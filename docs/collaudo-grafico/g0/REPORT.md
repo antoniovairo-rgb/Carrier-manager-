@@ -97,16 +97,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/18 (11) | 0/18 (11) | 0/18 (11) | 0/18 (11) | 0/18 (11) |
 | Creazione | 0/603 (11) | 0/603 (11) | 0/603 (11) | 0/603 (11) | 0/603 (11) |
 | Offerte | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) |
-| Dashboard | 0/106 (11) | 0/106 (11) | 0/106 (11) | 0/106 (11) | 0/106 (11) |
+| Dashboard | 0/104 (11) | 0/104 (11) | 0/104 (11) | 0/104 (11) | 0/104 (11) |
 | Stagione · Classifica | 0/248 (11) | 0/248 (11) | 0/248 (11) | 0/248 (11) | 0/248 (11) |
-| Stagione · Calendario | 0/162 (11) | 0/162 (11) | 0/162 (11) | 0/162 (11) | 0/162 (11) |
+| Stagione · Calendario | 0/242 (11) | 0/242 (11) | 0/242 (11) | 0/242 (11) | 0/242 (11) |
 | Stagione · Coppe | 0/44 (11) | 0/44 (11) | 0/44 (11) | 0/44 (11) | 0/44 (11) |
 | Club | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) |
 | Carriera · Profilo | 0/89 (11) | 0/89 (11) | 0/89 (11) | 0/89 (11) | 0/89 (11) |
 | Carriera · Nazionale | 0/111 (11) | 0/111 (11) | 0/111 (11) | 0/111 (11) | 0/111 (11) |
 | Agente | 0/110 (11) | 0/110 (11) | 0/110 (11) | 0/110 (11) | 0/110 (11) |
 | Ufficio | 0/122 (11) | 0/122 (11) | 0/122 (11) | 0/122 (11) | 0/122 (11) |
-| **TOTALE** | **0/1769** | **0/1769** | **0/1769** | **0/1769** | **0/1769** |
+| **TOTALE** | **0/1847** | **0/1847** | **0/1847** | **0/1847** | **0/1847** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
@@ -116,16 +116,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/18 | 0/18 | 0/18 | 0/18 | 0/18 |
 | Creazione | 0/603 | 0/603 | 0/603 | 0/603 | 0/603 |
 | Offerte | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
-| Dashboard | 0/106 | 0/106 | 0/106 | 0/106 | 0/106 |
+| Dashboard | 0/104 | 0/104 | 0/104 | 0/104 | 0/104 |
 | Stagione · Classifica | 0/248 | 0/248 | 0/248 | 0/248 | 0/248 |
-| Stagione · Calendario | 0/162 | 0/162 | 0/162 | 0/162 | 0/162 |
+| Stagione · Calendario | 0/242 | 0/242 | 0/242 | 0/242 | 0/242 |
 | Stagione · Coppe | 0/44 | 0/44 | 0/44 | 0/44 | 0/44 |
 | Club | 0/108 | 0/108 | 0/108 | 0/108 | 0/108 |
 | Carriera · Profilo | 0/89 | 0/89 | 0/89 | 0/89 | 0/89 |
 | Carriera · Nazionale | 0/111 | 0/111 | 0/111 | 0/111 | 0/111 |
 | Agente | 0/110 | 0/110 | 0/110 | 0/110 | 0/110 |
 | Ufficio | 0/122 | 0/122 | 0/122 | 0/122 | 0/122 |
-| **TOTALE** | **0/1769** | **0/1769** | **0/1769** | **0/1769** | **0/1769** |
+| **TOTALE** | **0/1847** | **0/1847** | **0/1847** | **0/1847** | **0/1847** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
@@ -135,16 +135,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) |
 | Creazione | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) |
 | Offerte | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) |
-| Dashboard | 0/72 (9 · 25) | 0/72 (9 · 25) | 0/72 (9 · 25) | 0/72 (9 · 25) | 0/72 (9 · 25) |
+| Dashboard | 0/70 (9 · 25) | 0/70 (9 · 25) | 0/70 (9 · 25) | 0/70 (9 · 25) | 0/70 (9 · 25) |
 | Stagione · Classifica | 0/237 (7 · 22) | 0/237 (7 · 22) | 0/237 (7 · 22) | 0/237 (7 · 22) | 0/237 (7 · 22) |
-| Stagione · Calendario | 0/129 (7 · 34) | 0/129 (7 · 34) | 0/129 (7 · 34) | 0/129 (7 · 34) | 0/129 (7 · 34) |
+| Stagione · Calendario | 0/209 (7 · 34) | 0/209 (7 · 34) | 0/209 (7 · 34) | 0/209 (7 · 34) | 0/209 (7 · 34) |
 | Stagione · Coppe | 0/27 (7 · 10) | 0/27 (7 · 10) | 0/27 (7 · 10) | 0/27 (7 · 10) | 0/27 (7 · 10) |
 | Club | 0/77 (7 · 25) | 0/77 (7 · 25) | 0/77 (7 · 25) | 0/77 (7 · 25) | 0/77 (7 · 25) |
 | Carriera · Profilo | 0/60 (9 · 20) | 0/60 (9 · 20) | 0/60 (9 · 20) | 0/60 (9 · 20) | 0/60 (9 · 20) |
 | Carriera · Nazionale | 0/68 (25 · 18) | 0/68 (25 · 18) | 0/68 (25 · 18) | 0/68 (25 · 18) | 0/68 (25 · 18) |
 | Agente | 0/81 (7 · 22) | 0/81 (7 · 22) | 0/81 (7 · 22) | 0/81 (7 · 22) | 0/81 (7 · 22) |
 | Ufficio | 0/84 (7 · 31) | 0/84 (7 · 31) | 0/84 (7 · 31) | 0/84 (7 · 31) | 0/84 (7 · 31) |
-| **TOTALE** | **0/1698** | **0/1698** | **0/1698** | **0/1698** | **0/1698** |
+| **TOTALE** | **0/1776** | **0/1776** | **0/1776** | **0/1776** | **0/1776** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
@@ -175,7 +175,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Offerte | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Dashboard | 1652 (1.81) | 1652 (1.81) | 1652 (1.81) | 1652 (1.81) | 1635 (1.79) |
 | Stagione · Classifica | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) |
-| Stagione · Calendario | 1109 (1.21) | 1109 (1.21) | 1109 (1.21) | 1109 (1.21) | 1109 (1.21) |
+| Stagione · Calendario | 1232 (1.35) | 1220 (1.33) | 1220 (1.33) | 1220 (1.33) | 1220 (1.33) |
 | Stagione · Coppe | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Club | 1212 (1.32) | 1199 (1.31) | 1199 (1.31) | 1186 (1.3) | 1186 (1.3) |
 | Carriera · Profilo | 1290 (1.41) | 1277 (1.4) | 1277 (1.4) | 1277 (1.4) | 1277 (1.4) |
@@ -304,16 +304,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSimulatore di carriera |
 |  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Creazione | 51 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | Inizia i provini |
-| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
+| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
-| Ufficio | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 19:32Italia ·  |
+| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
+| Ufficio | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 00:38Italia ·  |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 
@@ -393,8 +393,8 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione |  |  |  |  | 4 | 1 | 2 | 3 | 3 | 3 | 7 | 6 | 3 | **9** |
 | OVR |  |  |  |  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | **9** |
 | Settimana |  |  |  |  | 4 |  | 1 | 2 | 1 |  | 4 | 5 | 9 | **7** |
+| Gol |  |  | 1 | 1 | 2 | 2 | 1 |  |  | 2 | 3 |  |  | **7** |
 | Morale |  |  |  |  | 1 |  |  |  | 4 | 1 | 1 | 1 | 6 | **6** |
-| Gol |  |  | 1 | 1 | 2 | 2 |  |  |  | 2 | 3 |  |  | **6** |
 | Forma |  |  |  |  | 1 |  |  |  | 4 | 1 | 1 | 1 | 2 | **6** |
 | Fatica |  |  |  |  | 1 |  |  |  | 1 | 1 | 1 | 1 | 3 | **6** |
 | Fiducia |  |  |  |  | 1 |  |  |  | 1 | 1 |  | 1 | 4 | **5** |
@@ -433,9 +433,9 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 1 | Barlow x13 |
 | Creazione | 1 | Barlow x827 |
 | Offerte | 1 | Barlow x21 |
-| Dashboard | 1 | Barlow x72 |
+| Dashboard | 1 | Barlow x70 |
 | Stagione · Classifica | 1 | Barlow x237 |
-| Stagione · Calendario | 1 | Barlow x129 |
+| Stagione · Calendario | 1 | Barlow x209 |
 | Stagione · Coppe | 1 | Barlow x27 |
 | Club | 1 | Barlow x77 |
 | Carriera · Profilo | 1 | Barlow x60 |
@@ -455,9 +455,9 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 3 | **11** x6 (🎧 Audio) · **12** x6 (🔇 Silenzia ) · **15** x1 (⚙️ Opzioni) |
 | Creazione | 4 | **11** x314 (👤 Identità) · **12** x259 (ATTACCANTE) · **15** x1 (Inizia i pro) · **17** x1 (NOME) |
 | Offerte | 2 | **11** x12 (Primavera 1) · **13** x6 (Torino Athle) |
-| Dashboard | 6 | **11** x41 (Elite) · **12** x4 (Claudio Mila) · **13** x16 (K) · **17** x3 (78) · **20** x3 (Grafica Prob) · **24** x5 (86) |
+| Dashboard | 6 | **11** x39 (Elite) · **12** x4 (Claudio Mila) · **13** x16 (K) · **17** x3 (78) · **20** x3 (Grafica Prob) · **24** x5 (86) |
 | Stagione · Classifica | 5 | **11** x34 (Elite) · **12** x161 (Classifica) · **13** x22 (K) · **20** x1 (Grafica Prob) · **24** x1 (86) |
-| Stagione · Calendario | 5 | **11** x90 (Elite) · **12** x27 (Classifica) · **13** x2 (K) · **20** x1 (Grafica Prob) · **24** x1 (86) |
+| Stagione · Calendario | 5 | **11** x170 (Elite) · **12** x27 (Classifica) · **13** x2 (K) · **20** x1 (Grafica Prob) · **24** x1 (86) |
 | Stagione · Coppe | 5 | **11** x16 (Elite) · **12** x6 (Classifica) · **13** x3 (K) · **20** x1 (Grafica Prob) · **24** x1 (86) |
 | Club | 7 | **11** x63 (Elite) · **12** x4 (72/100) · **13** x2 (K) · **15** x1 (FC Salernum) · **17** x3 (78) · **20** x1 (Grafica Prob) · **24** x2 (86) |
 | Carriera · Profilo | 6 | **11** x45 (Elite) · **12** x2 (Profilo) · **13** x2 (K) · **17** x9 (78) · **20** x1 (Grafica Prob) · **24** x1 (86) |
@@ -478,9 +478,9 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 3 | `#1e293b` x7 (⚙️ Opzioni) · `#596a80` x5 (85) · `#526279` x1 (🎧 Audio) |
 | Creazione | 9 | `#1e293b` x264 (NOME) · `#596a80` x262 (👤 Identità) · `#000000` x260 (CFM) · `#526279` x18 (187 cm · 80 kg) · `#a34a08` x8 (🏆 Scalatore N) · `#166534` x7 (Effetto sugli ) · `#b91c1c` x4 (Velocità) · `#ffffff` x2 (Inizia i provi) · `#8e1f33` x2 (📋 Percorso ca) |
 | Offerte | 3 | `#526279` x14 (Scegli →) · `#1e293b` x6 (TAT) · `#ffffff` x1 (Scegli →) |
-| Dashboard | 9 | `#1e293b` x22 (10) · `#ffffff` x12 (86) · `#596a80` x12 (Forma) · `#526279` x12 (Partite) · `#166534` x5 (14) · `#8e1f33` x3 (78) · `#6c1f2e` x2 (Salva) · `#7c3aed` x2 (6) · `#92400e` x2 (7,4) |
+| Dashboard | 9 | `#1e293b` x22 (10) · `#ffffff` x12 (86) · `#526279` x12 (Partite) · `#596a80` x10 (Forma) · `#166534` x5 (14) · `#8e1f33` x3 (78) · `#6c1f2e` x2 (Salva) · `#7c3aed` x2 (6) · `#92400e` x2 (7,4) |
 | Stagione · Classifica | 9 | `#526279` x90 (Calendario) · `#1e293b` x58 (CRE) · `#b91c1c` x28 (3) · `#166534` x26 (10) · `#ffffff` x14 (86) · `#596a80` x9 (Club) · `#8e1f33` x8 (SAL) · `#6c1f2e` x2 (Salva) · `#0f172a` x2 (1) |
-| Stagione · Calendario | 9 | `#526279` x35 (Classifica) · `#1e293b` x30 (LAR) · `#596a80` x27 (12) · `#ffffff` x12 (86) · `#92400e` x10 (2) · `#166534` x8 (1) · `#8e1f33` x3 (Calendario) · `#6c1f2e` x2 (Salva) · `#b91c1c` x2 (6) |
+| Stagione · Calendario | 9 | `#596a80` x75 (12) · `#526279` x35 (Classifica) · `#1e293b` x30 (LAR) · `#92400e` x25 (2) · `#166534` x20 (1) · `#ffffff` x12 (86) · `#8e1f33` x5 (Calendario) · `#b91c1c` x5 (6) · `#6c1f2e` x2 (Salva) |
 | Stagione · Coppe | 5 | `#ffffff` x12 (86) · `#526279` x6 (Classifica) · `#1e293b` x5 (Nessuna coppa ) · `#6c1f2e` x2 (Salva) · `#8e1f33` x2 (Coppe) |
 | Club | 8 | `#1e293b` x28 (SAL) · `#596a80` x17 (Forma) · `#ffffff` x12 (86) · `#526279` x9 (Lega B) · `#8e1f33` x7 (5) · `#6c1f2e` x2 (Salva) · `#92400e` x1 (45) · `#166534` x1 (72/100) |
 | Carriera · Profilo | 9 | `#1e293b` x19 (78) · `#596a80` x16 (Forma) · `#ffffff` x12 (86) · `#8e1f33` x4 (6) · `#526279` x3 (Nazionale) · `#6c1f2e` x2 (Salva) · `#92400e` x2 (14) · `#1e40af` x1 (10) · `#166534` x1 (€45 mln) |
@@ -545,7 +545,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Offerte | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 13 / 400 | 2 | `div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus` | Scegli → |
 | Offerte | 8.77:1 | 4.5:1 | `#ffffff` su `#8e1f33` | 13 / 700 | 1 | `div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus` | Scegli → |
 | Offerte | 12.41:1 | 3:1 | `#1e293b` su `#f7e9ec` | 27 / 900 | 1 | `div:nth-child(1)>svg:nth-child(1)>text:nth-child(3)` | TAT |
-| Dashboard | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 8 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
+| Dashboard | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 6 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
 | Dashboard | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 600 | 2 | `div:nth-child(1)>span.cpm-num>span:nth-child(1)` | /100 |
 | Dashboard | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 2 | `div:nth-child(13)>div:nth-child(1)>span.cpm-num` | 28 |
 | Dashboard | 5.70:1 | 3:1 | `#7c3aed` su `#ffffff` | 24 / 800 | 1 | `div:nth-child(2)>div:nth-child(3)>div.cpm-num` | 6 |
@@ -556,10 +556,10 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Classifica | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 700 | 2 | `div.cpm-career>div:nth-child(2)>button.cpm-focus` | Calendario |
 | Stagione · Classifica | 5.49:1 | 4.5:1 | `#b91c1c` su `#f7e9ec` | 12 / 400 | 1 | `tbody:nth-child(2)>tr:nth-child(5)>td:nth-child(7)` | 2 |
 | Stagione · Calendario | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 700 | 2 | `div.cpm-career>div:nth-child(2)>button.cpm-focus` | Classifica |
+| Stagione · Calendario | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 600 | 48 | `div:nth-child(1)>div:nth-child(12)>div:nth-child(1)` | LAR |
 | Stagione · Calendario | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 27 | `div:nth-child(1)>div:nth-child(1)>div:nth-child(12)` | 12 |
-| Stagione · Calendario | 5.89:1 | 4.5:1 | `#b91c1c` su `#fff1f2` | 11 / 700 | 2 | `div:nth-child(1)>div:nth-child(1)>div:nth-child(6)` | 6 |
-| Stagione · Calendario | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 25 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | 11ª giornata |
-| Stagione · Calendario | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 12 / 400 | 8 | `div:nth-child(2)>div:nth-child(1)>span:nth-child(1)` | · in trasferta |
+| Stagione · Calendario | 5.89:1 | 4.5:1 | `#b91c1c` su `#fff1f2` | 11 / 700 | 3 | `div:nth-child(1)>div:nth-child(1)>div:nth-child(6)` | 6 |
+| Stagione · Calendario | 5.89:1 | 4.5:1 | `#b91c1c` su `#fff1f2` | 11 / 600 | 2 | `div:nth-child(1)>div:nth-child(6)>div:nth-child(1)` | PIS |
 | Stagione · Coppe | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 3 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | Quest'anno non sei in gara |
 | Stagione · Coppe | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 700 | 2 | `div.cpm-career>div:nth-child(2)>button.cpm-focus` | Classifica |
 | Stagione · Coppe | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 1 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | Le competizioni si aprono  |

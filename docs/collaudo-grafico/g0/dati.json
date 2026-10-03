@@ -3584,12 +3584,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 104,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 72,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 9,
     "nEmoji": 25,
@@ -3601,7 +3601,7 @@
       "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 8,
+      "n": 6,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
@@ -3681,7 +3681,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 72
+      "n": 70
      }
     ],
     "nFamiglie": 1,
@@ -3707,16 +3707,16 @@
       "esempio": "86"
      },
      {
-      "c": "#596a80",
-      "n": 12,
-      "fs": 11,
-      "esempio": "Forma"
-     },
-     {
       "c": "#526279",
       "n": 12,
       "fs": 11,
       "esempio": "Partite"
+     },
+     {
+      "c": "#596a80",
+      "n": 10,
+      "fs": 11,
+      "esempio": "Forma"
      },
      {
       "c": "#166534",
@@ -3752,7 +3752,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 41,
+      "n": 39,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -3829,7 +3829,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3850,12 +3850,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 104,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 72,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 9,
     "nEmoji": 25,
@@ -3867,7 +3867,7 @@
       "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 8,
+      "n": 6,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
@@ -3947,7 +3947,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 72
+      "n": 70
      }
     ],
     "nFamiglie": 1,
@@ -3973,16 +3973,16 @@
       "esempio": "86"
      },
      {
-      "c": "#596a80",
-      "n": 12,
-      "fs": 11,
-      "esempio": "Forma"
-     },
-     {
       "c": "#526279",
       "n": 12,
       "fs": 11,
       "esempio": "Partite"
+     },
+     {
+      "c": "#596a80",
+      "n": 10,
+      "fs": 11,
+      "esempio": "Forma"
      },
      {
       "c": "#166534",
@@ -4018,7 +4018,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 41,
+      "n": 39,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4095,7 +4095,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4116,12 +4116,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 104,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 72,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 9,
     "nEmoji": 25,
@@ -4133,7 +4133,7 @@
       "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 8,
+      "n": 6,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
@@ -4213,7 +4213,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 72
+      "n": 70
      }
     ],
     "nFamiglie": 1,
@@ -4239,16 +4239,16 @@
       "esempio": "86"
      },
      {
-      "c": "#596a80",
-      "n": 12,
-      "fs": 11,
-      "esempio": "Forma"
-     },
-     {
       "c": "#526279",
       "n": 12,
       "fs": 11,
       "esempio": "Partite"
+     },
+     {
+      "c": "#596a80",
+      "n": 10,
+      "fs": 11,
+      "esempio": "Forma"
      },
      {
       "c": "#166534",
@@ -4284,7 +4284,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 41,
+      "n": 39,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4361,7 +4361,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4382,12 +4382,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 104,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 72,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 9,
     "nEmoji": 25,
@@ -4399,7 +4399,7 @@
       "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 8,
+      "n": 6,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
@@ -4479,7 +4479,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 72
+      "n": 70
      }
     ],
     "nFamiglie": 1,
@@ -4505,16 +4505,16 @@
       "esempio": "86"
      },
      {
-      "c": "#596a80",
-      "n": 12,
-      "fs": 11,
-      "esempio": "Forma"
-     },
-     {
       "c": "#526279",
       "n": 12,
       "fs": 11,
       "esempio": "Partite"
+     },
+     {
+      "c": "#596a80",
+      "n": 10,
+      "fs": 11,
+      "esempio": "Forma"
      },
      {
       "c": "#166534",
@@ -4550,7 +4550,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 41,
+      "n": 39,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4627,7 +4627,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4648,12 +4648,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 106,
+    "nTesto": 104,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 72,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 9,
     "nEmoji": 25,
@@ -4665,7 +4665,7 @@
       "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 8,
+      "n": 6,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
@@ -4745,7 +4745,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 72
+      "n": 70
      }
     ],
     "nFamiglie": 1,
@@ -4771,16 +4771,16 @@
       "esempio": "86"
      },
      {
-      "c": "#596a80",
-      "n": 12,
-      "fs": 11,
-      "esempio": "Forma"
-     },
-     {
       "c": "#526279",
       "n": 12,
       "fs": 11,
       "esempio": "Partite"
+     },
+     {
+      "c": "#596a80",
+      "n": 10,
+      "fs": 11,
+      "esempio": "Forma"
      },
      {
       "c": "#166534",
@@ -4816,7 +4816,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 41,
+      "n": 39,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4893,7 +4893,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5143,7 +5143,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -5384,7 +5384,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -5625,7 +5625,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -5866,7 +5866,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -6107,7 +6107,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -6123,12 +6123,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 162,
+    "nTesto": 242,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 129,
+    "nMisurati": 209,
     "nSotto": 0,
     "nGradiente": 7,
     "nEmoji": 34,
@@ -6149,6 +6149,18 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 600,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 48,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(12)>div:nth-child(1)",
+      "esempio": "LAR"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
@@ -6164,34 +6176,22 @@
       "fw": 700,
       "rap": 5.89,
       "soglia": 4.5,
-      "n": 2,
+      "n": 3,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(6)",
       "esempio": "6"
      },
      {
-      "testo": "#526279",
-      "fondo": "#ffffff",
+      "testo": "#b91c1c",
+      "fondo": "#fff1f2",
       "fs": 11,
-      "fw": 400,
-      "rap": 6.21,
+      "fw": 600,
+      "rap": 5.89,
       "soglia": 4.5,
-      "n": 25,
+      "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "11ª giornata"
-     },
-     {
-      "testo": "#526279",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.21,
-      "soglia": 4.5,
-      "n": 8,
-      "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
-      "esempio": "· in trasferta"
+      "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "PIS"
      }
     ],
     "nMarca": 0,
@@ -6216,7 +6216,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 129
+      "n": 209
      }
     ],
     "nFamiglie": 1,
@@ -6230,6 +6230,12 @@
     ],
     "tinteTesto": [
      {
+      "c": "#596a80",
+      "n": 75,
+      "fs": 11,
+      "esempio": "12"
+     },
+     {
       "c": "#526279",
       "n": 35,
       "fs": 12,
@@ -6242,10 +6248,16 @@
       "esempio": "LAR"
      },
      {
-      "c": "#596a80",
-      "n": 27,
+      "c": "#92400e",
+      "n": 25,
       "fs": 11,
-      "esempio": "12"
+      "esempio": "2"
+     },
+     {
+      "c": "#166534",
+      "n": 20,
+      "fs": 11,
+      "esempio": "1"
      },
      {
       "c": "#ffffff",
@@ -6254,40 +6266,28 @@
       "esempio": "86"
      },
      {
-      "c": "#92400e",
-      "n": 10,
-      "fs": 11,
-      "esempio": "2"
-     },
-     {
-      "c": "#166534",
-      "n": 8,
-      "fs": 11,
-      "esempio": "1"
-     },
-     {
       "c": "#8e1f33",
-      "n": 3,
+      "n": 5,
       "fs": 12,
       "esempio": "Calendario"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 5,
+      "fs": 11,
+      "esempio": "6"
      },
      {
       "c": "#6c1f2e",
       "n": 2,
       "fs": 11,
       "esempio": "Salva"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 2,
-      "fs": 11,
-      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 90,
+      "n": 170,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -6317,11 +6317,12 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1109,
-    "schermate": 1.21,
+    "altezzaPx": 1232,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 1,
      "Partite": 3,
      "OVR": 1,
      "Stagione": 2,
@@ -6348,7 +6349,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -6362,12 +6363,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 162,
+    "nTesto": 242,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 129,
+    "nMisurati": 209,
     "nSotto": 0,
     "nGradiente": 7,
     "nEmoji": 34,
@@ -6388,6 +6389,18 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 600,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 48,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(12)>div:nth-child(1)",
+      "esempio": "LAR"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
@@ -6403,34 +6416,22 @@
       "fw": 700,
       "rap": 5.89,
       "soglia": 4.5,
-      "n": 2,
+      "n": 3,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(6)",
       "esempio": "6"
      },
      {
-      "testo": "#526279",
-      "fondo": "#ffffff",
+      "testo": "#b91c1c",
+      "fondo": "#fff1f2",
       "fs": 11,
-      "fw": 400,
-      "rap": 6.21,
+      "fw": 600,
+      "rap": 5.89,
       "soglia": 4.5,
-      "n": 25,
+      "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "11ª giornata"
-     },
-     {
-      "testo": "#526279",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.21,
-      "soglia": 4.5,
-      "n": 8,
-      "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
-      "esempio": "· in trasferta"
+      "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "PIS"
      }
     ],
     "nMarca": 0,
@@ -6455,7 +6456,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 129
+      "n": 209
      }
     ],
     "nFamiglie": 1,
@@ -6469,6 +6470,12 @@
     ],
     "tinteTesto": [
      {
+      "c": "#596a80",
+      "n": 75,
+      "fs": 11,
+      "esempio": "12"
+     },
+     {
       "c": "#526279",
       "n": 35,
       "fs": 12,
@@ -6481,10 +6488,16 @@
       "esempio": "LAR"
      },
      {
-      "c": "#596a80",
-      "n": 27,
+      "c": "#92400e",
+      "n": 25,
       "fs": 11,
-      "esempio": "12"
+      "esempio": "2"
+     },
+     {
+      "c": "#166534",
+      "n": 20,
+      "fs": 11,
+      "esempio": "1"
      },
      {
       "c": "#ffffff",
@@ -6493,40 +6506,28 @@
       "esempio": "86"
      },
      {
-      "c": "#92400e",
-      "n": 10,
-      "fs": 11,
-      "esempio": "2"
-     },
-     {
-      "c": "#166534",
-      "n": 8,
-      "fs": 11,
-      "esempio": "1"
-     },
-     {
       "c": "#8e1f33",
-      "n": 3,
+      "n": 5,
       "fs": 12,
       "esempio": "Calendario"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 5,
+      "fs": 11,
+      "esempio": "6"
      },
      {
       "c": "#6c1f2e",
       "n": 2,
       "fs": 11,
       "esempio": "Salva"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 2,
-      "fs": 11,
-      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 90,
+      "n": 170,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -6556,11 +6557,12 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1109,
-    "schermate": 1.21,
+    "altezzaPx": 1220,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 1,
      "Partite": 3,
      "OVR": 1,
      "Stagione": 2,
@@ -6587,7 +6589,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -6601,12 +6603,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 162,
+    "nTesto": 242,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 129,
+    "nMisurati": 209,
     "nSotto": 0,
     "nGradiente": 7,
     "nEmoji": 34,
@@ -6627,6 +6629,18 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 600,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 48,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(12)>div:nth-child(1)",
+      "esempio": "LAR"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
@@ -6642,34 +6656,22 @@
       "fw": 700,
       "rap": 5.89,
       "soglia": 4.5,
-      "n": 2,
+      "n": 3,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(6)",
       "esempio": "6"
      },
      {
-      "testo": "#526279",
-      "fondo": "#ffffff",
+      "testo": "#b91c1c",
+      "fondo": "#fff1f2",
       "fs": 11,
-      "fw": 400,
-      "rap": 6.21,
+      "fw": 600,
+      "rap": 5.89,
       "soglia": 4.5,
-      "n": 25,
+      "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "11ª giornata"
-     },
-     {
-      "testo": "#526279",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.21,
-      "soglia": 4.5,
-      "n": 8,
-      "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
-      "esempio": "· in trasferta"
+      "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "PIS"
      }
     ],
     "nMarca": 0,
@@ -6694,7 +6696,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 129
+      "n": 209
      }
     ],
     "nFamiglie": 1,
@@ -6708,6 +6710,12 @@
     ],
     "tinteTesto": [
      {
+      "c": "#596a80",
+      "n": 75,
+      "fs": 11,
+      "esempio": "12"
+     },
+     {
       "c": "#526279",
       "n": 35,
       "fs": 12,
@@ -6720,10 +6728,16 @@
       "esempio": "LAR"
      },
      {
-      "c": "#596a80",
-      "n": 27,
+      "c": "#92400e",
+      "n": 25,
       "fs": 11,
-      "esempio": "12"
+      "esempio": "2"
+     },
+     {
+      "c": "#166534",
+      "n": 20,
+      "fs": 11,
+      "esempio": "1"
      },
      {
       "c": "#ffffff",
@@ -6732,40 +6746,28 @@
       "esempio": "86"
      },
      {
-      "c": "#92400e",
-      "n": 10,
-      "fs": 11,
-      "esempio": "2"
-     },
-     {
-      "c": "#166534",
-      "n": 8,
-      "fs": 11,
-      "esempio": "1"
-     },
-     {
       "c": "#8e1f33",
-      "n": 3,
+      "n": 5,
       "fs": 12,
       "esempio": "Calendario"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 5,
+      "fs": 11,
+      "esempio": "6"
      },
      {
       "c": "#6c1f2e",
       "n": 2,
       "fs": 11,
       "esempio": "Salva"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 2,
-      "fs": 11,
-      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 90,
+      "n": 170,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -6795,11 +6797,12 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1109,
-    "schermate": 1.21,
+    "altezzaPx": 1220,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 1,
      "Partite": 3,
      "OVR": 1,
      "Stagione": 2,
@@ -6826,7 +6829,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -6840,12 +6843,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 162,
+    "nTesto": 242,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 129,
+    "nMisurati": 209,
     "nSotto": 0,
     "nGradiente": 7,
     "nEmoji": 34,
@@ -6866,6 +6869,18 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 600,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 48,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(12)>div:nth-child(1)",
+      "esempio": "LAR"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
@@ -6881,34 +6896,22 @@
       "fw": 700,
       "rap": 5.89,
       "soglia": 4.5,
-      "n": 2,
+      "n": 3,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(6)",
       "esempio": "6"
      },
      {
-      "testo": "#526279",
-      "fondo": "#ffffff",
+      "testo": "#b91c1c",
+      "fondo": "#fff1f2",
       "fs": 11,
-      "fw": 400,
-      "rap": 6.21,
+      "fw": 600,
+      "rap": 5.89,
       "soglia": 4.5,
-      "n": 25,
+      "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "11ª giornata"
-     },
-     {
-      "testo": "#526279",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.21,
-      "soglia": 4.5,
-      "n": 8,
-      "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
-      "esempio": "· in trasferta"
+      "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "PIS"
      }
     ],
     "nMarca": 0,
@@ -6933,7 +6936,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 129
+      "n": 209
      }
     ],
     "nFamiglie": 1,
@@ -6947,6 +6950,12 @@
     ],
     "tinteTesto": [
      {
+      "c": "#596a80",
+      "n": 75,
+      "fs": 11,
+      "esempio": "12"
+     },
+     {
       "c": "#526279",
       "n": 35,
       "fs": 12,
@@ -6959,10 +6968,16 @@
       "esempio": "LAR"
      },
      {
-      "c": "#596a80",
-      "n": 27,
+      "c": "#92400e",
+      "n": 25,
       "fs": 11,
-      "esempio": "12"
+      "esempio": "2"
+     },
+     {
+      "c": "#166534",
+      "n": 20,
+      "fs": 11,
+      "esempio": "1"
      },
      {
       "c": "#ffffff",
@@ -6971,40 +6986,28 @@
       "esempio": "86"
      },
      {
-      "c": "#92400e",
-      "n": 10,
-      "fs": 11,
-      "esempio": "2"
-     },
-     {
-      "c": "#166534",
-      "n": 8,
-      "fs": 11,
-      "esempio": "1"
-     },
-     {
       "c": "#8e1f33",
-      "n": 3,
+      "n": 5,
       "fs": 12,
       "esempio": "Calendario"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 5,
+      "fs": 11,
+      "esempio": "6"
      },
      {
       "c": "#6c1f2e",
       "n": 2,
       "fs": 11,
       "esempio": "Salva"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 2,
-      "fs": 11,
-      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 90,
+      "n": 170,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -7034,11 +7037,12 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1109,
-    "schermate": 1.21,
+    "altezzaPx": 1220,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 1,
      "Partite": 3,
      "OVR": 1,
      "Stagione": 2,
@@ -7065,7 +7069,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -7079,12 +7083,12 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 162,
+    "nTesto": 242,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 129,
+    "nMisurati": 209,
     "nSotto": 0,
     "nGradiente": 7,
     "nEmoji": 34,
@@ -7105,6 +7109,18 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 600,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 48,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(12)>div:nth-child(1)",
+      "esempio": "LAR"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
@@ -7120,34 +7136,22 @@
       "fw": 700,
       "rap": 5.89,
       "soglia": 4.5,
-      "n": 2,
+      "n": 3,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(6)",
       "esempio": "6"
      },
      {
-      "testo": "#526279",
-      "fondo": "#ffffff",
+      "testo": "#b91c1c",
+      "fondo": "#fff1f2",
       "fs": 11,
-      "fw": 400,
-      "rap": 6.21,
+      "fw": 600,
+      "rap": 5.89,
       "soglia": 4.5,
-      "n": 25,
+      "n": 2,
       "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "11ª giornata"
-     },
-     {
-      "testo": "#526279",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 400,
-      "rap": 6.21,
-      "soglia": 4.5,
-      "n": 8,
-      "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
-      "esempio": "· in trasferta"
+      "sel": "div:nth-child(1)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "PIS"
      }
     ],
     "nMarca": 0,
@@ -7172,7 +7176,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 129
+      "n": 209
      }
     ],
     "nFamiglie": 1,
@@ -7186,6 +7190,12 @@
     ],
     "tinteTesto": [
      {
+      "c": "#596a80",
+      "n": 75,
+      "fs": 11,
+      "esempio": "12"
+     },
+     {
       "c": "#526279",
       "n": 35,
       "fs": 12,
@@ -7198,10 +7208,16 @@
       "esempio": "LAR"
      },
      {
-      "c": "#596a80",
-      "n": 27,
+      "c": "#92400e",
+      "n": 25,
       "fs": 11,
-      "esempio": "12"
+      "esempio": "2"
+     },
+     {
+      "c": "#166534",
+      "n": 20,
+      "fs": 11,
+      "esempio": "1"
      },
      {
       "c": "#ffffff",
@@ -7210,40 +7226,28 @@
       "esempio": "86"
      },
      {
-      "c": "#92400e",
-      "n": 10,
-      "fs": 11,
-      "esempio": "2"
-     },
-     {
-      "c": "#166534",
-      "n": 8,
-      "fs": 11,
-      "esempio": "1"
-     },
-     {
       "c": "#8e1f33",
-      "n": 3,
+      "n": 5,
       "fs": 12,
       "esempio": "Calendario"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 5,
+      "fs": 11,
+      "esempio": "6"
      },
      {
       "c": "#6c1f2e",
       "n": 2,
       "fs": 11,
       "esempio": "Salva"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 2,
-      "fs": 11,
-      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 90,
+      "n": 170,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -7273,11 +7277,12 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1109,
-    "schermate": 1.21,
+    "altezzaPx": 1220,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
+     "Gol": 1,
      "Partite": 3,
      "OVR": 1,
      "Stagione": 2,
@@ -7304,7 +7309,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -7522,7 +7527,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -7738,7 +7743,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -7954,7 +7959,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -8170,7 +8175,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -8386,7 +8391,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -8640,7 +8645,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -8892,7 +8897,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -9144,7 +9149,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -9396,7 +9401,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -9648,7 +9653,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -9904,7 +9909,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -10158,7 +10163,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -10412,7 +10417,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -10666,7 +10671,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -10920,7 +10925,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -11169,7 +11174,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -11416,7 +11421,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -11663,7 +11668,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -11910,7 +11915,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -12157,7 +12162,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -12417,7 +12422,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -12675,7 +12680,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -12933,7 +12938,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -13191,7 +13196,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -13449,7 +13454,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }
@@ -13696,7 +13701,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -13941,7 +13946,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -14186,7 +14191,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -14431,7 +14436,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    },
@@ -14676,7 +14681,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 19:32Italia · "
+      "txt": "K⚽rwardEliteSalva · 00:38Italia · "
      }
     ]
    }

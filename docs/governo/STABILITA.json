@@ -1,5 +1,57 @@
 [
  {
+  "data": "2026-10-03 00:37",
+  "versione": "7.999.114",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 200
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 676
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 40
+   }
+  ]
+ },
+ {
   "data": "2026-10-02 21:03",
   "versione": "7.999.113",
   "catena": "completa",
