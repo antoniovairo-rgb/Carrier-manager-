@@ -1,5 +1,87 @@
 [
  {
+  "data": "2026-10-03 18:38",
+  "versione": "7.999.123",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 263
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 946
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 67
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 290
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 91
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 87
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 95
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 130
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 46
+   }
+  ]
+ },
+ {
   "data": "2026-10-03 17:06",
   "versione": "7.999.122",
   "catena": "carriera",

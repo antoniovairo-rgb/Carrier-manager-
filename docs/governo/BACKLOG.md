@@ -66,7 +66,7 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (152)
+## Storico — voci chiuse (153)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -222,7 +222,7 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-195 | 02/10 21:45 | Calendario a griglia: far vedere le avversarie, non solo V/N/P | miglioramento | FATTO — 7.999.114: sigla dell'avversaria, sede e punteggio in ogni casella del calendario (calendario-offerte-195) | L1 | — | — | foto PO |
 | PO-196 | 02/10 21:46 | Offerte di fine Under 18: non si capisce in che serie giocano i club offerenti | miglioramento | FATTO — 7.999.114: lega e bandiera su ogni offerta; sono tutte prime squadre professionistiche tranne «Resta in Under 18» (calendario-offerte-195) | L1 | — | — | foto PO; il PO chiede se sono tutti professionistici tranne la Primavera |
 | PO-197 | 02/10 21:50 | Prepartita (walkout 3D): i giocatori corrono sul posto invece di stare fermi | difetto | FATTO — 7.999.115: nel walkout il corpo arrivato si ferma e la clip di corsa si spegne in fretta, corsa sul posto −75% (walkout-fermi-197); da confermare sul telefono | L1 | — | — | foto PO |
-| PO-198 | 03/10 20:17 | Parata del pullman: «Niente figurine, solo CGTrader!» — sul tetto omini a blocchi e figurine dei visi sopra | difetto | IN CORSO — 7.999.123: la parata usa i corpi CGTrader (l'eroe davanti alza la coppa) e niente figurine; guardiano parata-198 (verde 8 corpi e 0 figurine, rosso 0 corpi e figurine) | L1 | — | — | foto PO 20:17 |
+| PO-198 | 03/10 20:17 | Parata del pullman: «Niente figurine, solo CGTrader!» — sul tetto omini a blocchi e figurine dei visi sopra | difetto | FATTO — 7.999.123: la parata usa i corpi CGTrader sul tetto (l'eroe davanti alza la coppa) e niente figurine (parata-198: verde 8 corpi e 0 figurine, rosso 0 corpi e figurine); da confermare sul telefono | L1 | — | — | foto PO 20:17 |
 
 ## Ricostruzione (fonti e regole di stato)
 
