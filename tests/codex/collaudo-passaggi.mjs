@@ -91,7 +91,7 @@ async function run(gi,act,outcome,repeat){const id=`gi${gi}-a${act.i}-${outcome}
     const end=await page.evaluate(b=>({frames:(window.__CPM_REC_BUF||[]).filter(r=>r.t>=b.t-2&&r.ph==='hl_result'),
       watch:(window.__CPM_WATCH_SNAP?.()?.samples||[]).filter(r=>r.t>=b.t-2),writers:window.__CPM_WS38||[],phase:window.__CPM_PHASE?.(),
       timeline:(window.__CPM_TIMELINE?.()||[]).slice(b.before),state:window.__CPM_STATE?.(),
-      draft:(()=>{try{const snap=window.__CPM_WATCH_SNAP?.();const keys=(snap?.samples||[]).map(s=>s.sk).filter(k=>Number.isInteger(k)&&k>=0);const sceneKey=keys.length?Math.max(...keys):null;
+      draft:(()=>{try{const snap=window.__CPM_WATCH_SNAP?.();const keys=(snap?.samples||[]).map(s=>s.sk).filter(k=>Number.isInteger(k)&&k>=0);const sceneKey=keys.length?keys.at(-1):null;
         return sceneKey==null?null:window.__CPM_DRAFTNOTE?.(snap,{sceneKey})??null;}catch(e){return `errore: ${e.message}`;}})()}),start);
     const cuts=new Map((end.watch||[]).map(s=>[Math.round(s.t),!!(s.f&16)]));
     rec.trace=(end.frames||[]).map(r=>({t:r.t-start.t,phase:r.ph,cut:cuts.get(Math.round(r.t))??false,

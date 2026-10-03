@@ -4,11 +4,12 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { chromium } from '../visual/node_modules/playwright/index.mjs';
 import { startServer, installCdnRoutes, sleep } from '../visual/lib/harness.mjs';
 
 const fixturePath = path.resolve(process.env.CPM_SAVE_190 || 'tests/visual/fixtures/save-190-s12-ovr93.json');
-const outputPath = path.resolve('tests/codex/po190-7999122.json');
+const outputPath = path.resolve('tests/codex/po190-7999122.json.gz');
 const version = fs.readFileSync('src/07-versione-save-interviste.jsx', 'utf8').match(/const GAME_VERSION="([^"]+)"/)?.[1];
 if (version !== '7.999.122') throw Error(`Serve GAME_VERSION 7.999.122; trovata ${version}`);
 if (!fs.existsSync(fixturePath)) throw Error(`Salvataggio assente: ${fixturePath}`);
@@ -54,10 +55,10 @@ if (process.env.CPM_DRY_RUN === '1') {
   console.log(JSON.stringify({ version, commit, dryRun: true, cases }));
   process.exit(0);
 }
-const data = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8'))
+const data = fs.existsSync(outputPath) ? JSON.parse(gunzipSync(fs.readFileSync(outputPath)))
   : { version, commit, source: path.relative('.', fixturePath), command: 'node tests/codex/po190-7999122.mjs', matches: [] };
 if (data.version !== version || data.commit !== commit) throw Error('Il grezzo appartiene a una base diversa');
-const save = () => fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
+const save = () => fs.writeFileSync(outputPath, gzipSync(JSON.stringify(data), { level: 9 }));
 const freeGB = () => os.freemem() / 2 ** 30;
 const memoryOK = () => freeGB() >= 3.5;
 if (!memoryOK()) { data.paused = { reason: 'RAM libera sotto 3,5 GB', freeGB: +freeGB().toFixed(2) }; save(); process.exit(0); }
