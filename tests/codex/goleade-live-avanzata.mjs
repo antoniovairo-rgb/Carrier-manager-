@@ -16,9 +16,11 @@ const server = await startServer();
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CPM_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe', args: ['--headless=new', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] });
 try {
   for (const career of careers) {
-    if (data.matches.some(m => m.seed === career.seed && m.finished)) continue;
+    if (process.env.CPM_REPLAY !== '1' && data.matches.some(m => m.seed === career.seed && m.finished)) continue;
     if (freeGB() < 3.5) { data.paused = { reason: 'RAM libera sotto 3,5 GB', freeGB: +freeGB().toFixed(2) }; save(); break; }
-    const row = { seed: career.seed, sourceSeason: career.advancedSave.season, sourceWeek: career.advancedSave.week, path: 'vissuta', startedAt: new Date().toISOString() };
+    const sourceSave = career.checkpoint?.season >= 7 ? career.checkpoint : career.advancedSave;
+    const repetition = data.matches.filter(m => m.seed === career.seed).length;
+    const row = { seed: career.seed, repetition, sourceSeason: sourceSave.season, sourceWeek: sourceSave.week, path: 'vissuta', startedAt: new Date().toISOString() };
     data.matches.push(row); save();
     const context = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 1, serviceWorkers: 'block' });
     const page = await context.newPage();
@@ -26,7 +28,7 @@ try {
     const memoryGuard = setInterval(() => { if (freeGB() < 3.5) { lowMemory = true; context.close().catch(() => {}); } }, 1000);
     await installCdnRoutes(page);
     if (fixture) await page.route('**/CARRIER-MANAGER-AV.html?*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: fixture }));
-    await page.addInitScript(saveText => { window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; localStorage.setItem('cpm-v3', saveText); }, career.advancedSave.localStorage);
+    await page.addInitScript(saveText => { window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; localStorage.setItem('cpm-v3', saveText); }, sourceSave.localStorage);
     try {
       await page.goto(`http://localhost:${server.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
       const enterUntil = Date.now() + 60000;
@@ -39,9 +41,17 @@ try {
       const contractBefore = await page.evaluate(() => { const s = window.__CPM_CAREER.snapshot(); return { expired: !!s.contractExpired, expiresAtSeason: s.contract?.expiresAtSeason, duration: s.contract?.duration, season: s.season }; });
       row.contractBefore = contractBefore;
       if (contractBefore.expired) {
-        await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard'));
+        await page.evaluate(() => window.__CPM_CAREER.goTab('agente'));
         const renewal = page.getByRole('button', { name: /Negozia rinnovo/i }).first();
         row.renewalButtonVisible = await renewal.isVisible().catch(() => false);
+        if (!row.renewalButtonVisible) {
+          await page.evaluate(() => window.__CPM_CAREER.goTab('ufficio'));
+          row.renewalButtonVisible = await renewal.isVisible().catch(() => false);
+        }
+        if (!row.renewalButtonVisible) {
+          await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard'));
+          row.renewalButtonVisible = await renewal.isVisible().catch(() => false);
+        }
         if (row.renewalButtonVisible) {
           row.blockingChoices = [];
           for (let n = 0; n < 12; n++) {
@@ -67,13 +77,14 @@ try {
             if (blocker.choice) await page.locator('[data-cpm-qa-active="1"]').first().click({ timeout: 5000 });
             await sleep(200);
           }
-          await renewal.click({ timeout: 8000 });
+          if (await renewal.isVisible().catch(() => false)) await renewal.click({ timeout: 8000 });
           const accept = page.getByRole('button', { name: /Accetta l.offerta del club/i }).first();
           row.renewalOfferVisible = await accept.isVisible().catch(() => false);
           if (row.renewalOfferVisible) await accept.click({ timeout: 8000 });
         }
         await sleep(250);
         row.contractAfter = await page.evaluate(() => { const s = window.__CPM_CAREER.snapshot(); return { expired: !!s.contractExpired, expiresAtSeason: s.contract?.expiresAtSeason, duration: s.contract?.duration, season: s.season }; });
+        if (row.contractAfter.expired) throw Error('Il contratto resta scaduto: partita vissuta non avviabile');
       }
       for (let i = 0; i < 12; i++) {
         const state = await page.evaluate(() => ({ md: window.__CPM_CAREER.thisWeekMd(), pending: window.__CPM_CAREER.openingPending(), screen: window.__CPM_CAREER.screen() }));
@@ -89,7 +100,7 @@ try {
       row.playMatchResult = await page.evaluate(() => window.__CPM_CAREER.playMatch());
       if (row.playMatchResult !== true) throw Error(`playMatch: ${row.playMatchResult}`);
       await page.waitForFunction(() => typeof window.__CPM_AUTOPLAY === 'function', null, { timeout: 60000 });
-      const autoplaySeed = 190000 + career.seed;
+      const autoplaySeed = 190000 + career.seed + repetition * 1000;
       await page.evaluate(seed => window.__CPM_AUTOPLAY(true, { seed, policy: 'seeded', tickMs: 150 }), autoplaySeed);
       row.autoplaySeed = autoplaySeed;
       const until = Date.now() + 300000;
