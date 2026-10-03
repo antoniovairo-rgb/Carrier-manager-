@@ -40,9 +40,19 @@ async function renewFromUI(page) {
   const result = { choices: [] };
   const presentation = page.getByRole('button', { name: /Inizia la tua storia/i }).first();
   if (await presentation.isVisible().catch(() => false)) { await presentation.click({ timeout: 8000 }); result.choices.push('Inizia la tua storia'); await sleep(150); }
-  await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard'));
+  await page.evaluate(() => window.__CPM_CAREER.goTab('agente'));
   const renew = page.getByRole('button', { name: /Negozia rinnovo/i }).first();
   result.buttonVisible = await renew.isVisible().catch(() => false);
+  if (!result.buttonVisible) {
+    await page.evaluate(() => window.__CPM_CAREER.goTab('ufficio'));
+    result.buttonVisible = await renew.isVisible().catch(() => false);
+    result.tab = 'ufficio';
+  } else result.tab = 'agente';
+  if (!result.buttonVisible) {
+    await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard'));
+    result.buttonVisible = await renew.isVisible().catch(() => false);
+    result.tab = 'dashboard';
+  }
   if (!result.buttonVisible) return result;
   for (let n = 0; n < 12; n++) {
     const blocker = await page.evaluate(() => {
@@ -67,7 +77,10 @@ async function renewFromUI(page) {
     if (blocker.choice) await page.locator('[data-cpm-qa-active="1"]').first().click({ timeout: 5000 });
     await sleep(200);
   }
-  await renew.click({ timeout: 8000 });
+  result.buttonVisible = await renew.isVisible().catch(() => false);
+  if (!result.buttonVisible) { result.reason = 'button disappeared after closing overlays'; return result; }
+  try { await renew.click({ timeout: 8000 }); }
+  catch (error) { result.reason = `button click failed: ${String(error.message).slice(0,160)}`; return result; }
   const accept = page.getByRole('button', { name: /Accetta l.offerta del club/i }).first();
   result.offerVisible = await accept.isVisible().catch(() => false);
   if (result.offerVisible) { await accept.click({ timeout: 8000 }); result.accepted = true; }
@@ -85,9 +98,8 @@ try {
     let career = data.careers.find(c => c.seed === seed);
     if (career?.completed) continue;
     if (!career) { career = { seed, creation: 'UI naturale', renewUI: process.env.CPM_RENEW_UI === '1', matchSpeed, trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
-    if (!career.checkpoint && career.trials.length) {
-      // React keeps the three-trial flow in memory. A closed page cannot resume
-      // midway; preserve the partial run as evidence and restart its UI flow.
+    if (!career.checkpoint && career.trials.length && !career.trialProgress) {
+      // Vecchi tentativi senza envelope persistito: conservarli e ripartire.
       career.interruptedTrialRuns ||= [];
       career.interruptedTrialRuns.push({ trials: career.trials, interruptedAt: career.paused?.at || career.finishedAt || null });
       career.trials = [];
@@ -102,16 +114,18 @@ try {
     page.on('pageerror', e => career.errors.push(String(e.message)));
     await installCdnRoutes(page);
     if (fixture) await page.route('**/CARRIER-MANAGER-AV.html?*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: fixture }));
-    const resume = career.checkpoint?.localStorage || null;
-    await page.addInitScript(({ seed, resume, matchSpeed }) => {
+    let resume = career.checkpoint?.localStorage || null;
+    const resumeTrials = !resume && !!career.trialProgress;
+    await page.addInitScript(({ seed, resume, trialProgress, matchSpeed }) => {
       window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1;
       if (resume) localStorage.setItem('cpm-v3', resume);
+      if (trialProgress) localStorage.setItem('cpm-trial-prog', trialProgress);
       localStorage.setItem('cpm-match-speed', matchSpeed);
       let x = (Number(sessionStorage.getItem('qa-rng') || seed + 1) >>> 0) || 1;
       Math.random = () => { x ^= x << 13; x ^= x >>> 17; x ^= x << 5; sessionStorage.setItem('qa-rng', String(x >>> 0)); return (x >>> 0) / 4294967296; };
-    }, { seed, resume, matchSpeed });
+    }, { seed, resume, trialProgress: resumeTrials ? career.trialProgress : null, matchSpeed });
     try {
-      const url = `http://localhost:${server.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
+      const url = `http://localhost:${server.address().port}/CARRIER-MANAGER-AV.html?${resumeTrials ? 'sit=0' : 'cpmtest=1'}`;
       await page.goto(url, { waitUntil: 'load', timeout: 90000 });
       if (resume) {
         const until = Date.now() + 60000;
@@ -122,10 +136,17 @@ try {
         }
       }
       if (!resume) {
-        await page.getByRole('button', { name: /Nuova carriera/i }).first().click();
-        await page.getByPlaceholder('Es. Giovanni Pisano').fill(`QA Naturale ${seed}`);
-        await page.getByRole('button', { name: /Inizia i provini/i }).click();
-        for (let i = 0; i < 3; i++) {
+        if (!resumeTrials) {
+          await page.getByRole('button', { name: /Nuova carriera/i }).first().click();
+          await page.getByPlaceholder('Es. Giovanni Pisano').fill(`QA Naturale ${seed}`);
+          await page.getByRole('button', { name: /Inizia i provini/i }).click();
+        } else {
+          await page.getByRole('button', { name: /Inizia il provino/i }).waitFor({ timeout: 60000 });
+          career.resumeEvidence = { savedResults: JSON.parse(career.trialProgress).res?.length ?? null,
+            displayed: await page.getByText(/PROVINO [123] DI 3/i).first().textContent().catch(() => null) };
+          save();
+        }
+        for (let i = resumeTrials ? career.trials.length : 0; i < 3; i++) {
           if (memoryStop()) throw Error('pausa memoria durante provini');
           await page.getByRole('button', { name: /Inizia il provino/i }).click();
           await page.waitForFunction(() => typeof window.__CPM_AUTOPLAY === 'function', null, { timeout: 60000 });
@@ -141,11 +162,24 @@ try {
           }
           if (await page.evaluate(() => window.__CPM_PHASE?.()) !== 'ended') throw Error(`Provino ${i + 1} non concluso; ultima fase ${lastPhase}`);
           await page.getByRole('button', { name: /Risultati provino/i }).click();
-          career.trials.push({ number: i + 1, completedAt: new Date().toISOString() }); save();
+          career.trials.push({ number: i + 1, completedAt: new Date().toISOString() });
+          career.trialProgress = await page.evaluate(() => localStorage.getItem('cpm-trial-prog'));
+          save();
           if (i < 2) await page.getByRole('button', { name: new RegExp(`Vai al Provino ${i + 2}`, 'i') }).click();
         }
         await page.getByText('Offerte ricevute', { exact: false }).first().waitFor({ timeout: 30000 });
         await page.keyboard.press('Enter');
+        if (resumeTrials) {
+          await page.waitForFunction(() => !!localStorage.getItem('cpm-v3'), null, { timeout: 60000 });
+          resume = await page.evaluate(() => localStorage.getItem('cpm-v3'));
+          await page.goto(`http://localhost:${server.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+          const until = Date.now() + 60000;
+          while (Date.now() < until && !(await page.evaluate(() => !!window.__CPM_CAREER).catch(() => false))) {
+            const button = page.getByText(/CONTINUA/i).first();
+            if (await button.isVisible().catch(() => false)) await button.click({ timeout: 1500, noWaitAfter: true }).catch(() => {});
+            await sleep(700);
+          }
+        }
       }
       await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 60000 });
       await sleep(800);
@@ -162,7 +196,7 @@ try {
         if (memoryStop()) break;
         const s = state.snapshot;
         if (process.env.CPM_RENEW_UI === '1' && s.proStatus === 'pro' && (s.contractExpired || (s.contract?.duration ?? 9) <= 1)
-          && !(career.renewals || []).some(x => x.season === s.season)) {
+          && !(career.renewals || []).some(x => x.before?.season === s.season && (x.ui?.accepted || x.before?.week === s.week))) {
           const before = { season: s.season, week: s.week, expired: !!s.contractExpired, duration: s.contract?.duration, expiresAtSeason: s.contract?.expiresAtSeason };
           const ui = await renewFromUI(page);
           state = await checkpoint();

@@ -1,6 +1,8 @@
 # PO-190 — goleade in carriera avanzata, checkpoint
 
-Base: `origin/main` 8cef5317, `GAME_VERSION="7.999.112"`. **Non ci sono ancora tre carriere naturali misurate** sulla nuova base. I 2,51–3,39 GB liberi osservati durante la preparazione erano sotto la soglia di 3,5 GB per avviare Chromium. I valori del PO (stagione 12, 2,90 GF/partita, 48 gol dell'eroe) sono il motivo del collaudo, non un risultato di questa sonda.
+**Stato aggiornato al 3 ottobre:** quattro carriere nate dall'interfaccia sono arrivate a S7/W1. La quarta (seme 3) ha completato i tre provini e sei stagioni con rinnovi accettati tramite i pulsanti del gioco: 204 gare di campionato simulate, zero partite con 6+ gol della squadra, una con scarto ≥5. Il caso del PO con eroe OVR 93 in S12 e le fonti dei gol nelle partite vissute restano **non verificati**. I paragrafi cronologici sotto descrivono anche i tentativi precedenti e non sostituiscono questo stato aggiornato.
+
+Base: `origin/main` 8cef5317, `GAME_VERSION="7.999.112"`. Al primo checkpoint i 2,51–3,39 GB liberi erano sotto la soglia di 3,5 GB per avviare Chromium; le carriere sono state misurate nelle riprese successive. I valori del PO (stagione 12, 2,90 GF/partita, 48 gol dell'eroe) sono il motivo del collaudo, non un risultato di questa sonda.
 
 Ho preparato `tests/codex/goleade-carriera-avanzata.mjs` per creare tre attaccanti dal percorso UI senza iniettare salvataggi o attributi iniziali, superare i provini e conservare a ogni passo salvataggio, stagione, settimana, stato del contratto, classifica e cronologia delle partite. Il comando di avvio è:
 
@@ -59,9 +61,9 @@ Nel campione: **1/612** partite con almeno 6 GF e **3/612** con scarto almeno 5.
 
 Comando del braccio vissuto: `$env:CPM_PRECOMPILED='1'; $env:CPM_SEEDS='0'; node tests/codex/goleade-live-avanzata.mjs`. Il grezzo `tests/codex/goleade-live-avanzata.json` conserva anche i tentativi invalidi. Nel salvataggio S6/W1 del seme 0 la sonda ha chiuso dall'interfaccia le schermate sovrapposte (benvenuto e colloquio con l'agente), quindi ha cliccato `Negozia rinnovo`; **non era visibile «Accetta l'offerta del club»** e il contratto è rimasto scaduto. La prima apertura di partita era pendente: `C.step()` ha restituito `opening-resolved`. Dopo, `C.playMatch()` ha restituito `true`, ma il gancio `__CPM_AUTOPLAY` non è comparso entro 60 s e la pagina è rimasta nel dashboard (foto `reports/codex/goleade-live-errore-seed0.png`). Nel codice, `src/18-career-app.jsx:986` impedisce `startMatch` a uno svincolato, mentre il gancio di test `playMatch` a `:1310` restituisce `true` dopo la chiamata senza verificare se il guardiano l'ha fermata. **Questo è un limite verificato del gancio di collaudo**; non conto la partita come vissuta né come difetto della simulazione.
 
-Un nuovo seme 3 è stato avviato con rinnovo via UI prima della scadenza: `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_SEEDS='3'; node tests/codex/goleade-carriera-avanzata.mjs`. Ha completato 2 provini, poi la guardia ha chiuso la pagina durante il terzo quando la memoria è scesa sotto 3,5 GB. Nessuna stagione del seme 3 è stata misurata. Il flusso dei tre provini è conservato in memoria React e **non è riprendibile dal secondo provino dopo la chiusura della pagina**; la sonda ora archivia i provini parziali in `interruptedTrialRuns` e ricomincia quel flusso dall'inizio, senza contarli come carriera conclusa. Le partite vissute su eroe attivo e la fonte dei gol restano non verificate.
+Un nuovo seme 3 è stato avviato con rinnovo via UI prima della scadenza: `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_SEEDS='3'; node tests/codex/goleade-carriera-avanzata.mjs`. Nei primi tentativi aveva completato 2 provini, poi la guardia aveva chiuso la pagina durante il terzo quando la memoria era scesa sotto 3,5 GB. La vecchia sonda ricominciava i provini da zero; il gioco conserva invece `cpm-trial-prog` per riprenderli. La correzione e il risultato del nuovo tentativo sono descritti nella sezione successiva.
 
-Ho riprovato il seme 3 con la velocità **2×**, opzione del gioco, senza ridurre i tre provini: `node tests/codex/goleade-precompile.mjs`; `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_MATCH_SPEED='2'; $env:CPM_SEEDS='3'; node tests/codex/goleade-carriera-avanzata.mjs`. La RAM iniziale era **4,57 GB**. Anche questo tentativo ha salvato **2 provini** e zero passi di carriera; durante il terzo la guardia ha registrato RAM sotto **3,5 GB** e ha chiuso la pagina. Il tentativo precedente è conservato in `interruptedTrialRuns`; il nuovo tentativo parziale resta in `trials`. La velocità 2× non ha risolto il limite di memoria su questa macchina e non produce dati di rinnovo o di goleade. Non ripeto il flusso finché non aumenta la RAM libera.
+Ho riprovato il seme 3 con la velocità **2×**, opzione del gioco, senza ridurre i tre provini: `node tests/codex/goleade-precompile.mjs`; `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_MATCH_SPEED='2'; $env:CPM_SEEDS='3'; node tests/codex/goleade-carriera-avanzata.mjs`. La RAM iniziale era **4,57 GB**. Quel tentativo aveva salvato **2 provini** e zero passi di carriera; durante il terzo la guardia aveva registrato RAM sotto **3,5 GB**. Il tentativo parziale è conservato in `interruptedTrialRuns`.
 
 ## Controllo numerico supplementare: eroe OVR alto
 
@@ -78,3 +80,24 @@ Unico 6+ della squadra di casa: seme **191172**, risultato **6–2** nel 93–50
 ```powershell
 node tests/codex/goleade-live-avanzata.mjs
 ```
+
+## Ripresa valida del seme 3 e rinnovi dall'interfaccia
+
+La sonda ora salva l'envelope `cpm-trial-prog` dopo ogni provino. Ha un ramo predisposto a ripristinarlo con `?sit=0`, poiché `?cpmtest=1` disabilita l'auto-ripresa nel gioco (`src/19-app-root.jsx:786`); **quel ramo di ripresa a metà provini non è ancora stato esercitato**. Nel tentativo valido i tre provini e le offerte sono stati attraversati dall'interfaccia nella stessa pagina. Dopo un arresto successivo, la carriera è stata ripresa dal suo salvataggio. Comandi completi usati: `node --check tests/codex/goleade-carriera-avanzata.mjs`; `node tests/codex/goleade-precompile.mjs`; `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_SEEDS='3'; $env:CPM_MATCH_SPEED='2'; node tests/codex/goleade-carriera-avanzata.mjs`, ripetuto dal checkpoint. Fonte: `tests/codex/goleade-carriera-avanzata.json`, carriera `seed:3`.
+
+**Esito misurato:** 3/3 provini conclusi, carriera a S7/W1, sei stagioni complete, **204** gare di campionato simulate, **0** gare con 6+ GF del club, **1** scarto ≥5, **0** errori JS registrati. L'eroe è passato da OVR 64 a 79; ha avuto presenze in tutte e sei le stagioni. I dati per stagione sono:
+
+| Stagione | OVR finale | Presenze eroe | Gol eroe | GF–GA club in 34 gare di lega | GF/gara | 6+ GF | Scarto ≥5 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 65 | 34 | 13 | 52–25 | 1,53 | 0 | 0 |
+| 2 | 69 | 35 | 6 | 49–42 | 1,44 | 0 | 0 |
+| 3 | 71 | 35 | 11 | 47–50 | 1,38 | 0 | 0 |
+| 4 | 73 | 35 | 15 | 46–44 | 1,35 | 0 | 0 |
+| 5 | 76 | 37 | 10 | 44–29 | 1,29 | 0 | 0 |
+| 6 | 78 | 36 | 17 | 59–48 | 1,74 | 0 | 1 |
+
+La sonda ha **cliccato** «Negozia rinnovo» e «Accetta l'offerta del club» quattro volte. A S2/W2 il contratto è passato da durata 1/scadenza S3 a durata 3/scadenza S5; a S4/W1 da 1/S5 a 2/S6. A S5/W1 è stato accettato un rinnovo annuale che lascia la scadenza S6; a S6/W1, con `contractExpired:true` all'inizio della settimana, un nuovo rinnovo ha riportato `contractExpired:false` e scadenza S7. Dunque **tre** rinnovi sono avvenuti prima della scadenza e **uno** dopo; non presento il quarto come preventivo.
+
+Un errore della sonda ripeteva la ricerca del pulsante nella stessa S2/W1 quando non era visibile. È stato corretto; il grezzo conserva primo e ultimo tentativo e registra **1.323** chiamate intermedie duplicate in `discardedDuplicateRenewalProbes`. Non sono azioni del giocatore né rinnovi, e non entrano nel campione calcistico. Un altro tentativo è terminato a S4/W1 per la scomparsa del pulsante durante la chiusura di schermate sovrapposte; la sonda ora registra l'assenza e prosegue dal checkpoint. Non è attribuito a un difetto del gioco.
+
+**Limite del verdetto PO-190:** queste 204 gare sono simulate, con un eroe al massimo OVR 79 e solo fino a S6. Il caso del PO (OVR 93, S12, 8–0 e 10–0) e la fonte dei gol delle partite vissute restano **non verificati**. Comando di sintesi riproducibile: `node -e "let c=require('./tests/codex/goleade-carriera-avanzata.json').careers.find(x=>x.seed===3);console.log(c.seasons.map(x=>[x.season,x.ovr,x.matches,x.goals,x.league.games,x.league.gf,x.league.ga,x.league.gamesSixPlus.length,x.league.marginsFivePlus.length]));console.log(c.renewals.filter(x=>x.ui?.accepted).map(x=>[x.before.season,x.before.week,x.before.expired,x.before.expiresAtSeason,x.after.expiresAtSeason]))"`.
