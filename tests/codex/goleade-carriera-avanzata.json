@@ -12,17 +12,17 @@
       "lived": [],
       "errors": [],
       "startedAt": "2026-10-03T03:32:10.491Z",
-      "finishedAt": "2026-10-03T03:32:30.868Z",
+      "finishedAt": "2026-10-03T03:41:32.742Z",
       "paused": {
         "reason": "RAM libera sotto 3,5 GB",
-        "at": "2026-10-03T03:32:30.868Z",
-        "detail": "Error: pausa memoria durante provini\n    at file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-serali/tests/codex/goleade-carriera-avanzata.mjs:60:35"
+        "at": "2026-10-03T03:41:32.742Z",
+        "detail": "Error: pausa memoria durante provini\n    at file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-serali/tests/codex/goleade-carriera-avanzata.mjs:65:35"
       }
     }
   ],
   "paused": {
-    "at": "2026-10-03T03:32:30.865Z",
-    "freeGB": 3.38,
+    "at": "2026-10-03T03:41:32.739Z",
+    "freeGB": 3.42,
     "reason": "RAM libera sotto 3,5 GB"
   }
 }

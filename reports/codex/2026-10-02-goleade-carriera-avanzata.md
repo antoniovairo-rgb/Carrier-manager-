@@ -16,6 +16,10 @@ Comando: `$env:CPM_SEEDS='0'; node tests/codex/goleade-carriera-avanzata.mjs`. L
 
 Il calendario di campionato, generato da `generateSeasonCalendar` in `src/09-audio-scout-anagrafiche.jsx`, espone `isHome`; dopo la gara `calendar.result` contiene `homeScore` e `awayScore` (`src/18-career-app.jsx`). La sonda usa questi campi per GF/GA del club, distinguendo casa e trasferta. La correttezza della classificazione sui dati effettivi resta **non verificata**. Gol per fonte, quota dell'eroe, partite con 6+ gol e scarti ≥5 non hanno ancora valori misurati. Eventuali riferimenti al calcio reale richiederanno una fonte verificata nel rapporto finale.
 
+### Secondo tentativo del 3 ottobre, renderer software
+
+Per ridurre il carico della sonda numerica, il browser è stato avviato con `--use-gl=angle --use-angle=swiftshader`, come il banco carriere esistente, al posto di D3D11. Comando: `node --check tests/codex/goleade-carriera-avanzata.mjs; $env:CPM_SEEDS='0'; node tests/codex/goleade-carriera-avanzata.mjs`. Prima del lancio `node -e "console.log((require('os').freemem()/2**30).toFixed(2))"` indicava 4,75 GB. Durante i provini la guardia ha registrato **3,42 GB** e ha fermato il processo. Il checkpoint ha ancora **0 provini e 0 passi** completati (`tests/codex/goleade-carriera-avanzata.json`). Questa configurazione non ha risolto il limite di memoria; i risultati calcistici restano non verificati. Non è stato ridotto il campione richiesto.
+
 ```powershell
 node tests/codex/goleade-live-avanzata.mjs
 ```

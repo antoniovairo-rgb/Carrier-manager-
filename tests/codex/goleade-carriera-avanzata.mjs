@@ -33,7 +33,9 @@ const freeGB = () => os.freemem() / 2 ** 30;
 const memoryStop = () => { if (freeGB() >= 3.5) return false; data.paused = { at: new Date().toISOString(), freeGB: +freeGB().toFixed(2), reason: 'RAM libera sotto 3,5 GB' }; save(); return true; };
 if (memoryStop()) { console.error(JSON.stringify(data.paused)); process.exit(2); }
 const server = await startServer();
-const browser = await chromium.launch({ headless: true, executablePath: process.env.CPM_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe', args: ['--headless=new', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] });
+// This is a numerical career probe: use the same software renderer as the
+// established career harness instead of reserving a D3D11 GPU context.
+const browser = await chromium.launch({ headless: true, executablePath: process.env.CPM_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe', args: ['--headless=new', '--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'] });
 try {
   for (const seed of seeds) {
     if (memoryStop()) break;
