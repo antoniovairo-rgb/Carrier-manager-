@@ -134,6 +134,27 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
    Helper di modulo per le scene che non passano dalla partita (intro): colora la divisa per NOME di materiale (gli slot
    HyperShirt/HyperShorts/HyperSocks/HyperBoots del GLB, come _applyHyperKit) e porta il corpo alla statura voluta
    misurandola sulle OSSA (il box dei SkinnedMesh CGTrader non misura il corpo: vedi 23/09 LOD). */
+/* [7.999.126 PO-201 collaudo PO 03/10 «I portieri non hanno i guanti»] Il corpo CGTrader non ha una parte «guanti»: le mani sono
+   nella pelle. Sul solo corpo del portiere, per ogni mesh di pelle (non maglia/pantaloncini/calzettoni/scarpe), la geometria si COPIA
+   (gli altri venti la condividono e restano intatti) e le facce i cui tre vertici sono guidati soprattutto da un osso della mano o
+   delle dita (hand_*, index/middle/ring/pinky/thumb_*) passano a un secondo materiale, il guanto. Idempotente (userData.guanti201).
+   Testimone __CPM_GUANTI201 (facce guanto per corpo). Rosso __CPM_NO_GUANTI_PO201 (le divise non chiedono i guanti). */
+function _guanti201(visual,hex){try{if(!visual||!hex||typeof THREE==='undefined')return 0;let tot=0,tutte=0;
+  const MANO=/^(?!ik_)(.*hand.*|.*(index|middle|ring|pinky|thumb).*)$/i;/* CGTrader (hand_l, index_01_l) e Mixamo (LeftHand, LeftHandIndex1); le ossa ik_ non hanno pesi */
+  visual.traverse(m=>{if(!m.isSkinnedMesh||!m.geometry||!m.skeleton||m.userData.guanti201)return;
+    const mat0=Array.isArray(m.material)?m.material[0]:m.material;if(!mat0||/^Hyper/.test(mat0.name||''))return;
+    const g0=m.geometry,ji=g0.getAttribute('skinIndex'),jw=g0.getAttribute('skinWeight');if(!ji||!jw)return;
+    const ossa=m.skeleton.bones.map(b=>MANO.test(b.name||''));
+    const _c4=(a,v,c)=>c===0?a.getX(v):c===1?a.getY(v):c===2?a.getZ(v):a.getW(v);/* three r128: BufferAttribute non ha getComponent */
+    const vm=new Uint8Array(ji.count);for(let v=0;v<ji.count;v++){let best=-1,bw=-1;for(let c=0;c<4;c++){const w=_c4(jw,v,c);if(w>bw){bw=w;best=_c4(ji,v,c);}}vm[v]=ossa[best]?1:0;}
+    const g=g0.clone();const idx=g.index?Array.from(g.index.array):Array.from({length:ji.count},(_,i)=>i);
+    const pelle=[],guanto=[];for(let f=0;f+2<idx.length;f+=3){const a=idx[f],b=idx[f+1],c=idx[f+2];((vm[a]&&vm[b]&&vm[c])?guanto:pelle).push(a,b,c);}
+    if(!guanto.length)return;
+    g.setIndex(pelle.concat(guanto));g.clearGroups();g.addGroup(0,pelle.length,0);g.addGroup(pelle.length,guanto.length,1);
+    const mg=new THREE.MeshStandardMaterial({color:new THREE.Color(hex),roughness:.7,metalness:0,skinning:true});
+    m.geometry=g;m.material=[mat0,mg];m.userData.guanti201=true;tot+=guanto.length/3;tutte+=(pelle.length+guanto.length)/3;});
+  try{if(typeof window!=='undefined'&&tot){(window.__CPM_GUANTI201=window.__CPM_GUANTI201||[]).push(tot);(window.__CPM_GUANTI201Q=window.__CPM_GUANTI201Q||[]).push(+(tot/Math.max(1,tutte)).toFixed(3));}}catch(_e){}
+  return tot;}catch(_e){return 0;}}
 function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
   const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
@@ -1012,7 +1033,15 @@ function ThreeMatchView(props){
           const _prep=(hex)=>{const _c=new THREE.Color(hex);if(!_no533k)_c.offsetHSL(0,0.30,-0.02);const _hsl={};_c.getHSL(_hsl);const _dim=1-_hsl.s*0.60*(0.45+0.55*(1-_hsl.l));return _c.multiplyScalar(_dim);};
           const _ef=_no533k?0.14:0.06;
           const _capelli=new THREE.Color(appr.hair||'#2d1800');
-          const _kitC=[_prep(kit.shirt),_prep(kit.shorts),_prep(kit.socks),_prep(kit.shoes),_capelli];
+          /* [7.999.126 PO-201 «I portieri non hanno i guanti»] sesta voce = i GUANTI: sul solo portiere i vertici guidati soprattutto da
+             un osso della mano o delle dita passano da pelle (0) a guanto (6), su una COPIA della geometria (gli altri condividono la
+             loro e restano intatti). Testimone __CPM_GUANTI201 (vertici-guanto per portiere). Rosso __CPM_NO_GUANTI_PO201. */
+          if(kit&&kit.guanti&&_at&&o.isSkinnedMesh&&o.skeleton&&!o.userData.guanti201){try{
+            const g=o.geometry.clone(),pa=g.attributes._parte||g.attributes._PARTE,ji=g.attributes.skinIndex,jw=g.attributes.skinWeight;
+            if(pa&&ji&&jw){const mano=o.skeleton.bones.map(b=>/hand|thumb|index|middle|ring|pinky/i.test(b.name||''));let n=0;
+              for(let v=0;v<pa.count;v++){if(pa.getX(v)!==0)continue;let best=-1,bw=-1;for(let c=0;c<4;c++){const w=c===0?jw.getX(v):c===1?jw.getY(v):c===2?jw.getZ(v):jw.getW(v);if(w>bw){bw=w;best=c===0?ji.getX(v):c===1?ji.getY(v):c===2?ji.getZ(v):ji.getW(v);}}if(mano[best]){pa.setX(v,6);n++;}}
+              if(n){pa.needsUpdate=true;o.geometry=g;o.userData.guanti201=true;try{(window.__CPM_GUANTI201=window.__CPM_GUANTI201||[]).push(n);}catch(_e){}}}}catch(_eG201){}}
+          const _kitC=[_prep(kit.shirt),_prep(kit.shorts),_prep(kit.socks),_prep(kit.shoes),_capelli,new THREE.Color((kit&&kit.guanti)||appr.skin||'#c8956a')];
           /* la maglia tiene la sua texture (disegno del club + numero sul dorso): entra come secondo campionatore */
           let _shirtTex=null;try{if(typeof kitPatternTex==='function')_shirtTex=kitPatternTex(kit.shirt,kit.c2||'#f0f0f0',kit.pattern||'solid',proc._num!=null?proc._num:undefined);}catch(_e){}
           const _base=o.material&&o.material.map?o.material.clone():new THREE.MeshLambertMaterial({color:0xb0b0b0,skinning:true});
@@ -1020,7 +1049,7 @@ function ThreeMatchView(props){
             if(_CPM_FACESOFT){if(_base.normalScale&&_base.normalScale.set)_base.normalScale.set(0.38,0.38);if('roughness'in _base)_base.roughness=Math.min(1,(_base.roughness!=null?_base.roughness:0.7)+0.15);}}
           _base.onBeforeCompile=(sh)=>{
             sh.uniforms.uKit910={value:_kitC};
-            sh.uniforms.uKitEm910={value:_kitC.map((c,i)=>i===4?c.clone().multiplyScalar(0):c.clone().multiplyScalar(_ef))};
+            sh.uniforms.uKitEm910={value:_kitC.map((c,i)=>(i===4||i===5)?c.clone().multiplyScalar(i===5?0.05:0):c.clone().multiplyScalar(_ef))};
             sh.uniforms.uShirt910={value:_shirtTex};
             sh.uniforms.uHaShirt910={value:_shirtTex?1:0};
             sh.vertexShader='attribute float _parte;\nvarying float vParte910;\n'+sh.vertexShader.replace('void main() {','void main() {\n\tvParte910=_parte;');
@@ -1029,7 +1058,7 @@ function ThreeMatchView(props){
                Sbagliarla non produce un errore di pagina — lo shader non compila e i ventidue spariscono dal
                campo con i triangoli ancora contati: e' successo, e l'hanno detto le foto, non il conteggio. */
             const _uv910=/varying\s+vec2\s+vMapUv/.test(sh.fragmentShader)?'vMapUv':'vUv';
-            sh.fragmentShader='uniform vec3 uKit910[5];\nuniform vec3 uKitEm910[5];\nuniform sampler2D uShirt910;\nuniform float uHaShirt910;\nvarying float vParte910;\n'+sh.fragmentShader
+            sh.fragmentShader='uniform vec3 uKit910[6];\nuniform vec3 uKitEm910[6];\nuniform sampler2D uShirt910;\nuniform float uHaShirt910;\nvarying float vParte910;\n'+sh.fragmentShader
               .replace('#include <map_fragment>','#include <map_fragment>\n\tint _p910=int(vParte910+0.5);\n\tif(_p910==1&&uHaShirt910>0.5){diffuseColor=vec4(texture2D(uShirt910,'+_uv910+').rgb,diffuseColor.a);}\n\telse if(_p910>=1){diffuseColor=vec4(uKit910[_p910-1],diffuseColor.a);}')
               .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n\tif(int(vParte910+0.5)>=1){totalEmissiveRadiance=uKitEm910[int(vParte910+0.5)-1];}');
           };
@@ -1050,7 +1079,8 @@ function ThreeMatchView(props){
               const _ef533=_no533k?0.14:0.06;/* [7.529.0 R5] il floor 0,14 era la compensazione «mai nero pieno di notte» pre-tonemapping: con ACES a 0,14 i kit brillano — 0,06 tarato sulle foto */o.material=new THREE.MeshLambertMaterial({color:_cd,emissive:_cd.clone().multiplyScalar(_ef533),skinning:true});}}// parte kit → tinta unita (o pattern su maglia)
           else if(_nm.includes('hair')){const _hs=appr.hairStyle||'short';const _variant=_nm.includes('hair_side')?'side':_nm.includes('hair_curly')?'curly':_nm.includes('hair_long')?'long':_nm.includes('hair_buzz')?'buzz':_nm.includes('hair_crop')?'crop':_nm.includes('hair_fade')?'fade':_nm.includes('hair_wavy')?'wavy':_nm.includes('hair_afro')?'afro':_nm.includes('hair_mohawk')?'mohawk':'short';if(appr.bald||_variant!==_hs){o.visible=false;}else{o.material=new THREE.MeshLambertMaterial({color:new THREE.Color(appr.hair||'#2d1800'),skinning:true});}}// 5.68.0: capelli a TINTA UNITA (come la foto profilo) → il colore scelto (es. biondo) è FEDELE in campo, non più mescolato con la texture scura del GLB (coerenza selezione↔live match)
           else if(_nm.includes('body')||_nm.includes('regularmale')||_nm.includes('face')){o.material=(o.material&&o.material.clone)?o.material.clone():new THREE.MeshLambertMaterial({skinning:true});const _sk=new THREE.Color(appr.skin||0xffffff);o.material.color=_sk;if('emissive'in o.material){o.material.emissive=_sk.clone().multiplyScalar(_CPM_FACESOFT?0.34:0.22);}
-            if(_CPM_FACESOFT){if(o.material.normalScale&&o.material.normalScale.set)o.material.normalScale.set(0.38,0.38);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness!=null?o.material.roughness:0.7)+0.15);}}// pelle: tono variabile + floor emissivo; cpmface: normal map attenuato (meno fronte corrucciata) + rough alto (meno hotspot duri) → volto meno severo
+            if(_CPM_FACESOFT){if(o.material.normalScale&&o.material.normalScale.set)o.material.normalScale.set(0.38,0.38);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness!=null?o.material.roughness:0.7)+0.15);}
+            if(kit&&kit.guanti&&!_nm.includes('face')){try{_guanti201(o,kit.guanti);}catch(_eG){}}/* [7.999.126 PO-201] i guanti del portiere: le facce delle mani passano al materiale guanto */}// pelle: tono variabile + floor emissivo; cpmface: normal map attenuato (meno fronte corrucciata) + rough alto (meno hotspot duri) → volto meno severo
           else if(!o.material||!o.material.map){o.material=new THREE.MeshLambertMaterial({color:new THREE.Color(0xb0b0b0),skinning:true});}});// fallback (mesh senza texture)
         const _bb=new THREE.Box3().setFromObject(root),_h=(_bb.max.y-_bb.min.y)||1.8,_sc=(appr.height||1.95)/_h,_gi=appr.girth||1;root.scale.set(_sc*_gi,_sc,_sc*_gi);// altezza/corporatura per giocatore (Step B)
         const mx=new THREE.AnimationMixer(root);let idle=null,run=null;
@@ -1125,6 +1155,9 @@ function ThreeMatchView(props){
       let _gkA='#facc15',_gkB='#1d1d1f',_gb=-1;GK_POOL.forEach(k=>{const m=Math.min(colorDist(_homeShirt,k),colorDist(_awayShirt,k));if(m>_gb){_gb=m;_gkA=k;}});
       {let _b2=-1;GK_POOL.forEach(k=>{const m=Math.min(colorDist(_homeShirt,k),colorDist(_awayShirt,k),colorDist(_gkA,k));if(m>_b2){_b2=m;_gkB=k;}});}
       const _gkHomeKit=buildKit(_gkA),_gkAwayKit=buildKit(_gkB);
+      /* [7.999.126 PO-201 collaudo PO 03/10 «I portieri non hanno i guanti»] i guanti: chiari su una divisa scura, scuri su una chiara
+         (sempre distinti dalla pelle e dalla maglia). Rosso __CPM_NO_GUANTI_PO201. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_GUANTI_PO201)){const _g201=c=>hexLum(c)<0.45?'#e8edf2':'#1b1f2a';try{_gkHomeKit.guanti=_g201(_gkA);_gkAwayKit.guanti=_g201(_gkB);}catch(_e){}}
       // 3D-VARIETY (Step B): protagonista dal SUO avatar (mai casuale); NPC con aspetto deterministico per club+slot (persistente).
       const _av=(typeof AVATARS!=='undefined'&&AVATARS[avatarId])||null;
       const _heroAppr=_av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:_av.skin,hair:_av.hair,hairStyle:_av.hairStyle||'short',bodyType:_av.bodyType||'regular',bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
@@ -1368,7 +1401,7 @@ function ThreeMatchView(props){
         const h=String(shorts).replace('#','');const lum=0.2126*parseInt(h.slice(0,2),16)/255+0.7152*parseInt(h.slice(2,4),16)/255+0.0722*parseInt(h.slice(4,6),16)/255;
         x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font='bold 26px Arial, sans-serif';x.lineWidth=4;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.85)':'rgba(7,9,16,0.85)';x.strokeText(String(num),0.19*S,0.9375*S);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0.19*S,0.9375*S);
         const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;_hyperShortsTexCache.set(key,t);try{if(typeof window!=='undefined'){const _p=(window.__CPM_PANT23=window.__CPM_PANT23||[]);if(_p.length<80)_p.push({num:String(num),shorts});}}catch(_e){}return t;};
-      const _applyHyperKit=(visual,kit,_appr,num)=>{const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
+      const _applyHyperKit=(visual,kit,_appr,num)=>{try{if(kit&&kit.guanti)_guanti201(visual,kit.guanti);}catch(_eG){}const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
         visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const _ms23=!(typeof window!=='undefined'&&window.__CPM_NO_PANT23)&&base&&base.name==='HyperShorts'&&num!=null;const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:'',_ms23?'p'+num:'',_mg18&&mesh.geometry?mesh.geometry.uuid:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num,mesh.geometry):(_ms23?_hyperShortsTex(hex,num):null);material.color=new THREE.Color((_mg18||_ms23)?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
          before the walkout begins instead of toggling bodies during a camera
          cut: no CH38 root can flash into the entrance shot.  Geometry and
