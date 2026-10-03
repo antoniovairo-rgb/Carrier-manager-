@@ -2,7 +2,233 @@
   "version": "7.999.112",
   "commit": "8cef5317",
   "command": "node tests/codex/goleade-live-avanzata.mjs",
-  "matches": [],
+  "matches": [
+    {
+      "seed": 0,
+      "sourceSeason": 6,
+      "sourceWeek": 1,
+      "path": "vissuta",
+      "startedAt": "2026-10-03T04:55:05.454Z",
+      "contractBefore": {
+        "expired": true,
+        "expiresAtSeason": 5,
+        "duration": 0,
+        "season": 6
+      },
+      "renewalButtonVisible": true,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    14 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-serali\\tests\\codex\\goleade-live-avanzata.mjs:46:25",
+      "finished": false,
+      "finishedAt": "2026-10-03T04:55:19.178Z"
+    },
+    {
+      "seed": 0,
+      "sourceSeason": 6,
+      "sourceWeek": 1,
+      "path": "vissuta",
+      "startedAt": "2026-10-03T04:56:52.685Z",
+      "contractBefore": {
+        "expired": true,
+        "expiresAtSeason": 5,
+        "duration": 0,
+        "season": 6
+      },
+      "renewalButtonVisible": true,
+      "blockingChoices": [
+        {
+          "ready": false,
+          "choice": "Salta",
+          "modal": "🌟Benvenuto in Korward Elite!Sei QA Naturale 0, un giovane talento con il sogno di diventare campione. Ogni settimana co"
+        },
+        {
+          "ready": false,
+          "choice": "Sto benissimo qui.",
+          "modal": "Il confrontoLuigi PastoreIl tuo procuratore · rapporto positivo«Abbiamo fatto parecchia strada negli ultimi mesi.»«Il tu"
+        },
+        {
+          "ready": false,
+          "choice": "Chiudi",
+          "modal": "Il confrontoLuigi PastoreIl tuo procuratore · rapporto positivo«Mi fa piacere sentirlo. Allora non ho fretta di muovermi"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        }
+      ],
+      "renewalOfferVisible": false,
+      "contractAfter": {
+        "expired": true,
+        "expiresAtSeason": 5,
+        "duration": 0,
+        "season": 6
+      },
+      "matchday": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Pisano",
+        "type": null
+      },
+      "before": {
+        "season": 6,
+        "week": 1,
+        "ovr": 74,
+        "club": "FC Altoadige",
+        "goals": 0,
+        "matches": 0,
+        "historyLength": 0
+      },
+      "playMatchResult": "opening",
+      "error": "Error: playMatch: opening\n    at file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-serali/tests/codex/goleade-live-avanzata.mjs:90:47",
+      "finished": false,
+      "finishedAt": "2026-10-03T04:57:03.435Z"
+    },
+    {
+      "seed": 0,
+      "sourceSeason": 6,
+      "sourceWeek": 1,
+      "path": "vissuta",
+      "startedAt": "2026-10-03T04:58:24.761Z",
+      "contractBefore": {
+        "expired": true,
+        "expiresAtSeason": 5,
+        "duration": 0,
+        "season": 6
+      },
+      "renewalButtonVisible": true,
+      "blockingChoices": [
+        {
+          "ready": false,
+          "choice": "Salta",
+          "modal": "🌟Benvenuto in Korward Elite!Sei QA Naturale 0, un giovane talento con il sogno di diventare campione. Ogni settimana co"
+        },
+        {
+          "ready": false,
+          "choice": "Sto benissimo qui.",
+          "modal": "Il confrontoLuigi PastoreIl tuo procuratore · rapporto positivo«Abbiamo fatto parecchia strada negli ultimi mesi.»«Il tu"
+        },
+        {
+          "ready": false,
+          "choice": "Chiudi",
+          "modal": "Il confrontoLuigi PastoreIl tuo procuratore · rapporto positivo«Mi fa piacere sentirlo. Allora non ho fretta di muovermi"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        },
+        {
+          "ready": false,
+          "reason": "renew button obstructed"
+        }
+      ],
+      "renewalOfferVisible": false,
+      "contractAfter": {
+        "expired": true,
+        "expiresAtSeason": 5,
+        "duration": 0,
+        "season": 6
+      },
+      "preSteps": [
+        {
+          "state": {
+            "md": {
+              "matchday": 1,
+              "week": 1,
+              "opp": "FC Pisano",
+              "type": null
+            },
+            "pending": [
+              "ritiro",
+              "presidente",
+              "mercato",
+              "stampa",
+              "maglia",
+              "presentazione"
+            ],
+            "screen": "dashboard"
+          },
+          "step": "opening-resolved"
+        }
+      ],
+      "matchday": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Pisano",
+        "type": null
+      },
+      "before": {
+        "season": 6,
+        "week": 1,
+        "ovr": 74,
+        "club": "FC Altoadige",
+        "goals": 0,
+        "matches": 0,
+        "historyLength": 0
+      },
+      "playMatchResult": true,
+      "error": "page.waitForFunction: Timeout 60000ms exceeded.\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-serali\\tests\\codex\\goleade-live-avanzata.mjs:91:18",
+      "finished": false,
+      "finishedAt": "2026-10-03T04:59:34.943Z"
+    }
+  ],
   "paused": {
     "reason": "RAM libera sotto 3,5 GB",
     "freeGB": 3.38
