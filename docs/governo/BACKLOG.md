@@ -66,7 +66,7 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (153)
+## Storico — voci chiuse (155)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -223,8 +223,8 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-196 | 02/10 21:46 | Offerte di fine Under 18: non si capisce in che serie giocano i club offerenti | miglioramento | FATTO — 7.999.114: lega e bandiera su ogni offerta; sono tutte prime squadre professionistiche tranne «Resta in Under 18» (calendario-offerte-195) | L1 | — | — | foto PO; il PO chiede se sono tutti professionistici tranne la Primavera |
 | PO-197 | 02/10 21:50 | Prepartita (walkout 3D): i giocatori corrono sul posto invece di stare fermi | difetto | FATTO — 7.999.115: nel walkout il corpo arrivato si ferma e la clip di corsa si spegne in fretta, corsa sul posto −75% (walkout-fermi-197); da confermare sul telefono | L1 | — | — | foto PO |
 | PO-198 | 03/10 20:17 | Parata del pullman: «Niente figurine, solo CGTrader!» — sul tetto omini a blocchi e figurine dei visi sopra | difetto | FATTO — 7.999.123: la parata usa i corpi CGTrader sul tetto (l'eroe davanti alza la coppa) e niente figurine (parata-198: verde 8 corpi e 0 figurine, rosso 0 corpi e figurine); da confermare sul telefono | L1 | — | — | foto PO 20:17 |
-| PO-199 | 03/10 | Galà: «si deve vedere apertura della busta progressivamente dal terzo al primo, non deve comparire subito il vincitore» | miglioramento | IN CORSO — 7.999.124: busta → 3° → 2° → vincitore, uno ogni 1,6 s (tasto Avanti per accelerare), luci e coriandoli solo al vincitore; guardiano busta-199 (verde 0,1,2,3 e vincitore dopo ~5 s, rosso subito) | L1 | — | — | richiesta PO; supera la scelta 7.999.51 «diretto al premio vinto» |
-| PO-200 | 03/10 | Presentazione della squadra: «far vedere i CGTrader ed in piccolo come in televisione la figurina» | miglioramento | IN CORSO — 7.999.124: in campo i corpi CGTrader (7 nella fila), una sola targhetta piccola in basso con volto e nome del chiamato, niente schieramento di figurine; guardiano presentazione-200 (rosso: 0 corpi e schieramento) | L1 | — | — | richiesta PO |
+| PO-199 | 03/10 | Galà: «si deve vedere apertura della busta progressivamente dal terzo al primo, non deve comparire subito il vincitore» | miglioramento | FATTO — 7.999.124: busta → 3° → 2° → vincitore, uno ogni 1,6 s, luci e coriandoli solo al vincitore (busta-199: verde 0,1,2,3 con vincitore dopo ~5 s, rosso subito); da confermare sul telefono | L1 | — | — | richiesta PO; supera la scelta 7.999.51 «diretto al premio vinto» |
+| PO-200 | 03/10 | Presentazione della squadra: «far vedere i CGTrader ed in piccolo come in televisione la figurina» | miglioramento | FATTO — 7.999.124: in campo i corpi CGTrader, una sola targhetta piccola come in televisione (presentazione-200: verde 7 corpi e 1 targhetta, rosso 0 corpi e schieramento di figurine); da confermare sul telefono | L1 | — | — | richiesta PO |
 
 ## Ricostruzione (fonti e regole di stato)
 
