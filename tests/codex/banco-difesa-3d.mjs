@@ -75,8 +75,8 @@ async function run({ gi, outcome, glb, repeat }) {
           if ((mode === 'fixed-45-frames' ? chooseFrames >= 45 : mode === 'moved' ? moved : mode === 'mounted-500ms' ? moved && performance.now() - t0 >= 500 : mode === 'target-aligned' ? targetChanged && meshNearTarget : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
             const phaseBefore = window.__CPM_PHASE?.(); const ball3 = window.__CPM_BALL3?.() ?? null; const accepted = window.__CPM_RESOLVE(0); resolve({ key, ball3, phaseBefore, accepted, chooseFrames, elapsedVirtualMs: performance.now() - t0 }); }
           else if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick);
-        }; requestAnimationFrame(tick); }), [gi, outcome, process.env.CPM_SETTLE_MODE]);
-      result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt;
+        }; requestAnimationFrame(tick); }), [gi, outcome, process.env.CPM_SETTLE_MODE || 'fixed-45-frames']);
+      result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt; result.chooseFrames = resolvedAt?.chooseFrames ?? null;
       if (!resolvedAt) { result.rejected = 'pallone non assestato entro 25 s virtuali'; return result; }
       if (resolvedAt.phaseChangedBeforeSettle) { result.rejected = `scena passata a ${resolvedAt.phaseBefore} prima dell'assestamento`; return result; }
       await sleep(glb ? 4000 : 2400);
@@ -87,8 +87,8 @@ async function run({ gi, outcome, glb, repeat }) {
       const events = Array.isArray(result.timelineTail) ? result.timelineTail.filter(x => x?.type === 'ActionResolved') : [];
       result.actionResolved = events.at(-1) ?? null;
       result.outcomeMatched = events.length === 1 && result.actionResolved.gi === gi && result.actionResolved.ok === (outcome === 'success');
-      result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched;
-      if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : 'ActionResolved non concorde';
+      result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched && result.chooseFrames >= 45;
+      if (!result.valid) result.rejected = result.chooseFrames < 45 ? `scelta osservata solo ${result.chooseFrames} frame` : !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : 'ActionResolved non concorde';
       return result;
     }
     const forcedAt = await page.evaluate(([i, mode]) => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
@@ -106,7 +106,7 @@ async function run({ gi, outcome, glb, repeat }) {
           if (mode === 'fixed-45-frames' ? chooseFrames >= 45 : mode === 'moved' ? moved : same >= 2) { window.__QA_BANK_CHOOSE_FRAMES = chooseFrames; resolve(key); }
           else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
         }; requestAnimationFrame(tick); });
-      return performance.now(); }, [gi, process.env.CPM_SETTLE_MODE]);
+      return performance.now(); }, [gi, process.env.CPM_SETTLE_MODE || 'fixed-45-frames']);
     if (shotsEnabled) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
     const settled = await page.evaluate(() => window.__QA_BANK_SETTLED);
     result.ballStart = settled;
@@ -136,8 +136,8 @@ async function run({ gi, outcome, glb, repeat }) {
     const resolved = Array.isArray(obs.timeline) ? obs.timeline.slice(beforeTimeline).filter(x => x?.type === 'ActionResolved') : [];
     result.actionResolved = resolved.at(-1) ?? null;
     result.outcomeMatched = resolved.length === 1 && result.actionResolved.gi === gi && result.actionResolved.ok === (outcome === 'success');
-    result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched && result.photos.length === 6;
-    if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : !result.outcomeMatched ? 'ActionResolved non concorde' : `foto ${result.photos.length}/6`;
+    result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched && result.photos.length === 6 && result.chooseFrames >= 45;
+    if (!result.valid) result.rejected = result.chooseFrames < 45 ? `scelta osservata solo ${result.chooseFrames} frame` : !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : !result.outcomeMatched ? 'ActionResolved non concorde' : `foto ${result.photos.length}/6`;
     return result;
   } catch (e) { result.rejected = String(e?.stack || e); return result; }
   finally { await context.close().catch(() => {}); }
@@ -148,7 +148,7 @@ try {
     const repeats = process.env.CPM_REPEAT === '1' ? 1 : repeated.has(gi) ? 2 : 1;
     for (let repeat = 0; repeat < repeats; repeat++) {
       const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
-      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'fixed-45-frames') && (!shotsEnabled || c.photos?.length === 6))) continue;
+      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'fixed-45-frames') && c.chooseFrames >= 45 && (!shotsEnabled || c.photos?.length === 6))) continue;
       const r = await run({ gi, outcome, glb, repeat }); data.cases.push(r); save();
       console.log(JSON.stringify({ id, valid: r.valid, rejected: r.rejected, n: r.frame?.n, heroOutside: r.frame?.fuori, ballOutside: r.frame?.bfuori }));
       if (r.rejected?.startsWith('memoria libera')) break outer;

@@ -124,3 +124,26 @@ Al controllo prima dell'avvio erano liberi 2,61 GB (`node -e "console.log((requi
 Alle 20:33 UTC lo stesso comando `node tests/codex/orologio-300.mjs` ha ricontrollato la memoria immediatamente prima di Chromium: 3,38 GB. Si è fermato senza aprire il browser; il grezzo del tentativo è `tests/codex/orologio-300.json`. Il precedente controllo a 3,51 GB non costituisce autorizzazione ad avviare Chromium quando la RAM è tornata sotto soglia.
 
 Anche il ramo con scatti della sonda è stato allineato alla risoluzione dopo 45 fotogrammi in `hl_choose`. Ora richiede sei foto per considerare valido un caso, compresi i giri ripetuti. Questa modifica è stata controllata solo sintatticamente; il comportamento in Chromium è **non verificato** finché la memoria non consente la prova.
+
+## Aggiornamento 03/10: verifica del conteggio dei fotogrammi
+
+Una revisione della sonda ha trovato un errore nella modalità predefinita: `settleMode` veniva registrato come `fixed-45-frames`, ma alle due chiamate `page.evaluate` arrivava `undefined`. In quel caso la condizione effettiva era l'assestamento del pallone, non il conteggio di 45 fotogrammi. Il nuovo tentativo `gi138-fail-procedurale-r0` lo ha dimostrato: `resolve.chooseFrames=15`. Il tentativo è stato **riclassificato non valido per il banco a 45 fotogrammi** nel grezzo. La sonda passa ora esplicitamente `fixed-45-frames` e considera valido un caso solo se `chooseFrames>=45`; `node --check tests/codex/banco-difesa-3d.mjs` è riuscito. I casi precedenti con `chooseFrames=45` restano distinguibili nel grezzo; non si inferisce il conteggio dai soli nomi della modalità.
+
+Comandi eseguiti dalla radice del repository:
+
+```powershell
+$env:CPM_SCENES='138'; $env:CPM_OUTCOME='fail'; $env:CPM_MODE='0'; $env:CPM_REPEAT='1'; $env:CPM_NO_SHOTS='1'; node tests/codex/banco-difesa-3d.mjs
+$env:CPM_SCENES='138'; $env:CPM_OUTCOME='fail'; $env:CPM_MODE='1'; $env:CPM_REPEAT='1'; $env:CPM_NO_SHOTS='1'; node tests/codex/banco-difesa-3d.mjs
+$env:CPM_SCENES='168'; $env:CPM_OUTCOME='success'; $env:CPM_MODE='1'; $env:CPM_REPEAT='1'; $env:CPM_NO_SHOTS='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+$env:CPM_SCENES='168,31'; $env:CPM_MODE='1'; $env:CPM_REPEAT='1'; $env:CPM_NO_SHOTS='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+```
+
+| Tentativo numerico nuovo | Validità | Fotogrammi in `hl_choose` | Letture `FRAME480` | Eroe fuori | Pallone fuori |
+| --- | --- | ---: | ---: | ---: | ---: |
+| gi138 fail procedurale | scartato: sonda risolta troppo presto | 15 | 31 | 0 | non registrato |
+| gi138 fail GLB | scartato: scena passata a `hl_result` prima dell'assestamento | non verificato | non verificato | non verificato | non verificato |
+| gi168 success GLB | valido, `ActionResolved.ok=true` | 45 | 30 | 0 | non registrato |
+| gi168 fail GLB | valido, `ActionResolved.ok=false` | 45 | 30 | 0 | 14 |
+| gi31 success GLB | scartato prima della pagina: memoria libera 2,87 GiB | non verificato | non verificato | non verificato | non verificato |
+
+Fonte: `tests/codex/banco-difesa-3d.json.gz`, campi `chooseFrames`, `frame` e `actionResolved`. I due casi validi gi168 sono **solo numerici**, senza i sei scatti necessari al giudizio visivo 001/002/003. Un precedente tentativo gi138 con scatti è stato scartato dopo una sola foto d'apertura. Durante le prove GLB la memoria libera è scesa anche a 2,67 GiB; il lotto è stato fermato e non giustifica ulteriori esecuzioni 3D mentre il PC resta sotto la soglia di 3,5 GiB. La serie completa dei 64 casi e la prova di ripetibilità restano aperte.
