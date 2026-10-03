@@ -323,6 +323,7 @@
     "conferenza-192": "node conferenza-192.mjs",
     "partita-rigiocata-194": "node partita-rigiocata-194.mjs",
     "calendario-offerte-195": "node calendario-offerte-195.mjs",
+    "walkout-fermi-197": "node walkout-fermi-197.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",

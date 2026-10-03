@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (47)
+## Voci aperte o parziali (46)
 
-Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
+Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -43,7 +43,6 @@ Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — 27-B corretto (7.999.100), 26-D corretto secondo la decisione PO (7.999.101), 26-C chiuso dalla 7.999.98; 26-A, 26-B, 27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
 | PO-185 | 02/10 | Ricollaudo Codex difesa 3D su 7.999.91: 32/32 esiti concordi con ActionResolved; restano ipotesi visive 001 apertura (gi138, gi36, gi45: 6 casi) e 002 fuori quadro (gi133f, gi138, gi168f, gi31f, gi32, gi36s: 8 casi; gi32 eroe a 15 u dalla palla in apertura) | difetto | DA COLLAUDARE — banco deterministico (npm run inquadratura-185: orologio virtuale 30 fps + seme + aggancio; giri ripetuti identici fotogramma per fotogramma). Su 10 casi difensivi: pallone fuori 5%, eroe 0% (contro 22-32% a orologio vero headless): il «002 pallone fuori» di Codex e nostro era soprattutto l'effetto dei pochi fps del banco. Residuo: gi45, 1-4 fotogrammi (~0,13 s) all'ingresso della camera. Nessuna modifica al gioco: verdetto finale sul telefono del PO (scene difensive, pallone visibile?) | L1 | — | — | rapporto `reports/codex/2026-10-01-ricollaudo-difesa-3d.md` (ramo codex/2026-10-01-ricollaudo-difesa-3d, 8db1699b) |
 | PO-191 | 02/10 20:26 | Premiazione 3D: compagni che attraversano il palco, eroe in posa sbagliata (gamba alzata, trofeo davanti) e che «vola» sopra il palco | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (Campioni Premier Division) |
-| PO-197 | 02/10 21:50 | Prepartita (walkout 3D): i giocatori corrono sul posto invece di stare fermi | difetto | DA RIPRODURRE | L1 | — | — | foto PO |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt salvataggio-ricarica già dato) | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -68,7 +67,7 @@ Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (150)
+## Storico — voci chiuse (151)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -222,6 +221,7 @@ Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-194 | 02/10 21:40 | **GRAVE** — partita già giocata riproposta «un'altra volta sempre alla 34esima giornata» (Primavera 2, S.1, settimana 39: conferenza pre-partita sulla home, poi «Vedi le formazioni» vs Altoadige) | difetto | FATTO — 7.999.113: RIPRODOTTO sul salvataggio del PO. La conferenza pre-partita si apriva insieme alla partita, compariva dopo il fischio e il discorso del mister che la segue riapriva la gara. Ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (partita-rigiocata-194) | L1 | — | `partita-rigiocata-194` | foto PO + salvataggio cpm-Antonio-Vairo-S1 |
 | PO-195 | 02/10 21:45 | Calendario a griglia: far vedere le avversarie, non solo V/N/P | miglioramento | FATTO — 7.999.114: sigla dell'avversaria, sede e punteggio in ogni casella del calendario (calendario-offerte-195) | L1 | — | — | foto PO |
 | PO-196 | 02/10 21:46 | Offerte di fine Under 18: non si capisce in che serie giocano i club offerenti | miglioramento | FATTO — 7.999.114: lega e bandiera su ogni offerta; sono tutte prime squadre professionistiche tranne «Resta in Under 18» (calendario-offerte-195) | L1 | — | — | foto PO; il PO chiede se sono tutti professionistici tranne la Primavera |
+| PO-197 | 02/10 21:50 | Prepartita (walkout 3D): i giocatori corrono sul posto invece di stare fermi | difetto | FATTO — 7.999.115: nel walkout il corpo arrivato si ferma e la clip di corsa si spegne in fretta, corsa sul posto −75% (walkout-fermi-197); da confermare sul telefono | L1 | — | — | foto PO |
 
 ## Ricostruzione (fonti e regole di stato)
 

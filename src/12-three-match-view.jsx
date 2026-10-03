@@ -2930,6 +2930,11 @@ function ThreeMatchView(props){
         if(mesh._lL){mesh._lL.rotation.x*=0.85;mesh._lR.rotation.x*=0.85;mesh._aL.rotation.x*=0.85;mesh._aR.rotation.x*=0.85;}mesh.position.y*=0.85;return;}
       const dx=mesh._wx-mesh.position.x,dz=mesh._wz-mesh.position.z,d=Math.hypot(dx,dz);
       mesh.position.x+=dx*k*0.85;mesh.position.z+=dz*k*0.85;// passo d'ingresso calmo (coerente col gioco più lento)
+      /* [7.999.115 collaudo PO-197 «i giocatori corrono sul posto, non sono in modalita' idle nel prepartita»] MISURATO (testimone
+         __CPM_WALK197, salvataggio S12 del PO): l'avvicinamento esponenziale lasciava una coda di strisciamento a 0,1-0,5 u/s e il corpo
+         arrivato teneva la clip di corsa piena per 1-1,5 s; arrivando sfalsati, per 5 s ce n'era sempre qualcuno che correva da fermo.
+         A meno di 0,15u dal posto ci si ferma li'. Rosso __CPM_NO_FERMI197. */
+      if(d<0.15&&!(typeof window!=='undefined'&&window.__CPM_NO_FERMI197)){mesh.position.x=mesh._wx;mesh.position.z=mesh._wz;}
       const rawSp=Math.hypot(mesh.position.x-mesh._px,mesh.position.z-mesh._pz)/Math.max(dt,0.001);
       mesh._px=mesh.position.x;mesh._pz=mesh.position.z;mesh._sp+=(rawSp-mesh._sp)*Math.min(dt*8,1);const sp=mesh._sp;
       const ta=d>0.5?Math.atan2(dx,dz):-Math.PI/2; // verso movimento, altrimenti fronte camera
@@ -8148,7 +8153,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _th=(_tb.max.y-_tb.min.y),_hh=(_hb.max.y-_hb.min.y);
               const _cv2=_co2?Math.hypot(_co2.position.x-(_co2._px476!=null?_co2._px476:_co2.position.x),_co2.position.z-(_co2._pz476!=null?_co2._pz476:_co2.position.z))/Math.max(aDt,1e-3):0;
               if(_co2){_co2._px476=_co2.position.x;_co2._pz476=_co2.position.z;}
-              _cw.push({t:+_ct.toFixed(2),beat:_bk,
+              const _mates191=_pod?(sr.current.players||[]).map(pp=>pp&&pp.mesh&&pp.mesh.visible!==false?+Math.hypot(pp.mesh.position.x-_pod.x,pp.mesh.position.z-_pod.z).toFixed(2):null).filter(v=>v!=null):[];/* [7.999.115 PO-191] distanza di ogni corpo dal centro del podio */
+              _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,
                 hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
                 coach:_co2?{x:+_co2.position.x.toFixed(2),z:+_co2.position.z.toFixed(2),v:+_cv2.toFixed(2),vis:!!_co2.visible}:null,
                 trofeo:{vis:!!trophyGrp.visible,h:+_th.toFixed(2),rap:_hh>0.2?+(_th/_hh).toFixed(2):null},
@@ -10093,11 +10099,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           // Stride (timeScale della corsa) scala con la velocità → meno foot-slide. (Sostituisce il vecchio _gsp*55 grezzo.)
           const _spd=_gsp/Math.max(dt,0.001);
           if(_spd>30&&!(typeof window!=='undefined'&&window.__CPM_NO_PASSO37)){if(_a._spS==null&&!(typeof window!=='undefined'&&window.__CPM_NO_TPOSE56))_a._spS=0;}/* [7.999.56 collaudo PO «sono ritornati in T pose e non corrono»] MISURATO (bisezione 7.999.36 pulita → 7.999.37 T-pose, sonda sulla scena #110 coi corpi): se il PRIMO fotogramma di un corpo e' uno stacco (oltre 30 u/s) la 7.999.37 saltava l'assegnazione e _spS restava UNDEFINED — undefined-0.12 = NaN, il NaN entrava in _locB (media esponenziale: resta NaN per sempre) e con pesi NaN three.js non applica nessuna clip: T-pose permanente. Ora lo stacco inizializza a fermo. Rosso __CPM_NO_TPOSE56. */
-          else _a._spS=(_a._spS==null)?_spd:_a._spS+(_spd-_a._spS)*Math.min(dt*((typeof window!=='undefined'&&window.__CPM_SPS44)?14:6),1);/* [7.999.44 braccio di prova, spento] __CPM_SPS44=1: stima piu' pronta, per il confronto GPU di Codex sulle accelerazioni (fascia 3-6 u/s) *//* [7.999.37 collaudo PO «movimenti poco fluidi»] uno spostamento istantaneo (stacco di scena, oltre 30 u/s) non e' una corsa: misurato, a inizio scena la stima saliva a 25 u/s e le gambe partivano alla cadenza massima (8,75 u/s di passo) con l'eroe fermo; ora 1,75. Rosso __CPM_NO_PASSO37 */// item 5 (5.49.1): velocità smussata più dolce (EMA τ≈0.17s)
+          else _a._spS=(_a._spS==null)?_spd:_a._spS+(_spd-_a._spS)*Math.min(dt*((typeof window!=='undefined'&&window.__CPM_SPS44)?14:((_spd<_a._spS&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FERMI197))?14:6)),1);/* [7.999.115 PO-197] nel walkout la stima scende piu' in fretta quando il corpo rallenta: arrivato, si ferma *//* [7.999.44 braccio di prova, spento] __CPM_SPS44=1: stima piu' pronta, per il confronto GPU di Codex sulle accelerazioni (fascia 3-6 u/s) *//* [7.999.37 collaudo PO «movimenti poco fluidi»] uno spostamento istantaneo (stacco di scena, oltre 30 u/s) non e' una corsa: misurato, a inizio scena la stima saliva a 25 u/s e le gambe partivano alla cadenza massima (8,75 u/s di passo) con l'eroe fermo; ora 1,75. Rosso __CPM_NO_PASSO37 */// item 5 (5.49.1): velocità smussata più dolce (EMA τ≈0.17s)
           // #4: EROE (_ai===0) con dead-zone più ampio → il micro-jitter del target NON fa entrare la corsa ("palleggio"/marcia sul posto)
           const _idleHero=_CPM_IDLE&&_ai===0;
           const _bt=_idleHero?Math.min(Math.max((_a._spS-0.6)/1.0,0),1):Math.min(Math.max((_a._spS-0.12)/0.7,0),1);
-          _a._locB=(_a._locB==null)?_bt:_a._locB+(_bt-_a._locB)*Math.min(dt*5,1);
+          _a._locB=(_a._locB==null)?_bt:_a._locB+(_bt-_a._locB)*Math.min(dt*((_bt<_a._locB&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FERMI197))?14:5),1);/* [7.999.115 PO-197] anche la miscela corsa/riposo scende in fretta nel walkout */
+          if(typeof window!=='undefined'&&window.__CPM_WALK197&&propsRef.current&&propsRef.current.matchPhase==="walkout"){try{const _W=window.__CPM_WALK197;(_W.c=_W.c||{})[_ai]={sp:+_spd.toFixed(3),spS:+(_a._spS||0).toFixed(3),locB:+(_a._locB||0).toFixed(3),run:_a.run?+_a.run.weight.toFixed(3):null,x:+_p.position.x.toFixed(2),z:+_p.position.z.toFixed(2)};}catch(_e197){}}/* [7.999.115 PO-197] testimone di collaudo: velocita' vera e peso della corsa di ogni corpo nel walkout */
           if(!Number.isFinite(_a._locB)&&!(typeof window!=='undefined'&&window.__CPM_NO_TPOSE56))_a._locB=Number.isFinite(_bt)?_bt:0;/* [7.999.56] rete: un peso non finito non deve mai congelare un corpo in T-pose */// item 5: transizione idle↔corsa più graduale (τ≈0.2s) → crossfade animazioni fluido
           if(_idleHero&&_a.idle)_a.idle.timeScale=0.5;// #4: idle dell'Eroe rallentato → posizione d'attesa calma, non palleggio
           /* [7.206.0 direttiva PO «mai movimenti robotici»] LA CADENZA DEL PASSO SEGUE LA VELOCITÀ. Un piede
