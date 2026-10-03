@@ -899,6 +899,16 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
        (maglie 34 -> 28 px, righe e margini stretti), i due bottoni affiancati: tutto entra in uno schermo da
        telefono. Sonda formazioni24.mjs. Rosso __CPM_NO_FORMAZ24. */
     const _c24=!(typeof window!=='undefined'&&window.__CPM_NO_FORMAZ24),_js24=_c24?28:34;
+    /* [7.999.126 PO-204 collaudo PO 03/10 22:49 «Prenditi più spazio verticale per il disegno delle formazioni»] La 7.999.24 aveva
+       compattato i campetti perche' la schermata sforava; sul telefono del PO ora sotto i bottoni restava ~1/5 dello schermo vuoto.
+       Si misura UNA volta lo spazio libero sotto la schermata e lo si divide fra le linee dei due campetti (tetto 36 px a linea):
+       si adatta a ogni telefono e non sfora mai. Testimone data-gap204. Rosso __CPM_NO_FORMAZ204 (comportamento 7.999.125). */
+    const ref204=React.useRef(null);const [gap204,setGap204]=React.useState(0);
+    React.useLayoutEffect(()=>{if(typeof window==='undefined'||window.__CPM_NO_FORMAZ204)return;
+      const mis=()=>{try{const el=ref204.current;if(!el)return;const r=el.getBoundingClientRect();
+        const righe=Math.max(1,rosterRows(_homeNums).length+rosterRows(_awayNums).length);
+        const libero=window.innerHeight-r.bottom-12;setGap204(g=>{const n=clamp(Math.floor((libero+g*righe)/righe),0,36);return n===g?g:n;});}catch(_e){}};
+      mis();window.addEventListener('resize',mis);return()=>window.removeEventListener('resize',mis);},[]);
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
@@ -907,7 +917,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       </div>
       <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
         {rosterRows(rr).map((row,ri)=>(
-          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2}}>
+          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2,padding:gap204?`${Math.floor(gap204/2)}px 0 ${Math.ceil(gap204/2)}px`:0}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
               <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={84}/></div>
             ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={84} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
@@ -916,7 +926,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     </Card>);
     const pr=oppTactic?clamp(oppTactic.pressure||0,0,100):0,prC=pr>66?TH.danger:pr>40?TH.warning:TH.success;
     return(
-    <div data-cpm="formazioni23" style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
+    <div data-cpm="formazioni23" ref={ref204} data-gap204={gap204} style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
           <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
