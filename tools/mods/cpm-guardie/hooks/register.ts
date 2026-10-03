@@ -16,7 +16,7 @@ async function catenaInCorso($: EngineInterface): Promise<boolean> {
 /* stato della catena: il log piu' recente dello scratchpad (ci*.log), aggiornato ogni 20 s */
 async function aggiornaStato($: EngineInterface): Promise<void> {
   try {
-    const voci = (await $.fs.list(SCRATCH)).filter(x => x.kind === 'file' && /^ci\d*\.log$/.test(x.name)).sort((a, b) => b.mtimeMs - a.mtimeMs)
+    const voci = (await $.fs.list(SCRATCH)).filter(x => x.kind === 'file' && /^ci\d*[a-z]?\.log$/.test(x.name)).sort((a, b) => b.mtimeMs - a.mtimeMs)
     if (!voci.length) { $.ui.status(undefined); return }
     const s = statoLog(await $.fs.read(SCRATCH + '/' + voci[0].name))
     if (s.finito) $.ui.status(s.esito || `catena finita: ${s.verdi} ✅ · ${s.rossi} ❌`)
@@ -86,7 +86,7 @@ export const register: Register = on => {
     /* lavori in corso (richiesta PO 03/10: «dove si vede l'avanzamento»): catena e sonde dello scratchpad */
     try {
       const voci = (await $.fs.list(SCRATCH)).filter(x => x.kind === 'file')
-      const ci = voci.filter(x => /^ci\d*\.log$/.test(x.name)).sort((a, b) => b.mtimeMs - a.mtimeMs)[0]
+      const ci = voci.filter(x => /^ci\d*[a-z]?\.log$/.test(x.name)).sort((a, b) => b.mtimeMs - a.mtimeMs)[0]
       if (ci) { const s = statoLog(await $.fs.read(SCRATCH + '/' + ci.name)); righe.push(`Ultima catena (${ci.name}): ${s.finito ? (s.esito || 'finita') : 'in corso'} · ${s.verdi} ✅ · ${s.rossi} ❌${s.ultimo ? ' · ultimo passo: ' + s.ultimo : ''}`) }
       let viva = false
       try { viva = (await $.process.run(['pgrep', '-f', 'scratchpad/gol190d'])).exitCode === 0 } catch {}
