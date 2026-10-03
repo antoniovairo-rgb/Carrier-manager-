@@ -83,6 +83,19 @@ export const register: Register = on => {
       const aperte = rm.split('\n').filter(l => /rituali in corsa/.test(l)).map(l => (l.match(/\*\*(7\.999\.\d+)/) || [])[1] || l.slice(0, 40))
       righe.push(`Righe di roadmap con «rituali in corsa»: ${aperte.length ? aperte.join(', ') : 'nessuna ✅'}`)
     } catch {}
+    /* lavori in corso (richiesta PO 03/10: «dove si vede l'avanzamento»): catena e sonde dello scratchpad */
+    try {
+      const voci = (await $.fs.list(SCRATCH)).filter(x => x.kind === 'file')
+      const ci = voci.filter(x => /^ci\d*\.log$/.test(x.name)).sort((a, b) => b.mtimeMs - a.mtimeMs)[0]
+      if (ci) { const s = statoLog(await $.fs.read(SCRATCH + '/' + ci.name)); righe.push(`Ultima catena (${ci.name}): ${s.finito ? (s.esito || 'finita') : 'in corso'} · ${s.verdi} ✅ · ${s.rossi} ❌${s.ultimo ? ' · ultimo passo: ' + s.ultimo : ''}`) }
+      let viva = false
+      try { viva = (await $.process.run(['pgrep', '-f', 'scratchpad/gol190d'])).exitCode === 0 } catch {}
+      for (const x of voci.filter(x => /^amp-k\d+\.log$/.test(x.name)).sort((a, b) => a.name.localeCompare(b.name))) {
+        const ult = (await $.fs.read(SCRATCH + '/' + x.name)).trim().split('\n').filter(l => /^\d+ pm /.test(l)).pop() || ''
+        const ris = (ult.match(/"home":(\d+),"away":(\d+)/) || []).slice(1).join('-')
+        righe.push(`Sonda goleade ${x.name.replace('.log', '')} (${viva ? 'in corso' : 'ferma'}): partite fatte ${Number((ult.match(/^\d+/) || ['-1'])[0]) + 1}/30${ris ? ' · ultima: ' + ris : ''}`)
+      }
+    } catch {}
     return { text: righe.join('\n') }
   })
 }
