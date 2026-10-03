@@ -186,3 +186,30 @@ Comando numerico dalla radice: `$env:CPM_SCENES='32'; $env:CPM_OUTCOME='success'
 ### gi32 fail procedurale: correzione della sonda fotografica
 
 Il primo tentativo con sei foto aveva `chooseFrames=45` ma `phaseBefore=hl_result` alla chiamata di risoluzione: **non valido**. Congelare il disegno dopo 45 frame non impediva alla fase di avanzare. La sonda ora scatta le foto 01 e 02 prima del 45° frame e chiama `__CPM_RESOLVE(0)` nello stesso callback che conta il 45°: non c'è una chiamata Playwright fra la soglia e la risoluzione. Il secondo tentativo con lo stesso comando, `$env:CPM_SCENES='32'; $env:CPM_OUTCOME='fail'; $env:CPM_MODE='0'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; Remove-Item Env:CPM_NO_SHOTS -ErrorAction SilentlyContinue; node tests/codex/banco-difesa-3d.mjs`, è valido (`ActionResolved.ok=false`, sei foto, `chooseFrames=45`, 114 letture `FRAME480`; gli altri campi sono nel grezzo). In `03-rincorsa` l'eroe incontra l'avversario, in `04-contatto` compare «Beffato dall'attaccante» e la palla è presso i due corpi; gli scatti 05–06 non contraddicono l'esito. Nessun 001/002/003 attribuito. Il caso resta **procedurale**: il corrispondente GLB è ancora da misurare.
+
+## Ripresa 04/10: banco a 24/80
+
+Comando dalla radice, ripetuto in processi separati per liberare la memoria di Chromium fra i casi:
+
+```powershell
+$env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+node tests/codex/banco-difesa-mancanti.mjs
+```
+
+Il secondo comando restituisce `expected:80`, `valid:24`, `missing:56`, di cui 26 GLB e 30 procedurali. I nuovi casi validi sono sotto; tutti hanno `chooseFrames=45`, `ActionResolved` concorde e sei PNG. Fonte: `tests/codex/banco-difesa-3d.json.gz`, ultimo record valido per ogni ID.
+
+| Caso | Letture `FRAME480` | Eroe fuori | Pallone fuori |
+| --- | ---: | ---: | ---: |
+| gi33 fail GLB r0 | 104 | 2 | 103 |
+| gi33 fail procedurale r0 | 126 | 0 | 101 |
+| gi33 fail procedurale r1 | 129 | 0 | 102 |
+| gi33 fail GLB r1 | 106 | 0 | 86 |
+| gi133 success procedurale r0 | 127 | 4 | 72 |
+| gi133 success procedurale r1 | 123 | 0 | 17 |
+| gi133 success GLB r1 | 100 | 14 | 44 |
+| gi133 fail procedurale r0 | 178 | 3 | 178 |
+| gi133 fail procedurale r1 | 153 | 14 | 153 |
+
+Nella foto di apertura `gi33-fail-glb-r0-01-apertura.png` l'eroe è visibile sopra la scheda. La foto `04-contatto` mostra già il tabellone 0–1 e la scena spostata verso l'area; non è il fotogramma effettivo del contatto. La foto `06-esito` mostra il pallone e l'eroe vicino al bordo destro, con l'esito «Supera e segna». Le sei foto non permettono di attribuire con certezza un codice 003, né di distinguere una palla fuori quadro attesa dalla camera da un errore di regia per tutti i 103/104 campioni. I conteggi 001/002/003 sui nove nuovi casi restano **non verificati visivamente**; i PNG consentono la revisione successiva.
+
+Gli scarti per memoria sono conservati nel grezzo e non entrano nei 24 validi. Il browser unico del banco fa scendere temporaneamente la memoria sotto 3,5 GiB dopo uno o due casi; chiudere il processo la riporta sopra soglia. Nessun caso viene forzato sotto la guardia. La serie completa resta aperta.
