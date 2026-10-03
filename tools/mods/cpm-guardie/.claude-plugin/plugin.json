@@ -1,0 +1,1 @@
+{ "name": "cpm-guardie", "version": "0.1.0", "description": "Carrier Manager: guardie sui rituali (promozione su main solo con catena verde, niente build durante una catena, niente pkill -f, niente identificativi del modello nei commit), stato della catena e comando /rituali" }
