@@ -1,0 +1,17 @@
+{
+  "versione": "7.999.122",
+  "commitBase": "9632ef5e389d1f673b8b8c54e3d9c2f8015a1dde",
+  "compito": "PO-190: guardiani preliminari; partite vissute e stagione simulata non ancora misurate",
+  "comandi": [
+    {"cwd": "tests/visual", "comando": "node debito-190.mjs", "exitCode": 0, "output": "{\"verde\":0.1,\"rosso\":0.4}\n✅ debito-190 verde (e il rosso si vede)"},
+    {"cwd": "tests/visual", "comando": "node rigori-190.mjs", "exitCode": 0, "output": "{\"verde\":0.11,\"rosso\":0.53}\n✅ rigori-190 verde (e il rosso si vede)"}
+  ],
+  "misure": [
+    {"nome": "debito per scena da 0,4", "verde": 0.1, "rosso": 0.4, "esito": "ok"},
+    {"nome": "rigori a squadra per partita nel banco di 60 partite per braccio", "verde": 0.11, "rosso": 0.53, "esito": "ok"}
+  ],
+  "dryRunFixture": {"comando": "CPM_DRY_RUN=1 node tests/codex/po190-7999122.mjs", "casi": 30, "avversariDistinti": 17, "casa": 15, "trasferta": 15, "conflittiAntiduplicato": 0, "esitoPartite": "non verificato"},
+  "partiteVissute": "non verificato",
+  "stagioneSimulata": "non verificato",
+  "segnalazioni": []
+}
