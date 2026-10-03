@@ -2273,7 +2273,11 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
      ciascuno. Niente buste da aprire per i premi degli altri. Rosso __CPM_NO_GALA51 = la serata a buste di prima. */
   const _g51=!(typeof window!=='undefined'&&window.__CPM_NO_GALA51);
   const _vinti51=_galaSeq.map((a,i)=>({a,i})).filter(x=>x.a.rows&&x.a.rows[0]&&x.a.rows[0].isPlayer);
-  const _altri51=_galaSeq.filter(a=>!(a.rows&&a.rows[0]&&a.rows[0].isPlayer));
+  /* [7.999.125 PO-199, scelta PO 03/10 «Busta per tutti i premi»] ogni premio della serata si apre con la sua busta, anche
+     quelli che vince un altro: la suspense e' vera solo se il vincitore non e' scontato. Rosso __CPM_NO_TUTTI201 (solo i vinti). */
+  const _tutti201=!(typeof window!=='undefined'&&window.__CPM_NO_TUTTI201);
+  const _mom201=_tutti201?_galaSeq.map((a,i)=>({a,i})).filter(x=>x.a.rows&&x.a.rows[0]):_vinti51;
+  const _altri51=_tutti201?_galaSeq.filter(a=>!(a.rows&&a.rows[0])):_galaSeq.filter(a=>!(a.rows&&a.rows[0]&&a.rows[0].isPlayer));
   const [g51,setG51]=React.useState(0);// 0 apertura · 1..N momenti · N+1 riepilogo
   /* [7.999.124 PO-199 collaudo PO 03/10 «Nel galà si deve vedere apertura della busta progressivamente dal terzo al primo, non deve
      comparire subito il vincitore del premio... un po' di suspense»] Ogni premio si apre in quattro tempi: la busta (0), il terzo
@@ -2282,6 +2286,9 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   /* lo stato porta il premio a cui appartiene: al cambio di premio il primo fotogramma parte gia' da 0, mai da un valore vecchio */
   const [b199,setB199]=React.useState({g:-1,rv:0});const busta199=b199.g===g51?b199.rv:0;
   React.useEffect(()=>{setB199({g:g51,rv:0});if(g51<1||(typeof window!=='undefined'&&window.__CPM_NO_BUSTA199))return;
+    /* [7.999.125 scelta PO 03/10 «Un tocco per posizione»] niente timer: ogni posto si svela solo al tocco. Rosso
+       __CPM_NO_TOCCO201: la busta torna automatica (1,6 s per posizione). */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_TOCCO201))return;
     const ts=[1,2,3].map(k=>setTimeout(()=>setB199(x=>x.g===g51?{g:g51,rv:Math.max(x.rv,k)}:x),k*1600));return()=>ts.forEach(clearTimeout);},[g51]);
   const _galaRow=(idx,medal,big)=>{const c=_galaTop3[idx];if(!c)return null;const _me=!!c.isPlayer;return(
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
@@ -2296,13 +2303,13 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     </div>);};
   return(
     <div style={{width:"100%"}}>
-      {_galaOn&&_g51&&(()=>{const N=_vinti51.length;const mom=g51>=1&&g51<=N?_vinti51[g51-1]:null;const rie=g51>N;
+      {_galaOn&&_g51&&(()=>{const N=_mom201.length;const mom=g51>=1&&g51<=N?_mom201[g51-1]:null;const rie=g51>N;
         const _fig=(nome,me,l)=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||"eroe"):(nome||"npc")} larg={l}/>;}catch(_e){return null;}};
         const _num=(c,k)=>c&&c.goals!=null&&(k==="capo"||k==="scarpa"||k==="oro"||k==="mvp")?c.goals:null;
         const _chiudi=()=>setGalaOff(true);
         const _rv199=(typeof window!=='undefined'&&window.__CPM_NO_BUSTA199)?3:busta199;
         return(<div data-cpm="gala51" style={{position:"fixed",inset:0,zIndex:9997,background:"#07060c"}}>
-          <GalaStage3D beat={mom&&_rv199>=3?3:0} act={mom?mom.i:(g51===0?0:1)} heroWins={!!mom&&_rv199>=3} avatarId={player.avatarId||0} seed={7} senzaCorpi={false}/>
+          <GalaStage3D beat={mom&&_rv199>=3?3:0} act={mom?mom.i:(g51===0?0:1)} heroWins={!!mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)} avatarId={player.avatarId||0} seed={7} senzaCorpi={false}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.45) 0%,rgba(7,6,12,0) 16%,rgba(7,6,12,0) 60%,rgba(7,6,12,0.7) 100%)",pointerEvents:"none"}}/>
           <div style={{position:"absolute",top:"calc(14px + env(safe-area-inset-top, 0px))",left:0,right:0,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:"#d4a017",textTransform:"uppercase",letterSpacing:2.4}}>
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
@@ -2329,9 +2336,24 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                   <div key={q.k} style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.small,color:TH.text,minWidth:0,animation:"logoIn 0.45s ease-out"}}>
                     {_fig(c.name,false,22)}<span style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><b>{q.l}</b> · {c.name}{c.goals!=null?" · "+c.goals:""}</span></div>);})}
               </div>
-              <Btn v="primary" fw onClick={()=>setB199(x=>({g:g51,rv:Math.min(3,(x.g===g51?x.rv:0)+1)}))}>Avanti →</Btn>
+              <Btn v="primary" fw onClick={()=>setB199(x=>{let r=Math.min(3,(x.g===g51?x.rv:0)+1);if(r===1&&!rows[2])r=rows[1]?2:3;if(r===2&&!rows[1])r=3;return{g:g51,rv:r};})}>{_rv199===0?(rows[2]?"Svela il 3° posto":rows[1]?"Svela il 2° posto":"E il vincitore è…"):_rv199===1?"Svela il 2° posto":"E il vincitore è…"}</Btn>
             </React.Fragment>);})()}
-            {mom&&_rv199>=3&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
+            {mom&&_rv199>=3&&!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const w=rows[0];const pos=rows.findIndex(x=>x&&x.isPlayer);const nw=_num(w,mom.a.key);return(<React.Fragment>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <div data-cpm="busta199-altro" style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  {_fig(w&&w.name,false,34)}
+                  {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
+                  <div style={{minWidth:0}}>
+                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}</div>
+                  </div>
+                </div>
+                <div style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
+              </div>
+              <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
+            </React.Fragment>);})()}
+            {mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
               <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
