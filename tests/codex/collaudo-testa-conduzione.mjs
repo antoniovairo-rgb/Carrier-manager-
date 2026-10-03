@@ -20,7 +20,10 @@ const baseCommit='8cef5317';
 const arm=process.env.CPM_ARM==='red'?'red':'green';
 const data=fs.existsSync(raw)?JSON.parse(zlib.gunzipSync(fs.readFileSync(raw))):{versione:version,baseCommit,comando:'node tests/codex/collaudo-testa-conduzione.mjs',runs:[]};
 data.versione=version;data.baseCommit=baseCommit;
-const save=()=>fs.writeFileSync(raw,zlib.gzipSync(JSON.stringify(data)));
+const save=()=>{const bytes=zlib.gzipSync(JSON.stringify(data));for(let i=0;i<15;i++){
+ try{fs.writeFileSync(raw,bytes);return;}
+ catch(e){if(e.code!=='EBUSY'||i===14)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,200);}
+}};
 const count=Number(process.env.CPM_BATCH||1);
 for(const run of data.runs){
  if(!run.versione)run.versione='7.999.96';
