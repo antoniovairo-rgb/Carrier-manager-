@@ -38,6 +38,21 @@ Il checkpoint ora contiene **101 tentativi**, di cui **5 validi con il nuovo oro
 
 I due giri success hanno gli stessi conteggi, ma il metodo non è ancora ripetibile sugli esiti fail: la differenza del punto di partenza è circa 25 unità sull'asse x e cambia il conteggio fuori quadro. Aspettare 500 ms virtuali non garantisce che il commit di staging del gioco sia arrivato. Il codice del gioco descrive esplicitamente lo staging come commit React successivo (`src/15-live-match.jsx:1599-1605`, `src/12-three-match-view.jsx:3485-3498`): questa è una possibile spiegazione del rumore del banco, non una causa dimostrata per questi cinque casi. La sonda conserva ogni tentativo e non assegna 001/002/003 da dati non separabili. La modalità sperimentale `target-aligned`, che attende il bersaglio logico aggiornato e la mesh entro 2u, è stata aggiunta ma **non eseguita**: il controllo pre-avvio ha misurato 2,99 GB liberi, sotto 3,5 GB. I 64 casi richiesti restano aperti; la condizione di avvio deve essere verificata prima di estendere il campione.
 
+### Ripresa del 3 ottobre: orologio verificato e sei scatti
+
+Il comando `node tests/codex/orologio-300.mjs` ha prodotto `tests/codex/orologio-300.json`: 300 callback, 300 fotogrammi nativi, 300 passi virtuali, 10.000 ms virtuali. Il controllo dell'orologio è valido per questa esecuzione. Prima del lotto `node -e "console.log((require('os').freemem()/2**30).toFixed(2))"` indicava 4,44 GB liberi. È stata allineata anche la guardia interna della sonda alla soglia di 3,5 GB prima di ogni caso 3D; il lotto si è interrotto due volte alla soglia e ha conservato il checkpoint.
+
+Comando del lotto, dalla radice: `$env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs`. I quattro casi qui sotto hanno `ActionResolved` concorde e sei scatti. Il banco fissa l'azione dopo 45 fotogrammi in `hl_choose`.
+
+| gi33 success | Letture | Eroe fuori | Pallone fuori | Posizione logica del pallone alla risoluzione |
+| --- | ---: | ---: | ---: | --- |
+| Procedurale r0 | 114 | 0 | non registrato dal testimone | 9,73; 52,18 |
+| Procedurale r1 | 97 | 0 | 80 | 58,48; 54,44 |
+| GLB r0 | 119 | 16 | 99 | 50,20; 55,05 |
+| GLB r1 | 101 | 7 | 84 | 51,48; 55,15 |
+
+Le due ripetizioni procedurali partono con il pallone in posizioni molto diverse e la prima non espone `bfuori`; questo **non prova la ripetibilità** del banco né un difetto del gioco. Le due ripetizioni GLB mostrano anch'esse differenze nei conteggi. I PNG e il grezzo sono in `reports/codex/banco-difesa-3d/` e `tests/codex/banco-difesa-3d.json.gz`. Rimangono da acquisire gli altri casi e da valutare visivamente 001/002/003; nessun nuovo codice viene attribuito da questa serie parziale.
+
 ## B. Europeo del seme 6
 
 La sonda `tests/codex/banco-europeo-181.mjs` riprende il banco carriere esterno con `__CPM_SIM_NAT=1`, forza il seme 6, registra i passi fra S8/W19 e W25 e conserva un checkpoint a fine stagione. Il primo avvio è stato interrotto dopo sei stagioni per liberare memoria; la seconda esecuzione dalla stagione 1 è arrivata oltre W24 senza blocco. Dal suo checkpoint S8/W1 sono state poi eseguite due prove appaiate con lo stesso salvataggio: una normale e una con `CPM_RED181=1`. La sonda non azzera il torneo quando compare `blocked:`: in tal caso avrebbe salvato il blocco come esito.

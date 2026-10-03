@@ -30,7 +30,7 @@ const port = server.address().port;
 async function run({ gi, outcome, glb, repeat }) {
   const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
   const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, clockMode: 'one-tick-per-browser-frame', settleMode: process.env.CPM_SETTLE_MODE || 'fixed-45-frames', valid: false, rejected: null, photos: [] };
-  if (freeGB() < 2.2) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 2.2 GB dopo l'avvio di Chrome`; return result; }
+  if (freeGB() < 3.5) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 3.5 GB prima del caso 3D`; return result; }
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
   const page = await context.newPage();
   await installCdnRoutes(page);
@@ -148,7 +148,7 @@ try {
     const repeats = process.env.CPM_REPEAT === '1' ? 1 : repeated.has(gi) ? 2 : 1;
     for (let repeat = 0; repeat < repeats; repeat++) {
       const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
-      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'fixed-45-frames'))) continue;
+      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'fixed-45-frames') && (!shotsEnabled || c.photos?.length === 6))) continue;
       const r = await run({ gi, outcome, glb, repeat }); data.cases.push(r); save();
       console.log(JSON.stringify({ id, valid: r.valid, rejected: r.rejected, n: r.frame?.n, heroOutside: r.frame?.fuori, ballOutside: r.frame?.bfuori }));
       if (r.rejected?.startsWith('memoria libera')) break outer;

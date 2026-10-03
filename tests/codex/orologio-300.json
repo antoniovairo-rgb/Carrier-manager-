@@ -1,4 +1,8 @@
 {
-  "executed": false,
-  "reason": "RAM libera 3.38 GB < 3.5 GB"
+  "callbackFrames": 300,
+  "nativeFrames": 300,
+  "virtualSteps": 300.00000000000017,
+  "virtualMs": 10000.000000000007,
+  "valid": true,
+  "command": "node tests/codex/orologio-300.mjs"
 }
