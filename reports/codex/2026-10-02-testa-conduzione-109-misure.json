@@ -1,0 +1,265 @@
+{
+  "versione": "7.999.112",
+  "baseCommit": "8cef5317",
+  "comando": "node tests/codex/testa-conduzione-analisi.mjs",
+  "misure": [
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 171,
+      "actionIndex": 0,
+      "action": "✈️ Stacco in corsa potente",
+      "outcome": "success",
+      "rep": 0,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.229,
+        "d": 0.162,
+        "ballY": 1.65
+      },
+      "peak": {
+        "t": 2.309,
+        "headY": 2.521
+      },
+      "syncMs": 80,
+      "guardContact": {
+        "t": 2.229,
+        "d": 0.162,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.309,
+        "headY": 2.521,
+        "g": "header"
+      },
+      "guardSyncMs": 80,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 13.11,
+      "speedAfter": 7.64,
+      "speedRatio": 0.58,
+      "stepsOver2": 7,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 1100,
+          "d": 2.2,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1700,
+          "d": 2.31,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1750,
+          "d": 2.51,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.56,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 3.15,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 3700,
+          "d": 2.03,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2150,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2350,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": -125
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "red",
+      "gi": 171,
+      "actionIndex": 0,
+      "action": "✈️ Stacco in corsa potente",
+      "outcome": "success",
+      "rep": 0,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.313,
+        "d": 0.567,
+        "ballY": 2.25
+      },
+      "peak": {
+        "t": 2.904,
+        "headY": 2.512
+      },
+      "syncMs": 591,
+      "guardContact": {
+        "t": 2.229,
+        "d": 0.176,
+        "g": null
+      },
+      "guardPeak": {
+        "t": 2.904,
+        "headY": 2.512,
+        "g": "header"
+      },
+      "guardSyncMs": 675,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 3.5,
+      "speedAfter": 18.32,
+      "speedRatio": 5.23,
+      "stepsOver2": 6,
+      "stepsOver85": 1,
+      "steps": [
+        {
+          "ms": 1700,
+          "d": 2.32,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1750,
+          "d": 3.37,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.51,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.32,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 3800,
+          "d": 7.82,
+          "dtMs": 50,
+          "over85": true
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2350,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2450,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi171-a0-success-r0-red-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 75
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    }
+  ]
+}
