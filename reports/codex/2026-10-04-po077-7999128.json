@@ -1,0 +1,37 @@
+{
+  "versione": "7.999.128",
+  "commit": "fba48b4e9b2841ce04e02b962ad2cba9097ec3a7",
+  "compito": "PO-077 gi86",
+  "comando": "$env:CPM_KIND='header'; $env:CPM_GI='86'; $env:CPM_ACTIONS='0'; $env:CPM_OUTCOME='success'; $env:CPM_BATCH='1'; $env:CPM_GPU_MODE='d3d11'; $env:CPM_CHROME_LEAN='1'; node tests/codex/po077-7999128.mjs",
+  "seme": "Testa-86-success-0",
+  "misure": [
+    {
+      "esito": "ok",
+      "soglia": ">=3",
+      "valore": 3.51,
+      "nome": "memoria libera prima del tentativo GiB"
+    },
+    {
+      "esito": "anomalia",
+      "soglia": ">0",
+      "valore": 0,
+      "nome": "fotogrammi testimone"
+    },
+    {
+      "esito": "anomalia",
+      "soglia": "6",
+      "valore": 0,
+      "nome": "foto"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "descrizione": "Tentativo non valido: Chromium chiuso dalla guardia sotto 3 GiB durante page.goto; nessun rilievo sul gioco",
+      "come_riprodurre": "Vedi comando",
+      "gravita": "media",
+      "prove": [
+        "tests/codex/collaudo-testa-7999128.json.gz"
+      ]
+    }
+  ]
+}
