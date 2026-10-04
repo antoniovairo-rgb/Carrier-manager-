@@ -68,8 +68,9 @@ async function giro(sp) {
   await page.addInitScript(o => {
     window.__CPM_GLB = false; window.__CPM_TXT487 = null;
     if (o.r) window.__CPM_NO489 = 1;
+    if (o.b) window[o.b] = 1;/* [7.999.131] una bandiera qualunque (CPM_BANDIERA), per provare un rimedio nuovo contro il suo rosso */
     try { localStorage.setItem('cpm-match-speed', String(o.v)); } catch (e) {}
-  }, { v: sp, r: ROSSO });
+  }, { v: sp, r: ROSSO, b: process.env.CPM_BANDIERA || null });
   try {
     await openMatch(page, port, { skipLoadAll: true });
     /* seed fisso => stesse scelte a ogni giro. `_ar()` avanza una volta per highlight risolto, non per
