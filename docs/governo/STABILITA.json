@@ -1,5 +1,184 @@
 [
  {
+  "data": "2026-10-04 13:15",
+  "versione": "7.999.130",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 69
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 1112
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 98
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 70
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 67
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 545
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 428
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 305
+   }
+  ]
+ },
+ {
+  "data": "2026-10-04 12:37",
+  "versione": "7.999.130",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 732
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 64
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 884
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 523
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-04 10:46",
   "versione": "7.999.129",
   "catena": "carriera",
