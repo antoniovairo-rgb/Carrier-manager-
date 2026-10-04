@@ -1,5 +1,107 @@
 [
  {
+  "data": "2026-10-04 00:23",
+  "versione": "7.999.126",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 237
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 858
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 34
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 23
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 289
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 87
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 85
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 92
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 129
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 45
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 123
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 91
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 72
+   }
+  ]
+ },
+ {
   "data": "2026-10-03 22:01",
   "versione": "7.999.126",
   "catena": "grafica",
