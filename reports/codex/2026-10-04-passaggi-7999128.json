@@ -1,0 +1,31 @@
+{
+  "versione": "7.999.128",
+  "commit": "fba48b4e9b2841ce04e02b962ad2cba9097ec3a7",
+  "compito": "Passaggi 3D, validazione sonda",
+  "comando": "$env:CPM_SCENES='38'; $env:CPM_MAX_CASES='1'; node tests/codex/collaudo-passaggi-7999128.mjs",
+  "seme": "non verificato",
+  "misure": [
+    {
+      "nome": "Memoria libera al momento dello stop GiB",
+      "valore": 2.94,
+      "soglia": ">=3",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "Casi validi",
+      "valore": 0,
+      "soglia": ">=1 per giudicare il gioco",
+      "esito": "anomalia"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "prove": [
+        "tests/codex/collaudo-passaggi-7999128.json.gz"
+      ],
+      "come_riprodurre": "Vedi comando",
+      "descrizione": "Sonda interrotta sotto la soglia RAM prima della scoperta delle azioni; nessun difetto del gioco verificato"
+    }
+  ]
+}
