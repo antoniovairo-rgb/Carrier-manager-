@@ -22,7 +22,8 @@ const save = () => { const raw = JSON.stringify(data, null, 2); fs.writeFileSync
     catch (e) { if (e.code !== 'EBUSY' || attempt === 14) { console.error(`Checkpoint JSON conservato; compressione differita: ${e.message}`); return; }
       Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 200); } } };
 const freeGB = () => os.freemem() / 2 ** 30;
-if (freeGB() < 3.5) { console.error(`3D rinviato: RAM libera ${freeGB().toFixed(2)} GB < 3.5 GB`); process.exit(2); }
+const minFreeGB = 3;
+if (freeGB() < minFreeGB) { console.error(`3D rinviato: RAM libera ${freeGB().toFixed(2)} GB < ${minFreeGB} GB`); process.exit(2); }
 const server = await startServer();
 const browser = await launchBrowser();
 const port = server.address().port;
@@ -30,8 +31,10 @@ const port = server.address().port;
 async function run({ gi, outcome, glb, repeat }) {
   const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
   const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, clockMode: 'one-tick-per-browser-frame', settleMode: process.env.CPM_SETTLE_MODE || 'fixed-45-frames', valid: false, rejected: null, photos: [] };
-  if (freeGB() < 3.5) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 3.5 GB prima del caso 3D`; return result; }
+  if (freeGB() < minFreeGB) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < ${minFreeGB} GB prima del caso 3D`; return result; }
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
+  let lowMemory = false;
+  const memoryGuard = setInterval(() => { if (freeGB() < minFreeGB) { lowMemory = true; context.close().catch(() => {}); } }, 250);
   const page = await context.newPage();
   await installCdnRoutes(page);
   // Trascrizione dell'orologio e del seme di tests/visual/inquadratura-185.mjs.
@@ -139,8 +142,8 @@ async function run({ gi, outcome, glb, repeat }) {
     result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched && result.photos.length === 6 && result.chooseFrames >= 45;
     if (!result.valid) result.rejected = result.chooseFrames < 45 ? `scelta osservata solo ${result.chooseFrames} frame` : !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : !result.outcomeMatched ? 'ActionResolved non concorde' : `foto ${result.photos.length}/6`;
     return result;
-  } catch (e) { result.rejected = String(e?.stack || e); return result; }
-  finally { await context.close().catch(() => {}); }
+  } catch (e) { result.rejected = lowMemory ? `memoria libera sotto ${minFreeGB} GB durante il caso: ${String(e?.message || e)}` : String(e?.stack || e); return result; }
+  finally { clearInterval(memoryGuard); result.lowMemory = lowMemory; if (lowMemory) result.valid = false; await context.close().catch(() => {}); }
 }
 
 try {
