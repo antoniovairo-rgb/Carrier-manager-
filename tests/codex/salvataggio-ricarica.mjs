@@ -80,19 +80,21 @@ async function view(page,seed,key,side,keepImages){
 function playing(s){return{playedMd:s?.playedMd||null,weekMatch:(s?.calendar||[]).filter(m=>m.week===s.week).map(m=>({type:m.type||'league',matchday:m.matchday,played:!!m.played,opponentId:m.opponentId})),playedCalendar:(s?.calendar||[]).filter(m=>m.played).length,cupClub:s?.cup?.club||null};}
 function checkpointName(s){if(s.season===1&&s.week===10)return'S1W10';if(s.season===2&&s.week===1)return'S2W1';if(s.season===3&&s.week===20)return'S3W20';return null;}
 
-let srv,browser,page;
+let srv,browser,page,memoryGuard,memoryInterrupted=false;
 try{
   const source=fs.readFileSync(path.join(ROOT,'src/07-versione-save-interviste.jsx'),'utf8');run.versione=(source.match(/const GAME_VERSION="([0-9.]+)"/)||[])[1]||null;
   if(run.versione!=='7.999.122')throw Error(`Versione non valida: ${run.versione}`);
   run.commit=execFileSync('git',['-c',`safe.directory=${ROOT.replaceAll('\\','/')}`,'merge-base','HEAD','origin/main'],{cwd:ROOT,encoding:'utf8'}).trim();
-  if(os.freemem()<3.5*1024**3){run.errors.push('RAM libera sotto 3,5 GiB prima del browser');save();console.log(run.errors.at(-1));process.exit(0);}
+  if(os.freemem()<3*1024**3){run.errors.push('RAM libera sotto 3 GiB prima del browser');save();console.log(run.errors.at(-1));process.exit(0);}
   srv=await startServer();browser=await launchBrowser();
+  memoryGuard=setInterval(()=>{if(os.freemem()<3*1024**3&&!memoryInterrupted){memoryInterrupted=true;run.errors.push('RAM scesa sotto 3 GiB durante il browser');browser.close().catch(()=>{});}},250);
   const url=`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
   page=await browser.newPage({viewport:{width:900,height:900}});await installCdnRoutes(page);
   await page.goto(url,{waitUntil:'load',timeout:90000});await page.waitForFunction(()=>document.getElementById('root')?.children.length>0,null,{timeout:60000});
   const catalog=await page.evaluate(()=>({clubs:CLUBS.map(c=>({id:c.id,n:c.n,a:c.a,p:c.p,c:c.c,c2:c.c2,nat:c.nat,lg:c.lg})),u18:U18_CLUBS.map(c=>({id:c.id,n:c.n,a:c.a,p:c.p,c:c.c,c2:c.c2,nat:c.nat,lg:c.lg}))}));catalog.leagues=[...new Set(catalog.clubs.map(c=>c.lg))];
   fs.mkdirSync(IMG,{recursive:true});save();
   for(const seed of SEEDS){
+    if(memoryInterrupted)break;
     const c={seed,matrix:null,checkpoints:[],interventions:[],errors:[],steps:0,status:'running',cupMatches:0};run.careers.push(c);
     try{
       const init=setup(seed,catalog);c.matrix=init.matrix;
@@ -154,8 +156,10 @@ try{
       c.status='finished';
     }catch(e){c.errors.push(String(e.stack||e));c.status='failed';}
     save();console.log('CAREER',JSON.stringify({seed,status:c.status,steps:c.steps,checkpoints:c.checkpoints.map(q=>({key:q.key,status:q.status})),errors:c.errors.length}));
+    if(memoryInterrupted)break;
   }
 }catch(e){run.errors.push(String(e.stack||e));}finally{
+  clearInterval(memoryGuard);
   if(browser)await Promise.race([browser.close().catch(()=>{}),sleep(8000)]);
   if(srv)srv.close();save();
   console.log('DONE',JSON.stringify({versione:run.versione,commit:run.commit,careers:run.careers.length,errors:run.errors.length,durationMs:run.durationMs,out:OUT}));
