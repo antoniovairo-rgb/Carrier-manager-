@@ -5314,8 +5314,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!(typeof window!=='undefined'&&window.__CPM_NO_KO207)){const _p207=ko207Ref.current,_s207=scoreRef.current||{};
             if(_p207){if((_s207.home|0)>(_p207.home|0))_l207="away";else if((_s207.away|0)>(_p207.away|0))_l207="home";_c207=!!_l207;}
             ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
-            if(_c207){try{(window.__CPM_KO207=window.__CPM_KO207||[]).push({min:clockRef.current|0,lato:_l207,scena:!!_st0.scena});}catch(_e){}
-              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});}catch(_e207){}}}}
+            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;}catch(_e207){}}}}
           if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:_c207?_l207:(possTurnRef.current>0?"home":"away"),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}

@@ -336,6 +336,7 @@
     "presentazione-200": "node presentazione-200.mjs",
     "guanti-201": "node guanti-201.mjs",
     "formazioni-204": "node formazioni-204.mjs",
+    "ripartenza-207": "node ripartenza-207.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",

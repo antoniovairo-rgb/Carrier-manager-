@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* [7.999.126 PO-207 collaudo PO 03/10 «Ad ogni gol il 2D non riparte dalla rimessa in gioco da centrocampo»] GUARDIANO su una
    partita vera dal salvataggio S12 (autoplay, seme fisso, fino al primo gol + 10 s, massimo 300 s; un braccio senza gol si ritenta fino a 3 partite): a ogni aumento del punteggio il motore riparte dal centro con la
-   palla a chi ha subito il gol (testimone __CPM_KO207) e il pallone del motore passa da (50,50) entro 3 campioni dopo la ripartenza.
+   palla a chi ha subito il gol (testimone __CPM_KO207) e subito dopo la ripartenza il motore e' in «kickoff» con il pallone a (50,50) (letto dal testimone nel gioco, non a campione).
    Verde: almeno una ripartenza e il pallone al centro. Rosso (__CPM_NO_KO207): nessuna ripartenza. MISURATO prima della correzione:
    dopo 3 gol il motore restava in «tenuta»/«volo» con il pallone dove era. */
 import fs from 'node:fs';
@@ -23,10 +23,10 @@ for (const rosso of [false, true]) { for (let tent = 0; tent < 3; tent++) {
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 2071, policy: 'seeded', tickMs: 150 }));
   const t0 = Date.now(); let nKo = 0, attesa = 0, centro = 0, primoGol = 0;
   while (Date.now() - t0 < 300000 && !(primoGol && Date.now() - primoGol > 10000)) {
-    const s = await page.evaluate(() => { let st = null; try { st = window.__CPM_MOTORE_OBJ().stato(); } catch (e) {} return { f: window.__CPM_PHASE(), g: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').length, ko: (window.__CPM_KO207 || []).length, p: st && st.palla ? [st.palla.x, st.palla.y] : null }; });
+    const s = await page.evaluate(() => { let st = null; try { st = window.__CPM_MOTORE_OBJ().stato(); } catch (e) {} return { f: window.__CPM_PHASE(), g: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').length, ko: (window.__CPM_KO207 || []).length, kos: (window.__CPM_KO207 || []).slice(), p: st && st.palla ? [st.palla.x, st.palla.y] : null }; });
     if (s.f === 'ended' || s.f === 'ceremony') break;
     if (s.g && !primoGol) primoGol = Date.now();
-    if (s.ko > nKo) { nKo = s.ko; attesa = 3; }
+    if (s.ko > nKo) { nKo = s.ko; attesa = 3; for (const k of s.kos) if (k.dopo === 'kickoff' && k.palla && k.palla[0] === 50 && k.palla[1] === 50) centro = Math.max(centro, s.kos.filter(q => q.dopo === 'kickoff' && q.palla && q.palla[0] === 50 && q.palla[1] === 50).length); }
     if (attesa > 0) { attesa--; if (s.p && Math.abs(s.p[0] - 50) <= 4 && Math.abs(s.p[1] - 50) <= 6) { centro++; attesa = 0; } }
     await sleep(300);
   }
