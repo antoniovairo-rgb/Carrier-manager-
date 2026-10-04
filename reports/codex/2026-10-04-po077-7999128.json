@@ -22,6 +22,12 @@
       "soglia": "6",
       "valore": 0,
       "nome": "foto"
+    },
+    {
+      "nome": "Tentativo Edge D3D11 valido",
+      "valore": 0,
+      "soglia": "1",
+      "esito": "anomalia"
     }
   ],
   "segnalazioni": [
