@@ -385,6 +385,11 @@ function creaMotorePossesso(cfg){
     if(intent==='freekick')x=Math.min(x,0.06);if(intent==='header')x*=K2.testa;
     x*=(press<2?0.75:press<4?0.9:1);x*=Math.exp(K2.forzaXg*vantDi(l));return clamp(x,0.005,0.9);};
   const esitoTiroV2=(P,intent,ctx)=>{const pr=(ctx&&ctx.pressRaw!=null)?ctx.pressRaw:4;let xg=xgV2(P,intent,pr);
+    /* [7.999.129 PO-202, decisione PO 04/10 «entrambe le leve, a meta'»] Nella partita VISSUTA (cfg.fin202) i tiri degli avversari sono
+       un po' piu' pericolosi e quelli dei compagni dell'eroe un po' meno (i tiri dell'eroe passano dalle sue scene, non da qui). MISURATO
+       prima (S12, stessa forza 95-95): nella vissuta gli avversari tirano 7,4 volte e segnano 0,6-0,8 gol a partita, nella simulata 13,4
+       tiri e 1,2-1,3 gol. La simulazione rapida non lo usa. Rosso __CPM_NO_FIN202 (in src/15). */
+    if(cfg.fin202&&intent!=='penalty')xg=clamp(xg*(P.team===HOME?(+cfg.fin202.home||1):(+cfg.fin202.away||1)),0.01,0.95);
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
