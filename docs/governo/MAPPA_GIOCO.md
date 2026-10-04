@@ -1,6 +1,6 @@
 # MAPPA DEL GIOCO — build 7.999.126 — 03/10/2026
 
-Consolidamento complessivo: **62% (Team 62%)** (affidabilità: 24 nodi alta · 38 media · 15 bassa su 77 nodi nel conto; nessun valore PO ancora)
+Consolidamento complessivo: **62% (Team 62%)** media semplice dei rami · **62%** pesata per tempo di gioco (Partita ×3; Home, Stagione, Sistemi ×2) — entrambe per decisione PO del 03/10 (affidabilità: 24 nodi alta · 38 media · 15 bassa su 77 nodi nel conto; nessun valore PO ancora)
 
 > **Limiti di questa stesura (PO-205, prima versione).** Albero generato **dal codice** (`grep` su `src/*.jsx`: stati `screen`/`setScreen`, fasi `phase` di `App`, `LiveMatch` e `TrialFlow`, linguette `tab`, finestre `…Modal` e overlay di `CareerApp`, componenti di scena 3D) e dai documenti di governo (`BACKLOG.md`, `ROADMAP.md`, `DECISIONI.md`, `RISCHI.md`, `ARCHITETTURA.md`, `STABILITA.json`). **La verifica navigando il gioco NON è stata fatta** (macchina occupata dai collaudi, nessun browser): per questo il criterio **Resa** ha un punteggio solo dove esiste una misura o una segnalazione del PO, altrove è «Non posso confermarlo». La versione 7.999.126 è la release in corso (guanti dei portieri, formazioni). I numeri di riga valgono per questa build.
 
@@ -47,11 +47,11 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 │   ├── 1.3 Impostazioni — Team 67% [media] · PO: __%
 │   ├── 1.4 Importa ed esporta salvataggio — Team 59% [media] · PO: __%
 │   └── 1.5 Revisione azioni e prova situazioni (solo sviluppo) — Team 57% [bassa] · PO: __% (peso 0, fuori dal conto)
-├── 2 Percorso iniziale (creazione, provini, Primavera, passaggio pro) — 69% (Team 69%) [media]
+├── 2 Percorso iniziale (creazione, provini, Primavera, passaggio pro) — 68% (Team 68%) [media]
 │   ├── 2.1 Creazione del giocatore — Team 69% [media] · PO: __%
 │   ├── 2.2 Filmato introduttivo — Team 65% [bassa] · PO: __%
 │   ├── 2.3 Provini (tre partite) — Team 65% [media] · PO: __%
-│   ├── 2.4 Offerte di fine provini — Team 81% [alta] · PO: __%
+│   ├── 2.4 Offerte di fine provini — Team 75% [alta] · PO: __%
 │   ├── 2.5 Stagioni Primavera (Under 18) — Team 64% [media] · PO: __%
 │   └── 2.6 Passaggio a professionista — Team 71% [alta] · PO: __%
 ├── 3 Home e ciclo settimanale — 59% (Team 59%) [media]
@@ -137,7 +137,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Ramo | Valore | Nodi | Pesi dei nodi (importanza) | Affidabilità (quota del peso) |
 |---|---:|---:|---|---|
 | 1 Avvio e accesso | 67% (Team 67%) | 5 | 1.1×3, 1.2×3, 1.3×2, 1.4×1, 1.5×0 | alta 0% · media 100% · bassa 0% |
-| 2 Percorso iniziale (creazione, provini, Primavera, passaggio pro) | 69% (Team 69%) | 6 | 2.1×3, 2.2×1, 2.3×2, 2.4×2, 2.5×3, 2.6×2 | alta 31% · media 62% · bassa 8% |
+| 2 Percorso iniziale (creazione, provini, Primavera, passaggio pro) | 68% (Team 68%) | 6 | 2.1×3, 2.2×1, 2.3×2, 2.4×2, 2.5×3, 2.6×2 | alta 31% · media 62% · bassa 8% |
 | 3 Home e ciclo settimanale | 59% (Team 59%) | 8 | 3.1×3, 3.2×3, 3.3×3, 3.4×2, 3.5×2, 3.6×2, 3.7×1, 3.8×1 | alta 18% · media 65% · bassa 18% |
 | 4 Stagione | 71% (Team 71%) | 5 | 4.1×3, 4.2×3, 4.3×2, 4.4×1, 4.5×1 | alta 80% · media 20% · bassa 0% |
 | 5 Partita | 61% (Team 61%) | 12 | 5.1×3, 5.2×2, 5.3×2, 5.4×2, 5.5×2, 5.6×3, 5.7×3, 5.8×1, 5.9×3, 5.10×2, 5.11×2, 5.12×2 | alta 63% · media 37% · bassa 0% |
@@ -169,7 +169,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo (nessuna navigazione eseguita) |
 | Solidità tecnica (10%) | 60 | ogni lettura in try/catch; rischio R-04 «partita in corso persa» (RISCHI.md) |
 | **Media pesata** | 66 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **66** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** un guardiano che ricarichi la pagina SENZA `cpmtest` (carriera, provini, partita in corso) e lo metta in una catena.
@@ -191,7 +191,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 70 | componente di 140 righe, nessuna logica di gioco |
 | **Media pesata** | 72 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **70** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano del menu (slot pieni/vuoti, nessun testo sovrapposto) in catena grafica.
@@ -213,7 +213,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 65 | strumenti di collaudo condizionati da `devToolsOn()`, ma il codice è nella build |
 | **Media pesata** | 67 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **67** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** togliere o nascondere dalla build store gli strumenti di collaudo; guardiano dei due ingressi.
@@ -235,7 +235,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | un salvataggio più nuovo viene comunque caricato con un avviso (19:809) |
 | **Media pesata** | 59 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **59** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano import→export→import con confronto byte per byte.
@@ -257,14 +257,14 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | dipende dagli hook `window.__CPM_*` |
 | **Media pesata** | 57 | peso coperto da prove: 65% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **57** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fuori dal conto (peso 0): resta nella mappa per completezza.
 
 **Voci del backlog collegate:** nessuna.
 
-### Ramo 2 — Percorso iniziale (creazione, provini, Primavera, passaggio pro) — 69% (Team 69%)
+### Ramo 2 — Percorso iniziale (creazione, provini, Primavera, passaggio pro) — 68% (Team 68%)
 
 #### 2.1 Creazione del giocatore — Team 69% [media] · PO: __%
 
@@ -281,7 +281,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 70 | componente compatto |
 | **Media pesata** | 69 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **69** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano «nuova carriera dall'inizio alla prima partita» (lacuna dichiarata in ARCHITETTURA.md).
@@ -303,7 +303,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 70 | isolato |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **65** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** uno scatto di controllo in catena grafica.
@@ -325,14 +325,14 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 65 | persistenza su chiave separata dallo slot |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **65** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano dei tre provini con ripresa a metà.
 
 **Voci del backlog collegate:** nessuna. Voce da aprire: Guardiano dei provini con ripresa a metà.
 
-#### 2.4 Offerte di fine provini — Team 81% [alta] · PO: __%
+#### 2.4 Offerte di fine provini — Team 75% [alta] · PO: __%
 
 - **Nel codice:** `OffersScreen` (`src/17-menu-creazione-pannelli.jsx:405`)
 - **Come ci si arriva:** fine del terzo provino (`onTrials`, 19:857)
@@ -347,12 +347,12 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo (correzione 7.999.114 non ricollaudata dal PO) |
 | Solidità tecnica (10%) | 70 | logica breve |
 | **Media pesata** | 81 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
-| **Team** | **81** | PO: __% · nota: |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
+| **Team** | **75** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo PO della 7.999.114 sul telefono.
 
-**Voci del backlog collegate:** PO-196 (chiusa).
+**Voci del backlog collegate:** PO-196 (chiusa). Voce da aprire: Consolidamento di «Offerte di fine provini»: collaudo PO della 7.999.114 sul telefono.
 
 #### 2.5 Stagioni Primavera (Under 18) — Team 64% [media] · PO: __%
 
@@ -369,7 +369,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | molte regole `proStatus==="u18"` sparse in 18 |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo Codex di una stagione Primavera intera con scheda (eventi, conferenze, classifica).
@@ -391,7 +391,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | migrazione al caricamento che crea campi (prima della 7.999.120) |
 | **Media pesata** | 71 | peso coperto da prove: 85% |
-| **Tetto** | 80 | max 80% (segnalazione PO aperta: PO-176) |
+| **Tetto** | 75 | max 80% (segnalazione PO aperta: PO-176); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **71** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** ricollaudo Codex di PO-176 sulla build corrente.
@@ -437,7 +437,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 40 | 65 occorrenze di `Math.random` in `src/18` (grep), DT-07 |
 | **Media pesata** | 58 | peso coperto da prove: 85% |
-| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183) |
+| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **50** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** chiudere PO-183 con collaudo; una sola funzione di avanzamento.
@@ -459,7 +459,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | testi e pesi in tabelle da 1.459 righe |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-154) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-154); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex (PO-153) e proposta PO-154; guardiano in catena.
@@ -481,7 +481,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | trigger probabilistici non seedati |
 | **Media pesata** | 61 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **61** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano della coda delle finestre in catena; misura Codex delle frequenze.
@@ -503,7 +503,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | logica inline nel componente |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano in catena e collaudo dei testi.
@@ -525,7 +525,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | gestori condivisi card⟷wizard (18:904) |
 | **Media pesata** | 69 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **69** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** rimettere `home-opening-test` in una catena.
@@ -547,7 +547,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 70 | componente piccolo |
 | **Media pesata** | 54 | peso coperto da prove: 70% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **54** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo Codex con scheda del primo avvio; uno scatto in catena grafica.
@@ -569,7 +569,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | codice morto di ~25 righe |
 | **Media pesata** | 26 | peso coperto da prove: 65% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **26** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** decisione PO: ripristinare o togliere.
@@ -593,7 +593,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | riconciliazione al caricamento (07:85) |
 | **Media pesata** | 75 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **75** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** un collaudo Codex di 30 carriere (fase 1) senza anomalie di classifica.
@@ -615,7 +615,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | calendario persistente generato una volta per stagione |
 | **Media pesata** | 74 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **74** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo PO della griglia sul telefono.
@@ -637,7 +637,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | stato coppe sparso fra `cup`, `euro`, `euroMondiale` |
 | **Media pesata** | 66 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **66** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex con controllo delle coppe arrivate in fondo.
@@ -659,7 +659,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 69 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **69** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** uno scatto della finestra in catena grafica.
@@ -681,7 +681,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | motori puri (18:5826) |
 | **Media pesata** | 66 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **66** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano del racconto e della scelta.
@@ -705,7 +705,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | stato in più ref (`showMatchPromptRef`) |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183) |
+| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **50** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** chiudere PO-183.
@@ -727,7 +727,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | sequenza a timeout (18:462-469) |
 | **Media pesata** | 67 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **67** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo PO di una gara di cartello.
@@ -749,7 +749,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 70 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **70** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano in catena.
@@ -859,7 +859,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | dentro `src/15` |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `rigori-58` in una catena.
@@ -881,7 +881,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | — |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **65** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `tabellino-schermo` o `tabellino-lati` in catena.
@@ -925,7 +925,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 68 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **68** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano in catena grafica.
@@ -971,7 +971,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | blocchi inline in 18 |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **65** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano dei dati del club (rosa, staff, bacheca).
@@ -993,7 +993,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 59 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **59** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo Codex con scheda dopo un trasferimento.
@@ -1015,7 +1015,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 61 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **61** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano della scelta.
@@ -1061,7 +1061,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 65 | — |
 | **Media pesata** | 62 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **62** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** uno scatto in catena grafica.
@@ -1083,7 +1083,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano dello scatto dei traguardi.
@@ -1105,7 +1105,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 49 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-098) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-098); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **49** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** proposta PO-098 dopo la fase 1 Codex.
@@ -1129,7 +1129,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | blocco di 500 righe inline |
 | **Media pesata** | 63 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **63** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiani dell'agente in una catena.
@@ -1151,7 +1151,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 70 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **70** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano in catena.
@@ -1173,7 +1173,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | probabilità non seedate (`Math.random()<offerProb`, 18:1182) |
 | **Media pesata** | 67 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **67** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `decisioni-50` in catena.
@@ -1195,7 +1195,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 60 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **60** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano della trattativa; collaudo Codex.
@@ -1217,7 +1217,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 58 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-157) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-157); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **58** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** proposta PO-157 dopo la fase 1 Codex.
@@ -1241,7 +1241,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | — |
 | **Media pesata** | 57 | peso coperto da prove: 85% |
-| **Tetto** | 80 | max 80% (segnalazione PO aperta: PO-177) |
+| **Tetto** | 75 | max 80% (segnalazione PO aperta: PO-177); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **57** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex e proposta PO-155.
@@ -1263,7 +1263,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 62 | peso coperto da prove: 85% |
-| **Tetto** | 80 | max 80% (segnalazione PO aperta: PO-177) |
+| **Tetto** | 75 | max 80% (segnalazione PO aperta: PO-177); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **62** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `ct-54` in catena; proposta PO-155.
@@ -1285,7 +1285,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | — |
 | **Media pesata** | 57 | peso coperto da prove: 85% |
-| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183) |
+| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **50** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** chiudere PO-183; fase 1 Codex.
@@ -1309,7 +1309,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | scena 3D in `src/16` (3.242 righe) |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano dell'intervista in catena.
@@ -1331,7 +1331,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 60 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **60** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano.
@@ -1353,7 +1353,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 61 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **61** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex con metriche sulle relazioni.
@@ -1421,7 +1421,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 57 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **57** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** decidere col PO se resta accanto alle cerimonie 3D.
@@ -1465,7 +1465,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 59 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **59** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** scatto in catena grafica.
@@ -1533,7 +1533,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | — |
 | **Media pesata** | 65 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **65** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `career-sim-test` (N stagioni) in catena.
@@ -1555,7 +1555,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 68 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **68** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `retire-announce-test` in catena.
@@ -1577,7 +1577,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | ricostruisce i dati dal salvataggio (7.258) |
 | **Media pesata** | 64 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **64** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo Codex con scheda di una carriera fino al ritiro.
@@ -1599,7 +1599,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 55 | peso coperto da prove: 70% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **55** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo Codex.
@@ -1645,7 +1645,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 71 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **71** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex senza anomalie.
@@ -1667,7 +1667,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 40 | R-02: `storage.save` cattura l'errore e restituisce `false` senza avviso (08:597) |
 | **Media pesata** | 59 | peso coperto da prove: 85% |
-| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183) |
+| **Tetto** | 50 | max 50% (difetto bloccante aperto: PO-183); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **50** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** L3 (PO-167, PO-168) e chiusura PO-183/PO-176.
@@ -1689,7 +1689,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 50 | — |
 | **Media pesata** | 66 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **66** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** fase 1 Codex con 30 carriere.
@@ -1711,7 +1711,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 63 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **63** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** guardiano del contratto scaduto in catena.
@@ -1733,7 +1733,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 56 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **56** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** proposta PO-156 dopo la fase 1.
@@ -1755,7 +1755,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 60 | — |
 | **Media pesata** | 73 | peso coperto da prove: 85% |
-| **Tetto** | — | nessuno |
+| **Tetto** | 75 | max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **73** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `audit-copyright` in CI prima dello store.
@@ -1777,7 +1777,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | — |
 | **Media pesata** | 56 | peso coperto da prove: 70% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **56** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** collaudo sul telefono; guardiano dei volumi.
@@ -1799,7 +1799,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 40 | file unico 6,5 MB, Babel nel browser (ARCHITETTURA.md) |
 | **Media pesata** | 42 | peso coperto da prove: 50% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-023) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-023); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **42** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** PO-023: misura sul telefono a fine lotto.
@@ -1821,7 +1821,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 40 | errori sul telefono invisibili (R-06) |
 | **Media pesata** | 35 | peso coperto da prove: 65% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-168) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 80% (segnalazione PO aperta: PO-168); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **35** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** L3 Parte C (PO-168).
@@ -1843,7 +1843,7 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 | Resa (15%) | — | Non posso confermarlo |
 | Solidità tecnica (10%) | 55 | R-08 licenze degli asset non verificate |
 | **Media pesata** | 62 | peso coperto da prove: 85% |
-| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`) |
+| **Tetto** | 70 | max 70% (nessun guardiano in una catena di `ci-runner.mjs`); max 75% (Resa non misurata sullo schermo (decisione PO 03/10)) |
 | **Team** | **62** | PO: __% · nota: |
 
 **Cosa manca per arrivare al 90%:** `validate-dist` e `audit-copyright` in CI; inventario licenze.
@@ -1915,13 +1915,13 @@ Korward Elite 7.999.126 — 62% (Team 62%)
 
 | # | Nodo | Team | Punti per criterio (F·S·T·C·R·So) e prova del Test |
 |---:|---|---:|---|
-| 1 | 2.4 Offerte di fine provini | 81% | F 85 · S 85 · T 75 · C 80 · R — · So 70. Test: `calendario-offerte-195` in catena grafica, rosso `__CPM_NO_LEGA196`, verde su 7.999.126 (STABILITA.json) |
-| 2 | 4.1 Classifica | 75% | F 85 · S 60 · T 85 · C 80 · R — · So 60. Test: `classifica-102` (rosso `__CPM_NO_CLASSIFICA102`) in catena carriera; `career-invariants` (standings) in `career-critical`, verdi su 7.999.122 |
-| 3 | 4.2 Calendario | 74% | F 85 · S 60 · T 80 · C 80 · R — · So 60. Test: `calendario-offerte-195` (grafica), `avversario-106` (carriera) con rossi, verdi; `calendario-nazionale` nella catena guardiani |
-| 4 | 13.7 Generazione club, rose e nomi | 73% | F 80 · S 80 · T 60 · C 75 · R — · So 60. Test: `nomi-51` (rossi) nella catena guardiani; `audit-copyright` non in CI |
+| 1 | 4.1 Classifica | 75% | F 85 · S 60 · T 85 · C 80 · R — · So 60 — tetto 75%. Test: `classifica-102` (rosso `__CPM_NO_CLASSIFICA102`) in catena carriera; `career-invariants` (standings) in `career-critical`, verdi su 7.999.122 |
+| 2 | 2.4 Offerte di fine provini | 75% | F 85 · S 85 · T 75 · C 80 · R — · So 70 — tetto 75%. Test: `calendario-offerte-195` in catena grafica, rosso `__CPM_NO_LEGA196`, verde su 7.999.126 (STABILITA.json) |
+| 3 | 4.2 Calendario | 74% | F 85 · S 60 · T 80 · C 80 · R — · So 60 — tetto 75%. Test: `calendario-offerte-195` (grafica), `avversario-106` (carriera) con rossi, verdi; `calendario-nazionale` nella catena guardiani |
+| 4 | 13.7 Generazione club, rose e nomi | 73% | F 80 · S 80 · T 60 · C 75 · R — · So 60 — tetto 75%. Test: `nomi-51` (rossi) nella catena guardiani; `audit-copyright` non in CI |
 | 5 | 13.13 Kit grafico e tema | 72% | F 80 · S 70 · T 75 · C 70 · R 65 · So 60 — tetto 80%. Test: `design-system` in completa e grafica (verde 7.999.126); `griglia-mobile` (censimento) |
-| 6 | 13.2 Simulazione delle altre partite e classifiche | 71% | F 80 · S 55 · T 85 · C 75 · R — · So 55. Test: `career-invariants`, `classifica-102` in catena; `sim-motore-test` (rosso `__CPM_NO_SIMV2`) |
-| 7 | 2.6 Passaggio a professionista | 71% | F 80 · S 65 · T 70 · C 75 · R — · So 60 — tetto 80%. Test: `pro-rivale-176` in catena carriera, rosso `__CPM_NO_PRO176`, verde su 7.999.122 |
+| 6 | 13.2 Simulazione delle altre partite e classifiche | 71% | F 80 · S 55 · T 85 · C 75 · R — · So 55 — tetto 75%. Test: `career-invariants`, `classifica-102` in catena; `sim-motore-test` (rosso `__CPM_NO_SIMV2`) |
+| 7 | 2.6 Passaggio a professionista | 71% | F 80 · S 65 · T 70 · C 75 · R — · So 60 — tetto 75%. Test: `pro-rivale-176` in catena carriera, rosso `__CPM_NO_PRO176`, verde su 7.999.122 |
 | 8 | 1.2 Menu principale e slot di salvataggio | 70% | F 85 · S 85 · T 30 · C 75 · R — · So 70 — tetto 70%. Test: `griglia-mobile` (catena grafica) misura la schermata `home` ma è un censimento senza soglia (griglia-mobile.mjs:164); `slot-card-layout-test.mjs` fuori catena |
 | 9 | 5.3 Giorno partita e rapporto dell'osservatore | 70% | F 80 · S 80 · T 40 · C 75 · R — · So 60 — tetto 70%. Test: `griglia-mobile` misura il «Prepartita» (censimento) |
 | 10 | 5.4 Formazioni | 70% | F 80 · S 65 · T 75 · C 75 · R 60 · So 60 — tetto 80%. Test: `formazioni-204` in catena grafica, rosso `__CPM_NO_FORMAZ204`, verde su 7.999.126 |
@@ -1964,73 +1964,74 @@ Ogni nodo sotto l'80% e le voci di `BACKLOG.md` che lo riguardano. «(chiusa)» 
 | 2.1 Creazione del giocatore | 69% | voce da aprire n. 5 |
 | 2.2 Filmato introduttivo | 65% | voce da aprire n. 6 |
 | 2.3 Provini (tre partite) | 65% | voce da aprire n. 7 |
+| 2.4 Offerte di fine provini | 75% | PO-196 (chiusa) · voce da aprire n. 8 |
 | 2.5 Stagioni Primavera (Under 18) | 64% | PO-192 (chiusa), PO-194 (chiusa), PO-153 |
 | 2.6 Passaggio a professionista | 71% | PO-176 |
 | 3.1 Home (cruscotto) | 64% | PO-066 |
 | 3.2 Pulsante principale e avanzamento della settimana | 50% | PO-183, PO-176, PO-153 |
 | 3.3 Vivi la settimana ed eventi settimanali | 64% | PO-154, PO-153 |
 | 3.4 Momenti di carriera | 61% | PO-154 |
-| 3.5 Il mister: verifica mensile e dialoghi | 64% | voce da aprire n. 8 |
-| 3.6 Interazioni d'apertura stagione | 69% | voce da aprire n. 9 |
-| 3.7 Tutorial | 54% | voce da aprire n. 10 |
-| 3.8 Allenamento (vista orfana) | 26% | PO-125 (chiusa) · voce da aprire n. 11 |
+| 3.5 Il mister: verifica mensile e dialoghi | 64% | voce da aprire n. 9 |
+| 3.6 Interazioni d'apertura stagione | 69% | voce da aprire n. 10 |
+| 3.7 Tutorial | 54% | voce da aprire n. 11 |
+| 3.8 Allenamento (vista orfana) | 26% | PO-125 (chiusa) · voce da aprire n. 12 |
 | 4.1 Classifica | 75% | PO-153 |
-| 4.2 Calendario | 74% | voce da aprire n. 12 |
+| 4.2 Calendario | 74% | voce da aprire n. 13 |
 | 4.3 Coppe (nazionale, europee, tornei) | 66% | PO-153 |
-| 4.4 Sorteggi dei gironi europei | 69% | voce da aprire n. 13 |
-| 4.5 Ritiro pre-campionato | 66% | voce da aprire n. 14 |
+| 4.4 Sorteggi dei gironi europei | 69% | voce da aprire n. 14 |
+| 4.5 Ritiro pre-campionato | 66% | voce da aprire n. 15 |
 | 5.1 Scelta Gioca / Simula | 50% | PO-183 |
-| 5.2 Conferenza pre-partita e discorso del mister | 67% | PO-192 (chiusa), PO-194 (chiusa) · voce da aprire n. 15 |
-| 5.3 Giorno partita e rapporto dell'osservatore | 70% | voce da aprire n. 16 |
+| 5.2 Conferenza pre-partita e discorso del mister | 67% | PO-192 (chiusa), PO-194 (chiusa) · voce da aprire n. 16 |
+| 5.3 Giorno partita e rapporto dell'osservatore | 70% | voce da aprire n. 17 |
 | 5.4 Formazioni | 70% | PO-204 |
 | 5.5 Ingresso in campo (3D) | 58% | PO-206, PO-188 (chiusa), PO-197 (chiusa) |
 | 5.6 Partita 2D | 60% | PO-207, PO-021, PO-031 |
 | 5.7 Highlight 3D dell'eroe | 50% | PO-033, PO-048, PO-050, PO-079, PO-094, PO-100, PO-104, PO-120, PO-127, PO-143, PO-172, PO-185, PO-024, PO-030, PO-064, PO-068, PO-123, PO-133 |
-| 5.8 Rigori di fine gara | 64% | voce da aprire n. 17 |
-| 5.9 Fine gara: riepilogo, pagelle e tabellino | 65% | voce da aprire n. 18 |
+| 5.8 Rigori di fine gara | 64% | voce da aprire n. 18 |
+| 5.9 Fine gara: riepilogo, pagelle e tabellino | 65% | voce da aprire n. 19 |
 | 5.10 Festa di fine partita | 52% | PO-203, PO-048 |
-| 5.11 Rassegna stampa post-partita | 68% | voce da aprire n. 19 |
+| 5.11 Rassegna stampa post-partita | 68% | voce da aprire n. 20 |
 | 5.12 Simula: la partita dell'eroe senza giocarla | 65% | PO-190, PO-202, PO-021 |
-| 6.1 Scheda Club | 65% | voce da aprire n. 20 |
-| 6.2 Presentazione al nuovo club | 59% | voce da aprire n. 21 |
-| 6.3 Numero di maglia | 61% | voce da aprire n. 22 |
+| 6.1 Scheda Club | 65% | voce da aprire n. 21 |
+| 6.2 Presentazione al nuovo club | 59% | voce da aprire n. 22 |
+| 6.3 Numero di maglia | 61% | voce da aprire n. 23 |
 | 7.1 Profilo | 59% | PO-066 |
-| 7.2 Diario sfogliabile | 62% | voce da aprire n. 23 |
-| 7.3 Traguardi (milestone e achievement) | 64% | voce da aprire n. 24 |
+| 7.2 Diario sfogliabile | 62% | voce da aprire n. 24 |
+| 7.3 Traguardi (milestone e achievement) | 64% | voce da aprire n. 25 |
 | 7.4 Stile di gioco (archetipi) | 49% | PO-098, PO-153 |
 | 8.1 Agente (procuratore, mercato, contratto, cessione, prestito) | 63% | PO-153 |
-| 8.2 Primo incontro col procuratore | 70% | voce da aprire n. 25 |
-| 8.3 Offerta di trasferimento e rifiuto | 67% | voce da aprire n. 26 |
-| 8.4 Trattativa del contratto | 60% | voce da aprire n. 27 |
+| 8.2 Primo incontro col procuratore | 70% | voce da aprire n. 26 |
+| 8.3 Offerta di trasferimento e rifiuto | 67% | voce da aprire n. 27 |
+| 8.4 Trattativa del contratto | 60% | voce da aprire n. 28 |
 | 8.5 Ufficio (patrimonio, staff privato, investimenti) | 58% | PO-157, PO-014 (chiusa) |
 | 9.1 Scheda Nazionale | 57% | PO-155, PO-177, PO-066 |
 | 9.2 Convocazione e partita in Nazionale | 62% | PO-155, PO-177 |
 | 9.3 Tornei per nazionali (Coppa delle Nazioni, Europeo, Mondiale) | 50% | PO-183, PO-155 |
-| 10.1 Intervista post-partita (3D) | 64% | voce da aprire n. 28 |
-| 10.2 Esito dell'intervista | 60% | voce da aprire n. 29 |
+| 10.1 Intervista post-partita (3D) | 64% | voce da aprire n. 29 |
+| 10.2 Esito dell'intervista | 60% | voce da aprire n. 30 |
 | 10.3 Relazioni: spogliatoio, rivale, stampa | 61% | PO-154 |
 | 11.1 Serata di presentazione della squadra | 68% | PO-137, PO-171 |
 | 11.2 Premiazione di squadra in campo | 46% | PO-002, PO-137, PO-150, PO-071 |
-| 11.3 Festa del titolo (finestra) | 57% | voce da aprire n. 30 |
-| 11.4 Galà dei premi | 61% | PO-137, PO-199 (chiusa) · voce da aprire n. 31 |
-| 11.5 Podio della stagione | 59% | voce da aprire n. 32 |
+| 11.3 Festa del titolo (finestra) | 57% | voce da aprire n. 31 |
+| 11.4 Galà dei premi | 61% | PO-137, PO-199 (chiusa) · voce da aprire n. 32 |
+| 11.5 Podio della stagione | 59% | voce da aprire n. 33 |
 | 11.6 Parata del pullman | 64% | PO-137 |
 | 11.7 Stadi 3D | 61% | PO-071 |
 | 12.1 Fine stagione | 65% | PO-153 |
-| 12.2 Annuncio del ritiro e stagione d'addio | 68% | voce da aprire n. 33 |
-| 12.3 Fine carriera | 64% | voce da aprire n. 34 |
-| 12.4 Nuova partita+ (eredità) | 55% | voce da aprire n. 35 |
+| 12.2 Annuncio del ritiro e stagione d'addio | 68% | voce da aprire n. 34 |
+| 12.3 Fine carriera | 64% | voce da aprire n. 35 |
+| 12.4 Nuova partita+ (eredità) | 55% | voce da aprire n. 36 |
 | 13.1 Motore della partita (brain) | 58% | PO-021, PO-022, PO-030, PO-031, PO-064, PO-190, PO-202 |
 | 13.2 Simulazione delle altre partite e classifiche | 71% | PO-153 |
 | 13.3 Salvataggi e migrazioni | 50% | PO-183, PO-176, PO-167 |
 | 13.4 Calendario e competizioni (generazione) | 66% | PO-153, PO-183 |
 | 13.5 Mercato e contratti | 63% | PO-153, PO-157 |
 | 13.6 Crescita del giocatore e difficoltà | 56% | PO-156, PO-177 |
-| 13.7 Generazione club, rose e nomi | 73% | voce da aprire n. 36 |
-| 13.8 Audio | 56% | voce da aprire n. 37 |
+| 13.7 Generazione club, rose e nomi | 73% | voce da aprire n. 37 |
+| 13.8 Audio | 56% | voce da aprire n. 38 |
 | 13.9 Prestazioni | 42% | PO-023 |
 | 13.10 Gestione degli errori | 35% | PO-168 |
-| 13.11 Build web e store | 62% | voce da aprire n. 38 |
+| 13.11 Build web e store | 62% | voce da aprire n. 39 |
 | 13.12 Corpi, clip e gesti 3D | 54% | PO-024, PO-061, PO-068, PO-070, PO-075, PO-171, PO-201 |
 | 13.13 Kit grafico e tema | 72% | PO-066, PO-188 (chiusa) |
 
@@ -2045,41 +2046,42 @@ Non scritte in `BACKLOG.md`: le apre il PO o le autorizza.
 5. **Guardiano nuova carriera: creazione → provini → offerte → prima partita** — nodo 2.1.
 6. **Consolidamento di «Filmato introduttivo»: uno scatto di controllo in catena grafica** — nodo 2.2.
 7. **Guardiano dei provini con ripresa a metà** — nodo 2.3.
-8. **Consolidamento di «Il mister: verifica mensile e dialoghi»: guardiano in catena e collaudo dei testi** — nodo 3.5.
-9. **Consolidamento di «Interazioni d'apertura stagione»: rimettere `home-opening-test` in una catena** — nodo 3.6.
-10. **Tutorial: nessuna verifica (né guardiano né collaudo)** — nodo 3.7.
-11. **Vista Allenamento orfana: ripristinare o eliminare** — nodo 3.8.
-12. **Consolidamento di «Calendario»: collaudo PO della griglia sul telefono** — nodo 4.2.
-13. **Consolidamento di «Sorteggi dei gironi europei»: uno scatto della finestra in catena grafica** — nodo 4.4.
-14. **Consolidamento di «Ritiro pre-campionato»: guardiano del racconto e della scelta** — nodo 4.5.
-15. **Consolidamento di «Conferenza pre-partita e discorso del mister»: collaudo PO di una gara di cartello** — nodo 5.2.
-16. **Consolidamento di «Giorno partita e rapporto dell'osservatore»: guardiano in catena** — nodo 5.3.
-17. **Consolidamento di «Rigori di fine gara»: `rigori-58` in una catena** — nodo 5.8.
-18. **Consolidamento di «Fine gara: riepilogo, pagelle e tabellino»: `tabellino-schermo` o `tabellino-lati` in catena** — nodo 5.9.
-19. **Consolidamento di «Rassegna stampa post-partita»: guardiano in catena grafica** — nodo 5.11.
-20. **Consolidamento di «Scheda Club»: guardiano dei dati del club (rosa, staff, bacheca)** — nodo 6.1.
-21. **Presentazione al nuovo club: nessuna verifica** — nodo 6.2.
-22. **Consolidamento di «Numero di maglia»: guardiano della scelta** — nodo 6.3.
-23. **Consolidamento di «Diario sfogliabile»: uno scatto in catena grafica** — nodo 7.2.
-24. **Consolidamento di «Traguardi (milestone e achievement)»: guardiano dello scatto dei traguardi** — nodo 7.3.
-25. **Consolidamento di «Primo incontro col procuratore»: guardiano in catena** — nodo 8.2.
-26. **Consolidamento di «Offerta di trasferimento e rifiuto»: `decisioni-50` in catena** — nodo 8.3.
-27. **Trattativa del contratto: nessuna verifica** — nodo 8.4.
-28. **Consolidamento di «Intervista post-partita (3D)»: guardiano dell'intervista in catena** — nodo 10.1.
-29. **Consolidamento di «Esito dell'intervista»: guardiano** — nodo 10.2.
-30. **Consolidamento di «Festa del titolo (finestra)»: decidere col PO se resta accanto alle cerimonie 3D** — nodo 11.3.
-31. **Guardiano `gala-3d` obsoleto (verifica la busta diretta, superata il 03/10)** — nodo 11.4.
-32. **Consolidamento di «Podio della stagione»: scatto in catena grafica** — nodo 11.5.
-33. **Consolidamento di «Annuncio del ritiro e stagione d'addio»: `retire-announce-test` in catena** — nodo 12.2.
-34. **Fine carriera: nessun guardiano del flusso fino al ritiro** — nodo 12.3.
-35. **Consolidamento di «Nuova partita+ (eredità)»: collaudo Codex** — nodo 12.4.
-36. **Consolidamento di «Generazione club, rose e nomi»: `audit-copyright` in CI prima dello store** — nodo 13.7.
-37. **Audio: nessun guardiano né collaudo registrato** — nodo 13.8.
-38. **`validate-dist` e `audit-copyright` nella CI** — nodo 13.11.
-39. **Catena `guardiani` non rieseguita dalla 7.999.98 (01/10): 28 release senza giro (STABILITA.json)** — trasversale.
-40. **Giro grafico 7.999.126: `rimbalzo-189`, `premiazione-palco-191`, `coppa-mani-191` rossi per campioni insufficienti (4 disegni su 8 richiesti, 11 campioni su 20, 2 su 10: `const ok` dei tre guardiani) — da ripetere su macchina scarica e rendere i guardiani robusti al carico; `walkout-fermi-197` rosso invece sulla misura (verde: somma 10 contro un massimo di 5,3 = un terzo del rosso 16), coerente con PO-206** — trasversale.
-41. **Componenti definiti e mai montati: `AIDecisionOverlay` (src/13:425), `Player3DViewer` (src/01:732), `AISettingsCard` (src/17:589)** — trasversale.
-42. **BACKLOG.md: PO-201 e PO-204 risultano «DA FARE» ma la 7.999.126 li consegna (ROADMAP.md)** — trasversale.
+8. **Consolidamento di «Offerte di fine provini»: collaudo PO della 7.999.114 sul telefono** — nodo 2.4.
+9. **Consolidamento di «Il mister: verifica mensile e dialoghi»: guardiano in catena e collaudo dei testi** — nodo 3.5.
+10. **Consolidamento di «Interazioni d'apertura stagione»: rimettere `home-opening-test` in una catena** — nodo 3.6.
+11. **Tutorial: nessuna verifica (né guardiano né collaudo)** — nodo 3.7.
+12. **Vista Allenamento orfana: ripristinare o eliminare** — nodo 3.8.
+13. **Consolidamento di «Calendario»: collaudo PO della griglia sul telefono** — nodo 4.2.
+14. **Consolidamento di «Sorteggi dei gironi europei»: uno scatto della finestra in catena grafica** — nodo 4.4.
+15. **Consolidamento di «Ritiro pre-campionato»: guardiano del racconto e della scelta** — nodo 4.5.
+16. **Consolidamento di «Conferenza pre-partita e discorso del mister»: collaudo PO di una gara di cartello** — nodo 5.2.
+17. **Consolidamento di «Giorno partita e rapporto dell'osservatore»: guardiano in catena** — nodo 5.3.
+18. **Consolidamento di «Rigori di fine gara»: `rigori-58` in una catena** — nodo 5.8.
+19. **Consolidamento di «Fine gara: riepilogo, pagelle e tabellino»: `tabellino-schermo` o `tabellino-lati` in catena** — nodo 5.9.
+20. **Consolidamento di «Rassegna stampa post-partita»: guardiano in catena grafica** — nodo 5.11.
+21. **Consolidamento di «Scheda Club»: guardiano dei dati del club (rosa, staff, bacheca)** — nodo 6.1.
+22. **Presentazione al nuovo club: nessuna verifica** — nodo 6.2.
+23. **Consolidamento di «Numero di maglia»: guardiano della scelta** — nodo 6.3.
+24. **Consolidamento di «Diario sfogliabile»: uno scatto in catena grafica** — nodo 7.2.
+25. **Consolidamento di «Traguardi (milestone e achievement)»: guardiano dello scatto dei traguardi** — nodo 7.3.
+26. **Consolidamento di «Primo incontro col procuratore»: guardiano in catena** — nodo 8.2.
+27. **Consolidamento di «Offerta di trasferimento e rifiuto»: `decisioni-50` in catena** — nodo 8.3.
+28. **Trattativa del contratto: nessuna verifica** — nodo 8.4.
+29. **Consolidamento di «Intervista post-partita (3D)»: guardiano dell'intervista in catena** — nodo 10.1.
+30. **Consolidamento di «Esito dell'intervista»: guardiano** — nodo 10.2.
+31. **Consolidamento di «Festa del titolo (finestra)»: decidere col PO se resta accanto alle cerimonie 3D** — nodo 11.3.
+32. **Guardiano `gala-3d` obsoleto (verifica la busta diretta, superata il 03/10)** — nodo 11.4.
+33. **Consolidamento di «Podio della stagione»: scatto in catena grafica** — nodo 11.5.
+34. **Consolidamento di «Annuncio del ritiro e stagione d'addio»: `retire-announce-test` in catena** — nodo 12.2.
+35. **Fine carriera: nessun guardiano del flusso fino al ritiro** — nodo 12.3.
+36. **Consolidamento di «Nuova partita+ (eredità)»: collaudo Codex** — nodo 12.4.
+37. **Consolidamento di «Generazione club, rose e nomi»: `audit-copyright` in CI prima dello store** — nodo 13.7.
+38. **Audio: nessun guardiano né collaudo registrato** — nodo 13.8.
+39. **`validate-dist` e `audit-copyright` nella CI** — nodo 13.11.
+40. **Catena `guardiani` non rieseguita dalla 7.999.98 (01/10): 28 release senza giro (STABILITA.json)** — trasversale.
+41. **Giro grafico 7.999.126: `rimbalzo-189`, `premiazione-palco-191`, `coppa-mani-191` rossi per campioni insufficienti (4 disegni su 8 richiesti, 11 campioni su 20, 2 su 10: `const ok` dei tre guardiani) — da ripetere su macchina scarica e rendere i guardiani robusti al carico; `walkout-fermi-197` rosso invece sulla misura (verde: somma 10 contro un massimo di 5,3 = un terzo del rosso 16), coerente con PO-206** — trasversale.
+42. **Componenti definiti e mai montati: `AIDecisionOverlay` (src/13:425), `Player3DViewer` (src/01:732), `AISettingsCard` (src/17:589)** — trasversale.
+43. **BACKLOG.md: PO-201 e PO-204 risultano «DA FARE» ma la 7.999.126 li consegna (ROADMAP.md)** — trasversale.
 
 ## Autocritica
 
