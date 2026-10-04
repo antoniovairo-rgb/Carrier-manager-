@@ -22,3 +22,16 @@ sistema delle scene dell'eroe nel suo insieme (pausa, piazzati dell'eroe, occasi
 e tempo alla sua squadra. Le riprese dopo le scene contano poco (tutte all'avversario: 9,0; tutte all'eroe: 6,7).
 
 Non verificato: il valore «giusto» di tiri subiti da una squadra di vertice (nessuna fonte consultata in questa misura).
+
+## Leve provate per «compensare gli avversari» (decisione PO 04/10), con la stessa riproduzione (13 partite)
+
+| Leva (solo partita vissuta) | Tiri avversari (base 5,2) |
+|---|---|
+| Propensione al tiro avversaria ×1,4 / ×1,7 / ×2,0 / ×2,4 | 5,2 / 5,0 / 5,5 / 5,5 — nessun effetto: non arrivano in zona |
+| Atteggiamento offensivo avversario +0,3 / +0,6 / +1 | 5,2 / 4,6 / 4,6 — nessun effetto |
+| Ripresa all'avversario dopo le scene a x 50 / 40 / 30 | 6,9 / 5,9 / 6,1 — al massimo +1,6 |
+| Forza avversaria +5 / +10 / +15 | 7,3 / 6,7 / 6,2 — non crescente |
+| Recupero di 4 minuti | 5,9 |
+
+Struttura dei tick nella vissuta (una partita): 22 per minuto, ma **0 nei minuti delle scene** (6 minuti) e **fine all'89'** senza recupero:
+84 minuti di gioco del motore contro 94 della simulata.
