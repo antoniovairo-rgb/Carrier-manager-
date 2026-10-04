@@ -9504,31 +9504,7 @@ const getThisWeekMatchday=()=>{
         );
       })()}
 
-      {/* TRAINING */}
-      {tab==="training"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
-          <Card>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
-              {(player.sessionLog||[]).some(s=>s&&(s.gainA||s.gainB))&&<div style={{display:"flex",alignItems:"center",gap:8}}>{/* [7.999.49 parte A] legenda solo se c'e' almeno un +1 */}
-                <span className="cpm-num" style={{fontSize:FS.caption,color:TH.growth,fontWeight:FW.bold}}>+1</span><span style={{fontSize:FS.caption,color:TH.faint}}>= guadagnato questa settimana</span>
-              </div>}
-            </div>
-            {(()=>{
-              const _wSlog=player.sessionLog||[];
-              const _wGained=new Set(_wSlog.flatMap(s=>[s.gainA?s.statA:null,s.gainB?s.statB:null].filter(Boolean)));
-              return Object.entries(player.stats).map(([k,v])=>(
-                <div key={k} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-                  <div style={{flex:1}}><StatBar label={k} value={v} tone="attribute" height={6}/></div>
-                  {_wGained.has(k)&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.black,color:TH.growth,background:TH.winBg,padding:"1px 6px",borderRadius:RAD.pill,flexShrink:0}}>+1</span>}
-                </div>
-              ));
-            })()}
-          </Card>
-          {/* Sprint 140 — TrainPanel component: auto-runs on mount, no player action needed */}
-          <TrainPanel player={player} setPlayer={setPlayer} notify={notify}/>
-        </div>
-      )}
+      {/* [7.999.127] vista «Allenamento» eliminata (decisione PO 03/10, questionario): nessun bottone la apriva, la crescita resta automatica a fine settimana. */}
 
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
