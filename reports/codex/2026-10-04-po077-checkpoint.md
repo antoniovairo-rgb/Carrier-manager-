@@ -50,3 +50,7 @@ $env:CPM_GPU_MODE='d3d11'; $env:CPM_KIND='header'; $env:CPM_GI='86'; $env:CPM_BA
 ```
 
 La sonda annota `gpuMode` per i nuovi tentativi; nessuna conclusione su FPS o fedeltà visiva deriva da questi due avvii. La macchina torna sopra 4 GiB dopo la chiusura di Chromium, ma questo non basta a mantenere 3 GiB **durante** il caricamento.
+
+### Tentativo seriale successivo
+
+Il 04/10 è stato eseguito un solo caso per processo, gi86 azione 0 success r0, con Chrome D3D11. Il comando esatto dalla radice in PowerShell è `$env:CPM_KIND='header'; $env:CPM_GI='86'; $env:CPM_ACTIONS='0'; $env:CPM_OUTCOME='success'; $env:CPM_BATCH='1'; $env:CPM_GPU_MODE='d3d11'; node tests/codex/collaudo-testa-conduzione.mjs`. La memoria libera prima del processo era 4,443 GiB (`node -e "const o=require('os');console.log((o.freemem()/1024**3).toFixed(3))"`). Il monitor ha chiuso la pagina durante `openMatch` quando la memoria è scesa sotto 3 GiB: `valid:false`, `lowMemory:true`, zero foto e zero fotogrammi del gesto. Il tentativo è conservato nel grezzo ma **non** aggiunge un caso collaudato. L'esecuzione era già seriale; il ritardo tra casi non evita il picco di memoria del caricamento di questo singolo caso.
