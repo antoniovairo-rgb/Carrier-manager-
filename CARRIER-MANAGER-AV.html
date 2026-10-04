@@ -42612,111 +42612,7 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
     </div>
   );
 }
-/* Sprint 140 — TrainPanel: auto-executes coach plan on mount, shows only feedback */
-const TrainPanel=({player,setPlayer,notify})=>{
-  const _TT={
-    fisico:{id:"fisico",e:"💪",l:"Fisico",a:"fisico",b:"velocità",col:"#16a34a"},
-    tecnico:{id:"tecnico",e:"⚽",l:"Tecnica",a:"tecnica",b:"tiro",col:"#2563eb"},
-    tattico:{id:"tattico",e:"🎯",l:"Tattica",a:"passaggio",b:"posizionamento",col:"#d97706"},
-    mentale:{id:"mentale",e:"🧠",l:"Mentalità",a:"mentalità",b:"dribbling",col:"#7c3aed"},
-  };
-  const fat=player.fatigue||0;
-  const allDone=(player.sessionsThisWeek||0)>=3;
-  const slog=player.sessionLog||[];
-  const streak=player.trainingStreak||0;
-  const week=player.week||1;
-  const _s2t=(k)=>({"velocità":"fisico","fisico":"fisico","tecnica":"tecnico","tiro":"tecnico","passaggio":"tattico","posizionamento":"tattico","mentalità":"mentale","dribbling":"mentale"})[k]||"fisico";
-  const _sorted=Object.entries(player.stats||{}).sort((a,b)=>a[1]-b[1]);
-  const _t0=_s2t(_sorted[0]?.[0]||"fisico");
-  const _t1_raw=_s2t(_sorted[1]?.[0]||"tecnica");
-  const _t1=_t1_raw!==_t0?_t1_raw:_s2t(_sorted[2]?.[0]||"mentale");
-  /* [7.160.0 super-test · ECO-F1] il fix fatica 7.152.0 era stato applicato SOLO al chokepoint weeklyGrowthFields:
-     chi apriva il tab Allenamento eseguiva ANCORA il piano vecchio (soglie 85/65, 3 sessioni piene a fatica ≤65 =
-     +30) → il bug «quasi sempre affaticato» rientrava dalla porta del TrainPanel e la crescita era path-dependent
-     (3 roll vs 2). Ora IDENTICO al chokepoint: soglie 72/50/28, recupero graduale "rec" (−18 fatica · +6 morale). */
-  const veryTired=fat>72;const highFat=fat>50;const medFat=fat>28;
-  const _plan=veryTired?["rec","rec","rec"]:highFat?[_t0,"rec","rec"]:medFat?[_t0,_t1,"rec"]:[_t0,_t1,_t0];
-  const _recent=(player.matchHistory||[]).slice(-3);
-  const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
-  // Sprint 2 (9.3): il vice-mister (assistantCoachRel) affina il lavoro → modula l'efficacia del training (±~12%)
-  const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
-  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*offerGrowthMult(player)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(player.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(player,"perkTrainer")]))/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
-  const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
-  const _t0name=(_TT[_t0]?.l||_t0).toLowerCase();const _t1name=(_TT[_t1]?.l||_t1).toLowerCase();/* [7.999.49 parte A] minuscole a meta' frase */
-  /* [7.999.49 parte A] efficacia mostrata RISPETTO ALLA BASE: senza la costante TRAIN_BASE_EFF, l'eta' e l'archetipo, che il
-     giocatore non puo' cambiare (il «↓ 67%» nasceva quasi tutto da li'). Solo testo: _mult resta quello che fa crescere. */
-  const _mEff=_mult/((TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player))||1);
-  const _mEffWhy=_avgRating>=7.5?" · voti alti":_avgRating<5.5?" · voti bassi":(player.form||60)>=75?" · grazie alla forma":(player.form||60)<=35?" · forma bassa":"";
-  const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana lavoriamo su ${_t0name} e ${_t1name}. Segui il piano.`;
-  const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
-  // [5.86.0 · DIRETTIVA PO] TRAINING AUTOMATICO by design: l'eroe è un CALCIATORE, non l'allenatore —
-  //   il piano settimanale lo decidono mister e preparatori (le 2 stat più deboli; recupero automatico a
-  //   fatica alta) e si esegue da solo all'apertura del tab. La scelta manuale del focus (5.82.0 BIL-4)
-  //   è stata RIMOSSA su feedback del proprietario: frizione noiosa, non una decisione interessante.
-  //   Restano: curve d'età (BIL-1), perk personal trainer, moltiplicatori forma/voti/fiducia, auto-training
-  //   all'avanzamento se il tab non viene aperto.
-  const _planEff=_plan;
-  React.useEffect(()=>{
-    if(allDone)return;
-    if(player.injured){notify("🏥 Sei in riabilitazione: niente allenamento questa settimana.",TH.warning);return;}/* [7.8.28 QA] aprire il tab Allenamento da INFORTUNATO eseguiva il piano completo (+fatica 30 → alzava il rischio ricaduta del roll 18380) — l'auto-training di doAdvanceWeek era già correttamente irraggiungibile da infortunati */
-    let ns={...player.stats};let fatD=0;let morD=0;let formD=0;
-    const newLog=[...(player.sessionLog||[])];const gained={};
-    _planEff.forEach(tid=>{
-      const isRec=tid==="rec"||tid==="rec_attivo"||tid==="rec_completo";
-      if(isRec){if(tid==="rec"){fatD-=18;morD+=6;newLog.push({id:"rec",e:"🧘",l:"Recupero",col:"#0284c7"});}else{const full=tid==="rec_completo";fatD-=(full?26:13);morD+=(full?10:5);formD+=(full?2:1);newLog.push({id:tid,e:full?"🛌":"🧘",l:full?"Riposo":"Recupero",col:"#0284c7"});}/* [7.160.0] "rec" = STESSI numeri del chokepoint (−18/+6, no form) → fatica identica su entrambi i path */}
-      else{const s=_TT[tid];if(!s)return;const pA=Math.min(0.85,_dim(ns[s.a])*_mult);const pB=Math.min(0.55,_dim(ns[s.b])*0.5*_mult);const gA=Math.random()<pA?1:0;const gB=Math.random()<pB?1:0;if(gA){ns[s.a]=clamp((ns[s.a]||60)+1,1,99);gained[s.a]=(gained[s.a]||0)+1;}if(gB){ns[s.b]=clamp((ns[s.b]||60)+1,1,99);gained[s.b]=(gained[s.b]||0)+1;}fatD+=10;newLog.push({id:s.id,e:s.e,l:s.l,col:s.col,gainA:gA,gainB:gB,statA:s.a,statB:s.b});}
-    });
-    setPlayer(p=>({...p,stats:ns,ovr:calcOvr(ns),fatigue:clamp((p.fatigue||0)+fatD,0,100),morale:clamp((p.morale||70)+morD,0,100),form:clamp((p.form||60)+formD,30,95),sessionsThisWeek:3,sessionLog:newLog,trainingStreak:(p.trainingStreak||0)+1,lastTrainingType:_planEff[0],weeklyFocusType:_t0,
-      // Sprint D2 + Sprint 2 (9.3): piccola crescita relazioni per settimana di allenamento (ora include il vice-mister)
-      fitnessCoachRel:clamp((p.fitnessCoachRel||50)+(Math.random()<0.3?1:0),0,100),
-      assistantCoachRel:clamp((p.assistantCoachRel||50)+(Math.random()<0.28?1:0),0,100),
-      teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
-    const gkeys=Object.keys(gained);
-    if(gkeys.length)notify(`✅ Settimana ${week}: ${gkeys.map(k=>`+${gained[k]} ${k}`).join(" · ")}`,TH.success);/* [7.999.49 parte A] «nessuna crescita» la dice gia' la card: niente avviso doppio sopra i bottoni */
-  },[]);// eslint-disable-line — auto-esecuzione al mount (direttiva PO 5.86.0)
-  return(
-    <Card>
-      <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:8,padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder}}>
-        <div style={{fontSize:FS.title,flexShrink:0}}>🧑‍🏫</div>
-        <div style={{flex:1}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · piano della settimana {week}</div>
-          <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
-          {_fitMsg&&<div style={{fontSize:FS.caption,color:TH.txBlue,marginTop:4}}>{_fitMsg}</div>}
-        </div>
-      </div>
-      {/* [7.999.49 parte A] il piano e' automatico: sessioni ed efficacia chiuse in «Dettagli del piano»; tolti i chip
-          di fatica e forma (li mostra gia' la testata) */}
-      <Fisarmonica id="allen-dettagli-piano" titolo="Dettagli del piano"><div style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderTop:"none",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",padding:"8px 10px"}}>
-      <div style={{display:"flex",gap:6,marginBottom:8}}>
-        {_planEff.map((tid,i)=>{
-          const isRec=tid==="rec"||tid==="rec_attivo"||tid==="rec_completo";
-          const t=isRec?{e:tid==="rec_completo"?"🛌":"🧘",l:tid==="rec_completo"?"Riposo":"Recupero",col:"#0284c7"}:_TT[tid];
-          const done=slog[i];
-          return(<div key={i} style={{flex:1,padding:"8px 4px",borderRadius:RAD.sm,border:`1.5px solid ${t?.col+(done?"88":"44")}`,background:t?.col+(done?"22":"0a"),textAlign:"center"}}>
-            <div style={{fontSize:FS.subhead}}>{done?"✅":t?.e||"?"}</div>
-            <div style={{fontSize:FS.caption,fontWeight:700,color:t?.col,marginTop:2}}>{t?.l||tid}</div>
-          </div>);
-        })}
-      </div>
-      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-        {_recent.length>0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>Voto medio (ultime {_recent.length}) {_avgRating.toFixed(1).replace(".",",")}</div>}
-        {Math.abs(_mEff-1)>=0.02&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_mEff>1?TH.bgGreen:TH.bgAmber,color:_mEff>1?TH.txGreen:TH.txAmber}}>Efficacia {_mEff>1?"+":"−"}{Math.round(Math.abs(_mEff-1)*100)}%{_mEffWhy}</div>}
-        {streak>=3&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:TH.bgAmber,color:TH.txAmber}}>🔥 {streak} sett.</div>}
-      </div>
-      </div></Fisarmonica>
-      {allDone?(
-        <div style={{textAlign:"center",padding:"10px 0",color:TH.txGreen,fontSize:FS.small,fontWeight:700}}>
-          ✅ Allenamento completato
-          <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:400,marginTop:3}}>
-            {(()=>{const g=(slog||[]).filter(s=>s.gainA||s.gainB);return g.length?g.map(s=>[s.gainA?`+1 ${s.statA}`:null,s.gainB?`+1 ${s.statB}`:null].filter(Boolean).join(" · ")).join(" · "):"Nessuna crescita questa settimana.";})()}
-          </div>
-        </div>
-      ):(
-        <div style={{textAlign:"center",padding:"10px 0",color:TH.faint,fontSize:FS.caption}}>⏳ Allenamento in corso…</div>
-      )}
-    </Card>
-  );
-};
+/* [7.999.127] TrainPanel eliminato con la vista «Allenamento» (decisione PO 03/10): era raggiungibile solo dal tab "training", che nessun bottone apriva. */
 // MIGRAZIONE SAVE (estratta da CareerApp, A1/#50): pura, testabile, byte-identica al blocco originale.
 //   player -> {player, changed}. Backfill per-campo. Esposta come window.__CPM_MIGRATE per il test save-compat.
 function migratePlayer(player){
@@ -52948,31 +52844,7 @@ const getThisWeekMatchday=()=>{
         );
       })()}
 
-      {/* TRAINING */}
-      {tab==="training"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
-          <Card>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
-              {(player.sessionLog||[]).some(s=>s&&(s.gainA||s.gainB))&&<div style={{display:"flex",alignItems:"center",gap:8}}>{/* [7.999.49 parte A] legenda solo se c'e' almeno un +1 */}
-                <span className="cpm-num" style={{fontSize:FS.caption,color:TH.growth,fontWeight:FW.bold}}>+1</span><span style={{fontSize:FS.caption,color:TH.faint}}>= guadagnato questa settimana</span>
-              </div>}
-            </div>
-            {(()=>{
-              const _wSlog=player.sessionLog||[];
-              const _wGained=new Set(_wSlog.flatMap(s=>[s.gainA?s.statA:null,s.gainB?s.statB:null].filter(Boolean)));
-              return Object.entries(player.stats).map(([k,v])=>(
-                <div key={k} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-                  <div style={{flex:1}}><StatBar label={k} value={v} tone="attribute" height={6}/></div>
-                  {_wGained.has(k)&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.black,color:TH.growth,background:TH.winBg,padding:"1px 6px",borderRadius:RAD.pill,flexShrink:0}}>+1</span>}
-                </div>
-              ));
-            })()}
-          </Card>
-          {/* Sprint 140 — TrainPanel component: auto-runs on mount, no player action needed */}
-          <TrainPanel player={player} setPlayer={setPlayer} notify={notify}/>
-        </div>
-      )}
+      {/* [7.999.127] vista «Allenamento» eliminata (decisione PO 03/10, questionario): nessun bottone la apriva, la crescita resta automatica a fine settimana. */}
 
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
