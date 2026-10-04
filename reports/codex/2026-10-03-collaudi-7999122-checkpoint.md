@@ -18,3 +18,5 @@ Le tre sonde esterne per B (ricarica), C (passaggi) e D (testa) sono state adatt
 ## Guardia aggiuntiva del 04/10 per i passaggi 3D
 
 Una pagina GLB della sonda PO-077 ha fatto calare la memoria libera da circa 4,01 a meno di 1,8 GiB. Per non ripetere il rischio nel collaudo passaggi, `tests/codex/collaudo-passaggi.mjs` richiede ora 6 GiB prima di aprire Chromium e chiude il contesto se durante il caso scende sotto 3,5 GiB. Il comando `node --check tests/codex/collaudo-passaggi.mjs` passa; con `CPM_SCENES=38 CPM_MAX_CASES=1 node tests/codex/collaudo-passaggi.mjs` la sonda ha restituito `RAM 4.74 GiB < 6 GiB prima del browser`. Dato grezzo: `tests/codex/collaudo-passaggi-7999122.json.gz`, con zero casi. **Nessun passaggio 3D è stato misurato da questo controllo.**
+
+Il PO ha poi aggiornato la soglia a 3 GiB. Lo script passaggi usa ora 3 GiB come soglia preventiva e durante il caso, con controllo ogni 250 ms. La prova di runtime della sonda passaggi con questa nuova soglia è **non verificata**; i due tentativi GLB della sonda testa sulla stessa base sono stati interrotti prima della scena dalla guardia a 3 GiB (vedi `2026-10-04-po077-checkpoint.md`).

@@ -18,9 +18,8 @@ const maxCases = Math.max(1, Number(process.env.CPM_MAX_CASES || Infinity));
 const rawPath = path.join(root, 'tests/codex/collaudo-passaggi-7999122.json.gz');
 const photoDir = path.join(root, 'reports/codex/collaudo-passaggi-7999122');
 const freeGiB = () => os.freemem() / 2 ** 30;
-// La sonda GLB del colpo di testa ha consumato oltre 2,2 GiB in una pagina;
-// manteniamo questo margine anche nei passaggi, ancora privi di un pilota.
-const minFreeGiB = 6;
+// Soglia scelta dal PO il 04/10 per consentire i casi GLB sul PC condiviso.
+const minFreeGiB = 3;
 const actionRx = /pass|dai|triang|filtr|vertical|spond|lanci|cross|uno.?due|rimorch|scaric|servi|tocca|apri|cambia|scambia/i;
 if (version !== '7.999.122') throw Error(`GAME_VERSION atteso 7.999.122, trovato ${version}`);
 fs.mkdirSync(photoDir, { recursive: true });
@@ -62,7 +61,7 @@ function describe(trace) {
 if (freeGiB() < minFreeGiB) { data.stopped=`RAM ${freeGiB().toFixed(2)} GiB < ${minFreeGiB} GiB prima del browser`; save(); console.log(data.stopped); process.exit(0); }
 const server=await startServer(); const browser=await launchBrowser(); const port=server.address().port;
 async function makePage(){ const context=await browser.newContext({viewport:{width:412,height:915},serviceWorkers:'block'}); const page=await context.newPage();
-  context._memoryGuard=setInterval(()=>{if(freeGiB()<3.5){data.stopped=`RAM scesa a ${freeGiB().toFixed(2)} GiB durante un caso GLB`;context.close().catch(()=>{});}},1000);
+  context._memoryGuard=setInterval(()=>{if(freeGiB()<minFreeGiB){data.stopped=`RAM scesa a ${freeGiB().toFixed(2)} GiB durante un caso GLB`;context.close().catch(()=>{});}},250);
   await installCdnRoutes(page);
   await page.addInitScript(()=>{window.__CPM_GLB=true;window.__CPM_PRESENT=1;window.__CPM_CINE=1;window.__CPM_DTREAL=1;window.__CPM_REC=true;window.__CPM_WS38_REC=1;});
   return {context,page}; }

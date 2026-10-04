@@ -37,3 +37,16 @@ Il rapporto minimo è 0,37: in questi sei casi **non** è misurato un rallentame
 ### Guardia di memoria per la ripresa
 
 Dopo i sei casi validi, il tentativo successivo è partito con circa 4,01 GiB liberi ed è stato interrotto perché la memoria è scesa sotto 1,8 GiB. La sonda richiede ora 6 GiB liberi prima di ogni pagina GLB e chiude la pagina se scende sotto 3,5 GiB durante il caso. È un margine basato sul calo osservato di oltre 2,2 GiB, non una misura delle prestazioni del gioco. `node --check tests/codex/collaudo-testa-conduzione.mjs` passa; `CPM_KIND=header CPM_GI=86 CPM_BATCH=1 node tests/codex/collaudo-testa-conduzione.mjs` si ferma prima di Chromium con `Pausa: RAM libera sotto 6 GB per la sonda GLB`. Nessun caso gi86 è stato eseguito da questo controllo.
+
+### Soglia aggiornata dal PO e due tentativi della scena 86
+
+Il PO ha sostituito la soglia preventiva di 6 GiB con **3 GiB** il 04/10. La sonda ora controlla 3 GiB prima del caso e ogni 250 ms durante il caso; il valore precedente resta sopra come cronologia del metodo, non come regola attuale. Con circa 4,05 GiB liberi, il tentativo gi86 azione 0 success r0 in modalità SwiftShader è stato interrotto durante `page.goto`, prima di qualunque foto o fotogramma utile (`lowMemory:true`). Un secondo tentativo con `CPM_GPU_MODE=d3d11`, partito sopra 3 GiB, è stato interrotto da `openMatch` prima della scena, sempre con `lowMemory:true`. Entrambi sono `valid:false` nel grezzo e non contano come prove del gesto.
+
+Comandi dalla radice (PowerShell):
+
+```powershell
+$env:CPM_KIND='header'; $env:CPM_GI='86'; $env:CPM_BATCH='1'; $env:CPM_ACTIONS='0,1,2'; node tests/codex/collaudo-testa-conduzione.mjs
+$env:CPM_GPU_MODE='d3d11'; $env:CPM_KIND='header'; $env:CPM_GI='86'; $env:CPM_BATCH='1'; $env:CPM_ACTIONS='0,1,2'; node tests/codex/collaudo-testa-conduzione.mjs
+```
+
+La sonda annota `gpuMode` per i nuovi tentativi; nessuna conclusione su FPS o fedeltà visiva deriva da questi due avvii. La macchina torna sopra 4 GiB dopo la chiusura di Chromium, ma questo non basta a mantenere 3 GiB **durante** il caricamento.

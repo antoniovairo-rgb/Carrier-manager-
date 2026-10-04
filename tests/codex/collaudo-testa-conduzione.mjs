@@ -4,12 +4,12 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {chromium} from '../visual/node_modules/playwright/index.mjs';
 import {startServer,launchBrowser,installCdnRoutes,openMatch,sleep} from '../visual/lib/harness.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-// Nel lotto gi64 la RAM libera e' scesa da 4,01 a meno di 1,8 GiB durante
-// una singola pagina GLB. 6 GiB lascia margine sopra la soglia di 3,5 GiB.
-const minFreeGB=6;
+// Soglia scelta dal PO il 04/10 per consentire i casi GLB sul PC condiviso.
+const minFreeGB=3;
 const out=path.join(root,'reports/codex/collaudo-testa-7999122');
 const raw=path.join(root,'tests/codex/collaudo-testa-7999122.json.gz');
 fs.mkdirSync(out,{recursive:true});
@@ -44,14 +44,16 @@ const pending=plan.filter(c=>
  !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&!!r.red===red&&r.versione===version&&r.skipped)
  &&(process.env.CPM_FORCE_RERUN==='1'||!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&!!r.red===red&&r.versione===version&&r.methodVersion>=2&&r.valid))
 ).map(c=>({...c,red})).slice(0,count);
-const srv=await startServer();const browser=await launchBrowser();
+const srv=await startServer();
+const gpuMode=process.env.CPM_GPU_MODE==='d3d11';
+const browser=gpuMode?await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||path.join(process.env.ProgramFiles||'C:/Program Files','Google/Chrome/Application/chrome.exe'),args:['--use-gl=angle','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--no-sandbox']}):await launchBrowser();
 try{
  for(const c of pending){
   if(os.freemem()<minFreeGB*1024**3){console.log(`Pausa: RAM libera sotto ${minFreeGB} GB per la sonda GLB`);break;}
-  const r={...c,versione:version,methodVersion:2,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
+  const r={...c,versione:version,methodVersion:2,gpuMode:gpuMode?'d3d11':'swiftshader',startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
-  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<3.5*1024**3){lowMemory=true;context.close().catch(()=>{});}},2000);
+  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<minFreeGB*1024**3){lowMemory=true;context.close().catch(()=>{});}},250);
   try{
    await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+60000));
    await installCdnRoutes(page);
