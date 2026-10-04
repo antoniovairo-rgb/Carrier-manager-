@@ -1333,8 +1333,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     /* [7.999.127 PO-190 terza parte, decisione PO 03/10 «scene dell'eroe un po' meno decisive»] Dopo rigori (7.999.121) e debito
        (7.999.122) l'eroe segnava ancora il 67% dei gol della squadra (obiettivo PO ~50%). Le sue occasioni su azione (tiro e assist,
        NON rigore e punizione diretta, che restano il loro xG) valgono il 25% in meno. Rosso __CPM_NO_SCENE190. */
+    det.base=+p.toFixed(3);p=(p+(+o.mods||0))*(o.mult==null?1:+o.mult);
+    /* [prima stesura misurata: il taglio sulla BASE arrivava diluito dai modificatori di contesto, base -26% ma p finale -12%, gol
+       dell'eroe invariati su 21 partite (1,33 -> 1,38). Il taglio va sulla probabilita' FINALE, dopo contesto e freni di partita.] */
     if((fam==='tiro'||fam==='assist')&&o.intent!=='penalty'&&o.intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_SCENE190))p*=0.75;
-    det.base=+p.toFixed(3);p=(p+(+o.mods||0))*(o.mult==null?1:+o.mult);p=clamp(p,0.03,0.85);det.p=+p.toFixed(3);return{p,det};}catch(_e){return null;}};
+    p=clamp(p,0.03,0.85);det.p=+p.toFixed(3);return{p,det};}catch(_e){return null;}};
   return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
