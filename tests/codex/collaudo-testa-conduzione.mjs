@@ -46,11 +46,14 @@ const pending=plan.filter(c=>
 ).map(c=>({...c,red})).slice(0,count);
 const srv=await startServer();
 const gpuMode=process.env.CPM_GPU_MODE==='d3d11';
-const browser=gpuMode?await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||path.join(process.env.ProgramFiles||'C:/Program Files','Google/Chrome/Application/chrome.exe'),args:['--use-gl=angle','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--no-sandbox']}):await launchBrowser();
+const leanMode=process.env.CPM_CHROME_LEAN==='1';
+const leanArgs=['--disable-extensions','--disable-background-networking','--disable-component-extensions-with-background-pages','--renderer-process-limit=1'];
+const chromePath=process.env.CPM_CHROME||path.join(process.env.ProgramFiles||'C:/Program Files','Google/Chrome/Application/chrome.exe');
+const browser=leanMode?await chromium.launch({headless:true,executablePath:chromePath,args:['--use-gl=angle',`--use-angle=${gpuMode?'d3d11':'swiftshader'}`,'--enable-gpu','--ignore-gpu-blocklist','--no-sandbox',...leanArgs]}):gpuMode?await chromium.launch({headless:true,executablePath:chromePath,args:['--use-gl=angle','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--no-sandbox']}):await launchBrowser();
 try{
  for(const c of pending){
   if(os.freemem()<minFreeGB*1024**3){console.log(`Pausa: RAM libera sotto ${minFreeGB} GB per la sonda GLB`);break;}
-  const r={...c,versione:version,methodVersion:2,gpuMode:gpuMode?'d3d11':'swiftshader',startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
+  const r={...c,versione:version,methodVersion:2,gpuMode:gpuMode?'d3d11':'swiftshader',leanMode,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
   let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<minFreeGB*1024**3){lowMemory=true;context.close().catch(()=>{});}},250);
