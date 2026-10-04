@@ -73,7 +73,10 @@ function creaMotorePossesso(cfg){
   const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
   const _eroeNonTira14=(P)=>!!(P&&P.eroe&&cfg.v2&&_EG&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14));/* [7.999.13] l'eroe tira solo nelle sue scene (vedi il ramo del tiro) */
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
-  const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,95),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,95)};
+  /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
+     (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
+  const _T202=(typeof window!=='undefined'&&window&&window.__CPM_NO_TETTO202)?95:99;
+  const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,_T202),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,_T202)};
   const V2=!!cfg.v2;
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
