@@ -24960,7 +24960,10 @@ function creaMotorePossesso(cfg){
   const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
   const _eroeNonTira14=(P)=>!!(P&&P.eroe&&cfg.v2&&_EG&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14));/* [7.999.13] l'eroe tira solo nelle sue scene (vedi il ramo del tiro) */
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
-  const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,95),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,95)};
+  /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
+     (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
+  const _T202=(typeof window!=='undefined'&&window&&window.__CPM_NO_TETTO202)?95:99;
+  const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,_T202),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,_T202)};
   const V2=!!cfg.v2;
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
@@ -25085,7 +25088,7 @@ function creaMotorePossesso(cfg){
     if(e.t==='parata'){const K=_pag((e.gk&&e.gk.i!=null)?e.gk.i:((e.chi&&e.chi.i!=null)?e.chi.i:null));if(K)K.parate++;}
     if((e.t==='passaggio'||e.t==='cross')&&e.a&&e.a.i!=null){const R=_pag(e.a.i);if(R){R.ricezioni++;R.tocchi++;}}
   }catch(_e){}};
-  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);return e;};
+  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);if(t==='tiro'&&typeof window!=='undefined'&&window&&window.__CPM_TIRI202){try{const _T=window.__CPM_TIRI202;if(_T.length<4000)_T.push({min:S.min,lato:(e.chi&&e.chi.team)||e.lato,scena:!!e.scena,vivo:!cfg.occasioniV2,seed:cfg.seed>>>0});}catch(_e202){}}/* [7.999.130 PO-202 testimone] ogni tiro col suo minuto e lato, nella vissuta e nella simulata */return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
   const chi=(p)=>p?{i:p.i,nome:nome(p),eroe:!!p.eroe,gk:!!p.gk,team:p.team,x:+p.x.toFixed(1),y:+p.y.toFixed(1)}:null;
 
