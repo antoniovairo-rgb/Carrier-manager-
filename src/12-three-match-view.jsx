@@ -10165,9 +10165,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _idleHero=_CPM_IDLE&&_ai===0;
           const _bt=_idleHero?Math.min(Math.max((_a._spS-0.6)/1.0,0),1):Math.min(Math.max((_a._spS-0.12)/0.7,0),1);
           _a._locB=(_a._locB==null)?_bt:_a._locB+(_bt-_a._locB)*Math.min(dt*((_bt<_a._locB&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FERMI197))?14:5),1);/* [7.999.115 PO-197] anche la miscela corsa/riposo scende in fretta nel walkout */
-          if(typeof window!=='undefined'&&window.__CPM_WALK197&&propsRef.current&&propsRef.current.matchPhase==="walkout"){try{const _W=window.__CPM_WALK197;(_W.c=_W.c||{})[_ai]={sp:+_spd.toFixed(3),spS:+(_a._spS||0).toFixed(3),locB:+(_a._locB||0).toFixed(3),run:_a.run?+_a.run.weight.toFixed(3):null,x:+_p.position.x.toFixed(2),z:+_p.position.z.toFixed(2)};}catch(_e197){}}/* [7.999.115 PO-197] testimone di collaudo: velocita' vera e peso della corsa di ogni corpo nel walkout */
+          if(typeof window!=='undefined'&&window.__CPM_WALK197&&propsRef.current&&propsRef.current.matchPhase==="walkout"){try{const _W=window.__CPM_WALK197;(_W.c=_W.c||{})[_ai]={sp:+_spd.toFixed(3),spS:+(_a._spS||0).toFixed(3),locB:+(_a._locB||0).toFixed(3),run:_a.run?+_a.run.weight.toFixed(3):null,it:_a.idle?+_a.idle.time.toFixed(2):null,x:+_p.position.x.toFixed(2),z:+_p.position.z.toFixed(2)};}catch(_e197){}}/* [7.999.115 PO-197] testimone di collaudo: velocita' vera e peso della corsa di ogni corpo nel walkout */
           if(!Number.isFinite(_a._locB)&&!(typeof window!=='undefined'&&window.__CPM_NO_TPOSE56))_a._locB=Number.isFinite(_bt)?_bt:0;/* [7.999.56] rete: un peso non finito non deve mai congelare un corpo in T-pose */// item 5: transizione idle↔corsa più graduale (τ≈0.2s) → crossfade animazioni fluido
           if(_idleHero&&_a.idle)_a.idle.timeScale=0.5;// #4: idle dell'Eroe rallentato → posizione d'attesa calma, non palleggio
+          /* [7.999.128 PO-206 «all'ingresso in campo i giocatori corrono sul posto quando sono in fila», momento indicato dal PO: schierati a
+             centrocampo] MISURATO: sul walkout intero (49 s reali, sonda walk206) la clip di corsa ha peso ~0 sui corpi fermi; e' la clip
+             «idle» stessa (10,2 s) che piega le ginocchia di 40-55 gradi quasi ogni secondo (escursione gambe 46-72 gradi, la corsa 49-80):
+             da lontano, in fila, sembra una corsa sul posto. Nel walkout l'idle oscilla lentamente nella sua finestra piu' calma (0-1 s,
+             escursione massima 11 gradi). Rosso __CPM_NO_FILA206. */
+          if(_a.idle&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FILA206)){_a._f206=(_a._f206==null?(_ai*0.7):_a._f206)+dt*1.4;_a.idle.timeScale=0;_a.idle.time=0.5-0.5*Math.cos(_a._f206);}
+          else if(_a._f206!=null&&_a.idle){_a._f206=null;_a.idle.timeScale=_idleHero?0.5:1;}
           /* [7.206.0 direttiva PO «mai movimenti robotici»] LA CADENZA DEL PASSO SEGUE LA VELOCITÀ. Un piede
              non slitta quando il ritmo del ciclo di corsa è PROPORZIONALE alla velocità reale; qui la cadenza
              era `0.55 + blend·0.40`, e il blend SATURA già a ~0.8 u/s → sopra quella soglia il ritmo restava
