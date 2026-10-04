@@ -1699,6 +1699,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{clockRef.current=clock;},[clock]);
   const [score,setScore]=useState(_rsScore);
   const scoreRef=useRef(_rsScore);
+  const rip202Ref=useRef(null);/* [7.999.129 PO-202] esito dell'ultimo tiro dell'eroe nella scena appena chiusa: fuori o parato → riparte l'avversario */
   const ko207Ref=useRef(null);/* [7.999.126 PO-207] punteggio all'ultimo minuto giocato senza scena */
   /* [7.811.0 — S3 v1: LA TABELLA DELL'ENFASI, stato x momentum, come FUNZIONE PURA. La misura sul diario e' cieca
      (una riga d'enfasi in quattro partite: la porta seedata <0.12 su momentum >=80/<=20 scatta di rado), quindi la
@@ -5316,7 +5317,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
             if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
               if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;}catch(_e207){}}}}
-          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:_c207?_l207:(possTurnRef.current>0?"home":"away"),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
+             dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
+             tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
+             Dopo un tiro dell'eroe finito fuori o parato riparte l'avversario (rimessa dal fondo o portiere). Palo e tiro murato restano
+             contesi. Rosso __CPM_NO_RIP202. */
+          const _r202=(_st0.scena&&!_c207&&!(typeof window!=='undefined'&&window.__CPM_NO_RIP202)&&(rip202Ref.current==='fuori'||rip202Ref.current==='saved'));
+          if(_st0.scena&&typeof window!=='undefined'&&window.__CPM_REC){try{const _R=(window.__CPM_RIP202=window.__CPM_RIP202||[]);if(_R.length<60)_R.push({min:nx,lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gol:!!_c207,tiro:rip202Ref.current||null,x:Math.round((ballPosRef.current&&ballPosRef.current.x)||50)});}catch(_e202){}}/* testimone: chi riparte dopo ogni scena dell'eroe */
+          if(_st0.scena&&_r202){try{setTurn616(-1,"rip202");}catch(_e202b){}}
+          if(_st0.scena)rip202Ref.current=null;
+          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}
@@ -8799,6 +8809,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
       if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9});_brain23(_evB2);
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
+        try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}rip202Ref.current=_t202;}catch(_e202){}
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
       else if(_M&&_M.registra){
       const _lato=(typeof window!=='undefined'&&window.__CPM_NO_TAB10)?(isMatchHome?'home':'away'):'home';/* [7.999.10] nel motore «home» e' sempre la squadra dell'eroe: il ponte (ramo del rosso B2) scriveva sull'avversario in trasferta */
