@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (45)
+## Voci aperte o parziali (49)
 
-Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
+Per lotto: L1 25 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,6 +42,9 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — 27-B corretto (7.999.100), 26-D corretto secondo la decisione PO (7.999.101), 26-C chiuso dalla 7.999.98; 26-A, 26-B, 27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
 | PO-185 | 02/10 | Ricollaudo Codex difesa 3D su 7.999.91: 32/32 esiti concordi con ActionResolved; restano ipotesi visive 001 apertura (gi138, gi36, gi45: 6 casi) e 002 fuori quadro (gi133f, gi138, gi168f, gi31f, gi32, gi36s: 8 casi; gi32 eroe a 15 u dalla palla in apertura) | difetto | IN CORSO — 03/10 riprodotto sulla 7.999.122 il rilievo Codex (ramo banco-deterministico 1b3224a8) su gi133 «Recupero sulla linea di fondo»: con orologio virtuale, seme e scena fissa il pallone è fuori quadro nel 100% dei fotogrammi (success e fail, 2 giri ciascuno), bersaglio camera fuori 82-86%; controllo gi33 0%. Non è l'effetto dei pochi fps. Diagnosi della regia in corso | L1 | — | — | rapporto `reports/codex/2026-10-01-ricollaudo-difesa-3d.md` (ramo codex/2026-10-01-ricollaudo-difesa-3d, 8db1699b) |
+| PO-202 | 03/10 22:54 | «Troppo sbilanciate le partite, non sono tirate»: 0-5 in trasferta contro FC Sussex, tripletta dell'eroe, tiri 23-11, xG 2,82-1,06 | difetto | DA MISURARE — versione giocata dal PO non confermata (le correzioni 7.999.121/122 sono su main da oggi); misura sulla 7.999.125 | L1 | — | — | foto PO 22:54 |
+| PO-203 | 03/10 22:54 | Festa di fine partita: l'eroe affonda nell'erba (piedi sotto il prato) | difetto | DA MISURARE — quota dei piedi nella festa di fine partita | L1 | — | — | foto PO 22:54 |
+| PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | DA MISURARE — velocità vera e peso della clip di corsa dei corpi in fila (testimone __CPM_WALK197) | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | PARZIALE — 7.999.120: rivale e sponsor di club nascono all'accettazione dell'offerta pro, non più alla ricarica (guardiano pro-rivale-176, rosso __CPM_NO_PRO176); differenze playedMd e cup.club da ricollaudare con Codex sulla 7.999.120 | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -65,15 +68,9 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE — PO 01/10: «da completare in L8» (fase 3, nuove tipologie di stadio) | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
-| PO-201 | 03/10 | I portieri non hanno i guanti | difetto | DA FARE — i corpi CGTrader non hanno una parte «guanti»: si colorano le facce pesate sulle ossa di mani e dita, solo per i portieri | L1 | — | — | richiesta PO |
-| PO-202 | 03/10 22:54 | «Troppo sbilanciate le partite, non sono tirate»: 0-5 in trasferta contro FC Sussex, tripletta dell'eroe, tiri 23-11, xG 2,82-1,06 | difetto | DA MISURARE — versione giocata dal PO non confermata (le correzioni 7.999.121/122 sono su main da oggi); misura sulla 7.999.125 | L1 | — | — | foto PO 22:54 |
-| PO-203 | 03/10 22:54 | Festa di fine partita: l'eroe affonda nell'erba (piedi sotto il prato) | difetto | DA MISURARE — quota dei piedi nella festa di fine partita | L1 | — | — | foto PO 22:54 |
-| PO-204 | 03/10 22:49 | Formazioni: prendersi più spazio verticale per il disegno | miglioramento | DA FARE — i due campetti sono schiacciati con spazio vuoto sotto | L1 | — | — | foto PO 22:49 |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
-| PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | DA MISURARE — velocità vera e peso della clip di corsa dei corpi in fila (testimone __CPM_WALK197) | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
-| PO-207 | 03/10 | Partita 2D: dopo ogni gol il gioco non riparte dalla rimessa da centrocampo | difetto | DA MISURARE — posizione del pallone e dei 22 al primo fotogramma dopo il gol | L1 | — | — | richiesta PO |
 
-## Storico — voci chiuse (155)
+## Storico — voci chiuse (158)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -232,6 +229,9 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-198 | 03/10 20:17 | Parata del pullman: «Niente figurine, solo CGTrader!» — sul tetto omini a blocchi e figurine dei visi sopra | difetto | FATTO — 7.999.123: la parata usa i corpi CGTrader sul tetto (l'eroe davanti alza la coppa) e niente figurine (parata-198: verde 8 corpi e 0 figurine, rosso 0 corpi e figurine); da confermare sul telefono | L1 | — | — | foto PO 20:17 |
 | PO-199 | 03/10 | Galà: «si deve vedere apertura della busta progressivamente dal terzo al primo, non deve comparire subito il vincitore» | miglioramento | FATTO — 7.999.124 busta progressiva · 7.999.125 scelte PO: un tocco per posizione e busta per tutti i premi (busta-199: chiusa senza tocchi, 0→1→2→3, premio perso con «Tu sei 2°»; rossi visibili); da confermare sul telefono | L1 | — | — | richiesta PO; supera la scelta 7.999.51 «diretto al premio vinto» |
 | PO-200 | 03/10 | Presentazione della squadra: «far vedere i CGTrader ed in piccolo come in televisione la figurina» | miglioramento | FATTO — 7.999.124: in campo i corpi CGTrader, una sola targhetta piccola come in televisione (presentazione-200: verde 7 corpi e 1 targhetta, rosso 0 corpi e schieramento di figurine); da confermare sul telefono | L1 | — | — | richiesta PO |
+| PO-201 | 03/10 | I portieri non hanno i guanti | difetto | FATTO — 7.999.126: guanti sui portieri (facce delle mani su un materiale guanto, solo portieri; corpo partita 3.412 facce tutte su ossa di mano e dita, CGTrader solo braccia); guanti-201 verde e rosso visibile; da confermare sul telefono | L1 | — | — | richiesta PO |
+| PO-204 | 03/10 22:49 | Formazioni: prendersi più spazio verticale per il disegno | miglioramento | FATTO — 7.999.126: lo spazio libero va alle linee dei campetti (36 px a linea su 412×915, nessuno scorrimento su 360×740); formazioni-204; da confermare sul telefono | L1 | — | — | foto PO 22:49 |
+| PO-207 | 03/10 | Partita 2D: dopo ogni gol il gioco non riparte dalla rimessa da centrocampo | difetto | FATTO — 7.999.126: a ogni aumento del punteggio il motore riparte dal centro con la palla a chi ha subito il gol (prima restava dove era il pallone); ripartenza-207 verde (kickoff a 50,50) e rosso visibile; da confermare sul telefono | L1 | — | — | richiesta PO |
 
 ## Ricostruzione (fonti e regole di stato)
 
