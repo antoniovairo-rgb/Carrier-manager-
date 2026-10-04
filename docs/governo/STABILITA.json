@@ -1,5 +1,110 @@
 [
  {
+  "data": "2026-10-04 21:16",
+  "versione": "7.999.132",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 735
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 989
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 521
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
+  "data": "2026-10-04 20:25",
+  "versione": "7.999.132",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "validate-situations",
+    "ok": false,
+    "s": 730,
+    "coda": "gate-history → 145 run · 🔴 REGRESSIONE (pulita → rotta) |  | ❌ FAIL — ball-motion"
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 65
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 911
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 523
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-04 18:46",
   "versione": "7.999.131",
   "catena": "carriera",
