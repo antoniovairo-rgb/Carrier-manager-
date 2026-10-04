@@ -25161,7 +25161,7 @@ function creaMotorePossesso(cfg){
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
       if(q.eroe&&_EG){sc+=BONUS_EROE;}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
-      else if(q.eroe){let _b879=S.richieste.scenaEroe?26:0;
+      else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
            Rosso __CPM_NO_B7POS. */
