@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (49)
+## Voci aperte o parziali (48)
 
-Per lotto: L1 25 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
+Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -44,7 +44,6 @@ Per lotto: L1 25 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-185 | 02/10 | Ricollaudo Codex difesa 3D su 7.999.91: 32/32 esiti concordi con ActionResolved; restano ipotesi visive 001 apertura (gi138, gi36, gi45: 6 casi) e 002 fuori quadro (gi133f, gi138, gi168f, gi31f, gi32, gi36s: 8 casi; gi32 eroe a 15 u dalla palla in apertura) | difetto | IN CORSO — 03/10 riprodotto sulla 7.999.122 il rilievo Codex (ramo banco-deterministico 1b3224a8) su gi133 «Recupero sulla linea di fondo»: con orologio virtuale, seme e scena fissa il pallone è fuori quadro nel 100% dei fotogrammi (success e fail, 2 giri ciascuno), bersaglio camera fuori 82-86%; controllo gi33 0%. Non è l'effetto dei pochi fps. Diagnosi della regia in corso | L1 | — | — | rapporto `reports/codex/2026-10-01-ricollaudo-difesa-3d.md` (ramo codex/2026-10-01-ricollaudo-difesa-3d, 8db1699b) |
 | PO-202 | 03/10 22:54 | «Troppo sbilanciate le partite, non sono tirate»: 0-5 in trasferta contro FC Sussex, tripletta dell'eroe, tiri 23-11, xG 2,82-1,06 | difetto | DA CORREGGERE — misurato 7.999.127, S12 (club 96): 20 vittorie e 1 pari su 21, subiti 0,29 a partita, 2 vittorie su 2 contro FC Manchester (98). La squadra dell'eroe non perde mai: leva da decidere col PO | L1 | — | — | foto PO 22:54 |
 | PO-203 | 03/10 22:54 | Festa di fine partita: l'eroe affonda nell'erba (piedi sotto il prato) | difetto | DA MISURARE — quota dei piedi nella festa di fine partita | L1 | — | — | foto PO 22:54 |
-| PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | DA MISURARE — velocità vera e peso della clip di corsa dei corpi in fila (testimone __CPM_WALK197) | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | PARZIALE — 7.999.120: rivale e sponsor di club nascono all'accettazione dell'offerta pro, non più alla ricarica (guardiano pro-rivale-176, rosso __CPM_NO_PRO176); differenze playedMd e cup.club da ricollaudare con Codex sulla 7.999.120 | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -70,7 +69,7 @@ Per lotto: L1 25 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
 
-## Storico — voci chiuse (158)
+## Storico — voci chiuse (159)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -231,6 +230,7 @@ Per lotto: L1 25 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-200 | 03/10 | Presentazione della squadra: «far vedere i CGTrader ed in piccolo come in televisione la figurina» | miglioramento | FATTO — 7.999.124: in campo i corpi CGTrader, una sola targhetta piccola come in televisione (presentazione-200: verde 7 corpi e 1 targhetta, rosso 0 corpi e schieramento di figurine); da confermare sul telefono | L1 | — | — | richiesta PO |
 | PO-201 | 03/10 | I portieri non hanno i guanti | difetto | FATTO — 7.999.126: guanti sui portieri (facce delle mani su un materiale guanto, solo portieri; corpo partita 3.412 facce tutte su ossa di mano e dita, CGTrader solo braccia); guanti-201 verde e rosso visibile; da confermare sul telefono | L1 | — | — | richiesta PO |
 | PO-204 | 03/10 22:49 | Formazioni: prendersi più spazio verticale per il disegno | miglioramento | FATTO — 7.999.126: lo spazio libero va alle linee dei campetti (36 px a linea su 412×915, nessuno scorrimento su 360×740); formazioni-204; da confermare sul telefono | L1 | — | — | foto PO 22:49 |
+| PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | FATTO — 7.999.128: la fila a centrocampo non corre più sul posto. Causa misurata: la clip idle (10,2 s) piega le ginocchia di 40-55° quasi ogni secondo (gambe 46-72°, la corsa 49-80°); nel walkout l'idle oscilla nella finestra calma 0-1 s (max 11°). Rosso __CPM_NO_FILA206, guardiano fila-206 su tutto il walkout (verde 100%, rosso 25%). Catene grafica 20/20 e completa 9/9 | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
 | PO-207 | 03/10 | Partita 2D: dopo ogni gol il gioco non riparte dalla rimessa da centrocampo | difetto | FATTO — 7.999.126: a ogni aumento del punteggio il motore riparte dal centro con la palla a chi ha subito il gol (prima restava dove era il pallone); ripartenza-207 verde (kickoff a 50,50) e rosso visibile; da confermare sul telefono | L1 | — | — | richiesta PO |
 
 ## Ricostruzione (fonti e regole di stato)
