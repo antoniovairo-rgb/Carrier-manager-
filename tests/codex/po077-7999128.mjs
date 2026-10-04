@@ -18,7 +18,8 @@ const expected='7.999.128';
 if(version!==expected)throw Error(`Versione ${version}, attesa ${expected}`);
 const baseCommit=execFileSync('git',['-c',`safe.directory=${root.replaceAll('\\','/')}`,'merge-base','HEAD','origin/main'],{cwd:root,encoding:'utf8'}).trim();
 const actionIndices=(process.env.CPM_ACTIONS||'0,1,2').split(',').map(Number).filter(Number.isInteger);
-const headPlan=[6,7,39,55,64,86,90,171].flatMap(gi=>actionIndices.flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'header',gi,actionIndex,outcome,rep})))));
+const headIndicesFor=gi=>gi===86?[0]:gi===171?[0,1]:actionIndices;
+const headPlan=[86,90,171].flatMap(gi=>headIndicesFor(gi).flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'header',gi,actionIndex,outcome,rep})))));
 const carryPlan=[18,19,21,22,47,96,104,112,178].flatMap(gi=>[0,1].flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'carry',gi,actionIndex,outcome,rep})))));
 const plan=process.env.CPM_KIND==='carry'?carryPlan:process.env.CPM_KIND==='all'?headPlan.concat(carryPlan):headPlan;
 const data=fs.existsSync(raw)?JSON.parse(zlib.gunzipSync(fs.readFileSync(raw))):{versione:version,baseCommit,comando:'node tests/codex/po077-7999128.mjs',runs:[]};
@@ -31,19 +32,21 @@ for(const run of data.runs){
 }
 save();
 if(os.freemem()<minFreeGB*1024**3){console.log(`Pausa: RAM libera sotto ${minFreeGB} GB per la sonda GLB`);process.exit(0);}
-const selectedGi=(process.env.CPM_GI||'64,86,90').split(',').filter(Boolean).map(Number);
+const selectedGi=(process.env.CPM_GI||'86,90').split(',').filter(Boolean).map(Number);
 const selectedOutcome=process.env.CPM_OUTCOME||'';
 const selectedRep=process.env.CPM_REP==null?null:Number(process.env.CPM_REP);
 const red=process.env.CPM_RED_TUFFO109==='1';
 if(red && (selectedGi.length!==1||selectedGi[0]!==171))throw Error('Il braccio rosso è limitato a CPM_GI=171');
 const pending=plan.filter(c=>
- (!selectedGi.length||selectedGi.includes(c.gi))
+ (!red || (c.gi===171 && c.actionIndex===0 && c.outcome==='success'))
+ &&(!selectedGi.length||selectedGi.includes(c.gi))
  &&(!selectedOutcome||c.outcome===selectedOutcome)
  &&(selectedRep==null||c.rep===selectedRep)
  &&
  !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&!!r.red===red&&r.versione===version&&r.skipped)
  &&(process.env.CPM_FORCE_RERUN==='1'||!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&!!r.red===red&&r.versione===version&&r.methodVersion>=2&&r.valid))
 ).map(c=>({...c,red})).slice(0,count);
+if(!pending.length){console.log('Nessun caso pendente');process.exit(0);}
 const srv=await startServer();
 const gpuMode=process.env.CPM_GPU_MODE==='d3d11';
 const leanMode=process.env.CPM_CHROME_LEAN==='1';
