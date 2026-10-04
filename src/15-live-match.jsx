@@ -1086,7 +1086,7 @@ function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.pass
     {et:"Ammonizioni",sx:A.ammonizioni|0,dx:B.ammonizioni|0},
     {et:"Espulsioni",sx:A.espulsioni|0,dx:B.espulsioni|0},
     {et:"Rimesse laterali",sx:A.rimesse|0,dx:B.rimesse|0},
-  ].filter(r=>r.et==="Gol"||r.et==="Possesso"||(r.n!=null?r.n>0:((+r.sx||0)+(+r.dx||0))>0));}
+  ].filter(r=>!(typeof window!=='undefined'&&window.__CPM_NO_STAT213)||r.et==="Gol"||r.et==="Possesso"||(r.n!=null?r.n>0:((+r.sx||0)+(+r.dx||0))>0));}/* [7.999.133 PO-213, collaudo PO 04/10 «le statistiche non devono comparire un po' alla volta ma devono esserci tutte all'inizio anche se a zero»] le voci a zero si nascondevano: ora tutte, sempre. Rosso __CPM_NO_STAT213 */
 /* [7.999.82] l'ingresso del brain per la giocata dell'eroe: famiglia del gesto, punto, intenzione (rigore/punizione), statistiche vere */
 /* [7.999.82] la percentuale mostrata sul pulsante e la scelta automatica leggono lo STESSO brain dell'esito (probabilita' del motore,
    con la marcatura della scena); senza motore o col rosso __CPM_NO_BRAIN82, la formula di prima. */

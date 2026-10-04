@@ -418,7 +418,13 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
     else{let n=voltoId23(tipo,chiave!=null?chiave:nome,0),z=0;while(n!=null&&_sc23.chi.has(n)&&_sc23.chi.get(n)!==_k23&&z<24){z++;n=voltoId23(tipo,chiave!=null?chiave:nome,z);}
       if(n!=null){_sc23.chi.set(n,_k23);_sc23.perChiave.set(_k23,n);}_vid23=n;}}
   const url=voltoUrl(tipo,chiave!=null?chiave:nome,_vid23);
-  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} chiave={chiave} nome={nome} ruolo={ruolo} col={col} col2={col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
+  /* [7.999.133 PO-208, collaudo PO 04/10 «Tutte le figurine devono avere lo stesso contorno, questo e' fuori standard» (carta del procuratore
+     con la cornice rossa nel Confronto); scelta PO: lo standard e' la CORNICE SOTTILE GRIGIA come il riquadro dell'eroe nella home. Quel
+     riquadro e' la stessa carta, con la cornice nel colore del club che sullo sfondo della testata scompare: la carta resta (volto pieno,
+     mai tagliato) e la cornice diventa per tutte grigio chiaro, invece del colore del club. Prima stesura (riquadro bianco col volto in
+     alto) bocciata dalla prova fotografica: volto piccolo e fascia vuota sotto. Rosso __CPM_NO_FIG208. */
+  const _fig208=!(typeof window!=='undefined'&&window.__CPM_NO_FIG208);
+  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} chiave={chiave} nome={nome} ruolo={ruolo} col={_fig208?"#e2e8f0":col} col2={_fig208?"#cbd5e1":col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
   const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
