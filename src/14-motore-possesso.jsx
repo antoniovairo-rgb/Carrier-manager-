@@ -1330,6 +1330,10 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     else if(fam==='dribbling')p=clamp(0.42+((A('dribbling')+A('velocità'))/2-(b.fisico+b.posizionamento)/2)*0.012,0.18,0.72);
     else if(fam==='difesa')p=clamp(0.46+((A('fisico')+A('posizionamento'))/2-(b.dribbling+b.velocità)/2)*0.012,0.2,0.75);
     else p=clamp(0.55+(A(o.stat||'tecnica')-b.posizionamento)*0.010,0.25,0.8);
+    /* [7.999.127 PO-190 terza parte, decisione PO 03/10 «scene dell'eroe un po' meno decisive»] Dopo rigori (7.999.121) e debito
+       (7.999.122) l'eroe segnava ancora il 67% dei gol della squadra (obiettivo PO ~50%). Le sue occasioni su azione (tiro e assist,
+       NON rigore e punizione diretta, che restano il loro xG) valgono il 25% in meno. Rosso __CPM_NO_SCENE190. */
+    if((fam==='tiro'||fam==='assist')&&o.intent!=='penalty'&&o.intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_SCENE190))p*=0.75;
     det.base=+p.toFixed(3);p=(p+(+o.mods||0))*(o.mult==null?1:+o.mult);p=clamp(p,0.03,0.85);det.p=+p.toFixed(3);return{p,det};}catch(_e){return null;}};
   return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe};
 }
