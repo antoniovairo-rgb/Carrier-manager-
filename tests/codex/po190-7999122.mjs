@@ -60,8 +60,10 @@ const data = fs.existsSync(outputPath) ? JSON.parse(gunzipSync(fs.readFileSync(o
 if (data.version !== version || data.commit !== commit) throw Error('Il grezzo appartiene a una base diversa');
 const save = () => fs.writeFileSync(outputPath, gzipSync(JSON.stringify(data), { level: 9 }));
 const freeGB = () => os.freemem() / 2 ** 30;
-const memoryOK = () => freeGB() >= 3.5;
-if (!memoryOK()) { data.paused = { reason: 'RAM libera sotto 3,5 GB', freeGB: +freeGB().toFixed(2) }; save(); process.exit(0); }
+const memoryOK = () => freeGB() >= 3;
+const runLimit = Math.max(1, Number(process.env.CPM_RUN_LIMIT || 1));
+let attemptedThisRun = 0;
+if (!memoryOK()) { data.paused = { reason: 'RAM libera sotto 3 GB', freeGB: +freeGB().toFixed(2) }; save(); process.exit(0); }
 const server = await startServer();
 const browser = await chromium.launch({
   headless: true,
@@ -69,10 +71,12 @@ const browser = await chromium.launch({
   args: ['--headless=new', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox'],
 });
 try {
-  for (let index = 0; index < total; index++) {
+  outer: for (let index = 0; index < total; index++) {
     for (const arm of ['verde', 'rosso']) {
     if (data.matches.some(row => row.index === index && row.arm === arm && row.valid)) continue;
-    if (!memoryOK()) { data.paused = { reason: 'RAM libera sotto 3,5 GB', freeGB: +freeGB().toFixed(2) }; save(); break; }
+    if (!memoryOK()) { data.paused = { reason: 'RAM libera sotto 3 GB', freeGB: +freeGB().toFixed(2) }; save(); break outer; }
+    if (attemptedThisRun >= runLimit) break outer;
+    attemptedThisRun++;
     const { name, namedSave, opponent, week38, seed } = prepareCase(index);
     const row = { index, arm, name, seed, opponent, isHome: week38.isHome,
       season: namedSave.player.season, week: namedSave.player.week,
@@ -85,7 +89,7 @@ try {
       if (memoryOK()) return;
       lowMemory = true;
       context.close().catch(() => {});
-    }, 1000);
+    }, 250);
     try {
       await installCdnRoutes(page);
       await page.addInitScript(({saveText, red}) => {
@@ -154,7 +158,7 @@ try {
       await context.close().catch(() => {});
     }
     console.log(JSON.stringify({ index, arm, valid: row.valid, score: row.match?.score, sources: row.goalSources, error: row.error?.slice(0, 120) }));
-    if (lowMemory) break;
+    if (lowMemory) { data.paused = { reason: 'RAM scesa sotto 3 GB durante la partita', index, arm }; save(); break outer; }
     }
     if (!memoryOK()) break;
   }
