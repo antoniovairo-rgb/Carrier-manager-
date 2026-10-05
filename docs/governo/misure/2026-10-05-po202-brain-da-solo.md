@@ -67,3 +67,14 @@ nella vissuta ogni scena offre un tiro o un assist, il motore da solo tira solo 
 Gli avversari tornano al livello del brain da solo (tiri 9,7 contro 9,9, gol 0,92 contro 0,84). La tua squadra resta sopra di +0,3 gol: sono le
 scene, dove il giocatore sceglie sempre una giocata da gol. Il «la scena dura e il resto del campo gioca» non è stato fatto alla lettera:
 sarebbero state due azioni contemporanee (gli avversari che attaccano mentre il pallone è dell'eroe in scena); il tempo si restituisce dopo.
+
+## Controllo con squadra debole (7.999.138)
+Stessa sonda, forze 72 contro 88 (`__CPM_FORZA19`) ed eroe OVR 75 (statistiche ×0,8), 24 partite vere contro 120 del brain da solo.
+
+| | gol (tua – avv.) | tiri | V / N / P | gol eroe |
+|---|---|---|---|---|
+| vissuta 7.999.138 | 0,88 – 1,67 | 9,8 – 15,5 | 17% / 21% / 63% | 0,33 |
+| brain da solo | 0,43 – 1,79 | 5,1 – 17,3 | 9% / 20% / 71% | 0,21 |
+
+Come con la squadra forte: gli avversari sono vicini al brain da solo, la tua squadra guadagna circa +0,3/+0,45 gol dalle scene, dove il
+giocatore sceglie la giocata. Questo scarto è la scelta del giocatore, non una correzione: nessuna leva compensa più nulla nella vissuta.
