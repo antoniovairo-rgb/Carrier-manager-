@@ -73,3 +73,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 05/10 — PO-202: il peso dell'eroe con il brain che decide tutto (questionario)
 - **Domanda:** con il brain che decide tutto, la scena dell'eroe la esegue il motore con la sua fisica. Misura (`docs/governo/misure/2026-10-05-po202-brain-da-solo.md`): oggi 0,88 gol dell'eroe e 58% di vittorie; brain puro 0,36 gol e 45%. Quanto deve pesare l'eroe?
 - **Risposta PO:** «Talento nel brain» — un solo parametro dentro il motore, uguale in vissuta e simulata, che alza la finalizzazione dell'eroe, tarato su 0,6-0,9 gol a partita (obiettivo PO del 30/09). Le quattro correzioni del 7.999.129-132 si ritirano.
+
+## 05/10 — PO-202, passo successivo alla 7.999.137 (questionario)
+- **Domanda:** gli avversari tirano 6,5 volte contro le 9,9 del brain da solo; cause misurate: scene «di origine» (cross/angolo/punizione verso l'eroe) e motore fermo durante la scena. Come procedo?
+- **Risposta PO:** «Correggi entrambe» — le scene di origine restano ma l'azione la gioca solo la scena; il motore non perde il tempo della scena.

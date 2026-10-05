@@ -370,7 +370,8 @@ function creaMotorePossesso(cfg){
       const D=piuVicino(R.x,R.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(R),zona:zonaDi(advDi(R.x,l),R.y),press:+pressioneSu(R).toFixed(1),x:+R.x.toFixed(1),y:+R.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
         tipo:_k26==="angolo"?"angolo":"cross",origine:{kind:_k26,chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)},finestra:!!S.richieste.scenaEroe,liberi:0,cast:{ricevente:chi(P),difensore:D?chi(D.p):null,portiere:chi(K),crossatore:chi(P)}});
-      /* niente fermo: il cross parte come sarebbe partito. Misurato col fermo (tenuta del crossatore): tiri della squadra 8-11 -> 14-19 a partita, gol 2,25 -> 4,75 — il crossatore sul fondo, rimasto col pallone, al passo dopo tirava. */}
+      /* niente fermo: il cross parte come sarebbe partito. Misurato col fermo (tenuta del crossatore): tiri della squadra 8-11 -> 14-19 a partita, gol 2,25 -> 4,75 — il crossatore sul fondo, rimasto col pallone, al passo dopo tirava. */
+      if(cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_FERMO138)){S.scena=true;S._scenaAuto138=S.min|0;S.richieste.verso=null;S.arco=null;}/* [7.999.138] modo brain: il motore si ferma subito (nessun passo dopo, quindi il crossatore non tira) e il cross lo gioca solo la scena; la ripresa ricolloca il pallone */}
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     let tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
     /* [24/09 POC — BRAIN] IL CROSS CERCA UN UOMO. Mirava a un punto a caso dell'area (88-94, y 42-58) qualunque fosse la
@@ -588,7 +589,7 @@ function creaMotorePossesso(cfg){
         cast:(()=>{try{let R=null,rs=-1e9;for(const q of g){if(!mio(q,l)||q.gk||q.i===P.i)continue;const lib=(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4;const sc=advDi(q.x,l)-0.5*hyp(q.x,q.y,P.x,P.y)+(lib?20:0);if(sc>rs){rs=sc;R=q;}}
           const D=piuVicino(P.x,P.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
           return {ricevente:chi(R),difensore:D?chi(D.p):null,portiere:chi(K)};}catch(_eC){return null;}})()});
-      ev("controllo",{chi:chi(P),press:_pr,zona:_z});return;}
+      ev("controllo",{chi:chi(P),press:_pr,zona:_z});if(cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_FERMO138)){S.scena=true;S._scenaAuto138=S.min|0;S.richieste.verso=null;S.arco=null;}/* [7.999.138 PO-202, decisione PO 05/10] dichiarata l'occasione il motore si ferma su quel fatto: l'azione la gioca solo la scena */return;}
     /* [7.894] IL PRIMO TOCCO NON E' SEMPRE UNA SOSTA. Il «controllo» al primo tick di ogni possesso (7.870) fermava
        il pallone ai piedi per un minuto intero in un possesso su due: banco 8 partite, rami.controllo 19 su 92
        tick, 21 passaggi e 2,9 tiri a partita, 0 azioni da tre passaggi — e sul telefono il PO vede «un pallone
@@ -1045,6 +1046,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null){const P=g[S.poss.padrone];S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
       return _fine();}
     S.tick++;S.cond=null;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;/* [diag] quanti tick con una richiesta pendente: per leggere in browser cio' che il banco non vede */if(S.richieste.gol)S.conta.golReqTick=(S.conta.golReqTick|0)+1;if(S.richieste.turno)S.conta.turnoReqTick=(S.conta.turnoReqTick|0)+1;if(S.richieste.verso)S.conta.versoTick=(S.conta.versoTick|0)+1;if(S.scena)S.conta.scenaTick=(S.conta.scenaTick|0)+1;
+    if(S.scena&&S._scenaAuto138!=null&&((S.min|0)-S._scenaAuto138)>=2){S.scena=false;S._scenaAuto138=null;}/* [7.999.138] rete: se la scena dichiarata non si apre, il motore riparte */
     if(S.scena){S.conta.scena++;return[];}
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
@@ -1092,8 +1094,8 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
     atteggiamento(lato,v){S.richieste.att[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},
     eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
-    scena(){S.scena=true;S.richieste.verso=null;S.arco=null;},
-    riprendi(o){o=o||{};S.scena=false;S.fermo=null;S.rete=null;S.richieste.verso=null;
+    scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
+    riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;
       if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
       if(o.eroe&&o.eroe.x!=null){g[HERO].x=clamp(+o.eroe.x,2,98);g[HERO].y=clamp(+o.eroe.y,3,97);}
       const l=o.lato===AWAY?AWAY:HOME;const x=clamp(+o.x||50,2,98),y=clamp(+o.y||50,3,97);
