@@ -1,5 +1,224 @@
 [
  {
+  "data": "2026-10-05 18:35",
+  "versione": "7.999.138",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 700
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 807
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 509
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
+  "data": "2026-10-05 17:08",
+  "versione": "7.999.138",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 736
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 36
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 561
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 346
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 187
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 993
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 257
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 34
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 589
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 417
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 533
+   }
+  ]
+ },
+ {
   "data": "2026-10-05 15:22",
   "versione": "7.999.137",
   "catena": "completa",
@@ -4291,78 +4510,6 @@
     "passo": "career-critical",
     "ok": true,
     "s": 662
-   }
-  ]
- },
- {
-  "data": "2026-10-01 16:40",
-  "versione": "7.999.98",
-  "catena": "rituale 7.999.98",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 21
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 693
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 626
-   },
-   {
-    "passo": "goleade",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 506
-   },
-   {
-    "passo": "brain-82",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "piazzati-eroe",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "cross-origine",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "scene-disegnabili",
-    "ok": true,
-    "s": 15
    }
   ]
  }
