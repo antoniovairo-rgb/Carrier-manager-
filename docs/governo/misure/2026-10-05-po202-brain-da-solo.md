@@ -56,3 +56,14 @@ Cosa è cambiato nel gioco:
 «origine» (cross/angolo/punizione verso l'eroe che diventano scena mentre nel motore l'azione prosegue) tolgono circa 2 tiri, il motore
 fermo durante la scena (6,8 minuti a partita, recuperati dopo) altri 2. I tiri in più della tua squadra (15,7 contro 10,2) sono le scene:
 nella vissuta ogni scena offre un tiro o un assist, il motore da solo tira solo quando conviene.
+
+## 7.999.138 — fermo sull'occasione e tempo restituito (decisione PO «correggi entrambe»)
+| passo | gol (tua – avv.) | tiri | V / N / P | gol eroe dalle scene | minuti di motore giocati |
+|---|---|---|---|---|---|
+| 7.999.137 | 1,50 – 0,63 | 15,7 – 6,5 | 58% / 25% / 17% | 0,46 | 84,5 |
+| 7.999.138 | 1,58 – 0,92 | 13,9 – 9,7 | 54% / 21% / 25% | 0,83 | 87,4 |
+| brain da solo | 1,29 – 0,84 | 10,2 – 9,9 | 48% / 23% / 29% | — | 94 |
+
+Gli avversari tornano al livello del brain da solo (tiri 9,7 contro 9,9, gol 0,92 contro 0,84). La tua squadra resta sopra di +0,3 gol: sono le
+scene, dove il giocatore sceglie sempre una giocata da gol. Il «la scena dura e il resto del campo gioca» non è stato fatto alla lettera:
+sarebbero state due azioni contemporanee (gli avversari che attaccano mentre il pallone è dell'eroe in scena); il tempo si restituisce dopo.
