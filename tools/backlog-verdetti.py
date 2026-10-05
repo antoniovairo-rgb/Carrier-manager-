@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Applica i verdetti del PO al backlog e tiene l'ordine (aperte in cima, chiuse nello storico).
 Uso: python3 tools/backlog-verdetti.py 'PO-158=FATTO — chiusa dal PO 01/10 («chiudi è OK»)' 'PO-159=PARZIALE — PO 01/10: «da completare»' ...
-Lo stato che inizia con FATTO sposta la voce nello storico; gli altri la tengono (o la riportano) fra le aperte."""
+Lo stato che inizia con FATTO o DOPPIONE sposta la voce nello storico; gli altri la tengono (o la riportano) fra le aperte."""
 import re, sys
 from collections import Counter
 B = 'docs/governo/BACKLOG.md'
@@ -19,8 +19,9 @@ mancanti = set(ver) - fatti
 if mancanti: sys.exit('voci non trovate: ' + ', '.join(sorted(mancanti)))
 num = lambda l: int(re.match(r'\| PO-(\d+)', l).group(1))
 order = {'L0': 0, 'L1': 1, 'L3': 3, 'L4': 4, 'L5': 5, 'L6': 6, 'L7': 7, 'L8': 8}
-chiuse = sorted([l for l in rows if l.split(' | ')[4].strip().startswith('FATTO')], key=num)
-aperte = sorted([l for l in rows if not l.split(' | ')[4].strip().startswith('FATTO')], key=lambda l: (order.get(l.split(' | ')[5].strip(), 9), num(l)))
+CHIUSO = ('FATTO', 'DOPPIONE')  # [05/10 decisione PO «ottimizza i PO»] un doppione e' chiuso: vive nella voce in cui e' unito
+chiuse = sorted([l for l in rows if l.split(' | ')[4].strip().startswith(CHIUSO)], key=num)
+aperte = sorted([l for l in rows if not l.split(' | ')[4].strip().startswith(CHIUSO)], key=lambda l: (order.get(l.split(' | ')[5].strip(), 9), num(l)))
 hop = [l for l in op if not l.startswith('| PO-')]; hcl = [l for l in cl if not l.startswith('| PO-')]
 sep = '|---|---|---|---|---|---|---|---|---|'
 io, ic = hop.index(sep), hcl.index(sep)

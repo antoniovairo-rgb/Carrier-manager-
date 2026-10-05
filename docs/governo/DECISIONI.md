@@ -85,3 +85,6 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 05/10 — PO-064 (questionario)
 - **Domanda PO:** «Ma il PO-064 non è una ripetizione?» — sì, si sovrappone a PO-022; la parte esito/probabilità è chiusa da PO-149 e PO-202.
 - **Risposta PO:** «Unisci a PO-022» — PO-064 è DOPPIONE di PO-022; resta una sola voce aperta: la scena 3D dell'eroe la genera il brain, non la scheda scritta (oggi `selectContextualSituations` su SITUATIONS).
+
+## 05/10 — Ottimizzazione del backlog (questionario, richiesta PO «ottimizza tutti i PO, ci sono molte ridondanze»)
+- Unioni approvate (la prima voce resta, le altre diventano DOPPIONE con rimando): PO-120 ← PO-100 · PO-033 ← PO-094, PO-104, PO-050, PO-079 · PO-123 ← PO-133, PO-172, PO-185 · PO-068 ← PO-024, PO-070, PO-075 · PO-030 ← PO-031 · PO-155 ← PO-177 · PO-002 ← PO-150 · PO-209 ← PO-211 · PO-190 ← PO-021 · (e PO-022 ← PO-064).

@@ -175,9 +175,9 @@ const md=s=>esc(s).replace(/\\*\\*([^*]+)\\*\\*/g,'<strong>$1</strong>').replace
 const testo=s=>String(s).replace(/\\*\\*|\`/g,'');
 // stato normalizzato: la prima parola chiave, per il menu a tendina
 const statoBase=s=>{const t=testo(s).toUpperCase();
-  for(const k of ['FATTO','PARZIALE','APERTO','IN CORSO','IN ATTESA','DA COLLAUDARE','NON RIPRODOTTO','SOSPESO','NON POSSO CONFERMARLO'])if(t.startsWith(k))return k.charAt(0)+k.slice(1).toLowerCase();
+  for(const k of ['FATTO','DOPPIONE','PARZIALE','APERTO','IN CORSO','IN ATTESA','DA COLLAUDARE','NON RIPRODOTTO','SOSPESO','NON POSSO CONFERMARLO'])if(t.startsWith(k))return k.charAt(0)+k.slice(1).toLowerCase();
   return testo(s).split(/[ —(,]/)[0]||'—';};
-const chipCls=b=>/^Fatto/.test(b)?'c-ok':/^(Parziale|In corso)/.test(b)?'c-run':/^(Aperto|Non riprodotto)/.test(b)?'c-open':'c-wait';
+const chipCls=b=>/^(Fatto|Doppione)/.test(b)?'c-ok':/^(Parziale|In corso)/.test(b)?'c-run':/^(Aperto|Non riprodotto)/.test(b)?'c-open':'c-wait';
 let tab=0;try{const v=localStorage.getItem('gov-tab');if(v!==null&&DATI.tabs[+v])tab=+v;}catch(e){}
 const F={};let ord=null;
 function valMenu(T,c,v){return T.cols[c]==='Stato'?statoBase(v):testo(v)||'—';}
