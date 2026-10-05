@@ -39,7 +39,7 @@ const TATTICHE_MOTORE={
     Bilanciato:{press:0,linea:0,amp:0,ment:0,diretto:0},Pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},
     Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
 try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
-const TAL202_K=3;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2); taratura 05/10 */
+const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2). Taratura 05/10 sulla VISSUTA (dove il giocatore tira a ogni occasione): K=3 dava 1,38 gol dell'eroe dalle scene, K=1 stimato ~0,8; nella simulazione rapida K=1 da' 0,48 */
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

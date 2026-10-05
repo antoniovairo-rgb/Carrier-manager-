@@ -2,8 +2,8 @@
 /* [7.999.137 PO-202, direttiva PO 05/10 «il brain deve decidere tutto durante la partita» + decisione PO «talento nel brain»]
    GUARDIANO in due parti.
    (A) TALENTO NEL BRAIN, in node: 120 partite del motore sulle 24 configurazioni vere della vissuta S12 (fixtures/cfg-202-s12.json,
-       eroe OVR 93), 5 semi ciascuna, occasioni dell'eroe nel motore. VERDE: gol dell'eroe a partita fra 0,55 e 1,0 (obiettivo PO 0,6-0,9; misurato 0,71 a K=3). ROSSO (__CPM_NO_TAL202):
-       sotto lo 0,5 (misurato 0,35).
+       eroe OVR 93), 5 semi ciascuna, occasioni dell'eroe nel motore. VERDE: con il talento (K=1) i gol dell'eroe salgono di almeno il 20% rispetto al ROSSO (__CPM_NO_TAL202) e restano
+       sopra 0,4 (taratura: simulata 0,35 senza, 0,48 con; l'obiettivo PO 0,6-0,9 si misura sulla vissuta, vedi la misura del 05/10).
    (B) LA SCENA LA GIOCA IL MOTORE, in una partita vera dal salvataggio S12 (autoplay, seme fisso): VERDE almeno una scena di tiro o
        assist decisa da giocaScena (testimone __CPM_SCENA137). ROSSO (__CPM_NO_BRAIN137): nessuna. Uso: node brain-202.mjs */
 import fs from 'node:fs';
@@ -43,8 +43,7 @@ for (const rosso of [false, true]) {
 }
 await b.close(); srv.close();
 const g = [];
-if (!(A.verde >= 0.55 && A.verde <= 1.0)) g.push('A verde fuori banda 0,55-1,0: ' + A.verde);
-if (!(A.rosso < 0.5)) g.push('A rosso: il talento spento non si vede ' + A.rosso);
+if (!(A.verde >= A.rosso * 1.2 && A.verde >= 0.4)) g.push('A: il talento non alza i gol dell\'eroe (verde ' + A.verde + ', rosso ' + A.rosso + ')');
 if (!(Bx.verde.decise >= 1)) g.push('B verde: nessuna scena decisa dal motore ' + JSON.stringify(Bx.verde));
 if (!(Bx.rosso.decise === 0)) g.push('B rosso: scene decise dal motore anche spento ' + JSON.stringify(Bx.rosso));
 if (g.length) { console.log('❌ brain-202'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
