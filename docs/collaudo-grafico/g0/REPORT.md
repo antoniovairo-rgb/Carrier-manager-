@@ -209,7 +209,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 2 | 2 | 2 | 2 | 2 |
 | Impostazioni | 2 | 2 | 2 | 2 | 2 |
-| Creazione | 6 | 6 | 6 | 6 | 6 |
+| Creazione | 7 | 7 | 7 | 7 | 7 |
 | Offerte | 3 | 3 | 3 | 3 | 3 |
 | Dashboard | 4 | 4 | 4 | 4 | 4 |
 | Stagione · Classifica | 8 | 8 | 8 | 8 | 8 |
@@ -304,16 +304,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSimulatore di carriera |
 |  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Creazione | 51 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | Inizia i provini |
-| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
+| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
-| Ufficio | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:01Italia ·  |
+| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
+| Ufficio | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 04:20Italia ·  |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 
@@ -476,7 +476,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---|
 | Home fuori carriera | 2 | `#ffffff` x1 (Nuova carriera) · `#526279` x1 (Crea il tuo ca) |
 | Impostazioni | 3 | `#1e293b` x7 (⚙️ Opzioni) · `#596a80` x5 (85) · `#526279` x1 (🎧 Audio) |
-| Creazione | 9 | `#1e293b` x264 (NOME) · `#596a80` x262 (👤 Identità) · `#000000` x260 (CFM) · `#526279` x18 (187 cm · 80 kg) · `#a34a08` x8 (🏆 Scalatore N) · `#166534` x7 (Effetto sugli ) · `#b91c1c` x4 (Velocità) · `#ffffff` x2 (Inizia i provi) · `#8e1f33` x2 (📋 Percorso ca) |
+| Creazione | 9 | `#1e293b` x265 (NOME) · `#596a80` x262 (👤 Identità) · `#000000` x260 (CFM) · `#526279` x18 (187 cm · 80 kg) · `#a34a08` x8 (🏆 Scalatore N) · `#166534` x7 (Effetto sugli ) · `#b91c1c` x4 (Velocità) · `#8e1f33` x2 (📋 Percorso ca) · `#ffffff` x1 (Inizia i provi) |
 | Offerte | 3 | `#526279` x14 (Scegli →) · `#1e293b` x6 (TAT) · `#ffffff` x1 (Scegli →) |
 | Dashboard | 9 | `#1e293b` x22 (10) · `#ffffff` x12 (86) · `#526279` x12 (Partite) · `#596a80` x10 (Forma) · `#166534` x5 (14) · `#8e1f33` x3 (78) · `#6c1f2e` x2 (Salva) · `#7c3aed` x2 (6) · `#92400e` x2 (7,4) |
 | Stagione · Classifica | 9 | `#526279` x90 (Calendario) · `#1e293b` x58 (CRE) · `#b91c1c` x28 (3) · `#166534` x26 (11) · `#ffffff` x14 (86) · `#596a80` x9 (Club) · `#8e1f33` x8 (SAL) · `#6c1f2e` x2 (Salva) · `#0f172a` x2 (1) |

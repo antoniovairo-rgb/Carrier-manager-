@@ -1676,7 +1676,7 @@
      "Inizia i provini"
     ],
     "nColTesto": 9,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 4,
     "nRaggi": 3,
     "nPesi": 4,
@@ -1709,7 +1709,7 @@
     "tinteTesto": [
      {
       "c": "#1e293b",
-      "n": 264,
+      "n": 265,
       "fs": 17,
       "esempio": "NOME"
      },
@@ -1750,16 +1750,16 @@
       "esempio": "Velocità"
      },
      {
-      "c": "#ffffff",
-      "n": 2,
-      "fs": 15,
-      "esempio": "Inizia i provini"
-     },
-     {
       "c": "#8e1f33",
       "n": 2,
       "fs": 12,
       "esempio": "📋 Percorso carriera"
+     },
+     {
+      "c": "#ffffff",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Inizia i provini"
      }
     ],
     "corpiDet": [
@@ -1911,7 +1911,7 @@
      "Inizia i provini"
     ],
     "nColTesto": 9,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 4,
     "nRaggi": 3,
     "nPesi": 4,
@@ -1944,7 +1944,7 @@
     "tinteTesto": [
      {
       "c": "#1e293b",
-      "n": 264,
+      "n": 265,
       "fs": 17,
       "esempio": "NOME"
      },
@@ -1985,16 +1985,16 @@
       "esempio": "Velocità"
      },
      {
-      "c": "#ffffff",
-      "n": 2,
-      "fs": 15,
-      "esempio": "Inizia i provini"
-     },
-     {
       "c": "#8e1f33",
       "n": 2,
       "fs": 12,
       "esempio": "📋 Percorso carriera"
+     },
+     {
+      "c": "#ffffff",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Inizia i provini"
      }
     ],
     "corpiDet": [
@@ -2146,7 +2146,7 @@
      "Inizia i provini"
     ],
     "nColTesto": 9,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 4,
     "nRaggi": 3,
     "nPesi": 4,
@@ -2179,7 +2179,7 @@
     "tinteTesto": [
      {
       "c": "#1e293b",
-      "n": 264,
+      "n": 265,
       "fs": 17,
       "esempio": "NOME"
      },
@@ -2220,16 +2220,16 @@
       "esempio": "Velocità"
      },
      {
-      "c": "#ffffff",
-      "n": 2,
-      "fs": 15,
-      "esempio": "Inizia i provini"
-     },
-     {
       "c": "#8e1f33",
       "n": 2,
       "fs": 12,
       "esempio": "📋 Percorso carriera"
+     },
+     {
+      "c": "#ffffff",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Inizia i provini"
      }
     ],
     "corpiDet": [
@@ -2381,7 +2381,7 @@
      "Inizia i provini"
     ],
     "nColTesto": 9,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 4,
     "nRaggi": 3,
     "nPesi": 4,
@@ -2414,7 +2414,7 @@
     "tinteTesto": [
      {
       "c": "#1e293b",
-      "n": 264,
+      "n": 265,
       "fs": 17,
       "esempio": "NOME"
      },
@@ -2455,16 +2455,16 @@
       "esempio": "Velocità"
      },
      {
-      "c": "#ffffff",
-      "n": 2,
-      "fs": 15,
-      "esempio": "Inizia i provini"
-     },
-     {
       "c": "#8e1f33",
       "n": 2,
       "fs": 12,
       "esempio": "📋 Percorso carriera"
+     },
+     {
+      "c": "#ffffff",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Inizia i provini"
      }
     ],
     "corpiDet": [
@@ -2616,7 +2616,7 @@
      "Inizia i provini"
     ],
     "nColTesto": 9,
-    "nFondi": 6,
+    "nFondi": 7,
     "nCorpi": 4,
     "nRaggi": 3,
     "nPesi": 4,
@@ -2649,7 +2649,7 @@
     "tinteTesto": [
      {
       "c": "#1e293b",
-      "n": 264,
+      "n": 265,
       "fs": 17,
       "esempio": "NOME"
      },
@@ -2690,16 +2690,16 @@
       "esempio": "Velocità"
      },
      {
-      "c": "#ffffff",
-      "n": 2,
-      "fs": 15,
-      "esempio": "Inizia i provini"
-     },
-     {
       "c": "#8e1f33",
       "n": 2,
       "fs": 12,
       "esempio": "📋 Percorso carriera"
+     },
+     {
+      "c": "#ffffff",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Inizia i provini"
      }
     ],
     "corpiDet": [
@@ -3829,7 +3829,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4095,7 +4095,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4361,7 +4361,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4627,7 +4627,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4893,7 +4893,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5143,7 +5143,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -5384,7 +5384,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -5625,7 +5625,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -5866,7 +5866,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -6107,7 +6107,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -6349,7 +6349,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -6589,7 +6589,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -6829,7 +6829,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -7069,7 +7069,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -7309,7 +7309,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -7527,7 +7527,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -7743,7 +7743,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -7959,7 +7959,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -8175,7 +8175,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -8391,7 +8391,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -8645,7 +8645,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -8897,7 +8897,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -9149,7 +9149,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -9401,7 +9401,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -9653,7 +9653,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -9909,7 +9909,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -10163,7 +10163,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -10417,7 +10417,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -10671,7 +10671,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -10925,7 +10925,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -11174,7 +11174,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -11421,7 +11421,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -11668,7 +11668,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -11915,7 +11915,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -12162,7 +12162,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -12422,7 +12422,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -12680,7 +12680,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -12938,7 +12938,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -13196,7 +13196,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -13454,7 +13454,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
@@ -13701,7 +13701,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -13946,7 +13946,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -14191,7 +14191,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -14436,7 +14436,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    },
@@ -14681,7 +14681,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 07:01Italia · "
+      "txt": "K⚽rwardEliteSalva · 04:20Italia · "
      }
     ]
    }
