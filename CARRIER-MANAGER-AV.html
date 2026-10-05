@@ -27404,8 +27404,8 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
    pannello in partita sia dal tabellino di fine gara: stesse voci, stesso ordine, stesse etichette. */
 /* [7.999.137 PO-202, direttiva PO 05/10 «il brain deve decidere tutto durante la partita»] Acceso: la scena di tiro/assist la gioca il
    motore (giocaScena, src/14), e le correzioni lato partita vissuta del 7.999.129-132 si ritirano (fin202, ripresa all'avversario dopo
-   il tiro dell'eroe, addebito dell'xG della scena). Restano il motore che gioca nel minuto della scena e il recupero: c'e' anche nella
-   simulazione rapida. Rosso __CPM_NO_BRAIN137 = tutto come la 7.999.136. */
+   addebito dell'xG della scena). Restano il motore che gioca nel minuto della scena, il recupero (c'e' anche nella simulazione rapida)
+   e la ripresa dell'avversario dopo un tiro fuori/parato o un pallone perso (regola del calcio). Rosso __CPM_NO_BRAIN137 = 7.999.136. */
 function brain137(){return !(typeof window!=='undefined'&&window.__CPM_NO_BRAIN137);}
 function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
   const dr=(q)=>q.dribbling>0?Math.round(100*(q.dribblingOk||0)/q.dribbling):0;
@@ -31676,7 +31676,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
              Dopo un tiro dell'eroe finito fuori o parato riparte l'avversario (rimessa dal fondo o portiere). Palo e tiro murato restano
              contesi. Rosso __CPM_NO_RIP202. */
-          const _r202=(_st0.scena&&!_c207&&!brain137()&&!(typeof window!=='undefined'&&window.__CPM_NO_RIP202)&&(rip202Ref.current==='fuori'||rip202Ref.current==='saved'));
+          const _r202=(_st0.scena&&!_c207&&!(typeof window!=='undefined'&&window.__CPM_NO_RIP202)&&(rip202Ref.current==='fuori'||rip202Ref.current==='saved'||rip202Ref.current==='wide'||rip202Ref.current==='perso'));/* [7.999.137] e' la regola del calcio (rimessa dal fondo, palla al portiere, palla a chi l'ha presa), non una compensazione: resta nel modo brain */
           if(_st0.scena&&typeof window!=='undefined'&&window.__CPM_REC){try{const _R=(window.__CPM_RIP202=window.__CPM_RIP202||[]);if(_R.length<60)_R.push({min:nx,lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gol:!!_c207,tiro:rip202Ref.current||null,x:Math.round((ballPosRef.current&&ballPosRef.current.x)||50)});}catch(_e202){}}/* testimone: chi riparte dopo ogni scena dell'eroe */
           if(_st0.scena&&_r202){try{setTurn616(-1,"rip202");}catch(_e202b){}}
           if(_st0.scena)rip202Ref.current=null;
@@ -35184,7 +35184,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
       if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9});_brain23(_evB2);
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
-        try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}rip202Ref.current=_t202;}catch(_e202){}
+        try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}if(brain137()&&!ok&&(_t202==='blocked'||/intercept|dispossess|beaten|lost|stopped/i.test(String(_outKind||key||''))))_t202='perso';rip202Ref.current=_t202;}catch(_e202){}/* [7.999.137] anche il pallone perso (intercetto, contrasto, tiro murato) riparte con l'avversario */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
       else if(_M&&_M.registra){
       const _lato=(typeof window!=='undefined'&&window.__CPM_NO_TAB10)?(isMatchHome?'home':'away'):'home';/* [7.999.10] nel motore «home» e' sempre la squadra dell'eroe: il ponte (ramo del rosso B2) scriveva sull'avversario in trasferta */
