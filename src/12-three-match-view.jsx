@@ -775,12 +775,19 @@ function ThreeMatchView(props){
       const vr=av.visualRoot;if(av._vr77!==vr){if(av._vr77&&av._off77)av._vr77.position.y=av._vy77;av._vr77=vr;av._vy77=vr.position.y;av._off77=0;}
       const ry=av.root?av.root.position.y:0;
       if(!cer||(typeof window!=='undefined'&&window.__CPM_NO_PIEDI77)||av.proc.position.y>0.3){if(av._off77){vr.position.y=av._vy77;av._off77=0;}
-        if(!cer&&av.proc.position.y<0.05){vr.updateMatrixWorld(true);av._footL.getWorldPosition(_v77);const l=_v77.y;av._footR.getWorldPosition(_v77);const m=Math.min(l,_v77.y)-ry;if(m>0.02&&(av._f077==null||m<av._f077))av._f077=m;}
+        if(!cer&&av.proc.position.y<0.05){vr.updateMatrixWorld(true);av._footL.getWorldPosition(_v77);const l=_v77.y;av._footR.getWorldPosition(_v77);const m=Math.min(l,_v77.y)-ry;if(m>0.02&&av._fs203==null)av._fs203=m;if(m>0.02&&(av._f077==null||m<av._f077))av._f077=m;}
         return;}
       const f0=av._f077!=null?av._f077:0.0634*(av._h||1.86);/* quota a terra: misurata in partita; senza partita, proporzione del corpo (0,118 su 1,86) */
+      /* [7.999.140 PO-203 «l'eroe affonda nell'erba» nella festa e nella premiazione] CAUSA MISURATA: la quota a terra _f077 e' il
+         MINIMO del piede piu' basso in tutta la partita e scende soltanto: ogni clip che abbassa il piede (passaggio, cross, scelta)
+         la trascina giu' — misurato su tre partite S12: 0,124 da fermo al calcio d'inizio, 0,102 / 0,095 / 0,094 al fischio. In festa
+         il corpo viene abbassato fino a quella quota, cioe' 2-3 centesimi sotto il prato, e piu' scene giochi piu' affonda.
+         Ora la quota non scende sotto il 95% del primo campione, cioe' il piede da fermo prima di ogni clip (senza campione,
+         la proporzione del corpo). Rosso __CPM_NO_PIEDI203. */
+      const _f203=(typeof window!=='undefined'&&window.__CPM_NO_PIEDI203)?f0:Math.max(f0,av._fs203!=null?0.95*av._fs203:0.0634*(av._h||1.86));
       vr.position.y=av._vy77;vr.updateMatrixWorld(true);
       av._footL.getWorldPosition(_v77);const l=_v77.y;av._footR.getWorldPosition(_v77);const raw=Math.min(l,_v77.y)-ry;
-      const d=raw-f0;if(d<=0.005){av._off77=0;return;}
+      const d=raw-_f203;if(d<=0.005){av._off77=0;return;}
       (vr.parent||vr).getWorldScale(_s77);const k=_s77.y||1;
       vr.position.y=av._vy77-d/k;av._off77=d;vr.updateMatrixWorld(true);}catch(_e){}};
     /* [7.999.77+ Parte 1 prompt PO «le braccia del mister sono storte o incrociate nelle feste»] CAUSA MISURATA
@@ -829,7 +836,7 @@ function ThreeMatchView(props){
       av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_piedi77(av);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
     };
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_BURST77=(home)=>{goalBurstT=0;goalBurstHome=!!home;goalBurstStadHome=!!home;return true;};}catch(_e77b){}/* [7.999.77+] test-only: fa esultare la panchina come per un gol (home=true: la panchina di casa) */
-    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h,x:+a.proc.position.x.toFixed(2),z:+a.proc.position.z.toFixed(2),rx:+a.root.position.x.toFixed(2),rz:+a.root.position.z.toFixed(2),g:a._gName||null,gw:+(a._gw||0).toFixed(2),run:+((a.run&&a.run.weight)||0).toFixed(2),idle:+((a.idle&&a.idle.weight)||0).toFixed(2),st:+(window.__CPM_SCENET||0).toFixed(3),ct:window.__CPM_CERT!=null?+(+window.__CPM_CERT).toFixed(2):null};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,fs:a._fs203,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h,x:+a.proc.position.x.toFixed(2),z:+a.proc.position.z.toFixed(2),rx:+a.root.position.x.toFixed(2),rz:+a.root.position.z.toFixed(2),g:a._gName||null,gw:+(a._gw||0).toFixed(2),run:+((a.run&&a.run.weight)||0).toFixed(2),idle:+((a.idle&&a.idle.weight)||0).toFixed(2),st:+(window.__CPM_SCENET||0).toFixed(3),ct:window.__CPM_CERT!=null?+(+window.__CPM_CERT).toFixed(2):null};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});
       /* [7.999.56] T-pose misurata per corpo: peso idle/corsa non finito, oppure nessuna azione del mixer con peso (tutte le clip del corpo) */
