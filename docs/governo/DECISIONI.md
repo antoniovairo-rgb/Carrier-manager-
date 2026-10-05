@@ -77,3 +77,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 05/10 — PO-202, passo successivo alla 7.999.137 (questionario)
 - **Domanda:** gli avversari tirano 6,5 volte contro le 9,9 del brain da solo; cause misurate: scene «di origine» (cross/angolo/punizione verso l'eroe) e motore fermo durante la scena. Come procedo?
 - **Risposta PO:** «Correggi entrambe» — le scene di origine restano ma l'azione la gioca solo la scena; il motore non perde il tempo della scena.
+
+## 05/10 — PO-210 e PO-203 (questionario)
+- **PO-210** «schermata post partita più standard»: **come le schede carriera** (card chiare, titoli di sezione e fisarmoniche della carriera; tabellino della gara in fisarmonica).
+- **PO-203** «eroe che affonda nell'erba»: visto nella **festa di fine partita normale** e nella **premiazione / Nazionale**. Il team non lo ha riprodotto (festa del provino, premiazione dopo partita S12): si cercano le varianti (stadio, clip).

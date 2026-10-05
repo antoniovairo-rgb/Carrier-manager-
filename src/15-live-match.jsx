@@ -1070,6 +1070,14 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
    motore (giocaScena, src/14), e le correzioni lato partita vissuta del 7.999.129-132 si ritirano (fin202, ripresa all'avversario dopo
    addebito dell'xG della scena). Restano il motore che gioca nel minuto della scena, il recupero (c'e' anche nella simulazione rapida)
    e la ripresa dell'avversario dopo un tiro fuori/parato o un pallone perso (regola del calcio). Rosso __CPM_NO_BRAIN137 = 7.999.136. */
+/* [7.999.139 PO-210, decisione PO 05/10 «come le schede carriera»] le sezioni del resoconto post partita sono fisarmoniche della carriera
+   (cappello standard + Card), aperte, con la scelta del giocatore ricordata. Rosso __CPM_NO_POST210 = titolo fatto a mano di prima. */
+function Sez210({id,titolo,icona,children}){
+  if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
+    <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>{(icona?icona+" ":"")+String(titolo).toUpperCase()}</div>{children}</>);
+  return(<Fisarmonica id={id} titolo={titolo} icona={icona} aperta={true} style={{textAlign:"left"}}>
+    <Card style={{padding:"9px 10px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:0}}><div data-cpm="sez210">{children}</div></Card>
+  </Fisarmonica>);}
 function brain137(){return !(typeof window!=='undefined'&&window.__CPM_NO_BRAIN137);}
 function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
   const dr=(q)=>q.dribbling>0?Math.round(100*(q.dribblingOk||0)/q.dribbling):0;
@@ -11271,8 +11279,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
-          <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>IL TUO TABELLINO</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
+          <Sez210 id="post-tabellino" titolo="Il tuo tabellino">
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},(()=>{/* [7.999.17 collaudo PO: «17 tiri» nel TUO tabellino contro «6/13 tiri in porta» poco sotto] quel 17 erano i tiri della SQUADRA (mxStats). Qui ora i tiri dell'EROE dalla pagella del motore, la stessa fonte del riquadro «in numeri». Rosso __CPM_NO_TIRI17 */let _q17=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRI17))_q17=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe)||null;}catch(_e){}return _q17?{l:"Tiri",v:_q17.tiri|0,e:"💥",c:TH.accent}:{l:"Tiri squadra",v:mxStats.shots,e:"💥",c:TH.accent};})(),{l:"Poss.",v:((()=>{/* [7.999.136 PO-209 collaudo PO «alcune statistiche sembrano al contrario»: possesso 37% qui e 49% nel tabellino sotto] qui si leggeva lo stato della cronaca (possession), che va per conto suo; il tabellino della gara lo prende dal motore. Ora la stessa fonte. Rosso __CPM_NO_POSS209 */
               if(!(typeof window!=='undefined'&&window.__CPM_NO_POSS209)){try{const _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null;if(_T&&_T.home&&_T.away){const _v=latiTabellino10(_T,isMatchHome).mine.possesso;if(_v!=null)return _v;}}catch(_e){}}
               return Math.round(possession);})())+'%',e:"🔵",c:TH.success}].map(s=>(
@@ -11281,6 +11289,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </Card>
             ))}
           </div>
+          </Sez210>
           {(()=>{/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] le connessioni della gara */
             const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
             if(!_gv.length&&!_rc.length)return null;
@@ -11289,11 +11298,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{minWidth:0}}><div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5}}>{lbl}</div>
                 <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
             </div>):null;
-            return(<div style={{marginBottom:14}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>🔗 LE CONNESSIONI</div>
+            return(<Sez210 id="post-connessioni" titolo="Le connessioni" icona="🔗">
               {_row("🎯","Assist serviti a",_gv,TH.primary)}
               {_row("⚽","Gol su assist di",_rc,TH.warning)}
-            </div>);
+            </Sez210>);
           })()}
           {/* [7.914.0 — IL TABELLINO DELLA GARA, richiesta del PO: «ci deve essere il tabellino delle statistiche
               completo altrimenti non riesco a capirne l'andamento»] Le quattro voci qui sotto sono le TUE
@@ -11322,9 +11330,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ["Rimesse laterali",_mine.rimesse,_loro.rimesse,_mine.rimesse,_loro.rimesse],
             ].filter(r=>(+r[3]||0)+(+r[4]||0)>0);
             if(!_righe.length)return null;
-            return(<div style={{marginBottom:14}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>TABELLINO DELLA GARA</div>
-              <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}}>
+            return(<Sez210 id="post-gara" titolo="Tabellino della gara">
+              <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
                   <span style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isMatchHome?homeTeamObj:awayTeamObj)?.n||"La tua squadra"}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
@@ -11343,10 +11350,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </div>
                   </div>);})}
               </div>
-            </div>);
+            </Sez210>);
           })()}
-          <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>IL TUO TABELLINO IN NUMERI</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:14}}>
+          <Sez210 id="post-numeri" titolo="Il tuo tabellino in numeri">
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
             {/* [23/09 POC — collaudo PO «queste statistiche sono coerenti? vengono da brain?»] NO, venivano da contatori a parte
                 (mxStats) e non tornavano col tabellino della gara (misurato: tiri avversari 11 qui, 20 nel tabellino). Ora sono
                 la PAGELLA DEL BRAIN dell eroe: palloni ricevuti, passaggi riusciti, tiri in porta, recuperi. Rosso __CPM_NO_NUMERI23. */}
@@ -11359,6 +11366,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             ))}
           </div>
+          </Sez210>
           {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);let rating=Math.round(raw*10)/10;
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
             try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
