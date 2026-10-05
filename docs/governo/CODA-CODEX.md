@@ -2,7 +2,7 @@
 
 Messaggi di Codex messi in coda dal PO. Ogni rilievo resta un'ipotesi finché il team non lo riproduce.
 
-## 04/10/2026 — Allineamento, base CPM 7.999.128 (in coda, non ancora lavorato)
+## 04/10/2026 — Allineamento, base CPM 7.999.128 (letto dal team il 05/10)
 
 - **Banco 7.999.105 archiviato** (decisione PO 03/10): nota pubblicata su `codex/2026-10-02-banco-deterministico`, commit `f6d96723` (verificato dal team con `git ls-remote`).
 - **Ramo attivo:** `codex/2026-10-04-po077-7999128`, commit `e0bc7e9b` (verificato), creato da main `fba48b4e` (7.999.128). Nessun file del gioco modificato.
@@ -13,3 +13,9 @@ Messaggi di Codex messi in coda dal PO. Ogni rilievo resta un'ipotesi finché il
 - **Blocco:** memoria del computer del collaudatore. Codex mantiene la soglia di 3 GB indicata dal PO; per misure valide serve più memoria libera all'avvio del singolo caso.
 
 Da fare dal team quando si riprende: leggere i due rapporti dal ramo `e0bc7e9b`; valutare se i casi di testa si possono misurare nella sessione cloud del team (15 GB) invece che sul computer del collaudatore.
+
+**Lettura del team, 05/10** (ramo scaricato, `git log` fino a `e0bc7e9b`; letti `reports/codex/2026-10-04-po077-7999128.md` e `2026-10-04-passaggi-7999128.md`):
+- I due rapporti confermano quanto riassunto sopra: **nessuna misura valida** sulla 7.999.128. PO-077 gi86: `valid:false`, `lowMemory:true`, 0 fotogrammi, sia con Chrome (3,510 GiB liberi all'avvio) sia con Edge (4,033 GiB). Passaggi: `discovery:0`, `cases:0`.
+- Nulla da riprodurre: non ci sono rilievi sul gioco, solo tentativi non validi dichiarati come tali.
+- **Discrepanza da chiarire col PO:** il rapporto parla di una soglia di **3 GiB** «indicata dal PO»; il prompt del team del 04/10 (`docs/governo/prompt/codex-2026-10-04b-ripresa.md`) dice **6 GB**. Non posso confermare quale valore il PO abbia comunicato a Codex.
+- Proposta: le scene di testa (gi86, gi90, rosso gi171) si possono misurare nella sessione cloud del team, che non ha il limite di memoria; serve il via del PO, perché finora PO-077 è stato affidato a Codex.

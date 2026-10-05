@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (53)
+## Voci aperte o parziali (51)
 
-Per lotto: L1 29 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
+Per lotto: L1 27 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -47,8 +47,6 @@ Per lotto: L1 29 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-209 | 04/10 | Tabellino post partita: «alcune statistiche sembrano al contrario» (foto: intestazione FC Laguna invece di FC Moreira dopo il cambio di squadra; possesso 37% nel riquadro eroe contro 49% nel tabellino; 3-0 con xG 0,90 contro 1,07) | difetto | DA MISURARE | L1 | — | da scrivere | PO 04/10 (foto tabellino) |
 | PO-210 | 04/10 | Schermata post partita (tabellino): «la renderei anche più standard graficamente» | grafica | DA FARE | L1 | — | da scrivere | PO 04/10 |
 | PO-211 | 04/10 | Intervista post partita «assurda» dopo il cambio di squadra: «si è incasinato tutto» (foto: sala stampa con sponsor e testate sovrapposte, MRA 3-0 FC Empolese) | difetto | DA MISURARE | L1 | — | da scrivere | PO 04/10 (foto intervista) |
-| PO-214 | 04/10 | Presentazione al nuovo club: deve esserci PRIMA della prima partita col nuovo club e deve essere una conferenza stampa in stile intervista post partita (oggi: riquadro «Presentazione · FC Moreira» in home con 3 frasi, dopo 3 partite) | richiesta | DA FARE | L1 | — | da scrivere | PO 04/10 (foto home) |
-| PO-215 | 05/10 00:28 | Carriera › Storico allenatori: icone (emoji) al posto delle figurine; possibile omonimia «Mister Verdiani» S.4-6 Difensivo e S.13 Bilanciato (stesso mister o due diversi?) | difetto | DA FARE | L1 | — | da scrivere | PO 05/10 (foto storico allenatori) |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | PARZIALE — 7.999.120: rivale e sponsor di club nascono all'accettazione dell'offerta pro, non più alla ricarica (guardiano pro-rivale-176, rosso __CPM_NO_PRO176); differenze playedMd e cup.club da ricollaudare con Codex sulla 7.999.120 | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -74,7 +72,7 @@ Per lotto: L1 29 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
 
-## Storico — voci chiuse (162)
+## Storico — voci chiuse (164)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -240,6 +238,8 @@ Per lotto: L1 29 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-208 | 04/10 22:44 | Figurine: tutte con lo stesso contorno (procuratore nel Confronto con carta rossa a colori club, fuori standard) | difetto | FATTO — 7.999.133: cornice grigia uniforme su tutte le figurine (scelta PO), guardiano figurine-208 | L1 | 7.999.133 | da scrivere | PO 04/10 22:44 «Tutte le figurine devono avere lo stesso contorno, questo è fuori standard» (2 foto) |
 | PO-212 | 04/10 | Anteprima di accettazione dell'offerta: posizione e punti in classifica diversi da quelli reali (classifica: MRA 13°, 3 punti) | difetto | FATTO — 7.999.134: anteprima e firma usano la stessa funzione (legaDopoTrasferimento212); S12 Torino Athletic 14ª/31 = 14ª/31, rosso 3ª/69 contro 14ª/31; residuo dichiarato: la stagione del club nuovo si ricostruisce alla firma; guardiano anteprima-212 | L1 | — | da scrivere | PO 04/10 (foto classifica) |
 | PO-213 | 04/10 | Partita 2D, pannello Statistiche: le voci compaiono un po' alla volta; «devono esserci tutte all'inizio anche se a zero» (foto: mancano tiri, possesso, xG in avvio) | difetto | FATTO — 7.999.133: statistiche in partita tutte presenti dall inizio anche a zero (17 voci contro 2), guardiano figurine-208 | L1 | — | da scrivere | PO 04/10 (foto statistiche) |
+| PO-214 | 04/10 | Presentazione al nuovo club: deve esserci PRIMA della prima partita col nuovo club e deve essere una conferenza stampa in stile intervista post partita (oggi: riquadro «Presentazione · FC Moreira» in home con 3 frasi, dopo 3 partite) | richiesta | FATTO — 7.999.135: «Gioca» apre la sala stampa del post partita prima della prima partita col club nuovo (domanda, rilancio, prima pagina, poi discorso del mister); residuo: con Simula resta il riquadro in home; guardiano presentazione-214 | L1 | — | da scrivere | PO 04/10 (foto home) |
+| PO-215 | 05/10 00:28 | Carriera › Storico allenatori: icone (emoji) al posto delle figurine; possibile omonimia «Mister Verdiani» S.4-6 Difensivo e S.13 Bilanciato (stesso mister o due diversi?) | difetto | FATTO — 7.999.135: storico allenatori con figurina e club per riga (anche il discorso pre-partita); cognomi già passati nella carriera saltati (misterLibero215): 0 club su 252 con omonimo, rosso 75; guardiano mister-215 | L1 | — | da scrivere | PO 05/10 (foto storico allenatori) |
 
 ## Ricostruzione (fonti e regole di stato)
 

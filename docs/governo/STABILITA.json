@@ -1,5 +1,321 @@
 [
  {
+  "data": "2026-10-05 04:19",
+  "versione": "7.999.135",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 199
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 806
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 276
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 311
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 70
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 68
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 77
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 112
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 103
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 75
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 40
+   }
+  ]
+ },
+ {
+  "data": "2026-10-05 03:45",
+  "versione": "7.999.135",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 697
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 695
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 507
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
+  "data": "2026-10-05 02:45",
+  "versione": "7.999.135",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 683
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 72
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 56
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 550
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 299
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 307
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 480
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 689
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 48
+   }
+  ]
+ },
+ {
   "data": "2026-10-05 02:05",
   "versione": "7.999.134",
   "catena": "completa",
