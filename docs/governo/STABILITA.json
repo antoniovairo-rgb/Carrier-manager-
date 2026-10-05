@@ -1,5 +1,169 @@
 [
  {
+  "data": "2026-10-05 00:29",
+  "versione": "7.999.133",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 680
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 734
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 509
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
+  "data": "2026-10-04 23:49",
+  "versione": "7.999.133",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 200
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 727
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 56
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 275
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 313
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 72
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 70
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 79
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 113
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 101
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 76
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 39
+   }
+  ]
+ },
+ {
   "data": "2026-10-04 22:45",
   "versione": "7.999.132",
   "catena": "carriera",
