@@ -27,3 +27,32 @@ registratore `__CPM_REG202` che annota ogni chiamata al motore. In node (`tools/
 
 **Cosa non è misurato.** Le partite sono in autoplay (scelte seedate), non scelte di un giocatore umano. Un salvataggio solo (S12,
 eroe OVR 93, squadra forte): per una squadra debole i numeri cambiano.
+
+## Seguito 05/10 — 7.999.137, il brain decide la scena (24 partite vere per ogni passo)
+
+Decisione PO: «talento nel brain» (un solo parametro nel motore). Passi misurati, ciascuno su 24 partite vere S12 rigiocate dal registro
+(24/24 identiche), strumenti in `tools/sonde/` (`po202-brain-da-solo.mjs`, `intento137.mjs`, `abl137.mjs`, `fermo137.mjs`, `cal137.mjs`).
+
+| passo | gol (tua – avv.) | tiri | V / N / P | gol eroe (pagelle) | gol eroe dalle scene | scene |
+|---|---|---|---|---|---|---|
+| 7.999.136 (riferimento) | 1,63 – 0,67 | 15,3 – 6,9 | 58% / 17% / 25% | 0,88 | — | 6,6 |
+| scena giocata dal motore, K=3, scene dalle occasioni naturali | 2,21 – 1,00 | 16,0 – 7,5 | 63% / 29% / 8% | 1,67 | 1,38 | 8,5 |
+| K=1 | 1,71 – 0,83 | 15,4 – 7,1 | 63% / 17% / 21% | 0,96 | 0,75 | 8,5 |
+| K=1 + ripresa dell'avversario dopo tiro fuori/parato/pallone perso (7.999.137) | 1,50 – 0,63 | 15,7 – 6,5 | 58% / 25% / 17% | 0,67 | 0,46 | 8,0 |
+| brain da solo, K=1 (120 partite) | 1,29 – 0,84 | 10,2 – 9,9 | 48% / 23% / 29% | 0,42 | — | 6,4 |
+
+Cosa è cambiato nel gioco:
+- **Talento nel brain** (`TAL202_K`, `esitoTiroV2`): i tiri dell'eroe valgono 1+K·(OVR−60)/40 volte (K=1 → ×1,8 a OVR 93). Tarato sulla
+  vissuta, dove il giocatore tira a ogni occasione: K=3 (tarato sulla simulata) dava 1,38 gol dalle scene.
+- **La scena la gioca il motore** (`giocaScena`): tiro e assist decisi da `esitoTiroV2` dal punto in cui il motore ha visto l'occasione,
+  con difensori, portiere, talento e gestione del vantaggio; punizione dall'origine = punizione diretta (xG ≤ 0,06), cross/angolo = testa.
+- **Le scene nascono dalle occasioni naturali del motore** (la regola della simulazione rapida): la richiesta di scena non dà più
+  bonus all'eroe (+26 ricevente, +30 cross) e non apre più la scena dopo 14 minuti.
+- Ritirati `fin202` e il debito di xG delle scene. Restano: il motore che gioca il minuto della scena (decisione PO 04/10), il recupero
+  (c'è anche nella simulata), la ripresa dell'avversario dopo tiro fuori/parato o pallone perso (regola del calcio; spenta per errore in
+  un passo intermedio, misurato: il pallone restava alla tua squadra 2,8 volte a partita dopo un tiro sbagliato).
+
+**Aperto (passo successivo).** Gli avversari tirano 6,5 volte contro le 9,9 del brain da solo. Ablazione sul registro: le richieste di
+«origine» (cross/angolo/punizione verso l'eroe che diventano scena mentre nel motore l'azione prosegue) tolgono circa 2 tiri, il motore
+fermo durante la scena (6,8 minuti a partita, recuperati dopo) altri 2. I tiri in più della tua squadra (15,7 contro 10,2) sono le scene:
+nella vissuta ogni scena offre un tiro o un assist, il motore da solo tira solo quando conviene.
