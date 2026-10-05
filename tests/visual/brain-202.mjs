@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* [7.999.137 PO-202, direttiva PO 05/10 «il brain deve decidere tutto durante la partita» + decisione PO «talento nel brain»]
    GUARDIANO in due parti.
-   (A) TALENTO NEL BRAIN, in node: 240 partite del motore (configurazione tipo S12: forze 96-98, eroe OVR 93, occasioni dell'eroe nel
-       motore). VERDE: gol dell'eroe a partita fra 0,55 e 1,0 (obiettivo PO 0,6-0,9; misurato 0,71 a K=3). ROSSO (__CPM_NO_TAL202):
+   (A) TALENTO NEL BRAIN, in node: 120 partite del motore sulle 24 configurazioni vere della vissuta S12 (fixtures/cfg-202-s12.json,
+       eroe OVR 93), 5 semi ciascuna, occasioni dell'eroe nel motore. VERDE: gol dell'eroe a partita fra 0,55 e 1,0 (obiettivo PO 0,6-0,9; misurato 0,71 a K=3). ROSSO (__CPM_NO_TAL202):
        sotto lo 0,5 (misurato 0,35).
    (B) LA SCENA LA GIOCA IL MOTORE, in una partita vera dal salvataggio S12 (autoplay, seme fisso): VERDE almeno una scena di tiro o
        assist decisa da giocaScena (testimone __CPM_SCENA137). ROSSO (__CPM_NO_BRAIN137): nessuna. Uso: node brain-202.mjs */
@@ -14,8 +14,9 @@ const code = src.slice(src.indexOf('/* CMAV-SRC-HEADER-END */') + '/* CMAV-SRC-H
 const P = [[8, 50, 1], [18, 12], [18, 38], [18, 62], [18, 88], [38, 25], [38, 50], [38, 75], [55, 22], [55, 78]], Q = [[95, 50, 1], [82, 12], [82, 38], [82, 62], [82, 88], [62, 25], [62, 50], [62, 75], [48, 20], [48, 50], [48, 80]];
 const R = i => i === 0 ? 'GK' : i <= 4 ? 'DF' : i <= 7 ? 'MF' : 'AT';
 const gio = () => P.map((p, i) => ({ team: 'home', gk: !!p[2], name: 'H' + (i + 1), rl: R(i), x: p[0], y: p[1] })).concat(Q.map((p, i) => ({ team: 'away', gk: !!p[2], name: 'A' + (i + 1), rl: R(i), x: p[0], y: p[1] })));
-const braccioA = (W) => { const crea = Function('decideExecution', 'window', code + '\nreturn creaMotorePossesso;')(undefined, W); let e = 0; const N = 240;
-  for (let s = 1; s <= N; s++) { const M = crea({ v2: true, occasioniV2: true, seed: s * 7919, stadio: s % 2 ? 'home' : 'away', giocatori: gio(), eroe: { name: 'EROE', x: 58, y: 50, attivo: true, ovr: 93 }, forza: { home: 96, away: 98 }, tattica: null, lato: 'home' });
+const CFG = JSON.parse(fs.readFileSync(new URL('./fixtures/cfg-202-s12.json', import.meta.url)));/* le 24 configurazioni vere (giocatori, forze, tattiche) registrate dalla vissuta S12 il 05/10 */
+const braccioA = (W) => { const crea = Function('decideExecution', 'window', code + '\nreturn creaMotorePossesso;')(undefined, W); let e = 0; const N = CFG.length * 5;
+  for (let s = 0; s < N; s++) { const c0 = CFG[s % CFG.length]; const M = crea(Object.assign({}, c0, { occasioniV2: true, brainLive: false, fin202: null, seed: (((c0.seed >>> 0) ^ ((1 + Math.floor(s / CFG.length)) * 2654435761)) >>> 0) }));
     const B = 22; for (let m = 1; m <= 46; m++) for (let b = 0; b < B; b++) M.tick({ min: Math.min(m, 45), dt: 1 / B, dec: true });
     M.chiedi.riprendi({ centro: true, lato: 'away' }); for (let m = 46; m <= 93; m++) for (let b = 0; b < B; b++) M.tick({ min: Math.min(m, 90), dt: 1 / B, dec: true });
     const q = (M.pagelle() || []).find(x => x.eroe || x.i === M.HERO); e += q ? (q.gol | 0) : 0; }

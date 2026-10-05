@@ -2816,7 +2816,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
   /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
-  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
+  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
   const bgCoolRef=useRef(0);
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
      voci, come un palinsesto — e nessun campo nuovo da salvare. */
@@ -4472,7 +4472,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            forbice 2-6 decisa dal PO, allunga il calendario o ne toglie le scene non ancora giocate in coda. Catene, rigori e
            punizioni dal limite non contano (la catena e' la stessa azione, il piazzato e' sempre una scena per scelta PO). */
         const _O28=occ28Ref.current;
-        if(!_no28()&&_O28.ultMin!==nx&&context!=="trial"&&!onBenchRef.current&&!subbedOffRef.current&&!_subDue38){
+        if(!brain137()&&!_no28()&&_O28.ultMin!==nx&&context!=="trial"&&!onBenchRef.current&&!subbedOffRef.current&&!_subDue38){
           _O28.ultMin=nx;
           try{
             const _t=tassoOccasioni28(_fattori28(nx));_O28.r=_t.r;_O28.E+=_t.r/90;
@@ -4527,7 +4527,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _EG6=V2L&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
         const _scaduta879=!_EG6&&!!(chiestaScena879Ref.current&&(nx-(chiestaScena879Ref.current.t0|0))>=14);
         if(_EG6&&nx>=85&&hlIdx===0&&!nessunaScena6Ref.current&&!onBenchRef.current&&!subbedOffRef.current){nessunaScena6Ref.current=true;try{addCom("🔎 "+(player.name||"L'eroe")+" fatica a entrare in partita: marcato stretto, pochi palloni giocabili.","#94a3b8",nx);cpmEv("scena",{min:nx,nessuna:true});}catch(_e6){}}
-        const _apre803=_no803?(nx>=_prog803)
+        /* [7.999.137 PO-202] modo brain: ogni occasione naturale del motore e' una scena (come nella simulazione rapida, dove ogni occasione
+           e' giocata), e solo quella. Se il calendario non ha uno slot libero lo si aggiunge qui, sul fatto. */
+        if(brain137()&&_fatto879&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current&&hlIdx>=hlTimesRef.current.length){try{
+          const _ph137=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
+          setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph137);return c;});
+          hlTimesRef.current=[...hlTimesRef.current,nx|0];setHlTimes(hlTimesRef.current);
+          numHLRef.current=(numHLRef.current|0)+1;setNumHL(numHLRef.current);try{cpmEv("scena",{min:nx|0,src:"brain137"});}catch(_e){}}catch(_e137s){}}
+        const _apre803=brain137()?(_fatto879&&!_subDue38&&hlIdx<hlTimesRef.current.length):_no803?(nx>=_prog803)
           :(_fatto879?_finestra879
           :(!_NO879&&_finestra879&&!_scaduta879?false
           :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current)&&((typeof window!=='undefined'&&window.__CPM_NO839)||!(counterRef.current&&!counterRef.current.chiuso839)))));/* [7.839.0] ne' sopra un contropiede in corsa (Moretti 30' «De Santis riparte» → 31' scena, gol dell'eroe) *//* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
@@ -4632,7 +4639,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
             setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),evento:occEroe879Ref.current?{min:occEroe879Ref.current.min,hl:hlIdx}:null,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
-            castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;/* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
+            castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;/* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occPos137Ref.current=(occEroe879Ref.current&&occEroe879Ref.current.x!=null)?{x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,hl:hlIdx,orig:(occEroe879Ref.current.origine&&occEroe879Ref.current.origine.kind)||null}:null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
@@ -5299,7 +5306,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -8652,7 +8659,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(brain137()&&motoreRef.current&&motoreRef.current.giocaScena&&(action.rew==="goal"||action.rew==="assist")){try{
       const _o137=_brainIn82(action,_fkSit,pPos,player.stats,{});
       if(_o137&&(_o137.fam==='tiro'||_o137.fam==='assist')&&_o137.intent!=='penalty'&&_o137.intent!=='freekick'){
-        _g137=motoreRef.current.giocaScena({fam:_o137.fam,intent:_o137.intent||null,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:player.stats||{}});
+        const _op137=(occPos137Ref.current&&occPos137Ref.current.hl===hlIdx)?occPos137Ref.current:null;/* il punto dove il motore ha visto l'occasione; altrimenti quello della scena */
+        /* l'origine dice che tiro e': dalla punizione e' una punizione diretta (xG del piazzato, senza talento), dal cross o dall'angolo un colpo di testa */
+        const _int137=(_op137&&_op137.orig==='punizione'&&_o137.fam==='tiro')?'freekick':(_op137&&_op137.orig==='rigore'&&_o137.fam==='tiro')?'penalty':(_op137&&(_op137.orig==='cross'||_op137.orig==='angolo')&&!_o137.intent)?'header':(_o137.intent||null);
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
     }catch(_e137){_g137=null;}}
     let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));

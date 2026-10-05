@@ -275,7 +275,7 @@ function creaMotorePossesso(cfg){
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
       if(q.eroe&&_EG){sc+=BONUS_EROE;}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
-      else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
+      else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
            Rosso __CPM_NO_B7POS. */
@@ -356,7 +356,7 @@ function creaMotorePossesso(cfg){
      l'eroe (bonus +3/+4 contro uno scarto di 6), mai a scena chiesta. Stessa logica del +26 dei passaggi (7.879): a richiesta aperta
      l'eroe in posizione plausibile (avanzato, non troppo largo) diventa il bersaglio preferito. Nessun sorteggio in piu'. */
   const _puo26=()=>!S.scena&&(S.richieste.scenaEroe||(S.richieste.origini&&((S.min|0)-((S._ult26==null)?-99:S._ult26))>=(S.richieste.gap26||6)));
-  const _bonusCross26=(q,l)=>(q.eroe&&!S.scena&&S.richieste.scenaEroe&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)&&advDi(q.x,l)>=58&&Math.abs(q.y-50)<=32)?30:0;
+  const _bonusCross26=(q,l)=>(q.eroe&&!S.scena&&S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)&&advDi(q.x,l)>=58&&Math.abs(q.y-50)<=32)?30:0;
   const cross=(P,R,opt)=>{opt=opt||{};const l=P.team;
     try{if(typeof window!=='undefined'&&window&&window.__CPM_CROSS26){const W=window.__CPM_CROSS26;W.tot++;if(P.eroe)W.daEroe++;if(R&&R.eroe){W.versoEroe++;if(S.richieste.scenaEroe)W.conRichiesta++;}if(opt.corner)W.angoli++;if(opt.corner&&R&&R.eroe)W.angoliEroe++;if(S.richieste.scenaEroe)W.aRichiesta=(W.aRichiesta|0)+1;const H=g.find(q=>q.eroe);if(H&&W.dove&&W.dove.length<40)W.dove.push([S.richieste.scenaEroe?1:0,H.team===l?1:0,Math.round(advDi(H.x,l)),Math.round(Math.abs(H.y-50))]);}}catch(_e){}/* [7.999.26 testimone, solo sonda] */
     /* [7.999.26 collaudo PO «tutto deve essere deciso dal brain, anche il render 3D degli highlights con l'eroe» · «poche azioni dalla
@@ -560,12 +560,15 @@ function creaMotorePossesso(cfg){
     /* [v2] L'OCCASIONE DELL'EROE: la scelta e' un INGRESSO del motore. Stessa condizione di occasione(), che e' pura, ed e' il PRIMO
        controllo del battito: annunciata l'occasione, si gioca subito. Misurato: col pressing prima, il pallone perso e ripreso quattro
        battiti dopo consumava la scelta fatta per l'occasione precedente, e sim rapida e partita guardata divergevano */
-    if(V2&&P.eroe&&_occV2Pronta(P)){eseguiOccV2(P);return;}
-    if(V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
-    if(V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
-    if(V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(advDi(P.x,l)<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);/* [7.999.5] il pressing SPOSTA i recuperi: piu' alti nella meta' avversaria, meno nella propria (squadra lunga) */if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
+    /* [7.999.137 PO-202] nella vissuta in modo brain (cfg.brainLive) l'occasione e' la STESSA della simulazione rapida: il motore la
+       riconosce con la sua regola (_occV2Pronta: pallone all'eroe oltre la trequarti, ritmo legato al punteggio) e, invece di sceglierla
+       da solo, la dichiara: la vissuta apre la scena e il giocatore sceglie. */
+    let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
+    if(!_nat137&&V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
+    if(!_nat137&&V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
+    if(!_nat137&&V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(advDi(P.x,l)<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);/* [7.999.5] il pressing SPOSTA i recuperi: piu' alti nella meta' avversaria, meno nella propria (squadra lunga) */if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
     if(P.gk){ramo("gk");if(S.poss.t<2&&rnd()<0.5)return;const R=scegliRicevente(P,{});if(R)passa(P,R,{kind:hyp(R.x,R.y,P.x,P.y)>26?"lancio":"corto",sicuro:true});else{const R2=piuVicino(P.x,P.y,l,{noGk:true,escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});}return;}
-    if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
+    if(!_nat137&&S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
     /* [7.879] l'eroe ha il pallone e la scena e' stata chiesta: si dichiara l'occasione e si TIENE il
        pallone per questo tick, cosi' il live match puo' aprire la scena sul fatto invece che sul minuto */
     /* [23/09 POC — punto 4: IL BRAIN COSTRUISCE L'OCCASIONE CHIESTA. Misurato: 13 occasioni su 14 «fra le linee», perche'
@@ -573,8 +576,8 @@ function creaMotorePossesso(cfg){
        situazione in campo sia davvero quella (fino a 8 occasioni utili), poi accetta la prima: la scena nasce sempre dal motore.
        Nessun sorteggio in piu' (la partita resta riproducibile). Rosso: il live non chiede tipi (__CPM_NO_B7TIPO). */
     const _tipoOcc=(zz,pp,yy)=>(zz==="area"||zz==="limite")?(pp<3?"conclusione":"spalle"):(zz==="trequarti"?(Math.abs(yy-50)>=22?"fascia":"fra-le-linee"):"costruzione");
-    if(!_EG&&S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
-    else     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
+    if(_nat137){}else if(cfg.brainLive){}else if(!_EG&&S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
+    if(_nat137||(!cfg.brainLive&&S.richieste.scenaEroe&&P.eroe&&adv>=52)){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
         liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
@@ -739,7 +742,7 @@ function creaMotorePossesso(cfg){
   }
   /* [v2] un'occasione ogni 5 minuti al massimo, quando l'eroe ha palla da avanzamento 64 in su. Funzione PURA (nessun sorteggio):
      il chiamante la puo' interrogare prima del battito per fermarsi e chiedere la scelta, e il motore la rivaluta identica. */
-  function _occV2Pronta(P){if(!V2||cfg.occasioniV2===false||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
+  function _occV2Pronta(P){if(!V2||(cfg.occasioniV2===false&&!cfg.brainLive)||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
     /* [7.999.13] come le scene della partita vera: almeno 12 minuti fra due occasioni e al massimo 6 a partita (prima 5 minuti e nessun tetto:
        fino a 13 occasioni, 13 tiri dell'eroe nella simulazione rapida). Rosso __CPM_NO_TIRO14 */
     const _v14=!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14);
@@ -1374,7 +1377,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno
      al motore viene annotata con i suoi argomenti, per rigiocarla fuori dal browser e attribuire la differenza vissuta/simulata. Le
      chiamate interne restano fuori (si avvolge una COPIA degli oggetti). Spento, non cambia nulla. */
-  const _reg202=(!cfg.occasioniV2&&typeof window!=='undefined'&&window&&window.__CPM_REG202)?window.__CPM_REG202:null;
+  const _reg202=((!cfg.occasioniV2||cfg.brainLive)&&typeof window!=='undefined'&&window&&window.__CPM_REG202)?window.__CPM_REG202:null;
   if(_reg202){const _cl=(x)=>{try{const seen=new WeakSet();return JSON.parse(JSON.stringify(x,(k,v)=>{if(typeof v==='function')return undefined;if(v&&typeof v==='object'){if(v.isObject3D||seen.has(v))return undefined;seen.add(v);}return v;}));}catch(_e){return null;}};
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
