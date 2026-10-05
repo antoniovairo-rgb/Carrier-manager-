@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (32)
+## Voci aperte o parziali (33)
 
-Per lotto: L1 11 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 1.
+Per lotto: L1 12 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -31,6 +31,7 @@ Per lotto: L1 11 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 1.
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-203 | 03/10 22:54 | Festa di fine partita: l'eroe affonda nell'erba (piedi sotto il prato) | difetto | DA MISURARE — 05/10 non riprodotto su 7.999.138: festa del provino (piede più basso fermo a 0,118, quota normale dell'osso del piede) e premiazione dopo una partita S12 giocata (0,102-0,127, 79 fotogrammi, foto con i piedi sul prato); serve sapere in quale festa è comparso (vittoria normale, gol, premiazione, Nazionale) | L1 | — | — | foto PO 22:54 |
 | PO-209 | 04/10 | Tabellino post partita: «alcune statistiche sembrano al contrario» (foto: intestazione FC Laguna invece di FC Moreira dopo il cambio di squadra; possesso 37% nel riquadro eroe contro 49% nel tabellino; 3-0 con xG 0,90 contro 1,07) | difetto | PARZIALE — 7.999.136: possesso del riquadro eroe dal motore (verde 51=51, rosso 73 contro 51, guardiano possesso-209); non riprodotta l'intestazione «FC Laguna» al posto del club in prestito; nota: «Dribbling riusciti 0%» significa 0 tentativi | L1 | — | da scrivere | PO 04/10 (foto tabellino) |
+| PO-216 | 05/10 (foto 1:26) | «Tabellino sbagliato»: tabellone 2-2 (FC Merseyside–FC Haringey, Premier Division, pareggio) ma il tabellino della gara dà Gol 2–3 | difetto | DA MISURARE — il tabellone viene dal punteggio della partita vissuta, il tabellino della gara dal motore (tabellino(), src/15-live-match.jsx:11313): il motore ha contato un gol avversario che il tabellone non ha (nei numeri del motore l avversario torna: 5 in porta = 3 gol + 2 parate) | L1 | — | — | foto `docs/governo/foto/po216-tabellino-2-2-vs-2-3.jpg` |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | PARZIALE — 7.999.120: rivale e sponsor di club nascono all'accettazione dell'offerta pro, non più alla ricarica (guardiano pro-rivale-176, rosso __CPM_NO_PRO176); differenze playedMd e cup.club da ricollaudare con Codex sulla 7.999.120 | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |

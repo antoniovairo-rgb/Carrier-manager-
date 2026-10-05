@@ -88,3 +88,6 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 
 ## 05/10 — Ottimizzazione del backlog (questionario, richiesta PO «ottimizza tutti i PO, ci sono molte ridondanze»)
 - Unioni approvate (la prima voce resta, le altre diventano DOPPIONE con rimando): PO-120 ← PO-100 · PO-033 ← PO-094, PO-104, PO-050, PO-079 · PO-123 ← PO-133, PO-172, PO-185 · PO-068 ← PO-024, PO-070, PO-075 · PO-030 ← PO-031 · PO-155 ← PO-177 · PO-002 ← PO-150 · PO-209 ← PO-211 · PO-190 ← PO-021 · (e PO-022 ← PO-064).
+
+## 05/10 — PO-068 gesti (questionario)
+- **Risposta PO:** «1, 2 e 3» — tutte e tre, in quest'ordine: (1) P1-b: `BRAIN_GESTI` anche nelle scene dell'eroe (caduta, cartellino, rovesciata) e colonne `contactAt`/`foot` nella tabella GESTI; (2) clip in prova di PO-075 (Receive Soccerball, Soccer Header, Jog Forward) agganciate al gioco; (3) le 16 varianti dichiarate e mai raggiunte (copertura 30/46 → 46/46). Ogni passo con rosso, guardiano e foto GLB-ON.
