@@ -100,8 +100,17 @@ function ctDiNazione(nation,season){try{const d=(typeof NAT_CLUB_DATA!=="undefin
 /* chi parla dalla panchina in QUESTA partita: il CT in Nazionale, il mister del club altrimenti */
 function misterInPartita(player,context){if(!(typeof window!=="undefined"&&window.__CPM_NO_CT54)&&/^(national|nationsCup|euroMondiale)/.test(context||"")){const ct=ctDiNazione(player&&player.nation,player&&player.season);if(ct)return ct;}
   return (player&&player.coach)||null;}
-function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
-  const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
+/* [7.999.135 PO-215 collaudo PO «c'è anche una potenziale omonimia tra mister»] I cognomi dei mister sono 16 e venivano estratti senza
+   guardare chi c'era gia' stato: nel salvataggio del PO «Mister Verdiani» S.4-6 (Difensivo) e un altro «Mister Verdiani» S.13 (Bilanciato).
+   misterLibero215: se il cognome proposto e' gia' nella tua carriera (storico + mister in carica) si prende il primo libero nella lista, a
+   partire dallo stesso indice (deterministico: anteprima dell'offerta e firma danno lo stesso nome); finiti i 16 si passa ai cognomi italiani
+   dell'anagrafe. Il mister in carica che resta non cambia nome. Rosso __CPM_NO_MISTER215 (estrazione di prima). */
+function misterUsati215(p){const u=new Set();((p&&p.coachHistory)||[]).forEach(c=>{if(c&&c.name)u.add(c.name);});if(p&&p.coach&&p.coach.name)u.add(p.coach.name);return u;}
+function misterLibero215(nome,p,h){try{if(typeof window!=="undefined"&&window.__CPM_NO_MISTER215)return nome;if(!p)return nome;const u=misterUsati215(p);if(!u.has(nome))return nome;
+  const L=[...COACH_NAMES,...((typeof NAME_BY_NAT!=="undefined"&&NAME_BY_NAT["🇮🇹"]&&NAME_BY_NAT["🇮🇹"].last)||[]).filter(x=>COACH_NAMES.indexOf(x)<0)];
+  const i0=Math.abs(h|0)%L.length;for(let k=0;k<L.length;k++){const n="Mister "+L[(i0+k)%L.length];if(!u.has(n))return n;}return nome;}catch(_e){return nome;}}
+function coachDiClub23(club,season,p){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
+  const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:misterLibero215("Mister "+COACH_NAMES[h%COACH_NAMES.length],p,h),style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
 const DERBIES={
   "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},

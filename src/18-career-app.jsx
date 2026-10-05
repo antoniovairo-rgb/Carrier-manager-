@@ -408,6 +408,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   // Sprint 15 — apply chosen interview answer to player state
   const applyInterviewAnswer=(ans)=>{
+    if(ans&&ans.pres&&interviewModal&&interviewModal.matchCtx==="presentazione"){try{const _t214=PRES_TONI.find(x=>x.k===ans.pres);if(_t214)doPresentazione(_t214);}catch(_e){}}/* [7.999.135 PO-214] */
     const ef=ans.ef||{};
     const toneLabel=IV_TONE_LBL[ans.tone]||ans.tone;/* [7.8.11] stessa mappa del bottone (era divergente) */
     // Sprint 24C: polemic risk — compute from current state before setPlayer
@@ -448,11 +449,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
     if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
       const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
-      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)))/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:(_m.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214))?rilPres214(ans.tone,(player.club&&player.club.id)||"c"):rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)))/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
       setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
     }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
-    const wasPrematch=interviewModal?.matchCtx==="prematch";
+    const wasPrematch=(interviewModal?.matchCtx==="prematch"||interviewModal?.matchCtx==="presentazione");
     setInterviewModal(null);
     setTimeout(()=>setInterviewFeedback(null),2800);
     // Sprint D3: after closing the pre-match press conference, fire the deferred mister talk
@@ -465,7 +466,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     }
   };
   /* [7.994.0] chiusura dalla prima pagina: stesso seguito di prima (dopo la conferenza pre-partita parla il mister) */
-  const chiudiIntervista24=()=>{const wasPre=interviewModal?.matchCtx==="prematch";setInterviewModal(null);
+  const chiudiIntervista24=()=>{const wasPre=(interviewModal?.matchCtx==="prematch"||interviewModal?.matchCtx==="presentazione");setInterviewModal(null);
     if(wasPre){const _disc=pendingMisterDiscorsoRef.current;pendingMisterDiscorsoRef.current=null;if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);else if(attesaConf194Ref.current)setScreen("match");attesaConf194Ref.current=false;}};
 
   // global keyboard shortcuts
@@ -1040,7 +1041,13 @@ const getThisWeekMatchday=()=>{
     }
     // Sprint D3: conferenza stampa pre-partita su big match (mw>=7, solo se tutorial completato)
     let _pressShown=false;
-    if(mw>=7&&player.tutorialDone===true){
+    /* [7.999.135 PO-214 collaudo PO «la presentazione deve esserci prima della prima partita con il nuovo club e deve essere una conferenza
+       stampa in stile intervista post partita»] Prima: un riquadro in home con tre bottoni, che la partita non aspettava (il PO l'ha
+       trovato dopo tre giornate). Ora, se non ti sei ancora presentato al club, «Gioca» apre la sala stampa: domanda, rilancio, prima
+       pagina; alla chiusura parla il mister e si entra in campo, come la conferenza pre-partita. Rosso __CPM_NO_PRES214. */
+    const _pres214=!(typeof window!=='undefined'&&window.__CPM_NO_PRES214)&&presentazioneView(player);
+    if(_pres214){pendingMisterDiscorsoRef.current=_disc;setInterviewModal(presIntervista214(player,opp.n));_pressShown=true;}
+    else if(mw>=7&&player.tutorialDone===true){
       /* [7.999.113 collaudo PO-192 «è una partita Primavera, ma quale bolgia?»] la domanda si pescava a caso fra tutte le 9 pre-partita:
          «quasi un derby… sara' una bolgia» usciva senza derby e nelle giovanili. Ora le domande con una condizione escono solo se
          il requisito c'e', con la stessa regola delle domande settimanali: la condizione della domanda (cond). Rosso __CPM_NO_DERBY192. */
@@ -2138,7 +2145,7 @@ const getThisWeekMatchday=()=>{
     const pos=sd.findIndex(t=>t.id===pid||(t.n||t.name)===p.club?.n)+1;
     if(pos<=0||pos<sd.length-4)return null;/* solo zona pericolo: ultimi 5 */
     const seed=hashStr((p.club?.id||"c")+"_sack_"+sn+"_"+wk);
-    const newName="Mister "+COACH_NAMES[seed%COACH_NAMES.length];
+    const newName=misterLibero215("Mister "+COACH_NAMES[seed%COACH_NAMES.length],p,seed);/* [7.999.135 PO-215] */
     const newStyle=["Difensivista","Offensivo","Bilanciato","Motivatore"][seed%4];
     return{st:"sack",pos,losses,newName,newStyle};
   }catch(_e){return null;}};
@@ -2638,6 +2645,12 @@ const getThisWeekMatchday=()=>{
     {k:"ambizioso",e:"🔥",l:"«Sono qui per vincere qualcosa»",fx:(q)=>({popularity:clamp((q.popularity||20)+5,0,100),morale:clamp((q.morale||70)+3,0,100),coachTrust:clamp((q.coachTrust||60)-1,0,100)}),n:"la piazza si accende, ma adesso te lo ricorderanno"},
     {k:"equilibrato",e:"🎯",l:"«Voglio ripagare la fiducia, un passo alla volta»",fx:(q)=>({popularity:clamp((q.popularity||20)+2,0,100),coachTrust:clamp((q.coachTrust||60)+3,0,100),teamChemistry:clamp((q.teamChemistry||60)+2,0,100)}),n:"nessuno si scalda, nessuno storce il naso"},
     {k:"umile",e:"🤝",l:"«Vengo per imparare e mettermi a disposizione»",fx:(q)=>({coachTrust:clamp((q.coachTrust||60)+5,0,100),teamChemistry:clamp((q.teamChemistry||60)+4,0,100),morale:clamp((q.morale||70)+2,0,100)}),n:"spogliatoio e mister apprezzano il tono"}];
+  /* [7.999.135 PO-214] la presentazione nella sala stampa dell'intervista: le tre risposte sono i tre toni di sempre (PRES_TONI) */
+  const presIntervista214=(p,oppName)=>{const pv=presentazioneView(p)||{};const J=(p.journalists||[]);const j=J.length?J[Math.abs(hashStr(String((p.club&&p.club.id)||"c")))%J.length]:null;
+    const _ton={ambizioso:"diretto",equilibrato:"diplomatico",umile:"umile"};
+    return{q:{q:pv.prestito?"Benvenuto a {club}: arrivi in prestito, cosa vuoi dimostrare in questi mesi?":"Benvenuto a {club}! Cosa ti ha convinto a sceglierci e cosa prometti ai tifosi?",
+      a:PRES_TONI.map(t=>({tone:_ton[t.k]||"diplomatico",txt:String(t.l).replace(/[«»]/g,""),ef:{},pres:t.k}))},
+      paper:j||NEWSPAPERS[0],journalistId:j?j.id:null,opponent:oppName||null,matchCtx:"presentazione"};};
   const doPresentazione=(t)=>{setPlayer(p=>{const cn=(p.club&&p.club.n)||"il club";return{...p,
     presentedClub:(p.club&&p.club.id)||"",
     ...t.fx(p),
@@ -5120,7 +5133,7 @@ const getThisWeekMatchday=()=>{
       const coachChanged=Math.random()<0.20;
       if(coachChanged){
         const cs=pick(COACH_STYLES);
-        newCoach={name:"Mister "+pick(COACH_NAMES),style:cs.style,trustMod:cs.trustMod};
+        newCoach={name:(()=>{const _n=pick(COACH_NAMES);return misterLibero215("Mister "+_n,p,COACH_NAMES.indexOf(_n));})(),style:cs.style,trustMod:cs.trustMod};/* [7.999.135 PO-215] */
       }
       // S11.3: emerging club every 5 seasons
       if(newSeason%5===0&&nT>0){
@@ -5256,7 +5269,7 @@ const getThisWeekMatchday=()=>{
       const archiveEntry={season:p.season||1,league:p.club?.lg||"–",champion:champion?.n||"–",championId:champion?.id||"–",playerClub:p.club?.n||"–",playerClubId:p.club?.id||p.club?.n||"–"/* [7.123.0] ID del club per lo storico piazzamenti robusto ai rinomini */,playerPos:(p.standings||[]).length>0?sortedForShifts.findIndex(t=>(t.id&&t.id===(p.club?.id||p.club?.n))||(t.n&&t.n===(p.club?.n||p.club?.id)))+1:0,playerGoals:p.goals||0,playerAssists:p.assists||0,relegated,isPlayerCupChamp:p.cup?.champion===true,isPlayerEuroChamp:(p.euro?.champion||false)||(p.euroMondiale?.champion||false),euroComp:(p.euro&&p.euro.champion&&p.euro.competition)||null,cupR:p.cup?(p.cup.champion?"W":(p.cup.round||1)):null,euroPlayed:(p.euro&&p.euro.competition)||null,euroEnd:p.euro?(p.euro.champion?"W":(p.euro.phase==="eliminated"?(((p.euro.koResults||[]).length>0)?"ko":"group"):(p.euro.phase||"group"))):null}; // Sprint 103 · [7.35.1] euroComp: QUALE coppa hai vinto · [7.36.0 collaudo PO «storico dei piazzamenti nelle varie competizioni»] cupR/euroPlayed/euroEnd: TURNO raggiunto in Coppa e fase Europa per lo storico del Tab Club
       const newLeagueArchive=[...(p.leagueArchive||[]),archiveEntry].slice(-30);/* [7.328.0 collaudo PO «storico dall'inizio (stagione 1)»] cap 20→30: una carriera 17→36 anni fa ~20 stagioni — il vecchio cap avrebbe tagliato proprio le prime (S.1 Primavera) a fine carriera */
       // Sprint 70: record coach tenure stats before coach possibly changes
-      const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
+      const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,club:p.club?.n||p.club?.name||null,/* [7.999.135 PO-215] il club: due mister con lo stesso cognome si distinguono */goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       _fx61={objLogs,willContractExpire,coachChanged,newCoach,isPhenomSeason,isGB,isNewGoalRecord,isNewAssistRecord,_willEuroPre,_euroCompPre,_playerNextLgPre,_pairPre,_nextClubPre};/* [6.1.0] pacchetto per le notifiche post-rollover */
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
       const _ret24={...p,season:newSeason,age:newAge,week:1,weekLived:false,windowOfferUsed:false,agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] piano procuratore a baseline di stagione (solo con agente) */...(p.investmentPending?{bankBalance:Math.round((p.bankBalance||0)+55000),investmentPending:false}:{}),goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_euroQualLog83,_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog,_stadEvoLog,_spBonusLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:((p.history||[]).some(h=>h.season===p.season)?(p.history||[]):[...(p.history||[]),prevHist]).slice(-50),/* [6.74.0 QA-4] il blocco di fine stagione ha già pushato la entry → niente doppione in Timeline Stagioni */...(function(){const _chg325=nextClub84&&p.club&&((nextClub84.id||nextClub84.n)!==(p.club.id||p.club.n));return _chg325?{fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:48}:{};})(),/* [7.325.0] rientro dal prestito / cambio club al rollover = spogliatoio nuovo: i rapporti non viaggiano col giocatore (48 e non 42: il club madre lo conosci gia') */clubPrestigeShifts:updatedShifts,clubEvo:newClubEvo,clubSponsor:(function(){/* [7.131.0] rinnova lo sponsor a scadenza o al cambio club, sennò mantiene */const _sp=p.clubSponsor,_nc=nextClub84||p.club,_ncid=_nc&&(_nc.id||_nc.n);if(_sp&&_sp.clubId===_ncid&&_sp.until>newSeason)return _sp;return genClubSponsor(_nc,newSeason,((updatedShifts||{})[_ncid]||0)+((_nc&&_nc.p)||60));})(),cup:newCup,euro:newEuro,
@@ -5711,7 +5724,7 @@ const getThisWeekMatchday=()=>{
       const newTeammates=generateTeammates({...p,club:newClub});
       // Sprint 98: generate fresh coach for new club
       const _cs98=pick(COACH_STYLES);
-      const _cd23=(typeof window!=='undefined'&&window.__CPM_NO_MISTERCLUB23)?null:coachDiClub23(newClub,p.season||1);/* [24/09 POC] lo stesso mister mostrato nell'offerta */
+      const _cd23=(typeof window!=='undefined'&&window.__CPM_NO_MISTERCLUB23)?null:coachDiClub23(newClub,p.season||1,p);/* [24/09 POC] lo stesso mister mostrato nell'offerta (7.999.135: niente omonimi nella tua carriera) */
       const _newCoach98=_cd23?{name:_cd23.name,style:_cd23.style,trustMod:_cd23.trustMod}:{name:"Mister "+pick(COACH_NAMES),style:_cs98.style,trustMod:_cs98.trustMod};
       // Sprint 98: compute contract from offer (wage+duration already set by generateTransferOffer)
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
@@ -5935,7 +5948,7 @@ const getThisWeekMatchday=()=>{
         {misterDiscorsoModal&&(
           <Modal open dismissable={false} width={400}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
               <div style={{textAlign:"center",marginBottom:10}}>
-                <div style={{fontSize:FS.display,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>
+                {(typeof window!=='undefined'&&window.__CPM_NO_MISTER215)?<div style={{fontSize:FS.display,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>:<div data-cpm="discorso215" style={{display:"flex",justifyContent:"center",marginBottom:6}}>{(()=>{try{return <Figurina tipo={misterDiscorsoModal.isCaptainTalk?"giocatore":"mister"} chiave={misterDiscorsoModal.coachName} larg={52}/>;}catch(_e){return null;}})()}</div>}{/* [7.999.135 PO-215] figurina al posto dell'icona */}
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>{misterDiscorsoModal.isCaptainTalk?"Discorso del Capitano":"Discorso Pre-Partita"}</div>
                 <div style={{fontSize:FS.body,fontWeight:900,color:misterDiscorsoModal.isCaptainTalk?TH.txGreen:TH.accentText}}>{misterDiscorsoModal.coachName}</div>
                 {misterDiscorsoModal.mw>=8&&<div style={{fontSize:FS.caption,marginTop:4,color:TH.goldText,fontWeight:700}}>🔥 PARTITA EPICA — questo cambia tutto</div>}
@@ -6287,7 +6300,7 @@ const getThisWeekMatchday=()=>{
       {misterDiscorsoModal&&(
         <Modal open dismissable={false} width={400}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{textAlign:"center",marginBottom:10}}>
-              <div style={{fontSize:FS.display,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>
+              {(typeof window!=='undefined'&&window.__CPM_NO_MISTER215)?<div style={{fontSize:FS.display,marginBottom:4}}>{misterDiscorsoModal.isCaptainTalk?"🤝":"🧑‍💼"}</div>:<div data-cpm="discorso215" style={{display:"flex",justifyContent:"center",marginBottom:6}}>{(()=>{try{return <Figurina tipo={misterDiscorsoModal.isCaptainTalk?"giocatore":"mister"} chiave={misterDiscorsoModal.coachName} larg={52}/>;}catch(_e){return null;}})()}</div>}{/* [7.999.135 PO-215] figurina al posto dell'icona */}
               <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>{misterDiscorsoModal.isCaptainTalk?"Discorso del Capitano":"Discorso Pre-Partita"}</div>
               <div style={{fontSize:FS.body,fontWeight:900,color:misterDiscorsoModal.isCaptainTalk?TH.txGreen:TH.accentText}}>{misterDiscorsoModal.coachName}</div>
               {misterDiscorsoModal.mw>=8&&<div style={{fontSize:FS.caption,marginTop:4,color:TH.goldText,fontWeight:700}}>🔥 PARTITA EPICA — questo cambia tutto</div>}
@@ -6319,7 +6332,7 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 15 — Interview Modal == */}
-      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -6345,11 +6358,11 @@ const getThisWeekMatchday=()=>{
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
               <Figurina tipo={giornalistaDonna(interviewModal.paper)?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":interviewModal.matchCtx==="presentazione"?"🎙️ Conferenza stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                {interviewModal.matchCtx&&!(_iv3d&&interviewModal.partita24&&interviewModal.partita24.hs!=null&&interviewModal.matchCtx!=="prematch")&&<div style={{fontSize:FS.caption,padding:"3px 9px",borderRadius:RAD.xl,background:interviewModal.matchCtx==="win"?TH.bgGreen:interviewModal.matchCtx==="loss"?TH.bgRed:interviewModal.matchCtx==="prematch"?TH.bgBlue:TH.bgAmber,color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
+                {interviewModal.matchCtx&&!(_iv3d&&interviewModal.partita24&&interviewModal.partita24.hs!=null&&interviewModal.matchCtx!=="prematch")&&<div style={{fontSize:FS.caption,padding:"3px 9px",borderRadius:RAD.xl,background:interviewModal.matchCtx==="win"?TH.bgGreen:interviewModal.matchCtx==="loss"?TH.bgRed:interviewModal.matchCtx==="prematch"?TH.bgBlue:TH.bgAmber,color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":interviewModal.matchCtx==="presentazione"?"PRESENTAZIONE":"SETTIMANALE"}</div>}
                 {interviewModal.notable&&<div style={{fontSize:FS.caption,padding:"2px 7px",borderRadius:RAD.xl,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
@@ -6678,7 +6691,7 @@ const getThisWeekMatchday=()=>{
                   let _nRuolo=null;try{const R=generateTeamRoster(c,player.season||1);const _pos=String(player.position||"").toLowerCase();
                     const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
                     if(_grp)_nRuolo=R.filter(x=>_grp.test(x.role)).length;}catch(_e){}
-                  const co=coachDiClub23(c,player.season||1);
+                  const co=coachDiClub23(c,player.season||1,player);
                   const _col={V:TH.winFg||"#166534",N:TH.drawFg||"#a16207",P:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,N:TH.drawBg,P:TH.lossBg};/* [7.999.49 parte A] V·N·P */
                   return(<div data-cpm="offerta-dettagli23" style={{marginTop:SP.md,paddingTop:SP.sm,borderTop:"1px solid "+TH.divider,display:"flex",flexDirection:"column",gap:SP.sm}}>
                     {l5.length>0&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Ultime {l5.length}</span>
@@ -7564,7 +7577,7 @@ const getThisWeekMatchday=()=>{
             </div>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
-            {PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"outline":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>))}
+            {(typeof window!=='undefined'&&window.__CPM_NO_PRES214)?PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"outline":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>)):(<Btn v="primary" fw onClick={()=>setInterviewModal(presIntervista214(player,null))}>🎙️ Vai in sala stampa</Btn>)}
           </div>
         </Card>);})()}
       {/* [7.28.0 ONDA 3 — §S6] IL PROGETTO CLUB — l'annuncio della transizione di stato */}
@@ -9626,11 +9639,14 @@ const getThisWeekMatchday=()=>{
           {(player.coachHistory||[]).length>0&&(()=>{
             /* [7.999.49 parte A] il mister ATTUALE in testa coi numeri della stagione in corso (lo storico si scrive solo a fine stagione) */
             const _chCur=player.coach&&(player.proStatus||"u18")==="pro"&&!(player.coachHistory||[]).some(c=>c&&c.season===(player.season||1))?[{name:player.coach.name||"Il mister",style:player.coach.style||"Bilanciato",season:player.season||1,goals:player.goals||0,assists:player.assists||0,coachTrust:player.coachTrust||60,inCarica:true}]:[];
-            const _chS70=[..._chCur,...[...(player.coachHistory||[])].reverse()];
+            const _no215=(typeof window!=='undefined'&&window.__CPM_NO_MISTER215);
+            /* [7.999.135 PO-215] il club di ogni stagione: dal campo nuovo, altrimenti dallo storico delle stagioni (player.history) */
+            const _clubS215=(s)=>{const h=(player.history||[]).find(x=>x&&(x.season|0)===(s|0));return h?(h.club||null):null;};
+            const _chS70=[..._chCur.map(c=>({...c,club:player.club?.n||player.club?.name||null})),...[...(player.coachHistory||[])].reverse().map(c=>c?{...c,club:c.club||_clubS215(c.season)}:c)];
             /* [7.999.53 collaudo PO «12 ma ne vedo 6»] il titolo contava le STAGIONI e la lista ne mostrava 6, una riga per stagione
                (lo stesso mister ripetuto cinque volte): ora una riga per MISTER, stagioni consecutive unite, tutte visibili. */
             const _ch70=[];for(const c of _chS70){if(!c)continue;const g=_ch70[_ch70.length-1];
-              if(g&&g.name===c.name&&g.sFrom===(c.season|0)+1){g.sFrom=c.season|0;g.goals+=(c.goals|0);g.assists+=(c.assists|0);g.n++;}
+              if(g&&g.name===c.name&&(_no215||g.club===c.club)&&g.sFrom===(c.season|0)+1){g.sFrom=c.season|0;g.goals+=(c.goals|0);g.assists+=(c.assists|0);g.n++;}
               else _ch70.push({...c,sTo:c.season|0,sFrom:c.season|0,goals:c.goals|0,assists:c.assists|0,n:1});}
             return(
               <Fisarmonica id="profilo-allenatori" titolo="Storico allenatori" quante={_ch70.length}>
@@ -9641,10 +9657,10 @@ const getThisWeekMatchday=()=>{
                     const _isLast=i>=_ch70.length-1;
                     return(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:_isLast?"none":`1px solid ${TH.cardBorder}`}}>
-                        <div style={{fontSize:FS.subhead,width:24,textAlign:"center",flexShrink:0}}>🧑‍💼</div>
+                        {_no215?<div style={{fontSize:FS.subhead,width:24,textAlign:"center",flexShrink:0}}>🧑‍💼</div>:<div data-cpm="mister215" style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={ch.name} larg={30}/>;}catch(_e){return null;}})()}</div>}
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ch.name}</div>
-                          <div style={{fontSize:FS.caption,color:TH.muted}}>{ch.style} · {ch.sFrom===ch.sTo?"S."+ch.sTo:"S."+ch.sFrom+"–"+ch.sTo+" ("+ch.n+" stagioni)"}{ch.inCarica?" · in carica":""}{ch.coachChanged?" · ↩ cambio":""}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{(!_no215&&ch.club)?ch.club+" · ":""}{ch.style} · {ch.sFrom===ch.sTo?"S."+ch.sTo:"S."+ch.sFrom+"–"+ch.sTo+" ("+ch.n+" stagioni)"}{ch.inCarica?" · in carica":""}{ch.coachChanged?" · ↩ cambio":""}</div>
                         </div>
                         <div style={{textAlign:"right",flexShrink:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{ch.goals}<span style={{fontSize:FS.caption,color:TH.muted}}>⚽</span> {ch.assists}<span style={{fontSize:FS.caption,color:TH.muted}}>🎯</span></div>
