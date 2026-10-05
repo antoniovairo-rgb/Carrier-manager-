@@ -1,5 +1,57 @@
 [
  {
+  "data": "2026-10-05 21:41",
+  "versione": "7.999.139",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 667
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 717
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 504
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   }
+  ]
+ },
+ {
   "data": "2026-10-05 20:54",
   "versione": "7.999.139",
   "catena": "grafica",
@@ -4467,139 +4519,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-01 17:37",
-  "versione": "7.999.98",
-  "catena": "guardiani",
-  "passi": [
-   {
-    "passo": "goleade",
-    "ok": true,
-    "s": 34
-   },
-   {
-    "passo": "scene-disegnabili",
-    "ok": true,
-    "s": 17
-   },
-   {
-    "passo": "nomi-51",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "piazzati-eroe",
-    "ok": true,
-    "s": 35
-   },
-   {
-    "passo": "cross-origine",
-    "ok": true,
-    "s": 54
-   },
-   {
-    "passo": "tiro-caricato",
-    "ok": true,
-    "s": 276
-   },
-   {
-    "passo": "passo-velocita",
-    "ok": true,
-    "s": 85
-   },
-   {
-    "passo": "gesti-copertura-96",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "etichette-95",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "attesa-difesa",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "calendario-nazionale",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "career-nat-sim",
-    "ok": true,
-    "s": 23
-   },
-   {
-    "passo": "disappunto",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "esultanza-braccia",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "fallo-cercato",
-    "ok": true,
-    "s": 92
-   },
-   {
-    "passo": "filtrante-intercetto",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "home-riquadri",
-    "ok": true,
-    "s": 17
-   },
-   {
-    "passo": "numeri-home",
-    "ok": true,
-    "s": 30
-   },
-   {
-    "passo": "occasioni-dinamiche",
-    "ok": true,
-    "s": 302
-   },
-   {
-    "passo": "occasioni-squadra",
-    "ok": true,
-    "s": 78
-   },
-   {
-    "passo": "piede-preferito",
-    "ok": true,
-    "s": 122
-   },
-   {
-    "passo": "ruleta",
-    "ok": true,
-    "s": 99
-   },
-   {
-    "passo": "strisce-corpo",
-    "ok": true,
-    "s": 29
-   },
-   {
-    "passo": "testa-tempismo",
-    "ok": true,
-    "s": 392
-   },
-   {
-    "passo": "witness-frameskip",
-    "ok": false,
-    "s": 26,
-    "coda": " | ❌ 1 problemi: |   · (B) misura non valida: ad anello vuoto il pallone ha percorso 0.01u (troppo poco per confrontare)"
    }
   ]
  }

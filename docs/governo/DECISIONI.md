@@ -81,3 +81,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 05/10 — PO-210 e PO-203 (questionario)
 - **PO-210** «schermata post partita più standard»: **come le schede carriera** (card chiare, titoli di sezione e fisarmoniche della carriera; tabellino della gara in fisarmonica).
 - **PO-203** «eroe che affonda nell'erba»: visto nella **festa di fine partita normale** e nella **premiazione / Nazionale**. Il team non lo ha riprodotto (festa del provino, premiazione dopo partita S12): si cercano le varianti (stadio, clip).
+
+## 05/10 — PO-064 (questionario)
+- **Domanda PO:** «Ma il PO-064 non è una ripetizione?» — sì, si sovrappone a PO-022; la parte esito/probabilità è chiusa da PO-149 e PO-202.
+- **Risposta PO:** «Unisci a PO-022» — PO-064 è DOPPIONE di PO-022; resta una sola voce aperta: la scena 3D dell'eroe la genera il brain, non la scheda scritta (oggi `selectContextualSituations` su SITUATIONS).
