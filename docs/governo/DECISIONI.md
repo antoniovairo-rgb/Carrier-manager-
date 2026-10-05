@@ -69,3 +69,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Parole del PO:** «PO-202 lo stai risolvendo definitivamente? brain deve decidere tutto durante la partita».
 - **Stato dichiarato al PO:** PO-202 è PARZIALE, non risolto in modo definitivo. Nella 7.999.132 l'equilibrio è stato ottenuto anche con correzioni lato partita vissuta (moltiplicatori di finalizzazione `fin202`, ripresa all'avversario `rip202`, recupero dei tick `debito202`, recupero a 93'), che non sono decisioni del motore.
 - **Direzione:** la partita vissuta deve diventare il motore che gioca da solo, con l'eroe che entra nelle scene senza fermarlo né togliere tiri agli avversari; le correzioni lato partita vissuta si ritirano quando il motore da solo dà lo stesso equilibrio della simulata. Piano e misure in ROADMAP.
+
+## 05/10 — PO-202: il peso dell'eroe con il brain che decide tutto (questionario)
+- **Domanda:** con il brain che decide tutto, la scena dell'eroe la esegue il motore con la sua fisica. Misura (`docs/governo/misure/2026-10-05-po202-brain-da-solo.md`): oggi 0,88 gol dell'eroe e 58% di vittorie; brain puro 0,36 gol e 45%. Quanto deve pesare l'eroe?
+- **Risposta PO:** «Talento nel brain» — un solo parametro dentro il motore, uguale in vissuta e simulata, che alza la finalizzazione dell'eroe, tarato su 0,6-0,9 gol a partita (obiettivo PO del 30/09). Le quattro correzioni del 7.999.129-132 si ritirano.

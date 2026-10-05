@@ -39,6 +39,7 @@ const TATTICHE_MOTORE={
     Bilanciato:{press:0,linea:0,amp:0,ment:0,diretto:0},Pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},
     Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
 try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
+const TAL202_K=3;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2); taratura 05/10 */
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -393,6 +394,13 @@ function creaMotorePossesso(cfg){
        prima (S12, stessa forza 95-95): nella vissuta gli avversari tirano 7,4 volte e segnano 0,6-0,8 gol a partita, nella simulata 13,4
        tiri e 1,2-1,3 gol. La simulazione rapida non lo usa. Rosso __CPM_NO_FIN202 (in src/15). */
     if(cfg.fin202&&intent!=='penalty')xg=clamp(xg*(P.team===HOME?(+cfg.fin202.home||1):(+cfg.fin202.away||1)),0.01,0.95);
+    /* [7.999.137 PO-202, decisione PO 05/10 «talento nel brain»] Il motore non guardava chi tirava: l'xG dipende dal punto, dalla
+       pressione e dalla forza della squadra, e un eroe da 93 tirava come un compagno qualunque (misurato: 0,36 gol a partita contro
+       l'obiettivo PO 0,6-0,9). Un solo parametro, qui, uguale in vissuta e simulata: i tiri dell'eroe valgono 1+K·(OVR-60)/40 volte
+       (nessun effetto sotto 60). Rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_TAL202; __CPM_TAL202_K solo per tarare. */
+    if(P.eroe&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TAL202)){
+      const _k=(typeof window!=='undefined'&&window&&window.__CPM_TAL202_K!=null)?+window.__CPM_TAL202_K:TAL202_K;const _o=+((cfg.eroe&&cfg.eroe.ovr)||70);
+      xg=clamp(xg*(1+_k*Math.max(0,_o-60)/40),0.005,0.9);}
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
@@ -1346,6 +1354,23 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        dell'eroe invariati su 21 partite (1,33 -> 1,38). Il taglio va sulla probabilita' FINALE, dopo contesto e freni di partita.] */
     if((fam==='tiro'||fam==='assist')&&o.intent!=='penalty'&&o.intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_SCENE190))p*=0.75;
     p=clamp(p,0.03,0.85);det.p=+p.toFixed(3);return{p,det};}catch(_e){return null;}};
+  /* [7.999.137 PO-202, direttiva PO 05/10 «il brain deve decidere tutto durante la partita»] LA SCENA LA GIOCA IL MOTORE.
+     Misurato (docs/governo/misure/2026-10-05-po202-brain-da-solo.md): con lo stesso numero di scene (6,6 contro 6,2) la scena rendeva
+     2,4 volte l'occasione del motore, perche' probEroe la trattava da «buona occasione» (0,10+0,8·xG fino a 0,45). Qui il tiro della
+     scena e' un tiro del motore: esitoTiroV2 dal punto della scena, con la pressione dei difensori veri, il talento dell'eroe
+     (TAL202_K), la gestione del vantaggio — lo stesso modello che decide i tiri degli altri 21 e quelli dell'eroe nella simulazione.
+     L'assist e' il passaggio (stessa formula del duello di probEroe) piu' il tiro del compagno qualche metro avanti, deciso da
+     esitoTiroV2. Il motore DECIDE e restituisce l'esito; i fatti si registrano come prima (risolviEroe.eventi). */
+  const giocaScena=(o)=>{try{if(!V2)return null;o=o||{};const H=g[HERO];if(!H)return null;const st=o.stats||{};const A=(k)=>clamp(+st[k]||60,30,99);
+    const x=clamp(+o.x||60,0,100),y=clamp(+o.y||50,0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
+    try{const press=pressioneSu(H);const intent=o.intent||(o.fam==='tiro'?'shot':null);
+      if(o.fam==='tiro'){const es=esitoTiroV2(H,intent,{pressRaw:press});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
+      if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
+        const b=D?attrsDi(D):{posizionamento:forza.away};const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008,0.5,0.95);
+        if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
+        const Rv={team:H.team,eroe:false,x:Math.min(94,x+10),y:50+(y-50)*0.3,i:-1};const es=esitoTiroV2(Rv,o.intent==='header'?'header':'shot',{pressRaw:3});
+        return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}
+      return null;}finally{H.x=x0;H.y=y0;}}catch(_e){return null;}};
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno
      al motore viene annotata con i suoi argomenti, per rigiocarla fuori dal browser e attribuire la differenza vissuta/simulata. Le
      chiamate interne restano fuori (si avvolge una COPIA degli oggetti). Spento, non cambia nulla. */
@@ -1354,8 +1379,8 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
     const re={};for(const k in risolviEroe)re[k]=typeof risolviEroe[k]==='function'?W('risolviEroe.'+k,risolviEroe[k]):risolviEroe[k];
-    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe)};}
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe};
+    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena)};}
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]

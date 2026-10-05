@@ -1066,6 +1066,11 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
 /* [23/09 POC — collaudo PO «nelle statistiche mancano azioni dalla fascia / cross, % dribbling riusciti» e «ovviamente
    stesse statistiche nel post partita (omogeneita')»] UNA LISTA SOLA di voci, letta dal tabellino del motore, usata sia dal
    pannello in partita sia dal tabellino di fine gara: stesse voci, stesso ordine, stesse etichette. */
+/* [7.999.137 PO-202, direttiva PO 05/10 «il brain deve decidere tutto durante la partita»] Acceso: la scena di tiro/assist la gioca il
+   motore (giocaScena, src/14), e le correzioni lato partita vissuta del 7.999.129-132 si ritirano (fin202, ripresa all'avversario dopo
+   il tiro dell'eroe, addebito dell'xG della scena). Restano il motore che gioca nel minuto della scena e il recupero: c'e' anche nella
+   simulazione rapida. Rosso __CPM_NO_BRAIN137 = tutto come la 7.999.136. */
+function brain137(){return !(typeof window!=='undefined'&&window.__CPM_NO_BRAIN137);}
 function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
   const dr=(q)=>q.dribbling>0?Math.round(100*(q.dribblingOk||0)/q.dribbling):0;
   return[
@@ -5294,7 +5299,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),fin202:((typeof window!=='undefined'&&window.__CPM_NO_FIN202)?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -5328,7 +5333,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
              Dopo un tiro dell'eroe finito fuori o parato riparte l'avversario (rimessa dal fondo o portiere). Palo e tiro murato restano
              contesi. Rosso __CPM_NO_RIP202. */
-          const _r202=(_st0.scena&&!_c207&&!(typeof window!=='undefined'&&window.__CPM_NO_RIP202)&&(rip202Ref.current==='fuori'||rip202Ref.current==='saved'));
+          const _r202=(_st0.scena&&!_c207&&!brain137()&&!(typeof window!=='undefined'&&window.__CPM_NO_RIP202)&&(rip202Ref.current==='fuori'||rip202Ref.current==='saved'));
           if(_st0.scena&&typeof window!=='undefined'&&window.__CPM_REC){try{const _R=(window.__CPM_RIP202=window.__CPM_RIP202||[]);if(_R.length<60)_R.push({min:nx,lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gol:!!_c207,tiro:rip202Ref.current||null,x:Math.round((ballPosRef.current&&ballPosRef.current.x)||50)});}catch(_e202){}}/* testimone: chi riparte dopo ogni scena dell'eroe */
           if(_st0.scena&&_r202){try{setTurn616(-1,"rip202");}catch(_e202b){}}
           if(_st0.scena)rip202Ref.current=null;
@@ -8641,8 +8646,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _r82=motoreRef.current.probEroe(_o82);if(_r82&&isFinite(_r82.p))_pBR82=_r82.p;
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_BRAIN82=window.__CPM_BRAIN82||[]);if(_W.length<400)_W.push({fam:_o82.fam,rew:action.rew||null,stat:action.stat||null,det:_r82&&_r82.det,vecchio:+(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76)).toFixed(3)});}catch(_e){}}}catch(_e82){_pBR82=null;}}
     const _pB2=_pBR82!=null?_pBR82:(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76));
-    if(_v2h&&(action.rew==="goal"||action.rew==="assist")&&motoreRef.current&&motoreRef.current.addebita){try{motoreRef.current.addebita(_pB2);}catch(_e36){}}/* [7.999.36] la scena dell'eroe e' un'occasione della squadra: i suoi gol attesi si tolgono ai tiri successivi del motore */
-    let ok=_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
+    if(!brain137()&&_v2h&&(action.rew==="goal"||action.rew==="assist")&&motoreRef.current&&motoreRef.current.addebita){try{motoreRef.current.addebita(_pB2);}catch(_e36){}}/* [7.999.36] la scena dell'eroe e' un'occasione della squadra: i suoi gol attesi si tolgono ai tiri successivi del motore */
+    /* [7.999.137 PO-202] tiro e assist su azione: l'esito lo decide il motore giocando la scena (rigore e punizione diretta restano il loro xG) */
+    let _g137=null;
+    if(brain137()&&motoreRef.current&&motoreRef.current.giocaScena&&(action.rew==="goal"||action.rew==="assist")){try{
+      const _o137=_brainIn82(action,_fkSit,pPos,player.stats,{});
+      if(_o137&&(_o137.fam==='tiro'||_o137.fam==='assist')&&_o137.intent!=='penalty'&&_o137.intent!=='freekick'){
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,intent:_o137.intent||null,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:player.stats||{}});
+        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
+    }catch(_e137){_g137=null;}}
+    let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
     if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){/* [7.211.0] esito forzato anche in revisione · [7.229.0 #47] +cpmtest: il CRITICO automatico gira sotto ?cpmtest=1 e credeva di forzare successo/fallimento — il flag NON veniva mai consumato (solo ?sit=N e revisione lo leggevano) → ogni coppia RIUSCITO/FALLITO del critico misurava DUE VOLTE lo stesso roll naturale seedato, e i falsi «gol senza rete» erano fallimenti naturali etichettati successo. Il GATE resta intatto per costruzione: non setta mai questo flag */ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
@@ -8684,6 +8697,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         _wood=(!_lowG&&(Math.abs(hashStr("wood|"+((action.label)||"")+"|"+hlIdx+"|"+((_fkSit&&_fkSit.text)||"")))%100)<40)?"bar":"post";
       }
     }catch(_e){_outKind=null;}}
+    if(!ok&&_g137&&_g137.fam==='tiro'){const _m137={saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito];if(_m137){_outKind=_m137;if(_m137==='post'&&!_wood)_wood='post';}}/* [7.999.137] il tipo di errore e' quello deciso dal motore */
     /* [7.669.0] LO STATO NARRATIVO IMPARA DA CIO' CHE L'EROE FA: e' l'unico modo perche' le
        interazioni abbiano memoria vera (il difensore che stringe la marcatura DOPO due dribbling
        subiti, il compagno che incoraggia DOPO un'occasione divorata). Solo conteggi, nessun effetto
