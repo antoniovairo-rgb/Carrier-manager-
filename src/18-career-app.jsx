@@ -5529,47 +5529,18 @@ const getThisWeekMatchday=()=>{
       return;
     }
     setPlayer(p=>{
-      const _lgEffAT=((player.leagueOverrides||{})[tc.club.id])||tc.club.lg;/* [7.162.0 super-test CAL-F2] lega EFFETTIVA (override-aware): prima un trasferimento verso un club promosso/retrocesso costruiva lega/pool sul lg STATICO del DB → si giocava nel campionato sbagliato con classifica corrotta fino al reload */
-      const newClub={...tc.club,lg:_lgEffAT,transferType:tc.type,isU18:false};
+      /* [7.999.134 PO-212] lega, calendario e classifica del club nuovo da legaDopoTrasferimento212 (src/09): la stessa funzione alimenta
+         l'anteprima dell'offerta, quindi cio' che vedi prima di firmare e' cio' che trovi dopo. Il corpo e' quello che stava qui. */
+      const _L212=legaDopoTrasferimento212(p,tc.club,player.leagueOverrides||{});
+      const _lgEffAT=_L212.lgEff;
+      const newClub={..._L212.newClub,transferType:tc.type};
       // E-3: set loan record when offer type is a prestito
       const _tcIsLoan=(tc.type||"").includes("prest");
       const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,parentContract:(p.contract?{...p.contract}:null),type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;/* [5.98.0 EC-4] il contratto col club madre viene RICORDATO */
-      const lc=CLUBS.filter(c=>!c.isU18&&((((player.leagueOverrides||{})[c.id])||c.lg)===_lgEffAT));/* [7.162.0 CAL-F2] pool override-aware */
-      const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
-      const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
-      const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(tc.club.id||tc.club.n||"x")*17;
-      const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
+      const lcs=_L212.lcs;
       const currentWeek=p.week||1;
-      // Bug #1: preserve season progress — mark past matchdays as already played
-      // [6.74.0 QA-15] risultati passati COERENTI tra Calendario e Classifica: prima il calendario mostrava
-      //   tutti 0-0 (pareggi) mentre la classifica ricostruita sotto attribuiva V/P/S reali → due schermate
-      //   contraddittorie. Ora lo stesso _simR (per matchday) alimenta ENTRAMBI.
-      const _pastR74={};
-      newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
-        const _pOpp=lcs.find(c=>c.id===e.opponentId)||{p:65};
-        const _diff=(newClub.p||70)-(_pOpp.p||65);
-        const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
-        const _hr=Math.abs(hashStr(String(seed)+"_"+e.matchday))%100/100;
-        _pastR74[e.matchday]=_hr<_wp?{won:true,drew:false,homeScore:2,awayScore:0}:_hr<_wp+0.27?{won:false,drew:true,homeScore:1,awayScore:1}:{won:false,drew:false,homeScore:0,awayScore:1};
-      }});
-      const newCalendar=newCalendarFull.map(e=>{
-        if(e.week>=currentWeek)return e;
-        const _r=_pastR74[e.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-        const _disp=e.isHome?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};// prospettiva casa/trasferta corretta nel tab Calendario
-        return{...e,played:true,result:{..._disp,simulated:true}};
-      });
-      // Bug #1: simulate realistic standings for past weeks based on club prestige
-      // [6.37.0 STAB-13] era `currentWeek>3`: trasferendosi a W2-3 le giornate passate venivano marcate PLAYED
-      //   nel calendario (sopra) ma le standings restavano a ZERO → classifica incoerente col calendario.
-      //   Ora si ricostruiscono per QUALSIASI settimana con giornate pregresse (currentWeek>1).
-      let newStandings=initStandings(lcs);
-      if(currentWeek>1){
-        const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
-        for(const _pmd of _pastMds){
-          const _simR=_pastR74[_pmd.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-          newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
-        }
-      }
+      const newCalendar=_L212.newCalendar;
+      let newStandings=_L212.newStandings;
       // [5.93.0 BIL-7] LE COPPE SOPRAVVIVONO AL TRASFERIMENTO (regola: ogni competizione è giocabile).
       //   Prima la rigenerazione del calendario CANCELLAVA tutte le gare cup/euro non giocate mentre
       //   p.cup/p.euro restavano attivi → competizioni zombie ("R16 non ancora disputato", girone 0/6).
@@ -6683,7 +6654,9 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.small,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
             </div>
             {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
-              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              const _ante212=!(typeof window!=='undefined'&&window.__CPM_NO_ANTE212)&&!(lg&&player.club&&lg===player.club.lg)?(()=>{try{return legaDopoTrasferimento212(player,c,player.leagueOverrides||{});}catch(_e){return null;}})():null;/* [7.999.134 PO-212] la classifica che troverai dopo la firma */
+              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo'};}}catch(_e){}
               const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
               return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
@@ -6697,7 +6670,8 @@ const getThisWeekMatchday=()=>{
                   /* ULTIME 5: la classifica delle ALTRE leghe e' deterministica settimana per settimana, quindi la differenza fra due
                      settimane consecutive dice esattamente com'e' finita quella giornata. Nella tua lega lo storico degli altri non c'e': niente pallini. */
                   const _l5=[];const _stessa=!!(player.club&&lg===player.club.lg);
-                  if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
+                  if(!_stessa&&_ante212){const _id=_ante212.newClub.id;_ante212.newCalendarFull.filter(e=>!e.type&&_ante212.pastR[e.matchday]).sort((x,y)=>(x.matchday||0)-(y.matchday||0)).forEach(e=>{const r=_ante212.pastR[e.matchday];_l5.push(r.won?"V":r.drew?"N":"P");});}
+                  else if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
                     if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"N":"P");}if(r2)prev=r2;}}
                   const l5=_l5.slice(-5);
                   const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";

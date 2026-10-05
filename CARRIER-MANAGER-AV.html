@@ -5366,7 +5366,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.133";/* [7.999.133 PO-208 tutte le figurine con la cornice sottile grigia (scelta PO); PO-213 statistiche in partita tutte presenti dall'inizio, anche a zero] *//* [7.999.132 PO-202: 3 minuti di recupero, fischio finale al 93' come nella simulazione (decisione PO)] *//* [7.999.131 PO-202: il motore recupera dopo ogni scena i passi del minuto in cui era fermo (decisione PO «il motore gioca anche nel minuto della scena»)] *//* [7.999.130 PO-202: tetto della forza nel motore 95 -> 99 (decisione PO 04/10), testimone __CPM_TIRI202] *//* [7.999.129 PO-202: dopo un tiro dell'eroe fuori o parato riparte l'avversario; nella partita vissuta tiri avversari +30% di pericolosita' e compagni dell'eroe -15% (decisione PO 04/10 «entrambe le leve, a meta'»)] *//* [7.999.128 PO-206: nel walkout l'idle resta nella sua finestra calma (la clip intera piega le ginocchia come una corsa sul posto)] *//* [7.999.127 PO-190 terza parte: le occasioni su azione dell'eroe valgono il 25% in meno (rigori e punizioni invariati). Rosso __CPM_NO_SCENE190] *//* [7.999.125 PO-199 scelte PO: la busta si svela un tocco per posizione (rosso __CPM_NO_TOCCO201) e si apre per tutti i premi della serata, anche quelli vinti da altri (rosso __CPM_NO_TUTTI201)] *//* [7.999.124 PO-199 galà: la busta si apre dal terzo al primo posto con suspense (rosso __CPM_NO_BUSTA199) · PO-200 presentazione: corpi CGTrader in campo e una sola figurina piccola come in televisione (rosso __CPM_NO_PRES200)] *//* [7.999.123 PO-198 «Niente figurine, solo CGTrader!»: la parata del pullman con la squadra CGTrader sul tetto e senza le figurine dei visi. Rosso __CPM_NO_PARATA198] *//* [7.999.122 PO-190 seconda parte: debito delle scene dell'eroe al 25%, i compagni tornano a segnare (S12: 1,38 → 2,00 gol a partita, compagni 0,19 → 0,67). Rosso __CPM_NO_DEB190] *//* [7.999.121 PO-190 «goleade»: in area solo un contatto su quattro e' rigore (Premier 2023/24: 0,29 rigori a partita in totale); prima ogni fallo in area era rigore e la squadra dell'eroe ne riceveva 1,08 a partita. Rosso __CPM_NO_RIG190] *//* [7.999.120 collaudo Codex PO-176 «salvataggio/ricarica»: rivale e sponsor del club nascevano solo alla ricarica (migrazione); ora il passaggio a professionista li crea subito (rosso __CPM_NO_PRO176) · manopola di collaudo __CPM_DEB36_K per la misura del debito di PO-190, solo cpmtest] *//* [7.999.119 PO-191 «giocatori che attraversano il palco»: per tutta la cerimonia un compagno e un avversario stavano dentro il solido del palco; la spinta fuori dal rettangolo vale ora per ogni corpo tranne l'eroe (rosso __CPM_NO_PALCO191B)] *//* [7.999.118 PO-191 «eroe in posa sbagliata, gamba alzata»: la clip del sollevamento si fermava a meta' salto (34%); ora al 45%, in piedi con le braccia tese e la coppa in presa (rosso __CPM_NO_POSA191)] *//* [7.999.117 PO-191 «coppa non in mano»: la regola che tiene la coppa sopra il volto misurava la testa dal riquadro del corpo con le braccia alzate (2,31) e la staccava di 0,45 dalle mani; tetto 1,85 (rosso __CPM_NO_COPPA191)] *//* [7.999.116 PO-191 «eroe che vola sopra il palco»: la quota segue l'impronta vera del palco rettangolare (corpo 1,05 · gradino 0,28 · prato 0), non il beat e il cerchio del vecchio palco tondo (rosso __CPM_NO_PALCO191)] *//* [7.999.115 PO-197 «i giocatori corrono sul posto nel prepartita»: nel walkout il corpo arrivato si ferma (a meno di 0,15u) e la stima della velocita' scende piu' in fretta, niente piu' clip di corsa da fermi (rosso __CPM_NO_FERMI197)] *//* [7.999.114 PO-196 «non si capisce in che serie giocano le squadre offerenti»: lega e bandiera su ogni offerta (rosso __CPM_NO_LEGA196) · PO-195 «nel calendario fai vedere le avversarie!»: sigla, sede e punteggio in ogni casella (rosso __CPM_NO_AVV195)] *//* [7.999.113 PO-194 GRAVE «partita già giocata» alla 34ª: la conferenza pre-partita si apriva insieme alla partita, compariva DOPO il fischio e il discorso del mister che la segue riapriva la gara appena giocata; ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (rosso __CPM_NO_CONF194) · PO-192 «è una partita Primavera, ma quale bolgia?»: la domanda «quasi un derby» esce solo in un derby vero e tra i professionisti (rosso __CPM_NO_DERBY192) · PO-193 «SETTIMANA 39 DI 38» → «Fine stagione» (rosso __CPM_NO_SETT193)] *//* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
+const GAME_VERSION="7.999.134";/* [7.999.134 PO-212 l'anteprima dell'offerta mostra la classifica che troverai dopo la firma: stessa funzione legaDopoTrasferimento212 per anteprima e accettazione; rosso __CPM_NO_ANTE212, guardiano anteprima-212] *//* [7.999.133 PO-208 tutte le figurine con la cornice sottile grigia (scelta PO); PO-213 statistiche in partita tutte presenti dall'inizio, anche a zero] *//* [7.999.132 PO-202: 3 minuti di recupero, fischio finale al 93' come nella simulazione (decisione PO)] *//* [7.999.131 PO-202: il motore recupera dopo ogni scena i passi del minuto in cui era fermo (decisione PO «il motore gioca anche nel minuto della scena»)] *//* [7.999.130 PO-202: tetto della forza nel motore 95 -> 99 (decisione PO 04/10), testimone __CPM_TIRI202] *//* [7.999.129 PO-202: dopo un tiro dell'eroe fuori o parato riparte l'avversario; nella partita vissuta tiri avversari +30% di pericolosita' e compagni dell'eroe -15% (decisione PO 04/10 «entrambe le leve, a meta'»)] *//* [7.999.128 PO-206: nel walkout l'idle resta nella sua finestra calma (la clip intera piega le ginocchia come una corsa sul posto)] *//* [7.999.127 PO-190 terza parte: le occasioni su azione dell'eroe valgono il 25% in meno (rigori e punizioni invariati). Rosso __CPM_NO_SCENE190] *//* [7.999.125 PO-199 scelte PO: la busta si svela un tocco per posizione (rosso __CPM_NO_TOCCO201) e si apre per tutti i premi della serata, anche quelli vinti da altri (rosso __CPM_NO_TUTTI201)] *//* [7.999.124 PO-199 galà: la busta si apre dal terzo al primo posto con suspense (rosso __CPM_NO_BUSTA199) · PO-200 presentazione: corpi CGTrader in campo e una sola figurina piccola come in televisione (rosso __CPM_NO_PRES200)] *//* [7.999.123 PO-198 «Niente figurine, solo CGTrader!»: la parata del pullman con la squadra CGTrader sul tetto e senza le figurine dei visi. Rosso __CPM_NO_PARATA198] *//* [7.999.122 PO-190 seconda parte: debito delle scene dell'eroe al 25%, i compagni tornano a segnare (S12: 1,38 → 2,00 gol a partita, compagni 0,19 → 0,67). Rosso __CPM_NO_DEB190] *//* [7.999.121 PO-190 «goleade»: in area solo un contatto su quattro e' rigore (Premier 2023/24: 0,29 rigori a partita in totale); prima ogni fallo in area era rigore e la squadra dell'eroe ne riceveva 1,08 a partita. Rosso __CPM_NO_RIG190] *//* [7.999.120 collaudo Codex PO-176 «salvataggio/ricarica»: rivale e sponsor del club nascevano solo alla ricarica (migrazione); ora il passaggio a professionista li crea subito (rosso __CPM_NO_PRO176) · manopola di collaudo __CPM_DEB36_K per la misura del debito di PO-190, solo cpmtest] *//* [7.999.119 PO-191 «giocatori che attraversano il palco»: per tutta la cerimonia un compagno e un avversario stavano dentro il solido del palco; la spinta fuori dal rettangolo vale ora per ogni corpo tranne l'eroe (rosso __CPM_NO_PALCO191B)] *//* [7.999.118 PO-191 «eroe in posa sbagliata, gamba alzata»: la clip del sollevamento si fermava a meta' salto (34%); ora al 45%, in piedi con le braccia tese e la coppa in presa (rosso __CPM_NO_POSA191)] *//* [7.999.117 PO-191 «coppa non in mano»: la regola che tiene la coppa sopra il volto misurava la testa dal riquadro del corpo con le braccia alzate (2,31) e la staccava di 0,45 dalle mani; tetto 1,85 (rosso __CPM_NO_COPPA191)] *//* [7.999.116 PO-191 «eroe che vola sopra il palco»: la quota segue l'impronta vera del palco rettangolare (corpo 1,05 · gradino 0,28 · prato 0), non il beat e il cerchio del vecchio palco tondo (rosso __CPM_NO_PALCO191)] *//* [7.999.115 PO-197 «i giocatori corrono sul posto nel prepartita»: nel walkout il corpo arrivato si ferma (a meno di 0,15u) e la stima della velocita' scende piu' in fretta, niente piu' clip di corsa da fermi (rosso __CPM_NO_FERMI197)] *//* [7.999.114 PO-196 «non si capisce in che serie giocano le squadre offerenti»: lega e bandiera su ogni offerta (rosso __CPM_NO_LEGA196) · PO-195 «nel calendario fai vedere le avversarie!»: sigla, sede e punteggio in ogni casella (rosso __CPM_NO_AVV195)] *//* [7.999.113 PO-194 GRAVE «partita già giocata» alla 34ª: la conferenza pre-partita si apriva insieme alla partita, compariva DOPO il fischio e il discorso del mister che la segue riapriva la gara appena giocata; ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (rosso __CPM_NO_CONF194) · PO-192 «è una partita Primavera, ma quale bolgia?»: la domanda «quasi un derby» esce solo in un derby vero e tra i professionisti (rosso __CPM_NO_DERBY192) · PO-193 «SETTIMANA 39 DI 38» → «Fine stagione» (rosso __CPM_NO_SETT193)] *//* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
    Il vetro della scheda all'ingresso in campo passa da 0,74/0,62 a 0,45/0,34 (sfocatura 6 px), con un'ombra sotto il testo bianco
    per restare leggibile sul prato. Rosso __CPM_NO_PRE188, guardiano pre-188. */
 /* [7.999.110 collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile» — riquadro «Campioni di …!»]
@@ -9183,6 +9183,44 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
   let st=initStandings(clubs);const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
   for(const m of md){st=updateStandings(st,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});}
   return st;}
+/* [7.999.134 PO-212 collaudo PO «nella preview di accettazione dell'offerta la posizione ed i punti erano diversi»] La lega che trovi
+   DOPO il trasferimento nasce qui, e l'anteprima dell'offerta chiama la STESSA funzione: prima l'anteprima leggeva la classifica del
+   mondo (calcWorldStandings, accoppiamenti a sorteggio per settimana) e l'accettazione ne costruiva un'altra (calendario del club nuovo
+   + giornate passate stimate dal prestigio), quindi posizione e punti cambiavano appena firmato. Corpo identico a quello che stava
+   dentro acceptTransfer (src/18), spostato senza modifiche. Rosso __CPM_NO_ANTE212 (lo legge solo l'anteprima). */
+function legaDopoTrasferimento212(p,club,ov){
+  const _lgEffAT=((ov||{})[club.id])||club.lg;
+  const newClub={...club,lg:_lgEffAT,isU18:false};
+  const lc=CLUBS.filter(c=>!c.isU18&&((((ov||{})[c.id])||c.lg)===_lgEffAT));
+  const lc2=CLUBS.filter(c=>c.nat===club.nat);
+  const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
+  const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(club.id||club.n||"x")*17;
+  const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
+  const currentWeek=p.week||1;
+  const _pastR74={};
+  newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
+    const _pOpp=lcs.find(c=>c.id===e.opponentId)||{p:65};
+    const _diff=(newClub.p||70)-(_pOpp.p||65);
+    const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
+    const _hr=Math.abs(hashStr(String(seed)+"_"+e.matchday))%100/100;
+    _pastR74[e.matchday]=_hr<_wp?{won:true,drew:false,homeScore:2,awayScore:0}:_hr<_wp+0.27?{won:false,drew:true,homeScore:1,awayScore:1}:{won:false,drew:false,homeScore:0,awayScore:1};
+  }});
+  const newCalendar=newCalendarFull.map(e=>{
+    if(e.week>=currentWeek)return e;
+    const _r=_pastR74[e.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
+    const _disp=e.isHome?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};
+    return{...e,played:true,result:{..._disp,simulated:true}};
+  });
+  let newStandings=initStandings(lcs);
+  if(currentWeek>1){
+    const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
+    for(const _pmd of _pastMds){
+      const _simR=_pastR74[_pmd.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
+      newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
+    }
+  }
+  return{lgEff:_lgEffAT,newClub,lcs,seed,newCalendarFull,newCalendar,newStandings,pastR:_pastR74};
+}
 /* [7.999.103 collaudo PO 01/10 «Dov'e' la verita'? ... Gravissimo bug che ci portiamo avanti da tempo» — salvataggio S.12 del PO]
    LE GIORNATE MANCATE SI RECUPERANO, NON SI NASCONDONO. Misurato sul salvataggio: durante l'Europeo la settimana e' passata dalla 21
    alla 28 e le sette giornate di campionato di quelle settimane (19-25) non sono state ne' giocate ne' simulate. Poi la rete (H) del
@@ -48925,47 +48963,18 @@ const getThisWeekMatchday=()=>{
       return;
     }
     setPlayer(p=>{
-      const _lgEffAT=((player.leagueOverrides||{})[tc.club.id])||tc.club.lg;/* [7.162.0 super-test CAL-F2] lega EFFETTIVA (override-aware): prima un trasferimento verso un club promosso/retrocesso costruiva lega/pool sul lg STATICO del DB → si giocava nel campionato sbagliato con classifica corrotta fino al reload */
-      const newClub={...tc.club,lg:_lgEffAT,transferType:tc.type,isU18:false};
+      /* [7.999.134 PO-212] lega, calendario e classifica del club nuovo da legaDopoTrasferimento212 (src/09): la stessa funzione alimenta
+         l'anteprima dell'offerta, quindi cio' che vedi prima di firmare e' cio' che trovi dopo. Il corpo e' quello che stava qui. */
+      const _L212=legaDopoTrasferimento212(p,tc.club,player.leagueOverrides||{});
+      const _lgEffAT=_L212.lgEff;
+      const newClub={..._L212.newClub,transferType:tc.type};
       // E-3: set loan record when offer type is a prestito
       const _tcIsLoan=(tc.type||"").includes("prest");
       const _newLoan=_tcIsLoan?{parentClubId:p.club?.id,parentClub:p.club,parentContract:(p.contract?{...p.contract}:null),type:tc.type,untilSeason:(p.season||1)+1,buyClause:tc.buyClause||null,minMatches:tc.minMatches||null}:null;/* [5.98.0 EC-4] il contratto col club madre viene RICORDATO */
-      const lc=CLUBS.filter(c=>!c.isU18&&((((player.leagueOverrides||{})[c.id])||c.lg)===_lgEffAT));/* [7.162.0 CAL-F2] pool override-aware */
-      const lc2=CLUBS.filter(c=>c.nat===tc.club.nat);
-      const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
-      const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(tc.club.id||tc.club.n||"x")*17;
-      const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
+      const lcs=_L212.lcs;
       const currentWeek=p.week||1;
-      // Bug #1: preserve season progress — mark past matchdays as already played
-      // [6.74.0 QA-15] risultati passati COERENTI tra Calendario e Classifica: prima il calendario mostrava
-      //   tutti 0-0 (pareggi) mentre la classifica ricostruita sotto attribuiva V/P/S reali → due schermate
-      //   contraddittorie. Ora lo stesso _simR (per matchday) alimenta ENTRAMBI.
-      const _pastR74={};
-      newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
-        const _pOpp=lcs.find(c=>c.id===e.opponentId)||{p:65};
-        const _diff=(newClub.p||70)-(_pOpp.p||65);
-        const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
-        const _hr=Math.abs(hashStr(String(seed)+"_"+e.matchday))%100/100;
-        _pastR74[e.matchday]=_hr<_wp?{won:true,drew:false,homeScore:2,awayScore:0}:_hr<_wp+0.27?{won:false,drew:true,homeScore:1,awayScore:1}:{won:false,drew:false,homeScore:0,awayScore:1};
-      }});
-      const newCalendar=newCalendarFull.map(e=>{
-        if(e.week>=currentWeek)return e;
-        const _r=_pastR74[e.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-        const _disp=e.isHome?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};// prospettiva casa/trasferta corretta nel tab Calendario
-        return{...e,played:true,result:{..._disp,simulated:true}};
-      });
-      // Bug #1: simulate realistic standings for past weeks based on club prestige
-      // [6.37.0 STAB-13] era `currentWeek>3`: trasferendosi a W2-3 le giornate passate venivano marcate PLAYED
-      //   nel calendario (sopra) ma le standings restavano a ZERO → classifica incoerente col calendario.
-      //   Ora si ricostruiscono per QUALSIASI settimana con giornate pregresse (currentWeek>1).
-      let newStandings=initStandings(lcs);
-      if(currentWeek>1){
-        const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
-        for(const _pmd of _pastMds){
-          const _simR=_pastR74[_pmd.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
-          newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
-        }
-      }
+      const newCalendar=_L212.newCalendar;
+      let newStandings=_L212.newStandings;
       // [5.93.0 BIL-7] LE COPPE SOPRAVVIVONO AL TRASFERIMENTO (regola: ogni competizione è giocabile).
       //   Prima la rigenerazione del calendario CANCELLAVA tutte le gare cup/euro non giocate mentre
       //   p.cup/p.euro restavano attivi → competizioni zombie ("R16 non ancora disputato", girone 0/6).
@@ -50079,7 +50088,9 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.small,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
             </div>
             {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
-              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              const _ante212=!(typeof window!=='undefined'&&window.__CPM_NO_ANTE212)&&!(lg&&player.club&&lg===player.club.lg)?(()=>{try{return legaDopoTrasferimento212(player,c,player.leagueOverrides||{});}catch(_e){return null;}})():null;/* [7.999.134 PO-212] la classifica che troverai dopo la firma */
+              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo'};}}catch(_e){}
               const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
               return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
@@ -50093,7 +50104,8 @@ const getThisWeekMatchday=()=>{
                   /* ULTIME 5: la classifica delle ALTRE leghe e' deterministica settimana per settimana, quindi la differenza fra due
                      settimane consecutive dice esattamente com'e' finita quella giornata. Nella tua lega lo storico degli altri non c'e': niente pallini. */
                   const _l5=[];const _stessa=!!(player.club&&lg===player.club.lg);
-                  if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
+                  if(!_stessa&&_ante212){const _id=_ante212.newClub.id;_ante212.newCalendarFull.filter(e=>!e.type&&_ante212.pastR[e.matchday]).sort((x,y)=>(x.matchday||0)-(y.matchday||0)).forEach(e=>{const r=_ante212.pastR[e.matchday];_l5.push(r.won?"V":r.drew?"N":"P");});}
+                  else if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
                     if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"N":"P");}if(r2)prev=r2;}}
                   const l5=_l5.slice(-5);
                   const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";

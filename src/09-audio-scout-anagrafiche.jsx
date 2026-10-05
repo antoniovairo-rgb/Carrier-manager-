@@ -1476,6 +1476,44 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
   let st=initStandings(clubs);const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
   for(const m of md){st=updateStandings(st,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});}
   return st;}
+/* [7.999.134 PO-212 collaudo PO «nella preview di accettazione dell'offerta la posizione ed i punti erano diversi»] La lega che trovi
+   DOPO il trasferimento nasce qui, e l'anteprima dell'offerta chiama la STESSA funzione: prima l'anteprima leggeva la classifica del
+   mondo (calcWorldStandings, accoppiamenti a sorteggio per settimana) e l'accettazione ne costruiva un'altra (calendario del club nuovo
+   + giornate passate stimate dal prestigio), quindi posizione e punti cambiavano appena firmato. Corpo identico a quello che stava
+   dentro acceptTransfer (src/18), spostato senza modifiche. Rosso __CPM_NO_ANTE212 (lo legge solo l'anteprima). */
+function legaDopoTrasferimento212(p,club,ov){
+  const _lgEffAT=((ov||{})[club.id])||club.lg;
+  const newClub={...club,lg:_lgEffAT,isU18:false};
+  const lc=CLUBS.filter(c=>!c.isU18&&((((ov||{})[c.id])||c.lg)===_lgEffAT));
+  const lc2=CLUBS.filter(c=>c.nat===club.nat);
+  const lcs=lc.length>=4?lc:lc2.length>=4?lc2:CLUBS.slice(0,16);
+  const _s=(p.season||1);const seed=(_s*7919+_s*_s*31)%2147483647+hashStr(club.id||club.n||"x")*17;
+  const newCalendarFull=generateSeasonCalendar(newClub,lcs,seed);
+  const currentWeek=p.week||1;
+  const _pastR74={};
+  newCalendarFull.forEach(e=>{if(e.week<currentWeek&&!e.type){
+    const _pOpp=lcs.find(c=>c.id===e.opponentId)||{p:65};
+    const _diff=(newClub.p||70)-(_pOpp.p||65);
+    const _wp=Math.max(0.05,Math.min(0.72,0.33+_diff*0.004));
+    const _hr=Math.abs(hashStr(String(seed)+"_"+e.matchday))%100/100;
+    _pastR74[e.matchday]=_hr<_wp?{won:true,drew:false,homeScore:2,awayScore:0}:_hr<_wp+0.27?{won:false,drew:true,homeScore:1,awayScore:1}:{won:false,drew:false,homeScore:0,awayScore:1};
+  }});
+  const newCalendar=newCalendarFull.map(e=>{
+    if(e.week>=currentWeek)return e;
+    const _r=_pastR74[e.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
+    const _disp=e.isHome?_r:{..._r,homeScore:_r.awayScore,awayScore:_r.homeScore};
+    return{...e,played:true,result:{..._disp,simulated:true}};
+  });
+  let newStandings=initStandings(lcs);
+  if(currentWeek>1){
+    const _pastMds=newCalendarFull.filter(e=>!e.type&&e.week<currentWeek);
+    for(const _pmd of _pastMds){
+      const _simR=_pastR74[_pmd.matchday]||{won:false,drew:true,homeScore:0,awayScore:0};
+      newStandings=updateStandings(newStandings,newClub.id,_simR,p.clubPrestigeShifts||{},{opponentId:_pmd.opponentId,seed:hashStr(String(seed)+"_"+_pmd.matchday)>>>0});
+    }
+  }
+  return{lgEff:_lgEffAT,newClub,lcs,seed,newCalendarFull,newCalendar,newStandings,pastR:_pastR74};
+}
 /* [7.999.103 collaudo PO 01/10 «Dov'e' la verita'? ... Gravissimo bug che ci portiamo avanti da tempo» — salvataggio S.12 del PO]
    LE GIORNATE MANCATE SI RECUPERANO, NON SI NASCONDONO. Misurato sul salvataggio: durante l'Europeo la settimana e' passata dalla 21
    alla 28 e le sette giornate di campionato di quelle settimane (19-25) non sono state ne' giocate ne' simulate. Poi la rete (H) del

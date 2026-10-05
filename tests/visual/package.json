@@ -339,6 +339,7 @@
     "minuti-202": "node minuti-202.mjs",
     "recupero-202": "node recupero-202.mjs",
     "figurine-208": "node figurine-208.mjs",
+    "anteprima-212": "node anteprima-212.mjs",
     "parata-198": "node parata-198.mjs",
     "busta-199": "node busta-199.mjs",
     "presentazione-200": "node presentazione-200.mjs",
