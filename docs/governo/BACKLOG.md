@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (54)
+## Voci aperte o parziali (53)
 
-Per lotto: L1 30 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
+Per lotto: L1 29 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -47,7 +47,6 @@ Per lotto: L1 30 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-209 | 04/10 | Tabellino post partita: «alcune statistiche sembrano al contrario» (foto: intestazione FC Laguna invece di FC Moreira dopo il cambio di squadra; possesso 37% nel riquadro eroe contro 49% nel tabellino; 3-0 con xG 0,90 contro 1,07) | difetto | DA MISURARE | L1 | — | da scrivere | PO 04/10 (foto tabellino) |
 | PO-210 | 04/10 | Schermata post partita (tabellino): «la renderei anche più standard graficamente» | grafica | DA FARE | L1 | — | da scrivere | PO 04/10 |
 | PO-211 | 04/10 | Intervista post partita «assurda» dopo il cambio di squadra: «si è incasinato tutto» (foto: sala stampa con sponsor e testate sovrapposte, MRA 3-0 FC Empolese) | difetto | DA MISURARE | L1 | — | da scrivere | PO 04/10 (foto intervista) |
-| PO-212 | 04/10 | Anteprima di accettazione dell'offerta: posizione e punti in classifica diversi da quelli reali (classifica: MRA 13°, 3 punti) | difetto | DA MISURARE | L1 | — | da scrivere | PO 04/10 (foto classifica) |
 | PO-214 | 04/10 | Presentazione al nuovo club: deve esserci PRIMA della prima partita col nuovo club e deve essere una conferenza stampa in stile intervista post partita (oggi: riquadro «Presentazione · FC Moreira» in home con 3 frasi, dopo 3 partite) | richiesta | DA FARE | L1 | — | da scrivere | PO 04/10 (foto home) |
 | PO-215 | 05/10 00:28 | Carriera › Storico allenatori: icone (emoji) al posto delle figurine; possibile omonimia «Mister Verdiani» S.4-6 Difensivo e S.13 Bilanciato (stesso mister o due diversi?) | difetto | DA FARE | L1 | — | da scrivere | PO 05/10 (foto storico allenatori) |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
@@ -75,7 +74,7 @@ Per lotto: L1 30 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
 
-## Storico — voci chiuse (161)
+## Storico — voci chiuse (162)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -239,6 +238,7 @@ Per lotto: L1 30 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4 · — 1.
 | PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | FATTO — 7.999.128: la fila a centrocampo non corre più sul posto. Causa misurata: la clip idle (10,2 s) piega le ginocchia di 40-55° quasi ogni secondo (gambe 46-72°, la corsa 49-80°); nel walkout l'idle oscilla nella finestra calma 0-1 s (max 11°). Rosso __CPM_NO_FILA206, guardiano fila-206 su tutto il walkout (verde 100%, rosso 25%). Catene grafica 20/20 e completa 9/9 | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
 | PO-207 | 03/10 | Partita 2D: dopo ogni gol il gioco non riparte dalla rimessa da centrocampo | difetto | FATTO — 7.999.126: a ogni aumento del punteggio il motore riparte dal centro con la palla a chi ha subito il gol (prima restava dove era il pallone); ripartenza-207 verde (kickoff a 50,50) e rosso visibile; da confermare sul telefono | L1 | — | — | richiesta PO |
 | PO-208 | 04/10 22:44 | Figurine: tutte con lo stesso contorno (procuratore nel Confronto con carta rossa a colori club, fuori standard) | difetto | FATTO — 7.999.133: cornice grigia uniforme su tutte le figurine (scelta PO), guardiano figurine-208 | L1 | 7.999.133 | da scrivere | PO 04/10 22:44 «Tutte le figurine devono avere lo stesso contorno, questo è fuori standard» (2 foto) |
+| PO-212 | 04/10 | Anteprima di accettazione dell'offerta: posizione e punti in classifica diversi da quelli reali (classifica: MRA 13°, 3 punti) | difetto | FATTO — 7.999.134: anteprima e firma usano la stessa funzione (legaDopoTrasferimento212); S12 Torino Athletic 14ª/31 = 14ª/31, rosso 3ª/69 contro 14ª/31; residuo dichiarato: la stagione del club nuovo si ricostruisce alla firma; guardiano anteprima-212 | L1 | — | da scrivere | PO 04/10 (foto classifica) |
 | PO-213 | 04/10 | Partita 2D, pannello Statistiche: le voci compaiono un po' alla volta; «devono esserci tutte all'inizio anche se a zero» (foto: mancano tiri, possesso, xG in avvio) | difetto | FATTO — 7.999.133: statistiche in partita tutte presenti dall inizio anche a zero (17 voci contro 2), guardiano figurine-208 | L1 | — | da scrivere | PO 04/10 (foto statistiche) |
 
 ## Ricostruzione (fonti e regole di stato)
