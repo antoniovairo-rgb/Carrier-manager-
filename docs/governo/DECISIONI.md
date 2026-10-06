@@ -102,3 +102,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 
 ## 06/10 — Clip in prova PO-075 (questionario)
 - **Risposta PO:** «Testa + coscia, corsa dopo» — «Soccer Header» (stacco da fermo) per i colpi di testa con l'eroe fermo; controllo di coscia di «Receive Soccerball» (tratto 0,8-1,6 s) quando l'eroe riceve un pallone alto; «Jog Forward» resta in prova finché non si confronta con la corsa attuale.
+
+## 06/10 — Chiudere L1 il prima possibile (questionario)
+- **Voci in attesa di Codex (PO-033, 048, 120, 123, 127):** «Collaudo io in headless» — misuro ciò che si misura senza GPU, con guardiani, e dichiaro esplicitamente ciò che richiede telefono o 60 fps.
+- **PO-022 e PO-030:** «Restano in L1».
+- **PO-068:** entrano in L1 il colpo di testa (la testa non arriva al pallone), le 16 varianti mai raggiunte e P2/P3.
