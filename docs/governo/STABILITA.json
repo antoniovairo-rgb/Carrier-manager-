@@ -1,5 +1,199 @@
 [
  {
+  "data": "2026-10-06 16:08",
+  "versione": "7.999.143",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 744
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 767
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 514
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
+  "data": "2026-10-06 14:44",
+  "versione": "7.999.143",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 226
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 814
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 45
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 284
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 332
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 81
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 77
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 84
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 117
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 81
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 64
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "post-210",
+    "ok": true,
+    "s": 557
+   },
+   {
+    "passo": "piedi-203",
+    "ok": true,
+    "s": 682
+   },
+   {
+    "passo": "gesti-scena-p1b",
+    "ok": true,
+    "s": 637
+   },
+   {
+    "passo": "piede-cross-p1b2",
+    "ok": true,
+    "s": 167
+   },
+   {
+    "passo": "rincorsa-144",
+    "ok": true,
+    "s": 252
+   },
+   {
+    "passo": "testa-146",
+    "ok": true,
+    "s": 147
+   }
+  ]
+ },
+ {
   "data": "2026-10-06 07:09",
   "versione": "7.999.142",
   "catena": "completa",
@@ -4695,90 +4889,6 @@
     "passo": "partita-vera",
     "ok": true,
     "s": 526
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-02 12:18",
-  "versione": "7.999.105",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 259
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 915
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 17
-   }
-  ]
- },
- {
-  "data": "2026-10-02 11:20",
-  "versione": "7.999.104",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 801
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 73
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 996
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 525
    },
    {
     "passo": "design-system",
