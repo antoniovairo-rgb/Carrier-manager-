@@ -107,3 +107,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Voci in attesa di Codex (PO-033, 048, 120, 123, 127):** «Collaudo io in headless» — misuro ciò che si misura senza GPU, con guardiani, e dichiaro esplicitamente ciò che richiede telefono o 60 fps.
 - **PO-022 e PO-030:** «Restano in L1».
 - **PO-068:** entrano in L1 il colpo di testa (la testa non arriva al pallone), le 16 varianti mai raggiunte e P2/P3.
+
+## 06/10 — Volée senza rincorsa (questionario, dal collaudo PO-120)
+- **Misura:** con la rincorsa (7.999.143) la volée della scena #6 arriva al contatto girata di 86-91° rispetto alla porta, 14° senza.
+- **Risposta PO:** «Togli la rincorsa alla volée» — torna al gesto al volo; il pallonetto tiene la rincorsa. Guardiano sull'angolo al contatto.
+- **Rettifica (06/10, stesso giorno):** il dato 86-91° veniva da una pagina riusata dopo altre scene («una pagina stanca non è il gioco»); su pagina nuova, 3 ripetizioni: con rincorsa 5°, 7°, 9°, senza 3°, 20°, 3°. **Risposta PO: «Rimetti la rincorsa»** — la volée tiene la rincorsa (decisione «Entrambi» del 06/10); la sospensione non è stata spedita.
