@@ -4,30 +4,15 @@ Generato da `tests/visual/censimento-scene.mjs` sulla build corrente. Situations
 
 | Verdetto | Azioni |
 |---|---|
-| fedele | 281 |
-| approssimata | 283 |
+| fedele | 284 |
+| approssimata | 280 |
 | non disegnabile | 9 |
 
 Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo script), con giudizio dichiarato per ogni gesto: da validare.
 
-## Varianti di GESTI mai raggiunte da deriveHL (16 su 46)
+## Varianti di GESTI mai raggiunte da deriveHL (0 su 35)
 
-- `shot/shot_placed`
-- `cross/cross_rabona`
-- `cross/cross_after_dribble`
-- `dribble/dribble_inside`
-- `dribble/dribble_outside`
-- `dribble/double_step`
-- `dribble/step_over`
-- `dribble/feint`
-- `dribble/roulette`
-- `dribble/hocus_pocus`
-- `pass/short_pass`
-- `pass/long_pass`
-- `pass/chip_pass`
-- `pass/heel`
-- `pass/backheel`
-- `tackle/aerial`
+
 
 ## Situations il cui TESTO promette un gesto non disegnabile (2)
 
@@ -44,7 +29,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 35 | 2 | ⚡ Contropiede avversario! Torna in difes | 📣 Organizza la difesa | tackle/base · def press | slide-tackle/tackle | comando:n, pressing:a | nessun gesto di comando: l'eroe corre; defGesto press: locomozione |
 | 110 | 0 | 🏃 Fai il velo per il compagno! | 🏃 Faccio il velo e attacco | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | velo:n | nessun gesto: locomozione |
 | 110 | 1 | 🏃 Fai il velo per il compagno! | ↩️ Ricevo dopo il velo | pass/base | pass | velo:n | nessun gesto: locomozione |
-| 110 | 2 | 🏃 Fai il velo per il compagno! | ⚡ Scatto oltre il velo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | velo:n, dribbling:a | nessun gesto: locomozione; clip dribble / change-direction (gesto generico) |
+| 110 | 2 | 🏃 Fai il velo per il compagno! | ⚡ Scatto oltre il velo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | velo:n, tiro:f, dribbling:a | nessun gesto: locomozione; clip dribble / change-direction (gesto generico) |
 | 124 | 1 | 🎯 Lanci lunghi — alzati e controlla! | 🛑 Stop di petto e conserva | build/base | dribble | petto:n, controllo:a, temporeggia:a | ricezione normale, nessun controllo di petto; clip receive (controllo generico); locomozione / dribble lento |
 | 129 | 2 | 🤼 Raddoppio difensivo! | 📣 Chiamo il compagno a raddoppiare | tackle/base · def call | slide-tackle/tackle | pressing:a, comando:n, comando:n | locomozione verso il portatore (nessun gesto di pressione); nessun gesto di comando: l'eroe corre; defGesto call: nessuna clip |
 | 135 | 2 | 🤝 Copertura del compagno fuori posizion | 📣 Comunico la situazione | tackle/base · def call | slide-tackle/tackle | comando:n, comando:n | nessun gesto di comando: l'eroe corre; defGesto call: nessuna clip |
@@ -64,7 +49,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 2 | 1 | 🎯 Precisione | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 2 | 2 | 🦶 Deviazione di prima | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 3 | 0 | 🦵 Tiro a giro | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 3 | 1 | 🌀 Dribbling portiere | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 3 | 1 | 🌀 Dribbling portiere e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 3 | 2 | 🎯 Assist retropassaggio | pass/base | pass | fedele | passaggio:f |
 | 4 | 0 | 🦵 Deviazione istintiva | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 4 | 1 | 🦶 Deviazione di piede | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
@@ -86,7 +71,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 9 | 2 | 🦵 Controllo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
 | 10 | 0 | 🎯 Pallonetto preciso | shot/shot_chip | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | cucchiaio:f |
 | 10 | 1 | 💥 Tiro di potenza | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
-| 10 | 2 | 🌀 Dribbling portiere | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 10 | 2 | 🌀 Dribbling portiere e tiro | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 11 | 0 | 💥 Collo pieno! | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 11 | 1 | 🎯 Interno precisione | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 11 | 2 | 🌀 Finta e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
@@ -108,24 +93,24 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 17 | 0 | ↗️ Cross teso | cross/cross_low_driven | pass | fedele | cross:f |
 | 17 | 1 | ↗️ Cross a rientrare | cross/cross_cutback | pass | fedele | giro:f, cross:f |
 | 17 | 2 | 🦵 Tiro a giro | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 18 | 0 | 🌀 Dribbling netto | pass/base | pass | approssimata | dribbling:a |
-| 18 | 1 | ⚡ Sterzata fulminea | pass/base | pass | approssimata |  |
+| 18 | 0 | 🌀 Dribbling netto e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
+| 18 | 1 | ⚡ Sterzata e assist | pass/base | pass | fedele | passaggio:f |
 | 18 | 2 | 💥 Tiro a giro | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 19 | 0 | 🌀 Dribbling netto | pass/base | pass | approssimata | dribbling:a |
-| 19 | 1 | ⚡ Sterzata fulminea | pass/base | pass | approssimata |  |
+| 19 | 0 | 🌀 Dribbling netto e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
+| 19 | 1 | ⚡ Sterzata e assist | pass/base | pass | fedele | passaggio:f |
 | 19 | 2 | 💥 Tiro a giro | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 20 | 0 | 🌀 Dribbling netto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
-| 20 | 1 | ⚡ Scatto puro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 20 | 0 | 🌀 Dribbling netto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
+| 20 | 1 | ⚡ Scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 20 | 2 | ↩️ Dai e vai | pass/one_two | pass | fedele | passaggio:f |
-| 21 | 0 | ⚡ Doppio passo esplosivo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | step_over:a |
+| 21 | 0 | ⚡ Doppio passo esplosivo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | step_over:a, tiro:f |
 | 21 | 1 | 🌀 Finta e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 21 | 2 | 🎯 Assist a sorpresa | pass/base | pass | fedele | passaggio:f |
 | 22 | 0 | ⚡ Sprint e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 22 | 1 | 🎯 Assist filtrante | pass/base | pass | fedele | passaggio:f |
-| 22 | 2 | 🌀 Dribbling GK | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 22 | 2 | 🌀 Dribbling GK e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 23 | 0 | ⚡ Scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 23 | 1 | 🎯 Filtrante per compagno | pass/base | pass | fedele | passaggio:f |
-| 23 | 2 | 🌀 Dribbling difensore | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 23 | 2 | 🌀 Dribbling difensore e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 24 | 0 | 🎯 Assist filtrante | pass/base | pass | fedele | passaggio:f |
 | 24 | 1 | ⚡ Accelera verso porta | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 24 | 2 | 💥 Tiro dal limite | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
@@ -174,8 +159,8 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 39 | 0 | 📐 Sponda per il rimorchio | pass/base | pass | fedele | passaggio:f |
 | 39 | 1 | 🦵 Tiro di prima | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 39 | 2 | 🌀 Controllo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
-| 40 | 0 | 🌀 Dribbling stretto perfetto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
-| 40 | 1 | ⚡ Finta e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 40 | 0 | 🌀 Dribbling stretto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
+| 40 | 1 | ⚡ Finta, scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 40 | 2 | 🔙 Retropassaggio sicuro | pass/base | pass | fedele | passaggio:f |
 | 41 | 0 | 🔄 Rovesciata spettacolare | shot/shot_volley | volley (+ mx-scissor-kick su «rovesciata/sforbiciata») | fedele | rovesciata:f |
 | 41 | 1 | 🦵 Colpo di testa normale | header/header_near_post | header | fedele | testa:f |
@@ -222,17 +207,17 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 55 | 0 | ✈️ Stacco sul palo lontano | header/header_far_post | header | fedele | testa:f |
 | 55 | 1 | 🦵 Mezza rovesciata | shot/shot_volley | volley (+ mx-scissor-kick su «rovesciata/sforbiciata») | fedele | rovesciata:f |
 | 55 | 2 | 🤝 Sponda indietro | pass/base | pass | fedele | passaggio:f |
-| 56 | 0 | ⚡ Scatto perfetto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 56 | 0 | ⚡ Scatto perfetto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 56 | 1 | 🎯 Controlla e tira | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
 | 56 | 2 | ↩️ Rimanda al mittente | pass/base | pass | approssimata |  |
-| 57 | 0 | ⚡ Spunto esplosivo | pass/base | pass | approssimata | dribbling:a |
-| 57 | 1 | 🌀 Dribbling di tecnica | pass/base | pass | approssimata | dribbling:a |
+| 57 | 0 | ⚡ Spunto e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
+| 57 | 1 | 🌀 Dribbling di tecnica e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 57 | 2 | 💥 Tiro cross teso | cross/cross_low_driven | pass | fedele | tiro:f, cross:f |
 | 58 | 0 | 💥 Angolo basso — potenza | penalty/base | penalty | approssimata |  |
 | 58 | 1 | 🌀 Cucchiaio — glaciale | penalty/penalty_panenka | penalty | fedele | cucchiaio:f |
 | 58 | 2 | ⚡ Incrociato rasoterra | penalty/base | penalty | approssimata |  |
 | 59 | 0 | 🔥 Prendo in mano la squadra | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
-| 59 | 1 | ⚡ Scatto in verticale | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 59 | 1 | ⚡ Scatto in verticale e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 59 | 2 | 🎯 Lancio smarcante | pass/pass_lofted | pass | fedele | passaggio:f |
 | 60 | 0 | 🌀 Li salto e servo il compagno libero | pass/pass_lofted | pass | approssimata |  |
 | 60 | 1 | ↩️ Dai e ricevi — smarca il compagno | pass/base | pass | approssimata |  |
@@ -304,7 +289,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 82 | 1 | 💥 Tiro a giro verso il palo lontano | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
 | 82 | 2 | 🌀 Dribbling e cross in area | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
 | 83 | 0 | ↗️ Cross immediato in area | cross/cross_near_post | pass | fedele | cross:f |
-| 83 | 1 | ⚡ Scatto sul secondo palo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 83 | 1 | ⚡ Scatto sul secondo palo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 83 | 2 | ↩️ Giocata corta con triangolo | pass/one_two | pass | fedele | passaggio:f |
 | 84 | 0 | 🎯 Cross a rientrare perfetto | cross/cross_cutback | pass | fedele | giro:f, cross:f |
 | 84 | 1 | 🦵 Tiro a giro forte sul portiere | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
@@ -330,38 +315,38 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 91 | 0 | ↗️ Cross sul primo palo | cross/cross_near_post | pass | fedele | cross:f |
 | 91 | 1 | 🦵 Tiro da posizione impossibile | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 91 | 2 | ↘️ Rasoterra rasente il palo | pass/pass_ground | pass | approssimata |  |
-| 92 | 0 | 🔄 Roulette di classe | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | roulette:f |
-| 92 | 1 | ⚡ Finta e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 92 | 0 | 🔄 Roulette e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | roulette:f, tiro:f |
+| 92 | 1 | ⚡ Finta, scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 92 | 2 | ↩️ Appoggio sicuro al compagno | pass/base | pass | fedele | passaggio:f |
 | 93 | 0 | 🌀 Finta a rientrare e tiro netto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | giro:f, tiro:f, dribbling:a |
 | 93 | 1 | 💥 Tiro diretto senza finte | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 93 | 2 | ↗️ Cross dopo dribbling | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
-| 94 | 0 | 🦵 Step-over e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | step_over:a, dribbling:a |
-| 94 | 1 | 🌀 Step-over e cross | cross/cross_near_post | pass | approssimata | step_over:a, cross:f |
+| 94 | 0 | 🦵 Step-over e scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | step_over:a, tiro:f, dribbling:a |
+| 94 | 1 | 🌀 Step-over e cross | cross/cross_after_dribble | pass | approssimata | step_over:a, cross:f |
 | 94 | 2 | 💥 Finta e tiro immediato | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
-| 95 | 0 | 💨 Finta rapida e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 95 | 0 | 💨 Finta rapida e scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 95 | 1 | 🌀 Finta di corpo e cross | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
 | 95 | 2 | 🎯 Assist dopo la finta | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 96 | 0 | ↗️ Cross al centro da fondo | cross/cross_near_post | pass | fedele | cross:f |
 | 96 | 1 | 🌀 Scarta il portiere da fondo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 96 | 2 | 🦵 Tiro da angolo impossibile | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
-| 97 | 0 | 🌀 Scarta col dribbling | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 97 | 0 | 🌀 Scarta col dribbling e tiro | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 97 | 1 | 💥 Tiro diretto sul portiere | shot/shot_one_on_one | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 97 | 2 | ↗️ Assist al compagno libero | pass/base | pass | fedele | passaggio:f |
 | 98 | 0 | 🌀 Dribbling stretto e tiro netto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 98 | 1 | 🦵 Tiro diretto più sicuro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 98 | 2 | ↩️ Retropassaggio fuori area | pass/base | pass | fedele | passaggio:f |
-| 99 | 0 | ⚡ Scatto esplosivo in profondità | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 99 | 0 | ⚡ Scatto esplosivo in profondità e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 99 | 1 | 🎯 Controllo e conclude | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
 | 99 | 2 | ↗️ Cross al volo in corsa | cross/cross_near_post | pass | fedele | volee:f, cross:f |
 | 100 | 0 | 🔄 Finta e cross | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
-| 100 | 1 | ⚡ Finta e scatto sulla fascia | pass/base | pass | approssimata | dribbling:a |
+| 100 | 1 | ⚡ Finta sulla fascia e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 100 | 2 | 💥 Tiro a giro sul portiere | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 101 | 0 | 🌀 Virata istantanea e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 101 | 0 | 🌀 Virata, scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 101 | 1 | 🎯 Giro e cross | cross/cross_near_post | pass | fedele | cross:f |
 | 101 | 2 | 💥 Tiro dopo la virata | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 102 | 0 | 🌀 Dribbling netto e cross | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
-| 102 | 1 | ⚡ Scatto in velocità | pass/base | pass | approssimata | dribbling:a |
+| 102 | 1 | ⚡ Scatto in velocità e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 102 | 2 | ↗️ Cross immediato senza dribblare | cross/cross_near_post | pass | approssimata | cross:f, dribbling:a |
 | 103 | 0 | 🤸 Controllo acrobatico e tira | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | acrobatico:a, tiro:f, controllo:a |
 | 103 | 1 | ✈️ Testa al volo | header/header_near_post | header | fedele | volee:f, testa:f |
@@ -386,27 +371,27 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 109 | 2 | ↩️ Controlla e serve | pass/base | pass | approssimata | controllo:a |
 | 110 | 0 | 🏃 Faccio il velo e attacco | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | NON DISEGNABILE | velo:n |
 | 110 | 1 | ↩️ Ricevo dopo il velo | pass/base | pass | NON DISEGNABILE | velo:n |
-| 110 | 2 | ⚡ Scatto oltre il velo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | NON DISEGNABILE | velo:n, dribbling:a |
+| 110 | 2 | ⚡ Scatto oltre il velo e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | NON DISEGNABILE | velo:n, tiro:f, dribbling:a |
 | 111 | 0 | ⚡ Rasoterra preciso per il compagno | pass/pass_ground | pass | approssimata |  |
 | 111 | 1 | 🦵 Tiro di prima invece | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 111 | 2 | 🤸 Appoggio di prima per il compagno libero | pass/base | pass | fedele | passaggio:f |
 | 112 | 0 | 🌀 Dribbling centrale e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
-| 112 | 1 | ⚡ Spunto esplosivo verso porta | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 112 | 1 | ⚡ Spunto esplosivo verso porta e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 112 | 2 | ↩️ Dai e vai in verticale | pass/one_two | pass | fedele | passaggio:f |
 | 113 | 0 | 🎯 Assist di prima senza guardare | pass/base | pass | fedele | passaggio:f |
 | 113 | 1 | 💥 Tiro a sorpresa senza assist | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f, passaggio:f |
 | 113 | 2 | 🌀 Finta e serve dopo la finta | pass/base | pass | approssimata | dribbling:a |
 | 114 | 0 | ↩️ Rimorchio e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 114 | 1 | 🎯 Rimorchio e serve il compagno | pass/base | pass | approssimata |  |
-| 114 | 2 | ⚡ Rimorchio e scatto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 114 | 2 | ⚡ Rimorchio, scatto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 115 | 0 | 🌀 Tiro a giro sul secondo palo | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
 | 115 | 1 | 🦵 Tiro interno piede classico | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 115 | 2 | ↩️ Appoggio di prima per il compagno libero | pass/base | pass | fedele | passaggio:f |
-| 116 | 0 | 💡 Finta e scarta il difensore | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 116 | 0 | 💡 Finta e scarta il difensore e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 116 | 1 | ⚡ Taglio improvviso diagonale | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 116 | 2 | 🎯 Schema concordato coi compagni | pass/base | pass | approssimata |  |
 | 117 | 0 | 🎯 Taglio diagonale e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
-| 117 | 1 | 🌀 Dribbling dopo il taglio | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 117 | 1 | 🌀 Dribbling dopo il taglio e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 117 | 2 | ↩️ Appoggio per il compagno | pass/base | pass | fedele | passaggio:f |
 | 118 | 0 | ⚡ Uno-due e smista subito | pass/one_two | pass | fedele | passaggio:f |
 | 118 | 1 | 🔄 Cambia lato rapidamente | pass/base | pass | approssimata |  |
@@ -419,7 +404,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 120 | 2 | 🌀 Dribbling e conduci | dribble/dribble_feint | change-direction | approssimata | dribbling:a |
 | 121 | 0 | 🔥 Triangolo e vai | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | passaggio:f |
 | 121 | 1 | ↩️ Dai e vai subito | pass/one_two | pass | fedele | passaggio:f |
-| 121 | 2 | ⚡ Scatto in verticale | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 121 | 2 | ⚡ Scatto in verticale e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 122 | 0 | 🌀 Parabola d'esterno 40m | pass/pass_lofted | pass | fedele | giro:f |
 | 122 | 1 | 📏 Lancio lungo di collo | pass/pass_lofted | pass | fedele | passaggio:f |
 | 122 | 2 | ↩️ Passaggio sicuro corto | pass/pass_ground | pass | fedele | passaggio:f |
@@ -484,11 +469,11 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 142 | 1 | 💪 Usa il fisico — campo pesante | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 142 | 2 | 🎯 Passaggio corto e sicuro | pass/pass_ground | pass | fedele | passaggio:f |
 | 143 | 0 | 🔥 Tiro potente — adrenalina pura | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
-| 143 | 1 | 🌀 Dribbling tecnico da campione | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 143 | 1 | 🌀 Dribbling tecnico da campione e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 143 | 2 | 🎯 Assist preciso — vinci il derby | pass/base | pass | fedele | passaggio:f |
 | 144 | 0 | 💥 Gol dell'ex — silenzio assoluto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 144 | 1 | 🎯 Assist gelido e decisivo | pass/base | pass | fedele | passaggio:f |
-| 144 | 2 | ⚡ Scatto senza rimpianti | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 144 | 2 | ⚡ Scatto senza rimpianti e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 145 | 0 | 🌟 Gol dell'anno — ci provo! | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 145 | 1 | 🎯 Assist decisivo per la vittoria | pass/base | pass | fedele | passaggio:f |
 | 145 | 2 | ⚡ Gioco sul sicuro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
@@ -496,7 +481,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 146 | 1 | ⚡ Sprint disperato di copertura | tackle/base · def slide | slide-tackle/tackle | approssimata |  |
 | 146 | 2 | 🧠 Intelligenza tattica — posizionati | tackle/base · def press | slide-tackle/tackle | approssimata | pressing:a |
 | 147 | 0 | 🎯 Sfrutta lo spazio in più | pass/base | pass | approssimata |  |
-| 147 | 1 | ⚡ Scatto senza pressione | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a, pressing:a |
+| 147 | 1 | ⚡ Scatto senza pressione e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a, pressing:a |
 | 147 | 2 | 💥 Tiro con fiducia | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 148 | 0 | 🏃 Scatto in profondità e cross basso | cross/cross_far_post | pass | approssimata | cross:f, dribbling:a |
 | 148 | 1 | 🎯 Triangolo col portiere | pass/one_two | pass | fedele | passaggio:f |
@@ -516,7 +501,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 153 | 0 | 💥 Bordata potente | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 153 | 1 | 🎯 Tiro controllato | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
 | 153 | 2 | ↗️ Serve in area per il compagno | pass/base | pass | approssimata |  |
-| 154 | 0 | 🌀 Dribbling individuale feroce | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 154 | 0 | 🌀 Dribbling individuale feroce e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 154 | 1 | ⚡ Sprint verso la porta | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 154 | 2 | 🎯 Serve un compagno smarcato | pass/base | pass | approssimata | pressing:a |
 | 155 | 0 | 🧠 Anticipi la giocata avversaria | tackle/base · def lunge | slide-tackle/tackle | fedele | contrasto:f |
@@ -529,7 +514,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 157 | 1 | ✋ Devia di piede sul palo | tackle/base · def lunge | slide-tackle/tackle | approssimata |  |
 | 157 | 2 | 📣 Avvisa il portiere | tackle/base · def call | slide-tackle/tackle | approssimata |  |
 | 158 | 0 | 🔙 Smarcati per ricevere | pass/base | pass | approssimata | controllo:a, pressing:a |
-| 158 | 1 | ⚡ Scatto per dargli una soluzione | pass/base | pass | approssimata | dribbling:a |
+| 158 | 1 | ⚡ Scatto, gli dai una soluzione e assist | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 158 | 2 | 💪 Offri il fisico per la palla lunga | pass/base | pass | approssimata |  |
 | 159 | 0 | ⚽ Taglio preciso sul palo lontano | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 159 | 1 | ✈️ Testa in profondità | header/header_far_post | header | fedele | testa:f |
@@ -542,7 +527,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 161 | 2 | 🎯 Palla sul primo palo | freekick/freekick_cross_low | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 162 | 0 | 🎯 Esterno piede preciso | pass/base | pass | fedele | giro:f |
 | 162 | 1 | 💥 Tiro d'esterno a sorpresa | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 162 | 2 | 🌀 Finta e interno piede | pass/base | pass | approssimata | dribbling:a |
+| 162 | 2 | 🌀 Finta e assist d'interno | pass/base | pass | approssimata | passaggio:f, dribbling:a |
 | 163 | 0 | 💥 Collo pieno potente | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 163 | 1 | 🎯 Tiro controllato | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
 | 163 | 2 | ↗️ Serve in area per il compagno | pass/base | pass | approssimata |  |
@@ -553,7 +538,7 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 165 | 1 | 🎯 Cross teso verso il secondo palo | cross/cross_far_post | pass | fedele | cross:f |
 | 165 | 2 | 💥 Tiro di collo pieno | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 166 | 0 | 🌀 Slalom completato e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
-| 166 | 1 | ⚡ Scatto nello stretto | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | dribbling:a |
+| 166 | 1 | ⚡ Scatto nello stretto e tiro | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, dribbling:a |
 | 166 | 2 | 🎯 Assist per il compagno smarcato | pass/base | pass | approssimata | passaggio:f, pressing:a |
 | 167 | 0 | 🦵 Controbalzo secco al volo | shot/shot_first_time | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | volee:f |
 | 167 | 1 | 🎯 Controllo e tira | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata | tiro:f, controllo:a |
@@ -582,13 +567,13 @@ Il verdetto viene da un registro di parole-gesto scritto da me (in testa allo sc
 | 175 | 0 | ⚡ Arriva in tempo sulla ribattuta | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | approssimata |  |
 | 175 | 1 | 🦵 Tiro immediato sul rimbalzo | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
 | 175 | 2 | 🤝 Serve il compagno più vicino | pass/base | pass | approssimata |  |
-| 176 | 0 | 🌀 Sterzata d'esterno verso il fondo | pass/base | pass | fedele | giro:f |
+| 176 | 0 | 🌀 Sterzata d'esterno sul fondo e assist | pass/base | pass | fedele | giro:f, passaggio:f |
 | 176 | 1 | ↗️ Cross al volo senza dribblare | cross/cross_near_post | pass | approssimata | volee:f, cross:f, dribbling:a |
 | 176 | 2 | 💥 Tiro a giro dall'angolo stretto | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
-| 177 | 0 | 🌀 Sterzata esterna e fuga verso il fondo | pass/base | pass | approssimata |  |
+| 177 | 0 | 🌀 Sterzata esterna, fuga sul fondo e assist | pass/base | pass | fedele | passaggio:f |
 | 177 | 1 | ↗️ Cross immediato di prima | cross/cross_near_post | pass | fedele | cross:f |
 | 177 | 2 | 🦵 Tiro verso il palo vicino | shot/shot_power | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | tiro:f |
-| 178 | 0 | ⚡ Sterzata d'esterno e brucia il terzino | pass/base | pass | fedele | giro:f |
+| 178 | 0 | ⚡ Sterzata d'esterno, brucia il terzino e assist | pass/base | pass | fedele | giro:f, passaggio:f |
 | 178 | 1 | 🎯 Cross preciso al secondo palo | cross/cross_far_post | pass | fedele | cross:f |
 | 178 | 2 | 🎯 Tiro a giro sul palo lontano | shot/shot_curled | kick (+ tiro in corsa mx-strike-foward-jog per l'eroe) | fedele | giro:f, tiro:f |
 | 179 | 0 | ↩️ Dai e vai in verticale | pass/one_two | pass | fedele | passaggio:f |

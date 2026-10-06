@@ -145,3 +145,4 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - il rapporto di Codex indica la versione collaudata;
   - i rilievi su una zona ferma si accumulano senza correzioni finché il collaudo non è chiuso;
   - restano ipotesi finché non sono riprodotti.
+- **Correzione (questionario 06/10):** «Cross di rabona» e «Assist di tacco» non si aggiungono. Rabona e tacco sono gesti promessi senza clip (regola PO-086, `src/04-situazioni-zone-piazzati.jsx:143-148`), quindi le azioni sarebbero sospese o mostrerebbero un gesto falso. Risposta PO: «Tolgo le 2 varianti». Restano in coda come clip mancanti.

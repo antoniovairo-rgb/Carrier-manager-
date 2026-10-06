@@ -52,13 +52,15 @@ const D = await page.evaluate(() => { const out = [];
   for (let gi = 0; gi < SITUATIONS.length; gi++) { const s = SITUATIONS[gi]; const acts = [];
     for (let ai = 0; ai < (s.actions || []).length; ai++) { const a = s.actions[ai]; let hl = null; try { hl = deriveHL(s, a); } catch (e) { hl = { err: String(e.message).slice(0, 60) }; }
       const g = hl && hl.type ? window.__CPM_GESTI(hl.type, hl.variant) : null;
-      acts.push({ ai, label: a.label, stat: a.stat, rew: a.rew, fail: a.fail, defGesto: a.defGesto || null, gkCall: !!a.gkCall, fam: hl && hl.type, variante: hl && hl.variant, clipKey: g ? g.clip : null, prof: g ? g.prof : null }); }
+      acts.push({ ai, label: a.label, stat: a.stat, rew: a.rew, fail: a.fail, defGesto: a.defGesto || null, gkCall: !!a.gkCall, fam: hl && hl.type, variante: hl && hl.variant, pre: (hl && hl.pre) || null, clipKey: g ? g.clip : null, prof: g ? g.prof : null }); }
     out.push({ gi, text: s.text, intro: s.intro || '', type: s.type, zone: (s.zones || [])[0], acts }); }
   const G = window.__CPM_GESTI(); return { sit: out, gesti: G }; });
 await b.close(); srv.close();
 /* varianti dichiarate in GESTI e quelle effettivamente raggiunte */
 const dichiarate = []; for (const f in D.gesti) for (const v in D.gesti[f]) dichiarate.push(f + '/' + v);
-const raggiunte = new Set(); const freq = {}; for (const s of D.sit) for (const a of s.acts) { const vv = (a.fam === 'tackle' && a.defGesto) ? a.defGesto : a.variante; const k = a.fam + '/' + (vv && D.gesti[a.fam] && D.gesti[a.fam][vv] ? vv : 'base'); raggiunte.add(k); freq[k] = (freq[k] | 0) + 1; }
+const raggiunte = new Set(); const freq = {}; for (const s of D.sit) for (const a of s.acts) { const vv = (a.fam === 'tackle' && a.defGesto) ? a.defGesto : a.variante; const k = a.fam + '/' + (vv && D.gesti[a.fam] && D.gesti[a.fam][vv] ? vv : 'base'); raggiunte.add(k); freq[k] = (freq[k] | 0) + 1;
+  /* [7.999.145 PO-068] il dribbling di preparazione del doppio gesto e' una variante raggiunta */
+  if (a.pre && D.gesti.dribble && D.gesti.dribble[a.pre]) { const kp = 'dribble/' + a.pre; raggiunte.add(kp); freq[kp] = (freq[kp] | 0) + 1; } }
 const promesse = t => PROMESSE.filter(p => p[1].test(t)).map(p => ({ k: p[0], v: p[2], come: p[3] }));
 const righe = []; const tot = { f: 0, a: 0, n: 0 }; const sitTesto = { n: [], a: [] };
 for (const s of D.sit) {

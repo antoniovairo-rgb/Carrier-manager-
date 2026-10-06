@@ -1775,6 +1775,19 @@ function _aerialContactY0(P,isHL,isResult,preStrike){
 }
 // CINE-1: motore cinematografico — deriva {type, pattern, variant} da situation+azione.
 // `type` resta byte-identico al cascade legacy (zero regressioni); pattern/variant sono il nuovo backbone.
+/* [7.999.145 PO-068 «doppio gesto», decisione PO 06/10 — rosso __CPM_NO_DOPPIO148] LA FINTA PRIMA DEL TIRO O DEL CROSS.
+   Le azioni «X e tiro» / «X e assist» (Roulette e tiro, Doppio passo e tiro, Step-over e cross, Sterzata… e assist,
+   Rientra e tira) dalla 7.798 rendono solo il gesto finale: il dribbling che lo precede non si vedeva, e le sue varianti
+   risultavano «mai raggiunte» nel censimento. Qui l'etichetta dichiara il dribbling di PREPARAZIONE; la sequenza dell'azione
+   (buildHLTimeline) gli riserva un tratto «feint» e il 3D vi monta la clip: roulette = clip del PO, gli altri = cambio di
+   direzione (il «doppio passo» non ha una clip dedicata: si vede il cambio di direzione, dichiarato). */
+function hlPreDribble(label){try{if(typeof window!=='undefined'&&window.__CPM_NO_DOPPIO148)return null;}catch(_e){}
+  const l=String(label||'').toLowerCase();
+  if(/roulette|ruleta|veronica|marsiglies|giravolta/.test(l))return 'roulette';
+  if(/doppio passo|step-?over/.test(l))return 'double_step';
+  if(/\brientra e\b|finta a rientrare|rientra sul|rientra col/.test(l))return 'dribble_inside';
+  if(/sterzat/.test(l))return 'dribble_outside';
+  return null;}
 function deriveHL(sit,act){
   const lbl=(act?.label||"").toLowerCase();
   const cn=(sit&&sit.cine)||(typeof deriveSitCine==="function"?deriveSitCine(sit):{});// CINE-DECOUPLE: segnali da campo, non da sit.text
@@ -1842,8 +1855,7 @@ function deriveHL(sit,act){
      Misurate tre azioni che promettono «rasoterra» e alzano il pallone fino a 1,80u, fra cui gi111,
      la scena segnalata. Due varianti bastano: una promessa di palla a terra e una di palla alta. */
   if(type==="pass"){
-    if(/tacco|backheel/.test(lbl))variant="heel";
-    else if(/uno-?due|dai e vai|triangol/.test(lbl))variant="one_two";
+    if(/uno-?due|dai e vai|triangol/.test(lbl))variant="one_two";
     else if(/raso ?terra|rasoterra|raso|a terra|piatto|corto|scarico/.test(lbl))variant="pass_ground";
     else if(/lanci|lungo|parabola|campanil|scavalc|alto|pallonett/.test(lbl))variant="pass_lofted";
   }
@@ -1852,7 +1864,7 @@ function deriveHL(sit,act){
     if(/rientr|a rientrare/.test(lbl))variant="cross_cutback";
     else if(/secondo palo|palo lontano|profond|arretrat/.test(lbl)||cn.fpCross)variant="cross_far_post";
     else if(/basso|teso|raso/.test(lbl))variant="cross_low_driven";
-    else variant="cross_near_post";
+    else variant=(act&&hlPreDribble(lbl))?"cross_after_dribble":"cross_near_post";/* [7.999.145 PO-068] il cross dopo la finta (rosso __CPM_NO_DOPPIO148) */
   } else if(type==="header"){
     /* [7.786.0 residuo dichiarato del 7.784] LO SMISTAMENTO DI TESTA NON MIRA AL PALO.
        Il 7.784 ha tolto dalla famiglia «tiro» le consegne rese come conclusione, lasciando fuori i
@@ -1955,7 +1967,8 @@ function deriveHL(sit,act){
     pattern=(_itP==="through")?"THROUGH_BALL":(_itP==="switch")?"SWITCH":(_itP==="onetwo")?"COMBINATION"
       :/filtrante|imbucata|profond|scavalc/.test(lbl)?"THROUGH_BALL":/scarico|cambia campo|allarg|ribalt|fascia|sventagliat/.test(lbl)?"SWITCH":"COMBINATION";/* [7.784.0] due consegne arrivate qui dalla regola sopra avevano il pattern sbagliato per assenza di parola: «Missile a SCAVALCARE la difesa» e' un lancio in profondita' (THROUGH_BALL), la «SVENTAGLIATA improvvisa» e' un cambio di fronte (SWITCH). Senza queste due parole finivano entrambe su COMBINATION, cioe' un uno-due corto. */
   }// 5.43.3: SWITCH = scarico/cambio gioco → palla diagonale verso un compagno sulla fascia (distinto dal passaggio verticale)
-  return{type,pattern,variant};
+  const pre=(act&&(type==="shot"||type==="pass"||type==="cross"))?hlPreDribble(lbl):null;/* [7.999.145 PO-068] dribbling di preparazione */
+  return{type,pattern,variant,pre};
 }
 // ============================================================================
 // CINE-TL (4.97.0) — Motore di TIMELINE per gli highlight. FASE 1: logica + validazione.
@@ -2097,7 +2110,13 @@ function buildHLTimeline(hl,o){
     else B('return',0.40,{from:'MATE1',to:'HERO',kind:'pass'},[]);
     concl('HERO',headerFinish?'header':'shot');
   }
-  return{actors:A,beats,meta:{pattern:pat,type,variant}};
+  /* [7.999.145 PO-068 doppio gesto] se l'azione dichiara un dribbling di preparazione e la sequenza non ha gia' il tratto di
+     finta (DRIBBLE_SHOT ce l'ha), lo si inserisce prima della prima giocata dell'eroe: pallone ai suoi piedi, nessuno spostamento. */
+  if(hl.pre&&!beats.some(b=>b.tag==='feint')&&!(typeof window!=='undefined'&&window.__CPM_NO_DOPPIO148)){
+    const _i148=beats.findIndex(b=>b&&b.ball&&b.ball.from==='HERO');
+    if(_i148>=0)beats.splice(_i148,0,{tag:'feint',dur:hl.pre==='roulette'?0.9:0.5,ball:{from:'HERO',to:'HERO',kind:'dribble'},moves:[]});
+  }
+  return{actors:A,beats,meta:{pattern:pat,type,variant,pre:hl.pre||null}};
 }
 // Validatore delle INVARIANTI calcistiche (le "regole obbligatorie" come check logici).
 // Ritorna un array di violazioni (vuoto = timeline coerente).
