@@ -1,5 +1,127 @@
 [
  {
+  "data": "2026-10-05 23:23",
+  "versione": "7.999.140",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 188
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 664
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 54
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 269
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 305
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 70
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 109
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 34
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 92
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "post-210",
+    "ok": true,
+    "s": 551
+   },
+   {
+    "passo": "piedi-203",
+    "ok": true,
+    "s": 633
+   }
+  ]
+ },
+ {
   "data": "2026-10-05 21:41",
   "versione": "7.999.139",
   "catena": "completa",
@@ -4457,58 +4579,6 @@
     "passo": "career-critical",
     "ok": true,
     "s": 848
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 512
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-01 18:17",
-  "versione": "7.999.99",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 691
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 54
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 687
    },
    {
     "passo": "partita-vera",
