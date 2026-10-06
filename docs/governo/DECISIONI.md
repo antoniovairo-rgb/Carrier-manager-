@@ -119,3 +119,13 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 06/10 — PO-123 obiettivo di movimento (questionario)
 - **Misura** (sonda hl-credibilita sul tempo di scena): prima dell'azione compagni fermi 34-43%, avversari 29-46%; durante l'esito 52% e 61%; oscillazione di circa 10 punti fra giri.
 - **Risposta PO:** «≤30% prima dell'azione» — nelle fasi prima del tiro/passaggio al massimo il 30% fermi (compagni e avversari entro 35 m), misurato su 5 partite; l'esito non si giudica.
+
+## 06/10 — PO-068 le 16 varianti mai raggiunte (questionario)
+- **Misura** (censimento `CENSIMENTO_SCENE.json`, base 46 dichiarate / 16 mai raggiunte):
+  - 9 sono doppioni di varianti già raggiunte, con la stessa clip e lo stesso profilo: shot_placed, step_over, feint, hocus_pocus, short_pass, long_pass, chip_pass, backheel e tackle/aerial (gli stacchi difensivi escono già come colpo di testa);
+  - 5 sono dribbling nascosti dalla regola 7.798 («X e tiro» / «X e assist»): dribble_inside, dribble_outside, double_step, roulette, cross_after_dribble;
+  - 2 non hanno nessuna azione in catalogo: cross_rabona e heel.
+- **Risposte PO:**
+  - «Tolgo i 9 doppioni»;
+  - «Doppio gesto»: prima la clip del dribbling nella costruzione, poi il tiro o il cross, con interruttore rosso e guardiano;
+  - «Aggiungo 2 azioni»: «Cross di rabona» e «Assist di tacco».
