@@ -1,5 +1,152 @@
 [
  {
+  "data": "2026-10-06 19:39",
+  "versione": "7.999.144",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 214
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 751
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 61
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 45
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 283
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 320
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 83
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 75
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 116
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 107
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 81
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "post-210",
+    "ok": true,
+    "s": 549
+   },
+   {
+    "passo": "piedi-203",
+    "ok": true,
+    "s": 667
+   },
+   {
+    "passo": "gesti-scena-p1b",
+    "ok": true,
+    "s": 662
+   },
+   {
+    "passo": "piede-cross-p1b2",
+    "ok": true,
+    "s": 166
+   },
+   {
+    "passo": "rincorsa-144",
+    "ok": true,
+    "s": 254
+   },
+   {
+    "passo": "testa-146",
+    "ok": true,
+    "s": 146
+   },
+   {
+    "passo": "movimento-147",
+    "ok": true,
+    "s": 663
+   }
+  ]
+ },
+ {
   "data": "2026-10-06 16:08",
   "versione": "7.999.143",
   "catena": "completa",
@@ -4837,58 +4984,6 @@
     "passo": "partita-vera",
     "ok": true,
     "s": 524
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-02 12:47",
-  "versione": "7.999.106",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 29
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 780
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 71
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 948
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 526
    },
    {
     "passo": "design-system",
