@@ -112,3 +112,6 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Misura:** con la rincorsa (7.999.143) la volée della scena #6 arriva al contatto girata di 86-91° rispetto alla porta, 14° senza.
 - **Risposta PO:** «Togli la rincorsa alla volée» — torna al gesto al volo; il pallonetto tiene la rincorsa. Guardiano sull'angolo al contatto.
 - **Rettifica (06/10, stesso giorno):** il dato 86-91° veniva da una pagina riusata dopo altre scene («una pagina stanca non è il gioco»); su pagina nuova, 3 ripetizioni: con rincorsa 5°, 7°, 9°, senza 3°, 20°, 3°. **Risposta PO: «Rimetti la rincorsa»** — la volée tiene la rincorsa (decisione «Entrambi» del 06/10); la sospensione non è stata spedita.
+
+## 06/10 — Accorpamenti in L1 (questionario, domanda PO «nel lotto 1 ci sono PO ripetitivi o accorpabili?»)
+- Approvati tutti: PO-209 ← PO-216 (tabellino post partita incoerente) · PO-123 ← PO-033, PO-120 (un unico collaudo degli highlight) · PO-048 ← PO-127 (regia della camera) · PO-022 ← PO-030 (cantiere del brain). L1 passa da 10 a 6 voci.
