@@ -23,17 +23,18 @@ for (const rosso of [false, true]) {
 
   const t0 = Date.now(); let ph = '', fs0 = null;
   while (Date.now() - t0 < 560000) { const s = await page.evaluate(() => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (ph !== 'ceremony' && ph !== 'ended' && window.__CPM_F077_SET) window.__CPM_F077_SET(0.05); return { ph, f: window.__CPM_FOOT77 ? window.__CPM_FOOT77() : null }; }); ph = s.ph; if (s.f && s.f.fs != null && fs0 == null) fs0 = s.f.fs; if (ph === 'ended' || ph === 'ceremony') break; await sleep(800); }
-  const piedi = []; let f0 = null;
-  for (let k = 0; k < 16; k++) { const f = await page.evaluate(() => window.__CPM_FOOT77 ? window.__CPM_FOOT77() : null); if (f && f.ct != null && f.ct > 0.5) { piedi.push(f.foot); f0 = f.f0; } await sleep(600); }
+  const piedi = []; let f0 = null, fsC = null, hC = null;
+  for (let k = 0; k < 16; k++) { const f = await page.evaluate(() => window.__CPM_FOOT77 ? window.__CPM_FOOT77() : null); if (f && f.ct != null && f.ct > 0.5) { piedi.push(f.foot); f0 = f.f0; fsC = f.fs; hC = f.h; } await sleep(600); }
   if (!rosso) await page.screenshot({ path: new URL('./out/piedi-203.png', import.meta.url).pathname }).catch(() => {});
-  const min = piedi.length ? Math.min(...piedi) : null;
-  esito[rosso ? 'rosso' : 'verde'] = { fase: ph, fermo: fs0, quotaMinPartita: f0, piedeMinFesta: min, campioni: piedi.length };
+  const min = piedi.length ? Math.min(...piedi) : null; const med = piedi.length ? [...piedi].sort((a, b) => a - b)[Math.floor(piedi.length / 2)] : null;
+  esito[rosso ? 'rosso' : 'verde'] = { fase: ph, fermo: fs0, quotaMinPartita: f0, piedeMinFesta: min, piedeMedFesta: med, campioni: piedi.length, fsCerimonia: fsC, h: hC };
   console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(esito[rosso ? 'rosso' : 'verde'])); await ctx.close();
 }
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
-const ok = e => e.fermo != null && e.piedeMinFesta != null && e.piedeMinFesta >= 0.85 * e.fermo;
-if (!(V.campioni >= 5 && ok(V))) g.push('verde: il piede affonda in festa ' + JSON.stringify(V));
-if (!(R.campioni >= 5 && R.piedeMinFesta != null && R.piedeMinFesta <= 0.08)) g.push('rosso: nessun affondamento anche spento (la partita non ha abbassato la quota?) ' + JSON.stringify(R));
+/* [7.999.143] mediana e non minimo: in catena (macchina carica) un fotogramma d'una posa accucciata della festa scendeva sotto soglia con i piedi sul prato (foto); l'affondamento vero abbassa TUTTA la festa (0,05 per tutto il rosso) */
+const ok = e => e.fermo != null && e.piedeMedFesta != null && e.piedeMedFesta >= 0.85 * e.fermo;
+if (!(V.campioni >= 5 && ok(V))) g.push('verde: piede med ' + V.piedeMedFesta + ' min ' + V.piedeMinFesta + ' fermo ' + (V.fermo && V.fermo.toFixed(3)) + ' fsCer ' + V.fsCerimonia + ' h ' + V.h + ' ' + JSON.stringify(V));
+if (!(R.campioni >= 5 && R.piedeMedFesta != null && R.piedeMedFesta <= 0.08)) g.push('rosso: nessun affondamento anche spento (la partita non ha abbassato la quota?) ' + JSON.stringify(R));
 if (g.length) { console.log('❌ piedi-203'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ piedi-203 verde (e il rosso si vede)');

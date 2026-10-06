@@ -363,7 +363,8 @@
     "tabellino-216": "node tabellino-216.mjs",
     "gesti-scena-p1b": "node gesti-scena-p1b.mjs",
     "piede-cross-p1b2": "node piede-cross-p1b2.mjs",
-    "rincorsa-144": "node rincorsa-144.mjs"
+    "rincorsa-144": "node rincorsa-144.mjs",
+    "testa-146": "node testa-146.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

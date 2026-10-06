@@ -3863,6 +3863,18 @@ function ThreeMatchView(props){
            Il 7.999.64 lo aveva chiuso solo sul cross costruito (orig26). Qui vale per ogni colpo di testa: se durante il caricamento il
            pallone attraversa la quota della testa accanto all'eroe, il colpo parte in quel fotogramma. */
         if(_preT74<0&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA76)&&ball.position.y>=1.5&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8){ballArcT=-aDt;}
+        /* [7.999.144 decisione PO 06/10 «colpo di testa» in L1. Rosso __CPM_NO_TESTA146] MISURATO (testimone testa-pallone, scene forzate
+           gi1/gi36/gi44 e una partita S12): quando parte l'arco del colpo di testa la testa dell'eroe e' a 3,1-3,3 u dal pallone in due scene
+           su tre, e in partita non arriva mai sotto 2,6 u: l'arco del colpo parte subito (senza caricamento) dal punto di consegna del cross, 3 u prima della testa (7.237), e da li' va in porta. Ora il colpo
+           aspetta il pallone: finche' e' oltre 0,9 u dalla testa l'arco resta in attesa (tetto 0,8 s) e nell'ultimo tratto il pallone
+           converge sulla testa. */
+        if(_preT74<=0.05&&ballArcT+aDt>=0&&isResult&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA146)){try{
+          const _hv=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hv&&(_hv._head145||(_hv._head145=_findBone904(_hv.visualRoot||_hv.root,/^head$/i)));
+          const _hp=sr.current._hp146||(sr.current._hp146=new THREE.Vector3());if(_hb)_hb.getWorldPosition(_hp);else _hp.set(hero.position.x,(hero.position.y||0)+2.0,hero.position.z);
+          const _d146=_hp.distanceTo(ball.position);const S=sr.current;if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;}
+          if(!S._l146&&!(_d146>0.9&&S._w146<0.8))S._l146=true;/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
+          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*7,1);ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2)]);}}catch(_e146){}}
         ballArcT+=aDt;
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
