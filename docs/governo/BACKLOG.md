@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (27)
+## Voci aperte o parziali (28)
 
-Per lotto: L1 6 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 1.
+Per lotto: L1 6 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -47,6 +47,7 @@ Per lotto: L1 6 · L3 4 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 1.
 | PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE — PO 01/10: «da completare in L8» (fase 3, nuove tipologie di stadio) | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
+| PO-217 | 06/10 21:28 | Analisi pre-partita (FC Nottingham, difficoltà 74, «Da neutralizzare», «Il consiglio del mister», «Entra in campo»): «Metti in coda, migliora graficamente» | grafica | IN CODA — richiesta PO 06/10 «metti in coda, migliora graficamente»: analisi pre-partita (tre card di testo uguali, mezza schermata vuota sotto il pulsante) | — | — | — | foto `docs/governo/foto/po217-analisi-prepartita.jpg` |
 
 ## Storico — voci chiuse (189)
 

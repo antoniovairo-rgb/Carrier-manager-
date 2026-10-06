@@ -10,7 +10,7 @@ const srv = await startServer(); const port = srv.address().port; const b = awai
 const tutte = [];
 for (let k = 0; k < N; k++) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; });
+  await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) r.split(',').forEach(k => window[k] = 1); }, process.env.CPM_ROSSO || '');
   await openMatch(page, port, { skipLoadAll: true, name: 'Credibile' + k });
   await page.evaluate(s => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 500 + k * 37);
   const t0 = Date.now(); const camp = [];
@@ -27,5 +27,5 @@ for (let k = 0; k < N; k++) {
   tutte.push(camp); await page.close();
 }
 await b.close(); srv.close();
-fs.mkdirSync('out', { recursive: true }); fs.writeFileSync('out/hl-credibilita.json', JSON.stringify(tutte));
+fs.mkdirSync('out', { recursive: true }); fs.writeFileSync(process.env.CPM_OUT || 'out/hl-credibilita.json', JSON.stringify(tutte));
 console.log('scritto out/hl-credibilita.json');

@@ -69,6 +69,7 @@ const R = {
     indietro: pct(pas.filter(v => v.avanti < -3).length, pas.length), lunghezzaMediana: med(pas.map(v => v.lung)), perTipo: pas.reduce((o, v) => { const k = v.ht || 'cronaca'; o[k] = (o[k] | 0) + 1; return o; }, {}) },
   compagni: { fotogrammi: comp.frames, fermi: pct(comp.fermi, comp.campioni), avanti: pct(comp.avanti, comp.campioni), indietro: pct(comp.indietro, comp.campioni), distanzaMedianaDalMarcatore: med(comp.liberi), fotogrammiSenzaUnCompagnoLibero: pct(comp.smarcati0, comp.frames) },
   difensori: { fotogrammi: dif.frames, distanzaMedianaDalPortatore: med(dif.distPort), portatoreSenzaNessunoEntro5m: pct(dif.senzaPressione, dif.frames), ilPiuVicinoChiude: pct(dif.chiude, dif.frames), ilPiuVicinoSiAllontana: pct(dif.apre, dif.frames), avversariFermiEntro35m: pct(dif.fermi, dif.camp) },
+  primaAzione: (() => { const F = ['hl_intro', 'hl_move', 'hl_choose'].map(k => perFase[k]).filter(Boolean); const cN = F.reduce((a, f) => a + f.cN, 0), cF = F.reduce((a, f) => a + f.cF, 0), dN = F.reduce((a, f) => a + f.dN, 0), dF = F.reduce((a, f) => a + f.dF, 0); return { compagniFermi: pct(cF, cN), avversariFermi: pct(dF, dN), campioniCompagni: cN, campioniAvversari: dN }; })(),
   perFase: Object.fromEntries(Object.entries(perFase).map(([k, v]) => [k, { fotogrammi: v.fr, compagniFermi: pct(v.cF, v.cN), avversariFermi: pct(v.dF, v.dN), portatoreLibero5m: pct(v.press, v.fr) }])),
   esempiVoli: pas.slice(0, 12)
 };
