@@ -129,3 +129,19 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - «Tolgo i 9 doppioni»;
   - «Doppio gesto»: prima la clip del dribbling nella costruzione, poi il tiro o il cross, con interruttore rosso e guardiano;
   - «Aggiungo 2 azioni»: «Cross di rabona» e «Assist di tacco».
+
+## 06/10 — Collaudi di Codex: zone ferme (indicazione PO)
+- **Regola PO:** una funzionalità che Codex sta collaudando non si modifica in parallelo («il cane che si morde la coda»). Si passa a sistemarla solo quando il collaudo è ritenuto chiuso definitivamente.
+- **Zone che Codex può collaudare** (ferme su main 7.999.143):
+  - PO-209/216, tabellino contro gol del motore (testimone `auto216`);
+  - PO-048/127, regia della camera;
+  - PO-210, fisarmoniche del post-partita;
+  - PO-203, piedi nell'esultanza.
+- **Zone in lavorazione** (escluse dal collaudo di Codex):
+  - PO-068, gesti degli highlight (`deriveHL`, GESTI, sequenza dell'azione, clip, contatto, rincorsa, testa);
+  - PO-123, movimento nelle scene (7.999.144);
+  - PO-022/030, scena generata dal brain.
+- **Procedura:**
+  - il rapporto di Codex indica la versione collaudata;
+  - i rilievi su una zona ferma si accumulano senza correzioni finché il collaudo non è chiuso;
+  - restano ipotesi finché non sono riprodotti.
