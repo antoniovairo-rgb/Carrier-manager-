@@ -95,3 +95,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 06/10 — PO-216 (questionario)
 - **Come è stata giocata la partita 2-2 con l'Haringey:** «Giocata a mano».
 - **Testimone nel gioco:** «Sì, testimone» — al fischio, se tabellone e motore non coincidono, il taccuino annota da solo i due elenchi di gol e le scene.
+
+## 06/10 — Rincorsa dei gesti (questionario, domanda PO «i gesti hanno tutti preparazione e/o rincorsa?»)
+- **Passaggio e cross:** «Riuso Strike Forward Jog» — la clip col passo d'appoggio anche per lancio lungo e cross; il passaggio corto resta da fermo.
+- **Pallonetto e volée:** «Entrambi» — anche pallonetto e volée prendono la rincorsa del tiro in corsa.
