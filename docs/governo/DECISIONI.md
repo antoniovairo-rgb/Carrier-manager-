@@ -91,3 +91,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 
 ## 05/10 — PO-068 gesti (questionario)
 - **Risposta PO:** «1, 2 e 3» — tutte e tre, in quest'ordine: (1) P1-b: `BRAIN_GESTI` anche nelle scene dell'eroe (caduta, cartellino, rovesciata) e colonne `contactAt`/`foot` nella tabella GESTI; (2) clip in prova di PO-075 (Receive Soccerball, Soccer Header, Jog Forward) agganciate al gioco; (3) le 16 varianti dichiarate e mai raggiunte (copertura 30/46 → 46/46). Ogni passo con rosso, guardiano e foto GLB-ON.
+
+## 06/10 — PO-216 (questionario)
+- **Come è stata giocata la partita 2-2 con l'Haringey:** «Giocata a mano».
+- **Testimone nel gioco:** «Sì, testimone» — al fischio, se tabellone e motore non coincidono, il taccuino annota da solo i due elenchi di gol e le scene.

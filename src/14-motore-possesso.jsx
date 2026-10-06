@@ -153,7 +153,7 @@ function creaMotorePossesso(cfg){
       case 'ricezione': case 'conduzione': {const q=e.to||e.chi;if(q&&typeof q.x==='number'){const adv=l==='home'?q.x:100-q.x;const w=(q.y<22||q.y>78)&&adv>=66;if(w&&!S._fascia23[l])A.fascia++;S._fascia23[l]=w;}break;}
       case 'tiro': A.tiri++;A.xg=Math.round((A.xg+(typeof e.xg==='number'?e.xg:_XG914(e)))*1000)/1000;
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
-      case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;try{(S._golLog=S._golLog||[]).push({min:S.min,tick:S.tick,lato:e.lato||null,scena:!!e.scena,chi:e.chi?e.chi.i:null});}catch(_eG){}/* [7.999.10] registro dei gol del motore, solo lettura: serve a confrontarlo col tabellone */break;
+      case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;try{(S._golLog=S._golLog||[]).push({min:S.min,tick:S.tick,lato:e.lato||l||null,scena:!!e.scena,chi:e.chi?e.chi.i:null});}catch(_eG){}/* [7.999.10] registro dei gol del motore, solo lettura: serve a confrontarlo col tabellone */break;
       case 'corner': A.corner++;break;
       case 'fallo': if(!e.daFuorigioco||(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLOFG23))A.falli++;break;/* [24/09 POC] la punizione per fuorigioco non e' un fallo (1,55 a squadra al banco). Rosso __CPM_NO_FALLOFG23 */
       case 'rigore': A.rigori++;break;

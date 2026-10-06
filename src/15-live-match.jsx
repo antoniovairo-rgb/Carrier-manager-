@@ -1846,6 +1846,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   function _goEndOrCeremony(){
     if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
     fine977Ref.current=true;
+    /* [7.999.141 PO-216 «Tabellino sbagliato», decisione PO 06/10 «sì, testimone»] Foto del PO: tabellone 2-2, tabellino della gara
+       (dal motore) 2-3, partita giocata A MANO. Non riprodotto: 173 partite vissute registrate in autoplay hanno tabellone = motore.
+       TESTIMONE, nessun effetto sul gioco: al fischio, se i gol del tabellone e quelli del motore non coincidono, il taccuino annota
+       da solo i due elenchi (minuto, lato, fonte) — la prossima volta il caso arriva con la sua prova. Rosso __CPM_NO_TEST216. */
+    try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TEST216)){const _M216=motoreRef.current;const _T216=_M216&&_M216.tabellino?_M216.tabellino():null;const _s216=scoreRef.current||{};
+      if(_T216&&_T216.home&&_T216.away){const _a=[_T216.home.gol|0,_T216.away.gol|0],_b=[_s216.home|0,_s216.away|0];
+        if(!((_a[0]===_b[0]&&_a[1]===_b[1])||(_a[0]===_b[1]&&_a[1]===_b[0]))){
+          const _gl=((_M216._S&&_M216._S._golLog)||[]).map(x=>(x.min|0)+"' "+(x.lato==='home'?'noi':x.lato==='away'?'loro':'?')+(x.scena?' (scena)':'')).join(', ');
+          const _ge=(typeof MATCH_EV!=='undefined'?MATCH_EV:[]).filter(e=>e&&e.ev==='goal').map(e=>(e.min|0)+"' "+(e.side==='home'?'noi':'loro')+' '+(e.src||'')).join(', ');
+          const _sl=(sceneLogRef.current||[]).filter(s=>s&&s.out).map(s=>s.min+"' "+(s.intent||'?')+'→'+s.out).join(', ');
+          const _rec={ctx:{v:GAME_VERSION,when:`S.${player.season||1} W.${player.week||1}`,min:clockRef.current|0,phase:"fine",opp:(opponent&&(opponent.n||opponent.a))||"?",score:`${_b[0]}-${_b[1]}`},
+            txt:`[PO-216 nota automatica] tabellone ${_b[0]}-${_b[1]}, motore ${_a[0]}-${_a[1]}. Gol del motore: ${_gl||'—'}. Gol del tabellone: ${_ge||'—'}. Scene: ${_sl||'—'}.`,t:Date.now(),auto216:true};
+          const _cur=JSON.parse(safeLS.get("cpm-bugnotes")||"[]");_cur.unshift(_rec);safeLS.set("cpm-bugnotes",JSON.stringify(_cur.slice(0,60)));
+          if(typeof window!=='undefined')window.__CPM_T216=_rec;}}}}catch(_e216){}
     try{AudioMgr.event({type:'MatchEnd'});}catch(_a){}/* [7.62.0 AUDIO] triplice fischio finale */
     try{setClock(c=>Math.max(c,90));clockRef.current=Math.max(clockRef.current||0,90);}catch(_ck){}/* [7.327.0 collaudo PO «i rigori non devono essere al 69esimo minuto!»] il fischio finale arriva all'ULTIMO highlight (7.2.0), che sul cronometro puo' essere il 69': da qui in poi (rigori, premiazione, ended) l'orologio DEVE dire 90' — header e maxischermo leggono entrambi da qui. Il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no */
     // [7.24.3 BUG GRAVE collaudo PO «di nuovo loop nelle ultime giornate, partita già giocata e vinta con

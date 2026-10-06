@@ -359,7 +359,8 @@
     "inquadratura-185": "CPM_OROLOGIO=1 CPM_SEME=1 CPM_FISSA=1 CPM_GLB=0 CPM_RIP=3 node inquadratura-185.mjs",
     "recupero-103:rosso": "CPM_RED=1 node recupero-103-test.mjs",
     "post-210": "node post-210.mjs",
-    "piedi-203": "node piedi-203.mjs"
+    "piedi-203": "node piedi-203.mjs",
+    "tabellino-216": "node tabellino-216.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
