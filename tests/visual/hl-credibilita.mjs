@@ -17,7 +17,7 @@ for (let k = 0; k < N; k++) {
   while (Date.now() - t0 < MS) {
     const f = await page.evaluate(() => { try { const ph = window.__CPM_PHASE ? window.__CPM_PHASE() : null; if (!ph || !/^hl_/.test(ph)) return { ph };
       const s = window.__CPM_STATE(); const a = window.__CPM_ARC || null;
-      return { ph, t: performance.now(), c: s.clock, P: s.players.map(p => [p.team === 'home' ? 1 : p.team === 'away' ? 2 : 0, p.gk ? 1 : 0, p.x, p.y]), H: [s.hero.x, s.hero.y], B: [s.ball.x, s.ball.y, s.ball.worldY],
+      return { ph, t: performance.now(), st: (typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null), c: s.clock, P: s.players.map(p => [p.team === 'home' ? 1 : p.team === 'away' ? 2 : 0, p.gk ? 1 : 0, p.x, p.y]), H: [s.hero.x, s.hero.y], B: [s.ball.x, s.ball.y, s.ball.worldY],
         arc: a && a.arc ? a.arc : null, ht: a ? a.ht : null, ek: a ? a.ek : null }; } catch (e) { return { err: String(e).slice(0, 80) }; } });
     if (f && f.ph === 'ended') break;
     if (f && f.t) camp.push(f);

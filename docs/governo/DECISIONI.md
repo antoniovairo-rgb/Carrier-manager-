@@ -115,3 +115,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 
 ## 06/10 — Accorpamenti in L1 (questionario, domanda PO «nel lotto 1 ci sono PO ripetitivi o accorpabili?»)
 - Approvati tutti: PO-209 ← PO-216 (tabellino post partita incoerente) · PO-123 ← PO-033, PO-120 (un unico collaudo degli highlight) · PO-048 ← PO-127 (regia della camera) · PO-022 ← PO-030 (cantiere del brain). L1 passa da 10 a 6 voci.
+
+## 06/10 — PO-123 obiettivo di movimento (questionario)
+- **Misura** (sonda hl-credibilita sul tempo di scena): prima dell'azione compagni fermi 34-43%, avversari 29-46%; durante l'esito 52% e 61%; oscillazione di circa 10 punti fra giri.
+- **Risposta PO:** «≤30% prima dell'azione» — nelle fasi prima del tiro/passaggio al massimo il 30% fermi (compagni e avversari entro 35 m), misurato su 5 partite; l'esito non si giudica.

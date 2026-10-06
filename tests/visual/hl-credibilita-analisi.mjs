@@ -38,7 +38,9 @@ for (const camp of D) {
     }
     // (2)(3) movimento
     for (let k = 1; k < S.length; k++) {
-      const f0 = S[k - 1], f1 = S[k], dt = (f1.t - f0.t) / 1000; if (dt <= 0.05 || dt > 0.6) continue;
+      const f0 = S[k - 1], f1 = S[k], dtR = (f1.t - f0.t) / 1000; if (dtR <= 0.05 || dtR > 0.6) continue;
+      /* [06/10] il tempo di SCENA, se c'e': nell'esito gira al rallentatore (0,28x) e in headless a una frazione del reale — misurare la velocita' a orologio chiamava «fermo» chi correva al rallentatore */
+      const dS = (f1.st != null && f0.st != null) ? (f1.st - f0.st) : null; const dt = (process.env.CPM_ORA_REALE || dS == null) ? dtR : dS; if (!(dt > 0.01)) continue;
       const C0 = corpi(f0), C1 = corpi(f1), b = M(f1.B[0], f1.B[1]);
       const port = C1.reduce((m, c) => (!m || dist(c.m, b) < dist(m.m, b)) ? c : m, null); if (!port || dist(port.m, b) > 2) continue;
       if (port.team !== 1) continue; /* solo quando la squadra dell'eroe ha il pallone */
