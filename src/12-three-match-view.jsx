@@ -103,6 +103,16 @@ function _attesa32(a,P,aDt){try{if(!a||!a._idleDif||!a.idle)return;
   const hl=P&&/^hl_/.test(String(P.matchPhase||''));const dif=hl&&!a._isGk&&!a._isRef&&!a._isHero&&a._team===(P.hlDef?'home':'away')&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32);
   a._dif32=(a._dif32||0)+((dif?1:0)-(a._dif32||0))*Math.min(aDt*3,1);const w=a.idle.weight;a._idleDif.weight=w*a._dif32;a.idle.weight=w*(1-a._dif32);
   if(typeof window!=='undefined'&&hl){const W=(window.__CPM_ATTESA32=window.__CPM_ATTESA32||{campioni:0,inAttesa:0,home:0,away:0,sbagliati:0});W.campioni++;if(a._dif32>0.7&&w>0.3){W.inAttesa++;W[a._team]=(W[a._team]|0)+1;if(!dif)W.sbagliati++;}}}catch(_e){}}
+/* [7.999.143 PO-068 P1-b seconda parte, decisione PO 05/10 «1, 2 e 3»] CONTATTO_CLIP: UNA tabella per piede (dx) e istante del contatto
+   (u, frazione della clip; w = anticipo della finestra d'aggancio) di ogni clip che calcia. Prima i due dati vivevano in due tabelle
+   (_PIEDE_CLIP31 e la tabella locale dell'aggancio) e l'aggancio del pallone al piede valeva solo per il tiro. MISURATO (provino-clip,
+   picco di velocita' del piede, 25 istanti): pass sinistro u 0,96 (4,3 contro 1,2) · penalty destro u 0,54 (9,0 contro 5,5) · kick
+   sinistro u 0,96 (7,0). In scena (S12 GLB-ON, cross forzato): al contatto il pallone stava a 4,7 u dal piede che crossa. Ora
+   passaggio e cross agganciano il pallone al piede come il tiro. Il rigore resta fuori: le scene forzate non montano il gesto, la
+   misura non c'e'. Rosso __CPM_NO_P1B2. */
+const CONTATTO_CLIP={'kick':{dx:false,u:0.9},'kick~m':{dx:true,u:0.9,w:0.18},'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},
+  'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-strike-foward-jog~m':{dx:false,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06,alto:true},
+  'pass':{dx:false,u:0.96,w:0.1},'pass~m':{dx:true,u:0.96,w:0.1},'penalty':{dx:true,u:0.54,w:0.08},'penalty~m':{dx:false,u:0.54,w:0.08}};
 const _PIEDE_CLIP31={'kick':'L','kick~m':'R','pass':'L','pass~m':'R','penalty':'R','penalty~m':'L','mx-kick-soccerball':'L','mx-kick-soccerball-2':'R'};
 function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const _nm=x=>((x&&x.getClip&&x.getClip())||{}).name,W=(typeof window!=='undefined')?(window.__CPM_VAR23=window.__CPM_VAR23||{}):{};
@@ -4501,7 +4511,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           MISURATO (gesto-eroe-review, CPM_INTENT=shot, 21 fotogrammi): distanza minima piede-palla 0,739 m — il piede non toccava mai la
           palla. Durante il caricamento (ballArcT<0) la palla sta davanti all'eroe e nell'ultimo tratto della clip (u 0,72-0,98, contatto
           misurato sull'asset a u=0,9) si aggancia all'osso del piede sinistro. Solo il pallone DISEGNATO: esito, arco e stato intatti. */
-       const _cgKickContact=!!(typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV&&ballArcActive&&ballArcT<0&&hero&&_cgAvatar&&(_cgAvatar._gName==="kick"||(!(typeof window!=="undefined"&&window.__CPM_NO_ROV69)&&_cgAvatar._gScissor&&_cgAvatar._gAct===_cgAvatar._gScissor))&&_cgAvatar._gAct);/* [7.999.68 taccuino PO #1 «Rovesciata» (000). Rosso __CPM_NO_ROV69] la sforbiciata si monta col nome «volley» e l'aggancio al piede non scattava mai: il pallone cadeva a 0,4 e l'eroe lo superava di 3u. La clip ha gia' la sua taratura (contatto u 0,29, alto). */
+       const _cgKickContact=!!(typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV&&ballArcActive&&ballArcT<0&&hero&&_cgAvatar&&(_cgAvatar._gName==="kick"||((_cgAvatar._gName==="pass"||_cgAvatar._gName==="cross")&&!window.__CPM_NO_P1B2)||(!(typeof window!=="undefined"&&window.__CPM_NO_ROV69)&&_cgAvatar._gScissor&&_cgAvatar._gAct===_cgAvatar._gScissor))&&_cgAvatar._gAct);/* [7.999.68 taccuino PO #1 «Rovesciata» (000). Rosso __CPM_NO_ROV69] la sforbiciata si monta col nome «volley» e l'aggancio al piede non scattava mai: il pallone cadeva a 0,4 e l'eroe lo superava di 3u. La clip ha gia' la sua taratura (contatto u 0,29, alto). */
+       /* [7.999.143 misura PO-068 P1-b, solo sotto test] distanza pallone-piede (sinistro e destro) per fotogramma durante i gesti che calciano */
+       if(typeof window!=='undefined'&&window.__CPM_P1B2&&_cgAvatar&&_cgAvatar._gAct&&_cgAvatar._gName){try{const _c=_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip();const _d=(_c&&_c.duration)||1;const _v=new THREE.Vector3();const _bl=_cgAvatar._ballL||_cgAvatar._footL,_br=_cgAvatar._ballR||_cgAvatar._footR;if(_bl&&_br&&window.__CPM_P1B2.length<6000){_bl.getWorldPosition(_v);const dl=_v.distanceTo(ball.position);_br.getWorldPosition(_v);const dr=_v.distanceTo(ball.position);window.__CPM_P1B2.push([String(_cgAvatar._gName),(_c&&_c.name)||'?',+((+_cgAvatar._gAct.time||0)/_d).toFixed(3),+dl.toFixed(3),+dr.toFixed(3),ballArcActive?1:0,+(+ballArcT).toFixed(3),String((propsRef.current&&propsRef.current.hlSitKey)||'')]);}}catch(_e){}}
        if(_cgDribbleTouch){
          const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
          const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
@@ -4519,7 +4531,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          /* [23/09 POC] il contatto dipende dall'esecuzione scelta (varianti _VAR23): piede e istante misurati sulla clip
             (picco di velocita' del piede, provino-clip): kick sx 0,98 · mx-kick-soccerball sx 0,92 · mx-kick-soccerball-2 dx 0,84 ·
             mx-strike-foward-jog dx 0,38. Finestra stretta [u-w, u+0,06] (la larga [u-0,18] seguiva il piede nel caricamento: 0,85 m contro 0,43); la clip storica resta [0,72, 0,98] col sinistro. */
-         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-strike-foward-jog~m':{dx:false,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06,alto:true},'kick~m':{dx:true,u:0.9,w:0.18}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
+         const _kc23=(!(typeof window!=='undefined'&&window.__CPM_NO_P1B2)&&CONTATTO_CLIP[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name])||({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-strike-foward-jog~m':{dx:false,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06,alto:true},'kick~m':{dx:true,u:0.9,w:0.18}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
          const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
