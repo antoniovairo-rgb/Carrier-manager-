@@ -11982,7 +11982,8 @@ function hlPreDribble(label){try{if(typeof window!=='undefined'&&window.__CPM_NO
   if(/doppio passo|step-?over/.test(l))return 'double_step';
   if(/\brientra e\b|finta a rientrare|rientra sul|rientra col/.test(l))return 'dribble_inside';
   if(/sterzat/.test(l))return 'dribble_outside';
-  return null;}
+  return null;
+}
 function deriveHL(sit,act){
   const lbl=(act?.label||"").toLowerCase();
   const cn=(sit&&sit.cine)||(typeof deriveSitCine==="function"?deriveSitCine(sit):{});// CINE-DECOUPLE: segnali da campo, non da sit.text

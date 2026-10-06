@@ -19,6 +19,7 @@ export function loadCine() {
     'const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));\n' +
     'const hlBallState=(sit)=>(sit&&sit.ballState!=null)?sit.ballState:"feet";\n' +
     'const deriveSitCine=(sit)=>(sit&&sit.cine)||{};\n' +
+    grab(/^function hlPreDribble\(label\)\{/) + '\n' +   /* [7.999.145 PO-068] dribbling di preparazione letto da deriveHL */
     grab(/^function deriveHL\(sit,act\)\{/) + '\n' +
     grab(/^function buildHLTimeline\(hl,o\)\{/) + '\n' +
     grab(/^function validateHLTimeline\(tl,hl\)\{/) + '\n' +
