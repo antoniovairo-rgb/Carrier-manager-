@@ -1,5 +1,57 @@
 [
  {
+  "data": "2026-10-06 21:12",
+  "versione": "7.999.144",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 726
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 792
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 511
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-06 19:39",
   "versione": "7.999.144",
   "catena": "grafica",
@@ -4926,59 +4978,6 @@
     "passo": "career-critical",
     "ok": true,
     "s": 932
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 524
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-02 13:58",
-  "versione": "7.999.107",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "validate-situations",
-    "ok": false,
-    "s": 787,
-    "coda": "gate-history → 126 run · 🔴 REGRESSIONE (pulita → rotta) |  | ❌ FAIL — motion"
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 17
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 82
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 998
    },
    {
     "passo": "partita-vera",
