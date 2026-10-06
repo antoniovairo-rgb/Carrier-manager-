@@ -3414,9 +3414,15 @@ function ThreeMatchView(props){
              if(_r)for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx!=null&&_A.attesi.length<400)_A.attesi.push({seq:e._seq,ev:e.t,idx,nomi:_nomi23(e,idx,nomi),visto:false});}
            }catch(_eA){}}
            if(e.scena&&(e.t==='ammonizione'||e.t==='espulsione')&&e.chi&&e.chi.i!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9))sr.current._carta9={col:e.t==='ammonizione'?'y':'r',idx:e.chi.i,t:-1,nato:performance.now()};/* [7.999.9 CARTELLINO] il cartellino deciso dal motore nella scena: l'arbitro lo mostra */
-           if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
+           /* [7.999.142 PO-068 P1-b, decisione PO 05/10 «1, 2 e 3»] BRAIN_GESTI ANCHE NELLE SCENE. Misurato (S12, GLB-ON, una partita):
+              639 eventi del brain, 639 scartati qui perche' il 3D esiste solo negli highlight — la tabella non montava MAI un gesto; nelle
+              scene i gesti attesi visti erano 28 su 42 (portiere pronto 3/7, tuffo 3/7, difensore in pressione 1/5). Ora un evento di
+              scena negli hl_* monta il gesto sui corpi che non sono l'eroe (il suo gesto resta quello dell'opzione scelta). Il canale
+              proprio della scena (_mateFx, portiere in reazione) resta in testa. Rosso __CPM_NO_P1B. */
+           const _p1b=/^hl_/.test(String(_ph23||''))&&!!e.scena&&!(typeof window!=='undefined'&&window.__CPM_NO_P1B);
+           if(_ph23!=='playing'&&!_p1b){if(_W)_W.fuoriGioco++;continue;}
            const _r=BRAIN_GESTI[e.t];if(!_r)continue;
-           for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
+           for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;if(_p1b&&idx===21)continue;
              const m=(idx===21)?hero:(sr.current.players&&sr.current.players[idx]&&sr.current.players[idx].mesh);
              if(!m){if(_W)_W.senzaCorpo++;continue;}
              m._brainG={nomi:_nomi23(e,idx,nomi),t:0.6,seq:e._seq,idx,ev:e.t};_rq.add(m);

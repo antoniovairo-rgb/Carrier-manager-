@@ -360,7 +360,8 @@
     "recupero-103:rosso": "CPM_RED=1 node recupero-103-test.mjs",
     "post-210": "node post-210.mjs",
     "piedi-203": "node piedi-203.mjs",
-    "tabellino-216": "node tabellino-216.mjs"
+    "tabellino-216": "node tabellino-216.mjs",
+    "gesti-scena-p1b": "node gesti-scena-p1b.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
