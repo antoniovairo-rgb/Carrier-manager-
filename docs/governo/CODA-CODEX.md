@@ -37,3 +37,30 @@ Il PO ha deciso: «le vecchie attività di collaudo in sospeso collaudale tu, ri
   5. PO-153, fase 1 carriere: 30 carriere × 10 stagioni con la scheda estesa (`reports/codex/PROMPT-2026-10-01-carriere-fase1-completa.md`). Sblocca PO-098 e PO-154…157 (L6).
 - **Ordine:** prima le voci di L1 (1-4), poi la fase 1 carriere (L6).
 - **Regola:** nessuna catena va interrotta. Le sonde pesanti girano solo fra una catena e l'altra.
+
+## 06/10/2026 — Rapporto Codex sulle zone ferme (main `6f35d47f`, 7.999.143)
+
+Codex ha lavorato in sola lettura, senza commit né PR. Il banco era Chrome 154 headless (fallback dell'harness), non il Chromium di Playwright: le misure sono esplorative.
+
+- **A · PO-209/216, tabellino.**
+  - 5 partite: 4 autoplay e 1 manuale con 5 azioni.
+  - Tabellone e gol del motore concordano in tutte e 5. Nessuna nota `auto216`.
+  - Tabellino visibile letto in 4 partite su 5.
+  - Prova con gol iniettato non valida: l'iniezione non si è attivata.
+  - NON CHIUSO.
+- **B · PO-048/127, camera.**
+  - 3 esecuzioni forzate: #3 due volte, #74 una volta.
+  - Il punto dei piedi dell'eroe è fuori quadro in 22 fotogrammi su 717; 20 sono attorno al gol della prima #3.
+  - Nessun palo che copre l'eroe.
+  - Ipotesi da verificare: sagoma tagliata al gol della #3.
+  - NON CHIUSO.
+- **C · PO-210, post-partita.**
+  - 9 chiusure e 9 riaperture corrette a 360, 375 e 412 px; nessuno scorrimento orizzontale.
+  - Manca il controllo visivo di testi tagliati e sovrapposizioni.
+  - NON CHIUSO.
+- **D · PO-203, piedi nell'esultanza.**
+  - #74, 53 campioni: piede più basso a 0,093–0,558 u, contro 0,119 da fermo; nessun campione sotto 0.
+  - Il picco coincide con la clip `lift`.
+  - NON CHIUSO.
+
+**Regola applicata:** le quattro zone restano ferme e il team non corregge nulla finché il collaudo non è dichiarato chiuso. I rilievi restano ipotesi finché non sono riprodotti.
