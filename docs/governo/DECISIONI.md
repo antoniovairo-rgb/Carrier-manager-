@@ -99,3 +99,6 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 06/10 — Rincorsa dei gesti (questionario, domanda PO «i gesti hanno tutti preparazione e/o rincorsa?»)
 - **Passaggio e cross:** «Riuso Strike Forward Jog» — la clip col passo d'appoggio anche per lancio lungo e cross; il passaggio corto resta da fermo.
 - **Pallonetto e volée:** «Entrambi» — anche pallonetto e volée prendono la rincorsa del tiro in corsa.
+
+## 06/10 — Clip in prova PO-075 (questionario)
+- **Risposta PO:** «Testa + coscia, corsa dopo» — «Soccer Header» (stacco da fermo) per i colpi di testa con l'eroe fermo; controllo di coscia di «Receive Soccerball» (tratto 0,8-1,6 s) quando l'eroe riceve un pallone alto; «Jog Forward» resta in prova finché non si confronta con la corsa attuale.
