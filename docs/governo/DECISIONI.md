@@ -153,3 +153,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - Tutte le scene nascono dal motore e le schede diventano modelli di testo.
   - L1 resta aperto fino ad allora.
 - **Metodo** (dalla proposta in `tests/character-lab/SCENE_DISEGNABILI.md` §5): a strati, una release per strato, ognuno con misura, interruttore rosso e guardiano.
+
+## 07/10 — Nuove zone ferme per Codex (dopo la chiusura di A-D)
+- **E:** PO-176 (cosa cambia dopo il ricaricamento).
+- **F:** PO-183 (nessuna partita rigiocata).
+- Base: main `22629405` (7.999.145). Il team non tocca salvataggio, ricarica e calendario finché il collaudo non è dichiarato chiuso.
+- Prompt: `docs/governo/prompt/codex-2026-10-07-salvataggio.md`.
