@@ -6,6 +6,7 @@
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const CASI = (process.env.CPM_CASI || '7:0,55:0,86:0,90:0,76:2,171:0,171:1').split(',').map(x => x.split(':').map(Number));
 const RED = process.env.CPM_RED === '1';
+const ESITO = process.env.CPM_ESITO || 'success'; /* [07/10 collaudo ex-Codex PO-077] anche esito 'fail' */
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const out = [];
 for (const [gi, ai] of CASI) {
@@ -16,7 +17,7 @@ for (const [gi, ai] of CASI) {
   await page.evaluate(g => { window.__CPM_TESTA33 = null; window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose', { timeout: 30000 }).catch(() => {});
   await sleep(800);
-  await page.evaluate(a => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(a); }, ai);
+  await page.evaluate(([a, e]) => { window.__CPM_FORCE_OUTCOME = e; window.__CPM_RESOLVE(a); }, [ai, ESITO]);
   let n = -1; for (let i = 0; i < 80; i++) { await sleep(600); const m = await page.evaluate(() => (window.__CPM_TESTA33 && window.__CPM_TESTA33.f.length) || 0); if (m > 20 && m === n) break; n = m; }
   const W = await page.evaluate(() => window.__CPM_TESTA33 || null); await page.close();
   if (process.env.CPM_DUMP && W) (await import('node:fs')).writeFileSync(process.env.CPM_DUMP + '-gi' + gi + '.json', JSON.stringify(W.f));
