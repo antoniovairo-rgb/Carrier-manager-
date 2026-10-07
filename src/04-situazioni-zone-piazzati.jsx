@@ -849,3 +849,53 @@ const COMMENTO_TECNICO={
   defend_goal:["Qui conta solo spazzare, niente fronzoli.",{t:"Il portiere comanda la linea, si sente.",se:"save"},"Momento da soffrire, capita in ogni partita.","Primo palo coperto, è l'unica cosa che conta adesso.",{t:"Serve un fallo tattico, non un eroismo.",se:"tackle"},{t:"Se esci male su questa, è gol: meglio restare.",se:"save"}]
 };
 function pickTelecronisti(seed){const i=Math.abs(hashStr(String(seed||"x")))%TELECRONISTI.length;return TELECRONISTI[i];}
+/* [7.999.147 PO-022 Passo 6, strato 1 — decisione PO 07/10 «Passo 6 completo»] LA SCENA NASCE DAL MOTORE: CONCLUSIONE.
+   Prima il motore dichiarava l'occasione (tipo, zona, posizione, pressione, compagni liberi, cast) e il gioco cercava la
+   scheda scritta piu' simile fra 16 pescate: la scena poteva promettere un compagno che non c'era, un 1 contro 1 con tre
+   difensori addosso, una zona diversa da quella dove stava l'eroe. Qui la scena si COSTRUISCE dall'occasione, con la stessa
+   fabbrica S() (intent, ballState, cine e `richiede` restano derivati come per le schede):
+   - posizione: la zona di partenza contiene il punto del motore (niente clamp, l'eroe resta dov'e');
+   - contesto: pressione e difensori vicini dalla pressione del motore; supporto dai compagni liberi; 1 contro 1 solo in area
+     senza pressione;
+   - opzioni: 3 dal registro qui sotto, tutte disegnabili (nessuna parola di GESTI_PROMESSI); l'assist solo se il motore ha
+     un ricevente libero, e porta il suo nome; il pallonetto solo nell'1 contro 1; pesi dalle statistiche dell'eroe;
+   - testo e intro: modelli con i nomi del cast. Scelta seminata (seed): la partita resta riproducibile.
+   Rosso __CPM_NO_P6C (si torna alla scheda scritta). */
+const P6_CONCLUSIONE=[
+  {k:'potenza',l:'💥 Tiro di potenza',st:'tiro',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>1.2},
+  {k:'piazzato',l:'🎯 Piazzato nell\'angolo basso',st:'tecnica',b:4,rew:'goal',fail:'miss',n:12,w:(c)=>c.press<1.5?1.4:0.9},
+  {k:'giro',l:'🦵 Tiro a giro',st:'tecnica',b:2,rew:'goal',fail:'miss',n:13,w:(c)=>c.limite?1.4:0.7},
+  {k:'prima',l:'⚡ Conclusione di prima',st:'tiro',b:0,rew:'goal',fail:'miss',n:12,w:(c)=>c.press>=1.5?1.3:0.6},
+  {k:'finta',l:'🌀 Finta e tiro',st:'dribbling',b:0,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press>=1?1.1:0.5},
+  {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>c.uno?1.5:0},
+  {k:'assist',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.3:0},
+];
+function scenaDalMotoreConclusione(occ,player,seed){
+  try{if(typeof window!=='undefined'&&window.__CPM_NO_P6C)return null;}catch(_e){}
+  if(!occ||occ.tipo!=='conclusione'||occ.x==null||occ.y==null)return null;
+  const x=+occ.x,y=+occ.y,press=+occ.press||0,limite=occ.zona==='limite';
+  const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
+  const ric=((occ.liberi|0)>0)?nm(cast.ricevente):null,dif=nm(cast.difensore),gk=nm(cast.portiere);
+  const uno=!limite&&press<1;
+  const c={press,limite,uno,ric};
+  let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
+  const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
+  const pool=P6_CONCLUSIONE.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const scelte=[];
+  while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
+    scelte.push(pool[i].t);pool.splice(i,1);}
+  if(!scelte.some(t=>t.rew==='goal'))return null;
+  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  const TIT=uno?['⚡ Solo davanti a '+(gk||'al portiere')+'!','⚡ Hai solo il portiere davanti!']
+    :limite?['💥 Spazio per il tiro dal limite!','💥 Palla buona al limite dell\'area!']
+    :press>=1.5?['🎯 Palla in area, '+(dif||'il difensore')+' addosso!','🎯 In area con il marcatore alle costole!']
+    :['🎯 Palla buona in area!','🎯 Pallone giusto in area: è il momento!'];
+  const text=TIT[Math.floor(rnd()*TIT.length)%TIT.length];
+  const intro=ric?(ric+' è libero sul secondo palo.'):(dif?(dif+' prova a chiudere.'):'');
+  const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
+  const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
+  const ctx={pressure:press>=1.5?'high':press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:press>=1.5?2:press>=0.5?1:0,lanes:['central_run'],cn:uno?{oneOnOne:true}:undefined};
+  const s=S(text,limite?['bordo','area']:['area'],mz,sz,actions,false,-1,intro,'off',null,ctx);
+  s._p6='conclusione';s._p6seed=seed>>>0;
+  return s;
+}

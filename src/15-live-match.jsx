@@ -4623,6 +4623,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   if(_c){_pick880=_c;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SIT880=window.__CPM_SIT880||[]).push({min:nx,zona:occEroe879Ref.current.zona,sit:_c.zones[0],tipo:occEroe879Ref.current.tipo});}catch(_e880){}}}
                 try{if(typeof window!=='undefined'&&window.__CPM_REC){const _it=deriveIntent(_pick880);(window.__CPM_B7=window.__CPM_B7||[]).push({min:nx|0,tipo:occEroe879Ref.current.tipo,chiesto:occEroe879Ref.current.chiesto,attese:occEroe879Ref.current.attese,x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,press:occEroe879Ref.current.press,intento:_it,coerente:!!(_OK7&&_OK7.indexOf(_it)>=0),candidateCoerenti:_fresh79.filter(_coer7).length,candidate:_fresh79.length});}}catch(_e7){}
               }
+              /* [7.999.147 PO-022 Passo 6, strato 1] la conclusione si COSTRUISCE dall'occasione del motore (src/04,
+                 scenaDalMotoreConclusione); la scheda scelta sopra resta il ripiego. Rosso __CPM_NO_P6C. */
+              try{const _o6=occEroe879Ref.current;const _g6=(_o6&&typeof scenaDalMotoreConclusione==='function')?scenaDalMotoreConclusione(_o6,player,_lzSeed):null;
+                if(_g6){_pick880=_g6;try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_P6=window.__CPM_P6||[]).push({min:nx|0,text:_g6.text,az:_g6.actions.map(a=>a.label),x:_o6.x,y:_o6.y,press:_o6.press,liberi:_o6.liberi|0,ric:_o6.cast&&_o6.cast.ricevente?_o6.cast.ricevente.nome:null,sz:_g6.startZone,rq:(_g6.actions||[]).map(a=>(a.richiede||[]).join('+')).join('|')});}catch(_ew){}}}catch(_e6){}
               /* [7.999.26 — LA SCENA NASCE DALL'ORIGINE DICHIARATA DAL BRAIN. Rosso __CPM_NO_ORIG26] Se l'occasione porta un'origine
                  (cross di un compagno, angolo, punizione in mezzo), la scheda si cerca nell'INTERO catalogo fra quelle che raccontano
                  proprio quello — l'eroe che riceve il cross (in corsa, di testa, al volo) o l'angolo — invece che fra le 16 estratte a
