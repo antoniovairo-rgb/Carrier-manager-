@@ -64,3 +64,25 @@ Codex ha lavorato in sola lettura, senza commit né PR. Il banco era Chrome 154 
   - NON CHIUSO.
 
 **Regola applicata:** le quattro zone restano ferme e il team non corregge nulla finché il collaudo non è dichiarato chiuso. I rilievi restano ipotesi finché non sono riprodotti.
+
+## 07/10/2026 — Collaudi ereditati, eseguiti dal team (CPM 7.999.145, Chromium di Playwright)
+
+- **PO-077, colpi di testa: nessun difetto.**
+  - Sonda `testa-tempismo-test.mjs`, a cui è stato aggiunto `CPM_ESITO` per scegliere l'esito.
+  - gi86 (×3) e gi90 (azioni 0-2), esito riuscito e fallito: 12/12 verdi. Picco del salto al contatto entro 0,10 s; pallone alla testa entro 0,248 u; salto 0,32-0,34 u.
+  - gi171 rosso (`__CPM_NO_TESTA33`/`__CPM_NO_TUFFO109`), 3 giri: scarto 0,61-0,67 s, nessun gesto al contatto. Il difetto si vede.
+  - gi171 verde, 3 giri: scarto 0,06-0,10 s.
+- **PO-147, passaggi della scena 38: due difetti riprodotti.**
+  - `daievai-92.mjs`, azioni 0-2 × riuscito/fallito, 6 casi: 014 = 0, 012 = 0, 005 = 3 (una per ogni esito riuscito), 011 = 2.
+  - **Difetto riprodotto 1.** 011 negli esiti falliti di «Accelera in profondità» (pallone fermo 2,2 s dopo l'intercetto) e «Conclusione di prima» (1,5 s).
+  - **Difetto riprodotto 2.** Nel tiro fallito di «Conclusione di prima» il pallone si ferma a (66,44) invece di andare verso la porta.
+  - Il guardiano in catena guarda solo l'azione 0, quindi non li vedeva. Messi in coda in PO-123.
+- **PO-185, difesa 001/002: confermate su 2 scene.** Sonda in scratch: inquadratura dell'eroe e del pallone ogni 150 ms, più foto.
+  - **Confermata su gi138** «Allineamento difensivo immediato»: pallone mai inquadrato (60/60 campioni nel riuscito, 45/60 nel fallito); in foto l'eroe è solo sul prato, senza pallone né portatore.
+  - **Confermata su gi133** «Sprint disperato sulla linea»: pallone fuori quadro in 57/60, eroe fuori in 16/60.
+  - **Non confermata su gi36** (fallito), **gi45, gi31, gi32**: eroe in quadro; pallone fuori 0-14 volte su 60, tranne gi36 (43/60 nel periodo dopo il gesto, mentre in foto al contatto è visibile).
+  - **Da verificare su gi168:** pallone fuori quadro 45/60.
+- **PO-143: indizi.**
+  - #18, «Dribbling netto e assist» (gi18 azione 0): non ottiene il dribbling di preparazione, perché la regola 7.999.145 riconosce solo sterzata, doppio passo, roulette e rientro.
+  - gi126 azione 1, «Stacco difensivo deciso»: è reso come colpo di testa d'attacco al primo palo (type header, variante header_near_post).
+  - Misura dei colpi di testa #64 e #126 in corso.
