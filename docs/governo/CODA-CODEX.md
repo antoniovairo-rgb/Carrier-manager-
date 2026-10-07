@@ -106,3 +106,18 @@ Banco: Chrome 155 (fallback dell'harness), numeri visivi esplorativi. Codex non 
 - **D · PO-203, piedi nell'esultanza — NON CHIUSO.**
   - 4 esultanze (#3, #2, #24, #74). Fuori dalla clip `lift`: piede più basso a 0,091–0,240 u, 0 campioni sotto il prato.
   - Manca la quinta esultanza e una verifica visiva della sospensione.
+
+## 07/10/2026 — PO-185 difesa 001/002: tentativo 7.999.146 annullato (non dimostrato)
+
+- **Censimento delle 30 scene difensive** (apertura a 900 ms, sonda 2D):
+  - pallone alle spalle dell'eroe in 4–5 scene su 30;
+  - fuori quadro in 3–4;
+  - i casi cambiano da un giro all'altro.
+- **Correzione provata:** portatore = avversario davanti all'eroe, portiere escluso (`src/15` blocco `_pal84`, rosso `__CPM_NO_PORT149`).
+- **Esito: correzione annullata.** Accesa 3/30 contro 4/30 spenta: differenza nel rumore della misura.
+- **Analisi dei casi rimasti:**
+  - in gi132 e gi168 il pallone è esattamente su un avversario alle spalle dell'eroe;
+  - l'eroe parte a x 8 e x 22, vicino alla propria porta;
+  - ipotesi: il portatore scelto davanti lo supera prima della scelta e il pallone lo segue. Da verificare con una traccia nel tempo, non con un solo campione;
+  - gi31: pallone ancora a (50; 50), quindi misura presa prima dell'allestimento (artefatto della sonda).
+- **Resta** il rilievo confermato in foto su gi138 e gi133. Nuova misura serve prima di toccare di nuovo il codice.
