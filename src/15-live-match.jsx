@@ -5360,8 +5360,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           let _c207=false,_l207=null;
           if(!(typeof window!=='undefined'&&window.__CPM_NO_KO207)){const _p207=ko207Ref.current,_s207=scoreRef.current||{};
             if(_p207){if((_s207.home|0)>(_p207.home|0))_l207="away";else if((_s207.away|0)>(_p207.away|0))_l207="home";_c207=!!_l207;}
-            ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
-            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+            /* [7.999.148 PO-207, guardiano ripartenza-207 rosso dopo il Passo 6] SE IL GOL ARRIVA MENTRE IL MOTORE E' ANCORA FERMO
+               NELLA SCENA, LA RIPARTENZA SI RIMANDA, NON SI PERDE. Prima il punteggio veniva segnato come gia' gestito anche quando il
+               motore era in scena (`_st0.scena`), la ripresa dal centro non si chiedeva e al battito dopo non c'era piu' nulla da
+               riconoscere: misurato, 1 ripartenza e 0 al centro su una partita S12. Ora finche' la scena e' aperta il punteggio
+               vecchio resta in memoria e la ripresa scatta al primo battito giocato dopo la scena. Rosso __CPM_NO_KO208. */
+            const _rim208=_c207&&_st0.scena&&!(typeof window!=='undefined'&&window.__CPM_NO_KO208);
+            if(!_rim208)ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
+            if(_c207&&!_rim208){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
               if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;}catch(_e207){}}}}
           /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
              dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
