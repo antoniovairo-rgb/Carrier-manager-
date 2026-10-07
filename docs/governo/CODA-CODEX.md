@@ -85,4 +85,4 @@ Codex ha lavorato in sola lettura, senza commit né PR. Il banco era Chrome 154 
 - **PO-143: indizi.**
   - #18, «Dribbling netto e assist» (gi18 azione 0): non ottiene il dribbling di preparazione, perché la regola 7.999.145 riconosce solo sterzata, doppio passo, roulette e rientro.
   - gi126 azione 1, «Stacco difensivo deciso»: è reso come colpo di testa d'attacco al primo palo (type header, variante header_near_post).
-  - Misura dei colpi di testa #64 e #126 in corso.
+  - Colpi di testa #64 (azioni 0 e 2) e #126 (azioni 0 e 1), esito riuscito e fallito: 8/8 sincronizzati (scarto 0-0,05 s, pallone a 0,07-0,24 u dalla testa). Il tempismo non spiega «scena strana» e «azione confusionaria»: non posso confermare la causa delle due note senza il video del PO.
