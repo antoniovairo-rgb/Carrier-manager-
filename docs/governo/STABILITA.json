@@ -1,5 +1,180 @@
 [
  {
+  "data": "2026-10-07 18:36",
+  "versione": "7.999.149",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 68
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 952
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 106
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 78
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 76
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": false,
+    "s": 555,
+    "coda": "VERDE: {\"pm\":true,\"confPrima\":true,\"fine\":\"ended\",\"riaperta\":false,\"quando\":null,\"week\":39,\"season\":1,\"giocata\":true,\"alto\":2} | ROSSO (__CPM_NO_CONF194): {\"pm\":true,\"confPrima\":false,\"fine\":\"ended\",\"riaperta\":false,\"quando\":null,\"week\":39,"
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 354
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 210
+   },
+   {
+    "passo": "recupero-202",
+    "ok": false,
+    "s": 537,
+    "coda": "rosso tentativo 1 {\"fischio\":93,\"tentativi\":1,\"s\":197} | ❌ recupero-202 |   · rosso: {\"fischio\":93,\"tentativi\":1,\"s\":197}"
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 282
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 607
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 446
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 595
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": false,
+    "s": 589,
+    "coda": "rosso {\"fase\":\"ceremony\",\"iniettato\":true,\"note\":0,\"testo\":null} | ❌ tabellino-216 |   · verde: nessuna nota automatica col caso iniettato {\"fase\":\"ceremony\",\"iniettato\":false,\"note\":0,\"testo\":null}"
+   }
+  ]
+ },
+ {
   "data": "2026-10-07 15:54",
   "versione": "7.999.148",
   "catena": "completa",
@@ -5416,58 +5591,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-03 01:47",
-  "versione": "7.999.116",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 661
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 679
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 505
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 0
    }
   ]
  }

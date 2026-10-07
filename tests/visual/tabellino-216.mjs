@@ -18,7 +18,8 @@ for (const rosso of [false, true]) {
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 99, policy: 'seeded', tickMs: 150 }));
   await sleep(4000);
-  const iniettato = await page.evaluate(() => { try { window.__CPM_MOTORE_OBJ()._S.tab.away.gol++; return true; } catch (e) { return false; } });
+  let iniettato = false;/* [7.999.149] il motore nasce al primo minuto giocato FUORI da una scena: si riprova finche' esiste (max 60 s) */
+  for (let k = 0; k < 60 && !iniettato; k++) { iniettato = await page.evaluate(() => { try { window.__CPM_MOTORE_OBJ()._S.tab.away.gol++; return true; } catch (e) { return false; } }); if (!iniettato) await sleep(1000); }
   const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(1000); }
   await sleep(1500);

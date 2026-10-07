@@ -11,7 +11,7 @@ const utili = (rip) => rip;
 for (const rosso of [false, true]) { for (let tent = 0; tent < 3; tent++) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + String.fromCharCode(65 + tent);/* il seme nasce anche dal NOME */
-  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r) window.__CPM_NO_REC202 = 1; localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...sv, r: rosso });
+  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r) { window.__CPM_NO_REC202 = 1; window.__CPM_NO_TEMPO138 = 1; /* [7.999.149] il rosso spegne anche il debito del tempo fermo (7.999.138): senza, le scene del Passo 6 lasciano un debito al 90' e il fischio slitta comunque al 93' */ } localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...sv, r: rosso });
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
