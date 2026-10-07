@@ -146,3 +146,10 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - i rilievi su una zona ferma si accumulano senza correzioni finché il collaudo non è chiuso;
   - restano ipotesi finché non sono riprodotti.
 - **Correzione (questionario 06/10):** «Cross di rabona» e «Assist di tacco» non si aggiungono. Rabona e tacco sono gesti promessi senza clip (regola PO-086, `src/04-situazioni-zone-piazzati.jsx:143-148`), quindi le azioni sarebbero sospese o mostrerebbero un gesto falso. Risposta PO: «Tolgo le 2 varianti». Restano in coda come clip mancanti.
+
+## 07/10 — PO-022/030: cosa serve per chiudere L1 (questionario)
+- **Domanda:** primo passo (opzioni dalla scena per la conclusione in area), primo passo più manovre, oppure Passo 6 completo.
+- **Risposta PO:** «Passo 6 completo».
+  - Tutte le scene nascono dal motore e le schede diventano modelli di testo.
+  - L1 resta aperto fino ad allora.
+- **Metodo** (dalla proposta in `tests/character-lab/SCENE_DISEGNABILI.md` §5): a strati, una release per strato, ognuno con misura, interruttore rosso e guardiano.
