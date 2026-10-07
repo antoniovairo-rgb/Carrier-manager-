@@ -364,6 +364,7 @@
     "gesti-scena-p1b": "node gesti-scena-p1b.mjs",
     "piede-cross-p1b2": "node piede-cross-p1b2.mjs",
     "rincorsa-144": "node rincorsa-144.mjs",
+    "scena-motore-147": "node scena-motore-147.mjs",
     "doppio-gesto-148": "node doppio-gesto-148.mjs",
     "testa-146": "node testa-146.mjs",
     "movimento-147": "node movimento-147.mjs"
