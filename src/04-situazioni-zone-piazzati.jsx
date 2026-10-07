@@ -913,11 +913,50 @@ function scenaDalMotoreSpalle(occ,player,seed){
   const ctx={pressure:'high',support:Math.min(occ.liberi|0,3),nearby_def:2,lanes:[]};
   return _p6Costruisci(occ,player,seed,P6_SPALLE,c,titoli,intro,limite?['bordo','area']:['area'],ctx,'spalle');
 }
+/* [7.999.149 PO-022 Passo 6, strati 3-4] FASCIA e FRA LE LINEE nascono dall'occasione del motore (trequarti: esterno se il motore
+   vede l'eroe a 22 o piu' dal centro, centrale altrimenti). Fascia: cross (primo palo, secondo palo, basso teso), fondo e cross,
+   rientro e tiro, appoggio al compagno del cast. Fra le linee: filtrante solo per un compagno LIBERO del motore, uno-due col
+   compagno piu' vicino, tiro da fuori, conduzione e tiro. Nessuna parola di GESTI_PROMESSI. Rossi __CPM_NO_P6F, __CPM_NO_P6L. */
+const P6_FASCIA=[
+  {k:'cross1',l:'↗️ Cross sul primo palo',st:'passaggio',b:2,rew:'assist',fail:'intercept',n:10,w:(c)=>1.1},
+  {k:'cross2',l:'↗️ Cross sul secondo palo',st:'passaggio',b:0,rew:'assist',fail:'intercept',n:11,w:(c)=>1.1},
+  {k:'teso',l:'⚡ Cross basso teso',st:'tecnica',b:1,rew:'assist',fail:'intercept',n:10,w:(c)=>c.press<2?1:0.7},
+  {k:'fondo',l:'🌀 Dribbling sul fondo e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>c.press>=1?1:0.6},
+  {k:'rientro',l:'🎯 Rientra e tira',st:'tecnica',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>0.8},
+  {k:'appoggio',l:(c)=>'🤝 Appoggio corto per '+(c.ricVicino||'il compagno'),st:'passaggio',b:5,rew:'assist',fail:'intercept',n:7,w:(c)=>0.7},
+];
+const P6_LINEE=[
+  {k:'filtrante',l:(c)=>'🎯 Filtrante per '+c.ric,st:'passaggio',b:2,rew:'assist',fail:'intercept',n:10,w:(c)=>c.ric?1.5:0},
+  {k:'unodue',l:(c)=>'🔁 Uno-due con '+(c.ricVicino||'il compagno'),st:'passaggio',b:3,rew:'assist',fail:'intercept',n:9,w:(c)=>1},
+  {k:'fuori',l:'💥 Tiro da fuori',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>c.press<2?1:0.6},
+  {k:'conduci',l:'🏃 Conduci palla al piede e tira',st:'velocità',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press<1.5?1:0.5},
+  {k:'finta',l:'🌀 Finta e cambio di passo',st:'dribbling',b:0,rew:'assist',fail:'intercept',n:14,w:(c)=>c.press>=1?1:0.6},
+];
+function scenaDalMotoreFascia(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6F||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||occ.tipo!=='fascia'||occ.x==null||occ.y==null)return null;
+  const N=_p6Nomi(occ);const c={press:+occ.press||0,ric:N.ric,ricVicino:N.ricVicino};
+  const titoli=['↗️ Palla sulla fascia: metti in mezzo?','↗️ Sei sulla fascia, '+(N.dif?N.dif+' ti chiude':'il terzino ti chiude')+'!'];
+  const intro=N.ric?(N.ric+' attacca l\'area.'):'In area c\'è poca gente: scegli bene.';
+  const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:c.press>=1.5?2:1,lanes:['wing']};
+  return _p6Costruisci(occ,player,seed,P6_FASCIA,c,titoli,intro,['fascia'],ctx,'fascia');
+}
+function scenaDalMotoreLinee(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6L||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||occ.tipo!=='fra-le-linee'||occ.x==null||occ.y==null)return null;
+  const N=_p6Nomi(occ);const c={press:+occ.press||0,ric:N.ric,ricVicino:N.ricVicino};
+  const titoli=['🧠 Ricevi fra le linee: hai spazio!','🧠 Fra le linee, '+(N.dif?N.dif+' esce in ritardo':'il mediano esce in ritardo')+'!'];
+  const intro=N.ric?(N.ric+' taglia alle spalle della difesa.'):'Nessun taglio in profondità: valuta il tiro o il dai e vai.';
+  const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:c.press>=1.5?2:1,lanes:['central_run']};
+  return _p6Costruisci(occ,player,seed,P6_LINEE,c,titoli,intro,['trequarti'],ctx,'fra-le-linee');
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
   if(occ.tipo==='conclusione')return scenaDalMotoreConclusione(occ,player,seed);
   if(occ.tipo==='spalle')return scenaDalMotoreSpalle(occ,player,seed);
+  if(occ.tipo==='fascia')return scenaDalMotoreFascia(occ,player,seed);
+  if(occ.tipo==='fra-le-linee')return scenaDalMotoreLinee(occ,player,seed);
   return null;
 }
 function scenaDalMotoreConclusione(occ,player,seed){

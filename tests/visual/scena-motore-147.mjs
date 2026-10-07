@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 const { startServer, launchBrowser, installCdnRoutes, sleep } = await import('/home/user/cm-poc/tests/visual/lib/harness.mjs');
 const save = JSON.parse(fs.readFileSync('/home/user/cm-poc/tests/visual/fixtures/save-190-s12-ovr93.json'));
-const semi = [7, 99]; const TOT = { verde: [], rosso: [] }, CONC = { verde: 0, rosso: 0 }; const TIPI = ['conclusione', 'spalle']; /* [7.999.148] strati del Passo 6 coperti */
+const semi = [7, 99]; const TOT = { verde: [], rosso: [] }, CONC = { verde: 0, rosso: 0 }; const TIPI = ['conclusione', 'spalle', 'fascia', 'fra-le-linee']; /* [7.999.148] strati del Passo 6 coperti */
 const srv = await startServer(); const b = await launchBrowser();
 for (const arm of ['verde', 'rosso']) for (const sd of semi) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
