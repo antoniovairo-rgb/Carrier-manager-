@@ -40,7 +40,8 @@ const sitStart=findLine(/^const SITUATIONS=\[/);
 let sitEnd=-1;for(let i=sitStart;i<L.length;i++){if(/^\];/.test(L[i])){sitEnd=i;break;}}
 const bsStart=findLine(/^function hlBallState\(sit\)\{/);
 let bsEnd=-1;for(let i=bsStart+1;i<bsStart+40;i++){if(L[i].trim()==='}'){bsEnd=i;break;}}
-const dhStart=findLine(/^function deriveHL\(sit,act\)\{/);
+const _pdStart=findLine(/^function hlPreDribble\(label\)\{/);/* [7.999.145 PO-068] il dribbling di preparazione sta subito sopra deriveHL e va estratto con lei */
+const dhStart=_pdStart>=0?_pdStart:findLine(/^function deriveHL\(sit,act\)\{/);
 /* [7.597.0 - L'ESTRATTORE SI ROMPEVA PER UN COMMENTO] Questa ricerca si fermava a 120 righe dall'inizio
    di deriveHL. Quella funzione contiene decine di righe di note (ogni ramo porta la misura che lo ha
    deciso), e bastava aggiungerne una perche' la riga di chiusura finisse oltre la finestra: dhEnd restava
@@ -48,7 +49,7 @@ const dhStart=findLine(/^function deriveHL\(sit,act\)\{/);
    successo davvero, ed e' costato mezz'ora di caccia ai caratteri speciali sbagliata in pieno.
    Il tetto non proteggeva da niente: se la riga non c'e', il fallimento arriva comunque. Ora si cerca
    fino alla fine del file, e se non si trova lo si dice con parole che indicano dove guardare. */
-let dhEnd=-1;for(let i=dhStart;i>=0&&i<L.length;i++){if(L[i].trim()==='return{type,pattern,variant};'){dhEnd=i+1;break;}}
+let dhEnd=-1;for(let i=dhStart;i>=0&&i<L.length;i++){if(/^return\{type,pattern,variant(,pre)?\};$/.test(L[i].trim())){dhEnd=i+1;break;}}
 if(dhStart>=0&&dhEnd<0)console.error('estrazione deriveHL: manca la riga di chiusura return{type,pattern,variant}; — se e\' stata riscritta, aggiorna questo marcatore');
 
 let SITUATIONS,deriveHL,hlBallState;
