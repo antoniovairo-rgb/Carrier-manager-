@@ -870,8 +870,58 @@ const P6_CONCLUSIONE=[
   {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>c.uno?1.5:0},
   {k:'assist',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.3:0},
 ];
+/* [7.999.148 Passo 6, strato 2] costruttore comune degli strati: posizione dal motore, pesi dalle statistiche, scelta seminata.
+   Ogni strato porta il suo registro di opzioni, i suoi titoli e il suo contesto. Rosso globale __CPM_NO_P6 (tutti gli strati). */
+function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
+  let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
+  const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
+  const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const scelte=[];
+  while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
+    scelte.push(pool[i].t);pool.splice(i,1);}
+  if(scelte.length<2)return null;
+  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
+  const x=+occ.x,y=+occ.y;
+  const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
+  const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
+  const s=S(text,zones,mz,sz,actions,false,-1,intro,'off',null,ctx);
+  s._p6=tipo;s._p6seed=seed>>>0;
+  return s;
+}
+function _p6Nomi(occ){const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
+  return {ric:((occ.liberi|0)>0)?nm(cast.ricevente):null,ricVicino:nm(cast.ricevente),dif:nm(cast.difensore),gk:nm(cast.portiere)};}
+/* [7.999.148 PO-022 Passo 6, strato 2] SPALLE ALLA PORTA: occasione in area o al limite con pressione >= 3 (il motore la dichiara
+   «spalle»). Con il marcatore addosso le giocate vere sono la girata, la protezione della palla con lo scarico al compagno, la
+   sponda di prima, il fallo cercato resistendo alla carica; il tiro di potenza resta ma pesa poco. Il compagno citato e' il
+   ricevente del motore: se non e' libero lo scarico resta (e' un appoggio corto), la sponda «per il compagno libero» no.
+   Rosso __CPM_NO_P6S. */
+const P6_SPALLE=[
+  {k:'girata',l:'🔄 Girata secca e tiro',st:'tecnica',b:-2,rew:'goal',fail:'miss',n:14,w:(c)=>1.3},
+  {k:'protegge',l:(c)=>'🛡️ Proteggi palla e scarica su '+(c.ricVicino||'un compagno'),st:'fisico',b:5,rew:'assist',fail:'intercept',n:10,w:(c)=>1.1},
+  {k:'sponda',l:(c)=>'🤝 Sponda di prima per '+c.ric,st:'passaggio',b:3,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.2:0},
+  {k:'fallo',l:'😤 Resisti alla carica e cerca il fallo',st:'fisico',b:2,rew:'assist',fail:'intercept',n:9,w:(c)=>0.9},/* come «Dribbling provocatorio — il fallo c'è!» del catalogo: rew assist, falloCercato dal factory */
+  {k:'potenza',l:'💥 Tiro di potenza di prima',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>0.6},
+];
+function scenaDalMotoreSpalle(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6S||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||occ.tipo!=='spalle'||occ.x==null||occ.y==null)return null;
+  const N=_p6Nomi(occ),limite=occ.zona==='limite';
+  const c={press:+occ.press||0,limite,ric:N.ric,ricVicino:N.ricVicino};
+  const titoli=[(N.dif?N.dif+' ti è addosso':'Il marcatore ti è addosso')+': spalle alla porta!','🧱 Spalle alla porta, marcatura stretta!'];
+  const intro=N.ric?(N.ric+' si smarca per lo scarico.'):'Nessun compagno libero vicino: decidi tu.';
+  const ctx={pressure:'high',support:Math.min(occ.liberi|0,3),nearby_def:2,lanes:[]};
+  return _p6Costruisci(occ,player,seed,P6_SPALLE,c,titoli,intro,limite?['bordo','area']:['area'],ctx,'spalle');
+}
+function scenaDalMotore(occ,player,seed){
+  try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
+  if(!occ)return null;
+  if(occ.tipo==='conclusione')return scenaDalMotoreConclusione(occ,player,seed);
+  if(occ.tipo==='spalle')return scenaDalMotoreSpalle(occ,player,seed);
+  return null;
+}
 function scenaDalMotoreConclusione(occ,player,seed){
-  try{if(typeof window!=='undefined'&&window.__CPM_NO_P6C)return null;}catch(_e){}
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6C||window.__CPM_NO_P6))return null;}catch(_e){}
   if(!occ||occ.tipo!=='conclusione'||occ.x==null||occ.y==null)return null;
   const x=+occ.x,y=+occ.y,press=+occ.press||0,limite=occ.zona==='limite';
   const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
