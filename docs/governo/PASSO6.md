@@ -27,6 +27,11 @@ La scena nasce dall'occasione:
 3. **Fascia** (trequarti esterno).
 4. **Fra le linee** (trequarti centrale).
 5. **Costruzione** (centrocampo), con le **manovre vere** del motore (PO-030): la sequenza di possesso che precede l'occasione (uno-due, terzo uomo, sovrapposizione) diventa la costruzione della scena.
+   - Stato 07/10: il motore emette `passaggio` (da, a, tipo, origine, arrivo) ma non conosce le manovre.
+   - Prima si misura su partite S12: negli ultimi passaggi prima di ogni occasione, quante sequenze sono già uno-due (A→B→A), terzo uomo (A→B→C con C in corsa) o sovrapposizione.
+   - Poi due interventi, ciascuno con interruttore rosso e guardiano:
+     - (a) la costruzione della scena ripercorre quei passaggi veri, non uno schema scritto;
+     - (b) se la misura dice che le manovre sono rare, il motore impara a sceglierle quando la posizione lo permette, con il controllo che tiri, gol e possesso restino nei limiti del banco.
 6. **Cross e angolo** (origine dichiarata dal motore): oggi scheda dal catalogo intero, da generare.
 7. **Difesa:** occasione difensiva emessa dal motore (oggi le scene difensive vengono dal calendario).
 8. **Chiusura:** le schede diventano solo modelli di testo; si adeguano `validate-situations`, le firme golden e il salvataggio a metà partita; si toglie il ripiego.
