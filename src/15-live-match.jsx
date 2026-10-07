@@ -3711,7 +3711,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          vale ancora il valore iniziale, cioe' la posizione dell'eroe; (2) il primo giro partiva solo dopo 700 ms e
          nessuno spostava prima il pallone. Ora il portatore si legge dalle posizioni correnti (lo stesso criterio del
          codice: l'avversario di movimento piu' vicino all'eroe) e il primo giro parte subito. Rosso __CPM_NO_PALLA84. */
-      if(_pal84){const _mp84=matchPlayersRef.current||[];let _bd84=1e9,_c84=null;for(let k=11;k<_mp84.length;k++){const q=_mp84[k];if(!q||q.team!=="away")continue;const _d=Math.hypot(q.x-pPos.x,q.y-pPos.y);if(_d<_bd84){_bd84=_d;_c84=q;}}
+      /* [7.999.146 PO-123 ← PO-185, collaudo ereditato da Codex: ipotesi 001/002 su gi138] IL PORTATORE STA DAVANTI ALL'EROE.
+         MISURATO (censimento delle 30 scene difensive, apertura): in 5 su 30 il pallone finiva all'avversario piu' vicino ma
+         DIETRO l'eroe, verso la nostra porta (gi44, gi127, gi132, gi168, gi189); in gi138 il pallone stava a (16,9; 63,7) con
+         l'eroe a (24; 56): la camera guarda avanti e lo perdeva, l'eroe restava solo sul prato. Il portatore ora e' l'avversario
+         di movimento piu' vicino fra quelli DAVANTI all'eroe (x >= eroe - 1; il portiere escluso); se nessuno e' davanti si
+         torna alla regola di prima. Rosso __CPM_NO_PORT149. */
+      if(_pal84){const _mp84=matchPlayersRef.current||[];let _bd84=1e9,_c84=null;const _np149=(typeof window!=='undefined'&&window.__CPM_NO_PORT149);
+        if(!_np149){for(let k=11;k<_mp84.length;k++){const q=_mp84[k];if(!q||q.team!=="away"||q.gk||q.x<pPos.x-1)continue;const _d=Math.hypot(q.x-pPos.x,q.y-pPos.y);if(_d<_bd84){_bd84=_d;_c84=q;}}}
+        if(!_c84)for(let k=11;k<_mp84.length;k++){const q=_mp84[k];if(!q||q.team!=="away")continue;const _d=Math.hypot(q.x-pPos.x,q.y-pPos.y);if(_d<_bd84){_bd84=_d;_c84=q;}}
         if(_c84){const _bp={x:_c84.x,y:_c84.y};ballTargetRef.current=_bp;setBallPos(_bp);if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{window.__CPM_PALLA84={x:+_c84.x.toFixed(1),y:+_c84.y.toFixed(1),d:+_bd84.toFixed(1)};}catch(_e){}}}}
     };
     if(_pal84)_tick84();
