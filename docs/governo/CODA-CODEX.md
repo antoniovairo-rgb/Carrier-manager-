@@ -74,9 +74,10 @@ Codex ha lavorato in sola lettura, senza commit né PR. Il banco era Chrome 154 
   - gi171 verde, 3 giri: scarto 0,06-0,10 s.
 - **PO-147, passaggi della scena 38: due difetti riprodotti.**
   - `daievai-92.mjs`, azioni 0-2 × riuscito/fallito, 6 casi: 014 = 0, 012 = 0, 005 = 3 (una per ogni esito riuscito), 011 = 2.
-  - **Difetto riprodotto 1.** 011 negli esiti falliti di «Accelera in profondità» (pallone fermo 2,2 s dopo l'intercetto) e «Conclusione di prima» (1,5 s).
-  - **Difetto riprodotto 2.** Nel tiro fallito di «Conclusione di prima» il pallone si ferma a (66,44) invece di andare verso la porta.
-  - Il guardiano in catena guarda solo l'azione 0, quindi non li vedeva. Messi in coda in PO-123.
+  - 011 negli esiti falliti di «Accelera in profondità» e «Conclusione di prima» (pallone fermo 2,2 e 1,5 s), misurato con la sonda 2D (GLB spento).
+  - **Verifica in 3D** (GLB acceso, foto): gli esiti falliti sono coerenti col testo. «Tiro fuori!»: il pallone va largo fino a (47; 9). «Conclusione murata»: il difensore scivola e il pallone resta vicino. Il pallone fermo è il punto in cui l'azione è finita (muro o intercetto), non un congelamento a metà azione.
+  - **Nessun difetto confermato.**
+  - Il guardiano in catena guarda solo l'azione 0.
 - **PO-185, difesa 001/002: confermate su 2 scene.** Sonda in scratch: inquadratura dell'eroe e del pallone ogni 150 ms, più foto.
   - **Confermata su gi138** «Allineamento difensivo immediato»: pallone mai inquadrato (60/60 campioni nel riuscito, 45/60 nel fallito); in foto l'eroe è solo sul prato, senza pallone né portatore.
   - **Confermata su gi133** «Sprint disperato sulla linea»: pallone fuori quadro in 57/60, eroe fuori in 16/60.
