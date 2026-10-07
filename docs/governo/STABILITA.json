@@ -1,5 +1,177 @@
 [
  {
+  "data": "2026-10-07 14:18",
+  "versione": "7.999.148",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 781
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 86
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 580
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 305
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 194
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 784
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 266
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 590
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 427
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 550
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 549
+   }
+  ]
+ },
+ {
   "data": "2026-10-07 10:07",
   "versione": "7.999.147",
   "catena": "completa",
@@ -5291,58 +5463,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 0
-   }
-  ]
- },
- {
-  "data": "2026-10-03 00:37",
-  "versione": "7.999.114",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 200
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 676
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 40
    }
   ]
  }
