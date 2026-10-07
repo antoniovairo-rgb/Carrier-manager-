@@ -6213,7 +6213,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else{if(d<_oD){_oD=d;_oppI=i;}}}
           const _sy=_hyg<50?1:-1;// verso il centro campo
           if(P.hlDef){// DIFENSIVO (raddoppio/copertura): un avversario PORTATORE davanti all'Eroe (goal-side) + un compagno accanto
-            if(_oppI>=0&&_oD>7){const t=_tg[_oppI];t.x+=((_hxg-6)-t.x)*0.6;t.y+=(_hyg-t.y)*0.6;}
+            /* [7.999.146 PO-123 ← PO-185, collaudo ereditato da Codex: ipotesi 001/002 su gi138/gi133] IL PORTATORE ATTACCA L'EROE DI FRONTE.
+               Il portatore veniva portato a «eroe - 6», cioe' fra l'eroe e la NOSTRA porta: un attaccante che ha gia' superato il
+               difensore, mentre la camera guarda avanti. MISURATO (traccia nel tempo, gi138): eroe a x 24, portatore a x 19 dal primo
+               istante, pallone sul portatore e fuori quadro. Ora sta DAVANTI (eroe + 6); resta alle spalle solo dove la scena lo dice
+               (rincorsa: «Torna in difesa», «Recupero sulla linea di fondo», «e' piu' veloce» → hlDefDietro). Rosso __CPM_NO_PORT149. */
+            if(_oppI>=0&&_oD>7){const t=_tg[_oppI];const _dx149=(P.hlDefDietro||(typeof window!=='undefined'&&window.__CPM_NO_PORT149))?-6:6;t.x+=((_hxg+_dx149)-t.x)*0.6;t.y+=(_hyg-t.y)*0.6;}
             if(_mateI>=0&&_h2D>10){const t=_tg[_mateI];t.x+=((_hxg-2)-t.x)*0.5;t.y+=((_hyg+_sy*6)-t.y)*0.5;}
           } else {// OFFENSIVO: assicura un ATTACCANTE nell'ultimo terzo come opzione di passaggio (per lanci lunghi/imbucate).
             //   Scegli l'attaccante di casa più AVANZATO (parte già avanti → arriva prima) e portalo davanti all'Eroe.
