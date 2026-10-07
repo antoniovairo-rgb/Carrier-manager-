@@ -87,3 +87,22 @@ Codex ha lavorato in sola lettura, senza commit né PR. Il banco era Chrome 154 
   - #18, «Dribbling netto e assist» (gi18 azione 0): non ottiene il dribbling di preparazione, perché la regola 7.999.145 riconosce solo sterzata, doppio passo, roulette e rientro.
   - gi126 azione 1, «Stacco difensivo deciso»: è reso come colpo di testa d'attacco al primo palo (type header, variante header_near_post).
   - Colpi di testa #64 (azioni 0 e 2) e #126 (azioni 0 e 1), esito riuscito e fallito: 8/8 sincronizzati (scarto 0-0,05 s, pallone a 0,07-0,24 u dalla testa). Il tempismo non spiega «scena strana» e «azione confusionaria»: non posso confermare la causa delle due note senza il video del PO.
+
+## 07/10/2026 — Secondo giro Codex sulle zone ferme (main `6f35d47f`, 7.999.143)
+
+Banco: Chrome 155 (fallback dell'harness), numeri visivi esplorativi. Codex non ha modificato il repository.
+
+- **A · PO-209/216, tabellino — CHIUSO (Codex).**
+  - 5 nuove partite con le scelte fatte dall'interfaccia: tabellone, tabellino visibile e gol del motore concordano 5/5.
+  - Iniezione valida: con il motore da 0–0 a 0–1 e il tabellone fermo, a fine gara compare 1 nota `auto216`.
+  - Il team accetta la chiusura: nessun difetto riprodotto in 10 partite normali, e il testimone scatta.
+- **B · PO-048/127, camera — NON CHIUSO.**
+  - 12 scene, 1.860 fotogrammi; punto dei piedi fuori quadro in 189.
+  - Rilievo visivo: gi3 «Tiro a giro», esito riuscito, eroe fuori dall'immagine a circa 1,7 s di scena (visibile a 1,5 s, rientra a 2,7 s).
+  - Ipotesi, zona ferma: nessun intervento finché il collaudo non è chiuso.
+- **C · PO-210, post-partita — NON CHIUSO.**
+  - Prova valida solo a 360 px con le sezioni aperte.
+  - Chiusura non provata; 375 e 412 px incompleti.
+- **D · PO-203, piedi nell'esultanza — NON CHIUSO.**
+  - 4 esultanze (#3, #2, #24, #74). Fuori dalla clip `lift`: piede più basso a 0,091–0,240 u, 0 campioni sotto il prato.
+  - Manca la quinta esultanza e una verifica visiva della sospensione.
