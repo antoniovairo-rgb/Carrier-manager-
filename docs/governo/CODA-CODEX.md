@@ -127,3 +127,25 @@ Banco: Chrome 155 (fallback dell'harness), numeri visivi esplorativi. Codex non 
   - **Misura 3D** su 10 scene (riuscito e fallito): pallone fuori quadro 196 campioni con la correzione accesa contro 190 da spenta; gi138 47/60 in entrambi.
   - **Conclusione:** il portatore alle spalle esiste, ma non spiega il pallone fuori quadro. La causa del pallone fuori quadro su gi138/gi133 resta aperta: non posso confermarla.
 - **Il gioco resta identico alla 7.999.145.**
+
+## 07/10/2026 — Terzo giro Codex sulle zone ferme (main `6f35d47f`, 7.999.143): tutte e quattro CHIUSE
+
+Banco: Chrome 155 (fallback dell'harness), esplorativo; pagina nuova per scena, tempo di scena. Repository non modificato.
+
+- **A · tabellino — CHIUSO.**
+  - Semi 777–781, con 3–10 scelte manuali: tabellone, tabellino e motore concordano 5/5; nessuna nota `auto216`.
+  - Testimone provato: motore 0–1 contro tabellone 0–0, poi 1 nota a fine gara.
+- **B · inquadratura — CHIUSO come collaudo, difetto riprodotto da Codex.**
+  - 60 foto (10 scene × 6): 9 interessate, in 4 scene.
+  - Eroe tagliato o non visibile:
+    - #3 «Tiro a giro», riuscito: circa 1,7–2,4 s;
+    - #38 «Dai e vai preciso», fallito: circa 2,0–3,0 s;
+    - #64 «Testa potente angolato», fallito: circa 1,2–2,4 s.
+  - Palo davanti all'eroe: #74 «Prima intenzione — dentro!», riuscito, circa 2,4 s.
+  - **La zona torna al team:** il team riproduce sul proprio ambiente prima di correggere.
+- **C · post-partita — CHIUSO.**
+  - 360/375/412 px, sezioni aperte e chiuse, alto e basso: nessun taglio o sovrapposizione.
+  - Larghezza del documento uguale alla viewport.
+- **D · piedi nell'esultanza — CHIUSO.**
+  - 5 esultanze, 330 campioni: 0 sotto il prato.
+  - Le quote alte coincidono con salti riconoscibili in foto.
