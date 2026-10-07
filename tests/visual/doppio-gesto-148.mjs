@@ -6,7 +6,7 @@
    ROSSO (__CPM_NO_DOPPIO148): cross e assist senza tratto di finta. Uso: node doppio-gesto-148.mjs */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const esito = {};
-const CASI = [['cross', /step-?over e cross/i], ['assist', /sterzat.*assist/i], ['tiro', /doppio passo e tiro/i]];
+const CASI = [['cross', /step-?over e cross/i], ['assist', /sterzat.*assist/i], ['tiro', /doppio passo e tiro/i], ['generico', /dribbling netto e assist/i]]; /* [7.999.146 PO-143 #18] */
 for (const rosso of [false, true]) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; if (r) window.__CPM_NO_DOPPIO148 = 1; }, rosso);
@@ -28,7 +28,7 @@ for (const rosso of [false, true]) {
 }
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
-for (const n of ['cross', 'assist']) {
+for (const n of ['cross', 'assist', 'generico']) {
   if (!V[n] || V[n].trovato === false) { g.push(`verde: caso ${n} non trovato in catalogo`); continue; }
   if (!(V[n].finta && V[n].cambio)) g.push(`verde ${n}: finta=${V[n].finta} cambio=${V[n].cambio} seg=${JSON.stringify(V[n].seg)}`);
   if (R[n] && R[n].finta) g.push(`rosso ${n}: tratto di finta presente anche spento`);

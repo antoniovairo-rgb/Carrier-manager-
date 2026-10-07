@@ -1787,6 +1787,12 @@ function hlPreDribble(label){try{if(typeof window!=='undefined'&&window.__CPM_NO
   if(/doppio passo|step-?over/.test(l))return 'double_step';
   if(/\brientra e\b|finta a rientrare|rientra sul|rientra col/.test(l))return 'dribble_inside';
   if(/sterzat/.test(l))return 'dribble_outside';
+  /* [7.999.146 PO-143 #18 «Non era un dribbling», collaudo ereditato da Codex] il doppio gesto vale per ogni etichetta che
+     promette un dribbling o una finta prima della giocata («Dribbling netto e assist», «Finta e cross», «Dribbling portiere
+     e tiro»): prima mancava, perche' la regola riconosceva solo roulette, doppio passo, rientro e sterzata. Esclusi i «senza
+     dribblare». Rosso __CPM_NO_DRIBBLE150 (solo questo ramo). */
+  try{if(typeof window!=='undefined'&&window.__CPM_NO_DRIBBLE150)return null;}catch(_e){}
+  if(/dribbl|finta|salta l.uomo|serpentin|elastico|sombrero|tunnel/.test(l)&&!/senza dribbl/.test(l))return 'dribble_feint';
   return null;
 }
 function deriveHL(sit,act){
