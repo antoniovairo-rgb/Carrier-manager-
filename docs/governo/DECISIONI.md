@@ -159,3 +159,10 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **F:** PO-183 (nessuna partita rigiocata).
 - Base: main `22629405` (7.999.145). Il team non tocca salvataggio, ricarica e calendario finché il collaudo non è dichiarato chiuso.
 - Prompt: `docs/governo/prompt/codex-2026-10-07-salvataggio.md`.
+
+## 07/10 — Zona ferma G per Codex (dopo la chiusura di E-F)
+- **Zona:** PO-153, fase 1 delle carriere, base per PO-154…157 (L6).
+- **Base:** main `f7026f4f` (7.999.148).
+- **Restituzione a Codex:** era fra i collaudi ereditati dal team il 06/10, mai iniziato e fuori dalle zone su cui lavora il team.
+- **Durata:** finché il collaudo non è chiuso, il team non tocca stagioni, offerte, impulsi, Nazionale, difficoltà, economia e Ufficio.
+- **Prompt:** `docs/governo/prompt/codex-2026-10-07-carriere-fase1.md`.
