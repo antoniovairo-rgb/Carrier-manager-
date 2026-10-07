@@ -26,7 +26,7 @@ for (const rosso of [false, true]) { for (let tent = 0; tent < 3; tent++) {
     const s = await page.evaluate(() => { let st = null; try { st = window.__CPM_MOTORE_OBJ().stato(); } catch (e) {} return { f: window.__CPM_PHASE(), g: (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'goal').length, ko: (window.__CPM_KO207 || []).length, kos: (window.__CPM_KO207 || []).slice(), p: st && st.palla ? [st.palla.x, st.palla.y] : null }; });
     if (s.f === 'ended' || s.f === 'ceremony') break;
     if (s.g && !primoGol) primoGol = Date.now();
-    if (s.ko > nKo) { nKo = s.ko; attesa = 3; for (const k of s.kos) if (k.dopo === 'kickoff' && k.palla && k.palla[0] === 50 && k.palla[1] === 50) centro = Math.max(centro, s.kos.filter(q => q.dopo === 'kickoff' && q.palla && q.palla[0] === 50 && q.palla[1] === 50).length); }
+    if (s.ko > nKo) { nKo = s.ko; attesa = 20; /* [7.999.148] 6 s, non 0,9: se il gol nasce dentro la scena il pallone torna al centro quando la scena finisce (misurato: 4 giri su 4 al centro, ma oltre le 3 letture) */ for (const k of s.kos) if (k.dopo === 'kickoff' && k.palla && k.palla[0] === 50 && k.palla[1] === 50) centro = Math.max(centro, s.kos.filter(q => q.dopo === 'kickoff' && q.palla && q.palla[0] === 50 && q.palla[1] === 50).length); }
     if (attesa > 0) { attesa--; if (s.p && Math.abs(s.p[0] - 50) <= 4 && Math.abs(s.p[1] - 50) <= 6) { centro++; attesa = 0; } }
     await sleep(300);
   }
