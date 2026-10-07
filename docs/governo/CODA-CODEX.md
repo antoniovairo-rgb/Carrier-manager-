@@ -149,3 +149,22 @@ Banco: Chrome 155 (fallback dell'harness), esplorativo; pagina nuova per scena, 
 - **D · piedi nell'esultanza — CHIUSO.**
   - 5 esultanze, 330 campioni: 0 sotto il prato.
   - Le quote alte coincidono con salti riconoscibili in foto.
+
+## 07/10/2026 — Rapporto Codex zone E-F (main `22629405`, 7.999.145): entrambe CHIUSE
+
+Banco: Chrome 155 (fallback), esplorativo; pagina nuova per prova; repository non modificato.
+
+- **E · PO-176, salvataggio e ricarica — CHIUSO.**
+  - 11 cicli: prima e dopo una partita, a metà settimana, al cambio di stagione, dopo un prestito.
+  - 6 identici. Negli altri solo normalizzazioni interne:
+    - `fitnessCoachRel` assente → 50;
+    - a inizio S13, `playedMd` della S12 → elenco vuoto della S13;
+    - `cup.club` assente → club corrente;
+    - identificativo del club aggiunto a una voce storica.
+  - Nessuna perdita visibile: classifica, calendario, risultati, contratto, statistiche, rivale e sponsor invariati; nessuna giornata tornata «da giocare».
+  - Non confermati: la resa di tutte le schermate e l'effetto futuro dell'identificativo storico.
+- **F · PO-183, partita rigiocata — CHIUSO.**
+  - 12/12 prove valide (S12 W38): interruzioni durante la partita, al fischio, in background, durante la conferenza.
+  - In 12/12: risultato coerente con calendario e storico, settimana 38→39, una sola partita aggiunta, classifica 33→34.
+  - Non confermata l'interruzione durante il discorso del mister: il banco non avviava quel percorso.
+- **Codex non ha zone assegnate.**
