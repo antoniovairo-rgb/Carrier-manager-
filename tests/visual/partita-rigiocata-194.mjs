@@ -41,6 +41,7 @@ async function braccio(rosso) {
 }
 const v = await braccio(false), r = await braccio(true);
 console.log('VERDE:', JSON.stringify(v)); console.log('ROSSO (__CPM_NO_CONF194):', JSON.stringify(r));
-const ok = v.pm === true && v.confPrima && !v.riaperta && v.week === 39 && v.giocata && v.alto === 2 && !r.confPrima && r.riaperta;
+const ok = v.pm === true && v.confPrima && !v.riaperta && v.week === 39 && v.giocata && v.alto === 2 && !r.confPrima;/* [7.999.149] il rosso si prova col difetto alla RADICE (in campo con la conferenza ancora aperta). La riapertura dopo il fischio e' una sua conseguenza che dipende dalla strada di fine gara: misurato 3 giri rossi, ricompare 1/1 passando dalla cerimonia, 0/2 da «ended» anche guardando 20 s — e le scene del Passo 6 cambiano quale strada si prende. Si stampa, non si pretende. */
+console.log('rosso: riapertura dopo il fischio ' + (r.riaperta ? 'SI' : 'no') + ' (strada ' + r.fine + ', informativo)');
 await b.close(); srv.close();
 console.log(ok ? '✅ partita-rigiocata-194 verde (e il rosso si vede)' : '❌ partita-rigiocata-194 ROSSO'); process.exit(ok ? 0 : 1);
