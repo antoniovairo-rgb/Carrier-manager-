@@ -121,3 +121,9 @@ Banco: Chrome 155 (fallback dell'harness), numeri visivi esplorativi. Codex non 
   - ipotesi: il portatore scelto davanti lo supera prima della scelta e il pallone lo segue. Da verificare con una traccia nel tempo, non con un solo campione;
   - gi31: pallone ancora a (50; 50), quindi misura presa prima dell'allestimento (artefatto della sonda).
 - **Resta** il rilievo confermato in foto su gi138 e gi133. Nuova misura serve prima di toccare di nuovo il codice.
+- **Secondo tentativo, anch'esso annullato.**
+  - **Traccia nel tempo:** il portatore è alle spalle dell'eroe fin dall'allestimento. `src/12` lo porta a «eroe − 6»; su gi138 eroe a x 24, portatore a x 19.
+  - **Correzione provata:** «eroe + 6», eccezione per le scene di rincorsa, più la regola del 2D.
+  - **Misura 3D** su 10 scene (riuscito e fallito): pallone fuori quadro 196 campioni con la correzione accesa contro 190 da spenta; gi138 47/60 in entrambi.
+  - **Conclusione:** il portatore alle spalle esiste, ma non spiega il pallone fuori quadro. La causa del pallone fuori quadro su gi138/gi133 resta aperta: non posso confermarla.
+- **Il gioco resta identico alla 7.999.145.**
