@@ -1,5 +1,67 @@
 [
  {
+  "data": "2026-10-08 15:36",
+  "versione": "7.999.151",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 722
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 837
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 514
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1102
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-08 14:02",
   "versione": "7.999.151",
   "catena": "carriera",
@@ -5985,108 +6047,6 @@
     "passo": "parata-198",
     "ok": true,
     "s": 46
-   }
-  ]
- },
- {
-  "data": "2026-10-03 17:06",
-  "versione": "7.999.122",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 899
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 95
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 70
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 36
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 67
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 558
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
    }
   ]
  }
