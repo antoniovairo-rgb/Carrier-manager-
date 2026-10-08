@@ -886,7 +886,8 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
-  const s=S(text,zones,mz,sz,actions,false,-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
+  const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
+  const s=S(text,zones,_pz?sz:mz,sz,actions,_pz,_pz?0:-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
   s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
   return s;
 }
@@ -1016,6 +1017,41 @@ function scenaDalMotoreDifesa(occ,player,seed){
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:1,lanes:[]};
   return _p6Costruisci(occ,player,seed,P6_DIFESA,c,titoli,intro,zones,ctx,'difesa');
 }
+/* [7.999.153 PO-022 Passo 6, strato 8a — decisione PO 08/10: prima i piazzati, poi la chiusura] RIGORE E PUNIZIONE NASCONO
+   DALL'OCCASIONE DEL MOTORE. Misurato: rigori e punizioni erano il 29% delle azioni dell'eroe (11 su 38 in 4 partite vere) e venivano
+   tutti dal catalogo (schedePiazzato: 3 schede di punizione diretta). Ora la punizione parte dal punto vero del fallo dichiarato dal
+   motore, il titolo dice la distanza e il portiere vero, le opzioni pesano la geometria (vicina e centrale: giro, botta, curva;
+   lontana o defilata: palla in area); il rigore e' sul dischetto col portiere vero. Azioni del catalogo, gia' disegnate dal 3D.
+   Movimento bloccato come nelle schede. Rosso __CPM_NO_P6P. */
+const P6_PUNIZIONE=[
+  {k:'giro',l:'🎯 Punizione a giro',st:'tiro',b:8,rew:'goal',fail:'miss',n:10,w:(c)=>c.vicina&&c.centrale?1.4:c.vicina?0.9:0.3},
+  {k:'botta',l:'💥 Botta sopra la barriera',st:'tiro',b:6,rew:'goal',fail:'miss',n:13,w:(c)=>c.vicina?1.1:0.5},
+  {k:'curva',l:'📐 Curva a rientrare',st:'tiro',b:8,rew:'goal',fail:'miss',n:12,w:(c)=>c.centrale?1.0:0.5},
+  {k:'rasoterra',l:'💥 Tiro rasoterra',st:'tiro',b:4,rew:'goal',fail:'miss',n:10,w:(c)=>c.vicina?0.7:0.3},
+  {k:'area',l:'↗️ Palla in area',st:'passaggio',b:5,rew:'assist',fail:'miss',n:8,w:(c)=>(!c.vicina||!c.centrale)?1.4:0.5},
+];
+const P6_RIGORE=[
+  {k:'angolato',l:'💥 Angolato rasoterra',st:'tiro',b:10,rew:'goal',fail:'miss',n:10,w:(c)=>1.2},
+  {k:'potenza',l:'💥 Angolo basso — potenza',st:'tiro',b:12,rew:'goal',fail:'miss_easy',n:10,w:(c)=>1.0},
+  {k:'centro',l:'⚡ Centro-alto',st:'tiro',b:5,rew:'goal',fail:'miss',n:10,w:(c)=>0.9},
+  {k:'cucchiaio',l:'🎯 Cucchiaio',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:8,w:(c)=>0.5},
+];
+function scenaDalMotorePiazzato(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6P||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||(occ.tipo!=='punizione'&&occ.tipo!=='rigore'))return null;
+  const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;const gk=nm(cast.portiere);
+  if(occ.tipo==='rigore'){
+    const o2=Object.assign({},occ,{x:88.5,y:50});
+    const titoli=['🔴 RIGORE! Sul dischetto.','🔴 RIGORE per noi! Il pallone è tuo.'];
+    const intro=gk?(gk+' si muove sulla linea. Solo tu e lui.'):'Tutto fermo. Solo tu e il portiere.';
+    return _p6Costruisci(o2,player,seed,P6_RIGORE,{},titoli,intro,['area'],{pressure:'none',support:0,nearby_def:0,lanes:[]},'rigore');}
+  if(occ.x==null||occ.y==null)return null;
+  const x=+occ.x,y=+occ.y;const m=Math.round(Math.hypot(100-x,50-y)*1.05);const c={vicina:m<=27,centrale:Math.abs(y-50)<=12};
+  if(x<62)return null;/* da troppo lontano non e' una punizione da scena */
+  const titoli=['📐 Punizione a '+m+' metri'+(gk?': '+gk+' sistema la barriera!':'!'),'📐 Punizione dal limite, '+m+' metri: tocca a te!'];
+  const intro=c.vicina&&c.centrale?'Posizione ideale per calciare in porta.':'Da qui anche il pallone in area è un\'idea.';
+  return _p6Costruisci(occ,player,seed,P6_PUNIZIONE,c,titoli,intro,x>=78?['bordo']:['trequarti'],{pressure:'none',support:1,nearby_def:0,lanes:[]},'punizione');
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
@@ -1025,6 +1061,7 @@ function scenaDalMotore(occ,player,seed){
   if(occ.tipo==='fra-le-linee')return scenaDalMotoreLinee(occ,player,seed);
   if(occ.tipo==='cross'||occ.tipo==='angolo')return scenaDalMotoreCross(occ,player,seed);
   if(occ.tipo==='difesa')return scenaDalMotoreDifesa(occ,player,seed);
+  if(occ.tipo==='punizione'||occ.tipo==='rigore')return scenaDalMotorePiazzato(occ,player,seed);
   return null;
 }
 function scenaDalMotoreConclusione(occ,player,seed){

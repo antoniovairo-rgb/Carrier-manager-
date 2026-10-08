@@ -4636,9 +4636,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                /* [7.999.27] rigore e punizione dal limite dell'eroe: la scheda e' il piazzato vero (niente origine da crossatore: il pallone e' sul punto, lo batte lui) */
                const _pk27=_og26&&(_og26.kind==="rigore"||(_og26.kind==="punizione"&&occEroe879Ref.current.tipo==="punizione"))&&!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27);
                if(_pk27){try{const _rg27=_og26.kind==="rigore";
-                 const _c27=schedePiazzato(_rg27,_used79);/* [7.999.100] la scelta vive in schedePiazzato (src/15, funzione pura) */
+                 const _p6p=!!(_pick880&&(_pick880._p6==='rigore'||_pick880._p6==='punizione'));/* [7.999.153 strato 8a] il piazzato e' gia' costruito dal motore: si tiene */
+                 const _c27=_p6p?[_pick880]:schedePiazzato(_rg27,_used79);/* [7.999.100] la scelta vive in schedePiazzato (src/15, funzione pura) */
                  try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_PIAZ99=window.__CPM_PIAZ99||[]).push({min:nx|0,rigore:!!_rg27,candidate:_c27.length});}catch(_e99){}
-                 if(_c27.length)_pick880=_c27[(hashStr("piaz27|"+_lzSeed+"|"+hlIdx)>>>0)%_c27.length];}catch(_e27){}
+                 if(_c27.length&&!_p6p)_pick880=_c27[(hashStr("piaz27|"+_lzSeed+"|"+hlIdx)>>>0)%_c27.length];}catch(_e27){}
                  /* [7.999.41b — taccuino PO su 7.999.34, SIT #81 punizione: «codice 001: all'apertura il pallone non e' ai piedi di nessuno
                     dei nostri (eroe >=43,3u)». Misurato con punizione-apertura-sonda: al taglio il 3D prende il pallone del gioco (50,50 a
                     centrocampo alla prima scena) e il punto della punizione arriva solo dopo la messa in scena, un aggiornamento piu' tardi.
