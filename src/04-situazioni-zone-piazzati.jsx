@@ -966,6 +966,31 @@ function scenaDalMotoreLinee(occ,player,seed){
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:c.press>=1.5?2:1,lanes:['central_run']};
   return _p6Costruisci(occ,player,seed,P6_LINEE,c,titoli,intro,['trequarti'],ctx,'fra-le-linee');
 }
+/* [7.999.151 PO-022 Passo 6, strato 6] CROSS E ANGOLO NASCONO DALL'OCCASIONE DEL MOTORE. Il motore dichiara il cross (o l'angolo) destinato
+   all'eroe con la sua origine: chi crossa e da dove. Prima la scena si pescava dall'intero catalogo fra le schede «aeree»; ora si
+   costruisce: titolo col nome del crossatore vero, intento fissato a inserimento e pallone dichiarato alto (tactic.it/bs: il 3D non
+   indovina dal testo), opzioni prese dalle azioni del catalogo che il 3D sa gia' disegnare (testa di potenza, testa piazzata, volee,
+   controllo e tiro). Sull'angolo il titolo dice «calcio d'angolo», cosi' la palla parte dalla bandierina (ballAt corner). Nessun
+   assist: sul cross il motore non dichiara compagni liberi (liberi 0). Rosso __CPM_NO_P6X. */
+const P6_CROSS=[
+  {k:'testa-potenza',l:'✈️ Testa di potenza',st:'fisico',b:6,rew:'goal',fail:'miss',n:16,w:(c)=>1.2},
+  {k:'testa-angolo',l:'🎯 Testa piazzata all\'angolo',st:'fisico',b:4,rew:'goal',fail:'miss',n:13,w:(c)=>1.0},
+  {k:'volee',l:'⚽ Volée di collo potente',st:'tiro',b:2,rew:'goal',fail:'miss',n:16,w:(c)=>c.angolo?0.6:1.0},
+  {k:'controllo',l:'🎯 Controllo e tiro fermo',st:'tecnica',b:6,rew:'goal',fail:'miss',n:12,w:(c)=>c.angolo?0.3:(c.press>=1.5?0.5:1.0)},
+];
+function scenaDalMotoreCross(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6X||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||(occ.tipo!=='cross'&&occ.tipo!=='angolo')||occ.x==null||occ.y==null)return null;
+  const angolo=occ.tipo==='angolo';const cast=occ.cast||{};
+  const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
+  const cr=nm(cast.crossatore)||nm(occ.origine&&occ.origine.chi);const dif=nm(cast.difensore);
+  const c={press:+occ.press||0,angolo};
+  const titoli=angolo?['🚩 Calcio d\'angolo'+(cr?' di '+cr:'')+': attacca il pallone!','🚩 Calcio d\'angolo: il pallone spiove in area!']
+                     :['✈️ Cross'+(cr?' di '+cr:'')+': attacca il pallone in area!','✈️ Il cross'+(cr?' di '+cr:'')+' arriva alto in area!'];
+  const intro=dif?(dif+' ti marca stretto.'):'Sei solo sul pallone: scegli bene.';
+  const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:dif?2:1,lanes:['central_run'],it:'insertion',bs:'aerial'};
+  return _p6Costruisci(occ,player,seed,P6_CROSS,c,titoli,intro,['area'],ctx,angolo?'angolo':'cross');
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
@@ -973,6 +998,7 @@ function scenaDalMotore(occ,player,seed){
   if(occ.tipo==='spalle')return scenaDalMotoreSpalle(occ,player,seed);
   if(occ.tipo==='fascia')return scenaDalMotoreFascia(occ,player,seed);
   if(occ.tipo==='fra-le-linee')return scenaDalMotoreLinee(occ,player,seed);
+  if(occ.tipo==='cross'||occ.tipo==='angolo')return scenaDalMotoreCross(occ,player,seed);
   return null;
 }
 function scenaDalMotoreConclusione(occ,player,seed){

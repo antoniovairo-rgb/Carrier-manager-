@@ -4659,7 +4659,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    if(s2.ballAt||/angolo|corner|rimbalz|palo|ribattut|controbalz|errore|lancio|lanci|spizzat|centrocampo/i.test(_t))return false;
                    return _it==="insertion"||(_it==="shot"&&/cross|volo|rovesciata|sforbiciata|testa|acrobatic/i.test(_t));};
                  const _cand26=SITUATIONS.filter(_fit26);
-                 if(_cand26.length){_pick880=_cand26[(hashStr("orig26|"+_lzSeed+"|"+hlIdx)>>>0)%_cand26.length];
+                 const _p6x=!!(_pick880&&(_pick880._p6==='cross'||_pick880._p6==='angolo'));/* [7.999.151 strato 6] la scena di cross/angolo e' gia' costruita dal motore: si tiene, e l'origine (crossatore, bandierina) viaggia con lei */
+                 if(_p6x||_cand26.length){if(!_p6x)_pick880=_cand26[(hashStr("orig26|"+_lzSeed+"|"+hlIdx)>>>0)%_cand26.length];
                    {const _flag60=_ang26&&!(typeof window!=='undefined'&&window.__CPM_NO_BANDIERINA60);/* [7.999.60 taccuino PO #76/#6 «001 apertura scena, la palla rimbalza»] MISURATO sul flusso vero: l'angolo partiva da (78,76) — la posizione di chi passa nel motore, non la bandierina — con volo di 0 unita' sull'eroe. L'angolo parte dalla bandierina del lato giusto (stessa regola dei corner di hlBallSpot). Rosso __CPM_NO_BANDIERINA60. */
                    _ORIG26={sit:_pick880,kind:_og26.kind,at:_ang26?"corner":"wing",x:_flag60?97:clamp(+_og26.x||90,2,98),y:_flag60?((+_og26.y||50)<50?2.5:97.5):clamp(+_og26.y||50,1,99),hl:hlIdx,min:nx|0,active:true};}}
                  else _ORIG26=null;
