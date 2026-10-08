@@ -1,5 +1,67 @@
 [
  {
+  "data": "2026-10-08 22:51",
+  "versione": "7.999.153",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 728
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 882
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 510
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1077
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-08 21:18",
   "versione": "7.999.153",
   "catena": "carriera",
@@ -6081,112 +6143,6 @@
     "passo": "formazioni-204",
     "ok": true,
     "s": 72
-   }
-  ]
- },
- {
-  "data": "2026-10-03 22:01",
-  "versione": "7.999.126",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 250
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 977
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": false,
-    "s": 73,
-    "coda": "VERDE: 4 disegni · margine alto primo 74 px, min 74, max 74 | ROSSO (__CPM_NO_RIMB189): 7 disegni · margine alto primo 0 px, min 0, max 74 | ❌ rimbalzo-189 ROSSO"
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": false,
-    "s": 305,
-    "coda": "VERDE: {\"pm\":true,\"inWalk\":24,\"corpi\":23,\"somma\":10,\"picco\":2} | ROSSO (__CPM_NO_FERMI197): {\"pm\":true,\"inWalk\":24,\"corpi\":23,\"somma\":16,\"picco\":4} | ❌ walkout-fermi-197 ROSSO"
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": false,
-    "s": 107,
-    "coda": "VERDE: {\"campioni\":11,\"inVolo\":0,\"esempio\":null,\"sulCorpo\":3} | ROSSO (__CPM_NO_PALCO191): {\"campioni\":9,\"inVolo\":5,\"esempio\":{\"y\":1.05,\"sotto\":0},\"sulCorpo\":3} | ❌ premiazione-palco-191 ROSSO"
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": false,
-    "s": 105,
-    "coda": "VERDE: {\"campioni\":2,\"scarto\":0.05,\"faccia\":0} | ROSSO (__CPM_NO_COPPA191): {\"campioni\":2,\"scarto\":0.51,\"faccia\":0} | ❌ coppa-mani-191 ROSSO"
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 115
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 148
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 141
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 71
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 114
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 86
    }
   ]
  }

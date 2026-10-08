@@ -39,4 +39,5 @@ La scena nasce dall'occasione:
 7. **Difesa:** occasione difensiva emessa dal motore (oggi le scene difensive vengono dal calendario).
    - **Fatto in 7.999.152:** occasione `difesa` emessa dal motore (portatore avversario entro 4 u dall'eroe, dal 5', una sola a partita — decisione PO 08/10: al massimo una, in aggiunta) e `scenaDalMotoreDifesa` (type def). Rosso `__CPM_NO_P6D`.
 8a. **Piazzati** (decisione PO 08/10): rigori e punizioni dell'eroe nascono dal motore come le altre scene — oggi sono il 29% delle sue azioni e vengono dal catalogo (`schedePiazzato`).
+   - **Fatto in 7.999.153:** `scenaDalMotorePiazzato` (punizione e rigore), rosso `__CPM_NO_P6P`.
 8b. **Chiusura:** le schede diventano solo modelli di testo; si adeguano `validate-situations`, le firme golden e il salvataggio a metà partita; si toglie il ripiego.
