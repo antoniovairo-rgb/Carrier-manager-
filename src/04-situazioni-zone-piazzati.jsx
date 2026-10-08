@@ -885,9 +885,25 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   const x=+occ.x,y=+occ.y;
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
-  const s=S(text,zones,mz,sz,actions,false,-1,intro,'off',null,ctx);
-  s._p6=tipo;s._p6seed=seed>>>0;
+  const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
+  const s=S(text,zones,mz,sz,actions,false,-1,_man?(_man.txt+' '+intro).trim():intro,'off',null,ctx);
+  s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
   return s;
+}
+/* [7.999.150 PO-030/PO-022 Passo 6, strato 5] LA MANOVRA VERA APRE LA SCENA. Il motore consegna con l'occasione gli ultimi passaggi
+   del possesso (preludio): qui diventano la prima frase della scena, coi nomi veri — uno-due (l'eroe la da' e la riceve dallo stesso
+   compagno), giro a tre (A per B, B per l'eroe), oppure il passaggio che l'ha servito, col suo tipo. Se l'ultimo passaggio non arriva
+   all'eroe (pallone recuperato o portato da solo) la scena non inventa niente. Rosso __CPM_NO_P6M. */
+function _p6Manovra(occ){
+  if(typeof window!=='undefined'&&window.__CPM_NO_P6M)return null;
+  const P=(occ&&Array.isArray(occ.preludio))?occ.preludio:[];if(!P.length)return null;
+  const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:'un compagno';
+  const u=P[P.length-1];if(!u||!u.a||!u.a.eroe||!u.da||u.da.eroe)return null;
+  const v=P.length>1?P[P.length-2]:null;
+  if(v&&v.da&&v.da.eroe&&v.a&&v.a.i===u.da.i)return {k:'uno-due',txt:'Uno-due con '+nm(u.da)+': te la ridà.'};
+  if(v&&v.a&&v.a.i===u.da.i&&v.da&&!v.da.eroe)return {k:'giro-a-tre',txt:nm(v.da)+' apre per '+nm(u.da)+', che ti serve.'};
+  const tipi={lancio:'Lancio lungo di ',filtrante:'Filtrante di ',cambio:'Cambio di gioco di ',verticale:'Verticalizzazione di ',appoggio:'Appoggio di ',corto:'Passaggio corto di '};
+  return {k:'servito',txt:(tipi[u.kind]||'Passaggio di ')+nm(u.da)+' per te.'};
 }
 function _p6Nomi(occ){const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
   return {ric:((occ.liberi|0)>0)?nm(cast.ricevente):null,ricVicino:nm(cast.ricevente),dif:nm(cast.difensore),gk:nm(cast.portiere)};}

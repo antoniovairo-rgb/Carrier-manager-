@@ -202,7 +202,17 @@ function creaMotorePossesso(cfg){
     if(e.t==='parata'){const K=_pag((e.gk&&e.gk.i!=null)?e.gk.i:((e.chi&&e.chi.i!=null)?e.chi.i:null));if(K)K.parate++;}
     if((e.t==='passaggio'||e.t==='cross')&&e.a&&e.a.i!=null){const R=_pag(e.a.i);if(R){R.ricezioni++;R.tocchi++;}}
   }catch(_e){}};
-  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);if(t==='tiro'&&typeof window!=='undefined'&&window&&window.__CPM_TIRI202){try{const _T=window.__CPM_TIRI202;if(_T.length<4000)_T.push({min:S.min,lato:(e.chi&&e.chi.team)||e.lato,scena:!!e.scena,vivo:!cfg.occasioniV2,seed:cfg.seed>>>0});}catch(_e202){}}/* [7.999.130 PO-202 testimone] ogni tiro col suo minuto e lato, nella vissuta e nella simulata */return e;};
+  /* [7.999.150 PO-030/PO-022 Passo 6, strato 5] LE MANOVRE VERE ENTRANO NELLA SCENA. Misurato su 48 partite S12 (306 occasioni dell'eroe):
+     nessuna occasione nasce a centrocampo, ma il 91,8% arriva dopo almeno un passaggio della stessa squadra (media 2,7), lo uno-due c'e'
+     nel 21% (37% fra le linee). Il motore ricorda gli ultimi 4 passaggi del possesso in corso e li consegna con l'occasione (preludio):
+     la scena racconta la manovra che e' davvero successa. Sola lettura: nessun rnd(), il flusso dei sorteggi non si sposta. Rosso __CPM_NO_P6M. */
+  const _prelOn149=!(typeof window!=='undefined'&&window&&window.__CPM_NO_P6M);let _prelBuf149=[];
+  const _prel149=(e)=>{if(!_prelOn149)return;const t=e.t;
+    if(t==='passaggio'){if(e.fuorigioco){_prelBuf149=[];return;}const tm=e.da&&e.da.team;if(_prelBuf149.length&&_prelBuf149[_prelBuf149.length-1].team!==tm)_prelBuf149=[];
+      _prelBuf149.push({team:tm,kind:e.kind||null,da:e.da?{i:e.da.i,nome:e.da.nome,eroe:!!e.da.eroe}:null,a:e.a?{i:e.a.i,nome:e.a.nome,eroe:!!e.a.eroe}:null});if(_prelBuf149.length>4)_prelBuf149.shift();return;}
+    if(t==='occasione_eroe'){const tm=e.chi&&e.chi.team;e.preludio=_prelBuf149.filter(q=>q.team===tm).map(q=>({kind:q.kind,da:q.da,a:q.a}));return;}
+    if(/^(intercetto|contrasto|recupero|fallo|rimessa|corner|rinvio|tiro|gol|parata|presa|spazzata|murato)$/.test(t))_prelBuf149=[];};
+  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}_prel149(e);S.eventi.push(e);_conta914(e);if(t==='tiro'&&typeof window!=='undefined'&&window&&window.__CPM_TIRI202){try{const _T=window.__CPM_TIRI202;if(_T.length<4000)_T.push({min:S.min,lato:(e.chi&&e.chi.team)||e.lato,scena:!!e.scena,vivo:!cfg.occasioniV2,seed:cfg.seed>>>0});}catch(_e202){}}/* [7.999.130 PO-202 testimone] ogni tiro col suo minuto e lato, nella vissuta e nella simulata */return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
   const chi=(p)=>p?{i:p.i,nome:nome(p),eroe:!!p.eroe,gk:!!p.gk,team:p.team,x:+p.x.toFixed(1),y:+p.y.toFixed(1)}:null;
 

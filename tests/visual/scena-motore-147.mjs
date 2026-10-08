@@ -33,6 +33,9 @@ for (const p of V) {
   if (p.rq && p.rq.replace(/\|/g, '')) g.push('opzione con gesto senza clip: ' + p.rq);
   if (!p.liberi && p.az.some(a => /^🤝/.test(a))) g.push('assist senza compagni liberi: ' + JSON.stringify(p));
 }
+const MAN = V.filter(x => x.man).length;/* [7.999.150 strato 5] la manovra vera apre la scena */
+if (!MAN) g.push('verde: nessuna scena aperta dalla manovra vera del motore (preludio) su ' + V.length);
+console.log('scene con la manovra vera', MAN, 'su', V.length, JSON.stringify(V.filter(x => x.man).map(x => x.man + ': ' + (x.intro || '').slice(0, 70))));
 if (TOT.rosso.length) g.push('rosso: ' + TOT.rosso.length + ' generate anche spento');
 console.log('generate verde', V.length, '· rosso', TOT.rosso.length);
 if (g.length) { console.log('❌ scena-motore-147'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
