@@ -1,5 +1,62 @@
 [
  {
+  "data": "2026-10-08 01:08",
+  "versione": "7.999.149",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 23
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 636
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 647
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 503
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1063
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0
+   }
+  ]
+ },
+ {
   "data": "2026-10-07 23:01",
   "versione": "7.999.149",
   "catena": "carriera",
@@ -5775,58 +5832,6 @@
     "passo": "partita-vera",
     "ok": true,
     "s": 521
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-03 08:12",
-  "versione": "7.999.119",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 28
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 726
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 61
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 913
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 519
    },
    {
     "passo": "design-system",
