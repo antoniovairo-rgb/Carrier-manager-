@@ -1,5 +1,177 @@
 [
  {
+  "data": "2026-10-08 21:18",
+  "versione": "7.999.153",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 23
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 75
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 825
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 81
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 61
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 532
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 301
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 192
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 527
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 332
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 610
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 433
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 553
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 546
+   }
+  ]
+ },
+ {
   "data": "2026-10-08 19:20",
   "versione": "7.999.152",
   "catena": "completa",
@@ -6015,98 +6187,6 @@
     "passo": "formazioni-204",
     "ok": true,
     "s": 86
-   }
-  ]
- },
- {
-  "data": "2026-10-03 20:34",
-  "versione": "7.999.125",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 259
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 994
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 34
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 66
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 290
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": true,
-    "s": 87
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": true,
-    "s": 87
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 93
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 135
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 130
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 62
    }
   ]
  }
