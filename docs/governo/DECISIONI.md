@@ -166,3 +166,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Restituzione a Codex:** era fra i collaudi ereditati dal team il 06/10, mai iniziato e fuori dalle zone su cui lavora il team.
 - **Durata:** finché il collaudo non è chiuso, il team non tocca stagioni, offerte, impulsi, Nazionale, difficoltà, economia e Ufficio.
 - **Prompt:** `docs/governo/prompt/codex-2026-10-07-carriere-fase1.md`.
+
+## 08/10 — Passo 6, strato 7: le scene difensive dell'eroe (PO-022)
+- **Misura che ha portato alla domanda:** 4 partite vere S12 (sonda `difesa-oggi`): 38 azioni dell'eroe risolte, **0 difensive** — ogni scena nasce da un'occasione d'attacco o da un piazzato del motore. Il motore offre però occasioni difensive vere: portatore avversario entro 4 u dall'eroe 5,2 volte a partita (6,7 entro 6 u), quasi tutte pressing alto nella metà campo avversaria (24 partite node, configurazioni S12).
+- **Decisione PO:** al massimo **1** scena difensiva a partita, e **si aggiunge** alle scene d'attacco (non ne prende il posto).
+- **Conseguenza:** il motore dichiara la prima occasione difensiva vera (portatore avversario entro 4 u dall'eroe) come `occasione_eroe` di tipo `difesa`, una sola volta a partita; la scena si costruisce da quella occasione; l'esito lo racconta il motore (contrasto o avversario che prosegue).

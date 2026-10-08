@@ -886,7 +886,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
-  const s=S(text,zones,mz,sz,actions,false,-1,_man?(_man.txt+' '+intro).trim():intro,'off',null,ctx);
+  const s=S(text,zones,mz,sz,actions,false,-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
   s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
   return s;
 }
@@ -991,6 +991,31 @@ function scenaDalMotoreCross(occ,player,seed){
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:dif?2:1,lanes:['central_run'],it:'insertion',bs:'aerial'};
   return _p6Costruisci(occ,player,seed,P6_CROSS,c,titoli,intro,['area'],ctx,angolo?'angolo':'cross');
 }
+/* [7.999.152 PO-022 Passo 6, strato 7 — decisione PO 08/10: al massimo una scena difensiva a partita, in aggiunta] LA DIFESA NASCE
+   DALL'OCCASIONE DEL MOTORE. Il motore dichiara la prima volta che il portatore avversario arriva entro 4 u dall'eroe (pressing alto,
+   quasi sempre nella meta' campo avversaria): la scena e' difensiva (type def, pallone all'avversario), nomina il portatore vero e
+   offre azioni difensive che il catalogo usa gia' (chiusura, contrasto pulito, scivolata, anticipo, raddoppio). L'esito lo racconta il
+   motore (contrasto riuscito, oppure l'avversario la scampa e prosegue). Rosso __CPM_NO_P6D. */
+const P6_DIFESA=[
+  {k:'chiusura',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
+  {k:'contrasto',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
+  {k:'scivolata',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
+  {k:'anticipo',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
+  {k:'raddoppio',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},
+];
+function scenaDalMotoreDifesa(occ,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!occ||occ.tipo!=='difesa'||occ.x==null||occ.y==null)return null;
+  const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
+  const av=nm(cast.portatore)||nm(cast.difensore);const x=+occ.x;
+  const c={press:+occ.press||0};
+  const titoli=x>=60?['🔥 Pressing alto su '+(av||'il portatore')+': riconquista palla!','🔥 '+(av||'Il loro portatore')+' esce palla al piede: aggredisci!']
+                    :['🛡️ '+(av||'Il portatore')+' ti punta a centrocampo: fermalo!','🛡️ Ripiegamento: '+(av||'il portatore')+' prova a ripartire!'];
+  const intro='Sei il più vicino: tocca a te.';
+  const zones=x>=67?['trequarti']:x>=45?['centro']:['propria'];
+  const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:1,lanes:[]};
+  return _p6Costruisci(occ,player,seed,P6_DIFESA,c,titoli,intro,zones,ctx,'difesa');
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
@@ -999,6 +1024,7 @@ function scenaDalMotore(occ,player,seed){
   if(occ.tipo==='fascia')return scenaDalMotoreFascia(occ,player,seed);
   if(occ.tipo==='fra-le-linee')return scenaDalMotoreLinee(occ,player,seed);
   if(occ.tipo==='cross'||occ.tipo==='angolo')return scenaDalMotoreCross(occ,player,seed);
+  if(occ.tipo==='difesa')return scenaDalMotoreDifesa(occ,player,seed);
   return null;
 }
 function scenaDalMotoreConclusione(occ,player,seed){

@@ -565,6 +565,16 @@ function creaMotorePossesso(cfg){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
     const press=pressioneSu(P),adv=advDi(P.x,l),zona=zonaDi(adv,P.y);
+    /* [7.999.152 PO-022 Passo 6, strato 7 — decisione PO 08/10: al massimo UNA scena difensiva a partita, in aggiunta] LA DIFESA DELL'EROE
+       NASCE DAL MOTORE. Misurato: 0 scene difensive su 38 azioni dell'eroe in 4 partite vere, mentre il portatore avversario arriva entro
+       4 u dall'eroe 5,2 volte a partita (pressing alto, quasi sempre nella meta' campo avversaria). La prima di queste, dal 5' in poi,
+       diventa l'occasione dell'eroe di tipo «difesa»: cast dichiarato (il portatore e' l'avversario da fermare), il motore si ferma come
+       per le altre scene. Nessun rnd(): una lettura della posizione. Solo nel modo brain (partita vissuta). Rosso __CPM_NO_P6D. */
+    if(cfg.brainLive&&!S._dif152&&!P.eroe&&!P.gk&&(S.min|0)>=5&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))){const H=g[HERO];
+      if(H&&attivo(H)&&H.team!==l&&hyp(P.x,P.y,H.x,H.y)<=4){S._dif152=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const K=g.find(q=>q.gk&&q.team===l&&attivo(q))||null;
+        ev("occasione_eroe",{chi:chi(H),zona:zonaDi(advDi(H.x,H.team),H.y),press:+press.toFixed(1),x:+H.x.toFixed(1),y:+H.y.toFixed(1),chiesto:null,attese:0,tipo:"difesa",finestra:false,liberi:0,
+          cast:{ricevente:null,difensore:chi(P),portiere:chi(K),portatore:chi(P)}});
+        if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_FERMO138)){S.scena=true;S._scenaAuto138=S.min|0;S.richieste.verso=null;S.arco=null;}return;}}
     const golReq=(S.richieste.gol&&S.richieste.gol.lato===l)?S.richieste.gol:null;
     if(golReq)golReq.t++;
     const att=clamp((S.richieste.att[l]||0)+0.35*TAT[l].ment,-1,1);/* [7.999.5] la mentalita' dello stile si somma all'atteggiamento del risultato */
