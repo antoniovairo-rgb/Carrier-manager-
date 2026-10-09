@@ -1,5 +1,77 @@
 [
  {
+  "data": "2026-10-09 16:21",
+  "versione": "7.999.155",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 718
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 807
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 514
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1112
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 7
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1143
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 3428
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-09 14:28",
   "versione": "7.999.155",
   "catena": "completa",
@@ -6307,58 +6379,6 @@
     "passo": "ripartenza-207",
     "ok": true,
     "s": 239
-   }
-  ]
- },
- {
-  "data": "2026-10-04 10:08",
-  "versione": "7.999.129",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 29
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 721
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 64
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 922
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 520
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
