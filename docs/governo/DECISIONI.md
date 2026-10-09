@@ -179,3 +179,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 09/10 — PO-221: quante scene dell'eroe e quanto rendono
 - **Misura:** 8 partite vere S12 (due corse, 7.999.153): 5-12 scene dell'eroe a partita (media 9-10); gol dell'eroe 1,0 e 1,75 a partita nelle due corse (campione piccolo); circa 1 scena su 3-4 finisce bene; le giocate più deboli sono finte, uno-due e filtranti fra le linee (intercettati).
 - **Decisione PO:** **5-7 scene a partita**; resa: **stessi gol** (obiettivo 0,6-0,9 a partita, fissato il 30/09) ma **più scene utili** — più assist e giocate riuscite, meno intercetti su uno-due e finte.
+
+## 09/10 (sera) — PO-221: come arrivare a 5-7 scene e a più assist (questionario)
+- **Misura nuova:** 6 partite vere S12 su 7.999.155, 55 scene: 9,2 a partita (4-12); per partita 2,7 conclusioni, 2,3 «fra le linee», 1,3 punizioni, 0,8 cross, 0,8 difese, 0,5 «spalle», 0,5 rigori. Esiti di 53 azioni scelte a caso dall'autoplay: 30 tiri sbagliati, 11 intercetti, 5 gol (0,83 a partita), 1 assist. Intercetti soprattutto su «Finta e cambio di passo» (4), «Conduci e tira» (3), «Uno-due» (2).
+- **Decisione PO (questionario):** meno scene con **più distanza fra le occasioni dal gioco (16' invece di 12') e al massimo 1 punizione diretta a partita** (rigori e scena difensiva invariati); più assist con **entrambe** le leve: ogni scena offensiva offre almeno un'opzione di passaggio/assist, e uno-due e finta vengono intercettati meno quando l'eroe ha buone statistiche di passaggio e dribbling. Gol invariati (0,6-0,9).
+- **Avvertenza:** gli esiti misurati vengono da scelte casuali dell'autoplay, non dalle scelte di un giocatore.
