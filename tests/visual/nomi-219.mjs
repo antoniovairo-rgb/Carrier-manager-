@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI = [7, 1234];
+const SEMI = [7, 1234];/* MISURATO 09/10 su 7.999.155: verde vicini 9/9, difensore usato 14/17 (82%); rosso 7/8, 15/19 (79%) — separazione sottile perche' anche il rosso ha il teatro armato; il guardiano resta un pavimento, non una misura fine */
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato: 0, scartato: 0, esempi: [] };
   for (const sd of SEMI) {
@@ -32,6 +32,7 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato
         if (m && !/^(cross|angolo|punizione|rigore)$/.test(m.tipo || '')) for (const x of m.n) { tot.nominati++; if (x.d <= 25) tot.vicini++; else if (tot.esempi.length < 6) tot.esempi.push(sd + ' ' + m.tipo + ' ' + x.nome + ' a ' + x.d + ' u'); } }
       prev = ph; if (ph === 'ended' || ph === 'ceremony') break; await sleep(250); }
     const W = await page.evaluate(() => window.__CPM_B4DIF || { usato: 0, scartato: 0 }); tot.usato += W.usato | 0; tot.scartato += W.scartato | 0;
+    tot.scambi = (tot.scambi | 0) + await page.evaluate(() => (window.__CPM_SW219 || []).reduce((a, x) => a + (x.scambi | 0), 0));/* quante scene lo scambio ha davvero toccato */
     console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' fine ' + ph); await ctx.close();
   }
   esito[rosso ? 'rosso' : 'verde'] = tot; console.log((rosso ? 'ROSSO' : 'VERDE') + ' ' + JSON.stringify(tot));
