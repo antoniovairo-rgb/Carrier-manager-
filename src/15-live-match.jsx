@@ -4625,28 +4625,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
               /* [7.999.147 PO-022 Passo 6, strato 1] la conclusione si COSTRUISCE dall'occasione del motore (src/04,
                  scenaDalMotoreConclusione); la scheda scelta sopra resta il ripiego. Rosso __CPM_NO_P6C. */
-              /* [7.999.155 PO-219 «nella scena ci sono A, B, C ma dice che gliela passa D»] I NOMI DELLA SCENA SONO DI CHI E' IN SCENA. Misurato
-                 (4 partite vere): il giocatore nominato dal motore sta, nel 3D, a 15-50 u da dove lo crede il motore (fino a 52,9) ed e' in
-                 quadro meno di una volta su due; il 3D scartava il difensore del cast 18 volte su 34. All'apertura il cast si sceglie fra chi
-                 il 3D disegna vicino all'eroe (posizioni di matchPlayers): il compagno dell'ultima manovra se e' vicino, altrimenti il ricevente
-                 del motore se e' vicino, altrimenti il compagno piu' vicino; il difensore (o il portatore) idem fra gli avversari. Se il
-                 compagno della manovra e' lontano la frase della manovra non lo nomina. Cross, angoli e piazzati restano al loro battitore.
-                 Il cast corretto va a testo, opzioni, 3D (castBrain) e motore. Rosso __CPM_NO_CAST219. */
-              try{const _o219=occEroe879Ref.current;if(_o219&&_o219.cast&&!(typeof window!=='undefined'&&window.__CPM_NO_CAST219)&&!/^(cross|angolo|punizione|rigore)$/.test(_o219.tipo||'')&&_o219.x!=null){
-                const _mp=matchPlayersRef.current||[];const _hx=+_o219.x,_hy=+_o219.y,_R=18;
-                const _w=(i,team)=>{const q=_mp[i];if(!q)return null;return {i,nome:String(q.name||''),eroe:false,gk:!!q.gk,team,x:+(+q.x).toFixed(1),y:+(+q.y).toFixed(1),d:Math.hypot(q.x-_hx,q.y-_hy)};};
-                const _vic=(team)=>{let b=null;_mp.forEach((q,i)=>{if(!q||q.team!==team||q.gk)return;const w=_w(i,team);if(w&&(!b||w.d<b.d))b=w;});return b;};
-                const _pul=(w)=>w?{i:w.i,nome:w.nome,eroe:false,gk:w.gk,team:w.team,x:w.x,y:w.y}:null;
-                const _P=_o219.preludio||[];const _u=_P[_P.length-1];let _ric=null;
-                if(_u&&_u.a&&_u.a.eroe&&_u.da&&!_u.da.eroe&&_u.da.i!=null){const w=_w(_u.da.i,'home');if(w&&w.d<=_R)_ric=w;}
-                if(!_ric&&_o219.cast.ricevente&&_o219.cast.ricevente.i!=null){const w=_w(_o219.cast.ricevente.i,'home');if(w&&w.d<=_R)_ric=w;}
-                if(!_ric){const w=_vic('home');if(w&&w.d<=_R+6)_ric=w;}
-                if(_u&&_u.da&&!_u.da.eroe&&(!_ric||_ric.i!==_u.da.i))_o219.preludio=[];/* il compagno della manovra non e' in scena: la frase non lo nomina */
-                const _dc=_o219.tipo==='difesa'?(_o219.cast.portatore||_o219.cast.difensore):_o219.cast.difensore;let _dif=null;
-                if(_dc&&_dc.i!=null){const w=_w(_dc.i,'away');if(w&&w.d<=_R)_dif=w;}
-                if(!_dif){const w=_vic('away');if(w&&w.d<=_R+6)_dif=w;}
-                _o219.cast={..._o219.cast,ricevente:_ric?_pul(_ric):(_o219.tipo==='difesa'?null:null),difensore:_dif?_pul(_dif):null};if(_o219.tipo==='difesa'&&_dif)_o219.cast.portatore=_pul(_dif);
-                if(!_ric)_o219.liberi=0;}}catch(_e219c){}
+              /* [7.999.155 PO-219 «nella scena ci sono A, B, C ma dice che gliela passa D»] UN SOLO COMPAGNO PER SCENA: se la scena si apre con
+                 una manovra vera (preludio), il ricevente del cast e' il compagno di quella manovra — testo («Uno-due con X»), opzioni e 3D
+                 nominano lo stesso uomo (misurato: «Uno-due con SPENCER» nel testo e «Uno-due con HAMMOND» nell'opzione). Che sia IN SCENA lo
+                 garantisce il 3D allo stacco (_sw219, src/12). Cross, angoli e piazzati restano al loro battitore. Rosso __CPM_NO_CAST219. */
+              try{const _o219=occEroe879Ref.current;if(_o219&&_o219.cast&&!(typeof window!=='undefined'&&window.__CPM_NO_CAST219)&&!/^(cross|angolo|punizione|rigore|difesa)$/.test(_o219.tipo||'')){
+                const _P=_o219.preludio||[];const _u=_P[_P.length-1];const _mp=matchPlayersRef.current||[];
+                if(_u&&_u.a&&_u.a.eroe&&_u.da&&!_u.da.eroe&&_u.da.i!=null&&_mp[_u.da.i]&&!_mp[_u.da.i].gk){const q=_mp[_u.da.i];_o219.cast={..._o219.cast,ricevente:{i:_u.da.i,nome:String(q.name||_u.da.nome||''),eroe:false,gk:false,team:'home',x:+(+q.x).toFixed(1),y:+(+q.y).toFixed(1)}};}}}catch(_e219c){}
               try{const _o6=occEroe879Ref.current;const _g6=(_o6&&typeof scenaDalMotore==='function')?scenaDalMotore(_o6,player,_lzSeed):null;
                 if(_g6){_pick880=_g6;try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_P6=window.__CPM_P6||[]).push({min:nx|0,tipo:_g6._p6||null,text:_g6.text,az:_g6.actions.map(a=>a.label),x:_o6.x,y:_o6.y,press:_o6.press,liberi:_o6.liberi|0,ric:_o6.cast&&_o6.cast.ricevente?_o6.cast.ricevente.nome:null,sz:_g6.startZone,rq:(_g6.actions||[]).map(a=>(a.richiede||[]).join('+')).join('|'),man:_g6._p6man||null,intro:_g6.intro||'',prel:(_o6.preludio||[]).length});}catch(_ew){}}}catch(_e6){}
               /* [7.999.26 — LA SCENA NASCE DALL'ORIGINE DICHIARATA DAL BRAIN. Rosso __CPM_NO_ORIG26] Se l'occasione porta un'origine

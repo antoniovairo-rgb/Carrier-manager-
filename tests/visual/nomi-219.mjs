@@ -3,7 +3,7 @@
    semi fissi). In scelta azione, per ogni giocatore nominato dalla scena (ricevente, difensore/portatore) misura dove lo disegna il 3D
    (__CPM_STATE) rispetto all'eroe, e conta quante volte il 3D usa davvero il difensore nominato (__CPM_B4DIF). MISURATO prima (7.999.154):
    nominati a 15-50 u da dove li crede il motore, difensore del cast scartato dal 3D 18 volte su 34. VERDE: almeno l'85% dei nominati
-   entro 25 u dall'eroe nel 3D e il difensore nominato usato dal 3D in almeno l'80% dei casi. ROSSO (__CPM_NO_CAST219): sotto entrambe.
+   entro 25 u dall'eroe nel 3D e il difensore nominato usato dal 3D in almeno l'80% dei casi. ROSSO (__CPM_NO_CAST219 + __CPM_NO_SWAP219): sotto almeno una. Il teatro va armato (__CPM_PRESENT=1): lo scambio avviene allo stacco.
    Uso: node nomi-219.mjs */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -14,7 +14,7 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato
   for (const sd of SEMI) {
     const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
     const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = 1; if (r) window.__CPM_NO_CAST219 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = 1; window.__CPM_PRESENT = 1;/* lo stacco d'apertura (teatro) e' spento sotto cpmtest: senza, lo scambio non avviene (lezione 7.345) */ if (r) { window.__CPM_NO_CAST219 = 1; window.__CPM_NO_SWAP219 = 1; } localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
     await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
     try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
