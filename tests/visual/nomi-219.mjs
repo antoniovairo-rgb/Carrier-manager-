@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI = [7, 1234];/* MISURATO 09/10 su 7.999.155: verde vicini 9/9, difensore usato 14/17 (82%); rosso 7/8, 15/19 (79%) — separazione sottile perche' anche il rosso ha il teatro armato; il guardiano resta un pavimento, non una misura fine */
+const SEMI = [7, 99, 1234, 2021];/* MISURATO 09/10 su 7.999.155: verde vicini 9/9, difensore usato 14/17 (82%); rosso 7/8, 15/19 (79%) — separazione sottile perche' anche il rosso ha il teatro armato; il guardiano resta un pavimento, non una misura fine */
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato: 0, scartato: 0, esempi: [] };
   for (const sd of SEMI) {
@@ -39,8 +39,11 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato
 }
 await b.close(); srv.close();
 const q = (t) => ({ vic: t.nominati ? t.vicini / t.nominati : 0, uso: (t.usato + t.scartato) ? t.usato / (t.usato + t.scartato) : 0 });
+/* [7.999.155, catena completa del 09/10] il contatore «difensore usato» NON separa i bracci (verde 87%, rosso 94%): resta stampato come
+   informazione. La prova e' la grandezza del difetto del PO — nominati LONTANI dall'eroe nel 3D all'apertura — su 4 partite. */
 const V = q(esito.verde), R = q(esito.rosso), g = [];
-if (!(esito.verde.nominati >= 8 && V.vic >= 0.85 && V.uso >= 0.8)) g.push('verde: vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + ', difensore usato ' + (100 * V.uso).toFixed(0) + '%');
-if (!(R.vic < 0.85 || R.uso < 0.8)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '%, usato ' + (100 * R.uso).toFixed(0) + '%)');
+if (!(esito.verde.nominati >= 12 && V.vic >= 0.95)) g.push('verde: vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + ' nominati (servono >=95% su >=12)');
+if (!(R.vic < V.vic && R.vic < 0.95)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '% contro ' + (100 * V.vic).toFixed(0) + '%)');
+console.log('informativo: difensore usato verde ' + (100 * V.uso).toFixed(0) + '% · rosso ' + (100 * R.uso).toFixed(0) + '%; scambi verde ' + (esito.verde.scambi | 0));
 if (g.length) { console.log('❌ nomi-219'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
-console.log('✅ nomi-219 verde (vicini ' + (100 * V.vic).toFixed(0) + '%, difensore usato ' + (100 * V.uso).toFixed(0) + '%; rosso ' + (100 * R.vic).toFixed(0) + '% / ' + (100 * R.uso).toFixed(0) + '%)');
+console.log('✅ nomi-219 verde (vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + '; rosso ' + (100 * R.vic).toFixed(0) + '% su ' + esito.rosso.nominati + ')');
