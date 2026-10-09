@@ -1,5 +1,78 @@
 [
  {
+  "data": "2026-10-09 08:54",
+  "versione": "7.999.155",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 744
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 64
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 827
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 515
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1090
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 7
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1139
+   },
+   {
+    "passo": "nomi-219",
+    "ok": false,
+    "s": 2262,
+    "coda": "informativo: difensore usato verde 84% · rosso 83%; scambi verde 32 | ❌ nomi-219 |   · rosso: il difetto non si vede (vicini 100% contro 96%)"
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-09 06:40",
   "versione": "7.999.155",
   "catena": "completa",
@@ -6200,115 +6273,6 @@
     "passo": "formazioni-204",
     "ok": true,
     "s": 74
-   }
-  ]
- },
- {
-  "data": "2026-10-04 06:10",
-  "versione": "7.999.128",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 240
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 848
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 34
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 65
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 288
-   },
-   {
-    "passo": "fila-206",
-    "ok": true,
-    "s": 343
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": false,
-    "s": 88,
-    "coda": "VERDE: {\"campioni\":12,\"inVolo\":0,\"esempio\":null,\"sulCorpo\":4} | ROSSO (__CPM_NO_PALCO191): {\"campioni\":22,\"inVolo\":5,\"esempio\":{\"y\":1.05,\"sotto\":0},\"sulCorpo\":16} | ❌ premiazione-palco-191 ROSSO"
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": false,
-    "s": 89,
-    "coda": "VERDE: {\"campioni\":9,\"scarto\":0.05,\"faccia\":0} | ROSSO (__CPM_NO_COPPA191): {\"campioni\":14,\"scarto\":0.51,\"faccia\":0} | ❌ coppa-mani-191 ROSSO"
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 96
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 130
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 126
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 59
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 95
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 73
    }
   ]
  }
