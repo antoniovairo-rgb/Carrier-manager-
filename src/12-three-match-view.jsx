@@ -6444,9 +6444,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(!/^hl_/.test(P.matchPhase||'')){sr.current._sw219=null;return null;}
           const _S=sr.current._sw219;if(_S&&_S.k===P.hlSitKey)return _S.m;if(!_doSnap)return null;
           const C=P.castBrain&&P.castBrain.current;const ap=P.allPlayers||[];const hx=+P.playerX,hy=+P.playerY;if(!C||!isFinite(hx)||!isFinite(hy))return null;
-          const m={},used={};let n=0;
-          for(const [w,team] of [[C.difensore,'away'],[C.ricevente,'home']]){if(!w||w.i==null||w.i===21)continue;const i=w.i,ti=_tg[i],si=ap[i];if(!ti||ti.gk||!si||si.team!==team||used[i])continue;
-            let j=-1,bd=1e9;for(let k=0;k<_tg.length;k++){const tk=_tg[k],sk=ap[k];if(!tk||tk.gk||!sk||sk.team!==team||used[k])continue;const d=Math.hypot(tk.x-hx,tk.y-hy);if(d<bd){bd=d;j=k;}}
+          const m={},used={};let n=0;const _cIdx={};for(const w of [C.difensore,C.ricevente,C.apre])if(w&&w.i!=null)_cIdx[w.i]=1;/* [PO-219b] lo slot di un altro nominato non si ruba: altrimenti lo si allontana e poi lo si salta */
+          for(const [w,team] of [[C.difensore,'away'],[C.ricevente,'home'],[C.apre,'home']]){/* [PO-219b] anche chi apre il giro a tre */if(!w||w.i==null||w.i===21)continue;const i=w.i,ti=_tg[i],si=ap[i];if(!ti||ti.gk||!si||si.team!==team||used[i])continue;
+            let j=-1,bd=1e9;for(let k=0;k<_tg.length;k++){const tk=_tg[k],sk=ap[k];if(!tk||tk.gk||!sk||sk.team!==team||used[k]||k===21||(_cIdx[k]&&k!==i))continue;const d=Math.hypot(tk.x-hx,tk.y-hy);if(d<bd){bd=d;j=k;}}
             const di=Math.hypot(ti.x-hx,ti.y-hy);used[i]=1;if(j>=0&&j!==i&&di>bd+3){m[i]=j;m[j]=i;used[j]=1;n++;}}
           sr.current._sw219={k:P.hlSitKey,m};
           try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SW219=window.__CPM_SW219||[]).push({k:P.hlSitKey,scambi:n});}catch(_e){}

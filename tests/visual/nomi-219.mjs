@@ -28,7 +28,7 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato
       if (ph === 'hl_choose' && prev !== 'hl_choose') { await sleep(400);
         const m = await page.evaluate(() => { const C = (window.__CPM_CAST219 || []).slice(-1)[0]; let st = null; try { st = window.__CPM_STATE(); } catch (e) {} if (!C || !st) return null;
           const P = st.players || [], H = st.hero || {}; const f = (w) => { if (!w || w.i == null || !P[w.i]) return null; const p = P[w.i]; return { nome: w.nome, d: +Math.hypot(p.x - H.x, p.y - H.y).toFixed(1) }; };
-          return { tipo: C.tipo, n: [f(C.ric), f(C.dif)].filter(Boolean) }; });
+          return { tipo: C.tipo, n: (C.prel || []).map(f).filter(Boolean) }; });/* [PO-219b] i compagni NOMINATI dalla manovra (preludio), uguali nei due bracci */
         if (m && !/^(cross|angolo|punizione|rigore)$/.test(m.tipo || '')) for (const x of m.n) { tot.nominati++; if (x.d <= 25) tot.vicini++; else if (tot.esempi.length < 6) tot.esempi.push(sd + ' ' + m.tipo + ' ' + x.nome + ' a ' + x.d + ' u'); } }
       prev = ph; if (ph === 'ended' || ph === 'ceremony') break; await sleep(250); }
     const W = await page.evaluate(() => window.__CPM_B4DIF || { usato: 0, scartato: 0 }); tot.usato += W.usato | 0; tot.scartato += W.scartato | 0;
