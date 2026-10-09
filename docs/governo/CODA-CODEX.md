@@ -168,3 +168,19 @@ Banco: Chrome 155 (fallback), esplorativo; pagina nuova per prova; repository no
   - In 12/12: risultato coerente con calendario e storico, settimana 38→39, una sola partita aggiunta, classifica 33→34.
   - Non confermata l'interruzione durante il discorso del mister: il banco non avviava quel percorso.
 - **Codex non ha zone assegnate.**
+
+## 09/10/2026 — Rapporto Codex zona G (PO-153, fase 1 carriere), base `f7026f4f` (7.999.148): MISURATA, NON CHIUSA
+
+Riportato dal PO in chat il 09/10. Codex non ha modificato file del repository né fatto commit o push.
+
+- **Campione:** 39 carriere × 10 stagioni (10 create dall'interfaccia), 6 percorsi fino al ritiro, 20 coppie biforcate sulle interviste, 5 coppie economiche, confronto separato di 12 voci dell'Ufficio.
+- **Ricontrolli:** nel campione principale nessun errore JavaScript e nessuno scarto GF/GS nella stessa lega.
+- **Da verificare (Codex):**
+  - percentuale effettiva di partite iniziate da titolare;
+  - conseguenze attribuibili ai singoli eventi;
+  - fase internazionale senza `__CPM_SIM_NAT=1`;
+  - coppie che differiscono per la scelta di un'offerta.
+- **Avvisi sul contratto:** 84, di cui 80 nel seme 15. Non confermato che producano un problema visibile.
+- **Ruoli:** la creazione normale assegna attaccante; i controlli sintetici con «portiere» non provano che sia un ruolo giocabile.
+- **Collaudi precedenti fuori dalla zona G:** sospesi su richiesta del PO, da non considerare tutti conclusi.
+- **Stato per il team:** zona G **NON CHIUSA** — resta ferma: il team non tocca stagioni, offerte, impulsi, Nazionale, difficoltà, economia e Ufficio. I rilievi non riprodotti dal team **non sono difetti confermati** (ipotesi fino alla riproduzione).
