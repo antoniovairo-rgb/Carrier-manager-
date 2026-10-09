@@ -175,3 +175,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 08/10 — Passo 6, strato 8: prima i piazzati, poi la chiusura (PO-022)
 - **Misura:** nelle partite misurate le scene costruite dal motore coprono 14 occasioni su 18 (`scena-motore-147`); restano dal catalogo rigori e punizioni dell'eroe, il 29% delle sue azioni (11 su 38 in 4 partite vere, sonda `difesa-oggi`).
 - **Decisione PO:** **strato 8a** — rigori e punizioni nascono dal motore come le altre scene (rosso e guardiano propri); **strato 8b**, release separata — chiusura totale: catalogo a modelli di testo, controlli di qualità sulle situazioni, firme del 3D e salvataggio a metà partita adeguati, via il ripiego.
+
+## 09/10 — PO-221: quante scene dell'eroe e quanto rendono
+- **Misura:** 8 partite vere S12 (due corse, 7.999.153): 5-12 scene dell'eroe a partita (media 9-10); gol dell'eroe 1,0 e 1,75 a partita nelle due corse (campione piccolo); circa 1 scena su 3-4 finisce bene; le giocate più deboli sono finte, uno-due e filtranti fra le linee (intercettati).
+- **Decisione PO:** **5-7 scene a partita**; resa: **stessi gol** (obiettivo 0,6-0,9 a partita, fissato il 30/09) ma **più scene utili** — più assist e giocate riuscite, meno intercetti su uno-due e finte.
