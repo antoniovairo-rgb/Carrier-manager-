@@ -1299,11 +1299,19 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         if(famDrib)E('conduzione',{chi:chi(H),from:da(H)});
         if(key==='goal'){tiroEroe('goal');E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
         else if(key==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null});if(ok&&R){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
+        /* [7.999.154 PO-218 «i pop di chiusura scena non rispecchiano la verita'»] UN SOLO TIPO D'ERRORE. Misurato (4 partite vere): il gioco
+           decide il dettaglio dell'errore (outKind: parata, palo, murato, fuori, fallo subito) e da li' derivano 3D e riquadro, mentre qui il
+           tiro sbagliato era SEMPRE «fuori» e il fallo subito un contrasto perso. Ora il motore riceve outKind e racconta lo stesso fatto.
+           Rosso __CPM_NO_ESITI218. */
+        const _ok218=!(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITI218)?(d.outKind||null):null;
+        const _fam218=!_ok218?null:(_ok218==='saved'||_ok218==='save')?'saved':_ok218==='post'?'post':(_ok218==='blocked'||_ok218==='wall_blocked')?'blocked':(_ok218==='fouled'||_ok218==='win_freekick')?'foul':(/^(wide|out|overhit|missed|deflected_out|shielded_out|lost|stopped)$/.test(_ok218))?'fuori':null;
+        if(!ok&&_fam218==='foul'&&(key==='intercept'||key==='through'||key==='miss')){E('fallo',{chi:D?chi(D):null,su:chi(H),per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}/* il fallo subito e' un fallo, non un contrasto perso */
         else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{modo:modo(D),chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
+        else if(!ok&&key==='intercept'&&(_fam218==='saved'||_fam218==='post'||_fam218==='fuori')){const es=_fam218;tiroEroe(es);if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(es==='post')E('palo',{chi:chi(H)});}
         else if(!ok&&key==='intercept'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}
         else if(key==='save'||key==='miss'||key==='miss_easy'||key==='post'||(rew==='goal'&&!ok)){/* un'«occasione» riuscita (chance) NON e' un tiro */
-          const es=key==='save'?'saved':key==='post'?'post':'fuori';tiroEroe(es);if(key==='miss_easy'){const _q17=_pag(HERO);if(_q17)_q17.sprechi=(_q17.sprechi|0)+1;}/* [7.999.17] il gol fatto sbagliato pesa in pagella */
-          if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
+          const es=key==='save'?'saved':key==='post'?'post':(_fam218==='saved'||_fam218==='post'||_fam218==='blocked')?_fam218:'fuori';if(es==='blocked'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}else{tiroEroe(es);if(key==='miss_easy'){const _q17=_pag(HERO);if(_q17)_q17.sprechi=(_q17.sprechi|0)+1;}/* [7.999.17] il gol fatto sbagliato pesa in pagella */
+          if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(es==='post')E('palo',{chi:chi(H)});}}
         else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       }
 

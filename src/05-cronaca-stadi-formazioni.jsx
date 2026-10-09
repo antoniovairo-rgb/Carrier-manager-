@@ -353,7 +353,8 @@ const HL_OVERLAY_POOLS={
 const _MISS_OVL={
   post:["Palo!","Il palo gli dice no","Ci è andato vicinissimo","A un passo dal gol"],
   saved:["Grande parata del portiere","Il portiere dice di no","Tentativo respinto","Conclusione centrale","Il gol sembrava fatto"],
-  blocked:["Murato dalla difesa","Tentativo respinto","Conclusione murata"],
+  blocked:["Murato dalla difesa","Conclusione murata","Il difensore si oppone"],/* [7.999.154 PO-218] «Tentativo respinto» resta solo fra le parate */
+  intercepted:["Intercettato","Palla persa","Anticipato dall'avversario","Ti portano via il pallone"],
   wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"],
   corner:["Deviata in angolo","Corner conquistato","Respinta in corner","A un passo — è angolo"],
   foul:["Conquista una punizione","Subisce il fallo","Guadagna un calcio piazzato","Steso — punizione"],
@@ -361,7 +362,8 @@ const _MISS_OVL={
 };
 const _MISS_TX={
   post:["😤 Palo! Fortuna avversaria.","😖 Il legno respinge la conclusione.","😤 Palo pieno — che sfortuna."],
-  saved:["😔 Para il portiere.","❌ Tiro debole, para comodo.","😔 Tiro centrale — parata facile.","😕 Il portiere devia in corner."],
+  saved:["😔 Para il portiere.","❌ Tiro debole, para comodo.","😔 Tiro centrale — parata facile.","🧤 Il portiere si distende e respinge."],/* [7.999.154 PO-218] «devia in corner» e' la famiglia corner, non la parata */
+  intercepted:["✂️ L'avversario legge la giocata e intercetta.","❌ Palla persa nel contrasto.","✂️ Anticipato sul più bello."],
   blocked:["❌ Murato dalla difesa.","🧱 La difesa mura la conclusione."],
   wide:["😬 Tiro fuori!","💨 Sopra la traversa — che rimpianto!","😔 Non trova lo specchio."],
   corner:["🚩 Deviata in angolo!","🏳️ La conclusione finisce in corner.","🚩 Respinta in corner — si riparte dalla bandierina."],
@@ -384,6 +386,7 @@ function _missKindNorm(k){
   if(k==="fouled"||k==="win_freekick"||k==="foul")return"foul";/* [6.4.2 R2.3] fallo SUBITO dall azione dell eroe → punizione a favore (prima → pool piatto) · [6.76.0] anche il "foul" nudo di decideExecution('intercept') */
   if(k==="offside")return"offside";/* [6.4.3 R2.4] filtrante in fuorigioco (prima → pool piatto) */
   if(k==="saved"||k==="save")return"saved";
+  if(!(typeof window!=="undefined"&&window.__CPM_NO_ESITI218)&&(k==="intercepted"||k==="dispossessed"||k==="beaten"))return"intercepted";/* [7.999.154 PO-218] un passaggio intercettato o una palla persa NON e' un tiro murato: famiglia propria, parole proprie. Rosso __CPM_NO_ESITI218 */
   if(k==="blocked"||k==="intercepted"||k==="wall_blocked"||k==="dispossessed"||k==="beaten")return"blocked";/* [6.4.3 R2.4] avversario vince il pallone → famiglia "murato/fermato" (prima → pool piatto) */
   if(k==="wide"||k==="out"||k==="overhit"||k==="missed"||k==="deflected_out"||k==="shielded_out"||k==="lost"||k==="stopped")return"wide";
   return null;
@@ -434,7 +437,7 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
 }
 // [7.136.0] mappe iconcina esito — per categoria (cat) e per famiglia granulare del "miss" (fam)
 const _OVL_CAT_ICON={goal:"⚽",assist:"🅰️",chance:"✨",pass:"🎯",cross:"↗️",dribble:"🌀",recovery:"🔄",tackle:"🛡️",save_hero:(typeof window!=="undefined"&&window.__CPM_NO_SALVA84)?"🧤":"🛡️",miss:"❌",miss_big:"😱",pass_fail:"✂️",dribble_fail:"🚫",def_fail:"⚠️",nothing:"😐",conceded:"🥅",foul:"🟨"};
-const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",wide:"💨",corner:"🚩",foul:"🟢",offside:"🚩"};
+const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",intercepted:"✂️",wide:"💨",corner:"🚩",foul:"🟢",offside:"🚩"};
 // Sprint 82 — ~100 stadium names across 6 tiers + U18 pool
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Terre Rosse","Stadio Accademia del Borgo","Arena della Gioventù","Campo Sportivo Lambro","Stadio Bertolotti","Arena Giovanile Sismondi","Centro Federale Valdarno","Stadio del Settore Giovanile","Campo dei Tigli","Arena Academy Nord"];// [5.96.0 CR-1] bonifica: via Coverciano/Braglia/Vismara/Galli (riferimenti reali)
 const STADIUM_POOLS=[
