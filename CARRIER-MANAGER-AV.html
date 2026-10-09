@@ -4024,6 +4024,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
     scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
   const x=+occ.x,y=+occ.y;
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
@@ -4141,11 +4142,11 @@ function scenaDalMotoreCross(occ,player,seed){
    offre azioni difensive che il catalogo usa gia' (chiusura, contrasto pulito, scivolata, anticipo, raddoppio). L'esito lo racconta il
    motore (contrasto riuscito, oppure l'avversario la scampa e prosegue). Rosso __CPM_NO_P6D. */
 const P6_DIFESA=[
-  {k:'chiusura',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
-  {k:'contrasto',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
-  {k:'scivolata',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
-  {k:'anticipo',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
-  {k:'raddoppio',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},
+  {k:'chiusura',g:'lunge',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
+  {k:'contrasto',g:'lunge',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
+  {k:'scivolata',g:'slide',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
+  {k:'anticipo',g:'lunge',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
+  {k:'raddoppio',g:'lunge',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},
 ];
 function scenaDalMotoreDifesa(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))return null;}catch(_e){}
@@ -31379,7 +31380,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
             setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),evento:occEroe879Ref.current?{min:occEroe879Ref.current.min,hl:hlIdx}:null,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
-            castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;/* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occPos137Ref.current=(occEroe879Ref.current&&occEroe879Ref.current.x!=null)?{x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,hl:hlIdx,orig:(occEroe879Ref.current.origine&&occEroe879Ref.current.origine.kind)||null}:null;occEroe879Ref.current=null;
+            castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;try{if(typeof window!=='undefined'&&window.__CPM_REC&&castBrainRef.current){const _c=castBrainRef.current;const _pk=(w)=>w?{i:w.i,nome:w.nome,x:w.x,y:w.y}:null;(window.__CPM_CAST219=window.__CPM_CAST219||[]).push({hl:hlIdx,min:nx|0,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,ric:_pk(_c.ricevente),dif:_pk(_c.difensore),port:_pk(_c.portatore),eroe:occEroe879Ref.current?{x:occEroe879Ref.current.x,y:occEroe879Ref.current.y}:null});}}catch(_e219){}/* [PO-219 testimone, solo sonde] il cast dichiarato all'apertura della scena *//* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occPos137Ref.current=(occEroe879Ref.current&&occEroe879Ref.current.x!=null)?{x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,hl:hlIdx,orig:(occEroe879Ref.current.origine&&occEroe879Ref.current.origine.kind)||null}:null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;

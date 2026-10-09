@@ -881,6 +881,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
     scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
   const x=+occ.x,y=+occ.y;
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
@@ -998,11 +999,11 @@ function scenaDalMotoreCross(occ,player,seed){
    offre azioni difensive che il catalogo usa gia' (chiusura, contrasto pulito, scivolata, anticipo, raddoppio). L'esito lo racconta il
    motore (contrasto riuscito, oppure l'avversario la scampa e prosegue). Rosso __CPM_NO_P6D. */
 const P6_DIFESA=[
-  {k:'chiusura',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
-  {k:'contrasto',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
-  {k:'scivolata',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
-  {k:'anticipo',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
-  {k:'raddoppio',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},
+  {k:'chiusura',g:'lunge',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
+  {k:'contrasto',g:'lunge',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
+  {k:'scivolata',g:'slide',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
+  {k:'anticipo',g:'lunge',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
+  {k:'raddoppio',g:'lunge',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},
 ];
 function scenaDalMotoreDifesa(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))return null;}catch(_e){}
