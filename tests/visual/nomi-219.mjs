@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+/* [7.999.155 PO-219 «nella scena ci sono A, B, C ma dice che gliela passa D»] GUARDIANO su partite vere dal salvataggio S12 (autoplay,
+   semi fissi). In scelta azione, per ogni giocatore nominato dalla scena (ricevente, difensore/portatore) misura dove lo disegna il 3D
+   (__CPM_STATE) rispetto all'eroe, e conta quante volte il 3D usa davvero il difensore nominato (__CPM_B4DIF). MISURATO prima (7.999.154):
+   nominati a 15-50 u da dove li crede il motore, difensore del cast scartato dal 3D 18 volte su 34. VERDE: almeno l'85% dei nominati
+   entro 25 u dall'eroe nel 3D e il difensore nominato usato dal 3D in almeno l'80% dei casi. ROSSO (__CPM_NO_CAST219): sotto entrambe.
+   Uso: node nomi-219.mjs */
+import fs from 'node:fs';
+import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+const SEMI = [7, 1234];
+const srv = await startServer(); const b = await launchBrowser(); const esito = {};
+for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, usato: 0, scartato: 0, esempi: [] };
+  for (const sd of SEMI) {
+    const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+    const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
+    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = 1; if (r) window.__CPM_NO_CAST219 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+    await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+    await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
+    try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
+    await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }); await sleep(1500);
+    try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+    await page.evaluate(() => window.__CPM_CAREER.playMatch());
+    await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
+    await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), sd);
+    const t0 = Date.now(); let ph = '', prev = '';
+    while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
+      if (ph === 'hl_choose' && prev !== 'hl_choose') { await sleep(400);
+        const m = await page.evaluate(() => { const C = (window.__CPM_CAST219 || []).slice(-1)[0]; let st = null; try { st = window.__CPM_STATE(); } catch (e) {} if (!C || !st) return null;
+          const P = st.players || [], H = st.hero || {}; const f = (w) => { if (!w || w.i == null || !P[w.i]) return null; const p = P[w.i]; return { nome: w.nome, d: +Math.hypot(p.x - H.x, p.y - H.y).toFixed(1) }; };
+          return { tipo: C.tipo, n: [f(C.ric), f(C.dif)].filter(Boolean) }; });
+        if (m && !/^(cross|angolo|punizione|rigore)$/.test(m.tipo || '')) for (const x of m.n) { tot.nominati++; if (x.d <= 25) tot.vicini++; else if (tot.esempi.length < 6) tot.esempi.push(sd + ' ' + m.tipo + ' ' + x.nome + ' a ' + x.d + ' u'); } }
+      prev = ph; if (ph === 'ended' || ph === 'ceremony') break; await sleep(250); }
+    const W = await page.evaluate(() => window.__CPM_B4DIF || { usato: 0, scartato: 0 }); tot.usato += W.usato | 0; tot.scartato += W.scartato | 0;
+    console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' fine ' + ph); await ctx.close();
+  }
+  esito[rosso ? 'rosso' : 'verde'] = tot; console.log((rosso ? 'ROSSO' : 'VERDE') + ' ' + JSON.stringify(tot));
+}
+await b.close(); srv.close();
+const q = (t) => ({ vic: t.nominati ? t.vicini / t.nominati : 0, uso: (t.usato + t.scartato) ? t.usato / (t.usato + t.scartato) : 0 });
+const V = q(esito.verde), R = q(esito.rosso), g = [];
+if (!(esito.verde.nominati >= 8 && V.vic >= 0.85 && V.uso >= 0.8)) g.push('verde: vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + ', difensore usato ' + (100 * V.uso).toFixed(0) + '%');
+if (!(R.vic < 0.85 || R.uso < 0.8)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '%, usato ' + (100 * R.uso).toFixed(0) + '%)');
+if (g.length) { console.log('❌ nomi-219'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+console.log('✅ nomi-219 verde (vicini ' + (100 * V.vic).toFixed(0) + '%, difensore usato ' + (100 * V.uso).toFixed(0) + '%; rosso ' + (100 * R.vic).toFixed(0) + '% / ' + (100 * R.uso).toFixed(0) + '%)');
