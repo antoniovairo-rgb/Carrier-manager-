@@ -1081,6 +1081,8 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
+  if(ric&&!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PASS221))&&!scelte.some(t=>t.rew==='assist')){/* [7.999.156 PO-221] con un compagno libero l'opzione «Servi X libero» c'e' sempre: prende il posto dell'ultima scelta che non sia l'unico tiro (senza compagno libero nessun passaggio inventato) */
+    const _as=P6_CONCLUSIONE.find(t=>t.k==='assist');for(let k=scelte.length-1;k>=0;k--){if(scelte[k].rew==='goal'&&scelte.filter(t=>t.rew==='goal').length<2)continue;scelte[k]=_as;break;}}
   if(!scelte.some(t=>t.rew==='goal'))return null;
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
   const TIT=uno?['⚡ Solo davanti a '+(gk||'al portiere')+'!','⚡ Hai solo il portiere davanti!']
