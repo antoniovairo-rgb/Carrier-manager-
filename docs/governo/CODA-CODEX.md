@@ -220,3 +220,4 @@ Dettagli G aggiuntivi: 10 carriere dall'interfaccia + 29 sintetiche; 6 fino al r
 
 Prompt: `docs/governo/prompt/codex-2026-10-09-collaudi-7999155.md`, base `837d3272` (7.999.155). Zone: H PO-219 (nomi in scena), I PO-218 (esito coerente), L PO-209 (intestazione «FC Laguna» col prestito), M PO-048 (inquadratura #3/#38/#64/#74 ripetuta sulla build attuale), N riserve A (auto216) ed E (PO-176) del rapporto A–G.
 Per regola, finché Codex collauda queste voci il team non le fa avanzare; restano al team PO-220, PO-221, PO-022 (8b), PO-068, PO-123. Zona G ferma.
+- **Coda fino al 19/10** (Codex viene dismesso il 19/10, PO 09/10: «approfittiamone ora»): `docs/governo/prompt/codex-2026-10-09b-coda-fino-19.md` — O PO-190 (gol in una stagione), P presenze e titolari (PO-222, solo misura), Q effetti delle scelte evento (PO-154, solo misura), R schermate L7, S cerimonie L8, T collaudo della release PO-220/221 quando esce. Consegna a zone, non a fine coda.
