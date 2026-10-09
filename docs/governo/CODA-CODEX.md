@@ -184,3 +184,15 @@ Riportato dal PO in chat il 09/10. Codex non ha modificato file del repository n
 - **Ruoli:** la creazione normale assegna attaccante; i controlli sintetici con «portiere» non provano che sia un ruolo giocabile.
 - **Collaudi precedenti fuori dalla zona G:** sospesi su richiesta del PO, da non considerare tutti conclusi.
 - **Stato per il team:** zona G **NON CHIUSA** — resta ferma: il team non tocca stagioni, offerte, impulsi, Nazionale, difficoltà, economia e Ufficio. I rilievi non riprodotti dal team **non sono difetti confermati** (ipotesi fino alla riproduzione).
+
+## 09/10/2026 (sera) — Chiusura dell'esecuzione dei collaudi A–G (Codex), base zona G `f7026f4f` (7.999.148)
+
+Riportato dal PO in chat il 09/10. Codex: «chiusura del lavoro di verifica, non un'approvazione senza riserve del gioco». Nessun file del repository modificato, nessun commit/push/PR.
+
+- **A–F:** esito per i campioni richiesti.
+- **G:** stesso campione (39 carriere × 10 stagioni, 6 percorsi al ritiro, 20 coppie di scelte, 5 coppie economiche). Due fatti **riprodotti da Codex** (prova grezza, script sulla macchina del PO, non nel repo):
+  - un eroe classificato «non convocato» riceve comunque una presenza quando la gara viene simulata → la percentuale reale di partenze da titolare non e' confermabile dalle carriere simulate (→ PO-222);
+  - un investimento pendente aggiunge €55.000 alla stagione successiva nel confronto controllato; il catalogo assegna lo stesso flag a tre scelte con promesse diverse; il percorso dall'interfaccia di ciascuna scelta non e' verificato (→ PO-223).
+- **Eventi:** 99 dei 106 impulsi comparsi nel campione, tutti con almeno un effetto di stato; un clic reale verificato (fatica 13→28, forma 70→77, applicato una volta); seguito sponsor→shooting in 39/39 carriere. Non confermato che l'effetto di ogni impulso sia visibile al giocatore.
+- **Ancora non verificati:** fase internazionale naturale senza flag di simulazione; portiere non selezionabile nella creazione normale.
+- **Stato per il team:** zona G **resta NON CHIUSA e ferma**. I due fatti sono riprodotti da Codex ma **non ancora dal team**: restano ipotesi nel registro (PO-222, PO-223) finche' non li riproduco sul codice attuale, e non si toccano finche' la zona G e' congelata.
