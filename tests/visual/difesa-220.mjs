@@ -10,6 +10,20 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 const SEMI = (process.env.SEMI || '7,99,1234,2021').split(',').map(Number);
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
+/* [09/10] PROVA DEL ROSSO DETERMINISTICA: nelle partite l'autoplay pesca 1 azione su 3, e in un giro il rosso ha pescato solo
+   scivolata e anticipo (che anche senza correzione hanno un gesto vero) — la prova dipendeva dal sorteggio. Qui si costruiscono
+   600 scene difensive per braccio con scenaDalMotoreDifesa (src/04) e si contano i gesti di TUTTE le azioni. MISURATO 09/10:
+   verde 0/1800 «press», rosso 1122/1800 (chiusura, contrasto e raddoppio cadono su «press» dal classificatore delle etichette). */
+const ENUM = await (async () => { const ctx = await b.newContext(); const page = await ctx.newPage(); await installCdnRoutes(page);
+  await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+  await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 });
+  const r = await page.evaluate(() => { if (typeof scenaDalMotoreDifesa !== 'function') return null; const out = {};
+    for (const rosso of [false, true]) { window.__CPM_NO_GESTO220 = rosso ? 1 : undefined; const t = { azioni: 0, press: 0 };
+      for (let sd = 1; sd <= 200; sd++) for (const press of [0, 1, 2]) { const sc = scenaDalMotoreDifesa({ tipo: 'difesa', x: 40 + (sd % 40), y: 20 + (sd % 60), press, cast: {} }, { stats: {} }, sd * 7919);
+        if (sc) for (const a of sc.actions) { t.azioni++; if ((a.defGesto || 'press') === 'press') t.press++; } }
+      out[rosso ? 'rosso' : 'verde'] = t; } window.__CPM_NO_GESTO220 = undefined; return out; });
+  await ctx.close(); return r; })();
+console.log('ENUMERAZIONE ' + JSON.stringify(ENUM));
 for (const rosso of [false, true]) { const tot = { scene: 0, press: 0, gesti: {}, dmin: [], gambe: [] };
   for (const sd of SEMI) {
     const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
@@ -41,6 +55,9 @@ for (const rosso of [false, true]) { const tot = { scene: 0, press: 0, gesti: {}
 }
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
+if (!ENUM) g.push('enumerazione: scenaDalMotoreDifesa non raggiungibile dalla pagina');
+else { if (!(ENUM.verde.azioni >= 1000 && ENUM.verde.press === 0)) g.push('verde (enumerazione): ' + ENUM.verde.press + ' azioni «press» su ' + ENUM.verde.azioni);
+  if (!(ENUM.rosso.press >= 0.3 * ENUM.rosso.azioni)) g.push('rosso (enumerazione): il difetto non si vede (' + ENUM.rosso.press + ' «press» su ' + ENUM.rosso.azioni + ')'); }
 if (!(V.scene >= 2 && V.press === 0)) g.push('verde: ' + V.press + ' scene difensive col gesto «press» su ' + V.scene);
 if (V.dmin.length && Math.min(...V.dmin) > 4) g.push('verde: l\'eroe non arriva mai entro 4 u dal portatore (' + V.dmin.join(', ') + ')');
 if (!(R.press >= 1)) console.log('⚠️ rosso: nessun «press» nel campione (' + JSON.stringify(R.gesti) + ') — la prova del rosso dipende dalle azioni sorteggiate');
