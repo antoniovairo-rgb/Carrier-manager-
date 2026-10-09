@@ -2939,8 +2939,10 @@ function ThreeMatchView(props){
     /* [23/09 POC] il RICEVENTE del cast, stessa regola del difensore: se e' in campo ed entro maxD dal punto, e' lui. Rosso __CPM_NO_B4RIC. */
     const _castRic23=(fallback,ax,az,maxD)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_B4RIC)return fallback;
       const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const i=C&&C.ricevente?C.ricevente.i:null;
-      if(i==null||i===21)return fallback;const pp=sr.current.players&&sr.current.players[i];const m=pp&&pp.mesh;
-      return (m&&m!==hero&&Math.hypot(m.position.x-ax,m.position.z-az)<=(maxD||20))?m:fallback;}catch(_eR){return fallback;}};
+      const W=(typeof window!=='undefined'&&window.__CPM_B4REC)?(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0,dist:[]}):null;/* [PO-219 testimone, solo sonde] il ricevente nominato dal motore e' quello che il 3D mette in scena? */
+      if(i==null||i===21){if(W)W.senzaCast++;return fallback;}const pp=sr.current.players&&sr.current.players[i];const m=pp&&pp.mesh;
+      const _d=m?Math.hypot(m.position.x-ax,m.position.z-az):999;const ok=(m&&m!==hero&&_d<=(maxD||20));if(W){if(ok)W.usato++;else W.scartato++;if(W.dist.length<200)W.dist.push(Math.round(_d));}
+      return ok?m:fallback;}catch(_eR){return fallback;}};
     const _castDif23=(fallback,ax,az,maxD)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_B4DIF)return fallback;
       const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const i=C&&C.difensore?C.difensore.i:null;
       const W=(typeof window!=='undefined'&&window.__CPM_B4REC)?(window.__CPM_B4DIF=window.__CPM_B4DIF||{usato:0,scartato:0,senzaCast:0}):null;
