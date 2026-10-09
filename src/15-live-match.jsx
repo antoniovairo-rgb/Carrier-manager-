@@ -5437,8 +5437,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             /* [7.999.101 rilievo Codex 26-D, decisione PO 01/10 «rigore sempre, resto nel tetto»] Codex: 10 highlight in 1 partita su 30
                (seme 973182 «Rilievi7», 7.999.96: 5 inserimenti brain-origine). La regola sta in scenaExtraAmmessa (funzione pura, guardiano
                tetto-scene). Rosso __CPM_NO_TETTO101. */
-            if(_oc26&&scenaExtraAmmessa(!!(_oc26.origine&&_oc26.origine.kind==="rigore"),numHLRef.current|0)&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
-              if(_pz27){extra27Ref.current=(extra27Ref.current|0)+1;occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;}else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
+            if(_oc26&&scenaExtraAmmessa(!!(_oc26.origine&&_oc26.origine.kind==="rigore"),numHLRef.current|0)&&(_pz27?((extra27Ref.current|0)<4&&!(_oc26.origine.kind==="punizione"&&(occ28Ref.current.punz221|0)>=1&&!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PUNZ221)))):/* [7.999.156 PO-221, decisione PO 09/10] al massimo 1 punizione diretta a partita; i rigori restano */(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
+              if(_pz27){extra27Ref.current=(extra27Ref.current|0)+1;if(_oc26.origine.kind==="punizione")occ28Ref.current.punz221=(occ28Ref.current.punz221|0)+1;occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;}else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
@@ -8699,7 +8699,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _op137=(occPos137Ref.current&&occPos137Ref.current.hl===hlIdx)?occPos137Ref.current:null;/* il punto dove il motore ha visto l'occasione; altrimenti quello della scena */
         /* l'origine dice che tiro e': dalla punizione e' una punizione diretta (xG del piazzato, senza talento), dal cross o dall'angolo un colpo di testa */
         const _int137=(_op137&&_op137.orig==='punizione'&&_o137.fam==='tiro')?'freekick':(_op137&&_op137.orig==='rigore'&&_o137.fam==='tiro')?'penalty':(_op137&&(_op137.orig==='cross'||_op137.orig==='angolo')&&!_o137.intent)?'header':(_o137.intent||null);
-        _g137=motoreRef.current.giocaScena({fam:_o137.fam,intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
     }catch(_e137){_g137=null;}}
     let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));

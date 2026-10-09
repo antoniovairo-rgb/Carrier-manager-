@@ -772,8 +772,9 @@ function creaMotorePossesso(cfg){
        punteggio — 12' di base, 9' se la squadra dell'eroe e' sotto nella ripresa (spinge), 16' se conduce di 2+ (gestisce).
        Il limite resta la fisica della partita: palla all'eroe nell'ultimo terzo. Rosso __CPM_NO_DIN15 = tetto fisso 7.999.13 */
     const _din15=_v14&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_DIN15);
-    let _gap=_v14?12:5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
-      if(_df<0&&S.min>=46)_gap=9;else if(_df>=2)_gap=16;}
+    const _g221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_GAP221));/* [7.999.156 PO-221, decisione PO 09/10] 16' fra due occasioni invece di 12' (sotto nella ripresa 13', avanti di 2+ 20'): le scene erano 9,2 a partita, obiettivo 5-7 */
+    let _gap=_v14?(_g221?16:12):5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
+      if(_df<0&&S.min>=46)_gap=_g221?13:9;else if(_df>=2)_gap=_g221?20:16;}
     return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
@@ -1375,7 +1376,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     const grande=(xx,yy,intent,alta)=>{const xg=xgV2({team:HOME,x:clamp(xx,0,100),y:clamp(yy,0,100)},intent||null,3);if(intent==='penalty'||intent==='freekick')return xg;return alta?clamp(0.08+0.6*xg,0.08,0.30):clamp(0.10+0.8*xg,0.10,0.45);};
     const fam=o.fam||'altro';let p;const det={fam,opp:Math.round(b.posizionamento),intent:o.intent||null};
     if(fam==='tiro'){const gr=grande(x,y,o.intent,!!o.alta);const sk=clamp(((A('tiro')+A(o.stat||'tiro'))/2-b.posizionamento)*0.010,-0.35,0.35);p=gr*(1+sk);det.gr=+gr.toFixed(3);det.sk=+sk.toFixed(3);}
-    else if(fam==='assist'){const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008,0.5,0.95);const gr=0.85*grande(Math.min(94,x+10),50,null,!!o.alta);p=pas*gr;det.pas=+pas.toFixed(3);det.gr=+gr.toFixed(3);}
+    else if(fam==='assist'){const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);const gr=0.85*grande(Math.min(94,x+10),50,null,!!o.alta);p=pas*gr;det.pas=+pas.toFixed(3);det.gr=+gr.toFixed(3);}
     else if(fam==='dribbling')p=clamp(0.42+((A('dribbling')+A('velocità'))/2-(b.fisico+b.posizionamento)/2)*0.012,0.18,0.72);
     else if(fam==='difesa')p=clamp(0.46+((A('fisico')+A('posizionamento'))/2-(b.dribbling+b.velocità)/2)*0.012,0.2,0.75);
     else p=clamp(0.55+(A(o.stat||'tecnica')-b.posizionamento)*0.010,0.25,0.8);
@@ -1399,7 +1400,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     try{const press=pressioneSu(H);const intent=o.intent||(o.fam==='tiro'?'shot':null);
       if(o.fam==='tiro'){const es=esitoTiroV2(H,intent,{pressRaw:press});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
-        const b=D?attrsDi(D):{posizionamento:forza.away};const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008,0.5,0.95);
+        const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
         if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
         const Rv={team:H.team,eroe:false,x:Math.min(94,x+10),y:50+(y-50)*0.3,i:-1};const es=esitoTiroV2(Rv,o.intent==='header'?'header':'shot',{pressRaw:3});
         return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}

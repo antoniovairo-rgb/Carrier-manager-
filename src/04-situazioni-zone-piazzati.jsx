@@ -880,6 +880,8 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
+  if(!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PASS221))&&!/^(difesa|rigore)$/.test(tipo||'')&&!scelte.some(t=>t.rew==='assist')){/* [7.999.156 PO-221, decisione PO 09/10] ogni scena offensiva offre almeno un'opzione di passaggio/assist: la piu' pesante disponibile prende il posto dell'ultima scelta (nessun sorteggio in piu') */
+    const _c221=REG.filter(t=>t.rew==='assist'&&t.w(c)>0&&scelte.indexOf(t)<0).sort((a,b)=>b.w(c)-a.w(c));if(_c221.length)scelte[scelte.length-1]=_c221[0];}
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
   if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
