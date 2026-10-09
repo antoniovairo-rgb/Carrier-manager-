@@ -215,3 +215,8 @@ Dettagli G aggiuntivi: 10 carriere dall'interfaccia + 29 sintetiche; 6 fino al r
 
 **Condizioni di Codex per l'approvazione di G:** chiarire la presenza al «non convocato», la quota reale di partenze da titolare, gli effetti reali delle scelte evento non provate singolarmente.
 **Stato per il team:** collaudi A–G **conclusi come esecuzione**; nessuna zona promossa ad «approvata» da questo rapporto; zona G **ferma** finche' il PO non la riapre.
+
+## 09/10/2026 (sera) — Nuovo incarico a Codex su 7.999.155 (L1)
+
+Prompt: `docs/governo/prompt/codex-2026-10-09-collaudi-7999155.md`, base `837d3272` (7.999.155). Zone: H PO-219 (nomi in scena), I PO-218 (esito coerente), L PO-209 (intestazione «FC Laguna» col prestito), M PO-048 (inquadratura #3/#38/#64/#74 ripetuta sulla build attuale), N riserve A (auto216) ed E (PO-176) del rapporto A–G.
+Per regola, finché Codex collauda queste voci il team non le fa avanzare; restano al team PO-220, PO-221, PO-022 (8b), PO-068, PO-123. Zona G ferma.
