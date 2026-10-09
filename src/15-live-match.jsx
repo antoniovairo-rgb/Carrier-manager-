@@ -2536,7 +2536,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(sit.intent==="penalty"&&handleRigoreRef.current){const _dd=["tl","tc","tr","bl","bc","br"];handleRigoreRef.current(_dd[Math.floor(_ar()*6)%6]);return;}
           if(!sit.actions||!sit.actions.length)return;
           const pol=o.policy||"seeded",n=sit.actions.length;
-          const k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;
+          let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */
           if(handleActionRef.current)handleActionRef.current(sit.actions[Math.max(0,Math.min(n-1,k))]);
         }
       }catch(_e){}},(o.tickMs|0)||350);
