@@ -1269,6 +1269,8 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       /* [23/09 POC — punto 3] la FAMIGLIA del gesto della scena (scelta dal giocatore) entra negli eventi: il tiro porta la sua
          intenzione (testa/volee/rigore/punizione), il dribbling e' una conduzione, un passaggio riuscito ha la sua ricezione. */
       const fam=d.tipo||'',vr=d.variante||'';
+      const _ok218=!(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITI218)?(d.outKind||null):null;
+      const _fam218=!_ok218?null:(_ok218==='saved'||_ok218==='save')?'saved':_ok218==='post'?'post':(_ok218==='blocked'||_ok218==='wall_blocked')?'blocked':(_ok218==='fouled'||_ok218==='win_freekick')?'foul':(/^(wide|out|overhit|missed|deflected_out|shielded_out|lost|stopped)$/.test(_ok218))?'fuori':null;
       if(!d.intent)d.intent=(fam==='header'||/header/.test(vr))?'header':fam==='penalty'?'penalty':fam==='freekick'?'freekick':/volley/.test(vr)?'volley':null;
       /* [23/09 POC — punto 3, v2] PRIMA IL GESTO SCELTO, POI LE CONSEGUENZE. Misurato (scena-gesti): l'eroe passava la palla in
          scena mentre il brain registrava un tiro, perche' gli eventi seguivano solo l'ESITO. Ora: 1) il gesto dell'eroe secondo la
@@ -1285,7 +1287,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});/* il portiere reagisce se il pallone passa entro 12 unita' dal centro porta */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
       if(famPass){
         E(fam==='cross'?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
-        if(!ok&&key==='intercept'&&D)E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        if(!ok&&key==='intercept'&&D&&_fam218!=='fuori')E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* [7.999.154 PO-218] un passaggio fuori misura non e' un intercetto */
         else if(!ok&&fam==='cross'&&D)E('spazzata',{chi:chi(D),corner:false});
         if(ok&&R){if(!(key==='assist'||key==='goal'))E('ricezione',{chi:chi(R),da:chi(H)});/* chi conclude di prima non controlla: niente ricezione */
           if(key==='assist'||key==='goal'){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),intent:fam==='cross'?'header':null,to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
@@ -1303,8 +1305,6 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
            decide il dettaglio dell'errore (outKind: parata, palo, murato, fuori, fallo subito) e da li' derivano 3D e riquadro, mentre qui il
            tiro sbagliato era SEMPRE «fuori» e il fallo subito un contrasto perso. Ora il motore riceve outKind e racconta lo stesso fatto.
            Rosso __CPM_NO_ESITI218. */
-        const _ok218=!(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITI218)?(d.outKind||null):null;
-        const _fam218=!_ok218?null:(_ok218==='saved'||_ok218==='save')?'saved':_ok218==='post'?'post':(_ok218==='blocked'||_ok218==='wall_blocked')?'blocked':(_ok218==='fouled'||_ok218==='win_freekick')?'foul':(/^(wide|out|overhit|missed|deflected_out|shielded_out|lost|stopped)$/.test(_ok218))?'fuori':null;
         if(!ok&&_fam218==='foul'&&(key==='intercept'||key==='through'||key==='miss')){E('fallo',{chi:D?chi(D):null,su:chi(H),per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}/* il fallo subito e' un fallo, non un contrasto perso */
         else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{modo:modo(D),chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
         else if(!ok&&key==='intercept'&&(_fam218==='saved'||_fam218==='post'||_fam218==='fuori')){const es=_fam218;tiroEroe(es);if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(es==='post')E('palo',{chi:chi(H)});}

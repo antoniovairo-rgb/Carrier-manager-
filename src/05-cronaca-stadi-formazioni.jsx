@@ -360,6 +360,8 @@ const _MISS_OVL={
   foul:["Conquista una punizione","Subisce il fallo","Guadagna un calcio piazzato","Steso — punizione"],
   offside:["In fuorigioco!","La bandierina è alzata","Oltre la linea — offside","Fuorigioco di un soffio"],
 };
+const _MISS_OVL_PASS={wide:["Passaggio fuori misura","Palla troppo lunga","Il compagno non ci arriva"],blocked:["Passaggio respinto","Il difensore si mette in mezzo"],saved:["Il portiere esce e la prende","Anticipato dal portiere"]};/* [7.999.154 PO-218] */
+const _MISS_TX_PASS={wide:["💨 Passaggio fuori misura: il compagno non ci arriva.","😬 Palla troppo lunga, finisce fuori."],blocked:["🧱 Il difensore si mette in mezzo e respinge il passaggio."],saved:["🧤 Il portiere esce e fa sua la palla."],intercepted:["✂️ L'avversario legge la giocata e intercetta.","✂️ Passaggio intercettato."]};/* [7.999.154 PO-218] */
 const _MISS_TX={
   post:["😤 Palo! Fortuna avversaria.","😖 Il legno respinge la conclusione.","😤 Palo pieno — che sfortuna."],
   saved:["😔 Para il portiere.","❌ Tiro debole, para comodo.","😔 Tiro centrale — parata facile.","🧤 Il portiere si distende e respinge."],/* [7.999.154 PO-218] «devia in corner» e' la famiglia corner, non la parata */
@@ -426,7 +428,8 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
   //   "miss_easy"): prima un cross deviato in ANGOLO con fail:"intercept" mostrava «Passaggio intercettato»
   //   mentre 3D+box-score raccontavano il corner — il layer M1 era di fatto ristretto a key==="miss".
   const _nk=_c70?null:(cat==="miss"||(!ok&&(cat==="pass_fail"||cat==="def_fail"||cat==="dribble_fail"||cat==="miss_big")))?_missKindNorm(outKind):null;
-  const pool=(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
+  const _pas218=!(typeof window!=='undefined'&&window.__CPM_NO_ESITI218)&&cat==="pass_fail"&&_nk&&_MISS_OVL_PASS[_nk];/* [7.999.154 PO-218] un passaggio sbagliato si racconta da passaggio: stessa famiglia (la coerenza col 3D resta), parole sue */
+  const pool=_pas218?_MISS_OVL_PASS[_nk]:(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
   const i=(((seed|0)%pool.length)+pool.length)%pool.length;
   const good=["goal","assist","chance","pass","cross","dribble","recovery","tackle","save_hero"];
   // [7.136.0 collaudo PO «ogni messaggio esito azione deve avere la sua iconcina, come la catena, il gol ecc.»]
