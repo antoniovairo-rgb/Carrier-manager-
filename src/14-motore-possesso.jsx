@@ -412,6 +412,7 @@ function creaMotorePossesso(cfg){
     if(P.eroe&&intent!=='penalty'&&intent!=='freekick'&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TAL202)){
       const _k=(typeof window!=='undefined'&&window&&window.__CPM_TAL202_K!=null)?+window.__CPM_TAL202_K:TAL202_K;const _o=+((cfg.eroe&&cfg.eroe.ovr)||70);
       xg=clamp(xg*(1+_k*Math.max(0,_o-60)/40),0.005,0.9);}
+    if(ctx&&ctx.res221&&ctx.res221!==1)xg=clamp(xg*ctx.res221,0.005,0.9);/* [7.999.156 PO-221] resa del tiro nelle SCENE dell'eroe (solo giocaScena, non la simulazione rapida) */
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
@@ -1398,7 +1399,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const giocaScena=(o)=>{try{if(!V2)return null;o=o||{};const H=g[HERO];if(!H)return null;const st=o.stats||{};const A=(k)=>clamp(+st[k]||60,30,99);
     const x=clamp(+o.x||60,0,100),y=clamp(+o.y||50,0,100);const x0=H.x,y0=H.y;H.x=x;H.y=y;
     try{const press=pressioneSu(H);const intent=o.intent||(o.fam==='tiro'?'shot':null);
-      if(o.fam==='tiro'){const es=esitoTiroV2(H,intent,{pressRaw:press});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
+      if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.4):1;/* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
         const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
         if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
