@@ -196,3 +196,22 @@ Riportato dal PO in chat il 09/10. Codex: «chiusura del lavoro di verifica, non
 - **Eventi:** 99 dei 106 impulsi comparsi nel campione, tutti con almeno un effetto di stato; un clic reale verificato (fatica 13→28, forma 70→77, applicato una volta); seguito sponsor→shooting in 39/39 carriere. Non confermato che l'effetto di ogni impulso sia visibile al giocatore.
 - **Ancora non verificati:** fase internazionale naturale senza flag di simulazione; portiere non selezionabile nella creazione normale.
 - **Stato per il team:** zona G **resta NON CHIUSA e ferma**. I due fatti sono riprodotti da Codex ma **non ancora dal team**: restano ipotesi nel registro (PO-222, PO-223) finche' non li riproduco sul codice attuale, e non si toccano finche' la zona G e' congelata.
+
+### Rapporto finale A–G (Codex, 09/10 sera) — esiti per zona
+
+Codex: «non equivale ad approvare tutte le funzioni del gioco». Prove sui commit fissati per ciascun giro; nessun file del gioco modificato o pubblicato.
+
+| Zona | Base | Esito riportato da Codex | Lettura per il team |
+|---|---|---|---|
+| A — tabellone, tabellino, gol del motore | 7.999.143 | nessun nuovo disallineamento confermato nel campione | la prova artificiale della nota auto216 **non vale** finche' non si dimostra che l'iniezione e' scattata |
+| B — camera negli highlight | 7.999.143 | scena #3: punto dei piedi fuori quadro 20/717 fotogrammi | da solo non prova la sagoma tagliata; banco ≠ telefono |
+| C — fisarmoniche post-partita | 360/375/412 px | nessun difetto riproducibile sufficiente a bloccare | — |
+| D — piedi nell'esultanza | 7.999.143 | nessun affondamento/volo riproducibile (salto distinto da appoggio) | risultato di banco, non telefono |
+| E — ricaricamento carriera (PO-176) | 7.999.145, 11 cicli | 0 errori di pagina; 5 cicli con valori cambiati | il conteggio delle differenze non prova una perdita: va letto **campo per campo** |
+| F — partita interrotta (PO-183) | 7.999.145, 12 casi | nessuna riproposta di partita gia' registrata nei casi completati | — |
+| G — sistemi di carriera (PO-153–157) | 7.999.148, 39×10 | campione completo; **anomalia presenze riprodotta** (PO-222); limiti di misura | **non supera l'approvazione funzionale piena** |
+
+Dettagli G aggiuntivi: 10 carriere dall'interfaccia + 29 sintetiche; 6 fino al ritiro (2 deboli, 2 medie, 2 forti); 0 errori JS, 0 scarti GF/GS. Scelte d'intervista (20 coppie): effetto immediato sulla fiducia, effetti a due stagioni non sempre dello stesso segno. Economia (5 coppie): il ramo staff/accademia/investimenti finisce con meno denaro e talvolta OVR piu' alto, non in modo uniforme; indicatore d'investimento: €100.000 → €155.000 contro €100.000 (verifica l'indicatore, non le tre scelte dall'interfaccia, PO-223). Presenze: «non convocato» prima della gara, poi presenze 0→1 e storico 0→1 dopo la partita simulata, senza errori JS (PO-222). Nazionale: il flag `__CPM_SIM_NAT=1` cambia l'avanzamento di una fase; frequenza ed effetto nel percorso naturale non confermabili. Portiere: controlli sintetici, non provano che sia selezionabile o giocabile.
+
+**Condizioni di Codex per l'approvazione di G:** chiarire la presenza al «non convocato», la quota reale di partenze da titolare, gli effetti reali delle scelte evento non provate singolarmente.
+**Stato per il team:** collaudi A–G **conclusi come esecuzione**; nessuna zona promossa ad «approvata» da questo rapporto; zona G **ferma** finche' il PO non la riapre.
