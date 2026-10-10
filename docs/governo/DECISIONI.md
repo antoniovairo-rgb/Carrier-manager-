@@ -209,3 +209,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Dove:** sito (GitHub Pages, main). «Pubblicare» = consolidare main con L1 chiuso, catene verdi, controllo copyright a zero, versione dichiarata stabile.
 - **L1:** **tutte e 8 le voci restano in L1** (PO-022 strato 8b, PO-048, PO-068 P2/P3, PO-123, PO-209, PO-218, PO-220, PO-221). Rischio di sforare dichiarato al PO.
 - **Sessioni:** +2. Una sessione **rilascio** (copyright, build offline e sua verifica, regressione su carriere lunghe, lista dei bloccanti) e una seconda **collaudatrice** sulle partite vere (PO-220, PO-221 su campioni grandi).
+
+## 10/10 notte — questionario: guardiano nomi-219 e priorità L1
+- **nomi-219:** tolta la soglia assoluta del rosso (<70%), tarata su una sola corsa (43%). Al rilascio 7.999.157 il rosso è stato 75% contro il 100% del verde. La prova del rosso resta il distacco di almeno 20 punti; la soglia del verde non cambia. Catena completa rifatta da capo.
+- **Dopo la promozione della 7.999.157:** prima voce di L1 è **PO-221, punizioni** (1,58 a partita nonostante il tetto di 1; scene 8,6 contro l'obiettivo di 5-7).

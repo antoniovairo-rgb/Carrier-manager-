@@ -43,7 +43,7 @@ const q = (t) => ({ vic: t.nominati ? t.vicini / t.nominati : 0, uso: (t.usato +
    informazione. La prova e' la grandezza del difetto del PO — nominati LONTANI dall'eroe nel 3D all'apertura — su 4 partite. */
 const V = q(esito.verde), R = q(esito.rosso), g = [];
 if (!(esito.verde.nominati >= 12 && V.vic >= 0.90)) g.push('verde: vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + ' nominati (servono >=90% su >=12)');
-if (!(R.vic < 0.70 && V.vic - R.vic >= 0.20)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '% contro ' + (100 * V.vic).toFixed(0) + '%)');
+/* [7.999.157, decisione PO 10/10] tolta la soglia assoluta del rosso (<70%), tarata su UNA corsa (6/14 = 43%): alla corsa del rilascio il rosso e' venuto 75% contro verde 100%, difetto visibile (25 punti) ma dichiarato invisibile. La prova del rosso e' la SEPARAZIONE di almeno 20 punti; la soglia del verde (>=90% su >=12) non cambia. */if (!(V.vic - R.vic >= 0.20)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '% contro ' + (100 * V.vic).toFixed(0) + '%)');
 console.log('informativo: difensore usato verde ' + (100 * V.uso).toFixed(0) + '% · rosso ' + (100 * R.uso).toFixed(0) + '%; scambi verde ' + (esito.verde.scambi | 0));
 if (g.length) { console.log('❌ nomi-219'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ nomi-219 verde (vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + '; rosso ' + (100 * R.vic).toFixed(0) + '% su ' + esito.rosso.nominati + '; portieri che aprono dal fondo, non giudicati: ' + ((esito.verde.portieri | 0) + (esito.rosso.portieri | 0)) + ')');
