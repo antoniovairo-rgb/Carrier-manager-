@@ -257,3 +257,17 @@ Riportato dal PO in chat.
 - Gol dell'eroe **0,69** a partita (25 su 36): dentro 0,6-0,9. Assist **0,28** a partita (10), contro 0,08 della mia misura su 7.999.156.
 - Scene di tipo punizione: 57 su 36 partite (1,58 a partita; 14 partite con 2 o più), nonostante il tetto «1 punizione diretta». Ipotesi da verificare: il tetto `punz221` conta solo le punizioni aperte dal ramo origine (`src/15-live-match.jsx:5440`), mentre le altre arrivano da percorsi diversi (19 sono «Palla in area», cioè punizioni indirette). Non posso confermarlo finché non lo misuro per percorso.
 - **10/10 ore 17:35 — controllo orario.** Collaudatrice ferma dopo il giro 2 e sviluppatrice ferma con una catena a 2 passi rossi e push trattenuto (lavoro non pubblicato perso). Archiviate e ricreate: collaudatrice `session_01LjarJjEanVUqzi7LhPhUgJ` (zona Q sugli impulsi col varco `apriImpulso` della 7.999.157, dal ramo principale in una cartella separata; poi residuo S «2 gol» contro «Gol 1»), sviluppatrice `session_01WeyJoaMDGcNSWFe5aLXY1g` (rebase su main, PO-066 e ingresso in campo con foto prima/dopo, catena grafica, regola sui passi rossi: due rilanci da soli prima di fermarsi).
+
+## 10/10/2026 (notte) — Codex, coda finale: esiti sulla 7.999.156 (base `2adc96ad`)
+Riportato dal PO in chat. Nessuna modifica al gioco, commit o push.
+- **Chiuse sul campione:**
+  - **R** — home e analisi pre-partita a 360, 375 e 412 px.
+  - **L** — 3 tabellini col club del prestito corretto.
+  - **M** — 12 ricollaudi della camera, difetti non riprodotti nei fotogrammi acquisiti.
+  - **N/A** — `auto216` rileva il disallineamento iniettato, verificato.
+  - **N/E** — 5 ricariche: istantanea del giocatore invariata 5/5, differenze del salvataggio classificate.
+- **I2 (PO-218) — aperta.** 46 esiti non riusciti con 6 immagini ciascuno; **riprodotte le tre discordanze «fuorigioco» contro «intercetto» nel motore**. Mancano un cross vero nel campione e il confronto completo caso per caso di riquadro, cronaca, motore e 3D.
+- **P (PO-222) — aperta.** In 3 prove controllate la schermata dice «Non convocato» ma la presenza cresce dopo la simulazione (3/3). Sono varianti sintetiche dello stesso salvataggio: manca la misura su 30 partite di carriere diverse.
+- **T2 (PO-221) — non avviata**, in attesa del commit della 7.999.157 su main.
+- Dati grezzi sul banco Codex: `l1-i2.json`, `l1-p-probe.json`, `l1-r-visual.json`, `l1-loan-games-156.json`, `l1-camera-m-156.json`, `l1-auto216-156.json`, `l1-n-reload-156.json`.
+- **Lettura del team:** restano risultati del banco Codex finché non li riproduco. La discordanza «fuorigioco» contro «intercetto», ormai riprodotta due volte da Codex, è il primo punto di PO-218 da riprodurre sulla mia build.

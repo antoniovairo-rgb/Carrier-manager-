@@ -1,5 +1,178 @@
 [
  {
+  "data": "2026-10-10 18:07",
+  "versione": "7.999.157",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 64
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 769
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 83
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 62
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 561
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 397
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 201
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 508
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 350
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 611
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 433
+   },
+   {
+    "passo": "tempo-138",
+    "ok": false,
+    "s": 557,
+    "coda": "rosso {\"fase\":\"ceremony\",\"pagato\":244,\"residuo\":58,\"aperto\":330} | ❌ tempo-138 |   · verde: debito non saldato al fischio {\"fase\":\"ceremony\",\"pagato\":316,\"residuo\":14,\"aperto\":330}"
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 544
+   }
+  ]
+ },
+ {
   "data": "2026-10-10 11:48",
   "versione": "7.999.156",
   "catena": "completa",
@@ -6454,58 +6627,6 @@
     "passo": "ripartenza-207",
     "ok": true,
     "s": 713
-   }
-  ]
- },
- {
-  "data": "2026-10-04 18:07",
-  "versione": "7.999.131",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 752
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 902
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 523
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
