@@ -1,0 +1,2986 @@
+[
+ {
+  "id": "wi_docufilm",
+  "cat": "opportunità",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎬 Accetto — mi racconto",
+    "ef": {
+     "popularity": 8,
+     "fatigue": 5,
+     "coachTrust": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚪 No grazie, prima il campo",
+    "ef": {
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_asta_maglia",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "❤️ Aggiungo gli scarpini autografati",
+    "ef": {
+     "popularity": 9,
+     "morale": 5,
+     "bank": -5000
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "👕 Va bene la maglia",
+    "ef": {
+     "popularity": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_dieta_ferrea",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥗 La seguo alla lettera",
+    "ef": {
+     "form": 5,
+     "morale": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🍕 Uno sgarro me lo concedo",
+    "ef": {
+     "morale": 4,
+     "form": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ex_compagno_cena",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🍽 Ci vado — l'amicizia viene prima",
+    "ef": {
+     "morale": 5,
+     "coachTrust": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📵 Rimandiamo a dopo la partita",
+    "ef": {
+     "coachTrust": 3,
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_torneo_padel",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎾 Gioco per vincere",
+    "ef": {
+     "chem": 7,
+     "fatigue": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🛋 Tifo dal divano",
+    "ef": {
+     "fatigue": -5,
+     "chem": -3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_biografia",
+  "cat": "opportunità",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📖 Firmo il contratto",
+    "ef": {
+     "bank": 20000,
+     "popularity": 6,
+     "coachTrust": -4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⌛ È troppo presto",
+    "ef": {
+     "coachTrust": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_murale",
+  "cat": "scelta",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎨 Vado di persona",
+    "ef": {
+     "popularity": 8,
+     "morale": 6,
+     "fatigue": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙏 Ringrazio con un video",
+    "ef": {
+     "popularity": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_extra_portieri",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥅 Resto e calcio finché fa buio",
+    "ef": {
+     "form": 6,
+     "fatigue": 7,
+     "coachTrust": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⏱ Oggi ho già dato tutto",
+    "ef": {
+     "fatigue": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_influencer",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📱 Porte aperte",
+    "ef": {
+     "popularity": 10,
+     "coachTrust": -6,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚫 Il centro sportivo è sacro",
+    "ef": {
+     "coachTrust": 4,
+     "popularity": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ospedale",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🏥 Ci vado con i regali",
+    "ef": {
+     "morale": 8,
+     "popularity": 6,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "💸 Dono in silenzio",
+    "ef": {
+     "bank": -10000,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_recupero_hitech",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "❄️ Ci vivo dentro",
+    "ef": {
+     "fatigue": -8,
+     "form": 3,
+     "chem": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "👥 Preferisco stare col gruppo",
+    "ef": {
+     "chem": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_carita_anonima",
+  "cat": "conseguenza",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📰 Che esca pure",
+    "ef": {
+     "popularity": 8,
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤫 Resti anonima, o niente",
+    "ef": {
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_sponsor_pers",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💰 Firmo — è il mio momento",
+    "ef": {
+     "bank": 35000,
+     "popularity": 8,
+     "coachTrust": -6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙏 Rifiuto con eleganza",
+    "ef": {
+     "coachTrust": 6,
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_cena_squadra",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🍝 Ci vado — il gruppo conta",
+    "ef": {
+     "chem": 8,
+     "morale": 6,
+     "fatigue": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🛌 Salto — devo recuperare",
+    "ef": {
+     "fatigue": -6,
+     "chem": -4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_investimento",
+  "cat": "conseguenza",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📈 Investo metà del conto",
+    "ef": {
+     "bank": -40000,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": "investment"
+   },
+   {
+    "txt": "🏦 Tengo i soldi fermi",
+    "ef": {
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_beneficenza",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "❤️ Lo pago io",
+    "ef": {
+     "bank": -25000,
+     "popularity": 12,
+     "morale": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤝 Partecipo solo all'evento",
+    "ef": {
+     "popularity": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_procuratore_push",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📰 Dagli il via libera",
+    "ef": {
+     "value": 0.25,
+     "popularity": 6,
+     "coachTrust": -8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "✋ Fermalo — non è il momento",
+    "ef": {
+     "coachTrust": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_giovane_aiuto",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎓 Resto un'ora con lui",
+    "ef": {
+     "chem": 6,
+     "coachTrust": 5,
+     "fatigue": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⏱ Non oggi",
+    "ef": {
+     "fatigue": -2,
+     "chem": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_intervista_scomoda",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Dico quello che penso",
+    "ef": {
+     "popularity": 9,
+     "coachTrust": -10,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧊 Glissa con diplomazia",
+    "ef": {
+     "coachTrust": 5,
+     "popularity": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_personal_chef",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥗 Lo assumo",
+    "ef": {
+     "bank": -15000,
+     "fatigue": -10,
+     "form": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🍕 Sto bene così",
+    "ef": {},
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_famiglia_visita",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "👨‍👩‍👦 Li ospito — le radici contano",
+    "ef": {
+     "morale": 12,
+     "fatigue": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📅 Rimandiamo di un mese",
+    "ef": {
+     "morale": -4,
+     "fatigue": -3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_scommessa_social",
+  "cat": "conseguenza",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "😂 Ci sto — ridiamoci su",
+    "ef": {
+     "bank": 18000,
+     "popularity": 10,
+     "coachTrust": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚫 Preferisco il basso profilo",
+    "ef": {
+     "coachTrust": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_compagno_lite",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🕊 Faccio da paciere stasera",
+    "ef": {
+     "chem": 10,
+     "coachTrust": 6,
+     "fatigue": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙈 Non mi immischio",
+    "ef": {
+     "chem": -5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_busta",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "📸 Foto alla busta, dritta in famiglia",
+    "ef": {
+     "morale": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏦 Da parte, testa bassa: è solo l'inizio",
+    "ef": {
+     "morale": 3,
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_canzone",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🎤 Salgo e canto: playlist della nonna, senza vergogna",
+    "ef": {
+     "morale": 7,
+     "chem": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙈 Stono apposta per farla finire prima",
+    "ef": {
+     "chem": 3,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_autografo",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "😂 Firmo con dedica: «Al mio primo tifoso per sbaglio»",
+    "ef": {
+     "morale": 6,
+     "popularity": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😤 Un giorno la fila la farà per me",
+    "ef": {
+     "form": 2,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_bar",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🥹 Passo a firmare la cornice di persona",
+    "ef": {
+     "popularity": 4,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "☕ Caffè pagato per tutti, una volta sola",
+    "ef": {
+     "popularity": 5,
+     "bank": -1500,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_prof",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "📚 Studio nei ritiri — promesso davvero",
+    "ef": {
+     "morale": 4,
+     "fatigue": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⚽ Il campo è la mia scuola adesso, prof",
+    "ef": {
+     "form": 3,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_es_muretto",
+  "cat": "esordio",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "⚽ Glielo lascio: è cominciato tutto lì",
+    "ef": {
+     "morale": 6,
+     "popularity": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🛒 Ne porto uno NUOVO per tutti, domani",
+    "ef": {
+     "bank": -1000,
+     "popularity": 5,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_firma",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "✒️ Gliela chiedo in regalo: va in cornice",
+    "ef": {
+     "morale": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧊 Conta la firma, non la penna",
+    "ef": {
+     "form": 2,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_armadietto",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🥹 Resta attaccato lì per tutta la mia carriera",
+    "ef": {
+     "morale": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🖼️ Lo faccio incorniciare per il museo del club",
+    "ef": {
+     "popularity": 4,
+     "chem": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_procuratore",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🧊 Non ora: al primo anno parla il campo",
+    "ef": {
+     "coachTrust": 4,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📇 Prendo il biglietto — mai dire mai",
+    "ef": {
+     "popularity": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_store",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🛍️ Due: una per me e una per mamma",
+    "ef": {
+     "bank": -3000,
+     "morale": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😎 Chiedo al commesso se vende: «benino», dice",
+    "ef": {
+     "popularity": 3,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_regola",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "🥐 Giovedì: cornetti per tutti, anche il mister",
+    "ef": {
+     "chem": 7,
+     "morale": 3,
+     "bank": -500
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📓 Prendo appunti. Letteralmente.",
+    "ef": {
+     "morale": 4,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pro_battesimo",
+  "cat": "primopro",
+  "once": true,
+  "addio": false,
+  "mile": true,
+  "choices": [
+   {
+    "txt": "😂 Rido più forte di loro: adesso sono dentro",
+    "ef": {
+     "chem": 8,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧊 Recupero tutto in silenzio. Domani mi vendico.",
+    "ef": {
+     "chem": 4,
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_maglia_gk",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "😄 Gliela prometto — e gli firmo anche i guanti",
+    "ef": {
+     "morale": 5,
+     "popularity": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧊 Dopo la partita, come si è sempre fatto",
+    "ef": {
+     "form": 2,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_cambio",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "👏 Accetto: quell'applauso vale una carriera",
+    "ef": {
+     "morale": 8,
+     "coachTrust": 4,
+     "fatigue": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⚔️ Voglio i novanta minuti: mi salutano al fischio finale",
+    "ef": {
+     "form": 4,
+     "coachTrust": -2,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_scarpini",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥹 Autorizzato — e la teca la firmiamo insieme",
+    "ef": {
+     "morale": 6,
+     "chem": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😅 Solo se ci mette anche quelli della papera col Rovigo",
+    "ef": {
+     "morale": 5,
+     "popularity": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_docu",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎬 Che sia un bel finale",
+    "ef": {
+     "popularity": 9,
+     "bank": 40000,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚪 L'ultima è mia: niente telecamere nello spogliatoio",
+    "ef": {
+     "morale": 5,
+     "chem": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_capitani",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥂 Rispondo a tutti, uno per uno",
+    "ef": {
+     "morale": 7,
+     "popularity": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤫 Lo riguardo da solo. Dieci volte.",
+    "ef": {
+     "morale": 9
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_addio_bimbi",
+  "cat": "addio",
+  "once": true,
+  "addio": true,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⚽ Un pomeriggio intero, palloni per tutti",
+    "ef": {
+     "morale": 8,
+     "popularity": 6,
+     "fatigue": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📅 Dopo il ritiro avremo tutto il tempo — promesso",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_orologio",
+  "cat": "conseguenza",
+  "once": true,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⌚ Lo compro — rito di passaggio",
+    "ef": {
+     "bank": -30000,
+     "chem": 7,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "💸 Follia — passo",
+    "ef": {
+     "chem": -3,
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_amichevole",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "✅ Ci vado — voglio farmi vedere",
+    "ef": {
+     "popularity": 12,
+     "fatigue": 14,
+     "form": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "❌ Rimango a riposare",
+    "ef": {
+     "fatigue": -10,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_media",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📺 Accetto — è riconoscimento",
+    "ef": {
+     "popularity": 14,
+     "value": 0.08,
+     "fatigue": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⚽ No, preferisco allenarmi",
+    "ef": {
+     "form": 4,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ciclo_forza",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💪 Ciclo completo — massimo impegno",
+    "ef": {
+     "fatigue": 15,
+     "form": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧘 Solo sessione leggera",
+    "ef": {
+     "fatigue": 4,
+     "form": 2,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_riposo",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🏋️ Mi alleno da solo — non mi fermo mai",
+    "ef": {
+     "form": 6,
+     "fatigue": 8,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🌴 Mi riposo davvero",
+    "ef": {
+     "fatigue": -18,
+     "morale": 10
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_tensione_spo",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🤝 Mediate tra i due",
+    "ef": {
+     "coachTrust": 8,
+     "morale": 5,
+     "popularity": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😶 Non ti impicci",
+    "ef": {
+     "morale": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🗣️ Segnali la cosa al mister",
+    "ef": {
+     "coachTrust": 6,
+     "morale": -4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_fan_aggression",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "😤 Rispondi a tono",
+    "ef": {
+     "morale": 5,
+     "popularity": -8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙏 «Scusi, farò meglio»",
+    "ef": {
+     "popularity": 6,
+     "morale": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚶 Vai avanti senza rispondere",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_procuratore",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⏳ Aspettiamo — la pazienza paga",
+    "ef": {
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📢 No, voglio muovermi ora — mettimi in lista",
+    "ef": {
+     "popularity": 4,
+     "coachTrust": -5,
+     "morale": -4,
+     "transferListed": true
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_giovane",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "✅ Certo — è bello trasmettere",
+    "ef": {
+     "morale": 8,
+     "coachTrust": 5,
+     "popularity": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "❌ Non ho tempo per questo",
+    "ef": {
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_intervista_sorpresa",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Dico tutto — la verità libera",
+    "ef": {
+     "popularity": 14,
+     "coachTrust": -6,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤝 Rispondo con diplomazia",
+    "ef": {
+     "popularity": 6,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "❌ Declino",
+    "ef": {
+     "popularity": -3,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_social",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🗑️ Cancello e mi scuso",
+    "ef": {
+     "popularity": -4,
+     "morale": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😏 Lascio stare — era ironico",
+    "ef": {
+     "popularity": 6,
+     "coachTrust": -4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📝 Chiarisco con un comunicato",
+    "ef": {
+     "popularity": 2,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_viaggio",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎮 Ti rilassi con i compagni",
+    "ef": {
+     "morale": 9,
+     "fatigue": -6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📊 Studi il video dell'avversario",
+    "ef": {
+     "form": 5,
+     "coachTrust": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏃 Fai un allenamento extra in palestra",
+    "ef": {
+     "form": 4,
+     "fatigue": 6
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_sogno",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Cavalco l'onda — oggi è un gran giorno",
+    "ef": {
+     "morale": 10,
+     "form": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Era solo un sogno. Al lavoro.",
+    "ef": {
+     "form": 2,
+     "fatigue": -4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ex_club",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "❤️ «Sì, ma sono felice qui»",
+    "ef": {
+     "morale": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 «È il calcio. Si va avanti»",
+    "ef": {
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😔 «Onestamente, un po' sì»",
+    "ef": {
+     "morale": -4,
+     "popularity": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_staff",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🧪 Lo provo — sono curioso",
+    "ef": {
+     "fatigue": -14,
+     "form": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Resto al metodo classico",
+    "ef": {
+     "fatigue": -6
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_capitano_sfida",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎯 Accetto — e do il massimo",
+    "ef": {
+     "form": 6,
+     "popularity": 7,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚶 Non mi interessa",
+    "ef": {
+     "form": 1,
+     "morale": -3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_insonnia",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📱 Guardi video motivazionali fino all'alba",
+    "ef": {
+     "morale": 6,
+     "fatigue": 10
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧘 Rispiri, lasci andare, dormi",
+    "ef": {
+     "morale": 4,
+     "fatigue": -5,
+     "form": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_tifosi",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📸 Mi fermo 20 minuti con loro",
+    "ef": {
+     "popularity": 12,
+     "morale": 7,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚗 Sorrido e saluto di corsa",
+    "ef": {
+     "popularity": 4,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_sponsor",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "✅ Firmo — è riconoscimento",
+    "ef": {
+     "popularity": 9,
+     "value": 0.05,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⏳ Aspetto qualcosa di più grande",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_polemica",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💪 La prendo come motivazione",
+    "ef": {
+     "morale": 5,
+     "form": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😤 Mi incazzo — e si vede",
+    "ef": {
+     "morale": -4,
+     "popularity": -6,
+     "coachTrust": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😶 Silenzio stampa totale",
+    "ef": {
+     "popularity": -3,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ct_radar",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Mi supero — voglio essere visto",
+    "ef": {
+     "form": 8,
+     "coachTrust": 4,
+     "fatigue": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Mi alleno normalmente",
+    "ef": {
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_giornalista_mercato",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🤐 Resto focalizzato sulla squadra",
+    "ef": {
+     "coachTrust": 6,
+     "popularity": 3,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📢 Ammetto che ci sto pensando",
+    "ef": {
+     "coachTrust": -8,
+     "popularity": 7,
+     "morale": -4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😏 Dico che decido a fine stagione",
+    "ef": {
+     "coachTrust": -2,
+     "popularity": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_vice_infortunato",
+  "cat": "leadership",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💪 Prendo le responsabilità — sono pronto",
+    "ef": {
+     "coachTrust": 10,
+     "morale": 6,
+     "fatigue": 5,
+     "form": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Faccio il mio — nient'altro",
+    "ef": {
+     "coachTrust": 2,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_prestito_inverno",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "✅ Vado — ho bisogno di giocare",
+    "ef": {
+     "form": 8,
+     "morale": 9,
+     "coachTrust": -5,
+     "value": 0.06
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "❌ Resto e mi batto qui",
+    "ef": {
+     "coachTrust": 5,
+     "morale": 4,
+     "fatigue": 5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_nazionale_b",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🌍 Vado — mi metto in mostra",
+    "ef": {
+     "popularity": 12,
+     "form": 6,
+     "morale": 10,
+     "fatigue": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏠 Resto con il club — è un momento delicato",
+    "ef": {
+     "coachTrust": 8,
+     "morale": 3,
+     "form": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_podcast",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎙️ Accetto — voglio raccontarmi",
+    "ef": {
+     "popularity": 14,
+     "morale": 7,
+     "value": 0.08
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😶 Sono riservato — preferisco il campo",
+    "ef": {
+     "morale": 4,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_donazione",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💖 Lo faccio — sport e solidarietà",
+    "ef": {
+     "popularity": 10,
+     "morale": 9,
+     "fatigue": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏃 Passo — ho bisogno di recuperare",
+    "ef": {
+     "fatigue": -8,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_fan_speciale",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💛 Mi fermo, parlo con lui, selfie e firma",
+    "ef": {
+     "morale": 14,
+     "popularity": 8,
+     "value": 0.03
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😔 Sono di fretta — un sorriso e via",
+    "ef": {
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_analisi_video",
+  "cat": "formazione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📽️ Lo faccio — ogni dettaglio conta",
+    "ef": {
+     "form": 6,
+     "fatigue": 6,
+     "mentalità": 1,
+     "posizionamento": 1
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😪 Ho già troppe cose in testa",
+    "ef": {
+     "morale": 4,
+     "fatigue": -5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_crioterapia",
+  "cat": "formazione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🧊 Ci provo — tutto per la forma",
+    "ef": {
+     "fatigue": -16,
+     "form": 6,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚿 Preferisco la doccia calda normale",
+    "ef": {
+     "fatigue": -7,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_veterano_allenamento",
+  "cat": "formazione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💪 Accetto subito — esperienza preziosa",
+    "ef": {
+     "form": 7,
+     "coachTrust": 5,
+     "morale": 7,
+     "fatigue": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Ho già il mio programma",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_cena_capitano",
+  "cat": "sociale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🍽️ Ci sono — la squadra prima di tutto",
+    "ef": {
+     "morale": 9,
+     "coachTrust": 5,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏠 Resto a casa — ho bisogno di riposare",
+    "ef": {
+     "fatigue": -8,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_giovani_accademia",
+  "cat": "sociale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "👶 Vado — è un gesto che vale",
+    "ef": {
+     "popularity": 9,
+     "morale": 11,
+     "value": 0.05
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😐 Non è il momento giusto per me",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_campo_bagnato",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⛈️ All'aperto — il vero campo si gioca in tutte le condizioni",
+    "ef": {
+     "fisico": 1,
+     "fatigue": 13,
+     "form": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏋️ Al coperto — tecnica e tattica senza rischi",
+    "ef": {
+     "tecnica": 1,
+     "fatigue": 7,
+     "form": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_sponsor_auto",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🚗 Firmo — è un bel riconoscimento",
+    "ef": {
+     "popularity": 8,
+     "value": 0.08,
+     "morale": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤝 Passo — voglio restare autentico",
+    "ef": {
+     "morale": 5,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_derby_semana",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Mi carico — per questi momenti esisto",
+    "ef": {
+     "form": 8,
+     "morale": 9,
+     "fatigue": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🎯 Resto concentrato e in silenzio",
+    "ef": {
+     "mentalità": 1,
+     "form": 4,
+     "fatigue": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😰 Ammetto di essere un po' teso",
+    "ef": {
+     "mentalità": 1,
+     "coachTrust": 4,
+     "morale": -4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_figlia_mister",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "😊 «È un onore. Gli sarò sempre grato.»",
+    "ef": {
+     "coachTrust": 9,
+     "morale": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😅 Ridi imbarazzato e cambi argomento",
+    "ef": {
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_auto_lusso",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🚗 Accetto — che spettacolo",
+    "ef": {
+     "popularity": 6,
+     "morale": 4,
+     "coachTrust": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚙 Tengo la mia, niente distrazioni",
+    "ef": {
+     "coachTrust": 4,
+     "morale": -1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_polemica_social",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Rispondo per le rime",
+    "ef": {
+     "popularity": 5,
+     "morale": -3,
+     "coachTrust": -4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤐 Ignoro, parlerò in campo",
+    "ef": {
+     "coachTrust": 4,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_scuola_calcio",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⚽ Ci metto faccia e soldi",
+    "ef": {
+     "bank": -30000,
+     "popularity": 9,
+     "morale": 6
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤝 Presto solo il nome",
+    "ef": {
+     "popularity": 3,
+     "bank": 6000
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_giornata_libera",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🏖 Mare col gruppo",
+    "ef": {
+     "chem": 7,
+     "morale": 6,
+     "fatigue": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏋️ Palestra e focus",
+    "ef": {
+     "form": 5,
+     "fatigue": 5,
+     "chem": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_videogioco",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎮 Firmo — sarò un personaggio",
+    "ef": {
+     "bank": 25000,
+     "popularity": 8
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🕹 Chiedo troppo, salta tutto",
+    "ef": {
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_genitori_tribuna",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "✈️ Li porto in tribuna d'onore",
+    "ef": {
+     "bank": -6000,
+     "morale": 9
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "📞 Li sento al telefono, ora no",
+    "ef": {
+     "morale": 2,
+     "fatigue": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_infortunato_posto",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🤝 Parlo col mister: se lo merita",
+    "ef": {
+     "chem": 6,
+     "coachTrust": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "😤 Il posto se lo riprende in campo",
+    "ef": {
+     "coachTrust": 4,
+     "chem": -5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_tv_primaserata",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "📺 Ci vado — occasione unica",
+    "ef": {
+     "popularity": 9,
+     "fatigue": 4,
+     "form": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🛌 Prima la partita, sempre",
+    "ef": {
+     "coachTrust": 4,
+     "popularity": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_cripto",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🚀 Ci punto una fetta",
+    "ef": {
+     "bank": -20000,
+     "morale": 2
+    },
+    "bond": null,
+    "flag": "investment"
+   },
+   {
+    "txt": "🧊 Non è roba per me",
+    "ef": {
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_bimbo_sogno",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💙 Lo invito all'allenamento",
+    "ef": {
+     "morale": 9,
+     "popularity": 5,
+     "fatigue": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🎁 Gli mando maglia e videomessaggio",
+    "ef": {
+     "morale": 4,
+     "bank": -2000
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_mental_coach",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🧘 Ci provo — testa libera",
+    "ef": {
+     "morale": 6,
+     "form": 3,
+     "fatigue": -3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "⚽ Preferisco il campo",
+    "ef": {
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_orologi_squadra",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "⌚ Li prendo per tutti",
+    "ef": {
+     "bank": -22000,
+     "chem": 10,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🍻 Basta una cena insieme",
+    "ef": {
+     "bank": -4000,
+     "chem": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_opinionista",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔥 Rispondo in conferenza",
+    "ef": {
+     "popularity": 3,
+     "coachTrust": -4,
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "💪 Uso la rabbia in campo",
+    "ef": {
+     "form": 4,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_bonus_gol_social",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "💸 Ci sto",
+    "ef": {
+     "bank": 8000,
+     "popularity": 4,
+     "coachTrust": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚫 Niente vetrine sui social",
+    "ef": {
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_casa_citta",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🏠 Compro — è casa mia",
+    "ef": {
+     "bank": -45000,
+     "morale": 6,
+     "popularity": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🔑 Resto in affitto, più libero",
+    "ef": {
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_primo_mister",
+  "cat": "personale",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎓 Ci vado di persona",
+    "ef": {
+     "morale": 7,
+     "fatigue": 4,
+     "chem": 2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "💌 Mando due parole di stima",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_tifoso_fisso",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🤝 Gli dedico cinque minuti",
+    "ef": {
+     "popularity": 5,
+     "morale": 2,
+     "fatigue": 1
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🚗 Passo dritto, ho fretta",
+    "ef": {
+     "morale": -1,
+     "popularity": -2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_esports",
+  "cat": "opportunità",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎮 Divento ambassador",
+    "ef": {
+     "bank": 18000,
+     "popularity": 7
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🧢 Non fa per me",
+    "ef": {
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_compagno_prestito",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🤝 Lo aiuto, senza dirlo a nessuno",
+    "ef": {
+     "bank": -15000,
+     "chem": 9,
+     "morale": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "💬 Gli trovo un consulente serio",
+    "ef": {
+     "chem": 3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_pioggia_scelta",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🌧 Esco a lavorare duro",
+    "ef": {
+     "form": 5,
+     "fatigue": 6,
+     "coachTrust": 4
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏋️ Palestra, niente rischi",
+    "ef": {
+     "fatigue": 2,
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_scommessa_amici",
+  "cat": "tensione",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🚫 Rifiuto netto — è la regola",
+    "ef": {
+     "morale": 3,
+     "coachTrust": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🤫 Solo una piccola, che sarà mai…",
+    "ef": {
+     "morale": -4,
+     "coachTrust": -8,
+     "popularity": -3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_maglia_dieci",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🔟 La prendo — me la merito",
+    "ef": {
+     "morale": 6,
+     "popularity": 5,
+     "form": -1
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🙅 Tengo il mio numero",
+    "ef": {
+     "morale": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_sosta_nazionali",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "😴 Stacco e ricarico",
+    "ef": {
+     "fatigue": -10,
+     "form": -1
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏃 Lavoro sui dettagli",
+    "ef": {
+     "form": 5,
+     "fatigue": 4
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_ristorante_socio",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🍽 Investo e ci metto la faccia",
+    "ef": {
+     "bank": -28000,
+     "popularity": 6
+    },
+    "bond": null,
+    "flag": "investment"
+   },
+   {
+    "txt": "🤔 Troppo rischio adesso",
+    "ef": {
+     "morale": 1
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_dirigente_idolo",
+  "cat": "conseguenza",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "👂 Ascolto la proposta",
+    "ef": {
+     "value": 0.2,
+     "coachTrust": -4,
+     "morale": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🔒 Sono concentrato qui",
+    "ef": {
+     "coachTrust": 5
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_compleanno_tifosi",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎂 Esco a salutarli tutti",
+    "ef": {
+     "popularity": 7,
+     "morale": 6,
+     "fatigue": 3
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🏠 Festeggio in famiglia",
+    "ef": {
+     "morale": 5,
+     "fatigue": -3
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_dieta_brand",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🥦 Accetto e mi adatto",
+    "ef": {
+     "bank": 12000,
+     "form": -2,
+     "morale": -2
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "🍖 Non cambio alimentazione ora",
+    "ef": {
+     "form": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ },
+ {
+  "id": "wi_massaggiatore_addio",
+  "cat": "scelta",
+  "once": false,
+  "addio": false,
+  "mile": false,
+  "choices": [
+   {
+    "txt": "🎉 Organizzo tutto io",
+    "ef": {
+     "bank": -8000,
+     "chem": 8,
+     "morale": 5
+    },
+    "bond": null,
+    "flag": null
+   },
+   {
+    "txt": "👏 Un applauso in spogliatoio",
+    "ef": {
+     "chem": 2
+    },
+    "bond": null,
+    "flag": null
+   }
+  ]
+ }
+]

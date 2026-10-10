@@ -1,0 +1,3531 @@
+[
+ {
+  "pre": {
+   "morale": 70,
+   "fatigue": 30,
+   "form": 70,
+   "popularity": 50,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 5000000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_docufilm",
+  "cat": "opportunità",
+  "k": 0,
+  "txt": "🎬 Accetto — mi racconto",
+  "decl": {
+   "popularity": 8,
+   "fatigue": 5,
+   "coachTrust": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    30,
+    35
+   ],
+   "coachTrust": [
+    60,
+    57
+   ],
+   "popularity": [
+    50,
+    53
+   ]
+  },
+  "newLines": [
+   "⚡",
+   "+5 ⭐+8 🤝-3",
+   "35",
+   "57/100",
+   "53/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 70,
+   "fatigue": 35,
+   "form": 70,
+   "popularity": 53,
+   "coachTrust": 57,
+   "value": 19.76,
+   "bankBalance": 5000000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_docufilm",
+  "cat": "opportunità",
+  "k": 1,
+  "txt": "🚪 No grazie, prima il campo",
+  "decl": {
+   "coachTrust": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    57,
+    60
+   ]
+  },
+  "newLines": [
+   "60/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 70,
+   "fatigue": 35,
+   "form": 70,
+   "popularity": 53,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 5000000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_asta_maglia",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "❤️ Aggiungo gli scarpini autografati",
+  "decl": {
+   "popularity": 9,
+   "morale": 5,
+   "bank": -5000
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    70,
+    75
+   ],
+   "popularity": [
+    53,
+    57
+   ],
+   "bankBalance": [
+    5000000,
+    4995000
+   ]
+  },
+  "newLines": [
+   "75",
+   "57/100",
+   "Offerta di sponsor · Vortex Boots"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 75,
+   "fatigue": 35,
+   "form": 70,
+   "popularity": 57,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_asta_maglia",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "👕 Va bene la maglia",
+  "decl": {
+   "popularity": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    57,
+    58
+   ]
+  },
+  "newLines": [
+   "58/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 75,
+   "fatigue": 35,
+   "form": 70,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_dieta_ferrea",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🥗 La seguo alla lettera",
+  "decl": {
+   "form": 5,
+   "morale": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    70,
+    75
+   ],
+   "morale": [
+    75,
+    72
+   ]
+  },
+  "newLines": [
+   "+3",
+   "72"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 72,
+   "fatigue": 35,
+   "form": 75,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_dieta_ferrea",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "🍕 Uno sgarro me lo concedo",
+  "decl": {
+   "morale": 4,
+   "form": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    75,
+    73
+   ],
+   "morale": [
+    72,
+    76
+   ]
+  },
+  "newLines": [
+   "73",
+   "76"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 76,
+   "fatigue": 35,
+   "form": 73,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_ex_compagno_cena",
+  "cat": "tensione",
+  "k": 0,
+  "txt": "🍽 Ci vado — l'amicizia viene prima",
+  "decl": {
+   "morale": 5,
+   "coachTrust": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    76,
+    81
+   ],
+   "coachTrust": [
+    60,
+    57
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+5 ⭐+9",
+   "81",
+   "57/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 81,
+   "fatigue": 35,
+   "form": 73,
+   "popularity": 58,
+   "coachTrust": 57,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_ex_compagno_cena",
+  "cat": "tensione",
+  "k": 1,
+  "txt": "📵 Rimandiamo a dopo la partita",
+  "decl": {
+   "coachTrust": 3,
+   "morale": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    81,
+    79
+   ],
+   "coachTrust": [
+    57,
+    60
+   ]
+  },
+  "newLines": [
+   "79",
+   "60/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 79,
+   "fatigue": 35,
+   "form": 73,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 60,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_torneo_padel",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🎾 Gioco per vincere",
+  "decl": {
+   "chem": 7,
+   "fatigue": 7
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    35,
+    42
+   ],
+   "teamChemistry": [
+    60,
+    67
+   ]
+  },
+  "newLines": [
+   "+3",
+   "42"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 79,
+   "fatigue": 42,
+   "form": 73,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 67,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_torneo_padel",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "🛋 Tifo dal divano",
+  "decl": {
+   "fatigue": -5,
+   "chem": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    42,
+    37
+   ],
+   "teamChemistry": [
+    67,
+    64
+   ]
+  },
+  "newLines": [
+   "37"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 79,
+   "fatigue": 37,
+   "form": 73,
+   "popularity": 58,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 4995000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_biografia",
+  "cat": "opportunità",
+  "k": 0,
+  "txt": "📖 Firmo il contratto",
+  "decl": {
+   "bank": 20000,
+   "popularity": 6,
+   "coachTrust": -4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    60,
+    56
+   ],
+   "popularity": [
+    58,
+    60
+   ],
+   "bankBalance": [
+    4995000,
+    5015000
+   ]
+  },
+  "newLines": [
+   "😄",
+   "-3 💪+5",
+   "56/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 79,
+   "fatigue": 37,
+   "form": 73,
+   "popularity": 60,
+   "coachTrust": 56,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_biografia",
+  "cat": "opportunità",
+  "k": 1,
+  "txt": "⌛ È troppo presto",
+  "decl": {
+   "coachTrust": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    56,
+    60
+   ]
+  },
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 79,
+   "fatigue": 37,
+   "form": 73,
+   "popularity": 60,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_murale",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🎨 Vado di persona",
+  "decl": {
+   "popularity": 8,
+   "morale": 6,
+   "fatigue": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    79,
+    85
+   ],
+   "fatigue": [
+    37,
+    42
+   ],
+   "popularity": [
+    60,
+    63
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+4 💪-2",
+   "85",
+   "42",
+   "63/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 42,
+   "form": 73,
+   "popularity": 63,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_murale",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "🙏 Ringrazio con un video",
+  "decl": {
+   "popularity": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    63,
+    64
+   ]
+  },
+  "newLines": [
+   "+5 🤝-3",
+   "64/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 42,
+   "form": 73,
+   "popularity": 64,
+   "coachTrust": 60,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_extra_portieri",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🥅 Resto e calcio finché fa buio",
+  "decl": {
+   "form": 6,
+   "fatigue": 7,
+   "coachTrust": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    73,
+    79
+   ],
+   "fatigue": [
+    42,
+    49
+   ],
+   "coachTrust": [
+    60,
+    64
+   ]
+  },
+  "newLines": [
+   "79",
+   "49"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 49,
+   "form": 79,
+   "popularity": 64,
+   "coachTrust": 64,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_extra_portieri",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "⏱ Oggi ho già dato tutto",
+  "decl": {
+   "fatigue": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    49,
+    47
+   ]
+  },
+  "newLines": [
+   "+7",
+   "47"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 47,
+   "form": 79,
+   "popularity": 64,
+   "coachTrust": 64,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_influencer",
+  "cat": "conseguenza",
+  "k": 0,
+  "txt": "📱 Porte aperte",
+  "decl": {
+   "popularity": 10,
+   "coachTrust": -6,
+   "fatigue": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    47,
+    51
+   ],
+   "coachTrust": [
+    64,
+    58
+   ],
+   "popularity": [
+    64,
+    68
+   ]
+  },
+  "newLines": [
+   "51",
+   "58/100",
+   "68/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 51,
+   "form": 79,
+   "popularity": 68,
+   "coachTrust": 58,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_influencer",
+  "cat": "conseguenza",
+  "k": 1,
+  "txt": "🚫 Il centro sportivo è sacro",
+  "decl": {
+   "coachTrust": 4,
+   "popularity": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    58,
+    62
+   ],
+   "popularity": [
+    68,
+    66
+   ]
+  },
+  "newLines": [
+   "+6 🤝-4",
+   "62/100",
+   "66/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 85,
+   "fatigue": 51,
+   "form": 79,
+   "popularity": 66,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_ospedale",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🏥 Ci vado con i regali",
+  "decl": {
+   "morale": 8,
+   "popularity": 6,
+   "fatigue": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    85,
+    93
+   ],
+   "fatigue": [
+    51,
+    55
+   ],
+   "popularity": [
+    66,
+    67
+   ]
+  },
+  "newLines": [
+   "93",
+   "55",
+   "67/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 93,
+   "fatigue": 55,
+   "form": 79,
+   "popularity": 67,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5015000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_ospedale",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "💸 Dono in silenzio",
+  "decl": {
+   "bank": -10000,
+   "morale": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    93,
+    97
+   ],
+   "bankBalance": [
+    5015000,
+    5005000
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+6 ⚡+5 ⭐+8",
+   "97"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 97,
+   "fatigue": 55,
+   "form": 79,
+   "popularity": 67,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5005000,
+   "teamChemistry": 64,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_recupero_hitech",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "❄️ Ci vivo dentro",
+  "decl": {
+   "fatigue": -8,
+   "form": 3,
+   "chem": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    79,
+    82
+   ],
+   "fatigue": [
+    55,
+    47
+   ],
+   "teamChemistry": [
+    64,
+    62
+   ]
+  },
+  "newLines": [
+   "82",
+   "47"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 97,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 67,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5005000,
+   "teamChemistry": 62,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_recupero_hitech",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "👥 Preferisco stare col gruppo",
+  "decl": {
+   "chem": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "teamChemistry": [
+    62,
+    66
+   ]
+  },
+  "newLines": [
+   "+3"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 97,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 67,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5005000,
+   "teamChemistry": 66,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_carita_anonima",
+  "cat": "conseguenza",
+  "k": 0,
+  "txt": "📰 Che esca pure",
+  "decl": {
+   "popularity": 8,
+   "morale": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    97,
+    95
+   ],
+   "popularity": [
+    67,
+    69
+   ]
+  },
+  "newLines": [
+   "95",
+   "69/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 95,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 69,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5005000,
+   "teamChemistry": 66,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_carita_anonima",
+  "cat": "conseguenza",
+  "k": 1,
+  "txt": "🤫 Resti anonima, o niente",
+  "decl": {
+   "morale": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    95,
+    100
+   ]
+  },
+  "newLines": [
+   "⚡",
+   "-2",
+   "100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 69,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5005000,
+   "teamChemistry": 66,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_sponsor_pers",
+  "cat": "opportunità",
+  "k": 0,
+  "txt": "💰 Firmo — è il mio momento",
+  "decl": {
+   "bank": 35000,
+   "popularity": 8,
+   "coachTrust": -6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    62,
+    56
+   ],
+   "popularity": [
+    69,
+    71
+   ],
+   "bankBalance": [
+    5005000,
+    5040000
+   ]
+  },
+  "newLines": [
+   "+4 ⭐+10 🤝-6",
+   "56/100",
+   "71/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 56,
+   "value": 19.76,
+   "bankBalance": 5040000,
+   "teamChemistry": 66,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_sponsor_pers",
+  "cat": "opportunità",
+  "k": 1,
+  "txt": "🙏 Rifiuto con eleganza",
+  "decl": {
+   "coachTrust": 6,
+   "morale": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    100,
+    98
+   ],
+   "coachTrust": [
+    56,
+    62
+   ]
+  },
+  "newLines": [
+   "98",
+   "62/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 98,
+   "fatigue": 47,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5040000,
+   "teamChemistry": 66,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_cena_squadra",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🍝 Ci vado — il gruppo conta",
+  "decl": {
+   "chem": 8,
+   "morale": 6,
+   "fatigue": 8
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    98,
+    100
+   ],
+   "fatigue": [
+    47,
+    55
+   ],
+   "teamChemistry": [
+    66,
+    74
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+8 ⚡+4 ⭐+6",
+   "100",
+   "55"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 55,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5040000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_cena_squadra",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "🛌 Salto — devo recuperare",
+  "decl": {
+   "fatigue": -6,
+   "chem": -4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    55,
+    49
+   ],
+   "teamChemistry": [
+    74,
+    70
+   ]
+  },
+  "newLines": [
+   "49"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5040000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": null
+  },
+  "id": "wi_investimento",
+  "cat": "conseguenza",
+  "k": 0,
+  "txt": "📈 Investo metà del conto",
+  "decl": {
+   "bank": -40000,
+   "morale": 3
+  },
+  "bond": null,
+  "flag": "investment",
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "bankBalance": [
+    5040000,
+    5000000
+   ],
+   "investmentPending": [
+    null,
+    true
+   ]
+  },
+  "newLines": [
+   "💪",
+   "+3 ⚡-8"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5000000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_investimento",
+  "cat": "conseguenza",
+  "k": 1,
+  "txt": "🏦 Tengo i soldi fermi",
+  "decl": {
+   "morale": 1
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 71,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 5000000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_beneficenza",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "❤️ Lo pago io",
+  "decl": {
+   "bank": -25000,
+   "popularity": 12,
+   "morale": 8
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    71,
+    74
+   ],
+   "bankBalance": [
+    5000000,
+    4975000
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+5",
+   "74/100",
+   "Offerta di sponsor · Caffè Milleluci"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 74,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 4975000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_beneficenza",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "🤝 Partecipo solo all'evento",
+  "decl": {
+   "popularity": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    74,
+    75
+   ]
+  },
+  "newLines": [
+   "75/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 75,
+   "coachTrust": 62,
+   "value": 19.76,
+   "bankBalance": 4975000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_procuratore_push",
+  "cat": "tensione",
+  "k": 0,
+  "txt": "📰 Dagli il via libera",
+  "decl": {
+   "value": 0.25,
+   "popularity": 6,
+   "coachTrust": -8
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    62,
+    54
+   ],
+   "popularity": [
+    75,
+    76
+   ],
+   "value": [
+    19.76,
+    20.01
+   ]
+  },
+  "newLines": [
+   "-2 🤝+6",
+   "54/100",
+   "76/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 76,
+   "coachTrust": 54,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_procuratore_push",
+  "cat": "tensione",
+  "k": 1,
+  "txt": "✋ Fermalo — non è il momento",
+  "decl": {
+   "coachTrust": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    54,
+    58
+   ]
+  },
+  "newLines": [
+   "58/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 82,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 70,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_giovane_aiuto",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "🎓 Resto un'ora con lui",
+  "decl": {
+   "chem": 6,
+   "coachTrust": 5,
+   "fatigue": 6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    49,
+    55
+   ],
+   "coachTrust": [
+    58,
+    63
+   ],
+   "teamChemistry": [
+    70,
+    76
+   ]
+  },
+  "newLines": [
+   "-6",
+   "55",
+   "63/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 55,
+   "form": 82,
+   "popularity": 76,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 76,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_giovane_aiuto",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "⏱ Non oggi",
+  "decl": {
+   "fatigue": -2,
+   "chem": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    55,
+    53
+   ],
+   "teamChemistry": [
+    76,
+    74
+   ]
+  },
+  "newLines": [
+   "53"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 82,
+   "popularity": 76,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_intervista_scomoda",
+  "cat": "tensione",
+  "k": 0,
+  "txt": "🔥 Dico quello che penso",
+  "decl": {
+   "popularity": 9,
+   "coachTrust": -10,
+   "morale": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    63,
+    53
+   ],
+   "popularity": [
+    76,
+    78
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+1",
+   "53/100",
+   "78/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 82,
+   "popularity": 78,
+   "coachTrust": 53,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_intervista_scomoda",
+  "cat": "tensione",
+  "k": 1,
+  "txt": "🧊 Glissa con diplomazia",
+  "decl": {
+   "coachTrust": 5,
+   "popularity": -2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    53,
+    58
+   ],
+   "popularity": [
+    78,
+    76
+   ]
+  },
+  "newLines": [
+   "+8 ⭐+12",
+   "58/100",
+   "76/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 82,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4975000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_personal_chef",
+  "cat": "opportunità",
+  "k": 0,
+  "txt": "🥗 Lo assumo",
+  "decl": {
+   "bank": -15000,
+   "fatigue": -10,
+   "form": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    82,
+    85
+   ],
+   "fatigue": [
+    53,
+    43
+   ],
+   "bankBalance": [
+    4975000,
+    4960000
+   ]
+  },
+  "newLines": [
+   "85",
+   "43"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 43,
+   "form": 85,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4960000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_personal_chef",
+  "cat": "opportunità",
+  "k": 1,
+  "txt": "🍕 Sto bene così",
+  "decl": {},
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [
+   "+4"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 43,
+   "form": 85,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4960000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_famiglia_visita",
+  "cat": "scelta",
+  "k": 0,
+  "txt": "👨‍👩‍👦 Li ospito — le radici contano",
+  "decl": {
+   "morale": 12,
+   "fatigue": 6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    43,
+    49
+   ]
+  },
+  "newLines": [
+   "49"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 49,
+   "form": 85,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4960000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_famiglia_visita",
+  "cat": "scelta",
+  "k": 1,
+  "txt": "📅 Rimandiamo di un mese",
+  "decl": {
+   "morale": -4,
+   "fatigue": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    100,
+    96
+   ],
+   "fatigue": [
+    49,
+    46
+   ]
+  },
+  "newLines": [
+   "96",
+   "46"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 96,
+   "fatigue": 46,
+   "form": 85,
+   "popularity": 76,
+   "coachTrust": 58,
+   "value": 20.01,
+   "bankBalance": 4960000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_scommessa_social",
+  "cat": "conseguenza",
+  "k": 0,
+  "txt": "😂 Ci sto — ridiamoci su",
+  "decl": {
+   "bank": 18000,
+   "popularity": 10,
+   "coachTrust": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    58,
+    55
+   ],
+   "popularity": [
+    76,
+    78
+   ],
+   "bankBalance": [
+    4960000,
+    4978000
+   ]
+  },
+  "newLines": [
+   "55/100",
+   "78/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 96,
+   "fatigue": 46,
+   "form": 85,
+   "popularity": 78,
+   "coachTrust": 55,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_scommessa_social",
+  "cat": "conseguenza",
+  "k": 1,
+  "txt": "🚫 Preferisco il basso profilo",
+  "decl": {
+   "coachTrust": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    55,
+    57
+   ]
+  },
+  "newLines": [
+   "⚡",
+   "-2",
+   "57/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 96,
+   "fatigue": 46,
+   "form": 85,
+   "popularity": 78,
+   "coachTrust": 57,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 74,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_compagno_lite",
+  "cat": "tensione",
+  "k": 0,
+  "txt": "🕊 Faccio da paciere stasera",
+  "decl": {
+   "chem": 10,
+   "coachTrust": 6,
+   "fatigue": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    46,
+    51
+   ],
+   "coachTrust": [
+    57,
+    63
+   ],
+   "teamChemistry": [
+    74,
+    84
+   ]
+  },
+  "newLines": [
+   "51",
+   "63/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 96,
+   "fatigue": 51,
+   "form": 85,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 84,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_compagno_lite",
+  "cat": "tensione",
+  "k": 1,
+  "txt": "🙈 Non mi immischio",
+  "decl": {
+   "chem": -5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "teamChemistry": [
+    84,
+    79
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+4 ⭐+9 🤝-10"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 96,
+   "fatigue": 51,
+   "form": 85,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 79,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_busta",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "📸 Foto alla busta, dritta in famiglia",
+  "decl": {
+   "morale": 6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "morale": [
+    96,
+    100
+   ]
+  },
+  "newLines": [
+   "100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 85,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 79,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_busta",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "🏦 Da parte, testa bassa: è solo l'inizio",
+  "decl": {
+   "morale": 3,
+   "form": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    85,
+    87
+   ]
+  },
+  "newLines": [
+   "💪",
+   "+3 ⚡-10",
+   "87"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 87,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 79,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_canzone",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "🎤 Salgo e canto: playlist della nonna, senza vergogna",
+  "decl": {
+   "morale": 7,
+   "chem": 6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "teamChemistry": [
+    79,
+    85
+   ]
+  },
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 87,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 85,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_canzone",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "🙈 Stono apposta per farla finire prima",
+  "decl": {
+   "chem": 3,
+   "morale": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "teamChemistry": [
+    85,
+    88
+   ]
+  },
+  "newLines": [
+   "😄",
+   "-4 ⚡-3"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 87,
+   "popularity": 78,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_autografo",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "😂 Firmo con dedica: «Al mio primo tifoso per sbaglio»",
+  "decl": {
+   "morale": 6,
+   "popularity": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    78,
+    79
+   ]
+  },
+  "newLines": [
+   "79/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 87,
+   "popularity": 79,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_autografo",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "😤 Un giorno la fila la farà per me",
+  "decl": {
+   "form": 2,
+   "morale": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    87,
+    89
+   ]
+  },
+  "newLines": [
+   "+2",
+   "89"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 89,
+   "popularity": 79,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_bar",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "🥹 Passo a firmare la cornice di persona",
+  "decl": {
+   "popularity": 4,
+   "morale": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    79,
+    80
+   ]
+  },
+  "newLines": [
+   "⚡",
+   "+5 🤝+6",
+   "80/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 89,
+   "popularity": 80,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4978000,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_bar",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "☕ Caffè pagato per tutti, una volta sola",
+  "decl": {
+   "popularity": 5,
+   "bank": -1500,
+   "morale": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    80,
+    81
+   ],
+   "bankBalance": [
+    4978000,
+    4976500
+   ]
+  },
+  "newLines": [
+   "81/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 51,
+   "form": 89,
+   "popularity": 81,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4976500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_prof",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "📚 Studio nei ritiri — promesso davvero",
+  "decl": {
+   "morale": 4,
+   "fatigue": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    51,
+    53
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+3 💪+2",
+   "53"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 89,
+   "popularity": 81,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4976500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_prof",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "⚽ Il campo è la mia scuola adesso, prof",
+  "decl": {
+   "form": 3,
+   "morale": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    89,
+    92
+   ]
+  },
+  "newLines": [
+   "92"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 92,
+   "popularity": 81,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4976500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_muretto",
+  "cat": "esordio",
+  "k": 0,
+  "txt": "⚽ Glielo lascio: è cominciato tutto lì",
+  "decl": {
+   "morale": 6,
+   "popularity": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    81,
+    82
+   ]
+  },
+  "newLines": [
+   "+3",
+   "82/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 92,
+   "popularity": 82,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4976500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_es_muretto",
+  "cat": "esordio",
+  "k": 1,
+  "txt": "🛒 Ne porto uno NUOVO per tutti, domani",
+  "decl": {
+   "bank": -1000,
+   "popularity": 5,
+   "morale": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    82,
+    83
+   ],
+   "bankBalance": [
+    4976500,
+    4975500
+   ]
+  },
+  "newLines": [
+   "83/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 92,
+   "popularity": 83,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_firma",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "✒️ Gliela chiedo in regalo: va in cornice",
+  "decl": {
+   "morale": 6
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [
+   "+2 💪+2"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 92,
+   "popularity": 83,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_firma",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "🧊 Conta la firma, non la penna",
+  "decl": {
+   "form": 2,
+   "morale": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    92,
+    94
+   ]
+  },
+  "newLines": [
+   "94"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 83,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_armadietto",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "🥹 Resta attaccato lì per tutta la mia carriera",
+  "decl": {
+   "morale": 7
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [
+   "+3 ⭐+5"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 83,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 88,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_armadietto",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "🖼️ Lo faccio incorniciare per il museo del club",
+  "decl": {
+   "popularity": 4,
+   "chem": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    83,
+    84
+   ],
+   "teamChemistry": [
+    88,
+    91
+   ]
+  },
+  "newLines": [
+   "· 18:18",
+   "84/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 84,
+   "coachTrust": 63,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 91,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_procuratore",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "🧊 Non ora: al primo anno parla il campo",
+  "decl": {
+   "coachTrust": 4,
+   "morale": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    63,
+    67
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+2 💪+3",
+   "67/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 84,
+   "coachTrust": 67,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 91,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_procuratore",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "📇 Prendo il biglietto — mai dire mai",
+  "decl": {
+   "popularity": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    84,
+    85
+   ]
+  },
+  "newLines": [
+   "85/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 85,
+   "coachTrust": 67,
+   "value": 20.01,
+   "bankBalance": 4975500,
+   "teamChemistry": 91,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_store",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "🛍️ Due: una per me e una per mamma",
+  "decl": {
+   "bank": -3000,
+   "morale": 7
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "bankBalance": [
+    4975500,
+    4972500
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+4 ⭐+5"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 85,
+   "coachTrust": 67,
+   "value": 20.01,
+   "bankBalance": 4972500,
+   "teamChemistry": 91,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_store",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "😎 Chiedo al commesso se vende: «benino», dice",
+  "decl": {
+   "popularity": 3,
+   "morale": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    85,
+    86
+   ]
+  },
+  "newLines": [
+   "+6",
+   "86/100",
+   "Offerta di sponsor · Aurea Sportswear"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 86,
+   "coachTrust": 67,
+   "value": 20.01,
+   "bankBalance": 4972500,
+   "teamChemistry": 91,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_regola",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "🥐 Giovedì: cornetti per tutti, anche il mister",
+  "decl": {
+   "chem": 7,
+   "morale": 3,
+   "bank": -500
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "bankBalance": [
+    4972500,
+    4972000
+   ],
+   "teamChemistry": [
+    91,
+    98
+   ]
+  },
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 86,
+   "coachTrust": 67,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 98,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_regola",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "📓 Prendo appunti. Letteralmente.",
+  "decl": {
+   "morale": 4,
+   "coachTrust": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    67,
+    70
+   ]
+  },
+  "newLines": [
+   "+7",
+   "70/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 86,
+   "coachTrust": 70,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 98,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_battesimo",
+  "cat": "primopro",
+  "k": 0,
+  "txt": "😂 Rido più forte di loro: adesso sono dentro",
+  "decl": {
+   "chem": 8,
+   "morale": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "teamChemistry": [
+    98,
+    100
+   ]
+  },
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 94,
+   "popularity": 86,
+   "coachTrust": 70,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_pro_battesimo",
+  "cat": "primopro",
+  "k": 1,
+  "txt": "🧊 Recupero tutto in silenzio. Domani mi vendico.",
+  "decl": {
+   "chem": 4,
+   "form": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "form": [
+    94,
+    95
+   ]
+  },
+  "newLines": [
+   "+2 🤝+4",
+   "95"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 95,
+   "popularity": 86,
+   "coachTrust": 70,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_maglia_gk",
+  "cat": "addio",
+  "k": 0,
+  "txt": "😄 Gliela prometto — e gli firmo anche i guanti",
+  "decl": {
+   "morale": 5,
+   "popularity": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    86,
+    87
+   ]
+  },
+  "newLines": [
+   "87/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 95,
+   "popularity": 87,
+   "coachTrust": 70,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_maglia_gk",
+  "cat": "addio",
+  "k": 1,
+  "txt": "🧊 Dopo la partita, come si è sempre fatto",
+  "decl": {
+   "form": 2,
+   "morale": 2
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [
+   "+7"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 53,
+   "form": 95,
+   "popularity": 87,
+   "coachTrust": 70,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_cambio",
+  "cat": "addio",
+  "k": 0,
+  "txt": "👏 Accetto: quell'applauso vale una carriera",
+  "decl": {
+   "morale": 8,
+   "coachTrust": 4,
+   "fatigue": -3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    53,
+    50
+   ],
+   "coachTrust": [
+    70,
+    74
+   ]
+  },
+  "newLines": [
+   "50",
+   "74/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 50,
+   "form": 95,
+   "popularity": 87,
+   "coachTrust": 74,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_cambio",
+  "cat": "addio",
+  "k": 1,
+  "txt": "⚔️ Voglio i novanta minuti: mi salutano al fischio finale",
+  "decl": {
+   "form": 4,
+   "coachTrust": -2,
+   "morale": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "coachTrust": [
+    74,
+    72
+   ]
+  },
+  "newLines": [
+   "+3",
+   "72/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 50,
+   "form": 95,
+   "popularity": 87,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_scarpini",
+  "cat": "addio",
+  "k": 0,
+  "txt": "🥹 Autorizzato — e la teca la firmiamo insieme",
+  "decl": {
+   "morale": 6,
+   "chem": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 50,
+   "form": 95,
+   "popularity": 87,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_scarpini",
+  "cat": "addio",
+  "k": 1,
+  "txt": "😅 Solo se ci mette anche quelli della papera col Rovigo",
+  "decl": {
+   "morale": 5,
+   "popularity": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    87,
+    88
+   ]
+  },
+  "newLines": [
+   "😄",
+   "+5",
+   "88/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 50,
+   "form": 95,
+   "popularity": 88,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 4972000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_docu",
+  "cat": "addio",
+  "k": 0,
+  "txt": "🎬 Che sia un bel finale",
+  "decl": {
+   "popularity": 9,
+   "bank": 40000,
+   "fatigue": 4
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "fatigue": [
+    50,
+    54
+   ],
+   "popularity": [
+    88,
+    89
+   ],
+   "bankBalance": [
+    4972000,
+    5012000
+   ]
+  },
+  "newLines": [
+   "54",
+   "89/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 54,
+   "form": 95,
+   "popularity": 89,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 5012000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_docu",
+  "cat": "addio",
+  "k": 1,
+  "txt": "🚪 L'ultima è mia: niente telecamere nello spogliatoio",
+  "decl": {
+   "morale": 5,
+   "chem": 3
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [
+   "😄",
+   "+5 ⭐+4"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 54,
+   "form": 95,
+   "popularity": 89,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 5012000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_capitani",
+  "cat": "addio",
+  "k": 0,
+  "txt": "🥂 Rispondo a tutti, uno per uno",
+  "decl": {
+   "morale": 7,
+   "popularity": 5
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {
+   "popularity": [
+    89,
+    90
+   ]
+  },
+  "newLines": [
+   "+2 💪+2",
+   "90/100"
+  ],
+  "errs": []
+ },
+ {
+  "pre": {
+   "morale": 100,
+   "fatigue": 54,
+   "form": 95,
+   "popularity": 90,
+   "coachTrust": 72,
+   "value": 20.01,
+   "bankBalance": 5012000,
+   "teamChemistry": 100,
+   "season": 3,
+   "totalMatches": 0,
+   "transferListed": false,
+   "investmentPending": true
+  },
+  "id": "wi_addio_capitani",
+  "cat": "addio",
+  "k": 1,
+  "txt": "🤫 Lo riguardo da solo. Dieci volte.",
+  "decl": {
+   "morale": 9
+  },
+  "bond": null,
+  "flag": null,
+  "apri": true,
+  "opened": true,
+  "clicked": true,
+  "closed": true,
+  "applied": 1,
+  "diff": {},
+  "newLines": [],
+  "errs": []
+ }
+]
