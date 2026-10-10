@@ -1,0 +1,3 @@
+=== GATE COPYRIGHT / DE-BRANDING ===
+✅ OK — nessun riferimento al mondo reale (club/leghe/competizioni/record/nomi).
+EXIT=0
