@@ -200,3 +200,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 10/10 sera — questionario: aggancio di prova per gli impulsi, poi gli assist
 - **Zona G:** sì al solo **aggancio di prova** per far comparire un impulso preciso del catalogo (collaudo PO-154 delle 221 scelte). Nessun cambio di comportamento: la zona G resta ferma per tutto il resto.
 - **Prossimo lavoro sul motore:** gli **assist** di PO-221 (compagno in posizione da gol dopo il passaggio riuscito).
+
+## 10/10 sera — questionario PO-224: riquadri della home in secondo piano
+- **Metodo:** prima il **censimento**. Fotografo la home per una stagione intera ed elenco i riquadri: quali chiedono una scelta e quali informano soltanto, con una proposta per ciascuno. Il PO decide sull'elenco; nessuna modifica prima.
+- **Zona G:** via libera a toccare **solo la presentazione** degli impulsi, cioè come e quando compare la finestra. Effetti, pescaggio e catalogo restano intatti.
