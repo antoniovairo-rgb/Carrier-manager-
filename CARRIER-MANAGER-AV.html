@@ -23894,8 +23894,11 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
     const Riga=({t,c})=>(<div style={{display:"flex",gap:SP.sm,alignItems:"flex-start",padding:"6px 0"}}>
       <span style={{width:6,height:6,borderRadius:"50%",background:c,marginTop:7,flexShrink:0}}/>
       <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{t}</div></div>);
+    /* [PO-217] il contenitore riempie l'altezza disponibile e il pulsante va in fondo (marginTop auto):
+       prima le tre card finivano a meta' schermo e «Entra in campo» restava sotto, con mezza schermata vuota.
+       Rosso window.__CPM_NO_PO217: il contenitore torna alto quanto il contenuto. */
     return(
-    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,marginBottom:SP.sm}}>
+    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,marginBottom:SP.sm,minHeight:(typeof window!=='undefined'&&window.__CPM_NO_PO217)?undefined:"100%"}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
           <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
@@ -23934,7 +23937,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
         <SectionHeader>Il consiglio del mister</SectionHeader>
         <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6}}>«{report.recommendation}»</div>
       </Card>
-      {onClose&&<Btn onClick={onClose} v="primary" size="lg" fw>Entra in campo</Btn>}
+      {onClose&&<div style={{marginTop:(typeof window!=='undefined'&&window.__CPM_NO_PO217)?undefined:"auto"}}><Btn onClick={onClose} v="primary" size="lg" fw>Entra in campo</Btn></div>}
     </div>);
   }
   return(
