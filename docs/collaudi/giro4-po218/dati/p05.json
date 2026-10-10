@@ -1,0 +1,188 @@
+{
+ "id": "p05",
+ "name": "Giulio Ferrari",
+ "seed": 5529,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 273,
+ "secondi": 202,
+ "scene": [
+  {
+   "poll": 9,
+   "hl": 0,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "offside",
+   "fam": "offside",
+   "ovl": "La bandierina è alzata",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(MAURO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 5,
+    "txt": "⚙️ Pellegrini (ALT) appoggia su Luzi (ALT).",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 19
+   }
+  },
+  {
+   "poll": 32,
+   "hl": 1,
+   "label": "🤼 Raddoppio coordinato col compagno",
+   "defGesto": "lunge",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Intercetto perfetto",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 10,
+    "txt": "🔙 Luzi (ALT) torna su Pellegrini (ALT) per far respirare la manovra.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 43
+   }
+  },
+  {
+   "poll": 71,
+   "hl": 2,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "assist",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Grande visione di gioco!",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "pronto",
+    "passaggio",
+    "tuffo",
+    "tiro:goal(MARRA)",
+    "gol(MARRA)"
+   ],
+   "successiva": {
+    "m": 22,
+    "txt": "⏸️ Pallone di Rosa (ALT) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 80
+   }
+  },
+  {
+   "poll": 93,
+   "hl": 3,
+   "label": "🎯 Punizione a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 26,
+    "txt": "🤝 Intesa a memoria con Fiorentino: si guardano una volta sola e sanno già cosa fare.",
+    "pd": null,
+    "ef": null,
+    "poll": 102
+   }
+  },
+  {
+   "poll": 126,
+   "hl": 4,
+   "label": "🌀 Finta e cambio di passo",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Palla persa",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 38,
+    "txt": "↔️ Luzi (ALT) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 135
+   }
+  },
+  {
+   "poll": 176,
+   "hl": 5,
+   "label": "🔁 Uno-due con FIORENTINO",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Palla persa",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 56,
+    "txt": "🤝 Si riparte, e Tucci gli dice due parole camminando: «Io taglio dentro, tu resta largo. Ci troviamo.»",
+    "pd": null,
+    "ef": null,
+    "poll": 184
+   }
+  },
+  {
+   "poll": 220,
+   "hl": 6,
+   "label": "🎯 Filtrante per FIORENTINO",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 73,
+    "txt": "🎯 Traversone teso di Costa (ALT) in area: Luzi (ALT) stacca!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 230
+   }
+  }
+ ],
+ "righeTotali": 80
+}

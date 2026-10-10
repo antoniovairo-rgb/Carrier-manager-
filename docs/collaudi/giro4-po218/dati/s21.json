@@ -1,0 +1,165 @@
+{
+ "id": "s21",
+ "name": "Nicola Gallo",
+ "seed": 2282,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ceremony",
+ "polls": 267,
+ "secondi": 198,
+ "scene": [
+  {
+   "poll": 6,
+   "hl": 0,
+   "label": "🛡️ Proteggi palla e scarica su MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Ti portano via il pallone",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(MAURO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 3,
+    "txt": "↔️ Luzi (ALT) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 15
+   }
+  },
+  {
+   "poll": 36,
+   "hl": 1,
+   "label": "💪 Contrasto pulito senza fallo",
+   "defGesto": "lunge",
+   "key": "foul",
+   "ok": false,
+   "outKind": "beaten",
+   "fam": null,
+   "ovl": "Intervento falloso",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(CRISTIANO)",
+    "fallo({P})"
+   ],
+   "successiva": {
+    "m": 14,
+    "txt": "↔️ Luzi (ALT) allarga troppo: la palla esce.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 47
+   }
+  },
+  {
+   "poll": 77,
+   "hl": 3,
+   "label": "💥 Tiro di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Tentativo respinto",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 22,
+    "txt": "⏸️ Pallone di Luzi (ALT) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 88
+   }
+  },
+  {
+   "poll": 107,
+   "hl": 4,
+   "label": "🎯 Punizione a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Non trova lo specchio",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 32,
+    "txt": "⚔️ Contrasto vinto da Palumbo (LAG) su Cristiano (ALT): cambia il possesso.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 118
+   }
+  },
+  {
+   "poll": 131,
+   "hl": 5,
+   "label": "💥 Tiro di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Conclusione murata",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 38,
+    "txt": "↗ Cross di Pellegrini (ALT) dalla fascia: Costa (ALT) attacca il primo palo!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 142
+   }
+  },
+  {
+   "poll": 187,
+   "hl": 6,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Palla persa",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 60,
+    "txt": "🟡 Fischia l'arbitro: fallo di Pecoraro (LAG) su Costa (ALT), punizione dal limite, sulla fascia.",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 196
+   }
+  }
+ ],
+ "righeTotali": 75
+}

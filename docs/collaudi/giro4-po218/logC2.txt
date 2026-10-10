@@ -1,0 +1,2 @@
+s22 Enrico Fabbri fine=ceremony scene=9 nonRiuscite=7 righe=76 227s
+s23 Tommaso Serra fine=ended scene=7 nonRiuscite=7 righe=74 206s

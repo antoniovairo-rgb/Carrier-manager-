@@ -1,0 +1,244 @@
+{
+ "id": "s20",
+ "name": "Stefano Villa",
+ "seed": 1171,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 292,
+ "secondi": 218,
+ "scene": [
+  {
+   "poll": 11,
+   "hl": 0,
+   "label": "🏃 Conduci palla al piede e tira",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": null,
+   "ovl": "Ci prova ma viene chiuso",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(QUINN)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 6,
+    "txt": "😬 Controllo sbagliato di Hayes (TYN).",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 22
+   }
+  },
+  {
+   "poll": 40,
+   "hl": 1,
+   "label": "🛡️ Scivolata netta",
+   "defGesto": "slide",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Muro invalicabile!",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 14,
+    "txt": "🟡 Fischia l'arbitro: fallo di Ross (TYN) su Hammond (MER), punizione sulla fascia, nella trequarti.",
+    "pd": "wide_right",
+    "ef": null,
+    "poll": 52
+   }
+  },
+  {
+   "poll": 73,
+   "hl": 2,
+   "label": "🎯 Piazzato nell'angolo basso",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "shot",
+   "variante": "shot_one_on_one",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 24,
+    "txt": "🟡 Stanley (TYN) stende Bailey (MER): punizione per FC Merseyside.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 83
+   }
+  },
+  {
+   "poll": 109,
+   "hl": 3,
+   "label": "🎯 Testa piazzata all'angolo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Conclusione murata",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 36,
+    "txt": "⏸️ Pallone di Bailey (TYN) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 117
+   }
+  },
+  {
+   "poll": 128,
+   "hl": 4,
+   "label": "🎯 Filtrante per HAMMOND",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 40,
+    "txt": "↗ Cross di Hayes (TYN) dalla fascia: Mitchell (TYN) attacca il primo palo!",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 136
+   }
+  },
+  {
+   "poll": 172,
+   "hl": 5,
+   "label": "✈️ Testa di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 57,
+    "txt": "🤝 Spencer allarga le braccia e lo chiama: adesso lo cercano tutti, Villa è diventato il riferimento.",
+    "pd": null,
+    "ef": null,
+    "poll": 180
+   }
+  },
+  {
+   "poll": 196,
+   "hl": 6,
+   "label": "🦵 Tiro a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Sfiora il vantaggio",
+   "tipo": "shot",
+   "variante": "shot_one_on_one",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 62,
+    "txt": "🟡 Bailey (TYN) stende Villa: punizione per FC Merseyside.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 204
+   }
+  },
+  {
+   "poll": 213,
+   "hl": 7,
+   "label": "💥 Botta sopra la barriera",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il portiere dice di no",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 65,
+    "txt": "🚀 Lancio lungo di Bailey (TYN) per Hayes (TYN), sulla fascia a centrocampo.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 224
+   }
+  },
+  {
+   "poll": 256,
+   "hl": 8,
+   "label": "🎯 Filtrante per HAMMOND",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 81,
+    "txt": "💥 Mitchell (TYN) calcia da due passi!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 266
+   }
+  }
+ ],
+ "righeTotali": 72
+}

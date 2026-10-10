@@ -1,0 +1,2 @@
+s20 Stefano Villa fine=ceremony scene=9 nonRiuscite=8 righe=72 218s
+s21 Nicola Gallo fine=ceremony scene=6 nonRiuscite=6 righe=75 198s

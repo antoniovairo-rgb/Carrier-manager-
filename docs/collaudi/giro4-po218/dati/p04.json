@@ -1,0 +1,249 @@
+{
+ "id": "p04",
+ "name": "Matteo De Luca",
+ "seed": 4418,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 297,
+ "secondi": 255,
+ "scene": [
+  {
+   "poll": 19,
+   "hl": 0,
+   "label": "💥 Tiro da fuori",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(QUINN)"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "↔️ Hayes (TYN) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 46
+   }
+  },
+  {
+   "poll": 37,
+   "hl": 1,
+   "label": "🛡️ Scivolata netta",
+   "defGesto": "slide",
+   "key": "foul",
+   "ok": false,
+   "outKind": "beaten",
+   "fam": null,
+   "ovl": "Fallo!",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(QUINN)",
+    "fallo({P})"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "↔️ Hayes (TYN) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 46
+   }
+  },
+  {
+   "poll": 72,
+   "hl": 2,
+   "label": "⚡ Conclusione di prima",
+   "defGesto": null,
+   "key": "goal",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Che gol, Matteo!",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:goal({P})",
+    "gol({P})",
+    "pressione(ROSS)"
+   ],
+   "successiva": {
+    "m": 24,
+    "txt": "✊ Ha segnato lui. Luca si ferma un attimo davanti alla curva prima di tornare a centrocampo: adesso la partita ha il suo nome sopra.",
+    "pd": null,
+    "ef": null,
+    "poll": 81
+   }
+  },
+  {
+   "poll": 94,
+   "hl": 3,
+   "label": "💥 Tiro rasoterra",
+   "defGesto": null,
+   "key": "goal",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Capolavoro di Matteo!",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:goal({P})",
+    "gol({P})"
+   ],
+   "successiva": {
+    "m": 29,
+    "txt": "😠 Il loro terzino non lo attacca ancora: gli resta a due metri e lo guarda, studia da che parte va. Sta prendendo le misure a Luca.",
+    "pd": null,
+    "ef": null,
+    "poll": 106
+   }
+  },
+  {
+   "poll": 129,
+   "hl": 4,
+   "label": "💥 Tiro di potenza di prima",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 41,
+    "txt": "🎯 Traversone teso di Stanley (TYN) in area: Mitchell (TYN) stacca!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 140
+   }
+  },
+  {
+   "poll": 153,
+   "hl": 5,
+   "label": "🎯 Punizione a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il gol sembrava fatto",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 46,
+    "txt": "✊ Un compagno più giovane sbaglia due appoggi di fila e comincia a nascondersi: Luca se ne accorge e va da lui.",
+    "pd": null,
+    "ef": null,
+    "poll": 164
+   }
+  },
+  {
+   "poll": 174,
+   "hl": 6,
+   "label": "📐 Curva a rientrare",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 50,
+    "txt": "🚀 Lancio lungo di Marshall (TYN) per Stanley (TYN), sulla fascia, nella trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 185
+   }
+  },
+  {
+   "poll": 201,
+   "hl": 7,
+   "label": "💥 Tiro di potenza di prima",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 56,
+    "txt": "🚀 Lancio lungo di Marshall (TYN) per Burke (TYN), sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 210
+   }
+  },
+  {
+   "poll": 253,
+   "hl": 8,
+   "label": "💥 Tiro da fuori",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Sfiora il vantaggio",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 76,
+    "txt": "🚀 Lancio lungo di Marshall (TYN) per Burke (TYN), dal limite.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 261
+   }
+  }
+ ],
+ "righeTotali": 71
+}

@@ -1,0 +1,11 @@
+p06 Simone Greco fine=null scene=0 nonRiuscite=0 righe=0 528s
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at /home/user/Carrier-manager-/docs/collaudi/giro4-po218/probe-giro4.mjs:42:14 {
+  log: []
+}
+
+Node.js v22.22.0

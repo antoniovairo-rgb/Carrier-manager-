@@ -1,0 +1,371 @@
+{
+ "id": "p08",
+ "name": "Paolo Moretti",
+ "seed": 8852,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 363,
+ "secondi": 275,
+ "scene": [
+  {
+   "poll": 11,
+   "hl": 0,
+   "label": "🔄 Girata secca e tiro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Non trova lo specchio",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(MAURO)"
+   ],
+   "successiva": {
+    "m": 5,
+    "txt": "🟡 Fischia l'arbitro: fallo di Nardi (ALT) su Colombo (LAG), punizione a centrocampo.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 22
+   }
+  },
+  {
+   "poll": 35,
+   "hl": 1,
+   "label": "🛑 Chiusura immediata",
+   "defGesto": "lunge",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Entrata pulita!",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 10,
+    "txt": "⏸️ Pallone di Moretti troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 46
+   }
+  },
+  {
+   "poll": 61,
+   "hl": 2,
+   "label": "↗️ Palla in area",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "freekick",
+   "variante": "freekick_cross_high",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 16,
+    "txt": "🟡 Fischia l'arbitro: fallo di Tucci (LAG) su Luzi (ALT), punizione sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 72
+   }
+  },
+  {
+   "poll": 82,
+   "hl": 3,
+   "label": "📐 Curva a rientrare",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Sfiora il vantaggio",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 20,
+    "txt": "🟡 Moretti stende Cristiano (ALT): punizione per FC Altoadige Primavera.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 93
+   }
+  },
+  {
+   "poll": 103,
+   "hl": 4,
+   "label": "🦵 Tiro a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il portiere dice di no",
+   "tipo": "shot",
+   "variante": "shot_curled",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 24,
+    "txt": "💥 Pellegrini (ALT) non ci pensa due volte: tiro da lontano!",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 115
+   }
+  },
+  {
+   "poll": 131,
+   "hl": 5,
+   "label": "🎯 Controllo e tiro fermo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(RAIMONDI)"
+   ],
+   "successiva": {
+    "m": 31,
+    "txt": "💥 Marra (LAG) si gira e lascia partire il destro dal vertice!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 139
+   }
+  },
+  {
+   "poll": 159,
+   "hl": 6,
+   "label": "🏃 Conduci palla al piede e tira",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": null,
+   "ovl": "Fermato dall'avversario",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 39,
+    "txt": "✊ Un compagno più giovane sbaglia due appoggi di fila e comincia a nascondersi: Moretti se ne accorge e va da lui.",
+    "pd": null,
+    "ef": null,
+    "poll": 167
+   }
+  },
+  {
+   "poll": 192,
+   "hl": 7,
+   "label": "✈️ Testa di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Occasione mancata",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 50,
+    "txt": "✊ Occasione buttata, e il compagno resta a terra a mangiarsi le mani: Moretti lo va a tirare su.",
+    "pd": null,
+    "ef": null,
+    "poll": 200
+   }
+  },
+  {
+   "poll": 213,
+   "hl": 8,
+   "label": "🎯 Piazzato nell'angolo basso",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Tiro fuori di poco",
+   "tipo": "shot",
+   "variante": "shot_one_on_one",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 55,
+    "txt": "↗ Cross di Pellegrini (ALT) dalla fascia: Nardi (ALT) attacca il primo palo!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 223
+   }
+  },
+  {
+   "poll": 241,
+   "hl": 9,
+   "label": "💥 Botta sopra la barriera",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Tentativo respinto",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 63,
+    "txt": "✋ Intercetto di Fiorentino (LAG): la palla cambia squadra.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 252
+   }
+  },
+  {
+   "poll": 263,
+   "hl": 10,
+   "label": "🤝 Sponda di prima per RIVA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 66,
+    "txt": "🎯 Costa (ALT) alza la testa e pesca Pellegrini (ALT) sulla trequarti.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 271
+   }
+  },
+  {
+   "poll": 285,
+   "hl": 11,
+   "label": "↗️ Palla in area",
+   "defGesto": null,
+   "key": "chance",
+   "ok": true,
+   "outKind": "chance",
+   "fam": null,
+   "ovl": "OCCASIONE CREATA!",
+   "tipo": "freekick",
+   "variante": "freekick_cross_high",
+   "ev": [],
+   "successiva": {
+    "m": 72,
+    "txt": "⚽ GOL! Palumbo (LAG) la mette dentro su assist di Moretti!",
+    "pd": "attack_goal",
+    "ef": "team_goal",
+    "poll": 309
+   }
+  },
+  {
+   "poll": 299,
+   "hl": 12,
+   "label": "🤝 Rimetti in mezzo per il compagno",
+   "defGesto": null,
+   "key": "nothing",
+   "ok": false,
+   "outKind": "offside",
+   "fam": null,
+   "ovl": "Azione non sfruttata",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 72,
+    "txt": "⚽ GOL! Palumbo (LAG) la mette dentro su assist di Moretti!",
+    "pd": "attack_goal",
+    "ef": "team_goal",
+    "poll": 309
+   }
+  },
+  {
+   "poll": 333,
+   "hl": 13,
+   "label": "💥 Tiro di potenza di prima",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 84,
+    "txt": "💥 Costa (ALT) non ci pensa due volte: tiro da lontano!",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 344
+   }
+  }
+ ],
+ "righeTotali": 65
+}

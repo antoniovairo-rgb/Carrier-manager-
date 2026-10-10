@@ -1,0 +1,189 @@
+{
+ "id": "s23",
+ "name": "Tommaso Serra",
+ "seed": 4404,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 277,
+ "secondi": 206,
+ "scene": [
+  {
+   "poll": 7,
+   "hl": 0,
+   "label": "🛡️ Proteggi palla e scarica su MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Ti portano via il pallone",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(MAURO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 3,
+    "txt": "↩️ Pellegrini (ALT) scarica all'indietro su Luzi (ALT): si ricomincia con calma.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 15
+   }
+  },
+  {
+   "poll": 50,
+   "hl": 1,
+   "label": "🌀 Finta e tiro",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Passaggio fuori misura",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 19,
+    "txt": "🤝 Il capitano lo raggiunge e gli batte una mano sul petto: «La prossima entra. Continua a metterti lì.»",
+    "pd": null,
+    "ef": null,
+    "poll": 58
+   }
+  },
+  {
+   "poll": 71,
+   "hl": 2,
+   "label": "💥 Botta sopra la barriera",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Tentativo respinto",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 25,
+    "txt": "🚀 Lancio lungo di Raimondi (ALT) per Costa (ALT), sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 82
+   }
+  },
+  {
+   "poll": 118,
+   "hl": 4,
+   "label": "🎯 Piazzato nell'angolo basso",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Tiro fuori di poco",
+   "tipo": "shot",
+   "variante": "shot_one_on_one",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 37,
+    "txt": "✋ Fiorentino (LAG) legge il passaggio di Pellegrini (ALT) e intercetta!",
+    "pd": "attack",
+    "ef": null,
+    "poll": 129
+   }
+  },
+  {
+   "poll": 165,
+   "hl": 5,
+   "label": "⚡ Conclusione di prima",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Tentativo respinto",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 55,
+    "txt": "🟡 un giocatore stende un giocatore: punizione per FC Laguna Primavera.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 176
+   }
+  },
+  {
+   "poll": 211,
+   "hl": 6,
+   "label": "🔁 Uno-due con RIVA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 72,
+    "txt": "🎯 Traversone teso di Pellegrini (ALT) in area: Luzi (ALT) stacca!",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 221
+   }
+  },
+  {
+   "poll": 268,
+   "hl": 7,
+   "label": "⚽ Volée di collo potente",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Il difensore si oppone",
+   "tipo": "shot",
+   "variante": "shot_volley",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": null
+  }
+ ],
+ "righeTotali": 74
+}

@@ -1,0 +1,282 @@
+{
+ "id": "p02",
+ "name": "Luca Bianchi",
+ "seed": 2021,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 307,
+ "secondi": 262,
+ "scene": [
+  {
+   "poll": 20,
+   "hl": 0,
+   "label": "🛑 Chiusura immediata",
+   "defGesto": "lunge",
+   "key": "through",
+   "ok": false,
+   "outKind": "beaten",
+   "fam": null,
+   "ovl": "L'avversario passa",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(MAURO)"
+   ],
+   "successiva": {
+    "m": 9,
+    "txt": "↩️ Luzi (ALT) scarica all'indietro su Pellegrini (ALT): si ricomincia con calma.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 31
+   }
+  },
+  {
+   "poll": 49,
+   "hl": 1,
+   "label": "💥 Tiro da fuori",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il portiere dice di no",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(MAURO)"
+   ],
+   "successiva": {
+    "m": 18,
+    "txt": "⚔️ Contrasto vinto da Marra (LAG) su Cristiano (ALT): cambia il possesso.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 60
+   }
+  },
+  {
+   "poll": 91,
+   "hl": 2,
+   "label": "🦵 Tiro a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Conclusione murata",
+   "tipo": "shot",
+   "variante": "shot_curled",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 34,
+    "txt": "🛡️ Bianchi ruba palla a Raimondi (ALT) dal limite!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 98
+   }
+  },
+  {
+   "poll": 124,
+   "hl": 3,
+   "label": "⚽ Volée di collo potente",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Il difensore si oppone",
+   "tipo": "shot",
+   "variante": "shot_volley",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 49,
+    "txt": "📣 Nello spogliatoio il mister disegna: «Secondo tempo alto. Bianchi, ti voglio dentro il campo, non sulla riga.»",
+    "pd": null,
+    "ef": null,
+    "poll": 139
+   }
+  },
+  {
+   "poll": 151,
+   "hl": 4,
+   "label": "🌀 Finta e cambio di passo",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(RAIMONDI)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 53,
+    "txt": "↔️ Costa (ALT) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 160
+   }
+  },
+  {
+   "poll": 180,
+   "hl": 5,
+   "label": "⚽ Volée di collo potente",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Sfiora il vantaggio",
+   "tipo": "shot",
+   "variante": "shot_volley",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 63,
+    "txt": "🟡 Fischia l'arbitro: fallo di Leone (LAG) su Cristiano (ALT), punizione dalle retrovie.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 191
+   }
+  },
+  {
+   "poll": 215,
+   "hl": 6,
+   "label": "💥 Tiro di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Il difensore si oppone",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 76,
+    "txt": "💥 Costa (ALT) calcia da due passi!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 225
+   }
+  },
+  {
+   "poll": 235,
+   "hl": 7,
+   "label": "🎯 Punizione a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 80,
+    "txt": "💥 Marra (LAG) si gira e lascia partire il destro dal vertice!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 245
+   }
+  },
+  {
+   "poll": 259,
+   "hl": 8,
+   "label": "🎯 Punizione a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 87,
+    "txt": "🚀 Lancio lungo di Bruno (ALT) per Pellegrini (ALT), a centrocampo.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 269
+   }
+  },
+  {
+   "poll": 284,
+   "hl": 9,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "chance",
+   "ok": true,
+   "outKind": "chance",
+   "fam": null,
+   "ovl": "Che imbucata!",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "ricezione(MARRA)"
+   ],
+   "successiva": null
+  },
+  {
+   "poll": 299,
+   "hl": 10,
+   "label": "🏃 Avanza in area",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Passaggio respinto",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(BRUNO)",
+    "rammarico({P})"
+   ],
+   "successiva": null
+  }
+ ],
+ "righeTotali": 66
+}

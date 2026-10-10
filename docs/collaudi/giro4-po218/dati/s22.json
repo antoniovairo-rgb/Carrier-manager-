@@ -1,0 +1,236 @@
+{
+ "id": "s22",
+ "name": "Enrico Fabbri",
+ "seed": 3393,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 303,
+ "secondi": 227,
+ "scene": [
+  {
+   "poll": 19,
+   "hl": 0,
+   "label": "🌀 Finta e cambio di passo",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(QUINN)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "🚀 Lancio lungo di Fabbri per Spencer (MER), dal limite, sulla fascia.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 47
+   }
+  },
+  {
+   "poll": 38,
+   "hl": 1,
+   "label": "🧠 Anticipa sul primo controllo",
+   "defGesto": "lunge",
+   "key": "through",
+   "ok": false,
+   "outKind": "deflected_out",
+   "fam": null,
+   "ovl": "L'avversario passa",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "🚀 Lancio lungo di Fabbri per Spencer (MER), dal limite, sulla fascia.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 47
+   }
+  },
+  {
+   "poll": 87,
+   "hl": 2,
+   "label": "🌀 Finta e cambio di passo",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(LANE)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 29,
+    "txt": "😠 Il loro terzino non lo attacca ancora: gli resta a due metri e lo guarda, studia da che parte va. Sta prendendo le misure a Fabbri.",
+    "pd": null,
+    "ef": null,
+    "poll": 95
+   }
+  },
+  {
+   "poll": 126,
+   "hl": 3,
+   "label": "😤 Resisti alla carica e cerca il fallo",
+   "defGesto": null,
+   "key": "chance",
+   "ok": true,
+   "outKind": "win_freekick",
+   "fam": null,
+   "ovl": "Palla velenosa in area!",
+   "tipo": "dribble",
+   "variante": "dribble_feint",
+   "ev": [
+    "conduzione({P})",
+    "fallo",
+    "ammonizione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 44,
+    "txt": "🎯 Traversone teso di Stanley (TYN) in area: Hayes (TYN) stacca!",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 135
+   }
+  },
+  {
+   "poll": 170,
+   "hl": 4,
+   "label": "🌀 Finta e tiro",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Il difensore si mette in mezzo",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(MARSHALL)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 59,
+    "txt": "🤝 Scambio acceso a centrocampo: Spencer voleva la palla prima, Fabbri allarga le braccia. Dura un attimo, poi si riparte.",
+    "pd": null,
+    "ef": null,
+    "poll": 182
+   }
+  },
+  {
+   "poll": 198,
+   "hl": 5,
+   "label": "✈️ Testa di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il portiere dice di no",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 67,
+    "txt": "⚽ GOL! Howard (MER) la mette dentro su assist di Hammond (MER)!",
+    "pd": "attack_goal",
+    "ef": "team_goal",
+    "poll": 207
+   }
+  },
+  {
+   "poll": 224,
+   "hl": 6,
+   "label": "↗️ Palla in area",
+   "defGesto": null,
+   "key": "chance",
+   "ok": true,
+   "outKind": "chance",
+   "fam": null,
+   "ovl": "Palla velenosa in area!",
+   "tipo": "freekick",
+   "variante": "freekick_cross_high",
+   "ev": [],
+   "successiva": {
+    "m": 74,
+    "txt": "🎯 Bailey (TYN) alza la testa e pesca Stanley (TYN) a centrocampo.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 250
+   }
+  },
+  {
+   "poll": 239,
+   "hl": 7,
+   "label": "✈️ Incornata sul secondo palo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Conclusione murata",
+   "tipo": "header",
+   "variante": "header_far_post",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 74,
+    "txt": "🎯 Bailey (TYN) alza la testa e pesca Stanley (TYN) a centrocampo.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 250
+   }
+  },
+  {
+   "poll": 282,
+   "hl": 8,
+   "label": "💥 Tiro da fuori",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Occasione mancata",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 89,
+    "txt": "↔️ Mitchell (TYN) allarga troppo: la palla esce.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 293
+   }
+  }
+ ],
+ "righeTotali": 76
+}

@@ -1,0 +1,139 @@
+{
+ "id": "p01",
+ "name": "Marco Rossi",
+ "seed": 1234,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 261,
+ "secondi": 199,
+ "scene": [
+  {
+   "poll": 13,
+   "hl": 0,
+   "label": "🔁 Uno-due con SPENCER",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 5,
+    "txt": "↔️ Burke (TYN) allarga troppo: la palla esce.",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 23
+   }
+  },
+  {
+   "poll": 36,
+   "hl": 1,
+   "label": "🤼 Raddoppio coordinato col compagno",
+   "defGesto": "lunge",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Intercetto perfetto",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 10,
+    "txt": "💥 Thornton (MER) da dentro l'area, tutto solo davanti alla porta!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 48
+   }
+  },
+  {
+   "poll": 101,
+   "hl": 2,
+   "label": "🌀 Finta e cambio di passo",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 35,
+    "txt": "✊ Un compagno più giovane sbaglia due appoggi di fila e comincia a nascondersi: Rossi se ne accorge e va da lui.",
+    "pd": null,
+    "ef": null,
+    "poll": 110
+   }
+  },
+  {
+   "poll": 194,
+   "hl": 3,
+   "label": "🦵 Tiro a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_curled",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 75,
+    "txt": "💥 Hayes (TYN) si gira e lascia partire il destro dal vertice!",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 205
+   }
+  },
+  {
+   "poll": 239,
+   "hl": 4,
+   "label": "🔄 Girata secca e tiro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 91,
+    "txt": "⚪ Hayes (TYN) e Burke (TYN) scambiano corto.",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 250
+   }
+  }
+ ],
+ "righeTotali": 79
+}
