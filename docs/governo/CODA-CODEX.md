@@ -230,3 +230,11 @@ Riportato dal PO in chat. Nessuna modifica al gioco, commit, push o PR.
 - **H (PO-219) — NON CHIUSA.** 6 partite, GLB spenti (corpi procedurali): 41/44 nominati entro 25 u. Lontani: WRIGHT 48,61 u, HOWARD 35,85 u, GRAY 25,62 u; HOWARD e GRAY compaiono nel testo visibile delle loro scene. 1 foto d'apertura su 31 nera, non ripetibile.
 - **I (PO-218) — NON CHIUSA.** 4 partite, GLB accesi, 32 scene (29 non riuscite): in 3 casi riquadro e cronaca dicono «fuorigioco» mentre il registro del motore dice «intercetto» (partita/highlight 1:0, 1:5, 2:2). Foto insufficienti per confermare l'esito fisico in tutte le scene.
 - **Lettura del team:** O consegnata; H e I aperte. Restano ipotesi finché non le riproduco sulla mia build. Nota mia del 09/10 coerente con I: sulle azioni d'assist il riquadro sceglie il tipo d'errore senza leggere l'esito del motore (passaggio riuscito e tiro del compagno sbagliato raccontato come «intercettato»): stesso punto da indagare insieme.
+
+## 10/10/2026 — Sessioni parallele del team: coordinamento e prime consegne
+
+- **Collaudatrice Haiku** `session_015L5DVPw5JuJRkzXU22MUE2`, ramo `collaudo/sessione-collaudatrice` (base 7.999.155):
+  - **Q NON CHIUSA**: catalogo censito (106 impulsi, 221 scelte; una sola scelta senza effetto dichiarato: `wi_personal_chef` «Sto bene così»). Manca l'effetto osservato: non esiste un varco di collaudo per far comparire un impulso preciso del catalogo (`src/18-career-app.jsx:4045` pescatore, `:1352` apriSettimana). Un varco solo-test toccherebbe l'area impulsi (zona G ferma): serve il via del PO.
+  - **S NON CHIUSA**: premiazioni campionato/europa/nazionale e galà, 24 fotogrammi GLB acceso, 0 errori di pagina; da verificare un trofeo che tocca la testa (europa, f.3) e un blocco grigio davanti al piedistallo del galà (f.5). Festa, ingresso e pullman non ancora fotografati (in corso).
+- **Sviluppatrice**: la prima (`session_016iFXUZxfYMv9QqUTMb1Yjx`, Opus) ha PO-066 committato ma non pubblicato; resta ferma e non archiviata, recuperabile dall'app. Nuova sviluppatrice Haiku `session_01TbSzdCEdMrbGy8oTtbQjFs`, ramo `sviluppo/haiku-l7-pulizia-l8`, pubblica dopo ogni commit.
+- **Controllo orario** (routine `trig_0151Hi6Bgbec84nyWuU48Qcz`, ai :35): stato delle sessioni, consegne nuove, catene da rilanciare dopo i riavvii del container.
