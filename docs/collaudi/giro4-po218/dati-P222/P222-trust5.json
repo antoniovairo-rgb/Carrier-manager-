@@ -1,0 +1,157 @@
+[
+ {
+  "passo": 0,
+  "esito": "lived",
+  "prima": {
+   "season": 12,
+   "week": 38,
+   "weekLived": false,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "dopo": {
+   "season": 12,
+   "week": 38,
+   "weekLived": false,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "incremento": 0
+ },
+ {
+  "passo": 1,
+  "esito": "simulated",
+  "prima": {
+   "season": 12,
+   "week": 38,
+   "weekLived": false,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "dopo": {
+   "season": 12,
+   "week": 38,
+   "weekLived": true,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "incremento": 0
+ },
+ {
+  "passo": 2,
+  "esito": "lived",
+  "prima": {
+   "season": 12,
+   "week": 38,
+   "weekLived": true,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "dopo": {
+   "season": 12,
+   "week": 38,
+   "weekLived": true,
+   "matches": 35,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "incremento": 0
+ },
+ {
+  "passo": 3,
+  "esito": "advanced",
+  "prima": {
+   "season": 12,
+   "week": 39,
+   "weekLived": true,
+   "matches": 36,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "dopo": {
+   "season": 12,
+   "week": 39,
+   "weekLived": true,
+   "matches": 36,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "incremento": 0
+ },
+ {
+  "passo": 4,
+  "esito": "seasonEnd",
+  "prima": {
+   "season": 12,
+   "week": 39,
+   "weekLived": true,
+   "matches": 36,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "dopo": {
+   "season": 12,
+   "week": 39,
+   "weekLived": true,
+   "matches": 36,
+   "coachTrust": 5,
+   "squadRole": "titolare",
+   "decisione": "not_called",
+   "entryMinute": 60,
+   "contractExpired": false,
+   "injured": false,
+   "isSuspended": false
+  },
+  "incremento": 0
+ }
+]

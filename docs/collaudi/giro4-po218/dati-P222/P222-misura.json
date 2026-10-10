@@ -1,0 +1,88 @@
+{
+ "righe": [
+  {
+   "i": 0,
+   "trust": 3,
+   "form": 35,
+   "fatigue": 0,
+   "squadRole": "leader",
+   "ovr": 55,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  },
+  {
+   "i": 1,
+   "trust": 40,
+   "form": 58,
+   "fatigue": 41,
+   "squadRole": "riserva",
+   "ovr": 66,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  },
+  {
+   "i": 2,
+   "trust": 77,
+   "form": 81,
+   "fatigue": 82,
+   "squadRole": "titolare",
+   "ovr": 77,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  },
+  {
+   "i": 3,
+   "trust": 18,
+   "form": 46,
+   "fatigue": 27,
+   "squadRole": "primavera",
+   "ovr": 57,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  },
+  {
+   "i": 4,
+   "trust": 55,
+   "form": 69,
+   "fatigue": 68,
+   "squadRole": "rotazione",
+   "ovr": 68,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  },
+  {
+   "i": 5,
+   "trust": 92,
+   "form": 92,
+   "fatigue": 13,
+   "squadRole": "leader",
+   "ovr": 79,
+   "decisione": "starter",
+   "entryMinute": 60,
+   "presenzePrima": 35,
+   "presenzeDopo": 35,
+   "incremento": 0,
+   "esitoStep": "lived"
+  }
+ ]
+}

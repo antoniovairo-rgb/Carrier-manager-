@@ -1,0 +1,310 @@
+{
+ "base": {
+  "coachTrust": 100,
+  "squadRole": "titolare",
+  "ovr": 93,
+  "club": "FC Merseyside"
+ },
+ "out": [
+  {
+   "i": 0,
+   "trust": 3,
+   "form": 35,
+   "fatigue": 0,
+   "squadRole": "leader",
+   "ovr": 55,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 1,
+   "trust": 40,
+   "form": 58,
+   "fatigue": 41,
+   "squadRole": "riserva",
+   "ovr": 66,
+   "decisione": "bench",
+   "entryMinute": 70
+  },
+  {
+   "i": 2,
+   "trust": 77,
+   "form": 81,
+   "fatigue": 82,
+   "squadRole": "titolare",
+   "ovr": 77,
+   "decisione": "bench",
+   "entryMinute": 47
+  },
+  {
+   "i": 3,
+   "trust": 18,
+   "form": 46,
+   "fatigue": 27,
+   "squadRole": "primavera",
+   "ovr": 57,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 4,
+   "trust": 55,
+   "form": 69,
+   "fatigue": 68,
+   "squadRole": "rotazione",
+   "ovr": 68,
+   "decisione": "bench",
+   "entryMinute": 71
+  },
+  {
+   "i": 5,
+   "trust": 92,
+   "form": 92,
+   "fatigue": 13,
+   "squadRole": "leader",
+   "ovr": 79,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 6,
+   "trust": 33,
+   "form": 57,
+   "fatigue": 54,
+   "squadRole": "riserva",
+   "ovr": 59,
+   "decisione": "bench",
+   "entryMinute": 67
+  },
+  {
+   "i": 7,
+   "trust": 70,
+   "form": 80,
+   "fatigue": 95,
+   "squadRole": "titolare",
+   "ovr": 70,
+   "decisione": "bench",
+   "entryMinute": 55
+  },
+  {
+   "i": 8,
+   "trust": 11,
+   "form": 45,
+   "fatigue": 40,
+   "squadRole": "primavera",
+   "ovr": 81,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 9,
+   "trust": 48,
+   "form": 68,
+   "fatigue": 81,
+   "squadRole": "rotazione",
+   "ovr": 61,
+   "decisione": "bench",
+   "entryMinute": 67
+  },
+  {
+   "i": 10,
+   "trust": 85,
+   "form": 91,
+   "fatigue": 26,
+   "squadRole": "leader",
+   "ovr": 72,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 11,
+   "trust": 26,
+   "form": 56,
+   "fatigue": 67,
+   "squadRole": "riserva",
+   "ovr": 83,
+   "decisione": "bench",
+   "entryMinute": 80
+  },
+  {
+   "i": 12,
+   "trust": 63,
+   "form": 79,
+   "fatigue": 12,
+   "squadRole": "titolare",
+   "ovr": 63,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 13,
+   "trust": 4,
+   "form": 44,
+   "fatigue": 53,
+   "squadRole": "primavera",
+   "ovr": 74,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 14,
+   "trust": 41,
+   "form": 67,
+   "fatigue": 94,
+   "squadRole": "rotazione",
+   "ovr": 85,
+   "decisione": "bench",
+   "entryMinute": 63
+  },
+  {
+   "i": 15,
+   "trust": 78,
+   "form": 90,
+   "fatigue": 39,
+   "squadRole": "leader",
+   "ovr": 65,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 16,
+   "trust": 19,
+   "form": 55,
+   "fatigue": 80,
+   "squadRole": "riserva",
+   "ovr": 76,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 17,
+   "trust": 56,
+   "form": 78,
+   "fatigue": 25,
+   "squadRole": "titolare",
+   "ovr": 56,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 18,
+   "trust": 93,
+   "form": 43,
+   "fatigue": 66,
+   "squadRole": "primavera",
+   "ovr": 67,
+   "decisione": "bench",
+   "entryMinute": 59
+  },
+  {
+   "i": 19,
+   "trust": 34,
+   "form": 66,
+   "fatigue": 11,
+   "squadRole": "rotazione",
+   "ovr": 78,
+   "decisione": "bench",
+   "entryMinute": 76
+  },
+  {
+   "i": 20,
+   "trust": 71,
+   "form": 89,
+   "fatigue": 52,
+   "squadRole": "leader",
+   "ovr": 58,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 21,
+   "trust": 12,
+   "form": 54,
+   "fatigue": 93,
+   "squadRole": "riserva",
+   "ovr": 69,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 22,
+   "trust": 49,
+   "form": 77,
+   "fatigue": 38,
+   "squadRole": "titolare",
+   "ovr": 80,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 23,
+   "trust": 86,
+   "form": 42,
+   "fatigue": 79,
+   "squadRole": "primavera",
+   "ovr": 60,
+   "decisione": "bench",
+   "entryMinute": 65
+  },
+  {
+   "i": 24,
+   "trust": 27,
+   "form": 65,
+   "fatigue": 24,
+   "squadRole": "rotazione",
+   "ovr": 71,
+   "decisione": "bench",
+   "entryMinute": 71
+  },
+  {
+   "i": 25,
+   "trust": 64,
+   "form": 88,
+   "fatigue": 65,
+   "squadRole": "leader",
+   "ovr": 82,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 26,
+   "trust": 5,
+   "form": 53,
+   "fatigue": 10,
+   "squadRole": "riserva",
+   "ovr": 62,
+   "decisione": "not_called",
+   "entryMinute": 60
+  },
+  {
+   "i": 27,
+   "trust": 42,
+   "form": 76,
+   "fatigue": 51,
+   "squadRole": "titolare",
+   "ovr": 73,
+   "decisione": "starter",
+   "entryMinute": 60
+  },
+  {
+   "i": 28,
+   "trust": 79,
+   "form": 41,
+   "fatigue": 92,
+   "squadRole": "primavera",
+   "ovr": 84,
+   "decisione": "bench",
+   "entryMinute": 50
+  },
+  {
+   "i": 29,
+   "trust": 20,
+   "form": 64,
+   "fatigue": 37,
+   "squadRole": "rotazione",
+   "ovr": 64,
+   "decisione": "bench",
+   "entryMinute": 76
+  }
+ ]
+}
