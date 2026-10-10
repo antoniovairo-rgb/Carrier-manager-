@@ -14,7 +14,7 @@ P) Zona G, condizione «presenze e titolari» (PO-222) — solo misura
    - Misura la quota reale di partenze da titolare leggendo la decisione prepartita (titolare / panchina / non convocato) e non il contatore delle presenze, su almeno 30 partite di carriere diverse.
    - La zona G resta ferma per il team: è un collaudo, non un via libera alle modifiche.
 
-Q) Zona G, condizione «effetti delle scelte evento» (PO-154) — solo misura
+Q) [10/10: PASSATA alla sessione collaudatrice del team — Codex la salta] Zona G, condizione «effetti delle scelte evento» (PO-154) — solo misura
    - Per quanti più impulsi possibile fra i 99 osservati (obiettivo: tutti), esegui dall'interfaccia almeno una scelta e registra lo stato prima e dopo (fatica, forma, morale, fiducia, denaro, popolarità e ogni campo che cambia).
    - Esito: una tabella con impulso, scelta, effetto dichiarato nel catalogo, effetto osservato, «visibile al giocatore sì/no» (dove lo vede, se lo vede).
    - Segnala a parte le scelte con effetto dichiarato e nessun effetto osservato, e quelle applicate più di una volta.
@@ -24,7 +24,7 @@ R) Schermate fuori standard (L7: PO-066 home, PO-217 analisi pre-partita)
    - Per ogni schermata: riquadri con colori o forme fuori dallo stile degli altri, testi tagliati, sovrapposizioni, spazi vuoti grandi (es. «mezza schermata vuota sotto il pulsante»). Una foto per larghezza.
    - Nessuna proposta grafica: solo cosa e dove.
 
-S) Cerimonie 3D (L8: PO-137, PO-002) — rassegna visiva
+S) [10/10: PASSATA alla sessione collaudatrice del team — Codex la salta] Cerimonie 3D (L8: PO-137, PO-002) — rassegna visiva
    - Le scene 3D fuori dalla partita che riesci a raggiungere senza toccare il codice: ingresso in campo, festa di fine partita, premiazione, galà, pullman.
    - Per ognuna: almeno 6 fotogrammi e i difetti visibili (corpi compenetrati, figure tagliate, oggetti fuori scala, camera dietro le tribune).
    - Se una scena non è raggiungibile, scrivi dove ti fermi.
