@@ -221,3 +221,12 @@ Dettagli G aggiuntivi: 10 carriere dall'interfaccia + 29 sintetiche; 6 fino al r
 Prompt: `docs/governo/prompt/codex-2026-10-09-collaudi-7999155.md`, base `837d3272` (7.999.155). Zone: H PO-219 (nomi in scena), I PO-218 (esito coerente), L PO-209 (intestazione «FC Laguna» col prestito), M PO-048 (inquadratura #3/#38/#64/#74 ripetuta sulla build attuale), N riserve A (auto216) ed E (PO-176) del rapporto A–G.
 Per regola, finché Codex collauda queste voci il team non le fa avanzare; restano al team PO-220, PO-221, PO-022 (8b), PO-068, PO-123. Zona G ferma.
 - **Coda fino al 19/10** (Codex viene dismesso il 19/10, PO 09/10: «approfittiamone ora»): `docs/governo/prompt/codex-2026-10-09b-coda-fino-19.md` — O PO-190 (gol in una stagione), P presenze e titolari (PO-222, solo misura), Q effetti delle scelte evento (PO-154, solo misura), R schermate L7, S cerimonie L8, T collaudo della release PO-220/221 quando esce. Consegna a zone, non a fine coda.
+
+## 10/10/2026 — Codex, primi esiti sull'incarico 7.999.155 (base `837d3272`)
+
+Riportato dal PO in chat. Nessuna modifica al gioco, commit, push o PR.
+
+- **O (PO-190) — CONSEGNATA.** 43 partite di club in una stagione (S12, autoplay `seeded`, semi 190001–190043): eroe 26 gol = **0,60 a partita, 37,1% dei 70 gol della squadra**; 1 partita su 43 con scarto ≥4; risultato, tabellino e storico concordi 43/43. Riferimento del team su 7.999.138: ~0,83 e 53%. Codex: «il confronto segnala una differenza, non ne dimostra la causa». Dati: `l1-o-season.json` sul PC del PO.
+- **H (PO-219) — NON CHIUSA.** 6 partite, GLB spenti (corpi procedurali): 41/44 nominati entro 25 u. Lontani: WRIGHT 48,61 u, HOWARD 35,85 u, GRAY 25,62 u; HOWARD e GRAY compaiono nel testo visibile delle loro scene. 1 foto d'apertura su 31 nera, non ripetibile.
+- **I (PO-218) — NON CHIUSA.** 4 partite, GLB accesi, 32 scene (29 non riuscite): in 3 casi riquadro e cronaca dicono «fuorigioco» mentre il registro del motore dice «intercetto» (partita/highlight 1:0, 1:5, 2:2). Foto insufficienti per confermare l'esito fisico in tutte le scene.
+- **Lettura del team:** O consegnata; H e I aperte. Restano ipotesi finché non le riproduco sulla mia build. Nota mia del 09/10 coerente con I: sulle azioni d'assist il riquadro sceglie il tipo d'errore senza leggere l'esito del motore (passaggio riuscito e tiro del compagno sbagliato raccontato come «intercettato»): stesso punto da indagare insieme.
