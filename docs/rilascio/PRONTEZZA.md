@@ -59,3 +59,56 @@ Build: worktree `/tmp/cpm` (ec8f073), `tests/visual` con `npm install` EXIT 0. B
 
 Esito punto 3: **verde sui guardiani standard e sul salvataggio nuovo e 190; il salvataggio 194 chiude con il rilievo A da sistemare.**
 
+## 4. Errori di console a 375 px
+
+Sonda: `docs/rilascio/probe-console-375.mjs` (viewport 375×812). Per ogni schermata: errori e avvisi di console, pageerror, scroll orizzontale (`scrollWidth − clientWidth`), estratto di testo visibile **per verificare che la schermata sia davvero quella attesa**. Due varianti: sorgente `CARRIER-MANAGER-AV.html` (quella servita da GitHub Pages) e dist `dist/index.html` (`PROBE_URL=dist/index.html`).
+
+| Schermata | Come | Sorgente (log `console-375.log`) | Dist (log `console-375-dist.log`) |
+|---|---|---|---|
+| home | percorso | 2 messaggi (vedi sotto) · overflow 0 px | 0 · overflow 0 px |
+| dashboard carriera | percorso (CONTINUA) | 0 · 0 px | 0 · 0 px |
+| calendario | hook `goTab` (sorgente) · tap (dist) | 0 · 0 px ✅ testo verificato | 0 · click eseguito (contenuto non verificato) |
+| classifica | idem | 0 · 0 px ✅ testo verificato | 0 · click eseguito |
+| profilo | hook (sorgente) · tap (dist) | 0 · 0 px ✅ testo verificato | ⚠️ **tap «Profilo» NON trovato** (vedi rilievo E) |
+| agente | hook · tap | 0 · 0 px ✅ | 0 · click eseguito |
+| ufficio | hook · tap | 0 · 0 px ✅ | 0 · click eseguito |
+| opzioni | percorso (voce «Opzioni») | 0 · 0 px ✅ testo verificato | 0 · 0 px ✅ |
+| intervista | hook `forceInterview` | ❌ **NON verificata**: busta non vista nel testo dopo 2,6 s · vedi rilievo D | NON ESEGUITA su dist |
+| post-partita | hook `goScreen('postmatch')` | ❌ **NON verificata**: il testo resta quello della dashboard | NON ESEGUITA su dist |
+| partita 3D | `openMatch` (flusso reale, provino) | 2 messaggi · overflow 0 px · testo «PROVINO 1/3» ✅ | NON ESEGUITA su dist (richiede gli hook) |
+| partita 2D | non separata | ❓ **Non posso confermarlo**: nel sorgente non ho trovato una modalità 2D distinta dalla 3D nel percorso reale | — |
+
+**Messaggi di console (sorgente): 6 in totale, tutti dal transpiler in-browser Babel** (`src/00-head.html:66-67` carica `@babel/standalone` da CDN; `src/00-head.html:313` `<script type="text/babel">`):
+- `warning`: «You are using the in-browser Babel transformer. Be sure to precompile your scripts for production»
+- `error`: «[BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB.»
+Frequenza: **2 messaggi per caricamento** della pagina (una coppia warning+error). Sulle 3 aperture della sonda: home (2 coppie in tutto) e partita (1 coppia). ⚠️ **Non posso confermare** perché la coppia compaia due volte sul primo caricamento: non l'ho isolato.
+**Dist offline: 0 messaggi** su tutte le schermate raggiunte. Conferma coerente con la build (`build-dist.log`: «Babel-in-browser: rimosso»).
+
+**Overflow orizzontale a 375 px: 0 px su tutte le schermate misurate** (sorgente e dist).
+
+**Copertura del punto 4 — dichiarata:** intervista e post-partita NON verificate a 375 px dalla sonda. Un'altra sonda del repo, `tests/visual/intervista-2d.mjs`, apre l'intervista (sala stampa «scena aperta: SI») con «PASS» e 0 errori di pagina, **ma a 412 px**, non a 375. Il post-partita non è raggiunto da nessuna sonda del repo che io abbia verificato.
+
+## 5. Lista dei BLOCCANTI per la pubblicazione
+
+Gravità: **bloccante** (impedisce la pubblicazione) · **da sistemare** (va corretto prima del rilascio, ma non ferma il sito) · **estetico** · **da verificare** (il rilievo non è confermato). Nessuna correzione è stata fatta: le fa il team.
+
+**A. Riferimenti reali fuori dal gate di copyright — BLOCCANTE (da confermare con il PO).** Il gate dice 0, ma il repo stesso definisce il de-branding bloccante (`src/09-audio-scout-anagrafiche.jsx:916`). La blocklist cerca solo nomi completi (`:915-921`), quindi non copre:
+- Derby con nomi di rivalità reali: `src/08-panchina-derby-meteo-cori.jsx:116` «Derby d'Italia», `:117` «Derby di Milano», `:118` «Derby della Capitale», `:120` «Derby del Sole».
+- Nomignoli reali di club: `src/02-club-leghe-albo.jsx:27` «FC Nerazzurri», `:28` «AC Rossoneri», `:31` «FC Biancoceleste», `:29` «FC Partenope».
+- Slug di club reali usati come ID: `src/02-club-leghe-albo.jsx:27-31`, `:102` (`psg`), `src/05-cronaca-stadi-formazioni.jsx:458-485`.
+- **Riproduzione:** `grep -n "Derby d'Italia" src/08-panchina-derby-meteo-cori.jsx`. **Non posso confermare** se questi nomi escono a schermo: va verificato con la sonda sul DOM.
+
+**B. Classifica del salvataggio ereditato non coerente — da sistemare.** Salvataggio `tests/visual/fixtures/save-194-primavera-w38.json`: somma GF 790 ≠ GA 787 su 18 squadre. Non riparata al caricamento; si azzera al rollover. **Causa probabile:** la riconciliazione controlla composizione (id e numero di squadre), non le somme: `src/17-menu-creazione-pannelli.jsx:1804-1811`. **Frequenza:** 3 esecuzioni su 3, stesso valore. **Riproduzione:** `PROBE_SAVE=old PROBE_FIX=save-194-primavera-w38.json node probe-rilascio-3s.mjs`. ⚠️ Origine del fixture non determinata.
+
+**C. Console della sorgente: avviso Babel e nota «deoptimised» a ogni caricamento — da sistemare (se si pubblica la sorgente).** Il sito GitHub Pages serve la sorgente, quindi il rilievo vale per il sito; la dist (store) è pulita. **Riproduzione:** apri `CARRIER-MANAGER-AV.html` a 375 px e leggi la console. Frequenza: 2 messaggi per caricamento. File: `src/00-head.html:66-67`, `:313`.
+
+**D. Intervista e post-partita non verificate a 375 px — da verificare.** Non è un difetto confermato: la sonda non le ha raggiunte. **Riproduzione:** la sonda `probe-console-375.mjs` apre l'intervista via `forceInterview` e non trova la busta («Apri la busta») nel testo; il post-partita via `goScreen('postmatch')` non cambia schermata. Serve un percorso di partita reale fino al fischio finale. ⚠️ Non posso confermare se è un limite della sonda o un difetto: l'intervista si apre in `intervista-2d.mjs` a 412 px.
+
+**E. Scheda «Profilo» non trovata col testo sulla dist — da verificare.** Sulla dist il tap con testo «Profilo» non risponde; sulla sorgente la scheda si apre (via hook). Può essere solo l'etichetta diversa. **Non posso confermarlo** senza l'albero DOM della dist.
+
+**F. Rilievi che NON sono bloccanti (estetico / da tenere d'occhio):**
+- Banca 134.943 k€ dopo 3 stagioni dal salvataggio 190: non anomalo per lo stato di partenza (92,3 M€), ma **non posso confermare** che l'economia sia bilanciata (controllo di non-regressione, non di realismo).
+- Lo step di `career-sim` si blocca su `proTransition` (transizione U18→pro): difetto dell'harness, non del gioco (la sonda ora sceglie «Accetta →»).
+
+**Riepilogo dei punti:** 1 copyright gate verde (0 hit) · 2 dist offline verde · 3 guardiani verdi e salvataggi nuovo/190 verdi; salvataggio 194 con rilievo B · 4 dist 0 messaggi e 0 px di overflow; sorgente 6 messaggi Babel; intervista e post-partita non verificate · 5 bloccanti: A (da confermare col PO), B, C, D, E.
+
