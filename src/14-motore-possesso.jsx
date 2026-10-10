@@ -773,7 +773,7 @@ function creaMotorePossesso(cfg){
        punteggio — 12' di base, 9' se la squadra dell'eroe e' sotto nella ripresa (spinge), 16' se conduce di 2+ (gestisce).
        Il limite resta la fisica della partita: palla all'eroe nell'ultimo terzo. Rosso __CPM_NO_DIN15 = tetto fisso 7.999.13 */
     const _din15=_v14&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_DIN15);
-    const _g221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_GAP221));/* [7.999.156 PO-221, decisione PO 09/10] 16' fra due occasioni invece di 12' (sotto nella ripresa 13', avanti di 2+ 20'): le scene erano 9,2 a partita, obiettivo 5-7 */
+    const _g221=!!cfg.brainLive&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_GAP221));/* solo la partita vissuta: la simulazione rapida resta al suo passo (brain-202 A: il talento alzava i gol 1,19 volte invece di >=1,2 col passo nuovo anche in simulazione) *//* [7.999.156 PO-221, decisione PO 09/10] 16' fra due occasioni invece di 12' (sotto nella ripresa 13', avanti di 2+ 20'): le scene erano 9,2 a partita, obiettivo 5-7 */
     let _gap=_v14?(_g221?16:12):5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
       if(_df<0&&S.min>=46)_gap=_g221?13:9;else if(_df>=2)_gap=_g221?20:16;}
     return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
