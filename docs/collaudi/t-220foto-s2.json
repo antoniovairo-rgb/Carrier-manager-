@@ -1,0 +1,51 @@
+{
+ "modo": "220foto",
+ "glb": true,
+ "budget": 380000,
+ "partite": [
+  {
+   "seme": 2,
+   "fine": "ceremony",
+   "scene": 6,
+   "gol": 2,
+   "chiavi": {
+    "miss-": 3,
+    "recovery+": 1,
+    "chance+": 1,
+    "goal+": 2
+   },
+   "defGesto": {
+    "lunge": 1
+   },
+   "dist": [
+    3.7
+   ],
+   "gambe": [
+    0.64
+   ],
+   "fotoScene": 1,
+   "gst": [
+    {
+     "g": null,
+     "cur": null,
+     "has": null,
+     "ts": 1
+    },
+    {
+     "g": null,
+     "cur": null,
+     "has": null,
+     "ts": 1
+    },
+    {
+     "g": null,
+     "cur": null,
+     "has": null,
+     "ts": 1
+    }
+   ],
+   "errori": 0,
+   "primoErrore": null
+  }
+ ]
+}

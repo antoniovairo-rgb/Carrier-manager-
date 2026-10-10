@@ -1,0 +1,33 @@
+{
+ "modo": "220",
+ "glb": false,
+ "budget": 420000,
+ "partite": [
+  {
+   "seme": 4,
+   "fine": "ceremony",
+   "scene": 7,
+   "gol": 1,
+   "chiavi": {
+    "miss-": 2,
+    "recovery+": 1,
+    "intercept-": 2,
+    "chance+": 2,
+    "goal+": 1
+   },
+   "defGesto": {
+    "lunge": 1
+   },
+   "dist": [
+    3.1
+   ],
+   "gambe": [
+    0.01
+   ],
+   "fotoScene": 0,
+   "gst": [],
+   "errori": 0,
+   "primoErrore": null
+  }
+ ]
+}
