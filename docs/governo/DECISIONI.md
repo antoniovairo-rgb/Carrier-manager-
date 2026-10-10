@@ -204,3 +204,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 10/10 sera — questionario PO-224: riquadri della home in secondo piano
 - **Metodo:** prima il **censimento**. Fotografo la home per una stagione intera ed elenco i riquadri: quali chiedono una scelta e quali informano soltanto, con una proposta per ciascuno. Il PO decide sull'elenco; nessuna modifica prima.
 - **Zona G:** via libera a toccare **solo la presentazione** degli impulsi, cioè come e quando compare la finestra. Effetti, pescaggio e catalogo restano intatti.
+
+## 10/10 notte — questionario: pubblicazione entro una settimana (scadenza 17/10)
+- **Dove:** sito (GitHub Pages, main). «Pubblicare» = consolidare main con L1 chiuso, catene verdi, controllo copyright a zero, versione dichiarata stabile.
+- **L1:** **tutte e 8 le voci restano in L1** (PO-022 strato 8b, PO-048, PO-068 P2/P3, PO-123, PO-209, PO-218, PO-220, PO-221). Rischio di sforare dichiarato al PO.
+- **Sessioni:** +2. Una sessione **rilascio** (copyright, build offline e sua verifica, regressione su carriere lunghe, lista dei bloccanti) e una seconda **collaudatrice** sulle partite vere (PO-220, PO-221 su campioni grandi).
