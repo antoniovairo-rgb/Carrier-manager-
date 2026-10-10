@@ -1354,6 +1354,12 @@ const getThisWeekMatchday=()=>{
         setWeekLiveModal(tipo==="spogliatoio"?{isSpogliatoio:true,teammate:tm,event:{txt:"Oggi resta dopo l'allenamento: ti faccio vedere come si attacca il primo palo."},choices:[{txt:"🤝 Resto volentieri",ef:{chem:4}},{txt:"🏠 Stasera no, sono stanco",ef:{fatigue:-3}}]}
           :tipo==="vissuta"?{event:{txt:"Settimana intensa: doppio allenamento e video-analisi."},changes:{morale:3,form:2,fatigue:6},coachMsg:"Ti voglio più cattivo sui contrasti."}
           :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Pago un fotografo mio",ef:{bank:-5000}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
+      /* [7.999.157 PO-154, decisione PO 10/10] VARCO DI SOLO COLLAUDO: apre il pop-up di un impulso PRECISO del catalogo, con le sue
+         scelte vere (stessa struttura del percorso settimanale, src/18 ~4050), per misurare l'effetto di ognuna delle 221 scelte.
+         Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
+      apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
+        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱"}[im.cat]||"💡";
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
