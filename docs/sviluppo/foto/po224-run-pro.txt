@@ -1,0 +1,28 @@
+══ PO-224 censimento home (pro, 375px) · settimane misurate 39 · stagione chiusa true ══
+  Il tuo procuratore [home]          sett=39 finestra=false bottoni=39 sopraPiega=7 sotto=32 topMed=1031 altMed=58
+  La tua settimana [home]            sett=39 finestra=false bottoni=39 sopraPiega=3 sotto=36 topMed=1240 altMed=51
+  Obiettivi della stagione [home]    sett=39 finestra=false bottoni=39 sopraPiega=0 sotto=39 topMed=1377 altMed=53
+  Ultime notizie [home]              sett=39 finestra=false bottoni=39 sopraPiega=0 sotto=39 topMed=1761 altMed=58
+  Il tuo procuratore [finestra]      sett=39 finestra=false bottoni=39 sopraPiega=7 sotto=32 topMed=1031 altMed=58
+  La tua settimana [finestra]        sett=39 finestra=false bottoni=39 sopraPiega=3 sotto=36 topMed=1240 altMed=51
+  Obiettivi della stagione [finestra] sett=39 finestra=false bottoni=39 sopraPiega=0 sotto=39 topMed=1377 altMed=53
+  Ultime notizie [finestra]          sett=39 finestra=false bottoni=39 sopraPiega=0 sotto=39 topMed=1761 altMed=58
+  Il progetto del club [home]        sett=38 finestra=false bottoni=38 sopraPiega=14 sotto=24 topMed=914 altMed=58
+  Voci di mercato [home]             sett=38 finestra=false bottoni=38 sopraPiega=0 sotto=38 topMed=1654 altMed=53
+  Classifica [home]                  sett=38 finestra=false bottoni=38 sopraPiega=0 sotto=38 topMed=1716 altMed=53
+  Il progetto del club [finestra]    sett=38 finestra=false bottoni=38 sopraPiega=14 sotto=24 topMed=914 altMed=58
+  Voci di mercato [finestra]         sett=38 finestra=false bottoni=38 sopraPiega=0 sotto=38 topMed=1654 altMed=53
+  Classifica [finestra]              sett=38 finestra=false bottoni=38 sopraPiega=0 sotto=38 topMed=1716 altMed=53
+  Il mondo fuori [home]              sett=37 finestra=false bottoni=37 sopraPiega=2 sotto=35 topMed=1182 altMed=67
+  Notizie della settimana [home]     sett=37 finestra=false bottoni=37 sopraPiega=0 sotto=37 topMed=1597 altMed=53
+  Il mondo fuori [finestra]          sett=37 finestra=false bottoni=37 sopraPiega=2 sotto=35 topMed=1182 altMed=67
+  Notizie della settimana [finestra] sett=37 finestra=false bottoni=37 sopraPiega=0 sotto=37 topMed=1597 altMed=53
+  Sponsor [home]                     sett=31 finestra=false bottoni=31 sopraPiega=10 sotto=21 topMed=999 altMed=58
+  Sponsor [finestra]                 sett=31 finestra=false bottoni=31 sopraPiega=10 sotto=21 topMed=999 altMed=58
+  Impulso della settimana [finestra] sett=22 finestra=true bottoni=22 sopraPiega=22 sotto=0 topMed=275 altMed=380
+  La tua storia [home]               sett=21 finestra=false bottoni=21 sopraPiega=20 sotto=1 topMed=736 altMed=53
+  La tua storia [finestra]           sett=21 finestra=false bottoni=21 sopraPiega=20 sotto=1 topMed=736 altMed=53
+  Duello capocannoniere [home]       sett= 6 finestra=false bottoni=6 sopraPiega=0 sotto=6 topMed=1297 altMed=58
+  Duello capocannoniere [finestra]   sett= 6 finestra=false bottoni=6 sopraPiega=0 sotto=6 topMed=1297 altMed=58
+  Questa settimana [finestra]        sett= 3 finestra=true bottoni=3 sopraPiega=3 sotto=0 topMed=250 altMed=430
+  errori pagina: 0

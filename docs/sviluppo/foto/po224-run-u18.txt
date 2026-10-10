@@ -1,0 +1,10 @@
+══ PO-224 censimento home (u18, 375px) · settimane misurate 39 · stagione chiusa false ══
+  La tua settimana [home]            sett=39 finestra=false bottoni=39 sopraPiega=22 sotto=17 topMed=793 altMed=51
+  Obiettivi della stagione [home]    sett=39 finestra=false bottoni=39 sopraPiega=22 sotto=17 topMed=903 altMed=53
+  Ultime notizie [home]              sett=39 finestra=false bottoni=39 sopraPiega=6 sotto=33 topMed=966 altMed=58
+  La tua settimana [finestra]        sett=39 finestra=false bottoni=39 sopraPiega=22 sotto=17 topMed=793 altMed=51
+  Obiettivi della stagione [finestra] sett=39 finestra=false bottoni=39 sopraPiega=22 sotto=17 topMed=903 altMed=53
+  Ultime notizie [finestra]          sett=39 finestra=false bottoni=39 sopraPiega=6 sotto=33 topMed=966 altMed=58
+  Impulso della settimana [finestra] sett=30 finestra=true bottoni=30 sopraPiega=30 sotto=0 topMed=275 altMed=379
+  Questa settimana [finestra]        sett= 3 finestra=true bottoni=3 sopraPiega=3 sotto=0 topMed=283 altMed=365
+  errori pagina: 0
