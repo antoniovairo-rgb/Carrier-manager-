@@ -30,3 +30,32 @@ _Il rapporto cresce punto per punto; ogni voce dichiara misura, file:riga e freq
 
 Esito punti 1–2: **verde**. Il punto 1 ha però una riserva di copertura del gate (vedi tabella).
 
+## 3. Regressione su carriere lunghe
+
+Build: worktree `/tmp/cpm` (ec8f073), `tests/visual` con `npm install` EXIT 0. Browser: `CPM_CHROME=/opt/pw-browsers/chromium`.
+
+| Guardiano | Esito | Log |
+|---|---|---|
+| `career-invariants.mjs` | ✅ EXIT 0 · 252 club · pageerror 0 | `reg-career-invariants.log` |
+| `tripath-chokepoint-test.mjs` | ✅ EXIT 0 · i 3 path delegano a tutti i chokepoint | `reg-tripath.log` |
+| `stab-nat-trigger-test.mjs` | ✅ EXIT 0 · trigger Nazionali coerente, pageerror 0 | `reg-stab-nat.log` |
+| `career-sim-test.mjs` (standard, 2 stagioni) | ✅ EXIT 0 · 154 step · pageerror 0 | `reg-career-sim.log` |
+
+**Sonda nuova per il punto (≥3 stagioni, handler veri, `__CPM_CAREER`):** `docs/rilascio/probe-rilascio-3s.mjs` (copia di lavoro in `tests/visual/`). Parametri: `PROBE_SAVE=new|old`, `PROBE_FIX=<fixture>`. Misura: rollover, invarianti (standings=18, GF=GA, banca≥0, OVR 40–99, settimana monotona), **ricarica** (reload + confronto chiavi del `player` in `localStorage`), pageerror.
+
+| Salvataggio | Stagioni | Errori di pagina | Chiavi prima/dopo reload | Esito | Log |
+|---|---|---|---|---|---|
+| **Nuovo** (seme in-app, S2 W1) | 3/3 (S2→S5) | 0 | 137 / 137 · persi 0 | ✅ | `reg-3s-new.log` |
+| **Vecchio** `save-190-s12-ovr93.json` (S12 W38, OVR 93) | 3/3 (S12→S15) | 0 | 187 / 187 · persi 0 | ✅ | `reg-3s-old190.log` |
+| **Vecchio** `save-194-primavera-w38.json` (S1 W38, U18) | 3/3 (S1→S5) | 0 | 146 / 147 · persi 0 · nuovi 1 (`fitnessCoachRel`, migrazione) | ❌ solo per GF≠GA iniziale (vedi rilievo A) | `reg-3s-old.log` |
+
+**Rilievo A — classifica del salvataggio 194 non coerente al caricamento (da sistemare).** Il file fixture ha già la classifica sbilanciata: somma GF **790** ≠ somma GA **787** su 18 squadre (561 partite giocate; verificato con lettura diretta del JSON). Il gioco non la ripara al caricamento: al passo 1 la sonda legge `S1W38: GF 790 ≠ GA 787`, a W39 `792 ≠ 789`. La differenza resta costante a 3 (non cresce a ogni partita): è **ereditata dal salvataggio**, non generata dal gioco. Si azzera al rollover (S2 `GF=GA` su tutti i rollover, es. S2→S3 820=820). Riproduzione: `PROBE_SAVE=old PROBE_FIX=save-194-primavera-w38.json node probe-rilascio-3s.mjs`. Il guardiano `STAB-12` dichiara di RICONCILIARE la classifica in migrazione (`CLAUDE.md`): qui la riconciliazione non avviene. ⚠️ **Non posso confermare** da quale versione derivi lo sbilancio: il file non ha metadati di versione oltre `saveVersion: 9`.
+
+**Rilievo B — «blocco» dello step a fine U18 (NON è un difetto del gioco).** Nel salvataggio 194 lo step ripete `advanced` a W39/40 senza avanzare. Causa misurata: lo schermo è `proTransition` (transizione U18→pro, `ProTransitionScreen`, scelta «Accetta →» / «Resta →»), che lo step dell'harness non gestisce (`__CPM_CAREER.step`, riga ~45291). Il giocatore sceglie l'offerta; la sonda ora la sceglie. Il gioco non si ferma.
+
+**Rilievo C — banca 134.943 k€ dopo 3 stagioni (salvataggio 190).** Non anomalo per il salvataggio: il fixture parte già da `bankBalance` 92.316.631 €, e l'investimento a fine stagione (`investSeason24`, rendimenti da −20% a +30%) spiega la crescita. **Non posso confermare** che l'economia sia bilanciata: il controllo è di non-regressione, non di realismo.
+
+**Frequenza:** rilievo A su 1 run del salvataggio 194 (3 esecuzioni: stesso valore 790/787 e 792/789, quindi deterministico). Salvataggi 190 e nuovo: nessun rilievo in 1 run ciascuno.
+
+Esito punto 3: **verde sui guardiani standard e sul salvataggio nuovo e 190; il salvataggio 194 chiude con il rilievo A da sistemare.**
+
