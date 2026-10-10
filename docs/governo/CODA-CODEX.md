@@ -244,3 +244,15 @@ Riportato dal PO in chat. Nessuna modifica al gioco, commit, push o PR.
   - **T PO-220 (7.999.156):** distanza eroe-portatore mediana 4,25 u, nessun «press» su 10 scene; visivo GLB insufficiente.
   - **T PO-221 (7.999.156):** 12 partite × 2 giri: scene mediana **9,0** (obiettivo 5-7), gol dell'eroe **1,00** (obiettivo 0,6-0,9), assist 0,21. **Lo stesso seme non ripete la partita** (0 su 12 identiche fra due giri, scarto medio 2,4 scene). **Smentisce la mia misura di 7,0 scene**: con 12 partite il campione è troppo piccolo per giudicare. In corso una misura di 36 partite sulla 7.999.157.
 - Sviluppatrice: PO-217 consegnato (`d93d7092`), ricreata per il giro 3 `session_01VzAUT4GNM99Fwim4VoLRq4` (PO-066, ingresso in campo, PO-072, L8).
+
+## 10/10/2026 (sera) — Chiusura Codex su 7.999.155 e coda finale fino al 19/10
+
+Riportato dal PO in chat.
+- **H (PO-219) — CHIUSA** sui corpi procedurali.
+- **I (PO-218) — NON VERIFICATA.** 3 scene con riquadro e cronaca «fuorigioco» e motore «intercetto», 2 ricorrenti nel campione supplementare; 1 «Finta e tiro» con tiro murato nel motore e cronaca «passaggio respinto». Ipotesi da riprodurre sotto PO-218, coerente con la mia nota del 09/10: il riquadro sceglie il tipo d'errore senza leggere l'esito del motore.
+- Codex dichiarava di non avviare altri collaudi; su domanda del PO preparata la coda finale `docs/governo/prompt/codex-2026-10-10-coda-finale.md` (base `2adc96ad`, 7.999.156): I2 cattura completa PO-218, T2 PO-221 sulla 7.999.157 quando è su main, P presenze/titolari, R schermate L7, L prestito, M inquadratura, N riserve A/E.
+
+### Misura del team, 36 partite sulla 7.999.157 (semi 101-109, 201-209, 301-309, 401-409)
+- Scene dell'eroe: media **8,61**, mediana 8,5 (min 3, max 13); 8 partite su 36 nella fascia 5-7, 18 sopra 8. Obiettivo PO 5-7 **non raggiunto**.
+- Gol dell'eroe **0,69** a partita (25 su 36): dentro 0,6-0,9. Assist **0,28** a partita (10), contro 0,08 della mia misura su 7.999.156.
+- Scene di tipo punizione: 57 su 36 partite (1,58 a partita; 14 partite con 2 o più), nonostante il tetto «1 punizione diretta». Ipotesi da verificare: il tetto `punz221` conta solo le punizioni aperte dal ramo origine (`src/15-live-match.jsx:5440`), mentre le altre arrivano da percorsi diversi (19 sono «Palla in area», cioè punizioni indirette). Non posso confermarlo finché non lo misuro per percorso.
