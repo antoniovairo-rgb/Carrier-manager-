@@ -271,3 +271,14 @@ Riportato dal PO in chat. Nessuna modifica al gioco, commit o push.
 - **T2 (PO-221) — non avviata**, in attesa del commit della 7.999.157 su main.
 - Dati grezzi sul banco Codex: `l1-i2.json`, `l1-p-probe.json`, `l1-r-visual.json`, `l1-loan-games-156.json`, `l1-camera-m-156.json`, `l1-auto216-156.json`, `l1-n-reload-156.json`.
 - **Lettura del team:** restano risultati del banco Codex finché non li riproduco. La discordanza «fuorigioco» contro «intercetto», ormai riprodotta due volte da Codex, è il primo punto di PO-218 da riprodurre sulla mia build.
+- **10/10 sera — consegne delle sessioni (giro 3 collaudo, giro 4 sviluppo) e ricreazione:**
+  - **Collaudatrice, zona Q (PO-154)** su 7.999.157 col varco `apriImpulso` (`docs/collaudi/Q-impulsi.md`, ramo `collaudo/sessione-collaudatrice` `c5bfb49f`). **Misura CHIUSA**: 106 impulsi e 221 scelte cliccate dall'interfaccia, ognuna applicata una sola volta. **Giro NON CHIUSO** per due rilievi da riprodurre:
+    1. 5 scelte (6 chiavi) dichiarano statistiche che il gestore non legge: nessun effetto osservato.
+    2. Il riquadro «⭐» mostra la popolarità dichiarata (+8) e non quella applicata (+3), in 67 scelte.
+    Il secondo è un problema di presentazione, quindi coperto dal via del PO «solo presentazione» (PO-224). Il primo tocca gli effetti, cioè la zona G ferma.
+  - **Sviluppatrice, giro 4** (`docs/sviluppo/RAPPORTO-giro4.md`, `2848b043`): solo misura, nessuna modifica al gioco.
+    - PO-066 home a 360/375/412 px: 0 testi sotto 10 px, 0 sbordamenti; nomi squadra troncati nella card «Prossima partita» a 360 px.
+    - PO-217: guardiano verde.
+    - Ingresso in campo non misurato.
+  - Ricreate: collaudatrice `session_014qtxu3yL6ZqWpEJe4Yysgc` (PO-218 su 7.999.157: discordanze riquadro/cronaca/motore su almeno 60 scene; poi P/PO-222 misura); sviluppatrice `session_01DSLZExKzQEg16HMTdrY8Wj` (censimento home PO-224, troncamento nomi, ingresso in campo GLB acceso).
+- **Rilascio 7.999.157:** catena carriera rossa al primo giro su `tempo-138` (verde: debito residuo 14 al fischio). Rilanciato da solo 2 volte: una volta il rosso non si vede, l'altra verde pieno. È un guardiano a tempo reale (autoplay a 150 ms), quindi instabile. Catena rifatta da capo: **33/33**. Completa in corsa.

@@ -1,5 +1,177 @@
 [
  {
+  "data": "2026-10-10 20:01",
+  "versione": "7.999.157",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 834
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 545
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 286
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 201
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 494
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 360
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 586
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 422
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 541
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 542
+   }
+  ]
+ },
+ {
   "data": "2026-10-10 18:07",
   "versione": "7.999.157",
   "catena": "carriera",
@@ -6495,138 +6667,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-04 18:46",
-  "versione": "7.999.131",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 67
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 901
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 101
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 54
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 75
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 78
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 564
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 56
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 320
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 327
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 713
    }
   ]
  }
