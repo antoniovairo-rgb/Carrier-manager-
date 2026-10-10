@@ -23898,7 +23898,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
        prima le tre card finivano a meta' schermo e «Entra in campo» restava sotto, con mezza schermata vuota.
        Rosso window.__CPM_NO_PO217: il contenitore torna alto quanto il contenuto. */
     return(
-    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,marginBottom:SP.sm,minHeight:(typeof window!=='undefined'&&window.__CPM_NO_PO217)?undefined:"100%"}}>
+    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,...((typeof window!=='undefined'&&window.__CPM_NO_PO217)?{marginBottom:SP.sm}:{minHeight:"100dvh",paddingBottom:SP.lg})}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
           <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
