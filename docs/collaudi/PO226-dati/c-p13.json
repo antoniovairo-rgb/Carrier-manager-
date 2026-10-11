@@ -1,0 +1,70 @@
+{
+ "partita": 13,
+ "nome": "Coll226c13",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 277,
+ "errori": [],
+ "intx": [
+  {
+   "min": 23,
+   "id": "mi_cons",
+   "fam": "MISTER"
+  },
+  {
+   "min": 33,
+   "id": "co_inc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 46,
+   "id": "co_int",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 56,
+   "id": "co_pal",
+   "fam": "COMPAGNI"
+  }
+ ],
+ "sc": [
+  {
+   "id": "co_pal",
+   "idx": 0,
+   "auto": true,
+   "min": 56
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 0,
+  "away": 3
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [
+  "📢 Spinta tattica del mister | voto 5.9 | Continua",
+  "📢 Spinta tattica del mister | voto 5.9 | Continua",
+  "📢 Spinta tattica del mister | voto 5.9 | Continua"
+ ],
+ "intxN": 50,
+ "hlMin": [
+  10,
+  14,
+  51,
+  27,
+  42,
+  57,
+  74,
+  86
+ ]
+}
