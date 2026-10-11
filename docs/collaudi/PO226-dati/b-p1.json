@@ -1,0 +1,73 @@
+{
+ "partita": 1,
+ "nome": "Coll226b1",
+ "panchina": true,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 276,
+ "errori": [],
+ "intx": [
+  {
+   "min": 19,
+   "id": "co_inc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 29,
+   "id": "co_prima",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 47,
+   "id": "er_chi",
+   "fam": "EROE"
+  },
+  {
+   "min": 57,
+   "id": "er_sprona",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "co_prima",
+   "idx": 0,
+   "auto": true,
+   "min": 29
+  },
+  {
+   "id": "er_sprona",
+   "idx": 0,
+   "auto": true,
+   "min": 57
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 1,
+  "away": 0
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  28,
+  38,
+  56,
+  70,
+  86,
+  49,
+  66,
+  82
+ ]
+}
