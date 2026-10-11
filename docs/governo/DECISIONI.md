@@ -216,3 +216,10 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 
 ## 11/10 — PO-224: i riquadri-impulso della home diventano finestre
 - Il PO, con una foto del riquadro «Lo spogliatoio» in home: «si perde facilmente, questi impulsi del gioco devono essere gestiti come pop up». **Decisione presa:** si parte dallo spogliatoio (e dal verdetto del patto col mister, che ha lo stesso schema) come finestra dentro «Vivi la Settimana». Esce nella prossima versione insieme a PO-221 punizioni, per fare un solo giro di catene. Gli altri riquadri seguono l'esito del censimento.
+
+## 11/10 — questionario PO-221: tetto di 7 scene
+- **Decisione:** al massimo 7 scene dell'eroe a partita; i rigori restano sempre fuori dal conto.
+- **Misura su 16 partite** (stessi semi):
+  - 7.999.157: 8,88 scene a partita, punizioni 1,69;
+  - con la sola falla delle punizioni chiusa: 8,44 scene, punizioni 0,62;
+  - con il tetto di 7 completo: **6,94 scene** (mediana 7, 11 partite su 16 in 5-7), gol dell'eroe 0,62, punizioni 0,56.
