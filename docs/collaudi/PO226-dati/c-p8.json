@@ -1,0 +1,69 @@
+{
+ "partita": 8,
+ "nome": "Coll226c8",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 289,
+ "errori": [],
+ "intx": [
+  {
+   "min": 24,
+   "id": "mi_lato",
+   "fam": "MISTER"
+  },
+  {
+   "min": 34,
+   "id": "er_giovane",
+   "fam": "EROE"
+  },
+  {
+   "min": 40,
+   "id": "er_gol",
+   "fam": "EROE"
+  },
+  {
+   "min": 45,
+   "id": "co_tri",
+   "fam": "COMPAGNI"
+  }
+ ],
+ "sc": [
+  {
+   "id": "co_tri",
+   "idx": 0,
+   "auto": true,
+   "min": 45
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": true,
+  "min": 78,
+  "bench": true,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 2,
+  "away": 0
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  25,
+  40,
+  21,
+  62,
+  70,
+  86,
+  46,
+  52,
+  64,
+  76
+ ]
+}
