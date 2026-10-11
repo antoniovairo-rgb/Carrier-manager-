@@ -4,3 +4,4 @@ k18 ceremony scene=5 gol_eroe=0 score={"home":2,"away":1} 284s
 k19 ceremony scene=7 gol_eroe=0 score={"home":0,"away":1} 291s
 k20 ceremony scene=8 gol_eroe=3 score={"home":5,"away":0} 288s
 k21 ceremony scene=5 gol_eroe=1 score={"home":4,"away":3} 284s
+k22 ceremony scene=7 gol_eroe=0 score={"home":0,"away":1} 291s
