@@ -6,6 +6,7 @@
    ma esegue comunque TUTTI i passi (CPM_CI_STOP=1 per fermarsi al primo rosso). Uso: node ci-runner.mjs [completa|carriera|grafica|guardiani]. */
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {
+  fumo: ['test:logic', 'design-system', 'lessico-218'],/* [7.999.159] prova rapida dell'esecutore */
   completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'design-system'],
   carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'rimbalzo-189', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'rigori-190', 'debito-190', 'scene-190', 'finale-202', 'ripresa-202', 'tetto-202', 'minuti-202', 'recupero-202', 'ripartenza-207', 'anteprima-212', 'mister-215', 'presentazione-214', 'possesso-209', 'brain-202', 'tempo-138', 'tabellino-216'],
   grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat', 'titolo-110', 'pre-188', 'rimbalzo-189', 'calendario-offerte-195', 'walkout-fermi-197', 'fila-206', 'premiazione-palco-191', 'coppa-mani-191', 'posa-sollevamento-191', 'palco-corpi-191', 'parata-198', 'busta-199', 'presentazione-200', 'guanti-201', 'formazioni-204', 'figurine-208', 'post-210', 'piedi-203', 'gesti-scena-p1b', 'piede-cross-p1b2', 'rincorsa-144', 'doppio-gesto-148', 'testa-146', 'movimento-147'],
@@ -21,14 +22,24 @@ const ver = (fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.js
 const env = { ...process.env, CPM_CHROME: process.env.CPM_CHROME || '/opt/pw-browsers/chromium', PLAYWRIGHT_BROWSERS_PATH: process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers', VISION_PROVIDER: process.env.VISION_PROVIDER || 'none' };
 const giro = { data: new Date().toISOString().slice(0, 16).replace('T', ' '), versione: ver, catena: nome, passi: [] };
 let rossi = 0;
-for (const p of passi) {
-  const t0 = Date.now(); const r = spawnSync('npm', ['run', '-s', p], { env, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
-  const ok = r.status === 0, s = Math.round((Date.now() - t0) / 1000); if (!ok) rossi++;
-  const coda = ((r.stdout || '') + (r.stderr || '')).trim().split('\n').slice(-3).join(' | ').slice(0, 240);
-  giro.passi.push({ passo: p, ok, s, coda: ok ? undefined : coda });
-  const riga = `${ok ? '✅' : '❌'} ${p} (${s}s)${ok ? '' : ' — ' + coda}`; console.log(riga); if (LOG) fs.appendFileSync(LOG, riga + '\n');
-  if (!ok && process.env.CPM_CI_STOP === '1') break;
-}
+/* [7.999.159, decisione PO 11/10 «adotta le nuove regole»] (1) PASSI LENTI IN PARALLELO: i guardiani che giocano partite vere
+   (decine di minuti l'uno) girano a due a due su processi separati (CPM_CI_PAR=0 per la sequenza pura). (2) UN ROSSO SI RILANCIA DA
+   SOLO fino a due volte: se torna verde il passo vale ma resta segnato «instabile» nel registro; resta rosso solo se e' rosso tre
+   volte su tre (CPM_CI_NORETRY=1 per spegnere). La catena intera non si rifa' piu' per un guardiano ballerino. */
+import { spawn } from 'node:child_process';
+const LENTI = new Set(['partita-vera', 'scena-motore-147', 'esiti-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical']);
+const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spawn('npm', ['run', '-s', p], { env }); let out = '';
+  ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
+  ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });
+const esito = async (p) => { let r = await corri(p); let prove = 1;
+  while (!r.ok && process.env.CPM_CI_NORETRY !== '1' && prove < 3) { const r2 = await corri(p); prove++; if (r2.ok) { r = { ...r2, s: r.s + r2.s, instabile: true, primo: r.coda }; break; } r = { ...r2, s: r.s + r2.s }; }
+  return { ...r, prove }; };
+const scrivi = (p, r) => { if (!r.ok) rossi++; giro.passi.push({ passo: p, ok: r.ok, s: r.s, coda: r.ok ? undefined : r.coda, instabile: r.instabile || undefined, prove: r.prove > 1 ? r.prove : undefined });
+  const riga = `${r.ok ? (r.instabile ? '⚠️' : '✅') : '❌'} ${p} (${r.s}s)${r.instabile ? ' — instabile: verde alla prova ' + r.prove + ', primo rosso: ' + r.primo : ''}${r.ok ? '' : ' — ' + r.coda}`; console.log(riga); if (LOG) fs.appendFileSync(LOG, riga + '\n'); };
+const PAR = process.env.CPM_CI_PAR !== '0';
+const seq = PAR ? passi.filter(p => !LENTI.has(p)) : passi, lenti = PAR ? passi.filter(p => LENTI.has(p)) : [];
+for (const p of seq) { const r = await esito(p); scrivi(p, r); if (!r.ok && process.env.CPM_CI_STOP === '1') break; }
+for (let k = 0; k < lenti.length; k += 2) { const blocco = lenti.slice(k, k + 2); const rr = await Promise.all(blocco.map(esito)); blocco.forEach((p, i) => scrivi(p, rr[i])); }
 let st = []; try { st = JSON.parse(fs.readFileSync(FILE, 'utf8')); } catch {}
 st.unshift(giro); fs.writeFileSync(FILE, JSON.stringify(st.slice(0, 60), null, 1) + '\n');
 const fine = `${rossi ? '❌' : '✅'} catena ${nome} su ${ver}: ${giro.passi.length - rossi}/${giro.passi.length} verdi`; console.log(fine); if (LOG) fs.appendFileSync(LOG, fine + '\nFINE\n');

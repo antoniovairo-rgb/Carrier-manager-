@@ -223,3 +223,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - 7.999.157: 8,88 scene a partita, punizioni 1,69;
   - con la sola falla delle punizioni chiusa: 8,44 scene, punizioni 0,62;
   - con il tetto di 7 completo: **6,94 scene** (mediana 7, 11 partite su 16 in 5-7), gol dell'eroe 0,62, punizioni 0,56.
+
+## 11/10 pomeriggio — nuove regole di rilascio (PO: «Sì, adotta le nuove regole e rilascia stanotte; raccogli più PO e lotti possibile»)
+1. **Un rilascio al giorno, di notte.** Le correzioni del giorno (team principale e sviluppatrice) si raccolgono in una sola versione; le catene girano una volta.
+2. **Catena leggera** (`ci-runner grafica`) per i cambi solo grafici; completa quando si tocca motore, partita o carriera.
+3. **Passi lenti in parallelo** (partita-vera, scena-motore, esiti-218, nomi-219, difesa-220, scene-221, career-critical) a due a due (`ci-runner.mjs`, `CPM_CI_PAR=0` per tornare alla sequenza).
+4. **Un rosso si rilancia da solo** fino a due volte. Se torna verde il passo vale ma resta segnato «instabile» nel registro, e il guardiano va sistemato. La catena si rifà da capo solo per un rosso vero, cioè 3 su 3 (`CPM_CI_NORETRY=1` per spegnere).
