@@ -293,3 +293,14 @@ Riportato dal PO in chat. Nessun file modificato, nessun commit o push.
 - **P (PO-222) — NON CHIUSO.** 30 profili sintetici: decisione prepartita 20 titolare, 5 panchina, 5 non convocato. **In 5 casi su 5 «non convocato» la simulazione accredita comunque una presenza.** La quota reale di titolarità nelle carriere naturali non è misurata. Zona G: difetto da riprodurre, nessun intervento senza il via del PO.
 - **T2 (PO-221) — in attesa.** La 7.999.157 non verrà promossa da sola: la base sarà la **7.999.158**, che la contiene, quando arriverà su main.
 - Banco Codex: tentativi 3D sospesi sotto i 3 GB di memoria libera (2,59–2,79 GB). Riprende quando la memoria lo consente.
+
+## 11/10/2026 — CODEX FUORI DAL PROGETTO (decisione PO)
+- PO: «da adesso in poi codex è fuori dal progetto. Richiede troppe risorse del PC, va lento e a breve scade anche abbonamento». Codex ha dichiarato la sospensione definitiva e la routine di ripresa è disattivata.
+- **Stato finale della coda:**
+  - **Consegnate:** R, L, M, N.
+  - **I2 (PO-218) incompleta:** 4 scene «fuorigioco» contro «intercetto» (6:3, 6:4, 9:0, 11:6) e 5 «Finta e tiro» con racconto diverso dal tiro registrato.
+  - **P (PO-222) incompleta:** «non convocato» con presenza accreditata 5/5, su profili sintetici.
+  - **T2 (PO-221):** mai avviata.
+- **Dati locali sul PC del PO** (non nel repository): `l1-i2.json`, `p30-sintetiche.json`.
+- Le zone incomplete **non sono chiuse**. I rilievi sono segnalazioni da riprodurre sul banco del team.
+- **Da oggi il collaudo è solo del team:** due sessioni collaudatrici e una sessione rilascio. I2 e T2 passano alla collaudatrice 2 (partite vere); P resta in zona G ferma.
