@@ -213,3 +213,6 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 10/10 notte — questionario: guardiano nomi-219 e priorità L1
 - **nomi-219:** tolta la soglia assoluta del rosso (<70%), tarata su una sola corsa (43%). Al rilascio 7.999.157 il rosso è stato 75% contro il 100% del verde. La prova del rosso resta il distacco di almeno 20 punti; la soglia del verde non cambia. Catena completa rifatta da capo.
 - **Dopo la promozione della 7.999.157:** prima voce di L1 è **PO-221, punizioni** (1,58 a partita nonostante il tetto di 1; scene 8,6 contro l'obiettivo di 5-7).
+
+## 11/10 — PO-224: i riquadri-impulso della home diventano finestre
+- Il PO, con una foto del riquadro «Lo spogliatoio» in home: «si perde facilmente, questi impulsi del gioco devono essere gestiti come pop up». **Decisione presa:** si parte dallo spogliatoio (e dal verdetto del patto col mister, che ha lo stesso schema) come finestra dentro «Vivi la Settimana». Esce nella prossima versione insieme a PO-221 punizioni, per fare un solo giro di catene. Gli altri riquadri seguono l'esito del censimento.
