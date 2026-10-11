@@ -1921,7 +1921,7 @@ const getThisWeekMatchday=()=>{
      (le sonde cliccano la home) salvo __CPM_POP224; rosso __CPM_NO_POP224. */
   let _popTaken224=false;
   /* [7.999.159 PO-224, collaudatrice giro 6 e rilascio giro 3] la finestra non si apre SOTTO un altro dialogo bloccante (il confronto col procuratore, non chiudibile, la copriva in 90 settimane su 92 della sonda; la finestra della settimana): aspetta che si chiuda. Estesa ai riquadri con scelta del censimento: «La tua storia», scelte narrative, esonero, procuratore (ingaggio e boutique/global). */
-  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal))return null;_popTaken224=true;
+  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPAP224&&React.isValidElement(node)&&node.props&&node.props.momento!=null)node=React.cloneElement(node,{momentoAperto:true});/* [7.999.160] in finestra la fisarmonica parte aperta: un tocco solo */if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal))return null;_popTaken224=true;
     return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto"}}>{node}</div></div>);};
   const bondEvent=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
@@ -7859,7 +7859,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.270.0 P2] IL MONDO TI ATTRAVERSA — rivale, ex compagni, ex club, CT */}
       {tab==="dashboard"&&(()=>{
         const wt=worldTouch(player);if(!wt)return null;
-        return(
+        return _pop224(
         <Card momento="Il mondo fuori" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"13px 15px",background:_n30("linear-gradient(150deg,#0b1a22,#0f2430)",TH.card),border:_n30("1px solid #2a5a6b","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#7dd3fc",semTesto945("#7dd3fc")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il mondo fuori</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -7877,7 +7877,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const ld=ledgerDue(player);if(!ld)return null;
         const bene=ld.e==="🤝";
-        return(
+        return _pop224(
         <Card style={{marginBottom:8,padding:"13px 15px",background:_n30(bene?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(bene?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30(bene?"#6ee7b7":TH.txAmber,bene?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il conto delle parole</div>
           <div style={{fontSize:FS.small,fontWeight:900,color:_n30(bene?"#fff":TH.txAmber,bene?TH.text:TH.txAmber),marginBottom:3}}>{ld.t}</div>
@@ -11548,7 +11548,7 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il gioco</button>}
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</button>}
         <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}

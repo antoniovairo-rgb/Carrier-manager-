@@ -921,7 +921,7 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   // [giro 6, decisione PO 11/10] nomi reali di club, soprannomi da colori e derby rinominati: se tornano, l'audit li segnala
   "Nerazzurri","Rossoneri","Partenope","Biancoceleste","Blucerchiati","Verdiblanco","FC Paris","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
   "Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
-const _CR_PLAYERS=["Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
+const _CR_PLAYERS=["Kylian","Bukayo","Erling","Vinicius","Pedri","Saka","Bellingham","Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
 //   (i pool restano ricchi di nomi comuni; è la COPPIA a essere bloccata, in generazione e in audit).
 const _CR_FULLNAMES=new Set(["thomas müller","timo werner","manuel neuer","marco reus","toni kroos","leon goretzka","joshua kimmich","sergio ramos","marcos alonso","david silva","fernando torres","marcos llorente","nacho fernández","sergio busquets","jordan henderson","kyle walker","luke shaw","aaron ramsey","dean henderson","harry kane","jack grealish","cenk tosun","nuri sahin","hamit altintop","altay bayindir","salih ucan","mert gunok","yusuf yazici","hakan calhanoglu","mark van bommel","steven berghuis","luuk de jong","vincent janssen","memphis depay","frenkie de jong","virgil van dijk","bruno fernandes","rúben dias","bernardo silva","rafael leão","nuno mendes","andré silva","joão félix","diogo jota","kevin de bruyne","eden hazard","romelu lukaku","kylian mbappé","antoine griezmann","olivier giroud","lautaro martínez","julián álvarez","lisandro martínez","emiliano martínez","gabriel jesus","vinícius júnior"]);
@@ -940,7 +940,7 @@ function _auditCopyrightSafety(){
     if(typeof DERBIES!=="undefined")subScan("DERBY",Object.values(DERBIES).map(d=>d.name));
     Object.values(EURO_COMP_WINNERS||{}).forEach(a=>subScan("EURO",a.map(x=>x.club)));
     Object.entries(LEAGUE_RECORDS||{}).forEach(([k,v])=>{subScan("REC_KEY",[k]);subScan("REC",[v.allTimeScorer,v.seasonRecord]);});
-    Object.values(NAME_BY_NAT||{}).forEach(o=>{eqScan("FIRST",o.first);eqScan("LAST",o.last);});
+    Object.values(NAME_BY_NAT||{}).forEach(o=>{eqScan("FIRST",o.first);eqScan("LAST",o.last);});try{eqScan("RIVAL_FIRST",RIVAL_FIRST);eqScan("RIVAL_LAST",RIVAL_LAST);}catch(e){}/* [7.999.160] anche i rivali */
     // 5.49.3 — giornali/media: scan delle testate (NEWSPAPERS) e dei giornali dei giornalisti (JOURNALIST_POOL) contro i brand reali
     if(typeof NEWSPAPERS!=="undefined")subScan("NEWS",NEWSPAPERS.map(n=>n.name+" "+(n.short||"")));
     if(typeof JOURNALIST_POOL!=="undefined")subScan("JOURNO",JOURNALIST_POOL.map(j=>j.paper));
