@@ -112,3 +112,90 @@ Gravità: **bloccante** (impedisce la pubblicazione) · **da sistemare** (va cor
 
 **Riepilogo dei punti:** 1 copyright gate verde (0 hit) · 2 dist offline verde · 3 guardiani verdi e salvataggi nuovo/190 verdi; salvataggio 194 con rilievo B · 4 dist 0 messaggi e 0 px di overflow; sorgente 6 messaggi Babel; intervista e post-partita non verificate · 5 bloccanti: A (da confermare col PO), B, C, D, E.
 
+
+---
+
+## Giro 2 (7.999.158)
+
+Base: `origin/poc/marioprada-character-system` @ `8b9a9e5`, `GAME_VERSION="7.999.158"` (`CARRIER-MANAGER-AV.html`, `src/07-versione-save-interviste.jsx`). Worktree `/tmp/cpm158`. Build sorgente: `CPM_FORZA_BUILD=1 node tools/build-src.mjs` EXIT 0 (56.520 righe; `build-src-158.log`). Dipendenze `tests/visual`: `npm install` EXIT 0. Browser: `CPM_CHROME=/opt/pw-browsers/chromium`.
+
+**Nota sul sito live.** `origin/main` è a `2adc96a`, con `GAME_VERSION="7.999.156"`: oggi il sito serve la 156. La 158 arriva al sito solo con la promozione su `main` (che fa partire `deploy-pages.yml`). Non è stata fatta: non richiesta.
+
+### Correzioni al giro 1 (dichiarate qui, il testo del giro 1 resta com'era)
+
+- **Rilievo C: la premessa era sbagliata.** Il giro 1 diceva che GitHub Pages serve la sorgente. Non è così: vedi punto 4.
+- **Rilievo E: non è un difetto.** La sonda del giro 1 cercava «Profilo» come testo esatto al primo livello. Vedi punto 2.
+- **Rilievo B: la causa indicata nel giro 1 non regge.** `src/17-menu-creazione-pannelli.jsx:1804-1811` è la riconciliazione per composizione (righe per id), non calcola somme. Vedi punto 3.
+
+### Punto 5 — ripetizione del giro 1 (copyright, build offline, validate-dist)
+
+| Controllo | Esito | Log |
+|---|---|---|
+| `node tools/audit-copyright.mjs` | EXIT 0 · «✅ OK — nessun riferimento» | `copyright-158.txt` |
+| `node tools/build-dist.mjs` (store) | EXIT 0 · 10,7 s · CDN residue: nessuna | `build-dist-158.log` |
+| `node tools/validate-dist.mjs` (store) | EXIT 0 · React montato, home, zero richieste esterne, zero errori | `validate-dist-158.log` |
+| `node tools/build-dist.mjs --web` (quella che serve Pages) | EXIT 0 | `build-dist-web-158.log` |
+| `node tools/validate-dist.mjs --web` | EXIT 0 · flag store assente, zero errori | `validate-dist-web-158.log` |
+
+**Rilievo A riletto (blocklist):** il gate di copyright passa, ma le stringhe segnalate nel giro 1 sono ancora nei bundle distribuiti: `Derby d'Italia` (dist-web 2 occorrenze, dist 2), `FC Nerazzurri` (1 / 1), `Stadio Sabaudo` (2 / 2), `Stade Phocéen` (2 / 2). Sorgente: `src/08-panchina-derby-meteo-cori.jsx:116` («Derby d'Italia») e `src/02-club-leghe-albo.jsx:27` («FC Nerazzurri»). **Non posso confermare** che compaiano a schermo: non verificato in questo giro. Il rilievo A resta aperto come nel giro 1.
+
+### Punto 1 — intervista e post-partita a 375×812, partita vera fino al fischio
+
+Percorso: fixture `save-190-s12-ovr93.json` (S12 W38), `playMatch()` + `__CPM_AUTOPLAY(true,{seed:2021,policy:'seeded',tickMs:150})`, attesa di `ceremony`/`ended`. Sonda: `probe-partita-375.mjs`. Log: `partita-375-158.log` (ultima esecuzione). Screenshot: `shots-158-375/`.
+
+- **Fischio finale** raggiunto in 177–202 s reali (5 esecuzioni). Nelle 5 esecuzioni il tabellone ha dato punteggi diversi con lo stesso seme (0–0, 1–2, 2–0, 3–4, 1–3). **Non posso confermare la causa** (non indagata: fuori dal mandato). Nota: il log conserva solo l'ultima esecuzione.
+- **Premiazione** «PREMIAZIONE CAMPIONI!» → «Salta premiazione →»: overflow 0 px.
+- **Post-partita** (dopo «Salta»): tabellino, «IL TUO TABELLINO», «TABELLINO DELLA GARA», xG, possesso. Overflow 0 px. Testo leggibile nello screenshot `02-dopo-click-Salta_premiazione_.png`, nessun testo tagliato.
+- **Intervista**: non c'è un pulsante intervista nella post-partita. Dopo «🏟️ Torna alla dashboard» l'intervista compare da sola (senza hook): giornalista, ospiti in sala, tre risposte («Diplomatico», «Ambizioso», «Umile»). A 375 px overflow 0 px, testi interi. Screenshot `21-dashboard-dopo-partita.png`. Il giro 1 non l'aveva raggiunta: usava l'hook `forceInterview`, che in post-partita non apre la finestra; il percorso reale passa dalla dashboard.
+- **Patto col mister** (`popup-224.mjs` a 375 px): verde = finestra presente, centrata, chiusa dalla scelta, patto `kept`; rosso = nessuna finestra e verdetto come riquadro in home (atteso). Screenshot `patto-375.png` (prima della chiusura): «IL PATTO COL MISTER — VERDETTO», testo intero. Il testo «41 gol su 0» viene dal guardiano, che forza l'obiettivo a 0: **artefatto del test**, non misurato con obiettivi reali.
+- **Console**: sorgente 2 messaggi Babel per caricamento (come nel giro 1). In partita 1 warning `[CPM-GL] contesto grafico perso: la scena verrà ricostruita al ripristino` (`partita-375-158.log`): compare in headless, **non analizzato**. Dist web: 0 messaggi (punto 4).
+- **Scroll orizzontale**: 0 px su tutte le schermate misurate (fine partita, post-partita, dashboard, intervista, patto).
+- **Osservazione estetica (non bloccante)**: la barra di navigazione ha 7 voci da 53 px che coprono 0–375 px. Misura DOM: `scrollWidth = clientWidth = 48` su ogni voce, quindi nessun taglio dentro i pulsanti, ma «OPZIONI» arriva al bordo destro senza margine (`nav` in `popup-224-shot` log, `patto-shot-158.log`).
+
+### Punto 2 — scheda «Profilo» sulla dist: NON è un difetto
+
+- Etichetta reale: la barra in basso ha la voce **CARRIERA** (il CSS la mette in maiuscolo; `innerText` = «CARRIERA», `textContent` = «Carriera»). Dentro CARRIERA il segmented control ha **«👤 Profilo»** e **«🌍 Nazionale»** (`src/18-career-app.jsx:7162`, `label:"Profilo"` con icona).
+- Dopo il percorso CARRIERA → «👤 Profilo» la scheda si apre: compare «STATISTICHE» (in maiuscolo via CSS), sezioni «RECORD DI CARRIERA», «BIOGRAFIA», «STATISTICHE CARRIERA». Overflow 0 px, 0 messaggi console. Screenshot `shots-158-profilo/02-profilo.png`.
+- Perché il giro 1 la dava «non trovata»: cercava «Profilo» come testo esatto al primo livello. Sonda corretta: `probe-profilo-dist.mjs`.
+
+### Punto 3 — classifica del salvataggio 194 (GF 790 ≠ GA 787)
+
+**Riprodotto sulla 158** (`probe-3s-194-158.log`, `PROBE_SAVE=old PROBE_FIX=save-194-primavera-w38.json`): `S1W38: GF 790 ≠ GA 787` (ripetuto due volte) e `S1W40: GF 792 ≠ GA 789`. Il giro 1 leggeva «W39»: il passo che sceglie la transizione U18→pro cambia il conteggio delle settimane, da qui la differenza di etichetta. Lo sbilancio è costante a 3 e si azzera a ogni rollover (S2→S3 817=817, S3→S4 787=787, S4→S5 765=765).
+
+**Verifiche sul file (lettura diretta, `save-194-primavera-w38.json`):**
+- 18 righe. **Ogni riga è coerente in sé**: V+P+S = giocate, punti = 3V+P, differenza reti = GF−GA.
+- La riga dell'eroe (FC Laguna Primavera, id `ven`) **coincide con il suo calendario**: GF 59, GA 10, 33 risultati su 33 coerenti con il segno (`homeScore` nel calendario = gol dell'eroe, non gol di casa: convenzione verificata sui 33 risultati).
+- Quindi lo sbilancio di +3 sta in partite **fra squadre diverse dall'eroe**, che il calendario non registra.
+
+**Settimana di origine: non determinabile dal file.** Il file non contiene storia delle settimane e lo sbilancio è già presente al caricamento. **Non posso confermarlo.**
+
+**Causa: IPOTESI (non verificata).** `src/09-audio-scout-anagrafiche.jsx:1433-1441`, ramo «riposo» di `updateStandings`: quando le squadre non ancora accoppiate sono dispari, la squadra di riposo (`byeTeam`) riceve `gf += bG` e `ga += gG` (riga 1438) senza che alcuna controparte registri quei gol. Le partite accoppiate invece sono simmetriche (`src/09-audio-scout-anagrafiche.jsx:1453-1455`: `h.gf+=hG; h.ga+=aG` e `a.gf+=aG; a.ga+=hG`). Ogni riposo sposta quindi GF−GA di `bG−gG`. Il meccanismo è coerente con un +3 netto, ma **non è provato**: mancano i riposi della stagione. Per confermarlo: contare i riposi per stagione in una replay da S1 W1 e controllare GF−GA settimana per settimana (non eseguito: niente correzioni in questo giro).
+
+### Punto 4 — Babel in-browser: quanto pesa e cosa serve il sito
+
+**Come si pubblica (`.github/workflows/deploy-pages.yml`, su push a `main`, verificato anche su `origin/main`):**
+- riga 68: la sorgente viene copiata in `_site/`;
+- righe 75–76: `index.html` e `CARRIER-MANAGER-AV.html` vengono **sovrascritti** con `dist-web/index.html`, prodotto da `tools/build-dist.mjs --web` (riga 44).
+
+Quindi il sito **già serve la dist precompilata**, sia alla radice sia all'indirizzo storico. La sorgente non è pubblicata. La premessa del giro 1 era errata. Il rilievo C riguarda solo chi apre il file sorgente in locale.
+
+**Misura** (`probe-babel-tempo.mjs`, log `babel-tempo-158.log`, 3 caricamenti ciascuno, contesto nuovo, tempo da navigazione a `#root` popolato):
+
+| Versione | Caricamenti (ms) | Mediana | Messaggi Babel in console |
+|---|---|---|---|
+| Sorgente `CARRIER-MANAGER-AV.html` | 11.569 · 10.652 · 10.150 | **10.652 ms** | 2 per caricamento (warning + error «deoptimised») |
+| Dist web `dist-web/index.html` | 478 · 519 · 530 | **519 ms** | 0 |
+
+Ambiente: headless con librerie locali (`installCdnRoutes`): i valori sono **relativi**, non misurano la rete o un telefono. Il messaggio «deoptimised» dichiara che Babel ha disattivato l'ottimizzazione di stile perché l'input supera i 500 KB: **non ho verificato altro** oltre al tempo misurato.
+
+### Riepilogo dei punti del giro 2
+
+| Punto | Esito |
+|---|---|
+| 1 · D intervista/post-partita/patto a 375 px | ✅ fischio raggiunto, post-partita e intervista leggibili, overflow 0 px, patto verde e rosso come atteso. Due rilievi estetici/di test (barra al bordo, «41 gol su 0» da obiettivo forzato) |
+| 2 · E scheda Profilo | ✅ **non è un difetto**: voce «👤 Profilo» dentro CARRIERA, si apre |
+| 3 · B classifica 194 | ✅ riprodotta (790≠787 da S1W38, costante a 3). Settimana non determinabile. Causa **ipotesi** `src/09-audio-scout-anagrafiche.jsx:1433-1441` (riposo a senso unico) |
+| 4 · C Babel | ✅ premessa corretta: il sito serve già la dist. Sorgente 10,7 s vs dist-web 0,5 s (mediana, headless) |
+| 5 · ripetizione copyright/build/validate | ✅ tutti EXIT 0 su store e web. A: stringhe ancora nei bundle, visibilità non confermata |
+
+**Punti aperti:** A (copyright: blocklist incompleta, stringhe nel bundle); B (causa da confermare con replay dei riposi); esiti diversi con lo stesso seme nella partita (causa non indagata); `[CPM-GL] contesto grafico perso` in headless (non analizzato). Nessuna correzione al gioco. Nessuna promozione su `main`. Nessuna PR.
