@@ -1,0 +1,67 @@
+{
+ "partita": 9,
+ "nome": "Coll226c9",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 282,
+ "errori": [],
+ "intx": [
+  {
+   "min": 20,
+   "id": "co_voce",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 30,
+   "id": "av_pres",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 46,
+   "id": "co_int",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 57,
+   "id": "er_reaz",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_reaz",
+   "idx": 0,
+   "auto": true,
+   "min": 57
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 0,
+  "away": 3
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  25,
+  44,
+  62,
+  75,
+  48,
+  86,
+  62,
+  73
+ ]
+}
