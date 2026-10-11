@@ -1,0 +1,68 @@
+{
+ "partita": 3,
+ "nome": "Coll226c3",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 282,
+ "errori": [],
+ "intx": [
+  {
+   "min": 26,
+   "id": "mi_cons",
+   "fam": "MISTER"
+  },
+  {
+   "min": 36,
+   "id": "er_sprona",
+   "fam": "EROE"
+  },
+  {
+   "min": 46,
+   "id": "er_giovane",
+   "fam": "EROE"
+  },
+  {
+   "min": 57,
+   "id": "er_reaz",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_reaz",
+   "idx": 0,
+   "auto": true,
+   "min": 57
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 0,
+  "away": 1
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  24,
+  39,
+  53,
+  69,
+  86,
+  55,
+  63,
+  77,
+  90
+ ]
+}
