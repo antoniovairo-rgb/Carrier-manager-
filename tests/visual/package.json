@@ -35,6 +35,7 @@
     "postarc-buildup-lag": "node postarc-buildup-lag-test.mjs",
     "postarc-buildup-live": "node postarc-buildup-live-test.mjs",
     "goal-postarc": "node goal-postarc-test.mjs",
+    "po229-gi38": "node po229-gi38-probe.mjs",
     "camera-step-census": "node camera-step-census-test.mjs",
     "wave-pose-sweep": "node wave-pose-sweep.mjs",
     "wave-arm-geometry": "node wave-arm-geometry.mjs",

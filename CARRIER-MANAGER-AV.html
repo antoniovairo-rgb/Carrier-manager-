@@ -19255,7 +19255,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(_stgNew456&&!_hlSnap&&_asIfPlay&&!P.ceremony&&!P.shootout&&/^hl_/.test(_curPh||"")
            &&sr.current._reSnap401!==P.hlSitKey&&P.hlSitKey!=null){
           sr.current._reSnap401=P.hlSitKey;_hlSnap=true;sr.current._cutSrc456="staging";
-          sr.current._ballSnap=true;sr.current._sceneCut=true;sr.current._cutZoomSnap=true;
+          /* [PO-229 gi38 «Dai e vai preciso»: riquadro «Passaggio vincente!», premio assist, ma in 3D il
+             pallone resta ai piedi dell'eroe e nessun compagno conclude] IL RI-TAGLIO NON UCCIDE LA
+             CONCLUSIONE GIA' PARTITA. Misurato col registratore per fotogramma: quando il primo fotogramma
+             della scena e' gia' `hl_result` (scena forzata/revisione a fps bassi), nello STESSO fotogramma
+             il cambio di fase chiama fireConclusion (arco dell'appoggio al muro armato) e questo blocco —
+             che sta prima del rilevamento del taglio di chiave — rialzava `_ballSnap`; al fotogramma dopo
+             lo snap di scena (r.~3560) spegneva arco e post-arco: niente restituzione, niente servizio.
+             La chiave e' la STESSA (il pallone e' gia' stato agganciato alla scena): se la conclusione e'
+             viva (arco, build-up o post-arco) il pallone resta suo; corpi e camera si ri-tagliano come
+             prima. Rosso __CPM_NO_PO229. */
+          const _viva229=(_curPh==="hl_result"&&(ballArcActive||tlOn||hlPostArcType!=null)&&!(typeof window!=='undefined'&&window.__CPM_NO_PO229));
+          if(!_viva229)sr.current._ballSnap=true;else if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_PO229=(window.__CPM_PO229||0)+1;}catch(_e){}}
+          sr.current._sceneCut=true;sr.current._cutZoomSnap=true;
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const _c=(window.__CPM_RSNP401=window.__CPM_RSNP401||[]);if(_c.length<40)_c.push({k:P.hlSitKey,t:Math.round(now-(sr.current._cutAt||0)),src:"staging"});}}
         /* [7.592.0 SOLO COLLAUDO] la scomposizione si chiude QUI, dove il bersaglio e' definitivo e la
            mesh e' quella che l'utente vede: cosi' l'ultimo pezzo — quanto la mesh resta indietro rispetto
