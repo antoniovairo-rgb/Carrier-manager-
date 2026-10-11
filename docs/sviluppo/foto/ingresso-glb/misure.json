@@ -1,0 +1,62 @@
+{
+  "W": 412,
+  "H": 915,
+  "pm": true,
+  "fotogrammi": [
+    {
+      "n": 1,
+      "testo": "PRIMAVERA 2",
+      "top": 579,
+      "bottom": 602,
+      "centro": 591,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    },
+    {
+      "n": 2,
+      "testo": "PRIMAVERA 2",
+      "top": 564,
+      "bottom": 588,
+      "centro": 576,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    },
+    {
+      "n": 3,
+      "testo": "PRIMAVERA 2",
+      "top": 564,
+      "bottom": 588,
+      "centro": 576,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    },
+    {
+      "n": 4,
+      "testo": "PRIMAVERA 2",
+      "top": 564,
+      "bottom": 588,
+      "centro": 576,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    },
+    {
+      "n": 5,
+      "testo": "PRIMAVERA 2",
+      "top": 564,
+      "bottom": 588,
+      "centro": 576,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    },
+    {
+      "n": 6,
+      "testo": "PRIMAVERA 2",
+      "top": 564,
+      "bottom": 588,
+      "centro": 576,
+      "fasciaInferiore": false,
+      "fase": "walkout"
+    }
+  ],
+  "errori": []
+}
