@@ -1,2 +1,3 @@
 k1 ceremony scene=7 gol_eroe=1 score={"home":2,"away":0} 314s
 k2 ceremony scene=7 gol_eroe=0 score={"home":0,"away":1} 297s
+k3 ceremony scene=7 gol_eroe=2 score={"home":2,"away":0} 305s
