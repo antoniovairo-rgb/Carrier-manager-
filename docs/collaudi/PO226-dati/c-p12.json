@@ -1,0 +1,71 @@
+{
+ "partita": 12,
+ "nome": "Coll226c12",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 93,
+ "secondi": 275,
+ "errori": [],
+ "intx": [
+  {
+   "min": 25,
+   "id": "mi_cons",
+   "fam": "MISTER"
+  },
+  {
+   "min": 30,
+   "id": "er_gol",
+   "fam": "EROE"
+  },
+  {
+   "min": 46,
+   "id": "mi_int",
+   "fam": "MISTER"
+  },
+  {
+   "min": 56,
+   "id": "co_int",
+   "fam": "COMPAGNI"
+  }
+ ],
+ "sc": [
+  {
+   "id": "co_int",
+   "idx": 0,
+   "auto": true,
+   "min": 56
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 2,
+  "away": 1
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [
+  "📢 RIGORE! Fallo di Cristiano (ALT) su Coll226c12 in piena area: l'arbitro indica il disch",
+  "📢 RIGORE! Fallo di Cristiano (ALT) su Coll226c12 in piena area: l'arbitro indica il disch",
+  "📢 RIGORE! Fallo di Cristiano (ALT) su Coll226c12 in piena area: l'arbitro indica il disch",
+  "📢 RIGORE! Fallo di Cristiano (ALT) su Coll226c12 in piena area: l'arbitro indica il disch"
+ ],
+ "intxN": 50,
+ "hlMin": [
+  10,
+  27,
+  21,
+  19,
+  47,
+  57,
+  68,
+  86
+ ]
+}
