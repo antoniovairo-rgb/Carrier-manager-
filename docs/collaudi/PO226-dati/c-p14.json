@@ -1,0 +1,66 @@
+{
+ "partita": 14,
+ "nome": "Coll226c14",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 279,
+ "errori": [],
+ "intx": [
+  {
+   "min": 28,
+   "id": "co_voce",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 46,
+   "id": "mi_int",
+   "fam": "MISTER"
+  },
+  {
+   "min": 56,
+   "id": "er_sprona",
+   "fam": "EROE"
+  },
+  {
+   "min": 66,
+   "id": "er_reaz",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_reaz",
+   "idx": 0,
+   "auto": true,
+   "min": 66
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 1,
+  "away": 1
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  10,
+  26,
+  43,
+  61,
+  39,
+  70,
+  84,
+  88
+ ]
+}
