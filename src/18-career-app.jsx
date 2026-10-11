@@ -1915,6 +1915,13 @@ const getThisWeekMatchday=()=>{
   //   (i tuoi assist/gol/striscia reali), sul compagno vero di p.teammates (nomi dal roster stabile 7.8.16).
   //   Max 1 episodio ogni ≥3 settimane (budget d'attenzione S1); marker lazy p.bondEv {s,w}.
   const bondState=(v)=>v>=75?{e:"💙",l:"Amico fraterno"}:v>=50?{e:"🤝",l:"Alleato"}:v>=25?{e:"😐",l:"Conoscente"}:{e:"❄️",l:"Gelo"};
+  /* [7.999.158 PO-224, foto PO 11/10 «il box a comparsa dello spogliatoio si perde facilmente, questi impulsi devono essere gestiti come pop up»]
+     i riquadri della home che chiedono una scelta (patto col mister: proposta e verdetto; lo spogliatoio) compaiono come FINESTRA sopra la home,
+     uno alla volta: il primo che si disegna prende la finestra, gli altri aspettano che sia risolto. Sotto ?cpmtest=1 restano riquadri
+     (le sonde cliccano la home) salvo __CPM_POP224; rosso __CPM_NO_POP224. */
+  let _popTaken224=false;
+  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;_popTaken224=true;
+    return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto"}}>{node}</div></div>);};
   const bondEvent=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;const tms=p.teammates||[];if(!tms.length)return null;
@@ -7500,7 +7507,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const pv=pactView(player);if(!pv)return null;
         const cName=player.coach?.name||"Il mister";
-        if(pv.st==="offer")return(
+        if(pv.st==="offer")return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#0d2418,#10301f)",TH.card),border:_n30("1px solid #1d6b45","1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30("#6ee7b7",semTesto945("#6ee7b7")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister</div>
             <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
@@ -7527,7 +7534,7 @@ const getThisWeekMatchday=()=>{
           `«Ti avevo dato ${pv.played} gare: ne sono usciti ${pv.val} ${_u} su ${pv.pact.target}. Il campo non fa sconti, nemmeno a me.»`,
           `«${pv.val} su ${pv.pact.target}. Non te ne faccio una colpa: ma il posto, adesso, te lo devi riprendere.»`];
         const _vTx=_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length];
-        return(
+        return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"#6ee7b7":TH.txAmber,_kept?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister — verdetto</div>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"rgba(255,255,255,0.85)":TH.txAmber,_kept?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_vTx}</div>
@@ -7537,7 +7544,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: episodio di legame derivato dai fatti (max 1 ogni ≥3 settimane) */}
       {tab==="dashboard"&&(()=>{
         const be=bondEvent(player);if(!be)return null;
-        return(
+        return _pop224(
         <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#112240)",TH.card),border:_n30("1px solid rgba(56,189,248,0.25)","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>

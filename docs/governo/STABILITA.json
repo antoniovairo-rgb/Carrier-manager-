@@ -1,5 +1,88 @@
 [
  {
+  "data": "2026-10-10 23:54",
+  "versione": "7.999.157",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 726
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 54
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 722
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 510
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1089
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1074
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 3251
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2200
+   },
+   {
+    "passo": "scene-221",
+    "ok": false,
+    "s": 1661,
+    "coda": "PARTITE scene [10,5,8,12,9,10] media 9.00 · gol eroe 0.50 a partita (informativo) | ❌ scene-221 |   · partite: media 9.00 scene (pavimento 4-8,5)"
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-10 20:01",
   "versione": "7.999.157",
   "catena": "carriera",
@@ -6609,59 +6692,6 @@
     "passo": "partita-vera",
     "ok": true,
     "s": 521
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-04 20:25",
-  "versione": "7.999.132",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 28
-   },
-   {
-    "passo": "validate-situations",
-    "ok": false,
-    "s": 730,
-    "coda": "gate-history → 145 run · 🔴 REGRESSIONE (pulita → rotta) |  | ❌ FAIL — ball-motion"
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 65
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 911
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 523
    },
    {
     "passo": "design-system",
