@@ -51203,7 +51203,7 @@ const getThisWeekMatchday=()=>{
         const team=(t,pos)=>(
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,flex:1,minWidth:0}}>
             <TeamBadge team={t} size={44}/>
-            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.n||t.name}</div>
+            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"normal",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{t.n||t.name}</div>
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(

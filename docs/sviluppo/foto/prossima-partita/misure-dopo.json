@@ -1,0 +1,81 @@
+{
+  "label": "dopo",
+  "misure": [
+    {
+      "px": 360,
+      "trovata": true,
+      "altezza": 229,
+      "larghezza": 347,
+      "x": 7,
+      "y": 270,
+      "nomi": [
+        {
+          "t": "FC Modenese Primavera",
+          "larghezza": 99,
+          "contenuto": 99,
+          "troncato": false,
+          "righe": 2
+        },
+        {
+          "t": "FC Ciociaro Primavera",
+          "larghezza": 99,
+          "contenuto": 99,
+          "troncato": false,
+          "righe": 2
+        }
+      ],
+      "sx": 0
+    },
+    {
+      "px": 375,
+      "trovata": true,
+      "altezza": 229,
+      "larghezza": 362,
+      "x": 7,
+      "y": 270,
+      "nomi": [
+        {
+          "t": "FC Modenese Primavera",
+          "larghezza": 106,
+          "contenuto": 106,
+          "troncato": false,
+          "righe": 2
+        },
+        {
+          "t": "FC Ciociaro Primavera",
+          "larghezza": 106,
+          "contenuto": 106,
+          "troncato": false,
+          "righe": 2
+        }
+      ],
+      "sx": 0
+    },
+    {
+      "px": 412,
+      "trovata": true,
+      "altezza": 229,
+      "larghezza": 394,
+      "x": 9,
+      "y": 270,
+      "nomi": [
+        {
+          "t": "FC Modenese Primavera",
+          "larghezza": 120,
+          "contenuto": 120,
+          "troncato": false,
+          "righe": 2
+        },
+        {
+          "t": "FC Ciociaro Primavera",
+          "larghezza": 120,
+          "contenuto": 120,
+          "troncato": false,
+          "righe": 2
+        }
+      ],
+      "sx": 0
+    }
+  ],
+  "errori": []
+}
