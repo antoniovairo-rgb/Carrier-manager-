@@ -1,0 +1,245 @@
+{
+  "misure": [
+    {
+      "momento": "inizio",
+      "w": 360,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        347,
+        347,
+        347,
+        169,
+        169,
+        347,
+        347,
+        347
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "inizio",
+      "w": 375,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        362,
+        362,
+        362,
+        176,
+        176,
+        362,
+        362,
+        362
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "inizio",
+      "w": 412,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        394,
+        394,
+        394,
+        193,
+        193,
+        394,
+        394,
+        394
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "meta",
+      "w": 360,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 7,
+      "larghezze": [
+        347,
+        347,
+        169,
+        169,
+        347,
+        347,
+        347
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "meta",
+      "w": 375,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 7,
+      "larghezze": [
+        362,
+        362,
+        176,
+        176,
+        362,
+        362,
+        362
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "meta",
+      "w": 412,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 7,
+      "larghezze": [
+        394,
+        394,
+        193,
+        193,
+        394,
+        394,
+        394
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "fine",
+      "w": 360,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        347,
+        347,
+        347,
+        169,
+        169,
+        347,
+        347,
+        347
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "fine",
+      "w": 375,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        362,
+        362,
+        362,
+        176,
+        176,
+        362,
+        362,
+        362
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    },
+    {
+      "momento": "fine",
+      "w": 412,
+      "navBloccate": 0,
+      "navSborda": [
+        "HOME:0",
+        "STAGIONE:0",
+        "CLUB:0",
+        "CARRIERA:0",
+        "AGENTE:0",
+        "UFFICIO:0",
+        "OPZIONI:0"
+      ],
+      "carte": 8,
+      "larghezze": [
+        394,
+        394,
+        394,
+        193,
+        193,
+        394,
+        394,
+        394
+      ],
+      "sotto10": 0,
+      "overflowX": 0
+    }
+  ],
+  "errori": []
+}

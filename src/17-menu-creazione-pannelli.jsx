@@ -2328,6 +2328,13 @@ function migratePlayer(player){
     if(!('teamChemistry' in newP)){newP={...newP,teamChemistry:60};changed=true;}
     // F8 (5.29.0): piede preferito (~22% mancini, deterministico da nome+nazione)
     if(!('foot' in newP)){newP={...newP,foot:(Math.abs(hashStr((newP.name||"")+(newP.nation||"")))%100)<22?"L":"R"};changed=true;}
+    // [giro 6, decisione PO 11/10] club con nomi reali rinominati: rimappo i nomi salvati. Idempotente, senza bump SAVE.
+    {const _ncl=_renameClub6(newP.club&&newP.club.n);
+     const _chg=(arr,k)=>(arr||[]).some(x=>x&&_renameClub6(x[k])!==x[k]);
+     const _rnA=(arr,k)=>(arr||[]).map(x=>x&&_renameClub6(x[k])!==x[k]?{...x,[k]:_renameClub6(x[k])}:x);
+     const _clubChg=!!(newP.club&&_ncl!==newP.club.n);
+     if(_clubChg||_chg(newP.standings,"n")||_chg(newP.calendar,"opponentName")||_chg(newP.matchHistory,"opponent")){
+       newP={...newP,club:_clubChg?{...newP.club,n:_ncl}:newP.club,standings:newP.standings?_rnA(newP.standings,"n"):newP.standings,calendar:newP.calendar?_rnA(newP.calendar,"opponentName"):newP.calendar,matchHistory:newP.matchHistory?_rnA(newP.matchHistory,"opponent"):newP.matchHistory};changed=true;}}
     // Sprint 28 migrations
     if(!('leagueArchive' in newP)){newP={...newP,leagueArchive:[]};changed=true;}
     // Sprint 42 migrations

@@ -24,19 +24,19 @@
 const CLUBS=[
   // -- ITALIA Lega A --
   mkT("juve","Torino Athletic","TAT",95,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
-  mkT("inter","FC Nerazzurri","NRZ",92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
-  mkT("milan","AC Rossoneri","ACR",90,"#dc2626","#0f0f0f","🇮🇹","Lega A"),
-  mkT("napoli","FC Partenope","PRT",88,"#38bdf8","#ffffff","🇮🇹","Lega A"),
+  mkT("inter","FC Valmora","VAL",92,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
+  mkT("milan","AC Dorvelli","ACR",90,"#dc2626","#0f0f0f","🇮🇹","Lega A"),
+  mkT("napoli","FC Vellamare","VEL",88,"#38bdf8","#ffffff","🇮🇹","Lega A"),
   mkT("roma","FC Capitale","CAP",84,"#b91c1c","#f59e0b","🇮🇹","Lega A"),
-  mkT("lazio","FC Biancoceleste","BIA",80,"#93c5fd","#ffffff","🇮🇹","Lega A"),
+  mkT("lazio","FC Alcavera","ALC",80,"#93c5fd","#ffffff","🇮🇹","Lega A"),
   mkT("ata","FC Bergamo","BRG",82,"#1d4ed8","#0f0f0f","🇮🇹","Lega A"),
-  mkT("fio","FC Viola","VIO",77,"#7c3aed","#f5f5f5","🇮🇹","Lega A"),
-  mkT("tor","FC Granata","GRA",70,"#6c1f2e","#f5f5f5","🇮🇹","Lega A"),
+  mkT("fio","FC Brenvar","BRN",77,"#7c3aed","#f5f5f5","🇮🇹","Lega A"),
+  mkT("tor","FC Torvelle","TRV",70,"#6c1f2e","#f5f5f5","🇮🇹","Lega A"),
   mkT("bol","FC Felsineo","FEL",72,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
   mkT("udi","FC Friulano","FRI",65,"#f5f5f5","#0f0f0f","🇮🇹","Lega A"),
-  mkT("sas","FC Neroverde","NER",68,"#15803d","#0f0f0f","🇮🇹","Lega A"),
+  mkT("sas","FC Caldoran","CAL",68,"#15803d","#0f0f0f","🇮🇹","Lega A"),
   mkT("cag","FC Sardo","SAR",65,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
-  mkT("sam","FC Blucerchiati","BLU",67,"#1d4ed8","#dc2626","🇮🇹","Lega A"),
+  mkT("sam","FC Marnesi","MAR",67,"#1d4ed8","#dc2626","🇮🇹","Lega A"),
   mkT("gen","FC Genova","GEN",66,"#dc2626","#1d4ed8","🇮🇹","Lega A"),
   mkT("ver","FC Scaligero","SCA",67,"#f59e0b","#1d4ed8","🇮🇹","Lega A"),
   mkT("mon2","FC Brianzolo","BRI",64,"#dc2626","#f5f5f5","🇮🇹","Lega A"),
@@ -67,20 +67,20 @@ const CLUBS=[
   mkT("sev","FC Hispalense","HIS",84,"#f5f5f5","#dc2626","🇪🇸","Liga Ibérica"),
   mkT("vill","FC Submarino","SUB",80,"#f59e0b","#1d4ed8","🇪🇸","Liga Ibérica"),
   mkT("rsoc","FC Sociedad","SOC",78,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
-  mkT("bet","FC Verdiblanco","VER",76,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("bet","FC Ventrana","VER",76,"#15803d","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("val","FC Valenciano","VLN",75,"#f5f5f5","#0f0f0f","🇪🇸","Liga Ibérica"),
   mkT("osa","FC Navarro","NAV",68,"#dc2626","#1d4ed8","🇪🇸","Liga Ibérica"),
-  mkT("cel","FC Celeste","CEL",70,"#93c5fd","#ffffff","🇪🇸","Liga Ibérica"),
+  mkT("cel","FC Oriolan","ORI",70,"#93c5fd","#ffffff","🇪🇸","Liga Ibérica"),
   mkT("ath","FC Bilbao","BIL",74,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("ray","FC Madrid Este","MAD",66,"#f5f5f5","#dc2626","🇪🇸","Liga Ibérica"),
   mkT("gir","FC Gironí","GIR",72,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("mall","FC Balear","BAL",65,"#dc2626","#0f0f0f","🇪🇸","Liga Ibérica"),
-  mkT("get","FC Azulón","AZU",64,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("get","FC Dalvora","DAL",64,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
   mkT("las","FC Canario","CNR",62,"#f59e0b","#1d4ed8","🇪🇸","Liga Ibérica"),
   mkT("alm","FC Indálico","IND",60,"#dc2626","#f5f5f5","🇪🇸","Liga Ibérica"),
-  mkT("esp","FC Perico","PER",63,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
+  mkT("esp","FC Pelvanni","PEL",63,"#1d4ed8","#f5f5f5","🇪🇸","Liga Ibérica"),
   // -- GERMANY 1. Liga --
-  mkT("bay","FC München","FCM",99,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
+  mkT("bay","FC Valdenau","VLD",99,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("bvb","FC Goldwald","GLW",93,"#f59e0b","#0f0f0f","🇩🇪","Deutsche Liga"),
   mkT("rbl","FC Leipzig","FLZ",88,"#f5f5f5","#dc2626","🇩🇪","Deutsche Liga"),
   mkT("b04","FC Werkstadt","WRK",89,"#dc2626","#0f0f0f","🇩🇪","Deutsche Liga"),
@@ -93,13 +93,13 @@ const CLUBS=[
   mkT("aug","FC Augsburg","AUG",66,"#15803d","#dc2626","🇩🇪","Deutsche Liga"),
   mkT("mai","FC Mainz","MAI",68,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("hof","FC Kraichgau","KRA",70,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
-  mkT("kol","FC Köln","KOL",65,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
+  mkT("kol","FC Ravelmund","RVM",65,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("wer","FC Weser","WSR",72,"#15803d","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("dsc","FC Lilien","LLN",58,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("boc","FC Ruhrpott","RUH",60,"#1d4ed8","#f5f5f5","🇩🇪","Deutsche Liga"),
   mkT("ber","FC Berlin Nord","BNO",62,"#dc2626","#f5f5f5","🇩🇪","Deutsche Liga"),
   // -- FRANCE Ligue Nationale --
-  mkT("psg","FC Paris","PRS",97,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
+  mkT("psg","FC Lumeranza","LUM",97,"#1d4ed8","#dc2626","🇫🇷","Ligue Nationale"),
   mkT("marse","FC Marseille","MSL",85,"#f5f5f5","#38bdf8","🇫🇷","Ligue Nationale"),
   mkT("mon","FC Monaco","MCO",82,"#dc2626","#f5f5f5","🇫🇷","Ligue Nationale"),
   mkT("lyon","FC Lyon","LYO",80,"#f5f5f5","#1d4ed8","🇫🇷","Ligue Nationale"),
@@ -120,7 +120,7 @@ const CLUBS=[
   // -- PORTUGAL Primeira Liga --
   mkT("ben","FC Lisboa","FLS",88,"#dc2626","#f5f5f5","🇵🇹","Liga Lusitana"),
   mkT("por","FC Portomar","POR",87,"#1d4ed8","#f5f5f5","🇵🇹","Liga Lusitana"),
-  mkT("spo","FC Leões","LEO",85,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
+  mkT("spo","FC Rendalto","RDL",85,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
   mkT("bra","FC Minhoto","MIN",74,"#dc2626","#ffffff","🇵🇹","Liga Lusitana"),
   mkT("vsc","FC Vimaranense","VIM",68,"#f5f5f5","#0f0f0f","🇵🇹","Liga Lusitana"),
   mkT("rioave","FC Rio Verde","RIO",65,"#15803d","#f5f5f5","🇵🇹","Liga Lusitana"),
@@ -326,8 +326,8 @@ const LEAGUE_RECORDS={
     ]
   },
   "Liga Ibérica 2":{
-    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:"FC Perico",era:"1990–2006"},
-    seasonRecord:{name:"Iker Zubiaga",goals:30,club:"FC Celeste",season:"2012-13"},
+    allTimeScorer:{name:"Andrés Cobeña",goals:208,club:"FC Pelvanni",era:"1990–2006"},
+    seasonRecord:{name:"Iker Zubiaga",goals:30,club:"FC Oriolan",season:"2012-13"},
     topScorers:[
       {name:"Andrés Cobeña",goals:208},{name:"Manolo Ledesmar",goals:182},
       {name:"PacoLedesma",goals:167},{name:"Xavi Morante",goals:150},{name:"Sergio Peñalver",goals:143},
@@ -335,7 +335,7 @@ const LEAGUE_RECORDS={
   },
   "Lega A":{
     allTimeScorer:{name:"Silvio Calabretti",goals:325,club:"FC Capitale",era:"1974–1994"},
-    seasonRecord:{name:"Roberto Macina",goals:38,club:"FC Partenope",season:"1987-88"},
+    seasonRecord:{name:"Roberto Macina",goals:38,club:"FC Vellamare",season:"1987-88"},
     topScorers:[
       {name:"Silvio Calabretti",goals:325},{name:"Franco Melotti",goals:281},
       {name:"Dario Ferrucci",goals:248},{name:"Lorenzo Bianchi",goals:204},{name:"Marco Sabetti",goals:179},
@@ -358,7 +358,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Deutsche Liga":{
-    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:"FC München",era:"1975–1995"},
+    allTimeScorer:{name:"Klaus Schreiber",goals:307,club:"FC Valdenau",era:"1975–1995"},
     seasonRecord:{name:"Dieter Krüger",goals:40,club:"FC Goldwald",season:"1999-00"},
     topScorers:[
       {name:"Klaus Schreiber",goals:307},{name:"Dieter Krüger",goals:268},
@@ -366,7 +366,7 @@ const LEAGUE_RECORDS={
     ]
   },
   "Ligue Nationale":{
-    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:"FC Paris",era:"1980–2002"},
+    allTimeScorer:{name:"Pierre Delacroix",goals:274,club:"FC Lumeranza",era:"1980–2002"},
     seasonRecord:{name:"Alain Mercier",goals:37,club:"FC Marseille",season:"1972-73"},
     topScorers:[
       {name:"Pierre Delacroix",goals:274},{name:"Jacques Fontaine",goals:238},
@@ -448,7 +448,7 @@ const EURO_COMP_WINNERS={
   UCL:[
     {s:2024,club:"CF Madrid",nat:"🇪🇸"},{s:2023,club:"FC Manchester",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2022,club:"CF Madrid",nat:"🇪🇸"},{s:2021,club:"FC Stamford",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-    {s:2020,club:"FC München",nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {s:2020,club:"FC Valdenau",nat:"🇩🇪"},{s:2019,club:"FC Merseyside",nat:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
     {s:2018,club:"CF Madrid",nat:"🇪🇸"},
   ],
   UEL:[

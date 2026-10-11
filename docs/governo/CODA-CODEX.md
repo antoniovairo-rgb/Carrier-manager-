@@ -238,3 +238,99 @@ Riportato dal PO in chat. Nessuna modifica al gioco, commit, push o PR.
   - **S NON CHIUSA**: premiazioni campionato/europa/nazionale e galà, 24 fotogrammi GLB acceso, 0 errori di pagina; da verificare un trofeo che tocca la testa (europa, f.3) e un blocco grigio davanti al piedistallo del galà (f.5). Festa, ingresso e pullman non ancora fotografati (in corso).
 - **Sviluppatrice**: la prima (`session_016iFXUZxfYMv9QqUTMb1Yjx`, Opus) ha PO-066 committato ma non pubblicato; resta ferma e non archiviata, recuperabile dall'app. Nuova sviluppatrice Haiku `session_01TbSzdCEdMrbGy8oTtbQjFs`, ramo `sviluppo/haiku-l7-pulizia-l8`, pubblica dopo ogni commit.
 - **Controllo orario** (routine `trig_0151Hi6Bgbec84nyWuU48Qcz`, ai :35): stato delle sessioni, consegne nuove, catene da rilanciare dopo i riavvii del container.
+- **10/10 pomeriggio — sessioni ferme e ricreate.** Le sessioni cloud chiudono il turno dopo una consegna e non ripartono da sole (sviluppatrice ferma dalle 09:52 con PO-217 in bozza; collaudatrice dalle 10:24 dopo il pullman). Ricreate dal loro ramo con l'istruzione di lavorare tutta la lista senza chiudere il turno: sviluppatrice `session_01VhJfEAwkuj8abp38qJkV6K` (rebase su main 7.999.156; PO-217, PO-066, PO-072, L8), collaudatrice `session_01YNsyufPPUS5UPZtKwpLaB3` (S completamento: festa e ingresso; T su 7.999.156: PO-220 e PO-221). Q sospesa (serve un varco nell'area impulsi, zona G: decisione PO).
+- **10/10 sera — consegne giro 2 della collaudatrice** (ramo `collaudo/sessione-collaudatrice`, `docs/collaudi/RIEPILOGO-giro2.md`):
+  - **S (7.999.155):** festa raggiunta con GLB acceso (compare solo con vittoria); ingresso in campo: campo vuoto in 2 fotogrammi su 6, giocatori minuscoli in 2, card «Primavera 2» che copre il terzo inferiore (passato alla sviluppatrice); il trofeo NON tocca la testa e il «blocco grigio» del galà è il gradino del piedistallo (3 esecuzioni). Da verificare: fascia «2 gol» contro card «Gol 1» sullo stesso provino della festa.
+  - **T PO-220 (7.999.156):** distanza eroe-portatore mediana 4,25 u, nessun «press» su 10 scene; visivo GLB insufficiente.
+  - **T PO-221 (7.999.156):** 12 partite × 2 giri: scene mediana **9,0** (obiettivo 5-7), gol dell'eroe **1,00** (obiettivo 0,6-0,9), assist 0,21. **Lo stesso seme non ripete la partita** (0 su 12 identiche fra due giri, scarto medio 2,4 scene). **Smentisce la mia misura di 7,0 scene**: con 12 partite il campione è troppo piccolo per giudicare. In corso una misura di 36 partite sulla 7.999.157.
+- Sviluppatrice: PO-217 consegnato (`d93d7092`), ricreata per il giro 3 `session_01VzAUT4GNM99Fwim4VoLRq4` (PO-066, ingresso in campo, PO-072, L8).
+
+## 10/10/2026 (sera) — Chiusura Codex su 7.999.155 e coda finale fino al 19/10
+
+Riportato dal PO in chat.
+- **H (PO-219) — CHIUSA** sui corpi procedurali.
+- **I (PO-218) — NON VERIFICATA.** 3 scene con riquadro e cronaca «fuorigioco» e motore «intercetto», 2 ricorrenti nel campione supplementare; 1 «Finta e tiro» con tiro murato nel motore e cronaca «passaggio respinto». Ipotesi da riprodurre sotto PO-218, coerente con la mia nota del 09/10: il riquadro sceglie il tipo d'errore senza leggere l'esito del motore.
+- Codex dichiarava di non avviare altri collaudi; su domanda del PO preparata la coda finale `docs/governo/prompt/codex-2026-10-10-coda-finale.md` (base `2adc96ad`, 7.999.156): I2 cattura completa PO-218, T2 PO-221 sulla 7.999.157 quando è su main, P presenze/titolari, R schermate L7, L prestito, M inquadratura, N riserve A/E.
+
+### Misura del team, 36 partite sulla 7.999.157 (semi 101-109, 201-209, 301-309, 401-409)
+- Scene dell'eroe: media **8,61**, mediana 8,5 (min 3, max 13); 8 partite su 36 nella fascia 5-7, 18 sopra 8. Obiettivo PO 5-7 **non raggiunto**.
+- Gol dell'eroe **0,69** a partita (25 su 36): dentro 0,6-0,9. Assist **0,28** a partita (10), contro 0,08 della mia misura su 7.999.156.
+- Scene di tipo punizione: 57 su 36 partite (1,58 a partita; 14 partite con 2 o più), nonostante il tetto «1 punizione diretta». Ipotesi da verificare: il tetto `punz221` conta solo le punizioni aperte dal ramo origine (`src/15-live-match.jsx:5440`), mentre le altre arrivano da percorsi diversi (19 sono «Palla in area», cioè punizioni indirette). Non posso confermarlo finché non lo misuro per percorso.
+- **10/10 ore 17:35 — controllo orario.** Collaudatrice ferma dopo il giro 2 e sviluppatrice ferma con una catena a 2 passi rossi e push trattenuto (lavoro non pubblicato perso). Archiviate e ricreate: collaudatrice `session_01LjarJjEanVUqzi7LhPhUgJ` (zona Q sugli impulsi col varco `apriImpulso` della 7.999.157, dal ramo principale in una cartella separata; poi residuo S «2 gol» contro «Gol 1»), sviluppatrice `session_01WeyJoaMDGcNSWFe5aLXY1g` (rebase su main, PO-066 e ingresso in campo con foto prima/dopo, catena grafica, regola sui passi rossi: due rilanci da soli prima di fermarsi).
+
+## 10/10/2026 (notte) — Codex, coda finale: esiti sulla 7.999.156 (base `2adc96ad`)
+Riportato dal PO in chat. Nessuna modifica al gioco, commit o push.
+- **Chiuse sul campione:**
+  - **R** — home e analisi pre-partita a 360, 375 e 412 px.
+  - **L** — 3 tabellini col club del prestito corretto.
+  - **M** — 12 ricollaudi della camera, difetti non riprodotti nei fotogrammi acquisiti.
+  - **N/A** — `auto216` rileva il disallineamento iniettato, verificato.
+  - **N/E** — 5 ricariche: istantanea del giocatore invariata 5/5, differenze del salvataggio classificate.
+- **I2 (PO-218) — aperta.** 46 esiti non riusciti con 6 immagini ciascuno; **riprodotte le tre discordanze «fuorigioco» contro «intercetto» nel motore**. Mancano un cross vero nel campione e il confronto completo caso per caso di riquadro, cronaca, motore e 3D.
+- **P (PO-222) — aperta.** In 3 prove controllate la schermata dice «Non convocato» ma la presenza cresce dopo la simulazione (3/3). Sono varianti sintetiche dello stesso salvataggio: manca la misura su 30 partite di carriere diverse.
+- **T2 (PO-221) — non avviata**, in attesa del commit della 7.999.157 su main.
+- Dati grezzi sul banco Codex: `l1-i2.json`, `l1-p-probe.json`, `l1-r-visual.json`, `l1-loan-games-156.json`, `l1-camera-m-156.json`, `l1-auto216-156.json`, `l1-n-reload-156.json`.
+- **Lettura del team:** restano risultati del banco Codex finché non li riproduco. La discordanza «fuorigioco» contro «intercetto», ormai riprodotta due volte da Codex, è il primo punto di PO-218 da riprodurre sulla mia build.
+- **10/10 sera — consegne delle sessioni (giro 3 collaudo, giro 4 sviluppo) e ricreazione:**
+  - **Collaudatrice, zona Q (PO-154)** su 7.999.157 col varco `apriImpulso` (`docs/collaudi/Q-impulsi.md`, ramo `collaudo/sessione-collaudatrice` `c5bfb49f`). **Misura CHIUSA**: 106 impulsi e 221 scelte cliccate dall'interfaccia, ognuna applicata una sola volta. **Giro NON CHIUSO** per due rilievi da riprodurre:
+    1. 5 scelte (6 chiavi) dichiarano statistiche che il gestore non legge: nessun effetto osservato.
+    2. Il riquadro «⭐» mostra la popolarità dichiarata (+8) e non quella applicata (+3), in 67 scelte.
+    Il secondo è un problema di presentazione, quindi coperto dal via del PO «solo presentazione» (PO-224). Il primo tocca gli effetti, cioè la zona G ferma.
+  - **Sviluppatrice, giro 4** (`docs/sviluppo/RAPPORTO-giro4.md`, `2848b043`): solo misura, nessuna modifica al gioco.
+    - PO-066 home a 360/375/412 px: 0 testi sotto 10 px, 0 sbordamenti; nomi squadra troncati nella card «Prossima partita» a 360 px.
+    - PO-217: guardiano verde.
+    - Ingresso in campo non misurato.
+  - Ricreate: collaudatrice `session_014qtxu3yL6ZqWpEJe4Yysgc` (PO-218 su 7.999.157: discordanze riquadro/cronaca/motore su almeno 60 scene; poi P/PO-222 misura); sviluppatrice `session_01DSLZExKzQEg16HMTdrY8Wj` (censimento home PO-224, troncamento nomi, ingresso in campo GLB acceso).
+- **Rilascio 7.999.157:** catena carriera rossa al primo giro su `tempo-138` (verde: debito residuo 14 al fischio). Rilanciato da solo 2 volte: una volta il rosso non si vede, l'altra verde pieno. È un guardiano a tempo reale (autoplay a 150 ms), quindi instabile. Catena rifatta da capo: **33/33**. Completa in corsa.
+
+## 11/10/2026 — Codex, coda finale: secondo aggiornamento (base `2adc96ad`, 7.999.156)
+Riportato dal PO in chat. Nessun file modificato, nessun commit o push.
+- **I2 (PO-218) — NON CHIUSO.** 13 partite vere, 107 scene risolte, 92 esiti non riusciti (85 con sei fotogrammi).
+  - **4 scene** con riquadro «fuorigioco» e motore «intercetto» (partita/highlight 6:3, 6:4, 9:0, 11:6).
+  - **5 azioni «Finta e tiro»** il cui racconto non corrisponde al tiro registrato.
+  - Mancano un cross osservato in partita vera e il confronto completo dei quattro racconti.
+  - Classe ormai riprodotta tre volte da Codex: è il primo punto di PO-218 per il team.
+- **P (PO-222) — NON CHIUSO.** 30 profili sintetici: decisione prepartita 20 titolare, 5 panchina, 5 non convocato. **In 5 casi su 5 «non convocato» la simulazione accredita comunque una presenza.** La quota reale di titolarità nelle carriere naturali non è misurata. Zona G: difetto da riprodurre, nessun intervento senza il via del PO.
+- **T2 (PO-221) — in attesa.** La 7.999.157 non verrà promossa da sola: la base sarà la **7.999.158**, che la contiene, quando arriverà su main.
+- Banco Codex: tentativi 3D sospesi sotto i 3 GB di memoria libera (2,59–2,79 GB). Riprende quando la memoria lo consente.
+
+## 11/10/2026 — CODEX FUORI DAL PROGETTO (decisione PO)
+- PO: «da adesso in poi codex è fuori dal progetto. Richiede troppe risorse del PC, va lento e a breve scade anche abbonamento». Codex ha dichiarato la sospensione definitiva e la routine di ripresa è disattivata.
+- **Stato finale della coda:**
+  - **Consegnate:** R, L, M, N.
+  - **I2 (PO-218) incompleta:** 4 scene «fuorigioco» contro «intercetto» (6:3, 6:4, 9:0, 11:6) e 5 «Finta e tiro» con racconto diverso dal tiro registrato.
+  - **P (PO-222) incompleta:** «non convocato» con presenza accreditata 5/5, su profili sintetici.
+  - **T2 (PO-221):** mai avviata.
+- **Dati locali sul PC del PO** (non nel repository): `l1-i2.json`, `p30-sintetiche.json`.
+- Le zone incomplete **non sono chiuse**. I rilievi sono segnalazioni da riprodurre sul banco del team.
+- **Da oggi il collaudo è solo del team:** due sessioni collaudatrici e una sessione rilascio. I2 e T2 passano alla collaudatrice 2 (partite vere); P resta in zona G ferma.
+
+## 11/10/2026 pomeriggio — consegne delle sessioni sulla 7.999.158 (routine)
+
+### Collaudatrice 2, T2 / PO-221 (`collaudo/partite-vere` `55f1884a`, `docs/collaudi-partite/PO221-158-60partite.md`)
+- 60 partite vere, tutte arrivate al fischio finale.
+- Scene: media **6,68**, mediana 7 (senza rigori 6,47).
+- Punizioni: 0,62 a partita, mai più di 1.
+- Gol dell'eroe **0,50** a partita, **sotto l'obiettivo 0,6-0,9** (sulla 157 erano 0,62 su 60 partite). Assist 0,25.
+- Prova del rosso, 20 partite con i guardiani spenti: scene 8,55, punizioni 1,55. I due guardiani vedono il difetto.
+- **Rilievo:** con meno scene calano i gol. È da ritarare la resa dei tiri (`res221`).
+
+### Collaudatrice, giro 5 (`collaudo/sessione-collaudatrice` `4602629c`)
+- **PO-225:** dissolvenza confermata con GLB acceso. Il rosso resta a 1.
+- **PO-224:** le finestre si aprono e la scelta le chiude (handler 3/3).
+  - **Rilievo:** quando c'è un altro dialogo aperto sopra (procuratore in più passi, festa del titolo), la finestra resta coperta e il clic col dito non la raggiunge finché quel dialogo non si chiude (0/3 col puntatore, poi sì dopo la chiusura).
+  - Proposta del team: la finestra non si mostra mentre un altro dialogo è aperto.
+- **PO-218 «Finta e tiro»:** famiglia giusta nei casi visti; in 2 casi è sbagliato il **lessico** («passaggio» per un tiro).
+  - Ipotesi di causa: `_hlOvlCat` manda ogni `intercept` al lessico di passaggio.
+  - Fuorigioco contro intercetto: 1 su 66.
+  - Ipotesi di causa: `_outKind` da `decideExecution`, indipendente dagli eventi del motore.
+
+### Rilascio, giro 2 (`rilascio/consolidamento` `c766a4fe`)
+- Copyright e build offline (store e web) verdi.
+- **Rilievo A:** le stringhe reali sono ancora nei pacchetti finché la sviluppatrice non chiude il giro 6.
+- Intervista e post-partita a 375 px raggiunti con una partita vera.
+- «Profilo» non è un difetto.
+- **Classifica del salvataggio 194:** riprodotta (ipotesi: riposi).
+- **Punti aperti:**
+  - con lo stesso seme gli esiti delle partite vengono diversi;
+  - avviso `[CPM-GL] contesto grafico perso`.

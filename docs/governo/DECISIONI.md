@@ -195,3 +195,45 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Collaudatrice:** regole **come Codex** (sola lettura, commit fisso per giro, rilievi riproducibili, «Non posso confermarlo», consegna a zone); parte subito su zone diverse da quelle di Codex e dal 19/10 eredita la sua coda.
 - **Avviate il 10/10:** collaudatrice `session_012geq5vKpCgT9V8cH9Yj2kq` (la prima, `session_016pTaHEL91Hw7ghGsDw2rvw`, non è partita: il clone non accetta un hash abbreviato; ricreata da `main` con checkout del commit fisso) (ramo `collaudo/sessione-collaudatrice`, base `729fc8e1` = 7.999.155, zone Q effetti eventi e S cerimonie 3D, tolte dalla coda Codex); sviluppatrice `session_016iFXUZxfYMv9QqUTMb1Yjx` (ramo `sviluppo/l7-pulizia-l8`, da `main`: L7 PO-066/PO-217, poi PO-072, poi L8 PO-137/PO-002). Rapporti in `docs/collaudi/` e `docs/sviluppo/` sui loro rami.
 - **10/10, decisione PO (questionario): Haiku 5.5 su entrambe le sessioni parallele.** Il modello di una sessione avviata non si cambia: le sessioni si ricreano. Collaudatrice ricreata con Haiku 5.5: `session_015L5DVPw5JuJRkzXU22MUE2` (archiviate `session_012geq5vKpCgT9V8cH9Yj2kq` e `session_016pTaHEL91Hw7ghGsDw2rvw`). Sviluppatrice: si ricrea con Haiku dopo che la sessione attuale (`session_016iFXUZxfYMv9QqUTMb1Yjx`) ha pubblicato sul suo ramo il commit di PO-066, oggi solo nel suo container. Da qui le consegne si pubblicano dopo ogni commit.
+- **10/10, PO: «Voglio parlare solo con te».** Il PO non interagisce con le sotto-sessioni né con i loro rami: incarichi, controlli, ricreazioni e unioni li fa la sessione principale, che riporta al PO solo esiti e decisioni da prendere (questionario).
+
+## 10/10 sera — questionario: aggancio di prova per gli impulsi, poi gli assist
+- **Zona G:** sì al solo **aggancio di prova** per far comparire un impulso preciso del catalogo (collaudo PO-154 delle 221 scelte). Nessun cambio di comportamento: la zona G resta ferma per tutto il resto.
+- **Prossimo lavoro sul motore:** gli **assist** di PO-221 (compagno in posizione da gol dopo il passaggio riuscito).
+
+## 10/10 sera — questionario PO-224: riquadri della home in secondo piano
+- **Metodo:** prima il **censimento**. Fotografo la home per una stagione intera ed elenco i riquadri: quali chiedono una scelta e quali informano soltanto, con una proposta per ciascuno. Il PO decide sull'elenco; nessuna modifica prima.
+- **Zona G:** via libera a toccare **solo la presentazione** degli impulsi, cioè come e quando compare la finestra. Effetti, pescaggio e catalogo restano intatti.
+
+## 10/10 notte — questionario: pubblicazione entro una settimana (scadenza 17/10)
+- **Dove:** sito (GitHub Pages, main). «Pubblicare» = consolidare main con L1 chiuso, catene verdi, controllo copyright a zero, versione dichiarata stabile.
+- **L1:** **tutte e 8 le voci restano in L1** (PO-022 strato 8b, PO-048, PO-068 P2/P3, PO-123, PO-209, PO-218, PO-220, PO-221). Rischio di sforare dichiarato al PO.
+- **Sessioni:** +2. Una sessione **rilascio** (copyright, build offline e sua verifica, regressione su carriere lunghe, lista dei bloccanti) e una seconda **collaudatrice** sulle partite vere (PO-220, PO-221 su campioni grandi).
+
+## 10/10 notte — questionario: guardiano nomi-219 e priorità L1
+- **nomi-219:** tolta la soglia assoluta del rosso (<70%), tarata su una sola corsa (43%). Al rilascio 7.999.157 il rosso è stato 75% contro il 100% del verde. La prova del rosso resta il distacco di almeno 20 punti; la soglia del verde non cambia. Catena completa rifatta da capo.
+- **Dopo la promozione della 7.999.157:** prima voce di L1 è **PO-221, punizioni** (1,58 a partita nonostante il tetto di 1; scene 8,6 contro l'obiettivo di 5-7).
+
+## 11/10 — PO-224: i riquadri-impulso della home diventano finestre
+- Il PO, con una foto del riquadro «Lo spogliatoio» in home: «si perde facilmente, questi impulsi del gioco devono essere gestiti come pop up». **Decisione presa:** si parte dallo spogliatoio (e dal verdetto del patto col mister, che ha lo stesso schema) come finestra dentro «Vivi la Settimana». Esce nella prossima versione insieme a PO-221 punizioni, per fare un solo giro di catene. Gli altri riquadri seguono l'esito del censimento.
+
+## 11/10 — questionario PO-221: tetto di 7 scene
+- **Decisione:** al massimo 7 scene dell'eroe a partita; i rigori restano sempre fuori dal conto.
+- **Misura su 16 partite** (stessi semi):
+  - 7.999.157: 8,88 scene a partita, punizioni 1,69;
+  - con la sola falla delle punizioni chiusa: 8,44 scene, punizioni 0,62;
+  - con il tetto di 7 completo: **6,94 scene** (mediana 7, 11 partite su 16 in 5-7), gol dell'eroe 0,62, punizioni 0,56.
+
+## 11/10 pomeriggio — nuove regole di rilascio (PO: «Sì, adotta le nuove regole e rilascia stanotte; raccogli più PO e lotti possibile»)
+1. **Un rilascio al giorno, di notte.** Le correzioni del giorno (team principale e sviluppatrice) si raccolgono in una sola versione; le catene girano una volta.
+2. **Catena leggera** (`ci-runner grafica`) per i cambi solo grafici; completa quando si tocca motore, partita o carriera.
+3. **Passi lenti in parallelo** (partita-vera, scena-motore, esiti-218, nomi-219, difesa-220, scene-221, career-critical) a due a due (`ci-runner.mjs`, `CPM_CI_PAR=0` per tornare alla sequenza).
+4. **Un rosso si rilancia da solo** fino a due volte. Se torna verde il passo vale ma resta segnato «instabile» nel registro, e il guardiano va sistemato. La catena si rifà da capo solo per un rosso vero, cioè 3 su 3 (`CPM_CI_NORETRY=1` per spegnere).
+
+## 11/10 sera — PO-226: interazioni in partita
+- PO: «diamo un senso a queste interazioni, magari riducendole ma rendendole collegate e decise dal motore (brain)».
+- **Piano del team, da 7.999.160:**
+  - **Meno scelte, e decise dal motore.** Al massimo 2-3 scelte a partita, che nascono da un fatto del motore e non da un orologio. Esempi: sotto di un gol al 70', si vince di misura all'85', l'eroe stanco, l'eroe marcato a uomo.
+  - **Gli ordini del mister diventano una scelta dell'eroe** («seguo l'ordine» / «faccio di testa mia») con un effetto vero sull'atteggiamento del motore, cioè sui gol. Oggi agiscono solo sulle scene dell'eroe.
+  - **Panchina.** Una scelta («chiedo di entrare» / «resto concentrato») letta dal motore per il minuto d'ingresso, con seme: oggi il minuto è estratto a caso senza seme.
+  - Ogni scelta ha un guardiano: il rosso spegne l'effetto e la differenza si misura sui gol e sui minuti.

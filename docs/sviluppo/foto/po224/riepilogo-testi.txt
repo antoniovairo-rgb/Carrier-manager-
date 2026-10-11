@@ -1,0 +1,1214 @@
+== censimento-pro.json chiusa True sett 39 stallo None
+39 hom sopraPiegaSett=39 top=39 btn=False S1W1 | Elite
+39 hom sopraPiegaSett=39 top=30 btn=True S1W1 | · 21:58
+39 hom sopraPiegaSett=39 top=59 btn=False S1W1 | SPAGNA · ATTACCANTE
+39 hom sopraPiegaSett=39 top=76 btn=False S1W1 | SAMUEL FRANCISCO
+39 hom sopraPiegaSett=39 top=96 btn=False S1W1 | OVR
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | FORMA
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | MORALE
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | FATICA
+39 hom sopraPiegaSett=39 top=219 btn=False S1W1 | FC Werkstadt
+39 hom sopraPiegaSett=39 top=335 btn=False S1W1 | Partite
+39 hom sopraPiegaSett=39 top=291 btn=False S1W1 | Gol
+39 hom sopraPiegaSett=39 top=291 btn=False S1W1 | Assist
+39 hom sopraPiegaSett=39 top=419 btn=False S1W1 | /100
+39 hom sopraPiegaSett=39 top=436 btn=False S1W1 | Fiducia del mister
+39 hom sopraPiegaSett=39 top=436 btn=False S1W1 | Popolarità
+39 hom sopraPiegaSett=21 top=638 btn=True S1W1 | Il tuo procuratore: boutique o global?
+39 hom sopraPiegaSett=5 top=790 btn=True S1W1 | La tua settimana
+39 hom sopraPiegaSett=0 top=915 btn=True S1W1 | Obiettivi della stagione
+39 hom sopraPiegaSett=0 top=969 btn=True S1W1 | OBIETTIVI PERSONALI
+39 hom sopraPiegaSett=0 top=999 btn=False S1W1 | 🏹 La prima stagione da pro: 11+ gol
+39 hom sopraPiegaSett=0 top=1034 btn=False S1W1 | 🏹 Media voto ≥ 6.7 (almeno 5 gare)
+39 hom sopraPiegaSett=0 top=1065 btn=False S1W1 | A fine stagione presenti il conto a te stesso.
+39 hom sopraPiegaSett=0 top=1121 btn=True S1W1 | Ultime notizie
+39 hom sopraPiegaSett=39 top=839 btn=True S1W1 | ☕ Sostieni il gioco
+39 hom sopraPiegaSett=39 top=839 btn=True S1W1 | 💡 Idee e feedback
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | HOME
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | STAGIONE
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | CLUB
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | CARRIERA
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | AGENTE
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | UFFICIO
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | OPZIONI
+39 fin sopraPiegaSett=39 top=39 btn=False S1W1 | Elite
+39 fin sopraPiegaSett=39 top=30 btn=True S1W1 | · 21:58
+39 fin sopraPiegaSett=39 top=59 btn=False S1W1 | SPAGNA · ATTACCANTE
+39 fin sopraPiegaSett=39 top=76 btn=False S1W1 | SAMUEL FRANCISCO
+39 fin sopraPiegaSett=39 top=96 btn=False S1W1 | OVR
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | FORMA
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | MORALE
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | FATICA
+39 fin sopraPiegaSett=39 top=219 btn=False S1W1 | FC Werkstadt
+39 fin sopraPiegaSett=39 top=335 btn=False S1W1 | Partite
+39 fin sopraPiegaSett=39 top=291 btn=False S1W1 | Gol
+39 fin sopraPiegaSett=39 top=291 btn=False S1W1 | Assist
+39 fin sopraPiegaSett=39 top=419 btn=False S1W1 | /100
+39 fin sopraPiegaSett=39 top=436 btn=False S1W1 | Fiducia del mister
+39 fin sopraPiegaSett=39 top=436 btn=False S1W1 | Popolarità
+39 fin sopraPiegaSett=21 top=638 btn=True S1W1 | Il tuo procuratore: boutique o global?
+39 fin sopraPiegaSett=5 top=790 btn=True S1W1 | La tua settimana
+39 fin sopraPiegaSett=0 top=915 btn=True S1W1 | Obiettivi della stagione
+39 fin sopraPiegaSett=0 top=969 btn=True S1W1 | OBIETTIVI PERSONALI
+39 fin sopraPiegaSett=0 top=999 btn=False S1W1 | 🏹 La prima stagione da pro: 11+ gol
+39 fin sopraPiegaSett=0 top=1034 btn=False S1W1 | 🏹 Media voto ≥ 6.7 (almeno 5 gare)
+39 fin sopraPiegaSett=0 top=1065 btn=False S1W1 | A fine stagione presenti il conto a te stesso.
+39 fin sopraPiegaSett=0 top=1121 btn=True S1W1 | Ultime notizie
+39 fin sopraPiegaSett=39 top=839 btn=True S1W1 | ☕ Sostieni il gioco
+39 fin sopraPiegaSett=39 top=839 btn=True S1W1 | 💡 Idee e feedback
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | HOME
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | STAGIONE
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | CLUB
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | CARRIERA
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | AGENTE
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | UFFICIO
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | OPZIONI
+39 hom sopraPiegaSett=21 top=504 btn=True S1W1 | Il progetto del club
+39 hom sopraPiegaSett=0 top=911 btn=False S1W1 | Giovane promessa
+39 hom sopraPiegaSett=0 top=912 btn=False S1W1 | 17 anni
+39 hom sopraPiegaSett=0 top=1232 btn=True S1W1 | Voci di mercato
+39 hom sopraPiegaSett=0 top=1294 btn=True S1W1 | Classifica
+39 fin sopraPiegaSett=21 top=504 btn=True S1W1 | Il progetto del club
+39 fin sopraPiegaSett=0 top=911 btn=False S1W1 | Giovane promessa
+39 fin sopraPiegaSett=0 top=912 btn=False S1W1 | 17 anni
+39 fin sopraPiegaSett=0 top=1232 btn=True S1W1 | Voci di mercato
+39 fin sopraPiegaSett=0 top=1294 btn=True S1W1 | Classifica
+38 hom sopraPiegaSett=38 top=308 btn=False S1W1 | PROSSIMA PARTITA
+38 hom sopraPiegaSett=38 top=307 btn=True S1W1 | Calendario ›
+38 fin sopraPiegaSett=38 top=308 btn=False S1W1 | PROSSIMA PARTITA
+38 fin sopraPiegaSett=38 top=307 btn=True S1W1 | Calendario ›
+38 hom sopraPiegaSett=38 top=207 btn=True S1W1 | ⚡ Vivi la Settimana
+38 hom sopraPiegaSett=38 top=230 btn=True S1W1 | allenamento, eventi e crescita
+38 fin sopraPiegaSett=38 top=207 btn=True S1W1 | ⚡ Vivi la Settimana
+38 fin sopraPiegaSett=38 top=230 btn=True S1W1 | allenamento, eventi e crescita
+38 hom sopraPiegaSett=4 top=786 btn=True S1W2 | Il mondo fuori
+38 hom sopraPiegaSett=0 top=1170 btn=True S1W2 | Notizie della settimana
+38 fin sopraPiegaSett=4 top=786 btn=True S1W2 | Il mondo fuori
+38 fin sopraPiegaSett=0 top=1170 btn=True S1W2 | Notizie della settimana
+34 hom sopraPiegaSett=34 top=424 btn=False S1W1 | In trasferta
+34 fin sopraPiegaSett=34 top=424 btn=False S1W1 | In trasferta
+34 hom sopraPiegaSett=34 top=339 btn=False S1W5 | Ultime 5
+34 fin sopraPiegaSett=34 top=339 btn=False S1W5 | Ultime 5
+33 hom sopraPiegaSett=33 top=391 btn=False S1W1 | In casa
+33 fin sopraPiegaSett=33 top=391 btn=False S1W1 | In casa
+33 hom sopraPiegaSett=15 top=571 btn=True S1W5 | Sponsor
+33 hom sopraPiegaSett=6 top=710 btn=True S1W5 | L'errore che hanno visto tutti
+33 fin sopraPiegaSett=15 top=571 btn=True S1W5 | Sponsor
+33 fin sopraPiegaSett=6 top=710 btn=True S1W5 | L'errore che hanno visto tutti
+31 hom sopraPiegaSett=31 top=257 btn=False S1W9 | ⚡ UN MOMENTO CHE RICORDERAI
+31 hom sopraPiegaSett=31 top=301 btn=False S1W9 | La Prima da Grande
+31 hom sopraPiegaSett=31 top=487 btn=True S1W9 | 💪 «Sono pronto. Da sempre.»
+31 hom sopraPiegaSett=31 top=512 btn=True S1W9 | Rimarrà nella storia: "La tua prima da grande: entrasti in campo come 
+31 hom sopraPiegaSett=31 top=577 btn=True S1W9 | 😅 «Ho un po' di paura, mister.»
+31 hom sopraPiegaSett=31 top=602 btn=True S1W9 | Rimarrà nella storia: "Confessasti la paura della prima da grande. Il 
+30 hom sopraPiegaSett=30 top=496 btn=False S1W3 | LO SPOGLIATOIO
+30 hom sopraPiegaSett=11 top=600 btn=True S1W3 | Il gruppo prima di tutto →
+30 fin sopraPiegaSett=30 top=496 btn=False S1W3 | LO SPOGLIATOIO
+30 fin sopraPiegaSett=11 top=600 btn=True S1W3 | Il gruppo prima di tutto →
+30 fin sopraPiegaSett=30 top=257 btn=False S1W9 | ⚡ UN MOMENTO CHE RICORDERAI
+30 fin sopraPiegaSett=30 top=301 btn=False S1W9 | La Prima da Grande
+30 fin sopraPiegaSett=30 top=487 btn=True S1W9 | 💪 «Sono pronto. Da sempre.»
+30 fin sopraPiegaSett=30 top=512 btn=True S1W9 | Rimarrà nella storia: "La tua prima da grande: entrasti in campo come 
+30 fin sopraPiegaSett=30 top=577 btn=True S1W9 | 😅 «Ho un po' di paura, mister.»
+30 fin sopraPiegaSett=30 top=602 btn=True S1W9 | Rimarrà nella storia: "Confessasti la paura della prima da grande. Il 
+28 hom sopraPiegaSett=2 top=886 btn=True S1W6 | Il posto non te lo regala nessuno
+28 fin sopraPiegaSett=2 top=886 btn=True S1W6 | Il posto non te lo regala nessuno
+25 hom sopraPiegaSett=25 top=502 btn=True S1W7 | La tua storia
+25 fin sopraPiegaSett=25 top=502 btn=True S1W7 | La tua storia
+24 hom sopraPiegaSett=24 top=579 btn=False S1W6 | Patrick Witte ti prende da parte
+24 fin sopraPiegaSett=24 top=579 btn=False S1W6 | Patrick Witte ti prende da parte
+23 fin sopraPiegaSett=23 top=312 btn=False S1W1 | Impulso della settimana
+23 hom sopraPiegaSett=0 top=1226 btn=False S1W3 | 2 / 11
+23 fin sopraPiegaSett=0 top=1226 btn=False S1W3 | 2 / 11
+20 hom sopraPiegaSett=20 top=287 btn=False S1W8 | Mister Mancuso
+20 fin sopraPiegaSett=20 top=287 btn=False S1W8 | Mister Mancuso
+19 hom sopraPiegaSett=19 top=298 btn=False S1W21 | 💬 IL MISTER TI CERCA
+19 hom sopraPiegaSett=19 top=365 btn=False S1W21 | «Ehi, come stai? Ti noto un po' diverso ultimamente. Tutto ok?»
+19 hom sopraPiegaSett=19 top=444 btn=True S1W21 | 🙏 Grazie per chiedere, mister. Sto migliorando.
+19 hom sopraPiegaSett=19 top=511 btn=True S1W21 | 😐 Bene, mister. Niente di grave.
+19 hom sopraPiegaSett=19 top=558 btn=True S1W21 | 😶 Non è un momento facile, lo ammetto.
+19 hom sopraPiegaSett=19 top=598 btn=True S1W21 | Annulla
+19 fin sopraPiegaSett=19 top=298 btn=False S1W21 | 💬 IL MISTER TI CERCA
+19 fin sopraPiegaSett=19 top=365 btn=False S1W21 | «Ehi, come stai? Ti noto un po' diverso ultimamente. Tutto ok?»
+19 fin sopraPiegaSett=19 top=444 btn=True S1W21 | 🙏 Grazie per chiedere, mister. Sto migliorando.
+19 fin sopraPiegaSett=19 top=511 btn=True S1W21 | 😐 Bene, mister. Niente di grave.
+19 fin sopraPiegaSett=19 top=558 btn=True S1W21 | 😶 Non è un momento facile, lo ammetto.
+19 fin sopraPiegaSett=19 top=598 btn=True S1W21 | Annulla
+17 hom sopraPiegaSett=17 top=230 btn=True S1W1 | 🏠 In casa
+17 fin sopraPiegaSett=17 top=230 btn=True S1W1 | 🏠 In casa
+17 hom sopraPiegaSett=17 top=230 btn=True S1W2 | ✈️ In trasferta
+17 fin sopraPiegaSett=17 top=230 btn=True S1W2 | ✈️ In trasferta
+16 hom sopraPiegaSett=16 top=480 btn=False S1W22 | Precedenti 0V 0N 1P
+16 fin sopraPiegaSett=16 top=480 btn=False S1W22 | Precedenti 0V 0N 1P
+12 hom sopraPiegaSett=12 top=480 btn=False S1W4 | ⚠️ Zona retrocessione
+12 fin sopraPiegaSett=12 top=480 btn=False S1W4 | ⚠️ Zona retrocessione
+12 hom sopraPiegaSett=12 top=453 btn=False S1W7 | 13ª in classifica
+12 fin sopraPiegaSett=12 top=453 btn=False S1W7 | 13ª in classifica
+12 hom sopraPiegaSett=12 top=453 btn=False S1W16 | 14ª in classifica
+12 fin sopraPiegaSett=12 top=453 btn=False S1W16 | 14ª in classifica
+11 hom sopraPiegaSett=11 top=453 btn=False S1W1 | 15ª in classifica
+11 fin sopraPiegaSett=11 top=453 btn=False S1W1 | 15ª in classifica
+11 hom sopraPiegaSett=11 top=453 btn=False S1W16 | 16ª in classifica
+11 fin sopraPiegaSett=11 top=453 btn=False S1W16 | 16ª in classifica
+10 hom sopraPiegaSett=10 top=453 btn=False S1W9 | 9ª in classifica
+10 fin sopraPiegaSett=10 top=453 btn=False S1W9 | 9ª in classifica
+9 hom sopraPiegaSett=9 top=480 btn=False S1W10 | 🎯 Scontro diretto
+9 fin sopraPiegaSett=9 top=480 btn=False S1W10 | 🎯 Scontro diretto
+9 hom sopraPiegaSett=9 top=338 btn=False S1W16 | 14ª
+9 hom sopraPiegaSett=0 top=912 btn=False S1W16 | ESONERO
+9 hom sopraPiegaSett=0 top=933 btn=False S1W16 | Il club ha esonerato il mister
+9 hom sopraPiegaSett=0 top=1012 btn=False S1W16 | 4 partite per convincerlo
+9 hom sopraPiegaSett=0 top=1038 btn=True S1W16 | Il nuovo corso comincia →
+9 fin sopraPiegaSett=9 top=338 btn=False S1W16 | 14ª
+9 fin sopraPiegaSett=0 top=912 btn=False S1W16 | ESONERO
+9 fin sopraPiegaSett=0 top=933 btn=False S1W16 | Il club ha esonerato il mister
+9 fin sopraPiegaSett=0 top=1012 btn=False S1W16 | 4 partite per convincerlo
+9 fin sopraPiegaSett=0 top=1038 btn=True S1W16 | Il nuovo corso comincia →
+9 hom sopraPiegaSett=9 top=338 btn=False S1W22 | 15ª
+9 fin sopraPiegaSett=9 top=338 btn=False S1W22 | 15ª
+8 hom sopraPiegaSett=8 top=892 btn=False S1W1 | TEST
+8 hom sopraPiegaSett=8 top=892 btn=False S1W1 | KE 7.999.156
+8 fin sopraPiegaSett=8 top=892 btn=False S1W1 | TEST
+8 fin sopraPiegaSett=8 top=892 btn=False S1W1 | KE 7.999.156
+8 hom sopraPiegaSett=8 top=480 btn=False S1W5 | Forza 76/99 · alla pari
+8 hom sopraPiegaSett=0 top=1109 btn=True S1W5 | Big match
+8 fin sopraPiegaSett=8 top=480 btn=False S1W5 | Forza 76/99 · alla pari
+8 fin sopraPiegaSett=0 top=1109 btn=True S1W5 | Big match
+8 hom sopraPiegaSett=4 top=855 btn=True S1W8 | Settimana di lavoro
+8 fin sopraPiegaSett=4 top=855 btn=True S1W8 | Settimana di lavoro
+8 hom sopraPiegaSett=8 top=338 btn=False S1W14 | 13ª
+8 fin sopraPiegaSett=8 top=338 btn=False S1W14 | 13ª
+8 hom sopraPiegaSett=8 top=338 btn=False S1W17 | 16ª
+8 fin sopraPiegaSett=8 top=338 btn=False S1W17 | 16ª
+7 hom sopraPiegaSett=7 top=447 btn=False S1W1 | 🏆 Sfida alla capolista
+7 fin sopraPiegaSett=7 top=447 btn=False S1W1 | 🏆 Sfida alla capolista
+7 hom sopraPiegaSett=7 top=453 btn=False S1W1 | 3ª in classifica
+7 fin sopraPiegaSett=7 top=453 btn=False S1W1 | 3ª in classifica
+7 hom sopraPiegaSett=7 top=453 btn=False S1W2 | 2ª in classifica
+7 fin sopraPiegaSett=7 top=453 btn=False S1W2 | 2ª in classifica
+7 hom sopraPiegaSett=7 top=453 btn=False S1W6 | 6ª in classifica
+7 fin sopraPiegaSett=7 top=453 btn=False S1W6 | 6ª in classifica
+7 fin sopraPiegaSett=7 top=335 btn=False S1W15 | Scelta
+7 hom sopraPiegaSett=0 top=968 btn=True S1W33 | Duello capocannoniere
+7 fin sopraPiegaSett=0 top=968 btn=True S1W33 | Duello capocannoniere
+6 fin sopraPiegaSett=6 top=335 btn=False S1W1 | Esordio
+6 hom sopraPiegaSett=6 top=760 btn=False S1W1 | Vittoria 3–0 in casa vs FC München (simulata) · 1 gol · 1 assist · vot
+6 hom sopraPiegaSett=6 top=453 btn=False S1W3 | 8ª in classifica
+6 hom sopraPiegaSett=6 top=771 btn=False S1W3 | L'asse con Patrick Witte
+6 fin sopraPiegaSett=6 top=453 btn=False S1W3 | 8ª in classifica
+6 fin sopraPiegaSett=6 top=771 btn=False S1W3 | L'asse con Patrick Witte
+6 hom sopraPiegaSett=6 top=453 btn=False S1W4 | 17ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W4 | 17ª in classifica
+6 hom sopraPiegaSett=6 top=453 btn=False S1W13 | 5ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W13 | 5ª in classifica
+6 hom sopraPiegaSett=0 top=1457 btn=False S1W18 | 🏷️ Mercato Invernale aperto
+6 fin sopraPiegaSett=0 top=1457 btn=False S1W18 | 🏷️ Mercato Invernale aperto
+6 hom sopraPiegaSett=6 top=480 btn=False S1W19 | Precedenti 1V 0N 0P
+6 fin sopraPiegaSett=6 top=480 btn=False S1W19 | Precedenti 1V 0N 0P
+6 hom sopraPiegaSett=0 top=1050 btn=False S1W25 | 3 / 11
+6 fin sopraPiegaSett=0 top=1050 btn=False S1W25 | 3 / 11
+6 hom sopraPiegaSett=0 top=1298 btn=False S1W33 | 6 / 11
+6 fin sopraPiegaSett=0 top=1298 btn=False S1W33 | 6 / 11
+5 hom sopraPiegaSett=5 top=420 btn=False S1W1 | 1ª in classifica
+5 hom sopraPiegaSett=1 top=846 btn=False S1W1 | 🏷️ Mercato Estivo aperto
+5 fin sopraPiegaSett=5 top=420 btn=False S1W1 | 1ª in classifica
+5 fin sopraPiegaSett=1 top=846 btn=False S1W1 | 🏷️ Mercato Estivo aperto
+5 fin sopraPiegaSett=5 top=760 btn=False S1W2 | Vittoria 3–0 in casa vs FC München (simulata) · 1 gol · 1 assist · vot
+5 hom sopraPiegaSett=5 top=453 btn=False S1W13 | 12ª in classifica
+5 fin sopraPiegaSett=5 top=453 btn=False S1W13 | 12ª in classifica
+5 hom sopraPiegaSett=5 top=428 btn=False S1W15 | FC Leipzig
+5 fin sopraPiegaSett=5 top=428 btn=False S1W15 | FC Leipzig
+4 hom sopraPiegaSett=4 top=428 btn=False S1W1 | FC Köln
+4 hom sopraPiegaSett=4 top=480 btn=False S1W1 | Forza 65/99 · più debole
+4 hom sopraPiegaSett=0 top=1195 btn=False S1W1 | 4 settimane rimanenti
+4 fin sopraPiegaSett=4 top=428 btn=False S1W1 | FC Köln
+4 fin sopraPiegaSett=4 top=480 btn=False S1W1 | Forza 65/99 · più debole
+4 fin sopraPiegaSett=0 top=1195 btn=False S1W1 | 4 settimane rimanenti
+4 hom sopraPiegaSett=4 top=428 btn=False S1W2 | FC Wolfstadt
+4 hom sopraPiegaSett=4 top=480 btn=False S1W2 | Forza 75/99 · alla pari
+4 hom sopraPiegaSett=4 top=480 btn=False S1W2 | ⚔️ Scontro al vertice
+4 hom sopraPiegaSett=0 top=1088 btn=False S1W2 | 3 settimane rimanenti
+4 fin sopraPiegaSett=4 top=428 btn=False S1W2 | FC Wolfstadt
+4 fin sopraPiegaSett=4 top=480 btn=False S1W2 | Forza 75/99 · alla pari
+4 fin sopraPiegaSett=4 top=480 btn=False S1W2 | ⚔️ Scontro al vertice
+4 fin sopraPiegaSett=0 top=1088 btn=False S1W2 | 3 settimane rimanenti
+4 hom sopraPiegaSett=4 top=428 btn=False S1W3 | FC Goldwald
+4 hom sopraPiegaSett=4 top=480 btn=False S1W3 | Forza 93/99 · più forte
+4 hom sopraPiegaSett=0 top=1345 btn=False S1W3 | 2 settimane rimanenti
+4 fin sopraPiegaSett=4 top=428 btn=False S1W3 | FC Goldwald
+4 fin sopraPiegaSett=4 top=480 btn=False S1W3 | Forza 93/99 · più forte
+4 fin sopraPiegaSett=0 top=1345 btn=False S1W3 | 2 settimane rimanenti
+4 hom sopraPiegaSett=4 top=428 btn=False S1W4 | FC Lilien
+4 hom sopraPiegaSett=4 top=480 btn=False S1W4 | Forza 58/99 · più debole
+4 hom sopraPiegaSett=0 top=1164 btn=False S1W4 | 1 settimana rimanente
+4 fin sopraPiegaSett=4 top=428 btn=False S1W4 | FC Lilien
+4 fin sopraPiegaSett=4 top=480 btn=False S1W4 | Forza 58/99 · più debole
+4 fin sopraPiegaSett=0 top=1164 btn=False S1W4 | 1 settimana rimanente
+4 hom sopraPiegaSett=4 top=428 btn=False S1W5 | FC Stuttgart
+4 fin sopraPiegaSett=4 top=428 btn=False S1W5 | FC Stuttgart
+4 fin sopraPiegaSett=4 top=333 btn=False S1W6 | Patrick Witte
+4 fin sopraPiegaSett=4 top=356 btn=False S1W6 | Lo spogliatoio · compagno
+4 hom sopraPiegaSett=4 top=428 btn=False S1W6 | FC Frankfurt
+4 hom sopraPiegaSett=4 top=453 btn=False S1W6 | 11ª in classifica
+4 hom sopraPiegaSett=4 top=480 btn=False S1W6 | Forza 79/99 · alla pari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W6 | FC Frankfurt
+4 fin sopraPiegaSett=4 top=453 btn=False S1W6 | 11ª in classifica
+4 fin sopraPiegaSett=4 top=480 btn=False S1W6 | Forza 79/99 · alla pari
+4 hom sopraPiegaSett=4 top=156 btn=False S1W7 | 100
+4 fin sopraPiegaSett=4 top=156 btn=False S1W7 | 100
+4 hom sopraPiegaSett=4 top=428 btn=False S1W7 | FC Berlin Nord
+4 hom sopraPiegaSett=4 top=480 btn=False S1W7 | Forza 62/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W7 | FC Berlin Nord
+4 fin sopraPiegaSett=4 top=480 btn=False S1W7 | Forza 62/99 · più debole
+4 hom sopraPiegaSett=4 top=207 btn=True S1W9 | ⏭️ Avanza Settimana
+4 fin sopraPiegaSett=4 top=207 btn=True S1W9 | ⏭️ Avanza Settimana
+4 hom sopraPiegaSett=4 top=428 btn=False S1W9 | FC Berlin
+4 hom sopraPiegaSett=4 top=480 btn=False S1W9 | Forza 80/99 · alla pari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W9 | FC Berlin
+4 fin sopraPiegaSett=4 top=480 btn=False S1W9 | Forza 80/99 · alla pari
+4 hom sopraPiegaSett=4 top=428 btn=False S1W10 | FC Mainz
+4 hom sopraPiegaSett=4 top=480 btn=False S1W10 | Forza 68/99 · alla pari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W10 | FC Mainz
+4 fin sopraPiegaSett=4 top=480 btn=False S1W10 | Forza 68/99 · alla pari
+4 hom sopraPiegaSett=4 top=453 btn=False S1W11 | 10ª in classifica
+4 hom sopraPiegaSett=4 top=428 btn=False S1W11 | FC Niederrhein
+4 hom sopraPiegaSett=4 top=480 btn=False S1W11 | Forza 74/99 · alla pari
+4 fin sopraPiegaSett=4 top=453 btn=False S1W11 | 10ª in classifica
+4 fin sopraPiegaSett=4 top=428 btn=False S1W11 | FC Niederrhein
+4 fin sopraPiegaSett=4 top=480 btn=False S1W11 | Forza 74/99 · alla pari
+4 hom sopraPiegaSett=4 top=428 btn=False S1W12 | FC Ruhrpott
+4 hom sopraPiegaSett=4 top=480 btn=False S1W12 | Forza 60/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W12 | FC Ruhrpott
+4 fin sopraPiegaSett=4 top=480 btn=False S1W12 | Forza 60/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W13 | FC Augsburg
+4 hom sopraPiegaSett=4 top=480 btn=False S1W13 | Forza 66/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W13 | FC Augsburg
+4 fin sopraPiegaSett=4 top=480 btn=False S1W13 | Forza 66/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W14 | FC Weser
+4 hom sopraPiegaSett=4 top=480 btn=False S1W14 | Forza 72/99 · alla pari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W14 | FC Weser
+4 fin sopraPiegaSett=4 top=480 btn=False S1W14 | Forza 72/99 · alla pari
+4 hom sopraPiegaSett=4 top=480 btn=False S1W15 | Forza 88/99 · più forte
+4 fin sopraPiegaSett=4 top=480 btn=False S1W15 | Forza 88/99 · più forte
+4 hom sopraPiegaSett=4 top=428 btn=False S1W16 | FC Friburgo
+4 hom sopraPiegaSett=0 top=1054 btn=False S1W16 | Mister Ferrari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W16 | FC Friburgo
+4 fin sopraPiegaSett=0 top=1054 btn=False S1W16 | Mister Ferrari
+4 hom sopraPiegaSett=4 top=428 btn=False S1W17 | FC Kraichgau
+4 hom sopraPiegaSett=4 top=480 btn=False S1W17 | Forza 70/99 · alla pari
+4 fin sopraPiegaSett=4 top=428 btn=False S1W17 | FC Kraichgau
+4 fin sopraPiegaSett=4 top=480 btn=False S1W17 | Forza 70/99 · alla pari
+4 hom sopraPiegaSett=4 top=595 btn=True S1W18 | 💼 Vai dal procuratore
+4 fin sopraPiegaSett=4 top=595 btn=True S1W18 | 💼 Vai dal procuratore
+4 hom sopraPiegaSett=0 top=1305 btn=False S1W30 | 4 / 11
+4 fin sopraPiegaSett=0 top=1305 btn=False S1W30 | 4 / 11
+3 hom sopraPiegaSett=3 top=420 btn=False S1W1 | 4ª in classifica
+3 hom sopraPiegaSett=3 top=395 btn=False S1W1 | FC München
+3 hom sopraPiegaSett=3 top=447 btn=False S1W1 | Forza 99/99 · più forte
+3 hom sopraPiegaSett=1 top=863 btn=False S1W1 | 5 settimane rimanenti
+3 fin sopraPiegaSett=3 top=420 btn=False S1W1 | 4ª in classifica
+3 fin sopraPiegaSett=3 top=395 btn=False S1W1 | FC München
+3 fin sopraPiegaSett=3 top=447 btn=False S1W1 | Forza 99/99 · più forte
+3 fin sopraPiegaSett=1 top=863 btn=False S1W1 | 5 settimane rimanenti
+3 hom sopraPiegaSett=0 top=1224 btn=False S1W1 | 1 / 11
+3 fin sopraPiegaSett=0 top=1224 btn=False S1W1 | 1 / 11
+3 hom sopraPiegaSett=0 top=897 btn=True S1W3 | Il primo spogliatoio dei grandi
+3 fin sopraPiegaSett=0 top=897 btn=True S1W3 | Il primo spogliatoio dei grandi
+3 hom sopraPiegaSett=0 top=1261 btn=False S1W8 | 6.19 (8 gare)
+3 fin sopraPiegaSett=0 top=1261 btn=False S1W8 | 6.19 (8 gare)
+3 hom sopraPiegaSett=3 top=760 btn=False S1W9 | Sconfitta 0–1 in trasferta vs FC Berlin Nord (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=760 btn=False S1W9 | Sconfitta 0–1 in trasferta vs FC Berlin Nord (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=339 btn=False S1W11 | personale
+3 hom sopraPiegaSett=3 top=760 btn=False S1W12 | Sconfitta 0–2 in trasferta vs FC Mainz (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=760 btn=False S1W12 | Sconfitta 0–2 in trasferta vs FC Mainz (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=345 btn=False S1W13 | Conseguenza
+3 hom sopraPiegaSett=3 top=760 btn=False S1W15 | Sconfitta 1–2 in casa vs FC Augsburg (simulata) · voto 5,5
+3 fin sopraPiegaSett=3 top=760 btn=False S1W15 | Sconfitta 1–2 in casa vs FC Augsburg (simulata) · voto 5,5
+3 fin sopraPiegaSett=3 top=308 btn=False S1W17 | Questa settimana
+3 fin sopraPiegaSett=3 top=526 btn=False S1W17 | IL MISTER
+3 fin sopraPiegaSett=3 top=597 btn=True S1W17 | ✅ Capito
+3 hom sopraPiegaSett=3 top=760 btn=False S1W18 | Sconfitta 0–2 in trasferta vs FC Friburgo (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=760 btn=False S1W18 | Sconfitta 0–2 in trasferta vs FC Friburgo (simulata) · voto 5,2
+3 hom sopraPiegaSett=0 top=1764 btn=False S1W18 | 5.75 (17 gare)
+3 fin sopraPiegaSett=0 top=1764 btn=False S1W18 | 5.75 (17 gare)
+3 hom sopraPiegaSett=3 top=760 btn=False S1W21 | Vittoria 1–0 in trasferta vs FC München (simulata) · voto 6,3
+3 fin sopraPiegaSett=3 top=760 btn=False S1W21 | Vittoria 1–0 in trasferta vs FC München (simulata) · voto 6,3
+3 fin sopraPiegaSett=3 top=760 btn=False S1W24 | Sconfitta 0–3 in casa vs FC Goldwald (simulata) · voto 5,1
+3 hom sopraPiegaSett=3 top=760 btn=False S1W26 | Sconfitta 0–3 in trasferta vs FC Frankfurt (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=760 btn=False S1W27 | Sconfitta 0–3 in trasferta vs FC Frankfurt (simulata) · voto 5,2
+3 hom sopraPiegaSett=0 top=1085 btn=False S1W27 | 5.74 (25 gare)
+3 fin sopraPiegaSett=0 top=1085 btn=False S1W27 | 5.74 (25 gare)
+3 hom sopraPiegaSett=3 top=760 btn=False S1W29 | Pareggio 0–0 in trasferta vs FC Berlin (simulata) · voto 5,8
+3 fin sopraPiegaSett=3 top=760 btn=False S1W30 | Pareggio 0–0 in trasferta vs FC Berlin (simulata) · voto 5,8
+3 hom sopraPiegaSett=3 top=760 btn=False S1W32 | Vittoria 2–0 in casa vs FC Ruhrpott (simulata) · 1 assist · voto 6,8
+3 fin sopraPiegaSett=3 top=760 btn=False S1W33 | Vittoria 2–0 in casa vs FC Ruhrpott (simulata) · 1 assist · voto 6,8
+3 hom sopraPiegaSett=3 top=516 btn=False S1W34 | Patrick Witte ti deve una cena
+3 hom sopraPiegaSett=0 top=1333 btn=False S1W34 | 5.86 (31 gare)
+3 fin sopraPiegaSett=3 top=516 btn=False S1W34 | Patrick Witte ti deve una cena
+3 fin sopraPiegaSett=0 top=1333 btn=False S1W34 | 5.86 (31 gare)
+3 hom sopraPiegaSett=3 top=760 btn=False S1W35 | Vittoria 1–0 in casa vs FC Weser (simulata) · 1 assist · voto 6,8
+2 hom sopraPiegaSett=2 top=207 btn=True S1W1 | ⚽ Gioca vs FC München
+2 fin sopraPiegaSett=2 top=207 btn=True S1W1 | ⚽ Gioca vs FC München
+2 hom sopraPiegaSett=2 top=102 btn=False S1W1 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 2/38 · 3° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W1 | Deutsche Liga · 2ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W1 | Ultime 1
+2 hom sopraPiegaSett=2 top=538 btn=False S1W1 | STAGIONE 1 · SETTIMANA 2 DI 38
+2 hom sopraPiegaSett=2 top=832 btn=False S1W1 | Marco Gestini
+2 hom sopraPiegaSett=1 top=870 btn=False S1W1 | «Il tuo contratto non rispecchia più il giocatore che sei diventato. S
+2 hom sopraPiegaSett=0 top=924 btn=True S1W1 | Vediamo
+2 hom sopraPiegaSett=0 top=924 btn=True S1W1 | Più tardi
+2 hom sopraPiegaSett=0 top=1367 btn=False S1W1 | 7.7 (1 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W1 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 2/38 · 3° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W1 | Deutsche Liga · 2ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W1 | Ultime 1
+2 fin sopraPiegaSett=2 top=538 btn=False S1W1 | STAGIONE 1 · SETTIMANA 2 DI 38
+2 fin sopraPiegaSett=2 top=832 btn=False S1W1 | Marco Gestini
+2 fin sopraPiegaSett=1 top=870 btn=False S1W1 | «Il tuo contratto non rispecchia più il giocatore che sei diventato. S
+2 fin sopraPiegaSett=0 top=924 btn=True S1W1 | Vediamo
+2 fin sopraPiegaSett=0 top=924 btn=True S1W1 | Più tardi
+2 fin sopraPiegaSett=0 top=1367 btn=False S1W1 | 7.7 (1 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W2 | ⚽ Gioca vs FC Köln
+2 fin sopraPiegaSett=2 top=207 btn=True S1W2 | ⚽ Gioca vs FC Köln
+2 hom sopraPiegaSett=2 top=102 btn=False S1W2 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 3/38 · 2° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W2 | Deutsche Liga · 3ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W2 | Ultime 2
+2 hom sopraPiegaSett=2 top=538 btn=False S1W2 | STAGIONE 1 · SETTIMANA 3 DI 38
+2 hom sopraPiegaSett=0 top=1260 btn=False S1W2 | 7.3 (2 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W2 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 3/38 · 2° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W2 | Deutsche Liga · 3ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W2 | Ultime 2
+2 fin sopraPiegaSett=2 top=538 btn=False S1W2 | STAGIONE 1 · SETTIMANA 3 DI 38
+2 fin sopraPiegaSett=0 top=1260 btn=False S1W2 | 7.3 (2 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W3 | ⚽ Gioca vs FC Wolfstadt
+2 fin sopraPiegaSett=2 top=207 btn=True S1W3 | ⚽ Gioca vs FC Wolfstadt
+2 hom sopraPiegaSett=2 top=102 btn=False S1W3 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 4/38 · 1° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W3 | Deutsche Liga · 4ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W3 | Ultime 3
+2 hom sopraPiegaSett=2 top=538 btn=False S1W3 | STAGIONE 1 · SETTIMANA 4 DI 38
+2 hom sopraPiegaSett=0 top=1516 btn=False S1W3 | 7.13 (3 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W3 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 4/38 · 1° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W3 | Deutsche Liga · 4ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W3 | Ultime 3
+2 fin sopraPiegaSett=2 top=538 btn=False S1W3 | STAGIONE 1 · SETTIMANA 4 DI 38
+2 fin sopraPiegaSett=0 top=1516 btn=False S1W3 | 7.13 (3 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W4 | ⚽ Gioca vs FC Goldwald
+2 fin sopraPiegaSett=2 top=207 btn=True S1W4 | ⚽ Gioca vs FC Goldwald
+2 hom sopraPiegaSett=2 top=102 btn=False S1W4 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 5/38 · 2° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W4 | Deutsche Liga · 5ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W4 | Ultime 4
+2 hom sopraPiegaSett=2 top=538 btn=False S1W4 | STAGIONE 1 · SETTIMANA 5 DI 38
+2 hom sopraPiegaSett=0 top=1335 btn=False S1W4 | 6.65 (4 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W4 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 5/38 · 2° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W4 | Deutsche Liga · 5ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W4 | Ultime 4
+2 fin sopraPiegaSett=2 top=538 btn=False S1W4 | STAGIONE 1 · SETTIMANA 5 DI 38
+2 fin sopraPiegaSett=0 top=1335 btn=False S1W4 | 6.65 (4 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W5 | ⚽ Gioca vs FC Lilien
+2 fin sopraPiegaSett=2 top=353 btn=False S1W5 | Opportunità
+2 fin sopraPiegaSett=2 top=207 btn=True S1W5 | ⚽ Gioca vs FC Lilien
+2 hom sopraPiegaSett=2 top=102 btn=False S1W5 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 6/38 · 2° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W5 | Deutsche Liga · 6ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W5 | STAGIONE 1 · SETTIMANA 6 DI 38
+2 hom sopraPiegaSett=0 top=1340 btn=False S1W5 | 6.68 (5 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W5 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 6/38 · 2° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W5 | Deutsche Liga · 6ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W5 | STAGIONE 1 · SETTIMANA 6 DI 38
+2 fin sopraPiegaSett=0 top=1340 btn=False S1W5 | 6.68 (5 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W6 | ⚽ Gioca vs FC Stuttgart
+2 fin sopraPiegaSett=2 top=207 btn=True S1W6 | ⚽ Gioca vs FC Stuttgart
+2 hom sopraPiegaSett=2 top=102 btn=False S1W6 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 7/38 · 6° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W6 | Deutsche Liga · 7ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W6 | STAGIONE 1 · SETTIMANA 7 DI 38
+2 hom sopraPiegaSett=0 top=1520 btn=False S1W6 | 6.52 (6 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W6 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 7/38 · 6° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W6 | Deutsche Liga · 7ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W6 | STAGIONE 1 · SETTIMANA 7 DI 38
+2 fin sopraPiegaSett=0 top=1520 btn=False S1W6 | 6.52 (6 gare)
+2 hom sopraPiegaSett=2 top=760 btn=False S1W7 | Sconfitta 1–2 in trasferta vs FC Stuttgart (simulata) · 1 assist · vot
+2 hom sopraPiegaSett=2 top=207 btn=True S1W7 | ⚽ Gioca vs FC Frankfurt
+2 fin sopraPiegaSett=2 top=760 btn=False S1W7 | Sconfitta 1–2 in trasferta vs FC Stuttgart (simulata) · 1 assist · vot
+2 fin sopraPiegaSett=2 top=207 btn=True S1W7 | ⚽ Gioca vs FC Frankfurt
+2 hom sopraPiegaSett=2 top=102 btn=False S1W7 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 8/38 · 6° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W7 | Deutsche Liga · 8ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W7 | STAGIONE 1 · SETTIMANA 8 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W7 | 6.33 (7 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W7 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 8/38 · 6° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W7 | Deutsche Liga · 8ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W7 | STAGIONE 1 · SETTIMANA 8 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W7 | 6.33 (7 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W8 | ⚽ Gioca vs FC Berlin Nord
+2 fin sopraPiegaSett=2 top=207 btn=True S1W8 | ⚽ Gioca vs FC Berlin Nord
+2 hom sopraPiegaSett=2 top=102 btn=False S1W8 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 9/38 · 9° posto
+2 hom sopraPiegaSett=2 top=283 btn=False S1W8 | STAGIONE 1 · SETTIMANA 9 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W8 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 9/38 · 9° posto
+2 fin sopraPiegaSett=2 top=283 btn=False S1W8 | STAGIONE 1 · SETTIMANA 9 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W9 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 10/38 · 9° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W9 | Deutsche Liga · 9ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W9 | STAGIONE 1 · SETTIMANA 10 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W9 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 10/38 · 9° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W9 | Deutsche Liga · 9ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W9 | STAGIONE 1 · SETTIMANA 10 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W10 | ⚽ Gioca vs FC Berlin
+2 fin sopraPiegaSett=2 top=207 btn=True S1W10 | ⚽ Gioca vs FC Berlin
+2 hom sopraPiegaSett=2 top=102 btn=False S1W10 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 11/38 · 9° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W10 | Deutsche Liga · 10ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W10 | STAGIONE 1 · SETTIMANA 11 DI 38
+2 hom sopraPiegaSett=0 top=1516 btn=False S1W10 | 6.09 (9 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W10 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 11/38 · 9° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W10 | Deutsche Liga · 10ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W10 | STAGIONE 1 · SETTIMANA 11 DI 38
+2 fin sopraPiegaSett=0 top=1516 btn=False S1W10 | 6.09 (9 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W11 | ⚽ Gioca vs FC Mainz
+2 fin sopraPiegaSett=2 top=207 btn=True S1W11 | ⚽ Gioca vs FC Mainz
+2 hom sopraPiegaSett=2 top=102 btn=False S1W11 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 12/38 · 10° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W11 | Deutsche Liga · 11ª giornata
+2 hom sopraPiegaSett=2 top=338 btn=False S1W11 | 10ª
+2 hom sopraPiegaSett=2 top=538 btn=False S1W11 | STAGIONE 1 · SETTIMANA 12 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W11 | 6 (10 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W11 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 12/38 · 10° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W11 | Deutsche Liga · 11ª giornata
+2 fin sopraPiegaSett=2 top=338 btn=False S1W11 | 10ª
+2 fin sopraPiegaSett=2 top=538 btn=False S1W11 | STAGIONE 1 · SETTIMANA 12 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W11 | 6 (10 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W12 | ⚽ Gioca vs FC Niederrhein
+2 fin sopraPiegaSett=2 top=207 btn=True S1W12 | ⚽ Gioca vs FC Niederrhein
+2 hom sopraPiegaSett=2 top=102 btn=False S1W12 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 13/38 · 11° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W12 | Deutsche Liga · 12ª giornata
+2 hom sopraPiegaSett=2 top=338 btn=False S1W12 | 11ª
+2 hom sopraPiegaSett=2 top=538 btn=False S1W12 | STAGIONE 1 · SETTIMANA 13 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W12 | 5.95 (11 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W12 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 13/38 · 11° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W12 | Deutsche Liga · 12ª giornata
+2 fin sopraPiegaSett=2 top=338 btn=False S1W12 | 11ª
+2 fin sopraPiegaSett=2 top=538 btn=False S1W12 | STAGIONE 1 · SETTIMANA 13 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W12 | 5.95 (11 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W13 | ⚽ Gioca vs FC Ruhrpott
+2 fin sopraPiegaSett=2 top=207 btn=True S1W13 | ⚽ Gioca vs FC Ruhrpott
+2 hom sopraPiegaSett=2 top=102 btn=False S1W13 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 14/38 · 12° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W13 | Deutsche Liga · 13ª giornata
+2 hom sopraPiegaSett=2 top=338 btn=False S1W13 | 12ª
+2 hom sopraPiegaSett=2 top=538 btn=False S1W13 | STAGIONE 1 · SETTIMANA 14 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W13 | 5.9 (12 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W13 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 14/38 · 12° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W13 | Deutsche Liga · 13ª giornata
+2 fin sopraPiegaSett=2 top=338 btn=False S1W13 | 12ª
+2 fin sopraPiegaSett=2 top=538 btn=False S1W13 | STAGIONE 1 · SETTIMANA 14 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W13 | 5.9 (12 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W14 | ⚽ Gioca vs FC Augsburg
+2 fin sopraPiegaSett=2 top=207 btn=True S1W14 | ⚽ Gioca vs FC Augsburg
+2 hom sopraPiegaSett=2 top=102 btn=False S1W14 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 15/38 · 13° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W14 | Deutsche Liga · 14ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W14 | STAGIONE 1 · SETTIMANA 15 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W14 | 5.87 (13 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W14 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 15/38 · 13° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W14 | Deutsche Liga · 14ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W14 | STAGIONE 1 · SETTIMANA 15 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W14 | 5.87 (13 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W15 | ⚽ Gioca vs FC Weser
+2 fin sopraPiegaSett=2 top=207 btn=True S1W15 | ⚽ Gioca vs FC Weser
+2 hom sopraPiegaSett=2 top=102 btn=False S1W15 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 16/38 · 13° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W15 | Deutsche Liga · 15ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W15 | STAGIONE 1 · SETTIMANA 16 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W15 | 5.87 (14 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W15 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 16/38 · 13° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W15 | Deutsche Liga · 15ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W15 | STAGIONE 1 · SETTIMANA 16 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W15 | 5.87 (14 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W16 | ⚽ Gioca vs FC Leipzig
+2 fin sopraPiegaSett=2 top=207 btn=True S1W16 | ⚽ Gioca vs FC Leipzig
+2 hom sopraPiegaSett=2 top=102 btn=False S1W16 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 17/38 · 14° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W16 | Deutsche Liga · 16ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W16 | STAGIONE 1 · SETTIMANA 17 DI 38
+2 hom sopraPiegaSett=0 top=1780 btn=False S1W16 | 5.82 (15 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W16 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 17/38 · 14° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W16 | Deutsche Liga · 16ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W16 | STAGIONE 1 · SETTIMANA 17 DI 38
+2 fin sopraPiegaSett=0 top=1780 btn=False S1W16 | 5.82 (15 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W17 | ⚽ Gioca vs FC Friburgo
+2 fin sopraPiegaSett=2 top=207 btn=True S1W17 | ⚽ Gioca vs FC Friburgo
+2 hom sopraPiegaSett=2 top=102 btn=False S1W17 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 18/38 · 16° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W17 | Deutsche Liga · 17ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W17 | STAGIONE 1 · SETTIMANA 18 DI 38
+2 hom sopraPiegaSett=0 top=1054 btn=False S1W17 | Mister Lupinacci
+2 hom sopraPiegaSett=0 top=1780 btn=False S1W17 | 5.78 (16 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W17 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 18/38 · 16° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W17 | Deutsche Liga · 17ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W17 | STAGIONE 1 · SETTIMANA 18 DI 38
+2 fin sopraPiegaSett=0 top=1054 btn=False S1W17 | Mister Lupinacci
+2 fin sopraPiegaSett=0 top=1780 btn=False S1W17 | 5.78 (16 gare)
+2 hom sopraPiegaSett=2 top=207 btn=True S1W18 | ⚽ Gioca vs FC Kraichgau
+2 fin sopraPiegaSett=2 top=207 btn=True S1W18 | ⚽ Gioca vs FC Kraichgau
+2 hom sopraPiegaSett=2 top=102 btn=False S1W18 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 19/38 · 16° posto
+2 hom sopraPiegaSett=2 top=283 btn=False S1W18 | STAGIONE 1 · SETTIMANA 19 DI 38
+2 hom sopraPiegaSett=2 top=496 btn=False S1W18 | MERCATO INVERNALE APERTO — FINO ALLA SETTIMANA 23
+2 hom sopraPiegaSett=0 top=975 btn=False S1W18 | Mister Verdiani
+2 hom sopraPiegaSett=0 top=1471 btn=True S1W18 | Settimana di mercato
+2 fin sopraPiegaSett=2 top=102 btn=False S1W18 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 19/38 · 16° posto
+2 fin sopraPiegaSett=2 top=283 btn=False S1W18 | STAGIONE 1 · SETTIMANA 19 DI 38
+2 fin sopraPiegaSett=2 top=496 btn=False S1W18 | MERCATO INVERNALE APERTO — FINO ALLA SETTIMANA 23
+2 fin sopraPiegaSett=0 top=975 btn=False S1W18 | Mister Verdiani
+2 fin sopraPiegaSett=0 top=1471 btn=True S1W18 | Settimana di mercato
+2 hom sopraPiegaSett=2 top=102 btn=False S1W19 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 20/38 · 16° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W19 | Deutsche Liga · 18ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W19 | STAGIONE 1 · SETTIMANA 20 DI 38
+2 hom sopraPiegaSett=0 top=1075 btn=False S1W19 | Mister Di Mauro
+2 fin sopraPiegaSett=2 top=102 btn=False S1W19 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 20/38 · 16° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W19 | Deutsche Liga · 18ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W19 | STAGIONE 1 · SETTIMANA 20 DI 38
+2 fin sopraPiegaSett=0 top=1075 btn=False S1W19 | Mister Di Mauro
+2 hom sopraPiegaSett=2 top=102 btn=False S1W20 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 21/38 · 14° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W20 | Deutsche Liga · 19ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W20 | STAGIONE 1 · SETTIMANA 21 DI 38
+2 hom sopraPiegaSett=0 top=1075 btn=False S1W20 | Mister Greco
+2 hom sopraPiegaSett=0 top=1863 btn=False S1W20 | 5.78 (18 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W20 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 21/38 · 14° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W20 | Deutsche Liga · 19ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W20 | STAGIONE 1 · SETTIMANA 21 DI 38
+2 fin sopraPiegaSett=0 top=1075 btn=False S1W20 | Mister Greco
+2 fin sopraPiegaSett=0 top=1863 btn=False S1W20 | 5.78 (18 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W21 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 22/38 · 14° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W21 | Deutsche Liga · 20ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W21 | STAGIONE 1 · SETTIMANA 22 DI 38
+2 hom sopraPiegaSett=0 top=1645 btn=False S1W21 | 5.78 (19 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W21 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 22/38 · 14° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W21 | Deutsche Liga · 20ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W21 | STAGIONE 1 · SETTIMANA 22 DI 38
+2 fin sopraPiegaSett=0 top=1645 btn=False S1W21 | 5.78 (19 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W22 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 23/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W22 | Deutsche Liga · 21ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W22 | STAGIONE 1 · SETTIMANA 23 DI 38
+2 hom sopraPiegaSett=2 top=771 btn=False S1W22 | ULTIMA SETTIMANA DI MERCATO
+2 hom sopraPiegaSett=2 top=790 btn=False S1W22 | La finestra chiude questa settimana. Se vuoi muoverti, è adesso: parla
+2 hom sopraPiegaSett=0 top=1808 btn=False S1W22 | 5.76 (20 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W22 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 23/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W22 | Deutsche Liga · 21ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W22 | STAGIONE 1 · SETTIMANA 23 DI 38
+2 fin sopraPiegaSett=2 top=771 btn=False S1W22 | ULTIMA SETTIMANA DI MERCATO
+2 fin sopraPiegaSett=2 top=790 btn=False S1W22 | La finestra chiude questa settimana. Se vuoi muoverti, è adesso: parla
+2 fin sopraPiegaSett=0 top=1808 btn=False S1W22 | 5.76 (20 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W23 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 24/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W23 | Deutsche Liga · 22ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W23 | STAGIONE 1 · SETTIMANA 24 DI 38
+2 hom sopraPiegaSett=0 top=1801 btn=False S1W23 | 5.73 (21 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W23 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 24/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W23 | Deutsche Liga · 22ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W23 | STAGIONE 1 · SETTIMANA 24 DI 38
+2 fin sopraPiegaSett=0 top=1801 btn=False S1W23 | 5.73 (21 gare)
+2 hom sopraPiegaSett=2 top=760 btn=False S1W24 | Sconfitta 0–3 in casa vs FC Goldwald (simulata) · voto 5,1
+2 hom sopraPiegaSett=2 top=102 btn=False S1W24 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 25/38 · 16° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W24 | Deutsche Liga · 23ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W24 | STAGIONE 1 · SETTIMANA 25 DI 38
+2 hom sopraPiegaSett=0 top=1054 btn=False S1W24 | Mister Rossi
+2 hom sopraPiegaSett=0 top=1780 btn=False S1W24 | 5.7 (22 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W24 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 25/38 · 16° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W24 | Deutsche Liga · 23ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W24 | STAGIONE 1 · SETTIMANA 25 DI 38
+2 fin sopraPiegaSett=0 top=1054 btn=False S1W24 | Mister Rossi
+2 fin sopraPiegaSett=0 top=1780 btn=False S1W24 | 5.7 (22 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W25 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 26/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W25 | Deutsche Liga · 24ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W25 | STAGIONE 1 · SETTIMANA 26 DI 38
+2 hom sopraPiegaSett=0 top=1340 btn=False S1W25 | 5.76 (23 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W25 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 26/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W25 | Deutsche Liga · 24ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W25 | STAGIONE 1 · SETTIMANA 26 DI 38
+2 fin sopraPiegaSett=0 top=1340 btn=False S1W25 | 5.76 (23 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W26 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 27/38 · 16° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W26 | Deutsche Liga · 25ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W26 | STAGIONE 1 · SETTIMANA 27 DI 38
+2 hom sopraPiegaSett=0 top=1360 btn=False S1W26 | 5.73 (24 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W26 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 27/38 · 16° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W26 | Deutsche Liga · 25ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W26 | STAGIONE 1 · SETTIMANA 27 DI 38
+2 fin sopraPiegaSett=0 top=1360 btn=False S1W26 | 5.73 (24 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W27 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 28/38 · 17° posto
+2 hom sopraPiegaSett=2 top=283 btn=False S1W27 | STAGIONE 1 · SETTIMANA 28 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W27 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 28/38 · 17° posto
+2 fin sopraPiegaSett=2 top=283 btn=False S1W27 | STAGIONE 1 · SETTIMANA 28 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W28 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 29/38 · 17° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W28 | Deutsche Liga · 26ª giornata
+2 hom sopraPiegaSett=2 top=338 btn=False S1W28 | 17ª
+2 hom sopraPiegaSett=2 top=538 btn=False S1W28 | STAGIONE 1 · SETTIMANA 29 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W28 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 29/38 · 17° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W28 | Deutsche Liga · 26ª giornata
+2 fin sopraPiegaSett=2 top=338 btn=False S1W28 | 17ª
+2 fin sopraPiegaSett=2 top=538 btn=False S1W28 | STAGIONE 1 · SETTIMANA 29 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W29 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 30/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W29 | Deutsche Liga · 27ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W29 | STAGIONE 1 · SETTIMANA 30 DI 38
+2 hom sopraPiegaSett=0 top=1583 btn=False S1W29 | 5.74 (26 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W29 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 30/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W29 | Deutsche Liga · 27ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W29 | STAGIONE 1 · SETTIMANA 30 DI 38
+2 fin sopraPiegaSett=0 top=1583 btn=False S1W29 | 5.74 (26 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W30 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 31/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W30 | Deutsche Liga · 28ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W30 | STAGIONE 1 · SETTIMANA 31 DI 38
+2 hom sopraPiegaSett=0 top=1340 btn=False S1W30 | 5.75 (27 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W30 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 31/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W30 | Deutsche Liga · 28ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W30 | STAGIONE 1 · SETTIMANA 31 DI 38
+2 fin sopraPiegaSett=0 top=1340 btn=False S1W30 | 5.75 (27 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W31 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 32/38 · 15° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W31 | Deutsche Liga · 29ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W31 | 18ª in classifica
+2 hom sopraPiegaSett=2 top=559 btn=False S1W31 | STAGIONE 1 · SETTIMANA 32 DI 38
+2 hom sopraPiegaSett=0 top=1360 btn=False S1W31 | 5.75 (28 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W31 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 32/38 · 15° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W31 | Deutsche Liga · 29ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W31 | 18ª in classifica
+2 fin sopraPiegaSett=2 top=559 btn=False S1W31 | STAGIONE 1 · SETTIMANA 32 DI 38
+2 fin sopraPiegaSett=0 top=1360 btn=False S1W31 | 5.75 (28 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W32 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 33/38 · 14° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W32 | Deutsche Liga · 30ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W32 | STAGIONE 1 · SETTIMANA 33 DI 38
+2 hom sopraPiegaSett=0 top=1340 btn=False S1W32 | 5.79 (29 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W32 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 33/38 · 14° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W32 | Deutsche Liga · 30ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W32 | STAGIONE 1 · SETTIMANA 33 DI 38
+2 fin sopraPiegaSett=0 top=1340 btn=False S1W32 | 5.79 (29 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W33 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 34/38 · 13° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W33 | Deutsche Liga · 31ª giornata
+2 hom sopraPiegaSett=2 top=480 btn=False S1W33 | Precedenti 0V 1N 0P
+2 hom sopraPiegaSett=2 top=538 btn=False S1W33 | STAGIONE 1 · SETTIMANA 34 DI 38
+2 hom sopraPiegaSett=0 top=1587 btn=False S1W33 | 5.83 (30 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W33 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 34/38 · 13° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W33 | Deutsche Liga · 31ª giornata
+2 fin sopraPiegaSett=2 top=480 btn=False S1W33 | Precedenti 0V 1N 0P
+2 fin sopraPiegaSett=2 top=538 btn=False S1W33 | STAGIONE 1 · SETTIMANA 34 DI 38
+2 fin sopraPiegaSett=0 top=1587 btn=False S1W33 | 5.83 (30 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W34 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 35/38 · 13° posto
+2 hom sopraPiegaSett=2 top=283 btn=False S1W34 | STAGIONE 1 · SETTIMANA 35 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W34 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 35/38 · 13° posto
+2 fin sopraPiegaSett=2 top=283 btn=False S1W34 | STAGIONE 1 · SETTIMANA 35 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W35 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 36/38 · 13° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W35 | Deutsche Liga · 32ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W35 | STAGIONE 1 · SETTIMANA 36 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W35 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 36/38 · 13° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W35 | Deutsche Liga · 32ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W35 | STAGIONE 1 · SETTIMANA 36 DI 38
+2 fin sopraPiegaSett=2 top=760 btn=False S1W36 | Vittoria 1–0 in casa vs FC Weser (simulata) · 1 assist · voto 6,8
+2 hom sopraPiegaSett=2 top=102 btn=False S1W36 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 37/38 · 13° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W36 | Deutsche Liga · 33ª giornata
+2 hom sopraPiegaSett=2 top=559 btn=False S1W36 | STAGIONE 1 · SETTIMANA 37 DI 38
+2 hom sopraPiegaSett=0 top=1608 btn=False S1W36 | 5.85 (32 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W36 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 37/38 · 13° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W36 | Deutsche Liga · 33ª giornata
+2 fin sopraPiegaSett=2 top=559 btn=False S1W36 | STAGIONE 1 · SETTIMANA 37 DI 38
+2 fin sopraPiegaSett=0 top=1608 btn=False S1W36 | 5.85 (32 gare)
+2 hom sopraPiegaSett=2 top=102 btn=False S1W37 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 38/38 · 14° posto
+2 hom sopraPiegaSett=2 top=289 btn=False S1W37 | Deutsche Liga · 34ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W37 | STAGIONE 1 · SETTIMANA 38 DI 38
+2 hom sopraPiegaSett=0 top=1650 btn=False S1W37 | 5.83 (33 gare)
+2 fin sopraPiegaSett=2 top=102 btn=False S1W37 | FC Werkstadt · Deutsche Liga · St. 1 · Sett. 38/38 · 14° posto
+2 fin sopraPiegaSett=2 top=289 btn=False S1W37 | Deutsche Liga · 34ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W37 | STAGIONE 1 · SETTIMANA 38 DI 38
+2 fin sopraPiegaSett=0 top=1650 btn=False S1W37 | 5.83 (33 gare)
+2 hom sopraPiegaSett=2 top=760 btn=False S1W38 | Sconfitta 0–2 in casa vs FC Friburgo (simulata) · voto 5,1
+2 hom sopraPiegaSett=2 top=102 btn=False S1W38 | FC Werkstadt · Deutsche Liga · St. 1 · Fine stagione · 14° posto
+2 hom sopraPiegaSett=2 top=283 btn=False S1W38 | STAGIONE 1 · FINE STAGIONE
+2 hom sopraPiegaSett=0 top=1117 btn=False S1W38 | 7 / 11
+2 hom sopraPiegaSett=0 top=1152 btn=False S1W38 | 5.86 (34 gare)
+2 fin sopraPiegaSett=2 top=760 btn=False S1W38 | Sconfitta 0–2 in casa vs FC Friburgo (simulata) · voto 5,1
+2 fin sopraPiegaSett=2 top=102 btn=False S1W38 | FC Werkstadt · Deutsche Liga · St. 1 · Fine stagione · 14° posto
+2 fin sopraPiegaSett=2 top=283 btn=False S1W38 | STAGIONE 1 · FINE STAGIONE
+2 fin sopraPiegaSett=0 top=1117 btn=False S1W38 | 7 / 11
+2 fin sopraPiegaSett=0 top=1152 btn=False S1W38 | 5.86 (34 gare)
+== censimento-u18.json chiusa False sett 39 stallo S1W39: step 'advanced' ripetuto 6x senza rollover
+39 hom sopraPiegaSett=39 top=39 btn=False S1W1 | Elite
+39 hom sopraPiegaSett=39 top=30 btn=True S1W1 | · 21:59
+39 hom sopraPiegaSett=39 top=59 btn=False S1W1 | SPAGNA · ATTACCANTE
+39 hom sopraPiegaSett=39 top=76 btn=False S1W1 | SAMUEL FRANCISCO
+39 hom sopraPiegaSett=39 top=96 btn=False S1W1 | OVR
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | FORMA
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | MORALE
+39 hom sopraPiegaSett=39 top=141 btn=False S1W1 | FATICA
+39 hom sopraPiegaSett=38 top=407 btn=False S1W1 | FC Ciociaro Primavera
+39 hom sopraPiegaSett=39 top=335 btn=False S1W1 | Partite
+39 hom sopraPiegaSett=39 top=335 btn=False S1W1 | Gol
+39 hom sopraPiegaSett=39 top=335 btn=False S1W1 | Assist
+39 hom sopraPiegaSett=39 top=419 btn=False S1W1 | /100
+39 hom sopraPiegaSett=39 top=436 btn=False S1W1 | Fiducia del mister
+39 hom sopraPiegaSett=39 top=436 btn=False S1W1 | Popolarità
+39 hom sopraPiegaSett=25 top=501 btn=True S1W1 | La tua settimana
+39 hom sopraPiegaSett=25 top=613 btn=True S1W1 | Obiettivi della stagione
+39 hom sopraPiegaSett=11 top=678 btn=True S1W1 | Ultime notizie
+39 hom sopraPiegaSett=39 top=839 btn=True S1W1 | ☕ Sostieni il gioco
+39 hom sopraPiegaSett=39 top=839 btn=True S1W1 | 💡 Idee e feedback
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | HOME
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | STAGIONE
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | CLUB
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | CARRIERA
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | AGENTE
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | UFFICIO
+39 hom sopraPiegaSett=39 top=885 btn=True S1W1 | OPZIONI
+39 fin sopraPiegaSett=39 top=39 btn=False S1W1 | Elite
+39 fin sopraPiegaSett=39 top=30 btn=True S1W1 | · 21:59
+39 fin sopraPiegaSett=39 top=59 btn=False S1W1 | SPAGNA · ATTACCANTE
+39 fin sopraPiegaSett=39 top=76 btn=False S1W1 | SAMUEL FRANCISCO
+39 fin sopraPiegaSett=39 top=96 btn=False S1W1 | OVR
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | FORMA
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | MORALE
+39 fin sopraPiegaSett=39 top=141 btn=False S1W1 | FATICA
+39 fin sopraPiegaSett=38 top=407 btn=False S1W1 | FC Ciociaro Primavera
+39 fin sopraPiegaSett=39 top=335 btn=False S1W1 | Partite
+39 fin sopraPiegaSett=39 top=335 btn=False S1W1 | Gol
+39 fin sopraPiegaSett=39 top=335 btn=False S1W1 | Assist
+39 fin sopraPiegaSett=39 top=419 btn=False S1W1 | /100
+39 fin sopraPiegaSett=39 top=436 btn=False S1W1 | Fiducia del mister
+39 fin sopraPiegaSett=39 top=436 btn=False S1W1 | Popolarità
+39 fin sopraPiegaSett=25 top=501 btn=True S1W1 | La tua settimana
+39 fin sopraPiegaSett=25 top=613 btn=True S1W1 | Obiettivi della stagione
+39 fin sopraPiegaSett=11 top=678 btn=True S1W1 | Ultime notizie
+39 fin sopraPiegaSett=39 top=839 btn=True S1W1 | ☕ Sostieni il gioco
+39 fin sopraPiegaSett=39 top=839 btn=True S1W1 | 💡 Idee e feedback
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | HOME
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | STAGIONE
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | CLUB
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | CARRIERA
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | AGENTE
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | UFFICIO
+39 fin sopraPiegaSett=39 top=885 btn=True S1W1 | OPZIONI
+39 hom sopraPiegaSett=25 top=558 btn=False S1W1 | Giovane promessa
+39 hom sopraPiegaSett=25 top=559 btn=False S1W1 | 17 anni
+39 fin sopraPiegaSett=25 top=558 btn=False S1W1 | Giovane promessa
+39 fin sopraPiegaSett=25 top=559 btn=False S1W1 | 17 anni
+38 hom sopraPiegaSett=38 top=308 btn=False S1W1 | PROSSIMA PARTITA
+38 hom sopraPiegaSett=38 top=307 btn=True S1W1 | Calendario ›
+38 fin sopraPiegaSett=38 top=308 btn=False S1W1 | PROSSIMA PARTITA
+38 fin sopraPiegaSett=38 top=307 btn=True S1W1 | Calendario ›
+38 hom sopraPiegaSett=38 top=207 btn=True S1W1 | ⚡ Vivi la Settimana
+38 hom sopraPiegaSett=38 top=230 btn=True S1W1 | allenamento, eventi e crescita
+38 fin sopraPiegaSett=38 top=207 btn=True S1W1 | ⚡ Vivi la Settimana
+38 fin sopraPiegaSett=38 top=230 btn=True S1W1 | allenamento, eventi e crescita
+34 hom sopraPiegaSett=34 top=424 btn=False S1W1 | In casa
+34 fin sopraPiegaSett=34 top=424 btn=False S1W1 | In casa
+34 hom sopraPiegaSett=34 top=339 btn=False S1W5 | Ultime 5
+34 fin sopraPiegaSett=34 top=339 btn=False S1W5 | Ultime 5
+33 hom sopraPiegaSett=33 top=391 btn=False S1W1 | In trasferta
+33 fin sopraPiegaSett=33 top=391 btn=False S1W1 | In trasferta
+31 fin sopraPiegaSett=31 top=310 btn=False S1W1 | Impulso della settimana
+21 hom sopraPiegaSett=21 top=542 btn=False S1W19 | FC Panteras
+21 fin sopraPiegaSett=21 top=542 btn=False S1W19 | FC Panteras
+20 hom sopraPiegaSett=20 top=496 btn=False S1W20 | SAGA DI MERCATO · EPISODIO 3 DI 3
+20 hom sopraPiegaSett=20 top=516 btn=False S1W20 | 📩 L'offerta ufficiale
+20 hom sopraPiegaSett=20 top=586 btn=True S1W20 | 💼 Ascolta l'offerta →
+20 fin sopraPiegaSett=20 top=496 btn=False S1W20 | SAGA DI MERCATO · EPISODIO 3 DI 3
+20 fin sopraPiegaSett=20 top=516 btn=False S1W20 | 📩 L'offerta ufficiale
+20 fin sopraPiegaSett=20 top=586 btn=True S1W20 | 💼 Ascolta l'offerta →
+17 hom sopraPiegaSett=17 top=230 btn=True S1W1 | ✈️ In trasferta
+17 fin sopraPiegaSett=17 top=230 btn=True S1W1 | ✈️ In trasferta
+17 hom sopraPiegaSett=17 top=230 btn=True S1W2 | 🏠 In casa
+17 fin sopraPiegaSett=17 top=230 btn=True S1W2 | 🏠 In casa
+16 hom sopraPiegaSett=16 top=480 btn=False S1W19 | Precedenti 1V 0N 0P
+16 fin sopraPiegaSett=16 top=480 btn=False S1W19 | Precedenti 1V 0N 0P
+10 fin sopraPiegaSett=10 top=333 btn=False S1W5 | Scelta
+10 hom sopraPiegaSett=10 top=502 btn=True S1W8 | Settimana di lavoro
+10 fin sopraPiegaSett=10 top=502 btn=True S1W8 | Settimana di lavoro
+10 hom sopraPiegaSett=6 top=757 btn=True S1W11 | Big match
+10 fin sopraPiegaSett=6 top=757 btn=True S1W11 | Big match
+8 hom sopraPiegaSett=8 top=480 btn=False S1W5 | Forza 23/99 · più debole
+8 fin sopraPiegaSett=8 top=480 btn=False S1W5 | Forza 23/99 · più debole
+8 hom sopraPiegaSett=8 top=453 btn=False S1W6 | 7ª in classifica
+8 hom sopraPiegaSett=8 top=480 btn=False S1W6 | Forza 34/99 · più debole
+8 fin sopraPiegaSett=8 top=453 btn=False S1W6 | 7ª in classifica
+8 fin sopraPiegaSett=8 top=480 btn=False S1W6 | Forza 34/99 · più debole
+8 hom sopraPiegaSett=8 top=480 btn=False S1W11 | Forza 30/99 · più debole
+8 fin sopraPiegaSett=8 top=480 btn=False S1W11 | Forza 30/99 · più debole
+8 hom sopraPiegaSett=8 top=480 btn=False S1W13 | Forza 35/99 · più debole
+8 fin sopraPiegaSett=8 top=480 btn=False S1W13 | Forza 35/99 · più debole
+7 hom sopraPiegaSett=7 top=892 btn=False S1W1 | TEST
+7 hom sopraPiegaSett=7 top=892 btn=False S1W1 | KE 7.999.156
+7 fin sopraPiegaSett=7 top=892 btn=False S1W1 | TEST
+7 fin sopraPiegaSett=7 top=892 btn=False S1W1 | KE 7.999.156
+6 fin sopraPiegaSett=6 top=333 btn=False S1W1 | Esordio
+6 hom sopraPiegaSett=6 top=453 btn=False S1W2 | 5ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W2 | 5ª in classifica
+6 hom sopraPiegaSett=6 top=453 btn=False S1W5 | 15ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W5 | 15ª in classifica
+6 hom sopraPiegaSett=6 top=453 btn=False S1W7 | 8ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W7 | 8ª in classifica
+6 hom sopraPiegaSett=6 top=453 btn=False S1W13 | 2ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W13 | 2ª in classifica
+6 hom sopraPiegaSett=6 top=453 btn=False S1W14 | 17ª in classifica
+6 fin sopraPiegaSett=6 top=453 btn=False S1W14 | 17ª in classifica
+6 hom sopraPiegaSett=6 top=480 btn=False S1W20 | Precedenti 0V 0N 1P
+6 fin sopraPiegaSett=6 top=480 btn=False S1W20 | Precedenti 0V 0N 1P
+6 hom sopraPiegaSett=6 top=480 btn=False S1W23 | Precedenti 0V 1N 0P
+6 fin sopraPiegaSett=6 top=480 btn=False S1W23 | Precedenti 0V 1N 0P
+5 hom sopraPiegaSett=5 top=760 btn=False S1W1 | Vittoria 2–0 in trasferta vs FC Modenese Primavera (simulata) · 1 assi
+5 fin sopraPiegaSett=5 top=760 btn=False S1W2 | Vittoria 2–0 in trasferta vs FC Modenese Primavera (simulata) · 1 assi
+5 fin sopraPiegaSett=5 top=342 btn=False S1W4 | personale
+4 hom sopraPiegaSett=4 top=420 btn=False S1W1 | 9ª in classifica
+4 fin sopraPiegaSett=4 top=420 btn=False S1W1 | 9ª in classifica
+4 hom sopraPiegaSett=4 top=428 btn=False S1W1 | FC Empolese Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W1 | Forza 38/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W1 | FC Empolese Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W1 | Forza 38/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W2 | FC Cesenate Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W2 | Forza 28/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W2 | FC Cesenate Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W2 | Forza 28/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W3 | FC Altoadige Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W3 | Forza 25/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W3 | FC Altoadige Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W3 | Forza 25/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W4 | FC Cremona Primavera
+4 hom sopraPiegaSett=4 top=453 btn=False S1W4 | 6ª in classifica
+4 hom sopraPiegaSett=4 top=480 btn=False S1W4 | Forza 33/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W4 | FC Cremona Primavera
+4 fin sopraPiegaSett=4 top=453 btn=False S1W4 | 6ª in classifica
+4 fin sopraPiegaSett=4 top=480 btn=False S1W4 | Forza 33/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W5 | FC Lariano Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W5 | FC Lariano Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W6 | FC Spezzino Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W6 | FC Spezzino Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W7 | FC Calabro Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W7 | Forza 29/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W7 | FC Calabro Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W7 | Forza 29/99 · più debole
+4 hom sopraPiegaSett=4 top=207 btn=True S1W9 | ⏭️ Avanza Settimana
+4 fin sopraPiegaSett=4 top=207 btn=True S1W9 | ⏭️ Avanza Settimana
+4 hom sopraPiegaSett=4 top=428 btn=False S1W9 | FC Parmense Primavera
+4 hom sopraPiegaSett=4 top=453 btn=False S1W9 | 11ª in classifica
+4 hom sopraPiegaSett=4 top=480 btn=False S1W9 | Forza 37/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W9 | FC Parmense Primavera
+4 fin sopraPiegaSett=4 top=453 btn=False S1W9 | 11ª in classifica
+4 fin sopraPiegaSett=4 top=480 btn=False S1W9 | Forza 37/99 · più debole
+4 fin sopraPiegaSett=4 top=336 btn=False S1W10 | Tensione
+4 hom sopraPiegaSett=4 top=428 btn=False S1W10 | FC Bruzio Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W10 | FC Bruzio Primavera
+4 fin sopraPiegaSett=4 top=342 btn=False S1W11 | Conseguenza
+4 hom sopraPiegaSett=4 top=428 btn=False S1W11 | FC Pisano Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W11 | FC Pisano Primavera
+4 hom sopraPiegaSett=4 top=156 btn=False S1W12 | 100
+4 fin sopraPiegaSett=4 top=156 btn=False S1W12 | 100
+4 hom sopraPiegaSett=4 top=428 btn=False S1W12 | FC Cittadino Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W12 | Forza 27/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W12 | FC Cittadino Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W12 | Forza 27/99 · più debole
+4 hom sopraPiegaSett=4 top=428 btn=False S1W13 | FC Sicania Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W13 | FC Sicania Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W14 | FC Salernum Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W14 | FC Salernum Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W15 | FC Leonessa Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W15 | FC Leonessa Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W16 | FC Pugliese Primavera
+4 fin sopraPiegaSett=4 top=428 btn=False S1W16 | FC Pugliese Primavera
+4 hom sopraPiegaSett=4 top=428 btn=False S1W17 | FC Laguna Primavera
+4 hom sopraPiegaSett=4 top=480 btn=False S1W17 | Forza 36/99 · più debole
+4 fin sopraPiegaSett=4 top=428 btn=False S1W17 | FC Laguna Primavera
+4 fin sopraPiegaSett=4 top=480 btn=False S1W17 | Forza 36/99 · più debole
+4 hom sopraPiegaSett=4 top=453 btn=False S1W25 | 14ª in classifica
+4 fin sopraPiegaSett=4 top=453 btn=False S1W25 | 14ª in classifica
+4 hom sopraPiegaSett=4 top=760 btn=False S1W33 | Sconfitta 0–1 in casa vs FC Sicania Primavera (simulata) · voto 5,2
+4 hom sopraPiegaSett=4 top=760 btn=False S1W36 | Vittoria 1–0 in casa vs FC Leonessa Primavera (simulata) · voto 6,4
+3 hom sopraPiegaSett=3 top=395 btn=False S1W1 | FC Modenese Primavera
+3 hom sopraPiegaSett=3 top=447 btn=False S1W1 | Forza 32/99 · più debole
+3 fin sopraPiegaSett=3 top=395 btn=False S1W1 | FC Modenese Primavera
+3 fin sopraPiegaSett=3 top=447 btn=False S1W1 | Forza 32/99 · più debole
+3 hom sopraPiegaSett=3 top=760 btn=False S1W6 | Vittoria 1–0 in casa vs FC Lariano Primavera (simulata) · 1 gol · voto
+3 fin sopraPiegaSett=3 top=760 btn=False S1W7 | Vittoria 1–0 in casa vs FC Lariano Primavera (simulata) · 1 gol · voto
+3 hom sopraPiegaSett=3 top=760 btn=False S1W9 | Vittoria 3–0 in casa vs FC Calabro Primavera (simulata) · voto 7,0
+3 fin sopraPiegaSett=3 top=760 btn=False S1W10 | Vittoria 3–0 in casa vs FC Calabro Primavera (simulata) · voto 7,0
+3 hom sopraPiegaSett=3 top=760 btn=False S1W12 | Vittoria 1–0 in trasferta vs FC Pisano Primavera (simulata) · 1 gol · 
+3 fin sopraPiegaSett=3 top=760 btn=False S1W13 | Vittoria 1–0 in trasferta vs FC Pisano Primavera (simulata) · 1 gol · 
+3 fin sopraPiegaSett=3 top=339 btn=False S1W15 | Questa settimana
+3 fin sopraPiegaSett=3 top=566 btn=True S1W15 | ✅ Capito
+3 hom sopraPiegaSett=3 top=760 btn=False S1W15 | Pareggio 1–1 in casa vs FC Salernum Primavera (simulata) · voto 5,7
+3 fin sopraPiegaSett=3 top=760 btn=False S1W16 | Pareggio 1–1 in casa vs FC Salernum Primavera (simulata) · voto 5,7
+3 hom sopraPiegaSett=3 top=760 btn=False S1W18 | Sconfitta 0–1 in trasferta vs FC Laguna Primavera (simulata) · voto 5,
+3 fin sopraPiegaSett=3 top=760 btn=False S1W19 | Sconfitta 0–1 in trasferta vs FC Laguna Primavera (simulata) · voto 5,
+3 hom sopraPiegaSett=3 top=760 btn=False S1W21 | Sconfitta 0–1 in trasferta vs FC Empolese Primavera (simulata) · voto 
+3 fin sopraPiegaSett=3 top=332 btn=False S1W23 | Rocco Landi
+3 fin sopraPiegaSett=3 top=354 btn=False S1W23 | Lo spogliatoio · compagno
+3 hom sopraPiegaSett=3 top=760 btn=False S1W24 | Pareggio 0–0 in casa vs FC Cremona Primavera (simulata) · voto 6,0
+3 fin sopraPiegaSett=3 top=760 btn=False S1W25 | Pareggio 0–0 in casa vs FC Cremona Primavera (simulata) · voto 6,0
+3 hom sopraPiegaSett=3 top=760 btn=False S1W27 | Vittoria 2–1 in trasferta vs FC Calabro Primavera (simulata) · 1 assis
+3 fin sopraPiegaSett=3 top=760 btn=False S1W28 | Vittoria 2–1 in trasferta vs FC Calabro Primavera (simulata) · 1 assis
+3 hom sopraPiegaSett=3 top=760 btn=False S1W30 | Sconfitta 0–2 in trasferta vs FC Bruzio Primavera (simulata) · voto 5,
+3 fin sopraPiegaSett=3 top=760 btn=False S1W31 | Sconfitta 0–2 in trasferta vs FC Bruzio Primavera (simulata) · voto 5,
+3 fin sopraPiegaSett=3 top=760 btn=False S1W34 | Sconfitta 0–1 in casa vs FC Sicania Primavera (simulata) · voto 5,2
+3 fin sopraPiegaSett=3 top=760 btn=False S1W37 | Vittoria 1–0 in casa vs FC Leonessa Primavera (simulata) · voto 6,4
+2 hom sopraPiegaSett=2 top=207 btn=True S1W1 | ⚽ Gioca vs FC Modenese Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W1 | ⚽ Gioca vs FC Modenese Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W1 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 2/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W1 | Primavera 2 · 2ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W1 | Ultime 1
+2 hom sopraPiegaSett=2 top=538 btn=False S1W1 | STAGIONE 1 · SETTIMANA 2 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W1 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 2/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W1 | Primavera 2 · 2ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W1 | Ultime 1
+2 fin sopraPiegaSett=2 top=538 btn=False S1W1 | STAGIONE 1 · SETTIMANA 2 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W2 | ⚽ Gioca vs FC Empolese Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W2 | ⚽ Gioca vs FC Empolese Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W2 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 3/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W2 | Primavera 2 · 3ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W2 | Ultime 2
+2 hom sopraPiegaSett=2 top=538 btn=False S1W2 | STAGIONE 1 · SETTIMANA 3 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W2 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 3/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W2 | Primavera 2 · 3ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W2 | Ultime 2
+2 fin sopraPiegaSett=2 top=538 btn=False S1W2 | STAGIONE 1 · SETTIMANA 3 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W3 | ⚽ Gioca vs FC Cesenate Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W3 | ⚽ Gioca vs FC Cesenate Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W3 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 4/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W3 | Primavera 2 · 4ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W3 | Ultime 3
+2 hom sopraPiegaSett=2 top=453 btn=False S1W3 | 18ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W3 | STAGIONE 1 · SETTIMANA 4 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W3 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 4/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W3 | Primavera 2 · 4ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W3 | Ultime 3
+2 fin sopraPiegaSett=2 top=453 btn=False S1W3 | 18ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W3 | STAGIONE 1 · SETTIMANA 4 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W4 | ⚽ Gioca vs FC Altoadige Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W4 | ⚽ Gioca vs FC Altoadige Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W4 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 5/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W4 | Primavera 2 · 5ª giornata
+2 hom sopraPiegaSett=2 top=339 btn=False S1W4 | Ultime 4
+2 hom sopraPiegaSett=2 top=538 btn=False S1W4 | STAGIONE 1 · SETTIMANA 5 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W4 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 5/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W4 | Primavera 2 · 5ª giornata
+2 fin sopraPiegaSett=2 top=339 btn=False S1W4 | Ultime 4
+2 fin sopraPiegaSett=2 top=538 btn=False S1W4 | STAGIONE 1 · SETTIMANA 5 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W5 | ⚽ Gioca vs FC Cremona Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W5 | ⚽ Gioca vs FC Cremona Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W5 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 6/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W5 | Primavera 2 · 6ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W5 | STAGIONE 1 · SETTIMANA 6 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W5 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 6/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W5 | Primavera 2 · 6ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W5 | STAGIONE 1 · SETTIMANA 6 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W6 | ⚽ Gioca vs FC Lariano Primavera
+2 fin sopraPiegaSett=2 top=365 btn=False S1W6 | Opportunità
+2 fin sopraPiegaSett=2 top=207 btn=True S1W6 | ⚽ Gioca vs FC Lariano Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W6 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 7/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W6 | Primavera 2 · 7ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W6 | STAGIONE 1 · SETTIMANA 7 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W6 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 7/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W6 | Primavera 2 · 7ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W6 | STAGIONE 1 · SETTIMANA 7 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W7 | ⚽ Gioca vs FC Spezzino Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W7 | ⚽ Gioca vs FC Spezzino Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W7 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 8/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W7 | Primavera 2 · 8ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W7 | STAGIONE 1 · SETTIMANA 8 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W7 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 8/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W7 | Primavera 2 · 8ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W7 | STAGIONE 1 · SETTIMANA 8 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W8 | ⚽ Gioca vs FC Calabro Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W8 | ⚽ Gioca vs FC Calabro Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W8 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 9/38
+2 hom sopraPiegaSett=2 top=283 btn=False S1W8 | STAGIONE 1 · SETTIMANA 9 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W8 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 9/38
+2 fin sopraPiegaSett=2 top=283 btn=False S1W8 | STAGIONE 1 · SETTIMANA 9 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W9 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 10/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W9 | Primavera 2 · 9ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W9 | STAGIONE 1 · SETTIMANA 10 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W9 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 10/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W9 | Primavera 2 · 9ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W9 | STAGIONE 1 · SETTIMANA 10 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W10 | ⚽ Gioca vs FC Parmense Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W10 | ⚽ Gioca vs FC Parmense Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W10 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 11/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W10 | Primavera 2 · 10ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W10 | STAGIONE 1 · SETTIMANA 11 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W10 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 11/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W10 | Primavera 2 · 10ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W10 | STAGIONE 1 · SETTIMANA 11 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W11 | ⚽ Gioca vs FC Bruzio Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W11 | ⚽ Gioca vs FC Bruzio Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W11 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 12/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W11 | Primavera 2 · 11ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W11 | 3ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W11 | STAGIONE 1 · SETTIMANA 12 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W11 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 12/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W11 | Primavera 2 · 11ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W11 | 3ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W11 | STAGIONE 1 · SETTIMANA 12 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W12 | ⚽ Gioca vs FC Pisano Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W12 | ⚽ Gioca vs FC Pisano Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W12 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 13/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W12 | Primavera 2 · 12ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W12 | STAGIONE 1 · SETTIMANA 13 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W12 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 13/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W12 | Primavera 2 · 12ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W12 | STAGIONE 1 · SETTIMANA 13 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W13 | ⚽ Gioca vs FC Cittadino Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W13 | ⚽ Gioca vs FC Cittadino Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W13 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 14/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W13 | Primavera 2 · 13ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W13 | STAGIONE 1 · SETTIMANA 14 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W13 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 14/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W13 | Primavera 2 · 13ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W13 | STAGIONE 1 · SETTIMANA 14 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W14 | ⚽ Gioca vs FC Sicania Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W14 | ⚽ Gioca vs FC Sicania Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W14 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 15/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W14 | Primavera 2 · 14ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W14 | STAGIONE 1 · SETTIMANA 15 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W14 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 15/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W14 | Primavera 2 · 14ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W14 | STAGIONE 1 · SETTIMANA 15 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W15 | ⚽ Gioca vs FC Salernum Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W15 | ⚽ Gioca vs FC Salernum Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W15 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 16/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W15 | Primavera 2 · 15ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W15 | 1ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W15 | STAGIONE 1 · SETTIMANA 16 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W15 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 16/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W15 | Primavera 2 · 15ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W15 | 1ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W15 | STAGIONE 1 · SETTIMANA 16 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W16 | ⚽ Gioca vs FC Leonessa Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W16 | ⚽ Gioca vs FC Leonessa Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W16 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 17/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W16 | Primavera 2 · 16ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W16 | STAGIONE 1 · SETTIMANA 17 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W16 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 17/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W16 | Primavera 2 · 16ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W16 | STAGIONE 1 · SETTIMANA 17 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W17 | ⚽ Gioca vs FC Pugliese Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W17 | ⚽ Gioca vs FC Pugliese Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W17 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 18/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W17 | Primavera 2 · 17ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W17 | STAGIONE 1 · SETTIMANA 18 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W17 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 18/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W17 | Primavera 2 · 17ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W17 | STAGIONE 1 · SETTIMANA 18 DI 38
+2 hom sopraPiegaSett=2 top=207 btn=True S1W18 | ⚽ Gioca vs FC Laguna Primavera
+2 fin sopraPiegaSett=2 top=207 btn=True S1W18 | ⚽ Gioca vs FC Laguna Primavera
+2 hom sopraPiegaSett=2 top=102 btn=False S1W18 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 19/38
+2 hom sopraPiegaSett=2 top=283 btn=False S1W18 | STAGIONE 1 · SETTIMANA 19 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W18 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 19/38
+2 fin sopraPiegaSett=2 top=283 btn=False S1W18 | STAGIONE 1 · SETTIMANA 19 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W19 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 20/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W19 | Primavera 2 · 18ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W19 | STAGIONE 1 · SETTIMANA 20 DI 38
+2 hom sopraPiegaSett=2 top=750 btn=False S1W19 | SAGA DI MERCATO · EPISODIO 2 DI 3
+2 hom sopraPiegaSett=2 top=771 btn=False S1W19 | 🗞️ Il pressing dei media
+2 hom sopraPiegaSett=2 top=840 btn=True S1W19 | 🛡️ «Sono concentrato solo sul mio club»
+2 hom sopraPiegaSett=0 top=892 btn=True S1W19 | 🚪 «Nel calcio mai dire mai…»
+2 fin sopraPiegaSett=2 top=102 btn=False S1W19 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 20/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W19 | Primavera 2 · 18ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W19 | STAGIONE 1 · SETTIMANA 20 DI 38
+2 fin sopraPiegaSett=2 top=750 btn=False S1W19 | SAGA DI MERCATO · EPISODIO 2 DI 3
+2 fin sopraPiegaSett=2 top=771 btn=False S1W19 | 🗞️ Il pressing dei media
+2 fin sopraPiegaSett=2 top=840 btn=True S1W19 | 🛡️ «Sono concentrato solo sul mio club»
+2 fin sopraPiegaSett=0 top=892 btn=True S1W19 | 🚪 «Nel calcio mai dire mai…»
+2 hom sopraPiegaSett=2 top=102 btn=False S1W20 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 21/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W20 | Primavera 2 · 19ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W20 | 4ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W20 | STAGIONE 1 · SETTIMANA 21 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W20 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 21/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W20 | Primavera 2 · 19ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W20 | 4ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W20 | STAGIONE 1 · SETTIMANA 21 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W21 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 22/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W21 | Primavera 2 · 20ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W21 | STAGIONE 1 · SETTIMANA 22 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W21 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 22/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W21 | Primavera 2 · 20ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W21 | STAGIONE 1 · SETTIMANA 22 DI 38
+2 fin sopraPiegaSett=2 top=760 btn=False S1W22 | Sconfitta 0–1 in trasferta vs FC Empolese Primavera (simulata) · voto 
+2 hom sopraPiegaSett=2 top=102 btn=False S1W22 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 23/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W22 | Primavera 2 · 21ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W22 | 16ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W22 | STAGIONE 1 · SETTIMANA 23 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W22 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 23/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W22 | Primavera 2 · 21ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W22 | 16ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W22 | STAGIONE 1 · SETTIMANA 23 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W23 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 24/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W23 | Primavera 2 · 22ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W23 | STAGIONE 1 · SETTIMANA 24 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W23 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 24/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W23 | Primavera 2 · 22ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W23 | STAGIONE 1 · SETTIMANA 24 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W24 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 25/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W24 | Primavera 2 · 23ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W24 | STAGIONE 1 · SETTIMANA 25 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W24 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 25/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W24 | Primavera 2 · 23ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W24 | STAGIONE 1 · SETTIMANA 25 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W25 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 26/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W25 | Primavera 2 · 24ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W25 | STAGIONE 1 · SETTIMANA 26 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W25 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 26/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W25 | Primavera 2 · 24ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W25 | STAGIONE 1 · SETTIMANA 26 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W26 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 27/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W26 | Primavera 2 · 25ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W26 | STAGIONE 1 · SETTIMANA 27 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W26 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 27/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W26 | Primavera 2 · 25ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W26 | STAGIONE 1 · SETTIMANA 27 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W27 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 28/38
+2 hom sopraPiegaSett=2 top=283 btn=False S1W27 | STAGIONE 1 · SETTIMANA 28 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W27 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 28/38
+2 fin sopraPiegaSett=2 top=283 btn=False S1W27 | STAGIONE 1 · SETTIMANA 28 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W28 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 29/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W28 | Primavera 2 · 26ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W28 | STAGIONE 1 · SETTIMANA 29 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W28 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 29/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W28 | Primavera 2 · 26ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W28 | STAGIONE 1 · SETTIMANA 29 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W29 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 30/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W29 | Primavera 2 · 27ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W29 | STAGIONE 1 · SETTIMANA 30 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W29 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 30/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W29 | Primavera 2 · 27ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W29 | STAGIONE 1 · SETTIMANA 30 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W30 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 31/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W30 | Primavera 2 · 28ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W30 | STAGIONE 1 · SETTIMANA 31 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W30 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 31/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W30 | Primavera 2 · 28ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W30 | STAGIONE 1 · SETTIMANA 31 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W31 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 32/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W31 | Primavera 2 · 29ª giornata
+2 hom sopraPiegaSett=2 top=453 btn=False S1W31 | 12ª in classifica
+2 hom sopraPiegaSett=2 top=538 btn=False S1W31 | STAGIONE 1 · SETTIMANA 32 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W31 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 32/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W31 | Primavera 2 · 29ª giornata
+2 fin sopraPiegaSett=2 top=453 btn=False S1W31 | 12ª in classifica
+2 fin sopraPiegaSett=2 top=538 btn=False S1W31 | STAGIONE 1 · SETTIMANA 32 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W32 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 33/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W32 | Primavera 2 · 30ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W32 | STAGIONE 1 · SETTIMANA 33 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W32 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 33/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W32 | Primavera 2 · 30ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W32 | STAGIONE 1 · SETTIMANA 33 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W33 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 34/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W33 | Primavera 2 · 31ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W33 | STAGIONE 1 · SETTIMANA 34 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W33 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 34/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W33 | Primavera 2 · 31ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W33 | STAGIONE 1 · SETTIMANA 34 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W34 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 35/38
+2 hom sopraPiegaSett=2 top=283 btn=False S1W34 | STAGIONE 1 · SETTIMANA 35 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W34 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 35/38
+2 fin sopraPiegaSett=2 top=283 btn=False S1W34 | STAGIONE 1 · SETTIMANA 35 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W35 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 36/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W35 | Primavera 2 · 32ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W35 | STAGIONE 1 · SETTIMANA 36 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W35 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 36/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W35 | Primavera 2 · 32ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W35 | STAGIONE 1 · SETTIMANA 36 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W36 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 37/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W36 | Primavera 2 · 33ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W36 | STAGIONE 1 · SETTIMANA 37 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W36 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 37/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W36 | Primavera 2 · 33ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W36 | STAGIONE 1 · SETTIMANA 37 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W37 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 38/38
+2 hom sopraPiegaSett=2 top=289 btn=False S1W37 | Primavera 2 · 34ª giornata
+2 hom sopraPiegaSett=2 top=538 btn=False S1W37 | STAGIONE 1 · SETTIMANA 38 DI 38
+2 fin sopraPiegaSett=2 top=102 btn=False S1W37 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Sett. 38/38
+2 fin sopraPiegaSett=2 top=289 btn=False S1W37 | Primavera 2 · 34ª giornata
+2 fin sopraPiegaSett=2 top=538 btn=False S1W37 | STAGIONE 1 · SETTIMANA 38 DI 38
+2 hom sopraPiegaSett=2 top=102 btn=False S1W38 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Fine stagione
+2 hom sopraPiegaSett=2 top=283 btn=False S1W38 | STAGIONE 1 · FINE STAGIONE
+2 fin sopraPiegaSett=2 top=102 btn=False S1W38 | FC Ciociaro Primavera · Primavera 2 · St. 1 · Fine stagione
+2 fin sopraPiegaSett=2 top=283 btn=False S1W38 | STAGIONE 1 · FINE STAGIONE

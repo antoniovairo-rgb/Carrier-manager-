@@ -1354,6 +1354,12 @@ const getThisWeekMatchday=()=>{
         setWeekLiveModal(tipo==="spogliatoio"?{isSpogliatoio:true,teammate:tm,event:{txt:"Oggi resta dopo l'allenamento: ti faccio vedere come si attacca il primo palo."},choices:[{txt:"🤝 Resto volentieri",ef:{chem:4}},{txt:"🏠 Stasera no, sono stanco",ef:{fatigue:-3}}]}
           :tipo==="vissuta"?{event:{txt:"Settimana intensa: doppio allenamento e video-analisi."},changes:{morale:3,form:2,fatigue:6},coachMsg:"Ti voglio più cattivo sui contrasti."}
           :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Pago un fotografo mio",ef:{bank:-5000}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
+      /* [7.999.157 PO-154, decisione PO 10/10] VARCO DI SOLO COLLAUDO: apre il pop-up di un impulso PRECISO del catalogo, con le sue
+         scelte vere (stessa struttura del percorso settimanale, src/18 ~4050), per misurare l'effetto di ognuna delle 221 scelte.
+         Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
+      apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
+        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱"}[im.cat]||"💡";
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -1909,6 +1915,14 @@ const getThisWeekMatchday=()=>{
   //   (i tuoi assist/gol/striscia reali), sul compagno vero di p.teammates (nomi dal roster stabile 7.8.16).
   //   Max 1 episodio ogni ≥3 settimane (budget d'attenzione S1); marker lazy p.bondEv {s,w}.
   const bondState=(v)=>v>=75?{e:"💙",l:"Amico fraterno"}:v>=50?{e:"🤝",l:"Alleato"}:v>=25?{e:"😐",l:"Conoscente"}:{e:"❄️",l:"Gelo"};
+  /* [7.999.158 PO-224, foto PO 11/10 «il box a comparsa dello spogliatoio si perde facilmente, questi impulsi devono essere gestiti come pop up»]
+     i riquadri della home che chiedono una scelta (patto col mister: proposta e verdetto; lo spogliatoio) compaiono come FINESTRA sopra la home,
+     uno alla volta: il primo che si disegna prende la finestra, gli altri aspettano che sia risolto. Sotto ?cpmtest=1 restano riquadri
+     (le sonde cliccano la home) salvo __CPM_POP224; rosso __CPM_NO_POP224. */
+  let _popTaken224=false;
+  /* [7.999.159 PO-224, collaudatrice giro 6 e rilascio giro 3] la finestra non si apre SOTTO un altro dialogo bloccante (il confronto col procuratore, non chiudibile, la copriva in 90 settimane su 92 della sonda; la finestra della settimana): aspetta che si chiuda. Estesa ai riquadri con scelta del censimento: «La tua storia», scelte narrative, esonero, procuratore (ingaggio e boutique/global). */
+  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal))return null;_popTaken224=true;
+    return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto"}}>{node}</div></div>);};
   const bondEvent=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;const tms=p.teammates||[];if(!tms.length)return null;
@@ -5489,7 +5503,7 @@ const getThisWeekMatchday=()=>{
   // accept transfer: update club, league, calendar, standings
   /* [7.307.0 collaudo PO «al rifiuto di un'offerta, soprattutto così importante, deve esserci una
      conseguenza, un attestato di stima per la fedeltà o roba simile»] «Rifiuta» faceva UNA cosa: chiudere
-     il modale. Dire di no al FC München — 99 di prestigio, stipendio triplicato — non lasciava traccia da
+     il modale. Dire di no al FC Valdenau — 99 di prestigio, stipendio triplicato — non lasciava traccia da
      nessuna parte: né la piazza, né il mister, né la tua storia se ne accorgevano.
      Ora il rifiuto PESA, e pesa in proporzione a quanto era grossa l'offerta: il peso lo dice il salto di
      PRESTIGIO rispetto al tuo club e il salto di STIPENDIO rispetto al tuo contratto (nessun campo nuovo,
@@ -7235,7 +7249,7 @@ const getThisWeekMatchday=()=>{
         const team=(t,pos)=>(
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,flex:1,minWidth:0}}>
             <TeamBadge team={t} size={44}/>
-            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.n||t.name}</div>
+            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"normal",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{t.n||t.name}</div>
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(
@@ -7466,7 +7480,7 @@ const getThisWeekMatchday=()=>{
           });
           if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
         };
-        return(
+        return _pop224(
         <Card momento={`${A.e} ${A.lbl}`} momentoInk={_n30("#fff",undefined)} momentoNota={`episodio ${ix+1} di ${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:_n30(`linear-gradient(150deg,${A.c1},${A.c2})`,TH.card),border:_n30(`1px solid ${A.ac}44`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
           <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>{_title}</div>
@@ -7478,7 +7492,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.14.0] LA TUA STORIA — capitolo narrativo della settimana (motore derivato, mai casuale) */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _ch=storyChapter(player);if(!_ch)return null;
-        return(
+        return _pop224(
         <Card momento="La tua storia" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#1a1026,#241438)",TH.card),border:_n30("1px solid #4c2a7a","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#c4b5fd",semTesto945("#c4b5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La tua storia</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -7494,7 +7508,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const pv=pactView(player);if(!pv)return null;
         const cName=player.coach?.name||"Il mister";
-        if(pv.st==="offer")return(
+        if(pv.st==="offer")return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#0d2418,#10301f)",TH.card),border:_n30("1px solid #1d6b45","1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30("#6ee7b7",semTesto945("#6ee7b7")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister</div>
             <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
@@ -7521,7 +7535,7 @@ const getThisWeekMatchday=()=>{
           `«Ti avevo dato ${pv.played} gare: ne sono usciti ${pv.val} ${_u} su ${pv.pact.target}. Il campo non fa sconti, nemmeno a me.»`,
           `«${pv.val} su ${pv.pact.target}. Non te ne faccio una colpa: ma il posto, adesso, te lo devi riprendere.»`];
         const _vTx=_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length];
-        return(
+        return _pop224(
           <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"#6ee7b7":TH.txAmber,_kept?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister — verdetto</div>
             <div style={{fontSize:FS.caption,color:_n30(_kept?"rgba(255,255,255,0.85)":TH.txAmber,_kept?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_vTx}</div>
@@ -7531,7 +7545,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: episodio di legame derivato dai fatti (max 1 ogni ≥3 settimane) */}
       {tab==="dashboard"&&(()=>{
         const be=bondEvent(player);if(!be)return null;
-        return(
+        return _pop224(
         <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#112240)",TH.card),border:_n30("1px solid rgba(56,189,248,0.25)","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -7546,7 +7560,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.28.0 ONDA 3 — §S7] L'ESONERO + l'esame del nuovo mister: derivati dalla classifica reale */}
       {tab==="dashboard"&&(()=>{
         const sv=sackView(player);if(!sv)return null;
-        if(sv.st==="sack")return(
+        if(sv.st==="sack")return _pop224(
           <Card style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#2a0e0e,#3a1414)",TH.card),border:_n30("1px solid #7a2a2a","1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30("#fca5a5",semTesto945("#fca5a5")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Esonero</div>
             <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>Il club ha esonerato il mister</div>
@@ -7782,7 +7796,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&!player.hasAgent&&player.agentHint&&player.agentHint.due&&(()=>{
         const _t375=AGENT_HINT_TXT[player.agentHint.due]||AGENT_HINT_TXT.first;
         const _fee375=player.agentHint.fee||agentHireFee(player);
-        return(
+        return _pop224(
         <Card style={{padding:"14px",marginBottom:8,borderLeft:"3px solid "+TH.accent}}>
           <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>{_t375.t}</div>
           <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.6,marginBottom:9}}>{_t375.b}</div>
@@ -7794,7 +7808,7 @@ const getThisWeekMatchday=()=>{
             <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,agentHint:{...(p.agentHint||{}),due:null}}))} style={{flex:"1 1 100px",padding:"11px"}}>Non ora</Btn>
           </div>
         </Card>);})()}
-      {tab==="dashboard"&&agentStyleView(player)&&(
+      {tab==="dashboard"&&agentStyleView(player)&&_pop224(
         <Card momento="Il tuo procuratore: boutique o global?" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>
