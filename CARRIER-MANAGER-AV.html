@@ -45894,7 +45894,8 @@ const getThisWeekMatchday=()=>{
      uno alla volta: il primo che si disegna prende la finestra, gli altri aspettano che sia risolto. Sotto ?cpmtest=1 restano riquadri
      (le sonde cliccano la home) salvo __CPM_POP224; rosso __CPM_NO_POP224. */
   let _popTaken224=false;
-  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;_popTaken224=true;
+  /* [7.999.159 PO-224, collaudatrice giro 6 e rilascio giro 3] la finestra non si apre SOTTO un altro dialogo bloccante (il confronto col procuratore, non chiudibile, la copriva in 90 settimane su 92 della sonda; la finestra della settimana): aspetta che si chiuda. Estesa ai riquadri con scelta del censimento: «La tua storia», scelte narrative, esonero, procuratore (ingaggio e boutique/global). */
+  const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal))return null;_popTaken224=true;
     return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto"}}>{node}</div></div>);};
   const bondEvent=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
@@ -51453,7 +51454,7 @@ const getThisWeekMatchday=()=>{
           });
           if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
         };
-        return(
+        return _pop224(
         <Card momento={`${A.e} ${A.lbl}`} momentoInk={_n30("#fff",undefined)} momentoNota={`episodio ${ix+1} di ${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:_n30(`linear-gradient(150deg,${A.c1},${A.c2})`,TH.card),border:_n30(`1px solid ${A.ac}44`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
           <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>{_title}</div>
@@ -51465,7 +51466,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.14.0] LA TUA STORIA — capitolo narrativo della settimana (motore derivato, mai casuale) */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _ch=storyChapter(player);if(!_ch)return null;
-        return(
+        return _pop224(
         <Card momento="La tua storia" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#1a1026,#241438)",TH.card),border:_n30("1px solid #4c2a7a","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#c4b5fd",semTesto945("#c4b5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La tua storia</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -51533,7 +51534,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.28.0 ONDA 3 — §S7] L'ESONERO + l'esame del nuovo mister: derivati dalla classifica reale */}
       {tab==="dashboard"&&(()=>{
         const sv=sackView(player);if(!sv)return null;
-        if(sv.st==="sack")return(
+        if(sv.st==="sack")return _pop224(
           <Card style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#2a0e0e,#3a1414)",TH.card),border:_n30("1px solid #7a2a2a","1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:_n30("#fca5a5",semTesto945("#fca5a5")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Esonero</div>
             <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>Il club ha esonerato il mister</div>
@@ -51769,7 +51770,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&!player.hasAgent&&player.agentHint&&player.agentHint.due&&(()=>{
         const _t375=AGENT_HINT_TXT[player.agentHint.due]||AGENT_HINT_TXT.first;
         const _fee375=player.agentHint.fee||agentHireFee(player);
-        return(
+        return _pop224(
         <Card style={{padding:"14px",marginBottom:8,borderLeft:"3px solid "+TH.accent}}>
           <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>{_t375.t}</div>
           <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.6,marginBottom:9}}>{_t375.b}</div>
@@ -51781,7 +51782,7 @@ const getThisWeekMatchday=()=>{
             <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,agentHint:{...(p.agentHint||{}),due:null}}))} style={{flex:"1 1 100px",padding:"11px"}}>Non ora</Btn>
           </div>
         </Card>);})()}
-      {tab==="dashboard"&&agentStyleView(player)&&(
+      {tab==="dashboard"&&agentStyleView(player)&&_pop224(
         <Card momento="Il tuo procuratore: boutique o global?" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>

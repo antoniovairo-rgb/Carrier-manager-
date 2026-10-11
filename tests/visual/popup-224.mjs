@@ -30,10 +30,17 @@ for (const rosso of [false, true]) {
     chiusa = await page.evaluate(() => !document.querySelector('[data-cpm="pop224"]'));
     stato = await page.evaluate(() => (window.__CPM_CAREER.snapshot().coachPact || {}).status);
   }
-  esito[rosso ? 'rosso' : 'verde'] = { ...r, chiusa, stato }; console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(esito[rosso ? 'rosso' : 'verde'])); await ctx.close();
+  let attesa = null;
+  if (!rosso) { /* [7.999.159] sotto un dialogo bloccante (il confronto col procuratore) la finestra aspetta */
+    attesa = await page.evaluate(async () => { const p = window.__CPM_CAREER.snapshot(); if (!p.hasAgent || !p.agent) return { saltata: 'nessun procuratore nel salvataggio' };
+      window.__CPM_CAREER.patch({ coachPact: { season: p.season || 1, fromWeek: 0, target: 0, games: 4, kind: 'gol', status: 'active' }, agentCheckin: { ...(p.agentCheckin || {}), due: true } });
+      await new Promise(r => setTimeout(r, 1200)); return { pop: !!document.querySelector('[data-cpm="pop224"]'), confronto: !!document.querySelector('[data-cpm="confronto23"]') }; });
+  }
+  esito[rosso ? 'rosso' : 'verde'] = { ...r, chiusa, stato, attesa }; console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(esito[rosso ? 'rosso' : 'verde'])); await ctx.close();
 }
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
+if (V.attesa && !V.attesa.saltata && !(V.attesa.confronto && !V.attesa.pop)) g.push('verde: la finestra si apre sotto il confronto col procuratore ' + JSON.stringify(V.attesa));
 if (!(V.pop && V.centrata && V.chiusa && V.stato === 'kept')) g.push('verde: la finestra non compare, non è nello schermo o la scelta non la chiude ' + JSON.stringify(V));
 if (!(!R.pop && R.verdetto)) g.push('rosso: il difetto non si vede (attesa: nessuna finestra e verdetto come riquadro) ' + JSON.stringify(R));
 if (g.length) { console.log('❌ popup-224'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
