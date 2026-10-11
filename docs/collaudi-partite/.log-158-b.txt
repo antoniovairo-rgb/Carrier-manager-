@@ -1,0 +1,1 @@
+k16 ceremony scene=9 gol_eroe=1 score={"home":5,"away":0} 324s
