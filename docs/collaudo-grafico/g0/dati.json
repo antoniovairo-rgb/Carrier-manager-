@@ -3788,8 +3788,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1652,
-    "schermate": 1.81,
+    "altezzaPx": 1668,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -3828,8 +3828,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4054,8 +4054,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1652,
-    "schermate": 1.81,
+    "altezzaPx": 1668,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -4094,8 +4094,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4320,8 +4320,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1652,
-    "schermate": 1.81,
+    "altezzaPx": 1668,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -4360,8 +4360,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4586,7 +4586,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1652,
+    "altezzaPx": 1653,
     "schermate": 1.81,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -4626,8 +4626,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4852,7 +4852,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1635,
+    "altezzaPx": 1637,
     "schermate": 1.79,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -4892,8 +4892,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5110,8 +5110,8 @@
      }
     ],
     "nSvgTesto": 18,
-    "altezzaPx": 1219,
-    "schermate": 1.33,
+    "altezzaPx": 1235,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -5142,8 +5142,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -5351,8 +5351,8 @@
      }
     ],
     "nSvgTesto": 18,
-    "altezzaPx": 1219,
-    "schermate": 1.33,
+    "altezzaPx": 1235,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -5383,8 +5383,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -5592,8 +5592,8 @@
      }
     ],
     "nSvgTesto": 18,
-    "altezzaPx": 1219,
-    "schermate": 1.33,
+    "altezzaPx": 1235,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -5624,8 +5624,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -5833,7 +5833,7 @@
      }
     ],
     "nSvgTesto": 18,
-    "altezzaPx": 1219,
+    "altezzaPx": 1220,
     "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -5865,8 +5865,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -6074,7 +6074,7 @@
      }
     ],
     "nSvgTesto": 18,
-    "altezzaPx": 1219,
+    "altezzaPx": 1220,
     "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -6106,8 +6106,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -6317,8 +6317,8 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1232,
-    "schermate": 1.35,
+    "altezzaPx": 1248,
+    "schermate": 1.36,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -6348,8 +6348,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -6557,8 +6557,8 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1220,
-    "schermate": 1.33,
+    "altezzaPx": 1236,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -6588,8 +6588,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -6797,8 +6797,8 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1220,
-    "schermate": 1.33,
+    "altezzaPx": 1236,
+    "schermate": 1.35,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -6828,8 +6828,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -7037,8 +7037,8 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1220,
-    "schermate": 1.33,
+    "altezzaPx": 1222,
+    "schermate": 1.34,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -7068,8 +7068,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -7277,8 +7277,8 @@
      }
     ],
     "nSvgTesto": 8,
-    "altezzaPx": 1220,
-    "schermate": 1.33,
+    "altezzaPx": 1222,
+    "schermate": 1.34,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -7308,8 +7308,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -7526,8 +7526,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -7742,8 +7742,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -7958,8 +7958,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -8174,8 +8174,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -8390,8 +8390,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -8608,8 +8608,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1212,
-    "schermate": 1.32,
+    "altezzaPx": 1228,
+    "schermate": 1.34,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -8644,8 +8644,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -8860,8 +8860,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1199,
-    "schermate": 1.31,
+    "altezzaPx": 1215,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -8896,8 +8896,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -9112,8 +9112,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1199,
-    "schermate": 1.31,
+    "altezzaPx": 1215,
+    "schermate": 1.33,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -9148,8 +9148,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -9364,7 +9364,7 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1186,
+    "altezzaPx": 1188,
     "schermate": 1.3,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -9400,8 +9400,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -9616,7 +9616,7 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1186,
+    "altezzaPx": 1188,
     "schermate": 1.3,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -9652,8 +9652,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -9872,8 +9872,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1290,
-    "schermate": 1.41,
+    "altezzaPx": 1306,
+    "schermate": 1.43,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -9908,8 +9908,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -10126,8 +10126,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1277,
-    "schermate": 1.4,
+    "altezzaPx": 1293,
+    "schermate": 1.41,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10162,8 +10162,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -10380,8 +10380,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1277,
-    "schermate": 1.4,
+    "altezzaPx": 1293,
+    "schermate": 1.41,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10416,8 +10416,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -10634,7 +10634,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1277,
+    "altezzaPx": 1279,
     "schermate": 1.4,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -10670,8 +10670,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -10888,7 +10888,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1277,
+    "altezzaPx": 1279,
     "schermate": 1.4,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -10924,8 +10924,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -11136,8 +11136,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1069,
-    "schermate": 1.17,
+    "altezzaPx": 1085,
+    "schermate": 1.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11173,8 +11173,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -11383,8 +11383,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1069,
-    "schermate": 1.17,
+    "altezzaPx": 1085,
+    "schermate": 1.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11420,8 +11420,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -11630,8 +11630,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1057,
-    "schermate": 1.16,
+    "altezzaPx": 1073,
+    "schermate": 1.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -11667,8 +11667,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -11877,7 +11877,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1057,
+    "altezzaPx": 1058,
     "schermate": 1.16,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -11914,8 +11914,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -12124,7 +12124,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1057,
+    "altezzaPx": 1058,
     "schermate": 1.16,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -12161,8 +12161,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -12383,8 +12383,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1544,
-    "schermate": 1.69,
+    "altezzaPx": 1560,
+    "schermate": 1.7,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -12421,8 +12421,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -12641,8 +12641,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1496,
-    "schermate": 1.63,
+    "altezzaPx": 1513,
+    "schermate": 1.65,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -12679,8 +12679,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -12899,8 +12899,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1496,
-    "schermate": 1.63,
+    "altezzaPx": 1513,
+    "schermate": 1.65,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -12937,8 +12937,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -13157,8 +13157,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1496,
-    "schermate": 1.63,
+    "altezzaPx": 1498,
+    "schermate": 1.64,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13195,8 +13195,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -13415,8 +13415,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1449,
-    "schermate": 1.58,
+    "altezzaPx": 1451,
+    "schermate": 1.59,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13453,8 +13453,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
@@ -13665,8 +13665,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1160,
-    "schermate": 1.27,
+    "altezzaPx": 1176,
+    "schermate": 1.29,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13700,8 +13700,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -13910,8 +13910,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1114,
-    "schermate": 1.22,
+    "altezzaPx": 1130,
+    "schermate": 1.23,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -13945,8 +13945,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -14155,8 +14155,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1114,
-    "schermate": 1.22,
+    "altezzaPx": 1130,
+    "schermate": 1.23,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14190,8 +14190,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 136,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -14400,7 +14400,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1114,
+    "altezzaPx": 1116,
     "schermate": 1.22,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -14435,8 +14435,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    },
@@ -14645,7 +14645,7 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1090,
+    "altezzaPx": 1092,
     "schermate": 1.19,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
@@ -14680,8 +14680,8 @@
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
-      "px": 118,
-      "txt": "K⚽rwardEliteSalva · 11:22Italia · "
+      "px": 120,
+      "txt": "K⚽rwardEliteSalva · 20:23Italia · "
      }
     ]
    }
