@@ -457,7 +457,7 @@ const CLUB_STADIUMS={
   //   + valori bonificati dai riferimenti reali (Kuip/Olympia/Trafford/Amsterdam Arena/Power).
   "juve":"Stadio Sabaudo","inter":"Stadio Meneghino","milan":"Stadio Meneghino","napoli":"Stadio Vesuvio",
   "roma":"Stadio Capitolino","lazio":"Stadio Capitolino","ata":"Bergamo Stadium","fio":"Stadio Toscano",
-  "tor":"Stadio Granata","bol":"Stadio Felsineo","udi":"Stadio Friulano",
+  "tor":"Stadio Torvelle","bol":"Stadio Felsineo","udi":"Stadio Friulano",
   "gen":"Stadio Ligure","sam":"Stadio Ligure","par":"Stadio Parmense",
   "mon2":"Brianza Stadium","sas":"Emilia Stadium","lec":"Stadio Salentino",
   "sal":"Stadio Salernum","ver":"Stadio Scaligero","spe":"Stadio Spezzino",

@@ -5502,7 +5502,7 @@ const getThisWeekMatchday=()=>{
   // accept transfer: update club, league, calendar, standings
   /* [7.307.0 collaudo PO «al rifiuto di un'offerta, soprattutto così importante, deve esserci una
      conseguenza, un attestato di stima per la fedeltà o roba simile»] «Rifiuta» faceva UNA cosa: chiudere
-     il modale. Dire di no al FC München — 99 di prestigio, stipendio triplicato — non lasciava traccia da
+     il modale. Dire di no al FC Valdenau — 99 di prestigio, stipendio triplicato — non lasciava traccia da
      nessuna parte: né la piazza, né il mister, né la tua storia se ne accorgevano.
      Ora il rifiuto PESA, e pesa in proporzione a quanto era grossa l'offerta: il peso lo dice il salto di
      PRESTIGIO rispetto al tuo club e il salto di STIPENDIO rispetto al tuo contratto (nessun campo nuovo,

@@ -917,17 +917,27 @@ const _CR_BRANDS=["Liverpool","Arsenal","Chelsea","Tottenham","Bournemouth","Juv
   "Gazzetta dello Sport","Tuttosport","TuttoSport","Corriere dello Sport","Sky Sport","La Repubblica","FootballItalia","Sport24","Champions League","Europa League","Conference League","Golden Boy","FIFA","UEFA",
   // [6.74.0 QA-P0] club reali sfuggiti all'audit (l'ultracode li ha trovati in DB/record): token che NON collidono
   // coi nomi fantasia attuali ("Porto" NON si può bloccare: substring di "FC Portomar")
-  "Eindhoven","Sochaux","Bruges","Anderlecht","Brugge","Feyenoord","Ajax","Benfica","Sporting CP","Olympique"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
+  "Eindhoven","Sochaux","Bruges","Anderlecht","Brugge","Feyenoord","Ajax","Benfica","Sporting CP","Olympique",
+  // [giro 6, decisione PO 11/10] nomi reali di club, soprannomi da colori e derby rinominati: se tornano, l'audit li segnala
+  "Nerazzurri","Rossoneri","Partenope","Biancoceleste","Blucerchiati","Verdiblanco","FC Paris","FC München","FC Köln","FC Perico","FC Leões","FC Azulón",
+  "Derby d'Italia","Derby di Milano","Derby della Capitale","Derby del Sole","Derby di Torino","Derby della Lanterna","Manchester Derby","North-West Derby","North London Derby","Istanbul Derby"];/* "Braga" escluso: substring del cognome PT "Bragança" (falso positivo sui coach) */
 const _CR_PLAYERS=["Mbappé","Benzema","Salah","Neymar","Haaland","Cruyff","Hazard","De Bruyne","Lukaku","Lewandowski","Vlahovic","Dybala","Pogba","Zidane","Mbappe","Dzeko","Immobile","Lacazette","Kimmich","Gündogan","Piqué","Busquets","Iniesta","Morata","Cancelo","Moutinho","van Dijk","Robben","Sneijder","Calhanoglu","Soyuncu"];
 // [5.96.0 CR-1] combinazioni nome+cognome di calciatori REALI: mai generarle nei roster
 //   (i pool restano ricchi di nomi comuni; è la COPPIA a essere bloccata, in generazione e in audit).
 const _CR_FULLNAMES=new Set(["thomas müller","timo werner","manuel neuer","marco reus","toni kroos","leon goretzka","joshua kimmich","sergio ramos","marcos alonso","david silva","fernando torres","marcos llorente","nacho fernández","sergio busquets","jordan henderson","kyle walker","luke shaw","aaron ramsey","dean henderson","harry kane","jack grealish","cenk tosun","nuri sahin","hamit altintop","altay bayindir","salih ucan","mert gunok","yusuf yazici","hakan calhanoglu","mark van bommel","steven berghuis","luuk de jong","vincent janssen","memphis depay","frenkie de jong","virgil van dijk","bruno fernandes","rúben dias","bernardo silva","rafael leão","nuno mendes","andré silva","joão félix","diogo jota","kevin de bruyne","eden hazard","romelu lukaku","kylian mbappé","antoine griezmann","olivier giroud","lautaro martínez","julián álvarez","lisandro martínez","emiliano martínez","gabriel jesus","vinícius júnior"]);
+// [giro 6, decisione PO 11/10] club con nomi reali rinominati: vecchio → nuovo. Serve alla migration di CareerApp
+// (il nome del club si salva in player.club.n, player.standings[].n, calendar[].opponentName, matchHistory[].opponent).
+// I derby NON si salvano (isDerby li ricalcola dagli id) → nessuna migration per loro.
+const CLUB_RENAME_6={"FC Nerazzurri":"FC Valmora","AC Rossoneri":"AC Dorvelli","FC Partenope":"FC Vellamare","FC Biancoceleste":"FC Alcavera","FC Paris":"FC Lumeranza","FC Granata":"FC Torvelle","FC Viola":"FC Brenvar","FC Blucerchiati":"FC Marnesi","FC Neroverde":"FC Caldoran","FC Verdiblanco":"FC Ventrana","FC Celeste":"FC Oriolan","FC Leões":"FC Rendalto","FC Perico":"FC Pelvanni","FC Azulón":"FC Dalvora","FC München":"FC Valdenau","FC Köln":"FC Ravelmund"};
+// idempotente: un nome già nuovo non cambia; il prefisso «<club> U18» segue il club
+function _renameClub6(v){if(typeof v!=="string")return v;for(const o of Object.keys(CLUB_RENAME_6)){if(v===o)return CLUB_RENAME_6[o];if(v.startsWith(o+" "))return CLUB_RENAME_6[o]+v.slice(o.length);}return v;}
 function _auditCopyrightSafety(){
   const hits=[];
   const subScan=(label,arr)=>{(arr||[]).forEach(s=>{const t=typeof s==="string"?s:((s&&(s.n||s.name||s.club))||"");if(!t)return;_CR_BRANDS.forEach(b=>{if(t.indexOf(b)>=0)hits.push(label+": \""+t+"\" ~ "+b);});});};
   const eqScan=(label,arr)=>{(arr||[]).forEach(t=>{if(typeof t!=="string")return;if(_CR_PLAYERS.indexOf(t)>=0)hits.push(label+": \""+t+"\"");});};
   try{
     subScan("CLUB",CLUBS.map(c=>c.n)); subScan("LEAGUE",[...new Set(CLUBS.map(c=>c.lg))]);
+    if(typeof DERBIES!=="undefined")subScan("DERBY",Object.values(DERBIES).map(d=>d.name));
     Object.values(EURO_COMP_WINNERS||{}).forEach(a=>subScan("EURO",a.map(x=>x.club)));
     Object.entries(LEAGUE_RECORDS||{}).forEach(([k,v])=>{subScan("REC_KEY",[k]);subScan("REC",[v.allTimeScorer,v.seasonRecord]);});
     Object.values(NAME_BY_NAT||{}).forEach(o=>{eqScan("FIRST",o.first);eqScan("LAST",o.last);});
