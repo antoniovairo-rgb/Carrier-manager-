@@ -1,0 +1,1454 @@
+[
+ {
+  "partita": 1,
+  "hl": 1,
+  "minuto": 8,
+  "portatore": "BAILEY",
+  "nFrame": 41,
+  "dApertura": 15.83,
+  "dMin": 3.47,
+  "dGesto": 15.83,
+  "gestoGLB": "kick",
+  "gwMax": 0.984,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 48963,
+    "ph": "hl_intro",
+    "d": 15.83,
+    "gName": "kick",
+    "gw": 0.984,
+    "lg": 1.076
+   },
+   {
+    "t": 50579,
+    "ph": "hl_intro",
+    "d": 3.47,
+    "gName": null,
+    "gw": 0.591,
+    "lg": 2.595
+   },
+   {
+    "t": 51783,
+    "ph": "hl_result",
+    "d": 4.46,
+    "gName": null,
+    "gw": 0.355,
+    "lg": 2.752
+   },
+   {
+    "t": 52894,
+    "ph": "hl_result",
+    "d": 4.46,
+    "gName": "kick",
+    "gw": 0.839,
+    "lg": 0.688
+   },
+   {
+    "t": 54057,
+    "ph": "hl_result",
+    "d": 4.46,
+    "gName": "kick",
+    "gw": 0.919,
+    "lg": 0.688
+   },
+   {
+    "t": 55230,
+    "ph": "hl_result",
+    "d": 4.39,
+    "gName": "kick",
+    "gw": 0.98,
+    "lg": 0.863
+   }
+  ]
+ },
+ {
+  "partita": 2,
+  "hl": 1,
+  "minuto": 11,
+  "portatore": "BAILEY",
+  "nFrame": 45,
+  "dApertura": 6.08,
+  "dMin": 2.83,
+  "dGesto": 6.08,
+  "gestoGLB": null,
+  "gwMax": 0.745,
+  "gestoDecisoRES": "lunge",
+  "esito": "through",
+  "arrivo": true,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 53677,
+    "ph": "hl_intro",
+    "d": 6.08,
+    "gName": null,
+    "gw": 0.745,
+    "lg": 0.343
+   },
+   {
+    "t": 54802,
+    "ph": "hl_intro",
+    "d": 6.08,
+    "gName": null,
+    "gw": 0.745,
+    "lg": 0.343
+   },
+   {
+    "t": 55938,
+    "ph": "hl_intro",
+    "d": 2.83,
+    "gName": null,
+    "gw": 0.347,
+    "lg": 0.5
+   },
+   {
+    "t": 57038,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": null,
+    "gw": 0.208,
+    "lg": 0
+   },
+   {
+    "t": 58186,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": null,
+    "gw": 0.084,
+    "lg": 0
+   },
+   {
+    "t": 59408,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": null,
+    "gw": 0.039,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 3,
+  "hl": 1,
+  "minuto": 14,
+  "portatore": "ROSS",
+  "nFrame": 41,
+  "dApertura": 25.34,
+  "dMin": 2.21,
+  "dGesto": 25.34,
+  "gestoGLB": "receive",
+  "gwMax": 1,
+  "gestoDecisoRES": "lunge",
+  "esito": "through",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 60103,
+    "ph": "hl_intro",
+    "d": 25.34,
+    "gName": "receive",
+    "gw": 1,
+    "lg": 2.782
+   },
+   {
+    "t": 61464,
+    "ph": "hl_intro",
+    "d": 2.21,
+    "gName": "receive",
+    "gw": 1,
+    "lg": 2.061
+   },
+   {
+    "t": 62686,
+    "ph": "hl_choose",
+    "d": 2.83,
+    "gName": "receive",
+    "gw": 1,
+    "lg": 0.709
+   },
+   {
+    "t": 63902,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": "receive",
+    "gw": 1,
+    "lg": 0.177
+   },
+   {
+    "t": 64886,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": "receive",
+    "gw": 1,
+    "lg": 0.177
+   },
+   {
+    "t": 66117,
+    "ph": "hl_result",
+    "d": 2.83,
+    "gName": null,
+    "gw": 0.683,
+    "lg": 0.177
+   }
+  ]
+ },
+ {
+  "partita": 4,
+  "hl": 1,
+  "minuto": 16,
+  "portatore": "QUINN",
+  "nFrame": 38,
+  "dApertura": 3.81,
+  "dMin": 3.81,
+  "dGesto": 3.81,
+  "gestoGLB": "shortPass",
+  "gwMax": 0.75,
+  "gestoDecisoRES": "lunge",
+  "esito": "foul",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 60750,
+    "ph": "hl_intro",
+    "d": 3.81,
+    "gName": "shortPass",
+    "gw": 0.75,
+    "lg": 0.089
+   },
+   {
+    "t": 62718,
+    "ph": "hl_intro",
+    "d": 6.16,
+    "gName": null,
+    "gw": 0.581,
+    "lg": 0.224
+   },
+   {
+    "t": 63854,
+    "ph": "hl_result",
+    "d": 6.16,
+    "gName": null,
+    "gw": 0.581,
+    "lg": 0.224
+   },
+   {
+    "t": 64825,
+    "ph": "hl_result",
+    "d": 6.16,
+    "gName": null,
+    "gw": 0.271,
+    "lg": 0
+   },
+   {
+    "t": 65834,
+    "ph": "hl_result",
+    "d": 6.16,
+    "gName": null,
+    "gw": 0.126,
+    "lg": 0
+   },
+   {
+    "t": 66889,
+    "ph": "hl_result",
+    "d": 6.16,
+    "gName": null,
+    "gw": 0.059,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 5,
+  "hl": 1,
+  "minuto": 9,
+  "portatore": "BAILEY",
+  "nFrame": 34,
+  "dApertura": 12.83,
+  "dMin": 6.8,
+  "dGesto": 8.61,
+  "gestoGLB": "kick",
+  "gwMax": 0.998,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": false,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 48785,
+    "ph": "hl_intro",
+    "d": 12.83,
+    "gName": "pass",
+    "gw": 0.984,
+    "lg": 0.288
+   },
+   {
+    "t": 51147,
+    "ph": "hl_intro",
+    "d": 6.8,
+    "gName": null,
+    "gw": 0.763,
+    "lg": 0.392
+   },
+   {
+    "t": 51942,
+    "ph": "hl_result",
+    "d": 8.61,
+    "gName": "kick",
+    "gw": 0.796,
+    "lg": 0.155
+   },
+   {
+    "t": 52909,
+    "ph": "hl_result",
+    "d": 8.61,
+    "gName": "kick",
+    "gw": 0.898,
+    "lg": 0.321
+   },
+   {
+    "t": 53806,
+    "ph": "hl_result",
+    "d": 8.61,
+    "gName": "kick",
+    "gw": 0.994,
+    "lg": 1.05
+   },
+   {
+    "t": 54837,
+    "ph": "hl_result",
+    "d": 8.61,
+    "gName": "kick",
+    "gw": 0.998,
+    "lg": 1.411
+   }
+  ]
+ },
+ {
+  "partita": 6,
+  "hl": 1,
+  "minuto": 17,
+  "portatore": "BAILEY",
+  "nFrame": 38,
+  "dApertura": 17.01,
+  "dMin": 6.54,
+  "dGesto": 6.64,
+  "gestoGLB": "kick",
+  "gwMax": 1,
+  "gestoDecisoRES": "lunge",
+  "esito": "foul",
+  "arrivo": false,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 60876,
+    "ph": "hl_intro",
+    "d": 17.01,
+    "gName": "pass",
+    "gw": 0.982,
+    "lg": 0.279
+   },
+   {
+    "t": 61828,
+    "ph": "hl_intro",
+    "d": 17.01,
+    "gName": "pass",
+    "gw": 0.982,
+    "lg": 0.279
+   },
+   {
+    "t": 65550,
+    "ph": "hl_result",
+    "d": 6.85,
+    "gName": null,
+    "gw": 0.761,
+    "lg": 0.385
+   },
+   {
+    "t": 66598,
+    "ph": "hl_result",
+    "d": 6.85,
+    "gName": "kick",
+    "gw": 0.97,
+    "lg": 0.495
+   },
+   {
+    "t": 67763,
+    "ph": "hl_result",
+    "d": 6.75,
+    "gName": "kick",
+    "gw": 0.998,
+    "lg": 1.234
+   },
+   {
+    "t": 68700,
+    "ph": "hl_result",
+    "d": 6.54,
+    "gName": "kick",
+    "gw": 1,
+    "lg": 1.721
+   }
+  ]
+ },
+ {
+  "partita": 7,
+  "hl": 1,
+  "minuto": 6,
+  "portatore": "QUINN",
+  "nFrame": 40,
+  "dApertura": 8.42,
+  "dMin": 3.19,
+  "dGesto": 3.2,
+  "gestoGLB": "kick",
+  "gwMax": 0.988,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 43917,
+    "ph": "hl_intro",
+    "d": 8.42,
+    "gName": "kick",
+    "gw": 0.938,
+    "lg": 0.439
+   },
+   {
+    "t": 45449,
+    "ph": "hl_intro",
+    "d": 3.47,
+    "gName": null,
+    "gw": 0.436,
+    "lg": 2.649
+   },
+   {
+    "t": 46463,
+    "ph": "hl_choose",
+    "d": 3.26,
+    "gName": null,
+    "gw": 0.262,
+    "lg": 2.719
+   },
+   {
+    "t": 47387,
+    "ph": "hl_result",
+    "d": 3.26,
+    "gName": "kick",
+    "gw": 0.631,
+    "lg": 0.68
+   },
+   {
+    "t": 48637,
+    "ph": "hl_result",
+    "d": 3.26,
+    "gName": "kick",
+    "gw": 0.908,
+    "lg": 0.68
+   },
+   {
+    "t": 49891,
+    "ph": "hl_result",
+    "d": 3.2,
+    "gName": "kick",
+    "gw": 0.988,
+    "lg": 1.05
+   }
+  ]
+ },
+ {
+  "partita": 8,
+  "hl": 1,
+  "minuto": 8,
+  "portatore": "BAILEY",
+  "nFrame": 37,
+  "dApertura": 14.71,
+  "dMin": 2.52,
+  "dGesto": 2.61,
+  "gestoGLB": "tackle",
+  "gwMax": 0.999,
+  "gestoDecisoRES": "slide",
+  "esito": "foul",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 45063,
+    "ph": "hl_intro",
+    "d": 14.71,
+    "gName": "kick",
+    "gw": 0.992,
+    "lg": 1.348
+   },
+   {
+    "t": 47079,
+    "ph": "hl_intro",
+    "d": 3.51,
+    "gName": null,
+    "gw": 0.462,
+    "lg": 2.799
+   },
+   {
+    "t": 48287,
+    "ph": "hl_result",
+    "d": 2.69,
+    "gName": "tackle",
+    "gw": 0.839,
+    "lg": 0.385
+   },
+   {
+    "t": 49333,
+    "ph": "hl_result",
+    "d": 2.69,
+    "gName": "tackle",
+    "gw": 0.98,
+    "lg": 1.035
+   },
+   {
+    "t": 50291,
+    "ph": "hl_result",
+    "d": 2.61,
+    "gName": "tackle",
+    "gw": 0.997,
+    "lg": 1.693
+   },
+   {
+    "t": 51307,
+    "ph": "hl_result",
+    "d": 2.52,
+    "gName": "tackle",
+    "gw": 0.999,
+    "lg": 2.065
+   }
+  ]
+ },
+ {
+  "partita": 9,
+  "hl": 1,
+  "minuto": 13,
+  "portatore": "BAILEY",
+  "nFrame": 30,
+  "dApertura": 17.39,
+  "dMin": 6.93,
+  "dGesto": 17.39,
+  "gestoGLB": "kick",
+  "gwMax": 0.969,
+  "gestoDecisoRES": "lunge",
+  "esito": "foul",
+  "arrivo": false,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 51671,
+    "ph": "hl_intro",
+    "d": 17.39,
+    "gName": "kick",
+    "gw": 0.969,
+    "lg": 0.755
+   },
+   {
+    "t": 55885,
+    "ph": "hl_intro",
+    "d": 7.03,
+    "gName": null,
+    "gw": 0.751,
+    "lg": 1.973
+   },
+   {
+    "t": 56771,
+    "ph": "hl_result",
+    "d": 6.93,
+    "gName": null,
+    "gw": 0.377,
+    "lg": 0.493
+   },
+   {
+    "t": 57400,
+    "ph": "hl_result",
+    "d": 6.93,
+    "gName": null,
+    "gw": 0.226,
+    "lg": 0.493
+   },
+   {
+    "t": 58254,
+    "ph": "hl_result",
+    "d": 6.93,
+    "gName": null,
+    "gw": 0.136,
+    "lg": 0.493
+   },
+   {
+    "t": 59501,
+    "ph": "hl_result",
+    "d": 6.93,
+    "gName": null,
+    "gw": 0.049,
+    "lg": 0.493
+   }
+  ]
+ },
+ {
+  "partita": 10,
+  "hl": 1,
+  "minuto": 9,
+  "portatore": "BAILEY",
+  "nFrame": 38,
+  "dApertura": 14.63,
+  "dMin": 3.91,
+  "dGesto": 14.63,
+  "gestoGLB": "kick",
+  "gwMax": 0.875,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 41685,
+    "ph": "hl_intro",
+    "d": 14.63,
+    "gName": "kick",
+    "gw": 0.875,
+    "lg": 0.132
+   },
+   {
+    "t": 42850,
+    "ph": "hl_intro",
+    "d": 14.63,
+    "gName": "kick",
+    "gw": 0.875,
+    "lg": 0.132
+   },
+   {
+    "t": 44371,
+    "ph": "hl_result",
+    "d": 3.91,
+    "gName": null,
+    "gw": 0.678,
+    "lg": 1.368
+   },
+   {
+    "t": 45407,
+    "ph": "hl_result",
+    "d": 3.91,
+    "gName": null,
+    "gw": 0.272,
+    "lg": 0.374
+   },
+   {
+    "t": 46726,
+    "ph": "hl_result",
+    "d": 3.91,
+    "gName": null,
+    "gw": 0.163,
+    "lg": 0.374
+   },
+   {
+    "t": 47611,
+    "ph": "hl_result",
+    "d": 3.91,
+    "gName": null,
+    "gw": 0.098,
+    "lg": 0.374
+   }
+  ]
+ },
+ {
+  "partita": 11,
+  "hl": 1,
+  "minuto": 9,
+  "portatore": "BAILEY",
+  "nFrame": 45,
+  "dApertura": 6.51,
+  "dMin": 6.51,
+  "dGesto": 6.51,
+  "gestoGLB": null,
+  "gwMax": 0.751,
+  "gestoDecisoRES": "slide",
+  "esito": "foul",
+  "arrivo": false,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 48458,
+    "ph": "hl_intro",
+    "d": 6.51,
+    "gName": null,
+    "gw": 0.751,
+    "lg": 0.352
+   },
+   {
+    "t": 50027,
+    "ph": "hl_intro",
+    "d": 8.61,
+    "gName": null,
+    "gw": 0.349,
+    "lg": 0.499
+   },
+   {
+    "t": 51159,
+    "ph": "hl_result",
+    "d": 7.5,
+    "gName": null,
+    "gw": 0.126,
+    "lg": 0
+   },
+   {
+    "t": 52180,
+    "ph": "hl_result",
+    "d": 7.5,
+    "gName": null,
+    "gw": 0.059,
+    "lg": 0
+   },
+   {
+    "t": 53304,
+    "ph": "hl_result",
+    "d": 7.5,
+    "gName": null,
+    "gw": 0.015,
+    "lg": 0
+   },
+   {
+    "t": 54472,
+    "ph": "hl_result",
+    "d": 7.5,
+    "gName": null,
+    "gw": 0.003,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 12,
+  "hl": 1,
+  "minuto": 14,
+  "portatore": "MARSHALL",
+  "nFrame": 46,
+  "dApertura": 4.19,
+  "dMin": 2.98,
+  "dGesto": 4.4,
+  "gestoGLB": "kick",
+  "gwMax": 1,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 55354,
+    "ph": "hl_intro",
+    "d": 4.19,
+    "gName": null,
+    "gw": 0.775,
+    "lg": 0.496
+   },
+   {
+    "t": 56476,
+    "ph": "hl_intro",
+    "d": 6.38,
+    "gName": null,
+    "gw": 0.191,
+    "lg": 0.062
+   },
+   {
+    "t": 57591,
+    "ph": "hl_result",
+    "d": 5.22,
+    "gName": "kick",
+    "gw": 0.527,
+    "lg": 0.155
+   },
+   {
+    "t": 58718,
+    "ph": "hl_result",
+    "d": 4.59,
+    "gName": "kick",
+    "gw": 0.999,
+    "lg": 1.721
+   },
+   {
+    "t": 59828,
+    "ph": "hl_result",
+    "d": 3.04,
+    "gName": null,
+    "gw": 0.775,
+    "lg": 2
+   },
+   {
+    "t": 60943,
+    "ph": "hl_result",
+    "d": 5.54,
+    "gName": null,
+    "gw": 0.078,
+    "lg": 2
+   }
+  ]
+ },
+ {
+  "partita": 13,
+  "hl": 3,
+  "minuto": 29,
+  "portatore": "MARSHALL",
+  "nFrame": 44,
+  "dApertura": 6.96,
+  "dMin": 6.71,
+  "dGesto": 6.77,
+  "gestoGLB": "tackle",
+  "gwMax": 0.974,
+  "gestoDecisoRES": "slide",
+  "esito": "recovery",
+  "arrivo": false,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 82053,
+    "ph": "hl_intro",
+    "d": 6.96,
+    "gName": null,
+    "gw": 0.774,
+    "lg": 2.694
+   },
+   {
+    "t": 83240,
+    "ph": "hl_intro",
+    "d": 7.84,
+    "gName": null,
+    "gw": 0.279,
+    "lg": 1.814
+   },
+   {
+    "t": 84370,
+    "ph": "hl_choose",
+    "d": 6.71,
+    "gName": null,
+    "gw": 0.168,
+    "lg": 0.373
+   },
+   {
+    "t": 85557,
+    "ph": "hl_result",
+    "d": 6.71,
+    "gName": "tackle",
+    "gw": 0.792,
+    "lg": 0.385
+   },
+   {
+    "t": 86600,
+    "ph": "hl_result",
+    "d": 6.71,
+    "gName": "tackle",
+    "gw": 0.896,
+    "lg": 0.594
+   },
+   {
+    "t": 87955,
+    "ph": "hl_result",
+    "d": 6.77,
+    "gName": "tackle",
+    "gw": 0.974,
+    "lg": 1.035
+   }
+  ]
+ },
+ {
+  "partita": 14,
+  "hl": 1,
+  "minuto": 8,
+  "portatore": "BAILEY",
+  "nFrame": 45,
+  "dApertura": 20.64,
+  "dMin": 2.57,
+  "dGesto": 20.64,
+  "gestoGLB": null,
+  "gwMax": 0.601,
+  "gestoDecisoRES": "lunge",
+  "esito": "through",
+  "arrivo": true,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 30544,
+    "ph": "hl_intro",
+    "d": 20.64,
+    "gName": null,
+    "gw": 0.601,
+    "lg": 0.058
+   },
+   {
+    "t": 32164,
+    "ph": "hl_intro",
+    "d": 20.49,
+    "gName": null,
+    "gw": 0.101,
+    "lg": 0
+   },
+   {
+    "t": 33297,
+    "ph": "hl_result",
+    "d": 20.27,
+    "gName": null,
+    "gw": 0.017,
+    "lg": 0
+   },
+   {
+    "t": 34292,
+    "ph": "hl_result",
+    "d": 20.21,
+    "gName": null,
+    "gw": 0.003,
+    "lg": 0
+   },
+   {
+    "t": 35408,
+    "ph": "hl_result",
+    "d": 19.49,
+    "gName": null,
+    "gw": 0,
+    "lg": 0
+   },
+   {
+    "t": 36544,
+    "ph": "hl_result",
+    "d": 17.28,
+    "gName": "miss",
+    "gw": 0.5,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 15,
+  "hl": 2,
+  "minuto": 10,
+  "portatore": "BAILEY",
+  "nFrame": 48,
+  "dApertura": 8.63,
+  "dMin": 4.75,
+  "dGesto": 8.63,
+  "gestoGLB": null,
+  "gwMax": 0.601,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": false,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 39911,
+    "ph": "hl_intro",
+    "d": 8.63,
+    "gName": null,
+    "gw": 0.601,
+    "lg": 0.289
+   },
+   {
+    "t": 41118,
+    "ph": "hl_intro",
+    "d": 5.57,
+    "gName": null,
+    "gw": 0.231,
+    "lg": 0
+   },
+   {
+    "t": 42382,
+    "ph": "hl_intro",
+    "d": 4.75,
+    "gName": null,
+    "gw": 0.083,
+    "lg": 0
+   },
+   {
+    "t": 43568,
+    "ph": "hl_result",
+    "d": 4.75,
+    "gName": null,
+    "gw": 0.03,
+    "lg": 0
+   },
+   {
+    "t": 44891,
+    "ph": "hl_result",
+    "d": 4.75,
+    "gName": null,
+    "gw": 0.007,
+    "lg": 0
+   },
+   {
+    "t": 46081,
+    "ph": "hl_result",
+    "d": 4.75,
+    "gName": null,
+    "gw": 0.002,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 16,
+  "hl": 1,
+  "minuto": 7,
+  "portatore": "BAILEY",
+  "nFrame": 43,
+  "dApertura": 2.28,
+  "dMin": 2.28,
+  "dGesto": 2.28,
+  "gestoGLB": null,
+  "gwMax": 0.763,
+  "gestoDecisoRES": "slide",
+  "esito": "foul",
+  "arrivo": true,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 30143,
+    "ph": "hl_intro",
+    "d": 2.28,
+    "gName": null,
+    "gw": 0.763,
+    "lg": 0.392
+   },
+   {
+    "t": 31220,
+    "ph": "hl_intro",
+    "d": 7.1,
+    "gName": null,
+    "gw": 0.355,
+    "lg": 0.491
+   },
+   {
+    "t": 32540,
+    "ph": "hl_move",
+    "d": 8.6,
+    "gName": null,
+    "gw": 0.275,
+    "lg": 0.445
+   },
+   {
+    "t": 33912,
+    "ph": "hl_result",
+    "d": 8.6,
+    "gName": null,
+    "gw": 0.165,
+    "lg": 0
+   },
+   {
+    "t": 35083,
+    "ph": "hl_result",
+    "d": 8.6,
+    "gName": null,
+    "gw": 0.077,
+    "lg": 0
+   },
+   {
+    "t": 36273,
+    "ph": "hl_result",
+    "d": 8.6,
+    "gName": null,
+    "gw": 0.036,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 17,
+  "hl": 2,
+  "minuto": 9,
+  "portatore": "BAILEY",
+  "nFrame": 38,
+  "dApertura": 4.73,
+  "dMin": 3.76,
+  "dGesto": 3.76,
+  "gestoGLB": "kick",
+  "gwMax": 0.997,
+  "gestoDecisoRES": "lunge",
+  "esito": "through",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 53103,
+    "ph": "hl_intro",
+    "d": 4.73,
+    "gName": null,
+    "gw": 0.775,
+    "lg": 2.458
+   },
+   {
+    "t": 53969,
+    "ph": "hl_intro",
+    "d": 4.73,
+    "gName": null,
+    "gw": 0.361,
+    "lg": 1.953
+   },
+   {
+    "t": 55245,
+    "ph": "hl_intro",
+    "d": 4.11,
+    "gName": null,
+    "gw": 0.217,
+    "lg": 0.799
+   },
+   {
+    "t": 56683,
+    "ph": "hl_result",
+    "d": 4.11,
+    "gName": "kick",
+    "gw": 0.804,
+    "lg": 0.321
+   },
+   {
+    "t": 58087,
+    "ph": "hl_result",
+    "d": 4.02,
+    "gName": "kick",
+    "gw": 0.976,
+    "lg": 0.863
+   },
+   {
+    "t": 58984,
+    "ph": "hl_result",
+    "d": 3.76,
+    "gName": "kick",
+    "gw": 0.997,
+    "lg": 1.411
+   }
+  ]
+ },
+ {
+  "partita": 18,
+  "hl": 1,
+  "minuto": 10,
+  "portatore": "MARSHALL",
+  "nFrame": 43,
+  "dApertura": 4.5,
+  "dMin": 1.9,
+  "dGesto": 4.5,
+  "gestoGLB": null,
+  "gwMax": 0.763,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 53639,
+    "ph": "hl_intro",
+    "d": 4.5,
+    "gName": null,
+    "gw": 0.763,
+    "lg": 2.194
+   },
+   {
+    "t": 54663,
+    "ph": "hl_intro",
+    "d": 2.1,
+    "gName": null,
+    "gw": 0.355,
+    "lg": 2.752
+   },
+   {
+    "t": 55826,
+    "ph": "hl_intro",
+    "d": 3.19,
+    "gName": null,
+    "gw": 0.213,
+    "lg": 2.034
+   },
+   {
+    "t": 56927,
+    "ph": "hl_result",
+    "d": 3.19,
+    "gName": null,
+    "gw": 0.165,
+    "lg": 0.509
+   },
+   {
+    "t": 58260,
+    "ph": "hl_result",
+    "d": 3.19,
+    "gName": null,
+    "gw": 0.077,
+    "lg": 0.509
+   },
+   {
+    "t": 59535,
+    "ph": "hl_result",
+    "d": 3.19,
+    "gName": null,
+    "gw": 0.028,
+    "lg": 0.509
+   }
+  ]
+ },
+ {
+  "partita": 19,
+  "hl": 1,
+  "minuto": 9,
+  "portatore": "BAILEY",
+  "nFrame": 35,
+  "dApertura": 11.91,
+  "dMin": 3.73,
+  "dGesto": 3.99,
+  "gestoGLB": "kick",
+  "gwMax": 0.999,
+  "gestoDecisoRES": "lunge",
+  "esito": "through",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 49778,
+    "ph": "hl_intro",
+    "d": 11.91,
+    "gName": "pass",
+    "gw": 0.938,
+    "lg": 0.187
+   },
+   {
+    "t": 51254,
+    "ph": "hl_intro",
+    "d": 3.77,
+    "gName": null,
+    "gw": 0.727,
+    "lg": 0.31
+   },
+   {
+    "t": 52439,
+    "ph": "hl_result",
+    "d": 3.77,
+    "gName": "kick",
+    "gw": 0.863,
+    "lg": 0.155
+   },
+   {
+    "t": 53255,
+    "ph": "hl_result",
+    "d": 3.73,
+    "gName": "kick",
+    "gw": 0.966,
+    "lg": 0.495
+   },
+   {
+    "t": 54735,
+    "ph": "hl_result",
+    "d": 3.86,
+    "gName": "kick",
+    "gw": 0.996,
+    "lg": 1.05
+   },
+   {
+    "t": 55657,
+    "ph": "hl_result",
+    "d": 4.12,
+    "gName": "kick",
+    "gw": 0.999,
+    "lg": 1.575
+   }
+  ]
+ },
+ {
+  "partita": 20,
+  "hl": 1,
+  "minuto": 10,
+  "portatore": "BAILEY",
+  "nFrame": 45,
+  "dApertura": 2.48,
+  "dMin": 1,
+  "dGesto": 2.48,
+  "gestoGLB": "kick",
+  "gwMax": 1,
+  "gestoDecisoRES": "slide",
+  "esito": "recovery",
+  "arrivo": true,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 33424,
+    "ph": "hl_intro",
+    "d": 2.48,
+    "gName": "kick",
+    "gw": 1,
+    "lg": 0
+   },
+   {
+    "t": 35062,
+    "ph": "hl_intro",
+    "d": 5.28,
+    "gName": null,
+    "gw": 0.101,
+    "lg": 0
+   },
+   {
+    "t": 36207,
+    "ph": "hl_result",
+    "d": 3.96,
+    "gName": "tackle",
+    "gw": 0.514,
+    "lg": 0.186
+   },
+   {
+    "t": 37221,
+    "ph": "hl_result",
+    "d": 3.45,
+    "gName": "tackle",
+    "gw": 1,
+    "lg": 2.211
+   },
+   {
+    "t": 38360,
+    "ph": "hl_result",
+    "d": 3.09,
+    "gName": "tackle",
+    "gw": 1,
+    "lg": 2.4
+   },
+   {
+    "t": 39476,
+    "ph": "hl_result",
+    "d": 1,
+    "gName": "tackle",
+    "gw": 1,
+    "lg": 2.4
+   }
+  ]
+ },
+ {
+  "partita": 21,
+  "hl": 1,
+  "minuto": 6,
+  "portatore": "BAILEY",
+  "nFrame": 50,
+  "dApertura": 12.61,
+  "dMin": 5.71,
+  "dGesto": 12.61,
+  "gestoGLB": null,
+  "gwMax": 0.361,
+  "gestoDecisoRES": "lunge",
+  "esito": "recovery",
+  "arrivo": false,
+  "gestoVero": false,
+  "sei_frame": [
+   {
+    "t": 25577,
+    "ph": "hl_intro",
+    "d": 12.61,
+    "gName": null,
+    "gw": 0.361,
+    "lg": 0
+   },
+   {
+    "t": 26899,
+    "ph": "hl_intro",
+    "d": 6.66,
+    "gName": null,
+    "gw": 0.065,
+    "lg": 0
+   },
+   {
+    "t": 28143,
+    "ph": "hl_move",
+    "d": 7.22,
+    "gName": null,
+    "gw": 0.008,
+    "lg": 0
+   },
+   {
+    "t": 29269,
+    "ph": "hl_result",
+    "d": 6.95,
+    "gName": null,
+    "gw": 0.001,
+    "lg": 0
+   },
+   {
+    "t": 30534,
+    "ph": "hl_result",
+    "d": 6.95,
+    "gName": null,
+    "gw": 0,
+    "lg": 0
+   },
+   {
+    "t": 31795,
+    "ph": "hl_result",
+    "d": 7.14,
+    "gName": null,
+    "gw": 0,
+    "lg": 0
+   }
+  ]
+ },
+ {
+  "partita": 22,
+  "hl": 1,
+  "minuto": 7,
+  "portatore": "BAILEY",
+  "nFrame": 49,
+  "dApertura": 14.81,
+  "dMin": 4.46,
+  "dGesto": 6.86,
+  "gestoGLB": "kick",
+  "gwMax": 1,
+  "gestoDecisoRES": "lunge",
+  "esito": "foul",
+  "arrivo": false,
+  "gestoVero": true,
+  "sei_frame": [
+   {
+    "t": 27345,
+    "ph": "hl_intro",
+    "d": 14.81,
+    "gName": null,
+    "gw": 0.465,
+    "lg": 0.02
+   },
+   {
+    "t": 28740,
+    "ph": "hl_intro",
+    "d": 7.89,
+    "gName": null,
+    "gw": 0.13,
+    "lg": 0
+   },
+   {
+    "t": 29866,
+    "ph": "hl_choose",
+    "d": 7.4,
+    "gName": null,
+    "gw": 0.017,
+    "lg": 0
+   },
+   {
+    "t": 31112,
+    "ph": "hl_result",
+    "d": 6.96,
+    "gName": "kick",
+    "gw": 0.999,
+    "lg": 1.721
+   },
+   {
+    "t": 32239,
+    "ph": "hl_result",
+    "d": 5,
+    "gName": null,
+    "gw": 0.601,
+    "lg": 2
+   },
+   {
+    "t": 33479,
+    "ph": "hl_result",
+    "d": 4.68,
+    "gName": null,
+    "gw": 0.047,
+    "lg": 2
+   }
+  ]
+ }
+]

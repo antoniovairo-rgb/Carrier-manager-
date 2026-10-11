@@ -1,0 +1,92 @@
+{
+  "partite": 60,
+  "errori": 0,
+  "fine": {
+    "ceremony": 60
+  },
+  "scene": {
+    "media": 8.53,
+    "mediana": 9,
+    "min": 3,
+    "max": 15,
+    "distribuzione": {
+      "3": 1,
+      "5": 4,
+      "6": 4,
+      "7": 9,
+      "8": 10,
+      "9": 14,
+      "10": 10,
+      "11": 3,
+      "12": 4,
+      "15": 1
+    }
+  },
+  "gol_eroe": {
+    "media": 0.62,
+    "mediana": 0,
+    "distribuzione": {
+      "0": 37,
+      "1": 12,
+      "2": 8,
+      "3": 3
+    }
+  },
+  "assist_eroe": {
+    "media": 0.27,
+    "distribuzione": {
+      "0": 47,
+      "1": 10,
+      "2": 3
+    }
+  },
+  "tipi_scena_cast": {
+    "fra-le-linee": 134,
+    "difesa": 56,
+    "cross": 53,
+    "conclusione": 112,
+    "punizione": 89,
+    "spalle": 41,
+    "rigore": 14,
+    "angolo": 13
+  },
+  "percorso_scene_registro": {
+    "motore-occasione": 512,
+    "brain-origine": 76,
+    "brain137": 79,
+    "reattiva": 26,
+    "secondo-tempo": 6,
+    "catena-motore": 6
+  },
+  "keys_esiti": {
+    "miss": 251,
+    "recovery": 22,
+    "intercept": 134,
+    "through": 18,
+    "goal": 37,
+    "miss_easy": 2,
+    "foul": 16,
+    "assist": 16,
+    "chance": 8
+  },
+  "punizioni": {
+    "totali": 89,
+    "a_partita_media": 1.48,
+    "per_percorso_registro": {
+      "motore-occasione": 89
+    },
+    "dirette": 56,
+    "palla_in_area": 33,
+    "senza_esito": 0,
+    "etichette": {
+      "↗️ Palla in area": 33,
+      "💥 Botta sopra la barriera": 16,
+      "🎯 Punizione a giro": 17,
+      "📐 Curva a rientrare": 9,
+      "💥 Tiro rasoterra": 14
+    }
+  },
+  "gol_squadra": {
+    "media": 2.72
+  }
+}
