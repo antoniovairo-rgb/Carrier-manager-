@@ -1,0 +1,68 @@
+{
+ "partita": 5,
+ "nome": "Coll226c5",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 93,
+ "secondi": 288,
+ "errori": [],
+ "intx": [
+  {
+   "min": 27,
+   "id": "av_pres",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 37,
+   "id": "co_inc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 48,
+   "id": "mi_lato",
+   "fam": "MISTER"
+  },
+  {
+   "min": 58,
+   "id": "er_giovane",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_giovane",
+   "idx": 0,
+   "auto": true,
+   "min": 58
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 1,
+  "away": 1
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  23,
+  41,
+  60,
+  27,
+  68,
+  86,
+  47,
+  61,
+  93
+ ]
+}
