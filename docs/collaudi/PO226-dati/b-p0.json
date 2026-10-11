@@ -1,0 +1,75 @@
+{
+ "partita": 0,
+ "nome": "Coll226b0",
+ "panchina": true,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 275,
+ "errori": [],
+ "intx": [
+  {
+   "min": 21,
+   "id": "co_prima",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 31,
+   "id": "av_stud",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 46,
+   "id": "er_chi",
+   "fam": "EROE"
+  },
+  {
+   "min": 56,
+   "id": "er_reaz",
+   "fam": "EROE"
+  },
+  {
+   "min": 61,
+   "id": "er_gol",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_gol",
+   "idx": 0,
+   "auto": true,
+   "min": 61
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 1,
+  "away": 0
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [
+  "📢 Spinta tattica del mister | voto 6 | Continua",
+  "📢 Spinta tattica del mister | voto 6 | Continua",
+  "📢 Spinta tattica del mister | voto 6 | Continua",
+  "📢 Spinta tattica del mister | voto 7.3 | ⚽ gol 1 | Continua"
+ ],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  28,
+  44,
+  55,
+  75,
+  86,
+  9999
+ ]
+}
