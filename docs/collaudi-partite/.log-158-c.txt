@@ -1,3 +1,4 @@
 k31 ceremony scene=7 gol_eroe=1 score={"home":2,"away":1} 313s
 k32 ceremony scene=7 gol_eroe=0 score={"home":4,"away":0} 300s
 k33 ceremony scene=5 gol_eroe=0 score={"home":2,"away":0} 288s
+k34 ceremony scene=7 gol_eroe=0 score={"home":2,"away":1} 298s
