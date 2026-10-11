@@ -1,0 +1,77 @@
+{
+ "partita": 0,
+ "nome": "Coll226c0",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 302,
+ "errori": [],
+ "intx": [
+  {
+   "min": 20,
+   "id": "av_stud",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 30,
+   "id": "co_tri",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 46,
+   "id": "co_inc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 56,
+   "id": "co_int",
+   "fam": "COMPAGNI"
+  }
+ ],
+ "sc": [
+  {
+   "id": "co_tri",
+   "idx": 0,
+   "auto": true,
+   "min": 30
+  },
+  {
+   "id": "co_int",
+   "idx": 0,
+   "auto": true,
+   "min": 56
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 2,
+  "away": 3
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  10,
+  23,
+  43,
+  22,
+  56,
+  71,
+  86,
+  49,
+  53,
+  61,
+  71,
+  80
+ ]
+}

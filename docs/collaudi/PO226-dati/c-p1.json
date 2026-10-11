@@ -1,0 +1,76 @@
+{
+ "partita": 1,
+ "nome": "Coll226c1",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 277,
+ "errori": [],
+ "intx": [
+  {
+   "min": 24,
+   "id": "mi_cons",
+   "fam": "MISTER"
+  },
+  {
+   "min": 34,
+   "id": "av_pres",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 46,
+   "id": "er_sprona",
+   "fam": "EROE"
+  },
+  {
+   "min": 56,
+   "id": "mi_lato",
+   "fam": "MISTER"
+  },
+  {
+   "min": 78,
+   "id": "er_gol",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "mi_lato",
+   "idx": 0,
+   "auto": true,
+   "min": 56
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 3,
+  "away": 0
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [
+  "📢 Spinta tattica del mister | voto 7.8 | ⚽ gol 1 | 🎯 assist 1 | Continua",
+  "📢 Spinta tattica del mister | voto 7.8 | ⚽ gol 1 | 🎯 assist 1 | Continua",
+  "📢 Spinta tattica del mister | voto 7.8 | ⚽ gol 1 | 🎯 assist 1 | Continua"
+ ],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  23,
+  38,
+  57,
+  75,
+  86,
+  60,
+  70,
+  77
+ ]
+}
