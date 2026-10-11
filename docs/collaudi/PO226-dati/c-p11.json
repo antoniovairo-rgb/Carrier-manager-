@@ -1,0 +1,78 @@
+{
+ "partita": 11,
+ "nome": "Coll226c11",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 282,
+ "errori": [],
+ "intx": [
+  {
+   "min": 18,
+   "id": "mi_avv",
+   "fam": "MISTER"
+  },
+  {
+   "min": 28,
+   "id": "av_stud",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 46,
+   "id": "co_disc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 56,
+   "id": "er_zona",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "av_stud",
+   "idx": 0,
+   "auto": true,
+   "min": 28
+  },
+  {
+   "id": "er_zona",
+   "idx": 0,
+   "auto": true,
+   "min": 56
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 0,
+  "away": 2
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [
+  "📢 Spinta tattica del mister | voto 5.7 | Continua",
+  "📢 Spinta tattica del mister | voto 5.7 | Continua",
+  "📢 Spinta tattica del mister | voto 5.7 | Continua"
+ ],
+ "intxN": 50,
+ "hlMin": [
+  10,
+  27,
+  15,
+  40,
+  44,
+  53,
+  72,
+  86,
+  78,
+  87
+ ]
+}
