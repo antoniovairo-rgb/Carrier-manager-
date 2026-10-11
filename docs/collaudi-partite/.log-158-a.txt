@@ -1,6 +1,0 @@
-k1 ceremony scene=7 gol_eroe=1 score={"home":2,"away":0} 314s
-k2 ceremony scene=7 gol_eroe=0 score={"home":0,"away":1} 297s
-k3 ceremony scene=7 gol_eroe=2 score={"home":2,"away":0} 305s
-k4 ceremony scene=7 gol_eroe=0 score={"home":0,"away":1} 302s
-k5 ceremony scene=8 gol_eroe=1 score={"home":4,"away":3} 294s
-k6 ceremony scene=7 gol_eroe=0 score={"home":3,"away":0} 284s
