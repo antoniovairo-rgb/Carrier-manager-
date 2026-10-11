@@ -19,11 +19,11 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - Conflitti: non si risolvono alla cieca. La sviluppatrice viene ricreata con l'istruzione di riallinearsi.
 - **Mai durante una catena in corsa** sul ramo principale: l'unione aspetta la fine della catena.
 
-## Stato al 11/10 mattina
+## Stato al 11/10 pomeriggio (routine 13:20)
 
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
-| sviluppo/haiku-l7-pulizia-l8 | session_01TWi2N2kwUYkRxctMCmEej1 | giro 6: copyright (derby e soprannomi reali, blocklist, migration nomi) | giro 7: finestre anche per gli altri riquadri con scelta del censimento PO-224 (procuratore boutique/global, «La tua storia», risposte «Sono pronto») SOLO dopo che la 7.999.158 è su main · PO-072 pulizia · L8 cerimonie |
-| collaudo/sessione-collaudatrice | session_018YWJuye6oyJrHkpk1dSm6R | giro 5: finestre PO-224, ingresso PO-225, «Finta e tiro» PO-218 sulla 7.999.158 | giro 6: collaudo della correzione PO-218 quando esce · PO-222 «non convocato» solo misura |
-| collaudo/partite-vere | session_017Kakyh6bnZh5mBCNR1bSpv | T2 PO-221 su 7.999.158 (60 partite + rosso) e PO-220 clip | giro 3: PO-220 dopo la correzione del gesto difensivo · PO-218 cross in partita vera |
-| rilascio/consolidamento | session_013YLrzJPhyhbyc9u9wq17qs | giro 2: bloccanti B-E, prontezza su 7.999.158 | giro 3: prontezza finale sul candidato al rilascio del 17/10 (stesse 5 voci) |
+| sviluppo/haiku-l7-pulizia-l8 | session_01TWi2N2kwUYkRxctMCmEej1 | giro 6: copyright (catena grafica 29/29 verde, career-critical in corsa) | giro 7: finestre per gli altri riquadri con scelta del censimento PO-224 (procuratore, «La tua storia», risposte «Sono pronto»), e la finestra non deve aprirsi sotto un altro dialogo · PO-072 pulizia · L8 cerimonie |
+| collaudo/sessione-collaudatrice | session_015a5h1EPvMCRD1YrHGLjcmz | giro 6: PO-222 su carriere naturali (solo misura), dialoghi che coprono la finestra PO-224 | giro 7: collaudo della correzione PO-218 (7.999.159) |
+| collaudo/partite-vere | session_0125jiks7a4pgkJe2Gbc3FBj | giro 3: PO-220 clip del gesto difensivo (25 scene GLB), PO-218 cross in partita vera | giro 4: T3 PO-221 gol dell'eroe dopo la ritaratura (7.999.159) |
+| rilascio/consolidamento | session_01Mz5Dm5tYpjta6BaUzsoN8a | giro 3: esiti diversi con lo stesso seme, contesto grafico perso, classifica 194, bozza di prontezza finale | giro 4: prontezza finale sul candidato al rilascio del 17/10 |

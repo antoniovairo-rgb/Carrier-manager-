@@ -304,3 +304,33 @@ Riportato dal PO in chat. Nessun file modificato, nessun commit o push.
 - **Dati locali sul PC del PO** (non nel repository): `l1-i2.json`, `p30-sintetiche.json`.
 - Le zone incomplete **non sono chiuse**. I rilievi sono segnalazioni da riprodurre sul banco del team.
 - **Da oggi il collaudo è solo del team:** due sessioni collaudatrici e una sessione rilascio. I2 e T2 passano alla collaudatrice 2 (partite vere); P resta in zona G ferma.
+
+## 11/10/2026 pomeriggio — consegne delle sessioni sulla 7.999.158 (routine)
+
+### Collaudatrice 2, T2 / PO-221 (`collaudo/partite-vere` `55f1884a`, `docs/collaudi-partite/PO221-158-60partite.md`)
+- 60 partite vere, tutte arrivate al fischio finale.
+- Scene: media **6,68**, mediana 7 (senza rigori 6,47).
+- Punizioni: 0,62 a partita, mai più di 1.
+- Gol dell'eroe **0,50** a partita, **sotto l'obiettivo 0,6-0,9** (sulla 157 erano 0,62 su 60 partite). Assist 0,25.
+- Prova del rosso, 20 partite con i guardiani spenti: scene 8,55, punizioni 1,55. I due guardiani vedono il difetto.
+- **Rilievo:** con meno scene calano i gol. È da ritarare la resa dei tiri (`res221`).
+
+### Collaudatrice, giro 5 (`collaudo/sessione-collaudatrice` `4602629c`)
+- **PO-225:** dissolvenza confermata con GLB acceso. Il rosso resta a 1.
+- **PO-224:** le finestre si aprono e la scelta le chiude (handler 3/3).
+  - **Rilievo:** quando c'è un altro dialogo aperto sopra (procuratore in più passi, festa del titolo), la finestra resta coperta e il clic col dito non la raggiunge finché quel dialogo non si chiude (0/3 col puntatore, poi sì dopo la chiusura).
+  - Proposta del team: la finestra non si mostra mentre un altro dialogo è aperto.
+- **PO-218 «Finta e tiro»:** famiglia giusta nei casi visti; in 2 casi è sbagliato il **lessico** («passaggio» per un tiro).
+  - Ipotesi di causa: `_hlOvlCat` manda ogni `intercept` al lessico di passaggio.
+  - Fuorigioco contro intercetto: 1 su 66.
+  - Ipotesi di causa: `_outKind` da `decideExecution`, indipendente dagli eventi del motore.
+
+### Rilascio, giro 2 (`rilascio/consolidamento` `c766a4fe`)
+- Copyright e build offline (store e web) verdi.
+- **Rilievo A:** le stringhe reali sono ancora nei pacchetti finché la sviluppatrice non chiude il giro 6.
+- Intervista e post-partita a 375 px raggiunti con una partita vera.
+- «Profilo» non è un difetto.
+- **Classifica del salvataggio 194:** riprodotta (ipotesi: riposi).
+- **Punti aperti:**
+  - con lo stesso seme gli esiti delle partite vengono diversi;
+  - avviso `[CPM-GL] contesto grafico perso`.
