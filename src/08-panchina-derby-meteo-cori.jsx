@@ -113,25 +113,25 @@ function coachDiClub23(club,season,p){try{const k=String((club&&(club.id||club.n
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:misterLibero215("Mister "+COACH_NAMES[h%COACH_NAMES.length],p,h),style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
 const DERBIES={
-  "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},
-  "milan-inter":{name:"Derby di Milano",e:"🔴"},"inter-milan":{name:"Derby di Milano",e:"🔴"},
-  "roma-lazio":{name:"Derby della Capitale",e:"🐺"},"lazio-roma":{name:"Derby della Capitale",e:"🐺"},
-  "juve-tor":{name:"Derby di Torino",e:"🏔️"},"tor-juve":{name:"Derby di Torino",e:"🏔️"},
-  "napoli-roma":{name:"Derby del Sole",e:"☀️"},"roma-napoli":{name:"Derby del Sole",e:"☀️"},
+  "juve-inter":{name:"Derby del Monte Alto",e:"⚡"},"inter-juve":{name:"Derby del Monte Alto",e:"⚡"},
+  "milan-inter":{name:"Derby del Naviglio Breve",e:"🔴"},"inter-milan":{name:"Derby del Naviglio Breve",e:"🔴"},
+  "roma-lazio":{name:"Derby dell'Antica Via",e:"🐺"},"lazio-roma":{name:"Derby dell'Antica Via",e:"🐺"},
+  "juve-tor":{name:"Derby della Collina Verde",e:"🏔️"},"tor-juve":{name:"Derby della Collina Verde",e:"🏔️"},
+  "napoli-roma":{name:"Derby della Costa Chiara",e:"☀️"},"roma-napoli":{name:"Derby della Costa Chiara",e:"☀️"},
   // [7.8.5 collaudo PO «deve esserci un derby reale: cittadino, regionale acceso…»] derby italiani aggiuntivi tra club rappresentati
-  "gen-sam":{name:"Derby della Lanterna",e:"🏮"},"sam-gen":{name:"Derby della Lanterna",e:"🏮"},// Genova (entrambe Lega A)
-  "sal-napoli":{name:"Derby della Campania",e:"🌋"},"napoli-sal":{name:"Derby della Campania",e:"🌋"},
-  "ata-bres":{name:"Derby della Lombardia orientale",e:"🦁"},"bres-ata":{name:"Derby della Lombardia orientale",e:"🦁"},
-  "fio-bol":{name:"Derby dell'Appennino",e:"⛰️"},"bol-fio":{name:"Derby dell'Appennino",e:"⛰️"},
-  "cag-pal":{name:"Derby delle Isole",e:"🏝️"},"pal-cag":{name:"Derby delle Isole",e:"🏝️"},
+  "gen-sam":{name:"Derby del Faro Vecchio",e:"🏮"},"sam-gen":{name:"Derby del Faro Vecchio",e:"🏮"},// Genova (entrambe Lega A)
+  "sal-napoli":{name:"Derby del Golfo Basso",e:"🌋"},"napoli-sal":{name:"Derby del Golfo Basso",e:"🌋"},
+  "ata-bres":{name:"Derby della Pianura Est",e:"🦁"},"bres-ata":{name:"Derby della Pianura Est",e:"🦁"},
+  "fio-bol":{name:"Derby del Crinale Lungo",e:"⛰️"},"bol-fio":{name:"Derby del Crinale Lungo",e:"⛰️"},
+  "cag-pal":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},"pal-cag":{name:"Derby dell'Arcipelago Minore",e:"🏝️"},
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
-  "mun-mcy":{name:"Manchester Derby",e:"🌹"},"mcy-mun":{name:"Manchester Derby",e:"🌹"},
-  "mun-liv":{name:"North-West Derby",e:"🥀"},"liv-mun":{name:"North-West Derby",e:"🥀"},
-  "ars-tot":{name:"North London Derby",e:"🔫"},"tot-ars":{name:"North London Derby",e:"🔫"},
+  "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
+  "mun-liv":{name:"Derby dell'Ovest Lontano",e:"🥀"},"liv-mun":{name:"Derby dell'Ovest Lontano",e:"🥀"},
+  "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
-  "gal-fenk":{name:"Istanbul Derby",e:"🌙"},"fenk-gal":{name:"Istanbul Derby",e:"🌙"},
+  "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
 function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}

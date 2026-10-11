@@ -446,7 +446,7 @@ const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo T
 const STADIUM_POOLS=[
   {min:88,s:["Stadio Meneghino","Stadio Capitolino","Stadio Sabaudo","Stadio Vesuvio","Albion Stadium","Mersey Stadium","Estadi Blau","Estadio Capital","Stadion der Wand","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena","München Arena","Estadio Coloso","Bridge Stadium","Cannon Stadium","North Stadium","Stade Phocéen","Estádio Azul"]},
   {min:76,s:["Stadio Toscano","Bergamo Stadium","Stadio dell'Arena Vecchia","Stadio Felsineo","Stadio Ligure","Volkswiese Stadion","Power Stadium","Estadio Naranja","Estadio Hispalense","Stade des Verts","Estádio Leonino","Estádio do Grifo","Estádio Norte","Stade Princier","Stadio dei Navigli","Fiandria Stadion","Arena Lviv","Stade de la Cathédrale","Estadio de la Cerámica Vieja","Stade du Littoral"]},
-  {min:63,s:["Stadio Monferrato","Stadio Adriatico","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica","Estadio Celeste","Estadio de la Sierra","Stade Gabriel Montpied","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
+  {min:63,s:["Stadio Monferrato","Stadio Adriatico","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica","Estadio Oriolan","Estadio de la Sierra","Stade Gabriel Montpied","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
   {min:50,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio del Piceno","Campo Crespi","Arena Cimini","Stadio Parmense","Stadio degli Etruschi","Stadio della Ghirlandina","Estadio del Sur","Arena Poltava","Stade des Volcans","Estadio de la Meseta","Stadio della Valle","Campo de la Costa Brava","Arena Kielce","Stadion Górniczy","Stade des Tilleuls","Estadio del Miño","Stadio delle Cave","Arena Cracovia"]},
   {min:35,s:["Stadio Comunale del Melandro","Campo Sportivo del Golfo","Arena Città di Castello","Stadio dell'Elefante B","Campo Sportivo dei Pini","Estadio de la Bahía B","Stade de l'Aveyron","Stadion Wschodni","Arena Lublin","Stadio dello Ionio","Campo San Nicolò","Estadio del Atlántico","Stade des Pyrénées","Arena Czeladź","Stadio dei Due Mari","Campo Sportivo degli Ulivi"]},
   {min:0,s:["Campo Sportivo Parrocchiale","Arena Polivalente","Stadio Civico Nord","Campo Allenamento B","Terreno di Gioco Centrale","Stadio Quartiere","Campo Secondario","Arena Dilettanti","Campo Sportivo Est","Terreno Senza Nome","Stadio Periferia","Campo del Comune"]},
@@ -457,7 +457,7 @@ const CLUB_STADIUMS={
   //   + valori bonificati dai riferimenti reali (Kuip/Olympia/Trafford/Amsterdam Arena/Power).
   "juve":"Stadio Sabaudo","inter":"Stadio Meneghino","milan":"Stadio Meneghino","napoli":"Stadio Vesuvio",
   "roma":"Stadio Capitolino","lazio":"Stadio Capitolino","ata":"Bergamo Stadium","fio":"Stadio Toscano",
-  "tor":"Stadio Granata","bol":"Stadio Felsineo","udi":"Stadio Friulano",
+  "tor":"Stadio Torvelle","bol":"Stadio Felsineo","udi":"Stadio Friulano",
   "gen":"Stadio Ligure","sam":"Stadio Ligure","par":"Stadio Parmense",
   "mon2":"Brianza Stadium","sas":"Emilia Stadium","lec":"Stadio Salentino",
   "sal":"Stadio Salernum","ver":"Stadio Scaligero","spe":"Stadio Spezzino",
@@ -467,8 +467,8 @@ const CLUB_STADIUMS={
   "whu":"East Stadium","wol":"Wanderers Stadium","cry":"Croydon Park",
   "bha":"Sussex Stadium","bur":"Lancashire Stadium","bou":"Dorset Stadium",
   "rma":"Estadio Capital","bar":"Estadi Blau","atm":"Estadio Coloso",
-  "sev":"Estadio Hispalense","bet":"Estadio Verdiblanco","val":"Estadio Naranja",
-  "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":"Estadio Celeste",
+  "sev":"Estadio Hispalense","bet":"Estadio Ventrana","val":"Estadio Naranja",
+  "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":"Estadio Oriolan",
   "bay":"München Arena","bvb":"Goldwald Stadion","rbl":"Leipzig Arena","b04":"Werkstadt Arena",
   "fra":"Frankfurt Arena","s04":"Gelsenkirchen Arena","bsc":"Berlin Arena",
   "psg":"Parc Royal","marse":"Stade Phocéen","lyon":"Lyon Stadium","lille":"Lille Stadium",
