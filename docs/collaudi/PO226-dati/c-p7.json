@@ -1,0 +1,66 @@
+{
+ "partita": 7,
+ "nome": "Coll226c7",
+ "panchina": false,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 268,
+ "errori": [],
+ "intx": [
+  {
+   "min": 29,
+   "id": "mi_prim",
+   "fam": "MISTER"
+  },
+  {
+   "min": 39,
+   "id": "co_inc",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 49,
+   "id": "co_int",
+   "fam": "COMPAGNI"
+  },
+  {
+   "min": 59,
+   "id": "er_chi",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_chi",
+   "idx": 0,
+   "auto": true,
+   "min": 59
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 0,
+  "away": 1
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  23,
+  42,
+  61,
+  66,
+  63,
+  76,
+  86
+ ]
+}
