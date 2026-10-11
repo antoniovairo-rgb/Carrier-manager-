@@ -5,7 +5,7 @@ Sonda: `po220-difesa.mjs`. Dati grezzi: `po220-a.jsonl` (partite 1–12), `po220
 
 ## Campione
 - **22 partite, 22 scene difensive** (`__CPM_CAST219.tipo === 'difesa'`), 0 errori.
-- **Ogni partita ha esattamente una scena difensiva.** Nelle 22 partite PO-221 sul salvataggio S12 le difese sono 56 su 512 scene (≈ 0,9 a partita); qui 22 su 22. **Non posso confermare la causa**: può dipendere dal seme (nomi k=1..22), dal fatto che il GLB sia acceso (il tempo di scena rallenta, e questo cambia cosa il gioco accumula), o da un vincolo del generatore. Non l'ho verificato.
+- **Ogni partita ha esattamente una scena difensiva.** Nelle 60 partite PO-221 (stesso salvataggio, senza GLB forzato) le difese sono 56 su 512 scene di cast, cioè ≈ 0,9 a partita; qui 22 su 22. **Non posso confermare la causa**: può dipendere dal seme (nomi k=1..22), dal fatto che il GLB sia acceso (il tempo di scena rallenta, e questo cambia cosa il gioco accumula), o da un vincolo del generatore. Non l'ho verificato.
 - Campionamento: fotogrammi ogni ~120 ms durante `hl_*` (30–50 per scena in headless). Dai fotogrammi estraggo sei punti equispaziati per scena (campo `sei_frame`).
 
 ## Domanda del PO: l'eroe arriva sul portatore e fa un gesto vero, o corre e basta?
