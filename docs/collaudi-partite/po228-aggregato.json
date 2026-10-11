@@ -1,0 +1,575 @@
+{
+ "partite": 22,
+ "voci": {
+  "Gol": {
+   "casa": {
+    "n": 22,
+    "media": 2,
+    "mediana": 2,
+    "min": 0,
+    "max": 5
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 0.95,
+    "mediana": 1,
+    "min": 0,
+    "max": 4
+   },
+   "totale": {
+    "n": 22,
+    "media": 2.95,
+    "mediana": 3,
+    "min": 1,
+    "max": 7
+   }
+  },
+  "Possesso": {
+   "casa": {
+    "n": 22,
+    "media": 53.59,
+    "mediana": 53,
+    "min": 48,
+    "max": 60
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 46.41,
+    "mediana": 47,
+    "min": 40,
+    "max": 52
+   }
+  },
+  "Tiri": {
+   "casa": {
+    "n": 22,
+    "media": 13,
+    "mediana": 13.5,
+    "min": 6,
+    "max": 18
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 8.73,
+    "mediana": 8.5,
+    "min": 4,
+    "max": 15
+   },
+   "totale": {
+    "n": 22,
+    "media": 21.73,
+    "mediana": 21,
+    "min": 16,
+    "max": 33
+   }
+  },
+  "Tiri in porta": {
+   "casa": {
+    "n": 22,
+    "media": 5.32,
+    "mediana": 5,
+    "min": 2,
+    "max": 11
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 2.77,
+    "mediana": 2.5,
+    "min": 1,
+    "max": 5
+   },
+   "totale": {
+    "n": 22,
+    "media": 8.09,
+    "mediana": 8,
+    "min": 4,
+    "max": 15
+   }
+  },
+  "Gol attesi (xG)": {
+   "casa": {
+    "n": 22,
+    "media": 1.2,
+    "mediana": 1.18,
+    "min": 0.21,
+    "max": 3.09
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 0.76,
+    "mediana": 0.73,
+    "min": 0.2,
+    "max": 1.44
+   },
+   "totale": {
+    "n": 22,
+    "media": 1.96,
+    "mediana": 1.89,
+    "min": 0.97,
+    "max": 3.29
+   }
+  },
+  "Azioni dalle fasce": {
+   "casa": {
+    "n": 22,
+    "media": 20.05,
+    "mediana": 20.5,
+    "min": 3,
+    "max": 39
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 19.77,
+    "mediana": 18.5,
+    "min": 11,
+    "max": 35
+   },
+   "totale": {
+    "n": 22,
+    "media": 39.82,
+    "mediana": 38.5,
+    "min": 23,
+    "max": 74
+   }
+  },
+  "Cross": {
+   "casa": {
+    "n": 22,
+    "media": 22.05,
+    "mediana": 21,
+    "min": 6,
+    "max": 37
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 15.59,
+    "mediana": 15,
+    "min": 3,
+    "max": 32
+   },
+   "totale": {
+    "n": 22,
+    "media": 37.64,
+    "mediana": 36.5,
+    "min": 16,
+    "max": 57
+   }
+  },
+  "Dribbling riusciti": {
+   "casa": {
+    "n": 22,
+    "media": 60.55,
+    "mediana": 62.5,
+    "min": 38,
+    "max": 82
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 32.68,
+    "mediana": 38,
+    "min": 0,
+    "max": 75
+   }
+  },
+  "Passaggi": {
+   "casa": {
+    "n": 22,
+    "media": 207.82,
+    "mediana": 205.5,
+    "min": 182,
+    "max": 244
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 197.86,
+    "mediana": 199,
+    "min": 163,
+    "max": 227
+   },
+   "totale": {
+    "n": 22,
+    "media": 405.68,
+    "mediana": 409.5,
+    "min": 354,
+    "max": 443
+   }
+  },
+  "Precisione passaggi": {
+   "casa": {
+    "n": 22,
+    "media": 84.14,
+    "mediana": 84,
+    "min": 78,
+    "max": 93
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 83.23,
+    "mediana": 83,
+    "min": 76,
+    "max": 90
+   }
+  },
+  "Recuperi": {
+   "casa": {
+    "n": 22,
+    "media": 24.18,
+    "mediana": 23.5,
+    "min": 17,
+    "max": 37
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 25.59,
+    "mediana": 23.5,
+    "min": 17,
+    "max": 42
+   },
+   "totale": {
+    "n": 22,
+    "media": 49.77,
+    "mediana": 49.5,
+    "min": 35,
+    "max": 74
+   }
+  },
+  "Parate": {
+   "casa": {
+    "n": 22,
+    "media": 1.77,
+    "mediana": 2,
+    "min": 0,
+    "max": 5
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 3.23,
+    "mediana": 3,
+    "min": 0,
+    "max": 7
+   },
+   "totale": {
+    "n": 22,
+    "media": 5,
+    "mediana": 5,
+    "min": 1,
+    "max": 8
+   }
+  },
+  "Calci d'angolo": {
+   "casa": {
+    "n": 22,
+    "media": 3.86,
+    "mediana": 4,
+    "min": 0,
+    "max": 10
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 3.23,
+    "mediana": 3,
+    "min": 0,
+    "max": 8
+   },
+   "totale": {
+    "n": 22,
+    "media": 7.09,
+    "mediana": 7.5,
+    "min": 2,
+    "max": 14
+   }
+  },
+  "Falli": {
+   "casa": {
+    "n": 22,
+    "media": 10.59,
+    "mediana": 10,
+    "min": 5,
+    "max": 16
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 9.59,
+    "mediana": 9,
+    "min": 6,
+    "max": 15
+   },
+   "totale": {
+    "n": 22,
+    "media": 20.18,
+    "mediana": 20,
+    "min": 14,
+    "max": 31
+   }
+  },
+  "Ammonizioni": {
+   "casa": {
+    "n": 22,
+    "media": 2.36,
+    "mediana": 2.5,
+    "min": 0,
+    "max": 5
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 1.91,
+    "mediana": 2,
+    "min": 0,
+    "max": 4
+   },
+   "totale": {
+    "n": 22,
+    "media": 4.27,
+    "mediana": 4.5,
+    "min": 2,
+    "max": 7
+   }
+  },
+  "Espulsioni": {
+   "casa": {
+    "n": 22,
+    "media": 0,
+    "mediana": 0,
+    "min": 0,
+    "max": 0
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 0.09,
+    "mediana": 0,
+    "min": 0,
+    "max": 1
+   },
+   "totale": {
+    "n": 22,
+    "media": 0.09,
+    "mediana": 0,
+    "min": 0,
+    "max": 1
+   }
+  },
+  "Rimesse laterali": {
+   "casa": {
+    "n": 22,
+    "media": 13.68,
+    "mediana": 13.5,
+    "min": 7,
+    "max": 27
+   },
+   "trasferta": {
+    "n": 22,
+    "media": 12.27,
+    "mediana": 12.5,
+    "min": 6,
+    "max": 19
+   },
+   "totale": {
+    "n": 22,
+    "media": 25.95,
+    "mediana": 26,
+    "min": 15,
+    "max": 44
+   }
+  }
+ },
+ "coerenza": {
+  "partite": 22,
+  "gol_diversi_dal_tabellone": 1,
+  "possesso_non_100": 0,
+  "in_porta_maggiore_di_tiri": 0,
+  "cross_maggiore_di_passaggi": 0,
+  "dettagli": [
+   {
+    "k": 4,
+    "tip": "gol≠tabellone",
+    "tab": [
+     1,
+     0
+    ],
+    "score": {
+     "home": 0,
+     "away": 0
+    }
+   }
+  ]
+ },
+ "assenti": {
+  "Gol": 0,
+  "Possesso": 0,
+  "Tiri": 0,
+  "Tiri in porta": 0,
+  "Gol attesi (xG)": 0,
+  "Azioni dalle fasce": 0,
+  "Cross": 0,
+  "Dribbling riusciti": 0,
+  "Passaggi": 0,
+  "Precisione passaggi": 0,
+  "Recuperi": 0,
+  "Parate": 0,
+  "Calci d'angolo": 0,
+  "Falli": 0,
+  "Ammonizioni": 0,
+  "Espulsioni": 0,
+  "Rimesse laterali": 0
+ },
+ "casa": [
+  {
+   "k": 1,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 2,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 3,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 4,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 5,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 6,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 7,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 8,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 9,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 10,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 11,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 12,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 13,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 14,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 15,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 16,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 17,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 18,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 19,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 20,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 21,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  },
+  {
+   "k": 22,
+   "squadraSalvataggio": "FC Merseyside",
+   "colonnaSinistra": "FC Merseyside",
+   "colonnaDestra": "FC Tyneside",
+   "giocatoreInCasa": true
+  }
+ ],
+ "casa_riepilogo": {
+  "giocatoreInCasa": 22,
+  "giocatoreInTrasferta": 0,
+  "nonVerificabile": 0
+ }
+}
