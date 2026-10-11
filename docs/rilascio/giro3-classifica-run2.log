@@ -1,0 +1,18 @@
+══ GIRO3 CLASSIFICA 194 · replay settimanale ══
+  start S1W38 n=18 GF=790 GA=787 D=3
+  BLOCCO 1/39/true/792/proTransition res=advanced
+  fine run: S1W39 GF=792 GA=789 D=3 passi=12
+  passo | fase | S W→W2 | res | ΣGF | ΣGA | Δ | variazione Δ | ΔGF | ΔGA | giocano(+1) | ferme(0) | cap | pl.giocatore
+    0 | F1 | S1 W38→W38 | simulated | 790 | 787 | 3 | +0 | 0 | 0 | 0 | 2 | 16 | 1
+    1 | F1 | S1 W38→W39 | lived     | 792 | 789 | 3 | +0 | 2 | 2 | 2 | 0 | 16 | 1
+    2 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    3 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    4 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    5 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    6 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    7 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    8 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+    9 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+   10 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+   11 | F1 | S1 W39→W39 | advanced  | 792 | 789 | 3 | +0 | 0 | 0 | 0 | 0 | 18 | 0
+  pageerror: 0
