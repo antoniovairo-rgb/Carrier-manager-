@@ -73,7 +73,7 @@ if ((process.env.CPM_SIT || '').length) {
     if (!ok) { console.log(`  gi${gi}: non forzabile`); continue; }
     await sleep(420);
     await page.evaluate(() => { window.__CPM_FROZEN = false; });
-    const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+    const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
     const k = acts ? ((acts.find(a => /assist/i.test(String(a.rew || ''))) || acts[0] || {}).i) : 0;
     await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; });
     try { await page.evaluate(i => window.__CPM_RESOLVE(i), k); } catch (e) { continue; }
@@ -121,7 +121,7 @@ for (let round = 0; !MIRATO && round < TARGET * 12 && righe.length < TARGET; rou
 
   /* interessa l'azione che PROMETTE UN DESTINATARIO: premio assist. Senza destinatario promesso
      «nessuno arriva sul pallone» non e' un difetto — e' un tiro. */
-  const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+  const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
   const k = acts ? (acts.find(a => /assist/i.test(String(a.rew || ''))) || {}).i : null;
   if (k == null) {
     await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});

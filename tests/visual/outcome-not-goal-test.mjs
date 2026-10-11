@@ -52,6 +52,8 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* `CPM_REALWAIT=1` apre l'attesa che il gioco VERO concede al gol (r.~20346, spenta sotto test):
    serve per non giudicare una finestra d'esito che il giocatore non ha mai. */
+/* [7.999.160 PO-229] le punizioni restano in hl_move finche' il giocatore non prende la mira (nessun timer, per scelta): il tasto «0» che il gioco accetta salta il movimento, altrimenti il giro si inceppa e il campione resta a 1-2 scene */
+await page.addInitScript(() => { setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_move') { const ev = new KeyboardEvent('keydown', { key: '0', bubbles: true }); document.dispatchEvent(ev); window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' })); } } catch (e) {} }, 700); });
 await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.n477) window.__CPM_NO477 = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; if (o.n478d) window.__CPM_NO478D = 1;/* [7.478.0] toglie il fondo campo: prova del rosso del clamp */ },
   { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0, n477: process.env.CPM_NO477 ? 1 : 0, n478d: process.env.CPM_NO478D ? 1 : 0 });
 /* ⚠️ DUE PERCORSI, E IL PERCHE'. Il flusso VERO (default) e' l'unico che vede la classe «props del
@@ -78,7 +80,7 @@ if (process.env.CPM_FORCE) {
     let ok = false; try { ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); } catch (e) {}
     if (!ok) continue;
     await sleep(600);
-    const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+    const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
     const kNo = acts ? (acts.find(a => !/goal/i.test(String(a.rew || ''))) || {}).i : null;
     if (kNo == null) continue;
     await page.evaluate(() => { window.__CPM_FROZEN = false; window.__CPM_PA457 = []; window.__CPM_FORCE_OUTCOME = 'success'; });
@@ -135,12 +137,12 @@ for (let round = 0; round < TARGET * 30 && righe.length < TARGET; round++) {
   await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_ARCEND457 = []; window.__CPM_ARCFIRE457 = []; window.__CPM_ARCORPHAN457 = []; window.__CPM_ARCCALL457 = []; window.__CPM_WAIT461 = []; window.__CPM_CONT461 = []; });
   await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const gotChoose = await page.waitForFunction(() => {
-    try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'hl_choose'; } catch (e) { return false; }
+    try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && (s.phase === 'hl_choose'); } catch (e) { return false; }
   }, { timeout: 30000 }).then(() => true).catch(() => false);
   if (!gotChoose) { await sleep(600); continue; }
 
   /* si sceglie un'azione il cui premio NON e' un gol: e' li' che vive il difetto del PO */
-  const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+  const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
   const kNo = acts ? (acts.find(a => !/goal/i.test(String(a.rew || ''))) || {}).i : null;
   if (kNo == null) {
     await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});

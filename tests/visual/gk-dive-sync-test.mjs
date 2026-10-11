@@ -59,9 +59,11 @@ for (const gi of SCENE) {
   await page.evaluate(() => { window.__CPM_FROZEN = false; window.__CPM_DIVE465 = []; });
   /* esito FALLITO: e' quello in cui il portiere para davvero (su un gol il tuffo resta corto per
      costruzione, 6.74 3D-3 — misurarlo li' significherebbe misurare un tuffo che DEVE mancare) */
-  await page.evaluate(m => { window.__CPM_FORCE_OUTCOME = m; }, MODO);
+  /* [7.999.160 PO-229] il motore sceglie da solo parata/murato/fuori: senza forzare la PARATA molte scene non hanno tuffo (cieco) */
+  await page.evaluate(([m, k]) => { window.__CPM_FORCE_OUTCOME = m; window.__CPM_FORCE_KIND = k || null; }, [MODO, process.env.CPM_KIND === '' ? '' : (process.env.CPM_KIND || (MODO === 'fail' ? 'saved' : ''))]);
   try { await page.evaluate(() => window.__CPM_RESOLVE(0)); } catch (e) { continue; }
-  await sleep(3000);
+  /* [7.999.160 PO-229] si aspetta che l'ARCO finisca, non 3 s fissi: in headless la scena ora va a ~1/4 del reale e a 3 s l'arco era al 95% (tutte le scene «non giudicabili», guardiano cieco) */
+  for (let w = 0; w < 120; w++) { await sleep(100); const fin = await page.evaluate(() => { const F = window.__CPM_DIVE465 || []; return F.some(f => f.arcD > 0 && f.arcT / f.arcD >= 0.98); }); if (fin) { await sleep(600); break; } }
   const F = await page.evaluate(() => (window.__CPM_DIVE465 || []).slice());
   if (F.length < 6) continue;
   const z0 = F[0].z0, tz = F[0].tz, span = Math.abs(tz - z0);
@@ -86,12 +88,27 @@ for (const gi of SCENE) {
      Ora una scena in cui l'arrivo non e' stato campionato si dichiara NON GIUDICABILE e si conta a parte:
      un guardiano non deve inventarsi l'istante che gli serve. E' la stessa classe di errore che la nota in
      testa a questo file gia' descriveva per i «MAI» al 27-30%: ricompare appena si allenta la disciplina. */
+  /* [7.999.160 PO-229] TUFFO FINITO PRIMA DELL'ARRIVO: il testimone scrive solo durante il tuffo, quindi se il portiere si e'
+     disteso ed e' rimasto a terra prima che la palla arrivasse l'arrivo non viene mai campionato. Non e' «non giudicabile»: e'
+     esattamente il difetto 111/112. Anticipo = distesa completa contro fine dell'arco, in tempo di scena. */
+  if (iArr < 0 && !process.env.CPM_OROLOGIO) {
+    const L = F[F.length - 1]; let iF = -1; for (let i = 0; i < F.length; i++) if (Math.abs(F[i].gz - z0) / span >= 0.95) { iF = i; break; }
+    if (L.u >= 0.99 && iF >= 0 && L.arcD > 0 && L.arcT < L.arcD) {
+      const dt = 1000 * ((F[iF].arcT || 0) - L.arcD);
+      righe.push({ gi, prog: 1, dtMs: dt, arcD: F[0].arcD, dvD: F[0].dvD, n: F.length });
+      if (VERB) console.log(`  gi${gi} · tuffo FINITO prima dell'arrivo · distesa completa ${(dt / 1000).toFixed(2)}s rispetto alla palla`);
+      continue;
+    }
+  }
   if (iArr < 0) { nonVisti.push(gi); continue; }
   { const _pArr = F[iArr].arcD > 0 ? F[iArr].arcT / F[iArr].arcD : 0;
     if (_pArr < 0.90) { nonVisti.push(gi); continue; } }
   const prog = Math.abs(F[iArr].gz - z0) / span;
   let iFull = -1; for (let i = 0; i < F.length; i++) if (Math.abs(F[i].gz - z0) / span >= 0.95) { iFull = i; break; }
-  const dtMs = iFull >= 0 ? (F[iFull].t - F[iArr].t) : null;
+  /* [7.999.160 PO-229] L'ANTICIPO SI MISURA IN TEMPO DI SCENA, non di orologio. In headless la scena gira a ~1/4 del reale
+     (arco di 0,67 s percorso in ~2,8 s reali): in millisecondi reali un anticipo di 0,1 s di scena diventa 0,4 s e il guardiano
+     boccia un tuffo sano. Il tempo di scena lo da' l'arco stesso (arcT); `CPM_OROLOGIO=1` rimette la misura vecchia. */
+  const dtMs = iFull < 0 ? null : (process.env.CPM_OROLOGIO ? (F[iFull].t - F[iArr].t) : 1000 * ((F[iFull].arcT || 0) - (F[iArr].arcT || 0)));
   righe.push({ gi, prog, dtMs, arcD: F[0].arcD, dvD: F[0].dvD, n: F.length });
   /* [7.583.0] QUANTI FOTOGRAMMI HA VISTO DAVVERO, e quanto era avanti l'arco nel fotogramma giudicato.
      GLB-ON headless gira a frazioni di fps: fra due campioni puo' passare TUTTA la coda dell'arco, e allora
