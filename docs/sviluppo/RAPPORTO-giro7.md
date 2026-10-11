@@ -80,3 +80,5 @@ Log delle corse di base: `docs/sviluppo/movimento-main-giro7-1.log` e `…-2.log
 ## 6. Esito
 
 **CHIUSO / NON CHIUSO: NON CHIUSO.** Motivo: la catena grafica è 29/30, non verde. L'unico rosso è `movimento-147`, controllo sul movimento in partita che non ho toccato. Sul ramo base è rosso in una corsa su due, quindi preesiste; ma sulla mia build la prova è 3 su 3 contro 1 su 2 sul base, e due corse di base non bastano a escludere un effetto. Il difetto L7 è corretto, misurato e guardato; il rilascio resta bloccato dal guardiano del movimento.
+
+**NON CHIUSO** — catena grafica 29/30 (movimento-147 rosso, soglia sui campioni; preesiste in una corsa su due su origin/main, ma la prova non esclude un effetto della mia build).
