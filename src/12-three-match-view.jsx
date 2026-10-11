@@ -7507,7 +7507,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             try{if(ballArcActive){const _ax=ballArcTgtX-ball.position.x,_az=ballArcTgtZ-ball.position.z,_al=_ax*_ax+_az*_az;
               if(_al>0.01){let _u=((hero.position.x-ball.position.x)*_ax+(hero.position.z-ball.position.z)*_az)/_al;_u=Math.max(0.05,Math.min(1,_u));
                 _txT=ball.position.x+_ax*_u;_tzT=ball.position.z+_az*_u;}}}catch(_e){}
-            const _dxT=_txT-hero.position.x,_dzT=_tzT-hero.position.z,_dlT=Math.hypot(_dxT,_dzT)||1,_cT=Math.min(_dlT-0.4,5.2);
+            const _p220=!(typeof window!=='undefined'&&window.__CPM_NO_PUSH220);/* [7.999.159 PO-220, collaudatrice 2 su 30 difese: clip del gesto assente al picco in 17/30, eroe a 6,0u mediana dal portatore] lo slancio arriva piu' lontano (5,2 → 7,5u) e il gesto degrada a pressing solo oltre 8u (era 6,5). Rosso __CPM_NO_PUSH220 */const _dxT=_txT-hero.position.x,_dzT=_tzT-hero.position.z,_dlT=Math.hypot(_dxT,_dzT)||1,_cT=Math.min(_dlT-0.4,_p220?7.5:5.2);
             sr.current._tkPush420=_cT>0?{x:_dxT/_dlT*_cT,z:_dzT/_dlT*_cT}:null;
             /* [collaudo PO gi146 «Si tuffa a terra senza nemmeno guardare o avvicinarsi al pallone/avversario»]
                MISURATO (gi146 az.0, «Blocca con tutto il fisico»): il fallback 7.415 dopo 1,4s suona il gesto
@@ -7517,7 +7517,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                locomozione addosso al portatore per la mappa 7.245, GLB-OFF = posa di pressione in piedi) —
                un difensore a 10 metri non si butta a terra, accorcia. `aerial`/`call` non passano da qui.
                __CPM_NO440: interruttore test-only per riprodurre il rosso nel guardiano. */
-            {const _dgF=P.hlDefGesto;if(_dlT>6.5&&(_dgF==='slide'||_dgF==='lunge'||!_dgF)&&!(typeof window!=='undefined'&&window.__CPM_NO440))sr.current._dgFar440=P.hlSitKey;}}
+            {const _dgF=P.hlDefGesto;if(_dlT>(_p220?8:6.5)&&(_dgF==='slide'||_dgF==='lunge'||!_dgF)&&!(typeof window!=='undefined'&&window.__CPM_NO440))sr.current._dgFar440=P.hlSitKey;}}
           if(!_hold415){actT+=aDt;sr.current._tkW415=0;}
           const _T=gwOf(actType,"vita"),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);/* [7.512.0 R2] vita del gesto dalla tabella unica: chiude il colpo di testa troncato al 65% (actType moriva a 0,75s su clip scalata a 1,15s) *//* [7.244.0 batch PO «non si vede la scivolata/il contrasto» sui gi31/32/45] il gesto difensivo durava 0.6s con inviluppo a seno — a 60fps saliva e spariva PRIMA che l'occhio si assestasse (verdetto a 1.9-2.25s = eroe in piedi da oltre un secondo). Ora il tackle dura 1.7s con inviluppo salita→TENUTA→recupero (la scivolata RESTA a terra ~0.9s, come nel calcio vero): il movimento verso la palla resta su _T2=0.6 invariato */
           if(actType==="shot"){
