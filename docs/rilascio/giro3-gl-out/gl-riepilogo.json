@@ -1,0 +1,72 @@
+[
+  {
+    "giro": 1,
+    "fase": "ceremony",
+    "secondi": 276,
+    "lost": 0,
+    "restored": 0,
+    "score": {
+      "home": 3,
+      "away": 1
+    },
+    "avvisi": 0,
+    "dettaglio": [],
+    "errori": []
+  },
+  {
+    "giro": 2,
+    "fase": "ceremony",
+    "secondi": 274,
+    "lost": 0,
+    "restored": 0,
+    "score": {
+      "home": 1,
+      "away": 0
+    },
+    "avvisi": 0,
+    "dettaglio": [],
+    "errori": []
+  },
+  {
+    "giro": 3,
+    "fase": "ceremony",
+    "secondi": 273,
+    "lost": 0,
+    "restored": 0,
+    "score": {
+      "home": 0,
+      "away": 0
+    },
+    "avvisi": 0,
+    "dettaglio": [],
+    "errori": []
+  },
+  {
+    "giro": 4,
+    "fase": "ceremony",
+    "secondi": 271,
+    "lost": 0,
+    "restored": 0,
+    "score": {
+      "home": 1,
+      "away": 0
+    },
+    "avvisi": 0,
+    "dettaglio": [],
+    "errori": []
+  },
+  {
+    "giro": 5,
+    "fase": "ceremony",
+    "secondi": 276,
+    "lost": 0,
+    "restored": 0,
+    "score": {
+      "home": 2,
+      "away": 0
+    },
+    "avvisi": 0,
+    "dettaglio": [],
+    "errori": []
+  }
+]
