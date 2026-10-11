@@ -282,3 +282,14 @@ Riportato dal PO in chat. Nessuna modifica al gioco, commit o push.
     - Ingresso in campo non misurato.
   - Ricreate: collaudatrice `session_014qtxu3yL6ZqWpEJe4Yysgc` (PO-218 su 7.999.157: discordanze riquadro/cronaca/motore su almeno 60 scene; poi P/PO-222 misura); sviluppatrice `session_01DSLZExKzQEg16HMTdrY8Wj` (censimento home PO-224, troncamento nomi, ingresso in campo GLB acceso).
 - **Rilascio 7.999.157:** catena carriera rossa al primo giro su `tempo-138` (verde: debito residuo 14 al fischio). Rilanciato da solo 2 volte: una volta il rosso non si vede, l'altra verde pieno. È un guardiano a tempo reale (autoplay a 150 ms), quindi instabile. Catena rifatta da capo: **33/33**. Completa in corsa.
+
+## 11/10/2026 — Codex, coda finale: secondo aggiornamento (base `2adc96ad`, 7.999.156)
+Riportato dal PO in chat. Nessun file modificato, nessun commit o push.
+- **I2 (PO-218) — NON CHIUSO.** 13 partite vere, 107 scene risolte, 92 esiti non riusciti (85 con sei fotogrammi).
+  - **4 scene** con riquadro «fuorigioco» e motore «intercetto» (partita/highlight 6:3, 6:4, 9:0, 11:6).
+  - **5 azioni «Finta e tiro»** il cui racconto non corrisponde al tiro registrato.
+  - Mancano un cross osservato in partita vera e il confronto completo dei quattro racconti.
+  - Classe ormai riprodotta tre volte da Codex: è il primo punto di PO-218 per il team.
+- **P (PO-222) — NON CHIUSO.** 30 profili sintetici: decisione prepartita 20 titolare, 5 panchina, 5 non convocato. **In 5 casi su 5 «non convocato» la simulazione accredita comunque una presenza.** La quota reale di titolarità nelle carriere naturali non è misurata. Zona G: difetto da riprodurre, nessun intervento senza il via del PO.
+- **T2 (PO-221) — in attesa.** La 7.999.157 non verrà promossa da sola: la base sarà la **7.999.158**, che la contiene, quando arriverà su main.
+- Banco Codex: tentativi 3D sospesi sotto i 3 GB di memoria libera (2,59–2,79 GB). Riprende quando la memoria lo consente.
