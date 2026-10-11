@@ -229,3 +229,11 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 2. **Catena leggera** (`ci-runner grafica`) per i cambi solo grafici; completa quando si tocca motore, partita o carriera.
 3. **Passi lenti in parallelo** (partita-vera, scena-motore, esiti-218, nomi-219, difesa-220, scene-221, career-critical) a due a due (`ci-runner.mjs`, `CPM_CI_PAR=0` per tornare alla sequenza).
 4. **Un rosso si rilancia da solo** fino a due volte. Se torna verde il passo vale ma resta segnato «instabile» nel registro, e il guardiano va sistemato. La catena si rifà da capo solo per un rosso vero, cioè 3 su 3 (`CPM_CI_NORETRY=1` per spegnere).
+
+## 11/10 sera — PO-226: interazioni in partita
+- PO: «diamo un senso a queste interazioni, magari riducendole ma rendendole collegate e decise dal motore (brain)».
+- **Piano del team, da 7.999.160:**
+  - **Meno scelte, e decise dal motore.** Al massimo 2-3 scelte a partita, che nascono da un fatto del motore e non da un orologio. Esempi: sotto di un gol al 70', si vince di misura all'85', l'eroe stanco, l'eroe marcato a uomo.
+  - **Gli ordini del mister diventano una scelta dell'eroe** («seguo l'ordine» / «faccio di testa mia») con un effetto vero sull'atteggiamento del motore, cioè sui gol. Oggi agiscono solo sulle scene dell'eroe.
+  - **Panchina.** Una scelta («chiedo di entrare» / «resto concentrato») letta dal motore per il minuto d'ingresso, con seme: oggi il minuto è estratto a caso senza seme.
+  - Ogni scelta ha un guardiano: il rosso spegne l'effetto e la differenza si misura sui gol e sui minuti.
