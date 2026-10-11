@@ -1,0 +1,190 @@
+{
+ "id": "f04",
+ "name": "Giulio Ferrari",
+ "seed": 5529,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 270,
+ "secondi": 233,
+ "scene": [
+  {
+   "poll": 9,
+   "hl": 0,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "offside",
+   "fam": "offside",
+   "ovl": "La bandierina è alzata",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(MAURO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 5,
+    "txt": "⚙️ Pellegrini (ALT) appoggia su Luzi (ALT).",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 20
+   }
+  },
+  {
+   "poll": 32,
+   "hl": 1,
+   "label": "🤼 Raddoppio coordinato col compagno",
+   "defGesto": "lunge",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Intercetto perfetto",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 10,
+    "txt": "⚔️ Contrasto vinto da Cristiano (ALT) su Ferrari: cambia il possesso.",
+    "pd": "attack",
+    "ef": null,
+    "poll": 43
+   }
+  },
+  {
+   "poll": 70,
+   "hl": 2,
+   "label": "🔁 Uno-due con RIVA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "offside",
+   "fam": "offside",
+   "ovl": "Fuorigioco di un soffio",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 23,
+    "txt": "🧭 Apertura di Marra (LAG) a scavalcare il campo: la riceve Ferrari dal limite.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 80
+   }
+  },
+  {
+   "poll": 93,
+   "hl": 3,
+   "label": "📐 Curva a rientrare",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Occasione mancata",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 29,
+    "txt": "🎯 Cristiano (ALT) alza la testa e pesca Luzi (ALT) sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 103
+   }
+  },
+  {
+   "poll": 130,
+   "hl": 4,
+   "label": "🏃 Conduci palla al piede e tira",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "wide",
+   "fam": null,
+   "ovl": "Ci prova ma viene chiuso",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 41,
+    "txt": "💥 Nardi (ALT) calcia dal limite dell'area!",
+    "pd": "attack",
+    "ef": null,
+    "poll": 138
+   }
+  },
+  {
+   "poll": 158,
+   "hl": 5,
+   "label": "🎯 Controllo e tiro fermo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Non trova lo specchio",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 49,
+    "txt": "↔️ Romano (ALT) allarga troppo: la palla esce.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 167
+   }
+  },
+  {
+   "poll": 181,
+   "hl": 6,
+   "label": "🔁 Uno-due con MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Anticipato dall'avversario",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 55,
+    "txt": "🚀 Lancio lungo di Raimondi (ALT) per Rosa (ALT), a centrocampo.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 191
+   }
+  }
+ ],
+ "righeTotali": 74
+}

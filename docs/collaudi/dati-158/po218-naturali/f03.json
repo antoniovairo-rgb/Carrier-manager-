@@ -1,0 +1,197 @@
+{
+ "id": "f03",
+ "name": "Matteo De Luca",
+ "seed": 4418,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 270,
+ "secondi": 240,
+ "scene": [
+  {
+   "poll": 18,
+   "hl": 0,
+   "label": "💥 Tiro da fuori",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(QUINN)"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "↔️ Hayes (TYN) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 45
+   }
+  },
+  {
+   "poll": 37,
+   "hl": 1,
+   "label": "🛡️ Scivolata netta",
+   "defGesto": "slide",
+   "key": "foul",
+   "ok": false,
+   "outKind": "beaten",
+   "fam": null,
+   "ovl": "Fallo!",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(QUINN)",
+    "fallo({P})"
+   ],
+   "successiva": {
+    "m": 11,
+    "txt": "↔️ Hayes (TYN) allarga troppo: la palla esce.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 45
+   }
+  },
+  {
+   "poll": 75,
+   "hl": 2,
+   "label": "⚡ Conclusione di prima",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Occasione mancata",
+   "tipo": "shot",
+   "variante": "shot_first_time",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(ROSS)"
+   ],
+   "successiva": {
+    "m": 25,
+    "txt": "⏸️ Pallone di Burke (TYN) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 85
+   }
+  },
+  {
+   "poll": 104,
+   "hl": 3,
+   "label": "✈️ Testa di potenza",
+   "defGesto": null,
+   "key": "goal",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Capolavoro di Matteo!",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:goal({P})",
+    "gol({P})",
+    "pressione(ROSS)"
+   ],
+   "successiva": {
+    "m": 32,
+    "txt": "⏸️ Pallone di Burke (TYN) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 113
+   }
+  },
+  {
+   "poll": 134,
+   "hl": 4,
+   "label": "🎯 Piazzato nell'angolo basso",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Grande parata del portiere",
+   "tipo": "shot",
+   "variante": "shot_one_on_one",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 42,
+    "txt": "🎯 Bailey (TYN) alza la testa e pesca Burke (TYN) sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 141
+   }
+  },
+  {
+   "poll": 173,
+   "hl": 5,
+   "label": "⚽ Volée di collo potente",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "blocked",
+   "fam": "blocked",
+   "ovl": "Conclusione murata",
+   "tipo": "shot",
+   "variante": "shot_volley",
+   "ev": [
+    "pronto",
+    "tiro:blocked({P})",
+    "murato(ROSS)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 57,
+    "txt": "↔️ Lane (TYN) allarga troppo: la palla esce.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 182
+   }
+  },
+  {
+   "poll": 219,
+   "hl": 6,
+   "label": "✈️ Testa di potenza",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Tiro fuori di poco",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 74,
+    "txt": "🚀 Lancio lungo di Ross (TYN) per Lane (TYN), sulla trequarti.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 228
+   }
+  }
+ ],
+ "righeTotali": 82
+}

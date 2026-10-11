@@ -1,0 +1,429 @@
+{
+ "build": "7.999.158",
+ "totale": 20,
+ "contraddizioni": 0,
+ "pageerror": 0,
+ "primoErrore": null,
+ "scene": [
+  {
+   "gi": 11,
+   "pos": {
+    "x": 58,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "💥 Conclusione di collo pieno!",
+   "riquadro": "Il difensore si oppone",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 11,
+   "pos": {
+    "x": 66,
+    "y": 34
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "💥 Conclusione di collo pieno!",
+   "riquadro": "Il difensore si oppone",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 11,
+   "pos": {
+    "x": 66,
+    "y": 66
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "💥 Conclusione di collo pieno!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 11,
+   "pos": {
+    "x": 74,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "💥 Conclusione di collo pieno!",
+   "riquadro": "Non trova lo specchio",
+   "fam": "wide",
+   "esito": "wide",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 11,
+   "pos": {
+    "x": 52,
+    "y": 42
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "💥 Conclusione di collo pieno!",
+   "riquadro": "Il difensore si oppone",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 21,
+   "pos": {
+    "x": 58,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "⚡ Doppio dribbling in velocità!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 21,
+   "pos": {
+    "x": 66,
+    "y": 34
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "⚡ Doppio dribbling in velocità!",
+   "riquadro": "Conclusione murata",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 21,
+   "pos": {
+    "x": 66,
+    "y": 66
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "⚡ Doppio dribbling in velocità!",
+   "riquadro": "Non trova lo specchio",
+   "fam": "wide",
+   "esito": "wide",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 21,
+   "pos": {
+    "x": 74,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "⚡ Doppio dribbling in velocità!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 21,
+   "pos": {
+    "x": 52,
+    "y": 42
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "⚡ Doppio dribbling in velocità!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 47,
+   "pos": {
+    "x": 58,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+   "riquadro": "Conclusione centrale",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 47,
+   "pos": {
+    "x": 66,
+    "y": 34
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+   "riquadro": "Conclusione murata",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 47,
+   "pos": {
+    "x": 66,
+    "y": 66
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+   "riquadro": "Occasione mancata",
+   "fam": "wide",
+   "esito": "wide",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 47,
+   "pos": {
+    "x": 74,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+   "riquadro": "Conclusione centrale",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 47,
+   "pos": {
+    "x": 52,
+    "y": 42
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+   "riquadro": "Occasione mancata",
+   "fam": "wide",
+   "esito": "wide",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 94,
+   "pos": {
+    "x": 58,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🦵 Step-over e via!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 94,
+   "pos": {
+    "x": 66,
+    "y": 34
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🦵 Step-over e via!",
+   "riquadro": "Non trova lo specchio",
+   "fam": "wide",
+   "esito": "wide",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 94,
+   "pos": {
+    "x": 66,
+    "y": 66
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🦵 Step-over e via!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 94,
+   "pos": {
+    "x": 74,
+    "y": 50
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🦵 Step-over e via!",
+   "riquadro": "Conclusione murata",
+   "fam": "blocked",
+   "esito": "blocked",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:blocked({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  },
+  {
+   "gi": 94,
+   "pos": {
+    "x": 52,
+    "y": 42
+   },
+   "risolta": true,
+   "azione": "Finta e tiro",
+   "situazione": "🦵 Step-over e via!",
+   "riquadro": "Il portiere dice di no",
+   "fam": "saved",
+   "esito": "saved",
+   "key": "miss",
+   "ok": false,
+   "eventi": [
+    "tiro:saved({P})",
+    "rammarico({P})"
+   ],
+   "cronaca": null,
+   "contraddizione": null
+  }
+ ]
+}

@@ -1,0 +1,1781 @@
+{
+ "sum": {
+  "W": 375,
+  "iter": 93,
+  "stagioni": 2,
+  "settimaneRegistrate": 92,
+  "conFinestra": 3,
+  "perTipo": {
+   "spogliatoio": 3
+  },
+  "sovrapposizioni": 0,
+  "nonChiuseDallaScelta": 3,
+  "riapparseDopoScelta": 3,
+  "viviCopertoSenzaFinestra": 0,
+  "altriOverlay": 90,
+  "pageerror": 0,
+  "primoErrore": null,
+  "stagioneFinale": {
+   "S": 14,
+   "W": 1
+  }
+ },
+ "rows": [
+  {
+   "festeggia": true,
+   "it": 1,
+   "res": "lived",
+   "S": 12,
+   "W": 38,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": true,
+   "it": 2,
+   "res": "simulated",
+   "S": 12,
+   "W": 38,
+   "n": 0,
+   "altri": [],
+   "vivi": {
+    "visibile": true,
+    "colpibile": true,
+    "coperto": false,
+    "hit": "BUTTON[data-cpm=avanza23] «⚡ Vivi la Settimanaallenamento, eventi e»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 3,
+   "res": "lived",
+   "S": 12,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 4,
+   "res": "advanced",
+   "S": 12,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "gala51"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 5,
+   "res": "seasonEnd",
+   "S": 12,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "gala51"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": true,
+   "it": 6,
+   "res": "opening-resolved",
+   "S": 13,
+   "W": 1,
+   "n": 0,
+   "altri": [],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 7,
+   "res": "lived",
+   "S": 13,
+   "W": 1,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 8,
+   "res": "simulated",
+   "S": 13,
+   "W": 1,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 9,
+   "res": "lived",
+   "S": 13,
+   "W": 2,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 10,
+   "res": "simulated",
+   "S": 13,
+   "W": 2,
+   "n": 1,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": {
+    "bottone": "Il gruppo prima di tutto ",
+    "rect": [
+     32,
+     432,
+     310,
+     45
+    ],
+    "hit": "BUTTON.cpm-press cpm-focus  z=auto pos=static",
+    "inPop": false,
+    "testoSopra": null,
+    "catena": [
+     "BUTTON.cpm-press cpm-focus  z=auto pos=static",
+     "DIV. z=auto pos=static",
+     "DIV[confronto23]. z=auto pos=static",
+     "DIV. z=auto pos=static"
+    ]
+   },
+   "tipo": "spogliatoio",
+   "testo": "LO SPOGLIATOIO | 🔥 | L'asse con Gary Howard | La squadra vola e in campo vi trovate a memoria: con Gary Howard è nato un asse che gli avversari hanno iniziato a teme",
+   "bottoni": [
+    "Il gruppo prima di tutto →"
+   ],
+   "sceltaFatta": "Il gruppo prima di tutto →",
+   "chiusaDopoScelta": false,
+   "riapparsa": "LO SPOGLIATOIO | 🔥 | L'asse con Gary Howard | La squadra vo",
+   "viviDopo": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "chiusaJS": true,
+   "riapparsaJS": false,
+   "bondDopoJS": null
+  },
+  {
+   "festeggia": false,
+   "it": 11,
+   "res": "lived",
+   "S": 13,
+   "W": 3,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 12,
+   "res": "simulated",
+   "S": 13,
+   "W": 3,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 13,
+   "res": "lived",
+   "S": 13,
+   "W": 4,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 14,
+   "res": "simulated",
+   "S": 13,
+   "W": 4,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «CF Madrid»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 15,
+   "res": "lived",
+   "S": 13,
+   "W": 5,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 16,
+   "res": "simulated",
+   "S": 13,
+   "W": 5,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 17,
+   "res": "simulated",
+   "S": 13,
+   "W": 5,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 18,
+   "res": "lived",
+   "S": 13,
+   "W": 6,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 19,
+   "res": "simulated",
+   "S": 13,
+   "W": 6,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 20,
+   "res": "lived",
+   "S": 13,
+   "W": 7,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 21,
+   "res": "simulated",
+   "S": 13,
+   "W": 7,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 22,
+   "res": "simulated",
+   "S": 13,
+   "W": 7,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «Claudio VenturiIl tuo procuratore · rapp»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 23,
+   "res": "lived",
+   "S": 13,
+   "W": 8,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 24,
+   "res": "simulated",
+   "S": 13,
+   "W": 8,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 25,
+   "res": "lived",
+   "S": 13,
+   "W": 9,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 26,
+   "res": "simulated",
+   "S": 13,
+   "W": 9,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 27,
+   "res": "lived",
+   "S": 13,
+   "W": 10,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 28,
+   "res": "simulated",
+   "S": 13,
+   "W": 10,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 29,
+   "res": "simulated",
+   "S": 13,
+   "W": 10,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 30,
+   "res": "lived",
+   "S": 13,
+   "W": 11,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 31,
+   "res": "simulated",
+   "S": 13,
+   "W": 11,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 32,
+   "res": "lived",
+   "S": 13,
+   "W": 12,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 33,
+   "res": "simulated",
+   "S": 13,
+   "W": 12,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 34,
+   "res": "simulated",
+   "S": 13,
+   "W": 12,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 35,
+   "res": "lived",
+   "S": 13,
+   "W": 13,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 36,
+   "res": "simulated",
+   "S": 13,
+   "W": 13,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 37,
+   "res": "lived",
+   "S": 13,
+   "W": 14,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 38,
+   "res": "simulated",
+   "S": 13,
+   "W": 14,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 39,
+   "res": "simulated",
+   "S": 13,
+   "W": 14,
+   "n": 1,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": {
+    "bottone": "Il gruppo prima di tutto ",
+    "rect": [
+     32,
+     431,
+     310,
+     45
+    ],
+    "hit": "BUTTON. z=auto pos=static",
+    "inPop": false,
+    "testoSopra": null,
+    "catena": [
+     "BUTTON. z=auto pos=static",
+     "DIV. z=auto pos=static",
+     "DIV. z=auto pos=static",
+     "DIV.cpm-rise z=auto pos=static"
+    ]
+   },
+   "tipo": "spogliatoio",
+   "testo": "LO SPOGLIATOIO | 🎁 | Gary Howard ti deve una cena | 3 assist tuoi nelle ultime gare: in area lo cerchi sempre, e lui lo sa. «Con te alle spalle è un altro calcio», t",
+   "bottoni": [
+    "Il gruppo prima di tutto →"
+   ],
+   "sceltaFatta": "Il gruppo prima di tutto →",
+   "chiusaDopoScelta": false,
+   "riapparsa": "LO SPOGLIATOIO | 🎁 | Gary Howard ti deve una cena | 3 assis",
+   "viviDopo": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "chiusaJS": true,
+   "riapparsaJS": false,
+   "bondDopoJS": null
+  },
+  {
+   "festeggia": false,
+   "it": 40,
+   "res": "lived",
+   "S": 13,
+   "W": 15,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 41,
+   "res": "simulated",
+   "S": 13,
+   "W": 15,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.8Mis»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 42,
+   "res": "lived",
+   "S": 13,
+   "W": 16,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 43,
+   "res": "simulated",
+   "S": 13,
+   "W": 16,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 44,
+   "res": "simulated",
+   "S": 13,
+   "W": 16,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 45,
+   "res": "lived",
+   "S": 13,
+   "W": 17,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 46,
+   "res": "simulated",
+   "S": 13,
+   "W": 17,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 47,
+   "res": "lived",
+   "S": 13,
+   "W": 18,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 48,
+   "res": "simulated",
+   "S": 13,
+   "W": 18,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 49,
+   "res": "lived",
+   "S": 13,
+   "W": 19,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 50,
+   "res": "simulated",
+   "S": 13,
+   "W": 19,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 51,
+   "res": "lived",
+   "S": 13,
+   "W": 20,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 52,
+   "res": "simulated",
+   "S": 13,
+   "W": 20,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 53,
+   "res": "lived",
+   "S": 13,
+   "W": 21,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 54,
+   "res": "simulated",
+   "S": 13,
+   "W": 21,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 55,
+   "res": "lived",
+   "S": 13,
+   "W": 22,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 56,
+   "res": "simulated",
+   "S": 13,
+   "W": 22,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 57,
+   "res": "lived",
+   "S": 13,
+   "W": 23,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 58,
+   "res": "simulated",
+   "S": 13,
+   "W": 23,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 59,
+   "res": "simulated",
+   "S": 13,
+   "W": 23,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.16Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 60,
+   "res": "lived",
+   "S": 13,
+   "W": 24,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 61,
+   "res": "simulated",
+   "S": 13,
+   "W": 24,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 62,
+   "res": "lived",
+   "S": 13,
+   "W": 25,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 63,
+   "res": "simulated",
+   "S": 13,
+   "W": 25,
+   "n": 1,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": {
+    "bottone": "Il gruppo prima di tutto ",
+    "rect": [
+     32,
+     432,
+     310,
+     45
+    ],
+    "hit": "BUTTON. z=auto pos=static",
+    "inPop": false,
+    "testoSopra": null,
+    "catena": [
+     "BUTTON. z=auto pos=static",
+     "DIV. z=auto pos=static",
+     "DIV. z=auto pos=static",
+     "DIV.cpm-rise z=auto pos=static"
+    ]
+   },
+   "tipo": "spogliatoio",
+   "testo": "LO SPOGLIATOIO | 🤝 | Isaac Hughes ti prende da parte | Il momento è secco e negli occhi dei compagni lo leggi. «Ci sono passato anch'io — resta nel gioco, il gol arr",
+   "bottoni": [
+    "Il gruppo prima di tutto →"
+   ],
+   "sceltaFatta": "Il gruppo prima di tutto →",
+   "chiusaDopoScelta": false,
+   "riapparsa": "LO SPOGLIATOIO | 🤝 | Isaac Hughes ti prende da parte | Il m",
+   "viviDopo": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "chiusaJS": true,
+   "riapparsaJS": false,
+   "bondDopoJS": null
+  },
+  {
+   "festeggia": false,
+   "it": 64,
+   "res": "lived",
+   "S": 13,
+   "W": 26,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 65,
+   "res": "simulated",
+   "S": 13,
+   "W": 26,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 66,
+   "res": "lived",
+   "S": 13,
+   "W": 27,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 67,
+   "res": "simulated",
+   "S": 13,
+   "W": 27,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 68,
+   "res": "lived",
+   "S": 13,
+   "W": 28,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 69,
+   "res": "simulated",
+   "S": 13,
+   "W": 28,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 70,
+   "res": "lived",
+   "S": 13,
+   "W": 29,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 71,
+   "res": "simulated",
+   "S": 13,
+   "W": 29,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 72,
+   "res": "lived",
+   "S": 13,
+   "W": 30,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 73,
+   "res": "simulated",
+   "S": 13,
+   "W": 30,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 74,
+   "res": "lived",
+   "S": 13,
+   "W": 31,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 75,
+   "res": "simulated",
+   "S": 13,
+   "W": 31,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.24Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 76,
+   "res": "lived",
+   "S": 13,
+   "W": 32,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 77,
+   "res": "simulated",
+   "S": 13,
+   "W": 32,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 78,
+   "res": "lived",
+   "S": 13,
+   "W": 33,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 79,
+   "res": "simulated",
+   "S": 13,
+   "W": 33,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 80,
+   "res": "lived",
+   "S": 13,
+   "W": 34,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 81,
+   "res": "simulated",
+   "S": 13,
+   "W": 34,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 82,
+   "res": "lived",
+   "S": 13,
+   "W": 35,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": true,
+   "it": 83,
+   "res": "simulated",
+   "S": 13,
+   "W": 35,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 84,
+   "res": "lived",
+   "S": 13,
+   "W": 36,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 85,
+   "res": "simulated",
+   "S": 13,
+   "W": 36,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 86,
+   "res": "lived",
+   "S": 13,
+   "W": 37,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 87,
+   "res": "simulated",
+   "S": 13,
+   "W": 37,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 88,
+   "res": "lived",
+   "S": 13,
+   "W": 38,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 89,
+   "res": "simulated",
+   "S": 13,
+   "W": 38,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": {
+    "visibile": true,
+    "colpibile": false,
+    "coperto": false,
+    "hit": "DIV «🧑‍💼 Verifica Trimestrale · S.13 W.32Mi»"
+   },
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 90,
+   "res": "lived",
+   "S": 13,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "cpm-fade"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 91,
+   "res": "advanced",
+   "S": 13,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "gala51"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  },
+  {
+   "festeggia": false,
+   "it": 92,
+   "res": "seasonEnd",
+   "S": 13,
+   "W": 39,
+   "n": 0,
+   "altri": [
+    "gala51"
+   ],
+   "vivi": null,
+   "copre": null,
+   "tipo": null,
+   "testo": "",
+   "bottoni": []
+  }
+ ]
+}

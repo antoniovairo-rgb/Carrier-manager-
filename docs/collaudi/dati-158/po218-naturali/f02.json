@@ -1,0 +1,141 @@
+{
+ "id": "f02",
+ "name": "Luca Bianchi",
+ "seed": 2021,
+ "fixture": "save-194-primavera-w38.json",
+ "fine": "ended",
+ "polls": 244,
+ "secondi": 226,
+ "scene": [
+  {
+   "poll": 19,
+   "hl": 0,
+   "label": "🛑 Chiusura immediata",
+   "defGesto": "lunge",
+   "key": "through",
+   "ok": false,
+   "outKind": "beaten",
+   "fam": null,
+   "ovl": "L'avversario passa",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "conduzione(MAURO)"
+   ],
+   "successiva": {
+    "m": 9,
+    "txt": "↩️ Luzi (ALT) scarica all'indietro su Pellegrini (ALT): si ricomincia con calma.",
+    "pd": "defend_goal",
+    "ef": null,
+    "poll": 30
+   }
+  },
+  {
+   "poll": 69,
+   "hl": 1,
+   "label": "🎯 Filtrante per MARRA",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(CRISTIANO)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 29,
+    "txt": "😠 Il loro centrale gli si presenta al primo pallone: una spallata e due parole. È il benvenuto.",
+    "pd": null,
+    "ef": null,
+    "poll": 78
+   }
+  },
+  {
+   "poll": 98,
+   "hl": 2,
+   "label": "🎯 Controllo e tiro fermo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 39,
+    "txt": "🤝 Il capitano lo raggiunge e gli batte una mano sul petto: «La prossima entra. Continua a metterti lì.»",
+    "pd": null,
+    "ef": null,
+    "poll": 109
+   }
+  },
+  {
+   "poll": 170,
+   "hl": 3,
+   "label": "🌀 Finta e tiro",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Il compagno non ci arriva",
+   "tipo": "shot",
+   "variante": "shot_power",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(CRISTIANO)"
+   ],
+   "successiva": {
+    "m": 67,
+    "txt": "🟡 Fischia l'arbitro: fallo di Bianchi su Cristiano (ALT), punizione dalle retrovie.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 181
+   }
+  },
+  {
+   "poll": 229,
+   "hl": 4,
+   "label": "🎯 Filtrante per RIVA",
+   "defGesto": null,
+   "key": "assist",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Illuminazione di Luca!",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "pronto",
+    "passaggio",
+    "tuffo",
+    "tiro:goal(RIVA)",
+    "gol(RIVA)"
+   ],
+   "successiva": {
+    "m": 91,
+    "txt": "💥 Riva (LAG) non ci pensa due volte: tiro da lontano!",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 240
+   }
+  }
+ ],
+ "righeTotali": 73
+}

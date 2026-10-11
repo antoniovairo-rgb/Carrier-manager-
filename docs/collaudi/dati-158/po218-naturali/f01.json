@@ -1,0 +1,165 @@
+{
+ "id": "f01",
+ "name": "Marco Rossi",
+ "seed": 1234,
+ "fixture": "save-190-s12-ovr93.json",
+ "fine": "ceremony",
+ "polls": 256,
+ "secondi": 233,
+ "scene": [
+  {
+   "poll": 9,
+   "hl": 0,
+   "label": "🔁 Uno-due con SPENCER",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Intercettato",
+   "tipo": "pass",
+   "variante": "one_two",
+   "ev": [
+    "passaggio",
+    "intercetto(BAILEY)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 5,
+    "txt": "↔️ Burke (TYN) allarga troppo: la palla esce.",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 20
+   }
+  },
+  {
+   "poll": 46,
+   "hl": 1,
+   "label": "🛑 Chiusura immediata",
+   "defGesto": "lunge",
+   "key": "recovery",
+   "ok": true,
+   "outKind": null,
+   "fam": null,
+   "ovl": "Entrata pulita!",
+   "tipo": "tackle",
+   "variante": "",
+   "ev": [
+    "contrasto({P})"
+   ],
+   "successiva": {
+    "m": 19,
+    "txt": "🎯 Traversone teso di Spencer (MER) in area: Thornton (MER) stacca!",
+    "pd": "wide_right",
+    "ef": null,
+    "poll": 57
+   }
+  },
+  {
+   "poll": 127,
+   "hl": 2,
+   "label": "💥 Tiro rasoterra",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "freekick",
+   "variante": "freekick_direct",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 54,
+    "txt": "🟡 Marshall (TYN) stende Howard (MER): punizione per FC Merseyside.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 138
+   }
+  },
+  {
+   "poll": 153,
+   "hl": 3,
+   "label": "🦵 Tiro a giro",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "wide",
+   "fam": "wide",
+   "ovl": "Che peccato!",
+   "tipo": "shot",
+   "variante": "shot_curled",
+   "ev": [
+    "pronto",
+    "tuffo",
+    "tiro:fuori({P})",
+    "rammarico({P})",
+    "pressione(BAILEY)"
+   ],
+   "successiva": {
+    "m": 60,
+    "txt": "🔁 Giro palla: Hayes (TYN) per Quinn (TYN).",
+    "pd": "retreat",
+    "ef": null,
+    "poll": 163
+   }
+  },
+  {
+   "poll": 187,
+   "hl": 4,
+   "label": "🎯 Testa piazzata all'angolo",
+   "defGesto": null,
+   "key": "miss",
+   "ok": false,
+   "outKind": "saved",
+   "fam": "saved",
+   "ovl": "Il gol sembrava fatto",
+   "tipo": "header",
+   "variante": "header_near_post",
+   "ev": [
+    "pronto",
+    "tiro:saved({P})",
+    "parata({P})",
+    "rammarico({P})",
+    "pressione(MARSHALL)"
+   ],
+   "successiva": {
+    "m": 71,
+    "txt": "⏸️ Pallone di Rossi troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "attack_goal",
+    "ef": null,
+    "poll": 198
+   }
+  },
+  {
+   "poll": 218,
+   "hl": 5,
+   "label": "🤝 Servi HAMMOND libero",
+   "defGesto": null,
+   "key": "intercept",
+   "ok": false,
+   "outKind": "intercepted",
+   "fam": "intercepted",
+   "ovl": "Palla persa",
+   "tipo": "pass",
+   "variante": "",
+   "ev": [
+    "passaggio",
+    "intercetto(MARSHALL)",
+    "rammarico({P})"
+   ],
+   "successiva": {
+    "m": 79,
+    "txt": "⏸️ Pallone di Stanley (TYN) troppo lungo: esce sulla fascia, rimessa laterale.",
+    "pd": "midfield",
+    "ef": null,
+    "poll": 226
+   }
+  }
+ ],
+ "righeTotali": 70
+}

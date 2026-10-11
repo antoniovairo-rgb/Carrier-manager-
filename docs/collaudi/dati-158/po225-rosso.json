@@ -1,0 +1,45 @@
+{
+ "ARM": "rosso",
+ "fase": "walkout",
+ "frames": [
+  {
+   "tSec": 0,
+   "opacita": 0
+  },
+  {
+   "tSec": 2,
+   "opacita": 1
+  },
+  {
+   "tSec": 4,
+   "opacita": 1
+  },
+  {
+   "tSec": 4.5,
+   "opacita": 1
+  },
+  {
+   "tSec": 4.9,
+   "opacita": 1
+  },
+  {
+   "tSec": 6,
+   "opacita": 1
+  },
+  {
+   "tSec": 8,
+   "opacita": 1
+  },
+  {
+   "tSec": 10,
+   "opacita": 1
+  },
+  {
+   "animazioni": [
+    "logoIn"
+   ]
+  }
+ ],
+ "pageerror": 0,
+ "primoErrore": null
+}

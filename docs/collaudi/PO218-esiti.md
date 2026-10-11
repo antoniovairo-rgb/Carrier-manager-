@@ -109,3 +109,63 @@ CPM_CHROME=/opt/pw-browsers/chromium PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
   node probe-giro4.mjs jobs-test.json dati        # una partita (≈200 s)
 node analisi.mjs                                  # tabelle e classi da dati/*.json → analisi-output.json
 ```
+
+## 8. «Finta e tiro» — riproduzione su 7.999.158 (collaudo PO-218)
+
+**Build:** `GAME_VERSION="7.999.158"` (letto con `grep` dal file costruito in `/tmp/cpm158`, commit `8b9a9e5`).
+**Richiesta:** almeno 15 scene «🌀 Finta e tiro», con riquadro, cronaca ed eventi del motore affiancati.
+**Esito breve:** il difetto **è riprodotto** (3 scene naturali su 3 con la chiave di esito `intercept`), **ma le scene sono poche** e la forma «almeno 15» non è raggiunta dalle scene naturali. Le 20 scene forzate superano il numero ma **non esercitano il difetto**.
+
+### 8.1 Campione
+
+| Origine | Scene totali | «Finta e tiro» | Con chiave `intercept` | Con difetto |
+|---|---|---|---|---|
+| Partite vere, build 7.999.158 (4 partite, `probe-giro4-158.mjs`, dati in `dati-158/po218-naturali/`) | 25 | 1 (`f02`) | 1 | 1 |
+| Partite vere, build 7.999.157 (giro 4, già in questo file, `giro4-po218/dati/`) | 77 | 2 (`s22`, `s23`) | 2 | 2 |
+| **Forzate** (`collaudo-finta-218.mjs`, 4 situazioni × 5 posizioni di partenza) | 20 | 20 | **0** | 0 |
+
+- **Naturali:** 3 casi su 102 scene (~3%). Tutte e tre con chiave `intercept`, tutte e tre con lessico di passaggio e motore di tiro.
+- **Forzate:** le quattro situazioni statiche che contengono «Finta e tiro» hanno tutte `fail:"miss"` (verificato su `SITUATIONS`: indici 11, 21, 47, 94). Quindi il percorso forzato non arriva mai alla chiave `intercept` e non può mostrare il difetto. Non ho verificato quale registro produce la scena naturale con `intercept`.
+
+### 8.2 Tre racconti affiancati (scene naturali)
+
+| Scena | Riquadro (`ovl`) | Motore (`ev`) | Cronaca successiva (prima riga dopo la scena) |
+|---|---|---|---|
+| `f02` (7.999.158), hl 3 | «Il compagno non ci arriva» (famiglia `wide`) | `pronto · tuffo · tiro:fuori · rammarico · pressione(CRISTIANO)` | «Fischia l'arbitro: fallo di Bianchi su Cristiano» (min 67) |
+| `s22` (7.999.157), hl 4 | «Il difensore si mette in mezzo» (famiglia `blocked`) | `pronto · tiro:blocked · murato(MARSHALL) · rammarico` | «Scambio acceso a centrocampo: Spencer voleva la palla…» (min 59) |
+| `s23` (7.999.157), hl 1 | «Passaggio fuori misura» (famiglia `wide`) | `pronto · tuffo · tiro:fuori · rammarico · pressione` | «Il capitano lo raggiunge e gli batte una mano sul petto…» |
+
+- **Il difetto è di lessico, non di famiglia.** La famiglia del riquadro coincide con il tiro del motore (`wide`↔`tiro:fuori`, `blocked`↔`tiro:blocked`). Le parole invece sono quelle di un **passaggio**: «il compagno non ci arriva», «passaggio fuori misura», «il difensore si mette in mezzo» (che è anche il testo di un passaggio respinto). È la classe che Codex ha descritto come «tiro murato raccontato come passaggio respinto».
+- **Cronaca:** nei tre casi la prima riga di cronaca successiva **non parla della scena**. Il campionamento ha granularità di 400 ms e cattura spesso un evento successivo. Quindi la colonna cronaca non prova da sola nulla: la pertinenza è 0/3 in questo campione, ma è un limite del metodo, non un dato sulla cronaca.
+
+### 8.3 Causa nel codice (7.999.158)
+
+Letto in `src/05-cronaca-stadi-formazioni.jsx`:
+
+- **riga 412** — `_hlOvlCat`: `if(outKey==="intercept")return"pass_fail";` Per ogni esito fallito con chiave `intercept` la categoria è `pass_fail` **senza guardare il nome dell'azione**: un «Finta e tiro» fallito con quella chiave riceve la categoria passaggio.
+- **riga 431** — `_pas218`: quando `cat==="pass_fail"` il riquadro prende il pool `_MISS_OVL_PASS` (riga 363: «Passaggio fuori misura», «Il compagno non ci arriva», «Il difensore si mette in mezzo»), mentre il tiro del motore è `_nk` (`wide`/`blocked`/`saved`).
+
+**Prova A/B** (`collaudo-finta-ab.mjs`, funzioni reali nella pagina, stessa etichetta «🌀 Finta e tiro», cambia solo la chiave):
+
+| Chiave | Categoria | Riquadri (40 semi) |
+|---|---|---|
+| `intercept` | `pass_fail` | «Il compagno non ci arriva», «Palla troppo lunga», «Passaggio fuori misura» |
+| `miss` | `miss` | «Sfiora il vantaggio», «Occasione mancata», «Che peccato!», «Non trova lo specchio», «Tiro fuori di poco» |
+
+Il meccanismo è dimostrato: la stessa azione di tiro, con chiave `intercept`, esce con lessico di passaggio.
+
+### 8.4 Cosa non ho fatto e cosa non posso confermare
+
+- **Non posso confermare** i 5 casi di Codex (su 7.999.155/156): non li ho riprodotti con le loro scene. Il meccanismo spiega la classe, non i cinque casi.
+- **Non raggiunto:** «almeno 15 scene naturali». Ne ho 3 (1 + 2). Il tasso naturale è ~3% su 102 scene in 13 partite (circa 8 scene a partita): per 15 scene «Finta e tiro» servono circa 500 scene, cioè circa 60 partite. A quattro in parallelo, circa un'ora di esecuzione.
+- **Cronaca delle scene forzate:** non registrata. Il testimone `__CPM_TXT487` è scritto dal generatore di cronaca di background, che nelle scene forzate non gira. Per la cronaca vera servono le partite naturali.
+- **Riparazione:** non applicata (collaudo in sola lettura). Il punto d'intervento è la riga 412: un esito `intercept` su un'azione il cui nome è di tiro dovrebbe passare per il lessico di tiro (`miss`), e un guardiano dovrebbe fallire se la stessa etichetta produce lessico di passaggio con chiave `intercept`. La scelta spetta al team.
+
+### 8.5 Riproduzione
+
+```
+# in una build 7.999.158 (tests/visual)
+node collaudo-finta-ab.mjs          # A/B delle due funzioni reali
+node collaudo-finta-218.mjs         # 20 scene forzate → finta-218.json
+node probe-giro4-158.mjs jobs.json outDir   # partite vere (jobs.json: id, name, seed, fixture)
+```
