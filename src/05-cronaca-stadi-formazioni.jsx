@@ -409,7 +409,7 @@ function _hlOvlCat(outKey,ok,actionLabel){
   if(outKey==="recovery")return reDef.test(L)?"tackle":"recovery";
   if(outKey==="miss_easy")return"miss_big";
   if(!ok){
-    if(outKey==="intercept")return"pass_fail";
+    if(outKey==="intercept")return(!(typeof window!=="undefined"&&window.__CPM_NO_LEX218)&&reShot.test(L)&&!rePass.test(L))?"miss":"pass_fail";/* [7.999.159 PO-218, collaudatrice giro 5 «Finta e tiro»] un TIRO fermato si racconta da tiro: ogni intercept andava al lessico di passaggio («Passaggio fuori misura» su un tiro murato). Rosso __CPM_NO_LEX218 */
     if(outKey==="through")return reDrib.test(L)?"dribble_fail":"def_fail";
     if(outKey==="nothing")return"nothing";
     return"miss";
