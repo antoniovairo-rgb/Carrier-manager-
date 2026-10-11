@@ -1,0 +1,74 @@
+{
+ "partita": 2,
+ "nome": "Coll226b2",
+ "panchina": true,
+ "finita": true,
+ "ckFinale": 90,
+ "secondi": 281,
+ "errori": [],
+ "intx": [
+  {
+   "min": 19,
+   "id": "av_stud",
+   "fam": "AVVERSARI"
+  },
+  {
+   "min": 29,
+   "id": "er_giovane",
+   "fam": "EROE"
+  },
+  {
+   "min": 47,
+   "id": "mi_int",
+   "fam": "MISTER"
+  },
+  {
+   "min": 57,
+   "id": "er_sprona",
+   "fam": "EROE"
+  }
+ ],
+ "sc": [
+  {
+   "id": "er_giovane",
+   "idx": 0,
+   "auto": true,
+   "min": 29
+  },
+  {
+   "id": "er_sprona",
+   "idx": 0,
+   "auto": true,
+   "min": 57
+  }
+ ],
+ "sub": {
+  "at": null,
+  "off": false,
+  "min": 0,
+  "bench": false,
+  "fat": 34,
+  "ctx": "career",
+  "bs": false
+ },
+ "score": {
+  "home": 1,
+  "away": 3
+ },
+ "voci": [],
+ "panchinaNodiMax": 0,
+ "panchinaSnip": [],
+ "intxN": 50,
+ "hlMin": [
+  8,
+  29,
+  14,
+  45,
+  54,
+  41,
+  69,
+  86,
+  72,
+  83
+ ]
+}
