@@ -5838,7 +5838,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _av911=m.glb911;const _t911=(_av911&&_av911.root)?_av911.root:m.c;/* [7.911.0 C11] il corpo CH38 al posto della figura */
           m.c.visible=!_av911;if(_av911&&_av911.root)_av911.root.visible=true;
           _t911.position.set(p.position.x+_hz*0.72,0,p.position.z-_hx*0.72);_t911.rotation.y=p.rotation.y;
-          if(_av911){if(_av911.run){_av911.run.weight=1;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=0.25;if(_av911.mx)_av911.mx.update(dt);}}
+          if(_av911){
+            /* [7.999.160 PO-227 «nella fila da fermi i bambini continuano a correre», collaudatrice giro 7: 22 bambini su 22 con jog a peso 1,00
+               a velocita' 0] il peso della corsa era FISSO a 1. Ora segue la velocita' smussata del giocatore che il bambino accompagna:
+               fermo = idle, in marcia = corsa (stessa idea dei giocatori, PO-197). Rosso __CPM_NO_FILA227. */
+            let _rw227=1,_iw227=0.25;
+            {const _px=p.position.x,_pz=p.position.z;
+              const _v227=(m._lp227&&dt>0)?Math.hypot(_px-m._lp227.x,_pz-m._lp227.z)/dt:0;
+              m._lp227={x:_px,z:_pz};
+              m._sp227=(m._sp227==null?_v227:m._sp227+(_v227-m._sp227)*Math.min(1,dt*6));
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_FILA227)){_rw227=clamp((m._sp227-0.3)/1.5,0,1);_iw227=1-_rw227*0.75;}
+              if(typeof window!=='undefined'&&_CPM_TEST){const _K=(window.__CPM_FILA227=window.__CPM_FILA227||{n:0,fermi:0,fermiCorsa:0});_K.n++;if(m._sp227<0.5){_K.fermi++;if(_rw227>0.3)_K.fermiCorsa++;}}
+            }
+            if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;if(_av911.mx)_av911.mx.update(dt);}}
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else if(replaying){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
