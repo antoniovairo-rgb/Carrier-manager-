@@ -23,7 +23,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
-| sviluppo/haiku-l7-pulizia-l8 | session_01TWi2N2kwUYkRxctMCmEej1 | giro 6: copyright (catena grafica 29/29 verde, career-critical in corsa) | giro 7: finestre per gli altri riquadri con scelta del censimento PO-224 (procuratore, «La tua storia», risposte «Sono pronto»), e la finestra non deve aprirsi sotto un altro dialogo · PO-072 pulizia · L8 cerimonie |
-| collaudo/sessione-collaudatrice | session_015a5h1EPvMCRD1YrHGLjcmz | giro 6: PO-222 su carriere naturali (solo misura), dialoghi che coprono la finestra PO-224 | giro 7: collaudo della correzione PO-218 (7.999.159) |
-| collaudo/partite-vere | session_0125jiks7a4pgkJe2Gbc3FBj | giro 3: PO-220 clip del gesto difensivo (25 scene GLB), PO-218 cross in partita vera | giro 4: T3 PO-221 gol dell'eroe dopo la ritaratura (7.999.159) |
-| rilascio/consolidamento | session_01Mz5Dm5tYpjta6BaUzsoN8a | giro 3: esiti diversi con lo stesso seme, contesto grafico perso, classifica 194, bozza di prontezza finale | giro 4: prontezza finale sul candidato al rilascio del 17/10 |
+| sviluppo/haiku-l7-pulizia-l8 | session_01Fdz5JvKvHGc626fpAgbWu4 | giro 7 (dal 11/10 sera, base 7.999.159): L7 schermate a 360/375/412 px, solo presentazione, guardiano l7-schermate | giro 8: da decidere dopo la consegna |
+| collaudo/sessione-collaudatrice | session_018kvYnJ5sfmW6ZRE1VYykto | giro 7 (base 7.999.159): PO-227 fila dell'ingresso (zona B, prima) e PO-226 censimento delle interazioni in partita (zona A) | giro 8: collaudo delle correzioni PO-226/227 |
+| collaudo/partite-vere | session_01XGv117bHVAJtE92cW7UabR | giro 4 (base 7.999.159): PO-228 statistiche di fine partita su 20 partite vere, come nasce ogni voce | giro 5: ri-misura dopo la ritaratura |
+| rilascio/consolidamento | session_01NuD8qLhYcPrryk6uKAuKui | giro 4 (base 7.999.159): PO-221 T3 su 60 partite (scene, gol, assist, punizioni), MATCH_TICK_MS 1700 contro 900 | giro 5: prontezza finale per il 17/10 |
