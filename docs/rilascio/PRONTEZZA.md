@@ -199,3 +199,57 @@ Ambiente: headless con librerie locali (`installCdnRoutes`): i valori sono **rel
 | 5 · ripetizione copyright/build/validate | ✅ tutti EXIT 0 su store e web. A: stringhe ancora nei bundle, visibilità non confermata |
 
 **Punti aperti:** A (copyright: blocklist incompleta, stringhe nel bundle); B (causa da confermare con replay dei riposi); esiti diversi con lo stesso seme nella partita (causa non indagata); `[CPM-GL] contesto grafico perso` in headless (non analizzato). Nessuna correzione al gioco. Nessuna promozione su `main`. Nessuna PR.
+
+---
+
+## Giro 3 (base origin/main 7.999.158)
+
+Base: `origin/main` = 7.999.158 (`GAME_VERSION="7.999.158"`, commit `1a819fb6`). Worktree `/tmp/cpm`, sorgente ricomposta con `CPM_FORZA_BUILD=1 node tools/build-src.mjs`. Nessun file del gioco modificato. Browser: `CPM_CHROME=/opt/pw-browsers/chromium`.
+
+### Punto 1 — «esiti diversi con lo stesso seme» → `giro3-esiti-seme.md`
+
+- (a) **Punteggio**: diverso in 2 coppie su 3 (A: 1-0 vs 2-0; C: 0-1 vs 0-0), uguale in B (1-0 vs 1-0). Diverso anche col `Math.random` seminato (R: 0-0 vs 4-0).
+- (b) **Scene**: diverse in 3 coppie su 3, sempre dalla terza scena in poi; in B identiche.
+- **Causa: NON dimostrata.** Candidati con file:riga (ipotesi): `CARRIER-MANAGER-AV.html:33489-33523` (jitter `Math.random` dei 22 in `matchPlayers`), `:30172` (tuffo portiere nei rigori), `:32635` e `:33390` (`Date.now()` sulla libreria d'azione). Il controllo R non separa `Math.random` dal tempo reale.
+- Limiti: 8 partite, nessuna percentuale. Senza autoplay non eseguito (la partita si ferma in `hl_choose`).
+- **Rilevanza per il rilascio**: il giocatore lo nota se rigioca la stessa partita. CLAUDE.md dichiara la cronaca deterministica (7.489.0): il documento e il comportamento non coincidono.
+
+### Punto 2 — avviso «[CPM-GL] contesto grafico perso» → `giro3-gl-contesto.md`
+
+- **0 avvisi su 5 partite 3D** (GLB di default, 375×812, autoplay seeded). Nessuna perdita di contesto (`__CPM_GLLOST` = 0 in tutte).
+- **Non posso confermare**: la frequenza sul telefono; il recupero in background dopo 15 s (non testato); il ripristino (richiede revoca forzata, non eseguita in questo giro).
+
+### Punto 3 — classifica del salvataggio 194 → `giro3-classifica-194.md`
+
+- Il Δ=+3 (GF 790, GA 787) è già nel file: il caricamento non lo crea. Costante da S1 W38 a W39; azzerato al rollover U18→pro; in S2 sempre 0.
+- Ipotesi «riposi» (`src/09-audio-scout-anagrafiche.jsx:1438`): **smentita nella forma dichiarata** — nelle 4 settimane di riposo in S2 (W9, W19, W28, W35) il Δ non cambia, e il numero di squadre simulate non è mai dispari (il ramo non viene eseguito).
+- **Origine del +3: NON determinabile** (la storia di S1 W1–W37 non è nel salvataggio). Il ramo del riposo resta sbilanciato per costruzione: ipotesi non misurata che possa dare uno sbilancio in altre situazioni.
+
+### Punto 4 — rapporti delle altre sessioni → `giro3-altre-sessioni.md`
+
+Ogni voce riporta la build dichiarata. Le build non coincidono tra loro.
+
+### Stato di prontezza per il 17/10, ordinato per gravità
+
+Legenda: **bloccante** (non si pubblica così) · **da sistemare** (va corretto prima) · **da verificare** (non confermato) · **estetico**.
+
+1. **Riferimenti reali nei bundle — bloccante da confermare col PO** (giro 2, rilievo A): `Derby d'Italia`, `FC Nerazzurri`, `Stadio Sabaudo`, `Stade Phocéen` presenti nei bundle dist (giro 2, `build-dist-158.log`). Il gate `audit-copyright` passa (0 hit) perché la blocklist cerca nomi completi. Visibilità a schermo non confermata.
+2. **Esiti diversi con lo stesso seme — da sistemare o da dichiarare** (punto 1): 2 coppie su 3 con punteggio diverso. Causa non isolata.
+3. **Gol dell'eroe sotto il range PO — da sistemare** (PO-221 su 158): 0,50 contro 0,6–0,9 su 60 partite (`docs/collaudi-partite/PO221-158-60partite.md`, branch `collaudo/partite-vere`). La roadmap di governo dichiara 0,62 su 16 partite: misure diverse, non ancora conciliate. Scene nel range (media 6,68).
+4. **PO-224 PARZIALE — da sistemare** (governo, commit `1a819fb6`): la finestra «Lo spogliatoio» è chiusa col puntatore 0/3 nei tre formati; in 90/92 settimane il dialogo del procuratore «IL CONFRONTO» (`data-cpm="confronto23"`) la copre (`docs/collaudi/PO224-finestre.md`, branch `collaudo/sessione-collaudatrice`). Il clic JS riesce 3/3: l'handler funziona, la raggiungibilità no.
+5. **PO-220 scene difensive — aperto** (`docs/collaudi-partite/PO220-difesa.md`, su 157): al gesto la distanza eroe–portatore è mediana ≈ 6,7 u; solo 7 scene su 22 hanno il gesto entro 4 u. Il guardiano `difesa-220` esiste su `main` (roadmap, 09/10); il collaudo sulla 158 non è in quel rapporto.
+6. **Classifica 194 — da sistemare (correttezza dei salvataggi ereditati)**: Δ=+3 presente nel file, origine non determinabile; ramo riposo sbilanciato (`src/09-audio-scout-anagrafiche.jsx:1438`). Non riparata al caricamento.
+7. **PO-225 grafica TV in dissolvenza a 4 s — da verificare**: verificato sull'opacità per istante d'animazione (verde 1 → 0 a 4,9 s; rosso 1), non sul fotogramma reale. Caricamento dei modelli CH38 con il flag acceso: non verificato (`docs/collaudi/PO225-ingresso.md`).
+8. **Zone S e T del giro 2 — da ricollaudare sulla 158** (`docs/collaudi/RIEPILOGO-giro2.md`): festa non chiusa (seme perde 1–3), PO-220/221 zona T non chiusi. Build dichiarate diverse (729fc8e, 2adc96a): non ricondotte alla 158.
+9. **Ingresso in campo con card «Primavera 2» e giocatori piccoli — da ricollaudare con GLB acceso** (`docs/sviluppo/RAPPORTO-giro4.md`, 156): non misurato sulla 158.
+10. **Documentazione: CLAUDE.md dice `MATCH_TICK_MS` 900 ms, il codice a `CARRIER-MANAGER-AV.html:27196` dà 1700 ms** (900 solo con `__CPM_NO564`). Da allineare, non è un difetto di gioco.
+11. **Nome squadra troncato nella card «Prossima partita» a 360 px** (`docs/sviluppo/RAPPORTO-giro4.md`, 156) — estetico, minore.
+12. **Navigazione a 7 voci, «OPZIONI» al bordo destro a 375 px** (giro 2, punto 1) — estetico.
+13. **Banner rosso «Avvia Stagione» / «Vivi la Settimana» in home** — decisione di gusto, non confermata dal backlog (`RAPPORTO-giro4.md`). Da decidere col PO.
+14. **Babel in-browser nella sorgente** (giro 2, rilievo C): il sito serve la dist (`deploy-pages.yml`), quindi non rilevante per la pubblicazione.
+
+### Cosa resta da fare prima del 17/10
+
+- Punto 1: riprodurre il controllo con coppie senza autoplay non è possibile senza un percorso di gioco manuale; da decidere se è richiesto.
+- Punto 2: revoca forzata del contesto (`WEBGL_lose_context`) e ripristino in background, non eseguiti.
+- Le voci 2–9 richiedono un collaudo sulla 158 (build di rilascio) prima della promozione su `main`.
