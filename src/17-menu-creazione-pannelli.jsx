@@ -1736,8 +1736,8 @@ function TutorialOverlay({name,step,onNext,onSkip}){
   const txt=s.text.replace(/\{name\}/g,name||"Campione");
   const ttl=s.title.replace(/\{name\}/g,name||"Campione");
   return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 12px 90px"}}>
-      <div style={{background:TH.card,border:`2px solid ${TH.primary}`,borderRadius:RAD.xl,padding:"26px 22px 20px",maxWidth:400,width:"100%",boxShadow:"0 10px 50px rgba(0,0,0,0.6)"}}>
+    <div style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 12px 90px"}}>
+      <div data-cpm="finestra230" style={{padding:"26px 22px 20px",maxWidth:400,width:"100%",...(finestraOn230()?finestraStd():{background:TH.card,border:`2px solid ${TH.primary}`,borderRadius:RAD.xl,boxShadow:"0 10px 50px rgba(0,0,0,0.6)"})}}>
         <div style={{fontSize:40,textAlign:"center",marginBottom:8}}>{s.icon}</div>
         <div style={{fontWeight:800,fontSize:FS.subhead,color:TH.text,textAlign:"center",marginBottom:8}}>{ttl}</div>
         <div style={{fontSize:FS.body,color:TH.muted,textAlign:"center",lineHeight:1.65,marginBottom:18}}>{txt}</div>

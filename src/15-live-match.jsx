@@ -1014,9 +1014,10 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   return(
     <div data-cpm="pop919" style={{position:"fixed",inset:0,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",
       padding:SP.lg,background:"rgba(3,7,16,0.74)",animation:"cpmPop919Velo .18s ease-out"}}>
-      <div style={{width:"100%",maxWidth:380,borderRadius:RAD.lg,overflow:"hidden",
+      <div data-cpm="finestra230" style={{width:"100%",maxWidth:380,borderRadius:RAD.lg,overflow:"hidden",
         background:"linear-gradient(180deg,#1b2740 0%,#131d31 62%,#101827 100%)",
         border:"1px solid rgba(148,163,184,0.30)",boxShadow:"0 24px 64px rgba(0,0,0,0.62)",
+        ...(finestraOn230()?{background:TH_DARK.surface3,border:`1px solid ${TH_DARK.divider}`,borderRadius:RAD.xl,boxShadow:TH_DARK.el3||TH.el3}:{}),/* [7.999.161 PO-230] cornice standard, valori del tema scuro: la partita e' sempre scura e i testi qui sono chiari */
         animation:"cpmPop919 .26s cubic-bezier(.2,0,0,1)"}}>
         {/* chi parla */}
         <div style={{display:"flex",alignItems:"center",gap:SP.md,padding:SP.md+"px "+SP.lg+"px",

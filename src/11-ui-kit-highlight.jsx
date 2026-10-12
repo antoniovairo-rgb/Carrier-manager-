@@ -254,6 +254,11 @@ function Skeleton({w="100%",h=14,r=RAD.sm,style={}}){
 }
 
 /* Modal / Dialog — un unico scrim+pannello (retira 8+ backdrop ad-hoc). */
+/* [7.999.161 PO-230 «tutte le finestre che compaiono in primo piano devono avere una grafica standard»] LA CORNICE DELLA
+   FINESTRA E' UNA SOLA: quella del Modal. Le finestre che non passano dal Modal (impulsi PO-224, momento di carriera, tutorial,
+   scelta in partita) prendono da qui fondo, bordo, raggio e ombra. Rosso __CPM_NO_FIN230 (ognuna torna alla sua grafica). */
+const finestraStd=()=>({background:TH.surface3,borderRadius:RAD.xl,boxShadow:TH.el3,border:`1px solid ${TH.divider}`});
+const finestraOn230=()=>!(typeof window!=='undefined'&&window.__CPM_NO_FIN230);
 function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={}}){
   if(!open)return null;
   return(<div onClick={dismissable?onClose:undefined} className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
