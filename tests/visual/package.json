@@ -337,6 +337,7 @@
     "ripresa-202": "node ripresa-202.mjs",
     "tetto-202": "node tetto-202.mjs",
     "tabellino-228": "node tabellino-228.mjs",
+    "statistiche-228": "node statistiche-228.mjs",
     "minuti-202": "node minuti-202.mjs",
     "recupero-202": "node recupero-202.mjs",
     "figurine-208": "node figurine-208.mjs",
