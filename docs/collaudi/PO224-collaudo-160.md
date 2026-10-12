@@ -65,3 +65,5 @@ Dati: `docs/collaudi/PO224-dati-160/po224-{412,360}.json` e i log `log-{412,360}
 **Stato: NON CHIUSO.** Motivo: in una stagione è comparsa una sola finestra (una delle sei richieste). A 360 px è coperta da un altro livello; il tocco sull'intestazione chiude la scelta e il patto forzato non compare. Le altre finestre non sono state osservate, e la fine stagione è stata superata con un gancio di collaudo e non col pulsante reale.
 
 _Collaudo eseguito dalla sessione collaudatrice (sola lettura sul gioco)._
+
+**NON CHIUSO** — in una stagione è comparsa una sola finestra su sei; a 360 px è coperta da un altro livello; il patto forzato non compare; la fine stagione è stata superata con un gancio di collaudo, non col pulsante reale.

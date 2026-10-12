@@ -63,3 +63,5 @@ Tempo: alcuni minuti in headless.
 **Stato: NON CHIUSO.** Motivo: 8 bambini su 22 hanno 2–4 letture ciascuno di corsa sopra 0,3 mentre sono fermi (27 su 1105, 2,4 %), quindi l'attesa «nessuno» non è soddisfatta, e la causa non è verificata. Chiuso invece il punto dei due corpi «non identificati»: non sono agganciati alla scena e non vengono disegnati.
 
 _Collaudo eseguito dalla sessione collaudatrice (sola lettura sul gioco)._
+
+**NON CHIUSO** — 8 bambini su 22 hanno 2–4 letture ciascuno di corsa sopra 0,3 mentre sono fermi (27 su 1105, 2,4 %), e la causa non è verificata. Chiuso il punto dei due corpi «non identificati»: non agganciati alla scena, non disegnati.
