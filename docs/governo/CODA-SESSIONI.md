@@ -23,7 +23,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
-| sviluppo/haiku-l7-pulizia-l8 | session_0116kmELic75jmWxmFs7UWE3 | giro 8 (OPUS 5.5, base 7.999.160): PO-229 uno-due gi38 dichiarato assist ma non giocato; ripresa di L7 (giro 7 non unito: movimento-147 rosso 3/3 sulla build contro 1/2 su main) | giro 9: salti del build-up gi12/gi21, passaggio→consegna gi79 |
+| sviluppo/seme-a | session_01Ji1kwDCwxEP71L5nCwGVet | giro 9 (Opus, base 7.999.161): bloccante (a) stesso seme → stessa partita, dalla diagnosi riferimenti/SEME-a-diagnosi.md; rosso __CPM_NO_SEME, guardiano seme-a. Giro 8 chiuso (gi38 e L7 integrati in d8f9f26c) | 12/10 17:36 |
 | collaudo/sessione-collaudatrice-161 | session_01XHNDapw19rWXseF2KDLnr4 | giro 9b (Haiku, base 7.999.161): PO-230 finestre a 360/412 px, PO-231 intervista in 3 partite. Il giro 9 (session_016rUizz…) si era fermato: push rifiutato, ramo remoto con storia diversa; ricreato su ramo nuovo (il suo commit locale b4679c0 è andato perso) | 12/10 15:40 |
 | collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
 | rilascio/consolidamento | session_014HLUniWew7ZSpQGjqGXUDb | giro 5 (base 7.999.160): prontezza finale per il 17/10 (dist, copyright, sito, voci aperte del giro 3, partita completa senza errori) | giro 6: verifica sul sito dopo la pubblicazione |
