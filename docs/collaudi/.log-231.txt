@@ -1,0 +1,3 @@
+partite registrate 1 · settimana finale 1 · partite finali 0 · 4200s
+  partita 1: intervista=true dopoQuante=0 finestreDopoFine=14 ivAlFine=1 blocco=null 
+FINE 0

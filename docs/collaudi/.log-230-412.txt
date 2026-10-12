@@ -1,0 +1,25 @@
+vw 412: settimana 38→1 · partite 35→0 · finestre distinte 23 · bloccate 7 · 252s
+  no       settimana23            r=20px SETTIMANA 38 · FC MERSEYSIDE
+  no       partita23              r=20px SETTIMANA 38 · PREMIER DIVISION
+  no       intervista231          r=12px 📰 CONFERENZA STAMPA
+  no       intervista231          r=12px IL GIORNALISTA INCALZA
+  no       intervista231          r=12px COM'È ANDATA
+  no       discorso215            r=20px DISCORSO PRE-PARTITA
+  TH_DARK  pop919                 r=20px 🤝 IL COMPAGNO
+  TH_DARK  pop919                 r=20px 📣 IL MISTER
+  TH_DARK  pop919                 r=20px ✊ TU
+  no       settimana23            r=20px SETTIMANA 39 · FC MERSEYSIDE
+  no       intervista231          r=18px INTERVISTA
+  no       gala51                 r=8px TAGLIO 1 Chiara Loreti apre la prima busta
+  no       toast23                r=0px 🆕
+  no       anon                   r=0px 🏆
+  no       pop224                 r=20px La tua storia
+  no       toast23                r=0px 🎙️
+  no       toast23                r=0px ✅
+  no       toast23                r=0px 🧑‍💼
+  no       toast23                r=0px 📈
+  no       toast23                r=0px 🎯
+  no       toast23                r=0px ⭐
+  no       anon                   r=20px SETTIMANA DI APERTURA · STAGIONE 13
+  no       toast23                r=12px 🏕️
+FINE 0
