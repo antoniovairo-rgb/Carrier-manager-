@@ -270,3 +270,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - Consegna (banco 1.500 partite): passaggi 429,5 → 814,2, cross 42,8 → 28,4; tiri −2,2%, gol −2,5%, xG −4,2%, possesso −2,7%. Effetti collaterali: voti difensori −0,12, centrocampisti +0,14 (media dei 22 invariata); gol dell'eroe nella simulazione rapida 0,12 → 0,09 (−22%).
 - PO (questionario): **«Adotta e correggi i gol eroe»**, obiettivo **814** (non 868).
 - Team: non entra nel rilascio delle 16:00. Nelle 4 partite vere di conferma i tiri salgono da 17-18 a 27-31 (il banco dice −2,2%): prima si misura su più partite vere e si riportano i gol dell'eroe al livello di prima; obiettivo il rilascio di mezzanotte.
+
+## 12/10 sera — PO-226 avviato, PO-048 chiusa
+- PO-226 (interazioni in partita), PO dopo la foto delle 23:57 (scelta «Il compagno · Hamilton» al 37', sistema vecchio): **«Sì, avvia il piano»** — il piano dell'11/10 (al massimo 2-3 scelte a partita nate da fatti del motore; ordini del mister «seguo / faccio di testa mia» con effetto sui gol; panchina «chiedo di entrare / resto concentrato» sul minuto d'ingresso; interruttore rosso e guardiano per ogni scelta). Alla sviluppatrice Opus dopo il giro 9 (seme).
+- PO-048 (eroe ai margini o coperto dal palo): **«Chiudila come non riprodotta»**; si riapre con foto e numero di scena.
