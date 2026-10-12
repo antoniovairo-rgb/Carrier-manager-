@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 const D = new URL('.', import.meta.url).pathname;
 const righe = [];
-for (const f of ['po228-giro6-a.jsonl', 'po228-giro6-b.jsonl']) {
+for (const f of ['po228-giro6-a.jsonl', 'po228-giro6-b.jsonl', 'po228-giro6-c.jsonl', 'po228-giro6-d.jsonl']) {
   if (!fs.existsSync(D + f)) continue;
   for (const l of fs.readFileSync(D + f, 'utf8').trim().split('\n')) if (l.trim()) righe.push(JSON.parse(l));
 }
