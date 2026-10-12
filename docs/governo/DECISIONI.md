@@ -265,3 +265,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - Riferimento: Premier League 2024/25, 893 passaggi a partita (premierleague.com/news/4323030). La fonte non dice se il dato è per squadra o per le due squadre; la lettura «due squadre insieme» è una deduzione (vedi riferimenti/PO228-riferimenti.md).
 - PO (questionario): **passaggi verso il reale, circa 850-900 a partita**; **cross abbassati verso circa 25** (stima, non dato pubblicato: il PO la accetta come obiettivo).
 - Vincoli del team: gol, tiri e voti non devono cambiare oltre il rumore (misura prima/dopo), interruttore rosso e guardiano.
+
+## 12/10 mattina — PO-228: adozione della ritaratura
+- Consegna (banco 1.500 partite): passaggi 429,5 → 814,2, cross 42,8 → 28,4; tiri −2,2%, gol −2,5%, xG −4,2%, possesso −2,7%. Effetti collaterali: voti difensori −0,12, centrocampisti +0,14 (media dei 22 invariata); gol dell'eroe nella simulazione rapida 0,12 → 0,09 (−22%).
+- PO (questionario): **«Adotta e correggi i gol eroe»**, obiettivo **814** (non 868).
+- Team: non entra nel rilascio delle 16:00. Nelle 4 partite vere di conferma i tiri salgono da 17-18 a 27-31 (il banco dice −2,2%): prima si misura su più partite vere e si riportano i gol dell'eroe al livello di prima; obiettivo il rilascio di mezzanotte.
