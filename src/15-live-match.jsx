@@ -2073,7 +2073,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [ballPos,setBallPos]=useState({x:50,y:50});
   const preSp41Ref=useRef(null);/* [7.999.41b] punto del piazzato del brain, scelto all'apertura della scena */
   const ballPosRef=useRef({x:50,y:50});
+  const ripresaSemeRef=useRef(null),minBattito161Ref=useRef(null);/* [7.999.161 SEME-a] punto di ripresa LOGICO consegnato al motore in `riprendi`: {x,y,eroe}. Rosso __CPM_NO_SEME */
   useEffect(()=>{ballPosRef.current=ballPos;},[ballPos]);
+  /* [7.999.161 SEME-a C2e — LA FOTO DELL'EROE SI PRENDE SUL PASSAGGIO DI FASE, NON SU CHI LO CAUSA. Rosso __CPM_NO_SEME] MISURATO
+     (seme 2311, partita intera, 2 giri su 4 al 20'): a `riprendi` arrivava l'eroe del motore 68,9/46,8865 invece di quello di fine
+     scena 68,9/47,5, perche' la scena si era chiusa in 'playing' prima che `handleContinue` la fotografasse. Qui la foto si prende
+     sul cambio di fase highlight → gioco, qualunque strada lo produca; `handleContinue` resta la prima a scriverla. */
+  const fase161Ref=useRef(null);
+  useEffect(()=>{const _pr=fase161Ref.current;fase161Ref.current=phase;
+    if(typeof window!=='undefined'&&window.__CPM_NO_SEME)return;
+    if(phase==='playing'&&(_pr==='hl_intro'||_pr==='hl_move'||_pr==='hl_choose'||_pr==='hl_result')&&!(ripresaSemeRef.current&&ripresaSemeRef.current.eroe)){
+      const _pe=pPosRef.current||{x:58,y:50};ripresaSemeRef.current={...(ripresaSemeRef.current||{}),eroe:{x:_pe.x,y:_pe.y},fase:1};}
+  },[phase]);// eslint-disable-line
   const [mxStats,setMxStats]=useState({shots:0,oppShots:0,fouls:0,corners:0});
   const [matchEvents,setMatchEvents]=useState([]); // Sprint 113: {min,type,txt} key events for ended screen
   // [6.5.0 R2-residuo] LEDGER UNICO degli eventi partita: unica via di scrittura del match-event feed.
@@ -4227,7 +4238,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        tempo di un tick. La cadenza non tocca il rendering, che e' dove stanno i fotogrammi.
        NON VERIFICATO: l'Android del PO. */
     const _c940=(typeof window!=='undefined'&&(window.__CPM_NO943||window.__CPM_NOC22))?11:22;
-    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?_c940:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */if(typeof window!=='undefined'&&window.__CPM_GOLPERSO_REC){try{(evAcc898Ref.current||[]).forEach(e=>{if(e&&e.t==='gol')(window.__CPM_GOLPERSO=window.__CPM_GOLPERSO||[]).push({lato:e.lato,min:e.min,dove:'reset-intervallo'});});}catch(_eGP){}}/* [23/09 POC testimone] eventi «gol» buttati dall'azzeramento */evAcc898Ref.current=(typeof window!=='undefined'&&window.__CPM_NO_GOLPERSO)?[]:(evAcc898Ref.current||[]).filter(e=>e&&e.t==='gol');/* [23/09 POC — UN GOL DECISO DAL MOTORE NON SI BUTTA. Rosso __CPM_NO_GOLPERSO] Il riavvio dell'intervallo (inizio highlight, pausa, velocita') azzerava il buffer dei sotto-tick: un gol deciso fra due battiti del minuto finiva nel tabellino del motore ma mai sul tabellone. Ora i soli «gol» restano in coda e li narra il prossimo battito del minuto. */
+    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?_c940:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */if(typeof window!=='undefined'&&window.__CPM_GOLPERSO_REC){try{(evAcc898Ref.current||[]).forEach(e=>{if(e&&e.t==='gol')(window.__CPM_GOLPERSO=window.__CPM_GOLPERSO||[]).push({lato:e.lato,min:e.min,dove:'reset-intervallo'});});}catch(_eGP){}}/* [23/09 POC testimone] eventi «gol» buttati dall'azzeramento */evAcc898Ref.current=(typeof window!=='undefined'&&window.__CPM_NO_GOLPERSO)?[]:(!(typeof window!=='undefined'&&window.__CPM_NO_SEME)&&phaseRef.current==='playing')?(evAcc898Ref.current||[]):(evAcc898Ref.current||[]).filter(e=>e&&e.t==='gol');/* [7.999.161 SEME-a C3c — UN FATTO DEL MOTORE NON SI PERDE PER UN RIAVVIO A OROLOGIO. Rosso __CPM_NO_SEME] MISURATO (seme 777, tre giri, ingressi del motore identici fino al 46'): l'occasione dell'eroe nata fra due battiti arrivava al battito del 46' in due giri e spariva nel terzo, perche' l'intervallo si era riavviato in mezzo (le sue dipendenze cambiano a tempo reale) e il riavvio buttava tutto tranne i gol. In gioco fluido ora resta tutto in coda e lo narra il battito che segue subito. Entrando in un highlight resta la regola di prima. *//* [23/09 POC — UN GOL DECISO DAL MOTORE NON SI BUTTA. Rosso __CPM_NO_GOLPERSO] Il riavvio dell'intervallo (inizio highlight, pausa, velocita') azzerava il buffer dei sotto-tick: un gol deciso fra due battiti del minuto finiva nel tabellino del motore ma mai sul tabellone. Ora i soli «gol» restano in coda e li narra il prossimo battito del minuto. */
     const _specchi898=(_stM870,_evM870)=>{
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
           const _dM=_stM870.poss.lato==="home"?1:-1;
@@ -4274,7 +4285,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            chiude sul confine del minuto: 22 passi ogni minuto, a qualunque velocita'. Gli SPECCHI (posizioni
            rese, pallone a schermo) restano legati alla fase: mentre la scena e' in onda il mondo continua a
            vivere, ma nessuno lo ridisegna sotto l'highlight. */
-          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing')&&(!stagedRef45.current||(typeof window!=='undefined'&&!!window.__CPM_NO_STACCO45));/* [7.999.45] niente specchi (eroe, compagni, pallone) sulla scena appena messa in posizione *//* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);_brain23(_ev);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing')&&(!stagedRef45.current||(typeof window!=='undefined'&&!!window.__CPM_NO_STACCO45));/* [7.999.45] niente specchi (eroe, compagni, pallone) sulla scena appena messa in posizione *//* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:((minBattito161Ref.current!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SEME))?(minBattito161Ref.current|0):(clockRef.current|0)),dt:1/_SUB898,dec:_a912});/* [7.999.161 SEME-a C3b — IL SOTTO-TICK PORTA IL MINUTO DEL BATTITO CHE LO PRECEDE. Rosso __CPM_NO_SEME] MISURATO (seme 4242, quattro giri): un sotto-tick caduto fra il battito del 6' e l'aggiornamento di clockRef entrava nel motore col minuto 5 in un giro e col 6 negli altri, e da li' i sorteggi si separavano. *//* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);_brain23(_ev);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
@@ -4414,6 +4425,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       }
       setClock(c=>{
         const nx=c+1;
+        minBattito161Ref.current=nx;/* [7.999.161 SEME-a C3b] il minuto dell'ultimo battito: lo leggono i sotto-tick (clockRef si aggiorna solo dopo il render) */
         /* [7.489.0 direttiva PO «le tre velocita' devono essere la stessa partita»] IL GENERATORE DELLA
            CRONACA E' UNA FUNZIONE DEL MINUTO, NON DEL CASO. L'audit ha misurato che la stessa partita
            giocata due volte produceva lo 0% di sequenza identica gia' dal primo evento: il tiro
@@ -4550,6 +4562,21 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
         const _passo28=(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
         const _finestra879=!_no803&&nx>=_apertoDa803&&_att803>=_passo28&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current&&!_tetto7();
+        /* [7.999.161 SEME-a C3 — IL DEBITO DEL MINUTO SI PAGA PRIMA DI OGNI RICHIESTA DEL BATTITO. Rosso __CPM_NO_SEME] MISURATO
+           (sonda-seme-traccia, S12, seme 2311, dopo C1+C2): ingressi del motore identici fino al 34', poi la stessa sequenza
+           di chiamate in ordine diverso — `origini`/`eroe`/`atteggiamento` del battito arrivavano dopo 8 sotto-tick del minuto
+           in un giro e dopo 9 nell'altro, perche' quanti sotto-tick cadono prima del battito lo decide il setInterval a
+           orologio da polso; quelli mancanti li pagava il ciclo 967, ma DOPO le richieste. Qui si paga lo stesso debito con
+           gli stessi argomenti, prima della prima richiesta: il ciclo 967 trova il conto gia' saldato. Stesse condizioni del
+           blocco del motore (fuori dagli highlight). */
+        if(!(typeof window!=='undefined'&&(window.__CPM_NO_SEME||window.__CPM_NO967))&&MOTORE870&&motoreRef.current&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){try{
+          const _M161=motoreRef.current,_mP161=Math.max(0,(nx|0)-1);let _g161=0;
+          while((passi966Ref.current|0)<(_SUB898-1)&&_g161<_SUB898){
+            const _evR=_M161.tick({min:_mP161,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);_brain23(_evR);
+            passi966Ref.current=(passi966Ref.current|0)+1;_g161++;
+            if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[_mP161]=(window.__CPM_PASSI959[_mP161]|0)+1;}catch(_e959){}}}
+          if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g161;}catch(_e){}}
+        }catch(_e161){}}
         if(!_NO879&&MOTORE870&&motoreRef.current){try{
           if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):(_att803>=5&&(extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0))),15,!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27)&&!onBenchRef.current&&!subbedOffRef.current&&nx<=89&&(extra27Ref.current|0)<4);/* [7.999.27] rigori e punizioni dal limite dell'eroe: sempre una scena (tetto di sicurezza 4 a partita) *//* [7.999.28] la scena da cross/angolo fuori finestra ora CONSUMA un'occasione del bersaglio dinamico (il calendario toglie una scena in coda); col rosso torna il vecchio tetto di 1 *//* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
           if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];/* [7.999.26] provata e TOLTA la richiesta di tipo «cross»: non ha prodotto scene da cross (misurato) e, lasciando la finestra aperta senza servire l'eroe, gonfiava i gol del gioco fluido (motore-unico 2,25 -> 4,75) */return T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
@@ -5396,7 +5423,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_st0.scena&&_r202){try{setTurn616(-1,"rip202");}catch(_e202b){}}
           if(_st0.scena)rip202Ref.current=null;
           if(_st0.scena&&!(typeof window!=='undefined'&&window.__CPM_NO_MIN202)){debito202Ref.current=Math.min((brain137()&&!(typeof window!=='undefined'&&window.__CPM_NO_TEMPO138))?440:66,(debito202Ref.current|0)+22);if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_DEB202=debito202Ref.current|0;window.__CPM_DEB202T=(window.__CPM_DEB202T|0)+22;}catch(_e){}}}/* [7.999.137] testimoni: debito residuo e debito aperto in tutto */
-          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          const _rs161=(_st0.scena&&!(typeof window!=='undefined'&&window.__CPM_NO_SEME))?ripresaSemeRef.current:null;if(_st0.scena)ripresaSemeRef.current=null;
+          /* [SEME-a C2b/C2c] l'eroe consegnato al motore: (b) scena del motore senza highlight (fase sempre 'playing') → l'eroe del
+             motore, non pPos, che lo scrivono a gara lo specchio e la deriva idle (rng a 500 ms reali): misurato 64,84 contro 67,29 al
+             67' (seme 2311). (c) ripresa DAL CENTRO (gol nella scena) → ancora l'eroe del motore: la posizione di fine scena li' la
+             muove l'esultanza a tempo reale, misurato 78,8/41,5 · 79,8/35,5 · 82,8/36,5 al 46' su quattro giri (seme 4242), e al calcio
+             d'inizio i ventidue tornano comunque nella loro meta'. Negli altri casi l'eroe fotografato a chiusura scena. */
+          const _semeOn161=!(typeof window!=='undefined'&&window.__CPM_NO_SEME),_cen161=_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0);
+          const _eM161=(_M._g&&_M._g[_M.HERO])?{x:_M._g[_M.HERO].x,y:_M._g[_M.HERO].y}:null;
+          const _eroe161=(_semeOn161&&_eM161&&(_cen161||!(_rs161&&_rs161.eroe)))?_eM161:((_rs161&&_rs161.eroe)?_rs161.eroe:pPosRef.current);
+          if(_st0.scena&&typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w=(window.__CPM_SEME161=window.__CPM_SEME161||[]);if(_w.length<80)_w.push({min:nx|0,foto:_rs161?(_rs161.fase?3:(_rs161.x!=null?2:1)):0,centro:!!_cen161,fonte:_eroe161===_eM161?'motore':(_rs161&&_eroe161===_rs161.eroe)?'fine-scena':'pPos',d:_eM161?+Math.hypot(_eroe161.x-(pPosRef.current||{x:0}).x,_eroe161.y-(pPosRef.current||{y:0}).y).toFixed(1):null});}catch(_eW){}}/* testimone: da dove viene l'eroe consegnato, e quanto dista da quello che si vede (d) *//* [7.999.161 SEME-a] il punto di ripresa logico fotografato da handleContinue (x/y seedati, eroe di fine scena); senza, i valori resi. Rosso __CPM_NO_SEME */
+          if(_st0.scena)_M.chiedi.riprendi({x:(_rs161&&_rs161.x!=null)?_rs161.x:((ballPosRef.current&&ballPosRef.current.x)||50),y:(_rs161&&_rs161.y!=null)?_rs161.y:((ballPosRef.current&&ballPosRef.current.y)||50),lato:_c207?_l207:(_r202?"away":(possTurnRef.current>0?"home":"away")),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:_eroe161,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}
@@ -9254,6 +9291,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(typeof window!=='undefined'&&(window.__CPM_REC||/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||""))){try{const _w=(window.__CPM_ALL781=window.__CPM_ALL781||{n:0,d:0});_w.n++;_w.d=+Math.hypot(_x-(_p.x||50),_y-(_p.y||50)).toFixed(1);}catch(_e){}}
   }catch(_e781){}};
   const handleContinue=()=>{
+    /* [7.999.161 SEME-a C2 — L'EROE CHE RIPRENDE E' QUELLO DI FINE SCENA. Rosso __CPM_NO_SEME] MISURATO (sonda-seme-traccia, S12, seme
+       2311): il primo ingresso del motore che diverge fra due giri identici e' `riprendi` del 9', e una delle due cause e' l'eroe:
+       fra la fine della scena e il battito che chiama `riprendi` la deriva idle (setInterval 500 ms reali, rng non seedato) lo sposta
+       un numero di volte che dipende dal tempo reale. Qui si fotografa la posizione dell'eroe a chiusura scena; la deriva continua a
+       muovere quello che si vede, ma al motore arriva questo. */
+    /* [SEME-a C2d] la foto si prende solo chiudendo una scena: una seconda chiamata a gioco gia' ripreso (misurato seme 2311, un giro su
+       quattro al 20': eroe 68,9/46,8865 contro 47,5, cioe' un passo di deriva idle) non riscrive ne' l'eroe ne' il punto. */
+    const _semeHC161=!(typeof window!=='undefined'&&window.__CPM_NO_SEME)&&phaseRef.current!=='playing';
+    if(_semeHC161){const _pe=pPosRef.current||{x:58,y:50};ripresaSemeRef.current={eroe:{x:_pe.x,y:_pe.y}};}else if(typeof window!=='undefined'&&window.__CPM_NO_SEME)ripresaSemeRef.current=null;
     _allinea781();
     // [6.78.0 FLAKE-FIX 2] in FORCE-MODE (gate) l'highlight forzato e' un CAMPIONE STATICO: nessun avanzamento
     //   (ne' "ended" ne' ripresa dal centro ne' catene) — il prossimo stato arriva dal prossimo __CPM_FORCE_SIT.
@@ -9373,7 +9419,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            azione con rientro parziale al centro, ramo dedicato alla parata dell'eroe (si riparte dalle proprie
            retrovie), e tutti i sorteggi SEEDATI su highlight+minuto+punteggio. */
         const _ok=outcome&&outcome.outKey;
-        const _bEnd=ballTargetRef.current||ballPosRef.current||{x:50,y:50};
+        let _bEnd=ballTargetRef.current||ballPosRef.current||{x:50,y:50};
+        /* [7.999.161 SEME-a C1 — LA CORSIA DI RIPRESA SI EREDITA DAL PALLONE LOGICO. Rosso __CPM_NO_SEME] MISURATO: la y di ripresa
+           veniva dal pallone DISEGNATO (copiato qui da `_allinea781`), che dipende da quanti fotogrammi ci stanno nella scena — in
+           headless 1-7 fps — e attraverso `riprendi` entrava nel motore: 44,02 · 44,08 · 43,81 · 44,27 su quattro giri identici al
+           9'. Col motore acceso la corsia si eredita dal SUO pallone, fermo durante la scena (scenaMuovi lo ripristina): stesso giro,
+           stesso numero. Il pallone reso continua a ripartire dal punto di ripresa scelto qui, dietro lo stacco di 360 ms: cambia la
+           base da cui si eredita la corsia, non il modo in cui la si mostra. */
+        const _seme=!(typeof window!=='undefined'&&window.__CPM_NO_SEME);
+        if(_seme&&motoreRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO870)){try{const _pm=motoreRef.current.stato().palla;if(_pm&&_pm.y!=null)_bEnd={x:_pm.x,y:_pm.y};}catch(_eS){}}
         let _rs=(Math.abs(hashStr("resume|"+hlIdx+"|"+(clockRef.current|0)+"|"+score.h+"-"+score.a))>>>0)||1;
         const _rr=()=>{_rs=(Math.imul(_rs,1664525)+1013904223)>>>0;return _rs/4294967296;};
         let _rx,_drift="midfield";
@@ -9385,6 +9439,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         else if(_ok==="wide"||_ok==="miss"||_ok==="post"){_rx=72+_rr()*14;_drift="retreat";}// tiro parato/fuori → l'avversario rilancia dalla sua trequarti, la tua squadra si ricompatta
         else if(_ok==="assist"||_ok==="through"){_rx=56+_rr()*16;_drift="attack";}// azione offensiva proseguita
         else{_rx=44+_rr()*12;_drift="midfield";}
+        if(_seme&&_semeHC161&&ripresaSemeRef.current){ripresaSemeRef.current.x=_rx;ripresaSemeRef.current.y=_ry;}/* [SEME-a] al motore lo stesso punto che si mostra, calcolato solo da valori logici e seedati */
         ballTargetRef.current={x:_rx,y:_ry};setBallPos({x:_rx,y:_ry});// SNAP immediato (target=pos) → niente lerp/scivolamento all'indietro
         driftTargetsRef.current=DRIFT_PRESETS[_drift]||DRIFT_PRESETS.midfield;
         /* [7.616.0] L'ESITO DELLA SCENA CLASSIFICA GIA' IL TURNOVER E NON LO PROPAGAVA: questo stesso
