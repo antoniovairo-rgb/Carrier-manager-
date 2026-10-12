@@ -2452,6 +2452,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        del PO. Serve poter scegliere l'azione la cui ricompensa E' il gol. */
     window.__CPM_ACTS=()=>{try{const sit=situationsRef.current[hlIdxRef.current];
       return (sit&&sit.actions)?sit.actions.map((a,i)=>({i,label:a.label,rew:a.rew})):null;}catch(e){return null;}};
+    window.__CPM_ACTSO=window.__CPM_ACTS;/* [7.999.160 PO-229] la riga sotto (7.553) RIDEFINISCE __CPM_ACTS con le sole etichette: le sonde dei gol (goal-postarc, outcome-not-goal, postarc-buildup-live) cercavano a.rew e da allora erano cieche. Gli oggetti {i,label,rew} restano su __CPM_ACTSO. */
     window.__CPM_ACTS=()=>{try{const s0=situationsRef.current[hlIdxRef.current];return (s0&&s0.actions)?s0.actions.map(a=>String((a&&a.label)||'')):[];}catch(_e){return [];}}; /* [7.553 sonda] le etichette delle azioni della scena corrente: serve a trovare da fuori la scena che offre una rovesciata o un tiro al volo, senza leggere il DOM. */
     window.__CPM_RESOLVE=(k)=>{ const sit=situationsRef.current[hlIdxRef.current]; if(!sit||!sit.actions||!sit.actions[k])return false;
       if(window.__CPM_RESEED)window.__CPM_RESEED(hlIdxRef.current*131+((k|0)+50000));
@@ -9508,7 +9509,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _on=(typeof window!=='undefined')&&!window.__CPM_NO461&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT);/* sotto il gate (`?cpmtest=1` senza opt-in cine) la finestra resta quella di sempre: il check post-highlight misura durate fisse e il percorso del gate va lasciato bit-identico */
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _w=(window.__CPM_WAIT461=window.__CPM_WAIT461||[]);if(_w.length<80)_w.push({on:_on,c:_c?{on:_c.on,tl:_c.tl,arc:_c.arc,pa:_c.pa}:null,att:_att461});}catch(_e){}}
         /* [7.857 REVOCATA, 10/09] l'attesa del gol pendente qui non cambiava nulla: sotto REALWAIT il gol di scena e' dichiarato dal renderer col pallone a 99,15 in entrambi i bracci; il difetto misurato era il banco senza REALWAIT (lezione 17ª). */
-        if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&_att461<6000){_att461+=180;t2=setTimeout(_avanza461,180);return;}
+        /* [7.999.160 PO-229 «sincronismo, esito»] IL TETTO SI CONTA IN TEMPO DI SCENA. Il tetto di 6 s era di PARETE: a 4-7 fps il
+           clock di scena avanza 1/4-1/3 del reale, la finestra si chiudeva col tiro ancora in volo e il gol restava dichiarato con la
+           palla ferma a x 24-40 (goal-postarc: 4 gol su 6 in classe C). Ora: 6 s DI SCENA (orologio `ck` del 7.864) con un tetto di
+           sicurezza di 30 s reali. A 30-60 fps scena e parete coincidono e nulla cambia. Rosso __CPM_NO_CK229. */
+        const _ck229=!(typeof window!=='undefined'&&window.__CPM_NO_CK229)&&_c&&typeof _c.ck==='number';
+        if(_ck229&&_att461===0)_avanza461._ck0=_c.ck;
+        const _sc229=_ck229?(_c.ck-(_avanza461._ck0||0))*1000:_att461;
+        if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&(_ck229?(_sc229<6000&&_att461<30000):_att461<6000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}
       }catch(_e461){}
       handleContinue();
     };

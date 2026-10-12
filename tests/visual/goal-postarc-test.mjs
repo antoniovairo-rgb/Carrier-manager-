@@ -45,8 +45,10 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(e.message));
 /* `CPM_REALWAIT=1` apre l'attesa che il gioco VERO concede al gol (r.~20346, spenta sotto test):
    serve per non giudicare una finestra d'esito che il giocatore non ha mai. */
-await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; },
-  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0 });
+/* [7.999.160 PO-229] le punizioni restano in hl_move finche' il giocatore non prende la mira (nessun timer, per scelta): il tasto «0» che il gioco accetta salta il movimento, altrimenti il giro si inceppa e il campione resta a 1-2 scene */
+await page.addInitScript(() => { setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_move') { const ev = new KeyboardEvent('keydown', { key: '0', bubbles: true }); document.dispatchEvent(ev); window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' })); } } catch (e) {} }, 700); });
+await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (o.rw) window.__CPM_REALWAIT = 1; if (o.no) window.__CPM_NO460 = 1; if (o.n1) window.__CPM_NO461 = 1; if (o.ck) window.__CPM_NO_CK229 = 1; },
+  { rw: process.env.CPM_REALWAIT ? 1 : 0, no: process.env.CPM_NO460 ? 1 : 0, n1: process.env.CPM_NO461 ? 1 : 0, ck: process.env.CPM_NO_CK229 ? 1 : 0 });
 await openMatch(page, port, { skipLoadAll: true });
 await sleep(700);
 
@@ -69,11 +71,11 @@ for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
   await page.evaluate(() => { window.__CPM_PA457 = []; window.__CPM_ARCEND457 = []; window.__CPM_ARCFIRE457 = []; window.__CPM_ARCORPHAN457 = []; window.__CPM_ARCCALL457 = []; window.__CPM_WAIT461 = []; window.__CPM_CONT461 = []; });
   await page.evaluate(() => { window.__CPM_QUEUE_REACTIVE && window.__CPM_QUEUE_REACTIVE(); });
   const gotChoose = await page.waitForFunction(() => {
-    try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'hl_choose'; } catch (e) { return false; }
+    try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && (s.phase === 'hl_choose'); } catch (e) { return false; }
   }, { timeout: 30000 }).then(() => true).catch(() => false);
   if (!gotChoose) { await sleep(600); continue; }
 
-  const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+  const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
   const kGoal = acts ? (acts.find(a => /goal/i.test(String(a.rew || ''))) || {}).i : null;
   if (kGoal == null) {
     await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {});
@@ -94,7 +96,7 @@ for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
      gioco — «finestra d'esito 3,46s» era il mio cronometro, e i gol dichiarati rotti erano scene ancora
      VIVE che nessuno aveva chiuso (`chiCHIUDE: nessun handleContinue registrato`, `uscita: mai uscita da
      hl_result`). Si aspetta che la scena finisca DAVVERO. */
-  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 25000 }).catch(() => {});
+  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase !== 'hl_result'; } catch (e) { return true; } }, { timeout: 40000 }).catch(() => {});
   await sleep(300);
 
   const d = await page.evaluate(() => ({
@@ -116,7 +118,7 @@ for (let round = 0; round < TARGET * 30 && gol.length < TARGET; round++) {
 }
 
 async function tornaAPlaying() {
-  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; } catch (e) { return false; } }, { timeout: 25000 }).catch(() => {});
+  await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.phase === 'playing'; } catch (e) { return false; } }, { timeout: 40000 }).catch(() => {});
 }
 
 await b.close(); srv.close();

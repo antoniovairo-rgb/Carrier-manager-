@@ -7,7 +7,7 @@
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {
   fumo: ['test:logic', 'design-system', 'lessico-218'],/* [7.999.159] prova rapida dell'esecutore */
-  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'design-system'],
+  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'gk-dive-sync', 'goal-postarc', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'fila-227', 'design-system'],
   carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'rimbalzo-189', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'rigori-190', 'debito-190', 'scene-190', 'finale-202', 'ripresa-202', 'tetto-202', 'minuti-202', 'recupero-202', 'ripartenza-207', 'anteprima-212', 'mister-215', 'presentazione-214', 'possesso-209', 'brain-202', 'tempo-138', 'tabellino-216'],
   grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat', 'titolo-110', 'pre-188', 'rimbalzo-189', 'calendario-offerte-195', 'walkout-fermi-197', 'fila-206', 'premiazione-palco-191', 'coppa-mani-191', 'posa-sollevamento-191', 'palco-corpi-191', 'parata-198', 'busta-199', 'presentazione-200', 'guanti-201', 'formazioni-204', 'figurine-208', 'post-210', 'piedi-203', 'gesti-scena-p1b', 'piede-cross-p1b2', 'rincorsa-144', 'doppio-gesto-148', 'testa-146', 'movimento-147'],
   guardiani: ['goleade', 'scene-disegnabili', 'nomi-51', 'piazzati-eroe', 'cross-origine', 'tiro-caricato', 'passo-velocita', 'gesti-copertura-96', 'etichette-95',
@@ -27,7 +27,8 @@ let rossi = 0;
    SOLO fino a due volte: se torna verde il passo vale ma resta segnato «instabile» nel registro; resta rosso solo se e' rosso tre
    volte su tre (CPM_CI_NORETRY=1 per spegnere). La catena intera non si rifa' piu' per un guardiano ballerino. */
 import { spawn } from 'node:child_process';
-const LENTI = new Set(['partita-vera', 'scena-motore-147', 'esiti-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical']);
+/* [7.999.160 PO-229] gk-dive-sync e goal-postarc erano ciechi da tempo senza che nessuno lo vedesse, perche' fuori catena. Ora dentro, fra i lenti. */
+const LENTI = new Set(['gk-dive-sync', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical']);
 const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spawn('npm', ['run', '-s', p], { env }); let out = '';
   ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
   ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });

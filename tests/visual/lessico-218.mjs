@@ -7,7 +7,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 for (const rosso of [false, true]) {
   const ctx = await b.newContext(); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_LEX218 = 1; }, rosso);
+  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) { window.__CPM_NO_LEX218 = 1; window.__CPM_NO_C70TIRO = 1; } }, rosso);
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => typeof _hlOvlCat === 'function' && typeof SITUATIONS !== 'undefined', null, { timeout: 60000 });
   esito[rosso ? 'rosso' : 'verde'] = await page.evaluate(() => {
@@ -15,13 +15,18 @@ for (const rosso of [false, true]) {
     const rePass = /passagg|imbucat|filtrant|lanci|scaric|verticalizz|apertur|servizi|smista|triangol|uno-due|dai e vai|appoggi/;
     const lab = new Set(); for (const s of SITUATIONS) for (const a of (s.actions || [])) { const L = String(a.label || '').toLowerCase(); if (reShot.test(L) && !rePass.test(L)) lab.add(a.label); }
     let pas = 0; const es = []; for (const l of lab) { const c = _hlOvlCat('intercept', false, l); if (c === 'pass_fail') { pas++; if (es.length < 5) es.push(l); } }
-    return { n: lab.size, pas, es };
+    /* [7.999.160] conduzione che finisce in tiro: il riquadro di un tiro murato/fuori deve venire dal lessico del tiro, non del dribbling */
+    const ct = ['🏃 Conduci palla al piede e tira']; let cn = 0, cd = 0; for (const s of SITUATIONS) for (const a of (s.actions || [])) { const L = String(a.label || ''); if (/conduc/i.test(L) && /\btir[aoi]|conclu/i.test(L)) ct.push(L); }
+    for (const l of [...new Set(ct)]) for (const k of ['blocked', 'wide']) for (let sd = 0; sd < 6; sd++) { const o = hlOverlay('intercept', false, l, 'X', sd, k); cn++; if (o.cat === 'dribble_fail') cd++; }
+    return { n: lab.size, pas, es, cn, cd };
   });
   console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(esito[rosso ? 'rosso' : 'verde'])); await ctx.close();
 }
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
 if (!(V.n >= 10 && V.pas === 0)) g.push('verde: azioni-tiro con lessico di passaggio ' + V.pas + ' su ' + V.n);
+if (!(V.cn >= 6 && V.cd === 0)) g.push('verde: conduzione-e-tiro col lessico del dribbling ' + V.cd + ' su ' + V.cn);
+if (!(R.cd >= R.cn && R.cn > 0)) g.push('rosso conduzione: il difetto non si vede (' + R.cd + ' su ' + R.cn + ')');
 if (!(R.pas >= Math.ceil(R.n * 0.9))) g.push('rosso: il difetto non si vede (' + R.pas + ' su ' + R.n + ')');
 if (g.length) { console.log('❌ lessico-218'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ lessico-218 verde (0 su ' + V.n + ' azioni-tiro col lessico di passaggio) e il rosso si vede (' + R.pas + ' su ' + R.n + ')');

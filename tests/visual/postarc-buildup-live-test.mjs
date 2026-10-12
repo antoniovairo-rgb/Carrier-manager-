@@ -49,7 +49,7 @@ for (let round = 0; round < TARGET * 4 && righe.length < TARGET; round++) {
   /* si sceglie l'azione la cui RICOMPENSA e' il gol: forzare il successo sull'azione 0 da' quasi
      sempre outKey="chance", e una chance non mette la palla in rete per definizione — misurarla
      significherebbe misurare un caso che non e' quello del PO. */
-  const acts = await page.evaluate(() => (window.__CPM_ACTS && window.__CPM_ACTS()) || null);
+  const acts = await page.evaluate(() => (window.__CPM_ACTSO && window.__CPM_ACTSO()) || null);
   const kGoal = acts ? (acts.find(a => /goal/i.test(String(a.rew || ''))) || {}).i : null;
   if (kGoal == null) { if (VERB) console.log(`  · scena senza azione da GOL (ricompense: ${acts ? acts.map(a => a.rew).join('/') : '?'}) — saltata`); await page.evaluate(() => window.__CPM_RESOLVE && window.__CPM_RESOLVE(0)).catch(() => {}); await sleep(1200); await tornaAPlaying(); continue; }
   await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; });

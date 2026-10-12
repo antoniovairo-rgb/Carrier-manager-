@@ -247,8 +247,8 @@ function calcCoachDecision(player,matchWeight=1){
 /* ========================================
    RIVAL NPC — parallel career antagonist
 ======================================== */
-const RIVAL_FIRST=["Marco","Luca","Federico","Alessandro","Matteo","Lorenzo","Davide","Simone","Francesco","Roberto","Esteban","Pablo","Carlos","Diego","João","Bruno","Antoine","Théo","Kylian","Florian","Leon","Kai","Harry","Mason","Marcus","Phil","Bukayo","Erling","Vinicius","Pedri"];
-const RIVAL_LAST=["Rossi","Ferrari","Conti","Bianchi","Romano","Ricci","Greco","Russo","Moretti","Gallo","García","López","Martínez","Fernández","González","Silva","Santos","Costa","Dupont","Martin","Bernard","Müller","Schmidt","Bauer","Wolf","Smith","Jones","Williams","Brown","Taylor","Saka","Bellingham"];
+const RIVAL_FIRST=["Marco","Luca","Federico","Alessandro","Matteo","Lorenzo","Davide","Simone","Francesco","Roberto","Esteban","Pablo","Carlos","Diego","João","Bruno","Antoine","Théo","Yanis","Florian","Leon","Kai","Harry","Mason","Marcus","Phil","Kofi","Eirik","Vitor","Pedro"];
+const RIVAL_LAST=["Rossi","Ferrari","Conti","Bianchi","Romano","Ricci","Greco","Russo","Moretti","Gallo","García","López","Martínez","Fernández","González","Silva","Santos","Costa","Dupont","Martin","Bernard","Müller","Schmidt","Bauer","Wolf","Smith","Jones","Williams","Brown","Taylor","Asante","Whitcombe"];
 function generateRival(player){
   const fn=pick(RIVAL_FIRST),ln=pick(RIVAL_LAST);
   const age=clamp((player.age||18)+rng(-1,3),17,24);

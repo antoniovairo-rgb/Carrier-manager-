@@ -237,3 +237,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
   - **Gli ordini del mister diventano una scelta dell'eroe** («seguo l'ordine» / «faccio di testa mia») con un effetto vero sull'atteggiamento del motore, cioè sui gol. Oggi agiscono solo sulle scene dell'eroe.
   - **Panchina.** Una scelta («chiedo di entrare» / «resto concentrato») letta dal motore per il minuto d'ingresso, con seme: oggi il minuto è estratto a caso senza seme.
   - Ogni scelta ha un guardiano: il rosso spegne l'effetto e la differenza si misura sui gol e sui minuti.
+
+## 11/10 notte — modello delle sessioni parallele
+- PO: «valuta tu in base alle attività se le sessioni parallele figlie devono essere Opus 5.5 o Haiku 5.5».
+- **Scelta del team:** collaudatrici e rilascio restano su Haiku 5.5 (misure in sola lettura, consegne buone: PO-227 con causa file:riga e numeri); la **sviluppatrice passa a Opus 5.5 dal giro 8** (modifiche al gioco su sorgente grande, prossime voci sulla partita: PO-226, strappo del pallone PO-229). Il giro 7 (solo grafica L7) finisce su Haiku.
+- Vincolo: le sessioni mostrano l'avviso del limite settimanale (stato «allowed_warning», azzeramento 13/10): per questo Opus solo dove serve.
+- Regola per il rilascio: il compito contiene già le decisioni di strategia (parallelismo, crash, budget), così la sessione non si ferma a chiedere.
