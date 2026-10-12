@@ -3785,7 +3785,12 @@ const getThisWeekMatchday=()=>{
     const _u18Iv455=(player.proStatus||"u18")!=="pro";
     const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
       :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
-    if(Math.random()<_interviewChance){
+    /* [7.999.161 PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»] il PO dal telefono: «l'intervista post partita questa volta
+       non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
+       dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
+    const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
+    if(_sempre231||Math.random()<_interviewChance){
+      if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
       const iw=pickInterviewByCtx(player,result);
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
@@ -6346,6 +6351,7 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 15 — Interview Modal == */}
+      {(typeof window!=='undefined'&&(window.__CPM_IVBLK231=interviewModal?[transferOffer&&'mercato',weekLiveModal&&'settimana',careerMomentModal&&'momento',monthlyReviewModal&&'mese'].filter(Boolean).join(','):null),null)}
       {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
@@ -6353,7 +6359,7 @@ const getThisWeekMatchday=()=>{
        della dashboard sottostante finivano DAVANTI alla scena 3D dell'intervista. Il modal esce dall'albero
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
-        <div style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
+        <div data-cpm="intervista231" data-ctx={interviewModal.matchCtx||""} style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
           {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}
           {/* [7.977.0 — collaudo PO dal suo Android: «schermata rotta e brutta». LA CAUSA E' UN COMMENTO.
               Qui stava un commento in stile C, NUDO, fra due espressioni JSX, cioe' FUORI dalle graffe: quello

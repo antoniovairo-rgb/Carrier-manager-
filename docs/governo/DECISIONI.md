@@ -249,3 +249,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - PO (questionario): **«Rinomina tutti gli evocativi»**.
 - Fatto in 7.999.161: 17 nomi di stadio rinominati — simboli/soprannomi di club reali (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier) e stadi veri verificati sul web (Stadio Adriatico di Pescara, Stade Gabriel Montpied di Clermont, Arena Lviv, Estadio de la Cerámica di Villarreal). I vecchi nomi entrano nella lista del controllo copyright (prova del rosso: «Stadio Sabaudo» segnalato).
 - Restano i nomi con la regione o la città, coerenti coi nomi dei club del gioco (es. Mersey Stadium per FC Merseyside).
+
+## 12/10 — PO-231: intervista post partita
+- PO: «l'intervista post partita questa volta non è uscita». Misura: nessun guasto, l'intervista usciva per sorteggio (18% dopo una gara normale da pro, 85% big match, 96% tripletta; in Primavera 4-30%).
+- PO (questionario): **«Sempre, dopo ogni partita»**. Fatto in 7.999.161 (rosso __CPM_NO_IV231 = sorteggio di prima). Le domande restano scelte in base al risultato.
