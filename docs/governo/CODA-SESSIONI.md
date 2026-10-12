@@ -24,6 +24,6 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
 | sviluppo/haiku-l7-pulizia-l8 | session_0116kmELic75jmWxmFs7UWE3 | giro 8 (OPUS 5.5, base 7.999.160): PO-229 uno-due gi38 dichiarato assist ma non giocato; ripresa di L7 (giro 7 non unito: movimento-147 rosso 3/3 sulla build contro 1/2 su main) | giro 9: salti del build-up gi12/gi21, passaggio→consegna gi79 |
-| collaudo/sessione-collaudatrice | session_016rUizzrTBXKfvAYsaDHBmK | giro 9 (Haiku, base 7.999.161 sul ramo poc): PO-230 tutte le finestre in primo piano a 360/412 px con o senza cornice standard; PO-231 intervista in 3 partite giocate come un giocatore | 12/10 08:56 |
-| collaudo/partite-vere | session_01FLeQryE3KJBRcDzuy1aqsB | giro 6 (Haiku, build main 7.999.160): PO-228 righe Passaggi/Cross all'86' su k1-k10 e confronto col riferimento | 12/10 08:56 |
+| collaudo/sessione-collaudatrice-161 | session_01XHNDapw19rWXseF2KDLnr4 | giro 9b (Haiku, base 7.999.161): PO-230 finestre a 360/412 px, PO-231 intervista in 3 partite. Il giro 9 (session_016rUizz…) si era fermato: push rifiutato, ramo remoto con storia diversa; ricreato su ramo nuovo (il suo commit locale b4679c0 è andato perso) | 12/10 15:40 |
+| collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
 | rilascio/consolidamento | session_014HLUniWew7ZSpQGjqGXUDb | giro 5 (base 7.999.160): prontezza finale per il 17/10 (dist, copyright, sito, voci aperte del giro 3, partita completa senza errori) | giro 6: verifica sul sito dopo la pubblicazione |
