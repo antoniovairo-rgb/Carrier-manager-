@@ -253,3 +253,85 @@ Legenda: **bloccante** (non si pubblica così) · **da sistemare** (va corretto 
 - Punto 1: riprodurre il controllo con coppie senza autoplay non è possibile senza un percorso di gioco manuale; da decidere se è richiesto.
 - Punto 2: revoca forzata del contesto (`WEBGL_lose_context`) e ripristino in background, non eseguiti.
 - Le voci 2–9 richiedono un collaudo sulla 158 (build di rilascio) prima della promozione su `main`.
+
+## Giro 5 — 7.999.160
+
+Base: `origin/main` = `10288c7` (`GAME_VERSION="7.999.160"`, `CARRIER-MANAGER-AV.html:5625`). Nessun file del gioco modificato. Browser: `CPM_CHROME=/opt/pw-browsers/chromium PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`. Log grezzi in `docs/rilascio/log160/` (screenshot esclusi dal commit).
+
+### 1. Build e validazione dist
+
+- `tests/visual`: `npm install` (senza download browser, come nel workflow). Senza, `tools/build-dist.mjs` esce con `MODULE_NOT_FOUND`.
+- `node tools/build-dist.mjs --web`: **ok, 42,2 s**. Il file prodotto è `dist-web/index.html`, 6.084.140 byte. ⚠️ Il messaggio finale stampa «dist/index.html 5941KB» (testo del build store, non il file scritto con `--web`).
+- `node tools/validate-dist.mjs --web`: **ok, 5,4 s** — React montato, home raggiunta, 0 richieste CDN, 0 errori console, flag store assente. Senza `CPM_CHROME` esce con «Executable doesn't exist» (browser `chromium_headless_shell-1248` non presente).
+
+### 2. Audit copyright
+
+- `node tools/audit-copyright.mjs` (con `CPM_CHROME` e `PLAYWRIGHT_BROWSERS_PATH`): **EXIT=0, 0 hit**.
+- ⚠️ L'audit non copre le stringhe del punto 3 dei rilievi (sotto): passa con quei nomi presenti nel sorgente.
+
+### 3. Sito — file servito e versione
+
+- `.github/workflows/deploy-pages.yml`: il sito serve `dist-web/index.html`, copiato in `_site/index.html` e `_site/CARRIER-MANAGER-AV.html` (righe 50-52 del workflow).
+- `https://antoniovairo-rgb.github.io/Carrier-manager-/` risponde **HTTP 200**, 6.084.140 byte, e il file servito è **byte-identico** a `dist-web/index.html` costruito da `10288c7`. Dichiara `GAME_VERSION = "7.999.160"`.
+- **Non posso confermare** che il deploy di Pages sia terminato con successo per questo commit: non ho letto lo stato delle Actions. Il controllo è di contenuto, non di run.
+
+### 4. Voci del Giro 3, sulla 160
+
+Ciascuna con la prova e la conclusione. Nessuna è chiusa.
+
+**(a) Esiti diversi con lo stesso seme — APERTA.** Stesso salvataggio (`save-190-s12-ovr93.json`), seme 2021, velocità 1x, autoplay seeded.
+
+| Run | Punteggio | Highlight (`numHL`) |
+|---|---|---|
+| A1 | 1-0 | 7 |
+| A2 | **4-0** | 9 |
+| B1 | 1-1 | 8 |
+
+- Log: `log160/esiti-A1.out`, `esiti-A2.out`, `esiti-B1.out` (righe `GIRO3:score`, `GIRO3:hl`).
+- A1 e A2 hanno stesso seme e stesso salvataggio, ma punteggio e numero di highlight diversi: la partita non è riproducibile sulla 160.
+- Causa: non determinata in questo giro (non ho isolato il punto di divergenza).
+
+**(b) Avviso «[CPM-GL] contesto grafico perso» — APERTA, non riproducibile in modo netto.**
+
+- Sonda GL (`giro3-probe-gl.mjs`, GLB di default, 375×812, 3 partite): **0 avvisi, 0 contesto perso** (`log160/gl-160.log`).
+- Sonde partita completa (`probe-partita-375.mjs`): **l'avviso compare in 3 esecuzioni su 3**, sempre a `01-fine-partita` (`partita-375.log`, `partita-375-dist.log`, `partita-375-dist2.log`).
+- Differenza tra le due sonde: la sonda partita fa uno screenshot a `01-fine-partita`, la sonda GL no. Questa è un'**ipotesi non verificata**, non una causa.
+- Sul telefono reale: non misurato. **Non posso confermare** che l'avviso non appaia sul dispositivo.
+
+**(c) Classifica del salvataggio 194 — APERTA, comportamento invariato.** Replay settimana per settimana (`giro3-probe-classifica.mjs`, log `classifica-194.log`).
+
+- Partenza S1 W38: n=18, GF 790, GA 787, **Δ=+3**. Il Δ resta +3 fino a S1 W39 (passo 1).
+- Rollover U18→pro: S2 W1 riparte da 0/0/0.
+- Fine S2: GF 816, GA 816, **Δ=0**. Rollover a S3 W1: 0/0/0. `pageerror: 0`.
+- L'origine del +3 resta non determinata: la storia di S1 W1–W37 non è nel salvataggio. Il ramo del riposo in `src/09-audio-scout-anagrafiche.jsx:1438` non è stato riesaminato in questo giro.
+
+**(d) `MATCH_TICK_MS` 1700 contro 900 di CLAUDE.md — APERTA (documentazione).**
+
+- Sorgente `CARRIER-MANAGER-AV.html:27221`: `const MATCH_TICK_MS=(…window.__CPM_NO564)?900:1700;` → **1700 ms di default**, 900 solo con il flag `__CPM_NO564`.
+- La dist contiene ancora il flag (`__CPM_NO564`, 2 occorrenze).
+- CLAUDE.md dichiara 900 ms come valore. Il codice non lo è. Quale sia il valore voluto non è verificabile dai file: va deciso dal PO. Non è un difetto di gioco di per sé.
+
+### 5. Partita completa da carriera fino all'intervista, senza pageerror
+
+- **Pageerror: 0** in tutte e tre le esecuzioni (la sonda registra `page.on('pageerror')` e non ne ha mai scritto una riga).
+- **Fischio e cerimonia: sì** in tutte e tre (`fischio: fase=ceremony dopo 194/198/195 s`).
+- **Intervista raggiunta senza hook: NO, non confermato.**
+  - Sorgente (`partita-375.log`): «visibile senza hook: true». Il test è una regex su `document.body.innerText`: non ho verificato quale testo l'ha soddisfatta.
+  - Dist (`partita-375-dist.log` e `dist2`): «visibile senza hook: **false**» in entrambe; l'intervista compare solo con l'hook `forceInterview` (dichiarato non-percorso-utente nella sonda, `probe-partita-dist.mjs:57`).
+- Errore di scratch, corretto: il primo run dist dava un 404 perché la mia copia non conteneva `icon-192.png` e `manifest.webmanifest`. Il run `dist2` non ha più 404.
+
+### Rilievi del giro 2 ancora aperti (non ricontrollati in questo giro salvo dove indicato)
+
+- **Nomi reali nel bundle dist** (rilievo 1): presenti nel sorgente e nella dist — `Stadio Sabaudo` (`CARRIER-MANAGER-AV.html:4668`, `:4679`), `Stade Phocéen` (`:4695`), `Derby d'Italia` (`:8910`, lista di nomi derby), `FC Nerazzurri` (`:8918`, chiave della mappa di rinomina `CLUB_RENAME_6`, quindi usata per migrare i salvataggi vecchi). **Non posso confermare** che siano visibili a schermo: non ho verificato la comparsa nel gioco. L'audit copyright passa comunque (0 hit).
+
+### Elenco dei bloccanti per il 17/10
+
+1. **(a) Esiti diversi con lo stesso seme**: aperto, misurato sulla 160 (1-0 / 4-0 / 1-1, stesso seme).
+2. **(c) Classifica 194**: Δ=+3 invariato, origine non determinata.
+3. **Intervista non raggiungibile per percorso naturale sulla dist**: 2 esecuzioni su 2 con «false» (il punto 5 chiede sì/no; la risposta è no, non confermato).
+4. **Nomi reali nel bundle** (rilievo 1): decisione del PO, non ancora presa.
+5. **Avviso contesto grafico**: presente in 3 partite complete su 3, assente in 3 sonde GL. Sul telefono non verificato.
+
+Non bloccante per il sito: (d) disallineamento di documentazione `MATCH_TICK_MS`, da allineare.
+
+**PRONTO / NON PRONTO per il 17/10: NON PRONTO** — cinque bloccanti elencati sopra. Il punto 3 (sito) è in linea con `main`, ma il deploy del run non è verificato.
