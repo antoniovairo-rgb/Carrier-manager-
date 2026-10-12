@@ -1,0 +1,17 @@
+INIZIO main#1 04:57:47
+ESITO main#1 exit=0 durata=685s verde {"compagniFermi":11,"avversariFermi":8.5,"campioniCompagni":100,"campioniAvversari":164}
+INIZIO l7#1 05:09:12
+ESITO l7#1 exit=1 durata=685s verde {"compagniFermi":14.2,"avversariFermi":14.3,"campioniCompagni":106,"campioniAvversari":189}
+INIZIO main#2 05:20:37
+ESITO main#2 exit=1 durata=685s verde {"compagniFermi":3.5,"avversariFermi":2.1,"campioniCompagni":115,"campioniAvversari":190}
+INIZIO l7#2 05:32:02
+ESITO l7#2 exit=1 durata=688s verde {"compagniFermi":4.6,"avversariFermi":7.3,"campioniCompagni":197,"campioniAvversari":328}
+INIZIO main#3 05:43:30
+ESITO main#3 exit=1 durata=689s verde {"compagniFermi":12.3,"avversariFermi":9.9,"campioniCompagni":57,"campioniAvversari":111}
+INIZIO l7#3 05:54:59
+ESITO l7#3 exit=1 durata=690s verde {"compagniFermi":0,"avversariFermi":0,"campioniCompagni":37,"campioniAvversari":49}
+INIZIO main#4 06:06:29
+ESITO main#4 exit=1 durata=692s verde {"compagniFermi":6.4,"avversariFermi":3.8,"campioniCompagni":47,"campioniAvversari":79}
+INIZIO l7#4 06:18:01
+ESITO l7#4 exit=1 durata=693s verde {"compagniFermi":1.9,"avversariFermi":4.3,"campioniCompagni":108,"campioniAvversari":161}
+FINE

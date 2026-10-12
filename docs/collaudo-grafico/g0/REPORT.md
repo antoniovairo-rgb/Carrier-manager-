@@ -173,15 +173,15 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Creazione | 1495 (1.63) | 1495 (1.63) | 1495 (1.63) | 1495 (1.63) | 1480 (1.62) |
 | Offerte | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Dashboard | 1652 (1.81) | 1652 (1.81) | 1652 (1.81) | 1652 (1.81) | 1635 (1.79) |
-| Stagione · Classifica | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) | 1219 (1.33) |
-| Stagione · Calendario | 1232 (1.35) | 1220 (1.33) | 1220 (1.33) | 1220 (1.33) | 1220 (1.33) |
+| Dashboard | 1668 (1.82) | 1668 (1.82) | 1668 (1.82) | 1653 (1.81) | 1637 (1.79) |
+| Stagione · Classifica | 1235 (1.35) | 1235 (1.35) | 1235 (1.35) | 1220 (1.33) | 1220 (1.33) |
+| Stagione · Calendario | 1248 (1.36) | 1236 (1.35) | 1236 (1.35) | 1222 (1.34) | 1222 (1.34) |
 | Stagione · Coppe | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Club | 1212 (1.32) | 1199 (1.31) | 1199 (1.31) | 1186 (1.3) | 1186 (1.3) |
-| Carriera · Profilo | 1290 (1.41) | 1277 (1.4) | 1277 (1.4) | 1277 (1.4) | 1277 (1.4) |
-| Carriera · Nazionale | 1069 (1.17) | 1069 (1.17) | 1057 (1.16) | 1057 (1.16) | 1057 (1.16) |
-| Agente | 1544 (1.69) | 1496 (1.63) | 1496 (1.63) | 1496 (1.63) | 1449 (1.58) |
-| Ufficio | 1160 (1.27) | 1114 (1.22) | 1114 (1.22) | 1114 (1.22) | 1090 (1.19) |
+| Club | 1228 (1.34) | 1215 (1.33) | 1215 (1.33) | 1188 (1.3) | 1188 (1.3) |
+| Carriera · Profilo | 1306 (1.43) | 1293 (1.41) | 1293 (1.41) | 1279 (1.4) | 1279 (1.4) |
+| Carriera · Nazionale | 1085 (1.19) | 1085 (1.19) | 1073 (1.17) | 1058 (1.16) | 1058 (1.16) |
+| Agente | 1560 (1.7) | 1513 (1.65) | 1513 (1.65) | 1498 (1.64) | 1451 (1.59) |
+| Ufficio | 1176 (1.29) | 1130 (1.23) | 1130 (1.23) | 1116 (1.22) | 1092 (1.19) |
 
 > Lo scorritore misurato a 412 px, schermata per schermata: Home fuori carriera `documento` · Impostazioni `documento` · Creazione `div#root>div.cpm-root>div.cpm-scroll` · Offerte `documento` · Dashboard `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Classifica `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Calendario `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Coppe `documento` · Club `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Profilo `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Nazionale `div#root>div.cpm-root>div.cpm-scroll` · Agente `div#root>div.cpm-root>div.cpm-scroll` · Ufficio `div#root>div.cpm-root>div.cpm-scroll`
 
@@ -304,16 +304,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSimulatore di carriera |
 |  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Creazione | 51 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | Inizia i provini |
-| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
+| Dashboard | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
-| Ufficio | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:22Italia ·  |
+| Stagione · Classifica | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Stagione · Calendario | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Stagione · Coppe | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Club | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Carriera · Profilo | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Carriera · Nazionale | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Agente | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Ufficio | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 

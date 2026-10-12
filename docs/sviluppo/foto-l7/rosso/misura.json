@@ -1,0 +1,273 @@
+{
+ "rosso": null,
+ "larghezze": [
+  360,
+  375,
+  412
+ ],
+ "fasi": [
+  {
+   "id": "inizio",
+   "nome": "Inizio stagione (sintetico: nessuna partita giocata)"
+  },
+  {
+   "id": "meta",
+   "nome": "Meta stagione (sintetico: 20 partite giocate)"
+  },
+  {
+   "id": "fine",
+   "nome": "Fine stagione (reale, fixtures save-190)"
+  }
+ ],
+ "dati": {
+  "inizio": {
+   "dashboard@360": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 360,
+    "scrollW": 360,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@375": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 375,
+    "scrollW": 375,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@412": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 412,
+    "scrollW": 412,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   }
+  },
+  "meta": {
+   "dashboard@360": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 360,
+    "scrollW": 360,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@375": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 375,
+    "scrollW": 375,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@412": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 412,
+    "scrollW": 412,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@360": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 360,
+    "scrollW": 360,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@375": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 375,
+    "scrollW": 375,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@412": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 412,
+    "scrollW": 412,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   }
+  },
+  "fine": {
+   "dashboard@360": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 360,
+    "scrollW": 360,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@375": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 375,
+    "scrollW": 375,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "dashboard@412": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 412,
+    "scrollW": 412,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 2,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@360": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 360,
+    "scrollW": 360,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@375": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 375,
+    "scrollW": 375,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   },
+   "prepartita@412": {
+    "nSovrap": 0,
+    "esempiSovrap": [],
+    "larghezza": 412,
+    "scrollW": 412,
+    "sforamentoPx": 0,
+    "nSfora": 0,
+    "esempiSfora": [],
+    "nSforaClip": 0,
+    "nTroncoH": 0,
+    "esempiTroncoH": [],
+    "nTroncoV": 0,
+    "esempiTroncoV": [],
+    "nPiccoli": 0,
+    "minFont": null
+   }
+  }
+ },
+ "errori": [
+  "inizio: playMatch → nomatch"
+ ]
+}

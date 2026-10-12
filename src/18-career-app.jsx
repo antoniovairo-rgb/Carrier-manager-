@@ -7143,7 +7143,9 @@ const getThisWeekMatchday=()=>{
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
-                <div className="cpm-num" style={{fontSize:FS.caption,color:ink,fontWeight:FW.semibold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+                {/* [L7 \u00b7 7.999.160] la riga stagione\u00b7settimana\u00b7posto era \u00abnowrap\u00bb con ellissi: su 360-412 px si tagliava
+                    proprio dove stanno \u00abSt. 12\u00bb e \u00abSett. 23/38\u00bb. Ora va a capo. Rosso __CPM_NO_L7_SUB (riporta il taglio). */}
+                <div className="cpm-num" style={{fontSize:FS.caption,color:ink,fontWeight:FW.semibold,...(window.__CPM_NO_L7_SUB?{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}:{lineHeight:1.3})}}>
                   {player.club?.n||player.club?.name||"\u2013"}
                   {(()=>{const lg=player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":"";return lg?" \u00b7 "+lg:"";})()}
                   {" \u00b7 St. "+season+(week>38?" \u00b7 Fine stagione":" \u00b7 Sett. "+week+"/38")}{/* [7.999.49 parte A] niente «W.»: forma stretta del glossario */}
