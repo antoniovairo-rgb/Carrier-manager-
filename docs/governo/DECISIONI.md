@@ -253,3 +253,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 12/10 — PO-231: intervista post partita
 - PO: «l'intervista post partita questa volta non è uscita». Misura: nessun guasto, l'intervista usciva per sorteggio (18% dopo una gara normale da pro, 85% big match, 96% tripletta; in Primavera 4-30%).
 - PO (questionario): **«Sempre, dopo ogni partita»**. Fatto in 7.999.161 (rosso __CPM_NO_IV231 = sorteggio di prima). Le domande restano scelte in base al risultato.
+
+## 12/10 mattina — cadenza dei rilasci
+- PO: «Nuova decisione: Rilascia 3 volte al giorno». Sostituisce la direttiva dell'11/10 «un rilascio al giorno, di notte».
+- PO (questionario): **orari 08 · 16 · 00 (ora di Roma)**; **prima di ogni rilascio le catene complete** («carriera» + «completa», circa 3-4 ore).
+- Attuazione: routine «CPM — rilascio 08·16·00» che parte alle 04:15, 12:15 e 20:15 (ora di Roma), fa girare le catene sull'ultimo commit del ramo e promuove su main solo se verdi. Se le catene sono rosse il rilascio salta e si annuncia il motivo. Se dall'ultimo rilascio non è cambiato nulla nel gioco, il rilascio non si fa.
+- Primo rilascio con la nuova cadenza: 16:00 di oggi (7.999.161).
