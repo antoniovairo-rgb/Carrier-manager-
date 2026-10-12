@@ -1,0 +1,96 @@
+{
+  "traccia": [
+    "passo 13: fase null → matchday (settimana 38)",
+    "passo 14: fase matchday → playing (settimana 38)",
+    "passo 22: fase playing → hl_intro (settimana 38)",
+    "passo 23: fase hl_intro → hl_result (settimana 38)",
+    "passo 28: fase hl_result → playing (settimana 38)",
+    "passo 56: fase playing → hl_intro (settimana 38)",
+    "passo 59: fase hl_intro → hl_result (settimana 38)",
+    "passo 64: fase hl_result → playing (settimana 38)",
+    "passo 100: fase playing → hl_intro (settimana 38)",
+    "passo 102: fase hl_intro → hl_choose (settimana 38)",
+    "passo 103: fase hl_choose → hl_result (settimana 38)",
+    "passo 108: fase hl_result → playing (settimana 38)",
+    "passo 144: fase playing → hl_intro (settimana 38)",
+    "passo 146: fase hl_intro → hl_choose (settimana 38)",
+    "passo 147: fase hl_choose → hl_result (settimana 38)",
+    "passo 151: fase hl_result → playing (settimana 38)",
+    "passo 182: fase playing → hl_intro (settimana 38)",
+    "passo 184: fase hl_intro → hl_result (settimana 38)",
+    "passo 189: fase hl_result → playing (settimana 38)",
+    "passo 196: fase playing → hl_intro (settimana 38)",
+    "passo 199: fase hl_intro → hl_choose (settimana 38)",
+    "passo 200: fase hl_choose → hl_result (settimana 38)",
+    "passo 203: fase hl_result → playing (settimana 38)",
+    "passo 248: fase playing → ceremony (settimana 38)",
+    "passo 249: fase ceremony → ended (settimana 38)"
+  ],
+  "avvisiFermi": [
+    "gala51 «Chiara Loreti apre la prima busta» (partita 1)"
+  ],
+  "vw": 412,
+  "vh": 915,
+  "gioco": "?cpmtest=1 (serve __CPM_CAREER per la lettura); __CPM_POP224=1 e __CPM_PRESENT=1 armati; GLB OFF; finestre chiuse con clic (closeTop), nessun dismiss",
+  "w_finale": 1,
+  "m_finale": 0,
+  "partite": [
+    {
+      "partita": 1,
+      "finestreDopoFine": [
+        "settimana23 / SETTIMANA 39 · FC MERSEYSIDE",
+        "toast23 / 💪",
+        "intervista231 / INTERVISTA",
+        "intervista231 / IL GIORNALISTA INCALZA",
+        "intervista231 / COM'È ANDATA",
+        "gala51 / Chiara Loreti apre la prima busta",
+        "toast23 / 🆕",
+        "anon / 🏆",
+        "pop224 / La tua storia",
+        "toast23 / 🎙️",
+        "toast23 / ✅",
+        "toast23 / 📈",
+        "toast23 / 🎯",
+        "toast23 / ⭐"
+      ],
+      "intervistaComparsa": true,
+      "dopoQuante": 0,
+      "precedenti": [
+        "settimana23 / SETTIMANA 39 · FC MERSEYSIDE",
+        "toast23 / 💪"
+      ],
+      "foto": "foto/PO231-412-partita1-intervista.png",
+      "ivAlFineGara": 1,
+      "inizioAtPasso": 14,
+      "fineAtPasso": 248,
+      "contesto": "win",
+      "intervistaOggetto": {
+        "dc": "intervista231",
+        "titolo": "INTERVISTA",
+        "z": 9998,
+        "nopanel": false,
+        "x": 0,
+        "y": 284,
+        "w": 412,
+        "h": 631,
+        "fuori": false,
+        "scorrevole": true,
+        "bg": "rgb(255, 255, 255)",
+        "raggio": "18px",
+        "ombra": "rgba(0, 0, 0, 0.45) 0px -12px 40px 0px",
+        "bordo": "1px solid rgb(231, 227, 220)",
+        "cornice": "no",
+        "trunc": [],
+        "pulsanti": 3,
+        "etichette": [
+          "🤝 Diplomatico«Non esiste la per",
+          "🔥 Ambizioso«Poco. Sono già ad u",
+          "🙏 Umile«Molte cose. La mentalit"
+        ],
+        "orizzScroll": false
+      },
+      "blocchiAlFine": null
+    }
+  ],
+  "secondi": 4200
+}
