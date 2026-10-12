@@ -445,7 +445,7 @@ eventi. Non dichiararle «fedeli alla simulazione».
 
 **Il ritmo della partita ha UN metronomo, e il clock è fermo negli highlight (7.484.0).** Tutto ciò che
 scorre in `playing` — cronaca BG, grida del mister, micro-sim dei gol, lerp del pallone — gira sul tick
-del clock: `MATCH_TICK_MS` **900 ms** per minuto di gioco (7.489.0; era 420), diviso per la velocità scelta dal
+del clock: `MATCH_TICK_MS` **1700 ms** per minuto di gioco (valore attuale nel codice; 900 ms solo con `__CPM_NO564`; storia: 420 → 900 nel 7.489.0 → 1700) — verificato dalla sessione di rilascio il 12/10, diviso per la velocità scelta dal
 giocatore (**1× · 1,5× · 2×**, comando accanto alla pausa, preferenza in `localStorage` `cpm-match-speed`
 — non nel salvataggio, nessun SAVE bump). Guardiano `npm run match-speed` (misurato 948/658/475 contro
 900/600/450 attesi · migrazione della vecchia preferenza 1,25 → 1 · prova del rosso `__CPM_NO484`). ⚠️ La manopola muove il FLUSSO, mai le finestre
