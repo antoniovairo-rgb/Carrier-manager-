@@ -1,5 +1,181 @@
 [
  {
+  "data": "2026-10-12 10:16",
+  "versione": "7.999.161",
+  "catena": "carriera",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 240,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 71
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 132
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 79
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 104
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 36
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": false,
+    "s": 280,
+    "coda": "VERDE: 4 disegni · margine alto primo 74 px, min 74, max 74 | ROSSO (__CPM_NO_RIMB189): 4 disegni · margine alto primo 0 px, min 0, max 74 | ❌ rimbalzo-189 ROSSO",
+    "prove": 3
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 628
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 54
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 357
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 230
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 508
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 786
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 619
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 453
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 556
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 562
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 790
+   }
+  ]
+ },
+ {
   "data": "2026-10-11 23:24",
   "versione": "7.999.160",
   "catena": "completa",
@@ -6840,58 +7016,6 @@
     "passo": "figurine-208",
     "ok": true,
     "s": 40
-   }
-  ]
- },
- {
-  "data": "2026-10-05 03:45",
-  "versione": "7.999.135",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 697
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 695
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 507
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
