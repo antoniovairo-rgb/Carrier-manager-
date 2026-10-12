@@ -259,3 +259,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - PO (questionario): **orari 08 · 16 · 00 (ora di Roma)**; **prima di ogni rilascio le catene complete** («carriera» + «completa», circa 3-4 ore).
 - Attuazione: routine «CPM — rilascio 08·16·00» che parte alle 04:15, 12:15 e 20:15 (ora di Roma), fa girare le catene sull'ultimo commit del ramo e promuove su main solo se verdi. Se le catene sono rosse il rilascio salta e si annuncia il motivo. Se dall'ultimo rilascio non è cambiato nulla nel gioco, il rilascio non si fa.
 - Primo rilascio con la nuova cadenza: 16:00 di oggi (7.999.161).
+
+## 12/10 mattina — PO-228: ritaratura di passaggi e cross
+- Misura (collaudatrice 2 giro 6, 10 partite su 7.999.160): passaggi a fine partita, due squadre insieme, media 414,9; cross 45,8.
+- Riferimento: Premier League 2024/25, 893 passaggi a partita (premierleague.com/news/4323030). La fonte non dice se il dato è per squadra o per le due squadre; la lettura «due squadre insieme» è una deduzione (vedi riferimenti/PO228-riferimenti.md).
+- PO (questionario): **passaggi verso il reale, circa 850-900 a partita**; **cross abbassati verso circa 25** (stima, non dato pubblicato: il PO la accetta come obiettivo).
+- Vincoli del team: gol, tiri e voti non devono cambiare oltre il rumore (misura prima/dopo), interruttore rosso e guardiano.

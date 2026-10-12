@@ -9,21 +9,21 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEME = +(process.env.SEME || 2311), GIRI = +(process.env.GIRI || 2), RANDSEED = process.env.RANDSEED === '1', FREEZEDATE = process.env.FREEZEDATE === '1';
-const TAG = process.env.TAG || ('s' + SEME + (RANDSEED ? '-rs' : ''));
+const SEME = +(process.env.SEME || 2311), GIRI = +(process.env.GIRI || 2), RANDSEED = process.env.RANDSEED === 'const' ? 'const' : process.env.RANDSEED === '1', FREEZEDATE = process.env.FREEZEDATE === '1';
+const TAG = process.env.TAG || ('s' + SEME + (RANDSEED === 'const' ? '-rc' : RANDSEED ? '-rs' : ''));
 const OUTD = '/tmp/claude-0/seme'; fs.mkdirSync(OUTD, { recursive: true });
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function giro(n) {
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e && e.message).slice(0, 160)));
-  await page.addInitScript(([s, rs]) => {
+  await page.addInitScript(([s, rs, fp, fl]) => {
     window.__CPM_GLB = false; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s));
-    window.__CPM_TXT487 = [];
+    window.__CPM_TXT487 = []; window.__CPM_REG202 = {}; window.__CPM_RND14 = {}; window.__CPM_PRESS959 = {};
     /* Math.random: conteggio per minuto di gioco; con rs=1 sostituito da un mulberry32 a seme fisso */
     const orig = Math.random; let a = 0x9E3779B9 >>> 0;
     const mb = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
     window.__SR = { n: 0, perMin: {} };
-    Math.random = function () { window.__SR.n++; try { const c = window.__CPM_CLOCK ? window.__CPM_CLOCK() : -1; const ph = window.__CPM_PHASE ? window.__CPM_PHASE() : '-'; const k = c + '|' + ph; window.__SR.perMin[k] = (window.__SR.perMin[k] | 0) + 1; } catch (e) {} return rs ? mb() : orig(); };
+    Math.random = function () { window.__SR.n++; try { const c = window.__CPM_CLOCK ? window.__CPM_CLOCK() : -1; const ph = window.__CPM_PHASE ? window.__CPM_PHASE() : '-'; const k = c + '|' + ph; window.__SR.perMin[k] = (window.__SR.perMin[k] | 0) + 1; } catch (e) {} return rs === 'const' ? 0.4321 : rs ? mb() : orig(); };
     /* traccia: ogni cambio di (fase, minuto, scena, punteggio) */
     window.__TR = []; let last = '';
     const t0 = performance.now();
@@ -32,9 +32,16 @@ async function giro(n) {
       const ph = window.__CPM_PHASE(), c = window.__CPM_CLOCK ? window.__CPM_CLOCK() : null, sc = window.__CPM_SCORE ? window.__CPM_SCORE() : null;
       const cs = window.__CPM_CURSIT ? window.__CPM_CURSIT() : null; const nh = window.__CPM_NUMHL ? window.__CPM_NUMHL() : null;
       const k = [ph, c, cs ? cs.i : '-', sc ? sc.home + '-' + sc.away : '-', nh].join('|');
+      try { const pp = window.__CPM_PPOS && window.__CPM_PPOS(); const b3 = window.__CPM_BALL3 && window.__CPM_BALL3();
+        const kp = pp ? pp.x + ',' + pp.y : '-'; const kb = b3 ? b3.t.x + ',' + b3.t.y : '-';
+        if (kp !== window.__LP) { window.__LP = kp; (window.__PP = window.__PP || []).push({ t: Math.round(performance.now() - t0), ph, c, x: pp && pp.x, y: pp && pp.y }); }
+        if (kb !== window.__LB) { window.__LB = kb; (window.__BT = window.__BT || []).push({ t: Math.round(performance.now() - t0), ph, c, x: b3 && b3.t.x, y: b3 && b3.t.y }); }
+      } catch (e) {}
       if (k !== last) { last = k; window.__TR.push({ t: Math.round(performance.now() - t0), ph, c, hl: cs ? cs.i : null, gi: cs ? cs.gi : null, sit: cs ? cs.t.slice(0, 30) : null, sc: sc ? sc.home + '-' + sc.away : null, nh }); }
     } catch (e) {} }, 20);
-  }, [save, RANDSEED]);
+    if (fp) { const _si = window.setInterval; window.__FP = 0; window.setInterval = function (fn, ms, ...r) { if (typeof fn === 'function' && (fp === true ? ['__CPM_PRESS959'] : fp).some(z => String(fn).indexOf(z) >= 0)) { window.__FP++; return _si.call(window, () => {}, ms); } return _si.call(window, fn, ms, ...r); }; }
+    for (const f of fl) window[f] = 1;
+  }, [save, RANDSEED, (process.env.NOINT ? process.env.NOINT.split(',') : process.env.FIXPRESS === '1'), (process.env.FLAGS || '').split(',').filter(Boolean)]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -49,21 +56,21 @@ async function giro(n) {
   const srAvvio = await page.evaluate(() => window.__SR.n);
   const hlTimes0 = await page.evaluate(() => window.__CPM_HLTIMES ? window.__CPM_HLTIMES() : null);
   await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), SEME);
-  const tA = Date.now(); let ph; while (Date.now() - tA < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; await sleep(700); }
+  const tA = Date.now(); let ph; while (Date.now() - tA < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'ended' || ph === 'ceremony') break; if (process.env.STOPMIN && (await page.evaluate(() => window.__CPM_CLOCK())) >= +process.env.STOPMIN) break; await sleep(700); }
   const durata = Date.now() - tA;
   const r = await page.evaluate(() => ({
     tr: window.__TR, sc: window.__CPM_SCORE && window.__CPM_SCORE(), clock: window.__CPM_CLOCK && window.__CPM_CLOCK(),
     hlTimes: window.__CPM_HLTIMES ? window.__CPM_HLTIMES() : null, numhl: window.__CPM_NUMHL ? window.__CPM_NUMHL() : null,
     tl: (window.__CPM_TIMELINE ? window.__CPM_TIMELINE() : []).map(e => ({ ty: e.type || e.ev, ...(e.payload || e) })),
     ev: (window.__CPM_EV ? window.__CPM_EV() : []).map(e => { const o = { ...e }; delete o.ts; return o; }),
-    txt: window.__TXT_COPY || window.__CPM_TXT487, sr: window.__SR,
+    txt: window.__TXT_COPY || window.__CPM_TXT487, sr: window.__SR, fp: window.__FP, pp: window.__PP, bt: window.__BT, press: window.__CPM_PRESS959, reg: window.__CPM_REG202, rnd14: window.__CPM_RND14,
   }));
   await ctx.close();
   return { giro: n, pm, fine: ph, durataMs: durata, srAvvio, hlTimes0, errs, ...r };
 }
 const out = [];
 for (let i = 0; i < GIRI; i++) { const g = await giro(i); out.push(g);
-  console.log(`giro ${i}: fine=${g.fine} min=${g.clock} score=${JSON.stringify(g.sc)} numHL=${g.numhl} hlTimes=${JSON.stringify(g.hlTimes)} hlTimes0=${JSON.stringify(g.hlTimes0)} durata=${g.durataMs}ms rnd=${g.sr && g.sr.n} righe=${(g.txt || []).length} ev=${g.ev.length} errs=${g.errs.length}`); }
+  console.log(`giro ${i}: fine=${g.fine} min=${g.clock} score=${JSON.stringify(g.sc)} numHL=${g.numhl} hlTimes=${JSON.stringify(g.hlTimes)} hlTimes0=${JSON.stringify(g.hlTimes0)} durata=${g.durataMs}ms rnd=${g.sr && g.sr.n} fp=${g.fp} righe=${(g.txt || []).length} ev=${g.ev.length} errs=${g.errs.length}`); }
 fs.writeFileSync(`${OUTD}/${TAG}.json`, JSON.stringify(out));
 await b.close(); srv.close();
 console.log('FINE ' + TAG);
