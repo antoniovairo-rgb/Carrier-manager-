@@ -1,0 +1,25 @@
+{
+  "k": 4,
+  "root": "/tmp/claude-0/-home-user-Carrier-manager-/eb1e2186-ecc0-577e-b1fa-f5bef31efee0/scratchpad/rec159",
+  "err": null,
+  "name": "Samuelito Vairo PO228-4",
+  "fine": "ceremony",
+  "tabellinoGol": {
+    "mine": "1",
+    "loro": "0"
+  },
+  "score": {
+    "home": 0,
+    "away": 0
+  },
+  "golRec": [
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 96,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at <anonymous>:10161:947"
+    }
+  ],
+  "evGoal": [],
+  "fischio": true
+}
