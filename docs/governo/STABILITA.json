@@ -2,6 +2,134 @@
  {
   "data": "2026-10-12 10:16",
   "versione": "7.999.161",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "validate-situations",
+    "ok": false,
+    "s": 3182,
+    "coda": "gate-history → 187 run · ↔ fingerprint cambiato (Δfailure -1) |  | ❌ FAIL — motion",
+    "prove": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 7
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 369
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 982
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 524
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1103
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 2152,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 230
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 339
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 4440
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2222
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1641
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 467
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": false,
+    "s": 901,
+    "coda": "k4 rosso: tabellino 3-2 (mio-loro), tabellone 3-2, motore 3-2, golLog [{\"min\":18,\"tick\":430,\"lato\":\"away\",\"scena\":false,\"chi\":19},{\"min\":58,\"tick\":1347,\"lato\":\"away\",\"scena\":false,\"chi\":18},{\"min\":63,\"tick\":1467,\"lato\":\"home\",\"scena\":false,",
+    "prove": 3
+   }
+  ]
+ },
+ {
+  "data": "2026-10-12 10:16",
+  "versione": "7.999.161",
   "catena": "carriera",
   "passi": [
    {
@@ -6904,118 +7032,6 @@
     "passo": "possesso-209",
     "ok": true,
     "s": 576
-   }
-  ]
- },
- {
-  "data": "2026-10-05 04:19",
-  "versione": "7.999.135",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 199
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 806
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 276
-   },
-   {
-    "passo": "fila-206",
-    "ok": true,
-    "s": 311
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": true,
-    "s": 70
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 77
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 112
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 103
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 75
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 60
-   },
-   {
-    "passo": "figurine-208",
-    "ok": true,
-    "s": 40
    }
   ]
  }
