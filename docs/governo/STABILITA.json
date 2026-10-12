@@ -1,5 +1,279 @@
 [
  {
+  "data": "2026-10-12 08:39",
+  "versione": "7.999.160",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 806
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 69
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 34
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 359
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 1051
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 541
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": false,
+    "s": 0,
+    "coda": "} |  | Node.js v22.22.0",
+    "prove": 3
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 3295,
+    "instabile": true,
+    "prove": 3
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 254
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 547
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 8998,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2310
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1675
+   }
+  ]
+ },
+ {
+  "data": "2026-10-12 06:29",
+  "versione": "7.999.160",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 277
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 56
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 302
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 353
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 209,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": false,
+    "s": 295,
+    "coda": "VERDE: {\"campioni\":16,\"scarto\":0.05,\"faccia\":0} | ROSSO (__CPM_NO_COPPA191): {\"campioni\":7,\"scarto\":0.51,\"faccia\":0} | ❌ coppa-mani-191 ROSSO",
+    "prove": 3
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 107
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 142
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 135
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 103
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 80
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "post-210",
+    "ok": true,
+    "s": 563
+   },
+   {
+    "passo": "piedi-203",
+    "ok": true,
+    "s": 659
+   },
+   {
+    "passo": "gesti-scena-p1b",
+    "ok": true,
+    "s": 648
+   },
+   {
+    "passo": "piede-cross-p1b2",
+    "ok": true,
+    "s": 191
+   },
+   {
+    "passo": "rincorsa-144",
+    "ok": true,
+    "s": 273
+   },
+   {
+    "passo": "doppio-gesto-148",
+    "ok": true,
+    "s": 270
+   },
+   {
+    "passo": "testa-146",
+    "ok": true,
+    "s": 168
+   },
+   {
+    "passo": "movimento-147",
+    "ok": true,
+    "s": 686
+   },
+   {
+    "passo": "l7-schermate",
+    "ok": true,
+    "s": 74
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 995
+   }
+  ]
+ },
+ {
   "data": "2026-10-11 23:24",
   "versione": "7.999.160",
   "catena": "completa",
@@ -6728,170 +7002,6 @@
     "passo": "possesso-209",
     "ok": true,
     "s": 576
-   }
-  ]
- },
- {
-  "data": "2026-10-05 04:19",
-  "versione": "7.999.135",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 199
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 806
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 276
-   },
-   {
-    "passo": "fila-206",
-    "ok": true,
-    "s": 311
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": true,
-    "s": 70
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 77
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 112
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 103
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 75
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 60
-   },
-   {
-    "passo": "figurine-208",
-    "ok": true,
-    "s": 40
-   }
-  ]
- },
- {
-  "data": "2026-10-05 03:45",
-  "versione": "7.999.135",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 697
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 695
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 507
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }

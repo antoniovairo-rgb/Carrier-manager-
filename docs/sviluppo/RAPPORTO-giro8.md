@@ -139,3 +139,33 @@ Main 1/4, ramo 0/4 (e 0/3 in catena). Le grandezze di merito sono **identiche** 
 nel verde, 0,51 nel rosso, faccia 0): cambia solo quanti campioni si raccolgono, intorno alla soglia. Stessa
 classe di `movimento-147`: guardiano a conteggio di campioni, instabile anche su main. La correzione PO-229 agisce
 solo dentro `hl_result` con conclusione viva e non tocca la premiazione; non ho una misura che la colleghi.
+
+### Completa — `node ci-runner.mjs completa` sul ramo (giro 7 + PO-229)
+**19/20 nel runner; 20/20 contando `scena-motore-147` rieseguito a mano.** Log: `docs/sviluppo/completa-giro8.log`.
+- ✅ `test:vision`, `test:logic`, `typing-shortcuts`, **`validate-situations`** (gate), `save-compat`, `replay`,
+  `career-critical`, `partita-vera`, `manovre-150`, `popup-224`, `lessico-218`, `fila-227`, `design-system`,
+  `gk-dive-sync`, **`goal-postarc`**, `difesa-220`, `scene-221`.
+- ⚠️ `esiti-218` instabile: verde alla terza prova (primo rosso: gi2021 «Piazzato nell'angolo basso», tiro fuori
+  raccontato come parata).
+- ⚠️ `nomi-219` instabile: verde alla seconda prova (primo rosso: compagni nominati vicini 88 % contro ≥ 90 %).
+- ❌ `scena-motore-147` in 0 s: **non è una misura**. Lo script carica harness e salvataggio da percorsi assoluti
+  `/home/user/cm-poc/tests/visual/…` (`tests/visual/scena-motore-147.mjs:6-7`), che in questo container non
+  esistono. Rieseguito a mano con un collegamento simbolico temporaneo `/home/user/cm-poc → repo` (rimosso
+  dopo): **✅ verde** — generate 14 su 14 occasioni coperte nel verde, 0 nel rosso `__CPM_NO_P6C`. Log:
+  `docs/sviluppo/scena-motore-147-giro8.log`. Lo script non l'ho corretto (fuori ambito): chi lo esegue fuori da
+  quella cartella lo vedrà sempre rosso.
+
+Le foto `docs/collaudo-grafico/g0/` sono rigenerate da `griglia-mobile`; `docs/governo/STABILITA.json` porta i
+giri di questa sessione.
+
+## Esito
+
+- **Compito 1 (PO-229): fatto.** Causa misurata e corretta, rosso `__CPM_NO_PO229`, sonda nuova verde 4/4 e
+  rossa 3/3, `delivery-arrival` (38,188,30) e `goal-postarc` verdi, gate e catena completa verdi. Resta da
+  provare sul telefono, e resta non dimostrato che il difetto esista anche nel flusso vero (vedi sopra).
+- **Compito 2 (L7 / movimento-147): misurato.** La differenza non regge (main 2/6, L7 0/7, p ≈ 0,19; nessuna
+  grandezza si sposta; stesse firme di rosso sulle due build). Dentro la catena grafica di questo giro
+  `movimento-147` è verde sulla mia build. La catena grafica resta però **29/30** per `coppa-mani-191`, rosso
+  anche su main 3 corse su 4: guardiano instabile della stessa classe (soglia sul numero di campioni).
+
+NON CHIUSO — la catena grafica non è verde (29/30, `coppa-mani-191` rosso 3/3 nel runner, rosso anche su main 3 corse su 4) e la catena completa ha un passo rosso nel runner (`scena-motore-147`, percorso assoluto inesistente nel container, verde solo eseguito a mano); nessun rosso è legato alle mie modifiche, ma non lo posso dichiarare verde.
