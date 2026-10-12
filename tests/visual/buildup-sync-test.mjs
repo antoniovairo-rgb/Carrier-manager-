@@ -35,7 +35,7 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 360, height: 260 } });
 await installCdnRoutes(page);
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; });
+await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_DRB229 = 1; }, !!process.env.CPM_NO_DRB229);
 await openMatch(page, port); await sleep(800);
 
 const righe = [], guasti = [];
