@@ -1,0 +1,4401 @@
+{
+ "visto": true,
+ "corpi": [
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 3,
+   "n": 4,
+   "visN": 4,
+   "visFr": 0,
+   "dtS": 0.71,
+   "fermi": 2,
+   "fermiVis": 2,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.16,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 3,
+   "n": 4,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.39,
+   "fermi": 2,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.95,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.05,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.95,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.06,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.99,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.02,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 3,
+   "n": 4,
+   "visN": 4,
+   "visFr": 0,
+   "dtS": 0.39,
+   "fermi": 2,
+   "fermiVis": 2,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.94,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.96,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.05,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.02,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.05,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.07,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.14,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "<anonymous>:3590:623",
+    "Array.forEach",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.11,
+   "creatori": [
+    "_mkA",
+    "_buildAvatars907"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 1,
+   "n": 2,
+   "visN": 2,
+   "visFr": 1,
+   "dtS": 0.05,
+   "fermi": 1,
+   "fermiVis": 1,
+   "fermiVisFr": 1,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_mkA",
+    "_buildAvatars907",
+    "<anonymous>:3604:238"
+   ]
+  },
+  {
+   "clips": [
+    "idle:0",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_passoNaturale7"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 49,
+   "visN": 49,
+   "visFr": 49,
+   "dtS": 20.42,
+   "fermi": 48,
+   "fermiVis": 48,
+   "fermiVisFr": 48,
+   "jogFermiVisFr": 48,
+   "jogFermiAny": 48,
+   "jogAnyVis": 48,
+   "stackTop": [
+    "_passoNaturale7",
+    "loop"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 212,
+   "n": 213,
+   "visN": 213,
+   "visFr": 5,
+   "dtS": 11.13,
+   "fermi": 191,
+   "fermiVis": 191,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 1,
+   "jogAnyVis": 11,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.12,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 212,
+   "n": 213,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 10.81,
+   "fermi": 195,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 2,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 55,
+   "n": 56,
+   "visN": 2,
+   "visFr": 0,
+   "dtS": 3.23,
+   "fermi": 49,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 57,
+   "n": 58,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.57,
+   "fermi": 51,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 1,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 58,
+   "n": 59,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.06,
+   "fermi": 52,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 1,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 66,
+   "n": 67,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.7,
+   "fermi": 59,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 67,
+   "n": 68,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.99,
+   "fermi": 58,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.07,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 64,
+   "n": 65,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.28,
+   "fermi": 56,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 70,
+   "n": 71,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.82,
+   "fermi": 62,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 1,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.12,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 70,
+   "n": 71,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 4.06,
+   "fermi": 61,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 61,
+   "n": 62,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.05,
+   "fermi": 53,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.02,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 212,
+   "n": 213,
+   "visN": 213,
+   "visFr": 22,
+   "dtS": 10.81,
+   "fermi": 190,
+   "fermiVis": 190,
+   "fermiVisFr": 22,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 2,
+   "jogAnyVis": 12,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.12,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 57,
+   "n": 58,
+   "visN": 5,
+   "visFr": 0,
+   "dtS": 3.33,
+   "fermi": 50,
+   "fermiVis": 1,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 60,
+   "n": 61,
+   "visN": 7,
+   "visFr": 2,
+   "dtS": 3.72,
+   "fermi": 52,
+   "fermiVis": 1,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 77,
+   "n": 78,
+   "visN": 4,
+   "visFr": 1,
+   "dtS": 4.01,
+   "fermi": 70,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.07,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 81,
+   "n": 82,
+   "visN": 75,
+   "visFr": 62,
+   "dtS": 4.45,
+   "fermi": 73,
+   "fermiVis": 68,
+   "fermiVisFr": 56,
+   "jogFermiVisFr": 1,
+   "jogFermiAny": 1,
+   "jogAnyVis": 4,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.08,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 86,
+   "n": 87,
+   "visN": 78,
+   "visFr": 65,
+   "dtS": 4.94,
+   "fermi": 77,
+   "fermiVis": 71,
+   "fermiVisFr": 59,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 4,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 84,
+   "n": 85,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 4.28,
+   "fermi": 77,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 1,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.07,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 66,
+   "n": 67,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.62,
+   "fermi": 58,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.08,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 65,
+   "n": 66,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.81,
+   "fermi": 57,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.07,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 63,
+   "n": 64,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 3.15,
+   "fermi": 57,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 55,
+   "n": 56,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 2.99,
+   "fermi": 49,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 92,
+   "n": 93,
+   "visN": 93,
+   "visFr": 81,
+   "dtS": 4.6,
+   "fermi": 92,
+   "fermiVis": 92,
+   "fermiVisFr": 81,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "<anonymous>:3647:4325",
+    "Array.map",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.12,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.12,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.98,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.99,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.99,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.99,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.99,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.1,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.48,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.72,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.16,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.4,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.64,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.03,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.08,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.97,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.32,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.05,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.05,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.56,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.01,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.02,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.02,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0.24,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 1.09,
+   "creatori": [
+    "_makeVariant",
+    "_replaceIntroLineupWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Group",
+   "agganciatoN": 0,
+   "n": 1,
+   "visN": 1,
+   "visFr": 0,
+   "dtS": 0,
+   "fermi": 0,
+   "fermiVis": 0,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 0,
+   "jogAnyVis": 0,
+   "stackTop": [
+    "_makeVariant",
+    "<anonymous>:3654:3741",
+    "Array.forEach",
+    "<anonymous>:3654:3646",
+    "Array.forEach",
+    "_replaceIntroLineupWithHyper",
+    "<anonymous>:3693:670"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.78,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 25,
+   "dtS": 10.52,
+   "fermi": 189,
+   "fermiVis": 189,
+   "fermiVisFr": 25,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 2,
+   "jogAnyVis": 19,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.85,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 32,
+   "dtS": 10.64,
+   "fermi": 184,
+   "fermiVis": 184,
+   "fermiVisFr": 32,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 20,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.77,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 42,
+   "dtS": 10.76,
+   "fermi": 181,
+   "fermiVis": 181,
+   "fermiVisFr": 42,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 21,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.79,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 53,
+   "dtS": 10.88,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 53,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 2,
+   "jogAnyVis": 21,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.78,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 60,
+   "dtS": 11,
+   "fermi": 181,
+   "fermiVis": 181,
+   "fermiVisFr": 55,
+   "jogFermiVisFr": 4,
+   "jogFermiAny": 4,
+   "jogAnyVis": 22,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.81,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 55,
+   "dtS": 11.12,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 42,
+   "jogFermiVisFr": 3,
+   "jogFermiAny": 3,
+   "jogAnyVis": 22,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.82,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 49,
+   "dtS": 11.24,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 33,
+   "jogFermiVisFr": 4,
+   "jogFermiAny": 4,
+   "jogAnyVis": 23,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.82,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 57,
+   "dtS": 10.52,
+   "fermi": 179,
+   "fermiVis": 179,
+   "fermiVisFr": 39,
+   "jogFermiVisFr": 3,
+   "jogFermiAny": 3,
+   "jogAnyVis": 23,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.8,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 38,
+   "dtS": 10.64,
+   "fermi": 179,
+   "fermiVis": 179,
+   "fermiVisFr": 22,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 4,
+   "jogAnyVis": 24,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.78,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 14,
+   "dtS": 10.76,
+   "fermi": 179,
+   "fermiVis": 179,
+   "fermiVisFr": 6,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 4,
+   "jogAnyVis": 24,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.82,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 5,
+   "dtS": 10.88,
+   "fermi": 178,
+   "fermiVis": 178,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 24,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.81,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 23,
+   "dtS": 11,
+   "fermi": 185,
+   "fermiVis": 185,
+   "fermiVisFr": 23,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 4,
+   "jogAnyVis": 25,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.78,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 29,
+   "dtS": 11.12,
+   "fermi": 181,
+   "fermiVis": 181,
+   "fermiVisFr": 28,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 4,
+   "jogAnyVis": 24,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.85,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 49,
+   "dtS": 11.24,
+   "fermi": 179,
+   "fermiVis": 179,
+   "fermiVisFr": 44,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 4,
+   "jogAnyVis": 24,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.76,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 98,
+   "dtS": 10.52,
+   "fermi": 179,
+   "fermiVis": 179,
+   "fermiVisFr": 91,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 23,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.76,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 161,
+   "dtS": 10.64,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 138,
+   "jogFermiVisFr": 4,
+   "jogFermiAny": 4,
+   "jogAnyVis": 23,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.86,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 175,
+   "dtS": 10.76,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 152,
+   "jogFermiVisFr": 3,
+   "jogFermiAny": 3,
+   "jogAnyVis": 22,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.82,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 148,
+   "dtS": 10.88,
+   "fermi": 181,
+   "fermiVis": 181,
+   "fermiVisFr": 126,
+   "jogFermiVisFr": 4,
+   "jogFermiAny": 4,
+   "jogAnyVis": 22,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.84,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 87,
+   "dtS": 11,
+   "fermi": 180,
+   "fermiVis": 180,
+   "fermiVisFr": 64,
+   "jogFermiVisFr": 2,
+   "jogFermiAny": 2,
+   "jogAnyVis": 21,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.84,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 62,
+   "dtS": 11.12,
+   "fermi": 181,
+   "fermiVis": 181,
+   "fermiVisFr": 49,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 21,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.85,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 24,
+   "dtS": 11.24,
+   "fermi": 182,
+   "fermiVis": 182,
+   "fermiVisFr": 21,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 20,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:1",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "idle",
+    "jog"
+   ],
+   "scale": 0.8,
+   "creatori": [
+    "_replaceMascotsWithHyper"
+   ],
+   "anc": [
+    "Group:Scene",
+    "Group"
+   ],
+   "topTipo": "Scene",
+   "agganciatoN": 211,
+   "n": 212,
+   "visN": 212,
+   "visFr": 23,
+   "dtS": 10.52,
+   "fermi": 183,
+   "fermiVis": 183,
+   "fermiVisFr": 20,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 3,
+   "jogAnyVis": 19,
+   "stackTop": [
+    "<anonymous>:3665:933",
+    "Array.forEach",
+    "_replaceMascotsWithHyper",
+    "window.__CPM_HYPER_MASCOT_BUILDER",
+    "<anonymous>:3695:479"
+   ]
+  },
+  {
+   "clips": [
+    "idle:0",
+    "jog:1"
+   ],
+   "nomiClip": [
+    "jog"
+   ],
+   "scale": 1.04,
+   "creatori": [
+    "_passoNaturale7"
+   ],
+   "anc": [
+    "Group:Scene"
+   ],
+   "topTipo": "Group:Scene",
+   "agganciatoN": 0,
+   "n": 49,
+   "visN": 49,
+   "visFr": 0,
+   "dtS": 17.35,
+   "fermi": 48,
+   "fermiVis": 48,
+   "fermiVisFr": 0,
+   "jogFermiVisFr": 0,
+   "jogFermiAny": 48,
+   "jogAnyVis": 48,
+   "stackTop": [
+    "_passoNaturale7",
+    "loop"
+   ]
+  }
+ ],
+ "scene": 221,
+ "mixers": 116,
+ "versione": "7.999.160"
+}

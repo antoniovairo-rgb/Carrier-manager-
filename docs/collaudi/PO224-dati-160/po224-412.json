@@ -1,0 +1,38 @@
+{
+ "W": 412,
+ "SEASONS": 1,
+ "versione": "7.999.160",
+ "righe": [
+  {
+   "W": 412,
+   "settimana": 4,
+   "tipo": "naturale",
+   "pop": true,
+   "titolo": "La tua storia",
+   "testoLen": 230,
+   "testo": "La tua storia › LA TUA STORIA ⚔️ Il rivale in casa Il club ha preso Matthew Nixon — un attaccante. In spogliatoio nessuno lo dice, ma tutti lo pensano: vuole il",
+   "altezza": 915,
+   "dentroSchermo": true,
+   "inPrimoPiano": true,
+   "copertaDa": null,
+   "pulsanti": [
+    "La tua storia\n›",
+    "Continua la storia →"
+   ],
+   "fisarmonica": {
+    "prima": 230,
+    "dopo": 15,
+    "cambia": true,
+    "finestraRestaDopoChiusuraFisarmonica": true,
+    "pulsantiDiSceltaDopoChiusura": 0,
+    "riaperta": 230
+   },
+   "chiusura": {
+    "esito": "chiusa col puntatore",
+    "cliccato": "Continua la storia →"
+   },
+   "residuiFuori": 0,
+   "chiave": "naturale-412"
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "W": 360,
+ "SEASONS": 1,
+ "versione": "7.999.160",
+ "righe": [
+  {
+   "W": 360,
+   "settimana": 4,
+   "tipo": "naturale",
+   "pop": true,
+   "titolo": "La tua storia",
+   "testoLen": 230,
+   "testo": "La tua storia › LA TUA STORIA ⚔️ Il rivale in casa Il club ha preso Matthew Nixon — un attaccante. In spogliatoio nessuno lo dice, ma tutti lo pensano: vuole il",
+   "altezza": 915,
+   "dentroSchermo": true,
+   "inPrimoPiano": false,
+   "copertaDa": "DIV «INTERVISTA Zona Mista SETTIMANALE In sala Esposito»",
+   "pulsanti": [
+    "La tua storia\n›",
+    "Continua la storia →"
+   ],
+   "fisarmonica": {
+    "prima": 230,
+    "dopo": 230,
+    "cambia": false,
+    "finestraRestaDopoChiusuraFisarmonica": true,
+    "pulsantiDiSceltaDopoChiusura": 1,
+    "riaperta": 230
+   },
+   "chiusura": {
+    "esito": "pulsante COPERTO: non cliccabile col puntatore",
+    "cliccato": "Continua la storia →"
+   },
+   "residuiFuori": 0,
+   "chiave": "naturale-360"
+  }
+ ]
+}

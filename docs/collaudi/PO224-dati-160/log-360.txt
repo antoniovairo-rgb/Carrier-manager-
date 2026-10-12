@@ -1,0 +1,22 @@
+step 0 → lived
+passo 0: S12 W38 undefined
+step 1 → simulated
+step 2 → lived
+step 3 → advanced
+  uscita fine stagione: pulsante visibile=false · step dopo = opening-resolved
+step 4 → seasonEnd
+W4 · «La tua storia» · primo piano false · dentro true · pulsante COPERTO: non cliccabile col puntatore · residui fuori 0
+step 5 → lived
+step 6 → simulated
+step 7 → lived
+step 8 → simulated
+passo 8: S13 W3 undefined
+step 9 → lived
+step 10 → simulated
+step 11 → lived
+passo 16: S13 W6 undefined
+passo 24: S13 W10 undefined
+passo 32: S13 W13 undefined
+passo 40: S13 W16 undefined
+PATTO forzato · finestra NON comparsa
+finestre osservate: 1 · tipi: La tua storia
