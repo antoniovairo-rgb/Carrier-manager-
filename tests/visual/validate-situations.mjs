@@ -251,8 +251,10 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
        con la 7.999.37 e col suo rosso __CPM_NO_PASSO37: stesse distribuzioni (16-21), e campioni bassi SOLO a freddo (5/21 e 0/21
        al primo campione, in entrambe). Una scena sotto soglia si rimisura UNA volta: una scena davvero ferma fallisce due volte;
        la rimisura resta scritta negli avvisi del check. */
+    /* [7.999.161 motion] pavimento di 0,4 s di SCENA nella finestra (tetto 6 s d'orologio): vedi sampleMotion in lib/harness.mjs. */
+    const MOT_OPT = { settle: 500, pollMs: 100, windowMs: 1900, minScene: 0.4, maxWindowMs: 6000 };
     const motRetry = [];
-    for (const gi of motIdx) { let s = await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 }); if (s && s.players && s.alive < 13) { await sleep(300); const s2 = await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 }); motRetry.push(`gi${gi}: rimisurata (${s.alive}/${s.players} → ${s2.alive}/${s2.players})`); s = s2; } motSamples.push(s); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
+    for (const gi of motIdx) { let s = await sampleMotion(page, gi, MOT_OPT); if (s && s.players && s.alive < 13) { await sleep(300); const s2 = await sampleMotion(page, gi, MOT_OPT); motRetry.push(`gi${gi}: rimisurata (${s.alive}/${s.players} → ${s2.alive}/${s2.players})`); s = s2; } motSamples.push(s); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
     const motRes = motion.run({ samples: motSamples });
     agg['motion'].issues.push(...motRes.issues.map(msg => ({ gi: null, msg })));
     agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })), ...motRetry.map(msg => ({ gi: null, msg })));

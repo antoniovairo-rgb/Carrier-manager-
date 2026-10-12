@@ -262,7 +262,7 @@ export async function samplePostHighlight(page, gi, { settle = 600, k = 0, pollM
    posizioni MESH reali (__CPM_STATE().players, derivate da mesh.position) durante la fase ATTIVA off-ball,
    SENZA risolvere l'azione. Ritorna metriche di vivacità: quanti giocatori si muovono davvero + salto max.
    Usato dal check `motion` (No Dead Players / liveness off-ball). */
-export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windowMs = 9000 } = {}) {
+export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windowMs = 9000, minScene = 0, maxWindowMs = windowMs } = {}) {
   await page.evaluate(([i, c]) => window.__CPM_FORCE_SIT(i, c), [gi, true]);
   await sleep(settle);
   await page.evaluate(() => { window.__CPM_FROZEN = false; }); // off-ball AI gira solo con dt>0
@@ -285,7 +285,18 @@ export async function sampleMotion(page, gi, { settle = 500, pollMs = 100, windo
   const sceneT0 = await page.evaluate(() => window.__CPM_SCENET || 0);
   const TARGET_SCENE = 1.2;
   let sceneNow = sceneT0;
-  while (Date.now() < end) {
+  /* [7.999.161 motion] UN PAVIMENTO DI TEMPO DI SCENA. Il rosso «gi14 12/21 · gi79 7/21» della 7.999.161 non
+     era il gioco: con la sonda tests/visual/sonda-motion-161.mjs (24 scene motIdx, bracci 160/161 alternati)
+     `alive` dipende SOLO da quanta scena scorre nella finestra di 1900 ms d'orologio. Stesso tempo di scena,
+     stessa vivacita' nelle due build (media del primo campione 160 contro 161: 15,4/14,0 a 0,15 s · 17,0/17,2 a
+     0,20 s · 18,6/18,4 a 0,25 s; >=19 in entrambe da 0,30 s in su; pagina fresca a ~6,6 fps 19-21 in tutte e
+     6 le corse). Sotto carico (fps 1,5-2,5) la finestra si chiudeva dopo 0,15-0,25 s di scena: spostamenti di
+     0,3-1,0 u contro la soglia 0,7, e il verdetto lo decideva il carico della macchina (160 rossa 1 corsa su
+     3 alla pari, 161 rossa 3 su 4, ENTRAMBE verdi da sole a ~4,5 fps). La soglia (0,7 u, 13/21) resta
+     identica: la finestra d'orologio si allunga solo finche' la scena non ha vissuto `minScene` secondi, con
+     tetto `maxWindowMs`. A macchina scarica (0,45-0,85 s di scena in 1900 ms) non cambia niente. */
+  const hardEnd = Date.now() + Math.max(windowMs, maxWindowMs);
+  while (Date.now() < end || (sceneNow - sceneT0 < minScene && Date.now() < hardEnd)) {
     const st = await page.evaluate(() => (typeof window.__CPM_STATE === 'function' ? window.__CPM_STATE() : null));
     const players = ((st && st.players) || []).map(p => ({ x: p.x, y: p.y, team: p.team, gk: p.gk }));
     const ball = (st && st.ball) ? { x: st.ball.x, y: st.ball.y } : null;
