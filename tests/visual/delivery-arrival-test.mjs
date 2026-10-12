@@ -51,6 +51,8 @@ await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
 /* i DEVTOOLS accendono il testimone di bordo (`_DEVT344`): senza, `__CPM_WATCH_SNAP` non esiste e la
    sonda gira senza guardare niente. `__CPM_CINE` accende l'executor, spento sotto `?cpmtest=1`. */
+/* [7.999.160 PO-229] le punizioni restano in hl_move finche' il giocatore non prende la mira: il tasto «0» salta il movimento (come goal-postarc) */
+await page.addInitScript(() => { setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_move') { document.dispatchEvent(new KeyboardEvent('keydown', { key: '0', bubbles: true })); window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' })); } } catch (e) {} }, 700); });
 await page.addInitScript(n => {
   window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1;
   if (n) window.__CPM_NO464 = 1;   /* prova del rosso: rimette il ripiego cieco del bersaglio */
