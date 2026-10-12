@@ -1,47 +1,65 @@
-/* [7.999.161 PO-228 guardiano] PASSAGGI E CROSS VERSO IL REALE, IL RESTO FERMO (decisione PO 12/10, docs/governo/DECISIONI.md).
-   Banco Node, niente browser: carica il motore da src/14-motore-possesso.jsx e gioca N partite con simulaPartitaMotore (la stessa
-   funzione della simulazione rapida: 22 decisioni al minuto, ripresa dal centro), sugli stessi semi in due bracci:
-     verde = motore com'e' · rosso = __CPM_NO_PASS228 (il motore di prima, che fa da base per le tolleranze).
-   VERDE se: passaggi a partita (due squadre) in 800-950 · cross in 20-30 · tiri entro ±5 % della base · gol entro ±8 % · xG entro ±6 % ·
-   possesso della squadra dell'eroe entro ±5 %. Le tolleranze sono larghe quanto il rumore del campione: su 300 partite l'errore
-   standard dei gol a partita e' ~3 %, dei tiri ~1,5 %; i semi sono fissi, quindi l'esito e' deterministico finche' il motore non cambia.
-   MISURATO alla consegna (1.500 partite, tre serie di semi): passaggi 429,5 -> 814,2 · cross 42,8 -> 28,4 · tiri 22,94 -> 22,43 ·
-   gol 2,18 -> 2,12 · xG 2,20 -> 2,11 · possesso eroe 49,4 -> 48,0 %.
-   Uso: node statistiche-228.mjs            (N=300, ~1 minuto)
+/* [7.999.161 PO-228 guardiano] PASSAGGI E CROSS VERSO IL REALE, IL RESTO FERMO (decisione PO 12/10, docs/governo/DECISIONI.md;
+   seconda decisione PO «adotta e correggi i gol eroe»: obiettivo ~814 passaggi, gol dell'eroe come prima).
+   Banco Node, niente browser: carica il motore da src/14-motore-possesso.jsx e gioca N partite con la procedura di
+   simulaPartitaMotore (22 decisioni al minuto, ripresa dal centro, occasioni dell'eroe risolte dal motore), sugli stessi semi
+   in due bracci: verde = motore com'e' · rosso = __CPM_NO_PASS228 (il motore di prima, che fa da base per le tolleranze).
+   VERDE se: passaggi a partita (due squadre) in 800-950 · cross in 20-30 · tiri entro ±5 % della base · gol entro ±8 % ·
+   xG entro ±6 % · possesso della squadra dell'eroe entro ±5 % · gol dell'eroe entro ±10 %.
+   Le tolleranze stanno sopra il rumore del campione (N=1000: errore standard dei gol ~2 %, dei gol dell'eroe ~6 %); i semi sono
+   fissi, quindi l'esito e' deterministico finche' il motore non cambia. Quattro processi in parallelo (worker_threads).
+   MISURATO alla consegna (N=3000): passaggi 429,5 -> 804,9 · cross 42,7 -> 28,8 · tiri +2,6 % · gol +2,8 % · xG +1,5 % ·
+   possesso eroe -3,3 % · gol dell'eroe 0,123 -> 0,126 (+2,7 %).
+   Uso: node statistiche-228.mjs              (N=1000, ~2 minuti)
         CPM_ROSSO=1 node statistiche-228.mjs  (solo il braccio rosso: deve dare passaggi sotto 500, ed esce 0 se e' cosi')
-        N=500 SEED0=777 node statistiche-228.mjs */
+        N=1500 SEED0=777 node statistiche-228.mjs */
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SRC = fs.readFileSync(path.join(ROOT, 'src', '14-motore-possesso.jsx'), 'utf8');
-const CODE = SRC.slice(SRC.indexOf('/* CMAV-SRC-HEADER-END */') + 26);
-const ROSSO = process.env.CPM_ROSSO === '1';
-const N = Math.max(20, +(process.env.N || 300)); const SEED0 = +(process.env.SEED0 || 1000);
 
-function braccio(rosso) {
-  const W = rosso ? { __CPM_NO_PASS228: true } : {};
-  const sim = Function('decideExecution', 'window', CODE + '\nreturn simulaPartitaMotore;')(undefined, W);
-  const S = { passaggi: 0, cross: 0, tiri: 0, gol: 0, xg: 0, poss: 0 };
-  for (let k = 0; k < N; k++) {
-    const r = sim({ seed: (SEED0 + k * 7919) >>> 0, forzaH: 60 + ((k * 7) % 21), forzaA: 60 + ((k * 13) % 21), stadio: k % 2 ? 'away' : 'home', ovr: 70 });
-    const T = r.tab; for (const s of ['home', 'away']) { S.passaggi += T[s].passaggi; S.cross += T[s].cross; S.tiri += T[s].tiri; S.gol += T[s].gol; S.xg += +T[s].xg || 0; }
+if (!isMainThread) {
+  const SRC = fs.readFileSync(path.join(ROOT, 'src', '14-motore-possesso.jsx'), 'utf8');
+  const CODE = SRC.slice(SRC.indexOf('/* CMAV-SRC-HEADER-END */') + 26);
+  const W = workerData.rosso ? { __CPM_NO_PASS228: true } : {};
+  const crea = Function('decideExecution', 'window', CODE + '\nreturn creaMotorePossesso;')(undefined, W);
+  const P = [[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]];
+  const Q = [[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]];
+  const R = i => i === 0 ? 'GK' : i <= 4 ? 'DF' : i <= 7 ? 'MF' : 'AT';
+  const S = { n: 0, passaggi: 0, cross: 0, tiri: 0, gol: 0, xg: 0, poss: 0, golEroe: 0, tiriEroe: 0 };
+  for (const k of workerData.ks) {/* stessa procedura di simulaPartitaMotore (src/14), piu' le pagelle per i gol dell'eroe */
+    const gio = P.map((p, i) => ({ team: 'home', gk: !!p[2], name: 'H' + (i + 1), rl: R(i), x: p[0], y: p[1] })).concat(Q.map((p, i) => ({ team: 'away', gk: !!p[2], name: 'A' + (i + 1), rl: R(i), x: p[0], y: p[1] })));
+    const M = crea({ v2: true, occasioniV2: true, seed: ((workerData.seed0 + k * 7919) >>> 0) || 7, stadio: k % 2 ? 'away' : 'home', giocatori: gio,
+      eroe: { name: 'EROE', x: 58, y: 50, attivo: true, ovr: 70 }, forza: { home: 60 + ((k * 7) % 21), away: 60 + ((k * 13) % 21) }, tattica: null, lato: 'home' });
+    for (let m = 1; m <= 46; m++) for (let b = 0; b < 22; b++) M.tick({ min: Math.min(m, 45), dt: 1 / 22, dec: true });
+    M.chiedi.riprendi({ centro: true, lato: 'away' });
+    for (let m = 46; m <= 93; m++) for (let b = 0; b < 22; b++) M.tick({ min: Math.min(m, 90), dt: 1 / 22, dec: true });
+    const T = M.tabellino(); S.n++;
+    for (const s of ['home', 'away']) { S.passaggi += T[s].passaggi; S.cross += T[s].cross; S.tiri += T[s].tiri; S.gol += T[s].gol; S.xg += +T[s].xg || 0; }
     const pt = (T.home.possesso || 0) + (T.away.possesso || 0); S.poss += pt > 0 ? 100 * T.home.possesso / pt : 50;
+    const E = (M.pagelle() || []).find(p => p.eroe); if (E) { S.golEroe += E.gol | 0; S.tiriEroe += E.tiri | 0; }
   }
-  for (const k in S) S[k] /= N; return S;
+  parentPort.postMessage(S);
+} else {
+  const ROSSO = process.env.CPM_ROSSO === '1';
+  const N = Math.max(20, +(process.env.N || 1000)); const SEED0 = +(process.env.SEED0 || 1000); const PAR = 4;
+  const braccio = (rosso) => Promise.all(Array.from({ length: PAR }, (_, w) => new Promise((ok, ko) => {
+    const ks = []; for (let k = w; k < N; k += PAR) ks.push(k);
+    const wk = new Worker(fileURLToPath(import.meta.url), { workerData: { rosso, ks, seed0: SEED0 } }); wk.on('message', ok); wk.on('error', ko);
+  }))).then(parti => { const S = {}; for (const p of parti) for (const [k, v] of Object.entries(p)) S[k] = (S[k] || 0) + v; for (const k in S) if (k !== 'n') S[k] /= S.n; return S; });
+  const f = (x, d = 2) => x.toFixed(d).replace('.', ',');
+  const riga = (n, S) => console.log(`${n.padEnd(6)} passaggi ${f(S.passaggi, 1)} · cross ${f(S.cross, 1)} · tiri ${f(S.tiri)} · gol ${f(S.gol)} · xG ${f(S.xg)} · possesso eroe ${f(S.poss, 1)} % · gol eroe ${f(S.golEroe, 3)} (tiri ${f(S.tiriEroe)})`);
+  const t0 = Date.now();
+  const R = await braccio(true); riga('rosso', R);
+  if (ROSSO) {
+    const ok = R.passaggi < 500;
+    console.log(ok ? `✅ ROSSO come atteso: senza PO-228 i passaggi tornano a ${f(R.passaggi, 1)} (< 500) · ${N} partite in ${((Date.now() - t0) / 1000).toFixed(0)} s`
+      : `❌ il rosso non riproduce il motore di prima: passaggi ${f(R.passaggi, 1)} (atteso < 500)`);
+    process.exit(ok ? 0 : 1);
+  }
+  const V = await braccio(false); riga('verde', V);
+  const fails = []; const d = (a, b) => 100 * (a - b) / b;
+  if (V.passaggi < 800 || V.passaggi > 950) fails.push(`passaggi ${f(V.passaggi, 1)} fuori da 800-950`);
+  if (V.cross < 20 || V.cross > 30) fails.push(`cross ${f(V.cross, 1)} fuori da 20-30`);
+  for (const [k, tol] of [['tiri', 5], ['gol', 8], ['xg', 6], ['poss', 5], ['golEroe', 10]]) { const x = d(V[k], R[k]); console.log(`  ${k.padEnd(7)} ${x >= 0 ? '+' : ''}${f(x, 1)} % (tolleranza ±${tol} %)`); if (Math.abs(x) > tol) fails.push(`${k} ${f(x, 1)} % oltre ±${tol} %`); }
+  console.log(`${N} partite per braccio in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
+  console.log(fails.length ? '❌ FAIL statistiche-228\n  ' + fails.join('\n  ') : '✅ PASS statistiche-228'); process.exit(fails.length ? 1 : 0);
 }
-const f = (x, d = 2) => x.toFixed(d).replace('.', ',');
-const riga = (n, S) => console.log(`${n.padEnd(6)} passaggi ${f(S.passaggi, 1)} · cross ${f(S.cross, 1)} · tiri ${f(S.tiri)} · gol ${f(S.gol)} · xG ${f(S.xg)} · possesso eroe ${f(S.poss, 1)} %`);
-const t0 = Date.now();
-const R = braccio(true); riga('rosso', R);
-if (ROSSO) {
-  const ok = R.passaggi < 500;
-  console.log(ok ? `✅ ROSSO come atteso: senza PO-228 i passaggi tornano a ${f(R.passaggi, 1)} (< 500) · ${N} partite in ${((Date.now() - t0) / 1000).toFixed(0)} s`
-    : `❌ il rosso non riproduce il motore di prima: passaggi ${f(R.passaggi, 1)} (atteso < 500)`);
-  process.exit(ok ? 0 : 1);
-}
-const V = braccio(false); riga('verde', V);
-const fails = []; const d = (a, b) => 100 * (a - b) / b;
-if (V.passaggi < 800 || V.passaggi > 950) fails.push(`passaggi ${f(V.passaggi, 1)} fuori da 800-950`);
-if (V.cross < 20 || V.cross > 30) fails.push(`cross ${f(V.cross, 1)} fuori da 20-30`);
-for (const [k, tol] of [['tiri', 5], ['gol', 8], ['xg', 6], ['poss', 5]]) { const x = d(V[k], R[k]); console.log(`  ${k.padEnd(5)} ${x >= 0 ? '+' : ''}${f(x, 1)} % (tolleranza ±${tol} %)`); if (Math.abs(x) > tol) fails.push(`${k} ${f(x, 1)} % oltre ±${tol} %`); }
-console.log(`${N} partite per braccio in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
-console.log(fails.length ? '❌ FAIL statistiche-228\n  ' + fails.join('\n  ') : '✅ PASS statistiche-228'); process.exit(fails.length ? 1 : 0);

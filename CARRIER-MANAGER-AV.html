@@ -25927,7 +25927,7 @@ function creaMotorePossesso(cfg){
      contrasto e pressing sul primo tocco in proporzione (a 1 i falli salivano da 21,5 a 27, a 0 scendevano a 16) · hb = il
      compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
      vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
-  const _K228={advC:67,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
+  const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
@@ -26209,10 +26209,21 @@ function creaMotorePossesso(cfg){
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
       const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
-  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3)return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+  /* [7.999.161 PO-228 v2, decisione PO «adotta e correggi i gol eroe»] SE L'EROE E' DAVANTI, NIENTE GIRO PALLA. MISURATO (400 partite,
+     simulazione rapida): col giro palla i gol dell'eroe scendevano da 0,128 a 0,095 e i suoi tiri da 0,51 a 0,41 a partita. Le
+     occasioni erano quasi le stesse (4,04 -> 3,88) ma nascevano prima: l'ultimo pallone all'eroe era un passaggio di giro palla 1,86
+     volte a partita, mentre filtranti e verticali verso di lui crollavano da 0,63 a 0,06. Dalla trequarti in su (avanzamento >= 56),
+     se l'eroe della stessa squadra non e' piu' di 3 u dietro al portatore ed e' a portata (5-46 u), il portatore DECIDE come prima
+     (scegliRicevente lo cerca col suo bonus). Solo lettura delle posizioni, nessun sorteggio. Per non perdere passaggi il giro palla
+     di prima sale da avanzamento 67 a 70 (mai oltre: a 71-72 tiri -6/-18 %, si entra nella zona del limite).
+     MISURATO (3.000 partite per braccio, statistiche-228): gol dell'eroe 0,123 -> 0,126 (+2,7 %), suoi tiri 0,48 -> 0,47;
+     senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
+  function _eroeDavanti228(P,adv){if(adv<56)return false;const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
+    const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
+  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
     ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
   function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
-    const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv))return;
+    const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;
     const pFb=_K228.fd*((press<3?0.22:0.08)+(adv>=56?0.03:0))*0.68*_cad936()*(adv<50?(1+1.2*Math.max(0,pressDi(altro(l)))):1),pF=pFb*0.68,r=rnd();/* come _fallo900 (ramo senza decreto) */
     if(r<pF){ramo("circola228_fallo");fallo(R);return;}
     if(V2){const pP=_K228.fd*clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(adv<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);if(rnd()<pP){ramo("circola228_persa");perdi(R,"contrasto");return;}}/* come pressingV2 */
