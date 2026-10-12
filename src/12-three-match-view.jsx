@@ -5544,6 +5544,38 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                   const _dd411=Math.hypot(_cgx411-_bgx411,_cgy411-_bgy411);
                   if(_dd411>3.5){tlSeg.unshift({tag:'feed',kind:'pass',dur:Math.min(0.9,0.25+_dd411/28),from:[_bgx411,_bgy411],to:[_cgx411,_cgy411],fromId:null,toId:_fb411.fromId,before:{},after:{}});tlBuildN++;}}}
             }catch(_e411){}}
+            /* [7.999.161 PO-229 build-up] IL «DAI» HA IL SUO «VAI». Rosso __CPM_NO_BU229.
+               MISURATO (buildup-sync, scena da sola con riscaldamento): gi24/az0 e gi79/az0 sono «tieni → appoggio al compagno →
+               ritorno all'eroe» e la timeline assegna all'eroe LO STESSO punto in tutti e tre i beat: il pallone fa 9-12u avanti
+               e indietro e l'eroe 0,0u — la statua del «si muove solo il pallone». Nel calcio chi appoggia e si fa ridare il
+               pallone si smarca in avanti mentre la palla torna. Qui (solo nel CONSUMO, come il pavimento di velocita' del 7.236:
+               la timeline pura, i suoi test e la firma del backbone restano intatti) il beat di ritorno porta l'eroe fino a 5u verso
+               la porta avversaria (mai indietro: a ridosso della porta il «vai» non c'e') e il pallone gli arriva LI'; cio' che l'eroe
+               fa dopo trasla dello stesso passo, cosi' la consegna e la conclusione (ancora _tlHeroEnd) restano cucite. Copie, mai mutazioni degli oggetti condivisi. */
+            if(tlOn&&!(typeof window!=='undefined'&&window.__CPM_NO_BU229)){try{
+              const _eq229=(a,b)=>!!(a&&b&&Math.hypot(a[0]-b[0],a[1]-b[1])<0.6);
+              for(let _i=1;_i<tlBuildN;_i++){const _g=tlSeg[_i],_pv=tlSeg[_i-1];
+                if(!(_g&&_pv&&_g.kind==='give'&&_g.toId==='HERO'&&_pv.fromId==='HERO'&&(_pv.kind==='pass'||_pv.kind==='give')))continue;
+                const _S=_g.after&&_g.after.HERO,_S0=_g.before&&_g.before.HERO;
+                if(!(_S&&_S0&&_eq229(_S,_S0)&&_eq229(_g.to,_S)))continue;
+                const _dv229=Math.min(5,90-_S[0]);if(_dv229<2)continue;/* a ridosso della porta non c'e' spazio per il «vai»: mai all'indietro */
+                const _S2=[_S[0]+_dv229,_S[1]];
+                const _Sm=[_S[0]+_dv229*0.52,_S[1]];/* il «vai» comincia appena il pallone e' partito: piu' di meta' strada gia' durante l'appoggio (a fps bassi la costruzione si vede a pezzi, e il primo pezzo e' l'appoggio) */
+                if(_pv.before&&_eq229(_pv.before.HERO,_S)&&_pv.after&&_eq229(_pv.after.HERO,_S))_pv.after={..._pv.after,HERO:_Sm};
+                _g.before={..._g.before,HERO:(_pv.after&&_pv.after.HERO)||_S};
+                _g.after={..._g.after,HERO:_S2};_g.to=_S2;_g.dur=Math.max(_g.dur||0,0.55);
+                /* tutto cio' che l'eroe fa DOPO trasla dello stesso passo: un controllo che ripartisse dal vecchio punto lo farebbe
+                   tornare indietro di 5u (misurato sulla prima stesura di questo rimedio: conduzione palla 4,2u contro eroe 2,1u su gi8/gi11/gi27/gi141). Il bersaglio di
+                   una giocata che parte dall'eroe (tiro, filtrante, cross) resta dov'e'. */
+                const _sh229=(q)=>[q[0]+_dv229,q[1]];
+                for(let _j=_i+1;_j<tlSeg.length;_j++){const _h=tlSeg[_j];if(!_h)continue;
+                  if(_h.from&&(_h.fromId==='HERO'||_eq229(_h.from,_S)))_h.from=_sh229(_h.from);
+                  if(_h.to&&_h.toId==='HERO')_h.to=_sh229(_h.to);
+                  if(_h.before&&_h.before.HERO)_h.before={..._h.before,HERO:_sh229(_h.before.HERO)};
+                  if(_h.after&&_h.after.HERO)_h.after={..._h.after,HERO:_sh229(_h.after.HERO)};}
+                if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_DAIVAI229=window.__CPM_DAIVAI229||[]).push({k:P.hlSitKey,i:_i,da:_S,a:_S2});}catch(_e){}}
+                break;}
+            }catch(_e229){}}
             if(!tlOn)fireConclusion();
           } else if(!_cineTest&&P.hlDef&&P.hlDefTraj&&P.hlDefTraj.inbound){
             /* [7.239.0 #55] IL PALLONE AVVERSARIO ARRIVA DAVVERO: pre-fase difensiva via executor con un
@@ -6800,7 +6832,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           /* [7.212.0] uno stacco di scena azzera anche le REAZIONI in corso: un tuffo/riflesso del portiere
              lasciato a metà continuava a muovere il mesh nella scena successiva (e la posa restava storta). */
           if(oppActType&&oppMesh){try{oppMesh.position.y=0;oppMesh.rotation.z=0;if(oppMesh._aL){oppMesh._aL.rotation.x=0;oppMesh._aL.rotation.z=0;}if(oppMesh._aR){oppMesh._aR.rotation.x=0;oppMesh._aR.rotation.z=0;}if(oppMesh._lR)oppMesh._lR.rotation.x=0;if(oppMesh._lL)oppMesh._lL.rotation.x=0;if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;oppMesh._diveToZ=null;}catch(_e){}}
-          oppActType=null;oppMesh=null;oppActT=0;gkSaveCelebT=-1;gkSaveMesh=null;sr.current._mateFx=null;sr.current._tlHeroEnd=null;/* [7.236.0] l'ancora di fine build-up muore con la scena */}/* bandiera DEDICATA: _cutSnap la azzera il blocco stacco-d'esito a ogni frame non-isResult */
+          oppActType=null;oppMesh=null;oppActT=0;gkSaveCelebT=-1;gkSaveMesh=null;sr.current._mateFx=null;sr.current._tlHeroEnd=null;if(!(typeof window!=='undefined'&&window.__CPM_NO_BU229))sr.current._int10=null;/* [7.999.161 PO-229] l'intercettore della scena precedente non trascina il pallone di questa *//* [7.236.0] l'ancora di fine build-up muore con la scena */}/* bandiera DEDICATA: _cutSnap la azzera il blocco stacco-d'esito a ogni frame non-isResult */
         // 5.43.16: PORTIERI — posizione di PRONTO con POSA FISSA (no run-cycle). animOne sposta dolcemente (target stabile),
         //   poi SOVRASCRIVO le gambe/braccia in posa di pronto (gambe divaricate, leggera flessione, braccia pronte) → il portiere
         //   NON fa più la "corsa sul posto" (il run-cycle delle gambe è annullato). Il tuffo (gk_dive) lo controlla quando attivo.
@@ -6946,7 +6978,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                rompendo il riferimento da cui il beat dopo riparte; qui si corregge il bersaglio del beat di
                VOLO, e la conduzione riceve un pallone gia' consegnato. */
             {const _nx395=tlSeg[bi+1];
-             if(_nx395&&_nx395.kind==='carry'&&(sg.kind==='pass'||sg.kind==='through'||sg.kind==='give'||sg.kind==='cross')){
+             if(_nx395&&(_nx395.kind==='carry'||(_nx395.kind==='dribble'&&!(typeof window!=='undefined'&&window.__CPM_NO_BU229)))&&(sg.kind==='pass'||sg.kind==='through'||sg.kind==='give'||sg.kind==='cross')){/* [7.999.161 PO-229 build-up] il rendez-vous vale anche quando il beat dopo e' un DRIBBLING: anche li' la colla del 7.613 mette il pallone sul corpo del portatore al primo fotogramma. Misurato (diag buildup, gi83/az0 «ritorno→dribbling» col «vai» del dai-e-vai): 3,3u di strappo give→dribble col volo sul punto del piano e l'eroe 3u indietro. Rosso __CPM_NO_BU229 */
                const _nid395=(typeof _nx395.toId==='string')?_nx395.toId:((typeof _nx395.fromId==='string')?_nx395.fromId:null);
                /* [7.414.0 gi24/gi79 «zig-zag avanti/indietro»] IL THROUGH SI RICEVE DAVANTI, NON ALLE SPALLE.
                   mapCineActors assegna MATE1 al compagno piu' vicino all'EROE — giusto per sponde e scambi
@@ -6980,7 +7012,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  if(_bm414)tlMap[_nid395]=_bm414;
                  sr.current._thrMap414=P.hlSitKey+':'+bi;sr.current._rm613=1;/* [7.613.0 strumentazione] questo frame ha rimappato il ricevente */}
                const _nm395=(_nid395==='HERO')?hero:((tlMap&&_nid395)?tlMap[_nid395]:null);
-               if(_nm395){const _ngx395=_nm395.position.x+50,_ngy395=_nm395.position.z/0.68+50,_w395=(typeof window!=='undefined'&&window.__CPM_NO613B)?(p*p):((p<0.5)?(2*p*p):(1-2*(1-p)*(1-p)));/* [7.613.0] il rendez-vous ARRIVA: con p^2 il peso a fine volo (p 0,92 all'ultimo frame utile) vale 0,85 e il 15% di strada verso il piede si saltava in UN frame all'ingresso della conduzione — misurato 3,8-3,9u (i SEAM residui dell'anello). Easing simmetrico che vale 1 a p=1 (a 0,92: 0,988): stessa prima meta' del volo, arrivo consegnato. Rosso __CPM_NO613B. */
+               if(_nm395){let _rfx229=0,_rfz229=0;if(_nx395.kind==='carry'&&!(typeof window!=='undefined'&&window.__CPM_NO_BU229)){let _ux229=G2X(_nx395.to[0])-G2X(_nx395.from[0]),_uz229=G2Z(_nx395.to[1])-G2Z(_nx395.from[1]),_ul229=Math.hypot(_ux229,_uz229);if(_ul229<0.5){_ux229=1;_uz229=0;_ul229=1;}_rfx229=_ux229/_ul229*0.95;_rfz229=_uz229/_ul229*0.95;}/* [7.999.161 PO-229] verso una CONDUZIONE il pallone si ferma al PIEDE — 0,95u dal corpo nella direzione in cui la conduzione andra' (controllo orientato; verso la porta se il beat e' un «tieni»), dove la colla lo terra' — e non al centro del corpo: misurato su gi63/az0 lo «spuntare» di 1,1u dal centro al piede al primo fotogramma di conduzione, con il portatore fermo (rapporto 0,16). Prima prova revocata: il piede dalla parte da cui il pallone ARRIVA faceva poi girare il pallone attorno al corpo appena il portatore partiva (rapporto mediano della passata intera 0,98 → 0,61). Rosso __CPM_NO_BU229 */const _ngx395=_nm395.position.x+_rfx229+50,_ngy395=(_nm395.position.z+_rfz229)/0.68+50,_w395=(typeof window!=='undefined'&&window.__CPM_NO613B)?(p*p):((p<0.5)?(2*p*p):(1-2*(1-p)*(1-p)));/* [7.613.0] il rendez-vous ARRIVA: con p^2 il peso a fine volo (p 0,92 all'ultimo frame utile) vale 0,85 e il 15% di strada verso il piede si saltava in UN frame all'ingresso della conduzione — misurato 3,8-3,9u (i SEAM residui dell'anello). Easing simmetrico che vale 1 a p=1 (a 0,92: 0,988): stessa prima meta' del volo, arrivo consegnato. Rosso __CPM_NO613B. */
                  _bxg=_bxg*(1-_w395)+_ngx395*_w395;_byg=_byg*(1-_w395)+_ngy395*_w395;}}}
             /* [7.613.0 — LA CONDUZIONE E' DEL CORPO, NON DEL PIANO. Rosso __CPM_NO613]
                COLLAUDO PO, SIT #10 «SALTO del pallone di 8,1u in 32 ms (buildup-volo)» + SIT #102
@@ -6995,6 +7027,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                il pallone sta al piede del portatore del beat (fromId/toId -> tlMap, eroe come ripiego,
                stessa anagrafe della guardia 7.414); il piano resta la rotta del portatore, non del pallone
                — e' la lezione del 7.540: il passaggio e' un evento, la conduzione e' un percorso. */
+            const _bx229=ball.position.x,_bz229=ball.position.z;/* [7.999.161] dove il pallone E' prima che la conduzione lo riscriva: vedi la colla qui sotto */
             if((sg.kind==='carry'||sg.kind==='dribble')&&!(typeof window!=='undefined'&&window.__CPM_NO613)){
               const _cid613=(typeof sg.fromId==='string')?sg.fromId:((typeof sg.toId==='string')?sg.toId:null);
               const _cm613=(_cid613==='HERO')?hero:((tlMap&&_cid613&&tlMap[_cid613])||hero);
@@ -7049,6 +7082,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_hm){
                 /* [7.382.0] LA MEDIA MOBILE NON EREDITA UNA CORSA CHE NON C'E' PIU'. Azzerarla solo alla fine del beat non bastava: `_tlC381` viene ripulito al cambio di scena, ma la direzione restava scritta SUL MESH, e il beat di conduzione successivo ripartiva dalla media di un'altra azione — misurato su gi103, 14 frame su 14 col pallone dietro, e su gi91 in modo intermittente a seconda di quale scena fosse stata giocata prima. Un guardiano verde su un sottoinsieme e rosso sulla passata intera e' sempre questo: uno stato che attraversa il confine. Qui la direzione appartiene alla coppia (portatore, beat), e cambiando l'una o l'altro riparte da zero. */
                 if(sr.current._tlCP382!==_hm){_hm._cdA382=null;_hm._cdR382=false;_hm._cpX382=null;_hm._cpZ382=null;sr.current._tlCP382=_hm;}/* la MEMORIA della direzione appartiene alla persona: cambia il portatore, riparte da zero */
+                /* [7.999.161 PO-229 build-up] LA CONDUZIONE NASCE CON UNA DIREZIONE BUONA. Rosso __CPM_NO_BU229. Al primo fotogramma di una
+                   conduzione nuova la direzione dell'offset veniva da un RIPIEGO (velocita' del modello o direzione del beat) che non contava
+                   come angolo buono: il corpo quasi fermo non poteva tenerlo, e il primo spostamento vero — anche due decimi all'indietro per
+                   l'inerzia oltre il punto del piano — lo riallineava di netto, col pallone che girava attorno al corpo. MISURATO (gi63/az0,
+                   «ritorno → controllo»): in conduzione palla 2,3u contro portatore 0,4u (rapporto 0,16, sotto lo 0,25 del guardiano).
+                   Ora l'angolo iniziale e' la direzione del beat di conduzione (dove il portatore andra'; se il beat e' un «tieni» senza
+                   direzione, dove sta gia' il pallone, se e' vicino; altrimenti verso la porta) e vale come angolo BUONO: il corpo quasi fermo
+                   lo tiene, una svolta vera lo ruota col tetto di 12 rad/s (7.382). Prima prova REVOCATA: partire dalla posizione reale del
+                   pallone faceva girare il pallone di 90-180 gradi attorno al corpo appena il portatore prendeva velocita' (rapporto mediano
+                   della passata intera 0,98 → 0,61, gi92/az0 pallone al fianco e corsa in avanti). */
+                if(_hm._cdA382==null&&!(typeof window!=='undefined'&&window.__CPM_NO_BU229)){
+                  const _sx229=G2X(sg.to[0])-G2X(sg.from[0]),_sz229=G2Z(sg.to[1])-G2Z(sg.from[1]),_sl229=Math.hypot(_sx229,_sz229);
+                  const _dx229=_bx229-_hm.position.x,_dz229=_bz229-_hm.position.z,_dd229=Math.hypot(_dx229,_dz229);
+                  _hm._cdA382=(_sl229>=0.5)?Math.atan2(_sz229,_sx229):((_dd229>0.25&&_dd229<2.5)?Math.atan2(_dz229,_dx229):0);_hm._cdR382=true;}
                 sr.current._tlC381=_hm;/* [7.381.0] CHI conduce, dichiarato dal renderer. La prima versione del guardiano lo deduceva prendendo il mesh piu' vicino al pallone: con l'offset a 0.95u un avversario in pressing e' spesso piu' vicino del portatore, e la proiezione finiva calcolata sul corpo sbagliato — 6 frame «col pallone dietro» su gi96 che erano un errore della sonda, non del gioco. */
                 /* [7.381.0 collaudo PO #83/#40/#96 «il pallone in corsa rimane dietro all'eroe» ·
                    «si perde un po' il pallone per strada durante la corsa»] LA CONDUZIONE HA UNA DIREZIONE.
@@ -7086,6 +7133,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 const _had382=(_hm._cpX382!=null);
                 let _cdX381=0,_cdZ381=0,_cdU381=0;
                 if(_had382){_cdX381=_hm.position.x-_hm._cpX382;_cdZ381=_hm.position.z-_hm._cpZ382;_cdU381=Math.hypot(_cdX381,_cdZ381);}
+                const _cdU0229=_cdU381;/* [7.999.161] lo spostamento VERO, prima dei ripieghi */
                 _hm._cpX382=_hm.position.x;_hm._cpZ382=_hm.position.z;
                 if(_cdU381<0.012){_cdX381=(_hm._hvx||0)*aDt;_cdZ381=(_hm._hvz||0)*aDt;_cdU381=Math.hypot(_cdX381,_cdZ381);}
                 if(_cdU381<0.004){const _sgX=G2X(sg.to[0])-G2X(sg.from[0]),_sgZ=G2Z(sg.to[1])-G2Z(sg.from[1]),_sgL=Math.hypot(_sgX,_sgZ);
@@ -7115,7 +7163,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    1,00 a 0,21 senza che nessuno dei due andasse da nessuna parte. Sotto un passo
                    percettibile si TIENE l'ultimo angolo buono invece di inseguire il tremolio. */
                 let _thN382=Math.atan2(_cdZ381,_cdX381);
-                if(_cdU381<0.05&&_hm._cdA382!=null&&_hm._cdR382)_thN382=_hm._cdA382;
+                if(((typeof window!=='undefined'&&window.__CPM_NO_BU229)?(_cdU381<0.05):(_cdU0229<Math.max(0.05,3.5*aDt)))&&_hm._cdA382!=null&&_hm._cdR382)_thN382=_hm._cdA382;/* [7.999.161 PO-229] la soglia e' una VELOCITA' (3,5 u/s, un passo), non un passo per fotogramma: a 25-40 ms di fotogramma il portatore che arretra di due decimi sul controllo (0,08u/fotogramma) superava lo 0,05 fisso e il pallone gli ruotava attorno di 34 gradi a fotogramma (gi63/az0, palla 1,8u contro corpo 0,4u). E si giudica sullo spostamento VERO: col corpo fermo i ripieghi (velocita' del modello, direzione del beat) non sono un movimento, e sul «tieni» (gi24/gi79, corpo 0,0u) facevano ruotare il pallone di 0,9u verso la direzione del beat. Rosso __CPM_NO_BU229 */
                 const _real382=(_cdU381>=0.012&&_had382);/* [7.384.0] `_cpX382` viene assegnato quattro righe sopra: leggerlo QUI significava trovarlo sempre valorizzato, e il latch «l'angolo viene da un movimento vero» si accendeva anche quando veniva da un ripiego */
                 if(_hm._cdA382!=null&&_hm._cdR382){
                   let _dA382=_thN382-_hm._cdA382;
@@ -10818,14 +10866,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              LOGICO in src/14, che il piano ha gia' portato a 92-94: gattava la palla sbagliata, ed e'
              lo stesso errore che era costato tre revoche. Qui si legge il pallone RESO — l'unico che
              il giocatore guarda — e la decisione si prende UNA VOLTA per affermazione. */
+          /* [7.999.161 PO-229 build-up] L'AFFERMAZIONE APPARTIENE ALLA SCENA CHE L'HA FATTA. Rosso __CPM_NO_BU229.
+             MISURATO con una trappola sul setter di ball.position.x (buildup-sync, passata intera): il lucchetto del gol
+             (1400 ms d'orologio, _golInRete811) armato dal gol della scena precedente era ancora vivo quando partiva la costruzione
+             della scena nuova, e a fine fotogramma riscriveva il pallone IN RETE (x 50,6) sopra l'executor per 5-34
+             fotogrammi; scaduto il lucchetto, il pallone tornava al piede del portatore in un colpo solo: 15-24u di
+             «salto» (gi8, gi12, gi21, gi40, gi43, gi63, gi96, gi97, gi103 nella passata intera, carry/dribble/pass→stesso
+             beat), e in conduzione «palla 22u, portatore 1,5u». Ora il lucchetto ricorda la chiave della scena in cui
+             e' nato, e tace se la scena e' cambiata o se e' in corso una costruzione (il pallone e' dell'executor). */
+          const _no229L=(typeof window!=='undefined'&&window.__CPM_NO_BU229);
+          const _P229L=propsRef.current||{};
           if(sr.current._bl812!==_bl.fino){
-            sr.current._bl812=_bl.fino;
+            sr.current._bl812=_bl.fino;sr.current._blK229=_P229L.hlSitKey;
             const _gx812=ball.position.x+50;/* inverso di G2X */
             const _av812=(_bl.x>50)?_gx812:(100-_gx812);
             sr.current._blOk812=!(typeof window!=='undefined'&&window.__CPM_NO812)?(_av812>=70):true;
             if(typeof window!=='undefined'&&window.__CPM_REC&&!sr.current._blOk812){try{window.__CPM_LONT812=(window.__CPM_LONT812||0)+1;}catch(_e){}}
           }
-          if(sr.current._blOk812){
+          const _ph229L=_P229L.matchPhase;const _alt229L=!_no229L&&(tlOn||_ph229L==='hl_intro'||_ph229L==='hl_move'||_ph229L==='hl_choose'||(_P229L.hlSitKey!=null&&_P229L.hlSitKey!==-1&&sr.current._blK229!==_P229L.hlSitKey));/* [7.999.161] si e' aperta un'ALTRA scena (non il ritorno al gioco, chiave -1, dove il lucchetto resta com'era), la scena e' ancora in apertura/lettura/scelta (li' il pallone sta sul piede di chi la gioca, mai in rete — PRECAUZIONE: i salti d'INGRESSO da 16-35u visti su gi40/gi63/gi96 nella passata intera sono spariti con l'insieme dei rimedi, ma non li ho attribuiti con certezza a questo ramo) o e' in corso una costruzione: il lucchetto tace */
+          if(_alt229L&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_BU229L=(window.__CPM_BU229L||0)+1;}catch(_e){}}
+          if(sr.current._blOk812&&!_alt229L){
           ball.position.x=G2X(_bl.x);ball.position.z=G2Z(_bl.y);
           if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LOCK811=(window.__CPM_LOCK811||0)+1;}catch(_e){}}
           }
@@ -10844,7 +10904,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               rivela il pallone sta ancora a 2,2-3,6u da lui e ci arriva in 4-5 s, perche' qui si fissava solo la x (lerp 1,6/s) e
               la z restava dove era finito l'arco — in foto il difensore a terra e il pallone che gli passa accanto: mancato.
               Ora il pallone intercettato va ai piedi di chi l'ha preso, in x e in z, con presa rapida. Rosso __CPM_NO_RUBA87. */
-      try{const _P87=propsRef.current||{};if(_P87.matchPhase==='hl_result'&&!ballArcActive&&ball&&!_P87.hlDef&&_P87.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m&&!(typeof window!=='undefined'&&window.__CPM_NO_RUBA87)){const _m87=sr.current._int10.m;const _k87=Math.min(aDt*7,1);/* [7.999.92 PO-147, taccuino #38 «Dai e vai», codice 011] MISURATO (sonda _daievai92, tempo reale): nel passaggio intercettato il
+      /* [7.999.161 PO-229 build-up] Anche l'intercetto (87) e la sua ripartenza (92) aspettano la fine della COSTRUZIONE, e l'intercettore
+         muore con la scena (azzerato allo stacco, vedi _int10 piu' su). MISURATO (diag buildup, passata intera, gi79/az0 con esito «intercettato»):
+         l'intercettore di una scena PRECEDENTE (_int10 mai azzerato) trascinava il pallone a 7/s verso di se' durante tutti i
+         beat della costruzione — executor a x 22, pallone reso a x 36-53 — e alla consegna il pallone tornava all'eroe con un salto di
+         18,2u. Rosso __CPM_NO_BU229. */
+      try{const _P87=propsRef.current||{};if(_P87.matchPhase==='hl_result'&&!(tlOn&&!(typeof window!=='undefined'&&window.__CPM_NO_BU229))&&!ballArcActive&&ball&&!_P87.hlDef&&_P87.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m&&!(typeof window!=='undefined'&&window.__CPM_NO_RUBA87)){const _m87=sr.current._int10.m;const _k87=Math.min(aDt*7,1);/* [7.999.92 PO-147, taccuino #38 «Dai e vai», codice 011] MISURATO (sonda _daievai92, tempo reale): nel passaggio intercettato il
    pallone restava fermo 2,8 s ai piedi dell'intercettore, che non ripartiva — palla congelata. Dopo 0,3 s di controllo
    l'intercettore riparte col pallone verso la porta di casa (gli ospiti attaccano verso x 0) a 5 u/s, fino a 12 u.
    Rosso __CPM_NO_DAIEVAI92. */
@@ -10857,7 +10922,12 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
          col pallone ai piedi. Rosso __CPM_NO_DAIEVAI92. */
       try{const _P92=propsRef.current||{};
         if(typeof window!=='undefined'&&_CPM_TEST&&_P92.matchPhase==='hl_result')window.__CPM_C92={arc:ballArcActive?1:0,pat:hlPostArcType||null,pt:+(+hlPostArcT).toFixed(2),ok:_P92.hlSuccess,kind:_P92.hlOutcomeKind||null,ric:!!sr.current._ric92};
-        if(_P92.matchPhase==='hl_result'&&!ballArcActive&&!hlPostArcType&&ball&&!_P92.hlDef&&_P92.hlSuccess===true&&_P92.hlOutcomeKind==='chance'&&!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){
+        /* [7.999.161 PO-229 build-up] «FINITO L'ARCO» NON VUOL DIRE «PRIMA DELL'ARCO». Rosso __CPM_NO_BU229. Durante la COSTRUZIONE non c'e'
+           ne' arco ne' post-arco, quindi questo blocco (e il gemello 93 qui sotto) partiva gia' mentre l'executor giocava i beat: si
+           eleggeva un ricevente e riscriveva corpo e pallone a fine fotogramma, sopra la timeline. Qui e nel 93 si aspetta che la
+           costruzione sia finita (tlOn spento); vedi la misura al blocco 93. */
+        const _bu229a=!(typeof window!=='undefined'&&window.__CPM_NO_BU229)&&tlOn;
+        if(_P92.matchPhase==='hl_result'&&!_bu229a&&!ballArcActive&&!hlPostArcType&&ball&&!_P92.hlDef&&_P92.hlSuccess===true&&_P92.hlOutcomeKind==='chance'&&!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){
           let _c92=sr.current._ric92;
           if(!_c92){let _bd=1e9,_bm=null;sr.current.players.forEach((pp,ii)=>{const src=(propsRef.current.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh&&pp.mesh!==hero){const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_bd){_bd=d;_bm=pp.mesh;}}});
             if(hero){const _dh=Math.hypot(hero.position.x-ball.position.x,hero.position.z-ball.position.z);if(_dh<_bd){_bd=_dh;_bm=hero;}}/* nel dai e vai il pallone torna all'eroe: e' lui che riparte */
@@ -10877,7 +10947,14 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
       try{const _P93=propsRef.current||{};
         const _bS93=_P93.hlType==='build'&&!_P93.hlOffBall&&_P93.hlSuccess===true&&_P93.hlReward!=='goal'&&_P93.hlReward!=='assist'&&_P93.hlOutcomeKind!=='chance';
         const _bF93=((_P93.hlType==='build'||_P93.hlType==='dribble')&&_P93.hlSuccess===false&&_P93.hlOutcomeKind==='dispossessed')||(_P93.hlType==='pass'&&_P93.hlSuccess===false&&_P93.hlOutcomeKind==='overhit');/* anche il passaggio troppo forte e' palla persa: la respinta lo faceva tornare indietro (gi140 «Passaggio sicuro laterale»: -3u e fermo 0,9 s) */
-        if(_P93.matchPhase==='hl_result'&&!ballArcActive&&(!hlPostArcType||(_bF93&&hlPostArcType==='deflect'&&hlPostArcT>0.25))&&ball&&!_P93.hlDef&&(_bS93||_bF93)&&!(typeof window!=='undefined'&&window.__CPM_NO_CONDUCI93)){
+        /* [7.999.161 PO-229 build-up] MISURATO con una trappola sul setter di ball.position.x (gi79/az1, esito di conduzione «build»):
+           durante i beat pass/give della costruzione il pallone era scritto 18 volte in 1,8 s da QUESTO blocco, che a fine
+           fotogramma riportava il pallone verso l'eroe (4 u/s) e inchiodava il corpo del «portatore» eletto alla sua posizione
+           interna: l'executor disegnava il passaggio 16→24, il giocatore vedeva il pallone tornare indietro e poi, finita la
+           costruzione, un salto alla CONSEGNA (9,5u nella sonda diagnostica, 14,1u nel rapporto di partenza). Il blocco e' pensato per
+           DOPO l'arco: ora aspetta che la costruzione sia finita. Rosso __CPM_NO_BU229. */
+        const _bu229b=!(typeof window!=='undefined'&&window.__CPM_NO_BU229)&&tlOn;
+        if(_P93.matchPhase==='hl_result'&&!_bu229b&&!ballArcActive&&(!hlPostArcType||(_bF93&&hlPostArcType==='deflect'&&hlPostArcT>0.25))&&ball&&!_P93.hlDef&&(_bS93||_bF93)&&!(typeof window!=='undefined'&&window.__CPM_NO_CONDUCI93)){
           let _c93=sr.current._con93;
           if(!_c93){const _team93=_bS93?'home':'away';let _bd=1e9,_bm=null;
             sr.current.players.forEach((pp,ii)=>{const src=(_P93.allPlayers||[])[ii];if(src&&src.team===_team93&&!src.gk&&pp.mesh&&pp.mesh!==hero){const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_bd){_bd=d;_bm=pp.mesh;}}});

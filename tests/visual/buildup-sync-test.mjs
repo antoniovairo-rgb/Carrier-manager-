@@ -35,7 +35,7 @@ const srv = await startServer(); const port = srv.address().port;
 const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 360, height: 260 } });
 await installCdnRoutes(page);
-await page.addInitScript((r) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_DRB229 = 1; }, !!process.env.CPM_NO_DRB229);
+await page.addInitScript(([r, r2]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window.__CPM_NO_DRB229 = 1; if (r2) window.__CPM_NO_BU229 = 1; }, [!!process.env.CPM_NO_DRB229, !!process.env.CPM_NO_BU229]);/* [7.999.161 PO-229] CPM_NO_BU229=1: prova del rosso del lucchetto-gol di scena, dei blocchi post-arco fermi durante la costruzione e del «vai» del dai-e-vai */
 await openMatch(page, port); await sleep(800);
 
 const righe = [], guasti = [];
