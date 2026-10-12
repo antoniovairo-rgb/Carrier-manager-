@@ -35,7 +35,7 @@ for (let k = FROM; k <= TO; k++) {
       if (ph === 'ended' || ph === 'ceremony') break;
       const min = await page.evaluate(() => (window.__CPM_CLOCK ? window.__CPM_CLOCK() : null));
       if (min != null && min >= 86 && !rec.lettura86) {
-        if (!aperto) { try { await page.getByText('Statistiche', { exact: true }).first().click({ timeout: 3000 }); aperto = true; } catch (e) {} await sleep(400); }
+        if (!aperto) { try { await page.getByText(/^statistiche$/i).first().click({ timeout: 3000 }); aperto = true; } catch (e) {} await sleep(400); }
         const txt = await page.evaluate(() => document.body.innerText);
         rec.lettura86 = { min, phase: ph, score: await page.evaluate(() => window.__CPM_SCORE && window.__CPM_SCORE()), righe: righe(txt), raw: txt.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 400).join('\n') };
       }
