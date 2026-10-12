@@ -1,0 +1,433 @@
+{
+  "k": 4,
+  "root": "/tmp/claude-0/-home-user-Carrier-manager-/eb1e2186-ecc0-577e-b1fa-f5bef31efee0/scratchpad/rec159",
+  "err": null,
+  "name": "Samuelito Vairo PO228-4",
+  "fine": "ceremony",
+  "tabellinoGol": {
+    "mine": "1",
+    "loro": "0"
+  },
+  "score": {
+    "home": 0,
+    "away": 0
+  },
+  "golRec": [
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 52,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 72,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 41,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 50,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 57,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 34,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 16,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 42,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 69,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 88,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 90,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 37,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 44,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 52,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 72,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 41,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 50,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 57,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 34,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 16,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 42,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 69,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 88,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 90,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 37,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 44,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 52,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 72,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 41,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 50,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 57,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 34,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 16,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 42,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 69,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 88,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 90,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 37,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 44,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 52,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 72,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 41,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 50,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 57,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 33,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 34,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 16,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 42,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 69,
+      "lato": "away",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 88,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 90,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1341) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 29,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 37,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 44,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at simulaPartitaMotore (<anonymous>:8786:1208) <- at simulateMatch (<anonymous>:2326:484) <- at recuperaGiornateMancate (<anonymous>:2002:1626)"
+    },
+    {
+      "via": "conta914:ev.gol:-",
+      "min": 96,
+      "lato": "home",
+      "st": "at ev (<anonymous>:8415:1215) <- at arrivoTiro (<anonymous>:8631:6024) <- at muoviVolo (<anonymous>:8631:5051) <- at Object.tick (<anonymous>:8692:3039) <- at <anonymous>:10161:947"
+    }
+  ],
+  "evGoal": [],
+  "fischio": true
+}

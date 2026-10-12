@@ -22,6 +22,7 @@ try {
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
+  await page.evaluate(() => { window.__GOLREC = []; }); /* isolamento: il registro si azzera a inizio partita (prima corsa contaminata dalle simulazioni di campionato) */
   await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), K);
   const tp = Date.now(); let ph = '';
   while (Date.now() - tp < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(500); }
