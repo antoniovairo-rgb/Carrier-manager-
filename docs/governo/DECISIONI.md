@@ -243,3 +243,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Scelta del team:** collaudatrici e rilascio restano su Haiku 5.5 (misure in sola lettura, consegne buone: PO-227 con causa file:riga e numeri); la **sviluppatrice passa a Opus 5.5 dal giro 8** (modifiche al gioco su sorgente grande, prossime voci sulla partita: PO-226, strappo del pallone PO-229). Il giro 7 (solo grafica L7) finisce su Haiku.
 - Vincolo: le sessioni mostrano l'avviso del limite settimanale (stato «allowed_warning», azzeramento 13/10): per questo Opus solo dove serve.
 - Regola per il rilascio: il compito contiene già le decisioni di strategia (parallelismo, crash, budget), così la sessione non si ferma a chiedere.
+
+## 12/10 mattina — nomi di stadio evocativi (prontezza 17/10)
+- Rilievo della sessione di rilascio: «Stadio Sabaudo» e «Stade Phocéen» nel bundle; «Derby d'Italia» e «FC Nerazzurri» risultano invece solo nella lista del controllo e nella mappa di rinomina dei vecchi salvataggi (non si vedono nel gioco, restano).
+- PO (questionario): **«Rinomina tutti gli evocativi»**.
+- Fatto in 7.999.161: 17 nomi di stadio rinominati — simboli/soprannomi di club reali (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier) e stadi veri verificati sul web (Stadio Adriatico di Pescara, Stade Gabriel Montpied di Clermont, Arena Lviv, Estadio de la Cerámica di Villarreal). I vecchi nomi entrano nella lista del controllo copyright (prova del rosso: «Stadio Sabaudo» segnalato).
+- Restano i nomi con la regione o la città, coerenti coi nomi dei club del gioco (es. Mersey Stadium per FC Merseyside).

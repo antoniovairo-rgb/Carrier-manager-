@@ -444,9 +444,9 @@ const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",intercepted:"✂️
 // Sprint 82 — ~100 stadium names across 6 tiers + U18 pool
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Terre Rosse","Stadio Accademia del Borgo","Arena della Gioventù","Campo Sportivo Lambro","Stadio Bertolotti","Arena Giovanile Sismondi","Centro Federale Valdarno","Stadio del Settore Giovanile","Campo dei Tigli","Arena Academy Nord"];// [5.96.0 CR-1] bonifica: via Coverciano/Braglia/Vismara/Galli (riferimenti reali)
 const STADIUM_POOLS=[
-  {min:88,s:["Stadio Meneghino","Stadio Capitolino","Stadio Sabaudo","Stadio Vesuvio","Albion Stadium","Mersey Stadium","Estadi Blau","Estadio Capital","Stadion der Wand","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena","München Arena","Estadio Coloso","Bridge Stadium","Cannon Stadium","North Stadium","Stade Phocéen","Estádio Azul"]},
-  {min:76,s:["Stadio Toscano","Bergamo Stadium","Stadio dell'Arena Vecchia","Stadio Felsineo","Stadio Ligure","Volkswiese Stadion","Power Stadium","Estadio Naranja","Estadio Hispalense","Stade des Verts","Estádio Leonino","Estádio do Grifo","Estádio Norte","Stade Princier","Stadio dei Navigli","Fiandria Stadion","Arena Lviv","Stade de la Cathédrale","Estadio de la Cerámica Vieja","Stade du Littoral"]},
-  {min:63,s:["Stadio Monferrato","Stadio Adriatico","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica","Estadio Oriolan","Estadio de la Sierra","Stade Gabriel Montpied","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
+  {min:88,s:["Stadio Valmora","Stadio Alcavera","Stadio Valcolle","Stadio Vellamare","Albion Stadium","Mersey Stadium","Estadi del Mar","Estadio Capital","Stadion am Hang","City Stadium","Northwich Stadium","Parc Royal","Grachten Arena","München Arena","Estadio Coloso","Riverside Park","Islington Park","North Stadium","Stade du Littoral","Estádio Azul"]},
+  {min:76,s:["Stadio Toscano","Bergamo Stadium","Stadio dell'Arena Vecchia","Stadio Felsineo","Stadio Ligure","Volkswiese Stadion","Power Stadium","Estadio Naranja","Estadio Hispalense","Stade des Verts","Estádio Rendalto","Estádio do Grifo","Estádio Norte","Stade de la Corniche","Stadio dei Navigli","Fiandria Stadion","Arena Halych","Stade de la Cathédrale","Estadio de los Naranjos","Stade du Littoral"]},
+  {min:63,s:["Stadio Monferrato","Stadio Costa Est","Stadio del Palladio","Stadio del Valdarno","Estadio de las Islas","Stade de la Loire","Estadio del Norte Verde","Arena Orobica","Estadio Oriolan","Estadio de la Sierra","Stade des Puys","Gradski Stadion","Stadion Steiermark","Estadio Andaluz","Stade de la Rivière","Arena della Torre","Stadio delle Dolomiti","Stade de la Champagne","Stadio Scaligero Sud","Estadio del Somontano"]},
   {min:50,s:["Stadio Brumana","Campo Sportivo Comunale","Stadio del Piceno","Campo Crespi","Arena Cimini","Stadio Parmense","Stadio degli Etruschi","Stadio della Ghirlandina","Estadio del Sur","Arena Poltava","Stade des Volcans","Estadio de la Meseta","Stadio della Valle","Campo de la Costa Brava","Arena Kielce","Stadion Górniczy","Stade des Tilleuls","Estadio del Miño","Stadio delle Cave","Arena Cracovia"]},
   {min:35,s:["Stadio Comunale del Melandro","Campo Sportivo del Golfo","Arena Città di Castello","Stadio dell'Elefante B","Campo Sportivo dei Pini","Estadio de la Bahía B","Stade de l'Aveyron","Stadion Wschodni","Arena Lublin","Stadio dello Ionio","Campo San Nicolò","Estadio del Atlántico","Stade des Pyrénées","Arena Czeladź","Stadio dei Due Mari","Campo Sportivo degli Ulivi"]},
   {min:0,s:["Campo Sportivo Parrocchiale","Arena Polivalente","Stadio Civico Nord","Campo Allenamento B","Terreno di Gioco Centrale","Stadio Quartiere","Campo Secondario","Arena Dilettanti","Campo Sportivo Est","Terreno Senza Nome","Stadio Periferia","Campo del Comune"]},
@@ -455,27 +455,27 @@ const CLUB_STADIUMS={
   // [5.96.0 CR-1/DB-1] chiavi RIALLINEATE agli id attuali di CLUBS (19 chiavi morte rimappate,
   //   collisione "mon" risolta: mon=FC Monaco→Stade Princier, mon2=FC Brianzolo→Brianza Stadium)
   //   + valori bonificati dai riferimenti reali (Kuip/Olympia/Trafford/Amsterdam Arena/Power).
-  "juve":"Stadio Sabaudo","inter":"Stadio Meneghino","milan":"Stadio Meneghino","napoli":"Stadio Vesuvio",
-  "roma":"Stadio Capitolino","lazio":"Stadio Capitolino","ata":"Bergamo Stadium","fio":"Stadio Toscano",
+  "juve":"Stadio Valcolle","inter":"Stadio Valmora","milan":"Stadio Valmora","napoli":"Stadio Vellamare",
+  "roma":"Stadio Alcavera","lazio":"Stadio Alcavera","ata":"Bergamo Stadium","fio":"Stadio Toscano",
   "tor":"Stadio Torvelle","bol":"Stadio Felsineo","udi":"Stadio Friulano",
   "gen":"Stadio Ligure","sam":"Stadio Ligure","par":"Stadio Parmense",
   "mon2":"Brianza Stadium","sas":"Emilia Stadium","lec":"Stadio Salentino",
   "sal":"Stadio Salernum","ver":"Stadio Scaligero","spe":"Stadio Spezzino",
-  "cre":"Stadio Cremonese","mcy":"City Stadium","liv":"Mersey Stadium","ars":"Cannon Stadium",
-  "che":"Bridge Stadium","mun":"Northwich Stadium","tot":"North Stadium",
+  "cre":"Stadio Cremonese","mcy":"City Stadium","liv":"Mersey Stadium","ars":"Islington Park",
+  "che":"Riverside Park","mun":"Northwich Stadium","tot":"North Stadium",
   "avl":"Aston Park","new":"Tyne Park","eve":"Merseyside Park","lei":"Midlands Stadium",
   "whu":"East Stadium","wol":"Wanderers Stadium","cry":"Croydon Park",
   "bha":"Sussex Stadium","bur":"Lancashire Stadium","bou":"Dorset Stadium",
-  "rma":"Estadio Capital","bar":"Estadi Blau","atm":"Estadio Coloso",
+  "rma":"Estadio Capital","bar":"Estadi del Mar","atm":"Estadio Coloso",
   "sev":"Estadio Hispalense","bet":"Estadio Ventrana","val":"Estadio Naranja",
   "vill":"Estadio Amarillo","ath":"Estadio Vasco","rsoc":"Estadio Donostiarra","cel":"Estadio Oriolan",
   "bay":"München Arena","bvb":"Goldwald Stadion","rbl":"Leipzig Arena","b04":"Werkstadt Arena",
   "fra":"Frankfurt Arena","s04":"Gelsenkirchen Arena","bsc":"Berlin Arena",
-  "psg":"Parc Royal","marse":"Stade Phocéen","lyon":"Lyon Stadium","lille":"Lille Stadium",
-  "mon":"Stade Princier","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",
+  "psg":"Parc Royal","marse":"Stade du Littoral","lyon":"Lyon Stadium","lille":"Lille Stadium",
+  "mon":"Stade de la Corniche","ren":"Rennes Park","nice":"Riviera Stadium","len":"Lens Stadium",
   "ajax":"Grachten Arena","psv":"Brabantia Stadion","feye":"Rotterdam Stadion","az":"Alkmaar Stadion",/* [6.74.0 QA-P0] */
-  "ben":"Estádio Lisboa","por":"Estádio Azul","spo":"Estádio Leonino",
-  "gal":"Istanbul Stadium","fenk":"Kadıköy Stadyumu","bes":"Kartal Park",
+  "ben":"Estádio Lisboa","por":"Estádio Azul","spo":"Estádio Rendalto",
+  "gal":"Istanbul Stadium","fenk":"Marmara Stadyumu","bes":"Boğaz Park",
   "club":"Fiandria Stadion","and":"Bruxella Park","gent":"Gent Arena","std":"Stade des Ardennes",/* [6.74.0 QA-P0] */
 };
 // Sprint C — per-club stadium style: 0=standard 1=modern dark 2=compact bowl 3=traditional
