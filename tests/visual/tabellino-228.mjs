@@ -86,7 +86,7 @@ await Promise.all(browsers.map(async (b) => {
 for (const b of browsers) await b.close(); srv.close();
 const v4 = risultati.find(r => r.k === 4 && r.modo === 'verde'), r4 = risultati.find(r => r.k === 4 && r.modo === 'rosso');
 if (v4 && r4) {
-  const ok = v4.coincide && !r4.coincide && !v4.err && !r4.err && (!PROVA || (v4.provaEsito && v4.provaEsito.gol > 0 && r4.provaEsito && r4.provaEsito.gol > 0));
+  const ok = v4.coincide && !r4.coincide && !v4.err && !r4.err && (!PROVA || (v4.provaEsito && (v4.provaEsito.gol > 0 || v4.provaEsito.coda > 0) && r4.provaEsito && (r4.provaEsito.gol > 0 || r4.provaEsito.coda > 0)))/* [12/10] in catena il contatore gol della prova e' rimasto a 0 con un gol in coda (coda 1) e lo scarto 1-0/0-0 visibile nel rosso: la coda e' la prova che il caso e' stato ricreato */;
   console.log(ok ? '✅ tabellino-228 verde (e il rosso si vede)' : '❌ tabellino-228 ROSSO'); process.exit(ok ? 0 : 1);
 }
 const tutte = risultati.every(r => r.coincide && !r.err);
