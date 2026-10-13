@@ -975,6 +975,31 @@ function ThreeMatchView(props){
     const _uno910=!(typeof window!=='undefined'&&window.__CPM_NO910);
     const _bodyUrl907='./assets/korward-regular-player.glb';
     try{if(typeof window!=='undefined')window.__CPM_BODY909=()=>_corpiPref907;}catch(_e){}/* [7.909] quale corpo e' in uso: lo leggono il contatore dei fotogrammi e le sonde */
+    /* [7.999.162 PO-232 «gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente (mai in T-Pose o senza
+       testa)»] PRONTEZZA DEI CORPI, letta da LiveMatch prima di aprire una scena dell'eroe. Pronto = corpo CH38 agganciato, corpi
+       CGTrader montati (__CPM_HYPER_CASUAL_STATUS ready-*), shader compilati (__CPM_HYPER_COMPILED74), nessuna testa in attesa della
+       sua texture (sr.current._testePend232) e ogni corpo visibile con almeno una clip che gira a peso > 0,05 (niente posa di legame).
+       Se il pacchetto CGTrader fallisce (fallback:*) non c'e' piu' niente da aspettare: decide la sola clip dei CH38. */
+    const _clipW232=av=>{try{const mx=av&&av.mx;if(!mx)return 0;const acts=mx._actions||[];const n=mx._nActiveActions!=null?mx._nActiveActions:acts.length;let w=0;for(let i=0;i<n;i++){const a=acts[i];if(a&&a.isRunning&&a.isRunning())w+=a.getEffectiveWeight();}return w;}catch(_e){return 0;}};
+    const _testa232=av=>{let teste=0,ok=0,osso=false;try{(av.visualRoot||av.root).traverse(o=>{if(o.isBone&&/^head$/i.test(o.name||''))osso=true;if(!o.isMesh||!o.material)return;(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(!m||!/^(Material\.002|KorwardNativeHair_)/.test(m.name||''))return;teste++;const im=m.map&&m.map.image;if(o.visible&&im&&((im.width|0)>0||(im.naturalWidth|0)>0))ok++;});});}catch(_e){}return {teste,ok,osso};};
+    const _corpi232=()=>{try{
+      if(!_useGLB)return {pronti:true,motivo:'glb-off'};
+      if(window.__CPM_GLB_READY!==true)return {pronti:false,motivo:'ch38'};
+      const st=String(window.__CPM_HYPER_CASUAL_STATUS||'');
+      if(st==='loading')return {pronti:false,motivo:'cgtrader'};
+      if(/^ready/.test(st)&&!window.__CPM_HYPER_COMPILED74)return {pronti:false,motivo:'compila'};
+      if(sr.current&&(sr.current._testePend232|0)>0)return {pronti:false,motivo:'testa',n:sr.current._testePend232|0};
+      let ferme=0,corpi=0;(glbAvatars||[]).forEach(av=>{if(!av||!av.root||!av.root.visible)return;corpi++;if(_clipW232(av)<=0.05)ferme++;});
+      if(ferme)return {pronti:false,motivo:'clip',ferme,corpi};
+      return {pronti:true,motivo:st||'ch38',corpi};}catch(_e){return {pronti:true,motivo:'errore'};}};
+    try{window.__CPM_CORPI232=_corpi232;}catch(_e){}
+    /* testimone (solo con __CPM_GLB232W armato dalla sonda): al primo fotogramma DISEGNATO di ogni scena dell'eroe, per ogni corpo
+       visibile e inquadrato: CGTrader si/no, peso delle clip attive (T-pose = 0), teste con texture caricata. */
+    const _w232v=new THREE.Vector3();
+    const _w232=(ph)=>{try{const P=propsRef.current||{};const out={ph,key:P.hlSitKey!=null?P.hlSitKey:null,st:String(window.__CPM_HYPER_CASUAL_STATUS||''),pronti:_corpi232(),proc:(typeof window.__CPM_PROCVIS==='function')?window.__CPM_PROCVIS():null,corpi:[]};
+      (glbAvatars||[]).forEach((av,i)=>{if(!av||!av.root||!av.root.visible)return;av.root.getWorldPosition(_w232v);_w232v.y+=1;_w232v.project(camera);if(Math.abs(_w232v.x)>1.05||Math.abs(_w232v.y)>1.05||_w232v.z>1)return;
+        const h=_testa232(av);out.corpi.push({i,cg:!!av._hyper,w:+_clipW232(av).toFixed(3),teste:h.teste,testeOk:h.ok,osso:h.osso});});
+      (window.__CPM_GLB232W=window.__CPM_GLB232W||[]).push(out);}catch(_e){}};
     try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;window.__CPM_HYPER_COMPILED74=false;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
     //   GRACE PERIOD: finché il CH38 non è agganciato i mesh procedurali (giocatori + EROE) restano NASCOSTI
@@ -1345,8 +1370,15 @@ function ThreeMatchView(props){
          materiale testa, mai la geometria né l''incarnato a runtime. */
       const _cgtraderHairMaterialCache=new Map(),_cgtraderHairTextureCache=new Map(),_cgtraderHairLoader=new THREE.TextureLoader();
       const _cgtraderHairVariant=hex=>{const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';};
-      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
-      const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
+      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
+      /* [7.999.162 PO-232] LA TESTA SPARIVA FINCHE' LA SUA TEXTURE NON ERA ARRIVATA. Il materiale della testa (Material.002) riceveva subito
+         la mappa dei capelli (PNG da ~2,5 MB) ancora vuota; three r128 nell'attesa campiona una texture nera con alfa 0, e il ritaglio
+         alphaTest 0,5 (ALPHAFIX) scartava l'intera testa: corpi senza testa per tutto il download. Ora la mappa si scambia SOLO a
+         texture caricata; fino ad allora resta la testa originale del GLB (gia' decodificata). sr.current._testePend232 conta le teste in
+         attesa: finche' non e' zero la scena dell'eroe non parte (LiveMatch, tetto 8 s). Rosso __CPM_NO_GLB232 = scambio immediato. */
+      const _testePend232=new Map();
+      const _flushTeste232=key=>{const L=_testePend232.get(key);if(!L)return;_testePend232.delete(key);try{if(sr.current)sr.current._testePend232=Math.max(0,(sr.current._testePend232|0)-L.length);}catch(_e){}L.forEach(([v,a])=>{try{_applyCgtraderNativeHair(v,a);}catch(_e){}});};
+      const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=(visual,appearance)=>{const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
       /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
@@ -5618,6 +5650,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   per la situazione, niente "ramp-in" visibile sotto il freeze. Solo gioco reale (il gate salta hl_intro → motion intatto).
           if(ballArcActive){ballArcActive=false;ballArcIsBG=false;contactFlashT=-1;_arcSrcX=null;_arcSrcZ=null;}}/* COERENZA: entrando nell'highlight si annulla QUALSIASI arco ancora in volo — [7.42.1 collaudo PO «nelle catene il pallone si blocca in posizioni illogiche»] prima si spegneva SOLO l'arco BG: sulle CATENE l'arco d'ESITO della prima azione (deflect/chance verso l'area) restava vivo e la mesh palla PENDEVA A MEZZ'ARIA vicino alla porta per tutto l'hl_intro, mentre la nuova azione riparte dal punto d'assestamento (7.34.1). Il nuovo HL parte SEMPRE dal suo stato-palla pulito. */
         if(_curPh==="hl_intro"){_chooseT=0;_hlSnap=true;sr.current._cutAt=performance.now();sr.current._cutSrc456="fase";}// FREEZE #2: all'AVVIO dell'highlight → snap dei giocatori in posizione + congelamento (così non si muovono in cronaca→intro)
+        if(/^hl_(intro|move|choose)$/.test(_curPh||'')&&!/^hl_(intro|move|choose)$/.test(prevPhase||'')&&typeof window!=='undefined'&&window.__CPM_GLB232W)sr.current._w232p=_curPh;/* [7.999.162 PO-232] testimone: si scatta dopo il primo disegno della scena */
         if(_curPh==="hl_choose")_chooseT=0; else if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"||_curPh==="hl_result")_chooseT=-1;// timer di lettura: parte entrando in hl_choose; azzerato fuori dalla fase di lettura
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
       }
@@ -11024,6 +11057,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       renderer.render(scene,camera);
+      if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
     };
     loop();
 

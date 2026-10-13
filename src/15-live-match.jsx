@@ -2338,6 +2338,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   Sotto ?cpmtest=1 la trattenuta è SPENTA (è presentazione: il gate/validator campionano a tempi fissi —
   //   stesso pattern del read-freeze 5.47.12).
   const [kickoffHold,setKickoffHold]=useState(true);
+  /* [7.999.162 PO-232 «gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente (mai in T-Pose o senza
+     testa)»] Il fischio aspettava solo il CH38 (__CPM_GLB_READY); i corpi CGTrader (lod0/1/2 ~29 MB + clip ~3,9 MB + teste ~2,5 MB
+     l'una) arrivano DOPO, e sul telefono la prima scena dell'eroe poteva aprirsi coi CH38 di ripiego, coi CGTrader appena montati o
+     con teste senza texture (scartate dal ritaglio alfa = corpo senza testa). Ora in `playing` il cronometro — l'unica strada che
+     apre una scena — resta fermo finche' ThreeMatchView non dichiara i corpi pronti (window.__CPM_CORPI232: CGTrader montati e
+     compilati, teste caricate, ogni corpo visibile con una clip a peso > 0,05). Tetto 8 s (__CPM_CAP232), una volta a partita: poi si
+     gioca comunque. Indicazione sobria in alto «Caricamento giocatori…». Rosso __CPM_NO_GLB232. Misure nella sonda
+     tests/visual/glb-pronti-232.mjs. */
+  const [corpiHold232,setCorpiHold232]=useState(false);
+  const corpiHold232Ref=useRef(false);
+  const corpiCap232Ref=useRef({t:0,fatto:false});
   const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
   useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
@@ -2396,6 +2407,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     },400);
     return ()=>clearInterval(iv);
   },[phase,glbTry]);
+  useEffect(()=>{/* [7.999.162 PO-232] attesa dei corpi prima di aprire una scena dell'eroe */
+    const _set=v=>{corpiHold232Ref.current=v;setCorpiHold232(v);};
+    if(phase!=="playing"||kickoffHold){_set(false);return;}
+    const _glbExp=(typeof window!=='undefined')&&window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp||window.__CPM_NO_GLB232||typeof window.__CPM_CORPI232!=='function'||corpiCap232Ref.current.fatto){_set(false);return;}
+    const _chk=()=>{try{const c=corpiCap232Ref.current;if(c.fatto){_set(false);return true;}
+      const r=window.__CPM_CORPI232();
+      if(!r||r.pronti){if(c.t){try{cpmEv("corpi232",{attesaMs:Date.now()-c.t,min:clockRef.current|0});}catch(_e){}}c.t=0;_set(false);return false;}
+      /* l'attesa del CH38 non consuma il tetto: e' gia' il compito della trattenuta del fischio (fuori dal banco); si molla solo se il CH38 fallisce */
+      if(r.motivo==='ch38'){if(window.__CPM_GLB_FAIL){_set(false);return false;}if(!corpiHold232Ref.current)_set(true);return false;}
+      if(!c.t)c.t=Date.now();
+      if(Date.now()-c.t>(+window.__CPM_CAP232||8000)){c.fatto=true;try{cpmEv("corpi232",{tetto:true,motivo:r.motivo,min:clockRef.current|0});}catch(_e){}_set(false);return true;}
+      if(!corpiHold232Ref.current)_set(true);return false;}catch(_e){_set(false);return true;}};
+    if(_chk())return;
+    const iv=setInterval(()=>{if(_chk())clearInterval(iv);},250);
+    return()=>clearInterval(iv);
+  },[phase,kickoffHold,glbTry]);
   // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
   // Attivo SOLO con ?cpmtest=1 → in produzione non viene mai registrato. Phase 2 dell'harness.
   useEffect(()=>{
@@ -4176,7 +4204,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // Clock — more commentary, possession updates
   useEffect(()=>{
-    if(phase!=="playing"||paused||kickoffHold)return;/* [7.9.3] kickoff trattenuto finché CH38 non è pronto */
+    if(phase!=="playing"||paused||kickoffHold||corpiHold232)return;/* [7.9.3] kickoff trattenuto finché CH38 non è pronto · [7.999.162 PO-232] e finche' i corpi CGTrader non sono pronti */
     if(scFreeze681&&!(typeof window!=='undefined'&&window.__CPM_NO682F)
        &&!(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_SCFREEZE_TEST))return;/* [7.682.0] c'e' una scelta aperta: il tempo di gioco si ferma finche' non e' presa (o finche' non scadono i venti secondi) */
     /* [7.898.0 A2 v3 — IL MINUTO DEL MOTORE HA TRE FASI: UNA DECIDE, DUE MUOVONO. Rosso __CPM_NO898]
@@ -8246,7 +8274,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       });
     },Math.max(40,Math.round(MATCH_TICK_MS/_SUB898/((typeof window!=='undefined'&&window.__CPM_NO484)?1:(matchSpeed||1)))));/* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>clearInterval(iv);
-  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,matchSpeed,scFreeze681]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
+  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
   // Ball attachment — la palla sta sull'eroe PRIMA dell'azione (intro/move/choose). FIX boomerang: NON
   //   durante hl_result — lì la palla vola verso l'esito (rete/compagno/fuori) e non va più richiamata sull'eroe.
@@ -9475,7 +9503,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(phase==="hl_move")setPhase("hl_choose");
         else if(phase==="hl_result"){if(Date.now()-(resultShownRef.current||0)>800)_kbContinue.current();}// [6.76.0 LMV-L6] guardia anti-skip (come il tap)
         // [5.75.0 BUG-9] lo skip da playing saltava DIRETTO a hl_move senza il routing/reset di startHL → DPad e mosse dell'HL precedente. Ora entra da hl_intro come il flusso naturale (che azzera anche la cronaca BG).
-        else if(phase==="playing"&&hlIdx<hlTimes.length){setClock(c=>Math.max(c,hlTimes[hlIdx]));setBgAction(null);try{cpmEv("scena",{min:Math.max(clockRef.current|0,hlTimes[hlIdx]|0),src:"calendario"});}catch(_e){}setPhase("hl_intro");}// [6.76.0 LMV-L3] il clock non torna MAI indietro (un HL dinamico con tempo già passato non regredisce il minuto)
+        else if(phase==="playing"&&hlIdx<hlTimes.length&&!corpiHold232Ref.current/* [7.999.162 PO-232] lo skip non apre una scena coi corpi non pronti */){setClock(c=>Math.max(c,hlTimes[hlIdx]));setBgAction(null);try{cpmEv("scena",{min:Math.max(clockRef.current|0,hlTimes[hlIdx]|0),src:"calendario"});}catch(_e){}setPhase("hl_intro");}// [6.76.0 LMV-L3] il clock non torna MAI indietro (un HL dinamico con tempo già passato non regredisce il minuto)
       }
     };
     const onU=e=>keysRef.current.delete(e.key);
@@ -10653,6 +10681,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:RAD.pill,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
+              {corpiHold232&&!kickoffHold&&!paused&&phase==="playing"&&(
+                <div data-cpm="corpi232" style={{position:"absolute",top:10,left:"50%",transform:"translateX(-50%)",zIndex:39,background:"rgba(5,8,20,0.78)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.pill,padding:"5px 12px",fontSize:FS.caption,color:"rgba(255,255,255,0.82)",letterSpacing:0.4,pointerEvents:"none",whiteSpace:"nowrap"}}>⏳ Caricamento giocatori…</div>)}
               {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
                   Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
               {bugNote&&(
