@@ -381,6 +381,7 @@
     "manovre-150": "node manovre-150.mjs",
     "esiti-218": "node esiti-218.mjs",
     "cross-218": "node cross-218.mjs",
+    "testata-209": "node testata-209.mjs",
     "seme-a": "node seme-a.mjs",
     "seme-a:rosso": "CPM_ROSSO=1 node seme-a.mjs",
     "interazioni-226": "node interazioni-226.mjs",

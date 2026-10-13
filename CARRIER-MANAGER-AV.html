@@ -48201,7 +48201,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
@@ -50766,7 +50766,7 @@ const getThisWeekMatchday=()=>{
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
         <div data-cpm="intervista231" data-ctx={interviewModal.matchCtx||""} style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
-          {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}
+          {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={((interviewModal&&interviewModal.club)||player.club)||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}
           {/* [7.977.0 — collaudo PO dal suo Android: «schermata rotta e brutta». LA CAUSA E' UN COMMENTO.
               Qui stava un commento in stile C, NUDO, fra due espressioni JSX, cioe' FUORI dalle graffe: quello
               non e' un commento, e' TESTO. Diventava un item del contenitore flex — invisibile, perche' la
@@ -50774,7 +50774,7 @@ const getThisWeekMatchday=()=>{
               dell'intervista, larga 100%, veniva schiacciata e spinta a destra, tagliata fuori schermo, col
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
-          {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
+          {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={((interviewModal&&interviewModal.club)||player.club)||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":(typeof window!=="undefined"&&window.__CPM_NO_IV12)?"62vh":"71vh",...((typeof window!=="undefined"&&(window.__CPM_NO_IV12||window.__CPM_NO_IV25))?{}:{minHeight:"69vh"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] scena 40% → 31%, riquadro 62 → 71vh */,overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)",...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?{background:TH.surface3,border:`1px solid ${TH.divider}`,borderRadius:`${RAD.xl}px ${RAD.xl}px 0 0`}:{})/* [7.999.162 PO-230] foglio dal basso (la scena 3D sta sopra): fondo, filo e raggio della cornice standard */}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1,...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?finestraStd():{})}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
@@ -50816,7 +50816,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:"2px solid "+TH.text,paddingBottom:4,marginBottom:8}}>
                     <span style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,letterSpacing:.3}}>{testata}</span>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.muted}}>St. {player.season||1} · Sett. {player.week||1}</span></div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:3}}>Domani in edicola{pt&&pt.hs!=null?(" · "+(player.club?.a||player.club?.n||"")+" "+pt.hs+"-"+pt.as+" "+(interviewModal.opponent||"")):""}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:3}}>Domani in edicola{pt&&pt.hs!=null?(" · "+(((interviewModal&&interviewModal.club)||player.club)?.a||((interviewModal&&interviewModal.club)||player.club)?.n||"")+" "+pt.hs+"-"+pt.as+" "+(interviewModal.opponent||"")):""}</div>
                   <div style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1.2,textWrap:"balance",marginBottom:4}}>{pp.titolo}</div>
                   <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{pp.sotto}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6}}>di {interviewModal.paper?.name||"la redazione"}</div>
@@ -50830,7 +50830,7 @@ const getThisWeekMatchday=()=>{
             {/* Question */}
             <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
-                «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club")}»
+                «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club")}»
               </div>
             </div>
             {/* [24/09 POC — risposta PO al questionario: «sì, eroe + giornalista»] chi risponde ha la sua figurina (volto intero),
@@ -50857,7 +50857,7 @@ const getThisWeekMatchday=()=>{
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
                       <span style={{fontSize:FS.caption,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:RAD.xl,background:`${toneColor}15`}}>{toneLabel}</span>
                     </div>
-                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>«{(ans.txt||"").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}»</div>
+                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>«{(ans.txt||"").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}»</div>
                   </button>
                 );
               })}
