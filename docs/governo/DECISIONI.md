@@ -285,3 +285,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - Misura: carriera + completa = 56 controlli, ~4h30 da sole; 4 controlli giravano due volte (test:logic, save-compat, replay, career-critical da 12,5 min); un instabile si ripeteva fino a 3 volte (nomi-219: 3h30 il 12/10).
 - PO (questionario): **«Sì, così»** — a ogni rilascio un NUCLEO fisso (~15 min: test:logic, save-compat, design-system, typing-shortcuts, career-critical) più SOLO i guardiani delle parti toccate (`ci-runner.mjs mirata`, mappa file src → guardiani); catena intera (`notte`, senza doppioni) una volta al giorno prima del rilascio delle 00 e prima della pubblicazione del 17/10; un guardiano instabile due volte si ripara, non si ripete.
 - PO: **restano 3 rilasci al giorno (08 · 16 · 00)**.
+
+## 13/10 pomeriggio — PO-226 entra prima del 17/10
+
+PO, testuale: «integrala la PO-226». Cambia la decisione del 13/10 mattina («dopo il 17/10: … PO-226»): il primo passo di PO-226 (ramo `sviluppo/interazioni-226`, rapporto `docs/sviluppo/RAPPORTO-giro10.md`) entra nel ramo principale dopo la promozione della 7.999.162 (che resta e673a51f, già verificata), come 7.999.163, con la catena `notte` del rilascio delle 00.

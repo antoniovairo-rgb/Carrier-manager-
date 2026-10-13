@@ -40,6 +40,44 @@ const TATTICHE_MOTORE={
     Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
 try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
 const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esitoTiroV2). Taratura 05/10 sulla VISSUTA (dove il giocatore tira a ogni occasione): K=3 dava 1,38 gol dell'eroe dalle scene, K=1 stimato ~0,8; nella simulazione rapida K=1 da' 0,48 */
+/* [PO-226, decisione PO 12/10 «Sì, avvia il piano» — LE INTERAZIONI NASCONO DAI FATTI DEL MOTORE. Rosso __CPM_NO_INT226]
+   Censimento (docs/sviluppo/RAPPORTO-giro10.md): in partita uscivano 4-5 schede a orologio (finestra 18'-88', sorteggio) e quattro
+   ordini del mister a minuti fissi (28'/63'/75'/85') che il giocatore non poteva rifiutare. Qui vive la parte PURA del sistema nuovo,
+   leggibile anche dal banco Node: (1) quali FATTI della partita aprono una scelta, in ordine di precedenza; (2) l'effetto della
+   scelta sull'atteggiamento del motore (ATT: [seguo l'ordine, faccio di testa mia], in [-1,1], moltiplica la voglia di tirare della
+   squadra dell'eroe come la mentalita'); (3) il minuto d'ingresso dalla panchina, con seme. Tetto: tre scelte a partita, otto minuti
+   fra l'una e l'altra (cinque per il vantaggio di misura all'85', che non puo' aspettare), ogni fatto una volta sola. I valori sono
+   una scelta di progetto dichiarata, non vengono da una fonte. */
+const INT226={
+  TETTO:3,DIST:8,K:0.9,
+  FATTI:[
+    {id:'panca_sotto',panca:1,quando:c=>c.panchina&&c.diff<0&&c.mn>=20&&c.mn<=c.ingresso-4},
+    {id:'panca_pari',panca:1,quando:c=>c.panchina&&c.diff===0&&c.mn>=46&&c.mn<=c.ingresso-4},
+    {id:'misura_85',dist:5,ordine:'consolida',att:[-0.6,0.3],quando:c=>!c.panchina&&c.mn>=85&&c.diff===1},
+    {id:'sotto_70',ordine:'urgenza_75',att:[0.6,-0.2],quando:c=>!c.panchina&&c.mn>=70&&c.diff<0},
+    {id:'pari_75',ordine:'urgenza_75',att:[0.45,-0.15],quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
+    {id:'avanti_2',ordine:'blocca_ora',att:[-0.45,0.2],quando:c=>!c.panchina&&c.mn>=60&&c.diff>=2},
+    {id:'eroe_stanco',ordine:'intelligente',att:[-0.25,0.15],quando:c=>!c.panchina&&c.mn>=55&&c.energia!=null&&c.energia<=55},
+    {id:'eroe_marcato',ordine:null,att:[0.25,-0.1],quando:c=>!c.panchina&&c.mn>=25&&(c.duelliP|0)>=2}],
+  attivo(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_INT226);},
+  /* c = {mn, diff (eroe meno avversario), energia, duelliP, panchina, ingresso, fatte:[id], ultima} → id del fatto, o null */
+  scegli(c){if(!c)return null;const F=c.fatte||[];if(F.length>=INT226.TETTO||c.mn>88)return null;
+    const pancaFatta=F.some(id=>/^panca_/.test(id));
+    for(const f of INT226.FATTI){if(F.indexOf(f.id)>=0)continue;if(f.panca&&pancaFatta)continue;
+      if((c.mn-(c.ultima==null?-99:c.ultima))<(f.dist||INT226.DIST))continue;
+      let ok=false;try{ok=!!f.quando(c);}catch(_e){ok=false;}if(ok)return f.id;}
+    return null;},
+  fatto(id){return INT226.FATTI.find(f=>f.id===id)||null;},
+  /* l'effetto della scelta idx (0 = seguo l'ordine, la neutra che scatta col timer · 1 = faccio di testa mia) */
+  att(id,idx){const f=INT226.fatto(id);return f&&f.att?(+f.att[idx?1:0]||0):0;},
+  /* panchina: idx 0 = resto concentrato (minuto deciso dal mister, invariato) · 1 = chiedo di entrare (prima, di 4-10' col seme,
+     mai prima di due minuti da adesso). Funzione pura di (base, scelta, seme, minuto). */
+  ingresso(base,idx,seme,mn){base=Math.round(+base||60);if(!idx)return base;let s=((seme>>>0)^0x226)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;
+    const d=4+Math.floor((s/4294967296)*7);return Math.max(Math.round(+mn||0)+2,Math.min(base,base-d));},
+  /* il riscaldamento parte 5-14' prima dell'ingresso, col seme (era Math.random) */
+  riscaldamento(base,seme){let s=((seme>>>0)^0x2261)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;return Math.max(1,Math.round(+base||60)-(5+Math.floor((s/4294967296)*10)));}
+};
+try{if(typeof globalThis!=='undefined')globalThis.INT226=INT226;}catch(_e){}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -104,7 +142,7 @@ function creaMotorePossesso(cfg){
     rete:null,         /* {lato,t} */
     kickoff:{lato:(cfg.lato===AWAY?AWAY:HOME),t:0},
     scena:false,
-    richieste:{gol:null,turno:null,verso:null,att:{home:0,away:0}},
+    richieste:{gol:null,turno:null,verso:null,att:{home:0,away:0},att226:{home:0,away:0}},
     eventi:[],
     arco:null,
     conta:{tenuta:0,volo:0,libero:0,fermo:0,rete:0,kickoff:0,scena:0,passaggi:0,tiri:0,gol:{home:0,away:0},falli:0,fuori:0,corner:0,contrasti:0,intercetti:0,conduzioni:0,ricezioniHero:0,golNegati:0,golForzati:0,rami:{}},
@@ -578,7 +616,8 @@ function creaMotorePossesso(cfg){
         if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_FERMO138)){S.scena=true;S._scenaAuto138=S.min|0;S.richieste.verso=null;S.arco=null;}return;}}
     const golReq=(S.richieste.gol&&S.richieste.gol.lato===l)?S.richieste.gol:null;
     if(golReq)golReq.t++;
-    const att=clamp((S.richieste.att[l]||0)+0.35*TAT[l].ment,-1,1);/* [7.999.5] la mentalita' dello stile si somma all'atteggiamento del risultato */
+    const _f226=(lt)=>INT226.attivo()?Math.max(0.2,1+INT226.K*(S.richieste.att226[lt]||0)):1;/* [PO-226] fattore della scelta sull'ordine del mister (1 col rosso __CPM_NO_INT226) */
+  const att=clamp((S.richieste.att[l]||0)+0.35*TAT[l].ment,-1,1);/* [7.999.5] la mentalita' dello stile si somma all'atteggiamento del risultato */
     /* [v2] L'OCCASIONE DELL'EROE: la scelta e' un INGRESSO del motore. Stessa condizione di occasione(), che e' pura, ed e' il PRIMO
        controllo del battito: annunciata l'occasione, si gioca subito. Misurato: col pressing prima, il pallone perso e ripreso quattro
        battiti dopo consumava la scelta fatta per l'occasione precedente, e sim rapida e partita guardata divergevano */
@@ -672,7 +711,7 @@ function creaMotorePossesso(cfg){
        Le quote scendono e cio' che si toglie al tiro torna al passaggio, che e' la voce affamata. */
     const _t950=(typeof window!=='undefined'&&window&&window.__CPM_NO950);
     let pTiro=(zona==="area"?(_t950?0.85:((typeof window!=="undefined"&&window&&window.__CPM_NO_TIRI23)?0.55:0.30)):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
-    pTiro*=(1+0.35*att);if(V2)pTiro*=K2.pTiro*Math.exp(K2.forzaTiro*vantDi(l));if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
+    pTiro*=(1+0.35*att);pTiro*=_f226(l);/* [PO-226] la scelta dell'eroe sull'ordine del mister. Rosso __CPM_NO_INT226 */if(V2)pTiro*=K2.pTiro*Math.exp(K2.forzaTiro*vantDi(l));if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
     /* [24/09 POC — BRAIN «PARTITA VERA», secondo difetto misurato] SI TIRA TROPPO DA FUORI. Banco 10 partite: tiri dal limite
        65 %, trequarti 18 %, area 16 % (anche contando l'area vera, 40 m di larghezza: 16 %) e 17,4 tiri a squadra. In Premier
        League 2024-25 i tiri da fuori sono il 31,7 % (8,3 a partita, Opta Analyst): la conclusione nasce in area. Qui il tiro
@@ -714,7 +753,7 @@ function creaMotorePossesso(cfg){
     const _noTiro14=_eroeNonTira14(P);
     if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
     else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
-      if(rnd()<pS){ramo("tiroV2");tira(P);return;}}
+      if(rnd()<pS*_f226(l)){ramo("tiroV2");tira(P);return;}}/* [PO-226] MISURATO: la conclusione v2 (questa, il ramo piu' battuto) non leggeva nessun atteggiamento — con la sola pTiro la scelta muoveva i tiri del 2% */
     if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
       const M=piuAvanzato(l,P.i);
@@ -1115,6 +1154,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
     atteggiamento(lato,v){S.richieste.att[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},
+    ordine226(lato,v){S.richieste.att226[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},/* [PO-226] separato da atteggiamento(): il live lo riscrive a ogni minuto dal punteggio */
     eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
     scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
     riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;

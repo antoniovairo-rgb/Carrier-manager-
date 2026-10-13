@@ -382,6 +382,7 @@
     "esiti-218": "node esiti-218.mjs",
     "seme-a": "node seme-a.mjs",
     "seme-a:rosso": "CPM_ROSSO=1 node seme-a.mjs",
+    "interazioni-226": "node interazioni-226.mjs",
     "nomi-219": "node nomi-219.mjs",
     "difesa-220": "node difesa-220.mjs",
     "scene-221": "node scene-221.mjs",
