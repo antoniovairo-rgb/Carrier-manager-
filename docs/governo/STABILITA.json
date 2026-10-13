@@ -1,5 +1,148 @@
 [
  {
+  "data": "2026-10-13 06:19",
+  "versione": "7.999.161",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 559
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 546
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 596
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 440
+   },
+   {
+    "passo": "tempo-138",
+    "ok": false,
+    "s": 1071,
+    "coda": "rosso {\"fase\":\"ceremony\",\"pagato\":242,\"residuo\":0,\"aperto\":242} | ❌ tempo-138 |   · rosso: il difetto non si vede {\"fase\":\"ceremony\",\"pagato\":242,\"residuo\":0,\"aperto\":242}",
+    "prove": 2
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 811
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 214
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 445
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 520
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 1028
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 527
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 332
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 8912,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2251
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 2232,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1165
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 465
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1642
+   }
+  ]
+ },
+ {
   "data": "2026-10-12 19:55",
   "versione": "7.999.161",
   "catena": "completa",
@@ -6959,168 +7102,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-05 14:12",
-  "versione": "7.999.137",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 738
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 36
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 79
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 33
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 41
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 59
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 540
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 44
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 276
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 9
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 217
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 511
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 262
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 53
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 594
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 420
    }
   ]
  }
