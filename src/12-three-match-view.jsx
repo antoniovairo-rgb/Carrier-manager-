@@ -5409,6 +5409,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   niente tuffo sul LANCIO del cross (un portiere non si tuffa su un traversone: sul cross parato
           //   ESCE con una presa — clip gk_catch finora mai usata; il tuffo sul cross arriva al 2° tocco).
           if(_CPM_TEST&&typeof window!=='undefined'){try{(window.__CPM_GKGATE=window.__CPM_GKGATE||[]).push({t:t||null,kind:P.hlOutcomeKind||null,def:P.hlDef?1:0,gk:awayGkMesh?1:0,arc:ballArcActive?1:0,vr:P.hlVariant||null});}catch(_e){}} /* [7.552 sonda] PERCHE' IL PORTIERE NON REAGISCE: registra gli ingressi del cancello (tipo di conclusione, esito, highlight difensivo, portiere in scena). */
+          /* [7.999.162 PO-229] DOVE il pallone passa al portiere: la z dell'arco quando attraversa il suo piano (interpolazione lineare dal
+             punto di calcio al bersaglio, come vola l'arco 6.74 3D-6), o il bersaglio se l'arco muore prima. Serve al tiro sbagliato qui sotto. */
+          let _zp229=ballArcTgtZ;if(awayGkMesh){const _gx=awayGkMesh.position.x,_sx=ball.position.x,_sz=ball.position.z;if(ballArcTgtX>_gx&&_sx<_gx&&(ballArcTgtX-_sx)>0.5)_zp229=_sz+(ballArcTgtZ-_sz)*((_gx-_sx)/(ballArcTgtX-_sx));}
           if(t==="cross"&&awayGkMesh&&!P.hlDef&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             oppActType=_tuffoTesto23(P)?"gk_dive":"gk_catch";oppActT=0;oppMesh=awayGkMesh;
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(ballArcTgtZ,oppMesh.position.z-4,oppMesh.position.z+4);oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1;
@@ -5416,7 +5419,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             //   mentre il cross atterrava fino a z=±18 → presa a vuoto a 4-13u dalla palla. Ora l'arco converge sul GK.
             ballArcTgtZ=clamp(ballArcTgtZ,oppMesh.position.z-3.5,oppMesh.position.z+3.5);
             ballArcTgtX=clamp(ballArcTgtX,40,44.5);
-          } else if((t==="shot"||t==="penalty"||t==="header"||t==="freekick")&&awayGkMesh&&!P.hlDef&&(((t==="penalty"||(t==="freekick"&&Math.abs(ballArcTgtZ)<7.5))&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&!(typeof window!=="undefined"&&window.__CPM_NO_FKGK62))/* [7.999.62 taccuino PO #78 «punizione fuori: il portiere non si tuffa». Rosso __CPM_NO_FKGK62] sul piazzato che esce DI POCO (entro 7,5u dal centro, i pali sono a 3,35) e sul rigore fuori il portiere si tuffa lo stesso, corto: sul rigore sceglie il lato prima del calcio, sulla punizione vicina al palo ci prova */||!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner"||P.hlOutcomeKind==="blocked"||P.hlOutcomeKind==="wall_blocked"||P.hlOutcomeKind==="intercepted"))){/* [7.197.0 S4] niente tuffo sul tiro MURATO: la conclusione muore sul muro a 5 metri dal tiratore, il portiere non c'entra nulla — prima si tuffava su un pallone che non gli arrivava mai */// 5.49.11: niente tuffo su azione difensiva · [6.4.1 R2.2] niente tuffo sul corner (palla fuori) · [6.76.0 LMV-B1] anche la PUNIZIONE parata/in porta fa tuffare il GK (prima "parata dal nulla": deflect+posa senza tuffo)
+          } else if((t==="shot"||t==="penalty"||t==="header"||t==="freekick")&&awayGkMesh&&!P.hlDef&&(((t==="penalty"||(t==="freekick"&&Math.abs(ballArcTgtZ)<7.5))&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&!(typeof window!=="undefined"&&window.__CPM_NO_FKGK62))/* [7.999.62 taccuino PO #78 «punizione fuori: il portiere non si tuffa». Rosso __CPM_NO_FKGK62] sul piazzato che esce DI POCO (entro 7,5u dal centro, i pali sono a 3,35) e sul rigore fuori il portiere si tuffa lo stesso, corto: sul rigore sceglie il lato prima del calcio, sulla punizione vicina al palo ci prova */||(!(typeof window!=="undefined"&&window.__CPM_NO_GK229M)&&(t==="shot"||t==="header")&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out")&&(Math.abs(ballArcTgtZ)<=4.85||Math.abs(_zp229-awayGkMesh.position.z)<=4.5))/* [7.999.162 PO-229] tiro che esce DI POCO (arco che finisce entro 1,5u dal palo) o che passa A PORTATA del portiere (entro 4,5u sul suo piano, anche quando il portiere e' uscito incontro al tiratore): lui ci prova — vedi la nota sotto */||!(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="corner"||P.hlOutcomeKind==="blocked"||P.hlOutcomeKind==="wall_blocked"||P.hlOutcomeKind==="intercepted"))){/* [7.197.0 S4] niente tuffo sul tiro MURATO: la conclusione muore sul muro a 5 metri dal tiratore, il portiere non c'entra nulla — prima si tuffava su un pallone che non gli arrivava mai */// 5.49.11: niente tuffo su azione difensiva · [6.4.1 R2.2] niente tuffo sul corner (palla fuori) · [6.76.0 LMV-B1] anche la PUNIZIONE parata/in porta fa tuffare il GK (prima "parata dal nulla": deflect+posa senza tuffo)
             /* [7.203.0 direttiva PO «sembra davvero una partita di calcio»] IL PORTIERE NON SI TUFFA SU TUTTO.
                Ogni conclusione nello specchio faceva partire un tuffo a corpo disteso, anche su un pallone
                calciato ADDOSSO al portiere o da due passi: nel calcio quello è un RIFLESSO — ci si oppone col
@@ -5438,6 +5441,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _saveReach=_isSaveDv?9:6;// M1 fix: legge il PROP (hlOutcomeVariant qui è ancora null) → ora la portata estesa su parata si attiva davvero
             const _dvTgt74=_isSaveDv?ballArcTgtZ:(oppMesh.position.z+(ballArcTgtZ-oppMesh.position.z)*0.55);/* [6.74.0 3D-3] sul GOL il tuffo resta CORTO (battuto, ~55% della distanza): prima il reach 6 copriva comunque tutti i target nello specchio → il GK si distendeva ESATTAMENTE sulla z d'ingresso e la palla gli passava ATTRAVERSO il corpo su ogni rigore/tiro segnato */
             oppMesh._diveToZ=clamp(_dvTgt74,oppMesh.position.z-_saveReach,oppMesh.position.z+_saveReach);
+            /* [7.999.162 PO-229 taccuino 13/10: «Volée di collo potente» e «Girata secca e tiro» SBAGLIATE → «codice 111 — portiere fuori
+               tempo», «il portiere non si tuffa nel momento giusto». Rosso __CPM_NO_GK229M] MISURATO (sonda gk-miss-229, tempo di scena):
+               sul tiro FUORI il portiere non faceva NIENTE anche quando l'arco gli passava a portata (gi88 volee: pallone sul suo piano a
+               z -2,32 e quota 0,74 col portiere a -0,37; girata GLB: z 2,67 contro -0,15) e solo dopo il pallone scivolava oltre il palo;
+               sul PALO il tuffo c'era ma corto (55% della distanza, come sul gol «battuto»). Un portiere vero sul tiro che esce di poco si
+               tuffa lo stesso — non puo' sapere che uscira' — e sul tiro largo lo guarda uscire (il cancello sopra: arco oltre 1,5u dal
+               palo = nessun tuffo). Qui la distesa va verso il pallone per l'80% della distanza (sfiora, non para), entro ±4,5 come gli
+               altri siti; la partenza resta quella sincronizzata all'arco (7.465: distesa = progresso dell'arco, zero al calcio). */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_GK229M)&&(P.hlOutcomeKind==="wide"||P.hlOutcomeKind==="out"||P.hlOutcomeKind==="post")&&(t==="shot"||t==="header")){
+              /* DOVE il pallone gli passa: la z dell'arco quando attraversa il piano del portiere (interpolazione lineare dal punto di
+                 calcio al bersaglio, come vola l'arco 6.74 3D-6), o il bersaglio se l'arco muore prima. Misurato su gi9: arco che entra
+                 nello specchio a z -1,9 sul piano del portiere e finisce a +0,5 — mirare al bersaglio mandava il tuffo dall'altra parte.
+                 Pallone ADDOSSO (entro 1,2u) = riflesso col corpo (gk_block, 7.203), non un tuffo che non si sposta. */
+              const _gx229=oppMesh.position.x,_gz229=oppMesh.position.z,_sx229=ball.position.x,_sz229=ball.position.z;
+              if(Math.abs(_zp229-_gz229)<1.2&&!_tuffoTesto23(P)){oppActType="gk_block";oppMesh._diveToZ=clamp(_zp229,_gz229-3,_gz229+3);oppMesh._blk229=sr.current._actSitKey403;oppMesh._pb229=null;}
+              else {oppMesh._diveToZ=clamp(_gz229+(_zp229-_gz229)*0.8,_gz229-4.5,_gz229+4.5);oppMesh._blk229=null;}
+              oppDiveDir=_zp229>=_gz229?1:-1;
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_GK229ARM={k:P.hlOutcomeKind,act:oppActType,zp:+_zp229.toFixed(2),tz:+ballArcTgtZ.toFixed(2),tx:+ballArcTgtX.toFixed(2),gz:+_gz229.toFixed(2),gx:+_gx229.toFixed(2),sx:+_sx229.toFixed(2),sz:+_sz229.toFixed(2)};}catch(_e){}}}
             oppMesh._diveBallY=ballArcTgtY;oppMesh._diveDur=(typeof window!=='undefined'&&window.__CPM_NO465)?clamp(ballArcDur*0.92,0.48,1.20):clamp((ballArcDur-Math.min(0,ballArcT))*1.10,0.55,1.70);/* [7.465.0] IL TUFFO DEVE DURARE QUANTO IL VOLO. Legandolo a `ballArcDur*0.92` il gesto finiva PRIMA che la palla arrivasse — e non per poco: l'arco parte con `ballArcT` NEGATIVO (il wind-up del 6.74), quindi il tempo reale fino all'arrivo e' `ballArcDur - ballArcT`, sempre maggiore della sola durata dell'arco. Misurato dopo aver agganciato l'estensione al pallone: il gesto si spegneva col portiere al 31-61% della distesa. Ora la vita del tuffo copre il volo (+10% di margine), e i due morsetti si allargano di conseguenza. *//* [7.215.0] quota e tempo della conclusione → il tuffo li segue invece di essere sempre uguale a se stesso */
           } else if(t==="tackle"||t==="dribble"){
             let nearD=99,nearM=null;
@@ -7259,6 +7280,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GK695=window.__CPM_GK695||{tuffi:0});_w.tuffi++;}catch(_e){}}}
           }catch(_e695){}
         }
+        /* [7.999.162 PO-229 — NIENTE TUFFO A PALLONE PASSATO. Rosso __CPM_NO_GK229M] Su un tiro SBAGLIATO dell'eroe un tuffo armato
+           quando l'arco e' gia' finito e il pallone ha gia' superato il piano del portiere (x oltre la sua di mezza unita') e' un gesto
+           fuori tempo per costruzione: si annulla prima che il corpo parta (oppActT ancora a zero). Non scatta sulle parate ne' sui gol. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_GK229M)&&oppActType==="gk_dive"&&oppActT===0&&oppMesh&&oppMesh===awayGkMesh&&P.hlSuccess===false&&/^(wide|out|post)$/.test(String(P.hlOutcomeKind||""))&&!ballArcActive&&ball.position.x>oppMesh.position.x+0.5){
+          oppActType=null;if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_GK229TARDI=(window.__CPM_GK229TARDI|0)+1;}catch(_e){}}}
+        /* [7.999.162 PO-229 misura] TESTIMONE DEL PORTIERE SUI TIRI, fotogramma per fotogramma e in TEMPO DI SCENA (ck = somma dei dt
+           del renderer): stato dell'arco, gesto del portiere e posizioni. Serve a dire QUANDO parte il tuffo rispetto all'arrivo del
+           pallone sulla linea anche sui tiri SBAGLIATI, dove `__CPM_DIVE465` (che scrive solo durante la traslazione) non basta. Test-only. */
+        if(typeof window!=='undefined'&&window.__CPM_REC229&&(_CPM_TEST||_SIT_TEST)){try{const _R=(window.__CPM_GK229=window.__CPM_GK229||[]);sr.current._ck229=(sr.current._ck229||0)+aDt;
+          if(_R.length<3000&&awayGkMesh)_R.push({ck:+sr.current._ck229.toFixed(3),ph:P.matchPhase||null,ok:P.hlOutcomeKind||null,at:ballArcActive?1:0,aT:+(+ballArcT).toFixed(3),aD:+(+ballArcDur).toFixed(2),
+            bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gy:+awayGkMesh.position.y.toFixed(2),
+            op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null});}catch(_e229){}}
         if(oppActType&&oppMesh){
           /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
              MISURATO (quattro partite intere, 39 tuffi con un arco in corso): l'istante del tuffo era
@@ -7387,8 +7420,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               (corpo appena inclinato verso la palla, niente rotazione orizzontale), scarica il peso sulle gambe
               larghe e allarga le braccia. Traslazione minima: la palla gli arriva addosso, non deve raggiungerla. */
             if(oppMesh._diveYaw!=null)oppMesh.rotation.y=oppMesh._diveYaw;
+            /* [7.999.162 PO-229 v2 — IL RIFLESSO VA DOVE PASSA IL PALLONE VERO. Rosso __CPM_NO_GK229M] MISURATO dal coordinatore sulla
+               build combinata (gk-miss-229 rosso 2 su 2, «alvolo gi6 post»): il riflesso armato sul tiro sbagliato partiva al CARICAMENTO
+               verso la z stimata con l'arco lineare (0,97), e lo scatto di 0,19 s era gia' chiuso prima del calcio; il pallone vero
+               passava a 1,93 — dall'altra parte. L'arco non e' lineare in x,z, quindi la stima al lancio sbaglia proprio sui palloni
+               vicini. Ora questo riflesso aspetta il CALCIO, poi a ogni fotogramma rimira il punto in cui il pallone attraversera' il
+               piano del portiere estrapolando la sua velocita' vera, finche' non lo supera; lo scatto si conta dal calcio. */
+            const _b229=!(typeof window!=='undefined'&&window.__CPM_NO_GK229M)&&oppMesh._blk229!=null&&oppMesh._blk229===sr.current._actSitKey403&&P.hlSuccess===false;
+            if(_b229){const _pb=oppMesh._pb229;
+              if(_pb&&ball.position.x<oppMesh.position.x){const _vx=ball.position.x-_pb.x,_vz=ball.position.z-_pb.z;
+                if(_vx>1e-3){const _zq=ball.position.z+_vz*(oppMesh.position.x-ball.position.x)/_vx;oppMesh._diveToZ=clamp(_zq,(oppMesh._divePz||0)-3,(oppMesh._divePz||0)+3);oppDiveDir=_zq>=(oppMesh._divePz||0)?1:-1;}}
+              oppMesh._pb229={x:ball.position.x,z:ball.position.z};}
             const _bpz=(oppMesh._divePz||0),_btz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_bpz);
-            const _be=Math.min(((typeof window!=='undefined'&&window.__CPM_NO576)?(u/0.30):(oppActT/0.19)),1),_bx=_be*_be*(3-2*_be);// scatto rapido, poi tiene la posa /* [7.552.0] LO SCATTO E' UN TEMPO, NON UNA FRAZIONE. Con la vita del gesto ora legata al volo del pallone, `u/0.30` avrebbe allungato anche lo SCATTO in proporzione all'arco: un riflesso che si apre in mezzo secondo non e' piu' un riflesso. Ancorato a 190ms assoluti (gli stessi 0,30x0,62 di prima), poi tiene la posa quanto serve. */
+            const _be=Math.min(((typeof window!=='undefined'&&window.__CPM_NO576)?(u/0.30):(_b229?(ballArcActive?Math.max(0,ballArcT)/0.19:1):(oppActT/0.19))),1),_bx=_be*_be*(3-2*_be);// scatto rapido, poi tiene la posa /* [7.552.0] LO SCATTO E' UN TEMPO, NON UNA FRAZIONE. Con la vita del gesto ora legata al volo del pallone, `u/0.30` avrebbe allungato anche lo SCATTO in proporzione all'arco: un riflesso che si apre in mezzo secondo non e' piu' un riflesso. Ancorato a 190ms assoluti (gli stessi 0,30x0,62 di prima), poi tiene la posa quanto serve. */
             oppMesh.position.z=_bpz+(_btz-_bpz)*_bx;
             if(!_glb674)oppMesh.position.y=Math.sin(_be*Math.PI)*0.28;// piccolo stacco sulle gambe, mai corpo a terra
             if(!_glb674)oppMesh.rotation.z=oppDiveDir*_bx*0.30;// solo un'inclinazione verso il lato del pallone
