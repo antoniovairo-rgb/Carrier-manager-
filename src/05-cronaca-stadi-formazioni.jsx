@@ -361,6 +361,8 @@ const _MISS_OVL={
   offside:["In fuorigioco!","La bandierina è alzata","Oltre la linea — offside","Fuorigioco di un soffio"],
 };
 const _MISS_OVL_PASS={wide:["Passaggio fuori misura","Palla troppo lunga","Il compagno non ci arriva"],blocked:["Passaggio respinto","Il difensore si mette in mezzo"],saved:["Il portiere esce e la prende","Anticipato dal portiere"]};/* [7.999.154 PO-218] */
+const _MISS_OVL_CROSS={wide:["Cross troppo lungo","Il cross esce sul fondo","Nessuno ci arriva"],blocked:["Cross respinto","Il difensore respinge il cross"],saved:["Il portiere esce e blocca il cross","Presa alta del portiere"]};/* [giro 11 PO-218 cross] */
+const _MISS_TX_CROSS={wide:["💨 Cross troppo lungo: esce sul fondo.","😬 Nessuno ci arriva, il cross finisce fuori."],blocked:["🧱 Il difensore respinge il cross."],saved:["🧤 Il portiere esce e blocca il cross."]};/* [giro 11 PO-218 cross] */
 const _MISS_TX_PASS={wide:["💨 Passaggio fuori misura: il compagno non ci arriva.","😬 Palla troppo lunga, finisce fuori."],blocked:["🧱 Il difensore si mette in mezzo e respinge il passaggio."],saved:["🧤 Il portiere esce e fa sua la palla."],intercepted:["✂️ L'avversario legge la giocata e intercetta.","✂️ Passaggio intercettato."]};/* [7.999.154 PO-218] */
 const _MISS_TX={
   post:["😤 Palo! Fortuna avversaria.","😖 Il legno respinge la conclusione.","😤 Palo pieno — che sfortuna."],
@@ -412,6 +414,7 @@ function _hlOvlCat(outKey,ok,actionLabel){
     if(outKey==="intercept")return(!(typeof window!=="undefined"&&window.__CPM_NO_LEX218)&&reShot.test(L)&&!rePass.test(L))?"miss":"pass_fail";/* [7.999.159 PO-218, collaudatrice giro 5 «Finta e tiro»] un TIRO fermato si racconta da tiro: ogni intercept andava al lessico di passaggio («Passaggio fuori misura» su un tiro murato). Rosso __CPM_NO_LEX218 */
     if(outKey==="through")return reDrib.test(L)?"dribble_fail":"def_fail";
     if(outKey==="nothing")return"nothing";
+    if(outKey==="miss"&&!(typeof window!=='undefined'&&window.__CPM_NO_CROSS218)&&reCross.test(L)&&!reShot.test(L))return"pass_fail";/* [giro 11 PO-218 cross] un CROSS sbagliato si racconta da cross: 8 azioni-cross del catalogo con fail «miss» (5 cross, 3 cross da punizione) uscivano col lessico del tiro («Tiro fuori di poco», «Grande parata del portiere»). Rosso __CPM_NO_CROSS218 */
     return"miss";
   }
   if(reDrib.test(L))return"dribble";
@@ -429,7 +432,8 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
   //   mentre 3D+box-score raccontavano il corner — il layer M1 era di fatto ristretto a key==="miss".
   const _nk=_c70?null:(cat==="miss"||(!ok&&(cat==="pass_fail"||cat==="def_fail"||cat==="dribble_fail"||cat==="miss_big")))?_missKindNorm(outKind):null;
   const _pas218=!(typeof window!=='undefined'&&window.__CPM_NO_ESITI218)&&cat==="pass_fail"&&_nk&&_MISS_OVL_PASS[_nk];/* [7.999.154 PO-218] un passaggio sbagliato si racconta da passaggio: stessa famiglia (la coerenza col 3D resta), parole sue */
-  const pool=_pas218?_MISS_OVL_PASS[_nk]:(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
+  const _crx218=_pas218&&!(typeof window!=='undefined'&&window.__CPM_NO_CROSS218)&&/cross|traverson|pennell|fendente|mette in mezzo|suggerimento dal/i.test(String(actionLabel||""))&&_MISS_OVL_CROSS[_nk];/* [giro 11 PO-218 cross] il cross ha parole sue */
+  const pool=_crx218?_MISS_OVL_CROSS[_nk]:_pas218?_MISS_OVL_PASS[_nk]:(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
   const i=(((seed|0)%pool.length)+pool.length)%pool.length;
   const good=["goal","assist","chance","pass","cross","dribble","recovery","tackle","save_hero"];
   // [7.136.0 collaudo PO «ogni messaggio esito azione deve avere la sua iconcina, come la catena, il gol ecc.»]

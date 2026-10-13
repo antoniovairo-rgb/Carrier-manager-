@@ -1321,16 +1321,22 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       /* il PUNTO NELLO SPECCHIO lo decide il motore (dado seedato): gol verso un angolo, parata vicino al centro, palo sul
          legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). */
       const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
-      const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')),famDrib=fam==='dribble',famDef=fam==='tackle';
+      const _x218=!(typeof window!=='undefined'&&window.__CPM_NO_CROSS218);const _fkx218=_x218&&!ok&&fam==='freekick'&&/cross/.test(vr)&&rew==='assist';/* [giro 11 PO-218 cross] il cross da punizione sbagliato e' un cross, non un tiro dell'eroe */
+      const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
       /* [23/09 POC — gesti evoluti] contrasto in piedi o in scivolata: deciso dalla situazione (distanza dalla porta propria di chi
          interviene, niente sorteggio). In scivolata quando si difende vicino alla propria area, in piedi altrove. */
       const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
       const MIO_GK=g.find(q=>q&&q.gk&&q.team===H.team)||null;
       const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});/* il portiere reagisce se il pallone passa entro 12 unita' dal centro porta */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
       if(famPass){
-        E(fam==='cross'?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
-        if(!ok&&key==='intercept'&&D&&_fam218!=='fuori')E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* [7.999.154 PO-218] un passaggio fuori misura non e' un intercetto */
-        else if(!ok&&fam==='cross'&&D)E('spazzata',{chi:chi(D),corner:false});
+        E(_crx218?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
+        /* [giro 11 PO-218 cross] IL CROSS SBAGLIATO HA IL SUO FATTO. Misurato (enumerazione su motore vero, cast con difensore e portiere):
+           il cross bloccato dal portiere (riquadro «Il portiere esce e la prende», 3D presa) era registrato «intercetto» del difensore, e il
+           cross fuori misura (riquadro «fuori», 3D oltre la linea) «spazzata» del difensore. Ora presa del portiere e pallone fuori. Rosso __CPM_NO_CROSS218 */
+        if(!ok&&_x218&&_crx218&&(_ok218==='saved'||_ok218==='save')&&K)E('presa',{gk:chi(K)});
+        else if(!ok&&_x218&&_crx218&&_fam218==='fuori')E('fuori',{da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        else if(!ok&&key==='intercept'&&D&&_fam218!=='fuori')E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* [7.999.154 PO-218] un passaggio fuori misura non e' un intercetto */
+        else if(!ok&&_crx218&&D)E('spazzata',{chi:chi(D),corner:false});
         if(ok&&R){if(!(key==='assist'||key==='goal'))E('ricezione',{chi:chi(R),da:chi(H)});/* chi conclude di prima non controlla: niente ricezione */
           if(key==='assist'||key==='goal'){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),intent:fam==='cross'?'header':null,to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
         if(fam==='cross'&&D)E('pressione',{chi:chi(D),su:chi(R||H)});
