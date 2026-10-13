@@ -23,10 +23,10 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
-| sviluppo/interazioni-226 | session_01VwcEQLykE89t8QdVFEXndd | giro 10 (Opus, base 7.999.162): PO-226 interazioni in partita (decisione PO 12/10). Giro 9 (seme) chiuso e integrato in 1edb426e | 13/10 07:36 |
+| sviluppo/esiti-218-209 | session_0181WCbFuxMhRJSzXoMMiS7J | giro 11 (Opus, base 7.999.163): PO-218 caso cross + PO-209 intestazione «FC Laguna» (sottoinsieme 17/10). Giro 10 (PO-226) archiviato e integrato in e5c8b815 (decisione PO 13/10 «integrala la PO-226») | 13/10 15:36 |
 | collaudo/sessione-collaudatrice-161 | — | giro 9b consegnato (PO-230 finestre 6/10 per valori, PO-231 1 partita su 3); sessione archiviata | 13/10 |
 | collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
 | rilascio/consolidamento | session_014HLUniWew7ZSpQGjqGXUDb | giro 5 (base 7.999.160): prontezza finale per il 17/10 (dist, copyright, sito, voci aperte del giro 3, partita completa senza errori) | giro 6: verifica sul sito dopo la pubblicazione |
 
 
-Nota catene 13/10: il rilascio delle 16:00 scrive /tmp/claude-0/n162-mirata.out (gli agenti in copia separata non lanciano browser dalle 10:00 UTC finché quel file non contiene FINE).
+Nota catene 13/10: il rilascio spostato a ~18:30 (decisione PO) scrive /tmp/claude-0/n163-mirata.out; prima /tmp/claude-0/n162-mirata.out (gli agenti in copia separata non lanciano browser dalle 10:00 UTC finché quel file non contiene FINE).
