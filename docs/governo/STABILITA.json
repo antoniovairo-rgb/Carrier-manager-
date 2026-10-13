@@ -1,5 +1,132 @@
 [
  {
+  "data": "2026-10-13 20:36",
+  "versione": "7.999.163",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 748
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 310
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 109
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 849
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 520
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1105
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1111
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 231
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 326
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 4303
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2201
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1672
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 495
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 312
+   }
+  ]
+ },
+ {
   "data": "2026-10-13 09:40",
   "versione": "7.999.162",
   "catena": "mirata",
@@ -7126,58 +7253,6 @@
     "passo": "tempo-138",
     "ok": true,
     "s": 533
-   }
-  ]
- },
- {
-  "data": "2026-10-05 15:22",
-  "versione": "7.999.137",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 696
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 684
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 505
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
