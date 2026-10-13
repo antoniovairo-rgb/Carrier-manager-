@@ -293,3 +293,7 @@ PO, testuale: «integrala la PO-226». Cambia la decisione del 13/10 mattina («
 ## 13/10 15:20 — rilascio delle 16 spostato a ~18:30 con PO-226
 
 PO, da questionario: «Sposto le 16:00 a ~18:30». La 7.999.162 da sola non viene pubblicata; si pubblica la 7.999.163 (162 + PO-226) dopo la catena `mirata` su e5c8b815+, verso le 18:30 se verde. La catena `notte` avviata alle 15:16 è stata fermata (4 passi) e ripartirà per il rilascio delle 00.
+
+## 13/10 sera — pubblicazione della 7.999.163
+
+PO: «Pubblicare stasera la versione 163». La promozione è stata rifiutata dalla guardia `cpm-guardie` (accetta solo catene completa/grafica/carriera registrate in STABILITA.json; la catena mirata della 163 era stata interrotta dal riavvio del container a 44/48). L'aggiornamento della guardia per accettare mirata/notte è stato negato dal sistema di sicurezza della sessione (modifica delle proprie protezioni). PO, da questionario: «Controllo completo, poi pubblico» → catena `completa` sulla 7.999.163 avviata alle 21:42 Roma; promozione appena verde.
