@@ -29,10 +29,22 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 
 const VERB = process.argv.includes('--verbose');
 const ROSSO = !!process.env.CPM_ROSSO;
+const ROSSO_L = process.env.CPM_ROSSO === 'L'; /* solo il lato del palo (giro 12): __CPM_NO_GK229L */
+const DUMPN = {};
+const LENTO = +(process.env.CPM_LENTO || 0);
 const KINDS = (process.env.CPM_KINDS || 'wide,post').split(',');
 /* scene: gi:ai:famiglia (dal censimento delle scene: gi88 a0 e' proprio «Volée di collo potente» del taccuino;
    «girata» e' la scena del motore «Spalle alla porta», costruita in pagina con scenaDalMotoreSpalle come la costruisce il gioco) */
 const SCENE = (process.env.CPM_SCENE || '88:0:volee,9:0:volee,86:1:alvolo,6:1:alvolo,P6S:girata:girata').split(',').map(s => { const [gi, ai, fam] = s.split(':'); return { gi, ai, fam }; });
+/* BRACCIO «PALO, LATO E BASSO FPS» (giro 12). Il rosso della catena mirata (13/10, «alvolo gi6 post: gk_block dalla parte opposta») NON
+   dipende dal frame-rate: il passo di scena e' tappato a 0,05 s (src/12, _rdt) e la stessa scena a CPU x6 e' verde 3/3. Dipende dal
+   bersaglio dell'arco, che non e' seedato: quando muore davanti al portiere appena oltre lo zero, il post-arco del palo porta il
+   pallone dall'altra parte rispetto alla velocita' dell'arco. Qui la geometria si FORZA (__CPM_GK229GEO: bersaglio z -0,3, portiere
+   z 0,5, arco che muore 2,5u prima del suo piano), e la pagina gira a CPU rallentata (CPM_LENTO_GEO, default 4): il caso diventa
+   ripetibile. Verde col gioco; rosso con CPM_ROSSO=L (__CPM_NO_GK229L). CPM_GEO=0 lo spegne. */
+const GEO = process.env.CPM_GEO === '0' ? 0 : +(process.env.CPM_GEO || 2);
+const LENTO_GEO = +(process.env.CPM_LENTO_GEO || 4);
+const GEO_SC = { gi: '6', ai: '1', fam: 'palo-geo', geo: { tz: -0.3, gz: 0.5, dx: 2.5 } };
 const PALO = 3.35;           /* mezza luce della porta in unita' di mondo (z) */
 const LONTANO = PALO + 2;    /* oltre: tiro chiaramente fuori dallo specchio */
 const SOGLIA_X = 48.6 - 1.2; /* linea di porta (_GLX 48,6) meno un pallone pieno contro il palo */
@@ -48,8 +60,12 @@ async function scena(sc, kind) {
   if (OFF) { const fs = await import('node:fs'); const f = `${OFF}-${sc.fam}-${sc.gi}-${kind}.json`; if (!fs.existsSync(f)) return { sc, kind, skip: 'nessun dump ' + f }; const J = JSON.parse(fs.readFileSync(f, 'utf8')); return { sc, kind, label: J.label, R: J.R, T: J.T, tardi: J.tardi | 0, cam: J.cam || [] }; }
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
+  /* BRACCIO A BASSO FPS (giro 12): CPM_LENTO=<k> rallenta la CPU della pagina di k volte via CDP — riproduce in modo ripetibile la
+     macchina carica della catena mirata (e il telefono lento) senza un secondo processo in parallelo. */
+  const lento = sc.geo ? LENTO_GEO : LENTO;
+  if (lento > 1) { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: lento }); }
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(([r, glb]) => { window.__CPM_GLB = !!glb; window.__CPM_REC = true; window.__CPM_CINE = 1; window.__CPM_CAMSTEP93ON = 1; if (r) window.__CPM_NO_GK229M = 1; }, [ROSSO ? 1 : 0, process.env.CPM_GLB ? 1 : 0]);
+  await page.addInitScript(([r, glb, geo]) => { window.__CPM_GLB = !!glb; window.__CPM_REC = true; window.__CPM_CINE = 1; window.__CPM_CAMSTEP93ON = 1; if (r === 1) window.__CPM_NO_GK229M = 1; if (r === 2) window.__CPM_NO_GK229L = 1; if (geo) window.__CPM_GK229GEO = geo; }, [ROSSO_L ? 2 : ROSSO ? 1 : 0, process.env.CPM_GLB ? 1 : 0, sc.geo || null]);
   try {
     await openMatch(page, port); await sleep(800);
     let gi = sc.gi, ai = +sc.ai;
@@ -81,12 +97,14 @@ async function scena(sc, kind) {
     const R = await page.evaluate(() => (window.__CPM_GK229 || []).slice());
     const T = await page.evaluate(() => (window.__CPM_GK799 || []).map(g => g.tag));
     const tardi = await page.evaluate(() => window.__CPM_GK229TARDI | 0);
+    const fps = await page.evaluate(() => Math.round(window.__CPM_FPS708 || 0)).catch(() => 0);
+    const arm = await page.evaluate(() => window.__CPM_GK229ARM || null).catch(() => null);
     /* 007 (solo annotazione, non giudicato): passi della camera oltre 2,5u fra due fotogrammi durante l'esito, con la velocita' in u/s di
        scena — al telefono (~30 fps) 2,6-5,6u in un fotogramma sono 80-170 u/s; un passo lungo in headless con dt grande non e' un salto */
     const cam = await page.evaluate(() => (window.__CPM_CAMSTEP93 || []).filter(e => e.ph === 'hl_result' && !e.cut && !e.snap && !e.sc && e.dt > 0).map(e => ({ st: e.st, v: Math.round(e.st / (e.dt / 1000)) })).filter(e => e.v >= 150));
     await page.close();
-    if (process.env.CPM_DUMP) { const fs = await import('node:fs'); fs.writeFileSync(`${process.env.CPM_DUMP}-${sc.fam}-${sc.gi}-${kind}.json`, JSON.stringify({ label, T, R, tardi, cam })); }
-    return { sc, kind, label, R, T, tardi, cam, errs };
+    if (process.env.CPM_DUMP) { const fs = await import('node:fs'); fs.writeFileSync(`${process.env.CPM_DUMP}-${sc.fam}-${sc.gi}-${kind}${(DUMPN[`${sc.gi}${kind}`] = (DUMPN[`${sc.gi}${kind}`] | 0) + 1) > 1 ? '-' + DUMPN[`${sc.gi}${kind}`] : ''}.json`, JSON.stringify({ label, T, R, tardi, cam, fps, arm })); }
+    return { sc, kind, label, R, T, tardi, cam, errs, fps };
   } catch (e) { try { await page.close(); } catch (_e) {} return { sc, kind, skip: 'errore: ' + String(e.message || e).slice(0, 120) }; }
 }
 
@@ -144,12 +162,13 @@ function analizza(o) {
 const f2 = v => v == null ? '—' : (v >= 0 ? '+' : '') + v.toFixed(2);
 
 const righe = [];
-for (const sc of SCENE) for (const k of KINDS) {
+const GIRO = [...SCENE.flatMap(sc => KINDS.map(k => [sc, k])), ...Array.from({ length: GEO }, () => [GEO_SC, 'post'])];
+for (const [sc, k] of GIRO) {
   const o = await scena(sc, k); const a = o.skip ? o : analizza(o); righe.push(a);
   if (a.skip) { console.log(`  ⚠ ${sc.fam} gi${sc.gi} ${k}: ${a.skip}`); continue; }
   if (a.nonGiud) { console.log(`  ⚠ ${sc.fam} gi${sc.gi} ${k}: NON GIUDICABILE (${a.nonGiud})`); continue; }
   console.log(`  · ${a.sc.fam.padEnd(7)} gi${a.sc.gi} «${a.label}» ${k.padEnd(4)} · arco ${a.arcD}s · calcio→piano ${(a.ckPiano - a.ckKick).toFixed(2)}s · calcio→linea ${a.ckLinea == null ? '—' : (a.ckLinea - a.ckKick).toFixed(2) + 's'} · sul piano z ${a.zPiano} y ${a.yPiano}, a ${a.dPiano}u dal portiere${a.portata ? ' (A PORTATA)' : ''} · sulla linea z ${a.zLinea}`);
-  console.log(`      ${a.gesto ? `${a.gesto}: corpo parte ${f2(a.ckS == null ? null : a.ckS - a.ckKick)}s dal calcio = ${f2(a.ckS == null ? null : a.ckS - a.ckPiano)}s dal passaggio sul piano · disteso ${f2(a.ckF == null ? null : a.ckF - a.ckPiano)}s dal piano · verso ${a.lato === 1 ? 'giusto' : a.lato === -1 ? 'SBAGLIATO' : 'centrale o laterale (non giudicato)'} (z ${a.z0} → ${a.tz})` : 'nessun gesto'} · tuffi tardivi annullati ${a.tardi} · camera 007 ${a.cam && a.cam.length ? a.cam.map(c => c.st + 'u@' + c.v + 'u/s').join(' ') : 'nessun salto'} · siti ${(a.T || []).join(',') || '-'}`);
+  console.log(`      ${a.gesto ? `${a.gesto}: corpo parte ${f2(a.ckS == null ? null : a.ckS - a.ckKick)}s dal calcio = ${f2(a.ckS == null ? null : a.ckS - a.ckPiano)}s dal passaggio sul piano · disteso ${f2(a.ckF == null ? null : a.ckF - a.ckPiano)}s dal piano · verso ${a.lato === 1 ? 'giusto' : a.lato === -1 ? 'SBAGLIATO' : 'centrale o laterale (non giudicato)'} (z ${a.z0} → ${a.tz})` : 'nessun gesto'} · fps reali ~${a.fps | 0} · tuffi tardivi annullati ${a.tardi} · camera 007 ${a.cam && a.cam.length ? a.cam.map(c => c.st + 'u@' + c.v + 'u/s').join(' ') : 'nessun salto'} · siti ${(a.T || []).join(',') || '-'}`);
   if (VERB) for (const e of (a.errs || []).slice(0, 2)) console.log('     pageerror: ' + e);
 }
 if (!OFF) { await b.close(); srv.close(); }
@@ -165,11 +184,12 @@ for (const r of giud) {
   if (r.ckS != null && r.ckS - r.ckPiano > 0.05) errori.push(`${id}: ${r.gesto} parte ${(r.ckS - r.ckPiano).toFixed(2)}s DOPO che il pallone l'ha superato`);
   if (r.ckS == null && r.gesto === 'gk_dive') errori.push(`${id}: tuffo armato ma il corpo non si sposta`);
   if (r.lato === -1) errori.push(`${id}: ${r.gesto} dalla parte opposta al pallone`);
+  if (r.sc.geo && r.lato === 0) errori.push(`${id}: geometria forzata ma verso non giudicabile (il braccio non guarda)`);
   if (r.gesto === 'gk_dive' && !r.portata && r.zLinea != null && Math.abs(r.zLinea) > LONTANO) errori.push(`${id}: tuffo su un pallone largo (passa a ${r.dPiano}u, esce a ${Math.abs(r.zLinea).toFixed(1)}u dal centro)`);
 }
 const con = giud.filter(r => r.gesto && r.ckS != null && r.ckPiano - r.ckKick >= REAZIONE);
 console.log(`\n=== ${giud.length} tiri sbagliati giudicati · ${giud.filter(r => r.gesto).length} con un gesto del portiere · ${giud.filter(r => r.portata).length} a portata ===`);
 if (con.length) { const d = con.map(r => r.ckS - r.ckPiano).sort((x, y) => x - y); console.log(`partenza del corpo − passaggio sul piano (s di scena): mediano ${f2(d[d.length >> 1])} · min ${f2(d[0])} · max ${f2(d[d.length - 1])}`); }
-if (errori.length) { console.log(`\n❌ ROSSO${ROSSO ? ' (atteso: __CPM_NO_GK229M)' : ''} — ${errori.length} difetti:`); for (const e of errori) console.log('  · ' + e); process.exit(ROSSO ? 0 : 1); }
+if (errori.length) { console.log(`\n❌ ROSSO${ROSSO ? (ROSSO_L ? ' (atteso: __CPM_NO_GK229L)' : ' (atteso: __CPM_NO_GK229M)') : ''} — ${errori.length} difetti:`); for (const e of errori) console.log('  · ' + e); process.exit(ROSSO ? 0 : 1); }
 console.log(`\n✅ VERDE${ROSSO ? ' — ma era atteso ROSSO: il guardiano non separa' : ''} — sui tiri sbagliati il portiere si muove verso il pallone prima che lo superi, e guarda uscire quelli lontani.`);
 process.exit(ROSSO ? 3 : 0);
