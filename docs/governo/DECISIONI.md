@@ -289,3 +289,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 13/10 pomeriggio — PO-226 entra prima del 17/10
 
 PO, testuale: «integrala la PO-226». Cambia la decisione del 13/10 mattina («dopo il 17/10: … PO-226»): il primo passo di PO-226 (ramo `sviluppo/interazioni-226`, rapporto `docs/sviluppo/RAPPORTO-giro10.md`) entra nel ramo principale dopo la promozione della 7.999.162 (che resta e673a51f, già verificata), come 7.999.163, con la catena `notte` del rilascio delle 00.
+
+## 13/10 15:20 — rilascio delle 16 spostato a ~18:30 con PO-226
+
+PO, da questionario: «Sposto le 16:00 a ~18:30». La 7.999.162 da sola non viene pubblicata; si pubblica la 7.999.163 (162 + PO-226) dopo la catena `mirata` su e5c8b815+, verso le 18:30 se verde. La catena `notte` avviata alle 15:16 è stata fermata (4 passi) e ripartirà per il rilascio delle 00.
