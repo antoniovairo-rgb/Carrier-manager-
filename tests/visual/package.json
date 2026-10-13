@@ -314,6 +314,8 @@
     "nomi-51:rosso102": "CPM_RED102=1 node nomi-51-test.mjs",
     "classifica-102": "node classifica-102-test.mjs",
     "classifica-102:rosso": "CPM_RED=1 node classifica-102-test.mjs",
+    "classifica-194": "node classifica-194.mjs",
+    "classifica-194:rosso": "CPM_RED=1 node classifica-194.mjs",
     "recupero-103": "node recupero-103-test.mjs",
     "euro-attesa-181": "node euro-attesa-181-test.mjs",
     "riquadro-euro-105": "node riquadro-euro-105-test.mjs",

@@ -3691,7 +3691,7 @@ const getThisWeekMatchday=()=>{
       // S41: detect cup match and conditionally skip standings update
       const _isCup=!!(cupCalEntry&&p.cup?.active&&!p.cup?.eliminated);
       const clubId=p.club?.id||p.club?.n;
-      const newStandings=_isCup?(p.standings||[]):updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{},{opponentId:result.opponentId||result.opponent,seed:standingsSeed(clubId,p.season,p.week)});
+      const newStandings=_isCup?(p.standings||[]):updateStandings(p.standings||initStandings(getLeagueClubs(p)),clubId,result,p.clubPrestigeShifts||{},{opponentId:(((typeof window!=='undefined'&&window.__CPM_NO_CL194)?null:(_endedLeague705&&_endedOppId705))||result.opponentId||result.opponent),seed:standingsSeed(clubId,p.season,p.week)}/* [7.999.162 CL194] la partita dal vivo non porta l'id dell'avversario (src/15 _buildEndResult: opponent = NOME «FC X Primavera») e il nome non coincide con la riga di classifica («FC X»): l'avversario non riceveva il risultato speculare e finiva nel riposo contro nessuno (somma GF≠GS). Ora si usa l'id della giornata servita (_playingMdRef). Rosso __CPM_NO_CL194, guardiano classifica-194 */);
       // S41: build cup state update + next-round calendar entry
       const _CRW=[0,9,19,28,35];const _CRN=["","Ottavi di Finale","Quarti di Finale","Semifinale","FINALE"];
       let cupUpdate2={};let extraCupCal=[];
