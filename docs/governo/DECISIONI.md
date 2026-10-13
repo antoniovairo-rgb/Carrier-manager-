@@ -274,3 +274,9 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 ## 12/10 sera — PO-226 avviato, PO-048 chiusa
 - PO-226 (interazioni in partita), PO dopo la foto delle 23:57 (scelta «Il compagno · Hamilton» al 37', sistema vecchio): **«Sì, avvia il piano»** — il piano dell'11/10 (al massimo 2-3 scelte a partita nate da fatti del motore; ordini del mister «seguo / faccio di testa mia» con effetto sui gol; panchina «chiedo di entrare / resto concentrato» sul minuto d'ingresso; interruttore rosso e guardiano per ogni scelta). Alla sviluppatrice Opus dopo il giro 9 (seme).
 - PO-048 (eroe ai margini o coperto dal palo): **«Chiudila come non riprodotta»**; si riapre con foto e numero di scena.
+
+## 13/10 mattina — questionario PO
+- **Ambito del 17/10: sottoinsieme bloccante.** Per il 17/10 bastano verità degli highlight (PO-229, PO-232, PO-218, portiere fuori tempo sui tiri sbagliati), statistiche (PO-228), seme (bloccante a), finestre standard (PO-230), PO-209. Dopo il 17/10: PO-022, PO-068, PO-123/143, PO-220, PO-226 (già avviato). Sostituisce, per il 17/10, la regola del 30/09 «L1 si chiude solo con tutte le voci».
+- **Zona G, bloccante (c) classifica Δ+3 sul salvataggio 194: «Sì, solo per questo difetto».** Misura prima, correzione minima con interruttore rosso e guardiano; nessun'altra modifica alla zona G.
+- **PO-230: la finestra standard è il Modal del gioco** (fondo chiaro, angoli arrotondati, un solo titolo, contenuto, pulsante d'azione in fondo; niente fisarmonica né titolo ripetuto), uguale per tutte le finestre.
+- **Cadenza dei rilasci:** il PO chiede di rivedere la logica delle catene («sei sicuro che c'è bisogno sempre di tutti questi controlli?») → proposta in preparazione.
