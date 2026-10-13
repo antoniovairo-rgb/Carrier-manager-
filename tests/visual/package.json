@@ -377,11 +377,14 @@
     "scena-motore-147": "node scena-motore-147.mjs",
     "manovre-150": "node manovre-150.mjs",
     "esiti-218": "node esiti-218.mjs",
+    "seme-a": "node seme-a.mjs",
+    "seme-a:rosso": "CPM_ROSSO=1 node seme-a.mjs",
     "nomi-219": "node nomi-219.mjs",
     "difesa-220": "node difesa-220.mjs",
     "scene-221": "node scene-221.mjs",
     "doppio-gesto-148": "node doppio-gesto-148.mjs",
     "testa-146": "node testa-146.mjs",
+    "glb-pronti-232": "node glb-pronti-232.mjs",
     "movimento-147": "node movimento-147.mjs"
   },
   "dependencies": {
