@@ -16,6 +16,30 @@ const CATENE = {
   /* witness-frameskip FUORI (PO-180): instabile anche sulla 7.999.96 — sonda __CPM_WD_FILL a volte assente, pallone fermo nella
      finestra di 1,2 s (0-0,42u contro 3-6u), un campione fuori ordine. Da riscrivere prima di rientrare. */
 };
+/* [13/10, decisione PO «rivedi la logica delle catene» → «Sì, così»] (1) NUCLEO fisso a ogni rilascio (~15 min). (2) MIRATA = nucleo +
+   SOLO i guardiani delle parti del gioco toccate rispetto a main (mappa sotto: file src → guardiani). (3) NOTTE = carriera ∪ completa SENZA
+   doppioni (test:logic, save-compat, replay, career-critical giravano due volte). (4) In mirata un rosso si riprova UNA volta sola: un
+   guardiano instabile due volte si ripara, non si ripete (CPM_CI_MAXPROVE). Uso: node ci-runner.mjs mirata [base, default origin/main]. */
+CATENE.nucleo = ['test:logic', 'save-compat', 'design-system', 'typing-shortcuts', 'career-critical'];
+CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
+const MAPPA = [
+  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'goal-postarc', 'esiti-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera']],
+  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218']],
+  [/src\/15-/, ['partita-vera', 'esiti-218', 'lessico-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138']],
+  [/src\/05-|src\/09-/, ['lessico-218', 'nomi-219']],
+  [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224']],
+  [/src\/18-|src\/16-|src\/10-/, ['popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214']],
+  [/src\/0[0-8]-/, ['classifica-102', 'partita-rigiocata-194', 'save-compat']],
+];
+if (process.argv[2] === 'mirata') {
+  const R0 = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'); let base = process.argv[3];
+  if (!base) { spawnSync('git', ['fetch', '-q', 'origin', 'main'], { cwd: R0 }); base = 'FETCH_HEAD'; }/* origin/main locale puo' essere vecchio: si confronta col main remoto appena letto */
+  let toccati = []; try { toccati = spawnSync('git', ['diff', '--name-only', base, 'HEAD', '--', 'src'], { cwd: path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'), encoding: 'utf8' }).stdout.split('\n').filter(Boolean); } catch {}
+  const extra = []; for (const f of toccati) { const m = MAPPA.find(([re]) => re.test(f)); if (m) extra.push(...m[1]); else extra.push(...CATENE.completa); }
+  CATENE.mirata = [...new Set([...CATENE.nucleo, ...extra])];
+  console.log('mirata: file toccati ' + (toccati.join(', ') || 'nessuno') + ' → ' + CATENE.mirata.length + ' passi');
+  if (process.env.CPM_CI_MAXPROVE == null) process.env.CPM_CI_MAXPROVE = '2';
+}
 const nome = process.argv[2] || 'completa'; const passi = CATENE[nome]; if (!passi) { console.error('catena sconosciuta: ' + nome + ' (' + Object.keys(CATENE).join(', ') + ')'); process.exit(2); }
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'), FILE = path.join(ROOT, 'docs/governo/STABILITA.json'), LOG = process.env.CPM_CI_LOG || null;
 const ver = (fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.jsx'), 'utf8').match(/GAME_VERSION="([0-9.]+)"/) || [])[1] || '?';
@@ -33,7 +57,7 @@ const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spaw
   ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
   ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });
 const esito = async (p) => { let r = await corri(p); let prove = 1;
-  while (!r.ok && process.env.CPM_CI_NORETRY !== '1' && prove < 3) { const r2 = await corri(p); prove++; if (r2.ok) { r = { ...r2, s: r.s + r2.s, instabile: true, primo: r.coda }; break; } r = { ...r2, s: r.s + r2.s }; }
+  while (!r.ok && process.env.CPM_CI_NORETRY !== '1' && prove < (+process.env.CPM_CI_MAXPROVE || 3)) { const r2 = await corri(p); prove++; if (r2.ok) { r = { ...r2, s: r.s + r2.s, instabile: true, primo: r.coda }; break; } r = { ...r2, s: r.s + r2.s }; }
   return { ...r, prove }; };
 const scrivi = (p, r) => { if (!r.ok) rossi++; giro.passi.push({ passo: p, ok: r.ok, s: r.s, coda: r.ok ? undefined : r.coda, instabile: r.instabile || undefined, prove: r.prove > 1 ? r.prove : undefined });
   const riga = `${r.ok ? (r.instabile ? '⚠️' : '✅') : '❌'} ${p} (${r.s}s)${r.instabile ? ' — instabile: verde alla prova ' + r.prove + ', primo rosso: ' + r.primo : ''}${r.ok ? '' : ' — ' + r.coda}`; console.log(riga); if (LOG) fs.appendFileSync(LOG, riga + '\n'); };

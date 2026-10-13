@@ -280,3 +280,8 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 - **Zona G, bloccante (c) classifica Δ+3 sul salvataggio 194: «Sì, solo per questo difetto».** Misura prima, correzione minima con interruttore rosso e guardiano; nessun'altra modifica alla zona G.
 - **PO-230: la finestra standard è il Modal del gioco** (fondo chiaro, angoli arrotondati, un solo titolo, contenuto, pulsante d'azione in fondo; niente fisarmonica né titolo ripetuto), uguale per tutte le finestre.
 - **Cadenza dei rilasci:** il PO chiede di rivedere la logica delle catene («sei sicuro che c'è bisogno sempre di tutti questi controlli?») → proposta in preparazione.
+
+## 13/10 mattina — logica delle catene (PO: «rivedi la logica delle catene, sei sicuro che c'è bisogno sempre di tutti questi controlli?»)
+- Misura: carriera + completa = 56 controlli, ~4h30 da sole; 4 controlli giravano due volte (test:logic, save-compat, replay, career-critical da 12,5 min); un instabile si ripeteva fino a 3 volte (nomi-219: 3h30 il 12/10).
+- PO (questionario): **«Sì, così»** — a ogni rilascio un NUCLEO fisso (~15 min: test:logic, save-compat, design-system, typing-shortcuts, career-critical) più SOLO i guardiani delle parti toccate (`ci-runner.mjs mirata`, mappa file src → guardiani); catena intera (`notte`, senza doppioni) una volta al giorno prima del rilascio delle 00 e prima della pubblicazione del 17/10; un guardiano instabile due volte si ripara, non si ripete.
+- PO: **restano 3 rilasci al giorno (08 · 16 · 00)**.
