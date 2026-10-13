@@ -257,20 +257,47 @@ function Skeleton({w="100%",h=14,r=RAD.sm,style={}}){
 /* [7.999.161 PO-230 «tutte le finestre che compaiono in primo piano devono avere una grafica standard»] LA CORNICE DELLA
    FINESTRA E' UNA SOLA: quella del Modal. Le finestre che non passano dal Modal (impulsi PO-224, momento di carriera, tutorial,
    scelta in partita) prendono da qui fondo, bordo, raggio e ombra. Rosso __CPM_NO_FIN230 (ognuna torna alla sua grafica). */
-const finestraStd=()=>({background:TH.surface3,borderRadius:RAD.xl,boxShadow:TH.el3,border:`1px solid ${TH.divider}`});
+const finestraStd=(T)=>{const t=T||TH;return{background:t.surface3,borderRadius:RAD.xl,boxShadow:t.el3||TH.el3,border:`1px solid ${t.divider}`};};/* [7.999.162 PO-230] T = tema (la scelta in partita usa TH_DARK): i valori vengono da QUI, non ripetuti a mano */
 const finestraOn230=()=>!(typeof window!=='undefined'&&window.__CPM_NO_FIN230);
-function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={}}){
-  if(!open)return null;
-  return(<div onClick={dismissable?onClose:undefined} className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
-    <div onClick={e=>e.stopPropagation()} className="cpm-rise" style={{background:TH.surface3,borderRadius:RAD.xl,boxShadow:TH.el3,maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",border:`1px solid ${TH.divider}`,...style}}>
-      {title!=null&&<div style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
+/* [7.999.162 PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco»] IL PANNELLO DEL MODAL E' UN COMPONENTE: fondo chiaro,
+   angoli arrotondati, UN SOLO titolo in testa (riga con filo sotto), contenuto, pulsanti d'azione in fondo (riga con filo sopra). Lo usano
+   il Modal e le finestre degli impulsi della home (_pop224, via cardInFinestra230). cpm = data-cpm del pannello. */
+function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
+  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
+      {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
         {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
       </div>}
-      <div style={{padding:`${SP.xl}px`}}>{children}</div>
-      {footer!=null&&<div style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
-    </div>
+      <div data-cpm="finestra-corpo" style={{padding:`${SP.xl}px`}}>{children}</div>
+      {footer!=null&&<div data-cpm="finestra-piede" style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
+    </div>);
+}
+/* z = livello dello scrim (le finestre-impulso stanno a 9997, sotto i dialoghi bloccanti); cpm/pannelloCpm = data-cpm di scrim e pannello. */
+function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm}){
+  if(!open)return null;
+  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
+    <ModalPannello title={title} footer={footer} onClose={onClose} dismissable={dismissable} width={width} style={style} cpm={pannelloCpm}>{children}</ModalPannello>
   </div>);
+}
+/* [7.999.162 PO-230, foto PO sulla 7.999.160: «La tua storia» in finestra mostrava il titolo con la freccia della fisarmonica e poi
+   «LA TUA STORIA» dentro, con l'aspetto del riquadro della home] UNA CARD DELLA HOME IN FINESTRA DIVENTA UN MODAL. Si smonta la Card:
+   titolo = il titolo della fisarmonica (momento) o, se manca, l'occhiello maiuscolo in testa (o il titolo in grassetto in testa); l'occhiello
+   che ripete il titolo esce; la nota della fisarmonica («episodio 2 di 4») resta come riga piccola; l'ultimo figlio fatto di soli pulsanti
+   va nel piede del Modal. Niente fisarmonica, niente freccia. Ritorna {title, body, footer}. Rosso __CPM_NO_MOD230 (in _pop224). */
+const _isOcchiello230=(el)=>React.isValidElement(el)&&el.type==="div"&&!!el.props.style&&el.props.style.textTransform==="uppercase";
+const _isTitoletto230=(el)=>React.isValidElement(el)&&el.type==="div"&&!!el.props.style&&(+el.props.style.fontWeight>=800)&&React.Children.toArray(el.props.children).every(c=>!React.isValidElement(c));
+const _isAzioni230=(el)=>{if(!React.isValidElement(el))return false;if(el.type===Btn)return true;if(el.type!=="div")return false;const k=React.Children.toArray(el.props.children);return k.length>0&&k.every(c=>React.isValidElement(c)&&c.type===Btn);};
+function cardInFinestra230(card){
+  const P=card.props||{};let kids=React.Children.toArray(P.children);let title=null;
+  if(P.momento!=null){title=P.momento;if(kids.length&&_isOcchiello230(kids[0]))kids=kids.slice(1);}
+  else if(kids.length&&_isOcchiello230(kids[0])){title=kids[0].props.children;kids=kids.slice(1);}
+  else if(kids.length&&_isTitoletto230(kids[0])){title=kids[0].props.children;kids=kids.slice(1);}
+  let footer=null;
+  if(kids.length&&_isAzioni230(kids[kids.length-1])){const a=kids[kids.length-1];kids=kids.slice(0,-1);
+    footer=<div style={{flex:1,minWidth:0}}>{a.type===Btn?a:React.cloneElement(a,{style:{...(a.props.style||{}),marginBottom:0,marginTop:0}})}</div>;}
+  if(kids.length){const u=kids[kids.length-1];if(React.isValidElement(u)&&u.props&&u.props.style)kids[kids.length-1]=React.cloneElement(u,{style:{...u.props.style,marginBottom:0}});}
+  const body=<React.Fragment>{P.momentoNota?<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:SP.sm}}>{P.momentoNota}</div>:null}{kids}</React.Fragment>;
+  return{title,body,footer};
 }
 
 /* [7.992.0 PO «un po' sintetico, spiega cosa ci sara'»] ANTEPRIMA DI UNA SEZIONE NON ANCORA ATTIVA: invece di

@@ -2320,7 +2320,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                 {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                 <div style={{minWidth:0}}>
                   <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{N>0?"Chiara Loreti apre la prima busta":"Chiara Loreti e Tommaso Varesi presentano la serata"}</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_galaSeq.map(a=>a.title).join(" · ")}</div>
+                  <div style={(typeof window!=="undefined"&&window.__CPM_NO_MOD230)?{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}:{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{_galaSeq.map(a=>a.title).join(" · ")}</div>{/* [7.999.162 PO-230, collaudo 161] l'elenco dei premi della serata va a capo invece di finire tagliato a 360-412 px. Rosso __CPM_NO_MOD230 */}
                 </div>
               </div>
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
