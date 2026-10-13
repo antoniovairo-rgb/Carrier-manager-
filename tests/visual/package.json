@@ -377,6 +377,7 @@
     "scena-motore-147": "node scena-motore-147.mjs",
     "manovre-150": "node manovre-150.mjs",
     "esiti-218": "node esiti-218.mjs",
+    "interazioni-226": "node interazioni-226.mjs",
     "nomi-219": "node nomi-219.mjs",
     "difesa-220": "node difesa-220.mjs",
     "scene-221": "node scene-221.mjs",

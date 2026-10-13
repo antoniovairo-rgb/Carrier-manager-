@@ -147,6 +147,28 @@ const latiTabellino10=(T,isMatchHome)=>{if(typeof window!=='undefined'&&window._
 const golScarto10=(n,maiusc)=>{n=Math.abs(n|0);if(typeof window!=='undefined'&&window.__CPM_NO_TAB10)return maiusc?'Due gol':'due';const p=['zero','uno','due','tre','quattro','cinque','sei','sette','otto','nove'][n]||String(n);const t=n===1?(maiusc?'Un gol':'uno'):(maiusc?(p.charAt(0).toUpperCase()+p.slice(1))+' gol':p);return t;};
 try{if(typeof window!=='undefined'){window.__CPM_LATI10=latiTabellino10;window.__CPM_SCARTO10=golScarto10;}}catch(_e){}
 
+/* [PO-226, decisione PO 12/10 — rosso __CPM_NO_INT226] LE SCHEDE DEL SISTEMA NUOVO: una per FATTO del motore (src/14, INT226.FATTI),
+   due opzioni, la prima e' la neutra che il timer applica da sola. Il testo dice il fatto che l'ha fatta nascere; l'effetto lo
+   applica scegli681 (atteggiamento del motore via chiedi.ordine226, minuto d'ingresso via INT226.ingresso). Stessa forma delle
+   schede INTX669, cosi' viaggiano sullo stesso binario (cronaca → PopScelta919 → scegli681). */
+const SCHEDE226={
+ panca_sotto:{fam:"MISTER",txt:c=>"\ud83e\ude91 Sotto di "+(Math.abs(c.diff)===1?"un gol":Math.abs(c.diff)+" gol")+" al "+c.mn+"': il mister si gira verso la panchina e incrocia lo sguardo di "+c.eroe+".",
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" annuisce e torna a guardare il campo: entrera' quando lo chiamano, pronto."},{et:"Chiedo di entrare",es:c=>c.eroe+" si alza e chiede la maglia: il mister ci pensa un attimo, poi lo manda a scaldarsi."}]},
+ panca_pari:{fam:"MISTER",txt:c=>"\ud83e\ude91 Ancora pari al "+c.mn+"': la partita e' bloccata e il mister cerca una soluzione con gli occhi.",
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" resta seduto e studia il terzino avversario: quando entra sapra' dove andare."},{et:"Chiedo di entrare",es:c=>c.eroe+" si fa avanti: «Mister, mettimi dentro». Il preparatore lo manda a scaldarsi."}]},
+ misura_85:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Un gol di vantaggio all'"+c.mn+"': il mister fa segno di abbassarsi, chiudere tutto, niente rischi.",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" rientra e si mette davanti alla difesa: la squadra si abbassa compatta."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta alto a cercare il gol del ko: la squadra lo segue, si gioca ancora in avanti."}]},
+ sotto_70:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Sotto al "+c.mn+"': il mister batte le mani e chiama tutti avanti, serve il gol.",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" alza i giri: la squadra sale e comincia a tirare da ogni posizione."},{et:"Faccio di testa mia",es:c=>c.eroe+" tiene la calma e la posizione: meglio un'occasione vera che dieci tiri a caso."}]},
+ pari_75:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Pari al "+c.mn+"': il mister chiede di provarci, «questa si puo' vincere».",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" chiama la palla e la squadra spinge: si cerca la porta piu' spesso."},{et:"Faccio di testa mia",es:c=>c.eroe+" preferisce non sbilanciarsi: un punto non si butta."}]},
+ avanti_2:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Due gol di vantaggio al "+c.mn+"': il mister abbassa le mani, «gestiamo».",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" fa girare palla e abbassa il ritmo: la squadra amministra."},{et:"Faccio di testa mia",es:c=>c.eroe+" vuole il terzo: continua ad attaccare lo spazio."}]},
+ eroe_stanco:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha il fiato corto al "+c.mn+"': il mister gli fa segno di gestirsi.",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si risparmia e resta in posizione: la squadra gli copre le spalle."},{et:"Faccio di testa mia",es:c=>c.eroe+" stringe i denti e continua a pressare: la squadra lo segue."}]},
+ eroe_marcato:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha perso "+(c.duelliP|0)+" duelli col suo marcatore: il mister gli chiede di allargarsi e portarlo via.",
+  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si allarga e porta il marcatore fuori: in mezzo si apre spazio per i compagni."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta li' e lo sfida ancora: e' una questione personale."}]}
+};
 const INTX669=[
  /* [7.669.0 v2 — MISURATO: una sola interazione a partita contro la banda 2-4, perche' quasi tutte
     le schede aspettavano che l'eroe avesse gia' inciso (duelli, occasioni). Ma una partita ha momenti
@@ -1382,9 +1404,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const subOffWhyRef=useRef("");
   const subOffAtRef=useRef((()=>{const _v=(!benchStart&&(context==="career"||context==="cup")&&(player.fatigue||0)>=60)?clamp(56+Math.round((80-(player.fatigue||0))*1.1),56,80):null;return (_v!=null&&_rsCk138>0&&_v<=_rsCk138)?null:_v;})());/* [7.38.0] più sei stanco, prima esci (60→78' · 70→67' · 78→58') · [7.150.0] ripresa: se il minuto d'uscita è GIÀ passato, niente sostituzione immediata (sei appena rientrato) */
   useEffect(()=>{onBenchRef.current=onBench;},[onBench]);
-  const [benchMinute]=useState(()=>benchStart?entryMinute:0);
+  const [benchMinute,setBenchMinute226]=useState(()=>benchStart?entryMinute:0);
+  const benchMinRef226=useRef(benchStart?entryMinute:0);/* [PO-226] il minuto d'ingresso puo' cambiare con la scelta «chiedo di entrare» */
   // Sprint 121 — randomized warmup timing (player can't predict entry minute)
-  const [benchWarmupAt]=useState(()=>benchStart?Math.max(1,entryMinute-Math.floor(Math.random()*10+5)):0);
+  const [benchWarmupAt]=useState(()=>benchStart?((typeof INT226!=='undefined'&&INT226.attivo())?INT226.riscaldamento(entryMinute,hashStr((player.name||"x")+"|risc226|"+(player.season||1)+"_"+(player.week||0)+"_"+(opponent?.id||opponent?.n||""))>>>0):Math.max(1,entryMinute-Math.floor(Math.random()*10+5))):0);/* [PO-226] col seme (era Math.random). Rosso __CPM_NO_INT226 */
   const [benchPhase,setBenchPhase]=useState("watching"); // Sprint 118: "watching"|"warmup"|"entering"
   const [subEntryKey,setSubEntryKey]=useState(0); // item 2 (5.49.6): trigger della cerimonia 3D d'ingresso del subentrante (edge → ThreeMatchView)
   // [7.126.0] VARIANTE d'ingresso (0-4), SEEDATA (alterna tra partite) + AWARE dell'IMPORTANZA (collaudo PO «alternanza
@@ -2923,6 +2946,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(c.fiducia)N.fiducia=(N.fiducia|0)+c.fiducia;
       if(c.zona)N.zona=(N.zona|0)+c.zona;
       (N.scelte=N.scelte||[]).push(P.id+"#"+idx);
+      /* [PO-226 — rosso __CPM_NO_INT226] LA SCELTA ARRIVA AL MOTORE. Ordine del mister: «seguo» (0) applica l'atteggiamento del fatto e
+         gli effetti dell'ordine di sempre (COACH_ORDERS: bonus, possesso, momento, deriva); «di testa mia» (1) solo il suo atteggiamento.
+         Panchina: il minuto d'ingresso lo ricalcola INT226.ingresso, col seme della partita. */
+      if(/^i226_/.test(String(P.id||""))&&typeof INT226!=='undefined'&&INT226.attivo()){try{
+        const _id=String(P.id).slice(5),_f=INT226.fatto(_id);const _W=(typeof window!=='undefined')?(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}):{scelte:[]};
+        if(_f&&_f.panca){const _b0=benchMinRef226.current||0;const _nm=INT226.ingresso(_b0,idx,((bgSimSeedRef.current>>>0)^hashStr((player.name||"x")+"|226"))>>>0,clockRef.current|0);
+          benchMinRef226.current=_nm;setBenchMinute226(_nm);if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)window.__CPM_BENCH_MIN=_nm;
+          _W.scelte.push({id:_id,idx,auto:!!auto,min:P.min,ingressoPrima:_b0,ingresso:_nm});}
+        else if(_f){const _a=INT226.att(_id,idx);try{motoreRef.current&&motoreRef.current.chiedi&&motoreRef.current.chiedi.ordine226&&motoreRef.current.chiedi.ordine226("home",_a);}catch(_e){}
+          const _o=(idx===0&&_f.ordine&&typeof COACH_ORDERS!=='undefined')?COACH_ORDERS[_f.ordine]:null;
+          if(_o){tacticBonusRef.current=_o.bonus;if(_o.poss)setPossession(p=>clamp(p+_o.poss,20,80));setMomentum(m=>clamp(m+(_o.mom||0),0,100));if(_o.drift&&DRIFT_PRESETS[_o.drift])driftTargetsRef.current=DRIFT_PRESETS[_o.drift];}
+          _W.scelte.push({id:_id,idx,auto:!!auto,min:P.min,att:_a,ordine:_o?_f.ordine:null});}
+      }catch(_e226){}}
       /* [7.719.0] LA PROMESSA E' UN FATTO DA VERIFICARE, NON UNA RIGA DI COLORE. «La prossima
          entra» (er_sprona#0: l'eroe rialza il compagno · co_inc#0: il capitano carica l'eroe) non
          racconta piu' un gol inventato: arma una promessa nello stato col punteggio del momento.
@@ -3024,7 +3060,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        bastano. Con la partita ferma il tempo di lettura non costa niente a nessuno. */
     const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000;
     if(typeof window!=='undefined'){try{window.__CPM_SC681_TMR=(window.__CPM_SC681_TMR||0)+1;}catch(_e){}}/* [7.721 strumentazione] timer di scadenza ARMATI */
-    const h=setTimeout(()=>{if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681(0,true);}catch(_e){}},ms);
+    const h=setTimeout(()=>{if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String((intxPendRef681.current||{}).id||"")))?(+window.__CPM_INT226_IDX|0):0,true);/* [PO-226] solo collaudo: il guardiano fa scegliere al timer anche «di testa mia» */}catch(_e){}},ms);
     return()=>{clearTimeout(h);if(typeof window!=='undefined'){try{window.__CPM_SC681_CLR=(window.__CPM_SC681_CLR||0)+1;}catch(_e){}}};
   },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
   /* [7.532.0 collaudo PO «nella cronaca testuale sono mischiati telecronaca ed indicazioni del mister, vanno
@@ -4285,7 +4321,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          tutti OLTRE quel confine. Stessa sorgente della catena cronaca; il tag separa i flussi cosi' che
          due rami sullo stesso minuto non estraggano lo stesso numero. */
       const _rndTick=(mn,tag)=>((typeof window!=='undefined'&&window.__CPM_NO489)?Math.random():seededRng((((bgSimSeedRef.current>>>0)+(mn>>>0)*2654435761+(tag>>>0))>>>0)||1)());
-      if(ck>=28&&!tacticFiredRef.current[0]){// [5.95.0 QW audit MP-2] soglia >= : lo skip non brucia più l'ordine
+      const _no226o=(typeof INT226!=='undefined')&&INT226.attivo();/* [PO-226] nel sistema nuovo gli ordini del mister non escono a minuto fisso: nascono dai fatti come scelte (SCHEDE226). Rosso __CPM_NO_INT226 */
+      if(ck>=28&&!tacticFiredRef.current[0]&&!_no226o){// [5.95.0 QW audit MP-2] soglia >= : lo skip non brucia più l'ordine
         tacticFiredRef.current[0]=true;
         var key0=selectCoachOrder(ck,scoreRef.current,momentumRef.current,player.fatigue||0);
         var ord0=COACH_ORDERS[key0]||COACH_ORDERS.pressing;
@@ -4295,7 +4332,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(ord0.drift&&DRIFT_PRESETS[ord0.drift])driftTargetsRef.current=DRIFT_PRESETS[ord0.drift];
         addCoach("📢 "+ord0.e+" «"+coachSay(ord0,String(bgSimSeedRef.current)+"|"+ck+"|0")+"»",ck);/* [7.788.0] la formulazione varia col seme, la decisione no */
       }
-      if(ck>=63&&!tacticFiredRef.current[1]){
+      if(ck>=63&&!tacticFiredRef.current[1]&&!_no226o){
         tacticFiredRef.current[1]=true;
         var key1=selectCoachOrder(ck,scoreRef.current,momentumRef.current,player.fatigue||0);
         var ord1=COACH_ORDERS[key1]||COACH_ORDERS.verticale;
@@ -4336,7 +4373,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         chantTimersRef.current.push(tid3);
       }
       // Sprint 113 — 75' coach order (3rd tactical moment)
-      if(ck>=75&&!tacticFiredRef.current[2]){
+      if(ck>=75&&!tacticFiredRef.current[2]&&!_no226o){
         tacticFiredRef.current[2]=true;
         var _sc75=scoreRef.current;var _diff75=_sc75.home-_sc75.away;
         var key2=_diff75<=0?"urgenza_75":_diff75>=2?"blocca_ora":"gestisci_1";
@@ -4349,7 +4386,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(_diff75<=0)chantTimersRef.current.push(setTimeout(()=>chantFor("urgenza",2600),400));
       }
       // Sprint 113 — 85' coach order (final assault if close game)
-      if(ck>=85&&!tacticFiredRef.current[3]){
+      if(ck>=85&&!tacticFiredRef.current[3]&&!_no226o){
         tacticFiredRef.current[3]=true;
         var _sc85=scoreRef.current;var _diff85=_sc85.home-_sc85.away;
         if(Math.abs(_diff85)<=1){
@@ -5815,7 +5852,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            come gia' fanno gli annunci di scena (7.653). Resta rara per costruzione: tetto tre, dodici
            minuti di distanza, mai dentro un highlight o sopra una scena-gol. */
         var _intxK669=null;
-        if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
+        /* [PO-226 — rosso __CPM_NO_INT226] NEL SISTEMA NUOVO LA SCHEDA LA APRE UN FATTO, NON L'OROLOGIO. Stessi cancelli di sicurezza
+           delle schede INTX669 (mai dentro un highlight, mai sopra un gol in costruzione o una recita, mai sopra l'azione saliente),
+           ma la panchina e' ammessa: li' vivono le due schede «chiedo di entrare / resto concentrato». Nessun sorteggio: la scheda e'
+           funzione pura dello stato (punteggio, minuto, energia, duelli persi, panchina). */
+        const _on226=(typeof INT226!=='undefined')&&INT226.attivo();
+        if(_on226&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
+           &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&nx<=88){try{
+          const _N=narrRef669.current;const _sc226=scoreRef.current||{home:0,away:0};
+          const _fatte226=(_N.fatte||[]).filter(x=>/^i226_/.test(x)).map(x=>x.slice(5));
+          const _c226={mn:nx,diff:(_sc226.home|0)-(_sc226.away|0),energia:((occ28Ctx.current||{}).energy),duelliP:(_N.duelliP|0),
+            panchina:!!onBenchRef.current,ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),
+            fatte:_fatte226,ultima:(_fatte226.length?(_N.ultima|0):null)};
+          const _f226=INT226.scegli(_c226);
+          if(_f226&&SCHEDE226[_f226]){const _S=SCHEDE226[_f226];_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
+            if(typeof window!=='undefined'){try{(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}).cand=(window.__CPM_INT226.cand|0)+1;}catch(_e){}}}
+        }catch(_e226){}}
+        if(!_on226&&!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
            &&(!(onBenchRef.current||subbedOffRef.current||heroRedRef.current)||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))/* [7.999.64 collaudo PO «scattano le interazioni anche se sono in panchina». Rosso __CPM_NO_PANCA64] le schede dell'eroe (mister, compagni, avversari) esistono solo se l'eroe e' in campo */
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))/* [7.695.0] NIENTE SCHEDE NUOVE SOPRA L'AZIONE: una scheda di scelta occupa mezzo telefono, e fotografata sopra l'area copriva esattamente cio' che il PO diceva di non vedere. Le interazioni erano gia' escluse durante il gol in costruzione; ora lo sono per tutta la finestra saliente, contropiedi e rigori compresi. */
            &&nx>=((typeof window!=='undefined'&&window.__CPM_NO723)?18:((narrRef669.current&&narrRef669.current.apre723)||(narrRef669.current.apre723=18+Math.floor(_rndM()*12))))&&nx<=88&&typeof INTX669!=='undefined'){try{/* [7.723.0 — LA PRIMA SCHEDA NON ESCE SEMPRE AL 18'. Rosso __CPM_NO723] MISURATO (censimento 6 partite): la prima scheda usciva SEMPRE al 18', primo minuto della finestra, dove l'unica eleggibile senza contatori era mi_avv (4/6 partite, e la memoria fra partite la rimetteva in gioco ogni tre gare). Ora la finestra si apre in un minuto casuale fra 18 e 29, fissato una volta per partita: la prima pesca trova un paniere di 3-6 schede invece di una. */
@@ -6444,6 +6497,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(!(typeof window!=='undefined'&&window.__CPM_NO748)){if(_c.coinv)_N.coinv=(_N.coinv|0)+_c.coinv;if(_c.fiducia)_N.fiducia=(_N.fiducia|0)+_c.fiducia;if(_c.zona)_N.zona=(_N.zona|0)+_c.zona;}
               ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_motore870:null,_az551:null,at:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};/* [7.812 v1 REVOCATA, vedi la libreria] */
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
+              if(_intxK669.i226&&typeof window!=='undefined'){try{const _W=(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]});_W.schede.push({min:nx,fatto:_intxK669.i226,diff:_ctx.diff,panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy),duelliP:(_N.duelliP|0)});}catch(_e){}}/* [PO-226] testimone: ogni scheda del sistema nuovo col fatto che l'ha aperta */
             }
           }catch(_e670){}}
           /* [7.666.0 v2 — DOVE si innesta, e perche' proprio qui. La v1 stava a valle, appena prima
