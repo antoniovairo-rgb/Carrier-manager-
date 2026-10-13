@@ -304,16 +304,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSimulatore di carriera |
 |  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Creazione | 51 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | Inizia i provini |
-| Dashboard | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Dashboard | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-| Stagione · Classifica | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Stagione · Calendario | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Stagione · Coppe | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Club | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Carriera · Profilo | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Carriera · Nazionale | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Agente | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
-| Ufficio | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:23Italia ·  |
+| Stagione · Classifica | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Stagione · Calendario | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Stagione · Coppe | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Club | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Carriera · Profilo | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Carriera · Nazionale | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Agente | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
+| Ufficio | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 09:55Italia ·  |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 
@@ -370,7 +370,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Calendario | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `V vinta · N pareggio · P persa` |
 | Stagione · Coppe | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `⭐` |
 | Club | `Si scende in campo! ⚽` · `⚽` · `🧭` · `🧣` · `🩺 Dr.` · `(medico sociale) · 📋` |
-| Carriera · Profilo | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `☕ Sostieni il gioco` · `💡 Idee e feedback` |
+| Carriera · Profilo | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `☕ Sostieni il progetto` · `💡 Idee e feedback` |
 | Carriera · Nazionale | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `📊` · `🎽` |
 | Agente | `Si scende in campo! ⚽` · `⚽` · `📣` · `🤵 Obiettivo della stagione` · `✂️ Licenzia il procuratore` · `🔴 Chiuso` |
 | Ufficio | `Si scende in campo! ⚽` · `⚽` · `🏋️` · `🥗` · `🩺` · `🧠` |
@@ -563,7 +563,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Coppe | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 3 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | Quest'anno non sei in gara |
 | Stagione · Coppe | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 700 | 2 | `div.cpm-career>div:nth-child(2)>button.cpm-focus` | Classifica |
 | Stagione · Coppe | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 1 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | Le competizioni si aprono  |
-| Stagione · Coppe | 7.58:1 | 4.5:1 | `#8e1f33` su `#f1eee8` | 11 / 700 | 1 | `div.cpm-nav-bar>div:nth-child(2)>button:nth-child(1)` | ☕ Sostieni il gioco |
+| Stagione · Coppe | 7.58:1 | 4.5:1 | `#8e1f33` su `#f1eee8` | 11 / 700 | 1 | `div.cpm-nav-bar>div:nth-child(2)>button:nth-child(1)` | ☕ Sostieni il progetto |
 | Stagione · Coppe | 8.77:1 | 4.5:1 | `#8e1f33` su `#ffffff` | 12 / 700 | 1 | `div.cpm-career>div:nth-child(2)>button.cpm-focus` | Coppe |
 | Club | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 12 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(6)` | 🩺 Dr. |
 | Club | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 5 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
