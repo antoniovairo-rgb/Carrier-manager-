@@ -23,7 +23,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 
 | Ramo | Sessione | In corso | Prossimi |
 |---|---|---|---|
-| sviluppo/esiti-218-209 | session_0181WCbFuxMhRJSzXoMMiS7J | giro 11 (Opus, base 7.999.163): PO-218 caso cross + PO-209 intestazione «FC Laguna» (sottoinsieme 17/10). Giro 10 (PO-226) archiviato e integrato in e5c8b815 (decisione PO 13/10 «integrala la PO-226») | 13/10 15:36 |
+| sviluppo/portiere-lato-229 | session_013RTfCkGDnzqzfsfXKpbfrg | giro 12 (Opus, base 7.999.164): PO-229 portiere che sceglie il lato sbagliato a pochi fotogrammi (gk-miss-229 rosso 2/2 in catena carica, 13/10). Giro 11 (PO-218 cross, PO-209/211) archiviato e integrato in b3c654f6 | 14/10 01:36 |
 | collaudo/sessione-collaudatrice-161 | — | giro 9b consegnato (PO-230 finestre 6/10 per valori, PO-231 1 partita su 3); sessione archiviata | 13/10 |
 | collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
 | rilascio/consolidamento | session_014HLUniWew7ZSpQGjqGXUDb | giro 5 (base 7.999.160): prontezza finale per il 17/10 (dist, copyright, sito, voci aperte del giro 3, partita completa senza errori) | giro 6: verifica sul sito dopo la pubblicazione |
