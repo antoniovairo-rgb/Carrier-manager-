@@ -1,5 +1,261 @@
 [
  {
+  "data": "2026-10-13 15:27",
+  "versione": "7.999.163",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "buildup-sync",
+    "ok": true,
+    "s": 171
+   },
+   {
+    "passo": "po229-gi38",
+    "ok": true,
+    "s": 46
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 329
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 731
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 537
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 595
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 443
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 548
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 197
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 678
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 502
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 118
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 89
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 45
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 64
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 32
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 23
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 550
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 56
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 891
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 242
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 8681,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 225
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 359
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 327
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1123
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1667
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 538
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 636,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2229
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1176
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 475
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 549
+   }
+  ]
+ },
+ {
   "data": "2026-10-13 09:40",
   "versione": "7.999.162",
   "catena": "mirata",
@@ -7126,58 +7382,6 @@
     "passo": "tempo-138",
     "ok": true,
     "s": 533
-   }
-  ]
- },
- {
-  "data": "2026-10-05 15:22",
-  "versione": "7.999.137",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 696
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 684
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 505
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
