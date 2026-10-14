@@ -1,5 +1,324 @@
 [
  {
+  "data": "2026-10-14 17:08",
+  "versione": "7.999.167",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 536
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "classifica-194",
+    "ok": true,
+    "s": 265
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 101
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 203
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 36
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 89
+   },
+   {
+    "passo": "toast-247",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "buildup-sync",
+    "ok": true,
+    "s": 170
+   },
+   {
+    "passo": "po229-gi38",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 302
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 670
+   },
+   {
+    "passo": "ingresso-245",
+    "ok": true,
+    "s": 77
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 526
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 582
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 421
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 532
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 188
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 659
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 490
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 7
+   },
+   {
+    "passo": "giornata-233",
+    "ok": false,
+    "s": 65,
+    "coda": "rosso {\"riga\":\"vs Portogallo · in casa | 🏳️ Nazionale1509ª giornata · sett. 39 | ULTIME 10 PARTITE GIOCATE\",\"codici\":[],\"amichevole\":false} | ❌ giornata-233 |   · rosso: il difetto non si vede {\"riga\":\"vs Portogallo · in casa | 🏳️ Naziona",
+    "prove": 2
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 69
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "calendario-247",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 685
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 228
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 4249
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 215
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 424
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 415
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1100
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1622
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 509
+   },
+   {
+    "passo": "bambini-236",
+    "ok": true,
+    "s": 1111
+   },
+   {
+    "passo": "conduci-242",
+    "ok": true,
+    "s": 202
+   },
+   {
+    "passo": "giornale-244",
+    "ok": true,
+    "s": 832
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 306
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2172
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1105
+   },
+   {
+    "passo": "schede-234",
+    "ok": true,
+    "s": 554
+   },
+   {
+    "passo": "schede-246",
+    "ok": true,
+    "s": 793
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 928
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 520
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 09:19",
   "versione": "7.999.166",
   "catena": "notte",
@@ -7435,58 +7754,6 @@
     "passo": "piedi-203",
     "ok": true,
     "s": 633
-   }
-  ]
- },
- {
-  "data": "2026-10-05 21:41",
-  "versione": "7.999.139",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 667
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 717
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 504
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 0
    }
   ]
  }
