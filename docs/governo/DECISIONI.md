@@ -361,3 +361,7 @@ PO: «Ma le catene non possono essere lanciate a parte da una sessione Haiku?».
 2. **PO-247** («FC Kadıköy»): «**Lascia**» — nome di quartiere, resta.
 3. **7.999.169** (giri 17-20): «**Appena pronta**» — unione subito dopo la 168, catena su sessione Haiku, pubblicazione appena verde.
 4. **PO-252**: ordine «**per peso**» confermato (piedi → pallone in rete → difesa immobile → rinvio → portiere → palloni alti).
+
+## 15/10 notte — la 7.999.168 confluisce nella 7.999.169
+
+Fatto misurato: sul ramo lavoro/168 il numero di versione non era mai stato portato a 7.999.168 (il comando che lo cambiava era stato bloccato insieme alla build dalla guardia, durante la catena della 167); il gioco avrebbe detto «7.999.167». In più la catena mirata della 168 sulla sessione Haiku era ferma da oltre un'ora sul vecchio `nomi-219` (instabile, riparato dal giro 18). Applicando le decisioni PO del 14/10 («168 con catena mirata» per togliere la scritta fps e «169 appena pronta»): la 168 non si pubblica da sola; la correzione PO-249 (fps) entra nella **7.999.169** insieme ai giri 16-20. La 169 non ha bisogno di deroghe (giro 18: ripartenza-207 riparato). Catena `notte` (rilascio delle 00) sulla sessione Haiku session_014h49RnLh3mUDDFAQXDWmFh; pubblicazione appena verde.
