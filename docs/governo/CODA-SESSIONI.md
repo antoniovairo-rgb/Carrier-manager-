@@ -27,13 +27,14 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/schede-convocazione-234 | — (archiviata) | giro 14 consegnato, integrato in 7.999.167 (lavoro/167) | 14/10 17:55 |
 | sviluppo/fluidita-crediti-237 | — (archiviata) | giro 15 consegnato, integrato in 7.999.167; fonti dei Crediti chiuse in CREDITI-fonti.md, brusio passato al giro 20 | 14/10 19:13 |
 | sviluppo/brusio-238 | session_01CsazHshRDXuy9rVVncFW5E | giro 20 (Opus, base lavoro/167): brusio di folla con licenza certa (decisione PO «Sostituiscilo»), poi PO-241 | 14/10 19:13 |
-| sviluppo/banco-highlight-248 | session_01UX5uhrC4fzNpwbqj46nRGn | giro 21 (Opus, base lavoro/167): PO-248 banco di misura highlight eroe (fluidità + credibilità), classifica dei 10 difetti; solo misura | 14/10 19:22 |
+| sviluppo/banco-highlight-248 | — (archiviata) | giro 21 consegnato: banco highlight e classifica dei 10 difetti → PO-252 | 14/10 22:10 |
 | lavoro/168 (catene) | session_014TW8VSYAJmoSCTMhpz4RoH | catena mirata 7.999.168 su Haiku (giro composto, deroga PO su ripartenza-207) | 14/10 22:07 |
+| sviluppo/highlight-252 | session_01Brq2HExZZsPfAD63PGKF1M | giro 22 (Opus, base lavoro/168): correzioni PO-252 dal banco (piedi, pallone in rete, difesa, rinvio, portiere, build-up aereo) | 14/10 22:09 |
 | sviluppo/statistiche-difesa-228 | session_01QMZrKUvYLkvfzuhdFecwAv | giro 16 (Opus, base 7.999.165): PO-228 ritaratura dal ramo sviluppo/ritaratura-228 + verifica dal vivo, PO-220 chiusure difensive | 14/10 10:02 |
 | sviluppo/scene-gesti-022 | session_01AcPBcxRGtnHXYkP1AXshuf | giro 17 (Opus, base 7.999.165): PO-022 scene dal motore, PO-068 gesti, PO-123/143 | 14/10 10:02 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
 | collaudo/release-165 | — (archiviata) | collaudo 165 consegnato → PO-242…247; PO-233 verificata | 14/10 17:55 |
-| collaudo/release-166 | session_01Kt3UG3rV8GGpaKgGGhN9ic | collaudo approfondito 7.999.166 (main): PO-229 giro 12, PO-239, PO-240 | 14/10 19:06 |
+| collaudo/release-166 | — (archiviata) | collaudo 166 consegnato: PO-239 verificata, PO-240(a) verificata, nuove PO-250/251 | 14/10 22:10 |
 | sviluppo/ripartenza-207 | session_01NcXJF4S452JcXzff5Wq76G | giro 18 (Opus, base lavoro/166): PO-207 ripartenza dal centro rotta dal seme (7.999.162), guardiano nomi-219 instabile da riparare | 14/10 17:51 |
 | sviluppo/rilievi-collaudo-242 | session_012sqMa4vt2dahDVE1YdbPjV | giro 19 (Opus, base lavoro/167): PO-242…247 dai collaudi 164/165 | 14/10 17:56 |
 | sviluppo/classifica-194-migrazione | — (archiviata) | giro 13 consegnato, integrato in 7.999.167 (lavoro/167) | 14/10 17:55 |
@@ -42,4 +43,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | rilascio/consolidamento | session_014HLUniWew7ZSpQGjqGXUDb | giro 5 (base 7.999.160): prontezza finale per il 17/10 (dist, copyright, sito, voci aperte del giro 3, partita completa senza errori) | giro 6: verifica sul sito dopo la pubblicazione |
 
 
-Nota catene 14/10: catena notte della 7.999.167 interrotta da due riavvii del container (15:59, 17:36 UTC), rilanciata come giro composto (20 passi già verdi, CPM_CI_FATTI) in /tmp/claude-0/n167-notte3.out; prima parte in /tmp/claude-0/n167-notte.out (worktree /home/user/cm-167). Nota catene 13/10: il rilascio spostato a ~18:30 (decisione PO) scrive /tmp/claude-0/n163-mirata.out; prima /tmp/claude-0/n162-mirata.out (gli agenti in copia separata non lanciano browser dalle 10:00 UTC finché quel file non contiene FINE).
+Consegne pronte da integrare nella 7.999.169 (dopo la 168): giro 17 sviluppo/scene-gesti-022, giro 18 sviluppo/ripartenza-207 (PO-207 + nomi-219: toglie la deroga), giro 19 sviluppo/rilievi-collaudo-242, giro 20 sviluppo/brusio-238; giro 16 sviluppo/statistiche-difesa-228 ancora in catena. Nota catene 14/10: catena notte della 7.999.167 interrotta da due riavvii del container (15:59, 17:36 UTC), rilanciata come giro composto (20 passi già verdi, CPM_CI_FATTI) in /tmp/claude-0/n167-notte3.out; prima parte in /tmp/claude-0/n167-notte.out (worktree /home/user/cm-167). Nota catene 13/10: il rilascio spostato a ~18:30 (decisione PO) scrive /tmp/claude-0/n163-mirata.out; prima /tmp/claude-0/n162-mirata.out (gli agenti in copia separata non lanciano browser dalle 10:00 UTC finché quel file non contiene FINE).
