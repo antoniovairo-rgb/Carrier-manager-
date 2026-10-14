@@ -1,5 +1,284 @@
 [
  {
+  "data": "2026-10-14 07:53",
+  "versione": "7.999.165",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 31
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 567
+   },
+   {
+    "passo": "buildup-sync",
+    "ok": true,
+    "s": 180
+   },
+   {
+    "passo": "po229-gi38",
+    "ok": true,
+    "s": 49
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 411
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 863
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 559
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 611
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 457
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 563
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 217
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 701
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 522
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 151
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 258
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 144
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 51
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 109
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 80
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 67
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 1018
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 253
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 513
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 521
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1138
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 274
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1731
+   },
+   {
+    "passo": "bambini-236",
+    "ok": true,
+    "s": 1426
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 541
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 327
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 9144,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2345
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1266
+   },
+   {
+    "passo": "schede-234",
+    "ok": true,
+    "s": 699
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 527
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 577
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 01:18",
   "versione": "7.999.164",
   "catena": "completa",
@@ -7171,58 +7450,6 @@
     "passo": "post-210",
     "ok": true,
     "s": 556
-   }
-  ]
- },
- {
-  "data": "2026-10-05 18:35",
-  "versione": "7.999.138",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 700
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 807
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 509
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
