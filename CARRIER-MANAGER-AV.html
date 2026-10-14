@@ -30329,7 +30329,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        bastano. Con la partita ferma il tempo di lettura non costa niente a nessuno. */
     const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000;
     if(typeof window!=='undefined'){try{window.__CPM_SC681_TMR=(window.__CPM_SC681_TMR||0)+1;}catch(_e){}}/* [7.721 strumentazione] timer di scadenza ARMATI */
-    const h=setTimeout(()=>{if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String((intxPendRef681.current||{}).id||"")))?(+window.__CPM_INT226_IDX|0):0,true);/* [PO-226] solo collaudo: il guardiano fa scegliere al timer anche «di testa mia» */}catch(_e){}},ms);
+    const h=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_NO_ORD18)return;/* [giro 18] sotto autoplay sceglie il battito, in tempo di gioco */if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String((intxPendRef681.current||{}).id||"")))?(+window.__CPM_INT226_IDX|0):0,true);/* [PO-226] solo collaudo: il guardiano fa scegliere al timer anche «di testa mia» */}catch(_e){}},ms);
     return()=>{clearTimeout(h);if(typeof window!=='undefined'){try{window.__CPM_SC681_CLR=(window.__CPM_SC681_CLR||0)+1;}catch(_e){}}};
   },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
   /* [7.532.0 collaudo PO «nella cronaca testuale sono mischiati telecronaca ed indicazioni del mister, vanno
@@ -31854,6 +31854,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            sue regole e, quando ce l'ha davvero oltre meta' campo, emette `occasione_eroe`. La scena si
            apre SU QUEL FATTO. Il vecchio cancello resta come rete: se dopo 14 minuti il pallone all'eroe
            non e' arrivato, la scena si apre lo stesso — un highlight non si perde mai. */
+        /* [giro 18 — LA SCELTA AUTOMATICA DELLA SCHEDA SI PRENDE IN TEMPO DI GIOCO, SOTTO AUTOPLAY. Rosso __CPM_NO_ORD18] MISURATO (seme-a,
+           S12, seme 2311, tre giri; anche col braccio base __CPM_NO_KO18): primo ingresso divergente al 92' su `chiedi.ordine226`
+           (in un altro giro al 72'). Sotto autoplay il cronometro NON si ferma sulla scheda (r. ~4255) e la scelta la prende il timer
+           di 35 s REALI (r. ~3102): l'ordine del mister arriva al motore in un minuto deciso dall'orologio da polso. Qui la stessa
+           attesa si converte in minuti di gioco (ms / MATCH_TICK_MS, per eccesso) e la scelta si prende al battito: stesso indice del
+           timer. Gioco vero invariato: senza autoplay la partita e' ferma sulla scheda e sceglie il giocatore. */
+        if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_NO_ORD18){try{const _P18=intxPendRef681.current;
+          if(_P18&&_P18.sc&&_P18.min!=null){const _k18=Math.max(1,Math.ceil(((+window.__CPM_SCMS681)||35000)/MATCH_TICK_MS));
+            if((nx|0)>=(_P18.min|0)+_k18)scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String(_P18.id||"")))?(+window.__CPM_INT226_IDX|0):0,true);}}catch(_e18){}}
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
         const _passo28=(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
         const _finestra879=!_no803&&nx>=_apertoDa803&&_att803>=_passo28&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current&&!_tetto7();
@@ -32707,11 +32716,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              riparte dal centro con la palla a chi ha subito il gol. Rosso __CPM_NO_KO207. */
           /* [prima stesura, sonda ko207b] il controllo solo a fine scena non scattava mai: i gol misurati erano da cronaca (nessuna
              scena), da piazzato e da highlight. La regola vale quindi per QUALUNQUE aumento del punteggio, al primo battito giocato. */
-          let _c207=false,_l207=null;
+          let _c207=false,_l207=null,_wFine207=null;
           if(!(typeof window!=='undefined'&&window.__CPM_NO_KO207)){const _p207=ko207Ref.current,_s207=scoreRef.current||{};
             if(_p207){if((_s207.home|0)>(_p207.home|0))_l207="away";else if((_s207.away|0)>(_p207.away|0))_l207="home";_c207=!!_l207;}
             ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
-            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
               if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;}catch(_e207){}}}}
           /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
              dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
@@ -32773,7 +32782,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                RECUPERANO dopo la scena, al massimo 4 per battito del minuto (22 passi in ~6 minuti): il battito e' un evento di GIOCO, quindi
                la cronaca resta identica a ogni velocita' (match-sequence). Prima stesura sui sotto-tick (orologio da polso): bocciata da
                match-sequence. Rosso __CPM_NO_MIN202. */
-            if((debito202Ref.current|0)>0&&!(_M._S&&_M._S.scena)&&!(typeof window!=='undefined'&&window.__CPM_NO_MIN202)){const _n202=Math.min((brain137()&&!(typeof window!=='undefined'&&window.__CPM_NO_TEMPO138))?((nx>=96&&!(typeof window!=='undefined'&&window.__CPM_NO_SALDO149))?(debito202Ref.current|0):8):4,debito202Ref.current|0);/* [7.999.149] al 96' (ultimo battito prima del tetto del 97') si salda TUTTO il residuo: misurato con le scene del Passo 6, 4 passi su ~308 restavano non pagati al fischio (tempo-138, braccio verde). Rosso __CPM_NO_SALDO149 */for(let _q=0;_q<_n202;_q++){const _ev202=_M.tick({min:nx,dt:1/_SUB898,dec:true});_brain23(_ev202);for(const _e of _ev202)_evB.push(_e);}debito202Ref.current-=_n202;if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MIN202=(window.__CPM_MIN202|0)+_n202;window.__CPM_DEB202=debito202Ref.current|0;}catch(_e202){}}}
+            if((debito202Ref.current|0)>0&&!(_M._S&&_M._S.scena)&&!(typeof window!=='undefined'&&window.__CPM_NO_MIN202)){const _n202=Math.min((brain137()&&!(typeof window!=='undefined'&&window.__CPM_NO_TEMPO138))?((nx>=96&&!(typeof window!=='undefined'&&window.__CPM_NO_SALDO149))?(debito202Ref.current|0):8):4,debito202Ref.current|0);/* [7.999.149] al 96' (ultimo battito prima del tetto del 97') si salda TUTTO il residuo: misurato con le scene del Passo 6, 4 passi su ~308 restavano non pagati al fischio (tempo-138, braccio verde). Rosso __CPM_NO_SALDO149 */let _f202=0;for(let _q=0;_q<_n202;_q++){if(nx<96&&!(typeof window!=='undefined'&&window.__CPM_NO_KO18)&&_M._S&&_M._S.poss&&(_M._S.poss.stato==='kickoff'||_M._S.poss.stato==='rete'))break;/* [giro 18 PO-207] il recupero non consuma il calcio d'inizio: vedi sotto */const _ev202=_M.tick({min:nx,dt:1/_SUB898,dec:true});_brain23(_ev202);for(const _e of _ev202)_evB.push(_e);_f202++;}debito202Ref.current-=_f202;if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_MIN202=(window.__CPM_MIN202|0)+_f202;window.__CPM_DEB202=debito202Ref.current|0;}catch(_e202){}}}
+            if(_wFine207){try{const _sf=_M.stato();_wFine207.fine=_sf&&_sf.poss?_sf.poss.stato:null;_wFine207.pallaFine=_sf&&_sf.palla?[Math.round(_sf.palla.x),Math.round(_sf.palla.y)]:null;}catch(_eF207){}}
+            /* [giro 18, PO-207 regressione misurata 14/10] MISURATO (sonda-ko207-g18, S12, seme 2071): dopo `riprendi({centro})` lo
+               stesso battito eseguiva 1 passo + 8 passi di recupero del debito MIN202 nello stesso millisecondo (debito 36 -> 28): il
+               calcio d'inizio (4 tick) si consumava prima di qualunque specchio e il pallone ricompariva a [30,16]. Valeva anche per i
+               gol FUORI scena (col seme spento, tentativi B/C/D: kickoff consumato nello stesso ms) — il guardiano non lo vedeva perche'
+               il testimone `dopo` si scriveva subito dopo la riprendi, prima del recupero. Il seme SEME-a non rompe nulla: cambia la
+               partita e il primo gol cade in una scena, dove il testimone non c'era. Ora il recupero si ferma su `rete`/`kickoff` (il
+               debito resta e si paga ai battiti seguenti: e' uno stato del motore, quindi deterministico) e il testimone `fine` dice
+               cosa resta a battito chiuso. Al 96' si salda tutto come prima (SALDO149). Rosso __CPM_NO_KO18. */
             _evM870=evAcc898Ref.current.concat(_evB);}evAcc898Ref.current=[];passi966Ref.current=0;/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
