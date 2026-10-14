@@ -176,7 +176,7 @@ function creaMotorePossesso(cfg){
      verita': qui il voto si costruisce SOLO da cio' che il giocatore ha fatto, perche' ogni evento del motore
      porta gia' il suo autore (`e.chi.i`). Il conto e' incrementale — un tick, un evento, nessuna passata sui
      ventimila eventi della partita. */
-  const _PAG0=()=>({passaggi:0,passOk:0,ricezioni:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0,sprechi:0});
+  const _PAG0=()=>({g228:0,g228ok:0,r228:0,passaggi:0,passOk:0,ricezioni:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0,sprechi:0});
   S.pag={};
   const _pag=(i)=>{if(i==null||i<0||i>=g.length)return null;if(!S.pag[i])S.pag[i]=_PAG0();return S.pag[i];};
   const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
@@ -206,7 +206,7 @@ function creaMotorePossesso(cfg){
            passaggio che non finiva FUORI dal campo: e da li che veniva la precisione al 95-98 per cento
            che il PO ha fotografato. Lintercetto toglie il punto a chi lo ha giocato, squadra e uomo. */
         if(e.da&&e.da.team&&S.tab[e.da.team])S.tab[e.da.team].passOk=Math.max(0,(S.tab[e.da.team].passOk|0)-1);
-        if(e.da&&e.da.i!=null){const _Q=_pag(e.da.i);if(_Q)_Q.passOk=Math.max(0,(_Q.passOk|0)-1);}
+        if(e.da&&e.da.i!=null){const _Q=_pag(e.da.i);if(_Q){_Q.passOk=Math.max(0,(_Q.passOk|0)-1);if(e.circ228)_Q.g228ok=Math.max(0,(_Q.g228ok|0)-1);}}
         break;
       case 'contrasto': case 'recupero': A.contrasti++;break;
     }
@@ -220,7 +220,7 @@ function creaMotorePossesso(cfg){
     const P=_pag(_aut);
     if(P){P.tocchi++;
       switch(e.t){
-        case 'passaggio': P.passaggi++;if(!e.fuori)P.passOk++;break;
+        case 'passaggio': P.passaggi++;if(!e.fuori)P.passOk++;if(e.circ228){P.g228++;if(!e.fuori)P.g228ok++;}break;
         case 'cross': P.passaggi++;P.passOk++;break;
         case 'tiro': P.tiri++;if(e.esito==='goal'||e.esito==='saved')P.inPorta++;break;
         case 'gol': P.gol++;break;
@@ -238,7 +238,7 @@ function creaMotorePossesso(cfg){
       const _gkSub=_pag(l==='home'?10:0);if(_gkSub)_gkSub.subiti++;
     }
     if(e.t==='parata'){const K=_pag((e.gk&&e.gk.i!=null)?e.gk.i:((e.chi&&e.chi.i!=null)?e.chi.i:null));if(K)K.parate++;}
-    if((e.t==='passaggio'||e.t==='cross')&&e.a&&e.a.i!=null){const R=_pag(e.a.i);if(R){R.ricezioni++;R.tocchi++;}}
+    if((e.t==='passaggio'||e.t==='cross')&&e.a&&e.a.i!=null){const R=_pag(e.a.i);if(R){R.ricezioni++;R.tocchi++;if(e.circ228)R.r228++;}}
   }catch(_e){}};
   /* [7.999.150 PO-030/PO-022 Passo 6, strato 5] LE MANOVRE VERE ENTRANO NELLA SCENA. Misurato su 48 partite S12 (306 occasioni dell'eroe):
      nessuna occasione nasce a centrocampo, ma il 91,8% arriva dopo almeno un passaggio della stessa squadra (media 2,7), lo uno-due c'e'
@@ -376,7 +376,7 @@ function creaMotorePossesso(cfg){
     /* [7.878] IL PALLONE PUO' USCIRE, e piu' spesso quanto piu' il bersaglio e' vicino alla linea: nel
        calcio vero la rimessa laterale e' l'interruzione piu' comune (~40 a partita), qui ne usciva 0,02
        perche' la probabilita' scattava solo oltre |y-50|>=34, dove il gioco non arriva quasi mai. */
-    if(!opt.sicuro&&rnd()<Math.min(0.42,Math.max(0,(Math.abs(R.y-50)-14)/26)*((kind==="lancio"||kind==="cambio")?0.34:0.22))){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true});volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
+    if(!opt.sicuro&&rnd()<Math.min(0.42,Math.max(0,(Math.abs(R.y-50)-14)/26)*((kind==="lancio"||kind==="cambio")?0.34:0.22))*(opt.circ228?_K228.fo:1)){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",Object.assign({da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true},opt.circ228?{circ228:1}:null));volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
     /* [7.932 — IL FUORIGIOCO ESISTE. Direttiva REAL MATCH ENGINE: gli eventi sono CONSEGUENZE]
        La voce era a ZERO contro 1,70 vera, e non per una taratura: nel motore la parola «fuorigioco» non
        compariva affatto. Qui si guarda dove stanno davvero i ventidue NEL MOMENTO in cui parte il passaggio
@@ -398,7 +398,7 @@ function creaMotorePossesso(cfg){
           return;}}}
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
-    ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
+    ev("passaggio",Object.assign({da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}},opt.circ228?{circ228:1}:null));
     volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:(kind==="lancio"?48:kind==="cambio"?48:50)*_v912(),icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
   /* [7.999.26] IL BRAIN CERCA L'EROE COL CROSS QUANDO IL LIVE HA CHIESTO LA SUA SCENA. Misurato: 74 cross in 2 partite, 1 verso
      l'eroe (bonus +3/+4 contro uno scarto di 6), mai a scena chiesta. Stessa logica del +26 dei passaggi (7.879): a richiesta aperta
@@ -600,6 +600,19 @@ function creaMotorePossesso(cfg){
        resta vero ed e' dichiarato: non serve a nessuno oggi, perche' la produzione sta a 11. */
     const _dt=S.dt||1;return Math.min(1,clamp(_dt*11,0.25,4));};
   const ramo=(k)=>{S.conta.rami[k]=(S.conta.rami[k]|0)+1;};
+  const _no228=()=>!V2||!!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASS228);/* solo il motore v2 (produzione e simulazione rapida): il v1 dei test di meccanica resta com'era */
+  /* [7.999.161 PO-228 ritaratura, decisione PO 12/10: passaggi verso il reale (850-900 a partita, Premier League 2024/25: 893),
+     cross verso ~25; gol, tiri, xG, possesso e voti fermi] Le manopole, tarate al banco (tests/visual/statistiche-228.mjs):
+     advC = fin dove si gioca di prima dopo una ricezione (67: oltre, le occasioni dell'eroe nascevano prima della trequarti e i
+     suoi gol scendevano; a 70 passaggi 868 ma occasioni dell'eroe 3,8 contro 4,1) · adv = fin dove si appoggia invece di condurre,
+     e fin dove sta il compagno che riceve il giro palla (l'eroe puo' riceverlo ovunque) · press = distanza minima dell'avversario
+     piu' vicino per giocare di prima · fw/cfw = quanto il giro palla cerca anche la profondita' (a 0 il pallone resta dietro e
+     tiri/xG calano del 10 %, a 0,3 i gol salgono del 12 %) · cross = quota di cross sulla fascia (era 0,40; il resto torna
+     dietro di almeno «arretra» unita') · fo = il giro palla esce meno spesso in rimessa (a 1: rimesse 28,8 -> 47) · fd = fallo,
+     contrasto e pressing sul primo tocco in proporzione (a 1 i falli salivano da 21,5 a 27, a 0 scendevano a 16) · hb = il
+     compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
+     vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
+  const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
@@ -609,8 +622,8 @@ function creaMotorePossesso(cfg){
        4 u dall'eroe 5,2 volte a partita (pressing alto, quasi sempre nella meta' campo avversaria). La prima di queste, dal 5' in poi,
        diventa l'occasione dell'eroe di tipo «difesa»: cast dichiarato (il portatore e' l'avversario da fermare), il motore si ferma come
        per le altre scene. Nessun rnd(): una lettura della posizione. Solo nel modo brain (partita vissuta). Rosso __CPM_NO_P6D. */
-    if(cfg.brainLive&&!S._dif152&&!P.eroe&&!P.gk&&(S.min|0)>=5&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))){const H=g[HERO];
-      if(H&&attivo(H)&&H.team!==l&&hyp(P.x,P.y,H.x,H.y)<=4){S._dif152=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const K=g.find(q=>q.gk&&q.team===l&&attivo(q))||null;
+    if(cfg.brainLive&&(!S._dif152||(typeof window!=='undefined'&&window&&window.__CPM_DIF220_OGNI>0&&(S.min|0)-(S._dif152m|0)>=window.__CPM_DIF220_OGNI))&&!P.eroe&&!P.gk&&(S.min|0)>=5&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_P6D||window.__CPM_NO_P6))){const H=g[HERO];
+      if(H&&attivo(H)&&H.team!==l&&hyp(P.x,P.y,H.x,H.y)<=4){S._dif152=1;S._dif152m=S.min|0;/* [giro 16 PO-220] __CPM_DIF220_OGNI (solo sonde): una scena difensiva ogni N minuti invece di una a partita, per misurare la chiusura su piu' scene vere */S.conta.occEroe=(S.conta.occEroe|0)+1;const K=g.find(q=>q.gk&&q.team===l&&attivo(q))||null;
         ev("occasione_eroe",{chi:chi(H),zona:zonaDi(advDi(H.x,H.team),H.y),press:+press.toFixed(1),x:+H.x.toFixed(1),y:+H.y.toFixed(1),chiesto:null,attese:0,tipo:"difesa",finestra:false,liberi:0,
           cast:{ricevente:null,difensore:chi(P),portiere:chi(K),portatore:chi(P)}});
         if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_FERMO138)){S.scena=true;S._scenaAuto138=S.min|0;S.richieste.verso=null;S.arco=null;}return;}}
@@ -768,7 +781,7 @@ function creaMotorePossesso(cfg){
        questi tre contatori dicono quale delle tre manca, invece di farlo indovinare. */
     if(!golReq&&adv>=72)ramo("cross_avanti");
     if(!golReq&&adv>=72&&largo)ramo("cross_largo");
-    if(!golReq&&adv>=72&&largo&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.55:0.40)){/* [24/09 POC] cross mirati: frequenza 0,55 -> 0,40 per non gonfiare tiri e colpi di testa */let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<(V2?66:78)||Math.abs(q.y-50)>(V2?28:20))continue;const sc=aq+(q.eroe?4:0)+_bonusCross26(q,l)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
+    if(!golReq&&adv>=72&&largo&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.55:0.40)){/* [24/09 POC] cross mirati: frequenza 0,55 -> 0,40 per non gonfiare tiri e colpi di testa */if(_ricicla228(P))return;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<(V2?66:78)||Math.abs(q.y-50)>(V2?28:20))continue;const sc=aq+(q.eroe?4:0)+_bonusCross26(q,l)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     /* [7.888 v2 — CHI ARRIVA AL LIMITE CON LA STRADA LIBERA PUO' ENTRARE.
        MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · limite 61 % · area 17 %, cioe'
@@ -782,7 +795,7 @@ function creaMotorePossesso(cfg){
     const _no888b=(typeof window!=='undefined'&&window&&window.__CPM_NO888);
     const _entra888=!_no888b&&zona==="limite"&&spazio>=4&&adv<90;
     const pCond=(_entra888||(S.poss.t<=3&&adv<86))?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)+(_entra888?0.30:0)):0;
-    if(rnd()<pCond){const _T23=(press<3&&S.tab)?S.tab[P.team]:null;if(_T23)_T23.dribbling++;/* [23/09 POC] conduzione con l'avversario addosso = dribbling tentato */
+    if(rnd()<pCond){if(_appoggio228(P,adv,press))return;const _T23=(press<3&&S.tab)?S.tab[P.team]:null;if(_T23)_T23.dribbling++;/* [23/09 POC] conduzione con l'avversario addosso = dribbling tentato */
       /* [24/09 POC — BRAIN «PARTITA VERA», primo difetto misurato] IL DRIBBLING NON RIESCE QUASI SEMPRE. Il dribbling
          falliva solo con spazio<2 e al 22 %: al banco (20 partite, tests/brain/pagella.mjs) 96 % di riusciti, contro il
          36,7 % di media della Premier League 2025-26 (Opta Analyst). Ora con l'avversario addosso la riuscita dipende
@@ -852,9 +865,57 @@ function creaMotorePossesso(cfg){
     if(p.tipo==="tiro"){arrivoTiro();return;}
     if(p.tipo==="fuori"){ev("fuori",{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1),da:chi(p.ultimoPassatore!=null?g[p.ultimoPassatore]:null)});fuoriCampo(S.palla.x,S.palla.y,altro(p.lato),"throw");return;}
     if(p.tipo==="cross"){arrivoCross();return;}
-    if(R&&attivo(R)&&hyp(R.x,R.y,S.palla.x,S.palla.y)<=4.5){R.x=clamp(S.palla.x-dirDi(R.team)*0.4,2,98);R.y=S.palla.y;if(R.eroe)S.conta.ricezioniHero++;ev("ricezione",{chi:chi(R),kind:p.kind||null,da:chi(p.ultimoPassatore!=null?g[p.ultimoPassatore]:null),from:p.da?{x:+p.da.x.toFixed(1),y:+p.da.y.toFixed(1)}:null,to:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)}});tenuta(R,null);return;}
+    if(R&&attivo(R)&&hyp(R.x,R.y,S.palla.x,S.palla.y)<=4.5){R.x=clamp(S.palla.x-dirDi(R.team)*0.4,2,98);R.y=S.palla.y;if(R.eroe)S.conta.ricezioniHero++;ev("ricezione",{chi:chi(R),kind:p.kind||null,da:chi(p.ultimoPassatore!=null?g[p.ultimoPassatore]:null),from:p.da?{x:+p.da.x.toFixed(1),y:+p.da.y.toFixed(1)}:null,to:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)}});const _tp228=p.tipo;tenuta(R,null);if(_tp228==="passaggio")circola228(R);return;}
     libero(S.palla.x,S.palla.y);
   }
+  /* [7.999.161 PO-228] TRE GESTI DEL GIRO PALLA, rosso __CPM_NO_PASS228 = motore di prima.
+     MISURATO PRIMA (banco tests/visual/statistiche-228.mjs, 1.500 partite su tre serie di semi, le due squadre insieme):
+     passaggi 429,5 · cross 42,8 · tiri 22,94 · gol 2,18 · xG 2,20 · possesso della squadra dell'eroe 49,4 %; partite vere 7.999.160
+     (collaudatrice 2, 10 partite): passaggi 414,9 e cross 45,8, cioe' il banco e' lo stesso ordine di grandezza. Perche' cosi'
+     pochi: 22 battiti al minuto e un passaggio ne costava due (il lancio, poi l'arrivo; la decisione al battito dopo), e meta'
+     dei battiti di possesso finiva in conduzioni, primi controlli e palloni vaganti.
+     (a) circola228: chi riceve un passaggio sotto avanzamento 67, senza un avversario entro 2 u, la gioca DI PRIMA a un compagno
+         libero vicino (6-28 u, marcatore >= 3 u): il passaggio parte nello stesso battito dell'arrivo. Prima, l'avversario ha la
+         sua occasione di fallo, contrasto o pressing come in decidiTenuta (_fallo900 e pressingV2, scalate da fd).
+     (b) _appoggio228: dove il portatore libero (avversario >= 3 u) avrebbe CONDOTTO, sotto avanzamento 70, appoggia a un compagno.
+     (c) _ricicla228: sulla fascia oltre avanzamento 72, dove il cross partiva 40 volte su 100, ne parte 20: le altre il pallone
+         torna dietro a un compagno libero, come nel calcio vero quando il cross non c'e'.
+     Il giro palla di (a)/(b) porta circ228 sull'evento: nel voto pesa vw di un passaggio deciso (a peso pieno i centrocampisti
+     salivano di mezzo punto per il solo volume).
+     MISURATO DOPO (stessi semi): passaggi 814,2 · cross 28,4 · tiri 22,43 (-2,2 %) · gol 2,12 (-2,5 %) · xG 2,11 (-4,2 %) ·
+     possesso eroe 48,0 % (-2,7 %) · falli 21,5 (=) · precisione 84,5 -> 91,4 %. Voti medi per reparto: portieri -0,01,
+     difensori -0,12 (meno spazzate: meno cross), centrocampisti +0,14, attaccanti -0,02, eroe -0,04. DICHIARATO: gol dell'eroe
+     nella simulazione rapida 0,12 -> 0,09 a partita (occasioni 4,05 -> 3,93). */
+  function _ricicla228(P){if(_no228()||rnd()<_K228.cross/0.40)return false;const l=P.team,adv=advDi(P.x,l);
+    let Q=null,qs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,P.x,P.y);if(dd<6||dd>30||advDi(q.x,l)>adv-_K228.arretra)continue;
+      const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;const sc=Math.min(marc,10)-Math.abs(dd-15)*0.2-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+    if(!Q)return false;ramo("ricicla228");passa(P,Q);return true;}
+  function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
+    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_K228.adv))continue;
+      const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
+      const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+    return Q;}
+  /* [7.999.161 PO-228 v2, decisione PO «adotta e correggi i gol eroe»] SE L'EROE E' DAVANTI, NIENTE GIRO PALLA. MISURATO (400 partite,
+     simulazione rapida): col giro palla i gol dell'eroe scendevano da 0,128 a 0,095 e i suoi tiri da 0,51 a 0,41 a partita. Le
+     occasioni erano quasi le stesse (4,04 -> 3,88) ma nascevano prima: l'ultimo pallone all'eroe era un passaggio di giro palla 1,86
+     volte a partita, mentre filtranti e verticali verso di lui crollavano da 0,63 a 0,06. Dalla trequarti in su (avanzamento >= 56),
+     se l'eroe della stessa squadra non e' piu' di 3 u dietro al portatore ed e' a portata (5-46 u), il portatore DECIDE come prima
+     (scegliRicevente lo cerca col suo bonus). Solo lettura delle posizioni, nessun sorteggio. Per non perdere passaggi il giro palla
+     di prima sale da avanzamento 67 a 70 (mai oltre: a 71-72 tiri -6/-18 %, si entra nella zona del limite).
+     MISURATO (3.000 partite per braccio, statistiche-228): gol dell'eroe 0,123 -> 0,126 (+2,7 %), suoi tiri 0,48 -> 0,47;
+     senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
+  function _eroeDavanti228(P,adv){if(adv<56||(typeof window!=='undefined'&&window&&window.__CPM_NO_EROE228))return false;/* [giro 16] __CPM_NO_EROE228: rosso della sola regola eroe-davanti (prova che statistiche-228 morde sui tiri dell'eroe) */const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
+    const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
+  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+    ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
+  function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
+    const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;
+    const pFb=_K228.fd*((press<3?0.22:0.08)+(adv>=56?0.03:0))*0.68*_cad936()*(adv<50?(1+1.2*Math.max(0,pressDi(altro(l)))):1),pF=pFb*0.68,r=rnd();/* come _fallo900 (ramo senza decreto) */
+    if(r<pF){ramo("circola228_fallo");fallo(R);return;}
+    if(V2){const pP=_K228.fd*clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(adv<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);if(rnd()<pP){ramo("circola228_persa");perdi(R,"contrasto");return;}}/* come pressingV2 */
+    if(press<3&&r<pF+pFb*1.27){ramo("circola228_contrasto");perdi(R);return;}
+    const Q=_compagno228(R,_K228.fw);if(!Q)return;
+    ramo("circola228");passa(R,Q,{circ228:true});}
   function arrivoTiro(){const p=S.poss;const P=g[p.tiratore];const l=p.lato,out=p.esito;const gk=portiereDi(altro(l));
     if(out==="goal"){S.rete={lato:l,t:0};S.poss.stato="rete";S.conta.gol[l]++;const gr=S.richieste.gol;if(gr&&gr.lato===l){if(gr.t>=5)S.conta.golForzati++;S.richieste.gol=null;}
       ev("gol",{chi:chi(P),assist:chi(p.ultimoPassatore!=null&&p.ultimoPassatore!==p.tiratore?g[p.ultimoPassatore]:null),lato:l,x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});return;}
@@ -1272,7 +1333,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
          punti e mezzo per aver toccato palla. Il volume ora ha un tetto (passaggi -0,8/+0,6, ricezioni +0,3, contrasti e intercetti
          +0,6): a decidere il voto restano gol, assist, errori e il risultato. Rosso __CPM_NO_VOTO16 = volume senza tetto. */
       const _vt16=!(typeof window!=='undefined'&&window&&window.__CPM_NO_VOTO16);
-      const _pa16=q.passOk*0.03-Math.max(0,q.passaggi-q.passOk)*0.05,_ri16=q.ricezioni*0.012,_di16=(q.contrasti+q.intercetti)*0.07;
+      const _c228=_no228()?0:(1-_K228.vw);const _pOk=q.passOk-_c228*q.g228ok,_pTot=q.passaggi-_c228*q.g228;const _pa16=_pOk*0.03-Math.max(0,_pTot-_pOk)*0.05,_ri16=(q.ricezioni-_c228*q.r228)*0.012,_di16=(q.contrasti+q.intercetti)*0.07;
       if(_v29&&r==='A'){v+=Math.max(-0.8,Math.min(0.5,Math.max(-0.8,Math.min(0.6,_pa16))+Math.min(0.3,_ri16)+Math.min(0.6,_di16)+q.spazzate*0.04));}/* [7.999.29] l'attaccante: un tetto unico al volume */
       else{
       v+=_vt16?Math.max(-0.8,Math.min(0.6,_pa16))+Math.min(0.3,_ri16):_pa16+_ri16;

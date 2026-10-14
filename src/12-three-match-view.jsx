@@ -5672,6 +5672,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   è SETTLED già al PRIMO fotogramma dell'highlight (preActionT pieno, non 0) → le squadre sono subito schierate correttamente
           //   per la situazione, niente "ramp-in" visibile sotto il freeze. Solo gioco reale (il gate salta hl_intro → motion intatto).
           if(ballArcActive){ballArcActive=false;ballArcIsBG=false;contactFlashT=-1;_arcSrcX=null;_arcSrcZ=null;}}/* COERENZA: entrando nell'highlight si annulla QUALSIASI arco ancora in volo — [7.42.1 collaudo PO «nelle catene il pallone si blocca in posizioni illogiche»] prima si spegneva SOLO l'arco BG: sulle CATENE l'arco d'ESITO della prima azione (deflect/chance verso l'area) restava vivo e la mesh palla PENDEVA A MEZZ'ARIA vicino alla porta per tutto l'hl_intro, mentre la nuova azione riparte dal punto d'assestamento (7.34.1). Il nuovo HL parte SEMPRE dal suo stato-palla pulito. */
+        /* [giro 16 PO-220, rosso __CPM_NO_INTRO220] IL CONTRASTO NON SOPRAVVIVE ALLA SUA SCENA. MISURATO (24 scene difensive vere): 9
+           contrasti si giocavano nell'hl_intro della scena SEGUENTE, prima di ogni scelta — il gesto trattenuto dall'aggancio 7.415 (palla
+           oltre 5 u) o ancora in corsa quando l'esito si chiude passa intatto al cambio di scena. Entrando in hl_intro il gesto va a fine
+           vita: al fotogramma dopo u=1 azzera la posa (inviluppo a zero) e actType muore per la strada solita. */
+        if(_curPh==="hl_intro"&&actType==="tackle"&&!(typeof window!=='undefined'&&window.__CPM_NO_INTRO220)){actT=gwOf("tackle","vita");sr.current._tkW415=0;}
         if(_curPh==="hl_intro"){_chooseT=0;_hlSnap=true;sr.current._cutAt=performance.now();sr.current._cutSrc456="fase";}// FREEZE #2: all'AVVIO dell'highlight → snap dei giocatori in posizione + congelamento (così non si muovono in cronaca→intro)
         if(/^hl_(intro|move|choose)$/.test(_curPh||'')&&!/^hl_(intro|move|choose)$/.test(prevPhase||'')&&typeof window!=='undefined'&&window.__CPM_GLB232W)sr.current._w232p=_curPh;/* [7.999.162 PO-232] testimone: si scatta dopo il primo disegno della scena */
         if(_curPh==="hl_choose")_chooseT=0; else if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"||_curPh==="hl_result")_chooseT=-1;// timer di lettura: parte entrando in hl_choose; azzerato fuori dalla fase di lettura
@@ -7639,7 +7644,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              cominciato (actT 0) e la palla e' oltre 5u, l'accumulo aspetta: la posa resta neutra
              (inviluppo a seno, u=0) e la scivolata scatta sul passaggio vero. Fallback 0,9s: se la
              palla non passa mai vicina, il gesto si gioca comunque — mai un eroe congelato. */
-          const _hold415=(actType==="tackle"&&P.hlDef&&actT===0&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)>5&&((sr.current._tkW415=(sr.current._tkW415||0)+aDt)<1.4));
+          const _hold415=(actType==="tackle"&&P.hlDef&&actT===0&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)>5&&((sr.current._tkW415=(sr.current._tkW415||0)+aDt)<((typeof window!=='undefined'&&window.__CPM_NO_ATT220)?1.4:0.5)));/* [giro 16 PO-220, rosso __CPM_NO_ATT220] tetto dell'attesa 1,4 -> 0,5 s. MISURATO (difesa-220-misura, 8 partite S12 col gesto confinato alla scena): in 5 scene difensive su 26 l'eroe aspettava il pallone oltre 5 u fino alla fine dell'esito e il contrasto non partiva MAI dentro la sua scena (attese 0,4-1,3 s, prima finivano nell'hl_intro dopo). Oltre 8 u il gesto degrada gia' a pressing (7.440), quindi non e' una scivolata nel vuoto */
           /* [7.420.0 collaudo PO gi146 «scivolata disordinata nemmeno vicino al pallone» · gi168 «si
              tuffa in mezzo all'area»] LA SCIVOLATA VIAGGIA VERSO IL PALLONE. La posa del tackle e'
              solo rotazione: il corpo scivolava SUL POSTO, dove capitava, e la palla passava altrove.
@@ -7671,6 +7676,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             {const _dgF=P.hlDefGesto;if(_dlT>(_p220?8:6.5)&&(_dgF==='slide'||_dgF==='lunge'||!_dgF)&&!(typeof window!=='undefined'&&window.__CPM_NO440))sr.current._dgFar440=P.hlSitKey;}}
           if(!_hold415){actT+=aDt;sr.current._tkW415=0;}
           const _T=gwOf(actType,"vita"),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);/* [7.512.0 R2] vita del gesto dalla tabella unica: chiude il colpo di testa troncato al 65% (actType moriva a 0,75s su clip scalata a 1,15s) *//* [7.244.0 batch PO «non si vede la scivolata/il contrasto» sui gi31/32/45] il gesto difensivo durava 0.6s con inviluppo a seno — a 60fps saliva e spariva PRIMA che l'occhio si assestasse (verdetto a 1.9-2.25s = eroe in piedi da oltre un secondo). Ora il tackle dura 1.7s con inviluppo salita→TENUTA→recupero (la scivolata RESTA a terra ~0.9s, come nel calcio vero): il movimento verso la palla resta su _T2=0.6 invariato */
+          /* [giro 16 PO-220 testimone, solo sonde: armato da __CPM_TK220ON] LA CHIUSURA DIFENSIVA MISURATA AL CONTATTO. Per ogni scena
+             difensiva: attesa prima del gesto (att, l'aggancio 7.415), distanza eroe-pallone e portatore-pallone quando la posa arriva a
+             piena estensione (u=0,18: dC/dP/tC), il minimo eroe-pallone nella posa tenuta (dMin/tMin), il gesto effettivo (gEff, col
+             degrado 7.440) e a fine gesto chi ha il pallone nel 3D (fine), da confrontare con l'esito raccontato (ok/kind). Unita' logiche. */
+          if(actType==="tackle"&&P.hlDef&&u<1&&typeof window!=='undefined'&&window.__CPM_TK220ON){try{const _W=window.__CPM_TK220=window.__CPM_TK220||[];let _r=_W.length?_W[_W.length-1]:null;
+            if(!_r||_r.k!==P.hlSitKey){_r={k:P.hlSitKey,ph:P.matchPhase||null,lbl:P.hlActLbl||null,g:P.hlDefGesto||null,ok:P.hlSuccess,kind:P.hlOutcomeKind||null,att:0,dC:null,dP:null,tC:null,dMin:99,tMin:null,fine:null,arco:null};if(_W.length<400)_W.push(_r);}
+            const _dB=Math.hypot(ball.position.x-hero.position.x,(ball.position.z-hero.position.z)/0.68);
+            const _nr=(tm)=>{let d=99;for(const q of players){if(!q||!q.mesh||q.team!==tm||q.gk)continue;const dd=Math.hypot(q.mesh.position.x-ball.position.x,(q.mesh.position.z-ball.position.z)/0.68);if(dd<d)d=dd;}return d;};
+            if(actT===0)_r.att=+(_r.att+aDt).toFixed(2);
+            else{if(_r.tC==null&&u>=0.18){_r.tC=+actT.toFixed(2);_r.dC=+_dB.toFixed(1);_r.dP=+_nr('away').toFixed(1);_r.gEff=(sr.current._dgFar440===P.hlSitKey)?'press':(P.hlDefGesto||null);_r.arco=!!ballArcActive;}
+              if(u<=0.72&&_dB<_r.dMin){_r.dMin=+_dB.toFixed(1);_r.tMin=+actT.toFixed(2);}
+              if(!_r.fine){const _dA=_nr('away'),_dH=Math.min(_dB,_nr('home'));_r.ult={u:+u.toFixed(2),dEroe:+_dB.toFixed(1),dNostri:+_dH.toFixed(1),dLoro:+_dA.toFixed(1),arco:!!ballArcActive};if(u>=0.95)_r.fine=_r.ult;}}
+          }catch(_e220){}}
           if(actType==="shot"){
             if(P.hlVariant==="shot_chip"){// pallonetto: corpo indietro, tocco leggero di punta, salto all'indietro
               hero._lR.rotation.x=-1.6*sw;hero._lL.rotation.x=0.5*sw;hero._aL.rotation.x=1.5*sw;hero._aR.rotation.x=-0.8*sw;hero.position.y=sw*0.38;if(hero._torso){hero._torso.rotation.x=-sw*0.35;hero._torso.rotation.y=sw*0.15;}
