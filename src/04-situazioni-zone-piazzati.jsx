@@ -1055,6 +1055,68 @@ function scenaDalMotorePiazzato(occ,player,seed){
   const intro=c.vicina&&c.centrale?'Posizione ideale per calciare in porta.':'Da qui anche il pallone in area è un\'idea.';
   return _p6Costruisci(occ,player,seed,P6_PUNIZIONE,c,titoli,intro,x>=78?['bordo']:['trequarti'],{pressure:'none',support:1,nearby_def:0,lanes:[]},'punizione');
 }
+/* [giro 17 PO-022, Passo 6 strato 8b — IL SECONDO TEMPO NASCE DAL MOTORE. Rosso __CPM_NO_SEG022] MISURATO (sonda catalogo-022, partite S12
+   su pagina nuova): le scene d'apertura sono gia' tutte del motore (55 su 55, 8 partite); l'unica scena dell'eroe che veniva ancora dal
+   catalogo scritto era il SECONDO TEMPO della stessa azione (CHAIN_SITS: dopo il dribbling, mischia, sponda, rimbalzo, stacco sull'angolo),
+   1 su 27 con gli esiti riusciti. Il TIPO di seguito lo sceglie gia' il motore (risolviEroe.seguito); qui la scena si costruisce: titolo e
+   introduzione coi nomi veri del cast dell'azione (difensore, portiere, compagno), opzioni dal registro pesate sulle statistiche, scelta
+   seminata. La GEOMETRIA (zone, startZone su cui si assesta il pallone, 7.57), l'intento, lo stato del pallone e i segnali cinematici restano
+   quelli della catena scelta: il motore e' fermo durante la scena (decisione PO 05/10, «l'azione la gioca solo la scena»), quindi la posizione
+   del secondo tempo e' conseguenza della scena, non un fatto del motore. Etichette gia' disegnate dal 3D; nessuna parola che riapra una catena. */
+const P6_SEGUITO={
+  dopo_dribbling:[
+    {k:'corsa',l:'💥 Conclusione in corsa',st:'tiro',b:6,rew:'goal',fail:'miss',n:13,w:(c)=>1.2},
+    {k:'piazzato',l:'🎯 Piazzato nell\'angolo basso',st:'tecnica',b:4,rew:'goal',fail:'miss',n:12,w:(c)=>1.1},
+    {k:'punta',l:'🌀 Punta il portiere e piazzala',st:'tecnica',b:2,rew:'goal',fail:'miss',n:15,w:(c)=>1.0},
+    {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>0.6},
+    {k:'scarico',l:(c)=>'↩️ Scarico a '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.0:0},
+  ],
+  mischia:[
+    {k:'spingi',l:'🦵 Spingila dentro!',st:'tiro',b:12,rew:'goal',fail:'miss',n:10,w:(c)=>1.2},
+    {k:'controllo',l:'🎯 Controllo e tiro',st:'tecnica',b:5,rew:'goal',fail:'miss',n:12,w:(c)=>1.0},
+    {k:'zampata',l:'🦶 Zampata da due passi',st:'fisico',b:8,rew:'goal',fail:'miss',n:12,w:(c)=>1.0},
+    {k:'servi',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?0.8:0},
+  ],
+  aereo:[
+    {k:'testa-potenza',l:'✈️ Testa di potenza',st:'fisico',b:6,rew:'goal',fail:'miss',n:16,w:(c)=>1.2},
+    {k:'testa-angolo',l:'🎯 Testa piazzata all\'angolo',st:'fisico',b:4,rew:'goal',fail:'miss',n:13,w:(c)=>1.0},
+    {k:'volee',l:'⚽ Volée di collo potente',st:'tiro',b:2,rew:'goal',fail:'miss',n:16,w:(c)=>1.0},
+    {k:'sponda',l:(c)=>'🤝 Sponda per '+c.ric,st:'passaggio',b:3,rew:'assist',fail:'nothing',n:7,w:(c)=>c.ric?0.9:0},
+  ],
+  rimbalzo:[
+    {k:'volo',l:'🦵 Tiro al volo',st:'tiro',b:4,rew:'goal',fail:'miss',n:15,w:(c)=>1.2},
+    {k:'prima',l:'🎯 Prima intenzione',st:'tecnica',b:2,rew:'goal',fail:'miss',n:13,w:(c)=>1.1},
+    {k:'avanza',l:'🏃 Avanza in area',st:'velocità',b:3,rew:'goal',fail:'intercept',n:12,w:(c)=>0.9},
+    {k:'servi',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?0.7:0},
+  ],
+};
+function scenaSecondoTempo(base,cast,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_SEG022||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!base||base._p6||typeof CHAIN_SITS==='undefined')return null;
+  let k=null;for(const kk in CHAIN_SITS)if(CHAIN_SITS[kk]&&CHAIN_SITS[kk].text===base.text){k=kk;break;}
+  if(!k)return null;
+  const fam=k==='dopo_dribbling'?'dopo_dribbling':k==='mischia'?'mischia':k==='second_ball'?'rimbalzo':'aereo';
+  const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;const cs=cast||{};
+  const c={ric:nm(cs.ricevente),dif:nm(cs.difensore),gk:nm(cs.portiere)};
+  let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
+  const stat=(q)=>{try{return +((player&&player.stats&&player.stats[q])||60);}catch(_e){return 60;}};
+  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);const scelte=[];
+  while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}scelte.push(pool[i].t);pool.splice(i,1);}
+  if(scelte.length<2)return null;
+  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  const T={
+    dopo_dribbling:['⚡ '+(c.dif?c.dif+' è saltato':'L\'uomo è saltato')+': campo aperto davanti a te!','⚡ Dribbling riuscito, '+(c.dif||'il difensore')+' resta indietro!'],
+    mischia:['🌀 Mischia in area! Approfitta del caos.','🌀 Palla vagante in area'+(c.dif?', '+c.dif+' non la allontana':'')+'!'],
+    aereo:[base.text],
+    rimbalzo:['🎯 Secondo tempo sul rimbalzo — istinto puro!','🎯 La palla rimbalza al limite'+(c.dif?' davanti a '+c.dif:'')+'!'],
+  }[fam];
+  const text=T[Math.floor(rnd()*T.length)%T.length];
+  const intro=(c.gk?c.gk+' è tra i pali.':'Il portiere è tra i pali.')+(c.ric?' '+c.ric+' ti accompagna.':'');
+  const s0=S(text,base.zones,base.moveZone,base.startZone,actions,base.lockMovement,base.maxMoves,intro,'off',base.ctx,base.tactic);
+  const s={...base,text:s0.text,intro:s0.intro,actions:s0.actions,richiede:s0.richiede};
+  s._p6='seguito';s._p6k=k;s._p6seed=seed>>>0;
+  return s;
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;

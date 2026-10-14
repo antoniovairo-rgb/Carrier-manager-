@@ -25,10 +25,11 @@ CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
 const MAPPA = [
   [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera']],
   [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226']],
-  [/src\/15-/, ['partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226']],
+  [/src\/15-/, ['catalogo-022', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226']],
   [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219']],
   [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224']],
   [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214']],
+  [/src\/04-/, ['catalogo-022', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],/* [giro 17] i generatori delle scene dell'eroe vivono in src/04 */
   [/src\/0[0-8]-/, ['classifica-102', 'partita-rigiocata-194', 'save-compat']],
 ];
 if (process.argv[2] === 'mirata') {

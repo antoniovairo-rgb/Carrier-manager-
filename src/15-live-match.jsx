@@ -4779,6 +4779,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    _ORIG26={sit:_pick880,kind:_og26.kind,at:_ang26?"corner":"wing",x:_flag60?97:clamp(+_og26.x||90,2,98),y:_flag60?((+_og26.y||50)<50?2.5:97.5):clamp(+_og26.y||50,1,99),hl:hlIdx,min:nx|0,active:true};}}
                  else _ORIG26=null;
                }catch(_e26){_ORIG26=null;}} else _ORIG26=null;}
+              /* [giro 17 PO-022, Passo 6 strato 8b — MISURA] TESTIMONE INERTE: da dove nasce la scena dell'eroe che si sta aprendo (motore o catalogo
+                 scritto, e perche'). Solo registro (cpmEv), nessun effetto sul gioco. Lo legge il guardiano catalogo-022. */
+              try{const _o22=occEroe879Ref.current;cpmEv("fonte022",{min:nx|0,hl:hlIdx,tipo:(_o22&&_o22.tipo)||null,
+                fonte:(_pick880&&_pick880._p6)?"motore":(!_o22?"senza-occasione":(_o22.origine&&(_o22.origine.kind==="rigore"||_o22.origine.kind==="punizione"))?"piazzato-catalogo":(_ORIG26&&_ORIG26.sit===_pick880)?"origine-catalogo":(_o22.tipo==="costruzione")?"tipo-senza-generatore":"generatore-nullo"),
+                gen:(_pick880&&_pick880._p6)||null,sk:String((_pick880&&_pick880.text)||"").slice(0,50)});}catch(_e022){}
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
             setBgAction(null);{const _o7=occEroe879Ref.current;if(!(_o7&&_o7.origine&&_o7.origine.kind==="rigore"))occ28Ref.current.ap7=(occ28Ref.current.ap7|0)+1;if(_o7&&_o7.tipo==="punizione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PZTOT221))occ28Ref.current.punz221=(occ28Ref.current.punz221|0)+1;/* [7.999.159] la punizione aperta da una scena normale conta nel tetto «1 a partita» (seme 740: punizione a giro al 35' da finestra, poi «Palla in area» al 39') */}try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),evento:occEroe879Ref.current?{min:occEroe879Ref.current.min,hl:hlIdx}:null,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
@@ -9419,7 +9424,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     cpmEmit("HighlightAdvance",{from:hlIdx,chained:!!pendingChainSitRef.current});// LMQP-1
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
-    if(pendingChainSitRef.current){try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}
+    if(pendingChainSitRef.current){try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}try{if(typeof scenaSecondoTempo==="function"){const _g22=scenaSecondoTempo(pendingChainSitRef.current,castBrainRef.current,player,((bgSimSeedRef.current^((clockRef.current|0)*7919+nx*131))>>>0));if(_g22)pendingChainSitRef.current={..._g22,_chainDepth:1};}}catch(_e22){}/* [giro 17 PO-022 strato 8b] il secondo tempo si costruisce dal cast del motore (src/04 scenaSecondoTempo); rosso __CPM_NO_SEG022 */try{const _c22=pendingChainSitRef.current;cpmEv("fonte022",{min:clockRef.current|0,hl:nx,tipo:"seguito",fonte:(_c22&&_c22._p6)?"motore":"catena-scritta",gen:(_c22&&_c22._p6)||null,sk:String((_c22&&_c22.text)||"").slice(0,50)});}catch(_e022){}/* [giro 17 PO-022] testimone inerte, vedi fonte022 sopra */
       const chain=pendingChainSitRef.current;
       pendingChainSitRef.current=null;
       setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
