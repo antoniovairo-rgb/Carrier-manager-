@@ -1,5 +1,147 @@
 [
  {
+  "data": "2026-10-14 06:04",
+  "versione": "7.999.165",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 736
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 45
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 334
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 128
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 930
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 525
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1137
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1157
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 255
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 549
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 235
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 359
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 4375
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2233
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1682
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 514
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 320
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 01:18",
   "versione": "7.999.164",
   "catena": "completa",
@@ -7171,58 +7313,6 @@
     "passo": "post-210",
     "ok": true,
     "s": 556
-   }
-  ]
- },
- {
-  "data": "2026-10-05 18:35",
-  "versione": "7.999.138",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 22
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 700
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 807
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 509
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
