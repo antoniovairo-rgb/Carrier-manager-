@@ -321,3 +321,7 @@ PO, 14/10 sera, testuale: «Ti autorizzo a modificare il blocco della pubblicazi
 - Corpo «Regular Male»: Mixamo (Adobe) (risposta PO).
 - Ritratti delle figurine: «Open Ai con APi a pagamento» (risposta PO): generati con l'API a pagamento di OpenAI.
 - Font (Great Vibes, Barlow, Barlow Condensed), suoni (Mixkit 3022, Freesound 69245) e versione DiceBear: «Verificale tu» → verifica su fonti pubbliche ufficiali con citazione; dove non verificabile «Non posso confermarlo».
+
+## 14/10 sera — «Pubblica il prima possibile»
+
+PO, testuale: «Pubblica il prima possibile». La 7.999.166 esce subito invece che alle 00 (deroga PO per ripartenza-207 già registrata).
