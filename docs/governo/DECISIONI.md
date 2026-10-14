@@ -354,3 +354,10 @@ Questionario: **«168 con catena mirata»**. Si pubblica la 7.999.168 (7.999.167
 ## 14/10 sera — catene su una sessione Haiku dedicata
 
 PO: «Ma le catene non possono essere lanciate a parte da una sessione Haiku?». Sì: da ora le catene di rilascio girano in una sessione Haiku 5.5 dedicata (etichetta `cpm:catene`), con il suo container, che resta in attesa dentro il proprio turno fino alla riga FINE e registra l'esito in STABILITA.json sul ramo della versione. La sessione principale resta libera per il PO e per le integrazioni; la promozione su main resta alla sessione principale. Prima applicazione: 7.999.168, session_014TW8VSYAJmoSCTMhpz4RoH (giro composto: 17 passi già verdi, 5 riavvii del container oggi).
+
+## 14/10 sera — questionario
+
+1. **PO-251** (pulsante «🎉 Festeggia» verde alla festa del trofeo): «**Oro da festa**» — colore oro solo per i momenti di trofeo, aggiunto al kit come variante ufficiale.
+2. **PO-247** («FC Kadıköy»): «**Lascia**» — nome di quartiere, resta.
+3. **7.999.169** (giri 17-20): «**Appena pronta**» — unione subito dopo la 168, catena su sessione Haiku, pubblicazione appena verde.
+4. **PO-252**: ordine «**per peso**» confermato (piedi → pallone in rete → difesa immobile → rinvio → portiere → palloni alti).
