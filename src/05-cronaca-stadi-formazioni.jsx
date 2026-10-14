@@ -334,7 +334,7 @@ const HL_OVERLAY_POOLS={
   dribble:["Dribbling vincente!","Salta l'uomo!","Grande giocata!","Numero di classe!","Che finta!","Lo manda al bar!","Accelerazione irresistibile","Tunnel di prima"],
   recovery:["Recupero decisivo","Intercetto perfetto","Palla riconquistata","Letta alla perfezione","Pressing che paga","Riaggressione immediata"],
   tackle:["Contrasto vinto!","Chiusura impeccabile!","Entrata pulita!","Anticipo da campione!","Muro invalicabile!","Spazza via il pericolo"],
-  miss:["Occasione mancata","Che peccato!","A un passo dal gol","Tiro fuori di poco","Palo!","Traversa!","Grande parata del portiere","Il portiere dice di no","Murato dalla difesa","Non trova lo specchio","Tentativo respinto","Il gol sembrava fatto","Ci è andato vicinissimo","Conclusione centrale","Sfiora il vantaggio"],
+  miss:["Occasione mancata","Che peccato!","A un passo dal gol","Tiro fuori di poco","Palo!","Traversa!","Grande parata del portiere","Il portiere dice di no","Murato dalla difesa","Non trova lo specchio","Tentativo respinto","Il gol sembrava fatto","Ci è andato vicinissimo","Conclusione centrale","Sfiora il vantaggio"].filter(x=>x!=="Sfiora il vantaggio"||(typeof window!=="undefined"&&window.__CPM_NO_VANT240)),/* [7.999.166 PO-240, taccuino PO 14/10 «dice SFIORA IL VANTAGGIO sul 3 a 0!»] il riquadro non sa il punteggio: la frase esce solo dalla cronaca col contesto «pari» (riga BG ctx:"drawing"). Rosso __CPM_NO_VANT240 */
   miss_big:["Gol clamorosamente sprecato!","Porta spalancata, e niente!","Occasione enorme buttata via","Doveva solo spingerla dentro","Errore incredibile sotto porta"],
   pass_fail:["Passaggio intercettato","Letto dalla difesa","Pallone regalato","Ultimo tocco impreciso","Lancio troppo lungo"],
   dribble_fail:["Fermato dall'avversario","Dribbling murato","Palla persa nel dribbling","Difesa attenta","Ci prova ma viene chiuso"],
@@ -355,7 +355,7 @@ const _MISS_OVL={
   saved:["Grande parata del portiere","Il portiere dice di no","Tentativo respinto","Conclusione centrale","Il gol sembrava fatto"],
   blocked:["Murato dalla difesa","Conclusione murata","Il difensore si oppone"],/* [7.999.154 PO-218] «Tentativo respinto» resta solo fra le parate */
   intercepted:["Intercettato","Palla persa","Anticipato dall'avversario","Ti portano via il pallone"],
-  wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"],
+  wide:["Tiro fuori di poco","Non trova lo specchio","Che peccato!","Occasione mancata","Sfiora il vantaggio"].filter(x=>x!=="Sfiora il vantaggio"||(typeof window!=="undefined"&&window.__CPM_NO_VANT240)),/* [7.999.166 PO-240, taccuino PO 14/10 «dice SFIORA IL VANTAGGIO sul 3 a 0!»] il riquadro non sa il punteggio: la frase esce solo dalla cronaca col contesto «pari» (riga BG ctx:"drawing"). Rosso __CPM_NO_VANT240 */
   corner:["Deviata in angolo","Corner conquistato","Respinta in corner","A un passo — è angolo"],
   foul:["Conquista una punizione","Subisce il fallo","Guadagna un calcio piazzato","Steso — punizione"],
   offside:["In fuorigioco!","La bandierina è alzata","Oltre la linea — offside","Fuorigioco di un soffio"],

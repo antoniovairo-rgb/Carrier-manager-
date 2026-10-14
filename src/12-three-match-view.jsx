@@ -5413,6 +5413,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_CPM_TEST&&typeof window!=='undefined'){try{(window.__CPM_GKGATE=window.__CPM_GKGATE||[]).push({t:t||null,kind:P.hlOutcomeKind||null,def:P.hlDef?1:0,gk:awayGkMesh?1:0,arc:ballArcActive?1:0,vr:P.hlVariant||null});}catch(_e){}} /* [7.552 sonda] PERCHE' IL PORTIERE NON REAGISCE: registra gli ingressi del cancello (tipo di conclusione, esito, highlight difensivo, portiere in scena). */
           /* [7.999.162 PO-229] DOVE il pallone passa al portiere: la z dell'arco quando attraversa il suo piano (interpolazione lineare dal
              punto di calcio al bersaglio, come vola l'arco 6.74 3D-6), o il bersaglio se l'arco muore prima. Serve al tiro sbagliato qui sotto. */
+          /* [giro 12 PO-229, SOLO SONDE ?cpmtest=1] __CPM_GK229GEO={tz,gz,dx}: geometria forzata del palo (bersaglio dell'arco in z, portiere
+             in z, arco che muore dx prima del suo piano) per giudicare il lato in modo deterministico — il bersaglio vero non e' seedato. */
+          if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_GK229GEO&&awayGkMesh&&(t==="shot"||t==="header")&&P.hlOutcomeKind==="post"&&!P.hlDef){try{const _G=window.__CPM_GK229GEO;
+            if(_G.gz!=null)awayGkMesh.position.z=+_G.gz;if(_G.tz!=null)ballArcTgtZ=+_G.tz;if(_G.dx!=null)ballArcTgtX=Math.min(ballArcTgtX,awayGkMesh.position.x-(+_G.dx));}catch(_eG){}}
           let _zp229=ballArcTgtZ;if(awayGkMesh){const _gx=awayGkMesh.position.x,_sx=ball.position.x,_sz=ball.position.z;if(ballArcTgtX>_gx&&_sx<_gx&&(ballArcTgtX-_sx)>0.5)_zp229=_sz+(ballArcTgtZ-_sz)*((_gx-_sx)/(ballArcTgtX-_sx));}
           if(t==="cross"&&awayGkMesh&&!P.hlDef&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             oppActType=_tuffoTesto23(P)?"gk_dive":"gk_catch";oppActT=0;oppMesh=awayGkMesh;
@@ -5457,6 +5461,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  nello specchio a z -1,9 sul piano del portiere e finisce a +0,5 — mirare al bersaglio mandava il tuffo dall'altra parte.
                  Pallone ADDOSSO (entro 1,2u) = riflesso col corpo (gk_block, 7.203), non un tuffo che non si sposta. */
               const _gx229=oppMesh.position.x,_gz229=oppMesh.position.z,_sx229=ball.position.x,_sz229=ball.position.z;
+              /* [giro 12 PO-229 — IL LATO DEL PALO SI DECIDE DOVE IL PALLONE PASSA DAVVERO. Rosso __CPM_NO_GK229L] MISURATO (gk-miss-229,
+                 fotogrammi salvati, gi6 «Tiro al volo» palo): l'arco del palo muore DAVANTI al portiere (x 42-46 con il portiere a 47) e il
+                 pallone passa il suo piano nel post-arco hit_post, che lo porta sul palo del segno del bersaglio (±3,66; traversa: z del
+                 bersaglio entro ±3,2) con due lerp esponenziali, x a 6,5/s e z a 4/s. Quando il bersaglio sta appena oltre lo zero e
+                 l'arco gli corre incontro dall'altro lato, la velocita' dell'arco dice un lato e il palo l'altro: era il «gk_block dalla
+                 parte opposta al pallone». Ora il punto di passaggio si calcola sulla curva del post-arco (forma chiusa dei due lerp:
+                 z = pz - (pz - z_b) * r^(4/6,5), r = distanza residua dalla linea al piano / alla fine dell'arco). Verificato sui
+                 passaggi misurati: 2,03/2,05 · 2,33/2,34 · -3,31/-3,22. Il basso fps non c'entra: il passo di scena e' tappato a 0,05 s. */
+              oppMesh._zpost229=null;
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_GK229L)&&P.hlOutcomeKind==="post"&&ballArcTgtX<=_gx229&&_gx229<GOAL_LINE_X-0.05){
+                const _bar=(P.hlWood!=null)?(P.hlWood==="bar"):(ballArcTgtY!=null&&ballArcTgtY>=1.55);
+                const _pz=_bar?clamp(ballArcTgtZ,-3.2,3.2):(ballArcTgtZ>=0?3.66:-3.66);
+                const _r=clamp((GOAL_LINE_X-_gx229)/Math.max(0.05,GOAL_LINE_X-ballArcTgtX),0,1);
+                _zp229=_pz-(_pz-ballArcTgtZ)*Math.pow(_r,4/6.5);oppMesh._zpost229=_zp229;}
               if(Math.abs(_zp229-_gz229)<1.2&&!_tuffoTesto23(P)){oppActType="gk_block";oppMesh._diveToZ=clamp(_zp229,_gz229-3,_gz229+3);oppMesh._blk229=sr.current._actSitKey403;oppMesh._pb229=null;}
               else {oppMesh._diveToZ=clamp(_gz229+(_zp229-_gz229)*0.8,_gz229-4.5,_gz229+4.5);oppMesh._blk229=null;}
               oppDiveDir=_zp229>=_gz229?1:-1;
@@ -7430,7 +7448,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                piano del portiere estrapolando la sua velocita' vera, finche' non lo supera; lo scatto si conta dal calcio. */
             const _b229=!(typeof window!=='undefined'&&window.__CPM_NO_GK229M)&&oppMesh._blk229!=null&&oppMesh._blk229===sr.current._actSitKey403&&P.hlSuccess===false;
             if(_b229){const _pb=oppMesh._pb229;
-              if(_pb&&ball.position.x<oppMesh.position.x){const _vx=ball.position.x-_pb.x,_vz=ball.position.z-_pb.z;
+              if(_pb&&ball.position.x<oppMesh.position.x&&!(oppMesh._zpost229!=null&&ballArcActive&&!(typeof window!=='undefined'&&window.__CPM_NO_GK229L))){/* [giro 12, rosso __CPM_NO_GK229L] arco che muore prima del piano: il passaggio e' nel post-arco, gia' calcolato al lancio — la velocita' dell'arco punterebbe dall'altra parte */const _vx=ball.position.x-_pb.x,_vz=ball.position.z-_pb.z;
                 if(_vx>1e-3){const _zq=ball.position.z+_vz*(oppMesh.position.x-ball.position.x)/_vx;oppMesh._diveToZ=clamp(_zq,(oppMesh._divePz||0)-3,(oppMesh._divePz||0)+3);oppDiveDir=_zq>=(oppMesh._divePz||0)?1:-1;}}
               oppMesh._pb229={x:ball.position.x,z:ball.position.z};}
             const _bpz=(oppMesh._divePz||0),_btz=(oppMesh._diveToZ!=null?oppMesh._diveToZ:_bpz);
