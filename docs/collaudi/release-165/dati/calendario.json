@@ -1,0 +1,158 @@
+[
+ {
+  "file": "../../docs/collaudi/release-165/dati/partenza-giroB-da-164c.json",
+  "voci": {
+   "season": 13,
+   "week": 9,
+   "speciali": [
+    [
+     9,
+     "national",
+     1479,
+     "Portogallo",
+     false,
+     "Amichevole Internazionale"
+    ]
+   ]
+  },
+  "home": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 9/38 · 5° posto",
+    "31 | 🏳️ Gioca vs Portogallo | Nazionale · Amichevole internazionale | ›",
+    "🏳️ Gioca vs Portogallo | Nazionale · Amichevole internazionale | › | Amichevole Internazionale",
+    "› | Amichevole Internazionale | PROSSIMA PARTITA | Calendario ›",
+    "ESP | Spagna | VS | In casa",
+    "POR | Portogallo | STAGIONE 13 · SETTIMANA 9 DI 38 | 9"
+   ],
+   "giornate": []
+  },
+  "via": "goTab/null",
+  "calendario": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 9/38 · 5° posto",
+    "POR | ▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca ›",
+    "▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca › | FEL"
+   ],
+   "giornate": [
+    "9ª giornata",
+    "10ª giornata",
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata"
+   ]
+  },
+  "coppe": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 9/38 · 5° posto",
+    "POR | ▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca ›",
+    "▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca › | FEL"
+   ],
+   "giornate": [
+    "9ª giornata",
+    "10ª giornata",
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata"
+   ]
+  },
+  "classifica": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 9/38 · 5° posto",
+    "POR | ▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca ›",
+    "▶ vs Portogallo · in casa🏳️ Nazionale | Amichevole Internazionale · sett. 9 | Gioca › | FEL"
+   ],
+   "giornate": [
+    "9ª giornata",
+    "10ª giornata",
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata"
+   ]
+  }
+ },
+ {
+  "file": "../../docs/collaudi/release-165/dati/b/salvataggio-fine-b.json",
+  "voci": {
+   "season": 13,
+   "week": 12,
+   "speciali": [
+    [
+     9,
+     "national",
+     1479,
+     "Portogallo",
+     true,
+     "Amichevole Internazionale"
+    ]
+   ]
+  },
+  "home": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 12/38 · 6° posto"
+   ],
+   "giornate": [
+    "11ª giornata"
+   ]
+  },
+  "via": "goTab/null",
+  "calendario": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 12/38 · 6° posto"
+   ],
+   "giornate": [
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata",
+    "16ª giornata",
+    "17ª giornata",
+    "18ª giornata"
+   ]
+  },
+  "coppe": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 12/38 · 6° posto"
+   ],
+   "giornate": [
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata",
+    "16ª giornata",
+    "17ª giornata",
+    "18ª giornata"
+   ]
+  },
+  "classifica": {
+   "codici": [],
+   "speciali": [
+    "· 14:20 | SPAGNA · ATTACCANTE | SAMUELITO VAIRO | AC Dorvelli · Lega A · St. 13 · Sett. 12/38 · 6° posto"
+   ],
+   "giornate": [
+    "11ª giornata",
+    "12ª giornata",
+    "13ª giornata",
+    "14ª giornata",
+    "15ª giornata",
+    "16ª giornata",
+    "17ª giornata",
+    "18ª giornata"
+   ]
+  }
+ }
+]

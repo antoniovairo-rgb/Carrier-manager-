@@ -1,0 +1,2930 @@
+[
+ {
+  "partita": 1,
+  "speed": "2",
+  "perGol": [
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 40,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 81,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 0,
+    "propriaMeta": [
+     "12/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     21,
+     85
+    ],
+    "seq": [
+     [
+      0,
+      "tenuta",
+      50,
+      50
+     ],
+     [
+      40,
+      "tenuta",
+      49,
+      49
+     ],
+     [
+      80,
+      "volo",
+      49,
+      49
+     ],
+     [
+      122,
+      "tenuta",
+      26,
+      85
+     ],
+     [
+      160,
+      "tenuta",
+      27,
+      85
+     ],
+     [
+      200,
+      "tenuta",
+      26,
+      85
+     ],
+     [
+      240,
+      "tenuta",
+      27,
+      85
+     ],
+     [
+      280,
+      "volo",
+      27,
+      85
+     ],
+     [
+      320,
+      "fermo",
+      67,
+      99
+     ],
+     [
+      360,
+      "fermo",
+      67,
+      99
+     ],
+     [
+      400,
+      "fermo",
+      67,
+      99
+     ],
+     [
+      440,
+      "fermo",
+      67,
+      99
+     ],
+     [
+      480,
+      "volo",
+      67,
+      99
+     ],
+     [
+      520,
+      "tenuta",
+      23,
+      85
+     ],
+     [
+      560,
+      "tenuta",
+      23,
+      85
+     ],
+     [
+      600,
+      "tenuta",
+      25,
+      85
+     ],
+     [
+      640,
+      "volo",
+      25,
+      85
+     ],
+     [
+      680,
+      "tenuta",
+      70,
+      77
+     ]
+    ]
+   }
+  ],
+  "decisioni": 2153,
+  "int226": {
+   "int": {
+    "schede": [
+     {
+      "min": 55,
+      "fatto": "eroe_stanco",
+      "diff": 0,
+      "panchina": false,
+      "energia": 24,
+      "duelliP": 0
+     },
+     {
+      "min": 75,
+      "fatto": "pari_75",
+      "diff": 0,
+      "panchina": false,
+      "energia": 23,
+      "duelliP": 0
+     },
+     {
+      "min": 85,
+      "fatto": "misura_85",
+      "diff": 1,
+      "panchina": false,
+      "energia": 23,
+      "duelliP": 0
+     }
+    ],
+    "scelte": [
+     {
+      "id": "eroe_stanco",
+      "idx": 0,
+      "auto": false,
+      "min": 55,
+      "att": -0.25,
+      "ordine": "intelligente"
+     },
+     {
+      "id": "pari_75",
+      "idx": 0,
+      "auto": false,
+      "min": 75,
+      "att": 0.45,
+      "ordine": "urgenza_75"
+     }
+    ],
+    "cand": 3
+   },
+   "testo": null
+  },
+  "gol": [
+   {
+    "t0": 192883,
+    "ph0": "playing",
+    "score": [
+     1,
+     0
+    ],
+    "min": 81,
+    "sintesi": {
+     "fase": "playing",
+     "min": 81,
+     "campioni": 15,
+     "kickoffMs": 0,
+     "kickoffDa": null,
+     "centroMs": 0,
+     "propriaMetaInKickoff": null,
+     "a1s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       23,
+       59
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       23,
+       59
+      ]
+     },
+     "a3s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       74,
+       26
+      ]
+     },
+     "stati": [
+      "playing:volo",
+      "playing:tenuta",
+      "playing:fermo",
+      "ceremony:tenuta"
+     ],
+     "kickoffEpisodi": 0,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "volo",
+      [
+       49,
+       49
+      ],
+      12
+     ],
+     [
+      2298,
+      "playing",
+      "tenuta",
+      [
+       23,
+       59
+      ],
+      9
+     ],
+     [
+      4809,
+      "playing",
+      "fermo",
+      [
+       81,
+       50
+      ],
+      10
+     ],
+     [
+      7352,
+      "playing",
+      "tenuta",
+      [
+       80,
+       46
+      ],
+      10
+     ],
+     [
+      8295,
+      "playing",
+      "fermo",
+      [
+       39,
+       99
+      ],
+      11
+     ]
+    ]
+   }
+  ],
+  "durS": 129
+ },
+ {
+  "partita": 2,
+  "speed": "2",
+  "perGol": [
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 40,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 26,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 7,
+    "kickoffMsReali": 121,
+    "propriaMeta": [
+     "13/20",
+     "13/20",
+     "13/20"
+    ],
+    "secondoKickoffDopoDecisioni": 18,
+    "secondoKickoffDopoMs": 719,
+    "pallaDopo5": [
+     41,
+     80
+    ],
+    "seq": [
+     [
+      0,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      40,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      80,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      121,
+      "tenuta",
+      50,
+      50
+     ],
+     [
+      160,
+      "tenuta",
+      51,
+      58
+     ],
+     [
+      200,
+      "tenuta",
+      50,
+      58
+     ],
+     [
+      240,
+      "volo",
+      50,
+      58
+     ],
+     [
+      280,
+      "tenuta",
+      41,
+      80
+     ],
+     [
+      320,
+      "tenuta",
+      41,
+      80
+     ],
+     [
+      363,
+      "tenuta",
+      40,
+      79
+     ],
+     [
+      400,
+      "volo",
+      40,
+      79
+     ],
+     [
+      441,
+      "tenuta",
+      50,
+      60
+     ],
+     [
+      480,
+      "tenuta",
+      50,
+      60
+     ],
+     [
+      522,
+      "tenuta",
+      49,
+      60
+     ],
+     [
+      560,
+      "volo",
+      49,
+      60
+     ],
+     [
+      600,
+      "tenuta",
+      37,
+      78
+     ],
+     [
+      640,
+      "volo",
+      37,
+      78
+     ],
+     [
+      680,
+      "tenuta",
+      49,
+      60
+     ]
+    ]
+   },
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 40,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 67,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 44,
+    "propriaMeta": [
+     "14/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     54,
+     1
+    ],
+    "seq": [
+     [
+      0,
+      "tenuta",
+      50,
+      51
+     ],
+     [
+      40,
+      "tenuta",
+      50,
+      51
+     ],
+     [
+      80,
+      "volo",
+      50,
+      51
+     ],
+     [
+      120,
+      "tenuta",
+      50,
+      40
+     ],
+     [
+      160,
+      "tenuta",
+      50,
+      40
+     ],
+     [
+      200,
+      "tenuta",
+      50,
+      40
+     ],
+     [
+      240,
+      "tenuta",
+      50,
+      40
+     ],
+     [
+      280,
+      "fermo",
+      50,
+      40
+     ],
+     [
+      320,
+      "volo",
+      50,
+      40
+     ],
+     [
+      360,
+      "tenuta",
+      93,
+      49
+     ],
+     [
+      400,
+      "volo",
+      93,
+      49
+     ],
+     [
+      440,
+      "fermo",
+      99,
+      2
+     ],
+     [
+      480,
+      "fermo",
+      99,
+      2
+     ],
+     [
+      520,
+      "fermo",
+      99,
+      2
+     ],
+     [
+      560,
+      "volo",
+      99,
+      2
+     ],
+     [
+      600,
+      "tenuta",
+      95,
+      46
+     ],
+     [
+      641,
+      "volo",
+      95,
+      46
+     ],
+     [
+      682,
+      "tenuta",
+      88,
+      80
+     ]
+    ]
+   }
+  ],
+  "decisioni": 2109,
+  "int226": {
+   "int": {
+    "schede": [
+     {
+      "min": 44,
+      "fatto": "eroe_marcato",
+      "diff": 1,
+      "panchina": false,
+      "energia": 29,
+      "duelliP": 2
+     },
+     {
+      "min": 55,
+      "fatto": "eroe_stanco",
+      "diff": 1,
+      "panchina": false,
+      "energia": 21,
+      "duelliP": 2
+     },
+     {
+      "min": 68,
+      "fatto": "avanti_2",
+      "diff": 2,
+      "panchina": false,
+      "energia": 26,
+      "duelliP": 2
+     }
+    ],
+    "scelte": [
+     {
+      "id": "eroe_marcato",
+      "idx": 0,
+      "auto": false,
+      "min": 44,
+      "att": 0.25,
+      "ordine": null
+     },
+     {
+      "id": "eroe_stanco",
+      "idx": 0,
+      "auto": false,
+      "min": 55,
+      "att": -0.25,
+      "ordine": "intelligente"
+     }
+    ],
+    "cand": 3
+   },
+   "testo": null
+  },
+  "gol": [
+   {
+    "t0": 130430.90000000037,
+    "ph0": "playing",
+    "score": [
+     1,
+     0
+    ],
+    "min": 26,
+    "sintesi": {
+     "fase": "playing",
+     "min": 26,
+     "campioni": 82,
+     "kickoffMs": 126,
+     "kickoffDa": 0,
+     "centroMs": 11495,
+     "propriaMetaInKickoff": [
+      "13/19"
+     ],
+     "a1s": {
+      "ph": "playing",
+      "st": "fermo",
+      "palla": [
+       81,
+       51
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "fermo",
+      "palla": [
+       81,
+       51
+      ]
+     },
+     "a3s": {
+      "ph": "hl_intro",
+      "st": "fermo",
+      "palla": [
+       81,
+       51
+      ]
+     },
+     "stati": [
+      "playing:kickoff",
+      "playing:tenuta",
+      "playing:volo",
+      "playing:fermo",
+      "hl_intro:fermo",
+      "hl_move:fermo",
+      "hl_choose:fermo",
+      "hl_result:fermo",
+      "playing:libero"
+     ],
+     "kickoffEpisodi": 1,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      13
+     ],
+     [
+      126,
+      "playing",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      13
+     ],
+     [
+      270,
+      "playing",
+      "volo",
+      [
+       50,
+       58
+      ],
+      13
+     ],
+     [
+      531,
+      "playing",
+      "tenuta",
+      [
+       50,
+       60
+      ],
+      13
+     ],
+     [
+      1655,
+      "playing",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      13
+     ],
+     [
+      2933,
+      "hl_intro",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      4386,
+      "hl_intro",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      5326,
+      "hl_move",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      6251,
+      "hl_result",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      6995,
+      "hl_result",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      7611,
+      "hl_result",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      8001,
+      "hl_result",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      8572,
+      "hl_result",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      9151,
+      "playing",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      9942,
+      "playing",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      10102,
+      "playing",
+      "fermo",
+      [
+       81,
+       51
+      ],
+      14
+     ],
+     [
+      10253,
+      "playing",
+      "volo",
+      [
+       94,
+       50
+      ],
+      14
+     ],
+     [
+      10418,
+      "playing",
+      "libero",
+      [
+       56,
+       29
+      ],
+      14
+     ],
+     [
+      10551,
+      "playing",
+      "tenuta",
+      [
+       56,
+       29
+      ],
+      14
+     ],
+     [
+      10699,
+      "playing",
+      "tenuta",
+      [
+       48,
+       73
+      ],
+      14
+     ],
+     [
+      10835,
+      "playing",
+      "tenuta",
+      [
+       52,
+       28
+      ],
+      14
+     ],
+     [
+      10980,
+      "playing",
+      "fermo",
+      [
+       45,
+       73
+      ],
+      13
+     ],
+     [
+      11094,
+      "playing",
+      "tenuta",
+      [
+       53,
+       47
+      ],
+      13
+     ],
+     [
+      11233,
+      "playing",
+      "tenuta",
+      [
+       43,
+       74
+      ],
+      13
+     ],
+     [
+      11376,
+      "playing",
+      "tenuta",
+      [
+       52,
+       49
+      ],
+      13
+     ],
+     [
+      11537,
+      "playing",
+      "tenuta",
+      [
+       43,
+       68
+      ],
+      13
+     ],
+     [
+      11668,
+      "playing",
+      "tenuta",
+      [
+       88,
+       81
+      ],
+      13
+     ],
+     [
+      11826,
+      "playing",
+      "fermo",
+      [
+       99,
+       98
+      ],
+      13
+     ],
+     [
+      11960,
+      "playing",
+      "tenuta",
+      [
+       43,
+       75
+      ],
+      13
+     ]
+    ]
+   },
+   {
+    "t0": 180419.2999999998,
+    "ph0": "playing",
+    "score": [
+     2,
+     0
+    ],
+    "min": 67,
+    "sintesi": {
+     "fase": "playing",
+     "min": 67,
+     "campioni": 8,
+     "kickoffMs": 0,
+     "kickoffDa": null,
+     "centroMs": 0,
+     "propriaMetaInKickoff": null,
+     "a1s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       87,
+       79
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       29,
+       67
+      ]
+     },
+     "a3s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       29,
+       67
+      ]
+     },
+     "stati": [
+      "playing:fermo",
+      "playing:tenuta",
+      "playing:volo"
+     ],
+     "kickoffEpisodi": 0,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "fermo",
+      [
+       99,
+       2
+      ],
+      14
+     ],
+     [
+      3439,
+      "playing",
+      "tenuta",
+      [
+       29,
+       67
+      ],
+      11
+     ],
+     [
+      9709,
+      "playing",
+      "tenuta",
+      [
+       67,
+       21
+      ],
+      12
+     ]
+    ]
+   }
+  ],
+  "durS": 131
+ },
+ {
+  "partita": 3,
+  "speed": "2",
+  "perGol": [
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 40,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 21,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 0,
+    "propriaMeta": [
+     "11/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     79,
+     43
+    ],
+    "seq": [
+     [
+      0,
+      "volo",
+      93,
+      50
+     ],
+     [
+      40,
+      "volo",
+      93,
+      50
+     ],
+     [
+      478,
+      "volo",
+      93,
+      50
+     ],
+     [
+      520,
+      "volo",
+      93,
+      50
+     ],
+     [
+      560,
+      "volo",
+      93,
+      50
+     ],
+     [
+      602,
+      "volo",
+      93,
+      50
+     ],
+     [
+      640,
+      "volo",
+      93,
+      50
+     ],
+     [
+      680,
+      "volo",
+      93,
+      50
+     ],
+     [
+      720,
+      "volo",
+      93,
+      50
+     ],
+     [
+      760,
+      "volo",
+      93,
+      50
+     ],
+     [
+      800,
+      "volo",
+      93,
+      50
+     ],
+     [
+      840,
+      "volo",
+      93,
+      50
+     ],
+     [
+      881,
+      "volo",
+      93,
+      50
+     ],
+     [
+      920,
+      "volo",
+      93,
+      50
+     ],
+     [
+      960,
+      "volo",
+      93,
+      50
+     ],
+     [
+      1000,
+      "volo",
+      93,
+      50
+     ],
+     [
+      1040,
+      "volo",
+      93,
+      50
+     ],
+     [
+      1080,
+      "volo",
+      93,
+      50
+     ]
+    ]
+   },
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 0,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 28,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 5,
+    "kickoffMsReali": 1,
+    "propriaMeta": [
+     "12/20",
+     "12/20",
+     "12/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     50,
+     80
+    ],
+    "seq": [
+     [
+      0,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      0,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      0,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      1,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      1,
+      "tenuta",
+      50,
+      50
+     ],
+     [
+      1,
+      "tenuta",
+      47,
+      48
+     ],
+     [
+      1,
+      "tenuta",
+      47,
+      48
+     ],
+     [
+      1,
+      "volo",
+      47,
+      48
+     ],
+     [
+      1,
+      "tenuta",
+      50,
+      80
+     ],
+     [
+      40,
+      "tenuta",
+      50,
+      80
+     ],
+     [
+      210,
+      "volo",
+      50,
+      80
+     ],
+     [
+      240,
+      "tenuta",
+      36,
+      38
+     ],
+     [
+      280,
+      "tenuta",
+      36,
+      38
+     ],
+     [
+      320,
+      "volo",
+      36,
+      38
+     ],
+     [
+      360,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      400,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      440,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      480,
+      "fermo",
+      49,
+      99
+     ]
+    ]
+   },
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 170,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 28,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 0,
+    "propriaMeta": [
+     "12/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     39,
+     41
+    ],
+    "seq": [
+     [
+      0,
+      "tenuta",
+      50,
+      80
+     ],
+     [
+      170,
+      "volo",
+      50,
+      80
+     ],
+     [
+      200,
+      "tenuta",
+      36,
+      38
+     ],
+     [
+      240,
+      "tenuta",
+      36,
+      38
+     ],
+     [
+      280,
+      "volo",
+      36,
+      38
+     ],
+     [
+      320,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      360,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      400,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      440,
+      "fermo",
+      49,
+      99
+     ],
+     [
+      480,
+      "volo",
+      49,
+      99
+     ],
+     [
+      520,
+      "tenuta",
+      77,
+      77
+     ],
+     [
+      560,
+      "volo",
+      77,
+      77
+     ],
+     [
+      601,
+      "tenuta",
+      87,
+      52
+     ],
+     [
+      640,
+      "tenuta",
+      85,
+      52
+     ],
+     [
+      683,
+      "fermo",
+      85,
+      52
+     ],
+     [
+      720,
+      "volo",
+      85,
+      52
+     ],
+     [
+      760,
+      "tenuta",
+      47,
+      81
+     ],
+     [
+      800,
+      "tenuta",
+      47,
+      81
+     ]
+    ]
+   },
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 40,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 41,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 0,
+    "propriaMeta": [
+     "13/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     37,
+     77
+    ],
+    "seq": [
+     [
+      0,
+      "tenuta",
+      47,
+      62
+     ],
+     [
+      40,
+      "volo",
+      47,
+      62
+     ],
+     [
+      83,
+      "tenuta",
+      90,
+      56
+     ],
+     [
+      119,
+      "volo",
+      90,
+      56
+     ],
+     [
+      161,
+      "tenuta",
+      78,
+      47
+     ],
+     [
+      199,
+      "tenuta",
+      79,
+      47
+     ],
+     [
+      239,
+      "tenuta",
+      79,
+      47
+     ],
+     [
+      279,
+      "volo",
+      79,
+      47
+     ],
+     [
+      319,
+      "volo",
+      86,
+      44
+     ],
+     [
+      359,
+      "volo",
+      94,
+      41
+     ],
+     [
+      400,
+      "fermo",
+      94,
+      50
+     ],
+     [
+      445,
+      "volo",
+      94,
+      50
+     ],
+     [
+      479,
+      "tenuta",
+      47,
+      54
+     ],
+     [
+      522,
+      "tenuta",
+      47,
+      54
+     ],
+     [
+      559,
+      "tenuta",
+      47,
+      54
+     ],
+     [
+      604,
+      "volo",
+      47,
+      54
+     ],
+     [
+      648,
+      "tenuta",
+      40,
+      78
+     ],
+     [
+      679,
+      "tenuta",
+      40,
+      78
+     ]
+    ]
+   },
+   {
+    "dopoScena": null,
+    "msAllaRipresa": 1,
+    "scena": false,
+    "prevFase": "playing",
+    "min": 52,
+    "fase": "playing",
+    "decisioniRete": 0,
+    "decisioniKickoff": 1,
+    "kickoffMsReali": 1,
+    "propriaMeta": [
+     "13/20"
+    ],
+    "secondoKickoffDopoDecisioni": null,
+    "secondoKickoffDopoMs": null,
+    "pallaDopo5": [
+     47,
+     51
+    ],
+    "seq": [
+     [
+      0,
+      "kickoff",
+      50,
+      50
+     ],
+     [
+      1,
+      "tenuta",
+      50,
+      50
+     ],
+     [
+      1,
+      "tenuta",
+      50,
+      50
+     ],
+     [
+      1,
+      "volo",
+      50,
+      50
+     ],
+     [
+      1,
+      "tenuta",
+      40,
+      80
+     ],
+     [
+      1,
+      "volo",
+      40,
+      80
+     ],
+     [
+      1,
+      "tenuta",
+      47,
+      51
+     ],
+     [
+      1,
+      "tenuta",
+      47,
+      51
+     ],
+     [
+      1,
+      "volo",
+      47,
+      51
+     ],
+     [
+      229,
+      "tenuta",
+      36,
+      80
+     ],
+     [
+      240,
+      "tenuta",
+      36,
+      80
+     ],
+     [
+      283,
+      "tenuta",
+      36,
+      80
+     ],
+     [
+      320,
+      "volo",
+      36,
+      80
+     ],
+     [
+      360,
+      "tenuta",
+      46,
+      52
+     ],
+     [
+      403,
+      "tenuta",
+      46,
+      52
+     ],
+     [
+      440,
+      "volo",
+      46,
+      52
+     ],
+     [
+      480,
+      "fermo",
+      36,
+      99
+     ],
+     [
+      520,
+      "volo",
+      36,
+      99
+     ]
+    ]
+   }
+  ],
+  "decisioni": 2130,
+  "int226": {
+   "int": {
+    "schede": [
+     {
+      "min": 45,
+      "fatto": "eroe_marcato",
+      "diff": 2,
+      "panchina": false,
+      "energia": 14,
+      "duelliP": 2
+     },
+     {
+      "min": 55,
+      "fatto": "eroe_stanco",
+      "diff": 3,
+      "panchina": false,
+      "energia": 0,
+      "duelliP": 2
+     },
+     {
+      "min": 63,
+      "fatto": "avanti_2",
+      "diff": 3,
+      "panchina": false,
+      "energia": 0,
+      "duelliP": 2
+     }
+    ],
+    "scelte": [
+     {
+      "id": "eroe_marcato",
+      "idx": 0,
+      "auto": false,
+      "min": 45,
+      "att": 0.25,
+      "ordine": null
+     },
+     {
+      "id": "eroe_stanco",
+      "idx": 0,
+      "auto": false,
+      "min": 55,
+      "att": -0.25,
+      "ordine": "intelligente"
+     },
+     {
+      "id": "avanti_2",
+      "idx": 0,
+      "auto": false,
+      "min": 63,
+      "att": -0.45,
+      "ordine": "blocca_ora"
+     }
+    ],
+    "cand": 3
+   },
+   "testo": null
+  },
+  "gol": [
+   {
+    "t0": 119961.89999999944,
+    "ph0": "playing",
+    "score": [
+     0,
+     1
+    ],
+    "min": 21,
+    "sintesi": {
+     "fase": "playing",
+     "min": 21,
+     "campioni": 28,
+     "kickoffMs": 2642,
+     "kickoffDa": 5618,
+     "centroMs": 2642,
+     "propriaMetaInKickoff": [
+      "12/19"
+     ],
+     "a1s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       65,
+       24
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "libero",
+      "palla": [
+       86,
+       42
+      ]
+     },
+     "a3s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       63,
+       68
+      ]
+     },
+     "stati": [
+      "playing:volo",
+      "playing:tenuta",
+      "playing:libero",
+      "playing:fermo",
+      "hl_intro:kickoff",
+      "hl_choose:kickoff"
+     ],
+     "kickoffEpisodi": 1,
+     "ritorniAlCentroMs": [
+      5618
+     ]
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "volo",
+      [
+       93,
+       50
+      ],
+      11
+     ],
+     [
+      651,
+      "playing",
+      "volo",
+      [
+       93,
+       50
+      ],
+      11
+     ],
+     [
+      1224,
+      "playing",
+      "tenuta",
+      [
+       65,
+       24
+      ],
+      11
+     ],
+     [
+      1768,
+      "playing",
+      "tenuta",
+      [
+       67,
+       24
+      ],
+      9
+     ],
+     [
+      3021,
+      "playing",
+      "tenuta",
+      [
+       63,
+       68
+      ],
+      10
+     ],
+     [
+      3896,
+      "playing",
+      "fermo",
+      [
+       89,
+       50
+      ],
+      11
+     ],
+     [
+      4807,
+      "playing",
+      "fermo",
+      [
+       89,
+       50
+      ],
+      12
+     ],
+     [
+      5618,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      6301,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      6456,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      6751,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      7167,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      7677,
+      "hl_intro",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      8237,
+      "hl_choose",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      8260,
+      "hl_choose",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ]
+    ]
+   },
+   {
+    "t0": 129000.89999999944,
+    "ph0": "hl_result",
+    "score": [
+     1,
+     1
+    ],
+    "min": 27,
+    "sintesi": {
+     "fase": "hl_result",
+     "min": 27,
+     "campioni": 14,
+     "kickoffMs": 2981,
+     "kickoffDa": 0,
+     "centroMs": 2981,
+     "propriaMetaInKickoff": [
+      "12/19"
+     ],
+     "a1s": {
+      "ph": "hl_result",
+      "st": "kickoff",
+      "palla": [
+       50,
+       50
+      ]
+     },
+     "a2s": {
+      "ph": "hl_result",
+      "st": "kickoff",
+      "palla": [
+       50,
+       50
+      ]
+     },
+     "a3s": null,
+     "stati": [
+      "hl_result:kickoff"
+     ],
+     "kickoffEpisodi": 1,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      350,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      466,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      729,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      916,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      1297,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      1485,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      1722,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2068,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2277,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2504,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2577,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2784,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ],
+     [
+      2981,
+      "hl_result",
+      "kickoff",
+      [
+       50,
+       50
+      ],
+      12
+     ]
+    ]
+   },
+   {
+    "t0": 132274.09999999963,
+    "ph0": "playing",
+    "score": [
+     2,
+     1
+    ],
+    "min": 28,
+    "sintesi": {
+     "fase": "playing",
+     "min": 28,
+     "campioni": 81,
+     "kickoffMs": 0,
+     "kickoffDa": null,
+     "centroMs": 0,
+     "propriaMetaInKickoff": null,
+     "a1s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       87,
+       52
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       80,
+       76
+      ]
+     },
+     "a3s": {
+      "ph": "hl_intro",
+      "st": "fermo",
+      "palla": [
+       83,
+       61
+      ]
+     },
+     "stati": [
+      "playing:tenuta",
+      "playing:volo",
+      "playing:fermo",
+      "hl_intro:fermo",
+      "hl_move:fermo",
+      "hl_choose:fermo",
+      "hl_result:fermo"
+     ],
+     "kickoffEpisodi": 0,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "tenuta",
+      [
+       50,
+       80
+      ],
+      13
+     ],
+     [
+      634,
+      "playing",
+      "tenuta",
+      [
+       85,
+       52
+      ],
+      13
+     ],
+     [
+      862,
+      "playing",
+      "tenuta",
+      [
+       34,
+       37
+      ],
+      12
+     ],
+     [
+      1069,
+      "playing",
+      "tenuta",
+      [
+       87,
+       52
+      ],
+      12
+     ],
+     [
+      1388,
+      "playing",
+      "tenuta",
+      [
+       81,
+       51
+      ],
+      13
+     ],
+     [
+      1646,
+      "playing",
+      "tenuta",
+      [
+       75,
+       77
+      ],
+      13
+     ],
+     [
+      1789,
+      "playing",
+      "tenuta",
+      [
+       85,
+       53
+      ],
+      13
+     ],
+     [
+      2021,
+      "playing",
+      "tenuta",
+      [
+       80,
+       76
+      ],
+      13
+     ],
+     [
+      2255,
+      "playing",
+      "tenuta",
+      [
+       83,
+       61
+      ],
+      13
+     ],
+     [
+      2471,
+      "playing",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      13
+     ],
+     [
+      2716,
+      "playing",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      13
+     ],
+     [
+      4344,
+      "hl_intro",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      5048,
+      "hl_intro",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      6047,
+      "hl_intro",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      6652,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      7270,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      7743,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      8221,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      8674,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      9096,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      9330,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      9698,
+      "hl_result",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      10150,
+      "playing",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      10773,
+      "playing",
+      "fermo",
+      [
+       83,
+       61
+      ],
+      14
+     ],
+     [
+      11317,
+      "playing",
+      "volo",
+      [
+       55,
+       76
+      ],
+      13
+     ],
+     [
+      11644,
+      "playing",
+      "tenuta",
+      [
+       85,
+       57
+      ],
+      13
+     ],
+     [
+      11864,
+      "playing",
+      "tenuta",
+      [
+       85,
+       57
+      ],
+      13
+     ]
+    ]
+   },
+   {
+    "t0": 155434.7999999998,
+    "ph0": "playing",
+    "score": [
+     3,
+     1
+    ],
+    "min": 41,
+    "sintesi": {
+     "fase": "playing",
+     "min": 41,
+     "campioni": 60,
+     "kickoffMs": 0,
+     "kickoffDa": null,
+     "centroMs": 0,
+     "propriaMetaInKickoff": null,
+     "a1s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       73,
+       54
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "libero",
+      "palla": [
+       66,
+       66
+      ]
+     },
+     "a3s": {
+      "ph": "hl_intro",
+      "st": "libero",
+      "palla": [
+       66,
+       66
+      ]
+     },
+     "stati": [
+      "playing:tenuta",
+      "playing:libero",
+      "hl_intro:libero",
+      "hl_choose:libero",
+      "hl_result:libero",
+      "playing:fermo",
+      "playing:volo"
+     ],
+     "kickoffEpisodi": 0,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "tenuta",
+      [
+       79,
+       47
+      ],
+      13
+     ],
+     [
+      1699,
+      "playing",
+      "tenuta",
+      [
+       73,
+       54
+      ],
+      13
+     ],
+     [
+      3956,
+      "hl_intro",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      4649,
+      "hl_intro",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      5787,
+      "hl_result",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      6711,
+      "hl_result",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      7126,
+      "hl_result",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      7671,
+      "hl_result",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      8146,
+      "hl_result",
+      "libero",
+      [
+       66,
+       66
+      ],
+      13
+     ],
+     [
+      8711,
+      "playing",
+      "fermo",
+      [
+       47,
+       99
+      ],
+      14
+     ],
+     [
+      9309,
+      "playing",
+      "tenuta",
+      [
+       81,
+       73
+      ],
+      14
+     ],
+     [
+      9652,
+      "playing",
+      "volo",
+      [
+       95,
+       51
+      ],
+      14
+     ],
+     [
+      10009,
+      "playing",
+      "tenuta",
+      [
+       46,
+       52
+      ],
+      12
+     ],
+     [
+      10336,
+      "playing",
+      "fermo",
+      [
+       99,
+       98
+      ],
+      12
+     ],
+     [
+      10676,
+      "playing",
+      "fermo",
+      [
+       96,
+       96
+      ],
+      13
+     ],
+     [
+      10976,
+      "playing",
+      "tenuta",
+      [
+       54,
+       77
+      ],
+      12
+     ],
+     [
+      11186,
+      "playing",
+      "tenuta",
+      [
+       85,
+       62
+      ],
+      12
+     ],
+     [
+      11346,
+      "playing",
+      "tenuta",
+      [
+       98,
+       94
+      ],
+      13
+     ],
+     [
+      11564,
+      "playing",
+      "libero",
+      [
+       71,
+       50
+      ],
+      13
+     ],
+     [
+      11857,
+      "playing",
+      "tenuta",
+      [
+       87,
+       60
+      ],
+      13
+     ]
+    ]
+   },
+   {
+    "t0": 174612.7999999998,
+    "ph0": "playing",
+    "score": [
+     4,
+     1
+    ],
+    "min": 52,
+    "sintesi": {
+     "fase": "playing",
+     "min": 52,
+     "campioni": 42,
+     "kickoffMs": 0,
+     "kickoffDa": null,
+     "centroMs": 0,
+     "propriaMetaInKickoff": null,
+     "a1s": {
+      "ph": "playing",
+      "st": "fermo",
+      "palla": [
+       84,
+       61
+      ]
+     },
+     "a2s": {
+      "ph": "playing",
+      "st": "fermo",
+      "palla": [
+       84,
+       61
+      ]
+     },
+     "a3s": {
+      "ph": "playing",
+      "st": "tenuta",
+      "palla": [
+       59,
+       70
+      ]
+     },
+     "stati": [
+      "playing:volo",
+      "playing:tenuta",
+      "playing:fermo",
+      "playing:libero"
+     ],
+     "kickoffEpisodi": 0,
+     "ritorniAlCentroMs": []
+    },
+    "raw": [
+     [
+      0,
+      "playing",
+      "volo",
+      [
+       47,
+       51
+      ],
+      12
+     ],
+     [
+      797,
+      "playing",
+      "tenuta",
+      [
+       73,
+       65
+      ],
+      13
+     ],
+     [
+      1142,
+      "playing",
+      "fermo",
+      [
+       84,
+       61
+      ],
+      13
+     ],
+     [
+      1366,
+      "playing",
+      "fermo",
+      [
+       84,
+       61
+      ],
+      13
+     ],
+     [
+      1651,
+      "playing",
+      "fermo",
+      [
+       84,
+       61
+      ],
+      13
+     ],
+     [
+      1697,
+      "playing",
+      "fermo",
+      [
+       84,
+       61
+      ],
+      13
+     ],
+     [
+      2688,
+      "playing",
+      "volo",
+      [
+       45,
+       74
+      ],
+      13
+     ],
+     [
+      3756,
+      "playing",
+      "fermo",
+      [
+       99,
+       98
+      ],
+      12
+     ],
+     [
+      4431,
+      "playing",
+      "tenuta",
+      [
+       46,
+       35
+      ],
+      13
+     ],
+     [
+      6167,
+      "playing",
+      "fermo",
+      [
+       82,
+       50
+      ],
+      14
+     ],
+     [
+      7420,
+      "playing",
+      "libero",
+      [
+       68,
+       76
+      ],
+      14
+     ],
+     [
+      8582,
+      "playing",
+      "libero",
+      [
+       68,
+       76
+      ],
+      14
+     ],
+     [
+      10061,
+      "playing",
+      "volo",
+      [
+       8,
+       50
+      ],
+      13
+     ],
+     [
+      11035,
+      "playing",
+      "volo",
+      [
+       71,
+       80
+      ],
+      12
+     ]
+    ]
+   }
+  ],
+  "durS": 128
+ }
+]
