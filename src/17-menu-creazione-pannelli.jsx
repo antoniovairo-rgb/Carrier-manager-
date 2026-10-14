@@ -139,7 +139,7 @@ const CREDITI238=[
   {sez:"Suoni",voci:[
     {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
     {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
-    {n:"Brusio di folla — Freesound «football crowd 3» (69245)",d:"Campione fornito dal PO.",manca:"autore, licenza e indirizzo",fonte:"assets/audio/sfx/crowd/README.md"}]}
+    {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
 ];
 const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
 function Crediti238({onClose}){
