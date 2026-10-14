@@ -27,6 +27,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/schede-convocazione-234 | — (archiviata) | giro 14 consegnato, integrato in 7.999.167 (lavoro/167) | 14/10 17:55 |
 | sviluppo/fluidita-crediti-237 | — (archiviata) | giro 15 consegnato, integrato in 7.999.167; fonti dei Crediti chiuse in CREDITI-fonti.md, brusio passato al giro 20 | 14/10 19:13 |
 | sviluppo/brusio-238 | session_01CsazHshRDXuy9rVVncFW5E | giro 20 (Opus, base lavoro/167): brusio di folla con licenza certa (decisione PO «Sostituiscilo»), poi PO-241 | 14/10 19:13 |
+| sviluppo/banco-highlight-248 | session_01UX5uhrC4fzNpwbqj46nRGn | giro 21 (Opus, base lavoro/167): PO-248 banco di misura highlight eroe (fluidità + credibilità), classifica dei 10 difetti; solo misura | 14/10 19:22 |
 | sviluppo/statistiche-difesa-228 | session_01QMZrKUvYLkvfzuhdFecwAv | giro 16 (Opus, base 7.999.165): PO-228 ritaratura dal ramo sviluppo/ritaratura-228 + verifica dal vivo, PO-220 chiusure difensive | 14/10 10:02 |
 | sviluppo/scene-gesti-022 | session_01AcPBcxRGtnHXYkP1AXshuf | giro 17 (Opus, base 7.999.165): PO-022 scene dal motore, PO-068 gesti, PO-123/143 | 14/10 10:02 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
