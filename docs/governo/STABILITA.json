@@ -288,7 +288,11 @@
     "ok": true,
     "s": 326
    }
-  ]
+  ],
+  "deroghe": [
+   "ripartenza-207"
+  ],
+  "nota_deroga": "Decisione PO 14/10 «Pubblico la 166» e autorizzazione esplicita alla deroga: ripartenza-207 rosso già presente sul sito dalla 7.999.163 (regressione del seme 7.999.162), in correzione al giro 18."
  },
  {
   "data": "2026-10-14 06:04",
