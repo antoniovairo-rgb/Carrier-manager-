@@ -346,3 +346,7 @@ Nota: le sessioni Claude Code girano sul piano del tuo account; quanto questa sc
 ## 14/10 sera — «nei panni del player» (PO-249)
 
 PO, con foto del riquadrino «3 fps»: «devi togliere completamente la scritta fps, è una cosa tecnica che al player non interessa! In generale il gioco deve mettersi nei panni del player, deve essere tutto chiaro, fluido, usabile, intuitivo». Regola: nessuna scritta tecnica o di sviluppo (fps, codici, contatori di corpi, nomi di modelli o fornitori, messaggi di caricamento tecnici) è visibile al giocatore; le misure restano dietro le quinte (taccuino, sonde). Ogni collaudo controlla anche questo.
+
+## 14/10 sera — pubblicazione 7.999.168 (scritta fps)
+
+Questionario: **«168 con catena mirata»**. Si pubblica la 7.999.168 (7.999.167 + PO-249, niente scritta fps) dopo la catena `mirata` sul ramo lavoro/168, con la stessa deroga del PO su `ripartenza-207` usata per la 166 (difetto noto PO-207, correzione dal giro 18). La catena notturna della 167 non ha potuto chiudersi per i riavvii del container (15:59, 17:36, 17:55, 18:16, 19:08 UTC); passi verdi prima dell'ultimo riavvio: vedi /tmp/claude-0/n167-notte-parte1.out e n167-notte3.out, con ripartenza-207 rosso.
