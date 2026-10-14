@@ -325,3 +325,7 @@ PO, 14/10 sera, testuale: «Ti autorizzo a modificare il blocco della pubblicazi
 ## 14/10 sera — «Pubblica il prima possibile»
 
 PO, testuale: «Pubblica il prima possibile». La 7.999.166 esce subito invece che alle 00 (deroga PO per ripartenza-207 già registrata).
+
+## 14/10 sera — brusio di folla (Crediti, PO-238)
+
+Il PO non ricorda da dove ha scaricato `assets/audio/sfx/crowd/freesound_community-football-crowd-3-69245.mp3` (caricato da lui su GitHub il 15/07, commit 6bd34cd3). L'id 69245 su Freesound è un altro suono; il nome somiglia ai download di Pixabay ma la pagina da qui risponde 403: non posso confermarlo. Questionario: **«Sostituiscilo»** — al suo posto un brusio con licenza certa (generato da noi, senza campioni di terzi, oppure una fonte con licenza verificata e scritta in CREDITI-fonti.md); il vecchio file esce dal gioco e dai Crediti. Interruttore rosso e riascolto del PO.
