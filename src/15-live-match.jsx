@@ -2581,7 +2581,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       return{t:{x:+ballTargetRef.current.x.toFixed(2),y:+ballTargetRef.current.y.toFixed(2)},
              l:{x:+ballPosRef.current.x.toFixed(2),y:+ballPosRef.current.y.toFixed(2)},
              m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0,g:(typeof window!=='undefined'&&window.__CPM_COLLA)?1:0};}catch(e){return null;}};
-    window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk,m720:q._m720?1:0}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
+    window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk,m720:q._m720?1:0,m143:q._m143?1:0}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
     window.__CPM_MS=()=>{try{return matchStateRef.current;}catch(e){return null;}};/* [7.711.0] il testimone del Match State unico */
     window.__CPM_FERMO_NOW=()=>{try{const _f=fermoRef.current;return _f?{x:_f.x,y:_f.y,kind:_f.kind||null,t:_f.t}:null;}catch(e){return null;}};/* [7.633.0] gancio di sola lettura: il fermo corrente, per la sonda dello schieramento da palla inattiva */
     window.__CPM_FERMO_SET=(k,x,y,t)=>{try{fermoRef.current={x:+x,y:+y,t:(t|0)||12,kind:String(k)};return true;}catch(e){return false;}};/* [7.633.0 SOLO COLLAUDO] forza un fermo per misurare lo schieramento da palla inattiva senza aspettare la lotteria dei sorteggi (pattern __CPM_FORCE_SIT) */
@@ -3651,7 +3651,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         /* [v3] la scena parte dalle posizioni FOTOGRAFATE alla sua apertura e fa al piu' 8 passi: il risultato e' funzione pura della scena, non del tempo di lettura (misurato con match-sequence) */
         {const _b=scenaBase23Ref.current;if(!_b||_b.hl!==hlIdx||_b.sit!==sit)scenaBase23Ref.current={hl:hlIdx,sit,k:0,gioc:(matchPlayersRef.current||[]).map(q=>q?{x:q.x,y:q.y}:null)};scenaBase23Ref.current.k=Math.min(8,scenaBase23Ref.current.k+1);}
         const _o23=motoreRef.current.chiedi.scenaMuovi({gioc:scenaBase23Ref.current.gioc,passi:scenaBase23Ref.current.k,eroe:pPosRef.current,palla:ballPosRef.current,dt:0.3,seme:(hashStr(String((sit&&sit.text)||'')+'|'+hlIdx)>>>0)||1});
-        if(_o23){setMatchPlayers(prev=>{const nx=prev.map((pl,i)=>{const q=_o23[i];return (q&&pl&&pl.team!=='ref')?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=nx;return nx;});
+        /* [giro 17 PO-123/PO-143 «difensori che pressano». Rosso __CPM_NO_MARCA143] MISURATO (sonda pressing-143, teatro acceso, 4 partite S12):
+           il motore apre l'occasione col marcatore a 1-3 u dall'eroe, ma in scena il difensore piu' vicino stava a 5-10 m anche nelle posizioni
+           logiche — il passo scenaMuovi tiene la linea e nessuno resta sul portatore. Qui il difensore NOMINATO dal motore (cast.difensore,
+           stesso indice di matchPlayers) si mette dal lato della porta alla distanza che il motore ha misurato (tra 1,2 e 5 u). Uno solo,
+           solo prima dell'azione, funzione pura della scena (stessa posizione a ogni passo). */
+        if(_o23&&sit&&sit._p6&&sit._p6dif!=null&&sit._p6dist!=null&&_o23[sit._p6dif]&&!(typeof window!=='undefined'&&window.__CPM_NO_MARCA143)){try{
+          const _e143=pPosRef.current||{};const _q143=_o23[sit._p6dif];const _gx=100-(+_e143.x),_gy=50-(+_e143.y),_gl=Math.hypot(_gx,_gy)||1;const _dd143=clamp(+sit._p6dist,1.2,5);
+          if(_e143.x!=null){_o23[sit._p6dif]={x:+clamp(+_e143.x+_gx/_gl*_dd143,2,98).toFixed(2),y:+clamp(+_e143.y+_gy/_gl*_dd143,3,97).toFixed(2)};}
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_MARCA143=window.__CPM_MARCA143||[]).push({hl:hlIdx,i:sit._p6dif,d:_dd143,da:{x:_q143.x,y:_q143.y}});}catch(_e){}}}catch(_e143){}}
+        if(_o23){const _mi143=(sit&&sit._p6&&!(typeof window!=='undefined'&&window.__CPM_NO_MARCA143))?sit._p6dif:null;setMatchPlayers(prev=>{const nx=prev.map((pl,i)=>{const q=_o23[i];return (q&&pl&&pl.team!=='ref')?{...pl,x:q.x,y:q.y,_m143:(_mi143!=null&&i===_mi143)}:pl;});matchPlayersRef.current=nx;return nx;});
           if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_B3MUOVI=(window.__CPM_B3MUOVI|0)+1;}catch(_e){}}
           return;}
       }
@@ -3801,7 +3810,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(_pal84){const _mp84=matchPlayersRef.current||[];let _bd84=1e9,_c84=null;for(let k=11;k<_mp84.length;k++){const q=_mp84[k];if(!q||q.team!=="away")continue;const _d=Math.hypot(q.x-pPos.x,q.y-pPos.y);if(_d<_bd84){_bd84=_d;_c84=q;}}
         if(_c84){const _bp={x:_c84.x,y:_c84.y};ballTargetRef.current=_bp;setBallPos(_bp);if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{window.__CPM_PALLA84={x:+_c84.x.toFixed(1),y:+_c84.y.toFixed(1),d:+_bd84.toFixed(1)};}catch(_e){}}}}
     };
-    if(_pal84)_tick84();
+    if(_pal84||(sit&&sit._p6&&sit._p6dif!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_MARCA143)))_tick84();/* [giro 17 PO-123] nelle scene del motore il marcatore si piazza subito, non dopo il primo intervallo */
     const iv=setInterval(_tick84,pressingMs);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y,paused]);// eslint-disable-line
@@ -4739,7 +4748,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 const _P=_o219.preludio||[];const _u=_P[_P.length-1];const _mp=matchPlayersRef.current||[];
                 if(_u&&_u.a&&_u.a.eroe&&_u.da&&!_u.da.eroe&&_u.da.i!=null&&_mp[_u.da.i]&&!_mp[_u.da.i].gk){const q=_mp[_u.da.i];_o219.cast={..._o219.cast,ricevente:{i:_u.da.i,nome:String(q.name||_u.da.nome||''),eroe:false,gk:false,team:'home',x:+(+q.x).toFixed(1),y:+(+q.y).toFixed(1)}};const _v=_P.length>1?_P[_P.length-2]:null;if(_v&&_v.a&&_v.a.i===_u.da.i&&_v.da&&!_v.da.eroe&&_v.da.i!=null&&_mp[_v.da.i]&&!_mp[_v.da.i].gk){const q2=_mp[_v.da.i];_o219.cast={..._o219.cast,apre:{i:_v.da.i,nome:String(q2.name||_v.da.nome||''),team:'home'}};}/* [7.999.155 PO-219b] «A apre per B, che ti serve»: anche A e' nominato, quindi va in scena come B */}}}catch(_e219c){}
               try{const _o6=occEroe879Ref.current;const _g6=(_o6&&typeof scenaDalMotore==='function')?scenaDalMotore(_o6,player,_lzSeed):null;
-                if(_g6){_pick880=_g6;try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_P6=window.__CPM_P6||[]).push({min:nx|0,tipo:_g6._p6||null,text:_g6.text,az:_g6.actions.map(a=>a.label),x:_o6.x,y:_o6.y,press:_o6.press,liberi:_o6.liberi|0,ric:_o6.cast&&_o6.cast.ricevente?_o6.cast.ricevente.nome:null,sz:_g6.startZone,rq:(_g6.actions||[]).map(a=>(a.richiede||[]).join('+')).join('|'),man:_g6._p6man||null,intro:_g6.intro||'',prel:(_o6.preludio||[]).length});}catch(_ew){}}}catch(_e6){}
+                if(_g6){_pick880=_g6;try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_P6=window.__CPM_P6||[]).push({min:nx|0,tipo:_g6._p6||null,pr:(_g6.tactic&&_g6.tactic.pressure)||null,text:_g6.text,az:_g6.actions.map(a=>a.label),x:_o6.x,y:_o6.y,press:_o6.press,liberi:_o6.liberi|0,ric:_o6.cast&&_o6.cast.ricevente?_o6.cast.ricevente.nome:null,sz:_g6.startZone,rq:(_g6.actions||[]).map(a=>(a.richiede||[]).join('+')).join('|'),man:_g6._p6man||null,intro:_g6.intro||'',prel:(_o6.preludio||[]).length});}catch(_ew){}}}catch(_e6){}
               /* [7.999.26 — LA SCENA NASCE DALL'ORIGINE DICHIARATA DAL BRAIN. Rosso __CPM_NO_ORIG26] Se l'occasione porta un'origine
                  (cross di un compagno, angolo, punizione in mezzo), la scheda si cerca nell'INTERO catalogo fra quelle che raccontano
                  proprio quello — l'eroe che riceve il cross (in corsa, di testa, al volo) o l'angolo — invece che fra le 16 estratte a

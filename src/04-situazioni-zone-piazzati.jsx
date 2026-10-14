@@ -899,6 +899,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
   const s=S(text,zones,_pz?sz:mz,sz,actions,_pz,_pz?0:-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
   s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
+  s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] il marcatore e la sua distanza, come li ha misurati il motore */
   return s;
 }
 /* [7.999.150 PO-030/PO-022 Passo 6, strato 5] LA MANOVRA VERA APRE LA SCENA. Il motore consegna con l'occasione gli ultimi passaggi
@@ -1129,9 +1130,24 @@ function scenaSecondoTempo(base,cast,player,seed){
   s._p6='seguito';s._p6k=k;s._p6seed=seed>>>0;
   return s;
 }
+/* [giro 17 PO-123/PO-143 «difensori che pressano» — LA PRESSIONE DELLA SCENA E' QUELLA DEL CAMPO. Rosso __CPM_NO_PRESS143] Il motore
+   consegna `press` = pressioneSu(eroe) (src/14 r.258), cioe' la DISTANZA dell'avversario piu' vicino in unita' di campo; i generatori la
+   leggevano come INTENSITA' (>=1,5 alta, <1 «1 contro 1 senza pressione»), e il motore stesso chiamava «spalle alla porta, il marcatore
+   ti e' addosso» l'occasione con l'avversario a 3 u o piu'. MISURATO (sonda pressing-143, 4 partite S12, teatro acceso): 8 scene su 20
+   dichiarate «pressione alta» col difensore vero a 6,2-12 m in scena. Qui, all'ingresso unico dei generatori, la distanza diventa
+   intensita' (0 da 6 u in su, 1,5 a 3 u, 3 a contatto) e «spalle» vuol dire marcatore entro 1,2 u. Il motore e i suoi eventi non cambiano. */
+function _p6Pressione(occ){
+  try{if(typeof window!=='undefined'&&window.__CPM_NO_PRESS143)return occ;}catch(_e){}
+  if(!occ||occ.tipo==='rigore'||occ.tipo==='punizione')return occ;
+  const d=+occ.press;if(!isFinite(d))return occ;
+  const o={...occ,press:+clamp((6-d)/2,0,3).toFixed(2),pressDist:d};
+  if(occ.tipo==='conclusione'||occ.tipo==='spalle')o.tipo=d<1.2?'spalle':'conclusione';
+  return o;
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
+  occ=_p6Pressione(occ);
   if(occ.tipo==='conclusione')return scenaDalMotoreConclusione(occ,player,seed);
   if(occ.tipo==='spalle')return scenaDalMotoreSpalle(occ,player,seed);
   if(occ.tipo==='fascia')return scenaDalMotoreFascia(occ,player,seed);
@@ -1170,5 +1186,6 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const ctx={pressure:press>=1.5?'high':press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:press>=1.5?2:press>=0.5?1:0,lanes:['central_run'],cn:uno?{oneOnOne:true}:undefined};
   const s=S(text,limite?['bordo','area']:['area'],mz,sz,actions,false,-1,intro,'off',null,ctx);
   s._p6='conclusione';s._p6seed=seed>>>0;
+  s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] come in _p6Costruisci */
   return s;
 }
