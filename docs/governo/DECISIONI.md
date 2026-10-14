@@ -329,3 +329,7 @@ PO, testuale: «Pubblica il prima possibile». La 7.999.166 esce subito invece c
 ## 14/10 sera — brusio di folla (Crediti, PO-238)
 
 Il PO non ricorda da dove ha scaricato `assets/audio/sfx/crowd/freesound_community-football-crowd-3-69245.mp3` (caricato da lui su GitHub il 15/07, commit 6bd34cd3). L'id 69245 su Freesound è un altro suono; il nome somiglia ai download di Pixabay ma la pagina da qui risponde 403: non posso confermarlo. Questionario: **«Sostituiscilo»** — al suo posto un brusio con licenza certa (generato da noi, senza campioni di terzi, oppure una fonte con licenza verificata e scritta in CREDITI-fonti.md); il vecchio file esce dal gioco e dai Crediti. Interruttore rosso e riascolto del PO.
+
+## 14/10 sera — priorità: highlight dell'eroe (PO-248)
+
+PO: «Puntiamo molto alla fluidità, credibilità degli highlights dell'eroe a tutto tondo!». Gli highlight dell'eroe diventano la prima priorità di L1. Prima si misura (banco unico su tutte le famiglie, GLB acceso, classifica dei difetti per peso), poi si corregge in quell'ordine; i giri già in corso sull'area (16, 17, 18, 19) proseguono e confluiscono. Il verdetto finale resta il telefono del PO (taccuino), perché l'headless non vede la fluidità vera.
