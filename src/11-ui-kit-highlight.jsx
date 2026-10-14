@@ -97,11 +97,12 @@ const OvrRing=({value,size=60,label="OVR"})=>{
    striscia colorata a sinistra, l'emoji iniziale del messaggio in un bollino, testo in inchiostro della pagina; sta in BASSO
    sopra la barra di navigazione, cosi' non copre piu' la testata («Simulazione…» sopra il nome). Rosso __CPM_NO_TOAST23. */
 const _NotifVecchio=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
-const Notif=({msg,color})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
+const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
   const m=String(msg).match(/^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:\uFE0F|\u200D(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}))*)\s*/u);const ic=m?m[1]:null,tx=m?String(msg).slice(m[0].length):String(msg);
   const c=(typeof legCol944==='function'?legCol944(color||TH.primary):(color||TH.primary));
   /* [24/09 POC] centrato da un contenitore flex a tutta larghezza: `cpm-rise` anima `transform` e cancellava il translateX(-50%) -> toast spostato a destra e tagliato (anteprima 04/05) */
-  return(<div style={{position:"fixed",left:0,right:0,bottom:"calc(96px + env(safe-area-inset-bottom, 0px))",zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
+  /* [giro 19 PO-247, collaudo 164 N4] con una finestra che tiene le risposte in basso (intervista) il toast sale in alto: in basso copriva la terza risposta. Rosso __CPM_NO_TOAST247 */
+  return(<div style={{position:"fixed",left:0,right:0,...((alto&&!(typeof window!=='undefined'&&window.__CPM_NO_TOAST247))?{top:"calc(14px + env(safe-area-inset-top, 0px))"}:{bottom:"calc(96px + env(safe-area-inset-bottom, 0px))"}),zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
     display:"flex",alignItems:"center",gap:SP.sm,maxWidth:380,minWidth:0,background:TH.surface3,border:"1px solid "+TH.divider,borderLeft:"4px solid "+c,borderRadius:RAD.md,padding:"9px 14px 9px 10px",boxShadow:TH.el3}}>
     {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
     <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
