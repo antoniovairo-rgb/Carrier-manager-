@@ -1,5 +1,296 @@
 [
  {
+  "data": "2026-10-14 09:19",
+  "versione": "7.999.166",
+  "catena": "notte",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 88
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 35
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 60
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 550
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 14
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 680
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 9
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 196
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 505
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": false,
+    "s": 981,
+    "coda": "{\"verde\":{\"ripartenze\":1,\"alCentro\":0,\"gol\":1,\"tentativi\":1,\"fine\":{\"f\":\"playing\",\"sc\":{\"home\":1,\"away\":0}},\"s\":105},\"rosso\":{\"ripartenze\":0,\"alCentro\":0,\"gol\":1,\"tentativi\":1,\"fine\":{\"f\":\"playing\",\"sc\":{\"home\":1,\"away\":0}},\"s\":102}} | ❌ ri",
+    "prove": 3
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 593
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 437
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 540
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 537
+   },
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 724
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 6
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 43
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 25
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 332
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 125
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 909
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 518
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 1115
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1133
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 248
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 541
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 242
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 506
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 122
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 8830,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2272
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1730
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 525
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 326
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 06:04",
   "versione": "7.999.165",
   "catena": "completa",
@@ -7196,123 +7487,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 0
-   }
-  ]
- },
- {
-  "data": "2026-10-05 20:54",
-  "versione": "7.999.139",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 212
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 650
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 9
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 56
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 38
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 268
-   },
-   {
-    "passo": "fila-206",
-    "ok": true,
-    "s": 308
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": true,
-    "s": 69
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": true,
-    "s": 66
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 73
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 108
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 35
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 91
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 47
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 54
-   },
-   {
-    "passo": "figurine-208",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "post-210",
-    "ok": true,
-    "s": 556
    }
   ]
  }
