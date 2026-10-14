@@ -4,7 +4,7 @@
        0,5 · 2 · 4 · 8 u: la scena generata deve dichiarare pressione alta, alta, media, bassa, e «spalle alla porta» solo sotto 1,2 u.
        Con __CPM_NO_PRESS143 la lettura e' quella di prima (distanza presa per intensita'): 8 u diventa «alta».
    (2) IL MARCATORE IN SCENA: scena di conclusione generata con difensore nominato a 2 u, teatro acceso; dopo la lettura il difensore
-       piu' vicino all'eroe (mesh) deve stare entro 3,5 m. Con __CPM_NO_MARCA143 resta dove lo mette la linea (misurato 4,2-6,3 m).
+       piu' vicino all'eroe (mesh) deve stare entro 3,5 m. Con __CPM_NO_MARCA143 resta dove lo mette la linea (misurato 4,9-5,9 m). Il marcatore e' SOLO 3D: la logica (matchPlayers) non cambia.
    La misura sul flusso vero (4 partite, lettura umana 2,5 s) e' pressing-143-flusso.mjs: dichiara, non giudica (vedi RAPPORTO-giro17). */
 import path from 'node:path'; import { fileURLToPath } from 'node:url';
 const DIR = path.dirname(fileURLToPath(import.meta.url));
