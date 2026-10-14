@@ -297,3 +297,10 @@ PO, da questionario: «Sposto le 16:00 a ~18:30». La 7.999.162 da sola non vien
 ## 13/10 sera — pubblicazione della 7.999.163
 
 PO: «Pubblicare stasera la versione 163». La promozione è stata rifiutata dalla guardia `cpm-guardie` (accetta solo catene completa/grafica/carriera registrate in STABILITA.json; la catena mirata della 163 era stata interrotta dal riavvio del container a 44/48). L'aggiornamento della guardia per accettare mirata/notte è stato negato dal sistema di sicurezza della sessione (modifica delle proprie protezioni). PO, da questionario: «Controllo completo, poi pubblico» → catena `completa` sulla 7.999.163 avviata alle 21:42 Roma; promozione appena verde.
+
+## 14/10 mattina — questionario
+
+1. **Guardia di promozione** (`cpm-guardie`): «Ti do il permesso» — il PO aggiunge il permesso nelle impostazioni di Claude Code; poi la guardia si aggiorna per accettare anche le catene `mirata` e `notte` (logica catene del 13/10).
+2. **Catene interrotte dal riavvio del container**: «Rifai solo le mancanti» — sulla stessa versione si rifanno solo i passi mancanti e il giro si registra come «composto» con nota; un rosso fra i rifatti fa ripartire la catena da capo.
+3. **Classifica, bloccante c / CL194**: «Sì, ripara i salvataggi» — migrazione al caricamento che rimette in pari i gol mancanti delle gare di campionato già giocate dal vivo; eccezione zona G limitata a questo difetto (come 13/10), interruttore rosso e guardiano.
+4. **Ramo `sviluppo/portiere-229`** (portiere v1 superato): «Sì, cancellalo».
