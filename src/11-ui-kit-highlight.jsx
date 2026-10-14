@@ -1480,8 +1480,14 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
     const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
       .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
     const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
-    const prossimo=function(i){if(i>=L.length){st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo(i+1);});});};
-    prossimo(0);
+    /* [giro 20 — PO-241 «il caricamento dei giocatori deve essere piu' furbo»] MISURATO (tests/visual/attesa-241.mjs, rete lenta come
+       nella sonda di PO-232: 2-6 s a file): uno alla volta, in 20 s di menu il pre-caricamento arrivava a pochi file e la partita
+       ripartiva da capo coi 6 file CGTrader (richieste viste a +5 s dall'apertura), lasciando 15-17 s di attesa dei corpi. Ora
+       SEI file in volo insieme (il tetto per host di Chrome in HTTP/1.1; sempre nei momenti d'ozio, stesse URL): la latenza di un file si sovrappone a quella degli
+       altri. Rosso __CPM_NO_ATTESA241 = uno alla volta come prima. */
+    const _par241=(window.__CPM_NO_ATTESA241?1:6);let _prox241=0,_vivi241=_par241;
+    const prossimo=function(){const i=_prox241++;if(i>=L.length){if(--_vivi241===0)st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo();});});};
+    for(let k=0;k<_par241;k++)prossimo();
   }catch(e){}},2500);
 }catch(e){}}
 function colorCharGLB(model,jerHex){

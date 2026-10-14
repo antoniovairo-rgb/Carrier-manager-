@@ -11996,8 +11996,14 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
     const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
       .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
     const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
-    const prossimo=function(i){if(i>=L.length){st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo(i+1);});});};
-    prossimo(0);
+    /* [giro 20 — PO-241 «il caricamento dei giocatori deve essere piu' furbo»] MISURATO (tests/visual/attesa-241.mjs, rete lenta come
+       nella sonda di PO-232: 2-6 s a file): uno alla volta, in 20 s di menu il pre-caricamento arrivava a pochi file e la partita
+       ripartiva da capo coi 6 file CGTrader (richieste viste a +5 s dall'apertura), lasciando 15-17 s di attesa dei corpi. Ora
+       SEI file in volo insieme (il tetto per host di Chrome in HTTP/1.1; sempre nei momenti d'ozio, stesse URL): la latenza di un file si sovrappone a quella degli
+       altri. Rosso __CPM_NO_ATTESA241 = uno alla volta come prima. */
+    const _par241=(window.__CPM_NO_ATTESA241?1:6);let _prox241=0,_vivi241=_par241;
+    const prossimo=function(){const i=_prox241++;if(i>=L.length){if(--_vivi241===0)st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo();});});};
+    for(let k=0;k<_par241;k++)prossimo();
   }catch(e){}},2500);
 }catch(e){}}
 function colorCharGLB(model,jerHex){
@@ -28456,6 +28462,30 @@ function schedePiazzato(rigore,usate){
   const u=usate||[];const c=SITUATIONS.filter(s2=>ok(s2)&&u.indexOf(s2.text)<0);
   if(c.length||(typeof window!=='undefined'&&window.__CPM_NO_PIAZ99))return c;
   return SITUATIONS.filter(ok);}
+/* [giro 20 — PO-241 «non mi piace il messaggio "caricamento giocatori"… mostra delle statistiche, delle curiosita'»] Schede del
+   riquadro che copre l'attesa dei corpi (PO-232) al posto della scritta tecnica. SOLO DATI VERI della partita in corso: punteggio e
+   possesso se il cronometro e' gia' partito; altrimenti l'eroe (eta', valutazione, punto forte, piede, numeri di stagione) e i nomi
+   delle formazioni davvero in campo (homeRoster/awayRoster, gli stessi della cronaca). Una scheda senza il suo dato non si mostra.
+   Rosso __CPM_NO_ATTESA241 → torna «Caricamento giocatori…» (e il pre-caricamento torna a un file alla volta, src/11). */
+const attesa241On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA241);
+function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clock,score,possession}){
+  const out=[],P=player||{},nm=t=>(t&&(t.n||t.name))||"";
+  const mio=isMatchHome===false?away:home,loro=isMatchHome===false?home:away;
+  const mioXI=isMatchHome===false?awayRoster:homeRoster,loroXI=isMatchHome===false?homeRoster:awayRoster;
+  if((clock|0)>0&&score){
+    out.push({t:"La partita al "+(clock|0)+"'",v:nm(home)+" "+(score.home|0)+" - "+(score.away|0)+" "+nm(away)});
+    if(typeof possession==="number")out.push({t:"Possesso palla",v:nm(home)+" "+possession+"% · "+nm(away)+" "+(100-possession)+"%"});
+  }
+  if(P.name&&P.ovr)out.push({t:P.name,v:(P.age?P.age+" anni · ":"")+"valutazione "+P.ovr});
+  const st=P.stats&&typeof P.stats==="object"?Object.entries(P.stats).filter(e=>typeof e[1]==="number"):[];
+  if(st.length){const top=st.reduce((m,e)=>e[1]>m[1]?e:m,st[0]);out.push({t:"Il punto forte di "+String(P.name||"").split(" ").slice(-1)[0],v:String(top[0]).charAt(0).toUpperCase()+String(top[0]).slice(1)+" "+Math.round(top[1])});}
+  if(P.foot==="R"||P.foot==="L")out.push({t:"Piede preferito",v:P.foot==="L"?"sinistro":"destro"});
+  if((P.matches|0)>0)out.push({t:"In questa stagione",v:(P.goals|0)+" gol e "+(P.assists|0)+" assist in "+(P.matches|0)+" partite"});
+  if(Array.isArray(mioXI)&&mioXI[0]&&mioXI[0].name&&nm(mio))out.push({t:"In porta per "+nm(mio),v:mioXI[0].name});
+  if(Array.isArray(loroXI)&&nm(loro)){const c=loroXI.find(x=>x&&x.role==="Centravanti");if(c&&c.name)out.push({t:"Il centravanti di "+nm(loro),v:c.name});
+    const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
+  return out;
+}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -29600,6 +29630,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const iv=setInterval(()=>{if(_chk())clearInterval(iv);},250);
     return()=>clearInterval(iv);
   },[phase,kickoffHold,glbTry]);
+  const [att241,setAtt241]=useState(0);/* [giro 20 PO-241] rotazione delle schede nel riquadro d'attesa dei corpi */
+  useEffect(()=>{if(!corpiHold232)return;const iv=setInterval(()=>setAtt241(n=>n+1),3200);return()=>clearInterval(iv);},[corpiHold232]);
   // VISUAL-TEST (4.82.0): force-situation per validare TUTTE le SITUATIONS in 3D.
   // Attivo SOLO con ?cpmtest=1 → in produzione non viene mai registrato. Phase 2 dell'harness.
   useEffect(()=>{
@@ -37932,8 +37964,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:RAD.pill,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
-              {corpiHold232&&!kickoffHold&&!paused&&phase==="playing"&&(
-                <div data-cpm="corpi232" style={{position:"absolute",top:10,left:"50%",transform:"translateX(-50%)",zIndex:39,background:"rgba(5,8,20,0.78)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.pill,padding:"5px 12px",fontSize:FS.caption,color:"rgba(255,255,255,0.82)",letterSpacing:0.4,pointerEvents:"none",whiteSpace:"nowrap"}}>⏳ Caricamento giocatori…</div>)}
+              {corpiHold232&&!kickoffHold&&!paused&&phase==="playing"&&(attesa241On()?(()=>{/* [giro 20 PO-241] schede vere al posto della scritta tecnica */
+                const _sc=schedeAttesa241({player,home:homeTeamObj,away:awayTeamObj,homeRoster,awayRoster,isMatchHome,clock,score,possession});
+                if(!_sc.length)return null;const _x=_sc[att241%_sc.length];
+                return(<div data-cpm="attesa241" style={{position:"absolute",top:"36%",left:"50%",transform:"translate(-50%,-50%)",minWidth:200,zIndex:39,background:"rgba(5,8,20,0.82)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.md,padding:"6px 14px",maxWidth:"calc(100% - 32px)",textAlign:"center",pointerEvents:"none"}}>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:0.4,overflowWrap:"anywhere"}}>{_x.t}</div>
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",overflowWrap:"anywhere"}}>{_x.v}</div>
+                </div>);})():(
+                <div data-cpm="corpi232" style={{position:"absolute",top:10,left:"50%",transform:"translateX(-50%)",zIndex:39,background:"rgba(5,8,20,0.78)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.pill,padding:"5px 12px",fontSize:FS.caption,color:"rgba(255,255,255,0.82)",letterSpacing:0.4,pointerEvents:"none",whiteSpace:"nowrap"}}>⏳ Caricamento giocatori…</div>))}
               {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
                   Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
               {bugNote&&(
