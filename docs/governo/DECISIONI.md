@@ -309,3 +309,7 @@ PO: «Pubblicare stasera la versione 163». La promozione è stata rifiutata dal
 ## 14/10 mattina — chiudere L1 e collaudo dopo ogni release
 
 PO: «Terminiamo il prima possibile L1!» e «Collaudo approfondito dopo ogni release!». Questionario: «Tutto L1 subito» (supera il rinvio del 13/10 di PO-022, PO-068, PO-123/143, PO-220, PO-228 a dopo il 17/10) e «Dopo ogni release» (una collaudatrice nuova sulla versione appena pubblicata, rapporto nel backlog al giro successivo). Avviati: giro 16 (PO-228 + PO-220), giro 17 (PO-022, PO-068, PO-123/143), collaudatrice release 7.999.164 (ramo collaudo/release-164).
+
+## 14/10 pomeriggio — rilascio delle 00 con un rosso già presente sul sito
+
+Catena `notte` della 7.999.166: 55/56, rosso `ripartenza-207` (PO-207: dopo un gol nato in scena la ripresa non è dal centro). Misurato: regressione della correzione del seme (7.999.162); con `__CPM_NO_SEME` torna verde (ripartenze 1, alCentro 2): il difetto è sul sito dalla 7.999.163. Correzione affidata al giro 18 (ramo sviluppo/ripartenza-207). PO, da questionario: «Pubblico la 166». La guardia di promozione blocca comunque (ultima catena con un passo rosso); l'aggiunta di una «deroga PO» nella guardia è stata negata dal sistema di sicurezza della sessione: serve l'intervento del PO.
