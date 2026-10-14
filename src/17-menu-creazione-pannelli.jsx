@@ -1848,6 +1848,11 @@ function migratePlayer(player){
         changed=true;
       }
     }
+    /* [giro 13 MIG194, decisione PO 14/10] la classifica sbilanciata dalle partite dal vivo col NOME dell'avversario (CL194) si rimette
+       in pari dalle giornate giocate (src/09 riparaClassifica194). Testimone window.__CPM_MIG194, rosso __CPM_NO_MIG194. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_MIG194)){const _r194=riparaClassifica194(newP);
+      if(_r194){newP={...newP,standings:_r194.standings,log:[`📋 Classifica riallineata: i risultati delle tue partite di campionato giocate dal vivo non erano arrivati agli avversari (gol fatti ${_r194.prima.gf}, subiti ${_r194.prima.ga}). Rifatta dalle ${_r194.giornate} giornate giocate: i tuoi punti non cambiano, le partite fra le altre squadre sono state risimulate.`,...(newP.log||[])].slice(0,60)};changed=true;
+        try{if(typeof window!=='undefined')window.__CPM_MIG194={prima:_r194.prima,dopo:_r194.dopo,giornate:_r194.giornate,dalVivo:_r194.dalVivo};}catch(_e){}}}
     // [6.28.0 collaudo PO «duplicazione partita, l'ho giocata poco prima»] REPAIR calendari ESISTENTI (generati
     //   prima del fix 6.27.0): riordina la parte NON giocata per non affrontare lo STESSO avversario in due
     //   giornate consecutive (andata+ritorno adiacenti). SOLO riordino degli slot week futuri: preserva le gare

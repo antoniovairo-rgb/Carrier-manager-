@@ -40,6 +40,7 @@ const t0 = Date.now(); let ph; while (Date.now() - t0 < 400000) { ph = await pag
 for (let k = 0; k < 20 && (await page.evaluate(() => { try { return window.__CPM_CAREER.snapshot().week; } catch (e) { return null; } })) !== 39; k++) { await page.keyboard.press('Enter'); await sleep(400); }
 await sleep(1500);
 const dopo = await stato();
+if (process.env.CPM_DUMP) { const sv = await page.evaluate(() => localStorage.getItem('cpm-v3')); fs.writeFileSync(process.env.CPM_DUMP, sv || ''); }/* [giro 13] salvataggio dopo la giornata, per misurare la migrazione MIG194 */
 await ctx.close(); await b.close(); srv.close();
 
 const somma = st => st.reduce((o, r) => ({ W: o.W + r.wins, L: o.L + r.losses, GF: o.GF + r.gf, GA: o.GA + r.ga }), { W: 0, L: 0, GF: 0, GA: 0 });
