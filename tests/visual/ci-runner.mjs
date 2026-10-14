@@ -46,6 +46,13 @@ const ver = (fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.js
 const env = { ...process.env, CPM_CHROME: process.env.CPM_CHROME || '/opt/pw-browsers/chromium', PLAYWRIGHT_BROWSERS_PATH: process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers', VISION_PROVIDER: process.env.VISION_PROVIDER || 'none' };
 const giro = { data: new Date().toISOString().slice(0, 16).replace('T', ' '), versione: ver, catena: nome, passi: [] };
 let rossi = 0;
+/* [14/10, decisione PO «Rifai solo le mancanti»] GIRO COMPOSTO: se il container si riavvia a meta' catena, CPM_CI_FATTI=passo1,passo2
+   elenca i passi gia' verdi sulla STESSA versione (dal log del giro interrotto, CPM_CI_FATTI_DA=<log>): non si rigiocano, entrano nel registro
+   con «gia_verde» e il giro si segna «composto». Un rosso fra i rifatti vale come rosso: la catena si rifa' da capo. */
+const _fatti = (process.env.CPM_CI_FATTI || '').split(',').map(x => x.trim()).filter(Boolean);
+if (_fatti.length) { giro.composto = true; giro.nota_composto = 'passi gia\' verdi prima del riavvio del container' + (process.env.CPM_CI_FATTI_DA ? ' (' + process.env.CPM_CI_FATTI_DA + ')' : '') + ': ' + _fatti.join(', ');
+  for (const f of _fatti) { if (!passi.includes(f)) { console.error('passo gia\' fatto non in catena: ' + f); process.exit(2); } giro.passi.push({ passo: f, ok: true, s: 0, gia_verde: true }); }
+  const resto = passi.filter(p => !_fatti.includes(p)); passi.length = 0; passi.push(...resto); }
 /* [7.999.159, decisione PO 11/10 «adotta le nuove regole»] (1) PASSI LENTI IN PARALLELO: i guardiani che giocano partite vere
    (decine di minuti l'uno) girano a due a due su processi separati (CPM_CI_PAR=0 per la sequenza pura). (2) UN ROSSO SI RILANCIA DA
    SOLO fino a due volte: se torna verde il passo vale ma resta segnato «instabile» nel registro; resta rosso solo se e' rosso tre
