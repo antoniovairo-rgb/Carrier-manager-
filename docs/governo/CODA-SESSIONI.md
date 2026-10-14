@@ -29,6 +29,8 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/statistiche-difesa-228 | session_01QMZrKUvYLkvfzuhdFecwAv | giro 16 (Opus, base 7.999.165): PO-228 ritaratura dal ramo sviluppo/ritaratura-228 + verifica dal vivo, PO-220 chiusure difensive | 14/10 10:02 |
 | sviluppo/scene-gesti-022 | session_01AcPBcxRGtnHXYkP1AXshuf | giro 17 (Opus, base 7.999.165): PO-022 scene dal motore, PO-068 gesti, PO-123/143 | 14/10 10:02 |
 | collaudo/release-164 | session_01Nb2GUnv45TVic7BJoDvRhw | collaudo approfondito della 7.999.164 sul sito (decisione PO 14/10: dopo ogni release) | 14/10 09:58 |
+| collaudo/release-165 | session_016JZMoBHAi5Z6evqWazP2SS | collaudo approfondito della 7.999.165 sul sito | 14/10 16:00 |
+| sviluppo/ripartenza-207 | session_01NcXJF4S452JcXzff5Wq76G | giro 18 (Opus, base lavoro/166): PO-207 ripartenza dal centro rotta dal seme (7.999.162), guardiano nomi-219 instabile da riparare | 14/10 17:51 |
 | sviluppo/classifica-194-migrazione | session_01XY5WuoiCRnGTNuu8tSWKKQ | giro 13 (Opus, base 7.999.165): CL194, riparare la classifica nei salvataggi esistenti (decisione PO 14/10, eccezione zona G) | 14/10 08:04 |
 | collaudo/sessione-collaudatrice-161 | — | giro 9b consegnato (PO-230 finestre 6/10 per valori, PO-231 1 partita su 3); sessione archiviata | 13/10 |
 | collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
