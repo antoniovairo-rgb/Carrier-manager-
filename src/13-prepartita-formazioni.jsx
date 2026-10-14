@@ -227,7 +227,10 @@ function PostMatchPress({match,report,player,L,onClose}){
   const heroClub=_natMatch?{n:player?.nation||"Italia",a:(player?.nation||"NAZ").slice(0,3).toUpperCase()}:(player?.club||{});
   // [6.7.1 copyright] SOLO testate DI FANTASIA: il default attinge alle NEWSPAPERS del gioco (fittizie), mai a nomi reali.
   const paper=(rep.papers&&rep.papers[0])||((typeof NEWSPAPERS!=="undefined"&&NEWSPAPERS[0]&&NEWSPAPERS[0].name)||"Sport Korward");
-  const dateLine=`Stagione ${player?.season||1} · Giornata ${player?.week||1}`;
+  /* [giro 19 PO-244, collaudo 165 N4 — rosso __CPM_NO_GIORN244] la rassegna stampa scriveva la SETTIMANA come giornata: la giornata
+     e' quella della voce di campionato della settimana (calendario); senza voce di campionato (coppe, Nazionale) si dice la settimana. */
+  const _md244=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_GIORN244)return null;if(_natMatch)return 0;const w=player?.week||1;const m=(player?.calendar||[]).find(c=>c&&(!c.type||c.type==="league")&&c.week===w);return m&&m.matchday!=null?m.matchday:0;}catch(_e){return null;}})();
+  const dateLine=_md244==null?`Stagione ${player?.season||1} · Giornata ${player?.week||1}`:_md244?`Stagione ${player?.season||1} · Giornata ${_md244}`:`Stagione ${player?.season||1} · Settimana ${player?.week||1}`;
   const lead=(rep.headlines&&rep.headlines[0])||null;
   const subs=(rep.headlines||[]).slice(1,4);
   const papers=rep.papers||["Sprint","Cronaca","Zona Mista","Sport in Rete"];

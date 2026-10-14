@@ -10695,11 +10695,12 @@ const OvrRing=({value,size=60,label="OVR"})=>{
    striscia colorata a sinistra, l'emoji iniziale del messaggio in un bollino, testo in inchiostro della pagina; sta in BASSO
    sopra la barra di navigazione, cosi' non copre piu' la testata («Simulazione…» sopra il nome). Rosso __CPM_NO_TOAST23. */
 const _NotifVecchio=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
-const Notif=({msg,color})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
+const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
   const m=String(msg).match(/^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:\uFE0F|\u200D(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}))*)\s*/u);const ic=m?m[1]:null,tx=m?String(msg).slice(m[0].length):String(msg);
   const c=(typeof legCol944==='function'?legCol944(color||TH.primary):(color||TH.primary));
   /* [24/09 POC] centrato da un contenitore flex a tutta larghezza: `cpm-rise` anima `transform` e cancellava il translateX(-50%) -> toast spostato a destra e tagliato (anteprima 04/05) */
-  return(<div style={{position:"fixed",left:0,right:0,bottom:"calc(96px + env(safe-area-inset-bottom, 0px))",zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
+  /* [giro 19 PO-247, collaudo 164 N4] con una finestra che tiene le risposte in basso (intervista) il toast sale in alto: in basso copriva la terza risposta. Rosso __CPM_NO_TOAST247 */
+  return(<div style={{position:"fixed",left:0,right:0,...((alto&&!(typeof window!=='undefined'&&window.__CPM_NO_TOAST247))?{top:"calc(14px + env(safe-area-inset-top, 0px))"}:{bottom:"calc(96px + env(safe-area-inset-bottom, 0px))"}),zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
     display:"flex",alignItems:"center",gap:SP.sm,maxWidth:380,minWidth:0,background:TH.surface3,border:"1px solid "+TH.divider,borderLeft:"4px solid "+c,borderRadius:RAD.md,padding:"9px 14px 9px 10px",boxShadow:TH.el3}}>
     {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
     <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
@@ -13129,6 +13130,12 @@ function _specchiaClip23(clip,root,nome){try{
 function _mira20(a,px,pz,tx,tz,goalX,eroe){if(!a||a._tgt517==null)return null;const W=(typeof window!=='undefined')?window:{};let t=a._tgt517;
   if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6)t=Math.atan2(goalX-px,Math.max(-3.3,Math.min(3.3,tz))-pz);/* x della LINEA di porta: il bersaglio di un tiro sbagliato puo' stare davanti alla porta (x 41,5 misurato) */
   if(a._gAct&&a._gAct===a._gScissor&&!W.__CPM_NO_ROV19)t+=Math.PI;return t;}
+/* [giro 19 PO-242 «Conduci palla al piede e tira» fallito, collaudi 164 N1 / 165 K1. Rosso __CPM_NO_COND242] il ramo «conduzione persa»
+   (5.43.5) saltava l'arco di tiro anche quando l'azione finisce in TIRO e il motore registra tiro parato/fuori: il riquadro diceva
+   «Grande parata», il campo mostrava un contrasto e il portiere restava fermo (3 parate su 3). Vero se l'azione e' una conclusione
+   (premio gol, etichetta da tiro) e l'esito e' uno dei tiri sbagliati. */
+function _tiro242(P,t){try{if(typeof window!=='undefined'&&window.__CPM_NO_COND242)return false;if(!P||P.hlReward!=="goal"||t==="dribble")return false;
+  return /\btir[aoi]|conclu/i.test(String(P.hlActLbl||''))&&/^(saved|save|wide|out|post|blocked)$/.test(String(P.hlOutcomeKind||''));}catch(_e){return false;}}
 /* [23/09 POC] la frase dell'esito dice che il portiere si tuffa? (decisione PO: il gesto segue il testo) */
 function _tuffoTesto23(P){try{if(typeof window!=='undefined'&&window.__CPM_NO_TESTO23)return false;return /tuffo|si distende|in volo/i.test(String((P&&P.hlOutText)||''));}catch(_e){return false;}}
 /* lato del corpo verso cui va la clip (+1 sinistra del giocatore, -1 destra), misurato sul bacino (provino-clip) */
@@ -14890,8 +14897,8 @@ function ThreeMatchView(props){
     const _isWalkStart=props.matchPhase==="walkout"&&!_CPM_TEST;// solo se si PARTE dalla walkout (la prima partita) e NON sotto gate: altrimenti i mesh restano in formazione (gate/forzature intatti)
     const _placeRow=(list,xRow,side)=>{const n=list.length;list.forEach((m,i)=>{
       m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;// slot finale schierato
-      m._wDelay=0.18+i*0.20;// scaglionamento: emergono uno dopo l'altro dal tunnel
-      m._wStartX=xRow-9;m._wStartZ=side*36;// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
+      m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*0.20;// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
+      m._wStartX=xRow-9;m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
     _placeRow(_homeMeshes,-15,-1);_placeRow(_awayMeshes,-7,1);
@@ -16085,7 +16092,12 @@ function ThreeMatchView(props){
       if(walkT<(mesh._wDelay||0)){mesh._idle=(mesh._idle||0)+dt*1.4;mesh.rotation.z=Math.sin(mesh._idle)*0.025;mesh.rotation.y+=(-Math.PI/2-mesh.rotation.y)*Math.min(dt*4,1);
         if(mesh._lL){mesh._lL.rotation.x*=0.85;mesh._lR.rotation.x*=0.85;mesh._aL.rotation.x*=0.85;mesh._aR.rotation.x*=0.85;}mesh.position.y*=0.85;return;}
       const dx=mesh._wx-mesh.position.x,dz=mesh._wz-mesh.position.z,d=Math.hypot(dx,dz);
-      mesh.position.x+=dx*k*0.85;mesh.position.z+=dz*k*0.85;// passo d'ingresso calmo (coerente col gioco più lento)
+      /* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] l'avvicinamento esponenziale da' una velocita' proporzionale alla
+         distanza residua: chi partiva lontano (gli ospiti dalla linea opposta, la coda della fila) attraversava il campo a ~28 u/s coi
+         bambini per mano. Il passo ha un tetto di 6,5 u/s (scena): con la testa della fila che esce per prima arrivano tutti entro
+         l'ingresso (10,5 s). */
+      let _f245=k*0.85;if(!(typeof window!=='undefined'&&window.__CPM_NO_ING245)&&d>0.001&&d*_f245>6.5*dt)_f245=6.5*dt/d;
+      mesh.position.x+=dx*_f245;mesh.position.z+=dz*_f245;// passo d'ingresso calmo (coerente col gioco più lento)
       /* [7.999.115 collaudo PO-197 «i giocatori corrono sul posto, non sono in modalita' idle nel prepartita»] MISURATO (testimone
          __CPM_WALK197, salvataggio S12 del PO): l'avvicinamento esponenziale lasciava una coda di strisciamento a 0,1-0,5 u/s e il corpo
          arrivato teneva la clip di corsa piena per 1-1,5 s; arrivando sfalsati, per 5 s ce n'era sempre qualcuno che correva da fermo.
@@ -17760,7 +17772,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(_curPh!==prevPhase){
         if(_curPh==="hl_result"){fireConclusion=()=>{const P=propsRef.current;sr.current._ccx460=P;/* [7.460.0] IL CONTESTO DELLA CONCLUSIONE SI DICHIARA QUI, AL LANCIO — stessa cura dello `stageStamp` del 7.456: il blocco di completamento dell'arco (r.~12420) lo leggeva dal fotogramma in cui la palla atterra, e su una parte dei gol quel fotogramma cade quando i props della scena sono gia' stati svuotati (misurato: atterraggio con `ht=null hs=null rew=null`, catena dei rami che non trova nulla, nessun post-arco, palla ferma a x 42,7 mentre il tabellone conta il gol). */if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _ac=(window.__CPM_ARCCALL457=window.__CPM_ARCCALL457||[]);if(_ac.length<40)_ac.push({ph:P.matchPhase||null,ht:P.hlType||null,hs:P.hlSuccess,rew:P.hlReward||null,pat:P.hlPattern||null});}catch(_e){}}let t=P.hlType;/* [7.346.0] `let`: il ramo d'ARCO si dirama su `t`, non su `actType` — per questo il precedente su `build` correggeva il gesto ma lasciava la traiettoria in porta. La rimappatura dell'assist (poche righe sotto) agisce su ENTRAMBI. L'estrattore analitico del check data-coherence passa `t` come parametro alla sua IIFE e parte dal marcatore `const _rz=` che sta a valle: la sua valutazione resta indipendente da questa riassegnazione. */actType=(t==="header"||t==="tackle"||t==="dribble"||t==="cross"||t==="penalty"||t==="freekick"||t==="pass"||t==="build")?t:(!t)?"build":"shot";actT=0;sr.current._actSitKey403=P.hlSitKey;/* [7.403.0] l'azione appartiene a QUESTA scena: la mappa gesti non monta niente finche' la chiave non coincide */// CINE-VAR: build ora ha animazione propria; null type → "build" (gesto neutro)
           // 5.43.5: CONDUZIONE PERSA — un BALL_CARRY FALLITO non è un tiro sbagliato ma una palla persa al TACKLE: il difensore entra in SCIVOLATA e la porta via (niente conclusione di tiro)
-          if((P.hlPattern==="BALL_CARRY"||t==="dribble"||(t==="build"&&P.hlReward==="goal"&&/intercept|dispos|beaten|tackl|foul|freekick/i.test(P.hlOutcomeKind||"")))&&P.hlSuccess===false){/* [7.235.0 #51 batch PO «il dribbling non si vede» sui FALLITI] il fail del dribbling era un rimbalzino di 4u in 0.34s sotto l'overlay (misurato: arco a ~220-410ms, tutto finito a ~1.1s) — ora OGNI dribbling fallito usa il trattamento COLLAUDATO del BALL_CARRY: il difensore entra in scivolata e PORTA VIA il pallone, il duello si legge · [7.244.0 gi46 «Taglio verso l'area» FALLITO «non si vede il gesto tecnico»] un BUILD con reward GOAL è per costruzione una CORSA a finalizzare (taglio/inserimento): il suo fallimento è la palla persa nel duello, non un tiro sbagliato — stesso trattamento, strutturale (niente testo a runtime) */
+          if((P.hlPattern==="BALL_CARRY"||t==="dribble"||(t==="build"&&P.hlReward==="goal"&&/intercept|dispos|beaten|tackl|foul|freekick/i.test(P.hlOutcomeKind||"")))&&P.hlSuccess===false&&!_tiro242(P,t)){/* [giro 19 PO-242] una conduzione che FINISCE IN TIRO e fallisce con un esito da tiro (parata/fuori/palo/murato) e' un tiro: va all'arco, e il portiere para *//* [7.235.0 #51 batch PO «il dribbling non si vede» sui FALLITI] il fail del dribbling era un rimbalzino di 4u in 0.34s sotto l'overlay (misurato: arco a ~220-410ms, tutto finito a ~1.1s) — ora OGNI dribbling fallito usa il trattamento COLLAUDATO del BALL_CARRY: il difensore entra in scivolata e PORTA VIA il pallone, il duello si legge · [7.244.0 gi46 «Taglio verso l'area» FALLITO «non si vede il gesto tecnico»] un BUILD con reward GOAL è per costruzione una CORSA a finalizzare (taglio/inserimento): il suo fallimento è la palla persa nel duello, non un tiro sbagliato — stesso trattamento, strutturale (niente testo a runtime) */
             actType=(t==="dribble")?"dribble":"build";actT=0;// nessuno swing di tiro: l'eroe viene contrastato/* [7.358.0 collaudo PO #18/#104/#154 «dribbling confusionario», «doppio passo sul posto senza palla»] IL DRIBBLING FALLITO NON ERA UN DRIBBLING. Questo ramo (5.43.5) rimappava OGNI conduzione persa su `build` per evitare lo swing di tiro — ma `build` significa due cose che qui mentono: la tabella d'avanzamento gli da' 2,5u invece di 10 (l'eroe fa due passi e torna indietro) e la mappa GLB manda `build` sulla clip `dribble` (il corpo dribbla comunque). Misurato: eroe avanti 2,0u e RIENTRO 2,0u mentre la palla finiva a 14-26u. Su un `dribble` lo swing di tiro non c'era mai stato: il nome resta quello vero, la scivolata dell'avversario (poche righe sotto) e' invariata. */
             let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});
             _nm=_castDif23(_nm,hero.position.x,hero.position.z,14);if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=hero.position.x+0.5;oppMesh._slideToZ=hero.position.z;
@@ -18995,6 +19007,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
+        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
         if(_ceremonyCarpet)_ceremonyCarpet.visible=true;
         for(const m of _mascots){const p=m.p;if(!p){continue;}const _hx=Math.sin(p.rotation.y),_hz=Math.cos(p.rotation.y);// "mano nella mano": di lato rispetto al verso di marcia
@@ -24458,7 +24471,10 @@ function PostMatchPress({match,report,player,L,onClose}){
   const heroClub=_natMatch?{n:player?.nation||"Italia",a:(player?.nation||"NAZ").slice(0,3).toUpperCase()}:(player?.club||{});
   // [6.7.1 copyright] SOLO testate DI FANTASIA: il default attinge alle NEWSPAPERS del gioco (fittizie), mai a nomi reali.
   const paper=(rep.papers&&rep.papers[0])||((typeof NEWSPAPERS!=="undefined"&&NEWSPAPERS[0]&&NEWSPAPERS[0].name)||"Sport Korward");
-  const dateLine=`Stagione ${player?.season||1} · Giornata ${player?.week||1}`;
+  /* [giro 19 PO-244, collaudo 165 N4 — rosso __CPM_NO_GIORN244] la rassegna stampa scriveva la SETTIMANA come giornata: la giornata
+     e' quella della voce di campionato della settimana (calendario); senza voce di campionato (coppe, Nazionale) si dice la settimana. */
+  const _md244=(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_GIORN244)return null;if(_natMatch)return 0;const w=player?.week||1;const m=(player?.calendar||[]).find(c=>c&&(!c.type||c.type==="league")&&c.week===w);return m&&m.matchday!=null?m.matchday:0;}catch(_e){return null;}})();
+  const dateLine=_md244==null?`Stagione ${player?.season||1} · Giornata ${player?.week||1}`:_md244?`Stagione ${player?.season||1} · Giornata ${_md244}`:`Stagione ${player?.season||1} · Settimana ${player?.week||1}`;
   const lead=(rep.headlines&&rep.headlines[0])||null;
   const subs=(rep.headlines||[]).slice(1,4);
   const papers=rep.papers||["Sprint","Cronaca","Zona Mista","Sport in Rete"];
@@ -36222,7 +36238,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _inb55=(_sit55&&(_sit55.ballState==="aerial"||(_sit55.tactic&&_sit55.tactic.bs==="aerial")))?"aerial":((_sit55&&_sit55.maxMoves===0)?"shot":null);
       if(_inb55&&_defTraj)_defTraj.inbound=_inb55;}catch(_e){}}
     const _seedOvl=Math.abs(hashStr((action.label||"")+key+hlIdx+score.home+score.away));
-    const _cond70=!(typeof window!=='undefined'&&window.__CPM_NO_COND70)&&!_isDefHL76&&/conduc/i.test(String(action.label||""))&&(key==="recovery"||!ok);/* [7.999.70 collaudo Codex 003] conduzione raccontata come conduzione: niente «recupero» sul successo, niente «conclusione murata» sul fallimento (rosso __CPM_NO_COND70) */
+    const _cond70=!(typeof window!=='undefined'&&window.__CPM_NO_COND70)&&!_isDefHL76&&/conduc/i.test(String(action.label||""))&&(key==="recovery"||!ok)&&((typeof window!=="undefined"&&window.__CPM_NO_COND242)||ok||!/\btir[aoi]|conclu/i.test(String(action.label||"")));/* [giro 19 PO-242] la conduzione che finisce in TIRO, se fallisce, si racconta da tiro: la riga segue l'esito del motore come il riquadro (05, 7.999.160). Rosso __CPM_NO_COND242 *//* [7.999.70 collaudo Codex 003] conduzione raccontata come conduzione: niente «recupero» sul successo, niente «conclusione murata» sul fallimento (rosso __CPM_NO_COND70) */
     const _COND70=ok?["🌀 Salta l'uomo e conduce palla al piede!","⚡ Supera il diretto avversario e porta avanti il pallone!","🎯 Dribbling riuscito: si riparte in avanti!"]:["😖 Il difensore lo chiude: palla persa.","❌ Prova la conduzione ma viene fermato.","😬 Il dribbling non riesce: palla agli avversari."];
     const _nkTx=_cond70?null:(key==="miss"||(!ok&&!_isDefHL76&&(key==="intercept"||key==="through"||key==="miss_easy")))?_missKindNorm(_outKind):null;// [6.76.0 LMV-S1] cronaca coerente con l'esito del motore anche sui fail non-"miss" (HL difensivi esclusi: lì parla _defTraj)
     const _woodTx=(_nkTx==="post"&&_wood==="bar")?_BAR_TX:null;/* [7.217.0] la cronaca nomina il legno che il 3D colpisce davvero */
@@ -36272,7 +36288,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}if(brain137()&&!ok&&(_t202==='blocked'||/intercept|dispossess|beaten|lost|stopped/i.test(String(_outKind||key||''))))_t202='perso';rip202Ref.current=_t202;}catch(_e202){}/* [7.999.137] anche il pallone perso (intercetto, contrasto, tiro murato) riparte con l'avversario */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
@@ -37215,7 +37231,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const cr=(_cupMd&&_cupMd.cupRound)||player.cup.round||1,_names={1:"Ottavi di Finale",2:"Quarti di Finale",3:"Semifinale",4:"Finale"};/* [6.45.0 RC] la Coppa ha 4 turni canonici (_CRN R16/Quarti/Semi/FINALE) */
       const cres=player.cup.results||[];const form=cres.map(r=>r.won?"W":r.drew?"D":"L").slice(-5);
       _tvComp={phase:_names[cr]||`Turno ${cr}`,pts:null,played:cres.length,form};
-    } else if(isNatCtx&&player.euroMondiale){
+    } else if(context==="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_GIORN244)){
+      /* [giro 19 PO-244, collaudi 164 N3 / 165 N5 — rosso __CPM_NO_GIORN244] l'amichevole della Nazionale e la Coppa delle Nazioni
+         cadevano nel ramo Europeo/Mondiale qui sotto (isNatCtx) appena il salvataggio portava un torneo GIA' CHIUSO (phase «done»,
+         koPhase null) → «NAZIONALE · FASE A ELIMINAZIONE» sul giornale. L'amichevole ha la sua fase; la Coppa delle Nazioni va al suo ramo. */
+      _tvComp={phase:"Amichevole internazionale",pts:null,played:0,form:[]};
+    } else if(isNatCtx&&player.euroMondiale&&(context!=="nationsCup"||(typeof window!=='undefined'&&window.__CPM_NO_GIORN244))){
       // [6.56.0 collaudo PO «le statistiche pre partita non sono veritiere»] il cammino contava SOLO le gare del
       //   girone → in FINALE mostrava «3 gare · WWW» ignorando i turni KO (ottavi/quarti/semifinale) già vinti.
       //   Ora somma girone + KO (le qualificazioni non hanno record per-gara → non conteggiabili).
@@ -38673,7 +38694,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             return(<div style={{margin:"-22px -22px 14px",padding:"14px 18px 12px",background:TH.card,borderBottom:`1px solid ${TH.divider}`,textAlign:"left"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:`1px solid ${TH.divider}`,paddingBottom:5,marginBottom:9}}>
                 <div style={{fontFamily:_serif,fontSize:FS.subhead,fontWeight:FW.black,letterSpacing:0.2,color:TH.text}}>📰 {_paper}</div>
-                <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:0.4,whiteSpace:"nowrap"}}>Stag. {player.season||1} · G. {player.week||1}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:0.4,whiteSpace:"nowrap"}}>Stag. {player.season||1} · {(()=>{/* [giro 19 PO-244, collaudo 165 N4 — rosso __CPM_NO_GIORN244] «G.» e' la GIORNATA di campionato (dal calendario, come l'etichetta del turno), non la settimana: dopo una settimana senza campionato i due numeri divergono. Fuori dal campionato la fase sta gia' nella testata: qui si dice la settimana. */if(typeof window!=='undefined'&&window.__CPM_NO_GIORN244)return 'G. '+(player.week||1);const _m244=/^Giornata (\d+)/.exec(String(_roundLabel||''));return _m244?'G. '+_m244[1]:'Sett. '+(player.week||1);})()}</div>
               </div>
               <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:FW.black,lineHeight:1.14,color:TH.text,letterSpacing:0,textTransform:"uppercase"}}>{_hl}</div>
             </div>);})()}
@@ -46081,6 +46102,8 @@ const getThisWeekMatchday=()=>{
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
+      notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
+      apriNC243:()=>{try{const q=player.nationsCupQueue;if(!q||!q.active||q.done)return "no-nc";startNationsCupMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-243] solo il guardiano intervista-231 (braccio Nazionale) */
       apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
@@ -48150,6 +48173,39 @@ const getThisWeekMatchday=()=>{
     if(!(typeof window!=='undefined'&&window.__CPM_NO_CONF194)){pendingMisterDiscorsoRef.current=null;attesaConf194Ref.current=false;setInterviewModal(m=>(m&&m.matchCtx==="prematch")?null:m);}/* [7.999.113 PO-194] rete: a partita finita una conferenza PRE-partita o un discorso rimasti in sospeso non devono sopravvivere (riaprivano la gara) */
     // [5.93.0] cerimonia consegnata → non ripeterla nelle gare successive della stagione
     try{const _ts93=titleStakesRef.current;if(_ts93&&(result.won||_ts93.late)){setPlayer(p=>({...p,titleCeremonyShown:p.season||1}));}titleStakesRef.current=null;}catch(_e){}
+    /* [giro 19 PO-243, decisione PO-231 «Sempre, dopo ogni partita»; collaudi 164 N2 / 165 K2: 0 interviste su 6 gare della Nazionale]
+       i rami Nazionale, Coppa delle Nazioni, Europeo/Mondiale e coppe europee escono con `return` prima del blocco dell'intervista:
+       il blocco diventa una funzione e quei rami la chiamano prima di uscire. Rosso __CPM_NO_IV243 = i rami escono senza intervista. */
+    const _intervistaPost231=()=>{
+    // Sprint 120: smart interview trigger — always for notable matches, 18% for normal
+    const _oppPres=matchOpp?.p||matchOpp?.prestige||50;
+    const _margin=Math.abs((result.homeScore||0)-(result.awayScore||0));
+    const _isHattrick=result.goals>=3;
+    const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
+    const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
+    /* [7.455.0 collaudo PO «già interviste?» — screenshot della mixed zone a un ragazzo di Primavera 2]
+       IN PRIMAVERA LA STAMPA NON TI ASPETTA FUORI DALLO SPOGLIATOIO. La probabilita' non guardava mai
+       proStatus: 18% dopo QUALSIASI partita, 85% dopo un big match, 96% dopo una tripletta — anche a un
+       diciassettenne alla settima settimana di sempre. Scelta del PO: restano, ma rare e in tono minore,
+       e solo dopo qualcosa che meriti davvero il taccuino (una tripletta la notano anche in Primavera;
+       una vittoria qualunque no). */
+    const _u18Iv455=(player.proStatus||"u18")!=="pro";
+    const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
+      :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
+    /* [7.999.161 PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»] il PO dal telefono: «l'intervista post partita questa volta
+       non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
+       dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
+    const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
+    if(_sempre231||Math.random()<_interviewChance){
+      if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
+      const iw=pickInterviewByCtx(player,result);
+      const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
+      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
+      const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+    }
+    };
+    const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};
     // Item 6: Qualificazioni Euro/Mondiale — early return
     if(result.context==="euroMondiale_qualif"){
       setMatchContext("career");
@@ -48170,6 +48226,7 @@ const getThisWeekMatchday=()=>{
       else if(_qQualified)setTimeout(()=>notify(`🌍 QUALIFICATI! ${_emQ.type||"Euro"} — la fase a gironi inizia ORA.`,TH.success),400);
       else setTimeout(()=>notify(`😔 Qualificazioni ${_emQ.type||"Euro"}: non qualificati. Prossima volta!`,TH.danger),400);
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Sprint 53: Europeo/Mondiale match — early return
@@ -48231,6 +48288,7 @@ const getThisWeekMatchday=()=>{
         else setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato · ${EM_KO_LABEL[_emKoPhase]||"Fase KO"}.`,TH.danger),400);
       }
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Sprint 43: national / Nations Cup match — early return, no week advance, no injury/standings
@@ -48312,6 +48370,7 @@ const getThisWeekMatchday=()=>{
           setTimeout(()=>notify(`🌍 Nations Cup: Partita ${newIdx}/${_groupN41} del girone completata — ancora ${Math.max(0,_groupN41-newIdx)} da giocare!`,TH.accent),300);
         }
       }
+      _iv243();
       return;
     }
     // S48: Euro group / knockout match end
@@ -48364,6 +48423,7 @@ const getThisWeekMatchday=()=>{
       if(result.won&&result.context==="euro_ko")setTimeout(()=>notify(`🌍 PASSA il turno europeo! Prossimo avversario in programma.`,TH.success),300);
       if(result.context==="euro_ko"&&result.won){const _r=player.euro;if(_r?.competition)setTimeout(()=>{const _sg=euroSig(_r.competition);if(_r.phase==="r16")notify(`🏆 Ai Quarti di Finale ${_sg}!`,"#f59e0b",2500);else if(_r.phase==="quarti")notify(`🏆 In SEMIFINALE ${_sg}!`,"#f59e0b",2500);else if(_r.phase==="sf")notify(`🏆 In FINALE ${_sg}!`,"#f59e0b",2500);/* [5.97.0] _r.phase = turno appena VINTO */},800);}
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Injury: compute before setPlayer so we can notify after
@@ -48524,33 +48584,7 @@ const getThisWeekMatchday=()=>{
       setTimeout(()=>notify(`🏆 Coppa · ${_rn}: ${isCupWon?"✅ PASSA":"❌ ELIMINATO"} vs ${result.opponent} (${result.homeScore}-${result.awayScore}${isCupPenalties?" · ai rigori":""})`,isCupWon?TH.success:TH.danger),400);
       if(isCupFinal)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2000);
     }
-    // Sprint 120: smart interview trigger — always for notable matches, 18% for normal
-    const _oppPres=matchOpp?.p||matchOpp?.prestige||50;
-    const _margin=Math.abs((result.homeScore||0)-(result.awayScore||0));
-    const _isHattrick=result.goals>=3;
-    const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
-    const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
-    /* [7.455.0 collaudo PO «già interviste?» — screenshot della mixed zone a un ragazzo di Primavera 2]
-       IN PRIMAVERA LA STAMPA NON TI ASPETTA FUORI DALLO SPOGLIATOIO. La probabilita' non guardava mai
-       proStatus: 18% dopo QUALSIASI partita, 85% dopo un big match, 96% dopo una tripletta — anche a un
-       diciassettenne alla settima settimana di sempre. Scelta del PO: restano, ma rare e in tono minore,
-       e solo dopo qualcosa che meriti davvero il taccuino (una tripletta la notano anche in Primavera;
-       una vittoria qualunque no). */
-    const _u18Iv455=(player.proStatus||"u18")!=="pro";
-    const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
-      :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
-    /* [7.999.161 PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»] il PO dal telefono: «l'intervista post partita questa volta
-       non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
-       dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
-    const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
-    if(_sempre231||Math.random()<_interviewChance){
-      if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
-      const iw=pickInterviewByCtx(player,result);
-      const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
-      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
-      const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
-    }
+    _intervistaPost231();/* [giro 19 PO-243] l'intervista post partita vive in una funzione sola, chiamata anche dai rami Nazionale/Europeo/Mondiale */
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
       const drbyName=currentMatchDerby.name||"Derby";
@@ -50785,7 +50819,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color}/>
+      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -51106,7 +51140,7 @@ const getThisWeekMatchday=()=>{
 
       {/* == Sprint 15 — Interview Modal == */}
       {(typeof window!=='undefined'&&(window.__CPM_IVBLK231=interviewModal?[transferOffer&&'mercato',weekLiveModal&&'settimana',careerMomentModal&&'momento',monthlyReviewModal&&'mese'].filter(Boolean).join(','):null),null)}
-      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal||(!(typeof window!=='undefined'&&window.__CPM_NO_IV243)&&nationsCupModal)))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -53363,7 +53397,8 @@ const getThisWeekMatchday=()=>{
               <Fisarmonica id="s24-prossime-partite" titolo="Prossime partite" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
                 {upcoming.map((md,i)=>{
                   const _isEuro=md.type==="euro_group"||md.type==="euro";
-                  const opp=md.opponentData||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
+                  const _nat247=!(typeof window!=='undefined'&&window.__CPM_NO_CAL247)&&md.type==="national";/* [giro 19 PO-247, collaudo 165 N7 — rosso __CPM_NO_CAL247] la Nazionale avversaria prende i colori da NAT_CLUB_DATA (come la partita), non lo scudo grigio di ripiego; e il chip «🏳️ Nazionale» scende nella riga sotto, che va a capo, invece di troncarsi in «Nazional…» a 412 px */
+                  const opp=md.opponentData||((_nat247&&typeof NAT_CLUB_DATA!=='undefined'&&NAT_CLUB_DATA[md.opponentName])?{n:md.opponentName,...NAT_CLUB_DATA[md.opponentName]}:null)||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
                   const isCur=md.week===week;
                   const _euroComp=euroSig(md.competition||(player.euro?.competition||"UCL"));/* [6.74.0 QA-P0] sigla display fantasia */
                   const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
@@ -53374,10 +53409,10 @@ const getThisWeekMatchday=()=>{
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                           {isCur&&"▶ "}vs {md.opponentName}<span style={{fontWeight:FW.regular,color:TH.muted}}>{md.isHome?" · in casa":" · in trasferta"}</span>
-                          {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
+                          {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&!_nat247&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
                           {_isEuro&&<span style={{fontSize:FS.caption,marginLeft:5,background:"#ede9fe",color:TH.accentText,border:"1px solid #ddd6fe",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_compLabel} · sett. {md.week}</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_nat247&&<span data-cpm="naz247" style={{marginRight:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}{_compLabel} · sett. {md.week}</div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
                         ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
@@ -53565,8 +53600,11 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:3}}>
               {Array.from({length:38},(_,i)=>{
                 const w=i+1,past=w<week,cur=w===week;
-                const mh=(player.matchHistory||[]).find(m=>m.week===w);
                 const calEntry=(player.calendar||[]).find(m=>m.week===w);
+                /* [giro 19 PO-247, collaudo 165 N6 — rosso __CPM_NO_CAL247] la casella cercava il risultato solo in matchHistory (le gare
+                   giocate DALL'EROE): dopo un prestito, o su una gara simulata, la settimana giocata restava «⚽ in programma». Se manca la
+                   voce dell'eroe, il risultato si legge dalla voce di calendario giocata (prima il campionato). Solo lettura. */
+                const mh=(player.matchHistory||[]).find(m=>m.week===w)||((typeof window!=='undefined'&&window.__CPM_NO_CAL247)?null:(()=>{const _pc=(player.calendar||[]).filter(m=>m&&m.week===w&&m.played&&m.result&&m.result.homeScore!=null);const c=_pc.find(m=>!m.type||m.type==="league")||_pc[0];return c?{opponent:c.opponentName,homeScore:c.result.homeScore,awayScore:c.result.awayScore,won:!!c.result.won,drew:!!c.result.drew,isHome:c.isHome!=null?!!c.isHome:null,_cal247:true}:null;})());
                 const hasScheduled=!!calEntry;
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}

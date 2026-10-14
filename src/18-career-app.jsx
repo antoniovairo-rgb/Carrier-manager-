@@ -1328,6 +1328,8 @@ const getThisWeekMatchday=()=>{
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
+      notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
+      apriNC243:()=>{try{const q=player.nationsCupQueue;if(!q||!q.active||q.done)return "no-nc";startNationsCupMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-243] solo il guardiano intervista-231 (braccio Nazionale) */
       apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
@@ -3397,6 +3399,39 @@ const getThisWeekMatchday=()=>{
     if(!(typeof window!=='undefined'&&window.__CPM_NO_CONF194)){pendingMisterDiscorsoRef.current=null;attesaConf194Ref.current=false;setInterviewModal(m=>(m&&m.matchCtx==="prematch")?null:m);}/* [7.999.113 PO-194] rete: a partita finita una conferenza PRE-partita o un discorso rimasti in sospeso non devono sopravvivere (riaprivano la gara) */
     // [5.93.0] cerimonia consegnata → non ripeterla nelle gare successive della stagione
     try{const _ts93=titleStakesRef.current;if(_ts93&&(result.won||_ts93.late)){setPlayer(p=>({...p,titleCeremonyShown:p.season||1}));}titleStakesRef.current=null;}catch(_e){}
+    /* [giro 19 PO-243, decisione PO-231 «Sempre, dopo ogni partita»; collaudi 164 N2 / 165 K2: 0 interviste su 6 gare della Nazionale]
+       i rami Nazionale, Coppa delle Nazioni, Europeo/Mondiale e coppe europee escono con `return` prima del blocco dell'intervista:
+       il blocco diventa una funzione e quei rami la chiamano prima di uscire. Rosso __CPM_NO_IV243 = i rami escono senza intervista. */
+    const _intervistaPost231=()=>{
+    // Sprint 120: smart interview trigger — always for notable matches, 18% for normal
+    const _oppPres=matchOpp?.p||matchOpp?.prestige||50;
+    const _margin=Math.abs((result.homeScore||0)-(result.awayScore||0));
+    const _isHattrick=result.goals>=3;
+    const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
+    const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
+    /* [7.455.0 collaudo PO «già interviste?» — screenshot della mixed zone a un ragazzo di Primavera 2]
+       IN PRIMAVERA LA STAMPA NON TI ASPETTA FUORI DALLO SPOGLIATOIO. La probabilita' non guardava mai
+       proStatus: 18% dopo QUALSIASI partita, 85% dopo un big match, 96% dopo una tripletta — anche a un
+       diciassettenne alla settima settimana di sempre. Scelta del PO: restano, ma rare e in tono minore,
+       e solo dopo qualcosa che meriti davvero il taccuino (una tripletta la notano anche in Primavera;
+       una vittoria qualunque no). */
+    const _u18Iv455=(player.proStatus||"u18")!=="pro";
+    const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
+      :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
+    /* [7.999.161 PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»] il PO dal telefono: «l'intervista post partita questa volta
+       non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
+       dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
+    const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
+    if(_sempre231||Math.random()<_interviewChance){
+      if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
+      const iw=pickInterviewByCtx(player,result);
+      const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
+      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
+      const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+    }
+    };
+    const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};
     // Item 6: Qualificazioni Euro/Mondiale — early return
     if(result.context==="euroMondiale_qualif"){
       setMatchContext("career");
@@ -3417,6 +3452,7 @@ const getThisWeekMatchday=()=>{
       else if(_qQualified)setTimeout(()=>notify(`🌍 QUALIFICATI! ${_emQ.type||"Euro"} — la fase a gironi inizia ORA.`,TH.success),400);
       else setTimeout(()=>notify(`😔 Qualificazioni ${_emQ.type||"Euro"}: non qualificati. Prossima volta!`,TH.danger),400);
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Sprint 53: Europeo/Mondiale match — early return
@@ -3478,6 +3514,7 @@ const getThisWeekMatchday=()=>{
         else setTimeout(()=>notify(`😔 ${_emCurQ.type||"Torneo"}: eliminato · ${EM_KO_LABEL[_emKoPhase]||"Fase KO"}.`,TH.danger),400);
       }
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Sprint 43: national / Nations Cup match — early return, no week advance, no injury/standings
@@ -3559,6 +3596,7 @@ const getThisWeekMatchday=()=>{
           setTimeout(()=>notify(`🌍 Nations Cup: Partita ${newIdx}/${_groupN41} del girone completata — ancora ${Math.max(0,_groupN41-newIdx)} da giocare!`,TH.accent),300);
         }
       }
+      _iv243();
       return;
     }
     // S48: Euro group / knockout match end
@@ -3611,6 +3649,7 @@ const getThisWeekMatchday=()=>{
       if(result.won&&result.context==="euro_ko")setTimeout(()=>notify(`🌍 PASSA il turno europeo! Prossimo avversario in programma.`,TH.success),300);
       if(result.context==="euro_ko"&&result.won){const _r=player.euro;if(_r?.competition)setTimeout(()=>{const _sg=euroSig(_r.competition);if(_r.phase==="r16")notify(`🏆 Ai Quarti di Finale ${_sg}!`,"#f59e0b",2500);else if(_r.phase==="quarti")notify(`🏆 In SEMIFINALE ${_sg}!`,"#f59e0b",2500);else if(_r.phase==="sf")notify(`🏆 In FINALE ${_sg}!`,"#f59e0b",2500);/* [5.97.0] _r.phase = turno appena VINTO */},800);}
       setScreen("dashboard");setTab("dashboard");/*[7.95.0] via la 2ª schermata post-partita redondante: il riepilogo ended (ora in stile giornale) e l unico post-partita*/
+      _iv243();
       return;
     }
     // Injury: compute before setPlayer so we can notify after
@@ -3771,33 +3810,7 @@ const getThisWeekMatchday=()=>{
       setTimeout(()=>notify(`🏆 Coppa · ${_rn}: ${isCupWon?"✅ PASSA":"❌ ELIMINATO"} vs ${result.opponent} (${result.homeScore}-${result.awayScore}${isCupPenalties?" · ai rigori":""})`,isCupWon?TH.success:TH.danger),400);
       if(isCupFinal)setTimeout(()=>notify("🏆🏆 HAI VINTO LA COPPA NAZIONALE! Straordinario!","#f59e0b"),2000);
     }
-    // Sprint 120: smart interview trigger — always for notable matches, 18% for normal
-    const _oppPres=matchOpp?.p||matchOpp?.prestige||50;
-    const _margin=Math.abs((result.homeScore||0)-(result.awayScore||0));
-    const _isHattrick=result.goals>=3;
-    const _isBigWin=result.won&&_oppPres>=70&&_margin>=2;
-    const _isBigLoss=!result.won&&!result.drew&&_margin>=3;
-    /* [7.455.0 collaudo PO «già interviste?» — screenshot della mixed zone a un ragazzo di Primavera 2]
-       IN PRIMAVERA LA STAMPA NON TI ASPETTA FUORI DALLO SPOGLIATOIO. La probabilita' non guardava mai
-       proStatus: 18% dopo QUALSIASI partita, 85% dopo un big match, 96% dopo una tripletta — anche a un
-       diciassettenne alla settima settimana di sempre. Scelta del PO: restano, ma rare e in tono minore,
-       e solo dopo qualcosa che meriti davvero il taccuino (una tripletta la notano anche in Primavera;
-       una vittoria qualunque no). */
-    const _u18Iv455=(player.proStatus||"u18")!=="pro";
-    const _interviewChance=_u18Iv455?(_isHattrick?0.30:(_isBigWin||_isBigLoss)?0.10:0.04)
-      :(_isHattrick?0.96:(_isBigWin||_isBigLoss)?0.85:0.18);
-    /* [7.999.161 PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»] il PO dal telefono: «l'intervista post partita questa volta
-       non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
-       dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
-    const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
-    if(_sempre231||Math.random()<_interviewChance){
-      if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
-      const iw=pickInterviewByCtx(player,result);
-      const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
-      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
-      const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
-    }
+    _intervistaPost231();/* [giro 19 PO-243] l'intervista post partita vive in una funzione sola, chiamata anche dai rami Nazionale/Europeo/Mondiale */
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
       const drbyName=currentMatchDerby.name||"Derby";
@@ -6032,7 +6045,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color}/>
+      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -6353,7 +6366,7 @@ const getThisWeekMatchday=()=>{
 
       {/* == Sprint 15 — Interview Modal == */}
       {(typeof window!=='undefined'&&(window.__CPM_IVBLK231=interviewModal?[transferOffer&&'mercato',weekLiveModal&&'settimana',careerMomentModal&&'momento',monthlyReviewModal&&'mese'].filter(Boolean).join(','):null),null)}
-      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal||(!(typeof window!=='undefined'&&window.__CPM_NO_IV243)&&nationsCupModal)))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -8610,7 +8623,8 @@ const getThisWeekMatchday=()=>{
               <Fisarmonica id="s24-prossime-partite" titolo="Prossime partite" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
                 {upcoming.map((md,i)=>{
                   const _isEuro=md.type==="euro_group"||md.type==="euro";
-                  const opp=md.opponentData||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
+                  const _nat247=!(typeof window!=='undefined'&&window.__CPM_NO_CAL247)&&md.type==="national";/* [giro 19 PO-247, collaudo 165 N7 — rosso __CPM_NO_CAL247] la Nazionale avversaria prende i colori da NAT_CLUB_DATA (come la partita), non lo scudo grigio di ripiego; e il chip «🏳️ Nazionale» scende nella riga sotto, che va a capo, invece di troncarsi in «Nazional…» a 412 px */
+                  const opp=md.opponentData||((_nat247&&typeof NAT_CLUB_DATA!=='undefined'&&NAT_CLUB_DATA[md.opponentName])?{n:md.opponentName,...NAT_CLUB_DATA[md.opponentName]}:null)||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
                   const isCur=md.week===week;
                   const _euroComp=euroSig(md.competition||(player.euro?.competition||"UCL"));/* [6.74.0 QA-P0] sigla display fantasia */
                   const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
@@ -8621,10 +8635,10 @@ const getThisWeekMatchday=()=>{
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                           {isCur&&"▶ "}vs {md.opponentName}<span style={{fontWeight:FW.regular,color:TH.muted}}>{md.isHome?" · in casa":" · in trasferta"}</span>
-                          {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
+                          {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&!_nat247&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
                           {_isEuro&&<span style={{fontSize:FS.caption,marginLeft:5,background:"#ede9fe",color:TH.accentText,border:"1px solid #ddd6fe",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_compLabel} · sett. {md.week}</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_nat247&&<span data-cpm="naz247" style={{marginRight:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}{_compLabel} · sett. {md.week}</div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
                         ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
@@ -8812,8 +8826,11 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:3}}>
               {Array.from({length:38},(_,i)=>{
                 const w=i+1,past=w<week,cur=w===week;
-                const mh=(player.matchHistory||[]).find(m=>m.week===w);
                 const calEntry=(player.calendar||[]).find(m=>m.week===w);
+                /* [giro 19 PO-247, collaudo 165 N6 — rosso __CPM_NO_CAL247] la casella cercava il risultato solo in matchHistory (le gare
+                   giocate DALL'EROE): dopo un prestito, o su una gara simulata, la settimana giocata restava «⚽ in programma». Se manca la
+                   voce dell'eroe, il risultato si legge dalla voce di calendario giocata (prima il campionato). Solo lettura. */
+                const mh=(player.matchHistory||[]).find(m=>m.week===w)||((typeof window!=='undefined'&&window.__CPM_NO_CAL247)?null:(()=>{const _pc=(player.calendar||[]).filter(m=>m&&m.week===w&&m.played&&m.result&&m.result.homeScore!=null);const c=_pc.find(m=>!m.type||m.type==="league")||_pc[0];return c?{opponent:c.opponentName,homeScore:c.result.homeScore,awayScore:c.result.awayScore,won:!!c.result.won,drew:!!c.result.drew,isHome:c.isHome!=null?!!c.isHome:null,_cal247:true}:null;})());
                 const hasScheduled=!!calEntry;
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}

@@ -23,12 +23,12 @@ const CATENE = {
 CATENE.nucleo = ['test:logic', 'save-compat', 'design-system', 'typing-shortcuts', 'career-critical'];
 CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
 const MAPPA = [
-  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236', 'pressing-143']],
-  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234']],
-  [/src\/15-/, ['fps-249', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226', 'schede-234', 'catalogo-022', 'pressing-143', 'ripartenza-207']],
+  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236', 'pressing-143', 'conduci-242', 'ingresso-245', 'giornale-244']],
+  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234', 'schede-246']],
+  [/src\/15-/, ['fps-249', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226', 'schede-234', 'catalogo-022', 'pressing-143', 'ripartenza-207', 'conduci-242', 'giornale-244', 'schede-246']],
   [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219', 'migrazione-194', 'classifica-194', 'classifica-102']],
-  [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224', 'migrazione-194', 'classifica-102', 'convocazione-235']],
-  [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214']],
+  [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224', 'migrazione-194', 'classifica-102', 'convocazione-235', 'toast-247']],
+  [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214', 'toast-247', 'calendario-247']],
   [/src\/04-/, ['catalogo-022', 'gesti-motore-068', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],/* [giro 17] i generatori delle scene dell'eroe vivono in src/04 */
   [/src\/0[0-8]-/, ['classifica-102', 'partita-rigiocata-194', 'save-compat']],
 ];
@@ -60,7 +60,7 @@ if (_fatti.length) { giro.composto = true; giro.nota_composto = 'passi gia\' ver
    volte su tre (CPM_CI_NORETRY=1 per spegnere). La catena intera non si rifa' piu' per un guardiano ballerino. */
 import { spawn } from 'node:child_process';
 /* [7.999.160 PO-229] gk-dive-sync e goal-postarc erano ciechi da tempo senza che nessuno lo vedesse, perche' fuori catena. Ora dentro, fra i lenti. */
-const LENTI = new Set(['testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'cross-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical', 'intervista-231', 'tabellino-228', 'interazioni-226', 'schede-234', 'bambini-236']);
+const LENTI = new Set(['conduci-242', 'giornale-244', 'schede-246', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'cross-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical', 'intervista-231', 'tabellino-228', 'interazioni-226', 'schede-234', 'bambini-236']);
 const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spawn('npm', ['run', '-s', p], { env }); let out = '';
   ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
   ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });
