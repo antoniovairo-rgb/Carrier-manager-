@@ -391,7 +391,8 @@
     "doppio-gesto-148": "node doppio-gesto-148.mjs",
     "testa-146": "node testa-146.mjs",
     "glb-pronti-232": "node glb-pronti-232.mjs",
-    "movimento-147": "node movimento-147.mjs"
+    "movimento-147": "node movimento-147.mjs",
+    "giornata-233": "node giornata-233.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

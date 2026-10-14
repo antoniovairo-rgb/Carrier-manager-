@@ -8614,7 +8614,7 @@ const getThisWeekMatchday=()=>{
                   const isCur=md.week===week;
                   const _euroComp=euroSig(md.competition||(player.euro?.competition||"UCL"));/* [6.74.0 QA-P0] sigla display fantasia */
                   const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
-                  const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):`${md.matchday}ª giornata`;
+                  const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):(md.type==="national"&&!(typeof window!=="undefined"&&window.__CPM_NO_GIORN233))?(md.competition||"Nazionale"):`${md.matchday}ª giornata`;/* [7.999.165 PO-233 «Che significa 1489 giornata?»] per la Nazionale il calendario usa il codice interno 1470+settimana (vedi _etichettaTurno957 sopra): qui si stampava come giornata. Ora la riga dice la competizione («Amichevole Internazionale»). Rosso __CPM_NO_GIORN233 */
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?TH.bgBlue:"transparent",borderRadius:isCur?6:0,paddingLeft:isCur?8:0}}>
                       <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
