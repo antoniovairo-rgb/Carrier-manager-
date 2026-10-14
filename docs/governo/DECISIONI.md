@@ -341,3 +341,4 @@ PO: «valuta tu il modello per le sessioni, ma magari per i collaudi usiamo un m
 - **Sviluppo** (giri di correzione, PO-248 in testa): resta Opus 5.5, perché il lavoro tocca motore, 3D e guardiani dove un errore costa una release.
 - La collaudatrice della 7.999.166 già partita resta com'è; la regola vale dalla prossima release (routine di rilascio aggiornata).
 Nota: le sessioni Claude Code girano sul piano del tuo account; quanto questa scelta incida sul consumo dei limiti del piano non posso confermarlo con un numero.
+- Aggiornamento PO 14/10 sera: «per i collaudi non 3D allora usa Haiku!». Il collaudo dopo ogni release si divide in due sessioni: **partita 3D** (highlight, portiere, pallone, fluidità) su **Sonnet 5.5**; **non 3D** (carriera, calendario, classifica, tabellino, interviste, giornale, finestre, schermate, testi, crediti) su **Haiku 5.5**. Routine di rilascio aggiornata.
