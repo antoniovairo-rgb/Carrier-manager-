@@ -317,6 +317,8 @@
     "classifica-102:rosso": "CPM_RED=1 node classifica-102-test.mjs",
     "classifica-194": "node classifica-194.mjs",
     "classifica-194:rosso": "CPM_RED=1 node classifica-194.mjs",
+    "migrazione-194": "node migrazione-194.mjs",
+    "migrazione-194:rosso": "CPM_RED=1 node migrazione-194.mjs",
     "recupero-103": "node recupero-103-test.mjs",
     "euro-attesa-181": "node euro-attesa-181-test.mjs",
     "riquadro-euro-105": "node riquadro-euro-105-test.mjs",
