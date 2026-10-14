@@ -342,3 +342,7 @@ PO: «valuta tu il modello per le sessioni, ma magari per i collaudi usiamo un m
 - La collaudatrice della 7.999.166 già partita resta com'è; la regola vale dalla prossima release (routine di rilascio aggiornata).
 Nota: le sessioni Claude Code girano sul piano del tuo account; quanto questa scelta incida sul consumo dei limiti del piano non posso confermarlo con un numero.
 - Aggiornamento PO 14/10 sera: «per i collaudi non 3D allora usa Haiku!». Il collaudo dopo ogni release si divide in due sessioni: **partita 3D** (highlight, portiere, pallone, fluidità) su **Sonnet 5.5**; **non 3D** (carriera, calendario, classifica, tabellino, interviste, giornale, finestre, schermate, testi, crediti) su **Haiku 5.5**. Routine di rilascio aggiornata.
+
+## 14/10 sera — «nei panni del player» (PO-249)
+
+PO, con foto del riquadrino «3 fps»: «devi togliere completamente la scritta fps, è una cosa tecnica che al player non interessa! In generale il gioco deve mettersi nei panni del player, deve essere tutto chiaro, fluido, usabile, intuitivo». Regola: nessuna scritta tecnica o di sviluppo (fps, codici, contatori di corpi, nomi di modelli o fornitori, messaggi di caricamento tecnici) è visibile al giocatore; le misure restano dietro le quinte (taccuino, sonde). Ogni collaudo controlla anche questo.
