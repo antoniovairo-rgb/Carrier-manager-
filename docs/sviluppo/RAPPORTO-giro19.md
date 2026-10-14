@@ -131,4 +131,27 @@ ingresso più lungo, cioè una scelta di regia che lascio al PO. Sul telefono **
 
 ## Catena mirata
 
-ESITO_CI
+`node ci-runner.mjs mirata` sul commit 3b25443 (confronto con `main`: file toccati 07, 09, 11, 12, 13, 14, 15, 17, 18 — la base
+`lavoro/167` porta anche i giri 13-15 → 62 passi): **61/62 verdi**, nessun passo «instabile». Registro in `docs/governo/STABILITA.json`.
+
+- ❌ **`giornata-233`**, rosso **mio**: il suo braccio rosso non riconosceva più «1509ª giornata» perché il chip «🏳️ Nazionale»,
+  spostato nella seconda riga, si attaccava al numero nel testo della pagina («Nazionale1509ª giornata»: `\b` non scatta fra lettera
+  e cifra). Il verde del guardiano non era toccato. **Corretto** (uno spazio dopo il chip, `src/18-career-app.jsx`), ricostruito e
+  rilanciato da solo sul build finale: `giornata-233` ✅ (rosso «Nazionale 1509ª giornata» riconosciuto), `calendario-247` ✅,
+  `design-system` ✅, `typing-shortcuts` ✅, `test:logic` 43/43 ✅. La catena intera **non** è stata rifatta dopo questo ritocco di
+  un carattere di testo: lo dichiaro.
+- Verdi fra gli altri, rilevanti per queste modifiche: `fila-227` e `bambini-236` (ingresso), `esiti-218`, `lessico-218`,
+  `cross-218`, `gk-dive-sync`, `gk-miss-229`, `goal-postarc`, `partita-vera`, `validate-situations`, `schede-234`,
+  `interazioni-226`, `testata-209`, `finestra-230`, `popup-224`, `classifica-102`, `career-critical`, `save-compat`, e i sette
+  guardiani di questo giro.
+- Durante la catena `griglia-mobile` ha rigenerato le foto di `docs/collaudo-grafico/g0/`: ripristinate, non fanno parte del giro.
+
+## Cosa resta aperto / domande per il PO
+
+1. **PO-245:** il passo dell'ingresso è 6,5 u/s (svelto). Una camminata vera chiede una fila più corta o un ingresso più lungo.
+2. **164 N5:** un prestito a metà stagione può far uscire dalla Coppa nazionale («fuori dopo il trasferimento»): va bene così?
+3. **PO-246:** i collaudi col pilota automatico dovrebbero armare `__CPM_SCFREEZE_TEST=1`, altrimenti le schede del mister si
+   misurano a cronometro che corre.
+4. **PO-242:** il gancio `__CPM_FORCE_KIND` agisce dopo la scelta della frase d'esito (`src/15-live-match.jsx:9168`): le sonde che
+   forzano l'esito vedono titolo e riga dell'esito naturale. Non l'ho spostato (toccherebbe tutte le sonde che lo usano).
+5. BACKLOG e roadmap non aggiornati da questo ramo: nessuna versione spedita (nessun bump), l'integrazione li aggiornerà.
