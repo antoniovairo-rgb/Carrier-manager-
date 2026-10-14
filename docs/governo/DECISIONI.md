@@ -304,3 +304,4 @@ PO: «Pubblicare stasera la versione 163». La promozione è stata rifiutata dal
 2. **Catene interrotte dal riavvio del container**: «Rifai solo le mancanti» — sulla stessa versione si rifanno solo i passi mancanti e il giro si registra come «composto» con nota; un rosso fra i rifatti fa ripartire la catena da capo.
 3. **Classifica, bloccante c / CL194**: «Sì, ripara i salvataggi» — migrazione al caricamento che rimette in pari i gol mancanti delle gare di campionato già giocate dal vivo; eccezione zona G limitata a questo difetto (come 13/10), interruttore rosso e guardiano.
 4. **Ramo `sviluppo/portiere-229`** (portiere v1 superato): «Sì, cancellalo».
+5. **Guardia aggiornata** (PO: «TI AUTORIZZO A FARLA DA SOLO!», 14/10 08:15): `cpm-guardie` accetta ora anche le catene `mirata` e `notte`; test della guardia 4/4.
