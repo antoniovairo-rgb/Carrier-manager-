@@ -30,7 +30,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/banco-highlight-248 | — (archiviata) | giro 21 consegnato: banco highlight e classifica dei 10 difetti → PO-252 | 14/10 22:10 |
 | lavoro/168 (catene) | session_014TW8VSYAJmoSCTMhpz4RoH | catena mirata 7.999.168 su Haiku (giro composto, deroga PO su ripartenza-207) | 14/10 22:07 |
 | sviluppo/highlight-252 | session_01Brq2HExZZsPfAD63PGKF1M | giro 22 (Opus, base lavoro/168): correzioni PO-252 dal banco (piedi, pallone in rete, difesa, rinvio, portiere, build-up aereo) | 14/10 22:09 |
-| sviluppo/statistiche-difesa-228 | session_01QMZrKUvYLkvfzuhdFecwAv | giro 16 (Opus, base 7.999.165): PO-228 ritaratura dal ramo sviluppo/ritaratura-228 + verifica dal vivo, PO-220 chiusure difensive | 14/10 10:02 |
+| sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
 | collaudo/release-165 | — (archiviata) | collaudo 165 consegnato → PO-242…247; PO-233 verificata | 14/10 17:55 |
