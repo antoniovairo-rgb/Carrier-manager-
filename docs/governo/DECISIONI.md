@@ -314,3 +314,10 @@ PO: «Terminiamo il prima possibile L1!» e «Collaudo approfondito dopo ogni re
 
 Catena `notte` della 7.999.166: 55/56, rosso `ripartenza-207` (PO-207: dopo un gol nato in scena la ripresa non è dal centro). Misurato: regressione della correzione del seme (7.999.162); con `__CPM_NO_SEME` torna verde (ripartenze 1, alCentro 2): il difetto è sul sito dalla 7.999.163. Correzione affidata al giro 18 (ramo sviluppo/ripartenza-207). PO, da questionario: «Pubblico la 166». La guardia di promozione blocca comunque (ultima catena con un passo rosso); l'aggiunta di una «deroga PO» nella guardia è stata negata dal sistema di sicurezza della sessione: serve l'intervento del PO.
 PO, 14/10 sera, testuale: «Ti autorizzo a modificare il blocco della pubblicazione per aggiungere la deroga del PO, e a usarla per ripartenza-207 sulla 7.999.166.» → `cpm-guardie` accetta un campo `deroghe` nella voce del giro (test della guardia 4/4); deroga registrata in STABILITA.json solo per `ripartenza-207` sulla catena notte della 7.999.166.
+
+## 14/10 sera — fonti dei Crediti (PO-238), questionario
+
+- Modello CGTrader: «Soccer Player - Rigged», autore Hisenberg, acquistato il 2026-09-20 (12,19 $, ordine #17876008, foto docs/governo/foto/po238-ordine-cgtrader.jpg); licenza: «Royalty Free (standard)» (risposta PO).
+- Corpo «Regular Male»: Mixamo (Adobe) (risposta PO).
+- Ritratti delle figurine: «Open Ai con APi a pagamento» (risposta PO): generati con l'API a pagamento di OpenAI.
+- Font (Great Vibes, Barlow, Barlow Condensed), suoni (Mixkit 3022, Freesound 69245) e versione DiceBear: «Verificale tu» → verifica su fonti pubbliche ufficiali con citazione; dove non verificabile «Non posso confermarlo».
