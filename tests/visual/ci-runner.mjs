@@ -23,7 +23,7 @@ const CATENE = {
 CATENE.nucleo = ['test:logic', 'save-compat', 'design-system', 'typing-shortcuts', 'career-critical'];
 CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
 const MAPPA = [
-  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236']],
+  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236', 'piedi-252', 'rete-252', 'difesa-252', 'rinvio-252', 'portiere-252', 'aereo-252']],/* [PO-252 giro 22] i sei guardiani degli highlight dell'eroe */
   [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234']],
   [/src\/15-/, ['fps-249', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226', 'schede-234']],
   [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219', 'migrazione-194', 'classifica-194', 'classifica-102']],

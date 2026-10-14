@@ -874,6 +874,28 @@ function ThreeMatchView(props){
        all'indietro il piede piu' basso nel ciclo (velocita' naturale della clip, in altezze-corpo al secondo). La cadenza diventa
        velocita' reale / velocita' naturale: a ogni velocita' il piede d'appoggio resta fermo sul prato (stride matching). */
     const _PASSO7=new Map();
+    /* [PO-252/1 giro 22, gancio di sola prova] CORSA SINTETICA PERFETTAMENTE SINCRONIZZATA: un clone dell'eroe suona la clip di
+       corsa a cadenza ts mentre la radice avanza a velocita' naturale x ts (lo stride matching del 7.999.7, esatto per costruzione),
+       campionata a passo dt. Restituisce la quota di fotogrammi «pattinati» secondo il criterio del testimone __CPM_PIEDI (qualunque
+       piede sotto 6 cm dalla radice che scorre oltre 0,5 m/s) e secondo il criterio d'APPOGGIO (il piede piu' basso, entro 2 cm dalla
+       sua quota minima nel ciclo). Serve a dire quanto del numero del banco e' strumento: qui il piede d'appoggio e' fermo per
+       costruzione. */
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_PIEDI_SINT252=(ts=1,dt=0.05,N=120)=>{try{const av=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero)||(glbAvatars||[])[0];if(!av||!av.run)return {errore:'nessun avatar'};
+      const clip=(av._runFwd||av.run).getClip();const src=av.visualRoot||av.root;const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+      const mx=new THREE.AnimationMixer(c);const act=mx.clipAction(clip);act.play();act.timeScale=ts;
+      const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i),hd=_findBone904(c,/Head$/i);if(!bl||!br||!hd)return {errore:'ossa'};
+      const rap=_passoNaturale7({run:act,visualRoot:src,root:src});mx.setTime(0);c.updateMatrixWorld(true);
+      const vL=new THREE.Vector3(),vR=new THREE.Vector3(),vH=new THREE.Vector3();vH.setFromMatrixPosition(hd.matrixWorld);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);
+      const alt=vH.y-Math.min(vL.y,vR.y);const m=alt>0?1.8/alt:1;const v=rap*alt*ts;/* unita' di mondo al secondo */
+      const fr=[];let z=0;for(let i=0;i<=N;i++){mx.update(i?dt:0);z+=i?v*dt:0;c.position.z=z;/* la clip guarda +z */c.updateMatrixWorld(true);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);fr.push([vL.x,vL.y,vL.z,vR.x,vR.y,vR.z]);}
+      let minL=1e9,minR=1e9;for(const f of fr){minL=Math.min(minL,f[1]);minR=Math.min(minR,f[4]);}
+      let n=0,skT=0,skA=0,velA=[];for(let i=1;i<fr.length;i++){const a=fr[i-1],b=fr[i];n++;
+        const sL=Math.hypot(b[0]-a[0],b[2]-a[2])*m/dt,sR=Math.hypot(b[3]-a[3],b[5]-a[5])*m/dt;
+        if((b[1]*m<0.06&&sL>0.5)||(b[4]*m<0.06&&sR>0.5))skT++;
+        const low=b[1]<b[4]?['L',b[1]-minL,sL]:['R',b[4]-minR,sR];if(low[1]*m<0.02){velA.push(low[2]);if(low[2]>0.5)skA++;}}
+      try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}
+      velA.sort((a,b)=>a-b);
+      let nC=0;for(const f of fr){if(f[1]*m<0.06||f[4]*m<0.06)nC++;}return {clip:clip.name,ts,dt,rap:+rap.toFixed(3),alt:+alt.toFixed(3),contatto:+(nC/fr.length).toFixed(3),v:+(v*m).toFixed(2),testimone:+(skT/n).toFixed(3),appoggio:+(skA/Math.max(1,velA.length)).toFixed(3),nAppoggio:velA.length,velAppoggioMed:velA.length?+velA[velA.length>>1].toFixed(2):null,minPiedi:[+(minL*m).toFixed(3),+(minR*m).toFixed(3)]};}catch(e){return {errore:String(e&&e.message||e).slice(0,120)};}};
     const _altezza7=(av)=>{try{const r=av.visualRoot||av.root;r.updateMatrixWorld(true);const hd=_findBone904(r,/Head$/i),bl=_findBone904(r,/(LeftToeBase|^ball_l)$/i),br=_findBone904(r,/(RightToeBase|^ball_r)$/i);if(!hd||!bl||!br)return 0;
       const a=new THREE.Vector3().setFromMatrixPosition(hd.matrixWorld),b=new THREE.Vector3().setFromMatrixPosition(bl.matrixWorld),c=new THREE.Vector3().setFromMatrixPosition(br.matrixWorld);return a.y-Math.min(b.y,c.y);}catch(_e){return 0;}};/* altezza testa-dita del corpo in scena (unita' di mondo) */
     const _passoNaturale7=(av)=>{try{const clip=av&&av.run&&av.run.getClip&&av.run.getClip();if(!clip)return 0;if(_PASSO7.has(clip.uuid))return _PASSO7.get(clip.uuid);
@@ -1030,6 +1052,10 @@ function ThreeMatchView(props){
     //   (.catch→null) → una singola anim che tarda/fallisce NON abbatte più l'intero modello (prima Promise.all
     //   rigettava se una qualsiasi delle 12 falliva → soldatini). Il modello si costruisce appena il corpo è pronto.
     if(_useGLB&&typeof loadGLB==='function'){const _optGLB=u=>loadGLB(u).catch(()=>null);
+      /* [PO-252/1 giro 22] la clip di CORSA vera (regular-anim-running, negli asset dal 7.9xx e mai caricata): l'eroe la usa sopra ~5 u/s,
+         dove la «jog» (velocita' naturale 1,83 u/s, tetto di cadenza 2,5 = 4,6 u/s) non puo' tenere il piede fermo. Facoltativa:
+         se non arriva, resta la jog di sempre. Rosso __CPM_NO_PIEDI252. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_PIEDI252))_optGLB('./assets/korward-regular-anims/regular-anim-running.glb').then(g=>{try{const c=g&&g.animations&&g.animations[0];if(c&&sr.current)sr.current._spr252=c;}catch(_e){}});
       // [7.8.19] RETRY del corpo footballer.glb (obbligatorio): un fallimento TRANSITORIO di rete mobile non deve
       //   mandare in campo i burattini → 3 tentativi con backoff (loadGLB evince i fallimenti dalla cache → riscarica).
       const _loadBody=(u,n)=>loadGLB(u).catch(e=>{if(n<=0)throw e;return new Promise(r=>setTimeout(r,1800)).then(()=>_loadBody(u,n-1));});
@@ -5392,6 +5418,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 const _rng=_sm777==='forward'?42:24;const d=Math.hypot(_fwd,pp.mesh.position.z-_phZ);
                 if(d<_rng){const _sc=d-Math.max(0,_fwd)*(_sm777==='forward'?0.7:0.25);if(_sc<_bs){_bs=_sc;_bm=pp.mesh;}}});
               if(_bm){passTargetMesh=_bm;ballArcTgtX=clamp(_bm.position.x,G2X(6),G2X(68));ballArcTgtZ=_bm.position.z;ballArcH=Math.max(ballArcH,0.9);}}
+            /* [PO-252/4 giro 22 — IL RINVIO HA LA VELOCITA' DI UN CALCIO VERO. Rosso __CPM_NO_RINVIO252, guardiano rinvio-252]
+               MISURATO (banco PO-248 difetto #4: 5 difese su 16 oltre 40 u/s, gi133 riuscito 42,8u in 0,5 s = 92 u/s): la tabella di
+               resolveDefensiveOutcome (src/11) da' a ogni esito una durata d'arco FISSA (0,32-0,60 s) qualunque sia la distanza, che
+               qui puo' arrivare a 40u fra avanzamento, apertura laterale e compagno cercato. Un rinvio vero viaggia sui 25 m/s: la
+               durata non scende sotto distanza / 26 u/s (tetto 1,6 s) e l'arco si alza coi lanci lunghi. Presa del portiere e gol
+               subito hanno tempi propri e restano fuori. */
+            if(!_dt.gkClaim&&!_dt.toOwnGoal&&!(typeof window!=='undefined'&&window.__CPM_NO_RINVIO252)){const _dd252=Math.hypot(ballArcTgtX-ball.position.x,ballArcTgtZ-ball.position.z),_need252=_dd252/26;
+              if(_need252>ballArcDur){ballArcDur=Math.min(_need252,1.6);ballArcH=Math.max(ballArcH,Math.min(_dd252*0.07,3.6));}
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_RINVIO252=window.__CPM_RINVIO252||[]).length<200&&window.__CPM_RINVIO252.push({d:+_dd252.toFixed(1),dur:+ballArcDur.toFixed(2)});}catch(_e){}}}
             /* [7.250.0 gi31 «Non si vede l'eroe che intercetta»] PRIMA IL CONTATTO, POI IL PALLONE VIA: l'arco
                d'esito difensivo partiva a t0 mentre l'eroe arrivava sul pallone a ~0.3s — la palla scappava
                prima del tocco e l'intercetto non si leggeva mai. Sulla famiglia PORTATORE (niente inbound:
@@ -5435,17 +5470,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                chiedeva). Ora: parata con la palla entro ~2.4u dal portiere, oppure conclusione da distanza
                ravvicinata (l'area piccola), ⇒ `gk_block`; su tutto il resto il tuffo resta com'era. */
             const _svK203=(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save");
-            const _dz203=Math.abs(ballArcTgtZ-awayGkMesh.position.z);
+            /* [PO-252/5 giro 22 — PARATA E GOL: IL PORTIERE LEGGE DOVE IL PALLONE GLI PASSA, NON DOVE FINISCE. Rosso __CPM_NO_GK252,
+               guardiano portiere-252] MISURATO (banco PO-248 difetto #5, codici 111/112: 8 portieri su 43, punizione 4/11, cross 2/3;
+               portiere-252 gi13 parata: pallone sul suo piano a 0,69u, portiere che si sposta dall'altra parte): su parata e gol riflesso/
+               tuffo, lato e bersaglio si decidevano sulla z FINALE dell'arco (ballArcTgtZ), mentre il punto in cui il pallone attraversa
+               il piano del portiere (_zp229, calcolato qui sopra per tutti gli esiti) lo usava solo fuori/palo (7.999.162). Su un tiro
+               angolato le due z differiscono di oltre un'unita' e decidono lati opposti. Ora vale il piano anche qui; il riflesso solo col
+               pallone entro 1,2u (la regola del 7.999.162): a 1,3-1,5u il riflesso, che trasla poco per costruzione, arrivava tardi. */
+            const _gk252=!(typeof window!=='undefined'&&window.__CPM_NO_GK252);
+            const _zq252=_gk252?_zp229:ballArcTgtZ;
+            const _dz203=Math.abs(_zq252-awayGkMesh.position.z);
             const _closeShot203=(P.playerX||50)>=87;
-            oppActType=(_svK203&&(_dz203<2.4||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
+            oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
             if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
-            oppDiveDir=ballArcTgtZ>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro
+            oppDiveDir=_zq252>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro [PO-252/5: dove il pallone passa]
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
             // PARATE #3: la PORTATA del tuffo dipende dall'esito → su una PARATA il portiere si distende fino alla palla (parata credibile),
             //   su GOL/fuori il tuffo resta più corto (non ci arriva: parata mancata convincente, niente "quasi-presa" incoerente).
             const _isSaveDv=(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save");
             const _saveReach=_isSaveDv?9:6;// M1 fix: legge il PROP (hlOutcomeVariant qui è ancora null) → ora la portata estesa su parata si attiva davvero
-            const _dvTgt74=_isSaveDv?ballArcTgtZ:(oppMesh.position.z+(ballArcTgtZ-oppMesh.position.z)*0.55);/* [6.74.0 3D-3] sul GOL il tuffo resta CORTO (battuto, ~55% della distanza): prima il reach 6 copriva comunque tutti i target nello specchio → il GK si distendeva ESATTAMENTE sulla z d'ingresso e la palla gli passava ATTRAVERSO il corpo su ogni rigore/tiro segnato */
+            const _dvTgt74=_isSaveDv?_zq252:(oppMesh.position.z+(_zq252-oppMesh.position.z)*0.55);/* [6.74.0 3D-3] sul GOL il tuffo resta CORTO (battuto, ~55% della distanza): prima il reach 6 copriva comunque tutti i target nello specchio → il GK si distendeva ESATTAMENTE sulla z d'ingresso e la palla gli passava ATTRAVERSO il corpo su ogni rigore/tiro segnato */
             oppMesh._diveToZ=clamp(_dvTgt74,oppMesh.position.z-_saveReach,oppMesh.position.z+_saveReach);
             /* [7.999.162 PO-229 taccuino 13/10: «Volée di collo potente» e «Girata secca e tiro» SBAGLIATE → «codice 111 — portiere fuori
                tempo», «il portiere non si tuffa nel momento giusto». Rosso __CPM_NO_GK229M] MISURATO (sonda gk-miss-229, tempo di scena):
@@ -6779,7 +6823,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              l'esultanza, e basta. */
           const _tkP420=(actType==="tackle"&&sr.current._tkPush420&&sr.current._tkPK420===P.hlSitKey)?sr.current._tkPush420:null;/* [7.420.0] la spinta della scivolata verso il pallone (latch per scena) */
           if(typeof window!=='undefined'&&window.__CPM_HERODRV769ON){try{window.__CPM_HERODRV769={hxg:+(+_hxg).toFixed(1),hyg:+(+_hyg).toFixed(1),tl:!!(tlOn&&tlMap&&tlMap.HERO===hero),cel:celebT>=0,cap:+_cap58.toFixed(1),aDt:+aDt.toFixed(3),ak:+(+ak).toFixed(3),ph:_curPh,mx:+hero.position.x.toFixed(1),mz:+hero.position.z.toFixed(1),n:(window.__CPM_HERODRV769?window.__CPM_HERODRV769.n:0)+1};}catch(_e769){}}/* [7.769 strumentazione test-only] il driver dell'eroe in scena: bersaglio, chi lo blocca, quanto avanza */
-          if(!(tlOn&&tlMap&&tlMap.HERO===hero)&&!(celebT>=0))animOne(hero,Math.min(G2X(_hxg)+_o2p,_cap58)+(_tkP420?_tkP420.x:0),G2Z(_hyg)+(_tkP420?_tkP420.z:0),aDt,ak,bx,bz);
+          /* [PO-252/3 giro 22] l'accorciata del difensore durante l'attesa del contrasto (calcolata nel blocco del gesto, r. «_hold415»):
+             un offset sul bersaglio del driver ordinario, valido per la scena in cui e' nato. */
+          sr.current._hb252x=Math.min(G2X(_hxg)+_o2p,_cap58);sr.current._hb252z=G2Z(_hyg);
+          const _pre252=(actType==="tackle"&&sr.current._pre252&&sr.current._pre252.k===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF252))?sr.current._pre252:null;
+          if(!(tlOn&&tlMap&&tlMap.HERO===hero)&&!(celebT>=0))animOne(hero,Math.min(G2X(_hxg)+_o2p,_cap58)+(_tkP420?_tkP420.x:0)+(_pre252?_pre252.x:0),G2Z(_hyg)+(_tkP420?_tkP420.z:0)+(_pre252?_pre252.z:0),aDt,ak,bx,bz);
         }/* [7.2.0] premiazione: eroe guidato dal blocco ceremony · [7.127.0] _benched: eroe uscito resta fuori (nascosto), non insegue più il gioco */
         // [6.4.4 R4.1] SOFT-COLLISION di posizione: la repulsione (PASS 2) agisce sui TARGET, ma animOne ha
         //   inerzia → i mesh off-ball possono compenetrarsi transitoriamente (i giocatori si attraversano).
@@ -6968,7 +7016,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  Rosso __CPM_NO546. */
               const _ltx52=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(last.to[0]):clamp(G2X(last.to[0]),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);
               const _ddx52=_ltx52-_lfx52,_ddz52=_ltz52-_lfz52,_dl52=Math.hypot(_ddx52,_ddz52)||1;
-              if(last.tag!=="orig26"){ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;}/* [7.999.26] il cross del brain arriva gia' al contatto: niente ricollocazione 3u indietro (misurato: salto all'indietro all'arrivo) */if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
+              /* [PO-252/6 giro 22 — IL CROSS NON TORNA INDIETRO. Rosso __CPM_NO_AER252, guardiano aereo-252] MISURATO (banco PO-248 difetto
+                 #6: volee gi65 5 esecuzioni su 5, passo isolato di 3,0-3,1u attribuito dal varco a `buildup-aereo`): la consegna qui sotto
+                 SCRIVE il pallone 3u prima del contatto da dovunque sia. Misurato col testimone __CPM_AER252 su gi65: al momento della
+                 consegna il pallone sta 4,8-5,2u prima del contatto e 1,9-2,1u di lato, quindi la scrittura e' un salto di ~3u in avanti e
+                 di lato (il banco lo leggeva come «indietro»: e' un teletrasporto in ogni caso). Ora, se il pallone e' gia' entro 8u dal
+                 contatto lungo la linea del cross (e 3u di lato), non si riscrive: la planata _aerIn52 lo porta al contatto da dov'e'. */
+              const _pg252=((ball.position.x-_lfx52)*_ddx52+(ball.position.z-_lfz52)*_ddz52)/_dl52,_lat252=Math.abs((ball.position.x-_lfx52)*_ddz52-(ball.position.z-_lfz52)*_ddx52)/_dl52;
+              const _gia252=!(typeof window!=='undefined'&&window.__CPM_NO_AER252)&&_pg252>=_dl52-8.0&&_pg252<=_dl52+0.5&&_lat252<=3.0;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_AER252=window.__CPM_AER252||[]).length<100&&window.__CPM_AER252.push({pg:+(_pg252-_dl52).toFixed(2),lat:+_lat252.toFixed(2),salta:_gia252?0:1,tag:last.tag||null});}catch(_e){}}
+              if(last.tag!=="orig26"&&!_gia252){ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;}/* [7.999.26] il cross del brain arriva gia' al contatto: niente ricollocazione 3u indietro (misurato: salto all'indietro all'arrivo) */if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
               sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};
             } else if(last&&(last.kind==='carry'||(last.kind==='dribble'&&!(typeof window!=='undefined'&&window.__CPM_NO_DRB229)))/* [7.999.161 PO-229] anche il DRIBBLING e' palla al piede: buildup-sync misurava 3,3-4,1u di strappo dribble→CONSEGNA (gi12/gi21) perche' la guardia 7.394 valeva solo per carry. Rosso __CPM_NO_DRB229 */&&(function(){const _cid414=(typeof last.fromId==='string')?last.fromId:((typeof last.toId==='string')?last.toId:null);const _cm414=(_cid414==='HERO')?hero:((tlMap&&_cid414&&tlMap[_cid414])||hero);return _cm414&&_cm414.position&&Math.hypot(ball.position.x-_cm414.position.x,ball.position.z-_cm414.position.z)<3.4;})()){ball.position.y=0.22;/* [7.414.0 gi24/gi79 «zig-zag» / «teletrasporto da 16,5u»] LA GUARDIA VALE PER QUALUNQUE PORTATORE, NON SOLO L'EROE: se l'ultimo beat e' la conduzione di un COMPAGNO tappato a velocita' umana, il corpo arriva corto sul piano (misurato: portatore a 4,5 col piano a 38 — 26u dall'eroe) e la scrittura del punto pianificato era un teletrasporto da 7,8-13,8u proprio al fotogramma della conclusione. Il portatore lo dice il beat (fromId→tlMap), l'eroe resta il ripiego. */
               /* [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA
@@ -7665,6 +7722,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              latcha UNA volta il vettore eroe→palla (tetto 3,5u, fermo a 0,4u dal pallone) come SPINTA
              sul bersaglio del driver ordinario — mai un secondo driver sul corpo (lezioni 7.322/7.384):
              l'accelerazione limitata di animOne trasforma la spinta in una scivolata che percorre. */
+          /* [PO-252/3 giro 22 — IL DIFENSORE ACCORCIA MENTRE ASPETTA IL PALLONE. Rosso __CPM_NO_DIF252, guardiano difesa-252]
+             MISURATO (banco PO-248 difetto #3: eroe immobile nei primi 2 s di scena in 4 difese su 16; sonda su gi31/gi130/gi133): qui
+             sopra l'attesa 7.415 tiene il contrasto finche' il pallone e' oltre 5u (fino a 1,4 s) — giusto non alzare la gamba a vuoto,
+             ma il corpo restava IMMOBILE: 1,3-1,5 s su gi31/gi130 col pallone che gli arrivava addosso, 2,0 s su gi133 col pallone a 53u.
+             Ora durante l'attesa il bersaglio dell'eroe si sposta verso il punto della traiettoria piu' vicino a lui (la stessa
+             proiezione del 7.427), fermandosi a 2u dalla linea, tetto 9u, avvicinamento smussato (τ≈0,25 s): un difensore vero accorcia.
+             L'offset resta per la scena: quando il gesto parte la spinta 7.420 si calcola dal punto raggiunto, senza ritorni indietro. */
+          if(actType==="tackle"&&P.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF252)&&sr.current._hb252x!=null){
+            const _o252=(sr.current._pre252&&sr.current._pre252.k===P.hlSitKey)?sr.current._pre252:(sr.current._pre252={k:P.hlSitKey,x:0,z:0});
+            if(_hold415){let _gx=ball.position.x,_gz=ball.position.z;
+              try{if(ballArcActive){const _ax=ballArcTgtX-ball.position.x,_az=ballArcTgtZ-ball.position.z,_al=_ax*_ax+_az*_az;if(_al>0.01){let _u=((hero.position.x-ball.position.x)*_ax+(hero.position.z-ball.position.z)*_az)/_al;_u=Math.max(0.05,Math.min(1,_u));_gx=ball.position.x+_ax*_u;_gz=ball.position.z+_az*_u;}}}catch(_e){}
+              {const _bdx=ball.position.x-_gx,_bdz=ball.position.z-_gz,_bdl=Math.hypot(_bdx,_bdz);const _vic=Math.hypot(_gx-hero.position.x,_gz-hero.position.z);
+                if(_vic<2.5&&_bdl>3.5){const _av=Math.min(2.5,_bdl-3.0);_gx+=_bdx/_bdl*_av;_gz+=_bdz/_bdl*_av;}}/* gia' sulla linea: va INCONTRO al pallone (anticipo), mai dentro i 3u */
+              const _dx=_gx-hero.position.x,_dz=_gz-hero.position.z,_dl=Math.hypot(_dx,_dz)||1,_c=Math.min(Math.max(0,_dl-(_dl<4?0.5:2.0)),9);
+              const _wx=hero.position.x+_dx/_dl*_c-sr.current._hb252x,_wz=hero.position.z+_dz/_dl*_c-sr.current._hb252z;
+              const _wl=Math.hypot(_wx,_wz),_ws=_wl>9?9/_wl:1,_kk=Math.min(aDt*4,1);
+              _o252.x+=(_wx*_ws-_o252.x)*_kk;_o252.z+=(_wz*_ws-_o252.z)*_kk;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_DIF252=(window.__CPM_DIF252||0)+1;}catch(_e){}}}}
           if(actType==="tackle"&&P.hlDef&&actT===0&&!_hold415&&sr.current._tkPK420!==P.hlSitKey){sr.current._tkPK420=P.hlSitKey;
             /* [7.427.0 collaudo PO gi128 «non si vede la chiusura dell'eroe»] IL DIFENSORE BATTUTO
                SI LANCIA SULLA LINEA DEL PASSAGGIO, non sul pallone: con la palla che vola via, il
@@ -10362,7 +10437,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 for(const [q,pq] of [[L,P7.prev.L],[Rr,P7.prev.R]]){const h=(q.y-gy)*m;if(h<0.06){cont=true;const vel=Math.hypot(q.x-pq.x,q.z-pq.z)*m/dt;if(vel>0.5)sk=true;}}
                 {const rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;const fv=Math.min(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z),Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z))*m/dt;const D=_w.diag||(_w.diag={n:0,rv:0,fv:0,mt:0});D.n++;D.rv+=rv;D.fv+=fv;if(_a.mx){D.mt=_a.mx.time;D.mts=D.mts||{};D.mts[_ai]=+_a.mx.time.toFixed(2);}D.scena=(D.scena||0)+dt;}
                 _w.fr++;if(cont)_w.cont++;if(sk)_w.sk++;if(hl){_w.hl.fr++;if(cont)_w.hl.cont++;if(sk)_w.hl.sk++;}
-                const pc=_w.perCorpo[_ai]||(_w.perCorpo[_ai]={fr:0,sk:0});pc.fr++;if(sk)pc.sk++;}
+                const pc=_w.perCorpo[_ai]||(_w.perCorpo[_ai]={fr:0,sk:0});pc.fr++;if(sk)pc.sk++;
+                if(_ai===0&&window.__CPM_PIEDI_EROE){const E=_w.eroe||(_w.eroe=[]);if(E.length<1500){const _rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;E.push([+dt.toFixed(3),+_rv.toFixed(2),+(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z)*m/dt).toFixed(2),+(Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z)*m/dt).toFixed(2),+((L.y-gy)*m).toFixed(3),+((Rr.y-gy)*m).toFixed(3),_a._gName||'',_a._gw!=null?+_a._gw.toFixed(2):0,_a.run?+_a.run.weight.toFixed(2):0,_a.idle?+_a.idle.weight.toFixed(2):0,sk?1:0,/^hl_/.test(String((propsRef.current&&propsRef.current.matchPhase)||''))?1:0,String((propsRef.current&&propsRef.current.matchPhase)||''),_a.run?+_a.run.timeScale.toFixed(2):0,+(_a._spS||0).toFixed(2),+(_a._rap7>0&&_a._h7>0?_a._rap7*_a._h7:0).toFixed(2),+(_a._locB||0).toFixed(2),(P7.prevR&&Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)>0.01)?Math.round(Math.abs((((Math.atan2(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)-_a.root.rotation.y)+Math.PI*3)%(Math.PI*2))-Math.PI)*180/Math.PI):null,_a._locoName||'run',(_a._runFwd||_a.run)&&(_a._runFwd||_a.run).getClip?(_a._runFwd||_a.run).getClip().name:'',+(_a._h7||0).toFixed(3),+(P7.sc||0).toFixed(3),+(_a._rap7||0).toFixed(3),+(_a._ws252||0).toFixed(2),_a._spr252?+_a._spr252.timeScale.toFixed(2):null]);}}/* la fase dalle props VIVE: `matchPhase` qui e' quella del montaggio (il ciclo nasce una volta, deps []) *//* [PO-252 giro 22] testimone di dettaglio dell'eroe (solo sonda, __CPM_PIEDI_EROE): velocita' radice/piedi, quota dei piedi, gesto e pesi, per separare il pattinamento della radice da quello delle clip */}
               P7.prev={L,R:Rr};P7.prevR={x:_a.root.position.x,z:_a.root.position.z};}}catch(_e7){}}
           _a.root.position.set(_p.position.x,(_ai===0&&_p.position.y<0)?0:_p.position.y,_p.position.z);
           if(typeof window!=='undefined'&&window.__CPM_CGTRADER_LOD_RUNTIME&&typeof window.__CPM_CGTRADER_LOD_RUNTIME.update==='function')window.__CPM_CGTRADER_LOD_RUNTIME.update(_a,_ai);/* [7.246.0 batch PO «l'eroe si butta a terra da posizione sbagliata»] le pose difensive procedurali AFFONDANO y (-0.18/-0.35) perché GLB-OFF il corpo è RUOTATO orizzontale (scivolata) — ma il root CH38 copia SOLO la y, non la rotazione → modello conficcato nel prato fino alle ginocchia su lunge/press. La y negativa dell'eroe non passa al GLB (le clip fanno da sole la discesa); la y POSITIVA (salto di testa, esultanza) resta */
@@ -10452,7 +10528,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              ciclo diventa frenetico). Il flag `?cpmcarry=0` continua a riportare al comportamento storico. */
           const _lb=_a._locB;if(_a.run)_a.run.timeScale=_CPM_CARRY?clamp(0.62+_a._spS*0.185,0.62,2.15):(0.55+_lb*0.40);
           if(_a.run&&!(typeof window!=='undefined'&&window.__CPM_NO_PASSO7)){if(_a._rap7==null){_a._rap7=_passoNaturale7(_a);_a._h7=_altezza7(_a);}
-            if(_a._rap7>0&&_a._h7>0.3){const v0=_a._rap7*_a._h7;_a.run.timeScale=clamp(_a._spS/v0,0.5,2.5);}}/* [7.999.7] cadenza = velocita' reale / velocita' naturale della clip */// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
+            /* [PO-252/1 giro 22 — LA VELOCITA' NATURALE E' QUELLA DELLA CLIP CHE SUONA. Rosso __CPM_NO_PIEDI252, guardiano piedi-252]
+               MISURATO (banco PO-248 difetto #1: piedi dell'eroe che pattinano in 117/117 esecuzioni; sonda-piedi-252 col testimone
+               __CPM_PIEDI_EROE): _rap7 si calcolava UNA volta, sul canale a cui _a.run puntava in quel momento — e dal 7.518 _a.run
+               viene RIPUNTATO a corsa all'indietro/laterale. Sull'eroe valeva 1,804 contro 1,081 della clip «jog» che suona davvero
+               (corsa sintetica __CPM_PIEDI_SINT252): cadenza 1,67 volte troppo lenta, piede d'appoggio trascinato avanti col corpo.
+               Ora la velocita' naturale si legge dalla clip ATTIVA (_passoNaturale7 ha gia' la cache per clip, costo: una ricerca). */
+            const _rapC=(typeof window!=='undefined'&&window.__CPM_NO_PIEDI252)?_a._rap7:_passoNaturale7(_a);
+            if(_rapC>0&&_a._h7>0.3){const v0=_rapC*_a._h7;_a.run.timeScale=clamp(_a._spS/v0,0.5,2.5);}}
+          /* [PO-252/1] SCATTO DELL'EROE: sopra 5 u/s (isteresi: si torna alla jog sotto 4) la locomozione passa alla clip di corsa vera,
+             con la sua cadenza sincronizzata alla velocita' (stessa regola del 7.999.7, velocita' naturale misurata sulla clip). Misurato
+             prima: nell'avvicinamento alla conclusione l'eroe corre a 8-10 u/s e la jog, ferma al tetto 2,5, lasciava scorrere il piede
+             d'appoggio di circa meta' della velocita'. Solo canale «avanti» (indietro/laterale restano quelli del 7.518). */
+          if(_ai===0&&_a.run&&_a.mx&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDI252)){
+            if(_a._spr252==null&&sr.current._spr252){try{_a._spr252=_a.mx.clipAction(sr.current._spr252);_a._spr252.play();_a._spr252.weight=0;}catch(_e){_a._spr252=false;}}
+            const _S=_a._spr252;let _wsT=0;
+            if(_S&&(_a._locoName||'run')==='run'&&_a._h7>0.3){const _rS=_passoNaturale7({run:_S,visualRoot:_a.visualRoot,root:_a.root});
+              if(_rS>0){_wsT=(_a._ws252||0)>0.5?(_a._spS>4?1:0):(_a._spS>5?1:0);_S.timeScale=clamp(_a._spS/(_rS*_a._h7),0.5,2.5);}}
+            _a._ws252=(_a._ws252||0)+(_wsT-(_a._ws252||0))*Math.min(dt*7,1);if(_a._ws252<0.005&&_wsT===0)_a._ws252=0;}/* [7.999.7] cadenza = velocita' reale / velocita' naturale della clip */// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
           if(_CPM_TEST&&typeof window!=='undefined'&&_a.run){try{const _sb=window.__CPM_STRIDE||(window.__CPM_STRIDE=[]);if(_a._spS>1&&_sb.length<4000)_sb.push([+_a._spS.toFixed(2),+_a.run.timeScale.toFixed(3)]);}catch(_e){}}/* [7.206.0] campionamento velocita<->cadenza del passo per la probe foot-slide */
           /* [7.209.0] richiesta di gesto PER-MESH: chi conclude un'azione (il compagno che finalizza l'assist,
              chi incorna il cross) chiede il proprio calcio/colpo di testa tramite `sr.current._mateFx`. */
@@ -10663,7 +10756,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 if(typeof window!=='undefined'&&window.__CPM_REC){try{const _H=(window.__CPM_HOLD855=window.__CPM_HOLD855||[]);if(_H.length<400)_H.push({t:Date.now(),at:+(+oppActT).toFixed(2),ct:+(+_a._gAct.time).toFixed(2),dd:+(+oppMesh._diveDur).toFixed(2)});}catch(_e){}}}}
             if(_ai===0&&(sr.current._cerLift===1||sr.current._celLift371===1)&&_a._gName==='lift'&&_a._gAct){/* [7.384.0] il congelamento all'apice esisteva SOLO per la cerimonia: senza, la clip d'esultanza arrivava in fondo, veniva rilasciata e ri-armata al fotogramma dopo — misurato un ri-armo per esultanza anche a scala corretta. Braccia al cielo si TENGONO. */const _ld=_a._gAct.getClip().duration||1;if(sr.current._cerLift===1&&P.ceremony&&P.ceremony.light&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA57)){/* [7.999.57 collaudo PO «l'eroe rimane freezato per un po'» nella festa di fine partita] MISURATO (sonda festa coi corpi): nella festa LEGGERA (niente trofeo) la clip mx-victory-jump restava in pausa al 34% — a meta' salto — per tutti i festeggiamenti (>10 s). Il congelamento all'apice serve a tenere la COPPA in mano: senza coppa l'esultanza si suona intera e riparte. Rosso __CPM_NO_FESTA57. */_a._gAct.paused=false;if((_a._gAct.time||0)>=_ld*0.97)_a._gAct.time=0.02*_ld;}else{_a._gAct.paused=true;_a._gAct.time=Math.min((_a._gAct.time||0)+aDt*1.4,_ld*((typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_LIFTFR!=null)?+window.__CPM_LIFTFR:((typeof window!=='undefined'&&window.__CPM_NO_POSA191)?0.34:0.45)));}}/* [7.999.118 collaudo PO-191 «eroe in posa sbagliata (gamba alzata)»] MISURATO scorrendo mx-victory (testimone __CPM_CER476.mani.pL/pR): al 34% l'eroe e' a META' SALTO — piedi 0,25-0,39 sul piano, gambe divaricate, braccia piegate; al 45% e' in piedi (piedi 0,20 contro 0,12-0,16 da fermo) con le braccia tese al massimo (mani 2,14 sopra i piedi) e la coppa in presa (0,05). Si congela li'. Rosso __CPM_NO_POSA191. __CPM_LIFTFR: solo collaudo, per scorrere la clip *//* [7.24.1] avanza fino all'APICE della rimessa (mani sopra la testa) e CONGELA — niente lancio */
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
-            if(_a.run)_a.run.weight=_lbW*(1-_gTot);if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
+            {const _ws=(_ai===0&&_a._spr252)?(_a._ws252||0):0;if(_a.run)_a.run.weight=_lbW*(1-_gTot)*(1-_ws);if(_ws||(_a._spr252&&_a._spr252.weight))_a._spr252.weight=_lbW*(1-_gTot)*_ws;}/* [PO-252/1] la corsa si divide fra jog e scatto */if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
             _updateAvatarMixerLod(_a,aDt,_ai,true);
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
@@ -10996,7 +11089,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _ph229L=_P229L.matchPhase;const _alt229L=!_no229L&&(tlOn||_ph229L==='hl_intro'||_ph229L==='hl_move'||_ph229L==='hl_choose'||(_P229L.hlSitKey!=null&&_P229L.hlSitKey!==-1&&sr.current._blK229!==_P229L.hlSitKey));/* [7.999.161] si e' aperta un'ALTRA scena (non il ritorno al gioco, chiave -1, dove il lucchetto resta com'era), la scena e' ancora in apertura/lettura/scelta (li' il pallone sta sul piede di chi la gioca, mai in rete — PRECAUZIONE: i salti d'INGRESSO da 16-35u visti su gi40/gi63/gi96 nella passata intera sono spariti con l'insieme dei rimedi, ma non li ho attribuiti con certezza a questo ramo) o e' in corso una costruzione: il lucchetto tace */
           if(_alt229L&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_BU229L=(window.__CPM_BU229L||0)+1;}catch(_e){}}
           if(sr.current._blOk812&&!_alt229L){
-          ball.position.x=G2X(_bl.x);ball.position.z=G2Z(_bl.y);
+          /* [PO-252/2 giro 22 — IL PALLONE ENTRA IN RETE, NON CI SI TELETRASPORTA. Rosso __CPM_NO_RETE252, guardiano rete-252]
+             MISURATO (banco PO-248 difetto #2, 4 gol su 13; sonda su gi0: pallone 2,7 s di scena a ridosso del palo, x 48,6 z 3,29,
+             poi in UN fotogramma a x 50,6 z 0,68): questa riga scriveva il punto dell'affermazione (_golInRete811, logico 100,6 → mondo
+             50,6) tutto in una volta, e 50,6 sta oltre la rete di fondo (49,4). Ora il bersaglio sta DENTRO la rete (x 49,0, fra la
+             linea 48,6 e il fondo) e il pallone ci scivola a velocita' limitata (14 u/s, mai piu' di 0,7u per fotogramma di scena). */
+          if(typeof window!=='undefined'&&window.__CPM_NO_RETE252){ball.position.x=G2X(_bl.x);ball.position.z=G2Z(_bl.y);}
+          else{const _tx252=_bl.x>50?Math.min(G2X(_bl.x),49.0):Math.max(G2X(_bl.x),-49.0),_tz252=G2Z(_bl.y);
+            const _dx252=_tx252-ball.position.x,_dz252=_tz252-ball.position.z,_dd252=Math.hypot(_dx252,_dz252),_st252=14*Math.min(Math.max(aDt,0),0.05);
+            if(_dd252<=_st252){ball.position.x=_tx252;ball.position.z=_tz252;}else{ball.position.x+=_dx252/_dd252*_st252;ball.position.z+=_dz252/_dd252*_st252;}}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LOCK811=(window.__CPM_LOCK811||0)+1;}catch(_e){}}
           }
         }
