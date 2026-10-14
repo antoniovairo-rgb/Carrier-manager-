@@ -23257,6 +23257,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ord=glbAvatars.map((av,index)=>{const p=av&&av.proc&&av.proc.position;const dx=p?p.x-_fuoco.x:999,dz=p?p.z-_fuoco.z:999;return{av,index,d:Math.hypot(dx,dz)};})
               .filter(x=>x.av&&x.av.root).sort((a,b)=>a.d-b.d);
             const _tieni=new Set([0]);/* l'eroe non si spegne mai */
+            /* [PO-236, 14/10 «Non ci sono i bambini accompagnati dalla squadra avversaria» — rosso __CPM_NO_236] MISURATO (sonda
+               bambini-236, ingresso Spagna-Portogallo): questo roster, pensato per gli HIGHLIGHT, girava anche nell'INGRESSO IN CAMPO e
+               disegnava solo eroe, un portiere e i tre piu' vicini al pallone. I bambini (lista _mascots, fuori dal roster) restavano
+               tutti e 22: nascondendoli, in campo restavano DUE calciatori. Le «squadre» della foto del PO erano i bambini, con le due
+               divise scambiate, e quasi nessun calciatore accanto. Nell'ingresso si disegnano tutti: la cerimonia e' la squadra. */
+            const _walk236=P.matchPhase==="walkout"&&!window.__CPM_NO_236;
+            if(_walk236)glbAvatars.forEach((av,index)=>{if(av&&av.root)_tieni.add(index);});
             const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
             if(P.shootout&&!(window.__CPM_NO_RIGORI58))_ord.filter(x=>x.av.proc&&(x.av.proc===sr.current._soGk58||x.av.proc===sr.current._soKicker)).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori si disegnano SEMPRE il portiere in porta e il rigorista */
             if(!(P.shootout&&!(window.__CPM_NO_RIGORI58)))_ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori niente «tre piu' vicini»: il rigorista che rientra in fila attraversava l'inquadratura */
@@ -23267,6 +23274,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _conta={lod0:0,lod1:0,lod2:0};
             glbAvatars.forEach(av=>{const l=av&&av._cgLod;if(l&&_conta[l]!==undefined)_conta[l]++;});
             if(typeof window!=='undefined')window.__CPM_CGTRADER_CINEMA_ROSTER={visible:_tieni.size,total:glbAvatars.length,hero:0,keeper:_port?_port.index:null,lod:_conta};
+            /* [PO-236] testimone dell'ingresso: per squadra, calciatori disegnati e calciatori disegnati col loro bambino accanto */
+            if(P.matchPhase==="walkout"&&typeof window!=='undefined'){try{const _dis=new Set();glbAvatars.forEach(av=>{if(av&&av.root&&av.root.visible&&av.proc&&!av._isRef)_dis.add(av.proc);});
+              const _sq={home:{disegnati:0,conBimbo:0,bimbi:0},away:{disegnati:0,conBimbo:0,bimbi:0}};
+              glbAvatars.forEach(av=>{if(av&&av.root&&av.root.visible&&!av._isRef&&_sq[av._team])_sq[av._team].disegnati++;});
+              for(const m of _mascots){const _l=m.casa?'home':'away';const _k=(m.glb911&&m.glb911.root)||m.c;if(!_k||!_k.visible)continue;_sq[_l].bimbi++;if(_dis.has(m.p))_sq[_l].conBimbo++;}
+              window.__CPM_CGTRADER_CINEMA_ROSTER.ingresso236=_sq;}catch(_e236){}}
           }catch(_eCin){}
         }
         _animLodStats.frames++;_animLodStats.lastFrameUpdates=0;
@@ -25655,7 +25668,7 @@ const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esit
    Censimento (docs/sviluppo/RAPPORTO-giro10.md): in partita uscivano 4-5 schede a orologio (finestra 18'-88', sorteggio) e quattro
    ordini del mister a minuti fissi (28'/63'/75'/85') che il giocatore non poteva rifiutare. Qui vive la parte PURA del sistema nuovo,
    leggibile anche dal banco Node: (1) quali FATTI della partita aprono una scelta, in ordine di precedenza; (2) l'effetto della
-   scelta sull'atteggiamento del motore (ATT: [seguo l'ordine, faccio di testa mia], in [-1,1], moltiplica la voglia di tirare della
+   scelta sull'atteggiamento del motore (ATT: [seguo le indicazioni, faccio di testa mia, via di mezzo — PO-234], in [-1,1], moltiplica la voglia di tirare della
    squadra dell'eroe come la mentalita'); (3) il minuto d'ingresso dalla panchina, con seme. Tetto: tre scelte a partita, otto minuti
    fra l'una e l'altra (cinque per il vantaggio di misura all'85', che non puo' aspettare), ogni fatto una volta sola. I valori sono
    una scelta di progetto dichiarata, non vengono da una fonte. */
@@ -25664,12 +25677,12 @@ const INT226={
   FATTI:[
     {id:'panca_sotto',panca:1,quando:c=>c.panchina&&c.diff<0&&c.mn>=20&&c.mn<=c.ingresso-4},
     {id:'panca_pari',panca:1,quando:c=>c.panchina&&c.diff===0&&c.mn>=46&&c.mn<=c.ingresso-4},
-    {id:'misura_85',dist:5,ordine:'consolida',att:[-0.6,0.3],quando:c=>!c.panchina&&c.mn>=85&&c.diff===1},
-    {id:'sotto_70',ordine:'urgenza_75',att:[0.6,-0.2],quando:c=>!c.panchina&&c.mn>=70&&c.diff<0},
-    {id:'pari_75',ordine:'urgenza_75',att:[0.45,-0.15],quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
-    {id:'avanti_2',ordine:'blocca_ora',att:[-0.45,0.2],quando:c=>!c.panchina&&c.mn>=60&&c.diff>=2},
-    {id:'eroe_stanco',ordine:'intelligente',att:[-0.25,0.15],quando:c=>!c.panchina&&c.mn>=55&&c.energia!=null&&c.energia<=55},
-    {id:'eroe_marcato',ordine:null,att:[0.25,-0.1],quando:c=>!c.panchina&&c.mn>=25&&(c.duelliP|0)>=2}],
+    {id:'misura_85',dist:5,ordine:'consolida',att:[-0.6,0.3,-0.2],quando:c=>!c.panchina&&c.mn>=85&&c.diff===1},
+    {id:'sotto_70',ordine:'urgenza_75',att:[0.6,-0.2,0.2],quando:c=>!c.panchina&&c.mn>=70&&c.diff<0},
+    {id:'pari_75',ordine:'urgenza_75',att:[0.45,-0.15,0.15],quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
+    {id:'avanti_2',ordine:'blocca_ora',att:[-0.45,0.2,-0.12],quando:c=>!c.panchina&&c.mn>=60&&c.diff>=2},
+    {id:'eroe_stanco',ordine:'intelligente',att:[-0.25,0.15,-0.05],quando:c=>!c.panchina&&c.mn>=55&&c.energia!=null&&c.energia<=55},
+    {id:'eroe_marcato',ordine:null,att:[0.25,-0.1,0.08],quando:c=>!c.panchina&&c.mn>=25&&(c.duelliP|0)>=2}],
   attivo(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_INT226);},
   /* c = {mn, diff (eroe meno avversario), energia, duelliP, panchina, ingresso, fatte:[id], ultima} → id del fatto, o null */
   scegli(c){if(!c)return null;const F=c.fatte||[];if(F.length>=INT226.TETTO||c.mn>88)return null;
@@ -25679,11 +25692,17 @@ const INT226={
       let ok=false;try{ok=!!f.quando(c);}catch(_e){ok=false;}if(ok)return f.id;}
     return null;},
   fatto(id){return INT226.FATTI.find(f=>f.id===id)||null;},
-  /* l'effetto della scelta idx (0 = seguo l'ordine, la neutra che scatta col timer · 1 = faccio di testa mia) */
-  att(id,idx){const f=INT226.fatto(id);return f&&f.att?(+f.att[idx?1:0]||0):0;},
+  /* l'effetto della scelta idx (0 = seguo le indicazioni, la neutra che scatta col timer · 1 = faccio di testa mia · 2 = la via di
+     mezzo). [PO-234, 14/10 «Segui indicazioni, non ordine e dai almeno 3 opzioni!»] TRE opzioni, tre atteggiamenti diversi: la terza
+     sta fra le prime due, valori di progetto dichiarati (non da una fonte), effetto misurato al banco (interazioni-226, parte A).
+     Rosso __CPM_NO_234: la terza opzione torna senza effetto (come la neutra prima del PO-234: atteggiamento 0). */
+  att(id,idx){const f=INT226.fatto(id);if(!f||!f.att)return 0;idx=Math.max(0,Math.min(f.att.length-1,idx|0));
+    if(idx===2&&typeof window!=='undefined'&&window&&window.__CPM_NO_234)return 0;return +f.att[idx]||0;},
   /* panchina: idx 0 = resto concentrato (minuto deciso dal mister, invariato) · 1 = chiedo di entrare (prima, di 4-10' col seme,
-     mai prima di due minuti da adesso). Funzione pura di (base, scelta, seme, minuto). */
+     mai prima di due minuti da adesso) · 2 [PO-234] = mi scaldo da solo (prima, di 1-3' col seme: il mister mi vede pronto).
+     Funzione pura di (base, scelta, seme, minuto). Rosso __CPM_NO_234: la terza opzione non sposta il minuto. */
   ingresso(base,idx,seme,mn){base=Math.round(+base||60);if(!idx)return base;let s=((seme>>>0)^0x226)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;
+    if(idx===2){if(typeof window!=='undefined'&&window&&window.__CPM_NO_234)return base;const d2=1+Math.floor((s/4294967296)*3);return Math.max(Math.round(+mn||0)+2,Math.min(base,base-d2));}
     const d=4+Math.floor((s/4294967296)*7);return Math.max(Math.round(+mn||0)+2,Math.min(base,base-d));},
   /* il riscaldamento parte 5-14' prima dell'ingresso, col seme (era Math.random) */
   riscaldamento(base,seme){let s=((seme>>>0)^0x2261)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;return Math.max(1,Math.round(+base||60)-(5+Math.floor((s/4294967296)*10)));}
@@ -27220,27 +27239,41 @@ const golScarto10=(n,maiusc)=>{n=Math.abs(n|0);if(typeof window!=='undefined'&&w
 try{if(typeof window!=='undefined'){window.__CPM_LATI10=latiTabellino10;window.__CPM_SCARTO10=golScarto10;}}catch(_e){}
 
 /* [PO-226, decisione PO 12/10 — rosso __CPM_NO_INT226] LE SCHEDE DEL SISTEMA NUOVO: una per FATTO del motore (src/14, INT226.FATTI),
-   due opzioni, la prima e' la neutra che il timer applica da sola. Il testo dice il fatto che l'ha fatta nascere; l'effetto lo
+   tre opzioni dal PO-234 (erano due), la prima e' la neutra che il timer applica da sola. Il testo dice il fatto che l'ha fatta nascere; l'effetto lo
    applica scegli681 (atteggiamento del motore via chiedi.ordine226, minuto d'ingresso via INT226.ingresso). Stessa forma delle
    schede INTX669, cosi' viaggiano sullo stesso binario (cronaca → PopScelta919 → scegli681). */
 const SCHEDE226={
  panca_sotto:{fam:"MISTER",txt:c=>"\ud83e\ude91 Sotto di "+(Math.abs(c.diff)===1?"un gol":Math.abs(c.diff)+" gol")+" al "+c.mn+"': il mister si gira verso la panchina e incrocia lo sguardo di "+c.eroe+".",
-  sc:[{et:"Resto concentrato",es:c=>c.eroe+" annuisce e torna a guardare il campo: entrera' quando lo chiamano, pronto."},{et:"Chiedo di entrare",es:c=>c.eroe+" si alza e chiede la maglia: il mister ci pensa un attimo, poi lo manda a scaldarsi."}]},
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" annuisce e torna a guardare il campo: entrera' quando lo chiamano, pronto."},{et:"Chiedo di entrare",es:c=>c.eroe+" si alza e chiede la maglia: il mister ci pensa un attimo, poi lo manda a scaldarsi."},
+   {et:"Mi scaldo da solo",es:c=>c.eroe+" comincia a correre lungo la linea senza dire niente: il mister lo vede pronto e lo anticipa di qualche minuto."}]},
  panca_pari:{fam:"MISTER",txt:c=>"\ud83e\ude91 Ancora pari al "+c.mn+"': la partita e' bloccata e il mister cerca una soluzione con gli occhi.",
-  sc:[{et:"Resto concentrato",es:c=>c.eroe+" resta seduto e studia il terzino avversario: quando entra sapra' dove andare."},{et:"Chiedo di entrare",es:c=>c.eroe+" si fa avanti: «Mister, mettimi dentro». Il preparatore lo manda a scaldarsi."}]},
- misura_85:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Un gol di vantaggio all'"+c.mn+"': il mister fa segno di abbassarsi, chiudere tutto, niente rischi.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" rientra e si mette davanti alla difesa: la squadra si abbassa compatta."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta alto a cercare il gol del ko: la squadra lo segue, si gioca ancora in avanti."}]},
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" resta seduto e studia il terzino avversario: quando entra sapra' dove andare."},{et:"Chiedo di entrare",es:c=>c.eroe+" si fa avanti: «Mister, mettimi dentro». Il preparatore lo manda a scaldarsi."},
+   {et:"Mi scaldo da solo",es:c=>c.eroe+" si toglie la pettorina e fa qualche allungo: il mister se ne accorge e lo chiama un po' prima."}]},
+ misura_85:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Un gol di vantaggio all'"+c.mn+"': le indicazioni del mister sono chiare, abbassarsi, chiudere tutto, niente rischi.",
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" rientra e si mette davanti alla difesa: la squadra si abbassa compatta."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta alto a cercare il gol del ko: la squadra lo segue, si gioca ancora in avanti."},
+   {et:"Teniamo palla nella loro metà",es:c=>c.eroe+" chiede il pallone e lo fa girare lontano dalla nostra area: si rischia poco, ma si tira poco."}]},
  sotto_70:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Sotto al "+c.mn+"': il mister batte le mani e chiama tutti avanti, serve il gol.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" alza i giri: la squadra sale e comincia a tirare da ogni posizione."},{et:"Faccio di testa mia",es:c=>c.eroe+" tiene la calma e la posizione: meglio un'occasione vera che dieci tiri a caso."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" alza i giri: la squadra sale e comincia a tirare da ogni posizione."},{et:"Faccio di testa mia",es:c=>c.eroe+" tiene la calma e la posizione: meglio un'occasione vera che dieci tiri a caso."},
+   {et:"Spingo, ma restiamo corti",es:c=>c.eroe+" sale, ma chiede ai compagni di restare corti: si attacca senza lasciare buchi dietro."}]},
  pari_75:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Pari al "+c.mn+"': il mister chiede di provarci, «questa si puo' vincere».",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" chiama la palla e la squadra spinge: si cerca la porta piu' spesso."},{et:"Faccio di testa mia",es:c=>c.eroe+" preferisce non sbilanciarsi: un punto non si butta."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" chiama la palla e la squadra spinge: si cerca la porta piu' spesso."},{et:"Faccio di testa mia",es:c=>c.eroe+" preferisce non sbilanciarsi: un punto non si butta."},
+   {et:"Ci provo, ma solo sulle palle giuste",es:c=>c.eroe+" aspetta il momento: si tira quando c'e' lo spazio, non prima."}]},
  avanti_2:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Due gol di vantaggio al "+c.mn+"': il mister abbassa le mani, «gestiamo».",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" fa girare palla e abbassa il ritmo: la squadra amministra."},{et:"Faccio di testa mia",es:c=>c.eroe+" vuole il terzo: continua ad attaccare lo spazio."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" fa girare palla e abbassa il ritmo: la squadra amministra."},{et:"Faccio di testa mia",es:c=>c.eroe+" vuole il terzo: continua ad attaccare lo spazio."},
+   {et:"Gestisco, ma resto pericoloso",es:c=>c.eroe+" abbassa il ritmo ma non smette di guardare la porta: se si apre lo spazio, si riparte."}]},
  eroe_stanco:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha il fiato corto al "+c.mn+"': il mister gli fa segno di gestirsi.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si risparmia e resta in posizione: la squadra gli copre le spalle."},{et:"Faccio di testa mia",es:c=>c.eroe+" stringe i denti e continua a pressare: la squadra lo segue."}]},
- eroe_marcato:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha perso "+(c.duelliP|0)+" duelli col suo marcatore: il mister gli chiede di allargarsi e portarlo via.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si allarga e porta il marcatore fuori: in mezzo si apre spazio per i compagni."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta li' e lo sfida ancora: e' una questione personale."}]}
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" si risparmia e resta in posizione: la squadra gli copre le spalle."},{et:"Faccio di testa mia",es:c=>c.eroe+" stringe i denti e continua a pressare: la squadra lo segue."},
+   {et:"Rifiato col pallone",es:c=>c.eroe+" smette di pressare ma chiede palla corta: riprende fiato giocando, senza sparire."}]},
+ eroe_marcato:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha perso "+(c.duelliP|0)+" duelli col suo marcatore: il mister gli indica di allargarsi e portarlo via.",
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" si allarga e porta il marcatore fuori: in mezzo si apre spazio per i compagni."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta li' e lo sfida ancora: e' una questione personale."},
+   {et:"Mi abbasso a prendere palla",es:c=>c.eroe+" viene incontro e gioca di prima: il marcatore lo segue a meta' campo, davanti si respira un po'."}]}
 };
+/* [PO-234, 14/10 «Segui indicazioni, non ordine e dai almeno 3 opzioni!» — rosso __CPM_NO_234] la scheda COME LA VEDE il giocatore:
+   tre opzioni, lessico «indicazioni». Col rosso torna la scheda di prima del PO-234 (due opzioni, «Seguo l'ordine»), cosi' il
+   guardiano schede-234 puo' provare di vedere la differenza. Funzione pura, letta anche dal banco Node. */
+function schedaVista234(S,W){if(!S)return S;const W_=W||(typeof window!=='undefined'?window:null);
+  if(!(W_&&W_.__CPM_NO_234))return S;
+  return Object.assign({},S,{sc:S.sc.slice(0,2).map((o,i)=>(i===0&&S.ordine)?Object.assign({},o,{et:"Seguo l'ordine"}):o)});}
 const INTX669=[
  /* [7.669.0 v2 — MISURATO: una sola interazione a partita contro la banda 2-4, perche' quasi tutte
     le schede aspettavano che l'eroe avesse gia' inciso (duelli, occasioni). Ma una partita ha momenti
@@ -33002,7 +33035,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             panchina:!!onBenchRef.current,ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),
             fatte:_fatte226,ultima:(_fatte226.length?(_N.ultima|0):null)};
           const _f226=INT226.scegli(_c226);
-          if(_f226&&SCHEDE226[_f226]){const _S=SCHEDE226[_f226];_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
+          if(_f226&&SCHEDE226[_f226]){const _S=schedaVista234(SCHEDE226[_f226]);_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
             if(typeof window!=='undefined'){try{(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}).cand=(window.__CPM_INT226.cand|0)+1;}catch(_e){}}}
         }catch(_e226){}}
         if(!_on226&&!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
@@ -42598,7 +42631,72 @@ const NAT_CLUB_DATA={
   "Olanda":{id:"nl-nt",a:"NED",p:78,c:"#FF4F00",c2:"#fff",nat:"🇳🇱"},
   "Belgio":{id:"be-nt",a:"BEL",p:79,c:"#1a1a1a",c2:"#FDDA24",nat:"🇧🇪"},
 };
-function NationalCallupScreen({data,onPlay}){
+/* [PO-235, 14/10 «Schermata fuori standard» — rosso __CPM_NO_235] LA CONVOCAZIONE IN NAZIONALE NEL KIT DEL GIOCO. Era l'unica
+   schermata pre-partita fatta a mano: fondo a gradiente scuro dal colore della nazionale (il titolo bianco ci stava sopra, il
+   sottotitolo a 2,95:1), card bianche sul nero, bottone VERDE con l'emoji dello stadio. Ora e' come il pre-partita del kit
+   (src/18, «partita23»): occhiello maiuscolo, Card del kit (TH.card, RAD.md), token TH/FS/FW/SP, una sola azione piena —
+   il primario del kit, Btn size="lg". La maglia resta, piccola, dentro la card d'apertura: e' l'identita' della chiamata.
+   Guardiano convocazione-235 (360/412 px, prima convocazione e normale), rosso __CPM_NO_235 = la schermata di prima. */
+function NationalCallupScreen(props){
+  if(typeof window!=='undefined'&&window.__CPM_NO_235)return _NationalCallupScreenOld235(props);
+  const{data,onPlay}=props;const{nation,isFirst,newCaps,opp:dataOpp}=data;
+  const nd=NAT_DATA[nation]||{flag:"🏳",col:TH.primary,col2:"#fff",opp:"Avversario"};
+  const opp=dataOpp||nd.opp||"Avversario";
+  const oppNd=NAT_DATA[opp]||{flag:"🏳"};
+  const[shown,setShown]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
+  const occhiello={fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8};
+  return(
+    <div data-cpm="convocazione235" style={{width:"100%",maxWidth:480,margin:"0 auto",padding:`${SP.lg}px ${SP.lg}px ${SP.xxl}px`,boxSizing:"border-box",
+      display:"flex",flexDirection:"column",gap:SP.md,opacity:shown?1:0,transition:"opacity 0.45s"}}>
+      {isFirst&&<Card tone="warn" shadow={false} density="tight">
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.txAmber}}>Traguardo di carriera · prima convocazione</div>
+      </Card>}
+      <Card>
+        <div style={occhiello}>Convocazione nazionale</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{fontSize:FS.display,lineHeight:1,flexShrink:0}}>{nd.flag}</div>
+          <div style={{minWidth:0,flex:1}}>
+            <div style={{fontSize:FS.title,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>Nazionale {nation}</div>
+            <div style={{fontSize:FS.small,color:TH.muted}}>Presenza n. {newCaps} · Amichevole internazionale</div>
+          </div>
+          <svg width="46" height="52" viewBox="0 0 92 104" aria-hidden style={{flexShrink:0}}>
+            <path d="M23 13 Q11 16 7 26 L2 47 L21 49 L21 92 L71 92 L71 49 L90 47 L85 26 Q81 16 69 13 Q59 7 46 6 Q33 7 23 13Z" fill={nd.col} stroke={TH.cardBorder} strokeWidth="2"/>
+            <path d="M31 13 Q38 22 46 22 Q54 22 61 13" fill="none" stroke={nd.col2} strokeWidth="2"/>
+            <text x="46" y="65" textAnchor="middle" fill={nd.col2} fontSize="24" fontWeight="900" fontFamily="inherit">10</text>
+          </svg>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Prossima partita</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:SP.sm}}>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{nd.flag}</span>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nation}</span>
+          </div>
+          <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.muted}}>vs</div>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",justifyContent:"flex-end",gap:SP.sm}}>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp}</span>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{oppNd.flag}</span>
+          </div>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Bonus dopo la partita</div>
+        <div style={{display:"flex",gap:SP.sm,marginTop:SP.sm}}>
+          {[{l:"Popolarità",v:"+8",c:TH.txGreen},{l:"Valore",v:"+€0.15M",c:TH.txAmber},{l:"Morale",v:"+12",c:TH.brandText}].map(b=>(
+            <div key={b.l} style={{flex:1,minWidth:0,background:TH.surface2,borderRadius:RAD.sm,padding:`${SP.sm}px ${SP.xs}px`,textAlign:"center"}}>
+              <div style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{b.l}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+    </div>
+  );
+}
+function _NationalCallupScreenOld235({data,onPlay}){
   const{nation,isFirst,newCaps,opp:dataOpp}=data;
   const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
   const{flag,col,col2}=nd;
