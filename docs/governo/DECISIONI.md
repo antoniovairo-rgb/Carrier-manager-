@@ -305,3 +305,7 @@ PO: «Pubblicare stasera la versione 163». La promozione è stata rifiutata dal
 3. **Classifica, bloccante c / CL194**: «Sì, ripara i salvataggi» — migrazione al caricamento che rimette in pari i gol mancanti delle gare di campionato già giocate dal vivo; eccezione zona G limitata a questo difetto (come 13/10), interruttore rosso e guardiano.
 4. **Ramo `sviluppo/portiere-229`** (portiere v1 superato): «Sì, cancellalo».
 5. **Guardia aggiornata** (PO: «TI AUTORIZZO A FARLA DA SOLO!», 14/10 08:15): `cpm-guardie` accetta ora anche le catene `mirata` e `notte`; test della guardia 4/4.
+
+## 14/10 mattina — chiudere L1 e collaudo dopo ogni release
+
+PO: «Terminiamo il prima possibile L1!» e «Collaudo approfondito dopo ogni release!». Questionario: «Tutto L1 subito» (supera il rinvio del 13/10 di PO-022, PO-068, PO-123/143, PO-220, PO-228 a dopo il 17/10) e «Dopo ogni release» (una collaudatrice nuova sulla versione appena pubblicata, rapporto nel backlog al giro successivo). Avviati: giro 16 (PO-228 + PO-220), giro 17 (PO-022, PO-068, PO-123/143), collaudatrice release 7.999.164 (ramo collaudo/release-164).

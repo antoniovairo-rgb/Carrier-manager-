@@ -26,6 +26,9 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/portiere-lato-229 | — (archiviata) | giro 12 CONSEGNATO (rapporto docs/sviluppo/RAPPORTO-giro12.md, mirata 48/49, nomi-219 rosso da verificare): da integrare dopo la catena della 7.999.165 | 14/10 08:32 |
 | sviluppo/schede-convocazione-234 | session_014yKfU8BWZjoFzFBKLqieiV | giro 14 (Opus, base 7.999.165): PO-234 indicazioni + 3 opzioni, PO-235 convocazione al kit, PO-236 bambini per entrambe le squadre | 14/10 08:32 |
 | sviluppo/fluidita-crediti-237 | session_01ExgJwjbt3LXJiv3DywYD3K | giro 15 (Opus, base 7.999.165): PO-237 prima partita scattosa (misura e correzione), PO-238 sezione Crediti nella home | 14/10 08:33 prossimo: PO-241 (attesa dei corpi furba: caricamento anticipato + statistiche/curiosità al posto di «Caricamento giocatori…»), stesso ramo, insieme a PO-237 |
+| sviluppo/statistiche-difesa-228 | session_01QMZrKUvYLkvfzuhdFecwAv | giro 16 (Opus, base 7.999.165): PO-228 ritaratura dal ramo sviluppo/ritaratura-228 + verifica dal vivo, PO-220 chiusure difensive | 14/10 10:02 |
+| sviluppo/scene-gesti-022 | session_01AcPBcxRGtnHXYkP1AXshuf | giro 17 (Opus, base 7.999.165): PO-022 scene dal motore, PO-068 gesti, PO-123/143 | 14/10 10:02 |
+| collaudo/release-164 | session_01Nb2GUnv45TVic7BJoDvRhw | collaudo approfondito della 7.999.164 sul sito (decisione PO 14/10: dopo ogni release) | 14/10 09:58 |
 | sviluppo/classifica-194-migrazione | session_01XY5WuoiCRnGTNuu8tSWKKQ | giro 13 (Opus, base 7.999.165): CL194, riparare la classifica nei salvataggi esistenti (decisione PO 14/10, eccezione zona G) | 14/10 08:04 |
 | collaudo/sessione-collaudatrice-161 | — | giro 9b consegnato (PO-230 finestre 6/10 per valori, PO-231 1 partita su 3); sessione archiviata | 13/10 |
 | collaudo/partite-vere | — | giro 6 consegnato (64ec3f21, PO-228 k1-k10); sessione archiviata | 12/10 09:31 |
