@@ -1,5 +1,117 @@
 [
  {
+  "data": "2026-10-14 19:44",
+  "versione": "7.999.166",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 21
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 699
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 189
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 661
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 485
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 10
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 536
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 470
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 736
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 514
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1082
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 229
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 316
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 485
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1627
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1111
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 09:19",
   "versione": "7.999.166",
   "catena": "notte",
@@ -7435,58 +7547,6 @@
     "passo": "piedi-203",
     "ok": true,
     "s": 633
-   }
-  ]
- },
- {
-  "data": "2026-10-05 21:41",
-  "versione": "7.999.139",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 667
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 717
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 504
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 0
    }
   ]
  }
