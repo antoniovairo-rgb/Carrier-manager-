@@ -4005,6 +4005,12 @@ function pickTelecronisti(seed){const i=Math.abs(hashStr(String(seed||"x")))%TEL
      un ricevente libero, e porta il suo nome; il pallonetto solo nell'1 contro 1; pesi dalle statistiche dell'eroe;
    - testo e intro: modelli con i nomi del cast. Scelta seminata (seed): la partita resta riproducibile.
    Rosso __CPM_NO_P6C (si torna alla scheda scritta). */
+/* [giro 17 PO-068 — LE VARIANTI DEI GESTI NELLE SCENE DEL MOTORE. Rosso __CPM_NO_REG068] MISURATO (sonda gesti-motore-068, 8.100 scene
+   generate): i registri del motore raggiungevano 18 varianti di GESTI su 26; otto le raggiungeva solo il catalogo scritto, che in partita
+   non si usa piu'. Sei hanno una clip vera e tornano qui con etichette gia' disegnate dal catalogo: cross a rientrare (cross_cutback),
+   stacco in corsa (header_diving), sterzata (dribble_outside), doppio passo (double_step) e roulette (roulette) come preparazione del
+   doppio gesto, lancio smarcante (pass_lofted). Restano fuori, dichiarate: tackle/press e tackle/call (clip nulla in GESTI). */
+const _r068=()=>!(typeof window!=='undefined'&&window.__CPM_NO_REG068);
 const P6_CONCLUSIONE=[
   {k:'potenza',l:'💥 Tiro di potenza',st:'tiro',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>1.2},
   {k:'piazzato',l:'🎯 Piazzato nell\'angolo basso',st:'tecnica',b:4,rew:'goal',fail:'miss',n:12,w:(c)=>c.press<1.5?1.4:0.9},
@@ -4012,6 +4018,7 @@ const P6_CONCLUSIONE=[
   {k:'prima',l:'⚡ Conclusione di prima',st:'tiro',b:0,rew:'goal',fail:'miss',n:12,w:(c)=>c.press>=1.5?1.3:0.6},
   {k:'finta',l:'🌀 Finta e tiro',st:'dribbling',b:0,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press>=1?1.1:0.5},
   {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>c.uno?1.5:0},
+  {k:'roulette',l:'🌀 Roulette e tiro',st:'dribbling',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>_r068()&&c.press>=1?0.8:0},/* [giro 17 PO-068] */
   {k:'assist',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.3:0},
 ];
 /* [7.999.148 Passo 6, strato 2] costruttore comune degli strati: posizione dal motore, pesi dalle statistiche, scelta seminata.
@@ -4087,11 +4094,15 @@ const P6_FASCIA=[
   {k:'teso',l:'⚡ Cross basso teso',st:'tecnica',b:1,rew:'assist',fail:'intercept',n:10,w:(c)=>c.press<2?1:0.7},
   {k:'fondo',l:'🌀 Dribbling sul fondo e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>c.press>=1?1:0.6},
   {k:'rientro',l:'🎯 Rientra e tira',st:'tecnica',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>0.8},
+  {k:'cutback',l:'↗️ Cross a rientrare',st:'passaggio',b:1,rew:'assist',fail:'intercept',n:10,w:(c)=>_r068()?0.8:0},/* [giro 17 PO-068] */
+  {k:'sterzata',l:'🌀 Sterzata esterna e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>_r068()&&c.press>=1?0.7:0},
+  {k:'doppiopasso',l:'🌀 Doppio passo e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>_r068()&&c.press>=1?0.7:0},
   {k:'appoggio',l:(c)=>'🤝 Appoggio corto per '+(c.ricVicino||'il compagno'),st:'passaggio',b:5,rew:'assist',fail:'intercept',n:7,w:(c)=>0.7},
 ];
 const P6_LINEE=[
   {k:'filtrante',l:(c)=>'🎯 Filtrante per '+c.ric,st:'passaggio',b:2,rew:'assist',fail:'intercept',n:10,w:(c)=>c.ric?1.5:0},
   {k:'unodue',l:(c)=>'🔁 Uno-due con '+(c.ricVicino||'il compagno'),st:'passaggio',b:3,rew:'assist',fail:'intercept',n:9,w:(c)=>1},
+  {k:'lancio',l:(c)=>'🎯 Lancio smarcante per '+c.ric,st:'passaggio',b:0,rew:'assist',fail:'intercept',n:10,w:(c)=>_r068()&&c.ric?0.8:0},/* [giro 17 PO-068] */
   {k:'fuori',l:'💥 Tiro da fuori',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>c.press<2?1:0.6},
   {k:'conduci',l:'🏃 Conduci palla al piede e tira',st:'velocità',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press<1.5?1:0.5},
   {k:'finta',l:'🌀 Finta e cambio di passo',st:'dribbling',b:0,rew:'assist',fail:'intercept',n:14,w:(c)=>c.press>=1?1:0.6},
@@ -4125,6 +4136,7 @@ const P6_CROSS=[
   {k:'testa-angolo',l:'🎯 Testa piazzata all\'angolo',st:'fisico',b:4,rew:'goal',fail:'miss',n:13,w:(c)=>1.0},
   {k:'volee',l:'⚽ Volée di collo potente',st:'tiro',b:2,rew:'goal',fail:'miss',n:16,w:(c)=>c.angolo?0.6:1.0},
   {k:'controllo',l:'🎯 Controllo e tiro fermo',st:'tecnica',b:6,rew:'goal',fail:'miss',n:12,w:(c)=>c.angolo?0.3:(c.press>=1.5?0.5:1.0)},
+  {k:'stacco',l:'✈️ Stacco in corsa potente',st:'fisico',b:4,rew:'goal',fail:'miss',n:16,w:(c)=>_r068()?0.8:0},/* [giro 17 PO-068] */
 ];
 function scenaDalMotoreCross(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6X||window.__CPM_NO_P6))return null;}catch(_e){}

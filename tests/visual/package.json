@@ -379,6 +379,7 @@
     "rincorsa-144": "node rincorsa-144.mjs",
     "scena-motore-147": "node scena-motore-147.mjs",
     "catalogo-022": "node catalogo-022.mjs",
+    "gesti-motore-068": "node gesti-motore-068.mjs",
     "manovre-150": "node manovre-150.mjs",
     "esiti-218": "node esiti-218.mjs",
     "cross-218": "node cross-218.mjs",

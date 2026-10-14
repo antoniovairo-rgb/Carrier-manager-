@@ -29,7 +29,7 @@ const MAPPA = [
   [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219']],
   [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224']],
   [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214']],
-  [/src\/04-/, ['catalogo-022', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],/* [giro 17] i generatori delle scene dell'eroe vivono in src/04 */
+  [/src\/04-/, ['catalogo-022', 'gesti-motore-068', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],/* [giro 17] i generatori delle scene dell'eroe vivono in src/04 */
   [/src\/0[0-8]-/, ['classifica-102', 'partita-rigiocata-194', 'save-compat']],
 ];
 if (process.argv[2] === 'mirata') {
