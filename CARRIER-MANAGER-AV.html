@@ -11933,6 +11933,34 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pg95on=_pg95u?_pg95u[1]==='1':_pg95p!=='0';
   if(_pg95on)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
 }catch(e){}}
+/* [PO-237 «La partita, in particolare la prima è un pò scattosa»] PRE-CARICAMENTO DEI CORPI. Misurato (sonda
+   tests/visual/prima-partita-237.mjs, stessa pagina, GLB acceso, finestre ancorate alla creazione del renderer della partita):
+   nella PRIMA partita si scaricavano e interpretavano a 0,5 s dal via 22 GLB — corpo «regular» + slim/stocky + 19 clip — e poi i
+   corpi CGTrader (lod0/1/2 + 3 file di clip) e le teste PNG: 1.549 ms di parsing GLB e 13 blocchi lunghi, contro 0 ms e 10 della
+   seconda partita (che li trova in _glbCache). Ora si caricano all'avvio, UNO ALLA VOLTA e nei momenti d'ozio, con le STESSE URL
+   della partita; le teste CGTrader si decodificano in anticipo (img.decode()) e la partita le riusa da window.__CPM_TESTE237 senza
+   riscaricarle. Dopo: 0 ms di parsing GLB in partita, 6 blocchi lunghi contro 5. Shader e caricamento delle texture in GPU si pagano
+   a OGNI partita (contesto WebGL nuovo): non sono un costo della prima e qui non si toccano. Corpi e teste CGTrader solo nel modo
+   CGTrader di default; il corpo «regular» in ogni modo GLB. Rosso __CPM_NO_PRE237 (la prima partita torna a pagare tutto). */
+if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
+  const _pre237on=(function(){try{return localStorage.getItem('cpm-glb')!=='0'&&!/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return true;}})();
+  if(_pre237on)setTimeout(function(){try{
+    if(window.__CPM_NO_PRE237)return;
+    const _cg237=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';
+    const idle=f=>{try{if(typeof requestIdleCallback==='function')requestIdleCallback(f,{timeout:1500});else setTimeout(f,60);}catch(e){setTimeout(f,60);}};
+    const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};
+    if(_cg237)['brown','black','blond','auburn'].forEach(function(k){try{if(T[k])return;const im=new Image();im.decoding='async';im.src='./assets/hair-colors/source-textures/HEAD_hair_'+k+'.png';
+      const fatto=function(){T[k]=im;};if(im.decode)im.decode().then(fatto).catch(function(){});else im.onload=fatto;}catch(e){}});
+    /* il corpo «regular» e le sue 19 clip li carica la partita in ogni modo GLB (src/12, _bodyUrl907 e la lista accanto); il
+       pre-caricamento 6.95.0 qui sopra scarica footballer.glb/anim-*.glb, che quella lista non contiene. Stesse URL esatte, cosi'
+       _glbCache le riconosce. */
+    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
+      .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
+    const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
+    const prossimo=function(i){if(i>=L.length){st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo(i+1);});});};
+    prossimo(0);
+  }catch(e){}},2500);
+}catch(e){}}
 function colorCharGLB(model,jerHex){
   model.traverse(node=>{
     if(!node.isMesh)return;
@@ -14278,7 +14306,7 @@ function ThreeMatchView(props){
          materiale testa, mai la geometria né l''incarnato a runtime. */
       const _cgtraderHairMaterialCache=new Map(),_cgtraderHairTextureCache=new Map(),_cgtraderHairLoader=new THREE.TextureLoader();
       const _cgtraderHairVariant=hex=>{const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';};
-      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
+      const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);{/* [PO-237] testa gia' decodificata all'avvio (11-ui-kit, __CPM_TESTE237): pronta subito, niente secondo download/decodifica. Rosso __CPM_NO_PRE237 */const _im237=(typeof window!=='undefined'&&!window.__CPM_NO_PRE237&&window.__CPM_TESTE237)?window.__CPM_TESTE237[key]:null;if(_im237&&_im237.complete&&_im237.naturalWidth>0){const t237=new THREE.Texture(_im237);t237.flipY=false;if('colorSpace' in t237&&THREE.SRGBColorSpace)t237.colorSpace=THREE.SRGBColorSpace;t237.needsUpdate=true;t237._ok232=true;_cgtraderHairTextureCache.set(key,t237);return t237;}}const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
       /* [7.999.162 PO-232] LA TESTA SPARIVA FINCHE' LA SUA TEXTURE NON ERA ARRIVATA. Il materiale della testa (Material.002) riceveva subito
          la mappa dei capelli (PNG da ~2,5 MB) ancora vuota; three r128 nell'attesa campiona una texture nera con alfa 0, e il ritaglio
          alphaTest 0,5 (ALPHAFIX) scartava l'intera testa: corpi senza testa per tutto il download. Ora la mappa si scambia SOLO a
@@ -42008,9 +42036,54 @@ function Wordmark({size=30,color,elite="#f59e0b",inRiga=false}){
 /* ========================================
    HOME SCREEN — slot salvataggio
 ======================================== */
+/* [PO-238, richiesta PO 14/10 «Nella home Page del gioco, non in carriera aggiungi una sezione crediti per elencare le risorse
+   utilizzate nel gioco»] CREDITI. Ogni voce viene da una fonte nel repo (campo `fonte`, che la schermata mostra): nessun autore,
+   licenza o indirizzo e' scritto a memoria. Dove la fonte non dice autore o licenza, la voce porta `manca` e la schermata scrive
+   «fonte da completare». Elenco delle voci da completare: docs/sviluppo/RAPPORTO-giro15.md. Rosso __CPM_NO_CREDITI238 (la voce sparisce). */
+const CREDITI238=[
+  {sez:"Modelli 3D e animazioni",voci:[
+    {n:"Calciatori in campo — «Realistic Soccer Player v2 rigged»",d:"Corpi e 33 animazioni dei giocatori in partita. Acquistato dal PO su CGTrader.",lic:"CGTrader — Royalty Free License (www.cgtrader.com/pages/terms-and-conditions)",manca:"autore/venditore, pagina del prodotto e conferma del listino Royalty Free",fonte:"tests/character-lab/CLIP_REGISTRY.md"},
+    {n:"Animazioni Mixamo (Adobe)",d:"Clip di movimento e gesti tecnici (assets/cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb, assets/anim-*.glb) e modello CH38.",lic:"Mixamo: royalty free anche per videogiochi (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)",fonte:"tests/character-lab/CLIP_REGISTRY.md · assets/mixamo/README.md"},
+    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (Female_Adult_15, Male_Adult_03, Female_Adult_11).",lic:"MIT — github.com/microsoft/Microsoft-Rocketbox",fonte:"docs/archivio/EXTRA-FIELD-MODELS.md"},
+    {n:"Corpo «Regular Male» (korward-regular-player)",d:"Corpo di ripiego e scene fuori dal campo, varianti slim/stocky e clip regular-anim.",manca:"origine, autore e licenza",fonte:"docs/ANIMATION_AUDIT_2026-09-19.md"}]},
+  {sez:"Librerie software",voci:[
+    {n:"React e ReactDOM 18.2.0",d:"Interfaccia del gioco.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/react/package.json"},
+    {n:"Three.js r128 (con GLTFLoader e SkeletonUtils)",d:"Grafica 3D della partita e delle scene. Autore indicato: mrdoob.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/three/package.json"},
+    {n:"Babel standalone 7.23.6",d:"Traduzione del codice nel browser (versione sorgente; la build per lo store e' precompilata). The Babel Team.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/@babel/standalone/package.json"},
+    {n:"DiceBear",d:"Generatore degli avatar illustrati. Copyright (c) 2024 Florian Körner.",lic:"MIT — github.com/dicebear/dicebear",manca:"versione del pacchetto",fonte:"assets/dicebear-avatars.min.js"}]},
+  {sez:"Illustrazioni e immagini",voci:[
+    {n:"Avataaars — Pablo Stanley",d:"Stile dell'avatar dell'eroe (via DiceBear). avataaars.com",lic:"Free for personal and commercial use",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Avatar Illustration System — Micah Lanier",d:"Stile degli avatar di staff e personaggi (via DiceBear). figma.com/community/file/829741575478342595",lic:"CC BY 4.0 — creativecommons.org/licenses/by/4.0",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Ritratti delle figurine",d:"Volti dei personaggi (assets/portraits).",manca:"origine, autore e termini d'uso",fonte:"docs/FIGURINE-VOLTI.md · assets/portraits/ai/manifest.json"},
+    {n:"Icone dell'app e grafiche dello store",d:"Disegnate dal gioco stesso (tools/gen-pwa-icons.mjs, tools/gen-store-graphics.mjs).",lic:"Realizzate per Korward Elite",fonte:"tools/gen-pwa-icons.mjs · tools/gen-store-graphics.mjs"}]},
+  {sez:"Caratteri",voci:[
+    {n:"Great Vibes",d:"La scritta «Elite» del marchio (incorporato nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"},
+    {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
+  {sez:"Suoni",voci:[
+    {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
+    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
+    {n:"Brusio di folla — Freesound «football crowd 3» (69245)",d:"Campione fornito dal PO.",manca:"autore, licenza e indirizzo",fonte:"assets/audio/sfx/crowd/README.md"}]}
+];
+const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
+function Crediti238({onClose}){
+  return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
+    footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
+    <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite. Le voci segnate «fonte da completare» sono in verifica.</div>
+    {CREDITI238.map(g=>(<div key={g.sez} data-cpm="crediti238-sez" style={{marginBottom:SP.lg}}>
+      <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1,textTransform:"uppercase",color:TH.brandText,marginBottom:SP.xs}}>{g.sez}</div>
+      {g.voci.map(v=>(<div key={v.n} data-cpm="crediti238-voce" style={{padding:`${SP.sm}px 0`,borderTop:`1px solid ${TH.divider}`}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{v.n}</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2,overflowWrap:"anywhere"}}>{v.d}</div>
+        {v.lic&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic}</div>}
+        {v.manca&&<div data-cpm="crediti238-manca" style={{fontSize:FS.caption,color:TH.txRed,fontWeight:FW.bold,marginTop:2}}>Fonte da completare: {v.manca}</div>}
+      </div>))}
+    </div>))}
+  </Modal>);
+}
 function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const _dk=window.innerWidth>=640;
   const[confirmDel,setConfirmDel]=useState(null);
+  const[crediti238,setCrediti238]=useState(false);/* [PO-238] */
   const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
   useEffect(()=>{
     const onKey=e=>{
@@ -42140,6 +42213,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
+      {crediti238On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
+        <button data-cpm="crediti238-voce-home" onClick={()=>setCrediti238(true)} className="cpm-press cpm-focus" style={{background:"none",border:"none",cursor:"pointer",color:TH.muted,fontSize:FS.small,fontWeight:FW.bold,textDecoration:"underline",padding:SP.sm}}>Crediti</button>
+      </div>}
+      {crediti238&&<Crediti238 onClose={()=>setCrediti238(false)}/>}
     </div>
   );
 }

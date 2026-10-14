@@ -113,9 +113,54 @@ function Wordmark({size=30,color,elite="#f59e0b",inRiga=false}){
 /* ========================================
    HOME SCREEN — slot salvataggio
 ======================================== */
+/* [PO-238, richiesta PO 14/10 «Nella home Page del gioco, non in carriera aggiungi una sezione crediti per elencare le risorse
+   utilizzate nel gioco»] CREDITI. Ogni voce viene da una fonte nel repo (campo `fonte`, che la schermata mostra): nessun autore,
+   licenza o indirizzo e' scritto a memoria. Dove la fonte non dice autore o licenza, la voce porta `manca` e la schermata scrive
+   «fonte da completare». Elenco delle voci da completare: docs/sviluppo/RAPPORTO-giro15.md. Rosso __CPM_NO_CREDITI238 (la voce sparisce). */
+const CREDITI238=[
+  {sez:"Modelli 3D e animazioni",voci:[
+    {n:"Calciatori in campo — «Realistic Soccer Player v2 rigged»",d:"Corpi e 33 animazioni dei giocatori in partita. Acquistato dal PO su CGTrader.",lic:"CGTrader — Royalty Free License (www.cgtrader.com/pages/terms-and-conditions)",manca:"autore/venditore, pagina del prodotto e conferma del listino Royalty Free",fonte:"tests/character-lab/CLIP_REGISTRY.md"},
+    {n:"Animazioni Mixamo (Adobe)",d:"Clip di movimento e gesti tecnici (assets/cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb, assets/anim-*.glb) e modello CH38.",lic:"Mixamo: royalty free anche per videogiochi (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)",fonte:"tests/character-lab/CLIP_REGISTRY.md · assets/mixamo/README.md"},
+    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (Female_Adult_15, Male_Adult_03, Female_Adult_11).",lic:"MIT — github.com/microsoft/Microsoft-Rocketbox",fonte:"docs/archivio/EXTRA-FIELD-MODELS.md"},
+    {n:"Corpo «Regular Male» (korward-regular-player)",d:"Corpo di ripiego e scene fuori dal campo, varianti slim/stocky e clip regular-anim.",manca:"origine, autore e licenza",fonte:"docs/ANIMATION_AUDIT_2026-09-19.md"}]},
+  {sez:"Librerie software",voci:[
+    {n:"React e ReactDOM 18.2.0",d:"Interfaccia del gioco.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/react/package.json"},
+    {n:"Three.js r128 (con GLTFLoader e SkeletonUtils)",d:"Grafica 3D della partita e delle scene. Autore indicato: mrdoob.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/three/package.json"},
+    {n:"Babel standalone 7.23.6",d:"Traduzione del codice nel browser (versione sorgente; la build per lo store e' precompilata). The Babel Team.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/@babel/standalone/package.json"},
+    {n:"DiceBear",d:"Generatore degli avatar illustrati. Copyright (c) 2024 Florian Körner.",lic:"MIT — github.com/dicebear/dicebear",manca:"versione del pacchetto",fonte:"assets/dicebear-avatars.min.js"}]},
+  {sez:"Illustrazioni e immagini",voci:[
+    {n:"Avataaars — Pablo Stanley",d:"Stile dell'avatar dell'eroe (via DiceBear). avataaars.com",lic:"Free for personal and commercial use",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Avatar Illustration System — Micah Lanier",d:"Stile degli avatar di staff e personaggi (via DiceBear). figma.com/community/file/829741575478342595",lic:"CC BY 4.0 — creativecommons.org/licenses/by/4.0",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Ritratti delle figurine",d:"Volti dei personaggi (assets/portraits).",manca:"origine, autore e termini d'uso",fonte:"docs/FIGURINE-VOLTI.md · assets/portraits/ai/manifest.json"},
+    {n:"Icone dell'app e grafiche dello store",d:"Disegnate dal gioco stesso (tools/gen-pwa-icons.mjs, tools/gen-store-graphics.mjs).",lic:"Realizzate per Korward Elite",fonte:"tools/gen-pwa-icons.mjs · tools/gen-store-graphics.mjs"}]},
+  {sez:"Caratteri",voci:[
+    {n:"Great Vibes",d:"La scritta «Elite» del marchio (incorporato nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"},
+    {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
+  {sez:"Suoni",voci:[
+    {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
+    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
+    {n:"Brusio di folla — Freesound «football crowd 3» (69245)",d:"Campione fornito dal PO.",manca:"autore, licenza e indirizzo",fonte:"assets/audio/sfx/crowd/README.md"}]}
+];
+const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
+function Crediti238({onClose}){
+  return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
+    footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
+    <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite. Le voci segnate «fonte da completare» sono in verifica.</div>
+    {CREDITI238.map(g=>(<div key={g.sez} data-cpm="crediti238-sez" style={{marginBottom:SP.lg}}>
+      <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1,textTransform:"uppercase",color:TH.brandText,marginBottom:SP.xs}}>{g.sez}</div>
+      {g.voci.map(v=>(<div key={v.n} data-cpm="crediti238-voce" style={{padding:`${SP.sm}px 0`,borderTop:`1px solid ${TH.divider}`}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{v.n}</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2,overflowWrap:"anywhere"}}>{v.d}</div>
+        {v.lic&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic}</div>}
+        {v.manca&&<div data-cpm="crediti238-manca" style={{fontSize:FS.caption,color:TH.txRed,fontWeight:FW.bold,marginTop:2}}>Fonte da completare: {v.manca}</div>}
+      </div>))}
+    </div>))}
+  </Modal>);
+}
 function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const _dk=window.innerWidth>=640;
   const[confirmDel,setConfirmDel]=useState(null);
+  const[crediti238,setCrediti238]=useState(false);/* [PO-238] */
   const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
   useEffect(()=>{
     const onKey=e=>{
@@ -245,6 +290,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
+      {crediti238On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
+        <button data-cpm="crediti238-voce-home" onClick={()=>setCrediti238(true)} className="cpm-press cpm-focus" style={{background:"none",border:"none",cursor:"pointer",color:TH.muted,fontSize:FS.small,fontWeight:FW.bold,textDecoration:"underline",padding:SP.sm}}>Crediti</button>
+      </div>}
+      {crediti238&&<Crediti238 onClose={()=>setCrediti238(false)}/>}
     </div>
   );
 }
