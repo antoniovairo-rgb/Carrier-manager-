@@ -1,5 +1,234 @@
 [
  {
+  "data": "2026-10-14 17:56",
+  "versione": "7.999.167",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 4
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 12
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 23
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 542
+   },
+   {
+    "passo": "brusio-238",
+    "ok": true,
+    "s": 13
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 22
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 88
+   },
+   {
+    "passo": "classifica-194",
+    "ok": true,
+    "s": 266
+   },
+   {
+    "passo": "crediti-238",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "attesa-241",
+    "ok": true,
+    "s": 93
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 106
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 212
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 98
+   },
+   {
+    "passo": "buildup-sync",
+    "ok": true,
+    "s": 170
+   },
+   {
+    "passo": "po229-gi38",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 319
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 720
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 528
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 589
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 428
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 537
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 191
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 673
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 494
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 8
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 729
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 235
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 4300
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 212
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 804,
+    "instabile": true,
+    "prove": 2
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 424
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1098
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 1626
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 512
+   },
+   {
+    "passo": "bambini-236",
+    "ok": true,
+    "s": 1161
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 304
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 2166
+   },
+   {
+    "passo": "interazioni-226",
+    "ok": true,
+    "s": 1139
+   },
+   {
+    "passo": "schede-234",
+    "ok": true,
+    "s": 581
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 443
+   }
+  ]
+ },
+ {
   "data": "2026-10-14 09:19",
   "versione": "7.999.166",
   "catena": "notte",
@@ -7435,58 +7664,6 @@
     "passo": "piedi-203",
     "ok": true,
     "s": 633
-   }
-  ]
- },
- {
-  "data": "2026-10-05 21:41",
-  "versione": "7.999.139",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 3
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 667
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 717
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 504
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 0
    }
   ]
  }
