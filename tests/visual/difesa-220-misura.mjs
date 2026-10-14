@@ -86,6 +86,9 @@ if (!(V.R.n >= 3)) g.push(`verde: solo ${V.R.n} scene difensive misurate (servon
 if (V.R.maiPartiti > Math.max(1, Math.round(0.15 * (V.R.n + V.R.maiPartiti)))) g.push(`verde: ${V.R.maiPartiti} scene col contrasto mai partito nella sua scena (attesa del pallone, tetto 0,5 s)`);
 if (V.fuori.length) g.push(`verde: ${V.fuori.length} contrasti giocati fuori dalla loro scena (${V.fuori.map(s => s.ph).join(', ')})`);
 if (!Rr.fuori.length) console.log('⚠️ rosso: nessun contrasto fuori scena nel campione — la prova del rosso dipende dalle catene di scene');
-if (g.length) { console.log('❌ difesa-220-scena'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+/* il runner della catena tiene le ultime 3 righe tagliate a 240 caratteri: le righe di riassunto sono lunghe e il motivo del rosso
+   finiva fuori (giro 16, prima prova rossa in catena non diagnosticabile). L'ultima riga porta da sola esito e motivi. */
+console.log(`verde n=${V.R.n} fuori=${V.fuori.length} mai=${V.R.maiPartiti} · rosso n=${Rr.R.n} fuori=${Rr.fuori.length}`);
+if (g.length) { console.log('❌ difesa-220-scena · ' + g.join(' · ')); process.exit(1); }
 console.log(`✅ difesa-220-scena verde: ${V.R.n} scene, 0 contrasti fuori scena (rosso: ${Rr.fuori.length} contrasti fuori scena)`);
 process.exit(0);
