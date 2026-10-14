@@ -1,0 +1,621 @@
+[
+ {
+  "seme": 11,
+  "pm": true,
+  "score": {
+   "home": 3,
+   "away": 0
+  },
+  "scene": [
+   {
+    "r": {
+     "label": "💥 Tiro da fuori",
+     "fam": null,
+     "ovl": "Finalizzazione perfetta!",
+     "ok": true,
+     "ev": [
+      "pronto",
+      "tuffo",
+      "tiro:goal({P})",
+      "gol({P})",
+      "pressione(QUINN)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 146,
+    "gest": "gk_dive",
+    "gkFr": 90,
+    "maxX": 100.6,
+    "inRete": true,
+    "oltre": true,
+    "ultimo": [
+     "hl_result",
+     99.16,
+     53.31,
+     0.29
+    ],
+    "primoResult": [
+     "hl_result",
+     57.62,
+     49.55,
+     0.22
+    ],
+    "f1": "g-s11-scena1-esito+1.2s.png",
+    "f2": "g-s11-scena1-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🛑 Chiusura immediata",
+     "fam": null,
+     "ovl": "Anticipo da campione!",
+     "ok": true,
+     "ev": [
+      "contrasto({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 87,
+    "gest": null,
+    "gkFr": 48,
+    "maxX": 74.41,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     68.57,
+     36.26,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     70.57,
+     36.96,
+     0.22
+    ],
+    "f1": "g-s11-scena2-esito+1.2s.png",
+    "f2": "g-s11-scena2-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "📐 Curva a rientrare",
+     "fam": "wide",
+     "ovl": "Sfiora il vantaggio",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tuffo",
+      "tiro:fuori({P})",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 127,
+    "gest": "gk_dive",
+    "gkFr": 86,
+    "maxX": 98.46,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     98.46,
+     55.58,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     84.4,
+     52.9,
+     0.22
+    ],
+    "f1": "g-s11-scena3-esito+1.2s.png",
+    "f2": "g-s11-scena3-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🎯 Testa piazzata all'angolo",
+     "fam": "blocked",
+     "ovl": "Il difensore si oppone",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tiro:blocked({P})",
+      "murato(MARSHALL)",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 167,
+    "gest": null,
+    "gkFr": 109,
+    "maxX": 97,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     85.37,
+     50.81,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     97,
+     97.5,
+     0.22
+    ],
+    "f1": "g-s11-scena4-esito+1.2s.png",
+    "f2": "g-s11-scena4-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🎯 Testa piazzata all'angolo",
+     "fam": "wide",
+     "ovl": "Occasione mancata",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tuffo",
+      "tiro:fuori({P})",
+      "rammarico({P})",
+      "pressione(MARSHALL)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 173,
+    "gest": "gk_dive",
+    "gkFr": 114,
+    "maxX": 98.4,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     98.4,
+     44.51,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     79.44,
+     78.32,
+     0.44
+    ],
+    "f1": "g-s11-scena5-esito+1.2s.png",
+    "f2": "g-s11-scena5-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🤝 Servi GRAY libero",
+     "fam": null,
+     "ovl": "Assist!",
+     "ok": true,
+     "ev": [
+      "pronto",
+      "passaggio",
+      "tuffo",
+      "tiro:goal(GRAY)",
+      "gol(GRAY)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 183,
+    "gest": "gk_dive",
+    "gkFr": 111,
+    "maxX": 100.6,
+    "inRete": true,
+    "oltre": true,
+    "ultimo": [
+     "hl_result",
+     99.17,
+     54.89,
+     0.27
+    ],
+    "primoResult": [
+     "hl_result",
+     72.7,
+     52.2,
+     0.22
+    ],
+    "f1": "g-s11-scena6-esito+1.2s.png",
+    "f2": "g-s11-scena6-esito+2.4s.png"
+   }
+  ],
+  "corpi": [
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 4,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 1,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 5,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 5,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 2,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 1,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   }
+  ]
+ },
+ {
+  "seme": 12,
+  "pm": true,
+  "score": {
+   "home": 1,
+   "away": 2
+  },
+  "scene": [
+   {
+    "r": {
+     "label": "🔁 Uno-due con HOWARD",
+     "fam": "intercepted",
+     "ovl": "Ti portano via il pallone",
+     "ok": false,
+     "ev": [
+      "passaggio",
+      "intercetto(QUINN)",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 130,
+    "gest": null,
+    "gkFr": 88,
+    "maxX": 70.94,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     59.24,
+     27.49,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     60.34,
+     28.66,
+     0.22
+    ],
+    "f1": "g-s12-scena1-esito+1.2s.png",
+    "f2": "g-s12-scena1-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🤼 Raddoppio coordinato col compagno",
+     "fam": null,
+     "ovl": "Beffato dall'attaccante",
+     "ok": false,
+     "ev": [
+      "conduzione(QUINN)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 176,
+    "gest": null,
+    "gkFr": 97,
+    "maxX": 67.32,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     62.11,
+     42.16,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     66.05,
+     44.25,
+     0.22
+    ],
+    "f1": "g-s12-scena2-esito+1.2s.png",
+    "f2": "g-s12-scena2-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🌀 Finta e cambio di passo",
+     "fam": "intercepted",
+     "ovl": "Anticipato dall'avversario",
+     "ok": false,
+     "ev": [
+      "passaggio",
+      "intercetto(QUINN)",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 231,
+    "gest": null,
+    "gkFr": 102,
+    "maxX": 82.43,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     70.61,
+     46.67,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     61.9,
+     55.71,
+     0.22
+    ],
+    "f1": "g-s12-scena3-esito+1.2s.png",
+    "f2": "g-s12-scena3-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "💥 Botta sopra la barriera",
+     "fam": "wide",
+     "ovl": "Che peccato!",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tuffo",
+      "tiro:fuori({P})",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 213,
+    "gest": "gk_dive",
+    "gkFr": 92,
+    "maxX": 98.46,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     98.46,
+     55.86,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     78.1,
+     43.9,
+     0.22
+    ],
+    "f1": "g-s12-scena4-esito+1.2s.png",
+    "f2": "g-s12-scena4-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "💥 Tiro di potenza",
+     "fam": "blocked",
+     "ovl": "Conclusione murata",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tiro:blocked({P})",
+      "murato(QUINN)",
+      "rammarico({P})"
+     ]
+    },
+    "giocata": null,
+    "campioni": 284,
+    "gest": null,
+    "gkFr": 110,
+    "maxX": 98.46,
+    "inRete": false,
+    "oltre": false,
+    "ultimo": [
+     "hl_result",
+     86.15,
+     48.61,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     79.35,
+     47.88,
+     0.22
+    ],
+    "f1": "g-s12-scena5-esito+1.2s.png",
+    "f2": "g-s12-scena5-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "💥 Tiro di potenza di prima",
+     "fam": null,
+     "ovl": "Non perdona!",
+     "ok": true,
+     "ev": [
+      "pronto",
+      "tuffo",
+      "tiro:goal({P})",
+      "gol({P})",
+      "pressione(QUINN)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 171,
+    "gest": "gk_dive",
+    "gkFr": 101,
+    "maxX": 100.6,
+    "inRete": true,
+    "oltre": true,
+    "ultimo": [
+     "hl_result",
+     99.16,
+     45.79,
+     0.27
+    ],
+    "primoResult": [
+     "hl_result",
+     78.19,
+     60.07,
+     0.22
+    ],
+    "f1": "g-s12-scena6-esito+1.2s.png",
+    "f2": "g-s12-scena6-esito+2.4s.png"
+   },
+   {
+    "r": {
+     "label": "🎯 Controllo e tiro fermo",
+     "fam": "saved",
+     "ovl": "Conclusione centrale",
+     "ok": false,
+     "ev": [
+      "pronto",
+      "tiro:saved({P})",
+      "parata({P})",
+      "rammarico({P})",
+      "pressione(MARSHALL)"
+     ]
+    },
+    "giocata": null,
+    "campioni": 196,
+    "gest": "gk_block",
+    "gkFr": 115,
+    "maxX": 99.16,
+    "inRete": true,
+    "oltre": true,
+    "ultimo": [
+     "hl_result",
+     89.1,
+     51.97,
+     0.22
+    ],
+    "primoResult": [
+     "hl_result",
+     85.8,
+     27,
+     0.22
+    ],
+    "f1": "g-s12-scena7-esito+1.2s.png",
+    "f2": "g-s12-scena7-esito+2.4s.png"
+   }
+  ],
+  "corpi": [
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 4,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 3,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 1,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 5,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 5,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 1,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   },
+   {
+    "ph": "hl_intro",
+    "st": "ready-lineup",
+    "pronti": true,
+    "motivo": "ready-lineup",
+    "proc": 0,
+    "n": 3,
+    "noCg": 0,
+    "tpose": 0,
+    "senzaTesta": 0
+   }
+  ]
+ }
+]

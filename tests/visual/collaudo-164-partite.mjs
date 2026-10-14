@@ -26,11 +26,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
-import { scanOverlays, closeTop, clickAdvance, clickGiocatore } from './lib/collaudo164.mjs';
+import { scanOverlays, closeTop, clickAdvance, clickGiocatore, avanzaTop } from './lib/collaudo164.mjs';
 
 const W = 412, H = 915;
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const OUT = path.join(REPO, 'docs', 'collaudi', 'release-164'); const DATI = path.join(OUT, 'dati');
+const OUT = path.join(REPO, 'docs', 'collaudi', 'release-164'); const DATI = path.join(OUT, 'dati', process.env.CPM_TAG || 'a');
 fs.mkdirSync(DATI, { recursive: true });
 const NP = +(process.env.CPM_NPARTITE || 8), BENCH_AT = +(process.env.CPM_BENCH_AT || 3), NAT_AT = +(process.env.CPM_NAT_AT || 5);
 const MAXMS = +(process.env.CPM_MAXMIN || 110) * 60000, SPEED = process.env.CPM_SPEED || '2';
@@ -45,6 +45,10 @@ const page = await ctx.newPage(); await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push({ t: Date.now(), m: String(e.message).slice(0, 200) }));
 await page.addInitScript(([s, sp]) => {
   window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_REC = true; window.__CPM_WALKTEST74 = 1; window.__CPM_GLB232W = []; window.__CPM_REC229 = 1;
+  /* [giro B] interruttori del TELEFONO: sotto ?cpmtest=1 la scena si chiude prima che l'arco finisca (nota 7.460/7.461) */
+  if (window.__C164_TEL !== false) { window.__CPM_CINE = 1; window.__CPM_REALWAIT = 1; }
+  /* [giro B] pallone registrato DENTRO la pagina ogni 80 ms durante le scene dell'eroe (la sonda legge ogni 1-2 s, troppo rado) */
+  window.__G164 = []; setInterval(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (!/^hl_/.test(ph || '')) return; const bl = window.__CPM_BALL && window.__CPM_BALL(); if (bl && window.__G164.length < 60000) window.__G164.push([Date.now(), ph, bl.x, bl.y]); } catch (e) {} }, 80);
   try { localStorage.setItem('cpm-v3', JSON.stringify(s)); localStorage.setItem('cpm-match-speed', sp); } catch (e) {}
   /* fluidita': longtask e intervalli fra fotogrammi, svuotati dalla sonda */
   window.__C164 = { lt: [], d: [] };
@@ -97,7 +101,7 @@ async function registraFinestre(ov, dove) {
 
 const t0 = Date.now();
 let m = null; const partite = []; let ultimaSett = ''; let ultimaFase = null; let stuck = 0; let hlCount = 0; let benchFatto = false, natFatto = false;
-let sceneAperta = null; let bloccati = 0; let preFaseT = 0; let lastAdvT = Date.now(); let ripetiK = '', ripetiN = 0;
+let sceneAperta = null; let bloccati = 0; let benchOrig = null; let preFaseT = 0; let lastAdvT = Date.now(); let ripetiK = '', ripetiN = 0;
 
 async function apriScena(ph) {
   const n = hlCount++;
@@ -105,7 +109,7 @@ async function apriScena(ph) {
     const c = window.__CPM_CORPI232 ? window.__CPM_CORPI232() : null; const w = (window.__CPM_GLB232W || []).slice(-1)[0] || null;
     const tx = (document.body.innerText || '').split('\n').filter(l => l.trim().length > 12).slice(0, 6);
     return { st, corpi: c, w232: w && { ph: w.ph, st: w.st, pronti: w.pronti, proc: w.proc, n: (w.corpi || []).length, noCg: (w.corpi || []).filter(q => !q.cg).length, tpose: (w.corpi || []).filter(q => q.w <= 0.05).length, senzaTesta: (w.corpi || []).filter(q => q.teste > q.testeOk).length }, testo: tx, clock: window.__CPM_CLOCK ? window.__CPM_CLOCK() : null }; });
-  const sc = { n, ph, apertura: s, foto: null, esito: null };
+  const sc = { n, ph, apertura: s, foto: null, esito: null, t0: Date.now(), nRes: await ev(() => (window.__CPM_RES218 || []).length) };
   if (m && m.scene.length < 3) sc.foto = await foto(`p${m.n}-scena${m.scene.length + 1}-apertura`);
   return sc;
 }
@@ -136,7 +140,9 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
         preFaseT = a ? Date.now() : preFaseT;
       }
     } else if (ph === 'walkout') {
-      const k = await ev(() => { const x = window.__CPM_MASCOT911 ? window.__CPM_MASCOT911() : null; const f = window.__CPM_FILA227 || null; return { x, f }; });
+      const k = await ev(() => { const x = window.__CPM_MASCOT911 ? window.__CPM_MASCOT911() : null; const f = window.__CPM_FILA227 || null; const hy = window.__CPM_HYPER_MASCOTS || null; const L = window.__CPM_HYPER_MASCOT_LIST || null; return { x, f, hy, lista: L ? { n: L.length, casa: L.filter(q => q && q.casa).length, vis: L.filter(q => q && q.glb911 && q.glb911.root && q.glb911.root.visible).length, visCasa: L.filter(q => q && q.casa && q.glb911 && q.glb911.root && q.glb911.root.visible).length } : null }; });
+      if (k && (k.hy || k.lista)) m.walkHy = { hy: k.hy, lista: k.lista, t: Math.round((Date.now() - preFaseT) / 1000) };
+      if (k && k.lista && (!m.walkHyMax || k.lista.vis > m.walkHyMax.vis)) m.walkHyMax = { ...k.lista, t: Math.round((Date.now() - preFaseT) / 1000) };
       if (k && k.x) m.walk.push({ t: Math.round((Date.now() - preFaseT) / 100) / 10, corpi: k.x.corpi, totale: k.x.totale, attivi: k.x.attivi, distMax: k.x.dist && k.x.dist.length ? Math.max(...k.x.dist) : null, distN: k.x.dist ? k.x.dist.length : 0, lontani: (k.x.dist || []).filter(d => d > 1.5).length });
       m.fila = k && k.f;
       /* foto dell'ingresso a 3, 9, 16, 24, 34, 46 s: le prime partite ne tengono tutte, le altre due */
@@ -150,7 +156,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
       if (/^hl_(intro|move|choose)$/.test(ph) && !sceneAperta) { sceneAperta = await apriScena(ph); await ev(() => { window.__CPM_GK229 = []; window.__CPM_GK229ARM = null; }); }
       if (ph === 'hl_result' && sceneAperta) {
         if (!sceneAperta.esito) { await sleep(300);
-          sceneAperta.esito = await ev(() => { const r = (window.__CPM_RES218 || []).slice(-1)[0] || null; return r ? { label: r.label, key: r.key, ok: r.ok, fam: r.fam, ovl: r.ovl, outKind: r.outKind, tipo: r.tipo, variante: r.variante, ev: r.ev } : null; });
+          sceneAperta.esito = await ev(n0 => { const R = window.__CPM_RES218 || []; const r = R.length > n0 ? R[R.length - 1] : null; if (!r) return { nonRegistrato: true, giocata: (document.body.innerText.match(/LA GIOCATA\n([^\n]+)/) || [])[1] || null }; return r ? { label: r.label, key: r.key, ok: r.ok, fam: r.fam, ovl: r.ovl, outKind: r.outKind, tipo: r.tipo, variante: r.variante, ev: r.ev } : null; }, sceneAperta.nRes);
           sceneAperta.balls = [];
           if (m.scene.length < 3) sceneAperta.fotoEsito = await foto(`p${m.n}-scena${m.scene.length + 1}-esito`);
         }
@@ -159,6 +165,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
       if (sceneAperta && sceneAperta.esito && !/^hl_/.test(ph)) {
         /* chiusura scena: pallone finale e portiere */
         const g = await ev(() => { const R = window.__CPM_GK229 || []; const arm = window.__CPM_GK229ARM || null; let gest = null, dzMax = 0; const z0 = R.length ? R[0].gz : 0; R.forEach(f => { if (f.op) gest = f.op; dzMax = Math.max(dzMax, Math.abs(f.gz - z0)); }); const L = R[R.length - 1] || null; return { arm, gest, dzMax: +dzMax.toFixed(2), fr: R.length, ultimo: L && { bx: L.bx, bz: L.bz, by: L.by, gx: L.gx, gz: L.gz } }; });
+        sceneAperta.g164 = await ev(t1 => { const G = window.__G164.filter(q => q[0] >= t1); window.__G164.length = 0; return { n: G.length, maxX: G.length ? Math.max(...G.map(q => q[2])) : null, inRete: G.some(q => q[2] >= 98.6 && Math.abs(q[3] - 50) <= 3.35 / 0.68), campioniInRete: G.filter(q => q[2] >= 98.6 && Math.abs(q[3] - 50) <= 3.35 / 0.68).length, fine: G.length ? G[G.length - 1].slice(1) : null }; }, sceneAperta.t0);
         sceneAperta.gk = g; sceneAperta.ballFine = sceneAperta.balls.slice(-1)[0] || null; sceneAperta.ballMaxX = sceneAperta.balls.length ? Math.max(...sceneAperta.balls.map(q => q.x)) : null; delete sceneAperta.balls;
         m.scene.push(sceneAperta); sceneAperta = null;
       }
@@ -175,6 +182,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
         m.fine.testo = await ev(() => (document.body.innerText || '').split('\n').filter(x => x.trim()).slice(0, 60).join(' | ').slice(0, 2500));
         m.fotoFine = await foto(`p${m.n}-fine`);
         await ev(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(false));
+        m.corpi = await ev(() => (window.__CPM_GLB232W || []).map(w => ({ ph: w.ph, pronti: w.pronti && w.pronti.pronti, motivo: w.pronti && w.pronti.motivo, proc: w.proc, n: (w.corpi || []).length, noCg: (w.corpi || []).filter(q => !q.cg).length, tpose: (w.corpi || []).filter(q => q.w <= 0.05).length, senzaTesta: (w.corpi || []).filter(q => q.teste > q.testeOk).length })));
         log('  fine', JSON.stringify(m.fine.score), 'tab', JSON.stringify(m.fine.tab && [m.fine.tab.home && m.fine.tab.home.gol, m.fine.tab.away && m.fine.tab.away.gol]), 'scene', m.scene.length);
         m.dopo = []; m.fineT = Date.now();
       }
@@ -193,6 +201,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
     delete m.perf; m.errori = errs.filter(e => e.t >= m.inizio).map(e => e.m); m.dopoFineIntervista = null;
     partite.push(m); m.intervista = null; m.attesaIntervista = true; jl('partite.jsonl', m);
     log('partita', m.n, 'registrata', m.durS + 's', 'fluidita', JSON.stringify(m.fluidita));
+    if (m.n === BENCH_AT && benchOrig) { await ev(o => window.__CPM_CAREER.patch(o), benchOrig); log('leva panchina tolta: valori originali ripristinati', JSON.stringify(benchOrig)); }
     m = null; ultimaFase = null; sceneAperta = null;
   }
   const c = await carriera();
@@ -200,7 +209,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
   const sk = c.season + '-' + c.week;
   if (sk !== ultimaSett) { ultimaSett = sk; await controllaSettimana(sk); }
   /* leve di collaudo dichiarate */
-  if (!benchFatto && partite.length + 1 === BENCH_AT && !c.lived) { await ev(() => window.__CPM_CAREER.patch({ coachTrust: 18, form: 35, fatigue: 70, squadRole: 'riserva' })); benchFatto = true; log('leva panchina armata'); }
+  if (!benchFatto && partite.length + 1 === BENCH_AT && !c.lived) { benchOrig = await ev(() => { const s = window.__CPM_CAREER.snapshot(); return { coachTrust: s.coachTrust, form: s.form, fatigue: s.fatigue, squadRole: s.squadRole }; }); await ev(() => window.__CPM_CAREER.patch({ coachTrust: 18, form: 35, fatigue: 70, squadRole: 'riserva' })); benchFatto = true; log('leva panchina armata'); }
   if (!natFatto && partite.length + 1 === NAT_AT && !c.lived) { await ev(() => { const s = window.__CPM_CAREER.snapshot(); window.__CPM_CAREER.patch({ nationalCaps: Math.max(2, s.nationalCaps | 0), nationsCupQueue: { active: true, opponents: ['Francia', 'Portogallo', 'Olanda'].filter(n => n !== s.nation), matchIdx: 0, pts: 0, matches: [], done: false, season: s.season } }); }); natFatto = true; log('leva nazionale armata'); }
   if (benchFatto && partite.length + 1 > BENCH_AT && !c.lived && !natFatto) { /* dopo la panchina si torna normali */ }
   const ov = await scanOverlays(page);
@@ -214,12 +223,14 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
         jl('interviste.jsonl', { partita: last.n, week: last.week, ...last.intervista, dopo: last.dopo }); log('  intervista partita', last.n); } }
     const k = ov.map(o => o.dc + o.titolo.slice(0, 20)).join(';'); ripetiN = k === ripetiK ? ripetiN + 1 : 0; ripetiK = k;
     if (ripetiN > 8) { log('finestra che non si chiude:', k); jl('blocchi.jsonl', { k, c }); ripetiN = 0; await ev(() => window.__CPM_CAREER.dismiss()); }
-    if (ov.some(o => o.pulsanti)) { await sleep(700); const e = await closeTop(page); if (e) { lastAdvT = Date.now(); await sleep(700); continue; } }
+    const nonConv = ov.find(o => o.etichette.some(e => /Simula e avanza/.test(e)) && !o.etichette.some(e => /Gioca/.test(e)));
+    if (nonConv) { const t = await ev(() => (document.body.innerText.match(/Non convocato[^\n]*\n?[^\n]*/) || [''])[0]); jl('non-convocato.jsonl', { c, t, etichette: nonConv.etichette }); log('  NON CONVOCATO, simulo la settimana:', String(t).slice(0, 80)); await clickAdvance(page, [/Simula e avanza/]); lastAdvT = Date.now(); await sleep(1500); continue; }
+    if (ov.some(o => o.pulsanti)) { await sleep(700); const e = await avanzaTop(page); if (e) { lastAdvT = Date.now(); await sleep(700); continue; } }
     /* finestre senza pulsanti (avvisi, gala'): si lascia scorrere e si prova l'avanzamento sotto */
   }
   const last = partite[partite.length - 1];
   if (last && last.attesaIntervista && Date.now() - last.fineT > 60000) { last.attesaIntervista = false; jl('interviste.jsonl', { partita: last.n, week: last.week, intervista: null, dopo: last.dopo, nota: 'nessuna intervista entro 60 s dalla fine' }); log('  NESSUNA intervista partita', last.n); }
-  const a = await clickGiocatore(page, [/^Gioca la partita/, /^Gioca\b/, /Torna alla dashboard/, /Vivi la Settimana/, /Chiudi la stagione/, /Vai al bilancio/, /Salta premiazione/, /Salta il gal/, /Siamo pronti/, /Continua/, /Avanti/, /Prosegui/, /^Inizia/, /Scendi in campo/, /Accetta/, /Nuova stagione/]);
+  const a = await clickGiocatore(page, [/^Gioca la partita/, /^Gioca\b/, /Torna alla dashboard/, /Vivi la Settimana/, /Chiudi la stagione/, /Vai al bilancio/, /Salta premiazione/, /Salta il gal/, /Siamo pronti/, /Continua/, /Avanti/, /Prosegui/, /^Inizia/, /Scendi in campo/, /Accetta/, /Nuova stagione/, /Avvia Stagione/, /^Avvia/, /^Conferma/, /^Andiamo/, /^Partiamo/, /^Completa/, /^Firma/, /^Prosegui/, /^Chiudi/, /^Fatto/, /^Ok\b/, /Che la stagione cominci/, /cominci/i, /→\s*$/]);
   if (a) { lastAdvT = Date.now(); stuck = 0; await sleep(900); continue; }
   stuck++;
   if (Date.now() - lastAdvT > 45000) {
@@ -230,6 +241,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
   await sleep(700);
 }
 const fin = await carriera();
+try { const sv = await page.evaluate(() => localStorage.getItem('cpm-v3')); if (sv) fs.writeFileSync(path.join(DATI, `salvataggio-fine-${TAG}.json`), sv); } catch (e) {}
 log('FINE', partite.length, 'partite in', Math.round((Date.now() - t0) / 1000), 's', JSON.stringify(fin));
 jl('fine.jsonl', { partite: partite.length, s: Math.round((Date.now() - t0) / 1000), fin, errori: errs.slice(0, 20) });
 await ctx.close(); await b.close(); srv.close();

@@ -109,3 +109,21 @@ export async function clickGiocatore(page, patterns) {
     return null;
   }, patterns.map(r => r.source));
 }
+
+/* [collaudo 164] Chiusura «da giocatore» della finestra in cima: si sceglie l'azione che fa ANDARE AVANTI la storia (Gioca, Parti,
+   Continua, Siamo pronti, Accetta...), poi la prima scelta del pannello che non sia salta/chiudi/simula, e solo per ultima la chiusura.
+   closeTop del 161 preferiva «Chiudi», e sul wizard d'apertura stagione chiudeva sempre il ritiro: carriera ferma (misurato 14/10). */
+export async function avanzaTop(page) {
+  return page.evaluate(() => {
+    const vis = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
+    const ov = [...document.body.querySelectorAll('*')].filter(el => { const cs = getComputedStyle(el); return cs.position === 'fixed' && parseInt(cs.zIndex, 10) >= 900 && vis(el) && !el.querySelector('[title="Ambiente di esecuzione"]') && el.querySelector('button'); });
+    if (!ov.length) return null;
+    const top = ov.sort((a, b) => parseInt(getComputedStyle(b).zIndex, 10) - parseInt(getComputedStyle(a).zIndex, 10))[0];
+    const btns = [...top.querySelectorAll('button')].filter(b => vis(b) && !b.disabled);
+    const t = b => (b.textContent || '').trim().replace(/^[^\p{L}\d]+/u, '');
+    const avanti = /^(Gioca|Parti|Siamo pronti|Continua|Avanti|Prosegui|Conferma|Accetta|Vai|Inizia|Andiamo|Entra|Scendi|Ok|OK|Ho capito|Fine|Firma)/;
+    const no = /^(Salta|Chiudi|Simula|Dopo|Non ora|Rifiuta|Torna|×|X$)/i;
+    const b = btns.find(x => avanti.test(t(x))) || btns.find(x => t(x) && !no.test(t(x))) || btns.find(x => /^(Chiudi|Dopo|Non ora|Salta|×|X)/i.test(t(x))) || btns[0];
+    if (!b) return null; const e = t(b).slice(0, 40) || '(icona)'; b.click(); return e;
+  });
+}
