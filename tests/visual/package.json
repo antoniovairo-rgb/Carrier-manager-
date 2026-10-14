@@ -399,7 +399,18 @@
     "testa-146": "node testa-146.mjs",
     "glb-pronti-232": "node glb-pronti-232.mjs",
     "movimento-147": "node movimento-147.mjs",
-    "giornata-233": "node giornata-233.mjs"
+    "giornata-233": "node giornata-233.mjs",
+    "banco-248:tiro": "node banco-highlight-248.mjs tiro",
+    "banco-248:testa": "node banco-highlight-248.mjs testa",
+    "banco-248:volee": "node banco-highlight-248.mjs volee",
+    "banco-248:cross": "node banco-highlight-248.mjs cross",
+    "banco-248:passaggio": "node banco-highlight-248.mjs passaggio",
+    "banco-248:dribbling": "node banco-highlight-248.mjs dribbling",
+    "banco-248:contrasto": "node banco-highlight-248.mjs contrasto",
+    "banco-248:rigore": "node banco-highlight-248.mjs rigore",
+    "banco-248:punizione": "node banco-highlight-248.mjs punizione",
+    "banco-248:difesa": "node banco-highlight-248.mjs difesa",
+    "banco-248:rapporto": "node banco-highlight-248.mjs rapporto"
   },
   "dependencies": {
     "playwright": "^1.48.0",
