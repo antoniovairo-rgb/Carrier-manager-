@@ -35,7 +35,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
 | collaudo/release-165 | — (archiviata) | collaudo 165 consegnato → PO-242…247; PO-233 verificata | 14/10 17:55 |
 | collaudo/release-166 | — (archiviata) | collaudo 166 consegnato: PO-239 verificata, PO-240(a) verificata, nuove PO-250/251 | 14/10 22:10 |
-| sviluppo/ripartenza-207 | session_01NcXJF4S452JcXzff5Wq76G | giro 18 (Opus, base lavoro/166): PO-207 ripartenza dal centro rotta dal seme (7.999.162), guardiano nomi-219 instabile da riparare | 14/10 17:51 |
+| sviluppo/ripartenza-207 | — (archiviata) | giro 18 consegnato (eab20b3c): PO-207 ripartenza dal centro + nomi-219 riparato, mirata 21/21 verde; da riunire nella 7.999.169 (toglie la deroga) | 15/10 00:37 |
 | sviluppo/rilievi-collaudo-242 | session_012sqMa4vt2dahDVE1YdbPjV | giro 19 (Opus, base lavoro/167): PO-242…247 dai collaudi 164/165 | 14/10 17:56 |
 | sviluppo/classifica-194-migrazione | — (archiviata) | giro 13 consegnato, integrato in 7.999.167 (lavoro/167) | 14/10 17:55 |
 | collaudo/sessione-collaudatrice-161 | — | giro 9b consegnato (PO-230 finestre 6/10 per valori, PO-231 1 partita su 3); sessione archiviata | 13/10 |
