@@ -12,6 +12,8 @@
     "partita-vera": "node partita-vera-guardian.mjs",
     "prima-partita-237": "node prima-partita-237.mjs",
     "crediti-238": "node crediti-238.mjs",
+    "brusio-238": "node brusio-238.mjs",
+    "attesa-241": "node attesa-241.mjs --guardiano",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
