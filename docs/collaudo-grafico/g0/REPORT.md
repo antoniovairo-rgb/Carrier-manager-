@@ -93,7 +93,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
-| Home fuori carriera | 0/16 (11) | 0/16 (11) | 0/16 (11) | 0/16 (11) | 0/16 (11) |
+| Home fuori carriera | 0/17 (11) | 0/17 (11) | 0/17 (11) | 0/17 (11) | 0/17 (11) |
 | Impostazioni | 0/18 (11) | 0/18 (11) | 0/18 (11) | 0/18 (11) | 0/18 (11) |
 | Creazione | 0/603 (11) | 0/603 (11) | 0/603 (11) | 0/603 (11) | 0/603 (11) |
 | Offerte | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) |
@@ -106,13 +106,13 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/111 (11) | 0/111 (11) | 0/111 (11) | 0/111 (11) | 0/111 (11) |
 | Agente | 0/110 (11) | 0/110 (11) | 0/110 (11) | 0/110 (11) | 0/110 (11) |
 | Ufficio | 0/122 (11) | 0/122 (11) | 0/122 (11) | 0/122 (11) | 0/122 (11) |
-| **TOTALE** | **0/1847** | **0/1847** | **0/1847** | **0/1847** | **0/1847** |
+| **TOTALE** | **0/1848** | **0/1848** | **0/1848** | **0/1848** | **0/1848** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
-| Home fuori carriera | 0/16 | 0/16 | 0/16 | 0/16 | 0/16 |
+| Home fuori carriera | 0/17 | 0/17 | 0/17 | 0/17 | 0/17 |
 | Impostazioni | 0/18 | 0/18 | 0/18 | 0/18 | 0/18 |
 | Creazione | 0/603 | 0/603 | 0/603 | 0/603 | 0/603 |
 | Offerte | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
@@ -125,13 +125,13 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/111 | 0/111 | 0/111 | 0/111 | 0/111 |
 | Agente | 0/110 | 0/110 | 0/110 | 0/110 | 0/110 |
 | Ufficio | 0/122 | 0/122 | 0/122 | 0/122 | 0/122 |
-| **TOTALE** | **0/1847** | **0/1847** | **0/1847** | **0/1847** | **0/1847** |
+| **TOTALE** | **0/1848** | **0/1848** | **0/1848** | **0/1848** | **0/1848** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
-| Home fuori carriera | 0/2 (9 · 5) | 0/2 (9 · 5) | 0/2 (9 · 5) | 0/2 (9 · 5) | 0/2 (9 · 5) |
+| Home fuori carriera | 0/2 (10 · 5) | 0/2 (10 · 5) | 0/2 (10 · 5) | 0/2 (10 · 5) | 0/2 (10 · 5) |
 | Impostazioni | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) | 0/13 (0 · 5) |
 | Creazione | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) | 0/827 (2 · 26) |
 | Offerte | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) | 0/21 (8 · 6) |
@@ -304,16 +304,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSimulatore di carriera |
 |  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Creazione | 51 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | Inizia i provini |
-| Dashboard | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
+| Dashboard | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-| Stagione · Classifica | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Stagione · Calendario | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Stagione · Coppe | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Club | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Carriera · Profilo | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Carriera · Nazionale | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Agente | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
-| Ufficio | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:35Italia ·  |
+| Stagione · Classifica | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Stagione · Calendario | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Stagione · Coppe | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Club | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Carriera · Profilo | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Carriera · Nazionale | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Agente | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
+| Ufficio | 120 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 07:57Italia ·  |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 

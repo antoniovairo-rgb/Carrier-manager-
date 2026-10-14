@@ -10,6 +10,8 @@
     "d7-corpi": "node d7-corpi.mjs",
     "ci": "node ci-runner.mjs completa",
     "partita-vera": "node partita-vera-guardian.mjs",
+    "prima-partita-237": "node prima-partita-237.mjs",
+    "crediti-238": "node crediti-238.mjs",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",
