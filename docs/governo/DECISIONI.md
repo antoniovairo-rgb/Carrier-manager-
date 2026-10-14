@@ -350,3 +350,7 @@ PO, con foto del riquadrino «3 fps»: «devi togliere completamente la scritta 
 ## 14/10 sera — pubblicazione 7.999.168 (scritta fps)
 
 Questionario: **«168 con catena mirata»**. Si pubblica la 7.999.168 (7.999.167 + PO-249, niente scritta fps) dopo la catena `mirata` sul ramo lavoro/168, con la stessa deroga del PO su `ripartenza-207` usata per la 166 (difetto noto PO-207, correzione dal giro 18). La catena notturna della 167 non ha potuto chiudersi per i riavvii del container (15:59, 17:36, 17:55, 18:16, 19:08 UTC); passi verdi prima dell'ultimo riavvio: vedi /tmp/claude-0/n167-notte-parte1.out e n167-notte3.out, con ripartenza-207 rosso.
+
+## 14/10 sera — catene su una sessione Haiku dedicata
+
+PO: «Ma le catene non possono essere lanciate a parte da una sessione Haiku?». Sì: da ora le catene di rilascio girano in una sessione Haiku 5.5 dedicata (etichetta `cpm:catene`), con il suo container, che resta in attesa dentro il proprio turno fino alla riga FINE e registra l'esito in STABILITA.json sul ramo della versione. La sessione principale resta libera per il PO e per le integrazioni; la promozione su main resta alla sessione principale. Prima applicazione: 7.999.168, session_014TW8VSYAJmoSCTMhpz4RoH (giro composto: 17 passi già verdi, 5 riavvii del container oggi).
