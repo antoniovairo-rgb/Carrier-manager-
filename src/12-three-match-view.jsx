@@ -3914,7 +3914,7 @@ function ThreeMatchView(props){
           const _d146=_hp.distanceTo(ball.position);const S=sr.current;if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;}
           if(!S._l146&&!(_d146>0.9&&S._w146<0.8))S._l146=true;/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
           if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*7,1);ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
-          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2)]);}}catch(_e146){}}
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2),(_hv&&glbAvatars&&_hv===glbAvatars[0])?1:0,_hb?1:0,+(_hv&&_hv.root?Math.hypot(_hv.root.position.x-hero.position.x,_hv.root.position.z-hero.position.z):-1).toFixed(2)]);/* [giro 17 PO-143 #64] testimone: avatar visibile? osso trovato? scarto radice-eroe */}}catch(_e146){}}
         ballArcT+=aDt;
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
@@ -6619,7 +6619,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(Math.hypot(_sx5-pp.mesh.position.x,_sz5-pp.mesh.position.z)>1.5){
                 pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;continue;}}}
           if(pp.mesh._mIdx==null)pp.mesh._mIdx=i;/* [7.198.0 S5] indice stabile: da qui derivano punta/spunto/prontezza del singolo giocatore */
-          if(_readFreeze){
+          const _i143=(_sw219&&_sw219[i]!=null)?_sw219[i]:i;/* [giro 17 PO-123] l'indice logico dietro questa mesh (lo scambio _sw219 mette in scena il difensore nominato) */
+          /* [giro 17 PO-123/PO-143 «difensori che pressano». Rosso __CPM_NO_MARCA143] MISURATO (sonda pressing-143-flusso, teatro acceso): il motore
+             apre l'occasione col marcatore a 1-3 u dall'eroe, in scena il difensore piu' vicino stava a 5-10 m. Il marcatore NOMINATO dal motore
+             (prop marca143 = cast.difensore + distanza) qui va dal lato della porta alla distanza dichiarata, solo prima dell'azione e SOLO NEL 3D:
+             scriverlo in matchPlayers entrava nella simulazione (il motore legge matchPlayers) e cambiava la partita (tabellino-228, k4). */
+          const _mk143=(!(typeof window!=='undefined'&&window.__CPM_NO_MARCA143)&&P.marca143&&_i143===P.marca143.i&&(P.matchPhase==='hl_intro'||P.matchPhase==='hl_move'||P.matchPhase==='hl_choose')&&isFinite(+P.playerX))?(function(){const ex=+P.playerX,ey=+P.playerY,gx=100-ex,gy=50-ey,gl=Math.hypot(gx,gy)||1,dd=clamp(+P.marca143.d,1.2,5);return {x:clamp(ex+gx/gl*dd,2,98),y:clamp(ey+gy/gl*dd,3,97)};})():null;
+          if(_readFreeze&&!_mk143){/* [giro 17 PO-123] il marcatore del motore non si congela in lettura: sta sull'eroe */
             /* [7.355.0 collaudo PO gi10 «sembra che stiano facendo riscaldamento, i giocatori non sono in
                posizione d'attesa»] IN ATTESA SI GUARDA LA PALLA. Il freeze di lettura ferma gli off-ball di
                proposito (~0,9s per far leggere la scena) ma li lasciava con l'orientamento che avevano un
@@ -6664,7 +6670,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
-          {const _q850=(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:null;
+          {const _q850=(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:(_mk143?{x:_mk143.x,y:_mk143.y,gk:false}:null);/* [giro 17 PO-123] il marcatore del motore va sul suo punto (_mk143), come il portatore */
            if(_q850&&_q850.x!=null&&!_q850.gk){pp.mesh._port850=true;animOne(pp.mesh,G2X(clamp(+_q850.x,2,98)),G2Z(clamp(+_q850.y,2,98)),aDt,ak,bx,bz);}/* [7.850.0] il portatore: punto logico, niente offset */
            else{pp.mesh._port850=false;animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}}}
         // item 2 (5.49.6): INGRESSO DEL SUBENTRANTE — l'eroe parte dalla LINEA LATERALE (area tecnica), riceve le ultime indicazioni

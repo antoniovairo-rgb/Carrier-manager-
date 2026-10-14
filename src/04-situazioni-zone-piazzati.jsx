@@ -861,6 +861,12 @@ function pickTelecronisti(seed){const i=Math.abs(hashStr(String(seed||"x")))%TEL
      un ricevente libero, e porta il suo nome; il pallonetto solo nell'1 contro 1; pesi dalle statistiche dell'eroe;
    - testo e intro: modelli con i nomi del cast. Scelta seminata (seed): la partita resta riproducibile.
    Rosso __CPM_NO_P6C (si torna alla scheda scritta). */
+/* [giro 17 PO-068 — LE VARIANTI DEI GESTI NELLE SCENE DEL MOTORE. Rosso __CPM_NO_REG068] MISURATO (sonda gesti-motore-068, 8.100 scene
+   generate): i registri del motore raggiungevano 18 varianti di GESTI su 26; otto le raggiungeva solo il catalogo scritto, che in partita
+   non si usa piu'. Sei hanno una clip vera e tornano qui con etichette gia' disegnate dal catalogo: cross a rientrare (cross_cutback),
+   stacco in corsa (header_diving), sterzata (dribble_outside), doppio passo (double_step) e roulette (roulette) come preparazione del
+   doppio gesto, lancio smarcante (pass_lofted). Restano fuori, dichiarate: tackle/press e tackle/call (clip nulla in GESTI). */
+const _r068=()=>!(typeof window!=='undefined'&&window.__CPM_NO_REG068);
 const P6_CONCLUSIONE=[
   {k:'potenza',l:'💥 Tiro di potenza',st:'tiro',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>1.2},
   {k:'piazzato',l:'🎯 Piazzato nell\'angolo basso',st:'tecnica',b:4,rew:'goal',fail:'miss',n:12,w:(c)=>c.press<1.5?1.4:0.9},
@@ -868,6 +874,7 @@ const P6_CONCLUSIONE=[
   {k:'prima',l:'⚡ Conclusione di prima',st:'tiro',b:0,rew:'goal',fail:'miss',n:12,w:(c)=>c.press>=1.5?1.3:0.6},
   {k:'finta',l:'🌀 Finta e tiro',st:'dribbling',b:0,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press>=1?1.1:0.5},
   {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>c.uno?1.5:0},
+  {k:'roulette',l:'🌀 Roulette e tiro',st:'dribbling',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>_r068()&&c.press>=1?0.8:0},/* [giro 17 PO-068] */
   {k:'assist',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.3:0},
 ];
 /* [7.999.148 Passo 6, strato 2] costruttore comune degli strati: posizione dal motore, pesi dalle statistiche, scelta seminata.
@@ -892,6 +899,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
   const s=S(text,zones,_pz?sz:mz,sz,actions,_pz,_pz?0:-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
   s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
+  s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] il marcatore e la sua distanza, come li ha misurati il motore */
   return s;
 }
 /* [7.999.150 PO-030/PO-022 Passo 6, strato 5] LA MANOVRA VERA APRE LA SCENA. Il motore consegna con l'occasione gli ultimi passaggi
@@ -943,11 +951,15 @@ const P6_FASCIA=[
   {k:'teso',l:'⚡ Cross basso teso',st:'tecnica',b:1,rew:'assist',fail:'intercept',n:10,w:(c)=>c.press<2?1:0.7},
   {k:'fondo',l:'🌀 Dribbling sul fondo e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>c.press>=1?1:0.6},
   {k:'rientro',l:'🎯 Rientra e tira',st:'tecnica',b:-3,rew:'goal',fail:'miss',n:14,w:(c)=>0.8},
+  {k:'cutback',l:'↗️ Cross a rientrare',st:'passaggio',b:1,rew:'assist',fail:'intercept',n:10,w:(c)=>_r068()?0.8:0},/* [giro 17 PO-068] */
+  {k:'sterzata',l:'🌀 Sterzata esterna e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>_r068()&&c.press>=1?0.7:0},
+  {k:'doppiopasso',l:'🌀 Doppio passo e cross',st:'dribbling',b:-2,rew:'assist',fail:'intercept',n:15,w:(c)=>_r068()&&c.press>=1?0.7:0},
   {k:'appoggio',l:(c)=>'🤝 Appoggio corto per '+(c.ricVicino||'il compagno'),st:'passaggio',b:5,rew:'assist',fail:'intercept',n:7,w:(c)=>0.7},
 ];
 const P6_LINEE=[
   {k:'filtrante',l:(c)=>'🎯 Filtrante per '+c.ric,st:'passaggio',b:2,rew:'assist',fail:'intercept',n:10,w:(c)=>c.ric?1.5:0},
   {k:'unodue',l:(c)=>'🔁 Uno-due con '+(c.ricVicino||'il compagno'),st:'passaggio',b:3,rew:'assist',fail:'intercept',n:9,w:(c)=>1},
+  {k:'lancio',l:(c)=>'🎯 Lancio smarcante per '+c.ric,st:'passaggio',b:0,rew:'assist',fail:'intercept',n:10,w:(c)=>_r068()&&c.ric?0.8:0},/* [giro 17 PO-068] */
   {k:'fuori',l:'💥 Tiro da fuori',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>c.press<2?1:0.6},
   {k:'conduci',l:'🏃 Conduci palla al piede e tira',st:'velocità',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press<1.5?1:0.5},
   {k:'finta',l:'🌀 Finta e cambio di passo',st:'dribbling',b:0,rew:'assist',fail:'intercept',n:14,w:(c)=>c.press>=1?1:0.6},
@@ -981,6 +993,7 @@ const P6_CROSS=[
   {k:'testa-angolo',l:'🎯 Testa piazzata all\'angolo',st:'fisico',b:4,rew:'goal',fail:'miss',n:13,w:(c)=>1.0},
   {k:'volee',l:'⚽ Volée di collo potente',st:'tiro',b:2,rew:'goal',fail:'miss',n:16,w:(c)=>c.angolo?0.6:1.0},
   {k:'controllo',l:'🎯 Controllo e tiro fermo',st:'tecnica',b:6,rew:'goal',fail:'miss',n:12,w:(c)=>c.angolo?0.3:(c.press>=1.5?0.5:1.0)},
+  {k:'stacco',l:'✈️ Stacco in corsa potente',st:'fisico',b:4,rew:'goal',fail:'miss',n:16,w:(c)=>_r068()?0.8:0},/* [giro 17 PO-068] */
 ];
 function scenaDalMotoreCross(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6X||window.__CPM_NO_P6))return null;}catch(_e){}
@@ -1055,9 +1068,86 @@ function scenaDalMotorePiazzato(occ,player,seed){
   const intro=c.vicina&&c.centrale?'Posizione ideale per calciare in porta.':'Da qui anche il pallone in area è un\'idea.';
   return _p6Costruisci(occ,player,seed,P6_PUNIZIONE,c,titoli,intro,x>=78?['bordo']:['trequarti'],{pressure:'none',support:1,nearby_def:0,lanes:[]},'punizione');
 }
+/* [giro 17 PO-022, Passo 6 strato 8b — IL SECONDO TEMPO NASCE DAL MOTORE. Rosso __CPM_NO_SEG022] MISURATO (sonda catalogo-022, partite S12
+   su pagina nuova): le scene d'apertura sono gia' tutte del motore (55 su 55, 8 partite); l'unica scena dell'eroe che veniva ancora dal
+   catalogo scritto era il SECONDO TEMPO della stessa azione (CHAIN_SITS: dopo il dribbling, mischia, sponda, rimbalzo, stacco sull'angolo),
+   1 su 27 con gli esiti riusciti. Il TIPO di seguito lo sceglie gia' il motore (risolviEroe.seguito); qui la scena si costruisce: titolo e
+   introduzione coi nomi veri del cast dell'azione (difensore, portiere, compagno), opzioni dal registro pesate sulle statistiche, scelta
+   seminata. La GEOMETRIA (zone, startZone su cui si assesta il pallone, 7.57), l'intento, lo stato del pallone e i segnali cinematici restano
+   quelli della catena scelta: il motore e' fermo durante la scena (decisione PO 05/10, «l'azione la gioca solo la scena»), quindi la posizione
+   del secondo tempo e' conseguenza della scena, non un fatto del motore. Etichette gia' disegnate dal 3D; nessuna parola che riapra una catena. */
+const P6_SEGUITO={
+  dopo_dribbling:[
+    {k:'corsa',l:'💥 Conclusione in corsa',st:'tiro',b:6,rew:'goal',fail:'miss',n:13,w:(c)=>1.2},
+    {k:'piazzato',l:'🎯 Piazzato nell\'angolo basso',st:'tecnica',b:4,rew:'goal',fail:'miss',n:12,w:(c)=>1.1},
+    {k:'punta',l:'🌀 Punta il portiere e piazzala',st:'tecnica',b:2,rew:'goal',fail:'miss',n:15,w:(c)=>1.0},
+    {k:'pallonetto',l:'🎯 Pallonetto sul portiere',st:'tecnica',b:-4,rew:'goal',fail:'miss_easy',n:10,w:(c)=>0.6},
+    {k:'scarico',l:(c)=>'↩️ Scarico a '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.0:0},
+  ],
+  mischia:[
+    {k:'spingi',l:'🦵 Spingila dentro!',st:'tiro',b:12,rew:'goal',fail:'miss',n:10,w:(c)=>1.2},
+    {k:'controllo',l:'🎯 Controllo e tiro',st:'tecnica',b:5,rew:'goal',fail:'miss',n:12,w:(c)=>1.0},
+    {k:'zampata',l:'🦶 Zampata da due passi',st:'fisico',b:8,rew:'goal',fail:'miss',n:12,w:(c)=>1.0},
+    {k:'servi',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?0.8:0},
+  ],
+  aereo:[
+    {k:'testa-potenza',l:'✈️ Testa di potenza',st:'fisico',b:6,rew:'goal',fail:'miss',n:16,w:(c)=>1.2},
+    {k:'testa-angolo',l:'🎯 Testa piazzata all\'angolo',st:'fisico',b:4,rew:'goal',fail:'miss',n:13,w:(c)=>1.0},
+    {k:'volee',l:'⚽ Volée di collo potente',st:'tiro',b:2,rew:'goal',fail:'miss',n:16,w:(c)=>1.0},
+    {k:'sponda',l:(c)=>'🤝 Sponda per '+c.ric,st:'passaggio',b:3,rew:'assist',fail:'nothing',n:7,w:(c)=>c.ric?0.9:0},
+  ],
+  rimbalzo:[
+    {k:'volo',l:'🦵 Tiro al volo',st:'tiro',b:4,rew:'goal',fail:'miss',n:15,w:(c)=>1.2},
+    {k:'prima',l:'🎯 Prima intenzione',st:'tecnica',b:2,rew:'goal',fail:'miss',n:13,w:(c)=>1.1},
+    {k:'avanza',l:'🏃 Avanza in area',st:'velocità',b:3,rew:'goal',fail:'intercept',n:12,w:(c)=>0.9},
+    {k:'servi',l:(c)=>'🤝 Servi '+c.ric+' libero',st:'passaggio',b:4,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?0.7:0},
+  ],
+};
+function scenaSecondoTempo(base,cast,player,seed){
+  try{if(typeof window!=='undefined'&&(window.__CPM_NO_SEG022||window.__CPM_NO_P6))return null;}catch(_e){}
+  if(!base||base._p6||typeof CHAIN_SITS==='undefined')return null;
+  let k=null;for(const kk in CHAIN_SITS)if(CHAIN_SITS[kk]&&CHAIN_SITS[kk].text===base.text){k=kk;break;}
+  if(!k)return null;
+  const fam=k==='dopo_dribbling'?'dopo_dribbling':k==='mischia'?'mischia':k==='second_ball'?'rimbalzo':'aereo';
+  const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;const cs=cast||{};
+  const c={ric:nm(cs.ricevente),dif:nm(cs.difensore),gk:nm(cs.portiere)};
+  let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
+  const stat=(q)=>{try{return +((player&&player.stats&&player.stats[q])||60);}catch(_e){return 60;}};
+  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);const scelte=[];
+  while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}scelte.push(pool[i].t);pool.splice(i,1);}
+  if(scelte.length<2)return null;
+  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  const T={
+    dopo_dribbling:['⚡ '+(c.dif?c.dif+' è saltato':'L\'uomo è saltato')+': campo aperto davanti a te!','⚡ Dribbling riuscito, '+(c.dif||'il difensore')+' resta indietro!'],
+    mischia:['🌀 Mischia in area! Approfitta del caos.','🌀 Palla vagante in area'+(c.dif?', '+c.dif+' non la allontana':'')+'!'],
+    aereo:[base.text],
+    rimbalzo:['🎯 Secondo tempo sul rimbalzo — istinto puro!','🎯 La palla rimbalza al limite'+(c.dif?' davanti a '+c.dif:'')+'!'],
+  }[fam];
+  const text=T[Math.floor(rnd()*T.length)%T.length];
+  const intro=(c.gk?c.gk+' è tra i pali.':'Il portiere è tra i pali.')+(c.ric?' '+c.ric+' ti accompagna.':'');
+  const s0=S(text,base.zones,base.moveZone,base.startZone,actions,base.lockMovement,base.maxMoves,intro,'off',base.ctx,base.tactic);
+  const s={...base,text:s0.text,intro:s0.intro,actions:s0.actions,richiede:s0.richiede};
+  s._p6='seguito';s._p6k=k;s._p6seed=seed>>>0;
+  return s;
+}
+/* [giro 17 PO-123/PO-143 «difensori che pressano» — LA PRESSIONE DELLA SCENA E' QUELLA DEL CAMPO. Rosso __CPM_NO_PRESS143] Il motore
+   consegna `press` = pressioneSu(eroe) (src/14 r.258), cioe' la DISTANZA dell'avversario piu' vicino in unita' di campo; i generatori la
+   leggevano come INTENSITA' (>=1,5 alta, <1 «1 contro 1 senza pressione»), e il motore stesso chiamava «spalle alla porta, il marcatore
+   ti e' addosso» l'occasione con l'avversario a 3 u o piu'. MISURATO (sonda pressing-143, 4 partite S12, teatro acceso): 8 scene su 20
+   dichiarate «pressione alta» col difensore vero a 6,2-12 m in scena. Qui, all'ingresso unico dei generatori, la distanza diventa
+   intensita' (0 da 6 u in su, 1,5 a 3 u, 3 a contatto) e «spalle» vuol dire marcatore entro 1,2 u. Il motore e i suoi eventi non cambiano. */
+function _p6Pressione(occ){
+  try{if(typeof window!=='undefined'&&window.__CPM_NO_PRESS143)return occ;}catch(_e){}
+  if(!occ||occ.tipo==='rigore'||occ.tipo==='punizione')return occ;
+  const d=+occ.press;if(!isFinite(d))return occ;
+  const o={...occ,press:+clamp((6-d)/2,0,3).toFixed(2),pressDist:d};
+  if(occ.tipo==='conclusione'||occ.tipo==='spalle')o.tipo=d<1.2?'spalle':'conclusione';
+  return o;
+}
 function scenaDalMotore(occ,player,seed){
   try{if(typeof window!=='undefined'&&window.__CPM_NO_P6)return null;}catch(_e){}
   if(!occ)return null;
+  occ=_p6Pressione(occ);
   if(occ.tipo==='conclusione')return scenaDalMotoreConclusione(occ,player,seed);
   if(occ.tipo==='spalle')return scenaDalMotoreSpalle(occ,player,seed);
   if(occ.tipo==='fascia')return scenaDalMotoreFascia(occ,player,seed);
@@ -1096,5 +1186,6 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const ctx={pressure:press>=1.5?'high':press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:press>=1.5?2:press>=0.5?1:0,lanes:['central_run'],cn:uno?{oneOnOne:true}:undefined};
   const s=S(text,limite?['bordo','area']:['area'],mz,sz,actions,false,-1,intro,'off',null,ctx);
   s._p6='conclusione';s._p6seed=seed>>>0;
+  s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] come in _p6Costruisci */
   return s;
 }
