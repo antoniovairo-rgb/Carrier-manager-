@@ -38,8 +38,8 @@ for (const sd of SEMI) {
     if (!s || s.ph === 'ended' || s.ph === 'ceremony') break;
     if (/^hl_(intro|move|choose)$/.test(s.ph) && !scena) { scena = { t: Date.now(), n0: s.n }; await page.evaluate(() => { window.__CPM_GK229 = []; }); }
     if (s.ph === 'hl_result' && scena && !scena.tr) { scena.tr = Date.now(); const k = scene.length + 1;
-      await sleep(1200); scena.f1 = `g-s${sd}-scena${k}-esito+1.2s.png`; await page.screenshot({ path: path.join(OUT, scena.f1) });
-      await sleep(1200); scena.f2 = `g-s${sd}-scena${k}-esito+2.4s.png`; await page.screenshot({ path: path.join(OUT, scena.f2) }); }
+      await sleep(1200); scena.f1 = `g-s${sd}-scena${k}-esito+1.2s.jpg`; await page.screenshot({ path: path.join(OUT, scena.f1), type: 'jpeg', quality: 72 });
+      await sleep(1200); scena.f2 = `g-s${sd}-scena${k}-esito+2.4s.jpg`; await page.screenshot({ path: path.join(OUT, scena.f2), type: 'jpeg', quality: 72 }); }
     if (scena && scena.tr && !/^hl_/.test(s.ph)) {
       const d = await page.evaluate(([t1, n0]) => { const R = (window.__CPM_RES218 || []); const r = R.length > n0 ? R[R.length - 1] : null;
         const G = window.__G164.filter(q => q[0] >= t1); const gk = window.__CPM_GK229 || []; let gest = null; gk.forEach(f => { if (f.op) gest = gest || f.op; });

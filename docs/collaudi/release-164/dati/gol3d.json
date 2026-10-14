@@ -40,8 +40,8 @@
      49.55,
      0.22
     ],
-    "f1": "g-s11-scena1-esito+1.2s.png",
-    "f2": "g-s11-scena1-esito+2.4s.png"
+    "f1": "g-s11-scena1-esito+1.2s.jpg",
+    "f2": "g-s11-scena1-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -72,8 +72,8 @@
      36.96,
      0.22
     ],
-    "f1": "g-s11-scena2-esito+1.2s.png",
-    "f2": "g-s11-scena2-esito+2.4s.png"
+    "f1": "g-s11-scena2-esito+1.2s.jpg",
+    "f2": "g-s11-scena2-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -107,8 +107,8 @@
      52.9,
      0.22
     ],
-    "f1": "g-s11-scena3-esito+1.2s.png",
-    "f2": "g-s11-scena3-esito+2.4s.png"
+    "f1": "g-s11-scena3-esito+1.2s.jpg",
+    "f2": "g-s11-scena3-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -142,8 +142,8 @@
      97.5,
      0.22
     ],
-    "f1": "g-s11-scena4-esito+1.2s.png",
-    "f2": "g-s11-scena4-esito+2.4s.png"
+    "f1": "g-s11-scena4-esito+1.2s.jpg",
+    "f2": "g-s11-scena4-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -178,8 +178,8 @@
      78.32,
      0.44
     ],
-    "f1": "g-s11-scena5-esito+1.2s.png",
-    "f2": "g-s11-scena5-esito+2.4s.png"
+    "f1": "g-s11-scena5-esito+1.2s.jpg",
+    "f2": "g-s11-scena5-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -214,8 +214,8 @@
      52.2,
      0.22
     ],
-    "f1": "g-s11-scena6-esito+1.2s.png",
-    "f2": "g-s11-scena6-esito+2.4s.png"
+    "f1": "g-s11-scena6-esito+1.2s.jpg",
+    "f2": "g-s11-scena6-esito+2.4s.jpg"
    }
   ],
   "corpi": [
@@ -326,8 +326,8 @@
      28.66,
      0.22
     ],
-    "f1": "g-s12-scena1-esito+1.2s.png",
-    "f2": "g-s12-scena1-esito+2.4s.png"
+    "f1": "g-s12-scena1-esito+1.2s.jpg",
+    "f2": "g-s12-scena1-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -358,8 +358,8 @@
      44.25,
      0.22
     ],
-    "f1": "g-s12-scena2-esito+1.2s.png",
-    "f2": "g-s12-scena2-esito+2.4s.png"
+    "f1": "g-s12-scena2-esito+1.2s.jpg",
+    "f2": "g-s12-scena2-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -392,8 +392,8 @@
      55.71,
      0.22
     ],
-    "f1": "g-s12-scena3-esito+1.2s.png",
-    "f2": "g-s12-scena3-esito+2.4s.png"
+    "f1": "g-s12-scena3-esito+1.2s.jpg",
+    "f2": "g-s12-scena3-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -427,8 +427,8 @@
      43.9,
      0.22
     ],
-    "f1": "g-s12-scena4-esito+1.2s.png",
-    "f2": "g-s12-scena4-esito+2.4s.png"
+    "f1": "g-s12-scena4-esito+1.2s.jpg",
+    "f2": "g-s12-scena4-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -462,8 +462,8 @@
      47.88,
      0.22
     ],
-    "f1": "g-s12-scena5-esito+1.2s.png",
-    "f2": "g-s12-scena5-esito+2.4s.png"
+    "f1": "g-s12-scena5-esito+1.2s.jpg",
+    "f2": "g-s12-scena5-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -498,8 +498,8 @@
      60.07,
      0.22
     ],
-    "f1": "g-s12-scena6-esito+1.2s.png",
-    "f2": "g-s12-scena6-esito+2.4s.png"
+    "f1": "g-s12-scena6-esito+1.2s.jpg",
+    "f2": "g-s12-scena6-esito+2.4s.jpg"
    },
    {
     "r": {
@@ -534,8 +534,8 @@
      27,
      0.22
     ],
-    "f1": "g-s12-scena7-esito+1.2s.png",
-    "f2": "g-s12-scena7-esito+2.4s.png"
+    "f1": "g-s12-scena7-esito+1.2s.jpg",
+    "f2": "g-s12-scena7-esito+2.4s.jpg"
    }
   ],
   "corpi": [

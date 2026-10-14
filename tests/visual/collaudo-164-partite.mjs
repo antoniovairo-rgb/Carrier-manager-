@@ -37,7 +37,8 @@ const MAXMS = +(process.env.CPM_MAXMIN || 110) * 60000, SPEED = process.env.CPM_
 const TAG = process.env.CPM_TAG || 'a';
 const jl = (f, o) => fs.appendFileSync(path.join(DATI, f), JSON.stringify(o) + '\n');
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
-const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+/* CPM_SAVE: riparte da un salvataggio scritto a fine giro (dati/<tag>/salvataggio-fine-<tag>.json), altrimenti S12 settimana 38 */
+const save = JSON.parse(fs.readFileSync(process.env.CPM_SAVE || new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 
 const srv = await startServer(); const b = await launchBrowser();
 const ctx = await b.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
@@ -63,7 +64,7 @@ try { await page.getByText('Continua', { exact: false }).first().click({ timeout
 await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }).catch(() => {});
 await sleep(1500);
 
-const foto = async (nome) => { const f = `${TAG}-${nome}.png`; try { await page.screenshot({ path: path.join(OUT, f) }); return f; } catch (e) { return null; } };
+const foto = async (nome) => { const f = `${TAG}-${nome}.jpg`; try { await page.screenshot({ path: path.join(OUT, f), type: 'jpeg', quality: 72 }); return f; } catch (e) { return null; } };
 const ev = (fn, arg) => page.evaluate(fn, arg).catch(e => ({ __err: String(e.message).slice(0, 120) }));
 
 const carriera = () => ev(() => { try { const c = window.__CPM_CAREER; const s = c.snapshot(); return { scr: c.screen(), season: s.season, week: s.week, lived: !!s.weekLived, matches: s.matches | 0, club: s.club && s.club.n, md: c.thisWeekMd(), nc: s.nationsCupQueue ? { a: !!s.nationsCupQueue.active, d: !!s.nationsCupQueue.done, i: s.nationsCupQueue.matchIdx | 0 } : null }; } catch (e) { return { err: e.message }; } });
@@ -114,7 +115,8 @@ async function apriScena(ph) {
   return sc;
 }
 
-while (Date.now() - t0 < MAXMS && partite.length < NP) {
+/* a quota raggiunta si resta fino a 60 s per l'intervista dell'ultima partita (attesaIntervista), poi si esce */
+while (Date.now() - t0 < MAXMS && (partite.length < NP || (partite.length && partite[partite.length - 1].attesaIntervista && Date.now() - partite[partite.length - 1].fineT < 62000))) {
   const ph = await fase();
   if (ph && ph.__err) { await sleep(800); continue; }
   /* === IN PARTITA === */
@@ -230,7 +232,7 @@ while (Date.now() - t0 < MAXMS && partite.length < NP) {
   }
   const last = partite[partite.length - 1];
   if (last && last.attesaIntervista && Date.now() - last.fineT > 60000) { last.attesaIntervista = false; jl('interviste.jsonl', { partita: last.n, week: last.week, intervista: null, dopo: last.dopo, nota: 'nessuna intervista entro 60 s dalla fine' }); log('  NESSUNA intervista partita', last.n); }
-  const a = await clickGiocatore(page, [/^Gioca la partita/, /^Gioca\b/, /Torna alla dashboard/, /Vivi la Settimana/, /Chiudi la stagione/, /Vai al bilancio/, /Salta premiazione/, /Salta il gal/, /Siamo pronti/, /Continua/, /Avanti/, /Prosegui/, /^Inizia/, /Scendi in campo/, /Accetta/, /Nuova stagione/, /Avvia Stagione/, /^Avvia/, /^Conferma/, /^Andiamo/, /^Partiamo/, /^Completa/, /^Firma/, /^Prosegui/, /^Chiudi/, /^Fatto/, /^Ok\b/, /Che la stagione cominci/, /cominci/i, /→\s*$/]);
+  const a = await clickGiocatore(page, [/^Gioca la partita/, /^Gioca\b/, /Torna alla dashboard/, /Vivi la Settimana/, /Chiudi la stagione/, /Vai al bilancio/, /Salta premiazione/, /Salta il gal/, /Siamo pronti/, /Continua/, /Avanti/, /Prosegui/, /^Inizia/, /Scendi in campo/, /Accetta/, /Nuova stagione/, /Avvia Stagione/, /^Avvia/, /^Conferma/, /^Andiamo/, /^Partiamo/, /^Completa/, /^Firma/, /^Prosegui/, /^Chiudi/, /^Fatto/, /^Ok\b/, /Che la stagione cominci/, /cominci/i, /Avanza Settimana/, /→\s*$/]);
   if (a) { lastAdvT = Date.now(); stuck = 0; await sleep(900); continue; }
   stuck++;
   if (Date.now() - lastAdvT > 45000) {
