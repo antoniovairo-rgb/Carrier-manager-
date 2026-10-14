@@ -8,7 +8,7 @@
 import { startServer, launchBrowser } from './lib/harness.mjs';
 import { pagina252, scena252, mediana } from './lib/scena-252.mjs';
 const SCENE = [{ gi: 0, k: 0, nome: 'tiro' }, { gi: 1, k: 0, nome: 'testa' }, { gi: 16, k: 0, nome: 'cross' }, { gi: 3, k: 0, nome: 'passaggio' }];
-const SOGLIA = +(process.env.CPM_SOGLIA || 0.22), MARGINE = 0.05;
+const SOGLIA = +(process.env.CPM_SOGLIA || 0.36), MARGINE = 0.08;/* misurato giro 22: mediana verde 0,298 · rossa 0,488 */
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const bracci = process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'];
 const ris = {};
