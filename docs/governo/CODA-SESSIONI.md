@@ -30,6 +30,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/scene-gesti-022 | session_01AcPBcxRGtnHXYkP1AXshuf | giro 17 (Opus, base 7.999.165): PO-022 scene dal motore, PO-068 gesti, PO-123/143 | 14/10 10:02 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
 | collaudo/release-165 | — (archiviata) | collaudo 165 consegnato → PO-242…247; PO-233 verificata | 14/10 17:55 |
+| collaudo/release-166 | session_01Kt3UG3rV8GGpaKgGGhN9ic | collaudo approfondito 7.999.166 (main): PO-229 giro 12, PO-239, PO-240 | 14/10 19:06 |
 | sviluppo/ripartenza-207 | session_01NcXJF4S452JcXzff5Wq76G | giro 18 (Opus, base lavoro/166): PO-207 ripartenza dal centro rotta dal seme (7.999.162), guardiano nomi-219 instabile da riparare | 14/10 17:51 |
 | sviluppo/rilievi-collaudo-242 | session_012sqMa4vt2dahDVE1YdbPjV | giro 19 (Opus, base lavoro/167): PO-242…247 dai collaudi 164/165 | 14/10 17:56 |
 | sviluppo/classifica-194-migrazione | — (archiviata) | giro 13 consegnato, integrato in 7.999.167 (lavoro/167) | 14/10 17:55 |
