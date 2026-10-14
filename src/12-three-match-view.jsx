@@ -10301,6 +10301,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _ord=glbAvatars.map((av,index)=>{const p=av&&av.proc&&av.proc.position;const dx=p?p.x-_fuoco.x:999,dz=p?p.z-_fuoco.z:999;return{av,index,d:Math.hypot(dx,dz)};})
               .filter(x=>x.av&&x.av.root).sort((a,b)=>a.d-b.d);
             const _tieni=new Set([0]);/* l'eroe non si spegne mai */
+            /* [PO-236, 14/10 «Non ci sono i bambini accompagnati dalla squadra avversaria» — rosso __CPM_NO_236] MISURATO (sonda
+               bambini-236, ingresso Spagna-Portogallo): questo roster, pensato per gli HIGHLIGHT, girava anche nell'INGRESSO IN CAMPO e
+               disegnava solo eroe, un portiere e i tre piu' vicini al pallone. I bambini (lista _mascots, fuori dal roster) restavano
+               tutti e 22: nascondendoli, in campo restavano DUE calciatori. Le «squadre» della foto del PO erano i bambini, con le due
+               divise scambiate, e quasi nessun calciatore accanto. Nell'ingresso si disegnano tutti: la cerimonia e' la squadra. */
+            const _walk236=P.matchPhase==="walkout"&&!window.__CPM_NO_236;
+            if(_walk236)glbAvatars.forEach((av,index)=>{if(av&&av.root)_tieni.add(index);});
             const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
             if(P.shootout&&!(window.__CPM_NO_RIGORI58))_ord.filter(x=>x.av.proc&&(x.av.proc===sr.current._soGk58||x.av.proc===sr.current._soKicker)).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori si disegnano SEMPRE il portiere in porta e il rigorista */
             if(!(P.shootout&&!(window.__CPM_NO_RIGORI58)))_ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori niente «tre piu' vicini»: il rigorista che rientra in fila attraversava l'inquadratura */
@@ -10311,6 +10318,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _conta={lod0:0,lod1:0,lod2:0};
             glbAvatars.forEach(av=>{const l=av&&av._cgLod;if(l&&_conta[l]!==undefined)_conta[l]++;});
             if(typeof window!=='undefined')window.__CPM_CGTRADER_CINEMA_ROSTER={visible:_tieni.size,total:glbAvatars.length,hero:0,keeper:_port?_port.index:null,lod:_conta};
+            /* [PO-236] testimone dell'ingresso: per squadra, calciatori disegnati e calciatori disegnati col loro bambino accanto */
+            if(P.matchPhase==="walkout"&&typeof window!=='undefined'){try{const _dis=new Set();glbAvatars.forEach(av=>{if(av&&av.root&&av.root.visible&&av.proc&&!av._isRef)_dis.add(av.proc);});
+              const _sq={home:{disegnati:0,conBimbo:0,bimbi:0},away:{disegnati:0,conBimbo:0,bimbi:0}};
+              glbAvatars.forEach(av=>{if(av&&av.root&&av.root.visible&&!av._isRef&&_sq[av._team])_sq[av._team].disegnati++;});
+              for(const m of _mascots){const _l=m.casa?'home':'away';const _k=(m.glb911&&m.glb911.root)||m.c;if(!_k||!_k.visible)continue;_sq[_l].bimbi++;if(_dis.has(m.p))_sq[_l].conBimbo++;}
+              window.__CPM_CGTRADER_CINEMA_ROSTER.ingresso236=_sq;}catch(_e236){}}
           }catch(_eCin){}
         }
         _animLodStats.frames++;_animLodStats.lastFrameUpdates=0;

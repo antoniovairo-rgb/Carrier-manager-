@@ -655,7 +655,72 @@ const NAT_CLUB_DATA={
   "Olanda":{id:"nl-nt",a:"NED",p:78,c:"#FF4F00",c2:"#fff",nat:"🇳🇱"},
   "Belgio":{id:"be-nt",a:"BEL",p:79,c:"#1a1a1a",c2:"#FDDA24",nat:"🇧🇪"},
 };
-function NationalCallupScreen({data,onPlay}){
+/* [PO-235, 14/10 «Schermata fuori standard» — rosso __CPM_NO_235] LA CONVOCAZIONE IN NAZIONALE NEL KIT DEL GIOCO. Era l'unica
+   schermata pre-partita fatta a mano: fondo a gradiente scuro dal colore della nazionale (il titolo bianco ci stava sopra, il
+   sottotitolo a 2,95:1), card bianche sul nero, bottone VERDE con l'emoji dello stadio. Ora e' come il pre-partita del kit
+   (src/18, «partita23»): occhiello maiuscolo, Card del kit (TH.card, RAD.md), token TH/FS/FW/SP, una sola azione piena —
+   il primario del kit, Btn size="lg". La maglia resta, piccola, dentro la card d'apertura: e' l'identita' della chiamata.
+   Guardiano convocazione-235 (360/412 px, prima convocazione e normale), rosso __CPM_NO_235 = la schermata di prima. */
+function NationalCallupScreen(props){
+  if(typeof window!=='undefined'&&window.__CPM_NO_235)return _NationalCallupScreenOld235(props);
+  const{data,onPlay}=props;const{nation,isFirst,newCaps,opp:dataOpp}=data;
+  const nd=NAT_DATA[nation]||{flag:"🏳",col:TH.primary,col2:"#fff",opp:"Avversario"};
+  const opp=dataOpp||nd.opp||"Avversario";
+  const oppNd=NAT_DATA[opp]||{flag:"🏳"};
+  const[shown,setShown]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
+  const occhiello={fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8};
+  return(
+    <div data-cpm="convocazione235" style={{width:"100%",maxWidth:480,margin:"0 auto",padding:`${SP.lg}px ${SP.lg}px ${SP.xxl}px`,boxSizing:"border-box",
+      display:"flex",flexDirection:"column",gap:SP.md,opacity:shown?1:0,transition:"opacity 0.45s"}}>
+      {isFirst&&<Card tone="warn" shadow={false} density="tight">
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.txAmber}}>Traguardo di carriera · prima convocazione</div>
+      </Card>}
+      <Card>
+        <div style={occhiello}>Convocazione nazionale</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{fontSize:FS.display,lineHeight:1,flexShrink:0}}>{nd.flag}</div>
+          <div style={{minWidth:0,flex:1}}>
+            <div style={{fontSize:FS.title,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>Nazionale {nation}</div>
+            <div style={{fontSize:FS.small,color:TH.muted}}>Presenza n. {newCaps} · Amichevole internazionale</div>
+          </div>
+          <svg width="46" height="52" viewBox="0 0 92 104" aria-hidden style={{flexShrink:0}}>
+            <path d="M23 13 Q11 16 7 26 L2 47 L21 49 L21 92 L71 92 L71 49 L90 47 L85 26 Q81 16 69 13 Q59 7 46 6 Q33 7 23 13Z" fill={nd.col} stroke={TH.cardBorder} strokeWidth="2"/>
+            <path d="M31 13 Q38 22 46 22 Q54 22 61 13" fill="none" stroke={nd.col2} strokeWidth="2"/>
+            <text x="46" y="65" textAnchor="middle" fill={nd.col2} fontSize="24" fontWeight="900" fontFamily="inherit">10</text>
+          </svg>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Prossima partita</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:SP.sm}}>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{nd.flag}</span>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nation}</span>
+          </div>
+          <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.muted}}>vs</div>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",justifyContent:"flex-end",gap:SP.sm}}>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp}</span>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{oppNd.flag}</span>
+          </div>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Bonus dopo la partita</div>
+        <div style={{display:"flex",gap:SP.sm,marginTop:SP.sm}}>
+          {[{l:"Popolarità",v:"+8",c:TH.txGreen},{l:"Valore",v:"+€0.15M",c:TH.txAmber},{l:"Morale",v:"+12",c:TH.brandText}].map(b=>(
+            <div key={b.l} style={{flex:1,minWidth:0,background:TH.surface2,borderRadius:RAD.sm,padding:`${SP.sm}px ${SP.xs}px`,textAlign:"center"}}>
+              <div style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{b.l}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+    </div>
+  );
+}
+function _NationalCallupScreenOld235({data,onPlay}){
   const{nation,isFirst,newCaps,opp:dataOpp}=data;
   const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
   const{flag,col,col2}=nd;

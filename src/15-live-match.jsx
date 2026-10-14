@@ -148,27 +148,41 @@ const golScarto10=(n,maiusc)=>{n=Math.abs(n|0);if(typeof window!=='undefined'&&w
 try{if(typeof window!=='undefined'){window.__CPM_LATI10=latiTabellino10;window.__CPM_SCARTO10=golScarto10;}}catch(_e){}
 
 /* [PO-226, decisione PO 12/10 — rosso __CPM_NO_INT226] LE SCHEDE DEL SISTEMA NUOVO: una per FATTO del motore (src/14, INT226.FATTI),
-   due opzioni, la prima e' la neutra che il timer applica da sola. Il testo dice il fatto che l'ha fatta nascere; l'effetto lo
+   tre opzioni dal PO-234 (erano due), la prima e' la neutra che il timer applica da sola. Il testo dice il fatto che l'ha fatta nascere; l'effetto lo
    applica scegli681 (atteggiamento del motore via chiedi.ordine226, minuto d'ingresso via INT226.ingresso). Stessa forma delle
    schede INTX669, cosi' viaggiano sullo stesso binario (cronaca → PopScelta919 → scegli681). */
 const SCHEDE226={
  panca_sotto:{fam:"MISTER",txt:c=>"\ud83e\ude91 Sotto di "+(Math.abs(c.diff)===1?"un gol":Math.abs(c.diff)+" gol")+" al "+c.mn+"': il mister si gira verso la panchina e incrocia lo sguardo di "+c.eroe+".",
-  sc:[{et:"Resto concentrato",es:c=>c.eroe+" annuisce e torna a guardare il campo: entrera' quando lo chiamano, pronto."},{et:"Chiedo di entrare",es:c=>c.eroe+" si alza e chiede la maglia: il mister ci pensa un attimo, poi lo manda a scaldarsi."}]},
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" annuisce e torna a guardare il campo: entrera' quando lo chiamano, pronto."},{et:"Chiedo di entrare",es:c=>c.eroe+" si alza e chiede la maglia: il mister ci pensa un attimo, poi lo manda a scaldarsi."},
+   {et:"Mi scaldo da solo",es:c=>c.eroe+" comincia a correre lungo la linea senza dire niente: il mister lo vede pronto e lo anticipa di qualche minuto."}]},
  panca_pari:{fam:"MISTER",txt:c=>"\ud83e\ude91 Ancora pari al "+c.mn+"': la partita e' bloccata e il mister cerca una soluzione con gli occhi.",
-  sc:[{et:"Resto concentrato",es:c=>c.eroe+" resta seduto e studia il terzino avversario: quando entra sapra' dove andare."},{et:"Chiedo di entrare",es:c=>c.eroe+" si fa avanti: «Mister, mettimi dentro». Il preparatore lo manda a scaldarsi."}]},
- misura_85:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Un gol di vantaggio all'"+c.mn+"': il mister fa segno di abbassarsi, chiudere tutto, niente rischi.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" rientra e si mette davanti alla difesa: la squadra si abbassa compatta."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta alto a cercare il gol del ko: la squadra lo segue, si gioca ancora in avanti."}]},
+  sc:[{et:"Resto concentrato",es:c=>c.eroe+" resta seduto e studia il terzino avversario: quando entra sapra' dove andare."},{et:"Chiedo di entrare",es:c=>c.eroe+" si fa avanti: «Mister, mettimi dentro». Il preparatore lo manda a scaldarsi."},
+   {et:"Mi scaldo da solo",es:c=>c.eroe+" si toglie la pettorina e fa qualche allungo: il mister se ne accorge e lo chiama un po' prima."}]},
+ misura_85:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Un gol di vantaggio all'"+c.mn+"': le indicazioni del mister sono chiare, abbassarsi, chiudere tutto, niente rischi.",
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" rientra e si mette davanti alla difesa: la squadra si abbassa compatta."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta alto a cercare il gol del ko: la squadra lo segue, si gioca ancora in avanti."},
+   {et:"Teniamo palla nella loro metà",es:c=>c.eroe+" chiede il pallone e lo fa girare lontano dalla nostra area: si rischia poco, ma si tira poco."}]},
  sotto_70:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Sotto al "+c.mn+"': il mister batte le mani e chiama tutti avanti, serve il gol.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" alza i giri: la squadra sale e comincia a tirare da ogni posizione."},{et:"Faccio di testa mia",es:c=>c.eroe+" tiene la calma e la posizione: meglio un'occasione vera che dieci tiri a caso."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" alza i giri: la squadra sale e comincia a tirare da ogni posizione."},{et:"Faccio di testa mia",es:c=>c.eroe+" tiene la calma e la posizione: meglio un'occasione vera che dieci tiri a caso."},
+   {et:"Spingo, ma restiamo corti",es:c=>c.eroe+" sale, ma chiede ai compagni di restare corti: si attacca senza lasciare buchi dietro."}]},
  pari_75:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Pari al "+c.mn+"': il mister chiede di provarci, «questa si puo' vincere».",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" chiama la palla e la squadra spinge: si cerca la porta piu' spesso."},{et:"Faccio di testa mia",es:c=>c.eroe+" preferisce non sbilanciarsi: un punto non si butta."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" chiama la palla e la squadra spinge: si cerca la porta piu' spesso."},{et:"Faccio di testa mia",es:c=>c.eroe+" preferisce non sbilanciarsi: un punto non si butta."},
+   {et:"Ci provo, ma solo sulle palle giuste",es:c=>c.eroe+" aspetta il momento: si tira quando c'e' lo spazio, non prima."}]},
  avanti_2:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 Due gol di vantaggio al "+c.mn+"': il mister abbassa le mani, «gestiamo».",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" fa girare palla e abbassa il ritmo: la squadra amministra."},{et:"Faccio di testa mia",es:c=>c.eroe+" vuole il terzo: continua ad attaccare lo spazio."}]},
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" fa girare palla e abbassa il ritmo: la squadra amministra."},{et:"Faccio di testa mia",es:c=>c.eroe+" vuole il terzo: continua ad attaccare lo spazio."},
+   {et:"Gestisco, ma resto pericoloso",es:c=>c.eroe+" abbassa il ritmo ma non smette di guardare la porta: se si apre lo spazio, si riparte."}]},
  eroe_stanco:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha il fiato corto al "+c.mn+"': il mister gli fa segno di gestirsi.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si risparmia e resta in posizione: la squadra gli copre le spalle."},{et:"Faccio di testa mia",es:c=>c.eroe+" stringe i denti e continua a pressare: la squadra lo segue."}]},
- eroe_marcato:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha perso "+(c.duelliP|0)+" duelli col suo marcatore: il mister gli chiede di allargarsi e portarlo via.",
-  sc:[{et:"Seguo l'ordine",es:c=>c.eroe+" si allarga e porta il marcatore fuori: in mezzo si apre spazio per i compagni."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta li' e lo sfida ancora: e' una questione personale."}]}
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" si risparmia e resta in posizione: la squadra gli copre le spalle."},{et:"Faccio di testa mia",es:c=>c.eroe+" stringe i denti e continua a pressare: la squadra lo segue."},
+   {et:"Rifiato col pallone",es:c=>c.eroe+" smette di pressare ma chiede palla corta: riprende fiato giocando, senza sparire."}]},
+ eroe_marcato:{fam:"MISTER",ordine:1,txt:c=>"\ud83d\udce2 "+c.eroe+" ha perso "+(c.duelliP|0)+" duelli col suo marcatore: il mister gli indica di allargarsi e portarlo via.",
+  sc:[{et:"Seguo le indicazioni",es:c=>c.eroe+" si allarga e porta il marcatore fuori: in mezzo si apre spazio per i compagni."},{et:"Faccio di testa mia",es:c=>c.eroe+" resta li' e lo sfida ancora: e' una questione personale."},
+   {et:"Mi abbasso a prendere palla",es:c=>c.eroe+" viene incontro e gioca di prima: il marcatore lo segue a meta' campo, davanti si respira un po'."}]}
 };
+/* [PO-234, 14/10 «Segui indicazioni, non ordine e dai almeno 3 opzioni!» — rosso __CPM_NO_234] la scheda COME LA VEDE il giocatore:
+   tre opzioni, lessico «indicazioni». Col rosso torna la scheda di prima del PO-234 (due opzioni, «Seguo l'ordine»), cosi' il
+   guardiano schede-234 puo' provare di vedere la differenza. Funzione pura, letta anche dal banco Node. */
+function schedaVista234(S,W){if(!S)return S;const W_=W||(typeof window!=='undefined'?window:null);
+  if(!(W_&&W_.__CPM_NO_234))return S;
+  return Object.assign({},S,{sc:S.sc.slice(0,2).map((o,i)=>(i===0&&S.ordine)?Object.assign({},o,{et:"Seguo l'ordine"}):o)});}
 const INTX669=[
  /* [7.669.0 v2 — MISURATO: una sola interazione a partita contro la banda 2-4, perche' quasi tutte
     le schede aspettavano che l'eroe avesse gia' inciso (duelli, occasioni). Ma una partita ha momenti
@@ -5930,7 +5944,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             panchina:!!onBenchRef.current,ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),
             fatte:_fatte226,ultima:(_fatte226.length?(_N.ultima|0):null)};
           const _f226=INT226.scegli(_c226);
-          if(_f226&&SCHEDE226[_f226]){const _S=SCHEDE226[_f226];_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
+          if(_f226&&SCHEDE226[_f226]){const _S=schedaVista234(SCHEDE226[_f226]);_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
             if(typeof window!=='undefined'){try{(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}).cand=(window.__CPM_INT226.cand|0)+1;}catch(_e){}}}
         }catch(_e226){}}
         if(!_on226&&!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545

@@ -44,7 +44,7 @@ const TAL202_K=1;/* [7.999.137 PO-202] il talento dell'eroe nel brain (vedi esit
    Censimento (docs/sviluppo/RAPPORTO-giro10.md): in partita uscivano 4-5 schede a orologio (finestra 18'-88', sorteggio) e quattro
    ordini del mister a minuti fissi (28'/63'/75'/85') che il giocatore non poteva rifiutare. Qui vive la parte PURA del sistema nuovo,
    leggibile anche dal banco Node: (1) quali FATTI della partita aprono una scelta, in ordine di precedenza; (2) l'effetto della
-   scelta sull'atteggiamento del motore (ATT: [seguo l'ordine, faccio di testa mia], in [-1,1], moltiplica la voglia di tirare della
+   scelta sull'atteggiamento del motore (ATT: [seguo le indicazioni, faccio di testa mia, via di mezzo — PO-234], in [-1,1], moltiplica la voglia di tirare della
    squadra dell'eroe come la mentalita'); (3) il minuto d'ingresso dalla panchina, con seme. Tetto: tre scelte a partita, otto minuti
    fra l'una e l'altra (cinque per il vantaggio di misura all'85', che non puo' aspettare), ogni fatto una volta sola. I valori sono
    una scelta di progetto dichiarata, non vengono da una fonte. */
@@ -53,12 +53,12 @@ const INT226={
   FATTI:[
     {id:'panca_sotto',panca:1,quando:c=>c.panchina&&c.diff<0&&c.mn>=20&&c.mn<=c.ingresso-4},
     {id:'panca_pari',panca:1,quando:c=>c.panchina&&c.diff===0&&c.mn>=46&&c.mn<=c.ingresso-4},
-    {id:'misura_85',dist:5,ordine:'consolida',att:[-0.6,0.3],quando:c=>!c.panchina&&c.mn>=85&&c.diff===1},
-    {id:'sotto_70',ordine:'urgenza_75',att:[0.6,-0.2],quando:c=>!c.panchina&&c.mn>=70&&c.diff<0},
-    {id:'pari_75',ordine:'urgenza_75',att:[0.45,-0.15],quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
-    {id:'avanti_2',ordine:'blocca_ora',att:[-0.45,0.2],quando:c=>!c.panchina&&c.mn>=60&&c.diff>=2},
-    {id:'eroe_stanco',ordine:'intelligente',att:[-0.25,0.15],quando:c=>!c.panchina&&c.mn>=55&&c.energia!=null&&c.energia<=55},
-    {id:'eroe_marcato',ordine:null,att:[0.25,-0.1],quando:c=>!c.panchina&&c.mn>=25&&(c.duelliP|0)>=2}],
+    {id:'misura_85',dist:5,ordine:'consolida',att:[-0.6,0.3,-0.2],quando:c=>!c.panchina&&c.mn>=85&&c.diff===1},
+    {id:'sotto_70',ordine:'urgenza_75',att:[0.6,-0.2,0.2],quando:c=>!c.panchina&&c.mn>=70&&c.diff<0},
+    {id:'pari_75',ordine:'urgenza_75',att:[0.45,-0.15,0.15],quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
+    {id:'avanti_2',ordine:'blocca_ora',att:[-0.45,0.2,-0.12],quando:c=>!c.panchina&&c.mn>=60&&c.diff>=2},
+    {id:'eroe_stanco',ordine:'intelligente',att:[-0.25,0.15,-0.05],quando:c=>!c.panchina&&c.mn>=55&&c.energia!=null&&c.energia<=55},
+    {id:'eroe_marcato',ordine:null,att:[0.25,-0.1,0.08],quando:c=>!c.panchina&&c.mn>=25&&(c.duelliP|0)>=2}],
   attivo(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_INT226);},
   /* c = {mn, diff (eroe meno avversario), energia, duelliP, panchina, ingresso, fatte:[id], ultima} → id del fatto, o null */
   scegli(c){if(!c)return null;const F=c.fatte||[];if(F.length>=INT226.TETTO||c.mn>88)return null;
@@ -68,11 +68,17 @@ const INT226={
       let ok=false;try{ok=!!f.quando(c);}catch(_e){ok=false;}if(ok)return f.id;}
     return null;},
   fatto(id){return INT226.FATTI.find(f=>f.id===id)||null;},
-  /* l'effetto della scelta idx (0 = seguo l'ordine, la neutra che scatta col timer · 1 = faccio di testa mia) */
-  att(id,idx){const f=INT226.fatto(id);return f&&f.att?(+f.att[idx?1:0]||0):0;},
+  /* l'effetto della scelta idx (0 = seguo le indicazioni, la neutra che scatta col timer · 1 = faccio di testa mia · 2 = la via di
+     mezzo). [PO-234, 14/10 «Segui indicazioni, non ordine e dai almeno 3 opzioni!»] TRE opzioni, tre atteggiamenti diversi: la terza
+     sta fra le prime due, valori di progetto dichiarati (non da una fonte), effetto misurato al banco (interazioni-226, parte A).
+     Rosso __CPM_NO_234: la terza opzione torna senza effetto (come la neutra prima del PO-234: atteggiamento 0). */
+  att(id,idx){const f=INT226.fatto(id);if(!f||!f.att)return 0;idx=Math.max(0,Math.min(f.att.length-1,idx|0));
+    if(idx===2&&typeof window!=='undefined'&&window&&window.__CPM_NO_234)return 0;return +f.att[idx]||0;},
   /* panchina: idx 0 = resto concentrato (minuto deciso dal mister, invariato) · 1 = chiedo di entrare (prima, di 4-10' col seme,
-     mai prima di due minuti da adesso). Funzione pura di (base, scelta, seme, minuto). */
+     mai prima di due minuti da adesso) · 2 [PO-234] = mi scaldo da solo (prima, di 1-3' col seme: il mister mi vede pronto).
+     Funzione pura di (base, scelta, seme, minuto). Rosso __CPM_NO_234: la terza opzione non sposta il minuto. */
   ingresso(base,idx,seme,mn){base=Math.round(+base||60);if(!idx)return base;let s=((seme>>>0)^0x226)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;
+    if(idx===2){if(typeof window!=='undefined'&&window&&window.__CPM_NO_234)return base;const d2=1+Math.floor((s/4294967296)*3);return Math.max(Math.round(+mn||0)+2,Math.min(base,base-d2));}
     const d=4+Math.floor((s/4294967296)*7);return Math.max(Math.round(+mn||0)+2,Math.min(base,base-d));},
   /* il riscaldamento parte 5-14' prima dell'ingresso, col seme (era Math.random) */
   riscaldamento(base,seme){let s=((seme>>>0)^0x2261)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;return Math.max(1,Math.round(+base||60)-(5+Math.floor((s/4294967296)*10)));}
