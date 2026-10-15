@@ -21,7 +21,7 @@ async function partita(i, braccio, rosso) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   const save = JSON.parse(JSON.stringify(SAVE)); save.player.name = 'Guard246 ' + ['Rossi', 'Bianchi', 'Verdi', 'Neri'][i % 4] + i;
-  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_SCMS681 = o.scms; if (o.freeze) window.__CPM_SCFREEZE_TEST = 1; if (o.rosso) window.__CPM_NO682F = 1;
+  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_NO_SCHEDE259 = 1;/* [PO-259] le schede 226/234 vivono sotto il rosso del 259: questo guardiano le custodisce li' */ window.__CPM_SCMS681 = o.scms; if (o.freeze) window.__CPM_SCFREEZE_TEST = 1; if (o.rosso) window.__CPM_NO682F = 1;
     localStorage.setItem('cpm-match-speed', o.speed); localStorage.setItem('cpm-v3', JSON.stringify(o.save)); }, { save, rosso, speed: SPEED, scms: SCMS, freeze: braccio === 'giocatore' });
   const out = { i, braccio, rosso, finita: false, aperte: [] };
   try {

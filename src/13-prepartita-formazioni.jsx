@@ -66,7 +66,17 @@ function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
 /* ========================================
    AI UI COMPONENTS
 ======================================== */
-function ScoutReportScreen({report,opponent,onClose,loading}){
+function ScoutReportScreen({report,opponent,onClose,loading,mister,mine}){
+  /* [PO-217] l'altezza DISPONIBILE si misura: `100dvh` sforava di 28 px (il padding in fondo allo scorritore .cpm-scroll) e il piede
+     col pulsante copriva il fondo dell'ultima card. Hook in testa, prima dei return condizionali (regole degli hook). */
+  const _ref217=React.useRef(null);const[_h217,_setH217]=React.useState(null);
+  React.useLayoutEffect(()=>{
+    const misura=()=>{try{const el=_ref217.current;if(!el)return;const sc=el.closest('.cpm-scroll');if(!sc)return;
+      const pb=parseFloat(getComputedStyle(sc).paddingBottom)||0;
+      const v=Math.floor(sc.getBoundingClientRect().bottom-pb-el.getBoundingClientRect().top-sc.scrollTop*0);
+      if(v>200)_setH217(h=>(h!=null&&Math.abs(h-v)<2)?h:v);}catch(_e){}};
+    misura();window.addEventListener('resize',misura);return()=>window.removeEventListener('resize',misura);
+  },[report,loading]);
   if(loading)return(
     <Card style={{padding:24,textAlign:"center",marginBottom:8}}>
       <div style={{fontSize:FS.h,marginBottom:6,animation:"pulse 1.2s infinite"}}>🔍</div>
@@ -82,6 +92,88 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
      Una Card chiara come le altre al posto della testata blu notte; il numero della difficolta' coi token
      semantici; punti deboli/forti con l'intestazione di sezione del kit; il consiglio del mister in un
      riquadro neutro; l'azione e' il primario del kit. Rosso __CPM_NO_SCOUT23: la schermata di prima. */
+  /* [PO-217 · giro 30 — foto PO 06/10 «migliora graficamente»] LA SCHERMATA DEL KIT CON UNA GERARCHIA.
+     Prima: tre card di testo uguali e mezza schermata vuota sotto «Entra in campo». Ora, con GLI STESSI DATI:
+     (1) testata-manifesto: i due stemmi della partita (il tuo club e l'avversario), il nome dell'avversario in grande e la
+         difficolta' come numero display + barra + etichetta;
+     (2) «Da neutralizzare»: i punti forti dell'avversario come righe numerate. NON c'e' una figurina del giocatore da
+         neutralizzare perche' il report non nomina un giocatore (strengths sono due frasi di reparto): disegnarne uno
+         sarebbe inventare un dato;
+     (3) il consiglio del mister come VOCE: la sua figurina (Figurina tipo mister, il mister di questa partita: CT in
+         Nazionale) col nome e la frase in un fumetto;
+     (4) il pulsante primario in fondo, sempre visibile (piede appiccicato) — il contenuto si distribuisce sull'altezza
+         dello schermo invece di lasciare il vuoto sotto.
+     Rosso window.__CPM_NO_PRE217: la schermata di prima. Guardiano tests/visual/analisi-217.mjs. */
+  if(!(typeof window!=='undefined'&&(window.__CPM_NO_PRE217||window.__CPM_NO_SCOUT23))){
+    const tx=report.difficulty>72?TH.txRed:report.difficulty>55?TH.txAmber:TH.txGreen;
+    const lab=report.difficulty>72?"Molto difficile":report.difficulty>55?"Difficile":report.difficulty>38?"Abbordabile":"Accessibile";
+    const _mn=(mister&&mister.name)||null;
+    /* taglia: sugli schermi alti (altezza utile >= 820, la 412x915 del PO) stemmi, numeri, figurina e corpo salgono di un passo
+       della scala, cosi' l'altezza la riempie il contenuto e non una banda vuota nella testata */
+    const G=_h217!=null&&_h217>=820;
+    const _forti=(report.strengths||[]);
+    const _deb=!(report.exploits&&report.exploits.length)?(report.weaknesses||[]):[];/* [7.999.49 parte A] come prima: solo se il pre-partita non li ha gia' mostrati */
+    const Voce=({n,t,c})=>(<div style={{display:"flex",gap:SP.md,alignItems:"flex-start",padding:`${SP.sm}px 0`,borderTop:n>1?`1px solid ${TH.divider}`:"none"}}>
+      <span className="cpm-num" style={{width:24,height:24,borderRadius:RAD.sm,background:c[0],color:c[1],fontSize:FS.small,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{n}</span>
+      <div style={{fontSize:G?FS.bodyLg:FS.body,color:TH.text,lineHeight:1.45,paddingTop:2}}>{t}</div></div>);
+    return(
+    <div ref={_ref217} data-cpm="analisi217" style={{display:"flex",flexDirection:"column",minHeight:_h217!=null?_h217:"100dvh",gap:SP.md}}>
+      <div data-cpm="analisi217-corpo" style={{display:"flex",flexDirection:"column",gap:SP.md,flex:"1 0 auto"}}>
+      {/* la testata ASSORBE l'altezza che avanza (contenuto centrato): il vuoto non finisce fra le card ne' sotto il pulsante */}
+      <Card elevation={2} style={{padding:`${SP.lg}px ${SP.lg}px ${SP.md}px`,flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+        <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,textAlign:"center"}}>Analisi pre-partita</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:SP.lg,margin:`${SP.md}px 0 ${SP.sm}px`}}>
+          {mine&&<div style={{opacity:.9}}><TeamBadge team={mine} size={G?64:52}/></div>}
+          {mine&&<div style={{fontSize:FS.small,fontWeight:FW.black,color:TH.faint,letterSpacing:1}}>VS</div>}
+          <TeamBadge team={opponent} size={G?96:72}/>
+        </div>
+        <div style={{textAlign:"center",fontSize:G?FS.h:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1.2,overflowWrap:"anywhere"}}>{opponent?.n||"Avversario"}</div>
+        {opponent?.lg?<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginTop:2}}>{opponent.lg}</div>:null}
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.lg,padding:`${SP.md}px`,background:TH.surface2,borderRadius:RAD.md}}>
+          <div style={{textAlign:"center",flexShrink:0,minWidth:56}}>
+            <div className="cpm-num" style={{fontSize:G?FS.displayLg:FS.display,fontWeight:FW.black,color:tx,lineHeight:1}}>{report.difficulty}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>difficoltà</div>
+          </div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:tx,marginBottom:SP.xs}}>{lab}</div>
+            <div style={{height:8,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${report.difficulty}%`,background:tx,borderRadius:RAD.pill}}/></div>
+          </div>
+        </div>
+      </Card>
+      {report.memNote&&(<Card bg={TH.bgAmber} border={TH.bdAmber} shadow={false} style={{padding:`${SP.sm}px ${SP.lg}px`}}>
+        <div style={{fontSize:FS.small,color:TH.txAmber,fontWeight:FW.semibold,lineHeight:1.5}}>{report.memNote}</div></Card>)}
+      {report.h2h&&(<Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader>Precedenti</SectionHeader>
+        <div style={{display:"flex",gap:SP.sm}}>{[["Vinte",report.h2h.w,TH.txGreen],["Pari",report.h2h.d,TH.txAmber],["Perse",report.h2h.l,TH.txRed]].map(([l,v,c])=>(
+          <div key={l} style={{flex:1,textAlign:"center",background:TH.surface2,borderRadius:RAD.md,padding:`${SP.sm}px 0`}}>
+            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:c}}>{v}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
+      </Card>)}
+      {_deb.length>0&&(<Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader icon="🎯">Da sfruttare</SectionHeader>
+        {_deb.map((w,i)=><Voce key={i} n={i+1} t={w} c={[TH.bgGreen,TH.txGreen]}/>)}
+      </Card>)}
+      <Card data-cpm="analisi217-neutralizzare" style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader icon="🛡️" style={{marginBottom:SP.xs}}>Da neutralizzare</SectionHeader>
+        {_forti.map((w,i)=><Voce key={i} n={i+1} t={w} c={[TH.bgAmber,TH.txAmber]}/>)}
+      </Card>
+      <Card data-cpm="analisi217-mister" style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+          {(()=>{try{return <Figurina tipo="mister" chiave={_mn||"mister"} larg={G?64:48}/>;}catch(_e){return null;}})()}
+          <div style={{minWidth:0}}>
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2}}>Il consiglio del mister</div>
+            <div style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{_mn||"Il mister"}</div>
+          </div>
+        </div>
+        <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.md}px`,borderLeft:`3px solid ${TH.primary}`}}>
+          <div style={{fontSize:G?FS.bodyLg:FS.body,color:TH.text,lineHeight:1.55}}>«{report.recommendation}»</div>
+        </div>
+      </Card>
+      </div>
+      {onClose&&<div data-cpm="analisi217-piede" style={{position:"sticky",bottom:0,paddingTop:SP.sm,paddingBottom:`calc(${SP.md}px + env(safe-area-inset-bottom, 0px))`,background:TH.bg}}>
+        <Btn onClick={onClose} v="primary" size="lg" fw>Entra in campo</Btn></div>}
+    </div>);
+  }
   if(!(typeof window!=='undefined'&&window.__CPM_NO_SCOUT23)){
     const tx=report.difficulty>72?TH.txRed:report.difficulty>55?TH.txAmber:TH.txGreen;/* stesso taglio dell etichetta */
     const lab=report.difficulty>72?"Molto difficile":report.difficulty>55?"Difficile":report.difficulty>38?"Abbordabile":"Accessibile";

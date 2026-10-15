@@ -109,6 +109,17 @@ function DiarioSfoglia({diary,DTYPE}){
     </div></div>
   </div>);
 }
+/* [PO-066 · giro 30 — collaudo PO «box fuori standard»] SULLA HOME LA FISARMONICA E' LA CARD COL MOMENTO.
+   I riquadri della home si aprono e si chiudono con la Card del kit (titolo in chiaro + freccia, raggio RAD.md);
+   quattro riquadri (Record watch, Obiettivi personali, Movimenti di Lega, coppa europea) usavano invece il
+   cappello maiuscolo della `Fisarmonica` delle schede Stagione/Club con la card attaccata sotto (raggio 6 tagliato
+   a meta'): due grammatiche diverse nella stessa colonna. Stesso contenuto, stessa apertura iniziale.
+   E' un componente di MODULO, non di CareerApp: definito dentro, a ogni render avrebbe azzerato lo stato aperto/chiuso.
+   Rosso window.__CPM_NO_HOME066: torna la Fisarmonica di prima. Guardiano tests/visual/home-066.mjs. */
+function FisHome66({id,titolo,aperta=false,cardStyle={},cardProps={},children}){
+  if(typeof window!=='undefined'&&window.__CPM_NO_HOME066)return <Fisarmonica id={id} titolo={titolo} aperta={aperta}><Card {...cardProps} style={cardStyle}>{children}</Card></Fisarmonica>;
+  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:SP.sm}}>{children}</Card>;
+}
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -379,16 +390,24 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const notifQRef=useRef([]);const notifBusyRef=useRef(false);const notifWkRef=useRef(0);
   const[notifPending,setNotifPending]=useState(false);/* [7.286.0 direttiva PO] la cascata di fine stagione TRATTIENE il pulsante della stagione nuova */
   useEffect(()=>{notifWkRef.current=(player.season||1)*100+(player.week||1);},[player.season,player.week]);
+  /* [giro 23 PO-247, questionario 15/10 «Dopo l'intervista» — rosso __CPM_NO_IV247] con l'intervista aperta la coda dei toast si
+     FERMA: l'avviso dei premi compare solo a intervista chiusa (il giro 19 lo spostava in alto, dove copriva la riga del punteggio).
+     Cio' che arriva o resta in coda durante l'intervista non scade col cambio di settimana: il giocatore non l'ha ancora visto. */
+  const ivAperta247Ref=useRef(false);
   const _drainNotif=()=>{if(notifBusyRef.current)return;
+    if(ivAperta247Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247)){if(notifQRef.current.length)setNotifPending(true);return;}
+    if(modaleAperto256()){if(notifQRef.current.length)setNotifPending(true);return;}/* [giro 26 PO-256] un Modal e' aperto: la coda aspetta la sua chiusura (il registro la riavvia) */
     let nx=notifQRef.current.shift();
-    while(nx&&!nx.prio&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
+    while(nx&&!nx.prio&&!nx.iv247&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
     if(!nx){setNotifPending(false);return;}
     const _q=notifQRef.current.length,_dur=_q>=4?1500:_q>=2?2100:_q>=1?2800:3600;
     notifBusyRef.current=true;setNotif(nx);try{AudioMgr.notifyCue(nx.msg,nx.color);}catch(_a){}
     setNotifPending(true);
-    setTimeout(()=>{setNotif(null);setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+    setTimeout(()=>{setNotif(null);if(modaleAperto256()&&!nx.rip256)notifQRef.current.unshift({...nx,rip256:1});/* [giro 26 PO-256] il Modal si e' aperto mentre il toast era in scena (e lo ha nascosto): torna in testa alla coda, una volta sola */setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+  const[modaliN256,setModaliN256]=useState(()=>_modali256.n);/* [giro 26 PO-256] quanti Modal sono aperti: il toast in scena si nasconde, la coda riparte alla chiusura */
+  useEffect(()=>{const f=(n)=>{setModaliN256(n);if(!n)setTimeout(_drainNotif,0);};_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
   const notify=(msg,color=TH.primary,opts)=>{
-    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current};
+    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current,iv247:!!ivAperta247Ref.current};
     if(_e.prio)notifQRef.current.unshift(_e);else notifQRef.current.push(_e);
     /* il cap toglie i piu' VECCHI fra i MINORI: uno splice cieco in testa mangerebbe proprio i prioritari */
     while(notifQRef.current.length>8){const i=notifQRef.current.findIndex(x=>!x.prio);if(i<0)break;notifQRef.current.splice(i,1);}
@@ -397,6 +416,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        la durata del PRIMO toast conosce gia' l'arretrato, e il prioritario e' davvero il primo a uscire. */
     setTimeout(_drainNotif,0);};
 
+  useEffect(()=>{const ap=!!interviewModal;const era=ivAperta247Ref.current;ivAperta247Ref.current=ap;
+    if(typeof window!=='undefined'&&window.__CPM_NO_IV247)return;
+    if(ap&&!era){notifQRef.current.forEach(x=>{x.iv247=true;});if(notif){notifQRef.current.unshift({...notif,iv247:true});setNotif(null);}}/* un toast gia' a schermo torna in testa alla coda: lo rivedrai dopo */
+    else if(!ap&&era){setTimeout(_drainNotif,350);}
+  },[interviewModal]);// eslint-disable-line
   // Sprint 19 — OVR milestone check (separate useEffect to avoid computing OVR outside setPlayer)
   useEffect(()=>{
     if(!player.ovr||!player.milestones)return;
@@ -576,7 +600,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
     saveTimerRef.current=setTimeout(()=>{
-      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify(storage.msgFallito(currentSlot),TH.danger);});/* [PO-167] avviso chiaro, senza testo tecnico */
     },600);
     return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
   },[player]);// eslint-disable-line
@@ -594,7 +618,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
       storage.save({phase:"career",player},currentSlot).then(ok=>{
         if(ok){setLastSaved(Date.now());_mrCleanup(player);notify("💾 Stagione salvata.",TH.success);}
-        else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);
+        else notify(storage.msgFallito(currentSlot),TH.danger);/* [PO-167] */
       }).catch(()=>{});
     }catch(_e){}
   },[screen]);// eslint-disable-line
@@ -615,7 +639,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const doSave=useCallback(async()=>{
     const ok=await storage.save({phase:"career",player},currentSlot);
     if(ok){setLastSaved(Date.now());notify("💾 Carriera salvata!",TH.success);if(onRefreshSlots)onRefreshSlots();}
-    else notify("⚠️ Errore nel salvataggio.",TH.danger);
+    else notify(storage.msgFallito(currentSlot,"⚠️ Errore nel salvataggio."),TH.danger);/* [PO-167] */
   },[player,currentSlot,onRefreshSlots]);// eslint-disable-line
 
   // Export to JSON
@@ -877,6 +901,10 @@ const getThisWeekMatchday=()=>{
      scelta PO 27/09 «Card neutra»: tutti i riquadri narrativi della home usano il fondo standard delle card, il colore resta solo
      nell'occhiello e nelle icone (portato a contrasto >= 4,5 da semTesto945). Rosso __CPM_NO_HOME30 = i fondi scuri di prima. */
   const _n30=(v,n)=>((typeof window!=='undefined'&&window.__CPM_NO_HOME30)?v:n);
+  /* [PO-066 · giro 30] seconda passata della card neutra: i riquadri di stato rimasti col fondo tinto (mercato aperto, lista
+     cessioni, infortunio, contratto scaduto, record battuto) passano al fondo della card; il colore resta nell'occhiello.
+     Rosso __CPM_NO_HOME066 = i riquadri di prima. Guardiano tests/visual/home-066.mjs. */
+  const _h66=(v,n)=>((typeof window!=='undefined'&&window.__CPM_NO_HOME066)?v:n);
   const _OPENING_HOME_CARDS=(typeof window!=='undefined'&&window.__CPM_HOMECARDS)?true:false;/* prova del rosso: riaccende le card sulla home */
   const [openingWiz,setOpeningWiz]=useState(false);
   const [openingWizTot,setOpeningWizTot]=useState(0);
@@ -1322,6 +1350,7 @@ const getThisWeekMatchday=()=>{
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,academy24:player.academy24||null,beni24:player.beni24||[],coachTrust:player.coachTrust,legacy24:(function(){try{return{score:calcLegacyScore(player),pat:legacyPatrimonio24(player)};}catch(e){return null;}})(),invest24:player.invest24||null,investHist24:player.investHist24||[],popularity:player.popularity,logTop:(player.log||[]).slice(0,8),/* [7.990.0 F2] sonda accademia24 */injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,clubLg:player.club?.lg||null,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      festa251:(kind)=>{try{setTitleCeleb({kind:kind||"nation",name:"Coppa delle Nazioni",season:player.season||1,club:"Nazionale"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 23 PO-251] solo il guardiano festa-251: apre la festa del trofeo */
       forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
@@ -1329,6 +1358,7 @@ const getThisWeekMatchday=()=>{
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
+      apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
       apriNC243:()=>{try{const q=player.nationsCupQueue;if(!q||!q.active||q.done)return "no-nc";startNationsCupMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-243] solo il guardiano intervista-231 (braccio Nazionale) */
       apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
@@ -5708,6 +5738,20 @@ const getThisWeekMatchday=()=>{
             const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
             _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
             _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]})`);
+          }else if(_opp7&&!(typeof window!=='undefined'&&window.__CPM_NO_COPPA_PRESTITO)&&(()=>{
+            /* [giro 23, questionario PO 15/10 «Resta in coppa» — eccezione zona G concessa per questo solo comportamento; rosso
+               __CPM_NO_COPPA_PRESTITO] nessuna settimana LIBERA nel calendario del club nuovo non e' piu' un motivo per uscire dalla coppa:
+               il turno va alla prima settimana utile anche con DOPPIO IMPEGNO (gara di lega + coppa nella stessa settimana, come gia' le
+               gare europee del girone). Si evita solo una settimana che abbia gia' un'altra gara di coppa/Europa/Nazionale riportata qui. */
+            const _occ245=new Set(_keptComp7.map(m=>m.week));
+            let _w245=Math.max(currentWeek+1,(_base7.week>currentWeek?_base7.week:currentWeek+1));
+            while(_w245<=37&&_occ245.has(_w245))_w245++;
+            if(_w245>37){_w245=currentWeek+1;while(_w245<=37&&_occ245.has(_w245))_w245++;}
+            if(_w245>37)return false;
+            _keptComp7.push({..._base7,opponentId:_opp7.id,opponentName:_opp7.n,week:_w245,doppio245:true});return true;})()){
+            const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
+            _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
+            _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]}, settimana ${_keptComp7[_keptComp7.length-1].week} insieme al campionato)`);
           }else{
             _updCup7={..._updCup7,active:false,eliminated:true};
             _compLog7.push("🏆 Coppa Nazionale: fuori dopo il trasferimento");
@@ -6045,7 +6089,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
+      <Notif msg={((interviewModal&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247))||(modaliN256>0&&modaleAperto256()))?null:notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista · [giro 23] e con l'intervista aperta non c'e' proprio · [giro 26 PO-256] mai sopra un Modal aperto */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -6900,7 +6944,8 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:34,fontWeight:900,color:_accent,letterSpacing:2,marginTop:10,textShadow:`0 0 28px ${_accent}`,animation:"celebTitle 0.7s ease-out 0.3s both",zIndex:2,textAlign:"center"}}>{_title}</div>
           <div style={{fontSize:FS.bodyLg,fontWeight:800,color:"#fff",marginTop:8,zIndex:2,textAlign:"center"}}>{titleCeleb.club}</div>
           <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.6)",marginTop:4,zIndex:2,textAlign:"center"}}>{titleCeleb.name} · Stagione {titleCeleb.season}</div>
-          <button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+          {(typeof window!=='undefined'&&window.__CPM_NO_ORO251)?<button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+            :<Btn v="festa" data-cpm="festeggia251" onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,fontSize:FS.body,zIndex:2,position:"relative"}}>🎉 Festeggia</Btn>}{/* [giro 23 PO-251, questionario 14/10 «Oro da festa» — rosso __CPM_NO_ORO251] il pulsante prendeva il colore del titolo (verde per la Nazionale): ora e' sempre l'oro della variante festa del kit */}
         </div>
         );
       })()}
@@ -7275,7 +7320,7 @@ const getThisWeekMatchday=()=>{
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(
-          <Card style={{marginBottom:9,padding:16,borderRadius:RAD.lg,boxShadow:TH.el2}}>
+          <Card style={{marginBottom:9,padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
@@ -7702,6 +7747,40 @@ const getThisWeekMatchday=()=>{
       {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&!_fila23&&(()=>{
         const _nm377=(player.agent&&player.agent.name)||agentNameFor(player);
         const _ask377=agentCheckinAsk(player,player.agent);
+        const _chiudi377=()=>{
+                setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
+                  log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
+                setCi377Sel(null);
+              };
+        /* [giro 24 PO-253, foto PO 15/10 «cornice del procuratore non standard»] IL CONFRONTO NELLA CORNICE STANDARD (ModalPannello,
+           decisione PO-230 13/10): «Il confronto» e' il titolo nella testa, non piu' un occhiello dentro il corpo; nel corpo figurina e
+           parole del procuratore; le quattro risposte (o «Chiudi») nel piede. Testo identico. Rosso __CPM_NO_PROC253 = la cornice di prima. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_PROC253))return(
+        <Modal open dismissable={false} width={440} title="Il confronto" pannelloCpm="confronto253"
+          footer={<div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:SP.sm}}>
+            {_ci377Sel?<Btn v="primary" size="lg" fw onClick={_chiudi377}>Chiudi</Btn>
+              :_ask377.opzioni.map(o=>(
+                <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
+                  onClick={()=>setCi377Sel(o.id)}>{o.label}</Btn>))}
+          </div>}>
+          <div data-cpm="confronto23">
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm377}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
+            </div>
+            {_ci377Sel?(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
+            ):(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
+                {_ask377.ricordo&&<div style={{fontSize:FS.small,color:TH.txAmber,marginBottom:SP.sm,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
+                <div style={{marginBottom:SP.sm}}>«{_ask377.lettura}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ask377.domanda}»</div>
+              </div>
+            )}
+          </div>
+        </Modal>);
         return(
         /* [24/09 POC — commento PO «standardizza e uniforma la schermata»] il confronto col procuratore nel Modal del kit */
         <Modal open dismissable={false} width={440}>
@@ -7714,11 +7793,7 @@ const getThisWeekMatchday=()=>{
             </div>
             {_ci377Sel?(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
-              <Btn v="primary" size="lg" fw onClick={()=>{
-                setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
-                  log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
-                setCi377Sel(null);
-              }}>Chiudi</Btn>
+              <Btn v="primary" size="lg" fw onClick={_chiudi377}>Chiudi</Btn>
             </>):(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
                 <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
@@ -7739,6 +7814,56 @@ const getThisWeekMatchday=()=>{
         const _nm376=(agentIntro.solo&&player.agent&&player.agent.name)||agentNameFor(player);
         const _ln376=agentIntroLine(player,_nm376,agentIntro.amb);
         const _op376=agentIntroOptions(player);
+        const _firma376=()=>{
+                const _a=agentIntro.amb;
+                /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
+                   serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
+                   paga due volte e non si rifirma. */
+                if(agentIntro.solo){
+                  setPlayer(p=>(p.agent?{...p,agent:{...p.agent,memory:agentRemember(p.agent.memory,{k:"ambizione",v:_a})}}:p));
+                  setAgentIntro(null);return;
+                }
+                const _f=agentIntro.fee||agentHireFee(player);
+                if((player.bankBalance||0)<_f){notify("💸 Fondi insufficienti: l'ingaggio costa "+_f.toLocaleString("it-IT")+"€",TH.danger);setAgentIntro(null);return;}
+                setPlayer(p=>({...agentHirePatch(p,_f,_a),log:[`🤵 Hai ingaggiato ${_nm376}.`,...(p.log||[])].slice(0,60)}));
+                notify("🤵 Agente ingaggiato! (onorario d'ingaggio "+_f.toLocaleString("it-IT")+"€)",TH.success);
+                setAgentIntro(null);
+              };
+        const _firmaLbl376=agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`;
+        /* [giro 24 PO-253] IL PRIMO INCONTRO NELLA CORNICE STANDARD (ModalPannello, PO-230): titolo «Il primo incontro» nella testa,
+           figurina e parole nel corpo, le scelte e «Ci penso ancora» (poi «Firma»/«Torna indietro») nel piede. Testo identico.
+           Rosso __CPM_NO_PROC253 = la cornice di prima. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_PROC253))return(
+        <Modal open dismissable={false} width={440} title="Il primo incontro" pannelloCpm="procuratore253"
+          footer={<div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:SP.sm}}>
+            {!agentIntro.amb?(<>
+              {_op376.map(o=>(
+                <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
+                  onClick={()=>setAgentIntro(a=>({...a,amb:o.id}))}>{o.label}</Btn>
+              ))}
+              <Btn v="ghost" fw onClick={()=>setAgentIntro(null)}>Ci penso ancora</Btn>
+            </>):(<>
+              <Btn v="primary" size="lg" fw onClick={_firma376}>{_firmaLbl376}</Btn>
+              <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
+            </>)}
+          </div>}>
+          <div data-cpm="procuratore23">
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
+            </div>
+            {!agentIntro.amb?(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.saluto}»</div>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.ruolo}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ln376.domanda}»</div>
+              </div>
+            ):(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
+            )}
+          </div>
+        </Modal>);
         return(
         /* [24/09 POC — commento PO sull'anteprima «schermata da uniformare e standardizzare» (primo incontro, ambizione, firma)]
            il primo incontro col procuratore passa nel Modal del kit: pannello chiaro, figurina, citazioni in un riquadro neutro,
@@ -7768,21 +7893,7 @@ const getThisWeekMatchday=()=>{
               </div>
             </>):(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
-              <Btn v="primary" size="lg" fw onClick={()=>{
-                const _a=agentIntro.amb;
-                /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
-                   serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
-                   paga due volte e non si rifirma. */
-                if(agentIntro.solo){
-                  setPlayer(p=>(p.agent?{...p,agent:{...p.agent,memory:agentRemember(p.agent.memory,{k:"ambizione",v:_a})}}:p));
-                  setAgentIntro(null);return;
-                }
-                const _f=agentIntro.fee||agentHireFee(player);
-                if((player.bankBalance||0)<_f){notify("💸 Fondi insufficienti: l'ingaggio costa "+_f.toLocaleString("it-IT")+"€",TH.danger);setAgentIntro(null);return;}
-                setPlayer(p=>({...agentHirePatch(p,_f,_a),log:[`🤵 Hai ingaggiato ${_nm376}.`,...(p.log||[])].slice(0,60)}));
-                notify("🤵 Agente ingaggiato! (onorario d'ingaggio "+_f.toLocaleString("it-IT")+"€)",TH.success);
-                setAgentIntro(null);
-              }}>{agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`}</Btn>
+              <Btn v="primary" size="lg" fw onClick={_firma376}>{_firmaLbl376}</Btn>
               <div style={{marginTop:10,textAlign:"center"}}>
                 <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
               </div>
@@ -7833,6 +7944,12 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&agentStyleView(player)&&_pop224(
         <Card momento="Il tuo procuratore: boutique o global?" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
+          {/* [PO-066] chi parla ha la sua figurina, come le altre card del procuratore (riga nome come nella card dell iniziativa) */}
+          {!(typeof window!=='undefined'&&window.__CPM_NO_HOME066)&&(()=>{const _nm66=(player.agent&&player.agent.name)||agentNameFor(player);return(
+          <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:8}}>
+            <Figurina tipo="procuratore" chiave={_nm66} larg={28} col={TH.primary}/>
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted}}>{_nm66}</div>
+          </div>);})()}
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>
           <div style={{display:"flex",gap:8}}>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,agentStyle:"boutique",log:[`🏠 Agenzia boutique: pochi assistiti, tanta cura (commissione 10%→8%).`,...(p.log||[])].slice(0,60)}))}>🏠 Boutique</Btn>
@@ -8158,17 +8275,17 @@ const getThisWeekMatchday=()=>{
         if(_gap>4||_lgG<8)return null;
         const _beaten=_gap<0,_tied=_gap===0;
         return(
-        <Fisarmonica id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}:{})}}>
+        <FisHome66 id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}:{})}}>
           <div style={{fontSize:FS.small,color:_beaten?TH.txAmber:TH.text,fontWeight:700,marginBottom:2}}>{_beaten?`Nuovo record stagionale della lega: ${_lgG} gol — sei nella storia.`:_tied?`Hai agguantato il record stagionale (${_rec.goals} gol di ${_rec.name}).`:`A ${_gap} gol dal record stagionale — ${_rec.goals} di ${_rec.name}${/^S\./.test(_rec.season||"")?` (${_rec.season})`:""}.`}</div>
           <div style={{height:5,background:TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden",marginTop:6}}>
             <div style={{height:"100%",width:`${clamp(Math.round(_lgG/Math.max(1,(_rec.goals||1))*100),4,100)}%`,background:_beaten?"#f59e0b":TH.primary,borderRadius:RAD.pill}}/>
           </div>
-        </Card></Fisarmonica>);})()}
+        </FisHome66>);})()}
       {/* DASHBOARD */}
       {tab==="dashboard"&&player.contractExpired&&(
-        <Card bg={TH.bgAmber} border={TH.bdAmber} style={{marginBottom:8,padding:"9px 12px"}}>
+        <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
-          <div style={{fontSize:FS.caption,color:TH.txAmber,opacity:0.85,marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
@@ -8184,13 +8301,13 @@ const getThisWeekMatchday=()=>{
         const _winEnd=_isSumWin?5:23;
         const _weeksLeft=Math.max(0,_winEnd-_wk+1);
         return(
-          <Card bg={_listed?TH.bgAmber:TH.bgBlue} border={_listed?TH.bdAmber:TH.bdBlue} style={{marginBottom:8,padding:"9px 12px"}}>
+          <Card bg={_h66(_listed?TH.bgAmber:TH.bgBlue,undefined)} border={_h66(_listed?TH.bdAmber:TH.bdBlue,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed?8:0}}>
               <div>
                 <div style={{fontSize:FS.caption,fontWeight:800,color:_listed?TH.txAmber:TH.txBlue}}>
                   {_listed?"📢 Sei in lista cessioni":`🏷️ ${_winLabel} aperto`}
                 </div>
-                <div style={{fontSize:FS.caption,color:_listed?TH.txAmber:TH.txBlue,opacity:0.8,marginTop:2}}>
+                <div style={{fontSize:FS.caption,color:_h66(_listed?TH.txAmber:TH.txBlue,TH.muted),opacity:_h66(0.8,1),marginTop:2}}>
                   {_inWin?`${_weeksLeft} settiman${_weeksLeft===1?"a":"e"} rimanent${_weeksLeft===1?"e":"i"}`:""}{_listed&&!_inWin?" · Finestra chiusa — attendi la prossima apertura":""}
                 </div>
               </div>
@@ -8219,12 +8336,12 @@ const getThisWeekMatchday=()=>{
         const orig=player.originalInjuryWeeks||Math.max(player.injuryWeeks||1,1);
         const recPct=Math.round(((orig-(player.injuryWeeks||0))/orig)*100);
         return(
-          <Card bg={TH.bgRed} border={TH.bdRed} style={{marginBottom:8,padding:"9px 12px"}}>
+          <Card bg={_h66(TH.bgRed,undefined)} border={_h66(TH.bdRed,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
               <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txRed}}>{iT.icon} {iT.label}</div>
-              <div style={{fontSize:FS.caption,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:RAD.xl}}>{sevLabel}</div>
+              <div style={{fontSize:FS.caption,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:_h66(RAD.xl,RAD.pill)/* [PO-066] la pastiglia del kit (Badge) */}}>{sevLabel}</div>
             </div>
-            <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.txRed,marginBottom:6}}>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:_h66(TH.txRed,TH.text),marginBottom:6}}>
               <span>⏳ {player.injuryWeeks||0} settiman{(player.injuryWeeks||0)===1?"a":"e"} rimanenti</span>
               <span style={{fontWeight:700,color:recPct>=50?TH.txGreen:TH.txRed}}>Recupero {recPct}%</span>
             </div>
@@ -8391,7 +8508,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const gs=persGoals(player);if(!gs)return null;
         return(
-        <Fisarmonica id="s24-obiettivi-personali" titolo="Obiettivi personali" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
+        <FisHome66 id="s24-obiettivi-personali" titolo="Obiettivi personali" aperta={true} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
           {gs.map((g,i)=>{
             const pct=g.k==="voto"?(g.cur!=null?Math.min(100,Math.round((g.cur/g.target)*100)):0):Math.min(100,Math.round(((g.cur||0)/Math.max(1,g.target))*100));
             return(
@@ -8406,13 +8523,13 @@ const getThisWeekMatchday=()=>{
             </div>);
           })}
           <div style={{fontSize:FS.caption,color:TH.muted,fontStyle:"italic"}}>A fine stagione presenti il conto a te stesso.</div>
-        </Card></Fisarmonica>);
+        </FisHome66>);
       })()}
       {/* Sprint 110 — Promozioni/Retrocessioni fine stagione precedente */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.lastLeagueShift&&player.lastLeagueShift.season===(player.season||1)-1&&(player.week||1)<=4&&(()=>{
         const ls=player.lastLeagueShift;
         return(
-          <Fisarmonica id="s24-movimenti-di-lega-fine-s" titolo={<>Movimenti di Lega — Fine S.{ls.season}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px",border:`1px solid ${TH.cardBorder}`}}>
+          <FisHome66 id="s24-movimenti-di-lega-fine-s" titolo={<>Movimenti di Lega — Fine S.{ls.season}</>} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px",border:`1px solid ${TH.cardBorder}`}}>
             {ls.promoted.length>0&&(
               <div style={{display:"flex",alignItems:"flex-start",gap:6,marginBottom:5}}>
                 <span style={{fontSize:FS.small,flexShrink:0}}>⬆️</span>
@@ -8431,7 +8548,7 @@ const getThisWeekMatchday=()=>{
                 </div>
               </div>
             )}
-          </Card></Fisarmonica>
+          </FisHome66>
         );
       })()}
 
@@ -8540,12 +8657,12 @@ const getThisWeekMatchday=()=>{
            la sola sigla («KCC») e il badge «ORA!»: ora e' una sezione come le altre (fisarmonica aperta), col nome per
            intero, cosa si gioca e quando, e sta SUBITO DOPO la partita della settimana. Rosso __CPM_NO_EURO24. */
         if(!(typeof window!=="undefined"&&window.__CPM_NO_EURO24)){const _full={UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[eu.competition]||"Coppa europea";
-          return(<Fisarmonica id="home-euro24" titolo={<>{_ce} {_full}</>} aperta={true}><Card data-cpm="euro-home24" style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"10px 12px"}}>
+          return(<FisHome66 id="home-euro24" titolo={<>{_ce} {_full}</>} aperta={true} cardProps={{"data-cpm":"euro-home24"}} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"10px 12px"}}>
             <div style={{display:"flex",justifyContent:"space-between",gap:10,fontSize:FS.small,color:TH.text,marginBottom:6}}>
               <span>{_grp?"Fase a gironi":_pl}</span>{_grp&&<b className="cpm-num">{eu.pts||0} punti nel girone</b>}</div>
             <div style={{fontSize:FS.small,color:TH.muted,marginBottom:10}}>{_euNext?(_now?("Si gioca questa settimana: contro "+_euNext.opponentName):("Prossima partita: contro "+_euNext.opponentName+" · settimana "+_euNext.week)):"Il calendario completo è nella sezione Coppe."}</div>
             <Btn v="outline" fw onClick={()=>{goTab("coppe");}} style={{padding:"8px"}}>Girone e calendario →</Btn>
-          </Card></Fisarmonica>);}
+          </FisHome66>);}
         return(
           <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${_cc}44`,"1px solid "+TH.cardBorder),background:_n30(`${_cc}0a`,TH.card),cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
             <div style={{display:"flex",alignItems:"center",gap:9}}>

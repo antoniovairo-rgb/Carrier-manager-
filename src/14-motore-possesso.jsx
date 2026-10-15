@@ -84,6 +84,105 @@ const INT226={
   riscaldamento(base,seme){let s=((seme>>>0)^0x2261)>>>0;s=(Math.imul(s,1664525)+1013904223)>>>0;return Math.max(1,Math.round(+base||60)-(5+Math.floor((s/4294967296)*10)));}
 };
 try{if(typeof globalThis!=='undefined')globalThis.INT226=INT226;}catch(_e){}
+/* [PO-259, decisione PO 15/10 «Poche ma decisive» — rosso __CPM_NO_SCHEDE259 = sistema PO-226/234 della 7.999.169]
+   Misurato (docs/sviluppo/RAPPORTO-giro28.md): le schede uscivano anche sul 3-0 al 63' («gestiamo»), con tre scelte generiche e un
+   effetto solo sulla voglia di tirare. Qui: (1) al massimo DUE schede a partita, dodici minuti fra l'una e l'altra, e solo dove c'e'
+   posta (punteggio in bilico, |scarto| <= 1): sotto nel finale, pari dopo il 75', vantaggio di misura dopo l'82', un'espulsione, un
+   rigore contro, il fiato corto dell'eroe, la panchina quando serve; (2) ogni opzione dichiara premio e rischio in parole di calcio;
+   (3) l'effetto passa dalle leve che il motore gia' usa: voglia di tirare (att226), pressing, linea, gioco diretto (TAT della squadra
+   dell'eroe, per un tempo dichiarato) e attesa della prossima occasione dell'eroe (gap di _occV2Pronta); (4) dopo cinque minuti il
+   racconto nasce dalle differenze del tabellino del motore e del punteggio (racconta: funzione pura, verificata dal guardiano).
+   I valori degli effetti sono una scelta di progetto dichiarata, non vengono da una fonte. */
+const INT259={
+  TETTO:2,DIST:12,ULTIMO:84,ATTESA:5,CALO:40,
+  attivo(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_SCHEDE259);},
+  recente(n,mn,m){return (n|0)>0&&m!=null&&(mn-m)>=0&&(mn-m)<=3;},
+  FATTI:[
+    {id:'rigore_contro',quando:c=>!c.panchina&&INT259.recente(c.rigContro,c.mn,c.rigControMin)&&Math.abs(c.diff)<=1},
+    {id:'espulsione_noi',quando:c=>!c.panchina&&INT259.recente(c.espNoi,c.mn,c.espNoiMin)&&Math.abs(c.diff)<=1},
+    {id:'espulsione_loro',quando:c=>!c.panchina&&INT259.recente(c.espLoro,c.mn,c.espLoroMin)&&Math.abs(c.diff)<=1},
+    {id:'sotto_finale',quando:c=>!c.panchina&&c.mn>=70&&c.diff===-1},
+    {id:'pari_finale',quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
+    {id:'misura_finale',quando:c=>!c.panchina&&c.mn>=82&&c.diff===1},
+    {id:'eroe_stanco',quando:c=>!c.panchina&&c.mn>=55&&INT259.recente(c.caloMin!=null?1:0,c.mn,c.caloMin)&&Math.abs(c.diff)<=1},/* [PO-259] il CALO, non il livello: col 226 usciva al 55' in 18 partite su 20 (energia <= 55 e' la norma), e con una soglia fissa usciva sempre al primo minuto ammesso (60' in 6 partite su 9, misura interrotta del giro 28). Ora la scheda nasce nel minuto in cui l'energia dell'eroe scende sotto 40 (caloMin, datato dal live), se la partita e' aperta */
+    {id:'panca',panca:1,quando:c=>c.panchina&&c.mn>=50&&c.diff<=0&&c.diff>=-1&&c.mn<=(c.ingresso|0)-4}],
+  /* c = {mn, diff (noi meno loro), energia, caloMin (minuto in cui l'energia e' scesa sotto CALO), panchina, ingresso, fatte:[id], ultima, espNoi/espNoiMin, espLoro/espLoroMin, rigContro/rigControMin} */
+  scegli(c){if(!c||!INT259.attivo())return null;const F=c.fatte||[];if(F.length>=INT259.TETTO||c.mn>INT259.ULTIMO)return null;
+    if(c.ultima!=null&&(c.mn-c.ultima)<INT259.DIST)return null;
+    for(const f of INT259.FATTI){if(F.indexOf(f.id)>=0)continue;let ok=false;try{ok=!!f.quando(c);}catch(_e){ok=false;}if(ok)return f.id;}
+    return null;},
+  /* eff: att (voglia di tirare, come att226) · press/linea/diretto (somma alla tattica della squadra dell'eroe) · gap (minuti in piu'/in
+     meno prima della prossima occasione dell'eroe) · dur (minuti di durata; senza = fino alla fine) · ingresso (panchina: come
+     INT226.ingresso). tipo: spinta / prudenza / eroe — decide quale fatto il racconto mette davanti. */
+  /* TRE PROFILI, misurati al banco (schede-259 parte B) prima di scrivere le parole: «spinta» (piu' tiri nostri, ma le loro occasioni
+     diventano piu' pericolose: contropiede alle spalle della linea), «palla» (loro tirano meno, ma anche noi), «eroe» (la prossima
+     occasione arriva all'eroe prima, ma la squadra cerca lui e tira meno). Premio e rischio dicono SOLO cio' che il banco ha visto. */
+  SCHEDE:{
+    rigore_contro:{txt:c=>"📢 Rigore per loro al "+c.mn+"': la squadra ha la testa bassa e il mister cerca la reazione.",sc:[
+      {et:"Carico i compagni, reagiamo subito",premio:"più tiri verso la loro porta",rischio:"squadra alta: i loro contropiedi fanno più male",tipo:"spinta",eff:{att:0.45,press:0.5,linea:0.4,gap:-2,dur:15}},
+      {et:"Calma, rimettiamo ordine col pallone",premio:"loro tirano di meno",rischio:"anche noi tiriamo di meno",tipo:"palla",eff:{att:-0.25,diretto:-0.7,gap:2,dur:15}},
+      {et:"Voglio il pallone, ci penso io",premio:"la prossima palla buona arriva a te, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.2,gap:-8,dur:15}}]},
+    espulsione_noi:{txt:c=>"🟥 Siamo rimasti in dieci al "+c.mn+"': il mister richiama tutti con le mani.",sc:[
+      {et:"Giochiamo come se fossimo in undici",premio:"restiamo pericolosi: più tiri",rischio:"in dieci e alti, ogni contropiede è un'occasione per loro",tipo:"spinta",eff:{att:0.4,press:0.45,linea:0.35,gap:-2,dur:20}},
+      {et:"Teniamo palla e facciamoli correre",premio:"loro tirano di meno",rischio:"anche noi tiriamo di meno",tipo:"palla",eff:{att:-0.3,diretto:-0.7,gap:2,dur:20}},
+      {et:"Corro per due, datela a me",premio:"la prossima palla buona arriva a te, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.2,gap:-8,dur:20}}]},
+    espulsione_loro:{txt:c=>"🟥 Loro in dieci al "+c.mn+"': il mister si sbraccia, «adesso tocca a noi».",sc:[
+      {et:"Approfittiamone, tutti su",premio:"più tiri contro una squadra in dieci",rischio:"squadra alta: i loro contropiedi fanno più male",tipo:"spinta",eff:{att:0.5,press:0.45,linea:0.4,gap:-2,dur:20}},
+      {et:"Palla a terra, li facciamo correre",premio:"loro tirano di meno",rischio:"anche noi tiriamo di meno",tipo:"palla",eff:{att:-0.2,diretto:-0.7,gap:2,dur:20}},
+      {et:"Cerco l'uno contro uno",premio:"la prossima occasione è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8,dur:20}}]},
+    sotto_finale:{txt:c=>"📢 Sotto di un gol al "+c.mn+"': il mister batte le mani, serve il pareggio.",sc:[
+      {et:"Tutti avanti, pressing alto",premio:"tanti tiri per il pareggio",rischio:"dietro restano praterie per il contropiede",tipo:"spinta",eff:{att:0.6,press:0.6,linea:0.5,gap:-2}},
+      {et:"Costruiamo col pallone, senza fretta",premio:"loro tirano di meno, la partita resta aperta",rischio:"il tempo scorre e anche noi tiriamo poco",tipo:"palla",eff:{att:-0.15,diretto:-0.6,gap:2}},
+      {et:"Palla a me, la risolvo io",premio:"la prossima occasione arriva a te, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8}}]},
+    pari_finale:{txt:c=>"📢 Pari al "+c.mn+"': il mister guarda la panchina, poi te. «Si può vincere».",sc:[
+      {et:"Andiamo a vincerla",premio:"più tiri nel finale",rischio:"un contropiede può costare il punto",tipo:"spinta",eff:{att:0.5,press:0.45,linea:0.4,gap:-2}},
+      {et:"Il punto va bene, teniamo palla",premio:"loro tirano di meno",rischio:"davanti si crea poco",tipo:"palla",eff:{att:-0.3,diretto:-0.7,gap:3}},
+      {et:"Aspetto la palla giusta",premio:"la prossima palla buona è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8}}]},
+    misura_finale:{txt:c=>"📢 Un gol di vantaggio all'"+c.mn+"': il mister si sgola, mancano pochi minuti.",sc:[
+      {et:"Teniamo palla nella loro metà",premio:"loro tirano di meno, il tempo passa",rischio:"anche noi tiriamo poco: il gol della sicurezza non arriva",tipo:"palla",eff:{att:-0.35,diretto:-0.7,gap:3}},
+      {et:"Cerchiamo il gol che la chiude",premio:"più tiri per chiuderla",rischio:"spazi alle spalle per il loro pareggio",tipo:"spinta",eff:{att:0.35,press:0.4,linea:0.35,gap:-2}},
+      {et:"Una ripartenza e la chiudo io",premio:"la prossima occasione è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.2,gap:-8}}]},
+    eroe_stanco:{txt:c=>"📢 "+c.eroe+" ha il fiato corto al "+c.mn+"' e la partita è ancora aperta: il mister lo guarda.",sc:[
+      {et:"Rifiato col pallone",premio:"la squadra tiene palla e loro tirano meno",rischio:"si tira meno anche noi",tipo:"palla",eff:{att:-0.2,diretto:-0.6,gap:3,dur:20}},
+      {et:"Stringo i denti e pressing",premio:"più tiri, palloni recuperati alti",rischio:"se il pressing salta, i loro contropiedi fanno male",tipo:"spinta",eff:{att:0.35,press:0.5,linea:0.35,gap:-2,dur:20}},
+      {et:"Mi tengo per l'ultima palla buona",premio:"la prossima occasione è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8,dur:20}}]},
+    panca:{txt:c=>"🪑 "+(c.diff<0?"Sotto di un gol":"Ancora pari")+" al "+c.mn+"': il mister si gira verso la panchina e incrocia lo sguardo di "+c.eroe+".",sc:[
+      {et:"Studio il loro terzino",premio:"quando entri, la prima occasione arriva prima",rischio:"entri quando lo decide il mister",tipo:"eroe",eff:{ingresso:0,gap:-5}},
+      {et:"Chiedo di entrare",premio:"entri prima, con più minuti per incidere",rischio:"entri a freddo: la prima occasione si fa aspettare",tipo:"eroe",eff:{ingresso:1,gap:3}},
+      {et:"Mi scaldo da solo",premio:"il mister ti vede pronto e ti anticipa un po'",rischio:"guadagni pochi minuti",tipo:"eroe",eff:{ingresso:2,gap:-1}}]}},
+  opz(id,idx){const S=INT259.SCHEDE[id];if(!S)return null;return S.sc[Math.max(0,Math.min(S.sc.length-1,idx|0))]||null;},
+  /* applica la scelta al motore. Restituisce {prima,dopo}: i dati del motore letti prima e dopo (il testimone li confronta) */
+  leggi(M){try{const R=M._S.richieste;const T=M.tattica&&M.tattica.home;return{att226:+(R.att226.home||0),press:T?+T.press:null,linea:T?+T.linea:null,diretto:T?+T.diretto:null,gap:R.s259?(R.s259.gap|0):0};}catch(_e){return null;}},
+  applica(M,id,idx,mn){const o=INT259.opz(id,idx);if(!o||!M||!M.chiedi)return null;const e=o.eff||{};const prima=INT259.leggi(M);
+    if(e.ingresso==null&&M.chiedi.ordine226)M.chiedi.ordine226('home',e.att||0);
+    if(M.chiedi.scelta259)M.chiedi.scelta259({press:e.press||0,linea:e.linea||0,diretto:e.diretto||0,gap:e.gap||0,fino:e.dur?(mn|0)+e.dur:999,att:e.ingresso==null?(e.att||0):null});
+    return{prima,dopo:INT259.leggi(M)};},
+  /* IL RACCONTO DAI FATTI. a/b = {home,away} (punteggio) e {th,ta} (tabellino del motore: tiri, contrasti+intercetti) prima e dopo la
+     finestra; occ = minuto della prima occasione dell'eroe dopo la scelta (o null). Restituisce {k (fatto messo davanti), n, testo, breve}.
+     Nessun sorteggio: lo stesso ingresso da' la stessa frase. */
+  racconta(r){const o=INT259.opz(r.fatto,r.idx)||{tipo:'spinta',et:''};const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));
+    const gF=d('gNoi'),gS=d('gLoro'),tN=d('tiriNoi'),tL=d('tiriLoro'),rec=d('recNoi'),cp=d('contro'),min=Math.max(1,(r.m1|0)-(r.m0|0));
+    const nm=r.eroe||"il nostro numero dieci";const quale="«"+o.et+"»";const tiri=(n)=>n===1?"un tiro":n+" tiri";
+    if(r.panca){const ent=r.ingresso|0;return{k:'ingresso',n:ent,testo:"🪑 "+quale+": il mister ha deciso, "+nm+" entra al "+ent+"'.",breve:"entri al "+ent+"'"};}
+    if(gF>0)return{k:'golNoi',n:gF,testo:"✅ "+quale+" ha pagato: "+(gF>1?gF+" gol":"gol")+" nei "+min+" minuti dopo la scelta.",breve:"ha pagato: "+(gF>1?gF+" gol":"gol")+" in "+min+"'"};
+    if(gS>0)return{k:'golLoro',n:gS,testo:"❌ "+(o.tipo==='spinta'?"Ci siamo sbilanciati e ci hanno puniti":"Ci hanno puniti lo stesso")+": "+(gS>1?gS+" gol subiti":"gol subito")+" dopo "+quale+".",breve:"ci hanno puniti: "+(gS>1?gS+" gol subiti":"gol subito")};
+    if(o.tipo==='spinta'&&cp>0)return{k:'contro',n:cp,testo:"⚠️ "+quale+": la squadra è alta e loro ripartono, "+(cp===1?"un contropiede":cp+" contropiedi")+" alle nostre spalle in "+min+" minuti.",breve:(cp===1?"un contropiede":cp+" contropiedi")+" subiti"};
+    if(o.tipo==='eroe'&&r.occ!=null)return{k:'occEroe',n:r.occ|0,testo:"⭐ "+quale+": la palla buona è arrivata a "+nm+" al "+(r.occ|0)+"'.",breve:"occasione per te al "+(r.occ|0)+"'"};
+    if(tL>=tN+2)return{k:'tiriLoro',n:tL,testo:"⚠️ Dopo "+quale+" abbiamo concesso "+tiri(tL)+" in "+min+" minuti"+(tN?" (noi "+tN+")":", noi nessuno")+".",breve:"concessi "+tiri(tL)};
+    if(o.tipo==='spinta'&&rec>=2&&rec>=tN)return{k:'recNoi',n:rec,testo:"✅ Il pressing di "+quale+" morde: "+rec+" palloni recuperati in "+min+" minuti.",breve:rec+" palloni recuperati"};
+    if(tN>=2)return{k:'tiriNoi',n:tN,testo:"✅ "+quale+": "+tiri(tN)+" verso la porta in "+min+" minuti"+(tL?" (loro "+tL+")":", loro nessuno")+".",breve:tiri(tN)+" nostri, "+tiri(tL)+" loro"};
+    if(o.tipo==='palla'&&tL<=1)return{k:'tiriLoro',n:tL,testo:"✅ "+quale+" tiene: "+(tL?"un solo tiro":"nessun tiro")+" concesso in "+min+" minuti.",breve:(tL?"un solo tiro":"nessun tiro")+" concesso"};
+    if(tN+tL===0)return{k:'tiriNoi',n:0,testo:"⏸️ "+quale+": "+min+" minuti bloccati, nessun tiro né per noi né per loro.",breve:"partita bloccata, nessun tiro"};
+    return{k:'tiriNoi',n:tN,testo:"⏸️ "+quale+": "+min+" minuti in equilibrio, "+tiri(tN)+" per noi e "+tiri(tL)+" per loro.",breve:tiri(tN)+" per noi, "+tiri(tL)+" per loro"};},
+  /* fotogramma dei fatti per il racconto: punteggio (sc, se il live lo passa; altrimenti i gol del motore) e tabellino del motore */
+  foto(M,sc){try{const t=M.tabellino();return{gNoi:sc?(sc.home|0):(t.home.gol|0),gLoro:sc?(sc.away|0):(t.away.gol|0),tiriNoi:t.home.tiri|0,tiriLoro:t.away.tiri|0,
+    recNoi:(t.home.contrasti|0)+(t.home.intercetti|0),contro:(M._S.conta.contro259|0),occ:(M._S._ultOccV2==null?null:M._S._ultOccV2|0)};}catch(_e){return null;}},
+  /* il fatto dichiarato corrisponde ai dati? (lo usa il guardiano: ricalcola dai due fotogrammi e controlla il numero nel testo) */
+  verifica(r,esito){try{const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const v={golNoi:d('gNoi'),golLoro:d('gLoro'),tiriNoi:d('tiriNoi'),tiriLoro:d('tiriLoro'),recNoi:d('recNoi'),contro:d('contro'),occEroe:r.occ,ingresso:r.ingresso};
+    if(!esito||v[esito.k]==null||(v[esito.k]|0)!==(esito.n|0))return false;
+    return (esito.n|0)<2||String(esito.testo).indexOf(String(esito.n|0))>=0;}catch(_e){return false;}}
+};
+try{if(typeof globalThis!=='undefined')globalThis.INT259=INT259;}catch(_e){}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -449,6 +548,7 @@ function creaMotorePossesso(cfg){
        prima (S12, stessa forza 95-95): nella vissuta gli avversari tirano 7,4 volte e segnano 0,6-0,8 gol a partita, nella simulata 13,4
        tiri e 1,2-1,3 gol. La simulazione rapida non lo usa. Rosso __CPM_NO_FIN202 (in src/15). */
     if(cfg.fin202&&intent!=='penalty')xg=clamp(xg*(P.team===HOME?(+cfg.fin202.home||1):(+cfg.fin202.away||1)),0.01,0.95);
+    if(intent!=='penalty'&&P.team===AWAY&&S.richieste.s259)xg=clamp(xg*(1+K259.xg*_esp259(AWAY)),0.005,0.9);/* [PO-259] lo spazio alle spalle della linea alzata dalla scheda */
     /* [7.999.137 PO-202, decisione PO 05/10 «talento nel brain»] Il motore non guardava chi tirava: l'xG dipende dal punto, dalla
        pressione e dalla forza della squadra, e un eroe da 93 tirava come un compagno qualunque (misurato: 0,36 gol a partita contro
        l'obiettivo PO 0,6-0,9). Un solo parametro, qui, uguale in vissuta e simulata: i tiri dell'eroe valgono 1+K·(OVR-60)/40 volte
@@ -541,7 +641,11 @@ function creaMotorePossesso(cfg){
     /* [7.875] il contrasto vicino alla linea manda spesso il pallone fuori: la rimessa laterale e' l'interruzione piu' comune del calcio vero (~40 a partita), qui ne mancava quasi del tutto */
     if(Math.abs(P.y-50)>=30&&rnd()<(Math.abs(P.y-50)>=40?0.55:0.30)){ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1),fuori:true});fuoriCampo(P.x,P.y,rnd()<0.5?l:altro(l),"throw");return;}
     ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
-    W.x=clamp(P.x+dirDi(W.team)*0.8,2,98);W.y=P.y;tenuta(W,null);};
+    W.x=clamp(P.x+dirDi(W.team)*0.8,2,98);W.y=P.y;tenuta(W,null);
+    /* [PO-259] il prezzo della squadra alzata dalla scheda: chi ci ruba palla cerca subito il compagno piu' avanzato, alle spalle della linea */
+    if(W.team===AWAY&&S.richieste.s259){const _e=_esp259(AWAY);if(_e>0&&advDi(W.x,AWAY)<70&&rnd()<K259.contro*_e){let R=null,bx=-1;
+      for(const q of g){if(!q||q.gk||q.team!==AWAY||q===W||!attivo(q))continue;const a=advDi(q.x,AWAY);if(a>bx){bx=a;R=q;}}
+      if(R&&bx>advDi(W.x,AWAY)+12){S.conta.contro259=(S.conta.contro259|0)+1;passa(W,R,{kind:"lancio"});}}}};
   /* [7.913.0 — A10] L'ARBITRO TIRA FUORI I CARTELLINI, E NON SOLO PER L'EROE. I gialli esistevano gia', ma
      vivevano nel live e SOLO per il protagonista (heroYellowsRef): gli altri ventuno potevano falciare per
      novanta minuti senza che l'arbitro battesse ciglio, e il tabellino del PO segnava «ammonizioni 0» dopo
@@ -643,7 +747,7 @@ function creaMotorePossesso(cfg){
     /* [7.999.137 PO-202] nella vissuta in modo brain (cfg.brainLive) l'occasione e' la STESSA della simulazione rapida: il motore la
        riconosce con la sua regola (_occV2Pronta: pallone all'eroe oltre la trequarti, ritmo legato al punteggio) e, invece di sceglierla
        da solo, la dichiara: la vissuta apre la scena e il giocatore sceglie. */
-    let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
+    let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(S.richieste.s259){S.richieste.s259.gap=0;S.richieste.s259.occ=S.min|0;}/* [PO-259] l'occasione e' arrivata: il gap della scelta si consuma */if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
     if(!_nat137&&V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
     if(!_nat137&&V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
     if(!_nat137&&V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(advDi(P.x,l)<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);/* [7.999.5] il pressing SPOSTA i recuperi: piu' alti nella meta' avversaria, meno nella propria (squadra lunga) */if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
@@ -730,7 +834,7 @@ function creaMotorePossesso(cfg){
        Le quote scendono e cio' che si toglie al tiro torna al passaggio, che e' la voce affamata. */
     const _t950=(typeof window!=='undefined'&&window&&window.__CPM_NO950);
     let pTiro=(zona==="area"?(_t950?0.85:((typeof window!=="undefined"&&window&&window.__CPM_NO_TIRI23)?0.55:0.30)):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
-    pTiro*=(1+0.35*att);pTiro*=_f226(l);/* [PO-226] la scelta dell'eroe sull'ordine del mister. Rosso __CPM_NO_INT226 */if(V2)pTiro*=K2.pTiro*Math.exp(K2.forzaTiro*vantDi(l));if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
+    pTiro*=(1+0.35*att);pTiro*=_f226(l);pTiro*=1+K259.tiro*_esp259(l);/* [PO-226] la scelta dell'eroe sull'ordine del mister. Rosso __CPM_NO_INT226 */if(V2)pTiro*=K2.pTiro*Math.exp(K2.forzaTiro*vantDi(l));if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
     /* [24/09 POC — BRAIN «PARTITA VERA», secondo difetto misurato] SI TIRA TROPPO DA FUORI. Banco 10 partite: tiri dal limite
        65 %, trequarti 18 %, area 16 % (anche contando l'area vera, 40 m di larghezza: 16 %) e 17,4 tiri a squadra. In Premier
        League 2024-25 i tiri da fuori sono il 31,7 % (8,3 a partita, Opta Analyst): la conclusione nasce in area. Qui il tiro
@@ -834,6 +938,7 @@ function creaMotorePossesso(cfg){
     const _g221=!!cfg.brainLive&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_GAP221));/* solo la partita vissuta: la simulazione rapida resta al suo passo (brain-202 A: il talento alzava i gol 1,19 volte invece di >=1,2 col passo nuovo anche in simulazione) *//* [7.999.156 PO-221, decisione PO 09/10] 16' fra due occasioni invece di 12' (sotto nella ripresa 13', avanti di 2+ 20'): le scene erano 9,2 a partita, obiettivo 5-7 */
     let _gap=_v14?(_g221?16:12):5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
       if(_df<0&&S.min>=46)_gap=_g221?13:9;else if(_df>=2)_gap=_g221?20:16;}
+    if(S.richieste.s259&&S.richieste.s259.gap)_gap=Math.max(5,_gap+S.richieste.s259.gap);/* [PO-259] la scelta avvicina o allontana la PROSSIMA occasione dell'eroe (si consuma quando arriva) */
     return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
@@ -990,10 +1095,11 @@ function creaMotorePossesso(cfg){
   }
   function tickRete(){S.rete.t++;S.conta.rete++;S.poss.t++;if(S.rete.t>=2){const l=altro(S.rete.lato);S.rete=null;S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;ev("centro",{lato:l});}}
   function tickKickoff(){const k=S.kickoff;k.t++;S.conta.kickoff++;S.poss.t++;S.palla.x=50;S.palla.y=50;S.poss.lato=k.lato;
-    if(k.t<2)return;
+    if(k.t<(k.hold||2))return;
     const l=k.lato;let A=null,B=null,da=1e9,db=1e9;for(const q of g){if(!mio(q,l)||q.gk)continue;const d=hyp(q.x,q.y,50,50);if(d<da){db=da;B=A;da=d;A=q;}else if(d<db){db=d;B=q;}}
     if(!A){libero(50,50);return;}
     if(hyp(A.x,A.y,50,50)>6&&k.t<5)return;
+    if(cfg.brainLive&&typeof window!=='undefined'&&window&&window.__CPM_REC){try{const W=(window.__CPM_KO27=window.__CPM_KO27||[]);if(W.length<40)W.push({lato:k.lato,t:k.t,hold:k.hold||2,fuori:g.filter(q=>attivo(q)&&!q.gk&&(q.team===HOME?q.x>51:q.x<49)).length,eroe:[Math.round(g[HERO].x),Math.round(g[HERO].y)]});}catch(_e27){}}/* [giro 27] testimone alla BATTUTA, solo il motore della partita vera (il banco non passa brainLive): quanti di movimento nella meta' sbagliata */
     A.x=50-dirDi(l)*0.8;A.y=50;if(B&&hyp(B.x,B.y,50,50)<=8){B.x=50-dirDi(l)*3;B.y=53;}else B=null;
     S.poss.padrone=A.i;S.poss.stato="tenuta";ev("calcio_inizio",{chi:chi(A),lato:l});
     if(B)passa(A,B,{sicuro:true,kind:"appoggio"});else tenuta(A,null);
@@ -1173,7 +1279,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       muoviTutti();
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null){const P=g[S.poss.padrone];S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
       return _fine();}
-    S.tick++;S.cond=null;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;/* [diag] quanti tick con una richiesta pendente: per leggere in browser cio' che il banco non vede */if(S.richieste.gol)S.conta.golReqTick=(S.conta.golReqTick|0)+1;if(S.richieste.turno)S.conta.turnoReqTick=(S.conta.turnoReqTick|0)+1;if(S.richieste.verso)S.conta.versoTick=(S.conta.versoTick|0)+1;if(S.scena)S.conta.scenaTick=(S.conta.scenaTick|0)+1;
+    S.tick++;S.cond=null;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;if(S.richieste.s259&&S.min>=S.richieste.s259.fino)_fine259();/* [PO-259] l'effetto della scheda scade *//* [diag] quanti tick con una richiesta pendente: per leggere in browser cio' che il banco non vede */if(S.richieste.gol)S.conta.golReqTick=(S.conta.golReqTick|0)+1;if(S.richieste.turno)S.conta.turnoReqTick=(S.conta.turnoReqTick|0)+1;if(S.richieste.verso)S.conta.versoTick=(S.conta.versoTick|0)+1;if(S.scena)S.conta.scenaTick=(S.conta.scenaTick|0)+1;
     if(S.scena&&S._scenaAuto138!=null&&((S.min|0)-S._scenaAuto138)>=2){S.scena=false;S._scenaAuto138=null;}/* [7.999.138] rete: se la scena dichiarata non si apre, il motore riparte */
     if(S.scena){S.conta.scena++;return[];}
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
@@ -1193,6 +1299,15 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     muoviTutti();
     if(S.poss.stato==="tenuta"&&S.poss.padrone!=null){const P=g[S.poss.padrone];S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
     return _fine();}
+  /* [PO-259] fine dell'effetto della scheda: la tattica torna quella di partenza, la voglia di tirare della scelta si azzera */
+  /* [PO-259] IL RISCHIO DICHIARATO E' VERO. Misurato al banco prima di queste righe (prima stesura delle opzioni, contro la stessa partita senza
+     scelta): «spingere» dava +22% di tiri e -14% di tiri SUBITI, cioe' una scelta senza prezzo (il pressing toglie il pallone all'avversario e basta). Quando la scheda alza la linea (o il pressing) della
+     squadra dell'eroe, l'avversario che arriva alla conclusione trova lo spazio alle spalle: tira piu' volentieri e da posizioni migliori,
+     in proporzione a quanto la scelta ha alzato la squadra. Solo mentre l'effetto della scheda e' vivo. Valori di progetto tarati al banco
+     (schede-259 parte B, RAPPORTO-giro28), non da una fonte. */
+  const K259={tiro:1.2,xg:1.2,press:0.33,contro:0.9};
+  function _esp259(lt){const R=S.richieste.s259;if(!R||lt!==AWAY)return 0;const T=TAT[HOME];return Math.max(0,T.linea-R.base.linea)+K259.press*Math.max(0,T.press-R.base.press);}
+  function _fine259(){const R=S.richieste.s259;if(!R)return;const T=TAT[HOME];T.press=R.base.press;T.linea=R.base.linea;T.diretto=R.base.diretto;if(R.att)S.richieste.att226[HOME]=0;S.richieste.s259=null;}
   const chiedi={
     origini(on,gap,piaz){S.richieste.origini=!!on;S.richieste.gap26=(gap|0)||6;S.richieste.piazzati=!!piaz;},/* [7.999.27] piaz: il live vuole la scena dei rigori e delle punizioni dal limite dell'eroe *//* [7.999.26] SOLO il live: il brain dichiara le occasioni dell'eroe con un'origine (cross, angolo, punizione in mezzo) anche fuori dalle finestre di scena */
     gol(lato){if(V2)return;S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
@@ -1222,13 +1337,28 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
     atteggiamento(lato,v){S.richieste.att[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},
     ordine226(lato,v){S.richieste.att226[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},/* [PO-226] separato da atteggiamento(): il live lo riscrive a ogni minuto dal punteggio */
+    /* [PO-259 — rosso __CPM_NO_SCHEDE259, chi chiama e' solo il sistema nuovo] la scelta della scheda tocca la TATTICA della squadra dell'eroe
+       (pressing, linea, gioco diretto) per un tempo dichiarato e l'attesa della prossima occasione dell'eroe; alla scadenza tutto torna com'era */
+    scelta259(o){o=o||{};_fine259();const T=TAT[HOME];const base={press:T.press,linea:T.linea,diretto:T.diretto};
+      T.press=clamp(T.press+(+o.press||0),-1,1);T.linea=clamp(T.linea+(+o.linea||0),-1,1);T.diretto=clamp(T.diretto+(+o.diretto||0),-1,1);
+      S.richieste.s259={base,gap:(o.gap|0),fino:(o.fino|0)||999,att:(o.att!=null)};},
     eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
     scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
     riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;
       if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
       if(o.eroe&&o.eroe.x!=null){g[HERO].x=clamp(+o.eroe.x,2,98);g[HERO].y=clamp(+o.eroe.y,3,97);}
       const l=o.lato===AWAY?AWAY:HOME;const x=clamp(+o.x||50,2,98),y=clamp(+o.y||50,3,97);
-      if(o.centro){S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;return;}
+      if(o.centro){S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;
+        /* [giro 27 PO-207 riaperta, taccuino PO 15/10 «Rigore — Tiro potente», gol: «dopo il gol non si riparte da centrocampo»] MISURATO
+           (sonda ko-fine, S12, rigore chiesto al 9' con chiedi.piazzato): il pallone tornava a (50,50) ma la battuta partiva dopo 2 passi,
+           in 270-470 ms reali, con 8-10 giocatori di movimento su 20 ancora nella meta' sbagliata e l'eroe sul dischetto avversario: in
+           fotografia il pallone esce dal cerchio prima che il calcio d'inizio si veda. Qui la ripresa dopo un gol nato in SCENA o da
+           piazzato (il campo era coperto dall'highlight: e' lo stacco di regia, come lo SNAP del 3D) schiera i ventidue con la stessa
+           regola del calcio d'inizio (riga «st==="kickoff"» del passo) e tiene la palla ferma 11 passi. Rosso __CPM_NO_SCHIERA27. */
+        if(o.schiera&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_SCHIERA27)){S.kickoff.hold=11;const c=[];
+          for(const q of g){if(!attivo(q))continue;const sl=slotDi(q);if(q.gk){q.x=sl.x;q.y=50;continue;}q.x=clamp(q.team===HOME?Math.min(sl.x,46):Math.max(sl.x,54),2,98);q.y=clamp(sl.y,3,97);if(q.team===l)c.push(q);}
+          c.sort((a,b)=>hyp(a.x,a.y,50,50)-hyp(b.x,b.y,50,50));if(c[0]){c[0].x=50-dirDi(l)*0.8;c[0].y=50;}if(c[1]){c[1].x=50-dirDi(l)*3;c[1].y=53;}}
+        return;}
       const W=piuVicino(x,y,l,{noGk:true});if(W){W.p.x=x-dirDi(l)*0.4;W.p.y=y;S.palla.x=x;S.palla.y=y;tenuta(W.p,null);S.poss.t=1;}else libero(x,y);},
     posiziona(x,y){S.palla.x=clamp(+x,0,100);S.palla.y=clamp(+y,0,100);},
     /* [7.891] IL CALCIO PIAZZATO DELLA SCENA LO SCHIERA IL MOTORE. Il live match, due minuti prima di una

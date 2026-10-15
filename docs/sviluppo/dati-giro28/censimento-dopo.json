@@ -1,0 +1,253 @@
+{
+ "verde": {
+  "partite": 20,
+  "finite": 20,
+  "schedeTot": 18,
+  "schedePerPartita": 0.9,
+  "distribuzione": {
+   "0": 8,
+   "1": 6,
+   "2": 6
+  },
+  "max": 2,
+  "senzaPosta": 0,
+  "scelte": 18,
+  "sceltaCambiaMotore": 18,
+  "racconti": 18,
+  "raccontiCoerenti": 18,
+  "riepilogo": "12/12",
+  "errori": 0,
+  "dettaglio": [
+   {
+    "p": 0,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "75'0 pari_finale",
+    "racconti": [
+     "75'→80' ⏸️ «Andiamo a vincerla»: 5 minuti senza scosse, un tiro nostro e 0 tiri loro. | mister: «Pazienza, restiamo dentro la partita.»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 75': «Andiamo a vincerla» → 1 tiri nostri, 0 loro"
+   },
+   {
+    "p": 1,
+    "score": {
+     "home": 4,
+     "away": 1
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 2,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "dove": "75'0 pari_finale",
+    "racconti": [
+     "75'→80' ⚠️ Dopo «Aspetto la palla giusta» abbiamo concesso 3 tiri in 5 minuti, noi nessuno. | mister: «Stiamo concedendo troppo, stringete!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 75': «Aspetto la palla giusta» → concessi 3 tiri"
+   },
+   {
+    "p": 3,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "57'0 eroe_stanco | 75'0 pari_finale",
+    "racconti": [
+     "57'→62' ✅ «Rifiato col pallone» tiene: un solo tiro concesso in 5 minuti. | mister: «Bene cosi', non vedono palla!»",
+     "75'→80' ⏸️ «Andiamo a vincerla»: 5 minuti senza scosse, un tiro nostro e 2 tiri loro. | mister: «Pazienza, restiamo dentro la partita.»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 57': «Rifiato col pallone» → un solo tiro concesso\n🧠 La tua scelta al 75': «Andiamo a vincerla» → 1 tiri nostri, 2 loro"
+   },
+   {
+    "p": 4,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "57'0 eroe_stanco | 75'0 pari_finale",
+    "racconti": [
+     "57'→62' ⏸️ «Stringo i denti e pressing»: 5 minuti senza scosse, un tiro nostro e un tiro loro. | mister: «Pazienza, restiamo dentro la partita.»",
+     "75'→80' ✅ «Il punto va bene, teniamo palla» tiene: un solo tiro concesso in 5 minuti. | mister: «Bene cosi', non vedono palla!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 57': «Stringo i denti e pressing» → 1 tiri nostri, 1 loro\n🧠 La tua scelta al 75': «Il punto va bene, teniamo palla» → un solo tiro concesso"
+   },
+   {
+    "p": 5,
+    "score": {
+     "home": 1,
+     "away": 3
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 6,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 7,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "62'+1 eroe_stanco | 82'0 pari_finale",
+    "racconti": [
+     "62'→67' ⏸️ «Stringo i denti e pressing»: 5 minuti senza scosse, 0 tiri nostri e 0 tiri loro. | mister: «Pazienza, restiamo dentro la partita.»",
+     "82'→87' ✅ «Il punto va bene, teniamo palla» tiene: un solo tiro concesso in 5 minuti. | mister: «Bene cosi', non vedono palla!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 62': «Stringo i denti e pressing» → 0 tiri nostri, 0 loro\n🧠 La tua scelta al 82': «Il punto va bene, teniamo palla» → un solo tiro concesso"
+   },
+   {
+    "p": 8,
+    "score": {
+     "home": 0,
+     "away": 2
+    },
+    "dove": "13'0 espulsione_noi | 70'-1 sotto_finale",
+    "racconti": [
+     "13'→18' ⏸️ «Corro per due, datela a me»: 5 minuti senza scosse, 0 tiri nostri e 0 tiri loro. | mister: «Pazienza, restiamo dentro la partita.»",
+     "70'→75' ✅ «Palla a me, la risolvo io»: 2 tiri verso la porta in 5 minuti (loro 2). | mister: «Continuate a calciare!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 13': «Corro per due, datela a me» → 0 tiri nostri, 0 loro\n🧠 La tua scelta al 70': «Palla a me, la risolvo io» → 2 tiri nostri, 2 loro"
+   },
+   {
+    "p": 9,
+    "score": {
+     "home": 0,
+     "away": 0
+    },
+    "dove": "75'0 pari_finale",
+    "racconti": [
+     "75'→80' ⏸️ «Andiamo a vincerla»: 5 minuti senza scosse, un tiro nostro e 0 tiri loro. | mister: «Pazienza, restiamo dentro la partita.»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 75': «Andiamo a vincerla» → 1 tiri nostri, 0 loro"
+   },
+   {
+    "p": 10,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 11,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "dove": "70'-1 sotto_finale",
+    "racconti": [
+     "70'→75' ✅ «Palla a me, la risolvo io»: 2 tiri verso la porta in 5 minuti, loro nessuno. | mister: «Continuate a calciare!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 70': «Palla a me, la risolvo io» → 2 tiri nostri, 0 loro"
+   },
+   {
+    "p": 12,
+    "score": {
+     "home": 2,
+     "away": 3
+    },
+    "dove": "75'0 pari_finale",
+    "racconti": [
+     "75'→80' ✅ «Andiamo a vincerla»: 2 tiri verso la porta in 5 minuti, loro nessuno. | mister: «Continuate a calciare!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 75': «Andiamo a vincerla» → 2 tiri nostri, 0 loro"
+   },
+   {
+    "p": 13,
+    "score": {
+     "home": 1,
+     "away": 4
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 14,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 15,
+    "score": {
+     "home": 1,
+     "away": 2
+    },
+    "dove": "70'-1 sotto_finale | 82'-1 eroe_stanco",
+    "racconti": [
+     "70'→75' ⏸️ «Tutti avanti, pressing alto»: 5 minuti senza scosse, 0 tiri nostri e un tiro loro. | mister: «Pazienza, restiamo dentro la partita.»",
+     "82'→87' ✅ «Rifiato col pallone» tiene: nessun tiro concesso in 5 minuti. | mister: «Bene cosi', non vedono palla!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 70': «Tutti avanti, pressing alto» → 0 tiri nostri, 1 loro\n🧠 La tua scelta al 82': «Rifiato col pallone» → nessun tiro concesso"
+   },
+   {
+    "p": 16,
+    "score": {
+     "home": 4,
+     "away": 3
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 17,
+    "score": {
+     "home": 1,
+     "away": 0
+    },
+    "dove": "75'0 pari_finale",
+    "racconti": [
+     "75'→80' ✅ «Aspetto la palla giusta»: 2 tiri verso la porta in 5 minuti, loro nessuno. | mister: «Continuate a calciare!»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 75': «Aspetto la palla giusta» → 2 tiri nostri, 0 loro"
+   },
+   {
+    "p": 18,
+    "score": {
+     "home": 2,
+     "away": 1
+    },
+    "dove": "",
+    "racconti": [],
+    "riepilogo": null
+   },
+   {
+    "p": 19,
+    "score": {
+     "home": 2,
+     "away": 2
+    },
+    "dove": "55'0 espulsione_loro | 69'0 eroe_stanco",
+    "racconti": [
+     "55'→60' ✅ «Palla a terra, li facciamo correre» tiene: un solo tiro concesso in 5 minuti. | mister: «Bene cosi', non vedono palla!»",
+     "69'→74' ⏸️ «Stringo i denti e pressing»: 5 minuti senza scosse, un tiro nostro e un tiro loro. | mister: «Pazienza, restiamo dentro la partita.»"
+    ],
+    "riepilogo": "🧠 La tua scelta al 55': «Palla a terra, li facciamo correre» → un solo tiro concesso\n🧠 La tua scelta al 69': «Stringo i denti e pressing» → 1 tiri nostri, 1 loro"
+   }
+  ]
+ }
+}

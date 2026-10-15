@@ -756,7 +756,8 @@ function App(){
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
-  const refreshSlots=()=>storage.listSlots().then(s=>setSlots(s)).catch(()=>setSlots([]));/* [6.44.0 RC-crit] un listSlots che rigetta (storage disabilitato) non deve bloccare il boot */
+  const[riserve,setRiserve]=useState([]);const[riservaNo,setRiservaNo]=useState([]);/* [PO-167] slot ripristinabili dalla copia di riserva · slot rimandati in questa sessione */
+  const refreshSlots=()=>storage.listSlots().then(s=>{setSlots(s);storage.listRiserve().then(r=>setRiserve(r||[])).catch(()=>{});}).catch(()=>setSlots([]));/* [6.44.0 RC-crit] un listSlots che rigetta (storage disabilitato) non deve bloccare il boot */
   useEffect(()=>{
     // [7.149.0 collaudo PO «se metto in background l'app il gioco NON deve riavviarsi, deve riprendere dallo stesso punto»]
     //   AUTO-RIPRESA: se una carriera era attiva (puntatore cpm-active) e lo slot ha un save valido, si rientra DRITTO
@@ -817,6 +818,9 @@ function App(){
   const startNew=(slot=0)=>{setCurrentSlot(slot);trialResumeRef.current=null;try{safeLS.set("cpm-trial-prog","");}catch(_e){}setPhase("create");};/* [7.330.0] nuova partenza esplicita = i provini in sospeso si abbandonano */
   useEffect(()=>{try{if(typeof window!=="undefined"&&!window.__CPM_STORE_BUILD)window.__CPM_CUR_SLOT=currentSlot;}catch(_e){}},[currentSlot]);/* [7.332.0] diagnostica: lo slot corrente osservabile dal guardiano trial-persist (mai in store build) */
   const deleteSlot=async(slot)=>{await storage.del(slot);await refreshSlots();};
+  const ripristinaSlot=async(slot)=>{const ok=await storage.ripristina(slot);await refreshSlots();
+    if(ok)appNotify(`✅ Carriera ripristinata dalla copia di riserva (salvataggio ${slot+1}).`,TH.success);else appNotify("Non è stato possibile ripristinare la copia di riserva.");};/* [PO-167] */
+  const _ris167=riserve.find(r=>!riservaNo.includes(r.slot));
   const importSave=(file)=>{
     const r=new FileReader();
     r.onload=async e=>{
@@ -876,8 +880,10 @@ function App(){
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
       <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
+        {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
-        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span>
+        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span></React.Fragment>
+        :<span data-cpm="badge255" style={{color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
       </div>
       <style>{`
         *{box-sizing:border-box;}
@@ -945,6 +951,13 @@ function App(){
     return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
+    {_ris167&&<Modal open cpm="riserva-167" pannelloCpm="riserva-167-pannello" dismissable={false} title="Copia di riserva trovata"
+      footer={<><Btn v="secondary" onClick={()=>setRiservaNo(a=>[...a,_ris167.slot])}>Non ora</Btn><Btn v="primary" onClick={()=>ripristinaSlot(_ris167.slot)}>Ripristina</Btn></>}>
+      <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{_ris167.motivo==="corrotto"?`Il salvataggio ${_ris167.slot+1} non si riesce a leggere.`:`Il salvataggio ${_ris167.slot+1} risulta vuoto.`} C'è una copia di riserva della tua carriera:</div>
+      <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.sm}}>{_ris167.name} · {_ris167.club}</div>
+      <div style={{fontSize:FS.small,color:TH.muted}}>Stagione {_ris167.season} · settimana {_ris167.week}</div>
+      <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>Vuoi ripristinarla?</div>
+    </Modal>}{/* [PO-167 · giro 29] finestra standard (Modal → ModalPannello) */}
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */

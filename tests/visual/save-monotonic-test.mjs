@@ -45,6 +45,9 @@ async function apri({ nativo = true, rompi = false } = {}) {
       window.__RACE = { log: [], prossimoRitardo: 0, attivo: false };
       window.storage = {
         set: (k, v) => {
+          /* [PO-167 giro 29] dal backup degli slot ogni salvataggio scrive PRIMA `cpm-v3-riserva` e poi `cpm-v3`: il ritardo
+             pilotato deve colpire la scrittura della chiave principale (quella su cui si gioca la gara), non la copia di riserva */
+          if (k !== 'cpm-v3') return new Promise(res => setTimeout(() => { disco[k] = v; res(); }, 0));
           const d = window.__RACE.attivo ? (window.__RACE.prossimoRitardo || 0) : 0;
           window.__RACE.prossimoRitardo = 0;
           let et = '?'; try { et = String(JSON.parse(v).player.bankBalance); } catch (e) {}
