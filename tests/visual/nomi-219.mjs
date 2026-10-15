@@ -8,13 +8,17 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI = Array.from({ length: 18 }, (_, i) => 101 + i);/* [giro 18, «un guardiano instabile due volte si ripara»] MISURATO
+const BASE = +(process.env.CPM_N219_BASE || 101);/* [giro 34] solo collaudo: sposta i semi per misurare la stessa build su semi diversi */
+const SEMI = Array.from({ length: 18 }, (_, i) => BASE + i);/* [giro 18, «un guardiano instabile due volte si ripara»] MISURATO
    (nomi-219-misura.mjs, 30 semi verdi 101-130 + 12 rossi 101-112, 3 partite in parallelo): verde 43/48 = 89,6%, cioe' il tasso vero sta SULLA vecchia
    soglia del 90% (ricampionando i 30 semi, la vecchia forma — 8 semi, >=90% su >=12 — esce rossa ~70% delle corse: 38% per campione corto, il resto per
    quota). Rosso 9/16 = 56%. Semi consecutivi, NON scelti: provata la scelta dei semi «con copertura» (14 semi che avevano dato nominati) e la copertura NON si
    ripete fra corse (22 nominati invece dei ~40 attesi), quindi la stima onesta si fa ricampionando tutti i semi: 18 verdi + 9 rossi, soglia 75%, rossi falsi
    ~3,8% a corsa (oggi ~70%), un braccio che gioca come il rosso passa ~2,6%. */
-const SEMI_ROSSO = Array.from({ length: 9 }, (_, i) => 101 + i);
+const SEMI_ROSSO = Array.from({ length: 9 }, (_, i) => BASE + i);/* [giro 34, ri-misura dopo il rosso del giro 22] il rosso del giro 22 (85% su 20, 88% su 17) era della forma VECCHIA (8 semi,
+   soglia 90%): quel ramo non conteneva la riparazione del giro 18. Questa forma, 5 corse sulla stessa build (3 coi semi 101, 1 coi 119, 1 coi 137):
+   verde 5/5 (86-100%, minimo 29 nominati), rosso rilevato 5/5 (40-60%, 4-8 nominati oltre 35 u). Ricampionando le 135 partite: rossi falsi ~0,1% a
+   corsa, verde al 1° percentile 79% (margine ~4 punti), rosso con almeno 2 lontani al 1° percentile. Forma e soglie invariate (nomi-219-ricampiona.mjs). */
 const PAR = +(process.env.CPM_N219_PAR || 3);/* tre partite alla volta: la misura e' stata presa cosi' (le distanze sono ferme fra 0 e 900 ms dall'apertura della scelta) */
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, lontani: 0, usato: 0, scartato: 0, esempi: [] };
@@ -31,17 +35,17 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, lonta
     await page.evaluate(() => window.__CPM_CAREER.playMatch());
     await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
     await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), sd);
-    const t0 = Date.now(); let ph = '', prev = '';
+    const t0 = Date.now(); let ph = '', prev = ''; const ps = { n: 0, v: 0, l: 0 };/* [giro 34] conteggi per seme, stampati: servono a ricampionare */
     while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
       if (ph === 'hl_choose' && prev !== 'hl_choose') { await sleep(400);
         const m = await page.evaluate(() => { const C = (window.__CPM_CAST219 || []).slice(-1)[0]; let st = null; try { st = window.__CPM_STATE(); } catch (e) {} if (!C || !st) return null;
           const P = st.players || [], H = st.hero || {}; const f = (w) => { if (!w || w.i == null || !P[w.i]) return null; const p = P[w.i]; return { nome: w.nome, d: +Math.hypot(p.x - H.x, p.y - H.y).toFixed(1) }; };
           return { tipo: C.tipo, gk: (C.prel || []).filter(w => w.gk).length, n: (C.prel || []).filter(w => !w.gk).map(f).filter(Boolean) }; });/* il portiere che apre dal fondo resta in porta: contato a parte, mai giudicato *//* [PO-219b] i compagni NOMINATI dalla manovra (preludio), uguali nei due bracci */
-        if (m && !/^(cross|angolo|punizione|rigore)$/.test(m.tipo || '')) { tot.portieri = (tot.portieri | 0) + (m.gk | 0); for (const x of m.n) { tot.nominati++; if (x.d > 35) tot.lontani++; if (x.d <= 25) tot.vicini++; else if (tot.esempi.length < 6) tot.esempi.push(sd + ' ' + m.tipo + ' ' + x.nome + ' a ' + x.d + ' u'); } } }
+        if (m && !/^(cross|angolo|punizione|rigore)$/.test(m.tipo || '')) { tot.portieri = (tot.portieri | 0) + (m.gk | 0); for (const x of m.n) { tot.nominati++; ps.n++; if (x.d > 35) { tot.lontani++; ps.l++; } if (x.d <= 25) { tot.vicini++; ps.v++; } else if (tot.esempi.length < 6) tot.esempi.push(sd + ' ' + m.tipo + ' ' + x.nome + ' a ' + x.d + ' u'); } } }
       prev = ph; if (ph === 'ended' || ph === 'ceremony') break; await sleep(250); }
     const W = await page.evaluate(() => window.__CPM_B4DIF || { usato: 0, scartato: 0 }); tot.usato += W.usato | 0; tot.scartato += W.scartato | 0;
     tot.scambi = (tot.scambi | 0) + await page.evaluate(() => (window.__CPM_SW219 || []).reduce((a, x) => a + (x.scambi | 0), 0));/* quante scene lo scambio ha davvero toccato */
-    console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' fine ' + ph); await ctx.close();
+    console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' fine ' + ph + ' nominati ' + ps.n + ' vicini ' + ps.v + ' lontani ' + ps.l); await ctx.close();
   } }));
   esito[rosso ? 'rosso' : 'verde'] = tot; console.log((rosso ? 'ROSSO' : 'VERDE') + ' ' + JSON.stringify(tot));
 }
