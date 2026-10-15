@@ -1,0 +1,191 @@
+{
+  "larghezza": 360,
+  "settimane": [
+    {
+      "settimana": 495,
+      "classifica": {
+        "squadre": 18,
+        "gf": 834,
+        "ga": 834,
+        "uguali": true,
+        "incoerenti": []
+      },
+      "calendario": {
+        "voci": 44,
+        "giocate": 43,
+        "ultima": {
+          "matchday": 34,
+          "week": 38,
+          "opponentId": "new",
+          "opponentName": "FC Tyneside",
+          "isHome": false,
+          "played": true,
+          "result": {
+            "homeScore": 0,
+            "awayScore": 1,
+            "won": false,
+            "drew": false
+          },
+          "simulated": true
+        },
+        "storia": {
+          "season": 12,
+          "week": 38,
+          "opponent": "FC Tyneside",
+          "oppAbbr": "TYN",
+          "oppCol": "#0f0f0f",
+          "homeScore": 0,
+          "awayScore": 1,
+          "goals": 0,
+          "assists": 0,
+          "rating": 5.6,
+          "won": false,
+          "drew": false,
+          "simulated": true
+        },
+        "storiaN": 36
+      }
+    },
+    {
+      "settimana": 495,
+      "classifica": {
+        "squadre": 18,
+        "gf": 0,
+        "ga": 0,
+        "uguali": true,
+        "incoerenti": []
+      },
+      "calendario": {
+        "voci": 41,
+        "giocate": 0,
+        "ultima": null,
+        "storia": null,
+        "storiaN": 0
+      }
+    },
+    {
+      "settimana": 496,
+      "classifica": {
+        "squadre": 18,
+        "gf": 14,
+        "ga": 14,
+        "uguali": true,
+        "incoerenti": []
+      },
+      "calendario": {
+        "voci": 41,
+        "giocate": 1,
+        "ultima": {
+          "matchday": 1,
+          "week": 1,
+          "opponentId": "bha",
+          "opponentName": "FC Sussex",
+          "isHome": false,
+          "played": true,
+          "result": {
+            "homeScore": 3,
+            "awayScore": 0,
+            "won": true,
+            "drew": false
+          },
+          "simulated": true
+        },
+        "storia": {
+          "season": 13,
+          "week": 1,
+          "opponent": "FC Sussex",
+          "oppAbbr": "SUS",
+          "oppCol": "#1d4ed8",
+          "homeScore": 3,
+          "awayScore": 0,
+          "goals": 2,
+          "assists": 1,
+          "rating": 8.1,
+          "won": true,
+          "drew": false,
+          "simulated": true
+        },
+        "storiaN": 1
+      }
+    }
+  ],
+  "errori": [],
+  "vietati": {
+    "dashboard": [],
+    "calendario": [],
+    "classifica": [],
+    "home": []
+  },
+  "consegne": {},
+  "nonConfermato": [
+    "PO-254: pulsante Crediti non trovato in home",
+    "PO-243 intervista post-Nazionale: nessuna Nazionale attiva nelle 3 settimane → non verificabile senza forzatura"
+  ],
+  "fineStagioneForzata": 1,
+  "step": {
+    "n": 10,
+    "esiti": {
+      "lived": 4,
+      "simulated": 3,
+      "advanced": 1,
+      "seasonEnd-gestita": 1,
+      "opening-resolved": 1
+    }
+  },
+  "stato": {
+    "season": 13,
+    "week": 3,
+    "club": "FC Merseyside",
+    "proStatus": "pro",
+    "nationsCupActive": false
+  },
+  "badge": {
+    "trovato": true,
+    "testo": "v 7.999.170",
+    "testoBox": ""
+  },
+  "procuratore": {
+    "titoloTrovato": false,
+    "titoloConfronto": false,
+    "finestre": 0
+  },
+  "toastConModale": {
+    "comparso": false
+  },
+  "toastSuModale": {
+    "toast": false,
+    "nota": "toast non trovato a schermo: nessuna sovrapposizione"
+  },
+  "procuratoreChiuso": "non chiudibile da script: pagina ricaricata",
+  "toastControllo": {
+    "visibile": true
+  },
+  "backup": {
+    "chiavi": [
+      "cpm-v3",
+      "cpm-v3-riserva"
+    ],
+    "riserva": [
+      "cpm-v3-riserva"
+    ]
+  },
+  "giornaleVisibile": false,
+  "nazionaleAttiva": false,
+  "overflow": {
+    "scrollW": 360,
+    "clientW": 360
+  },
+  "iniziale": {
+    "badge": {
+      "trovato": true,
+      "testo": "v 7.999.170"
+    },
+    "crediti": {
+      "voci": 16,
+      "sezioni": 5,
+      "daCompletare": 0,
+      "nonPosso": 2,
+      "testo": "Crediti\n×\nLe risorse di terze parti usate in Korward Elite.\nMODELLI 3D E ANIMAZIONI\nGiocatori 3D «Soccer Player - Rigged» (CGTrader)\nOrdine CGTrader #17876008 del 20/09/2026.\nAutore: Hisenberg\nLicenza: Royalty Free (standard) — dichiarata dal PO\nCorpo «Regular Male»\nProvenienza dichiarata dal PO.\nAutore: Mixamo (Adobe)\nMicrosoft Rocketbox\nGiornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).\nAutore: Microsoft (github.com/microsoft/Microsoft-Rocketbox)\nLicenza: MIT\nAnimazioni Mixamo e modello CH38\nClip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).\nAutore: Mixamo (Adobe)\nLicenza: «royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.htm"
+    }
+  }
+}
