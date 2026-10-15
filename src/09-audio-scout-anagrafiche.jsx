@@ -57,11 +57,18 @@ const AudioMgr=(function(){
   //   il boato del gol suona il campione REALE (crowdRoar lo preferisce). Finché il file NON c'è, il fetch fallisce e si
   //   ricade sul synth (comportamento attuale). Nessun altro passo di codice: basta caricare il file nel repo.
   // [7.72.1] campioni REALI forniti dal PO (Freesound/Mixkit) — priorità sui fallback generati:
-  //   crowd.roar = boato di gioia allo stadio (Mixkit) · crowd.bed = brusio di folla da calcio (Freesound).
+  //   crowd.roar = boato di gioia allo stadio (Mixkit) · crowd.bed = brusio di folla da calcio.
+  // [giro 20 — PO-238, decisione PO 14/10 «Sostituiscilo»] il brusio mp3 del 7.72.1 (fonte e licenza non
+  //   verificabili) e' USCITO dal gioco: crowd.bed e' ora generato da noi (tools/gen-crowd-bed.mjs: rumore modellato +
+  //   grani vocali sintetici, seme fisso, nessun campione di terzi). Misura (tools/misura-brusio.mjs): il vecchio aveva
+  //   43,8 ms di silenzio in testa (ritardo dell'encoder mp3) → al giunto del loop -46,8 dB per 20 ms ogni 39 s; il nuovo
+  //   e' periodico per costruzione (giunto +1,0/-0,8 dB). Rosso: window.__CPM_NO_BRUSIO238 → niente file, synth di riserva.
+  const _brusio238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRUSIO238);
   const URL_SFX={
     'crowd.roar':['assets/audio/sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav','assets/audio/sfx/crowd/goal-roar.ogg','assets/audio/sfx/crowd/goal-roar.mp3','assets/audio/sfx/crowd/goal-roar.wav'],
-    'crowd.bed':['assets/audio/sfx/crowd/freesound_community-football-crowd-3-69245.mp3']
+    'crowd.bed':['assets/audio/sfx/crowd/brusio-folla-korward.wav']
   };
+  const _bedUrls238=()=>_brusio238On()?URL_SFX['crowd.bed']:[];
   const _urlBufs={};let _samplesTried=false;
   function _tryFetchDecode(urls,i,onOk){
     if(!ctx||i>=urls.length)return;
@@ -69,7 +76,7 @@ const AudioMgr=(function(){
   }
   function loadSamples(){
     if(_samplesTried||SILENT()||!ready)return;_samplesTried=true;
-    try{Object.keys(URL_SFX).forEach(k=>{const v=URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
+    try{Object.keys(URL_SFX).forEach(k=>{const v=k==='crowd.bed'?_bedUrls238():URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
   }
   function playSample(key,peak,cat,dur){
     if(!ready||!_urlBufs[key])return false;
@@ -167,8 +174,8 @@ const AudioMgr=(function(){
 
   // ---- FOLLA (letto continuo + reazioni) --------------------------------
   let bed=null,_matchHushed=false;/* [7.104.0] a partita finita (schermata GIORNALE) il letto-folla resta SPENTO anche se l'utente tocca lo schermo (unlock non lo riavvia) */
-  const _bedGain=t=>1.6+t*2.4;// [7.72.1] il brusio reale (Freesound) è registrato QUIETO (peak .13) → boost; peak out resta <0.6 (no clip)
-  function _startRealBed(base){// letto = registrazione REALE di folla in loop (Freesound), fornita dal PO
+  const _bedGain=t=>(1.6+t*2.4)*0.138;// [7.72.1] boost del vecchio brusio registrato quieto · [giro 20] ×0,138 = 10^(-17,2/20): il nuovo file e' a -16,9 LUFS contro -34,1 del vecchio → stessa sonorita' in partita; picco in uscita a t=1: 0,52×0,55=0,29 (era 0,55)
+  function _startRealBed(base){// letto = brusio di folla in loop (dal giro 20 generato da noi, tools/gen-crowd-bed.mjs)
     const src=ctx.createBufferSource();src.buffer=_urlBufs['crowd.bed'];src.loop=true;
     const g=ctx.createGain();g.gain.value=0.0001;
     src.connect(g);g.connect(dest('crowd'));src.start();
@@ -486,6 +493,8 @@ const AudioMgr=(function(){
   function setSuspended(v){if(!ctx)return;/* [7.243.0] NON gated da SILENT(): entrando nel wizard il flag e gia alzato e la sospensione deve comunque passare (sotto gate ctx non nasce mai → safe) */try{if(v){if(ctx.state==='running')ctx.suspend().catch(()=>{});}else{if(ctx.state==='suspended'&&unlocked)ctx.resume().catch(()=>{});}}catch(_e){}}
   function getCfg(){try{return JSON.parse(JSON.stringify(cfg));}catch(_e){return {...DEF};}}
   function preview(c){ if(!ready)return; if(c==='music'){arp(['C','E','G'],'music',0.12,0.14);} else if(c==='crowd')crowdSwell(0.7,0.5,1800); else if(c==='referee')refWhistle(1); else if(c==='match')play('ball.kick'); else play('ui.confirm'); }
+  // [giro 20] solo prova: quali file del brusio il gioco caricherebbe (vuoto col rosso) e se il buffer e' gia' decodificato
+  if(typeof window!=='undefined')window.__CPM_BRUSIO238=()=>({urls:_bedUrls238().slice(),decodificato:!!_urlBufs['crowd.bed'],durata:_urlBufs['crowd.bed']?_urlBufs['crowd.bed'].duration:0});
   function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
   return {unlock,play,scene,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
@@ -1486,6 +1495,36 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
   let st=initStandings(clubs);const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
   for(const m of md){st=updateStandings(st,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});}
   return st;}
+/* [giro 13 MIG194, decisione PO 14/10 «Si', ripara i salvataggi» — eccezione zona G limitata a CL194] La partita di campionato giocata
+   DAL VIVO passava a updateStandings il NOME dell'avversario (CL194, corretto in src/18 solo per le gare future): l'avversario non
+   riceveva il risultato speculare e una squadra giocava il turno «di riposo» contro nessuno, quindi la somma GF-GS e V-P della lega
+   non torna a zero. Misurato: salvataggio del PO (fixtures/save-195) GF 792 contro GS 789, V 229 contro P 225; la stessa giornata
+   rigiocata col difetto acceso porta GF-GS da 3 a 4. Quali giornate siano state colpite e chi abbia preso la partita fantasma NON e'
+   ricostruibile: la classifica conserva solo i totali e le gare fra le altre squadre non sono salvate da nessuna parte (la riproduzione
+   della stagione coi semi del gioco non ridà la classifica salvata: 17 righe su 18 diverse con ogni ipotesi provata). Ricostruibile
+   esattamente e' cio' che il salvataggio sa: le giornate dell'eroe (calendario), cioe' la riga dell'eroe e il risultato SPECULARE di
+   ogni suo avversario. Quindi: si rifà la classifica dalle giornate giocate (come 7.999.102) con gli id, le anagrafiche delle righe
+   salvate (nomi, prestigio, Primavera) e i semi del gioco; le gare fra le altre squadre si risimulano (dichiarato). Solo se: c'e' almeno
+   una giornata dal vivo, le squadre della classifica sono quelle del calendario, la riga dell'eroe coincide con le sue giornate (la
+   firma del difetto: punti dell'eroe giusti, lega sbilanciata) e la lega e' sbilanciata. Il risultato deve tornare in pari e lasciare
+   identica la riga dell'eroe, altrimenti null. Idempotente: una lega in pari non si tocca. Rosso __CPM_NO_MIG194 (lo legge il chiamante). */
+function riparaClassifica194(p){try{
+  if(!p||!p.club)return null;const myId=p.club.id||p.club.n;const st=p.standings||[];if(st.length<4)return null;
+  const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result&&m.opponentId!=null).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
+  const dalVivo=md.filter(m=>!(m.simulated||m.result.simulated)).length;if(!dalVivo)return null;
+  const clubs=leagueClubsFromCalendar(p);if(!clubs)return null;const byId={};st.forEach(r=>{if(r&&r.id!=null)byId[r.id]=r;});
+  if(clubs.length!==st.length||clubs.some(c=>!byId[c.id]))return null;
+  const tot=t=>t.reduce((o,r)=>({gf:o.gf+(r.gf|0),ga:o.ga+(r.ga|0),w:o.w+(r.wins|0),l:o.l+(r.losses|0),d:o.d+(r.draws|0)}),{gf:0,ga:0,w:0,l:0,d:0});
+  const inPari=s=>s.gf===s.ga&&s.w===s.l&&s.d%2===0;const prima=tot(st);if(inPari(prima))return null;
+  const K=['played','wins','draws','losses','gf','ga','pts'];
+  const atteso=md.reduce((o,m)=>{const r=m.result;o.played++;o.gf+=r.homeScore|0;o.ga+=r.awayScore|0;if(r.won){o.wins++;o.pts+=3;}else if(r.drew){o.draws++;o.pts+=1;}else o.losses++;return o;},{played:0,wins:0,draws:0,losses:0,gf:0,ga:0,pts:0});
+  const me0=byId[myId];if(!me0||K.some(k=>(me0[k]|0)!==atteso[k]))return null;
+  let ns=initStandings(clubs.map(c=>{const{played,wins,draws,losses,gf,ga,gd,pts,...k}=byId[c.id];return k;}));
+  for(const m of md)ns=updateStandings(ns,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});
+  const dopo=tot(ns);const me1=ns.find(r=>r.id===myId);
+  if(!inPari(dopo)||!me1||K.some(k=>(me1[k]|0)!==atteso[k]))return null;
+  return{standings:ns,prima,dopo,giornate:md.length,dalVivo};
+}catch(_e){return null;}}
 /* [7.999.134 PO-212 collaudo PO «nella preview di accettazione dell'offerta la posizione ed i punti erano diversi»] La lega che trovi
    DOPO il trasferimento nasce qui, e l'anteprima dell'offerta chiama la STESSA funzione: prima l'anteprima leggeva la classifica del
    mondo (calcWorldStandings, accoppiamenti a sorteggio per settimana) e l'accettazione ne costruiva un'altra (calendario del club nuovo

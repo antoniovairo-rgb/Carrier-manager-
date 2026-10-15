@@ -3,8 +3,9 @@
    (semi 7 e 99). VERDE: almeno 3 conclusioni generate; per ognuna la zona di partenza contiene il punto del motore, nessuna
    opzione promette un gesto senza clip, l'assist solo se il motore ha compagni liberi. VERDE vuole TUTTE le conclusioni del motore generate (almeno 2). ROSSO (__CPM_NO_P6C): 0 generate. */
 import fs from 'node:fs';
-const { startServer, launchBrowser, installCdnRoutes, sleep } = await import('/home/user/cm-poc/tests/visual/lib/harness.mjs');
-const save = JSON.parse(fs.readFileSync('/home/user/cm-poc/tests/visual/fixtures/save-190-s12-ovr93.json'));
+import path from 'node:path'; import { fileURLToPath } from 'node:url'; const DIR = path.dirname(fileURLToPath(import.meta.url));/* [giro 17] percorsi relativi: /home/user/cm-poc non esiste in ogni sessione */
+const { startServer, launchBrowser, installCdnRoutes, sleep } = await import(path.join(DIR, 'lib/harness.mjs'));
+const save = JSON.parse(fs.readFileSync(path.join(DIR, 'fixtures/save-190-s12-ovr93.json')));
 const semi = [7, 99]; const TOT = { verde: [], rosso: [] }, CONC = { verde: 0, rosso: 0 }; const TIPI = ['conclusione', 'spalle', 'fascia', 'fra-le-linee', 'cross', 'angolo', 'difesa', 'punizione', 'rigore'];/* [7.999.153] + strato 8a *//* [7.999.151] + strato 6 · [7.999.152] + strato 7 */ /* [7.999.148] strati del Passo 6 coperti */
 const srv = await startServer(); const b = await launchBrowser();
 for (const arm of ['verde', 'rosso']) for (const sd of semi) {

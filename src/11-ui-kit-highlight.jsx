@@ -97,11 +97,12 @@ const OvrRing=({value,size=60,label="OVR"})=>{
    striscia colorata a sinistra, l'emoji iniziale del messaggio in un bollino, testo in inchiostro della pagina; sta in BASSO
    sopra la barra di navigazione, cosi' non copre piu' la testata («Simulazione…» sopra il nome). Rosso __CPM_NO_TOAST23. */
 const _NotifVecchio=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
-const Notif=({msg,color})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
+const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
   const m=String(msg).match(/^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:\uFE0F|\u200D(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}))*)\s*/u);const ic=m?m[1]:null,tx=m?String(msg).slice(m[0].length):String(msg);
   const c=(typeof legCol944==='function'?legCol944(color||TH.primary):(color||TH.primary));
   /* [24/09 POC] centrato da un contenitore flex a tutta larghezza: `cpm-rise` anima `transform` e cancellava il translateX(-50%) -> toast spostato a destra e tagliato (anteprima 04/05) */
-  return(<div style={{position:"fixed",left:0,right:0,bottom:"calc(96px + env(safe-area-inset-bottom, 0px))",zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
+  /* [giro 19 PO-247, collaudo 164 N4] con una finestra che tiene le risposte in basso (intervista) il toast sale in alto: in basso copriva la terza risposta. Rosso __CPM_NO_TOAST247 */
+  return(<div style={{position:"fixed",left:0,right:0,...((alto&&!(typeof window!=='undefined'&&window.__CPM_NO_TOAST247))?{top:"calc(14px + env(safe-area-inset-top, 0px))"}:{bottom:"calc(96px + env(safe-area-inset-bottom, 0px))"}),zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
     display:"flex",alignItems:"center",gap:SP.sm,maxWidth:380,minWidth:0,background:TH.surface3,border:"1px solid "+TH.divider,borderLeft:"4px solid "+c,borderRadius:RAD.md,padding:"9px 14px 9px 10px",boxShadow:TH.el3}}>
     {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
     <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
@@ -1455,6 +1456,40 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pg95p=(function(){try{return localStorage.getItem('cpm-glb');}catch(e){return null;}})();
   const _pg95on=_pg95u?_pg95u[1]==='1':_pg95p!=='0';
   if(_pg95on)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
+}catch(e){}}
+/* [PO-237 «La partita, in particolare la prima è un pò scattosa»] PRE-CARICAMENTO DEI CORPI. Misurato (sonda
+   tests/visual/prima-partita-237.mjs, stessa pagina, GLB acceso, finestre ancorate alla creazione del renderer della partita):
+   nella PRIMA partita si scaricavano e interpretavano a 0,5 s dal via 22 GLB — corpo «regular» + slim/stocky + 19 clip — e poi i
+   corpi CGTrader (lod0/1/2 + 3 file di clip) e le teste PNG: 1.549 ms di parsing GLB e 13 blocchi lunghi, contro 0 ms e 10 della
+   seconda partita (che li trova in _glbCache). Ora si caricano all'avvio, UNO ALLA VOLTA e nei momenti d'ozio, con le STESSE URL
+   della partita; le teste CGTrader si decodificano in anticipo (img.decode()) e la partita le riusa da window.__CPM_TESTE237 senza
+   riscaricarle. Dopo: 0 ms di parsing GLB in partita, 6 blocchi lunghi contro 5. Shader e caricamento delle texture in GPU si pagano
+   a OGNI partita (contesto WebGL nuovo): non sono un costo della prima e qui non si toccano. Corpi e teste CGTrader solo nel modo
+   CGTrader di default; il corpo «regular» in ogni modo GLB. Rosso __CPM_NO_PRE237 (la prima partita torna a pagare tutto). */
+if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
+  const _pre237on=(function(){try{return localStorage.getItem('cpm-glb')!=='0'&&!/[?&]glb=0\b/.test((window.location&&window.location.search)||"");}catch(e){return true;}})();
+  if(_pre237on)setTimeout(function(){try{
+    if(window.__CPM_NO_PRE237)return;
+    const _cg237=typeof _hyperQ23==='function'&&_hyperQ23()==='cgtrader-highlight-optimized';
+    const idle=f=>{try{if(typeof requestIdleCallback==='function')requestIdleCallback(f,{timeout:1500});else setTimeout(f,60);}catch(e){setTimeout(f,60);}};
+    const T=window.__CPM_TESTE237=window.__CPM_TESTE237||{};
+    if(_cg237)['brown','black','blond','auburn'].forEach(function(k){try{if(T[k])return;const im=new Image();im.decoding='async';im.src='./assets/hair-colors/source-textures/HEAD_hair_'+k+'.png';
+      const fatto=function(){T[k]=im;};if(im.decode)im.decode().then(fatto).catch(function(){});else im.onload=fatto;}catch(e){}});
+    /* il corpo «regular» e le sue 19 clip li carica la partita in ogni modo GLB (src/12, _bodyUrl907 e la lista accanto); il
+       pre-caricamento 6.95.0 qui sopra scarica footballer.glb/anim-*.glb, che quella lista non contiene. Stesse URL esatte, cosi'
+       _glbCache le riconosce. */
+    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
+      .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
+    const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
+    /* [giro 20 — PO-241 «il caricamento dei giocatori deve essere piu' furbo»] MISURATO (tests/visual/attesa-241.mjs, rete lenta come
+       nella sonda di PO-232: 2-6 s a file): uno alla volta, in 20 s di menu il pre-caricamento arrivava a pochi file e la partita
+       ripartiva da capo coi 6 file CGTrader (richieste viste a +5 s dall'apertura), lasciando 15-17 s di attesa dei corpi. Ora
+       SEI file in volo insieme (il tetto per host di Chrome in HTTP/1.1; sempre nei momenti d'ozio, stesse URL): la latenza di un file si sovrappone a quella degli
+       altri. Rosso __CPM_NO_ATTESA241 = uno alla volta come prima. */
+    const _par241=(window.__CPM_NO_ATTESA241?1:6);let _prox241=0,_vivi241=_par241;
+    const prossimo=function(){const i=_prox241++;if(i>=L.length){if(--_vivi241===0)st.fine=Date.now()-st.t0;return;}idle(function(){loadGLB('./assets/'+L[i]+'.glb').then(function(){st.fatti++;},function(){}).then(function(){prossimo();});});};
+    for(let k=0;k<_par241;k++)prossimo();
+  }catch(e){}},2500);
 }catch(e){}}
 function colorCharGLB(model,jerHex){
   model.traverse(node=>{

@@ -7,7 +7,7 @@
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {
   fumo: ['test:logic', 'design-system', 'lessico-218'],/* [7.999.159] prova rapida dell'esecutore */
-  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'cross-218', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'fila-227', 'finestra-230', 'intervista-231', 'tabellino-228', 'design-system', 'giornata-233'],
+  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'cross-218', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'fila-227', 'finestra-230', 'intervista-231', 'tabellino-228', 'design-system', 'giornata-233', 'fps-249', 'migrazione-194', 'schede-234', 'convocazione-235', 'bambini-236', 'prima-partita-237', 'crediti-238', 'brusio-238', 'attesa-241', 'difesa-220-scena', 'statistiche-228'],
   carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'rimbalzo-189', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'rigori-190', 'debito-190', 'scene-190', 'finale-202', 'ripresa-202', 'tetto-202', 'minuti-202', 'recupero-202', 'ripartenza-207', 'anteprima-212', 'mister-215', 'presentazione-214', 'possesso-209', 'brain-202', 'tempo-138', 'tabellino-216'],
   grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat', 'titolo-110', 'pre-188', 'rimbalzo-189', 'calendario-offerte-195', 'walkout-fermi-197', 'fila-206', 'premiazione-palco-191', 'coppa-mani-191', 'posa-sollevamento-191', 'palco-corpi-191', 'parata-198', 'busta-199', 'presentazione-200', 'guanti-201', 'formazioni-204', 'figurine-208', 'post-210', 'piedi-203', 'gesti-scena-p1b', 'piede-cross-p1b2', 'rincorsa-144', 'doppio-gesto-148', 'testa-146', 'movimento-147', 'l7-schermate'],
   guardiani: ['goleade', 'scene-disegnabili', 'nomi-51', 'piazzati-eroe', 'cross-origine', 'tiro-caricato', 'passo-velocita', 'gesti-copertura-96', 'etichette-95',
@@ -23,12 +23,13 @@ const CATENE = {
 CATENE.nucleo = ['test:logic', 'save-compat', 'design-system', 'typing-shortcuts', 'career-critical'];
 CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
 const MAPPA = [
-  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera']],
-  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226']],
-  [/src\/15-/, ['partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226']],
-  [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219']],
-  [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224']],
-  [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214']],
+  [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236', 'pressing-143', 'conduci-242', 'ingresso-245', 'giornale-244', 'difesa-220-scena']],
+  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234', 'schede-246', 'statistiche-228']],
+  [/src\/15-/, ['fps-249', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226', 'schede-234', 'catalogo-022', 'pressing-143', 'ripartenza-207', 'conduci-242', 'giornale-244', 'schede-246', 'attesa-241']],
+  [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219', 'migrazione-194', 'classifica-194', 'classifica-102', 'brusio-238']],
+  [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224', 'migrazione-194', 'classifica-102', 'convocazione-235', 'toast-247', 'crediti-238', 'brusio-238', 'attesa-241']],
+  [/src\/18-|src\/16-|src\/10-/, ['giornata-233', 'testata-209', 'popup-224', 'finestra-230', 'intervista-231', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'anteprima-212', 'mister-215', 'presentazione-214', 'toast-247', 'calendario-247']],
+  [/src\/04-/, ['catalogo-022', 'gesti-motore-068', 'scena-motore-147', 'classifica-102', 'partita-rigiocata-194', 'save-compat']],/* [giro 17] i generatori delle scene dell'eroe vivono in src/04 */
   [/src\/0[0-8]-/, ['classifica-102', 'partita-rigiocata-194', 'save-compat']],
 ];
 if (process.argv[2] === 'mirata') {
@@ -46,13 +47,20 @@ const ver = (fs.readFileSync(path.join(ROOT, 'src/07-versione-save-interviste.js
 const env = { ...process.env, CPM_CHROME: process.env.CPM_CHROME || '/opt/pw-browsers/chromium', PLAYWRIGHT_BROWSERS_PATH: process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers', VISION_PROVIDER: process.env.VISION_PROVIDER || 'none' };
 const giro = { data: new Date().toISOString().slice(0, 16).replace('T', ' '), versione: ver, catena: nome, passi: [] };
 let rossi = 0;
+/* [14/10, decisione PO «Rifai solo le mancanti»] GIRO COMPOSTO: se il container si riavvia a meta' catena, CPM_CI_FATTI=passo1,passo2
+   elenca i passi gia' verdi sulla STESSA versione (dal log del giro interrotto, CPM_CI_FATTI_DA=<log>): non si rigiocano, entrano nel registro
+   con «gia_verde» e il giro si segna «composto». Un rosso fra i rifatti vale come rosso: la catena si rifa' da capo. */
+const _fatti = (process.env.CPM_CI_FATTI || '').split(',').map(x => x.trim()).filter(Boolean);
+if (_fatti.length) { giro.composto = true; giro.nota_composto = 'passi gia\' verdi prima del riavvio del container' + (process.env.CPM_CI_FATTI_DA ? ' (' + process.env.CPM_CI_FATTI_DA + ')' : '') + ': ' + _fatti.join(', ');
+  for (const f of _fatti) { if (!passi.includes(f)) { console.error('passo gia\' fatto non in catena: ' + f); process.exit(2); } giro.passi.push({ passo: f, ok: true, s: 0, gia_verde: true }); }
+  const resto = passi.filter(p => !_fatti.includes(p)); passi.length = 0; passi.push(...resto); }
 /* [7.999.159, decisione PO 11/10 «adotta le nuove regole»] (1) PASSI LENTI IN PARALLELO: i guardiani che giocano partite vere
    (decine di minuti l'uno) girano a due a due su processi separati (CPM_CI_PAR=0 per la sequenza pura). (2) UN ROSSO SI RILANCIA DA
    SOLO fino a due volte: se torna verde il passo vale ma resta segnato «instabile» nel registro; resta rosso solo se e' rosso tre
    volte su tre (CPM_CI_NORETRY=1 per spegnere). La catena intera non si rifa' piu' per un guardiano ballerino. */
 import { spawn } from 'node:child_process';
 /* [7.999.160 PO-229] gk-dive-sync e goal-postarc erano ciechi da tempo senza che nessuno lo vedesse, perche' fuori catena. Ora dentro, fra i lenti. */
-const LENTI = new Set(['testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'cross-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical', 'intervista-231', 'tabellino-228', 'interazioni-226']);
+const LENTI = new Set(['conduci-242', 'giornale-244', 'schede-246', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'cross-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical', 'intervista-231', 'tabellino-228', 'interazioni-226', 'schede-234', 'bambini-236', 'difesa-220-scena']);
 const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spawn('npm', ['run', '-s', p], { env }); let out = '';
   ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
   ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });

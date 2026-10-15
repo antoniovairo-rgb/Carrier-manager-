@@ -113,9 +113,54 @@ function Wordmark({size=30,color,elite="#f59e0b",inRiga=false}){
 /* ========================================
    HOME SCREEN — slot salvataggio
 ======================================== */
+/* [PO-238, richiesta PO 14/10 «Nella home Page del gioco, non in carriera aggiungi una sezione crediti per elencare le risorse
+   utilizzate nel gioco»] CREDITI. Ogni voce viene da una fonte nel repo (campo `fonte`, che la schermata mostra): nessun autore,
+   licenza o indirizzo e' scritto a memoria. Dove la fonte non dice autore o licenza, la voce porta `manca` e la schermata scrive
+   «fonte da completare». Elenco delle voci da completare: docs/sviluppo/RAPPORTO-giro15.md. Rosso __CPM_NO_CREDITI238 (la voce sparisce). */
+const CREDITI238=[
+  {sez:"Modelli 3D e animazioni",voci:[
+    {n:"Calciatori in campo — «Realistic Soccer Player v2 rigged»",d:"Corpi e 33 animazioni dei giocatori in partita. Acquistato dal PO su CGTrader.",lic:"CGTrader — Royalty Free License (www.cgtrader.com/pages/terms-and-conditions)",manca:"autore/venditore, pagina del prodotto e conferma del listino Royalty Free",fonte:"tests/character-lab/CLIP_REGISTRY.md"},
+    {n:"Animazioni Mixamo (Adobe)",d:"Clip di movimento e gesti tecnici (assets/cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb, assets/anim-*.glb) e modello CH38.",lic:"Mixamo: royalty free anche per videogiochi (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)",fonte:"tests/character-lab/CLIP_REGISTRY.md · assets/mixamo/README.md"},
+    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (Female_Adult_15, Male_Adult_03, Female_Adult_11).",lic:"MIT — github.com/microsoft/Microsoft-Rocketbox",fonte:"docs/archivio/EXTRA-FIELD-MODELS.md"},
+    {n:"Corpo «Regular Male» (korward-regular-player)",d:"Corpo di ripiego e scene fuori dal campo, varianti slim/stocky e clip regular-anim.",manca:"origine, autore e licenza",fonte:"docs/ANIMATION_AUDIT_2026-09-19.md"}]},
+  {sez:"Librerie software",voci:[
+    {n:"React e ReactDOM 18.2.0",d:"Interfaccia del gioco.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/react/package.json"},
+    {n:"Three.js r128 (con GLTFLoader e SkeletonUtils)",d:"Grafica 3D della partita e delle scene. Autore indicato: mrdoob.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/three/package.json"},
+    {n:"Babel standalone 7.23.6",d:"Traduzione del codice nel browser (versione sorgente; la build per lo store e' precompilata). The Babel Team.",lic:"MIT",fonte:"src/00-head.html · tests/visual/node_modules/@babel/standalone/package.json"},
+    {n:"DiceBear",d:"Generatore degli avatar illustrati. Copyright (c) 2024 Florian Körner.",lic:"MIT — github.com/dicebear/dicebear",manca:"versione del pacchetto",fonte:"assets/dicebear-avatars.min.js"}]},
+  {sez:"Illustrazioni e immagini",voci:[
+    {n:"Avataaars — Pablo Stanley",d:"Stile dell'avatar dell'eroe (via DiceBear). avataaars.com",lic:"Free for personal and commercial use",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Avatar Illustration System — Micah Lanier",d:"Stile degli avatar di staff e personaggi (via DiceBear). figma.com/community/file/829741575478342595",lic:"CC BY 4.0 — creativecommons.org/licenses/by/4.0",fonte:"assets/dicebear-avatars.min.js"},
+    {n:"Ritratti delle figurine",d:"Volti dei personaggi (assets/portraits).",manca:"origine, autore e termini d'uso",fonte:"docs/FIGURINE-VOLTI.md · assets/portraits/ai/manifest.json"},
+    {n:"Icone dell'app e grafiche dello store",d:"Disegnate dal gioco stesso (tools/gen-pwa-icons.mjs, tools/gen-store-graphics.mjs).",lic:"Realizzate per Korward Elite",fonte:"tools/gen-pwa-icons.mjs · tools/gen-store-graphics.mjs"}]},
+  {sez:"Caratteri",voci:[
+    {n:"Great Vibes",d:"La scritta «Elite» del marchio (incorporato nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"},
+    {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
+  {sez:"Suoni",voci:[
+    {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
+    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
+    {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
+];
+const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
+function Crediti238({onClose}){
+  return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
+    footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
+    <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite. Le voci segnate «fonte da completare» sono in verifica.</div>
+    {CREDITI238.map(g=>(<div key={g.sez} data-cpm="crediti238-sez" style={{marginBottom:SP.lg}}>
+      <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1,textTransform:"uppercase",color:TH.brandText,marginBottom:SP.xs}}>{g.sez}</div>
+      {g.voci.map(v=>(<div key={v.n} data-cpm="crediti238-voce" style={{padding:`${SP.sm}px 0`,borderTop:`1px solid ${TH.divider}`}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{v.n}</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2,overflowWrap:"anywhere"}}>{v.d}</div>
+        {v.lic&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic}</div>}
+        {v.manca&&<div data-cpm="crediti238-manca" style={{fontSize:FS.caption,color:TH.txRed,fontWeight:FW.bold,marginTop:2}}>Fonte da completare: {v.manca}</div>}
+      </div>))}
+    </div>))}
+  </Modal>);
+}
 function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const _dk=window.innerWidth>=640;
   const[confirmDel,setConfirmDel]=useState(null);
+  const[crediti238,setCrediti238]=useState(false);/* [PO-238] */
   const fmtDate=ts=>ts?new Date(ts).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
   useEffect(()=>{
     const onKey=e=>{
@@ -245,6 +290,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
+      {crediti238On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
+        <button data-cpm="crediti238-voce-home" onClick={()=>setCrediti238(true)} className="cpm-press cpm-focus" style={{background:"none",border:"none",cursor:"pointer",color:TH.muted,fontSize:FS.small,fontWeight:FW.bold,textDecoration:"underline",padding:SP.sm}}>Crediti</button>
+      </div>}
+      {crediti238&&<Crediti238 onClose={()=>setCrediti238(false)}/>}
     </div>
   );
 }
@@ -655,7 +704,72 @@ const NAT_CLUB_DATA={
   "Olanda":{id:"nl-nt",a:"NED",p:78,c:"#FF4F00",c2:"#fff",nat:"🇳🇱"},
   "Belgio":{id:"be-nt",a:"BEL",p:79,c:"#1a1a1a",c2:"#FDDA24",nat:"🇧🇪"},
 };
-function NationalCallupScreen({data,onPlay}){
+/* [PO-235, 14/10 «Schermata fuori standard» — rosso __CPM_NO_235] LA CONVOCAZIONE IN NAZIONALE NEL KIT DEL GIOCO. Era l'unica
+   schermata pre-partita fatta a mano: fondo a gradiente scuro dal colore della nazionale (il titolo bianco ci stava sopra, il
+   sottotitolo a 2,95:1), card bianche sul nero, bottone VERDE con l'emoji dello stadio. Ora e' come il pre-partita del kit
+   (src/18, «partita23»): occhiello maiuscolo, Card del kit (TH.card, RAD.md), token TH/FS/FW/SP, una sola azione piena —
+   il primario del kit, Btn size="lg". La maglia resta, piccola, dentro la card d'apertura: e' l'identita' della chiamata.
+   Guardiano convocazione-235 (360/412 px, prima convocazione e normale), rosso __CPM_NO_235 = la schermata di prima. */
+function NationalCallupScreen(props){
+  if(typeof window!=='undefined'&&window.__CPM_NO_235)return _NationalCallupScreenOld235(props);
+  const{data,onPlay}=props;const{nation,isFirst,newCaps,opp:dataOpp}=data;
+  const nd=NAT_DATA[nation]||{flag:"🏳",col:TH.primary,col2:"#fff",opp:"Avversario"};
+  const opp=dataOpp||nd.opp||"Avversario";
+  const oppNd=NAT_DATA[opp]||{flag:"🏳"};
+  const[shown,setShown]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
+  const occhiello={fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8};
+  return(
+    <div data-cpm="convocazione235" style={{width:"100%",maxWidth:480,margin:"0 auto",padding:`${SP.lg}px ${SP.lg}px ${SP.xxl}px`,boxSizing:"border-box",
+      display:"flex",flexDirection:"column",gap:SP.md,opacity:shown?1:0,transition:"opacity 0.45s"}}>
+      {isFirst&&<Card tone="warn" shadow={false} density="tight">
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.txAmber}}>Traguardo di carriera · prima convocazione</div>
+      </Card>}
+      <Card>
+        <div style={occhiello}>Convocazione nazionale</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{fontSize:FS.display,lineHeight:1,flexShrink:0}}>{nd.flag}</div>
+          <div style={{minWidth:0,flex:1}}>
+            <div style={{fontSize:FS.title,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>Nazionale {nation}</div>
+            <div style={{fontSize:FS.small,color:TH.muted}}>Presenza n. {newCaps} · Amichevole internazionale</div>
+          </div>
+          <svg width="46" height="52" viewBox="0 0 92 104" aria-hidden style={{flexShrink:0}}>
+            <path d="M23 13 Q11 16 7 26 L2 47 L21 49 L21 92 L71 92 L71 49 L90 47 L85 26 Q81 16 69 13 Q59 7 46 6 Q33 7 23 13Z" fill={nd.col} stroke={TH.cardBorder} strokeWidth="2"/>
+            <path d="M31 13 Q38 22 46 22 Q54 22 61 13" fill="none" stroke={nd.col2} strokeWidth="2"/>
+            <text x="46" y="65" textAnchor="middle" fill={nd.col2} fontSize="24" fontWeight="900" fontFamily="inherit">10</text>
+          </svg>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Prossima partita</div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md,marginTop:SP.sm}}>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:SP.sm}}>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{nd.flag}</span>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nation}</span>
+          </div>
+          <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.muted}}>vs</div>
+          <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",justifyContent:"flex-end",gap:SP.sm}}>
+            <span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp}</span>
+            <span style={{fontSize:FS.h,lineHeight:1}}>{oppNd.flag}</span>
+          </div>
+        </div>
+      </Card>
+      <Card>
+        <div style={occhiello}>Bonus dopo la partita</div>
+        <div style={{display:"flex",gap:SP.sm,marginTop:SP.sm}}>
+          {[{l:"Popolarità",v:"+8",c:TH.txGreen},{l:"Valore",v:"+€0.15M",c:TH.txAmber},{l:"Morale",v:"+12",c:TH.brandText}].map(b=>(
+            <div key={b.l} style={{flex:1,minWidth:0,background:TH.surface2,borderRadius:RAD.sm,padding:`${SP.sm}px ${SP.xs}px`,textAlign:"center"}}>
+              <div style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{b.l}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Btn onClick={onPlay} v="primary" size="lg" fw>Gioca la partita</Btn>
+    </div>
+  );
+}
+function _NationalCallupScreenOld235({data,onPlay}){
   const{nation,isFirst,newCaps,opp:dataOpp}=data;
   const nd=NAT_DATA[nation]||{flag:"🏳",col:"#1e40af",col2:"#fff",opp:"Avversario"};
   const{flag,col,col2}=nd;
@@ -1848,6 +1962,11 @@ function migratePlayer(player){
         changed=true;
       }
     }
+    /* [giro 13 MIG194, decisione PO 14/10] la classifica sbilanciata dalle partite dal vivo col NOME dell'avversario (CL194) si rimette
+       in pari dalle giornate giocate (src/09 riparaClassifica194). Testimone window.__CPM_MIG194, rosso __CPM_NO_MIG194. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_MIG194)){const _r194=riparaClassifica194(newP);
+      if(_r194){newP={...newP,standings:_r194.standings,log:[`📋 Classifica riallineata: i risultati delle tue partite di campionato giocate dal vivo non erano arrivati agli avversari (gol fatti ${_r194.prima.gf}, subiti ${_r194.prima.ga}). Rifatta dalle ${_r194.giornate} giornate giocate: i tuoi punti non cambiano, le partite fra le altre squadre sono state risimulate.`,...(newP.log||[])].slice(0,60)};changed=true;
+        try{if(typeof window!=='undefined')window.__CPM_MIG194={prima:_r194.prima,dopo:_r194.dopo,giornate:_r194.giornate,dalVivo:_r194.dalVivo};}catch(_e){}}}
     // [6.28.0 collaudo PO «duplicazione partita, l'ho giocata poco prima»] REPAIR calendari ESISTENTI (generati
     //   prima del fix 6.27.0): riordina la parte NON giocata per non affrontare lo STESSO avversario in due
     //   giornate consecutive (andata+ritorno adiacenti). SOLO riordino degli slot week futuri: preserva le gare

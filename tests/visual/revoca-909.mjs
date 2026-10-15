@@ -12,7 +12,7 @@ for (const braccio of ['verde', 'rosso']) {
   await installCdnRoutes(ctx);
   const page = await ctx.newPage();
   let errori = 0; page.on('pageerror', () => { errori++; });
-  await page.addInitScript((rosso) => { window.__CPM_GLB = true; if (rosso) window.__CPM_NO909 = true; }, braccio === 'rosso');
+  await page.addInitScript((rosso) => { window.__CPM_GLB = true; window.__CPM_SHOW_FPS = 1; /* [7.999.168 PO-249] il riquadrino fps e' nascosto al giocatore: qui serve allo strumento */ if (rosso) window.__CPM_NO909 = true; }, braccio === 'rosso');
   await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' });
   await page.evaluate(() => { if (window.__CPM_LOAD_ALL) window.__CPM_LOAD_ALL(); }).catch(() => {});
   await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 300 }); }).catch(() => {});
