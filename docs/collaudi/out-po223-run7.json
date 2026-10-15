@@ -1,0 +1,33 @@
+{
+  "con flag investmentPending (scelta «Ci punto una fetta» -20.000)": {
+    "fineStagione": true,
+    "stagione_fine": 2,
+    "banca_fine_stagione": 101600,
+    "flag_fine_stagione": true,
+    "log_fine": [],
+    "banca_dopo_rollover": 156600,
+    "flag_dopo_rollover": false,
+    "log_dopo": [],
+    "stagione_dopo": 3,
+    "avvisi_investimento": [
+      "Nuova stagione iniziata!",
+      "L'investimento immobiliare rende: +55.000€ sul conto!"
+    ],
+    "errori": []
+  },
+  "controllo senza flag (stesso saldo)": {
+    "fineStagione": true,
+    "stagione_fine": 2,
+    "banca_fine_stagione": 101600,
+    "flag_fine_stagione": false,
+    "log_fine": [],
+    "banca_dopo_rollover": 101600,
+    "flag_dopo_rollover": false,
+    "log_dopo": [],
+    "stagione_dopo": 3,
+    "avvisi_investimento": [
+      "Nuova stagione iniziata!"
+    ],
+    "errori": []
+  }
+}
