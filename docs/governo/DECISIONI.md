@@ -407,3 +407,9 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 ## 15/10 notte — PO-228 e ripartenza del giro 27
 1. **PO-228 / PO-207**: «**Restringi, poi ritara**» — lo schieramento dei ventidue con 11 passi di possesso alla ripresa dal centro resta solo dopo i gol da piazzato o nati in scena (come dichiarato dal giro 27); agli altri gol si riparte dal centro senza quel possesso lungo. Poi si ritarano i passaggi a ~814 (patch pronta del giro 32, da tarare di nuovo sulla misura dopo la restrizione). Tiri, xG e cross devono tornare verso il profilo della 169.
 2. **7.999.170**: «**Sì, pubblica**» appena la catena è verde; la restrizione entra nella 7.999.171.
+
+## 15/10 notte — Briefing del lotto 1 (questionario)
+1. **Filone «Highlight dell'eroe»**, prossimo giro (base 7.999.171, con i giri 22 e 31): «**Prima apertura vuota**» — prima PO-261 (primo highlight su prato vuoto, 5 partite su 10), poi PO-258 (portiere sulla punizione).
+2. **PO-262** (determinismo, match-sequence rosso già sulla 169): «**Giro di misura ora**» — sessione Opus che trova il generatore non seedato e la release che l'ha introdotto, poi corregge con rosso e guardiano.
+3. **Voci già sul sito** (PO-123, 209, 230, 233, 235, 242, 243, 244): nessuna ancora vista funzionare dal PO, restano «da verificare».
+4. **Esiti «bugiardi»** (PO-218, 240, 250): «**Dentro il filone highlight**», dopo la prima apertura.
