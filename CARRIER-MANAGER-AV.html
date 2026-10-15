@@ -16467,7 +16467,10 @@ function ThreeMatchView(props){
          shader (lezione 7.769), e il pallone «salterebbe» a ogni rientro. Quindi resta montata e CALDA, ma
          il giro si ferma qui — altrimenti continuerebbe a disegnare ventitre corpi che nessuno guarda, che
          e' il costo che questa versione vuole togliere. Il rientro nell'highlight e' istantaneo. */
-      try{if(typeof window!=='undefined'&&window.__CPM_SOSP917===true)return;}catch(_e917){}
+      try{if(typeof window!=='undefined'&&window.__CPM_SOSP917===true){sr.current._sosp261=1;return;}}catch(_e917){}
+      /* [giro 40 PO-261 «Prima apertura vuota», rosso __CPM_NO_APERTURA261] la sospensione si ANNOTA: il fotogramma che la camera ha in
+         memoria non e' mai stato a schermo (sopra c'era il campo 2D), quindi all'apertura della scena lo stacco non ha niente da
+         nascondere — vedi il blocco dello snap (cerca _sosp261). */
       /* ⚠️ [7.696.0 — STRUMENTO PROVATO E REVOCATO CON LA MISURA CONTRARIA, PRIMA DI SPEDIRLO]
          Avevo messo qui un flag per far avanzare il tempo di scena di 1/60 per fotogramma, convinto che
          il laboratorio non potesse vedere il codice 007 perche' gira a 7 fps (era la mia nota del 7.598).
@@ -22793,7 +22796,20 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            secondo timbro la richiesta non si vedrebbe nel fotogramma in cui e' partita. */
         const _mask=(_nowMs471-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0);
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _c4=(window.__CPM_CAM471=window.__CPM_CAM471||[]);if(_c4.length<120&&!(sr.current._snapT471>_nowMs471))_c4.push({d:+_dSnap.toFixed(1),mask:!!_mask,src:(sr.current._cutSnap?(sr.current._sceneCut?"both":"esito"):"scena"),ph:P.matchPhase||null,kind:P.hlOutcomeKind||null,held:!!(!_no471&&!_mask&&_dSnap>6)});}catch(_e){}}
-        if(sr.current._snapT471>_nowMs471){
+        /* [giro 40 PO-261 «Prima apertura vuota» — collaudo 3D 169: primo highlight su prato vuoto con l'eroe fuori quadro in 5
+           partite su 10] MISURATO (apertura-261, flusso vero, GLB acceso, __CPM_PRESENT=1): al primo fotogramma della PRIMA scena la
+           camera era ancora alla nascita in tribuna (0,26,46). In cronaca il giro 3D e' sospeso sotto il campo 2D (7.917), quindi la
+           camera resta dove l'aveva lasciata il walkout; all'apertura lo snap qui sotto chiedeva lo stacco nero e TRATTENEVA la camera
+           120 ms — e quel fotogramma trattenuto, coi ventidue appena riaccesi, e' proprio quello pesante della prima scena (texture e
+           programmi): headless restava a schermo 2,6-2,9 s. Ma il salto che lo stacco dovrebbe nascondere non e' visibile: l'immagine
+           di partenza non e' mai stata a schermo. Alla ripresa dalla sospensione lo snap e' quindi immediato, senza stacco ne' attesa:
+           il primo fotogramma della scena e' gia' quello giusto. Il testimone 7.471 lo marca `nascosto` (non e' un salto scoperto). */
+        const _nasc261=!!sr.current._sosp261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261);
+        if(_nasc261){
+          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._sosp261=0;
+          try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_AP261=(window.__CPM_AP261||0)+1;const _c4=window.__CPM_CAM471;if(_c4&&_c4.length)_c4[_c4.length-1].nascosto=true;}catch(_e){}}
+        }else if(sr.current._snapT471>_nowMs471){
           /* ⚠️ DUE TRAPPOLE, tutte e due misurate e non indovinate:
              (1) l'attesa va CONSUMATA QUI DENTRO, non in un blocco a valle: la prima stesura armava lo
                  stacco e il fotogramma dopo trovava `_mask` vero — l'aveva appena acceso lei — e cadeva
@@ -24451,6 +24467,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       renderer.render(scene,camera);
+      if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
     };
     loop();
