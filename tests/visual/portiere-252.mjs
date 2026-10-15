@@ -3,7 +3,7 @@
    43 — punizione 4/11, cross 2/3, testa 1/7, volee 1/12). Criterio IDENTICO al banco (funzione analizzaPortiere copiata da
    banco-highlight-248.mjs, che a sua volta e' quello di gk-miss-229): tempo di SCENA, testimone __CPM_GK229, bruciapelo < 0,20 s non
    giudicato. GLB acceso, pagina nuova per scena. Uso: node portiere-252.mjs [--verbose]  (CPM_SOLO=verde|rosso)
-   Verde: nessun portiere «tardi» o «verso opposto» nel braccio verde; rosso __CPM_NO_GK252: almeno 2 difetti.                       */
+   Verde: nessun portiere «tardi» o «verso opposto» nel braccio verde; rosso __CPM_NO_GK252: almeno 1 difetto (intermittente).                       */
 import { startServer, launchBrowser } from './lib/harness.mjs';
 import { pagina252, scena252, kDi } from './lib/scena-252.mjs';
 const S = { GK_TARDI: 0.05, GK_REAZ: 0.20, GK_PORTATA: 4.5 };
@@ -26,7 +26,7 @@ await Promise.race([b.close(), new Promise(r => setTimeout(r, 5000))]); srv.clos
 if (process.env.CPM_SOLO) setTimeout(() => process.exit(0), 100);
 else { const V = ris.verde.filter(x => !x.p.nonGiud), R = ris.rosso.filter(x => !x.p.nonGiud);
   if (V.length < 4) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati'); setTimeout(() => process.exit(2), 100); }
-  else { const ok = V.every(x => !x.ko) && R.filter(x => x.ko).length >= 2;
+  else { const ok = V.every(x => !x.ko) && R.filter(x => x.ko).length >= 1;/* il difetto vecchio e' intermittente: in catena il rosso ha dato 2/8, 2/8, 2/8 e 1/7 — ne basta uno per provare che il guardiano vede */
     console.log(`\nverde: KO ${V.filter(x => x.ko).length}/${V.length} · rosso: KO ${R.filter(x => x.ko).length}/${R.length}`);
     console.log(ok ? '✅ portiere-252 VERDE' : '❌ portiere-252 ROSSO'); setTimeout(() => process.exit(ok ? 0 : 1), 100); } }
 
@@ -69,5 +69,7 @@ function analizzaPortiere(R, act, e) {
   const latoP = Math.sign(piano.z - gz0), latoG = Math.sign(zFin - gz0);
   out.verso = Math.abs(piano.z - gz0) > 0.6 && Math.abs(zFin - gz0) > 0.3 && latoP !== latoG;
   out.parataSenzaGesto = (e.kind === 'saved' || act.kind === 'saved') && !out.gesto;
+  /* [giro 22] posizione del portiere al piano e 0,4 s dopo: separa una reazione sbagliata dal riposizionamento a gesto finito */
+  { const at = ck => { let r = R[R.length - 1]; for (const x of R) if (x.ck >= ck) { r = x; break; } return +(+r.gz).toFixed(2); }; out.gz = [+(+gz0).toFixed(2), at(piano.ck), at(piano.ck + 0.4), +(+zFin).toFixed(2)]; out.pz = +(+piano.z).toFixed(2); }
   return out;
 }

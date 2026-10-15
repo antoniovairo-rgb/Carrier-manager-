@@ -127,9 +127,22 @@ Su gi16 (cross intercettato) il portiere non è giudicabile (bruciapelo < 0,20 s
 **Seconda misura, seconda correzione.** Nella prima corsa della catena `mirata` il guardiano è uscito rosso (verde 1/7 in
 difetto): il riflesso della **parata** partiva all'armo, prima del calcio, e lo scatto di 0,19 s si chiudeva verso una stima
 lineare; la rimira in volo del 7.999.162 (`_blk229`) valeva solo sul tiro sbagliato. Ora il riflesso di parata usa lo stesso
-canale (`src/12-three-match-view.jsx:5481-5486`, stesso interruttore `__CPM_NO_GK252`). Due corse consecutive dopo la correzione:
+canale (`src/12-three-match-view.jsx:5485-5489`, stesso interruttore `__CPM_NO_GK252`). Due corse consecutive dopo la correzione:
 verde **0/8** e **0/7**, rosso **2/8** e **2/8** (gi15, riflesso tardi a 1,27u: strutturale nel rosso). ⚠️ Il banco di §2 è stato
 rigiocato **prima** di questa seconda correzione: i suoi numeri del portiere (4/43) non la includono.
+
+**Terza misura, terza correzione.** Nella seconda corsa `mirata` il verde era pulito (0/8) e il rosso ha mostrato un solo difetto
+(1/7) contro i 2 pretesi: il criterio del braccio rosso è stato riparato (ne basta 1, il difetto vecchio è intermittente: 2/8,
+2/8, 2/8, 1/7, 4/8, 1/8 nelle corse). Una corsa successiva ha poi mostrato **gi13 (punizione) in difetto nel verde** due volte:
+la punizione diretta e il tiro a giro hanno una «pancia» laterale perpendicolare alla corda (7.231, `src/12-three-match-view.jsx:3701-3707`,
+fino a 2,6u · sin(u·π)) che la stima lineare del punto di passaggio ignorava. Ora la stima la include (`:5480-5486`). Nel rosso il
+tracciato lo mostra bene: portiere da −0,91 a −0,05 col pallone che passa a −1,76.
+Dopo la correzione, otto corse del guardiano: verde 0/7 · **1/8** · 0/8 · 0/8 · **1/8** · 0/7 · 0/8 · 0/7. I due difetti residui
+sono entrambi **gi1** (riflesso, pallone fermato 1,7-1,8u prima del piano): un tracciato senza difetto della stessa scena mostra il
+portiere che va dalla parte giusta (−0,60 → −1,59, pallone a −1,6) e poi si riposiziona a gesto finito (→ −1,18); il criterio del
+banco giudica il lato a fine finestra di 4 s, quindi un riposizionamento oltre il punto di partenza conta come «lato opposto».
+**Non posso confermarlo** sul caso in difetto (non catturato col dettaglio): resta aperto. Un quarto tentativo (mirare la fine
+dell'arco quando muore davanti al portiere) non ha cambiato niente ed è stato tolto.
 
 ### 6 · Pallone che «torna indietro» nel build-up aereo — `__CPM_NO_AER252`, `npm run aereo-252`
 

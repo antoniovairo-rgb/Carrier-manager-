@@ -18444,7 +18444,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                angolato le due z differiscono di oltre un'unita' e decidono lati opposti. Ora vale il piano anche qui; il riflesso solo col
                pallone entro 1,2u (la regola del 7.999.162): a 1,3-1,5u il riflesso, che trasla poco per costruzione, arrivava tardi. */
             const _gk252=!(typeof window!=='undefined'&&window.__CPM_NO_GK252);
-            const _zq252=_gk252?_zp229:ballArcTgtZ;
+            let _zq252=_gk252?_zp229:ballArcTgtZ;
+            /* [PO-252/5, terza misura] la PANCIA del tiro a giro / punizione diretta (7.231, r. «IL GIRO GIRA»: perpendicolare alla corda,
+               min(2,6 ; corda·0,14)·sin(u·π)) sposta il punto di passaggio di 0,4-0,8u al piano del portiere: la stima lineare la ignorava
+               e su gi13 (punizione) il tuffo partiva dal lato opposto col pallone a 0,8-1,6u. Qui la stessa pancia, a u del piano. */
+            if(_gk252&&(t==="shot"||t==="freekick")&&(P.hlVariant==="shot_curled"||P.hlVariant==="freekick_direct")&&ballArcTgtX>awayGkMesh.position.x&&ball.position.x<awayGkMesh.position.x){
+              const _cdx=ballArcTgtX-ball.position.x,_cdz=ballArcTgtZ-ball.position.z,_cl=Math.hypot(_cdx,_cdz)||1,_pz=_cdx/_cl,_sg=(((ball.position.z+ballArcTgtZ)*0.5)*_pz>=0)?1:-1;
+              const _ug=clamp((awayGkMesh.position.x-ball.position.x)/_cdx,0,1);_zq252+=_pz*Math.min(2.6,_cl*0.14)*_sg*Math.sin(_ug*Math.PI);}
             const _dz203=Math.abs(_zq252-awayGkMesh.position.z);
             const _closeShot203=(P.playerX||50)>=87;
             oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
