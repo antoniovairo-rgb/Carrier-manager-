@@ -384,3 +384,8 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 - PO-255 (15/10): badge d'avvio «PROD · KE x.y.z» → «Solo versione, senza PROD»: un piccolo «v x.y.z» discreto che svanisce; nessuna parola PROD/TEST al giocatore.
 - Questionario 15/10 (seconda tornata): PO-123/242/243/244 non ancora provati dal PO; PO-238 unita a PO-254 (DOPPIONE); PO-228 «Prima un collaudo statistiche»; PO-243/244 «collaudo mirato» (sessione Haiku, ramo collaudo/mirato-169, insieme alle statistiche).
 - PO-259 (15/10): schede del mister in partita 2D «noiose» → decisione «Poche ma decisive»: max 1-2 a partita, solo nei momenti che contano, rischio e premio dichiarati, esito raccontato dopo ~5', effetto vero sul motore e sull'occasione successiva dell'eroe.
+
+## 15/10 — Briefing del lotto 1 (questionario)
+- Chiuse dal PO come FATTO: PO-236 (bambini), PO-237 (prima partita), PO-232 (highlight coi corpi caricati); PO-048 spostata nello storico (non riprodotta).
+- Non ancora provate: PO-233, PO-235, PO-230, PO-209 (restano da verificare). Corretto il backlog: PO-235/236/237 erano già sulla 7.999.169.
+- Prossimo filone dopo i giri in corso: «Highlight dell'eroe» (PO-248/229, dal banco dei 10 difetti di PO-252).
