@@ -397,3 +397,9 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 - Zona G: PO-222 e PO-223 «Solo misura, niente correzioni»; la zona resta ferma finché il PO non decide.
 - L3: «Anticipa solo il backup» — copia di riserva automatica degli slot e avviso se il salvataggio fallisce; il resto di L3 dopo L1.
 - In parallelo a L1: PO-217 (analisi pre-partita) e PO-066 (riquadri della home), in un giro grafico.
+
+## 15/10 sera — questionario dopo le misure (difesa-220, statistiche, zona G)
+1. **PO-220**: «**Correggi tutto in un giro**» — un solo giro Opus: l'eroe si piazza dove dice il motore, arriva davvero sull'uomo, tiene palla dopo il recupero; guardiano sulle stesse metriche del collaudo (scarto motore/3D, ritorno indietro).
+2. **PO-228**: «**Ritara i passaggi a ~814**» — solo i passaggi verso il bersaglio misurato, senza toccare gol, tiri, xG.
+3. **Zona G**: «**Sì, solo questi due**» — eccezione concessa solo per PO-222 (presenza al squalificato su «Simula») e PO-223 (resa dell'investimento legata a puntata e scelta; «esito incerto» davvero incerto), con interruttore rosso e guardiano carriera. Il resto della zona resta fermo.
+4. **7.999.170**: «**Subito senza il 22**» — si costruisce ora coi rami pronti (decisioni-245, procuratore-253, crediti-254, badge-toast-255, taccuino-169, schede-259, backup-167, grafica-217-066); il giro 22 (highlight-252) va nella 7.999.171.
