@@ -380,3 +380,4 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 - Chiuse dal PO come FATTO: PO-249 (niente fps), PO-247 (rilievi minori), PO-241 (attesa dei corpi).
 - Le altre voci della 169 (PO-207, PO-220, PO-123, PO-242, PO-243, PO-244, PO-238) restano «DA VERIFICARE DAL PO» (risposta: «Restano da verificare»); i collaudi in corso sulla 169 aggiungono le loro misure.
 - PO-220 riaperta dal PO (15/10): chiusure difensive non credibili — l'eroe non arriva sull'uomo e l'esito non torna col 3D. Decisione «Prima un collaudo mirato»: sessione di sola misura sulle scene difensive, poi la correzione.
+- PO-254 (15/10): Crediti — accesso con «Pulsante del kit in home» (secondario standard a tutta larghezza sotto «Nuova carriera»); il contenuto va allineato a docs/governo/CREDITI-fonti.md (fonti individuate dal PO e dalla sessione principale), niente più «fonte da completare» dove la fonte c'è.
