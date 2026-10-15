@@ -365,3 +365,9 @@ PO: «Ma le catene non possono essere lanciate a parte da una sessione Haiku?».
 ## 15/10 notte — la 7.999.168 confluisce nella 7.999.169
 
 Fatto misurato: sul ramo lavoro/168 il numero di versione non era mai stato portato a 7.999.168 (il comando che lo cambiava era stato bloccato insieme alla build dalla guardia, durante la catena della 167); il gioco avrebbe detto «7.999.167». In più la catena mirata della 168 sulla sessione Haiku era ferma da oltre un'ora sul vecchio `nomi-219` (instabile, riparato dal giro 18). Applicando le decisioni PO del 14/10 («168 con catena mirata» per togliere la scritta fps e «169 appena pronta»): la 168 non si pubblica da sola; la correzione PO-249 (fps) entra nella **7.999.169** insieme ai giri 16-20. La 169 non ha bisogno di deroghe (giro 18: ripartenza-207 riparato). Catena `notte` (rilascio delle 00) sulla sessione Haiku session_014h49RnLh3mUDDFAQXDWmFh; pubblicazione appena verde.
+
+## 15/10 notte — questionario (rilievi del giro 19)
+
+1. **PO-245 ingresso in campo**: «**Camminata vera, ingresso più lungo**» — passo da camminata (~2 u/s) e ingresso allungato quanto serve; resta lo stesso tunnel per le due squadre.
+2. **Coppa Nazionale e prestito**: «**Resta in coppa**» — al trasferimento il turno di coppa si sposta alla prima settimana utile anche con doppio impegno; l'eroe non esce dalla coppa per il prestito. **Eccezione zona G** concessa dal PO solo per questo comportamento, con interruttore rosso e guardiano carriera.
+3. **PO-247 avviso premi nell'intervista**: «**Dopo l'intervista**» — l'avviso compare solo a intervista chiusa.
