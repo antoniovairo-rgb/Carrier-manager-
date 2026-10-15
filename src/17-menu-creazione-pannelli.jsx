@@ -141,8 +141,49 @@ const CREDITI238=[
     {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
     {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
 ];
+/* [PO-254, richiesta PO 15/10 «Crediti, pulsante/link troppo minimale ed il contenuto non e' stato aggiornato (tutte le fonti
+   sono state individuate)»] Il contenuto riprende SOLO docs/governo/CREDITI-fonti.md (fonte verificata, una voce per riga della
+   tabella; React/Three.js/Babel sono una riga sola nel documento). Il nome del prodotto CGTrader e' quello della foto dell'ordine
+   (docs/governo/foto/po238-ordine-cgtrader.jpg). `nc` = campo che il documento non puo' confermare: si scrive «Non posso
+   confermarlo» in grigio. Dove il documento non indica una licenza («—»), la riga Licenza dice lo stesso. Le risorse del gioco
+   che il documento non elenca sono nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
+   il contenuto PO-238 e il link sottile). */
+const CREDITI254=[
+  {sez:"Modelli 3D e animazioni",voci:[
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:"Ordine CGTrader #17876008 del 20/09/2026.",aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)",nc:["lic"]}]},
+  {sez:"Illustrazioni e immagini",voci:[
+    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI",nc:["lic"]},
+    {n:"DiceBear «Avataaars»",aut:"Pablo Stanley",d:"dicebear.com: «Free for personal and commercial use».",nc:["lic"]},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"}]},
+  {sez:"Caratteri",voci:[
+    {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
+    {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
+  {sez:"Suoni",voci:[
+    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
+    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]},
+  {sez:"Librerie software",voci:[
+    {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
+    {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"}]}
+];
+const crediti254On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI254);
 const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
 function Crediti238({onClose}){
+  const _n254=crediti254On();
+  const _nc=<span data-cpm="crediti254-nonconf" style={{color:TH.muted}}>Non posso confermarlo</span>;
+  if(_n254)return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
+    footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
+    <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite.</div>
+    {CREDITI254.map(g=>(<div key={g.sez} data-cpm="crediti238-sez" style={{marginBottom:SP.lg}}>
+      <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1,textTransform:"uppercase",color:TH.brandText,marginBottom:SP.xs}}>{g.sez}</div>
+      {g.voci.map(v=>(<div key={v.n} data-cpm="crediti238-voce" style={{padding:`${SP.sm}px 0`,borderTop:`1px solid ${TH.divider}`}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{v.n}</div>
+        {v.d&&<div data-cpm="crediti254-desc" style={{fontSize:FS.caption,color:TH.muted,marginTop:2,overflowWrap:"anywhere"}}>{v.d}</div>}
+        {(v.aut||(v.nc&&v.nc.includes("aut")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Autore: {v.aut||_nc}</div>}
+        {(v.lic||(v.nc&&v.nc.includes("lic")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic||_nc}</div>}
+      </div>))}
+    </div>))}
+  </Modal>);
   return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
     footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
     <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite. Le voci segnate «fonte da completare» sono in verifica.</div>
@@ -290,7 +331,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
-      {crediti238On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
+      {crediti238On()&&crediti254On()&&<div style={{marginTop:SP.sm}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}
+        <Btn data-cpm="crediti254-pulsante" onClick={()=>setCrediti238(true)} v="secondary" fw icon={<span data-cpm="crediti254-icona" aria-hidden="true">ℹ️</span>}>Crediti</Btn>
+      </div>}
+      {crediti238On()&&!crediti254On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}
         <button data-cpm="crediti238-voce-home" onClick={()=>setCrediti238(true)} className="cpm-press cpm-focus" style={{background:"none",border:"none",cursor:"pointer",color:TH.muted,fontSize:FS.small,fontWeight:FW.bold,textDecoration:"underline",padding:SP.sm}}>Crediti</button>
       </div>}
       {crediti238&&<Crediti238 onClose={()=>setCrediti238(false)}/>}
