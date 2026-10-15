@@ -391,3 +391,9 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 - Prossimo filone dopo i giri in corso: «Highlight dell'eroe» (PO-248/229, dal banco dei 10 difetti di PO-252).
 - Crediti (15/10, giro 25): rimettere Rocketbox (MIT), animazioni Mixamo e CH38, GLTFLoader/SkeletonUtils con la loro fonte già nel repo («Rimettile con la loro fonte»); per Regular Male e ritratti OpenAI nessuna riga licenza («Senza riga licenza»).
 - Nota onesta su PO-237 (chiusa dal PO sul telefono): il collaudo 3D headless della 169 misura ancora la prima partita più scattosa della seconda (p50 133 contro 83 ms). L'headless non è il telefono: vale il verdetto del PO, la misura resta agli atti.
+
+## 15/10 — Briefing degli altri lotti (questionario)
+- L6: la fase 1 (diagnosi su 30 carriere × 10 stagioni), già di Codex, passa a una sessione Haiku di sola misura, subito, insieme al collaudo di PO-190 (goleade dell'eroe).
+- Zona G: PO-222 e PO-223 «Solo misura, niente correzioni»; la zona resta ferma finché il PO non decide.
+- L3: «Anticipa solo il backup» — copia di riserva automatica degli slot e avviso se il salvataggio fallisce; il resto di L3 dopo L1.
+- In parallelo a L1: PO-217 (analisi pre-partita) e PO-066 (riquadri della home), in un giro grafico.
