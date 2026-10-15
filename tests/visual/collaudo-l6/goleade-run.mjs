@@ -25,32 +25,26 @@ await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
 await sleep(1000);
 const version = await page.evaluate(() => GAME_VERSION);
 const start = await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot(); return { season: p.season, week: p.week, ovr: p.ovr, club: p.club && p.club.n, lg: p.club && p.club.lg, matches0: (p.matchHistory || []).length, goals0: p.goals, matches: p.matches, archetype: p.archetype, nationalCaps: p.nationalCaps }; });
-const target = start.matches0 + N_MATCHES;
-let iter = 0, endReason = 'ok';
-let mhNow = start.matches0;
-while (mhNow < target && iter++ < 400) {
-  const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); C.dismiss(); const p = C.snapshot(); return { res, n: (p.matchHistory || []).length }; });
+const perMatch = [];
+let iter = 0, endReason = 'ok', seasonsCrossed = 0, lastMatches = start.matches;
+// Conteggio dal contatore player.matches (matchHistory puo' non crescere: e' limitato in lunghezza).
+while (perMatch.length < N_MATCHES && iter++ < 600) {
+  const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); C.dismiss(); const p = C.snapshot(); const mh = p.matchHistory || []; return { res, matches: p.matches || 0, last: mh[mh.length - 1] || null, season: p.season, week: p.week, cal: (p.calendar || []).filter(c => c.week === (mh[mh.length - 1] || {}).week).map(c => ({ h: c.isHome ?? null })) }; });
   if (String(r.res).startsWith('error:')) { endReason = r.res; break; }
-  if (r.res === 'seasonEnd') { endReason = 'seasonEnd prima delle N partite'; break; }
-  if (String(r.res).startsWith('blocked:')) await page.evaluate(() => window.__CPM_CAREER.clearTournaments());
-  mhNow = r.n;
+  if (r.res === 'seasonEnd') {
+    const ok = await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
+    if (ok !== true) { endReason = 'startNewSeason:' + ok; break; }
+    await page.evaluate(() => window.__CPM_CAREER.dismiss());
+    seasonsCrossed++; await sleep(300); continue;
+  }
+  if (String(r.res).startsWith('blocked:')) { await page.evaluate(() => window.__CPM_CAREER.clearTournaments()); continue; }
+  if (r.matches > lastMatches && r.last) {
+    perMatch.push({ season: r.season, week: r.last.week, opp: r.last.opponent, homeScore: r.last.homeScore, awayScore: r.last.awayScore, teamGoals: r.last.homeScore, oppGoals: r.last.awayScore, heroGoals: r.last.goals, heroAssists: r.last.assists, rating: r.last.rating, won: !!r.last.won, drew: !!r.last.drew, simulated: !!r.last.simulated, euro: !!r.last.euro, dMatches: r.matches - lastMatches });
+    lastMatches = r.matches;
+  }
   await sleep(40);
 }
-const data = await page.evaluate(() => {
-  const p = window.__CPM_CAREER.snapshot();
-  const cal = p.calendar || [];
-  return { mh: (p.matchHistory || []).slice(start_idx()).map(m => m), cal: cal.map(c => ({ w: c.week, h: c.isHome ?? null, opp: c.opponentName ?? null, pl: !!c.played, res: c.result ?? null })), goalsNow: p.goals, matchesNow: p.matches, ovrNow: p.ovr, standings: (p.standings || []).length };
-  function start_idx() { return 0; }
-});
-// raccoglie solo le partite NUOVE (dopo lo stato iniziale)
-const newMatches = data.mh.slice(start.matches0);
-const perMatch = newMatches.map(m => {
-  const c = data.cal.find(x => x.w === m.week) || {};
-  const home = c.h;
-  const team = home === true ? m.homeScore : home === false ? m.awayScore : null;
-  const opp = home === true ? m.awayScore : home === false ? m.homeScore : null;
-  return { season: m.season, week: m.week, opp: m.opponent, home, homeScore: m.homeScore, awayScore: m.awayScore, teamGoals: team, oppGoals: opp, heroGoals: m.goals, heroAssists: m.assists, rating: m.rating, won: !!m.won, drew: !!m.drew, simulated: !!m.simulated, minutes: m.minutesPlayed ?? null };
-});
+const data = { cal: [] };
 const N = perMatch.length;
 const sum = f => perMatch.reduce((a, x) => a + (f(x) || 0), 0);
 const teamKnown = perMatch.filter(x => x.teamGoals != null);
@@ -67,7 +61,7 @@ const summary = {
   tiriXgTiri: 'NON MISURATO sul percorso sim (nessun dato di tiro in simulateMatch)',
   incoerenzaWon: perMatch.filter(x => x.teamGoals != null && (x.won !== (x.teamGoals > x.oppGoals))).length,
 };
-const out = { collaudo: 'L6 · PO-190 goleade', version, fixture: 'tests/visual/fixtures/save-190-s12-ovr93.json', start, endReason, iter, pageerrors: errors, summary, perMatch, calendarNow: data.cal.length };
+const out = { collaudo: 'L6 · PO-190 goleade', version, fixture: 'tests/visual/fixtures/save-190-s12-ovr93.json', start, endReason, iter, seasonsCrossed, pageerrors: errors, summary, perMatch, calendarNow: data.cal.length };
 fs.writeFileSync(path.join(OUT, 'goleade-po190-save190-sim.json'), JSON.stringify(out, null, 1));
 console.log(JSON.stringify(summary));
 console.log(`partite ${N} · fine: ${endReason} · pageerrors ${errors.length}`);
