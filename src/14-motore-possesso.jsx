@@ -144,7 +144,7 @@ const INT259={
       {et:"Una ripartenza e la chiudo io",premio:"la prossima occasione è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.2,gap:-8}}]},
     eroe_stanco:{txt:c=>"📢 "+c.eroe+" ha il fiato corto al "+c.mn+"' e la partita è ancora aperta: il mister lo guarda.",sc:[
       {et:"Rifiato col pallone",premio:"la squadra tiene palla e loro tirano meno",rischio:"si tira meno anche noi",tipo:"palla",eff:{att:-0.2,diretto:-0.6,gap:3,dur:20}},
-      {et:"Stringo i denti e pressing",premio:"più tiri, palloni recuperati alti",rischio:"se il pressing salta, i loro contropiedi fanno male",tipo:"spinta",eff:{att:0.35,press:0.5,linea:0.35,gap:-2,dur:20}},
+      {et:"Stringo i denti e pressing",premio:(typeof window!=='undefined'&&window&&window.__CPM_NO_PREMIO44)?"più tiri, palloni recuperati alti":"più tiri verso la porta",/* [giro 44 PO-226 — rosso __CPM_NO_PREMIO44] banco schede-259 (192 partite, stessi semi): col profilo «spinta» i palloni recuperati CALANO (23,9 contro 27,4 ogni 100'), quindi il premio «palloni recuperati» era una promessa falsa */rischio:"se il pressing salta, i loro contropiedi fanno male",tipo:"spinta",eff:{att:0.35,press:0.5,linea:0.35,gap:-2,dur:20}},
       {et:"Mi tengo per l'ultima palla buona",premio:"la prossima occasione è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8,dur:20}}]},
     panca:{txt:c=>"🪑 "+(c.diff<0?"Sotto di un gol":"Ancora pari")+" al "+c.mn+"': il mister si gira verso la panchina e incrocia lo sguardo di "+c.eroe+".",sc:[
       {et:"Studio il loro terzino",premio:"quando entri, la prima occasione arriva prima",rischio:"entri quando lo decide il mister",tipo:"eroe",eff:{ingresso:0,gap:-5}},

@@ -103,6 +103,14 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
   const tutteCambiano = [SPI, PAL, ERO].every(b => b.cambiati === b.applicate && b.applicate > 0);
   if (!tutteCambiano) fail.push('B: una scelta non cambia il motore');
   if (!(chk.spintaTiri >= 0.05 && chk.spintaRischio >= 0.10)) fail.push('B: «spinta» premio/rischio non veri');
+  /* [giro 44 PO-226] ogni PREMIO scritto deve essere vero al banco: una scheda che promette «palloni recuperati» con un profilo che li fa calare
+     mente al giocatore (era «Stringo i denti e pressing»: recuperi 23,9 contro 27,4 ogni 100'). Rosso __CPM_NO_PREMIO44. */
+  { const W44 = process.env.CPM_NO_PREMIO44 ? { __CPM_NO_PREMIO44: 1 } : {}; const I44 = carica(W44).INT259; const bugie = [];
+    for (const [id, S] of Object.entries(I44.SCHEDE)) S.sc.forEach(o => { const t = String(o.premio || '');
+      if (/recuperat/i.test(t) && !(sep(({ spinta: SPI, palla: PAL, eroe: ERO })[o.tipo].recuperi100, NEU.recuperi100) > 0)) bugie.push(id + ': «' + t + '»');
+      if (/più tiri/i.test(t) && !(sep(({ spinta: SPI, palla: PAL, eroe: ERO })[o.tipo].tiri100, NEU.tiri100) > 0)) bugie.push(id + ': «' + t + '»'); });
+    console.log(`   premi scritti smentiti dal banco: ${bugie.length}${bugie.length ? ' ' + JSON.stringify(bugie) : ''}`);
+    if (bugie.length) fail.push('B: premio scritto smentito dal banco (' + bugie.join(' · ') + ')'); }
   if (!(chk.pallaSubiti <= -0.05 && chk.pallaTiri <= -0.03)) fail.push('B: «palla» premio/rischio non veri');
   if (!(chk.eroeAttesa != null && chk.eroeAttesa <= -1.5 && chk.eroeTiri <= 0)) fail.push('B: «eroe» premio/rischio non veri');
   if (RAC[1] !== RAC[0] || RAC[0] === 0) fail.push('B: racconti non coerenti coi fatti');
