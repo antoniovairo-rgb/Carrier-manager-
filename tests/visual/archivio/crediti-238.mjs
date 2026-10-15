@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* [ARCHIVIATO giro 25, PO-254] Sostituito da tests/visual/crediti-254.mjs, che ne tiene i controlli di struttura. Gira solo con CPM_ROSSO=__CPM_NO_CREDITI254 (contenuto PO-238). Per rieseguirlo, riportarlo in tests/visual/ con git mv (vedi README). */
 /* [PO-238 guardiano] «Nella home Page del gioco, non in carriera aggiungi una sezione crediti per elencare le risorse utilizzate».
    Carica il gioco su pagina pulita (home, nessuna carriera), a 360 e 412 px:
    - la voce «Crediti» c'e' nella home ([data-cpm=crediti238-voce-home]);

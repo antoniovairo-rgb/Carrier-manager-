@@ -55,7 +55,7 @@ if (st && st.urls.length) {
   else if (Math.abs(giunto.db) > 3) ko.push(`giunto del loop a ${giunto.db.toFixed(1)} dB dalla mediana (tetto ±3)`);
 }
 // 4) Crediti
-const voce = await page.$('[data-cpm="crediti238-voce-home"]'); let cred = '';
+const voce = await page.$('[data-cpm="crediti254-pulsante"]') || await page.$('[data-cpm="crediti238-voce-home"]'); /* [PO-254] pulsante del kit, link vecchio sotto __CPM_NO_CREDITI254 */ let cred = '';
 if (!voce) ko.push('voce «Crediti» assente nella home');
 else { await voce.scrollIntoViewIfNeeded(); await voce.click(); await sleep(500);
   cred = await page.evaluate(() => (document.querySelector('[data-cpm="crediti238"]') || {}).textContent || '');
