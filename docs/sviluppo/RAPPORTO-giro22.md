@@ -135,7 +135,7 @@ rigiocato **prima** di questa seconda correzione: i suoi numeri del portiere (4/
 (1/7) contro i 2 pretesi: il criterio del braccio rosso è stato riparato (ne basta 1, il difetto vecchio è intermittente: 2/8,
 2/8, 2/8, 1/7, 4/8, 1/8 nelle corse). Una corsa successiva ha poi mostrato **gi13 (punizione) in difetto nel verde** due volte:
 la punizione diretta e il tiro a giro hanno una «pancia» laterale perpendicolare alla corda (7.231, `src/12-three-match-view.jsx:3701-3707`,
-fino a 2,6u · sin(u·π)) che la stima lineare del punto di passaggio ignorava. Ora la stima la include (`:5480-5486`). Nel rosso il
+fino a 2,6u · sin(u·π)) che la stima lineare del punto di passaggio ignorava. Ora la stima la include (`:5481-5487`). Nel rosso il
 tracciato lo mostra bene: portiere da −0,91 a −0,05 col pallone che passa a −1,76.
 Dopo la correzione, otto corse del guardiano: verde 0/7 · **1/8** · 0/8 · 0/8 · **1/8** · 0/7 · 0/8 · 0/7. I due difetti residui
 sono entrambi **gi1** (riflesso, pallone fermato 1,7-1,8u prima del piano): un tracciato senza difetto della stessa scena mostra il
@@ -214,6 +214,52 @@ punizione gi13 (riflesso tardi a 1,65u: probabilmente il ramo `_closeShot203` o 
 (5 processi al 100% di CPU per ~30 minuti, mentre giravano due misure del guardiano dei piedi): quelle due misure non sono
 state usate.
 
-## 5. Catena `mirata`
+## 5. Catena `mirata` (`cd tests/visual && node ci-runner.mjs mirata`)
 
-(vedi sezione successiva, aggiornata a fine catena)
+La `mirata` confronta col `main` remoto: il ramo base `lavoro/168` porta già modifiche di altri giri su sette frammenti
+(`src/07, 09, 11, 12, 14, 15, 17`), quindi la catena vale **48 passi** (nucleo + guardiani di tutte quelle aree + i sei nuovi).
+Tre corse, ognuna sul build esatto del momento:
+
+| corsa | build | esito | rossi |
+|---|---|---|---|
+| 1 | `16910da` | **interrotta** a 25/48 (24 verdi) per correggere il rosso | `portiere-252` (verde 1/7) |
+| 2 | `0dc23f6` | **46/48** | `portiere-252` (verde 0/8, ma rosso 1/7 contro i 2 pretesi → criterio del braccio rosso riparato) · `nomi-219` (vicini 88% su 17, servono ≥ 90%) · `tempo-138` instabile (verde alla 2ª prova) |
+| 3 | `69d5fb6` (finale) | **47/48** | `nomi-219` (vicini **85% su 20**, servono ≥ 90%) |
+
+Nella corsa 3 tutti i guardiani nuovi sono verdi alla prima prova (`piedi-252` 324 s · `rete-252` 329 s · `difesa-252` ·
+`rinvio-252` 375 s · `portiere-252` 630 s · `aereo-252`), e così `validate-situations`, `partita-vera`, `esiti-218`,
+`gk-dive-sync`, `gk-miss-229`, `goal-postarc`, `scene-221`, `difesa-220`, `career-critical`.
+
+⚠️ Errore mio nella corsa 2: ho interrotto la prima prova di `nomi-219` credendola appesa (22 s di CPU in un'ora); è lento per
+costruzione (8 partite × 2 bracci, fino a 7 minuti l'una, a lavorare è il browser). La seconda prova è andata a fine ed è quella
+riportata.
+
+**`nomi-219`: attribuzione** — vedi §6.
+
+## 6. `nomi-219`: attribuzione del rosso
+
+`__CPM_STATE` legge eroe e giocatori dalle **mesh** (`src/12-three-match-view.jsx:2781-2795`), quindi le correzioni di moto (la 3
+sposta l'eroe fino a 9u nelle difese, la 4 allunga gli archi dei rinvii) potevano in principio spostare la quota dei nominati
+vicini all'eroe. Misura: il braccio verde di `nomi-219` (stessi 8 semi, GLB spento come nel guardiano) sulla **stessa build**
+`69d5fb6`, due processi in parallelo, con e senza i sei interruttori rossi `__CPM_NO_*252` (copia temporanea dello script, tolta):
+
+| braccio | nominati | vicini (≤ 25u) | quota |
+|---|---|---|---|
+| build finale, correzioni attive | 19 | 18 | **94,7%** |
+| stessa build, sei interruttori rossi (comportamento di prima) | 13 | 11 | **84,6%** |
+
+Con le correzioni spente la quota è **più bassa**, non più alta: il rosso della catena (85% su 20, 88% su 17) non è attribuibile a
+questo giro. Il guardiano lavora su 13-20 campioni e oscilla attorno alla sua soglia (85 · 88 · 95% sulle tre misure con le
+correzioni attive). **Non posso confermare** come si comporti sulla base `lavoro/168` senza questo ramo: non l'ho misurato (la
+sua copia è sotto gli interruttori solo per le parti che ho toccato io). Proposta per chi lo possiede: alzare il numero di partite
+o la copertura minima, come dice la regola PO 13/10 «un guardiano instabile due volte si ripara».
+
+## 7. Stato per il PO
+
+- Sei voci corrette, ognuna con interruttore rosso e guardiano verde/rosso; banco rigiocato con miglioramenti netti su 2, 3, 4, 5
+  e 6; la voce 1 migliora le mediane ma **non scende sotto la soglia del banco** (117/117 restano sopra 0,10).
+- `mirata` finale 47/48, unico rosso `nomi-219`, misurato come non attribuibile a questo giro.
+- Nessun bump di versione, nessuna promozione su `main`, nessuna riga di roadmap (non è un rilascio: ramo di sviluppo).
+- Da collaudare sul telefono (GLB, 60 fps): la corsa dell'eroe con la clip di scatto (nuova, mai vista dal PO) e il pallone che
+  plana in rete — l'headless non giudica la resa (CLAUDE.md, 7.475/7.507).
+
