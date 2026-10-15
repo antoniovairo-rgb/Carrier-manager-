@@ -12122,7 +12122,12 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pg95u=/[?&]glb=([01])\b/.exec((window.location&&window.location.search)||"");
   const _pg95p=(function(){try{return localStorage.getItem('cpm-glb');}catch(e){return null;}})();
   const _pg95on=_pg95u?_pg95u[1]==='1':_pg95p!=='0';
-  if(_pg95on)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
+  /* [giro 39 — PO-171 «Via CH38 ovunque (cerimonie, ritratto dei menu, download)»] questo pre-caricamento scaricava a OGNI avvio il
+     CH38 vero (footballer.glb + 11 anim-*.glb, 4,47 MB) che nessuna scena usa piu': la partita monta il corpo «regular» e i corpi
+     CGTrader (pre-caricamento PO-237 qui sotto), cerimonie e intro i CGTrader, il ritratto dei menu e' una figurina 2D. Misurato con
+     tests/visual/via-ch38-171.mjs: 0 richieste footballer/anim- su home, carriera, presentazione e partita. Spento; il rosso
+     __CPM_NO_CH38_PREFETCH lo riaccende com'era. */
+  if(_pg95on&&window.__CPM_NO_CH38_PREFETCH)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
 }catch(e){}}
 /* [PO-237 «La partita, in particolare la prima è un pò scattosa»] PRE-CARICAMENTO DEI CORPI. Misurato (sonda
    tests/visual/prima-partita-237.mjs, stessa pagina, GLB acceso, finestre ancorate alla creazione del renderer della partita):
@@ -12145,7 +12150,7 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
     /* il corpo «regular» e le sue 19 clip li carica la partita in ogni modo GLB (src/12, _bodyUrl907 e la lista accanto); il
        pre-caricamento 6.95.0 qui sopra scarica footballer.glb/anim-*.glb, che quella lista non contiene. Stesse URL esatte, cosi'
        _glbCache le riconosce. */
-    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
+    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance','walk'/* [giro 39 PO-171] la camminata dell'ingresso: la partita la chiedeva a freddo */].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
       .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
     const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
     /* [giro 20 — PO-241 «il caricamento dei giocatori deve essere piu' furbo»] MISURATO (tests/visual/attesa-241.mjs, rete lenta come
