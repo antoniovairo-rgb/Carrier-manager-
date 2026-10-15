@@ -413,3 +413,9 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 2. **PO-262** (determinismo, match-sequence rosso già sulla 169): «**Giro di misura ora**» — sessione Opus che trova il generatore non seedato e la release che l'ha introdotto, poi corregge con rosso e guardiano.
 3. **Voci già sul sito** (PO-123, 209, 230, 233, 235, 242, 243, 244): nessuna ancora vista funzionare dal PO, restano «da verificare».
 4. **Esiti «bugiardi»** (PO-218, 240, 250): «**Dentro il filone highlight**», dopo la prima apertura.
+
+## 15/10 notte — Briefing degli altri lotti (questionario)
+1. **Zona G**: «**Correggi tutte e tre**» — eccezione estesa a PO-263 (squalificato/non convocato/svincolato che si infortuna e si stanca su «Simula»), PO-264 (svincolato con voto nell'Europa simulata), PO-265 («Investo metà del conto» toglie sempre 40.000€). Giro Opus con interruttori e guardiani carriera; il resto della zona G resta fermo.
+2. **L6**: «**Proposta e questionario**» — dai numeri della fase 1 (RAPPORTO-carriere-l6) una proposta per PO-154…157 e PO-098, portata al PO in un questionario; nessuna modifica al gioco.
+3. **L3/L4 in parallelo a L1**: solo «**PO-171 via CH38**» (cerimonie, ritratto dei menu, download). PO-180, PO-168, PO-023 restano in coda.
+4. **L5, L7, L8**: «**Dopo L1, nell'ordine**».
