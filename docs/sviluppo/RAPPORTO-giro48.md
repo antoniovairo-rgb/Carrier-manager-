@@ -84,7 +84,7 @@ Agganciato a `package.json` (`kit-061`), alla catena `grafica` di `ci-runner.mjs
 | `design-system` | verde («SISTEMA GRAFICO OK») |
 | `save-compat` | verde, 12 pass · 0 fail |
 | `griglia-mobile` | verde, exit 0, overflow 0 px su tutte le larghezze (gli scatti rigenerati in `docs/collaudo-grafico` NON sono stati committati) |
-| `career-critical` | verde su 62adbb2 (9 min 10 s); su 9f7ae99 vedi sotto |
+| `career-critical` | verde su 62adbb2 (9 min 10 s) e su 9f7ae99 (exit 0, zero ❌; una prima corsa a 9f7ae99 era stata solo TAGLIATA dal tetto di 10 minuti della chiamata, rifatta per intero in sottofondo con attesa in primo piano) |
 | `kit-061` | verde; rosso riprodotto |
 | `strisce-corpo`, `maglie-numero` | verdi (guardiani vicini, stessa funzione) |
 
