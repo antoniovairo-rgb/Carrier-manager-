@@ -1085,6 +1085,10 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
                 color:armato?"#f8fafc":"rgba(226,232,240,0.45)",fontFamily:"inherit",fontSize:FS.body,fontWeight:FW.bold,
                 lineHeight:1.25,transition:"background .18s ease,border-color .18s ease,color .18s ease"}}>
               <span style={{color:F.col,fontWeight:FW.black,marginRight:8}}>{oi+1}</span>{o.et}
+              {(o.premio||o.rischio)&&<div data-cpm="rp259" style={{marginTop:4,marginLeft:18,fontSize:FS.caption,fontWeight:FW.medium,lineHeight:1.35,color:armato?"#cbd5e1":"rgba(203,213,225,0.45)"}}>{/* [PO-259] premio e rischio, in parole di calcio */}
+                {o.premio&&<div><span style={{color:armato?"#86efac":"inherit",fontWeight:FW.bold}}>Premio: </span>{o.premio}</div>}
+                {o.rischio&&<div><span style={{color:armato?"#fca5a5":"inherit",fontWeight:FW.bold}}>Rischio: </span>{o.rischio}</div>}
+              </div>}
             </button>
           ))}
         </div>
@@ -3028,6 +3032,22 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       /* [PO-226 — rosso __CPM_NO_INT226] LA SCELTA ARRIVA AL MOTORE. Ordine del mister: «seguo» (0) applica l'atteggiamento del fatto e
          gli effetti dell'ordine di sempre (COACH_ORDERS: bonus, possesso, momento, deriva); «di testa mia» (1) solo il suo atteggiamento.
          Panchina: il minuto d'ingresso lo ricalcola INT226.ingresso, col seme della partita. */
+      /* [PO-259 — rosso __CPM_NO_SCHEDE259] LA SCELTA ARRIVA AL MOTORE e prepara il racconto: INT259.applica tocca voglia di tirare, tattica
+         (pressing, linea, gioco diretto) e attesa della prossima occasione dell'eroe; in panchina sposta anche il minuto d'ingresso (INT226.ingresso,
+         col seme). Il testimone registra i dati del motore prima e dopo: «cambiato» e' una lettura, non una dichiarazione. */
+      if(/^i259_/.test(String(P.id||""))&&typeof INT259!=='undefined'&&INT259.attivo()){try{
+        const _id=String(P.id).slice(5),_o=INT259.opz(_id,idx),_M=motoreRef.current,_mn=clockRef.current|0;
+        const _W=(typeof window!=='undefined')?(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}):{scelte:[]};
+        let _iP=null,_iD=null;
+        if(_o&&_o.eff&&_o.eff.ingresso!=null){_iP=benchMinRef226.current||0;_iD=INT226.ingresso(_iP,_o.eff.ingresso,((bgSimSeedRef.current>>>0)^hashStr((player.name||"x")+"|226"))>>>0,_mn);
+          benchMinRef226.current=_iD;setBenchMinute226(_iD);if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)window.__CPM_BENCH_MIN=_iD;}
+        const _f0=_M?INT259.foto(_M,scoreRef.current):null;
+        const _ap=_M?INT259.applica(_M,_id,idx,_mn):null;
+        const _camb=!!((_ap&&JSON.stringify(_ap.prima)!==JSON.stringify(_ap.dopo))||(_iD!=null&&_iD!==_iP));
+        N.r259={fatto:_id,idx,m0:_mn,foto:_f0,occ0:_f0?_f0.occ:null,panca:!!(_o&&_o.eff&&_o.eff.ingresso!=null),ingresso:_iD,et:(_o&&_o.et)||""};
+        (N.r259list=N.r259list||[]).push(N.r259);
+        _W.scelte.push({fatto:_id,idx,auto:!!auto,min:_mn,prima:_ap&&_ap.prima,dopo:_ap&&_ap.dopo,ingressoPrima:_iP,ingresso:_iD,cambiato:_camb});
+      }catch(_e259){}}
       if(/^i226_/.test(String(P.id||""))&&typeof INT226!=='undefined'&&INT226.attivo()){try{
         const _id=String(P.id).slice(5),_f=INT226.fatto(_id);const _W=(typeof window!=='undefined')?(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}):{scelte:[]};
         if(_f&&_f.panca){const _b0=benchMinRef226.current||0;const _nm=INT226.ingresso(_b0,idx,((bgSimSeedRef.current>>>0)^hashStr((player.name||"x")+"|226"))>>>0,clockRef.current|0);
@@ -3139,7 +3159,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        bastano. Con la partita ferma il tempo di lettura non costa niente a nessuno. */
     const ms=(typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000;
     if(typeof window!=='undefined'){try{window.__CPM_SC681_TMR=(window.__CPM_SC681_TMR||0)+1;}catch(_e){}}/* [7.721 strumentazione] timer di scadenza ARMATI */
-    const h=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_NO_ORD18)return;/* [giro 18] sotto autoplay sceglie il battito, in tempo di gioco */if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String((intxPendRef681.current||{}).id||"")))?(+window.__CPM_INT226_IDX|0):0,true);/* [PO-226] solo collaudo: il guardiano fa scegliere al timer anche «di testa mia» */}catch(_e){}},ms);
+    const h=setTimeout(()=>{if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_NO_ORD18)return;/* [giro 18] sotto autoplay sceglie il battito, in tempo di gioco */if(typeof window!=='undefined'){try{window.__CPM_SC681_FIRE=(window.__CPM_SC681_FIRE||0)+1;}catch(_e){}}try{scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i2(26|59)_/.test(String((intxPendRef681.current||{}).id||"")))?(+window.__CPM_INT226_IDX|0):0,true);/* [PO-226] solo collaudo: il guardiano fa scegliere al timer anche «di testa mia» */}catch(_e){}},ms);
     return()=>{clearTimeout(h);if(typeof window!=='undefined'){try{window.__CPM_SC681_CLR=(window.__CPM_SC681_CLR||0)+1;}catch(_e){}}};
   },[coms,scegli681]); // stable — clockRef via ref, non dipende da clock state
   /* [7.532.0 collaudo PO «nella cronaca testuale sono mischiati telecronaca ed indicazioni del mister, vanno
@@ -4672,7 +4692,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            timer. Gioco vero invariato: senza autoplay la partita e' ferma sulla scheda e sceglie il giocatore. */
         if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_NO_ORD18){try{const _P18=intxPendRef681.current;
           if(_P18&&_P18.sc&&_P18.min!=null){const _k18=Math.max(1,Math.ceil(((+window.__CPM_SCMS681)||35000)/MATCH_TICK_MS));
-            if((nx|0)>=(_P18.min|0)+_k18)scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i226_/.test(String(_P18.id||"")))?(+window.__CPM_INT226_IDX|0):0,true);}}catch(_e18){}}
+            if((nx|0)>=(_P18.min|0)+_k18)scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i2(26|59)_/.test(String(_P18.id||"")))?(+window.__CPM_INT226_IDX|0):0,true);}}catch(_e18){}}
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
         const _passo28=(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
         const _finestra879=!_no803&&nx>=_apertoDa803&&_att803>=_passo28&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current&&!_tetto7();
@@ -5984,7 +6004,41 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            delle schede INTX669 (mai dentro un highlight, mai sopra un gol in costruzione o una recita, mai sopra l'azione saliente),
            ma la panchina e' ammessa: li' vivono le due schede «chiedo di entrare / resto concentrato». Nessun sorteggio: la scheda e'
            funzione pura dello stato (punteggio, minuto, energia, duelli persi, panchina). */
-        const _on226=(typeof INT226!=='undefined')&&INT226.attivo();
+        /* [PO-259, decisione PO 15/10 «Poche ma decisive» — rosso __CPM_NO_SCHEDE259 = le schede PO-226/234 della 7.999.169] al massimo DUE
+           schede a partita e solo dove c'e' posta (INT259.scegli, src/14): punteggio in bilico nel finale, un'espulsione, un rigore contro, il
+           fiato corto dell'eroe in una partita aperta. Il sistema 226 resta vivo solo sotto il rosso. */
+        const _on259=(typeof INT259!=='undefined')&&INT259.attivo()&&(typeof INT226!=='undefined')&&INT226.attivo();
+        const _on226=(typeof INT226!=='undefined')&&INT226.attivo()&&!_on259;
+        if(_on259){try{
+          const _N=narrRef669.current;const _M=motoreRef.current;const _t=(_M&&_M.tabellino)?_M.tabellino():null;
+          /* i fatti rari si leggono dal tabellino del motore e si datano al minuto in cui compaiono (lettura, nessun sorteggio) */
+          const _e=_N.e259||(_N.e259={eN:0,eL:0,rL:0,eNm:null,eLm:null,rLm:null});
+          {const _en=((occ28Ctx.current||{}).energy);if(_en!=null){if(_e.enP!=null&&_e.enP>INT259.CALO&&_en<=INT259.CALO)_e.calom=nx;_e.enP=_en;}}/* [PO-259] il minuto del calo di fiato dell'eroe */
+          if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}if((_t.away.rigori|0)>_e.rL){_e.rL=_t.away.rigori|0;_e.rLm=nx;}}
+          /* IL RACCONTO, cinque minuti dopo la scelta: nasce dalle differenze del tabellino del motore e del punteggio (INT259.racconta) */
+          const _R=_N.r259;
+          if(_R&&!_R.detto&&!_inHL77&&_M&&nx>=_R.m0+INT259.ATTESA){_R.detto=true;const _dopo=INT259.foto(_M,scoreRef.current);
+            const _r={fatto:_R.fatto,idx:_R.idx,m0:_R.m0,m1:nx,prima:_R.foto,dopo:_dopo,occ:(_dopo&&_dopo.occ!=null&&_dopo.occ>=_R.m0&&_dopo.occ!==_R.occ0)?_dopo.occ:null,
+              eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!_R.panca,ingresso:_R.ingresso};
+            const _es=INT259.racconta(_r);_R.breve=_es.breve;_R.testo=_es.testo;
+            const _o=INT259.opz(_R.fatto,_R.idx)||{};
+            const _voce=_es.k==='golNoi'?"«Così! È questa la strada!»":_es.k==='golLoro'?(_o.tipo==='spinta'?"«Troppo alti, ci hanno presi alle spalle!»":"«Su la testa, c'è ancora tempo!»")
+              :_es.k==='contro'?"«Attenti dietro, ci ripartono addosso!»":_es.k==='occEroe'?"«Era quella la palla giusta!»":_es.k==='recNoi'?"«Così, aggrediteli!»"
+              :_es.k==='ingresso'?"«Preparati, tocca a te al "+(_R.ingresso|0)+"'.»":(_es.k==='tiriLoro'&&_es.n>=2)?"«Stiamo concedendo troppo, stringete!»":_es.k==='tiriLoro'?"«Bene così, non vedono palla!»"
+              :(_es.k==='tiriNoi'&&_es.n>=2)?"«Continuate a calciare!»":"«Pazienza, restiamo dentro la partita.»";
+            try{addCom(_es.testo,"#c4b5fd",nx);}catch(_e){}try{addCoach("\ud83d\udce2 "+_voce,nx);}catch(_e){}
+            if(typeof window!=='undefined'){try{(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}).racconti.push({fatto:_R.fatto,idx:_R.idx,m0:_R.m0,m1:nx,esito:_es,voce:_voce,prima:_R.foto,dopo:_dopo,occ:_r.occ,ingresso:_R.ingresso,panca:!!_R.panca,coerente:INT259.verifica(_r,_es)});}catch(_e){}}}
+        }catch(_e259){}}
+        if(_on259&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
+           &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&!(narrRef669.current.r259&&!narrRef669.current.r259.detto)){try{
+          const _N=narrRef669.current;const _sc=scoreRef.current||{home:0,away:0};const _e=_N.e259||{};
+          const _fatte=(_N.fatte||[]).filter(x=>/^i259_/.test(x)).map(x=>x.slice(5));
+          const _c={mn:nx,diff:(_sc.home|0)-(_sc.away|0),energia:((occ28Ctx.current||{}).energy),panchina:!!onBenchRef.current,
+            ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),fatte:_fatte,ultima:(_fatte.length?(_N.ultima|0):null),
+            caloMin:(_e.calom!=null?_e.calom:null),espNoi:_e.eN|0,espNoiMin:_e.eNm,espLoro:_e.eL|0,espLoroMin:_e.eLm,rigContro:_e.rL|0,rigControMin:_e.rLm};
+          const _f=INT259.scegli(_c);
+          if(_f&&INT259.SCHEDE[_f]){const _S=INT259.SCHEDE[_f];_intxK669={id:"i259_"+_f,fam:"MISTER",txt:_S.txt,sc:_S.sc.map(o=>({et:o.et,premio:o.premio,rischio:o.rischio,es:()=>null})),cons:{},i259:_f};}
+        }catch(_e259){}}
         if(_on226&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&nx<=88){try{
           const _N=narrRef669.current;const _sc226=scoreRef.current||{home:0,away:0};
@@ -5996,7 +6050,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_f226&&SCHEDE226[_f226]){const _S=schedaVista234(SCHEDE226[_f226]);_intxK669={id:"i226_"+_f226,fam:_S.fam,txt:_S.txt,sc:_S.sc,cons:{},i226:_f226};
             if(typeof window!=='undefined'){try{(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]}).cand=(window.__CPM_INT226.cand|0)+1;}catch(_e){}}}
         }catch(_e226){}}
-        if(!_on226&&!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
+        if(!_on226&&!_on259&&!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
            &&(!(onBenchRef.current||subbedOffRef.current||heroRedRef.current)||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))/* [7.999.64 collaudo PO «scattano le interazioni anche se sono in panchina». Rosso __CPM_NO_PANCA64] le schede dell'eroe (mister, compagni, avversari) esistono solo se l'eroe e' in campo */
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))/* [7.695.0] NIENTE SCHEDE NUOVE SOPRA L'AZIONE: una scheda di scelta occupa mezzo telefono, e fotografata sopra l'area copriva esattamente cio' che il PO diceva di non vedere. Le interazioni erano gia' escluse durante il gol in costruzione; ora lo sono per tutta la finestra saliente, contropiedi e rigori compresi. */
            &&nx>=((typeof window!=='undefined'&&window.__CPM_NO723)?18:((narrRef669.current&&narrRef669.current.apre723)||(narrRef669.current.apre723=18+Math.floor(_rndM()*12))))&&nx<=88&&typeof INTX669!=='undefined'){try{/* [7.723.0 — LA PRIMA SCHEDA NON ESCE SEMPRE AL 18'. Rosso __CPM_NO723] MISURATO (censimento 6 partite): la prima scheda usciva SEMPRE al 18', primo minuto della finestra, dove l'unica eleggibile senza contatori era mi_avv (4/6 partite, e la memoria fra partite la rimetteva in gioco ogni tre gare). Ora la finestra si apre in un minuto casuale fra 18 e 29, fissato una volta per partita: la prima pesca trova un paniere di 3-6 schede invece di una. */
@@ -6625,6 +6679,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(!(typeof window!=='undefined'&&window.__CPM_NO748)){if(_c.coinv)_N.coinv=(_N.coinv|0)+_c.coinv;if(_c.fiducia)_N.fiducia=(_N.fiducia|0)+_c.fiducia;if(_c.zona)_N.zona=(_N.zona|0)+_c.zona;}
               ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_motore870:null,_az551:null,at:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};/* [7.812 v1 REVOCATA, vedi la libreria] */
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
+              if(_intxK669.i259&&typeof window!=='undefined'){try{(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}).schede.push({min:nx,fatto:_intxK669.i259,diff:_ctx.diff,score:{home:_mio,away:_suo},panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy)});}catch(_e){}}/* [PO-259] testimone: ogni scheda col fatto, il minuto e il punteggio */
               if(_intxK669.i226&&typeof window!=='undefined'){try{const _W=(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]});_W.schede.push({min:nx,fatto:_intxK669.i226,diff:_ctx.diff,panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy),duelliP:(_N.duelliP|0)});}catch(_e){}}/* [PO-226] testimone: ogni scheda del sistema nuovo col fatto che l'ha aperta */
             }
           }catch(_e670){}}
@@ -11544,6 +11599,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
+          {(()=>{/* [PO-259] la riga della scelta: cosa hai deciso e cosa e' successo (dal racconto nato dai fatti del motore). Rosso __CPM_NO_SCHEDE259 */
+            if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L=((narrRef669.current||{}).r259list)||[];if(!_L.length)return null;
+            return(<div data-cpm="riep259" style={{margin:"0 0 14px",padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
+              {_L.map((r,i)=>(<div key={i} style={{fontSize:FS.small,lineHeight:1.4,color:TH.text,marginTop:i?6:0}}>
+                <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
+                <span style={{color:TH.muted}}>{" \u2192 "+(r.breve||"non c'è stato il tempo di vederne l'effetto")}</span></div>))}
+            </div>);})()}
           <Sez210 id="post-tabellino" titolo="Il tuo tabellino">
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},(()=>{/* [7.999.17 collaudo PO: «17 tiri» nel TUO tabellino contro «6/13 tiri in porta» poco sotto] quel 17 erano i tiri della SQUADRA (mxStats). Qui ora i tiri dell'EROE dalla pagella del motore, la stessa fonte del riquadro «in numeri». Rosso __CPM_NO_TIRI17 */let _q17=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRI17))_q17=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe)||null;}catch(_e){}return _q17?{l:"Tiri",v:_q17.tiri|0,e:"💥",c:TH.accent}:{l:"Tiri squadra",v:mxStats.shots,e:"💥",c:TH.accent};})(),{l:"Poss.",v:((()=>{/* [7.999.136 PO-209 collaudo PO «alcune statistiche sembrano al contrario»: possesso 37% qui e 49% nel tabellino sotto] qui si leggeva lo stato della cronaca (possession), che va per conto suo; il tabellino della gara lo prende dal motore. Ora la stessa fonte. Rosso __CPM_NO_POSS209 */

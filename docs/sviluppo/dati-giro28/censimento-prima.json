@@ -1,0 +1,183 @@
+{
+ "verde": {
+  "partite": 20,
+  "finite": 20,
+  "schedeTot": 45,
+  "schedePerPartita": 2.25,
+  "distribuzione": {
+   "1": 2,
+   "2": 11,
+   "3": 7
+  },
+  "max": 3,
+  "senzaPosta": 8,
+  "scelte": 45,
+  "sceltaCambiaMotore": 45,
+  "racconti": 0,
+  "raccontiCoerenti": 0,
+  "riepilogo": "0/20",
+  "errori": 0,
+  "dettaglio": [
+   {
+    "p": 0,
+    "score": {
+     "home": 2,
+     "away": 1
+    },
+    "dove": "75'0 pari_75 | 88'+1 misura_85"
+   },
+   {
+    "p": 1,
+    "score": {
+     "home": 4,
+     "away": 1
+    },
+    "dove": "60'+2 avanti_2 | 72'+3 eroe_stanco"
+   },
+   {
+    "p": 2,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "dove": "55'0 eroe_stanco | 75'0 pari_75 | 83'-1 sotto_70"
+   },
+   {
+    "p": 3,
+    "score": {
+     "home": 1,
+     "away": 3
+    },
+    "dove": "55'0 eroe_stanco | 75'0 pari_75 | 84'-1 sotto_70"
+   },
+   {
+    "p": 4,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "55'-1 eroe_stanco | 75'0 pari_75"
+   },
+   {
+    "p": 5,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "dove": "25'0 eroe_marcato | 56'-1 eroe_stanco | 70'-1 sotto_70"
+   },
+   {
+    "p": 6,
+    "score": {
+     "home": 3,
+     "away": 1
+    },
+    "dove": "55'+2 eroe_stanco | 63'+2 avanti_2"
+   },
+   {
+    "p": 7,
+    "score": {
+     "home": 1,
+     "away": 0
+    },
+    "dove": "55'+1 eroe_stanco | 85'+1 misura_85"
+   },
+   {
+    "p": 8,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "dove": "70'-1 sotto_70"
+   },
+   {
+    "p": 9,
+    "score": {
+     "home": 0,
+     "away": 0
+    },
+    "dove": "62'0 eroe_stanco | 75'0 pari_75"
+   },
+   {
+    "p": 10,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "55'+2 eroe_stanco | 63'+2 avanti_2"
+   },
+   {
+    "p": 11,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "dove": "39'-1 eroe_marcato | 55'-1 eroe_stanco | 70'-1 sotto_70"
+   },
+   {
+    "p": 12,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "55'+1 eroe_stanco | 63'+2 avanti_2"
+   },
+   {
+    "p": 13,
+    "score": {
+     "home": 1,
+     "away": 4
+    },
+    "dove": "70'-3 sotto_70"
+   },
+   {
+    "p": 14,
+    "score": {
+     "home": 1,
+     "away": 2
+    },
+    "dove": "55'+1 eroe_stanco | 75'0 pari_75"
+   },
+   {
+    "p": 15,
+    "score": {
+     "home": 2,
+     "away": 2
+    },
+    "dove": "55'-1 eroe_stanco | 70'-1 sotto_70 | 81'0 pari_75"
+   },
+   {
+    "p": 16,
+    "score": {
+     "home": 1,
+     "away": 2
+    },
+    "dove": "55'+1 eroe_stanco | 75'0 pari_75 | 84'-1 sotto_70"
+   },
+   {
+    "p": 17,
+    "score": {
+     "home": 2,
+     "away": 0
+    },
+    "dove": "56'0 eroe_stanco | 75'0 pari_75 | 86'+1 misura_85"
+   },
+   {
+    "p": 18,
+    "score": {
+     "home": 1,
+     "away": 0
+    },
+    "dove": "55'+1 eroe_stanco | 85'+1 misura_85"
+   },
+   {
+    "p": 19,
+    "score": {
+     "home": 3,
+     "away": 2
+    },
+    "dove": "55'0 eroe_stanco | 75'0 pari_75"
+   }
+  ]
+ }
+}
