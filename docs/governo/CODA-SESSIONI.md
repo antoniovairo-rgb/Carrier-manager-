@@ -31,6 +31,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | lavoro/168 (catene) | — (archiviata) | catena 168 fermata: la 168 confluisce nella 169 (DECISIONI 15/10 notte) | 15/10 01:38 |
 | sviluppo/highlight-252 | session_01Brq2HExZZsPfAD63PGKF1M | giro 22 (Opus, base lavoro/168): correzioni PO-252 dal banco (piedi, pallone in rete, difesa, rinvio, portiere, build-up aereo) | 14/10 22:09 |
 | lavoro/169 (catene) | session_014h49RnLh3mUDDFAQXDWmFh | catena notte 7.999.169 su Haiku (giri 16-20 + PO-249, nessuna deroga) | 15/10 01:38 |
+| sviluppo/decisioni-245 | session_012QkaFPeC79ueNDxWA7Dm5k | giro 23 (Opus, base lavoro/169): ingresso camminata vera, coppa resta dopo il prestito (eccezione zona G), avviso premi dopo l'intervista, oro da festa | 15/10 02:18 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
