@@ -52,6 +52,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/passaggi-228-giro32 | — (archiviata, consegnato 35c9b86f) | giro 32 (Opus, base lavoro/170): PO-228 passaggi 739 → ~814 senza toccare gol, tiri, xG | 15/10 18:47 |
 | sviluppo/zona-g-222-223-giro33 | — (archiviata, consegnato a4714015) | giro 33 (Opus, base lavoro/170): eccezione zona G solo PO-222 (squalificato su Simula) e PO-223 (resa investimento legata a puntata e scelta) | 15/10 18:47 |
 | sviluppo/nomi-219-giro34 | — (archiviata, consegnato a6aa9e79) | giro 34 (Opus, base lavoro/170): riparare il guardiano nomi-219 instabile due volte (85/88/95% attorno al 90%), regola PO 13/10; solo test | 15/10 19:04 |
+| sviluppo/ripartenza-228-giro35 | session_01UjkGXjmfF4yMqNQ1WwXhiB | giro 35 (Opus, base sviluppo/passaggi-228-giro32): decisione PO «Restringi, poi ritara» — ripartenza del giro 27 solo dopo gol da piazzato/scena, poi passaggi a ~814 | 15/10 22:18 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
