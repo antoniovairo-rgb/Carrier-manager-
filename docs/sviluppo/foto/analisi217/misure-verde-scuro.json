@@ -1,0 +1,100 @@
+{
+ "rosso": false,
+ "tema": "scuro",
+ "misure": [
+  {
+   "w": 412,
+   "h": 915,
+   "versione": "analisi217",
+   "vh": 915,
+   "W": 412,
+   "scroller": {
+    "sh": 915,
+    "ch": 915,
+    "top": 0
+   },
+   "catena": [
+    "DIV h887 top0 ovvisible sh887 pad0px/0px",
+    "DIV h887 top0 ovvisible sh887 pad0px/0px",
+    "DIV.cpm-match-wrap h887 top0 ovvisible sh887 pad0px/0px",
+    "DIV h887 top0 ovvisible sh887 pad0px/0px",
+    "DIV.cpm-scroll h915 top0 ovauto sh915 pad0px/28px",
+    "DIV.cpm-root h915 top0 ovhidden sh915 pad0px/0px",
+    "DIV h915 top0 ovvisible sh915 pad0px/0px",
+    "BODY h915 top0 ovhidden sh915 pad0px/0px"
+   ],
+   "contenitore": {
+    "top": 0,
+    "bottom": 887
+   },
+   "scrollW": 412,
+   "docH": 915,
+   "vuoto": 28,
+   "dove": "sotto l'ultimo blocco",
+   "vuotoDentro": 77,
+   "doveDentro": "ANALISI PRE-PARTITA CIO ",
+   "pulsante": {
+    "top": 827,
+    "bottom": 875,
+    "ultimo": true
+   },
+   "raggi": [],
+   "corpi": [],
+   "oltre": [],
+   "difficoltaFs": 44,
+   "nomeFs": 24,
+   "nome": "FC Modenese Primavera",
+   "corpoMax": 15,
+   "figurinaMister": true,
+   "viol": []
+  },
+  {
+   "w": 360,
+   "h": 780,
+   "versione": "analisi217",
+   "vh": 780,
+   "W": 360,
+   "scroller": {
+    "sh": 780,
+    "ch": 780,
+    "top": 0
+   },
+   "catena": [
+    "DIV h752 top0 ovvisible sh752 pad0px/0px",
+    "DIV h752 top0 ovvisible sh752 pad0px/0px",
+    "DIV.cpm-match-wrap h752 top0 ovvisible sh752 pad0px/0px",
+    "DIV h752 top0 ovvisible sh752 pad0px/0px",
+    "DIV.cpm-scroll h780 top0 ovauto sh780 pad0px/28px",
+    "DIV.cpm-root h780 top0 ovhidden sh780 pad0px/0px",
+    "DIV h780 top0 ovvisible sh780 pad0px/0px",
+    "BODY h780 top0 ovhidden sh780 pad0px/0px"
+   ],
+   "contenitore": {
+    "top": 0,
+    "bottom": 752
+   },
+   "scrollW": 360,
+   "docH": 780,
+   "vuoto": 28,
+   "dove": "sotto l'ultimo blocco",
+   "vuotoDentro": 4,
+   "doveDentro": "ANALISI PRE-PARTITA CIO ",
+   "pulsante": {
+    "top": 692,
+    "bottom": 740,
+    "ultimo": true
+   },
+   "raggi": [],
+   "corpi": [],
+   "oltre": [],
+   "difficoltaFs": 32,
+   "nomeFs": 20,
+   "nome": "FC Modenese Primavera",
+   "corpoMax": 13,
+   "figurinaMister": true,
+   "viol": []
+  }
+ ],
+ "errori": [],
+ "esito": "VERDE"
+}

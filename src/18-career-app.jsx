@@ -109,6 +109,17 @@ function DiarioSfoglia({diary,DTYPE}){
     </div></div>
   </div>);
 }
+/* [PO-066 · giro 30 — collaudo PO «box fuori standard»] SULLA HOME LA FISARMONICA E' LA CARD COL MOMENTO.
+   I riquadri della home si aprono e si chiudono con la Card del kit (titolo in chiaro + freccia, raggio RAD.md);
+   quattro riquadri (Record watch, Obiettivi personali, Movimenti di Lega, coppa europea) usavano invece il
+   cappello maiuscolo della `Fisarmonica` delle schede Stagione/Club con la card attaccata sotto (raggio 6 tagliato
+   a meta'): due grammatiche diverse nella stessa colonna. Stesso contenuto, stessa apertura iniziale.
+   E' un componente di MODULO, non di CareerApp: definito dentro, a ogni render avrebbe azzerato lo stato aperto/chiuso.
+   Rosso window.__CPM_NO_HOME066: torna la Fisarmonica di prima. Guardiano tests/visual/home-066.mjs. */
+function FisHome66({id,titolo,aperta=false,cardStyle={},cardProps={},children}){
+  if(typeof window!=='undefined'&&window.__CPM_NO_HOME066)return <Fisarmonica id={id} titolo={titolo} aperta={aperta}><Card {...cardProps} style={cardStyle}>{children}</Card></Fisarmonica>;
+  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:SP.sm}}>{children}</Card>;
+}
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -890,6 +901,10 @@ const getThisWeekMatchday=()=>{
      scelta PO 27/09 «Card neutra»: tutti i riquadri narrativi della home usano il fondo standard delle card, il colore resta solo
      nell'occhiello e nelle icone (portato a contrasto >= 4,5 da semTesto945). Rosso __CPM_NO_HOME30 = i fondi scuri di prima. */
   const _n30=(v,n)=>((typeof window!=='undefined'&&window.__CPM_NO_HOME30)?v:n);
+  /* [PO-066 · giro 30] seconda passata della card neutra: i riquadri di stato rimasti col fondo tinto (mercato aperto, lista
+     cessioni, infortunio, contratto scaduto, record battuto) passano al fondo della card; il colore resta nell'occhiello.
+     Rosso __CPM_NO_HOME066 = i riquadri di prima. Guardiano tests/visual/home-066.mjs. */
+  const _h66=(v,n)=>((typeof window!=='undefined'&&window.__CPM_NO_HOME066)?v:n);
   const _OPENING_HOME_CARDS=(typeof window!=='undefined'&&window.__CPM_HOMECARDS)?true:false;/* prova del rosso: riaccende le card sulla home */
   const [openingWiz,setOpeningWiz]=useState(false);
   const [openingWizTot,setOpeningWizTot]=useState(0);
@@ -7305,7 +7320,7 @@ const getThisWeekMatchday=()=>{
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(
-          <Card style={{marginBottom:9,padding:16,borderRadius:RAD.lg,boxShadow:TH.el2}}>
+          <Card style={{marginBottom:9,padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
@@ -7929,6 +7944,12 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&agentStyleView(player)&&_pop224(
         <Card momento="Il tuo procuratore: boutique o global?" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
+          {/* [PO-066] chi parla ha la sua figurina, come le altre card del procuratore (riga nome come nella card dell iniziativa) */}
+          {!(typeof window!=='undefined'&&window.__CPM_NO_HOME066)&&(()=>{const _nm66=(player.agent&&player.agent.name)||agentNameFor(player);return(
+          <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:8}}>
+            <Figurina tipo="procuratore" chiave={_nm66} larg={28} col={TH.primary}/>
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted}}>{_nm66}</div>
+          </div>);})()}
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>
           <div style={{display:"flex",gap:8}}>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,agentStyle:"boutique",log:[`🏠 Agenzia boutique: pochi assistiti, tanta cura (commissione 10%→8%).`,...(p.log||[])].slice(0,60)}))}>🏠 Boutique</Btn>
@@ -8254,17 +8275,17 @@ const getThisWeekMatchday=()=>{
         if(_gap>4||_lgG<8)return null;
         const _beaten=_gap<0,_tied=_gap===0;
         return(
-        <Fisarmonica id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}:{})}}>
+        <FisHome66 id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}:{})}}>
           <div style={{fontSize:FS.small,color:_beaten?TH.txAmber:TH.text,fontWeight:700,marginBottom:2}}>{_beaten?`Nuovo record stagionale della lega: ${_lgG} gol — sei nella storia.`:_tied?`Hai agguantato il record stagionale (${_rec.goals} gol di ${_rec.name}).`:`A ${_gap} gol dal record stagionale — ${_rec.goals} di ${_rec.name}${/^S\./.test(_rec.season||"")?` (${_rec.season})`:""}.`}</div>
           <div style={{height:5,background:TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden",marginTop:6}}>
             <div style={{height:"100%",width:`${clamp(Math.round(_lgG/Math.max(1,(_rec.goals||1))*100),4,100)}%`,background:_beaten?"#f59e0b":TH.primary,borderRadius:RAD.pill}}/>
           </div>
-        </Card></Fisarmonica>);})()}
+        </FisHome66>);})()}
       {/* DASHBOARD */}
       {tab==="dashboard"&&player.contractExpired&&(
-        <Card bg={TH.bgAmber} border={TH.bdAmber} style={{marginBottom:8,padding:"9px 12px"}}>
+        <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
-          <div style={{fontSize:FS.caption,color:TH.txAmber,opacity:0.85,marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
         </Card>
       )}
@@ -8280,13 +8301,13 @@ const getThisWeekMatchday=()=>{
         const _winEnd=_isSumWin?5:23;
         const _weeksLeft=Math.max(0,_winEnd-_wk+1);
         return(
-          <Card bg={_listed?TH.bgAmber:TH.bgBlue} border={_listed?TH.bdAmber:TH.bdBlue} style={{marginBottom:8,padding:"9px 12px"}}>
+          <Card bg={_h66(_listed?TH.bgAmber:TH.bgBlue,undefined)} border={_h66(_listed?TH.bdAmber:TH.bdBlue,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:_listed?8:0}}>
               <div>
                 <div style={{fontSize:FS.caption,fontWeight:800,color:_listed?TH.txAmber:TH.txBlue}}>
                   {_listed?"📢 Sei in lista cessioni":`🏷️ ${_winLabel} aperto`}
                 </div>
-                <div style={{fontSize:FS.caption,color:_listed?TH.txAmber:TH.txBlue,opacity:0.8,marginTop:2}}>
+                <div style={{fontSize:FS.caption,color:_h66(_listed?TH.txAmber:TH.txBlue,TH.muted),opacity:_h66(0.8,1),marginTop:2}}>
                   {_inWin?`${_weeksLeft} settiman${_weeksLeft===1?"a":"e"} rimanent${_weeksLeft===1?"e":"i"}`:""}{_listed&&!_inWin?" · Finestra chiusa — attendi la prossima apertura":""}
                 </div>
               </div>
@@ -8315,12 +8336,12 @@ const getThisWeekMatchday=()=>{
         const orig=player.originalInjuryWeeks||Math.max(player.injuryWeeks||1,1);
         const recPct=Math.round(((orig-(player.injuryWeeks||0))/orig)*100);
         return(
-          <Card bg={TH.bgRed} border={TH.bdRed} style={{marginBottom:8,padding:"9px 12px"}}>
+          <Card bg={_h66(TH.bgRed,undefined)} border={_h66(TH.bdRed,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
               <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txRed}}>{iT.icon} {iT.label}</div>
-              <div style={{fontSize:FS.caption,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:RAD.xl}}>{sevLabel}</div>
+              <div style={{fontSize:FS.caption,fontWeight:700,color:sevColor,background:`${sevColor}18`,padding:"2px 8px",borderRadius:_h66(RAD.xl,RAD.pill)/* [PO-066] la pastiglia del kit (Badge) */}}>{sevLabel}</div>
             </div>
-            <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.txRed,marginBottom:6}}>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:_h66(TH.txRed,TH.text),marginBottom:6}}>
               <span>⏳ {player.injuryWeeks||0} settiman{(player.injuryWeeks||0)===1?"a":"e"} rimanenti</span>
               <span style={{fontWeight:700,color:recPct>=50?TH.txGreen:TH.txRed}}>Recupero {recPct}%</span>
             </div>
@@ -8487,7 +8508,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const gs=persGoals(player);if(!gs)return null;
         return(
-        <Fisarmonica id="s24-obiettivi-personali" titolo="Obiettivi personali" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
+        <FisHome66 id="s24-obiettivi-personali" titolo="Obiettivi personali" aperta={true} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
           {gs.map((g,i)=>{
             const pct=g.k==="voto"?(g.cur!=null?Math.min(100,Math.round((g.cur/g.target)*100)):0):Math.min(100,Math.round(((g.cur||0)/Math.max(1,g.target))*100));
             return(
@@ -8502,13 +8523,13 @@ const getThisWeekMatchday=()=>{
             </div>);
           })}
           <div style={{fontSize:FS.caption,color:TH.muted,fontStyle:"italic"}}>A fine stagione presenti il conto a te stesso.</div>
-        </Card></Fisarmonica>);
+        </FisHome66>);
       })()}
       {/* Sprint 110 — Promozioni/Retrocessioni fine stagione precedente */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.lastLeagueShift&&player.lastLeagueShift.season===(player.season||1)-1&&(player.week||1)<=4&&(()=>{
         const ls=player.lastLeagueShift;
         return(
-          <Fisarmonica id="s24-movimenti-di-lega-fine-s" titolo={<>Movimenti di Lega — Fine S.{ls.season}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px",border:`1px solid ${TH.cardBorder}`}}>
+          <FisHome66 id="s24-movimenti-di-lega-fine-s" titolo={<>Movimenti di Lega — Fine S.{ls.season}</>} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px",border:`1px solid ${TH.cardBorder}`}}>
             {ls.promoted.length>0&&(
               <div style={{display:"flex",alignItems:"flex-start",gap:6,marginBottom:5}}>
                 <span style={{fontSize:FS.small,flexShrink:0}}>⬆️</span>
@@ -8527,7 +8548,7 @@ const getThisWeekMatchday=()=>{
                 </div>
               </div>
             )}
-          </Card></Fisarmonica>
+          </FisHome66>
         );
       })()}
 
@@ -8636,12 +8657,12 @@ const getThisWeekMatchday=()=>{
            la sola sigla («KCC») e il badge «ORA!»: ora e' una sezione come le altre (fisarmonica aperta), col nome per
            intero, cosa si gioca e quando, e sta SUBITO DOPO la partita della settimana. Rosso __CPM_NO_EURO24. */
         if(!(typeof window!=="undefined"&&window.__CPM_NO_EURO24)){const _full={UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[eu.competition]||"Coppa europea";
-          return(<Fisarmonica id="home-euro24" titolo={<>{_ce} {_full}</>} aperta={true}><Card data-cpm="euro-home24" style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"10px 12px"}}>
+          return(<FisHome66 id="home-euro24" titolo={<>{_ce} {_full}</>} aperta={true} cardProps={{"data-cpm":"euro-home24"}} cardStyle={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"10px 12px"}}>
             <div style={{display:"flex",justifyContent:"space-between",gap:10,fontSize:FS.small,color:TH.text,marginBottom:6}}>
               <span>{_grp?"Fase a gironi":_pl}</span>{_grp&&<b className="cpm-num">{eu.pts||0} punti nel girone</b>}</div>
             <div style={{fontSize:FS.small,color:TH.muted,marginBottom:10}}>{_euNext?(_now?("Si gioca questa settimana: contro "+_euNext.opponentName):("Prossima partita: contro "+_euNext.opponentName+" · settimana "+_euNext.week)):"Il calendario completo è nella sezione Coppe."}</div>
             <Btn v="outline" fw onClick={()=>{goTab("coppe");}} style={{padding:"8px"}}>Girone e calendario →</Btn>
-          </Card></Fisarmonica>);}
+          </FisHome66>);}
         return(
           <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${_cc}44`,"1px solid "+TH.cardBorder),background:_n30(`${_cc}0a`,TH.card),cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
             <div style={{display:"flex",alignItems:"center",gap:9}}>
