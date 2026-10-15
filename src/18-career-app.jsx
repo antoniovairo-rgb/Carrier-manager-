@@ -1340,6 +1340,7 @@ const getThisWeekMatchday=()=>{
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
+      apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
       apriNC243:()=>{try{const q=player.nationsCupQueue;if(!q||!q.active||q.done)return "no-nc";startNationsCupMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-243] solo il guardiano intervista-231 (braccio Nazionale) */
       apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
       playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
@@ -7728,6 +7729,40 @@ const getThisWeekMatchday=()=>{
       {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&!_fila23&&(()=>{
         const _nm377=(player.agent&&player.agent.name)||agentNameFor(player);
         const _ask377=agentCheckinAsk(player,player.agent);
+        const _chiudi377=()=>{
+                setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
+                  log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
+                setCi377Sel(null);
+              };
+        /* [giro 24 PO-253, foto PO 15/10 «cornice del procuratore non standard»] IL CONFRONTO NELLA CORNICE STANDARD (ModalPannello,
+           decisione PO-230 13/10): «Il confronto» e' il titolo nella testa, non piu' un occhiello dentro il corpo; nel corpo figurina e
+           parole del procuratore; le quattro risposte (o «Chiudi») nel piede. Testo identico. Rosso __CPM_NO_PROC253 = la cornice di prima. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_PROC253))return(
+        <Modal open dismissable={false} width={440} title="Il confronto" pannelloCpm="confronto253"
+          footer={<div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:SP.sm}}>
+            {_ci377Sel?<Btn v="primary" size="lg" fw onClick={_chiudi377}>Chiudi</Btn>
+              :_ask377.opzioni.map(o=>(
+                <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
+                  onClick={()=>setCi377Sel(o.id)}>{o.label}</Btn>))}
+          </div>}>
+          <div data-cpm="confronto23">
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm377}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
+            </div>
+            {_ci377Sel?(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
+            ):(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
+                {_ask377.ricordo&&<div style={{fontSize:FS.small,color:TH.txAmber,marginBottom:SP.sm,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
+                <div style={{marginBottom:SP.sm}}>«{_ask377.lettura}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ask377.domanda}»</div>
+              </div>
+            )}
+          </div>
+        </Modal>);
         return(
         /* [24/09 POC — commento PO «standardizza e uniforma la schermata»] il confronto col procuratore nel Modal del kit */
         <Modal open dismissable={false} width={440}>
@@ -7740,11 +7775,7 @@ const getThisWeekMatchday=()=>{
             </div>
             {_ci377Sel?(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
-              <Btn v="primary" size="lg" fw onClick={()=>{
-                setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
-                  log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
-                setCi377Sel(null);
-              }}>Chiudi</Btn>
+              <Btn v="primary" size="lg" fw onClick={_chiudi377}>Chiudi</Btn>
             </>):(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
                 <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
@@ -7765,6 +7796,56 @@ const getThisWeekMatchday=()=>{
         const _nm376=(agentIntro.solo&&player.agent&&player.agent.name)||agentNameFor(player);
         const _ln376=agentIntroLine(player,_nm376,agentIntro.amb);
         const _op376=agentIntroOptions(player);
+        const _firma376=()=>{
+                const _a=agentIntro.amb;
+                /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
+                   serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
+                   paga due volte e non si rifirma. */
+                if(agentIntro.solo){
+                  setPlayer(p=>(p.agent?{...p,agent:{...p.agent,memory:agentRemember(p.agent.memory,{k:"ambizione",v:_a})}}:p));
+                  setAgentIntro(null);return;
+                }
+                const _f=agentIntro.fee||agentHireFee(player);
+                if((player.bankBalance||0)<_f){notify("💸 Fondi insufficienti: l'ingaggio costa "+_f.toLocaleString("it-IT")+"€",TH.danger);setAgentIntro(null);return;}
+                setPlayer(p=>({...agentHirePatch(p,_f,_a),log:[`🤵 Hai ingaggiato ${_nm376}.`,...(p.log||[])].slice(0,60)}));
+                notify("🤵 Agente ingaggiato! (onorario d'ingaggio "+_f.toLocaleString("it-IT")+"€)",TH.success);
+                setAgentIntro(null);
+              };
+        const _firmaLbl376=agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`;
+        /* [giro 24 PO-253] IL PRIMO INCONTRO NELLA CORNICE STANDARD (ModalPannello, PO-230): titolo «Il primo incontro» nella testa,
+           figurina e parole nel corpo, le scelte e «Ci penso ancora» (poi «Firma»/«Torna indietro») nel piede. Testo identico.
+           Rosso __CPM_NO_PROC253 = la cornice di prima. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_PROC253))return(
+        <Modal open dismissable={false} width={440} title="Il primo incontro" pannelloCpm="procuratore253"
+          footer={<div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:SP.sm}}>
+            {!agentIntro.amb?(<>
+              {_op376.map(o=>(
+                <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
+                  onClick={()=>setAgentIntro(a=>({...a,amb:o.id}))}>{o.label}</Btn>
+              ))}
+              <Btn v="ghost" fw onClick={()=>setAgentIntro(null)}>Ci penso ancora</Btn>
+            </>):(<>
+              <Btn v="primary" size="lg" fw onClick={_firma376}>{_firmaLbl376}</Btn>
+              <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
+            </>)}
+          </div>}>
+          <div data-cpm="procuratore23">
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
+            </div>
+            {!agentIntro.amb?(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.saluto}»</div>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.ruolo}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ln376.domanda}»</div>
+              </div>
+            ):(
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
+            )}
+          </div>
+        </Modal>);
         return(
         /* [24/09 POC — commento PO sull'anteprima «schermata da uniformare e standardizzare» (primo incontro, ambizione, firma)]
            il primo incontro col procuratore passa nel Modal del kit: pannello chiaro, figurina, citazioni in un riquadro neutro,
@@ -7794,21 +7875,7 @@ const getThisWeekMatchday=()=>{
               </div>
             </>):(<>
               <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
-              <Btn v="primary" size="lg" fw onClick={()=>{
-                const _a=agentIntro.amb;
-                /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
-                   serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
-                   paga due volte e non si rifirma. */
-                if(agentIntro.solo){
-                  setPlayer(p=>(p.agent?{...p,agent:{...p.agent,memory:agentRemember(p.agent.memory,{k:"ambizione",v:_a})}}:p));
-                  setAgentIntro(null);return;
-                }
-                const _f=agentIntro.fee||agentHireFee(player);
-                if((player.bankBalance||0)<_f){notify("💸 Fondi insufficienti: l'ingaggio costa "+_f.toLocaleString("it-IT")+"€",TH.danger);setAgentIntro(null);return;}
-                setPlayer(p=>({...agentHirePatch(p,_f,_a),log:[`🤵 Hai ingaggiato ${_nm376}.`,...(p.log||[])].slice(0,60)}));
-                notify("🤵 Agente ingaggiato! (onorario d'ingaggio "+_f.toLocaleString("it-IT")+"€)",TH.success);
-                setAgentIntro(null);
-              }}>{agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`}</Btn>
+              <Btn v="primary" size="lg" fw onClick={_firma376}>{_firmaLbl376}</Btn>
               <div style={{marginTop:10,textAlign:"center"}}>
                 <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
               </div>
