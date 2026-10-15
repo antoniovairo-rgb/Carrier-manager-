@@ -23,7 +23,9 @@ async function braccio(rosso) {
   const t0 = k => { const i = sc.beats.indexOf(k); return i < 0 ? null : { a: sc.beatsD.slice(0, i).reduce((x, y) => x + y, 0), d: sc.beatsD[i] }; };
   const warp = async t => { await p.evaluate(v => { window.__CPM_CERT_SET = v; }, t); await sleep(2500); };
   const cap = t0('captain');
-  if (cap) { const m = []; for (const f of [0.5, 0.8]) { await warp(cap.a + cap.d * f); const q = await p.evaluate(() => window.__CPM_PREMIO23 || null); if (q && q.beat === 'captain' && q.maniY != null) m.push(q.maniY); }
+  /* in headless il clock di scena va a 1/10-1/30 del reale: la clip d'alzata arriva all'apice quando arriva. Si tiene il tempo di
+     cerimonia FERMO a meta' beat (riarmandolo) e si campiona fino a 8 s: conta il massimo, non l'istante */
+  if (cap) { const m = []; for (let k = 0; k < 8; k++) { await p.evaluate(v => { window.__CPM_CERT_SET = v; }, cap.a + cap.d * 0.5); await sleep(1000); const q = await p.evaluate(() => window.__CPM_PREMIO23 || null); if (q && q.beat === 'captain' && q.maniY != null) m.push(q.maniY); if (m.length && Math.max(...m) >= 2.0) break; }
     o.maniCap = m.length ? Math.max(...m) : null; }
   const pa = t0('pass');
   if (pa) { await p.evaluate(() => { window.__CPM_PASSA137 = { campioni: [] }; });
