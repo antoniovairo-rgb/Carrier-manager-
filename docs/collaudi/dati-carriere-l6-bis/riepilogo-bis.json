@@ -1,0 +1,788 @@
+{
+ "generato": "2026-10-15T23:37:31.879Z",
+ "syn": {
+  "gruppo": "sintetiche",
+  "carriere": 3,
+  "stagioni": 30,
+  "fine": {
+   "ok": 3
+  },
+  "pageerrors": 0,
+  "S_n": 30,
+  "rinnovi": {
+   "tentativi": 71,
+   "accettati": 8,
+   "rifiutatiDalClub": 63,
+   "ctaAssente": 0,
+   "altro": 0,
+   "carriereConAccettato": 2,
+   "carriereSenzaOfferta": 1,
+   "carriereSenzaOffertaDettaglio": [
+    {
+     "f": "syn-00.json",
+     "tentativi": 33,
+     "rifiuti": 33,
+     "cta": 0,
+     "trustMin": 12
+    }
+   ],
+   "durataAccettata": {
+    "1": 4,
+    "2": 1,
+    "3": 3
+   },
+   "unAnnoInutile": 3,
+   "daSvincolato": 3,
+   "trustRifiuti": 30.15,
+   "trustAccettati": 81.35
+  },
+  "contratto": {
+   "stagioniScaduteAFine": 3,
+   "settimaneDaSvincolato": 286,
+   "settimaneTot": 30,
+   "partiteDaSvincolato": 102,
+   "partiteTot": 1009
+  },
+  "offerte": {
+   "totali": 21,
+   "perCarriera": 7,
+   "carriereConOfferta": 3,
+   "accettate": 6,
+   "accettateConCambioClub": 6,
+   "rifiutate": 15,
+   "perStagione": {
+    "1": 2,
+    "2": 1,
+    "3": 2,
+    "4": 1,
+    "5": 3,
+    "6": 3,
+    "8": 2,
+    "9": 2,
+    "10": 5
+   },
+   "cambiClubStagionali": 6
+  },
+  "saldo": {
+   "stagioniPro": 30,
+   "stagioniVariazioneZero": 3,
+   "variazioneMedia": 470163.37,
+   "variazioneMediaContrattoValido": 410568.76,
+   "saldoFinaleMedio": 4701633.67,
+   "saldoFinaleMax": 6696532
+  },
+  "perFascia": {
+   "affermazione 21-25": {
+    "stagioni": 15,
+    "ovr": 74.87,
+    "gol": 6.93,
+    "assist": 3.73,
+    "giocate": 26.2,
+    "partite": 33.27,
+    "golPerGiocata": 0.265
+   },
+   "gavetta 17-20": {
+    "stagioni": 9,
+    "ovr": 67.22,
+    "gol": 6,
+    "assist": 4.22,
+    "giocate": 33.89,
+    "partite": 34.44,
+    "golPerGiocata": 0.177
+   },
+   "élite 26-30": {
+    "stagioni": 6,
+    "ovr": 80.17,
+    "gol": 9.17,
+    "assist": 4.17,
+    "giocate": 33.33,
+    "partite": 33.33,
+    "golPerGiocata": 0.275
+   }
+  },
+  "perIndice": {
+   "1": {
+    "stagioni": 3,
+    "ovr": 65,
+    "gol": 6,
+    "assist": 5.33,
+    "giocate": 34,
+    "partite": 34,
+    "golPerGiocata": 0.176
+   },
+   "2": {
+    "stagioni": 3,
+    "ovr": 66.67,
+    "gol": 6.67,
+    "assist": 2.67,
+    "giocate": 35,
+    "partite": 35.33,
+    "golPerGiocata": 0.19
+   },
+   "3": {
+    "stagioni": 3,
+    "ovr": 69,
+    "gol": 5.33,
+    "assist": 3.33,
+    "giocate": 32.67,
+    "partite": 34,
+    "golPerGiocata": 0.163
+   },
+   "4": {
+    "stagioni": 3,
+    "ovr": 71.33,
+    "gol": 5.33,
+    "assist": 2.67,
+    "giocate": 24.33,
+    "partite": 35.67,
+    "golPerGiocata": 0.219
+   },
+   "5": {
+    "stagioni": 3,
+    "ovr": 73.33,
+    "gol": 7.33,
+    "assist": 3.33,
+    "giocate": 28,
+    "partite": 28,
+    "golPerGiocata": 0.262
+   },
+   "6": {
+    "stagioni": 3,
+    "ovr": 75.33,
+    "gol": 7.67,
+    "assist": 6,
+    "giocate": 36.33,
+    "partite": 37.33,
+    "golPerGiocata": 0.211
+   },
+   "7": {
+    "stagioni": 3,
+    "ovr": 76.67,
+    "gol": 11,
+    "assist": 6.33,
+    "giocate": 35.67,
+    "partite": 36,
+    "golPerGiocata": 0.308
+   },
+   "8": {
+    "stagioni": 3,
+    "ovr": 78.33,
+    "gol": 5.67,
+    "assist": 2.33,
+    "giocate": 18,
+    "partite": 29.33,
+    "golPerGiocata": 0.315
+   },
+   "9": {
+    "stagioni": 3,
+    "ovr": 79.67,
+    "gol": 7.67,
+    "assist": 2.67,
+    "giocate": 26.33,
+    "partite": 37.67,
+    "golPerGiocata": 0.291
+   },
+   "10": {
+    "stagioni": 3,
+    "ovr": 81,
+    "gol": 8.33,
+    "assist": 5,
+    "giocate": 29,
+    "partite": 29,
+    "golPerGiocata": 0.287
+   }
+  },
+  "perLivello": {
+   "debole": {
+    "stagioni": 20,
+    "ovr": 72.55,
+    "gol": 6.6,
+    "assist": 3.4,
+    "giocate": 30.7,
+    "partite": 34.1,
+    "golPerGiocata": 0.215
+   },
+   "media": {
+    "stagioni": 10,
+    "ovr": 75.8,
+    "gol": 8.1,
+    "assist": 5.1,
+    "giocate": 28.4,
+    "partite": 32.7,
+    "golPerGiocata": 0.285
+   }
+  },
+  "perArchetipo": {
+   "centravanti": {
+    "stagioni": 10,
+    "ovr": 72.5,
+    "gol": 7.7,
+    "assist": 3.6,
+    "giocate": 35.3,
+    "partite": 35.3,
+    "golPerGiocata": 0.218
+   },
+   "enfant": {
+    "stagioni": 10,
+    "ovr": 72.6,
+    "gol": 5.5,
+    "assist": 3.2,
+    "giocate": 26.1,
+    "partite": 32.9,
+    "golPerGiocata": 0.211
+   },
+   "fantasista": {
+    "stagioni": 10,
+    "ovr": 75.8,
+    "gol": 8.1,
+    "assist": 5.1,
+    "giocate": 28.4,
+    "partite": 32.7,
+    "golPerGiocata": 0.285
+   }
+  },
+  "perRuolo": {
+   "primavera": {
+    "stagioni": 8,
+    "ovr": 76.75,
+    "gol": 6,
+    "assist": 3.75,
+    "giocate": 19.25,
+    "partite": 28.75,
+    "golPerGiocata": 0.312
+   },
+   "riserva": {
+    "stagioni": 20,
+    "ovr": 72.2,
+    "gol": 7.35,
+    "assist": 3.95,
+    "giocate": 33.4,
+    "partite": 35.15,
+    "golPerGiocata": 0.22
+   },
+   "rotazione": {
+    "stagioni": 2,
+    "ovr": 75.5,
+    "gol": 9,
+    "assist": 5,
+    "giocate": 38,
+    "partite": 38,
+    "golPerGiocata": 0.237
+   }
+  },
+  "partita": {
+   "golEroePerPartita": 0.211,
+   "golEroePerGiocata": 0.237,
+   "quotaEroe": 24.9
+  },
+  "titolarita": {
+   "gareValutate": 1020,
+   "conContratto": 888,
+   "titolare": 85.4,
+   "panchina": 14.6,
+   "nonConvocato": 0,
+   "minutiTeoriciMedi": 80.26,
+   "daSvincolato": 123,
+   "perStagione": {
+    "1": {
+     "gare": 102,
+     "titolare": 100,
+     "minuti": 90
+    },
+    "2": {
+     "gare": 101,
+     "titolare": 100,
+     "minuti": 90
+    },
+    "3": {
+     "gare": 98,
+     "titolare": 68.4,
+     "minuti": 68.54
+    },
+    "4": {
+     "gare": 68,
+     "titolare": 94.1,
+     "minuti": 86.29
+    },
+    "5": {
+     "gare": 84,
+     "titolare": 78.6,
+     "minuti": 76.45
+    },
+    "6": {
+     "gare": 99,
+     "titolare": 77.8,
+     "minuti": 75.87
+    },
+    "7": {
+     "gare": 101,
+     "titolare": 64.4,
+     "minuti": 65.54
+    },
+    "8": {
+     "gare": 68,
+     "titolare": 80.9,
+     "minuti": 76.56
+    },
+    "9": {
+     "gare": 68,
+     "titolare": 100,
+     "minuti": 90
+    },
+    "10": {
+     "gare": 99,
+     "titolare": 93.9,
+     "minuti": 86.19
+    }
+   },
+   "perRuoloSquadra": {
+    "riserva": {
+     "gare": 632,
+     "titolare": 91.1
+    },
+    "primavera": {
+     "gare": 187,
+     "titolare": 60.4
+    },
+    "rotazione": {
+     "gare": 69,
+     "titolare": 100
+    }
+   }
+  },
+  "nazionale": {
+   "carriereConPresenza": 0,
+   "presenzeMax": 0,
+   "presenzeTot": 0,
+   "stagioniConPresenzeNuove": 0,
+   "presenzeNuove": 0,
+   "stagioniConPresenzeNuoveDaSvincolatoTuttaStagione": 0,
+   "presenzeDaSvincolatoTuttaStagione": 0,
+   "stagioniConPresenzeNuoveConSettimaneSvincolato": 0,
+   "primaPresenza": [],
+   "valutazioniCancello": 69,
+   "valutazioniPerStagione": 2.3,
+   "valutazioniPassate": 7,
+   "settimaneValutate": [
+    [
+     "35",
+     24
+    ],
+    [
+     "28",
+     23
+    ],
+    [
+     "19",
+     19
+    ],
+    [
+     "9",
+     3
+    ]
+   ]
+  },
+  "nazionaleGiocata": {
+   "partite": 0,
+   "schermateConvocazione": 0,
+   "primaConvocazione": 0,
+   "partiteLiveArrivateInCampo": 0,
+   "presenzeContate": 0,
+   "daSvincolato": 0,
+   "msMedi": null,
+   "etaDebutto": null,
+   "dettaglio": []
+  },
+  "impulsi": {
+   "catalogo": 106,
+   "senzaCondizioneCatalogo": 40,
+   "eventi": 707,
+   "perStagione": 23.57,
+   "eventiSenzaCondizione": 331,
+   "quotaSenzaCondizione": 46.8,
+   "unicPerCarriera": 92,
+   "ripetizioni": 431
+  },
+  "creazione": []
+ },
+ "u18": {
+  "gruppo": "creazione U18",
+  "carriere": 0,
+  "stagioni": 0,
+  "fine": {},
+  "pageerrors": 0,
+  "S_n": 0,
+  "rinnovi": {
+   "tentativi": 0,
+   "accettati": 0,
+   "rifiutatiDalClub": 0,
+   "ctaAssente": 0,
+   "altro": 0,
+   "carriereConAccettato": 0,
+   "carriereSenzaOfferta": 0,
+   "carriereSenzaOffertaDettaglio": [],
+   "durataAccettata": {},
+   "unAnnoInutile": 0,
+   "daSvincolato": 0,
+   "trustRifiuti": null,
+   "trustAccettati": null
+  },
+  "contratto": {
+   "stagioniScaduteAFine": 0,
+   "settimaneDaSvincolato": 0,
+   "settimaneTot": 0,
+   "partiteDaSvincolato": 0,
+   "partiteTot": 0
+  },
+  "offerte": {
+   "totali": 0,
+   "perCarriera": null,
+   "carriereConOfferta": 0,
+   "accettate": 0,
+   "accettateConCambioClub": 0,
+   "rifiutate": 0,
+   "perStagione": {},
+   "cambiClubStagionali": 0
+  },
+  "saldo": {
+   "stagioniPro": 0,
+   "stagioniVariazioneZero": 0,
+   "variazioneMedia": null,
+   "variazioneMediaContrattoValido": null,
+   "saldoFinaleMedio": null,
+   "saldoFinaleMax": 0
+  },
+  "perFascia": {},
+  "perIndice": {},
+  "perLivello": {},
+  "perArchetipo": {},
+  "perRuolo": {},
+  "partita": {
+   "golEroePerPartita": 0,
+   "golEroePerGiocata": 0,
+   "quotaEroe": null
+  },
+  "titolarita": {
+   "gareValutate": 0,
+   "conContratto": 0,
+   "titolare": null,
+   "panchina": null,
+   "nonConvocato": null,
+   "minutiTeoriciMedi": null,
+   "daSvincolato": 0,
+   "perStagione": {},
+   "perRuoloSquadra": {}
+  },
+  "nazionale": {
+   "carriereConPresenza": 0,
+   "presenzeMax": 0,
+   "presenzeTot": 0,
+   "stagioniConPresenzeNuove": 0,
+   "presenzeNuove": 0,
+   "stagioniConPresenzeNuoveDaSvincolatoTuttaStagione": 0,
+   "presenzeDaSvincolatoTuttaStagione": 0,
+   "stagioniConPresenzeNuoveConSettimaneSvincolato": 0,
+   "primaPresenza": [],
+   "valutazioniCancello": 0,
+   "valutazioniPerStagione": null,
+   "valutazioniPassate": 0,
+   "settimaneValutate": []
+  },
+  "nazionaleGiocata": {
+   "partite": 0,
+   "schermateConvocazione": 0,
+   "primaConvocazione": 0,
+   "partiteLiveArrivateInCampo": 0,
+   "presenzeContate": 0,
+   "daSvincolato": 0,
+   "msMedi": null,
+   "etaDebutto": null,
+   "dettaglio": []
+  },
+  "impulsi": {
+   "catalogo": 0,
+   "senzaCondizioneCatalogo": 0,
+   "eventi": 0,
+   "perStagione": 0,
+   "eventiSenzaCondizione": 0,
+   "quotaSenzaCondizione": null,
+   "unicPerCarriera": null,
+   "ripetizioni": 0
+  },
+  "creazione": []
+ },
+ "naz": {
+  "gruppo": "Nazionale giocata",
+  "carriere": 0,
+  "stagioni": 0,
+  "fine": {},
+  "pageerrors": 0,
+  "S_n": 0,
+  "rinnovi": {
+   "tentativi": 0,
+   "accettati": 0,
+   "rifiutatiDalClub": 0,
+   "ctaAssente": 0,
+   "altro": 0,
+   "carriereConAccettato": 0,
+   "carriereSenzaOfferta": 0,
+   "carriereSenzaOffertaDettaglio": [],
+   "durataAccettata": {},
+   "unAnnoInutile": 0,
+   "daSvincolato": 0,
+   "trustRifiuti": null,
+   "trustAccettati": null
+  },
+  "contratto": {
+   "stagioniScaduteAFine": 0,
+   "settimaneDaSvincolato": 0,
+   "settimaneTot": 0,
+   "partiteDaSvincolato": 0,
+   "partiteTot": 0
+  },
+  "offerte": {
+   "totali": 0,
+   "perCarriera": null,
+   "carriereConOfferta": 0,
+   "accettate": 0,
+   "accettateConCambioClub": 0,
+   "rifiutate": 0,
+   "perStagione": {},
+   "cambiClubStagionali": 0
+  },
+  "saldo": {
+   "stagioniPro": 0,
+   "stagioniVariazioneZero": 0,
+   "variazioneMedia": null,
+   "variazioneMediaContrattoValido": null,
+   "saldoFinaleMedio": null,
+   "saldoFinaleMax": 0
+  },
+  "perFascia": {},
+  "perIndice": {},
+  "perLivello": {},
+  "perArchetipo": {},
+  "perRuolo": {},
+  "partita": {
+   "golEroePerPartita": 0,
+   "golEroePerGiocata": 0,
+   "quotaEroe": null
+  },
+  "titolarita": {
+   "gareValutate": 0,
+   "conContratto": 0,
+   "titolare": null,
+   "panchina": null,
+   "nonConvocato": null,
+   "minutiTeoriciMedi": null,
+   "daSvincolato": 0,
+   "perStagione": {},
+   "perRuoloSquadra": {}
+  },
+  "nazionale": {
+   "carriereConPresenza": 0,
+   "presenzeMax": 0,
+   "presenzeTot": 0,
+   "stagioniConPresenzeNuove": 0,
+   "presenzeNuove": 0,
+   "stagioniConPresenzeNuoveDaSvincolatoTuttaStagione": 0,
+   "presenzeDaSvincolatoTuttaStagione": 0,
+   "stagioniConPresenzeNuoveConSettimaneSvincolato": 0,
+   "primaPresenza": [],
+   "valutazioniCancello": 0,
+   "valutazioniPerStagione": null,
+   "valutazioniPassate": 0,
+   "settimaneValutate": []
+  },
+  "nazionaleGiocata": {
+   "partite": 0,
+   "schermateConvocazione": 0,
+   "primaConvocazione": 0,
+   "partiteLiveArrivateInCampo": 0,
+   "presenzeContate": 0,
+   "daSvincolato": 0,
+   "msMedi": null,
+   "etaDebutto": null,
+   "dettaglio": []
+  },
+  "impulsi": {
+   "catalogo": 0,
+   "senzaCondizioneCatalogo": 0,
+   "eventi": 0,
+   "perStagione": 0,
+   "eventiSenzaCondizione": 0,
+   "quotaSenzaCondizione": null,
+   "unicPerCarriera": null,
+   "ripetizioni": 0
+  },
+  "creazione": []
+ },
+ "gemelli": {
+  "righe": [
+   {
+    "f": "gem-01-nessuna.json",
+    "base": 1,
+    "arm": "nessuna",
+    "stagioni": 4,
+    "ovrFine": 76,
+    "dOvr": 8,
+    "statsFine": 579,
+    "settimaneInfortunio": 2,
+    "moraleMedia": 94.74,
+    "fatigueMedia": 38.42,
+    "popFine": 82,
+    "trustFine": 33,
+    "saldoFine": 3931148,
+    "legacy": 234,
+    "patrimonio": 6,
+    "gol": 28,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-nessuna2.json",
+    "base": 1,
+    "arm": "nessuna2",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 574,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 93.4,
+    "fatigueMedia": 37.92,
+    "popFine": 71,
+    "trustFine": 22,
+    "saldoFine": 3126640,
+    "legacy": 225,
+    "patrimonio": 6,
+    "gol": 23,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-staff-nutri.json",
+    "base": 1,
+    "arm": "staff-nutri",
+    "stagioni": 4,
+    "ovrFine": 76,
+    "dOvr": 8,
+    "statsFine": 589,
+    "settimaneInfortunio": 2,
+    "moraleMedia": 94.87,
+    "fatigueMedia": 39.04,
+    "popFine": 86,
+    "trustFine": 42,
+    "saldoFine": 4303748,
+    "legacy": 164,
+    "patrimonio": 6,
+    "gol": 25,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-staff-trainer.json",
+    "base": 1,
+    "arm": "staff-trainer",
+    "stagioni": 4,
+    "ovrFine": 77,
+    "dOvr": 9,
+    "statsFine": 589,
+    "settimaneInfortunio": 10,
+    "moraleMedia": 94.32,
+    "fatigueMedia": 37.45,
+    "popFine": 67,
+    "trustFine": 38,
+    "saldoFine": 3639320,
+    "legacy": 142,
+    "patrimonio": 6,
+    "gol": 18,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   }
+  ],
+  "delta": {
+   "1": [
+    {
+     "arm": "nessuna2",
+     "dOvr": -1,
+     "dStats": -5,
+     "dInf": 16,
+     "dMorale": -1.34,
+     "dFatica": -0.5,
+     "dPop": -11,
+     "dTrust": -11,
+     "dSaldo": -804508,
+     "dLegacy": -9,
+     "dGol": -5
+    },
+    {
+     "arm": "staff-nutri",
+     "dOvr": 0,
+     "dStats": 10,
+     "dInf": 0,
+     "dMorale": 0.13,
+     "dFatica": 0.62,
+     "dPop": 4,
+     "dTrust": 9,
+     "dSaldo": 372600,
+     "dLegacy": -70,
+     "dGol": -3
+    },
+    {
+     "arm": "staff-trainer",
+     "dOvr": 1,
+     "dStats": 10,
+     "dInf": 8,
+     "dMorale": -0.42,
+     "dFatica": -0.97,
+     "dPop": -15,
+     "dTrust": 5,
+     "dSaldo": -291828,
+     "dLegacy": -92,
+     "dGol": -10
+    }
+   ]
+  }
+ },
+ "fase1": {
+  "carriere": 30,
+  "stagioni": 300,
+  "durataZero": 210,
+  "variazioneZero": 210,
+  "perFascia": {
+   "affermazione 21-25": {
+    "stagioni": 131,
+    "gol": 3.69,
+    "golPerGiocata": 0.222
+   },
+   "declino 31+": {
+    "stagioni": 19,
+    "gol": 0,
+    "golPerGiocata": 0
+   },
+   "gavetta 17-20": {
+    "stagioni": 40,
+    "gol": 8.25,
+    "golPerGiocata": 0.255
+   },
+   "élite 26-30": {
+    "stagioni": 110,
+    "gol": 0.24,
+    "golPerGiocata": 0.045
+   }
+  },
+  "golEroePerPartita": 0.076,
+  "quotaEroe": 7.7,
+  "offerte": 0,
+  "carriereConPresenza": 20
+ },
+ "nazVsSyn": []
+}
