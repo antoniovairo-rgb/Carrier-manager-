@@ -1,0 +1,3 @@
+verde {"campioni":[{"chip":false,"testo":[],"misura":3,"fase":"hl_choose"},{"chip":false,"testo":[],"misura":8,"fase":"hl_move"},{"chip":false,"testo":[],"misura":11,"fase":"hl_move"}],"errori":0}
+rosso {"campioni":[{"chip":true,"testo":["3 fps"],"misura":0,"fase":"hl_choose"},{"chip":true,"testo":["5 fps"],"misura":6,"fase":"hl_move"},{"chip":true,"testo":["9 fps"],"misura":10,"fase":"hl_move"}],"errori":0}
+✅ fps-249 verde (nessuna scritta fps al giocatore, misura viva) e il rosso si vede

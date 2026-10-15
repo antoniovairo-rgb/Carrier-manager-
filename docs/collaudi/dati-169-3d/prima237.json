@@ -1,0 +1,138 @@
+{
+ "A": {
+  "frames": 142,
+  "p50": 133.2,
+  "p95": 500,
+  "max": 12532.8,
+  "sopra50": 113,
+  "sopra100": 88,
+  "sopra250": 39,
+  "longtask": 9,
+  "ltSomma": 19762,
+  "ltMax": 12453,
+  "attribuzione": {
+   "clone": 112,
+   "shader": 9067,
+   "buffer": 6,
+   "texture": 2543
+  },
+  "peggiori": [
+   {
+    "a": 2.8,
+    "ms": 12453,
+    "att": {
+     "shader": 9018,
+     "buffer": 6,
+     "texture": 2539
+    }
+   },
+   {
+    "a": 18.5,
+    "ms": 2673,
+    "att": {
+     "clone": 4,
+     "shader": 49
+    }
+   },
+   {
+    "a": 15.3,
+    "ms": 2182,
+    "att": {}
+   },
+   {
+    "a": 31.2,
+    "ms": 1357,
+    "att": {
+     "texture": 1
+    }
+   },
+   {
+    "a": 2.1,
+    "ms": 707,
+    "att": {}
+   },
+   {
+    "a": 24.8,
+    "ms": 160,
+    "att": {}
+   }
+  ]
+ },
+ "B": {
+  "frames": 288,
+  "p50": 83.3,
+  "p95": 200,
+  "max": 10832.9,
+  "sopra50": 259,
+  "sopra100": 75,
+  "sopra250": 8,
+  "longtask": 7,
+  "ltSomma": 16531,
+  "ltMax": 10743,
+  "attribuzione": {
+   "clone": 96,
+   "shader": 7796,
+   "buffer": 8,
+   "texture": 2758
+  },
+  "peggiori": [
+   {
+    "a": 1.6,
+    "ms": 10743,
+    "att": {
+     "shader": 7169,
+     "buffer": 8,
+     "texture": 2757
+    }
+   },
+   {
+    "a": 15.4,
+    "ms": 3383,
+    "att": {
+     "clone": 3,
+     "buffer": 0,
+     "shader": 627
+    }
+   },
+   {
+    "a": 12.4,
+    "ms": 1942,
+    "att": {}
+   },
+   {
+    "a": 23,
+    "ms": 225,
+    "att": {}
+   },
+   {
+    "a": 41,
+    "ms": 119,
+    "att": {
+     "texture": 1
+    }
+   },
+   {
+    "a": 21.9,
+    "ms": 67,
+    "att": {}
+   }
+  ]
+ },
+ "pre": {
+  "pre": {
+   "fatti": 28,
+   "tot": 28,
+   "t0": 1792067121410,
+   "fine": 1934
+  },
+  "teste": [
+   "brown",
+   "black",
+   "auburn",
+   "blond"
+  ]
+ },
+ "rosso": "",
+ "finestra": 45000,
+ "attesa": 25000
+}

@@ -1,0 +1,12 @@
+
+=== 6 tuffi misurati (anticipo tollerato: 250ms) ===
+  ✅  gi12 · arco 0.79s → tuffo 1.13s · distesa completa -0.10s rispetto all'arrivo
+  ✅  gi13 · arco 0.57s → tuffo 0.89s · distesa completa -0.04s rispetto all'arrivo
+  ✅  gi21 · arco 0.77s → tuffo 1.11s · distesa completa -0.10s rispetto all'arrivo
+  ✅  gi51 · arco 0.62s → tuffo 0.94s · distesa completa -0.09s rispetto all'arrivo
+  ✅  gi97 · arco 0.54s → tuffo 0.86s · distesa completa -0.04s rispetto all'arrivo
+  ✅  gi116 · arco 0.6s → tuffo 0.92s · distesa completa -0.05s rispetto all'arrivo
+
+ANTICIPO della distesa (giudicato) — mediano -0.05s · peggiore -0.10s   (0 = disteso quando la palla arriva; negativo = si butta prima e aspetta)
+
+✅ PASS — quando il portiere completa la distesa, la completa all'arrivo della palla (non prima).
