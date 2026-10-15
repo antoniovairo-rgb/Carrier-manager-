@@ -9673,8 +9673,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            il primo fotogramma della scena e' gia' quello giusto. Il testimone 7.471 lo marca `nascosto` (non e' un salto scoperto). */
         const _nasc261=!!sr.current._sosp261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261);
         if(_nasc261){
-          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._sosp261=0;sr.current._ap261f=1;
+          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._sosp261=0;sr.current._ap261f=1;sr.current._snapF261={x:tLx,z:tLz};
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
+          try{if(P.onCutNeeded)P.onCutNeeded();sr.current._cutAt471=_nowMs471;}catch(_e471){}/* lo stacco resta: copre i riallineamenti del pallone dei primi 300 ms (avvicinamento), ma sopra un'immagine gia' giusta */
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_AP261=(window.__CPM_AP261||0)+1;const _c4=window.__CPM_CAM471;if(_c4&&_c4.length)_c4[_c4.length-1].nascosto=true;}catch(_e){}}
         }else if(sr.current._snapT471>_nowMs471){
           /* ⚠️ DUE TRAPPOLE, tutte e due misurate e non indovinate:
@@ -9693,7 +9694,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           sr.current._snapT471=_nowMs471+120;try{if(P.onCutNeeded)P.onCutNeeded();sr.current._cutAt471=_nowMs471;}catch(_e471){}
           kp=0;kl=0;
         }else{
-          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;
+          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._snapF261={x:tLx,z:tLz};
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
         }
       }
@@ -9938,7 +9939,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          _prc.cam=(_prc.cam|0)+1;}}
       if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
-        const _cut5=Math.hypot(tPx-_in5.px,tPz-_in5.pz)>25||Math.hypot(tLx-_in5.lx,tLz-_in5.lz)>30;
+        /* [giro 40 PO-261 «Prima apertura vuota», rosso __CPM_NO_APERTURA261] lo SNAP di scena e' un taglio anche sotto le soglie di
+           distanza: senza questa riga l'arbitro ripartiva dal bersaglio della scena PRECEDENTE (o della nascita in tribuna) e lo sguardo,
+           appena messo sull'eroe dallo snap, rientrava verso la direzione stantia. Misurato (apertura-261, testimone __CPM_SNAP261):
+           sguardo a 24-27u dal bersaglio dello snap a fine fotogramma, eroe fuori quadro per tutta l'apertura. */
+        const _cut5=Math.hypot(tPx-_in5.px,tPz-_in5.pz)>25||Math.hypot(tLx-_in5.lx,tLz-_in5.lz)>30||(!!sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261));
         if(_cut5){_in5.px=tPx;_in5.py=tPy;_in5.pz=tPz;_in5.lx=tLx;_in5.ly=tLy;_in5.lz=tLz;}
         else{const _k5=Math.min(dt/0.15,1);
           _in5.px+=(tPx-_in5.px)*_k5;_in5.py+=(tPy-_in5.py)*_k5;_in5.pz+=(tPz-_in5.pz)*_k5;
@@ -10164,7 +10169,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dove la palla sta a ndc.y −1.37 (sotto il bordo inferiore) per l'INTERA scena. Ora la guardia vale
          su tutte le fasi dell'highlight: l'eroe mantiene la priorita' (se ha corretto lui, la palla aspetta
          il frame dopo) e la correzione resta rate-capped e solo su camLook → posizione camera intatta. */
-      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
+      /* [giro 40 PO-261, rosso __CPM_NO_APERTURA261] NON sul fotogramma dello SNAP di scena: lo snap del pallone (_ballSnap) viene armato
+         nello stesso fotogramma (r. ~7000) ma si esegue solo al fotogramma dopo (r. ~3633), quindi qui il pallone e' ancora dove l'aveva
+         lasciato la cronaca — misurato fino a 46u dall'eroe — e la guardia girava lo sguardo verso un pallone che non c'e' piu' (scarto
+         15-27u dal bersaglio dello snap, eroe fuori quadro per l'apertura). Dal fotogramma dopo la guardia lavora sul pallone vero. */
+      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&!(sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261))&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
         const _cxB=camera.position.x,_cyB=camera.position.y,_czB=camera.position.z;
         const _dxB=ball.position.x-_cxB,_dzB=ball.position.z-_czB,_dyB=(ball.position.y+0.2)-_cyB;
         const _lxB=camLook.x-_cxB,_lzB=camLook.z-_czB,_lyB=camLook.y-_cyB;
@@ -10312,7 +10321,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             aggiungeva, ed era quello il suo difetto di segno. */
          const _inv697=(!(typeof window!=='undefined'&&window.__CPM_NO697C)&&_cs671._sgn671&&Math.sign(_dax)!==0&&Math.sign(_dax)!==_cs671._sgn671);
          const _max671=(_inv697?1.22:2.62)*dt;/* 70 gradi/s sulle inversioni, 150 sulle panoramiche */
-         const _taglio671=(Math.abs(_dax)>0.5||!!_cs671._cutSnap||!!_cs671._sceneCut);
+         /* [giro 40 PO-261] lo snap AZZERA _cutSnap/_sceneCut nel suo stesso blocco, quindi qui il taglio appena eseguito non si vedeva
+            piu': sotto mezzo radiante il freno trattava lo snap come una panoramica e lasciava lo sguardo sulla direzione VECCHIA, che
+            poi rientrava a passo di lerp (misurato: eroe fuori quadro per tutta l'apertura, sguardo a 20u dal bersaglio). _snapF261
+            vive un fotogramma: quello dello snap. Rosso __CPM_NO_APERTURA261. */
+         const _taglio671=(Math.abs(_dax)>0.5||!!_cs671._cutSnap||!!_cs671._sceneCut||(!!_cs671._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261)));
          if(!_taglio671&&(Math.abs(_dax)>_max671||Math.abs(_day)>_max671)){
            const _axC=_cs671._ax671+Math.max(-_max671,Math.min(_max671,_dax));
            const _ayC=_cs671._ay671+Math.max(-_max671,Math.min(_max671,_day));
@@ -10329,6 +10342,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(Math.abs(_d697)>0.006)_cs671._sgn671=Math.sign(_d697);}}/* [7.697.0] il verso dell'ultimo movimento VERO reso a schermo: e' il riferimento su cui si riconosce l'inversione, e i micro-movimenti sotto la soglia del detector non lo sporcano */
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
+      if(sr.current._snapF261&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _q=(window.__CPM_SNAP261=window.__CPM_SNAP261||[]);if(_q.length<80)_q.push({ph:P.matchPhase||null,nasc:!!sr.current._ap261f,scarto:+Math.hypot(camLook.x-sr.current._snapF261.x,camLook.z-sr.current._snapF261.z).toFixed(1)});}catch(_e){}}/* [giro 40 PO-261] testimone: quanto lo sguardo resta lontano dal bersaglio dello snap a fine fotogramma */
       camera.lookAt(camLook.x,camLook.y,camLook.z);
       /* [7.904.0 gancio test-only per la sonda C4] __CPM_CAM_DUGOUT904({x,y,z,lx,ly,lz}) forza la camera
          a un'inquadratura fissa (es. il dugout, per fotografare la panchina da vicino) — SOVRASCRIVE il
@@ -11334,7 +11348,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       renderer.render(scene,camera);
-      sr.current._ap261f=0;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
+      sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
     };
     loop();
