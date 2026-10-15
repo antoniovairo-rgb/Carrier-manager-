@@ -47,6 +47,10 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | collaudo/zona-g-misura | session_019KNcHwb2Qrt5hWEcEmed8b | zona G sola misura (Haiku): riproduzione PO-222 e PO-223, nessuna correzione | 15/10 13:44 |
 | sviluppo/backup-167 | session_01CQiFQVArtH7SAawpnur9Xh | giro 29 (Opus): PO-167 copia di riserva degli slot e avviso di salvataggio fallito | 15/10 13:44 |
 | sviluppo/grafica-217-066 | session_012vEkGqn532iVnmwkSidaj5 | giro 30 (Opus, sola grafica): PO-217 analisi pre-partita, PO-066 riquadri della home | 15/10 13:44 |
+| lavoro/170 (catene) | session_01WVhPJq2q9dNVkcHxtWCZne | catena notte 7.999.170 (Haiku): giri 23-30 senza il 22 (decisione PO «Subito senza il 22») | 15/10 18:46 |
+| sviluppo/difesa-220-giro31 | session_017bMPz8gmaDe4L7oJGAapAk | giro 31 (Opus, base lavoro/170): PO-220 «Correggi tutto in un giro» — eroe dove dice il motore, arriva sull'uomo, tiene palla dopo il recupero | 15/10 18:47 |
+| sviluppo/passaggi-228-giro32 | session_01TvQgHSy6nzh6WLAi5kn4AS | giro 32 (Opus, base lavoro/170): PO-228 passaggi 739 → ~814 senza toccare gol, tiri, xG | 15/10 18:47 |
+| sviluppo/zona-g-222-223-giro33 | session_018dx3Zod98mFMNic6FBEW51 | giro 33 (Opus, base lavoro/170): eccezione zona G solo PO-222 (squalificato su Simula) e PO-223 (resa investimento legata a puntata e scelta) | 15/10 18:47 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
@@ -65,3 +69,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 - 15/10 14:36 — CONSEGNATI: giro 25b (crediti-254), giro 29 (backup-167), collaudo zona G (PO-222 in parte, PO-223 importo fisso), L6 fase 1 + PO-190 (RAPPORTO-carriere-l6.md). Sessioni archiviate.
 - 15/10 15:37 — CONSEGNATI: giro 27 (PO-207 rigore/punizione ripartenza, PO-257; PO-258 aperta), giro 30 (PO-217, PO-066), collaudo mirato 169 (passaggi 739, PO-243 verificata 3/3, PO-244 verificata salvo amichevole). Sessioni archiviate. In corso: giro 22, giro 28 (match-sequence rosso in esame), collaudo difesa-220.
 - 15/10 16:35 — CONSEGNATI: giro 28 (PO-259 schede 2,25→0,90 a partita), collaudo difesa-220 (A 88%, B 18%, eroe che torna indietro). match-sequence rosso già sulla 169 → PO-262. Sessioni archiviate. In corso: giro 22 (43/48, rosso nomi-219).
+- 15/10 18:47 — 7.999.170 unita su lavoro/170 (8fd95fef: giri 23-30, conflitti solo su liste della catena, STABILITA e coda dei toast 247+256), catena notte avviata su sessione Haiku. Avviati i giri 31 (PO-220), 32 (PO-228), 33 (PO-222/223). Giro 22 ancora in corso → 7.999.171.
