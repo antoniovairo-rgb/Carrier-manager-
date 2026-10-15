@@ -1,0 +1,137 @@
+{
+  "larghezza": 412,
+  "settimane": [],
+  "errori": [],
+  "vietati": {
+    "dashboard": [],
+    "calendario": [],
+    "classifica": [],
+    "home": []
+  },
+  "consegne": {
+    "tabellinoVsTabellone": {
+      "calendarioRisultato": {
+        "homeScore": 0,
+        "awayScore": 1,
+        "won": false,
+        "drew": false
+      },
+      "storiaRisultato": null,
+      "storiaKeys": [
+        "season",
+        "week",
+        "opponent",
+        "oppAbbr",
+        "oppCol",
+        "homeScore",
+        "awayScore",
+        "goals",
+        "assists",
+        "rating",
+        "won",
+        "drew",
+        "simulated"
+      ]
+    },
+    "creditiHome": false
+  },
+  "fineStagioneForzata": 1,
+  "step": {
+    "n": 11,
+    "esiti": {
+      "lived": 5,
+      "simulated": 3,
+      "advanced": 1,
+      "seasonEnd-gestita": 1,
+      "opening-resolved": 1
+    }
+  },
+  "stato": {
+    "season": 13,
+    "week": 3,
+    "club": "FC Merseyside",
+    "proStatus": "pro"
+  },
+  "modaleChiuso": true,
+  "classifica": {
+    "squadre": 18,
+    "gf": 41,
+    "ga": 41,
+    "uguali": true,
+    "incoerenti": [],
+    "righe": [
+      {
+        "n": "FC Manchester",
+        "p": 2,
+        "v": 2,
+        "n_": 0,
+        "s": 0,
+        "gf": 6,
+        "ga": 2,
+        "pts": 6
+      },
+      {
+        "n": "FC Stamford",
+        "p": 2,
+        "v": 2,
+        "n_": 0,
+        "s": 0,
+        "gf": 4,
+        "ga": 1,
+        "pts": 6
+      },
+      {
+        "n": "FC Hammers",
+        "p": 2,
+        "v": 2,
+        "n_": 0,
+        "s": 0,
+        "gf": 4,
+        "ga": 1,
+        "pts": 6
+      }
+    ]
+  },
+  "calendario": {
+    "voci": 41,
+    "giocate": 2,
+    "perTipo": {
+      "league": 2
+    },
+    "ultima": {
+      "matchday": 2,
+      "week": 2,
+      "opponentId": "lei",
+      "opponentName": "FC Foxshire",
+      "isHome": true,
+      "played": true,
+      "result": {
+        "homeScore": 0,
+        "awayScore": 1,
+        "won": false,
+        "drew": false
+      },
+      "simulated": true
+    },
+    "storia": {
+      "season": 13,
+      "week": 2,
+      "opponent": "FC Foxshire",
+      "oppAbbr": "FOX",
+      "oppCol": "#1d4ed8",
+      "homeScore": 0,
+      "awayScore": 1,
+      "goals": 0,
+      "assists": 0,
+      "rating": 5.6,
+      "won": false,
+      "drew": false,
+      "simulated": true
+    },
+    "storiaN": 2
+  },
+  "overflow": {
+    "scrollW": 412,
+    "clientW": 412
+  }
+}
