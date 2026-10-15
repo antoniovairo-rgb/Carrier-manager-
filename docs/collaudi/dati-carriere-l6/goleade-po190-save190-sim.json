@@ -1,0 +1,54 @@
+{
+ "collaudo": "L6 · PO-190 goleade",
+ "version": "7.999.169",
+ "fixture": "tests/visual/fixtures/save-190-s12-ovr93.json",
+ "start": {
+  "season": 12,
+  "week": 38,
+  "ovr": 93,
+  "club": "FC Merseyside",
+  "lg": "Premier Division",
+  "matches0": 35,
+  "goals0": 48,
+  "matches": 35,
+  "archetype": {
+   "id": "centravanti",
+   "e": "🎯",
+   "name": "Centravanti",
+   "desc": "Equilibrio perfetto in area",
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "favored": [
+    "tiro",
+    "posizionamento",
+    "tecnica"
+   ]
+  },
+  "nationalCaps": 14
+ },
+ "endReason": "ok",
+ "iter": 401,
+ "seasonsCrossed": 6,
+ "pageerrors": [],
+ "summary": {
+  "partite": 0,
+  "golEroePerPartita": null,
+  "golSquadra": 0,
+  "golSquadraNota": "su 0/0 partite con lato noto",
+  "quotaGolEroe": null,
+  "quotaGolEroeConLato": null,
+  "golSubiti": 0,
+  "risultati5plus": 0,
+  "risultati7plus": 0,
+  "scarto5plus": 0,
+  "tiriXgTiri": "NON MISURATO sul percorso sim (nessun dato di tiro in simulateMatch)",
+  "incoerenzaWon": 0
+ },
+ "perMatch": [],
+ "calendarNow": 41
+}
