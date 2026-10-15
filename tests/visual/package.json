@@ -353,6 +353,7 @@
     "tetto-202": "node tetto-202.mjs",
     "tabellino-228": "node tabellino-228.mjs",
     "statistiche-228": "node statistiche-228.mjs",
+    "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",
     "statistiche-228-vivo": "node statistiche-228-vivo.mjs",
     "difesa-220-misura": "node difesa-220-misura.mjs",
     "difesa-220-scena": "GIUDICA=1 K=1,2,3 OGNI=5 node difesa-220-misura.mjs",
