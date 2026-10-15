@@ -124,6 +124,13 @@ a 1,3-1,5u il riflesso, che trasla poco, arrivava tardi).
 
 Su gi16 (cross intercettato) il portiere non è giudicabile (bruciapelo < 0,20 s) in nessuno dei due bracci.
 
+**Seconda misura, seconda correzione.** Nella prima corsa della catena `mirata` il guardiano è uscito rosso (verde 1/7 in
+difetto): il riflesso della **parata** partiva all'armo, prima del calcio, e lo scatto di 0,19 s si chiudeva verso una stima
+lineare; la rimira in volo del 7.999.162 (`_blk229`) valeva solo sul tiro sbagliato. Ora il riflesso di parata usa lo stesso
+canale (`src/12-three-match-view.jsx:5481-5486`, stesso interruttore `__CPM_NO_GK252`). Due corse consecutive dopo la correzione:
+verde **0/8** e **0/7**, rosso **2/8** e **2/8** (gi15, riflesso tardi a 1,27u: strutturale nel rosso). ⚠️ Il banco di §2 è stato
+rigiocato **prima** di questa seconda correzione: i suoi numeri del portiere (4/43) non la includono.
+
 ### 6 · Pallone che «torna indietro» nel build-up aereo — `__CPM_NO_AER252`, `npm run aereo-252`
 
 **Causa misurata** (testimone `__CPM_AER252`): la consegna a fine costruzione aerea (`src/12-three-match-view.jsx:7019` sul

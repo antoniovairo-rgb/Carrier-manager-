@@ -18448,6 +18448,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _dz203=Math.abs(_zq252-awayGkMesh.position.z);
             const _closeShot203=(P.playerX||50)>=87;
             oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
+            /* [PO-252/5, seconda misura] il riflesso della PARATA aspetta il calcio e rimira in volo il punto in cui il pallone vero
+               attraversa il suo piano — lo stesso canale del 7.999.162 (_blk229), che finora valeva solo sul tiro sbagliato. Misurato in
+               catena (portiere-252 verde 1/7) e nel banco (testa gi1/gi53: riflesso a 0,73-0,78u, portiere che si sposta dalla parte
+               opposta): lo scatto di 0,19 s si chiudeva PRIMA del calcio verso una stima lineare, e l'arco vero non e' lineare. */
+            if(_gk252){if(oppActType==="gk_block"&&!_closeShot203){awayGkMesh._blk229=sr.current._actSitKey403;awayGkMesh._pb229=null;awayGkMesh._zpost229=null;}else awayGkMesh._blk229=null;}
             if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
             oppDiveDir=_zq252>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro [PO-252/5: dove il pallone passa]
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
