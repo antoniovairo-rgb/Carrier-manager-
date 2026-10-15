@@ -145,26 +145,32 @@ const CREDITI238=[
    sono state individuate)»] Il contenuto riprende SOLO docs/governo/CREDITI-fonti.md (fonte verificata, una voce per riga della
    tabella; React/Three.js/Babel sono una riga sola nel documento). Il nome del prodotto CGTrader e' quello della foto dell'ordine
    (docs/governo/foto/po238-ordine-cgtrader.jpg). `nc` = campo che il documento non puo' confermare: si scrive «Non posso
-   confermarlo» in grigio. Dove il documento non indica una licenza («—»), la riga Licenza dice lo stesso. Le risorse del gioco
-   che il documento non elenca sono nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
+   confermarlo» in grigio. Dove il documento non indica una licenza («—»), la voce non ha la riga Licenza (decisione PO 15/10
+   «Senza riga licenza», giro 25b). Le voci tolte nel giro 25 sono tornate con la loro fonte (decisione PO 15/10 «Rimettile con
+   la loro fonte»); i file d'origine non confermata restano nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
    il contenuto PO-238 e il link sottile). */
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
     {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:"Ordine CGTrader #17876008 del 20/09/2026.",aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
-    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)",nc:["lic"]}]},
+    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
+    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
+    {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
-    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI",nc:["lic"]},
+    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
     {n:"DiceBear «Avataaars»",aut:"Pablo Stanley",d:"dicebear.com: «Free for personal and commercial use».",nc:["lic"]},
-    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"}]},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"},
+    {n:"Icone dell'app e grafiche dello store",aut:"Realizzate per Korward Elite"}]},
   {sez:"Caratteri",voci:[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
     {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
-    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]},
+    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"},
+    {n:"Effetti sonori sintetizzati con Web Audio",aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
     {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
-    {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"}]}
+    {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"},
+    {n:"GLTFLoader e SkeletonUtils",d:"Esempi di three@0.128.0, come Three.js.",aut:"three.js authors",lic:"MIT — Copyright © 2010-2021 three.js authors"}]}
 ];
 const crediti254On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI254);
 const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);

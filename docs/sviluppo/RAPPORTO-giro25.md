@@ -99,3 +99,82 @@ indicata qui sotto è quella che dichiarava la vecchia schermata PO-238, con la 
 - `BACKLOG.md` e la roadmap non sono stati aggiornati, perché questo giro non è un rilascio (`GAME_VERSION` invariato).
   La riga di roadmap si scrive quando la versione parte.
 - Nessun push su `main`.
+
+---
+
+# Giro 25b — decisioni PO del 15/10 (ramo `sviluppo/crediti-254`)
+
+Base: commit `72ffe742` (giro 25). `GAME_VERSION` **non toccato** (resta 7.999.169).
+
+## Decisioni applicate
+
+1. **«Rimettile con la loro fonte».** Cinque voci tolte nel giro 25 tornano nei Crediti (`CREDITI254` in
+   `src/17-menu-creazione-pannelli.jsx`) e, con la loro fonte, come righe nuove in fondo a `docs/governo/CREDITI-fonti.md`
+   (16 righe, erano 11). Documento e gioco dicono le stesse cose.
+
+   | Voce | Sezione nel gioco | Autore | Licenza | Fonte nel repo |
+   |---|---|---|---|---|
+   | Microsoft Rocketbox (`assets/actor-journalist.glb`, `actor-presenter.glb`, `actor-presenter-f.glb`) | Modelli 3D e animazioni | Microsoft (github.com/microsoft/Microsoft-Rocketbox) | MIT | `docs/archivio/EXTRA-FIELD-MODELS.md` righe 5-7 e 96 |
+   | Animazioni Mixamo (`assets/anim-*.glb`, `cgtrader-clip-mixamo.glb`, `cgtrader-clip-po*.glb`) e modello CH38 (`assets/footballer*.glb`) | Modelli 3D e animazioni | Mixamo (Adobe) | «royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe) | `tests/character-lab/CLIP_REGISTRY.md` righe 10, 26, 53 + FAQ helpx.adobe.com/creative-cloud/faq/mixamo-faq.html |
+   | GLTFLoader e SkeletonUtils (esempi di three@0.128.0) | Librerie software | three.js authors | MIT — «Copyright © 2010-2021 three.js authors» | `src/00-head.html` righe 64-65; LICENSE del pacchetto npm `three` 0.128.0 (devDependency di `tests/visual/package.json`) |
+   | Effetti sonori sintetizzati con Web Audio | Suoni | realizzati per Korward Elite | — | `assets/audio/README.md` righe 6-7 |
+   | Icone dell'app e grafiche dello store | Illustrazioni e immagini | realizzate per Korward Elite | — | `tools/gen-pwa-icons.mjs`, `tools/gen-store-graphics.mjs` |
+
+   **Avviso di copyright di Microsoft Rocketbox: Non posso confermarlo.** Il testo esatto della LICENSE MIT di Rocketbox
+   (la riga «Copyright (c) …») non è nel repo. `EXTRA-FIELD-MODELS.md` dice solo «licenza MIT dal 12/2020» e cita il README
+   del repository Microsoft. Nel repo non ci sono file LICENSE di Rocketbox né la frase «Copyright … Microsoft»
+   (cercata con `grep -rn -i "Copyright.*Microsoft"` fuori da `node_modules`: nessun risultato). Per questo i Crediti mostrano «Licenza: MIT» e
+   **non** riportano l'avviso. La licenza MIT chiede che l'avviso accompagni le copie del software: va recuperato dalla
+   LICENSE del repository Microsoft e aggiunto. **Decisione PO** su chi lo recupera.
+
+   Altre due cose che ho verificato e che è giusto dire:
+   - **GLTFLoader / SkeletonUtils.** La riga di copyright viene dal file `node_modules/three/LICENSE` installato da
+     `npm install` (three 0.128.0, la stessa versione che carica il gioco). Il pacchetto contiene anche `examples/js/loaders/GLTFLoader.js`
+     e `examples/js/utils/SkeletonUtils.js`. Il PO aveva indicato «licenza MIT come Three.js»: la LICENSE lo conferma per il pacchetto.
+   - **CH38.** `CLIP_REGISTRY.md` non nomina il CH38 né `footballer*.glb`. L'attribuzione a Mixamo del CH38 è in
+     `docs/LIVE_MATCH_ENGINE_ANALYSIS.md` riga 268 («`footballer.glb` (CH38 Mixamo)») e in CLAUDE.md. L'ho aggiunta come fonte
+     nel documento. `cgtrader-clip-po.glb` in `CLIP_REGISTRY.md` riga 53 contiene clip `mx-*`, che lo stesso registro dà come FBX Mixamo.
+
+2. **«Senza riga licenza».** «Regular Male» e i ritratti OpenAI mostrano autore e provenienza, senza riga «Licenza» e senza
+   «Non posso confermarlo». Ho applicato la stessa regola alle due voci nuove con Licenza «—» nel documento (effetti
+   Web Audio, icone e grafiche). «Non posso confermarlo» in grigio resta solo dove lo dice il documento: autore del Mixkit
+   3022 e licenza esatta di Avataaars. Conteggio nella finestra: 2 (erano 4).
+
+3. **File d'origine non confermata.** Non sono nei Crediti, restano da chiarire: `assets/avatar-0..11.png`,
+   `assets/hero-highlight-portrait-v1.*`, `assets/hyper-casual-korward-*.glb`, `assets/hair-colors/`,
+   `assets/korward-regular-anims/`, `assets/portraits/`. Non posso confermarne l'origine.
+
+## Guardiano `crediti-254`
+
+- `ATTESI` passa da 11 a 16 righe (le cinque nuove, nell'ordine del documento).
+- Nuovo controllo 4: le voci `SENZA_LIC` («Regular Male», «Ritratti delle figurine», «Web Audio», «Icone dell'app») non devono
+  contenere «Licenza:» né «Non posso confermarlo». Le voci `CON_NC` («Mixkit 3022», «Avataaars») devono contenere il grigio.
+
+## Esiti (eseguiti in questo turno, sul build ricomposto)
+
+| Passo | Esito |
+|---|---|
+| `CPM_FORZA_BUILD=1 node tools/build-src.mjs` | ricomposto da 21 frammenti, 7211555 byte |
+| `node tools/check-src.mjs` | ✓ identico byte per byte |
+| `crediti-254` verde | ✅ uscita 0. 360 px: pulsante 347/347, 16 voci, 0 da completare, 2 non confermabili, orizzontale 0/0. 412 px: 394/394, stessi numeri |
+| `crediti-254` rosso (`CPM_ROSSO=__CPM_NO_CREDITI254`) | ❌ uscita 1: pulsante assente, 7 «Fonte da completare», voci del documento mancanti, controlli 4 rossi |
+| `crediti-254` sul build del giro 25 (`72ffe74`) | ❌ uscita 1: le cinque voci nuove mancano; «Regular Male» e ritratti mostrano la riga Licenza |
+| `design-system` | ✅ SISTEMA GRAFICO OK |
+| `node tools/audit-copyright.mjs` | ✅ uscita 0, «nessun riferimento al mondo reale» |
+| `griglia-mobile` | ✅ uscita 0, 65 scatti, testo fuori colonna 0 su tutte le larghezze. «NON misurato: prepartita: playMatch → nomatch» è già nel report committato (preesistente). Le foto e il report che la sonda riscrive in `docs/collaudo-grafico/g0/` non sono stati committati |
+| `test:logic` | ✅ 43/43 |
+| `save-compat` | ✅ 12 pass · 0 fail |
+| `career-critical` | ✅ 11/11 passi (recovery-competition · save-monotonic · playing-mdref · double-tap · stale-matchday · playedmd-registry · career-invariants · pending-mr-durable · cup-final-replay · coppa-nazioni · coppa-intera), lanciati uno per uno in due gruppi con gli stessi comandi dello script npm |
+
+Non eseguiti: il gate 14/14 e la catena completa. Il turno ha toccato solo i Crediti (testo e grafica della home), quindi vale
+la catena «solo grafica» della direttiva PO del 22/09, eseguita tutta qui sopra.
+
+## Foto (`docs/sviluppo/foto-giro25b/`)
+
+`home-{360,412}.png` · `crediti-{360,412}-{1,2,3}.png`. Sono tre scatti per larghezza, scorrendo la finestra dall'inizio alla
+fine, così si vedono tutte le 16 voci. Foto della home **senza carriere salvate**.
+
+## Fuori ambito
+
+- `GAME_VERSION`, roadmap e `BACKLOG.md` non sono stati toccati, perché non è un rilascio. Nessun push su `main`.
+- L'avviso di copyright di Rocketbox: vedi il punto 1. Non posso confermarlo.

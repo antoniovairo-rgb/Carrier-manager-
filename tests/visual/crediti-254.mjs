@@ -7,7 +7,8 @@
    2) NESSUNA «Fonte da completare»: zero [data-cpm=crediti238-manca] e la scritta non compare nel testo;
       le voci «Non posso confermarlo» sono scritte cosi' e in grigio (colore della descrizione, non rosso);
    3) OGNI VOCE DEL DOCUMENTO E' PRESENTE: la tabella di docs/governo/CREDITI-fonti.md viene letta riga per riga; per ogni riga
-      il guardiano pretende nella finestra i testi elencati in ATTESI. Se il documento cambia numero di righe, il guardiano
+      il guardiano pretende nella finestra i testi elencati in ATTESI (giro 25b: +5 righe rimesse con la loro fonte);
+   4) [giro 25b] le voci SENZA_LIC non hanno riga Licenza ne' «Non posso confermarlo»; le voci CON_NC lo mostrano in grigio. Se il documento cambia numero di righe, il guardiano
       si dichiara ROSSO finche' ATTESI non viene allineato (una riga nuova non puo' passare inosservata).
    Piu' i controlli di crediti-238: Modal standard (testa/piede/titolo), niente scorrimento orizzontale, «Chiudi» chiude.
    Foto: out/crediti-254/home-<w>.png · crediti-<w>.png · crediti-<w>-fondo.png
@@ -33,7 +34,17 @@ const ATTESI = [
   ['Avataaars', ['Avataaars', 'Pablo Stanley']],
   ['Micah', ['Micah', 'Micah Lanier', 'CC BY 4.0']],
   ['React/ReactDOM', ['React', 'Three.js', 'Babel', 'MIT']],
+  // [giro 25b, decisione PO 15/10 «Rimettile con la loro fonte»]
+  ['Microsoft Rocketbox', ['Microsoft Rocketbox', 'actor-journalist.glb', 'actor-presenter-f.glb', 'MIT']],
+  ['Animazioni Mixamo', ['Animazioni Mixamo', 'cgtrader-clip-mixamo.glb', 'footballer', 'royalty free', 'mixamo-faq']],
+  ['GLTFLoader', ['GLTFLoader', 'SkeletonUtils', 'three@0.128.0', 'three.js authors']],
+  ['Effetti sonori', ['Web Audio', 'Realizzati per Korward Elite']],
+  ['Icone', ["Icone dell'app", 'Realizzate per Korward Elite']],
 ];
+// [giro 25b, decisione PO 15/10 «Senza riga licenza»] voci che NON hanno riga Licenza ne' «Non posso confermarlo»,
+// e voci dove il documento dice «Non posso confermarlo» (lo devono mostrare, in grigio).
+const SENZA_LIC = ['Regular Male', 'Ritratti delle figurine', 'Web Audio', "Icone dell'app"];
+const CON_NC = ['Mixkit 3022', 'Avataaars'];
 const NONCONF_MIN = (DOC.match(/Non posso confermarlo/g) || []).length - 1; // la riga d'intestazione del documento ne nomina uno
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 let ko = [];
@@ -76,6 +87,7 @@ for (const w of [360, 412]) {
       titolo: (pn && pn.querySelector('[data-cpm="finestra-titolo"]') || {}).textContent || '', testo: m ? m.textContent : '',
       manca: document.querySelectorAll('[data-cpm="crediti238-manca"]').length, nc, grigio: d ? getComputedStyle(d).color : '',
       voci: document.querySelectorAll('[data-cpm="crediti238-voce"]').length,
+      vt: [...document.querySelectorAll('[data-cpm="crediti238-voce"]')].map(e => ({ t: e.textContent || '', nc: !!e.querySelector('[data-cpm="crediti254-nonconf"]') })),
       oriz: document.documentElement.scrollWidth - window.innerWidth, pOriz: pn ? pn.scrollWidth - pn.clientWidth : 0 };
   });
   await page.screenshot({ path: path.join(OUT, `crediti-${w}.png`) });
@@ -88,6 +100,8 @@ for (const w of [360, 412]) {
   if (r.nc.some(c => c !== r.grigio)) ko.push(`${w}px: «Non posso confermarlo» non e' in grigio (${r.nc.join(' ')} contro ${r.grigio})`);
   // 3) ogni voce del documento
   for (const [k, testi] of ATTESI) { const assenti = testi.filter(t => !r.testo.includes(t)); if (assenti.length) ko.push(`${w}px: voce «${k}» del documento: manca ${assenti.join(', ')}`); }
+  for (const k of SENZA_LIC) { const v = r.vt.find(x => x.t.includes(k)); if (!v) ko.push(`${w}px: voce «${k}» assente`); else if (/Licenza:|Non posso confermarlo/.test(v.t)) ko.push(`${w}px: voce «${k}» mostra una riga Licenza o «Non posso confermarlo» (decisione PO: senza riga licenza)`); }
+  for (const k of CON_NC) { const v = r.vt.find(x => x.t.includes(k)); if (!v || !v.nc) ko.push(`${w}px: voce «${k}» senza «Non posso confermarlo» in grigio`); }
   if (r.oriz > 1 || r.pOriz > 1) ko.push(`${w}px: scorrimento orizzontale (${r.oriz}/${r.pOriz} px)`);
   const chiudi = await page.$('[data-cpm="crediti238-pannello"] [data-cpm="finestra-piede"] button'); if (chiudi) { await chiudi.click(); await sleep(300); }
   if (await page.$('[data-cpm="crediti238"]')) ko.push(`${w}px: «Chiudi» non chiude`);
