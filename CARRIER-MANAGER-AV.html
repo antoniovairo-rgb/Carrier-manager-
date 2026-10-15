@@ -8015,13 +8015,38 @@ const storage={
      contenuto e' vecchio per definizione). Nessun campo nuovo nel salvataggio, nessuna nuova
      infrastruttura, formato immutato: i save esistenti restano leggibili identici. */
   _coda:{},_seq:{},
+  /* [PO-167 · giro 29, decisione PO 15/10 «Anticipa solo il backup»] COPIA DI RISERVA DEGLI SLOT. Prima di sovrascrivere
+     uno slot, l'ultima versione BUONA (JSON leggibile con player.name) viene copiata in `<chiave>-riserva`; se lo slot si
+     legge corrotto o vuoto e la riserva e' buona, la Home propone il ripristino (finestra standard, src/19). Un salvataggio
+     che fallisce (quota piena, eccezione) lascia l'esito in `_esito` e il chiamante mostra `msgFallito`. Additiva: formato
+     del salvataggio e SAVE_VERSION immutati; la coda e lo scarto del 7.448 restano il percorso di ogni scrittura.
+     Rosso __CPM_NO_BACKUP167 (niente copia, niente proposta, vecchi avvisi). Guardiano tests/visual/backup-167.mjs. */
+  _esito:{},
+  _no167:()=>typeof window!=="undefined"&&!!window.__CPM_NO_BACKUP167,
+  _leggiRaw:async(k)=>{if(window.storage){const r=await window.storage.get(k);return (r&&r.value)||null;}return localStorage.getItem(k);},
+  _scriviRaw:async(k,s)=>{if(window.storage)await window.storage.set(k,s);else localStorage.setItem(k,s);},
+  _buono:(s)=>{if(!s)return false;try{const d=JSON.parse(s);return !!(d&&d.player&&d.player.name);}catch(_e){return false;}},
+  msgFallito:(slot=0,vecchio)=>{
+    if(storage._no167())return vecchio||"⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.";
+    const e=storage._esito[SLOT_KEYS[slot]||SLOT_KEYS[0]];
+    /* la frase del PO si dice solo quando e' VERA: senza una riserva buona (primo salvataggio mai riuscito) si dice altro */
+    return e&&e.riserva?"Salvataggio non riuscito: la tua carriera è al sicuro nella copia di riserva":"Salvataggio non riuscito: libera un po' di spazio sul dispositivo e riprova.";
+  },
   save:(d,slot=0)=>{
     const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
     const mio=(storage._seq[key]=(storage._seq[key]||0)+1);
     const payload={...d,savedAt:Date.now(),saveVersion:SAVE_VERSION};
     const scrivi=async()=>{
       if(mio<(storage._seq[key]||0)&&!(typeof window!=="undefined"&&window.__CPM_NO_P0_2))return true;/* superata da una richiesta piu' recente: scriverla sarebbe tornare indietro */
-      try{const s=JSON.stringify(payload);if(window.storage)await window.storage.set(key,s);else localStorage.setItem(key,s);return true;}catch{return false;}
+      const no167=storage._no167();
+      try{const s=JSON.stringify(payload);
+        if(!no167){try{const prev=await storage._leggiRaw(key);if(prev&&prev!==s&&storage._buono(prev))await storage._scriviRaw(key+"-riserva",prev);}catch(_e){}}/* [PO-167] prima di sovrascrivere: l'ultima versione buona va in riserva (se la copia fallisce, il salvataggio prosegue: la riserva precedente resta) */
+        if(window.storage)await window.storage.set(key,s);else localStorage.setItem(key,s);
+        storage._esito[key]={ok:true,t:Date.now()};return true;
+      }catch{
+        let riserva=false;if(!no167){try{riserva=storage._buono(await storage._leggiRaw(key+"-riserva"));}catch(_e){}}
+        storage._esito[key]={ok:false,riserva,t:Date.now()};return false;
+      }
     };
     /* __CPM_NO_P0_2: interruttore test-only che ripristina il comportamento pre-fix (scritture
        concorrenti, nessuna coda) — serve al guardiano per provare il rosso. */
@@ -8045,6 +8070,30 @@ const storage={
   del:async(slot=0)=>{
     const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
     try{if(window.storage)await window.storage.delete(key);else localStorage.removeItem(key);}catch{}
+    if(!storage._no167()){try{if(window.storage)await window.storage.delete(key+"-riserva");else localStorage.removeItem(key+"-riserva");}catch{}}/* [PO-167] eliminazione VOLUTA: anche la riserva se ne va, altrimenti la Home riproporrebbe la carriera appena cancellata */
+  },
+  /* [PO-167] slot da proporre al ripristino: principale corrotto o vuoto + riserva buona */
+  listRiserve:async()=>{
+    if(storage._no167())return [];
+    const out=[];
+    for(let i=0;i<SLOT_KEYS.length;i++){
+      try{
+        const main=await storage._leggiRaw(SLOT_KEYS[i]);if(storage._buono(main))continue;
+        const bak=await storage._leggiRaw(SLOT_KEYS[i]+"-riserva");if(!storage._buono(bak))continue;
+        const d=JSON.parse(bak);const p=d.player;
+        out.push({slot:i,motivo:main?"corrotto":"vuoto",name:p.name,club:p.club?.name||p.club?.n||"–",season:p.season||1,week:p.week||1,savedAt:d.savedAt||0});
+      }catch(_e){}
+    }
+    return out;
+  },
+  /* [PO-167] ripristino: la riserva torna nello slot. Passa dalla STESSA coda del 7.448 e supera le scritture in attesa. */
+  ripristina:(slot=0)=>{
+    const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
+    storage._seq[key]=(storage._seq[key]||0)+1;
+    const fai=async()=>{try{const bak=await storage._leggiRaw(key+"-riserva");if(!storage._buono(bak))return false;await storage._scriviRaw(key,bak);return true;}catch(_e){return false;}};
+    const p=(storage._coda[key]||Promise.resolve()).then(fai,fai);
+    storage._coda[key]=p.catch(()=>{});
+    return p;
   },
   listSlots:async()=>{
     const out=[];
@@ -45477,7 +45526,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
     saveTimerRef.current=setTimeout(()=>{
-      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify(storage.msgFallito(currentSlot),TH.danger);});/* [PO-167] avviso chiaro, senza testo tecnico */
     },600);
     return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
   },[player]);// eslint-disable-line
@@ -45495,7 +45544,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
       storage.save({phase:"career",player},currentSlot).then(ok=>{
         if(ok){setLastSaved(Date.now());_mrCleanup(player);notify("💾 Stagione salvata.",TH.success);}
-        else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);
+        else notify(storage.msgFallito(currentSlot),TH.danger);/* [PO-167] */
       }).catch(()=>{});
     }catch(_e){}
   },[screen]);// eslint-disable-line
@@ -45516,7 +45565,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const doSave=useCallback(async()=>{
     const ok=await storage.save({phase:"career",player},currentSlot);
     if(ok){setLastSaved(Date.now());notify("💾 Carriera salvata!",TH.success);if(onRefreshSlots)onRefreshSlots();}
-    else notify("⚠️ Errore nel salvataggio.",TH.danger);
+    else notify(storage.msgFallito(currentSlot,"⚠️ Errore nel salvataggio."),TH.danger);/* [PO-167] */
   },[player,currentSlot,onRefreshSlots]);// eslint-disable-line
 
   // Export to JSON
@@ -57227,7 +57276,8 @@ function App(){
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
-  const refreshSlots=()=>storage.listSlots().then(s=>setSlots(s)).catch(()=>setSlots([]));/* [6.44.0 RC-crit] un listSlots che rigetta (storage disabilitato) non deve bloccare il boot */
+  const[riserve,setRiserve]=useState([]);const[riservaNo,setRiservaNo]=useState([]);/* [PO-167] slot ripristinabili dalla copia di riserva · slot rimandati in questa sessione */
+  const refreshSlots=()=>storage.listSlots().then(s=>{setSlots(s);storage.listRiserve().then(r=>setRiserve(r||[])).catch(()=>{});}).catch(()=>setSlots([]));/* [6.44.0 RC-crit] un listSlots che rigetta (storage disabilitato) non deve bloccare il boot */
   useEffect(()=>{
     // [7.149.0 collaudo PO «se metto in background l'app il gioco NON deve riavviarsi, deve riprendere dallo stesso punto»]
     //   AUTO-RIPRESA: se una carriera era attiva (puntatore cpm-active) e lo slot ha un save valido, si rientra DRITTO
@@ -57288,6 +57338,9 @@ function App(){
   const startNew=(slot=0)=>{setCurrentSlot(slot);trialResumeRef.current=null;try{safeLS.set("cpm-trial-prog","");}catch(_e){}setPhase("create");};/* [7.330.0] nuova partenza esplicita = i provini in sospeso si abbandonano */
   useEffect(()=>{try{if(typeof window!=="undefined"&&!window.__CPM_STORE_BUILD)window.__CPM_CUR_SLOT=currentSlot;}catch(_e){}},[currentSlot]);/* [7.332.0] diagnostica: lo slot corrente osservabile dal guardiano trial-persist (mai in store build) */
   const deleteSlot=async(slot)=>{await storage.del(slot);await refreshSlots();};
+  const ripristinaSlot=async(slot)=>{const ok=await storage.ripristina(slot);await refreshSlots();
+    if(ok)appNotify(`✅ Carriera ripristinata dalla copia di riserva (salvataggio ${slot+1}).`,TH.success);else appNotify("Non è stato possibile ripristinare la copia di riserva.");};/* [PO-167] */
+  const _ris167=riserve.find(r=>!riservaNo.includes(r.slot));
   const importSave=(file)=>{
     const r=new FileReader();
     r.onload=async e=>{
@@ -57416,6 +57469,13 @@ function App(){
     return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
+    {_ris167&&<Modal open cpm="riserva-167" pannelloCpm="riserva-167-pannello" dismissable={false} title="Copia di riserva trovata"
+      footer={<><Btn v="secondary" onClick={()=>setRiservaNo(a=>[...a,_ris167.slot])}>Non ora</Btn><Btn v="primary" onClick={()=>ripristinaSlot(_ris167.slot)}>Ripristina</Btn></>}>
+      <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.45}}>{_ris167.motivo==="corrotto"?`Il salvataggio ${_ris167.slot+1} non si riesce a leggere.`:`Il salvataggio ${_ris167.slot+1} risulta vuoto.`} C'è una copia di riserva della tua carriera:</div>
+      <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.sm}}>{_ris167.name} · {_ris167.club}</div>
+      <div style={{fontSize:FS.small,color:TH.muted}}>Stagione {_ris167.season} · settimana {_ris167.week}</div>
+      <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>Vuoi ripristinarla?</div>
+    </Modal>}{/* [PO-167 · giro 29] finestra standard (Modal → ModalPannello) */}
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */

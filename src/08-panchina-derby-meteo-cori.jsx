@@ -597,13 +597,38 @@ const storage={
      contenuto e' vecchio per definizione). Nessun campo nuovo nel salvataggio, nessuna nuova
      infrastruttura, formato immutato: i save esistenti restano leggibili identici. */
   _coda:{},_seq:{},
+  /* [PO-167 · giro 29, decisione PO 15/10 «Anticipa solo il backup»] COPIA DI RISERVA DEGLI SLOT. Prima di sovrascrivere
+     uno slot, l'ultima versione BUONA (JSON leggibile con player.name) viene copiata in `<chiave>-riserva`; se lo slot si
+     legge corrotto o vuoto e la riserva e' buona, la Home propone il ripristino (finestra standard, src/19). Un salvataggio
+     che fallisce (quota piena, eccezione) lascia l'esito in `_esito` e il chiamante mostra `msgFallito`. Additiva: formato
+     del salvataggio e SAVE_VERSION immutati; la coda e lo scarto del 7.448 restano il percorso di ogni scrittura.
+     Rosso __CPM_NO_BACKUP167 (niente copia, niente proposta, vecchi avvisi). Guardiano tests/visual/backup-167.mjs. */
+  _esito:{},
+  _no167:()=>typeof window!=="undefined"&&!!window.__CPM_NO_BACKUP167,
+  _leggiRaw:async(k)=>{if(window.storage){const r=await window.storage.get(k);return (r&&r.value)||null;}return localStorage.getItem(k);},
+  _scriviRaw:async(k,s)=>{if(window.storage)await window.storage.set(k,s);else localStorage.setItem(k,s);},
+  _buono:(s)=>{if(!s)return false;try{const d=JSON.parse(s);return !!(d&&d.player&&d.player.name);}catch(_e){return false;}},
+  msgFallito:(slot=0,vecchio)=>{
+    if(storage._no167())return vecchio||"⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.";
+    const e=storage._esito[SLOT_KEYS[slot]||SLOT_KEYS[0]];
+    /* la frase del PO si dice solo quando e' VERA: senza una riserva buona (primo salvataggio mai riuscito) si dice altro */
+    return e&&e.riserva?"Salvataggio non riuscito: la tua carriera è al sicuro nella copia di riserva":"Salvataggio non riuscito: libera un po' di spazio sul dispositivo e riprova.";
+  },
   save:(d,slot=0)=>{
     const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
     const mio=(storage._seq[key]=(storage._seq[key]||0)+1);
     const payload={...d,savedAt:Date.now(),saveVersion:SAVE_VERSION};
     const scrivi=async()=>{
       if(mio<(storage._seq[key]||0)&&!(typeof window!=="undefined"&&window.__CPM_NO_P0_2))return true;/* superata da una richiesta piu' recente: scriverla sarebbe tornare indietro */
-      try{const s=JSON.stringify(payload);if(window.storage)await window.storage.set(key,s);else localStorage.setItem(key,s);return true;}catch{return false;}
+      const no167=storage._no167();
+      try{const s=JSON.stringify(payload);
+        if(!no167){try{const prev=await storage._leggiRaw(key);if(prev&&prev!==s&&storage._buono(prev))await storage._scriviRaw(key+"-riserva",prev);}catch(_e){}}/* [PO-167] prima di sovrascrivere: l'ultima versione buona va in riserva (se la copia fallisce, il salvataggio prosegue: la riserva precedente resta) */
+        if(window.storage)await window.storage.set(key,s);else localStorage.setItem(key,s);
+        storage._esito[key]={ok:true,t:Date.now()};return true;
+      }catch{
+        let riserva=false;if(!no167){try{riserva=storage._buono(await storage._leggiRaw(key+"-riserva"));}catch(_e){}}
+        storage._esito[key]={ok:false,riserva,t:Date.now()};return false;
+      }
     };
     /* __CPM_NO_P0_2: interruttore test-only che ripristina il comportamento pre-fix (scritture
        concorrenti, nessuna coda) — serve al guardiano per provare il rosso. */
@@ -627,6 +652,30 @@ const storage={
   del:async(slot=0)=>{
     const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
     try{if(window.storage)await window.storage.delete(key);else localStorage.removeItem(key);}catch{}
+    if(!storage._no167()){try{if(window.storage)await window.storage.delete(key+"-riserva");else localStorage.removeItem(key+"-riserva");}catch{}}/* [PO-167] eliminazione VOLUTA: anche la riserva se ne va, altrimenti la Home riproporrebbe la carriera appena cancellata */
+  },
+  /* [PO-167] slot da proporre al ripristino: principale corrotto o vuoto + riserva buona */
+  listRiserve:async()=>{
+    if(storage._no167())return [];
+    const out=[];
+    for(let i=0;i<SLOT_KEYS.length;i++){
+      try{
+        const main=await storage._leggiRaw(SLOT_KEYS[i]);if(storage._buono(main))continue;
+        const bak=await storage._leggiRaw(SLOT_KEYS[i]+"-riserva");if(!storage._buono(bak))continue;
+        const d=JSON.parse(bak);const p=d.player;
+        out.push({slot:i,motivo:main?"corrotto":"vuoto",name:p.name,club:p.club?.name||p.club?.n||"–",season:p.season||1,week:p.week||1,savedAt:d.savedAt||0});
+      }catch(_e){}
+    }
+    return out;
+  },
+  /* [PO-167] ripristino: la riserva torna nello slot. Passa dalla STESSA coda del 7.448 e supera le scritture in attesa. */
+  ripristina:(slot=0)=>{
+    const key=SLOT_KEYS[slot]||SLOT_KEYS[0];
+    storage._seq[key]=(storage._seq[key]||0)+1;
+    const fai=async()=>{try{const bak=await storage._leggiRaw(key+"-riserva");if(!storage._buono(bak))return false;await storage._scriviRaw(key,bak);return true;}catch(_e){return false;}};
+    const p=(storage._coda[key]||Promise.resolve()).then(fai,fai);
+    storage._coda[key]=p.catch(()=>{});
+    return p;
   },
   listSlots:async()=>{
     const out=[];
