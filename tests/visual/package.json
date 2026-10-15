@@ -308,6 +308,8 @@
     "ci:grafica": "node ci-runner.mjs grafica",
     "ci:guardiani": "node ci-runner.mjs guardiani",
     "griglia-mobile": "node griglia-mobile.mjs",
+    "analisi-217": "node analisi-217.mjs",
+    "home-066": "node home-066.mjs",
     "l7-schermate": "CPM_L7_GUARDIA=1 node l7-schermate.mjs",
     "l7-schermate:misura": "node l7-schermate.mjs",
     "giornaliste-169": "node giornaliste-169-test.mjs",

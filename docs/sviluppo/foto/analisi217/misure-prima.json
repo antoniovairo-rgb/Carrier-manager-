@@ -1,0 +1,68 @@
+{
+ "rosso": false,
+ "tema": "chiaro",
+ "misure": [
+  {
+   "w": 412,
+   "h": 915,
+   "versione": "scout23",
+   "vh": 915,
+   "W": 412,
+   "scrollW": 412,
+   "docH": 915,
+   "vuoto": 485,
+   "dove": "fra «IL CONSIGLIO DEL MISTER » e «Entra in campo»",
+   "pulsante": {
+    "top": 851,
+    "bottom": 899,
+    "ultimo": true
+   },
+   "raggi": [],
+   "corpi": [],
+   "oltre": [],
+   "difficoltaFs": 20,
+   "nomeFs": 17,
+   "nome": "FC Modenese Primavera",
+   "corpoMax": 12,
+   "figurinaMister": false,
+   "viol": [
+    "V1 spazio vuoto 485px fra «IL CONSIGLIO DEL MISTER » e «Entra in campo» (soglia 64)",
+    "G1 difficolta' a 20px (< FS.display)",
+    "G1 nome avversario a 17px (< FS.title)",
+    "M1 il consiglio del mister non ha la figurina del mister"
+   ]
+  },
+  {
+   "w": 360,
+   "h": 780,
+   "versione": "scout23",
+   "vh": 780,
+   "W": 360,
+   "scrollW": 360,
+   "docH": 780,
+   "vuoto": 331,
+   "dove": "fra «IL CONSIGLIO DEL MISTER » e «Entra in campo»",
+   "pulsante": {
+    "top": 716,
+    "bottom": 764,
+    "ultimo": true
+   },
+   "raggi": [],
+   "corpi": [],
+   "oltre": [],
+   "difficoltaFs": 20,
+   "nomeFs": 17,
+   "nome": "FC Modenese Primavera",
+   "corpoMax": 12,
+   "figurinaMister": false,
+   "viol": [
+    "V1 spazio vuoto 331px fra «IL CONSIGLIO DEL MISTER » e «Entra in campo» (soglia 64)",
+    "G1 difficolta' a 20px (< FS.display)",
+    "G1 nome avversario a 17px (< FS.title)",
+    "M1 il consiglio del mister non ha la figurina del mister"
+   ]
+  }
+ ],
+ "errori": [],
+ "esito": "ROSSO"
+}

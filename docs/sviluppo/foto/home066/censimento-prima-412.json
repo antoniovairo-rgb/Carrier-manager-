@@ -1,0 +1,1232 @@
+{
+ "rosso": false,
+ "larg": 412,
+ "tema": "chiaro",
+ "scenari": [
+  {
+   "nome": "u18-inizio",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Primavera 2 · 1ª giornata PROSSIMA PARTITA Calen",
+     "h": 229,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 1 · SETTIMANA 1 DI 38 0 Partite 0 Gol 0",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 194,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 1 ",
+     "h": 171,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 101,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-inizio",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Liga Ibérica · 2ª giornata PROSSIMA PARTITA Cale",
+     "h": 212,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 2 DI 38 1 Partite 0 Gol 0",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "La tua storia › LA TUA STORIA ⚔️ Il rivale in ca",
+     "h": 205,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🏛️ ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 366,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "🏷️ Mercato Estivo aperto 4 settimane rimanenti",
+     "h": 53,
+     "raggio": "12px",
+     "fondo": "rgb(239, 246, 255)",
+     "viol": [
+      "F1 fondo non neutro rgb(239, 246, 255)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 11,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 172,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
+     "h": 128,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.2 🛡️ AT M",
+     "h": 212,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 14,
+     "titolo": "Classifica › CLASSIFICA · W.2/38 1 ATM ATM 3 1gj",
+     "h": 241,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 15,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 138,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-meta",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Coppa Nazionale · Finale PROSSIMA PARTITA Calend",
+     "h": 196,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 19 DI 38 18 Partite 9 Gol",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "MERCATO INVERNALE APERTO — FINO ALLA SETTIMANA 2",
+     "h": 148,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 6,
+     "titolo": "La tua storia › LA TUA STORIA 🌙 La vigilia dell",
+     "h": 205,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🌍 A",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 238,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 11,
+     "titolo": "Il mondo fuori › IL MONDO FUORI 👀 C'era il CT, ",
+     "h": 218,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
+     "h": 244,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "La tua settimana › 🏆 LA TUA SETTIMANA La settim",
+     "h": 431,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 14,
+     "titolo": "Duello capocannoniere › DUELLO CAPOCANNONIERE #1",
+     "h": 147,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 15,
+     "titolo": "📢 Sei in lista cessioni 5 settimane rimanenti R",
+     "h": 76,
+     "raggio": "12px",
+     "fondo": "rgb(254, 243, 199)",
+     "viol": [
+      "F1 fondo non neutro rgb(254, 243, 199)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 16,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 172,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 17,
+     "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
+     "h": 128,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.19 📋 Sei ",
+     "h": 121,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 19,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 101,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-fine",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Liga Ibérica · 32ª giornata PROSSIMA PARTITA Cal",
+     "h": 212,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 36 DI 38 33 Partite 17 Go",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "La tua storia › LA TUA STORIA 🔥 La volata scude",
+     "h": 205,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🌍 A",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "❤️ Vita privata › ❤️ VITA PRIVATA Qualcuno in tr",
+     "h": 208,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 238,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 11,
+     "titolo": "Il mondo fuori › IL MONDO FUORI 🎙️ Alessandro M",
+     "h": 218,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 450,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "Duello capocannoniere › DUELLO CAPOCANNONIERE #1",
+     "h": 147,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 14,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 173,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 15,
+     "titolo": "OBIETTIVI PERSONALI › ✅ La prima stagione da pro",
+     "h": 129,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
+     "titolo": "Notizie della settimana › NOTIZIE DELLA SETTIMAN",
+     "h": 187,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 17,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.36 🔥 I bo",
+     "h": 212,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
+     "titolo": "Classifica › CLASSIFICA · W.36/38 1 CFM ★ CFM 73",
+     "h": 241,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 19,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 292,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-infortunato",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Liga Ibérica · 11ª giornata PROSSIMA PARTITA Cal",
+     "h": 212,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 12 DI 38 18 Partite 9 Gol",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🌍 A",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "❤️ Vita privata › ❤️ VITA PRIVATA Qualcuno in tr",
+     "h": 208,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 238,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "Il mondo fuori › IL MONDO FUORI 🎙️ Alessandro M",
+     "h": 218,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 11,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 450,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "Duello capocannoniere › DUELLO CAPOCANNONIERE 🔥",
+     "h": 153,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "🟠 Stiramento muscolare 🟠 Medio ⏳ 3 settimane r",
+     "h": 167,
+     "raggio": "12px",
+     "fondo": "rgb(255, 241, 242)",
+     "viol": [
+      "F1 fondo non neutro rgb(255, 241, 242)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 14,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 172,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 15,
+     "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
+     "h": 128,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
+     "titolo": "Notizie della settimana › NOTIZIE DELLA SETTIMAN",
+     "h": 187,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 17,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.12 💼 FC I",
+     "h": 212,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
+     "titolo": "Classifica › CLASSIFICA · W.12/38 1 ATM ATM 27 1",
+     "h": 241,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 19,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 180,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-svincolato",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Liga Ibérica · 21ª giornata PROSSIMA PARTITA Cal",
+     "h": 212,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 23 DI 38 18 Partite 9 Gol",
+     "h": 118,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🌍 A",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 7,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 238,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "Il mondo fuori › IL MONDO FUORI 🎙️ Alessandro M",
+     "h": 218,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
+     "h": 244,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 11,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 450,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "Duello capocannoniere › DUELLO CAPOCANNONIERE #1",
+     "h": 147,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "📋 Contratto scaduto — sei svincolato Rinnova co",
+     "h": 109,
+     "raggio": "12px",
+     "fondo": "rgb(254, 243, 199)",
+     "viol": [
+      "F1 fondo non neutro rgb(254, 243, 199)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 14,
+     "titolo": "🏷️ Mercato Invernale aperto 1 settimana rimanen",
+     "h": 53,
+     "raggio": "12px",
+     "fondo": "rgb(239, 246, 255)",
+     "viol": [
+      "F1 fondo non neutro rgb(239, 246, 255)"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 15,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 172,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
+     "titolo": "OBIETTIVI PERSONALI › 🏹 La prima stagione da pr",
+     "h": 128,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 17,
+     "titolo": "Notizie della settimana › NOTIZIE DELLA SETTIMAN",
+     "h": 187,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.23 🔥 I bo",
+     "h": 212,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 19,
+     "titolo": "Classifica › CLASSIFICA · W.23/38 1 CFM ★ CFM 51",
+     "h": 241,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 20,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 236,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  },
+  {
+   "nome": "pro-record",
+   "riquadri": [
+    {
+     "i": 2,
+     "titolo": "Liga Ibérica · 27ª giornata PROSSIMA PARTITA Cal",
+     "h": 244,
+     "raggio": "16px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "R1 card con raggio 16px invece di RAD.md"
+     ],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
+     "titolo": "STAGIONE 4 · SETTIMANA 30 DI 38 26 Partite 34 Go",
+     "h": 190,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 4,
+     "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
+     "h": 77,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 5,
+     "titolo": "La tua storia › LA TUA STORIA 🔥 La volata scude",
+     "h": 205,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 6,
+     "titolo": "LO SPOGLIATOIO 🔥 L'asse con Sergio Blanco La sq",
+     "h": 171,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 7,
+     "titolo": "Il progetto del club › IL PROGETTO DEL CLUB 🌍 A",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 8,
+     "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
+     "h": 189,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 9,
+     "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
+     "h": 206,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "P1 riquadro del procuratore senza la sua figurina"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 10,
+     "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
+     "h": 238,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 11,
+     "titolo": "Il mondo fuori › IL MONDO FUORI 🎙️ Alessandro M",
+     "h": 218,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 12,
+     "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
+     "h": 244,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 13,
+     "titolo": "La tua settimana › 📅 LA TUA SETTIMANA Settimana",
+     "h": 522,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 14,
+     "titolo": "Duello capocannoniere › DUELLO CAPOCANNONIERE #1",
+     "h": 147,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 15,
+     "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
+     "h": 173,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 16,
+     "titolo": "OBIETTIVI PERSONALI › ✅ La prima stagione da pro",
+     "h": 130,
+     "raggio": "6px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [
+      "A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento"
+     ],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 17,
+     "titolo": "Notizie della settimana › NOTIZIE DELLA SETTIMAN",
+     "h": 187,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 18,
+     "titolo": "Voci di mercato › VOCI DI MERCATO — W.30 💼 FC I",
+     "h": 212,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 19,
+     "titolo": "Classifica › CLASSIFICA · W.30/38 1 CFM ★ CFM 63",
+     "h": 241,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    },
+    {
+     "i": 20,
+     "titolo": "Ultime notizie › ULTIME NOTIZIE 🤵 Marco Gestini",
+     "h": 264,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": true
+    }
+   ],
+   "scrollW": 412,
+   "W": 412
+  }
+ ],
+ "errori": [],
+ "esito": "ROSSO",
+ "totali": {
+  "riquadri": 112,
+  "fuoriStandard": 24,
+  "scenari": 7,
+  "sforamentoPagina": []
+ }
+}
