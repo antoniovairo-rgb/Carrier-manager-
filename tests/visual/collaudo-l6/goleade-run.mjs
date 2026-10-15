@@ -28,7 +28,7 @@ const start = await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot
 const perMatch = [];
 let iter = 0, endReason = 'ok', seasonsCrossed = 0, lastMatches = start.matches;
 // Conteggio dal contatore player.matches (matchHistory puo' non crescere: e' limitato in lunghezza).
-const resCount = {};
+const resCount = {}; let adoptedAddio = 0;
 while (perMatch.length < N_MATCHES && iter++ < 1500) {
   const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); C.dismiss(); const p = C.snapshot(); const mh = p.matchHistory || []; return { res, matches: p.matches || 0, last: mh[mh.length - 1] || null, season: p.season, week: p.week, cal: (p.calendar || []).filter(c => c.week === (mh[mh.length - 1] || {}).week).map(c => ({ h: c.isHome ?? null })) }; });
   resCount[String(r.res).split(':')[0]] = (resCount[String(r.res).split(':')[0]] || 0) + 1;
@@ -37,9 +37,10 @@ while (perMatch.length < N_MATCHES && iter++ < 1500) {
     const ok = await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
     if (ok !== true) { endReason = 'startNewSeason:' + ok; break; }
     await page.evaluate(() => window.__CPM_CAREER.dismiss());
-    seasonsCrossed++; await sleep(300); continue;
+    seasonsCrossed++; lastMatches = 0; await sleep(300); continue;
   }
   if (String(r.res).startsWith('blocked:')) { await page.evaluate(() => window.__CPM_CAREER.clearTournaments()); continue; }
+  if (r.res === 'opening-resolved') { adoptedAddio++; await page.evaluate(() => window.__CPM_CAREER.patch({ retireAskedSeason: window.__CPM_CAREER.get().season })); }
   if (r.matches > lastMatches && r.last) {
     perMatch.push({ season: r.season, week: r.last.week, opp: r.last.opponent, homeScore: r.last.homeScore, awayScore: r.last.awayScore, teamGoals: r.last.homeScore, oppGoals: r.last.awayScore, heroGoals: r.last.goals, heroAssists: r.last.assists, rating: r.last.rating, won: !!r.last.won, drew: !!r.last.drew, simulated: !!r.last.simulated, euro: !!r.last.euro, dMatches: r.matches - lastMatches });
     lastMatches = r.matches;
@@ -63,7 +64,7 @@ const summary = {
   tiriXgTiri: 'NON MISURATO sul percorso sim (nessun dato di tiro in simulateMatch)',
   incoerenzaWon: perMatch.filter(x => x.teamGoals != null && (x.won !== (x.teamGoals > x.oppGoals))).length,
 };
-const out = { collaudo: 'L6 · PO-190 goleade', version, fixture: 'tests/visual/fixtures/save-190-s12-ovr93.json', start, endReason, iter, seasonsCrossed, resCount, pageerrors: errors, summary, perMatch, calendarNow: data.cal.length };
+const out = { collaudo: 'L6 · PO-190 goleade', version, fixture: 'tests/visual/fixtures/save-190-s12-ovr93.json', start, endReason, iter, seasonsCrossed, resCount, adoptedAddio, pageerrors: errors, summary, perMatch, calendarNow: data.cal.length };
 fs.writeFileSync(path.join(OUT, 'goleade-po190-save190-sim.json'), JSON.stringify(out, null, 1));
 console.log(JSON.stringify(summary));
 console.log(`partite ${N} · fine: ${endReason} · pageerrors ${errors.length}`);
