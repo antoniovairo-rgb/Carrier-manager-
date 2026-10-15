@@ -390,7 +390,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
   ]},
   {id:"wi_investimento",once:true,cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
-    {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},flag:"investment",inv:"prudente",note:"rendita a fine stagione"},
+    {txt:"📈 Investo metà del conto",ef:{bank:-40000,quotaConto265:0.5,morale:3}/* [PO-265] costa davvero la meta' del saldo (bank265, src/18); bank:-40000 resta solo per il rosso __CPM_NO_META265 */,flag:"investment",inv:"prudente",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
   {id:"wi_beneficenza",cond:_notoOk453/* [7.453.0] prima ti devono riconoscere */,cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
