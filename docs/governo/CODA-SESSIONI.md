@@ -54,6 +54,9 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/nomi-219-giro34 | — (archiviata, consegnato a6aa9e79) | giro 34 (Opus, base lavoro/170): riparare il guardiano nomi-219 instabile due volte (85/88/95% attorno al 90%), regola PO 13/10; solo test | 15/10 19:04 |
 | sviluppo/ripartenza-228-giro35 | session_01UjkGXjmfF4yMqNQ1WwXhiB | giro 35 (Opus, base sviluppo/passaggi-228-giro32): decisione PO «Restringi, poi ritara» — ripartenza del giro 27 solo dopo gol da piazzato/scena, poi passaggi a ~814 | 15/10 22:18 |
 | sviluppo/determinismo-262-giro36 | session_01Lha8HDT2FDFmoebjAGvpsY | giro 36 (Opus, base lavoro/170): PO-262 match-sequence rosso — punto di divergenza, release colpevole, correzione con rosso e guardiano | 15/10 22:29 |
+| sviluppo/zona-g-263-265-giro37 | session_01L5qrRj7Lap4fwhf2tq1gnY | giro 37 (Opus, base giro 33): eccezione zona G PO-263, PO-264, PO-265 | 15/10 22:32 |
+| analisi/proposta-l6-giro38 | session_013Uuw4ZJ9TrrKt74bNoSmGB | giro 38 (Opus, solo documento, base collaudo/carriere-l6): docs/governo/PROPOSTA-L6.md per PO-154…157 e PO-098, con domande per il questionario | 15/10 22:32 |
+| sviluppo/via-ch38-171-giro39 | session_01T2hfT2xAYFLmmG9VRpbwgs | giro 39 (Opus, base lavoro/170): PO-171 via CH38 da cerimonie, ritratto dei menu e download | 15/10 22:32 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
