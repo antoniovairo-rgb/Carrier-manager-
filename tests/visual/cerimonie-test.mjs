@@ -25,7 +25,7 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = [];
 page.on('pageerror', e => errs.push(String(e).slice(0, 160)));
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; });
+await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; for (const k of r) window[k] = true; }, (process.env.CPM_ROSSO || '').split(',').filter(Boolean));/* [giro 47] CPM_ROSSO=__CPM_NO_VARIA137 (copione unico) o __CPM_NO_PASSA137 (niente passaggio): il guardiano deve diventare rosso */
 await openMatch(page, port); await sleep(1200);
 const scripts = {};
 for (const kind of ['league', 'cup', 'promo', 'int', 'bigwin']) {
@@ -131,6 +131,8 @@ for (let i = 0; i < sigs.length; i++) for (let j = i + 1; j < sigs.length; j++) 
 const pr = scripts.promo && scripts.promo.beats || [];
 if (pr.includes('present') || pr.includes('lift')) guasti.push('la PROMOZIONE ha podio/sollevamento: deve festeggiare senza coppa');
 if (!(pr.includes('coach') && pr.includes('curva'))) guasti.push('la PROMOZIONE non ha mister+curva: ' + pr.join('>'));
+/* [giro 47 · PO-002] nella premiazione di squadra il capitano PASSA la coppa all'eroe: beat `pass` dopo `captain` */
+for (const k of ['league', 'cup', 'int']) { const bb = scripts[k] && scripts[k].beats || []; const ic = bb.indexOf('captain'); if (ic >= 0 && bb[ic + 1] !== 'pass') guasti.push(`${k}: il capitano non passa la coppa all'eroe (${bb.join('>')})`); }
 const cu = scripts.cup && scripts.cup.beats || [];
 if (!(cu.includes('present') && cu.includes('lift'))) guasti.push('la COPPA non ha consegna+sollevamento: ' + cu.join('>'));
 wg.forEach(g => guasti.push(g));
