@@ -29,15 +29,23 @@ const out=[];for(const [pat,sh,c2] of KITS)for(const vista of ['fronte','schiena
   const lum=(()=>{const h=sh.replace('#','');return 0.2126*parseInt(h.slice(0,2),16)/255+0.7152*parseInt(h.slice(2,4),16)/255+0.0722*parseInt(h.slice(4,6),16)/255;})();
   _applyHyperKit(av,{shirt:sh,c2,pattern:pat,shorts:lum<0.5?'#f1f1f3':'#181826',socks:sh,shoes:'#141418'},null,10);${process.env.CPM_DIAG==='pelle'?"av.traverse(o=>{if(o.isMesh&&!/^Hyper/.test(o.material&&o.material.name||''))o.visible=false;});":''}${process.env.CPM_DIAG==='tinta'?"av.traverse(o=>{if(o.isMesh&&o.material&&o.material.name==='HyperShirt'){o.material=o.material.clone();o.material.map=null;o.material.color.set('#22c55e');}});":''}
   const cam=new THREE.PerspectiveCamera(${VICINO ? 18 : 30},W/H,0.05,50);hd.getWorldPosition(vh);const cy=vh.y-${VICINO ? 0.34 : 0.62};cam.position.set(0,cy,${VICINO ? 2.6 : 3.1});cam.lookAt(0,cy-${VICINO ? 0.02 : 0.08},0);ren.render(sc,cam);
+  if(vista==='fronte'){const cv=document.createElement('canvas');cv.width=W;cv.height=H;const cx=cv.getContext('2d');cx.drawImage(ren.domElement,0,0);const d=cx.getImageData(0,0,W,H).data;
+    /* misura: fra i pixel della maglia (vicini al primo o al secondo colore, dopo luce e tonemapping) la quota del SECONDO colore; e i pixel color pelle nel riquadro del petto (macchia) */
+    const P=document.createElement('canvas');P.width=P.height=1;const pc=P.getContext('2d');const rgb=h=>{pc.fillStyle=h;pc.fillRect(0,0,1,1);return pc.getImageData(0,0,1,1).data;};
+    let nA=0,nB=0,pel=0;const near=(i,c,t)=>{const r=d[i]/(c[0]+8),g=d[i+1]/(c[1]+8),bb=d[i+2]/(c[2]+8),m=(r+g+bb)/3;return m>0.25&&m<1.6&&Math.abs(r-m)<t*m&&Math.abs(g-m)<t*m&&Math.abs(bb-m)<t*m;};
+    const sh8=[...rgb(sh)],c28=[...rgb(c2)],skin=[200,140,110];
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=4*(y*W+x);const dA=Math.hypot(d[i]-sh8[0]*0.85,d[i+1]-sh8[1]*0.85,d[i+2]-sh8[2]*0.85),dB=Math.hypot(d[i]-c28[0]*0.85,d[i+1]-c28[1]*0.85,d[i+2]-c28[2]*0.85);if(Math.min(dA,dB)<110){if(dB<dA)nB++;else nA++;}
+      if(x>W*0.38&&x<W*0.62&&y>H*0.215&&y<H*0.42){const r=d[i],g=d[i+1],bb=d[i+2];if(r>120&&r>g+25&&g>bb+5&&r-bb>45&&r-bb<130)pel++;}}
+    (window.__MISURE=window.__MISURE||[]).push({pat,sh,c2,quotaB:+(nB/Math.max(1,nA+nB)).toFixed(3),pelle:pel});}
   const f=document.createElement('figure');f.style.margin='0';const im=new Image();im.src=ren.domElement.toDataURL();f.appendChild(im);const cap=document.createElement('figcaption');cap.style.cssText='color:#cbd5e1;font:10px sans-serif;text-align:center';cap.textContent=pat+' '+vista;f.appendChild(cap);document.getElementById('r').appendChild(f);
   out.push(pat+'/'+vista);sc.remove(av);}
-window.__PROVINO={ok:true,n:out.length,kit:window.__CPM_KIT061||null};}catch(e){window.__PROVINO={ok:false,err:String(e.stack||e.message)};}})();</script></body></html>`;
+window.__PROVINO={ok:true,n:out.length,kit:window.__CPM_KIT061||null,misure:window.__MISURE||[]};}catch(e){window.__PROVINO={ok:false,err:String(e.stack||e.message)};}})();</script></body></html>`;
 const dir = path.join(ROOT, 'tests/visual'); const tmp = path.join(dir, 'provino-kit061.tmp.html'); fs.writeFileSync(tmp, html);
 const srv = await startServer(); const port = srv.address().port; const br = await launchBrowser();
 const p = await br.newPage({ viewport: { width: 1240, height: 400 } }); await installCdnRoutes(p);
 const E = []; p.on('pageerror', e => E.push(e.message));
 await p.goto(`http://localhost:${port}/tests/visual/provino-kit061.tmp.html`); await p.waitForFunction(() => window.__PROVINO, null, { timeout: 120000 });
-const r = await p.evaluate(() => window.__PROVINO); const od = path.join(ROOT, 'docs/sviluppo/foto-giro48'); fs.mkdirSync(od, { recursive: true });
+const r = await p.evaluate(() => window.__PROVINO); const od = process.env.CPM_OUT ? path.resolve(process.env.CPM_OUT) : path.join(ROOT, 'docs/sviluppo/foto-giro48'); fs.mkdirSync(od, { recursive: true });
 await p.screenshot({ path: path.join(od, NOME + '.png'), fullPage: true });
-console.log(JSON.stringify({ ...r, errori: E.slice(0, 3) })); await br.close(); srv.close(); fs.unlinkSync(tmp);
+console.log('PROVINO ' + JSON.stringify({ ...r, errori: E.slice(0, 3) })); await br.close(); srv.close(); fs.unlinkSync(tmp);
 process.exit(r.ok && !E.length ? 0 : 1);

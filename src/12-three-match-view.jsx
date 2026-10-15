@@ -1225,6 +1225,8 @@ function ThreeMatchView(props){
       if(_homePat){_homeKit.pattern=_homePat;_homeKit.c2=(heroClub&&heroClub.c2)||'#f0f0f0';}
       const _awayPat=(oppClub&&_kpFor(oppClub))||null;
       if(_awayPat){_awayKit.pattern=_awayPat;_awayKit.c2=(oppClub&&oppClub.c2)||'#f0f0f0';}
+      /* [PO-061 giro 48] solo collaudo (cpmtest): __CPM_KITPAT061={home,away} forza i motivi di entrambe le squadre, per il censimento fotografico */
+      try{const _f61=_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_KITPAT061;if(_f61){if(_f61.home){_homeKit.pattern=_f61.home;_homeKit.c2=_f61.homeC2||_homeKit.c2||'#f0f0f0';}if(_f61.away){_awayKit.pattern=_f61.away;_awayKit.c2=_f61.awayC2||_awayKit.c2||'#f0f0f0';}}}catch(_e61){}
       if(_awayKit.shorts===_homeKit.shorts)_awayKit={..._awayKit,shorts:hexLum(_awayShirt)<0.5?'#cfd2d8':'#0d0d16'};// pantaloncini diversi tra le due squadre
       // portieri: due colori distinti da entrambe le maglie (e tra loro) dal GK_POOL
       let _gkA='#facc15',_gkB='#1d1d1f',_gb=-1;GK_POOL.forEach(k=>{const m=Math.min(colorDist(_homeShirt,k),colorDist(_awayShirt,k));if(m>_gb){_gb=m;_gkA=k;}});
