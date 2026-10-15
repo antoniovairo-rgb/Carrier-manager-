@@ -425,3 +425,12 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 2. **Perimetro L1**: «**Tutte corrette + tuo collaudo**» — ogni voce L1 aperta ha una correzione nel rilascio o un verdetto misurato; dopo la pubblicazione questionario per chiuderle una per una (FATTO solo dal PO).
 3. **Fuori L1**: «**Stadi + giri già in corso**» — giro stadi 3D (PO-071 fase 3, nuove tipologie) con grafica correlata: cerimonie nello stadio (PO-137/002), pubblico e cartelloni, ingresso in campo, kit grafico (PO-061, L5). Entrano anche zona G (giri 33/37) e via CH38 (giro 39) se verdi.
 4. Consegna dei giri entro le 06:00 UTC del 16/10 (08:00 Roma); quello che non è consegnato e verde entro l'unione slitta, dichiarato.
+
+## 16/10 notte — Questionario sulla proposta L6 (docs/governo/PROPOSTA-L6.md, giro 38)
+1. **Inizio**: «**Banco corretto, poi Nazionale**» — fase 1-bis di sola misura (rinnovo accettato quando offerto e conteggio delle carriere senza offerta, solo gli 8 archetipi veri con le statistiche della creazione, 10 carriere dalla creazione normale, 5 con la Nazionale giocata, gemelli economici dell'Ufficio, minuti e titolarità), poi niente Nazionale da svincolato, poi gli impulsi.
+2. **PO-154**: «**Memoria + seguiti + contesto**» (opzione A+B della proposta).
+3. **PO-155**: «**Svincolato, poi finestre + CT**» — qualificazioni del torneo invariate.
+4. **PO-157**: «**Misura, rinnovo, potatura**».
+5. **PO-156**: «**Bersagli del PO, poi taratura**» — il PO fisserà 4-5 numeri per fase.
+6. **PO-098**: «**Misura, poi motore, dopo L1**»; nomi degli stili: **Finalizzatore · Regista · Incursore · Trascinatore**; Enfant diventa tratto di crescita.
+7. **Zona G**: «**Passo per passo**» — il banco corretto parte ora (solo test); per ogni correzione successiva il PO concede l'eccezione coi numeri del banco nuovo.
