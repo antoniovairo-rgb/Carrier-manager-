@@ -1,5 +1,446 @@
 [
  {
+  "data": "2026-10-15 22:53",
+  "versione": "7.999.170",
+  "catena": "notte",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "procuratore-253",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "fps-249",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "prima-partita-237",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "brusio-238",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "attesa-241",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "statistiche-228",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "crediti-254",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "badge-255",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "toast-256",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "backup-167",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-234",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "bambini-236",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-220-scena",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-259",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   }
+  ],
+  "composto": true,
+  "nota_composto": "passi gia' verdi prima del riavvio del container (catena notte 15/10 18:47 su sessione Haiku, stessa build 8fd95fef/a0c8e39a; rifatta senza crediti-238 archiviato): test:logic, save-compat, replay, classifica-102, recupero-103, euro-attesa-181, riquadro-euro-105, avversario-106, rinvio-coppe-107, etichette-108, titolo-110, pre-188, rimbalzo-189, conferenza-192, partita-rigiocata-194, pro-rivale-176, rigori-190, debito-190, scene-190, finale-202, ripresa-202, tetto-202, minuti-202, recupero-202, ripartenza-207, anteprima-212, mister-215, presentazione-214, possesso-209, brain-202, tempo-138, tabellino-216, test:vision, typing-shortcuts, validate-situations, manovre-150, popup-224, lessico-218, fila-227, finestra-230, procuratore-253, design-system, giornata-233, fps-249, migrazione-194, convocazione-235, prima-partita-237, brusio-238, attesa-241, statistiche-228, crediti-254, badge-255, toast-256, backup-167, career-critical, partita-vera, scena-motore-147, esiti-218, cross-218, testata-209, gk-dive-sync, gk-miss-229, goal-postarc, nomi-219, difesa-220, scene-221, intervista-231, tabellino-228, schede-234, bambini-236, difesa-220-scena, schede-259"
+ },
+ {
   "data": "2026-10-15 18:47",
   "versione": "7.999.170",
   "catena": "notte",
@@ -8764,148 +9205,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-06 14:44",
-  "versione": "7.999.143",
-  "catena": "grafica",
-  "passi": [
-   {
-    "passo": "griglia-mobile",
-    "ok": true,
-    "s": 226
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 814
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 33
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 21
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 59
-   },
-   {
-    "passo": "calendario-offerte-195",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "walkout-fermi-197",
-    "ok": true,
-    "s": 284
-   },
-   {
-    "passo": "fila-206",
-    "ok": true,
-    "s": 332
-   },
-   {
-    "passo": "premiazione-palco-191",
-    "ok": true,
-    "s": 81
-   },
-   {
-    "passo": "coppa-mani-191",
-    "ok": true,
-    "s": 77
-   },
-   {
-    "passo": "posa-sollevamento-191",
-    "ok": true,
-    "s": 84
-   },
-   {
-    "passo": "palco-corpi-191",
-    "ok": true,
-    "s": 121
-   },
-   {
-    "passo": "parata-198",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "busta-199",
-    "ok": true,
-    "s": 117
-   },
-   {
-    "passo": "presentazione-200",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "guanti-201",
-    "ok": true,
-    "s": 81
-   },
-   {
-    "passo": "formazioni-204",
-    "ok": true,
-    "s": 64
-   },
-   {
-    "passo": "figurine-208",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "post-210",
-    "ok": true,
-    "s": 557
-   },
-   {
-    "passo": "piedi-203",
-    "ok": true,
-    "s": 682
-   },
-   {
-    "passo": "gesti-scena-p1b",
-    "ok": true,
-    "s": 637
-   },
-   {
-    "passo": "piede-cross-p1b2",
-    "ok": true,
-    "s": 167
-   },
-   {
-    "passo": "rincorsa-144",
-    "ok": true,
-    "s": 252
-   },
-   {
-    "passo": "testa-146",
-    "ok": true,
-    "s": 147
    }
   ]
  }
