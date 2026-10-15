@@ -591,12 +591,12 @@ function ThreeMatchView(props){
       // [5.88.0 S2] hook di COLLAUDO template (test-only, spento nella build store): window.__CPM_STADIUM_TPL_FORCE
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&window.__CPM_STADIUM_TPL_FORCE&&STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE]){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
-        _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2};
+        _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2,kind:_ft.kind||null};
       }
       /* [C7] hook di COLLAUDO capienza (test-only): la taglia (sm/md/lg/xl) e il livello architettonico nascono dalla capienza —
          senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
-      try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null};}catch(_e){}
+      try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null,kind:(!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)&&_c.kind)||null};}catch(_e){}
       return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
@@ -617,7 +617,7 @@ function ThreeMatchView(props){
        stadio ha sempre lo stesso orizzonte. Solo scenografia: nessuna luce, nessun effetto sul gioco. */
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_FONDALE70)){
       const _st70=(sr.current&&sr.current._stad455)||{},_tp70=String(_st70.tpl||""),_cp70=+(_st70.cap||18000);
-      const _paese70=/provincia|comunale/.test(_tp70)||_cp70<12000;
+      const _paese70=/provincia|comunale|borgo/.test(_tp70)||_cp70<12000;
       let _sd70=(Math.abs(hashStr(_tp70+"|"+_cp70+"|fondale"))>>>0)||7;const _r70=()=>{_sd70=(_sd70*1664525+1013904223)>>>0;return _sd70/4294967296;};
       const _cv70=document.createElement("canvas");_cv70.width=2048;_cv70.height=512;const _x70=_cv70.getContext("2d");
       const _hex70=c=>"#"+(c>>>0).toString(16).padStart(6,"0").slice(-6);
@@ -1867,7 +1867,7 @@ function ThreeMatchView(props){
     const _placeRow=(list,xRow,side)=>{const n=list.length;list.forEach((m,i)=>{
       m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;// slot finale schierato
       m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*((typeof window!=='undefined'&&window.__CPM_NO_CAMM245)?0.20:0.65);/* [giro 23 PO-245 «camminata vera» — rosso __CPM_NO_CAMM245] a passo di camminata (1,8 u/s) 0,2 s fra uno e l'altro vorrebbero dire 0,36u: corpi uno dentro l'altro. 0,65 s = ~1,2u di fila */// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
-      m._wStartX=xRow-9;m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
+      m._wStartX=(typeof window!=='undefined'&&window.__CPM_NO_STADI246)?xRow-9:(side<0?-23.6:-20.4);/* [giro 46 PO-071 — rosso __CPM_NO_STADI246] le due file escono affiancate dalla bocca del tunnel (x -22, buildStadium) invece che da due punti del bordo campo */m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
     _placeRow(_homeMeshes,-15,-1);_placeRow(_awayMeshes,-7,1);
@@ -2037,7 +2037,7 @@ function ThreeMatchView(props){
     // [7.129.0 collaudo PO «i cartelloni devono stare DIETRO la linea della rimessa laterale e dunque anche della
     //   bandierina»] erano a z=±33.2 = SULLA touchline (e alla stessa z delle bandierine d'angolo _TLZ) → ora a ±34.8,
     //   OLTRE il bordo del prato (34) → dietro la touchline e dietro le bandierine, sul perimetro come i board veri.
-    [-37.8,-25.2,-12.6,0,12.6,25.2,37.8].forEach((x,i)=>{_mkAdBoard(x,-34.8-i*0.03,0,i,true,13.1);_mkAdBoard(x,34.8+i*0.03,Math.PI,i+4,true,13.1);});/* passo 12.6, w 13.1 (overlap 0.5), z-stagger anti-flicker → strip continua */
+    [-37.8,-25.2,-12.6,0,12.6,25.2,37.8].forEach((x,i)=>{if(!(i===1&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)))/* [giro 46 PO-071] varco del tunnel d'ingresso (buildStadium, x -22) */_mkAdBoard(x,-34.8-i*0.03,0,i,true,13.1);_mkAdBoard(x,34.8+i*0.03,Math.PI,i+4,true,13.1);});/* passo 12.6, w 13.1 (overlap 0.5), z-stagger anti-flicker → strip continua */
     // [7.119.0 collaudo PO «i cartelloni si vedono su tutti i lati ma senza sponsor»] i board a BORDO CAMPO delle
     //   LINEE LATERALI (tribuna/distinti) sono di TAGLIO rispetto alla camera dietro la porta → leggono come strisce
     //   vuote. Solo la curva di fondo mostra sponsor leggibili. FIX: una fascia LED di sponsor RIALZATA e INCLINATA
@@ -8947,7 +8947,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           kp=Math.min(dt*1.4,1);kl=Math.min(dt*1.8,1);
         } else if(prog<0.85){
           const _th=-Math.PI/2+(prog/0.85)*Math.PI*2;// partenza dietro la porta di casa, giro completo antiorario
-          const _rad=46-6*prog,_hgt=26-9*prog;// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
+          /* [giro 46 PO-071 — camera dell'ingresso per tipologia. Rosso __CPM_NO_STADI246] l'orbita era la stessa per ogni impianto:
+             sopra i terrapieni bassi del borgo a 26u si vedeva soprattutto prato e cielo, sotto la corona dell'arena il giro restava
+             basso. La quota segue la tipologia (borgo 0,70 · catino 0,92 · arena 1,14); traiettoria e tempi invariati. */
+          const _k46=((sr.current&&sr.current._stad455)||{}).kind,_hk46=_k46==="borgo"?0.70:_k46==="catino"?0.92:_k46==="arena"?1.14:1;
+          const _rad=46-6*prog,_hgt=(26-9*prog)*_hk46;// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
+          try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:_k46||null,k:_hk46,y:+_hgt.toFixed(2)};}catch(_e){}
           tPx=Math.cos(_th)*_rad;tPy=_hgt;tPz=Math.sin(_th)*_rad*0.60;
           tLx=Math.cos(_th+Math.PI)*40;tLy=8-4*prog;tLz=Math.sin(_th+Math.PI)*26;// sguardo alla tribuna OPPOSTA: campo+anello in quadro
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
