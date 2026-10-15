@@ -371,3 +371,7 @@ Fatto misurato: sul ramo lavoro/168 il numero di versione non era mai stato port
 1. **PO-245 ingresso in campo**: «**Camminata vera, ingresso più lungo**» — passo da camminata (~2 u/s) e ingresso allungato quanto serve; resta lo stesso tunnel per le due squadre.
 2. **Coppa Nazionale e prestito**: «**Resta in coppa**» — al trasferimento il turno di coppa si sposta alla prima settimana utile anche con doppio impegno; l'eroe non esce dalla coppa per il prestito. **Eccezione zona G** concessa dal PO solo per questo comportamento, con interruttore rosso e guardiano carriera.
 3. **PO-247 avviso premi nell'intervista**: «**Dopo l'intervista**» — l'avviso compare solo a intervista chiusa.
+
+## 15/10 mattina — 7.999.169
+
+PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (giro composto dopo la riparazione di tabellino-228) è tutta verde, senza aspettare l'orario 08/16/00.
