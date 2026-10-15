@@ -13,12 +13,14 @@ try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout
 await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 });
 await sleep(1000);
 const log = [];
-for (let i = 0; i < 120; i++) {
+let consec = 0, firstStuck = -1;
+for (let i = 0; i < 1500; i++) {
   const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); const scr = C.screen(); const op = C.openingPending(); C.dismiss(); const p = C.snapshot(); return { res, scr, op: Array.isArray(op) ? op : op, s: p.season, w: p.week, lived: !!p.weekLived, pendingDetail: JSON.stringify(op).slice(0, 200) }; });
+  if (r.res === 'opening-resolved') { consec++; if (consec === 1) firstStuck = i; } else consec = 0;
+  if (consec >= 25) { log.push(`BLOCCO dal passo ${firstStuck}: opening-resolved ripetuto, S${r.s}W${r.w}, op=${r.pendingDetail}`); break; }
   log.push(`${i} ${r.res} scr=${r.scr} S${r.s}W${r.w} lived=${r.lived} op=${r.pendingDetail}`);
   if (r.res === 'seasonEnd') await page.evaluate(() => window.__CPM_CAREER.startNewSeason());
-  if (i > 3 && String(r.res) === 'opening-resolved' && log.filter(l => l.includes('opening-resolved')).length > 12) break;
   await sleep(30);
 }
-console.log(log.slice(0, 60).join('\n'));
+console.log(log.slice(Math.max(0, firstStuck - 4), firstStuck + 30).join('\n'));
 await browser.close(); srv.close(); console.log('FINE');
