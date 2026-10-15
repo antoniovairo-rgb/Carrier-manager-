@@ -419,3 +419,9 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 2. **L6**: «**Proposta e questionario**» — dai numeri della fase 1 (RAPPORTO-carriere-l6) una proposta per PO-154…157 e PO-098, portata al PO in un questionario; nessuna modifica al gioco.
 3. **L3/L4 in parallelo a L1**: solo «**PO-171 via CH38**» (cerimonie, ritratto dei menu, download). PO-180, PO-168, PO-023 restano in coda.
 4. **L5, L7, L8**: «**Dopo L1, nell'ordine**».
+
+## 15/10 notte — Mega rilascio del 16/10 (chiusura di L1)
+1. **Orario**: «**Rilascio delle 16**» del 16/10 (14:00 UTC). Unione in mattinata, catena notte completa, pubblicazione alle 16 se verde.
+2. **Perimetro L1**: «**Tutte corrette + tuo collaudo**» — ogni voce L1 aperta ha una correzione nel rilascio o un verdetto misurato; dopo la pubblicazione questionario per chiuderle una per una (FATTO solo dal PO).
+3. **Fuori L1**: «**Stadi + giri già in corso**» — giro stadi 3D (PO-071 fase 3, nuove tipologie) con grafica correlata: cerimonie nello stadio (PO-137/002), pubblico e cartelloni, ingresso in campo, kit grafico (PO-061, L5). Entrano anche zona G (giri 33/37) e via CH38 (giro 39) se verdi.
+4. Consegna dei giri entro le 06:00 UTC del 16/10 (08:00 Roma); quello che non è consegnato e verde entro l'unione slitta, dichiarato.
