@@ -1,0 +1,147 @@
+{
+ "partite": 20,
+ "errori": 0,
+ "voci": {
+  "passaggi (due squadre)": {
+   "media": 739.1,
+   "sd": 63.32,
+   "min": 650,
+   "max": 883,
+   "n": 20
+  },
+  "passaggi riusciti % (due squadre)": {
+   "media": 90.78,
+   "sd": 1.43,
+   "min": 87.77943368107303,
+   "max": 93.23220536756126,
+   "n": 20
+  },
+  "cross (due squadre)": {
+   "media": 26.65,
+   "sd": 6.23,
+   "min": 18,
+   "max": 39,
+   "n": 20
+  },
+  "tiri (due squadre)": {
+   "media": 22.5,
+   "sd": 3,
+   "min": 15,
+   "max": 28,
+   "n": 20
+  },
+  "tiri in porta (due squadre)": {
+   "media": 7.95,
+   "sd": 2.67,
+   "min": 3,
+   "max": 13,
+   "n": 20
+  },
+  "dribbling riusciti % (due squadre)": {
+   "media": 50.86,
+   "sd": 11.09,
+   "min": 18.181818181818183,
+   "max": 68.42105263157895,
+   "n": 20
+  },
+  "contrasti (due squadre)": {
+   "media": 24.5,
+   "sd": 9.02,
+   "min": 9,
+   "max": 43,
+   "n": 20
+  },
+  "falli (due squadre)": {
+   "media": 22.75,
+   "sd": 4.47,
+   "min": 14,
+   "max": 31,
+   "n": 20
+  },
+  "ammonizioni (due squadre)": {
+   "media": 4.2,
+   "sd": 1.61,
+   "min": 1,
+   "max": 6,
+   "n": 20
+  },
+  "possesso squadra casa % (somma = 100)": {
+   "media": 51.2,
+   "sd": 2.73,
+   "min": 48,
+   "max": 56,
+   "n": 20
+  },
+  "gol (due squadre)": {
+   "media": 2.4,
+   "sd": 1.88,
+   "min": 0,
+   "max": 6,
+   "n": 20
+  },
+  "xG (due squadre)": {
+   "media": 1.68,
+   "sd": 0.55,
+   "min": 0.9770000000000001,
+   "max": 3.492,
+   "n": 20
+  },
+  "possesso check somma (deve essere 100)": {
+   "media": 100,
+   "sd": 0,
+   "min": 100,
+   "max": 100,
+   "n": 20
+  }
+ },
+ "voci_extra": {
+  "corner": {
+   "media": 5.6,
+   "sd": 2.09,
+   "min": 2,
+   "max": 8,
+   "n": 20
+  },
+  "intercetti": {
+   "media": 22.55,
+   "sd": 4.49,
+   "min": 14,
+   "max": 33,
+   "n": 20
+  },
+  "dribbling_tentati": {
+   "media": 24.15,
+   "sd": 11.21,
+   "min": 11,
+   "max": 54,
+   "n": 20
+  }
+ },
+ "perSquadra_casa": {
+  "passaggi": {
+   "media": 290.5,
+   "sd": 48.68,
+   "min": 210,
+   "max": 388,
+   "n": 20
+  },
+  "cross": {
+   "media": 16.4,
+   "sd": 6.61,
+   "min": 6,
+   "max": 34,
+   "n": 20
+  },
+  "tiri": {
+   "media": 13.35,
+   "sd": 2.66,
+   "min": 8,
+   "max": 16,
+   "n": 20
+  }
+ },
+ "sanity": {
+  "tiriBloccati_ok_inPorta_maggiore_tiri": 0,
+  "golTabVsScore": []
+ }
+}
