@@ -40,6 +40,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/crediti-254 | session_01T3Fg6V1xKqjcahLVWg5Vqv | giro 25 (Opus, base 7.999.169): PO-254 pulsante del kit «Crediti» in home e contenuto allineato a CREDITI-fonti.md | 15/10 12:35 |
 | sviluppo/badge-toast-255 | session_016CgyD1NFeY3QaTGeoHZ9L1 | giro 26 (Opus, base 7.999.169): PO-255 badge solo «v x.y.z» senza PROD/TEST; PO-256 i toast aspettano la chiusura dei Modal | 15/10 12:40 |
 | sviluppo/taccuino-169 | session_01SySqniugzQPDaeLz9MDzqG | giro 27 (Opus, base 7.999.169): taccuino PO 15/10 — PO-207 rigore senza ripartenza dal centro, PO-257 finta 000, PO-258 punizione 111 (coordinato col giro 22) | 15/10 12:41 |
+| collaudo/mirato-169 | session_01TEJ851pZn5jfY4EEQwUWCF | collaudo mirato 7.999.169 (Haiku, sola misura): A) statistiche su 20 partite (PO-228), B) intervista dopo la Nazionale (PO-243), C) giornale (PO-244); rapporto docs/collaudi/RAPPORTO-mirato-169.md | 15/10 12:57 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
