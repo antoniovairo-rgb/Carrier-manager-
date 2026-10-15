@@ -5316,6 +5316,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 sr.current._mateFx={mesh:_bm519,name:_fam519==="tiro"?"tackle":"header",t:_fam519==="tiro"?0.9:0.8};
                 if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1)});}catch(_e){}}
               }
+              /* [PO-252/8 giro 42 — OLTRE I 9u IL DIFENSORE SI MUOVE, NON GESTICOLA. Rosso __CPM_NO_REAZ252, guardiano reazione-252]
+                 Il banco 248 conta 5/54 conclusioni senza nessuna reazione avversaria (cross gi148, tiro gi66): il gesto del 7.519
+                 ha tetto 9u apposta (un gesto a distanza e' un gesto teletrasportato) e oltre non succedeva NIENTE. Qui, fra 9 e
+                 24u, il difensore piu' vicino riceve un SPOSTAMENTO verso il punto (scivola sulla linea di tiro / attacca il punto
+                 d'atterraggio del cross), applicato come offset al suo bersaglio ordinario (driver off-ball, stessa inerzia di
+                 animOne): corre, non salta. Tetto 7u e mai oltre 3u dal punto. Vale per la sola scena (chiave hlSitKey). */
+              if(!(_bm519&&_bd519<9)&&typeof window!=='undefined'&&window.__CPM_REA42N!==undefined){try{window.__CPM_REA42N.push({f:_fam519,d:_bm519?+_bd519.toFixed(1):null,k:P.hlOutcomeKind||null});}catch(_e){}}/* [giro 42 testimone] perche' nessun gesto */
+              else if(_bm519&&_bd519<24&&!(typeof window!=='undefined'&&window.__CPM_NO_REAZ252)){
+                const _ux42=(_px519-_bm519.position.x)/_bd519,_uz42=(_pz519-_bm519.position.z)/_bd519,_l42=Math.min(7,_bd519-3);
+                _bm519._rea42={k:P.hlSitKey,x:_ux42*_l42,z:_uz42*_l42};
+                if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1),mov:1,x0:+_bm519.position.x.toFixed(2),z0:+_bm519.position.z.toFixed(2),px:+_px519.toFixed(2),pz:+_pz519.toFixed(2)});window.__CPM_REA42M=_bm519;}catch(_e){}}
+              }
             }
           }
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=="undefined"){try{window.__CPM_ARC={t,ok:P.hlSuccess,kind:P.hlOutcomeKind||null,on:!!ballArcActive,tx:+(+ballArcTgtX).toFixed(1),tz:+(+ballArcTgtZ).toFixed(1),h:+(+ballArcH).toFixed(2),dur:+(+ballArcDur).toFixed(2)};}catch(_e){}}/* [7.341.0] osservabilità del BERSAGLIO dell'arco (test-only): il setaccio delle azioni misurava «dove finisce la palla» e doveva dedurre dove il motore la stesse mandando */
@@ -6754,7 +6766,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
           {const _q850=(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:(_mk143?{x:_mk143.x,y:_mk143.y,gk:false}:null);/* [giro 17 PO-123] il marcatore del motore va sul suo punto (_mk143), come il portatore */
            if(_q850&&_q850.x!=null&&!_q850.gk){pp.mesh._port850=true;animOne(pp.mesh,G2X(clamp(+_q850.x,2,98)),G2Z(clamp(+_q850.y,2,98)),aDt,ak,bx,bz);}/* [7.850.0] il portatore: punto logico, niente offset */
-           else{pp.mesh._port850=false;animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}}}
+           else{pp.mesh._port850=false;const _r42=(pp.mesh._rea42&&pp.mesh._rea42.k===P.hlSitKey&&isResult&&!(typeof window!=='undefined'&&window.__CPM_NO_REAZ252))?pp.mesh._rea42:null;/* [PO-252/8 giro 42] reazione di movimento */
+             if(_r42)_r42.hit=(_r42.hit|0)+1;
+             animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98))+(_r42?_r42.x:0),G2Z(clamp(t.y+(t.ry||0),2,98))+(_r42?_r42.z:0),aDt,ak,bx,bz);}}}
         // item 2 (5.49.6): INGRESSO DEL SUBENTRANTE — l'eroe parte dalla LINEA LATERALE (area tecnica), riceve le ultime indicazioni
         //   (si gira verso la panchina), poi cammina IN CAMPO fino alla sua posizione. Override del target eroe durante la sequenza.
         if(subEntryT>=0){
@@ -8925,7 +8939,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          passate che girano PIU' A VALLE (arretramento per bisezione, guardia sullo snap, clamp sulla vista
          reale) restavano fuori dal conto, e il censimento diceva 5 su 8 senza poter fare di meglio. Qui si
          azzera una volta per fotogramma e si raccoglie alla fine, quando tutte hanno parlato. */
-      sr.current._tocc503=[];sr.current._leg563=0;/* [7.563.0] quante reti di LEGALITA' hanno gia' scritto in questo fotogramma */
+      sr.current._tocc503=[];sr.current._tr42=null;sr.current._leg563=0;/* [7.563.0] quante reti di LEGALITA' hanno gia' scritto in questo fotogramma */
       if(sr.current._cutZoomSnap){camHL=_hlTgt;sr.current._cutZoomSnap=false;}
       let tPx,tPy,tPz,tLx,tLy,tLz,kp,kl;
       if(isWalk){
@@ -9223,6 +9237,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          }}
         tPx=wPx+(cPx-wPx)*camHL;tPy=wPy+(cPy-wPy)*camHL;tPz=wPz+(cPz-wPz)*camHL;
         tLx=wLx+(cLx-wLx)*camHL;tLy=wLy+(cLy-wLy)*camHL;tLz=wLz+(cLz-wLz)*camHL;
+        if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('blend:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
         /* [7.650.0 - LA REGIA STA IN TRIBUNA EST. Rosso __CPM_NO650]
            DIRETTIVA PO (collaudo 28/08, SIT #56): "la regia deve stare sempre dalla tribuna est,
            si invertono di campo solo le squadre tra primo e secondo tempo". E' anche la cura
@@ -9438,8 +9453,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          viaggio del pallone taglierebbe fuori la storia. Pesata su `camHL` (il blend largo→stretto della
          regia): a inquadratura larga non si stringe. Spenta sotto la manopola di prova, che deve poter
          misurare da sola. PROVA DEL ROSSO: `__CPM_NO505` rimette la distanza di prima. */
-      if(typeof window!=='undefined'&&window.__CPM_F6REC&&hero){try{const _r=(window.__CPM_F6LOG=window.__CPM_F6LOG||[]);if(_r.length<4000)_r.push({ph:P.matchPhase,sb:_subjBall50?1:0,hl:+camHL.toFixed(2),dT:+Math.hypot(tPx-hero.position.x,tPz-hero.position.z).toFixed(1),dC:+Math.hypot(camera.position.x-hero.position.x,camera.position.z-hero.position.z).toFixed(1),bh:+Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z).toFixed(1),rp:replaying?1:0});}catch(_eF6){}}/* [23/09 POC testimone, solo sonda] */
-      if(isHL&&!_subjBall50&&hero&&!P.ceremony&&!P.shootout&&!replaying
+if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('preF6:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
+            if(typeof window!=='undefined'&&window.__CPM_F6REC&&hero){try{const _r=(window.__CPM_F6LOG=window.__CPM_F6LOG||[]);if(_r.length<4000)_r.push({ph:P.matchPhase,sb:_subjBall50?1:0,hl:+camHL.toFixed(2),dT:+Math.hypot(tPx-hero.position.x,tPz-hero.position.z).toFixed(1),dC:+Math.hypot(camera.position.x-hero.position.x,camera.position.z-hero.position.z).toFixed(1),bh:+Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z).toFixed(1),rp:replaying?1:0});}catch(_eF6){}}/* [23/09 POC testimone, solo sonda] */
+      /* [PO-252/9 giro 42 — LA TAGLIA SI SPEGNE IN DISSOLVENZA, NON IN UN FOTOGRAMMA. Rosso __CPM_NO_TAGLIA252, guardiano camera-252]
+         MISURATO (banco 248 voce 9, testimone __CPM_CAMJ42 con i punti di controllo del bersaglio): su gi66 gol/sbaglia/parata il
+         bersaglio della camera salta di 32-34u in UN fotogramma (da ~(24,3,2) stretto sull'eroe a ~(0,11,15) largo). L'unica passata
+         che cambia nel fotogramma e' questa: quando il soggetto passa al pallone (_subjBall50, isteresi 7.520) la taglia si spegneva
+         secca, e l'arbitro d'inerzia (7.521) vede un salto oltre 25u e lo tratta come uno stacco voluto — senza nero: la camera
+         vola a 3u per fotogramma. Ora il peso della taglia (_w252) scende/sale con tau ~0,35 s di scena; al cambio di scena si
+         allinea subito (la firma golden, catturata in lettura con l'eroe soggetto, non cambia). */
+      const _no252t=(typeof window!=='undefined'&&window.__CPM_NO_TAGLIA252);
+      {const _cs252=sr.current,_tgt252=(isHL&&!_subjBall50)?1:0,_sk252=String((P&&P.hlSitKey)||'');
+       if(_no252t||_cs252._w252==null||_cs252._w252k!==_sk252||_cs252._cutSnap||_cs252._sceneCut)_cs252._w252=_tgt252;
+       else _cs252._w252+=(_tgt252-_cs252._w252)*Math.min(dt/0.35,1);
+       _cs252._w252k=_sk252;}
+      sr.current._sb42=!!_subjBall50;
+      const _w252=_no252t?((isHL&&!_subjBall50)?1:0):sr.current._w252;
+      if(isHL&&_w252>0.002&&hero&&!P.ceremony&&!P.shootout&&!replaying
          &&!(typeof window!=='undefined'&&(window.__CPM_NO505||window.__CPM_ZOOM480||window.__CPM_FRAMET480))){
         const _hx5=hero.position.x,_hy5=hero.position.y+0.9,_hz5=hero.position.z;
         const _vx5=tPx-_hx5,_vy5=tPy-_hy5,_vz5=tPz-_hz5;
@@ -9456,7 +9486,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            globale. */
         const _tg5=(typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_TAGLIA18)?(+window.__CPM_TAGLIA_REV||0.18):0.12;/* [23/09 POC — decisione PO (wizard): nella SOLA review CGTrader la taglia chiesta e' 0,18; la partita normale resta a 0,12 (7.713). Rosso __CPM_NO_TAGLIA18. __CPM_TAGLIA_REV solo per la taratura da sonda.] */const _want5=Math.max(3.5,1.75/(2*_tg5*_tf5));/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
         if(_d5>_want5){
-          const _sc5=1-(1-_want5/_d5)*camHL;
+          const _sc5=1-(1-_want5/_d5)*camHL*_w252;
           tPx=_hx5+_vx5*_sc5;tPy=Math.max(2.1,_hy5+_vy5*_sc5);tPz=_hz5+_vz5*_sc5;
           /* la mira accompagna la taglia: piu' si stringe, piu' lo sguardo converge sul soggetto — e' la
              stessa correzione che la manopola di prova aveva dovuto imparare (7.480, «9 riquadri su 12
@@ -9862,7 +9892,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;
          if(!_prc.cut){_prc.cut=1;camera.position.set(tPx,tPy,tPz);camLook.set(_kp.x,1.25,_kp.z);}}}
-      camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
+if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('lerp:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
+            camera.position.x+=(tPx-camera.position.x)*kp;camera.position.y+=(tPy-camera.position.y)*kp;camera.position.z+=(tPz-camera.position.z)*kp;
       /* [7.507.0 codice 007 — IL BERSAGLIO DELLO SGUARDO E' LEGALE PRIMA DEL LERP]
          Il meccanismo dell'oscillazione, gia' letto nel 7.475/7.478C ma mai chiuso alla radice: il lerp
          trascina `camLook` verso un bersaglio che puo' lasciare il soggetto FUORI dal quadro reale, la
@@ -9920,7 +9951,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);/* tre quarti: ~49 gradi fuori dall'asse del volo, cosi' la palla attraversa il quadro */
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;tLx=_kp.x;tLy=1.25;tLz=_kp.z;
          _prc.cam=(_prc.cam|0)+1;}}
-      if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
+if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('arb:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
         const _cut5=Math.hypot(tPx-_in5.px,tPz-_in5.pz)>25||Math.hypot(tLx-_in5.lx,tLz-_in5.lz)>30;
         if(_cut5){_in5.px=tPx;_in5.py=tPy;_in5.pz=tPz;_in5.lx=tLx;_in5.ly=tLy;_in5.lz=tLz;}
@@ -10314,6 +10346,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
+      /* [PO-252 giro 42, testimone di sola prova] posizione resa della camera + mani del fotogramma (_tocc503) +
+         tempo di scena: serve ad ATTRIBUIRE il salto isolato della camera (voce 9 del banco 248). Flag dedicato. */
+      if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{const _j42=window.__CPM_CAMJ42;if(_j42.length<4000)_j42.push({sc:+(window.__CPM_SCENET||0).toFixed(3),p:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],t:[+tPx.toFixed(2),+tPy.toFixed(2),+tPz.toFixed(2)],h:(sr.current._tocc503||[]).join('+'),sb:sr.current._sb42?1:0,w:+(sr.current._w252==null?-1:sr.current._w252).toFixed(2),tr:(sr.current._tr42||[]).join(' '),cs:!!sr.current._cutSnap,sc2:!!sr.current._sceneCut,ph:(propsRef.current||{}).matchPhase});}catch(_e42){}}
       /* [7.904.0 gancio test-only per la sonda C4] __CPM_CAM_DUGOUT904({x,y,z,lx,ly,lz}) forza la camera
          a un'inquadratura fissa (es. il dugout, per fotografare la panchina da vicino) — SOVRASCRIVE il
          risultato della regia normale qui, DOPO ogni altro calcolo di questo fotogramma: non tocca tPx/

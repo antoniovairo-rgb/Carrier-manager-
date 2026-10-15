@@ -110,6 +110,7 @@ const INIT = () => {
   window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1;
   window.__CPM_PIEDI_REC = 1; window.__CPM_REC229 = 1;
   window.__CPM_CAMSTEP93ON = 1; // passi di camera > 2,5u con snap/taglio di scena dichiarati (PO-144)
+  if (window.__CPM_CAMJ42_ON) window.__CPM_CAMJ42 = [];
   window.__CPM_BJMIN = 3; // il varco del 7.478 attribuisce gia' da 3u (default 6): serve a dare un NOME allo scrittore dei salti misurati qui
   window.__B248 = { on: false, fr: [] };
   const loop = () => {
@@ -137,6 +138,7 @@ async function nuovaPagina() {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page._errs = []; page.on('pageerror', e => page._errs.push(String(e.message).slice(0, 140)));
+  if (process.env.CPM_CAMJ42) await page.addInitScript(() => { window.__CPM_CAMJ42_ON = 1; });
   await page.addInitScript(INIT);
   await openMatch(page, port);
   await page.waitForFunction(() => window.__CPM_GLB_READY === true, null, { timeout: 60000 }).catch(() => {});
@@ -222,7 +224,7 @@ async function esegui(page, ex) {
   await page.evaluate(([o, kd]) => {
     window.__CPM_FORCE_OUTCOME = o; if (kd) window.__CPM_FORCE_KIND = kd; else delete window.__CPM_FORCE_KIND;
     window.__CPM_FRAME480 = null; window.__CPM_GK229 = []; window.__CPM_BJ478 = []; window.__CPM_REA519 = []; window.__CPM_ORF516 = []; window.__CPM_CAMSTEP93 = [];
-    window.__CPM_PIEDI = null; window.__B248.fr = []; window.__B248.on = true; window.__B248_RES0 = (window.__CPM_RES218 || []).length;
+    window.__CPM_PIEDI = null; if (window.__CPM_CAMJ42) window.__CPM_CAMJ42 = []; window.__B248.fr = []; window.__B248.on = true; window.__B248_RES0 = (window.__CPM_RES218 || []).length;
   }, [e.out, e.kind || null]);
   const okR = await page.evaluate(kk => window.__CPM_RESOLVE(kk), k).catch(() => false);
   if (!okR) return { gi, esito: e.id, nonGiud: 'risoluzione fallita' };
@@ -239,6 +241,8 @@ async function esegui(page, ex) {
     bj: (window.__CPM_BJ478 || []).slice(), cam93: (window.__CPM_CAMSTEP93 || []).slice(), rea: (window.__CPM_REA519 || []).slice(), orf: (window.__CPM_ORF516 || []).length,
     res: (window.__CPM_RES218 || []).slice(window.__B248_RES0 || 0), out: (function () { const o = window.__CPM_OUTCOME; return o ? { text: o.text || null, ok: o.ok, outKey: o.outKey || null, overlay: o.overlay || null, outKind: o.outKind || null, wood: o.woodwork || null } : null; })(), act: (window.__CPM_STATE() || {}).act || null, fps: window.__CPM_FPS708 || null,
   }));
+  /* [giro 42] attribuzione dei passi di camera (> 2,5u) alle mani del fotogramma, testimone __CPM_CAMJ42 (CPM_CAMJ42=1) */
+  if (process.env.CPM_CAMJ42) { const j = await page.evaluate(() => window.__CPM_CAMJ42 || []); for (let i = 1; i < j.length; i++) { const a = j[i - 1], z = j[i]; const d = Math.hypot(z.p[0] - a.p[0], z.p[1] - a.p[1], z.p[2] - a.p[2]); const dT = Math.hypot(z.t[0] - a.t[0], z.t[2] - a.t[2]); if (dT > 15) console.log(`  [cam42-T] gi${gi} ${e.id} bersaglio ${dT.toFixed(1)}u sc ${a.sc}→${z.sc} ph ${z.ph}\n     prima: ${a.tr}\n     dopo:  ${z.tr}`); if (d > 2.5) console.log(`  [cam42] gi${gi} ${e.id} passo ${d.toFixed(2)}u sc ${a.sc}→${z.sc} ph ${z.ph} mani[${z.h}] prima[${a.h}] cs ${z.cs} sc2 ${z.sc2} bersaglio ${a.t}→${z.t} pos ${a.p}→${z.p}`); } }
   await page.evaluate(() => { window.__B248.on = false; });
   return analizza({ gi, k, label: ex.label, e, apertura, dati, ckOss: +ckU.toFixed(2) });
 }
