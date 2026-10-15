@@ -47,7 +47,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | collaudo/zona-g-misura | session_019KNcHwb2Qrt5hWEcEmed8b | zona G sola misura (Haiku): riproduzione PO-222 e PO-223, nessuna correzione | 15/10 13:44 |
 | sviluppo/backup-167 | session_01CQiFQVArtH7SAawpnur9Xh | giro 29 (Opus): PO-167 copia di riserva degli slot e avviso di salvataggio fallito | 15/10 13:44 |
 | sviluppo/grafica-217-066 | session_012vEkGqn532iVnmwkSidaj5 | giro 30 (Opus, sola grafica): PO-217 analisi pre-partita, PO-066 riquadri della home | 15/10 13:44 |
-| lavoro/170 (catene) | session_01WVhPJq2q9dNVkcHxtWCZne | catena notte 7.999.170 (Haiku): giri 23-30 senza il 22 (decisione PO «Subito senza il 22») | 15/10 18:46 |
+| lavoro/170 (catene) | — (archiviata) | catena notte 7.999.170: 72 verdi, rosso crediti-238 (test archiviato rimesso per errore nell'unione); catena composta 72/72 dopo averlo tolto; pubblicata | 15/10 18:46 |
 | sviluppo/difesa-220-giro31 | session_017bMPz8gmaDe4L7oJGAapAk | giro 31 (Opus, base lavoro/170): PO-220 «Correggi tutto in un giro» — eroe dove dice il motore, arriva sull'uomo, tiene palla dopo il recupero | 15/10 18:47 |
 | sviluppo/passaggi-228-giro32 | — (archiviata, consegnato 35c9b86f) | giro 32 (Opus, base lavoro/170): PO-228 passaggi 739 → ~814 senza toccare gol, tiri, xG | 15/10 18:47 |
 | sviluppo/zona-g-222-223-giro33 | — (archiviata, consegnato a4714015) | giro 33 (Opus, base lavoro/170): eccezione zona G solo PO-222 (squalificato su Simula) e PO-223 (resa investimento legata a puntata e scelta) | 15/10 18:47 |
@@ -66,6 +66,9 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/stadi-071-giro46 | session_01Qq2deyGNw5eMHcxxKdsXo8 | giro 46: stadi 3D PO-071 fase 3, pubblico, cartelloni, ingresso (Opus, base lavoro/171-base, consegna entro 06:00 UTC 16/10) | 15/10 22:43 |
 | sviluppo/cerimonie-137-giro47 | session_01M9GhufweMkMRyfggPgHy11 | giro 47: cerimonie PO-137/002 (Opus, base lavoro/171-base, consegna entro 06:00 UTC 16/10) | 15/10 22:43 |
 | sviluppo/kit-061-giro48 | session_01CpsNLobcWtzKm9vJDwRfk5 | giro 48: kit grafico PO-061 (Opus, base lavoro/171-base, consegna entro 06:00 UTC 16/10) | 15/10 22:43 |
+| collaudo/carriere-l6-bis-giro49 | session_01P5rWr6UfYQc6azaq8XNPaU | giro 49 (Opus, sola misura): L6 fase 1-bis col banco corretto (decisione PO 16/10) | 15/10 22:52 |
+| collaudo/release-7.999.170-3d | session_01JgrA3diPzdLZwDXfS3QVwA | collaudo 3D della 7.999.170 (Sonnet) | 15/10 22:54 |
+| collaudo/release-7.999.170-carriera | session_01E2UUZQNA94bt2BQAUtTmsz | collaudo non 3D della 7.999.170 (Haiku) | 15/10 22:54 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
@@ -92,3 +95,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 - 15/10 22:20 — CONSEGNATO giro 32 (35c9b86f, solo misure e patch non adottata): passaggi 811,3 sulla 170 (bersaglio ~814 già raggiunto). Spostamento 169→170 di tiri −17 %, xG −17 %, cross −22 % attribuito con misura alla regola del giro 27 (riprendi schiera:true a ogni gol fuori scena, src/15 ~5554; con __CPM_NO_SCHIERA27 torna il profilo 169). Domanda al PO.
 - 15/10 22:30 — Briefing L1: avviato giro 36 (PO-262). In coda dopo la 7.999.171 (giri 22, 31, 33, 34, 35): giro highlight con PO-261 (prima apertura vuota), poi PO-258, poi esiti PO-218/240/250.
 - 15/10 22:45 — Mega rilascio 16/10 ore 16 (decisione PO): creata lavoro/171-base (5eb55003 = lavoro/170 + giro 22, liste catena coi guardiani 252, crediti-238 tolto); avviati i giri 40-48. Consegnato giro 38 (proposta L6, analisi/proposta-l6-giro38 7bb83a54): questionario da portare al PO. Unione della 7.999.171 alle 06:00 UTC: giri 31, 33, 34, 35, 36, 37, 39, 40-48 consegnati e verdi; il resto slitta, dichiarato.
+- 15/10 22:55 — PUBBLICATA 7.999.170 (main 12f46bdf). La guardia di promozione aveva fermato main per il rosso crediti-238: tolto il nome dalle liste (20dfe60b) e registrato un giro composto 72/72 sulla stessa build coi passi verdi della catena (nessun passo rigiocato, nessuna deroga). Avviati i due collaudi e il giro 49 (L6 banco corretto). Consegnato il giro 48 (kit, 41010e0f): entra nell'unione delle 06:00.
