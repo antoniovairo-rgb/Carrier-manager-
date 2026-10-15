@@ -589,7 +589,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
     saveTimerRef.current=setTimeout(()=>{
-      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);});
+      storage.save({phase:"career",player},currentSlot).then(ok=>{if(ok){setLastSaved(Date.now());_mrCleanup(player);}else notify(storage.msgFallito(currentSlot),TH.danger);});/* [PO-167] avviso chiaro, senza testo tecnico */
     },600);
     return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);};
   },[player]);// eslint-disable-line
@@ -607,7 +607,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
       storage.save({phase:"career",player},currentSlot).then(ok=>{
         if(ok){setLastSaved(Date.now());_mrCleanup(player);notify("💾 Stagione salvata.",TH.success);}
-        else notify("⚠️ Salvataggio fallito — spazio insufficiente sul dispositivo.",TH.danger);
+        else notify(storage.msgFallito(currentSlot),TH.danger);/* [PO-167] */
       }).catch(()=>{});
     }catch(_e){}
   },[screen]);// eslint-disable-line
@@ -628,7 +628,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const doSave=useCallback(async()=>{
     const ok=await storage.save({phase:"career",player},currentSlot);
     if(ok){setLastSaved(Date.now());notify("💾 Carriera salvata!",TH.success);if(onRefreshSlots)onRefreshSlots();}
-    else notify("⚠️ Errore nel salvataggio.",TH.danger);
+    else notify(storage.msgFallito(currentSlot,"⚠️ Errore nel salvataggio."),TH.danger);/* [PO-167] */
   },[player,currentSlot,onRefreshSlots]);// eslint-disable-line
 
   // Export to JSON
