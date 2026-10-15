@@ -375,3 +375,7 @@ Fatto misurato: sul ramo lavoro/168 il numero di versione non era mai stato port
 ## 15/10 mattina — 7.999.169
 
 PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (giro composto dopo la riparazione di tabellino-228) è tutta verde, senza aspettare l'orario 08/16/00.
+
+## 15/10 — Questionario sui PO della 7.999.169
+- Chiuse dal PO come FATTO: PO-249 (niente fps), PO-247 (rilievi minori), PO-241 (attesa dei corpi).
+- Le altre voci della 169 (PO-207, PO-220, PO-123, PO-242, PO-243, PO-244, PO-238) restano «DA VERIFICARE DAL PO» (risposta: «Restano da verificare»); i collaudi in corso sulla 169 aggiungono le loro misure.
