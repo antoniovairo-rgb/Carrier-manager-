@@ -9673,7 +9673,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            il primo fotogramma della scena e' gia' quello giusto. Il testimone 7.471 lo marca `nascosto` (non e' un salto scoperto). */
         const _nasc261=!!sr.current._sosp261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261);
         if(_nasc261){
-          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._sosp261=0;
+          sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;sr.current._sosp261=0;sr.current._ap261f=1;
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_AP261=(window.__CPM_AP261||0)+1;const _c4=window.__CPM_CAM471;if(_c4&&_c4.length)_c4[_c4.length-1].nascosto=true;}catch(_e){}}
         }else if(sr.current._snapT471>_nowMs471){
@@ -11096,7 +11096,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(_dBJ>=((typeof window!=='undefined'&&+window.__CPM_BJMIN)||6)){try{const _aBJ=(window.__CPM_BJ478=window.__CPM_BJ478||[]);
           if(_aBJ.length<300){const _nBJ=performance.now();
             _aBJ.push({d:+_dBJ.toFixed(1),src:_b0.src||'continuo',n:(_b0.srcs?_b0.srcs.length:0),tutti:(_b0.srcs&&_b0.srcs.length>1)?_b0.srcs.slice(0,4).join('+'):null,ph:P.matchPhase||null,sk:(P.hlSitKey!=null?+P.hlSitKey:null),
-              mask:((_nBJ-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0))});}}catch(_eBJ){}}}
+              mask:((_nBJ-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0)),nascosto:!!sr.current._ap261f/* [giro 40 PO-261] primo fotogramma dopo il campo 2D: il prima non era a schermo */});}}catch(_eBJ){}}}
       /* [testimone 7.803 — CHI VINCE SUL PALLONE. Sola lettura sotto __CPM_REC]
          Il pallone reso ha QUINDICI scrittori in questo file e uno solo segue il pallone logico
          (`P.ballX`, cioe' cio' che telecronaca, piani e gol affermano). Misurato: al gol il logico
@@ -11334,7 +11334,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       renderer.render(scene,camera);
-      if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
+      sr.current._ap261f=0;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
     };
     loop();

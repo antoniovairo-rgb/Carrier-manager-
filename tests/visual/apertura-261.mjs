@@ -10,7 +10,7 @@ const N = +(process.env.CPM_PARTITE261 || 4), SC = +(process.env.CPM_SCENE261 ||
 const ROSSO = process.env.CPM_ROSSO || '';
 const NOMI = ['Aldo Brenta', 'Cesare Dolfi', 'Ettore Fanti', 'Ivo Mansi', 'Nando Orsi', 'Piero Quaglia', 'Rocco Sala', 'Tullio Vanni', 'Ugo Zanetti', 'Dario Bellini'];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
-const out = [];
+const out = [], bjTot = [];
 for (let i = 0; i < N; i++) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
@@ -40,6 +40,8 @@ for (let i = 0; i < N; i++) {
     console.log(`p${i} scena${k + 1} min ${s.ck} fot ${fr.length} · apertura fuori ${fuoriAp}/${ap.length} · tot fuori ${g.fuori}/${g.n} · h ${g.ultimo} · cam→eroe al 1° ${dcam} · cam0 (${f0.cx},${f0.cy},${f0.cz}) eroe0 (${f0.hx},${f0.hz}) · ${(s.res||s.intro||{}).sit}`);
     out.push({ p: i, k, ck: s.ck, fr, g });
   }
+  { const bj = await page.evaluate(() => (window.__CPM_BJ478 || []).slice()); const sc = bj.filter(x => !x.mask && !x.nascosto && /^hl_/.test(String(x.ph || '')));
+    const nasc = bj.filter(x => x.nascosto).length; console.log(`p${i} salti del pallone in scena: ${bj.length} · coperti ${bj.filter(x => x.mask).length} · nascosti (dopo il 2D) ${nasc} · SCOPERTI ${sc.length}: ${sc.slice(0, 6).map(x => `${x.src}${x.tutti ? '[' + x.tutti + ']' : ''}:${x.d}@${x.ph}`).join(' ')}`); bjTot.push(...sc); }
   if (errs.length) console.log('pageerror', errs.slice(0, 3));
   await ctx.close();
 }
