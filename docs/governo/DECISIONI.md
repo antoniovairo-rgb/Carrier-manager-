@@ -403,3 +403,7 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 2. **PO-228**: «**Ritara i passaggi a ~814**» — solo i passaggi verso il bersaglio misurato, senza toccare gol, tiri, xG.
 3. **Zona G**: «**Sì, solo questi due**» — eccezione concessa solo per PO-222 (presenza al squalificato su «Simula») e PO-223 (resa dell'investimento legata a puntata e scelta; «esito incerto» davvero incerto), con interruttore rosso e guardiano carriera. Il resto della zona resta fermo.
 4. **7.999.170**: «**Subito senza il 22**» — si costruisce ora coi rami pronti (decisioni-245, procuratore-253, crediti-254, badge-toast-255, taccuino-169, schede-259, backup-167, grafica-217-066); il giro 22 (highlight-252) va nella 7.999.171.
+
+## 15/10 notte — PO-228 e ripartenza del giro 27
+1. **PO-228 / PO-207**: «**Restringi, poi ritara**» — lo schieramento dei ventidue con 11 passi di possesso alla ripresa dal centro resta solo dopo i gol da piazzato o nati in scena (come dichiarato dal giro 27); agli altri gol si riparte dal centro senza quel possesso lungo. Poi si ritarano i passaggi a ~814 (patch pronta del giro 32, da tarare di nuovo sulla misura dopo la restrizione). Tiri, xG e cross devono tornare verso il profilo della 169.
+2. **7.999.170**: «**Sì, pubblica**» appena la catena è verde; la restrizione entra nella 7.999.171.
