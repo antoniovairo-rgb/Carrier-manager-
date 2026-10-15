@@ -17,7 +17,7 @@ for (const br of ['verde', 'rosso']) {
     const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_TAGLIA252: 1 } : {});
     for (const c of SEQ) {
       const out = c.e === 'gol' ? 'success' : 'fail';
-      const kind = { parata: 'save', murata: 'block' }[c.e] || null;
+      const kind = { parata: 'saved', murata: 'blocked' }[c.e] || null;
       const k = c.e === 'gol' ? Math.max(0, await kDi(page, c.gi, 'goal')) : 0;
       const j = await scena252(page, { gi: c.gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_CAMJ42 = []; }, raccogli: () => window.__CPM_CAMJ42 || [] });
       if (!Array.isArray(j)) { righe.push(`gi${c.gi} ${c.e}: ${j && j.errore}`); continue; }

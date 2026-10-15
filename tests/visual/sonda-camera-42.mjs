@@ -12,7 +12,7 @@ let page = null;
 for (const c of CASI) for (let r = 0; r < RIP; r++) {
   if (!page || !process.env.CPM_STESSA) page = await pagina252(b, port, flags);
   const out = c.e === 'gol' || c.e === 'riesce' ? 'success' : 'fail';
-  const kind = { parata: 'save', fuori: 'wide', murata: 'block', intercetto: 'intercept' }[c.e] || null;
+  const kind = { parata: 'saved', fuori: 'wide', murata: 'blocked', intercetto: 'intercepted' }[c.e] || null;
   const k = c.e === 'gol' ? Math.max(0, await kDi(page, c.gi, 'goal')) : 0;
   const res = await scena252(page, { gi: c.gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_CAMJ42 = []; }, raccogli: () => window.__CPM_CAMJ42 || [] });
   if (!process.env.CPM_STESSA) { await page.close(); page = null; } tot++;

@@ -447,7 +447,9 @@
     "difesa-252": "node difesa-252.mjs",
     "rinvio-252": "node rinvio-252.mjs",
     "portiere-252": "node portiere-252.mjs",
-    "aereo-252": "node aereo-252.mjs"
+    "aereo-252": "node aereo-252.mjs",
+    "camera-252": "node camera-252.mjs",
+    "reazione-252": "node reazione-252.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

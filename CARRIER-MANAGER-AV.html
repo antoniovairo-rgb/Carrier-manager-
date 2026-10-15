@@ -18445,6 +18445,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 const _m=pp.mesh;if(!_m||_m===oppMesh)return;const _d=Math.hypot(_m.position.x-_px519,_m.position.z-_pz519);
                 if(_d<_bd519){_bd519=_d;_bm519=_m;}});
               {const _c519=_castDif23(_bm519,_px519,_pz519,9);if(_c519&&_c519!==_bm519){_bm519=_c519;_bd519=Math.hypot(_c519.position.x-_px519,_c519.position.z-_pz519);}}/* [23/09 POC] chi reagisce e' il difensore del brain, se e' li' */
+              if(!(_bm519&&_bd519<9)&&typeof window!=='undefined'&&window.__CPM_REA42N!==undefined){try{window.__CPM_REA42N.push({f:_fam519,d:_bm519?+_bd519.toFixed(1):null,k:P.hlOutcomeKind||null});}catch(_e){}}/* [giro 42 testimone] perche' nessun gesto */
               if(_bm519&&_bd519<9){
                 sr.current._mateFx={mesh:_bm519,name:_fam519==="tiro"?"tackle":"header",t:_fam519==="tiro"?0.9:0.8};
                 if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1)});}catch(_e){}}
@@ -18453,12 +18454,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  Il banco 248 conta 5/54 conclusioni senza nessuna reazione avversaria (cross gi148, tiro gi66): il gesto del 7.519
                  ha tetto 9u apposta (un gesto a distanza e' un gesto teletrasportato) e oltre non succedeva NIENTE. Qui, fra 9 e
                  24u, il difensore piu' vicino riceve un SPOSTAMENTO verso il punto (scivola sulla linea di tiro / attacca il punto
-                 d'atterraggio del cross), applicato come offset al suo bersaglio ordinario (driver off-ball, stessa inerzia di
-                 animOne): corre, non salta. Tetto 7u e mai oltre 3u dal punto. Vale per la sola scena (chiave hlSitKey). */
-              if(!(_bm519&&_bd519<9)&&typeof window!=='undefined'&&window.__CPM_REA42N!==undefined){try{window.__CPM_REA42N.push({f:_fam519,d:_bm519?+_bd519.toFixed(1):null,k:P.hlOutcomeKind||null});}catch(_e){}}/* [giro 42 testimone] perche' nessun gesto */
+                 d'atterraggio del cross), che diventa il suo bersaglio nel driver off-ball (stessa inerzia di animOne): corre, non salta. Tetto 7u e mai oltre 3u dal punto. Vale per la sola scena (chiave hlSitKey). */
               else if(_bm519&&_bd519<24&&!(typeof window!=='undefined'&&window.__CPM_NO_REAZ252)){
                 const _ux42=(_px519-_bm519.position.x)/_bd519,_uz42=(_pz519-_bm519.position.z)/_bd519,_l42=Math.min(7,_bd519-3);
-                _bm519._rea42={k:P.hlSitKey,x:_ux42*_l42,z:_uz42*_l42};
+                _bm519._rea42={k:P.hlSitKey,x:_bm519.position.x+_ux42*_l42,z:_bm519.position.z+_uz42*_l42};_bm519._ctx=_bm519._rea42.x;_bm519._ctz=_bm519._rea42.z;/* il bersaglio commesso (EMA 0,22s) parte gia' sul punto: misurato, senza questo il difensore invertiva la corsa solo dopo ~1,4s *//* punto ASSOLUTO: misurato, un offset sul bersaglio ordinario veniva mangiato dalla deriva del reparto (10→12u dal punto) */
                 if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1),mov:1,x0:+_bm519.position.x.toFixed(2),z0:+_bm519.position.z.toFixed(2),px:+_px519.toFixed(2),pz:+_pz519.toFixed(2)});window.__CPM_REA42M=_bm519;}catch(_e){}}
               }
             }
@@ -19901,7 +19900,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            if(_q850&&_q850.x!=null&&!_q850.gk){pp.mesh._port850=true;animOne(pp.mesh,G2X(clamp(+_q850.x,2,98)),G2Z(clamp(+_q850.y,2,98)),aDt,ak,bx,bz);}/* [7.850.0] il portatore: punto logico, niente offset */
            else{pp.mesh._port850=false;const _r42=(pp.mesh._rea42&&pp.mesh._rea42.k===P.hlSitKey&&isResult&&!(typeof window!=='undefined'&&window.__CPM_NO_REAZ252))?pp.mesh._rea42:null;/* [PO-252/8 giro 42] reazione di movimento */
              if(_r42)_r42.hit=(_r42.hit|0)+1;
-             animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98))+(_r42?_r42.x:0),G2Z(clamp(t.y+(t.ry||0),2,98))+(_r42?_r42.z:0),aDt,ak,bx,bz);}}}
+             animOne(pp.mesh,_r42?_r42.x:G2X(clamp(t.x+(t.rx||0),2,98)),_r42?_r42.z:G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);if(_r42&&typeof window!=='undefined'&&window.__CPM_REA42N!==undefined)_r42.dopo=[+pp.mesh.position.x.toFixed(1),+pp.mesh.position.z.toFixed(1),+(pp.mesh._ctx||0).toFixed(1),+(pp.mesh._vx||0).toFixed(1)];}}}
         // item 2 (5.49.6): INGRESSO DEL SUBENTRANTE — l'eroe parte dalla LINEA LATERALE (area tecnica), riceve le ultime indicazioni
         //   (si gira verso la panchina), poi cammina IN CAMPO fino alla sua posizione. Override del target eroe durante la sequenza.
         if(subEntryT>=0){
