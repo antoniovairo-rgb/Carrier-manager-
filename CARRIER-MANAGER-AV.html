@@ -18578,18 +18578,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                d'arrivo mentre il pallone vola (all'atterraggio, a meta' dei casi, era gia' a 6-10 u e non lo raggiungeva entro 2 s).
                Riuscito: il compagno cercato dall'esito (seekMate), altrimenti il nostro piu' vicino al punto d'arrivo (eroe compreso).
                Fallito: il PORTATORE della scena (quello che il 3D ha messo davanti all'eroe, _c31), altrimenti il loro piu' vicino. */
+            /* verso di protezione: lontano dal portatore della scena (chi ha appena perso il pallone), altrimenti avanti */
+            const _via31=(m)=>{try{const S=sr.current._c31;const _pp=S&&S.k===P.hlSitKey&&S.i>=0&&sr.current.players[S.i];const _cm=_pp&&_pp.mesh;
+              if(_cm){const ex=m.position.x-_cm.position.x,ez=m.position.z-_cm.position.z,el=Math.hypot(ex,ez);if(el>0.05)return {x:ex/el,z:ez/el};}}catch(_e){}return {x:1,z:0};};
             if(!_cineTest&&!(typeof window!=='undefined'&&window.__CPM_NO_TIENI31)&&!_dt.toTouch&&!_dt.toGoalLine&&!_dt.toOwnGoal&&!_dt.gkClaim&&typeof P.hlSuccess==='boolean'){
               const _ok31=P.hlSuccess===true;let _w31=null;
               if(_ok31){if(passTargetMesh&&passTargetMesh!==hero)_w31=passTargetMesh;
                 else{let _bd=hero?Math.hypot(hero.position.x-ballArcTgtX,hero.position.z-ballArcTgtZ):1e9;_w31=hero||null;
-                  sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||!pp.mesh||pp.mesh===hero||src.gk||src.team!=='home')return;const d=Math.hypot(pp.mesh.position.x-ballArcTgtX,pp.mesh.position.z-ballArcTgtZ);if(d<_bd-1.5){_bd=d;_w31=pp.mesh;}});}}
+                  sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||!pp.mesh||pp.mesh===hero||src.gk||src.team!=='home')return;const d=Math.hypot(pp.mesh.position.x-ballArcTgtX,pp.mesh.position.z-ballArcTgtZ);if(d<_bd-1.5){_bd=d;_w31=pp.mesh;}});
+                  /* riuscito ma al punto d'arrivo un AVVERSARIO e' piu' vicino del nostro designato (o il nostro e' oltre 4 u): il pallone
+                     resta all'eroe, un tocco avanti. MISURATO dal guardiano (k31-s3, k33-s2): «recuperata» col pallone a un loro a fine esito */
+                  let _ba=1e9;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||!pp.mesh||src.gk||src.team!=='away')return;_ba=Math.min(_ba,Math.hypot(pp.mesh.position.x-ballArcTgtX,pp.mesh.position.z-ballArcTgtZ));});
+                  if(hero&&(_bd>4||_ba<_bd)){_w31=hero;const _v=_via31(hero);const _sg=((ball.position.x-hero.position.x)*(-_v.z)+(ball.position.z-hero.position.z)*_v.x)>=0?1:-1;/* di lato e appena dietro all'eroe, dal lato in cui sta gia' il pallone: un tocco dritto all'indietro passava DENTRO il suo corpo */
+                    ballArcTgtX=clamp(hero.position.x+_v.x*0.5+(-_v.z)*_sg*1.3,G2X(3),G2X(68));ballArcTgtZ=clamp(hero.position.z+_v.z*0.5+_v.x*_sg*1.3,-30,30);ballArcH=Math.min(ballArcH,0.45);ballArcDur=Math.min(Math.max(ballArcDur,0.3),0.4);}}}
               else{const _S31=sr.current._c31;if(_S31&&_S31.k===P.hlSitKey&&_S31.i>=0){const _pp=sr.current.players[_S31.i];if(_pp&&_pp.mesh)_w31=_pp.mesh;}
                 /* fallito: il pallone RESTA al portatore — lo sposta di un tocco oltre l'eroe (verso la nostra porta, x decrescente) e lo
                    riprende, invece di un rimbalzo a 6-25 u che nessuno raccoglieva entro 2 s (misurato: 9 scene fallite su 14 col pallone di
                    nessuno a +2 s) */
-                if(_w31){const _sd=(_w31.position.z>=(hero?hero.position.z:0))?1:-1;ballArcTgtX=Math.max(G2X(3),_w31.position.x-1.8);ballArcTgtZ=clamp(_w31.position.z+_sd*1.1,-30,30);ballArcH=Math.min(ballArcH,0.35);ballArcDur=Math.min(Math.max(ballArcDur,0.34),0.45);}
+                if(_w31){const _hx=hero?hero.position.x:_w31.position.x-1.5,_hz=hero?hero.position.z:_w31.position.z;
+                  /* lato del dribbling: quello col nostro piu' vicino PIU' LONTANO (eroe compreso) — dal guardiano: un nostro a 1,2 u dal punto d'arrivo si «prendeva» la fallita */
+                  let _sd=(_w31.position.z>=_hz)?1:-1,_best=-1;for(const _c of [1,-1]){const _tx=Math.max(G2X(3),_hx-2.5),_tz=clamp(_hz+_c*3.0,-30,30);let _m=hero?Math.hypot(hero.position.x-_tx,hero.position.z-_tz):1e9;
+                    sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||!pp.mesh||src.team!=='home')return;_m=Math.min(_m,Math.hypot(pp.mesh.position.x-_tx,pp.mesh.position.z-_tz));});if(_m>_best+0.3){_best=_m;_sd=_c;}}
+                  ballArcTgtX=Math.max(G2X(3),_hx-2.5);ballArcTgtZ=clamp(_hz+_sd*3.0,-30,30);/* ATTORNO all'eroe: 2,5 u oltre di lui e 3 u di lato (dal lato del portatore), ~3,9 u dall'eroe. Misurato dal guardiano: col tocco a -1,8 / -4 u dal portatore il pallone atterrava a ~2 u dall'eroe fermo, e a fine esito era «suo» (k32-s2, k21-s1, k25-s2) */ballArcH=Math.min(ballArcH,0.35);ballArcDur=Math.min(Math.max(ballArcDur,0.34),0.45);}
                 if(!_w31){let _bd=1e9;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||!pp.mesh||src.gk||src.team!=='away')return;const d=Math.hypot(pp.mesh.position.x-ballArcTgtX,pp.mesh.position.z-ballArcTgtZ);if(d<_bd){_bd=d;_w31=pp.mesh;}});}}
-              sr.current._post31=_w31?{k:P.hlSitKey,ok:_ok31,win:_w31,dir:_ok31?1:-1,kind:_dt.kind||null,t:0}:null;}
+              {const _v=_ok31?(_w31===hero?_via31(hero):{x:1,z:0}):{x:-1,z:0};sr.current._post31=_w31?{k:P.hlSitKey,ok:_ok31,win:_w31,dir:_ok31?1:-1,vx:_v.x,vz:_v.z,kind:_dt.kind||null,t:0}:null;}}
             if(!(P.hlDefTraj&&P.hlDefTraj.inbound)&&!_dt.toOwnGoal)ballArcT=-0.35;}
           ballArcIsBG=ballArcActive; // 3DV-11: usa TGT esplicito anche per archi HL (come BG arc)
           if(ballArcActive&&ballArcT>=0)contactFlashT=0;/* [6.74.0 3D-8] col wind-up il flash arriva all'impatto reale (gestito nel blocco arco) */
@@ -21317,8 +21329,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          formazione e dalla separazione per costruzione). Il pallone lo scrive solo qui, firmato «vincitore» nel testimone F2. */
       {const _q31=sr.current._post31;
        if(_q31&&(!isResult||_q31.k!==P.hlSitKey||!P.hlDef||(typeof window!=='undefined'&&window.__CPM_NO_TIENI31)))sr.current._post31=null;
-       else if(_q31&&ballArcActive&&_q31.win&&_q31.win!==hero&&ballArcT>=0){_q31.tx=ballArcTgtX-(_q31.dir||1)*0.7;_q31.tz=ballArcTgtZ;_q31.win._carry526={x:_q31.tx,z:_q31.tz,t:0.6};}/* in volo: il vincitore va incontro al punto d'arrivo */
-       else if(_q31&&ballArcActive&&_q31.win===hero&&ballArcT>=0){_q31.tx=ballArcTgtX-(_q31.dir||1)*0.7;_q31.tz=ballArcTgtZ;}
+       else if(_q31&&ballArcActive&&_q31.win&&_q31.win!==hero&&ballArcT>=0){_q31.tx=ballArcTgtX-(_q31.vx!=null?_q31.vx:(_q31.dir||1))*0.7;_q31.tz=ballArcTgtZ-(_q31.vz||0)*0.7;_q31.win._carry526={x:_q31.tx,z:_q31.tz,t:0.6};}/* in volo: il vincitore va incontro al punto d'arrivo */
+       else if(_q31&&ballArcActive&&_q31.win===hero&&ballArcT>=0){_q31.tx=ballArcTgtX-(_q31.vx!=null?_q31.vx:(_q31.dir||1))*0.7;_q31.tz=ballArcTgtZ-(_q31.vz||0)*0.7;}
        else if(_q31&&!ballArcActive&&!hlPostArcType&&hero){_q31.t+=aDt;
          if(!_q31.win){let _bm=null,_bd=1e9;const _home=_q31.ok;
            if(_home){_bd=Math.hypot(hero.position.x-ball.position.x,hero.position.z-ball.position.z);_bm=hero;}
@@ -21327,10 +21339,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            _q31.win=_bm;_q31.dir=_home?1:-1;}
          const _wm=_q31.win;
          if(_wm){const _dx=ball.position.x-_wm.position.x,_dz=ball.position.z-_wm.position.z,_dd=Math.hypot(_dx,_dz);
-           if(_dd>1.2&&!_q31.pres){_q31.tx=ball.position.x;_q31.tz=ball.position.z;}
-           else{_q31.pres=1;/* palla al piede: davanti al vincitore nel verso dell'attacco, il corpo avanza a passo di conduzione */
-             _q31.tx=clamp(_wm.position.x+_q31.dir*3,-47,47);_q31.tz=_wm.position.z*0.98;
-             ball.position.x=_wm.position.x+_q31.dir*0.6;ball.position.z=_wm.position.z;
+           const _vx=(_q31.vx!=null?_q31.vx:_q31.dir),_vz=(_q31.vz!=null?_q31.vz:0);
+           if(_dd>1.2&&!_q31.pres){_q31.tx=ball.position.x-_vx*0.6;_q31.tz=ball.position.z-_vz*0.6;}
+           else{_q31.pres=1;/* palla al piede: davanti al vincitore nel suo verso (noi: lontano dal portatore battuto; loro: verso la nostra porta), il corpo avanza a passo di conduzione */
+             _q31.tx=clamp(_wm.position.x+_vx*3,-47,47);_q31.tz=clamp(_wm.position.z+_vz*3,-31,31);
+             ball.position.x=_wm.position.x+_vx*0.6;ball.position.z=_wm.position.z+_vz*0.6;
              if((sr.current._ws524=31)&&sr.current._bj0){sr.current._bj0.src='vincitore';sr.current._bj0.srcs.push('vincitore');}}
            if(_wm!==hero)_wm._carry526={x:_q31.tx,z:_q31.tz,t:0.6};
            if(typeof window!=='undefined'&&window.__CPM_TIENI31ON){try{window.__CPM_TIENI31={k:_q31.k,ok:_q31.ok,eroe:_wm===hero?1:0,pres:_q31.pres?1:0,d:+_dd.toFixed(2),t:+_q31.t.toFixed(2)};}catch(_e){}}}}}

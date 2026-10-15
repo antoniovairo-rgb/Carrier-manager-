@@ -11,12 +11,13 @@
    mediana eroe-portatore al contatto <= 3,0 u; (A) <= 45%; (B) forti <= 15%; pallone di nessuno a +2 s <= 25%; ritorno <= 25%.
    (Misurato al giro 31 sui semi 21-26: prima 90% · 24% · 62% · 85%, dopo 26% · 5% · 5% · 0%.)
    ROSSO: deve violarne almeno tre (la prova che il guardiano vede). Pavimento di copertura: >= 8 scene giudicabili per braccio,
-   altrimenti esce != 0 dichiarandosi CIECO. Uso: node difesa-220-giro31.mjs  (K=31,32 OGNI=4 per cambiare semi/densita').
-   Durata: due partite per braccio, i bracci in parallelo: ~12 minuti. */
+   altrimenti esce != 0 dichiarandosi CIECO. Uso: node difesa-220-giro31.mjs  (K=31,32,33,34 OGNI=6 per cambiare semi/densita').
+   Durata: quattro partite per braccio, i bracci in parallelo: ~22 minuti. «Ritorno» senza nessuna scena con escursione >= 1,5 u
+   (l'eroe parte gia' sull'uomo e non si allontana) non e' una violazione: non c'e' niente da cui tornare. */
 import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os';
 const HERE = path.dirname(new URL(import.meta.url).pathname);
-const K = process.env.K || '31,32'; const OGNI = process.env.OGNI || '4';
+const K = process.env.K || '31,32,33,34'; const OGNI = process.env.OGNI || '6';
 const ROSSI = '__CPM_NO_POSTO31,__CPM_NO_TIENI31,__CPM_NO_ARRIVO31';
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'd220g31-'));
 const corsa = (nome, rosso) => new Promise(res => { const out = path.join(dir, nome + '.jsonl');
@@ -46,7 +47,7 @@ const viola = (m) => { const v = [];
   if (m.dApertura != null && m.dDichiarata != null && Math.abs(m.dApertura - m.dDichiarata) > 1.5) v.push(`apertura ${m.dApertura} lontana dalla dichiarata ${m.dDichiarata}`);
   if (m.dContattoPort == null || m.dContattoPort > 3.0) v.push(`contatto ${m.dContattoPort} u > 3`);
   if (m.A > 45) v.push(`(A) ${m.A}% > 45`); if (m.Bforte > 15) v.push(`(B) forti ${m.Bforte}% > 15`);
-  if (m.nessuno2s > 25) v.push(`pallone di nessuno ${m.nessuno2s}% > 25`); if (m.ritorno == null || m.ritorno > 25) v.push(`ritorno ${m.ritorno}% > 25`);
+  if (m.nessuno2s > 25) v.push(`pallone di nessuno ${m.nessuno2s}% > 25`); if (m.ritorno != null && m.ritorno > 25) v.push(`ritorno ${m.ritorno}% > 25 (${m.ritornoN})`);
   return v; };
 const vv = viola(mv), vr = viola(mr); let ok = true;
 if (mv.scene < 8 || mr.scene < 8) { console.log(`CIECO: copertura insufficiente (verde ${mv.scene}, rosso ${mr.scene} scene con contatto; servono >= 8)`); console.log(V.log.slice(-600)); ok = false; }
