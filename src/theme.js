@@ -94,7 +94,9 @@ const TOKENS = {
     /* highlight oro/ambra — colore inline PIU' USATO (#f59e0b, 182 occ) = Btn gold (6665) */
     highlight: { solid:"#f59e0b", grad:"linear-gradient(135deg,#f59e0b,#d97706)", on:"#ffffff",
       gold:"#b45309" /* TH.gold/goldText (272/291) */,
-      goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)" /* TH.goldGrad (291) */ },
+      goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)" /* TH.goldGrad (291) */,
+      /* [giro 23 PO-251 «Oro da festa»] variante FESTA: solo momenti di trofeo (Btn v="festa", TH.festaGrad/festaInk/festaGlow) */
+      festa:{ grad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)", on:"#2a1a02", glow:"rgba(245,197,66,0.45)" } },
   },
 
   /* -- OUTCOME (risultati) — TH win/draw/loss Fg/Bg/Bd (293-295) + TH_DARK (314-316) -- */

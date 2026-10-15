@@ -379,16 +379,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const notifQRef=useRef([]);const notifBusyRef=useRef(false);const notifWkRef=useRef(0);
   const[notifPending,setNotifPending]=useState(false);/* [7.286.0 direttiva PO] la cascata di fine stagione TRATTIENE il pulsante della stagione nuova */
   useEffect(()=>{notifWkRef.current=(player.season||1)*100+(player.week||1);},[player.season,player.week]);
+  /* [giro 23 PO-247, questionario 15/10 «Dopo l'intervista» — rosso __CPM_NO_IV247] con l'intervista aperta la coda dei toast si
+     FERMA: l'avviso dei premi compare solo a intervista chiusa (il giro 19 lo spostava in alto, dove copriva la riga del punteggio).
+     Cio' che arriva o resta in coda durante l'intervista non scade col cambio di settimana: il giocatore non l'ha ancora visto. */
+  const ivAperta247Ref=useRef(false);
   const _drainNotif=()=>{if(notifBusyRef.current)return;
+    if(ivAperta247Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247)){if(notifQRef.current.length)setNotifPending(true);return;}
     let nx=notifQRef.current.shift();
-    while(nx&&!nx.prio&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
+    while(nx&&!nx.prio&&!nx.iv247&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
     if(!nx){setNotifPending(false);return;}
     const _q=notifQRef.current.length,_dur=_q>=4?1500:_q>=2?2100:_q>=1?2800:3600;
     notifBusyRef.current=true;setNotif(nx);try{AudioMgr.notifyCue(nx.msg,nx.color);}catch(_a){}
     setNotifPending(true);
     setTimeout(()=>{setNotif(null);setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
   const notify=(msg,color=TH.primary,opts)=>{
-    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current};
+    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current,iv247:!!ivAperta247Ref.current};
     if(_e.prio)notifQRef.current.unshift(_e);else notifQRef.current.push(_e);
     /* il cap toglie i piu' VECCHI fra i MINORI: uno splice cieco in testa mangerebbe proprio i prioritari */
     while(notifQRef.current.length>8){const i=notifQRef.current.findIndex(x=>!x.prio);if(i<0)break;notifQRef.current.splice(i,1);}
@@ -397,6 +402,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        la durata del PRIMO toast conosce gia' l'arretrato, e il prioritario e' davvero il primo a uscire. */
     setTimeout(_drainNotif,0);};
 
+  useEffect(()=>{const ap=!!interviewModal;const era=ivAperta247Ref.current;ivAperta247Ref.current=ap;
+    if(typeof window!=='undefined'&&window.__CPM_NO_IV247)return;
+    if(ap&&!era){notifQRef.current.forEach(x=>{x.iv247=true;});if(notif){notifQRef.current.unshift({...notif,iv247:true});setNotif(null);}}/* un toast gia' a schermo torna in testa alla coda: lo rivedrai dopo */
+    else if(!ap&&era){setTimeout(_drainNotif,350);}
+  },[interviewModal]);// eslint-disable-line
   // Sprint 19 — OVR milestone check (separate useEffect to avoid computing OVR outside setPlayer)
   useEffect(()=>{
     if(!player.ovr||!player.milestones)return;
@@ -1322,6 +1332,7 @@ const getThisWeekMatchday=()=>{
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,academy24:player.academy24||null,beni24:player.beni24||[],coachTrust:player.coachTrust,legacy24:(function(){try{return{score:calcLegacyScore(player),pat:legacyPatrimonio24(player)};}catch(e){return null;}})(),invest24:player.invest24||null,investHist24:player.investHist24||[],popularity:player.popularity,logTop:(player.log||[]).slice(0,8),/* [7.990.0 F2] sonda accademia24 */injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,clubLg:player.club?.lg||null,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      festa251:(kind)=>{try{setTitleCeleb({kind:kind||"nation",name:"Coppa delle Nazioni",season:player.season||1,club:"Nazionale"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 23 PO-251] solo il guardiano festa-251: apre la festa del trofeo */
       forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
@@ -5708,6 +5719,20 @@ const getThisWeekMatchday=()=>{
             const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
             _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
             _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]})`);
+          }else if(_opp7&&!(typeof window!=='undefined'&&window.__CPM_NO_COPPA_PRESTITO)&&(()=>{
+            /* [giro 23, questionario PO 15/10 «Resta in coppa» — eccezione zona G concessa per questo solo comportamento; rosso
+               __CPM_NO_COPPA_PRESTITO] nessuna settimana LIBERA nel calendario del club nuovo non e' piu' un motivo per uscire dalla coppa:
+               il turno va alla prima settimana utile anche con DOPPIO IMPEGNO (gara di lega + coppa nella stessa settimana, come gia' le
+               gare europee del girone). Si evita solo una settimana che abbia gia' un'altra gara di coppa/Europa/Nazionale riportata qui. */
+            const _occ245=new Set(_keptComp7.map(m=>m.week));
+            let _w245=Math.max(currentWeek+1,(_base7.week>currentWeek?_base7.week:currentWeek+1));
+            while(_w245<=37&&_occ245.has(_w245))_w245++;
+            if(_w245>37){_w245=currentWeek+1;while(_w245<=37&&_occ245.has(_w245))_w245++;}
+            if(_w245>37)return false;
+            _keptComp7.push({..._base7,opponentId:_opp7.id,opponentName:_opp7.n,week:_w245,doppio245:true});return true;})()){
+            const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
+            _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
+            _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]}, settimana ${_keptComp7[_keptComp7.length-1].week} insieme al campionato)`);
           }else{
             _updCup7={..._updCup7,active:false,eliminated:true};
             _compLog7.push("🏆 Coppa Nazionale: fuori dopo il trasferimento");
@@ -6045,7 +6070,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
+      <Notif msg={(interviewModal&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247))?null:notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista · [giro 23] e con l'intervista aperta non c'e' proprio */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -6900,7 +6925,8 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:34,fontWeight:900,color:_accent,letterSpacing:2,marginTop:10,textShadow:`0 0 28px ${_accent}`,animation:"celebTitle 0.7s ease-out 0.3s both",zIndex:2,textAlign:"center"}}>{_title}</div>
           <div style={{fontSize:FS.bodyLg,fontWeight:800,color:"#fff",marginTop:8,zIndex:2,textAlign:"center"}}>{titleCeleb.club}</div>
           <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.6)",marginTop:4,zIndex:2,textAlign:"center"}}>{titleCeleb.name} · Stagione {titleCeleb.season}</div>
-          <button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+          {(typeof window!=='undefined'&&window.__CPM_NO_ORO251)?<button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+            :<Btn v="festa" data-cpm="festeggia251" onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,fontSize:FS.body,zIndex:2,position:"relative"}}>🎉 Festeggia</Btn>}{/* [giro 23 PO-251, questionario 14/10 «Oro da festa» — rosso __CPM_NO_ORO251] il pulsante prendeva il colore del titolo (verde per la Nazionale): ora e' sempre l'oro della variante festa del kit */}
         </div>
         );
       })()}

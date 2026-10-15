@@ -75,6 +75,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
+    festa:{background:TH.festaGrad,color:TH.festaInk,fontWeight:FW.black,boxShadow:"0 8px 30px "+TH.festaGlow},/* [giro 23 PO-251 «Oro da festa»] SOLO momenti di trofeo (festa «CAMPIONI!», coppe): oro pieno, inchiostro scuro */
   };
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;

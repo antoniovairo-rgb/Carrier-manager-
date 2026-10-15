@@ -10,7 +10,7 @@ const SAVE = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.j
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function giro(rosso) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(o => { window.__CPM_GLB = false; if (o.r) window.__CPM_NO_TOAST247 = 1; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
+  await page.addInitScript(o => { window.__CPM_GLB = false; window.__CPM_NO_IV247 = 1;/* [giro 23] dal giro 23 il toast non compare proprio durante l'intervista (toast-intervista-247): qui si collauda il collocamento del giro 19, che resta come ripiego */ if (o.r) window.__CPM_NO_TOAST247 = 1; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}

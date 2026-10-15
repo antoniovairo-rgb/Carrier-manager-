@@ -355,6 +355,7 @@ let TH = {
   // Scala brand (sostituisce il "granata-su-blu" accidentale delle selezioni)
   primaryTint:"#f7e9ec", primaryBorder:"#e3c3cb",
   // Oro metallico trofei (disambiguato da warning)
+  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
   // Token semantici di dominio (fg/bg/bd)
   winFg:"#166534"/* [7.968] era #137036: due verdi scuri a 11 punti di distanza, indistinguibili a occhio e contati come due tinte dal censimento. Questo e' l'inchiostro verde approvato, lo stesso a cui si aggancia `semTesto945` */, winBg:"#e7f6ec", winBd:"#b7e4c4",
@@ -484,6 +485,7 @@ const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_no
   cardBg:"#172033", border:"#2c3a52",
   el1:"0 2px 12px rgba(0,0,0,0.4)", el2:"0 4px 16px rgba(0,0,0,0.5)", el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620", primaryBorder:"#4a2530",
+  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#d4922a",
   winFg:"#4ade80", winBg:"#12321f", winBd:"#1d4d33",
   drawFg:"#fbbf24", drawBg:"#2c2410", drawBd:"#4a3a12",
@@ -10682,6 +10684,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
+    festa:{background:TH.festaGrad,color:TH.festaInk,fontWeight:FW.black,boxShadow:"0 8px 30px "+TH.festaGlow},/* [giro 23 PO-251 «Oro da festa»] SOLO momenti di trofeo (festa «CAMPIONI!», coppe): oro pieno, inchiostro scuro */
   };
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
@@ -14112,7 +14115,7 @@ function ThreeMatchView(props){
       // [7.8.19] RETRY del corpo footballer.glb (obbligatorio): un fallimento TRANSITORIO di rete mobile non deve
       //   mandare in campo i burattini → 3 tentativi con backoff (loadGLB evince i fallimenti dalla cache → riscarica).
       const _loadBody=(u,n)=>loadGLB(u).catch(e=>{if(n<=0)throw e;return new Promise(r=>setTimeout(r,1800)).then(()=>_loadBody(u,n-1));});
-      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),_optGLB('./assets/korward-regular-player-slim.glb'),_optGLB('./assets/korward-regular-player-stocky.glb'),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/korward-regular-anims/regular-anim-idle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-kick.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-penalty.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-header.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-tackle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-volley.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-catch.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-block.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-receive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-throwin.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog-back.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-left.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-right.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-pass.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-dribble.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-change-direction.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-missed-chance.glb')]).then(([_cg,_sg,_xg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg,_pasg,_drbg,_chg,_misg])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
+      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),_optGLB('./assets/korward-regular-player-slim.glb'),_optGLB('./assets/korward-regular-player-stocky.glb'),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/korward-regular-anims/regular-anim-idle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-kick.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-penalty.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-header.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-tackle.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-volley.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-catch.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-gk-block.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-receive.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-throwin.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-jog-back.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-left.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-strafe-right.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-pass.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-dribble.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-change-direction.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-missed-chance.glb'),_optGLB('./assets/korward-regular-anims/regular-anim-walk.glb')/* [giro 23 PO-245] camminata dell'ingresso */]).then(([_cg,_sg,_xg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg,_pasg,_drbg,_chg,_misg,_wkg245])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
       // clip da file separati (Mixamo "without skin") applicate per NOME al rig del personaggio (stesso scheletro mixamorig)
       /* A runtime package may provide an AnimationClip directly (CGTrader review) or a GLTF result (regular assets). Accept both without relying on an optional isAnimationClip flag. */
       const _clip1=g=>(g&&((g.isAnimationClip===true)||(Array.isArray(g.tracks)&&typeof g.duration==="number"))&&g)||(g&&g.animations&&g.animations[0])||null;
@@ -14347,8 +14350,8 @@ function ThreeMatchView(props){
            pattinate»] Le clip jog-back/strafe-L/strafe-R erano negli asset e mai montate. Qui si RENDONO
            DISPONIBILI (clip condivise); le AnimationAction si creano PIGRE al primo uso per avatar — niente
            66 azioni preventive sui mixer (budget mobile). Esclusi GK (animazioni proprie) e arbitro. */
-        {const _cbk=_clip1(_jbg),_csl=_clip1(_slg),_csr=_clip1(_srg);
-         _list.forEach(av=>{if(av&&!av._isGk&&!av._isRef)av._locoClips={back:_cbk,strL:_csl,strR:_csr};});}
+        {const _cbk=_clip1(_jbg),_csl=_clip1(_slg),_csr=_clip1(_srg),_cwk245=_clip1(_wkg245);
+         _list.forEach(av=>{if(av&&!av._isGk&&!av._isRef)av._locoClips={back:_cbk,strL:_csl,strR:_csr,walk:_cwk245};});}
         _mkGestures(_list[0],{kick:_kg,penalty:_pg,header:_hg,tackle:_tg,volley:_vg,dribble:_drbg,pass:_pasg,cross:_pasg,shortPass:_pasg,longPass:_pasg,heel:_pasg,doubleStep:_drbg,feint:_chg,change:_chg,miss:_misg,lift:_twg});// [6.40.0] gesto dribble (fallback locomozione se la clip manca) · [7.24.1] lift = rimessa CONGELATA all'apice (alzata di coppa)
         // [7.24.1 collaudo PO «la coppa gli vola in testa, non la alza con le mani»] ossa delle MANI dell'eroe
         //   (mixamorig) per agganciare il trofeo alla posa vera durante la cerimonia.
@@ -14429,7 +14432,7 @@ function ThreeMatchView(props){
         const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
           spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
+        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
         _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
         if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
@@ -14588,7 +14591,7 @@ function ThreeMatchView(props){
           const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,_isHero:old.proc===hero||index===0,_cgLod:avatarPkg._cgLod||null,
             spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
+          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
           _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
         });
@@ -14613,7 +14616,7 @@ function ThreeMatchView(props){
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
             state._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:state._handL,hr:state._handR};
-            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
+            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
             visual.visible=false;return state;
           };
           _next.forEach((avatar,index)=>{const variants=avatar._cgLodVariants={};variants[avatar._cgLod]=_stateOf(avatar);lodPackages.forEach(candidate=>{const key=candidate&&candidate._cgLod;if(key&&!variants[key])variants[key]=_makeVariant(avatar,candidate,index);});});
@@ -14680,8 +14683,9 @@ function ThreeMatchView(props){
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
           const appr=appearanceFromSeed(hashStr('hyper-child-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,mascot.casa?_awayKit:_homeKit,appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip),run=mx.clipAction(runClip);idle.play();run.play();run.weight=0;run.timeScale=0.5;mx.setTime((index%7)*0.12);
+          const _wkc245=_clip('walk');const walk245=_wkc245?mx.clipAction(_wkc245):null;if(walk245){walk245.play();walk245.weight=0;}/* [giro 23 PO-245] il bambino cammina col suo calciatore */
           root.visible=false;scene.add(root);mascot.c.visible=false;
-          const avatar={root,visualRoot:visual,mx,idle,run,proc:mascot.c,_hyper:true,_hyperChild:true};mascot.glb911=avatar;made.push(avatar);
+          const avatar={root,visualRoot:visual,mx,idle,run,walk245,proc:mascot.c,_hyper:true,_hyperChild:true};mascot.glb911=avatar;made.push(avatar);
         });
         mascotGlbAvatars=made;
         try{window.__CPM_HYPER_MASCOTS={avatars:made.length,legacyVisible:mascots.filter(m=>m&&m.c&&m.c.visible).length};}catch(_e){}
@@ -14912,7 +14916,7 @@ function ThreeMatchView(props){
     const _isWalkStart=props.matchPhase==="walkout"&&!_CPM_TEST;// solo se si PARTE dalla walkout (la prima partita) e NON sotto gate: altrimenti i mesh restano in formazione (gate/forzature intatti)
     const _placeRow=(list,xRow,side)=>{const n=list.length;list.forEach((m,i)=>{
       m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;// slot finale schierato
-      m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*0.20;// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
+      m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*((typeof window!=='undefined'&&window.__CPM_NO_CAMM245)?0.20:0.65);/* [giro 23 PO-245 «camminata vera» — rosso __CPM_NO_CAMM245] a passo di camminata (1,8 u/s) 0,2 s fra uno e l'altro vorrebbero dire 0,36u: corpi uno dentro l'altro. 0,65 s = ~1,2u di fila */// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
       m._wStartX=xRow-9;m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
     });};
@@ -16100,7 +16104,7 @@ function ThreeMatchView(props){
       if(prog>=1){replaying=false;replayDone=true;setReplayOn(false);}
     };
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
-    let walkT=0,walkDone=false,_wasWalk=false;const WALK_DUR=10.5;// [6.90.0 collaudo PO «inquadrature d'ingresso più lente e meno frenetiche»] 6.2→10.5s: il giro a 360° respira (~9s), la chiusura sulla fila ha il suo tempo. [6.28.0] _wasWalk: rileva l'INIZIO della fase walkout nel render-loop → riavvia l'ingresso scaglionato dal tunnel ANCHE quando ThreeMatchView è montato prima (fase matchday) — prima l'ingresso "vero" partiva solo se il mount avveniva già in walkout (quasi mai) → i giocatori scivolavano dalla formazione, «sballato».
+    let walkT=0,walkDone=false,_wasWalk=false;let WALK_DUR=10.5;const WALK_V245=1.8;/* [giro 23 PO-245] WALK_DUR non e' piu' fisso: con la camminata si calcola all'avvio dell'ingresso (ultimo arrivo + 2 s), rosso __CPM_NO_CAMM245 = 10,5 s */// [6.90.0 collaudo PO «inquadrature d'ingresso più lente e meno frenetiche»] 6.2→10.5s: il giro a 360° respira (~9s), la chiusura sulla fila ha il suo tempo. [6.28.0] _wasWalk: rileva l'INIZIO della fase walkout nel render-loop → riavvia l'ingresso scaglionato dal tunnel ANCHE quando ThreeMatchView è montato prima (fase matchday) — prima l'ingresso "vero" partiva solo se il mount avveniva già in walkout (quasi mai) → i giocatori scivolavano dalla formazione, «sballato».
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
     const animWalk=(mesh,dt,k)=>{
       // 5.47.17: prima del proprio turno il giocatore ASPETTA alla bocca del tunnel (idle leggero), poi entra
@@ -16111,7 +16115,8 @@ function ThreeMatchView(props){
          distanza residua: chi partiva lontano (gli ospiti dalla linea opposta, la coda della fila) attraversava il campo a ~28 u/s coi
          bambini per mano. Il passo ha un tetto di 6,5 u/s (scena): con la testa della fila che esce per prima arrivano tutti entro
          l'ingresso (10,5 s). */
-      let _f245=k*0.85;if(!(typeof window!=='undefined'&&window.__CPM_NO_ING245)&&d>0.001&&d*_f245>6.5*dt)_f245=6.5*dt/d;
+      const _v245=(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)?6.5:WALK_V245;/* [giro 23 PO-245, questionario 15/10 «camminata vera, ingresso piu' lungo» — rosso __CPM_NO_CAMM245] 6,5 u/s era un passo svelto: ora camminata (1,8 u/s, ~1,9 m/s) e l'ingresso dura quanto serve (WALK_DUR calcolato all'avvio) */
+      let _f245=k*0.85;if(!(typeof window!=='undefined'&&window.__CPM_NO_ING245)&&d>0.001&&d*_f245>_v245*dt)_f245=_v245*dt/d;
       mesh.position.x+=dx*_f245;mesh.position.z+=dz*_f245;// passo d'ingresso calmo (coerente col gioco più lento)
       /* [7.999.115 collaudo PO-197 «i giocatori corrono sul posto, non sono in modalita' idle nel prepartita»] MISURATO (testimone
          __CPM_WALK197, salvataggio S12 del PO): l'avvicinamento esponenziale lasciava una coda di strisciamento a 0,1-0,5 u/s e il corpo
@@ -19013,6 +19018,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _toTunnel=(m)=>{if(!m||m._wStartX==null)return;m.position.x=m._wStartX;m.position.z=m._wStartZ;m.position.y=0;m._px=m.position.x;m._pz=m.position.z;m._sp=0;m._idle=0;};
         sr.current.players.forEach(pp=>_toTunnel(pp.mesh));_toTunnel(hero);
         walkT=0;walkDone=false;
+        /* [giro 23 PO-245 — rosso __CPM_NO_CAMM245] durata dell'ingresso = l'ultimo che arriva al suo posto (ritardo d'uscita + strada a
+           passo di camminata) + 2 s per fermarsi e girarsi verso la camera; mai sotto i 10,5 s storici. */
+        WALK_DUR=10.5;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){let _u245=0;const _a245=(m)=>{if(!m||m._wStartX==null||m._wx==null)return;_u245=Math.max(_u245,(m._wDelay||0)+Math.hypot(m._wx-m._wStartX,m._wz-m._wStartZ)/WALK_V245);};
+          sr.current.players.forEach(pp=>_a245(pp.mesh));_a245(hero);WALK_DUR=Math.max(10.5,_u245+2);}
+        try{if(typeof window!=='undefined')window.__CPM_WALKDUR245=+WALK_DUR.toFixed(2);}catch(_e245d){}
       }
       _wasWalk=isWalk;
       /* [7.999.59 collaudo PO «le scene 3D all'ingresso in campo sono molto scattose e pesanti»] MISURATO (long task + profilo CPU
@@ -19046,7 +19056,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(!(typeof window!=='undefined'&&window.__CPM_NO_FILA227)){_rw227=clamp((m._sp227-0.3)/1.5,0,1);_iw227=1-_rw227*0.75;}
               if(typeof window!=='undefined'&&_CPM_TEST){const _K=(window.__CPM_FILA227=window.__CPM_FILA227||{n:0,fermi:0,fermiCorsa:0});_K.n++;if(m._sp227<0.5){_K.fermi++;if(_rw227>0.3)_K.fermiCorsa++;}}
             }
-            if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;if(_av911.mx)_av911.mx.update(dt);}}
+            if(_av911.walk245&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){/* [giro 23 PO-245] il bambino CAMMINA: clip «walk» con la cadenza sulla velocita' vera (velocita' naturale della clip misurata una volta sul suo corpo) */
+              if(_av911._v0k245==null){const _r=_passoNaturale7({run:_av911.walk245,visualRoot:_av911.visualRoot,root:_av911.root}),_h=_altezza7(_av911);_av911._v0k245=(_r>0&&_h>0.3)?_r*_h:0;}
+              if(_av911.run)_av911.run.weight=0;_av911.walk245.weight=_rw227;_av911.walk245.timeScale=_av911._v0k245>0?clamp((m._sp227||0)/_av911._v0k245,0.5,2.5):1;}
+            else if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;if(_av911.mx)_av911.mx.update(dt);}}
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else if(replaying){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
@@ -21911,8 +21924,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   profondo) con quota che scende, sguardo verso la tribuna OPPOSTA attraverso il campo → in un giro
         //   si vedono TUTTE e quattro le tribune (curve comprese) con tifo/coreografie. Nell'ultimo tratto
         //   converge sulla carrellata bassa della fila che entra (transizione morbida al kickoff).
-        const prog=Math.min(walkT/WALK_DUR,1);
-        if(prog<0.85){
+        /* [giro 23 PO-245 «camminata vera, ingresso piu' lungo» — rosso __CPM_NO_CAMM245] con l'ingresso di ~38 s il giro a 360 gradi
+           scalato sulla durata diventerebbe una mezza minuto di tribune senza calciatori. Regia a tempi assoluti: giro dello stadio in
+           12 s (era ~9), poi la camera bassa accompagna la testa della fila (l'eroe esce per primo), negli ultimi 6 s la carrellata
+           lungo la fila schierata di sempre. Le formule delle due inquadrature storiche sono le stesse. */
+        const _c245=!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)&&WALK_DUR>16;
+        const _ORB245=12,_FIN245=6;
+        const prog=_c245?(walkT<_ORB245?(walkT/_ORB245)*0.85:walkT>=WALK_DUR-_FIN245?0.85+0.15*Math.min(1,(walkT-(WALK_DUR-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
+        if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
+          const _hz=clamp(hero.position.z,-32,32),_hx=hero.position.x;
+          tPx=_hx-13;tPy=4.2;tPz=_hz+6;tLx=_hx+1;tLy=1.3;tLz=_hz-5;
+          kp=Math.min(dt*1.4,1);kl=Math.min(dt*1.8,1);
+        } else if(prog<0.85){
           const _th=-Math.PI/2+(prog/0.85)*Math.PI*2;// partenza dietro la porta di casa, giro completo antiorario
           const _rad=46-6*prog,_hgt=26-9*prog;// orbita DENTRO il catino (sopra il bordo campo, mai dentro le tribune)
           tPx=Math.cos(_th)*_rad;tPy=_hgt;tPz=Math.sin(_th)*_rad*0.60;
@@ -23484,7 +23507,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              impresso. Isteresi a tempo (0,25s di permanenza minima) contro lo sfarfallio ai confini.
              Pigrizia: l'AnimationAction nasce al primo uso. __CPM_NO518 = rosso (solo run, pattinate). */
           if(_a._locoFade){const _lf=_a._locoFade;_lf.t-=dt;_lf.act.weight*=Math.max(0,1-dt*8);if(_lf.t<=0){try{_lf.act.stop();}catch(_e){}_a._locoFade=null;}}
-          if(_a._locoClips&&!_a._isGk&&!_a._isRef&&!(typeof window!=='undefined'&&window.__CPM_NO518)){
+          /* [giro 23 PO-245 «camminata vera» — rosso __CPM_NO_CAMM245] nell'ingresso il canale di locomozione e' la CAMMINATA del pacchetto
+             (clip «walk»), non la corsa rallentata: a 1,8 u/s la corsa avrebbe la cadenza al pavimento (0,5) e i piedi pattinerebbero. Stesso
+             meccanismo del selettore 7.518 (si ripunta `_a.run`, dissolvenza esplicita del canale lasciato) e la cadenza si ricalcola sulla
+             clip nuova (`_rap7` azzerato: velocita' naturale misurata sulla camminata). Finito l'ingresso si torna al canale avanti. */
+          const _wk245=!!(propsRef.current&&propsRef.current.matchPhase==="walkout"&&_a._locoClips&&_a._locoClips.walk&&!_a._isRef&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245));
+          if(_wk245&&_a._locoName!=='walk'&&_a.mx){_a._locoActs=_a._locoActs||{};const _na=_a._locoActs.walk||(_a._locoActs.walk=_a.mx.clipAction(_a._locoClips.walk));
+            if(_na!==_a.run){if(!_a._runFwd)_a._runFwd=_a.run;const _ow=_a.run?_a.run.weight:0;if(_a.run)_a._locoFade={act:_a.run,t:0.22};_na.play();_na.weight=_ow;_a.run=_na;_a._locoName='walk';_a._rap7=null;}}
+          else if(!_wk245&&_a._locoName==='walk'){const _na=_a._runFwd;if(_na&&_na!==_a.run){const _ow=_a.run?_a.run.weight:0;_a._locoFade={act:_a.run,t:0.22};_na.play();_na.weight=_ow;_a.run=_na;}_a._locoName='run';_a._rap7=null;}
+          if(_wk245&&typeof window!=='undefined'&&window.__CPM_CAMM245){try{const _K=window.__CPM_CAMM245;_K.n=(_K.n||0)+1;if(_a._locoName==='walk')_K.walk=(_K.walk||0)+1;if((_a._spS||0)>0.6&&_a.run){_K.mov=(_K.mov||0)+1;_K.ts=(_K.ts||0)+_a.run.timeScale;if(_a._rap7>0&&_a._h7>0.3){_K.v0=+(_a._rap7*_a._h7).toFixed(3);}}}catch(_e245k){}}
+          if(_a._locoClips&&!_a._isGk&&!_a._isRef&&!_wk245&&_a._locoName!=='walk'&&!(typeof window!=='undefined'&&window.__CPM_NO518)){
             _a._locoDwell=Math.max(0,(_a._locoDwell||0)-dt);
             if(_gsp>0.03&&_a._locoDwell<=0){
               const _mvA=Math.atan2(_gdx,_gdz);let _rel=((_mvA-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;
@@ -45280,16 +45312,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const notifQRef=useRef([]);const notifBusyRef=useRef(false);const notifWkRef=useRef(0);
   const[notifPending,setNotifPending]=useState(false);/* [7.286.0 direttiva PO] la cascata di fine stagione TRATTIENE il pulsante della stagione nuova */
   useEffect(()=>{notifWkRef.current=(player.season||1)*100+(player.week||1);},[player.season,player.week]);
+  /* [giro 23 PO-247, questionario 15/10 «Dopo l'intervista» — rosso __CPM_NO_IV247] con l'intervista aperta la coda dei toast si
+     FERMA: l'avviso dei premi compare solo a intervista chiusa (il giro 19 lo spostava in alto, dove copriva la riga del punteggio).
+     Cio' che arriva o resta in coda durante l'intervista non scade col cambio di settimana: il giocatore non l'ha ancora visto. */
+  const ivAperta247Ref=useRef(false);
   const _drainNotif=()=>{if(notifBusyRef.current)return;
+    if(ivAperta247Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247)){if(notifQRef.current.length)setNotifPending(true);return;}
     let nx=notifQRef.current.shift();
-    while(nx&&!nx.prio&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
+    while(nx&&!nx.prio&&!nx.iv247&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
     if(!nx){setNotifPending(false);return;}
     const _q=notifQRef.current.length,_dur=_q>=4?1500:_q>=2?2100:_q>=1?2800:3600;
     notifBusyRef.current=true;setNotif(nx);try{AudioMgr.notifyCue(nx.msg,nx.color);}catch(_a){}
     setNotifPending(true);
     setTimeout(()=>{setNotif(null);setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
   const notify=(msg,color=TH.primary,opts)=>{
-    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current};
+    const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current,iv247:!!ivAperta247Ref.current};
     if(_e.prio)notifQRef.current.unshift(_e);else notifQRef.current.push(_e);
     /* il cap toglie i piu' VECCHI fra i MINORI: uno splice cieco in testa mangerebbe proprio i prioritari */
     while(notifQRef.current.length>8){const i=notifQRef.current.findIndex(x=>!x.prio);if(i<0)break;notifQRef.current.splice(i,1);}
@@ -45298,6 +45335,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        la durata del PRIMO toast conosce gia' l'arretrato, e il prioritario e' davvero il primo a uscire. */
     setTimeout(_drainNotif,0);};
 
+  useEffect(()=>{const ap=!!interviewModal;const era=ivAperta247Ref.current;ivAperta247Ref.current=ap;
+    if(typeof window!=='undefined'&&window.__CPM_NO_IV247)return;
+    if(ap&&!era){notifQRef.current.forEach(x=>{x.iv247=true;});if(notif){notifQRef.current.unshift({...notif,iv247:true});setNotif(null);}}/* un toast gia' a schermo torna in testa alla coda: lo rivedrai dopo */
+    else if(!ap&&era){setTimeout(_drainNotif,350);}
+  },[interviewModal]);// eslint-disable-line
   // Sprint 19 — OVR milestone check (separate useEffect to avoid computing OVR outside setPlayer)
   useEffect(()=>{
     if(!player.ovr||!player.milestones)return;
@@ -46223,6 +46265,7 @@ const getThisWeekMatchday=()=>{
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,academy24:player.academy24||null,beni24:player.beni24||[],coachTrust:player.coachTrust,legacy24:(function(){try{return{score:calcLegacyScore(player),pat:legacyPatrimonio24(player)};}catch(e){return null;}})(),invest24:player.invest24||null,investHist24:player.investHist24||[],popularity:player.popularity,logTop:(player.log||[]).slice(0,8),/* [7.990.0 F2] sonda accademia24 */injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,clubLg:player.club?.lg||null,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      festa251:(kind)=>{try{setTitleCeleb({kind:kind||"nation",name:"Coppa delle Nazioni",season:player.season||1,club:"Nazionale"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 23 PO-251] solo il guardiano festa-251: apre la festa del trofeo */
       forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
@@ -50609,6 +50652,20 @@ const getThisWeekMatchday=()=>{
             const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
             _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
             _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]})`);
+          }else if(_opp7&&!(typeof window!=='undefined'&&window.__CPM_NO_COPPA_PRESTITO)&&(()=>{
+            /* [giro 23, questionario PO 15/10 «Resta in coppa» — eccezione zona G concessa per questo solo comportamento; rosso
+               __CPM_NO_COPPA_PRESTITO] nessuna settimana LIBERA nel calendario del club nuovo non e' piu' un motivo per uscire dalla coppa:
+               il turno va alla prima settimana utile anche con DOPPIO IMPEGNO (gara di lega + coppa nella stessa settimana, come gia' le
+               gare europee del girone). Si evita solo una settimana che abbia gia' un'altra gara di coppa/Europa/Nazionale riportata qui. */
+            const _occ245=new Set(_keptComp7.map(m=>m.week));
+            let _w245=Math.max(currentWeek+1,(_base7.week>currentWeek?_base7.week:currentWeek+1));
+            while(_w245<=37&&_occ245.has(_w245))_w245++;
+            if(_w245>37){_w245=currentWeek+1;while(_w245<=37&&_occ245.has(_w245))_w245++;}
+            if(_w245>37)return false;
+            _keptComp7.push({..._base7,opponentId:_opp7.id,opponentName:_opp7.n,week:_w245,doppio245:true});return true;})()){
+            const _nbr7=[newClub.id,..._poolC7.slice(0,15).map(c=>c.id)];
+            _updCup7={..._updCup7,bracket:_nbr7,cupSurvivors:_nbr7.slice(0,Math.max(2,16>>(_rd7-1))),nextWeek:_keptComp7[_keptComp7.length-1].week};
+            _compLog7.push(`🏆 Coppa Nazionale: il cammino continua col nuovo club (${_CRN7[_rd7]}, settimana ${_keptComp7[_keptComp7.length-1].week} insieme al campionato)`);
           }else{
             _updCup7={..._updCup7,active:false,eliminated:true};
             _compLog7.push("🏆 Coppa Nazionale: fuori dopo il trasferimento");
@@ -50946,7 +51003,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
+      <Notif msg={(interviewModal&&!(typeof window!=='undefined'&&window.__CPM_NO_IV247))?null:notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista · [giro 23] e con l'intervista aperta non c'e' proprio */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -51801,7 +51858,8 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:34,fontWeight:900,color:_accent,letterSpacing:2,marginTop:10,textShadow:`0 0 28px ${_accent}`,animation:"celebTitle 0.7s ease-out 0.3s both",zIndex:2,textAlign:"center"}}>{_title}</div>
           <div style={{fontSize:FS.bodyLg,fontWeight:800,color:"#fff",marginTop:8,zIndex:2,textAlign:"center"}}>{titleCeleb.club}</div>
           <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.6)",marginTop:4,zIndex:2,textAlign:"center"}}>{titleCeleb.name} · Stagione {titleCeleb.season}</div>
-          <button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+          {(typeof window!=='undefined'&&window.__CPM_NO_ORO251)?<button onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,border:"none",background:_accent,color:"#11130a",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",zIndex:2,boxShadow:`0 8px 30px ${_accent}66`}}>🎉 Festeggia</button>
+            :<Btn v="festa" data-cpm="festeggia251" onClick={()=>setTitleCeleb(null)} style={{marginTop:30,padding:"12px 34px",borderRadius:RAD.md,fontSize:FS.body,zIndex:2,position:"relative"}}>🎉 Festeggia</Btn>}{/* [giro 23 PO-251, questionario 14/10 «Oro da festa» — rosso __CPM_NO_ORO251] il pulsante prendeva il colore del titolo (verde per la Nazionale): ora e' sempre l'oro della variante festa del kit */}
         </div>
         );
       })()}
