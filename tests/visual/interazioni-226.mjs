@@ -89,7 +89,7 @@ if (!process.env.CPM_SOLO_NODE) {
     const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
     const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
     const save = JSON.parse(JSON.stringify(SAVE)); save.player.name = 'Guard226 ' + ['Rossi', 'Bianchi', 'Verdi', 'Neri', 'Galli', 'Conti'][i % 6] + i;
-    await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_SCMS681 = 1500; window.__CPM_INT226_IDX = o.idx; if (o.rosso) window.__CPM_NO_INT226 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(o.save)); }, { save, rosso, idx: i % 2 });
+    await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_NO_SCHEDE259 = 1;/* [PO-259] le schede 226/234 vivono sotto il rosso del 259: questo guardiano le custodisce li' */ window.__CPM_SCMS681 = 1500; window.__CPM_INT226_IDX = o.idx; if (o.rosso) window.__CPM_NO_INT226 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(o.save)); }, { save, rosso, idx: i % 2 });
     let out = { i, rosso, finita: false };
     try {
       await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
