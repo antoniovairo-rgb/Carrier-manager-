@@ -29,7 +29,7 @@ async function giro(rosso) {
     for (let k = 0; k < 60; k++) { const p = await ph(); if (p === 'walkout') break;
       await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua/i.test(b.textContent || '') && !/Salta/i.test(b.textContent || '')); if (x) x.click(); }); await sleep(700); }
     out.walk = (await ph()) === 'walkout';
-    const t0 = Date.now(); while (Date.now() - t0 < 90000) { const p = await ph(); if (p !== 'walkout') break; await sleep(500); }
+    const t0 = Date.now(); while (Date.now() - t0 < 480000) { const p = await ph(); if (p !== 'walkout') break; await sleep(500); }/* [giro 23] l'ingresso a passo di camminata dura ~38 s di scena: 90 s reali non bastavano ad arrivare alla fine */
     const W = await page.evaluate(() => window.__CPM_WALK245 || []);
     out.n = W.length;
     const lato = casa => { const F = W.map(f => ({ t: f.t, P: f.p.filter(q => q[0] === (casa ? 1 : 0)) })); if (!F.length || !F[0].P.length) return null;

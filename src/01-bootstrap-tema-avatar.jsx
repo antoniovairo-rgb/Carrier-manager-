@@ -88,6 +88,7 @@ let TH = {
   // Scala brand (sostituisce il "granata-su-blu" accidentale delle selezioni)
   primaryTint:"#f7e9ec", primaryBorder:"#e3c3cb",
   // Oro metallico trofei (disambiguato da warning)
+  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
   // Token semantici di dominio (fg/bg/bd)
   winFg:"#166534"/* [7.968] era #137036: due verdi scuri a 11 punti di distanza, indistinguibili a occhio e contati come due tinte dal censimento. Questo e' l'inchiostro verde approvato, lo stesso a cui si aggancia `semTesto945` */, winBg:"#e7f6ec", winBd:"#b7e4c4",
@@ -217,6 +218,7 @@ const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_no
   cardBg:"#172033", border:"#2c3a52",
   el1:"0 2px 12px rgba(0,0,0,0.4)", el2:"0 4px 16px rgba(0,0,0,0.5)", el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620", primaryBorder:"#4a2530",
+  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#d4922a",
   winFg:"#4ade80", winBg:"#12321f", winBd:"#1d4d33",
   drawFg:"#fbbf24", drawBg:"#2c2410", drawBd:"#4a3a12",
