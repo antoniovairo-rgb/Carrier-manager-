@@ -46,9 +46,18 @@ Foto in `docs/sviluppo/foto-giro48/` (`prima-*` = codice di base o `__CPM_NO_KIT
    maglia per ogni angolo, davanti e dietro, mai sulle spalle); i polsini sono l'ultimo 10% della manica.
 3. **La maglia vince la profondità sulla pelle** (`polygonOffset` −2/−6 sul solo materiale `HyperShirt`; provato e
    scartato sui pantaloncini, che trasparivano sotto l'orlo).
+4. **Calzettoni nel colore del club** (`_socksTex061`): misurato sulla texture delle gambe (1024 px) — il calzettone è il
+   blocco poco saturo e chiaro sopra la scarpa (che sta sotto l'84% dell'altezza), le righine oro stanno fra il 44% e il 52%
+   con blu/verde 0,59 contro 0,79 della pelle. Il calzettone prende il colore `socks` del kit tenendo la luce del disegno
+   (parastinco, pieghe), le righine il secondo colore se stacca abbastanza, altrimenti bianco/blu notte; pelle e scarpa
+   restano. Prima stesura bocciata dalle foto: la regola dell'oro prendeva anche la pelle (ginocchia macchiate del secondo
+   colore) → ristretta alla fascia delle righine.
 
-Costo: nessuna texture in più (stessa maglia 512 px per squadra, fondo condiviso del 7.999.59); la mappa del corpo era già
-cotta per le strisce, ora si cuoce anche per le altre maglie: 27-97 ms per geometria in headless, una volta per partita.
+Costo: maglie senza texture in più (stessa maglia 512 px per squadra, fondo condiviso del 7.999.59); la mappa del corpo era
+già cotta per le strisce, ora si cuoce anche per le altre maglie: 27-97 ms per geometria in headless, una volta per partita.
+Calzettoni: una texture gambe 512 px per colore e per livello di dettaglio, deduplicata per impronta dell'immagine (le due
+gambe arrivano con due copie identiche) — misurate 15 in partita (5 colori × 3 livelli), circa +4 MB netti di scheda
+grafica perché la texture originale 1024 px non viene più usata. Da tenere d'occhio sul telefono.
 
 ## 4. Misure (guardiano `npm run kit-061`)
 
@@ -61,12 +70,13 @@ Provino di fronte, primo piano, quota del secondo colore fra i pixel della magli
 | fascia diagonale, secondo colore | 0,115 | 0,212 | ≥ 0,17 |
 | pelle sul petto, 4 tinte unite | 35 · 35 · 38 · 27 | 7 · 7 · 7 · 5 | ≤ 15 |
 | pittore dal corpo in partita (band/vband) | mai chiamato | band, vband, solid | entrambi |
+| calzettoni tinti in partita | 0 | 5 colori, ~45.700 px di texture ciascuno | ≥2 colori, ≥2000 px |
 
 Verde: `✅ PASS kit-061`. Rosso: `CPM_ROSSO=1 npm run kit-061` → `✅ ROSSO come atteso`.
 Agganciato a `package.json` (`kit-061`), alla catena `grafica` di `ci-runner.mjs` e alla MAPPA (`src/12-|src/13-`, insieme a
 `strisce-corpo` che condivide la mappa del corpo).
 
-## 5. Catena grafica (su questo ramo, build esatto del commit 62adbb2)
+## 5. Catena grafica (rifatta sul build dei calzettoni, commit 9f7ae99)
 
 | Passo | Esito |
 |---|---|
@@ -74,7 +84,7 @@ Agganciato a `package.json` (`kit-061`), alla catena `grafica` di `ci-runner.mjs
 | `design-system` | verde («SISTEMA GRAFICO OK») |
 | `save-compat` | verde, 12 pass · 0 fail |
 | `griglia-mobile` | verde, exit 0, overflow 0 px su tutte le larghezze (gli scatti rigenerati in `docs/collaudo-grafico` NON sono stati committati) |
-| `career-critical` | verde, exit 0 (9 min 10 s) |
+| `career-critical` | verde su 62adbb2 (9 min 10 s); su 9f7ae99 vedi sotto |
 | `kit-061` | verde; rosso riprodotto |
 | `strisce-corpo`, `maglie-numero` | verdi (guardiani vicini, stessa funzione) |
 
@@ -82,7 +92,6 @@ Build: `CPM_FORZA_BUILD=1 node tools/build-src.mjs` + `node tools/check-src.mjs`
 
 ## 6. Cosa resta fuori (dichiarato)
 
-- **Calzettoni nel colore del club** (difetto 4): vedi la sezione 7 per l'esito del tentativo in questo giro.
 - **Residuo lod2**: sul corpo dei giocatori lontani la banda verticale vista di schiena ha una piccola chiazza del colore di
   fondo in basso a sinistra (`dopo-provino-lod2.jpg`). lod0 e lod1 sono puliti. In campo lod2 è alto poche decine di pixel:
   non misurato oltre.
