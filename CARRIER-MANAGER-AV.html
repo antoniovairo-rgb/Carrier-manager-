@@ -10870,7 +10870,15 @@ const finestraOn230=()=>!(typeof window!=='undefined'&&window.__CPM_NO_FIN230);
 /* [7.999.162 PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco»] IL PANNELLO DEL MODAL E' UN COMPONENTE: fondo chiaro,
    angoli arrotondati, UN SOLO titolo in testa (riga con filo sotto), contenuto, pulsanti d'azione in fondo (riga con filo sopra). Lo usano
    il Modal e le finestre degli impulsi della home (_pop224, via cardInFinestra230). cpm = data-cpm del pannello. */
+/* [giro 26 PO-256, collaudo 169 D3] REGISTRO DEI MODALI APERTI: ogni ModalPannello (quindi ogni Modal e le finestre degli impulsi
+   della home) si conta al montaggio e si scala allo smontaggio; chi ascolta (la coda dei toast di CareerApp) viene avvisato a ogni
+   cambio. Principio: un toast non copre mai un Modal aperto, aspetta che si chiuda (come popup-224 e l'intervista PO-247).
+   Solo presentazione: decide QUANDO si mostra un avviso, non cosa dice. Rosso __CPM_NO_TOAST256. */
+const _modali256={n:0,ascolta:new Set()};
+const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.__CPM_NO_TOAST256);
+const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
+  useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
   return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
@@ -45281,13 +45289,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[notifPending,setNotifPending]=useState(false);/* [7.286.0 direttiva PO] la cascata di fine stagione TRATTIENE il pulsante della stagione nuova */
   useEffect(()=>{notifWkRef.current=(player.season||1)*100+(player.week||1);},[player.season,player.week]);
   const _drainNotif=()=>{if(notifBusyRef.current)return;
+    if(modaleAperto256()){if(notifQRef.current.length)setNotifPending(true);return;}/* [giro 26 PO-256] un Modal e' aperto: la coda aspetta la sua chiusura (il registro la riavvia) */
     let nx=notifQRef.current.shift();
     while(nx&&!nx.prio&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
     if(!nx){setNotifPending(false);return;}
     const _q=notifQRef.current.length,_dur=_q>=4?1500:_q>=2?2100:_q>=1?2800:3600;
     notifBusyRef.current=true;setNotif(nx);try{AudioMgr.notifyCue(nx.msg,nx.color);}catch(_a){}
     setNotifPending(true);
-    setTimeout(()=>{setNotif(null);setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+    setTimeout(()=>{setNotif(null);if(modaleAperto256()&&!nx.rip256)notifQRef.current.unshift({...nx,rip256:1});/* [giro 26 PO-256] il Modal si e' aperto mentre il toast era in scena (e lo ha nascosto): torna in testa alla coda, una volta sola */setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+  const[modaliN256,setModaliN256]=useState(()=>_modali256.n);/* [giro 26 PO-256] quanti Modal sono aperti: il toast in scena si nasconde, la coda riparte alla chiusura */
+  useEffect(()=>{const f=(n)=>{setModaliN256(n);if(!n)setTimeout(_drainNotif,0);};_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
   const notify=(msg,color=TH.primary,opts)=>{
     const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current};
     if(_e.prio)notifQRef.current.unshift(_e);else notifQRef.current.push(_e);
@@ -50946,7 +50957,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
+      <Notif msg={(modaliN256>0&&modaleAperto256())?null:notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 26 PO-256] mai sopra un Modal aperto */}{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
@@ -57347,8 +57358,10 @@ function App(){
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
       <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
+        {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
-        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span>
+        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span></React.Fragment>
+        :<span data-cpm="badge255" style={{color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
       </div>
       <style>{`
         *{box-sizing:border-box;}

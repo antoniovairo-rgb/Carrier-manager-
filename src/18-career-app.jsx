@@ -380,13 +380,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[notifPending,setNotifPending]=useState(false);/* [7.286.0 direttiva PO] la cascata di fine stagione TRATTIENE il pulsante della stagione nuova */
   useEffect(()=>{notifWkRef.current=(player.season||1)*100+(player.week||1);},[player.season,player.week]);
   const _drainNotif=()=>{if(notifBusyRef.current)return;
+    if(modaleAperto256()){if(notifQRef.current.length)setNotifPending(true);return;}/* [giro 26 PO-256] un Modal e' aperto: la coda aspetta la sua chiusura (il registro la riavvia) */
     let nx=notifQRef.current.shift();
     while(nx&&!nx.prio&&nx.wk&&nx.wk<notifWkRef.current)nx=notifQRef.current.shift();/* stantio: la settimana e' cambiata */
     if(!nx){setNotifPending(false);return;}
     const _q=notifQRef.current.length,_dur=_q>=4?1500:_q>=2?2100:_q>=1?2800:3600;
     notifBusyRef.current=true;setNotif(nx);try{AudioMgr.notifyCue(nx.msg,nx.color);}catch(_a){}
     setNotifPending(true);
-    setTimeout(()=>{setNotif(null);setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+    setTimeout(()=>{setNotif(null);if(modaleAperto256()&&!nx.rip256)notifQRef.current.unshift({...nx,rip256:1});/* [giro 26 PO-256] il Modal si e' aperto mentre il toast era in scena (e lo ha nascosto): torna in testa alla coda, una volta sola */setTimeout(()=>{notifBusyRef.current=false;if(!notifQRef.current.length)setNotifPending(false);_drainNotif();},260);},_dur);};
+  const[modaliN256,setModaliN256]=useState(()=>_modali256.n);/* [giro 26 PO-256] quanti Modal sono aperti: il toast in scena si nasconde, la coda riparte alla chiusura */
+  useEffect(()=>{const f=(n)=>{setModaliN256(n);if(!n)setTimeout(_drainNotif,0);};_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
   const notify=(msg,color=TH.primary,opts)=>{
     const _e={msg,color,prio:!!(opts&&opts.prio),wk:notifWkRef.current};
     if(_e.prio)notifQRef.current.unshift(_e);else notifQRef.current.push(_e);
@@ -6045,7 +6048,7 @@ const getThisWeekMatchday=()=>{
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
-      <Notif msg={notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
+      <Notif msg={(modaliN256>0&&modaleAperto256())?null:notif?.msg} color={notif?.color} alto={!!interviewModal}/>{/* [giro 26 PO-256] mai sopra un Modal aperto */}{/* [giro 19 PO-247] il toast non copre le risposte dell'intervista */}
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
       {showSettings&&<SettingsScreen strumenti={<>
           {/* Sprint 20 — Career card copy button in profile */}
