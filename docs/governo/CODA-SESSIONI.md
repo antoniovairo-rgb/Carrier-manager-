@@ -38,6 +38,7 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | sviluppo/procuratore-253 | session_019ikTfX6zSSZTa3h32kZsUT | giro 24 (Opus, base main 7.999.169): PO-253 cornice standard (ModalPannello) per «Il confronto» e «Il primo incontro» col procuratore, guardiano procuratore-253 — CONSEGNATO 15/10 12:35 (bb1097e4, guardiano e controlli verdi, catena completa da fare all'integrazione). Sessione archiviata | 15/10 12:03 |
 | collaudo/difesa-220 | session_019Qtg7UiF1QCwk4U7VVyzEi | collaudo mirato PO-220 (Sonnet, sola misura, 7.999.169): eroe che non arriva sull'uomo ed esito che non torna col 3D, rapporto docs/collaudi/RAPPORTO-difesa-220.md | 15/10 12:33 |
 | sviluppo/crediti-254 | session_01T3Fg6V1xKqjcahLVWg5Vqv | giro 25 (Opus, base 7.999.169): PO-254 pulsante del kit «Crediti» in home e contenuto allineato a CREDITI-fonti.md | 15/10 12:35 |
+| sviluppo/badge-toast-255 | session_016CgyD1NFeY3QaTGeoHZ9L1 | giro 26 (Opus, base 7.999.169): PO-255 badge solo «v x.y.z» senza PROD/TEST; PO-256 i toast aspettano la chiusura dei Modal | 15/10 12:40 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
