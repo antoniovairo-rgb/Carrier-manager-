@@ -389,3 +389,5 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 - Chiuse dal PO come FATTO: PO-236 (bambini), PO-237 (prima partita), PO-232 (highlight coi corpi caricati); PO-048 spostata nello storico (non riprodotta).
 - Non ancora provate: PO-233, PO-235, PO-230, PO-209 (restano da verificare). Corretto il backlog: PO-235/236/237 erano già sulla 7.999.169.
 - Prossimo filone dopo i giri in corso: «Highlight dell'eroe» (PO-248/229, dal banco dei 10 difetti di PO-252).
+- Crediti (15/10, giro 25): rimettere Rocketbox (MIT), animazioni Mixamo e CH38, GLTFLoader/SkeletonUtils con la loro fonte già nel repo («Rimettile con la loro fonte»); per Regular Male e ritratti OpenAI nessuna riga licenza («Senza riga licenza»).
+- Nota onesta su PO-237 (chiusa dal PO sul telefono): il collaudo 3D headless della 169 misura ancora la prima partita più scattosa della seconda (p50 133 contro 83 ms). L'headless non è il telefono: vale il verdetto del PO, la misura resta agli atti.
