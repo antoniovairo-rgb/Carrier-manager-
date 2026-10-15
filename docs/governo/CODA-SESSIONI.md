@@ -43,6 +43,10 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 | collaudo/mirato-169 | session_01TEJ851pZn5jfY4EEQwUWCF | collaudo mirato 7.999.169 (Haiku, sola misura): A) statistiche su 20 partite (PO-228), B) intervista dopo la Nazionale (PO-243), C) giornale (PO-244); rapporto docs/collaudi/RAPPORTO-mirato-169.md | 15/10 12:57 |
 | sviluppo/schede-259 | session_016rmHL7YmMNkGhq9YRhNhpi | giro 28 (Opus, base 7.999.169): PO-259 schede del mister «poche ma decisive» (1-2 a partita, rischio/premio, esito raccontato dopo 5', effetto vero sul motore) | 15/10 13:07 |
 | sviluppo/crediti-254 (25b) | session_01CVGkMxbmRujV7SMwV8Q8zE | giro 25b: rimettere Rocketbox/Mixamo/CH38/GLTFLoader con fonte, niente riga licenza per Regular Male e ritratti OpenAI | 15/10 13:40 |
+| collaudo/carriere-l6 | session_01BSHcYX8UajM747JYXqxgpx | L6 fase 1 (Haiku, sola misura): 30 carriere × 10 stagioni + PO-190 goleade; rapporto docs/collaudi/RAPPORTO-carriere-l6.md | 15/10 13:44 |
+| collaudo/zona-g-misura | session_019KNcHwb2Qrt5hWEcEmed8b | zona G sola misura (Haiku): riproduzione PO-222 e PO-223, nessuna correzione | 15/10 13:44 |
+| sviluppo/backup-167 | session_01CQiFQVArtH7SAawpnur9Xh | giro 29 (Opus): PO-167 copia di riserva degli slot e avviso di salvataggio fallito | 15/10 13:44 |
+| sviluppo/grafica-217-066 | session_012vEkGqn532iVnmwkSidaj5 | giro 30 (Opus, sola grafica): PO-217 analisi pre-partita, PO-066 riquadri della home | 15/10 13:44 |
 | sviluppo/statistiche-difesa-228 | — (archiviata) | giro 16 consegnato (3c969fb7): PO-228 + PO-220, mirata 50/52 (nomi-219 rosso per campione, riparato dal giro 18); da unire nella 7.999.169 | 14/10 23:37 |
 | sviluppo/scene-gesti-022 | — (archiviata) | giro 17 consegnato (7239fb2), unito in lavoro/169; resta aperto il cross #64/#126 | 14/10 22:20 |
 | collaudo/release-164 | — (archiviata) | collaudo 164 consegnato → PO-242…247 | 14/10 17:55 |
