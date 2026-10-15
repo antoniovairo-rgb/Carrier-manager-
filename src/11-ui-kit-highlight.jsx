@@ -264,7 +264,15 @@ const finestraOn230=()=>!(typeof window!=='undefined'&&window.__CPM_NO_FIN230);
 /* [7.999.162 PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco»] IL PANNELLO DEL MODAL E' UN COMPONENTE: fondo chiaro,
    angoli arrotondati, UN SOLO titolo in testa (riga con filo sotto), contenuto, pulsanti d'azione in fondo (riga con filo sopra). Lo usano
    il Modal e le finestre degli impulsi della home (_pop224, via cardInFinestra230). cpm = data-cpm del pannello. */
+/* [giro 26 PO-256, collaudo 169 D3] REGISTRO DEI MODALI APERTI: ogni ModalPannello (quindi ogni Modal e le finestre degli impulsi
+   della home) si conta al montaggio e si scala allo smontaggio; chi ascolta (la coda dei toast di CareerApp) viene avvisato a ogni
+   cambio. Principio: un toast non copre mai un Modal aperto, aspetta che si chiuda (come popup-224 e l'intervista PO-247).
+   Solo presentazione: decide QUANDO si mostra un avviso, non cosa dice. Rosso __CPM_NO_TOAST256. */
+const _modali256={n:0,ascolta:new Set()};
+const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.__CPM_NO_TOAST256);
+const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
+  useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
   return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
