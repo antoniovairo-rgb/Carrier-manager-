@@ -990,10 +990,11 @@ function creaMotorePossesso(cfg){
   }
   function tickRete(){S.rete.t++;S.conta.rete++;S.poss.t++;if(S.rete.t>=2){const l=altro(S.rete.lato);S.rete=null;S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;ev("centro",{lato:l});}}
   function tickKickoff(){const k=S.kickoff;k.t++;S.conta.kickoff++;S.poss.t++;S.palla.x=50;S.palla.y=50;S.poss.lato=k.lato;
-    if(k.t<2)return;
+    if(k.t<(k.hold||2))return;
     const l=k.lato;let A=null,B=null,da=1e9,db=1e9;for(const q of g){if(!mio(q,l)||q.gk)continue;const d=hyp(q.x,q.y,50,50);if(d<da){db=da;B=A;da=d;A=q;}else if(d<db){db=d;B=q;}}
     if(!A){libero(50,50);return;}
     if(hyp(A.x,A.y,50,50)>6&&k.t<5)return;
+    if(cfg.brainLive&&typeof window!=='undefined'&&window&&window.__CPM_REC){try{const W=(window.__CPM_KO27=window.__CPM_KO27||[]);if(W.length<40)W.push({lato:k.lato,t:k.t,hold:k.hold||2,fuori:g.filter(q=>attivo(q)&&!q.gk&&(q.team===HOME?q.x>51:q.x<49)).length,eroe:[Math.round(g[HERO].x),Math.round(g[HERO].y)]});}catch(_e27){}}/* [giro 27] testimone alla BATTUTA, solo il motore della partita vera (il banco non passa brainLive): quanti di movimento nella meta' sbagliata */
     A.x=50-dirDi(l)*0.8;A.y=50;if(B&&hyp(B.x,B.y,50,50)<=8){B.x=50-dirDi(l)*3;B.y=53;}else B=null;
     S.poss.padrone=A.i;S.poss.stato="tenuta";ev("calcio_inizio",{chi:chi(A),lato:l});
     if(B)passa(A,B,{sicuro:true,kind:"appoggio"});else tenuta(A,null);
@@ -1228,7 +1229,17 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
       if(o.eroe&&o.eroe.x!=null){g[HERO].x=clamp(+o.eroe.x,2,98);g[HERO].y=clamp(+o.eroe.y,3,97);}
       const l=o.lato===AWAY?AWAY:HOME;const x=clamp(+o.x||50,2,98),y=clamp(+o.y||50,3,97);
-      if(o.centro){S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;return;}
+      if(o.centro){S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;
+        /* [giro 27 PO-207 riaperta, taccuino PO 15/10 «Rigore — Tiro potente», gol: «dopo il gol non si riparte da centrocampo»] MISURATO
+           (sonda ko-fine, S12, rigore chiesto al 9' con chiedi.piazzato): il pallone tornava a (50,50) ma la battuta partiva dopo 2 passi,
+           in 270-470 ms reali, con 8-10 giocatori di movimento su 20 ancora nella meta' sbagliata e l'eroe sul dischetto avversario: in
+           fotografia il pallone esce dal cerchio prima che il calcio d'inizio si veda. Qui la ripresa dopo un gol nato in SCENA o da
+           piazzato (il campo era coperto dall'highlight: e' lo stacco di regia, come lo SNAP del 3D) schiera i ventidue con la stessa
+           regola del calcio d'inizio (riga «st==="kickoff"» del passo) e tiene la palla ferma 11 passi. Rosso __CPM_NO_SCHIERA27. */
+        if(o.schiera&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_SCHIERA27)){S.kickoff.hold=11;const c=[];
+          for(const q of g){if(!attivo(q))continue;const sl=slotDi(q);if(q.gk){q.x=sl.x;q.y=50;continue;}q.x=clamp(q.team===HOME?Math.min(sl.x,46):Math.max(sl.x,54),2,98);q.y=clamp(sl.y,3,97);if(q.team===l)c.push(q);}
+          c.sort((a,b)=>hyp(a.x,a.y,50,50)-hyp(b.x,b.y,50,50));if(c[0]){c[0].x=50-dirDi(l)*0.8;c[0].y=50;}if(c[1]){c[1].x=50-dirDi(l)*3;c[1].y=53;}}
+        return;}
       const W=piuVicino(x,y,l,{noGk:true});if(W){W.p.x=x-dirDi(l)*0.4;W.p.y=y;S.palla.x=x;S.palla.y=y;tenuta(W.p,null);S.poss.t=1;}else libero(x,y);},
     posiziona(x,y){S.palla.x=clamp(+x,0,100);S.palla.y=clamp(+y,0,100);},
     /* [7.891] IL CALCIO PIAZZATO DELLA SCENA LO SCHIERA IL MOTORE. Il live match, due minuti prima di una
