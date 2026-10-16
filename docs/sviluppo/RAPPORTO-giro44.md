@@ -160,7 +160,23 @@ una scheda appena nata. **Non posso confermare** con quale frequenza capitasse a
 Tutti eseguiti dentro il turno sulla **build finale** (copia di lavoro al commit `2778708`, file di gioco identico al commit consegnato;
 dopo quel commit sono cambiati solo file di test). Log in `docs/sviluppo/dati-giro44/catena/`.
 
-ESITI_CATENA
+| guardiano | esito sulla build finale |
+|---|---|
+| `schede-246` (riparato) | ✅ verde · rosso `__CPM_NO682F` riconosciuto (era ❌ anche sulla base) |
+| `schede-260` (nuovo) | ✅ verde (0 campioni fuori dal gioco) · rosso riconosciuto (scheda sopra highlight/cerimonia, scheda sovrascritta) |
+| `schede-259` | ✅ verde — A regola 9/9 e 7/7 · B banco: 0 premi smentiti, leva «cerca l'eroe» 130 contro 117 · C 4 partite: 1,25 schede/partita, max 2, 0 senza posta, motore 5/5, racconti 5/5, riepilogo 4/4 · rosso riconosciuto (2,25/partita, 0 racconti) |
+| `schede-234` | ✅ verde |
+| `interazioni-226` | ✅ verde |
+| `tempo-138` | ✅ verde (e il rosso si vede) |
+| `replay` | ✅ verde |
+| `partita-vera` | ✅ verde — «le bande d'accettazione tengono» |
+| `test:logic` | ✅ 43/43 |
+| `seme-a` | ❌ rosso **preesistente**: identico sulla base 171 (primo ingresso divergente #486 al 17', prima di ogni scheda) — vedi «Cosa resta aperto» |
+
+Note di metodo: il container è stato riavviato **due volte** durante la catena (02:03 e 02:24 UTC): ogni corsa interrotta è stata
+rifatta da capo sulla stessa build (`interazioni-226` rifatto intero; di `schede-259` sono valide le parti A e B del giro interrotto,
+confermate anche da una corsa separata `CPM_SOLO_NODE=1`, e la parte C rifatta intera con `CPM_SOLO_BROWSER=1`). Gruppi lenti eseguiti
+due o tre alla volta in parallelo. `promessa-226` e `misura-226` sono strumenti, non guardiani: non sono nella catena.
 
 `node tools/check-src.mjs`: file ricomposto identico byte per byte ai frammenti.
 

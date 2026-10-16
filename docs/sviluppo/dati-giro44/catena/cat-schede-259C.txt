@@ -1,0 +1,11 @@
+(C) verde p1 finita {"home":2,"away":1} schede=1 [82'+1 misura_finale] cambia=1/1 racconti=1 coerenti=1 riep=si
+(C) verde p0 finita {"home":2,"away":3} schede=1 [73'-1 sotto_finale] cambia=1/1 racconti=1 coerenti=1 riep=si
+(C) verde p2 finita {"home":0,"away":1} schede=1 [75'0 pari_finale] cambia=1/1 racconti=1 coerenti=1 riep=si
+(C) verde p3 finita {"home":2,"away":2} schede=2 [57'0 eroe_stanco | 82'+1 misura_finale] cambia=2/2 racconti=2 coerenti=2 riep=si
+(C) verde: 4/4 finite · schede 5 (1.25/partita, max 2, distribuzione {"1":3,"2":1}) · senza posta 0 · scelta che cambia il motore 5/5 · racconti coerenti 5/5 · riepilogo 4/4 · errori 0
+(C) rosso p1 finita {"home":2,"away":1} schede=1 [85'+1 misura_85] cambia=1/1 racconti=0 coerenti=0 riep=no
+(C) rosso p0 finita {"home":1,"away":3} schede=3 [59'+1 eroe_stanco | 67'+1 eroe_marcato | 75'-1 sotto_70] cambia=3/3 racconti=0 coerenti=0 riep=no
+(C) rosso p2 finita {"home":0,"away":1} schede=3 [55'0 eroe_stanco | 75'0 pari_75 | 83'-1 sotto_70] cambia=3/3 racconti=0 coerenti=0 riep=no
+(C) rosso p3 finita {"home":3,"away":1} schede=2 [55'+1 eroe_stanco | 85'+1 misura_85] cambia=2/2 racconti=0 coerenti=0 riep=no
+(C) rosso: 4/4 finite · schede 9 (2.25/partita, max 3, distribuzione {"1":1,"2":1,"3":2}) · senza posta 0 · scelta che cambia il motore 9/9 · racconti coerenti 0/0 · riepilogo 0/4 · errori 0
+✅ VERDE — schede poche e decisive, effetto vero sul motore, racconto dai fatti, riga nel riepilogo, prova del rosso riconosciuta

@@ -1,0 +1,12 @@
+=== D1 REPLAY ENGINE — registrazione + validazione completezza ===
+  gi0   [insertion  ] 16 frame · 12627ms · 3 eventi · maxBallJump 0
+  gi8   [shot       ] 16 frame · 2090ms · 4 eventi · maxBallJump 0.4
+  gi17  [cross      ] 16 frame · 1586ms · 4 eventi · maxBallJump 58.6
+  gi30  [progression] 16 frame · 1531ms · 4 eventi · maxBallJump 0
+  gi60  [progression] 16 frame · 1517ms · 4 eventi · maxBallJump 0.4
+  gi88  [insertion  ] 16 frame · 1505ms · 4 eventi · maxBallJump 0.4
+  gi120 [through    ] 16 frame · 1541ms · 4 eventi · maxBallJump 46.1
+  gi132 [recover    ] 16 frame · 1512ms · 3 eventi · maxBallJump 0.1
+
+replay scritti → tests/visual/out/validate/replay · 8 highlight
+✅ PASS — replay completi e coerenti
