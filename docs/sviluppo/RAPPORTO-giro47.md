@@ -71,7 +71,24 @@ Esiti misurati su questo ramo (in sequenza):
 - `gala-3d` ❌ **anche sulla base, identico** (`eroe:false, premio:false`): misura ancora l'eroe sul palco del galà, tolto per
   decisione PO al 7.999.52. Pre-esistente, non toccato; non è in nessuna catena.
 
-CATENA_MIRATA
+**Catena mirata** (`ci-runner.mjs mirata origin/lavoro/171-base` → src/12 + src/16 → 62 passi). Il container è ripartito
+alle 01:4x UTC al passo 15: la catena è stata ripresa da una coda in primo piano/sottofondo (stessi script `npm run`, un
+rosso si riprova una volta). Esito sul build finale del ramo:
+- **verdi (56)**: test:logic · save-compat · design-system · typing-shortcuts · career-critical · buildup-sync · po229-gi38 ·
+  fila-227 · **validate-situations (gate 14/14)** · pressing-143 · ingresso-245 · analisi-217 · piedi-252 · rete-252 · rinvio-252 ·
+  cerimonie · passaggio-coppa-137 · scene-fuori-137 · partita-vera · goal-postarc · esiti-218 · gk-dive-sync · gk-miss-229 ·
+  cross-218 · bambini-236 · festa-oro-251 · giornata-233 · testata-209 · popup-224 · finestra-230 · intervista-231 ·
+  classifica-102 · recupero-103 · euro-attesa-181 · riquadro-euro-105 · avversario-106 · rinvio-coppe-107 · etichette-108 ·
+  titolo-110 · pre-188 · conferenza-192 · partita-rigiocata-194 · pro-rivale-176 · anteprima-212 · mister-215 ·
+  presentazione-214 · toast-247 · calendario-247 · coppa-prestito-245 · toast-intervista-247 · procuratore-253 · toast-256 ·
+  backup-167 · home-066 · conduci-242 · giornale-244
+- **rosso (1), pre-esistente**: `difesa-252` (scene difensive in partita gi133/31/130) — `verde: fermi ≥ 0,8 0/4 · rosso: 0/4`,
+  cioè la prova del rosso non si vede; **identico sulla base `lavoro/171-base`** eseguita a parte (03:51 UTC). Non tocca la cerimonia.
+- **non eseguiti per tempo** (guardiani di partita da 10-25 minuti l'uno, nessuno legge il codice della cerimonia):
+  `difesa-220-scena` · `ingresso-camminata-245` · `portiere-252` · `aereo-252` · `scene-221` (quest'ultimo interrotto dal tetto
+  dei 30 minuti di un blocco dopo quattro partite intere, senza esito, e non rilanciato)
+
+⚠️ I guardiani riscrivono foto storiche (`docs/sviluppo/foto/analisi217/`, `docs/sviluppo/foto-giro26/`): ripristinate, non committate.
 
 ## 5. Fuori ambito / da fare
 
