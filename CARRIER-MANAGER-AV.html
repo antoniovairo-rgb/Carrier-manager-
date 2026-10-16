@@ -22596,9 +22596,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          allinea subito (la firma golden, catturata in lettura con l'eroe soggetto, non cambia). */
       const _no252t=(typeof window!=='undefined'&&window.__CPM_NO_TAGLIA252);
       {const _cs252=sr.current,_tgt252=(isHL&&!_subjBall50)?1:0,_sk252=String((P&&P.hlSitKey)||'');
-       if(_no252t||_cs252._w252==null||_cs252._w252k!==_sk252||_cs252._cutSnap||_cs252._sceneCut)_cs252._w252=_tgt252;
+       if(_no252t||_cs252._w252==null||_cs252._w252k!==_sk252||_cs252._w252h!==!!isHL||_cs252._cutSnap||_cs252._sceneCut)_cs252._w252=_tgt252;/* la dissolvenza vale SOLO per il cambio di soggetto dentro un highlight: all'ingresso/uscita si allinea subito */
        else _cs252._w252+=(_tgt252-_cs252._w252)*Math.min(dt/0.35,1);
-       _cs252._w252k=_sk252;}
+       _cs252._w252k=_sk252;_cs252._w252h=!!isHL;}
       sr.current._sb42=!!_subjBall50;
       const _w252=_no252t?((isHL&&!_subjBall50)?1:0):sr.current._w252;
       if(isHL&&_w252>0.002&&hero&&!P.ceremony&&!P.shootout&&!replaying
