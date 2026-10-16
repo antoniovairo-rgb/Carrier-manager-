@@ -77,7 +77,15 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 fs.writeFileSync(path.join(DIST, 'index.html'), html);
 const assetsSrc = path.join(ROOT, 'assets');
-if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true });
+/* [giro 39 — PO-171] il CH38 vero (footballer*.glb + anim-*.glb in radice di assets/, 11,3 MB) non lo carica piu' nessuna scena:
+   resta nel repo per i varchi di prova (__CPM_NO_CH38_PREFETCH, __CPM_SETBODY907) ma non entra nel pacchetto store.
+   CPM_DIST_CON_CH38=1 lo rimette. Il corpo «regular» (korward-regular-*) resta: la partita lo monta ancora. */
+const CON_CH38 = !!process.env.CPM_DIST_CON_CH38;
+const _ch38Dist = /[\\/]assets[\\/](footballer[a-z-]*\.glb|anim-[a-z-]+\.glb)$/;
+let _ch38Esclusi = 0;
+if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true,
+  filter: s => { if (!CON_CH38 && _ch38Dist.test(s)) { _ch38Esclusi += fs.statSync(s).size; return false; } return true; } });
+console.log(`CH38 escluso dal pacchetto: ${(_ch38Esclusi / 1048576).toFixed(2)} MB${CON_CH38 ? ' (CPM_DIST_CON_CH38: incluso)' : ''}`);
 /* [7.310.1] la dist copiava SOLO sw.js: manifest e icone PWA restavano fuori, e la pagina — che le
    referenzia con <link rel="manifest"> e <link rel="icon"> — chiedeva `icon-192.png` a ogni avvio
    ottenendo un 404 (misurato con validate-dist: unico errore di console della build offline).
