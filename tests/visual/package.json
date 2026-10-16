@@ -299,6 +299,7 @@
     "piede-preferito": "node piede-preferito-test.mjs",
     "ruleta": "node ruleta-test.mjs",
     "strisce-corpo": "node strisce-corpo-test.mjs",
+    "kit-061": "node kit061-test.mjs",
     "testa-tempismo": "node testa-tempismo-test.mjs",
     "tiro-caricato": "node tiro-caricato-test.mjs",
     "witness-frameskip": "node witness-frameskip-test.mjs",

@@ -14502,6 +14502,8 @@ function ThreeMatchView(props){
       if(_homePat){_homeKit.pattern=_homePat;_homeKit.c2=(heroClub&&heroClub.c2)||'#f0f0f0';}
       const _awayPat=(oppClub&&_kpFor(oppClub))||null;
       if(_awayPat){_awayKit.pattern=_awayPat;_awayKit.c2=(oppClub&&oppClub.c2)||'#f0f0f0';}
+      /* [PO-061 giro 48] solo collaudo (cpmtest): __CPM_KITPAT061={home,away} forza i motivi di entrambe le squadre, per il censimento fotografico */
+      try{const _f61=_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_KITPAT061;if(_f61){if(_f61.home){_homeKit.pattern=_f61.home;_homeKit.c2=_f61.homeC2||_homeKit.c2||'#f0f0f0';}if(_f61.away){_awayKit.pattern=_f61.away;_awayKit.c2=_f61.awayC2||_awayKit.c2||'#f0f0f0';}}}catch(_e61){}
       if(_awayKit.shorts===_homeKit.shorts)_awayKit={..._awayKit,shorts:hexLum(_awayShirt)<0.5?'#cfd2d8':'#0d0d16'};// pantaloncini diversi tra le due squadre
       // portieri: due colori distinti da entrambe le maglie (e tra loro) dal GK_POOL
       let _gkA='#facc15',_gkB='#1d1d1f',_gb=-1;GK_POOL.forEach(k=>{const m=Math.min(colorDist(_homeShirt,k),colorDist(_awayShirt,k));if(m>_gb){_gb=m;_gkA=k;}});
@@ -14701,26 +14703,26 @@ function ThreeMatchView(props){
          strisce dritte nella texture si piegano a V (e i cerchi a V rovesciata). Ora ogni pixel della maglia sa dov'e' sul corpo: le
          strisce seguono l'angolo attorno al busto (sulle maniche attorno al braccio), i cerchi l'altezza (sulle maniche la distanza
          lungo il braccio). Mappa cotta una volta per geometria. Rosso __CPM_NO_STRISCE25 = motivo disegnato nella texture come prima. */
-      const _shirtGeoMapCache=new Map();
+      /*KIT061*/const _shirtGeoMapCache=new Map();
       const _shirtGeoMap=(geom,S)=>{const k=geom.uuid+'|'+S;if(_shirtGeoMapCache.has(k))return _shirtGeoMapCache.get(k);let out=null;const _t0=performance.now();
         try{const pa=geom.attributes.position,ua=geom.attributes.uv,ix=geom.index;if(!pa||!ua)return null;const n=pa.count;
           let cx=0,cz=0,cn=0,mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;for(let i=0;i<n;i++){const X=pa.getX(i);if(X<mnx)mnx=X;if(X>mxx)mxx=X;const Y=pa.getY(i);if(Y<mny)mny=Y;if(Y>mxy)mxy=Y;}
           const W=mxx-mnx,H=mxy-mny,mid=(mxx+mnx)/2;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-mid)<W*0.2){cx+=pa.getX(i);cz+=pa.getZ(i);cn++;}}if(!cn)return null;cx/=cn;cz/=cn;
           let R=0;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-mid)<W*0.2)R+=Math.hypot(pa.getX(i)-cx,pa.getZ(i)-cz);}R/=cn;
           const arm=W*0.26;let ay=0,an=0;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-cx)>arm){ay+=pa.getY(i);an++;}}ay=an?ay/an:mny+H*0.8;
-          const th=new Float32Array(S*S),hy=new Float32Array(S*S),cov=new Uint8Array(S*S);
+          const th=new Float32Array(S*S),hy=new Float32Array(S*S),cov=new Uint8Array(S*S),sd=new Int8Array(S*S),ax=new Float32Array(S*S);
           const vt=(i,m)=>{const X=pa.getX(i),Y=pa.getY(i),Z=pa.getZ(i);if(m){return [Math.atan2(Z-cz,Y-ay),(Math.abs(X-cx)-arm)+H*0.8,1];}return [Math.atan2(X-cx,Z-cz),Y-mny,0];};
           const T=ix?ix.count/3:n/3;for(let t=0;t<T;t++){const i0=ix?ix.getX(3*t):3*t,i1=ix?ix.getX(3*t+1):3*t+1,i2=ix?ix.getX(3*t+2):3*t+2;
-            const m=Math.abs((pa.getX(i0)+pa.getX(i1)+pa.getX(i2))/3-cx)>arm?1:0;const a=vt(i0,m),b=vt(i1,m),c=vt(i2,m);
+            const m=Math.abs((pa.getX(i0)+pa.getX(i1)+pa.getX(i2))/3-cx)>arm?1:0;const s0=((pa.getX(i0)+pa.getX(i1)+pa.getX(i2))/3>cx)?1:-1;const a=vt(i0,m),b=vt(i1,m),c=vt(i2,m);
             for(const q of [b,c]){while(q[0]-a[0]>Math.PI)q[0]-=2*Math.PI;while(q[0]-a[0]<-Math.PI)q[0]+=2*Math.PI;}
             const x0=ua.getX(i0)*S,y0=ua.getY(i0)*S,x1=ua.getX(i1)*S,y1=ua.getY(i1)*S,x2=ua.getX(i2)*S,y2=ua.getY(i2)*S;
             const d=(y1-y2)*(x0-x2)+(x2-x1)*(y0-y2);if(Math.abs(d)<1e-9)continue;
             const bx0=Math.max(0,Math.floor(Math.min(x0,x1,x2))),bx1=Math.min(S-1,Math.ceil(Math.max(x0,x1,x2))),by0=Math.max(0,Math.floor(Math.min(y0,y1,y2))),by1=Math.min(S-1,Math.ceil(Math.max(y0,y1,y2)));
             for(let py=by0;py<=by1;py++)for(let px=bx0;px<=bx1;px++){const sx=px+0.5,sy=py+0.5;const w0=((y1-y2)*(sx-x2)+(x2-x1)*(sy-y2))/d,w1=((y2-y0)*(sx-x2)+(x0-x2)*(sy-y2))/d,w2=1-w0-w1;
-              if(w0<-0.02||w1<-0.02||w2<-0.02)continue;const o=py*S+px;th[o]=(w0*a[0]+w1*b[0]+w2*c[0]);hy[o]=(w0*a[1]+w1*b[1]+w2*c[1])/R;cov[o]=1+a[2];}}
+              if(w0<-0.02||w1<-0.02||w2<-0.02)continue;const o=py*S+px;th[o]=(w0*a[0]+w1*b[0]+w2*c[0]);hy[o]=(w0*a[1]+w1*b[1]+w2*c[1])/R;cov[o]=1+a[2];sd[o]=s0;ax[o]=(w0*Math.abs(pa.getX(i0)-cx)+w1*Math.abs(pa.getX(i1)-cx)+w2*Math.abs(pa.getX(i2)-cx))/R;}}
           for(let pass=0;pass<4;pass++){const add=[];for(let py=0;py<S;py++)for(let px=0;px<S;px++){const o=py*S+px;if(cov[o])continue;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const qx=px+dx,qy=py+dy;if(qx<0||qy<0||qx>=S||qy>=S)continue;const q=qy*S+qx;if(cov[q]){add.push(o,q);break;}}}
-            for(let j=0;j<add.length;j+=2){th[add[j]]=th[add[j+1]];hy[add[j]]=hy[add[j+1]];cov[add[j]]=cov[add[j+1]];}}
-          out={S,th,hy,cov};let _cv=0;for(let o=0;o<S*S;o++)if(cov[o])_cv++;try{if(typeof window!=='undefined'){const _w=(window.__CPM_STRISCE25=window.__CPM_STRISCE25||[]);if(_w.length<20)_w.push({tri:T,cov:+(_cv/(S*S)).toFixed(3),ms:Math.round(performance.now()-_t0)});}}catch(_e2){}}catch(_e){out=null;}
+            for(let j=0;j<add.length;j+=2){th[add[j]]=th[add[j+1]];hy[add[j]]=hy[add[j+1]];cov[add[j]]=cov[add[j+1]];sd[add[j]]=sd[add[j+1]];ax[add[j]]=ax[add[j+1]];}}
+          out={S,th,hy,cov,sd,ax,armR:arm/R};let _cv=0;for(let o=0;o<S*S;o++)if(cov[o])_cv++;try{if(typeof window!=='undefined'){const _w=(window.__CPM_STRISCE25=window.__CPM_STRISCE25||[]);if(_w.length<20)_w.push({tri:T,cov:+(_cv/(S*S)).toFixed(3),ms:Math.round(performance.now()-_t0)});}}catch(_e2){}}catch(_e){out=null;}
         _shirtGeoMapCache.set(k,out);return out;};
       const _hexRGB=h=>{const s=String(h||'#ffffff').replace('#','');const f=s.length===3?s.split('').map(ch=>ch+ch).join(''):s;return [parseInt(f.slice(0,2),16)||0,parseInt(f.slice(2,4),16)||0,parseInt(f.slice(4,6),16)||0];};
       const _shirtGeoPaint=(x,S,geo,pattern,shirt,c2)=>{if(!geo||geo.S!==S)return false;const A=_hexRGB(shirt),B=_hexRGB(c2||'#f0f0f0');const img=x.getImageData(0,0,S,S),D=img.data;
@@ -14731,16 +14733,45 @@ function ThreeMatchView(props){
           let dd=V[o]-Math.floor(V[o])-cen;dd-=Math.round(dd);const sd=hw-Math.abs(dd);const al=Math.max(0,Math.min(1,0.5+sd/dv));
           D[4*o]=A[0]+(B[0]-A[0])*al;D[4*o+1]=A[1]+(B[1]-A[1])*al;D[4*o+2]=A[2]+(B[2]-A[2])*al;D[4*o+3]=255;}
         x.putImageData(img,0,0);return true;};
+      /* [PO-061 giro 48 «kit di qualita' grafica migliore»] CENSIMENTO FOTOGRAFICO (provino-kit061, corpo lod1 col codice vero):
+         il 7.999.25 aveva portato sul corpo solo strisce/righine/cerchi; meta', fascia diagonale, banda verticale, fascia sul petto e
+         maniche erano ancora rettangoli disegnati nello SPAZIO DELLA TEXTURE, e sul corpo diventavano macchie: la «band» una chiazza nera
+         a forma di pipistrello sulle spalle, la «vband» assente sul davanti, le «sleeves» invisibili, le «halves» a chiazze. Ora tutti i
+         motivi si disegnano dalla stessa mappa del corpo (angolo attorno al busto, altezza, lato), come le icone 2D: metà sinistra/destra,
+         fascia dalla spalla destra al fianco sinistro, banda centrale davanti e dietro, fascia orizzontale sul petto con i filetti,
+         maniche nel secondo colore. E ogni maglia ha COLLO e POLSINI a contrasto, cioe' la rifinitura che separa una maglia da una tinta
+         piatta. Bordi sfumati di un pixel come le strisce. Rosso __CPM_NO_KIT061 = motivi e maglia come prima. */
+      const _shirtGeoPaint061=(x,S,geo,pattern,shirt,c2)=>{if(!geo||geo.S!==S||!geo.sd)return false;const N=S*S,cov=geo.cov,th=geo.th,hy=geo.hy,sd=geo.sd,PI=Math.PI,P2=PI/2;
+        const A=_hexRGB(shirt),B=_hexRGB(c2||'#f0f0f0'),fam=pattern==='stripes'||pattern==='stripesw'||pattern==='hoops';let hT=0,hA=0,hT0=1e9,hA0=1e9;for(let o=0;o<N;o++){if(cov[o]===1){if(hy[o]>hT)hT=hy[o];if(hy[o]<hT0)hT0=hy[o];}else if(cov[o]===2){if(hy[o]>hA)hA=hy[o];if(hy[o]<hA0)hA0=hy[o];}}if(hT<=0)return false;
+        const img=x.getImageData(0,0,S,S),D=img.data,lay=[];const mk=(rgb,fn)=>{const F=new Float32Array(N);for(let o=0;o<N;o++)if(cov[o])F[o]=fn(o);lay.push([rgb,F]);};
+        const fr=o=>1-hy[o]/hT,ab=o=>{const t=Math.abs(th[o]);return Math.min(t,PI-t);},ln=L=>0.2126*L[0]+0.7152*L[1]+0.0722*L[2];
+        if(!fam){for(let o=0;o<N;o++)if(cov[o]){const C=pattern==='vband'?B:A;D[4*o]=C[0];D[4*o+1]=C[1];D[4*o+2]=C[2];D[4*o+3]=255;}
+          if(pattern==='halves')mk(B,o=>cov[o]===1?(th[o]>=0?1:-1)*ab(o):sd[o]);
+          else if(pattern==='vband')mk(A,o=>cov[o]===1?0.42-ab(o):-1);
+          else if(pattern==='sleeves')mk(B,o=>geo.ax[o]-geo.armR*1.06);
+          else if(pattern==='sash')mk(B,o=>{if(cov[o]!==1)return -1;const t=Math.abs(th[o])>P2?Math.sign(th[o])*PI-th[o]:th[o];return 0.36-Math.abs(t-P2*(-0.4615+1.0769*fr(o)));});
+          else if(pattern==='band'){const dy=o=>Math.abs(fr(o)-0.5)*hT,hw=0.10*hT;mk([17,17,17],o=>cov[o]===1?hw-dy(o):-1);mk([244,244,244],o=>cov[o]===1?hw-0.028*hT-dy(o):-1);mk(B,o=>cov[o]===1?0.035*hT-dy(o):-1);}}
+        /* rifiniture: il colore che stacca dal fondo (secondo colore sulle tinte unite, primo sui motivi che il secondo lo usano gia') */
+        const T=(fam||pattern==='vband'||pattern==='sleeves'||pattern==='halves')?(pattern==='vband'?A:(Math.abs(ln(A)-ln(B))>40?A:B)):B;
+        const TT=pattern==='sleeves'?A:T;
+        const cw=0.04*(hT-hT0),kw=0.10*(hA-hA0),NB=48,top=new Float32Array(NB).fill(-1e9),bi=o=>Math.max(0,Math.min(NB-1,Math.floor((th[o]+PI)/(2*PI)*NB)));for(let o=0;o<N;o++)if(cov[o]===1){const k=bi(o);if(hy[o]>top[k])top[k]=hy[o];}
+        /* collo: lungo il profilo della scollatura (la piu' alta altezza della maglia per ogni angolo), davanti e dietro; sui fianchi il profilo e' la spalla e non si tocca */
+        const tp=top.map((v,k)=>Math.max(v,top[(k+1)%NB],top[(k+NB-1)%NB]));mk(T,o=>cov[o]===1&&ab(o)<0.8?hy[o]-(tp[bi(o)]-cw):-1);
+        if(hA>hA0)mk(TT,o=>cov[o]===2?hy[o]-(hA-kw):-1);
+        for(const [C,F] of lay){const g=(o,q)=>{if(q<0||q>=N||!cov[q])return -1;const d=Math.abs(F[q]-F[o]);return d>0.3?-1:d;};
+          for(let o=0;o<N;o++){if(!cov[o])continue;const px=o%S;let g1=px<S-1?g(o,o+1):-1;if(g1<0)g1=px>0?g(o,o-1):-1;let g2=g(o,o+S);if(g2<0)g2=g(o,o-S);const dv=Math.max(1e-4,(Math.max(g1,0)+Math.max(g2,0))*0.75);
+            const al=Math.max(0,Math.min(1,0.5+F[o]/dv));if(al<=0)continue;D[4*o]+=(C[0]-D[4*o])*al;D[4*o+1]+=(C[1]-D[4*o+1])*al;D[4*o+2]+=(C[2]-D[4*o+2])*al;}}
+        x.putImageData(img,0,0);try{if(typeof window!=='undefined'){const _w=(window.__CPM_KIT061=window.__CPM_KIT061||[]);if(_w.length<40)_w.push({pattern,strati:lay.length,hT:+hT.toFixed(3),hT0:+hT0.toFixed(3),hA:+hA.toFixed(3),hA0:+hA0.toFixed(3)});}}catch(_e){}return true;};
       const _hyperShirtTexCache=new Map();
       const _hyperShirtBase74=new Map(),_geoId74=new WeakMap();let _gidN74=0;const _gid74=o=>{if(!o||typeof o!=='object')return 0;if(!_geoId74.has(o))_geoId74.set(o,++_gidN74);return _geoId74.get(o);};/* [7.999.59] fondo maglia per squadra */
-      const _hyperShirtTex=(shirt,c2,pattern,num,geom)=>{const _g25=(geom&&!(typeof window!=='undefined'&&window.__CPM_NO_STRISCE25)&&(pattern==='stripes'||pattern==='stripesw'||pattern==='hoops'))?_shirtGeoMap(geom,512):null;const key=[shirt,c2,pattern,num,_g25?geom.uuid:''].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
+      const _hyperShirtTex=(shirt,c2,pattern,num,geom)=>{const _k61=!(typeof window!=='undefined'&&window.__CPM_NO_KIT061),_fam61=pattern==='stripes'||pattern==='stripesw'||pattern==='hoops';const _g25=(geom&&(_fam61?!(typeof window!=='undefined'&&window.__CPM_NO_STRISCE25):_k61))?_shirtGeoMap(geom,512):null;const key=[shirt,c2,pattern,num,_g25?geom.uuid:''].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
         const S=512,f=S/1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
         /* [7.999.59 collaudo PO «ingresso in campo pesante, va a scatti»] MISURATO col profilo CPU dell'ingresso: 2,5 s nel dipingere le
            maglie, perche' OGNI numero rifaceva da capo la pittura pixel per pixel delle strisce (getImageData 512x512). Il fondo e' lo
            stesso per tutta la squadra: si dipinge una volta e si copia, sopra si scrive solo il numero. Rosso __CPM_NO_MAGLIE74. */
         const _no74=(typeof window!=='undefined'&&window.__CPM_NO_MAGLIE74);const _bk74=[shirt,c2,pattern,_gid74(_g25)].join('|');const _b74=_no74?null:_hyperShirtBase74.get(_bk74);
         if(_b74){x.drawImage(_b74,0,0);}else{x.fillStyle=shirt;x.fillRect(0,0,S,S);x.fillStyle=c2||'#f0f0f0';
-        if(_g25&&_shirtGeoPaint(x,S,_g25,pattern,shirt,c2)){}else if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
+        if(_g25&&_fam61&&_shirtGeoPaint(x,S,_g25,pattern,shirt,c2)){if(_k61)_shirtGeoPaint061(x,S,_g25,pattern,shirt,c2);}else if(_g25&&!_fam61&&_k61&&_shirtGeoPaint061(x,S,_g25,pattern,shirt,c2)){}else if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
         else if(pattern==='stripesw'){for(let y=0;y<1024;y+=48)x.fillRect(0,(y+19)*f,S,10*f);}
         else if(pattern==='hoops'){for(let X=500;X<1024;X+=96)x.fillRect(X*f,0,48*f,S);}
         else if(pattern==='halves'){x.fillRect(0,640*f,S,S);}
@@ -14760,8 +14791,23 @@ function ThreeMatchView(props){
         const h=String(shorts).replace('#','');const lum=0.2126*parseInt(h.slice(0,2),16)/255+0.7152*parseInt(h.slice(2,4),16)/255+0.0722*parseInt(h.slice(4,6),16)/255;
         x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font='bold 26px Arial, sans-serif';x.lineWidth=4;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.85)':'rgba(7,9,16,0.85)';x.strokeText(String(num),0.19*S,0.9375*S);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0.19*S,0.9375*S);
         const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;_hyperShortsTexCache.set(key,t);try{if(typeof window!=='undefined'){const _p=(window.__CPM_PANT23=window.__CPM_PANT23||[]);if(_p.length<80)_p.push({num:String(num),shorts});}}catch(_e){}return t;};
+      /* [PO-061 giro 48] CALZETTONI DEL CLUB. Nei corpi kit-adapter i calzettoni sono DIPINTI nella texture delle gambe (bianchi con
+         due righine oro) e il colore socks del kit non arrivava mai: tutte le squadre in calzettoni bianchi. Misurato sulla texture
+         (1024 px): il calzettone e' il blocco poco saturo e chiaro sopra la scarpa, la scarpa sta sotto l'84% dell'altezza, la pelle e'
+         satura; le righine oro stanno fra il 44% e il 52% dell'altezza con blu/verde 0,59 contro 0,79 della pelle. Qui il calzettone prende il colore del kit tenendo la luce del disegno (parastinco, pieghe) e le righine il colore di
+         contrasto; pelle e scarpa restano. 512 px, una texture per colore. Rosso __CPM_NO_KIT061. */
+      const _socksTexCache061=new Map();
+      const _socksFp061=new WeakMap();const _socksTex061=(base,socks,band)=>{/* chiave = IMPRONTA dell'immagine (8x8 px): le due gambe arrivano con due copie identiche della stessa immagine */let fp=base.image&&_socksFp061.get(base.image);if(!fp&&base.image){try{const q=document.createElement('canvas');q.width=q.height=8;const qx=q.getContext('2d');qx.drawImage(base.image,0,0,8,8);fp=base.image.width+':'+Array.from(qx.getImageData(0,0,8,8).data).join(',');}catch(_e){fp=String(_gid74(base.image));}_socksFp061.set(base.image,fp);}const key=[fp,socks,band].join('|');if(_socksTexCache061.has(key))return _socksTexCache061.get(key);let t=null;
+        try{const im=base.image;if(!im||!(im.width>0))return null;const S=Math.min(512,im.width),c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');x.drawImage(im,0,0,S,S);
+          const img=x.getImageData(0,0,S,S),D=img.data,A=_hexRGB(socks),B=_hexRGB(band),yB=Math.round(S*0.84);let n=0;
+          for(let py=0;py<yB;py++)for(let px=0;px<S;px++){const o=4*(py*S+px);if(D[o+3]<8)continue;const r=D[o],g=D[o+1],b=D[o+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+            if(mx-mn<38&&mn>105){const l=Math.min(1.08,(0.2126*r+0.7152*g+0.0722*b)/232);D[o]=Math.min(255,A[0]*l);D[o+1]=Math.min(255,A[1]*l);D[o+2]=Math.min(255,A[2]*l);n++;}
+            else if(py>S*0.42&&py<S*0.56&&px>S*0.33&&r>140&&g>95&&b<g*0.70&&r-g<70){const l=Math.min(1.1,(0.2126*r+0.7152*g+0.0722*b)/165);D[o]=Math.min(255,B[0]*l);D[o+1]=Math.min(255,B[1]*l);D[o+2]=Math.min(255,B[2]*l);n++;}}
+          x.putImageData(img,0,0);t=new THREE.CanvasTexture(c);t.flipY=base.flipY;t.encoding=base.encoding;t.wrapS=base.wrapS;t.wrapT=base.wrapT;t.anisotropy=4;
+          try{if(typeof window!=='undefined'){const _w=(window.__CPM_SOCKS061=window.__CPM_SOCKS061||[]);if(_w.length<20)_w.push({socks,band,px:n});}}catch(_e2){}}catch(_e){t=null;}
+        _socksTexCache061.set(key,t);return t;};
       const _applyHyperKit=(visual,kit,_appr,num)=>{try{if(kit&&kit.guanti)_guanti201(visual,kit.guanti);}catch(_eG){}const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
-        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const _ms23=!(typeof window!=='undefined'&&window.__CPM_NO_PANT23)&&base&&base.name==='HyperShorts'&&num!=null;const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:'',_ms23?'p'+num:'',_mg18&&mesh.geometry?mesh.geometry.uuid:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num,mesh.geometry):(_ms23?_hyperShortsTex(hex,num):null);material.color=new THREE.Color((_mg18||_ms23)?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
+        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(base&&/^HyperLeg(Left|Right)$/.test(base.name)&&base.map&&!(typeof window!=='undefined'&&window.__CPM_NO_KIT061)){const sk=colors.HyperSocks,ln=h=>{const q=_hexRGB(h);return 0.2126*q[0]+0.7152*q[1]+0.0722*q[2];},bd=(k.c2&&Math.abs(ln(k.c2)-ln(sk))>60)?k.c2:(ln(sk)<128?'#f2f2f2':'#151a26');const lk=['leg061',base.uuid,sk,bd].join('|');let lm=_hyperKitMaterialCache.get(lk);if(!lm){const tx=_socksTex061(base.map,sk,bd);if(!tx)return base;lm=base.clone();lm.map=tx;lm.needsUpdate=true;_hyperKitMaterialCache.set(lk,lm);}return lm;}const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const _ms23=!(typeof window!=='undefined'&&window.__CPM_NO_PANT23)&&base&&base.name==='HyperShorts'&&num!=null;const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:'',_ms23?'p'+num:'',_mg18&&mesh.geometry?mesh.geometry.uuid:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num,mesh.geometry):(_ms23?_hyperShortsTex(hex,num):null);material.color=new THREE.Color((_mg18||_ms23)?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;/* [PO-061] il busto del corpo buca la maglia sul petto e sotto la nuca (macchia color pelle su TUTTE le maglie, provata nascondendo la pelle): la maglia vince la profondita' di pochi millimetri. Rosso __CPM_NO_KIT061 */if(base&&base.name==='HyperShirt'&&!(typeof window!=='undefined'&&window.__CPM_NO_KIT061)){material.polygonOffset=true;material.polygonOffsetFactor=-2;material.polygonOffsetUnits=-6;}material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};/*/KIT061*/      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
          before the walkout begins instead of toggling bodies during a camera
          cut: no CH38 root can flash into the entrance shot.  Geometry and
          materials remain shared by SkeletonUtils clones; only skeletons and
