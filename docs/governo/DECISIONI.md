@@ -434,3 +434,16 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 5. **PO-156**: «**Bersagli del PO, poi taratura**» — il PO fisserà 4-5 numeri per fase.
 6. **PO-098**: «**Misura, poi motore, dopo L1**»; nomi degli stili: **Finalizzatore · Regista · Incursore · Trascinatore**; Enfant diventa tratto di crescita.
 7. **Zona G**: «**Passo per passo**» — il banco corretto parte ora (solo test); per ogni correzione successiva il PO concede l'eccezione coi numeri del banco nuovo.
+
+## 16/10 mattina — questionario sui punti aperti
+
+Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §10, §12 (ramo collaudo/carriere-l6-bis-giro49); docs/sviluppo/RAPPORTO-giro44.md (ramo sviluppo/interazioni-226-giro44).
+
+- **PO-270 rinnovo di 1 anno (zona G)**: eccezione concessa; correzione nella 7.999.172 (il rinnovo aggiunge davvero le stagioni), interruttore rosso + guardiano.
+- **Nazionale (zona G)**: eccezione concessa; cancello convocazioni settimanale e controllo del contratto, tutti e due, dopo L1, in coda a L6.
+- **Impulsi PO-154 (zona G)**: eccezione concessa; parte dopo L1 nell'ordine L6 (dopo Banco e Nazionale), con «Memoria + seguiti + contesto».
+- **Ufficio (zona G)**: eccezione concessa; nutrizionista attivo ogni settimana e posizione considerata nelle partite simulate, dopo L1, in coda a L6.
+- **PO-268 Crediti**: togliere solo il numero d'ordine e la data; restano modello, autore e CGTrader come fonte.
+- **Schede di punteggio (giro 44)**: la scheda del pari nasce da un fatto del finale (tiro pericoloso loro / occasione nostra dopo il 75') con rete di sicurezza; nella 7.999.172, con guardiano.
+- **Rossi preesistenti** (seme-a, framing-guard, testa-76, testa-146, gala-3d, PO-271 difesa-252): giro dedicato di sola riparazione dopo il rilascio delle 16, verso la 7.999.172.
+- **Se la catena notte 171 esce rossa**: correggere, rifare la catena e pubblicare al rilascio delle 00.
