@@ -1,0 +1,13 @@
+(A) motore, 312 partite per braccio
+   seguo      {"partite":312,"schedeAPartita":1.17,"maxSchede":2,"golCasa":1.446,"tiriCasa":11.32,"att":{"schede":177,"tiriAlMin":0.1549,"golAlMin":0.0166,"tiri":560,"gol":60},"dif":{"schede":135,"tiriAlMin":0.148,"golAlMin":0.0209,"tiri":424,"gol":60}}
+   testa      {"partite":312,"schedeAPartita":1.18,"maxSchede":3,"golCasa":1.452,"tiriCasa":11.37,"att":{"schede":177,"tiriAlMin":0.1284,"golAlMin":0.0169,"tiri":464,"gol":61},"dif":{"schede":135,"tiriAlMin":0.186,"golAlMin":0.0213,"tiri":533,"gol":61}}
+   rossoSeguo {"partite":312,"schedeAPartita":1.18,"maxSchede":3,"golCasa":1.429,"tiriCasa":11.32,"att":{"schede":177,"tiriAlMin":0.138,"golAlMin":0.016,"tiri":499,"gol":58},"dif":{"schede":135,"tiriAlMin":0.1693,"golAlMin":0.0199,"tiri":485,"gol":57}}
+   rossoTesta {"partite":312,"schedeAPartita":1.18,"maxSchede":3,"golCasa":1.429,"tiriCasa":11.32,"att":{"schede":177,"tiriAlMin":0.138,"golAlMin":0.016,"tiri":499,"gol":58},"dif":{"schede":135,"tiriAlMin":0.1693,"golAlMin":0.0199,"tiri":485,"gol":57}}
+   scarto «seguo» contro «di testa mia» — tiri: attacco 20.6% · difesa -20.4% | gol: attacco -1.8% · difesa -1.9%
+   rosso (__CPM_NO_INT226) — tiri: attacco 0.0% · difesa 0.0%
+(B) panchina: 400/400 casi corretti · anticipo medio «chiedo di entrare» 6.7' · deterministico 400/400
+(C) verde p0 finita {"home":3,"away":0} schede=2 conFatto=2 vecchie=0 scelte=2 motore=ok | 55'eroe_stanco 63'avanti_2 | eroe_stanco#0 att-0.25 avanti_2#0 att-0.45
+(C) verde p1 finita {"home":0,"away":3} schede=2 conFatto=2 vecchie=0 scelte=2 motore=ok | 60'eroe_stanco 70'sotto_70 | eroe_stanco#1 att0.15 sotto_70#1 att-0.2
+(C) rosso p0 finita schede nuove=0 schede a orologio=4
+(C) rosso p1 finita schede nuove=0 schede a orologio=5
+✅ VERDE — interazioni nate dai fatti del motore, effetto misurato, prova del rosso riconosciuta

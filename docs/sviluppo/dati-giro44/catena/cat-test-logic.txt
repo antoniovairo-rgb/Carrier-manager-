@@ -1,0 +1,269 @@
+TAP version 13
+# Subtest: \#7 regressione strutturale del backbone narrativo vs baseline
+ok 1 - \#7 regressione strutturale del backbone narrativo vs baseline
+  ---
+  duration_ms: 88.850608
+  type: 'test'
+  ...
+# Subtest: 179 situations caricate con intent/ballState/cine
+ok 2 - 179 situations caricate con intent/ballState/cine
+  ---
+  duration_ms: 2.064944
+  type: 'test'
+  ...
+# Subtest: \#16 backbone narrativo valido per OGNI situation × azione (invarianti calcistiche)
+ok 3 - \#16 backbone narrativo valido per OGNI situation × azione (invarianti calcistiche)
+  ---
+  duration_ms: 40.476781
+  type: 'test'
+  ...
+# Subtest: CINE invariante: colpo di testa SOLO con palla aerea (coerenza, FAIL bloccante nel gate)
+ok 4 - CINE invariante: colpo di testa SOLO con palla aerea (coerenza, FAIL bloccante nel gate)
+  ---
+  duration_ms: 5.604847
+  type: 'test'
+  ...
+# Subtest: un esito ASSIST non viene reso come una conclusione in porta
+ok 5 - un esito ASSIST non viene reso come una conclusione in porta
+  ---
+  duration_ms: 6.70282
+  type: 'test'
+  ...
+# Subtest: ogni colpo di testa con esito ASSIST usa lo smistamento, non una variante d'attacco
+ok 6 - ogni colpo di testa con esito ASSIST usa lo smistamento, non una variante d'attacco
+  ---
+  duration_ms: 3.533665
+  type: 'test'
+  ...
+# ℹ segnaposto fuori dal set noto (verifica typo): GKA, GKH
+# Subtest: cronaca: caricata e non vuota
+ok 7 - cronaca: caricata e non vuota
+  ---
+  duration_ms: 0.876106
+  type: 'test'
+  ...
+# Subtest: cronaca: ogni riga ben formata (txt/w/bpos/momThreshold/minClock)
+ok 8 - cronaca: ogni riga ben formata (txt/w/bpos/momThreshold/minClock)
+  ---
+  duration_ms: 0.489419
+  type: 'test'
+  ...
+# Subtest: cronaca: segnaposto {…} bilanciati e noti
+ok 9 - cronaca: segnaposto {…} bilanciati e noti
+  ---
+  duration_ms: 1.21498
+  type: 'test'
+  ...
+# Subtest: cronaca: tassonomie note (warn-soft su pd/ef/ms nuovi)
+ok 10 - cronaca: tassonomie note (warn-soft su pd/ef/ms nuovi)
+  ---
+  duration_ms: 0.331927
+  type: 'test'
+  ...
+# Subtest: ogni situation ha azioni ben formate (label/stat/rew/fail/nrg)
+ok 11 - ogni situation ha azioni ben formate (label/stat/rew/fail/nrg)
+  ---
+  duration_ms: 1.295329
+  type: 'test'
+  ...
+# Subtest: intent e startZone validi su tutte le situations
+ok 12 - intent e startZone validi su tutte le situations
+  ---
+  duration_ms: 0.4351
+  type: 'test'
+  ...
+# Subtest: convenzioni (warn-soft): 3 azioni per situation · zone note
+ok 13 - convenzioni (warn-soft): 3 azioni per situation · zone note
+  ---
+  duration_ms: 0.290764
+  type: 'test'
+  ...
+# Subtest: determinismo: stessa intent+ctx+seed → stesso risultato
+ok 14 - determinismo: stessa intent+ctx+seed → stesso risultato
+  ---
+  duration_ms: 3.233624
+  type: 'test'
+  ...
+# Subtest: quality sempre in [0.02, 0.99]
+ok 15 - quality sempre in [0.02, 0.99]
+  ---
+  duration_ms: 4.797343
+  type: 'test'
+  ...
+# Subtest: no esiti impossibili: outcome sempre nel dominio dell'intento
+ok 16 - no esiti impossibili: outcome sempre nel dominio dell'intento
+  ---
+  duration_ms: 20.511417
+  type: 'test'
+  ...
+# Subtest: \#19 FI: forte+libero >> debole+sotto pressione (quality e tasso positivo)
+ok 17 - \#19 FI: forte+libero >> debole+sotto pressione (quality e tasso positivo)
+  ---
+  duration_ms: 51.273024
+  type: 'test'
+  ...
+# Subtest: \#30 piede preferito: cross di piede debole peggiore · tiro da fascia opposta = taglio interno (bonus)
+ok 18 - \#30 piede preferito: cross di piede debole peggiore · tiro da fascia opposta = taglio interno (bonus)
+  ---
+  duration_ms: 4.91477
+  type: 'test'
+  ...
+# Subtest: failure-package: repro con force-sit + seed per fallimento con gi
+ok 19 - failure-package: repro con force-sit + seed per fallimento con gi
+  ---
+  duration_ms: 1.973552
+  type: 'test'
+  ...
+# Subtest: failure-package: repro con run-command per fallimento globale (gi null)
+ok 20 - failure-package: repro con run-command per fallimento globale (gi null)
+  ---
+  duration_ms: 2.205148
+  type: 'test'
+  ...
+# Subtest: failure-package: summary scritto con fingerprint + counts coerenti
+ok 21 - failure-package: summary scritto con fingerprint + counts coerenti
+  ---
+  duration_ms: 0.878141
+  type: 'test'
+  ...
+# Subtest: failure-package: run pulita (0 issue) → ok true, nessun failure
+ok 22 - failure-package: run pulita (0 issue) → ok true, nessun failure
+  ---
+  duration_ms: 0.384237
+  type: 'test'
+  ...
+# Subtest: gate-history: makeRecord estrae i campi compatti dal run-summary
+ok 23 - gate-history: makeRecord estrae i campi compatti dal run-summary
+  ---
+  duration_ms: 2.152023
+  type: 'test'
+  ...
+# Subtest: gate-history: append + read persiste la riga su disco
+ok 24 - gate-history: append + read persiste la riga su disco
+  ---
+  duration_ms: 1.676021
+  type: 'test'
+  ...
+# Subtest: gate-history: summary senza fingerprint non inquina lo storico
+ok 25 - gate-history: summary senza fingerprint non inquina lo storico
+  ---
+  duration_ms: 0.479817
+  type: 'test'
+  ...
+# Subtest: gate-history: trend rileva la REGRESSIONE (pulita → rotta)
+ok 26 - gate-history: trend rileva la REGRESSIONE (pulita → rotta)
+  ---
+  duration_ms: 0.593354
+  type: 'test'
+  ...
+# Subtest: gate-history: trend rileva la RIPARAZIONE (rotta → pulita) + clean streak
+ok 27 - gate-history: trend rileva la RIPARAZIONE (rotta → pulita) + clean streak
+  ---
+  duration_ms: 33.067684
+  type: 'test'
+  ...
+# Subtest: gate-history: run stabili → fpChanged false, streak crescente
+ok 28 - gate-history: run stabili → fpChanged false, streak crescente
+  ---
+  duration_ms: 228.908829
+  type: 'test'
+  ...
+# Subtest: gate-history: cap rolling a 200 run
+ok 29 - gate-history: cap rolling a 200 run
+  ---
+  duration_ms: 3225.730677
+  type: 'test'
+  ...
+# Subtest: gate-history: storico vuoto → trend null
+ok 30 - gate-history: storico vuoto → trend null
+  ---
+  duration_ms: 0.313725
+  type: 'test'
+  ...
+# Subtest: determinismo: stesso seme, stessa sequenza di fatti
+ok 31 - determinismo: stesso seme, stessa sequenza di fatti
+  ---
+  duration_ms: 55.492292
+  type: 'test'
+  ...
+# Subtest: un pallone, un padrone: in tenuta la palla sta ai piedi (<=3u) e i passi sono umani
+ok 32 - un pallone, un padrone: in tenuta la palla sta ai piedi (<=3u) e i passi sono umani
+  ---
+  duration_ms: 422.271784
+  type: 'test'
+  ...
+# Subtest: il gol decretato viene costruito e segnato entro 16 tick
+ok 33 - il gol decretato viene costruito e segnato entro 16 tick
+  ---
+  duration_ms: 57.871803
+  type: 'test'
+  ...
+# Subtest: senza decreto non si segna mai: il punteggio e' del microsim
+ok 34 - senza decreto non si segna mai: il punteggio e' del microsim
+  ---
+  duration_ms: 37.220535
+  type: 'test'
+  ...
+# Subtest: una partita ha passaggi, conduzioni, tiri e palle morte in misura credibile
+ok 35 - una partita ha passaggi, conduzioni, tiri e palle morte in misura credibile
+  ---
+  duration_ms: 575.283597
+  type: 'test'
+  ...
+# Subtest: i fatti portano nomi veri e luoghi veri
+ok 36 - i fatti portano nomi veri e luoghi veri
+  ---
+  duration_ms: 4.389925
+  type: 'test'
+  ...
+# Subtest: la scena ferma il motore; la ripresa riparte dal punto e dal lato chiesti
+ok 37 - la scena ferma il motore; la ripresa riparte dal punto e dal lato chiesti
+  ---
+  duration_ms: 2.526446
+  type: 'test'
+  ...
+# Subtest: l'eroe in panchina non tocca mai il pallone
+ok 38 - l'eroe in panchina non tocca mai il pallone
+  ---
+  duration_ms: 6.850347
+  type: 'test'
+  ...
+# Subtest: [7.872] nessun tiro da centrocampo o dalla propria meta' campo, nemmeno col gol decretato
+ok 39 - [7.872] nessun tiro da centrocampo o dalla propria meta' campo, nemmeno col gol decretato
+  ---
+  duration_ms: 41.896431
+  type: 'test'
+  ...
+# Subtest: [7.875] la partita si ferma: almeno 3 interruzioni (fallo/rimessa/corner/rinvio) a partita
+ok 40 - [7.875] la partita si ferma: almeno 3 interruzioni (fallo/rimessa/corner/rinvio) a partita
+  ---
+  duration_ms: 51.974259
+  type: 'test'
+  ...
+# Subtest: report-trend: stabile → mostra streak nella dashboard
+ok 41 - report-trend: stabile → mostra streak nella dashboard
+  ---
+  duration_ms: 3.464509
+  type: 'test'
+  ...
+# Subtest: report-trend: REGRESSIONE → banner rosso nella dashboard
+ok 42 - report-trend: REGRESSIONE → banner rosso nella dashboard
+  ---
+  duration_ms: 0.832731
+  type: 'test'
+  ...
+# Subtest: report-trend: nessun gateTrend → nessun blocco (retro-compat)
+ok 43 - report-trend: nessun gateTrend → nessun blocco (retro-compat)
+  ---
+  duration_ms: 1.082409
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7453.17043

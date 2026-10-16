@@ -2964,7 +2964,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
   /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
-  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
+  const chiestaScena879Ref=useRef(null);const promEroe44Ref=useRef(null);/* [giro 44 PO-226] la promessa della scheda «la risolvo io» */const occEroe879Ref=useRef(null);const occPos137Ref=useRef(null);/* [7.999.137] dove il motore ha visto l'occasione */const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);const extra27Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
   const bgCoolRef=useRef(0);
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
      voci, come un palinsesto — e nessun campo nuovo da salvare. */
@@ -3054,6 +3054,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _camb=!!((_ap&&JSON.stringify(_ap.prima)!==JSON.stringify(_ap.dopo))||(_iD!=null&&_iD!==_iP));
         N.r259={fatto:_id,idx,m0:_mn,foto:_f0,occ0:_f0?_f0.occ:null,panca:!!(_o&&_o.eff&&_o.eff.ingresso!=null),ingresso:_iD,et:(_o&&_o.et)||""};
         (N.r259list=N.r259list||[]).push(N.r259);
+        /* [giro 44 PO-226 — rosso __CPM_NO_PROM44] LA PROMESSA DELL'EROE SI MANTIENE. Misurato (misura-226, 20 partite base 171): dopo una scelta
+           «eroe» («Palla a me, la risolvo io», premio «la prossima palla buona arriva a te, prima») il prossimo highlight dell'eroe e' arrivato
+           1 volta su 6, e l'occasione del motore 0 su 6 nei 5' del racconto: il motore anticipava l'occasione (gap -8), ma la finestra della
+           partita vissuta restava chiusa (passo fra due scene, budget di scene della partita gia' speso). Per 8 minuti la finestra si apre senza
+           attesa e, se il budget e' speso, si aggiunge UNA scena — mai oltre il tetto PO di 7 (PO-221). */
+        if(_o&&_o.tipo==='eroe'&&!(_o.eff&&_o.eff.ingresso!=null)&&!(typeof window!=='undefined'&&window.__CPM_NO_PROM44)){promEroe44Ref.current={da:_mn,fino:_mn+8,hl0:null,slot:false};}
         _W.scelte.push({fatto:_id,idx,auto:!!auto,min:_mn,prima:_ap&&_ap.prima,dopo:_ap&&_ap.dopo,ingressoPrima:_iP,ingresso:_iD,cambiato:_camb});
       }catch(_e259){}}
       if(/^i226_/.test(String(P.id||""))&&typeof INT226!=='undefined'&&INT226.attivo()){try{
@@ -3153,6 +3159,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(sc&&typeof window!=='undefined'){try{window.__CPM_SC681_IN=(window.__CPM_SC681_IN||0)+1;}catch(_e){}}/* [7.721 strumentazione] righe con scelta ENTRATE nel banner */
     if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:(t??clockRef.current)|0,txt:String(text||""),sc:sc?1:0});}catch(_e802){}}/* [strumento PLAYTEST] ogni riga che ENTRA nel banner, con il suo minuto: e' l'unica cosa che il player legge davvero. Il registro `chronicle` non porta il testo (solo le righe-fatto lo fanno), quindi ritmo, ripetitivita' ed enfasi della telecronaca non erano misurabili — e cio' che non si misura, nel red team, diventa opinione. Sola lettura sotto __CPM_REC: non tocca stato ne' render. */if(sc)setScFreeze681(true);/* [7.682.0] la partita si ferma qui, e riparte quando la scelta e' presa */setComs(p=>[{text,color,t:t??clockRef.current,sc:sc||null,sci:null,fam:(opts&&opts.fam)||null,chi:(opts&&opts.chi)||null/* [7.919] la riga sa CHI PARLA: senza, il pop-up della scelta non puo' mettere una faccia sulla frase */},...p].slice(0,16));},[]);
   addComRef681.current=addCom;scegli681Ref.current=scegli681;
+  /* [giro 44 PO-260 — rosso __CPM_NO_POP260] COLLAUDO 3D 169: al fischio era ancora aperta la scheda «Due gol di vantaggio al 84'», sopra
+     «Salta premiazione». Una scheda ancora in sospeso quando la partita esce dal gioco per finire (cerimonia o fischio) si chiude con la
+     scelta NEUTRA dichiarata «scelta da sola» (stessa via del timer di scadenza), cosi' la scelta arriva al motore e non resta appesa. */
+  useEffect(()=>{
+    if(phase!=="ceremony"&&phase!=="ended")return;if(typeof window!=='undefined'&&window.__CPM_NO_POP260)return;
+    const P=intxPendRef681.current;if(!P||!P.sc)return;
+    try{if(typeof window!=='undefined')window.__CPM_POP260_FINE=(window.__CPM_POP260_FINE|0)+1;}catch(_e){}
+    try{scegli681((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_INT226_IDX!=null&&/^i2(26|59)_/.test(String(P.id||"")))?(+window.__CPM_INT226_IDX|0):0,true);}catch(_e260){}
+  },[phase,scegli681]);
   /* [7.681.0] IL RESPIRO DELLA SCELTA. Nove secondi: poco piu' del respiro che la cronaca gia' concede
      agli eventi importanti (7 tick, 6,3 s a velocita' 1), abbastanza per leggere due righe e decidere.
      Scaduto il tempo si applica la PRIMA opzione della scheda — quella scritta per essere neutra — e
@@ -4679,7 +4694,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               setHlTimes(function(prev){var v=[...prev,_m28];hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
               try{cpmEv("scena",{min:nx|0,src:"occ28+",T:_T});}catch(_e){}
-            }else if(_T<_pianif&&hlTimesRef.current.length>(hlIdx|0)){
+            }else if(_T<_pianif&&hlTimesRef.current.length>(hlIdx|0)&&!(promEroe44Ref.current&&promEroe44Ref.current.slot)){/* [giro 44] la scena promessa dalla scheda non si ritira */
               const _last=hlTimesRef.current.length-1;
               setSituations(function(prev){var c=[...prev];if(c.length>_last)c.splice(_last,1);return c;});
               setHlTimes(function(prev){var v=[...prev];if(v.length>(hlIdx|0))v.pop();hlTimesRef.current=v;return v;});
@@ -4711,7 +4726,17 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_P18&&_P18.sc&&_P18.min!=null){const _k18=Math.max(1,Math.ceil(((+window.__CPM_SCMS681)||35000)/MATCH_TICK_MS));
             if((nx|0)>=(_P18.min|0)+_k18)scegli681((_CPM_TEST&&window.__CPM_INT226_IDX!=null&&/^i2(26|59)_/.test(String(_P18.id||"")))?(+window.__CPM_INT226_IDX|0):0,true);}}catch(_e18){}}
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
-        const _passo28=(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
+        let _prom44=null;try{const _pP=promEroe44Ref.current;if(_pP&&!(typeof window!=='undefined'&&window.__CPM_NO_PROM44)){
+          if(_pP.hl0==null)_pP.hl0=hlIdx|0;
+          if((hlIdx|0)>_pP.hl0||nx>_pP.fino||_tetto7()||onBenchRef.current||subbedOffRef.current){promEroe44Ref.current=null;}
+          else{_prom44=_pP;if(!_pP.slot&&(hlIdx|0)>=hlTimesRef.current.length&&nx<=84){_pP.slot=true;/* [giro 44 PO-226] budget speso: una scena in piu', promessa dalla scheda */
+            const _ph44=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
+            setSituations(function(prev){var c=[...prev];c.push(_ph44);return c;});
+            setHlTimes(function(prev){var v=[...prev,nx+1];hlTimesRef.current=v;return v;});
+            setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+            try{cpmEv("scena",{min:nx|0,src:"prom44"});}catch(_e){}}
+            if(typeof window!=='undefined'){try{window.__CPM_PROM44=(window.__CPM_PROM44||[]);if(window.__CPM_PROM44.length<50&&_pP.log!==1){_pP.log=1;window.__CPM_PROM44.push({da:_pP.da,hl0:_pP.hl0,slot:_pP.slot});}}catch(_e){}}}}}catch(_e44){}
+        const _passo28=_prom44?0:(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [giro 44] con la promessa dell'eroe viva, nessuna attesa fra due scene *//* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
         const _finestra879=!_no803&&nx>=_apertoDa803&&_att803>=_passo28&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current&&!_tetto7();
         /* [7.999.161 SEME-a C3 — IL DEBITO DEL MINUTO SI PAGA PRIMA DI OGNI RICHIESTA DEL BATTITO. Rosso __CPM_NO_SEME] MISURATO
            (sonda-seme-traccia, S12, seme 2311, dopo C1+C2): ingressi del motore identici fino al 34', poi la stessa sequenza
@@ -4729,7 +4754,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g161;}catch(_e){}}
         }catch(_e161){}}
         if(!_NO879&&MOTORE870&&motoreRef.current){try{
-          if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):(_att803>=5&&(extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0))),15,!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27)&&!onBenchRef.current&&!subbedOffRef.current&&nx<=89&&(extra27Ref.current|0)<4);/* [7.999.27] rigori e punizioni dal limite dell'eroe: sempre una scena (tetto di sicurezza 4 a partita) *//* [7.999.28] la scena da cross/angolo fuori finestra ora CONSUMA un'occasione del bersaglio dinamico (il calendario toglie una scena in coda); col rosso torna il vecchio tetto di 1 *//* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
+          if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&(!!_prom44||((_no28()||context==="trial")?((extra26Ref.current|0)<1):(_att803>=5&&(extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))),15,!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27)&&!onBenchRef.current&&!subbedOffRef.current&&nx<=89&&(extra27Ref.current|0)<4);/* [7.999.27] rigori e punizioni dal limite dell'eroe: sempre una scena (tetto di sicurezza 4 a partita) *//* [7.999.28] la scena da cross/angolo fuori finestra ora CONSUMA un'occasione del bersaglio dinamico (il calendario toglie una scena in coda); col rosso torna il vecchio tetto di 1 *//* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
           if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];/* [7.999.26] provata e TOLTA la richiesta di tipo «cross»: non ha prodotto scene da cross (misurato) e, lasciando la finestra aperta senza servire l'eroe, gonfiava i gol del gioco fluido (motore-unico 2,25 -> 4,75) */return (_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_TIPO_OCC)||T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [giro 11 PO-218] __CPM_TIPO_OCC: solo sonda (?cpmtest=1), chiede al motore sempre lo stesso tipo d'occasione *//* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
           else if(!_finestra879&&chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(false);chiestaScena879Ref.current=null;}
         }catch(_e879){}}
@@ -6026,6 +6051,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            fiato corto dell'eroe in una partita aperta. Il sistema 226 resta vivo solo sotto il rosso. */
         const _on259=(typeof INT259!=='undefined')&&INT259.attivo()&&(typeof INT226!=='undefined')&&INT226.attivo();
         const _on226=(typeof INT226!=='undefined')&&INT226.attivo()&&!_on259;
+        /* [giro 44 PO-246 — rosso __CPM_NO_SOSP246] UNA SCHEDA ALLA VOLTA. Misurato (schede-260, pilota con scelta lenta): 2 schede aperte, 1 sola
+           arrivata al motore. Con una scheda gia' in sospeso la cronaca rifiuta la riga nuova (addCom, 7.686) ma il sospeso veniva SOVRASCRITTO
+           (intxPendRef681, r. ~7486): la prima scelta spariva e i pulsanti a schermo avrebbero applicato le opzioni della seconda. Ora finche' una
+           scheda aspetta risposta non ne nasce un'altra. */
+        const _sosp246=!!intxPendRef681.current&&!(typeof window!=='undefined'&&window.__CPM_NO_SOSP246);
         if(_on259){try{
           const _N=narrRef669.current;const _M=motoreRef.current;const _t=(_M&&_M.tabellino)?_M.tabellino():null;
           /* i fatti rari si leggono dal tabellino del motore e si datano al minuto in cui compaiono (lettura, nessun sorteggio) */
@@ -6046,7 +6076,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             try{addCom(_es.testo,"#c4b5fd",nx);}catch(_e){}try{addCoach("\ud83d\udce2 "+_voce,nx);}catch(_e){}
             if(typeof window!=='undefined'){try{(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}).racconti.push({fatto:_R.fatto,idx:_R.idx,m0:_R.m0,m1:nx,esito:_es,voce:_voce,prima:_R.foto,dopo:_dopo,occ:_r.occ,ingresso:_R.ingresso,panca:!!_R.panca,coerente:INT259.verifica(_r,_es)});}catch(_e){}}}
         }catch(_e259){}}
-        if(_on259&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
+        if(_on259&&!_sosp246&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&!(narrRef669.current.r259&&!narrRef669.current.r259.detto)){try{
           const _N=narrRef669.current;const _sc=scoreRef.current||{home:0,away:0};const _e=_N.e259||{};
           const _fatte=(_N.fatte||[]).filter(x=>/^i259_/.test(x)).map(x=>x.slice(5));
@@ -6056,7 +6086,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _f=INT259.scegli(_c);
           if(_f&&INT259.SCHEDE[_f]){const _S=INT259.SCHEDE[_f];_intxK669={id:"i259_"+_f,fam:"MISTER",txt:_S.txt,sc:_S.sc.map(o=>({et:o.et,premio:o.premio,rischio:o.rischio,es:()=>null})),cons:{},i259:_f};}
         }catch(_e259){}}
-        if(_on226&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
+        if(_on226&&!_sosp246&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&nx<=88){try{
           const _N=narrRef669.current;const _sc226=scoreRef.current||{home:0,away:0};
           const _fatte226=(_N.fatte||[]).filter(x=>/^i226_/.test(x)).map(x=>x.slice(5));
@@ -10641,7 +10671,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   e' la seconda difesa contro il tocco involontario segnalato dal PO), faccia di chi parla,
                   frase, tempo visibile, opzioni larghe. La partita era gia' ferma dal 7.682. */}
                 {festa942&&<FestaFine942 dati={festa942} onChiudi={()=>{setFesta942(null);setPhase("ended");}}/>}
-              {!(typeof window!=='undefined'&&window.__CPM_NO919)&&coms&&coms[0]&&coms[0].sc&&coms[0].sci==null&&(
+              {!(typeof window!=='undefined'&&window.__CPM_NO919)&&coms&&coms[0]&&coms[0].sc&&coms[0].sci==null
+                &&(phase==="playing"||(typeof window!=='undefined'&&window.__CPM_NO_POP260))/* [giro 44 PO-260 — rosso __CPM_NO_POP260] la scheda vive solo nel gioco fluido: mai sopra un highlight, la cerimonia o il fischio. Durante un highlight resta in sospeso (nascosta) e torna a schermo alla ripresa */&&(
                 <PopScelta919 com={coms[0]} onScegli={scegli681} player={player}
                   coachName={((misterInPartita(player,context)||{}).name)||(player&&player.club&&player.club.n)||"Mister"}
                   avvNome={(opponent&&(opponent.n||opponent.name))||"L'avversario"}

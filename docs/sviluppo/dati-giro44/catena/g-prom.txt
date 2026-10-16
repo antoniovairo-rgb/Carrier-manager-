@@ -1,0 +1,16 @@
+VERDE p8 finita hl [6] · scelte «eroe» ["13'espulsione_noi → nessun highlight","70'sotto_finale → nessun highlight"]
+VERDE p11 finita hl [8,10,24] · scelte «eroe» ["70'sotto_finale → nessun highlight"]
+VERDE p2 finita hl [6,11,22,48,87,89] · scelte «eroe» ["75'pari_finale → +12'"]
+VERDE p14 finita hl [2,7,11,11,18,46,76] · scelte «eroe» ["70'sotto_finale → +6'"]
+VERDE p17 finita hl [2,6,19,48,59,76,81] · scelte «eroe» ["75'pari_finale → +1'"]
+VERDE p0 finita hl [4,20,42,58,77,85,94] · scelte «eroe» ["73'sotto_finale → +4'"]
+ROSSO p8 finita hl [6] · scelte «eroe» ["13'espulsione_noi → nessun highlight","70'sotto_finale → nessun highlight"]
+ROSSO p11 finita hl [8,10,24] · scelte «eroe» ["70'sotto_finale → nessun highlight"]
+ROSSO p2 finita hl [6,11,22,48,87,89] · scelte «eroe» ["75'pari_finale → +12'"]
+ROSSO p14 finita hl [2,7,11,11,21,23,36,68] · scelte «eroe» ["76'pari_finale → nessun highlight (tetto)"]
+ROSSO p17 finita hl [2,6,19,48,59,76,81] · scelte «eroe» ["75'pari_finale → +1'"]
+ROSSO p0 finita hl [4,20,42,58,77,85,94] · scelte «eroe» ["73'sotto_finale → +4'"]
+verde: promessa mantenuta 3/7 · rosso: 2/6
+❌ promessa-226
+  · verde: promessa mantenuta solo 3/7
+EXIT 1

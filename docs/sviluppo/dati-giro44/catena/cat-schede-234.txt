@@ -1,0 +1,15 @@
+(A) testi verde: 8/8 schede con >=3 opzioni · «ordine» 0 · prima opzione senza «indicazioni» 0
+(A) testi rosso: 0/8 schede con >=3 opzioni · «ordine» 6
+(B) motore, 312 partite per braccio (stessi semi)
+   «seguo le indicazioni» (0)  {"partite":312,"att":{"schede":177,"tiriAlMin":0.1549,"golAlMin":0.0166},"dif":{"schede":135,"tiriAlMin":0.148,"golAlMin":0.0209}}
+   «di testa mia» (1)          {"partite":312,"att":{"schede":177,"tiriAlMin":0.1284,"golAlMin":0.0169},"dif":{"schede":135,"tiriAlMin":0.186,"golAlMin":0.0213}}
+   «via di mezzo» (2)          {"partite":312,"att":{"schede":177,"tiriAlMin":0.1469,"golAlMin":0.0169},"dif":{"schede":135,"tiriAlMin":0.1623,"golAlMin":0.0213}}
+   senza effetto               {"partite":312,"att":{"schede":177,"tiriAlMin":0.138,"golAlMin":0.016},"dif":{"schede":135,"tiriAlMin":0.1693,"golAlMin":0.0199}}
+   rosso, opzione 2            {"partite":312,"att":{"schede":177,"tiriAlMin":0.138,"golAlMin":0.016},"dif":{"schede":135,"tiriAlMin":0.1693,"golAlMin":0.0199}}
+   attacco: ordine atteggiamenti 1<2<0 · separazione minima 5.4% di tiri al minuto · gol 0/1/2 0.0166 / 0.0169 / 0.0169
+   difesa : ordine atteggiamenti 0<2<1 · separazione minima 9.7% di tiri al minuto · gol 0/1/2 0.0209 / 0.0213 / 0.0213
+   rosso: opzione 2 identica al braccio senza effetto (riconosciuto)
+(B) panchina: 400/400 casi con tre minuti d'ingresso coerenti · deterministico 400/400 · rosso (minuto del mister) 400/400
+(C) verde: bottoni 3 · «ordine» no · scelta {"id":"eroe_stanco","idx":2,"auto":true,"min":55,"att":-0.05,"ordine":null} · foto /tmp/claude-0/-home-user-Carrier-manager-/f9f64f95-b849-55eb-a53b-ad53fa8edada/scratchpad/finale/tests/visual/out/schede-234/verde-scheda.png
+(C) rosso: bottoni 2 · «ordine» si · foto /tmp/claude-0/-home-user-Carrier-manager-/f9f64f95-b849-55eb-a53b-ad53fa8edada/scratchpad/finale/tests/visual/out/schede-234/rosso-scheda.png
+✅ VERDE — schede con almeno 3 opzioni, lessico «indicazioni», effetti distinti sul motore, prova del rosso riconosciuta

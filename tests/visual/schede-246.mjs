@@ -9,8 +9,15 @@
    ESITO DELLA MISURA (giro 19): il difetto del collaudo nasce dal PILOTA, che per costruzione salta il blocco del cronometro
    (src/15, gate del clock: `__CPM_AUTOPLAY_ON` senza `__CPM_SCFREEZE_TEST`); con il blocco attivo la partita si ferma finche' la scheda
    non e' scelta (timer 35 s) e la scelta arriva al motore. Il braccio PILOTA si stampa ma non si giudica (CPM_PILOTA=0 lo salta).
-   VERDE (braccio giocatore): 0-1 minuti a scheda aperta e ogni scheda arriva al motore (__CPM_INT226.scelte).
-   ROSSO (__CPM_NO682F, l'interruttore esistente che toglie il blocco): il cronometro corre con la scheda aperta (> 3 minuti).
+   VERDE (braccio giocatore): 0-1 minuti a scheda aperta e ogni scheda arriva al motore (__CPM_S259.scelte; con CPM_226=1 __CPM_INT226.scelte).
+   ROSSO (__CPM_NO682F, l'interruttore esistente che toglie il blocco): il cronometro corre con la scheda aperta (> 1 minuto, oltre la tolleranza del verde).
+   [giro 44] PERCHE' ERA ROSSO (anche sulla 169): STRUMENTO, non gioco. Misurato con sonda-246-stallo.mjs: braccio giocatore fermo al 55'
+   con la scheda a schermo, timer armati 1 / scaduti 0, per sempre. Il giro 18 (__CPM_NO_ORD18) ha spostato la scelta automatica, SOTTO
+   AUTOPLAY, dal timer reale al battito del cronometro; ma questo braccio ferma il cronometro (__CPM_SCFREEZE_TEST) → nessun battito,
+   timer muto, stallo che esiste solo nella sonda. Con __CPM_NO_ORD18 (il timer reale sceglie, come per una persona): partita finita,
+   2/2 scelte al motore. Il gioco vero (niente autoplay) usa gia' il timer reale. Ora il guardiano arma __CPM_NO_ORD18 nei bracci
+   giocatore e rosso, e custodisce il sistema VIVO (PO-259, __CPM_S259.scelte); CPM_226=1 lo riporta sulle schede 226 (sotto il rosso 259).
+   Il braccio PILOTA non si gioca piu' di default (CPM_PILOTA=1 per stamparlo).
    Uso: node schede-246.mjs  (CPM_PARTITE=1, CPM_SPEED=4, CPM_SCMS=6000) */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -21,8 +28,8 @@ async function partita(i, braccio, rosso) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   const save = JSON.parse(JSON.stringify(SAVE)); save.player.name = 'Guard246 ' + ['Rossi', 'Bianchi', 'Verdi', 'Neri'][i % 4] + i;
-  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_NO_SCHEDE259 = 1;/* [PO-259] le schede 226/234 vivono sotto il rosso del 259: questo guardiano le custodisce li' */ window.__CPM_SCMS681 = o.scms; if (o.freeze) window.__CPM_SCFREEZE_TEST = 1; if (o.rosso) window.__CPM_NO682F = 1;
-    localStorage.setItem('cpm-match-speed', o.speed); localStorage.setItem('cpm-v3', JSON.stringify(o.save)); }, { save, rosso, speed: SPEED, scms: SCMS, freeze: braccio === 'giocatore' });
+  await page.addInitScript((o) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; if (o.s226) window.__CPM_NO_SCHEDE259 = 1;/* [giro 44] di default il sistema vivo (259); CPM_226=1 = schede 226 */ if (o.freeze || o.rosso) window.__CPM_NO_ORD18 = 1;/* [giro 44] la scelta automatica la prende il timer reale, come per una persona: col cronometro fermo il battito del giro 18 non arriva mai */ window.__CPM_SCMS681 = o.scms; if (o.freeze) window.__CPM_SCFREEZE_TEST = 1; if (o.rosso) window.__CPM_NO682F = 1;
+    localStorage.setItem('cpm-match-speed', o.speed); localStorage.setItem('cpm-v3', JSON.stringify(o.save)); }, { save, rosso, speed: SPEED, scms: SCMS, freeze: braccio === 'giocatore', s226: process.env.CPM_226 === '1' });
   const out = { i, braccio, rosso, finita: false, aperte: [] };
   try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
@@ -41,7 +48,7 @@ async function partita(i, braccio, rosso) {
       else if (!d.sc && cur) { out.aperte.push(cur); cur = null; }
       if (d.ph === 'ended' || d.ph === 'ceremony') { if (cur) { cur.alFischio = true; out.aperte.push(cur); cur = null; } out.finita = true; break; } }
     await sleep(1500);
-    const W = await page.evaluate(() => ({ w: window.__CPM_INT226 || { schede: [], scelte: [] }, tmr: window.__CPM_SC681_TMR | 0, fire: window.__CPM_SC681_FIRE | 0, clr: window.__CPM_SC681_CLR | 0 }));
+    const W = await page.evaluate(() => ({ w: (window.__CPM_S259 && window.__CPM_S259.schede.length) ? { schede: window.__CPM_S259.schede, scelte: window.__CPM_S259.scelte.map(s => ({ id: s.fatto, min: s.min, auto: s.auto })) } : (window.__CPM_INT226 || { schede: [], scelte: [] }), tmr: window.__CPM_SC681_TMR | 0, fire: window.__CPM_SC681_FIRE | 0, clr: window.__CPM_SC681_CLR | 0 }));
     out.schede = (W.w.schede || []).length; out.scelte = (W.w.scelte || []).map(s => s.id + '@' + s.min + (s.auto ? 'a' : '')); out.tmr = W.tmr; out.fire = W.fire;
     out.mostrate = out.aperte.length; out.maxMin = Math.max(0, ...out.aperte.map(a => (a.a | 0) - (a.da | 0)));
   } catch (e) { out.errore = String(e.message).slice(0, 160); }
@@ -49,7 +56,7 @@ async function partita(i, braccio, rosso) {
 }
 const R = [];
 for (const rosso of [false, true]) for (const br of ['giocatore', 'pilota']) for (let i = 0; i < NP; i++) {
-  if (br === 'pilota' && (rosso || process.env.CPM_PILOTA === '0')) continue;
+  if (br === 'pilota' && (rosso || process.env.CPM_PILOTA !== '1')) continue;
   const o = await partita(i, br, rosso); R.push(o);
   console.log((rosso ? 'ROSSO ' : 'VERDE ') + br + ' p' + i + ' · fine ' + o.finita + ' · schede a schermo ' + o.mostrate + ' · arrivate al motore ' + (o.scelte || []).length + ' ' + JSON.stringify(o.scelte) + ' · minuti a scheda aperta max ' + o.maxMin + ' · aperte ' + JSON.stringify((o.aperte || []).map(a => a.da + '-' + a.a + (a.alFischio ? ' FISCHIO' : ''))) + ' · timer armati/scaduti ' + o.tmr + '/' + o.fire + (o.errore ? ' · ERRORE ' + o.errore : '') + (o.errori.length ? ' · pageerror ' + o.errori.join(' | ') : ''));
 }
@@ -59,6 +66,6 @@ const persa = o => (o.mostrate || 0) > (o.scelte || []).length || (o.aperte || [
 V.forEach(o => { if (!o.finita) g.push('verde p' + o.i + ': partita non finita'); if (persa(o)) g.push('verde p' + o.i + ': scheda persa (' + o.mostrate + ' a schermo, ' + (o.scelte || []).length + ' al motore)');
   if (o.maxMin > 1) g.push('verde p' + o.i + ': il cronometro corre con la scheda aperta (' + o.maxMin + ' minuti)'); if (o.errori.length) g.push('verde: errori di pagina'); });
 if (!V.some(o => o.mostrate > 0)) g.push('verde: nessuna scheda comparsa, guardiano cieco');
-if (!Ro.some(o => o.maxMin > 3)) g.push('rosso: il cronometro non corre con la scheda aperta, il difetto non si vede');
+if (!Ro.some(o => o.maxMin > 1)) g.push('rosso: il cronometro non corre con la scheda aperta, il difetto non si vede');/* [giro 44] soglia = oltre la tolleranza del verde (1): misurato 3 minuti col rosso (71-74), 0 col verde */
 if (g.length) { console.log('❌ schede-246'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ schede-246 verde (col blocco la partita aspetta la scheda e la scelta arriva al motore) e il rosso si vede');
