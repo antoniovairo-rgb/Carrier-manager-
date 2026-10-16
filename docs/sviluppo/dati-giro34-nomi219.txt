@@ -1,0 +1,151 @@
+# giro 34 · nomi-219 · righe per seme delle 5 corse (build lavoro/170 = 7.999.170, 8fd95fe + stampa per seme)
+## c1
+verde seme 103 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 101 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 102 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 104 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 105 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 106 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 107 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 108 fine ceremony nominati 3 vicini 2 lontani 0
+verde seme 109 fine ceremony nominati 3 vicini 1 lontani 1
+verde seme 110 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 111 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 112 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 113 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 114 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 115 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 116 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 118 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 117 fine ceremony nominati 2 vicini 2 lontani 0
+rosso seme 103 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 101 fine ceremony nominati 3 vicini 1 lontani 1
+rosso seme 102 fine ceremony nominati 2 vicini 2 lontani 0
+rosso seme 104 fine ceremony nominati 6 vicini 3 lontani 2
+rosso seme 105 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 106 fine ceremony nominati 3 vicini 1 lontani 1
+rosso seme 107 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 108 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 109 fine ceremony nominati 0 vicini 0 lontani 0
+✅ nomi-219 verde (vicini 91% su 33; rosso 50% su 22, lontani oltre 35 u 8 (verde 1); portieri che aprono dal fondo, non giudicati: 0)
+FINE 0 1792086483
+## c2
+verde seme 103 fine ceremony nominati 2 vicini 1 lontani 0
+verde seme 101 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 102 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 104 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 105 fine ceremony nominati 8 vicini 8 lontani 0
+verde seme 106 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 107 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 108 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 109 fine ceremony nominati 1 vicini 0 lontani 0
+verde seme 110 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 111 fine ceremony nominati 5 vicini 3 lontani 0
+verde seme 112 fine ceremony nominati 6 vicini 5 lontani 1
+verde seme 113 fine ceremony nominati 7 vicini 6 lontani 0
+verde seme 114 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 115 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 116 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 117 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 118 fine ceremony nominati 1 vicini 1 lontani 0
+rosso seme 103 fine ceremony nominati 7 vicini 4 lontani 2
+rosso seme 101 fine ceremony nominati 5 vicini 1 lontani 2
+rosso seme 102 fine ceremony nominati 2 vicini 2 lontani 0
+rosso seme 104 fine ceremony nominati 1 vicini 0 lontani 0
+rosso seme 105 fine ceremony nominati 4 vicini 3 lontani 1
+rosso seme 106 fine ceremony nominati 0 vicini 0 lontani 0
+rosso seme 107 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 108 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 109 fine ceremony nominati 4 vicini 3 lontani 1
+✅ nomi-219 verde (vicini 88% su 48; rosso 56% su 27, lontani oltre 35 u 8 (verde 1); portieri che aprono dal fondo, non giudicati: 0)
+FINE 0 1792089011
+## c3
+verde seme 120 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 119 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 121 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 122 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 123 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 124 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 125 fine ceremony nominati 4 vicini 3 lontani 0
+verde seme 126 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 127 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 128 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 129 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 130 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 131 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 132 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 133 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 134 fine ceremony nominati 5 vicini 4 lontani 0
+verde seme 135 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 136 fine ceremony nominati 3 vicini 3 lontani 0
+rosso seme 121 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 120 fine ceremony nominati 3 vicini 1 lontani 0
+rosso seme 119 fine ceremony nominati 5 vicini 2 lontani 2
+rosso seme 122 fine ceremony nominati 1 vicini 0 lontani 0
+rosso seme 123 fine ceremony nominati 4 vicini 2 lontani 1
+rosso seme 124 fine ceremony nominati 3 vicini 1 lontani 0
+rosso seme 125 fine ceremony nominati 3 vicini 1 lontani 1
+rosso seme 126 fine ceremony nominati 4 vicini 3 lontani 0
+rosso seme 127 fine ceremony nominati 5 vicini 1 lontani 2
+✅ nomi-219 verde (vicini 95% su 39; rosso 40% su 30, lontani oltre 35 u 7 (verde 0); portieri che aprono dal fondo, non giudicati: 0)
+FINE 0 1792091469
+## c4
+verde seme 103 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 102 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 101 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 104 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 105 fine ceremony nominati 6 vicini 6 lontani 0
+verde seme 106 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 107 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 108 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 109 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 110 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 111 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 112 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 113 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 114 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 115 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 116 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 117 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 118 fine ceremony nominati 1 vicini 1 lontani 0
+rosso seme 103 fine ceremony nominati 4 vicini 2 lontani 2
+rosso seme 102 fine ceremony nominati 2 vicini 2 lontani 0
+rosso seme 101 fine ceremony nominati 5 vicini 2 lontani 3
+rosso seme 104 fine ceremony nominati 2 vicini 1 lontani 0
+rosso seme 105 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 106 fine ceremony nominati 1 vicini 0 lontani 0
+rosso seme 107 fine ceremony nominati 0 vicini 0 lontani 0
+rosso seme 108 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 109 fine ceremony nominati 0 vicini 0 lontani 0
+✅ nomi-219 verde (vicini 100% su 45; rosso 50% su 18, lontani oltre 35 u 7 (verde 0); portieri che aprono dal fondo, non giudicati: 0)
+FINE 0 1792093987
+## c5
+verde seme 139 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 138 fine ceremony nominati 4 vicini 3 lontani 0
+verde seme 137 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 140 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 141 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 142 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 143 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 144 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 145 fine ceremony nominati 3 vicini 3 lontani 0
+verde seme 146 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 147 fine ceremony nominati 3 vicini 1 lontani 1
+verde seme 148 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 149 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 150 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 151 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 152 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 153 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 154 fine ceremony nominati 3 vicini 2 lontani 1
+rosso seme 138 fine ceremony nominati 4 vicini 2 lontani 1
+rosso seme 139 fine ceremony nominati 1 vicini 0 lontani 0
+rosso seme 137 fine ceremony nominati 4 vicini 3 lontani 1
+rosso seme 140 fine ceremony nominati 1 vicini 0 lontani 0
+rosso seme 141 fine ceremony nominati 3 vicini 3 lontani 0
+rosso seme 142 fine ceremony nominati 2 vicini 1 lontani 0
+rosso seme 143 fine ceremony nominati 4 vicini 4 lontani 0
+rosso seme 144 fine ceremony nominati 0 vicini 0 lontani 0
+rosso seme 145 fine ceremony nominati 6 vicini 2 lontani 2
+✅ nomi-219 verde (vicini 86% su 29; rosso 60% su 25, lontani oltre 35 u 4 (verde 2); portieri che aprono dal fondo, non giudicati: 0)
+FINE 0 1792096488
