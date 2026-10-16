@@ -74,7 +74,10 @@ Ultima corsa: **verde** A1 0/2 · A2 0/16 · A3 contrasto · B 0/3 · C 2/2; **r
 | cross-218 | ✅ (dopo la correzione del dribbling-cross) |
 | lessico-218 | ✅ 0 su 138 · rosso 138 su 138 |
 | conduci-242 | ✅ |
-| scene-221 · seme-a · validate-situations · replay | vedi §8 (stato alla consegna) |
+| scene-221 | ✅ 6 partite, 6,17 scene a partita |
+| replay | ✅ 8 highlight completi e coerenti |
+| validate-situations | ✅ PASS, 14 categorie, fingerprint 00001505 |
+| seme-a | ❌ **rosso, identico sulla base 5eb5500** (worktree separato, stesso guardiano): giro 1 «sorteggi del motore diversi dal 18'» su `chiedi.riprendi`. Preesistente, famiglia **PO-262** (determinismo); non causato da questo giro |
 
 ## 7. Cosa NON è chiuso (dichiarato)
 
@@ -91,4 +94,6 @@ Ultima corsa: **verde** A1 0/2 · A2 0/16 · A3 contrasto · B 0/3 · C 2/2; **r
 
 ## 8. Stato alla consegna
 
-Vedi la tabella §6 e l'aggiornamento in coda a questo file.
+Tutto ciò che è nel §3 è verde sulle suite richieste tranne `seme-a`, rosso già sulla base (PO-262). Il rapporto del collaudo e il
+taccuino del PO sul telefono restano il giudice dei testi nuovi. Strumenti per rimisurare:
+`node esiti-241-censimento.mjs <da> <a>` (+ `rapporto`), `node esiti-241-partite.mjs <semi>`, `npm run esiti-241`.
