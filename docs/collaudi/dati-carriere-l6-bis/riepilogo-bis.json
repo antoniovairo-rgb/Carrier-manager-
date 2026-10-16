@@ -1,21 +1,21 @@
 {
- "generato": "2026-10-15T23:37:31.879Z",
+ "generato": "2026-10-16T00:06:59.389Z",
  "syn": {
   "gruppo": "sintetiche",
-  "carriere": 3,
-  "stagioni": 30,
+  "carriere": 19,
+  "stagioni": 190,
   "fine": {
-   "ok": 3
+   "ok": 19
   },
   "pageerrors": 0,
-  "S_n": 30,
+  "S_n": 190,
   "rinnovi": {
-   "tentativi": 71,
-   "accettati": 8,
-   "rifiutatiDalClub": 63,
+   "tentativi": 202,
+   "accettati": 86,
+   "rifiutatiDalClub": 116,
    "ctaAssente": 0,
    "altro": 0,
-   "carriereConAccettato": 2,
+   "carriereConAccettato": 18,
    "carriereSenzaOfferta": 1,
    "carriereSenzaOffertaDettaglio": [
     {
@@ -27,358 +27,492 @@
     }
    ],
    "durataAccettata": {
-    "1": 4,
-    "2": 1,
-    "3": 3
+    "1": 23,
+    "2": 22,
+    "3": 41
    },
-   "unAnnoInutile": 3,
-   "daSvincolato": 3,
-   "trustRifiuti": 30.15,
-   "trustAccettati": 81.35
+   "unAnnoInutile": 18,
+   "daSvincolato": 24,
+   "trustRifiuti": 31.02,
+   "trustAccettati": 80.82
   },
   "contratto": {
-   "stagioniScaduteAFine": 3,
-   "settimaneDaSvincolato": 286,
-   "settimaneTot": 30,
-   "partiteDaSvincolato": 102,
-   "partiteTot": 1009
+   "stagioniScaduteAFine": 4,
+   "settimaneDaSvincolato": 382,
+   "settimaneTot": 190,
+   "partiteDaSvincolato": 136,
+   "partiteTot": 7149
   },
   "offerte": {
-   "totali": 21,
-   "perCarriera": 7,
-   "carriereConOfferta": 3,
-   "accettate": 6,
-   "accettateConCambioClub": 6,
-   "rifiutate": 15,
+   "totali": 117,
+   "perCarriera": 6.16,
+   "carriereConOfferta": 19,
+   "accettate": 14,
+   "accettateConCambioClub": 14,
+   "rifiutate": 103,
    "perStagione": {
-    "1": 2,
-    "2": 1,
-    "3": 2,
-    "4": 1,
-    "5": 3,
-    "6": 3,
-    "8": 2,
-    "9": 2,
-    "10": 5
+    "1": 8,
+    "2": 8,
+    "3": 12,
+    "4": 10,
+    "5": 14,
+    "6": 14,
+    "7": 12,
+    "8": 11,
+    "9": 12,
+    "10": 16
    },
-   "cambiClubStagionali": 6
+   "cambiClubStagionali": 15
   },
   "saldo": {
-   "stagioniPro": 30,
-   "stagioniVariazioneZero": 3,
-   "variazioneMedia": 470163.37,
-   "variazioneMediaContrattoValido": 410568.76,
-   "saldoFinaleMedio": 4701633.67,
-   "saldoFinaleMax": 6696532
+   "stagioniPro": 190,
+   "stagioniVariazioneZero": 4,
+   "variazioneMedia": 554643.61,
+   "variazioneMediaContrattoValido": 533866.1,
+   "saldoFinaleMedio": 5546436.11,
+   "saldoFinaleMax": 18440268
   },
   "perFascia": {
    "affermazione 21-25": {
-    "stagioni": 15,
-    "ovr": 74.87,
-    "gol": 6.93,
-    "assist": 3.73,
-    "giocate": 26.2,
-    "partite": 33.27,
-    "golPerGiocata": 0.265
+    "stagioni": 83,
+    "ovr": 75.52,
+    "gol": 10.71,
+    "assist": 5.58,
+    "giocate": 35.08,
+    "partite": 36.88,
+    "golPerGiocata": 0.305
+   },
+   "declino 31+": {
+    "stagioni": 12,
+    "ovr": 80.5,
+    "gol": 13.75,
+    "assist": 6.75,
+    "giocate": 38.83,
+    "partite": 39,
+    "golPerGiocata": 0.354
    },
    "gavetta 17-20": {
-    "stagioni": 9,
-    "ovr": 67.22,
-    "gol": 6,
-    "assist": 4.22,
-    "giocate": 33.89,
-    "partite": 34.44,
-    "golPerGiocata": 0.177
+    "stagioni": 29,
+    "ovr": 70.07,
+    "gol": 8.69,
+    "assist": 4.41,
+    "giocate": 35.24,
+    "partite": 35.79,
+    "golPerGiocata": 0.247
    },
    "élite 26-30": {
-    "stagioni": 6,
-    "ovr": 80.17,
-    "gol": 9.17,
-    "assist": 4.17,
-    "giocate": 33.33,
-    "partite": 33.33,
-    "golPerGiocata": 0.275
+    "stagioni": 66,
+    "ovr": 80.36,
+    "gol": 13.18,
+    "assist": 7.03,
+    "giocate": 38.33,
+    "partite": 39.12,
+    "golPerGiocata": 0.344
    }
   },
   "perIndice": {
    "1": {
-    "stagioni": 3,
-    "ovr": 65,
-    "gol": 6,
-    "assist": 5.33,
-    "giocate": 34,
+    "stagioni": 19,
+    "ovr": 68.79,
+    "gol": 8,
+    "assist": 4.63,
+    "giocate": 33.68,
     "partite": 34,
-    "golPerGiocata": 0.176
+    "golPerGiocata": 0.237
    },
    "2": {
-    "stagioni": 3,
-    "ovr": 66.67,
-    "gol": 6.67,
-    "assist": 2.67,
-    "giocate": 35,
-    "partite": 35.33,
-    "golPerGiocata": 0.19
+    "stagioni": 19,
+    "ovr": 70.79,
+    "gol": 9.37,
+    "assist": 4.21,
+    "giocate": 36.16,
+    "partite": 37.16,
+    "golPerGiocata": 0.259
    },
    "3": {
-    "stagioni": 3,
-    "ovr": 69,
-    "gol": 5.33,
-    "assist": 3.33,
-    "giocate": 32.67,
-    "partite": 34,
-    "golPerGiocata": 0.163
+    "stagioni": 19,
+    "ovr": 72.79,
+    "gol": 9.42,
+    "assist": 6.32,
+    "giocate": 36.84,
+    "partite": 37.89,
+    "golPerGiocata": 0.256
    },
    "4": {
-    "stagioni": 3,
-    "ovr": 71.33,
-    "gol": 5.33,
-    "assist": 2.67,
-    "giocate": 24.33,
-    "partite": 35.67,
-    "golPerGiocata": 0.219
+    "stagioni": 19,
+    "ovr": 74.89,
+    "gol": 11.79,
+    "assist": 5.16,
+    "giocate": 36.68,
+    "partite": 38.47,
+    "golPerGiocata": 0.321
    },
    "5": {
-    "stagioni": 3,
-    "ovr": 73.33,
-    "gol": 7.33,
-    "assist": 3.33,
-    "giocate": 28,
-    "partite": 28,
-    "golPerGiocata": 0.262
+    "stagioni": 19,
+    "ovr": 76.74,
+    "gol": 11.21,
+    "assist": 5.95,
+    "giocate": 36.53,
+    "partite": 37,
+    "golPerGiocata": 0.307
    },
    "6": {
-    "stagioni": 3,
-    "ovr": 75.33,
-    "gol": 7.67,
-    "assist": 6,
-    "giocate": 36.33,
-    "partite": 37.33,
-    "golPerGiocata": 0.211
+    "stagioni": 19,
+    "ovr": 78.42,
+    "gol": 10.84,
+    "assist": 6.89,
+    "giocate": 37.47,
+    "partite": 38.47,
+    "golPerGiocata": 0.289
    },
    "7": {
-    "stagioni": 3,
-    "ovr": 76.67,
-    "gol": 11,
-    "assist": 6.33,
-    "giocate": 35.67,
-    "partite": 36,
-    "golPerGiocata": 0.308
+    "stagioni": 19,
+    "ovr": 79.68,
+    "gol": 13.16,
+    "assist": 6.47,
+    "giocate": 37.05,
+    "partite": 39.05,
+    "golPerGiocata": 0.355
    },
    "8": {
-    "stagioni": 3,
-    "ovr": 78.33,
-    "gol": 5.67,
-    "assist": 2.33,
-    "giocate": 18,
-    "partite": 29.33,
-    "golPerGiocata": 0.315
+    "stagioni": 19,
+    "ovr": 80.79,
+    "gol": 11.79,
+    "assist": 6.42,
+    "giocate": 35.21,
+    "partite": 37.21,
+    "golPerGiocata": 0.335
    },
    "9": {
-    "stagioni": 3,
-    "ovr": 79.67,
-    "gol": 7.67,
-    "assist": 2.67,
-    "giocate": 26.33,
-    "partite": 37.67,
-    "golPerGiocata": 0.291
+    "stagioni": 19,
+    "ovr": 81.63,
+    "gol": 13.26,
+    "assist": 6.95,
+    "giocate": 36.47,
+    "partite": 38.37,
+    "golPerGiocata": 0.364
    },
    "10": {
-    "stagioni": 3,
-    "ovr": 81,
-    "gol": 8.33,
-    "assist": 5,
-    "giocate": 29,
-    "partite": 29,
-    "golPerGiocata": 0.287
+    "stagioni": 19,
+    "ovr": 82.32,
+    "gol": 15.68,
+    "assist": 6.79,
+    "giocate": 38.63,
+    "partite": 38.63,
+    "golPerGiocata": 0.406
    }
   },
   "perLivello": {
    "debole": {
-    "stagioni": 20,
-    "ovr": 72.55,
-    "gol": 6.6,
-    "assist": 3.4,
-    "giocate": 30.7,
-    "partite": 34.1,
-    "golPerGiocata": 0.215
+    "stagioni": 80,
+    "ovr": 71.92,
+    "gol": 7.7,
+    "assist": 4.01,
+    "giocate": 34.2,
+    "partite": 35.66,
+    "golPerGiocata": 0.225
+   },
+   "forte": {
+    "stagioni": 50,
+    "ovr": 84.16,
+    "gol": 19.26,
+    "assist": 10.38,
+    "giocate": 42.8,
+    "partite": 42.96,
+    "golPerGiocata": 0.45
    },
    "media": {
-    "stagioni": 10,
-    "ovr": 75.8,
-    "gol": 8.1,
-    "assist": 5.1,
-    "giocate": 28.4,
-    "partite": 32.7,
-    "golPerGiocata": 0.285
+    "stagioni": 60,
+    "ovr": 76.8,
+    "gol": 9.95,
+    "assist": 4.93,
+    "giocate": 34.23,
+    "partite": 35.8,
+    "golPerGiocata": 0.291
    }
   },
   "perArchetipo": {
+   "bomber": {
+    "stagioni": 30,
+    "ovr": 78.23,
+    "gol": 14.1,
+    "assist": 5.9,
+    "giocate": 37.83,
+    "partite": 38.37,
+    "golPerGiocata": 0.373
+   },
    "centravanti": {
-    "stagioni": 10,
-    "ovr": 72.5,
-    "gol": 7.7,
-    "assist": 3.6,
-    "giocate": 35.3,
-    "partite": 35.3,
-    "golPerGiocata": 0.218
+    "stagioni": 40,
+    "ovr": 74.5,
+    "gol": 9.65,
+    "assist": 4.53,
+    "giocate": 35.58,
+    "partite": 36.02,
+    "golPerGiocata": 0.271
    },
    "enfant": {
-    "stagioni": 10,
-    "ovr": 72.6,
-    "gol": 5.5,
-    "assist": 3.2,
-    "giocate": 26.1,
-    "partite": 32.9,
-    "golPerGiocata": 0.211
+    "stagioni": 30,
+    "ovr": 77.43,
+    "gol": 11.1,
+    "assist": 5.73,
+    "giocate": 35.13,
+    "partite": 37.53,
+    "golPerGiocata": 0.316
    },
    "fantasista": {
+    "stagioni": 40,
+    "ovr": 77.95,
+    "gol": 12.72,
+    "assist": 7.95,
+    "giocate": 36.85,
+    "partite": 38.95,
+    "golPerGiocata": 0.345
+   },
+   "leader": {
+    "stagioni": 20,
+    "ovr": 74.05,
+    "gol": 6.5,
+    "assist": 3.5,
+    "giocate": 35.1,
+    "partite": 35.55,
+    "golPerGiocata": 0.185
+   },
+   "trequartista": {
     "stagioni": 10,
-    "ovr": 75.8,
-    "gol": 8.1,
-    "assist": 5.1,
-    "giocate": 28.4,
-    "partite": 32.7,
-    "golPerGiocata": 0.285
+    "ovr": 84.6,
+    "gol": 21.2,
+    "assist": 11.6,
+    "giocate": 42.9,
+    "partite": 43,
+    "golPerGiocata": 0.494
+   },
+   "tuttocampista": {
+    "stagioni": 10,
+    "ovr": 77.6,
+    "gol": 12.5,
+    "assist": 6.8,
+    "giocate": 36.7,
+    "partite": 37.9,
+    "golPerGiocata": 0.341
+   },
+   "velocista": {
+    "stagioni": 10,
+    "ovr": 69.9,
+    "gol": 5.8,
+    "assist": 3.4,
+    "giocate": 34.6,
+    "partite": 35.3,
+    "golPerGiocata": 0.168
    }
   },
   "perRuolo": {
    "primavera": {
-    "stagioni": 8,
-    "ovr": 76.75,
-    "gol": 6,
-    "assist": 3.75,
-    "giocate": 19.25,
-    "partite": 28.75,
-    "golPerGiocata": 0.312
+    "stagioni": 10,
+    "ovr": 77,
+    "gol": 6.7,
+    "assist": 3.4,
+    "giocate": 20.8,
+    "partite": 31.8,
+    "golPerGiocata": 0.322
    },
    "riserva": {
-    "stagioni": 20,
-    "ovr": 72.2,
-    "gol": 7.35,
-    "assist": 3.95,
-    "giocate": 33.4,
-    "partite": 35.15,
-    "golPerGiocata": 0.22
+    "stagioni": 121,
+    "ovr": 74.28,
+    "gol": 9.31,
+    "assist": 4.96,
+    "giocate": 35.69,
+    "partite": 36.57,
+    "golPerGiocata": 0.261
    },
    "rotazione": {
-    "stagioni": 2,
-    "ovr": 75.5,
-    "gol": 9,
-    "assist": 5,
-    "giocate": 38,
-    "partite": 38,
-    "golPerGiocata": 0.237
+    "stagioni": 48,
+    "ovr": 80.71,
+    "gol": 15.54,
+    "assist": 7.83,
+    "giocate": 40.02,
+    "partite": 40.04,
+    "golPerGiocata": 0.388
+   },
+   "titolare": {
+    "stagioni": 11,
+    "ovr": 85.27,
+    "gol": 21.45,
+    "assist": 11.45,
+    "giocate": 43.91,
+    "partite": 44,
+    "golPerGiocata": 0.489
    }
   },
   "partita": {
-   "golEroePerPartita": 0.211,
-   "golEroePerGiocata": 0.237,
-   "quotaEroe": 24.9
+   "golEroePerPartita": 0.304,
+   "golEroePerGiocata": 0.314,
+   "quotaEroe": 28.5
   },
   "titolarita": {
-   "gareValutate": 1020,
-   "conContratto": 888,
-   "titolare": 85.4,
-   "panchina": 14.6,
+   "gareValutate": 6460,
+   "conContratto": 6217,
+   "titolare": 92.6,
+   "panchina": 7.4,
    "nonConvocato": 0,
-   "minutiTeoriciMedi": 80.26,
-   "daSvincolato": 123,
+   "minutiTeoriciMedi": 85.14,
+   "daSvincolato": 161,
    "perStagione": {
     "1": {
-     "gare": 102,
-     "titolare": 100,
-     "minuti": 90
+     "gare": 640,
+     "titolare": 92,
+     "minuti": 85.1
     },
     "2": {
-     "gare": 101,
-     "titolare": 100,
-     "minuti": 90
+     "gare": 627,
+     "titolare": 93.6,
+     "minuti": 86.03
     },
     "3": {
-     "gare": 98,
-     "titolare": 68.4,
-     "minuti": 68.54
+     "gare": 626,
+     "titolare": 82.1,
+     "minuti": 78.37
     },
     "4": {
-     "gare": 68,
-     "titolare": 94.1,
-     "minuti": 86.29
+     "gare": 612,
+     "titolare": 93.1,
+     "minuti": 85.79
     },
     "5": {
-     "gare": 84,
-     "titolare": 78.6,
-     "minuti": 76.45
+     "gare": 619,
+     "titolare": 91.9,
+     "minuti": 84.5
     },
     "6": {
-     "gare": 99,
-     "titolare": 77.8,
-     "minuti": 75.87
+     "gare": 627,
+     "titolare": 91.2,
+     "minuti": 83.93
     },
     "7": {
-     "gare": 101,
-     "titolare": 64.4,
-     "minuti": 65.54
+     "gare": 609,
+     "titolare": 92.6,
+     "minuti": 85.02
     },
     "8": {
-     "gare": 68,
-     "titolare": 80.9,
-     "minuti": 76.56
+     "gare": 608,
+     "titolare": 97.4,
+     "minuti": 88.16
     },
     "9": {
-     "gare": 68,
-     "titolare": 100,
-     "minuti": 90
+     "gare": 606,
+     "titolare": 95.9,
+     "minuti": 87.41
     },
     "10": {
-     "gare": 99,
-     "titolare": 93.9,
-     "minuti": 86.19
+     "gare": 643,
+     "titolare": 95.8,
+     "minuti": 87.23
     }
    },
    "perRuoloSquadra": {
     "riserva": {
-     "gare": 632,
-     "titolare": 91.1
+     "gare": 4139,
+     "titolare": 92.5
     },
     "primavera": {
-     "gare": 187,
-     "titolare": 60.4
+     "gare": 221,
+     "titolare": 62.9
     },
     "rotazione": {
-     "gare": 69,
+     "gare": 1567,
+     "titolare": 95.5
+    },
+    "titolare": {
+     "gare": 290,
      "titolare": 100
     }
    }
   },
   "nazionale": {
-   "carriereConPresenza": 0,
-   "presenzeMax": 0,
-   "presenzeTot": 0,
-   "stagioniConPresenzeNuove": 0,
-   "presenzeNuove": 0,
+   "carriereConPresenza": 8,
+   "presenzeMax": 12,
+   "presenzeTot": 28,
+   "stagioniConPresenzeNuove": 17,
+   "presenzeNuove": 28,
    "stagioniConPresenzeNuoveDaSvincolatoTuttaStagione": 0,
    "presenzeDaSvincolatoTuttaStagione": 0,
-   "stagioniConPresenzeNuoveConSettimaneSvincolato": 0,
-   "primaPresenza": [],
-   "valutazioniCancello": 69,
-   "valutazioniPerStagione": 2.3,
-   "valutazioniPassate": 7,
+   "stagioniConPresenzeNuoveConSettimaneSvincolato": 1,
+   "primaPresenza": [
+    {
+     "f": "syn-03.json",
+     "idx": 8,
+     "age": 27,
+     "ovr": 82,
+     "nation": "Germania"
+    },
+    {
+     "f": "syn-07.json",
+     "idx": 6,
+     "age": 29,
+     "ovr": 84,
+     "nation": "Argentina"
+    },
+    {
+     "f": "syn-08.json",
+     "idx": 7,
+     "age": 23,
+     "ovr": 79,
+     "nation": "Olanda"
+    },
+    {
+     "f": "syn-10.json",
+     "idx": 10,
+     "age": 28,
+     "ovr": 90,
+     "nation": "Italia"
+    },
+    {
+     "f": "syn-13.json",
+     "idx": 8,
+     "age": 29,
+     "ovr": 80,
+     "nation": "Germania"
+    },
+    {
+     "f": "syn-16.json",
+     "idx": 10,
+     "age": 26,
+     "ovr": 85,
+     "nation": "Brasile"
+    },
+    {
+     "f": "syn-17.json",
+     "idx": 4,
+     "age": 21,
+     "ovr": 84,
+     "nation": "Argentina"
+    },
+    {
+     "f": "syn-18.json",
+     "idx": 8,
+     "age": 26,
+     "ovr": 81,
+     "nation": "Olanda"
+    }
+   ],
+   "valutazioniCancello": 393,
+   "valutazioniPerStagione": 2.07,
+   "valutazioniPassate": 72,
    "settimaneValutate": [
     [
-     "35",
-     24
+     "28",
+     143
     ],
     [
-     "28",
-     23
+     "35",
+     141
     ],
     [
      "19",
-     19
+     90
     ],
     [
      "9",
-     3
+     19
     ]
    ]
   },
@@ -396,12 +530,12 @@
   "impulsi": {
    "catalogo": 106,
    "senzaCondizioneCatalogo": 40,
-   "eventi": 707,
-   "perStagione": 23.57,
-   "eventiSenzaCondizione": 331,
-   "quotaSenzaCondizione": 46.8,
-   "unicPerCarriera": 92,
-   "ripetizioni": 431
+   "eventi": 4292,
+   "perStagione": 22.59,
+   "eventiSenzaCondizione": 2039,
+   "quotaSenzaCondizione": 47.5,
+   "unicPerCarriera": 91.95,
+   "ripetizioni": 2545
   },
   "creazione": []
  },
@@ -620,6 +754,102 @@
  "gemelli": {
   "righe": [
    {
+    "f": "gem-01-accademia.json",
+    "base": 1,
+    "arm": "accademia",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 571,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 94.88,
+    "fatigueMedia": 36.91,
+    "popFine": 91,
+    "trustFine": 47,
+    "saldoFine": 3950621,
+    "legacy": 249,
+    "patrimonio": 15,
+    "gol": 30,
+    "accademiaRagazzi": 3,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-beni.json",
+    "base": 1,
+    "arm": "beni",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 6,
+    "statsFine": 568,
+    "settimaneInfortunio": 10,
+    "moraleMedia": 95.68,
+    "fatigueMedia": 37.97,
+    "popFine": 89,
+    "trustFine": 56,
+    "saldoFine": 1939488,
+    "legacy": 290,
+    "patrimonio": 16,
+    "gol": 20,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-invest-prudente.json",
+    "base": 1,
+    "arm": "invest-prudente",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 574,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 93.4,
+    "fatigueMedia": 37.92,
+    "popFine": 71,
+    "trustFine": 22,
+    "saldoFine": 2443924,
+    "legacy": 225,
+    "patrimonio": 6,
+    "gol": 23,
+    "accademiaRagazzi": 0,
+    "investimenti": [
+     23258,
+     19390,
+     14636
+    ],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-invest-rischioso.json",
+    "base": 1,
+    "arm": "invest-rischioso",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 574,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 93.4,
+    "fatigueMedia": 37.92,
+    "popFine": 71,
+    "trustFine": 22,
+    "saldoFine": 2367273,
+    "legacy": 225,
+    "patrimonio": 6,
+    "gol": 23,
+    "accademiaRagazzi": 0,
+    "investimenti": [
+     -52703,
+     -5199,
+     8535
+    ],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
     "f": "gem-01-nessuna.json",
     "base": 1,
     "arm": "nessuna",
@@ -658,6 +888,50 @@
     "legacy": 225,
     "patrimonio": 6,
     "gol": 23,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-staff-fisio.json",
+    "base": 1,
+    "arm": "staff-fisio",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 574,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 93.4,
+    "fatigueMedia": 37.92,
+    "popFine": 71,
+    "trustFine": 22,
+    "saldoFine": 2899632,
+    "legacy": 225,
+    "patrimonio": 6,
+    "gol": 23,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-01-staff-mental.json",
+    "base": 1,
+    "arm": "staff-mental",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 7,
+    "statsFine": 571,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 96.9,
+    "fatigueMedia": 36.91,
+    "popFine": 87,
+    "trustFine": 47,
+    "saldoFine": 3913984,
+    "legacy": 240,
+    "patrimonio": 6,
+    "gol": 30,
     "accademiaRagazzi": 0,
     "investimenti": [],
     "rinnoviOk": 0,
@@ -706,10 +980,334 @@
     "investimenti": [],
     "rinnoviOk": 0,
     "exp": 0
+   },
+   {
+    "f": "gem-01-staff-tutti.json",
+    "base": 1,
+    "arm": "staff-tutti",
+    "stagioni": 4,
+    "ovrFine": 76,
+    "dOvr": 8,
+    "statsFine": 583,
+    "settimaneInfortunio": 10,
+    "moraleMedia": 96.65,
+    "fatigueMedia": 38.76,
+    "popFine": 84,
+    "trustFine": 67,
+    "saldoFine": 2755352,
+    "legacy": 144,
+    "patrimonio": 6,
+    "gol": 24,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 0,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-accademia.json",
+    "base": 6,
+    "arm": "accademia",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 7,
+    "statsFine": 572,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 96.08,
+    "fatigueMedia": 37.15,
+    "popFine": 86,
+    "trustFine": 72.9,
+    "saldoFine": 2657424,
+    "legacy": 151,
+    "patrimonio": 15,
+    "gol": 31,
+    "accademiaRagazzi": 3,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-beni.json",
+    "base": 6,
+    "arm": "beni",
+    "stagioni": 4,
+    "ovrFine": 73,
+    "dOvr": 6,
+    "statsFine": 567,
+    "settimaneInfortunio": 8,
+    "moraleMedia": 97.18,
+    "fatigueMedia": 37.75,
+    "popFine": 65,
+    "trustFine": 65.1,
+    "saldoFine": 1468224,
+    "legacy": 156,
+    "patrimonio": 16,
+    "gol": 35,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-invest-prudente.json",
+    "base": 6,
+    "arm": "invest-prudente",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 7,
+    "statsFine": 572,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 96.08,
+    "fatigueMedia": 37.15,
+    "popFine": 81,
+    "trustFine": 72.9,
+    "saldoFine": 2259358,
+    "legacy": 142,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [
+     17928,
+     25914,
+     17292
+    ],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-invest-rischioso.json",
+    "base": 6,
+    "arm": "invest-rischioso",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 8,
+    "statsFine": 578,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 95.79,
+    "fatigueMedia": 37.15,
+    "popFine": 63,
+    "trustFine": 62.8,
+    "saldoFine": 2211788,
+    "legacy": 147,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [
+     -100000,
+     22747,
+     80817
+    ],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-nessuna.json",
+    "base": 6,
+    "arm": "nessuna",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 8,
+    "statsFine": 578,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 95.79,
+    "fatigueMedia": 37.15,
+    "popFine": 63,
+    "trustFine": 62.8,
+    "saldoFine": 2868224,
+    "legacy": 147,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-nessuna2.json",
+    "base": 6,
+    "arm": "nessuna2",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 7,
+    "statsFine": 572,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 96.08,
+    "fatigueMedia": 37.15,
+    "popFine": 81,
+    "trustFine": 72.9,
+    "saldoFine": 2868224,
+    "legacy": 142,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-staff-fisio.json",
+    "base": 6,
+    "arm": "staff-fisio",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 8,
+    "statsFine": 578,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 95.79,
+    "fatigueMedia": 37.15,
+    "popFine": 63,
+    "trustFine": 62.8,
+    "saldoFine": 2655424,
+    "legacy": 147,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-staff-mental.json",
+    "base": 6,
+    "arm": "staff-mental",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 7,
+    "statsFine": 572,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 98.02,
+    "fatigueMedia": 37.15,
+    "popFine": 81,
+    "trustFine": 72.9,
+    "saldoFine": 2697984,
+    "legacy": 142,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-staff-nutri.json",
+    "base": 6,
+    "arm": "staff-nutri",
+    "stagioni": 4,
+    "ovrFine": 74,
+    "dOvr": 7,
+    "statsFine": 570,
+    "settimaneInfortunio": 12,
+    "moraleMedia": 96.11,
+    "fatigueMedia": 38.58,
+    "popFine": 61,
+    "trustFine": 76.2,
+    "saldoFine": 2655424,
+    "legacy": 217,
+    "patrimonio": 6,
+    "gol": 31,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-staff-trainer.json",
+    "base": 6,
+    "arm": "staff-trainer",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 8,
+    "statsFine": 579,
+    "settimaneInfortunio": 18,
+    "moraleMedia": 96.11,
+    "fatigueMedia": 37.14,
+    "popFine": 82,
+    "trustFine": 57.400000000000006,
+    "saldoFine": 2570304,
+    "legacy": 144,
+    "patrimonio": 6,
+    "gol": 29,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
+   },
+   {
+    "f": "gem-06-staff-tutti.json",
+    "base": 6,
+    "arm": "staff-tutti",
+    "stagioni": 4,
+    "ovrFine": 75,
+    "dOvr": 8,
+    "statsFine": 583,
+    "settimaneInfortunio": 12,
+    "moraleMedia": 97.7,
+    "fatigueMedia": 39.01,
+    "popFine": 67,
+    "trustFine": 77.5,
+    "saldoFine": 1974464,
+    "legacy": 140,
+    "patrimonio": 6,
+    "gol": 28,
+    "accademiaRagazzi": 0,
+    "investimenti": [],
+    "rinnoviOk": 1,
+    "exp": 0
    }
   ],
   "delta": {
    "1": [
+    {
+     "arm": "accademia",
+     "dOvr": -1,
+     "dStats": -8,
+     "dInf": 16,
+     "dMorale": 0.14,
+     "dFatica": -1.51,
+     "dPop": 9,
+     "dTrust": 14,
+     "dSaldo": 19473,
+     "dLegacy": 15,
+     "dGol": 2
+    },
+    {
+     "arm": "beni",
+     "dOvr": -2,
+     "dStats": -11,
+     "dInf": 8,
+     "dMorale": 0.94,
+     "dFatica": -0.45,
+     "dPop": 7,
+     "dTrust": 23,
+     "dSaldo": -1991660,
+     "dLegacy": 56,
+     "dGol": -8
+    },
+    {
+     "arm": "invest-prudente",
+     "dOvr": -1,
+     "dStats": -5,
+     "dInf": 16,
+     "dMorale": -1.34,
+     "dFatica": -0.5,
+     "dPop": -11,
+     "dTrust": -11,
+     "dSaldo": -1487224,
+     "dLegacy": -9,
+     "dGol": -5
+    },
+    {
+     "arm": "invest-rischioso",
+     "dOvr": -1,
+     "dStats": -5,
+     "dInf": 16,
+     "dMorale": -1.34,
+     "dFatica": -0.5,
+     "dPop": -11,
+     "dTrust": -11,
+     "dSaldo": -1563875,
+     "dLegacy": -9,
+     "dGol": -5
+    },
     {
      "arm": "nessuna2",
      "dOvr": -1,
@@ -722,6 +1320,32 @@
      "dSaldo": -804508,
      "dLegacy": -9,
      "dGol": -5
+    },
+    {
+     "arm": "staff-fisio",
+     "dOvr": -1,
+     "dStats": -5,
+     "dInf": 16,
+     "dMorale": -1.34,
+     "dFatica": -0.5,
+     "dPop": -11,
+     "dTrust": -11,
+     "dSaldo": -1031516,
+     "dLegacy": -9,
+     "dGol": -5
+    },
+    {
+     "arm": "staff-mental",
+     "dOvr": -1,
+     "dStats": -8,
+     "dInf": 16,
+     "dMorale": 2.16,
+     "dFatica": -1.51,
+     "dPop": 5,
+     "dTrust": 14,
+     "dSaldo": -17164,
+     "dLegacy": 6,
+     "dGol": 2
     },
     {
      "arm": "staff-nutri",
@@ -748,6 +1372,151 @@
      "dSaldo": -291828,
      "dLegacy": -92,
      "dGol": -10
+    },
+    {
+     "arm": "staff-tutti",
+     "dOvr": 0,
+     "dStats": 4,
+     "dInf": 8,
+     "dMorale": 1.91,
+     "dFatica": 0.34,
+     "dPop": 2,
+     "dTrust": 34,
+     "dSaldo": -1175796,
+     "dLegacy": -90,
+     "dGol": -4
+    }
+   ],
+   "6": [
+    {
+     "arm": "accademia",
+     "dOvr": -1,
+     "dStats": -6,
+     "dInf": 0,
+     "dMorale": 0.29,
+     "dFatica": 0,
+     "dPop": 23,
+     "dTrust": 10.1,
+     "dSaldo": -210800,
+     "dLegacy": 4,
+     "dGol": 0
+    },
+    {
+     "arm": "beni",
+     "dOvr": -2,
+     "dStats": -11,
+     "dInf": -10,
+     "dMorale": 1.39,
+     "dFatica": 0.6,
+     "dPop": 2,
+     "dTrust": 2.3,
+     "dSaldo": -1400000,
+     "dLegacy": 9,
+     "dGol": 4
+    },
+    {
+     "arm": "invest-prudente",
+     "dOvr": -1,
+     "dStats": -6,
+     "dInf": 0,
+     "dMorale": 0.29,
+     "dFatica": 0,
+     "dPop": 18,
+     "dTrust": 10.1,
+     "dSaldo": -608866,
+     "dLegacy": -5,
+     "dGol": 0
+    },
+    {
+     "arm": "invest-rischioso",
+     "dOvr": 0,
+     "dStats": 0,
+     "dInf": 0,
+     "dMorale": 0,
+     "dFatica": 0,
+     "dPop": 0,
+     "dTrust": 0,
+     "dSaldo": -656436,
+     "dLegacy": 0,
+     "dGol": 0
+    },
+    {
+     "arm": "nessuna2",
+     "dOvr": -1,
+     "dStats": -6,
+     "dInf": 0,
+     "dMorale": 0.29,
+     "dFatica": 0,
+     "dPop": 18,
+     "dTrust": 10.1,
+     "dSaldo": 0,
+     "dLegacy": -5,
+     "dGol": 0
+    },
+    {
+     "arm": "staff-fisio",
+     "dOvr": 0,
+     "dStats": 0,
+     "dInf": 0,
+     "dMorale": 0,
+     "dFatica": 0,
+     "dPop": 0,
+     "dTrust": 0,
+     "dSaldo": -212800,
+     "dLegacy": 0,
+     "dGol": 0
+    },
+    {
+     "arm": "staff-mental",
+     "dOvr": -1,
+     "dStats": -6,
+     "dInf": 0,
+     "dMorale": 2.23,
+     "dFatica": 0,
+     "dPop": 18,
+     "dTrust": 10.1,
+     "dSaldo": -170240,
+     "dLegacy": -5,
+     "dGol": 0
+    },
+    {
+     "arm": "staff-nutri",
+     "dOvr": -1,
+     "dStats": -8,
+     "dInf": -6,
+     "dMorale": 0.32,
+     "dFatica": 1.43,
+     "dPop": -2,
+     "dTrust": 13.4,
+     "dSaldo": -212800,
+     "dLegacy": 70,
+     "dGol": 0
+    },
+    {
+     "arm": "staff-trainer",
+     "dOvr": 0,
+     "dStats": 1,
+     "dInf": 0,
+     "dMorale": 0.32,
+     "dFatica": -0.01,
+     "dPop": 19,
+     "dTrust": -5.4,
+     "dSaldo": -297920,
+     "dLegacy": -3,
+     "dGol": -2
+    },
+    {
+     "arm": "staff-tutti",
+     "dOvr": 0,
+     "dStats": 5,
+     "dInf": -6,
+     "dMorale": 1.91,
+     "dFatica": 1.86,
+     "dPop": 4,
+     "dTrust": 14.7,
+     "dSaldo": -893760,
+     "dLegacy": -7,
+     "dGol": -3
     }
    ]
   }

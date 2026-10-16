@@ -1,0 +1,183 @@
+{
+ "version": "7.999.170",
+ "trainer": {
+  "fatica20_lv0": 0.759,
+  "fatica20_lv1": 0.837,
+  "fatica20_lv2": 0.8777,
+  "fatica20_lv3": 0.915,
+  "fatica40_lv0": 0.518,
+  "fatica40_lv1": 0.568,
+  "fatica40_lv2": 0.595,
+  "fatica40_lv3": 0.6203
+ },
+ "morale": {
+  "da50": {
+   "nessuno": 51,
+   "mental1": 51,
+   "mental3": 52,
+   "casa": 51,
+   "casa+barca": 52
+  },
+  "da60": {
+   "nessuno": 60,
+   "mental1": 61,
+   "mental3": 62,
+   "casa": 61,
+   "casa+barca": 61
+  },
+  "da70": {
+   "nessuno": 70,
+   "mental1": 70,
+   "mental3": 71,
+   "casa": 70,
+   "casa+barca": 71
+  }
+ },
+ "moraleEquilibrio": {
+  "nessuno": 60,
+  "mental3": 81,
+  "casa+barca": 71
+ },
+ "infortuni": {
+  "fatica45_lv0": 0,
+  "fatica45_lv1": 0,
+  "fatica45_lv2": 0,
+  "fatica45_lv3": 0,
+  "fatica60_lv0": 3.025,
+  "fatica60_lv1": 2.765,
+  "fatica60_lv2": 2.547,
+  "fatica60_lv3": 2.292,
+  "fatica70_lv0": 6.82,
+  "fatica70_lv1": 6.265,
+  "fatica70_lv2": 5.735,
+  "fatica70_lv3": 5.17,
+  "fatica80_lv0": 7.005,
+  "fatica80_lv1": 6.438,
+  "fatica80_lv2": 5.89,
+  "fatica80_lv3": 5.303
+ },
+ "economia": {
+  "nessuno": 5400,
+  "trainer3": 3440,
+  "nutri3": 4000,
+  "fisio3": 4000,
+  "mental3": 4280,
+  "tutti3": -480,
+  "accademia": 5000,
+  "svincolato": "nessun accredito"
+ },
+ "investimenti": {
+  "prudente": {
+   "media": 3.52,
+   "min": 2,
+   "max": 5,
+   "negative": 0,
+   "n": 300
+  },
+  "bilanciato": {
+   "media": 3.02,
+   "min": -3.9,
+   "max": 9.9,
+   "negative": 81,
+   "n": 300
+  },
+  "rischioso": {
+   "media": 3.54,
+   "min": -20,
+   "max": 29.9,
+   "negative": 133,
+   "n": 300
+  }
+ },
+ "beni": [
+  {
+   "k": "casa",
+   "costo": 250000,
+   "pop": 1,
+   "trust": 2,
+   "moraleSett": 0.5
+  },
+  {
+   "k": "auto",
+   "costo": 150000,
+   "pop": 3,
+   "trust": -2,
+   "moraleSett": 0
+  },
+  {
+   "k": "barca",
+   "costo": 700000,
+   "pop": 4,
+   "trust": -3,
+   "moraleSett": 0.5
+  },
+  {
+   "k": "fondazione",
+   "costo": 300000,
+   "pop": 6,
+   "trust": 2,
+   "moraleSett": 0
+  }
+ ],
+ "staffTabella": [
+  {
+   "k": "perkTrainer",
+   "fx": [
+    "+10% efficacia allenamenti",
+    "+15% efficacia allenamenti",
+    "+20% efficacia allenamenti"
+   ],
+   "costoLv": [
+    700,
+    1260,
+    1960
+   ]
+  },
+  {
+   "k": "perkNutrition",
+   "fx": [
+    "Recupero fatica +2 a settimana",
+    "Recupero fatica +3 a settimana",
+    "Recupero fatica +4 a settimana"
+   ],
+   "costoLv": [
+    500,
+    900,
+    1400
+   ]
+  },
+  {
+   "k": "perkFisio",
+   "fx": [
+    "Rischio infortuni −8%",
+    "Rischio infortuni −16%",
+    "Rischio infortuni −24%"
+   ],
+   "costoLv": [
+    500,
+    900,
+    1400
+   ]
+  },
+  {
+   "k": "perkMental",
+   "fx": [
+    "Morale +0,5 a settimana",
+    "Morale +1 a settimana",
+    "Morale +1,5 a settimana"
+   ],
+   "costoLv": [
+    400,
+    720,
+    1120
+   ]
+  }
+ ],
+ "accademia": {
+  "costo": {
+   "found": 150000,
+   "week": 400
+  },
+  "legacyMax": "rag min(30, tot*3) + fondazione 10 + ricchezza 0/6/12/20"
+ }
+}
