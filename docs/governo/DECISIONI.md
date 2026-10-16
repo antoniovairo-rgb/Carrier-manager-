@@ -403,3 +403,34 @@ PO: «Pubblica appena è verde». La 7.999.169 si pubblica appena la catena (gir
 2. **PO-228**: «**Ritara i passaggi a ~814**» — solo i passaggi verso il bersaglio misurato, senza toccare gol, tiri, xG.
 3. **Zona G**: «**Sì, solo questi due**» — eccezione concessa solo per PO-222 (presenza al squalificato su «Simula») e PO-223 (resa dell'investimento legata a puntata e scelta; «esito incerto» davvero incerto), con interruttore rosso e guardiano carriera. Il resto della zona resta fermo.
 4. **7.999.170**: «**Subito senza il 22**» — si costruisce ora coi rami pronti (decisioni-245, procuratore-253, crediti-254, badge-toast-255, taccuino-169, schede-259, backup-167, grafica-217-066); il giro 22 (highlight-252) va nella 7.999.171.
+
+## 15/10 notte — PO-228 e ripartenza del giro 27
+1. **PO-228 / PO-207**: «**Restringi, poi ritara**» — lo schieramento dei ventidue con 11 passi di possesso alla ripresa dal centro resta solo dopo i gol da piazzato o nati in scena (come dichiarato dal giro 27); agli altri gol si riparte dal centro senza quel possesso lungo. Poi si ritarano i passaggi a ~814 (patch pronta del giro 32, da tarare di nuovo sulla misura dopo la restrizione). Tiri, xG e cross devono tornare verso il profilo della 169.
+2. **7.999.170**: «**Sì, pubblica**» appena la catena è verde; la restrizione entra nella 7.999.171.
+
+## 15/10 notte — Briefing del lotto 1 (questionario)
+1. **Filone «Highlight dell'eroe»**, prossimo giro (base 7.999.171, con i giri 22 e 31): «**Prima apertura vuota**» — prima PO-261 (primo highlight su prato vuoto, 5 partite su 10), poi PO-258 (portiere sulla punizione).
+2. **PO-262** (determinismo, match-sequence rosso già sulla 169): «**Giro di misura ora**» — sessione Opus che trova il generatore non seedato e la release che l'ha introdotto, poi corregge con rosso e guardiano.
+3. **Voci già sul sito** (PO-123, 209, 230, 233, 235, 242, 243, 244): nessuna ancora vista funzionare dal PO, restano «da verificare».
+4. **Esiti «bugiardi»** (PO-218, 240, 250): «**Dentro il filone highlight**», dopo la prima apertura.
+
+## 15/10 notte — Briefing degli altri lotti (questionario)
+1. **Zona G**: «**Correggi tutte e tre**» — eccezione estesa a PO-263 (squalificato/non convocato/svincolato che si infortuna e si stanca su «Simula»), PO-264 (svincolato con voto nell'Europa simulata), PO-265 («Investo metà del conto» toglie sempre 40.000€). Giro Opus con interruttori e guardiani carriera; il resto della zona G resta fermo.
+2. **L6**: «**Proposta e questionario**» — dai numeri della fase 1 (RAPPORTO-carriere-l6) una proposta per PO-154…157 e PO-098, portata al PO in un questionario; nessuna modifica al gioco.
+3. **L3/L4 in parallelo a L1**: solo «**PO-171 via CH38**» (cerimonie, ritratto dei menu, download). PO-180, PO-168, PO-023 restano in coda.
+4. **L5, L7, L8**: «**Dopo L1, nell'ordine**».
+
+## 15/10 notte — Mega rilascio del 16/10 (chiusura di L1)
+1. **Orario**: «**Rilascio delle 16**» del 16/10 (14:00 UTC). Unione in mattinata, catena notte completa, pubblicazione alle 16 se verde.
+2. **Perimetro L1**: «**Tutte corrette + tuo collaudo**» — ogni voce L1 aperta ha una correzione nel rilascio o un verdetto misurato; dopo la pubblicazione questionario per chiuderle una per una (FATTO solo dal PO).
+3. **Fuori L1**: «**Stadi + giri già in corso**» — giro stadi 3D (PO-071 fase 3, nuove tipologie) con grafica correlata: cerimonie nello stadio (PO-137/002), pubblico e cartelloni, ingresso in campo, kit grafico (PO-061, L5). Entrano anche zona G (giri 33/37) e via CH38 (giro 39) se verdi.
+4. Consegna dei giri entro le 06:00 UTC del 16/10 (08:00 Roma); quello che non è consegnato e verde entro l'unione slitta, dichiarato.
+
+## 16/10 notte — Questionario sulla proposta L6 (docs/governo/PROPOSTA-L6.md, giro 38)
+1. **Inizio**: «**Banco corretto, poi Nazionale**» — fase 1-bis di sola misura (rinnovo accettato quando offerto e conteggio delle carriere senza offerta, solo gli 8 archetipi veri con le statistiche della creazione, 10 carriere dalla creazione normale, 5 con la Nazionale giocata, gemelli economici dell'Ufficio, minuti e titolarità), poi niente Nazionale da svincolato, poi gli impulsi.
+2. **PO-154**: «**Memoria + seguiti + contesto**» (opzione A+B della proposta).
+3. **PO-155**: «**Svincolato, poi finestre + CT**» — qualificazioni del torneo invariate.
+4. **PO-157**: «**Misura, rinnovo, potatura**».
+5. **PO-156**: «**Bersagli del PO, poi taratura**» — il PO fisserà 4-5 numeri per fase.
+6. **PO-098**: «**Misura, poi motore, dopo L1**»; nomi degli stili: **Finalizzatore · Regista · Incursore · Trascinatore**; Enfant diventa tratto di crescita.
+7. **Zona G**: «**Passo per passo**» — il banco corretto parte ora (solo test); per ogni correzione successiva il PO concede l'eccezione coi numeri del banco nuovo.
