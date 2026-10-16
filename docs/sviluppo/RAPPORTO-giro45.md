@@ -83,6 +83,7 @@ Fonte: audit statico del sorgente (solo lettura, file:riga sul ramo) più le mis
 | 11 | simulazione rapida: risultato | **motore** (`simulaPartitaMotore`) | `src/10:885-890` | `__CPM_NO_SIMV2` | ok |
 | 12 | simulazione rapida: **gol e assist dell'eroe** | `_pSimStats` (probabilità sui gol di squadra), non il tabellino del motore | `src/10:883-905` (letto) | nessuno | GRANDE, 3-5 h: cambia statistiche/economia di carriera, serve catena carriera |
 | 13 | partite fra altri club | Poisson | `updateStandings` | — | fuori ambito (zona G) |
+| 15 | **ripresa del motore dopo una scena dell'eroe** | **3D**: posizione dell'eroe resa a fine scena (dipende dal tempo di render) | `seme-a`: primo ingresso divergente #486 `chiedi.riprendi` al 17', eroe 83,7 vs 80,7; rosso anche sulla base | nessuno | **misurato** in questo giro (§3.1); MEDIO 2-4 h, bloccante (a) della prontezza |
 | 14 | scene dell'eroe: dal motore o dal catalogo | motore (giro 17: 55/55) | `catalogo-022` | `__CPM_NO_SEG022` | rigiocato in questo giro, vedi §3 |
 
 ---
@@ -133,4 +134,46 @@ per scelta: locomozione).
 
 ## 3. Rituali
 
-(da compilare a fine catena)
+Build `CPM_FORZA_BUILD=1 node tools/build-src.mjs` + `node tools/check-src.mjs` (allineato a HEAD). Catena **`mirata`**
+(`node ci-runner.mjs mirata`: file toccati `src/12`, `src/15` → 48 passi) sul build esatto 57dd6bb.
+
+**Interruzione:** la prima corsa (00:13) è stata uccisa dal **riavvio del container** alle ~01:40, dopo 17 passi. Ho rifatto
+solo i mancanti sullo stesso build (regola PO 14/10, `CPM_CI_FATTI` dell'esecutore, che lo registra come giro composto).
+
+ESITO_CATENA
+
+**Guardiani richiesti fuori dalla mappa, sullo stesso build:**
+
+| guardiano | esito |
+|---|---|
+| `gesti-motore-068` | ✅ verde 24/26; rosso visibile 18 < 24 |
+| `gesto-vocabolario` | ✅ verde |
+| `replay` | ✅ PASS, 8 highlight |
+| `scena-motore-147` | ✅ verde (14 scene generate, rosso 0) |
+| `catalogo-022` | ✅ verde (nella catena) |
+| `validate-situations` | ✅ 14/14 (nella catena, 740 s) |
+| `partita-vera` | ✅ verde (nella catena) |
+| `tecnica-045` (nuovo) | ✅ verde e rosso visibile (anche nella catena) |
+| **`seme-a`** | ❌ **rosso — anche sulla base 5eb5500**, vedi sotto |
+
+### 3.1 Due rossi non attribuibili al ramo (misurati sulla base)
+
+Worktree della base `lavoro/171-base` 5eb5500, stessi `node_modules`, stesso browser:
+
+- **`difesa-252`**: sul ramo rosso due volte (verde 0/4, **rosso 0/4**: il braccio rosso non riproduce più il difetto); sulla
+  base **identico** (verde 0/4 · rosso 0/4). Il guardiano tocca solo scene difensive (tackle), che questo giro non modifica.
+  È il guardiano a non vedere più il suo rosso: va riparato da chi lo possiede (giro 22).
+- **`seme-a` — bloccante (a) della prontezza, da segnalare al PO.** Tre giri della stessa partita (S12, autoplay seminato):
+
+  | build | giro 0 | giro 1 | giro 2 | primo ingresso divergente |
+  |---|---|---|---|---|
+  | ramo 57dd6bb | 0-1 | 0-1 | 2-1 | #486 al 17' |
+  | base 5eb5500 | 2-2 | 2-1 | 0-1 | #486 al 17' (giri 1 e 2) |
+
+  Stesso punto di rottura in entrambi: `chiedi.riprendi` alla fine di una scena, con la **posizione dell'eroe vista nel 3D**
+  diversa fra i giri (83,7 contro 80,7) — il motore riparte da dove la scena ha lasciato l'eroe, e quella posizione dipende dal
+  tempo di render (headless). È un difetto PO-022 vero e proprio (il 3D che decide un ingresso del motore), **pre-esistente**,
+  non introdotto da questo giro. Stima: 2-4 h (consegnare al motore la posizione logica di fine scena invece di quella resa,
+  oppure quantizzarla), da fare con `seme-a`, `ripresa-202`, `partita-rigiocata-194`. Non fatto: fuori dalla consegna.
+
+Nessun bump di versione, nessuna promozione su `main`, nessuna riga di roadmap: ramo di sviluppo, come chiesto.
