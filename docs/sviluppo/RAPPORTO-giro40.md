@@ -103,6 +103,20 @@ Gate `validate-situations`: **✅ 14/14 PASS**, fingerprint 00001505, 0 failure 
 
 | guardiano | esito |
 |---|---|
+| test:logic · test:vision · typing-shortcuts · save-compat · design-system | ✅ |
+| career-critical | ✅ (782 s) |
+| replay | ✅ 8 highlight completi e coerenti |
+| **apertura-261** (nuovo) | ✅ verde in catena: prima immagine 0/4, scarto max 0 u · rosso 4/4 a parte |
+| **parata-258** (nuovo) | ✅ verde in catena 4/4 · rosso 4/4 a parte |
+| gk-dive-sync | ✅ |
+| gk-miss-229 | ✅ 12/12 giudicati, partenza del corpo mediana −0,44 s dal passaggio |
+| goal-postarc | ✅ classi A/B/C 0 |
+| glb-pronti-232 | ✅ verde, rosso visibile (2/4 non pronte) |
+| attesa-241 | ✅ mediana 11,5 s, vecchia scritta 0/2 |
+| hero-in-frame | ✅ |
+| analisi-217 · ingresso-camminata-245 | ✅ |
+| framing-guard | ❌ **preesistente**: mediana 0,094 < soglia 0,11 sul ramo **e identica sulla base** (0,094); fuori quadro ramo 2,5% contro base 3,3%. La soglia 0,11 viene dalla taglia 0,18; la partita normale e' a 0,12 dal 7.713 (decisione PO): va riallineata la soglia o ridecisa la taglia, non toccata qui |
+| seme-a | ❌ **preesistente** (sotto) |
 GUARDIANI_RIGHE
 
 **seme-a ROSSO, ma preesistente.** Sul ramo: rosso 2 prove su 2 («giro 2: sorteggi del motore diversi dal 18'», punteggio 1-0 contro
