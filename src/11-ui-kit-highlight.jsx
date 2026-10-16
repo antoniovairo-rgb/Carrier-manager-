@@ -1429,6 +1429,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      z -36) — src/12 _placeRow — ma li' non c'era nulla: uscivano da un cartellone. Ora un portale nella base della Tribuna
      Ovest e, se la tribuna e' arretrata, il tunnel telescopico fino a bordo campo; lo stile segue la tipologia (borgo:
      pensilina verde · arena: vetro e LED nel colore del club · gli altri: cemento con cornice del club). */
+  let _tun46info=null;
   if(_tun46){try{
     const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=-22,_w=5.2,_h=3.0;
     const _frM=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
@@ -1447,6 +1448,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const band=new THREE.Mesh(new THREE.BoxGeometry(_w+0.6,0.32,0.3),_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.3)}):_frM);
       band.position.set(_tx,_h+0.05,_mz-0.1);scene.add(band);}
     try{if(typeof window!=='undefined'){const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.tunnel={x:_tx,z0:+_fz.toFixed(2),z1:_mz,L:+_L.toFixed(2),stile:_stile};}}catch(_e){}
+    _tun46info={x:_tx,z1:_mz,L:_L,stile:_stile};
   }catch(_eT46){}}
   // [5.88.0 S2] INSEGNA col nome dello stadio (canvas wordmark) sopra la Tribuna Ovest — identità immediata
   // [7.661.0] PO: «il vecchio pannello/cartellone con il nome dello stadio deve essere eliminato» — il nome
@@ -1520,7 +1522,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   try{if(typeof window!=='undefined'){/* [giro 46] testimone: tipologia e costo dell'impianto (mesh = tetto dei draw call, indipendente dalla camera) */
     let nM=0,tri=0;scene.traverse(o=>{if(o.isMesh&&o.geometry){nM++;const g=o.geometry,c=((g.index?g.index.count:(g.attributes.position?g.attributes.position.count:0))/3);tri+=o.isInstancedMesh?c*o.count:c;}});
     const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.kind=K46;w.tpl=(T&&T.template)||null;w.cap=_capB;w.crown=_crown46;w.meshes=nM;w.tri=Math.round(tri);w.light=lightColor;}}catch(_e){}
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
+  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================

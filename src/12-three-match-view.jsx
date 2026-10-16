@@ -597,7 +597,7 @@ function ThreeMatchView(props){
          senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
       try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null,kind:(!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)&&_c.kind)||null};}catch(_e){}
-      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
+      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current._tun46=_sc.tunnel||null;/* [giro 46] bocca del tunnel per la camera dell'ingresso */sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
        scena resta con le parti già aggiunte (gradinate e folla: ecco perché lo stadio sembra abitato) ma
@@ -8940,8 +8940,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            lungo la fila schierata di sempre. Le formule delle due inquadrature storiche sono le stesse. */
         const _c245=!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)&&WALK_DUR>16;
         const _ORB245=12,_FIN245=6;
-        const prog=_c245?(walkT<_ORB245?(walkT/_ORB245)*0.85:walkT>=WALK_DUR-_FIN245?0.85+0.15*Math.min(1,(walkT-(WALK_DUR-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
-        if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
+        /* [giro 46 PO-071 — l'ingresso parte dal TUNNEL. Rosso __CPM_NO_STADI246] i primi 3,2 s la camera e' bassa a bordo campo e
+           guarda la bocca del tunnel della tipologia (portale, pensilina, tubo di vetro) mentre escono i primi; poi l'orbita, che
+           parte gia' da quel lato (angolo -90 gradi: x 0, z -27,6), quindi il raccordo e' un lerp breve. Orbita compressa nei
+           secondi restanti, stessi 12 s complessivi. */
+        const _tn46=(_c245&&sr.current&&sr.current._tun46&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?sr.current._tun46:null,_T46=_tn46?3.2:0;
+        const prog=_c245?(walkT<_T46?-2:walkT<_ORB245?((walkT-_T46)/(_ORB245-_T46))*0.85:walkT>=WALK_DUR-_FIN245?0.85+0.15*Math.min(1,(walkT-(WALK_DUR-_FIN245))/_FIN245):-1):Math.min(walkT/WALK_DUR,1);
+        if(prog===-2){
+          tPx=_tn46.x+8.5;tPy=3.3;tPz=-27.2;tLx=_tn46.x+0.5;tLy=1.7;tLz=_tn46.z1-1.2;
+          kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.6,1);
+          try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:((sr.current._stad455||{}).kind)||null,tunnel:_tn46.stile,y:tPy};}catch(_e){}
+        } else if(prog<0){/* accompagna la fila: camera bassa davanti alla testa (l'eroe), un passo avanti nel verso di marcia, sguardo indietro sulla colonna che lo segue */
           const _hz=clamp(hero.position.z,-32,32),_hx=hero.position.x;
           tPx=_hx-13;tPy=4.2;tPz=_hz+6;tLx=_hx+1;tLy=1.3;tLz=_hz-5;
           kp=Math.min(dt*1.4,1);kl=Math.min(dt*1.8,1);
