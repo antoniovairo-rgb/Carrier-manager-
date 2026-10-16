@@ -3329,6 +3329,8 @@ function ThreeMatchView(props){
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      const __w266c=(tg)=>{try{const W=sr.current._w266m;if(!W||typeof window==='undefined'||!window.__CPM_W266)return;const L=(window.__CPM_W266T=window.__CPM_W266T||[]);if(L.length>6000)return;for(const ii in W.ms){const mm=W.ms[ii];L.push([W.f,tg,+ii,+(mm.position.x+50).toFixed(1),+(mm.position.z/0.68+50).toFixed(1),(propsRef.current&&propsRef.current.matchPhase)||'']);}}catch(_e){}};/* [giro 43 PO-266] testimone solo sonde */
+      if(sr.current._w266m){sr.current._w266m.f++;if(sr.current._w266m.f>400)sr.current._w266m=null;}__w266c('S');
       /* [7.917.0 — F1] SOSPENSIONE PER IL CAMPO 2D. Fra un highlight e l'altro la scena 3D non si vede: il
          PO guarda il campo dall'alto. Smontarla sarebbe l'errore: rimontarla costa 2,6 s di compilazione
          shader (lezione 7.769), e il pallone «salterebbe» a ogni rientro. Quindi resta montata e CALDA, ma
@@ -4055,6 +4057,7 @@ function ThreeMatchView(props){
                rimedio la cambiava. Un cambiamento di comportamento non dimostrato che costa un invariante
                non si spedisce: revocato. La strada giusta e' partire dal caso rosso rimasto (gi50) e
                capire da dove nasce, non ritoccare la mappa per farla combaciare con un'ipotesi. */
+            else if(_hs===true&&_ht==="header"&&(P.hlReward==="recovery"||P.hlReward==="possession")&&!(typeof window!=="undefined"&&window.__CPM_NO_TESTA43B)){heroPostT=0;heroPostType="fist";}/* [giro 43 PO-143 #126] il colpo di testa che RECUPERA il pallone finisce sul compagno (arco sopra): mai in rete. Misurato prima: «Stacco difensivo deciso» riuscito -> in_net, cioe' un gol disegnato su un esito senza gol. Rosso __CPM_NO_TESTA43B */
             else if(_hs===true&&(_ht==="shot"||_ht==="penalty"||_ht==="freekick"||_ht==="header")){
               hlPostArcT=0;hlOutcomeVariant="goal";
               // CINE-3: chip/volley entrano alti in rete
@@ -4872,7 +4875,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                incorna — stessa idea del passaggio (r.3145), raggio corto perche' una spizzata e' un
                tocco, non un lancio — e ci arriva con un arco basso e breve. Se nessuno passa il filtro
                resta un tocco corto in avanti, mai la porta. Rosso __CPM_NO786. */
-            if(_vh==="header_flick"){ballArcH=1.5;ballArcDur=0.50;ballArcProf=null;
+            /* [giro 43 PO-143 #126 «Stacco difensivo deciso»] MISURATO: esito RECUPERO reso come colpo di testa al primo palo, cioe' un'incornata
+               verso la porta da centrocampo (57,6 -> 92-94, poi il pallone fin sulla linea di fondo). Chi vince un pallone alto per recuperarlo lo
+               indirizza a un compagno: stesso bersaglio dello smistamento. Rosso __CPM_NO_TESTA43B. */
+            const _rc43=(P.hlReward==='recovery'||P.hlReward==='possession')&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA43B);
+            if(_vh==="header_flick"||_rc43){ballArcH=1.5;ballArcDur=0.50;ballArcProf=null;
               /* [7.786.0] `ball` va interrogato con `typeof`: il gate estrae computeArc e la fa girare
                  ISOLATA, dove quel simbolo non esiste — dieci scene rosse con «ball is not defined».
                  Il ramo del passaggio se la cava perche' in quel percorso non ci arriva mai. */
@@ -4914,7 +4921,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              /* [7.215.0] ALTEZZA D'ARRIVO della testa: un'incornata ben fatta si SCHIACCIA a terra (il colpo di
                 testa che il portiere para meno), una sbagliata sale a mezz'altezza. Il tuffo di testa arriva
                 sempre raso. */
-             if(_vh!=="header_flick")ballArcTgtY=(_vh==="header_diving")?clamp(0.30+(1-_q)*0.35,0.28,0.70):clamp(1.35-_q*0.95,0.32,1.55);}}/* [7.786.0] lo smistamento tiene la sua quota d'arrivo: la formula qui sopra schiaccia a terra un colpo di testa che va in PORTA, e una palla smistata a un compagno non si schiaccia */
+             if(_vh!=="header_flick"&&!_rc43)ballArcTgtY=(_vh==="header_diving")?clamp(0.30+(1-_q)*0.35,0.28,0.70):clamp(1.35-_q*0.95,0.32,1.55);}}/* [7.786.0] lo smistamento tiene la sua quota d'arrivo: la formula qui sopra schiaccia a terra un colpo di testa che va in PORTA, e una palla smistata a un compagno non si schiaccia */
           else if(t==="cross"){ballArcT=0;ballArcActive=true;
             // CINE-1: variant cross — primo palo (stesso lato fascia), secondo palo (lato opposto), cutback (dal fondo)
             const _v=P.hlVariant;// _side definito sopra (globale all'arc block)
@@ -5386,7 +5393,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   NELLO SPECCHIO (semi-porta 3.66). Prima curled/far-post/1v1 atterravano a z fino a ±12 (fuori porta,
           //   sul prato) e l'in_net li "ritrascinava" dentro strisciando lungo la linea — gol surreali.
           //   I FAIL restano larghi (fuori/palo hanno bisogno di target fuori specchio).
-          if(ballArcActive&&P.hlSuccess===true&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")){
+          /* [giro 43 PO-143] il colpo di testa che va a un COMPAGNO (smistamento 7.786, recupero) non e' un tiro: i due clamp nello specchio qui
+             sotto lo riportavano in porta (misurato su #126: bersaglio 65-70 -> arco a 90-92). Rosso __CPM_NO_TESTA43B. */
+          const _amico43=t==="header"&&(P.hlVariant==="header_flick"||P.hlReward==="recovery"||P.hlReward==="possession")&&!(typeof window!=="undefined"&&window.__CPM_NO_TESTA43B);
+          if(ballArcActive&&P.hlSuccess===true&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&!_amico43){
             ballArcTgtZ=clamp(ballArcTgtZ,-3.3,3.3);
             ballArcTgtX=Math.max(ballArcTgtX,AWAY_GOAL_X-4);// niente atterraggi troppo corti su un gol
           }
@@ -5395,7 +5405,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              mira z=±4-9, ben oltre il palo a ±3.66): il tiro «parato» usciva di porta e il portiere si
              tuffava FUORI dai pali per parare un pallone che era fuori. Stesso clamp del gol — il tiro parato
              è on-target per definizione; palo/fuori/murato restano larghi come devono. */
-          if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
+          if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&!_amico43&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             ballArcTgtZ=clamp(ballArcTgtZ,-3.3,3.3);
             ballArcTgtX=Math.max(ballArcTgtX,AWAY_GOAL_X-4);
             /* [giro 40 PO-258 «Bordata potente» parata, codice 111 portiere fuori tempo — taccuino PO 7.999.169 S.13 W.21 43'. Rosso
@@ -5716,6 +5726,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }catch(_e26){try{if(typeof window!=='undefined')window.__CPM_ORIG26ERR=String(_e26&&_e26.message||_e26);}catch(_e){}}}
           if(!_o26&&_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
             tlSeg=resolveTimeline(_tlc);
+            /* [giro 43 PO-143, taccuino #64/#126 «azione confusionaria con colpo di testa», «pallone che arretra»] MISURATO (sonda-testa-126,
+               testimone __CPM_BU43, GLB acceso): nelle scene di testa del catalogo (pattern HEADER_ATTACK, senza origine del motore) la costruzione
+               a tre del 7.775.1 manda il pallone dal crossatore a un terzo uomo ALLE SPALLE e ritorno prima del cross — 12 u indietro su #126
+               (59,2 -> 46,8), 4 u su #64 — e il pallone, gia' consegnato all'eroe all'apertura, va avanti e indietro tre volte prima di
+               arrivargli in testa. Un colpo di testa nasce da UN cross: lo scarico e il rientro si tolgono qui, nel consumo; la timeline pura
+               (e la firma del backbone) restano quelle. Rosso __CPM_NO_TESTA43. */
+            if(P.hlType==='header'&&!P.hlDef&&_tlc.meta&&_tlc.meta.pattern==='HEADER_ATTACK'&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA43)){const _n43=tlSeg.length;tlSeg=tlSeg.filter(g=>!(g&&(g.tag==='scarico'||g.tag==='rientro')));
+              if(tlSeg.length!==_n43){const _ci43=tlSeg.findIndex(g=>g&&g.tag==='cross'),_ri43=_ci43>0?tlSeg[_ci43-1]:null;if(_ri43&&_ri43.to&&tlSeg[_ci43].from)tlSeg[_ci43]={...tlSeg[_ci43],from:_ri43.to.slice()};}/* il cross parte da dove il crossatore ha finito la corsa */
+              try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_TESTA43=window.__CPM_TESTA43||[]).push({k:P.hlSitKey,tolti:_n43-tlSeg.length});}catch(_e43){}}
             /* [7.236.0 batch «compare e scompare»] la coreografia deve essere UMANAMENTE corribile: il burst
                della timeline chiedeva ~25 u/s (90 km/h) e nessun inseguitore poteva starci dietro. Pavimento
                sulla durata dei segmenti di CONDUZIONE dell'eroe (HERO→HERO): velocità max ~11 u/s. Solo qui
@@ -6776,8 +6795,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let j=-1,bd=1e9;for(let k=0;k<_tg.length;k++){const tk=_tg[k],sk=ap[k];if(!tk||tk.gk||!sk||sk.team!==team||used[k]||k===21||(_cIdx[k]&&k!==i))continue;const d=Math.hypot(tk.x-hx,tk.y-hy);if(d<bd){bd=d;j=k;}}
             const di=Math.hypot(ti.x-hx,ti.y-hy);used[i]=1;if(j>=0&&j!==i&&di>bd+3){m[i]=j;m[j]=i;used[j]=1;n++;}}
           sr.current._sw219={k:P.hlSitKey,m};
-          try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SW219=window.__CPM_SW219||[]).push({k:P.hlSitKey,scambi:n});}catch(_e){}
+          try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SW219=window.__CPM_SW219||[]).push({k:P.hlSitKey,scambi:n,m,h:[+hx.toFixed(1),+hy.toFixed(1)],ph:P.matchPhase,src:sr.current._cutSrc456||null,fl:(function(){const o={};const _pl=sr.current.players||[];for(const k in _cIdx){const mm=_pl[k]&&_pl[k].mesh;if(!mm)continue;o[k]=[mm===passTargetMesh?'pt':'',mm._rcvT!=null&&mm._rcvT>=0?'rcv':'',mm._failRunT!=null&&mm._failRunT>=0?'fail':'',mm._celT371===1?'cel':'',mm._carry526!=null?'carry':'',(sr.current._pkCol415&&mm===sr.current._pkCol415.m)?'pk':'',(sr.current._adv773&&sr.current._adv773.mesh===mm)?'adv':'',mm===oppMesh?'opp':'',[+(mm.position.x+50).toFixed(1),+(mm.position.z/0.68+50).toFixed(1)].join(',')].filter(Boolean).join('+');}return o;})()});}catch(_e){}
           return m;}catch(_e219){return null;}})();
+        try{if(typeof window!=='undefined'&&window.__CPM_W266&&P.matchPhase==='hl_choose'&&sr.current._w266!==P.hlSitKey){sr.current._w266=P.hlSitKey;const C=P.castBrain&&P.castBrain.current;const hm=hero;const _pl=sr.current.players||[];
+          const _hp=hm?[hm.position.x+50,hm.position.z/0.68+50]:null;const f=(w)=>{if(!w||w.i==null||!_pl[w.i]||!_pl[w.i].mesh)return null;const mm=_pl[w.i].mesh,t=_tg[w.i];return {i:w.i,nome:w.nome,d:_hp?+Math.hypot(mm.position.x+50-_hp[0],mm.position.z/0.68+50-_hp[1]).toFixed(1):null,sw:_sw219&&_sw219[w.i]!=null?_sw219[w.i]:null,tg:t?[+t.x.toFixed(1),+t.y.toFixed(1)]:null,fl:[mm===passTargetMesh?'pt':'',mm._rcvT!=null&&mm._rcvT>=0?'rcv':'',mm._failRunT!=null&&mm._failRunT>=0?'fail':'',mm._celT371===1?'cel':'',mm._carry526!=null?'carry':'',(sr.current._pkCol415&&mm===sr.current._pkCol415.m)?'pk':'',(sr.current._adv773&&sr.current._adv773.mesh===mm)?'adv':'',mm===oppMesh?'opp':''].filter(Boolean).join('+')};};
+          (window.__CPM_W266L=window.__CPM_W266L||[]).push({k:P.hlSitKey,tipo:C&&C.tipo||null,cast:C?{hl:C.hl,min:C.min}:null,hero:_hp&&_hp.map(v=>+v.toFixed(1)),heroT:[+(+P.playerX).toFixed(1),+(+P.playerY).toFixed(1)],sw:sr.current._sw219||null,ric:f(C&&C.ricevente),apre:f(C&&C.apre),dif:f(C&&C.difensore)});}}catch(_e266){}/* [giro 43 PO-266] testimone solo sonde: dove sta il nominato all'apertura della scelta e perche' */
         try{if(typeof window!=='undefined'&&window.__CPM_REC&&passTargetMesh&&/^hl_/.test(P.matchPhase||'')){const _k=P.hlSitKey;const _pl=sr.current.players||[];let _ix=-1;for(let q=0;q<_pl.length;q++)if(_pl[q]&&_pl[q].mesh===passTargetMesh){_ix=q;break;}
           if(_ix>=0&&sr.current._pt219!==_k+':'+_ix){sr.current._pt219=_k+':'+_ix;const C=P.castBrain&&P.castBrain.current;(window.__CPM_PT219=window.__CPM_PT219||[]).push({k:_k,i:_ix,ric:C&&C.ricevente?C.ricevente.i:null,tipo:C&&C.tipo||null,ph:P.matchPhase});}}}catch(_ept){}/* [7.999.156 PO-219] testimone REC: chi riceve DAVVERO il passaggio nel 3D contro il compagno nominato dal cast */
         /* [giro 31 PO-220 — L'EROE SI PIAZZA DOVE DICE IL MOTORE. Rosso __CPM_NO_POSTO31] MISURATO (collaudo 3D difesa-220, 43 scene di
@@ -6803,6 +6825,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(sr.current._adv773&&sr.current._adv773.mesh===pp.mesh&&!(typeof window!=='undefined'&&window.__CPM_NO_REPARTO90))continue;/* [7.999.89+ PO-132 #134 codice 006/011] MISURATO (sonda _reparto90, tempo reale): l'attaccante che porta palla prima del gol subito (7.773) era guidato ANCHE da questo driver di formazione, che lo riportava al suo posto a ogni fotogramma — con la palla ai piedi restava fermo a x 21,8, oppure non raggiungeva mai il pallone a 9,6u. Pallone fermo 1,5 s, reparto fermo con lui, poi tiro da lontano. Mentre avanza, il corpo e' solo dell'avanzata. Rosso __CPM_NO_REPARTO90. */
           if(oppActType&&pp.mesh===oppMesh)continue;// 5.43.13: durante un'azione reattiva (tuffo portiere / scivolata) il mesh è controllato SOLO da quell'animazione → niente conflitto col run-cycle off-ball ("parata scoordinata")
           if(t.gk)continue;// 5.43.14b: i PORTIERI gestiti a parte (sotto), SENZA repulsione → niente jitter/"corsa sul posto"
+          if(_doSnap&&!(_sw219&&_sw219[i]!=null)&&sr.current._w266m&&sr.current._w266m.ms[i]&&typeof window!=='undefined'&&window.__CPM_W266){try{(window.__CPM_W266S=window.__CPM_W266S||[]).push({k:P.hlSitKey,i,senza:1,sw:_sw219?1:0,S:sr.current._sw219?sr.current._sw219.k:null,src:sr.current._cutSrc456||null,ph:P.matchPhase,f:sr.current._w266m.f,t:[+t.x.toFixed(1),+t.y.toFixed(1)]});}catch(_e){}}
+          if(_doSnap&&_sw219&&_sw219[i]!=null&&typeof window!=='undefined'&&window.__CPM_W266){try{if(!sr.current._w266m||sr.current._w266m.k!==P.hlSitKey){sr.current._w266m={k:P.hlSitKey,ms:{},f:0};window.__CPM_W266T=[];}sr.current._w266m.ms[i]=pp.mesh;(window.__CPM_W266S=window.__CPM_W266S||[]).push({k:P.hlSitKey,i,j:_sw219[i],t:[+t.x.toFixed(1),+t.y.toFixed(1),+(t.rx||0).toFixed(1),+(t.ry||0).toFixed(1)]});}catch(_e){}}/* [giro 43 PO-266] testimone: lo snap tocca davvero lo scambiato */
           if(_doSnap){const _sx=_pt31?G2X(_pt31.x):G2X(clamp(t.x+(t.rx||0),2,98)),_sz=_pt31?G2Z(_pt31.y):G2Z(clamp(t.y+(t.ry||0),2,98));pp.mesh.position.x=_sx;pp.mesh.position.z=_sz;pp.mesh._ctx=_sx;pp.mesh._ctz=_sz;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx;pp.mesh._pz=_sz;continue;}// FREEZE #2: snap in posizione all'avvio (poi fermo)
           /* [7.402.0 — revocato il taglio per-uomo indiscriminato: strappava via il compagno della consegna. */
           /* [7.405.0 codice 001 — direttiva PO: «il compagno ad inizio scena deve avere il pallone TRA I
@@ -6828,7 +6852,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              sicurezza». Resta la sonda, che ora misura il regime del giocatore. */
           if(_asIfPlay&&_inRead){
             const _ss405=P.stagedSpot&&P.stagedSpot.current,_src405=(P.allPlayers||[])[i];
-            if(_ss405&&_src405&&_src405._taker402){
+            if(_ss405&&_src405&&_src405._taker402&&((typeof window!=='undefined'&&window.__CPM_NO_SPOT266)||_ss405.taker===i)){/* [giro 43 PO-266] solo il battitore piazzato per questa scena (src/15) */
               const _sx5=G2X(clamp(_ss405.x,2,98)),_sz5=G2Z(clamp(_ss405.y,2,98));
               if(Math.hypot(_sx5-pp.mesh.position.x,_sz5-pp.mesh.position.z)>1.5){
                 pp.mesh.position.x=_sx5;pp.mesh.position.z=_sz5;pp.mesh._ctx=_sx5;pp.mesh._ctz=_sz5;pp.mesh._vx=0;pp.mesh._vz=0;pp.mesh._px=_sx5;pp.mesh._pz=_sz5;continue;}}}
@@ -7023,6 +7047,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   Dopo il movimento, separa le coppie troppo vicine (< _MINSEP world) spingendole SIMMETRICAMENTE:
         //   deterministico, bounded, cheap (~190 coppie). Solo in gioco (non durante il freeze/snap di lettura,
         //   che pone i giocatori di proposito). Gate-safe (posizioni off-ball fuori dalla firma golden).
+        __w266c('P');
         if(!_readFreeze&&!_doSnap&&!P.ceremony&&!P.shootout){const _MINSEP=1.7;
           const _skipSep=(m)=>!m||m.gk||m.mesh===passTargetMesh||(m.mesh._rcvT!=null&&m.mesh._rcvT>=0)||(m.mesh._failRunT!=null&&m.mesh._failRunT>=0)||m.mesh._carry526!=null||(sr.current._pkCol415&&m.mesh===sr.current._pkCol415.m);/* [7.618.0] idem per la separazione *//* [7.523.0] il portatore non si sballotta *//* [6.45.0 RC] non spingere chi riceve (_rcvT) o corre a vuoto (_failRunT): animOne li congela di proposito → venivano sballottati a metà ricezione */
           for(let i=0;i<_players.length;i++){const pi=_players[i];if(!pi||!pi.mesh||_skipSep(pi))continue;
@@ -7147,6 +7172,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // 5.43.16: PORTIERI — posizione di PRONTO con POSA FISSA (no run-cycle). animOne sposta dolcemente (target stabile),
         //   poi SOVRASCRIVO le gambe/braccia in posa di pronto (gambe divaricate, leggera flessione, braccia pronte) → il portiere
         //   NON fa più la "corsa sul posto" (il run-cycle delle gambe è annullato). Il tuffo (gk_dive) lo controlla quando attivo.
+        __w266c('G');
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[i],pp=_players[i];if(!t||!pp||!t.gk)continue;if(oppActType&&pp.mesh===oppMesh)continue;/* [7.2.0] portieri fermi ai pali durante la premiazione */
           const gm=pp.mesh;const _gx=G2X(clamp(t.x,2,98)),_gz=G2Z(clamp(t.y,2,98));
           // 5.49.10: il PORTIERE è freezato come gli altri all'avvio dell'highlight — SNAP in posizione poi FERMO durante la fase di lettura,
@@ -7171,6 +7197,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              l'eroe intanto si muove e il pallone gli passava a 0,7-1,0u dalla testa (misurato sul flusso vero). Il volo segue l'eroe vivo. */
           if(tlSeg&&tlSeg[0]&&tlSeg[0].tag==='orig26'&&hero&&hero.position&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA63B)){tlSeg[0].to=[hero.position.x+50,hero.position.z/0.68+50];}
           let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
+          try{if(typeof window!=='undefined'&&window.__CPM_BU43){const _L=window.__CPM_BU43;if(_L.length<4000)_L.push([+tlT.toFixed(2),bi,(tlSeg[bi]&&tlSeg[bi].tag)||'fine',(tlSeg[bi]&&tlSeg[bi].kind)||'',+(ball.position.x+50).toFixed(1),+ball.position.y.toFixed(2),+(hero.position.x+50).toFixed(1),sr.current._ws524|0,_aerTL==null?null:+(+_aerTL).toFixed(2)]);}}catch(_e43){}/* [giro 43 PO-143] testimone solo sonde: beat del build-up, pallone (x,quota), eroe, scrittore del fotogramma prima */
           /* [7.999.33 — LO STACCO ANTICIPA IL PALLONE. Collaudo PO «i colpi di testa non sono sincronizzati con la velocita' del cross».
              Rosso __CPM_NO_TESTA33.] MISURATO (sonda testa-tempismo, 5 scene): il cross arrivava alla testa con l'eroe ancora a terra
              (salto 0,6 u al contatto), poi l'eroe saliva fino a +2,2 u mezzo secondo DOPO che il pallone era gia' ripartito: salto e pallone
@@ -11545,6 +11572,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           for(const g of _R51._tag51){const v=_on51&&(g.gold||Math.hypot(g.m.position.x-bx,g.m.position.z-bz)<18)&&_corpo102(g.m);g.sp.visible=v;if(v){g.sp.position.set(g.m.position.x,2.35,g.m.position.z);_n51++;{const av=_R51._av102&&_R51._av102.get(g.m);if(av&&!(av.root&&av.root.visible))_orf102++;}}}
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
+      __w266c('R');
       renderer.render(scene,camera);
       sr.current._ap261f=0;sr.current._snapF261=null;if(sr.current._sosp261&&/^hl_/.test(P.matchPhase||'')&&!sr.current._sceneCut&&!sr.current._cutSnap)sr.current._sosp261=0;/* [giro 40 PO-261] la scena e' a schermo: da qui un salto torna visibile */
       if(sr.current._w232p){const _p232=sr.current._w232p;sr.current._w232p=null;_w232(_p232);}/* [7.999.162 PO-232] */
