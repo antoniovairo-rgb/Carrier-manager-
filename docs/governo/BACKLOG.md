@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (66)
+## Voci aperte o parziali (65)
 
-Per lotto: L1 40 · L3 2 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2 · zona G (ferma) 5 · L7 (tocca il flusso settimana: verificare confine zona G) 1.
+Per lotto: L1 39 · L3 2 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2 · zona G (ferma) 5 · L7 (tocca il flusso settimana: verificare confine zona G) 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -35,7 +35,6 @@ Per lotto: L1 40 · L3 2 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2 · zon
 | PO-233 | 14/10 | «Che significa 1489 giornata?» (foto Calendario · Prossime partite, 7.999.163: «vs Portogallo · in casa · Nazionale · 1489ª giornata · sett. 19») | difetto | DA VERIFICARE DAL PO — 7.999.165 su main (14/10 16:00): la riga della Nazionale in «Prossime partite» mostra la competizione («Amichevole Internazionale») invece del codice 1470+settimana; guardiano giornata-233 verde, rosso __CPM_NO_GIORN233 «1509ª giornata» | L1 | — | — | chat PO 14/10 07:50 (foto) |
 | PO-234 | 14/10 | «Segui indicazioni, non ordine e dai almeno 3 opzioni!» (foto 7.999.164, 55' scheda «Il mister · Vairo ha il fiato corto al 55': il mister gli fa segno di gestirsi», opzioni «Seguo l'ordine» / «Faccio di testa mia») | richiesta | PARZIALE — testo «indicazioni» e 3 opzioni sul sito (giro 14, schede-234); il resto confluisce in PO-259 (schede poche ma decisive, giro 28) | L1 | — | — | chat PO 14/10 08:23 (foto docs/governo/foto/po234-scheda-mister.jpg) |
 | PO-235 | 14/10 | «Schermata fuori standard» (foto 7.999.164, «Convocazione Nazionale · Nazionale Spagna · Cap #15 · Amichevole Internazionale», maglia 10, Prossima partita, Bonus dopo la partita, «Gioca la Partita» verde) | grafica | DA VERIFICARE DAL PO — 7.999.169 su main (15/10): convocazione nel kit standard (giro 14, convocazione-235); il backlog la dava ancora APERTO per errore | L1 | — | — | chat PO 14/10 08:25 (foto docs/governo/foto/po235-convocazione.jpg) |
-| PO-237 | 14/10 | «La partita, in particolare la prima è un pò scattosa» (7.999.164, dispositivo PO) | difetto | DA VERIFICARE DAL PO — chiusa dal PO il 15/10; collaudo 3D 170: prima partita ancora un poco più scattosa in headless (p50 133 contro 117 ms, 1,14× contro 1,6× della 169) | L1 | — | — | chat PO 14/10 |
 | PO-240 | 14/10 | Taccuino 7.999.163 S.13 W.18 44' vs FC Albion (3-0), «Tiro di potenza» miss: «dice SFIORA IL VANTAGGIO sul 3 a 0!»; bozza automatica: «l'esito dichiarato è miss ma la palla è finita IN RETE», codice 001 (pallone ai piedi di nessuno all'apertura, compagno più vicino 5,8u) | difetto | PARZIALE — collaudo 166: «Sfiora il vantaggio» mai a schermo in 81 scene (a); restano (b) «miss ma in rete» e (c) 001, con PO-218 | L1 | — | — | taccuino PO 14/10 |
 | PO-242 | 14/10 | «Conduci palla al piede e tira» fallito: riquadro che si contraddice («Grande parata del portiere» o «Non trova lo specchio» sopra «Il difensore lo chiude: palla persa») e nella parata il portiere non fa il gesto (__CPM_GK229 vuoto) | difetto | DA VERIFICARE DAL PO — 7.999.169 su main (15/10 13:20): riquadro coerente su «Conduci palla al piede e tira» (giro 19) | L1 | — | — | collaudi release 164/165 |
 | PO-243 | 14/10 | Nessuna intervista post partita dopo le gare della Nazionale (0 su 5 nel collaudo 164, 0 su 1 nel 165; club 15 su 15): la decisione PO-231 è «sempre» | difetto | DA VERIFICARE DAL PO — collaudo mirato 15/10: intervista presente dopo 3 gare di Nazionale su 3 (convocazione forzata con nationsCupQueue) | L1 | — | — | collaudi release 164/165 |
@@ -87,7 +86,7 @@ Per lotto: L1 40 · L3 2 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2 · zon
 | PO-264 | 15/10 | Europa simulata: lo svincolato riceve una voce di storico non marcata con voto dal risultato di squadra (_ratEG61/_ratEK61), a differenza della lega (presenza e gol già a zero) | carriera (zona G) | PARZIALE — giro 37 consegnato (605dd0e0); entra nella 7.999.171 | zona G (ferma) | — | — | rapporto docs/sviluppo/RAPPORTO-giro33.md §4 (ramo sviluppo/zona-g-222-223-giro33), lettura del codice |
 | PO-265 | 15/10 | Investimento «Investo metà del conto» toglie sempre 40.000€, non la metà del conto (src/03:393): testo ed effetto non coincidono | economia (zona G) | PARZIALE — giro 37 consegnato (605dd0e0): uscita uguale alla metà del saldo; entra nella 7.999.171 | zona G (ferma) | — | — | rapporto docs/sviluppo/RAPPORTO-giro33.md §4 (ramo sviluppo/zona-g-222-223-giro33), lettura del codice |
 
-## Storico — voci chiuse (203)
+## Storico — voci chiuse (204)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -289,6 +288,7 @@ Per lotto: L1 40 · L3 2 · L4 4 · L5 1 · L6 7 · L7 1 · L8 3 · — 2 · zon
 | PO-231 | 12/10 | «l'intervista post partita questa volta non è uscita» | carriera | FATTO — chiusa dal PO 14/10 («Le interviste post partita si vedono!»), dopo 7.999.161 (intervista dopo ogni partita, guardiano intervista-231) | L1 | — | __CPM_NO_IV231 | chat PO 12/10 |
 | PO-232 | 12/10 | «gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente (mai in T-Pose o senza testa)» | difetto | FATTO — chiusa dal PO 15/10 (briefing L1): highlight sempre coi corpi 3D caricati, verificato sul telefono | L1 | — | — | chat PO 12/10 sera |
 | PO-236 | 14/10 | «Non ci sono i bambini accompagnati dalla squadra avversaria» (foto 7.999.164, ingresso in campo Spagna-Portogallo) | difetto | FATTO — chiusa dal PO 15/10 (briefing L1): bambini per entrambe le squadre all'ingresso, verificato sul telefono (7.999.169, bambini-236) | L1 | — | — | chat PO 14/10 08:27 (foto docs/governo/foto/po236-ingresso-bambini.jpg) |
+| PO-237 | 14/10 | «La partita, in particolare la prima è un pò scattosa» (7.999.164, dispositivo PO) | difetto | FATTO — chiusa dal PO il 15/10 sul telefono; nota: il collaudo 3D 170 in headless misura ancora la prima partita un poco più scattosa (p50 133 contro 117 ms, 1,14× contro 1,6× della 169), vale il verdetto del PO | L1 | — | — | chat PO 14/10 |
 | PO-238 | 14/10 | «Nella home Page del gioco, non in carriera aggiungi una sezione crediti per elencare le risorse utilizzate nel gioco» | richiesta | DOPPIONE — unita a PO-254 dal PO 15/10 (questionario): la sezione Crediti esiste dalla 7.999.169; pulsante e contenuto proseguono in PO-254 (giro 25) | L1 | — | — | chat PO 14/10 |
 | PO-239 | 14/10 | «Togliere dagli highlights eroe la scritta "corpi CGTrader"» | grafica | FATTO — collaudo 166: 2.867 letture in 15 partite, 0 con «CGTrader» o «corpi»; e con PO-249 (7.999.168) sparisce anche la scritta fps | L1 | — | — | chat PO 14/10 |
 | PO-241 | 14/10 | «Il caricamento dei giocatori ed i relativi messaggi devono essere più furbi e logici, non sono mostra delle statistiche, delle curiosità, non mi piace il messaggio "caricamento giocatori"» | richiesta | FATTO — chiusa dal PO 15/10 (questionario): attesa dei corpi senza «Caricamento giocatori», verificata con la 7.999.169 | L1 | — | — | chat PO 14/10 |
