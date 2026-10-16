@@ -4982,9 +4982,10 @@ function getLeagueClubs(player){
   return CLUBS.slice(0,16);
 }
 // contextual start position: player spawns inside the situation zone
-function getStartPos(sit){
+function getStartPos(sit,rnd){/* [giro 36 PO-262] `rnd` opzionale: un generatore seedato al posto di Math.random (vedi LiveMatch `_spRnd262`) */
   const sz=sit?.startZone||{x:[55,72],y:[30,70]};
-  return{x:rng(sz.x[0],sz.x[1]),y:rng(sz.y[0],sz.y[1])};
+  const r=rnd?((a,b)=>Math.floor(rnd()*(b-a+1))+a):rng;
+  return{x:r(sz.x[0],sz.x[1]),y:r(sz.y[0],sz.y[1])};
 }
 // Durata DINAMICA del post-highlight (ms) — funzione pura di esito+azione (deterministica, testabile).
 // Garantisce che la palla atterri (archi ≤1.2s) e lo slow-mo (1.6s) si concluda, + tempo di lettura.
@@ -29228,6 +29229,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
   useEffect(()=>{try{AudioMgr.enterMatch();}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
+  /* [giro 36 PO-262 — IL PUNTO DEL PIAZZATO E' FUNZIONE DELLA PARTITA, NON DEL CASO. Rosso __CPM_NO_SP262] MISURATO (match-sequence
+     rosso sulla 169/170; testimoni di sola lettura su pPos, sorteggi di `_rndM` e stato dei ref per minuto, 6 giri identici a 1x): la
+     prima scena a movimento bloccato (punizione, gi1 al 6') apriva con l'eroe in 82,4/48,4 · 80,4/52,4 · 82,4/52,4 · 80,4/49,4 —
+     `getStartPos` sorteggia il punto nella startZone con Math.random. Quel punto e' la foto di fine scena (SEME-a 7.999.161) che
+     `riprendi` consegna al motore del possesso: il motore diverge al 9', la riga del 9' cambia (4 sorteggi `_rndM` contro 5: il
+     protagonista tenuto invece che estratto) e da li' la partita e' un'altra. Ora il punto si sorteggia da un generatore seedato su
+     (seed di partita, indice della scena): stessa scena, stesso punto, a ogni velocita'. Il gate (FORCE_SIT, r. ~2545) resta com'era. */
+  const _spRnd262=k=>(typeof window!=='undefined'&&window.__CPM_NO_SP262)?undefined:seededRng(((bgSimSeedRef.current>>>0)^hashStr("sp262|"+k))>>>0);
   /* [7.819.0 — IL RACCONTO E' DELLA PARTITA, NON DEL MINUTO. Rosso __CPM_NO819]
      Playtest n°5, bugia M: i minuti 9'-11' («X serve Y al limite della trequarti» → «prova a sorprendere il
      portiere da lontanissimo» → «ci arriva in tuffo e la devia in angolo») erano IDENTICI in 8 diari su 8,
@@ -31294,7 +31303,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        if(_contKeyRef.current===_k002)return;
        _contKeyRef.current=_k002;}
       let sp;
-      if(_curSit?.lockMovement){ sp=(preSp41Ref.current&&preSp41Ref.current.k===hlIdx)?preSp41Ref.current.sp:getStartPos(_curSit); }/* [7.999.41b] il punto del piazzato gia' scelto all'apertura */
+      if(_curSit?.lockMovement){ sp=(preSp41Ref.current&&preSp41Ref.current.k===hlIdx)?preSp41Ref.current.sp:getStartPos(_curSit,_spRnd262(hlIdx)); }/* [7.999.41b] il punto del piazzato gia' scelto all'apertura */
       else { const _sz=_curSit?.startZone||{x:[55,72],y:[30,70]};
              /* [7.34.1 collaudo PO «BUG/INCOERENZA CATENA: l'azione a cascata deve riprendere più o meno dal
                 punto X dove è finita la palla (che per le chance è al limite dell'area), non a caso»] per le
@@ -31317,7 +31326,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                 nascono altrove, non il comando delle righe — l'80% partiva nel corridoio centrale. */
              sp=_in?{x:_pv.x,y:_pv.y}
                :(_isChain||!(typeof window!=='undefined'&&window.__CPM_NO621))?{x:clamp(_pv.x,_sz.x[0],_sz.x[1]),y:clamp(_pv.y,_sz.y[0],_sz.y[1])}
-               :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2});
+               :(getStartPos(_curSit,_spRnd262(hlIdx))||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2});
              if(typeof window!=='undefined'&&window.__CPM_CONT621!==undefined){try{const _c1=window.__CPM_CONT621;
                if(_c1.length<300)_c1.push({d:+Math.hypot(sp.x-_pv.x,sp.y-_pv.y).toFixed(1),in:_in?1:0,ch:_isChain?1:0});}catch(_e){}} }
       setPPos(sp);stagedRef45.current=true;
@@ -32587,7 +32596,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     disegna il primo fotogramma in highlight la messa in scena e' gia' arrivata e lo scatto (testimone __CPM_SNAP42) e' sul punto
                     in entrambi i bracci. Sul telefono il ciclo di disegno puo' girare fra il commit che apre la scena e l'effetto che piazza il
                     pallone: e' la finestra che il taccuino del PO misura (32 campioni). Il giudice e' il telefono.] */
-                 try{if(_pick880&&_pick880.lockMovement&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA41)){const _sp41=getStartPos(_pick880);if(_sp41){preSp41Ref.current={k:hlIdx,sp:_sp41};setPPos(_sp41);stagedRef45.current=true;ballPosRef.current={x:_sp41.x,y:_sp41.y};ballTargetRef.current={x:_sp41.x,y:_sp41.y};setBallPos({x:_sp41.x,y:_sp41.y});}}}catch(_e41){}
+                 try{if(_pick880&&_pick880.lockMovement&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA41)){const _sp41=getStartPos(_pick880,_spRnd262(hlIdx));if(_sp41){preSp41Ref.current={k:hlIdx,sp:_sp41};setPPos(_sp41);stagedRef45.current=true;ballPosRef.current={x:_sp41.x,y:_sp41.y};ballTargetRef.current={x:_sp41.x,y:_sp41.y};setBallPos({x:_sp41.x,y:_sp41.y});}}}catch(_e41){}
                  _ORIG26=null;}
                else if(_og26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){try{
                  const _ang26=_og26.kind==="angolo";
