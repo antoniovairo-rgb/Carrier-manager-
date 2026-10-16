@@ -9,9 +9,10 @@ import fs from 'node:fs'; import path from 'node:path';
 const TOD=process.env.CPM_TOD||'night';
 const NO=(process.env.CPM_NO||'').split(',').filter(Boolean);
 const OUT=path.join(__dirname,'..','out','galleria-stadi'+(NO.length?'-rosso':''));fs.mkdirSync(OUT,{recursive:true});
-const TUTTI=['provino','provincia:3000','provincia:9000','comunale:9000','comunale:18000','storico_it:18000','moderno_it:30000','inglese:30000','tedesco:50000','spagnolo:50000','francese:30000','olandese:30000','sudamericano:30000'];
+const TUTTI=['provino','provincia:3000','provincia:9000','comunale:9000','comunale:18000','storico_it:18000','moderno_it:30000','inglese:30000','tedesco:50000','spagnolo:50000','francese:30000','olandese:30000','sudamericano:30000',/* [giro 46 PO-071 fase 3] nuove tipologie */'borgo:3000','borgo:9000','catino:24000','mattoni:22000','arena:60000'];
 const CASI=(process.env.CPM_CASI||'').split(',').filter(Boolean);const casi=CASI.length?CASI:TUTTI;
-const VISTE={tv:{x:0,y:16,z:34,lx:0,ly:4,lz:-30},porta:{x:-44,y:6,z:0,lx:30,ly:4,lz:0},curva:{x:5,y:6,z:-20,lx:60,ly:4,lz:20},tetto:{x:0,y:4,z:5,lx:0,ly:14,lz:-55},prato:{x:6,y:2.4,z:12,lx:0,ly:0,lz:-6}};
+const VISTE={tv:{x:0,y:16,z:34,lx:0,ly:4,lz:-30},porta:{x:-44,y:6,z:0,lx:30,ly:4,lz:0},curva:{x:5,y:6,z:-20,lx:60,ly:4,lz:20},tetto:{x:0,y:4,z:5,lx:0,ly:14,lz:-55},prato:{x:6,y:2.4,z:12,lx:0,ly:0,lz:-6},/* [giro 46] l'architettura intera dall'angolo e la bocca del tunnel d'ingresso */alto:{x:-100,y:80,z:110,lx:0,ly:0,lz:0},tunnel:{x:-34,y:3.6,z:-25,lx:-21,ly:1.8,lz:-39},aereo:{x:-112,y:122,z:112,lx:0,ly:0,lz:0}};
+const SOLO=(process.env.CPM_VISTE||'').split(',').filter(Boolean);/* [giro 46] CPM_VISTE=tv,aereo fotografa solo quelle viste */
 const srv=await startServer();const port=srv.address().port;const b=await launchBrowser();const indice=[];
 for(const caso of casi){
   const ctx=await b.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -25,9 +26,9 @@ for(const caso of casi){
   await page.evaluate(()=>{window.__CPM_FORCE_SIT(13,true);});
   await page.waitForFunction(()=>window.__CPM_PHASE&&window.__CPM_PHASE()==='hl_choose',null,{timeout:30000}).catch(()=>{});await sleep(1500);
   await page.addStyleTag({content:'body *{visibility:hidden!important} canvas{visibility:visible!important}'});
-  const info=await page.evaluate(()=>({ph:window.__CPM_PHASE&&window.__CPM_PHASE(),fail:window.__CPM_STADFAIL||null,pali:window.__CPM_PALI69||null}));
+  const info=await page.evaluate(()=>({ph:window.__CPM_PHASE&&window.__CPM_PHASE(),fail:window.__CPM_STADFAIL||null,pali:window.__CPM_PALI69||null,stadi246:window.__CPM_STADI246||null}));
   const foto={};
-  for(const [v,c] of Object.entries(VISTE)){
+  for(const [v,c] of Object.entries(VISTE)){if(SOLO.length&&!SOLO.includes(v))continue;
     await page.evaluate(c=>{window.__CPM_CAM904=c;},c);await sleep(1600);ultimo=null;await sleep(900);
     if(ultimo){const f=path.join(OUT,`${caso.replace(':','-')}-${v}.png`);fs.writeFileSync(f,ultimo);foto[v]=path.basename(f);}
   }

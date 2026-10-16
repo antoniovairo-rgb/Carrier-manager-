@@ -242,7 +242,32 @@ const STADIUM_TEMPLATES={
   francese:    {rings:2,standH:1.00,dist:1.05,corner:"open",  roof:"full",   tower:"tetto",        fence:"plexi",mod:0.90},
   olandese:    {rings:2,standH:1.05,dist:0.95,corner:"closed",roof:"full",   tower:"tetto",        fence:"plexi",mod:0.80},
   sudamericano:{rings:3,standH:1.35,dist:1.05,corner:"curve", roof:"none",   tower:"angolari_alte",fence:"high", mod:0.35,asym:true},
+  /* [giro 46 PO-071 fase 3 — NUOVE TIPOLOGIE. Rosso __CPM_NO_STADI246] quattro impianti con un'architettura propria (campo
+     `kind`, letto da buildStadium), tutti procedurali e senza asset: dal campo di paese all'arena. Si assegnano in
+     stadiumConfigFor dall'hash del club, dentro le fasce di capienza/prestigio coerenti (nessun campo nuovo nel salvataggio). */
+  borgo:       {rings:1,standH:0.60,dist:1.00,corner:"open",  roof:"west",   tower:"traliccio",    fence:"metal",mod:0.10,kind:"borgo"},  // tribuna coperta + terrapieni erbosi
+  catino:      {rings:1,standH:1.28,dist:0.92,corner:"curve", roof:"none",   tower:"angolari_alte",fence:"high", mod:0.40,kind:"catino"}, // anello unico ripido e continuo, coronamento in cemento
+  mattoni:     {rings:2,standH:0.95,dist:0.90,corner:"open",  roof:"full",   tower:"angolari_alte",fence:"none", mod:0.35,kind:"mattoni"},// storico: mattoni, frontone sulla tribuna principale, quattro torri d'angolo (i pali perimetrali costerebbero 4 luci in piu')
+  arena:       {rings:3,standH:1.30,dist:0.95,corner:"closed",roof:"full",   tower:"tetto",        fence:"plexi",mod:0.95,kind:"arena"},  // grande arena: copertura anulare e corona LED nel colore del club
 };
+/* [giro 46 PO-071 fase 3] ASSEGNAZIONE delle nuove tipologie: funzione PURA di (hash del club, lega, capienza, prestigio).
+   Un terzo dei club piccoli gioca in un BORGO, un terzo dei grandi in un'ARENA, un club medio su tre in un CATINO o (leghe
+   di tradizione) in uno STORICO IN MATTONI; meta' dei campi Primavera sono borghi. La capienza resta quella del profilo:
+   la tipologia cambia solo l'architettura, mai l'affluenza. */
+function stadiumKind46(h,lg,capacity,p,isU18){
+  if(typeof window!=='undefined'&&window.__CPM_NO_STADI246)return null;
+  const b=(h>>>23)%6;
+  if(isU18)return (b%2===0)?"borgo":null;
+  if(lg==="Nazionale")return null;
+  if(capacity<13000&&p<70&&b<2)return "borgo";
+  if(capacity>=48000&&p>=80&&b<2)return "arena";
+  if(capacity>=14000&&capacity<38000){
+    if(b===2)return "catino";
+    if(b===3&&/Premier|Championship|Lega|Oranje|Belga/.test(lg))return "mattoni";
+  }
+  return null;
+}
+if(typeof window!=='undefined')window.__CPM_STADIUM_KIND46=stadiumKind46;
 // mappa lega → pool di template (variazione per club via hash): l'identità architettonica nazionale
 const STADIUM_LG_TPL={
   "Lega A":["storico_it","moderno_it","storico_it"],"Lega B":["comunale","storico_it"],
@@ -284,6 +309,7 @@ function stadiumConfigFor(club,evo){
     if(capacity>=32000&&(tplId==="comunale"||tplId==="provincia"))tplId=_bigTplFor(lg);
     if(capacity<12000&&(STADIUM_TEMPLATES[tplId].megaCurva||STADIUM_TEMPLATES[tplId].rings>=3))tplId="comunale";
   }
+  {const _k46=stadiumKind46(h,lg,capacity,p,isU18);if(_k46&&STADIUM_TEMPLATES[_k46])tplId=_k46;}/* [giro 46 PO-071 fase 3] */
   const tpl=STADIUM_TEMPLATES[tplId]||STADIUM_TEMPLATES.comunale;
   const modernity=clamp((tpl.mod||0.4)+(p-60)/160+(((h>>>7)%20)-10)/100+((evo.trophiesRecent||0)>0?0.08:0),0.05,1);
   // [5.89.0 S3] ATMOSFERA per club: fattore di intensità del tifo (0.8–1.2) da hash + template "caldi"
@@ -300,7 +326,7 @@ function stadiumConfigFor(club,evo){
     capacity,prestige:p,modernity,rings:tpl.rings,corner:_cornerJ,roof:tpl.roof,tower:tpl.tower,
     fence:tpl.fence,standH:tpl.standH*_jH,dist:tpl.dist*_jD,roofTone:_roofTone,wallTone:_wallTone,megaCurva:!!tpl.megaCurva,asym:!!tpl.asym,
     screens:p>82?2:1,ledBoards:modernity>0.55,seatCol:(club&&club.c)||"#8a8a92",seatCol2:(club&&club.c2)||"#3a3a44",
-    style:(typeof getStadiumStyle==="function")?getStadiumStyle(club):0};
+    style:(typeof getStadiumStyle==="function")?getStadiumStyle(club):0,kind:tpl.kind||null};
   return (club&&club.stadium)?{...cfg,...club.stadium}:cfg;
 }
 if(typeof window!=='undefined')window.stadiumConfigFor=stadiumConfigFor;// esposto per i test analitici
