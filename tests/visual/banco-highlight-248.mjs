@@ -286,9 +286,9 @@ function analizza({ gi, k, label, e, apertura, dati, ckOss }) {
   let fermi = 0, nR2 = 0; for (let i = 1; i < R2.length; i++) { const a = R2[i - 1], c = R2[i]; if (!(c.ck > a.ck) || !a.h || !c.h) continue; nR2++; const mv = Math.hypot(c.h[0] - a.h[0], c.h[2] - a.h[2]) > 0.005; const gesto = c.g && c.g[0] && (c.g[1] || 0) > 0.1; if (!mv && !gesto) fermi++; }
   const gestoMontato = F.some(f => f.g && f.g[0] && (f.g[1] || 0) > 0.3);
   const clips = [...new Set(F.filter(f => f.g && f.g[0] && (f.g[1] || 0) > 0.3).map(f => f.g[0]))];
-  const bjVivi = dati.bj.filter(x => !x.mask && /^hl_/.test(String(x.ph || '')) && x.d >= 6).length; // >= 6: la soglia storica del varco
+  const bjVivi = dati.bj.filter(x => !x.mask && !x.nascosto && /^hl_/.test(String(x.ph || '')) && x.d >= 6).length; // >= 6: la soglia storica del varco
   const camSrc = (dati.cam93 || []).filter(x => /^hl_/.test(String(x.ph || '')) && !x.cut).map(x => `${x.st}u${x.snap ? ' snap' : ''}${x.sc ? ' cambio-scena' : ''}`).slice(0, 8);
-  const bjSrc = dati.bj.filter(x => !x.mask && /^hl_/.test(String(x.ph || ''))).map(x => `${x.src}${x.tutti ? '[' + x.tutti + ']' : ''}:${x.d}`).slice(0, 8);
+  const bjSrc = dati.bj.filter(x => !x.mask && !x.nascosto && /^hl_/.test(String(x.ph || ''))).map(x => `${x.src}${x.tutti ? '[' + x.tutti + ']' : ''}:${x.d}`).slice(0, 8);
   const pd = dati.piedi;
   const piedi = pd ? { fr: pd.hl ? pd.hl.fr : 0, cont: pd.hl ? pd.hl.cont : 0, sk: pd.hl ? pd.hl.sk : 0, eroeFr: pd.perCorpo && pd.perCorpo[0] ? pd.perCorpo[0].fr : 0, eroeSk: pd.perCorpo && pd.perCorpo[0] ? pd.perCorpo[0].sk : 0, senzaOssa: pd.senzaOssa || 0 } : null;
   const fluid = {
