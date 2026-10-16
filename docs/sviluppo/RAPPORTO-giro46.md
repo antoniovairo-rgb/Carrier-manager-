@@ -104,7 +104,27 @@ non li ho introdotti né identificati.
 
 ## 6. Guardiani e rituali (build finale 96ca2c2)
 
-ESITI_CATENA
+Tutti sul build del codice finale (commit 96ca2c2; i commit successivi sono solo documenti), browser `CPM_CHROME=/opt/pw-browsers/chromium`.
+
+| controllo | esito |
+|---|---|
+| `CPM_FORZA_BUILD=1 node tools/build-src.mjs` + `node tools/check-src.mjs` | identico byte per byte |
+| `node tools/audit-copyright.mjs` | ✅ 0 riferimenti al mondo reale (nessun nome nuovo introdotto) |
+| **`stadi-071`** (nuovo) | ✅ verde e rosso visibile (numeri in §4) |
+| `stadi-70`, `pali-69` | ✅ verdi, rossi visibili |
+| `fps-249` | ✅ |
+| `galleria-stadi` (collaudo) | 18 impianti × 2 ore, 0 errori di pagina, 0 `__CPM_STADFAIL` |
+| ingresso: `fila-227`, `bambini-236`, `ingresso-245`, `ingresso-camminata-245` | ✅ tutti e quattro (anche fuori catena, prima dell'apertura sul tunnel; `fila-227`, `ingresso-245` di nuovo verdi in catena) |
+| catena `node ci-runner.mjs mirata origin/lavoro/171-base` (nucleo + guardiani di src/10, 11, 12: **66 passi**) | ESITO_MIRATA |
+
+**`difesa-252` rosso — non è di questo giro.** In catena è rosso tre volte con lo stesso quadro: braccio verde perfetto (fermo
+0,03-0,07, 0/4 sopra 0,8) ma braccio ROSSO che non mostra il difetto (0/4, soglia «almeno 2»). Fatto girare sulla **base pulita**
+(`lavoro/171-base`, worktree) nelle stesse condizioni: **identico** (verde 0,03-0,07 · rosso 0,49-0,53 · `❌ difesa-252 ROSSO`).
+Il guardiano tocca l'eroe negli interventi difensivi, non lo stadio: è il suo braccio rosso a non reggere la soglia 0,8 sotto
+carico (la catena gira i passi lenti a due a due). Da riparare nel guardiano (giro 22, PO-252), non qui.
+
+**Riavvii del container.** Durante la catena il container è ripartito due volte (uptime 0, processi morti): ripresa come «giro
+composto» (`CPM_CI_FATTI` dai log dei giri interrotti, stesso build), i passi già verdi non rigiocati.
 
 ## 7. Cosa NON è fatto / da decidere
 
