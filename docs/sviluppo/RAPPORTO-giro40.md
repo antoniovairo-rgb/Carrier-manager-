@@ -117,6 +117,9 @@ Gate `validate-situations`: **✅ 14/14 PASS**, fingerprint 00001505, 0 failure 
 | analisi-217 · ingresso-camminata-245 | ✅ |
 | framing-guard | ❌ **preesistente**: mediana 0,094 < soglia 0,11 sul ramo **e identica sulla base** (0,094); fuori quadro ramo 2,5% contro base 3,3%. La soglia 0,11 viene dalla taglia 0,18; la partita normale e' a 0,12 dal 7.713 (decisione PO): va riallineata la soglia o ridecisa la taglia, non toccata qui |
 | seme-a | ❌ **preesistente** (sotto) |
+| piedi-252 · rete-252 · rinvio-252 · aereo-252 | ✅ (piedi mediana 0,224 vs rosso 0,494 · rete passo 0,73 vs 3,89 u · rinvio 25,4 vs 77,3 u/s · aereo 0/3 vs 3/3) |
+| portiere-252 | ✅ verde KO 0/7 · rosso KO 2/7 — **braccio rosso aggiornato**: con la correzione PO-258 il solo `__CPM_NO_GK252` non riproduceva piu' il difetto (rosso 0/8: l'arco della parata finisce sul piano del portiere, z finale = z al piano); ora il rosso spegne anche `__CPM_NO_PARATA258` (misurato: gi15 KO come sulla base, che da' rosso 2/7) |
+| difesa-252 | ❌ **preesistente**: verde ok (fermo 0,05-0,10) ma il braccio rosso `__CPM_NO_DIF252` arriva a 0,50 sotto la soglia 0,8; **identico sulla base** (0,50, «ROSSO» anche li'). Il rosso separa bene i bracci ma la soglia 0,8 non e' raggiunta: da ritarare, non toccato |
 GUARDIANI_RIGHE
 
 **seme-a ROSSO, ma preesistente.** Sul ramo: rosso 2 prove su 2 («giro 2: sorteggi del motore diversi dal 18'», punteggio 1-0 contro
