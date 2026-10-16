@@ -452,3 +452,8 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - Misurato: prova verde v max 24,4 u/s (soglia 32); braccio rosso __CPM_NO_RINVIO252 oltre 40 u/s in 1 scena su 20 (40,8 u/s, gi130 az.0), stesse scene instabili fra una prova e l'altra.
 - **Decisione PO: «Fuori catena, ripara dopo»** — rinvio-252 esce dalla catena completa e resta nella MAPPA (come difesa-252, PO-271); la riparazione entra nel giro dei rossi preesistenti verso la 7.999.172. Commit a9b0f25d su lavoro/171.
+
+## 16/10 sera — spot-266 e testa-143 nella catena notte 7.999.171
+
+- Misurato: spot-266, verde intermittente (gi64 a volte un compagno resta incollato alla bandierina), uguale sul commit del giro 43 (2f2c1c2b) eseguito da solo: non introdotto dalle unioni della 171. testa-143: «il difetto non si vede spento» (braccio rosso cieco).
+- **Decisione PO: «Fuori catena, PO-266 riaperta»** — i due guardiani escono dalla completa (restano nella MAPPA); PO-266 torna APERTO (correzione parziale); riparazione nel giro dei rossi verso la 7.999.172. Commit 75a3df1c su lavoro/171.
