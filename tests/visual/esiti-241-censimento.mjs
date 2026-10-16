@@ -15,38 +15,7 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, __dirna
 const OUT = path.join(LIBDIR, '..', 'out', (process.env.CPM_OUTDIR || 'esiti-241') + (process.env.CPM_ROSSO ? '-rosso' : ''));
 const A = process.argv.slice(2);
 
-/* ── classificatori: cosa DICE il testo, cosa MOSTRA il 3D ── */
-export function catTesto(t) {
-  const x = String(t || '').toLowerCase(); const c = new Set(); if (!x) return c;
-  if (/portiere|parat|para |para\.|presa|in tuffo|si distende|polpastrell|guant/.test(x)) c.add('portiere');
-  if (/murat|muro|si oppone|si mette in mezzo|difensore respinge|respinge il cross|barriera|ribatt/.test(x)) c.add('difensore');
-  if (/intercett|anticipat|palla persa|perde il pallone|ti portano via|legge la giocata|chiude in anticipo|recuperata dagli avversari/.test(x)) c.add('intercetto');
-  if (/\bpalo\b|traversa|legno/.test(x)) c.add('palo');
-  if (/fuori|sul fondo|specchio|sopra la traversa|troppo lung|non ci arriva/.test(x)) c.add('fuori');
-  if (/fallo|punizione|steso|calcio piazzato/.test(x)) c.add('fallo');
-  if (/filtrant|imbucat/.test(x)) c.add('filtrante');
-  if (/conclusione|tentativo|tiro\b/.test(x) && /respint|murat|respinge/.test(x)) c.add('conclusione_respinta');
-  return c;
-}
-export function contraddizioni(r) {
-  const out = []; if (!r || !r.v) return ['3D non osservato'];
-  const v = r.v, testi = [r.overlay, r.text].filter(Boolean), cats = new Set(); testi.forEach(t => catTesto(t).forEach(c => cats.add(c)));
-  const gk = Object.keys(v.gk || {}).length > 0, def = Object.keys(v.def || {}).length > 0, pa = Object.keys(v.pa || {});
-  const ev = r.ev || [], lab = String(r.label || '').toLowerCase();
-  const evTiro = ev.find(e => e.startsWith('tiro:')); const esTiro = evTiro ? evTiro.split(':')[1].split('(')[0] : null;
-  if (r.ok === false && v.inNet) out.push('fallito ma il pallone entra IN RETE nel 3D (PO-240 b)');
-  if (cats.has('portiere') && !gk && !cats.has('difensore')) out.push('il testo nomina il portiere ma nel 3D il portiere non fa nessun gesto');
-  if (cats.has('difensore') && gk && !def && v.v !== 'blocked') out.push('il testo dice murato ma nel 3D interviene il portiere');
-  if (cats.has('intercetto') && (esTiro === 'blocked' || (v.v === 'blocked' && /^(shot|freekick|header)$/.test(v.ht || '')))) out.push('il testo dice intercettato/palla persa ma il tiro parte e viene murato');
-  if (cats.has('difensore') && !cats.has('intercetto') && ev.some(e => e.startsWith('intercetto')) && !esTiro) out.push('il testo dice murato ma il motore registra un intercetto');
-  if (cats.has('filtrante') && /cross|traverson|pennell|palla in area|parabola|mette in mezzo|scodell/.test(lab)) out.push('«filtrante» su un cross/palla in area (PO-250)');
-  if (cats.has('conclusione_respinta') && r.ok && r.outKey === 'chance' && !gk && !def) out.push('chance: il testo racconta una conclusione respinta che il 3D non mostra');
-  if (cats.has('fallo') && !ev.some(e => e.startsWith('fallo')) && r.outKind !== 'win_freekick') out.push('il testo dice fallo ma il motore non lo registra');
-  if (r.outKind === 'win_freekick' && !cats.has('fallo')) out.push('fallo cercato riuscito raccontato senza fallo');
-  if (catTesto(r.overlay).has('portiere') && catTesto(r.text).has('difensore') || catTesto(r.overlay).has('difensore') && catTesto(r.text).has('portiere')) out.push('titolo e riga del riquadro si contraddicono');
-  return out;
-}
-
+import { catTesto, contraddizioni } from './lib/esiti-241.mjs';
 function famigliaDi(sit, a) {
   const l = String(a.l || '').toLowerCase();
   if (a.fc) return 'fallo-cercato';
@@ -85,6 +54,7 @@ let page = await nuovaPagina();
 const TOT = await page.evaluate(() => SITUATIONS.length);
 const cat = await page.evaluate(() => SITUATIONS.map((s, gi) => ({ gi, type: s.type, acts: (s.actions || []).map((a, k) => { let h = {}; try { h = deriveHL(s, a) || {}; } catch (e) {} return { k, l: a.label, rew: a.rew, fail: a.fail, fc: !!a.falloCercato, t: h.type || null, v: h.variant || null }; }) })));
 const cand = []; for (const s of cat) for (const a of s.acts) { const f = famigliaDi(s, a); if (f) cand.push({ gi: s.gi, k: a.k, l: a.l, fam: f }); }
+const FAMF = (process.env.CPM_FAM || '').split(',').filter(Boolean); if (FAMF.length) for (let i = cand.length - 1; i >= 0; i--) if (!FAMF.includes(cand[i].fam)) cand.splice(i, 1);
 /* ordine: a scacchiera per famiglia, cosi' ogni gruppo [da,a) copre famiglie diverse */
 const perFam = {}; cand.forEach(c => (perFam[c.fam] = perFam[c.fam] || []).push(c));
 const ord = []; const fams = Object.keys(perFam).sort(); for (let i = 0; ord.length < cand.length; i++) for (const f of fams) if (perFam[f][i]) ord.push(perFam[f][i]);
@@ -94,7 +64,7 @@ console.log(`candidate ${cand.length} (${fams.map(f => f + ' ' + perFam[f].lengt
 const righe = []; let prima = true;
 for (const c of sel) {
   if (!prima) { await page.close().catch(() => {}); page = await nuovaPagina(); } prima = false;
-  for (const out of ['fail', 'success']) {
+  for (const out of (process.env.CPM_ESITI || 'fail,success').split(',')) {
     const t0 = Date.now(); let r;
     try { r = await esegui(page, c, out); } catch (e) { r = { errore: String(e.message || e).slice(0, 140) }; }
     r = { ...c, out, ...r, ms: Date.now() - t0 }; r.contr = r.errore ? [] : contraddizioni(r); righe.push(r); fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, `${DA}-${AA}.json`), JSON.stringify({ quando: new Date().toISOString(), rosso: ROSSO, parziale: true, righe }, null, 1));
@@ -110,6 +80,7 @@ async function esegui(page, c, out) {
   const esca = (c.gi + 61) % TOT; await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), esca).catch(() => {}); await sleep(1500);
   const ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), c.gi).catch(() => false); if (!ok) return { errore: 'forzatura fallita' };
   await sleep(2500);
+  if (process.env.CPM_KIND) await page.evaluate(k => { window.__CPM_FORCE_KIND = k; }, process.env.CPM_KIND); /* solo per il 3D: col tipo forzato il riquadro NON segue (banco-248 nota 3) */
   await page.evaluate(o => { window.__CPM_FORCE_OUTCOME = o; window.__CPM_V241 = {}; window.__R241 = (window.__CPM_RES218 || []).length; }, out);
   const okR = await page.evaluate(k => window.__CPM_RESOLVE(k), c.k).catch(() => false); if (!okR) return { errore: 'risoluzione fallita' };
   /* si osserva la scena d'esito in TEMPO DI SCENA (4 s), tetto reale 40 s */
