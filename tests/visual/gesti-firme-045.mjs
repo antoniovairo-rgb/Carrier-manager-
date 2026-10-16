@@ -14,7 +14,7 @@ const srv = await startServer(); const port = srv.address().port; const b = awai
 /* UNA PAGINA NUOVA PER SCENA (lezione 7.483, misurata qui: sulla stessa pagina pass_ground/pass_lofted/one_two/cross_far_post non
    montavano nessuna clip; su pagina nuova pass_ground monta shortPass:pass per 18 fotogrammi). */
 const apri = async () => { const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(() => { window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; });
+  await page.addInitScript((r) => { window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; if (r) window.__CPM_NO_TEC045 = 1; }, process.env.CPM_ROSSO_TEC === '1');
   await openMatch(page, port, { skipLoadAll: true, name: 'Firme 045' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0 && window.__CPM_GESTI_CLIP045 && window.__CPM_GESTI_CLIP045(), null, { timeout: 120000 }).catch(() => {}); return page; };
 let page = await apri();
@@ -67,5 +67,5 @@ Object.values(corpoUguale).filter(g => g.length > 1).forEach(g => console.log(' 
 const mute = righe.filter(r => !r.clipVere.length).map(r => r.key);
 console.log('\n— varianti senza nessuna clip montata in scena: ' + (mute.join(', ') || 'nessuna'));
 fs.mkdirSync(path.join(DIR, 'out'), { recursive: true });
-fs.writeFileSync(path.join(DIR, 'out/gesti-firme-045' + (SOLO.length ? '-' + SOLO.join('_') : '') + '.json'), JSON.stringify({ info: INFO, righe, indist, corpoUguale, mute }, null, 1));
+fs.writeFileSync(path.join(DIR, 'out/gesti-firme-045' + (SOLO.length ? '-' + SOLO.join('_') : '') + (process.env.CPM_ROSSO_TEC === '1' ? '-rosso' : '') + '.json'), JSON.stringify({ info: INFO, righe, indist, corpoUguale, mute }, null, 1));
 console.log('scritto out/gesti-firme-045.json');
