@@ -2,7 +2,7 @@
 /* [7.999.132 PO-202, decisione PO 04/10 «piu' un recupero breve»] GUARDIANO su una partita vera intera dal salvataggio S12 (autoplay,
    seme fisso, fino al fischio, massimo 420 s). La partita finiva al 90' senza recupero; ora il fischio arriva al 93' come nella
    simulazione rapida (testimone __CPM_FINE202 = minuto vero del fischio). MISURATO su 12 partite per braccio: 7 tiri fra il 90' e il 92'
-   nel verde, 0 nel rosso. Verde: fischio a 93 o oltre. Rosso (__CPM_NO_REC202): fischio a 90. */
+   nel verde, 0 nel rosso. Verde: fischio a 93 o oltre. Rosso (__CPM_NO_REC202 + __CPM_NO_GOL90): fischio a 90. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
@@ -11,7 +11,7 @@ const utili = (rip) => rip;
 for (const rosso of [false, true]) { for (let tent = 0; tent < 3; tent++) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + String.fromCharCode(65 + tent);/* il seme nasce anche dal NOME */
-  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r) { window.__CPM_NO_REC202 = 1; window.__CPM_NO_TEMPO138 = 1; /* [7.999.149] il rosso spegne anche il debito del tempo fermo (7.999.138): senza, le scene del Passo 6 lasciano un debito al 90' e il fischio slitta comunque al 93' */ } localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...sv, r: rosso });
+  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r) { window.__CPM_NO_REC202 = 1; window.__CPM_NO_GOL90 = 1;/* [7.999.171 catena notte] il rosso isola il recupero: con il seme della 171 il motore segna fra l'89' e il 90' e la regola del gol al 90' (7.999.6) allunga di un minuto (misurato: rosso 91 con la regola, 90 senza; verde 93) */ window.__CPM_NO_TEMPO138 = 1; /* [7.999.149] il rosso spegne anche il debito del tempo fermo (7.999.138): senza, le scene del Passo 6 lasciano un debito al 90' e il fischio slitta comunque al 93' */ } localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...sv, r: rosso });
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
