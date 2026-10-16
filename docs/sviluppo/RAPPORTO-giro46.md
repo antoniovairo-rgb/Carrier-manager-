@@ -113,9 +113,10 @@ Tutti sul build del codice finale (commit 96ca2c2; i commit successivi sono solo
 | **`stadi-071`** (nuovo) | ✅ verde e rosso visibile (numeri in §4) |
 | `stadi-70`, `pali-69` | ✅ verdi, rossi visibili |
 | `fps-249` | ✅ |
+| `ingresso-camminata-245` rifatto da solo sul build finale | ✅ (e di nuovo ✅ in catena) |
 | `galleria-stadi` (collaudo) | 18 impianti × 2 ore, 0 errori di pagina, 0 `__CPM_STADFAIL` |
 | ingresso: `fila-227`, `bambini-236`, `ingresso-245`, `ingresso-camminata-245` | ✅ tutti e quattro (anche fuori catena, prima dell'apertura sul tunnel; `fila-227`, `ingresso-245` di nuovo verdi in catena) |
-| catena `node ci-runner.mjs mirata origin/lavoro/171-base` (nucleo + guardiani di src/10, 11, 12: **66 passi**) | ESITO_MIRATA |
+| catena `node ci-runner.mjs mirata origin/lavoro/171-base` (nucleo + guardiani di src/10, 11, 12: **66 passi**) | **65/66 verdi** (giro composto in tre tronconi per due riavvii del container; registrato in `docs/governo/STABILITA.json`). Rosso: `difesa-252` (vedi sotto, identico sulla base). Instabile: `difesa-220-scena` (rosso alla prima prova, verde alla seconda; anche sulla base lo storico mostra un giro da 3185 s, cioè rilanciato). Fra i verdi: `validate-situations` (gate 14/14), `career-critical`, `test:logic`, `save-compat`, `design-system`, `typing-shortcuts`, `griglia-mobile`, `partita-vera`, `stadi-071`, e i quattro dell'ingresso |
 
 **`difesa-252` rosso — non è di questo giro.** In catena è rosso tre volte con lo stesso quadro: braccio verde perfetto (fermo
 0,03-0,07, 0/4 sopra 0,8) ma braccio ROSSO che non mostra il difetto (0/4, soglia «almeno 2»). Fatto girare sulla **base pulita**
