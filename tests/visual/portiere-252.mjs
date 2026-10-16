@@ -13,7 +13,7 @@ const bracci = process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'
 const ris = {};
 for (const br of bracci) { ris[br] = [];
   for (const [gi, out, kind] of CASI) {
-    const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_GK252: 1 } : {});
+    const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_GK252: 1, __CPM_NO_PARATA258: 1 } : {});/* [giro 40 PO-258] l'arco della parata ora finisce sul piano del portiere: z finale = z al piano, e col solo NO_GK252 il difetto non si riproduce piu' (misurato: rosso 0/8; con entrambi gi15 KO come sulla base) */
     const k = await kDi(page, gi, null);
     const r = await scena252(page, { gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_GK229 = []; }, raccogli: () => ({ gk: (window.__CPM_GK229 || []).slice(), kind: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind || null : null, dbg: window.__CPM_GK252 || null }) });
     await page.close();
