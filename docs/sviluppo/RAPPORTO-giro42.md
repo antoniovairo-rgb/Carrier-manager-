@@ -149,7 +149,41 @@ movimento** (marcate `mov:1`). Il risultato dice che c'è sempre qualcuno che re
 
 ## 3. Rituali sul build finale
 
-RITUALI_QUI
+Build finale `76607e0` (`node tools/check-src.mjs`: allineato). Una prova alla volta salvo dove detto; GLB acceso nei 252.
+
+| prova | esito | numeri |
+|---|---|---|
+| `validate-situations` | ✅ PASS 14/14 | fingerprint **00001505**, 0 failure |
+| `test:logic` | ✅ | 43/43 |
+| `replay` | ✅ PASS | 8 highlight |
+| `piedi-252` | ✅ | mediana verde 0,224 · rosso 0,518 |
+| `rete-252` | ✅ | passo max verde 0,92u · rosso 4,44u |
+| `difesa-252` | ❌ **rosso cieco** | verde fermo 0,05-0,07 (buono) · rosso 0,49-0,53 contro la soglia 0,8 ⁽¹⁾ |
+| `rinvio-252` | ✅ | v max verde 25,1 · rosso 69,2 u/s |
+| `portiere-252` | ✅ | KO verde 0/7 · rosso 2/7 |
+| `aereo-252` | ✅ | salti verde 0/3 · rosso 3/3 |
+| `reazione-252` (nuovo) | ✅ | verde 0 senza reazione, accorciamento mediano 8,0u · rosso 3/3 senza reazione |
+| `camera-252` (nuovo) | ✅ | verde passo max 1,1u, 0 salti isolati · rosso 33,3u |
+| `hero-in-frame` | ✅ | (una prima corsa con tre browser in concorrenza era rossa: vedi §1, voce 9) |
+| `camera-hands` | ✅ | solo conteggio |
+| `squad-react` | ✅ | tiro/testa/cross |
+| `framing-guard` | ❌ **non attribuibile** | mediana 0,096 (soglia 0,11); **con i miei tre interruttori spenti 0,095**, stessa corsa da sola ⁽²⁾ |
+| `seme-a` | ❌ **non attribuibile** | giri divergenti all'ingresso #486 al 17'; **identico coi miei tre interruttori spenti** ⁽³⁾ |
+
+⁽¹⁾ Coi miei tre interruttori spenti il rosso resta cieco (0,49-0,53, eroe che percorre 6,7-8,7u nei primi 2 s): sulla base
+`lavoro/171-base` l'eroe in difesa si muove anche col rimedio del giro 22 spento (è cambiato qualcosa nei giri 23-30, non
+cercato). Il guardiano va ritarato (soglia o scene del braccio rosso) da chi possiede la base: **non l'ho toccato**.
+⁽²⁾ La misura dipende dal carico: con due censimenti in parallelo i fotogrammi campionati si dimezzano (2.299 contro 4.624) e la
+mediana scende a 0,087. Le due corse giudicate sono da sole. Non ho misurato la base pura `5eb5500`.
+⁽³⁾ Corsa del braccio «spento» in parallelo ad altri test; il punto di divergenza coincide col verde. Non ho misurato la base pura.
+
+⚠️ «Interruttori spenti» = comportamento di prima per le tre correzioni di questo giro; restano attivi solo i testimoni di prova,
+che fuori dai loro flag non scrivono nulla (salvo l'annotazione `sr.current._sb42`, sola lettura). È lo stesso metodo di
+attribuzione del giro 22 (§6), non una prova sulla base: **non posso confermare** che `framing-guard` e `seme-a` siano rossi anche
+su `lavoro/171-base`, solo che non cambiano spegnendo questo giro.
+
+Non eseguiti: catena `mirata`/`completa` di `ci-runner.mjs` per intero (tempo), `career-critical`/`save-compat` (zona carriera non
+toccata). Nessun bump, nessuna promozione su `main`, nessuna riga di roadmap (ramo di sviluppo, non rilascio).
 
 ## 4. Strumenti lasciati
 
