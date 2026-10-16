@@ -1,7 +1,7 @@
 /* [PO-252/8 giro 42] Guardiano: OGNI conclusione di tiro/testa/cross ha una reazione del reparto avversario — il gesto
    del 7.519 entro 9u oppure, oltre, lo SPOSTAMENTO del difensore piu' vicino verso il punto (__CPM_NO_REAZ252 = rosso).
    Scena del banco 248 senza reazione: cross gi148 (tre esiti). GLB acceso, pagina nuova per scena,
-   tempo di scena. Verde: 0 esecuzioni senza reazione e, su quelle di movimento, accorciamento mediano verso il punto >= 1,5u.
+   tempo di scena. Verde: 0 esecuzioni senza reazione e, su quelle di movimento, accorciamento mediano verso il punto >= 4u (misurato 9,6u).
    Rosso: almeno un'esecuzione senza reazione (prova che il guardiano vede). */
 import { startServer, launchBrowser } from './lib/harness.mjs';
 import { pagina252, scena252 } from './lib/scena-252.mjs';
@@ -33,7 +33,7 @@ for (const br of (process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'ros
 await b.close(); srv.close();
 if (process.env.CPM_SOLO) process.exit(0);
 const V = esito.verde, R = esito.rosso;
-const okV = V.tot >= 3 && V.senza === 0 && (V.mov === 0 || (V.accM != null && V.accM >= 1.5)), okR = R.tot >= 3 && R.senza >= 1;
-console.log(`verde: accorciamento mediano ${V.accM == null ? '—' : V.accM.toFixed(1) + 'u'} (soglia 1,5u)`);
+const okV = V.tot >= 3 && V.senza === 0 && (V.mov === 0 || (V.accM != null && V.accM >= 4)), okR = R.tot >= 3 && R.senza >= 1;
+console.log(`verde: accorciamento mediano ${V.accM == null ? '—' : V.accM.toFixed(1) + 'u'} (soglia 4u)`);
 console.log(okV && okR ? '✅ reazione-252 VERDE (e il rosso vede il difetto)' : `❌ reazione-252: verde ${okV ? 'ok' : 'KO'} · rosso ${okR ? 'vede' : 'CIECO'}`);
 process.exit(okV && okR ? 0 : 1);
