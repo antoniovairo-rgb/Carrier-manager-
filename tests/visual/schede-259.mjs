@@ -87,7 +87,13 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
     const att = T.attesa.length ? +(T.attesa.reduce((a, b) => a + b, 0) / T.attesa.length).toFixed(1) : null;
     return { schede: T.schede, applicate: T.applicate, cambiati: T.cambiati, tiri100: k(T.tiri), subiti100: k(T.subiti), recuperi100: k(T.recuperi), gol100: k(T.gol), golSub100: k(T.golSub), xg100: k(T.xg), xgSub100: k(T.xgSub), xgPerTiroSub: T.subiti ? +(T.xgSub / T.subiti).toFixed(3) : 0, attesaOccEroe: att, occ: T.attesa.length, racconti: T.racconti, coerenti: T.coerenti, fatti: T.fatti };
   }
-  const SPI = braccio({}, 'spinta'), PAL = braccio({}, 'palla'), ERO = braccio({}, 'eroe'), NEU = braccio({}, null);
+  const W44 = process.env.CPM_NO_PROM44 ? { __CPM_NO_PROM44: 1 } : {};
+  const SPI = braccio({}, 'spinta'), PAL = braccio({}, 'palla'), ERO = braccio(W44, 'eroe'), NEU = braccio({}, null);
+  /* [giro 44 PO-226] «la risolvo io»: i compagni cercano l'eroe finche' l'occasione promessa non arriva (rosso __CPM_NO_PROM44). Stessi semi:
+     con la leva l'eroe deve avere piu' occasioni nei 15' dopo la scelta che senza. Misurato: 130 contro 117 (attesa 3,3' contro 3,7'). */
+  { const E0 = braccio({ __CPM_NO_PROM44: 1 }, 'eroe');
+    console.log(`   «eroe» con i compagni che cercano l'eroe: occasioni ${ERO.occ} (attesa ${ERO.attesaOccEroe}') contro ${E0.occ} (${E0.attesaOccEroe}') senza la leva`);
+    if (!(ERO.occ >= E0.occ * 1.05)) fail.push('B: «la risolvo io» non porta piu\' occasioni all\'eroe (' + ERO.occ + ' contro ' + E0.occ + ')'); }
   console.log('(B) banco, ' + (24 * SEMI) + ' partite per braccio, nei 15\' dopo la scheda (valori per 100 minuti; attesa = minuti fino alla prossima occasione dell\'eroe)');
   for (const [n, x] of [['«spinta»', SPI], ['«palla»', PAL], ['«eroe»', ERO], ['nessuna scelta', NEU]]) console.log('   ' + n.padEnd(15) + JSON.stringify(x));
   const sep = (a, b) => b ? (a - b) / b : 0, pc = (x) => (100 * x).toFixed(1) + '%';

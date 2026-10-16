@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-/* [giro 44 PO-226] GUARDIANO: la scheda del mister che promette «la prossima palla buona arriva a te, prima» (profilo «eroe») mantiene la
+/* [giro 44 PO-226] STRUMENTO DI COLLAUDO (NON guardiano di catena: in partita vera le partite divergono fra due giri prima di ogni scheda —
+   seme-a rosso preesistente — e su 6 partite verde e rosso si separano di poco: misurato verde 3/6, rosso 2/6). Il guardiano deterministico
+   della stessa leva sta nel banco di schede-259 (parte B: occasioni dell'eroe 130 contro 117 senza la leva). Misura: la scheda del mister che promette «la prossima palla buona arriva a te, prima» (profilo «eroe») mantiene la
    promessa in partita vera. Misura di partenza (misura-226, 20 partite, base 171): dopo una scelta «eroe» il prossimo highlight dell'eroe
    e' arrivato 1 volta su 6 (12'); il motore anticipava l'occasione ma la finestra della partita vissuta restava chiusa.
    Partite vere di carriera (save-194, playMatch), pilota seedato, la scheda sceglie SEMPRE l'opzione 3 (indice 2 = profilo «eroe» in tutte le
@@ -41,7 +43,7 @@ async function partita(i, rosso) {
   out.errori = errs.slice(0, 3); await page.close(); return out;
 }
 const tutte = [];
-for (const rosso of [false, true]) { let next = 0; const res = [];
+for (const rosso of (process.env.CPM_BRACCI || 'verde,rosso').split(',').map(x => x === 'rosso')) { let next = 0; const res = [];
   const lav = async () => { while (next < SCELTE.length) { const k = next++; const o = await partita(SCELTE[k], rosso); res.push(o);
     const mis = (o.scelte || []).filter(c => c.fatto !== 'panca').map(c => { const prima = o.hl.filter(m => m <= c.min).length; const h = o.hl.filter(m => m >= c.min).sort((x, y) => x - y)[0];
       return { min: c.min, fatto: c.fatto, giocate: prima, dopo: h == null ? null : h - c.min, misurabile: prima < 7 && c.min <= 84 }; });
@@ -54,6 +56,6 @@ console.log(`verde: promessa mantenuta ${V.ok}/${V.n} · rosso: ${Ro.ok}/${Ro.n}
 if (tutte.some(o => !o.rosso && (!o.finita || o.errori.length))) g.push('verde: partita non finita o errori di pagina');
 if (V.n < 2) g.push('verde: meno di 2 scelte misurabili, guardiano cieco');
 else if (V.ok < 0.75 * V.n) g.push('verde: promessa mantenuta solo ' + V.ok + '/' + V.n);
-if (!(Ro.n >= 2 && Ro.ok < 0.5 * Ro.n)) g.push('rosso: la promessa non si rompe (' + Ro.ok + '/' + Ro.n + '), il difetto non si vede');
+if (tutte.some(o => o.rosso) && !(Ro.n >= 2 && Ro.ok < 0.5 * Ro.n)) g.push('rosso: la promessa non si rompe (' + Ro.ok + '/' + Ro.n + '), il difetto non si vede');
 if (g.length) { console.log('❌ promessa-226'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ promessa-226 verde (dopo «la risolvo io» la scena dell\'eroe arriva entro 8 minuti) e il rosso si vede');

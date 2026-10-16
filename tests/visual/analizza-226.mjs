@@ -37,6 +37,10 @@ for (const [t, rr] of Object.entries(perTipo)) {
   const occ = rr.filter(r => r.occ != null).map(r => r.occ - r.m0);
   console.log(`   ${t}: ${rr.length} finestre · tiri nostri ${(rr.reduce((a, r) => a + d(r, 'tiriNoi'), 0) / m * 5).toFixed(2)} ogni 5' · tiri loro ${(rr.reduce((a, r) => a + d(r, 'tiriLoro'), 0) / m * 5).toFixed(2)} · gol fatti ${gF} subiti ${gS} · contropiedi ${rr.reduce((a, r) => a + d(r, 'contro'), 0)} · occasione dell'eroe nella finestra ${occ.length}/${rr.length} (dopo ${JSON.stringify(occ)} minuti)`);
 }
+/* l'occasione dell'eroe in partita vera e' l'HIGHLIGHT: minuti dalla scelta al prossimo hl_intro, per profilo */
+{ const nx = {}; R.forEach(p => { ((p.s259 || {}).scelte || []).forEach(c => { const o = INT259.opz(c.fatto, c.idx) || {}; const t = (o.eff && o.eff.ingresso != null) ? 'panca' : (o.tipo || '?');
+    const h = (p.hl || []).filter(m => m != null && m >= c.min).sort((x, y) => x - y)[0]; (nx[t] = nx[t] || []).push(h == null ? null : h - c.min); }); });
+  for (const [t, a] of Object.entries(nx)) { const v = a.filter(x => x != null); console.log(`   prossimo highlight dell'eroe dopo la scelta «${t}»: ${v.length}/${a.length} arrivati · minuti ${JSON.stringify(a)} · mediana ${med(v)}`); } }
 const kk = {}; RA.forEach(r => { const k = (r.esito || {}).k; kk[k] = (kk[k] || 0) + 1; });
 console.log(`   racconti dopo ~5': ${RA.length} · fatto messo davanti ${JSON.stringify(kk)} · coerenti (INT259.verifica) ${RA.filter(r => INT259.verifica({ prima: r.prima, dopo: r.dopo, occ: r.occ, ingresso: r.ingresso }, r.esito)).length}/${RA.length}`);
 /* esito finale delle partite con scheda: il punteggio dopo la scheda e' cambiato? */
