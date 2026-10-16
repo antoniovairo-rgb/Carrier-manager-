@@ -32,7 +32,7 @@ const SAVE = { phase: 'career', player: {
   contract: { duration: 3, wage: 30000, expiresAtSeason: 8 } } };
 
 async function apri() {
-  const ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
+  const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });/* [7.999.171 catena notte] il gioco registra sw.js al primo caricamento: al ricaricamento il service worker scarica React/Three/Babel dalla rete scavalcando le copie locali di installCdnRoutes; dove il browser non esce in rete la pagina resta bianca (misurato identico sulla 7.999.170). La prova riguarda il localStorage, non il service worker. */
   const page = await ctx.newPage();
   await installCdnRoutes(page);
   page.on('pageerror', e => guasti.push('pageerror: ' + String(e.message).slice(0, 120)));
