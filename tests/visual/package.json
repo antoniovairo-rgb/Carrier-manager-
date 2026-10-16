@@ -398,6 +398,8 @@
     "scena-motore-147": "node scena-motore-147.mjs",
     "catalogo-022": "node catalogo-022.mjs",
     "gesti-motore-068": "node gesti-motore-068.mjs",
+    "tecnica-045": "node tecnica-045.mjs",
+    "gesti-firme-045": "node gesti-firme-045.mjs",
     "pressing-143": "node pressing-143.mjs",
     "pressing-143-flusso": "node pressing-143-flusso.mjs",
     "testa-motore-143": "node testa-motore-143.mjs",
