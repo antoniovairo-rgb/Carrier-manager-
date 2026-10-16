@@ -345,6 +345,8 @@
     "posa-sollevamento-191": "node posa-sollevamento-191.mjs",
     "palco-corpi-191": "node palco-corpi-191.mjs",
     "passaggio-coppa-137": "node passaggio-coppa-137.mjs",
+    "scene-fuori-137": "node scene-fuori-137.mjs",
+    "censimento-scene-47": "node censimento-scene-47.mjs",
     "foto-premiazione-47": "node foto-premiazione-47.mjs",
     "pro-rivale-176": "node pro-rivale-176.mjs",
     "rigori-190": "node rigori-190.mjs",

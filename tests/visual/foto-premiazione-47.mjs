@@ -35,7 +35,7 @@ for (const W of WS) {
         const nm = `${OUT}/${TAG}-${k}-${String(i).padStart(2, '0')}-${sc.beats[i]}${FR.length > 1 ? '-' + f : ''}-${W}.png`;
         await page.screenshot({ path: nm });
         const pos = await page.evaluate(() => { const T = window.__CPM3D; if (!T) return null; let tro = null; T.scene.traverse(x => { if (!tro && x._extra425 !== undefined) tro = x; });
-          const r = v => v ? [+v.x.toFixed(2), +v.y.toFixed(2), +v.z.toFixed(2)] : null; return { eroe: r(T.hero.position), cam: r(T.camera.position), coppa: tro ? r(tro.position) : null, cap: window.__CPM_PREMIO23 || null, mani: window.__CPM_MANI137 || null, p24: window.__CPM_PREM24 || null }; });
+          const r = v => v ? [+v.x.toFixed(2), +v.y.toFixed(2), +v.z.toFixed(2)] : null; return { eroe: r(T.hero.position), cam: r(T.camera.position), coppa: tro ? r(tro.position) : null, coppaVis: tro ? tro.visible : null, cap: window.__CPM_PREMIO23 || null, mani: window.__CPM_MANI137 || null, p24: window.__CPM_PREM24 || null }; });
         if (process.env.CPM_POS) console.log('   ', sc.beats[i], f, JSON.stringify(pos));
       }
       acc += sc.beatsD[i];
