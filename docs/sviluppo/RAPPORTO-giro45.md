@@ -140,7 +140,15 @@ Build `CPM_FORZA_BUILD=1 node tools/build-src.mjs` + `node tools/check-src.mjs` 
 **Interruzione:** la prima corsa (00:13) è stata uccisa dal **riavvio del container** alle ~01:40, dopo 17 passi. Ho rifatto
 solo i mancanti sullo stesso build (regola PO 14/10, `CPM_CI_FATTI` dell'esecutore, che lo registra come giro composto).
 
-ESITO_CATENA
+**Stato alla consegna (05:20 UTC): 39 passi giudicati su 48, 9 non finiti.**
+- **38 verdi**, fra cui `validate-situations` 14/14, `partita-vera`, `career-critical`, `catalogo-022`, `esiti-218`,
+  `cross-218` (i due più vicini alla modifica sui cross), `scene-221`, `goal-postarc`, `gk-dive-sync`, `tecnica-045`.
+  `pressing-143` **instabile** (rosso alla prima prova nel braccio rosso, verde alla seconda).
+- **1 rosso: `difesa-252`**, identico sulla base (§3.1), non attribuibile.
+- **Non finiti** (la seconda corsa era ancora su `difesa-220-scena` da oltre 20 minuti): `giornale-244`, `difesa-220-scena`,
+  `ingresso-camminata-245`, `tabellino-228`, `intervista-231`, `interazioni-226`, `schede-234`, `schede-246`, `schede-259`.
+  **Non posso dichiararli verdi.** Per il rilascio vanno fatti girare prima della promozione; la catena per il ramo resta
+  **incompleta** e `STABILITA.json` non è stato scritto (l'esecutore scrive a fine catena).
 
 **Guardiani richiesti fuori dalla mappa, sullo stesso build:**
 
