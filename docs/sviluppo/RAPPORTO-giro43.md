@@ -78,9 +78,30 @@ della scena dopo — in cui il motore aveva nominato proprio lui.
   compagni entro 3 u da una bandierina in scelta della seconda scena: verde 0 e 0, rosso 1 e 1.
 - `nomi-219`: vedi §3.
 
-## 3. Catena
+## 3. Catena (build finale del ramo, una corsa alla volta)
 
-_in corsa — vedi sotto_
+| passo | esito | numeri |
+|---|---|---|
+| `validate-situations` | ✅ 14/14 | fingerprint 00001505, 0 failure |
+| `nomi-219` | ✅ | verde 94% vicini su 49, **0 oltre 35 u**; rosso 71% su 21, 6 oltre 35 u (righe per seme: `dati-giro43-nomi219.txt`) |
+| `cross-218` | ✅ | verde e rosso si vedono |
+| `buildup-sync` | ✅ | 37 build-up, salto mediano 0,8 u (max 1,3) |
+| `bg-name-role` | ✅ | |
+| `replay` · `test:logic` · `save-compat` | ✅ | |
+| `spot-266` (nuovo) | ✅ ×2 | verde 0/0 incollati, rosso 1/1 |
+| `testa-143` (nuovo) | ✅ | tabella §1 |
+| `seme-a` | ❌ **preesistente** | primo ingresso divergente #486 al 17' (`chiedi.riprendi`, posizione dell'eroe consegnata dal 3D). Identico sulla base `5eb5500` (worktree pulito, stesso guardiano): giro con 2-1 e «eroe consegnato↔visto» 45,7 u in entrambi. Anche con i miei tre rossi accesi resta rosso. Non toccato. |
+| `testa-76` (extra) | ❌ **preesistente** | gi171 quota all'impatto: ramo 0,85, base 0,74 (soglia 1,3) |
+| `testa-146` (extra) | ❌ **preesistente** | il braccio rosso `__CPM_NO_TESTA146` non separa più (0,28-0,54 u), uguale sulla base; verde a posto |
+
+**`nomi-219` non reso più severo.** Una regola «zero nominati oltre 35 u nel verde» sul tasso del giro 34 (4 su 194, ~40
+nominati a corsa) sarebbe stata rossa in ~56% delle corse (1-(1-0,021)^40). Sul ramo ho 0 su 49 nel guardiano e 0 su 19 nelle
+sonde, ma ho riprodotto e corretto **una** delle quattro cause del giro 34 (seme 147); le altre tre (109, 112, 154) non sono
+uscite nelle mie corse. Non posso confermare che il tasso nuovo sia zero, quindi forma e soglie restano quelle del giro 34
+(rossi falsi stimati ~0,1%). Le righe per seme di questa corsa servono a ricampionare le prossime.
+
+Non eseguite in questo giro: la catena `completa`/`notte` intera (`partita-vera`, `career-critical`, ecc.). Il ramo tocca
+src/12 e src/15: per l'unione va fatta girare almeno `node ci-runner.mjs mirata`.
 
 ## 4. Guardiani, sonde, interruttori
 - Guardiani nuovi: `spot-266` (rapido), `testa-143` (~6 min, GLB): in `package.json`, nella MAPPA di `ci-runner.mjs`
