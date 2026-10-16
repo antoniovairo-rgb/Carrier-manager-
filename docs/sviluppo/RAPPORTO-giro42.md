@@ -45,12 +45,13 @@ lo porta il lerp ordinario; l'apertura di scena (`_sceneCut`) resta com'era.
 
 | `camera-252` (gi0 murata → gi66 gol/sbaglia/parata, stessa pagina, 2 pagine per braccio) | verde | rosso |
 |---|---|---|
-| passo massimo del bersaglio ai cambi di soggetto | 5,1-7,3u (3 corse) | 32,1-33,1u |
+| passo massimo del bersaglio ai cambi di soggetto | 1,1-7,3u (4 corse) | 32,1-33,3u |
 | passi oltre 15u | 0 | 2 |
 | salti isolati della camera resa | 0 | 0 ⁽¹⁾ |
 
 ⁽¹⁾ lo snap scoperto **non si riproduce** in questa sequenza nemmeno col rosso: per la causa B la prova è il banco rigiocato
-(§2), sullo stesso strumento che lo aveva contato (3 salti nel «tiro» prima della correzione, banco intermedio di questo giro).
+(§2), sullo stesso strumento che lo aveva contato: **3 salti nel «tiro» prima della correzione (banco intermedio di questo giro) → 0
+su tutte le famiglie** dopo.
 
 ### Voce 8 · reazione avversaria oltre 9u
 
@@ -68,7 +69,7 @@ sostituita dalla versione finale.
 | `reazione-252` (cross gi148, tre esiti) | verde | rosso |
 |---|---|---|
 | esecuzioni senza reazione | 0/3 | 2/3 |
-| accorciamento verso il punto (movimento) | da 11,6-13,6u fino a 2,3-3,6u · mediana **9,6u** (soglia 4u) | — |
+| accorciamento verso il punto (movimento) | da 11,6-13,6u fino a 2,3-3,6u · mediana **9,6u**, 8,0u in catena (soglia 4u) | — |
 
 ⚠️ **Limiti dichiarati.** Il rosso vede il difetto in 1-3 esecuzioni su 3 secondo la corsa:
 la distanza del difensore cambia fra un giro e l'altro (messa in scena), quindi il braccio rosso può uscire cieco — è un guardiano
