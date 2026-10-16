@@ -1,5 +1,12 @@
 # Rapporto giro 40 — PO-261 «Prima apertura vuota» · PO-258 punizione parata (codice 111)
 
+**Sintesi.** PO-261: la prima scena si apriva con la camera ferma alla nascita in tribuna (snap trattenuto dopo il campo 2D) e lo
+sguardo veniva poi trascinato via dallo snap (guardia-pallone sul pallone non ancora riposizionato, arbitro d'inerzia e freno che non
+vedevano il taglio): tre correzioni in `src/12`, rosso `__CPM_NO_APERTURA261`, guardiano `apertura-261` (prima immagine fuori 4/4 → 0/4).
+PO-258: sulla parata l'arco finiva 2-4 u dietro il portiere uscito, il pallone gli passava attraverso: ora finisce sulle sue mani,
+rosso `__CPM_NO_PARATA258`, guardiano `parata-258` (4/4 dietro → 0/4). Gate 14/14 PASS. Quattro rossi di catena, tutti preesistenti
+e misurati identici sulla base.
+
 Ramo `sviluppo/apertura-261-giro40`, base `lavoro/171-base` (7.999.170 + giro 22). Nessun cambio di `GAME_VERSION`/`SAVE_VERSION`,
 zona G non toccata. Tutto il codice di gioco toccato sta in `src/12-three-match-view.jsx` (ricomposto con
 `CPM_FORZA_BUILD=1 node tools/build-src.mjs`, `node tools/check-src.mjs` allineato).
@@ -126,7 +133,13 @@ Gate `validate-situations`: **✅ 14/14 PASS**, fingerprint 00001505, 0 failure 
 | scene-221 | ✅ 6,17 scene a partita |
 | partita-vera | ✅ bande d'accettazione |
 | ingresso-245 · giornale-244 · fila-227 | ✅ |
-GUARDIANI_RIGHE
+| bambini-236 · conduci-242 · pressing-143 | ✅ |
+| difesa-220-scena | ❌ **preesistente**: sul ramo «3 scene col contrasto mai partito nella sua scena (tetto 0,5 s)», **sulla base 2 scene, stesso verdetto rosso** (corsa parallela, stesse condizioni). Le correzioni di questo giro non toccano i contrasti (camera dello snap e arco della parata) |
+
+Corse: gate da solo; i guardiani in due corsie al massimo (lenti a coppie, come `ci-runner`), con il container ripreso due volte
+durante la notte (corse interrotte rifatte da capo). Eseguiti tutti i guardiani chiesti dal compito e tutti quelli della MAPPA `src/12-13`.
+Guardiani di altri toccati in questo giro: `ball-jump-census` e `banco-highlight-248` (contano `nascosto` come coperto),
+`portiere-252` (braccio rosso), `ci-runner.mjs`/`package.json` (apertura-261 e parata-258 in MAPPA, completa e lenti).
 
 **seme-a ROSSO, ma preesistente.** Sul ramo: rosso 2 prove su 2 («giro 2: sorteggi del motore diversi dal 18'», punteggio 1-0 contro
 2-1). Rieseguito sulla base esatta `origin/lavoro/171-base` (worktree separato): giro 0 finisce **0-1**, giro 1 finisce **1-0** con lo
@@ -135,6 +148,13 @@ interrotto dalla ripresa del container; i due giri finiti bastano a dire che div
 sonde. Non attribuito: fuori ambito di questo giro, da riprendere.
 
 ## 4. Cosa resta
+
+- **Quattro rossi preesistenti, identici sulla base** (nessuno introdotto qui): `seme-a` (la stessa partita finisce 0-1 e 1-0),
+  `framing-guard` (soglia 0,11 contro taglia PO 0,12 → mediana 0,094), `difesa-252` (braccio rosso a 0,50 sotto la soglia 0,8),
+  `difesa-220-scena` (contrasti mai partiti nella scena: 3 ramo, 2 base). Vanno riparati o ritarati prima del rilascio delle 16 se la
+  catena li include: **la catena completa oggi non e' verde, e non per questo giro**.
+- Nel verde di `apertura-261` in catena una **seconda** scena e' uscita vuota (39,8% del tempo, 1 partita su 4): il guardiano giudica
+  solo le prime scene; non attribuito.
 
 - Durata reale della «prima immagine in tribuna» sul telefono (dipende dal primo render della scena): da collaudare sul dispositivo.
 - R04: salti `avvicinamento` (8–13 u in `hl_intro`) e `inseguitore` (6,5–10 u) scoperti, non attribuiti.
