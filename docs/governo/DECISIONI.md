@@ -447,3 +447,8 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 - **Schede di punteggio (giro 44)**: la scheda del pari nasce da un fatto del finale (tiro pericoloso loro / occasione nostra dopo il 75') con rete di sicurezza; nella 7.999.172, con guardiano.
 - **Rossi preesistenti** (seme-a, framing-guard, testa-76, testa-146, gala-3d, PO-271 difesa-252): giro dedicato di sola riparazione dopo il rilascio delle 16, verso la 7.999.172.
 - **Se la catena notte 171 esce rossa**: correggere, rifare la catena e pubblicare al rilascio delle 00.
+
+## 16/10 sera — rinvio-252 nella catena notte 7.999.171
+
+- Misurato: prova verde v max 24,4 u/s (soglia 32); braccio rosso __CPM_NO_RINVIO252 oltre 40 u/s in 1 scena su 20 (40,8 u/s, gi130 az.0), stesse scene instabili fra una prova e l'altra.
+- **Decisione PO: «Fuori catena, ripara dopo»** — rinvio-252 esce dalla catena completa e resta nella MAPPA (come difesa-252, PO-271); la riparazione entra nel giro dei rossi preesistenti verso la 7.999.172. Commit a9b0f25d su lavoro/171.
