@@ -22,7 +22,7 @@ function gruppo(C, nome) {
       const caps = s.nationalCaps || 0;
       const wk = s.weekly || [];
       const expWeeks = wk.filter(x => x[9] === 1).length;
-      S.push({ f: c.f, k: c.cfg.k, tier: c.cfg.tier || c.cfg.mode, role: c.cfg.role, arch: c.cfg.archetype, nation: c.cfg.nation, idx: i + 1, season: s.season, age: s.age, band: band(s.age), ovr: s.ovr, pro: s.proStatus,
+      S.push({ f: c.f, k: c.cfg.k, tier: c.cfg.tier || c.cfg.mode, pos: c.cfg.role, arch: c.cfg.archetype, nation: c.cfg.nation, idx: i + 1, season: s.season, age: s.age, band: band(s.age), ovr: s.ovr, pro: s.proStatus,
         partite: mh.length, giocate, svincolatoPartite: mh.filter(m => m.sv).length, gol: goalsOf(s), assist: sum(mh.map(m => m.a || 0)),
         golSquadra: sum(mh.map(m => m.hs || 0)), golSubiti: sum(mh.map(m => m.as || 0)),
         dur: s.contract ? s.contract.duration : null, expFine: !!s.contractExpired, expWeeks, club: s.club.id, clubP: s.club.p,
@@ -47,7 +47,7 @@ function gruppo(C, nome) {
     daSvincolato: R.filter(r => r.exp && /^accettato/.test(r.esito)).length,
     trustRifiuti: avg(R.filter(r => r.esito === 'rifiutato').map(r => r.trust)), trustAccettati: avg(R.filter(r => /^accettato/.test(r.esito)).map(r => r.trust)),
   };
-  out.contratto = { stagioniScaduteAFine: S.filter(s => s.expFine).length, settimaneDaSvincolato: sum(S.map(s => s.expWeeks)), settimaneTot: sum(S.map(s => (s.expWeeks >= 0 ? 1 : 0))) , partiteDaSvincolato: sum(S.map(s => s.svincolatoPartite)), partiteTot: sum(S.map(s => s.partite)) };
+  out.contratto = { stagioniScaduteAFine: S.filter(s => s.expFine).length, settimaneDaSvincolato: sum(S.map(s => s.expWeeks)), partiteDaSvincolato: sum(S.map(s => s.svincolatoPartite)), partiteTot: sum(S.map(s => s.partite)) };
   // offerte e trasferimenti
   const O = C.flatMap(c => (c.offers || []).map(o => ({ ...o, f: c.f })));
   out.offerte = { totali: O.length, perCarriera: avg(C.map(c => (c.offers || []).length)), carriereConOfferta: C.filter(c => (c.offers || []).length).length, accettate: O.filter(o => o.decisione === 'accetta').length,
@@ -60,7 +60,7 @@ function gruppo(C, nome) {
     saldoFinaleMedio: avg(C.map(c => (c.seasons.slice(-1)[0] || {}).bankBalance || 0)), saldoFinaleMax: Math.max(0, ...C.map(c => (c.seasons.slice(-1)[0] || {}).bankBalance || 0)) };
   // gol per fascia, per indice stagione, per livello, per archetipo, per ruolo
   const by = (key, list = S) => { const g = {}; for (const s of list) { const k = s[key]; (g[k] = g[k] || []).push(s); } return Object.fromEntries(Object.entries(g).sort().map(([k, v]) => [k, { stagioni: v.length, ovr: avg(v.map(x => x.ovr)), gol: avg(v.map(x => x.gol)), assist: avg(v.map(x => x.assist)), giocate: avg(v.map(x => x.giocate)), partite: avg(v.map(x => x.partite)), golPerGiocata: +(sum(v.map(x => x.gol)) / Math.max(1, sum(v.map(x => x.giocate)))).toFixed(3) }])); };
-  out.perFascia = by('band'); out.perIndice = by('idx'); out.perLivello = by('tier'); out.perArchetipo = by('arch'); out.perRuolo = by('role');
+  out.perFascia = by('band'); out.perIndice = by('idx'); out.perLivello = by('tier'); out.perArchetipo = by('arch'); out.perPosizione = by('pos'); out.perRuoloSquadra = by('role');
   // quota gol eroe / squadra
   out.partita = { golEroePerPartita: +(sum(S.map(s => s.gol)) / Math.max(1, sum(S.map(s => s.partite)))).toFixed(3), golEroePerGiocata: +(sum(S.map(s => s.gol)) / Math.max(1, sum(S.map(s => s.giocate)))).toFixed(3), quotaEroe: pct(sum(S.map(s => s.gol)), sum(S.map(s => s.golSquadra))) };
   // titolarita' (decisione del mister su ogni gara di campionato)
