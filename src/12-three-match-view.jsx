@@ -9705,6 +9705,14 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              61-177ms su 340, meno il commit React. Si salta a meta' di quella finestra. */
           sr.current._snapT471=_nowMs471+120;try{if(P.onCutNeeded)P.onCutNeeded();sr.current._cutAt471=_nowMs471;}catch(_e471){}
           kp=0;kl=0;
+        }else if(!(typeof window!=='undefined'&&window.__CPM_NO_SNAP252)&&!_mask&&sr.current._cutSnap&&!sr.current._sceneCut&&isResult&&_dSnap>1.5){
+          /* [PO-252/9 giro 42 — LO STACCO D'ESITO CORTO NON SALTA SCOPERTO. Rosso __CPM_NO_SNAP252, guardiano camera-252]
+             MISURATO (banco 248, tiro: gi0 sbaglia/parata, gi66 parata, 5,0-5,9u in un fotogramma con i vicini <= 0,2u; testimone
+             __CPM_CAMJ42: mano «snap» in quel fotogramma). Lo stacco d'esito del 7.63 sopra i 6u chiede il nero (7.471), sotto
+             saltava SENZA nero: un salto di 5-6u non si legge come un taglio ma come uno scatto. Ora sotto i 6u non si salta: la
+             richiesta si consuma e il lerp ordinario porta la camera. Solo lo stacco d'esito (hl_result): l'apertura di scena
+             (_sceneCut) resta com'era, e con lei la firma golden. */
+          sr.current._cutSnap=false;sr.current._snapT471=0;
         }else{
           sr.current._cutSnap=false;sr.current._sceneCut=false;sr.current._snapT471=0;
           try{camera.position.set(tPx,tPy,tPz);camLook.set(tLx,tLy,tLz);}catch(_e){}
@@ -10347,7 +10355,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
       camera.lookAt(camLook.x,camLook.y,camLook.z);
       /* [PO-252 giro 42, testimone di sola prova] posizione resa della camera + mani del fotogramma (_tocc503) +
          tempo di scena: serve ad ATTRIBUIRE il salto isolato della camera (voce 9 del banco 248). Flag dedicato. */
-      if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{const _j42=window.__CPM_CAMJ42;if(_j42.length<4000)_j42.push({sc:+(window.__CPM_SCENET||0).toFixed(3),p:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],t:[+tPx.toFixed(2),+tPy.toFixed(2),+tPz.toFixed(2)],h:(sr.current._tocc503||[]).join('+'),sb:sr.current._sb42?1:0,ho:(function(){try{if(!hero)return null;const _v=new THREE.Vector3(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);return(_v.z<1&&Math.abs(_v.x)<=1&&Math.abs(_v.y)<=1)?1:0;}catch(_e){return null;}})(),w:+(sr.current._w252==null?-1:sr.current._w252).toFixed(2),tr:(sr.current._tr42||[]).join(' '),cs:!!sr.current._cutSnap,sc2:!!sr.current._sceneCut,ph:(propsRef.current||{}).matchPhase});}catch(_e42){}}
+      if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{const _j42=window.__CPM_CAMJ42;if(_j42.length<4000)_j42.push({sc:+(window.__CPM_SCENET||0).toFixed(3),p:[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)],t:[+tPx.toFixed(2),+tPy.toFixed(2),+tPz.toFixed(2)],h:(sr.current._tocc503||[]).join('+'),sb:sr.current._sb42?1:0,ho:(function(){try{if(!hero)return null;const _v=new THREE.Vector3(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);return(_v.z<1&&Math.abs(_v.x)<=1&&Math.abs(_v.y)<=1)?1:0;}catch(_e){return null;}})(),w:+(sr.current._w252==null?-1:sr.current._w252).toFixed(2),tr:(sr.current._tr42||[]).join(' '),cs:!!sr.current._cutSnap,sc2:!!sr.current._sceneCut,cl:!!(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE()),ph:(propsRef.current||{}).matchPhase});}catch(_e42){}}
       /* [7.904.0 gancio test-only per la sonda C4] __CPM_CAM_DUGOUT904({x,y,z,lx,ly,lz}) forza la camera
          a un'inquadratura fissa (es. il dugout, per fotografare la panchina da vicino) — SOVRASCRIVE il
          risultato della regia normale qui, DOPO ogni altro calcolo di questo fotogramma: non tocca tPx/
