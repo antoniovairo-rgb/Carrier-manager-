@@ -15,7 +15,7 @@ const ris = {};
 for (const br of bracci) {
   ris[br] = [];
   for (const sc of SCENE) {
-    const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_PIEDI252: 1 } : {});
+    const page = await pagina252(b, port, { ...(br === 'rosso' ? { __CPM_NO_PIEDI252: 1 } : {}), ...(process.env.CPM_FLAGS ? JSON.parse(process.env.CPM_FLAGS) : {}) });
     const r = await scena252(page, { gi: sc.gi, k: sc.k, out: 'success', prima: () => { window.__CPM_PIEDI_REC = 1; window.__CPM_PIEDI = null; }, raccogli: () => window.__CPM_PIEDI });
     await page.close();
     const e = r && r.perCorpo && r.perCorpo[0];

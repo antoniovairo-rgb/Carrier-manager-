@@ -9,8 +9,8 @@ import { pagina252, scena252 } from './lib/scena-252.mjs';
 const CASI = [[133, 'success'], [133, 'fail'], [31, 'success'], [130, 'success']];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const ris = { verde: [], rosso: [] };
-for (const br of ['verde', 'rosso']) for (const [gi, out] of CASI) {
-  const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_DIF252: 1 } : {});
+for (const br of (process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'])) for (const [gi, out] of CASI) {
+  const page = await pagina252(b, port, { ...(br === 'rosso' ? { __CPM_NO_DIF252: 1 } : {}), ...(process.env.CPM_FLAGS ? JSON.parse(process.env.CPM_FLAGS) : {}) });
   const r = await scena252(page, { gi, k: 0, out, secondi: 2.5, raccogli: () => ({ fr: window.__S252.fr.slice() }) });
   await page.close();
   const F = ((r && r.fr) || []).filter(f => f.ck != null && f.h); if (F.length < 8) { console.log(`  ${br} gi${gi} ${out}: non giudicata`); continue; }
