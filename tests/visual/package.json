@@ -15,6 +15,7 @@
     "brusio-238": "node brusio-238.mjs",
     "attesa-241": "node attesa-241.mjs --guardiano",
     "apertura-261": "node apertura-261.mjs --guardiano",
+    "parata-258": "node parata-258.mjs",
     "quick-gate": "node quick-gate.mjs",
     "validate-situations:update-golden": "node validate-situations.mjs --update-golden",
     "validate-situations:update-baseline": "CPM_UPDATE_BASELINE=1 node validate-situations.mjs",

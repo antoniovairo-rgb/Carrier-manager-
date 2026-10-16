@@ -5338,6 +5338,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(ballArcActive&&P.hlSuccess===false&&!P.hlDef&&(t==="shot"||t==="penalty"||t==="freekick"||t==="header")&&(P.hlOutcomeKind==="saved"||P.hlOutcomeKind==="save")){
             ballArcTgtZ=clamp(ballArcTgtZ,-3.3,3.3);
             ballArcTgtX=Math.max(ballArcTgtX,AWAY_GOAL_X-4);
+            /* [giro 40 PO-258 «Bordata potente» parata, codice 111 portiere fuori tempo — taccuino PO 7.999.169 S.13 W.21 43'. Rosso
+               __CPM_NO_PARATA258, guardiano parata-258] MISURATO (sonda del giro 27, 4 punizioni fk_power parate, GLB acceso, testimone
+               __CPM_GK229): il portiere uscito a x 41 arrivava sul punto giusto in tempo (z -2,51 contro pallone a -2,36), ma l'arco della
+               parata finiva 2-4u DIETRO di lui (x 42,9-44,9: il morsetto qui sopra porta il bersaglio ad almeno AWAY_GOAL_X-4 = 42 anche
+               col portiere fuori dai pali). Il pallone gli passava attraverso all'84% dell'arco, con la distesa (che segue il progresso
+               dell'arco, 7.465) ancora incompleta, e la respinta 7.514 partiva da dietro la sua schiena: a occhio il portiere arriva in
+               ritardo. Ora sulla parata, col portiere davanti al bersaglio, l'arco finisce sul suo piano (mani a +0,45u): stessa
+               direzione, durata scalata sulla corda per tenere la velocita', distesa piena al contatto e respinta dalle sue mani. */
+            if(awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_PARATA258)){
+              const _gx258=awayGkMesh.position.x+0.45,_sx258=ball.position.x,_sz258=ball.position.z;
+              if(ballArcTgtX>_gx258+0.3&&_sx258<_gx258-2){
+                const _u258=(_gx258-_sx258)/(ballArcTgtX-_sx258),_px258=ballArcTgtX;
+                ballArcTgtZ=_sz258+(ballArcTgtZ-_sz258)*_u258;ballArcTgtX=_gx258;ballArcDur=Math.max(0.2,ballArcDur*_u258);
+                if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA258=window.__CPM_PARATA258||[]);if(W.length<100)W.push({t,gx:+awayGkMesh.position.x.toFixed(2),prima:+_px258.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u258.toFixed(2)});}catch(_e){}}
+              }
+            }
           }
           // [6.74.0 3D-8] WIND-UP: la palla parte DOPO il caricamento del gesto, non al frame 0.
           /* [7.513.0 R2/2 — IL CONTATTO E' UNA PROPRIETA' DELLA TABELLA: audit «cross e passaggi partono a
