@@ -723,6 +723,18 @@ function creaMotorePossesso(cfg){
      compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
      vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
   const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
+  /* [giro 32 PO-228, decisione PO 15/10 «Ritara i passaggi a ~814»] LA PARTITA VISSUTA GIRA PALLA COME LA RAPIDA, I TIRI RESTANO.
+     MISURATO (collaudo mirato 169, 20 partite vere): 739 passaggi contro gli 814 del banco. La causa e' il tempo: nel modo vissuto
+     (brainLive) il motore si ferma sulle scene dell'eroe — al banco 153 battiti su 2.068 (7,4 %), dal vivo 84-203 — e passaggi e
+     tiri scendono insieme (banco: 800 -> 751 passaggi, 23,3 -> 21,4 tiri). A tempo dato ogni passaggio in piu' toglie tempo
+     all'attacco (al banco ~40 passaggi per tiro perso con fw, adv o advC): servono due manopole, solo nel modo vissuto —
+     adv (il portatore libero appoggia invece di condurre fino ad avanzamento 76, e il compagno puo' riceverlo fino a li') e la
+     propensione al tiro dell'ultimo terzo (pAtt x1,2) che restituisce i tiri spostati. advC (il passaggio di prima) e' stato
+     scartato: a 71 tiri -8 % e xG -7 %. La simulazione rapida resta quella tarata dal giro 16 (bit per bit: guardiano passaggi-228).
+     Rosso __CPM_NO_PASSVIVO228 = motore della 7.999.170. */
+  const _K228V=Object.assign({},_K228,{adv:76}),_PATT228V=0.06/0.05;/* [giro 35] ritarata sulla misura dopo la restrizione della ripresa del giro 27: dal vivo 779,7 passaggi su 40 partite, al bersaglio ~814 manca il +4,4 %. Banco (N=1500): adv 76 + pAtt 0,06 (contro 0,05) = passaggi +4,4 %, tiri +0,2 %, xG +1,4 %, gol +0,1 %. Scartate: la variante +9 % del giro 32 (advC 72 · adv 80 · pAtt 0,08: dal vivo ~850, fuori tolleranza) e advC 71-72 (tiri -2,3 % a +7,4 %) */
+  const _vivo228=()=>!!cfg.brainLive&&!_no228()&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASSVIVO228);
+  const _KV228=()=>_vivo228()?_K228V:_K228;
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
@@ -875,7 +887,7 @@ function creaMotorePossesso(cfg){
        automatica nella simulazione rapida). Cosi' ogni suo gol si vede. */
     const _noTiro14=_eroeNonTira14(P);
     if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
-    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*(_vivo228()?_PATT228V:1)*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
       if(rnd()<pS*_f226(l)){ramo("tiroV2");tira(P);return;}}/* [PO-226] MISURATO: la conclusione v2 (questa, il ramo piu' battuto) non leggeva nessun atteggiamento — con la sola pTiro la scelta muoveva i tiri del 2% */
     if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
@@ -1002,7 +1014,7 @@ function creaMotorePossesso(cfg){
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;const sc=Math.min(marc,10)-Math.abs(dd-15)*0.2-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     if(!Q)return false;ramo("ricicla228");passa(P,Q);return true;}
   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
-    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_K228.adv))continue;
+    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
       const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
@@ -1017,7 +1029,7 @@ function creaMotorePossesso(cfg){
      senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
   function _eroeDavanti228(P,adv){if(adv<56||(typeof window!=='undefined'&&window&&window.__CPM_NO_EROE228))return false;/* [giro 16] __CPM_NO_EROE228: rosso della sola regola eroe-davanti (prova che statistiche-228 morde sui tiri dell'eroe) */const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
     const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
-  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_KV228().adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
     ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
   function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
     const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;

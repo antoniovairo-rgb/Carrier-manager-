@@ -26709,6 +26709,18 @@ function creaMotorePossesso(cfg){
      compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
      vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
   const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
+  /* [giro 32 PO-228, decisione PO 15/10 «Ritara i passaggi a ~814»] LA PARTITA VISSUTA GIRA PALLA COME LA RAPIDA, I TIRI RESTANO.
+     MISURATO (collaudo mirato 169, 20 partite vere): 739 passaggi contro gli 814 del banco. La causa e' il tempo: nel modo vissuto
+     (brainLive) il motore si ferma sulle scene dell'eroe — al banco 153 battiti su 2.068 (7,4 %), dal vivo 84-203 — e passaggi e
+     tiri scendono insieme (banco: 800 -> 751 passaggi, 23,3 -> 21,4 tiri). A tempo dato ogni passaggio in piu' toglie tempo
+     all'attacco (al banco ~40 passaggi per tiro perso con fw, adv o advC): servono due manopole, solo nel modo vissuto —
+     adv (il portatore libero appoggia invece di condurre fino ad avanzamento 76, e il compagno puo' riceverlo fino a li') e la
+     propensione al tiro dell'ultimo terzo (pAtt x1,2) che restituisce i tiri spostati. advC (il passaggio di prima) e' stato
+     scartato: a 71 tiri -8 % e xG -7 %. La simulazione rapida resta quella tarata dal giro 16 (bit per bit: guardiano passaggi-228).
+     Rosso __CPM_NO_PASSVIVO228 = motore della 7.999.170. */
+  const _K228V=Object.assign({},_K228,{adv:76}),_PATT228V=0.06/0.05;/* [giro 35] ritarata sulla misura dopo la restrizione della ripresa del giro 27: dal vivo 779,7 passaggi su 40 partite, al bersaglio ~814 manca il +4,4 %. Banco (N=1500): adv 76 + pAtt 0,06 (contro 0,05) = passaggi +4,4 %, tiri +0,2 %, xG +1,4 %, gol +0,1 %. Scartate: la variante +9 % del giro 32 (advC 72 · adv 80 · pAtt 0,08: dal vivo ~850, fuori tolleranza) e advC 71-72 (tiri -2,3 % a +7,4 %) */
+  const _vivo228=()=>!!cfg.brainLive&&!_no228()&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASSVIVO228);
+  const _KV228=()=>_vivo228()?_K228V:_K228;
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
@@ -26861,7 +26873,7 @@ function creaMotorePossesso(cfg){
        automatica nella simulazione rapida). Cosi' ogni suo gol si vede. */
     const _noTiro14=_eroeNonTira14(P);
     if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
-    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*(_vivo228()?_PATT228V:1)*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
       if(rnd()<pS*_f226(l)){ramo("tiroV2");tira(P);return;}}/* [PO-226] MISURATO: la conclusione v2 (questa, il ramo piu' battuto) non leggeva nessun atteggiamento — con la sola pTiro la scelta muoveva i tiri del 2% */
     if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
@@ -26988,7 +27000,7 @@ function creaMotorePossesso(cfg){
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;const sc=Math.min(marc,10)-Math.abs(dd-15)*0.2-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     if(!Q)return false;ramo("ricicla228");passa(P,Q);return true;}
   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
-    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_K228.adv))continue;
+    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
       const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
@@ -27003,7 +27015,7 @@ function creaMotorePossesso(cfg){
      senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
   function _eroeDavanti228(P,adv){if(adv<56||(typeof window!=='undefined'&&window&&window.__CPM_NO_EROE228))return false;/* [giro 16] __CPM_NO_EROE228: rosso della sola regola eroe-davanti (prova che statistiche-228 morde sui tiri dell'eroe) */const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
     const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
-  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_KV228().adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
     ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
   function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
     const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;
@@ -29425,6 +29437,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const rip202Ref=useRef(null);
   const debito202Ref=useRef(0);/* [7.999.131 PO-202] passi del motore ancora dovuti per i minuti passati dentro una scena *//* [7.999.129 PO-202] esito dell'ultimo tiro dell'eroe nella scena appena chiusa: fuori o parato → riparte l'avversario */
   const ko207Ref=useRef(null);/* [7.999.126 PO-207] punteggio all'ultimo minuto giocato senza scena */
+  const golScena235Ref=useRef(0);/* [giro 35 PO-207/PO-228] 1 = l'ultimo gol e' dell'EROE in scena (highlight, rigore/punizione, gol subito nella sua scena): solo allora la ripresa dal centro schiera i ventidue */
   /* [7.811.0 — S3 v1: LA TABELLA DELL'ENFASI, stato x momentum, come FUNZIONE PURA. La misura sul diario e' cieca
      (una riga d'enfasi in quattro partite: la porta seedata <0.12 su momentum >=80/<=20 scatta di rado), quindi la
      tabella si misura DIRETTAMENTE su tutta la griglia degli stati (tabella-830): nessuna frase puo' contraddire il
@@ -29899,7 +29912,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     try{AudioMgr.event({type:'GoalHero',assist:!!g.assist});}catch(_a){}/* [7.62.0 AUDIO] boato SINCRONO all'ingresso in rete (non alla scelta) */
     // [6.5.1 Polish A] il TABELLONE si aggiorna ORA (palla in rete), non all'istante della scelta:
     //   lo score-increment del gol dell'eroe è differito qui → scoreboard + esultanza + rete SINCRONI.
-    if(g.scoreHome){cpmEv("goal",{min:clockRef.current,side:"home",src:"highlight"});try{_golInRete811("home");}catch(_e811s){}/* [7.496.0 F1b] il gol dell'EROE da gioco aperto */scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.120.0 audit live · Alta] il gol da GIOCO APERTO incrementa lo score LOGICO (scoreRef) SUBITO, come già fa il set-piece (fix C1 7.113.0): prima solo setScore differito → se era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800ms→ingresso-rete, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI / sidecar con risultato stantìo. Il setScore resta per la sincronia visiva. L'useEffect([score]) riconcilia scoreRef al valore committato (stesso numero → nessun doppio conteggio). */setScore(sc=>({...sc,home:sc.home+1}));}
+    if(g.scoreHome){golScena235Ref.current=1;cpmEv("goal",{min:clockRef.current,side:"home",src:"highlight"});try{_golInRete811("home");}catch(_e811s){}/* [7.496.0 F1b] il gol dell'EROE da gioco aperto */scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.120.0 audit live · Alta] il gol da GIOCO APERTO incrementa lo score LOGICO (scoreRef) SUBITO, come già fa il set-piece (fix C1 7.113.0): prima solo setScore differito → se era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800ms→ingresso-rete, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI / sidecar con risultato stantìo. Il setScore resta per la sincronia visiva. L'useEffect([score]) riconcilia scoreRef al valore committato (stesso numero → nessun doppio conteggio). */setScore(sc=>({...sc,home:sc.home+1}));}
     setResultReveal(true);// [6.5.4] l'ESITO IN BASSO si rivela ORA (ingresso in rete = sovraimpressione GOL): pannello risultato + floatGoal/goalCinema SINCRONI (prima il pannello usciva a _rd92, spesso PRIMA dell'overlay col build-up R5)
     if(g.com)try{g.com();}catch(_e){}// [7.54.0 BL-15] anche la CRONACA del gol/assist esce all'ingresso in rete (prima a _rd92 fisso: la riga poteva precedere la palla in volo)
     flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
@@ -33194,8 +33207,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!(typeof window!=='undefined'&&window.__CPM_NO_KO207)){const _p207=ko207Ref.current,_s207=scoreRef.current||{};
             if(_p207){if((_s207.home|0)>(_p207.home|0))_l207="away";else if((_s207.away|0)>(_p207.away|0))_l207="home";_c207=!!_l207;}
             ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
-            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
-              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:true/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;}catch(_e207){}}}}
+            /* [giro 35 PO-207/PO-228, decisione PO 15/10 «Restringi, poi ritara»] MISURATO nel giro 32 (10 partite, stessi semi): la
+               regola del giro 27 qui sotto scattava a OGNI gol fuori scena, anche ambientale (microsim, cronaca, gol costruiti dal
+               motore): 11 passi di palla ferma e i ventidue schierati a ogni gol spostavano la partita vissuta (passaggi +6 %, tiri
+               -14 %, xG -19 %, cross -22 % rispetto alla 7.999.169). Il giro 27 la dichiarava per il gol su rigore/punizione dell'eroe e
+               per il gol nato in scena: ora schiera solo quando l'ultimo gol e' dell'eroe in scena (golScena235Ref). Agli altri gol si
+               riparte comunque DAL CENTRO, senza schieramento ne' palla tenuta, come sulla 7.999.169. Rosso __CPM_NO_RIP235 = regola
+               larga della 7.999.170. */
+            const _er235=!!golScena235Ref.current,_sch235=_er235||!!(typeof window!=='undefined'&&window.__CPM_NO_RIP235);if(_c207)golScena235Ref.current=0;
+            if(_c207){const _w207={min:clockRef.current|0,lato:_l207,scena:!!_st0.scena,eroe:_er235,sch:(_st0.scena||_sch235)};_wFine207=_w207;try{(window.__CPM_KO207=window.__CPM_KO207||[]).push(_w207);}catch(_e){}
+              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207,schiera:_sch235/* [giro 27 PO-207] il gol nato in scena o da piazzato: i ventidue schierati per il calcio d'inizio. [giro 35] solo quello */});const _sd=_M.stato();_w207.dopo=_sd&&_sd.poss?_sd.poss.stato:null;_w207.palla=_sd&&_sd.palla?[Math.round(_sd.palla.x),Math.round(_sd.palla.y)]:null;try{_w207.fuori=(_M._g||[]).filter(q=>q&&!q.gk&&(q.team==='home'?q.x>51:q.x<49)).length;_w207.hold=(_M._S&&_M._S.kickoff)?(_M._S.kickoff.hold|0):null;}catch(_e235){}/* [giro 35] testimone dell'EFFETTO: giocatori di movimento nella meta' sbagliata subito dopo la ripresa (0 se schierati) */}catch(_e207){}}}}
           /* [7.999.129 PO-202 «partite troppo sbilanciate, non sono tirate»] MISURATO (sonda gol202, S12, 6 partite): dopo una scena
              dell'eroe finita senza gol la palla restava alla sua squadra 21 volte su 31, spesso in area avversaria (x 76-99), anche dopo un
              tiro fuori o parato; gli avversari tiravano 8 volte a partita (xG 0,71) contro 13,4 (xG 1,29) della stessa partita simulata.
@@ -36804,7 +36825,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       else if(key==="foul")_M.registra('fallo',_lato,{});
       if(_outKind==="corner")_M.registra('corner',_lato,{});
     } }catch(_e915){}
-    setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'"+(_assistBy?" (assist di "+_assistBy+")":""));}if(key==="assist"){assists++;rb+=3;pushMatchEvent(_ck,"player_assist",em=>"🎯 Assist"+(_assistTo?" per "+_assistTo:"")+" al "+em+"'");}/* [6.5.1 Polish A] score differito a fireGoalCeleb (palla in rete) */if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;if(!(typeof window!=="undefined"&&window.__CPM_NO_GA85)){golSubito85Ref.current=(golSubito85Ref.current|0)+1;}else setScore(sc=>({...sc,away:sc.away+1}));try{cpmEv("goal",{min:clockRef.current,side:"away",src:"scena-difensiva"});}catch(_e759){}/* [7.759.0] TROVATO DAL GUARDIANO A 4 PARTITE (banda tabellone 7.756: raccontati 2-4, punteggio 2-5): il gol subito nella scena difensiva entrava nel punteggio senza l'evento «goal» del libro mastro — l'unico dei cinque scrittori del punteggio senza la sua riga di verita'. */setMxStats(x=>({...x,oppShots:(x.oppShots||0)+1}));/* [7.163.0 LIVE-F8] il gol subito È un tiro avversario: il box-score non può avere più gol che tiri */pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
+    setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'"+(_assistBy?" (assist di "+_assistBy+")":""));}if(key==="assist"){assists++;rb+=3;pushMatchEvent(_ck,"player_assist",em=>"🎯 Assist"+(_assistTo?" per "+_assistTo:"")+" al "+em+"'");}/* [6.5.1 Polish A] score differito a fireGoalCeleb (palla in rete) */if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;golScena235Ref.current=1;if(!(typeof window!=="undefined"&&window.__CPM_NO_GA85)){golSubito85Ref.current=(golSubito85Ref.current|0)+1;}else setScore(sc=>({...sc,away:sc.away+1}));try{cpmEv("goal",{min:clockRef.current,side:"away",src:"scena-difensiva"});}catch(_e759){}/* [7.759.0] TROVATO DAL GUARDIANO A 4 PARTITE (banda tabellone 7.756: raccontati 2-4, punteggio 2-5): il gol subito nella scena difensiva entrava nel punteggio senza l'evento «goal» del libro mastro — l'unico dei cinque scrittori del punteggio senza la sua riga di verita'. */setMxStats(x=>({...x,oppShots:(x.oppShots||0)+1}));/* [7.163.0 LIVE-F8] il gol subito È un tiro avversario: il box-score non può avere più gol che tiri */pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
     // [6.41.0 collaudo PO «hanno festeggiato i tifosi ospiti anziché quelli di casa»] GOL SUBITO via highlight
     //   DIFENSIVO (goal_against): segna l'AVVERSARIO → devono esultare i SUOI tifosi. Prima questo path
     //   incrementava il punteggio ma NON emetteva alcun wave-event → nessuna esultanza sul gol subito (la
@@ -37081,7 +37102,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         try{_golInRete811("home");}catch(_e811s){}};
       if(typeof window!=='undefined'&&window.__CPM_NO_FK62)_fk62();
       else{spNet62Ref.current=_fk62;fxTimeout(()=>{const _f=spNet62Ref.current;if(_f===_fk62){spNet62Ref.current=null;_f();}},4000);}
-      cpmEv("goal",{min:clockRef.current,side:"home",src:"setpiece"});/* [7.496.0 F1b] il gol dell'EROE su palla ferma: e' l'UNICO che non passa da `handleContinue` (nota 7.392), quindi va registrato qui */
+      golScena235Ref.current=1;cpmEv("goal",{min:clockRef.current,side:"home",src:"setpiece"});/* [7.496.0 F1b] il gol dell'EROE su palla ferma: e' l'UNICO che non passa da `handleContinue` (nota 7.392), quindi va registrato qui */
       scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.113.0 audit massivo · fix C1] il gol da set-piece incrementa il punteggio LOGICO (scoreRef) SUBITO, non solo col setScore differito a 1450ms: prima, se la punizione/rigore era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800-1450ms, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI o risultato registrato incoerente (goals:1 ma homeScore:0/pari). Il setScore resta a 1450 per la sincronia visiva col pallone in rete */
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1450);
       fxTimeout(()=>{try{AudioMgr.event({type:'GoalTeam'});}catch(_a){}/* [7.62.0 AUDIO] boato sul gol da rigore (non passa da fireGoalCeleb) */addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(sc=>({...sc,home:sc.home+1}));},1450);
