@@ -155,7 +155,7 @@ const INT259={
   leggi(M){try{const R=M._S.richieste;const T=M.tattica&&M.tattica.home;return{att226:+(R.att226.home||0),press:T?+T.press:null,linea:T?+T.linea:null,diretto:T?+T.diretto:null,gap:R.s259?(R.s259.gap|0):0};}catch(_e){return null;}},
   applica(M,id,idx,mn){const o=INT259.opz(id,idx);if(!o||!M||!M.chiedi)return null;const e=o.eff||{};const prima=INT259.leggi(M);
     if(e.ingresso==null&&M.chiedi.ordine226)M.chiedi.ordine226('home',e.att||0);
-    if(M.chiedi.scelta259)M.chiedi.scelta259({press:e.press||0,linea:e.linea||0,diretto:e.diretto||0,gap:e.gap||0,fino:e.dur?(mn|0)+e.dur:999,att:e.ingresso==null?(e.att||0):null});
+    if(M.chiedi.scelta259)M.chiedi.scelta259({press:e.press||0,linea:e.linea||0,diretto:e.diretto||0,gap:e.gap||0,fino:e.dur?(mn|0)+e.dur:999,att:e.ingresso==null?(e.att||0):null,cerca:o.tipo==='eroe'&&e.ingresso==null});
     return{prima,dopo:INT259.leggi(M)};},
   /* IL RACCONTO DAI FATTI. a/b = {home,away} (punteggio) e {th,ta} (tabellino del motore: tiri, contrasti+intercetti) prima e dopo la
      finestra; occ = minuto della prima occasione dell'eroe dopo la scelta (o null). Restituisce {k (fatto messo davanti), n, testo, breve}.
@@ -427,7 +427,7 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe&&_EG){sc+=BONUS_EROE;}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
+      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44();}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
       else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
@@ -436,7 +436,7 @@ function creaMotorePossesso(cfg){
         if(_tq&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){const l=q.team;const a=advDi(q.x,l);
           const pronto=_tq==="conclusione"?a>=80:_tq==="fascia"?(a>=62&&Math.abs(q.y-50)>=24):_tq==="spalle"?a>=74:_tq==="fra-le-linee"?(a>=60&&a<76):a<60;
           if(!pronto)_b879=2;}
-        sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+_b879;}/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
+        sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+_b879+_cerca44();}/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
       if(fw<-12)sc-=6;
       /* [7.943 — CHI PASSA GUARDA LA LINEA. Rosso __CPM_NO943]
          La scelta del ricevente pesava avanzamento, marcatura e corsia, ma MAI il fuorigioco: il motore
@@ -747,7 +747,7 @@ function creaMotorePossesso(cfg){
     /* [7.999.137 PO-202] nella vissuta in modo brain (cfg.brainLive) l'occasione e' la STESSA della simulazione rapida: il motore la
        riconosce con la sua regola (_occV2Pronta: pallone all'eroe oltre la trequarti, ritmo legato al punteggio) e, invece di sceglierla
        da solo, la dichiara: la vissuta apre la scena e il giocatore sceglie. */
-    let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(S.richieste.s259){S.richieste.s259.gap=0;S.richieste.s259.occ=S.min|0;}/* [PO-259] l'occasione e' arrivata: il gap della scelta si consuma */if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
+    let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(S.richieste.s259){S.richieste.s259.gap=0;S.richieste.s259.occ=S.min|0;S.richieste.s259.cerca=false;}/* [PO-259] l'occasione e' arrivata: il gap della scelta si consuma */if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
     if(!_nat137&&V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
     if(!_nat137&&V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
     if(!_nat137&&V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(advDi(P.x,l)<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);/* [7.999.5] il pressing SPOSTA i recuperi: piu' alti nella meta' avversaria, meno nella propria (squadra lunga) */if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
@@ -1305,7 +1305,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
      squadra dell'eroe, l'avversario che arriva alla conclusione trova lo spazio alle spalle: tira piu' volentieri e da posizioni migliori,
      in proporzione a quanto la scelta ha alzato la squadra. Solo mentre l'effetto della scheda e' vivo. Valori di progetto tarati al banco
      (schede-259 parte B, RAPPORTO-giro28), non da una fonte. */
-  const K259={tiro:1.2,xg:1.2,press:0.33,contro:0.9};
+  const K259={tiro:1.2,xg:1.2,press:0.33,contro:0.9,cerca:14};/* [giro 44 PO-226] cerca: quanto i compagni cercano l'eroe dopo «la risolvo io» */
+  /* [giro 44 PO-226 — rosso __CPM_NO_PROM44] LA SQUADRA CERCA L'EROE. Misurato (misura-226, base 171): dopo una scelta «eroe» l'occasione dell'eroe nel
+     motore e' arrivata 0 volte su 6 nei 5' del racconto e il prossimo highlight 1 su 6: la scelta accorciava solo l'ATTESA fra due occasioni (gap), ma
+     l'occasione nasce quando l'eroe ha palla nell'ultimo terzo, e se i compagni non gliela danno l'attesa non conta (sonda: finestra aperta dal 60'
+     al 92', zero palloni utili). Finche' l'occasione promessa non arriva, nel punteggio del passaggio l'eroe vale K259.cerca in piu': e' il prezzo
+     dichiarato sulla scheda («tutto passa da te: i compagni tirano meno»). */
+  const _cerca44=()=>(S.richieste.s259&&S.richieste.s259.cerca&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PROM44))?K259.cerca:0;
   function _esp259(lt){const R=S.richieste.s259;if(!R||lt!==AWAY)return 0;const T=TAT[HOME];return Math.max(0,T.linea-R.base.linea)+K259.press*Math.max(0,T.press-R.base.press);}
   function _fine259(){const R=S.richieste.s259;if(!R)return;const T=TAT[HOME];T.press=R.base.press;T.linea=R.base.linea;T.diretto=R.base.diretto;if(R.att)S.richieste.att226[HOME]=0;S.richieste.s259=null;}
   const chiedi={
@@ -1341,7 +1347,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        (pressing, linea, gioco diretto) per un tempo dichiarato e l'attesa della prossima occasione dell'eroe; alla scadenza tutto torna com'era */
     scelta259(o){o=o||{};_fine259();const T=TAT[HOME];const base={press:T.press,linea:T.linea,diretto:T.diretto};
       T.press=clamp(T.press+(+o.press||0),-1,1);T.linea=clamp(T.linea+(+o.linea||0),-1,1);T.diretto=clamp(T.diretto+(+o.diretto||0),-1,1);
-      S.richieste.s259={base,gap:(o.gap|0),fino:(o.fino|0)||999,att:(o.att!=null)};},
+      S.richieste.s259={base,gap:(o.gap|0),fino:(o.fino|0)||999,att:(o.att!=null),cerca:!!o.cerca};},
     eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
     scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
     riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;
