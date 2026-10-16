@@ -1,0 +1,6 @@
+
+ANTICIPO della distesa (giudicato) — mediano -0.05s · peggiore -0.10s   (0 = disteso quando la palla arriva; negativo = si butta prima e aspetta)
+
+conclusioni ai MORSETTI storici di _diveDur: gi4 arco=0.43 · gi61 arco=0.24
+
+✅ PASS — quando il portiere completa la distesa, la completa all'arrivo della palla (non prima).

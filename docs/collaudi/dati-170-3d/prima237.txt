@@ -1,0 +1,4 @@
+node prima-partita-237.mjs (7.999.170, GLB acceso, stessa pagina, finestra 45 s, software-GL)
+prima : frames 158, p50 133.3 ms, p95 700, >100ms 96, >250ms 41, longtask somma 18563 ms, max 7746 ms; shader 4805 ms, texture 2093 ms, parsing GLB in partita 4 ms
+seconda: frames 173, p50 116.6 ms, p95 583, >100ms 98, >250ms 29, longtask somma 18742 ms, max 11110 ms; shader 8158 ms, texture 2745 ms, parsing GLB 0 ms
+esito guardiano: VERDE (giudica solo parsing GLB e texture)

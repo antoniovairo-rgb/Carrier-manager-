@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+const i=process.argv[2]; const R=JSON.parse(fs.readFileSync(`out/collaudo-170/p${i}.json`));
+const ex=R.extra;
+console.log('P'+i,R.nome,'score',JSON.stringify(R.fine.score),'clock',R.fine.clock,'dur',R.durataMs/1000|0,'gol',R.gol.length,'hl',R.hl.length);
+console.log(' walk',JSON.stringify({n:ex.walkN,casa:ex.casa,osp:ex.osp,dur:ex.walkDur,clip:ex.clip}));
+console.log(' walkout t:',R.fasi.filter(f=>f.ph==='walkout'||f.ph==='playing').slice(0,2).map(f=>f.t));
+console.log(' ko',JSON.stringify(R.fine.ko),' ko27',JSON.stringify(ex.ko27));
+console.log(' gol',R.gol.map(g=>`${g.ck}' ${g.da.home}-${g.da.away}->${g.a.home}-${g.a.away}`).join(' | '));
+console.log(' mister',JSON.stringify(R.misterEp), 'campioni',(R.mister||[]).length, 'perFase',JSON.stringify((R.mister||[]).reduce((a,m)=>(a[m.ph]=(a[m.ph]||0)+1,a),{})));
+console.log(' fps',JSON.stringify(ex.fps),'primi45',JSON.stringify(ex.primi45));
+console.log(' fase',JSON.stringify(ex.fase));
+const f1=R.hl[0]; console.log(' hl:',R.hl.map(h=>h.fr?`${h.ck}'${(h.fr.fuori!=null?h.fr.fuori:'')}`:`${h.ck}'-`).join(' '));
+console.log(' frKeys',R.hl[0]&&R.hl[0].fr?JSON.stringify(R.hl[0].fr).slice(0,300):null);
+console.log(' salti',JSON.stringify(R.salti||[]).slice(0,400),' nessuno',(R.nessuno||[]).length,' tech',R.tech.length,' err',R.errori);
+console.log(' ev', R.fine.ev.filter(e=>e.ev==='goal').map(e=>`${e.min||e.m}:${e.src}`).join(' '));
