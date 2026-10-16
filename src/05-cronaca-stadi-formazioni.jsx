@@ -423,7 +423,7 @@ function _hlOvlCat(outKey,ok,actionLabel){
   if(outKey==="recovery")return reDef.test(L)?"tackle":"recovery";
   if(outKey==="miss_easy")return"miss_big";
   if(!ok){
-    if(outKey==="intercept"&&!(typeof window!=="undefined"&&(window.__CPM_NO_DRIB241||window.__CPM_NO_ESITI241))&&reDrib.test(L)&&!reShot.test(L)&&!rePass.test(L))return"dribble_fail";/* [giro 41 PO-218] un DRIBBLING fermato (3D: il difensore entra in scivolata, conduzione persa) si racconta da dribbling: usciva «Passaggio intercettato» (censimento esiti-241, gi150 «Dribbling provocatorio»). Rosso __CPM_NO_DRIB241 */
+    if(outKey==="intercept"&&!(typeof window!=="undefined"&&(window.__CPM_NO_DRIB241||window.__CPM_NO_ESITI241))&&reDrib.test(L)&&!reShot.test(L)&&!rePass.test(L)&&!reCross.test(L))return"dribble_fail";/* [giro 41 PO-218] un DRIBBLING fermato (3D: il difensore entra in scivolata, conduzione persa) si racconta da dribbling: usciva «Passaggio intercettato» (censimento esiti-241, gi150 «Dribbling provocatorio»). Rosso __CPM_NO_DRIB241 */
     if(outKey==="intercept")return(!(typeof window!=="undefined"&&window.__CPM_NO_LEX218)&&reShot.test(L)&&!rePass.test(L))?"miss":"pass_fail";/* [7.999.159 PO-218, collaudatrice giro 5 «Finta e tiro»] un TIRO fermato si racconta da tiro: ogni intercept andava al lessico di passaggio («Passaggio fuori misura» su un tiro murato). Rosso __CPM_NO_LEX218 */
     if(outKey==="through")return reDrib.test(L)?"dribble_fail":"def_fail";
     if(outKey==="nothing")return"nothing";

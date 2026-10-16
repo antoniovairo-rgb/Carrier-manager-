@@ -5324,6 +5324,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               }
             }
           }
+          /* [giro 41 PO-218 «Conclusione murata» — IL MURO HA UN UOMO. Misurato (censimento esiti-241, tipo forzato «blocked» su gi0 tiro e
+             gi7 testa): il bersaglio dell'arco si accorcia sul punto del contatto (2,2-7,5u davanti all'eroe, r. «il muro e' a pochi metri»)
+             ma NESSUN difensore fa un gesto — la reazione di reparto 7.519 cerca entro 9u dall'EROE e spesso non trova nessuno: il riquadro
+             dice «Murato dalla difesa» e il pallone si ferma contro il nulla. Ora il difensore piu' vicino al PUNTO DEL MURO (entro 18u) ci
+             scivola col passo dell'intercetto (7.999.10: arriva insieme al pallone) e suona la clip del contrasto. Rosso __CPM_NO_MURO241 */
+          if(ballArcActive&&!P.hlDef&&P.hlOutcomeKind==="blocked"&&(t==="shot"||t==="header")&&!(typeof window!=='undefined'&&(window.__CPM_NO_MURO241||window.__CPM_NO_ESITI241))){
+            let _bm241=null,_bd241=1e9;
+            sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='away'||src.gk)return;const _m=pp.mesh;if(!_m)return;const _d=Math.hypot(_m.position.x-ballArcTgtX,_m.position.z-ballArcTgtZ);if(_d<_bd241){_bd241=_d;_bm241=_m;}});
+            {const _c241=_castDif23(_bm241,ballArcTgtX,ballArcTgtZ,18);if(_c241&&_c241!==_bm241){_bm241=_c241;_bd241=Math.hypot(_c241.position.x-ballArcTgtX,_c241.position.z-ballArcTgtZ);}}
+            if(_bm241&&_bd241<18){oppActType="opp_tackle";oppActT=0;oppMesh=_bm241;oppMesh._divePz=_bm241.position.z;oppDiveDir=_bm241.position.z>=0?1:-1;oppMesh._slideToX=ballArcTgtX+0.6;oppMesh._slideToZ=ballArcTgtZ;
+              oppMesh._slideSpd10={v:Math.max(2.5,_bd241/Math.max(0.2,ballArcDur-0.05)),sk:P.hlSitKey};sr.current._mateFx={mesh:_bm241,name:"tackle",t:0.9};}
+          }
           if((_CPM_TEST||_SIT_TEST)&&typeof window!=="undefined"){try{window.__CPM_ARC={t,ok:P.hlSuccess,kind:P.hlOutcomeKind||null,on:!!ballArcActive,tx:+(+ballArcTgtX).toFixed(1),tz:+(+ballArcTgtZ).toFixed(1),h:+(+ballArcH).toFixed(2),dur:+(+ballArcDur).toFixed(2)};}catch(_e){}}/* [7.341.0] osservabilità del BERSAGLIO dell'arco (test-only): il setaccio delle azioni misurava «dove finisce la palla» e doveva dedurre dove il motore la stesse mandando */
           // [6.74.0 3D-2] ESITO GOL della famiglia tiro/testa: il punto d'atterraggio dell'ARCO deve stare
           //   NELLO SPECCHIO (semi-porta 3.66). Prima curled/far-post/1v1 atterravano a z fino a ±12 (fuori porta,
@@ -5775,7 +5787,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(_curPh==="playing"||_curPh==="ended"||_curPh==="walkout"){zoneRingT=-1;zoneRingMat.opacity=0;}
       }
       prevPhase=_curPh;
-        if(typeof window!=="undefined"&&window.__CPM_V241&&_curPh==="hl_result"){try{const _P241=propsRef.current||{},W=window.__CPM_V241,_k241=_P241.hlSitKey;if(W.k!==_k241||!W.r){W.k=_k241;W.r={k:_k241,kind:_P241.hlOutcomeKind||null,ok:_P241.hlSuccess,ht:_P241.hlType||null,pa:{},gk:{},def:{},bx:null,bz:null,inNet:0,n:0,v:null};(W.all=W.all||[]).push(W.r);}const R=W.r;R.n++;if(hlPostArcType)R.pa[hlPostArcType]=1;if(oppActType&&oppMesh){if(oppMesh===awayGkMesh)R.gk[oppActType]=1;else R.def[oppActType]=1;}R.bx=+ball.position.x.toFixed(2);R.bz=+ball.position.z.toFixed(2);if(ball.position.x>GOAL_LINE_X&&Math.abs(ball.position.z)<=3.35)R.inNet=1;if(hlOutcomeVariant)R.v=hlOutcomeVariant;}catch(_e241){}}/* [giro 41 PO-218/240/250 testimone, solo sonde: window.__CPM_V241={}] cosa MOSTRA il 3D nella scena d'esito — post-arco, gesti del portiere e dei difensori, dove finisce il pallone, se entra in rete */
+        if(typeof window!=="undefined"&&window.__CPM_V241&&_curPh==="hl_result"){try{const _P241=propsRef.current||{},W=window.__CPM_V241,_k241=_P241.hlSitKey;if(W.k!==_k241||!W.r){W.k=_k241;W.r={k:_k241,kind:_P241.hlOutcomeKind||null,ok:_P241.hlSuccess,ht:_P241.hlType||null,pa:{},gk:{},def:{},fx:{},bx:null,bz:null,inNet:0,n:0,v:null};(W.all=W.all||[]).push(W.r);}const R=W.r;R.n++;if(hlPostArcType)R.pa[hlPostArcType]=1;if(oppActType&&oppMesh){if(oppMesh===awayGkMesh)R.gk[oppActType]=1;else R.def[oppActType]=1;}R.bx=+ball.position.x.toFixed(2);R.bz=+ball.position.z.toFixed(2);if(ball.position.x>GOAL_LINE_X&&ball.position.x<GOAL_LINE_X+2.2&&Math.abs(ball.position.z)<=3.35&&ball.position.y<2.44)R.inNet=1;if(hlOutcomeVariant)R.v=hlOutcomeVariant;const _fx241=sr.current._mateFx;if(_fx241&&_fx241.mesh){let _tm241="?";sr.current.players.forEach((pp,ii)=>{if(pp.mesh===_fx241.mesh){const _src=(_P241.allPlayers||[])[ii];_tm241=_src?(_src.gk?"gk-":"")+_src.team:"?";}});(R.fx=R.fx||{})[_tm241+":"+_fx241.name]=1;}}catch(_e241){}}/* [giro 41 PO-218/240/250 testimone, solo sonde: window.__CPM_V241={}] cosa MOSTRA il 3D nella scena d'esito — post-arco, gesti del portiere e dei difensori, dove finisce il pallone, se entra in rete */
       // ATE-4: zone ring RAF — entry scale-in + pulse durante HL; invisibile fuori HL
       {const _inHL=_curPh==="hl_intro"||_curPh==="hl_move"||_curPh==="hl_choose";
        if(_inHL&&zoneRingT<0)zoneRingT=0;
