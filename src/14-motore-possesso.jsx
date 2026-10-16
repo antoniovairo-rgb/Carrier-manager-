@@ -1552,6 +1552,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
            Rosso __CPM_NO_ESITI218. */
         if(!ok&&_fam218==='foul'&&(key==='intercept'||key==='through'||key==='miss')){E('fallo',{chi:D?chi(D):null,su:chi(H),per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}/* il fallo subito e' un fallo, non un contrasto perso */
         else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{modo:modo(D),chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
+        else if(!ok&&key==='intercept'&&famDrib&&!D&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_DRIB241||window.__CPM_NO_ESITI241)))E('contrasto',{modo:'piedi',chi:null,su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* [giro 41 PO-218] senza difensore nel cast il dribbling fermato cadeva sul ramo del TIRO murato (censimento esiti-241, gi150: «conduzione, tiro:blocked» mentre il 3D mostra la scivolata sulla conduzione). Resta un contrasto. Rosso __CPM_NO_DRIB241 */
         else if(!ok&&key==='intercept'&&(_fam218==='saved'||_fam218==='post'||_fam218==='fuori')){const es=_fam218;tiroEroe(es);if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(es==='post')E('palo',{chi:chi(H)});}
         else if(!ok&&key==='intercept'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}
         else if(key==='save'||key==='miss'||key==='miss_easy'||key==='post'||(rew==='goal'&&!ok)){/* un'«occasione» riuscita (chance) NON e' un tiro */

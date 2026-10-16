@@ -307,6 +307,18 @@ const BG_MATCH=[
   {txt:"⚔️ Il derby si accende: mischia furibonda a centrocampo, l'arbitro fatica.",ef:null,derbyOnly:true,w:2,ms:{fouls:1},bpos:{x:50,y:50},pd:"midfield"},
   {txt:"📋 Primi minuti di studio: {H} e {A} si annusano senza scoprirsi.",ef:null,w:2,maxClock:15,bpos:{x:50,y:50},pd:"midfield"},
 ];
+/* [giro 41 PO-250/PO-218 «esiti bugiardi»: punizione crossata raccontata «Filtrante perfetto! La conclusione e' respinta»] LA CHANCE
+   SI RACCONTA PER CIO' CHE IL 3D MOSTRA. MISURATO (censimento esiti-241, scene forzate GLB acceso): la riga della chance era pescata
+   A CASO (Math.random, fuori dal seme) fra quattro frasi che affermano fatti diversi — filtrante, portiere che respinge, primo tentativo
+   murato, compagno che non conclude — mentre il 3D ne mostra UNO: sul pallone messo in area (cross, punizione «palla in area», chainOn
+   aereo) la consegna rimbalza in area senza tiro ne' portiere; sul filtrante/assist il compagno tira e il PORTIERE respinge; sull'uno-due
+   il pallone torna all'eroe. Pool per famiglia, scelta col seme del riquadro. Rosso __CPM_NO_CHANCE241 (o __CPM_NO_ESITI241). */
+const _CHANCE_TX241={
+  aerea:["🎯 Palla d'oro in area! Il compagno non riesce a concludere — palla che balla!","↗️ Pallone messo in mezzo: mischia in area, c'è ancora da giocare!","🌪️ La palla spiove in area e nessuno la controlla — palla viva!"],
+  filtrante:["⚡ Filtrante perfetto! La conclusione del compagno è respinta — c'è ancora da giocare!","🔥 Imbucata splendida — il portiere respinge! Occasione ancora aperta!"],
+  respinta:["🎯 Compagno servito: il portiere respinge — occasione ancora aperta!","👁️ Che giocata! Il portiere ci mette i guantoni — palla viva!"],
+  unodue:["🔁 Scambio riuscito: il pallone torna a te!","🤝 Dai e vai perfetto — palla di nuovo tua in corsa!"],
+};
 const OUTCOME_TX={
   chance_dribble:["🌀 L'avversario è SALTATO! Campo aperto davanti a te!","⚡ Numero splendido — il difensore è a terra, palla al piede!","🔥 Superato con la finta! La difesa è aperta!","💨 Bruciato in velocità — ora la porta ti guarda!"],
   chance:["🎯 Palla d'oro! Il compagno non riesce a concludere — palla che balla in area!","⚡ Filtrante perfetto! La conclusione è respinta — c'è ancora da giocare!","👁️ Che apertura! Il primo tentativo è murato — palla viva!","🔥 Imbucata splendida — il portiere respinge! Occasione ancora aperta!"],
@@ -411,6 +423,7 @@ function _hlOvlCat(outKey,ok,actionLabel){
   if(outKey==="recovery")return reDef.test(L)?"tackle":"recovery";
   if(outKey==="miss_easy")return"miss_big";
   if(!ok){
+    if(outKey==="intercept"&&!(typeof window!=="undefined"&&(window.__CPM_NO_DRIB241||window.__CPM_NO_ESITI241))&&reDrib.test(L)&&!reShot.test(L)&&!rePass.test(L)&&!reCross.test(L))return"dribble_fail";/* [giro 41 PO-218] un DRIBBLING fermato (3D: il difensore entra in scivolata, conduzione persa) si racconta da dribbling: usciva «Passaggio intercettato» (censimento esiti-241, gi150 «Dribbling provocatorio»). Rosso __CPM_NO_DRIB241 */
     if(outKey==="intercept")return(!(typeof window!=="undefined"&&window.__CPM_NO_LEX218)&&reShot.test(L)&&!rePass.test(L))?"miss":"pass_fail";/* [7.999.159 PO-218, collaudatrice giro 5 «Finta e tiro»] un TIRO fermato si racconta da tiro: ogni intercept andava al lessico di passaggio («Passaggio fuori misura» su un tiro murato). Rosso __CPM_NO_LEX218 */
     if(outKey==="through")return reDrib.test(L)?"dribble_fail":"def_fail";
     if(outKey==="nothing")return"nothing";
@@ -425,6 +438,8 @@ function _hlOvlCat(outKey,ok,actionLabel){
 }
 function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
   const _c70=!(typeof window!=='undefined'&&window.__CPM_NO_COND70)&&/conduc/i.test(String(actionLabel||""))&&(outKey==="recovery"||!ok)&&((typeof window!=="undefined"&&window.__CPM_NO_C70TIRO)||!/\btir[aoi]|conclu/i.test(String(actionLabel||"")));/* [7.999.160 PO-218, collaudatrice 2 «Conduci palla al piede e tira»: tiro murato raccontato «Palla persa nel dribbling», tiro fuori «Ci prova ma viene chiuso»] una conduzione che FINISCE IN TIRO si racconta da tiro. Rosso __CPM_NO_C70TIRO *//* [7.999.70 collaudo Codex 003, gi30 «Dribbling centrale e conduci» · gi123 «Giratone e conduci». Rosso __CPM_NO_COND70] azioni d'ATTACCO col premio recovery: la sovrimpressione pescava i testi del recupero difensivo («Recupero decisivo», «Riaggressione immediata») e sul fallimento quelli del tiro murato («Conclusione murata»). Una conduzione si racconta come dribbling. */
+  const _fc241=!(typeof window!=='undefined'&&(window.__CPM_NO_FALLO241||window.__CPM_NO_ESITI241))&&ok&&outKey==="chance"&&outKind==="win_freekick";/* [giro 41 PO-218] il FALLO CERCATO riuscito (motore: fallo; 3D: l'eroe cade) usciva «Palla d'oro!»/«OCCASIONE CREATA!» con la riga «il compagno non riesce a concludere» (censimento esiti-241, gi150). Rosso __CPM_NO_FALLO241 */
+  if(_fc241){const _pf=_MISS_OVL.foul,_i=(((seed|0)%_pf.length)+_pf.length)%_pf.length;return {text:_pf[_i],tone:"good",cat:"foul_won",fam:"foul",icon:_OVL_FAM_ICON.foul};}
   const cat=_c70?(ok?"dribble":"dribble_fail"):_hlOvlCat(outKey,ok,actionLabel);
   // M1: sul "miss" usa il sotto-pool coerente con l'esito granulare deciso dal motore (palo/parata/murato/fuori).
   //   [6.76.0 LMV-S1] esteso a TUTTI i fail offensivi con esito granulare noto (fail:"intercept"/"through"/

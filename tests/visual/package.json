@@ -410,6 +410,8 @@
     "testa-motore-143": "node testa-motore-143.mjs",
     "manovre-150": "node manovre-150.mjs",
     "esiti-218": "node esiti-218.mjs",
+    "esiti-241": "node esiti-241.mjs",
+    "esiti-241-censimento": "node esiti-241-censimento.mjs",
     "cross-218": "node cross-218.mjs",
     "testata-209": "node testata-209.mjs",
     "seme-a": "node seme-a.mjs",
