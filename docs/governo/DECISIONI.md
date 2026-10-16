@@ -457,3 +457,8 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - Misurato: spot-266, verde intermittente (gi64 a volte un compagno resta incollato alla bandierina), uguale sul commit del giro 43 (2f2c1c2b) eseguito da solo: non introdotto dalle unioni della 171. testa-143: «il difetto non si vede spento» (braccio rosso cieco).
 - **Decisione PO: «Fuori catena, PO-266 riaperta»** — i due guardiani escono dalla completa (restano nella MAPPA); PO-266 torna APERTO (correzione parziale); riparazione nel giro dei rossi verso la 7.999.172. Commit 75a3df1c su lavoro/171.
+
+## 16/10 sera — orario del mega rilascio 7.999.171
+
+- Stima (durate storiche dei 19 passi mancanti, due alla volta): fine catena fra le 21:30 e le 22:30 UTC (23:30-00:30 di Roma). Non confermabile.
+- **Decisione PO: «Pubblica appena verde»** — se la catena chiude verde dopo la mezzanotte di Roma, la 7.999.171 si pubblica subito, senza aspettare il rilascio delle 08; poi le due sessioni di collaudo come di regola.
