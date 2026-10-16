@@ -3480,6 +3480,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          IL COMPAGNO sul punto-palla, in staging — il corner vuole il battitore alla bandierina, il cross
          vuole il crossatore sulla fascia col pallone tra i piedi. Lo staging e' la stessa sorgente da cui
          i mesh snappano al taglio (e al ri-taglio 7.401): uomo e pallone nascono insieme. */
+      /* [giro 43 PO-266 «ci sono A, B, C ma dice che gliela passa D»] MISURATO (sonda-nomi-266, seme 147 al 71', 3 riproduzioni su 4):
+         il nominato HAMMOND messo in scena dallo scambio _sw219 a 4 u dall'eroe e, due fotogrammi dopo, di nuovo alla bandierina (97; 2,5)
+         a 53 u. Era il battitore dell'ANGOLO della scena prima: punto-palla e contrassegno _taker402 si scrivevano solo per le scene col
+         pallone fuori dai piedi dell'eroe e non si azzeravano mai, quindi la colla del battitore (src/12, 7.405) lo teneva sul punto vecchio
+         per tutta la lettura della scena dopo. Ora il punto si azzera a ogni scena e porta l'indice del battitore che ha davvero piazzato;
+         la colla vale solo per lui. Rosso __CPM_NO_SPOT266. */
+      if(!(typeof window!=="undefined"&&window.__CPM_NO_SPOT266))_stagedSpotRef.current=null;
       try{
         if(sit0.type!=="def"&&typeof hlBallSpot==="function"){
           const _bs402=hlBallSpot(sit0,(hp&&hp.x!=null)?hp.x:58,(hp&&hp.y!=null)?hp.y:50);
@@ -3489,7 +3496,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               let _bi402=-1,_bd402=1e9;
               prev.forEach((pl,idx)=>{if(pl.team!=="home"||pl.gk||idx===0)return;
                 const _d=Math.hypot(pl.x-_bs402.x,pl.y-_bs402.y);if(_d<_bd402){_bd402=_d;_bi402=idx;}});
+              if(_bi402>=0&&_bd402<=3&&prev[_bi402]&&prev[_bi402]._taker402&&_stagedSpotRef.current&&_stagedSpotRef.current.sit===sit0)_stagedSpotRef.current.taker=_bi402;/* [giro 43 PO-266] lo staging rigira: il battitore gia' sul punto resta il battitore */
               if(_bi402<0||_bd402<=3)return prev;/* qualcuno c'e' gia': non si tocca niente */
+              if(_stagedSpotRef.current&&_stagedSpotRef.current.sit===sit0)_stagedSpotRef.current.taker=_bi402;/* [giro 43 PO-266] chi e' il battitore di QUESTA scena */
               return prev.map((pl,idx)=>idx===_bi402?{...pl,x:clamp(_bs402.x,2,98),y:clamp(_bs402.y,2,98),rx:0,ry:0,_taker402:true}:(pl._taker402?{...pl,_taker402:false}:pl));/* rx/ry azzerati + CONTRASSEGNO del battitore: la colla del renderer (7.405) incolla la mesh di chi lo porta al punto staggiato — il match per coordinate non scattava mai, i bersagli dell'AI off-ball non sono i logici grezzi */
             });
           }
