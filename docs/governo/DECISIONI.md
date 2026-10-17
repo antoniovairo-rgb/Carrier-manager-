@@ -462,3 +462,8 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - Stima (durate storiche dei 19 passi mancanti, due alla volta): fine catena fra le 21:30 e le 22:30 UTC (23:30-00:30 di Roma). Non confermabile.
 - **Decisione PO: «Pubblica appena verde»** — se la catena chiude verde dopo la mezzanotte di Roma, la 7.999.171 si pubblica subito, senza aspettare il rilascio delle 08; poi le due sessioni di collaudo come di regola.
+
+## 17/10 notte — rimbalzo-189 e pubblicazione della 7.999.171
+
+- Misurato (2 volte sulla build 171): prova verde con margine alto fermo a 74 px; braccio rosso __CPM_NO_RIMB189 cieco (margine 0 px fermo, nessun salto). Trovato rosso dalla catena della sessione Haiku (commit 942fe280); verde nella catena della sessione principale.
+- **Decisione PO: «Fuori catena e pubblica»** — rimbalzo-189 esce dalla catena (resta nella MAPPA), riparazione nel giro dei rossi; la 7.999.171 si pubblica subito.
