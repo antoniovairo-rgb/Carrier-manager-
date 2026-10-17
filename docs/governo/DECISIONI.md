@@ -483,3 +483,4 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 ## 17/10 — verifica PO sulle interazioni col mister
 
 - PO: «Le interazioni in partita 2D con il mister sono Ok» (7.999.171) → PO-226, PO-234, PO-246 VERIFICATO. PO-260 (scheda sopra highlight/cerimonia in 3D) resta in L1-bis; il giro 52 non deve cambiare il comportamento 2D già approvato.
+- PO 17/10: «C'è un miglioramento negli interventi difensivi e passaggi» → decisione «Migliorati, restano aperte»: PO-220 e PO-228 in L1-bis, ricontrollo dopo la 7.999.172 (giro 35 sui passaggi).
