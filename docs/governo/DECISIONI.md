@@ -491,3 +491,11 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 - **Secondo percorso di rinnovo (offerta del club, transferOffer.isRenewal)**: eccezione zona G ESTESA a quel solo percorso — «Sì, misura e correggi».
 - **Esito con due scelte nella stessa partita (PO-280)**: «La prima finisce alla seconda»; l'ultima fino al fischio.
 - **Ordine nel tabellino della gara**: «Tabellino come intestazione» (casa – ospite, la tua squadra evidenziata, ogni numero sotto la squadra giusta).
+
+## 17/10 — metodo di lavoro (PO: «usa quello che trovi più utile per il progetto»)
+
+- **Sessioni figlie** per il lavoro lungo e pesante (giri di sviluppo, collaudi 3D e carriera): container propri, in parallelo, sopravvivono ai riavvii della sessione principale.
+- **Sottoagenti** per il lavoro breve di lettura e analisi (rapporti dei giri, ricerche nel codice, controllo delle unioni, bozze dei questionari), con livello di ragionamento basso per le ricerche e alto per i giudizi.
+- **Catene notte** nella sessione principale, seguite dentro il turno fino alla riga FINE (le sessioni Haiku dedicate si sono fermate due volte il 16/10).
+- **Compiti dei giri**: si aggiunge la frase «Time matters here: do not spend time that can be avoided, and the earlier a correct result is obtained, the better.» (consiglio del team Claude Code, newsletter 17/10); l'effetto sui tempi va misurato.
+- **Guardia di promozione cpm-guardie**: ora chiusa in caso di errore (se git o il controllo falliscono, il push su main è rifiutato invece di passare).
