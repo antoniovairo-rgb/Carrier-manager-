@@ -1,0 +1,4 @@
+verde {"fase":"ceremony","pagato":308,"residuo":0,"aperto":308}
+rosso {"fase":"ceremony","pagato":276,"residuo":14,"aperto":330}
+✅ tempo-138 verde (e il rosso si vede)
+FINE 0

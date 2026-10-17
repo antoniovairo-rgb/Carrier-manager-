@@ -1,0 +1,6 @@
+VERDE Prova Neri 3 · fine true · scheda a schermo in gioco 171 campioni · FUORI dal gioco 0 [] · highlight partiti con scheda in sospeso 2 · schede 1 · scelte ["eroe_stanco@90a"] · chiuse al fischio 1
+VERDE Prova Greco 8 · fine true · scheda a schermo in gioco 300 campioni · FUORI dal gioco 0 [] · highlight partiti con scheda in sospeso 0 · schede 2 · scelte ["espulsione_noi@48a","sotto_finale@90a"] · chiuse al fischio 1
+ROSSO Prova Neri 3 · fine true · scheda a schermo in gioco 176 campioni · FUORI dal gioco 31 ["hl_intro@71","hl_intro@71","hl_intro@71","hl_choose@71","hl_result@71","hl_result@71"] · highlight partiti con scheda in sospeso 2 · schede 2 · scelte [] · chiuse al fischio 0
+ROSSO Prova Greco 8 · fine true · scheda a schermo in gioco 309 campioni · FUORI dal gioco 0 [] · highlight partiti con scheda in sospeso 0 · schede 2 · scelte ["espulsione_noi@48a"] · chiuse al fischio 0
+✅ schede-260 verde (la scheda del mister non copre mai highlight, cerimonia o fischio; al fischio si chiude e arriva al motore) e il rosso si vede
+FINE 0

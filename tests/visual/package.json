@@ -434,6 +434,7 @@
     "ingresso-245": "node ingresso-245.mjs",
     "schede-246": "node schede-246.mjs",
     "schede-260": "node schede-260.mjs",
+    "schede-finale": "node schede-finale.mjs",
     "misura-226": "node misura-226.mjs",
     "promessa-226": "node promessa-226.mjs",
     "toast-247": "node toast-247.mjs",
