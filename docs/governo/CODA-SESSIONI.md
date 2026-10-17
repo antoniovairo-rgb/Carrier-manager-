@@ -125,3 +125,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - giro 53 PO-273/274/275 highlight e memoria — session_01YZKnQsSZz8ah1egVPJmjQF — sviluppo/highlight-273-giro53
   - giro 54 PO-277 ingresso dal tunnel + PO-276 — session_01VRiPAZWRMfdCEvTiRgtMv9 — sviluppo/ingresso-277-giro54
   - giro 35 (sviluppo/ripartenza-228-giro35) entra all'unione.
+  - giro 55 PO-278 pallone — session_014Qo7zTDiQ1QX3H4YZuVYjo — sviluppo/pallone-278-giro55
