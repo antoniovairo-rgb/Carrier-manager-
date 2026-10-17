@@ -479,3 +479,7 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - PO: «avvia la 7.999.172 con L1-bis». Base lavoro/172-base = main 39776cdc (7.999.171). Giri 50-54 su Opus, uno per filone; il giro 35 (ripartenza ristretta, ritaratura passaggi) entra all'unione.
 - PO-277 (nuova): ingresso dal tunnel più rapido ma non velocissimo come prima, saltabile, e usato per caricare i GLB.
+
+## 17/10 — verifica PO sulle interazioni col mister
+
+- PO: «Le interazioni in partita 2D con il mister sono Ok» (7.999.171) → PO-226, PO-234, PO-246 VERIFICATO. PO-260 (scheda sopra highlight/cerimonia in 3D) resta in L1-bis; il giro 52 non deve cambiare il comportamento 2D già approvato.
