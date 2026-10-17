@@ -52,18 +52,25 @@ const norm = g => { let m = 0; const L = [];
     L.push({ m, k: e[0] + ' ' + JSON.stringify(e[1], (kk, v) => typeof v === 'number' ? +v.toFixed(4) : v) }); }
   return L; };
 const out = [];
-for (let i = 0; i < GIRI; i++) { const g = await giro(i); out.push(g);
+/* [giro 50 PO-271] giri SPEZZABILI: un giro a partita intera dura 200-215 s a carico alto, tre giri superano il tetto di 10 minuti di
+   una chiamata. SEME_OUT=<file> accoda ogni giro (jsonl); SEME_DA=<file> confronta i giri gia' raccolti senza giocarne di nuovi. */
+const _da = process.env.SEME_DA ? fs.readFileSync(process.env.SEME_DA, 'utf8').split('\n').filter(Boolean).map(x => JSON.parse(x)) : null;
+for (let i = 0; i < (_da ? _da.length : GIRI); i++) { const g = _da ? _da[i] : await giro(i); out.push(g); if (!_da && process.env.SEME_OUT) fs.appendFileSync(process.env.SEME_OUT, JSON.stringify(g) + '\n');
   const dMax = g.rip.reduce((a, r) => Math.max(a, r.d || 0), 0), fonti = g.rip.reduce((a, r) => (a[r.fonte] = (a[r.fonte] | 0) + 1, a), {});
   console.log(`giro ${i}: fine=${g.fine} min=${g.clock} punteggio=${g.sc ? g.sc.home + '-' + g.sc.away : '?'} ingressi=${g.log.length} durata=${g.durataMs}ms errori=${g.errs.length} · riprese ${g.rip.length} ${JSON.stringify(fonti)} eroe consegnato↔visto max ${dMax.toFixed(1)}u`); }
 await b.close(); srv.close();
-const base = norm(out[0]); let primaMin = null, diverge = false, motivi = [];
-for (let i = 1; i < out.length; i++) { const L = norm(out[i]);
+if (out.length < 2) { console.log('(un solo giro raccolto: confronto rimandato a SEME_DA)'); process.exit(0); }
+/* [giro 50 PO-271] con STOPMIN ogni giro si ferma a un istante diverso dentro il minuto di arresto: il confronto si tronca ai minuti
+   COMPLETI (< STOPMIN), altrimenti la coda del giro piu' lungo e' una «divergenza» dello strumento (misurato: #706 al 25' con STOPMIN=25). */
+const _tronca = L => STOPMIN ? L.filter(e => e.m < STOPMIN) : L;
+const base = _tronca(norm(out[0])); let primaMin = null, diverge = false, motivi = [];
+for (let i = 1; i < out.length; i++) { const L = _tronca(norm(out[i]));
   let k = 0; while (k < Math.min(L.length, base.length) && L[k].k === base[k].k) k++;
   if (k < L.length || k < base.length) { diverge = true; const m = (base[k] || L[k]).m; primaMin = primaMin == null ? m : Math.min(primaMin, m);
     motivi.push(`giro ${i}: primo ingresso divergente #${k} al ${m}'\n     0: ${(base[k] || { k: '(fine)' }).k.slice(0, 200)}\n     ${i}: ${(L[k] || { k: '(fine)' }).k.slice(0, 200)}`); }
   const r0 = out[0].rnd14, r = out[i].rnd14; const ms = [...new Set([...Object.keys(r0), ...Object.keys(r)])].map(Number).sort((a, b) => a - b);
-  const mr = ms.find(m => r0[m] !== r[m]); if (mr !== undefined) { diverge = true; primaMin = primaMin == null ? mr : Math.min(primaMin, mr); motivi.push(`giro ${i}: sorteggi del motore diversi dal ${mr}'`); }
-  const s0 = JSON.stringify(out[0].sc), s = JSON.stringify(out[i].sc); if (s0 !== s) { diverge = true; motivi.push(`giro ${i}: punteggio ${s} contro ${s0}`); }
+  const mr = ms.find(m => (!STOPMIN || m < STOPMIN) && r0[m] !== r[m]); if (mr !== undefined) { diverge = true; primaMin = primaMin == null ? mr : Math.min(primaMin, mr); motivi.push(`giro ${i}: sorteggi del motore diversi dal ${mr}'`); }
+  const s0 = JSON.stringify(out[0].sc), s = JSON.stringify(out[i].sc); if (!STOPMIN && s0 !== s) { diverge = true; motivi.push(`giro ${i}: punteggio ${s} contro ${s0}`); }
 }
 const errTot = out.reduce((a, g) => a + g.errs.length, 0), corti = out.filter(g => !STOPMIN && g.fine !== 'ended' && g.fine !== 'ceremony').length;
 console.log(motivi.length ? motivi.join('\n') : 'ingressi del motore, sorteggi per minuto e punteggio IDENTICI in tutti i giri');
