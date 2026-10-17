@@ -127,3 +127,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - giro 35 (sviluppo/ripartenza-228-giro35) entra all'unione.
   - giro 55 PO-278 pallone — session_014Qo7zTDiQ1QX3H4YZuVYjo — sviluppo/pallone-278-giro55
   - giro 56 PO-279 statistiche d inizio partita — session_01Ph8MSXmZPVLJEkvPHNPudA — sviluppo/statistiche-279-giro56
+  - giro 57 PO-280 esito della scelta del mister — session_01Hg5P5GKnjGDfEs8EL834f2 — sviluppo/esito-scelta-280-giro57
