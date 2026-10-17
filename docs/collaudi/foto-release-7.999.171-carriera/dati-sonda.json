@@ -1,0 +1,216 @@
+{
+ "errors": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB.",
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB.",
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ],
+ "steps": [
+  {
+   "w0": {
+    "season": 2,
+    "week": 1,
+    "standingsN": 18,
+    "gf": 0,
+    "ga": 0
+   }
+  },
+  {
+   "passo": 1,
+   "res": "opening-resolved",
+   "w": 1,
+   "weeksDone": 0
+  },
+  {
+   "settimana": 1,
+   "res": "opening-resolved",
+   "season": 2,
+   "week": 1,
+   "standingsN": 18,
+   "gf": 0,
+   "ga": 0,
+   "bank": 0,
+   "lived": false
+  },
+  {
+   "passo": 2,
+   "res": "lived",
+   "w": 1,
+   "weeksDone": 0
+  },
+  {
+   "settimana": 2,
+   "res": "lived",
+   "season": 2,
+   "week": 1,
+   "standingsN": 18,
+   "gf": 0,
+   "ga": 0,
+   "bank": 0,
+   "lived": true
+  },
+  {
+   "passo": 3,
+   "res": "simulated",
+   "w": 1,
+   "weeksDone": 0
+  },
+  {
+   "settimana": 3,
+   "res": "simulated",
+   "season": 2,
+   "week": 2,
+   "standingsN": 18,
+   "gf": 21,
+   "ga": 21,
+   "bank": 5400,
+   "lived": false
+  },
+  {
+   "passo": 4,
+   "res": "lived",
+   "w": 2,
+   "weeksDone": 1
+  },
+  {
+   "settimana": 4,
+   "res": "lived",
+   "season": 2,
+   "week": 2,
+   "standingsN": 18,
+   "gf": 21,
+   "ga": 21,
+   "bank": 5400,
+   "lived": true
+  },
+  {
+   "passo": 5,
+   "res": "simulated",
+   "w": 2,
+   "weeksDone": 1
+  },
+  {
+   "settimana": 5,
+   "res": "simulated",
+   "season": 2,
+   "week": 3,
+   "standingsN": 18,
+   "gf": 45,
+   "ga": 45,
+   "bank": 10800,
+   "lived": false
+  },
+  {
+   "passo": 6,
+   "res": "lived",
+   "w": 3,
+   "weeksDone": 2
+  },
+  {
+   "settimana": 6,
+   "res": "lived",
+   "season": 2,
+   "week": 3,
+   "standingsN": 18,
+   "gf": 45,
+   "ga": 45,
+   "bank": 10800,
+   "lived": true
+  },
+  {
+   "passo": 7,
+   "res": "simulated",
+   "w": 4,
+   "weeksDone": 3
+  },
+  {
+   "settimana": 7,
+   "res": "simulated",
+   "season": 2,
+   "week": 4,
+   "standingsN": 18,
+   "gf": 65,
+   "ga": 65,
+   "bank": 16200,
+   "lived": false
+  },
+  {
+   "tab": "calendar",
+   "goTab": true,
+   "overflow": {
+    "sw": 412,
+    "iw": 412
+   }
+  },
+  {
+   "tab": "standings",
+   "goTab": true,
+   "overflow": {
+    "sw": 412,
+    "iw": 412
+   }
+  },
+  {
+   "tab": "profile",
+   "goTab": true,
+   "overflow": {
+    "sw": 412,
+    "iw": 412
+   }
+  }
+ ],
+ "texts": {
+  "inizio": "v 7.999.171\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 1/38 · 4° posto\n70\nOVR\nFORMA\n70\nMORALE\n72\nFATICA\n10\n🏁 Avvia Stagione\nritiro, raduno e presentazioni\n›\nDeutsche Liga · 1ª giornata\nPROSSIMA PARTITA\nCalendario ›\nLLN\nFC Lilien\n16ª in classifica\nVS\nIn trasferta\nWRK\nFC Werkstadt\n4ª in classifica\nForza 58/99 · più debole\n⚠️ Zona retrocessione\nSTAGIONE 2 · SETTIMANA 1 DI 38\n0\nPartite\n0\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🏷️ Mercato Estivo aperto\n5 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n0 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n—\nA fine stagione presenti il conto a te stesso.\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana1": "v 7.999.171\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 1/38 · 4° posto\n70\nOVR\nFORMA\n70\nMORALE\n72\nFATICA\n10\n🏁 Avvia Stagione\nritiro, raduno e presentazioni\n›\nDeutsche Liga · 1ª giornata\nPROSSIMA PARTITA\nCalendario ›\nLLN\nFC Lilien\n16ª in classifica\nVS\nIn trasferta\nWRK\nFC Werkstadt\n4ª in classifica\nForza 58/99 · più debole\n⚠️ Zona retrocessione\nSTAGIONE 2 · SETTIMANA 1 DI 38\n0\nPartite\n0\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🏷️ Mercato Estivo aperto\n5 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n0 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n—\nA fine stagione presenti il conto a te stesso.\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana2": "v 7.999.171\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 1/38 · 4° posto\n70\nOVR\nFORMA\n70\nMORALE\n72\nFATICA\n10\n⚽ Gioca vs FC Lilien\n✈️ In trasferta\n›\nDeutsche Liga · 1ª giornata\nPROSSIMA PARTITA\nCalendario ›\nLLN\nFC Lilien\n16ª in classifica\nVS\nIn trasferta\nWRK\nFC Werkstadt\n4ª in classifica\nForza 58/99 · più debole\n⚠️ Zona retrocessione\nSTAGIONE 2 · SETTIMANA 1 DI 38\n0\nPartite\n0\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🏷️ Mercato Estivo aperto\n5 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n0 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n—\nA fine stagione presenti il conto a te stesso.\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana3": "v 7.999.171\nPareggio 1–1 in trasferta vs FC Lilien (simulata) · 1 gol · voto 6,3\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 2/38 · 9° posto\n73\nOVR\nFORMA\n70\nMORALE\n72\nFATICA\n47\n⚡ Vivi la Settimana\nallenamento, eventi e crescita\n›\nDeutsche Liga · 2ª giornata\nPROSSIMA PARTITA\nCalendario ›\nUltime 1\nN\n9ª\nWRK\nFC Werkstadt\n9ª in classifica\nVS\nIn casa\nRVM\nFC Ravelmund\n14ª in classifica\nForza 65/99 · più debole\nSTAGIONE 2 · SETTIMANA 2 DI 38\n1\nPartite\n1\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl progetto del club\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n20 anni\n🏷️ Mercato Estivo aperto\n4 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n1 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n6.3 (1 gare)\nA fine stagione presenti il conto a te stesso.\nVoci di mercato\n›\nClassifica\n›\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana4": "v 7.999.171\nPareggio 1–1 in trasferta vs FC Lilien (simulata) · 1 gol · voto 6,3\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 2/38 · 9° posto\n73\nOVR\nFORMA\n70\nMORALE\n72\nFATICA\n47\n⚽ Gioca vs FC Ravelmund\n🏠 In casa\n›\nDeutsche Liga · 2ª giornata\nPROSSIMA PARTITA\nCalendario ›\nUltime 1\nN\n9ª\nWRK\nFC Werkstadt\n9ª in classifica\nVS\nIn casa\nRVM\nFC Ravelmund\n14ª in classifica\nForza 65/99 · più debole\nSTAGIONE 2 · SETTIMANA 2 DI 38\n1\nPartite\n1\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl progetto del club\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n20 anni\n🏷️ Mercato Estivo aperto\n4 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n1 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n6.3 (1 gare)\nA fine stagione presenti il conto a te stesso.\nVoci di mercato\n›\nClassifica\n›\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana5": "Vittoria 3–0 in casa vs FC Ravelmund (simulata) · 1 assist · voto 7,0\nK⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 3/38 · 5° posto\n73\nOVR\nFORMA\n70\nMORALE\n86\nFATICA\n29\n⚡ Vivi la Settimana\nallenamento, eventi e crescita\n›\nDeutsche Liga · 3ª giornata\nPROSSIMA PARTITA\nCalendario ›\nUltime 2\nN\nV\n5ª\nFRB\nFC Friburgo\n8ª in classifica\nVS\nIn trasferta\nWRK\nFC Werkstadt\n5ª in classifica\nForza 76/99 · alla pari\nSTAGIONE 2 · SETTIMANA 3 DI 38\n2\nPartite\n1\nGol\n1\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl progetto del club\n›\nIl tuo procuratore: boutique o global?\n›\nIl mondo fuori\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n20 anni\n🏷️ Mercato Estivo aperto\n3 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n1 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n6.65 (2 gare)\nA fine stagione presenti il conto a te stesso.\nNotizie della settimana\n›\nVoci di mercato\n›\nClassifica\n›\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+  "settimana6": "K⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 3/38 · 5° posto\n73\nOVR\nFORMA\n70\nMORALE\n93\nFATICA\n29\n⚽ Gioca vs FC Friburgo\n✈️ In trasferta\n›\nDeutsche Liga · 3ª giornata\nPROSSIMA PARTITA\nCalendario ›\nUltime 2\nN\nV\n5ª\nFRB\nFC Friburgo\n8ª in classifica\nVS\nIn trasferta\nWRK\nFC Werkstadt\n5ª in classifica\nForza 76/99 · alla pari\nSTAGIONE 2 · SETTIMANA 3 DI 38\n2\nPartite\n1\nGol\n1\nAssist\n🤝\n64/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl progetto del club\n›\nIl tuo procuratore: boutique o global?\n›\nIl mondo fuori\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n20 anni\n🏷️ Mercato Estivo aperto\n3 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n1 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n6.65 (2 gare)\nA fine stagione presenti il conto a te stesso.\nNotizie della settimana\n›\nVoci di mercato\n›\nClassifica\n›\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI\nINTERVISTA\nCronaca di Sport\nSETTIMANALE\nIn sala\nGreco\nin sala\nFerretti\nin sala\nRicci\nin sala\n«Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?»\nRISPONDI TU\nCollaudo Carriera\n🤝 Diplomatico\n«Impegno totale, sacrificio e la migliore versione di me stesso in campo.»\n🔥 Ambizioso\n«Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.»\n🙏 Umile\n«Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.»\nScegli il tono della risposta: gli effetti li vedrai subito dopo.",
+  "settimana7": "K⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 4/38 · 7° posto\n74\nOVR\nFORMA\n70\nMORALE\n95\nFATICA\n39\n⚡ Vivi la Settimana\nallenamento, eventi e crescita\n›\nDeutsche Liga · 4ª giornata\nPROSSIMA PARTITA\nCalendario ›\nUltime 3\nN\nV\nP\n7ª\nWRK\nFC Werkstadt\n7ª in classifica\nVS\nIn casa\nSTG\nFC Stuttgart\n4ª in classifica\nForza 76/99 · alla pari\nSTAGIONE 2 · SETTIMANA 4 DI 38\n3\nPartite\n1\nGol\n1\nAssist\n🤝\n64/100\nFiducia del mister\n⭐\n20/100\nPopolarità\nLa tua storia\n›\nIl progetto del club\n›\nIl tuo procuratore: boutique o global?\n›\nIl primo spogliatoio dei grandi\n›\nIl mondo fuori\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n20 anni\n🏷️ Mercato Estivo aperto\n2 settimane rimanenti\nObiettivi della stagione\n›\nObiettivi personali\n›\n🏹 La prima stagione da pro: 12+ gol\n1 / 12\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n6.2 (3 gare)\nA fine stagione presenti il conto a te stesso.\nNotizie della settimana\n›\nVoci di mercato\n›\nClassifica\n›\nUltime notizie\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI\nINTERVISTA\nCronaca di Sport\nSETTIMANALE\nIn sala\nGreco\nin sala\nFerretti\nin sala\nRicci\nin sala\n«Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?»\nRISPONDI TU\nCollaudo Carriera\n🤝 Diplomatico\n«Impegno totale, sacrificio e la migliore versione di me stesso in campo.»\n🔥 Ambizioso\n«Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.»\n🙏 Umile\n«Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.»\nScegli il tono della risposta: gli effetti li vedrai subito dopo.",
+  "tab_calendar": "K⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 4/38 · 7° posto\n74\nOVR\n📊\nClassifica\n📅\nCalendario\n🏆\nCoppe\nPROSSIME PARTITE\n›\nSTG\n▶ vs FC Stuttgart · in casa\n4ª giornata · sett. 4\nGioca ›\nKRA\nvs FC Kraichgau · in trasferta\n5ª giornata · sett. 5\nVLD\nvs FC Valdenau · in casa\n6ª giornata · sett. 6\nBNO\nvs FC Berlin Nord · in trasferta\n7ª giornata · sett. 7\nRUH\nvs FC Ruhrpott · in casa\n8ª giornata · sett. 8\nNIE\nvs FC Niederrhein · in trasferta\n9ª giornata · sett. 10\nFFT\nvs FC Frankfurt · in casa\n10ª giornata · sett. 11\nFBL\nvs FC Berlin · in trasferta\n11ª giornata · sett. 12\nPARTITE GIOCATE\n›\nSTAGIONE 2 — CALENDARIO\n›\n1\nLLN · t\nN 1-1\n2\nRVM · c\nV 3-0\n3\nFRB · t\nP 1-2\n4\nSTG · c\n⚽\n5\nKRA · t\n⚽\n6\nVLD · c\n⚽\n7\nBNO · t\n⚽\n8\nRUH · c\n⚽\n9\n10\nNIE · t\n⚽\n11\nFFT · c\n⚽\n12\nFBL · t\n⚽\n13\nWSR · c\n⚽\n14\nMAI · t\n⚽\n15\nWOL · c\n⚽\n16\nGLW · t\n⚽\n17\nFLZ · c\n⚽\n18\nAUG · t\n⚽\n19\n20\nLLN · c\n⚽\n21\nRVM · t\n⚽\n22\nFRB · c\n⚽\n23\nSTG · t\n⚽\n24\nKRA · c\n⚽\n25\nVLD · t\n⚽\n26\nBNO · c\n⚽\n27\nRUH · t\n⚽\n28\n29\nNIE · c\n⚽\n30\nFFT · t\n⚽\n31\nFBL · c\n⚽\n32\nWSR · t\n⚽\n33\nMAI · c\n⚽\n34\nWOL · t\n⚽\n35\n36\nGLW · c\n⚽\n37\nFLZ · t\n⚽\n38\nAUG · c\n⚽\nV vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI\nINTERVISTA\nCronaca di Sport\nSETTIMANALE\nIn sala\nGreco\nin sala\nFerretti\nin sala\nRicci\nin sala\n«Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?»\nRISPONDI TU\nCollaudo Carriera\n🤝 Diplomatico\n«Impegno totale, sacrificio e la migliore versione di me stesso in campo.»\n🔥 Ambizioso\n«Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.»\n🙏 Umile\n«Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.»\nScegli il tono della risposta: gli effetti li vedrai subito dopo.",
+  "tab_standings": "K⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 4/38 · 7° posto\n74\nOVR\n📊\nClassifica\n📅\nCalendario\n🏆\nCoppe\nLEGA\nDeutsche Liga\nLega A\nPremier Division\nLiga Ibérica\nLigue Nationale\nLiga Lusitana\nLiga Oranje\nLiga Belga\nLiga Anatolica\nLega B\nChampionship\nDeutsche Liga 2\nLigue Nationale 2\nLiga Ibérica 2\n›\nCLASSIFICA DEUTSCHE LIGA\n›\n\t#\tCLUB\tG\tV\tN\tP\tGF\tGS\tDIFF\tPT\n\n\t1\t\nFFT\nFFT\t3\t3\t0\t0\t6\t1\t+5\t9\n\n\t2\t\nGLW\nGLW\t3\t2\t1\t0\t7\t1\t+6\t7\n\n\t3\t\nVLD\nVLD\t3\t2\t1\t0\t4\t0\t+4\t7\n\n\t4\t\nSTG\nSTG\t3\t2\t1\t0\t3\t1\t+2\t7\n\n\t5\t\nFRB\nFRB\t3\t2\t0\t1\t6\t3\t+3\t6\n\n\t6\t\nWOL\nWOL\t3\t1\t1\t1\t5\t3\t+2\t4\n\n\t7\t\nWRK\nWRK ★\t3\t1\t1\t1\t5\t3\t+2\t4\n\n\t8\t\nFLZ\nFLZ\t3\t1\t1\t1\t4\t3\t+1\t4\n\n\t9\t\nAUG\nAUG\t3\t1\t1\t1\t3\t2\t+1\t4\n\n\t10\t\nLLN\nLLN\t3\t1\t1\t1\t4\t4\t0\t4\n\n\t11\t\nWSR\nWSR\t3\t1\t1\t1\t3\t4\t-1\t4\n\n\t12\t\nKRA\nKRA\t3\t1\t1\t1\t2\t5\t-3\t4\n\n\t13\t\nFBL\nFBL\t3\t1\t0\t2\t5\t5\t0\t3\n\n\t14\t\nNIE\nNIE\t3\t1\t0\t2\t1\t3\t-2\t3\n\n\t15\t\nRUH\nRUH\t3\t1\t0\t2\t1\t3\t-2\t3\n\n\t16\t\nBNO\nBNO\t3\t1\t0\t2\t2\t6\t-4\t3\n\n\t17\t\nRVM\nRVM\t3\t0\t0\t3\t2\t8\t-6\t0\n\n\t18\t\nMAI\nMAI\t3\t0\t0\t3\t2\t10\t-8\t0\nG giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti\n🏆 Campione\n⬆ CL (1-4)\n🟠 EL (5-6)\n🟢 Conf. (7)\n⬇ Retrocesse\n⚽ CAPOCANNONIERI\n›\nDAGLI ALTRI CAMPIONATI\n›\nAlbo d'oro — storico campioni\n›\nMarcatori storici\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI\nINTERVISTA\nCronaca di Sport\nSETTIMANALE\nIn sala\nGreco\nin sala\nFerretti\nin sala\nRicci\nin sala\n«Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?»\nRISPONDI TU\nCollaudo Carriera\n🤝 Diplomatico\n«Impegno totale, sacrificio e la migliore versione di me stesso in campo.»\n🔥 Ambizioso\n«Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.»\n🙏 Umile\n«Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.»\nScegli il tono della risposta: gli effetti li vedrai subito dopo.",
+  "tab_profile": "K⚽rward\nElite\nSalva\n· 04:12\nITALIA · ATTACCANTE\nCOLLAUDO CARRIERA\nFC Werkstadt · Deutsche Liga · St. 2 · Sett. 4/38 · 7° posto\n74\nOVR\nFORMA\n70\nMORALE\n95\nFATICA\n39\n👤\nProfilo\n🌍\nNazionale\nIn Rotazione\nProssimo gradino — Titolare: OVR ≥78 (ora 74) · fiducia del mister ≥72 (ora 64) · voto medio ≥6,8 (ora 6,2)\nSTATISTICHE\n6\n›\nGol stagione\n1\nAssist stagione\n1\nPresenze stag.\n3\nGol carriera\n1\nAssist carriera\n1\nValore\n€9,7 mln\nStagioni da professionista completate: 1\nBIOGRAFIA\n›\nRECORD PERSONALI\n1\n›\nRIVALE: ALESSANDRO MÜLLER\n›\nLA STAMPA\n3\n›\nSTILE DI GIOCO: BOMBER\n›\nCONTRATTO\n›\nATTRIBUTI\n8\n›\nMILESTONE\n›\n☕ Sostieni il progetto\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI\nINTERVISTA\nCronaca di Sport\nSETTIMANALE\nIn sala\nGreco\nin sala\nFerretti\nin sala\nRicci\nin sala\n«Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?»\nRISPONDI TU\nCollaudo Carriera\n🤝 Diplomatico\n«Impegno totale, sacrificio e la migliore versione di me stesso in campo.»\n🔥 Ambizioso\n«Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.»\n🙏 Umile\n«Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.»\nScegli il tono della risposta: gli effetti li vedrai subito dopo.",
+  "home412": "v 7.999.171\nK⚽rward\nElite\n\nSIMULATORE DI CARRIERA CALCISTICA\n\nDa promessa a leggenda\n\nNuova carriera\n\nCrea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.\n\nℹ️\nCrediti\n🏠\nHome\n🎬\nRivedi intro\n📂\nImporta\n⚙️\nOpzioni",
+  "crediti412": "v 7.999.171\nK⚽rward\nElite\n\nSIMULATORE DI CARRIERA CALCISTICA\n\nDa promessa a leggenda\n\nNuova carriera\n\nCrea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.\n\nℹ️\nCrediti\nCrediti\n×\nLe risorse di terze parti usate in Korward Elite.\nMODELLI 3D E ANIMAZIONI\nGiocatori 3D «Soccer Player - Rigged» (CGTrader)\nOrdine CGTrader #17876008 del 20/09/2026.\nAutore: Hisenberg\nLicenza: Royalty Free (standard) — dichiarata dal PO\nCorpo «Regular Male»\nProvenienza dichiarata dal PO.\nAutore: Mixamo (Adobe)\nMicrosoft Rocketbox\nGiornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).\nAutore: Microsoft (github.com/microsoft/Microsoft-Rocketbox)\nLicenza: MIT\nAnimazioni Mixamo e modello CH38\nClip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).\nAutore: Mixamo (Adobe)\nLicenza: «royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)\nILLUSTRAZIONI E IMMAGINI\nRitratti delle figurine\nAutore: Generati con l'API a pagamento di OpenAI\nDiceBear «Avataaars»\ndicebear.com: «Free for personal and commercial use».\nAutore: Pablo Stanley\nDiceBear «Micah» (Avatar Illustration System)\nAutore: Micah Lanier\nLicenza: CC BY 4.0 (attribuzione obbligatoria)\nIcone dell'app e grafiche dello store\nAutore: Realizzate per Korward Elite\nCARATTERI\nGreat Vibes\nAutore: Robert Leuschke («The Great Vibes Pro Project Authors»)\nLicenza: SIL Open Font License 1.1\nBarlow e Barlow Condensed\nAutore: Jeremy Tribby («The Barlow Project Authors»)\nLicenza: SIL Open Font License 1.1\nSUONI\n«Stadium joy shouting crowd» (Mixkit 3022)\nLicenza: Mixkit Sound Effects Free License\nBrusio di folla\nAutore: generato per Korward Elite (giro 20, 14/10)\nLicenza: nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso\nEffetti sonori sintetizzati con Web Audio\nAutore: Realizzati per Korward Elite\nLIBRERIE SOFTWARE\nDiceBear (libreria)\nAutore: Florian Körner\nLicenza: MIT\nReact/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6\nLicenza: MIT\nGLTFLoader e SkeletonUtils\nEsempi di three@0.128.0, come Three.js.\nAutore: three.js authors\nLicenza: MIT — Copyright © 2010-2021 three.js authors\nChiudi\n🏠\nHome\n🎬\nRivedi intro\n📂\nImporta\n⚙️\nOpzioni",
+  "home360": "v 7.999.171\nK⚽rward\nElite\n\nSIMULATORE DI CARRIERA CALCISTICA\n\nDa promessa a leggenda\n\nNuova carriera\n\nCrea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.\n\nℹ️\nCrediti\n🏠\nHome\n🎬\nRivedi intro\n📂\nImporta\n⚙️\nOpzioni",
+  "crediti360": "v 7.999.171\nK⚽rward\nElite\n\nSIMULATORE DI CARRIERA CALCISTICA\n\nDa promessa a leggenda\n\nNuova carriera\n\nCrea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.\n\nℹ️\nCrediti\nCrediti\n×\nLe risorse di terze parti usate in Korward Elite.\nMODELLI 3D E ANIMAZIONI\nGiocatori 3D «Soccer Player - Rigged» (CGTrader)\nOrdine CGTrader #17876008 del 20/09/2026.\nAutore: Hisenberg\nLicenza: Royalty Free (standard) — dichiarata dal PO\nCorpo «Regular Male»\nProvenienza dichiarata dal PO.\nAutore: Mixamo (Adobe)\nMicrosoft Rocketbox\nGiornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).\nAutore: Microsoft (github.com/microsoft/Microsoft-Rocketbox)\nLicenza: MIT\nAnimazioni Mixamo e modello CH38\nClip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).\nAutore: Mixamo (Adobe)\nLicenza: «royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)\nILLUSTRAZIONI E IMMAGINI\nRitratti delle figurine\nAutore: Generati con l'API a pagamento di OpenAI\nDiceBear «Avataaars»\ndicebear.com: «Free for personal and commercial use».\nAutore: Pablo Stanley\nDiceBear «Micah» (Avatar Illustration System)\nAutore: Micah Lanier\nLicenza: CC BY 4.0 (attribuzione obbligatoria)\nIcone dell'app e grafiche dello store\nAutore: Realizzate per Korward Elite\nCARATTERI\nGreat Vibes\nAutore: Robert Leuschke («The Great Vibes Pro Project Authors»)\nLicenza: SIL Open Font License 1.1\nBarlow e Barlow Condensed\nAutore: Jeremy Tribby («The Barlow Project Authors»)\nLicenza: SIL Open Font License 1.1\nSUONI\n«Stadium joy shouting crowd» (Mixkit 3022)\nLicenza: Mixkit Sound Effects Free License\nBrusio di folla\nAutore: generato per Korward Elite (giro 20, 14/10)\nLicenza: nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso\nEffetti sonori sintetizzati con Web Audio\nAutore: Realizzati per Korward Elite\nLIBRERIE SOFTWARE\nDiceBear (libreria)\nAutore: Florian Körner\nLicenza: MIT\nReact/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6\nLicenza: MIT\nGLTFLoader e SkeletonUtils\nEsempi di three@0.128.0, come Three.js.\nAutore: three.js authors\nLicenza: MIT — Copyright © 2010-2021 three.js authors\nChiudi\n🏠\nHome\n🎬\nRivedi intro\n📂\nImporta\n⚙️\nOpzioni"
+ },
+ "screens": [
+  "01-carriera-inizio-412.png",
+  "s01-dopo-passo-1-412.png",
+  "s02-dopo-passo-2-412.png",
+  "s03-dopo-passo-3-412.png",
+  "s04-dopo-passo-4-412.png",
+  "s05-dopo-passo-5-412.png",
+  "s06-dopo-passo-6-412.png",
+  "s07-dopo-passo-7-412.png",
+  "20-tab-calendar-412.png",
+  "20-tab-standings-412.png",
+  "20-tab-profile-412.png",
+  "05-carriera-360.png",
+  "10-home-412.png",
+  "11-crediti-412.png",
+  "10-home-360.png",
+  "11-crediti-360.png"
+ ],
+ "overflow360_carriera": {
+  "sw": 360,
+  "iw": 360
+ },
+ "overflowCrediti": {
+  "360": {
+   "sw": 360,
+   "iw": 360
+  },
+  "412": {
+   "sw": 412,
+   "iw": 412
+  }
+ },
+ "crediti_pannello_scroll": {
+  "sh": 1497,
+  "ch": 700,
+  "sw": 288,
+  "cw": 288
+ }
+}
