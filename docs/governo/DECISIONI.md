@@ -503,3 +503,13 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 ## 17/10 — chi decide le scelte aperte dalle sessioni figlie
 
 - PO: «Deve essere la sessione madre a decidere». Le sessioni figlie (giri, collaudi) non scelgono e non chiedono al PO: scrivono le opzioni nel rapporto; la sessione principale decide seguendo le decisioni PO già registrate e le regole permanenti, registra la scelta qui con il motivo e la comunica al giro. Al PO arrivano solo le scelte che cambiano il prodotto in modo non già deciso (questionario).
+
+## 17/10 — decisioni della sessione principale sulle consegne dei giri 50-57 (7.999.172)
+
+Prese dalla sessione principale secondo la regola PO «Deve essere la sessione madre a decidere».
+- **Giro 52, PO-226 (soglia trequarti 64→56, `_occV2Pronta`)**: NON entra nella 172. Motivo: il PO ha approvato le interazioni 2D col mister (PO-226 VERIFICATO) e il compito del giro diceva di non cambiarle. All'unione la modifica si toglie; il ramo la conserva. Caso 2 (tetto di 7 scene): nessuna delle opzioni (a)/(b)/(c), per lo stesso motivo. L'estensione del fatto del finale alle schede «sotto di uno»/«avanti di uno» non entra: non è stata chiesta.
+- **Giro 50, guardiani nuovi o riparati (seme-a, framing-guard, testa-76, gala-3d)**: entrano nella MAPPA; nella catena notte della 172 restano solo se verdi lì. Se uno risulta instabile si applica la regola PO del 13/10 (si ripara, non si ripete).
+- **Giro 53, guardiani nuovi (inquadra-273, salti-274, memoria-275)**: stessa regola. Taglia dell'eroe (PO-261) non toccata: resta decisione PO già presa. I difetti annotati (eroe fuori quadro in hl_result su «Ricevi fra le linee», scatti di avvicinamento in hl_intro/hl_choose) restano in L1-bis per un giro successivo.
+- **Giro 54, walkout-fermi-197 rosso e pillola «PALLA PERSA» sopra il tabellone**: un giro di seguito (58) ripara il guardiano sul tempo di scena e cerca la pillola, prima della catena notte della 172.
+- **Giri 51, 55, 56, 57**: entrano come consegnati; gate 14/14 e catena notte si eseguono sull'unione.
+- **Giro 55, pallino della lavagna 2D**: portato al PO (interpretazione di «Il pallone in tutte le partite»).
