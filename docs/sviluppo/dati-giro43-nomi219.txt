@@ -1,0 +1,31 @@
+verde seme 103 fine ceremony nominati 0 vicini 0 lontani 0
+verde seme 101 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 102 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 104 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 105 fine ceremony nominati 4 vicini 4 lontani 0
+verde seme 106 fine ceremony nominati 5 vicini 4 lontani 0
+verde seme 107 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 108 fine ceremony nominati 3 vicini 2 lontani 0
+verde seme 109 fine ceremony nominati 4 vicini 3 lontani 0
+verde seme 110 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 111 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 112 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 113 fine ceremony nominati 2 vicini 2 lontani 0
+verde seme 114 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 115 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 116 fine ceremony nominati 5 vicini 5 lontani 0
+verde seme 117 fine ceremony nominati 1 vicini 1 lontani 0
+verde seme 118 fine ceremony nominati 1 vicini 1 lontani 0
+VERDE {"nominati":49,"vicini":46,"lontani":0,"usato":86,"scartato":25,"esempi":["106 fra-le-linee HOWARD a 29.6 u","108 fra-le-linee RUSSELL a 26.9 u","109 conclusione BAILEY a 28.9 u"],"portieri":0,"scambi":144}
+rosso seme 101 fine ceremony nominati 0 vicini 0 lontani 0
+rosso seme 103 fine ceremony nominati 4 vicini 3 lontani 1
+rosso seme 102 fine ceremony nominati 3 vicini 3 lontani 0
+rosso seme 104 fine ceremony nominati 4 vicini 3 lontani 1
+rosso seme 105 fine ceremony nominati 2 vicini 2 lontani 0
+rosso seme 106 fine ceremony nominati 1 vicini 1 lontani 0
+rosso seme 107 fine ceremony nominati 2 vicini 1 lontani 1
+rosso seme 108 fine ceremony nominati 1 vicini 0 lontani 1
+rosso seme 109 fine ceremony nominati 4 vicini 2 lontani 2
+ROSSO {"nominati":21,"vicini":15,"lontani":6,"usato":36,"scartato":15,"esempi":["103 fra-le-linee GRAY a 36.6 u","104 fra-le-linee HOWARD a 41 u","107 fra-le-linee BAILEY a 54 u","109 fra-le-linee HOWARD a 39.8 u","108 fra-le-linee BAILEY a 40.4 u","109 conclusione BAILEY a 59.8 u"],"portieri":0,"scambi":0}
+informativo: difensore usato verde 77% · rosso 71%; scambi verde 144
+✅ nomi-219 verde (vicini 94% su 49; rosso 71% su 21, lontani oltre 35 u 6 (verde 0); portieri che aprono dal fondo, non giudicati: 0)

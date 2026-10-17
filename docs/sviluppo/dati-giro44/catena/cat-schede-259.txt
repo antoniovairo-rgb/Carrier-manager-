@@ -1,0 +1,13 @@
+(A) regola: 9/9 momenti senza posta restano muti · 7/7 momenti decisivi aprono la scheda giusta · opzioni senza rischio/premio 0
+(A) rosso: INT259.attivo() = false (col rosso decide INT226, che apre la scheda sul 3-0: avanti_2)
+   «eroe» con i compagni che cercano l'eroe: occasioni 130 (attesa 3.3') contro 117 (3.7') senza la leva
+(B) banco, 192 partite per braccio, nei 15' dopo la scheda (valori per 100 minuti; attesa = minuti fino alla prossima occasione dell'eroe)
+   «spinta»       {"schede":137,"applicate":137,"cambiati":137,"tiri100":16.5,"subiti100":10.17,"recuperi100":23.89,"gol100":2.48,"golSub100":1.46,"xg100":2.22,"xgSub100":1.57,"xgPerTiroSub":0.154,"attesaOccEroe":5.8,"occ":124,"racconti":137,"coerenti":137,"fatti":{"recNoi":17,"golLoro":8,"tiriNoi":54,"golNoi":18,"contro":32,"tiriLoro":8}}
+   «palla»        {"schede":137,"applicate":137,"cambiati":137,"tiri100":11.78,"subiti100":8.37,"recuperi100":24.38,"gol100":1.75,"golSub100":0.63,"xg100":1.68,"xgSub100":0.64,"xgPerTiroSub":0.077,"attesaOccEroe":8.1,"occ":118,"racconti":137,"coerenti":137,"fatti":{"tiriLoro":106,"golNoi":12,"golLoro":6,"tiriNoi":13}}
+   «eroe»         {"schede":137,"applicate":137,"cambiati":137,"tiri100":11.63,"subiti100":10.02,"recuperi100":27.35,"gol100":2.09,"golSub100":0.83,"xg100":1.76,"xgSub100":0.89,"xgPerTiroSub":0.088,"attesaOccEroe":3.3,"occ":130,"racconti":137,"coerenti":137,"fatti":{"golNoi":23,"occEroe":72,"tiriNoi":31,"golLoro":9,"tiriLoro":2}}
+   nessuna scelta {"schede":137,"applicate":0,"cambiati":0,"tiri100":12.8,"subiti100":10.75,"recuperi100":27.4,"gol100":2.04,"golSub100":1.12,"xg100":1.97,"xgSub100":0.91,"xgPerTiroSub":0.085,"attesaOccEroe":7.1,"occ":110,"racconti":0,"coerenti":0,"fatti":{}}
+   contro «nessuna scelta» — spinta: tiri 28.9% (premio) · pericolo dei loro tiri, xG subito 72.5% (rischio)
+                            palla : tiri subiti -22.1% (premio) · tiri nostri -8.0% (rischio)
+                            eroe  : prossima occasione dell'eroe -3.8' (premio) · tiri della squadra -9.1% (rischio)
+   racconti dopo 5': 411/411 corrispondono ai fatti del motore · fatti messi davanti: spinta {"recNoi":17,"golLoro":8,"tiriNoi":54,"golNoi":18,"contro":32,"tiriLoro":8} palla {"tiriLoro":106,"golNoi":12,"golLoro":6,"tiriNoi":13} eroe {"golNoi":23,"occEroe":72,"tiriNoi":31,"golLoro":9,"tiriLoro":2}
+   premi scritti smentiti dal banco: 0

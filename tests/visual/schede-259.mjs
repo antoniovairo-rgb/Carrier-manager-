@@ -87,7 +87,13 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
     const att = T.attesa.length ? +(T.attesa.reduce((a, b) => a + b, 0) / T.attesa.length).toFixed(1) : null;
     return { schede: T.schede, applicate: T.applicate, cambiati: T.cambiati, tiri100: k(T.tiri), subiti100: k(T.subiti), recuperi100: k(T.recuperi), gol100: k(T.gol), golSub100: k(T.golSub), xg100: k(T.xg), xgSub100: k(T.xgSub), xgPerTiroSub: T.subiti ? +(T.xgSub / T.subiti).toFixed(3) : 0, attesaOccEroe: att, occ: T.attesa.length, racconti: T.racconti, coerenti: T.coerenti, fatti: T.fatti };
   }
-  const SPI = braccio({}, 'spinta'), PAL = braccio({}, 'palla'), ERO = braccio({}, 'eroe'), NEU = braccio({}, null);
+  const W44 = process.env.CPM_NO_PROM44 ? { __CPM_NO_PROM44: 1 } : {};
+  const SPI = braccio({}, 'spinta'), PAL = braccio({}, 'palla'), ERO = braccio(W44, 'eroe'), NEU = braccio({}, null);
+  /* [giro 44 PO-226] «la risolvo io»: i compagni cercano l'eroe finche' l'occasione promessa non arriva (rosso __CPM_NO_PROM44). Stessi semi:
+     con la leva l'eroe deve avere piu' occasioni nei 15' dopo la scelta che senza. Misurato: 130 contro 117 (attesa 3,3' contro 3,7'). */
+  { const E0 = braccio({ __CPM_NO_PROM44: 1 }, 'eroe');
+    console.log(`   «eroe» con i compagni che cercano l'eroe: occasioni ${ERO.occ} (attesa ${ERO.attesaOccEroe}') contro ${E0.occ} (${E0.attesaOccEroe}') senza la leva`);
+    if (!(ERO.occ >= E0.occ * 1.05)) fail.push('B: «la risolvo io» non porta piu\' occasioni all\'eroe (' + ERO.occ + ' contro ' + E0.occ + ')'); }
   console.log('(B) banco, ' + (24 * SEMI) + ' partite per braccio, nei 15\' dopo la scheda (valori per 100 minuti; attesa = minuti fino alla prossima occasione dell\'eroe)');
   for (const [n, x] of [['«spinta»', SPI], ['«palla»', PAL], ['«eroe»', ERO], ['nessuna scelta', NEU]]) console.log('   ' + n.padEnd(15) + JSON.stringify(x));
   const sep = (a, b) => b ? (a - b) / b : 0, pc = (x) => (100 * x).toFixed(1) + '%';
@@ -103,6 +109,14 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
   const tutteCambiano = [SPI, PAL, ERO].every(b => b.cambiati === b.applicate && b.applicate > 0);
   if (!tutteCambiano) fail.push('B: una scelta non cambia il motore');
   if (!(chk.spintaTiri >= 0.05 && chk.spintaRischio >= 0.10)) fail.push('B: «spinta» premio/rischio non veri');
+  /* [giro 44 PO-226] ogni PREMIO scritto deve essere vero al banco: una scheda che promette «palloni recuperati» con un profilo che li fa calare
+     mente al giocatore (era «Stringo i denti e pressing»: recuperi 23,9 contro 27,4 ogni 100'). Rosso __CPM_NO_PREMIO44. */
+  { const W44 = process.env.CPM_NO_PREMIO44 ? { __CPM_NO_PREMIO44: 1 } : {}; const I44 = carica(W44).INT259; const bugie = [];
+    for (const [id, S] of Object.entries(I44.SCHEDE)) S.sc.forEach(o => { const t = String(o.premio || '');
+      if (/recuperat/i.test(t) && !(sep(({ spinta: SPI, palla: PAL, eroe: ERO })[o.tipo].recuperi100, NEU.recuperi100) > 0)) bugie.push(id + ': «' + t + '»');
+      if (/più tiri/i.test(t) && !(sep(({ spinta: SPI, palla: PAL, eroe: ERO })[o.tipo].tiri100, NEU.tiri100) > 0)) bugie.push(id + ': «' + t + '»'); });
+    console.log(`   premi scritti smentiti dal banco: ${bugie.length}${bugie.length ? ' ' + JSON.stringify(bugie) : ''}`);
+    if (bugie.length) fail.push('B: premio scritto smentito dal banco (' + bugie.join(' · ') + ')'); }
   if (!(chk.pallaSubiti <= -0.05 && chk.pallaTiri <= -0.03)) fail.push('B: «palla» premio/rischio non veri');
   if (!(chk.eroeAttesa != null && chk.eroeAttesa <= -1.5 && chk.eroeTiri <= 0)) fail.push('B: «eroe» premio/rischio non veri');
   if (RAC[1] !== RAC[0] || RAC[0] === 0) fail.push('B: racconti non coerenti coi fatti');

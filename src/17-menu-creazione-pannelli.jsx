@@ -177,6 +177,10 @@ const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238
 function Crediti238({onClose}){
   const _n254=crediti254On();
   const _nc=<span data-cpm="crediti254-nonconf" style={{color:TH.muted}}>Non posso confermarlo</span>;
+  /* [7.999.171 PO-267, collaudo carriera 170 D1 alta] «Non posso confermarlo» e' una nota di verifica interna, non un testo per il
+     giocatore: dove autore o licenza non sono confermati la riga non si mostra (stessa regola della decisione PO 15/10 «Senza riga
+     licenza»). Rosso __CPM_NO_CRED267: torna la riga con «Non posso confermarlo». */
+  const _nc267=(typeof window!=='undefined'&&window.__CPM_NO_CRED267);
   if(_n254)return(<Modal open onClose={onClose} title="Crediti" width={520} cpm="crediti238" pannelloCpm="crediti238-pannello"
     footer={<Btn onClick={onClose} v="primary">Chiudi</Btn>}>
     <div style={{fontSize:FS.small,color:TH.muted,marginBottom:SP.md,lineHeight:1.5}}>Le risorse di terze parti usate in Korward Elite.</div>
@@ -185,8 +189,8 @@ function Crediti238({onClose}){
       {g.voci.map(v=>(<div key={v.n} data-cpm="crediti238-voce" style={{padding:`${SP.sm}px 0`,borderTop:`1px solid ${TH.divider}`}}>
         <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{v.n}</div>
         {v.d&&<div data-cpm="crediti254-desc" style={{fontSize:FS.caption,color:TH.muted,marginTop:2,overflowWrap:"anywhere"}}>{v.d}</div>}
-        {(v.aut||(v.nc&&v.nc.includes("aut")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Autore: {v.aut||_nc}</div>}
-        {(v.lic||(v.nc&&v.nc.includes("lic")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic||_nc}</div>}
+        {(v.aut||(_nc267&&v.nc&&v.nc.includes("aut")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Autore: {v.aut||_nc}</div>}
+        {(v.lic||(_nc267&&v.nc&&v.nc.includes("lic")))&&<div style={{fontSize:FS.caption,color:TH.text,marginTop:2,overflowWrap:"anywhere"}}>Licenza: {v.lic||_nc}</div>}
       </div>))}
     </div>))}
   </Modal>);

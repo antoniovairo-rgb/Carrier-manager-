@@ -43,6 +43,7 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
 await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; });
+if (process.env.CPM_FLAGS) await page.addInitScript(f => { for (const [k, v] of Object.entries(f)) window[k] = v; }, JSON.parse(process.env.CPM_FLAGS));/* [giro 42] bracci di attribuzione */
 const { total } = await openMatch(page, port);
 await sleep(700);
 

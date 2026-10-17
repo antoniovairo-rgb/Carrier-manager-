@@ -1,0 +1,24 @@
+partite 20 · finite 20 · errori di pagina 0
+
+1) QUANTE: schede del mister 25 (1.25/partita, distribuzione {"0":2,"1":11,"2":7}) · highlight giocati dall'eroe 118 (5.90/partita, min 1 max 9)
+   per fatto: {"sotto_finale":5,"misura_finale":5,"pari_finale":8,"eroe_stanco":4,"espulsione_noi":2,"rigore_contro":1}
+
+2) QUANDO: minuto min 13 · mediana 75 · max 83 · elenco ["73'sotto_finale","82'misura_finale","75'pari_finale","57'eroe_stanco","82'misura_finale","56'espulsione_noi","70'sotto_finale","75'pari_finale","59'eroe_stanco","77'pari_finale","59'eroe_stanco","75'sotto_finale","13'espulsione_noi","70'sotto_finale","75'pari_finale","83'misura_finale","70'sotto_finale","82'eroe_stanco","82'misura_finale","60'rigore_contro","75'pari_finale","75'pari_finale","76'pari_finale","75'pari_finale","82'misura_finale"]
+   scarto al momento della scheda: {"0":10,"-1":8,"+1":7} · senza posta (|scarto|>=2) 0
+   partite in bilico al 75' (|scarto|<=1): 18, con almeno una scheda 18 · partite chiuse al 75' (|scarto|>=2): 2, con almeno una scheda 0
+
+3) RISVOLTI SUL MOTORE: scelte 25, di cui automatiche 25; la scelta cambia un dato del motore 25/25
+   riferimento (stesse partite, minuti fuori dalle finestre): tiri nostri 0.56 ogni 5' · tiri loro 0.61 ogni 5'
+   spinta: 7 finestre · tiri nostri 0.71 ogni 5' · tiri loro 0.29 · gol fatti 1 subiti 1 · contropiedi 0 · occasione dell'eroe nella finestra 2/7 (dopo [2,2] minuti)
+   eroe: 9 finestre · tiri nostri 0.56 ogni 5' · tiri loro 0.33 · gol fatti 2 subiti 0 · contropiedi 0 · occasione dell'eroe nella finestra 3/9 (dopo [0,1,2] minuti)
+   palla: 9 finestre · tiri nostri 0.44 ogni 5' · tiri loro 0.44 · gol fatti 0 subiti 1 · contropiedi 0 · occasione dell'eroe nella finestra 1/9 (dopo [2] minuti)
+   prossimo highlight dell'eroe dopo la scelta «spinta»: 4/7 arrivati · minuti [4,8,4,null,8,null,null] · mediana 8
+   prossimo highlight dell'eroe dopo la scelta «eroe»: 4/9 arrivati · minuti [12,null,null,null,2,3,1,null,null] · mediana 3
+   prossimo highlight dell'eroe dopo la scelta «palla»: 4/9 arrivati · minuti [21,null,4,7,9,null,null,null,null] · mediana 9
+   racconti dopo ~5': 25 · fatto messo davanti {"golNoi":3,"tiriNoi":8,"tiriLoro":8,"golLoro":2,"recNoi":1,"occEroe":3} · coerenti (INT259.verifica) 25/25
+
+4) ANDAMENTO DOPO LA SCHEDA: lo scarto finale e' diverso da quello al momento della scheda in 12/25 schede
+
+5) PO-260: campioni con la scheda a schermo fuori dal gioco fluido 0 [] · campioni a schermo in tutto 3
+
+6) PARTITE: p0 2-3 hl5 [73'sotto_finale(-1)] · p1 2-1 hl3 [82'misura_finale(1)] · p2 0-1 hl6 [75'pari_finale(0)] · p3 2-2 hl6 [57'eroe_stanco(0) 82'misura_finale(1)] · p4 0-1 hl7 [56'espulsione_noi(-1) 70'sotto_finale(-1)] · p5 1-0 hl7 [75'pari_finale(0)] · p6 1-1 hl7 [59'eroe_stanco(1) 77'pari_finale(0)] · p7 1-2 hl5 [59'eroe_stanco(1) 75'sotto_finale(-1)] · p8 1-1 hl1 [13'espulsione_noi(0) 70'sotto_finale(-1)] · p9 1-0 hl6 [75'pari_finale(0)] · p10 1-0 hl4 [83'misura_finale(1)] · p11 0-1 hl6 [70'sotto_finale(-1) 82'eroe_stanco(-1)] · p12 3-1 hl7 [82'misura_finale(1)] · p13 0-2 hl4 [] · p14 2-1 hl9 [60'rigore_contro(-1) 75'pari_finale(0)] · p15 3-1 hl7 [75'pari_finale(0)] · p16 2-1 hl7 [76'pari_finale(0)] · p17 0-0 hl7 [75'pari_finale(0)] · p18 2-1 hl7 [82'misura_finale(1)] · p19 2-0 hl7 []

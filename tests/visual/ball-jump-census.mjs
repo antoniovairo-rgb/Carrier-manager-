@@ -135,10 +135,10 @@ console.log(`\n=== ${fonti.length} salti ATTRIBUITI su ${visti} fotogrammi VISTI
 if (!visti) console.log('  ⚠️  il varco non ha guardato nessun fotogramma: la misura non vale (strumenti spenti o codice non raggiunto).');
 if (fonti.length) {
   const per = {};
-  for (const f of fonti) { const k = f.src + (f.mask ? ' [dentro lo stacco]' : ' [SCOPERTO]'); (per[k] = per[k] || []).push(f.d); }
+  for (const f of fonti) { const k = f.src + ((f.mask || f.nascosto) ? ' [dentro lo stacco]' : ' [SCOPERTO]'); (per[k] = per[k] || []).push(f.d); }
   for (const [k, ds] of Object.entries(per).sort((a, b2) => b2[1].length - a[1].length))
     console.log(`  ${String(ds.length).padStart(3)}x ${k.padEnd(30)} · da ${Math.min(...ds).toFixed(1)} a ${Math.max(...ds).toFixed(1)} u`);
-  const scoperti = fonti.filter(f => !f.mask);
+  const scoperti = fonti.filter(f => !f.mask && !f.nascosto);/* [giro 40 PO-261] nascosto = primo fotogramma dopo il campo 2D, il prima non era a schermo */
   console.log(`\n${scoperti.length}/${fonti.length} salti avvengono SENZA stacco nero vivo: sono quelli che il giocatore vede.`);
 } else console.log('  nessun salto attribuito (varco vuoto: strumenti spenti o pallone continuo).');
 for (const e of errs.slice(0, 3)) console.log('  ⚠ pageerror: ' + e);

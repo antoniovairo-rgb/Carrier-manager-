@@ -130,9 +130,10 @@ function getLeagueClubs(player){
   return CLUBS.slice(0,16);
 }
 // contextual start position: player spawns inside the situation zone
-function getStartPos(sit){
+function getStartPos(sit,rnd){/* [giro 36 PO-262] `rnd` opzionale: un generatore seedato al posto di Math.random (vedi LiveMatch `_spRnd262`) */
   const sz=sit?.startZone||{x:[55,72],y:[30,70]};
-  return{x:rng(sz.x[0],sz.x[1]),y:rng(sz.y[0],sz.y[1])};
+  const r=rnd?((a,b)=>Math.floor(rnd()*(b-a+1))+a):rng;
+  return{x:r(sz.x[0],sz.x[1]),y:r(sz.y[0],sz.y[1])};
 }
 // Durata DINAMICA del post-highlight (ms) — funzione pura di esito+azione (deterministica, testabile).
 // Garantisce che la palla atterri (archi ≤1.2s) e lo slow-mo (1.6s) si concluda, + tempo di lettura.

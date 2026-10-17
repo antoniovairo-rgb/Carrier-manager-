@@ -1,0 +1,3 @@
+VERDE giocatore p0 · fine true · schede a schermo 1 · arrivate al motore 1 ["sotto_finale@70a"] · minuti a scheda aperta max 0 · aperte ["70-70"] · timer armati/scaduti 1/1
+ROSSO giocatore p0 · fine true · schede a schermo 1 · arrivate al motore 1 ["sotto_finale@74a"] · minuti a scheda aperta max 3 · aperte ["71-74"] · timer armati/scaduti 1/1
+✅ schede-246 verde (col blocco la partita aspetta la scheda e la scelta arriva al motore) e il rosso si vede

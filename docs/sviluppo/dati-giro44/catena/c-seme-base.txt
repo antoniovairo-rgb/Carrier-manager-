@@ -1,0 +1,15 @@
+giro 0: fine=ceremony min=93 punteggio=0-1 ingressi=2571 durata=189377ms errori=0 · riprese 10 {"motore":4,"fine-scena":6} eroe consegnato↔visto max 8.6u
+giro 1: fine=ceremony min=90 punteggio=2-2 ingressi=2668 durata=192104ms errori=0 · riprese 11 {"motore":4,"fine-scena":7} eroe consegnato↔visto max 18.0u
+giro 2: fine=ceremony min=90 punteggio=2-2 ingressi=2666 durata=191040ms errori=0 · riprese 11 {"motore":4,"fine-scena":7} eroe consegnato↔visto max 18.0u
+giro 1: primo ingresso divergente #486 al 17'
+     0: chiedi.riprendi [{"x":75.18,"y":54.086,"lato":"away","gioc":null,"eroe":{"x":83.7,"y":48.9},"schiera":false,"centro":false}]
+     1: chiedi.riprendi [{"x":75.18,"y":54.086,"lato":"away","gioc":null,"eroe":{"x":82.7,"y":52.9},"schiera":false,"centro":false}]
+giro 1: sorteggi del motore diversi dal 18'
+giro 1: punteggio {"home":2,"away":2} contro {"home":0,"away":1}
+giro 2: primo ingresso divergente #486 al 17'
+     0: chiedi.riprendi [{"x":75.18,"y":54.086,"lato":"away","gioc":null,"eroe":{"x":83.7,"y":48.9},"schiera":false,"centro":false}]
+     2: chiedi.riprendi [{"x":75.18,"y":54.086,"lato":"away","gioc":null,"eroe":{"x":82.7,"y":52.9},"schiera":false,"centro":false}]
+giro 2: sorteggi del motore diversi dal 18'
+giro 2: punteggio {"home":2,"away":2} contro {"home":0,"away":1}
+❌ SEME-a ROSSO
+EXIT 1

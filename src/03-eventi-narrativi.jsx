@@ -390,7 +390,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
   ]},
   {id:"wi_investimento",once:true,cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
-    {txt:"📈 Investo metà del conto",ef:{bank:-40000,morale:3},flag:"investment",note:"rendita a fine stagione"},
+    {txt:"📈 Investo metà del conto",ef:{bank:-40000,quotaConto265:0.5,morale:3}/* [PO-265] costa davvero la meta' del saldo (bank265, src/18); bank:-40000 resta solo per il rosso __CPM_NO_META265 */,flag:"investment",inv:"prudente",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
   {id:"wi_beneficenza",cond:_notoOk453/* [7.453.0] prima ti devono riconoscere */,cat:"scelta",txt:"La fondazione del club ti chiede di finanziare un campetto di quartiere, a nome tuo.",choices:[
@@ -712,7 +712,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
   ]},
   {id:"wi_cripto",cat:"conseguenza",txt:"Un amico ti spinge su una criptovaluta «che esploderà». Rischio alto, tutto o niente.",choices:[
-    {txt:"🚀 Ci punto una fetta",ef:{bank:-20000,morale:2},flag:"investment",note:"esito incerto a fine stagione"},
+    {txt:"🚀 Ci punto una fetta",ef:{bank:-20000,morale:2},flag:"investment",inv:"rischioso",note:"esito incerto a fine stagione"},
     {txt:"🧊 Non è roba per me",ef:{morale:1}},
   ]},
   {id:"wi_bimbo_sogno",cat:"scelta",txt:"Il papà di un bimbo malato ti scrive: il sogno del figlio è conoscerti.",choices:[
@@ -772,7 +772,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🏃 Lavoro sui dettagli",ef:{form:5,fatigue:4}},
   ]},
   {id:"wi_ristorante_socio",cond:p=>_brandOk453(p)&&((p.bank||0)+(p.bankBalance||0))>=120000/* [7.453.0] non si compra casa/un ristorante senza averci i soldi */,cat:"conseguenza",txt:"Ti propongono di entrare come socio in un ristorante di lusso in centro.",choices:[
-    {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",note:"rendita se l'attività gira"},
+    {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",inv:"bilanciato",note:"rendita se l'attività gira"},
     {txt:"🤔 Troppo rischio adesso",ef:{morale:1}},
   ]},
   {id:"wi_dirigente_idolo",cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[

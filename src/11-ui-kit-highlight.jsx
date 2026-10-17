@@ -440,6 +440,7 @@ function makeCrowdTex(spec){
   const lw=Array.from({length:rowsLow},(_,r)=>1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
   // sedile vuoto: plastica nei colori del CLUB DI CASA (lo stadio è suo), desaturata
   const seatBase=_mix(homeHex,"#5a6272",0.45);
+  const _grass46=!!spec.grass;/* [giro 46 PO-071] BORGO: il settore e' un terrapieno d'erba con la gente in piedi, non una gradinata a sedili */
   // VIP box (Tribuna Ovest): campata centrale della fila alta dell'anello inferiore
   const vipC0=S.vip?Math.floor(colsLow*0.40):-1,vipC1=S.vip?Math.ceil(colsLow*0.60):-1;
   const seats=[];
@@ -532,16 +533,16 @@ function makeCrowdTex(spec){
   const allowOla=fill>=(CROWD_CFG.anim.olaMinFill-_pssT*0.14)&&inten>=(CROWD_CFG.anim.olaMinIntensity-_pssT*0.10);// §7: ola solo a stadio caldo · [7.187.0] una piazza calda la lancia anche con meno gente
   const redraw=(now,goalSide,excite)=>{
     const t=(now||0)*0.001,ex=Math.max(0,Math.min(1,excite||0)),gs=goalSide||0;
-    const gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,"#0c0c18");gr.addColorStop(1,"#191926");
+    const gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,_grass46?"#2a4423":"#0c0c18");gr.addColorStop(1,_grass46?"#3a5e2f":"#191926");
     ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle="rgba(120,125,150,0.35)";ctx.fillRect(0,splitY-2,W,3);// ballatoio tra gli anelli
+    if(!_grass46){ctx.fillStyle="rgba(120,125,150,0.35)";ctx.fillRect(0,splitY-2,W,3);}// ballatoio tra gli anelli
     const wf=((t*5)%(colsLow+10))-5;// fronte dell'OLA
     for(const s of seats){
       const{cW,rH}=s;
       // gradino/sedile: sempre disegnato; il posto vuoto mostra il SEDILE del club (affluenza leggibile)
-      if(s.empty){ctx.fillStyle="#23232f";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);
+      if(s.empty){if(_grass46)continue;ctx.fillStyle="#23232f";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);
         ctx.fillStyle=s.seatCol;ctx.fillRect(s.bx+cW*0.18,s.by+rH*0.40,cW*0.64,rH*0.34);continue;}
-      ctx.fillStyle="#2c2c3a";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);
+      if(!_grass46){ctx.fillStyle="#2c2c3a";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);}
       const cheer=ex>0&&gs!==0&&(s.isH===(gs>0)),desp=ex>0&&gs!==0&&(s.isH!==(gs>0));
       const ola=(cheer||desp||!allowOla||s.band==="up")?0:Math.max(0,1-Math.abs(s.col-wf)/2.4)*(1-ex);
       // applauso individuale desincronizzato (§3): occasioni/parate (eccitazione media), non tutti insieme
@@ -743,6 +744,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // [5.88.0 STADI S2] ASSEMBLATORE: i parametri architettonici arrivano dal template (stadiumConfigFor);
   //   senza template (tpl assente) ogni valore ricade sul comportamento legacy ESATTO → zero regressioni.
   const T=stadCfg.tpl||null;
+  /* [giro 46 PO-071 fase 3 — NUOVE TIPOLOGIE. Rosso __CPM_NO_STADI246: gli stadi di prima] borgo · catino · mattoni · arena
+     (STADIUM_TEMPLATES, assegnati in stadiumConfigFor). Qui la loro architettura: terrapieni d'erba, coronamento continuo,
+     mattoni e frontone, copertura anulare con corona LED; luci, cartelloni e tunnel d'ingresso coerenti con la tipologia. */
+  const K46=(T&&T.kind&&!(typeof window!=='undefined'&&window.__CPM_NO_STADI246))?T.kind:null;
+  try{if(typeof window!=='undefined')window.__CPM_STADI246={};}catch(_e){}
   const _dK=T?Math.min(T.dist||1,xl?1.00:lg?1.04:1.08):1;// [6.1.0] clamp: mai più il fossato da pista (gap misurati fino a 36u)
   const _hGrad61=_capB?(xl?clamp((_capB-45000)/37000,0,1)*0.20:lg?clamp((_capB-26000)/19000,0,1)*0.18:md?clamp((_capB-12000)/14000,0,1)*0.15:clamp((_capB-3000)/9000,0,1)*0.12):0;// [6.1.0] gradazione DENTRO la classe: 43k ≠ 27k
   const _hK=(T?T.standH:1)*(1+_hGrad61);
@@ -769,8 +775,9 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // Style variation: 0=standard, 1=modern dark, 2=compact bowl, 3=traditional
   const roofOpacity=style===1?0.90:style===2?0.70:0.80;
   const roofColor=style===1?0x333344:style===3?0x888877:0x555566;
-  const floodH=xl?32:lg?28:md?24:20; // floodlight pole height
-  const cM=new THREE.MeshLambertMaterial({color:(stadCfg.tpl&&stadCfg.tpl.wallTone===1)?0x3d3833:0x32323e});// [5.92.0] cemento caldo/freddo per club
+  const floodH=(xl?32:lg?28:md?24:20)*(K46==="borgo"?0.78:1); // floodlight pole height · [giro 46] borgo: torri basse di paese
+  const cM=new THREE.MeshLambertMaterial({color:K46==="mattoni"?(((stadCfg.tpl&&stadCfg.tpl.wallTone===1)?0x7a3f2c:0x6a3527)):(stadCfg.tpl&&stadCfg.tpl.wallTone===1)?0x3d3833:0x32323e});// [5.92.0] cemento caldo/freddo per club · [giro 46] mattoni rossi
+  const _grassM46=K46==="borgo"?new THREE.MeshLambertMaterial({color:0x3f6334}):null;/* [giro 46] terrapieno */
   const stM=new THREE.MeshLambertMaterial({color:0x808088});
   const roofColor92=(stadCfg.tpl&&stadCfg.tpl.roofTone!=null)?[roofColor,0x3a3a46,0x6a6a75][stadCfg.tpl.roofTone]||roofColor:roofColor;// [5.92.0] tono tetto per club
   const roofM=new THREE.MeshLambertMaterial({color:roofColor92,transparent:true,opacity:roofOpacity});
@@ -817,7 +824,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillTrib=Math.max(0.03,_bfC-_movedC/(2*Math.max(1,endW)));// tolti equamente alle due tribune
   const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
-    passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||""});
+    passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
      texture con TIFOSO-TARGET ~0.9u (giocatori ~1.9u): anello unico = muro intero con texFull (fronte
      grande + fondo fitto = LOD naturale), 2-3 anelli = banda bassa (52%) sull anello inferiore.
@@ -909,8 +916,13 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     opts=opts||{};const _nt=opts.tiers||2,_roofOn=opts.roofOn!==false;// anelli variabili + tetto per-settore (S2)
     const g=new THREE.Group();
     // struttura posteriore in cemento (chiude la sagoma dello stadio dietro l'anello alto)
-    const back=new THREE.Mesh(new THREE.BoxGeometry(standW,standH,standD*0.26),cM);
+    const _bank46=!!opts.bank&&!!_grassM46;/* [giro 46] borgo: terrapieno d'erba al posto della gradinata in cemento */
+    const back=new THREE.Mesh(new THREE.BoxGeometry(standW,standH,standD*0.26),_bank46?_grassM46:cM);
     back.position.set(0,standH/2,standD*0.36);back.receiveShadow=true;g.add(back);
+    if(_bank46){/* il fianco esterno del terrapieno scende verso la campagna */
+      const _bz=standD*0.49,_run=standH*1.7,_L=Math.hypot(_run,standH+0.8);
+      const sl=new THREE.Mesh(new THREE.PlaneGeometry(standW,_L),_grassM46);sl.position.set(0,(standH+0.8)/2,_bz+_run/2);
+      sl.rotation.x=-Math.atan2(_run,standH+0.8);g.add(sl);}
     const mkTier=(z0,y0,z1,y1,tex)=>{
       const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);
       const m=new THREE.MeshLambertMaterial({color:0xffffff,map:tex,side:THREE.DoubleSide});
@@ -938,7 +950,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
        parapetti sul fronte degli anelli, SCALE RADIALI sopra i gradoni (i corridoi che spezzano la
        texture-folla in settori), VOMITORI scuri sul camminamento. Tutta geometria condivisa, ~15
        mesh per tribuna. */
-    {const _lvS=opts.lvl!=null?opts.lvl:_lvl437;
+    if(!_bank46){const _lvS=opts.lvl!=null?opts.lvl:_lvl437;
       const _mkRail=(y,z)=>{const r=new THREE.Mesh(new THREE.BoxGeometry(standW,0.34,0.12),stM);r.position.set(0,y,z);g.add(r);};
       _mkRail(3.15,-standD/2+0.55);/* balaustra fronte-campo dell'anello basso */
       if(_nt>1)_mkRail(standH*0.68+0.2,-standD*0.02-0.05);/* fronte anello alto */
@@ -955,7 +967,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
           vm.position.set(vx,standH*0.645+0.85,-standD*0.06);g.add(vm);}}
     }
     // Concrete base strip
-    const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),cM);
+    const base=new THREE.Mesh(new THREE.BoxGeometry(standW+2,3,standD+3),_bank46?_grassM46:cM);
     base.position.set(0,1.5,0);g.add(base);
     if(_compBanner){/* [7.301.0] striscione della competizione sulla FACCIA CAMPO del muretto (in locale il campo
         sta a -z: stessa convenzione dei gradoni, che partono da -standD/2) */
@@ -1021,9 +1033,18 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
           /* striscia luminosa sottocopertura */
           const led=new THREE.Mesh(new THREE.BoxGeometry(standW+6,0.16,0.16),_ledM437);
           led.position.set(0,_rTop-0.55,_zFront+0.35);g.add(led);}
+        if(opts.gable){/* [giro 46] STORICO IN MATTONI: frontone sul colmo della tribuna principale, nel colore del club con cornice chiara */
+          const _gw=Math.min(26,standW*0.24),_gh=_gw*0.26;
+          const _tri=(w,h)=>{const sh=new THREE.Shape();sh.moveTo(-w/2,0);sh.lineTo(w/2,0);sh.lineTo(0,h);sh.lineTo(-w/2,0);return new THREE.ShapeGeometry(sh);};
+          const gT=new THREE.Mesh(_tri(_gw+1.2,_gh+0.5),new THREE.MeshLambertMaterial({color:0xe9e2d0,side:THREE.DoubleSide}));
+          gT.position.set(0,_rTop+0.2,_zFront+0.05);g.add(gT);
+          const gC=new THREE.Mesh(_tri(_gw,_gh),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex),side:THREE.DoubleSide}));
+          gC.position.set(0,_rTop+0.45,_zFront-0.02);g.add(gC);
+          try{if(typeof window!=='undefined')(window.__CPM_STADI246=window.__CPM_STADI246||{}).gable=true;}catch(_e){}}
       }
     }
     // Fence rail at pitch-side bottom
+    if(_bank46)try{if(typeof window!=='undefined'){const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.bank=(w.bank|0)+1;}}catch(_e){}
     if(_fenceT!=="none"){// inglese: niente recinzione, tribune a filo campo
       const _fH=_fenceT==="high"?2.6:_fenceT==="plexi"?1.1:0.9;// sudamericano alta · moderna plexi · legacy/metal
       const _fM=_fenceT==="plexi"?new THREE.MeshLambertMaterial({color:0xbfd8e8,transparent:true,opacity:0.35}):new THREE.MeshLambertMaterial({color:_fenceT==="high"?0x3a3f46:0x2a6038});
@@ -1070,10 +1091,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _roofFor=k=>{if(_roofT==="none")return false;/* catino aperto: identita' (sudamericano) */
     if(_lvl437>=2)return true;/* [7.438.0 collaudo PO «la copertura, soprattutto negli stadi importanti, deve esserci anche in curva!»] dal livello importante l'anello di copertura e' COMPLETO: le curve non restano scoperte */
     return _roofT==="legacy"||_roofT==="full"?true:_roofT==="west"?k==="ovest":(_roofT==="partial"?(k==="ovest"||k==="est"):true);};
-  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest")});   // Tribuna Ovest — casa/famiglie/VIP
-  const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false,{tiers:(T&&T.asym)?1:_tiers,roofOn:_roofFor("est")});     // Tribuna Est — casa + spicchio ospiti (asym: bassa a 1 anello)
-  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,(_sudH>sideH?sideD*1.15:sideD),_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud")});// [5.89.1 HOTFIX] un argomento in PIÙ (sideD duplicato) scalava tutti i parametri → crowdObj arrivava come NUMERO → curva Sud BIANCA senza tifosi/bandiere in ogni partita (segnalazione PO con screenshot)   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
-  const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true,{tiers:_tiers,roofOn:_roofFor("nord")});// Curva Nord — SOLO ospiti
+  const _ovStand=addStand(0,-endZ,Math.PI, endW,endD,endH,_ovest,crowd.fill,true,false,{tiers:_tiers,roofOn:_roofFor("ovest"),gable:K46==="mattoni"});   // Tribuna Ovest — casa/famiglie/VIP
+  const _esStand=addStand(0, endZ,0,       endW,endD,endH,_est,crowd.fill,true,false,{tiers:(T&&T.asym)?1:_tiers,roofOn:_roofFor("est"),bank:K46==="borgo"});     // Tribuna Est — casa + spicchio ospiti (asym: bassa a 1 anello)
+  const _sudStand=addStand(sideX, 0, Math.PI/2, sideW,(_sudH>sideH?sideD*1.15:sideD),_sudH,_sud,crowd.fill,true,false,{tiers:(T&&T.megaCurva)?1:_tiers,roofOn:_roofFor("sud"),bank:K46==="borgo"});// [5.89.1 HOTFIX] un argomento in PIÙ (sideD duplicato) scalava tutti i parametri → crowdObj arrivava come NUMERO → curva Sud BIANCA senza tifosi/bandiere in ogni partita (segnalazione PO con screenshot)   // Curva Sud (tabellone) — SOLO casa · tedesco: MURO a 1 anello
+  const _nordStand=addStand(-sideX,0,-Math.PI/2, sideW,sideD,sideH,_nord,crowd.awayFill,false,true,{tiers:_tiers,roofOn:_roofFor("nord"),bank:K46==="borgo"});// Curva Nord — SOLO ospiti
   const homeMats=[..._sudStand.mats,..._ovStand.mats,..._esStand.mats];
   const awayMats=[..._nordStand.mats];
   // Corner sections — filled or open based on style
@@ -1100,8 +1121,44 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const cb=new THREE.Mesh(new THREE.BoxGeometry(24,2,24),cM);cb.position.set(x,1,z);scene.add(cb);
   });
 
+  /* [giro 46 PO-071 fase 3] CORONAMENTO CONTINUO (catino) / CORONA LED con copertura anulare (arena): un anello che lega le
+     quattro sommita' passando sopra gli angoli — la firma che separa queste due tipologie da tutte le altre. Otto segmenti in
+     UNA InstancedMesh per materiale (1-2 draw call), piu' quattro falde d'angolo nell'arena. */
+  let _crown46=0;
+  if(K46==="catino"||K46==="arena"){try{
+    const _isA=K46==="arena";
+    const _topOf=(H,D,nt)=>{if(!_isA)return {y:H+1.25,z:D*0.47};
+      const rT=nt>=3?H*1.34+2.4:H+1.8,lv=_lvl437,dp=D*(lv>=3?0.62:lv>=2?0.52:0.40),sl=lv>=3?0.16:0.12;
+      return {y:rT+Math.sin(sl)*dp+0.9,z:D*(nt>=3?0.52:0.36)+0.5};};
+    const _sD=(_sudH>sideH?sideD*1.15:sideD);
+    const oV=_topOf(endH,endD,_tiers),eS=_topOf(endH,endD,(T&&T.asym)?1:_tiers),sU=_topOf(_sudH,_sD,(T&&T.megaCurva)?1:_tiers),nO=_topOf(sideH,sideD,_tiers);
+    const P=[/* [x,z,y] in senso orario: Ovest (z-), angolo, Sud (x+), angolo, Est (z+), angolo, Nord (x-), angolo */
+      [-endW/2,-(endZ+oV.z),oV.y],[endW/2,-(endZ+oV.z),oV.y],[sideX+sU.z,-sideW/2,sU.y],[sideX+sU.z,sideW/2,sU.y],
+      [endW/2,endZ+eS.z,eS.y],[-endW/2,endZ+eS.z,eS.y],[-(sideX+nO.z),sideW/2,nO.y],[-(sideX+nO.z),-sideW/2,nO.y]];
+    const _segH=_isA?0.7:1.3,_segD=_isA?0.6:2.2;
+    const _cMat=_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.25)}):cM;
+    const _im=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),_cMat,8);_im.frustumCulled=false;
+    const _st=_isA?null:new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}),8);
+    if(_st)_st.frustumCulled=false;
+    const _m4=new THREE.Matrix4(),_q=new THREE.Quaternion(),_ax=new THREE.Vector3(0,1,0);
+    for(let i=0;i<8;i++){const a=P[i],b=P[(i+1)%8];const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz)+_segD*0.6,y=(a[2]+b[2])/2;
+      _q.setFromAxisAngle(_ax,-Math.atan2(dz,dx));
+      _m4.compose(new THREE.Vector3((a[0]+b[0])/2,y,(a[1]+b[1])/2),_q,new THREE.Vector3(L,_segH,_segD));_im.setMatrixAt(i,_m4);
+      if(_st){_m4.compose(new THREE.Vector3((a[0]+b[0])/2,y+_segH*0.5+0.18,(a[1]+b[1])/2),_q,new THREE.Vector3(L,0.36,_segD*1.04));_st.setMatrixAt(i,_m4);}
+      if(_isA&&(i%2===1)){/* falda d'angolo: la copertura diventa un anello senza interruzioni */
+        const cx=(a[0]+b[0])/2,cz=(a[1]+b[1])/2,ang=-Math.atan2(dz,dx),Ds=Math.max(10,endD*0.55);
+        let nx=-dz,nz=dx;const nl=Math.hypot(nx,nz)||1;nx/=nl;nz/=nl;if(nx*cx+nz*cz>0){nx=-nx;nz=-nz;}/* normale verso il campo */
+        const rf=new THREE.Mesh(new THREE.BoxGeometry(L,0.5,Ds),roofM);
+        rf.position.set(cx+nx*(Ds/2-0.4),y-0.9,cz+nz*(Ds/2-0.4));rf.rotation.y=ang;scene.add(rf);}}
+    _im.instanceMatrix.needsUpdate=true;scene.add(_im);if(_st){_st.instanceMatrix.needsUpdate=true;scene.add(_st);}
+    _crown46=8;
+  }catch(_e46){}}
   // Floodlights — colour from league palette
-  const lightColor=stadCfg.floodColor||0xf4f8ff;
+  let lightColor=stadCfg.floodColor||0xf4f8ff;
+  /* [giro 46] luci coerenti con la tipologia (stesso NUMERO di luci): il borgo ha riflettori caldi da campo di paese, l'arena
+     il bianco freddo dei LED. */
+  if(K46==="borgo")lightColor=new THREE.Color(lightColor).lerp(new THREE.Color(0xffd49a),0.45).getHex();
+  else if(K46==="arena")lightColor=new THREE.Color(lightColor).lerp(new THREE.Color(0xe6f0ff),0.35).getHex();
   // [5.88.0 S2] stile torri: traliccio (provincia, esili) · perimetrali (6 pali bassi) · angolari_alte (iconiche ×1.3) · tetto (bank sul tetto, niente pali) · legacy
   const _fH2=_towerT==="angolari_alte"?floodH*1.3:_towerT==="perimetrali"?floodH*0.7:floodH;
   const _towPos=_towerT==="perimetrali"
@@ -1334,8 +1391,11 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const base=_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col});
     const face=_led?new THREE.MeshBasicMaterial({map:t}):new THREE.MeshLambertMaterial({map:t});
     return (_spTex[key]=[base,base,base,base,face,base]);};
+  /* [giro 46] cartelloni coerenti con la tipologia: nel borgo tavole dipinte degli sponsor di paese (crema, verde, ruggine,
+     colore del club); nell'arena e nel catino i pannelli restano quelli del club (LED dove l'impianto e' moderno). */
+  const _BORGO46=[new THREE.Color(0xd8ccb0),_hC,new THREE.Color(0x2f5a36),new THREE.Color(0x9a4a2a)];
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
-    const col=idx%3===0?_hC:idx%3===1?hLight:hDark;
+    const col=K46==="borgo"?_BORGO46[idx%4]:idx%3===0?_hC:idx%3===1?hLight:hDark;
     const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),stadCfg&&stadCfg.sponsor?_spMat(col,(idx>>1)%2?"k":"s"):(_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col})));
     m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
     // Small text-like stripe on top
@@ -1347,7 +1407,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      i cartelloni dei lati lunghi stavano a z=±33.2 = ESATTAMENTE sulla TOUCHLINE (7.69.0) e sulle BANDIERINE
      d'angolo (stesse coordinate) → linea e bandierina risultavano «dentro» il cartellone. Ora stanno appena OLTRE
      il bordo del prato (z=±35.2, prato ±35.0): linee e bandierine restano sull'erba, i board le incorniciano. */
-  for(let i=-44;i<=44;i+=11){addAd(i,-35.2,9,1.3,0,idx++);addAd(i,35.2,9,1.3,Math.PI,idx++);}
+  const _tun46=!(typeof window!=='undefined'&&window.__CPM_NO_STADI246);/* [giro 46] il tunnel d'ingresso apre un varco nei cartelloni */
+  for(let i=-44;i<=44;i+=11){if(!(_tun46&&(i===-22||i===-33)))addAd(i,-35.2,9,1.3,0,idx);idx++;addAd(i,35.2,9,1.3,Math.PI,idx++);}
   for(let i=-28;i<=28;i+=12){addAd(53.2,i,9,1.3,Math.PI/2,idx++);addAd(-53.2,i,9,1.3,-Math.PI/2,idx++);}
 
   /* [7.184.2 collaudo PO «le linee del fallo laterale non sono allineate con le bandierine!»] RIMOSSE le bandierine
@@ -1364,6 +1425,31 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      const b1=new THREE.Mesh(new THREE.BoxGeometry(9,1.1,1.6),_dgM);b1.position.set(dx,0.55,-34.6);scene.add(b1);
      const r1=new THREE.Mesh(new THREE.BoxGeometry(9.6,0.15,2.2),_dgGl);r1.position.set(dx,2.1,-34.8);r1.rotation.x=0.18;scene.add(r1);
    });}
+  /* [giro 46 PO-071 — INGRESSO IN CAMPO. Rosso __CPM_NO_STADI246] LA BOCCA DEL TUNNEL. Le due squadre partono da (x -24..-16,
+     z -36) — src/12 _placeRow — ma li' non c'era nulla: uscivano da un cartellone. Ora un portale nella base della Tribuna
+     Ovest e, se la tribuna e' arretrata, il tunnel telescopico fino a bordo campo; lo stile segue la tipologia (borgo:
+     pensilina verde · arena: vetro e LED nel colore del club · gli altri: cemento con cornice del club). */
+  let _tun46info=null;
+  if(_tun46){try{
+    const _fz=-endZ+(endD+3)/2,_mz=-35.9,_L=Math.max(0,_mz-_fz),_tx=-22,_w=5.2,_h=3.0;
+    const _frM=new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)});
+    const _inM=new THREE.MeshBasicMaterial({color:0x07080c});
+    const mouth=new THREE.Mesh(new THREE.PlaneGeometry(_w-0.6,_h-0.3),_inM);mouth.position.set(_tx,(_h-0.3)/2,_fz+0.12);/* davanti allo striscione della competizione (+0,06), che altrimenti tappa la bocca */scene.add(mouth);
+    [-1,1].forEach(sd=>{const pl=new THREE.Mesh(new THREE.BoxGeometry(0.45,_h,0.5),_frM);pl.position.set(_tx+sd*(_w/2-0.1),_h/2,_fz+0.2);scene.add(pl);});
+    const lin=new THREE.Mesh(new THREE.BoxGeometry(_w+0.4,0.5,0.55),_frM);lin.position.set(_tx,_h+0.2,_fz+0.2);scene.add(lin);
+    let _stile="cemento";
+    if(K46==="borgo"){_stile="pensilina";
+      const can=new THREE.Mesh(new THREE.BoxGeometry(_w+1.2,0.14,2.4),new THREE.MeshLambertMaterial({color:0x2f5a36}));can.position.set(_tx,_h+0.5,_fz+1.1);can.rotation.x=-0.12;scene.add(can);}
+    else if(_L>0.6){
+      const _isA=K46==="arena";_stile=_isA?"vetro":"telescopico";
+      const wM=_isA?_plexiM:new THREE.MeshLambertMaterial({color:0x2a2f38});
+      [-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.BoxGeometry(0.16,_h,_L),wM);w.position.set(_tx+sd*_w/2,_h/2,_fz+_L/2);scene.add(w);});
+      const rf=new THREE.Mesh(new THREE.BoxGeometry(_w+0.5,0.3,_L),_isA?_roofDarkM:new THREE.MeshLambertMaterial({color:0x22262e}));rf.position.set(_tx,_h+0.15,_fz+_L/2);scene.add(rf);
+      const band=new THREE.Mesh(new THREE.BoxGeometry(_w+0.6,0.32,0.3),_isA?new THREE.MeshBasicMaterial({color:new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.3)}):_frM);
+      band.position.set(_tx,_h+0.05,_mz-0.1);scene.add(band);}
+    try{if(typeof window!=='undefined'){const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.tunnel={x:_tx,z0:+_fz.toFixed(2),z1:_mz,L:+_L.toFixed(2),stile:_stile};}}catch(_e){}
+    _tun46info={x:_tx,z1:_mz,L:_L,stile:_stile};
+  }catch(_eT46){}}
   // [5.88.0 S2] INSEGNA col nome dello stadio (canvas wordmark) sopra la Tribuna Ovest — identità immediata
   // [7.661.0] PO: «il vecchio pannello/cartellone con il nome dello stadio deve essere eliminato» — il nome
   //   vive sul LED a scorrimento (7.658+); questa insegna resta solo sotto il rosso __CPM_NO662 (confronto).
@@ -1433,7 +1519,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     if(on){roofTop=(nt>=3)?_sudH*1.34+2.4:_sudH+1.8;const zb=D*((nt>=3)?0.52:(lv<=0?0.34:0.36)),dp=(lv<=0)?D*0.20:D*(lv>=3?0.62:lv>=2?0.52:0.40);roofFrontX=sideX+((lv<=0)?(zb-dp/2):(zb-dp));}
     return {h:+_sudH.toFixed(2),tiers:nt,baseX:+(sideX-(D+3)/2).toFixed(2),frontX:+(sideX-D/2+0.6).toFixed(2),top:+top.toFixed(2),topX:+topX.toFixed(2),roofTop:roofTop==null?null:+roofTop.toFixed(2),roofFrontX:roofFrontX==null?null:+roofFrontX.toFixed(2)};}catch(_e){return null;}})();
   const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd,sud:_sudGeo};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
+  try{if(typeof window!=='undefined'){/* [giro 46] testimone: tipologia e costo dell'impianto (mesh = tetto dei draw call, indipendente dalla camera) */
+    let nM=0,tri=0;scene.traverse(o=>{if(o.isMesh&&o.geometry){nM++;const g=o.geometry,c=((g.index?g.index.count:(g.attributes.position?g.attributes.position.count:0))/3);tri+=o.isInstancedMesh?c*o.count:c;}});
+    const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.kind=K46;w.tpl=(T&&T.template)||null;w.cap=_capB;w.crown=_crown46;w.meshes=nM;w.tri=Math.round(tri);w.light=lightColor;}}catch(_e){}
+  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================
@@ -1464,7 +1553,12 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
   const _pg95u=/[?&]glb=([01])\b/.exec((window.location&&window.location.search)||"");
   const _pg95p=(function(){try{return localStorage.getItem('cpm-glb');}catch(e){return null;}})();
   const _pg95on=_pg95u?_pg95u[1]==='1':_pg95p!=='0';
-  if(_pg95on)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
+  /* [giro 39 — PO-171 «Via CH38 ovunque (cerimonie, ritratto dei menu, download)»] questo pre-caricamento scaricava a OGNI avvio il
+     CH38 vero (footballer.glb + 11 anim-*.glb, 4,47 MB) che nessuna scena usa piu': la partita monta il corpo «regular» e i corpi
+     CGTrader (pre-caricamento PO-237 qui sotto), cerimonie e intro i CGTrader, il ritratto dei menu e' una figurina 2D. Misurato con
+     tests/visual/via-ch38-171.mjs: 0 richieste footballer/anim- su home, carriera, presentazione e partita. Spento; il rosso
+     __CPM_NO_CH38_PREFETCH lo riaccende com'era. */
+  if(_pg95on&&window.__CPM_NO_CH38_PREFETCH)setTimeout(function(){['footballer','anim-idle','anim-jog','anim-kick','anim-penalty','anim-header','anim-tackle','anim-volley','anim-gk-dive','anim-gk-catch','anim-gk-block','anim-receive'].forEach(function(n){try{loadGLB('./assets/'+n+'.glb').catch(function(){});}catch(e){}});},900);
 }catch(e){}}
 /* [PO-237 «La partita, in particolare la prima è un pò scattosa»] PRE-CARICAMENTO DEI CORPI. Misurato (sonda
    tests/visual/prima-partita-237.mjs, stessa pagina, GLB acceso, finestre ancorate alla creazione del renderer della partita):
@@ -1487,7 +1581,7 @@ if(typeof window!=='undefined'&&window.__CPM_GLB!==false){try{
     /* il corpo «regular» e le sue 19 clip li carica la partita in ogni modo GLB (src/12, _bodyUrl907 e la lista accanto); il
        pre-caricamento 6.95.0 qui sopra scarica footballer.glb/anim-*.glb, che quella lista non contiene. Stesse URL esatte, cosi'
        _glbCache le riconosce. */
-    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance'].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
+    const L=['korward-regular-player','korward-regular-player-slim','korward-regular-player-stocky'].concat(['idle','jog','kick','penalty','header','tackle','volley','gk-dive','gk-catch','gk-block','receive','throwin','jog-back','strafe-left','strafe-right','pass','dribble','change-direction','missed-chance','walk'/* [giro 39 PO-171] la camminata dell'ingresso: la partita la chiedeva a freddo */].map(function(n){return 'korward-regular-anims/regular-anim-'+n;}))
       .concat(_cg237?['cgtrader-review-lod0-kit-adapter','cgtrader-review-lod1-kit-adapter','cgtrader-review-lod2-kit-adapter','cgtrader-clip-mixamo','cgtrader-clip-po','cgtrader-clip-po2']:[]);
     const st=window.__CPM_PRE237={fatti:0,tot:L.length,t0:Date.now(),fine:null};
     /* [giro 20 — PO-241 «il caricamento dei giocatori deve essere piu' furbo»] MISURATO (tests/visual/attesa-241.mjs, rete lenta come

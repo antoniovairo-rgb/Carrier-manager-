@@ -44,8 +44,11 @@ const ATTESI = [
 // [giro 25b, decisione PO 15/10 «Senza riga licenza»] voci che NON hanno riga Licenza ne' «Non posso confermarlo»,
 // e voci dove il documento dice «Non posso confermarlo» (lo devono mostrare, in grigio).
 const SENZA_LIC = ['Regular Male', 'Ritratti delle figurine', 'Web Audio', "Icone dell'app"];
-const CON_NC = ['Mixkit 3022', 'Avataaars'];
-const NONCONF_MIN = (DOC.match(/Non posso confermarlo/g) || []).length - 1; // la riga d'intestazione del documento ne nomina uno
+/* [7.999.171 PO-267] «Non posso confermarlo» non si mostra piu' al giocatore: le voci non confermate stanno senza la riga
+   (col rosso __CPM_NO_CRED267 tornano, e allora valgono i controlli di prima). */
+const R267 = !!process.env.CPM_NO_CRED267;
+const CON_NC = R267 ? ['Mixkit 3022', 'Avataaars'] : [];
+const NONCONF_MIN = R267 ? (DOC.match(/Non posso confermarlo/g) || []).length - 1 : 0; // la riga d'intestazione del documento ne nomina uno
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 let ko = [];
 if (righe.length !== ATTESI.length) ko.push(`il documento ha ${righe.length} righe, il guardiano ne conosce ${ATTESI.length}: allineare ATTESI`);
@@ -96,6 +99,7 @@ for (const w of [360, 412]) {
   if (!r.modal || !r.testa || !r.piede || r.titolo !== 'Crediti') ko.push(`${w}px: la finestra non e' il Modal standard (${JSON.stringify({ modal: r.modal, testa: r.testa, piede: r.piede, titolo: r.titolo })})`);
   // 2) niente «Fonte da completare», «Non posso confermarlo» in grigio
   if (r.manca || /Fonte da completare|fonte da completare/.test(r.testo)) ko.push(`${w}px: ${r.manca} voci portano ancora «Fonte da completare»`);
+  if (!R267 && r.nc.length) ko.push(`${w}px: «Non posso confermarlo» mostrato ${r.nc.length} volte al giocatore (PO-267: la riga non va mostrata)`);
   if (r.nc.length < NONCONF_MIN) ko.push(`${w}px: «Non posso confermarlo» scritto ${r.nc.length} volte, il documento lo dice ${NONCONF_MIN}`);
   if (r.nc.some(c => c !== r.grigio)) ko.push(`${w}px: «Non posso confermarlo» non e' in grigio (${r.nc.join(' ')} contro ${r.grigio})`);
   // 3) ogni voce del documento
