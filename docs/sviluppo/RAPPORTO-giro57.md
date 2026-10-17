@@ -34,18 +34,30 @@ a +5' restano identiche (racconti a +5' incoerenti coi loro 5': 0), cambia solo 
 
 Interruttore rosso: `window.__CPM_NO_ESITO280` (= 7.999.171). `INT259.smentito(r, esito)` è il giudice del guardiano.
 
-**Scelta da confermare col PO:** la finestra va al fischio per tutte le scelte, come chiesto. Con due scelte nella stessa gara le due
-finestre si sovrappongono (in p1 entrambe dicono «ha pagato: gol fino al fischio» per lo stesso gol). Alternativa possibile: chiudere la
-finestra della prima scelta al minuto della seconda. Non applicata.
+**Due scelte nella stessa gara — decisione PO 17/10 «La prima finisce alla seconda» (applicata).** La finestra di una scelta va dal suo
+minuto al minuto della scelta successiva; l'ultima fino al fischio. Il fotogramma di chiusura è quello che la scelta successiva registra
+**prima** di toccare il motore (`r259.foto`), quindi le finestre sono contigue e disgiunte. `INT259.finestre(L, fFischio, mFischio)` (src/14)
+calcola per ogni scelta `{m1, dopo, occ, fino}`; l'occasione dell'eroe conta solo se cade dentro la finestra. La breve dice
+«fino al N'» (minuto della scelta successiva) oppure «fino al fischio». Interruttore rosso `window.__CPM_NO_FIN280` (= prima stesura del
+giro: tutte al fischio).
 
-## 2. Ordine delle squadre nel «Tabellino della gara»
+Misura (banco A, stesse 96 partite): **17 partite con due scelte** · gol contati da due scelte **rosso 8 → verde 0** · smentite verde 0/85.
+Esempio: 69' «3 gol fatti e un gol subito fino al fischio» + 82' «ha pagato: gol fino al fischio» (lo stesso gol detto due volte) →
+69' «2 gol fatti e un gol subito fino al 82'» + 82' «ha pagato: gol fino al fischio».
+Nota: con le finestre più corte la riga a +5' del rosso NO_ESITO280 risulta smentita 60/85 (prima 64/85): stesso banco, finestre diverse.
 
-Non è un difetto di attribuzione. L'intestazione mostra **casa – ospite** (`homeTeamObj`, punteggio `isMatchHome?score.home:score.away`);
-il tabellino mostra **la tua squadra — avversari** (`latiTabellino10`: nel motore «home» è sempre la squadra dell'eroe, correzione
-7.999.10). Nella foto l'eroe è il FC Merseyside in trasferta: tabellino «FC Merseyside — FC Haringey», coerente.
-Misura: `tabellino-lati` verde (squadra dell'eroe 3-0 nel motore → 3-0 in casa e 3-0 in trasferta) e rosso `CPM_ROSSO=1` riconosciuto
-(in trasferta 0-3). Nessuna modifica. Resta una scelta di presentazione per il PO (stesso ordine dell'intestazione o «tua squadra»
-sempre a sinistra), non una correzione.
+## 2. Ordine delle squadre nel «Tabellino della gara» — decisione PO 17/10 «Tabellino come intestazione» (applicata)
+
+Prima: il tabellino mostrava sempre **la tua squadra — avversari** (`latiTabellino10`, valori già attribuiti giusti), mentre l'intestazione
+mostra **casa – ospite**: in trasferta l'ordine era opposto. Ora `ordineTabellino280(T, isMatchHome)` (src/15) sceglie solo dove mostrare
+i due lati già corretti: casa a sinistra, ospite a destra; in trasferta la colonna dell'eroe è la destra. La squadra dell'eroe è evidenziata
+(nome in `TH.primary`, barra di confronto del colore dell'eroe che segue la sua colonna); `data-cpm="tab280"` porta `data-eroe="sx|dx"`.
+Interruttore rosso `window.__CPM_NO_ORD280` (eroe sempre a sinistra, = 7.999.171).
+
+Guardiano `tabellino-lati` esteso (parte C): eroe 3-0 nel motore → in casa sx 3 / dx 0, eroe sx; in trasferta sx 0 / dx 3, eroe dx, con
+gol, tiri e possesso ognuno sotto la sua squadra. Verde ✅; `CPM_ROSSO_ORD=1` rosso riconosciuto (in trasferta l'eroe torna a sinistra);
+`CPM_ROSSO=1` (NO_TAB10) ancora riconosciuto. Nel browser `esito-280` (B, verde) legge il DOM del tabellino e controlla che i gol sotto la
+colonna dichiarata dell'eroe siano quelli dell'eroe.
 
 ## 3. Guardiano
 
@@ -57,4 +69,9 @@ riconosciuto: smentite > 0 e DOM con la riga a +5'.
 - `node tools/check-src.mjs`: identico byte per byte.
 - `npm run esito-280`: ✅ (A + B, verde e rosso).
 - `npm run test:logic`: 43/43. `schede-259` parte node: ✅. `tabellino-lati` verde ✅, rosso riconosciuto.
+- Seconda parte del giro (decisioni PO 17/10): `npm run esito-280` ✅ — A: 0/85 smentite, 17 partite con due scelte, gol contati da due
+  scelte verde 0 / rosso `__CPM_NO_FIN280` 8; B: 2/2 riepiloghi dal fischio con finestre «fino al 70'», tabellino nel DOM 2/2 coi gol
+  sotto la squadra giusta (partite in trasferta, eroe a destra), rosso 2/2. `tabellino-lati` verde ✅, `CPM_ROSSO_ORD=1` e `CPM_ROSSO=1`
+  rossi riconosciuti. `test:logic` 43/43, `schede-259` ✅, `design-system` ✅, `check-src` identico. `tabellino-lati` aggiunto alla MAPPA
+  di `ci-runner.mjs` sotto `src/15-`.
 - **Non eseguiti** in questo giro: gate 14/14 e catena `mirata`/`notte` (da fare nella sessione di rilascio).

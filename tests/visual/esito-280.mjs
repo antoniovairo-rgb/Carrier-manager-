@@ -24,6 +24,8 @@ if (!process.env.CPM_SOLO_BROWSER) {
   const CFG = JSON.parse(fs.readFileSync(new URL('./fixtures/cfg-202-s12.json', import.meta.url)));
   const SEMI = +(process.env.CPM_SEMI || 4);
   const { crea, INT259 } = carica({});
+  const RF = carica({ __CPM_NO_FIN280: 1 }).INT259; /* rosso della decisione PO 17/10: tutte le finestre al fischio */
+  const D2 = { partite2: 0, doppiV: 0, doppiR: 0, smentiteR: 0, esempi: [] };
   if (!INT259.finale || !INT259.smentito) { console.log('❌ INT259.finale/smentito assenti'); process.exit(1); }
   const T = { partite: 0, conScelta: 0, conSceltaFinale: 0, scelte: 0, finale: 0, rosso: 0, verde: 0, rossoF: 0, verdeF: 0, esempi: [], incoerenti: 0, classi: {}, finaleGolSubito: 0 };
   for (let s = 0; s < CFG.length * SEMI; s++) {
@@ -47,8 +49,15 @@ if (!process.env.CPM_SOLO_BROWSER) {
     }
     T.partite++; if (aperte.length) T.conScelta++; if (aperte.some(a => a.m0 >= 70)) T.conSceltaFinale++;
     const fF = INT259.foto(M);
-    for (const a of aperte) {
-      const r = { fatto: a.fatto, idx: a.idx, m0: a.m0, m1: 93, prima: a.foto, dopo: fF, occ: a.occ != null ? a.occ : ((fF.occ != null && fF.occ >= a.m0 && fF.occ !== a.occ0) ? fF.occ : null), eroe: 'Vairo' };
+    /* [PO-280 bis] «la prima finisce alla seconda»: gol contati da piu' scelte = somma dei gol nelle finestre - gol dalla prima scelta al fischio */
+    const W = INT259.finestre(aperte, fF, 93), WR = RF.finestre(aperte, fF, 93);
+    if (aperte.length >= 2) { D2.partite2++; const g = (w, a) => ((w.dopo.gNoi | 0) - (a.foto.gNoi | 0)) + ((w.dopo.gLoro | 0) - (a.foto.gLoro | 0));
+      const tot = ((fF.gNoi | 0) + (fF.gLoro | 0)) - ((aperte[0].foto.gNoi | 0) + (aperte[0].foto.gLoro | 0));
+      const sv = aperte.reduce((t, a, i) => t + g(W[i], a), 0), sr = aperte.reduce((t, a, i) => t + g(WR[i], a), 0);
+      D2.doppiV += Math.max(0, sv - tot); D2.doppiR += Math.max(0, sr - tot);
+      if (sr > tot && D2.esempi.length < 3) D2.esempi.push(aperte.map((a, i) => `${a.m0}' «${RF.finale(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, WR[i])).breve}» → ora «${INT259.finale(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, W[i])).breve}»`).join(' · ')); }
+    for (const [ia, a] of aperte.entries()) {
+      const r = Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, W[ia]);
       const vecchia = a.es5 || { k: 'nessuno', n: 0, breve: "non c'è stato il tempo di vederne l'effetto" };
       const nuova = INT259.finale(r);
       const sR = INT259.smentito(r, vecchia), sV = INT259.smentito(r, nuova); const fin = a.m0 >= 70;
@@ -62,6 +71,12 @@ if (!process.env.CPM_SOLO_BROWSER) {
   console.log(`(A) racconto a +5' coerente coi suoi 5' (comportamento approvato, invariato): incoerenti ${T.incoerenti}`);
   for (const e of T.esempi) console.log('    esempio rosso: ' + e);
   if (T.conSceltaFinale < 30) fail.push(`A: meno di 30 partite con scelta nel finale (${T.conSceltaFinale}): alzare CPM_SEMI`);
+  console.log(`(A) due scelte nella stessa partita: ${D2.partite2} partite · gol contati da due scelte — VERDE (finestra fino alla scelta successiva): ${D2.doppiV} · ROSSO __CPM_NO_FIN280 (tutte al fischio): ${D2.doppiR}`);
+  for (const e of D2.esempi) console.log('    esempio doppio (rosso → verde): ' + e);
+  if (D2.partite2 < 10) fail.push(`A: meno di 10 partite con due scelte (${D2.partite2})`);
+  if (D2.doppiV !== 0) fail.push(`A verde: ${D2.doppiV} gol contati da due scelte`);
+  if (!(D2.doppiR > 0)) fail.push('A rosso NO_FIN280 cieco: nessun gol contato due volte');
+  if (RF.attivoFin280() !== false) fail.push('A: interruttore __CPM_NO_FIN280 non riconosciuto');
   if (T.verde !== 0) fail.push(`A verde: ${T.verde} esiti del riepilogo smentiti`);
   if (!(T.rosso > 0)) fail.push('A rosso cieco: nessuna smentita con la riga a +5\'');
   if (T.incoerenti) fail.push('A: racconto a +5\' incoerente');
@@ -98,7 +113,10 @@ if (!process.env.CPM_SOLO_NODE) {
       Object.assign(out, await page.evaluate(() => {
         const riep = (() => { const el = document.querySelector('[data-cpm="riep259"]'); return el ? el.innerText : null; })();
         const S = window.__CPM_S259 || { racconti: [] }; const E = window.__CPM_ESITO280 || {};
-        return { riep, racconti: S.racconti.map(r => ({ m0: r.m0, breve: r.esito && r.esito.breve })), esito280: Object.values(E).map(x => ({ m0: x.r.m0, breve: x.finale.breve, d: { gN: (x.r.dopo.gNoi | 0) - (x.r.prima.gNoi | 0), gL: (x.r.dopo.gLoro | 0) - (x.r.prima.gLoro | 0), tL: (x.r.dopo.tiriLoro | 0) - (x.r.prima.tiriLoro | 0) } })),
+        const tab = (() => { const h = document.querySelector('[data-cpm="tab280"]'); if (!h) return null; const box = h.parentElement; const r1 = h.nextElementSibling;
+          const nums = r1 ? [...r1.querySelectorAll('.cpm-num')].map(e => e.innerText.trim()) : [];
+          return { eroe: h.getAttribute('data-eroe'), sx: h.querySelector('[data-cpm="tab280-sx"]').innerText, dx: h.querySelector('[data-cpm="tab280-dx"]').innerText, riga: r1 ? r1.innerText.replace(/\s+/g, ' ') : null, gol: nums }; })();
+        return { tab, riep, racconti: S.racconti.map(r => ({ m0: r.m0, breve: r.esito && r.esito.breve })), esito280: Object.values(E).map(x => ({ m0: x.r.m0, breve: x.finale.breve, d: { gN: (x.r.dopo.gNoi | 0) - (x.r.prima.gNoi | 0), gL: (x.r.dopo.gLoro | 0) - (x.r.prima.gLoro | 0), tL: (x.r.dopo.tiriLoro | 0) - (x.r.prima.tiriLoro | 0) } })),
           score: window.__CPM_SCORE ? window.__CPM_SCORE() : null };
       }));
       out.errori = errs.slice(0, 3);
@@ -116,6 +134,10 @@ if (!process.env.CPM_SOLO_NODE) {
       /* ogni riga del riepilogo e' quella del fischio */
       const ok = conRiep.filter(p => p.esito280.length && p.esito280.every(e => p.riep.includes(e.breve))).length;
       console.log(`(B) verde: riepilogo dal fischio ${ok}/${conRiep.length}`); if (ok !== conRiep.length) fail.push('B verde: riga del riepilogo non calcolata al fischio');
+      /* [PO-280 bis] tabellino della gara nel DOM: la colonna dichiarata dell'eroe porta i gol dell'eroe (score.home del motore) */
+      const tabOk = res.filter(p => p.tab && p.score && /^Gol/.test(String(p.tab.riga || '').replace(/^\d+\s*/, '')) && +p.tab.gol[p.tab.eroe === 'sx' ? 0 : 1] === p.score.home && +p.tab.gol[p.tab.eroe === 'sx' ? 1 : 0] === p.score.away).length;
+      console.log(`(B) verde: tabellino della gara con i gol sotto la squadra giusta ${tabOk}/${res.length} · ${res.map(p => p.tab ? `${p.tab.sx} [${p.tab.gol.join('-')}] ${p.tab.dx} eroe=${p.tab.eroe}` : 'assente').join(' | ')}`);
+      if (tabOk !== res.length) fail.push('B verde: tabellino della gara con gol attribuiti male o assente');
       if (conRiep.length === 0) console.log('(B) ⚠️ nessuna partita con scelta: il ramo DOM non e\' giudicato (il banco A resta il giudice)');
     } else {
       const vec = conRiep.filter(p => p.racconti.length && p.racconti.every(r => p.riep.includes(r.breve)) && !p.riep.includes('fino al fischio')).length;

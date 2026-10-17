@@ -181,8 +181,17 @@ const INT259={
   attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
   finale(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
     if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
-      return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro fino al fischio.",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+" fino al fischio"};}
-    const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+" fino al fischio")});},
+      return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro"+INT259.fino(r)+".",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+INT259.fino(r)};}
+    const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+INT259.fino(r))});},
+  /* [PO-280 bis — decisione PO 17/10 «La prima finisce alla seconda», rosso __CPM_NO_FIN280] con due scelte nella stessa partita la finestra di
+     giudizio di una scelta va dal suo minuto al minuto della scelta successiva (fotogramma preso li', prima che la seconda tocchi il motore);
+     l'ultima fino al fischio. Prima (giro 57, prima stesura) tutte arrivavano al fischio e lo stesso gol veniva raccontato da due scelte.
+     L = elenco delle scelte (con .m0 .foto .occ .occ0), fF/mF = fotogramma e minuto del fischio. Restituisce per ogni scelta {m1,dopo,occ,fino}. */
+  attivoFin280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN280);},
+  fino(r){return r.fino==null?" fino al fischio":" fino al "+(r.fino|0)+"'";},
+  finestre(L,fF,mF){const on=INT259.attivoFin280();return L.map((r,i)=>{const nx=on?L.slice(i+1).find(q=>q&&q.foto&&(q.m0|0)>=(r.m0|0)):null;
+    const dopo=nx?nx.foto:fF,m1=nx?(nx.m0|0):mF;const ok=(o)=>o!=null&&o>=(r.m0|0)&&o!==r.occ0&&(!nx||o<m1);
+    return{m1,dopo,fino:nx?m1:null,occ:ok(r.occ)?r.occ:(dopo&&ok(dopo.occ)?dopo.occ:null)};});},
   /* il racconto smentisce i fatti della finestra scelta→fischio? (lo usa il guardiano esito-280) */
   smentito(r,esito){try{const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));if(r.panca)return false;
     if((d('gNoi')>0||d('gLoro')>0)&&!/gol/i.test(String(esito.breve||'')))return true;
