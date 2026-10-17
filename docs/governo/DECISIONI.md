@@ -512,4 +512,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Giro 53, guardiani nuovi (inquadra-273, salti-274, memoria-275)**: stessa regola. Taglia dell'eroe (PO-261) non toccata: resta decisione PO già presa. I difetti annotati (eroe fuori quadro in hl_result su «Ricevi fra le linee», scatti di avvicinamento in hl_intro/hl_choose) restano in L1-bis per un giro successivo.
 - **Giro 54, walkout-fermi-197 rosso e pillola «PALLA PERSA» sopra il tabellone**: un giro di seguito (58) ripara il guardiano sul tempo di scena e cerca la pillola, prima della catena notte della 172.
 - **Giri 51, 55, 56, 57**: entrano come consegnati; gate 14/14 e catena notte si eseguono sull'unione.
-- **Giro 55, pallino della lavagna 2D**: portato al PO (interpretazione di «Il pallone in tutte le partite»).
+- **Giro 55, pallino della lavagna 2D**: portato al PO. Risposta PO 17/10: «Anche il pallino 2D» → lo fa il giro 58.
