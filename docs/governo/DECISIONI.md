@@ -467,3 +467,10 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - Misurato (2 volte sulla build 171): prova verde con margine alto fermo a 74 px; braccio rosso __CPM_NO_RIMB189 cieco (margine 0 px fermo, nessun salto). Trovato rosso dalla catena della sessione Haiku (commit 942fe280); verde nella catena della sessione principale.
 - **Decisione PO: «Fuori catena e pubblica»** — rimbalzo-189 esce dalla catena (resta nella MAPPA), riparazione nel giro dei rossi; la 7.999.171 si pubblica subito.
+
+## 17/10 mattina — chiusura di L1 (questionario)
+
+- **Da verificare (15 voci)**: «Chiudi con le prove» — PO-123, 209, 230, 233, 235, 242, 243, 244, 245, 251, 253, 254, 256, 257, 259 → VERIFICATO con le prove dei collaudi 169-171; PO-255 resta aperta (badge «v 7.999.171» ancora visibile, collaudo carriera 171) e passa in L1-bis.
+- **Highlight (PO-022, 068, 143, 218, 229, 240, 248, 250, 252, 261, nuove 273, 274)**: «Chiudi in L1, residui in L1-bis».
+- **Partita (PO-207, 220, 226, 228, 234, 246, 258, 260, 262, 266)**: stessa regola, residui in L1-bis.
+- **Residui (PO-267, 268, 269, 271, 272, 275, 276)**: tutti nella 7.999.172 (lotto L1-bis). L1 risulta chiuso.
