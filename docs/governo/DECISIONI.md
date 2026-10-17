@@ -484,3 +484,10 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 
 - PO: «Le interazioni in partita 2D con il mister sono Ok» (7.999.171) → PO-226, PO-234, PO-246 VERIFICATO. PO-260 (scheda sopra highlight/cerimonia in 3D) resta in L1-bis; il giro 52 non deve cambiare il comportamento 2D già approvato.
 - PO 17/10: «C'è un miglioramento negli interventi difensivi e passaggi» → decisione «Migliorati, restano aperte»: PO-220 e PO-228 in L1-bis, ricontrollo dopo la 7.999.172 (giro 35 sui passaggi).
+
+## 17/10 — decisioni sulle consegne dei giri 51 e 57
+
+- **Badge versione (PO-255/269)**: «Spostarlo nella testata» (accanto all'ora), misurando prima lo spazio a 360 px.
+- **Secondo percorso di rinnovo (offerta del club, transferOffer.isRenewal)**: eccezione zona G ESTESA a quel solo percorso — «Sì, misura e correggi».
+- **Esito con due scelte nella stessa partita (PO-280)**: «La prima finisce alla seconda»; l'ultima fino al fischio.
+- **Ordine nel tabellino della gara**: «Tabellino come intestazione» (casa – ospite, la tua squadra evidenziata, ogni numero sotto la squadra giusta).
