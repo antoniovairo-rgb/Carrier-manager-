@@ -117,3 +117,11 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
 - 17/10 05:36 UTC — collaudo carriera 171 consegnato (ef6ca1c): 4 rilievi (PO-268 confermato, chip versione visibile, PO-269 a 360 px nei Crediti, nuovo PO-272 «(simulata)»); classifica GF=GS, PO-249 e PO-267 superati; non verificati: tabellino di partita giocata, giornale, modali a 360 px. Collaudo 3D in corso (6 partite chiuse a 90', 0 errori di pagina).
 
 - 17/10 06:36 UTC — collaudo 3D 171 consegnato (c8e194e): 9 partite fino al fischio, 0 errori di pagina, nessun difetto alto; nuovi PO-273 (volée, eroe fuori quadro), PO-274 (salti del pallone scoperti), PO-275 (memoria 507 MB), PO-276 (walkout e HUD). Verificati: apertura-261, esiti-218 verde, gk-dive-sync, ripartenza-207, passaggio-coppa-137, ingresso-245. Sessioni dei due collaudi archiviate.
+
+- 17/10 07:34 UTC — 7.999.172 (L1-bis) avviata da lavoro/172-base (= main 39776cdc), sessioni Opus:
+  - giro 50 guardiani rossi/ciechi (PO-271, PO-266) — session_01Pau7qy6t7iM6TeAHAFgj2C — sviluppo/guardiani-271-giro50
+  - giro 51 PO-270, PO-268, PO-255/269, PO-272 — session_01WZ3GM57m6FSp3UspJvCAj9 — sviluppo/piccole-268-giro51
+  - giro 52 schede a fatto del finale + PO-260/246/234/226 — session_01KBA1Vi9aWXn6bDmeW2E6He — sviluppo/schede-finale-giro52
+  - giro 53 PO-273/274/275 highlight e memoria — session_01YZKnQsSZz8ah1egVPJmjQF — sviluppo/highlight-273-giro53
+  - giro 54 PO-277 ingresso dal tunnel + PO-276 — session_01VRiPAZWRMfdCEvTiRgtMv9 — sviluppo/ingresso-277-giro54
+  - giro 35 (sviluppo/ripartenza-228-giro35) entra all'unione.
