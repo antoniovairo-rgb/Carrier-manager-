@@ -128,3 +128,4 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - giro 55 PO-278 pallone — session_014Qo7zTDiQ1QX3H4YZuVYjo — sviluppo/pallone-278-giro55
   - giro 56 PO-279 statistiche d inizio partita — session_01Ph8MSXmZPVLJEkvPHNPudA — sviluppo/statistiche-279-giro56
   - giro 57 PO-280 esito della scelta del mister — session_01Hg5P5GKnjGDfEs8EL834f2 — sviluppo/esito-scelta-280-giro57
+- 17/10 08:45 UTC — consegnati: giro 51 (985ab328: PO-270, 268, 272 fatti; 269 parziale), giro 56 (2c531b4f: stat-279), giro 57 (6d9a0ff1: esito 0/85 smentite, tabellino non invertito). Sessioni 51 e 57 archiviate; seguiti sugli stessi rami con le decisioni PO: giro 51-bis session_01Dsgm4EECarMPGBhS7bWEmS (badge in testata, secondo rinnovo), giro 57-bis session_01EDtcYUQGLiGADhVNBQrPVq (due scelte, tabellino casa–ospite).
