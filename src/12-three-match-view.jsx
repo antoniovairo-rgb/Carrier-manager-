@@ -1947,7 +1947,31 @@ function ThreeMatchView(props){
       x.fillStyle=hiVis?'#2a1000':'#1c2330';[[128,30,5],[36,150,4.5],[220,150,4.5],[128,226,5]].forEach(([u,v,r])=>{x.beginPath();x.arc(u,v,r,0,6.283);x.fill();});
       return new THREE.CanvasTexture(c);};
     const _hiVisBall=(wfx==='snow'||wfx==='fog'||wfx==='storm');// neve/grandine·nebbia/foschia·tempesta → pallone arancione
-    const ball=new THREE.Mesh(new THREE.SphereGeometry((typeof window!=="undefined"&&window.__CPM_NO794)?0.32:0.20,24,16),new THREE.MeshPhongMaterial({map:_mkBallTex(_hiVisBall),shininess:42}));// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
+    /* [giro 55 PO-278 — IL PALLONE HA LA SUA TAGLIA E UN BORDO NETTO. Rosso __CPM_NO_PALL278] Nota PO dal telefono
+       (ingresso in campo), poi «il pallone in tutte le partite»: «troppo grosso e non ben definito graficamente».
+       Misurato (sonda pallone-278, 412x915, GLB accesi): diametro 0,44u contro un uomo di 1,75u = rapporto 0,25
+       in gioco e in ingresso (calcio vero 22 cm su 180 = 0,12); sopra, un alone bianco SENZA test di profondita'
+       (raggio fisso 0,29) e un disco d'ombra ambra di 1,05u — 2,4 volte il pallone — fanno la macchia sfocata
+       della foto (quota di pixel alonati attorno al pallone 0,56-0,63 negli highlight). Qui: texture disegnata
+       PER PIXEL sulla sfera (prima un quadrato 256x256 con gradiente, stirato sulla mappa 2:1 e sfocato dal
+       filtro), cuciture a sei pannelli nette + accento teal (il design moderno 5.47.17 resta: niente pentagoni
+       retro), mipmap + anisotropia. La taglia e l'alone si regolano nel render-loop (vedi _no278 piu' sotto). */
+    const _no278=(typeof window!=='undefined'&&!!window.__CPM_NO_PALL278);
+    const _mkBallTex278=(hiVis)=>{const W=512,H=256,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');const im=x.createImageData(W,H),D=im.data;
+      const base=hiVis?[255,122,18]:[246,248,251],seam=hiVis?[42,16,0]:[30,38,52],acc=hiVis?[42,16,0]:[18,182,200];
+      const ca=Math.cos(0.6),sa=Math.sin(0.6),cb=Math.cos(0.45),sb=Math.sin(0.45);/* cubo ruotato: le cuciture non si allineano all'equatore della mappa */
+      for(let j=0;j<H;j++){const lat=(0.5-(j+0.5)/H)*Math.PI,cl=Math.cos(lat),y0=Math.sin(lat);
+        for(let i=0;i<W;i++){const lon=((i+0.5)/W)*2*Math.PI;let px=-Math.cos(lon)*cl,py=y0,pz=Math.sin(lon)*cl;
+          let t=px*ca-pz*sa;pz=px*sa+pz*ca;px=t;t=py*cb-pz*sb;pz=py*sb+pz*cb;py=t;
+          const ax=Math.abs(px),ay=Math.abs(py),az=Math.abs(pz);const m1=Math.max(ax,ay,az),m3=Math.min(ax,ay,az),m2=ax+ay+az-m1-m3;
+          let col=base;if(m1-m2<0.045)col=seam;/* cucitura fra due pannelli */else if(m1-m3<0.30&&m2-m3<0.30)col=acc;/* accento sugli otto vertici */
+          const o=(j*W+i)*4;D[o]=col[0];D[o+1]=col[1];D[o+2]=col[2];D[o+3]=255;}}
+      x.putImageData(im,0,0);const t=new THREE.CanvasTexture(c);t.anisotropy=Math.min(8,(renderer&&renderer.capabilities&&renderer.capabilities.getMaxAnisotropy&&renderer.capabilities.getMaxAnisotropy())||1);return t;};
+    const ball=new THREE.Mesh(new THREE.SphereGeometry((typeof window!=="undefined"&&window.__CPM_NO794)?0.32:0.20,_no278?24:32,_no278?16:24),new THREE.MeshPhongMaterial({map:_no278?_mkBallTex(_hiVisBall):_mkBallTex278(_hiVisBall),shininess:_no278?42:28}));
+    /* [giro 55 PO-278] il pallone piu' piccolo deve POSARE sul prato: la quota di riposo 0,22 e' un letterale in una
+       ventina di formule (nota 7.794), quindi non si tocca la posizione logica — si abbassa SOLO il disegno, nel
+       fotogramma, della differenza fra 0,22 e il raggio reso (onBeforeRender agisce prima del modelView). */
+    if(!_no278){let _dy278=0;ball.onBeforeRender=function(){const _r=0.20*ball.scale.y;_dy278=(ball.position.y<0.5)?Math.max(0,Math.min(0.22,ball.position.y)-_r)*Math.max(0,Math.min(1,(0.5-ball.position.y)/0.28)):0;ball.matrixWorld.elements[13]-=_dy278;};ball.onAfterRender=function(){ball.matrixWorld.elements[13]+=_dy278;_dy278=0;};}// 5.47.17: pallone ancora più piccolo (0.36→0.32) + design moderno riconoscibile
     ball.castShadow=true;ball.position.set(G2X(ballX||50),0.65,G2Z(ballY||50));scene.add(ball);
     // Sprint 3D-BALL: alone occlusione (depthTest:false) — palla visibile anche dietro i giocatori — 3DV-1: raggio 0.95, opacità ridotta
     const ballHalo=new THREE.Mesh(new THREE.SphereGeometry((typeof window!=="undefined"&&window.__CPM_NO794)?0.46:0.29,10,7),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.05,depthTest:false,depthWrite:false}));// 5.47.17: halo proporzionato al pallone più piccolo (0.32)
@@ -2868,6 +2892,12 @@ function ThreeMatchView(props){
          6 item su 10 esaurivano il limite di 9 secondi. Qui c'è solo quello che serve a capire se la palla si
          muove ancora. Test-only, come tutto il resto del blocco. */
       window.__CPM_INQ74=function(gx,gy){try{const v=new THREE.Vector3(G2X(gx),0.5,G2Z(gy)).project(camera);return{x:+v.x.toFixed(2),y:+v.y.toFixed(2),on:Math.abs(v.x)<=1&&Math.abs(v.y)<=1&&v.z<1};}catch(_e){return null;}};/* [sonda #74] un punto del campo e' in quadro? (test-only) */
+      window.__CPM_PALL278=function(){try{const _g=ball.geometry.parameters||{},_hg=ballHalo.geometry.parameters||{};const _hh=(renderer&&renderer.domElement&&renderer.domElement.clientHeight)||915,_ww=(renderer&&renderer.domElement&&renderer.domElement.clientWidth)||412;
+        const _c=ball.position.clone().project(camera);const _rt=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0).normalize();const _re=_g.radius*ball.scale.x;
+        const _e=ball.position.clone().addScaledVector(_rt,_re).project(camera);const _d=Math.hypot((_e.x-_c.x)*_ww/2,(_e.y-_c.y)*_hh/2)*2;/* diametro a schermo SENZA scorcio (vettore destro della camera) */
+        const _u=new THREE.Vector3(ball.position.x,0,ball.position.z).project(camera),_v=new THREE.Vector3(ball.position.x,1.75,ball.position.z).project(camera);const _uomo=Math.hypot((_v.x-_u.x)*_ww/2,(_v.y-_u.y)*_hh/2);/* uomo di 1,75u in piedi sul punto del pallone */
+        return{r:_g.radius,seg:[_g.widthSegments,_g.heightSegments],sc:+ball.scale.x.toFixed(3),reff:+_re.toFixed(3),haloR:_hg.radius,haloSc:+ballHalo.scale.x.toFixed(3),haloOp:+ballHalo.material.opacity.toFixed(3),haloVis:!!ballHalo.visible,vis:!!ball.visible,y:+ball.position.y.toFixed(2),
+          ndc:[+_c.x.toFixed(4),+_c.y.toFixed(4)],on:Math.abs(_c.x)<=1&&Math.abs(_c.y)<=1&&_c.z<1,dpx:+_d.toFixed(1),uomo:+_uomo.toFixed(1),rap:_uomo>0.5?+(_d/_uomo).toFixed(3):null,rect:(function(){const _b=renderer.domElement.getBoundingClientRect();return{x:_b.x,y:_b.y,w:_b.width,h:_b.height};})(),fase:(propsRef.current&&propsRef.current.matchPhase)||null};}catch(_e){return{err:String(_e)};}};/* [giro 55 PO-278] test-only: taglia (a schermo, contro un uomo alla stessa profondita') e alone del pallone per il guardiano pallone-278 */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
       /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
          possesso ambientale (7.537) leggeva la palla dalle MESH e i giocatori da `matchPlayers` (l'array
@@ -4774,13 +4804,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          68% proprio in CRONACA, dove la camera e' la piu' larga: raggio effettivo ~0,22 — un puntino dal
          divano. Scala di LEGGIBILITA' invertita: 1,10 in playing (r eff ~0,35, stile FM), gli highlight
          restano alla misura di sempre (0,53 a camera stretta: li' la palla riempie gia' lo schermo). */
-      const _bBase534=_no534?(0.68-camHL*0.15):(1.10-camHL*0.57);
+      const _bBase534=_no534?(0.68-camHL*0.15):(_no278?(1.10-camHL*0.57):(0.62-camHL*0.09));/* [giro 55 PO-278] 0,62 in gioco e ingresso (diametro 0,25u: rapporto 0,14 contro un uomo di 1,75u, il calcio vero e' 0,12 — un filo sopra per la lettura dal telefono) · 0,53 in scena stretta (0,21u: 0,12) */
       if(contactFlashT>=0){contactFlashT+=dt;const _cf=Math.max(0,1-contactFlashT/0.12);
         ball.scale.setScalar(_no534?(1+_cf*0.22):(_bBase534*(1+_cf*0.30)));ballHalo.material.opacity=Math.max(ballHalo.material.opacity,_cf*0.28);// 3DV-1: flash più sottile (NO534: assoluto storico; nuovo: relativo alla base, cosi' il flash INGRANDISCE sempre)
         // LT-1: ring espande da 1× a 3.8× e svanisce in 0.20s
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
       else{ball.scale.setScalar(_bBase534);ctFlash.material.opacity=0;}
+      if(!_no278){ballHalo.scale.setScalar(Math.max(0.2,(0.20*ball.scale.x*1.12)/0.29));ballHalo.material.opacity=Math.min(ballHalo.material.opacity,0.045);}/* [giro 55 PO-278] l'alone resta (fa vedere il pallone dietro i corpi) ma aderisce al pallone: raggio 1,12 volte quello reso, non 0,29 fisso, e quasi trasparente — era lui la sfocatura del bordo */
       /* [7.862.0 — IL PALLONE HA UNA TAGLIA MINIMA SULLO SCHERMO. Rosso __CPM_NO862] Nota PO 10/09: «il pallone
          secondo me e' troppo piccolo, sproporzionato» (terza volta: 7.794 lo aveva portato da 0,32 a 0,20 di
          raggio, la 7.807 aveva riacceso l'alone). Misurato con la sonda «taglia862»: 5,9 px di diametro alla mediana sul
@@ -4804,7 +4835,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            pavimento e' un quarto della sua altezza, mai sotto 8 px, mai sopra 11. A camera vicina non cambia nulla. */
         let _MIN=11;
         {_T.b.set(ball.position.x,ball.position.y+1.75,ball.position.z).project(camera);const _hb=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* altezza a schermo di un uomo fermo sul pallone: misurata sempre (anche col rosso), applicata solo col verde */
-         if(!(typeof window!=='undefined'&&window.__CPM_NO899)&&_hb>0.5)_MIN=Math.max(8,Math.min(11,0.25*_hb));
+         if(!(typeof window!=='undefined'&&window.__CPM_NO899)&&_hb>0.5)_MIN=_no278?Math.max(8,Math.min(11,0.25*_hb)):Math.max(4,Math.min(9,0.16*_hb));/* [giro 55 PO-278] il pavimento non riporta il pallone a un quarto dell'uomo: 0,16 dell'uomo, fra 4 e 9 px (misurato in camera larga: uomo 16 px, col minimo a 6 il pallone tornava a 0,38 dell'uomo) */
          _T.hb=+_hb.toFixed(1);_T.min=+_MIN.toFixed(1);_T.ndc=[+_T.a.x.toFixed(4),+_T.a.y.toFixed(4)];}
         if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}_T.out=+((_px>0.5&&_px<_MIN&&_T.a.z<1)?_MIN:_px).toFixed(1);/* diametro reso dopo il pavimento */
       }catch(_e862){}}
@@ -4815,7 +4846,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(typeof window!=='undefined'&&window.__CPM_NO794)ball.position.y+=0.43;// 3DV-12: 0.68 playing → 0.53 close HL (was 1.0) · [7.529.0 NO534] vedi _bBase534
       if(_bShadow534.visible){_bShadow534.position.x=ball.position.x;_bShadow534.position.z=ball.position.z;
         const _bh534=Math.max(0,ball.position.y-0.22);
-        _bShadow534.scale.setScalar(Math.max(0.55,ball.scale.x*(1+Math.min(_bh534*0.16,0.8))));
+        _bShadow534.scale.setScalar(_no278?Math.max(0.55,ball.scale.x*(1+Math.min(_bh534*0.16,0.8))):(0.20*ball.scale.x*2*1.9/1.05)*(1+Math.min(_bh534*0.30,1.2)));/* [giro 55 PO-278] a terra l'ombra e' 1,9 volte il diametro reso (era 2,4-4,5): ancora un segno ambra che dice dove ricade, non un disco che ingrossa il pallone */
         _bShadow534.material.opacity=Math.max(0.16,0.80-_bh534*0.20);}/* piu' vola, piu' l'ombra si allarga e si spegne — e' lei che dice DOVE ricade */
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
