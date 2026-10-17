@@ -474,3 +474,8 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 - **Highlight (PO-022, 068, 143, 218, 229, 240, 248, 250, 252, 261, nuove 273, 274)**: «Chiudi in L1, residui in L1-bis».
 - **Partita (PO-207, 220, 226, 228, 234, 246, 258, 260, 262, 266)**: stessa regola, residui in L1-bis.
 - **Residui (PO-267, 268, 269, 271, 272, 275, 276)**: tutti nella 7.999.172 (lotto L1-bis). L1 risulta chiuso.
+
+## 17/10 — avvio 7.999.172 (L1-bis) e richiesta PO-277
+
+- PO: «avvia la 7.999.172 con L1-bis». Base lavoro/172-base = main 39776cdc (7.999.171). Giri 50-54 su Opus, uno per filone; il giro 35 (ripartenza ristretta, ritaratura passaggi) entra all'unione.
+- PO-277 (nuova): ingresso dal tunnel più rapido ma non velocissimo come prima, saltabile, e usato per caricare i GLB.
