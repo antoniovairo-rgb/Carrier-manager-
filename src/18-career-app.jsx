@@ -5662,7 +5662,14 @@ const getThisWeekMatchday=()=>{
       const finalRenewalWage=Math.round(baseRenewalWage*agentMult*(1+renewalTaskBonus));
       const agentPct=Math.round((agentMult-1)*100+(renewalTaskBonus*100));
       const agentNote=(player.hasAgent||renewalTaskBonus>0)?` 🤵 +${agentPct}%`:"";
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      /* [7.999.172 PO-270b, giro 51 — eccezione zona G estesa dal PO 17/10 a questo percorso] stesso difetto del rinnovo negoziato:
+         `duration` = anni dell'offerta, scalata di uno al cambio stagione → un'offerta di 1 anno all'ultimo anno lasciava svincolati
+         (misurato con rinnovo-270 sul build 7.999.171+giro 51: durata 1 → stagione dopo 0, svincolato). Stessa regola di PO-270:
+         durata = max(residua,1) + anni firmati. Nota: oggi nessun punto del gioco produce un'offerta isRenewal (solo il gancio di
+         collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
+      const _firm270b=tc.duration||2;
+      const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -7251,9 +7258,10 @@ const getThisWeekMatchday=()=>{
           <div style={{background:cc,color:ink,borderBottom:c2?("3px solid "+c2):("3px solid "+inkVelo945(ink,0.28))}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
+              <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}><VersioneTestata269 col={ink}/>
               <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
                 Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
-              </button>
+              </button></div>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
               <div role="button" aria-label="Apri la figurina" data-cpm="figurina-testata" onClick={()=>setFigAperta23(true)} className="cpm-press" style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0,cursor:"pointer"}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
