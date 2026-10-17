@@ -72,4 +72,5 @@ Catena scelta: la modifica tocca solo il testo del riquadro d'attesa (nessun mot
 - `check-src`: identico byte per byte.
 - `stat-279` verde (sopra) e rosso FAIL come atteso.
 - `test:logic` 43/43 · `save-compat` 12/0 · `typing-shortcuts` PASS · `design-system` OK · `attesa-241` verde (vecchia scritta 0/2).
-- `career-critical`: vedi sotto.
+- `career-critical`: 11/11 passi verdi (eseguiti uno per uno; un primo giro unico era scaduto al caricamento pagina dopo 9m50s per il tetto della chiamata, non per un rosso).
+- Non eseguiti su questo ramo: gate `validate-situations`, `partita-vera`, `replay` e gli altri guardiani della MAPPA `src/15-` — restano alla catena della sessione di rilascio.
