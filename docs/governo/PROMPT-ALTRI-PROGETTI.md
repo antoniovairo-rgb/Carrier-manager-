@@ -19,6 +19,7 @@ Regole:
   * i controlli lunghi (suite di test complete) li fai girare tu e li segui fino alla fine dentro il turno, non in background in un'altra sessione.
 - Niente force push. Committa e pubblica spesso: il container può riavviarsi.
 - Ogni ora controlla le sessioni figlie, leggi le consegne, archivia quelle finite e dimmi solo le novità.
+- Le scelte aperte dalle sessioni figlie le decidi tu, sessione principale: le sessioni figlie non scelgono e non chiedono a me. Decidi seguendo le mie decisioni già registrate e le regole qui sopra, registri la scelta in DECISIONI.md con il motivo e la comunichi alla sessione figlia. Porti a me solo ciò che cambia quello che vedo o il prodotto in modo non già deciso, con un questionario.
 ```
 
 ## 2. Compito per una sessione figlia di sviluppo
@@ -34,7 +35,7 @@ Compito: [richiesta del PO, testuale, con foto o file di riferimento].
 2. Correggi, con interruttore e controllo automatico.
 3. Rilancia i controlli esistenti che tocchi.
 4. Scrivi docs/sviluppo/RAPPORTO-[nome].md con misure prima/dopo e cosa NON hai potuto verificare.
-5. Committa, pubblica il ramo, messaggio finale breve con l'hash. Se serve una mia decisione, scrivila nel rapporto con 2-3 opzioni: non sceglierla tu.
+5. Committa, pubblica il ramo, messaggio finale breve con l'hash. Se serve una decisione, non prenderla tu e non chiederla al PO: scrivila nel rapporto con 2-3 opzioni e la tua consigliata; decide la sessione principale.
 ```
 
 ## 3. Compito per una sessione figlia di collaudo
@@ -56,7 +57,7 @@ Time matters here: do not spend time that can be avoided, and the earlier a corr
 Leggi docs/sviluppo/RAPPORTO-[nome].md sul ramo [ramo] e riassumimi in 10 righe:
 - cosa è stato corretto, con la misura prima/dopo;
 - quali controlli sono verdi e quali no;
-- quali decisioni servono dal PO (con le opzioni proposte);
+- quali decisioni servono (con le opzioni proposte), da decidere nella sessione principale;
 - cosa il rapporto dichiara di non aver verificato.
 Non inventare nulla che non sia nel rapporto. Ragionamento basso.
 ```

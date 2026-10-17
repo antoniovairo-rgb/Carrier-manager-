@@ -499,3 +499,7 @@ Fonte numeri: docs/collaudi/RAPPORTO-carriere-l6-bis.md §3, §5.4, §8, §9, §
 - **Catene notte** nella sessione principale, seguite dentro il turno fino alla riga FINE (le sessioni Haiku dedicate si sono fermate due volte il 16/10).
 - **Compiti dei giri**: si aggiunge la frase «Time matters here: do not spend time that can be avoided, and the earlier a correct result is obtained, the better.» (consiglio del team Claude Code, newsletter 17/10); l'effetto sui tempi va misurato.
 - **Guardia di promozione cpm-guardie**: ora chiusa in caso di errore (se git o il controllo falliscono, il push su main è rifiutato invece di passare).
+
+## 17/10 — chi decide le scelte aperte dalle sessioni figlie
+
+- PO: «Deve essere la sessione madre a decidere». Le sessioni figlie (giri, collaudi) non scelgono e non chiedono al PO: scrivono le opzioni nel rapporto; la sessione principale decide seguendo le decisioni PO già registrate e le regole permanenti, registra la scelta qui con il motivo e la comunica al giro. Al PO arrivano solo le scelte che cambiano il prodotto in modo non già deciso (questionario).
