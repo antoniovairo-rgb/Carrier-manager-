@@ -29082,12 +29082,26 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       }
       /* il pallone */
       if(M.b){
-        const X=CX(M.b),Y=CY(M.b),RB=Math.max(2.6,r*0.52);
+        /* [giro 58 PO-278 «anche il pallino 2D», decisione PO 17/10 — rosso __CPM_NO_PALL2D] come il pallone 3D del giro 55: piu'
+           piccolo e netto. MISURATO a 412x915: pedina r 7 px, pallino 3,64 px = diametro 0,52 della pedina (piu' di meta' di un
+           uomo), riempito con un gradiente bianco→ardesia sotto un'ombra larga quanto lui e un bordo al 55%: una macchia chiara.
+           Ora 0,34 della pedina (minimo 2,2 px), bianco pieno, bordo scuro pieno e una macchia centrale che lo dice pallone; ombra
+           stretta. Nessun dato del motore cambia: solo il disegno. */
+        const _no278=(typeof window!=='undefined'&&window.__CPM_NO_PALL2D);
+        const X=CX(M.b),Y=CY(M.b),RB=_no278?Math.max(2.6,r*0.52):Math.max(2.2,r*0.34);
+        try{if(typeof window!=='undefined'&&window.__CPM_PALL2D)window.__CPM_PALL2D={r:+r.toFixed(2),rb:+RB.toFixed(2),rapp:+(RB/r).toFixed(3),x:+X.toFixed(1),y:+Y.toFixed(1)};}catch(_e278){}/* testimone di collaudo, inerte */
+        if(_no278){
         g.beginPath();g.ellipse(X+RB*0.5,Y+RB*0.8,RB*1.05,RB*0.7,0,0,Math.PI*2);g.fillStyle="rgba(0,0,0,0.34)";g.fill();
         const gb=g.createRadialGradient(X-RB*0.4,Y-RB*0.4,RB*0.1,X,Y,RB*1.2);
         gb.addColorStop(0,"#ffffff");gb.addColorStop(1,"#cbd5e1");
         g.beginPath();g.arc(X,Y,RB,0,Math.PI*2);g.fillStyle=gb;g.fill();
         g.lineWidth=0.9;g.strokeStyle="rgba(15,23,42,0.55)";g.stroke();
+        }else{
+        g.beginPath();g.ellipse(X+RB*0.35,Y+RB*0.55,RB*0.95,RB*0.55,0,0,Math.PI*2);g.fillStyle="rgba(0,0,0,0.30)";g.fill();
+        g.beginPath();g.arc(X,Y,RB,0,Math.PI*2);g.fillStyle="#ffffff";g.fill();
+        g.lineWidth=Math.max(1,RB*0.38);g.strokeStyle="#0f172a";g.stroke();
+        g.beginPath();g.arc(X,Y,RB*0.36,0,Math.PI*2);g.fillStyle="#0f172a";g.fill();
+        }
       }
       /* le due porte hanno un nome: la sigla della squadra che le difende */
       if(s>0&&(vert?oy:ox)>10){
@@ -39089,7 +39103,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
-              </div>):(<div data-cpm="fg-slot" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"7%",left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+              </div>):(<div data-cpm="fg-slot" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":"max(7%, 76px)",/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
