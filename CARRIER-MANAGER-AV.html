@@ -43496,7 +43496,7 @@ const CREDITI238=[
    il contenuto PO-238 e il link sottile). */
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
-    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:"Ordine CGTrader #17876008 del 20/09/2026.",aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
     {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
     {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
     {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
@@ -49364,7 +49364,7 @@ const getThisWeekMatchday=()=>{
       const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
       const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:_adjRat131,won:sim.won,drew:sim.drew,simulated:true,...(p.contractExpired?{svincolato:true,rating:null}:_mk222||{})}].slice(-200);/* [7.419.0] fuori rosa: la voce lo DICE, niente voto fantasma */
       const moD=sim.won?3:sim.drew?1:-2;
-      notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n} (simulata)${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_out222?(_sq222?" — 🟥 SQUALIFICATO: l'hai guardata dalla tribuna":" — ⛔ NON CONVOCATO: l'hai guardata dalla tribuna"):_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
+      notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n}${(typeof window!=='undefined'&&window.__CPM_NO_SIM272)?" (simulata)":""}${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_out222?(_sq222?" — 🟥 SQUALIFICATO: l'hai guardata dalla tribuna":" — ⛔ NON CONVOCATO: l'hai guardata dalla tribuna"):_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
       const _injSim79=_fuori263?{}:simInjuryRoll(p,(_aSd+7));/* [PO-263] chi non gioca non si infortuna in partita *//* [7.9.0] infortunio possibile anche SIMULANDO la lega */
       if(_injSim79.injured){const _iT79=INJURY_TYPES_META[_injSim79.injuryType]||{label:"Infortunio",icon:"🩹"};setTimeout(()=>notify(`${_iT79.icon} ${_iT79.label} in partita! Stop: ${_injSim79.injuryWeeks} settiman${_injSim79.injuryWeeks===1?"a":"e"}.`,TH.danger),1400);}
       const _fatS79=_fuori263?_recFat263:clamp((p.fatigue||0)+6+(Math.abs(hashStr("fat|"+(p.season||1)+"|"+(p.week||1)+"|"+(opp&&opp.id||"")))%6),0,100),_formS79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18] la gara SIMULATA costava -14 di fatica (RECUPERO!) → ora costa +6..11 seedato come una partita vera; [RC-19] malus rientro graduale anche su questo path (prima solo Avanza) */
@@ -51629,7 +51629,12 @@ const getThisWeekMatchday=()=>{
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
     const finalWage=Math.round(wage*agentMult*(1+_renB95));
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
-    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    /* [7.999.172 PO-270, collaudo carriere L6-bis §3 — eccezione zona G concessa dal PO 16/10] il rinnovo si firma solo nell'ultimo
+       anno (durata 1) o da svincolato (0), e al cambio stagione la durata scala di uno: scrivere `duration` = anni firmati faceva
+       valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
+       gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
+    const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -53521,7 +53526,7 @@ const getThisWeekMatchday=()=>{
               const mh=(player.matchHistory||[]).find(m=>m.week===(player.week||1));
               if(!mh)return null;
               return<div className="cpm-num" style={{padding:"8px 12px",background:mh.won?TH.winBg:mh.drew?TH.drawBg:TH.lossBg,borderRadius:RAD.sm,border:`1px solid ${mh.won?TH.winBd:mh.drew?TH.drawBd:TH.lossBd}`,color:mh.won?TH.winFg:mh.drew?TH.drawFg:TH.lossFg,fontSize:FS.caption,marginBottom:8,fontWeight:FW.bold}}>
-                {mh.won?"✅ Vittoria":mh.drew?"🔁 Pareggio":"❌ Sconfitta"} {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated?" (simulata)":""}{/* [7.999.49 parte A] esito a parole, niente «W.» */}
+                {mh.won?"✅ Vittoria":mh.drew?"🔁 Pareggio":"❌ Sconfitta"} {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated&&typeof window!=='undefined'&&window.__CPM_NO_SIM272?" (simulata)":""}{/* [7.999.172 PO-272] «(simulata)» era una nota tecnica nel testo del giocatore: tolta. Rosso __CPM_NO_SIM272 */}{/* [7.999.49 parte A] esito a parole, niente «W.» */}
               </div>;
             })()}
             {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
@@ -58506,6 +58511,12 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» (fisso in basso a destra, z 9999) stava SOPRA ogni finestra: a 360 px copriva il
+     bordo destro e il testo dei Crediti (sonda chip-269: 1.215 px², cioe' tutto il chip dentro il pannello). Con una finestra aperta il
+     chip si nasconde (registro _modali256 dei Modal, lo stesso del toast PO-256). La scelta definitiva (toglierlo o spostarlo) e' del PO.
+     Rosso __CPM_NO_CHIP269, guardiano chip-269. */
+  const[modaliN269,setModaliN269]=useState(()=>_modali256.n);
+  useEffect(()=>{const f=(n)=>setModaliN269(n);_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
   const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
   useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
@@ -58656,7 +58667,7 @@ function App(){
         {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
         <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span></React.Fragment>
-        :<span data-cpm="badge255" style={{color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
+        :<span data-cpm="badge255" style={{visibility:(modaliN269>0&&!(typeof window!=='undefined'&&window.__CPM_NO_CHIP269))?"hidden":undefined,color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
       </div>
       <style>{`
         *{box-sizing:border-box;}

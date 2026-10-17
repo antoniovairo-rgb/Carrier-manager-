@@ -23,7 +23,7 @@ const DOC = fs.readFileSync(path.join(DIR, '..', '..', 'docs', 'governo', 'CREDI
 const righe = DOC.split('\n').filter(l => /^\|/.test(l) && !/^\|\s*-/.test(l)).slice(1).map(l => l.split('|').slice(1, -1).map(c => c.trim()));
 // Una voce per riga del documento, nello stesso ordine: [testo che identifica la riga nel documento, testi pretesi nella finestra].
 const ATTESI = [
-  ['Soccer Player - Rigged', ['Soccer Player - Rigged', 'Hisenberg', 'Royalty Free', '17876008']],
+  ['Soccer Player - Rigged', ['Soccer Player - Rigged', 'Hisenberg', 'Royalty Free', 'CGTrader']],
   ['Regular Male', ['Regular Male', 'Mixamo (Adobe)']],
   ['Ritratti delle figurine', ['Ritratti delle figurine', 'OpenAI']],
   ['Great Vibes', ['Great Vibes', 'Robert Leuschke', 'SIL Open Font License 1.1']],
@@ -47,6 +47,9 @@ const SENZA_LIC = ['Regular Male', 'Ritratti delle figurine', 'Web Audio', "Icon
 /* [7.999.171 PO-267] «Non posso confermarlo» non si mostra piu' al giocatore: le voci non confermate stanno senza la riga
    (col rosso __CPM_NO_CRED267 tornano, e allora valgono i controlli di prima). */
 const R267 = !!process.env.CPM_NO_CRED267;
+/* [7.999.172 PO-268] al giocatore niente numero d'ordine ne' data dell'acquisto CGTrader (restano modello, autore e CGTrader come
+   fonte). Col rosso __CPM_NO_CRED268 (CPM_ROSSO=__CPM_NO_CRED268) tornano, e il guardiano DEVE uscire 1. */
+const ORDINE268 = ['17876008', '20/09/2026', 'Ordine CGTrader'];
 const CON_NC = R267 ? ['Mixkit 3022', 'Avataaars'] : [];
 const NONCONF_MIN = R267 ? (DOC.match(/Non posso confermarlo/g) || []).length - 1 : 0; // la riga d'intestazione del documento ne nomina uno
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -104,6 +107,7 @@ for (const w of [360, 412]) {
   if (r.nc.some(c => c !== r.grigio)) ko.push(`${w}px: «Non posso confermarlo» non e' in grigio (${r.nc.join(' ')} contro ${r.grigio})`);
   // 3) ogni voce del documento
   for (const [k, testi] of ATTESI) { const assenti = testi.filter(t => !r.testo.includes(t)); if (assenti.length) ko.push(`${w}px: voce «${k}» del documento: manca ${assenti.join(', ')}`); }
+  { const o = ORDINE268.filter(t => r.testo.includes(t)); if (o.length) ko.push(`${w}px: i Crediti mostrano ancora l'ordine d'acquisto (${o.join(', ')}) — PO-268`); }
   for (const k of SENZA_LIC) { const v = r.vt.find(x => x.t.includes(k)); if (!v) ko.push(`${w}px: voce «${k}» assente`); else if (/Licenza:|Non posso confermarlo/.test(v.t)) ko.push(`${w}px: voce «${k}» mostra una riga Licenza o «Non posso confermarlo» (decisione PO: senza riga licenza)`); }
   for (const k of CON_NC) { const v = r.vt.find(x => x.t.includes(k)); if (!v || !v.nc) ko.push(`${w}px: voce «${k}» senza «Non posso confermarlo» in grigio`); }
   if (r.oriz > 1 || r.pOriz > 1) ko.push(`${w}px: scorrimento orizzontale (${r.oriz}/${r.pOriz} px)`);

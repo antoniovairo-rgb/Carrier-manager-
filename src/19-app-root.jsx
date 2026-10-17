@@ -733,6 +733,12 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» (fisso in basso a destra, z 9999) stava SOPRA ogni finestra: a 360 px copriva il
+     bordo destro e il testo dei Crediti (sonda chip-269: 1.215 px², cioe' tutto il chip dentro il pannello). Con una finestra aperta il
+     chip si nasconde (registro _modali256 dei Modal, lo stesso del toast PO-256). La scelta definitiva (toglierlo o spostarlo) e' del PO.
+     Rosso __CPM_NO_CHIP269, guardiano chip-269. */
+  const[modaliN269,setModaliN269]=useState(()=>_modali256.n);
+  useEffect(()=>{const f=(n)=>setModaliN269(n);_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
   const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
   useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
@@ -883,7 +889,7 @@ function App(){
         {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
         <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span></React.Fragment>
-        :<span data-cpm="badge255" style={{color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
+        :<span data-cpm="badge255" style={{visibility:(modaliN269>0&&!(typeof window!=='undefined'&&window.__CPM_NO_CHIP269))?"hidden":undefined,color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
       </div>
       <style>{`
         *{box-sizing:border-box;}
