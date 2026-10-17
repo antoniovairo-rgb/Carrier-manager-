@@ -49,6 +49,7 @@ Time matters here: do not spend time that can be avoided, and the earlier a corr
 2. Foto in docs/collaudi/foto-[versione]-[area]/ e rapporto docs/collaudi/RAPPORTO-[versione]-[area].md con una tabella di gravità (alta/media/bassa), ogni riga con la sua prova.
 3. Una sezione «Non verificato» con ciò che non hai potuto provare.
 4. Committa, pubblica il ramo, messaggio finale breve con difetti per gravità e hash.
+Se un difetto richiede una scelta, non prenderla tu e non chiederla al PO: scrivi nel rapporto 2-3 opzioni e la tua consigliata; decide la sessione principale.
 ```
 
 ## 4. Sottoagente per leggere una consegna (da usare dentro la sessione principale)
