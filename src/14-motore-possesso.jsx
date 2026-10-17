@@ -174,6 +174,20 @@ const INT259={
     if(o.tipo==='palla'&&tL<=1)return{k:'tiriLoro',n:tL,testo:"✅ "+quale+" tiene: "+(tL?"un solo tiro":"nessun tiro")+" concesso in "+min+" minuti.",breve:(tL?"un solo tiro":"nessun tiro")+" concesso"};
     if(tN+tL===0)return{k:'tiriNoi',n:0,testo:"⏸️ "+quale+": "+min+" minuti bloccati, nessun tiro né per noi né per loro.",breve:"partita bloccata, nessun tiro"};
     return{k:'tiriNoi',n:tN,testo:"⏸️ "+quale+": "+min+" minuti in equilibrio, "+tiri(tN)+" per noi e "+tiri(tL)+" per loro.",breve:tiri(tN)+" per noi, "+tiri(tL)+" per loro"};},
+  /* [PO-280 — rosso __CPM_NO_ESITO280] L'ESITO DEL RIEPILOGO SI SCRIVE SUI FATTI FINO AL FISCHIO. Collaudo PO (Stag. 13 G. 21, 1-1): «La tua scelta
+     al 82' → nessun tiro concesso. Esito non vero, hanno pareggiato!». Il riepilogo riusava la riga breve del racconto detto 5' dopo la scelta
+     (82'→87'): vera allora, smentita dal pareggio arrivato dopo. Qui lo stesso racconto (stessa regola, nessun sorteggio) sulla finestra
+     scelta→fischio; se nella finestra hanno segnato entrambe, la riga li dice tutti e due (racconta mette davanti solo il primo). */
+  attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
+  finale(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
+    if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
+      return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro fino al fischio.",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+" fino al fischio"};}
+    const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+" fino al fischio")});},
+  /* il racconto smentisce i fatti della finestra scelta→fischio? (lo usa il guardiano esito-280) */
+  smentito(r,esito){try{const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));if(r.panca)return false;
+    if((d('gNoi')>0||d('gLoro')>0)&&!/gol/i.test(String(esito.breve||'')))return true;
+    if(d('gLoro')>0&&/^ha pagato/.test(String(esito.breve||'')))return true;
+    if(esito.k==='golEntrambi')return false;return !INT259.verifica(r,esito);}catch(_e){return true;}},
   /* fotogramma dei fatti per il racconto: punteggio (sc, se il live lo passa; altrimenti i gol del motore) e tabellino del motore */
   foto(M,sc){try{const t=M.tabellino();return{gNoi:sc?(sc.home|0):(t.home.gol|0),gLoro:sc?(sc.away|0):(t.away.gol|0),tiriNoi:t.home.tiri|0,tiriLoro:t.away.tiri|0,
     recNoi:(t.home.contrasti|0)+(t.home.intercetti|0),contro:(M._S.conta.contro259|0),occ:(M._S._ultOccV2==null?null:M._S._ultOccV2|0)};}catch(_e){return null;}},

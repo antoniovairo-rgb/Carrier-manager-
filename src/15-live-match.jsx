@@ -6067,7 +6067,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_R&&!_R.detto&&!_inHL77&&_M&&nx>=_R.m0+INT259.ATTESA){_R.detto=true;const _dopo=INT259.foto(_M,scoreRef.current);
             const _r={fatto:_R.fatto,idx:_R.idx,m0:_R.m0,m1:nx,prima:_R.foto,dopo:_dopo,occ:(_dopo&&_dopo.occ!=null&&_dopo.occ>=_R.m0&&_dopo.occ!==_R.occ0)?_dopo.occ:null,
               eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!_R.panca,ingresso:_R.ingresso};
-            const _es=INT259.racconta(_r);_R.breve=_es.breve;_R.testo=_es.testo;
+            const _es=INT259.racconta(_r);_R.breve=_es.breve;_R.testo=_es.testo;_R.occ=_r.occ;_R.es5={k:_es.k,n:_es.n,testo:_es.testo,breve:_es.breve};
             const _o=INT259.opz(_R.fatto,_R.idx)||{};
             const _voce=_es.k==='golNoi'?"«Così! È questa la strada!»":_es.k==='golLoro'?(_o.tipo==='spinta'?"«Troppo alti, ci hanno presi alle spalle!»":"«Su la testa, c'è ancora tempo!»")
               :_es.k==='contro'?"«Attenti dietro, ci ripartono addosso!»":_es.k==='occEroe'?"«Era quella la palla giusta!»":_es.k==='recNoi'?"«Così, aggrediteli!»"
@@ -11667,7 +11667,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
           {(()=>{/* [PO-259] la riga della scelta: cosa hai deciso e cosa e' successo (dal racconto nato dai fatti del motore). Rosso __CPM_NO_SCHEDE259 */
-            if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L=((narrRef669.current||{}).r259list)||[];if(!_L.length)return null;
+            if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L0=((narrRef669.current||{}).r259list)||[];if(!_L0.length)return null;
+            /* [PO-280 — rosso __CPM_NO_ESITO280] l'esito del riepilogo si ricalcola sui fatti dal minuto della scelta al fischio (INT259.finale): la riga
+               breve del racconto valeva per i 5' dopo la scelta ed era smentita da cio' che succedeva dopo (il pareggio del collaudo PO) */
+            let _L=_L0;if(INT259.attivo280&&INT259.attivo280()){try{const _M=motoreRef.current;const _fF=_M?INT259.foto(_M,scoreRef.current):null;const _mF=Math.max(90,clockRef.current|0);
+              if(_fF)_L=_L0.map(r=>{if(!r.foto)return r;const _rr={fatto:r.fatto,idx:r.idx,m0:r.m0,m1:_mF,prima:r.foto,dopo:_fF,occ:(r.occ!=null?r.occ:((_fF.occ!=null&&_fF.occ>=r.m0&&_fF.occ!==r.occ0)?_fF.occ:null)),
+                eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!r.panca,ingresso:r.ingresso};const _ef=INT259.finale(_rr);
+                if(typeof window!=='undefined'){try{const _W=(window.__CPM_ESITO280=window.__CPM_ESITO280||{});_W[r.m0+"|"+r.fatto]={r:_rr,es5:r.es5||null,finale:_ef};}catch(_e){}}
+                return Object.assign({},r,{breve:_ef.breve});});}catch(_e280){}}
             return(<div data-cpm="riep259" style={{margin:"0 0 14px",padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>
               {_L.map((r,i)=>(<div key={i} style={{fontSize:FS.small,lineHeight:1.4,color:TH.text,marginTop:i?6:0}}>
                 <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
