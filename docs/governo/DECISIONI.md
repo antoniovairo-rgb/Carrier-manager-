@@ -530,3 +530,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Contenuto della 7.999.173: «Tutto il backlog aperto»** (L1-bis, L3, L4, L5, L6, L7, L8, PO-281 dopo la misura del giro 59). Lettura della sessione principale: le voci di zona G del backlog (PO-154 impulsi e PO-155 Nazionale, già con eccezione del 16/10; PO-157 Ufficio, PO-156 difficoltà, PO-281) si lavorano con la regola di sempre (misura, interruttore rosso, guardiano); le scelte di prodotto non ancora decise (es. i bersagli di PO-156) tornano al PO con un questionario.
 - **Dopo la 173: stabilità.** Niente funzioni nuove; collaudo «carriere intere» (più sessioni giocano carriere complete dall'U18 al ritiro con profili diversi, ogni incoerenza con la prova) e correzione dei bug logici.
 - Giri della 173 avviati il 18/10 da lavoro/172: 60-68 (vedi CODA-SESSIONI).
+
+## 18/10 — fine del congelamento della zona G
+
+- PO: «Zona G come tutti gli altri contenuti, stesso comportamento». La zona G (carriera, economia) non è più ferma: si lavora come ogni altra area (misura prima, interruttore rosso, guardiano, salvataggi compatibili, scelte di prodotto non decise portate al PO). Le eccezioni puntuali non servono più. Sostituisce la regola permanente «Zona G ferma salvo eccezioni».
+- I giri 60-64 e 68 hanno nel compito «zona G ferma»: se una loro correzione la richiede e l'hanno lasciata come decisione nel rapporto, la prende la sessione principale con questa regola.
