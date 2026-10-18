@@ -705,7 +705,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const isDerby=(matchResult.isDerby)||false;
 
   // Historical memory context
-  const arc=ARCHETYPES.find(a=>a.id===(playerCtx.archetype?.id||playerCtx.archetype));
+  const arc=archDi(playerCtx.archetype);
   const arcName=arc?arc.name:null;
   const recs=playerCtx.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
   const isGB=(playerCtx.goldenBoys||[]).length>0;
@@ -1596,7 +1596,7 @@ function recuperaGiornateMancate(p,isStale){try{
     const opp=(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.id===m.opponentId))||(p.standings||[]).find(r=>r&&r.id===m.opponentId)||(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.n===m.opponentName));
     if(!opp)continue;
     const sd=standingsSeed(myId,sn,m.week);
-    const sim=simulateMatch(p.club,opp,p.ovr||65,m.isHome,(sd+(m.matchday||0)*31+1)>>>0,sh,{motore:true,stile:(p.coach&&p.coach.style)||null});
+    const sim=simulateMatch(p.club,opp,p.ovr||65,m.isHome,(sd+(m.matchday||0)*31+1)>>>0,sh,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
     const r={homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew};
     st=updateStandings(st,myId,r,sh,{opponentId:m.opponentId||opp.id,seed:sd});
     ris[m.matchday]=r;voci.push({matchday:m.matchday,week:m.week,opp:m.opponentName,r});}

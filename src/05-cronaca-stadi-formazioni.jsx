@@ -570,7 +570,7 @@ const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0
 const wPick=(evts,rnd)=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=(rnd?rnd():_cpmRnd())*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
 function baseStats(archetype){
   const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
-  const arc=ARCHETYPES.find(a=>a.id===(archetype?.id||archetype));
+  const arc=archDi(archetype);/* [giro 67 PO-098] 4 stili + 8 archetipi */
   if(arc)Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
   return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
 }

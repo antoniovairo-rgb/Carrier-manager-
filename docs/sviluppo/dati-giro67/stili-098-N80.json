@@ -1,0 +1,139 @@
+{
+ "N": 80,
+ "verde": {
+  "neutro": {
+   "tiri": 0.338,
+   "gol": 0.138,
+   "assist": 0.037,
+   "passaggi": 28.775,
+   "ricezioni": 32.663,
+   "tocchi": 126.5,
+   "golSq": 0.988,
+   "golSub": 1.087,
+   "occ": {
+    "dribbling": 137,
+    "tiro": 16,
+    "passaggio": 89
+   }
+  },
+  "finalizzatore": {
+   "tiri": 1.3,
+   "gol": 0.275,
+   "assist": 0.037,
+   "passaggi": 20.813,
+   "ricezioni": 24.762,
+   "tocchi": 98.188,
+   "golSq": 1.012,
+   "golSub": 1.15,
+   "occ": {
+    "dribbling": 83,
+    "tiro": 93,
+    "passaggio": 40
+   }
+  },
+  "regista": {
+   "tiri": 0.25,
+   "gol": 0.087,
+   "assist": 0.075,
+   "passaggi": 38.837,
+   "ricezioni": 44.55,
+   "tocchi": 163.725,
+   "golSq": 1.238,
+   "golSub": 1.025,
+   "occ": {
+    "passaggio": 309
+   }
+  },
+  "incursore": {
+   "tiri": 0.35,
+   "gol": 0.138,
+   "assist": 0.013,
+   "passaggi": 28.113,
+   "ricezioni": 32.975,
+   "tocchi": 133.375,
+   "golSq": 0.988,
+   "golSub": 1.137,
+   "occ": {
+    "dribbling": 251,
+    "tiro": 9
+   }
+  },
+  "trascinatore": {
+   "tiri": 0.675,
+   "gol": 0.225,
+   "assist": 0.087,
+   "passaggi": 30.337,
+   "ricezioni": 34.825,
+   "tocchi": 137.863,
+   "golSq": 1.387,
+   "golSub": 0.725,
+   "occ": {
+    "dribbling": 134,
+    "tiro": 28,
+    "passaggio": 117
+   }
+  }
+ },
+ "rosso": {
+  "finalizzatore": {
+   "tiri": 0.338,
+   "gol": 0.138,
+   "assist": 0.037,
+   "passaggi": 28.775,
+   "ricezioni": 32.663,
+   "tocchi": 126.5,
+   "golSq": 0.988,
+   "golSub": 1.087,
+   "occ": {
+    "dribbling": 137,
+    "tiro": 16,
+    "passaggio": 89
+   }
+  },
+  "regista": {
+   "tiri": 0.338,
+   "gol": 0.138,
+   "assist": 0.037,
+   "passaggi": 28.775,
+   "ricezioni": 32.663,
+   "tocchi": 126.5,
+   "golSq": 0.988,
+   "golSub": 1.087,
+   "occ": {
+    "dribbling": 137,
+    "tiro": 16,
+    "passaggio": 89
+   }
+  },
+  "incursore": {
+   "tiri": 0.338,
+   "gol": 0.138,
+   "assist": 0.037,
+   "passaggi": 28.775,
+   "ricezioni": 32.663,
+   "tocchi": 126.5,
+   "golSq": 0.988,
+   "golSub": 1.087,
+   "occ": {
+    "dribbling": 137,
+    "tiro": 16,
+    "passaggio": 89
+   }
+  },
+  "trascinatore": {
+   "tiri": 0.338,
+   "gol": 0.138,
+   "assist": 0.037,
+   "passaggi": 28.775,
+   "ricezioni": 32.663,
+   "tocchi": 126.5,
+   "golSq": 0.988,
+   "golSub": 1.087,
+   "occ": {
+    "dribbling": 137,
+    "tiro": 16,
+    "passaggio": 89
+   }
+  }
+ }
+}

@@ -4025,10 +4025,14 @@ const P6_CONCLUSIONE=[
 ];
 /* [7.999.148 Passo 6, strato 2] costruttore comune degli strati: posizione dal motore, pesi dalle statistiche, scelta seminata.
    Ogni strato porta il suo registro di opzioni, i suoi titoli e il suo contesto. Rosso globale __CPM_NO_P6 (tutti gli strati). */
+/* [giro 67 PO-098] LO STILE SCEGLIE LE OPZIONI DELLA SCENA: il peso di ogni opzione si moltiplica per la leva «scena» dello stile
+   (esito gol / assist, o statistica dribbling). Nessun sorteggio in piu': cambia solo il peso dentro la scelta seminata. Rosso __CPM_NO_STILI. */
+function _pesoStile67(player,t){try{const m=(typeof stileMotore==='function')?stileMotore(player):null;if(!m||!m.scena||!t)return 1;const k=m.scena;
+  if(t.st==='dribbling')return +k.dribbling||1;if(t.rew==='assist')return +k.assist||1;if(t.rew==='goal')return +k.goal||1;return 1;}catch(_e){return 1;}}
 function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
-  const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);
   const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
@@ -4259,7 +4263,7 @@ function scenaSecondoTempo(base,cast,player,seed){
   const c={ric:nm(cs.ricevente),dif:nm(cs.difensore),gk:nm(cs.portiere)};
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(q)=>{try{return +((player&&player.stats&&player.stats[q])||60);}catch(_e){return 60;}};
-  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);const scelte=[];
+  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
@@ -4313,7 +4317,7 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const c={press,limite,uno,ric};
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
-  const pool=P6_CONCLUSIONE.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const pool=P6_CONCLUSIONE.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);
   const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
@@ -4884,7 +4888,7 @@ const shuffle=arr=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=rng(0
 const wPick=(evts,rnd)=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=(rnd?rnd():_cpmRnd())*tot;for(const e of evts){r-=(e.w||1);if(r<=0)return e;}return evts[0];};
 function baseStats(archetype){
   const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
-  const arc=ARCHETYPES.find(a=>a.id===(archetype?.id||archetype));
+  const arc=archDi(archetype);/* [giro 67 PO-098] 4 stili + 8 archetipi */
   if(arc)Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
   return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
 }
@@ -4897,6 +4901,10 @@ const ARCHETYPE_STAT_BONUS={
   trequartista:{passaggio:0.07,tecnica:0.05,mentalità:0.04},
   leader:      {mentalità:0.06,fisico:0.05,posizionamento:0.03},
   centravanti: {tiro:0.05,posizionamento:0.05,tecnica:0.04},
+  finalizzatore:{tiro:0.06,fisico:0.04,posizionamento:0.05},/* [giro 67 PO-098] i 4 stili: stessi bonus del loro archetipo di riferimento */
+  regista:     {passaggio:0.07,tecnica:0.05,mentalità:0.04},
+  incursore:   {velocità:0.07,dribbling:0.05,fisico:0.03},
+  trascinatore:{mentalità:0.06,fisico:0.05,posizionamento:0.03},
   enfant:      {tecnica:0.03,velocità:0.03,tiro:0.02,dribbling:0.02,mentalità:0.02,passaggio:0.02,fisico:0.01,posizionamento:0.01},
   tuttocampista:{tiro:0.02,tecnica:0.02,velocità:0.02,fisico:0.02,mentalità:0.02,passaggio:0.02,dribbling:0.02,posizionamento:0.02},
 };
@@ -4947,7 +4955,7 @@ function adaptiveDifficulty(player){
 const TRAIN_BASE_EFF=0.40;
 function trainAgeMult(age){const a=age||18;return a<=26?1.0:a<=28?0.75:a<=30?0.55:a<=33?0.25:0.06;}
 // [5.80.0 MIN-8] Enfant Prodige: crescita ×1.35 fino ai 22 anni. [7.999.49 parte A] la desc diceva «crescita x2»: ora dice il vero
-function archGrowthMult(p){const id=p&&(p.archetype?.id||p.archetype);return(id==="enfant"&&((p&&p.age)||18)<23)?1.35:1;}
+function archGrowthMult(p){return(haTrattoEnfant(p)&&((p&&p.age)||18)<23)?1.35:1;}/* [giro 67 PO-098] Enfant = tratto di crescita (player.tratti.enfant o vecchio archetipo) */
 /* [7.999.50 PO «applicarla davvero»] la «Crescita +N» delle offerte era solo mostrata: ora l'offerta accettata scrive
    growthBoost {pct,until} e l'allenamento cresce del N% fino alla stagione `until` compresa. Campo opzionale: salvataggi vecchi = ×1.
    Rosso __CPM_NO_CRESC49. */
@@ -5657,7 +5665,7 @@ function generateProContracts(player){
 }
 function generateSeasonObjectives(player){
   const ovr=player.ovr||60;
-  const arcId=player.archetype?.id||player.archetype||"";
+  const arcId=archLetturaDi(player.archetype);/* [giro 67 PO-098] lo stile parla col suo archetipo di riferimento */
   const p=player.club?.p||50;
   const standT=p>=80?3:p>=65?6:p>=50?9:12;
   // Sprint 107: goal target modulated by archetype
@@ -5681,8 +5689,9 @@ function generateSeasonObjectives(player){
   }
   return objs;
 }
-/* ── S12: Player archetypes ── */
-const ARCHETYPES=[
+/* ── S12: Player archetypes ── [giro 67 PO-098] gli 8 di prima restano qui come ARCHETYPES_8: servono alla migrazione dei salvataggi
+   e alle letture dei vecchi id; la creazione offre i 4 STILI (ARCHETYPES qui sotto). */
+const ARCHETYPES_8=[
   {id:"bomber",       e:"💪", name:"Bomber",           desc:"Potenza e istinto del gol",        bonus:{tiro:+8,fisico:+5,posizionamento:+6,velocità:-2,passaggio:-3},    favored:["tiro","posizionamento","fisico"]},
   {id:"fantasista",   e:"🪄", name:"Fantasista",        desc:"Tecnica sopraffina e imprevedibile",bonus:{tecnica:+8,dribbling:+7,passaggio:+4,fisico:-4,tiro:-2},          favored:["tecnica","dribbling","passaggio"]},
   {id:"velocista",    e:"⚡", name:"Velocista",         desc:"Rapidità devastante sulla fascia",  bonus:{velocità:+10,dribbling:+5,fisico:+3,tiro:-4,mentalità:-2},         favored:["velocità","dribbling","fisico"]},
@@ -5692,6 +5701,41 @@ const ARCHETYPES=[
   {id:"enfant",       e:"✨", name:"Enfant Prodige",    desc:"Cresce più in fretta fino ai 22 anni",bonus:{tecnica:+4,velocità:+4,tiro:+3,dribbling:+3,mentalità:+2},        favored:["tecnica","velocità","tiro","dribbling","mentalità","passaggio","fisico","posizionamento"]},
   {id:"tuttocampista",e:"⚖️",name:"Tuttocampista",     desc:"Nessun punto debole, nessun picco", bonus:{tiro:+2,tecnica:+2,velocità:+2,fisico:+2,mentalità:+2,passaggio:+2,dribbling:+2,posizionamento:+2}, favored:["tiro","tecnica","velocità","fisico","mentalità","passaggio","dribbling","posizionamento"]},
 ];
+/* [giro 67 PO-098, decisione PO 16/10 «Misura, poi motore»] QUATTRO STILI CHE CAMBIANO IL GIOCO. Prima l'archetipo non entrava nel
+   motore della partita (l'eroe del motore aveva solo ovr/fiducia/forma, src/15 creaMotorePossesso) e nelle scene il successo lo decide
+   probEroe dalle statistiche: l'archetipo pesava solo sulle statistiche di partenza e sulle sim. Ora ogni stile porta tre leve nel motore,
+   tutte DETERMINISTICHE (nessun sorteggio in piu': il replay resta riproducibile):
+   - zona: quanto i compagni cercano l'eroe secondo dove si trova (area · limite · trequarti · meta' campo), src/14 scegliRicevente;
+   - scena: quali opzioni gli offre la scena (peso per esito/statistica), src/04 _pesoStile;
+   - squadra: il Trascinatore alza la forza della sua squadra quando e' in campo (src/14).
+   Numeri miei, dichiarati nel rapporto del giro 67 (da tarare col PO). Rosso __CPM_NO_STILI: il motore ignora lo stile. */
+const ARCHETYPES=[
+  {id:"finalizzatore",e:"🎯",name:"Finalizzatore",desc:"Vive in area: i compagni lo cercano per il tiro",bonus:{tiro:+8,posizionamento:+6,fisico:+3,velocità:-2,passaggio:-3},favored:["tiro","posizionamento","fisico"],
+    motore:{zona:{area:1.7,limite:1.3,trequarti:0.8,meta:0.5},scena:{goal:1.35,assist:0.75,dribbling:0.9},squadra:0}},
+  {id:"regista",      e:"🎨",name:"Regista",      desc:"Riceve dietro le punte e fa giocare la squadra",bonus:{passaggio:+9,tecnica:+6,mentalità:+3,fisico:-3,tiro:-3},favored:["passaggio","tecnica","mentalità"],
+    motore:{zona:{area:0.7,limite:0.9,trequarti:1.5,meta:1.6},scena:{goal:0.85,assist:1.9,dribbling:1.0},squadra:0}},
+  {id:"incursore",    e:"⚡",name:"Incursore",    desc:"Attacca lo spazio palla al piede, salta l'uomo",bonus:{velocità:+9,dribbling:+7,fisico:+2,tiro:-2,mentalità:-2},favored:["velocità","dribbling","fisico"],
+    motore:{zona:{area:1.1,limite:1.3,trequarti:1.4,meta:0.7},scena:{goal:1.0,assist:0.9,dribbling:1.8},squadra:0}},
+  {id:"trascinatore", e:"🦁",name:"Trascinatore", desc:"Gioca per la squadra: con lui in campo tutti rendono di più",bonus:{mentalità:+9,fisico:+5,posizionamento:+3,velocità:-2,dribbling:-1},favored:["mentalità","fisico","posizionamento"],
+    motore:{zona:{area:1.0,limite:1.0,trequarti:1.0,meta:1.0},scena:{goal:1.0,assist:1.0,dribbling:1.0},squadra:5}},
+];
+/* vecchio archetipo → stile. L'Enfant non e' uno stile: diventa il tratto di crescita (player.tratti.enfant) e prende lo stile delle sue
+   statistiche migliori (vedi stileDi). Fantasista → Regista (tecnica e passaggio), Tuttocampista → Trascinatore (nessun picco). */
+const STILE_DA_ARCH8={bomber:"finalizzatore",centravanti:"finalizzatore",trequartista:"regista",fantasista:"regista",velocista:"incursore",leader:"trascinatore",tuttocampista:"trascinatore"};
+/* id dello stile per leggere i vecchi rami (obiettivi, sim): ogni stile parla con l'id del suo archetipo di riferimento */
+const ARCH8_DI_STILE={finalizzatore:"bomber",regista:"trequartista",incursore:"velocista",trascinatore:"leader"};
+function stileDi(a,stats){const id=(a&&a.id)||a||"";if(ARCHETYPES.some(x=>x.id===id))return id;if(STILE_DA_ARCH8[id])return STILE_DA_ARCH8[id];
+  if(id==="enfant"&&stats){let best="finalizzatore",bv=-1;for(const st of ARCHETYPES){const v=st.favored.reduce((s,k)=>s+(+stats[k]||0),0)/st.favored.length;if(v>bv){bv=v;best=st.id;}}return best;}
+  return "finalizzatore";}
+/* l'id «di lettura» per i rami scritti sugli 8 (obiettivi stagionali, _pSimStats): un vecchio id resta se stesso, uno stile parla col suo riferimento */
+function archLetturaDi(a){const id=(a&&a.id)||a||"";return ARCH8_DI_STILE[id]||id;}
+/* le tre leve dello stile per il motore (null = neutro). Rosso __CPM_NO_STILI */
+function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
+/* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
+/* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
+function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
+function haTrattoEnfant(p){return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
@@ -8864,7 +8908,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const isDerby=(matchResult.isDerby)||false;
 
   // Historical memory context
-  const arc=ARCHETYPES.find(a=>a.id===(playerCtx.archetype?.id||playerCtx.archetype));
+  const arc=archDi(playerCtx.archetype);
   const arcName=arc?arc.name:null;
   const recs=playerCtx.records||{topSeasonGoals:0,topSeasonAssists:0,topOvr:60};
   const isGB=(playerCtx.goldenBoys||[]).length>0;
@@ -9755,7 +9799,7 @@ function recuperaGiornateMancate(p,isStale){try{
     const opp=(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.id===m.opponentId))||(p.standings||[]).find(r=>r&&r.id===m.opponentId)||(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.n===m.opponentName));
     if(!opp)continue;
     const sd=standingsSeed(myId,sn,m.week);
-    const sim=simulateMatch(p.club,opp,p.ovr||65,m.isHome,(sd+(m.matchday||0)*31+1)>>>0,sh,{motore:true,stile:(p.coach&&p.coach.style)||null});
+    const sim=simulateMatch(p.club,opp,p.ovr||65,m.isHome,(sd+(m.matchday||0)*31+1)>>>0,sh,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
     const r={homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew};
     st=updateStandings(st,myId,r,sh,{opponentId:m.opponentId||opp.id,seed:sd});
     ris[m.matchday]=r;voci.push({matchday:m.matchday,week:m.week,opp:m.opponentName,r});}
@@ -10690,7 +10734,7 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
     const _t0=(typeof performance!=='undefined')?performance.now():0;
     const _pe5=(typeof TATTICHE_MOTORE!=='undefined')?getClubPersona(opponent):null;/* [7.999.5] stili: il mister dell'eroe (opz.stile) e la persona dell'avversario */
-    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
+    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,stile:(opz&&opz.stileEroe)||null,/* [giro 67 PO-098] */tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
     hG=_r.home;aG=_r.away;
     if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
   }catch(_eSM){}}
@@ -10707,6 +10751,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=ovr||65;
+  archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
      giocando dal vivo). Ora λ scala davvero con l'OVR: 65→~0.31 · 71→~0.42 · 80→~0.58 · 88→~0.73 (+arch/won),
@@ -26935,6 +26980,13 @@ function creaMotorePossesso(cfg){
      (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
   const _T202=(typeof window!=='undefined'&&window&&window.__CPM_NO_TETTO202)?95:99;
   const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,_T202),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,_T202)};
+  /* [giro 67 PO-098] LO STILE DELL'EROE NEL MOTORE (src/06 ARCHETYPES[].motore, via stileMotore). Tre leve deterministiche, nessun
+     sorteggio in piu': zona (quanto i compagni lo cercano secondo dove si trova), scena (la scelta automatica nella sim rapida) e
+     squadra (il Trascinatore in campo alza la forza della sua squadra). Rosso __CPM_NO_STILI: lo stile si ignora. */
+  const STILE67=(cfg.eroe&&cfg.eroe.stile&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_STILI))?cfg.eroe.stile:null;
+  const _fH67=forza.home;const _trasc67=(on)=>{if(STILE67&&(+STILE67.squadra||0))forza.home=on?clamp(_fH67+(+STILE67.squadra),40,_T202):_fH67;};_trasc67(eroeAttivo);/* segue l'eroe in campo/fuori (chiedi.eroe) */
+  const _zonaStile67=(q)=>{if(!STILE67||!STILE67.zona)return 1;const a=advDi(q.x,q.team),zz=STILE67.zona;return a>=84&&Math.abs(q.y-50)<=22?(+zz.area||1):a>=70?(+zz.limite||1):a>=56?(+zz.trequarti||1):(+zz.meta||1);};
+  const _bStile67=(q)=>STILE67?10*(_zonaStile67(q)-1):0;/* premio additivo: x1,7 in area vale +7 su un punteggio dove la marcatura ne toglie fino a 14 */
   const V2=!!cfg.v2;
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
@@ -27141,7 +27193,7 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44();}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
+      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44()+_bStile67(q);}/* [giro 67 PO-098] + lo stile *//* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
       else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
@@ -27677,10 +27729,12 @@ function creaMotorePossesso(cfg){
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;
     const s={tiro:(zona==="area"?1.0:zona==="limite"?0.45:0.12)*v("tiro")*(press<2?0.75:1),cross:(adv>=72&&Math.abs(P.y-50)>=22)?0.85*v("passaggio"):0,
       dribbling:(spazio>=3?0.62:0.30)*v("dribbling"),passaggio:0.55*v("passaggio")};
+    if(STILE67&&STILE67.scena){const k=STILE67.scena;s.tiro*=(+k.goal||1);s.cross*=(+k.assist||1);s.passaggio*=(+k.assist||1);s.dribbling*=(+k.dribbling||1);}/* [giro 67 PO-098] */
     let best="passaggio",bs=-1;for(const k of ["tiro","cross","dribbling","passaggio"])if(s[k]>bs){bs=s[k];best=k;}return best;}
   function eseguiOccV2(P){const k=(S._nOccV2|0);S._nOccV2=k+1;S._ultOccV2=S.min;const auto=sceltaAutoV2(P);
     const sc=(cfg.scelte&&cfg.scelte[k])||auto;const l=P.team,adv=advDi(P.x,l);
     ev("occasione_eroe",{k,auto,scelta:sc,chi:chi(P),zona:zonaDi(adv,P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
+    {const _c67=(S.conta.scelte67=S.conta.scelte67||{});_c67[sc]=(_c67[sc]|0)+1;}/* [giro 67 PO-098] conteggio inerte delle scelte dell'eroe, per la sonda stili-098 */
     if(sc==="tiro"){tira(P);return;}
     if(sc==="cross"){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<74)continue;const s2=aq-Math.abs(q.y-50)*0.3+rnd()*6;if(s2>bs){bs=s2;R=q;}}
       if(R){cross(P,R);return;}const R2=scegliRicevente(P,{});if(R2)passa(P,R2);else conduci(P);return;}
@@ -27736,7 +27790,7 @@ function creaMotorePossesso(cfg){
   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
     for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
-      const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+      const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2))+_bStile67(q):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
   /* [7.999.161 PO-228 v2, decisione PO «adotta e correggi i gol eroe»] SE L'EROE E' DAVANTI, NIENTE GIRO PALLA. MISURATO (400 partite,
      simulazione rapida): col giro palla i gol dell'eroe scendevano da 0,128 a 0,095 e i suoi tiri da 0,51 a 0,41 a partita. Le
@@ -28080,7 +28134,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     scelta259(o){o=o||{};_fine259();const T=TAT[HOME];const base={press:T.press,linea:T.linea,diretto:T.diretto};
       T.press=clamp(T.press+(+o.press||0),-1,1);T.linea=clamp(T.linea+(+o.linea||0),-1,1);T.diretto=clamp(T.diretto+(+o.diretto||0),-1,1);
       S.richieste.s259={base,gap:(o.gap|0),fino:(o.fino|0)||999,att:(o.att!=null),cerca:!!o.cerca};},
-    eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
+    eroe(on){eroeAttivo=!!on;_trasc67(eroeAttivo);if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
     scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
     riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;
       if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
@@ -28412,12 +28466,12 @@ function simulaPartitaMotore(o){o=o||{};
   const gio=P.map((p,i)=>({team:'home',gk:!!p[2],name:'H'+(i+1),rl:R(i),x:p[0],y:p[1]})).concat(Q.map((p,i)=>({team:'away',gk:!!p[2],name:'A'+(i+1),rl:R(i),x:p[0],y:p[1]})));
   /* [7.999.5] occasioni dell'eroe ACCESE: nella partita guardata sono gli highlight, qui le risolve il motore con la scelta piu' probabile dal profilo (scelta PO). Spente, la simulazione perdeva ~0,4 gol a partita e i gol dell'eroe. */
   const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});
   for(let m=46;m<=93;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,90),dt:1/B,dec:true});
-  const t=M.tabellino();return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
+  const t=M.tabellino();if(o.dettaglio)return{home:t.home.gol|0,away:t.away.gol|0,tab:t,pag:M.pagelle(),scelte:(M._S.conta&&M._S.conta.scelte67)||{}};/* [giro 67 PO-098] solo per le sonde */return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
 if(typeof window!=='undefined'){try{window.__CPM_SIM_MOTORE=simulaPartitaMotore;}catch(_e){}}
 /* CMAV-MOTORE-END */
 /* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
@@ -34058,7 +34112,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -44002,7 +44056,8 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
   const _cand23=candidatiEroe23(avatarId);const voltoScelto=_cand23.length?_cand23[voltoVar%_cand23.length]:null;
-  const[archetypeId,setArchetypeId]=useState("bomber");
+  const[archetypeId,setArchetypeId]=useState("finalizzatore");/* [giro 67 PO-098] 4 stili */
+  const[enfant67,setEnfant67]=useState(false);/* [giro 67 PO-098] Enfant Prodige: tratto di crescita, non piu' uno stile */
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
@@ -44012,11 +44067,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     if(!name.trim())return;
     const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];
     let stats=baseStats(arc);
+    /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
+    if(enfant67){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
     if(legacyBonus?.statBoost){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]+legacyBonus.statBoost,1,99);});}
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -44085,6 +44142,11 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 {Object.entries(arc.bonus).map(([k,v],j)=><React.Fragment key={k}>{j>0?" · ":""}<span style={{color:v>0?TH.txGreen:TH.txRed,fontWeight:700,whiteSpace:"nowrap"}}>{k[0].toUpperCase()+k.slice(1)} {v>0?"+":"−"}{Math.abs(v)}</span></React.Fragment>)}
               </div>
             ):null;})()}
+            {/* [giro 67 PO-098] Enfant Prodige come tratto di crescita */}
+            <label data-cpm="tratto-enfant" style={{display:"flex",alignItems:"flex-start",gap:8,marginTop:8,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid "+(enfant67?TH.primary:TH.cardBorder),background:enfant67?TH.primaryTint:TH.surface2,cursor:"pointer"}}>
+              <input type="checkbox" checked={enfant67} onChange={e=>setEnfant67(e.target.checked)} style={{marginTop:2}}/>
+              <span style={{fontSize:FS.caption,color:TH.text,lineHeight:1.45}}><span style={{fontWeight:FW.bold}}>✨ Enfant Prodige</span> · tratto di crescita: cresci più in fretta fino ai 22 anni, ma parti con 2 punti in meno su ogni attributo</span>
+            </label>
           </div>
           {/* Club dei Sogni — tutti i club del gioco. [7.999.49 parte A] in fisarmonica chiusa: il bottone per iniziare non sta più dopo l'elenco dei club */}
           <details style={{marginBottom:0}}>
@@ -46037,6 +46099,12 @@ function migratePlayer(player){
       newP={...newP,archetype:ARCHETYPES[0]};
       changed=true;
     }
+    /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
+       archetipoOrig, e l'Enfant diventa il tratto di crescita (tratti.enfant) con lo stile delle sue statistiche migliori. Nessun campo tolto. */
+    {const _id67=(newP.archetype&&newP.archetype.id)||newP.archetype;
+     if(_id67&&!(typeof window!=='undefined'&&window.__CPM_NO_STILI)&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id67)&&!ARCHETYPES.some(a=>a.id===_id67)){
+       const _st67=ARCHETYPES.find(a=>a.id===stileDi(_id67,newP.stats))||ARCHETYPES[0];
+       newP={...newP,archetype:_st67,archetipoOrig:_id67,tratti:{...(newP.tratti||{}),enfant:_id67==="enfant"||!!(newP.tratti&&newP.tratti.enfant)}};changed=true;}}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
@@ -49525,7 +49593,7 @@ const getThisWeekMatchday=()=>{
         const _ndS=NAT_CLUB_DATA[_nOppN]||{id:"xx-nt",a:"INT",p:78,c:"#888888",c2:"#ffffff",nat:"🏳️"};
         const _hN=NAT_CLUB_DATA[p.nation||"Italia"]||{p:80,c:"#1e40af",c2:"#ffffff",a:(p.nation||"NAZ").slice(0,3).toUpperCase(),nat:"🏳️"};
         const _sdN=(Math.abs(hashStr("natfrsim|"+(p.season||1)+"|"+(p.week||1)+"|"+_nOppN))>>>0)||1;
-        const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},{id:_ndS.id,n:_nOppN,a:_ndS.a,p:_ndS.p,c:_ndS.c,c2:_ndS.c2},p.ovr||65,true,_sdN,undefined,{motore:true});
+        const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},{id:_ndS.id,n:_nOppN,a:_ndS.a,p:_ndS.p,c:_ndS.c,c2:_ndS.c2},p.ovr||65,true,_sdN,undefined,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null)});
         const _psN=(typeof _pSimStats==="function")?_pSimStats(simN,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_sdN+2)>>>0)):{goals:0,assists:0};
         const newCalN=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:simN.homeScore,awayScore:simN.awayScore,won:simN.won,drew:simN.drew},simulated:true}:m);
         const _pendNat28=newCalN.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||m.type==="cup"));/* [7.8.28 QA] un turno di coppa/europa nella STESSA settimana non va strandato: la settimana resta ferma (weekLived) finché non lo risolvi */
@@ -49549,7 +49617,7 @@ const getThisWeekMatchday=()=>{
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
       const _aSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6] settimana riproducibile
-      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
+      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
       // Only mark THIS specific match as played (by matchday id), not all at same week
       const newCal=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       // Check if more unplayed euro/cup matches remain at same week after this sim
@@ -50105,7 +50173,7 @@ const getThisWeekMatchday=()=>{
       const growthPct=p.age<21?0.20:p.age<=23?0.09:p.age<=26?0.04:p.age<=28?0.02:0;
       if(growthPct>0&&Math.random()<growthPct){
         // S12.4: archetype favors specific stats (70% chance to pick from favored, 30% random)
-        const arc=ARCHETYPES.find(a=>a.id===(p.archetype?.id||p.archetype));
+        const arc=archDi(p.archetype);
         const pool=(arc&&arc.favored.length&&Math.random()<0.70)?arc.favored:Object.keys(p.stats);
         const k=pick(pool);
         // Hard plateau: stats above 88 grow 3× slower · [7.178.0 RC-20] scalini élite allineati alla curva
@@ -50827,7 +50895,7 @@ const getThisWeekMatchday=()=>{
           //   (le nazionali giocano comunque), cap/gol accreditati, voce marcata. Niente standings di club.
           const _hN=NAT_CLUB_DATA[p.nation||"Italia"]||{p:80,c:"#1e40af",c2:"#ffffff",a:(p.nation||"NAZ").slice(0,3).toUpperCase()};
           const _sdN=(Math.abs(hashStr("natfradv|"+(p.season||1)+"|"+(p.week||1)+"|"+(md.opponentName||"x")))>>>0)||1;
-          const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},opp,p.ovr||65,true,_sdN,undefined,{motore:true});
+          const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},opp,p.ovr||65,true,_sdN,undefined,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null)});
           const _psN=(typeof _pSimStats==="function")?_pSimStats(simN,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_sdN+2)>>>0)):{goals:0,assists:0};
           const newCalN=(p.calendar||[]).map(m=>m.matchday===md.matchday?{...m,played:true,result:{homeScore:simN.homeScore,awayScore:simN.awayScore,won:simN.won,drew:simN.drew},simulated:true}:m);
           if(p.injured){/* [7.8.28 QA] INFORTUNATO: la Nazionale gioca senza di te — voce marcata (niente loop), NIENTE cap/gol/morale (prima Avanza accreditava Cap #N a un giocatore ai box) */
@@ -50839,7 +50907,7 @@ const getThisWeekMatchday=()=>{
           }
         } else if(opp){
           const _wSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6]
-          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
+          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
           const isCupMd=md.type==="cup";
           if(isEuroG){
             const egPts=(sim.won?3:sim.drew?1:0);
@@ -51052,7 +51120,7 @@ const getThisWeekMatchday=()=>{
             :avversarioDiGiornata(_xlc,xmd,p);/* [7.999.106] */
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
-            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
+            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
             const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}
@@ -51411,7 +51479,7 @@ const getThisWeekMatchday=()=>{
       const _posK102=(p.position||"Attaccante")==="Portiere"?['fisico','mentalità','posizionamento']:(p.position||"Attaccante")==="Difensore"?['fisico','mentalità','tecnica']:(p.position||"Attaccante")==="Centrocampista"?['passaggio','mentalità','tecnica']:['tiro','dribbling','posizionamento'];
       let _growthLog102=null;
       // Sprint 107: archetype biases growth pool (60% favored, 40% generic)
-      const _arc107=ARCHETYPES.find(a=>a.id===(p.archetype?.id||p.archetype));
+      const _arc107=archDi(p.archetype);
       const _favored107=_arc107?.favored||[];
       const _pickGrowth107=(genericPool)=>(_favored107.length&&Math.random()<0.60)?pick(_favored107):pick(genericPool);
       if(newAge<=21){
@@ -51847,7 +51915,7 @@ const getThisWeekMatchday=()=>{
     const seed=(Math.abs(hashStr("natsim|"+(player.season||1)+"|"+em.phase+"|"+(em.qualMatchIdx||0)+"|"+(em.groupMatchIdx||0)+"|"+(em.koPhase||"")+"|"+oppName)))>>>0;
     const homeNatTeam={id:"nat-"+(player.nation||"x"),n:player.nation||"Italia",a:heroNat.a||"NAZ",p:heroNat.p||80,c:heroNat.c,c2:heroNat.c2,nat:heroNat.nat};
     const oppNatTeam={id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat};
-    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true});
+    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(player):null)});
     const _ps=(typeof _pSimStats==="function")?_pSimStats(sim,player.ovr||65,player.archetype?.id||player.archetype||"",seededRng((seed+2)>>>0)):{goals:0,assists:0};
     const rating=Math.round(clamp(sim.rating+_ps.goals*0.4+_ps.assists*0.2,4.0,9.5)*10)/10;
     matchTypeRef.current="euroMondiale";
@@ -51867,7 +51935,7 @@ const getThisWeekMatchday=()=>{
     const seed=(Math.abs(hashStr("ncsim|"+(player.season||1)+"|"+(q.matchIdx||0)+"|"+oppName)))>>>0;
     const homeNatTeam={id:"nat-"+(player.nation||"x"),n:player.nation||"Italia",a:heroNat.a||"NAZ",p:heroNat.p||80,c:heroNat.c,c2:heroNat.c2,nat:heroNat.nat};
     const oppNatTeam={id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat};
-    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true});
+    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(player):null)});
     const _ps=(typeof _pSimStats==="function")?_pSimStats(sim,player.ovr||65,player.archetype?.id||player.archetype||"",seededRng((seed+2)>>>0)):{goals:0,assists:0};
     const rating=Math.round(clamp(sim.rating+_ps.goals*0.4+_ps.assists*0.2,4.0,9.5)*10)/10;
     matchTypeRef.current="nationsCup";
@@ -56400,7 +56468,7 @@ const getThisWeekMatchday=()=>{
             );
           })()}
           {/* S12.5: Archetype card */}
-          {(()=>{const arc=ARCHETYPES.find(a=>a.id===(player.archetype?.id||player.archetype))||ARCHETYPES[0];return(
+          {(()=>{const arc=archDi(player.archetype)||ARCHETYPES[0];return(
             <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
             <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>
@@ -56408,6 +56476,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{flex:1}}>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",marginBottom:2}}>{arc.name}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{arc.desc}</div>
+                  {haTrattoEnfant(player)&&<div data-cpm="tratto-enfant-profilo" style={{fontSize:FS.caption,color:"#fde68a",marginTop:3,fontWeight:FW.semibold}}>✨ Enfant Prodige · cresci più in fretta fino ai 22 anni</div>}{/* [giro 67 PO-098] il tratto di crescita */}
                 </div>
                 <div style={{display:"flex",flexDirection:"column",gap:3,alignItems:"flex-end"}}>
                   {Object.entries(arc.bonus).filter(([,v])=>v>0).slice(0,3).map(([k,v])=>(

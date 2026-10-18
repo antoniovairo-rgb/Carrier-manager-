@@ -911,7 +911,7 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
     const _t0=(typeof performance!=='undefined')?performance.now():0;
     const _pe5=(typeof TATTICHE_MOTORE!=='undefined')?getClubPersona(opponent):null;/* [7.999.5] stili: il mister dell'eroe (opz.stile) e la persona dell'avversario */
-    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
+    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,stile:(opz&&opz.stileEroe)||null,/* [giro 67 PO-098] */tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
     hG=_r.home;aG=_r.away;
     if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
   }catch(_eSM){}}
@@ -928,6 +928,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=ovr||65;
+  archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
      giocando dal vivo). Ora λ scala davvero con l'OVR: 65→~0.31 · 71→~0.42 · 80→~0.58 · 88→~0.73 (+arch/won),

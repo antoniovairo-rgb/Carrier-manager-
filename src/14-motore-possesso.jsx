@@ -249,6 +249,13 @@ function creaMotorePossesso(cfg){
      (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
   const _T202=(typeof window!=='undefined'&&window&&window.__CPM_NO_TETTO202)?95:99;
   const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,_T202),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,_T202)};
+  /* [giro 67 PO-098] LO STILE DELL'EROE NEL MOTORE (src/06 ARCHETYPES[].motore, via stileMotore). Tre leve deterministiche, nessun
+     sorteggio in piu': zona (quanto i compagni lo cercano secondo dove si trova), scena (la scelta automatica nella sim rapida) e
+     squadra (il Trascinatore in campo alza la forza della sua squadra). Rosso __CPM_NO_STILI: lo stile si ignora. */
+  const STILE67=(cfg.eroe&&cfg.eroe.stile&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_STILI))?cfg.eroe.stile:null;
+  const _fH67=forza.home;const _trasc67=(on)=>{if(STILE67&&(+STILE67.squadra||0))forza.home=on?clamp(_fH67+(+STILE67.squadra),40,_T202):_fH67;};_trasc67(eroeAttivo);/* segue l'eroe in campo/fuori (chiedi.eroe) */
+  const _zonaStile67=(q)=>{if(!STILE67||!STILE67.zona)return 1;const a=advDi(q.x,q.team),zz=STILE67.zona;return a>=84&&Math.abs(q.y-50)<=22?(+zz.area||1):a>=70?(+zz.limite||1):a>=56?(+zz.trequarti||1):(+zz.meta||1);};
+  const _bStile67=(q)=>STILE67?10*(_zonaStile67(q)-1):0;/* premio additivo: x1,7 in area vale +7 su un punteggio dove la marcatura ne toglie fino a 14 */
   const V2=!!cfg.v2;
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
@@ -455,7 +462,7 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44();}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
+      if(q.eroe&&_EG){sc+=BONUS_EROE+_cerca44()+_bStile67(q);}/* [giro 67 PO-098] + lo stile *//* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
       else if(q.eroe){let _b879=(S.richieste.scenaEroe&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_COLL_NOB879))?26:0;/* [collaudo PO-202, solo sonda] */
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
@@ -991,10 +998,12 @@ function creaMotorePossesso(cfg){
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;
     const s={tiro:(zona==="area"?1.0:zona==="limite"?0.45:0.12)*v("tiro")*(press<2?0.75:1),cross:(adv>=72&&Math.abs(P.y-50)>=22)?0.85*v("passaggio"):0,
       dribbling:(spazio>=3?0.62:0.30)*v("dribbling"),passaggio:0.55*v("passaggio")};
+    if(STILE67&&STILE67.scena){const k=STILE67.scena;s.tiro*=(+k.goal||1);s.cross*=(+k.assist||1);s.passaggio*=(+k.assist||1);s.dribbling*=(+k.dribbling||1);}/* [giro 67 PO-098] */
     let best="passaggio",bs=-1;for(const k of ["tiro","cross","dribbling","passaggio"])if(s[k]>bs){bs=s[k];best=k;}return best;}
   function eseguiOccV2(P){const k=(S._nOccV2|0);S._nOccV2=k+1;S._ultOccV2=S.min;const auto=sceltaAutoV2(P);
     const sc=(cfg.scelte&&cfg.scelte[k])||auto;const l=P.team,adv=advDi(P.x,l);
     ev("occasione_eroe",{k,auto,scelta:sc,chi:chi(P),zona:zonaDi(adv,P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
+    {const _c67=(S.conta.scelte67=S.conta.scelte67||{});_c67[sc]=(_c67[sc]|0)+1;}/* [giro 67 PO-098] conteggio inerte delle scelte dell'eroe, per la sonda stili-098 */
     if(sc==="tiro"){tira(P);return;}
     if(sc==="cross"){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<74)continue;const s2=aq-Math.abs(q.y-50)*0.3+rnd()*6;if(s2>bs){bs=s2;R=q;}}
       if(R){cross(P,R);return;}const R2=scegliRicevente(P,{});if(R2)passa(P,R2);else conduci(P);return;}
@@ -1050,7 +1059,7 @@ function creaMotorePossesso(cfg){
   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
     for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
-      const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+      const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2))+_bStile67(q):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
   /* [7.999.161 PO-228 v2, decisione PO «adotta e correggi i gol eroe»] SE L'EROE E' DAVANTI, NIENTE GIRO PALLA. MISURATO (400 partite,
      simulazione rapida): col giro palla i gol dell'eroe scendevano da 0,128 a 0,095 e i suoi tiri da 0,51 a 0,41 a partita. Le
@@ -1394,7 +1403,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     scelta259(o){o=o||{};_fine259();const T=TAT[HOME];const base={press:T.press,linea:T.linea,diretto:T.diretto};
       T.press=clamp(T.press+(+o.press||0),-1,1);T.linea=clamp(T.linea+(+o.linea||0),-1,1);T.diretto=clamp(T.diretto+(+o.diretto||0),-1,1);
       S.richieste.s259={base,gap:(o.gap|0),fino:(o.fino|0)||999,att:(o.att!=null),cerca:!!o.cerca};},
-    eroe(on){eroeAttivo=!!on;if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
+    eroe(on){eroeAttivo=!!on;_trasc67(eroeAttivo);if(!eroeAttivo&&S.poss.padrone===HERO){libero(S.palla.x,S.palla.y);}if(!eroeAttivo&&S.poss.ricevente===HERO)S.poss.ricevente=null;},
     scena(){S.scena=true;S._scenaAuto138=null;S.richieste.verso=null;S.arco=null;},
     riprendi(o){o=o||{};S.scena=false;S._scenaAuto138=null;S.fermo=null;S.rete=null;S.richieste.verso=null;
       if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
@@ -1726,11 +1735,11 @@ function simulaPartitaMotore(o){o=o||{};
   const gio=P.map((p,i)=>({team:'home',gk:!!p[2],name:'H'+(i+1),rl:R(i),x:p[0],y:p[1]})).concat(Q.map((p,i)=>({team:'away',gk:!!p[2],name:'A'+(i+1),rl:R(i),x:p[0],y:p[1]})));
   /* [7.999.5] occasioni dell'eroe ACCESE: nella partita guardata sono gli highlight, qui le risolve il motore con la scelta piu' probabile dal profilo (scelta PO). Spente, la simulazione perdeva ~0,4 gol a partita e i gol dell'eroe. */
   const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});
   for(let m=46;m<=93;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,90),dt:1/B,dec:true});
-  const t=M.tabellino();return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
+  const t=M.tabellino();if(o.dettaglio)return{home:t.home.gol|0,away:t.away.gol|0,tab:t,pag:M.pagelle(),scelte:(M._S.conta&&M._S.conta.scelte67)||{}};/* [giro 67 PO-098] solo per le sonde */return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
 if(typeof window!=='undefined'){try{window.__CPM_SIM_MOTORE=simulaPartitaMotore;}catch(_e){}}
 /* CMAV-MOTORE-END */

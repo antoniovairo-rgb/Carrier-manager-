@@ -879,10 +879,14 @@ const P6_CONCLUSIONE=[
 ];
 /* [7.999.148 Passo 6, strato 2] costruttore comune degli strati: posizione dal motore, pesi dalle statistiche, scelta seminata.
    Ogni strato porta il suo registro di opzioni, i suoi titoli e il suo contesto. Rosso globale __CPM_NO_P6 (tutti gli strati). */
+/* [giro 67 PO-098] LO STILE SCEGLIE LE OPZIONI DELLA SCENA: il peso di ogni opzione si moltiplica per la leva «scena» dello stile
+   (esito gol / assist, o statistica dribbling). Nessun sorteggio in piu': cambia solo il peso dentro la scelta seminata. Rosso __CPM_NO_STILI. */
+function _pesoStile67(player,t){try{const m=(typeof stileMotore==='function')?stileMotore(player):null;if(!m||!m.scena||!t)return 1;const k=m.scena;
+  if(t.st==='dribbling')return +k.dribbling||1;if(t.rew==='assist')return +k.assist||1;if(t.rew==='goal')return +k.goal||1;return 1;}catch(_e){return 1;}}
 function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
-  const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);
   const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
@@ -1113,7 +1117,7 @@ function scenaSecondoTempo(base,cast,player,seed){
   const c={ric:nm(cs.ricevente),dif:nm(cs.difensore),gk:nm(cs.portiere)};
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(q)=>{try{return +((player&&player.stats&&player.stats[q])||60);}catch(_e){return 60;}};
-  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);const scelte=[];
+  const pool=P6_SEGUITO[fam].map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
@@ -1167,7 +1171,7 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const c={press,limite,uno,ric};
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
-  const pool=P6_CONCLUSIONE.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)})).filter(o=>o.w>0);
+  const pool=P6_CONCLUSIONE.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);
   const scelte=[];
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
