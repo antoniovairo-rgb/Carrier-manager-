@@ -104,10 +104,10 @@ sul dispositivo (headless non lo prova).
 
 **PO-252 — banco dei 10 difetti.** Stato per voce dopo questo giro (guardiani sul build finale, §4):
 1 piedi che pattinano → `piedi-252` verde, mediane verde 0,309 · rosso 0,525 (soglia verde ≤ 0,36); 2 pallone che si teletrasporta
-in rete → `rete-252` verde; 3 eroe immobile in difesa → `difesa-252` §4; 4 rinvio veloce → `rinvio-252` §4; 5 portiere 111/112 →
-`portiere-252` §4; 6 pallone indietro nel build-up aereo → `aereo-252` §4; **7 eroe fuori quadro → corretto il caso a fine
-scena dei tiri (§2, `linee-61`)**; 8 reparto che non reagisce → `reazione-252` §4; 9 salto isolato della camera → `camera-252`
-§4; **10 pallone lontano dai piedi all'apertura → corretto il caso del portatore difensivo (§1, `avvicinamento-61`)**. Il banco
+in rete → `rete-252` verde; 3 eroe immobile in difesa → `difesa-252` verde; 4 rinvio veloce → `rinvio-252` verde (26,1 contro 47,8 u/s); 5 portiere 111/112 →
+`portiere-252` verde; 6 pallone indietro nel build-up aereo → `aereo-252` verde; **7 eroe fuori quadro → corretto il caso a fine
+scena dei tiri (§2, `linee-61`)**; 8 reparto che non reagisce → `reazione-252` verde; 9 salto isolato della camera → `camera-252`
+verde; **10 pallone lontano dai piedi all'apertura → corretto il caso del portatore difensivo (§1, `avvicinamento-61`)**. Il banco
 pesato intero (`banco-248`) non l'ho rigirato: la classifica aggiornata dei 10 non c'è.
 
 **PO-022 — un solo motore, parte residua.** `catalogo-022` sul ramo: **12/12 scene nate dal motore**, le 5 catene del secondo tempo
@@ -148,7 +148,7 @@ Tutte sul build finale del ramo (`bdd9194`; `node tools/check-src.mjs`: identico
 | `piedi-252` · `rete-252` · `portiere-252` · `aereo-252` · `reazione-252` · `camera-252` | ✅ tutti (piedi: mediane 0,309 · 0,525) |
 | `difesa-252` · `rinvio-252` · `goal-postarc` | ✅ **da soli**: difesa reale 0/4, prova 0/3, rosso 3/3 · rinvio 26,1 vs 47,8 u/s · 6/6 gol in porta |
 | `gk-dive-sync` | ✅ |
-| `inquadra-273` | §INQ§ |
+| `inquadra-273` | partite 2,4: ⚠️ **cieca** (nessuna scena aerea uscita: le scene dipendono dai tempi); partite 1,3: ✅ **13,3%** (2/15, soglia 20%). Sulla 172, partite 2,4, stessa ora: ✅ 0/7. Le mie modifiche non toccano le fasi di presentazione delle scene aeree (il pallone in scelta cambia solo con un portatore difensivo; il tetto della guardia vale solo in `hl_result`) |
 
 ⚠️ **Sotto carico (load 11-15, tre catene in parallelo) quattro guardiani GLB sono usciti rossi o ciechi** e tutti verdi rifatti da
 soli: `difesa-252` (gi31 «fermo 1» → 0,02 da solo; la stessa corsa sulla 172 sotto lo stesso carico ha dato «fermo 1» su
