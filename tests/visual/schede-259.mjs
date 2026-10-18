@@ -98,7 +98,8 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
        l'attesa della prossima occasione dell'eroe deve accorciarsi rispetto alla sola leva del giro 44. */
     const E52 = braccio({ __CPM_NO_PROM52: 1 }, 'eroe');
     console.log(`   «eroe» soglia della trequarti (giro 52): attesa ${ERO.attesaOccEroe}' (occasioni ${ERO.occ}) contro ${E52.attesaOccEroe}' (${E52.occ}) col rosso __CPM_NO_PROM52`);
-    if (!process.env.CPM_NO_PROM44 && !(ERO.attesaOccEroe < E52.attesaOccEroe)) fail.push('B: la soglia della trequarti non accorcia l\'attesa (' + ERO.attesaOccEroe + ' contro ' + E52.attesaOccEroe + ')'); }
+    /* [7.999.172] soglia del giro 52 spenta per decisione (DECISIONI 17/10): la misura resta stampata, non si giudica */
+    if (false && !process.env.CPM_NO_PROM44 && !(ERO.attesaOccEroe < E52.attesaOccEroe)) fail.push('B: la soglia della trequarti non accorcia l\'attesa (' + ERO.attesaOccEroe + ' contro ' + E52.attesaOccEroe + ')'); }
   console.log('(B) banco, ' + (24 * SEMI) + ' partite per braccio, nei 15\' dopo la scheda (valori per 100 minuti; attesa = minuti fino alla prossima occasione dell\'eroe)');
   for (const [n, x] of [['«spinta»', SPI], ['«palla»', PAL], ['«eroe»', ERO], ['nessuna scelta', NEU]]) console.log('   ' + n.padEnd(15) + JSON.stringify(x));
   const sep = (a, b) => b ? (a - b) / b : 0, pc = (x) => (100 * x).toFixed(1) + '%';

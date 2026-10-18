@@ -982,7 +982,9 @@ function creaMotorePossesso(cfg){
     /* [giro 52 PO-226 — rosso __CPM_NO_PROM52] «la prossima palla buona arriva a te»: misurato (sonda-promessa52, base 171) dopo la scelta l'eroe
        la palla la riceve, ma sulla trequarti (x 57-61) e l'occasione nasceva solo dall'ultimo terzo (64): promessa vuota per 12' (p5, p2).
        Finche' la promessa e' aperta la palla buona e' quella ricevuta dalla trequarti (56). Valore di progetto dichiarato. */
-    const _soglia52=(S.richieste.s259&&S.richieste.s259.cerca&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_PROM52||window.__CPM_NO_PROM44)))?56:64;
+    /* [7.999.172] SPENTA per decisione (DECISIONI 17/10, giri 50-57): il PO ha approvato le interazioni 2D col mister (PO-226 VERIFICATO)
+       e il giro 52 non doveva cambiarle. Il codice resta; per riaccenderla in prova: window.__CPM_SI_PROM52=1. */
+    const _soglia52=((typeof window!=='undefined'&&window&&window.__CPM_SI_PROM52)&&S.richieste.s259&&S.richieste.s259.cerca&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_PROM52||window.__CPM_NO_PROM44)))?56:64;
     return advDi(P.x,P.team)>=_soglia52&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
