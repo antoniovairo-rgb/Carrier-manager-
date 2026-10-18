@@ -28257,7 +28257,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
          legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). */
       const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
       const _x218=!(typeof window!=='undefined'&&window.__CPM_NO_CROSS218);const _fkx218=_x218&&!ok&&fam==='freekick'&&/cross/.test(vr)&&rew==='assist';/* [giro 11 PO-218 cross] il cross da punizione sbagliato e' un cross, non un tiro dell'eroe */
-      const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
+      /* [giro 60 PO-218 «esiti bugiardi», rosso __CPM_NO_DIF60] LA SCENA DIFENSIVA NON E' UN TIRO DELL'EROE. Misurato (censimento esiti-241 con
+         CPM_DIF=1, scene difensive prima escluse): gi36/gi44 «Muro invalicabile — il tiro non passa» / «SALVATO!» riusciti -> il motore
+         scriveva tiro:saved dell'EROE + parata + rammarico (la famiglia del gesto e' «header», non «tackle», e cadeva nel ramo del tiro);
+         gi136 cross difensivo sbagliato -> «cross, fuori» dell'eroe. Ora la scena difensiva (sit.type def) di testa o di cross e' una
+         spazzata dell'eroe se riesce, l'avversario che prosegue se fallisce (il gol subito resta del blocco goal_against qui sotto). */
+      const famDefX=!!d.def&&fam!=='tackle'&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF60);
+      const famPass=!famDefX&&(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
       /* [23/09 POC — gesti evoluti] contrasto in piedi o in scivolata: deciso dalla situazione (distanza dalla porta propria di chi
          interviene, niente sorteggio). In scivolata quando si difende vicino alla propria area, in piedi altrove. */
       const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
@@ -28275,6 +28281,10 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         if(ok&&R){if(!(key==='assist'||key==='goal'))E('ricezione',{chi:chi(R),da:chi(H)});/* chi conclude di prima non controlla: niente ricezione */
           if(key==='assist'||key==='goal'){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),intent:fam==='cross'?'header':null,to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
         if(fam==='cross'&&D)E('pressione',{chi:chi(D),su:chi(R||H)});
+      }
+      else if(famDefX){
+        if(ok)E('spazzata',{chi:chi(H),corner:false});
+        else if(D&&key!=='goal_against')E('conduzione',{chi:chi(D),from:da(D)});
       }
       else if(famDef){
         if(ok&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
@@ -37542,6 +37552,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          decideExecution intatto (decision-baseline invariata). In area (x≥70) il taglio può davvero finire
          in tiro parato/palo: lente-tiro legittima, invariata. */
       if(_htp==="build"&&(_ctx.x!=null?_ctx.x:50)<70&&!/intercept|dispos|fouled|win_freekick|foul|offside|lost|stopped|overhit|shielded|beaten/i.test(_outKind||""))_outKind=(key==="intercept")?"intercepted":"dispossessed";/* [7.249.0 gi37/38 «tiro da distanza impossibile» PERSISTENTE su 7.248] il seed dell'outKind include fatica/forma che DERIVANO nella sessione wizard → uscivano kind fuori dalla lista chiusa saved/post/wide/out (es. blocked). Ora WHITELIST: se il fail di una corsa lontano dalla porta NON è una perdita di possesso, LO DIVENTA — robusto a ogni seed */
+      /* [giro 60 PO-143/PO-218 «esiti bugiardi», rosso __CPM_NO_STACCO60] LO STACCO CHE DEVE RECUPERARE IL PALLONE, SE FALLISCE, E' UN DUELLO
+         AEREO PERSO, NON UN TIRO PARATO. Misurato (censimento esiti-241, gi126/1 «Stacco difensivo deciso», premio recupero, eroe a
+         centrocampo): 2/2 «Tentativo respinto — Tiro debole, para comodo» e nel 3D il portiere avversario para (gk_block/gk_dive) un pallone
+         colpito da 40 metri. Il giro 43 lo aveva lasciato aperto. Qui, chokepoint M1 (3D + riquadro + cronaca leggono _outKind): anticipato. */
+      if(_htp==="header"&&(action.rew==="recovery"||action.rew==="possession")&&!/intercept|dispos|fouled|win_freekick|foul|lost|beaten/i.test(_outKind||"")&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO60))_outKind="intercepted";
       /* [7.217.0] QUALE LEGNO: deciso qui, una volta sola, e consumato da 3D + overlay + cronaca (pattern M1).
          Un colpo di testa, un tiro in 1v1 o un cross a rientrare finiscono sul palo per geometria (sono giocate
          basse): la traversa resta alle conclusioni che vanno in alto. Seedato → riproducibile. */
@@ -37699,7 +37714,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',def:!!(_fkSit&&_fkSit.type==='def')/* [giro 60 PO-218] la scena difensiva non e' un tiro dell'eroe */,gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}if(brain137()&&!ok&&(_t202==='blocked'||/intercept|dispossess|beaten|lost|stopped/i.test(String(_outKind||key||''))))_t202='perso';rip202Ref.current=_t202;}catch(_e202){}/* [7.999.137] anche il pallone perso (intercetto, contrasto, tiro murato) riparte con l'avversario */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
