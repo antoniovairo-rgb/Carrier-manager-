@@ -5,7 +5,7 @@
    (A) node, banco del motore vero (24 configurazioni S12 x CPM_SEMI, default 4 = 96 partite): a ogni scheda si applica un'opzione (a rotazione),
        si registrano il fotogramma alla scelta, il racconto a +5' (quello di sempre) e il fotogramma al fischio. Per ogni scelta si giudica
        con INT259.smentito se la riga del riepilogo contraddice i fatti scelta→fischio (gol fatti o subiti non detti, tiri dichiarati
-       diversi). ROSSO (riga a +5'): smentite > 0. VERDE (INT259.finale): smentite = 0. Si stampa a parte il sottoinsieme «scelta nel finale» (>=70').
+       diversi). ROSSO (riga a +5'): smentite > 0. VERDE (INT259.finaleEsito): smentite = 0. Si stampa a parte il sottoinsieme «scelta nel finale» (>=70').
    (B) browser, partite vere di carriera con autoplay (CPM_PARTITE per braccio, default 2, i due bracci in parallelo): la riga del riepilogo
        nel DOM e' quella calcolata al fischio (verde) / quella a +5' (rosso). Il «Tabellino della gara» (colonne «tua squadra — avversari»,
        7.999.10) lo giudica il guardiano tabellino-lati, in casa e in trasferta.
@@ -26,7 +26,7 @@ if (!process.env.CPM_SOLO_BROWSER) {
   const { crea, INT259 } = carica({});
   const RF = carica({ __CPM_NO_FIN280: 1 }).INT259; /* rosso della decisione PO 17/10: tutte le finestre al fischio */
   const D2 = { partite2: 0, doppiV: 0, doppiR: 0, smentiteR: 0, esempi: [] };
-  if (!INT259.finale || !INT259.smentito) { console.log('❌ INT259.finale/smentito assenti'); process.exit(1); }
+  if (!INT259.finaleEsito || !INT259.smentito) { console.log('❌ INT259.finaleEsito/smentito assenti'); process.exit(1); }
   const T = { partite: 0, conScelta: 0, conSceltaFinale: 0, scelte: 0, finale: 0, rosso: 0, verde: 0, rossoF: 0, verdeF: 0, esempi: [], incoerenti: 0, classi: {}, finaleGolSubito: 0 };
   for (let s = 0; s < CFG.length * SEMI; s++) {
     const c0 = CFG[s % CFG.length];
@@ -55,18 +55,18 @@ if (!process.env.CPM_SOLO_BROWSER) {
       const tot = ((fF.gNoi | 0) + (fF.gLoro | 0)) - ((aperte[0].foto.gNoi | 0) + (aperte[0].foto.gLoro | 0));
       const sv = aperte.reduce((t, a, i) => t + g(W[i], a), 0), sr = aperte.reduce((t, a, i) => t + g(WR[i], a), 0);
       D2.doppiV += Math.max(0, sv - tot); D2.doppiR += Math.max(0, sr - tot);
-      if (sr > tot && D2.esempi.length < 3) D2.esempi.push(aperte.map((a, i) => `${a.m0}' «${RF.finale(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, WR[i])).breve}» → ora «${INT259.finale(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, W[i])).breve}»`).join(' · ')); }
+      if (sr > tot && D2.esempi.length < 3) D2.esempi.push(aperte.map((a, i) => `${a.m0}' «${RF.finaleEsito(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, WR[i])).breve}» → ora «${INT259.finaleEsito(Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, W[i])).breve}»`).join(' · ')); }
     for (const [ia, a] of aperte.entries()) {
       const r = Object.assign({ fatto: a.fatto, idx: a.idx, m0: a.m0, prima: a.foto, eroe: 'Vairo' }, W[ia]);
       const vecchia = a.es5 || { k: 'nessuno', n: 0, breve: "non c'è stato il tempo di vederne l'effetto" };
-      const nuova = INT259.finale(r);
+      const nuova = INT259.finaleEsito(r);
       const sR = INT259.smentito(r, vecchia), sV = INT259.smentito(r, nuova); const fin = a.m0 >= 70;
       T.scelte++; if (fin) T.finale++; if (sR) { T.rosso++; if (fin) T.rossoF++; const dd = (k) => (fF[k] | 0) - (a.foto[k] | 0); const cl = (dd('gNoi') > 0 || dd('gLoro') > 0) && !/gol/i.test(vecchia.breve) ? 'golTaciuti' : (dd('gLoro') > 0 ? 'golSubitoDopoHaPagato' : 'numeroDiverso'); T.classi[cl] = (T.classi[cl] || 0) + 1; if (fin && dd('gLoro') > 0) T.finaleGolSubito++; } if (sV) { T.verde++; if (fin) T.verdeF++; }
       if (sR && T.esempi.length < 6) { const dd = (k) => (fF[k] | 0) - (a.foto[k] | 0); T.esempi.push(`${a.m0}' «${INT259.opz(a.fatto, a.idx).et}» +5': «${vecchia.breve}» · al fischio: gol ${dd('gNoi')}-${dd('gLoro')}, tiri ${dd('tiriNoi')}-${dd('tiriLoro')} → «${nuova.breve}»`); }
     }
   }
   console.log(`(A) banco: ${T.partite} partite · con scelta ${T.conScelta} · con scelta nel finale (>=70') ${T.conSceltaFinale} · scelte ${T.scelte} (nel finale ${T.finale})`);
-  console.log(`(A) riga del riepilogo smentita dai fatti scelta→fischio — ROSSO (riga a +5'): ${T.rosso}/${T.scelte} (nel finale ${T.rossoF}/${T.finale}) · VERDE (INT259.finale): ${T.verde}/${T.scelte} (nel finale ${T.verdeF}/${T.finale})`);
+  console.log(`(A) riga del riepilogo smentita dai fatti scelta→fischio — ROSSO (riga a +5'): ${T.rosso}/${T.scelte} (nel finale ${T.rossoF}/${T.finale}) · VERDE (INT259.finaleEsito): ${T.verde}/${T.scelte} (nel finale ${T.verdeF}/${T.finale})`);
   console.log(`(A) classi delle smentite (rosso): ${JSON.stringify(T.classi)} · scelte nel finale con gol subito dopo e riga che non lo dice: ${T.finaleGolSubito}`);
   console.log(`(A) racconto a +5' coerente coi suoi 5' (comportamento approvato, invariato): incoerenti ${T.incoerenti}`);
   for (const e of T.esempi) console.log('    esempio rosso: ' + e);

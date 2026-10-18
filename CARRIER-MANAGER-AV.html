@@ -26870,7 +26870,8 @@ const INT259={
      (82'→87'): vera allora, smentita dal pareggio arrivato dopo. Qui lo stesso racconto (stessa regola, nessun sorteggio) sulla finestra
      scelta→fischio; se nella finestra hanno segnato entrambe, la riga li dice tutti e due (racconta mette davanti solo il primo). */
   attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
-  finale(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
+  /* [7.999.172] nome proprio: «finale» era gia' la regola delle schede del finale (giro 52, sopra) e la chiave doppia la cancellava (schede-259 A 6/7) */
+  finaleEsito(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
     if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
       return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro"+INT259.fino(r)+".",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+INT259.fino(r)};}
     const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+INT259.fino(r))});},
@@ -40178,13 +40179,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
           {(()=>{/* [PO-259] la riga della scelta: cosa hai deciso e cosa e' successo (dal racconto nato dai fatti del motore). Rosso __CPM_NO_SCHEDE259 */
             if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L0=((narrRef669.current||{}).r259list)||[];if(!_L0.length)return null;
-            /* [PO-280 — rosso __CPM_NO_ESITO280] l'esito del riepilogo si ricalcola sui fatti dal minuto della scelta al fischio (INT259.finale): la riga
+            /* [PO-280 — rosso __CPM_NO_ESITO280] l'esito del riepilogo si ricalcola sui fatti dal minuto della scelta al fischio (INT259.finaleEsito): la riga
                breve del racconto valeva per i 5' dopo la scelta ed era smentita da cio' che succedeva dopo (il pareggio del collaudo PO) */
             let _L=_L0;if(INT259.attivo280&&INT259.attivo280()){try{const _M=motoreRef.current;const _fF=_M?INT259.foto(_M,scoreRef.current):null;const _mF=Math.max(90,clockRef.current|0);
               /* [PO-280 bis — rosso __CPM_NO_FIN280] «la prima finisce alla seconda»: finestra fino alla scelta successiva, l'ultima al fischio */
               const _fin=_fF?INT259.finestre(_L0,_fF,_mF):null;
               if(_fF)_L=_L0.map((r,_i)=>{if(!r.foto)return r;const _w=_fin[_i];const _rr={fatto:r.fatto,idx:r.idx,m0:r.m0,m1:_w.m1,prima:r.foto,dopo:_w.dopo,fino:_w.fino,occ:_w.occ,
-                eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!r.panca,ingresso:r.ingresso};const _ef=INT259.finale(_rr);
+                eroe:(((player&&player.name)||"").trim().split(/\s+/).pop()||null),panca:!!r.panca,ingresso:r.ingresso};const _ef=INT259.finaleEsito(_rr);
                 if(typeof window!=='undefined'){try{const _W=(window.__CPM_ESITO280=window.__CPM_ESITO280||{});_W[r.m0+"|"+r.fatto]={r:_rr,es5:r.es5||null,finale:_ef};}catch(_e){}}
                 return Object.assign({},r,{breve:_ef.breve});});}catch(_e280){}}
             return(<div data-cpm="riep259" style={{margin:"0 0 14px",padding:"10px 12px",borderRadius:RAD.md,background:TH.card,border:`1px solid ${TH.divider}`,textAlign:"left"}}>

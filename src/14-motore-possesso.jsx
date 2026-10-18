@@ -184,7 +184,8 @@ const INT259={
      (82'→87'): vera allora, smentita dal pareggio arrivato dopo. Qui lo stesso racconto (stessa regola, nessun sorteggio) sulla finestra
      scelta→fischio; se nella finestra hanno segnato entrambe, la riga li dice tutti e due (racconta mette davanti solo il primo). */
   attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
-  finale(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
+  /* [7.999.172] nome proprio: «finale» era gia' la regola delle schede del finale (giro 52, sopra) e la chiave doppia la cancellava (schede-259 A 6/7) */
+  finaleEsito(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
     if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
       return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro"+INT259.fino(r)+".",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+INT259.fino(r)};}
     const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+INT259.fino(r))});},
