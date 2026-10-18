@@ -523,3 +523,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «Misura poi proposta». Un giro di sola lettura (59) misura cosa fanno oggi acquisti e investimenti; nessuna modifica alla zona G finché il PO non sceglie dal questionario.
 - Effetti voluti dal PO: «Effetti sul campo», «Rischio e scelte vere», «Visibili nel mondo». Non scelto: «Fine carriera».
+
+## 18/10 — piano dopo la 7.999.172
+
+- PO: «farei una 173 conclusiva e poi stabilità, collaudo da player super approfondito e correzioni bug logici».
+- **Contenuto della 7.999.173: «Tutto il backlog aperto»** (L1-bis, L3, L4, L5, L6, L7, L8, PO-281 dopo la misura del giro 59). Lettura della sessione principale: le voci di zona G del backlog (PO-154 impulsi e PO-155 Nazionale, già con eccezione del 16/10; PO-157 Ufficio, PO-156 difficoltà, PO-281) si lavorano con la regola di sempre (misura, interruttore rosso, guardiano); le scelte di prodotto non ancora decise (es. i bersagli di PO-156) tornano al PO con un questionario.
+- **Dopo la 173: stabilità.** Niente funzioni nuove; collaudo «carriere intere» (più sessioni giocano carriere complete dall'U18 al ritiro con profili diversi, ogni incoerenza con la prova) e correzione dei bug logici.
+- Giri della 173 avviati il 18/10 da lavoro/172: 60-68 (vedi CODA-SESSIONI).
