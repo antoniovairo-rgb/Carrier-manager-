@@ -733,6 +733,10 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
+  /* [7.999.172 PO-269, giro 51] il chip «v x.y.z» fisso in basso a destra (z 9999) copriva la barra di Home/carriera e i Crediti
+     (sonda chip-269: 1.215 px² dentro il pannello a 360 px). Decisione PO 17/10: la versione va NELLA TESTATA (VersioneTestata269,
+     src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */
+  const _chipFisso269=typeof window!=='undefined'&&!!(window.__CPM_NO_CHIP269||window.__CPM_NO_BADGE255);
   const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
   useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
@@ -879,12 +883,12 @@ function App(){
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
-      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
+      {_chipFisso269&&<div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
         {(typeof window!=='undefined'&&window.__CPM_NO_BADGE255)?<React.Fragment>{/* [giro 26 PO-255] rosso: il badge tecnico di prima */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
         <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span></React.Fragment>
         :<span data-cpm="badge255" style={{color:"rgba(255,255,255,0.85)",background:"rgba(0,0,0,0.35)",padding:"1px 6px",borderRadius:RAD.xs}}>v {GAME_VERSION}</span>}{/* [giro 26 PO-255, collaudo 169 D1 — decisione PO 15/10 «Solo versione, senza PROD»] al giocatore resta solo la versione, piccola e discreta, che svanisce come prima: niente PROD/TEST ne' «KE». APP_ENV resta per gli usi interni. Rosso __CPM_NO_BADGE255 */}
-      </div>
+      </div>}
       <style>{`
         *{box-sizing:border-box;}
         @keyframes cpmBadgeFade{0%{opacity:1}88%{opacity:1}100%{opacity:0;visibility:hidden}}
