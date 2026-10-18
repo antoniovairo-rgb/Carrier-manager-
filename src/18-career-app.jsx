@@ -9415,7 +9415,8 @@ const getThisWeekMatchday=()=>{
             {/* Stadio */}
             <Fisarmonica id="s24-stadio" titolo="Stadio"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"7px 12px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div style={{fontSize:FS.body,fontWeight:700,color:TH.text}}>{stadName}</div>
+                <div style={{minWidth:0}}><div style={{fontSize:FS.body,fontWeight:700,color:TH.text}}>{stadName}</div>
+                  {(()=>{try{const _k=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club).kind:null;const _l=(typeof stadiumKindLabel==="function")?stadiumKindLabel(_k):null;return _l?<div data-cpm="tipo-stadio" style={{fontSize:FS.caption,color:TH.muted}}>{_l}</div>:null;}catch(_e){return null;}})()}{/* [giro 64 PO-071] tipologia dell'impianto, solo dove ha un'architettura propria */}</div>
                 <div style={{textAlign:"right"}}>
                   <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.brandText}}>{capStr}</div>
                   <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Capienza</div>
