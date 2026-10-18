@@ -513,3 +513,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Giro 54, walkout-fermi-197 rosso e pillola «PALLA PERSA» sopra il tabellone**: un giro di seguito (58) ripara il guardiano sul tempo di scena e cerca la pillola, prima della catena notte della 172.
 - **Giri 51, 55, 56, 57**: entrano come consegnati; gate 14/14 e catena notte si eseguono sull'unione.
 - **Giro 55, pallino della lavagna 2D**: portato al PO. Risposta PO 17/10: «Anche il pallino 2D» → lo fa il giro 58.
+
+## 18/10 — rilascio 7.999.172
+
+- Alle 08:00 la 172 non è uscita: l'unione dei giri non era stata fatta (errore della sessione principale, dichiarato al PO).
+- PO: «rilascia il prima possibile!» → si pubblica appena la catena notte è verde, senza attendere la fascia delle 16 o delle 00.
