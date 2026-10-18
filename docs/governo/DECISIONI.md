@@ -518,3 +518,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Alle 08:00 la 172 non è uscita: l'unione dei giri non era stata fatta (errore della sessione principale, dichiarato al PO).
 - PO: «rilascia il prima possibile!» → si pubblica appena la catena notte è verde, senza attendere la fascia delle 16 o delle 00.
+
+## 18/10 — acquisti e investimenti (PO-281, legata a PO-157)
+
+- PO: «Misura poi proposta». Un giro di sola lettura (59) misura cosa fanno oggi acquisti e investimenti; nessuna modifica alla zona G finché il PO non sceglie dal questionario.
+- Effetti voluti dal PO: «Effetti sul campo», «Rischio e scelte vere», «Visibili nel mondo». Non scelto: «Fine carriera».
