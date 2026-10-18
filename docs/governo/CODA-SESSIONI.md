@@ -130,3 +130,15 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - giro 57 PO-280 esito della scelta del mister — session_01Hg5P5GKnjGDfEs8EL834f2 — sviluppo/esito-scelta-280-giro57
 - 17/10 08:45 UTC — consegnati: giro 51 (985ab328: PO-270, 268, 272 fatti; 269 parziale), giro 56 (2c531b4f: stat-279), giro 57 (6d9a0ff1: esito 0/85 smentite, tabellino non invertito). Sessioni 51 e 57 archiviate; seguiti sugli stessi rami con le decisioni PO: giro 51-bis session_01Dsgm4EECarMPGBhS7bWEmS (badge in testata, secondo rinnovo), giro 57-bis session_01EDtcYUQGLiGADhVNBQrPVq (due scelte, tabellino casa–ospite).
 - 17/10 14:45 UTC — consegnati e archiviati: giro 50 (e5a5e7fa), 51-bis (2c6d9e38), 52 (0608bdf1), 53 (3659569a), 54 (a560a245), 55 (900ac3ec), 56 (2c531b4f), 57-bis (e5238fb8). Decisioni della sessione principale in DECISIONI.md (17/10, giri 50-57). Avviato giro 58 session_019613opP6wezbbYu1zXu3SX — sviluppo/seguito-172-giro58 (walkout-fermi-197 sul tempo di scena, pillola «PALLA PERSA», pallino 2D PO-278).
+- 18/10 13:40-13:45 UTC — avviati per la 7.999.173 (base lavoro/172, decisione PO «Tutto il backlog aperto»):
+  - giro 59 PO-281 misura acquisti/investimenti (sola lettura) — session_0188ZzJUL7Sox66iCvmdyZWo — analisi/acquisti-281-giro59
+  - giro 60 L1-bis esiti e gesti (218, 240, 250, 258, 068, 143) — session_019kDStJdMAdACB7t6G3mrtM — sviluppo/esiti-gesti-giro60
+  - giro 61 L1-bis regia highlight (261, 229, 248, 252, 022, 266, 262, 207) — session_01RX6Dxwr1NJFTArLXqr6m8g — sviluppo/regia-highlight-giro61
+  - giro 62 L3 (167, 168) — session_011GksPc11xH36FcNMHRY7ps — sviluppo/salvataggi-errori-giro62
+  - giro 63 L4 (023, 180, 171, 072) — session_018wNdrgLiaa5AxoW6Bi1ffq — sviluppo/prestazioni-pulizia-giro63
+  - giro 64 L5+L8 (061, 276, 071, 002, 137) — session_012tCd7LHBsHHgMpYHusk6EB — sviluppo/grafica-cerimonie-giro64
+  - giro 65 L6 Nazionale (155) — session_013ACM6pHbVB4gVahDFa49uF — sviluppo/nazionale-155-giro65
+  - giro 66 L6 impulsi (154, 224) — session_015KyBSe2oKP89CioRNPBRHy — sviluppo/impulsi-154-giro66
+  - giro 67 L6 archetipi, difficoltà (misura), gol eroe (098, 156, 190) — session_01CgjAPDUxuEQYgnRz79dsCm — sviluppo/archetipi-difficolta-giro67
+  - giro 68 L7 + mappa (066, 217, 205, 267) — session_01DQmsDmV6Ti2WQJcGDwW2Bu — sviluppo/schermate-mappa-giro68
+  - PO-157 Ufficio ed economia: dopo il giro 59 (misura) e il questionario PO-281.
