@@ -17,6 +17,7 @@
     "simulata-272": "node simulata-272.mjs",
     "brusio-238": "node brusio-238.mjs",
     "attesa-241": "node attesa-241.mjs --guardiano",
+    "stat-279": "node stat-279.mjs --guardiano",
     "apertura-261": "node apertura-261.mjs --guardiano",
     "inquadra-273": "node inquadra-273.mjs --guardiano",
     "salti-274": "node salti-274.mjs --guardiano",

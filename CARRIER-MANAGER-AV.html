@@ -29678,6 +29678,8 @@ function tassoOccasioni28(f){
   return {r:cl(r,2,6),voci};
 }
 try{if(typeof window!=='undefined')window.__CPM_TASSO28=tassoOccasioni28;}catch(_e){}
+try{if(typeof window!=='undefined')window.__CPM_STAT279={fatti:fatti279,scegli:scegli279,indietro:indietro279,/* [giro 56 PO-279] sonda del guardiano stat-279 (funzioni pure) */
+  schede:(P,oppN,ctx)=>{const o=(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.n===oppN))||{n:oppN};return schedeAttesa241({player:P,home:P.club,away:o,homeRoster:null,awayRoster:null,isMatchHome:true,clock:0,score:null,possession:null,opponent:o,context:ctx||"career"});}};}catch(_e){}
 /* [7.999.100 rilievo Codex 27-B, riprodotto sulla 7.999.96: seme 974734 «Rilievi23», 4 punizioni dell'eroe in una partita e 3 schede di
    punizione diretta nel catalogo (gi 13, 78, 81): alla quarta il filtro «mai una scheda gia' giocata» restava vuoto e la scena cadeva
    sulla scheda generica — «Rovesciata in corsa!» su una punizione. Le schede candidate per il piazzato dell'eroe (rigore o punizione
@@ -29692,13 +29694,85 @@ function schedePiazzato(rigore,usate){
   const u=usate||[];const c=SITUATIONS.filter(s2=>ok(s2)&&u.indexOf(s2.text)<0);
   if(c.length||(typeof window!=='undefined'&&window.__CPM_NO_PIAZ99))return c;
   return SITUATIONS.filter(ok);}
+/* [giro 56 — PO-279 «Cambia statistiche ad ogni partita altrimenti è ripetitivo e devono essere più interessanti, ad esempio 10 gol,
+   4 assist, 100 presenze, gioca con la sua ex squadra dove ha collezionato 20 gol in 50 presenze»] Misura prima (stat-279, 20 partite di
+   carriera vere): il riquadro d'attesa mostrava le stesse schede nello stesso ordine e «Il punto forte» identico 20 volte su 20.
+   CATALOGO di fatti d'inizio partita: ogni numero viene dal salvataggio (history per l'ex squadra e il club, totali di carriera,
+   matchHistory — che e' STAGIONALE, quindi striscia/andata/voto parlano solo della stagione — nationalCaps/nationalGoals); ogni fatto
+   porta i suoi numeri in `n` perche' il guardiano li ricontrolli. Niente «prima volta contro…»: il salvataggio non lo puo' provare.
+   SCELTA senza memoria nuova (la carriera si legge, non si scrive): si ricostruiscono dal salvataggio i 3 stati prima delle ultime 3
+   partite (si tolgono le righe finali di matchHistory) e si scartano i testi che c'erano gia'; fra i freschi vincono i fatti forti
+   (ex squadra, traguardi tondi, striscia), altrimenti uno dei primi tre col seme della partita. Il punto forte resta solo come ripiego.
+   ⚠️ coppe/europee giocate dal vivo non sempre entrano in matchHistory: lo stato «indietro» puo' essere approssimato — tocca solo il
+   filtro di freschezza, mai i numeri mostrati. Rosso __CPM_NO_STAT279 → schede del giro 20. */
+const stat279On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_STAT279);
+const _M279={gol:[10,25,50,75,100,125,150,200,250,300,400,500],ass:[10,25,50,75,100,150,200,250,300],pres:[50,100,150,200,250,300,350,400,450,500],stag:[10,20,30,40,50]};
+function fatti279(P,opp,context){
+  const out=[];P=P||{};const S=String(P.name||"").split(" ").slice(-1)[0]||"Lui";const on=opp?(opp.n||opp.name||""):"";
+  const pl=(n,a,b)=>n===1?a:b,dec=x=>String(Math.round(x*10)/10).replace(".",",");
+  const naz=/^(national|nationsCup|euroMondiale)/.test(context||"");
+  const me=P.club||{},meN=me.n||me.name||"",meId=me.id;
+  const add=(k,pri,t,v,n)=>out.push({k,pri,t,v,n});
+  const H=(P.history||[]).filter(h=>h&&typeof h==="object");
+  /* ex squadra: righe di storia con quel club, escluso il club attuale */
+  if(on&&!naz&&!((opp.id&&opp.id===meId)||on===meN)){
+    const r=H.filter(h=>(opp.id&&h.clubId===opp.id)||h.club===on);
+    if(r.length){const g=r.reduce((a,h)=>a+(h.goals|0),0),a=r.reduce((a,h)=>a+(h.assists|0),0),m=r.reduce((a,h)=>a+(h.matches|0),0);
+      if(m>0)add("ex",100,"Contro la sua ex squadra",g+" "+pl(g,"gol","gol")+(a?" e "+a+" assist":"")+" in "+m+" "+pl(m,"presenza","presenze")+" con la maglia del "+on,[g].concat(a?[a]:[],[m]));}}
+  const TG=P.totalGoals|0,TA=P.totalAssists|0,TM=P.totalMatches|0,G=P.goals|0,A=P.assists|0,M=P.matches|0;
+  const prossimo=(L,x)=>L.find(v=>v>x);
+  {const T=prossimo(_M279.gol,TG);if(T&&T-TG<=3&&TG>0){const d=T-TG;add("trag_gol",95,"A "+d+" "+pl(d,"gol","gol")+" dai "+T+" in carriera",S+" è a quota "+TG,[d,T,TG]);}}
+  {const T=prossimo(_M279.pres,TM);if(T&&T-TM===1)add("trag_pres",94,"Può essere la presenza numero "+T,"in carriera per "+S+": finora "+TM,[T,TM]);}
+  {const T=prossimo(_M279.ass,TA);if(T&&T-TA<=2&&TA>0){const d=T-TA;add("trag_ass",92,"A "+d+" assist dai "+T+" in carriera",S+" ne ha serviti "+TA,[d,T,TA]);}}
+  if(!naz){const T=prossimo(_M279.stag,G);if(T&&T-G<=2&&G>0){const d=T-G;add("trag_stag",88,"A "+d+" "+pl(d,"gol","gol")+" dai "+T+" in stagione",S+" ne ha segnati "+G+" in "+M+" "+pl(M,"partita","partite"),[d,T,G,M]);}}
+  /* matchHistory e' stagionale: solo presenze vere (niente infortunio/svincolo) */
+  const MH=(P.matchHistory||[]).filter(h=>h&&!h.injured&&!h.svincolato);
+  {let s=0,gs=0;for(let i=MH.length-1;i>=0&&(MH[i].goals|0)>0;i--){s++;gs+=MH[i].goals|0;}
+   if(s>=2)add("striscia",75,"In gol nelle ultime "+s+" partite",gs+" "+pl(gs,"gol","gol")+" di fila per "+S,[s,gs]);
+   else{let z=0;for(let i=MH.length-1;i>=0&&(MH[i].goals|0)===0;i--)z++;const lg=z<MH.length?MH[MH.length-1-z]:null;
+     if(z>=4&&lg&&lg.opponent)add("digiuno",45,"Senza gol nelle ultime "+z+" partite","l'ultimo contro "+lg.opponent,[z]);}}
+  if(on&&!naz){const Hv=MH.filter(h=>h.opponent===on);
+    if(Hv.length){const g=Hv.reduce((a,h)=>a+(h.goals|0),0),a=Hv.reduce((a,h)=>a+(h.assists|0),0),r=Hv[Hv.length-1].rating;
+      if(Hv.length===1&&typeof r==="number")add("andata",g>0?70:50,"All'andata contro "+on,(g?g+" "+pl(g,"gol","gol")+", ":"")+(a?a+" assist, ":"")+"voto "+dec(r),(g?[g]:[]).concat(a?[a]:[],[Math.round(r*10)/10]));
+      else if(Hv.length>1)add("avversario",g>0?65:40,S+" contro "+on+" in stagione",g+" "+pl(g,"gol","gol")+(a?" e "+a+" assist":"")+" in "+Hv.length+" partite",[g].concat(a?[a]:[],[Hv.length]));}}
+  if(naz&&(P.nationalCaps|0)>0){const c=P.nationalCaps|0,g=P.nationalGoals|0;add("nazionale",60,"In Nazionale",g+" "+pl(g,"gol","gol")+" in "+c+" "+pl(c,"presenza","presenze"),[g,c]);}
+  if(M>0)add("stagione",30,"In questa stagione",G+" "+pl(G,"gol","gol")+" e "+A+" assist in "+M+" "+pl(M,"partita","partite"),[G,A,M]);
+  if(TM>0&&TM!==M)add("carriera",30,"In carriera",TG+" "+pl(TG,"gol","gol")+" e "+TA+" assist in "+TM+" presenze",[TG,TA,TM]);
+  if(!naz&&meN){const r=H.filter(h=>(meId&&h.clubId===meId)||h.club===meN);
+    if(r.length){const g=r.reduce((a,h)=>a+(h.goals|0),0)+G,m=r.reduce((a,h)=>a+(h.matches|0),0)+M,st=r.length+1;
+      if(m>0)add("club",32,"Con la maglia del "+meN,g+" "+pl(g,"gol","gol")+" in "+m+" "+pl(m,"presenza","presenze")+", "+st+"ª stagione",[g,m,st]);}}
+  {const R=MH.filter(h=>typeof h.rating==="number"&&h.rating>0);
+    if(R.length>=3){const av=Math.round(R.reduce((a,h)=>a+h.rating,0)/R.length*10)/10;add("voto",28,"Media voto in stagione",dec(av)+" in "+R.length+" partite",[av,R.length]);}
+    const u=R[R.length-1];if(u&&u.opponent&&u.opponent!==on){const g=u.goals|0,a=u.assists|0,r=Math.round(u.rating*10)/10;
+      add("ultima",31,"L'ultima volta, contro "+u.opponent,(g?g+" "+pl(g,"gol","gol")+", ":"")+(a?a+" assist, ":"")+"voto "+dec(r),(g?[g]:[]).concat(a?[a]:[],[r]));}}
+  return out;
+}
+/* stato del salvataggio PRIMA dell'ultima partita registrata (si toglie l'ultima riga di matchHistory) */
+function indietro279(P){
+  const mh=(P&&P.matchHistory)||[];if(!mh.length)return null;const e=mh[mh.length-1]||{};
+  const g=e.goals|0,a=e.assists|0,pr=(e.injured||e.svincolato)?0:1;
+  return {P:{...P,matchHistory:mh.slice(0,-1),goals:(P.goals|0)-g,assists:(P.assists|0)-a,matches:(P.matches|0)-pr,totalGoals:(P.totalGoals|0)-g,totalAssists:(P.totalAssists|0)-a,totalMatches:(P.totalMatches|0)-pr},
+    opp:{n:e.opponent||""},ctx:e.cup?"cup":e.euro?"euro_group":"career"};
+}
+function scegli279(P,opp,context){
+  const C=fatti279(P,opp,context);if(!C.length)return [];
+  const visti=new Set();let q=P;
+  for(let i=0;i<3;i++){const b=indietro279(q);if(!b)break;fatti279(b.P,b.opp,b.ctx).forEach(c=>visti.add(c.t+"|"+c.v));q=b.P;}
+  const on=opp?(opp.n||opp.name||""):"";
+  const seed=hashStr(String(P.name||"")+"|"+on+"|"+(P.season||1)+"|"+(P.week||1)+"|"+(P.totalMatches|0));
+  const fr=C.filter(c=>!visti.has(c.t+"|"+c.v)),pool=fr.length?fr:C;
+  const ord=[...pool].sort((x,y)=>y.pri-x.pri||(x.k<y.k?-1:1));
+  let pick=ord[0];
+  if(pick.pri<60){const top=ord.slice(0,Math.min(3,ord.length));pick=top[seed%top.length];}
+  return [pick].concat(C.filter(c=>c!==pick).sort((x,y)=>(visti.has(x.t+"|"+x.v)?1:0)-(visti.has(y.t+"|"+y.v)?1:0)||y.pri-x.pri));
+}
 /* [giro 20 — PO-241 «non mi piace il messaggio "caricamento giocatori"… mostra delle statistiche, delle curiosita'»] Schede del
    riquadro che copre l'attesa dei corpi (PO-232) al posto della scritta tecnica. SOLO DATI VERI della partita in corso: punteggio e
    possesso se il cronometro e' gia' partito; altrimenti l'eroe (eta', valutazione, punto forte, piede, numeri di stagione) e i nomi
    delle formazioni davvero in campo (homeRoster/awayRoster, gli stessi della cronaca). Una scheda senza il suo dato non si mostra.
    Rosso __CPM_NO_ATTESA241 → torna «Caricamento giocatori…» (e il pre-caricamento torna a un file alla volta, src/11). */
 const attesa241On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA241);
-function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clock,score,possession}){
+function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clock,score,possession,opponent,context}){
   const out=[],P=player||{},nm=t=>(t&&(t.n||t.name))||"";
   const mio=isMatchHome===false?away:home,loro=isMatchHome===false?home:away;
   const mioXI=isMatchHome===false?awayRoster:homeRoster,loroXI=isMatchHome===false?homeRoster:awayRoster;
@@ -29706,11 +29780,13 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
     out.push({t:"La partita al "+(clock|0)+"'",v:nm(home)+" "+(score.home|0)+" - "+(score.away|0)+" "+nm(away)});
     if(typeof possession==="number")out.push({t:"Possesso palla",v:nm(home)+" "+possession+"% · "+nm(away)+" "+(100-possession)+"%"});
   }
+  const _f279=stat279On()?(function(){try{return scegli279(P,opponent||loro,context);}catch(_e){return [];}})():null;
+  if(_f279)_f279.forEach(f=>out.push({t:f.t,v:f.v,k:f.k}));/* [giro 56 PO-279] i fatti della carriera vengono prima */
   if(P.name&&P.ovr)out.push({t:P.name,v:(P.age?P.age+" anni · ":"")+"valutazione "+P.ovr});
-  const st=P.stats&&typeof P.stats==="object"?Object.entries(P.stats).filter(e=>typeof e[1]==="number"):[];
+  const st=(_f279&&_f279.length)?[]:P.stats&&typeof P.stats==="object"?Object.entries(P.stats).filter(e=>typeof e[1]==="number"):[];
   if(st.length){const top=st.reduce((m,e)=>e[1]>m[1]?e:m,st[0]);out.push({t:"Il punto forte di "+String(P.name||"").split(" ").slice(-1)[0],v:String(top[0]).charAt(0).toUpperCase()+String(top[0]).slice(1)+" "+Math.round(top[1])});}
   if(P.foot==="R"||P.foot==="L")out.push({t:"Piede preferito",v:P.foot==="L"?"sinistro":"destro"});
-  if((P.matches|0)>0)out.push({t:"In questa stagione",v:(P.goals|0)+" gol e "+(P.assists|0)+" assist in "+(P.matches|0)+" partite"});
+  if(!_f279&&(P.matches|0)>0)out.push({t:"In questa stagione",v:(P.goals|0)+" gol e "+(P.assists|0)+" assist in "+(P.matches|0)+" partite"});
   if(Array.isArray(mioXI)&&mioXI[0]&&mioXI[0].name&&nm(mio))out.push({t:"In porta per "+nm(mio),v:mioXI[0].name});
   if(Array.isArray(loroXI)&&nm(loro)){const c=loroXI.find(x=>x&&x.role==="Centravanti");if(c&&c.name)out.push({t:"Il centravanti di "+nm(loro),v:c.name});
     const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
@@ -39351,7 +39427,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>);})()}
               {corpiHold232&&!kickoffHold&&!paused&&phase==="playing"&&(attesa241On()?(()=>{/* [giro 20 PO-241] schede vere al posto della scritta tecnica */
-                const _sc=schedeAttesa241({player,home:homeTeamObj,away:awayTeamObj,homeRoster,awayRoster,isMatchHome,clock,score,possession});
+                const _sc=schedeAttesa241({player,home:homeTeamObj,away:awayTeamObj,homeRoster,awayRoster,isMatchHome,clock,score,possession,opponent,context});
                 if(!_sc.length)return null;const _x=_sc[att241%_sc.length];
                 return(<div data-cpm="attesa241" style={{position:"absolute",top:"36%",left:"50%",transform:"translate(-50%,-50%)",minWidth:200,zIndex:39,background:"rgba(5,8,20,0.82)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.md,padding:"6px 14px",maxWidth:"calc(100% - 32px)",textAlign:"center",pointerEvents:"none"}}>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:0.4,overflowWrap:"anywhere"}}>{_x.t}</div>
