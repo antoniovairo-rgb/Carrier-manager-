@@ -28262,7 +28262,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
          scriveva tiro:saved dell'EROE + parata + rammarico (la famiglia del gesto e' «header», non «tackle», e cadeva nel ramo del tiro);
          gi136 cross difensivo sbagliato -> «cross, fuori» dell'eroe. Ora la scena difensiva (sit.type def) di testa o di cross e' una
          spazzata dell'eroe se riesce, l'avversario che prosegue se fallisce (il gol subito resta del blocco goal_against qui sotto). */
-      const famDefX=!!d.def&&fam!=='tackle'&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF60);
+      const famDefX=!!d.def&&(fam==='header'||fam==='cross')&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF60);/* solo testa e cross: le scene difensive generate dal motore possono avere famiglia vuota e restano contrasti (misurato con difesa-220-giro31: con fam!=='tackle' il contrasto riuscito diventava spazzata, forti 29-36% contro 15% della base) */
       const famPass=!famDefX&&(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
       /* [23/09 POC — gesti evoluti] contrasto in piedi o in scivolata: deciso dalla situazione (distanza dalla porta propria di chi
          interviene, niente sorteggio). In scivolata quando si difende vicino alla propria area, in piedi altrove. */
