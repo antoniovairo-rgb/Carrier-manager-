@@ -3336,7 +3336,7 @@ const getThisWeekMatchday=()=>{
       const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
       const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:_adjRat131,won:sim.won,drew:sim.drew,simulated:true,...(p.contractExpired?{svincolato:true,rating:null}:_mk222||{})}].slice(-200);/* [7.419.0] fuori rosa: la voce lo DICE, niente voto fantasma */
       const moD=sim.won?3:sim.drew?1:-2;
-      notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n} (simulata)${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_out222?(_sq222?" — 🟥 SQUALIFICATO: l'hai guardata dalla tribuna":" — ⛔ NON CONVOCATO: l'hai guardata dalla tribuna"):_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
+      notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n}${(typeof window!=='undefined'&&window.__CPM_NO_SIM272)?" (simulata)":""}${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_out222?(_sq222?" — 🟥 SQUALIFICATO: l'hai guardata dalla tribuna":" — ⛔ NON CONVOCATO: l'hai guardata dalla tribuna"):_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
       const _injSim79=_fuori263?{}:simInjuryRoll(p,(_aSd+7));/* [PO-263] chi non gioca non si infortuna in partita *//* [7.9.0] infortunio possibile anche SIMULANDO la lega */
       if(_injSim79.injured){const _iT79=INJURY_TYPES_META[_injSim79.injuryType]||{label:"Infortunio",icon:"🩹"};setTimeout(()=>notify(`${_iT79.icon} ${_iT79.label} in partita! Stop: ${_injSim79.injuryWeeks} settiman${_injSim79.injuryWeeks===1?"a":"e"}.`,TH.danger),1400);}
       const _fatS79=_fuori263?_recFat263:clamp((p.fatigue||0)+6+(Math.abs(hashStr("fat|"+(p.season||1)+"|"+(p.week||1)+"|"+(opp&&opp.id||"")))%6),0,100),_formS79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18] la gara SIMULATA costava -14 di fatica (RECUPERO!) → ora costa +6..11 seedato come una partita vera; [RC-19] malus rientro graduale anche su questo path (prima solo Avanza) */
@@ -5601,7 +5601,12 @@ const getThisWeekMatchday=()=>{
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
     const finalWage=Math.round(wage*agentMult*(1+_renB95));
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
-    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    /* [7.999.172 PO-270, collaudo carriere L6-bis §3 — eccezione zona G concessa dal PO 16/10] il rinnovo si firma solo nell'ultimo
+       anno (durata 1) o da svincolato (0), e al cambio stagione la durata scala di uno: scrivere `duration` = anni firmati faceva
+       valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
+       gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
+    const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -5657,7 +5662,14 @@ const getThisWeekMatchday=()=>{
       const finalRenewalWage=Math.round(baseRenewalWage*agentMult*(1+renewalTaskBonus));
       const agentPct=Math.round((agentMult-1)*100+(renewalTaskBonus*100));
       const agentNote=(player.hasAgent||renewalTaskBonus>0)?` 🤵 +${agentPct}%`:"";
-      setPlayer(p=>({...p,contract:{duration:tc.duration||2,wage:finalRenewalWage,expiresAtSeason:(p.season||1)+(tc.duration||2)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      /* [7.999.172 PO-270b, giro 51 — eccezione zona G estesa dal PO 17/10 a questo percorso] stesso difetto del rinnovo negoziato:
+         `duration` = anni dell'offerta, scalata di uno al cambio stagione → un'offerta di 1 anno all'ultimo anno lasciava svincolati
+         (misurato con rinnovo-270 sul build 7.999.171+giro 51: durata 1 → stagione dopo 0, svincolato). Stessa regola di PO-270:
+         durata = max(residua,1) + anni firmati. Nota: oggi nessun punto del gioco produce un'offerta isRenewal (solo il gancio di
+         collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
+      const _firm270b=tc.duration||2;
+      const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -7246,9 +7258,10 @@ const getThisWeekMatchday=()=>{
           <div style={{background:cc,color:ink,borderBottom:c2?("3px solid "+c2):("3px solid "+inkVelo945(ink,0.28))}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
+              <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}><VersioneTestata269 col={ink}/>
               <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
                 Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
-              </button>
+              </button></div>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
               <div role="button" aria-label="Apri la figurina" data-cpm="figurina-testata" onClick={()=>setFigAperta23(true)} className="cpm-press" style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0,cursor:"pointer"}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
@@ -7493,7 +7506,7 @@ const getThisWeekMatchday=()=>{
               const mh=(player.matchHistory||[]).find(m=>m.week===(player.week||1));
               if(!mh)return null;
               return<div className="cpm-num" style={{padding:"8px 12px",background:mh.won?TH.winBg:mh.drew?TH.drawBg:TH.lossBg,borderRadius:RAD.sm,border:`1px solid ${mh.won?TH.winBd:mh.drew?TH.drawBd:TH.lossBd}`,color:mh.won?TH.winFg:mh.drew?TH.drawFg:TH.lossFg,fontSize:FS.caption,marginBottom:8,fontWeight:FW.bold}}>
-                {mh.won?"✅ Vittoria":mh.drew?"🔁 Pareggio":"❌ Sconfitta"} {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated?" (simulata)":""}{/* [7.999.49 parte A] esito a parole, niente «W.» */}
+                {mh.won?"✅ Vittoria":mh.drew?"🔁 Pareggio":"❌ Sconfitta"} {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated&&typeof window!=='undefined'&&window.__CPM_NO_SIM272?" (simulata)":""}{/* [7.999.172 PO-272] «(simulata)» era una nota tecnica nel testo del giocatore: tolta. Rosso __CPM_NO_SIM272 */}{/* [7.999.49 parte A] esito a parole, niente «W.» */}
               </div>;
             })()}
             {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}

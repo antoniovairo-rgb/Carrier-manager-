@@ -10,7 +10,7 @@ const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.j
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 for (const rosso of [false, true]) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; if (s.r) window.__CPM_NO_POSS209 = 1; localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...save, r: rosso });
+  await page.addInitScript(s => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_NO_ORD280 = 1; if (s.r) window.__CPM_NO_POSS209 = 1; localStorage.setItem('cpm-match-speed', '4'); const c = { ...s }; delete c.r; localStorage.setItem('cpm-v3', JSON.stringify(c)); }, { ...save, r: rosso });
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -19,6 +19,8 @@ for (const rosso of [false, true]) {
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 2021, policy: 'seeded', tickMs: 150 }));
+  /* [7.999.172] __CPM_NO_ORD280 in entrambi i bracci: dal giro 57 il tabellino segue l'ordine casa-ospite e in trasferta l'eroe e' a destra;
+     questo guardiano confronta i NUMERI (riquadro = colonna dell'eroe), quindi fissa l'eroe a sinistra. La disposizione la giudica tabellino-lati. */
   const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended') break; await sleep(1000); }
   await sleep(2500);

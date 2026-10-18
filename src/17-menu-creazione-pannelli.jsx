@@ -151,7 +151,7 @@ const CREDITI238=[
    il contenuto PO-238 e il link sottile). */
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
-    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:"Ordine CGTrader #17876008 del 20/09/2026.",aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
     {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
     {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
     {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
@@ -251,6 +251,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:18,boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
+        <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
         <div style={{position:"relative",textAlign:"center",padding:"28px 20px 24px"}}>
           <div className="lrise" style={{display:"inline-block",marginBottom:11,lineHeight:0}}>
             <svg width="60" height="60" viewBox="0 0 100 100" style={{filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.35))"}}>
@@ -355,6 +356,19 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
 /* ========================================
    CREATE SCREEN  (req #2 – avatar)
 ======================================== */
+/* [7.999.172 PO-269, giro 51 — decisione PO 17/10 «Spostarlo nella testata»] la versione «v x.y.z» non e' piu' un chip fisso
+   in basso a destra (copriva la barra di Home/carriera e i Crediti): vive DENTRO la testata — a destra nella fascia del club
+   accanto a «Salva · ora», in alto a destra nella testata della Home. Misura dello spazio prima della patch (sonda sul build 7.999.171):
+   carriera, fra la fine del marchio e «Salva · ora» restavano 128 px a 360 e 175 px a 412; il testo sta in ~80 px. Home: angolo
+   destro della testata libero sopra il logo (logo da y 45). Resta discreta e svanisce come prima (cpmBadgeFade, decisione PO-255);
+   con una finestra aperta si nasconde (registro _modali256, correzione PO-269 del giro 51). Rosso __CPM_NO_CHIP269 → torna il chip
+   fisso di prima; guardiano chip-269. */
+function VersioneTestata269({col,style}){
+  const[n,setN]=useState(()=>_modali256.n);
+  useEffect(()=>{const f=(k)=>setN(k);_modali256.ascolta.add(f);return()=>{_modali256.ascolta.delete(f);};},[]);
+  if(typeof window!=='undefined'&&(window.__CPM_NO_CHIP269||window.__CPM_NO_BADGE255))return null;
+  return(<div data-cpm="badge269" aria-hidden style={{pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",whiteSpace:"nowrap",lineHeight:1,animation:"cpmBadgeFade 9s ease forwards",...(style||{})}}><span data-cpm="badge255" style={{color:col,visibility:n>0?"hidden":undefined}}>v {GAME_VERSION}</span></div>);
+}
 // Logo "Rise" riutilizzabile (marchio app) — usato su tutte le schermate
 function LogoMark({size=32,shadow=true}){
   const gid=React.useMemo(()=>"lm"+Math.floor(Math.random()*1e6),[]);

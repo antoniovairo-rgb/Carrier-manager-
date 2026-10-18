@@ -1,0 +1,158 @@
+diff --git a/src/14-motore-possesso.jsx b/src/14-motore-possesso.jsx
+index 34ac6f7..766c7ec 100644
+--- a/src/14-motore-possesso.jsx
++++ b/src/14-motore-possesso.jsx
+@@ -723,6 +723,18 @@ function creaMotorePossesso(cfg){
+      compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
+      vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
+   const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
++  /* [giro 32 PO-228, decisione PO 15/10 «Ritara i passaggi a ~814»] LA PARTITA VISSUTA GIRA PALLA COME LA RAPIDA, I TIRI RESTANO.
++     MISURATO (collaudo mirato 169, 20 partite vere): 739 passaggi contro gli 814 del banco. La causa e' il tempo: nel modo vissuto
++     (brainLive) il motore si ferma sulle scene dell'eroe — al banco 153 battiti su 2.068 (7,4 %), dal vivo 84-203 — e passaggi e
++     tiri scendono insieme (banco: 800 -> 751 passaggi, 23,3 -> 21,4 tiri). A tempo dato ogni passaggio in piu' toglie tempo
++     all'attacco (al banco ~40 passaggi per tiro perso con fw, adv o advC): servono due manopole, solo nel modo vissuto —
++     adv (il portatore libero appoggia invece di condurre fino ad avanzamento 73, e il compagno puo' riceverlo fino a li') e la
++     propensione al tiro dell'ultimo terzo (pAtt x1,12) che restituisce i tiri spostati. advC (il passaggio di prima) e' stato
++     scartato: a 71 tiri -8 % e xG -7 %. La simulazione rapida resta quella tarata dal giro 16 (bit per bit: guardiano passaggi-228).
++     Rosso __CPM_NO_PASSVIVO228 = motore della 7.999.170. */
++  const _K228V=Object.assign({},_K228,{adv:73}),_PATT228V=1.12;
++  const _vivo228=()=>!!cfg.brainLive&&!_no228()&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASSVIVO228);
++  const _KV228=()=>_vivo228()?_K228V:_K228;
+   function decidiTenuta(){
+     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
+     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
+@@ -875,7 +887,7 @@ function creaMotorePossesso(cfg){
+        automatica nella simulazione rapida). Cosi' ogni suo gol si vede. */
+     const _noTiro14=_eroeNonTira14(P);
+     if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
+-    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
++    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*(_vivo228()?_PATT228V:1)*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+       if(rnd()<pS*_f226(l)){ramo("tiroV2");tira(P);return;}}/* [PO-226] MISURATO: la conclusione v2 (questa, il ramo piu' battuto) non leggeva nessun atteggiamento — con la sola pTiro la scelta muoveva i tiri del 2% */
+     if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
+       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
+@@ -1002,7 +1014,7 @@ function creaMotorePossesso(cfg){
+       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;const sc=Math.min(marc,10)-Math.abs(dd-15)*0.2-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+     if(!Q)return false;ramo("ricicla228");passa(P,Q);return true;}
+   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
+-    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_K228.adv))continue;
++    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
+       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
+       const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
+     return Q;}
+@@ -1017,7 +1029,7 @@ function creaMotorePossesso(cfg){
+      senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
+   function _eroeDavanti228(P,adv){if(adv<56||(typeof window!=='undefined'&&window&&window.__CPM_NO_EROE228))return false;/* [giro 16] __CPM_NO_EROE228: rosso della sola regola eroe-davanti (prova che statistiche-228 morde sui tiri dell'eroe) */const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
+     const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
+-  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
++  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_KV228().adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+     ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
+   function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
+     const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;
+diff --git a/tests/visual/ci-runner.mjs b/tests/visual/ci-runner.mjs
+index c104ec1..9c9d0af 100644
+--- a/tests/visual/ci-runner.mjs
++++ b/tests/visual/ci-runner.mjs
+@@ -7,7 +7,7 @@
+ import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
+ const CATENE = {
+   fumo: ['test:logic', 'design-system', 'lessico-218'],/* [7.999.159] prova rapida dell'esecutore */
+-  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'cross-218', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'fila-227', 'finestra-230', 'procuratore-253', 'intervista-231', 'tabellino-228', 'design-system', 'giornata-233', 'fps-249', 'migrazione-194', 'schede-234', 'convocazione-235', 'bambini-236', 'prima-partita-237', 'crediti-238', 'brusio-238', 'attesa-241', 'difesa-220-scena', 'statistiche-228', 'crediti-254', 'badge-255', 'toast-256', 'schede-259', 'backup-167'],
++  completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'scena-motore-147', 'manovre-150', 'esiti-218', 'cross-218', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'nomi-219', 'difesa-220', 'scene-221', 'popup-224', 'lessico-218', 'fila-227', 'finestra-230', 'procuratore-253', 'intervista-231', 'tabellino-228', 'design-system', 'giornata-233', 'fps-249', 'migrazione-194', 'schede-234', 'convocazione-235', 'bambini-236', 'prima-partita-237', 'crediti-238', 'brusio-238', 'attesa-241', 'difesa-220-scena', 'statistiche-228', 'passaggi-228', 'crediti-254', 'badge-255', 'toast-256', 'schede-259', 'backup-167'],
+   carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110', 'pre-188', 'rimbalzo-189', 'conferenza-192', 'partita-rigiocata-194', 'pro-rivale-176', 'rigori-190', 'debito-190', 'scene-190', 'finale-202', 'ripresa-202', 'tetto-202', 'minuti-202', 'recupero-202', 'ripartenza-207', 'anteprima-212', 'mister-215', 'presentazione-214', 'possesso-209', 'brain-202', 'tempo-138', 'tabellino-216'],
+   grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat', 'titolo-110', 'pre-188', 'rimbalzo-189', 'calendario-offerte-195', 'walkout-fermi-197', 'fila-206', 'premiazione-palco-191', 'coppa-mani-191', 'posa-sollevamento-191', 'palco-corpi-191', 'parata-198', 'busta-199', 'presentazione-200', 'guanti-201', 'formazioni-204', 'figurine-208', 'post-210', 'piedi-203', 'gesti-scena-p1b', 'piede-cross-p1b2', 'rincorsa-144', 'doppio-gesto-148', 'testa-146', 'movimento-147', 'l7-schermate', 'analisi-217', 'home-066'],/* [giro 30] PO-217 analisi pre-partita, PO-066 riquadri della home */
+   guardiani: ['goleade', 'scene-disegnabili', 'nomi-51', 'piazzati-eroe', 'cross-origine', 'tiro-caricato', 'passo-velocita', 'gesti-copertura-96', 'etichette-95',
+@@ -24,7 +24,7 @@ CATENE.nucleo = ['test:logic', 'save-compat', 'design-system', 'typing-shortcuts
+ CATENE.notte = [...new Set([...CATENE.carriera, ...CATENE.completa])];
+ const MAPPA = [
+   [/src\/12-|src\/13-/, ['buildup-sync', 'po229-gi38', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'esiti-218', 'cross-218', 'scene-221', 'fila-227', 'validate-situations', 'partita-vera', 'bambini-236', 'pressing-143', 'conduci-242', 'ingresso-245', 'giornale-244', 'difesa-220-scena', 'ingresso-camminata-245', 'analisi-217']],
+-  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234', 'schede-246', 'statistiche-228', 'schede-259']],
++  [/src\/14-/, ['partita-vera', 'tabellino-228', 'tabellino-216', 'possesso-209', 'nomi-219', 'difesa-220', 'brain-202', 'tempo-138', 'esiti-218', 'cross-218', 'interazioni-226', 'schede-234', 'schede-246', 'statistiche-228', 'passaggi-228', 'schede-259']],
+   [/src\/15-/, ['fps-249', 'partita-vera', 'esiti-218', 'lessico-218', 'cross-218', 'tabellino-228', 'intervista-231', 'scene-221', 'validate-situations', 'minuti-202', 'ripresa-202', 'recupero-202', 'finale-202', 'tetto-202', 'tempo-138', 'interazioni-226', 'schede-234', 'catalogo-022', 'pressing-143', 'ripartenza-207', 'conduci-242', 'giornale-244', 'schede-246', 'attesa-241', 'schede-259']],
+   [/src\/05-|src\/09-/, ['lessico-218', 'cross-218', 'nomi-219', 'migrazione-194', 'classifica-194', 'classifica-102', 'brusio-238']],
+   [/src\/1[17]-/, ['finestra-230', 'griglia-mobile', 'popup-224', 'migrazione-194', 'classifica-102', 'convocazione-235', 'toast-247', 'crediti-238', 'brusio-238', 'attesa-241', 'toast-intervista-247', 'festa-oro-251', 'crediti-254', 'toast-256']],
+diff --git a/tests/visual/passaggi-228.mjs b/tests/visual/passaggi-228.mjs
+new file mode 100644
+index 0000000..c33dfb4
+--- /dev/null
++++ b/tests/visual/passaggi-228.mjs
+@@ -0,0 +1,80 @@
++/* [giro 32 PO-228, decisione PO 15/10 «Ritara i passaggi a ~814»] I PASSAGGI DELLA PARTITA VISSUTA, IL RESTO FERMO.
++   Banco Node, niente browser: carica il motore da src/14-motore-possesso.jsx e gioca N partite col motore in modo
++   «partita vissuta» (brainLive: e' il modo della partita giocata nel gioco, src/15 creaMotorePossesso({brainLive:brain137()})),
++   22 decisioni al minuto come simulaPartitaMotore, sugli stessi semi in due bracci:
++     verde = motore com'e' · rosso = __CPM_NO_PASSVIVO228 (il motore della 7.999.170).
++   Nel modo vissuto il motore si ferma sulle scene dell'eroe (~150 battiti a partita, il 7 %) e quel tempo non e' giro palla:
++   la ritaratura del giro 32 vale SOLO li' (la simulazione rapida resta quella tarata dal giro 16, e qui si prova che resta
++   IDENTICA al bit). Misure (due squadre insieme):
++     VERDE se: passaggi verde/rosso in [+1 %, +5 %] · tiri entro ±3 % · xG entro ±3 % · gol entro ±4 % piu' 2,5 errori standard
++     della differenza · cross entro ±5 % · dribbling tentati entro ±6 % · occasioni dell'eroe entro ±5 % · possesso della squadra
++     dell'eroe entro ±1,5 punti · simulazione rapida (brainLive spento) identica nei due bracci.
++   Il rosso si prova con CPM_ROSSO=1: entrambi i bracci col motore di prima -> passaggi +0 % -> esce 1.
++   Uso: node passaggi-228.mjs            (N=2000, quattro processi, ~2 minuti)
++        CPM_ROSSO=1 node passaggi-228.mjs (deve uscire 1)
++        N=4000 SEED0=777 node passaggi-228.mjs */
++import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
++import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
++const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
++
++if (!isMainThread) {
++  const SRC = fs.readFileSync(path.join(ROOT, 'src', '14-motore-possesso.jsx'), 'utf8');
++  const CODE = SRC.slice(SRC.indexOf('/* CMAV-SRC-HEADER-END */') + 26);
++  const W = workerData.rosso ? { __CPM_NO_PASSVIVO228: true } : {};
++  const crea = Function('decideExecution', 'window', CODE + '\nreturn creaMotorePossesso;')(undefined, W);
++  const P = [[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]];
++  const Q = [[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]];
++  const R = i => i === 0 ? 'GK' : i <= 4 ? 'DF' : i <= 7 ? 'MF' : 'AT';
++  const S = { n: 0, passaggi: 0, cross: 0, tiri: 0, gol: 0, gol2: 0, xg: 0, poss: 0, drib: 0, occ: 0, firmaRapida: 0 };
++  const gioca = (k, brain) => {
++    const gio = P.map((p, i) => ({ team: 'home', gk: !!p[2], name: 'H' + (i + 1), rl: R(i), x: p[0], y: p[1] })).concat(Q.map((p, i) => ({ team: 'away', gk: !!p[2], name: 'A' + (i + 1), rl: R(i), x: p[0], y: p[1] })));
++    const M = crea({ v2: true, occasioniV2: true, brainLive: brain, seed: ((workerData.seed0 + k * 7919) >>> 0) || 7, stadio: k % 2 ? 'away' : 'home', giocatori: gio,
++      eroe: { name: 'EROE', x: 58, y: 50, attivo: true, ovr: 70 }, forza: { home: 60 + ((k * 7) % 21), away: 60 + ((k * 13) % 21) }, tattica: null, lato: 'home' });
++    let occ = 0; const tk = (o) => { for (const e of (M.tick(o) || [])) if (e.t === 'occasione_eroe') occ++; };
++    for (let m = 1; m <= 46; m++) for (let b = 0; b < 22; b++) tk({ min: Math.min(m, 45), dt: 1 / 22, dec: true });
++    M.chiedi.riprendi({ centro: true, lato: 'away' });
++    for (let m = 46; m <= 93; m++) for (let b = 0; b < 22; b++) tk({ min: Math.min(m, 90), dt: 1 / 22, dec: true });
++    return { T: M.tabellino(), occ };
++  };
++  for (const k of workerData.ks) {
++    const { T, occ } = gioca(k, true); S.n++; S.occ += occ;
++    let g = 0;
++    for (const s of ['home', 'away']) { S.passaggi += T[s].passaggi; S.cross += T[s].cross; S.tiri += T[s].tiri; g += T[s].gol; S.xg += +T[s].xg || 0; S.drib += T[s].dribbling | 0; }
++    S.gol += g; S.gol2 += g * g;
++    const pt = (T.home.possesso || 0) + (T.away.possesso || 0); S.poss += pt > 0 ? 100 * T.home.possesso / pt : 50;
++    if (k % 10 === 0) { const r = gioca(k, false).T; S.firmaRapida += r.home.passaggi * 7 + r.away.passaggi * 13 + r.home.tiri * 101 + r.away.tiri * 103 + (+r.home.xg || 0) * 1009; }/* un campione della simulazione rapida: deve restare identico */
++  }
++  parentPort.postMessage(S);
++} else {
++  const ROSSO = process.env.CPM_ROSSO === '1';
++  const N = Math.max(40, +(process.env.N || 2000)); const SEED0 = +(process.env.SEED0 || 1000); const PAR = 4;
++  const braccio = (rosso) => Promise.all(Array.from({ length: PAR }, (_, w) => new Promise((ok, ko) => {
++    const ks = []; for (let k = w; k < N; k += PAR) ks.push(k);
++    const wk = new Worker(fileURLToPath(import.meta.url), { workerData: { rosso, ks, seed0: SEED0 } }); wk.on('message', ok); wk.on('error', ko);
++  }))).then(parti => { const S = {}; for (const p of parti) for (const [k, v] of Object.entries(p)) S[k] = (S[k] || 0) + v; return S; });
++  const f = (x, d = 2) => x.toFixed(d).replace('.', ',');
++  const t0 = Date.now();
++  const [V, Rr] = await Promise.all([braccio(ROSSO), braccio(true)]);
++  const m = (S, k) => S[k] / S.n;
++  const riga = (n, S) => console.log(`${n.padEnd(6)} passaggi ${f(m(S, 'passaggi'), 1)} · tiri ${f(m(S, 'tiri'))} · gol ${f(m(S, 'gol'))} · xG ${f(m(S, 'xg'))} · cross ${f(m(S, 'cross'), 1)} · dribbling ${f(m(S, 'drib'), 1)} · occasioni eroe ${f(m(S, 'occ'))} · possesso casa ${f(m(S, 'poss'), 1)} %`);
++  console.log(`passaggi-228 · modo partita vissuta · N=${N} per braccio · semi da ${SEED0}${ROSSO ? ' · PROVA DEL ROSSO (entrambi i bracci __CPM_NO_PASSVIVO228)' : ''}`);
++  riga('verde', V); riga('rosso', Rr);
++  const rel = (k) => m(V, k) / m(Rr, k) - 1;
++  const sdG = (S) => Math.sqrt(Math.max(0, S.gol2 / S.n - (S.gol / S.n) ** 2));
++  const seG = Math.sqrt(sdG(V) ** 2 / V.n + sdG(Rr) ** 2 / Rr.n) / m(Rr, 'gol');
++  const C = [
++    ['passaggi verde/rosso in [+1 %, +5 %]', rel('passaggi'), (x) => x >= 0.01 && x <= 0.05],
++    ['tiri entro ±3 %', rel('tiri'), (x) => Math.abs(x) <= 0.03],
++    ['xG entro ±3 %', rel('xg'), (x) => Math.abs(x) <= 0.03],
++    [`gol entro ±${f(100 * (0.04 + 2.5 * seG), 1)} % (4 % + 2,5 errori standard)`, rel('gol'), (x) => Math.abs(x) <= 0.04 + 2.5 * seG],
++    ['cross entro ±5 %', rel('cross'), (x) => Math.abs(x) <= 0.05],
++    ['dribbling tentati entro ±6 %', rel('drib'), (x) => Math.abs(x) <= 0.06],
++    ['occasioni dell\'eroe entro ±5 %', rel('occ'), (x) => Math.abs(x) <= 0.05],
++  ];
++  let ok = true;
++  for (const [n, x, t] of C) { const p = t(x); ok = ok && p; console.log(`${p ? '✓' : '✗'} ${n}: ${x >= 0 ? '+' : ''}${f(100 * x, 1)} %`); }
++  const dP = m(V, 'poss') - m(Rr, 'poss'); const pP = Math.abs(dP) <= 1.5; ok = ok && pP; console.log(`${pP ? '✓' : '✗'} possesso della squadra dell'eroe entro ±1,5 punti: ${dP >= 0 ? '+' : ''}${f(dP, 2)}`);
++  const pR = Math.abs(V.firmaRapida - Rr.firmaRapida) < 1e-6; ok = ok && pR; console.log(`${pR ? '✓' : '✗'} simulazione rapida identica nei due bracci (firma ${f(V.firmaRapida, 1)} contro ${f(Rr.firmaRapida, 1)})`);
++  console.log(`${ok ? '✅ VERDE' : '❌ ROSSO'} — ${Math.round((Date.now() - t0) / 1000)} s`);
++  process.exit(ok ? 0 : 1);
++}

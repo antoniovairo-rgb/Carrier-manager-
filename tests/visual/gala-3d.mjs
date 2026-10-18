@@ -1,5 +1,5 @@
 /* [7.999.52 PO: niente eroe sul palco, solo i presentatori] [7.999.51] IL GALA' E' IL MOMENTO IN 3D (scelta PO: «il momento in 3D», «in abito da sera», «solo i miei premi in cima»).
-   Verde: apertura con la fascia; «Apri la busta» porta DIRETTO al premio vinto (niente terzo/secondo posto); l'eroe sale sul palco
+   Verde: apertura con la fascia; «Apri la busta» e gli svelamenti (terzo → secondo → primo, PO-199 dalla 7.999.124) portano al premio vinto; l'eroe sale sul palco
    (testimone __CPM_GALA51: corpo della partita, 9 ossa, camminata, trofeo) e la fascia dice «Il premio è tuo»; alla chiusura la pagina
    mette in cima «I tuoi premi» e i podi della lega in una fisarmonica. Rosso --rosso (__CPM_NO_GALA51): torna la serata a buste. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -22,6 +22,10 @@ const txt = () => page.evaluate(() => document.body.innerText);
 const v = { nuovo: await page.evaluate(() => !!document.querySelector('[data-cpm="gala51"]')), apertura: /sono per te|è per te|nessuno per te/i.test(await txt()) };
 await clic('Apri la busta');
 let tes = null; for (let i = 0; i < 40 && !(tes && tes.presentatore && tes.presentatrice); i++) { await sleep(500); tes = await page.evaluate(() => window.__CPM_GALA52 || null); }
+/* [giro 50 PO-271] dalla 7.999.124 (PO-199, scelta PO 03/10) la busta si apre PROGRESSIVAMENTE dal terzo al primo: supera la regola
+   «diretto al premio vinto» della 7.999.51 (guardiano busta-199). Il verde falliva solo su «Il premio è tuo» perche' la pagina era
+   ferma su «Svela il 3° posto». Si svelano i gradini fino al vincitore, poi si giudica come prima. */
+for (let i = 0; i < 4 && !/Il premio è tuo/.test(await txt()); i++) { if (!(await clic('Svela il 3° posto') || await clic('Svela il 2° posto') || await clic('E il vincitore è'))) break; await sleep(1200); }
 await sleep(3000); v.eroe = await page.evaluate(() => !!(window.__CPM_GALA51 && window.__CPM_GALA51.eroe));
 const t2 = await txt(); v.premio = /Il premio è tuo/.test(t2); v.buste = /Il secondo posto/.test(t2); v.tes = tes;
 if (!rosso) { await clic('Vai al bilancio'); await sleep(1500); }

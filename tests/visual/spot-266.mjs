@@ -4,6 +4,11 @@
    3 su 4): il battitore dell'angolo restava «battitore» col punto della bandierina e la colla del renderer (7.405) lo teneva li' per tutta
    la lettura della scena dopo — nominato dal testo a 53 u dall'eroe. Misura: compagni (non portieri) entro 3 u da una bandierina in scelta
    azione della seconda scena, campionati per 900 ms. VERDE: 0 su entrambe. ROSSO (__CPM_NO_SPOT266): almeno 1 su almeno una.
+   [giro 50 PO-271/PO-266] VERDE INTERMITTENTE RIPARATO. MISURATO (sonda per fotogramma su gi64, GLB spento): al primo fotogramma in
+   hl_choose la mesh del battitore e' ancora alla bandierina (97,5; 1,9), al fotogramma dopo lo stacco la porta a (90; 51,5): lo snap
+   si arma al cambio di chiave e gira al fotogramma successivo (src/12, «_lastSitKey»). Sotto carico la pagina va a 2-5 fps e quel
+   fotogramma dura 200-500 ms: il campionamento lo coglieva. Ora si campiona dopo tre fotogrammi della scena nuova. Nessuna modifica
+   al gioco: a 60 fps e' un fotogramma, dentro lo stacco nero.
    Uso: node spot-266.mjs */
 import path from 'node:path'; import { fileURLToPath } from 'node:url';
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -22,6 +27,7 @@ for (const rosso of [false, true]) for (const gi of DOPO) {
   await attendi(page, f => f === 'hl_result', 15000); await sleep(1500);
   await page.evaluate(g => { window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);
   await attendi(page, f => f === 'hl_choose', 30000);
+  await page.evaluate(() => new Promise(r => { let n = 0; const f = () => (++n >= 3 ? r() : requestAnimationFrame(f)); requestAnimationFrame(f); }));/* [giro 50] lo snap di scena gira al fotogramma DOPO il cambio di chiave */
   let max = 0; for (let k = 0; k < 6; k++) { const n = await page.evaluate(() => { const st = window.__CPM_STATE(); return (st.players || []).filter(p => p.team === 'home' && !p.gk && Math.hypot(p.x - 97, Math.min(Math.abs(p.y - 2.5), Math.abs(p.y - 97.5))) < 3).length; }); max = Math.max(max, n); await sleep(150); }
   const r = { gi, battitoreAllAngolo: bat, incollatiDopo: max }; esito[rosso ? 'rosso' : 'verde'].push(r); console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(r)); await page.close();
 }

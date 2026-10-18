@@ -96,13 +96,18 @@ try{if(typeof globalThis!=='undefined')globalThis.INT226=INT226;}catch(_e){}
 const INT259={
   TETTO:2,DIST:12,ULTIMO:84,ATTESA:5,CALO:40,
   attivo(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_SCHEDE259);},
+  /* [giro 52] il fatto del finale: c.finMin = minuto (>= FIN) dell'ultimo tiro pericoloso o occasione, c.finK = 'loro'|'noi' (letto dal
+     tabellino del motore nel live, nessun sorteggio). Senza fatto la scheda aspetta la rete (RETE). Valori di progetto dichiarati. */
+  FIN:75,RETE:81,
+  finale(c){if(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN252b)return true;
+    return (c.finMin!=null&&c.finMin>=INT259.FIN&&INT259.recente(1,c.mn,c.finMin))||c.mn>=INT259.RETE;},
   recente(n,mn,m){return (n|0)>0&&m!=null&&(mn-m)>=0&&(mn-m)<=3;},
   FATTI:[
     {id:'rigore_contro',quando:c=>!c.panchina&&INT259.recente(c.rigContro,c.mn,c.rigControMin)&&Math.abs(c.diff)<=1},
     {id:'espulsione_noi',quando:c=>!c.panchina&&INT259.recente(c.espNoi,c.mn,c.espNoiMin)&&Math.abs(c.diff)<=1},
     {id:'espulsione_loro',quando:c=>!c.panchina&&INT259.recente(c.espLoro,c.mn,c.espLoroMin)&&Math.abs(c.diff)<=1},
     {id:'sotto_finale',quando:c=>!c.panchina&&c.mn>=70&&c.diff===-1},
-    {id:'pari_finale',quando:c=>!c.panchina&&c.mn>=75&&c.diff===0},
+    {id:'pari_finale',quando:c=>!c.panchina&&c.mn>=75&&c.diff===0&&INT259.finale(c)},/* [giro 52, decisione PO 16/10 «Fatto del finale + rete» — rosso __CPM_NO_FIN252b = nasce al primo minuto ammesso] misurato (RAPPORTO-giro44): al 75' in 6 partite su 8, un orologio. Ora nasce da un FATTO del finale (tiro in porta, legno o tiro pericoloso di una delle due squadre, o occasione dell'eroe, dal 75', recente) e, se il fatto non arriva, dalla rete di sicurezza all'81' */
     {id:'misura_finale',quando:c=>!c.panchina&&c.mn>=82&&c.diff===1},
     {id:'eroe_stanco',quando:c=>!c.panchina&&c.mn>=55&&INT259.recente(c.caloMin!=null?1:0,c.mn,c.caloMin)&&Math.abs(c.diff)<=1},/* [PO-259] il CALO, non il livello: col 226 usciva al 55' in 18 partite su 20 (energia <= 55 e' la norma), e con una soglia fissa usciva sempre al primo minuto ammesso (60' in 6 partite su 9, misura interrotta del giro 28). Ora la scheda nasce nel minuto in cui l'energia dell'eroe scende sotto 40 (caloMin, datato dal live), se la partita e' aperta */
     {id:'panca',panca:1,quando:c=>c.panchina&&c.mn>=50&&c.diff<=0&&c.diff>=-1&&c.mn<=(c.ingresso|0)-4}],
@@ -134,7 +139,7 @@ const INT259={
       {et:"Tutti avanti, pressing alto",premio:"tanti tiri per il pareggio",rischio:"dietro restano praterie per il contropiede",tipo:"spinta",eff:{att:0.6,press:0.6,linea:0.5,gap:-2}},
       {et:"Costruiamo col pallone, senza fretta",premio:"loro tirano di meno, la partita resta aperta",rischio:"il tempo scorre e anche noi tiriamo poco",tipo:"palla",eff:{att:-0.15,diretto:-0.6,gap:2}},
       {et:"Palla a me, la risolvo io",premio:"la prossima occasione arriva a te, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8}}]},
-    pari_finale:{txt:c=>"📢 Pari al "+c.mn+"': il mister guarda la panchina, poi te. «Si può vincere».",sc:[
+    pari_finale:{txt:c=>"📢 Pari al "+c.mn+"': "+(c&&c.finK==='loro'?"ci hanno appena fatto tremare. Il mister ":c&&c.finK==='noi'?"quell'occasione ha acceso lo stadio. Il mister ":"il mister ")+"guarda la panchina, poi te. «Si può vincere».",sc:[
       {et:"Andiamo a vincerla",premio:"più tiri nel finale",rischio:"un contropiede può costare il punto",tipo:"spinta",eff:{att:0.5,press:0.45,linea:0.4,gap:-2}},
       {et:"Il punto va bene, teniamo palla",premio:"loro tirano di meno",rischio:"davanti si crea poco",tipo:"palla",eff:{att:-0.3,diretto:-0.7,gap:3}},
       {et:"Aspetto la palla giusta",premio:"la prossima palla buona è tua, prima",rischio:"tutto passa da te: i compagni tirano meno",tipo:"eroe",eff:{att:-0.15,gap:-8}}]},
@@ -174,6 +179,30 @@ const INT259={
     if(o.tipo==='palla'&&tL<=1)return{k:'tiriLoro',n:tL,testo:"✅ "+quale+" tiene: "+(tL?"un solo tiro":"nessun tiro")+" concesso in "+min+" minuti.",breve:(tL?"un solo tiro":"nessun tiro")+" concesso"};
     if(tN+tL===0)return{k:'tiriNoi',n:0,testo:"⏸️ "+quale+": "+min+" minuti bloccati, nessun tiro né per noi né per loro.",breve:"partita bloccata, nessun tiro"};
     return{k:'tiriNoi',n:tN,testo:"⏸️ "+quale+": "+min+" minuti in equilibrio, "+tiri(tN)+" per noi e "+tiri(tL)+" per loro.",breve:tiri(tN)+" per noi, "+tiri(tL)+" per loro"};},
+  /* [PO-280 — rosso __CPM_NO_ESITO280] L'ESITO DEL RIEPILOGO SI SCRIVE SUI FATTI FINO AL FISCHIO. Collaudo PO (Stag. 13 G. 21, 1-1): «La tua scelta
+     al 82' → nessun tiro concesso. Esito non vero, hanno pareggiato!». Il riepilogo riusava la riga breve del racconto detto 5' dopo la scelta
+     (82'→87'): vera allora, smentita dal pareggio arrivato dopo. Qui lo stesso racconto (stessa regola, nessun sorteggio) sulla finestra
+     scelta→fischio; se nella finestra hanno segnato entrambe, la riga li dice tutti e due (racconta mette davanti solo il primo). */
+  attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
+  /* [7.999.172] nome proprio: «finale» era gia' la regola delle schede del finale (giro 52, sopra) e la chiave doppia la cancellava (schede-259 A 6/7) */
+  finaleEsito(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
+    if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
+      return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro"+INT259.fino(r)+".",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+INT259.fino(r)};}
+    const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+INT259.fino(r))});},
+  /* [PO-280 bis — decisione PO 17/10 «La prima finisce alla seconda», rosso __CPM_NO_FIN280] con due scelte nella stessa partita la finestra di
+     giudizio di una scelta va dal suo minuto al minuto della scelta successiva (fotogramma preso li', prima che la seconda tocchi il motore);
+     l'ultima fino al fischio. Prima (giro 57, prima stesura) tutte arrivavano al fischio e lo stesso gol veniva raccontato da due scelte.
+     L = elenco delle scelte (con .m0 .foto .occ .occ0), fF/mF = fotogramma e minuto del fischio. Restituisce per ogni scelta {m1,dopo,occ,fino}. */
+  attivoFin280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN280);},
+  fino(r){return r.fino==null?" fino al fischio":" fino al "+(r.fino|0)+"'";},
+  finestre(L,fF,mF){const on=INT259.attivoFin280();return L.map((r,i)=>{const nx=on?L.slice(i+1).find(q=>q&&q.foto&&(q.m0|0)>=(r.m0|0)):null;
+    const dopo=nx?nx.foto:fF,m1=nx?(nx.m0|0):mF;const ok=(o)=>o!=null&&o>=(r.m0|0)&&o!==r.occ0&&(!nx||o<m1);
+    return{m1,dopo,fino:nx?m1:null,occ:ok(r.occ)?r.occ:(dopo&&ok(dopo.occ)?dopo.occ:null)};});},
+  /* il racconto smentisce i fatti della finestra scelta→fischio? (lo usa il guardiano esito-280) */
+  smentito(r,esito){try{const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));if(r.panca)return false;
+    if((d('gNoi')>0||d('gLoro')>0)&&!/gol/i.test(String(esito.breve||'')))return true;
+    if(d('gLoro')>0&&/^ha pagato/.test(String(esito.breve||'')))return true;
+    if(esito.k==='golEntrambi')return false;return !INT259.verifica(r,esito);}catch(_e){return true;}},
   /* fotogramma dei fatti per il racconto: punteggio (sc, se il live lo passa; altrimenti i gol del motore) e tabellino del motore */
   foto(M,sc){try{const t=M.tabellino();return{gNoi:sc?(sc.home|0):(t.home.gol|0),gLoro:sc?(sc.away|0):(t.away.gol|0),tiriNoi:t.home.tiri|0,tiriLoro:t.away.tiri|0,
     recNoi:(t.home.contrasti|0)+(t.home.intercetti|0),contro:(M._S.conta.contro259|0),occ:(M._S._ultOccV2==null?null:M._S._ultOccV2|0)};}catch(_e){return null;}},
@@ -723,6 +752,18 @@ function creaMotorePossesso(cfg){
      compagno cerca l'eroe (bonus come in scegliRicevente) · eroeAdv = l'eroe gioca di prima solo sotto questo avanzamento ·
      vw = peso del giro palla nel voto (0,17 tiene la media dei 22 voti: 6,63 -> 6,62). */
   const _K228={advC:70,adv:70,press:2,fw:0.1,cfw:0.5,cross:0.20,arretra:4,fo:0.5,fd:0.55,hb:2,eroeAdv:60,vw:0.17};
+  /* [giro 32 PO-228, decisione PO 15/10 «Ritara i passaggi a ~814»] LA PARTITA VISSUTA GIRA PALLA COME LA RAPIDA, I TIRI RESTANO.
+     MISURATO (collaudo mirato 169, 20 partite vere): 739 passaggi contro gli 814 del banco. La causa e' il tempo: nel modo vissuto
+     (brainLive) il motore si ferma sulle scene dell'eroe — al banco 153 battiti su 2.068 (7,4 %), dal vivo 84-203 — e passaggi e
+     tiri scendono insieme (banco: 800 -> 751 passaggi, 23,3 -> 21,4 tiri). A tempo dato ogni passaggio in piu' toglie tempo
+     all'attacco (al banco ~40 passaggi per tiro perso con fw, adv o advC): servono due manopole, solo nel modo vissuto —
+     adv (il portatore libero appoggia invece di condurre fino ad avanzamento 76, e il compagno puo' riceverlo fino a li') e la
+     propensione al tiro dell'ultimo terzo (pAtt x1,2) che restituisce i tiri spostati. advC (il passaggio di prima) e' stato
+     scartato: a 71 tiri -8 % e xG -7 %. La simulazione rapida resta quella tarata dal giro 16 (bit per bit: guardiano passaggi-228).
+     Rosso __CPM_NO_PASSVIVO228 = motore della 7.999.170. */
+  const _K228V=Object.assign({},_K228,{adv:76}),_PATT228V=0.06/0.05;/* [giro 35] ritarata sulla misura dopo la restrizione della ripresa del giro 27: dal vivo 779,7 passaggi su 40 partite, al bersaglio ~814 manca il +4,4 %. Banco (N=1500): adv 76 + pAtt 0,06 (contro 0,05) = passaggi +4,4 %, tiri +0,2 %, xG +1,4 %, gol +0,1 %. Scartate: la variante +9 % del giro 32 (advC 72 · adv 80 · pAtt 0,08: dal vivo ~850, fuori tolleranza) e advC 71-72 (tiri -2,3 % a +7,4 %) */
+  const _vivo228=()=>!!cfg.brainLive&&!_no228()&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASSVIVO228);
+  const _KV228=()=>_vivo228()?_K228V:_K228;
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
@@ -875,7 +916,7 @@ function creaMotorePossesso(cfg){
        automatica nella simulazione rapida). Cosi' ogni suo gol si vede. */
     const _noTiro14=_eroeNonTira14(P);
     if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
-    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*(_vivo228()?_PATT228V:1)*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
       if(rnd()<pS*_f226(l)){ramo("tiroV2");tira(P);return;}}/* [PO-226] MISURATO: la conclusione v2 (questa, il ramo piu' battuto) non leggeva nessun atteggiamento — con la sola pTiro la scelta muoveva i tiri del 2% */
     if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
@@ -939,7 +980,13 @@ function creaMotorePossesso(cfg){
     let _gap=_v14?(_g221?16:12):5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
       if(_df<0&&S.min>=46)_gap=_g221?13:9;else if(_df>=2)_gap=_g221?20:16;}
     if(S.richieste.s259&&S.richieste.s259.gap)_gap=Math.max(5,_gap+S.richieste.s259.gap);/* [PO-259] la scelta avvicina o allontana la PROSSIMA occasione dell'eroe (si consuma quando arriva) */
-    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
+    /* [giro 52 PO-226 — rosso __CPM_NO_PROM52] «la prossima palla buona arriva a te»: misurato (sonda-promessa52, base 171) dopo la scelta l'eroe
+       la palla la riceve, ma sulla trequarti (x 57-61) e l'occasione nasceva solo dall'ultimo terzo (64): promessa vuota per 12' (p5, p2).
+       Finche' la promessa e' aperta la palla buona e' quella ricevuta dalla trequarti (56). Valore di progetto dichiarato. */
+    /* [7.999.172] SPENTA per decisione (DECISIONI 17/10, giri 50-57): il PO ha approvato le interazioni 2D col mister (PO-226 VERIFICATO)
+       e il giro 52 non doveva cambiarle. Il codice resta; per riaccenderla in prova: window.__CPM_SI_PROM52=1. */
+    const _soglia52=((typeof window!=='undefined'&&window&&window.__CPM_SI_PROM52)&&S.richieste.s259&&S.richieste.s259.cerca&&!(typeof window!=='undefined'&&window&&(window.__CPM_NO_PROM52||window.__CPM_NO_PROM44)))?56:64;
+    return advDi(P.x,P.team)>=_soglia52&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;
@@ -1002,7 +1049,7 @@ function creaMotorePossesso(cfg){
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;const sc=Math.min(marc,10)-Math.abs(dd-15)*0.2-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     if(!Q)return false;ramo("ricicla228");passa(P,Q);return true;}
   function _compagno228(R,fw){const l=R.team,d=dirDi(l);let Q=null,qs=-1e9;
-    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_K228.adv))continue;
+    for(const q of g){if(!mio(q,l)||q.i===R.i||q.gk||!attivo(q))continue;const dd=hyp(q.x,q.y,R.x,R.y);if(dd<6||dd>28||(!q.eroe&&advDi(q.x,l)>=_KV228().adv))continue;
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;if(marc<3)continue;
       const sc=(q.x-R.x)*d*fw+Math.min(marc,10)+(q.eroe?_K228.hb*(_EG?BONUS_EROE:((cfg.eroe&&cfg.eroe.bonus)||2)):0)-Math.abs(dd-15)*0.2-corsiaLibera(R.x,R.y,q.x,q.y,l)*6;if(sc>qs){qs=sc;Q=q;}}
     return Q;}
@@ -1017,7 +1064,7 @@ function creaMotorePossesso(cfg){
      senza questa regola 0,123 -> 0,121 / 0,134 -> 0,115 su due serie da 1.500 (fino a -14 %). */
   function _eroeDavanti228(P,adv){if(adv<56||(typeof window!=='undefined'&&window&&window.__CPM_NO_EROE228))return false;/* [giro 16] __CPM_NO_EROE228: rosso della sola regola eroe-davanti (prova che statistiche-228 morde sui tiri dell'eroe) */const H=g[HERO];if(!H||H===P||H.team!==P.team||!attivo(H)||advDi(H.x,P.team)<adv-3)return false;
     const d=hyp(H.x,H.y,P.x,P.y);return d>=5&&d<=46;}
-  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_K228.adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
+  function _appoggio228(P,adv,press){if(_no228()||P.eroe||adv>=_KV228().adv||press<3||_eroeDavanti228(P,adv))return false;const Q=_compagno228(P,_K228.cfw);if(!Q)return false;
     ramo("appoggio228");passa(P,Q,{circ228:true});return true;}
   function circola228(R){if(_no228()||S.scena||S.fase>1e-9||!R||R.gk||S.richieste.gol||S.richieste.turno||S.richieste.verso)return;
     const l=R.team,adv=advDi(R.x,l),press=pressioneSu(R);if(adv>=_K228.advC||press<_K228.press||(R.eroe&&adv>=_K228.eroeAdv)||_eroeDavanti228(R,adv))return;

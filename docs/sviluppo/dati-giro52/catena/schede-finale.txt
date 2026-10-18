@@ -1,0 +1,7 @@
+(A) verde: 5/5 pari senza fatto restano muti · 4/4 con fatto o rete aprono la scheda
+    testo col fatto: «📢 Pari al 76': ci hanno appena fatto tremare. Il mister guarda la panchina, poi te. «Si può vincere».» · testo della rete: «📢 Pari al 81': il mister guarda la panchina, poi te. «Si può vincere».»
+(A) rosso __CPM_NO_FIN252b: pari al 75 senza fatto → pari_finale (riconosciuto: orologio)
+(B) verde: partite finite 4/4 · schede del pari 1 [p2 79' dopo loro 79'] · senza fatto prima dell'81' 0
+(B) rosso: partite finite 4/4 · schede del pari 1 [p2 75' rete] · senza fatto prima dell'81' 1
+✅ schede-finale verde
+FINE 0

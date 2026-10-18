@@ -65,7 +65,15 @@ for (let gi = 0; gi < N; gi += PASSO) {
      misura una camera che non ha ancora finito di muoversi — e il censimento accuserebbe l'inquadratura
      di una lentezza che e' dello strumento. `CPM_WAIT` allarga la finestra: se l'altezza apparente NON
      cresce allargandola, il numero e' del gioco e non del cronometro. */
-  await sleep(+(process.env.CPM_WAIT || 2400));
+  /* [giro 50 PO-271] LA FINESTRA SI CONTA IN TEMPO DI SCENA. Il sonno fisso di 2,4 s reali misurava il cronometro della macchina:
+     a carico alto (load 15-20 su 4 CPU, altri browser accesi) la stessa finestra conteneva 864 fotogrammi su 191 scene (4,5 a scena)
+     contro i 5.281 (27,6) del censimento del 7.482, la camera non arrivava alla taglia e il guardiano usciva rosso (mediana 0,086,
+     fuori quadro 20,3%) senza che il gioco fosse cambiato. Ora si aspetta che il clock di scena (`__CPM_SCENET`, lo stesso che
+     governa camera e gesti) avanzi di CPM_SCENA secondi (1,3 = la finestra che 2,4 s reali davano a ~11 fps con dt tappato a
+     0,05), tetto 25 s reali. CPM_WAIT=<ms> ripristina il sonno fisso (confronto col vecchio strumento). */
+  if (process.env.CPM_WAIT) await sleep(+process.env.CPM_WAIT);
+  else { const _sc = () => page.evaluate(() => window.__CPM_SCENET || 0).catch(() => 0); const s0 = await _sc(), t0 = Date.now();
+    while (Date.now() - t0 < 25000) { await sleep(120); if ((await _sc()) - s0 >= +(process.env.CPM_SCENA || 1.3)) break; } }
   const f = await page.evaluate(() => { const o = window.__CPM_FRAME480; return o ? { n: o.n, min: o.min, max: o.max, fuori: o.fuori, ultimo: o.ultimo } : null; }).catch(() => null);
   if (!f || !f.n) continue;
   righe.push({ gi, ...info, ...f });
@@ -117,7 +125,10 @@ const G_ROSSO = !!process.env.CPM_ROSSO;
 if (MED_MIN || FUORI_MAX) {
   const _med = q(0.5), _pf = totFr ? 100 * totFuori / totFr : 0;
   if (G_ROSSO) {
-    if (_med < 0.10) { console.log(`\n✅ prova del rosso riuscita: senza la taglia in regia la mediana crolla a ${_med.toFixed(3)}`); }
+    /* [giro 50 PO-271] soglie riallineate alla taglia della partita normale, 0,12 dal 7.713 (decisione PO, src/12 «_tg5»): la 0,11 era
+       tarata sulla 0,18 del 7.509 (resa ~0,75 del chiesto → 0,135). Misurato giro 50 a finestra di scena: verde mediana 0,107 · rosso
+       __CPM_NO505 0,057. Verde >= 0,085, rosso < CPM_ROSSO_MAX (0,07): 0,015 di margine dal rosso, 0,022 dal verde. */
+    if (_med < +(process.env.CPM_ROSSO_MAX || 0.10)) { console.log(`\n✅ prova del rosso riuscita: senza la taglia in regia la mediana crolla a ${_med.toFixed(3)}`); }
     else { console.log(`\n❌ PROVA DEL ROSSO FALLITA: mediana ${_med.toFixed(3)} anche con la taglia spenta`); process.exitCode = 2; }
   } else {
     let _ko = false;

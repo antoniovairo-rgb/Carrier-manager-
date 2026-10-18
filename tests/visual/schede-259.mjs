@@ -32,7 +32,7 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
   const NO = [['3-0 al 63', { mn: 63, diff: 3 }], ['2-0 al 63', { mn: 63, diff: 2 }], ['0-3 all 80', { mn: 80, diff: -3 }], ['pari al 30', { mn: 30, diff: 0 }],
     ['sotto di 1 al 40', { mn: 40, diff: -1 }], ['fiato corto sul 3-0', { mn: 70, diff: 3, energia: 38, caloMin: 69 }], ['fiato calato da tempo al 60 sull 1-1', { mn: 60, diff: 0, energia: 30, caloMin: 41 }], ['3-0 e loro in dieci', { mn: 50, diff: 3, espLoro: 1, espLoroMin: 49 }],
     ['tetto raggiunto', { mn: 80, diff: 0, fatte: ['pari_finale', 'espulsione_noi'], ultima: 60 }]];
-  const SI = [['sotto di 1 al 72', { mn: 72, diff: -1 }, 'sotto_finale'], ['pari al 77', { mn: 77, diff: 0 }, 'pari_finale'], ['espulso dei nostri al 40 sull 1-1', { mn: 40, diff: 0, espNoi: 1, espNoiMin: 39 }, 'espulsione_noi'],
+  const SI = [['sotto di 1 al 72', { mn: 72, diff: -1 }, 'sotto_finale'], ['pari al 77 dopo un tiro loro al 76', { mn: 77, diff: 0, finMin: 76, finK: 'loro' }, 'pari_finale'], ['espulso dei nostri al 40 sull 1-1', { mn: 40, diff: 0, espNoi: 1, espNoiMin: 39 }, 'espulsione_noi'],
     ['espulso dei loro al 55 sullo 0-1', { mn: 55, diff: -1, espLoro: 1, espLoroMin: 54 }, 'espulsione_loro'], ['rigore contro al 33 sull 1-0', { mn: 33, diff: 1, rigContro: 1, rigControMin: 32 }, 'rigore_contro'],
     ['fiato corto al 62 sull 1-1', { mn: 62, diff: 0, energia: 38, caloMin: 61 }, 'eroe_stanco'], ['vantaggio di misura all 84', { mn: 84, diff: 1 }, 'misura_finale']];
   const errNo = NO.filter(([, c]) => caso(c)), errSi = SI.filter(([, c, id]) => caso(c) !== id);
@@ -93,7 +93,13 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
      con la leva l'eroe deve avere piu' occasioni nei 15' dopo la scelta che senza. Misurato: 130 contro 117 (attesa 3,3' contro 3,7'). */
   { const E0 = braccio({ __CPM_NO_PROM44: 1 }, 'eroe');
     console.log(`   «eroe» con i compagni che cercano l'eroe: occasioni ${ERO.occ} (attesa ${ERO.attesaOccEroe}') contro ${E0.occ} (${E0.attesaOccEroe}') senza la leva`);
-    if (!(ERO.occ >= E0.occ * 1.05)) fail.push('B: «la risolvo io» non porta piu\' occasioni all\'eroe (' + ERO.occ + ' contro ' + E0.occ + ')'); }
+    if (!(ERO.occ >= E0.occ * 1.05)) fail.push('B: «la risolvo io» non porta piu\' occasioni all\'eroe (' + ERO.occ + ' contro ' + E0.occ + ')'); 
+    /* [giro 52 PO-226] la palla buona dalla trequarti (soglia 56 invece di 64 finche' la promessa e' aperta; rosso __CPM_NO_PROM52): stessi semi,
+       l'attesa della prossima occasione dell'eroe deve accorciarsi rispetto alla sola leva del giro 44. */
+    const E52 = braccio({ __CPM_NO_PROM52: 1 }, 'eroe');
+    console.log(`   «eroe» soglia della trequarti (giro 52): attesa ${ERO.attesaOccEroe}' (occasioni ${ERO.occ}) contro ${E52.attesaOccEroe}' (${E52.occ}) col rosso __CPM_NO_PROM52`);
+    /* [7.999.172] soglia del giro 52 spenta per decisione (DECISIONI 17/10): la misura resta stampata, non si giudica */
+    if (false && !process.env.CPM_NO_PROM44 && !(ERO.attesaOccEroe < E52.attesaOccEroe)) fail.push('B: la soglia della trequarti non accorcia l\'attesa (' + ERO.attesaOccEroe + ' contro ' + E52.attesaOccEroe + ')'); }
   console.log('(B) banco, ' + (24 * SEMI) + ' partite per braccio, nei 15\' dopo la scheda (valori per 100 minuti; attesa = minuti fino alla prossima occasione dell\'eroe)');
   for (const [n, x] of [['«spinta»', SPI], ['«palla»', PAL], ['«eroe»', ERO], ['nessuna scelta', NEU]]) console.log('   ' + n.padEnd(15) + JSON.stringify(x));
   const sep = (a, b) => b ? (a - b) / b : 0, pc = (x) => (100 * x).toFixed(1) + '%';
