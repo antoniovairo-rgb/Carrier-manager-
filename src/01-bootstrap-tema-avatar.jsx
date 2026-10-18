@@ -6,7 +6,7 @@
  *
  * Alias React/THREE, i flag di test da querystring (_SIT_TEST, _CPM_TEST, _CPM_*),
  * la tavolozza TH + TH_DARK/TH_LIGHT, i token FS/FW/SP/RAD/MO, il catalogo AVATARS
- * e i volti NPC, i componenti AvatarSVG / NpcFace / NpcFaceCoach / AvatarPhoto /
+ * e i volti NPC, i componenti AvatarSVG / NpcFace / NpcFaceCoach /
  * Player3DViewer, EmoText, TeamBadge e le utility di nome/cognome.
  *
  * ----------------------------------------------------------------------
@@ -659,84 +659,9 @@ function NpcFaceCoach({coachName,size}){return <Figurina tipo="mister" chiave={c
 /* ========================================
    PLAYER 3D VIEWER
 ======================================== */
-// ===== FOTO PROFILO CH38 (5.50.0) — l'avatar dell'eroe è il render del modello reale del calciatore =====
-// Genera UNA VOLTA per avatarId uno snapshot RITRATTO del modello CH38 (footballer.glb) con pelle/capelli/kit
-// dell'avatar scelto, e lo usa al posto dell'AvatarSVG ovunque. Lazy (GLB 3.2MB caricato solo al bisogno),
-// cacheato per avatarId, con fallback all'SVG. NO-OP sotto gate (_CPM_TEST) → quality gate invariato.
-const _heroPhotoCache={};let _heroPhotoAssets=null,_heroPhotoRenderer=null;
-// 5.69.3 — rilascia il contesto WebGL del renderer dei ritratti (dispose NON basta: serve forceContextLoss).
-//   Chiamato all'AVVIO di una partita → il contesto del ritratto non "ruba" quello del campo (fix schermo nero).
-function _disposeHeroPhotoRenderer(){if(_heroPhotoRenderer){try{_heroPhotoRenderer.forceContextLoss();}catch(_e){}try{_heroPhotoRenderer.dispose();}catch(_e){}_heroPhotoRenderer=null;}}
-// 5.50.2: maglia di colore DIVERSO per ogni avatar nella foto profilo → varietà visiva immediata (il modello è unico)
-const _AV_KIT_COLS=["#c0392b","#1d4ed8","#15803d","#b45309","#6d28d9","#0e7490","#be185d","#334155","#c2410c","#4d7c0f","#0f766e","#7e22ce"];
-function _ensureHeroPhotoAssets(){
-  if(_heroPhotoAssets)return _heroPhotoAssets;
-  _heroPhotoAssets=Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)])
-    .then(([cg,ig])=>({glb:cg,idle:(ig&&ig.animations&&ig.animations[0])||(cg&&cg.animations&&cg.animations[0])||null}));
-  return _heroPhotoAssets;
-}
-async function renderHeroPhoto(avatarId){
-  const n=AVATARS.length,id=(((avatarId|0)%n)+n)%n;
-  if(_heroPhotoCache[id]!==undefined)return _heroPhotoCache[id];
-  if(_CPM_TEST||typeof THREE==='undefined'||typeof loadGLB!=='function'||!THREE.SkeletonUtils){_heroPhotoCache[id]=null;return null;}
-  _heroPhotoCache[id]=undefined;// in-flight
-  let url=null;
-  try{
-    const {glb,idle}=await _ensureHeroPhotoAssets();
-    if(!glb||!glb.scene)throw new Error('no glb');
-    const av=AVATARS[id]||AVATARS[0];
-    const appr={skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald',height:1.86+((id*73)%100)/100*0.18,girth:0.95+((id*131)%100)/100*0.13};
-    const _ks=_AV_KIT_COLS[id%_AV_KIT_COLS.length];
-    const kit=(typeof buildKit==='function')?buildKit(_ks):{shirt:_ks,shorts:'#181826',socks:_ks,shoes:'#141418'};
-    const root=THREE.SkeletonUtils.clone(glb.scene);
-    root.traverse(o=>{if(!o.isMesh)return;const nm=(o.name||'').toLowerCase();if(nm.includes('joint')){o.visible=false;return;}o.frustumCulled=false;
-      let kc=null;if(nm.includes('shirt'))kc=kit.shirt;else if(nm.includes('shorts'))kc=kit.shorts;else if(nm.includes('socks'))kc=kit.socks;else if(nm.includes('shoes'))kc=kit.shoes;
-      if(kc!=null){const c=new THREE.Color(kc);o.material=new THREE.MeshLambertMaterial({color:c,emissive:c.clone().multiplyScalar(0.14),skinning:true});}
-      else if(nm.includes('hair')){if(appr.bald){o.visible=false;}else{o.material=new THREE.MeshLambertMaterial({color:new THREE.Color(appr.hair||'#2d1800'),skinning:true});}}
-      else if(nm.includes('body')&&o.material){o.material=o.material.clone();const sk=new THREE.Color(appr.skin||0xffffff);o.material.color=sk;if('emissive'in o.material)o.material.emissive=sk.clone().multiplyScalar(0.30);// 5.69.2: emissive MEDIO (0.72 era neon, 0.14 era troppo scuro) → floor morbido, volto ben illuminato ma non fluorescente
-        if(o.material.normalScale&&o.material.normalScale.set)o.material.normalScale.set(0.28,0.28);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness!=null?o.material.roughness:0.7)+0.20);}});// normal map attenuato (niente fronte corrucciata) ma non piatto/plastica; rough alto = pelle opaca (niente hotspot lucidi)
-    {const _bb0=new THREE.Box3().setFromObject(root),_hh=(_bb0.max.y-_bb0.min.y)||1.8,_sc=(appr.height||1.9)/_hh;root.scale.set(_sc*(appr.girth||1),_sc,_sc*(appr.girth||1));root.updateMatrixWorld(true);}
-    const scene=new THREE.Scene();
-    // 5.69.1 — LUCE RITRATTO calda e BILANCIATA (non lavata): key frontale leggermente caldo a livello occhi
-    //   (niente ombre dure sotto le sopracciglia = aria cordiale), fill freddo laterale per volume, rim per
-    //   staccare i capelli. Intensità totale ridotta rispetto a 5.68 (era sovraesposta → volti "fluorescenti").
-    scene.add(new THREE.HemisphereLight(0xfff6ec,0x6a707c,1.08));// cielo caldo · terra fredda → incarnato sano e luminoso
-    scene.add(new THREE.AmbientLight(0xffffff,0.34));
-    const dir=new THREE.DirectionalLight(0xfff1e0,0.98);dir.position.set(0.35,0.7,3.2);scene.add(dir);// key caldo frontale (modella senza indurire)
-    const fill=new THREE.DirectionalLight(0xeaf1ff,0.42);fill.position.set(-1.7,0.2,2.4);scene.add(fill);// fill freddo laterale-basso
-    const rim=new THREE.DirectionalLight(0xffffff,0.32);rim.position.set(0,1.7,-2.2);scene.add(rim);// rim posteriore per i capelli
-    scene.add(root);
-    if(idle){const mx=new THREE.AnimationMixer(root);mx.clipAction(idle).play();mx.setTime(0.5);}
-    root.updateMatrixWorld(true);
-    const SZ=640;// 5.69.1: risoluzione ritratto più alta (512→640) → più nitido sugli schermi ad alta densità
-    // 5.69.3 — renderer del ritratto PERSISTENTE (un solo contesto, riusato) → niente churn di contesti WebGL
-    //   (il churn della 5.69.2 faceva fallire i render → fallback SVG). Ma se una PARTITA è attiva NON creare/usare
-    //   un contesto qui (lo ruberebbe al campo → schermo nero): salta → fallback SVG solo durante la partita.
-    if(typeof window!=='undefined'&&window.__CPM_MATCH_ACTIVE)throw new Error('match-active');
-    if(!_heroPhotoRenderer){_heroPhotoRenderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});_heroPhotoRenderer.setPixelRatio(1);}
-    const R=_heroPhotoRenderer;R.setSize(SZ,SZ);R.setClearColor(0x000000,0);
-    const bb=new THREE.Box3().setFromObject(root);const cx=(bb.min.x+bb.max.x)/2,topY=bb.max.y,botY=bb.min.y,bodyH=(topY-botY)||1.8;
-    // 5.68.0 — inquadratura STRETTA su TESTA+SPALLE: i pixel vanno sul volto (prima inquadrava tutto il corpo →
-    //   volto minuscolo poi ritagliato = sfocato). Distanza calcolata dalla porzione verticale voluta.
-    const fov=24,headCY=topY-bodyH*0.13,extent=bodyH*0.30,dist=extent/(2*Math.tan(fov*Math.PI/360));
-    const cam=new THREE.PerspectiveCamera(fov,1,0.05,100);
-    cam.position.set(cx,headCY,(bb.max.z||0)+dist);cam.lookAt(cx,headCY,0);
-    R.render(scene,cam);
-    url=R.domElement.toDataURL('image/png');
-  }catch(e){url=null;}
-  _heroPhotoCache[id]=url;return url;
-}
-function AvatarPhoto({id=0,size=60,border=false,style={}}){
-  // 5.69.4 — FIX DEFINITIVO campo nero: il ritratto CH38 è ora un'IMMAGINE STATICA pre-generata
-  //   (assets/avatar-<id>.png, renderizzata offline dal modello CH38 con la stessa resa cordiale). NESSUN
-  //   renderer WebGL a runtime → niente secondo contesto WebGL che rubi quello della partita (era la causa del
-  //   campo nero dopo la schermata di creazione). Volti CH38 mantenuti, nitidi e coerenti. Fallback all'SVG se
-  //   l'immagine manca. renderHeroPhoto resta definita ma NON è più usata (nessun contesto WebGL creato).
-  const n=AVATARS.length,_id=((((id|0)%n)+n)%n);
-  const [err,setErr]=useState(false);
-  if(err)return <Figurina tipo="giocatore" chiave={"avatar-"+_id} larg={Math.round(size*5/7)} style={style}/>;/* [7.973] il ripiego del ritratto non e' piu' una faccina della libreria: e' lo spazio bianco della figurina */
-  return <img src={"./assets/avatar-"+_id+".png"} width={size} height={size} alt="" onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",objectPosition:"center center",background:"#e6ecf5",display:"block",flexShrink:0,...(border?{border:"2px solid "+TH.primary,boxSizing:"border-box"}:{}),...style}}/>;
-}
+/* [giro 63 PO-171/PO-072] Qui c'erano il ritratto 3D CH38 (renderHeroPhoto, 5.50) e AvatarPhoto (assets/avatar-<id>.png, 5.69.4):
+   nessun chiamante dal 7.973 (i menu mostrano Figurina). Tolti senza cambio di comportamento; storia in docs/RELEASE_HISTORY.md.
+   src/12 chiama ancora _disposeHeroPhotoRenderer sotto `typeof ... === "function"`: ora e' un no-op, come lo era gia' di fatto. */
 function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280px",animate=true}){
   const containerRef=useRef(null);
   const stateRef=useRef({renderer:null,animId:null,isDragging:false,lastX:0,playerGroup:null,bodyMesh:null,t:0});

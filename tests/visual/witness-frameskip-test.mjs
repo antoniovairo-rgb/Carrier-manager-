@@ -21,10 +21,14 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 import { readFileSync } from 'node:fs';
 
 const issues = [];
+const ROSSO = process.env.CPM_ROSSO180 === '1';
 
 /* --- A --- */
 {
-  const src = readFileSync(new URL('../../CARRIER-MANAGER-AV.html', import.meta.url), 'utf8');
+  let src = readFileSync(new URL('../../CARRIER-MANAGER-AV.html', import.meta.url), 'utf8');
+  /* [giro 63 PO-180] braccio rosso STATICO: si rimette nel testo (solo in memoria) il `return` del diradamento e il dimezzamento */
+  if (ROSSO) src = src.replace('const W=sr.current._wd||(sr.current._wd=', 'const W=sr.current._wd||(sr.current._wd=0||');
+  if (ROSSO) { const k = src.indexOf('const W=sr.current._wd||'); src = src.slice(0, k + 200) + ';if(W.skip++%W.step!==0)return;W.step*=2;' + src.slice(k + 200); }
   const at = src.indexOf('const W=sr.current._wd||(sr.current._wd=');
   if (at < 0) issues.push('(A) non trovo il testimone nel sorgente (ancora cambiata?)');
   else {
@@ -53,41 +57,47 @@ await page.addInitScript(() => { window.__CPM_GLB = false; });
 await openMatch(page, port);
 await sleep(1000);
 
-/* quanto viaggia il pallone in una finestra di tempo REALE, risolvendo la stessa azione */
-async function travel(gi) {
-  await page.evaluate(g => { window.__CPM_FORCE_SIT(g, true); }, gi);
-  await sleep(700);
-  await page.evaluate(() => { window.__CPM_FROZEN = false; }); await sleep(250);
-  const a = await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(0); return window.__CPM_BALL(); });
-  await sleep(1200);
-  const b = await page.evaluate(() => window.__CPM_BALL());
-  return +Math.hypot(b.x - a.x, b.y - a.y).toFixed(2);
+/* [giro 63 PO-180] RISCRITTA. La versione 7.352/7.360 misurava lo spazio percorso dal PALLONE in 1,2 s dopo la risoluzione
+   della scena 8: dipendeva dalla cinematica d'esito (a volte la palla e' ferma nel post-highlight: 0-0,42u contro 3-6u) e
+   non dal testimone. E chiedeva la sonda __CPM_WD_FILL un secondo dopo l'apertura, quando il render-loop poteva non averla
+   ancora definita (nasce DENTRO il blocco del testimone, al primo fotogramma utile). Il campione «fuori ordine» era un
+   artefatto del riempimento forzato: WD_FILL dichiara pieno un anello che ha scritto solo poche centinaia di posti, e i
+   posti mai scritti (t=0) finivano in mezzo alla traccia.
+   Ora (B) misura il SINTOMO senza passare dal pallone: in una finestra di 2 s di rAF della pagina, quanti campioni scrive
+   il testimone. Un campione per fotogramma del render-loop = il frame arriva fino in fondo al blocco; il vecchio `return`
+   con step 2 ne scriveva uno su due. Rapporto prima e dopo il riempimento, stessa pagina, stesse condizioni. */
+const pronta = await page.waitForFunction(() => typeof window.__CPM_WD_FILL === 'function' && typeof window.__CPM_WATCH_SNAP === 'function', null, { timeout: 30000, polling: 250 }).then(() => true, () => false);
+async function rapporto() {
+  return page.evaluate(() => new Promise(res => {
+    let n = 0; const t0 = performance.now();
+    const tick = now => { n++; if (now - t0 < 2000) requestAnimationFrame(tick); else {
+      const s = window.__CPM_WATCH_SNAP(); const t1 = performance.now();
+      const k = s ? s.samples.filter(c => c.t > t0 && c.t <= t1).length : -1;
+      res({ raf: n, campioni: k, r: n ? +(k / n).toFixed(2) : null }); } };
+    requestAnimationFrame(tick);
+  }));
 }
-/* il typeof si valuta DENTRO la pagina: una funzione attraversa page.evaluate come `undefined` */
-if (await page.evaluate(() => typeof window.__CPM_WD_FILL) !== 'function')
-  issues.push('(B) manca la sonda __CPM_WD_FILL: la prova ad anello pieno non e\' stata fatta');
+if (!pronta) issues.push('(B) la sonda __CPM_WD_FILL non e\' comparsa entro 30 s: la prova ad anello pieno non e\' stata fatta');
 else {
-  const vuoto = await travel(8);
-  const snapA = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); return s ? s.samples.length : -1; });
-  await page.evaluate(() => window.__CPM_WD_FILL());        /* [7.360.0] solo PIENO: il parametro forzava `step`, cioe' simulava il diradamento che non esiste piu' — passarlo qui faceva fallire la (C) con un valore scritto dal test stesso */
-  await sleep(250);
-  const pieno = await travel(8);
-  const snapB = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); return s ? s.samples.length : -1; });
-  const rap = vuoto > 0.5 ? +(pieno / vuoto).toFixed(2) : null;
-  console.log(`(B) spazio percorso dal pallone in 1,2s → anello vuoto ${vuoto}u · anello pieno ${pieno}u · rapporto ${rap}`);
-  if (rap == null) issues.push(`(B) misura non valida: ad anello vuoto il pallone ha percorso ${vuoto}u (troppo poco per confrontare)`);
-  else if (rap < 0.7) issues.push(`(B) ad anello pieno il pallone percorre solo il ${Math.round(rap * 100)}% dello spazio: la partita va al RALLENTATORE (il testimone sta saltando frame)`);
-  /* (C) [7.360.0] L'ANELLO E' CIRCOLARE: la memoria resta limitata SENZA sacrificare la risoluzione, e la
-     traccia restituita e' in ordine cronologico anche dopo il giro (senza il riordino tornava spezzata a
-     meta' e il taccuino leggeva un salto temporale all'indietro). */
+  await page.evaluate(() => { window.__CPM_FROZEN = false; });
+  const vuoto = await rapporto();
+  await page.evaluate(() => window.__CPM_WD_FILL());
+  await sleep(300);
+  const pieno = await rapporto();
+  console.log(`(B) campioni del testimone per fotogramma rAF in 2 s → anello vuoto ${vuoto.campioni}/${vuoto.raf} (${vuoto.r}) · anello pieno ${pieno.campioni}/${pieno.raf} (${pieno.r})`);
+  if (vuoto.r == null || vuoto.raf < 5) issues.push(`(B) misura non valida: ${vuoto.raf} fotogrammi in 2 s`);
+  else if (vuoto.r < 0.7) issues.push(`(B) ad anello VUOTO il testimone scrive solo ${vuoto.campioni} campioni su ${vuoto.raf} fotogrammi: il render-loop non arriva in fondo al blocco`);
+  else if (pieno.r < 0.7 * vuoto.r) issues.push(`(B) ad anello PIENO il testimone scrive ${pieno.r} campioni a fotogramma contro ${vuoto.r} a vuoto: il frame viene saltato (rallentatore)`);
+  /* (C) [7.360.0] l'anello e' circolare, a risoluzione piena e in ordine. Si giudicano solo i posti SCRITTI (t>0). */
   const w = await page.evaluate(() => { const s = window.__CPM_WATCH_SNAP(); if (!s) return null;
-    let fuoriOrdine = 0; for (let i = 1; i < s.samples.length; i++) if (s.samples[i].t < s.samples[i - 1].t) fuoriOrdine++;
-    return { n: s.samples.length, res: s.res, fuoriOrdine }; });
-  console.log(`(C) anello dopo il riempimento forzato: ${w ? w.n : '?'} campioni · risoluzione 1 su ${w ? w.res : '?'} · campioni fuori ordine ${w ? w.fuoriOrdine : '?'} (capienza 30000)`);
+    const v = s.samples.filter(c => c.t > 0); let fuoriOrdine = 0; for (let i = 1; i < v.length; i++) if (v[i].t < v[i - 1].t) fuoriOrdine++;
+    return { n: s.samples.length, scritti: v.length, res: s.res, fuoriOrdine }; });
+  console.log(`(C) anello dopo il riempimento forzato: ${w ? w.n : '?'} posti (${w ? w.scritti : '?'} scritti) · risoluzione 1 su ${w ? w.res : '?'} · fuori ordine ${w ? w.fuoriOrdine : '?'} (capienza 30000)`);
   if (!w || w.n > 30000) issues.push(`(C) l'anello ha superato la capienza (${w ? w.n : '?'}): la memoria non e' piu' limitata`);
-  if (w && w.res !== 1) issues.push(`(C) la risoluzione e' scesa a 1 su ${w.res}: il testimone ha ripreso a diradare e «un fotogramma» torna a non voler dire un fotogramma`);
-  if (w && w.fuoriOrdine > 0) issues.push(`(C) ${w.fuoriOrdine} campioni fuori ordine cronologico: dopo il giro dell'anello la traccia e' spezzata`);
-  void snapA; void snapB;
+  if (w && w.res !== 1) issues.push(`(C) la risoluzione e' scesa a 1 su ${w.res}: il testimone ha ripreso a diradare`);
+  /* un solo salto all'indietro e' legittimo: il punto in cui la traccia passa dai campioni scritti prima del riempimento
+     (posti alti, ora i piu' vecchi) a quelli nuovi scritti da 0. Due o piu' = traccia spezzata. */
+  if (w && w.fuoriOrdine > 1) issues.push(`(C) ${w.fuoriOrdine} salti all'indietro nella traccia: dopo il giro dell'anello la traccia e' spezzata`);
 }
 
 await browser.close(); srv.close();
