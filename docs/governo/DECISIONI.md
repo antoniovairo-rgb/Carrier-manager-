@@ -541,3 +541,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Rilascio della 173: «Due blocchi».** Blocco A, partita e grafica: giri 60, 61, 63, 64, 68 → 7.999.173. Blocco B, carriera ed economia: giri 62, 65, 66, 67 e PO-281/PO-157 → 7.999.174. Ogni blocco ha la sua catena notte.
 - **Fine della stabilità: «Zero bug alti e medi».** Si chiude quando due giri di collaudo carriere di fila non trovano bug di gravità alta o media e la catena notte è verde senza instabili.
 - **Collaudo carriere: «6 carriere, profili diversi».** Attaccante, centrocampista, difensore, portiere se previsto, carriera con Nazionale, carriera piena di trasferimenti; ognuna dall'U18 al ritiro, in parallelo.
+
+## 18/10 sera — rilascio 172, metodo delle catene, fine dei lavori
+
+- Catena della 172: «Resto nel turno» fino alla pubblicazione. Le morti del container (tre riavvii in un giorno) venivano da turni chiusi con la catena in corsa e da un riavvio non evitabile.
+- **Catene future: «Catena spezzata in tronchi»** — 3-4 tronchi da circa un'ora, ognuno seguito fino in fondo nel turno e registrato; un riavvio perde al massimo un tronco.
+- **Lezione dell'unione:** due giri hanno aggiunto la stessa chiave `finale` all'oggetto INT259; nel file unito vinceva la seconda e la regola del giro 52 spariva senza errori. All'unione si controllano le chiavi doppie degli oggetti toccati da più giri.
+- PO: «poi parti subito con le modifiche del rilascio successivo, fino al rilascio nel main» · «dopo chiudere il backlog il prima possibile» · «questo progetto va avanti da giugno, finite tutte le modifiche solo collaudi approfonditi da player e stabilità».
