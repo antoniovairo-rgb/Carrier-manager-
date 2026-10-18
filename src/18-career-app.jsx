@@ -6201,7 +6201,8 @@ const getThisWeekMatchday=()=>{
           </Card>}
           {devToolsOn()&&(()=>{
             let _bn=[];try{_bn=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
-            if(!_bn.length)return null;
+            const _er=_no168()?[]:leggiErrLog168();/* [PO-168] il registro degli errori vive nel taccuino */
+            if(!_bn.length&&!_er.length)return null;
             const _fmt1=(n)=>{const c=n.ctx||{};return `[KE ${c.v||"?"}] ${c.when||""} · ${c.min}' · ${c.phase||""}${c.opp?` · vs ${c.opp} (${c.score||"-"})`:""}\n`
               +(c.sit?`SIT${c.gi>=0?` #${c.gi}`:""}${c.intent?` [${c.intent}]`:""}: «${c.sit}»\n`:"")
               +(c.act?`AZIONE: «${c.act}» → esito ${c.out||"?"}${c.ok===false?" (fallita)":c.ok===true?" (riuscita)":""}\n`:"")
@@ -6223,10 +6224,24 @@ const getThisWeekMatchday=()=>{
                     <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.4}}>{n.txt}</div>
                   </div>))}
               </div>
-              <div style={{display:"flex",gap:7}}>
+              {_er.length>0&&<div data-cpm="errlog-168" style={{marginBottom:8}}>
+                <div style={{fontSize:FS.caption,fontWeight:900,color:TH.danger,marginBottom:4}}>🧾 {_er.length} error{_er.length===1?"e":"i"} registrat{_er.length===1?"o":"i"}</div>
+                <div style={{maxHeight:120,overflowY:"auto"}}>
+                  {_er.slice(0,8).map((e,i)=>(
+                    <div key={i} style={{borderLeft:`3px solid ${TH.danger}`,background:TH.surface2,borderRadius:RAD.sm,padding:"5px 9px",marginBottom:4}}>
+                      <div style={{fontSize:FS.caption,color:TH.faint}}>{new Date(e.t).toLocaleString("it-IT")} · {e.kind} · v {e.v}{e.n>1?` · ×${e.n}`:""}</div>
+                      <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.35,wordBreak:"break-word"}}>{e.msg}</div>
+                    </div>))}
+                </div>
+                <div style={{display:"flex",gap:7,marginTop:4}}>
+                  <Btn v="ghost" fw onClick={()=>{if(esportaErrLog168())notify("🧾 Registro esportato.",TH.success);else notify("Esportazione non riuscita su questo dispositivo.",TH.warning);}}>🧾 Esporta registro</Btn>
+                  <Btn v="ghost" onClick={()=>{safeLS.set(ERRLOG_KEY,"[]");notify("🗑 Registro svuotato.",TH.muted);setTab(t=>t);}} style={{flexShrink:0}}>🗑</Btn>
+                </div>
+              </div>}
+              {_bn.length>0&&<div style={{display:"flex",gap:7}}>
                 <Btn v="primary" fw onClick={()=>{try{navigator.clipboard.writeText(_all()).then(()=>notify("📋 Appunti copiati: incollali nella chat.",TH.success)).catch(()=>notify("Copia non riuscita su questo dispositivo.",TH.warning));}catch(_e){}}}>📋 Copia tutto</Btn>
                 <Btn v="ghost" onClick={()=>{safeLS.set("cpm-bugnotes","[]");notify("🗑 Appunti svuotati.",TH.muted);setTab(t=>t);}} style={{flexShrink:0}}>🗑</Btn>
-              </div>
+              </div>}
             </Card>);})()}
           {/* [6.84.0 collaudo PO «l'esporta salvataggio in fondo a tutto»] Export save — ULTIMA voce del sottotab Profilo */}
           <Card style={{padding:"7px 12px"}} shadow={false}>
@@ -7292,6 +7307,7 @@ const getThisWeekMatchday=()=>{
         </div>);
       })()}
 
+      {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
         <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>

@@ -1623,7 +1623,7 @@ const _BENCH_ENTRY=[
 class MatchErrorBoundary extends React.Component{
   constructor(p){super(p);this.state={err:null,info:null};}
   static getDerivedStateFromError(err){return{err};}
-  componentDidCatch(err,info){this.setState({err,info});}
+  componentDidCatch(err,info){this.setState({err,info});logErr168("partita",err,info&&info.componentStack);}/* [PO-168] anche nel registro */
   render(){
     if(this.state.err){
       const msg=this.state.err?.message||String(this.state.err);
