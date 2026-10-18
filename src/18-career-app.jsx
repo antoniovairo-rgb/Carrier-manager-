@@ -7789,7 +7789,7 @@ const getThisWeekMatchday=()=>{
         const lv=lifeView(player);if(!lv)return null;
         return(
         <Card momento="❤️ Vita privata" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#26101c,#331426)",TH.card),border:_n30("1px solid #7a2a55","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>
+          {!dup068On()&&<div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>}{/* [7.999.173 PO-066 giro 68] il titolo della fisarmonica lo dice gia' */}
           <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{lv.t}</div>
           <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5,marginBottom:8}}>{lv.d}</div>
           {lv.st==="incontro"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{stage:"coppia",name:lv.name,since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+4,0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"❤️",headline:"L'incontro con "+lv.name,body:"La serata finita a parlare di tutto tranne che di calcio.",color:_n30("#db2777",semTesto945("#db2777"))}]),log:[`❤️ Hai conosciuto ${lv.name}: c'è qualcosa di nuovo nell'aria.`,...(p.log||[])].slice(0,60)}))}>Usciamo di nuovo →</Btn>}
@@ -8057,7 +8057,7 @@ const getThisWeekMatchday=()=>{
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pa.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{pa.t}</div>
+              {!(dup068On()&&pa.t)&&<div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{pa.t}</div>}{/* [7.999.173 PO-066 giro 68] pa.t e' gia' il titolo della fisarmonica */}
               <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.76)",TH.muted),lineHeight:1.55}}>{pa.d}</div>
             </div>
           </div>
@@ -8185,7 +8185,7 @@ const getThisWeekMatchday=()=>{
             {th26&&<div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.title,lineHeight:1}}>{th26.e}</span>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.4,fontWeight:FW.bold}}>La tua settimana</div>
+                {!dup068On()&&<div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.4,fontWeight:FW.bold}}>La tua settimana</div>}{/* [7.999.173 PO-066 giro 68] */}
                 <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1.25}}>{th26.t}</div>
               </div>
             </div>}
@@ -8324,7 +8324,7 @@ const getThisWeekMatchday=()=>{
         return(
         <Card momento="Duello capocannoniere" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>Duello capocannoniere</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{dup068On()?null:"Duello capocannoniere"}</div>{/* [7.999.173 PO-066 giro 68] resta solo il segnale SORPASSO */}
             {_sorp&&<div style={{fontSize:FS.caption,background:"#16a34a",color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:800}}>🔥 SORPASSO</div>}
           </div>
           {_rows.map((r,i)=>(
