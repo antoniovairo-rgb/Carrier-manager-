@@ -42,7 +42,7 @@ for (let i = 0; i < N; i++) {
     out.push({ p: i, k, ck: s.ck, fr, g });
   }
   { const bj = await page.evaluate(() => (window.__CPM_BJ478 || []).slice()); const sc = bj.filter(x => !x.mask && !x.nascosto && /^hl_/.test(String(x.ph || '')));
-    const nasc = bj.filter(x => x.nascosto).length; console.log(`p${i} salti del pallone in scena: ${bj.length} · coperti ${bj.filter(x => x.mask).length} · nascosti (dopo il 2D) ${nasc} · SCOPERTI ${sc.length}: ${sc.slice(0, 6).map(x => `${x.src}${x.tutti ? '[' + x.tutti + ']' : ''}:${x.d}@${x.ph}`).join(' ')}`); bjTot.push(...sc); }
+    const nasc = bj.filter(x => x.nascosto).length; console.log(`p${i} salti del pallone in scena: ${bj.length} · coperti ${bj.filter(x => x.mask).length} · nascosti (dopo il 2D) ${nasc} · SCOPERTI ${sc.length}: ${sc.slice(0, 6).map(x => `${x.src}${x.tutti ? '[' + x.tutti + ']' : ''}:${x.d}@${x.ph}${x.dt != null ? `{dt ${x.dt} arco ${x.ar ? 'vivo' : 'spento'} T ${x.aT}/${x.ad} L ${x.al} passo atteso ${x.al != null && x.ad ? (x.al * x.dt / x.ad).toFixed(1) : '-'}}` : ''}`).join(' ')}`); bjTot.push(...sc); }
   { const sn = await page.evaluate(() => (window.__CPM_SNAP261 || []).slice()); console.log(`p${i} snap di scena: ${sn.length} · scarto dello sguardo a fine fotogramma ${sn.map(x => x.scarto + (x.nasc ? '*' : '')).join(' ')} (* = dopo il 2D)`); snapTot.push(...sn); }
   if (errs.length) console.log('pageerror', errs.slice(0, 3));
   await ctx.close();
@@ -72,8 +72,17 @@ console.log(`prima immagine della prima scena con l'eroe fuori: ${primaFuori}/${
 if (GIUDICA) {
   const MAXQ = +(process.env.CPM_MAXQ261 || 20);
   if (pi.length < Math.max(2, Math.ceil(N / 2)) || !snapTot.length) { console.log(`❌ sonda cieca: ${pi.length} prime scene su ${N}, ${snapTot.length} snap`); process.exit(2); }
+  /* [giro 53 PO-274] I SALTI SCOPERTI IN CONCLUSIONE (hl_result) si giudicano, ma solo quelli che la VELOCITA' del pallone non spiega.
+     Misurato su 6 partite: gli «arco» scoperti valevano 6,4-8,7u contro un passo atteso dell'arco (lunghezza x passo di scena / durata)
+     di 4,3-6,9u, con passi di scena di 0,11-0,24 s: e' il tiro (30-41 u/s) visto a pochi fotogrammi, non un teletrasporto (lezione
+     7.360). Rosso = arco oltre 2x il passo atteso +1u, oppure (senza arco misurabile) piu' di VMAX u/s di scena. */
+  const VMAX = +(process.env.CPM_VMAX274 || 50);
+  const tele = bjTot.filter(x => x.ph === 'hl_result' && x.dt > 0 && (x.src === 'arco' && x.al != null && x.ad > 0 ? x.d > 2 * (x.al * x.dt / x.ad) + 1 : x.d / x.dt > VMAX));
+  console.log(`salti scoperti in conclusione ${bjTot.filter(x => x.ph === 'hl_result').length} · non spiegati dalla velocita' (teletrasporti) ${tele.length}${tele.length ? ': ' + tele.slice(0, 4).map(x => `${x.src}:${x.d}u in ${x.dt}s`).join(' ') : ''}`);
+  if (ROSSO === '__CPM_SALTO274') { const ok = tele.length >= 1; console.log(ok ? `✅ ROSSO come atteso (__CPM_SALTO274): ${tele.length} teletrasporti contati` : '❌ il rosso non riproduce: il guardiano non vede il teletrasporto'); process.exit(ok ? 0 : 1); }
   if (ROSSO) { const ok = primaFuori >= Math.ceil(pi.length / 2) || scGrandi >= 1; console.log(ok ? `✅ ROSSO come atteso (${ROSSO}): prima immagine fuori ${primaFuori}/${pi.length}, scarti oltre 3u ${scGrandi}` : '❌ il rosso non riproduce'); process.exit(ok ? 0 : 1); }
   const fails = []; if (primaFuori) fails.push(`prima immagine con l'eroe fuori in ${primaFuori}/${pi.length} prime scene`); if (scGrandi) fails.push(`${scGrandi} snap con lo sguardo oltre 3u dal bersaglio (max ${scMax})`);
   if (prime.n && (prime.vuote > 0 || prime.quota > MAXQ)) fails.push(`${prime.vuote} aperture vuote, quota ${prime.quota}%`);
+  if (tele.length) fails.push(`${tele.length} salti del pallone in conclusione non spiegati dalla velocita'`);
   console.log(fails.length ? '❌ FAIL apertura-261\n  ' + fails.join('\n  ') : `✅ PASS apertura-261 (prima immagine sull'eroe ${pi.length}/${pi.length}, scarto max ${scMax}u, aperture vuote 0)`); process.exit(fails.length ? 1 : 0);
 }
