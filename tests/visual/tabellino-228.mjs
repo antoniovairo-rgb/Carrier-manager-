@@ -24,7 +24,7 @@ async function gioca(b, url, k, modo) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   try {
     const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' PO228-' + k; rec.name = pl.name;
-    await page.addInitScript(([s, rosso, prova]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (rosso) window.__CPM_NO_TAB228 = true; if (prova) window.__CPM_TAB228_PROVA = true; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, modo === 'rosso', PROVA]); rec.prova = PROVA;
+    await page.addInitScript(([s, rosso, prova]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_NO_STILI = 1; /* [giro 67 PO-098] lo scenario e' la partita S12 della 172: con lo stile (centravanti → Finalizzatore) la partita cambia e il caso non si riproduce */ window.__CPM_PRESENT = 1; if (rosso) window.__CPM_NO_TAB228 = true; if (prova) window.__CPM_TAB228_PROVA = true; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, modo === 'rosso', PROVA]); rec.prova = PROVA;
     await page.goto(url, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
     try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}

@@ -186,7 +186,22 @@ Cinque numeri per fase. Tre opzioni.
 
 ## 5. Rituali (su questo ramo, build `5bf6e7f`)
 
-RITUALI
+Catena **mirata** di `ci-runner.mjs` contro `origin/lavoro/172` (99 passi: nucleo + guardiani della MAPPA per src/04, 05, 06,
+09, 10, 14, 15, 17, 18), più `replay`, `stab-nat-trigger`, `career-sim`, `tripath-chokepoint` che la mirata non contiene. Per stare
+nei tempi l'ho eseguita su tre corsie parallele (`ci-runner` per i primi 40 passi, una corsia sequenziale per i restanti, i 20 passi
+lenti a coppie), con la stessa regola «un rosso si riprova una volta». Il container è ripartito a metà (16:00): i passi già chiusi
+restano validi (stesso build `5bf6e7f`), quelli interrotti sono stati rifatti da capo. `docs/governo/STABILITA.json` non è stato
+toccato (corse non registrate dal runner).
+
+| Esito | Passi |
+|---|---|
+| ✅ verdi al primo giro | **96 su 103** |
+| ⚠️ instabili (rosso, poi verde al secondo giro) | `cross-218` (3D: «il cross fuori non esce», x 45,3 su 15 fotogrammi, CPU satura) · `pressing-143` (marcatore a 5,18 u, atteso ≤ 3,5) — causa non cercata |
+| ❌ → ✅ dopo correzione del guardiano | `ripartenza-207`, `tabellino-228`, `schede-246`: giocano una partita **precisa** da un salvataggio con un vecchio archetipo (S12 centravanti, primavera fantasista). Sulla 172 sono verdi (rigiocati in un worktree della 172); con gli stili l'eroe diventa Finalizzatore/Regista, la partita cambia e il caso del guardiano non si riproduce (tabellino-228: il gol del seme 4 non c'è più; schede-246: la squadra non va sotto e le schede del finale non nascono; ripartenza-207: `alCentro 2 ≠ ripartenze 1` con 2 gol — **Non verificato** se sia un difetto vero della ripartenza col secondo gol o del conteggio). Ora i tre accendono `__CPM_NO_STILI` (lo scenario è la partita della 172) e tornano verdi col rosso visibile |
+| ❌ preesistenti (rossi anche sulla 172, verificato) | `tempo-138` (rosso cieco: `pagato 176 = aperto 176`, il difetto non si vede) · `schede-259` parte A, regola pura in node: «momento decisivo muto: pari al 77' dopo un tiro loro al 76'» (6/7 anche sulla 172) |
+
+Altri: `test:logic` 43/43 · `save-compat` ✅ · `validate-situations` ✅ · `partita-vera` ✅ · `replay` ✅ · `career-critical` ✅ ·
+`stili-098` ✅ · `stili-098-migrazione` ✅ · `check-src` identico byte per byte.
 
 ## 6. Non verificato (riassunto)
 - Differenza fra stili **dal vivo** oltre il Finalizzatore: misurata solo nel motore (node); Regista 9 partite, Incursore e
@@ -205,3 +220,8 @@ RITUALI
 3. **PO-098 taratura** — forza del Trascinatore: (a) **+5 come ora, consigliata per il collaudo** (è l'unico valore misurato che
    si vede: +0,4 gol fatti, −0,36 subiti nel motore) · (b) +3 (misurato a N=40: +0,08 gol, quasi invisibile) · (c) leva diversa
    (morale/fiducia dei compagni invece della forza). Costo Enfant: (a) −2 come ora, consigliata · (b) nessun costo · (c) −3.
+4. **Guardiani a partita fissa con un vecchio archetipo** (`ripartenza-207`, `tabellino-228`, `schede-246`): (a) **stile spento
+   nel guardiano (`__CPM_NO_STILI`), fatto, consigliata** — il loro oggetto non è lo stile e lo scenario resta la partita misurata
+   · (b) cercare nuovi semi che riproducano il caso con lo stile acceso (costo: una partita da ~5 min per seme provato) · (c)
+   entrambi: (a) ora, (b) quando si tocca di nuovo l'area. Da aprire a parte: `ripartenza-207` con lo stile acceso dà
+   `alCentro 2 ≠ ripartenze 1` su una partita con due gol.
