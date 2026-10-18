@@ -295,6 +295,7 @@
     "attesa-difesa": "node attesa-difesa-test.mjs",
     "calendario-nazionale": "node calendario-nazionale-test.mjs",
     "career-nat-sim": "node career-nat-sim-test.mjs",
+    "nazionale-155": "node nazionale-155.mjs",
     "cross-origine": "node cross-origine-test.mjs",
     "disappunto": "node disappunto-test.mjs",
     "esultanza-braccia": "node esultanza-braccia-test.mjs",
