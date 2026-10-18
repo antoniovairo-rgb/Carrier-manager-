@@ -179,6 +179,29 @@ const INT259={
     if(o.tipo==='palla'&&tL<=1)return{k:'tiriLoro',n:tL,testo:"✅ "+quale+" tiene: "+(tL?"un solo tiro":"nessun tiro")+" concesso in "+min+" minuti.",breve:(tL?"un solo tiro":"nessun tiro")+" concesso"};
     if(tN+tL===0)return{k:'tiriNoi',n:0,testo:"⏸️ "+quale+": "+min+" minuti bloccati, nessun tiro né per noi né per loro.",breve:"partita bloccata, nessun tiro"};
     return{k:'tiriNoi',n:tN,testo:"⏸️ "+quale+": "+min+" minuti in equilibrio, "+tiri(tN)+" per noi e "+tiri(tL)+" per loro.",breve:tiri(tN)+" per noi, "+tiri(tL)+" per loro"};},
+  /* [PO-280 — rosso __CPM_NO_ESITO280] L'ESITO DEL RIEPILOGO SI SCRIVE SUI FATTI FINO AL FISCHIO. Collaudo PO (Stag. 13 G. 21, 1-1): «La tua scelta
+     al 82' → nessun tiro concesso. Esito non vero, hanno pareggiato!». Il riepilogo riusava la riga breve del racconto detto 5' dopo la scelta
+     (82'→87'): vera allora, smentita dal pareggio arrivato dopo. Qui lo stesso racconto (stessa regola, nessun sorteggio) sulla finestra
+     scelta→fischio; se nella finestra hanno segnato entrambe, la riga li dice tutti e due (racconta mette davanti solo il primo). */
+  attivo280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_ESITO280);},
+  finale(r){const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));const gF=d('gNoi'),gS=d('gLoro');
+    if(!r.panca&&gF>0&&gS>0){const o=INT259.opz(r.fatto,r.idx)||{et:''};const g=(n)=>n===1?"un gol":n+" gol";
+      return{k:'golEntrambi',n:gF+gS,testo:"⚖️ Dopo «"+o.et+"»: "+g(gF)+" nostr"+(gF===1?"o":"i")+" e "+g(gS)+" loro"+INT259.fino(r)+".",breve:g(gF)+" fatt"+(gF===1?"o":"i")+" e "+g(gS)+" subit"+(gS===1?"o":"i")+INT259.fino(r)};}
+    const e=INT259.racconta(r);return Object.assign({},e,{breve:r.panca?e.breve:(String(e.breve).replace(/ in \d+'$/,"")+INT259.fino(r))});},
+  /* [PO-280 bis — decisione PO 17/10 «La prima finisce alla seconda», rosso __CPM_NO_FIN280] con due scelte nella stessa partita la finestra di
+     giudizio di una scelta va dal suo minuto al minuto della scelta successiva (fotogramma preso li', prima che la seconda tocchi il motore);
+     l'ultima fino al fischio. Prima (giro 57, prima stesura) tutte arrivavano al fischio e lo stesso gol veniva raccontato da due scelte.
+     L = elenco delle scelte (con .m0 .foto .occ .occ0), fF/mF = fotogramma e minuto del fischio. Restituisce per ogni scelta {m1,dopo,occ,fino}. */
+  attivoFin280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN280);},
+  fino(r){return r.fino==null?" fino al fischio":" fino al "+(r.fino|0)+"'";},
+  finestre(L,fF,mF){const on=INT259.attivoFin280();return L.map((r,i)=>{const nx=on?L.slice(i+1).find(q=>q&&q.foto&&(q.m0|0)>=(r.m0|0)):null;
+    const dopo=nx?nx.foto:fF,m1=nx?(nx.m0|0):mF;const ok=(o)=>o!=null&&o>=(r.m0|0)&&o!==r.occ0&&(!nx||o<m1);
+    return{m1,dopo,fino:nx?m1:null,occ:ok(r.occ)?r.occ:(dopo&&ok(dopo.occ)?dopo.occ:null)};});},
+  /* il racconto smentisce i fatti della finestra scelta→fischio? (lo usa il guardiano esito-280) */
+  smentito(r,esito){try{const d=(k)=>((r.dopo[k]|0)-(r.prima[k]|0));if(r.panca)return false;
+    if((d('gNoi')>0||d('gLoro')>0)&&!/gol/i.test(String(esito.breve||'')))return true;
+    if(d('gLoro')>0&&/^ha pagato/.test(String(esito.breve||'')))return true;
+    if(esito.k==='golEntrambi')return false;return !INT259.verifica(r,esito);}catch(_e){return true;}},
   /* fotogramma dei fatti per il racconto: punteggio (sc, se il live lo passa; altrimenti i gol del motore) e tabellino del motore */
   foto(M,sc){try{const t=M.tabellino();return{gNoi:sc?(sc.home|0):(t.home.gol|0),gLoro:sc?(sc.away|0):(t.away.gol|0),tiriNoi:t.home.tiri|0,tiriLoro:t.away.tiri|0,
     recNoi:(t.home.contrasti|0)+(t.home.intercetti|0),contro:(M._S.conta.contro259|0),occ:(M._S._ultOccV2==null?null:M._S._ultOccV2|0)};}catch(_e){return null;}},
