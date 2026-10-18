@@ -535,3 +535,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «Zona G come tutti gli altri contenuti, stesso comportamento». La zona G (carriera, economia) non è più ferma: si lavora come ogni altra area (misura prima, interruttore rosso, guardiano, salvataggi compatibili, scelte di prodotto non decise portate al PO). Le eccezioni puntuali non servono più. Sostituisce la regola permanente «Zona G ferma salvo eccezioni».
 - I giri 60-64 e 68 hanno nel compito «zona G ferma»: se una loro correzione la richiede e l'hanno lasciata come decisione nel rapporto, la prende la sessione principale con questa regola.
+
+## 18/10 — questionario sul piano 173 e stabilità
+
+- **Rilascio della 173: «Due blocchi».** Blocco A, partita e grafica: giri 60, 61, 63, 64, 68 → 7.999.173. Blocco B, carriera ed economia: giri 62, 65, 66, 67 e PO-281/PO-157 → 7.999.174. Ogni blocco ha la sua catena notte.
+- **Fine della stabilità: «Zero bug alti e medi».** Si chiude quando due giri di collaudo carriere di fila non trovano bug di gravità alta o media e la catena notte è verde senza instabili.
+- **Collaudo carriere: «6 carriere, profili diversi».** Attaccante, centrocampista, difensore, portiere se previsto, carriera con Nazionale, carriera piena di trasferimenti; ognuna dall'U18 al ritiro, in parallelo.
