@@ -48,13 +48,21 @@ pallone colpito a centrocampo. `_outKind` usciva `saved` dalla lente-tiro di `de
 ### Correzioni
 | rosso | dove | cosa cambia |
 |---|---|---|
-| `__CPM_NO_DIF60` | `src/14` `risolviEroe.eventi` (`famDefX`); `src/15` passa `def` (sit.type) al motore | scena difensiva di testa o di cross: `spazzata` dell'eroe se riesce, l'avversario che prosegue (`conduzione`) se fallisce; il gol subito resta del blocco `goal_against` |
+| `__CPM_NO_DIF60` | `src/14` `risolviEroe.eventi` (`famDefX`, solo famiglia `header`/`cross`); `src/15` passa `def` (sit.type) al motore | scena difensiva di testa o di cross: `spazzata` dell'eroe se riesce, l'avversario che prosegue (`conduzione`) se fallisce; il gol subito resta del blocco `goal_against` |
 | `__CPM_NO_STACCO60` | `src/15` `handleAction`, chokepoint M1 accanto al remap 7.247 | stacco di testa con premio recupero/possesso fallito → `_outKind` `intercepted`: riquadro, 3D e cronaca lo leggono da lì |
 
 ### Misura dopo (scene forzate, GLB acceso)
 - gi36/0 e gi44/0 riusciti: motore `spazzata` (niente tiro, niente rammarico); gi136/0 fallito: niente cross dell'eroe.
 - gi126/1 fallito, 2/2: «Palla persa» «❌ Palla persa nel contrasto.», nessun gesto del portiere. Rosso: 2/2 «Tiro debole, para
   comodo» con `gk_dive`.
+
+### Prima stesura bocciata da `difesa-220-giro31`
+La prima versione (c12c842) prendeva ogni scena difensiva con famiglia **diversa da** `tackle`. Le scene difensive **generate dal
+motore** (quelle di `difesa-220-giro31`: «Chiusura immediata», «Raddoppio coordinato col compagno») possono avere famiglia vuota
+da `deriveHL`, e il loro contrasto riuscito diventava una `spazzata`: casi «forti» (riquadro e 3D in disaccordo a +2 s) **29%,
+29%, 36%** in tre corse del ramo contro **15%** della base 172 (stesso guardiano, worktree della base). Ristretta a `header`/`cross`
+(4b3109c): **14%**, verde. Le 86 azioni difensive di `SITUATIONS` sono tutte `tackle`/`header`/`cross` (enumerazione), quindi
+l'enumerazione di `esiti-60` non poteva vedere questo caso: lo vede `difesa-220-giro31`, che è nella MAPPA di `src/15`.
 
 ### Guardiano nuovo `esiti-60` (package.json; MAPPA `src/14` e `src/15`; catena `completa`)
 A: enumerazione sul motore vero di tutte le azioni delle situations difensive non-contrasto (8 esecuzioni) · B: scena forzata
@@ -113,14 +121,20 @@ Ciò che resta di PO-068 non si chiude con codice senza clip nuove o senza rived
 - Resta aperto (giro 43): su #126 il pallone nasce sull'eroe e il cross arriva da un compagno più avanti; il rimedio tocca
   l'apertura della scena e le firme golden. Non fatto.
 
-## Rituali sul build del ramo (c12c842)
+## Rituali
 
 `node ci-runner.mjs mirata origin/lavoro/172` (file toccati `src/14`, `src/15` → 50 passi: nucleo `test:logic`, `save-compat`,
 `design-system`, `typing-shortcuts`, `career-critical` + MAPPA delle due parti, compresi `validate-situations`, `partita-vera`,
-`esiti-60`).
+`esiti-60`, `difesa-220-giro31`).
 
-**In corsa alla prima pubblicazione del rapporto** (avviata 14:56 UTC): verdi finora `test:logic`, `save-compat`,
-`design-system`, `typing-shortcuts`, `passaggi-228`, `tabellino-216`, `possesso-209`, `brain-202`; nessun rosso. Esito finale: ESITO_CATENA
+**Prima corsa, build c12c842 — fermata a 37/50 e NON valida** (build corretto dopo): verdi fra gli altri `validate-situations`
+(14/14, fingerprint 00001505), `career-critical`, `partita-vera`, `esiti-218`, `esiti-241`, `esiti-60`, `catalogo-022`,
+`pressing-143`, `spot-266`, `tecnica-045`, `tabellino-228`; instabili `pallino-278`, `esito-280`; rossi:
+- `tempo-138` ❌ «rosso: il difetto non si vede» (braccio rosso cieco) — **identico sulla base 172** (worktree di
+  `origin/lavoro/172`: verde pagato 308/308, rosso 198/198, stesso verdetto). Preesistente, non di questo giro.
+- `difesa-220-giro31` ❌ — **causato dalla prima stesura**, corretto in 4b3109c (vedi PO-218).
+
+**Seconda corsa, build 4b3109c:** ESITO_CATENA
 
 ## Non verificato
 
