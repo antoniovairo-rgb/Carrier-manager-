@@ -3829,7 +3829,22 @@ function ThreeMatchView(props){
        else{
         if(_useTgt||_tackleCarrier){
           const _bak=_tackleCarrier?Math.min(1,aDt*10):Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2)));
-          ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;
+          /* [giro 61 — salto di avvicinamento in hl_intro/hl_choose, annotato dal giro 53. Rosso __CPM_NO_AVV61] Col portatore
+             difensivo il lerp min(1,aDt*10) diventa un passo INTERO quando il passo di scena e' >= 0,1 s (headless e telefono lento):
+             misurato 6-17,8u in un fotogramma. Fuori dall'esito il pallone raggiunge il portatore rotolando a 22 u/s di scena al
+             massimo (sopra i 15 u/s di corsa dei giocatori: non resta indietro). Testimone __CPM_AVV61 in entrambi i bracci. */
+          {const _dx61=(_btX-ball.position.x)*_bak,_dz61=(_btZ-ball.position.z)*_bak;let _st61=Math.hypot(_dx61,_dz61),_f61=1;
+           const _on61=_tackleCarrier&&!isResult&&aDt>0;
+           /* sotto lo stacco nero (stesso criterio della maschera 7.471/7.504: stacco reale o interno) l'aggancio intero e' invisibile e resta: la scelta si legge a
+              scena ferma, e un pallone fermato a meta' strada resterebbe lontano dal portatore per tutta la lettura */
+           let _cut61=false;try{_cut61=(typeof _CUT471!=='undefined')&&(performance.now()-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0);}catch(_e61){}
+           /* in SCELTA la scena si legge FERMA (il giro 3D disegna 1-2 fotogrammi e poi si ferma): li' il pallone va ai piedi del portatore
+              in un passo, altrimenti la lettura mostra il pallone a meta' strada (misurato sulle scene forzate: 11-16u dal portatore col
+              lerp di prima, 20-31u col solo tetto) */
+           const _rd61=P.matchPhase==='hl_choose';
+           if(_on61&&!(typeof window!=='undefined'&&window.__CPM_NO_AVV61)){if(_rd61)_f61=_bak>0?1/_bak:1;else if(!_cut61){const _cap61=22*aDt;if(_st61>_cap61){_f61=_cap61/_st61;}}}
+           ball.position.x+=_dx61*_f61;ball.position.z+=_dz61*_f61;
+           if(_on61&&(_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'){const _W61=(window.__CPM_AVV61=window.__CPM_AVV61||{n:0,nCut:0,vmax:0,smax:0,gap:null,ph:{}});_W61.n++;if(_cut61||_rd61)_W61.nCut++;else{const _v61=_st61*_f61/aDt;if(_st61*_f61>0.05&&_v61>_W61.vmax)_W61.vmax=+_v61.toFixed(1);if(_st61*_f61>_W61.smax)_W61.smax=+(_st61*_f61).toFixed(2);}_W61.gap=+Math.hypot(_btX-ball.position.x,_btZ-ball.position.z).toFixed(2);const _k61=P.matchPhase||'?';_W61.ph[_k61]=(_W61.ph[_k61]|0)+1;}}
           if((sr.current._ws524=15)&&sr.current._bj0)(sr.current._bj0.src='avvicinamento',sr.current._bj0.srcs.push('avvicinamento'));/* [7.555.0 P0] questo lerp era l'UNICO scrittore senza nome: il censimento per fase lo vedeva come «anonimo» sull'11,5% dei fotogrammi di hl_result (11 su 96). Non e' un bug di moto, e' un buco di anagrafe: ora la firma copre anche l'avvicinamento al bersaglio dell'esito. */
         } else {
           /* [7.194.0 S1] LA PALLA VIAGGIA A VELOCITÀ REALE. Fuori dall'arco il pallone inseguiva la posizione
@@ -9788,6 +9803,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          else if(!_st.ball){if(_volo525&&_d520>6){_st.ball=true;_st.acc=0;}
            else if(_d520>10){_st.acc+=dt;if(_st.acc>0.35){_st.ball=true;_st.acc=0;}}else _st.acc=0;}
          else{if(!_volo525&&_d520<7){_st.acc+=dt;if(_st.acc>0.25){_st.ball=false;_st.acc=0;}}else _st.acc=0;}
+         /* [giro 61 — eroe fuori quadro in hl_result su «Ricevi fra le linee», annotato dal giro 53. Rosso __CPM_NO_LINEE61]
+            MISURATO (sonda linee-61, 4 partite vere GLB acceso, 9 scene «fra le linee»): eroe fuori 8% dei fotogrammi col pallone in
+            volo ma 25,8% a pallone NON in volo, e quei fotogrammi sono tutti nel POST-ARCO di un tiro parato/fuori (p2 3': 40/40) col
+            soggetto rimasto sul pallone, mentre l'eroe che ha tirato da 20-25u resta fuori. Il volo e la parata sono la storia (7.522);
+            passati 0,9 s di scena di post-arco la storia torna a chi ha tirato, fino alla fine della scena (anche sul suo gol, in_net:
+            misurato p2 3' eroe marcatore appena fuori, ndc 1,03-1,13, per 40 fotogrammi). Esclusi l'autogol, il compagno
+            che finalizza (assist_recv: 7.522, «il ricevente va visto») e il ritorno dell'uno-due; esclusi gli highlight difensivi
+            (hanno gia' l'eroe come soggetto, 7.482.1). */
+         if(!isResult)sr.current._keep61=null;
+         else if(!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61)&&!_ex520){
+           if(_st.ball&&!ballArcActive&&hlPostArcType&&hlPostArcT>=0.9&&!/^(in_net_own|cross_goal|assist_recv|onetwo_back)$/.test(hlPostArcType))sr.current._keep61=P.hlSitKey;
+           if(sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey){_st.ball=false;_st.acc=0;}}
          _subjBall50=_st.ball;}}
       /* [7.505.0 F6/3 — LA TAGLIA E' REGIA: 0,18 · decisione delegata dal PO, presa con lo sweep sulle 191]
          Lo sweep (7.503) ha dato la curva completa: a taglia 0 la mediana e' 0,054 con l'86% delle scene
@@ -10581,7 +10608,11 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              25-35u dall'eroe) il bersaglio dello sguardo stava sull'eroe ma questa guardia ruotava lo sguardo vero di 9-10u verso il pallone,
              e la guardia-eroe aspettava perche' il BERSAGLIO lo conteneva (7.704): eroe fuori 18/22 e 15/17 fotogrammi d'apertura, 1/1 in scelta.
              Nelle fasi di PRESENTAZIONE (intro/move/scelta), quando il soggetto e' l'eroe, vale lo stesso tetto degli highlight difensivi. */
-          if((P.hlDef||(!isResult&&!_subjBall50&&!(typeof window!=='undefined'&&window.__CPM_NO_PG273)))&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_PG74)){
+          /* [giro 61, rosso __CPM_NO_LINEE61] e anche nel tratto finale del post-arco in cui la storia e' tornata a chi ha tirato (_keep61):
+             MISURATO (linee-61, p1 4'): col solo cambio di soggetto la guardia ruotava lo sguardo verso il pallone respinto, passato a 9u
+             dalla camera, e portava l'eroe a ndc x -7. */
+          const _k61g=isResult&&sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61);
+          if((P.hlDef||_k61g||(!isResult&&!_subjBall50&&!(typeof window!=='undefined'&&window.__CPM_NO_PG273)))&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_PG74)){
             const _aHB=Math.atan2(hero.position.z-_czB,hero.position.x-_cxB);let _dH=_aHB-_aLB;while(_dH>Math.PI)_dH-=2*Math.PI;while(_dH<-Math.PI)_dH+=2*Math.PI;
             const _lim=_aMB/0.97*0.94;/* dopo la rotazione l'eroe sta a (_dH-_corB) dall'asse: deve restare entro _lim */
             if(Math.abs(_dH-_corB)>_lim){const _cMax=_corB>0?(_dH+_lim):(_dH-_lim);_corB=_corB>0?Math.max(0,Math.min(_corB,_cMax)):Math.min(0,Math.max(_corB,_cMax));}}
@@ -11426,7 +11457,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           _g.bn=(_g.bn||0)+1;if(!_bd||!ball.visible)_g.bfuori=(_g.bfuori||0)+1;if(!ball.visible)_g.binv=(_g.binv||0)+1;else if(!_bd)_g.bgeo=(_g.bgeo||0)+1;
           if(_g.n<=12){_g.a12=(_g.a12||0)+1;if(!_dentro)_g.afuori=(_g.afuori||0)+1;if(!_bd||!ball.visible)_g.abfuori=(_g.abfuori||0)+1;}}
         _g.fase=P.matchPhase||null;
-        if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),h:+_h480.toFixed(3),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
+        if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),h:+_h480.toFixed(3),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null,ar:ballArcActive?1:0,pa:hlPostArcType||null,ok:P.hlOutcomeKind||null,kp:(sr.current._keep61!=null)?1:0,pt:(hlPostArcT>=0)?+hlPostArcT.toFixed(2):null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
       }catch(_e480){}}
       /* [7.561.0 missione — IL PALLONE ESCE DALL'INQUADRATURA, E IN CRONACA NESSUNO LO RIPORTA DENTRO]
          Collaudo PO del 24 agosto: «il pallone spesso esce fuori dalla scena, la telecamera non segue
