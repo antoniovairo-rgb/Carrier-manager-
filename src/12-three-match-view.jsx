@@ -1919,7 +1919,8 @@ function ThreeMatchView(props){
     //   (delay per indice) e camminano in diagonale fino allo slot schierato. Non più tutti insieme dalla formazione.
     const _isWalkStart=props.matchPhase==="walkout"&&!_CPM_TEST;// solo se si PARTE dalla walkout (la prima partita) e NON sotto gate: altrimenti i mesh restano in formazione (gate/forzature intatti)
     const _placeRow=(list,xRow,side)=>{const n=list.length;list.forEach((m,i)=>{
-      m._wx=xRow;m._wz=n>1?(-28+56*i/(n-1)):0;// slot finale schierato
+      const _H277=(typeof window!=='undefined'&&window.__CPM_NO_ING277)?28:10;/* [giro 54 PO-277 «ingresso piu' rapido, non velocissimo» — rosso __CPM_NO_ING277] la fila schierata stava su 56u (5,6u fra due compagni): ora 20u, spalla a spalla come in tv, e la strada dal tunnel si accorcia */
+      m._wx=xRow;m._wz=n>1?(-_H277+2*_H277*i/(n-1)):0;// slot finale schierato
       m._wDelay=0.18+((typeof window!=='undefined'&&window.__CPM_NO_ING245)?i:(n-1-i))*((typeof window!=='undefined'&&window.__CPM_NO_CAMM245)?0.20:0.65);/* [giro 23 PO-245 «camminata vera» — rosso __CPM_NO_CAMM245] a passo di camminata (1,8 u/s) 0,2 s fra uno e l'altro vorrebbero dire 0,36u: corpi uno dentro l'altro. 0,65 s = ~1,2u di fila */// scaglionamento: emergono uno dopo l'altro dal tunnel · [giro 19 PO-245] esce PRIMA chi va piu' lontano (la testa della fila), cosi' il passo resta da camminata
       m._wStartX=(typeof window!=='undefined'&&window.__CPM_NO_STADI246)?xRow-9:(side<0?-23.6:-20.4);/* [giro 46 PO-071 — rosso __CPM_NO_STADI246] le due file escono affiancate dalla bocca del tunnel (x -22, buildStadium) invece che da due punti del bordo campo */m._wStartZ=((typeof window!=='undefined'&&window.__CPM_NO_ING245)?side:-1)*36;/* [giro 19 PO-245, collaudo 165 N3 — rosso __CPM_NO_ING245] le due squadre escono dallo STESSO tunnel (z -36, lato panchine): prima gli ospiti partivano dalla linea laterale opposta e attraversavano il campo */// [6.28.0] bocca del tunnel (lato campo) SEMPRE memorizzata → l'ingresso scaglionato si può riavviare all'inizio della fase walkout (non solo al mount)
       if(_isWalkStart){m.position.x=m._wStartX;m.position.z=m._wStartZ;m._px=m.position.x;m._pz=m.position.z;m._sp=0;}// partenza: bocca del tunnel (lato campo)
@@ -3112,7 +3113,7 @@ function ThreeMatchView(props){
       if(prog>=1){replaying=false;replayDone=true;setReplayOn(false);}
     };
     // Stato walkout 3D: i giocatori si schierano in fila, camera che scorre, poi calcio d'inizio
-    let walkT=0,walkDone=false,_wasWalk=false;let WALK_DUR=10.5;const WALK_V245=1.8;/* [giro 23 PO-245] WALK_DUR non e' piu' fisso: con la camminata si calcola all'avvio dell'ingresso (ultimo arrivo + 2 s), rosso __CPM_NO_CAMM245 = 10,5 s */// [6.90.0 collaudo PO «inquadrature d'ingresso più lente e meno frenetiche»] 6.2→10.5s: il giro a 360° respira (~9s), la chiusura sulla fila ha il suo tempo. [6.28.0] _wasWalk: rileva l'INIZIO della fase walkout nel render-loop → riavvia l'ingresso scaglionato dal tunnel ANCHE quando ThreeMatchView è montato prima (fase matchday) — prima l'ingresso "vero" partiva solo se il mount avveniva già in walkout (quasi mai) → i giocatori scivolavano dalla formazione, «sballato».
+    let walkT=0,walkDone=false,_wasWalk=false;let WALK_DUR=10.5;const WALK_V245=(typeof window!=='undefined'&&window.__CPM_NO_ING277)?1.8:2.2;/* [giro 54 PO-277 — rosso __CPM_NO_ING277] passo 1,8→2,2 u/s (ancora camminata: tetto del guardiano 2,3) + fila compatta: ingresso 38,5 s → 24 s di scena (prima del giro 23: 10,5 s) *//* [giro 23 PO-245] WALK_DUR non e' piu' fisso: con la camminata si calcola all'avvio dell'ingresso (ultimo arrivo + 2 s), rosso __CPM_NO_CAMM245 = 10,5 s */// [6.90.0 collaudo PO «inquadrature d'ingresso più lente e meno frenetiche»] 6.2→10.5s: il giro a 360° respira (~9s), la chiusura sulla fila ha il suo tempo. [6.28.0] _wasWalk: rileva l'INIZIO della fase walkout nel render-loop → riavvia l'ingresso scaglionato dal tunnel ANCHE quando ThreeMatchView è montato prima (fase matchday) — prima l'ingresso "vero" partiva solo se il mount avveniva già in walkout (quasi mai) → i giocatori scivolavano dalla formazione, «sballato».
     // Cammina verso lo slot di walkout, fronte alla camera (-x)
     const animWalk=(mesh,dt,k)=>{
       // 5.47.17: prima del proprio turno il giocatore ASPETTA alla bocca del tunnel (idle leggero), poi entra
@@ -6219,10 +6220,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
          aspettano al tunnel finche' il 3D e' pronto (__CPM_GLB_READY, lo stesso segnale del fischio d'inizio; tetto 10 s) e
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
-      const _hold74=isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10));
+      const _hold74=isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10));
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){
+        /* [giro 54 PO-277 «saltabile» — rosso __CPM_NO_ING277] «Salta ingresso» non taglia la fase a meta': MISURATO (sonda del
+           giro) che i corpi ancora in attesa al tunnel non hanno nessuna clip avviata e `playing` non gliene avvia una, cosi' l'attesa
+           dei corpi (PO-232) scattava per tutto il tetto di 8 s (15 corpi «fermi» su 23). Il salto porta tutti al proprio posto e
+           chiude l'ingresso nello STESSO fotogramma (walkT=WALK_DUR): la chiusura e' quella naturale (onWalkoutDone) e il riposo riparte (vedi l'idle della fila, ramo PO-206). Mezzo secondo di scena non bastava: sotto carico in headless durava piu' della rete di sicurezza. */
+        if(typeof window!=='undefined'&&window.__CPM_SKIPWALK277&&!walkDone&&!window.__CPM_NO_ING277){window.__CPM_SKIPWALK277=false;
+          const _sn277=(m)=>{if(!m||m._wx==null)return;m.position.x=m._wx;m.position.z=m._wz;m._px=m._wx;m._pz=m._wz;m._sp=0;};
+          sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);
+          }
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
@@ -9276,7 +9285,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           tLx=Math.cos(_th+Math.PI)*40;tLy=8-4*prog;tLz=Math.sin(_th+Math.PI)*26;// sguardo alla tribuna OPPOSTA: campo+anello in quadro
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
-          const panZ=-32+64*prog;tPx=-42;tPy=9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
+          const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
+          const panZ=(-32+64*prog)*(_o277?10/28:1);tPx=_o277?-33:-42;tPy=_o277?7.2:9.5;tPz=panZ;tLx=-11;tLy=2.0;tLz=panZ*0.5;
           kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.6,1);
         }
       } else {
@@ -10975,7 +10985,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              «idle» stessa (10,2 s) che piega le ginocchia di 40-55 gradi quasi ogni secondo (escursione gambe 46-72 gradi, la corsa 49-80):
              da lontano, in fila, sembra una corsa sul posto. Nel walkout l'idle oscilla lentamente nella sua finestra piu' calma (0-1 s,
              escursione massima 11 gradi). Rosso __CPM_NO_FILA206. */
-          if(_a.idle&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FILA206)){_a._f206=(_a._f206==null?(_ai*0.7):_a._f206)+dt*1.4;_a.idle.timeScale=0;_a.idle.time=0.5-0.5*Math.cos(_a._f206);}
+          if(_a.idle&&propsRef.current&&propsRef.current.matchPhase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_FILA206)&&!(walkDone&&!(typeof window!=='undefined'&&(window.__CPM_NO_ING277S||window.__CPM_NO_ING277)))/* [giro 54 PO-277 — rosso __CPM_NO_ING277S] MISURATO (stato del mixer per corpo, sonda del giro): qui l'idle ha timeScale 0 e il tempo guidato a mano; il ripristino (ramo sotto) non arriva piu' ai corpi rimasti fermi una volta in `playing`, e l'attesa dei corpi PO-232 li contava «fermi» fino al tetto di 8 s (21 corpi su 23 dopo un salto). Chiuso l'ingresso (walkDone, anche saltato) il riposo riparte nello stesso fotogramma. */){_a._f206=(_a._f206==null?(_ai*0.7):_a._f206)+dt*1.4;_a.idle.timeScale=0;_a.idle.time=0.5-0.5*Math.cos(_a._f206);}
           else if(_a._f206!=null&&_a.idle){_a._f206=null;_a.idle.timeScale=_idleHero?0.5:1;}
           /* [7.206.0 direttiva PO «mai movimenti robotici»] LA CADENZA DEL PASSO SEGUE LA VELOCITÀ. Un piede
              non slitta quando il ritmo del ciclo di corsa è PROPORZIONALE alla velocità reale; qui la cadenza
