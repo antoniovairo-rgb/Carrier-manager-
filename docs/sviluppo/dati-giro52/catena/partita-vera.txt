@@ -1,0 +1,27 @@
+
+> cpm-visual-3d-validation@1.0.0 partita-vera
+> node partita-vera-guardian.mjs
+
+  · [diag] motore partita 0: {"tick":2089,"conta":{"tenuta":579,"volo":882,"libero":287,"fermo":291,"rete":0,"kickoff":7,"scena":103,"passaggi":826,"tiri":16,"gol":{"home":0,"away":0},"falli":23,"fuori":35,"corner":2,"contrasti":17,"intercetti":32,"conduzioni":186,"ricezioniHero":24,"golNegati":0,"golForzati":0,"rami":{"controllo":115,"appoggio228":28,"circola228":561,"circola228_persa":8,"passa":150,"conduci":186,"cross_avanti":192,"fallo":12,"contrasto":5,"cross_largo":65,"cross":15,"spazz_arrivo":20,"spazz_dif4_8":9,"conduzioneFuori":1,"ricicla228":11,"tiroV2":12,"spazz_difLontano":6,"gestioneV2":11,"dribblingPerso":5,"dribblingFallo":4,"pressingV2":12,"circola228_fallo":7,"spazz_difVicino":5,"tiro":1,"gk":7,"circola228_contrasto":1},"occEroe":0,"scenaTick":103,"tiroEroeNegato":36,"spazzDist":128.0859097300035,"spazzN":20},"quota":{"home":312,"away":267}}
+  · [diag] motore partita 1: {"tick":2155,"conta":{"tenuta":579,"volo":792,"libero":366,"fermo":253,"rete":2,"kickoff":20,"scena":202,"passaggi":730,"tiri":21,"gol":{"home":1,"away":0},"falli":21,"fuori":37,"corner":9,"contrasti":12,"intercetti":20,"conduzioni":171,"ricezioniHero":37,"golNegati":0,"golForzati":0,"rami":{"controllo":118,"appoggio228":27,"circola228":453,"circola228_persa":7,"passa":175,"conduci":171,"cross_avanti":180,"fallo":13,"contrasto":3,"cross_largo":43,"cross":9,"spazz_arrivo":19,"spazz_dif4_8":4,"conduzioneFuori":3,"ricicla228":3,"tiroV2":13,"spazz_difLontano":8,"gestioneV2":15,"circola228_fallo":6,"dribblingFallo":2,"pressingV2":8,"spazz_difVicino":7,"gk":6,"tiro1":6,"tiro":2,"dribblingPerso":5,"persa1":1,"cross_senzaRicevente":2},"occEroe":0,"scenaTick":202,"tiroEroeNegato":48,"spazzDist":148.95242295077188,"spazzN":19},"quota":{"home":348,"away":231}}
+  · righe del motore per fatto: {"fuori":31,"battuta":4,"passaggio":18,"fallo":26,"cross":20,"tiro":32,"contrasto":3,"intercetto":11,"ricezione":7,"parata":1,"-":2,"murato":1,"gol":1}
+
+=== GUARDIANO PARTITA-VERA ===
+
+  [info] portatore-stato: campioni 0 · copertura 0% · dist mediana ?u · coda consegne null
+  ✅ turno-causale — scritture causali 100% (orologio 0/82)
+  ✅ manovra-viva — 70 righe di manovra su 2 partite (motore 70 + catena 0 + libreria 0 + battute di piano 0) · banda 10
+  ✅ arbitro-esiste — 57 interruzioni ambientali
+  ✅ custodia — mediana 3.7u su 71 campioni (ogni tick vivo)
+  · non giudicabile (campione sotto minimo) gol-con-manovra — 1/1 gol con riga di macchina nei 4' prima
+  ✅ mente-esegue — 45 passaggi eseguiti dal motore (righe passaggio/ricezione/cross) su 2 partite · banda 2
+  ✅ riga-descrive — 54 righe-fatto (fatti del motore gia' avvenuti) su 2 partite · banda 2
+  ✅ raccoglitore — 14 recuperi/contrasti/intercetti del motore su 2 partite · banda 4
+  ✅ esiti-registrati — 11 esiti di scena nel libro mastro su 2 partite · banda 4
+  · non giudicabile (campione sotto minimo) tabellone — gol raccontati 1-0 · punteggio finale 0-0 su 0 partite
+  · non giudicabile (campione sotto minimo) gol-del-simulatore — 0 gol del microsim nati · 1 accreditati · 0 mangiati prima del tabellone
+  ✅ nomi-veri — 54/54 righe-fatto con un cognome della rosa (rosa 20 nomi)
+
+✅ PARTITA-VERA OK — le bande d'accettazione tengono.
+
+FINE 0

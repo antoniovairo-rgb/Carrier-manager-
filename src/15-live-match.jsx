@@ -6061,6 +6061,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* i fatti rari si leggono dal tabellino del motore e si datano al minuto in cui compaiono (lettura, nessun sorteggio) */
           const _e=_N.e259||(_N.e259={eN:0,eL:0,rL:0,eNm:null,eLm:null,rLm:null});
           {const _en=((occ28Ctx.current||{}).energy);if(_en!=null){if(_e.enP!=null&&_e.enP>INT259.CALO&&_en<=INT259.CALO)_e.calom=nx;_e.enP=_en;}}/* [PO-259] il minuto del calo di fiato dell'eroe */
+          /* [giro 52 — rosso __CPM_NO_FIN252b] IL FATTO DEL FINALE: dal 75' ogni tiro in porta, legno o tiro pericoloso (xG >= 0,2) di una delle due
+             squadre e ogni occasione dell'eroe nel motore si data al minuto in cui compare nel tabellino (lettura del confronto fra due minuti,
+             nessun sorteggio). La scheda del pari nasce da li' (INT259.finale), con la rete all'81'. */
+          if(_t){const _q=(a)=>({p:(a.inPorta|0)+(a.legni|0),x:+a.xg||0});const _h=_q(_t.home),_a=_q(_t.away);const _oc=(_M&&_M._S&&_M._S._ultOccV2!=null)?(_M._S._ultOccV2|0):null;
+            if(_e.fP&&nx>=INT259.FIN){const _dl=(_a.p>_e.fP.a.p)||(_a.x-_e.fP.a.x>=0.2),_dn=(_h.p>_e.fP.h.p)||(_h.x-_e.fP.h.x>=0.2)||(_oc!=null&&_oc!==_e.fP.oc&&_oc>=INT259.FIN);
+              if(_dl||_dn){_e.finm=nx;_e.fink=_dl?'loro':'noi';}}
+            _e.fP={h:_h,a:_a,oc:_oc};}
           if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}if((_t.away.rigori|0)>_e.rL){_e.rL=_t.away.rigori|0;_e.rLm=nx;}}
           /* IL RACCONTO, cinque minuti dopo la scelta: nasce dalle differenze del tabellino del motore e del punteggio (INT259.racconta) */
           const _R=_N.r259;
@@ -6082,9 +6089,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _fatte=(_N.fatte||[]).filter(x=>/^i259_/.test(x)).map(x=>x.slice(5));
           const _c={mn:nx,diff:(_sc.home|0)-(_sc.away|0),energia:((occ28Ctx.current||{}).energy),panchina:!!onBenchRef.current,
             ingresso:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_BENCH_MIN)||benchMinRef226.current||0),fatte:_fatte,ultima:(_fatte.length?(_N.ultima|0):null),
-            caloMin:(_e.calom!=null?_e.calom:null),espNoi:_e.eN|0,espNoiMin:_e.eNm,espLoro:_e.eL|0,espLoroMin:_e.eLm,rigContro:_e.rL|0,rigControMin:_e.rLm};
+            caloMin:(_e.calom!=null?_e.calom:null),espNoi:_e.eN|0,espNoiMin:_e.eNm,espLoro:_e.eL|0,espLoroMin:_e.eLm,rigContro:_e.rL|0,rigControMin:_e.rLm,finMin:(_e.finm!=null?_e.finm:null),finK:_e.fink||null};
           const _f=INT259.scegli(_c);
-          if(_f&&INT259.SCHEDE[_f]){const _S=INT259.SCHEDE[_f];_intxK669={id:"i259_"+_f,fam:"MISTER",txt:_S.txt,sc:_S.sc.map(o=>({et:o.et,premio:o.premio,rischio:o.rischio,es:()=>null})),cons:{},i259:_f};}
+          if(_f&&INT259.SCHEDE[_f]){const _S=INT259.SCHEDE[_f];_intxK669={id:"i259_"+_f,fam:"MISTER",txt:_S.txt,sc:_S.sc.map(o=>({et:o.et,premio:o.premio,rischio:o.rischio,es:()=>null})),cons:{},i259:_f,finK:(_f==='pari_finale'&&INT259.recente(1,nx,_e.finm)&&!(typeof window!=='undefined'&&window.__CPM_NO_FIN252b))?(_e.fink||null):null,finMin:(_e.finm!=null?_e.finm:null)};}
         }catch(_e259){}}
         if(_on226&&!_sosp246&&!_inHL77&&!pendingGoalRef.current&&!_recHij545&&!(subbedOffRef.current||heroRedRef.current)
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))&&nx<=88){try{
@@ -6708,7 +6715,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _cmp=(function(){try{const _rr=((isMatchHome?homeRoster:awayRoster)||homeRoster||[]);
               const _r0=_rr.filter(m=>m&&m.name&&m.name!==player.name);const _r1=(typeof window!=='undefined'&&window.__CPM_NO826)?_r0:_r0.filter(m=>!/^(POR|GK|Portiere)$/i.test(String(m.pos||m.role||"")));const _r=_r1.length?_r1:_r0;/* [7.826.0 — IL COMPAGNO CHE LO CHIAMA NON E' IL PORTIERE. Rosso __CPM_NO826] Playtest n°6 (AA): «Fontana allarga le braccia e lo chiama», «Fontana esce dal mucchio dell'esultanza» — Fontana e' il portiere, tre volte in quattro partite. Il compagno delle schede si pesca fra gli uomini di movimento. */
               const _m=_r[Math.floor(_rndM()*_r.length)];return _m?(_surnBG(_m.name)||"il compagno"):"il compagno";}catch(_e){return "il compagno";}})();
-            const _ctx={mn:nx,diff:_mio-_suo,eroe:_eroe,compagno:_cmp,duelliV:_N.duelliV,duelliP:_N.duelliP,
+            const _ctx={mn:nx,diff:_mio-_suo,eroe:_eroe,compagno:_cmp,duelliV:_N.duelliV,duelliP:_N.duelliP,finK:(_intxK669&&_intxK669.finK)||null,
               occFallite:_N.occFallite,giocate:_N.giocate,marcatura:_N.marcatura,
               golSubDaPoco:(_N.golSub>0&&(nx-(_N.golSubMn|0))<=6),
               golFatti:(_N.golFatti|0),golSub:(_N.golSub|0),eroeGol:(_N.eroeGol|0),golFattoDaPoco:((_N.golFatti|0)>0&&(nx-(_N.golFattoMn|0))<=6),eroeGolDaPoco:((_N.eroeGol|0)>0&&(nx-(_N.eroeGolMn|0))<=6)};/* [7.721.0] stessi campi del contesto di selezione, cosi' txt/es non divergono */
@@ -6726,7 +6733,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(!(typeof window!=='undefined'&&window.__CPM_NO748)){if(_c.coinv)_N.coinv=(_N.coinv|0)+_c.coinv;if(_c.fiducia)_N.fiducia=(_N.fiducia|0)+_c.fiducia;if(_c.zona)_N.zona=(_N.zona|0)+_c.zona;}
               ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_motore870:null,_az551:null,at:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};/* [7.812 v1 REVOCATA, vedi la libreria] */
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
-              if(_intxK669.i259&&typeof window!=='undefined'){try{(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}).schede.push({min:nx,fatto:_intxK669.i259,diff:_ctx.diff,score:{home:_mio,away:_suo},panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy)});}catch(_e){}}/* [PO-259] testimone: ogni scheda col fatto, il minuto e il punteggio */
+              if(_intxK669.i259&&typeof window!=='undefined'){try{(window.__CPM_S259=window.__CPM_S259||{schede:[],scelte:[],racconti:[]}).schede.push({min:nx,fatto:_intxK669.i259,diff:_ctx.diff,score:{home:_mio,away:_suo},panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy),finK:_intxK669.finK||null,finMin:(_intxK669.finMin!=null?_intxK669.finMin:null)});}catch(_e){}}/* [PO-259] testimone: ogni scheda col fatto, il minuto e il punteggio */
               if(_intxK669.i226&&typeof window!=='undefined'){try{const _W=(window.__CPM_INT226=window.__CPM_INT226||{schede:[],scelte:[]});_W.schede.push({min:nx,fatto:_intxK669.i226,diff:_ctx.diff,panchina:!!onBenchRef.current,energia:((occ28Ctx.current||{}).energy),duelliP:(_N.duelliP|0)});}catch(_e){}}/* [PO-226] testimone: ogni scheda del sistema nuovo col fatto che l'ha aperta */
             }
           }catch(_e670){}}
