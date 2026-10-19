@@ -47180,6 +47180,20 @@ const getThisWeekMatchday=()=>{
   //   apertura/chiusura finestre) vivevano SOLO in doAdvanceWeek → chi giocava/simulava le settimane li saltava
   //   (task appesi, finestre mute, MVP mai valutato). Questo effect li esegue sul cambio settimana QUANDO il path
   //   non era doAdvanceWeek (flag _mktDoneRef): stesse formule dei blocchi inline (cross-ref righe ~22025-22210).
+  /* [7.999.173 PO-155] ARRIVO IN UNA FINESTRA INTERNAZIONALE, da qualunque percorso (Avanza, Simula, partita giocata):
+     il giro 49 ha misurato che il vecchio controllo girava solo dentro doAdvanceWeek. Al montaggio non si decide
+     (un ricaricamento non deve ripetere la lista). Rosso __CPM_NO_FIN155. */
+  const _fin155Ref=useRef(null);
+  useEffect(()=>{try{
+    const k=(player.season||1)+"|"+(player.week||1);
+    if(_fin155Ref.current===null){_fin155Ref.current=k;return;}
+    if(_fin155Ref.current===k)return;_fin155Ref.current=k;
+    if(typeof window!=='undefined'&&window.__CPM_NO_FIN155)return;
+    if((player.proStatus||"u18")!=="pro")return;
+    const W=player.week||1;if(!natFinestre155(player).includes(W))return;
+    const q=player.nationsCupQueue;if(q&&q.active&&!q.done)return;
+    _tryNatCallup(W,true);
+  }catch(_e){}},[player.season,player.week]);// eslint-disable-line
   const _mktDoneRef=useRef(null);
   const _mktWkRef=useRef(null);
   useEffect(()=>{
@@ -48333,6 +48347,22 @@ const getThisWeekMatchday=()=>{
       :rank===1?"Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco.":rank===2?"Sei il primo nome dietro al titolare: una grande striscia può ribaltare le gerarchie.":(role==="riserva"?"«Il mio 9 gioca ogni settimana — tu no.» Per rientrare nel giro serve il campo.":"Sei tra i convocabili, ma davanti c'è chi segna di più: servono numeri, non parole.");
     return{list,rank,why};
   }catch(_e){return null;}};
+  /* [7.999.173 PO-155 «Svincolato, poi finestre + CT»] LE FINESTRE INTERNAZIONALI SONO LE SOSTE DEL CALENDARIO.
+     Il calendario del club ha gia' le sue soste (`_CAL_BREAKS`, src/09: settimane 9·19·28·35 con 16 avversari):
+     sono le settimane senza giornata di campionato fra la prima e l'ultima. Prima la convocazione era un tiro di
+     dado valutato solo nelle settimane avanzate da `doAdvanceWeek` (giro 49: 2,02 valutazioni a stagione, la
+     settimana 9 quasi mai). Ora ogni sosta e' una finestra: arrivandoci, da qualunque percorso, il CT decide.
+     Derivato dal calendario: nessun campo nuovo nel salvataggio. Rosso __CPM_NO_FIN155. */
+  const natFinestre155=(p)=>{try{const lg=(p.calendar||[]).filter(m=>m&&(!m.type||m.type==="league")&&m.week);if(lg.length<2)return[];
+    const ws=new Set(lg.map(m=>m.week));const a=Math.min(...ws),b=Math.max(...ws);const out=[];for(let w=a+1;w<b;w++)if(!ws.has(w))out.push(w);return out;}catch(_e){return[];}};
+  /* [7.999.173 PO-155] IL RAPPORTO COL CT, derivato dalla storia vera in Nazionale (presenze, voti, gol e assist
+     delle ultime sei gare): 0-100. Pesa sulla decisione del CT (±5 di idoneita') e il tab Nazionale lo mostra.
+     Derivato: nessun campo salvato. */
+  const ctRapporto155=(p)=>{try{const caps=p.nationalCaps||0;const h=(p.natHistory||[]).filter(x=>x&&x.rating!=null).slice(-6);
+    let r=40+Math.min(20,caps);
+    if(h.length){const avg=h.reduce((t,x)=>t+(+x.rating||6),0)/h.length;r+=(avg-6.5)*10;r+=Math.min(10,h.reduce((t,x)=>t+(x.goals||0)*2+(x.assists||0),0));}
+    const v=clamp(Math.round(r),0,100);
+    return{v,label:v>=70?"Il CT ti considera un punto fermo":v>=50?"Il CT ti segue con fiducia":v>=35?"Il CT ti osserva: devi convincerlo":"Il CT non è convinto di te"};}catch(_e){return{v:50,label:"Il CT ti osserva"};}};
   // [7.29.0 ONDA 4 — §S10] SPONSOR & IMMAGINE: il secondo stipendio arriva a FASCE di fama (soglie di
   //   popolarità; con procuratore GLOBAL si aprono prima, §S5). Brand di fantasia seedati, max 1 sponsor per
   //   fascia (p.sponsors lazy); il reddito entra dal chokepoint weeklyEconomyFields (tutti i path — STAB).
@@ -50200,9 +50230,12 @@ const getThisWeekMatchday=()=>{
   };
 
   /* [7.544.0] IL CONTROLLO SULLA CONVOCAZIONE, in un posto solo. */
-  const _tryNatCallup=(weekVal)=>{
+  const _tryNatCallup=(weekVal,fin)=>{/* [7.999.173 PO-155] fin=true: decisione del CT all'arrivo in una finestra (sosta) */
     const isInU18=(player.proStatus||"u18")==="u18";
-    const _callupBusyWk=[19,20].includes(weekVal);
+    const _callupBusyWk=fin?false:[19,20].includes(weekVal);/* [7.999.173] la finestra E' la sosta e non apre schermate: niente esclusione */
+    /* [7.999.173 PO-155, giro 49 «il cancello non guarda il contratto» — rosso __CPM_NO_SV155] DA SVINCOLATO NIENTE NAZIONALE:
+       senza club non si gioca, e il CT non chiama chi non gioca. */
+    const _sv155=!!player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_SV155);
     /* [7.544.0 collaudo PO «ma è spagnolo! e ci ha messo anche troppo per la prima convocazione»] TESTIMONE
        DELLA CONVOCAZIONE (test-only). Il salvataggio del PO dice: nazione Spagna (soglia OVR 81), OVR 81
        gia' in S.3 e poi 85/86/88, 31-40 gol a stagione, popolarita' 100 — e `nationalCaps: 0` alla S.7.
@@ -50210,8 +50243,8 @@ const getThisWeekMatchday=()=>{
        sfortuna, e' un ramo che non viene percorso. Qui si registra OGNI valutazione del cancello con i suoi
        valori, cosi' la diagnosi la fa la misura e non il ragionamento. */
     if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;
-      if(_w.length<400)_w.push({s:player.season||1,w:weekVal,u18:!!isInU18,busy:!!_callupBusyWk,inj:!!player.injured,ovr:player.ovr||0,caps:player.nationalCaps||0,nst:(player.natHistory||[]).filter(h=>h&&(h.season||0)===(player.season||1)).length});}catch(_e){}}
-    if(!isInU18&&!_callupBusyWk&&!player.injured){
+      if(_w.length<400)_w.push({s:player.season||1,w:weekVal,fin:!!fin,sv:!!player.contractExpired,u18:!!isInU18,busy:!!_callupBusyWk,inj:!!player.injured,ovr:player.ovr||0,caps:player.nationalCaps||0,nst:(player.natHistory||[]).filter(h=>h&&(h.season||0)===(player.season||1)).length});}catch(_e){}}
+    if(!isInU18&&!_callupBusyWk&&!player.injured&&!_sv155){
       const caps=player.nationalCaps||0;
       const lastNat=player.lastNationalSeason||0;
       const curSeas=player.season||1;
@@ -50251,6 +50284,8 @@ const getThisWeekMatchday=()=>{
       let elig=(ovr-ovrGate)+contrib*10+continuity*6+(rep-50)*0.10+(frm-70)*0.10;
       if(isFirst&&age<20)elig-=(20-age)*4;         // niente convocazioni stabili solo per il potenziale
       if(curSeas<=2)elig-=(3-curSeas)*5;           // freno alle primissime stagioni
+      const _rel155=fin?ctRapporto155(player):null;
+      if(_rel155)elig+=(_rel155.v-50)/10;          // [7.999.173 PO-155] il rapporto col CT pesa ±5
       if(typeof window!=='undefined'&&window.__CPM_CALLUP!==undefined){try{const _w=window.__CPM_CALLUP;const _l=_w[_w.length-1];
         if(_l&&_l.s===(player.season||1)&&_l.w===weekVal){_l.gate=ovrGate;_l.elig=+elig.toFixed(1);_l.pend=(player.calendar||[]).some(md=>md.type==="national"&&!md.played);_l.passa=(ovr>=ovrGate&&elig>0&&(isFirst||seasonOpen)&&!_l.pend);}}catch(_e){}}
       /* [7.783.0] QUANTE FINESTRE A STAGIONE LO DECIDE IL VALORE, non una costante. Con un tetto fisso a otto
@@ -50266,12 +50301,17 @@ const getThisWeekMatchday=()=>{
         //   (nazione+stagione+settimana → stessa carriera, stessa convocazione) e amichevole nel CALENDARIO
         //   alla prima settimana LIBERA (pausa internazionale di fatto): si gioca/simula dal flusso standard.
         const _cuR=seededRng((Math.abs(hashStr((player.nation||"x")+"|natfr|"+(player.season||1)+"|"+weekVal))>>>0)||1);
-        if(_cuR()<callP){
+        /* [7.999.173 PO-155 «la convocazione è un tiro di dado settimanale»] nella finestra decide il CT, non il dado:
+           convocato chi supera la soglia della nazionale con idoneita' positiva (al debutto serve un margine di 2).
+           Il numero estratto si consuma lo stesso, cosi' l'avversario resta quello seedato di prima. */
+        const _roll155=_cuR();
+        if(fin?(elig>=(isFirst?2:0)):(_roll155<callP)){
           const _allNat=["Italia","Spagna","Francia","Germania","Inghilterra","Portogallo","Brasile","Argentina","Olanda","Belgio"];
           const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
           const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
           const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
-          let _natW=weekVal;do{_natW++;}while(_natW<=37&&_usedW.has(_natW));
+          let _natW=weekVal;if(fin){if(_usedW.has(_natW))_natW=99;}else{do{_natW++;}while(_natW<=37&&_usedW.has(_natW));}/* [7.999.173] la finestra si gioca nella sosta stessa; se la sosta e' occupata da un'altra gara, salta */
+          const _ct155=fin?ctListView(player):null;const _ruolo155=_ct155?(_ct155.rank===1?"titolare":"a disposizione"):null;
           /* [7.999.35 collaudo PO «calendario sbagliato»: in settimana 28, in pieno girone dell'Europeo, la home mostrava
              «FC Merseyside vs Belgio · Premier Division»] L'amichevole della convocazione prendeva la prima settimana libera
              DEL CALENDARIO DEL CLUB, senza guardare il torneo della Nazionale (che vive fuori dal calendario): un'amichevole in
@@ -50279,9 +50319,19 @@ const getThisWeekMatchday=()=>{
              in cui la fase finale arriva (dalla 24, dove si chiudono le qualificazioni). Rosso __CPM_NO_CAL35. */
           const _em35=player.euroMondiale;const _torneo35=!!(_em35&&_em35.active&&!_em35.done&&(_em35.phase!=="qualificazioni"||_natW>=24))&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35);
           if(_natW<=37&&!_torneo35){
-            setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale"}]}));
-            setTimeout(()=>notify(`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
+            setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale",...(fin?{finestra:true,ctRole:_ruolo155,ctRel:_rel155?_rel155.v:null}:{})}],...(fin?{log:[`🌍 Sosta di settimana ${_natW}: il CT ti convoca (${_ruolo155}) per l'amichevole con ${_callupOpp}. ${_rel155?_rel155.label+".":""}`,...(pp.log||[])].slice(0,60)}:{})}));
+            setTimeout(()=>notify(fin?`🌍 Il CT ti convoca per la sosta: amichevole vs ${_callupOpp}, settimana ${_natW} — ${_ruolo155}.`:`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
           }
+        }else if(fin&&ovr>=ovrGate-3){/* [7.999.173 PO-155] la lista del CT esce anche quando non ci sei: con il perche' */
+          const _why155=ovr<ovrGate?`serve OVR ${ovrGate}`:(isFirst&&elig<2&&elig>=0)?"per il debutto serve ancora qualcosa in campo":"davanti a te c'è chi rende di più";
+          setPlayer(pp=>({...pp,log:[`📋 Sosta di settimana ${weekVal}: il CT non ti convoca — ${_why155}.`,...(pp.log||[])].slice(0,60)}));
+          setTimeout(()=>notify(`📋 Lista del CT per la sosta: non ci sei — ${_why155}.`,TH.warning),700);
+        }
+      }else if(fin&&ovr>=ovrGate-3){
+        const _why155b=ovr<ovrGate?`serve OVR ${ovrGate}`:(_natStag782>=_capStag783?"il CT ruota la rosa: per questa stagione hai già dato":"davanti a te c'è chi rende di più");
+        if(!(player.calendar||[]).some(md=>md.type==="national"&&!md.played)){
+          setPlayer(pp=>({...pp,log:[`📋 Sosta di settimana ${weekVal}: il CT non ti convoca — ${_why155b}.`,...(pp.log||[])].slice(0,60)}));
+          setTimeout(()=>notify(`📋 Lista del CT per la sosta: non ci sei — ${_why155b}.`,TH.warning),700);
         }
       }
     }
@@ -50879,7 +50929,7 @@ const getThisWeekMatchday=()=>{
        dando per scontato che girasse OGNI settimana: girandone 13, quelle sei ne mangiavano piu' della meta'.
        Ora e' una funzione sola, chiamata da OGNI percorso che fa avanzare la settimana (un solo posto che
        sa), e restano escluse solo le due settimane della sosta di meta' stagione. */
-    _tryNatCallup(weekVal);
+    if(typeof window!=='undefined'&&window.__CPM_NO_FIN155)_tryNatCallup(weekVal);/* [7.999.173 PO-155] il vecchio dado settimanale resta solo nel rosso: ora decide il CT nelle finestre (effect sulla settimana) */
 
   };
 
@@ -57181,6 +57231,8 @@ const getThisWeekMatchday=()=>{
                   ))}
                 </div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,fontStyle:"italic"}}>{ct.why}</div>
+                {!(typeof window!=='undefined'&&window.__CPM_NO_FIN155)&&(()=>{const r=ctRapporto155(player);const fw=natFinestre155(player).filter(w=>w>=(player.week||1));return(
+                  <div data-cpm="ct155" style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginTop:6}}>🤝 Rapporto col CT: <b className="cpm-num">{r.v}/100</b> — {r.label}.{player.contractExpired?" Da svincolato il CT non ti chiama: prima serve un club.":fw.length?` Prossima finestra internazionale: settimana ${fw[0]}.`:" Finestre internazionali della stagione concluse."}</div>);})()}
               </Card></Fisarmonica>);})()}
 
             {/* Convocazione pendente */}

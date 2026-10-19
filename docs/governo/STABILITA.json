@@ -2020,6 +2020,243 @@
   "nota_composto": "passi gia' verdi prima del riavvio del container: test:logic, save-compat, design-system, typing-shortcuts, chip-269, badge-255, finestra-230"
  },
  {
+  "data": "2026-10-18 13:52",
+  "versione": "7.999.172",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "nazionale-155",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "rinnovo-270",
+    "ok": true,
+    "s": 75
+   },
+   {
+    "passo": "chip-269",
+    "ok": true,
+    "s": 44
+   },
+   {
+    "passo": "simulata-272",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 36
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 97
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 34
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 71
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 27
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 11
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 26
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 513
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 39
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "toast-247",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "calendario-247",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "toast-intervista-247",
+    "ok": true,
+    "s": 63
+   },
+   {
+    "passo": "festa-oro-251",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "procuratore-253",
+    "ok": true,
+    "s": 166
+   },
+   {
+    "passo": "toast-256",
+    "ok": true,
+    "s": 73
+   },
+   {
+    "passo": "backup-167",
+    "ok": true,
+    "s": 58
+   },
+   {
+    "passo": "home-066",
+    "ok": true,
+    "s": 110
+   },
+   {
+    "passo": "squalifica-222",
+    "ok": true,
+    "s": 154
+   },
+   {
+    "passo": "investimento-223",
+    "ok": true,
+    "s": 210
+   },
+   {
+    "passo": "infortunio-263",
+    "ok": true,
+    "s": 200
+   },
+   {
+    "passo": "svincolato-264",
+    "ok": true,
+    "s": 150
+   },
+   {
+    "passo": "meta-conto-265",
+    "ok": true,
+    "s": 65
+   },
+   {
+    "passo": "via-ch38-171",
+    "ok": true,
+    "s": 112
+   },
+   {
+    "passo": "stadi-071",
+    "ok": true,
+    "s": 202
+   },
+   {
+    "passo": "scene-fuori-137",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 743
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 559
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 895
+   },
+   {
+    "passo": "coppa-prestito-245",
+    "ok": true,
+    "s": 49
+   }
+  ]
+ },
+ {
   "data": "2026-10-17 04:07",
   "versione": "7.999.171",
   "catena": "notte",
