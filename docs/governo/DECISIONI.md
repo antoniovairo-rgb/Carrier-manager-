@@ -588,3 +588,11 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Rossi preesistenti tempo-138 e pressing-143** (giro 70: identici sulla base lavoro/173): si giudicano nella catena 174; se restano rossi veri, si ricontrollano in locale prima della promozione.
 - **Giro 62:** errori-168 aggiunto alla catena completa/notte e alla MAPPA (src/0x, src/18).
 - **Chiavi doppie:** restano le 3 preesistenti (ball e lR in src/12, setOffer in src/18), nessuna nuova dai giri; si correggono nella fase di stabilità.
+
+## 19/10 18:30 — PO-098 e PO-190: stile unico, via l'Enfant, quota chiusa (PO)
+
+- PO (questionario): «tutti al 50% non ha senso, tanto vale toglierli» · «non mi convince togliamolo, rimane praticamente solo il finalizzatore. Il player non potrà scegliere» · «togli anche enfant».
+- Quindi: niente scelta dello stile alla creazione, l'eroe gioca da Finalizzatore per tutti; via il tratto Enfant; PO-190 come bersaglio di quota è chiusa. Resta il difetto pagella 2 gol / risultato registrato 1 (giro 67 §3).
+- Sessione principale: giro 74 interrotto e archiviato (il suo lavoro non era pubblicato); giro 75 session_013qMah5NFx2pN6k8y6zCoST, ramo sviluppo/stile-unico-giro75, base lavoro/174 (rimozione + migrazione dei salvataggi a Finalizzatore + difetto pagella).
+- Calendario (sessione principale): la 7.999.174 esce come assemblata, con la catena già in corso; il giro 75 entra nella 7.999.175 subito dopo. Motivo: rifare l'assemblaggio e la catena intera ritarderebbe la 174 di 2-3 ore per una modifica che entra comunque poche ore dopo. Il collaudo della 174 non giudica la scelta dello stile.
+- Salvataggi con Enfant: il moltiplicatore di crescita si spegne, le statistiche già guadagnate restano (opzione prudente, nessun dato del giocatore tolto).
