@@ -1,0 +1,20 @@
+# tronco-6 · build eb8f83a0 (7.999.174) · catena notte
+# giro 1 interrotto dal tetto di chiamata (passi chiusi: recupero-103, titolo-110, debito-190); giro 2 ripreso con quei passi in CPM_CI_FATTI
+✅ recupero-103 (85s)
+✅ titolo-110 (27s)
+✅ debito-190 (1s)
+✅ recupero-202 (733s)
+✅ brain-202 (428s)
+✅ svincolato-264 (142s)
+✅ passaggi-228 (76s)
+✅ lessico-218 (19s)
+✅ design-system (1s)
+✅ crediti-254 (23s)
+✅ rete-252 (333s)
+✅ esiti-241 (404s)
+✅ difesa-252 (360s)
+✅ scena-motore-147 (1070s)
+✅ gk-miss-229 (401s)
+✅ bambini-236 (1328s)
+✅ catena notte su 7.999.174: 100/100 verdi
+FINE

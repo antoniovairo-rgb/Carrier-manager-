@@ -1,0 +1,21 @@
+# Tronco 2 — catena notte su 7.999.174 (eb8f83a0), 19/10/2026
+# Giro 1 (interrotto dal tetto della chiamata con esiti-218 e nomi-219 in corsa):
+✅ save-compat (20s)
+✅ riquadro-euro-105 (52s)
+✅ conferenza-192 (0s)
+✅ finale-202 (12s)
+✅ anteprima-212 (50s)
+✅ tabellino-216 (553s)
+✅ rimbalzo-189 (84s)
+✅ test:vision (2s)
+✅ finestra-230 (114s)
+✅ fps-249 (51s)
+✅ brusio-238 (15s)
+✅ toast-256 (88s)
+✅ aereo-252 (297s)
+✅ reazione-252 (298s)
+✅ spot-266 (105s)
+# Giro 2 (rilancio dei due passi rimasti, gli altri dichiarati fatti):
+✅ esiti-218 (1120s)
+✅ nomi-219 (2644s)
+✅ catena notte su 7.999.174: 100/100 verdi
