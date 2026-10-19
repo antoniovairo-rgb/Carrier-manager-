@@ -326,6 +326,51 @@ const _statusOk453=(p)=>{try{return (p.proStatus||"u18")==="pro"&&(((p.totalMatc
    eleggibili 56 impulsi su 106, e TREDICI di essi presupponevano una carriera che quel ragazzo non ha.
    Tredici e' un minimo, non un totale: 50 condizioni su 106 non erano valutabili fuori dal gioco. */
 
+/* [7.999.173 PO-154 — decisione PO 16/10 «Memoria + seguiti + contesto», opzione A+B di PROPOSTA-L6 §1]
+   Misura di partenza (RAPPORTO-carriere-l6 §2 e ricalcolo sul sorgente): 40 impulsi su 106 senza condizione,
+   3 scelte su 221 con una conseguenza nel tempo (solo gli investimenti), nessuna scelta ricordata. Tre pezzi:
+   (1) MEMORIA: `p.impMem` {id → {c: indice scelta (-1 = mostrato senza risposta), s, w, a: settimana assoluta}},
+       scritto nei due soli punti dove un impulso nasce (pescaggio) e si risolve (handleImpulseChoice).
+   (2) SEGUITI: impulsi con `seg:{da,c,min,max,ctx}` che escono solo se l'impulso `da` e' stato risolto con la
+       scelta `c` fra `min` e `max` settimane fa, una volta per ogni volta che l'origine e' stata scelta; il
+       pescaggio li mette davanti agli altri. Un seguito puo' essere a sua volta origine (catene).
+   (3) CONTESTO: le 40 voci senza condizione ne ricevono una (forma, ruolo in rosa, risultati, eta', conto),
+       salvo `wi_scommessa_amici`, dichiarata universale (la tentazione non sceglie il momento).
+   Campo nuovo opzionale, assente = nessuna memoria: nessun bump di SAVE_VERSION. Rossi: __CPM_NO154 (memoria e
+   seguiti spenti) · __CPM_NO154C (contesto spento, le 40 voci tornano universali). Guardiano impulsi-memoria-154. */
+const _off154=(k)=>{try{return typeof window!=="undefined"&&!!window[k];}catch(_e){return false;}};
+const absW154=(p)=>((((p&&p.season)||1)-1)*38)+((p&&p.week)||1);
+const _cx154=(f)=>(p)=>{if(_off154("__CPM_NO154C"))return true;try{return !!f(p);}catch(_e){return true;}};
+const _gara154=(p)=>(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played);
+const _trasf154=(p)=>(p.calendar||[]).some(m=>m&&m.week===(p.week||1)&&!m.played&&m.isHome===false);
+const _ult154=(p,n)=>(p.matchHistory||[]).slice(-n);
+const _vinte154=(p,n)=>_ult154(p,n).filter(m=>m&&m.won).length;
+const _perse154=(p,n)=>_ult154(p,n).filter(m=>m&&!m.won&&!m.drew).length;
+const _pro154=(p)=>(p.proStatus||"u18")==="pro";
+const _conto154=(p)=>(p.bankBalance||0);
+const _ruolo154=(p)=>p.squadRole||"rotazione";
+const _exClub154=(p)=>(p.history||[]).some(h=>h&&h.clubId&&p.club&&h.clubId!==p.club.id)||((p.season||1)>=3);
+const _casa154=(p)=>(p.history||[]).filter(h=>h&&p.club&&h.clubId===p.club.id).length>=1;
+const IMP_UNIVERSALI154=["wi_scommessa_amici"];
+/* [giro 71 · decisione PO 19/10 D3 «Si spengono al trasferimento»] la memoria registra anche il club (`k`) in cui la scelta e' stata
+   fatta; un seguito con `seg.spo` (parla dello spogliatoio, del mister o della dirigenza di quel club) non esce piu' se oggi il club e'
+   un altro. Memorie scritte prima (senza `k`) restano valide: nessuna informazione, nessuno spegnimento (migrazione additiva).
+   Rosso __CPM_NO_SPO154 (il filtro torna spento). Guardiano impulsi-memoria-154, parte D. */
+const _clubK154=(p)=>(p&&p.club&&(p.club.id||p.club.n))||null;
+function impMem154(p,id){if(_off154("__CPM_NO154"))return null;const m=(p&&p.impMem)||{};return m[id]||null;}
+/* il seguito e' pronto? origine risolta con la scelta giusta, nella finestra di settimane, e non ancora seguita */
+function segOk154(id,p){try{
+  if(_off154("__CPM_NO154"))return false;
+  const im=WEEKLY_IMPULSES.find(x=>x.id===id);const s=im&&im.seg;if(!s)return false;
+  const o=impMem154(p,s.da);if(!o||o.c==null||o.c<0)return false;
+  if(s.c!=null&&(Array.isArray(s.c)?s.c:[s.c]).indexOf(o.c)<0)return false;
+  const d=absW154(p)-(o.a||0);if(d<(s.min||3)||d>(s.max||20))return false;
+  if(s.spo&&o.k&&!_off154("__CPM_NO_SPO154")&&o.k!==_clubK154(p))return false;
+  const me=((p&&p.impMem)||{})[id];if(me&&(me.a||0)>=(o.a||0))return false;
+  return !s.ctx||!!s.ctx(p);
+}catch(_e){return false;}}
+const _sg154=(id)=>(p)=>segOk154(id,p);
+
 /* ========================================
    SPRINT 24 — B: OGNI SETTIMANA CONTA (IMPULSI)
 ======================================== */
@@ -340,7 +385,7 @@ const WEEKLY_IMPULSES=[
     {txt:"❤️ Aggiungo gli scarpini autografati",ef:{popularity:9,morale:5,bank:-5000}},
     {txt:"👕 Va bene la maglia",ef:{popularity:3}},
   ]},
-  {id:"wi_dieta_ferrea",cat:"scelta",txt:"Il nutrizionista propone una settimana di dieta ferrea per arrivare tirato alla prossima gara.",choices:[
+  {id:"wi_dieta_ferrea",cond:_cx154(p=>_gara154(p)/* «per arrivare tirato alla prossima gara»: c'e' una gara */),cat:"scelta",txt:"Il nutrizionista propone una settimana di dieta ferrea per arrivare tirato alla prossima gara.",choices:[
     {txt:"🥗 La seguo alla lettera",ef:{form:5,morale:-3}},
     {txt:"🍕 Uno sgarro me lo concedo",ef:{morale:4,form:-2}},
   ]},
@@ -348,7 +393,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🍽 Ci vado — l'amicizia viene prima",ef:{morale:5,coachTrust:-3}},
     {txt:"📵 Rimandiamo a dopo la partita",ef:{coachTrust:3,morale:-2}},
   ]},
-  {id:"wi_torneo_padel",cat:"scelta",txt:"Nel giorno libero i compagni organizzano un torneo di padel. Sarà battaglia vera.",choices:[
+  {id:"wi_torneo_padel",cond:_cx154(p=>(p.fatigue||0)<70/* nel giorno libero, non a chi e' a pezzi */),cat:"scelta",txt:"Nel giorno libero i compagni organizzano un torneo di padel. Sarà battaglia vera.",choices:[
     {txt:"🎾 Gioco per vincere",ef:{chem:7,fatigue:7}},
     {txt:"🛋 Tifo dal divano",ef:{fatigue:-5,chem:-3}},
   ]},
@@ -360,7 +405,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎨 Vado di persona",ef:{popularity:8,morale:6,fatigue:5}},
     {txt:"🙏 Ringrazio con un video",ef:{popularity:3}},
   ]},
-  {id:"wi_extra_portieri",cat:"scelta",txt:"Il preparatore dei portieri ti offre una sessione extra di finalizzazione contro i numeri uno della rosa.",choices:[
+  {id:"wi_extra_portieri",cond:_cx154(p=>(p.fatigue||0)<75&&_ruolo154(p)!=="leader"/* la sessione extra la cerca chi deve ancora conquistarsi il posto */),cat:"scelta",txt:"Il preparatore dei portieri ti offre una sessione extra di finalizzazione contro i numeri uno della rosa.",choices:[
     {txt:"🥅 Resto e calcio finché fa buio",ef:{form:6,fatigue:7,coachTrust:4}},
     {txt:"⏱ Oggi ho già dato tutto",ef:{fatigue:-2}},
   ]},
@@ -368,15 +413,15 @@ const WEEKLY_IMPULSES=[
     {txt:"📱 Porte aperte",ef:{popularity:10,coachTrust:-6,fatigue:4}},
     {txt:"🚫 Il centro sportivo è sacro",ef:{coachTrust:4,popularity:-2}},
   ]},
-  {id:"wi_ospedale",cat:"scelta",txt:"Il reparto pediatrico dell'ospedale cittadino chiede una visita a sorpresa per i piccoli tifosi.",choices:[
+  {id:"wi_ospedale",cond:_cx154(p=>_pro154(p)||(p.popularity||0)>=15/* qualcuno ti deve conoscere: il club ci manda anche i ragazzi della Primavera */),cat:"scelta",txt:"Il reparto pediatrico dell'ospedale cittadino chiede una visita a sorpresa per i piccoli tifosi.",choices:[
     {txt:"🏥 Ci vado con i regali",ef:{morale:8,popularity:6,fatigue:4}},
     {txt:"💸 Dono in silenzio",ef:{bank:-10000,morale:4}},
   ]},
-  {id:"wi_recupero_hitech",cat:"scelta",txt:"Il club installa una nuova area recupero hi-tech. Le sessioni extra però tolgono tempo allo spogliatoio.",choices:[
+  {id:"wi_recupero_hitech",cond:_cx154(p=>(p.fatigue||0)>=30/* il recupero serve a chi e' carico */),cat:"scelta",txt:"Il club installa una nuova area recupero hi-tech. Le sessioni extra però tolgono tempo allo spogliatoio.",choices:[
     {txt:"❄️ Ci vivo dentro",ef:{fatigue:-8,form:3,chem:-2}},
     {txt:"👥 Preferisco stare col gruppo",ef:{chem:4}},
   ]},
-  {id:"wi_carita_anonima",once:true,cat:"conseguenza",txt:"Un giornalista ha scoperto una tua donazione anonima e vuole pubblicarla. «La gente deve saperlo».",choices:[
+  {id:"wi_carita_anonima",once:true,seg:{da:"wi_ospedale",c:1,min:5,max:20},cond:_sg154("wi_carita_anonima")/* [PO-154] la donazione anonima scoperta presuppone la donazione: e' il seguito di «Dono in silenzio» */,cat:"conseguenza",txt:"Un giornalista ha scoperto una tua donazione anonima e vuole pubblicarla. «La gente deve saperlo».",choices:[
     {txt:"📰 Che esca pure",ef:{popularity:8,morale:-2}},
     {txt:"🤫 Resti anonima, o niente",ef:{morale:5}},
   ]},
@@ -385,11 +430,11 @@ const WEEKLY_IMPULSES=[
     {txt:"💰 Firmo — è il mio momento",ef:{bank:35000,popularity:8,coachTrust:-6}},
     {txt:"🙏 Rifiuto con eleganza",ef:{coachTrust:6,morale:-2}},
   ]},
-  {id:"wi_cena_squadra",cat:"scelta",txt:"I senatori organizzano una cena di squadra infrasettimanale. Sarà lunga.",choices:[
+  {id:"wi_cena_squadra",cond:_cx154(p=>(p.fatigue||0)<75/* una cena lunga in settimana non si propone a chi e' a pezzi */),cat:"scelta",txt:"I senatori organizzano una cena di squadra infrasettimanale. Sarà lunga.",choices:[
     {txt:"🍝 Ci vado — il gruppo conta",ef:{chem:8,morale:6,fatigue:8}},
     {txt:"🛌 Salto — devo recuperare",ef:{fatigue:-6,chem:-4}},
   ]},
-  {id:"wi_investimento",once:true,cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
+  {id:"wi_investimento",cond:_cx154(p=>_pro154(p)&&_conto154(p)>=60000/* «serve liquidita' subito»: la liquidita' c'e' */),once:true,cat:"conseguenza",txt:"Il tuo consulente propone un investimento immobiliare «sicuro». Serve liquidità subito.",choices:[
     {txt:"📈 Investo metà del conto",ef:{bank:-40000,quotaConto265:0.5,morale:3}/* [PO-265] costa davvero la meta' del saldo (bank265, src/18); bank:-40000 resta solo per il rosso __CPM_NO_META265 */,flag:"investment",inv:"prudente",note:"rendita a fine stagione"},
     {txt:"🏦 Tengo i soldi fermi",ef:{morale:1}},
   ]},
@@ -409,11 +454,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Dico quello che penso",ef:{popularity:9,coachTrust:-10,morale:4}},
     {txt:"🧊 Glissa con diplomazia",ef:{coachTrust:5,popularity:-2}},
   ]},
-  {id:"wi_personal_chef",cat:"opportunità",txt:"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.",choices:[
+  {id:"wi_personal_chef",cond:_cx154(p=>_conto154(p)>=30000),cat:"opportunità",txt:"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.",choices:[
     {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3}},
     {txt:"🍕 Sto bene così",ef:{}},
   ]},
-  {id:"wi_famiglia_visita",cat:"scelta",txt:"I tuoi genitori vogliono venire a trovarti proprio nella settimana più piena.",choices:[
+  {id:"wi_famiglia_visita",cond:_cx154(p=>_gara154(p)/* «proprio nella settimana piu' piena» */),cat:"scelta",txt:"I tuoi genitori vogliono venire a trovarti proprio nella settimana più piena.",choices:[
     {txt:"👨‍👩‍👦 Li ospito — le radici contano",ef:{morale:12,fatigue:6}},
     {txt:"📅 Rimandiamo di un mese",ef:{morale:-4,fatigue:-3}},
   ]},
@@ -421,7 +466,7 @@ const WEEKLY_IMPULSES=[
     {txt:"😂 Ci sto — ridiamoci su",ef:{bank:18000,popularity:10,coachTrust:-3}},
     {txt:"🚫 Preferisco il basso profilo",ef:{coachTrust:2}},
   ]},
-  {id:"wi_compagno_lite",cat:"tensione",txt:"Due compagni hanno litigato pesantemente nello spogliatoio. Sei l'unico che parla con entrambi.",choices:[
+  {id:"wi_compagno_lite",cond:_cx154(p=>(p.teamChemistry||60)<70||_perse154(p,2)>=1/* le liti nascono in uno spogliatoio teso */),cat:"tensione",txt:"Due compagni hanno litigato pesantemente nello spogliatoio. Sei l'unico che parla con entrambi.",choices:[
     {txt:"🕊 Faccio da paciere stasera",ef:{chem:10,coachTrust:6,fatigue:5}},
     {txt:"🙈 Non mi immischio",ef:{chem:-5}},
   ]},
@@ -512,11 +557,11 @@ const WEEKLY_IMPULSES=[
     {txt:"✅ Ci vado — voglio farmi vedere",ef:{popularity:12,fatigue:14,form:3}},
     {txt:"❌ Rimango a riposare",ef:{fatigue:-10,morale:5}},
   ]},
-  {id:"wi_media",cat:"opportunità",txt:"Un canale sportivo ti vuole per una rubrica settimanale. Non è il campo, ma è immagine.",choices:[
+  {id:"wi_media",cond:_cx154(p=>_notoOk453(p)),cat:"opportunità",txt:"Un canale sportivo ti vuole per una rubrica settimanale. Non è il campo, ma è immagine.",choices:[
     {txt:"📺 Accetto — è riconoscimento",ef:{popularity:14,value:0.08,fatigue:5}},
     {txt:"⚽ No, preferisco allenarmi",ef:{form:4,coachTrust:3}},
   ]},
-  {id:"wi_ciclo_forza",cat:"scelta",txt:"Il preparatore atletico propone un ciclo extra di forza. Duro ma efficace.",choices:[
+  {id:"wi_ciclo_forza",cond:_cx154(p=>(p.fatigue||0)<60&&(p.age||18)<=32),cat:"scelta",txt:"Il preparatore atletico propone un ciclo extra di forza. Duro ma efficace.",choices:[
     {txt:"💪 Ciclo completo — massimo impegno",ef:{fatigue:15,form:7}},
     {txt:"🧘 Solo sessione leggera",ef:{fatigue:4,form:2,morale:3}},
   ]},
@@ -542,12 +587,12 @@ const WEEKLY_IMPULSES=[
     {txt:"✅ Certo — è bello trasmettere",ef:{morale:8,coachTrust:5,popularity:4}},
     {txt:"❌ Non ho tempo per questo",ef:{morale:-2}},
   ]},
-  {id:"wi_intervista_sorpresa",cat:"scelta",txt:"Un giornalista famoso vuole un'intervista esclusiva. Argomenti sensibili inclusi.",choices:[
+  {id:"wi_intervista_sorpresa",cond:_cx154(p=>_notoOk453(p)),cat:"scelta",txt:"Un giornalista famoso vuole un'intervista esclusiva. Argomenti sensibili inclusi.",choices:[
     {txt:"🔥 Dico tutto — la verità libera",ef:{popularity:14,coachTrust:-6,morale:5}},
     {txt:"🤝 Rispondo con diplomazia",ef:{popularity:6,coachTrust:3}},
     {txt:"❌ Declino",ef:{popularity:-3,morale:3}},
   ]},
-  {id:"wi_social",cat:"conseguenza",txt:"Un tuo post viene frainteso dai media. Come gestisci?",choices:[
+  {id:"wi_social",cond:_cx154(p=>(p.popularity||20)>=30),cat:"conseguenza",txt:"Un tuo post viene frainteso dai media. Come gestisci?",choices:[
     {txt:"🗑️ Cancello e mi scuso",ef:{popularity:-4,morale:-3}},
     {txt:"😏 Lascio stare — era ironico",ef:{popularity:6,coachTrust:-4}},
     {txt:"📝 Chiarisco con un comunicato",ef:{popularity:2,morale:4}},
@@ -557,16 +602,16 @@ const WEEKLY_IMPULSES=[
     {txt:"📊 Studi il video dell'avversario",ef:{form:5,coachTrust:4}},
     {txt:"🏃 Fai un allenamento extra in palestra",ef:{form:4,fatigue:6}},
   ]},
-  {id:"wi_sogno",cat:"conseguenza",txt:"Stanotte hai sognato di segnare il gol decisivo in una finale. Ti svegli carico.",choices:[
+  {id:"wi_sogno",cond:_cx154(p=>(p.week||1)>=24||(p.form||70)>=78||_vinte154(p,3)>=2/* il sogno della finale viene quando la stagione conta o le cose girano */),cat:"conseguenza",txt:"Stanotte hai sognato di segnare il gol decisivo in una finale. Ti svegli carico.",choices:[
     {txt:"🔥 Cavalco l'onda — oggi è un gran giorno",ef:{morale:10,form:5}},
     {txt:"😐 Era solo un sogno. Al lavoro.",ef:{form:2,fatigue:-4}},
   ]},
-  {id:"wi_ex_club",cat:"tensione",txt:"Un tuo ex compagno ti scrive: «Ti mancano i vecchi tempi?»",choices:[
+  {id:"wi_ex_club",cond:_cx154(p=>_exClub154(p)/* serve un ex: un club lasciato o qualche stagione alle spalle */),cat:"tensione",txt:"Un tuo ex compagno ti scrive: «Ti mancano i vecchi tempi?»",choices:[
     {txt:"❤️ «Sì, ma sono felice qui»",ef:{morale:8}},
     {txt:"😐 «È il calcio. Si va avanti»",ef:{morale:3}},
     {txt:"😔 «Onestamente, un po' sì»",ef:{morale:-4,popularity:3}},
   ]},
-  {id:"wi_staff",cat:"opportunità",txt:"Il preparatore atletico ti propone un nuovo metodo di recupero post-allenamento.",choices:[
+  {id:"wi_staff",cond:_cx154(p=>(p.fatigue||0)>=35),cat:"opportunità",txt:"Il preparatore atletico ti propone un nuovo metodo di recupero post-allenamento.",choices:[
     {txt:"🧪 Lo provo — sono curioso",ef:{fatigue:-14,form:4}},
     {txt:"😐 Resto al metodo classico",ef:{fatigue:-6}},
   ]},
@@ -619,23 +664,23 @@ const WEEKLY_IMPULSES=[
     {txt:"🏠 Resto con il club — è un momento delicato",ef:{coachTrust:8,morale:3,form:3}},
   ]},
   // Sprint 61 — nuovi impulsi
-  {id:"wi_podcast",cat:"personale",txt:"Un podcaster sportivo di successo ti invita per un'intervista. Potresti aprire tanti nuovi fan.",choices:[
+  {id:"wi_podcast",cond:_cx154(p=>_notoOk453(p)),cat:"personale",txt:"Un podcaster sportivo di successo ti invita per un'intervista. Potresti aprire tanti nuovi fan.",choices:[
     {txt:"🎙️ Accetto — voglio raccontarmi",ef:{popularity:14,morale:7,value:0.08}},
     {txt:"😶 Sono riservato — preferisco il campo",ef:{morale:4,coachTrust:3}},
   ]},
-  {id:"wi_donazione",cat:"personale",txt:"Un'associazione benefica ti chiede di partecipare a una partita di solidarietà. Visibilità vs riposo.",choices:[
+  {id:"wi_donazione",cond:_cx154(p=>_notoOk453(p)),cat:"personale",txt:"Un'associazione benefica ti chiede di partecipare a una partita di solidarietà. Visibilità vs riposo.",choices:[
     {txt:"💖 Lo faccio — sport e solidarietà",ef:{popularity:10,morale:9,fatigue:7}},
     {txt:"🏃 Passo — ho bisogno di recuperare",ef:{fatigue:-8,morale:3}},
   ]},
-  {id:"wi_fan_speciale",cat:"personale",txt:"Un bambino con la tua maglia ti aspetta fuori dallo stadio: «Sei la mia ispirazione.» Ti fermi?",choices:[
+  {id:"wi_fan_speciale",cond:_cx154(p=>_notoOk453(p)/* «un bambino con la tua maglia» */),cat:"personale",txt:"Un bambino con la tua maglia ti aspetta fuori dallo stadio: «Sei la mia ispirazione.» Ti fermi?",choices:[
     {txt:"💛 Mi fermo, parlo con lui, selfie e firma",ef:{morale:14,popularity:8,value:0.03}},
     {txt:"😔 Sono di fretta — un sorriso e via",ef:{morale:3}},
   ]},
-  {id:"wi_analisi_video",cat:"formazione",txt:"Il preparatore atletico ti propone due ore extra di analisi video sui tuoi movimenti. Noioso ma utile.",choices:[
+  {id:"wi_analisi_video",cond:_cx154(p=>(p.form||70)<78||_ruolo154(p)==="riserva"||_ruolo154(p)==="rotazione"/* chi ha qualcosa da correggere */),cat:"formazione",txt:"Il preparatore atletico ti propone due ore extra di analisi video sui tuoi movimenti. Noioso ma utile.",choices:[
     {txt:"📽️ Lo faccio — ogni dettaglio conta",ef:{form:6,fatigue:6,mentalità:1,posizionamento:1}},
     {txt:"😪 Ho già troppe cose in testa",ef:{morale:4,fatigue:-5}},
   ]},
-  {id:"wi_crioterapia",cat:"formazione",txt:"Il preparatore consiglia la crioterapia post-allenamento. «Ti farà bene ma è un inferno.»",choices:[
+  {id:"wi_crioterapia",cond:_cx154(p=>(p.fatigue||0)>=40),cat:"formazione",txt:"Il preparatore consiglia la crioterapia post-allenamento. «Ti farà bene ma è un inferno.»",choices:[
     {txt:"🧊 Ci provo — tutto per la forma",ef:{fatigue:-16,form:6,morale:3}},
     {txt:"🚿 Preferisco la doccia calda normale",ef:{fatigue:-7,morale:5}},
   ]},
@@ -647,11 +692,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🍽️ Ci sono — la squadra prima di tutto",ef:{morale:9,coachTrust:5,fatigue:4}},
     {txt:"🏠 Resto a casa — ho bisogno di riposare",ef:{fatigue:-8,morale:3}},
   ]},
-  {id:"wi_giovani_accademia",cat:"sociale",txt:"Il club ti chiede di visitare la scuola calcio e ispirare i giovani. Saranno emozionatissimi.",choices:[
+  {id:"wi_giovani_accademia",cond:_cx154(p=>_ruolo154(p)!=="riserva"/* il club manda chi gioca, anche dalla Primavera */),cat:"sociale",txt:"Il club ti chiede di visitare la scuola calcio e ispirare i giovani. Saranno emozionatissimi.",choices:[
     {txt:"👶 Vado — è un gesto che vale",ef:{popularity:9,morale:11,value:0.05}},
     {txt:"😐 Non è il momento giusto per me",ef:{morale:2}},
   ]},
-  {id:"wi_campo_bagnato",cat:"scelta",txt:"Il campo è fradicio di pioggia. Al coperto (tecnica) o in campo aperto (fisico)?",choices:[
+  {id:"wi_campo_bagnato",cond:_cx154(p=>(p.week||1)>=8&&(p.week||1)<=30/* la stagione delle piogge */),cat:"scelta",txt:"Il campo è fradicio di pioggia. Al coperto (tecnica) o in campo aperto (fisico)?",choices:[
     {txt:"⛈️ All'aperto — il vero campo si gioca in tutte le condizioni",ef:{fisico:1,fatigue:13,form:5}},
     {txt:"🏋️ Al coperto — tecnica e tattica senza rischi",ef:{tecnica:1,fatigue:7,form:3}},
   ]},
@@ -664,7 +709,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎯 Resto concentrato e in silenzio",ef:{mentalità:1,form:4,fatigue:-3}},
     {txt:"😰 Ammetto di essere un po' teso",ef:{mentalità:1,coachTrust:4,morale:-4}},
   ]},
-  {id:"wi_figlia_mister",cat:"personale",txt:"La figlia del mister ti ferma dopo l'allenamento: «Papà parla sempre di te. Sei il suo preferito.»",choices:[
+  {id:"wi_figlia_mister",cond:_cx154(p=>(p.coachTrust||60)>=65/* «papa' parla sempre di te»: il mister ti stima davvero */),cat:"personale",txt:"La figlia del mister ti ferma dopo l'allenamento: «Papà parla sempre di te. Sei il suo preferito.»",choices:[
     {txt:"😊 «È un onore. Gli sarò sempre grato.»",ef:{coachTrust:9,morale:8}},
     {txt:"😅 Ridi imbarazzato e cambi argomento",ef:{morale:4}},
   ]},
@@ -676,7 +721,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🚗 Accetto — che spettacolo",ef:{popularity:6,morale:4,coachTrust:-3}},
     {txt:"🚙 Tengo la mia, niente distrazioni",ef:{coachTrust:4,morale:-1}},
   ]},
-  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e il post diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
+  {id:"wi_polemica_social",cond:_cx154(p=>(p.popularity||20)>=30&&_ult154(p,1).length>0),cat:"tensione",txt:"Un tifoso avversario ti insulta online e il post diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
     {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
     {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
   ]},
@@ -684,7 +729,7 @@ const WEEKLY_IMPULSES=[
     {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6}},
     {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000}},
   ]},
-  {id:"wi_giornata_libera",cat:"scelta",txt:"Il mister concede un giorno libero: mare coi compagni o palestra da solo per limare i dettagli?",choices:[
+  {id:"wi_giornata_libera",cond:_cx154(p=>_vinte154(p,1)>=1/* il giorno libero si concede dopo una vittoria */),cat:"scelta",txt:"Il mister concede un giorno libero: mare coi compagni o palestra da solo per limare i dettagli?",choices:[
     {txt:"🏖 Mare col gruppo",ef:{chem:7,morale:6,fatigue:3}},
     {txt:"🏋️ Palestra e focus",ef:{form:5,fatigue:5,chem:-2}},
   ]},
@@ -692,7 +737,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎮 Firmo — sarò un personaggio",ef:{bank:25000,popularity:8}},
     {txt:"🕹 Chiedo troppo, salta tutto",ef:{morale:-2}},
   ]},
-  {id:"wi_genitori_tribuna",cat:"personale",txt:"I tuoi genitori vogliono venire a vederti giocare da lontano: viaggio e hotel a carico tuo.",choices:[
+  {id:"wi_genitori_tribuna",cond:_cx154(p=>_trasf154(p)/* «vederti giocare da lontano»: la gara e' in trasferta */),cat:"personale",txt:"I tuoi genitori vogliono venire a vederti giocare da lontano: viaggio e hotel a carico tuo.",choices:[
     {txt:"✈️ Li porto in tribuna d'onore",ef:{bank:-6000,morale:9}},
     {txt:"📞 Li sento al telefono, ora no",ef:{morale:2,fatigue:-2}},
   ]},
@@ -711,19 +756,19 @@ const WEEKLY_IMPULSES=[
     {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
   ]},
-  {id:"wi_cripto",cat:"conseguenza",txt:"Un amico ti spinge su una criptovaluta «che esploderà». Rischio alto, tutto o niente.",choices:[
+  {id:"wi_cripto",cond:_cx154(p=>_conto154(p)>=40000),cat:"conseguenza",txt:"Un amico ti spinge su una criptovaluta «che esploderà». Rischio alto, tutto o niente.",choices:[
     {txt:"🚀 Ci punto una fetta",ef:{bank:-20000,morale:2},flag:"investment",inv:"rischioso",note:"esito incerto a fine stagione"},
     {txt:"🧊 Non è roba per me",ef:{morale:1}},
   ]},
-  {id:"wi_bimbo_sogno",cat:"scelta",txt:"Il papà di un bimbo malato ti scrive: il sogno del figlio è conoscerti.",choices:[
+  {id:"wi_bimbo_sogno",cond:_cx154(p=>_notoOk453(p)),cat:"scelta",txt:"Il papà di un bimbo malato ti scrive: il sogno del figlio è conoscerti.",choices:[
     {txt:"💙 Lo invito all'allenamento",ef:{morale:9,popularity:5,fatigue:2}},
     {txt:"🎁 Gli mando maglia e videomessaggio",ef:{morale:4,bank:-2000}},
   ]},
-  {id:"wi_mental_coach",cat:"scelta",txt:"Un mental coach propone due giorni di lavoro sulla concentrazione.",choices:[
+  {id:"wi_mental_coach",cond:_cx154(p=>(p.morale||70)<62||_perse154(p,3)>=2/* la testa si allena quando pesa */),cat:"scelta",txt:"Un mental coach propone due giorni di lavoro sulla concentrazione.",choices:[
     {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3}},
     {txt:"⚽ Preferisco il campo",ef:{form:2}},
   ]},
-  {id:"wi_orologi_squadra",cat:"scelta",txt:"Vuoi cementare il gruppo regalando un orologio a ogni compagno. Costa parecchio.",choices:[
+  {id:"wi_orologi_squadra",cond:_cx154(p=>_pro154(p)&&_conto154(p)>=44000),cat:"scelta",txt:"Vuoi cementare il gruppo regalando un orologio a ogni compagno. Costa parecchio.",choices:[
     {txt:"⌚ Li prendo per tutti",ef:{bank:-22000,chem:10,morale:3}},
     {txt:"🍻 Basta una cena insieme",ef:{bank:-4000,chem:4}},
   ]},
@@ -739,11 +784,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4}},
     {txt:"🔑 Resto in affitto, più libero",ef:{morale:1}},
   ]},
-  {id:"wi_primo_mister",cat:"personale",txt:"Il tuo primo allenatore, oggi in difficoltà, ti chiede una mano per un provino ai suoi ragazzi.",choices:[
+  {id:"wi_primo_mister",cond:_cx154(p=>(p.season||1)>=3/* «il tuo primo allenatore»: serve un po' di strada fatta */),cat:"personale",txt:"Il tuo primo allenatore, oggi in difficoltà, ti chiede una mano per un provino ai suoi ragazzi.",choices:[
     {txt:"🎓 Ci vado di persona",ef:{morale:7,fatigue:4,chem:2}},
     {txt:"💌 Mando due parole di stima",ef:{morale:2}},
   ]},
-  {id:"wi_tifoso_fisso",cat:"tensione",txt:"Un tifoso ti aspetta ogni giorno fuori dal centro sportivo: gentile ma insistente.",choices:[
+  {id:"wi_tifoso_fisso",cond:_cx154(p=>_notoOk453(p)),cat:"tensione",txt:"Un tifoso ti aspetta ogni giorno fuori dal centro sportivo: gentile ma insistente.",choices:[
     {txt:"🤝 Gli dedico cinque minuti",ef:{popularity:5,morale:2,fatigue:1}},
     {txt:"🚗 Passo dritto, ho fretta",ef:{morale:-1,popularity:-2}},
   ]},
@@ -751,11 +796,11 @@ const WEEKLY_IMPULSES=[
     {txt:"🎮 Divento ambassador",ef:{bank:18000,popularity:7}},
     {txt:"🧢 Non fa per me",ef:{morale:1}},
   ]},
-  {id:"wi_compagno_prestito",cat:"tensione",txt:"Un compagno in difficoltà economica ti chiede in confidenza un prestito personale.",choices:[
+  {id:"wi_compagno_prestito",cond:_cx154(p=>_pro154(p)&&_conto154(p)>=30000),cat:"tensione",txt:"Un compagno in difficoltà economica ti chiede in confidenza un prestito personale.",choices:[
     {txt:"🤝 Lo aiuto, senza dirlo a nessuno",ef:{bank:-15000,chem:9,morale:4}},
     {txt:"💬 Gli trovo un consulente serio",ef:{chem:3}},
   ]},
-  {id:"wi_pioggia_scelta",cat:"scelta",txt:"Diluvia. Il mister lascia scegliere: campo fangoso o palestra al coperto?",choices:[
+  {id:"wi_pioggia_scelta",cond:_cx154(p=>(p.week||1)>=8&&(p.week||1)<=30),cat:"scelta",txt:"Diluvia. Il mister lascia scegliere: campo fangoso o palestra al coperto?",choices:[
     {txt:"🌧 Esco a lavorare duro",ef:{form:5,fatigue:6,coachTrust:4}},
     {txt:"🏋️ Palestra, niente rischi",ef:{fatigue:2,form:2}},
   ]},
@@ -775,7 +820,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🍽 Investo e ci metto la faccia",ef:{bank:-28000,popularity:6},flag:"investment",inv:"bilanciato",note:"rendita se l'attività gira"},
     {txt:"🤔 Troppo rischio adesso",ef:{morale:1}},
   ]},
-  {id:"wi_dirigente_idolo",cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[
+  {id:"wi_dirigente_idolo",cond:_cx154(p=>_pro154(p)&&_mktOk(p)&&(p.ovr||60)>=66/* un dirigente chiama chi ha mercato */),cat:"conseguenza",txt:"Un tuo vecchio idolo, oggi dirigente di un altro club, ti chiama: «C'è un progetto per te».",choices:[
     {txt:"👂 Ascolto la proposta",ef:{value:0.2,coachTrust:-4,morale:3}},
     {txt:"🔒 Sono concentrato qui",ef:{coachTrust:5}},
   ]},
@@ -787,9 +832,108 @@ const WEEKLY_IMPULSES=[
     {txt:"🥦 Accetto e mi adatto",ef:{bank:12000,form:-2,morale:-2}},
     {txt:"🍖 Non cambio alimentazione ora",ef:{form:2}},
   ]},
-  {id:"wi_massaggiatore_addio",cat:"scelta",txt:"Il vecchio massaggiatore va in pensione. Puoi organizzargli una festa d'addio a tue spese.",choices:[
+  {id:"wi_massaggiatore_addio",cond:_cx154(p=>_casa154(p)&&_conto154(p)>=16000/* lo conosci se in questo club ci sei da almeno una stagione */),cat:"scelta",txt:"Il vecchio massaggiatore va in pensione. Puoi organizzargli una festa d'addio a tue spese.",choices:[
     {txt:"🎉 Organizzo tutto io",ef:{bank:-8000,chem:8,morale:5}},
     {txt:"👏 Un applauso in spogliatoio",ef:{chem:2}},
+  ]},
+  /* [7.999.173 PO-154] I SEGUITI: escono solo se la scelta d'origine e' stata fatta, nella finestra di settimane
+     dichiarata (segOk154). Testi che RICORDANO la scelta; due catene di secondo livello (docu → premio,
+     clan → mister). Nessun seguito cambia l'esito di un investimento: quello resta del rollover (PO-223). */
+  {id:"wi_seg_docu_puntata",seg:{da:"wi_docufilm",c:0,min:6,max:16,spo:1},cond:_sg154("wi_seg_docu_puntata"),cat:"seguito",txt:"È uscita la puntata del documentario che hai accettato di girare: nello spogliatoio c'è chi ride e chi si è visto tagliato.",choices:[
+    {txt:"🍿 Organizzo la proiezione per la squadra",ef:{chem:6,popularity:4,fatigue:2}},
+    {txt:"🙊 Chiedo scusa a chi si è sentito escluso",ef:{chem:3,coachTrust:2}},
+  ]},
+  {id:"wi_seg_docu_premio",seg:{da:"wi_seg_docu_puntata",c:0,min:8,max:24,ctx:p=>_notoOk453(p)},cond:_sg154("wi_seg_docu_premio"),cat:"seguito",txt:"Il documentario della proiezione in spogliatoio è candidato al festival dello sport. Ti invitano sul palco.",choices:[
+    {txt:"🎤 Ci vado con due compagni",ef:{popularity:8,chem:3,fatigue:2}},
+    {txt:"📨 Ringrazio per iscritto",ef:{morale:3}},
+  ]},
+  {id:"wi_seg_docu_rifiuto",seg:{da:"wi_docufilm",c:1,min:4,max:14,spo:1},cond:_sg154("wi_seg_docu_rifiuto"),cat:"seguito",txt:"Il documentario che hai rifiutato l'hanno girato su un compagno. Il mister, a quattr'occhi: «Hai fatto bene a pensare al campo».",choices:[
+    {txt:"🤝 «Grazie mister, era la scelta giusta»",ef:{coachTrust:4,morale:2}},
+    {txt:"😶 Un po' mi rode",ef:{morale:-2,form:2}},
+  ]},
+  {id:"wi_seg_ospedale_lettera",seg:{da:"wi_ospedale",c:0,min:4,max:14},cond:_sg154("wi_seg_ospedale_lettera"),cat:"seguito",txt:"Dal reparto pediatrico che hai visitato arriva una busta di disegni: in tutti ci sei tu che segni.",choices:[
+    {txt:"🖼️ Li appendo nello spogliatoio",ef:{morale:8,chem:3}},
+    {txt:"📸 Li pubblico con un grazie",ef:{popularity:6,morale:4}},
+  ]},
+  {id:"wi_seg_cripto",seg:{da:"wi_cripto",c:0,min:4,max:12,spo:1},cond:_sg154("wi_seg_cripto"),cat:"seguito",txt:"La criptovaluta su cui hai puntato è sulle montagne russe: meno quaranta lunedì, più trenta giovedì. In spogliatoio ti chiamano «il trader».",choices:[
+    {txt:"🧊 Non guardo il grafico fino a fine stagione",ef:{morale:2}},
+    {txt:"📱 Controllo il telefono anche nell'intervallo",ef:{morale:-3,form:-2}},
+  ]},
+  {id:"wi_seg_cantiere",seg:{da:"wi_investimento",c:0,min:6,max:18},cond:_sg154("wi_seg_cantiere"),cat:"seguito",txt:"Il consulente ti porta a vedere il cantiere dell'investimento immobiliare: le gru sono ferme per la pioggia, ma «è tutto nei tempi».",choices:[
+    {txt:"🦺 Faccio un giro col casco",ef:{morale:3,fatigue:1}},
+    {txt:"📄 Mi bastano le carte",ef:{morale:1}},
+  ]},
+  {id:"wi_seg_prestito_reso",seg:{da:"wi_compagno_prestito",c:0,min:6,max:18,spo:1},cond:_sg154("wi_seg_prestito_reso"),cat:"seguito",txt:"Il compagno a cui hai prestato i soldi ti lascia una busta nell'armadietto: la prima rata e un biglietto, «non lo dimentico».",choices:[
+    {txt:"🤝 Gli dico di tenerla ancora",ef:{chem:6,morale:4}},
+    {txt:"✅ La accetto, così siamo pari",ef:{chem:3,bank:5000,morale:2}},
+  ]},
+  {id:"wi_seg_lite_pace",seg:{da:"wi_compagno_lite",c:0,min:3,max:10,spo:1},cond:_sg154("wi_seg_lite_pace"),cat:"seguito",txt:"I due compagni che hai fatto riappacificare ora esultano insieme dopo ogni gol. Il capitano: «Questo spogliatoio è anche tuo».",choices:[
+    {txt:"😊 Me la godo",ef:{morale:6,chem:4}},
+    {txt:"🎯 Ora tocca vincere",ef:{form:3,coachTrust:2}},
+  ]},
+  {id:"wi_seg_lite_clan",seg:{da:"wi_compagno_lite",c:1,min:3,max:10,spo:1,ctx:p=>(p.teamChemistry||60)<85},cond:_sg154("wi_seg_lite_clan"),cat:"seguito",txt:"La lite in cui non ti eri voluto immischiare ha diviso lo spogliatoio in due tavoli a pranzo. Ti chiedono da che parte stai.",choices:[
+    {txt:"🕊 Mi siedo a un tavolo nuovo, in mezzo",ef:{chem:5,fatigue:2}},
+    {txt:"🙈 Mangio in camera",ef:{chem:-4,morale:-2}},
+  ]},
+  {id:"wi_seg_lite_mister",seg:{da:"wi_seg_lite_clan",c:1,min:3,max:10,spo:1},cond:_sg154("wi_seg_lite_mister"),cat:"seguito",txt:"Il mister ha notato lo spogliatoio diviso e chiede ai più esperti di intervenire. Guarda te, che a pranzo non ti fai più vedere.",choices:[
+    {txt:"🗣️ Parlo al gruppo prima dell'allenamento",ef:{chem:8,coachTrust:5,morale:-1}},
+    {txt:"😶 Non tocca a me",ef:{coachTrust:-5,chem:-3}},
+  ]},
+  {id:"wi_seg_scommessa",seg:{da:"wi_scommessa_amici",c:1,min:3,max:12},cond:_sg154("wi_seg_scommessa"),cat:"seguito",txt:"Un giornalista ha sentito parlare della «scommessa innocente» fra amici. Vuole una tua dichiarazione prima di scrivere.",choices:[
+    {txt:"🗣️ Ammetto lo sbaglio e chiedo scusa",ef:{popularity:-4,coachTrust:3,morale:-2}},
+    {txt:"🚫 Nego tutto",ef:{popularity:-2,coachTrust:-6,morale:-3}},
+  ]},
+  {id:"wi_seg_intervista",seg:{da:"wi_intervista_sorpresa",c:0,min:2,max:8,spo:1},cond:_sg154("wi_seg_intervista"),cat:"seguito",txt:"L'intervista in cui hai detto tutto è uscita col titolo più duro possibile. Il mister ti aspetta nel suo ufficio.",choices:[
+    {txt:"🤝 Chiarisco a quattr'occhi",ef:{coachTrust:5,morale:-1}},
+    {txt:"🔥 Confermo ogni parola",ef:{popularity:5,coachTrust:-6}},
+  ]},
+  {id:"wi_seg_podcast",seg:{da:"wi_podcast",c:0,min:4,max:14},cond:_sg154("wi_seg_podcast"),cat:"seguito",txt:"La puntata del podcast ha fatto il giro: una scuola calcio ti scrive che i ragazzi ripetono le tue frasi in allenamento.",choices:[
+    {txt:"🎙️ Registro un saluto per loro",ef:{popularity:5,morale:5}},
+    {txt:"⚽ Passo a trovarli dopo la partita",ef:{popularity:7,morale:6,fatigue:3}},
+  ]},
+  {id:"wi_seg_famiglia",seg:{da:"wi_famiglia_visita",c:1,min:4,max:8,ctx:p=>!_gara154(p)},cond:_sg154("wi_seg_famiglia"),cat:"seguito",txt:"È passato il mese: i tuoi genitori ti ricordano la visita che avevi rimandato. Questa settimana non si gioca.",choices:[
+    {txt:"👨‍👩‍👦 Stavolta li ospito",ef:{morale:10,fatigue:3}},
+    {txt:"📅 Rimando ancora",ef:{morale:-6}},
+  ]},
+  {id:"wi_seg_mental",seg:{da:"wi_mental_coach",c:0,min:3,max:10,ctx:p=>_gara154(p)},cond:_sg154("wi_seg_mental"),cat:"seguito",txt:"Il mental coach ti richiama: «Come va la respirazione prima delle gare?». Questa settimana si gioca: è il momento di provarla.",choices:[
+    {txt:"🧘 La faccio nel tunnel",ef:{form:3,morale:4}},
+    {txt:"😅 Me la sono già dimenticata",ef:{morale:1}},
+  ]},
+  {id:"wi_seg_chef",seg:{da:"wi_personal_chef",c:0,min:4,max:10},cond:_sg154("wi_seg_chef"),cat:"seguito",txt:"Il mese di prova dello chef è finito: ti senti più leggero e i test lo confermano. Ti propone di restare per la stagione.",choices:[
+    {txt:"🥗 Lo confermo",ef:{bank:-20000,fatigue:-8,form:3}},
+    {txt:"🍳 Ho imparato le ricette, faccio da me",ef:{form:1,morale:3}},
+  ]},
+  {id:"wi_seg_accademia",seg:{da:"wi_giovani_accademia",c:0,min:6,max:20},cond:_sg154("wi_seg_accademia"),cat:"seguito",txt:"I ragazzi della scuola calcio che hai visitato hanno vinto il loro torneo e ti dedicano la coppa.",choices:[
+    {txt:"🏆 Vado alla premiazione",ef:{morale:9,popularity:5,fatigue:2}},
+    {txt:"📹 Mando un videomessaggio",ef:{morale:5,popularity:2}},
+  ]},
+  {id:"wi_seg_fan",seg:{da:"wi_fan_speciale",c:0,min:4,max:16,ctx:p=>_gara154(p)},cond:_sg154("wi_seg_fan"),cat:"seguito",txt:"Il bambino con la tua maglia, quello con cui ti eri fermato, è tornato: stavolta è in tribuna con uno striscione, «Sei passato a salutarmi».",choices:[
+    {txt:"👋 Gli dedico il riscaldamento",ef:{morale:8,popularity:4}},
+    {txt:"🎽 Gli lancio la maglia a fine gara",ef:{morale:6,popularity:6}},
+  ]},
+  {id:"wi_seg_idolo",seg:{da:"wi_dirigente_idolo",c:0,min:2,max:8,spo:1},cond:_sg154("wi_seg_idolo"),cat:"seguito",txt:"La chiacchierata col tuo vecchio idolo è finita sui giornali. Il direttore sportivo vuole sapere se sei ancora con loro.",choices:[
+    {txt:"🔒 «Sono concentrato qui»",ef:{coachTrust:4,morale:1}},
+    {txt:"🤷 «Ascoltare non è firmare»",ef:{coachTrust:-4,value:0.05}},
+  ]},
+  {id:"wi_seg_primo_mister",seg:{da:"wi_primo_mister",c:0,min:6,max:20},cond:_sg154("wi_seg_primo_mister"),cat:"seguito",txt:"Due ragazzi del tuo primo allenatore hanno passato il provino. Ti chiama emozionato: «Senza di te non ci credevano».",choices:[
+    {txt:"🥹 Lo invito alla prossima partita",ef:{morale:9,bank:-1000}},
+    {txt:"📞 Gli prometto che ci rivediamo",ef:{morale:5}},
+  ]},
+  {id:"wi_seg_cena",seg:{da:"wi_cena_squadra",c:1,min:1,max:5,spo:1},cond:_sg154("wi_seg_cena"),cat:"seguito",txt:"In spogliatoio girano le foto della cena di squadra che hai saltato. Le battute sono tutte per te.",choices:[
+    {txt:"😂 La prossima la offro io",ef:{chem:5,bank:-2000,morale:2}},
+    {txt:"🙃 Incasso e sorrido",ef:{chem:1,morale:-1}},
+  ]},
+  {id:"wi_seg_social",seg:{da:"wi_social",c:1,min:2,max:6},cond:_sg154("wi_seg_social"),cat:"seguito",txt:"Il post che avevi lasciato lì, «tanto era ironico», è diventato un meme. Metà dei tifosi ride con te, l'altra metà di te.",choices:[
+    {txt:"😂 Lo cavalco con un video",ef:{popularity:6,coachTrust:-2}},
+    {txt:"🧊 Silenzio, passerà",ef:{morale:-1}},
+  ]},
+  {id:"wi_seg_forza",seg:{da:"wi_ciclo_forza",c:0,min:3,max:8},cond:_sg154("wi_seg_forza"),cat:"seguito",txt:"I test atletici dopo il ciclo completo di forza: hai guadagnato esplosività, ma i polpacci sono duri come pietre.",choices:[
+    {txt:"🧊 Due giorni di scarico",ef:{fatigue:-10,form:1}},
+    {txt:"💪 Continuo così",ef:{form:3,fatigue:6}},
+  ]},
+  {id:"wi_seg_scuola",seg:{da:"wi_scuola_calcio",c:0,min:8,max:24},cond:_sg154("wi_seg_scuola"),cat:"seguito",txt:"La scuola calcio in cui hai messo faccia e soldi ha aperto le iscrizioni: duecento bambini, e la fila arriva fino al parcheggio.",choices:[
+    {txt:"⚽ Il primo allenamento lo faccio io",ef:{popularity:6,morale:8,fatigue:3}},
+    {txt:"🏷️ Basta il taglio del nastro",ef:{popularity:3,morale:3}},
   ]},
 ];
 

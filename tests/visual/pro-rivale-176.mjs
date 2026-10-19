@@ -17,6 +17,9 @@ async function braccio(rosso) {
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }).catch(() => {}); await sleep(2500);
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
   for (let k = 0; k < 30; k++) { if (await page.locator('text=LE TUE OPZIONI').first().isVisible().catch(() => false)) break;
+    /* [giro 66, PO-154] la sonda non sa rispondere a un impulso: passava solo perche' a W39 usciva sempre wi_procuratore («Aspettiamo»).
+       Col pool del contesto nuovo esce un altro impulso e la finestra fermava «Chiudi la stagione». A settimana vissuta la finestra si chiude. */
+    await page.evaluate(() => { try { const C = window.__CPM_CAREER, s = C.get(); if (s.lived && s.week >= 39 && C.screen() === 'dashboard') C.dismiss(); } catch (e) {} });
     await page.evaluate(() => { const x = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null).find(b => /Capito|Vivi la Settimana|Chiudi la stagione|Continua|Avanti|Prosegui|Aspettiamo|Ho capito|Vedi le offerte|Scegli|Salta|Chiudi$/i.test(b.textContent || '')); if (x) x.click(); }); await sleep(1500); }
   const opz = await page.locator('text=LE TUE OPZIONI').first().isVisible().catch(() => false);
   const prima = await page.evaluate(() => { try { const s = window.__CPM_CAREER.snapshot(); return { pro: s.proStatus, rival: !!s.rival, sponsor: !!s.clubSponsor }; } catch (e) { return null; } });

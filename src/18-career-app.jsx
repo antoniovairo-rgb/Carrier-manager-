@@ -1438,8 +1438,8 @@ const getThisWeekMatchday=()=>{
          scelte vere (stessa struttura del percorso settimanale, src/18 ~4050), per misurare l'effetto di ognuna delle 221 scelte.
          Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
       apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
-        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱"}[im.cat]||"💡";
-        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat});return true;}catch(e){return "error:"+(e&&e.message);}},
+        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[im.cat]||"💡";
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -2004,6 +2004,11 @@ const getThisWeekMatchday=()=>{
   const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPAP224&&React.isValidElement(node)&&node.props&&node.props.momento!=null)node=React.cloneElement(node,{momentoAperto:true});/* [7.999.160] in finestra la fisarmonica parte aperta: un tocco solo */if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal||(!_w.__CPM_NO_IV224&&interviewModal)))return null;/* [7.999.161 PO-224, collaudatrice giro 8: a 360 px «La tua storia» stava sotto l'intervista «Zona Mista» settimanale] la finestra aspetta anche l'intervista. Rosso __CPM_NO_IV224 */_popTaken224=true;
     if(!_w.__CPM_NO_MOD230&&finestraOn230()&&React.isValidElement(node)&&node.type===Card){const _f230=cardInFinestra230(node);return(<Modal z={9997} dismissable={false} cpm="pop224" pannelloCpm="finestra230" title={_f230.title} footer={_f230.footer}>{_f230.body}</Modal>);}/* [7.999.162 PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco»] la Card della home in finestra si smonta e si ridisegna DENTRO il Modal: un solo titolo, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Rosso __CPM_NO_MOD230 (la Card clonata della 7.999.161) */
     return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" data-cpm="finestra230" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto",...(finestraOn230()?{...finestraStd(),padding:SP.sm}:{})}}>{(finestraOn230()&&React.isValidElement(node))?React.cloneElement(node,{style:{...(node.props.style||{}),background:"transparent",border:"none",boxShadow:"none",marginBottom:0}}):node}</div></div>);};/* [7.999.161 PO-230] cornice standard: la Card interna perde fondo, bordo e ombra propri */
+  /* [7.999.173 PO-224, giro 66] il censimento (docs/sviluppo/PO224-censimento-home.md) aveva lasciato in home quattro riquadri che
+     chiedono una scelta o una presa d'atto: «Il progetto del club», «Sponsor», «Vita privata», «Non mi era mai successo». Passano anche
+     loro per la stessa finestra (_pop224: uno alla volta, aspetta i dialoghi bloccanti). Solo presentazione: stato e pulsanti invariati.
+     Rosso __CPM_NO_POP224B (tornano riquadri), guardiano popup-224b. */
+  const _pop224B=(node)=>((typeof window!=='undefined'&&window.__CPM_NO_POP224B)?node:_pop224(node));
   const bondEvent=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const sn=p.season||1,wk=p.week||1;const tms=p.teammates||[];if(!tms.length)return null;
@@ -4031,6 +4036,7 @@ const getThisWeekMatchday=()=>{
         ...(choice.flag==="investment"?{investmentPending:true,...((typeof window!=="undefined"&&window.__CPM_NO_INV223)?{}:{investimenti223:[...(p.investimenti223||[]),{amt:ef.bank!=null?Math.max(0,Math.round(p.bankBalance||0)-Math.max(0,Math.round((p.bankBalance||0)+ef.bank))):0,prof:choice.inv||"bilanciato",s:p.season||1,w:p.week||1}]})}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE · [PO-223] e registra QUANTO e' uscito davvero dal conto e con che profilo */
         ...(ef.transferListed===true?{transferListed:true}:{}),/* [7.430.0] «voglio muovermi ora» produce il FATTO: in lista, ed e' il flag che il mercato legge davvero */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
+        ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
       };
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
@@ -4196,12 +4202,15 @@ const getThisWeekMatchday=()=>{
       /* [7.433.0] la stagione d'addio non e' una stagione qualunque: se ci sono impulsi dell'addio
          ancora da vivere, 6 settimane su 10 tocca a loro */
       const _fw433=WEEKLY_IMPULSES.filter(im=>(im.addio||im.mile)&&_impCond(im)&&!(player.impulseSeen||{})[im.id]);/* [7.435.0] pietre miliari: addio + esordio + primo anno pro — le cond fanno gia' la stagione giusta */
-      const impulse=(_fw433.length&&Math.random()<0.6)?pick(_fw433):(_pickPool.length?pick(_pickPool):null);
+      /* [7.999.173 PO-154] i SEGUITI pronti passano davanti a tutto: escono solo se la scelta d'origine e' stata
+         fatta (segOk154) e una volta sola per scelta; a parita' vince l'origine piu' vecchia, che scade prima. */
+      const _seg154=WEEKLY_IMPULSES.filter(im=>im.seg&&_impCond(im)).sort((a,b)=>(((player.impMem||{})[a.seg.da]||{}).a||0)-(((player.impMem||{})[b.seg.da]||{}).a||0));
+      const impulse=_seg154.length?_seg154[0]:(_fw433.length&&Math.random()<0.6)?pick(_fw433):(_pickPool.length?pick(_pickPool):null);
       if(impulse){
         _lastImpulseId=impulse.id;
-        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1}}));/* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
-        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱"}[impulse.cat]||"💡";
-        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
+        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
+        const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[impulse.cat]||"💡";
+        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
       }
     }
@@ -6374,7 +6383,7 @@ const getThisWeekMatchday=()=>{
               <div style={{minWidth:0}}>
                 <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>{weekLiveModal.isSpogliatoio?(weekLiveModal.teammate?.name||"Un compagno"):weekLiveModal.isImpulse?"Impulso della settimana":weekLiveModal.isRehab?"Riabilitazione":"Questa settimana"}</div>
                 {weekLiveModal.isSpogliatoio&&<div style={{fontSize:FS.small,color:TH.muted}}>Lo spogliatoio · {TEAMMATE_ARCHETYPES.find(a=>a.id===weekLiveModal.teammate?.archetype)?.name||"compagno"}</div>}
-                {weekLiveModal.isImpulse&&<div style={{fontSize:FS.small,fontWeight:FW.bold,color:{opportunità:TH.txGreen,scelta:TH.brandText,tensione:TH.txRed,conseguenza:TH.muted,addio:TH.txAmber,esordio:TH.txGreen,primopro:TH.brandText}[weekLiveModal.cat]||TH.brandText}}>{({opportunità:"Opportunità",scelta:"Scelta",tensione:"Tensione",conseguenza:"Conseguenza",addio:"L'addio",esordio:"Esordio",primopro:"Primo anno da pro"})[weekLiveModal.cat]||weekLiveModal.cat}</div>}
+                {weekLiveModal.isImpulse&&<div style={{fontSize:FS.small,fontWeight:FW.bold,color:{opportunità:TH.txGreen,scelta:TH.brandText,tensione:TH.txRed,conseguenza:TH.muted,addio:TH.txAmber,esordio:TH.txGreen,primopro:TH.brandText,seguito:TH.txAmber}[weekLiveModal.cat]||TH.brandText}}>{({opportunità:"Opportunità",scelta:"Scelta",tensione:"Tensione",conseguenza:"Conseguenza",addio:"L'addio",esordio:"Esordio",primopro:"Primo anno da pro",seguito:"Il seguito"})[weekLiveModal.cat]||weekLiveModal.cat}</div>}
               </div>
             </div>
             {weekLiveModal.isRehab&&<div style={{fontSize:FS.small,color:TH.txAmber}}>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</div>}
@@ -6428,7 +6437,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.h}}>{weekLiveModal.event?.e||"💡"}</div>
                 <div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>Impulso settimana</div>
-                  <div style={{fontSize:FS.caption,color:{opportunità:TH.txGreen,scelta:"#2563eb",tensione:"#dc2626",conseguenza:"#7c3aed",addio:"#b45309",esordio:"#16a34a",primopro:"#0891b2"}[weekLiveModal.cat]||TH.primary,fontWeight:700,textTransform:"capitalize"}}>{({addio:"L'addio",esordio:"Esordio",primopro:"Primo anno da pro"})[weekLiveModal.cat]||weekLiveModal.cat}</div>{/* [7.436.0 consolidamento] le categorie nuove hanno un NOME, non la chiave grezza («Primopro») */}
+                  <div style={{fontSize:FS.caption,color:{opportunità:TH.txGreen,scelta:"#2563eb",tensione:"#dc2626",conseguenza:"#7c3aed",addio:"#b45309",esordio:"#16a34a",primopro:"#0891b2"}[weekLiveModal.cat]||TH.primary,fontWeight:700,textTransform:"capitalize"}}>{({addio:"L'addio",esordio:"Esordio",primopro:"Primo anno da pro",seguito:"Il seguito"})[weekLiveModal.cat]||weekLiveModal.cat}</div>{/* [7.436.0 consolidamento] le categorie nuove hanno un NOME, non la chiave grezza («Primopro») */}
                 </div>
               </div>
             ):(
@@ -7803,7 +7812,7 @@ const getThisWeekMatchday=()=>{
         const pj=clubProject(player);if(!pj)return null;
         const seen=player.clubProjSeen;
         if(seen&&seen.k===pj.k&&seen.cid===(player.club?.id||player.club?.n))return null;
-        return(
+        return _pop224B(
         <Card momento="Il progetto del club" momentoInk={_n30(pj.tone==="bad"||pj.tone==="good"?"#fff":TH.text,undefined)}/* [G10] l'inchiostro segue il FONDO: col tono neutro questa card non e' scura ma `TH.card`, e il bianco dichiarato a mano dava bianco su bianco (misurato dalla griglia: 1,00:1) */ /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30(pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,TH.card),border:_n30(pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30(pj.tone==="bad"?"#fdba74":pj.tone==="good"?"#fcd34d":TH.muted,pj.tone==="bad"?semTesto945("#fdba74"):pj.tone==="good"?semTesto945("#fcd34d"):TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il progetto del club</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -7820,7 +7829,7 @@ const getThisWeekMatchday=()=>{
           silenzio dall'effect → mai spurio. Il Btn scrive la nuova baseline + un effetto direzionale bounded. */}
       {tab==="dashboard"&&(()=>{
         const ss=stanceShift(player);if(!ss)return null;const _up=(ss.fx&&ss.fx.morale||0)>=0;
-        return(
+        return _pop224B(
         <Card momento="Sponsor" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30(_up?"linear-gradient(150deg,#0d2418,#12301e)":"linear-gradient(150deg,#2a1010,#331414)",TH.card),border:_n30(_up?"1px solid #1d6b45":"1px solid #7a2a2a","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30(_up?"#6ee7b7":"#fca5a5",_up?semTesto945("#6ee7b7"):semTesto945("#fca5a5")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{ss.e} Cambio di clima · {ss.label}</div>
           <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.86)",TH.muted),lineHeight:1.5,marginBottom:8}}>{ss.t}</div>
@@ -7853,7 +7862,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.29.0 ONDA 4 — §S14] VITA PRIVATA — l'arco lento (incontro → matrimonio → genitore) */}
       {tab==="dashboard"&&(()=>{
         const lv=lifeView(player);if(!lv)return null;
-        return(
+        return _pop224B(
         <Card momento="❤️ Vita privata" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#26101c,#331426)",TH.card),border:_n30("1px solid #7a2a55","1px solid "+TH.cardBorder)}}>
           {!dup068On()&&<div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>}{/* [7.999.173 PO-066 giro 68] il titolo della fisarmonica lo dice gia' */}
           <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{lv.t}</div>
@@ -8097,7 +8106,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.30.0 ONDA 5 — §S17] GLI IRRIPETIBILI — once-in-a-career, mai due nella stessa stagione */}
       {tab==="dashboard"&&(()=>{
         const ov=onceView(player);if(!ov)return null;
-        return(
+        return _pop224B(
         <Card momento="Non mi era mai successo" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#1c1408,#2a1f0c)",TH.card),border:_n30("1px solid #8a6d1a","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#fcd34d",semTesto945("#fcd34d")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Non mi era mai successo</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
