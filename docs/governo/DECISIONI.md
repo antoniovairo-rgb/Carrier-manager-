@@ -579,3 +579,12 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Giro 70: trainer «tenere 0,08/0,12/0,16»; mental coach «lasciare così e dichiararlo nel testo» (vale dal vivo); vita_casa/vita_auto «separati dai beni dell'Ufficio».
 - Collaudi: nessun difetto alto. I medi entrano nella 174 col giro 72: (1) 173-3D «fra le linee» eroe fuori quadro 25% in hl_result → estendere linee-61 al totale (soglia ≤15%) e correggere la mira; (2) 172-3D corpi GLB non pronti a fine ingresso (PO-277) → misura e correzione; (3) 172-carriera schede-finale parte B esce 0 senza giudicare → deve uscire ≠0; (4) 173-carriera pulizia-072 su base inesistente → base su tag pre-173; (5) 173-carriera ritratto dell'eroe dopo PO-171 → foto in 3 schermate GLB-ON; bassi: pallone 0,193 contro 0,19 (PO-278), premiazione-palco-191 copertura, etichette barra a 360 px.
+
+## 19/10 sera — assemblaggio 7.999.174 (decisioni della sessione principale)
+
+- **Calendario:** la 7.999.174 esce senza la quota PO-190 «50% per tutti». Motivo: la misura chiesta (25 partite vissute per stile, 4 stili, prima e dopo) richiede molte ore; il PO ha chiesto di rilasciare il prima possibile. PO-190 va al giro 74 (session_01BAUfBq6gD8t4LqpJhZk3yD, ramo sviluppo/quota-190-giro74, base giro 69) ed entra nel rilascio successivo. Nel giro 74 entra anche il difetto pagella 2 gol / risultato registrato 1 segnalato dal giro 67.
+- **Giro 69 (PO-156):** scelta del mister graduata anche nella partita vissuta (a, consigliata: una sola regola per Gioca e Simula); tolleranza del guardiano come §1 (a); vittorie dal vivo col Finalizzatore rimisurate dal giro 74 con quota-190-vivo (a).
+- **Giro 70 (PO-281/157):** quote del piano del trainer 0,08/0,12/0,16 (A, impatto netto); mental coach: lasciare così e dichiararlo nella riga dello staff (A); vita_casa/vita_auto separati dai beni dell'Ufficio (A). Motivo: opzioni consigliate, coerenti con «effetti sul campo, rischio e scelte vere».
+- **Rossi preesistenti tempo-138 e pressing-143** (giro 70: identici sulla base lavoro/173): si giudicano nella catena 174; se restano rossi veri, si ricontrollano in locale prima della promozione.
+- **Giro 62:** errori-168 aggiunto alla catena completa/notte e alla MAPPA (src/0x, src/18).
+- **Chiavi doppie:** restano le 3 preesistenti (ball e lR in src/12, setOffer in src/18), nessuna nuova dai giri; si correggono nella fase di stabilità.
