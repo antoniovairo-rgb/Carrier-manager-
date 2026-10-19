@@ -373,6 +373,7 @@
     "debito-190": "node debito-190.mjs",
     "scene-190": "node scene-190.mjs",
     "stili-098": "node stili-098.mjs",
+    "difficolta-156": "node difficolta-156.mjs && node difficolta-156.mjs --rosso",
     "stili-098-migrazione": "node stili-098-migrazione.mjs",
     "quota-190-vivo": "node quota-190-vivo.mjs",
     "finale-202": "node finale-202.mjs",

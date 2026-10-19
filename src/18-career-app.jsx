@@ -1741,7 +1741,7 @@ const getThisWeekMatchday=()=>{
       });
     }
     if((p.age||18)>=31){
-      const _dp=(p.age||18)>=35?0.20:(p.age||18)>=33?0.14:0.08;
+      const _dp=(typeof window!=='undefined'&&window.__CPM_NO_156)?((p.age||18)>=35?0.20:(p.age||18)>=33?0.14:0.08):((p.age||18)>=35?0.35:(p.age||18)>=33?0.30:0.22);/* [giro 69 PO-156 «A — Curva netta»] declino fisico vero: misurato, a 31+ l'OVR restava quello dell'elite (81,0 contro 81,8, banco L6-bis) — probabilita' settimanale di perdere un punto 0,08/0,14/0,20 → 0,22/0,30/0,35 (rosso __CPM_NO_156) */
       if(Math.random()<_dp){
         const _dk=Math.random()<0.7?pick(['velocità','fisico']):pick(['tiro','tecnica','dribbling','posizionamento']);
         stats[_dk]=clamp((stats[_dk]||60)-1,1,99);
@@ -3241,7 +3241,7 @@ const getThisWeekMatchday=()=>{
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
       const _aSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6] settimana riproducibile
-      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
+      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,giocatore:(isInjured||_out222||p.contractExpired)?null:p,/* [giro 69 PO-156] la scelta del mister */stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
       // Only mark THIS specific match as played (by matchday id), not all at same week
       const newCal=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       // Check if more unplayed euro/cup matches remain at same week after this sim
@@ -4531,7 +4531,7 @@ const getThisWeekMatchday=()=>{
           }
         } else if(opp){
           const _wSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6]
-          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
+          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,giocatore:(p.injured||p.contractExpired)?null:p,/* [giro 69 PO-156] */stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
           const isCupMd=md.type==="cup";
           if(isEuroG){
             const egPts=(sim.won?3:sim.drew?1:0);
@@ -4744,7 +4744,7 @@ const getThisWeekMatchday=()=>{
             :avversarioDiGiornata(_xlc,xmd,p);/* [7.999.106] */
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
-            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
+            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,giocatore:p.contractExpired?null:p,/* [giro 69 PO-156] */stileEroe:(typeof stileMotore==='function'?stileMotore(p):null),stile:(p.coach&&p.coach.style)||null});
             const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}
