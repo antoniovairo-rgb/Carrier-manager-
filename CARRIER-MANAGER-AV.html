@@ -5803,8 +5803,13 @@ function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO
 /* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
 /* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
 function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
-function haTrattoEnfant(p){return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
-try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant};}catch(_e){}
+/* [giro 75, decisione PO 19/10 «togliamolo, rimane praticamente solo il Finalizzatore» · «togli anche enfant»] STILE UNICO: alla
+   creazione non si sceglie piu' lo stile (l'eroe e' Finalizzatore per tutti) e il tratto Enfant non esiste piu' (niente crescita x1,35,
+   niente costo -2). I salvataggi passano a Finalizzatore in migratePlayer (src/17), lo stile e l'Enfant di prima restano registrati in
+   stilePrima75 / enfantPrima75. Il motore conosce ancora i 4 stili (stileMotore). Rosso __CPM_NO_STILEUNICO75 = comportamento 7.999.174. */
+function stileUnico75(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_STILEUNICO75);}catch(_e){return true;}}
+function haTrattoEnfant(p){if(stileUnico75())return false;return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
@@ -30412,7 +30417,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        (S.fischio228, letto da _conta914) per i sotto-tick che battono fra il fischio e lo spegnimento del metronomo.
        Guardiano tests/visual/tabellino-228.mjs (verde: tabellino == tabellone; rosso: lo scarto ricompare). */
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TAB228)){const _S228=motoreRef.current&&motoreRef.current._S;if(_S228&&_S228.tab){_S228.fischio228=true;
-      for(const _e of (evAcc898Ref.current||[])){if(!_e||_e.t!=='gol')continue;const _l=(_e.chi&&_e.chi.team)||_e.per||_e.lato;const _A=_S228.tab[_l];if(!_A)continue;if((_A.gol|0)>0)_A.gol--;if(_e.assist&&_e.assist.team&&_S228.tab[_e.assist.team]&&(_S228.tab[_e.assist.team].assist|0)>0)_S228.tab[_e.assist.team].assist--;(_S228._tolti228=_S228._tolti228||[]).push({min:_e.min,lato:_l});}
+      for(const _e of (evAcc898Ref.current||[])){if(!_e||_e.t!=='gol')continue;const _l=(_e.chi&&_e.chi.team)||_e.per||_e.lato;const _A=_S228.tab[_l];if(!_A)continue;if((_A.gol|0)>0)_A.gol--;if(!(typeof window!=='undefined'&&window.__CPM_NO_PAGELLA75)){/* [giro 75] il gol tolto dal tabellino esce anche dalla pagella del marcatore (e l'assist da quella di chi l'ha servito) */const _pq=_S228.pag&&_e.chi&&_e.chi.i!=null?_S228.pag[_e.chi.i]:null;if(_pq&&(_pq.gol|0)>0)_pq.gol--;const _pa=_S228.pag&&_e.assist&&_e.assist.i!=null?_S228.pag[_e.assist.i]:null;if(_pa&&(_pa.assist|0)>0)_pa.assist--;}if(_e.assist&&_e.assist.team&&_S228.tab[_e.assist.team]&&(_S228.tab[_e.assist.team].assist|0)>0)_S228.tab[_e.assist.team].assist--;(_S228._tolti228=_S228._tolti228||[]).push({min:_e.min,lato:_l});}
       evAcc898Ref.current=(evAcc898Ref.current||[]).filter(_e=>!(_e&&_e.t==='gol'));}}}catch(_e228){}
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TEST216)){const _M216=motoreRef.current;const _T216=_M216&&_M216.tabellino?_M216.tabellino():null;const _s216=scoreRef.current||{};
       if(_T216&&_T216.home&&_T216.away){const _a=[_T216.home.gol|0,_T216.away.gol|0],_b=[_s216.home|0,_s216.away|0];
@@ -31431,6 +31436,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(!txt)return null;
     const chiN=e.chi||e.da||e.gk||null;const aN=e.a||e.su||null;
     return{txt,ef,w:1,bpos:bpos||(to?{x:to.x,y:to.y}:null),at,ms,tn617:null,poss:0,
+      _eroe75:!!(e.t==='gol'&&nostro&&e.chi&&e.chi.eroe),/* [giro 75] il motore ha fatto segnare l'EROE in gioco fluido: va nel suo risultato registrato (team_goal) */
       _motore870:{lato:l,kind:e.t,kindP:e.kind||e.intent||null,prio:bp,dur:(e.dur>0)?+e.dur:null,from:from?{x:+from.x.toFixed(1),y:+from.y.toFixed(1)}:null,to:to?{x:+to.x.toFixed(1),y:+to.y.toFixed(1)}:null,imp:bp>=6},
       _az551:(chiN||aN)?{da:_raw(chiN)||"",a:_raw(aN)||""}:null};
   }catch(_e870){return null;}};
@@ -35528,6 +35534,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _C=(window.__CPM_GOL785C=window.__CPM_GOL785C||[]);
             if(_C.length<10)_C.push({min:nx,sost:(ev!==_simEv77),lib:!!ev._lib666,intx:!!ev._intx669,az:!!ev._az551,piano:!!ev._piano649,sp:ev.sp||null,txt:String(ev.txt||'').slice(0,46)});
           }}catch(_e785){}
+          /* [giro 75 — LA PAGELLA E IL RISULTATO REGISTRATO CONTANO GLI STESSI GOL. Rosso __CPM_NO_PAGELLA75] Misurato (quota-190-vivo k4/k12/k13,
+             salvataggio S12): pagella del motore 2 gol, risultato registrato 1. Il motore fa segnare l'eroe anche in gioco fluido (registro
+             _golLog: min 15, scena:false, chi = HERO): la pagella lo conta (src/14 _conta914, P.gol++), il live lo narrava come gol ambientale
+             della squadra e mStats.goals — cio' che arriva in carriera — non lo vedeva. Ora quel gol e' dell'eroe anche qui. */
+          const _gEroe75=ev.ef==="team_goal"&&ev._eroe75&&!(typeof window!=='undefined'&&window.__CPM_NO_PAGELLA75);
+          if(_gEroe75){setMStats(st=>({...st,goals:st.goals+1,rb:st.rb+5}));_evName170=_surnBG(player.name||"")||_evName170;try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_PAG75=(window.__CPM_PAG75|0)+1;}catch(_e75){}}
           if(ev.ef==="team_goal"){cpmEv("goal",{min:nx,side:"home",src:_simEv77?"microsim":"cronaca"});try{_golInRete811("home");}catch(_e811s){}try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['accreditato_casa']=(_L['accreditato_casa']|0)+1;}}catch(_e785){}/* [7.496.0 F1b] il gol AMBIENTALE: `src` distingue il roll del micro-simulatore dalla riga pescata a caso, che oggi possono entrambe segnare */setScore(s=>({...s,home:s.home+1}));const _myR=(isMatchHome?homeRoster:awayRoster)||homeRoster;const _sc76=_myR.filter(function(r){return r&&!/portiere|goalkeeper|^gk$/i.test(r.role||"")&&r.name!==player.name;});const _pool76=_sc76.length?_sc76:_myR.filter(function(r){return r&&r.name!==player.name;});/* [7.8.28 QA] EROE escluso dal pool marcatori ambientali: la cronaca poteva stampare «Gol di <Eroe>» per un gol del microsim che NON contava nelle sue statistiche (tabellino 2 gol, pagella 1) */const _tmSorteggio=_surnBG(((_pool76[Math.floor(_rndM()*Math.min(10,_pool76.length))]||{}).name)||"")||"un compagno";/* [7.170.0] cognome suffisso-aware (mai «jr» nudo) */const _tmScorer=(_evName170&&!(typeof window!=='undefined'&&window.__CPM_NO830))?_evName170:_tmSorteggio;/* [7.830.0 — IL MARCATORE E' UNO SOLO. Rosso __CPM_NO830] Playtest n°6/7 (Q): «Conclusione secca di Pellegrini» → «Colombo segna!», 3 gol su 4. Il testimone NOME814.det ha mostrato che la 7.814 calcolava «Pellegrini»… e QUESTO handler (7.170) lo sovrascriveva un rigo dopo con un sorteggio dalla rosa, per il badge, il float e la riga. Chi ha fatto l'ultima battuta segna; il sorteggio resta solo quando non c'e' un piano. */_evName170=_tmScorer;pushMatchEvent(nx,"goal","⚽ Gol di "+_tmScorer);setFloatGoal({text:"⚽ GOL — "+_tmScorer,col:"#22c55e",key:Date.now()});}/* [7.112.0 collaudo PO «mostra i marcatori anche durante il live match»] badge col nome del marcatore compagno *//* [6.76.0 LMV-S3] il PORTIERE escluso dal pool marcatori dei gol ambientali *//* [6.49.0 RC] COLLAUDO PO «marcatori inventati, non in linea con la rosa»: il gol della TUA squadra pescava dalla rosa fisica di CASA → in trasferta mostrava un giocatore AVVERSARIO. Ora usa la rosa dell'EROE (isMatchHome?home:away). */
           if(ev.ef==="opp_goal"){setScore(s=>{
             cpmEv("goal",{min:nx,side:"away",src:_simEv77?"microsim":"cronaca"});try{_golInRete811("away");}catch(_e811s){}try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['accreditato_ospite']=(_L['accreditato_ospite']|0)+1;}}catch(_e785){}/* [7.496.0 F1b] */
@@ -44019,6 +44031,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const _cand23=candidatiEroe23(avatarId);const voltoScelto=_cand23.length?_cand23[voltoVar%_cand23.length]:null;
   const[archetypeId,setArchetypeId]=useState("finalizzatore");/* [giro 67 PO-098] 4 stili */
   const[enfant67,setEnfant67]=useState(false);/* [giro 67 PO-098] Enfant Prodige: tratto di crescita, non piu' uno stile */
+  const _unico75=stileUnico75();/* [giro 75 PO 19/10] stile unico: niente griglia degli stili, niente Enfant. Rosso __CPM_NO_STILEUNICO75 */
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
@@ -44026,15 +44039,15 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];
+    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
-    if(enfant67){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
+    if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
     if(legacyBonus?.statBoost){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]+legacyBonus.statBoost,1,99);});}
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!_unico75&&!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -44077,13 +44090,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🎯 Stile e percorso</div>
+          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_unico75?"🗺️ Percorso":"🎯 Stile e percorso"}</div>
           <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
           </Card>
-          {/* S12.2: Archetype selection */}
-          <div>
+          {/* S12.2: Archetype selection — [giro 75] nascosta con lo stile unico */}
+          {!_unico75&&<div data-cpm="scelta-stile">
             <label style={lbl}>Stile di gioco</label>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
               {ARCHETYPES.map(arc=>{
@@ -44108,7 +44121,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               <input type="checkbox" checked={enfant67} onChange={e=>setEnfant67(e.target.checked)} style={{marginTop:2}}/>
               <span style={{fontSize:FS.caption,color:TH.text,lineHeight:1.45}}><span style={{fontWeight:FW.bold}}>✨ Enfant Prodige</span> · tratto di crescita: cresci più in fretta fino ai 22 anni, ma parti con 2 punti in meno su ogni attributo</span>
             </label>
-          </div>
+          </div>}
           {/* Club dei Sogni — tutti i club del gioco. [7.999.49 parte A] in fisarmonica chiusa: il bottone per iniziare non sta più dopo l'elenco dei club */}
           <details style={{marginBottom:0}}>
             <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⭐ Club dei sogni (facoltativo){dreamClub?<span style={{color:TH.txGreen,fontWeight:FW.bold}}> · {dreamClub.n}</span>:null}</summary>
@@ -46066,6 +46079,16 @@ function migratePlayer(player){
      if(_id67&&!(typeof window!=='undefined'&&window.__CPM_NO_STILI)&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id67)&&!ARCHETYPES.some(a=>a.id===_id67)){
        const _st67=ARCHETYPES.find(a=>a.id===stileDi(_id67,newP.stats))||ARCHETYPES[0];
        newP={...newP,archetype:_st67,archetipoOrig:_id67,tratti:{...(newP.tratti||{}),enfant:_id67==="enfant"||!!(newP.tratti&&newP.tratti.enfant)}};changed=true;}}
+    /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
+       vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
+       restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
+    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+     if(_id75!=="finalizzatore"||_enf75){
+       newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
+       if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
+       if(_enf75)newP.enfantPrima75=true;
+       if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
+       changed=true;}}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
