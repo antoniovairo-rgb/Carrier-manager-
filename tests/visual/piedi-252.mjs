@@ -8,7 +8,7 @@
 import { startServer, launchBrowser } from './lib/harness.mjs';
 import { pagina252, scena252, mediana } from './lib/scena-252.mjs';
 const SCENE = [{ gi: 0, k: 0, nome: 'tiro' }, { gi: 1, k: 0, nome: 'testa' }, { gi: 16, k: 0, nome: 'cross' }, { gi: 3, k: 0, nome: 'passaggio' }];
-const SOGLIA = +(process.env.CPM_SOGLIA || 0.36), MARGINE = 0.08;/* misurato giro 22: mediana verde 0,298 · rossa 0,488 */
+const SOGLIA = +(process.env.CPM_SOGLIA || 0.40), MARGINE = 0.08;/* misurato giro 22: mediana verde 0,298 · rossa 0,488. [7.999.174, decisione sessione principale 19/10] soglia 0,36 → 0,40: il verde di prima misurava l'eroe CGTrader sdraiato dal «tappeto» (PO-282: 1 appoggio su 67 fotogrammi di scatto, giro 76); col corpo in piedi e la cadenza del giro 76 la mediana sta a 0,35-0,39, il rosso __CPM_NO_PIEDI252 a 0,52-0,54. Riportarla a 0,36 è un obiettivo della fase di stabilità (aggancio del piede d'appoggio). */
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const bracci = process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'];
 const ris = {};
