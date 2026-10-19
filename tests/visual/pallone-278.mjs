@@ -27,7 +27,7 @@ async function pagina(rosso, save, extra) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; if (o.r) window.__CPM_NO_PALL278 = true; if (o.s) localStorage.setItem('cpm-v3', JSON.stringify(o.s)); for (const k of o.x) window[k] = true; }, { r: rosso, s: save || null, x: extra || [] });
+  await page.addInitScript(o => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_WALKTEST74 = 1; if (o.r) window.__CPM_NO_PALL278 = true; if (o.s) localStorage.setItem('cpm-v3', JSON.stringify(o.s)); for (const k of o.x) window[k] = true; }, { r: rosso, s: save || null, x: extra || (process.env.CPM_EXTRA || '').split(',').filter(Boolean) });/* [giro 72] CPM_EXTRA=__CPM_NO_PALL72 per il rosso del pavimento scorciato */
   return { ctx, page, errs };
 }
 /* foto della sola tela + lettura del gancio nello STESSO fotogramma congelato */
@@ -91,7 +91,11 @@ async function giocoEHighlight(rosso) {
     let ok = false; const t0 = Date.now();
     while (Date.now() - t0 < 200000) { await sleep(400); const s = await page.evaluate(() => ({ min: (window.__CPM_CLOCK && window.__CPM_CLOCK()) | 0, ph: (window.__CPM_PHASE && window.__CPM_PHASE()) || '?', w: (window.__CPM_WS && window.__CPM_WS()) || null, q: window.__CPM_PALL278 ? window.__CPM_PALL278() : null }));
       if (s.ph === 'ended') break; if (s.min >= 5 && /^hl_(choose|result)$/.test(s.ph) && s.q && s.q.on && s.q.vis && Math.abs(s.q.ndc[0]) < 0.8 && Math.abs(s.q.ndc[1]) < 0.8) { ok = true; break; } }
-    if (ok) R.push(await misura(page, (rosso ? 'rosso' : 'verde') + '-partita')); else R.push({ fase: 'partita', errore: 'highlight del flusso col pallone nel quadro non raggiunto' });
+    if (ok) { R.push(await misura(page, (rosso ? 'rosso' : 'verde') + '-partita'));
+      /* [giro 72 PO-278] UNA foto e' un fotogramma: il difetto del pavimento sotto __CPM_REC colpiva un fotogramma su cinque. Si campiona
+         il rapporto per 4 s (scena viva) e si giudica il MASSIMO, solo sui fotogrammi col pallone nel quadro e uomo >= 30 px. */
+      const C = []; const t1 = Date.now(); while (Date.now() - t1 < 4000) { const q = await page.evaluate(() => window.__CPM_PALL278 ? window.__CPM_PALL278() : null).catch(() => null); if (q && q.on && q.rap != null && q.uomo >= 30) C.push(q.rap); await sleep(40); }
+      C.sort((x, y) => x - y); R.push({ fase: 'partita-campioni', n: C.length, rapMax: C.length ? C[C.length - 1] : null, rapMed: C.length ? C[C.length >> 1] : null }); } else R.push({ fase: 'partita', errore: 'highlight del flusso col pallone nel quadro non raggiunto' });
     await page.evaluate(() => window.__CPM_AUTOPLAY(false)).catch(() => {});
     await page.evaluate(() => window.__CPM_LOAD_ALL()); await sleep(500);
     for (const gi of HL_GI) { await page.evaluate(i => window.__CPM_FORCE_SIT(i, true), gi); await sleep(2200); R.push(await misura(page, (rosso ? 'rosso' : 'verde') + '-hl' + gi)); }
@@ -105,6 +109,7 @@ const V = SOLO === 'rosso' ? [] : await braccio(false);
 const Ro = SOLO === 'verde' ? [] : await braccio(true);
 await b.close(); srv.close();
 const giudica = (A, nome) => { const g = []; for (const m of A) { if (m.errore) { g.push(`${nome} ${m.fase}: ${m.errore}`); continue; }
+  if (m.fase === 'partita-campioni') { if (m.n < 10) m.nonGiudicata = `solo ${m.n} campioni`; else if (m.rapMax > RMAX) g.push(`${nome} partita-campioni: rapporto massimo ${m.rapMax} > ${RMAX} su ${m.n} campioni (mediana ${m.rapMed})`); continue; }
   const rmax = (m.hb != null && m.hb < 30) ? RMAX_LARGO : RMAX;/* camera larga: sotto i 30 px d'uomo vale il pavimento di leggibilita' (4 px) */
   if (m.rap == null || m.rap < RMIN || m.rap > rmax) g.push(`${nome} ${m.fase}: rapporto pallone/uomo ${m.rap} fuori da [${RMIN};${rmax}] (uomo ${m.hb} px)`);
   if (m.px != null && m.px < 7 && m.P && m.P.on) m.nonGiudicata = 'alone: pallone sotto i 7 px, il bordo e\' solo antialias';
@@ -112,7 +117,7 @@ const giudica = (A, nome) => { const g = []; for (const m of A) { if (m.errore) 
   else if (m.alone > AMAX) g.push(`${nome} ${m.fase}: quota alone ${m.alone} > ${AMAX}`);
   if (m.errori && m.errori.length) g.push(`${nome} ${m.fase}: errori di pagina ${m.errori[0]}`); } return g; };
 const gV = giudica(V, 'verde'), gR = giudica(Ro, 'rosso');
-for (const m of [...V, ...Ro]) console.log(`  ${m.fase}: rapporto ${m.rap} · pallone ${m.px} px · uomo ${m.hb} px · alone ${m.alone}` + (m.nonGiudicata ? ` (non giudicata: ${m.nonGiudicata})` : ''));
+for (const m of [...V, ...Ro]) if (m.fase === 'partita-campioni') console.log(`  partita-campioni: ${m.n} · rapporto mediano ${m.rapMed} · massimo ${m.rapMax}` + (m.nonGiudicata ? ` (non giudicata: ${m.nonGiudicata})` : '')); else console.log(`  ${m.fase}: rapporto ${m.rap} · pallone ${m.px} px · uomo ${m.hb} px · alone ${m.alone}` + (m.nonGiudicata ? ` (non giudicata: ${m.nonGiudicata})` : ''));
 const fall = []; if (!SOLO || SOLO === 'verde') fall.push(...gV);
 if ((!SOLO || SOLO === 'rosso') && !gR.some(x => /rapporto|alone/.test(x))) fall.push('rosso: il difetto non si vede (nessuna soglia cade col pallone di prima)');
 if (fall.length) { console.log('❌ pallone-278'); fall.forEach(x => console.log('  · ' + x)); process.exit(1); }
