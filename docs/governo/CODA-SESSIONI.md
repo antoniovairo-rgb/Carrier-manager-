@@ -142,3 +142,5 @@ Ramo principale del team: `poc/marioprada-character-system`. Promozione su `main
   - giro 67 L6 archetipi, difficoltà (misura), gol eroe (098, 156, 190) — session_01CgjAPDUxuEQYgnRz79dsCm — sviluppo/archetipi-difficolta-giro67
   - giro 68 L7 + mappa (066, 217, 205, 267) — session_01DQmsDmV6Ti2WQJcGDwW2Bu — sviluppo/schermate-mappa-giro68
   - PO-157 Ufficio ed economia: dopo il giro 59 (misura) e il questionario PO-281.
+- 19/10 06:00 UTC — catena notte 7.999.173 (lavoro/173 878844d7) divisa in 6 tronchi su sessioni figlie (riavvii continui del container principale): t1 session_01StVDeoSneDz4y3SQuR5Qf5 · t2 session_01BguHzUTR6nfprNQtZh6ANv · t3 session_01DdGwcp9GRDCdm6epQo8Cke · t4 session_01G4YuE5e7ru4G2yWBctBn8H · t5 session_01UZ49Y2xnFWQknwR29TSBE3 · t6 session_011fc831W6zhJdvuxPJFkpcm (rami catena/173-t1…t6). 22 passi già verdi nella sessione principale. Primo tentativo con l'hash abbreviato non partito (ref_not_found), sessioni archiviate.
+- 18/10 23:43 UTC — collaudi 7.999.172: 3D session_01SBdD2vtvjUujAxMH4uBndx · carriera session_01Ww6Ur7yYCago2WcxdoHzQt.
