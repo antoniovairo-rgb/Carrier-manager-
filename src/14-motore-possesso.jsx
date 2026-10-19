@@ -1572,7 +1572,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
          legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). */
       const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
       const _x218=!(typeof window!=='undefined'&&window.__CPM_NO_CROSS218);const _fkx218=_x218&&!ok&&fam==='freekick'&&/cross/.test(vr)&&rew==='assist';/* [giro 11 PO-218 cross] il cross da punizione sbagliato e' un cross, non un tiro dell'eroe */
-      const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
+      /* [giro 60 PO-218 «esiti bugiardi», rosso __CPM_NO_DIF60] LA SCENA DIFENSIVA NON E' UN TIRO DELL'EROE. Misurato (censimento esiti-241 con
+         CPM_DIF=1, scene difensive prima escluse): gi36/gi44 «Muro invalicabile — il tiro non passa» / «SALVATO!» riusciti -> il motore
+         scriveva tiro:saved dell'EROE + parata + rammarico (la famiglia del gesto e' «header», non «tackle», e cadeva nel ramo del tiro);
+         gi136 cross difensivo sbagliato -> «cross, fuori» dell'eroe. Ora la scena difensiva (sit.type def) di testa o di cross e' una
+         spazzata dell'eroe se riesce, l'avversario che prosegue se fallisce (il gol subito resta del blocco goal_against qui sotto). */
+      const famDefX=!!d.def&&(fam==='header'||fam==='cross')&&!(typeof window!=='undefined'&&window.__CPM_NO_DIF60);/* solo testa e cross: le scene difensive generate dal motore possono avere famiglia vuota e restano contrasti (misurato con difesa-220-giro31: con fam!=='tackle' il contrasto riuscito diventava spazzata, forti 29-36% contro 15% della base) */
+      const famPass=!famDefX&&(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')||_fkx218),famDrib=fam==='dribble',famDef=fam==='tackle';const _crx218=fam==='cross'||_fkx218;
       /* [23/09 POC — gesti evoluti] contrasto in piedi o in scivolata: deciso dalla situazione (distanza dalla porta propria di chi
          interviene, niente sorteggio). In scivolata quando si difende vicino alla propria area, in piedi altrove. */
       const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
@@ -1590,6 +1596,10 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         if(ok&&R){if(!(key==='assist'||key==='goal'))E('ricezione',{chi:chi(R),da:chi(H)});/* chi conclude di prima non controlla: niente ricezione */
           if(key==='assist'||key==='goal'){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),intent:fam==='cross'?'header':null,to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
         if(fam==='cross'&&D)E('pressione',{chi:chi(D),su:chi(R||H)});
+      }
+      else if(famDefX){
+        if(ok)E('spazzata',{chi:chi(H),corner:false});
+        else if(D&&key!=='goal_against')E('conduzione',{chi:chi(D),from:da(D)});
       }
       else if(famDef){
         if(ok&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
