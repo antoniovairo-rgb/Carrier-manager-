@@ -152,6 +152,31 @@ const invTesto223=(e)=>{const d=e.ret-e.amt,dd=(d>=0?"+":"−")+eur223(d);
   if(e.prof==="prudente")return `📈 Investimento immobiliare: puntati ${eur223(e.amt)}, rientrano ${eur223(e.ret)} (${dd})`;
   if(e.prof==="rischioso")return e.ret>0?`🚀 La cripto è esplosa: puntati ${eur223(e.amt)}, rientrano ${eur223(e.ret)} (${dd})`:`📉 La cripto è crollata: persi tutti i ${eur223(e.amt)} puntati`;
   return e.ret>=e.amt?`🍽 Il ristorante gira: puntati ${eur223(e.amt)}, rientrano ${eur223(e.ret)} (${dd})`:`🍽 Il ristorante fatica: puntati ${eur223(e.amt)}, rientrano ${eur223(e.ret)} (${dd})`;};
+/* [PO-281 · giro 70, «Pacchetto consigliato»] INVESTIMENTI IN UN SOLO SISTEMA. Prima la fine stagione chiudeva due cose
+   separate: l'investimento d'impulso dentro il letterale del rollover (registro investimenti223, nessuna traccia dopo) e quello
+   dell'Ufficio in investSeason24 (registro investHist24). Ora UNA funzione chiude entrambi, con le loro formule di sempre
+   (PO-223 e F3: i guardiani investimento-223 e meta-conto-265 restano il giudice degli importi), UN registro (investHist24, con
+   `fonte`: «impulso» o «ufficio»), una riga di diario e una NOTIZIA DI STAMPA per esito (stampa281). Il rischio si legge prima
+   della scelta da una tabella sola (rischio223_281 qui, rischioF3_281 in src/08). Rosso __CPM_NO_INV281 = le due chiusure di prima. */
+const rischio223_281=(prof)=>{const d=INV223[prof]||INV223.bilanciato;const pl=d.lo2==null?0:(1-d.w);const pmax=d.lo2==null?0:Math.round((1-d.lo2)*100);
+  return {pPerdita:Math.round(pl*100),perditaMax:pmax,guadMax:Math.round((d.hi-1)*100)};};
+const stampaInv281=(s,fonte,prof,amt,gain)=>{const ok=gain>=0,eu=eur223;const lab=fonte==="impulso"?(prof==="prudente"?"l'immobiliare":prof==="rischioso"?"la cripto":"il ristorante"):("l'investimento "+((INVEST24[prof]||INVEST24.prudente).l.toLowerCase()));
+  return {season:s,week:38,type:"stampa",e:ok?"📰":"🗞️",headline:ok?("Affari: "+lab+" rende"):("Affari: "+lab+" va male"),
+    body:(ok?"«Fiuto per gli affari»: ":"«Soldi bruciati»: ")+"puntati "+eu(amt)+", "+(ok?"guadagnati ":"persi ")+eu(Math.abs(gain))+(ok?". I tifosi commentano divertiti.":". Sui social qualcuno ironizza.")};};
+const chiudiInvestimenti281=(ret,prev)=>{
+  if(typeof window!=='undefined'&&window.__CPM_NO_INV281)return investSeason24(ret,prev);
+  try{const s=prev.season||1;let bank=ret.bankBalance||0;const hist=[],log=[],news=[];
+    if(prev.investmentPending){
+      if(invLegacy223(prev)){bank+=55000;hist.push({s,prof:"prudente",amt:0,gain:55000,fonte:"impulso"});log.push("📈 Investimento immobiliare (promessa di prima): +55.000€");}
+      else invEsiti223(prev).forEach(e=>{bank+=e.ret;const g=e.ret-e.amt;hist.push({s,prof:e.prof,amt:e.amt,gain:g,fonte:"impulso"});log.push(invTesto223(e));news.push(stampaInv281(s,"impulso",e.prof,e.amt,g));});}
+    const iv=prev.invest24;
+    if(iv&&iv.amt>0&&!(typeof window!=="undefined"&&window.__CPM_NO_INVEST24)){const rate=investRate24(prev,s,iv.prof),g=Math.round(iv.amt*rate),d=INVEST24[iv.prof]||INVEST24.prudente;
+      bank+=iv.amt+g;hist.push({s,prof:iv.prof,amt:iv.amt,gain:g,fonte:"ufficio"});
+      log.push(d.e+" Investimento "+d.l.toLowerCase()+" chiuso: "+(g>=0?"+":"−")+eur223(g)+" ("+(rate>=0?"+":"−")+String(Math.abs(Math.round(rate*1000)/10)).replace(".",",")+"%) su "+eur223(iv.amt));news.push(stampaInv281(s,"ufficio",iv.prof,iv.amt,g));}
+    if(!hist.length)return {...ret,investmentPending:false,investimenti223:[]};
+    return {...ret,bankBalance:Math.round(bank),investmentPending:false,investimenti223:[],invest24:(iv&&iv.amt>0)?null:ret.invest24,
+      investHist24:[...((prev.investHist24)||[]),...hist].slice(-12),stampa281:[...(ret.stampa281||[]),...news].slice(-40),log:[...log,...(ret.log||[])].slice(0,60)};
+  }catch(_e){return investSeason24(ret,prev);}};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -1456,6 +1481,9 @@ const getThisWeekMatchday=()=>{
       resolveOpening:()=>{try{setPlayer(p=>{const sn=p.season||1;return{...p,campDone:true,presidentModalSeason:sn,jerseyNumSeason:sn,drawSeen:sn,mercatoSeen:sn,presentSeason:sn,...(((p.proStatus||"u18")==="pro"&&sn>=2&&(!p.seasonPledge||p.seasonPledge.season!==sn))?{seasonPledge:{season:sn,tone:"equilibrato"}}:{})};});return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] risoluzione minima (flag, +drawSeen per i sorteggi) delle interazioni d'apertura per l'harness · [7.147.0] +mercatoSeen
       natTournamentPatch:(p)=>{try{return natTournamentPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [6.32.0 STAB-2] espone l'helper trigger tornei Nazionali per la suite career-invariants
       weeklyEconomyFields:(p)=>{try{return weeklyEconomyFields(p);}catch(e){return "error:"+(e&&e.message);}},
+      weeklyStaffRel:(p)=>{try{return weeklyStaffRel(p);}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sonda reazioni dei beni */
+      chiudiInvestimenti:(r,p)=>{try{return chiudiInvestimenti281(r,p);}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sonda chiusura unica */
+      scegli:(i)=>{try{const c=weekLiveModal&&weekLiveModal.choices&&weekLiveModal.choices[i|0];if(!c)return "nessuna";handleImpulseChoice(c);return weekLiveModal.cat||"?";}catch(e){return "error:"+(e&&e.message);}},/* [PO-281] sceglie davvero (stesso gestore del bottone) */
       weeklyGrowthFields:(p,b)=>{try{return weeklyGrowthFields(p,b||{});}catch(e){return "error:"+(e&&e.message);}},simInjuryRoll:(p,seed)=>{try{return simInjuryRoll(p,seed);}catch(e){return "error:"+(e&&e.message);}},/* [7.989.0 F1] sonda staff24 */investRate24:(p,se,pr)=>{try{return investRate24(p,se,pr);}catch(e){return "error:"+(e&&e.message);}},/* [7.991.0 F3] */ // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
       euroGroupKOPatch:(p)=>{try{return euroGroupKOPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] espone la transizione girone→KO per la probe euro-ko-zombie
       euro:()=>{try{const e=player.euro;return e?{active:!!e.active,phase:e.phase,pts:e.pts||0,gr:(e.groupResults||[]).length,koCal:(player.calendar||[]).filter(m=>m.type==="euro"&&!m.played).map(m=>({ph:m.euroPhase,w:m.week,opp:m.opponentId,home:!!m.isHome})),egCal:(player.calendar||[]).filter(m=>m.type==="euro_group").map(m=>({w:m.week,played:!!m.played}))}:null;}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] stato euro per la probe
@@ -1703,13 +1731,14 @@ const getThisWeekMatchday=()=>{
     const r=seededRng(((seed>>>0)||1));
     const matchFat=clamp((p.fatigue||0)+12+Math.round(r()*10),0,100);
     const roll=r();
-    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*staffLv24(p,"perkFisio");/* [7.989.0 F1] fisioterapista */
+    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*prepInfLv281(p);/* [7.989.0 F1] fisioterapista · [PO-281] ora preparatore atletico */
     if(!((matchFat>82&&roll<0.07*_fx24)||(matchFat>68&&roll<0.03*_fx24)))return {};
     const sev=r();
     let injuryWeeks,injuryType,injurySeverity;
     if(matchFat>82&&sev<0.07){injurySeverity="grave";injuryWeeks=6+Math.round(r()*6);injuryType=sev<0.035?"osseo":"distorsione";}
     else if(sev<0.40){injurySeverity="medio";injuryWeeks=3+Math.round(r()*2);injuryType="stiramento";}
     else{injurySeverity="lieve";injuryWeeks=1+Math.round(r());injuryType="contusione";}
+    injuryWeeks=prepRientro281(p,injuryWeeks);/* [PO-281] il preparatore atletico accorcia il rientro (−1/−2, mai sotto 1) */
     return {injured:true,injuryWeeks,injuryType,injurySeverity,originalInjuryWeeks:injuryWeeks,returnPenaltyWeeks:0};
   };
   // [7.9.0 direttiva PO «sprint dedicato curve d'età»] CRESCITA/DECLINO settimanali — helper PURO condiviso
@@ -1744,7 +1773,7 @@ const getThisWeekMatchday=()=>{
       const _rec=hist.slice(-3);
       const _avg=_rec.length?_rec.reduce((s,m)=>s+(m.rating||6.5),0)/_rec.length:6.5;
       const _acM=(p.assistantCoachRel||50)>=75?1.12:(p.assistantCoachRel||50)>=60?1.04:(p.assistantCoachRel||50)<=35?0.90:1.0;/* [7.114.0 audit carriera · fix PROG-1] il vice-mister (assistantCoachRel, ±12%) mancava nell'auto-training → il modificatore 9.3 era DI FATTO MORTO (l'auto-training è il default; il TrainPanel col fattore quasi non gira). Ora allineato al TrainPanel (default rel 50 → 1.0 neutro) */
-      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*offerGrowthMult(p)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(p,"perkTrainer")]));
+      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*offerGrowthMult(p)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkTrainer?1.10:1):trainerFocus281(p)?1:(1+[0,0.10,0.15,0.20][staffLv24(p,"perkTrainer")]));/* [PO-281] col piano mirato il trainer lavora sull'attributo scelto (trainerPiano281 qui sotto), non sul moltiplicatore generico */
       const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
       _plan.forEach(tid=>{
         if(tid==="rec"){fatigueDelta-=18;morale=clamp(morale+6,0,100);return;}
@@ -1754,6 +1783,7 @@ const getThisWeekMatchday=()=>{
         fatigueDelta+=10;
       });
     }
+    stats=trainerPiano281(p,stats);/* [PO-281] piano del personal trainer: +1 deterministico sull'attributo scelto */
     if((p.age||18)>=31){
       const _dp=(typeof window!=='undefined'&&window.__CPM_NO_156)?((p.age||18)>=35?0.20:(p.age||18)>=33?0.14:0.08):((p.age||18)>=35?0.35:(p.age||18)>=33?0.30:0.22);/* [giro 69 PO-156 «A — Curva netta»] declino fisico vero: misurato, a 31+ l'OVR restava quello dell'elite (81,0 contro 81,8, banco L6-bis) — probabilita' settimanale di perdere un punto 0,08/0,14/0,20 → 0,22/0,30/0,35 (rosso __CPM_NO_156) */
       if(Math.random()<_dp){
@@ -1761,7 +1791,7 @@ const getThisWeekMatchday=()=>{
         stats[_dk]=clamp((stats[_dk]||60)-1,1,99);
       }
     }
-    morale=clamp(Math.round(morale+(60-morale)*0.05+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?0:0.5*staffLv24(p,"perkMental"))+beniMorale24(p)),0,100);/* [7.989.0 F1] mental coach · [7.992.0 F4] casa e barca */
+    morale=clamp(Math.round(morale+(60-morale)*0.05+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?0:mentalMorale281(p))+beniMorale24(p)),0,100);/* [7.989.0 F1] mental coach · [7.992.0 F4] casa e barca */
     /* [7.55.0 ONDA 7] MICRO-EFFETTO DEL DRIVER: la carica emotiva del driver della settimana (mindDriver, la
        stessa mostrata nella card «La tua settimana» → COERENTE per costruzione) pesa un filo sulla morale.
        Fold DENTRO la morale ritornata → applicato exactly-once su TUTTI i 5 path (tutti leggono .morale), zero
@@ -3204,8 +3234,10 @@ const getThisWeekMatchday=()=>{
     //   PARTITE le rialzano (onMatchEnd, attuatori invariati, NON chiama weeklyStaffRel); le settimane le fanno
     //   driftare verso una media (~60), più forte sopra 90 → senza continuare a giocare/vincere i valori scendono.
     const _mrev=(v)=>{const _M=60;if(v<=_M)return v;const d=(v-_M)*0.035+(v>90?(v-90)*0.09:0);return clamp(Math.round((v-d)*10)/10,_M,100);};
+    const _bz=beniReazione281(p);/* [PO-281] i beni fanno parlare stampa/tifosi/compagni/mister nel tempo (≈1 settimana su 6) */
     return {fitnessCoachRel:clamp((p.fitnessCoachRel||50)+fd,0,100),assistantCoachRel:clamp((p.assistantCoachRel||50)+ad,0,100),
-      coachTrust:_mrev(trust),teamChemistry:_mrev(p.teamChemistry!=null?p.teamChemistry:60)};
+      coachTrust:clamp(_mrev(trust)+(_bz?_bz.dTrust:0),0,100),teamChemistry:clamp(_mrev(p.teamChemistry!=null?p.teamChemistry:60)+(_bz?_bz.dChem:0),0,100),
+      ...(_bz?{...(_bz.dPop?{popularity:clamp((p.popularity||20)+_bz.dPop,0,100)}:{}),stampa281:[...(p.stampa281||[]),_bz.voce].slice(-40)}:{})};
   };
 
   // Simulate current week's match then advance
@@ -3350,7 +3382,7 @@ const getThisWeekMatchday=()=>{
         if(!cupWon){const _rem74=_simCupRemainder(_cupSim74);_cupSim74={..._cupSim74,cupBracketMatches:_rem74.cupBracketMatches,winnerId:_rem74.winnerId};}/* [6.74.0 QA-23] */
         const _injCup79=(isInjured||_fuori263)?{}:simInjuryRoll(p,(_aSd+11));/* [PO-263] chi non gioca non si infortuna in partita *//* [7.9.0] infortunio possibile anche SIMULANDO la coppa (il path live della coppa lo rolla già) */
         if(_injCup79.injured){const _iTc79=INJURY_TYPES_META[_injCup79.injuryType]||{label:"Infortunio",icon:"🩹"};setTimeout(()=>notify(`${_iTc79.icon} ${_iTc79.label} in partita! Stop: ${_injCup79.injuryWeeks} settiman${_injCup79.injuryWeeks===1?"a":"e"}.`,TH.danger),1600);}
-        const _fatC79=_fuori263?_recFat263:clamp((p.fatigue||0)+6+(Math.abs(hashStr("fatc|"+(p.season||1)+"|"+(p.week||1)))%6),0,100),_formC79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18/19] idem per la Coppa simulata */
+        const _fatC79=_fuori263?_recFat263:prepFatica281(p,p.fatigue||0,clamp((p.fatigue||0)+6+(Math.abs(hashStr("fatc|"+(p.season||1)+"|"+(p.week||1)))%6),0,100)),_formC79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18/19] idem per la Coppa simulata */
         const _growC79=(_pendingSim||isInjured||_injCup79.injured)?null:weeklyGrowthFields(p,{stats:p.stats,morale:clamp((p.morale||70)+(cupWon?3:-2),0,100),fatigue:_fatC79,form:_formC79,matchHistory:p.matchHistory});/* [7.9.0 direttiva PO] crescita/declino anche SIMULANDO la coppa */
         return{...p,...(isInjured&&!_pendingSim?injBase:{})/* [7.114.0 audit carriera · fix INJ-1] scala la settimana d'infortunio SOLO quando la settimana AVANZA: sui rami «pending» (2ª gara nella stessa settimana) la settimana non avanza → injBase qui raddoppiava il decremento e, a injuryWeeks=1, faceva recuperare l'infortunato PRIMA della 2ª gara accreditandogli una presenza da sano */,..._injCup79,calendar:calAfterCup,log:[`🏆 Coppa · ${_CRN[cupRound]} (sim): ${sim.homeScore}-${sim.awayScore}${cpPen?" dcr":""} vs ${opp.n} — ${cupWon?"passi il turno":"ELIMINATO"}${cpPen?" ai rigori":""}`,...(p.log||[])].slice(0,60),/* [6.94.0] esito coppa nelle Notizie (persistente) */matchHistory:[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_psC61.goals,assists:_psC61.assists,rating:_ratC61,won:cupWon,drew:false,simulated:true,cup:true,cupRound:_CRN[cupRound],...(isInjured&&!_no222?{injured:true,rating:null}:_sv264&&!isInjured?{svincolato:true,rating:null}:_mk222&&!isInjured?_mk222:{})}/* [PO-222] la coppa simulata da infortunato scriveva un voto: ora la voce lo dice, come in lega */].slice(-200),matches:(p.matches||0)+((p.contractExpired||_out222||(isInjured&&!_no222))?0:1),totalMatches:(p.totalMatches||0)+((p.contractExpired||_out222||(isInjured&&!_no222))?0:1)/* [7.419.0] niente presenza da svincolato */,goals:(p.goals||0)+_psC61.goals,totalGoals:(p.totalGoals||0)+_psC61.goals,assists:(p.assists||0)+_psC61.assists,totalAssists:(p.totalAssists||0)+_psC61.assists,/* [7.261.0] G/A eroe in Coppa simulata */morale:_growC79?_growC79.morale:clamp((p.morale||70)+(cupWon?3:-2),0,100),cup:_cupSim74,trophies:newTrophiesC,diary:capDiary([...(p.diary||[]),..._cupDiaryC]),...(_growC79?{stats:_growC79.stats,ovr:_growC79.ovr,value:_growC79.value,trainingStreak:((p.sessionsThisWeek||0)>0||_growC79.didTrain)?(p.trainingStreak||0)+(_growC79.didTrain?1:0):0}:{}),...(!_pendingSim?weeklyEconomyFields(p):{}),...(!_pendingSim?{fitnessCoachRel:weeklyStaffRel(p).fitnessCoachRel}:{})/* [7.162.0 ECO-F5] parità live/sim */,...(!_pendingSim&&!isInjured?{fatigue:clamp(_fatC79+(_growC79?_growC79.fatigueDelta:0),0,100),form:_formC79}:{}),week:_pendingSim?(p.week||1):(p.week||1)+1,weekLived:_pendingSim?true:false,returnPenaltyWeeks:_pendingSim?(p.returnPenaltyWeeks||0):(isInjured?injBase.returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)),...(!_pendingSim?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
       }
@@ -3374,7 +3406,7 @@ const getThisWeekMatchday=()=>{
       notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n}${(typeof window!=='undefined'&&window.__CPM_NO_SIM272)?" (simulata)":""}${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_out222?(_sq222?" — 🟥 SQUALIFICATO: l'hai guardata dalla tribuna":" — ⛔ NON CONVOCATO: l'hai guardata dalla tribuna"):_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
       const _injSim79=_fuori263?{}:simInjuryRoll(p,(_aSd+7));/* [PO-263] chi non gioca non si infortuna in partita *//* [7.9.0] infortunio possibile anche SIMULANDO la lega */
       if(_injSim79.injured){const _iT79=INJURY_TYPES_META[_injSim79.injuryType]||{label:"Infortunio",icon:"🩹"};setTimeout(()=>notify(`${_iT79.icon} ${_iT79.label} in partita! Stop: ${_injSim79.injuryWeeks} settiman${_injSim79.injuryWeeks===1?"a":"e"}.`,TH.danger),1400);}
-      const _fatS79=_fuori263?_recFat263:clamp((p.fatigue||0)+6+(Math.abs(hashStr("fat|"+(p.season||1)+"|"+(p.week||1)+"|"+(opp&&opp.id||"")))%6),0,100),_formS79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18] la gara SIMULATA costava -14 di fatica (RECUPERO!) → ora costa +6..11 seedato come una partita vera; [RC-19] malus rientro graduale anche su questo path (prima solo Avanza) */
+      const _fatS79=_fuori263?_recFat263:prepFatica281(p,p.fatigue||0,clamp((p.fatigue||0)+6+(Math.abs(hashStr("fat|"+(p.season||1)+"|"+(p.week||1)+"|"+(opp&&opp.id||"")))%6),0,100)),_formS79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18] la gara SIMULATA costava -14 di fatica (RECUPERO!) → ora costa +6..11 seedato come una partita vera; [RC-19] malus rientro graduale anche su questo path (prima solo Avanza) */
       const _growS79=(_pendingEuro||_injSim79.injured)?null:weeklyGrowthFields(p,{stats:p.stats,morale:clamp((p.morale||70)+moD,0,100),fatigue:_fatS79,form:_formS79,matchHistory:newHistory});/* [7.9.0 direttiva PO] allenamento+declino+drift+valore anche sul path SIMULA */
       return{...p,..._injSim79,standings:newSt,calendar:newCal,matchHistory:newHistory,matches:(p.matches||0)+((p.contractExpired||_out222)?0:1),goals:(p.goals||0)+_sPS131.goals,totalGoals:(p.totalGoals||0)+_sPS131.goals,assists:(p.assists||0)+_sPS131.assists,totalAssists:(p.totalAssists||0)+_sPS131.assists,totalMatches:(p.totalMatches||0)+((p.contractExpired||_out222)?0:1),/* [7.419.0] «non vieni schierato» (5.98 EC-1) vale ANCHE per la presenza: 13 partite 0 gol era l'eroe-fantasma — gol azzerati ma presenza accreditata *//* [6.44.0 RC] presenza di carriera anche SIMULANDO la lega (prima solo gol/assist entravano nei totali → conteggio presenze corrotto, milestone presenze bloccate) */morale:_growS79?_growS79.morale:clamp((p.morale||70)+moD,0,100),...(_growS79?{stats:_growS79.stats,ovr:_growS79.ovr,value:_growS79.value,trainingStreak:((p.sessionsThisWeek||0)>0||_growS79.didTrain)?(p.trainingStreak||0)+(_growS79.didTrain?1:0):0}:{}),...(!_pendingEuro?weeklyEconomyFields(p):{}),...(!_pendingEuro?{fitnessCoachRel:weeklyStaffRel(p).fitnessCoachRel}:{})/* [7.162.0 ECO-F5] parità live/sim: le settimane di PARTITA non driftano fiducia/chimica (7.8.22 vale per le settimane senza gara) */,...(!_pendingEuro?{teamChemistry:clamp((p.teamChemistry||60)+(sim.won?2:sim.drew?0:-2),0,100)}:{}),/* [7.162.0 ECO-F2] chimica reattiva anche sul ramo lega SANO simulato */...(!_pendingEuro?{fatigue:clamp(_fatS79+(_growS79?_growS79.fatigueDelta:0),0,100),form:_formS79}:{}),/* [6.45.0 RC] recupero fatica + drift forma anche sul path SIMULA (prima congelati → divergenza da doAdvanceWeek) *//* [6.35.0 STAB-7] stipendio sul path SIMULA (partita di lega) · [6.43.0] relazioni staff */week:_pendingEuro?(p.week||1):(p.week||1)+1,weekLived:_pendingEuro?true:false,returnPenaltyWeeks:_pendingEuro?(p.returnPenaltyWeeks||0):Math.max(0,(p.returnPenaltyWeeks||0)-1),...(!_pendingEuro?{sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{})};
     });
@@ -3775,9 +3807,9 @@ const getThisWeekMatchday=()=>{
     }
     // Injury: compute before setPlayer so we can notify after
     const _minF=result&&result.minutesPlayed!=null?clamp(result.minutesPlayed/90,0.35,1):1;/* [7.163.0 super-test LIVE-F6] la fatica scala coi MINUTI VERI (entrare al 78' o uscire al 58' non costa come 90') — la Sezione 8 lo prometteva, matchHistory li aveva già */
-    const postFatigue=clamp((player.fatigue||0)+Math.round(rng(8,14)*_minF),0,100);/* [7.152.0 collaudo PO] costo-fatica di una partita ridotto (12-22 → 8-14): con una settimana di recupero una singola gara non deve lasciare uno strascico ingestibile */
+    const postFatigue=prepFatica281(player,player.fatigue||0,clamp((player.fatigue||0)+Math.round(rng(8,14)*_minF),0,100));/* [PO-281] gare ravvicinate: il preparatore atletico toglie 3-5 punti *//* [7.152.0 collaudo PO] costo-fatica di una partita ridotto (12-22 → 8-14): con una settimana di recupero una singola gara non deve lasciare uno strascico ingestibile */
     const injRoll=Math.random();
-    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*staffLv24(player,"perkFisio");/* [7.989.0 F1] fisioterapista */
+    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*prepInfLv281(player);/* [7.989.0 F1] fisioterapista · [PO-281] ora preparatore atletico */
     const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07*_fx24)||(postFatigue>68&&injRoll<0.03*_fx24));
     // §9.6: bande di recupero realistiche — lieve 1-2 sett. (comune), medio 3-5, grave 6-12 (frattura/trauma osseo, raro e solo con fatica alta)
     let injuryWeeks=0,injuryType=null,injurySeverity=null;
@@ -3786,6 +3818,7 @@ const getThisWeekMatchday=()=>{
       if(postFatigue>82&&sevRoll<0.07){injurySeverity="grave";injuryWeeks=rng(6,12);injuryType=sevRoll<0.035?"osseo":"distorsione";}
       else if(sevRoll<0.40){injurySeverity="medio";injuryWeeks=rng(3,5);injuryType="stiramento";}
       else{injurySeverity="lieve";injuryWeeks=rng(1,2);injuryType="contusione";}
+      injuryWeeks=prepRientro281(player,injuryWeeks);/* [PO-281] preparatore atletico: rientro piu' rapido */
     }
     // Sprint 19 — milestone check (pre-compute before setState so we know which ones just triggered)
     const prevMilestones=player.milestones||[];
@@ -3993,7 +4026,7 @@ const getThisWeekMatchday=()=>{
     /* [P0 #4] un doppio tocco sulla scelta applicava gli effetti DUE volte */
     if(!(typeof window!=="undefined"&&window.__CPM_NO_P0_4)){if(_tapEvt449.current)return;_tapEvt449.current=true;}
     if(typeof window!=="undefined"&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_TAP449=window.__CPM_TAP449||{adv:0,evt:0};window.__CPM_TAP449.evt++;}catch(_e){}}/* [P0 #4] contatore test-only delle applicazioni REALI: l'invariante «una intenzione = una applicazione» si misura qui, non sui valori (che dipendono da quale evento viene estratto) */
-    const ef=efConto265(choice,player.bankBalance);/* [PO-265] la meta' del conto si calcola sul saldo su cui il giocatore ha scelto */
+    const ef=mentalTensione281(player,weekLiveModal&&(weekLiveModal.cat||(weekLiveModal.event&&weekLiveModal.event.cat)),efConto265(choice,player.bankBalance));/* [PO-265] la meta' del conto si calcola sul saldo su cui il giocatore ha scelto · [PO-281] il mental coach attutisce le conseguenze dei bivi di tensione */
     if(sotto265(choice,player.bankBalance)){_tapEvt449.current=false;return;}
     // Sprint 69: pre-compute bond milestone before setPlayer (reads current player state)
     let bondMilestone=null;
@@ -4134,7 +4167,7 @@ const getThisWeekMatchday=()=>{
          if(_tx416){
            const ef=ev.ef||{};
            setPlayer(p=>{
-             const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
+             const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),...vitaConto281(p,ef)};/* [PO-281] conto e chimica VERI (bankBalance/teamChemistry), non i campi p.bank/p.chem che nessuno legge */
              const _mk=markVitaEvent(p,ev);
              const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-WORLD_MEM_CAP)}:{};
              return{...p,weekLived:true,...extras,..._mk,..._wm};
@@ -4715,7 +4748,7 @@ const getThisWeekMatchday=()=>{
           const _tx=typeof ev.txt==="function"?(function(){try{return ev.txt(p);}catch(_e){return "";}})():ev.txt;
           if(_tx){
             const ef=ev.ef||{};
-            const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
+            const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),...vitaConto281(p,ef)};/* [PO-281] conto e chimica VERI (bankBalance/teamChemistry), non i campi p.bank/p.chem che nessuno legge */
             const _mk=markVitaEvent(p,ev);
             const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-WORLD_MEM_CAP)}:{};
             setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_tx},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
@@ -5451,14 +5484,14 @@ const getThisWeekMatchday=()=>{
       const _ch70={name:p.coach?.name||"Il Mister",style:p.coach?.style||"Bilanciato",season:p.season||1,club:p.club?.n||p.club?.name||null,/* [7.999.135 PO-215] il club: due mister con lo stesso cognome si distinguono */goals:p.goals||0,assists:p.assists||0,matches:p.matches||0,ovr:p.ovr||60,coachTrust:p.coachTrust||60,coachChanged};
       _fx61={objLogs,willContractExpire,coachChanged,newCoach,isPhenomSeason,isGB,isNewGoalRecord,isNewAssistRecord,_willEuroPre,_euroCompPre,_playerNextLgPre,_pairPre,_nextClubPre};/* [6.1.0] pacchetto per le notifiche post-rollover */
       const newCoachHistory=[...(p.coachHistory||[]),_ch70].slice(-20);
-      const _ret24={...p,season:newSeason,age:newAge,week:1,weekLived:false,windowOfferUsed:false,agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] piano procuratore a baseline di stagione (solo con agente) */...(p.investmentPending?{bankBalance:Math.round((p.bankBalance||0)+(invLegacy223(p)?55000:invEsiti223(p).reduce((a,e)=>a+e.ret,0))),investmentPending:false,investimenti223:[]}:{}),/* [PO-223] resa = puntata × esito seedato (era 55.000 fissi) */goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_euroQualLog83,_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog,_stadEvoLog,_spBonusLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:((p.history||[]).some(h=>h.season===p.season)?(p.history||[]):[...(p.history||[]),prevHist]).slice(-50),/* [6.74.0 QA-4] il blocco di fine stagione ha già pushato la entry → niente doppione in Timeline Stagioni */...(function(){const _chg325=nextClub84&&p.club&&((nextClub84.id||nextClub84.n)!==(p.club.id||p.club.n));return _chg325?{fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:48}:{};})(),/* [7.325.0] rientro dal prestito / cambio club al rollover = spogliatoio nuovo: i rapporti non viaggiano col giocatore (48 e non 42: il club madre lo conosci gia') */clubPrestigeShifts:updatedShifts,clubEvo:newClubEvo,clubSponsor:(function(){/* [7.131.0] rinnova lo sponsor a scadenza o al cambio club, sennò mantiene */const _sp=p.clubSponsor,_nc=nextClub84||p.club,_ncid=_nc&&(_nc.id||_nc.n);if(_sp&&_sp.clubId===_ncid&&_sp.until>newSeason)return _sp;return genClubSponsor(_nc,newSeason,((updatedShifts||{})[_ncid]||0)+((_nc&&_nc.p)||60));})(),cup:newCup,euro:newEuro,
+      const _ret24={...p,season:newSeason,age:newAge,week:1,weekLived:false,windowOfferUsed:false,agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] piano procuratore a baseline di stagione (solo con agente) */...((p.investmentPending&&typeof window!=='undefined'&&window.__CPM_NO_INV281)?{bankBalance:Math.round((p.bankBalance||0)+(invLegacy223(p)?55000:invEsiti223(p).reduce((a,e)=>a+e.ret,0))),investmentPending:false,investimenti223:[]}:{}),/* [PO-281] senza rosso la chiude chiudiInvestimenti281, insieme a quella dell'Ufficio *//* [PO-223] resa = puntata × esito seedato (era 55.000 fissi) */goals:0,assists:0,matches:0,fatigue:0,skillPoints:0,stats:agedStats,ovr:newOvr,contract:newContract,contractExpired,club:nextClub84||p.club,loan:_loanE3,leagueOverrides:_newOvPre,morale:clamp((p.morale||70)+bonM+(playerClubRelegated?-10:playerClubPromoted?8:0)+(isGB?15:0),0,100),coachTrust:clamp((p.coachTrust||60)+bonCT+(playerClubRelegated?-8:playerClubPromoted?5:0)+(coachChanged?newCoach.trustMod:0)+_promiseTrustDelta,0,100),coachPromise:null,popularity:clamp((p.popularity||20)+bonPop+(isGB?25:0),0,100),value:Math.max(0.5,(p.value||0.8)+bonVal+(playerClubRelegated?-0.3:playerClubPromoted?0.15:0)+(isGB?0.8:0)),log:[agingLog,...objLogs,...[_euroQualLog83,_growthLog102,gbLog,coachLog,phenomLog,relegLog,stadiumEvoLog,_stadEvoLog,_spBonusLog].filter(Boolean),...(p.log||[])].slice(0,60),standings:newStandings,calendar:newCalendar,matchHistory:[],seasonObjectives:newObjectives,history:((p.history||[]).some(h=>h.season===p.season)?(p.history||[]):[...(p.history||[]),prevHist]).slice(-50),/* [6.74.0 QA-4] il blocco di fine stagione ha già pushato la entry → niente doppione in Timeline Stagioni */...(function(){const _chg325=nextClub84&&p.club&&((nextClub84.id||nextClub84.n)!==(p.club.id||p.club.n));return _chg325?{fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:48}:{};})(),/* [7.325.0] rientro dal prestito / cambio club al rollover = spogliatoio nuovo: i rapporti non viaggiano col giocatore (48 e non 42: il club madre lo conosci gia') */clubPrestigeShifts:updatedShifts,clubEvo:newClubEvo,clubSponsor:(function(){/* [7.131.0] rinnova lo sponsor a scadenza o al cambio club, sennò mantiene */const _sp=p.clubSponsor,_nc=nextClub84||p.club,_ncid=_nc&&(_nc.id||_nc.n);if(_sp&&_sp.clubId===_ncid&&_sp.until>newSeason)return _sp;return genClubSponsor(_nc,newSeason,((updatedShifts||{})[_ncid]||0)+((_nc&&_nc.p)||60));})(),cup:newCup,euro:newEuro,
         // [6.33.0 STAB-3] i tornei Nazionali durano DENTRO la stagione (W20-34) → al rollover sono finiti:
         // DEVO deattivarli, altrimenti un euroMondiale rimasto {active:true,done:true} (rami W24/W27 che
         // settavano done senza active:false) BLOCCA il trigger 4 stagioni dopo (!p.euroMondiale?.active) →
         // lockout permanente di Europei/Mondiali. La voce resta per display/albo; worldMemory tiene il record.
         euroMondiale:p.euroMondiale?{...p.euroMondiale,active:false}:p.euroMondiale,
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
-        coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,/* [7.114.0 audit carriera · fix PROG-2] reset dello stato training-settimana al rollover: se la stagione finiva con sessionsThisWeek=3 la W1 nuova restava con l'auto-training congelato (guardia <3 + allDone), stessa classe del fix live 7.8.28 */...(captainReset?{isCaptain:false}:{})}; return investSeason24(academySeason24(_ret24,p),p);/* [7.991.0 F3] e chiude l'investimento della stagione *//* [7.990.0 Patrimonio F2] il vivaio col tuo nome consegna il suo ragazzo */ // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
+        coach:newCoach,goldenBoys:gbSeasons,records:newRecords,teammates:newTeammates,journalists:newJournalists,fanLegend:updFanLegend,leagueArchive:newLeagueArchive,coachHistory:newCoachHistory,jerseyNumSeason:0,yellAccum:0,isSuspended:false,seasonCards:{y:0,r:0},lastLeagueShift:_lastShiftPre,campDone:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,/* [7.114.0 audit carriera · fix PROG-2] reset dello stato training-settimana al rollover: se la stagione finiva con sessionsThisWeek=3 la W1 nuova restava con l'auto-training congelato (guardia <3 + allDone), stessa classe del fix live 7.8.28 */...(captainReset?{isCaptain:false}:{})}; return chiudiInvestimenti281(academySeason24(_ret24,p),p);/* [7.991.0 F3] e chiude l'investimento della stagione *//* [7.990.0 Patrimonio F2] il vivaio col tuo nome consegna il suo ragazzo */ // Sprint 84 + E-3: club+loan updated · Sprint C: reset ritiro
     });
     // S41: double achievement — won league + cup same season
     {const _sd=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);const _ch=_sd[0];const _pid=player.club?.id||player.club?.n;if(player.cup?.champion&&_ch&&(_ch.id===_pid||_ch.n===player.club?.n)&&!(player.achievements||[]).includes("double")){setTimeout(()=>{setPlayer(p=>({...p,achievements:[...(p.achievements||[]),"double"]}));notify("🏆🏆🏆 DOPPIO! Campionato + Coppa nella stessa stagione! Leggendario!","#f59e0b");},1200);}}
@@ -6397,6 +6430,7 @@ const getThisWeekMatchday=()=>{
                         costa e quanto hai. Niente riga rossa sotto. */}
                     <Btn v="secondary" fw size="lg" disabled={!_afford95} onClick={()=>{if(_afford95)handleImpulseChoice(ch);}} style={{justifyContent:"flex-start",textAlign:"left",color:TH.text,fontWeight:FW.semibold,flexDirection:"column",alignItems:"flex-start",gap:2}}>
                       <span>{ch.txt}</span>
+                      {ch.flag==="investment"&&!(typeof window!=='undefined'&&window.__CPM_NO_INV281)&&<span data-cpm="rischio281-impulso" style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted}}>⚖️ {rischioTesto281(rischio223_281(ch.inv||"bilanciato"))}</span>}{/* [PO-281] il rischio si legge prima di scegliere */}
                       {!_afford95&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted}}>{_s265?<>🔒 Serve almeno {fmtEuro23(META265_MIN*2)} sul conto · hai {fmtEuro23(player.bankBalance||0)}</>:<>🔒 Costa {fmtEuro23(-_b265)} · sul conto hai {fmtEuro23(player.bankBalance||0)}</>}</span>}
                     </Btn>
                   </div>);})}
@@ -6455,6 +6489,7 @@ const getThisWeekMatchday=()=>{
                     onMouseEnter={e=>{e.currentTarget.style.background=TH.bg;e.currentTarget.style.borderColor=TH.primary;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=TH.cardBorder;}}>
                     <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.5}}>{ch.txt}</div>
+                    {ch.flag==="investment"&&!(typeof window!=='undefined'&&window.__CPM_NO_INV281)&&<div data-cpm="rischio281-impulso" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>⚖️ {rischioTesto281(rischio223_281(ch.inv||"bilanciato"))}</div>}{/* [PO-281] */}
                     {/* [6.5.4 direttiva PO] niente più chip bonus/malus (morale/forma/fatica/fiducia/popolarità/legame)
                        sulle scelte: l'esito non deve condizionare la decisione. Resta solo il vincolo DURO dei fondi. */}
                     {!_afford95&&<div style={{fontSize:FS.caption,color:TH.txRed,fontWeight:700,marginTop:4}}>💸 Fondi insufficienti ({Math.round((player.bankBalance||0)/1000)}k€)</div>}
@@ -10362,6 +10397,7 @@ const getThisWeekMatchday=()=>{
           {/* Sprint 51 — Diario di Carriera */}
           {(player.diary||[]).length>0&&(()=>{
             const DTYPE={
+              stampa:{e:"📰",color:TH.muted},/* [PO-281] */
               first_goal:{e:"⚽",color:TH.txGreen},
               hattrick:{e:"🎩",color:TH.goldText},
               milestone:{e:"🏅",color:TH.accentText},
@@ -10381,7 +10417,7 @@ const getThisWeekMatchday=()=>{
                         return(
               <Fisarmonica id="profilo-diario" titolo="Diario di Carriera" quante={(player.diary||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 
-                <DiarioSfoglia diary={player.diary||[]} DTYPE={DTYPE}/>{/* [7.999.53 PO «c'e' solo l'ultima stagione: scroll o avanti/indietro?»] sfoglia per stagione, scroll dentro la stagione */}
+                <DiarioSfoglia diary={(typeof window!=='undefined'&&window.__CPM_NO_BENI281&&window.__CPM_NO_INV281)?(player.diary||[]):[...(player.diary||[]),...(player.stampa281||[])].sort((a,b)=>((a.season|0)-(b.season|0))||((a.week|0)-(b.week|0)))} DTYPE={DTYPE}/>{/* [PO-281] le notizie di stampa su beni e investimenti stanno nel diario */}{/* [7.999.53 PO «c'e' solo l'ultima stagione: scroll o avanti/indietro?»] sfoglia per stagione, scroll dentro la stagione */}
               </Card></Fisarmonica>
             );
           })()}
@@ -10743,7 +10779,11 @@ const getThisWeekMatchday=()=>{
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:700,color:TH.text}}>{d.l}
                           <span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span className="cpm-num" style={{fontWeight:600,color:TH.muted}}>Livello {lv}/3</span></div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(d.fx[lv-1]+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+d.fx[shown-1]+" · "+_eur49(c)+" a settimana")}</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
+                        {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
+                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{a||"generale"}</button>;})}
+                        </div>}
                       </div>
                       <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
                     </div>
@@ -10795,6 +10835,10 @@ const getThisWeekMatchday=()=>{
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
                         style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
                     </div>);})}
+                  {(player.beni24||[]).length>0&&(player.stampa281||[]).length>0&&<div data-cpm="beni281-reazioni" style={{marginTop:4,display:"flex",flexDirection:"column",gap:3}}>{/* [PO-281] le reazioni nel tempo, le ultime tre */}
+                    <div style={{fontSize:FS.caption,color:TH.faint}}>Ultime voci sul tuo stile di vita e sui tuoi affari</div>
+                    {(player.stampa281||[]).slice(-3).reverse().map(function(v,i){return <div key={i} style={{fontSize:FS.caption,color:TH.muted}}>{v.e} <b style={{color:TH.text}}>{v.headline}</b> · {v.body} <span style={{color:TH.faint}}>(S.{v.season} sett. {v.week})</span></div>;})}
+                  </div>}
                 </div>
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
                 {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){return _eur49(Math.abs(v));};
@@ -10816,7 +10860,8 @@ const getThisWeekMatchday=()=>{
                         <span style={{fontSize:FS.bodyLg}}>📈</span>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>Investi un quarto del patrimonio{amt>=10000?(" · "+k(amt)):""}</div>
-                          <div style={{fontSize:FS.caption,color:TH.muted}}>{amt<10000?"Serve un patrimonio di almeno €40 mila.":"Vincolato fino a fine stagione. Prudente +2/+5% · Bilanciato −4/+10% · Rischioso −20/+30%."}{last?(" Ultimo: "+(last.gain>=0?"+":"−")+k(last.gain)+" (S."+last.s+")."):""}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{amt<10000?"Serve un patrimonio di almeno €40 mila.":((typeof window!=='undefined'&&window.__CPM_NO_INV281)?"Vincolato fino a fine stagione. Prudente +2/+5% · Bilanciato −4/+10% · Rischioso −20/+30%.":"Vincolato fino a fine stagione. Prima di scegliere:")}{last?(" Ultimo: "+(last.gain>=0?"+":"−")+k(last.gain)+" (S."+last.s+")."):""}</div>
+                          {amt>=10000&&!(typeof window!=='undefined'&&window.__CPM_NO_INV281)&&<div data-cpm="rischio281-ufficio" style={{display:"flex",flexDirection:"column",gap:1,marginTop:3}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <div key={pr} style={{fontSize:FS.caption,color:TH.muted}}>{d.e} <b style={{color:TH.text}}>{d.l}</b> · {rischioTesto281(rischioF3_281(pr))}</div>;})}</div>}{/* [PO-281] rischio leggibile prima della scelta */}
                         </div>
                       </div>
                       {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
