@@ -911,21 +911,40 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   const lambdaA=clamp(1.26-diff*0.82-homeFactor-ovrBonus*0.32+personaMod,0.48,2.45);
   let hG=_pg(lambdaH);
   let aG=_pg(lambdaA);
+  /* [giro 69 PO-156 «A — Curva netta», rosso __CPM_NO_156] LA PARTITA SIMULATA DELL'EROE RISPETTA LA SCELTA DEL MISTER. Prima l'eroe
+     simulato giocava sempre 90' anche quando il mister lo lasciava in panchina (banco L6-bis §7): ora, se il chiamante passa
+     opz.giocatore, la stessa calcCoachDecision del prompt partita decide titolare/panchina (ingresso seedato) e la quota di minuti
+     (sim.quota156) scala il peso dell'eroe sulla squadra, il voto e i gol/assist (_pSimStats). Non convocato: entra all'80'
+     (semplificazione dichiarata: il percorso simulato non ha una voce «tribuna» per le coppe). Misurato anche: nel motore l'OVR
+     dell'eroe spostava le vittorie di <=5 punti fra OVR 60 e 92 (sonda giro 69) — il protagonista ora alza la forza della squadra
+     di (OVR - 70) x 1,0 (da 0 a +15: chi e' sotto il 70 non indebolisce chi sostituisce) per la quota di minuti giocata. Da 31 anni l'OVR in campo vale 2 punti in meno, da 33
+     quattro (voto, gol e peso sulla squadra): il declino si vede in partita prima che nella scheda. */
+  let _q156=null,_st156=null,_fz156=0,_ov156=null;
+  if(opz&&opz.giocatore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_156)&&typeof calcCoachDecision==='function'){try{
+    const _gp=opz.giocatore;let _mw=1;try{_mw=calcMatchWeight(_gp,opponent?.id||opponent?.n,_gp.standings||[],_gp.week||1);}catch(_e){}
+    const _cd=calcCoachDecision(_gp,_mw,seededRng((((seed>>>0)^0x156)>>>0)||1));_st156=_cd.status;
+    _q156=_cd.status==='starter'?1:(90-(_cd.status==='bench'?(_cd.entryMinute||60):80))/90;
+    const _ag156=+_gp.age||24;_ov156=(playerOvr||65)-(_ag156>=33?4:_ag156>=31?2:0);/* il veterano in campo rende meno del suo OVR (fiato, ritmo) */
+    _fz156=clamp((_ov156-70)*1.0,0,15)*_q156;
+  }catch(_e){_q156=null;}}
   /* [7.999.4 MOTORE UNICO passo 2. Rosso __CPM_NO_SIMV2] la partita DELL'EROE simulata la gioca il motore del live, senza
      grafica (simulaPartitaMotore, src/14), con lo stesso seme; il Poisson sopra resta per le partite fra altri club (tabellone
      di coppa, simulatore di debug) e come ripiego se il motore non risponde. L'oggetto risultato non cambia forma. */
   if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
     const _t0=(typeof performance!=='undefined')?performance.now():0;
     const _pe5=(typeof TATTICHE_MOTORE!=='undefined')?getClubPersona(opponent):null;/* [7.999.5] stili: il mister dell'eroe (opz.stile) e la persona dell'avversario */
-    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
+    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clamp(clubP+_fz156,30,99),/* [giro 69 PO-156] */forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,stile:(opz&&opz.stileEroe)||null,/* [giro 67 PO-098] */tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
     hG=_r.home;aG=_r.away;
     if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
   }catch(_eSM){}}
   const _m=hG-aG;
   const _baseRat=_m>0?(6.2+Math.min(_m*0.25,0.8)):(_m===0?5.8:(5.5-Math.min(-_m*0.18,0.5)));
   const _ovrMod=_m>0?clamp(((playerOvr||65)-65)/200,-0.1,0.3):clamp(((playerOvr||65)-65)/260,-0.08,0.22);/* [7.261.0 collaudo PO «non essere severo con le simulazioni»] la qualità contava SOLO nelle vittorie: un fuoriclasse che pareggia prendeva 5.8 tondo come una riserva. Ora pesa (meno) anche su pari e sconfitta — bounded ±0.22, e resta NEGATIVA per chi è sotto la media: il voto non è un regalo, è il riconoscimento del livello */
-  const _simRating=Math.round(clamp(_baseRat+_ovrMod+(_rng()-0.5)*0.4,4.0,9.5)*10)/10;
-  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  let _simRating=Math.round(clamp(_baseRat+_ovrMod+(_rng()-0.5)*0.4,4.0,9.5)*10)/10;
+  /* [giro 69 PO-156] il voto segue il livello (OVR 71 = neutro, +0,05 a punto sopra, nessun malus sotto, tetto +0,6; da 31 anni 3 punti in meno nel voto: il fuoriclasse non prende 6 pieno in
+     una vittoria di misura) e la quota di minuti (chi entra a mezz'ora dalla fine resta vicino al 6). */
+  if(_q156!=null){const _o156=_ov156-71-((+opz.giocatore.age||24)>=31?3:0),_r156=_baseRat+clamp(_o156*0.05,0,0.6)+(_rng()-0.5)*0.4;_simRating=Math.round(clamp(6+(_r156-6)*(0.3+0.7*_q156),4.0,9.5)*10)/10;}
+  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
 }
 if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simMatch=simulateMatch;}catch(_e){}}// [7.200.0] esposto al simulatore di bilanciamento (test-only)
 // Sprint 131: probabilistic player goals/assists for simulated matches
@@ -933,17 +952,20 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const R=rng||Math.random;
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
-  const o=ovr||65;
+  const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
+  archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
      giocando dal vivo). Ora λ scala davvero con l'OVR: 65→~0.31 · 71→~0.42 · 80→~0.58 · 88→~0.73 (+arch/won),
      assist analoghi → l'eroe è COINVOLTO (G o A) in circa metà delle sim vinte, da star quasi sempre. */
   const gL=clamp((o-48)/55+(["bomber","centravanti"].includes(archId)?0.14:0)+(sim.won?0.07:0),0.06,0.92);
   const aL=clamp((o-48)/75+(["trequartista","fantasista"].includes(archId)?0.10:0),0.04,0.55);
+  const _q=(sim.quota156!=null)?sim.quota156:null;/* [giro 69 PO-156] quota di minuti: gol e assist scalano coi minuti; il fuoriclasse (OVR>76) segna di piu' */
+  const gL156=_q!=null?clamp((gL+clamp((o-76)*0.03,0,0.3))*_q,0.02,0.95):gL,aL156=_q!=null?clamp(aL*_q,0.02,0.55):aL;
   const r1=R(),r2=R();
   const pe=x=>Math.exp(-x);
-  const g=r1<pe(gL)?0:r1<pe(gL)*(1+gL)?1:2;
-  const a=r2<pe(aL)?0:r2<pe(aL)*(1+aL)?1:2;
+  const g=r1<pe(gL156)?0:r1<pe(gL156)*(1+gL156)?1:2;
+  const a=r2<pe(aL156)?0:r2<pe(aL156)*(1+aL156)?1:2;
   return{goals:Math.min(g,tg),assists:Math.min(a,Math.max(0,tg-g))};
 }
 /* [7.261.0 collaudo PO «nel toast del risultato specifica se l'eroe ha fatto assist e gol ed il voto»] riga-eroe

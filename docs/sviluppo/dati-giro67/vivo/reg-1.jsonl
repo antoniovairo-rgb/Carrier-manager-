@@ -1,0 +1,5 @@
+{"k":1,"modo":"verde","err":"TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.","sec":112}
+{"k":2,"modo":"verde","err":null,"fine":"ceremony","tab":{"passaggi":861,"cross":23,"tiri":22,"gol":6},"eroe":{"gol":2,"assist":0,"tiri":4,"voto":7.7},"rami228":{"circola":528,"appoggio":63,"ricicla":19},"score":{"home":4,"away":2},"golEroe":2,"sec":435}
+{"k":3,"modo":"verde","err":null,"fine":"ceremony","tab":{"passaggi":715,"cross":22,"tiri":16,"gol":2},"eroe":{"gol":1,"assist":0,"tiri":5,"voto":7.1},"rami228":{"circola":415,"appoggio":55,"ricicla":8},"score":{"home":1,"away":1},"golEroe":1,"sec":332}
+{"k":4,"modo":"verde","err":null,"fine":"ceremony","tab":{"passaggi":772,"cross":31,"tiri":25,"gol":3},"eroe":{"gol":0,"assist":0,"tiri":1,"voto":5.7},"rami228":{"circola":428,"appoggio":78,"ricicla":20},"score":{"home":1,"away":2},"golEroe":0,"sec":316}
+{"k":5,"modo":"verde","err":null,"fine":"ceremony","tab":{"passaggi":753,"cross":17,"tiri":19,"gol":2},"eroe":{"gol":0,"assist":0,"tiri":8,"voto":6.1},"rami228":{"circola":454,"appoggio":55,"ricicla":8},"score":{"home":1,"away":1},"golEroe":0,"sec":316}

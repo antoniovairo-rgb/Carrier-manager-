@@ -1,0 +1,90 @@
+{
+ "base": {
+  "n": 27,
+  "golSquadra": 38,
+  "golEroe": 15,
+  "golEroePagella": 15,
+  "quota": 0.395,
+  "ic95": [
+   0.239,
+   0.55
+  ],
+  "gf": 1.41,
+  "gs": 0.7,
+  "golEroeGara": 0.56,
+  "tiriEroe": 3.56,
+  "assistEroe": null,
+  "voto": 6.81,
+  "V": 14,
+  "N": 6,
+  "P": 7,
+  "cinquePiu": 0,
+  "sec": 329
+ },
+ "dopo": {
+  "n": 25,
+  "golSquadra": 44,
+  "golEroe": 20,
+  "golEroePagella": 23,
+  "quota": 0.455,
+  "ic95": [
+   0.307,
+   0.602
+  ],
+  "gf": 1.76,
+  "gs": 0.64,
+  "golEroeGara": 0.8,
+  "tiriEroe": 4.64,
+  "assistEroe": 0.24,
+  "voto": 7.24,
+  "V": 20,
+  "N": 3,
+  "P": 2,
+  "cinquePiu": 0,
+  "sec": 339
+ },
+ "s100": {
+  "n": 26,
+  "golSquadra": 44,
+  "golEroe": 19,
+  "golEroePagella": 22,
+  "quota": 0.432,
+  "ic95": [
+   0.285,
+   0.578
+  ],
+  "gf": 1.69,
+  "gs": 0.69,
+  "golEroeGara": 0.73,
+  "tiriEroe": 4.58,
+  "assistEroe": 0.19,
+  "voto": 7.17,
+  "V": 20,
+  "N": 4,
+  "P": 2,
+  "cinquePiu": 0,
+  "sec": 337
+ },
+ "reg": {
+  "n": 9,
+  "golSquadra": 14,
+  "golEroe": 6,
+  "golEroePagella": 6,
+  "quota": 0.429,
+  "ic95": [
+   0.169,
+   0.688
+  ],
+  "gf": 1.56,
+  "gs": 1.0,
+  "golEroeGara": 0.67,
+  "tiriEroe": 4.0,
+  "assistEroe": 0.11,
+  "voto": 6.87,
+  "V": 4,
+  "N": 3,
+  "P": 2,
+  "cinquePiu": 0,
+  "sec": 351
+ }
+}

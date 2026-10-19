@@ -184,7 +184,7 @@ function calcSquadRole(player){
 /* ========================================
    COACH DECISION — titolare / panchina / non convocato
 ======================================== */
-function calcCoachDecision(player,matchWeight=1){
+function calcCoachDecision(player,matchWeight=1,rng){
   const trust=clamp(player.coachTrust||60,0,100);
   const form=clamp(player.form||70,30,95); // Sprint 153: canonical fallback + bounds
   const fatigue=clamp(player.fatigue||0,0,100);
@@ -205,6 +205,15 @@ function calcCoachDecision(player,matchWeight=1){
   const _clubLvl=player.club?.prestige||player.club?.p||65;
   const _ovrEdge=(player.ovr||60)-_clubLvl;
   score+=clamp(_ovrEdge*0.7,-12,14);
+  /* [giro 69 PO-156 «A — Curva netta», rosso __CPM_NO_156] L'ETA' PESA SULLA SCELTA DEL MISTER, E LA SCELTA E' GRADUATA. Misurato
+     (banco L6-bis, giro 67 §4): titolare 93,5% a 17-20 anni e 95% a 31+, nessuna gavetta e nessun declino. E il punteggio ha una
+     distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
+     con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
+     26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+  let _tit156=null;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+    const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
   if(trust<12||(score<25&&trust<30)){
@@ -212,13 +221,13 @@ function calcCoachDecision(player,matchWeight=1){
     reason=trust<12
       ?"Il mister non ha fiducia in te in questo momento. Non sei nei convocati."
       :(fatigue>80?"Non sei in condizione fisica di giocare. Ti serve riposo.":"Il tecnico ha preferito altri. Lavora in allenamento per riconquistare un posto.");
-  } else if(score<50||fatigue>78){
+  } else if((_tit156!=null?!_tit156:score<50)||fatigue>78){
     status="bench";
     // Sprint 142 + [7.8.11 collaudo tester «subentra sempre tra il 48' e il 60'»]: finestre PIÙ AMPIE
     //   → il subentro non si raggruppa più in un intervallo fisso. Resta correlato alla fiducia (più fiducia =
     //   ingresso mediamente più anticipato/di peso), ma ora un titolare-di-fiducia può entrare al 46' come al 68',
     //   uno di media fiducia dal 52' al 74', un ultimo-della-rosa dal 60' all'82'.
-    const _rnd=(min,max)=>min+Math.floor(Math.random()*(max-min+1));
+    const _rnd=(min,max)=>min+Math.floor((rng||Math.random)()*(max-min+1));/* [giro 69 PO-156] rng seedato dal percorso simulato */
     entryMinute=trust>=65?_rnd(46,68):trust>=45?_rnd(52,74):_rnd(60,82);
     // [7.140.0 collaudo PO «non indicare da nessuna parte il minuto in cui entrerà l'eroe dalla panchina»] il minuto
     //   d'ingresso resta calcolato (entryMinute) ma NON viene più svelato: solo «tieniti pronto, il mister ti chiamerà».

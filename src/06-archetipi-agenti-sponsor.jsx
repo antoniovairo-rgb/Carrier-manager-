@@ -30,6 +30,10 @@ const ARCHETYPE_STAT_BONUS={
   trequartista:{passaggio:0.07,tecnica:0.05,mentalità:0.04},
   leader:      {mentalità:0.06,fisico:0.05,posizionamento:0.03},
   centravanti: {tiro:0.05,posizionamento:0.05,tecnica:0.04},
+  finalizzatore:{tiro:0.06,fisico:0.04,posizionamento:0.05},/* [giro 67 PO-098] i 4 stili: stessi bonus del loro archetipo di riferimento */
+  regista:     {passaggio:0.07,tecnica:0.05,mentalità:0.04},
+  incursore:   {velocità:0.07,dribbling:0.05,fisico:0.03},
+  trascinatore:{mentalità:0.06,fisico:0.05,posizionamento:0.03},
   enfant:      {tecnica:0.03,velocità:0.03,tiro:0.02,dribbling:0.02,mentalità:0.02,passaggio:0.02,fisico:0.01,posizionamento:0.01},
   tuttocampista:{tiro:0.02,tecnica:0.02,velocità:0.02,fisico:0.02,mentalità:0.02,passaggio:0.02,dribbling:0.02,posizionamento:0.02},
 };
@@ -80,7 +84,7 @@ function adaptiveDifficulty(player){
 const TRAIN_BASE_EFF=0.40;
 function trainAgeMult(age){const a=age||18;return a<=26?1.0:a<=28?0.75:a<=30?0.55:a<=33?0.25:0.06;}
 // [5.80.0 MIN-8] Enfant Prodige: crescita ×1.35 fino ai 22 anni. [7.999.49 parte A] la desc diceva «crescita x2»: ora dice il vero
-function archGrowthMult(p){const id=p&&(p.archetype?.id||p.archetype);return(id==="enfant"&&((p&&p.age)||18)<23)?1.35:1;}
+function archGrowthMult(p){return(haTrattoEnfant(p)&&((p&&p.age)||18)<23)?1.35:1;}/* [giro 67 PO-098] Enfant = tratto di crescita (player.tratti.enfant o vecchio archetipo) */
 /* [7.999.50 PO «applicarla davvero»] la «Crescita +N» delle offerte era solo mostrata: ora l'offerta accettata scrive
    growthBoost {pct,until} e l'allenamento cresce del N% fino alla stagione `until` compresa. Campo opzionale: salvataggi vecchi = ×1.
    Rosso __CPM_NO_CRESC49. */
@@ -790,7 +794,7 @@ function generateProContracts(player){
 }
 function generateSeasonObjectives(player){
   const ovr=player.ovr||60;
-  const arcId=player.archetype?.id||player.archetype||"";
+  const arcId=archLetturaDi(player.archetype);/* [giro 67 PO-098] lo stile parla col suo archetipo di riferimento */
   const p=player.club?.p||50;
   const standT=p>=80?3:p>=65?6:p>=50?9:12;
   // Sprint 107: goal target modulated by archetype
@@ -814,8 +818,9 @@ function generateSeasonObjectives(player){
   }
   return objs;
 }
-/* ── S12: Player archetypes ── */
-const ARCHETYPES=[
+/* ── S12: Player archetypes ── [giro 67 PO-098] gli 8 di prima restano qui come ARCHETYPES_8: servono alla migrazione dei salvataggi
+   e alle letture dei vecchi id; la creazione offre i 4 STILI (ARCHETYPES qui sotto). */
+const ARCHETYPES_8=[
   {id:"bomber",       e:"💪", name:"Bomber",           desc:"Potenza e istinto del gol",        bonus:{tiro:+8,fisico:+5,posizionamento:+6,velocità:-2,passaggio:-3},    favored:["tiro","posizionamento","fisico"]},
   {id:"fantasista",   e:"🪄", name:"Fantasista",        desc:"Tecnica sopraffina e imprevedibile",bonus:{tecnica:+8,dribbling:+7,passaggio:+4,fisico:-4,tiro:-2},          favored:["tecnica","dribbling","passaggio"]},
   {id:"velocista",    e:"⚡", name:"Velocista",         desc:"Rapidità devastante sulla fascia",  bonus:{velocità:+10,dribbling:+5,fisico:+3,tiro:-4,mentalità:-2},         favored:["velocità","dribbling","fisico"]},
@@ -825,6 +830,41 @@ const ARCHETYPES=[
   {id:"enfant",       e:"✨", name:"Enfant Prodige",    desc:"Cresce più in fretta fino ai 22 anni",bonus:{tecnica:+4,velocità:+4,tiro:+3,dribbling:+3,mentalità:+2},        favored:["tecnica","velocità","tiro","dribbling","mentalità","passaggio","fisico","posizionamento"]},
   {id:"tuttocampista",e:"⚖️",name:"Tuttocampista",     desc:"Nessun punto debole, nessun picco", bonus:{tiro:+2,tecnica:+2,velocità:+2,fisico:+2,mentalità:+2,passaggio:+2,dribbling:+2,posizionamento:+2}, favored:["tiro","tecnica","velocità","fisico","mentalità","passaggio","dribbling","posizionamento"]},
 ];
+/* [giro 67 PO-098, decisione PO 16/10 «Misura, poi motore»] QUATTRO STILI CHE CAMBIANO IL GIOCO. Prima l'archetipo non entrava nel
+   motore della partita (l'eroe del motore aveva solo ovr/fiducia/forma, src/15 creaMotorePossesso) e nelle scene il successo lo decide
+   probEroe dalle statistiche: l'archetipo pesava solo sulle statistiche di partenza e sulle sim. Ora ogni stile porta tre leve nel motore,
+   tutte DETERMINISTICHE (nessun sorteggio in piu': il replay resta riproducibile):
+   - zona: quanto i compagni cercano l'eroe secondo dove si trova (area · limite · trequarti · meta' campo), src/14 scegliRicevente;
+   - scena: quali opzioni gli offre la scena (peso per esito/statistica), src/04 _pesoStile;
+   - squadra: il Trascinatore alza la forza della sua squadra quando e' in campo (src/14).
+   Numeri miei, dichiarati nel rapporto del giro 67 (da tarare col PO). Rosso __CPM_NO_STILI: il motore ignora lo stile. */
+const ARCHETYPES=[
+  {id:"finalizzatore",e:"🎯",name:"Finalizzatore",desc:"Vive in area: i compagni lo cercano per il tiro",bonus:{tiro:+8,posizionamento:+6,fisico:+3,velocità:-2,passaggio:-3},favored:["tiro","posizionamento","fisico"],
+    motore:{zona:{area:1.7,limite:1.3,trequarti:0.8,meta:0.5},scena:{goal:1.35,assist:0.75,dribbling:0.9},squadra:0}},
+  {id:"regista",      e:"🎨",name:"Regista",      desc:"Riceve dietro le punte e fa giocare la squadra",bonus:{passaggio:+9,tecnica:+6,mentalità:+3,fisico:-3,tiro:-3},favored:["passaggio","tecnica","mentalità"],
+    motore:{zona:{area:0.7,limite:0.9,trequarti:1.5,meta:1.6},scena:{goal:0.85,assist:1.9,dribbling:1.0},squadra:0}},
+  {id:"incursore",    e:"⚡",name:"Incursore",    desc:"Attacca lo spazio palla al piede, salta l'uomo",bonus:{velocità:+9,dribbling:+7,fisico:+2,tiro:-2,mentalità:-2},favored:["velocità","dribbling","fisico"],
+    motore:{zona:{area:1.1,limite:1.3,trequarti:1.4,meta:0.7},scena:{goal:1.0,assist:0.9,dribbling:1.8},squadra:0}},
+  {id:"trascinatore", e:"🦁",name:"Trascinatore", desc:"Gioca per la squadra: con lui in campo tutti rendono di più",bonus:{mentalità:+9,fisico:+5,posizionamento:+3,velocità:-2,dribbling:-1},favored:["mentalità","fisico","posizionamento"],
+    motore:{zona:{area:1.0,limite:1.0,trequarti:1.0,meta:1.0},scena:{goal:1.0,assist:1.0,dribbling:1.0},squadra:5}},
+];
+/* vecchio archetipo → stile. L'Enfant non e' uno stile: diventa il tratto di crescita (player.tratti.enfant) e prende lo stile delle sue
+   statistiche migliori (vedi stileDi). Fantasista → Regista (tecnica e passaggio), Tuttocampista → Trascinatore (nessun picco). */
+const STILE_DA_ARCH8={bomber:"finalizzatore",centravanti:"finalizzatore",trequartista:"regista",fantasista:"regista",velocista:"incursore",leader:"trascinatore",tuttocampista:"trascinatore"};
+/* id dello stile per leggere i vecchi rami (obiettivi, sim): ogni stile parla con l'id del suo archetipo di riferimento */
+const ARCH8_DI_STILE={finalizzatore:"bomber",regista:"trequartista",incursore:"velocista",trascinatore:"leader"};
+function stileDi(a,stats){const id=(a&&a.id)||a||"";if(ARCHETYPES.some(x=>x.id===id))return id;if(STILE_DA_ARCH8[id])return STILE_DA_ARCH8[id];
+  if(id==="enfant"&&stats){let best="finalizzatore",bv=-1;for(const st of ARCHETYPES){const v=st.favored.reduce((s,k)=>s+(+stats[k]||0),0)/st.favored.length;if(v>bv){bv=v;best=st.id;}}return best;}
+  return "finalizzatore";}
+/* l'id «di lettura» per i rami scritti sugli 8 (obiettivi stagionali, _pSimStats): un vecchio id resta se stesso, uno stile parla col suo riferimento */
+function archLetturaDi(a){const id=(a&&a.id)||a||"";return ARCH8_DI_STILE[id]||id;}
+/* le tre leve dello stile per il motore (null = neutro). Rosso __CPM_NO_STILI */
+function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
+/* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
+/* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
+function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
+function haTrattoEnfant(p){return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
