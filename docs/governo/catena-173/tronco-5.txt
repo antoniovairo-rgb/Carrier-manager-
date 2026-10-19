@@ -1,0 +1,14 @@
+✅ ripartenza-207 (521s)
+✅ meta-conto-265 (100s)
+✅ validate-situations (825s)
+✅ brusio-238 (19s)
+✅ attesa-241 (128s)
+✅ crediti-254 (36s)
+⚠️ difesa-220-giro31 (2733s) — instabile: verde alla prova 2, primo rosso: VERDE VIOLA: (B) forti 21% > 15 | ROSSO viola come atteso: apertura 6.7 u > 3 · apertura 6.7 lontana dalla dichiarata 1.1 · contatto 6.8 u > 3 · (A) 86% > 45 · (B) forti 21% > 15 · pallone di nessuno 64% > 25 · ritorno 80% > 25 (8/10) | ❌ d
+✅ esiti-60 (300s)
+✅ scena-motore-147 (1133s)
+✅ gk-dive-sync (236s)
+✅ scene-221 (1691s)
+✅ tabellino-228 (329s)
+✅ schede-246 (570s)
+✅ catena notte su 7.999.173: 97/97 verdi
