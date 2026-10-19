@@ -1,0 +1,18 @@
+✅ replay (85s)
+✅ avversario-106 (19s)
+✅ partita-rigiocata-194 (569s)
+✅ ripresa-202 (310s)
+✅ mister-215 (59s)
+✅ squalifica-222 (229s)
+✅ acquisti-281 (135s)
+✅ typing-shortcuts (30s)
+✅ procuratore-253 (267s)
+✅ migrazione-194 (126s)
+✅ attesa-241 (141s)
+⚠️ difesa-220-giro31 (2779s) — instabile: verde alla prova 2, primo rosso: VERDE VIOLA: (B) forti 20% > 15 | ROSSO viola come atteso: apertura 5.8 u > 3 · apertura 5.8 lontana dalla dichiarata 1.6 · contatto 5.6 u > 3 · (A) 90% > 45 · pallone di nessuno 70% > 25 · ritorno 88% > 25 (7/8) | ❌ difesa-220-giro31 ROSSO
+✅ testa-143 (481s)
+✅ cross-218 (276s)
+✅ difesa-220 (2251s)
+✅ schede-259 (889s)
+✅ schede-246 (581s)
+✅ catena notte su 7.999.174: 100/100 verdi
