@@ -1,0 +1,14 @@
+✅ investimento-223 (295s)
+✅ lessico-218 (29s)
+✅ finestra-230 (133s)
+✅ fps-249 (59s)
+✅ migrazione-194 (113s)
+✅ parata-258 (257s)
+✅ camera-252 (454s)
+✅ spot-266 (128s)
+✅ esiti-218 (1121s)
+✅ goal-postarc (314s)
+⚠️ nomi-219 (5118s) — instabile: verde alla prova 2, primo rosso: } |  | Node.js v22.22.0
+✅ schede-234 (664s)
+✅ schede-259 (754s)
+✅ catena notte su 7.999.173: 97/97 verdi

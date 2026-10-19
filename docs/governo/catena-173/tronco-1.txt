@@ -1,0 +1,11 @@
+✅ mister-215 (50s)
+⚠️ tempo-138 (1591s) — instabile: verde alla prova 3, primo rosso: rosso {"fase":"ceremony","pagato":264,"residuo":0,"aperto":264} | ❌ tempo-138 |   · rosso: il difetto non si vede {"fase":"ceremony","pagato":264,"residuo":0,"aperto":264}
+✅ rimbalzo-189 (74s)
+✅ passaggi-228 (90s)
+✅ ripartenza-235 (527s)
+✅ design-system (1s)
+✅ convocazione-235 (102s)
+✅ prima-partita-237 (230s)
+✅ aereo-252 (266s)
+✅ difesa-220-scena (1620s)
+✅ catena notte su 7.999.173: 97/97 verdi
