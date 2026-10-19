@@ -157,8 +157,15 @@ const CREDITI254=[
     {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
     {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
+       di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
+       license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
+       chiede la CC BY. Rosso __CPM_NO_CRED267B: tornano le due voci della 7.999.171 (Avataaars senza riga Licenza). */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_CRED267B)?[
     {n:"DiceBear «Avataaars»",aut:"Pablo Stanley",d:"dicebear.com: «Free for personal and commercial use».",nc:["lic"]},
-    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"}]:[
+    {n:"DiceBear «Avataaars»",d:"Stile dell'avatar dell'eroe. Fonte: avataaars.com",aut:"Pablo Stanley",lic:"Free for personal and commercial use"},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",d:"Stile degli avatar di staff e personaggi. Fonte: figma.com/community/file/829741575478342595",aut:"Micah Lanier",lic:"CC BY 4.0 — creativecommons.org/licenses/by/4.0"}]),
     {n:"Icone dell'app e grafiche dello store",aut:"Realizzate per Korward Elite"}]},
   {sez:"Caratteri",voci:[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},

@@ -268,6 +268,12 @@ function stadiumKind46(h,lg,capacity,p,isU18){
   return null;
 }
 if(typeof window!=='undefined')window.__CPM_STADIUM_KIND46=stadiumKind46;
+/* [giro 64 PO-071 «etichetta della tipologia dove ha senso» — rosso __CPM_NO_ETI071] le quattro tipologie del giro 46 non
+   comparivano in nessuna schermata. Etichetta SOLO per gli impianti che hanno un'architettura propria (kind): gli altri
+   template non hanno un nome che il giocatore riconoscerebbe, e un'etichetta generica sarebbe rumore. */
+const STADIUM_KIND_LABEL={borgo:"Campo di paese",catino:"Catino",mattoni:"Storico in mattoni",arena:"Arena"};
+function stadiumKindLabel(k){if(typeof window!=='undefined'&&window.__CPM_NO_ETI071)return null;return (k&&STADIUM_KIND_LABEL[k])||null;}
+if(typeof window!=='undefined')window.__CPM_STADIUM_KIND_LABEL=stadiumKindLabel;
 // mappa lega → pool di template (variazione per club via hash): l'identità architettonica nazionale
 const STADIUM_LG_TPL={
   "Lega A":["storico_it","moderno_it","storico_it"],"Lega B":["comunale","storico_it"],

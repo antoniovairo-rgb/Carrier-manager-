@@ -21,7 +21,7 @@ function famigliaDi(sit, a) {
   if (a.fc) return 'fallo-cercato';
   if (a.t === 'penalty') return 'rigore';
   if (a.t === 'freekick') return a.rew === 'assist' ? 'punizione-cross' : 'punizione';
-  if (sit.type === 'def') return null;
+  if (sit.type === 'def') return process.env.CPM_DIF ? 'difesa-' + (a.t || 'x') : null; /* [giro 60 PO-218] CPM_DIF=1 censisce anche le scene difensive (prima escluse) */
   if (a.t === 'header') return 'testa';
   if (a.t === 'shot') return a.v === 'shot_volley' ? 'volee' : (a.rew === 'assist' ? 'tiro-assist' : 'tiro');
   if (a.t === 'cross') return 'cross';

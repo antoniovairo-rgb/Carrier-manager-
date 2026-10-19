@@ -39,6 +39,17 @@ const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg",
    e il contenuto (testo e bottoni) arriva al tocco. Niente e' nascosto: e' a un dito di distanza, che e'
    esattamente quello che il PO ha chiesto. La riga chiusa resta sopra i 44 px di bersaglio tattile
    (padding compreso) e porta `aria-expanded`, cosi' la fisarmonica esiste anche per chi non vede. */
+/* [7.999.173 PO-066, giro 68] una fisarmonica della home ripeteva il proprio titolo: «La tua storia» in testa e, aperta, l'occhiello
+   maiuscolo «LA TUA STORIA» come primo figlio (idem «Il progetto del club»). Se il primo figlio e' un <div> di solo testo UGUALE al
+   momento (senza maiuscole/spazi), non si mostra: il titolo c'e' gia'. Gli occhielli che aggiungono un dato (settimana, stagione)
+   restano. Rosso __CPM_NO_DUP068. Guardiano tests/visual/home-066.mjs, controllo D1. */
+const dup068On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_DUP068);/* i doppioni con markup diverso si spengono a mano col medesimo rosso */
+const _senzaDoppione068=(children,momento)=>{
+  if(typeof momento!=="string"||(typeof window!=='undefined'&&window.__CPM_NO_DUP068))return children;
+  const _k=React.Children.toArray(children);const _f=_k[0];const _n=t=>String(t).trim().replace(/\s+/g," ").toLowerCase();
+  if(_f&&_f.type==="div"&&_f.props&&typeof _f.props.children==="string"&&_n(_f.props.children)===_n(momento))return _k.slice(1);
+  return children;
+};
 const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",momento,momentoAperto=false,momentoNota,momentoInk,...rest})=>{
   const [_ap,_setAp]=React.useState(!!momentoAperto);
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
@@ -60,7 +71,7 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
       </button>)}
-    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
+    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{_senzaDoppione068(children,momento)}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */

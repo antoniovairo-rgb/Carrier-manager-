@@ -1,0 +1,14 @@
+✅ recupero-202 (500s)
+✅ brain-202 (467s)
+✅ squalifica-222 (195s)
+✅ typing-shortcuts (25s)
+✅ popup-224 (44s)
+✅ badge-255 (94s)
+✅ piedi-252 (416s)
+❌ portiere-252 (2363s) —  | verde: KO 0/7 · rosso: KO 0/7 | ❌ portiere-252 ROSSO
+✅ apertura-261 (244s)
+✅ esiti-241 (502s)
+✅ tecnica-045 (100s)
+✅ difesa-252 (426s)
+✅ testa-143 (382s)
+❌ catena notte su 7.999.173: 96/97 verdi

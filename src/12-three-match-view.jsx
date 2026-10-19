@@ -2067,7 +2067,28 @@ function ThreeMatchView(props){
     const AD_BRANDS=[["VOLTARA",{it:"carica istantanea",en:"energy drink",de:"Energydrink",fr:"boisson énergisante",es:"bebida energética",pt:"bebida energética",nl:"energiedrank",tr:"enerji içeceği"},"#0b1c2e","#ffd24a"],["BANCA MERIDIA",{it:"dal 1921",en:"since 1921",de:"seit 1921",fr:"depuis 1921",es:"desde 1921",pt:"desde 1921",nl:"sinds 1921",tr:"1921'den beri"},"#101418","#9fd3ff"],["SKYLINEA",{it:"voli low cost",en:"low-cost flights",de:"Billigflüge",fr:"vols low cost",es:"vuelos low cost",pt:"voos low cost",nl:"goedkope vluchten",tr:"ucuz uçuş"},"#0e2038","#ffffff"],["FORTEZZA",{it:"assicurazioni",en:"insurance",de:"Versicherungen",fr:"assurances",es:"seguros",pt:"seguros",nl:"verzekeringen",tr:"sigorta"},"#161233","#f0a63a"],["LUNACOLA",{it:"gusto notturno",en:"night taste",de:"Geschmack der Nacht",fr:"goût nocturne",es:"sabor nocturno",pt:"sabor noturno",nl:"smaak van de nacht",tr:"gecenin tadı"},"#1a0d20","#ff7ab8"],["PIXEL+",{it:"la TV che vive",en:"the TV that lives",de:"Fernsehen, das lebt",fr:"la TV qui vit",es:"la tele que vive",pt:"a TV que vive",nl:"tv die leeft",tr:"yaşayan televizyon"},"#0a0a12","#7dff9a"],["MONTEVERDE",{it:"caffè d'autore",en:"signature coffee",de:"Kaffeekunst",fr:"café d'auteur",es:"café de autor",pt:"café de autor",nl:"koffie met karakter",tr:"özel kahve"},"#14210f","#ffe9c4"],["RAPIDO",{it:"fibra & mobile",en:"fibre & mobile",de:"Glasfaser & Mobil",fr:"fibre & mobile",es:"fibra y móvil",pt:"fibra e móvel",nl:"glasvezel & mobiel",tr:"fiber ve mobil"},"#211010","#ff9d5c"],["NORDIK",{it:"abbigliamento sportivo",en:"sportswear",de:"Sportbekleidung",fr:"vêtements de sport",es:"ropa deportiva",pt:"roupa desportiva",nl:"sportkleding",tr:"spor giyim"},"#0f1a24","#bfe3ff"],["OLIMPO",{it:"scarpe da gara",en:"race shoes",de:"Laufschuhe",fr:"chaussures de course",es:"zapatillas de carrera",pt:"sapatilhas de corrida",nl:"hardloopschoenen",tr:"yarış ayakkabısı"},"#191308","#ffd700"],["VELATOUR",{it:"viaggi su misura",en:"tailor-made travel",de:"Reisen nach Maß",fr:"voyages sur mesure",es:"viajes a medida",pt:"viagens à medida",nl:"reizen op maat",tr:"size özel seyahat"},"#0c2226","#8ef4e0"],["GRANFORNO",{it:"pizza in 5'",en:"pizza in 5 min",de:"Pizza in 5 Min",fr:"pizza en 5 min",es:"pizza en 5 min",pt:"pizza em 5 min",nl:"pizza in 5 min",tr:"5 dakikada pizza"}/* [7.282.0 collaudo PO «vedo ancora cartelloni con la lingua sbagliata»: «PIZZA IN 5'» era identico in italiano e inglese, quindi in Inghilterra si leggeva comunque italiano */,"#241108","#ffcf8a"],["ORAFICIO",{it:"orologi svizzeri",en:"swiss watches",de:"Schweizer Uhren",fr:"montres suisses",es:"relojes suizos",pt:"relógios suíços",nl:"zwitserse horloges",tr:"isviçre saatleri"},"#141414","#e8d9a0"],["TITANIO",{it:"motori elettrici",en:"electric motors",de:"Elektromotoren",fr:"moteurs électriques",es:"motores eléctricos",pt:"motores elétricos",nl:"elektromotoren",tr:"elektrikli motorlar"},"#0d1220","#c3ccf0"],["BRIOSNACK",{it:"la pausa giusta",en:"the right break",de:"die richtige Pause",fr:"la bonne pause",es:"la pausa perfecta",pt:"a pausa certa",nl:"de juiste pauze",tr:"doğru mola"},"#231b06","#fff06a"],["CRISTALLA",{it:"acqua di sorgente",en:"spring water",de:"Quellwasser",fr:"eau de source",es:"agua de manantial",pt:"água da nascente",nl:"bronwater",tr:"kaynak suyu"},"#0a1c2c","#aee4ff"],["FALCOMOTO",{it:"due ruote libere",en:"two free wheels",de:"zwei freie Räder",fr:"deux roues libres",es:"dos ruedas libres",pt:"duas rodas livres",nl:"twee vrije wielen",tr:"özgür iki teker"},"#1c0d0d","#ff6a4a"],["METEORA",{it:"videogiochi",en:"video games",de:"Videospiele",fr:"jeux vidéo",es:"videojuegos",pt:"videojogos",nl:"videogames",tr:"video oyunları"},"#160a26","#c07aff"],["PONTE",{it:"finanza semplice",en:"simple finance",de:"einfache Finanzen",fr:"finance simple",es:"finanzas simples",pt:"finanças simples",nl:"eenvoudig financieren",tr:"kolay finans"},"#0d1e16","#8ce8b0"],["QUADRIFOGLIO",{it:"auto ibride",en:"hybrid cars",de:"Hybridautos",fr:"voitures hybrides",es:"coches híbridos",pt:"carros híbridos",nl:"hybride auto's",tr:"hibrit otomobil"},"#0f2010","#b6ff7d"],["SIRENA",{it:"musica in streaming",en:"music streaming",de:"Musik-Streaming",fr:"musique en streaming",es:"música en streaming",pt:"música em streaming",nl:"muziekstreaming",tr:"müziği akıtan"},"#081826","#6ad6ff"],["VULCANO GYM",{it:"allenati vero",en:"train for real",de:"trainiere richtig",fr:"entraîne-toi vraiment",es:"entrena de verdad",pt:"treina a sério",nl:"echt trainen",tr:"gerçekten çalış"},"#200a0a","#ffb04a"]];
     const _adLang=_ultrasLang(stadiumHomeNat||homeClub?.nat||"");
     const _adTag=(b)=>{const t=b[1];return (typeof t==="string")?t:((t&&(t[_adLang]||t.it))||"");};
-    const _mkBrandTex=(b,styleK)=>_memoTex535("br|"+String(b&&b[0])+"|"+_adTag(b)+"|"+styleK,()=>_mkBrandTexRaw(b,styleK));/* [7.535.0] stesso brand+stile = stessa texture (i cartelloni si ripetono lungo tutto il perimetro) */
+    /* [giro 64 PO-071 «cartelloni sponsor diversi per tipologia» — rosso __CPM_NO_ADK064] il perimetro era identico in tutti gli
+       impianti (stesse strisce LED). Ora la FATTURA segue la tipologia del giro 46: BORGO = insegne dipinte su legno (fondo
+       chiaro, assi, nessuna banda luminosa, illuminate dalla scena), MATTONI = smalto d'epoca (verde/blu scuro, cornice crema,
+       caratteri con grazie, illuminate dalla scena), ARENA = LED pregiato (nero, scritta luminosa col bagliore e bande nel
+       colore del club). Catino e impianti storici: invariati. Stessi marchi di fantasia e stessa lingua di chi ospita. */
+    const _adK064=(typeof window!=='undefined'&&window.__CPM_NO_ADK064)?null:(((sr.current&&sr.current._stad455)||{}).kind||null);
+    try{if(typeof window!=='undefined'&&_CPM_TEST)window.__CPM_ADK064={kind:_adK064};}catch(_e){}
+    const _mkBrandTex=(b,styleK)=>_memoTex535("br|"+String(b&&b[0])+"|"+_adTag(b)+"|"+styleK+"|"+(_adK064||""),()=>(_adK064==="borgo"||_adK064==="mattoni"||_adK064==="arena")?_mkBrandTexK064(b,styleK,_adK064):_mkBrandTexRaw(b,styleK));
+    const _mkBrandTexK064=(b,styleK,K)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");x.textAlign="center";x.textBaseline="middle";
+      const _fit=(txt,maxW,px,pre,fam)=>{let s=px;x.font=`${pre} ${s}px ${fam}`;while(s>14&&x.measureText(txt).width>maxW){s-=2;x.font=`${pre} ${s}px ${fam}`;}return s;};
+      const tg=_adTag(b);
+      if(K==="borgo"){const _bgs=["#efe4cc","#e8dcc0","#f2ead6"];x.fillStyle=_bgs[((styleK%3)+3)%3];x.fillRect(0,0,1024,160);
+        x.strokeStyle="rgba(90,60,30,0.22)";x.lineWidth=3;for(const yy of [40,80,120]){x.beginPath();x.moveTo(0,yy);x.lineTo(1024,yy);x.stroke();}
+        x.strokeStyle="#5a3a1e";x.lineWidth=10;x.strokeRect(5,5,1014,150);
+        x.fillStyle=b[2];_fit(b[0],900,70,"800","Georgia, serif");x.fillText(b[0],512,66);x.fillStyle="#6b4a2a";_fit(tg,900,28,"italic 600","Georgia, serif");x.fillText(tg,512,122);}
+      else if(K==="mattoni"){const _bgs=["#123826","#14243e","#3a1414"];x.fillStyle=_bgs[((styleK%3)+3)%3];x.fillRect(0,0,1024,160);
+        x.strokeStyle="#e9dcb8";x.lineWidth=5;x.strokeRect(14,14,996,132);x.lineWidth=2;x.strokeRect(24,24,976,112);
+        x.fillStyle="#f1e6c6";_fit(b[0].toUpperCase(),880,64,"700","Georgia, 'Times New Roman', serif");x.fillText(b[0].toUpperCase(),512,70);x.globalAlpha=0.85;_fit(tg,880,26,"italic 500","Georgia, serif");x.fillText(tg,512,118);x.globalAlpha=1;}
+      else{x.fillStyle="#05070c";x.fillRect(0,0,1024,160);const cc=(typeof homeClub!=="undefined"&&homeClub&&homeClub.c)||b[3];
+        x.fillStyle=cc;x.fillRect(0,0,1024,10);x.fillRect(0,150,1024,10);
+        x.shadowColor=b[3];x.shadowBlur=26;x.fillStyle=b[3];const _t=b[0]+"  ·  "+String(tg).toUpperCase();_fit(_t,940,68,"900","Arial");x.fillText(_t,512,82);x.shadowBlur=0;}
+      return _tex758(c,8);};/* [7.535.0] stesso brand+stile = stessa texture (i cartelloni si ripetono lungo tutto il perimetro) */
     const _mkBrandTexRaw=(b,styleK)=>{const c=document.createElement("canvas");c.width=1024;c.height=160;const x=c.getContext("2d");
       /* [7.51.1 collaudo PO «mancano i cartelloni in questo stadio»] c'erano ECCOME, ma i bg dei brand sono quasi
          neri → di notte/da lontano leggevano come strisce SPENTE. Ora: metà dei cartelloni a palette INVERTITA
@@ -2091,7 +2112,7 @@ function ThreeMatchView(props){
        board erano larghi 13 ma distanziati solo 11-12 → si SOVRAPPONEVANO (testo tagliato ai bordi) e, essendo due
        piani trasparenti COMPLANARI sovrapposti, facevano Z-FIGHTING (il renderer alterna quale sta davanti a ogni
        frame = «lampeggio»). FIX: larghezza < passo (parametro w) → gap tra i board → niente overlap né z-fight. */
-    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
+    const _mkAdBoard=(x,z,rotY,k,brandMode,w)=>{const p=_adPal[((k%3)+3)%3];const _bi=(_adSeed44+k*7)%AD_BRANDS.length;const m=new THREE.Mesh(new THREE.PlaneGeometry(w||13,1.7),(brandMode&&(_adK064==="borgo"||_adK064==="mattoni"))?new THREE.MeshLambertMaterial({map:_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k),side:THREE.DoubleSide,emissive:0x2a2a2a}):new THREE.MeshBasicMaterial({map:brandMode?_mkBrandTex(AD_BRANDS[_bi],_adSeed44+k):_mkAdTex(p[0],p[1]),side:THREE.DoubleSide,transparent:true,opacity:0.98}));/* [giro 64] insegne dipinte/smaltate: illuminate dalla scena, non LED */m.position.set(x,1.0,z);m.rotation.y=rotY;scene.add(m);};
     // [7.8.12/7.8.13 collaudo tester] i cartelloni erano a x=±49, IN FRONT della rete di fondo (49.4) → il piano
     //   TAGLIAVA la bocca della porta (comparivano davanti alla rete). Spostarli a ±51.2 (dietro TUTTA la porta,
     //   rete laterale ~51.15) li ha fatti SPARIRE dietro la curva/perimetro negli stadi piccoli. Posizione giusta:
@@ -3829,7 +3850,22 @@ function ThreeMatchView(props){
        else{
         if(_useTgt||_tackleCarrier){
           const _bak=_tackleCarrier?Math.min(1,aDt*10):Math.min(1,aDt*(3.5/Math.max(ballArcDur,0.2)));
-          ball.position.x+=(_btX-ball.position.x)*_bak;ball.position.z+=(_btZ-ball.position.z)*_bak;
+          /* [giro 61 — salto di avvicinamento in hl_intro/hl_choose, annotato dal giro 53. Rosso __CPM_NO_AVV61] Col portatore
+             difensivo il lerp min(1,aDt*10) diventa un passo INTERO quando il passo di scena e' >= 0,1 s (headless e telefono lento):
+             misurato 6-17,8u in un fotogramma. Fuori dall'esito il pallone raggiunge il portatore rotolando a 22 u/s di scena al
+             massimo (sopra i 15 u/s di corsa dei giocatori: non resta indietro). Testimone __CPM_AVV61 in entrambi i bracci. */
+          {const _dx61=(_btX-ball.position.x)*_bak,_dz61=(_btZ-ball.position.z)*_bak;let _st61=Math.hypot(_dx61,_dz61),_f61=1;
+           const _on61=_tackleCarrier&&!isResult&&aDt>0;
+           /* sotto lo stacco nero (stesso criterio della maschera 7.471/7.504: stacco reale o interno) l'aggancio intero e' invisibile e resta: la scelta si legge a
+              scena ferma, e un pallone fermato a meta' strada resterebbe lontano dal portatore per tutta la lettura */
+           let _cut61=false;try{_cut61=(typeof _CUT471!=='undefined')&&(performance.now()-Math.max(_CUT471.at,(sr.current._cutAt471||-1e9)))<Math.max(300,_CUT471.dur||0);}catch(_e61){}
+           /* in SCELTA la scena si legge FERMA (il giro 3D disegna 1-2 fotogrammi e poi si ferma): li' il pallone va ai piedi del portatore
+              in un passo, altrimenti la lettura mostra il pallone a meta' strada (misurato sulle scene forzate: 11-16u dal portatore col
+              lerp di prima, 20-31u col solo tetto) */
+           const _rd61=P.matchPhase==='hl_choose';
+           if(_on61&&!(typeof window!=='undefined'&&window.__CPM_NO_AVV61)){if(_rd61)_f61=_bak>0?1/_bak:1;else if(!_cut61){const _cap61=22*aDt;if(_st61>_cap61){_f61=_cap61/_st61;}}}
+           ball.position.x+=_dx61*_f61;ball.position.z+=_dz61*_f61;
+           if(_on61&&(_CPM_TEST||_SIT_TEST)&&typeof window!=='undefined'){const _W61=(window.__CPM_AVV61=window.__CPM_AVV61||{n:0,nCut:0,vmax:0,smax:0,gap:null,ph:{}});_W61.n++;if(_cut61||_rd61)_W61.nCut++;else{const _v61=_st61*_f61/aDt;if(_st61*_f61>0.05&&_v61>_W61.vmax)_W61.vmax=+_v61.toFixed(1);if(_st61*_f61>_W61.smax)_W61.smax=+(_st61*_f61).toFixed(2);}_W61.gap=+Math.hypot(_btX-ball.position.x,_btZ-ball.position.z).toFixed(2);const _k61=P.matchPhase||'?';_W61.ph[_k61]=(_W61.ph[_k61]|0)+1;}}
           if((sr.current._ws524=15)&&sr.current._bj0)(sr.current._bj0.src='avvicinamento',sr.current._bj0.srcs.push('avvicinamento'));/* [7.555.0 P0] questo lerp era l'UNICO scrittore senza nome: il censimento per fase lo vedeva come «anonimo» sull'11,5% dei fotogrammi di hl_result (11 su 96). Non e' un bug di moto, e' un buco di anagrafe: ora la firma copre anche l'avvicinamento al bersaglio dell'esito. */
         } else {
           /* [7.194.0 S1] LA PALLA VIAGGIA A VELOCITÀ REALE. Fuori dall'arco il pallone inseguiva la posizione
@@ -8679,6 +8715,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const pl=new THREE.Mesh(new THREE.BoxGeometry(0.14,3.8,0.14),new THREE.MeshLambertMaterial({color:0x2a2f3a}));const pr=pl.clone();pl.position.set(-3.0,1.9,-0.03);pr.position.set(3.0,1.9,-0.03);
               /* il palco guarda la CAMERA della consegna (-sgn*10, 8): di fronte era a +z e la camera lo vedeva di sbieco, enorme e fuori centro */
               const _ux=-_cSgn*10,_uz=8,_ul=Math.hypot(_ux,_uz);const gB=new THREE.Group();gB.add(bn);gB.add(pl);gB.add(pr);gB.position.set(-_ux/_ul*7.2,0,-_uz/_ul*7.2);gB.rotation.y=Math.atan2(_ux,_uz);
+              /* [giro 64 PO-002/PO-137 «palco col nome della competizione» a qualita' professionale — rosso __CPM_NO_PALCO064] lo
+                 striscione era un piano di 6x1,1 su due pali sottili: da vicino si leggeva come un cartello. Ora un FONDALE da
+                 premiazione: parete scura con spessore (7,4x3,3), pannello col nome della competizione in grande, la riga
+                 «CAMPIONI/VINCITORI · STAGIONE N», cornice e stelle oro, due colonne di luce ai lati. Procedurale, una texture. */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_PALCO064)){gB.remove(bn);gB.remove(pl);gB.remove(pr);
+                const c2=document.createElement('canvas');c2.width=1024;c2.height=448;const h2=c2.getContext('2d');
+                const g3=h2.createLinearGradient(0,0,0,448);g3.addColorStop(0,'#1d1830');g3.addColorStop(0.55,'#0f0c1a');g3.addColorStop(1,'#07060c');h2.fillStyle=g3;h2.fillRect(0,0,1024,448);
+                const rg=h2.createRadialGradient(512,200,40,512,200,520);rg.addColorStop(0,'rgba(253,230,138,0.20)');rg.addColorStop(1,'rgba(253,230,138,0)');h2.fillStyle=rg;h2.fillRect(0,0,1024,448);
+                h2.strokeStyle='#d4a017';h2.lineWidth=10;h2.strokeRect(14,14,996,420);h2.lineWidth=3;h2.strokeStyle='#fde68a';h2.strokeRect(30,30,964,388);
+                h2.textAlign='center';h2.textBaseline='middle';h2.fillStyle='#fde68a';
+                const _st=(cx,cy,r)=>{h2.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*0.45:r;h2.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}h2.closePath();h2.fill();};
+                _st(412,84,18);_st(512,76,24);_st(612,84,18);
+                let f2=112;h2.font='900 '+f2+'px Barlow, Arial, sans-serif';while(f2>44&&h2.measureText(tx).width>900){f2-=4;h2.font='900 '+f2+'px Barlow, Arial, sans-serif';}
+                h2.shadowColor='rgba(212,160,23,0.85)';h2.shadowBlur=18;h2.fillText(tx,512,214);h2.shadowBlur=0;
+                h2.fillStyle='#d4a017';h2.fillRect(262,290,500,4);
+                h2.fillStyle='#f3f4f6';h2.font='700 44px Barlow, Arial, sans-serif';const _sub=(_ck422==="cup"?"VINCITORI":"CAMPIONI")+" \u00b7 STAGIONE "+String((propsRef.current&&propsRef.current.season)||1);h2.fillText(_sub,512,352);
+                const _tx64=new THREE.CanvasTexture(c2);_tx64.anisotropy=4;
+                const wall=new THREE.Mesh(new THREE.BoxGeometry(7.4,3.3,0.18),new THREE.MeshLambertMaterial({color:0x14111f}));wall.position.set(0,1.75,-0.12);
+                const face=new THREE.Mesh(new THREE.PlaneGeometry(7.0,3.06),new THREE.MeshBasicMaterial({map:_tx64}));face.position.set(0,1.75,0.0);
+                const _colM=new THREE.MeshBasicMaterial({color:0xfde68a,transparent:true,opacity:0.85});
+                const cl=new THREE.Mesh(new THREE.BoxGeometry(0.16,3.3,0.16),_colM);cl.position.set(-3.82,1.75,-0.04);const cr=cl.clone();cr.position.x=3.82;
+                const top=new THREE.Mesh(new THREE.BoxGeometry(7.8,0.14,0.3),new THREE.MeshLambertMaterial({color:0xb8860b}));top.position.set(0,3.45,-0.08);
+                gB.add(wall);gB.add(face);gB.add(cl);gB.add(cr);gB.add(top);gB._fondale064=true;
+                try{if(_CPM_TEST)window.__CPM_PALCO064={nome:tx,sub:_sub,w:7.4,h:3.3};}catch(_e){}}
               podiumGrp.add(gB);podiumGrp._banner23=gB;}catch(_eB){}}
             /* il TROFEO della competizione: la coppa classica resta; per lo scudetto un PIATTO d'oro
                con corona d'alloro, per l'internazionale la coppa GRANDE dalle orecchie larghe; la
@@ -9314,6 +9374,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_CAMING246={kind:_k46||null,k:_hk46,y:+_hgt.toFixed(2)};}catch(_e){}
           tPx=Math.cos(_th)*_rad;tPy=_hgt;tPz=Math.sin(_th)*_rad*0.60;
           tLx=Math.cos(_th+Math.PI)*40;tLy=8-4*prog;tLz=Math.sin(_th+Math.PI)*26;// sguardo alla tribuna OPPOSTA: campo+anello in quadro
+          /* [giro 64 PO-276 «fotogrammi a campo vuoto nei primi secondi» — rosso __CPM_NO_ING276] MISURATO (sonda ingresso-276, GLB
+             acceso, 412x915): fra 3,2 e 12 s di scena il 74,6% dei campioni non aveva NESSUN calciatore nel quadro — lo sguardo andava
+             alla tribuna opposta mentre la colonna usciva dal tunnel alle spalle o di lato alla camera. Stessa orbita a 360 gradi
+             (6.89.0), ma lo sguardo punta alla COLONNA che entra: la camera sta fuori e guarda dentro, quindi dietro ai calciatori
+             la tribuna opposta resta in quadro. Baricentro senza allocazioni, solo corpi visibili. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_ING276)){let _sx=hero.position.x,_sz=hero.position.z,_sn=1;const _pl276=sr.current.players||[];
+            for(let i=0;i<_pl276.length;i++){const _m=_pl276[i]&&_pl276[i].mesh;if(_m&&_m.visible!==false){_sx+=_m.position.x;_sz+=_m.position.z;_sn++;}}
+            const _cx=_sx/_sn,_cz=_sz/_sn;tLx=tLx*0.25+_cx*0.75;tLz=tLz*0.25+_cz*0.75;tLy=2.6;}
           kp=Math.min(dt*1.9,1);kl=Math.min(dt*1.9,1);// [6.90.0] lerp più morbido: movimento lento, mai frenetico
         } else {// chiusura: carrellata bassa lungo la fila dei giocatori che entrano
           const _o277=!(typeof window!=='undefined'&&window.__CPM_NO_ING277);/* [giro 54 PO-277/PO-276 «file lontane» — rosso __CPM_NO_ING277] la carrellata era tarata sulla fila larga (z +-28): con la fila compatta (+-10) guardava oltre la coda e lasciava la squadra piccola sul bordo sinistro. Stessa carrellata, scalata sulla fila e piu' vicina */
@@ -9788,6 +9856,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          else if(!_st.ball){if(_volo525&&_d520>6){_st.ball=true;_st.acc=0;}
            else if(_d520>10){_st.acc+=dt;if(_st.acc>0.35){_st.ball=true;_st.acc=0;}}else _st.acc=0;}
          else{if(!_volo525&&_d520<7){_st.acc+=dt;if(_st.acc>0.25){_st.ball=false;_st.acc=0;}}else _st.acc=0;}
+         /* [giro 61 — eroe fuori quadro in hl_result su «Ricevi fra le linee», annotato dal giro 53. Rosso __CPM_NO_LINEE61]
+            MISURATO (sonda linee-61, 4 partite vere GLB acceso, 9 scene «fra le linee»): eroe fuori 8% dei fotogrammi col pallone in
+            volo ma 25,8% a pallone NON in volo, e quei fotogrammi sono tutti nel POST-ARCO di un tiro parato/fuori (p2 3': 40/40) col
+            soggetto rimasto sul pallone, mentre l'eroe che ha tirato da 20-25u resta fuori. Il volo e la parata sono la storia (7.522);
+            passati 0,9 s di scena di post-arco la storia torna a chi ha tirato, fino alla fine della scena (anche sul suo gol, in_net:
+            misurato p2 3' eroe marcatore appena fuori, ndc 1,03-1,13, per 40 fotogrammi). Esclusi l'autogol, il compagno
+            che finalizza (assist_recv: 7.522, «il ricevente va visto») e il ritorno dell'uno-due; esclusi gli highlight difensivi
+            (hanno gia' l'eroe come soggetto, 7.482.1). */
+         if(!isResult)sr.current._keep61=null;
+         else if(!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61)&&!_ex520){
+           if(_st.ball&&!ballArcActive&&hlPostArcType&&hlPostArcT>=0.9&&!/^(in_net_own|cross_goal|assist_recv|onetwo_back)$/.test(hlPostArcType))sr.current._keep61=P.hlSitKey;
+           if(sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey){_st.ball=false;_st.acc=0;}}
          _subjBall50=_st.ball;}}
       /* [7.505.0 F6/3 — LA TAGLIA E' REGIA: 0,18 · decisione delegata dal PO, presa con lo sweep sulle 191]
          Lo sweep (7.503) ha dato la curva completa: a taglia 0 la mediana e' 0,054 con l'86% delle scene
@@ -10581,7 +10661,11 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              25-35u dall'eroe) il bersaglio dello sguardo stava sull'eroe ma questa guardia ruotava lo sguardo vero di 9-10u verso il pallone,
              e la guardia-eroe aspettava perche' il BERSAGLIO lo conteneva (7.704): eroe fuori 18/22 e 15/17 fotogrammi d'apertura, 1/1 in scelta.
              Nelle fasi di PRESENTAZIONE (intro/move/scelta), quando il soggetto e' l'eroe, vale lo stesso tetto degli highlight difensivi. */
-          if((P.hlDef||(!isResult&&!_subjBall50&&!(typeof window!=='undefined'&&window.__CPM_NO_PG273)))&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_PG74)){
+          /* [giro 61, rosso __CPM_NO_LINEE61] e anche nel tratto finale del post-arco in cui la storia e' tornata a chi ha tirato (_keep61):
+             MISURATO (linee-61, p1 4'): col solo cambio di soggetto la guardia ruotava lo sguardo verso il pallone respinto, passato a 9u
+             dalla camera, e portava l'eroe a ndc x -7. */
+          const _k61g=isResult&&sr.current._keep61!=null&&sr.current._keep61===P.hlSitKey&&!(typeof window!=='undefined'&&window.__CPM_NO_LINEE61);
+          if((P.hlDef||_k61g||(!isResult&&!_subjBall50&&!(typeof window!=='undefined'&&window.__CPM_NO_PG273)))&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_PG74)){
             const _aHB=Math.atan2(hero.position.z-_czB,hero.position.x-_cxB);let _dH=_aHB-_aLB;while(_dH>Math.PI)_dH-=2*Math.PI;while(_dH<-Math.PI)_dH+=2*Math.PI;
             const _lim=_aMB/0.97*0.94;/* dopo la rotazione l'eroe sta a (_dH-_corB) dall'asse: deve restare entro _lim */
             if(Math.abs(_dH-_corB)>_lim){const _cMax=_corB>0?(_dH+_lim):(_dH-_lim);_corB=_corB>0?Math.max(0,Math.min(_corB,_cMax)):Math.min(0,Math.max(_corB,_cMax));}}
@@ -11426,7 +11510,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           _g.bn=(_g.bn||0)+1;if(!_bd||!ball.visible)_g.bfuori=(_g.bfuori||0)+1;if(!ball.visible)_g.binv=(_g.binv||0)+1;else if(!_bd)_g.bgeo=(_g.bgeo||0)+1;
           if(_g.n<=12){_g.a12=(_g.a12||0)+1;if(!_dentro)_g.afuori=(_g.afuori||0)+1;if(!_bd||!ball.visible)_g.abfuori=(_g.abfuori||0)+1;}}
         _g.fase=P.matchPhase||null;
-        if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),h:+_h480.toFixed(3),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
+        if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),h:+_h480.toFixed(3),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null,ar:ballArcActive?1:0,pa:hlPostArcType||null,ok:P.hlOutcomeKind||null,kp:(sr.current._keep61!=null)?1:0,pt:(hlPostArcT>=0)?+hlPostArcT.toFixed(2):null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
       }catch(_e480){}}
       /* [7.561.0 missione — IL PALLONE ESCE DALL'INQUADRATURA, E IN CRONACA NESSUNO LO RIPORTA DENTRO]
          Collaudo PO del 24 agosto: «il pallone spesso esce fuori dalla scena, la telecamera non segue

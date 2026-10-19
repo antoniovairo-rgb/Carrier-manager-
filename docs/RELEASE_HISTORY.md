@@ -1,5 +1,8 @@
 # Cronologia delle release — Korward Elite
 
+> **Note di versione scritte nel codice** (7.4xx → 7.999.172, prima nel commento di `GAME_VERSION` in `src/07`): dal giro 63
+> stanno in `docs/archivio/note-versione-src07.md` (799 KB, si cerca con `grep -n`).
+
 ### 7.551.0 — La rovesciata si rovescia
 
 Rosso: `__CPM_NO575`. Collaudo PO, **terza segnalazione**, riproducibile: «rovesciata al contrario».

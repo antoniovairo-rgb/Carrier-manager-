@@ -33,6 +33,7 @@ const ATTESI = [
   ['DiceBear (libreria)', ['DiceBear', 'Florian Körner', 'MIT']],
   ['Avataaars', ['Avataaars', 'Pablo Stanley']],
   ['Micah', ['Micah', 'Micah Lanier', 'CC BY 4.0']],
+  // [7.999.173 PO-267, giro 68] le voci DiceBear hanno fonte e riga Licenza (controllo DICEBEAR267 piu' sotto)
   ['React/ReactDOM', ['React', 'Three.js', 'Babel', 'MIT']],
   // [giro 25b, decisione PO 15/10 «Rimettile con la loro fonte»]
   ['Microsoft Rocketbox', ['Microsoft Rocketbox', 'actor-journalist.glb', 'actor-presenter-f.glb', 'MIT']],
@@ -109,6 +110,10 @@ for (const w of [360, 412]) {
   for (const [k, testi] of ATTESI) { const assenti = testi.filter(t => !r.testo.includes(t)); if (assenti.length) ko.push(`${w}px: voce «${k}» del documento: manca ${assenti.join(', ')}`); }
   { const o = ORDINE268.filter(t => r.testo.includes(t)); if (o.length) ko.push(`${w}px: i Crediti mostrano ancora l'ordine d'acquisto (${o.join(', ')}) — PO-268`); }
   for (const k of SENZA_LIC) { const v = r.vt.find(x => x.t.includes(k)); if (!v) ko.push(`${w}px: voce «${k}» assente`); else if (/Licenza:|Non posso confermarlo/.test(v.t)) ko.push(`${w}px: voce «${k}» mostra una riga Licenza o «Non posso confermarlo» (decisione PO: senza riga licenza)`); }
+  /* [7.999.173 PO-267, giro 68] le due voci DiceBear stanno nel formato delle altre: riga Licenza e fonte. Rosso CPM_ROSSO=__CPM_NO_CRED267B. */
+  for (const [k, pretesi] of [['Avataaars', ['Licenza: Free for personal and commercial use', 'avataaars.com']], ['Micah', ['Licenza: CC BY 4.0', 'creativecommons.org/licenses/by/4.0', 'figma.com']]]) {
+    const v = r.vt.find(x => x.t.includes(k)); const m = v ? pretesi.filter(t => !v.t.includes(t)) : pretesi;
+    if (!R267 && m.length) ko.push(`${w}px: voce DiceBear «${k}» senza ${m.join(', ')} (PO-267)`); }
   for (const k of CON_NC) { const v = r.vt.find(x => x.t.includes(k)); if (!v || !v.nc) ko.push(`${w}px: voce «${k}» senza «Non posso confermarlo» in grigio`); }
   if (r.oriz > 1 || r.pOriz > 1) ko.push(`${w}px: scorrimento orizzontale (${r.oriz}/${r.pOriz} px)`);
   const chiudi = await page.$('[data-cpm="crediti238-pannello"] [data-cpm="finestra-piede"] button'); if (chiudi) { await chiudi.click(); await sleep(300); }
