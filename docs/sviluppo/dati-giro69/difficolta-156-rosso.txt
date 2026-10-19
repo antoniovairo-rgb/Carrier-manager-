@@ -1,0 +1,41 @@
+  regista gavetta seme 1: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 76 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 78 gare · 35 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 41 decisioni · ok · pageerror 0
+  regista elite seme 1: 69 gare · 45 decisioni · ok · pageerror 0
+  regista affermazione seme 1: 78 gare · 43 decisioni · ok · pageerror 0
+  regista declino seme 1: 71 gare · 44 decisioni · ok · pageerror 0
+  incursore gavetta seme 1: 69 gare · 44 decisioni · ok · pageerror 0
+  incursore affermazione seme 1: 78 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 44 decisioni · ok · pageerror 0
+  incursore elite seme 1: 70 gare · 46 decisioni · ok · pageerror 0
+  incursore declino seme 1: 80 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 78 gare · 44 decisioni · ok · pageerror 0
+  regista gavetta seme 2: 69 gare · 40 decisioni · ok · pageerror 0
+  regista affermazione seme 2: 69 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  finalizzatore affermazione seme 2: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  regista elite seme 2: 70 gare · 42 decisioni · ok · pageerror 0
+  regista declino seme 2: 76 gare · 45 decisioni · ok · pageerror 0
+  incursore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 69 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 69 gare · 40 decisioni · ok · pageerror 0
+  incursore affermazione seme 2: 70 gare · 39 decisioni · ok · pageerror 0
+  incursore declino seme 2: 69 gare · 47 decisioni · ok · pageerror 0
+  incursore elite seme 2: 77 gare · 47 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · ROSSO (__CPM_NO_156) · 24 carriere x 2 stagioni · 568 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         415  ✓5.96                       ✗0.253       ✓33.3      ✗79.7     ✗83.3
+affermazione    442  ✓6.2                        ✓0.367       ✓42.5      ✗86.1     ✗93.9
+elite           424  ✗6.16                       ✗0.333       ✗38        ✓86.9     ✓95
+declino         450  ✓6.19                       ✗0.356       ✓39.1      ✗87.7     ✗96.4
+  finalizzatore  gavetta: 5.96/0.309/32.4%/81.9'/87.1% · affermazione: 6.22/0.435/45.6%/87.6'/96.5% · elite: 6.16/0.333/35.5%/87.8'/96.3% · declino: 6.31/0.442/46.1%/90'/100%
+  regista        gavetta: 5.99/0.225/35.5%/68.7'/65.4% · affermazione: 6.22/0.333/42.2%/82.8'/89% · elite: 6.21/0.353/44.6%/85.7'/93.1% · declino: 6.16/0.34/38.1%/83'/88.8%
+  incursore      gavetta: 5.94/0.225/31.9%/87.7'/96.5% · affermazione: 6.15/0.331/39.9%/88'/96.3% · elite: 6.12/0.313/34%/87.2'/95.7% · declino: 6.08/0.282/32.9%/90'/100%
+celle entro tolleranza: 9/20 · carriere non concluse 0 · pageerror 0
+fuori: gavetta.gol 0.253 (bersaglio 0.15) · gavetta.min 79.7 (bersaglio 55) · gavetta.tit 83.3 (bersaglio 45) · affermazione.min 86.1 (bersaglio 75) · affermazione.tit 93.9 (bersaglio 75) · elite.voto 6.16 (bersaglio 6.9) · elite.gol 0.333 (bersaglio 0.5) · elite.vitt 38 (bersaglio 55) · declino.gol 0.356 (bersaglio 0.25) · declino.min 87.7 (bersaglio 65) · declino.tit 96.4 (bersaglio 60)
+
+✅ ROSSO VISTO — senza la correzione la curva esce di tolleranza
+FINE 0

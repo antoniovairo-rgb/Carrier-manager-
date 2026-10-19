@@ -39,11 +39,55 @@ const COACH_STYLES=[
    la sospensione a fondi finiti lo spegne, il livello scelto e' ricordato in perk*Lv). Acceso senza perk*Lv =
    livello 1 = ESATTAMENTE il comportamento di prima (save vecchi invariati, nessuna migration). Costi: livello 1
    = costo storico (trainer max(700,5%) · nutri max(500,4%)), livello 2 x1.8, livello 3 x2.8. */
-const STAFF24=[
+const STAFF24_281=[
   {k:"perkTrainer",lv:"perkTrainerLv",e:"🏋️",l:"Personal trainer",fx:["+10% efficacia allenamenti","+15% efficacia allenamenti","+20% efficacia allenamenti"],min:700,pct:0.05},
+  {k:"perkNutrition",lv:"perkNutritionLv",e:"🏃",l:"Preparatore atletico",fx:["Recupero fatica +2 a settimana · gare ravvicinate −3 fatica · rientro dagli infortuni −1 settimana · rischio infortuni −8%","Recupero fatica +3 a settimana · gare ravvicinate −4 fatica · rientro dagli infortuni −1 settimana · rischio infortuni −16%","Recupero fatica +4 a settimana · gare ravvicinate −5 fatica · rientro dagli infortuni −2 settimane · rischio infortuni −24%"],min:500,pct:0.04/* costo del vecchio nutrizionista: chi migra non paga di piu', chi aveva anche il fisioterapista paga meno */},
+  {k:"perkMental",lv:"perkMentalLv",e:"🧠",l:"Mental coach",fx:["Pressione nelle partite pesanti −25% · conseguenze dei bivi di tensione −25%","Pressione nelle partite pesanti −40% · conseguenze dei bivi di tensione −40%","Pressione nelle partite pesanti −55% · conseguenze dei bivi di tensione −55%"],min:400,pct:0.03}];
+/* la lista di prima (quattro figure), viva solo col rosso __CPM_NO_PREP281: e' il braccio «prima» della misura */
+const STAFF24_PRE281=[STAFF24_281[0],
   {k:"perkNutrition",lv:"perkNutritionLv",e:"🥗",l:"Nutrizionista",fx:["Recupero fatica +2 a settimana","Recupero fatica +3 a settimana","Recupero fatica +4 a settimana"],min:500,pct:0.04},
   {k:"perkFisio",lv:"perkFisioLv",e:"🩺",l:"Fisioterapista",fx:["Rischio infortuni −8%","Rischio infortuni −16%","Rischio infortuni −24%"],min:500,pct:0.03},
   {k:"perkMental",lv:"perkMentalLv",e:"🧠",l:"Mental coach",fx:["Morale +0,5 a settimana","Morale +1 a settimana","Morale +1,5 a settimana"],min:400,pct:0.03}];
+const STAFF24=(typeof window!=="undefined"&&window.__CPM_NO_PREP281)?STAFF24_PRE281:STAFF24_281;
+/* [PO-281 · giro 70, «Pacchetto consigliato»] STAFF PRIVATO CHE SI SENTE. Misura del giro 59: fisioterapista e mental coach
+   NON facevano nulla di misurabile (0 infortuni in 2 stagioni nel base; morale gia' a 95 di media), il trainer +5 punti sparsi.
+   1) Personal trainer: con un PIANO (perkTrainerFocus = attributo scelto) il ×1,10/1,15/1,20 generico lascia il posto a una
+      crescita MIRATA: +1 sull'attributo del piano con quota settimanale 0,08/0,12/0,16 (scalata dal rendimento decrescente),
+      decisa da un hash di nome+stagione+settimana (nessun Math.random: il resto della carriera non cambia sequenza).
+   2) Nutrizionista + fisioterapista = PREPARATORE ATLETICO (chiave storica perkNutrition): recupero settimanale di prima,
+      −3/−4/−5 di fatica nelle GARE RAVVICINATE (piu' gare nella stessa settimana), rientro dagli infortuni −1/−1/−2 settimane
+      (mai sotto 1) e il rischio infortuni del vecchio fisioterapista. Chi aveva l'uno o l'altro lo ritrova qui (migration).
+   3) Mental coach: niente piu' morale (era al tetto). Riduce la PRESSIONE nelle partite pesanti (la parte negativa di pubblico
+      e morale nel tasso dal vivo) e le CONSEGUENZE NEGATIVE dei bivi «tensione» di 25/40/55%.
+   Rossi: __CPM_NO_TRAINER281 · __CPM_NO_PREP281 · __CPM_NO_MENTAL281 (comportamento di prima, effetto per effetto). */
+function _no281(k){return typeof window!=="undefined"&&!!window["__CPM_NO_"+k+"281"];}
+function _h281(k){k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);}
+const TRAINER_ATTR281=["velocità","tecnica","fisico","mentalità","tiro","passaggio","dribbling","posizionamento"];
+function trainerFocus281(p){if(_no281("TRAINER"))return null;const f=p&&p.perkTrainerFocus;return (f&&TRAINER_ATTR281.indexOf(f)>=0&&staffLv24(p,"perkTrainer")>0)?f:null;}
+function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const dim=v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;return [0,0.08,0.12,0.16][lv]*Math.min(1,dim/0.35);}
+/* stats -> stats con il +1 del piano (o invariate). Chiamata UNA volta per settimana avanzata da weeklyGrowthFields. */
+function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
+  const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
+function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+function prepLv281(p){return staffLv24(p,"perkNutrition");}
+function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */
+function garaRavv281(p){const w=(p&&p.week)||1;return ((p&&p.calendar)||[]).filter(function(m){return m&&m.week===w;}).length>=2;}
+function prepFatica281(p,fat0,fat1){if(_no281("PREP"))return fat1;const lv=prepLv281(p);if(!lv||!garaRavv281(p)||!(fat1>fat0))return fat1;return Math.max(fat0,fat1-[0,3,4,5][lv]);}
+function prepRientro281(p,wk){if(_no281("PREP")||!(wk>1))return wk;const lv=prepLv281(p);if(!lv)return wk;return Math.max(1,wk-(lv>=3?2:1));}
+function mentalLv281(p){return _no281("MENTAL")?0:staffLv24(p,"perkMental");}
+function mentalQuota281(p){return [0,0.25,0.40,0.55][mentalLv281(p)];}
+function mentalMorale281(p){return _no281("MENTAL")?0.5*staffLv24(p,"perkMental"):0;}
+/* tasso dal vivo: nelle partite pesanti la parte NEGATIVA di pubblico e morale si riduce */
+function mentalPressione281(p,mod,pesante){if(!pesante||!(mod<0))return mod;return mod*(1-mentalQuota281(p));}
+/* bivi «tensione»: le conseguenze NEGATIVE (morale/forma/popolarita'/fiducia/chimica giu', fatica su) si riducono. Il conto no. */
+function mentalTensione281(p,cat,ef){const q=mentalQuota281(p);if(!q||cat!=="tensione"||!ef)return ef;const o={...ef};
+  ["morale","form","popularity","coachTrust","chem"].forEach(function(k){if(typeof o[k]==="number"&&o[k]<0)o[k]=Math.round(o[k]*(1-q)*10)/10;});
+  if(typeof o.fatigue==="number"&&o.fatigue>0)o.fatigue=Math.round(o.fatigue*(1-q)*10)/10;return o;}
+/* [PO-281 · giro 70] 6) GLI EVENTI DI VITA LEGGONO IL CONTO VERO. vita_auto/vita_casa leggevano p.bank (campo che non esiste:
+   il conto e' bankBalance) e quindi non uscivano mai. Rosso __CPM_NO_VITA281 = il campo sbagliato di prima. */
+function vitaSaldo281(p){return _no281("VITA")?((p&&p.bank)||0):((p&&p.bankBalance)||0);}
+function vitaConto281(p,ef){if(_no281("VITA"))return {chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
+  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{})};}
 const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
 function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
@@ -85,6 +129,30 @@ const BENI24=[
   {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia del mister +2, conta per l'eredità di carriera (valutazione finale)",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
 function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
 function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
+/* [PO-281 · giro 70] 5) I BENI VIVONO NEL TEMPO. Prima: popolarita'/fiducia una volta all'acquisto e basta. Ora, circa una
+   settimana su sei (hash di nome+stagione+settimana: deterministico), uno dei beni posseduti fa parlare qualcuno — stampa,
+   tifosi, compagni o mister — e il tono dipende dallo STILE del bene e dall'ultima partita: un bene vistoso dopo una sconfitta
+   costa fiducia, uno sobrio dopo una sconfitta fa difendere dai tifosi. Effetti piccoli (±1/±2) ma ricorrenti, con la notizia
+   nel diario (campo stampa281, mai sovrascritto dai rami settimana). Chiamata dal chokepoint weeklyStaffRel (tre path).
+   Rosso __CPM_NO_BENI281. */
+const BENI_REAZ281={
+  casa:{w:["tifosi","«Lo vediamo al mercato la domenica: uno di noi.»",{pop:1}],l:["tifosi","Dopo la sconfitta, al bar sotto casa nessuno lo contesta: «Vive qui, ci tiene.»",{pop:1}]},
+  auto:{w:["stampa","Un settimanale fotografa la tua auto sportiva: «Vince e se la gode.»",{pop:1}],l:["mister","Dopo la sconfitta il mister nota l'auto nel parcheggio: «Prima il campo.»",{trust:-2}]},
+  barca:{w:["compagni","I compagni ti prendono in giro per le foto sulla barca: lo spogliatoio ride.",{chem:1}],l:["stampa","«In barca mentre la squadra perde»: un quotidiano pubblica le foto.",{pop:-2,trust:-1}]},
+  fondazione:{w:["stampa","La tua fondazione inaugura un campetto: servizio al telegiornale locale.",{pop:2}],l:["compagni","Nella settimana storta i compagni vengono con te all'evento della fondazione.",{chem:2}]}};
+function beniReazione281(p){if(_no281("BENI"))return null;const b=(p&&p.beni24)||[];if(!b.length||(p.proStatus||"u18")==="u18")return null;
+  const h=_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|beni281");if(h%6!==0)return null;
+  const k=b[(h>>>4)%b.length],R=BENI_REAZ281[k],d=BENI24.find(function(x){return x.k===k;});if(!R||!d)return null;
+  const mh=p.matchHistory||[],l=mh[mh.length-1],perso=!!l&&!l.won&&!l.drew;const r=perso?R.l:R.w,fx=r[2];
+  return {k,chi:r[0],txt:r[1],dPop:fx.pop||0,dTrust:fx.trust||0,dChem:fx.chem||0,
+    voce:{season:p.season||1,week:p.week||1,type:"stampa",e:d.e,headline:d.l+": "+{stampa:"parla la stampa",tifosi:"parlano i tifosi",compagni:"parla lo spogliatoio",mister:"parla il mister"}[r[0]],
+      body:r[1]+" ("+[fx.pop?("popolarità "+(fx.pop>0?"+":"")+fx.pop):"",fx.trust?("fiducia del mister "+(fx.trust>0?"+":"")+fx.trust):"",fx.chem?("chimica "+(fx.chem>0?"+":"")+fx.chem):""].filter(Boolean).join(", ")+")"}};}
+/* [PO-281 · giro 70] 4) INVESTIMENTI: UN SOLO SISTEMA. Una tabella di rischio comune ai due ingressi (Ufficio F3 e proposte
+   d'impulso PO-223), scritta PRIMA della scelta: probabilita' di perdere e perdita massima, calcolate dalle stesse costanti
+   che decidono l'esito (INVEST24 qui, INV223 in src/18). La chiusura a fine stagione e' una funzione sola
+   (chiudiInvestimenti281, src/18) con un registro solo (investHist24, campo `fonte`) e una notizia di stampa per esito. */
+function rischioF3_281(prof){const d=INVEST24[prof]||INVEST24.prudente;const pl=d.min>=0?0:(-d.min)/(d.max-d.min);return {pPerdita:Math.round(pl*100),perditaMax:Math.round(Math.max(0,-d.min)*100),guadMax:Math.round(d.max*100)};}
+function rischioTesto281(r){return r.pPerdita<=0?("Rischio basso: non si perde, fino a +"+r.guadMax+"%"):(((r.pPerdita>=40||r.perditaMax>=20)?"Rischio alto":"Rischio medio")+": "+r.pPerdita+"% di probabilità di perdere, fino a −"+r.perditaMax+"% · fino a +"+r.guadMax+"%");}
 function legacyPatrimonio24(p){if(typeof window!=="undefined"&&window.__CPM_NO_EREDITA24)return {pts:0,rag:0,fond:0,ric:0,netto:0};
   const rag=Math.min(30,(((p&&p.academy24&&p.academy24.tot)|0))*3),fond=(((p&&p.beni24)||[]).indexOf("fondazione")>=0)?10:0,net=patrimonioNetto24(p);
   const ric=net>=20000000?20:net>=5000000?12:net>=1000000?6:0;return {pts:rag+fond+ric,rag,fond,ric,netto:net};}
@@ -184,7 +252,7 @@ function calcSquadRole(player){
 /* ========================================
    COACH DECISION — titolare / panchina / non convocato
 ======================================== */
-function calcCoachDecision(player,matchWeight=1){
+function calcCoachDecision(player,matchWeight=1,rng){
   const trust=clamp(player.coachTrust||60,0,100);
   const form=clamp(player.form||70,30,95); // Sprint 153: canonical fallback + bounds
   const fatigue=clamp(player.fatigue||0,0,100);
@@ -205,6 +273,15 @@ function calcCoachDecision(player,matchWeight=1){
   const _clubLvl=player.club?.prestige||player.club?.p||65;
   const _ovrEdge=(player.ovr||60)-_clubLvl;
   score+=clamp(_ovrEdge*0.7,-12,14);
+  /* [giro 69 PO-156 «A — Curva netta», rosso __CPM_NO_156] L'ETA' PESA SULLA SCELTA DEL MISTER, E LA SCELTA E' GRADUATA. Misurato
+     (banco L6-bis, giro 67 §4): titolare 93,5% a 17-20 anni e 95% a 31+, nessuna gavetta e nessun declino. E il punteggio ha una
+     distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
+     con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
+     26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+  let _tit156=null;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+    const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
   if(trust<12||(score<25&&trust<30)){
@@ -212,13 +289,13 @@ function calcCoachDecision(player,matchWeight=1){
     reason=trust<12
       ?"Il mister non ha fiducia in te in questo momento. Non sei nei convocati."
       :(fatigue>80?"Non sei in condizione fisica di giocare. Ti serve riposo.":"Il tecnico ha preferito altri. Lavora in allenamento per riconquistare un posto.");
-  } else if(score<50||fatigue>78){
+  } else if((_tit156!=null?!_tit156:score<50)||fatigue>78){
     status="bench";
     // Sprint 142 + [7.8.11 collaudo tester «subentra sempre tra il 48' e il 60'»]: finestre PIÙ AMPIE
     //   → il subentro non si raggruppa più in un intervallo fisso. Resta correlato alla fiducia (più fiducia =
     //   ingresso mediamente più anticipato/di peso), ma ora un titolare-di-fiducia può entrare al 46' come al 68',
     //   uno di media fiducia dal 52' al 74', un ultimo-della-rosa dal 60' all'82'.
-    const _rnd=(min,max)=>min+Math.floor(Math.random()*(max-min+1));
+    const _rnd=(min,max)=>min+Math.floor((rng||Math.random)()*(max-min+1));/* [giro 69 PO-156] rng seedato dal percorso simulato */
     entryMinute=trust>=65?_rnd(46,68):trust>=45?_rnd(52,74):_rnd(60,82);
     // [7.140.0 collaudo PO «non indicare da nessuna parte il minuto in cui entrerà l'eroe dalla panchina»] il minuto
     //   d'ingresso resta calcolato (entryMinute) ma NON viene più svelato: solo «tieniti pronto, il mister ti chiamerà».
@@ -733,6 +810,42 @@ let _lastClaudeCall=0;
 // [5.75.0 BUG-5] safeLS: accesso a localStorage SEMPRE guardato — con storage/cookie disabilitati il solo
 //   accesso alla proprietà lancia SecurityError; a module scope (pre-React) uccideva il boot → schermo vuoto muto.
 const safeLS={get(k){try{return localStorage.getItem(k);}catch(_e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(_e){}}};
+/* [7.999.173 · PO-168 parte C] REGISTRO DEGLI ERRORI. Misurato prima (giro 62, sonda misura-168-prima): un errore fuori
+   da React (setTimeout, promessa rifiutata) finiva solo nella console — zero chiavi di registro sul disco, zero traccia
+   per il collaudo; un errore di render cadeva nel RootErrorBoundary che lo scriveva solo in console. Ora un gestore
+   globale (error + unhandledrejection) e i due error boundary scrivono in `cpm-errlog` (ultimi 40, i doppioni
+   consecutivi si contano invece di ripetersi). Il taccuino (Profilo → Appunti di collaudo) li mostra e li esporta.
+   Fuori dal salvataggio (chiave propria, safeLS: a quota piena non scrive e non lancia). Rosso __CPM_NO_ERR168.
+   Guardiano tests/visual/errori-168.mjs. */
+const ERRLOG_KEY="cpm-errlog";
+const _no168=()=>typeof window!=="undefined"&&!!window.__CPM_NO_ERR168;
+const leggiErrLog168=()=>{try{const a=JSON.parse(safeLS.get(ERRLOG_KEY)||"[]");return Array.isArray(a)?a:[];}catch(_e){return [];}};
+const logErr168=(kind,err,extra)=>{
+  if(_no168())return;
+  try{
+    const msg=String((err&&err.message)||err||"errore sconosciuto").slice(0,300);
+    const stack=String((err&&err.stack)||"").slice(0,800);
+    const a=leggiErrLog168();
+    if(a[0]&&a[0].msg===msg&&a[0].kind===kind){a[0].n=(a[0].n||1)+1;a[0].ultimo=Date.now();}
+    else a.unshift({t:Date.now(),v:typeof GAME_VERSION!=="undefined"?GAME_VERSION:"?",kind,msg,stack,...(extra?{extra:String(extra).slice(0,600)}:{})});
+    safeLS.set(ERRLOG_KEY,JSON.stringify(a.slice(0,40)));
+  }catch(_e){}
+};
+const esportaErrLog168=()=>{try{let note=[];try{note=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
+  const b=new Blob([JSON.stringify({_korwardLog:1,v:typeof GAME_VERSION!=="undefined"?GAME_VERSION:"?",at:new Date().toISOString(),ua:(typeof navigator!=="undefined"&&navigator.userAgent)||"",errori:leggiErrLog168(),appunti:note},null,2)],{type:"application/json"});
+  const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download="korward-log-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}catch(_e){return false;}};
+if(typeof window!=="undefined"&&!_no168()){
+  try{window.addEventListener("error",e=>{if(e&&e.target&&e.target!==window&&!e.error)return;/* risorse (img/script) non caricate: non sono errori del gioco */logErr168("errore",e&&(e.error||e.message),e&&e.filename?(e.filename.split("/").pop()+":"+e.lineno):"");});}catch(_e){}
+  try{window.addEventListener("unhandledrejection",e=>{const r=e&&e.reason;if(r&&(r.name==="NotAllowedError"||r.name==="AbortError"))return;/* audio.play() senza gesto dell'utente: politica del browser, non un guasto */logErr168("promessa",r);});}catch(_e){}
+}
+if(typeof window!=="undefined"){try{window.__CPM_ERRLOG=leggiErrLog168;}catch(_e){}}
+/* [7.999.173 · PO-167 parte B] MEMORIA PERSISTENTE. Misurato prima: navigator.storage.persisted() = false — il browser
+   puo' sfrattare localStorage sotto pressione di spazio (Safari dopo 7 giorni senza visite, Chrome su disco pieno). Si
+   chiede una volta per avvio la persistenza; il browser decide (puo' rifiutare senza chiedere nulla all'utente). Esito
+   in window.__CPM_PERSIST167. Rosso __CPM_NO_PERSIST167. */
+if(typeof window!=="undefined"&&!window.__CPM_NO_PERSIST167){
+  try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persisted().then(p=>p?true:navigator.storage.persist()).then(r=>{window.__CPM_PERSIST167={chiesto:true,persistente:!!r};}).catch(()=>{window.__CPM_PERSIST167={chiesto:true,persistente:false};});}else window.__CPM_PERSIST167={chiesto:false,persistente:false};}catch(_e){}
+}
 /* [7.342.0 collaudo PO «il pulsante warning nel live match non lo vedo»] GLI STRUMENTI DI COLLAUDO NON SONO
    HOOK DI TEST. Il tasto ⚠️ e la card degli appunti erano protetti da `!window.__CPM_STORE_BUILD`, come i
    probe: ma quel flag lo inietta `tools/build-dist.mjs` in OGNI dist, cioè in tutto ciò che finisce nell'APK —

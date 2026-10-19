@@ -1,0 +1,147 @@
+{
+ "neutro75": {
+  "tiro": 0.14890744440056033,
+  "assist": 0.1247106592980507
+ },
+ "rows": [
+  {
+   "id": "bomber",
+   "somma": 14,
+   "bonus": {
+    "tiro": 8,
+    "fisico": 5,
+    "posizionamento": 6,
+    "velocità": -2,
+    "passaggio": -3
+   },
+   "succRateBonusMax": 6,
+   "probTiro": 0.16,
+   "probAssist": 0.119,
+   "simGolVinta": 0.735,
+   "simAssist": 0.416,
+   "crescita": "x1"
+  },
+  {
+   "id": "fantasista",
+   "somma": 13,
+   "bonus": {
+    "tecnica": 8,
+    "dribbling": 7,
+    "passaggio": 4,
+    "fisico": -4,
+    "tiro": -2
+   },
+   "succRateBonusMax": 6,
+   "probTiro": 0.146,
+   "probAssist": 0.133,
+   "simGolVinta": 0.618,
+   "simAssist": 0.508,
+   "crescita": "x1"
+  },
+  {
+   "id": "velocista",
+   "somma": 12,
+   "bonus": {
+    "velocità": 10,
+    "dribbling": 5,
+    "fisico": 3,
+    "tiro": -4,
+    "mentalità": -2
+   },
+   "succRateBonusMax": 7.000000000000001,
+   "probTiro": 0.143,
+   "probAssist": 0.125,
+   "simGolVinta": 0.618,
+   "simAssist": 0.416,
+   "crescita": "x1"
+  },
+  {
+   "id": "trequartista",
+   "somma": 14,
+   "bonus": {
+    "passaggio": 9,
+    "tecnica": 6,
+    "mentalità": 5,
+    "fisico": -3,
+    "tiro": -3
+   },
+   "succRateBonusMax": 7.000000000000001,
+   "probTiro": 0.145,
+   "probAssist": 0.139,
+   "simGolVinta": 0.618,
+   "simAssist": 0.508,
+   "crescita": "x1"
+  },
+  {
+   "id": "leader",
+   "somma": 15,
+   "bonus": {
+    "mentalità": 9,
+    "fisico": 6,
+    "posizionamento": 4,
+    "velocità": -2,
+    "dribbling": -2
+   },
+   "succRateBonusMax": 6,
+   "probTiro": 0.149,
+   "probAssist": 0.125,
+   "simGolVinta": 0.618,
+   "simAssist": 0.416,
+   "crescita": "x1"
+  },
+  {
+   "id": "centravanti",
+   "somma": 15,
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "succRateBonusMax": 5,
+   "probTiro": 0.156,
+   "probAssist": 0.129,
+   "simGolVinta": 0.735,
+   "simAssist": 0.416,
+   "crescita": "x1"
+  },
+  {
+   "id": "enfant",
+   "somma": 16,
+   "bonus": {
+    "tecnica": 4,
+    "velocità": 4,
+    "tiro": 3,
+    "dribbling": 3,
+    "mentalità": 2
+   },
+   "succRateBonusMax": 3,
+   "probTiro": 0.153,
+   "probAssist": 0.125,
+   "simGolVinta": 0.618,
+   "simAssist": 0.416,
+   "crescita": "x1,35 fino a 22"
+  },
+  {
+   "id": "tuttocampista",
+   "somma": 16,
+   "bonus": {
+    "tiro": 2,
+    "tecnica": 2,
+    "velocità": 2,
+    "fisico": 2,
+    "mentalità": 2,
+    "passaggio": 2,
+    "dribbling": 2,
+    "posizionamento": 2
+   },
+   "succRateBonusMax": 2,
+   "probTiro": 0.152,
+   "probAssist": 0.129,
+   "simGolVinta": 0.618,
+   "simAssist": 0.416,
+   "crescita": "x1"
+  }
+ ]
+}

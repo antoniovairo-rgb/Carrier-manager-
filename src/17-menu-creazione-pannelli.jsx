@@ -398,7 +398,8 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
   const _cand23=candidatiEroe23(avatarId);const voltoScelto=_cand23.length?_cand23[voltoVar%_cand23.length]:null;
-  const[archetypeId,setArchetypeId]=useState("bomber");
+  const[archetypeId,setArchetypeId]=useState("finalizzatore");/* [giro 67 PO-098] 4 stili */
+  const[enfant67,setEnfant67]=useState(false);/* [giro 67 PO-098] Enfant Prodige: tratto di crescita, non piu' uno stile */
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
@@ -408,11 +409,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
     if(!name.trim())return;
     const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];
     let stats=baseStats(arc);
+    /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
+    if(enfant67){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
     if(legacyBonus?.statBoost){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]+legacyBonus.statBoost,1,99);});}
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -481,6 +484,11 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 {Object.entries(arc.bonus).map(([k,v],j)=><React.Fragment key={k}>{j>0?" · ":""}<span style={{color:v>0?TH.txGreen:TH.txRed,fontWeight:700,whiteSpace:"nowrap"}}>{k[0].toUpperCase()+k.slice(1)} {v>0?"+":"−"}{Math.abs(v)}</span></React.Fragment>)}
               </div>
             ):null;})()}
+            {/* [giro 67 PO-098] Enfant Prodige come tratto di crescita */}
+            <label data-cpm="tratto-enfant" style={{display:"flex",alignItems:"flex-start",gap:8,marginTop:8,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid "+(enfant67?TH.primary:TH.cardBorder),background:enfant67?TH.primaryTint:TH.surface2,cursor:"pointer"}}>
+              <input type="checkbox" checked={enfant67} onChange={e=>setEnfant67(e.target.checked)} style={{marginTop:2}}/>
+              <span style={{fontSize:FS.caption,color:TH.text,lineHeight:1.45}}><span style={{fontWeight:FW.bold}}>✨ Enfant Prodige</span> · tratto di crescita: cresci più in fretta fino ai 22 anni, ma parti con 2 punti in meno su ogni attributo</span>
+            </label>
           </div>
           {/* Club dei Sogni — tutti i club del gioco. [7.999.49 parte A] in fisarmonica chiusa: il bottone per iniziare non sta più dopo l'elenco dei club */}
           <details style={{marginBottom:0}}>
@@ -2433,6 +2441,12 @@ function migratePlayer(player){
       newP={...newP,archetype:ARCHETYPES[0]};
       changed=true;
     }
+    /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
+       archetipoOrig, e l'Enfant diventa il tratto di crescita (tratti.enfant) con lo stile delle sue statistiche migliori. Nessun campo tolto. */
+    {const _id67=(newP.archetype&&newP.archetype.id)||newP.archetype;
+     if(_id67&&!(typeof window!=='undefined'&&window.__CPM_NO_STILI)&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id67)&&!ARCHETYPES.some(a=>a.id===_id67)){
+       const _st67=ARCHETYPES.find(a=>a.id===stileDi(_id67,newP.stats))||ARCHETYPES[0];
+       newP={...newP,archetype:_st67,archetipoOrig:_id67,tratti:{...(newP.tratti||{}),enfant:_id67==="enfant"||!!(newP.tratti&&newP.tratti.enfant)}};changed=true;}}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
@@ -2511,6 +2525,15 @@ function migratePlayer(player){
     if(!('bankBalance' in newP)){newP={...newP,bankBalance:0};changed=true;}// v8 [5.81.0] economia
     if(!('perkTrainer' in newP)){newP={...newP,perkTrainer:false};changed=true;}
     if(!('perkNutrition' in newP)){newP={...newP,perkNutrition:false};changed=true;}
+    /* [PO-281 · giro 70] nutrizionista + fisioterapista = PREPARATORE ATLETICO (chiave perkNutrition). Additiva e una volta sola
+       (marcatore prep281): chi aveva l'uno o l'altro acceso ritrova il preparatore acceso al livello piu' alto dei due; il livello
+       ricordato (perk*Lv) passa anche da spento. Il fisioterapista si spegne (non e' piu' in lista, non costa piu').
+       Col rosso __CPM_NO_PREP281 la migration non gira: e' il braccio «prima» della misura. */
+    if(!('prep281' in newP)&&!(typeof window!=='undefined'&&window.__CPM_NO_PREP281)){
+      const _lv=(on,v)=>on?((typeof v==="number"&&v>=1)?Math.min(3,v|0):1):0;
+      const _ln=_lv(newP.perkNutrition,newP.perkNutritionLv),_lf=_lv(newP.perkFisio,newP.perkFisioLv);
+      const _mem=Math.max(newP.perkNutritionLv|0,newP.perkFisioLv|0);
+      newP={...newP,prep281:1,perkNutrition:!!(_ln||_lf),...((_ln||_lf)?{perkNutritionLv:Math.max(_ln,_lf)}:(_mem>=1?{perkNutritionLv:Math.min(3,_mem)}:{})),perkFisio:false};changed=true;}
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}

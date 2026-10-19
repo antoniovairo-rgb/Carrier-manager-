@@ -789,6 +789,14 @@ function ThreeMatchView(props){
     const _v77=new THREE.Vector3(),_s77=new THREE.Vector3();
     const _piedi77=(av)=>{try{if(!av||!av.visualRoot||!av._footL||!av._footR||!av.proc||!av.proc._isHero)return;
       let cer=false;try{cer=ceremonyT>=0;}catch(_e){}
+      /* [giro 73 PO-283 «sembra colpire con la testa ma poi calcia con il piede in semi sforbiciata»] MISURATO (corpi-073, angolo
+         «Stacco in corsa potente» fallito, GLB acceso): la clip `header` e' pulita (i due piedi salgono e scendono insieme), il calcio
+         lo fa il DISAPPUNTO che segue (mx-disappunto, «Golf Bad Shot» 0,5-2,6 s): in cgtrader-clip-po.glb il suo bacino ha DUE chiavi
+         costanti (95,253 = quota da fermo), quindi l'accovacciata con le mani alla testa non abbassa il corpo ma ALZA LE GAMBE:
+         piedi a 0,54-0,58 dal prato col bacino inchiodato a 1,022 — un corpo sospeso che scalcia. Stessa classe di riparaCadute7.
+         Qui, finche' il disappunto ha peso, il corpo scende di quanto il piede piu' basso sta sopra la quota a terra (come in
+         cerimonia, solo verso il basso). Rosso __CPM_NO_STACCO073. */
+      if(!cer&&av._gDisapp&&av._gAct===av._gDisapp&&(av._gw||0)>0.05&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO073))cer=true;
       const vr=av.visualRoot;if(av._vr77!==vr){if(av._vr77&&av._off77)av._vr77.position.y=av._vy77;av._vr77=vr;av._vy77=vr.position.y;av._off77=0;}
       const ry=av.root?av.root.position.y:0;
       if(!cer||(typeof window!=='undefined'&&window.__CPM_NO_PIEDI77)||av.proc.position.y>0.3){if(av._off77){vr.position.y=av._vy77;av._off77=0;}
@@ -894,11 +902,11 @@ function ThreeMatchView(props){
        piede sotto 6 cm dalla radice che scorre oltre 0,5 m/s) e secondo il criterio d'APPOGGIO (il piede piu' basso, entro 2 cm dalla
        sua quota minima nel ciclo). Serve a dire quanto del numero del banco e' strumento: qui il piede d'appoggio e' fermo per
        costruzione. */
-    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_PIEDI_SINT252=(ts=1,dt=0.05,N=120)=>{try{const av=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero)||(glbAvatars||[])[0];if(!av||!av.run)return {errore:'nessun avatar'};
-      const clip=(av._runFwd||av.run).getClip();const src=av.visualRoot||av.root;const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_PIEDI_SINT252=(ts=1,dt=0.05,N=120,quale=null,rapF=null)=>{try{const av=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero)||(glbAvatars||[])[0];if(!av||!av.run)return {errore:'nessun avatar'};
+      const clip=(quale==='spr'&&av._locoClips&&av._locoClips.spr)?av._locoClips.spr:(quale==='sprReg'&&sr.current._spr252)?sr.current._spr252:(av._runFwd||av.run).getClip();/* [giro 76] quale: 'spr' = scatto del pacchetto del corpo, 'sprReg' = scatto regular; rapF forza la velocita' naturale */const src=av.visualRoot||av.root;const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
       const mx=new THREE.AnimationMixer(c);const act=mx.clipAction(clip);act.play();act.timeScale=ts;
       const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i),hd=_findBone904(c,/Head$/i);if(!bl||!br||!hd)return {errore:'ossa'};
-      const rap=_passoNaturale7({run:act,visualRoot:src,root:src});mx.setTime(0);c.updateMatrixWorld(true);
+      const rap=rapF||_passoNaturale7({run:act,visualRoot:src,root:src});mx.setTime(0);c.updateMatrixWorld(true);
       const vL=new THREE.Vector3(),vR=new THREE.Vector3(),vH=new THREE.Vector3();vH.setFromMatrixPosition(hd.matrixWorld);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);
       const alt=vH.y-Math.min(vL.y,vR.y);const m=alt>0?1.8/alt:1;const v=rap*alt*ts;/* unita' di mondo al secondo */
       const fr=[];let z=0;for(let i=0;i<=N;i++){mx.update(i?dt:0);z+=i?v*dt:0;c.position.z=z;/* la clip guarda +z */c.updateMatrixWorld(true);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);fr.push([vL.x,vL.y,vL.z,vR.x,vR.y,vR.z]);}
@@ -910,8 +918,28 @@ function ThreeMatchView(props){
       try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}
       velA.sort((a,b)=>a-b);
       let nC=0;for(const f of fr){if(f[1]*m<0.06||f[4]*m<0.06)nC++;}return {clip:clip.name,ts,dt,rap:+rap.toFixed(3),alt:+alt.toFixed(3),contatto:+(nC/fr.length).toFixed(3),v:+(v*m).toFixed(2),testimone:+(skT/n).toFixed(3),appoggio:+(skA/Math.max(1,velA.length)).toFixed(3),nAppoggio:velA.length,velAppoggioMed:velA.length?+velA[velA.length>>1].toFixed(2):null,minPiedi:[+(minL*m).toFixed(3),+(minR*m).toFixed(3)]};}catch(e){return {errore:String(e&&e.message||e).slice(0,120)};}};
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_CLIP76=(quale='spr',N=96)=>{try{/* [giro 76] campioni di una clip di locomozione sul corpo dell'eroe (solo sonda): dita sx/dx e bacino nel riferimento della clip */
+      const av=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero&&x._locoClips)||(glbAvatars||[]).find(x=>x&&x._locoClips&&x._locoClips.spr);if(!av)return {errore:'nessun avatar'};
+      const clip=quale==='jog'?(av._runFwd||av.run).getClip():av._locoClips[quale];if(!clip)return {errore:'clip'};const src=av.visualRoot||av.root;const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+      const mx=new THREE.AnimationMixer(c);const act=mx.clipAction(clip);act.play();const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i),hd=_findBone904(c,/Head$/i),pv=_findBone904(c,/(^|[^a-z])pelvis$|Hips$/i);
+      const v=new THREE.Vector3(),D=clip.duration||1,fr=[];for(let i=0;i<=N;i++){mx.setTime(D*i/N);c.updateMatrixWorld(true);const row=[];for(const o of [bl,br,hd,pv]){if(o){v.setFromMatrixPosition(o.matrixWorld);row.push(+v.x.toFixed(4),+v.y.toFixed(4),+v.z.toFixed(4));}else row.push(0,0,0);}fr.push(row);}
+      try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}return {clip:clip.name,D,N,isHero:!!(av.proc&&av.proc._isHero),fr};}catch(e){return {errore:String(e&&e.message||e).slice(0,120)};}};
     const _altezza7=(av)=>{try{const r=av.visualRoot||av.root;r.updateMatrixWorld(true);const hd=_findBone904(r,/Head$/i),bl=_findBone904(r,/(LeftToeBase|^ball_l)$/i),br=_findBone904(r,/(RightToeBase|^ball_r)$/i);if(!hd||!bl||!br)return 0;
       const a=new THREE.Vector3().setFromMatrixPosition(hd.matrixWorld),b=new THREE.Vector3().setFromMatrixPosition(bl.matrixWorld),c=new THREE.Vector3().setFromMatrixPosition(br.matrixWorld);return a.y-Math.min(b.y,c.y);}catch(_e){return 0;}};/* altezza testa-dita del corpo in scena (unita' di mondo) */
+    /* [giro 76] profilo della velocita' del piede d'appoggio lungo la clip (altezze/s, N campioni): fuori dall'appoggio vale la mediana */
+    const _PROF76=new Map();let _v76=null;
+    const _profilo76=(act)=>{try{const clip=act&&act.getClip&&act.getClip();if(!clip)return null;if(_PROF76.has(clip.uuid))return _PROF76.get(clip.uuid);
+      let out=null;const root=act.getRoot&&act.getRoot();
+      if(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone&&root){const c=THREE.SkeletonUtils.clone(root);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+        const mx=new THREE.AnimationMixer(c);const a=mx.clipAction(clip);a.play();
+        const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i),hd=_findBone904(c,/Head$/i);
+        if(bl&&br&&hd){const N=96,D=clip.duration||1,P=[];let alt=0;const vL=new THREE.Vector3(),vR=new THREE.Vector3(),vH=new THREE.Vector3();
+          for(let i=0;i<=N;i++){mx.setTime(D*i/N);c.updateMatrixWorld(true);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);vH.setFromMatrixPosition(hd.matrixWorld);P.push([vL.x,vL.y,vL.z,vR.x,vR.y,vR.z]);alt=Math.max(alt,vH.y-Math.min(vL.y,vR.y));}
+          if(alt>0){let mnL=1e9,mnR=1e9;for(const q of P){mnL=Math.min(mnL,q[1]);mnR=Math.min(mnR,q[4]);}const thr=0.04*alt,v=new Array(N).fill(null),ok=[];
+            for(let i=0;i<N;i++){const a0=P[i],a1=P[i+1];for(const [o,mn] of [[0,mnL],[3,mnR]]){if(a0[o+1]-mn<thr&&a1[o+1]-mn<thr){const s=Math.hypot(a1[o]-a0[o],a1[o+2]-a0[o+2])/(D/N)/alt;if(s>0.3){v[i]=v[i]==null?s:Math.min(v[i],s);}}}if(v[i]!=null)ok.push(v[i]);}
+            if(ok.length>=N/8){ok.sort((x,y)=>x-y);const med=ok[ok.length>>1];for(let i=0;i<N;i++)v[i]=clamp(v[i]==null?med:v[i],med*0.5,med*2);let h=0;while(h<N/4&&Math.max(...P[h+1].map((x,j)=>Math.abs(x-P[h][j])))<1e-4*alt)h++;out={D,v,med,tH:D*h/N,alt};}}}
+        try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}}
+      _PROF76.set(clip.uuid,out);return out;}catch(_e){return null;}};
     const _passoNaturale7=(av)=>{try{const clip=av&&av.run&&av.run.getClip&&av.run.getClip();if(!clip)return 0;if(_PASSO7.has(clip.uuid))return _PASSO7.get(clip.uuid);
       let rap=0;const src=av.visualRoot||av.root;
       if(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone&&src){const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
@@ -1392,7 +1420,7 @@ function ThreeMatchView(props){
         const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
           spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
+        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};
         _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
         if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
@@ -1595,7 +1623,7 @@ function ThreeMatchView(props){
           const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,_isHero:old.proc===hero||index===0,_cgLod:avatarPkg._cgLod||null,
             spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
+          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};
           _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
         });
@@ -1620,7 +1648,7 @@ function ThreeMatchView(props){
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
             state._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:state._handL,hr:state._handR};
-            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
+            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
             visual.visible=false;return state;
           };
           _next.forEach((avatar,index)=>{const variants=avatar._cgLodVariants={};variants[avatar._cgLod]=_stateOf(avatar);lodPackages.forEach(candidate=>{const key=candidate&&candidate._cgLod;if(key&&!variants[key])variants[key]=_makeVariant(avatar,candidate,index);});});
@@ -2851,6 +2879,16 @@ function ThreeMatchView(props){
         const _gav=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars[0])?glbAvatars[0]:null;
         return { lR:r(hero._lR), lL:r(hero._lL), aL:r(hero._aL), aR:r(hero._aR), rotY:+(hero.rotation.y||0).toFixed(3), posY:+(hero.position.y||0).toFixed(3), phase:(propsRef.current&&propsRef.current.matchPhase)||null, hlType:(propsRef.current&&propsRef.current.hlType)||null, hlIntent:(propsRef.current&&propsRef.current.hlIntent)||null, hlVariant:(propsRef.current&&propsRef.current.hlVariant)||null,
           glb:_gav?{gName:_gav._gName||null,gw:+((_gav._gw||0).toFixed(3)),hasDribbleClip:!!(_gav.gestures&&_gav.gestures.dribble)}:null }; };
+      /* [giro 73 PO-282 «tappeto che rotola»] TESTIMONE DEL CORPO GLB DELL'EROE (test-only, sola lettura): inclinazione del bacino
+         rispetto alla verticale (gradi), quota del bacino sul suolo, yaw della radice, clip montata col suo peso e tempo. */
+      window.__CPM_EROE73=function(){ try{ const _gav=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars[0])?glbAvatars[0]:null; if(!_gav||!_gav.root)return null;
+        const _vr=_gav.visualRoot||_gav.root; const hb=_gav._hips73||(_gav._hips73=_findBone904(_vr,/^pelvis$|Hips$/i)); const hd=_gav._head73||(_gav._head73=_findBone904(_vr,/^head$|Head$/i)); const V=THREE.Vector3; let tilt=null,hy=null,dy=null;
+        if(hb&&hd){_vr.updateWorldMatrix(true,true);const a=new V(),c=new V();hb.getWorldPosition(a);hd.getWorldPosition(c);const d=c.sub(a);const L=d.length()||1;tilt=+(Math.acos(Math.max(-1,Math.min(1,d.y/L)))*57.2958).toFixed(1);hy=+a.y.toFixed(3);dy=+(d.y).toFixed(3);}
+        let fl=null,fr=null,hh=null;try{const L=_gav._ftL73||(_gav._ftL73=_findBone904(_vr,/^(ball_l|LeftToeBase)$/i)),Rb=_gav._ftR73||(_gav._ftR73=_findBone904(_vr,/^(ball_r|RightToeBase)$/i));const t=new V();if(L){L.getWorldPosition(t);fl=+t.y.toFixed(3);}if(Rb){Rb.getWorldPosition(t);fr=+t.y.toFixed(3);}if(hd){hd.getWorldPosition(t);hh=+t.y.toFixed(3);}}catch(_e){}
+        let ct=null,cn=null;try{if(_gav._gAct){ct=+_gav._gAct.time.toFixed(3);cn=_gav._gAct.getClip().name||null;}}catch(_e){}
+        let act=null;try{const m=_gav.mx;if(m&&m._actions)act=m._actions.filter(x=>x.isRunning()&&x.getEffectiveWeight()>0.05).map(x=>(x.getClip().name||'?')+':'+x.getEffectiveWeight().toFixed(2)+'@'+x.time.toFixed(2));}catch(_e){}
+        return {act,tilt,hy,dy,fl,fr,hh,ry:+((_gav.root.rotation&&_gav.root.rotation.y)||0).toFixed(3),rx:+((_gav.root.rotation&&_gav.root.rotation.x)||0).toFixed(3),rz:+((_gav.root.rotation&&_gav.root.rotation.z)||0).toFixed(3),
+          x:+_gav.root.position.x.toFixed(2),z:+_gav.root.position.z.toFixed(2),g:_gav._gName||null,gw:+((_gav._gw||0).toFixed(3)),ct,cn,ph:(propsRef.current&&propsRef.current.matchPhase)||null,ok:(propsRef.current&&propsRef.current.hlOutcomeKind)||null}; }catch(_e){return {err:String(_e&&_e.message||_e)};} };
       /* [7.322.0 collaudo — il modello logico e la scena erano due partite diverse] PONTE MESH→LOGICA.
          Nel gioco convivono DUE insiemi di 22 giocatori: `matchPlayers` (l'array logico di LiveMatch, su cui
          si calcolano marcatura e guadagno del movimento) e le MESH 3D (quelle che l'utente vede, mosse
@@ -4890,7 +4928,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _r0=(typeof window!=='undefined'&&window.__CPM_NO794)?0.32:0.20;const _hh=(renderer&&renderer.domElement&&renderer.domElement.clientHeight)||H||915;
         _T.a.copy(ball.position).project(camera);_T.b.set(ball.position.x,ball.position.y+_r0*ball.scale.y*2,ball.position.z).project(camera);
         const _px=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* diametro in pixel */
-        if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){_T.a.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_T.b.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_T.b.y-_T.a.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
+        if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){/* [giro 72 PO-278 — rosso __CPM_NO_PALL72] il testimone riusava _T.a (centro del pallone) per l'eroe: un fotogramma su cinque il pavimento qui sotto misurava l'«uomo» contro il centro dell'EROE e saliva a 9 px — solo sotto __CPM_REC, cioe' proprio nel guardiano (misurato in partita: scala 0,884, rapporto 0,209). Ora vettori propri. */
+          const _no72r=(typeof window!=='undefined'&&window.__CPM_NO_PALL72);const _ha=_no72r?_T.a:(_T.h1||(_T.h1=new THREE.Vector3())),_hb2=_no72r?_T.b:(_T.h2||(_T.h2=new THREE.Vector3()));
+          _ha.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_hb2.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_hb2.y-_ha.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
         /* [7.899.0 — LA TAGLIA MINIMA E' RELATIVA ALL'UOMO ALLA STESSA PROFONDITA'. Rosso __CPM_NO899] Nota PO 15/09
            (foto a centrocampo, campo largo, 1,5×): «pallone troppo grande e sproporzionato». Misurato sulla foto: pallone
            10,5 px su 412 di larghezza — e' il pavimento fisso di 11 px della 7.862 — accanto a uomini alti ~32 px: un
@@ -4902,7 +4942,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         {_T.b.set(ball.position.x,ball.position.y+1.75,ball.position.z).project(camera);const _hb=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* altezza a schermo di un uomo fermo sul pallone: misurata sempre (anche col rosso), applicata solo col verde */
          if(!(typeof window!=='undefined'&&window.__CPM_NO899)&&_hb>0.5)_MIN=_no278?Math.max(8,Math.min(11,0.25*_hb)):Math.max(4,Math.min(9,0.16*_hb));/* [giro 55 PO-278] il pavimento non riporta il pallone a un quarto dell'uomo: 0,16 dell'uomo, fra 4 e 9 px (misurato in camera larga: uomo 16 px, col minimo a 6 il pallone tornava a 0,38 dell'uomo) */
          _T.hb=+_hb.toFixed(1);_T.min=+_MIN.toFixed(1);_T.ndc=[+_T.a.x.toFixed(4),+_T.a.y.toFixed(4)];}
-        if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}_T.out=+((_px>0.5&&_px<_MIN&&_T.a.z<1)?_MIN:_px).toFixed(1);/* diametro reso dopo il pavimento */
+        /* [giro 72 PO-278 «pallone in partita 0,193 contro 0,19» — rosso __CPM_NO_PALL72] il pavimento confrontava il diametro misurato lungo la
+           VERTICALE del mondo, che con la camera inclinata e' scorciato (fattore f<1), mentre una sfera a schermo e' tonda: il pallone vero
+           era 1/f volte il pavimento (misurato in partita: uomo 50 px, pavimento 8 px, pallone reso 9,7 px = 0,193 dell'uomo). Ora il
+           diametro si misura lungo il vettore DESTRO della camera, come il guardiano: pavimento e misura parlano della stessa grandezza. */
+        let _pxF=_px;if(!(typeof window!=='undefined'&&window.__CPM_NO_PALL72)){const _rt72=(_T.rt72||(_T.rt72=new THREE.Vector3())).setFromMatrixColumn(camera.matrixWorld,0).normalize();
+          const _c72=(_T.c72||(_T.c72=new THREE.Vector3())).copy(ball.position).project(camera);/* centro proiettato proprio: sotto __CPM_REC _T.a e' riusato per l'eroe */
+          _T.b.copy(ball.position).addScaledVector(_rt72,_r0*ball.scale.x).project(camera);const _ww72=(renderer&&renderer.domElement&&renderer.domElement.clientWidth)||412;
+          _pxF=Math.hypot((_T.b.x-_c72.x)*_ww72/2,(_T.b.y-_c72.y)*_hh/2)*2;}
+        if(_pxF>0.5&&_pxF<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_pxF);_T.up++;}_T.out=+((_pxF>0.5&&_pxF<_MIN&&_T.a.z<1)?_MIN:_pxF).toFixed(1);/* diametro reso dopo il pavimento */
       }catch(_e862){}}
       /* [7.794.0] IL ROSSO RIDA' AL PALLONE ANCHE LA SUA VECCHIA LEVITAZIONE. La quota di terra e' un
          letterale in una ventina di formule (vedi la nota in testa al file: le guardie analitiche la
@@ -10012,11 +10060,20 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            ma la ricerca converge sul CUSCINO (x0,86, ~78% del semiquadro): dopo la correzione la palla e'
            comoda dentro, e la deriva della regia impiega molti fotogrammi a riportarla fuori — la
            frequenza crolla per costruzione. __CPM_NO522 = rosso (bordo esatto di prima). */
-        const _out6=(px,py,pz,mf)=>{const _m=(mf||1);const lx=tLx-px,lz=tLz-pz,ly=tLy-py,hl=Math.hypot(lx,lz)||1;
-          const dx=_bx6-px,dz=_bz6-pz,dy=_by6-py,gd=Math.hypot(dx,dz)||1;
+        /* [giro 72 — collaudo 7.999.173 D1 «Ricevi fra le linee»: eroe fuori quadro in hl_result. Rosso __CPM_NO_LINEE72]
+           MISURATO (linee-61 esteso, 4 partite vere GLB, 8 scene): a pallone NON in volo l'eroe era fuori nel 37,3% dei fotogrammi
+           (138/370), quasi tutti nei primi 0,9 s del post-arco col soggetto sul pallone (respinta 49/90, rete 34/36, passaggio al
+           compagno 33/33): il giro 61 aveva riportato la storia sull'eroe solo DOPO 0,9 s. La regia sul pallone resta (7.522: il volo
+           e la parata sono la storia), ma ora la bisezione che arretra la camera per tenere DENTRO il pallone pretende dentro anche
+           l'eroe: pallone e chi ha giocato nello stesso quadro. Solo a pallone fermo/post-arco, eroe entro 40u dal pallone, mai sugli
+           highlight difensivi (hanno gia' l'eroe come soggetto). Il tetto d'arretramento (34u, confine dello stadio) non cambia. */
+        const _h72=isResult&&_subjBall50&&!ballArcActive&&!P.hlDef&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_LINEE72)&&Math.hypot(hero.position.x-_bx6,hero.position.z-_bz6)<=40;
+        const _o72=(X,Y,Z,px,py,pz,_m)=>{const lx=tLx-px,lz=tLz-pz,ly=tLy-py,hl=Math.hypot(lx,lz)||1;
+          const dx=X-px,dz=Z-pz,dy=Y-py,gd=Math.hypot(dx,dz)||1;
           if(Math.abs(Math.atan2(dy,gd)-Math.atan2(ly,hl))>_eM6*_m)return true;
           let da=Math.atan2(dz,dx)-Math.atan2(lz,lx);while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
           return Math.abs(da)>_aM6*_m;};
+        const _out6=(px,py,pz,mf)=>{const _m=(mf||1);return _o72(_bx6,_by6,_bz6,px,py,pz,_m)||(_h72&&_o72(hero.position.x,hero.position.y+0.9,hero.position.z,px,py,pz,_m));};
         /* ⚠️ RIMEDIO CONFUTATO E RITIRATO: il cuscino 0,86 e' stato misurato (OSC521, gi33/130/127/189)
            e NON riduce le inversioni (verde 0,15 vs rosso 0,158 su gi33): la bisezione non e' l'oscillatore
            dominante. La costante resta 1 (bordo storico); la parametrizzazione di _out6 resta per il
@@ -11015,7 +11072,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
                 {const rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;const fv=Math.min(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z),Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z))*m/dt;const D=_w.diag||(_w.diag={n:0,rv:0,fv:0,mt:0});D.n++;D.rv+=rv;D.fv+=fv;if(_a.mx){D.mt=_a.mx.time;D.mts=D.mts||{};D.mts[_ai]=+_a.mx.time.toFixed(2);}D.scena=(D.scena||0)+dt;}
                 _w.fr++;if(cont)_w.cont++;if(sk)_w.sk++;if(hl){_w.hl.fr++;if(cont)_w.hl.cont++;if(sk)_w.hl.sk++;}
                 const pc=_w.perCorpo[_ai]||(_w.perCorpo[_ai]={fr:0,sk:0});pc.fr++;if(sk)pc.sk++;
-                if(_ai===0&&window.__CPM_PIEDI_EROE){const E=_w.eroe||(_w.eroe=[]);if(E.length<1500){const _rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;E.push([+dt.toFixed(3),+_rv.toFixed(2),+(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z)*m/dt).toFixed(2),+(Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z)*m/dt).toFixed(2),+((L.y-gy)*m).toFixed(3),+((Rr.y-gy)*m).toFixed(3),_a._gName||'',_a._gw!=null?+_a._gw.toFixed(2):0,_a.run?+_a.run.weight.toFixed(2):0,_a.idle?+_a.idle.weight.toFixed(2):0,sk?1:0,/^hl_/.test(String((propsRef.current&&propsRef.current.matchPhase)||''))?1:0,String((propsRef.current&&propsRef.current.matchPhase)||''),_a.run?+_a.run.timeScale.toFixed(2):0,+(_a._spS||0).toFixed(2),+(_a._rap7>0&&_a._h7>0?_a._rap7*_a._h7:0).toFixed(2),+(_a._locB||0).toFixed(2),(P7.prevR&&Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)>0.01)?Math.round(Math.abs((((Math.atan2(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)-_a.root.rotation.y)+Math.PI*3)%(Math.PI*2))-Math.PI)*180/Math.PI):null,_a._locoName||'run',(_a._runFwd||_a.run)&&(_a._runFwd||_a.run).getClip?(_a._runFwd||_a.run).getClip().name:'',+(_a._h7||0).toFixed(3),+(P7.sc||0).toFixed(3),+(_a._rap7||0).toFixed(3),+(_a._ws252||0).toFixed(2),_a._spr252?+_a._spr252.timeScale.toFixed(2):null]);}}/* la fase dalle props VIVE: `matchPhase` qui e' quella del montaggio (il ciclo nasce una volta, deps []) *//* [PO-252 giro 22] testimone di dettaglio dell'eroe (solo sonda, __CPM_PIEDI_EROE): velocita' radice/piedi, quota dei piedi, gesto e pesi, per separare il pattinamento della radice da quello delle clip */}
+                if(_ai===0&&window.__CPM_PIEDI_EROE){const E=_w.eroe||(_w.eroe=[]);if(E.length<1500){const _rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;E.push([+dt.toFixed(3),+_rv.toFixed(2),+(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z)*m/dt).toFixed(2),+(Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z)*m/dt).toFixed(2),+((L.y-gy)*m).toFixed(3),+((Rr.y-gy)*m).toFixed(3),_a._gName||'',_a._gw!=null?+_a._gw.toFixed(2):0,_a.run?+_a.run.weight.toFixed(2):0,_a.idle?+_a.idle.weight.toFixed(2):0,sk?1:0,/^hl_/.test(String((propsRef.current&&propsRef.current.matchPhase)||''))?1:0,String((propsRef.current&&propsRef.current.matchPhase)||''),_a.run?+_a.run.timeScale.toFixed(2):0,+(_a._spS||0).toFixed(2),+(_a._rap7>0&&_a._h7>0?_a._rap7*_a._h7:0).toFixed(2),+(_a._locB||0).toFixed(2),(P7.prevR&&Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)>0.01)?Math.round(Math.abs((((Math.atan2(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)-_a.root.rotation.y)+Math.PI*3)%(Math.PI*2))-Math.PI)*180/Math.PI):null,_a._locoName||'run',(_a._runFwd||_a.run)&&(_a._runFwd||_a.run).getClip?(_a._runFwd||_a.run).getClip().name:'',+(_a._h7||0).toFixed(3),+(P7.sc||0).toFixed(3),+(_a._rap7||0).toFixed(3),+(_a._ws252||0).toFixed(2),_a._spr252?+_a._spr252.timeScale.toFixed(2):null,_a._spr252?+_a._spr252.time.toFixed(4):null,+aDt.toFixed(4),+_a.root.position.x.toFixed(3),+_a.root.position.z.toFixed(3),+L.x.toFixed(3),+L.z.toFixed(3),+Rr.x.toFixed(3),+Rr.z.toFixed(3),_a._spr252&&_a._spr252.getClip?_a._spr252.getClip().name:null,_a._spr252?+_a._spr252.getEffectiveWeight().toFixed(2):null]);}}/* la fase dalle props VIVE: `matchPhase` qui e' quella del montaggio (il ciclo nasce una volta, deps []) *//* [PO-252 giro 22] testimone di dettaglio dell'eroe (solo sonda, __CPM_PIEDI_EROE): velocita' radice/piedi, quota dei piedi, gesto e pesi, per separare il pattinamento della radice da quello delle clip */}
               P7.prev={L,R:Rr};P7.prevR={x:_a.root.position.x,z:_a.root.position.z};}}catch(_e7){}}
           _a.root.position.set(_p.position.x,(_ai===0&&_p.position.y<0)?0:_p.position.y,_p.position.z);
           if(typeof window!=='undefined'&&window.__CPM_CGTRADER_LOD_RUNTIME&&typeof window.__CPM_CGTRADER_LOD_RUNTIME.update==='function')window.__CPM_CGTRADER_LOD_RUNTIME.update(_a,_ai);/* [7.246.0 batch PO «l'eroe si butta a terra da posizione sbagliata»] le pose difensive procedurali AFFONDANO y (-0.18/-0.35) perché GLB-OFF il corpo è RUOTATO orizzontale (scivolata) — ma il root CH38 copia SOLO la y, non la rotazione → modello conficcato nel prato fino alle ginocchia su lunge/press. La y negativa dell'eroe non passa al GLB (le clip fanno da sole la discesa); la y POSITIVA (salto di testa, esultanza) resta */
@@ -11127,11 +11184,36 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              prima: nell'avvicinamento alla conclusione l'eroe corre a 8-10 u/s e la jog, ferma al tetto 2,5, lasciava scorrere il piede
              d'appoggio di circa meta' della velocita'. Solo canale «avanti» (indietro/laterale restano quelli del 7.518). */
           if(_ai===0&&_a.run&&_a.mx&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDI252)){
-            if(_a._spr252==null&&sr.current._spr252){try{_a._spr252=_a.mx.clipAction(sr.current._spr252);_a._spr252.play();_a._spr252.weight=0;}catch(_e){_a._spr252=false;}}
+            /* [giro 73 PO-282 «l'eroe dopo aver rubato il pallone si trasforma in un tappeto che rotola»] MISURATO (corpi-073, GLB acceso):
+               nell'esito del recupero l'eroe riparte di corsa, la dissolvenza jog→scatto porta `running` a peso 0,70 e l'asse
+               bacino→testa si piega a 86-99 gradi (bacino a 0,07 sul suolo): il corpo si sdraia e si rialza. CAUSA: la clip di scatto
+               caricata a r.1072 e' quella del corpo REGULAR (radice -90 gradi su X, bacino in un'altra convenzione di assi) e veniva
+               montata su QUALUNQUE eroe, anche sul corpo CGTrader, che ha ossa con gli stessi nomi ma riposi diversi e una SUA
+               `running` riadattata nel pacchetto. Ora ogni corpo usa lo scatto del proprio pacchetto (_locoClips.spr, r.~1395/1598/1623);
+               la clip regular resta ai soli corpi regular; l'azione si ricrea quando il cambio LOD sostituisce il mixer. Rosso
+               __CPM_NO_TAPPETO073. */
+            const _no073=(typeof window!=='undefined')&&!!window.__CPM_NO_TAPPETO073;
+            const _src073=_no073?sr.current._spr252:((_a._locoClips&&_a._locoClips.spr)||((_a._hyper||_a._cgLod)?null:sr.current._spr252));
+            if(!_no073&&_a._spr252&&_a._spr252Mx!==_a.mx){try{_a._spr252.stop();}catch(_e){}_a._spr252=null;}
+            if(_a._spr252==null&&_src073){try{_a._spr252=_a.mx.clipAction(_src073);_a._spr252.play();_a._spr252.weight=0;_a._spr252Mx=_a.mx;}catch(_e){_a._spr252=false;}}
             const _S=_a._spr252;let _wsT=0;
             if(_S&&(_a._locoName||'run')==='run'&&_a._h7>0.3){const _rS=_passoNaturale7({run:_S,visualRoot:_a.visualRoot,root:_a.root});
-              if(_rS>0){_wsT=(_a._ws252||0)>0.5?(_a._spS>4?1:0):(_a._spS>5?1:0);_S.timeScale=clamp(_a._spS/(_rS*_a._h7),0.5,2.5);}}
-            _a._ws252=(_a._ws252||0)+(_wsT-(_a._ws252||0))*Math.min(dt*7,1);if(_a._ws252<0.005&&_wsT===0)_a._ws252=0;}/* [7.999.7] cadenza = velocita' reale / velocita' naturale della clip */// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
+              if(_rS>0){_wsT=(_a._ws252||0)>0.5?(_a._spS>4?1:0):(_a._spS>5?1:0);_S.timeScale=clamp(_a._spS/(_rS*_a._h7),0.5,2.5);
+                /* [giro 76 — LA CADENZA DELLO SCATTO SEGUE LA FASE DEL PASSO. Rosso __CPM_NO_PASSO76, guardiano piedi-252] MISURATO
+                   (sonda del giro, hook __CPM_CLIP76 + testimone __CPM_PIEDI_EROE, GLB acceso): dal giro 73 l'eroe CGTrader scatta con la
+                   `running` del suo pacchetto. La sua velocita' naturale (4,37 altezze/s, mediana) e' giusta, ma DENTRO un appoggio il
+                   piede scorre all'indietro da 2,9 a 5,5 altezze/s: nessun timeScale costante lo tiene fermo, e a 8-9 u/s lo scarto vale
+                   1-3 m/s di pattinamento (56% dei fotogrammi di scatto). Scalare la cadenza x0,8/x1,3/x1,6 non cambia nulla (50-57%).
+                   Ora la cadenza si legge, fotogramma per fotogramma, dalla velocita' del piede d'appoggio in QUEL punto della clip. */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_PASSO76)&&dt>0){const _tb=_profilo76(_S);if(_tb){const _D=_tb.D,_n=_tb.v.length,_st=_D/_n;
+                  /* la posa ferma in testa alla clip (misurata: 7 campioni, 0,04 s, piede inchiodato mentre il corpo avanza) si scavalca */
+                  let _u=((_S.time%_D)+_D)%_D;if(_u<_tb.tH){_S.time+=_tb.tH-_u;_u=_tb.tH;}
+                  /* fase guidata dalla DISTANZA: si percorre il profilo finche' il piede d'appoggio ha fatto la strada del corpo in questo fotogramma */
+                  let _sc76=_a._h7;try{const _vr=_a.visualRoot||_a.root;if(_vr&&_vr.parent){_vr.parent.getWorldScale(_v76||(_v76=new THREE.Vector3()));if(_v76.x>0)_sc76=_v76.x*_tb.alt;}}catch(_e){}/* scala vera mondo/clip: il profilo e' in altezze DELLA CLIP DI CORSA, _h7 e' l'altezza nella posa del momento della misura */
+                  let _rem=((_spd<=30)?_gsp:_a._spS*dt)/_sc76,_adv=0;/* la strada VERA del corpo in questo fotogramma, non la velocita' smussata: in accelerazione _spS resta indietro (misurato 5,9-6,7 contro 8,6 u/s) */for(let _k=0;_k<2*_n&&_rem>1e-6;_k++){const _i=Math.min(_n-1,Math.floor(_u/_st)),_left=Math.max((_i+1)*_st-_u,1e-6),_need=_tb.v[_i]*_left;
+                    if(_need>=_rem){const _d=_rem/_tb.v[_i];_adv+=_d;_u+=_d;_rem=0;}else{_adv+=_left;_u+=_left;_rem-=_need;if(_u>=_D-1e-6){_u=_tb.tH;_adv+=_tb.tH;}}}/* al giro si salta anche la posa ferma: il mixer, avanzando, ci rientrerebbe */
+                  _S.timeScale=clamp(_adv/dt,0.5,2.5);}}}}
+            _a._ws252=(_a._ws252||0)+(_wsT-(_a._ws252||0))*Math.min(dt*((typeof window!=='undefined'&&window.__CPM_NO_PASSO76)?7:16),1);/* [giro 76] dissolvenza jog->scatto piu' corta: nel misto i due cicli hanno fasi diverse e il piede scivola nel 67% dei fotogrammi (35% a scatto pieno) */if(_a._ws252<0.005&&_wsT===0)_a._ws252=0;}/* [7.999.7] cadenza = velocita' reale / velocita' naturale della clip */// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
           if(_CPM_TEST&&typeof window!=='undefined'&&_a.run){try{const _sb=window.__CPM_STRIDE||(window.__CPM_STRIDE=[]);if(_a._spS>1&&_sb.length<4000)_sb.push([+_a._spS.toFixed(2),+_a.run.timeScale.toFixed(3)]);}catch(_e){}}/* [7.206.0] campionamento velocita<->cadenza del passo per la probe foot-slide */
           /* [7.209.0] richiesta di gesto PER-MESH: chi conclude un'azione (il compagno che finalizza l'assist,
              chi incorna il cross) chiede il proprio calcio/colpo di testa tramite `sr.current._mateFx`. */

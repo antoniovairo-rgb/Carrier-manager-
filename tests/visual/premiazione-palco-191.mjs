@@ -18,7 +18,11 @@ async function braccio(rosso) {
   await sleep(3000);
   await p.waitForFunction(() => !!window.__CPM_CER425, null, { timeout: 60000 }).catch(() => {}); const info = await p.evaluate(() => window.__CPM_CER425 || null);
   const i = info ? info.beats.indexOf('lift') : -1; const t0 = i > 0 ? info.beatsD.slice(0, i).reduce((a, x) => a + x, 0) : 6.8;
-  await p.evaluate(t => { window.__CPM_CER476 = []; window.__CPM_CERT_SET = t; }, t0 - 0.1); await sleep(9000);
+  await p.evaluate(t => { window.__CPM_CER476 = []; window.__CPM_CERT_SET = t; }, t0 - 0.1);
+  /* [giro 72, collaudo 173 D2: 14 campioni su 20 sotto carico] l'attesa fissa di 9 s reali raccoglieva tanti campioni quanti fotogrammi
+     faceva il browser: sotto carico meno di 20 e il guardiano era rosso per COPERTURA. Ora si attende finche' i campioni del
+     sollevamento arrivano a 24 (tetto 40 s), cosi' la misura non dipende dal carico. */
+  { const t1 = Date.now(); await sleep(3000); while (Date.now() - t1 < 40000) { const n = await p.evaluate(() => (window.__CPM_CER476 || []).filter(w => w.beat === 'lift' && w.podio).length).catch(() => 0); if (n >= 24) break; await sleep(1000); } }
   const W = (await p.evaluate(() => window.__CPM_CER476 || [])).filter(w => w.beat === 'lift' && w.podio);
   await p.close();
   const volo = W.filter(w => w.hero.y - sotto(w) > 0.15);

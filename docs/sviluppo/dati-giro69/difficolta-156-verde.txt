@@ -1,0 +1,41 @@
+  finalizzatore gavetta seme 1: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 76 gare · 46 decisioni · ok · pageerror 0
+  regista affermazione seme 1: 76 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 75 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  regista gavetta seme 1: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  regista elite seme 1: 79 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 76 gare · 39 decisioni · ok · pageerror 0
+  regista gavetta seme 1: 69 gare · 41 decisioni · ok · pageerror 0
+  incursore affermazione seme 1: 76 gare · 41 decisioni · ok · pageerror 0
+  regista declino seme 1: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  incursore gavetta seme 1: 70 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 78 gare · 42 decisioni · ok · pageerror 0
+  incursore elite seme 1: 77 gare · 44 decisioni · ok · pageerror 0
+  regista declino seme 1: 72 gare · 49 decisioni · ok · pageerror 0
+  incursore declino seme 1: 69 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 71 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 77 gare · 42 decisioni · ok · pageerror 0
+  regista gavetta seme 2: 69 gare · 45 decisioni · ok · pageerror 0
+  regista declino seme 2: 77 gare · 44 decisioni · ok · pageerror 0
+  regista affermazione seme 2: 72 gare · 38 decisioni · ok · pageerror 0
+  regista elite seme 2: 79 gare · 44 decisioni · ok · pageerror 0
+  incursore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  incursore affermazione seme 2: 70 gare · 40 decisioni · ok · pageerror 0
+  incursore declino seme 2: 78 gare · 46 decisioni · ok · pageerror 0
+  incursore elite seme 2: 79 gare · 45 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 24 carriere x 2 stagioni · 591 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         415  ✓5.94                       ✓0.125       ✓32.3      ✓56.1     ✓45.5
+affermazione    441  ✓6.44                       ✓0.37        ✓48.3      ✓79.2     ✓82.2
+elite           468  ✓6.89                       ✓0.479       ✓51.9      ✓88.6     ✓97.8
+declino         448  ✓6.36                       ✓0.286       ✓44.2      ✓69.9     ✓67
+  finalizzatore  gavetta: 5.95/0.145/34.8%/60.5'/51.3% · affermazione: 6.6/0.497/55.8%/82'/87.1% · elite: 6.83/0.481/46.1%/87.2'/95.5% · declino: 6.44/0.355/49.3%/63.7'/58.8%
+  regista        gavetta: 5.88/0.08/29%/47.8'/34.9% · affermazione: 6.41/0.297/47.3%/78.8'/81.6% · elite: 6.9/0.437/55.1%/89.2'/98.9% · declino: 6.24/0.221/36.9%/69.6'/65.6%
+  incursore      gavetta: 5.98/0.151/33.1%/60.6'/51.3% · affermazione: 6.32/0.315/41.8%/76.7'/77.8% · elite: 6.95/0.519/54.5%/89.4'/98.9% · declino: 6.4/0.279/46.3%/76'/76.1%
+celle entro tolleranza: 20/20 · carriere non concluse 0 · pageerror 0
+
+✅ CURVA OK — le quattro fasi nei bersagli A
+FINE 0
