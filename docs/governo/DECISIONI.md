@@ -574,3 +574,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Nazionale, sosta occupata da una coppa: «La finestra salta».
 - Impulsi, seguiti dopo un trasferimento: «Si spengono al trasferimento» (la memoria registra il club) → giro 71 sul ramo del giro 66.
 - PO-190 quota gol dell'eroe: «50% per tutti» (ogni stile) → dopo il giro 69 (difficoltà), sul suo ramo, perché le due tarature si toccano.
+
+## 19/10 — scelte sui rapporti del giro 70 e dei collaudi 172/173 (sessione principale)
+
+- Giro 70: trainer «tenere 0,08/0,12/0,16»; mental coach «lasciare così e dichiararlo nel testo» (vale dal vivo); vita_casa/vita_auto «separati dai beni dell'Ufficio».
+- Collaudi: nessun difetto alto. I medi entrano nella 174 col giro 72: (1) 173-3D «fra le linee» eroe fuori quadro 25% in hl_result → estendere linee-61 al totale (soglia ≤15%) e correggere la mira; (2) 172-3D corpi GLB non pronti a fine ingresso (PO-277) → misura e correzione; (3) 172-carriera schede-finale parte B esce 0 senza giudicare → deve uscire ≠0; (4) 173-carriera pulizia-072 su base inesistente → base su tag pre-173; (5) 173-carriera ritratto dell'eroe dopo PO-171 → foto in 3 schermate GLB-ON; bassi: pallone 0,193 contro 0,19 (PO-278), premiazione-palco-191 copertura, etichette barra a 360 px.
