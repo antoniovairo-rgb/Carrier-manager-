@@ -2064,6 +2064,11 @@ const _ruolo154=(p)=>p.squadRole||"rotazione";
 const _exClub154=(p)=>(p.history||[]).some(h=>h&&h.clubId&&p.club&&h.clubId!==p.club.id)||((p.season||1)>=3);
 const _casa154=(p)=>(p.history||[]).filter(h=>h&&p.club&&h.clubId===p.club.id).length>=1;
 const IMP_UNIVERSALI154=["wi_scommessa_amici"];
+/* [giro 71 · decisione PO 19/10 D3 «Si spengono al trasferimento»] la memoria registra anche il club (`k`) in cui la scelta e' stata
+   fatta; un seguito con `seg.spo` (parla dello spogliatoio, del mister o della dirigenza di quel club) non esce piu' se oggi il club e'
+   un altro. Memorie scritte prima (senza `k`) restano valide: nessuna informazione, nessuno spegnimento (migrazione additiva).
+   Rosso __CPM_NO_SPO154 (il filtro torna spento). Guardiano impulsi-memoria-154, parte D. */
+const _clubK154=(p)=>(p&&p.club&&(p.club.id||p.club.n))||null;
 function impMem154(p,id){if(_off154("__CPM_NO154"))return null;const m=(p&&p.impMem)||{};return m[id]||null;}
 /* il seguito e' pronto? origine risolta con la scelta giusta, nella finestra di settimane, e non ancora seguita */
 function segOk154(id,p){try{
@@ -2072,6 +2077,7 @@ function segOk154(id,p){try{
   const o=impMem154(p,s.da);if(!o||o.c==null||o.c<0)return false;
   if(s.c!=null&&(Array.isArray(s.c)?s.c:[s.c]).indexOf(o.c)<0)return false;
   const d=absW154(p)-(o.a||0);if(d<(s.min||3)||d>(s.max||20))return false;
+  if(s.spo&&o.k&&!_off154("__CPM_NO_SPO154")&&o.k!==_clubK154(p))return false;
   const me=((p&&p.impMem)||{})[id];if(me&&(me.a||0)>=(o.a||0))return false;
   return !s.ctx||!!s.ctx(p);
 }catch(_e){return false;}}
@@ -2545,7 +2551,7 @@ const WEEKLY_IMPULSES=[
   /* [7.999.173 PO-154] I SEGUITI: escono solo se la scelta d'origine e' stata fatta, nella finestra di settimane
      dichiarata (segOk154). Testi che RICORDANO la scelta; due catene di secondo livello (docu → premio,
      clan → mister). Nessun seguito cambia l'esito di un investimento: quello resta del rollover (PO-223). */
-  {id:"wi_seg_docu_puntata",seg:{da:"wi_docufilm",c:0,min:6,max:16},cond:_sg154("wi_seg_docu_puntata"),cat:"seguito",txt:"È uscita la puntata del documentario che hai accettato di girare: nello spogliatoio c'è chi ride e chi si è visto tagliato.",choices:[
+  {id:"wi_seg_docu_puntata",seg:{da:"wi_docufilm",c:0,min:6,max:16,spo:1},cond:_sg154("wi_seg_docu_puntata"),cat:"seguito",txt:"È uscita la puntata del documentario che hai accettato di girare: nello spogliatoio c'è chi ride e chi si è visto tagliato.",choices:[
     {txt:"🍿 Organizzo la proiezione per la squadra",ef:{chem:6,popularity:4,fatigue:2}},
     {txt:"🙊 Chiedo scusa a chi si è sentito escluso",ef:{chem:3,coachTrust:2}},
   ]},
@@ -2553,7 +2559,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎤 Ci vado con due compagni",ef:{popularity:8,chem:3,fatigue:2}},
     {txt:"📨 Ringrazio per iscritto",ef:{morale:3}},
   ]},
-  {id:"wi_seg_docu_rifiuto",seg:{da:"wi_docufilm",c:1,min:4,max:14},cond:_sg154("wi_seg_docu_rifiuto"),cat:"seguito",txt:"Il documentario che hai rifiutato l'hanno girato su un compagno. Il mister, a quattr'occhi: «Hai fatto bene a pensare al campo».",choices:[
+  {id:"wi_seg_docu_rifiuto",seg:{da:"wi_docufilm",c:1,min:4,max:14,spo:1},cond:_sg154("wi_seg_docu_rifiuto"),cat:"seguito",txt:"Il documentario che hai rifiutato l'hanno girato su un compagno. Il mister, a quattr'occhi: «Hai fatto bene a pensare al campo».",choices:[
     {txt:"🤝 «Grazie mister, era la scelta giusta»",ef:{coachTrust:4,morale:2}},
     {txt:"😶 Un po' mi rode",ef:{morale:-2,form:2}},
   ]},
@@ -2561,7 +2567,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🖼️ Li appendo nello spogliatoio",ef:{morale:8,chem:3}},
     {txt:"📸 Li pubblico con un grazie",ef:{popularity:6,morale:4}},
   ]},
-  {id:"wi_seg_cripto",seg:{da:"wi_cripto",c:0,min:4,max:12},cond:_sg154("wi_seg_cripto"),cat:"seguito",txt:"La criptovaluta su cui hai puntato è sulle montagne russe: meno quaranta lunedì, più trenta giovedì. In spogliatoio ti chiamano «il trader».",choices:[
+  {id:"wi_seg_cripto",seg:{da:"wi_cripto",c:0,min:4,max:12,spo:1},cond:_sg154("wi_seg_cripto"),cat:"seguito",txt:"La criptovaluta su cui hai puntato è sulle montagne russe: meno quaranta lunedì, più trenta giovedì. In spogliatoio ti chiamano «il trader».",choices:[
     {txt:"🧊 Non guardo il grafico fino a fine stagione",ef:{morale:2}},
     {txt:"📱 Controllo il telefono anche nell'intervallo",ef:{morale:-3,form:-2}},
   ]},
@@ -2569,19 +2575,19 @@ const WEEKLY_IMPULSES=[
     {txt:"🦺 Faccio un giro col casco",ef:{morale:3,fatigue:1}},
     {txt:"📄 Mi bastano le carte",ef:{morale:1}},
   ]},
-  {id:"wi_seg_prestito_reso",seg:{da:"wi_compagno_prestito",c:0,min:6,max:18},cond:_sg154("wi_seg_prestito_reso"),cat:"seguito",txt:"Il compagno a cui hai prestato i soldi ti lascia una busta nell'armadietto: la prima rata e un biglietto, «non lo dimentico».",choices:[
+  {id:"wi_seg_prestito_reso",seg:{da:"wi_compagno_prestito",c:0,min:6,max:18,spo:1},cond:_sg154("wi_seg_prestito_reso"),cat:"seguito",txt:"Il compagno a cui hai prestato i soldi ti lascia una busta nell'armadietto: la prima rata e un biglietto, «non lo dimentico».",choices:[
     {txt:"🤝 Gli dico di tenerla ancora",ef:{chem:6,morale:4}},
     {txt:"✅ La accetto, così siamo pari",ef:{chem:3,bank:5000,morale:2}},
   ]},
-  {id:"wi_seg_lite_pace",seg:{da:"wi_compagno_lite",c:0,min:3,max:10},cond:_sg154("wi_seg_lite_pace"),cat:"seguito",txt:"I due compagni che hai fatto riappacificare ora esultano insieme dopo ogni gol. Il capitano: «Questo spogliatoio è anche tuo».",choices:[
+  {id:"wi_seg_lite_pace",seg:{da:"wi_compagno_lite",c:0,min:3,max:10,spo:1},cond:_sg154("wi_seg_lite_pace"),cat:"seguito",txt:"I due compagni che hai fatto riappacificare ora esultano insieme dopo ogni gol. Il capitano: «Questo spogliatoio è anche tuo».",choices:[
     {txt:"😊 Me la godo",ef:{morale:6,chem:4}},
     {txt:"🎯 Ora tocca vincere",ef:{form:3,coachTrust:2}},
   ]},
-  {id:"wi_seg_lite_clan",seg:{da:"wi_compagno_lite",c:1,min:3,max:10,ctx:p=>(p.teamChemistry||60)<85},cond:_sg154("wi_seg_lite_clan"),cat:"seguito",txt:"La lite in cui non ti eri voluto immischiare ha diviso lo spogliatoio in due tavoli a pranzo. Ti chiedono da che parte stai.",choices:[
+  {id:"wi_seg_lite_clan",seg:{da:"wi_compagno_lite",c:1,min:3,max:10,spo:1,ctx:p=>(p.teamChemistry||60)<85},cond:_sg154("wi_seg_lite_clan"),cat:"seguito",txt:"La lite in cui non ti eri voluto immischiare ha diviso lo spogliatoio in due tavoli a pranzo. Ti chiedono da che parte stai.",choices:[
     {txt:"🕊 Mi siedo a un tavolo nuovo, in mezzo",ef:{chem:5,fatigue:2}},
     {txt:"🙈 Mangio in camera",ef:{chem:-4,morale:-2}},
   ]},
-  {id:"wi_seg_lite_mister",seg:{da:"wi_seg_lite_clan",c:1,min:3,max:10},cond:_sg154("wi_seg_lite_mister"),cat:"seguito",txt:"Il mister ha notato lo spogliatoio diviso e chiede ai più esperti di intervenire. Guarda te, che a pranzo non ti fai più vedere.",choices:[
+  {id:"wi_seg_lite_mister",seg:{da:"wi_seg_lite_clan",c:1,min:3,max:10,spo:1},cond:_sg154("wi_seg_lite_mister"),cat:"seguito",txt:"Il mister ha notato lo spogliatoio diviso e chiede ai più esperti di intervenire. Guarda te, che a pranzo non ti fai più vedere.",choices:[
     {txt:"🗣️ Parlo al gruppo prima dell'allenamento",ef:{chem:8,coachTrust:5,morale:-1}},
     {txt:"😶 Non tocca a me",ef:{coachTrust:-5,chem:-3}},
   ]},
@@ -2589,7 +2595,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🗣️ Ammetto lo sbaglio e chiedo scusa",ef:{popularity:-4,coachTrust:3,morale:-2}},
     {txt:"🚫 Nego tutto",ef:{popularity:-2,coachTrust:-6,morale:-3}},
   ]},
-  {id:"wi_seg_intervista",seg:{da:"wi_intervista_sorpresa",c:0,min:2,max:8},cond:_sg154("wi_seg_intervista"),cat:"seguito",txt:"L'intervista in cui hai detto tutto è uscita col titolo più duro possibile. Il mister ti aspetta nel suo ufficio.",choices:[
+  {id:"wi_seg_intervista",seg:{da:"wi_intervista_sorpresa",c:0,min:2,max:8,spo:1},cond:_sg154("wi_seg_intervista"),cat:"seguito",txt:"L'intervista in cui hai detto tutto è uscita col titolo più duro possibile. Il mister ti aspetta nel suo ufficio.",choices:[
     {txt:"🤝 Chiarisco a quattr'occhi",ef:{coachTrust:5,morale:-1}},
     {txt:"🔥 Confermo ogni parola",ef:{popularity:5,coachTrust:-6}},
   ]},
@@ -2617,7 +2623,7 @@ const WEEKLY_IMPULSES=[
     {txt:"👋 Gli dedico il riscaldamento",ef:{morale:8,popularity:4}},
     {txt:"🎽 Gli lancio la maglia a fine gara",ef:{morale:6,popularity:6}},
   ]},
-  {id:"wi_seg_idolo",seg:{da:"wi_dirigente_idolo",c:0,min:2,max:8},cond:_sg154("wi_seg_idolo"),cat:"seguito",txt:"La chiacchierata col tuo vecchio idolo è finita sui giornali. Il direttore sportivo vuole sapere se sei ancora con loro.",choices:[
+  {id:"wi_seg_idolo",seg:{da:"wi_dirigente_idolo",c:0,min:2,max:8,spo:1},cond:_sg154("wi_seg_idolo"),cat:"seguito",txt:"La chiacchierata col tuo vecchio idolo è finita sui giornali. Il direttore sportivo vuole sapere se sei ancora con loro.",choices:[
     {txt:"🔒 «Sono concentrato qui»",ef:{coachTrust:4,morale:1}},
     {txt:"🤷 «Ascoltare non è firmare»",ef:{coachTrust:-4,value:0.05}},
   ]},
@@ -2625,7 +2631,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🥹 Lo invito alla prossima partita",ef:{morale:9,bank:-1000}},
     {txt:"📞 Gli prometto che ci rivediamo",ef:{morale:5}},
   ]},
-  {id:"wi_seg_cena",seg:{da:"wi_cena_squadra",c:1,min:1,max:5},cond:_sg154("wi_seg_cena"),cat:"seguito",txt:"In spogliatoio girano le foto della cena di squadra che hai saltato. Le battute sono tutte per te.",choices:[
+  {id:"wi_seg_cena",seg:{da:"wi_cena_squadra",c:1,min:1,max:5,spo:1},cond:_sg154("wi_seg_cena"),cat:"seguito",txt:"In spogliatoio girano le foto della cena di squadra che hai saltato. Le battute sono tutte per te.",choices:[
     {txt:"😂 La prossima la offro io",ef:{chem:5,bank:-2000,morale:2}},
     {txt:"🙃 Incasso e sorrido",ef:{chem:1,morale:-1}},
   ]},
@@ -50452,7 +50458,7 @@ const getThisWeekMatchday=()=>{
         ...(choice.flag==="investment"?{investmentPending:true,...((typeof window!=="undefined"&&window.__CPM_NO_INV223)?{}:{investimenti223:[...(p.investimenti223||[]),{amt:ef.bank!=null?Math.max(0,Math.round(p.bankBalance||0)-Math.max(0,Math.round((p.bankBalance||0)+ef.bank))):0,prof:choice.inv||"bilanciato",s:p.season||1,w:p.week||1}]})}:{}),/* [5.98.0 EC-5] la rendita promessa ora ESISTE · [PO-223] e registra QUANTO e' uscito davvero dal conto e con che profilo */
         ...(ef.transferListed===true?{transferListed:true}:{}),/* [7.430.0] «voglio muovermi ora» produce il FATTO: in lista, ed e' il flag che il mercato legge davvero */
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
-        ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
+        ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
       };
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
@@ -50624,7 +50630,7 @@ const getThisWeekMatchday=()=>{
       const impulse=_seg154.length?_seg154[0]:(_fw433.length&&Math.random()<0.6)?pick(_fw433):(_pickPool.length?pick(_pickPool):null);
       if(impulse){
         _lastImpulseId=impulse.id;
-        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
+        setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[impulse.cat]||"💡";
         setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;

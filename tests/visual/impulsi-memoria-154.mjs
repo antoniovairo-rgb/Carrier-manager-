@@ -10,6 +10,11 @@
  * C) FLUSSO VERO (handler __CPM_CAREER, salvataggio in localStorage): si apre il pop-up vero di «wi_ospedale», si clicca
  *    «Ci vado con i regali», si controlla che la memoria sia scritta; poi si vivono fino a 12 settimane e il seguito
  *    «wi_seg_ospedale_lettera» deve uscire nella sua finestra (4-14 settimane).
+ * D) CAMBIO DI CLUB (giro 71, decisione PO 19/10 D3 «Si spengono al trasferimento»): la memoria registra il club (`k`); i seguiti
+ *    con `seg.spo` (spogliatoio/mister/dirigenza del club) non sono pronti se il club di oggi e' un altro, gli altri seguiti si'.
+ *    Regola sul catalogo + flusso vero: «wi_compagno_lite» → «Non mi immischio» → esce «wi_seg_lite_clan» → «Mangio in camera»
+ *    → TRASFERIMENTO vero (offerta + «Accetta») → 12 settimane: «wi_seg_lite_mister» (secondo anello) non deve uscire.
+ *    Rosso dedicato: CPM_ROSSO_SPO=1 arma solo __CPM_NO_SPO154 → il seguito del vecchio spogliatoio esce: il guardiano DEVE uscire 1.
  * Verde: A senza-condizione = universali dichiarate, universali di fatto <= 12, pool minimo >= 12; B tutto coerente; C memoria
  *        scritta e seguito uscito.
  * Prova del rosso: CPM_ROSSO=1 arma __CPM_NO154 e __CPM_NO154C → memoria, seguiti e contesto spenti: il guardiano DEVE uscire 1.
@@ -18,6 +23,7 @@
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 
 const ROSSO = process.env.CPM_ROSSO === '1';
+const ROSSO_SPO = process.env.CPM_ROSSO_SPO === '1';
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
 const guasti = []; const righe = [];
@@ -35,8 +41,8 @@ async function apri(save) {
   const page = await ctx.newPage();
   await installCdnRoutes(page);
   const errori = []; page.on('pageerror', e => errori.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(({ s, rosso }) => { window.__CPM_GLB = false; if (rosso) { window.__CPM_NO154 = true; window.__CPM_NO154C = true; }
-    localStorage.setItem('cpm-v3', JSON.stringify(s)); }, { s: save, rosso: ROSSO });
+  await page.addInitScript(({ s, rosso }) => { window.__CPM_GLB = false; if (rosso === true) { window.__CPM_NO154 = true; window.__CPM_NO154C = true; } if (rosso === "spo") window.__CPM_NO_SPO154 = true;
+    localStorage.setItem('cpm-v3', JSON.stringify(s)); }, { s: save, rosso: ROSSO ? true : (ROSSO_SPO ? 'spo' : false) });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 30000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 40000 });
   await sleep(1500);
@@ -140,9 +146,70 @@ for (let k = 1; k <= 12 && !uscito; k++) {
 console.log('settimane vissute: ' + usciti.join(' · '));
 ok(!!uscito, `il seguito «wi_seg_ospedale_lettera» esce nella sua finestra: ${uscito ? 'dopo ' + uscito.settimane + ' settimane' : 'mai in 12 settimane'}`);
 ok(errori.length === 0, `nessun errore di pagina (${errori.length}${errori.length ? ': ' + errori[0] : ''})`);
-await ctx.close(); await browser.close(); srv.close();
+await ctx.close();
+
+// ---------------- D) cambio di club: regola sul catalogo
+const D1 = await (async () => { const { ctx: c2, page: p2 } = await apri(baseSave('Collaudo Spogliatoio', { teamChemistry: 60 }));
+  const r = await p2.evaluate(() => { const L = window.__CPM_IMPULSES || [];
+    const p0 = { proStatus: 'pro', season: 5, week: 18, club: { id: 'b04', n: 'FC Werkstadt' }, teamChemistry: 60, calendar: [{ week: 18, played: false }] };
+    const now = 4 * 38 + 18; const idoneo = (im, p) => { try { return !im.cond || !!im.cond(p); } catch (e) { return false; } };
+    const out = [];
+    for (const sg of L.filter(im => im.seg)) { const s = sg.seg; if (s.ctx && !s.ctx(p0)) continue;
+      const mid = Math.round(((s.min || 3) + (s.max || 20)) / 2), c = Array.isArray(s.c) ? s.c[0] : s.c;
+      const m = (k) => ({ ...p0, impMem: { [s.da]: { c, a: now - mid, ...(k === undefined ? {} : { k }) } } });
+      out.push({ id: sg.id, spo: !!s.spo, stesso: idoneo(sg, m('b04')), altro: idoneo(sg, m('zzz')), vecchia: idoneo(sg, m(undefined)) }); }
+    return out; });
+  await c2.close(); return r; })();
+const Dspo = D1.filter(r => r.spo), Dalt = D1.filter(r => !r.spo);
+console.log(`D) seguiti di spogliatoio (spo): ${Dspo.length} (${Dspo.map(r => r.id).join(', ')}) · altri: ${Dalt.length}`);
+ok(Dspo.length >= 8, `almeno 8 seguiti di spogliatoio marcati (${Dspo.length})`);
+const DspoBad = Dspo.filter(r => !r.stesso || r.altro || !r.vecchia);
+ok(DspoBad.length === 0, `spogliatoio: pronti nello stesso club e con memoria vecchia senza club, spenti in un altro club (incoerenti: ${DspoBad.map(r => r.id + (r.altro ? '[esce in altro club]' : '')).join(', ') || 'nessuno'})`);
+const DaltBad = Dalt.filter(r => !r.stesso || !r.altro);
+ok(DaltBad.length === 0, `seguiti non di spogliatoio: restano pronti anche dopo il cambio di club (incoerenti: ${DaltBad.map(r => r.id).join(', ') || 'nessuno'})`);
+
+// ---------------- D) cambio di club: flusso vero, trasferimento in mezzo alla catena lite → clan → mister
+{ const { ctx: c3, page: p3, errori: e3 } = await apri(baseSave('Collaudo Trasferimento', { teamChemistry: 60 }));
+  const sn = () => p3.evaluate(() => window.__CPM_CAREER.snapshot());
+  const clicca = (t) => p3.evaluate((t) => { const b = [...document.querySelectorAll('button')].filter(x => (x.textContent || '').includes(t));
+    if (!b.length) return false; b[b.length - 1].click(); return true; }, t);
+  await p3.evaluate(() => window.__CPM_CAREER.apriImpulso('wi_compagno_lite')); await sleep(600);
+  const c0 = await clicca('Non mi immischio'); await sleep(900); await p3.evaluate(() => window.__CPM_CAREER.dismiss());
+  let w = 6, clan = null; const prima = [];
+  for (let k = 1; k <= 11 && !clan; k++) { w++;
+    await p3.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false, injured: false, teamChemistry: 60 }), w); await sleep(250);
+    await p3.evaluate(() => window.__CPM_CAREER.step()); await sleep(600);
+    const last = ((await sn()).recentImpulses || []).slice(-1)[0] || null; prima.push(`W${w}:${last}`);
+    if (last === 'wi_seg_lite_clan') { clan = { w, clic: await clicca('Mangio in camera') }; await sleep(900); }
+    await p3.evaluate(() => window.__CPM_CAREER.dismiss()); await sleep(200); }
+  const sA = await sn(); const memClan = (sA.impMem || {}).wi_seg_lite_clan || null;
+  // trasferimento vero: offerta generata dal gioco (o una di ripiego nella stessa lega) e clic su «Accetta»
+  const off = await p3.evaluate(() => { const C = window.__CPM_CAREER; if (C.forceOffer() === true) return 'generata';
+    const cl = CLUBS.find(x => x.lg === 'Deutsche Liga' && x.id !== 'b04'); C.setOffer({ club: cl, wage: 7000, duration: 3, fee: 5 }); return 'ripiego'; });
+  await sleep(1500);
+  let accettata = true; try { await p3.getByRole('button', { name: 'Accetta', exact: true }).first().click({ timeout: 10000 }); } catch (e) { accettata = false; }
+  await sleep(2500); await p3.evaluate(() => window.__CPM_CAREER.dismiss());
+  for (let i = 0; i < 12; i++) { const n = await p3.evaluate(() => (window.__CPM_CAREER.openingPending() || []).length); if (!n) break;
+    await p3.evaluate(() => window.__CPM_CAREER.resolveOpening()); await sleep(300); }
+  const sB = await sn(); const dopo = []; let mister = null;
+  for (let k = 1; k <= 12; k++) { w++; if (w > 36) break;
+    await p3.evaluate((w) => window.__CPM_CAREER.patch({ week: w, weekLived: false, injured: false, teamChemistry: 60 }), w); await sleep(250);
+    await p3.evaluate(() => window.__CPM_CAREER.step()); await sleep(600);
+    const last = ((await sn()).recentImpulses || []).slice(-1)[0] || null; dopo.push(`W${w}:${last}`);
+    if (last === 'wi_seg_lite_mister' && !mister) mister = w;
+    await p3.evaluate(() => window.__CPM_CAREER.dismiss()); await sleep(200); }
+  console.log(`D) prima del trasferimento: ${prima.join(' · ')}`);
+  console.log(`D) trasferimento: offerta ${off}, accettata ${accettata}, club ${sA.club && sA.club.id} → ${sB.club && sB.club.id}`);
+  console.log(`D) dopo il trasferimento: ${dopo.join(' · ')}`);
+  ok(c0 && !!clan && clan.clic, `catena avviata: «Non mi immischio» → «wi_seg_lite_clan» uscito (${clan ? 'W' + clan.w : 'mai'}) e risolto «Mangio in camera»`);
+  ok(!!memClan && memClan.c === 1 && memClan.k === 'b04', `memoria con il club: ${JSON.stringify(memClan)}`);
+  ok(accettata && sB.club && sB.club.id !== 'b04', `trasferimento vero avvenuto (${sB.club && sB.club.id})`);
+  ok(!mister, `il seguito del vecchio spogliatoio «wi_seg_lite_mister» non esce nel club nuovo: ${mister ? 'USCITO a W' + mister : 'mai in ' + dopo.length + ' settimane'}`);
+  ok(e3.length === 0, `D) nessun errore di pagina (${e3.length}${e3.length ? ': ' + e3[0] : ''})`);
+  await c3.close(); }
+await browser.close(); srv.close();
 
 if (process.env.CPM_JSON) console.log(JSON.stringify(AB, null, 1));
 console.log(righe.join('\n'));
-console.log(guasti.length ? `\n❌ FAIL impulsi-memoria-154${ROSSO ? ' (braccio rosso: atteso)' : ''} — ${guasti.length} guasti` : `\n✅ PASS impulsi-memoria-154${ROSSO ? ' — ATTENZIONE: il braccio rosso dovrebbe fallire' : ''}`);
+console.log(guasti.length ? `\n❌ FAIL impulsi-memoria-154${ROSSO ? ' (braccio rosso: atteso)' : ROSSO_SPO ? ' (braccio rosso SPO: atteso)' : ''} — ${guasti.length} guasti` : `\n✅ PASS impulsi-memoria-154${ROSSO || ROSSO_SPO ? ' — ATTENZIONE: il braccio rosso dovrebbe fallire' : ''}`);
 process.exit(guasti.length ? 1 : 0);

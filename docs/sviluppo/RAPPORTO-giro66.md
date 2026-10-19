@@ -135,4 +135,48 @@ nel commit, per non creare conflitti con la sessione principale.
 
 **D3 — Seguiti e cambio di club.**
 1. Lasciare com'è (finestre brevi). **(consigliata per ora)**
-2. Aggiungere alla memoria l'id del club e spegnere i seguiti di spogliatoio dopo un trasferimento.
+2. Aggiungere alla memoria l'id del club e spegnere i seguiti di spogliatoio dopo un trasferimento.  → **decisa dal PO il 19/10 e fatta nel giro 71** (vedi in fondo).
+
+## Giro 71 — D3 decisa: i seguiti di spogliatoio si spengono al trasferimento
+
+Decisione PO 19/10 (D3, opzione 2): «Si spengono al trasferimento». `GAME_VERSION` e `SAVE_VERSION` non cambiati.
+
+| Pezzo | Dove | Cosa fa |
+|---|---|---|
+| Club nella memoria | `src/18-career-app.jsx`, i due punti di scrittura di `p.impMem` (pescaggio e `handleImpulseChoice`) | ogni voce porta anche `k` = id del club al momento in cui l'impulso esce o viene risolto (helper `_clubK154` in `src/03`). |
+| Segno `spo` | `src/03-eventi-narrativi.jsx`, 10 seguiti | `wi_seg_docu_puntata`, `wi_seg_docu_rifiuto`, `wi_seg_cripto`, `wi_seg_prestito_reso`, `wi_seg_lite_pace`, `wi_seg_lite_clan`, `wi_seg_lite_mister`, `wi_seg_intervista`, `wi_seg_idolo`, `wi_seg_cena`: quelli che parlano di compagni, mister o dirigenza del club. |
+| Regola | `segOk154` | se il seguito ha `spo` e la memoria dell'origine ha `k` diverso dal club di oggi → non pronto. Memorie senza `k` (salvataggi scritti prima) restano valide: migrazione additiva, nessun campo obbligatorio. |
+
+Rosso: `__CPM_NO_SPO154` (filtro spento). Scelta del criterio: solo il cambio di **id del club**, come da decisione. Il passaggio
+Primavera → prima squadra **dello stesso club** non cambia l'id e quindi non spegne: non misurato quanto spesso capiti dentro una
+finestra di seguito.
+
+### Misure (guardiano `impulsi-memoria-154`, parte D nuova)
+
+**D-regola, catalogo vero (24 seguiti giudicabili):**
+
+| | Verde | Rosso `CPM_ROSSO_SPO=1` |
+|---|---|---|
+| Seguiti `spo` pronti nello stesso club | 10/10 | 10/10 |
+| Seguiti `spo` pronti con memoria **senza** club (salvataggi vecchi) | 10/10 | 10/10 |
+| Seguiti `spo` pronti in **un altro** club | **0/10** | 10/10 |
+| Altri 14 seguiti pronti anche in un altro club | 14/14 | 14/14 |
+
+**D-flusso vero** (pop-up vero, offerta generata dal gioco con `forceOffer` e clic su «Accetta»): `wi_compagno_lite` → «Non mi
+immischio» → esce `wi_seg_lite_clan` a W9 → «Mangio in camera» (memoria `c:1, k:"b04"`) → trasferimento → 12 settimane vissute.
+
+| | Verde | Rosso `CPM_ROSSO_SPO=1` |
+|---|---|---|
+| Club dopo il trasferimento | b04 → ath | b04 → lec |
+| `wi_seg_lite_mister` (secondo anello, vecchio spogliatoio) | **mai** in 12 settimane (W10-W21) | **uscito a W12** |
+
+Il club di destinazione varia fra i giri (offerta generata dal gioco); una corsa per braccio, campione minimo.
+Il braccio rosso storico `CPM_ROSSO=1` resta rosso (8 guasti). Corretto nella sonda: il rosso SPO non arma più anche `__CPM_NO154`.
+
+### Catene rilanciate sul build del giro (tutte verdi)
+
+`impulsi-memoria-154` verde (exit 0) · rosso SPO exit 1 · rosso storico exit 1 · `test:logic` 43/43 · `save-compat` 12/0 ·
+`popup-224b` PASS · `impulsi-contesto` PASS · `career-critical` 11/11 (spezzato in due gruppi: la corsa unica ha sforato i 10
+minuti dopo `career-invariants`; i quattro passi restanti `pending-mr-durable`, `cup-final-replay`, `coppa-nazioni`, `coppa-intera`
+rilanciati a parte, verdi) · `career-invariants` PASS · `stab-nat-trigger` PASS · `career-sim` PASS (2 stagioni) ·
+`tripath-chokepoint` PASS. Gate 14/14 **non** eseguito: il motore partita non è toccato.
