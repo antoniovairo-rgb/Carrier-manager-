@@ -80,7 +80,8 @@ if (N > 0) {
   const V = giudica(await giro(false), 'verde');
   if (V.finite < N) fail.push('B: partite non finite');
   if (V.senza.length) fail.push('B: scheda del pari senza fatto: ' + V.senza.map(s => 'p' + s.p + ' ' + s.min + "'").join(', '));
-  if (!V.pari.length) console.log('(B) ⚠️ nessuna scheda del pari in queste partite: B non ha giudicato niente (dichiarato, non rosso)');
+  /* [giro 72, collaudo 172 M1] un guardiano che non giudica non passa: zero schede del pari = B cieco = uscita 1 (si rilancia con piu' partite) */
+  if (!V.pari.length) fail.push('B: nessuna scheda del pari in ' + N + ' partite: B non ha giudicato niente (CPM_PARTITE piu\' alto)');
   if (process.env.CPM_ROSSO) { const R = giudica(await giro(true), 'rosso'); if (!R.senza.length) fail.push('B: rosso non riconosciuto (nessuna scheda del pari senza fatto)'); }
   await b.close(); srv.close();
 }

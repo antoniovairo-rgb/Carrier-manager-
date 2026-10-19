@@ -72,13 +72,18 @@ async function giro(braccio) {
 const R = {}; for (const br of BRACCI) { R[br] = await giro(br); console.log(br.toUpperCase() + ' ' + JSON.stringify(R[br])); }
 await b.close(); srv.close();
 if (process.env.CPM_SOLO_MISURA) process.exit(0);
-const g = [];
+const g = [], cieco = [];
 const V = R.verde, X = R.salta, Y = R['salta-secco'], Z = R.rosso;
 if (V) { if (!V.walk || V.durataDich == null) g.push('verde: ingresso non misurato');
   else { if (!(V.durataDich >= DMIN && V.durataDich <= DMAX)) g.push(`verde: durata ${V.durataDich}s fuori banda [${DMIN},${DMAX}]`);
     if (V.veloS > 0.4) g.push(`verde: velo d'attesa prima della camminata (${V.veloS}s): il caricamento non avviene durante l'ingresso`);
     if (!V.pulsante) g.push('verde: nessun pulsante «Salta ingresso»');
-    if (!V.corpiAllaFine) g.push('verde: a fine ingresso i corpi non sono pronti (la partita aspetta)'); }
+    /* [giro 72, collaudo 172 D1] «corpi non pronti» era anche il verdetto di un ingresso MAI CONCLUSO entro CPM_TMAX (uscita null → corpiAllaFine
+       null): sotto carico in headless il tempo di scena scorre a 1/6-1/15 del reale. Misurato da solo: corpi pronti a 24 s, uscita a 145,9 s,
+       attesa dopo 0. Un ingresso non concluso ora e' dichiarato CIECO (uscita 2), non un difetto del gioco. */
+    if (V.uscitaS == null) cieco.push(`verde: ingresso non concluso entro ${(+(process.env.CPM_TMAX || 320000) / 1000).toFixed(0)} s (corpi pronti a ${V.corpiS} s): corpi a fine ingresso NON GIUDICATI — rilanciare da solo o con CPM_TMAX piu' alto`);
+    else if (!V.corpiAllaFine) g.push('verde: a fine ingresso i corpi non sono pronti (la partita aspetta)');
+    else if (V.attesaDopoS > 1) g.push(`verde: dopo l'ingresso la partita aspetta i corpi ${V.attesaDopoS}s`); }
   if (V.errori.length) g.push('verde: errori di pagina ' + V.errori.join(' | ')); }
 if (X) { if (X.cliccatoS == null) g.push('salta: pulsante non trovato/cliccato');
   else if (!(X.uscitaS != null && X.uscitaS - X.cliccatoS <= 3)) g.push(`salta: la fase non lascia walkout dopo il click (click ${X.cliccatoS}s, uscita ${X.uscitaS}s)`);
@@ -86,5 +91,6 @@ if (X) { if (X.cliccatoS == null) g.push('salta: pulsante non trovato/cliccato')
   if (X.errori.length) g.push('salta: errori di pagina ' + X.errori.join(' | ')); }
 if (Y && !(Y.attesaDopoS >= 3)) g.push('salta-secco: il difetto del taglio secco non si vede ' + JSON.stringify(Y));
 if (Z) { if (!(Z.durataDich > DMAX) || Z.pulsante || (RIT && !(Z.veloS >= 2))) g.push('rosso: il difetto non si vede ' + JSON.stringify(Z)); }
-if (g.length) { console.log('❌ ingresso-277'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+if (g.length) { console.log('❌ ingresso-277'); g.concat(cieco).forEach(x => console.log('  · ' + x)); process.exit(1); }
+if (cieco.length) { console.log('⚠️ ingresso-277 CIECO'); cieco.forEach(x => console.log('  · ' + x)); process.exit(2); }
 console.log('✅ ingresso-277 verde (durata intermedia, nessun velo, saltabile, corpi pronti a fine ingresso) e il rosso si vede');

@@ -11,6 +11,8 @@
    (a) MECCANISMO, pt >= 1,0 s: soggetto della regia sull'eroe. VERDE >= 90% · ROSSO (CPM_ROSSO=__CPM_NO_LINEE61) <= 60% (il soggetto torna anche da solo quando il pallone respinto passa vicino all'eroe: misurato 33%).
    (b) ESITO, pt >= 1,6 s (0,9 s di regia sul pallone + 0,7 s per riportare la camera): eroe fuori. VERDE <= 15% se ci sono
        almeno 10 fotogrammi, altrimenti dichiarato «non giudicato». Nel rosso si stampa soltanto.
+   (c) [giro 72] TOTALE a pallone non in volo (tutto hl_result, non solo la coda): eroe fuori <= 15% (>= 40 fotogrammi). ROSSO
+       CPM_ROSSO=__CPM_NO_LINEE72 (bisezione senza l'eroe): atteso > 15% (misurato prima 37,3%).
    CIECO (uscita 2): meno di 10 fotogrammi con pt >= 1,0. Gira da solo: sotto carico il tempo di scena non avanza. */
 import fs from 'fs';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
@@ -61,8 +63,12 @@ fs.mkdirSync('out', { recursive: true }); fs.writeFileSync(ROSSO ? 'out/linee-61
 if (process.argv.includes('--guardiano')) {
   if (M.n < 10) { console.log('⚠️ linee-61 CIECO: meno di 10 fotogrammi con il post-arco oltre 1 s di scena'); process.exit(2); }
   const g = [];
-  if (ROSSO) { if (qM > 60) g.push(`rosso: soggetto sull'eroe nel ${qM.toFixed(1)}% (atteso <= 60%)`); }
+  if (/NO_LINEE72/.test(ROSSO)) { if (!(qF > 15)) g.push(`rosso NO_LINEE72: eroe fuori a pallone non in volo solo nel ${qF == null ? '-' : qF.toFixed(1)}% (atteso > 15%)`); }
+  else if (ROSSO) { if (qM > 60) g.push(`rosso: soggetto sull'eroe nel ${qM.toFixed(1)}% (atteso <= 60%)`); }
   else { if (qM < 90) g.push(`verde: soggetto sull'eroe solo nel ${qM.toFixed(1)}% (atteso >= 90%)`);
-    if (C.n >= 10 && qC > 15) g.push(`verde: eroe fuori nel ${qC.toFixed(1)}% della coda (atteso <= 15%)`); else if (C.n < 10) console.log('  (esito in coda non giudicato: ' + C.n + ' fotogrammi)'); }
+    if (C.n >= 10 && qC > 15) g.push(`verde: eroe fuori nel ${qC.toFixed(1)}% della coda (atteso <= 15%)`); else if (C.n < 10) console.log('  (esito in coda non giudicato: ' + C.n + ' fotogrammi)');
+    /* [giro 72, collaudo 173 D1] il giudizio sulla sola coda passava (0/107) mentre sul TOTALE dei fotogrammi a pallone non in volo l'eroe
+       era fuori nel 25-37%: ora si giudica anche il totale, soglia 15% (come il caso 7.482), con almeno 40 fotogrammi */
+    if (F.n >= 40 && qF > 15) g.push(`verde: eroe fuori nel ${qF.toFixed(1)}% dei fotogrammi a pallone non in volo (atteso <= 15%)`); else if (F.n < 40) console.log('  (totale a pallone non in volo non giudicato: ' + F.n + ' fotogrammi)'); }
   console.log(g.length ? '❌ linee-61 ' + (ROSSO ? 'rosso' : 'verde') + '\n  · ' + g.join('\n  · ') : `✅ ${ROSSO ? 'ROSSO come atteso' : 'PASS linee-61'}`); process.exit(g.length ? 1 : 0);
 }

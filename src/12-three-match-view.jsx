@@ -4890,7 +4890,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _r0=(typeof window!=='undefined'&&window.__CPM_NO794)?0.32:0.20;const _hh=(renderer&&renderer.domElement&&renderer.domElement.clientHeight)||H||915;
         _T.a.copy(ball.position).project(camera);_T.b.set(ball.position.x,ball.position.y+_r0*ball.scale.y*2,ball.position.z).project(camera);
         const _px=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* diametro in pixel */
-        if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){_T.a.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_T.b.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_T.b.y-_T.a.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
+        if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){/* [giro 72 PO-278 — rosso __CPM_NO_PALL72] il testimone riusava _T.a (centro del pallone) per l'eroe: un fotogramma su cinque il pavimento qui sotto misurava l'«uomo» contro il centro dell'EROE e saliva a 9 px — solo sotto __CPM_REC, cioe' proprio nel guardiano (misurato in partita: scala 0,884, rapporto 0,209). Ora vettori propri. */
+          const _no72r=(typeof window!=='undefined'&&window.__CPM_NO_PALL72);const _ha=_no72r?_T.a:(_T.h1||(_T.h1=new THREE.Vector3())),_hb2=_no72r?_T.b:(_T.h2||(_T.h2=new THREE.Vector3()));
+          _ha.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_hb2.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_hb2.y-_ha.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
         /* [7.899.0 — LA TAGLIA MINIMA E' RELATIVA ALL'UOMO ALLA STESSA PROFONDITA'. Rosso __CPM_NO899] Nota PO 15/09
            (foto a centrocampo, campo largo, 1,5×): «pallone troppo grande e sproporzionato». Misurato sulla foto: pallone
            10,5 px su 412 di larghezza — e' il pavimento fisso di 11 px della 7.862 — accanto a uomini alti ~32 px: un
@@ -4902,7 +4904,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         {_T.b.set(ball.position.x,ball.position.y+1.75,ball.position.z).project(camera);const _hb=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* altezza a schermo di un uomo fermo sul pallone: misurata sempre (anche col rosso), applicata solo col verde */
          if(!(typeof window!=='undefined'&&window.__CPM_NO899)&&_hb>0.5)_MIN=_no278?Math.max(8,Math.min(11,0.25*_hb)):Math.max(4,Math.min(9,0.16*_hb));/* [giro 55 PO-278] il pavimento non riporta il pallone a un quarto dell'uomo: 0,16 dell'uomo, fra 4 e 9 px (misurato in camera larga: uomo 16 px, col minimo a 6 il pallone tornava a 0,38 dell'uomo) */
          _T.hb=+_hb.toFixed(1);_T.min=+_MIN.toFixed(1);_T.ndc=[+_T.a.x.toFixed(4),+_T.a.y.toFixed(4)];}
-        if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}_T.out=+((_px>0.5&&_px<_MIN&&_T.a.z<1)?_MIN:_px).toFixed(1);/* diametro reso dopo il pavimento */
+        /* [giro 72 PO-278 «pallone in partita 0,193 contro 0,19» — rosso __CPM_NO_PALL72] il pavimento confrontava il diametro misurato lungo la
+           VERTICALE del mondo, che con la camera inclinata e' scorciato (fattore f<1), mentre una sfera a schermo e' tonda: il pallone vero
+           era 1/f volte il pavimento (misurato in partita: uomo 50 px, pavimento 8 px, pallone reso 9,7 px = 0,193 dell'uomo). Ora il
+           diametro si misura lungo il vettore DESTRO della camera, come il guardiano: pavimento e misura parlano della stessa grandezza. */
+        let _pxF=_px;if(!(typeof window!=='undefined'&&window.__CPM_NO_PALL72)){const _rt72=(_T.rt72||(_T.rt72=new THREE.Vector3())).setFromMatrixColumn(camera.matrixWorld,0).normalize();
+          const _c72=(_T.c72||(_T.c72=new THREE.Vector3())).copy(ball.position).project(camera);/* centro proiettato proprio: sotto __CPM_REC _T.a e' riusato per l'eroe */
+          _T.b.copy(ball.position).addScaledVector(_rt72,_r0*ball.scale.x).project(camera);const _ww72=(renderer&&renderer.domElement&&renderer.domElement.clientWidth)||412;
+          _pxF=Math.hypot((_T.b.x-_c72.x)*_ww72/2,(_T.b.y-_c72.y)*_hh/2)*2;}
+        if(_pxF>0.5&&_pxF<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_pxF);_T.up++;}_T.out=+((_pxF>0.5&&_pxF<_MIN&&_T.a.z<1)?_MIN:_pxF).toFixed(1);/* diametro reso dopo il pavimento */
       }catch(_e862){}}
       /* [7.794.0] IL ROSSO RIDA' AL PALLONE ANCHE LA SUA VECCHIA LEVITAZIONE. La quota di terra e' un
          letterale in una ventina di formule (vedi la nota in testa al file: le guardie analitiche la
@@ -10012,11 +10022,20 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            ma la ricerca converge sul CUSCINO (x0,86, ~78% del semiquadro): dopo la correzione la palla e'
            comoda dentro, e la deriva della regia impiega molti fotogrammi a riportarla fuori — la
            frequenza crolla per costruzione. __CPM_NO522 = rosso (bordo esatto di prima). */
-        const _out6=(px,py,pz,mf)=>{const _m=(mf||1);const lx=tLx-px,lz=tLz-pz,ly=tLy-py,hl=Math.hypot(lx,lz)||1;
-          const dx=_bx6-px,dz=_bz6-pz,dy=_by6-py,gd=Math.hypot(dx,dz)||1;
+        /* [giro 72 — collaudo 7.999.173 D1 «Ricevi fra le linee»: eroe fuori quadro in hl_result. Rosso __CPM_NO_LINEE72]
+           MISURATO (linee-61 esteso, 4 partite vere GLB, 8 scene): a pallone NON in volo l'eroe era fuori nel 37,3% dei fotogrammi
+           (138/370), quasi tutti nei primi 0,9 s del post-arco col soggetto sul pallone (respinta 49/90, rete 34/36, passaggio al
+           compagno 33/33): il giro 61 aveva riportato la storia sull'eroe solo DOPO 0,9 s. La regia sul pallone resta (7.522: il volo
+           e la parata sono la storia), ma ora la bisezione che arretra la camera per tenere DENTRO il pallone pretende dentro anche
+           l'eroe: pallone e chi ha giocato nello stesso quadro. Solo a pallone fermo/post-arco, eroe entro 40u dal pallone, mai sugli
+           highlight difensivi (hanno gia' l'eroe come soggetto). Il tetto d'arretramento (34u, confine dello stadio) non cambia. */
+        const _h72=isResult&&_subjBall50&&!ballArcActive&&!P.hlDef&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_LINEE72)&&Math.hypot(hero.position.x-_bx6,hero.position.z-_bz6)<=40;
+        const _o72=(X,Y,Z,px,py,pz,_m)=>{const lx=tLx-px,lz=tLz-pz,ly=tLy-py,hl=Math.hypot(lx,lz)||1;
+          const dx=X-px,dz=Z-pz,dy=Y-py,gd=Math.hypot(dx,dz)||1;
           if(Math.abs(Math.atan2(dy,gd)-Math.atan2(ly,hl))>_eM6*_m)return true;
           let da=Math.atan2(dz,dx)-Math.atan2(lz,lx);while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
           return Math.abs(da)>_aM6*_m;};
+        const _out6=(px,py,pz,mf)=>{const _m=(mf||1);return _o72(_bx6,_by6,_bz6,px,py,pz,_m)||(_h72&&_o72(hero.position.x,hero.position.y+0.9,hero.position.z,px,py,pz,_m));};
         /* ⚠️ RIMEDIO CONFUTATO E RITIRATO: il cuscino 0,86 e' stato misurato (OSC521, gi33/130/127/189)
            e NON riduce le inversioni (verde 0,15 vs rosso 0,158 su gi33): la bisezione non e' l'oscillatore
            dominante. La costante resta 1 (bordo storico); la parametrizzazione di _out6 resta per il
