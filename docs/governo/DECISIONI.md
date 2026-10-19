@@ -567,3 +567,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Con il container principale che si riavvia di continuo, la catena notte si esegue in **tronchi paralleli su sessioni figlie** (6 da circa un'ora, stesso build, `CPM_CI_FATTI` complementari, sorgente = nome del ramo, mai l'hash abbreviato); la sessione principale unisce i registri, rifà qui un rosso dubbio e chiude con un giro composto. 7.999.173: 97/97 in circa 3 ore invece di 10.
 - Da riparare in stabilità (instabili ricorrenti): tempo-138, nomi-219, difesa-220-giro31; portiere-252 cieco in una sessione figlia (ambiente); chiavi doppie preesistenti `ball`, `lR` (src/12) e `setOffer` (src/18).
+
+## 19/10 — questionario dubbi blocco B
+
+- Nazionale, ruolo del CT: «Prima informativo, poi in campo» — nella 174 informativo; in stabilità, se il collaudo lo conferma, «a disposizione» entra a gara in corso nelle amichevoli simulate.
+- Nazionale, sosta occupata da una coppa: «La finestra salta».
+- Impulsi, seguiti dopo un trasferimento: «Si spengono al trasferimento» (la memoria registra il club) → giro 71 sul ramo del giro 66.
+- PO-190 quota gol dell'eroe: «50% per tutti» (ogni stile) → dopo il giro 69 (difficoltà), sul suo ramo, perché le due tarature si toccano.
