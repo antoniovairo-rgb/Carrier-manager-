@@ -51,8 +51,8 @@ const R = { rosso: ROSSO, larg: LARG, tema: SCURO ? 'scuro' : 'chiaro', scenari:
 for (const [nome, pl] of SCENARI) {
   const ctx = await browser.newContext({ viewport: { width: LARG, height: 915 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx);
   const page = await ctx.newPage(); page.on('pageerror', e => R.errori.push(nome + ': ' + String(e.message || e).slice(0, 140)));
-  await page.addInitScript(c => { window.__CPM_GLB = false; window.__CPM_FIS_APERTE = true; if (c.rosso) window.__CPM_NO_HOME066 = true;
-    localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: c.pl })); }, { rosso: ROSSO, pl });
+  await page.addInitScript(c => { window.__CPM_GLB = false; window.__CPM_FIS_APERTE = true; if (c.rosso) window.__CPM_NO_HOME066 = true; if (c.rosso068) window.__CPM_NO_DUP068 = true;
+    localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: c.pl })); }, { rosso: ROSSO, rosso068: process.env.CPM_ROSSO068 === '1', pl });
   await page.goto(`http://127.0.0.1:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 60000 }).catch(() => {});
   await sleep(1500); try { await page.getByText('CONTINUA', { exact: false }).first().click({ timeout: 8000 }); } catch (_e) {}
@@ -115,6 +115,11 @@ for (const [nome, pl] of SCENARI) {
       v.figurine = box.querySelectorAll('[data-cpm-figurina]').length;
       if (/procuratore/i.test(testo.slice(0, 60)) && !v.figurine) v.viol.push('P1 riquadro del procuratore senza la sua figurina');
       v.fisarmonica = !!box.querySelector('button[aria-expanded]');
+      /* [7.999.173 PO-066, giro 68] D1 titolo ripetuto: dentro la fisarmonica aperta un testo identico al suo titolo (occhiello doppione).
+         Rosso CPM_ROSSO068=1 (__CPM_NO_DUP068). */
+      { const bt = box.querySelector('button[aria-expanded]'); const sp = bt && bt.querySelector('span'); const tt = sp ? (sp.textContent || '').trim().toLowerCase() : '';
+        if (tt) { const dup = [...box.querySelectorAll('div,span')].find(e => !bt.contains(e) && visibile(e) && e.children.length === 0 && (e.textContent || '').trim().replace(/\s+/g, ' ').toLowerCase() === tt);
+          if (dup) v.viol.push('D1 titolo ripetuto dentro la fisarmonica: «' + tt + '»'); } }
       out.push(v);
     });
     return { riquadri: out, scrollW: document.documentElement.scrollWidth, W };

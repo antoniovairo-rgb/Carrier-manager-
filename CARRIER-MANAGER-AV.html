@@ -10238,6 +10238,17 @@ const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg",
    e il contenuto (testo e bottoni) arriva al tocco. Niente e' nascosto: e' a un dito di distanza, che e'
    esattamente quello che il PO ha chiesto. La riga chiusa resta sopra i 44 px di bersaglio tattile
    (padding compreso) e porta `aria-expanded`, cosi' la fisarmonica esiste anche per chi non vede. */
+/* [7.999.173 PO-066, giro 68] una fisarmonica della home ripeteva il proprio titolo: «La tua storia» in testa e, aperta, l'occhiello
+   maiuscolo «LA TUA STORIA» come primo figlio (idem «Il progetto del club»). Se il primo figlio e' un <div> di solo testo UGUALE al
+   momento (senza maiuscole/spazi), non si mostra: il titolo c'e' gia'. Gli occhielli che aggiungono un dato (settimana, stagione)
+   restano. Rosso __CPM_NO_DUP068. Guardiano tests/visual/home-066.mjs, controllo D1. */
+const dup068On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_DUP068);/* i doppioni con markup diverso si spengono a mano col medesimo rosso */
+const _senzaDoppione068=(children,momento)=>{
+  if(typeof momento!=="string"||(typeof window!=='undefined'&&window.__CPM_NO_DUP068))return children;
+  const _k=React.Children.toArray(children);const _f=_k[0];const _n=t=>String(t).trim().replace(/\s+/g," ").toLowerCase();
+  if(_f&&_f.type==="div"&&_f.props&&typeof _f.props.children==="string"&&_n(_f.props.children)===_n(momento))return _k.slice(1);
+  return children;
+};
 const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",momento,momentoAperto=false,momentoNota,momentoInk,...rest})=>{
   const [_ap,_setAp]=React.useState(!!momentoAperto);
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
@@ -10259,7 +10270,7 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
       </button>)}
-    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
+    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{_senzaDoppione068(children,momento)}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
@@ -43369,8 +43380,15 @@ const CREDITI254=[
     {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
     {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
+       di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
+       license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
+       chiede la CC BY. Rosso __CPM_NO_CRED267B: tornano le due voci della 7.999.171 (Avataaars senza riga Licenza). */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_CRED267B)?[
     {n:"DiceBear «Avataaars»",aut:"Pablo Stanley",d:"dicebear.com: «Free for personal and commercial use».",nc:["lic"]},
-    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",aut:"Micah Lanier",lic:"CC BY 4.0 (attribuzione obbligatoria)"}]:[
+    {n:"DiceBear «Avataaars»",d:"Stile dell'avatar dell'eroe. Fonte: avataaars.com",aut:"Pablo Stanley",lic:"Free for personal and commercial use"},
+    {n:"DiceBear «Micah» (Avatar Illustration System)",d:"Stile degli avatar di staff e personaggi. Fonte: figma.com/community/file/829741575478342595",aut:"Micah Lanier",lic:"CC BY 4.0 — creativecommons.org/licenses/by/4.0"}]),
     {n:"Icone dell'app e grafiche dello store",aut:"Realizzate per Korward Elite"}]},
   {sez:"Caratteri",voci:[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
@@ -53698,7 +53716,7 @@ const getThisWeekMatchday=()=>{
         const lv=lifeView(player);if(!lv)return null;
         return(
         <Card momento="❤️ Vita privata" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#26101c,#331426)",TH.card),border:_n30("1px solid #7a2a55","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>
+          {!dup068On()&&<div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>}{/* [7.999.173 PO-066 giro 68] il titolo della fisarmonica lo dice gia' */}
           <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{lv.t}</div>
           <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5,marginBottom:8}}>{lv.d}</div>
           {lv.st==="incontro"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{stage:"coppia",name:lv.name,since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+4,0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"❤️",headline:"L'incontro con "+lv.name,body:"La serata finita a parlare di tutto tranne che di calcio.",color:_n30("#db2777",semTesto945("#db2777"))}]),log:[`❤️ Hai conosciuto ${lv.name}: c'è qualcosa di nuovo nell'aria.`,...(p.log||[])].slice(0,60)}))}>Usciamo di nuovo →</Btn>}
@@ -53966,7 +53984,7 @@ const getThisWeekMatchday=()=>{
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pa.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{pa.t}</div>
+              {!(dup068On()&&pa.t)&&<div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{pa.t}</div>}{/* [7.999.173 PO-066 giro 68] pa.t e' gia' il titolo della fisarmonica */}
               <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.76)",TH.muted),lineHeight:1.55}}>{pa.d}</div>
             </div>
           </div>
@@ -54094,7 +54112,7 @@ const getThisWeekMatchday=()=>{
             {th26&&<div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.title,lineHeight:1}}>{th26.e}</span>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.4,fontWeight:FW.bold}}>La tua settimana</div>
+                {!dup068On()&&<div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.4,fontWeight:FW.bold}}>La tua settimana</div>}{/* [7.999.173 PO-066 giro 68] */}
                 <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1.25}}>{th26.t}</div>
               </div>
             </div>}
@@ -54233,7 +54251,7 @@ const getThisWeekMatchday=()=>{
         return(
         <Card momento="Duello capocannoniere" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>Duello capocannoniere</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{dup068On()?null:"Duello capocannoniere"}</div>{/* [7.999.173 PO-066 giro 68] resta solo il segnale SORPASSO */}
             {_sorp&&<div style={{fontSize:FS.caption,background:"#16a34a",color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:800}}>🔥 SORPASSO</div>}
           </div>
           {_rows.map((r,i)=>(

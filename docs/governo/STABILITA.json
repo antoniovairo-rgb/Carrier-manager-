@@ -1154,6 +1154,282 @@
   "nota_riprova": "unico rosso schede-259 (A 6/7): chiave INT259.finale doppia fra giro 52 e giro 57, corretta in addc0ea5 (finaleEsito); ripassati sul build corretto, tutti verdi: test:logic, save-compat, replay, schede-234, tabellino-lati, schede-259, schede-260, schede-246, interazioni-226, esito-280, schede-finale"
  },
  {
+  "data": "2026-10-18 14:06",
+  "versione": "7.999.172",
+  "catena": "mirata",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "chip-269",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "badge-255",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 275
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 50
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 120
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 129
+   },
+   {
+    "passo": "toast-247",
+    "ok": true,
+    "s": 54
+   },
+   {
+    "passo": "brusio-238",
+    "ok": true,
+    "s": 19
+   },
+   {
+    "passo": "attesa-241",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "toast-intervista-247",
+    "ok": true,
+    "s": 75
+   },
+   {
+    "passo": "festa-oro-251",
+    "ok": true,
+    "s": 59
+   },
+   {
+    "passo": "crediti-254",
+    "ok": true,
+    "s": 38
+   },
+   {
+    "passo": "toast-256",
+    "ok": true,
+    "s": 108
+   },
+   {
+    "passo": "via-ch38-171",
+    "ok": true,
+    "s": 142
+   },
+   {
+    "passo": "stadi-071",
+    "ok": true,
+    "s": 276
+   },
+   {
+    "passo": "rinnovo-270",
+    "ok": true,
+    "s": 110
+   },
+   {
+    "passo": "simulata-272",
+    "ok": true,
+    "s": 24
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 105
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 57
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 17
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 18
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 40
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 533
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 56
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 55
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 68
+   },
+   {
+    "passo": "calendario-247",
+    "ok": true,
+    "s": 52
+   },
+   {
+    "passo": "procuratore-253",
+    "ok": true,
+    "s": 248
+   },
+   {
+    "passo": "backup-167",
+    "ok": true,
+    "s": 87
+   },
+   {
+    "passo": "home-066",
+    "ok": true,
+    "s": 164
+   },
+   {
+    "passo": "squalifica-222",
+    "ok": true,
+    "s": 222
+   },
+   {
+    "passo": "investimento-223",
+    "ok": true,
+    "s": 305
+   },
+   {
+    "passo": "infortunio-263",
+    "ok": true,
+    "s": 296
+   },
+   {
+    "passo": "svincolato-264",
+    "ok": true,
+    "s": 207
+   },
+   {
+    "passo": "meta-conto-265",
+    "ok": true,
+    "s": 94
+   },
+   {
+    "passo": "scene-fuori-137",
+    "ok": true,
+    "s": 90
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 1013
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 593
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 945
+   },
+   {
+    "passo": "coppa-prestito-245",
+    "ok": true,
+    "s": 72
+   }
+  ],
+  "composto": true,
+  "nota_composto": "passi gia' verdi prima del riavvio del container: test:logic, save-compat, design-system, typing-shortcuts, chip-269, badge-255, finestra-230"
+ },
+ {
   "data": "2026-10-17 04:07",
   "versione": "7.999.171",
   "catena": "notte",
