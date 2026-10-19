@@ -432,6 +432,8 @@
     "scena-motore-147": "node scena-motore-147.mjs",
     "catalogo-022": "node catalogo-022.mjs",
     "gesti-motore-068": "node gesti-motore-068.mjs",
+    "corpi-073": "node corpi-073.mjs",
+    "corpi-073-rosso": "CPM_ROSSO073=1 node corpi-073.mjs",
     "tecnica-045": "node tecnica-045.mjs",
     "gesti-firme-045": "node gesti-firme-045.mjs",
     "pressing-143": "node pressing-143.mjs",

@@ -2729,6 +2729,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       return{t:{x:+ballTargetRef.current.x.toFixed(2),y:+ballTargetRef.current.y.toFixed(2)},
              l:{x:+ballPosRef.current.x.toFixed(2),y:+ballPosRef.current.y.toFixed(2)},
              m:m?{x:m.x,y:m.y}:null,ko:(kickRef.current|0),kf:(kickoffRef.current|0),c:clockRef.current|0,g:(typeof window!=='undefined'&&window.__CPM_COLLA)?1:0};}catch(e){return null;}};
+    window.__CPM_MP_PLACE073=(i,x,y)=>{window.__CPM_PLACE073={i,x,y};return true;};/* [giro 73 PO-284] gancio test-only: il prossimo staging trova il giocatore LOGICO i gia' sul punto (senza contrassegni), come il crossatore del motore sull'angolo vero */
+    window.__CPM_SPOT073=()=>{try{const sp=_stagedSpotRef.current;const mp=(matchPlayersRef&&matchPlayersRef.current)||[];return{spot:sp?{at:sp.at,x:sp.x,y:sp.y,taker:sp.taker==null?null:sp.taker,sit:sp.sit===situationsRef.current[hlIdxRef.current]}:null,takers:mp.map((q,i)=>q&&q._taker402?{i,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10}:null).filter(Boolean),orig:(typeof _ORIG26!=='undefined'&&_ORIG26)?{at:_ORIG26.at,x:_ORIG26.x,y:_ORIG26.y,active:!!_ORIG26.active,sit:_ORIG26.sit===situationsRef.current[hlIdxRef.current]}:null};}catch(_e){return{err:String(_e&&_e.message||_e)};}};/* [giro 73 PO-284] testimone test-only: punto-palla dello staging, battitore dichiarato, origine del motore */
     window.__CPM_MP=()=>{try{return (matchPlayersRef&&matchPlayersRef.current?matchPlayersRef.current:matchPlayers||[]).map(q=>q?{t:q.team,x:Math.round(q.x*10)/10,y:Math.round(q.y*10)/10,n:q.name||"",gk:!!q.gk,m720:q._m720?1:0}:null);}catch(e){return null;}};/* [7.130.0] +n (cognome dorso) +gk per la verifica *//* [BL-07] stato LOGICO LiveMatch (pre-3D) per isolare lo strato che perde lo shading */
     window.__CPM_MS=()=>{try{return matchStateRef.current;}catch(e){return null;}};/* [7.711.0] il testimone del Match State unico */
     window.__CPM_FERMO_NOW=()=>{try{const _f=fermoRef.current;return _f?{x:_f.x,y:_f.y,kind:_f.kind||null,t:_f.t}:null;}catch(e){return null;}};/* [7.633.0] gancio di sola lettura: il fermo corrente, per la sonda dello schieramento da palla inattiva */
@@ -3612,10 +3614,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_bs402&&_bs402.at!=="hero"&&_bs402.at!=="gk"&&_bs402.x!=null){
             _stagedSpotRef.current={sit:sit0,at:_bs402.at,x:_bs402.x,y:_bs402.y};
             setMatchPlayers(prev=>{
+              try{const _o73=typeof window!=='undefined'&&window.__CPM_PLACE073;if(_o73&&prev[_o73.i]){window.__CPM_PLACE073=null;prev=prev.map((q,k)=>k===_o73.i?{...q,x:_o73.x,y:_o73.y,rx:0,ry:0}:q);}}catch(_e73){}/* [giro 73] solo test (__CPM_MP_PLACE073) */
               let _bi402=-1,_bd402=1e9;
               prev.forEach((pl,idx)=>{if(pl.team!=="home"||pl.gk||idx===0)return;
                 const _d=Math.hypot(pl.x-_bs402.x,pl.y-_bs402.y);if(_d<_bd402){_bd402=_d;_bi402=idx;}});
               if(_bi402>=0&&_bd402<=3&&prev[_bi402]&&prev[_bi402]._taker402&&_stagedSpotRef.current&&_stagedSpotRef.current.sit===sit0)_stagedSpotRef.current.taker=_bi402;/* [giro 43 PO-266] lo staging rigira: il battitore gia' sul punto resta il battitore */
+              /* [giro 73 PO-284 «apertura dell'angolo: pallone ai piedi di nessuno, compagno piu' vicino 6,2 u, eroe >= 43,7 u» (001)]
+                 MISURATO (corpi-073 284v, flusso vero, angoli dichiarati dal motore): 001 in tutti i campioni su due aperture su tre, compagno
+                 piu' vicino 5,9-23,3 u. Nel LOGICO il crossatore del motore e' gia' entro 3 u dalla bandierina, quindi qui si usciva senza
+                 marcarlo battitore: niente contrassegno, niente colla del renderer (src/12, 7.405), e la sua MESH arrivava dal posto di prima
+                 con l'inerzia del movimento. Ora chi e' gia' sul punto viene dichiarato battitore (posizione logica invariata) e la colla lo
+                 porta sul pallone al taglio. Rosso __CPM_NO_BATT073. */
+              if(_bi402>=0&&_bd402<=3&&!(typeof window!=="undefined"&&window.__CPM_NO_BATT073)){if(_stagedSpotRef.current&&_stagedSpotRef.current.sit===sit0)_stagedSpotRef.current.taker=_bi402;
+                if(prev[_bi402]._taker402&&!prev.some((pl,idx)=>idx!==_bi402&&pl._taker402))return prev;
+                return prev.map((pl,idx)=>idx===_bi402?{...pl,_taker402:true}:(pl._taker402?{...pl,_taker402:false}:pl));}
               if(_bi402<0||_bd402<=3)return prev;/* qualcuno c'e' gia': non si tocca niente */
               if(_stagedSpotRef.current&&_stagedSpotRef.current.sit===sit0)_stagedSpotRef.current.taker=_bi402;/* [giro 43 PO-266] chi e' il battitore di QUESTA scena */
               return prev.map((pl,idx)=>idx===_bi402?{...pl,x:clamp(_bs402.x,2,98),y:clamp(_bs402.y,2,98),rx:0,ry:0,_taker402:true}:(pl._taker402?{...pl,_taker402:false}:pl));/* rx/ry azzerati + CONTRASSEGNO del battitore: la colla del renderer (7.405) incolla la mesh di chi lo porta al punto staggiato — il match per coordinate non scattava mai, i bersagli dell'AI off-ball non sono i logici grezzi */
