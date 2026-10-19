@@ -39,11 +39,55 @@ const COACH_STYLES=[
    la sospensione a fondi finiti lo spegne, il livello scelto e' ricordato in perk*Lv). Acceso senza perk*Lv =
    livello 1 = ESATTAMENTE il comportamento di prima (save vecchi invariati, nessuna migration). Costi: livello 1
    = costo storico (trainer max(700,5%) · nutri max(500,4%)), livello 2 x1.8, livello 3 x2.8. */
-const STAFF24=[
+const STAFF24_281=[
   {k:"perkTrainer",lv:"perkTrainerLv",e:"🏋️",l:"Personal trainer",fx:["+10% efficacia allenamenti","+15% efficacia allenamenti","+20% efficacia allenamenti"],min:700,pct:0.05},
+  {k:"perkNutrition",lv:"perkNutritionLv",e:"🏃",l:"Preparatore atletico",fx:["Recupero fatica +2 a settimana · gare ravvicinate −3 fatica · rientro dagli infortuni −1 settimana · rischio infortuni −8%","Recupero fatica +3 a settimana · gare ravvicinate −4 fatica · rientro dagli infortuni −1 settimana · rischio infortuni −16%","Recupero fatica +4 a settimana · gare ravvicinate −5 fatica · rientro dagli infortuni −2 settimane · rischio infortuni −24%"],min:500,pct:0.04/* costo del vecchio nutrizionista: chi migra non paga di piu', chi aveva anche il fisioterapista paga meno */},
+  {k:"perkMental",lv:"perkMentalLv",e:"🧠",l:"Mental coach",fx:["Pressione nelle partite pesanti −25% · conseguenze dei bivi di tensione −25%","Pressione nelle partite pesanti −40% · conseguenze dei bivi di tensione −40%","Pressione nelle partite pesanti −55% · conseguenze dei bivi di tensione −55%"],min:400,pct:0.03}];
+/* la lista di prima (quattro figure), viva solo col rosso __CPM_NO_PREP281: e' il braccio «prima» della misura */
+const STAFF24_PRE281=[STAFF24_281[0],
   {k:"perkNutrition",lv:"perkNutritionLv",e:"🥗",l:"Nutrizionista",fx:["Recupero fatica +2 a settimana","Recupero fatica +3 a settimana","Recupero fatica +4 a settimana"],min:500,pct:0.04},
   {k:"perkFisio",lv:"perkFisioLv",e:"🩺",l:"Fisioterapista",fx:["Rischio infortuni −8%","Rischio infortuni −16%","Rischio infortuni −24%"],min:500,pct:0.03},
   {k:"perkMental",lv:"perkMentalLv",e:"🧠",l:"Mental coach",fx:["Morale +0,5 a settimana","Morale +1 a settimana","Morale +1,5 a settimana"],min:400,pct:0.03}];
+const STAFF24=(typeof window!=="undefined"&&window.__CPM_NO_PREP281)?STAFF24_PRE281:STAFF24_281;
+/* [PO-281 · giro 70, «Pacchetto consigliato»] STAFF PRIVATO CHE SI SENTE. Misura del giro 59: fisioterapista e mental coach
+   NON facevano nulla di misurabile (0 infortuni in 2 stagioni nel base; morale gia' a 95 di media), il trainer +5 punti sparsi.
+   1) Personal trainer: con un PIANO (perkTrainerFocus = attributo scelto) il ×1,10/1,15/1,20 generico lascia il posto a una
+      crescita MIRATA: +1 sull'attributo del piano con quota settimanale 0,08/0,12/0,16 (scalata dal rendimento decrescente),
+      decisa da un hash di nome+stagione+settimana (nessun Math.random: il resto della carriera non cambia sequenza).
+   2) Nutrizionista + fisioterapista = PREPARATORE ATLETICO (chiave storica perkNutrition): recupero settimanale di prima,
+      −3/−4/−5 di fatica nelle GARE RAVVICINATE (piu' gare nella stessa settimana), rientro dagli infortuni −1/−1/−2 settimane
+      (mai sotto 1) e il rischio infortuni del vecchio fisioterapista. Chi aveva l'uno o l'altro lo ritrova qui (migration).
+   3) Mental coach: niente piu' morale (era al tetto). Riduce la PRESSIONE nelle partite pesanti (la parte negativa di pubblico
+      e morale nel tasso dal vivo) e le CONSEGUENZE NEGATIVE dei bivi «tensione» di 25/40/55%.
+   Rossi: __CPM_NO_TRAINER281 · __CPM_NO_PREP281 · __CPM_NO_MENTAL281 (comportamento di prima, effetto per effetto). */
+function _no281(k){return typeof window!=="undefined"&&!!window["__CPM_NO_"+k+"281"];}
+function _h281(k){k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);}
+const TRAINER_ATTR281=["velocità","tecnica","fisico","mentalità","tiro","passaggio","dribbling","posizionamento"];
+function trainerFocus281(p){if(_no281("TRAINER"))return null;const f=p&&p.perkTrainerFocus;return (f&&TRAINER_ATTR281.indexOf(f)>=0&&staffLv24(p,"perkTrainer")>0)?f:null;}
+function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const dim=v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;return [0,0.08,0.12,0.16][lv]*Math.min(1,dim/0.35);}
+/* stats -> stats con il +1 del piano (o invariate). Chiamata UNA volta per settimana avanzata da weeklyGrowthFields. */
+function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
+  const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
+function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+function prepLv281(p){return staffLv24(p,"perkNutrition");}
+function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */
+function garaRavv281(p){const w=(p&&p.week)||1;return ((p&&p.calendar)||[]).filter(function(m){return m&&m.week===w;}).length>=2;}
+function prepFatica281(p,fat0,fat1){if(_no281("PREP"))return fat1;const lv=prepLv281(p);if(!lv||!garaRavv281(p)||!(fat1>fat0))return fat1;return Math.max(fat0,fat1-[0,3,4,5][lv]);}
+function prepRientro281(p,wk){if(_no281("PREP")||!(wk>1))return wk;const lv=prepLv281(p);if(!lv)return wk;return Math.max(1,wk-(lv>=3?2:1));}
+function mentalLv281(p){return _no281("MENTAL")?0:staffLv24(p,"perkMental");}
+function mentalQuota281(p){return [0,0.25,0.40,0.55][mentalLv281(p)];}
+function mentalMorale281(p){return _no281("MENTAL")?0.5*staffLv24(p,"perkMental"):0;}
+/* tasso dal vivo: nelle partite pesanti la parte NEGATIVA di pubblico e morale si riduce */
+function mentalPressione281(p,mod,pesante){if(!pesante||!(mod<0))return mod;return mod*(1-mentalQuota281(p));}
+/* bivi «tensione»: le conseguenze NEGATIVE (morale/forma/popolarita'/fiducia/chimica giu', fatica su) si riducono. Il conto no. */
+function mentalTensione281(p,cat,ef){const q=mentalQuota281(p);if(!q||cat!=="tensione"||!ef)return ef;const o={...ef};
+  ["morale","form","popularity","coachTrust","chem"].forEach(function(k){if(typeof o[k]==="number"&&o[k]<0)o[k]=Math.round(o[k]*(1-q)*10)/10;});
+  if(typeof o.fatigue==="number"&&o.fatigue>0)o.fatigue=Math.round(o.fatigue*(1-q)*10)/10;return o;}
+/* [PO-281 · giro 70] 6) GLI EVENTI DI VITA LEGGONO IL CONTO VERO. vita_auto/vita_casa leggevano p.bank (campo che non esiste:
+   il conto e' bankBalance) e quindi non uscivano mai. Rosso __CPM_NO_VITA281 = il campo sbagliato di prima. */
+function vitaSaldo281(p){return _no281("VITA")?((p&&p.bank)||0):((p&&p.bankBalance)||0);}
+function vitaConto281(p,ef){if(_no281("VITA"))return {chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
+  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{})};}
 const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
 function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
@@ -85,6 +129,30 @@ const BENI24=[
   {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia del mister +2, conta per l'eredità di carriera (valutazione finale)",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
 function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
 function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
+/* [PO-281 · giro 70] 5) I BENI VIVONO NEL TEMPO. Prima: popolarita'/fiducia una volta all'acquisto e basta. Ora, circa una
+   settimana su sei (hash di nome+stagione+settimana: deterministico), uno dei beni posseduti fa parlare qualcuno — stampa,
+   tifosi, compagni o mister — e il tono dipende dallo STILE del bene e dall'ultima partita: un bene vistoso dopo una sconfitta
+   costa fiducia, uno sobrio dopo una sconfitta fa difendere dai tifosi. Effetti piccoli (±1/±2) ma ricorrenti, con la notizia
+   nel diario (campo stampa281, mai sovrascritto dai rami settimana). Chiamata dal chokepoint weeklyStaffRel (tre path).
+   Rosso __CPM_NO_BENI281. */
+const BENI_REAZ281={
+  casa:{w:["tifosi","«Lo vediamo al mercato la domenica: uno di noi.»",{pop:1}],l:["tifosi","Dopo la sconfitta, al bar sotto casa nessuno lo contesta: «Vive qui, ci tiene.»",{pop:1}]},
+  auto:{w:["stampa","Un settimanale fotografa la tua auto sportiva: «Vince e se la gode.»",{pop:1}],l:["mister","Dopo la sconfitta il mister nota l'auto nel parcheggio: «Prima il campo.»",{trust:-2}]},
+  barca:{w:["compagni","I compagni ti prendono in giro per le foto sulla barca: lo spogliatoio ride.",{chem:1}],l:["stampa","«In barca mentre la squadra perde»: un quotidiano pubblica le foto.",{pop:-2,trust:-1}]},
+  fondazione:{w:["stampa","La tua fondazione inaugura un campetto: servizio al telegiornale locale.",{pop:2}],l:["compagni","Nella settimana storta i compagni vengono con te all'evento della fondazione.",{chem:2}]}};
+function beniReazione281(p){if(_no281("BENI"))return null;const b=(p&&p.beni24)||[];if(!b.length||(p.proStatus||"u18")==="u18")return null;
+  const h=_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|beni281");if(h%6!==0)return null;
+  const k=b[(h>>>4)%b.length],R=BENI_REAZ281[k],d=BENI24.find(function(x){return x.k===k;});if(!R||!d)return null;
+  const mh=p.matchHistory||[],l=mh[mh.length-1],perso=!!l&&!l.won&&!l.drew;const r=perso?R.l:R.w,fx=r[2];
+  return {k,chi:r[0],txt:r[1],dPop:fx.pop||0,dTrust:fx.trust||0,dChem:fx.chem||0,
+    voce:{season:p.season||1,week:p.week||1,type:"stampa",e:d.e,headline:d.l+": "+{stampa:"parla la stampa",tifosi:"parlano i tifosi",compagni:"parla lo spogliatoio",mister:"parla il mister"}[r[0]],
+      body:r[1]+" ("+[fx.pop?("popolarità "+(fx.pop>0?"+":"")+fx.pop):"",fx.trust?("fiducia del mister "+(fx.trust>0?"+":"")+fx.trust):"",fx.chem?("chimica "+(fx.chem>0?"+":"")+fx.chem):""].filter(Boolean).join(", ")+")"}};}
+/* [PO-281 · giro 70] 4) INVESTIMENTI: UN SOLO SISTEMA. Una tabella di rischio comune ai due ingressi (Ufficio F3 e proposte
+   d'impulso PO-223), scritta PRIMA della scelta: probabilita' di perdere e perdita massima, calcolate dalle stesse costanti
+   che decidono l'esito (INVEST24 qui, INV223 in src/18). La chiusura a fine stagione e' una funzione sola
+   (chiudiInvestimenti281, src/18) con un registro solo (investHist24, campo `fonte`) e una notizia di stampa per esito. */
+function rischioF3_281(prof){const d=INVEST24[prof]||INVEST24.prudente;const pl=d.min>=0?0:(-d.min)/(d.max-d.min);return {pPerdita:Math.round(pl*100),perditaMax:Math.round(Math.max(0,-d.min)*100),guadMax:Math.round(d.max*100)};}
+function rischioTesto281(r){return r.pPerdita<=0?("Rischio basso: non si perde, fino a +"+r.guadMax+"%"):(((r.pPerdita>=40||r.perditaMax>=20)?"Rischio alto":"Rischio medio")+": "+r.pPerdita+"% di probabilità di perdere, fino a −"+r.perditaMax+"% · fino a +"+r.guadMax+"%");}
 function legacyPatrimonio24(p){if(typeof window!=="undefined"&&window.__CPM_NO_EREDITA24)return {pts:0,rag:0,fond:0,ric:0,netto:0};
   const rag=Math.min(30,(((p&&p.academy24&&p.academy24.tot)|0))*3),fond=(((p&&p.beni24)||[]).indexOf("fondazione")>=0)?10:0,net=patrimonioNetto24(p);
   const ric=net>=20000000?20:net>=5000000?12:net>=1000000?6:0;return {pts:rag+fond+ric,rag,fond,ric,netto:net};}

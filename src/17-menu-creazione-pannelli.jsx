@@ -2511,6 +2511,15 @@ function migratePlayer(player){
     if(!('bankBalance' in newP)){newP={...newP,bankBalance:0};changed=true;}// v8 [5.81.0] economia
     if(!('perkTrainer' in newP)){newP={...newP,perkTrainer:false};changed=true;}
     if(!('perkNutrition' in newP)){newP={...newP,perkNutrition:false};changed=true;}
+    /* [PO-281 · giro 70] nutrizionista + fisioterapista = PREPARATORE ATLETICO (chiave perkNutrition). Additiva e una volta sola
+       (marcatore prep281): chi aveva l'uno o l'altro acceso ritrova il preparatore acceso al livello piu' alto dei due; il livello
+       ricordato (perk*Lv) passa anche da spento. Il fisioterapista si spegne (non e' piu' in lista, non costa piu').
+       Col rosso __CPM_NO_PREP281 la migration non gira: e' il braccio «prima» della misura. */
+    if(!('prep281' in newP)&&!(typeof window!=='undefined'&&window.__CPM_NO_PREP281)){
+      const _lv=(on,v)=>on?((typeof v==="number"&&v>=1)?Math.min(3,v|0):1):0;
+      const _ln=_lv(newP.perkNutrition,newP.perkNutritionLv),_lf=_lv(newP.perkFisio,newP.perkFisioLv);
+      const _mem=Math.max(newP.perkNutritionLv|0,newP.perkFisioLv|0);
+      newP={...newP,prep281:1,perkNutrition:!!(_ln||_lf),...((_ln||_lf)?{perkNutritionLv:Math.max(_ln,_lf)}:(_mem>=1?{perkNutritionLv:Math.min(3,_mem)}:{})),perkFisio:false};changed=true;}
     if(!('nationalGoals' in newP)){newP={...newP,nationalGoals:0};changed=true;}
     if(!('presidentModalSeason' in newP)){newP={...newP,presidentModalSeason:0};changed=true;}
     if(!('justRecovered' in newP)){newP={...newP,justRecovered:false};changed=true;}
