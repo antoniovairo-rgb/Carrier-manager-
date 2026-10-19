@@ -75,7 +75,16 @@ Metodo del giro 59 (carriera pro S2 W1, FC Werkstadt, 5M€ sul conto, `Math.ran
 
 ## 3. Catena eseguita
 
-CATENA_QUI
+Build del commit `ed4ddcb` (sorgente identico a quello pubblicato; i commit successivi toccano solo documenti).
+
+- **Prima dei guardiani:** `test:logic` 43/43 · `career-invariants` ✅ · `stab-nat-trigger` ✅ (dopo aver riportato il costo del Preparatore al 4%: alla prima stesura al 5% il guardiano STAB-ECO era **rosso**, «costi staff (19%) errati (got 32000)» — ho corretto il costo, non il guardiano) · `career-sim` ✅ 2 stagioni · `tripath-chokepoint` ✅ · `check-src` identico.
+- **Catena `mirata` contro `origin/lavoro/173`** (nucleo + guardiani della MAPPA per src/03, 08, 15, 17, 18): **87/89 verdi**, registrata in `docs/governo/STABILITA.json`. Giro **composto**: il container si è riavviato al passo 24 (tutti verdi); i 65 mancanti sono stati rifatti sullo stesso build con `CPM_CI_FATTI` (regola del 14/10).
+  - Comprende `test:logic`, `save-compat`, `design-system`, `typing-shortcuts`, `career-critical` (740 s), `investimento-223`, `meta-conto-265`, `acquisti-281`, `griglia-mobile`, `validate-situations` e i guardiani del motore di src/15.
+  - ❌ `tempo-138` — rosso 2 volte su 2: «rosso: il difetto non si vede» (braccio rosso cieco). **Identico sulla base `lavoro/173`** (`npm run tempo-138` in una copia di `origin/lavoro/173`: stesso messaggio). Preesistente, non di questo giro.
+  - ❌ `pressing-143` — rosso: «verde: marcatore a 4.08 m (atteso <= 3,5)». **Identico sulla base `lavoro/173`** (stesso valore 4,08 m). Preesistente.
+  - ⚠️ `difesa-220-giro31` — instabile: verde alla seconda prova.
+- La modifica in src/15 è neutra per costruzione quando il mental coach è spento (`mentalPressione281` moltiplica per 1): nessun guardiano del motore attiva il mental coach.
+- **Resa:** la foto `griglia-mobile` dell'Ufficio a 360 px mostra lo Staff privato con i bottoni del piano e la riga del Preparatore atletico, senza scroll orizzontale (foto rigenerata dal guardiano, non committata).
 
 ---
 
@@ -89,7 +98,8 @@ CATENA_QUI
 
 ## 5. Non verificato
 
-- **Resa sullo schermo** (Ufficio con i bottoni del piano, righe di rischio dell'Ufficio, notizie nel diario): nessuna fotografia fatta in questo giro. La riga di rischio d'impulso è verificata solo come testo presente nel DOM. `design-system` e `griglia-mobile` vedi §3.
+- **Resa sullo schermo** di righe di rischio dell'Ufficio, notizie nel diario e reazioni dei beni nell'Ufficio: non fotografate (la foto di `griglia-mobile` mostra solo lo Staff privato, su un eroe senza beni né investimenti). La riga di rischio d'impulso è verificata come testo presente nel DOM. Il piano del trainer si sceglie anche a trainer spento (scelta preparata in anticipo): da confermare col PO.
+- **I due rossi della catena** (`tempo-138`, `pressing-143`) sono preesistenti sulla base: non li ho indagati.
 - **Pressione dal vivo del mental coach:** verificata come funzione (−0,030 → −0,0135); **non** ho giocato partite dal vivo a bracci, quindi l'effetto sui gol/esiti non è misurato.
 - **Infortuni nati fuori dalle due funzioni toccate** (eventi settimanali, ricaduta da rientro forzato): il preparatore non ne accorcia il rientro. Non ho censito se esistono altri punti in cui nasce un infortunio oltre a `simInjuryRoll`, l'infortunio dal vivo e la ricaduta (`src/18` ~707).
 - **Gare ravvicinate nelle simulate europee** (`_fatE`, `src/18` ~3256/3287): lì la gara simulata recupera già 14 punti e non l'ho toccata.
