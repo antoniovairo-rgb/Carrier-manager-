@@ -608,3 +608,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «aspetta il giro 76, rilascia appena possibile».
 - Sessione principale: la 174 si riassembla appena il giro 76 consegna. Se in quel momento il giro 75 ha già consegnato e i suoi controlli sono verdi, entra anche lui; altrimenti il giro 75 va nella 7.999.175 (e la scelta dello stile resta visibile per una release). Motivo: la richiesta del PO è la velocità, il giro 75 ha ancora un rosso aperto nella sua catena.
+
+## 19/10 21:15 — 7.999.174 riassemblata col giro 76; piedi-252 ricalibrato
+
+- Giro 76 (f6dc13f6, session_01BQRypCsjVdWbB7LhiMRdWX): la fase della clip di scatto CGTrader avanza con la distanza vera percorsa dal corpo (profilo del piede d'appoggio), salta la posa ferma in testa, dissolvenza jog→scatto più corta; rosso `__CPM_NO_PASSO76`. piedi-252 verde 0,353 / 0,366 / 0,390 / 0,390 (prima 0,427-0,444), rosso 0,523-0,542; corpi-073 verde (14-16°).
+- **Soglia di piedi-252 0,36 → 0,40** (decisione della sessione principale, motivata): il giro 76 ha misurato che il verde di prima guardava l'eroe sdraiato dal «tappeto» (1 appoggio su 67 fotogrammi di scatto): non era un riferimento per un corpo in piedi. Col corpo in piedi la mediana sta a 0,35-0,39; il braccio rosso resta a 0,52-0,54, quindi il guardiano vede ancora il difetto. Tornare a ≤0,36 (aggancio del piede d'appoggio, miscela riposo-corsa) va nella fase di stabilità.
+- Giro 75 non pronto (rosso aperto nella sua catena): entra nella 7.999.175, come deciso alle 20:40.
+- Nuovo commit lavoro/174 eb8f83a0; catena notte in 6 tronchi (catena/174b-t1…t6): t1 session_01DrKwKB44xbivqnXWbCcdW2 · t2 session_01GPhDiw4ajUTsQqByttCdCV · t3 session_012P11aL3kSXTx1cxo8Kpr8g · t4 session_01R2VeQ6UqL7ZoQgytDvRYyf · t5 session_01EHsQUFvi8c6xanpCLtudPC · t6 session_01HEvDNUejEp3n267QFnqprM.
