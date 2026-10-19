@@ -733,6 +733,42 @@ let _lastClaudeCall=0;
 // [5.75.0 BUG-5] safeLS: accesso a localStorage SEMPRE guardato — con storage/cookie disabilitati il solo
 //   accesso alla proprietà lancia SecurityError; a module scope (pre-React) uccideva il boot → schermo vuoto muto.
 const safeLS={get(k){try{return localStorage.getItem(k);}catch(_e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(_e){}}};
+/* [7.999.173 · PO-168 parte C] REGISTRO DEGLI ERRORI. Misurato prima (giro 62, sonda misura-168-prima): un errore fuori
+   da React (setTimeout, promessa rifiutata) finiva solo nella console — zero chiavi di registro sul disco, zero traccia
+   per il collaudo; un errore di render cadeva nel RootErrorBoundary che lo scriveva solo in console. Ora un gestore
+   globale (error + unhandledrejection) e i due error boundary scrivono in `cpm-errlog` (ultimi 40, i doppioni
+   consecutivi si contano invece di ripetersi). Il taccuino (Profilo → Appunti di collaudo) li mostra e li esporta.
+   Fuori dal salvataggio (chiave propria, safeLS: a quota piena non scrive e non lancia). Rosso __CPM_NO_ERR168.
+   Guardiano tests/visual/errori-168.mjs. */
+const ERRLOG_KEY="cpm-errlog";
+const _no168=()=>typeof window!=="undefined"&&!!window.__CPM_NO_ERR168;
+const leggiErrLog168=()=>{try{const a=JSON.parse(safeLS.get(ERRLOG_KEY)||"[]");return Array.isArray(a)?a:[];}catch(_e){return [];}};
+const logErr168=(kind,err,extra)=>{
+  if(_no168())return;
+  try{
+    const msg=String((err&&err.message)||err||"errore sconosciuto").slice(0,300);
+    const stack=String((err&&err.stack)||"").slice(0,800);
+    const a=leggiErrLog168();
+    if(a[0]&&a[0].msg===msg&&a[0].kind===kind){a[0].n=(a[0].n||1)+1;a[0].ultimo=Date.now();}
+    else a.unshift({t:Date.now(),v:typeof GAME_VERSION!=="undefined"?GAME_VERSION:"?",kind,msg,stack,...(extra?{extra:String(extra).slice(0,600)}:{})});
+    safeLS.set(ERRLOG_KEY,JSON.stringify(a.slice(0,40)));
+  }catch(_e){}
+};
+const esportaErrLog168=()=>{try{let note=[];try{note=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
+  const b=new Blob([JSON.stringify({_korwardLog:1,v:typeof GAME_VERSION!=="undefined"?GAME_VERSION:"?",at:new Date().toISOString(),ua:(typeof navigator!=="undefined"&&navigator.userAgent)||"",errori:leggiErrLog168(),appunti:note},null,2)],{type:"application/json"});
+  const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download="korward-log-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}catch(_e){return false;}};
+if(typeof window!=="undefined"&&!_no168()){
+  try{window.addEventListener("error",e=>{if(e&&e.target&&e.target!==window&&!e.error)return;/* risorse (img/script) non caricate: non sono errori del gioco */logErr168("errore",e&&(e.error||e.message),e&&e.filename?(e.filename.split("/").pop()+":"+e.lineno):"");});}catch(_e){}
+  try{window.addEventListener("unhandledrejection",e=>{const r=e&&e.reason;if(r&&(r.name==="NotAllowedError"||r.name==="AbortError"))return;/* audio.play() senza gesto dell'utente: politica del browser, non un guasto */logErr168("promessa",r);});}catch(_e){}
+}
+if(typeof window!=="undefined"){try{window.__CPM_ERRLOG=leggiErrLog168;}catch(_e){}}
+/* [7.999.173 · PO-167 parte B] MEMORIA PERSISTENTE. Misurato prima: navigator.storage.persisted() = false — il browser
+   puo' sfrattare localStorage sotto pressione di spazio (Safari dopo 7 giorni senza visite, Chrome su disco pieno). Si
+   chiede una volta per avvio la persistenza; il browser decide (puo' rifiutare senza chiedere nulla all'utente). Esito
+   in window.__CPM_PERSIST167. Rosso __CPM_NO_PERSIST167. */
+if(typeof window!=="undefined"&&!window.__CPM_NO_PERSIST167){
+  try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persisted().then(p=>p?true:navigator.storage.persist()).then(r=>{window.__CPM_PERSIST167={chiesto:true,persistente:!!r};}).catch(()=>{window.__CPM_PERSIST167={chiesto:true,persistente:false};});}else window.__CPM_PERSIST167={chiesto:false,persistente:false};}catch(_e){}
+}
 /* [7.342.0 collaudo PO «il pulsante warning nel live match non lo vedo»] GLI STRUMENTI DI COLLAUDO NON SONO
    HOOK DI TEST. Il tasto ⚠️ e la card degli appunti erano protetti da `!window.__CPM_STORE_BUILD`, come i
    probe: ma quel flag lo inietta `tools/build-dist.mjs` in OGNI dist, cioè in tutto ciò che finisce nell'APK —

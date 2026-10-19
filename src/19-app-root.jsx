@@ -1018,7 +1018,7 @@ if(typeof window!=='undefined'&&window.__CPM_STORE_BUILD){window.runCPMTest50=fu
 class RootErrorBoundary extends React.Component{
   constructor(p){super(p);this.state={err:null};}
   static getDerivedStateFromError(err){return{err};}
-  componentDidCatch(err,info){try{console.error("[KORWARD] Crash globale:",err,info&&info.componentStack);}catch(e){}}
+  componentDidCatch(err,info){try{console.error("[KORWARD] Crash globale:",err,info&&info.componentStack);}catch(e){}logErr168("schermata",err,info&&info.componentStack);}/* [PO-168] anche nel registro */
   _backup(){try{const o={};["cpm-v3","cpm-v3-s2","cpm-v3-s3"].forEach(k=>{const v=localStorage.getItem(k);if(v)o[k]=v;});const b=new Blob([JSON.stringify({_elevoraBackup:1,_korwardBackup:1,at:Date.now(),slots:o},null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download="korward-backup.json";a.click();URL.revokeObjectURL(u);}catch(e){}}
   render(){
     if(!this.state.err)return this.props.children;
@@ -1031,6 +1031,7 @@ class RootErrorBoundary extends React.Component{
           <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
           <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
           <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
+          {!_no168()&&<button data-cpm="crash-log-168" onClick={()=>esportaErrLog168()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>🧾 Esporta registro errori</button>}{/* [PO-168] da passare allo sviluppo */}
         </div>
       </div>
     );
