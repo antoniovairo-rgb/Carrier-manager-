@@ -1,0 +1,18 @@
+✅ save-compat (30s)
+✅ riquadro-euro-105 (70s)
+✅ conferenza-192 (0s)
+✅ finale-202 (16s)
+✅ anteprima-212 (65s)
+✅ tabellino-216 (576s)
+✅ rimbalzo-189 (108s)
+✅ test:vision (2s)
+✅ finestra-230 (150s)
+✅ fps-249 (69s)
+✅ brusio-238 (20s)
+✅ toast-256 (111s)
+✅ aereo-252 (385s)
+✅ reazione-252 (446s)
+✅ spot-266 (144s)
+✅ esiti-218 (1185s)
+⚠️ nomi-219 (5308s) — instabile: verde alla prova 2, primo rosso: } |  | Node.js v22.22.0
+✅ catena notte su 7.999.174: 100/100 verdi

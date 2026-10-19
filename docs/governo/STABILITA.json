@@ -1,5 +1,599 @@
 [
  {
+  "data": "2026-10-19 17:47",
+  "versione": "7.999.174",
+  "catena": "notte",
+  "passi": [
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "classifica-102",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "recupero-103",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "euro-attesa-181",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "avversario-106",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rinvio-coppe-107",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "etichette-108",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita-rigiocata-194",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pro-rivale-176",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rigori-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "debito-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scene-190",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "ripresa-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tetto-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "minuti-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "recupero-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "ripartenza-207",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "mister-215",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "presentazione-214",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "possesso-209",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "brain-202",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tempo-138",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "squalifica-222",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "investimento-223",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "infortunio-263",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "svincolato-264",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "meta-conto-265",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "acquisti-281",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "errori-168",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "corpi-073",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "passaggi-228",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "ripartenza-235",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "manovre-150",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "cross-218",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "testata-209",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-220",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "scene-221",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "popup-224",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "lessico-218",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "fila-227",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "procuratore-253",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "intervista-231",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "giornata-233",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-234",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "bambini-236",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "prima-partita-237",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "attesa-241",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-220-scena",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "statistiche-228",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "crediti-254",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "badge-255",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-259",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "backup-167",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "piedi-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rete-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "portiere-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-220-giro31",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "apertura-261",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "parata-258",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "esiti-241",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "camera-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-246",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "schede-260",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tecnica-045",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "difesa-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rinvio-252",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "testa-143",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "esiti-60",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 30
+   },
+   {
+    "passo": "riquadro-euro-105",
+    "ok": true,
+    "s": 70
+   },
+   {
+    "passo": "conferenza-192",
+    "ok": true,
+    "s": 0
+   },
+   {
+    "passo": "finale-202",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "anteprima-212",
+    "ok": true,
+    "s": 65
+   },
+   {
+    "passo": "tabellino-216",
+    "ok": true,
+    "s": 576
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 108
+   },
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "finestra-230",
+    "ok": true,
+    "s": 150
+   },
+   {
+    "passo": "fps-249",
+    "ok": true,
+    "s": 69
+   },
+   {
+    "passo": "brusio-238",
+    "ok": true,
+    "s": 20
+   },
+   {
+    "passo": "toast-256",
+    "ok": true,
+    "s": 111
+   },
+   {
+    "passo": "aereo-252",
+    "ok": true,
+    "s": 385
+   },
+   {
+    "passo": "reazione-252",
+    "ok": true,
+    "s": 446
+   },
+   {
+    "passo": "spot-266",
+    "ok": true,
+    "s": 144
+   },
+   {
+    "passo": "esiti-218",
+    "ok": true,
+    "s": 1185
+   },
+   {
+    "passo": "nomi-219",
+    "ok": true,
+    "s": 5308,
+    "instabile": true,
+    "prove": 2
+   }
+  ],
+  "composto": true,
+  "nota_composto": "passi gia' verdi prima del riavvio del container (tronco-2): test:logic, replay, career-critical, classifica-102, recupero-103, euro-attesa-181, avversario-106, rinvio-coppe-107, etichette-108, titolo-110, pre-188, partita-rigiocata-194, pro-rivale-176, rigori-190, debito-190, scene-190, ripresa-202, tetto-202, minuti-202, recupero-202, ripartenza-207, mister-215, presentazione-214, possesso-209, brain-202, tempo-138, squalifica-222, investimento-223, infortunio-263, svincolato-264, meta-conto-265, acquisti-281, errori-168, corpi-073, passaggi-228, ripartenza-235, typing-shortcuts, validate-situations, partita-vera, scena-motore-147, manovre-150, cross-218, testata-209, gk-dive-sync, gk-miss-229, goal-postarc, difesa-220, scene-221, popup-224, lessico-218, fila-227, procuratore-253, intervista-231, tabellino-228, design-system, giornata-233, migrazione-194, schede-234, convocazione-235, bambini-236, prima-partita-237, attesa-241, difesa-220-scena, statistiche-228, crediti-254, badge-255, schede-259, backup-167, piedi-252, rete-252, portiere-252, difesa-220-giro31, apertura-261, parata-258, esiti-241, camera-252, schede-246, schede-260, tecnica-045, difesa-252, rinvio-252, testa-143, esiti-60"
+ },
+ {
   "data": "2026-10-19 12:07",
   "versione": "7.999.173",
   "catena": "mirata",
@@ -13388,1036 +13982,6 @@
     "passo": "design-system",
     "ok": true,
     "s": 0
-   }
-  ]
- },
- {
-  "data": "2026-10-07 23:01",
-  "versione": "7.999.149",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 61
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 897
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 96
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 37
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 71
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 35
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 70
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 551
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 17
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 315
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 202
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 1045
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 277
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 59
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 598
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 443
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 566
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 580
-   }
-  ]
- },
- {
-  "data": "2026-10-07 20:50",
-  "versione": "7.999.149",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 6
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 69
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 986
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 53
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 102
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 56
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 72
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 72
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 543
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 53
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 15
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 315
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 11
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 204
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 515
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 275
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 49
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 60
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 619
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 430
-   },
-   {
-    "passo": "tempo-138",
-    "ok": false,
-    "s": 555,
-    "coda": "rosso {\"fase\":\"ceremony\",\"pagato\":278,\"residuo\":0,\"aperto\":286} | ❌ tempo-138 |   · verde: debito non saldato al fischio {\"fase\":\"ceremony\",\"pagato\":304,\"residuo\":4,\"aperto\":308}"
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 567
-   }
-  ]
- },
- {
-  "data": "2026-10-07 18:36",
-  "versione": "7.999.149",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 68
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 952
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 106
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 41
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 58
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 17
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 78
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 18
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 39
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 76
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": false,
-    "s": 555,
-    "coda": "VERDE: {\"pm\":true,\"confPrima\":true,\"fine\":\"ended\",\"riaperta\":false,\"quando\":null,\"week\":39,\"season\":1,\"giocata\":true,\"alto\":2} | ROSSO (__CPM_NO_CONF194): {\"pm\":true,\"confPrima\":false,\"fine\":\"ended\",\"riaperta\":false,\"quando\":null,\"week\":39,"
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 55
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 19
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 354
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 210
-   },
-   {
-    "passo": "recupero-202",
-    "ok": false,
-    "s": 537,
-    "coda": "rosso tentativo 1 {\"fischio\":93,\"tentativi\":1,\"s\":197} | ❌ recupero-202 |   · rosso: {\"fischio\":93,\"tentativi\":1,\"s\":197}"
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 282
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 53
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 50
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 62
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 607
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 446
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 595
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": false,
-    "s": 589,
-    "coda": "rosso {\"fase\":\"ceremony\",\"iniettato\":true,\"note\":0,\"testo\":null} | ❌ tabellino-216 |   · verde: nessuna nota automatica col caso iniettato {\"fase\":\"ceremony\",\"iniettato\":false,\"note\":0,\"testo\":null}"
-   }
-  ]
- },
- {
-  "data": "2026-10-07 15:54",
-  "versione": "7.999.148",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 23
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 733
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 51
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 795
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 511
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1082
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-07 14:18",
-  "versione": "7.999.148",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 58
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 781
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 44
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 86
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 46
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 20
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 580
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 47
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 305
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 8
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 194
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 784
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 266
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 43
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 40
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 590
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 427
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 550
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 549
-   }
-  ]
- },
- {
-  "data": "2026-10-07 10:07",
-  "versione": "7.999.147",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 24
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 732
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 12
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 56
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 845
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 513
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1101
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-07 08:35",
-  "versione": "7.999.147",
-  "catena": "carriera",
-  "passi": [
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 847
-   },
-   {
-    "passo": "classifica-102",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "recupero-103",
-    "ok": true,
-    "s": 87
-   },
-   {
-    "passo": "euro-attesa-181",
-    "ok": true,
-    "s": 32
-   },
-   {
-    "passo": "riquadro-euro-105",
-    "ok": true,
-    "s": 45
-   },
-   {
-    "passo": "avversario-106",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "rinvio-coppe-107",
-    "ok": true,
-    "s": 63
-   },
-   {
-    "passo": "etichette-108",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "titolo-110",
-    "ok": true,
-    "s": 31
-   },
-   {
-    "passo": "pre-188",
-    "ok": true,
-    "s": 23
-   },
-   {
-    "passo": "rimbalzo-189",
-    "ok": true,
-    "s": 62
-   },
-   {
-    "passo": "conferenza-192",
-    "ok": true,
-    "s": 0
-   },
-   {
-    "passo": "partita-rigiocata-194",
-    "ok": true,
-    "s": 551
-   },
-   {
-    "passo": "pro-rivale-176",
-    "ok": true,
-    "s": 48
-   },
-   {
-    "passo": "rigori-190",
-    "ok": true,
-    "s": 16
-   },
-   {
-    "passo": "debito-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "scene-190",
-    "ok": true,
-    "s": 1
-   },
-   {
-    "passo": "finale-202",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "ripresa-202",
-    "ok": true,
-    "s": 308
-   },
-   {
-    "passo": "tetto-202",
-    "ok": true,
-    "s": 10
-   },
-   {
-    "passo": "minuti-202",
-    "ok": true,
-    "s": 195
-   },
-   {
-    "passo": "recupero-202",
-    "ok": true,
-    "s": 523
-   },
-   {
-    "passo": "ripartenza-207",
-    "ok": true,
-    "s": 263
-   },
-   {
-    "passo": "anteprima-212",
-    "ok": true,
-    "s": 42
-   },
-   {
-    "passo": "mister-215",
-    "ok": true,
-    "s": 41
-   },
-   {
-    "passo": "presentazione-214",
-    "ok": true,
-    "s": 52
-   },
-   {
-    "passo": "possesso-209",
-    "ok": true,
-    "s": 602
-   },
-   {
-    "passo": "brain-202",
-    "ok": true,
-    "s": 428
-   },
-   {
-    "passo": "tempo-138",
-    "ok": true,
-    "s": 562
-   },
-   {
-    "passo": "tabellino-216",
-    "ok": true,
-    "s": 541
-   }
-  ]
- },
- {
-  "data": "2026-10-07 07:30",
-  "versione": "7.999.146",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 716
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 814
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 518
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }
