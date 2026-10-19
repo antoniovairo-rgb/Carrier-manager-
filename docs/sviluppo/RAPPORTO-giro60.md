@@ -134,7 +134,23 @@ Ciò che resta di PO-068 non si chiude con codice senza clip nuove o senza rived
   `origin/lavoro/172`: verde pagato 308/308, rosso 198/198, stesso verdetto). Preesistente, non di questo giro.
 - `difesa-220-giro31` ❌ — **causato dalla prima stesura**, corretto in 4b3109c (vedi PO-218).
 
-**Seconda corsa, build 4b3109c:** ESITO_CATENA
+**Seconda corsa, build 4b3109c:** **47/50 verdi** (giro composto: il container si è riavviato due volte,
+alle ~23:08 e ~01:39 UTC; rifatti solo i passi mancanti sullo stesso build, `CPM_CI_FATTI`, regola PO 14/10; registrato in
+`docs/governo/STABILITA.json`). Verdi fra gli altri: `validate-situations` 14/14 (fingerprint 00001505), `test:logic`,
+`save-compat`, `design-system`, `career-critical`, `partita-vera`, `esiti-60`, `esiti-241`, `esiti-218`, `cross-218`,
+`lessico-218`, `catalogo-022`, `scene-221`, `nomi-219`, `tecnica-045`, `spot-266`, `conduci-242`, `interazioni-226`.
+Instabili (verdi alla seconda prova): `difesa-220-giro31` (casi forti 21% alla prima, tutti contrasti lunge/slide: ramo non
+toccato; la base sta sulla soglia, 15%), `difesa-220`.
+
+**I tre rossi, tutti rossi anche sulla base 172** (worktree di `origin/lavoro/172`, stesso guardiano):
+| guardiano | ramo | base 172 |
+|---|---|---|
+| `tempo-138` | rosso 3 catene: braccio rosso cieco (pagato = aperto) | rosso: verde 308/308, rosso 198/198, «il difetto non si vede» |
+| `pressing-143` | rosso in catena (3 volte); da solo verde 2/2 | rosso 2/2 da solo («marcatore a 3,94 m», «marcatore vicino anche spento 2,91 m»), 2/2 sotto carico (3,52-3,53 m) |
+| `schede-259` | rosso (parte C) | rosso: «A: momento decisivo muto pari al 77 dopo un tiro loro al 76» |
+
+Nessuno dei tre tocca il codice cambiato qui (debito di tempo, marcatore 3D in `src/12`, schede del pari); vanno nel giro dei
+rossi preesistenti.
 
 ## Non verificato
 
