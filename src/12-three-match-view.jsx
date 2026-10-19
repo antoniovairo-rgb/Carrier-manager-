@@ -789,6 +789,14 @@ function ThreeMatchView(props){
     const _v77=new THREE.Vector3(),_s77=new THREE.Vector3();
     const _piedi77=(av)=>{try{if(!av||!av.visualRoot||!av._footL||!av._footR||!av.proc||!av.proc._isHero)return;
       let cer=false;try{cer=ceremonyT>=0;}catch(_e){}
+      /* [giro 73 PO-283 «sembra colpire con la testa ma poi calcia con il piede in semi sforbiciata»] MISURATO (corpi-073, angolo
+         «Stacco in corsa potente» fallito, GLB acceso): la clip `header` e' pulita (i due piedi salgono e scendono insieme), il calcio
+         lo fa il DISAPPUNTO che segue (mx-disappunto, «Golf Bad Shot» 0,5-2,6 s): in cgtrader-clip-po.glb il suo bacino ha DUE chiavi
+         costanti (95,253 = quota da fermo), quindi l'accovacciata con le mani alla testa non abbassa il corpo ma ALZA LE GAMBE:
+         piedi a 0,54-0,58 dal prato col bacino inchiodato a 1,022 — un corpo sospeso che scalcia. Stessa classe di riparaCadute7.
+         Qui, finche' il disappunto ha peso, il corpo scende di quanto il piede piu' basso sta sopra la quota a terra (come in
+         cerimonia, solo verso il basso). Rosso __CPM_NO_STACCO073. */
+      if(!cer&&av._gDisapp&&av._gAct===av._gDisapp&&(av._gw||0)>0.05&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO073))cer=true;
       const vr=av.visualRoot;if(av._vr77!==vr){if(av._vr77&&av._off77)av._vr77.position.y=av._vy77;av._vr77=vr;av._vy77=vr.position.y;av._off77=0;}
       const ry=av.root?av.root.position.y:0;
       if(!cer||(typeof window!=='undefined'&&window.__CPM_NO_PIEDI77)||av.proc.position.y>0.3){if(av._off77){vr.position.y=av._vy77;av._off77=0;}
@@ -1392,7 +1400,7 @@ function ThreeMatchView(props){
         const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
           spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
+        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};
         _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
         if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
@@ -1595,7 +1603,7 @@ function ThreeMatchView(props){
           const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,_isHero:old.proc===hero||index===0,_cgLod:avatarPkg._cgLod||null,
             spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
-          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};
+          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};
           _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
         });
@@ -1620,7 +1628,7 @@ function ThreeMatchView(props){
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
             state._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:state._handL,hr:state._handR};
-            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
+            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right'),walk:_clip('walk'),spr:_clip('running')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),goalKick:_clip('gk-goal-kick'),gkThrow:_clip('gk-throw'),gkReady:_clip('gk-ready'),standTackle:_clip('tackle'),lookBack:_clip('look-over-shoulder'),dive:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-dive')),catch:_catchClip,block:((typeof window!=='undefined'&&window.__CPM_NO_GKDIVE)?null:_clip('gk-block'))}/* [23/09 POC] tuffo e respinta riadattati sullo scheletro CGTrader (tools/retarget_cgtrader_clip.py, cancello anatomico 3,1/2,7 gradi di mediana). Rosso __CPM_NO_GKDIVE */);
             visual.visible=false;return state;
           };
           _next.forEach((avatar,index)=>{const variants=avatar._cgLodVariants={};variants[avatar._cgLod]=_stateOf(avatar);lodPackages.forEach(candidate=>{const key=candidate&&candidate._cgLod;if(key&&!variants[key])variants[key]=_makeVariant(avatar,candidate,index);});});
@@ -2851,6 +2859,16 @@ function ThreeMatchView(props){
         const _gav=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars[0])?glbAvatars[0]:null;
         return { lR:r(hero._lR), lL:r(hero._lL), aL:r(hero._aL), aR:r(hero._aR), rotY:+(hero.rotation.y||0).toFixed(3), posY:+(hero.position.y||0).toFixed(3), phase:(propsRef.current&&propsRef.current.matchPhase)||null, hlType:(propsRef.current&&propsRef.current.hlType)||null, hlIntent:(propsRef.current&&propsRef.current.hlIntent)||null, hlVariant:(propsRef.current&&propsRef.current.hlVariant)||null,
           glb:_gav?{gName:_gav._gName||null,gw:+((_gav._gw||0).toFixed(3)),hasDribbleClip:!!(_gav.gestures&&_gav.gestures.dribble)}:null }; };
+      /* [giro 73 PO-282 «tappeto che rotola»] TESTIMONE DEL CORPO GLB DELL'EROE (test-only, sola lettura): inclinazione del bacino
+         rispetto alla verticale (gradi), quota del bacino sul suolo, yaw della radice, clip montata col suo peso e tempo. */
+      window.__CPM_EROE73=function(){ try{ const _gav=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars[0])?glbAvatars[0]:null; if(!_gav||!_gav.root)return null;
+        const _vr=_gav.visualRoot||_gav.root; const hb=_gav._hips73||(_gav._hips73=_findBone904(_vr,/^pelvis$|Hips$/i)); const hd=_gav._head73||(_gav._head73=_findBone904(_vr,/^head$|Head$/i)); const V=THREE.Vector3; let tilt=null,hy=null,dy=null;
+        if(hb&&hd){_vr.updateWorldMatrix(true,true);const a=new V(),c=new V();hb.getWorldPosition(a);hd.getWorldPosition(c);const d=c.sub(a);const L=d.length()||1;tilt=+(Math.acos(Math.max(-1,Math.min(1,d.y/L)))*57.2958).toFixed(1);hy=+a.y.toFixed(3);dy=+(d.y).toFixed(3);}
+        let fl=null,fr=null,hh=null;try{const L=_gav._ftL73||(_gav._ftL73=_findBone904(_vr,/^(ball_l|LeftToeBase)$/i)),Rb=_gav._ftR73||(_gav._ftR73=_findBone904(_vr,/^(ball_r|RightToeBase)$/i));const t=new V();if(L){L.getWorldPosition(t);fl=+t.y.toFixed(3);}if(Rb){Rb.getWorldPosition(t);fr=+t.y.toFixed(3);}if(hd){hd.getWorldPosition(t);hh=+t.y.toFixed(3);}}catch(_e){}
+        let ct=null,cn=null;try{if(_gav._gAct){ct=+_gav._gAct.time.toFixed(3);cn=_gav._gAct.getClip().name||null;}}catch(_e){}
+        let act=null;try{const m=_gav.mx;if(m&&m._actions)act=m._actions.filter(x=>x.isRunning()&&x.getEffectiveWeight()>0.05).map(x=>(x.getClip().name||'?')+':'+x.getEffectiveWeight().toFixed(2)+'@'+x.time.toFixed(2));}catch(_e){}
+        return {act,tilt,hy,dy,fl,fr,hh,ry:+((_gav.root.rotation&&_gav.root.rotation.y)||0).toFixed(3),rx:+((_gav.root.rotation&&_gav.root.rotation.x)||0).toFixed(3),rz:+((_gav.root.rotation&&_gav.root.rotation.z)||0).toFixed(3),
+          x:+_gav.root.position.x.toFixed(2),z:+_gav.root.position.z.toFixed(2),g:_gav._gName||null,gw:+((_gav._gw||0).toFixed(3)),ct,cn,ph:(propsRef.current&&propsRef.current.matchPhase)||null,ok:(propsRef.current&&propsRef.current.hlOutcomeKind)||null}; }catch(_e){return {err:String(_e&&_e.message||_e)};} };
       /* [7.322.0 collaudo — il modello logico e la scena erano due partite diverse] PONTE MESH→LOGICA.
          Nel gioco convivono DUE insiemi di 22 giocatori: `matchPlayers` (l'array logico di LiveMatch, su cui
          si calcolano marcatura e guadagno del movimento) e le MESH 3D (quelle che l'utente vede, mosse
@@ -11146,7 +11164,18 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              prima: nell'avvicinamento alla conclusione l'eroe corre a 8-10 u/s e la jog, ferma al tetto 2,5, lasciava scorrere il piede
              d'appoggio di circa meta' della velocita'. Solo canale «avanti» (indietro/laterale restano quelli del 7.518). */
           if(_ai===0&&_a.run&&_a.mx&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDI252)){
-            if(_a._spr252==null&&sr.current._spr252){try{_a._spr252=_a.mx.clipAction(sr.current._spr252);_a._spr252.play();_a._spr252.weight=0;}catch(_e){_a._spr252=false;}}
+            /* [giro 73 PO-282 «l'eroe dopo aver rubato il pallone si trasforma in un tappeto che rotola»] MISURATO (corpi-073, GLB acceso):
+               nell'esito del recupero l'eroe riparte di corsa, la dissolvenza jog→scatto porta `running` a peso 0,70 e l'asse
+               bacino→testa si piega a 86-99 gradi (bacino a 0,07 sul suolo): il corpo si sdraia e si rialza. CAUSA: la clip di scatto
+               caricata a r.1072 e' quella del corpo REGULAR (radice -90 gradi su X, bacino in un'altra convenzione di assi) e veniva
+               montata su QUALUNQUE eroe, anche sul corpo CGTrader, che ha ossa con gli stessi nomi ma riposi diversi e una SUA
+               `running` riadattata nel pacchetto. Ora ogni corpo usa lo scatto del proprio pacchetto (_locoClips.spr, r.~1395/1598/1623);
+               la clip regular resta ai soli corpi regular; l'azione si ricrea quando il cambio LOD sostituisce il mixer. Rosso
+               __CPM_NO_TAPPETO073. */
+            const _no073=(typeof window!=='undefined')&&!!window.__CPM_NO_TAPPETO073;
+            const _src073=_no073?sr.current._spr252:((_a._locoClips&&_a._locoClips.spr)||((_a._hyper||_a._cgLod)?null:sr.current._spr252));
+            if(!_no073&&_a._spr252&&_a._spr252Mx!==_a.mx){try{_a._spr252.stop();}catch(_e){}_a._spr252=null;}
+            if(_a._spr252==null&&_src073){try{_a._spr252=_a.mx.clipAction(_src073);_a._spr252.play();_a._spr252.weight=0;_a._spr252Mx=_a.mx;}catch(_e){_a._spr252=false;}}
             const _S=_a._spr252;let _wsT=0;
             if(_S&&(_a._locoName||'run')==='run'&&_a._h7>0.3){const _rS=_passoNaturale7({run:_S,visualRoot:_a.visualRoot,root:_a.root});
               if(_rS>0){_wsT=(_a._ws252||0)>0.5?(_a._spS>4?1:0):(_a._spS>5?1:0);_S.timeScale=clamp(_a._spS/(_rS*_a._h7),0.5,2.5);}}
