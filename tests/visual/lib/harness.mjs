@@ -146,7 +146,7 @@ export async function installCdnRoutes(page) {
   });
 }
 
-async function clickByText(page, src, timeout = 9000) {
+export async function clickByText(page, src, timeout = 9000) {
   const end = Date.now() + timeout;
   while (Date.now() < end) {
     const h = await page.evaluateHandle(s => { const rx = new RegExp(s, 'i'); return [...document.querySelectorAll('button')].find(b => rx.test((b.textContent || '').trim())) || null; }, src);
