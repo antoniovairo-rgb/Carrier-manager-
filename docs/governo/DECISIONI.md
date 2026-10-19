@@ -603,3 +603,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Misura della sessione principale (braccio verde, 4 scene): con la correzione del giro 73 0,272/0,463/0,407/0,232; con `__CPM_NO_TAPPETO073` 0,171/0,317/0,104/0,247. Causa: la clip di corsa del pacchetto CGTrader che toglie il «tappeto» fa pattinare di più i piedi. È un rosso vero, non d'ambiente.
 - Decisione: niente scavalcamento del guardiano di promozione. Giro 76 session_01BQRypCsjVdWbB7LhiMRdWX (sviluppo/piedi-corsa-giro76) ritara la corsa nuova senza riportare il «tappeto». La 7.999.174 si riassembla con i giri 75 (stile unico, via l'Enfant, pagella) e 76 e rifà la catena: così la scelta dello stile non arriva mai sul telefono. Motivo: la catena va rifatta comunque.
 - Controlli nuovi dei giri in locale: 16/17 verdi; nazionale-155 instabile anche sul giro 65 da solo (1 rosso su 3) → lista instabili della fase di stabilità; difficolta-156 verde 20/20 e rosso visto (9/20 dentro).
+
+## 19/10 20:40 — 7.999.174: «aspetta il giro 76, rilascia appena possibile» (PO)
+
+- PO: «aspetta il giro 76, rilascia appena possibile».
+- Sessione principale: la 174 si riassembla appena il giro 76 consegna. Se in quel momento il giro 75 ha già consegnato e i suoi controlli sono verdi, entra anche lui; altrimenti il giro 75 va nella 7.999.175 (e la scelta dello stile resta visibile per una release). Motivo: la richiesta del PO è la velocità, il giro 75 ha ancora un rosso aperto nella sua catena.
