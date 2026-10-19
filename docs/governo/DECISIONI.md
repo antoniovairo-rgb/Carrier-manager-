@@ -562,3 +562,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - **PO-156 difficoltà: «A — Curva netta».** Bersagli (voto · gol/gara · vittorie · minuti · titolare): gavetta 17-20 6,0 · 0,15 · 35% · 55' · 45% · affermazione 21-25 6,4 · 0,30 · 45% · 75' · 75% · élite 26-30 6,9 · 0,50 · 55% · 85' · 95% · declino 31+ 6,3 · 0,25 · 45% · 65' · 60%. Giro 69, base il ramo del giro 67 (stili).
 - **PO-281/PO-157 acquisti e investimenti: «Pacchetto consigliato».** Trainer con piano sull'attributo scelto; nutrizionista + fisioterapista accorpati in «Preparatore atletico» con rientro più rapido dagli infortuni; mental coach che riduce la pressione nelle partite pesanti (via il bonus di morale, già al tetto); investimenti in un solo sistema con rischio leggibile e notizie in stampa; beni con reazioni nel tempo; correzione di vita_auto/vita_casa (leggono p.bank invece di bankBalance). Giro 70.
+
+## 19/10 — 7.999.173 pubblicata; metodo della catena a tronchi paralleli
+
+- Con il container principale che si riavvia di continuo, la catena notte si esegue in **tronchi paralleli su sessioni figlie** (6 da circa un'ora, stesso build, `CPM_CI_FATTI` complementari, sorgente = nome del ramo, mai l'hash abbreviato); la sessione principale unisce i registri, rifà qui un rosso dubbio e chiude con un giro composto. 7.999.173: 97/97 in circa 3 ore invece di 10.
+- Da riparare in stabilità (instabili ricorrenti): tempo-138, nomi-219, difesa-220-giro31; portiere-252 cieco in una sessione figlia (ambiente); chiavi doppie preesistenti `ball`, `lR` (src/12) e `setOffer` (src/18).
