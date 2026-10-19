@@ -596,3 +596,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Sessione principale: giro 74 interrotto e archiviato (il suo lavoro non era pubblicato); giro 75 session_013qMah5NFx2pN6k8y6zCoST, ramo sviluppo/stile-unico-giro75, base lavoro/174 (rimozione + migrazione dei salvataggi a Finalizzatore + difetto pagella).
 - Calendario (sessione principale): la 7.999.174 esce come assemblata, con la catena già in corso; il giro 75 entra nella 7.999.175 subito dopo. Motivo: rifare l'assemblaggio e la catena intera ritarderebbe la 174 di 2-3 ore per una modifica che entra comunque poche ore dopo. Il collaudo della 174 non giudica la scelta dello stile.
 - Salvataggi con Enfant: il moltiplicatore di crescita si spegne, le statistiche già guadagnate restano (opzione prudente, nessun dato del giocatore tolto).
+
+## 19/10 19:20 — catena 7.999.174: piedi-252 rosso, la 174 aspetta i giri 75 e 76
+
+- Catena notte 174 (f58fe2b5), tronchi finiti: t1 17/17 (tempo-138 instabile), t5 15/16 con **piedi-252 rosso 3/3** (mediana verde 0,444, soglia 0,36), t6 16/16; t2, t3, t4 in corso.
+- Misura della sessione principale (braccio verde, 4 scene): con la correzione del giro 73 0,272/0,463/0,407/0,232; con `__CPM_NO_TAPPETO073` 0,171/0,317/0,104/0,247. Causa: la clip di corsa del pacchetto CGTrader che toglie il «tappeto» fa pattinare di più i piedi. È un rosso vero, non d'ambiente.
+- Decisione: niente scavalcamento del guardiano di promozione. Giro 76 session_01BQRypCsjVdWbB7LhiMRdWX (sviluppo/piedi-corsa-giro76) ritara la corsa nuova senza riportare il «tappeto». La 7.999.174 si riassembla con i giri 75 (stile unico, via l'Enfant, pagella) e 76 e rifà la catena: così la scelta dello stile non arriva mai sul telefono. Motivo: la catena va rifatta comunque.
+- Controlli nuovi dei giri in locale: 16/17 verdi; nazionale-155 instabile anche sul giro 65 da solo (1 rosso su 3) → lista instabili della fase di stabilità; difficolta-156 verde 20/20 e rosso visto (9/20 dentro).
