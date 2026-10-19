@@ -557,3 +557,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 64: cerimonie differenziate «non unirlo e archiviarlo»; kit «collo e polsini solo su lod0/lod1, lod2 a tinta pulita» (giro di seguito); PO-276 «chiudere col collaudo sul telefono».
 - Giro 68: PO-217 «lasciare così».
 - Blocco A = giri 60, 61, 63, 64, 68 → 7.999.173. Blocco B = giri 62, 65, 66, 67 + PO-281/PO-157 (dopo il questionario) → 7.999.174.
+
+## 19/10 — questionario blocco B (7.999.174)
+
+- **PO-156 difficoltà: «A — Curva netta».** Bersagli (voto · gol/gara · vittorie · minuti · titolare): gavetta 17-20 6,0 · 0,15 · 35% · 55' · 45% · affermazione 21-25 6,4 · 0,30 · 45% · 75' · 75% · élite 26-30 6,9 · 0,50 · 55% · 85' · 95% · declino 31+ 6,3 · 0,25 · 45% · 65' · 60%. Giro 69, base il ramo del giro 67 (stili).
+- **PO-281/PO-157 acquisti e investimenti: «Pacchetto consigliato».** Trainer con piano sull'attributo scelto; nutrizionista + fisioterapista accorpati in «Preparatore atletico» con rientro più rapido dagli infortuni; mental coach che riduce la pressione nelle partite pesanti (via il bonus di morale, già al tetto); investimenti in un solo sistema con rischio leggibile e notizie in stampa; beni con reazioni nel tempo; correzione di vita_auto/vita_casa (leggono p.bank invece di bankBalance). Giro 70.
