@@ -548,3 +548,12 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - **Catene future: «Catena spezzata in tronchi»** — 3-4 tronchi da circa un'ora, ognuno seguito fino in fondo nel turno e registrato; un riavvio perde al massimo un tronco.
 - **Lezione dell'unione:** due giri hanno aggiunto la stessa chiave `finale` all'oggetto INT259; nel file unito vinceva la seconda e la regola del giro 52 spariva senza errori. All'unione si controllano le chiavi doppie degli oggetti toccati da più giri.
 - PO: «poi parti subito con le modifiche del rilascio successivo, fino al rilascio nel main» · «dopo chiudere il backlog il prima possibile» · «questo progetto va avanti da giugno, finite tutte le modifiche solo collaudi approfonditi da player e stabilità».
+
+## 19/10 — scelte della sessione principale sulle consegne dei giri 60-68 (blocco A della 7.999.173)
+
+- Giro 60: PO-068 «Chiudere PO-068 per la parte "motore" e aprire una voce clip» (nuova voce L5). PO-240 (b)(c) e PO-258 restano aperti in stabilità.
+- Giro 61: regia del post-arco «lasciare 0,9 s»; linee-61 «solo MAPPA», avvicinamento-61 entra nella completa; PO-022 «tenere le SITUATIONS come banco del gate». PO-266 non riprodotto: passa al collaudo di stabilità.
+- Giro 63: PO-023 «tenere render-3d-023 come guardiano di regressione grossolana; misura sul telefono dal PO»; PO-171 «chiudere per menu/cerimonie/download, voce L1 separata per il corpo regular».
+- Giro 64: cerimonie differenziate «non unirlo e archiviarlo»; kit «collo e polsini solo su lod0/lod1, lod2 a tinta pulita» (giro di seguito); PO-276 «chiudere col collaudo sul telefono».
+- Giro 68: PO-217 «lasciare così».
+- Blocco A = giri 60, 61, 63, 64, 68 → 7.999.173. Blocco B = giri 62, 65, 66, 67 + PO-281/PO-157 (dopo il questionario) → 7.999.174.
