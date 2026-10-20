@@ -9,7 +9,7 @@ durante il giro** (processi uccisi a metà corsa): le corse interrotte non sono 
 | guardiano | natura dell'instabilità | correzione | verifica |
 |---|---|---|---|
 | nazionale-155 | strumento (passo dato su una chiusura React vecchia) | sonda: attesa della ri-registrazione | 5/5 verdi · rossi `fin` e `sv` visibili |
-| tempo-138 | strumento (il rosso spegneva il seme → partita del rosso non riproducibile) | rosso senza `__CPM_NO_SEME` | vedi sezione (corse in corso al momento della stesura) |
+| tempo-138 | strumento (il rosso spegneva il seme → partita del rosso non riproducibile) | rosso senza `__CPM_NO_SEME` | 5/5 verdi, rosso identico 5 su 5 (308/242) |
 | apertura-261 | strumento (passo atteso dell'arco calcolato sul dt sbagliato) | passo atteso sul tempo d'arco che la posizione riflette + testimone | 5/5 verdi · rossi `__CPM_SALTO274` e `__CPM_NO_APERTURA261` visibili |
 | nomi-219 | strumento (crash di Node, non una misura) | errore di un seme rigiocato una volta | vedi sezione |
 | difesa-220-giro31 | strumento + campione piccolo (fps 1,4-3,4 sotto carico) | **non corretto** — punto aperto | riprodotto 1/1 |
@@ -63,6 +63,10 @@ Contatore `__CPM_PASSI959`: 22 passi a ogni minuto in entrambe le corse confront
 
 **Correzione (strumento, `tests/visual/tempo-138.mjs`).** Il rosso non spegne più `__CPM_NO_SEME`. Soglie invariate.
 
+**Verifica (build finale del ramo).** 5 corse di fila, la quarta con piedi-252 in parallelo: **5/5 «✅ tempo-138 verde (e il
+rosso si vede)»**; verde 132/132/0 e rosso 308 aperti / 242 pagati / 0 residuo in tutte e cinque (il rosso si vede dal
+pagato < aperto: 66 passi tagliati dal vecchio tetto).
+
 ## apertura-261
 
 **Causa (misurata).** Il criterio dei «salti non spiegati dalla velocità» confronta lo spostamento del pallone in un
@@ -113,11 +117,11 @@ In catena il guardiano non è fra i LENTI, quindi gira da solo (2 browser): lì 
 
 ## piedi-252 (non corretto)
 
-Tre corse complete a macchina scarica: verde 0,330 ✅ · **0,417 ❌** · 0,365 ✅ (rosso 0,506 · 0,455 · 0,529).
+Tre corse complete a macchina scarica: verde 0,330 ✅ · **0,417 ❌** · 0,365 ✅ (rosso 0,506 · 0,455 · 0,529); una quarta con tempo-138 in parallelo: verde 0,350 ✅ (testa 0,410, cross 0,350), rosso 0,585.
 Il verdetto è il terzo valore su quattro (`mediana` prende l'elemento [2]), cioè quasi sempre il maggiore fra testa e cross
 (tiro 0,17-0,28 e passaggio 0,23-0,26 stanno sempre sotto). Valori del braccio verde: testa 0,330 · 0,419 · 0,375; cross
 0,400 · 0,417 · 0,365. Sommando i fotogrammi delle tre corse: **testa 98/262 = 0,374, cross 102/259 = 0,394** contro soglia
-0,40. Il rosso della seconda corsa (0,455) cade anche sul margine (verde + 0,08 = 0,497).
+0,40 (con la quarta: testa 132/345 = 0,383, cross 130/339 = 0,383). Il rosso della seconda corsa (0,455) cade anche sul margine (verde + 0,08 = 0,497).
 Conclusione: la dispersione per scena (~85 fotogrammi, ±0,05) è dello strumento, ma il valore vero sta sul filo della soglia;
 più ripetizioni stringono la stima senza portarla sotto. Senza abbassare la soglia, serve una correzione del gioco
 (appoggio del piede, già indicata nel rapporto del giro 76).
@@ -159,5 +163,5 @@ valore e ordine. Dopo la modifica l'analizzatore non trova più chiavi doppie.
 
 - nazionale-155: 5/5 verdi + 2 rossi visibili — **fatto**.
 - apertura-261: 5/5 verdi + 2 rossi visibili — **fatto**.
-- tempo-138: in corso.
+- tempo-138: 5/5 verdi, rosso visibile 5/5 — **fatto**.
 - nomi-219: in corso.
