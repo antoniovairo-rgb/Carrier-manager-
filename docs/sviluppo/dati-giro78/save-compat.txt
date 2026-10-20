@@ -1,0 +1,4 @@
+  ℹ️  nota: 2ª migration changed=true senza nuovi campi — rigenerazione calendario/standings perché il club sintetico del test non è nel pool lega (benigno; i save reali con club valido convergono a changed=false).
+
+=== SAVE-COMPAT === 12 pass · 0 fail
+✅ PASS

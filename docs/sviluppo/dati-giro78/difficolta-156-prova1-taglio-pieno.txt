@@ -1,0 +1,36 @@
+  finalizzatore declino seme 1: 75 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 69 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 76 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 75 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 3: 70 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 78 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 82 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 3: 75 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 4: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 3: 79 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore declino seme 4: 78 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore declino seme 3: 76 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 4: 77 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 4: 69 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 6: 69 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore elite seme 5: 77 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 5: 78 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 5: 69 gare · 52 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 6: 69 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore declino seme 5: 76 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 6: 77 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore elite seme 6: 77 gare · 46 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 24 carriere x 2 stagioni · 269 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         415  ✓5.9                        ✓0.108       ✓30.8      ✓57.3     ✓47.1
+affermazione    435  ✓6.38                       ✓0.331       ✓46.7      ✓80       ✓83.7
+elite           464  ✓6.85                       ✓0.476       ✓49.1      ✓86.3     ✓94.4
+declino         464  ✓6.36                       ✓0.203       ✓48.3      ✗56.7     ✗48.5
+  finalizzatore  gavetta: 5.9/0.108/30.8%/57.3'/47.1% · affermazione: 6.38/0.331/46.7%/80'/83.7% · elite: 6.85/0.476/49.1%/86.3'/94.4% · declino: 6.36/0.203/48.3%/56.7'/48.5%
+celle entro tolleranza: 18/20 · carriere non concluse 0 · pageerror 0
+fuori: declino.min 56.7 (bersaglio 65) · declino.tit 48.5 (bersaglio 60)
+
+❌ CURVA FUORI BERSAGLIO

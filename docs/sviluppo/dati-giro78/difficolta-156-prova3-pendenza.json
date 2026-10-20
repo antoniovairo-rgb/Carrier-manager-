@@ -1,0 +1,305 @@
+{
+ "rosso": false,
+ "semi": 6,
+ "stagioni": 2,
+ "tutte": {
+  "gavetta": {
+   "gare": 417,
+   "decisioni": 243,
+   "voto": 5.93,
+   "gol": 0.108,
+   "vitt": 33.1,
+   "min": 59.1,
+   "tit": 50.2
+  },
+  "affermazione": {
+   "gare": 434,
+   "decisioni": 264,
+   "voto": 6.35,
+   "gol": 0.304,
+   "vitt": 43.5,
+   "min": 78.8,
+   "tit": 82.2
+  },
+  "elite": {
+   "gare": 459,
+   "decisioni": 270,
+   "voto": 6.86,
+   "gol": 0.492,
+   "vitt": 49.2,
+   "min": 85.9,
+   "tit": 93.3
+  },
+  "declino": {
+   "gare": 460,
+   "decisioni": 280,
+   "voto": 6.32,
+   "gol": 0.2,
+   "vitt": 44.1,
+   "min": 55.5,
+   "tit": 47.1
+  }
+ },
+ "perStile": {
+  "finalizzatore": {
+   "gavetta": {
+    "gare": 417,
+    "decisioni": 243,
+    "voto": 5.93,
+    "gol": 0.108,
+    "vitt": 33.1,
+    "min": 59.1,
+    "tit": 50.2
+   },
+   "affermazione": {
+    "gare": 434,
+    "decisioni": 264,
+    "voto": 6.35,
+    "gol": 0.304,
+    "vitt": 43.5,
+    "min": 78.8,
+    "tit": 82.2
+   },
+   "elite": {
+    "gare": 459,
+    "decisioni": 270,
+    "voto": 6.86,
+    "gol": 0.492,
+    "vitt": 49.2,
+    "min": 85.9,
+    "tit": 93.3
+   },
+   "declino": {
+    "gare": 460,
+    "decisioni": 280,
+    "voto": 6.32,
+    "gol": 0.2,
+    "vitt": 44.1,
+    "min": 55.5,
+    "tit": 47.1
+   }
+  }
+ },
+ "fuori": [
+  "declino.min 55.5 (bersaglio 65)",
+  "declino.tit 47.1 (bersaglio 60)"
+ ],
+ "carriere": [
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 1,
+   "gare": 76,
+   "dec": 49,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 2,
+   "gare": 69,
+   "dec": 47,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 2,
+   "gare": 69,
+   "dec": 50,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 1,
+   "gare": 77,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 1,
+   "gare": 75,
+   "dec": 50,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 1,
+   "gare": 70,
+   "dec": 39,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 3,
+   "gare": 76,
+   "dec": 38,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 2,
+   "gare": 76,
+   "dec": 43,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 2,
+   "gare": 77,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 3,
+   "gare": 70,
+   "dec": 39,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 3,
+   "gare": 79,
+   "dec": 42,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 4,
+   "gare": 75,
+   "dec": 52,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 5,
+   "gare": 70,
+   "dec": 41,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 4,
+   "gare": 70,
+   "dec": 42,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 3,
+   "gare": 79,
+   "dec": 42,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 4,
+   "gare": 69,
+   "dec": 38,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 4,
+   "gare": 75,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 5,
+   "gare": 75,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 6,
+   "gare": 69,
+   "dec": 39,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 6,
+   "gare": 75,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 6,
+   "gare": 69,
+   "dec": 38,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 5,
+   "gare": 76,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 5,
+   "gare": 77,
+   "dec": 47,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 6,
+   "gare": 77,
+   "dec": 45,
+   "fine": "ok",
+   "errori": 0
+  }
+ ]
+}

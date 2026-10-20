@@ -944,7 +944,7 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   /* [giro 69 PO-156] il voto segue il livello (OVR 71 = neutro, +0,05 a punto sopra, nessun malus sotto, tetto +0,6; da 31 anni 3 punti in meno nel voto: il fuoriclasse non prende 6 pieno in
      una vittoria di misura) e la quota di minuti (chi entra a mezz'ora dalla fine resta vicino al 6). */
   if(_q156!=null){const _o156=_ov156-71-((+opz.giocatore.age||24)>=31?3:0),_r156=_baseRat+clamp(_o156*0.05,0,0.6)+(_rng()-0.5)*0.4;_simRating=Math.round(clamp(6+(_r156-6)*(0.3+0.7*_q156),4.0,9.5)*10)/10;}
-  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156,eta156:+opz.giocatore.age||24}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
 }
 if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simMatch=simulateMatch;}catch(_e){}}// [7.200.0] esposto al simulatore di bilanciamento (test-only)
 // Sprint 131: probabilistic player goals/assists for simulated matches
@@ -953,6 +953,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
+  const _fin78=(archId&&archId.id||archId)==='finalizzatore';/* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
@@ -961,7 +962,15 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const gL=clamp((o-48)/55+(["bomber","centravanti"].includes(archId)?0.14:0)+(sim.won?0.07:0),0.06,0.92);
   const aL=clamp((o-48)/75+(["trequartista","fantasista"].includes(archId)?0.10:0),0.04,0.55);
   const _q=(sim.quota156!=null)?sim.quota156:null;/* [giro 69 PO-156] quota di minuti: gol e assist scalano coi minuti; il fuoriclasse (OVR>76) segna di piu' */
-  const gL156=_q!=null?clamp((gL+clamp((o-76)*0.03,0,0.3))*_q,0.02,0.95):gL,aL156=_q!=null?clamp(aL*_q,0.02,0.55):aL;
+  /* [giro 78 PO-156, rosso __CPM_NO_156] con lo stile unico gioca solo il Finalizzatore e la curva A era tarata sulla media di tre stili:
+     misurato (RAPPORTO-giro75 §5) affermazione 0,411 e declino 0,392 gol a gara contro 0,30 e 0,25. Per il Finalizzatore nel percorso
+     minuti/OVR: niente premio d'archetipo da bomber (+0,14); sotto i 31 anni la pendenza attorno a OVR 76 si fa ripida (+0,05 a punto
+     sopra, tetto +0,35; -0,025 a punto sotto, tetto -0,05: la curva A sale di colpo fra affermazione ed elite); da 31 anni premio
+     da fuoriclasse ridotto (0,025 a punto invece di 0,03; a 0 il declino scendeva a 0,203 gol ma, con meno gol, il mister lo
+     faceva giocare meno: 56,7' e 48,5% titolare).
+ */
+  const _fq78=_q!=null&&_fin78&&sim.eta156!=null;
+  const gL156=_q!=null?clamp((gL-(_fq78&&["bomber","centravanti"].includes(archId)?0.14:0)+(_fq78?(sim.eta156>=31?clamp((o-76)*0.025,0,0.3):clamp((o-76)*(o>=76?0.05:0.025),-0.05,0.35)):clamp((o-76)*0.03,0,0.3)))*_q,0.02,0.95):gL,aL156=_q!=null?clamp(aL*_q,0.02,0.55):aL;
   const r1=R(),r2=R();
   const pe=x=>Math.exp(-x);
   const g=r1<pe(gL156)?0:r1<pe(gL156)*(1+gL156)?1:2;
