@@ -708,3 +708,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Giro 80 (67be309d, sviluppo/giro80-ingresso285): ingresso da 23,9 s a 15,9 s di scena con 3 stacchi di camera (a 5, 12 e 16,5 s di coreografia), passo massimo in quadro 2,2 u/s, squadra schierata (scarto 0). ingresso-285 verde, rosso con __CPM_NO_ING285. Guardiani dell'ingresso 245/276/camminata-245/fila-206/fila-227/walkout-fermi-197/bambini-236/stadi-071/coppa-prestito verdi.
 - Aperti: ingresso-277 braccio rosso in timeout di caricamento sotto carico (verde e salto OK); ingresso-59 rosso «a scatti» (blocco 6,1 s, misura il thread principale) non confrontato con la base. Sessione principale: prima di assemblare la 177, ingresso-59 e ingresso-277 si rifanno a macchina scarica sulla 176 e sul ramo; si promuove solo se il rosso è del carico o già presente sulla 176. Controllo a occhio dei tre stacchi nel collaudo 3D della 177.
+
+## 20/10 notte — giro 82 (PO-287) consegnato
+
+- Giro 82 (9641f951, sviluppo/giro82-neutro287): eroe senza archetipo (scheda, bonus di creazione, succRate, crescita favorita, obiettivi e leve del motore spenti; `_pSimStats` tiene la curva dei minuti del giro 78). neutro-287 verde, rosso 68 violazioni con __CPM_NO_NEUTRO287. stile-unico-75 e stili-098-migrazione girano col rosso 287 acceso (provano gli strati vecchi).
+- Difficoltà PO-156: col neutro la gavetta usciva sul bordo (17-20/20); ritaratura: penalità del mister a 17-20 anni da -8 a -10 solo col neutro (src/08:283). Dopo: 20/20 in due corse piene. Bersagli e soglie invariati.
+- PO (questionario): salvataggi esistenti **«Lasciali come sono»** — le statistiche già create restano (il bonus non è separabile); lo stile di prima va in stilePrima287.
