@@ -626,3 +626,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 20/10 — modello dei collaudi di stabilità (PO, questionario)
 
 - PO: **«Misto»** — Sonnet 5.5 per le 6 carriere intere e i collaudi 3D (giudizio a occhio, misure); Haiku 5.5 per i giri di soli controlli automatici (catene, salvataggi, rilanci). Motivo: costi misurati dei collaudi 172-174 (Sonnet 0,70-1,62 $, Haiku 0,29-0,45 $) e collaudo carriera 174 in Haiku con 2 foto guardate su 16.
+
+## 20/10 07:00 — collaudo 3D 7.999.175 e giro 79
+
+- Collaudo 3D 175 (Sonnet, sotto-agente locale; commit bf69573d su collaudo/7.999.175-3d): 11 partite intere, 0 pageerror; giro 75 confermato (gol dell'eroe uguali fra pagella, risultato e tabellino; migrazione a Finalizzatore). Determinismo: stesso seme, due corse in sequenza identiche (gol, highlight, esiti, punteggio, pagella).
+- Medie: (1) scheda del mister «Rigore per loro» dopo il rigore a favore dell'eroe (3/3); (2) apertura dell'angolo PO-284 instabile sul seme 3 e guardiano 284f cieco. Basse: squadre invertite nell'intestazione del 2° tempo, due voti per la stessa partita (8,1 e 7,5), minuti dei gol sfasati in «Momenti chiave».
+- Decisione della sessione principale (opzioni consigliate): giro 79 (sotto-agente, ramo sviluppo/collaudo175-giro79) corregge la scheda del rigore (A), rimisura l'angolo a macchina scarica e corregge lo staging se oscilla, rende il guardiano non cieco (A); le basse solo se la causa è chiara; toglie il residuo «Enfant prodige» della memoria d'intervista se confermato.
+- Da questa sessione non si possono più creare sessioni figlie nel cloud: giri e collaudi girano come sotto-agenti locali.
