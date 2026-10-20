@@ -1,0 +1,18 @@
+# Tronco 2 — catena notte (ramo lavoro/175 @ 74bda39)
+# STATO: INCOMPLETO. 15 passi ✅ su 17 dichiarati. esiti-218 senza esito nel log; nomi-219 bloccato in attesa di I/O (ep_poll) per oltre 30 min, al primo tentativo e nel ritentativo: nessuna riga di esito, il runner non ha ancora chiuso la catena.
+
+✅ save-compat (29s)
+✅ riquadro-euro-105 (49s)
+✅ conferenza-192 (0s)
+✅ finale-202 (11s)
+✅ anteprima-212 (44s)
+✅ tabellino-216 (545s)
+✅ rimbalzo-189 (75s)
+✅ test:vision (2s)
+✅ finestra-230 (106s)
+✅ fps-249 (46s)
+✅ brusio-238 (13s)
+✅ toast-256 (80s)
+✅ aereo-252 (254s)
+✅ reazione-252 (265s)
+✅ spot-266 (100s)
