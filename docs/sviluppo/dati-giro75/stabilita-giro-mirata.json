@@ -1,57 +1,368 @@
 {
- "data": "2026-10-08 01:08",
- "versione": "7.999.149",
- "catena": "completa",
+ "data": "2026-10-19 19:12",
+ "versione": "7.999.174",
+ "catena": "mirata",
  "passi": [
-  {
-   "passo": "test:vision",
-   "ok": true,
-   "s": 5
-  },
   {
    "passo": "test:logic",
    "ok": true,
-   "s": 5
-  },
-  {
-   "passo": "typing-shortcuts",
-   "ok": true,
-   "s": 23
-  },
-  {
-   "passo": "validate-situations",
-   "ok": true,
-   "s": 636
+   "s": 3
   },
   {
    "passo": "save-compat",
    "ok": true,
-   "s": 9
-  },
-  {
-   "passo": "replay",
-   "ok": true,
-   "s": 48
-  },
-  {
-   "passo": "career-critical",
-   "ok": true,
-   "s": 647
-  },
-  {
-   "passo": "partita-vera",
-   "ok": true,
-   "s": 503
-  },
-  {
-   "passo": "scena-motore-147",
-   "ok": true,
-   "s": 1063
+   "s": 11
   },
   {
    "passo": "design-system",
    "ok": true,
    "s": 0
+  },
+  {
+   "passo": "typing-shortcuts",
+   "ok": true,
+   "s": 18
+  },
+  {
+   "passo": "acquisti-281",
+   "ok": true,
+   "s": 85
+  },
+  {
+   "passo": "difficolta-156",
+   "ok": false,
+   "s": 507,
+   "coda": "fuori: declino.gol 0.363 (bersaglio 0.25) |  | ❌ CURVA FUORI BERSAGLIO",
+   "prove": 2
+  },
+  {
+   "passo": "stili-098",
+   "ok": true,
+   "s": 26
+  },
+  {
+   "passo": "stili-098-migrazione",
+   "ok": true,
+   "s": 19
+  },
+  {
+   "passo": "stile-unico-75",
+   "ok": true,
+   "s": 26
+  },
+  {
+   "passo": "classifica-102",
+   "ok": true,
+   "s": 33
+  },
+  {
+   "passo": "partita-rigiocata-194",
+   "ok": true,
+   "s": 531
+  },
+  {
+   "passo": "backup-167",
+   "ok": true,
+   "s": 55
+  },
+  {
+   "passo": "errori-168",
+   "ok": true,
+   "s": 17
+  },
+  {
+   "passo": "via-ch38-171",
+   "ok": true,
+   "s": 108
+  },
+  {
+   "passo": "corpi-073",
+   "ok": true,
+   "s": 371
+  },
+  {
+   "passo": "pagella-75",
+   "ok": true,
+   "s": 815
+  },
+  {
+   "passo": "ripartenza-235",
+   "ok": true,
+   "s": 433
+  },
+  {
+   "passo": "pallino-278",
+   "ok": true,
+   "s": 126,
+   "instabile": true,
+   "prove": 2
+  },
+  {
+   "passo": "pillola-58",
+   "ok": true,
+   "s": 108
+  },
+  {
+   "passo": "tabellino-lati",
+   "ok": true,
+   "s": 15
+  },
+  {
+   "passo": "stat-279",
+   "ok": true,
+   "s": 50
+  },
+  {
+   "passo": "fps-249",
+   "ok": true,
+   "s": 42
+  },
+  {
+   "passo": "lessico-218",
+   "ok": true,
+   "s": 19
+  },
+  {
+   "passo": "validate-situations",
+   "ok": true,
+   "s": 658
+  },
+  {
+   "passo": "minuti-202",
+   "ok": true,
+   "s": 158
+  },
+  {
+   "passo": "ripresa-202",
+   "ok": true,
+   "s": 283
+  },
+  {
+   "passo": "recupero-202",
+   "ok": true,
+   "s": 725
+  },
+  {
+   "passo": "finale-202",
+   "ok": true,
+   "s": 10
+  },
+  {
+   "passo": "tetto-202",
+   "ok": true,
+   "s": 7
+  },
+  {
+   "passo": "tempo-138",
+   "ok": true,
+   "s": 1013,
+   "instabile": true,
+   "prove": 2
+  },
+  {
+   "passo": "catalogo-022",
+   "ok": true,
+   "s": 266
+  },
+  {
+   "passo": "pressing-143",
+   "ok": true,
+   "s": 38
+  },
+  {
+   "passo": "ripartenza-207",
+   "ok": true,
+   "s": 465
+  },
+  {
+   "passo": "attesa-241",
+   "ok": true,
+   "s": 90
+  },
+  {
+   "passo": "difesa-220-giro31",
+   "ok": true,
+   "s": 1201
+  },
+  {
+   "passo": "esiti-241",
+   "ok": true,
+   "s": 384
+  },
+  {
+   "passo": "spot-266",
+   "ok": true,
+   "s": 89
+  },
+  {
+   "passo": "schede-260",
+   "ok": true,
+   "s": 1159
+  },
+  {
+   "passo": "tecnica-045",
+   "ok": true,
+   "s": 89
+  },
+  {
+   "passo": "esiti-60",
+   "ok": true,
+   "s": 160
+  },
+  {
+   "passo": "ritratto-171-72",
+   "ok": true,
+   "s": 101
+  },
+  {
+   "passo": "popup-224b",
+   "ok": true,
+   "s": 54
+  },
+  {
+   "passo": "chip-269",
+   "ok": true,
+   "s": 38
+  },
+  {
+   "passo": "badge-255",
+   "ok": true,
+   "s": 76
+  },
+  {
+   "passo": "finestra-230",
+   "ok": true,
+   "s": 90
+  },
+  {
+   "passo": "griglia-mobile",
+   "ok": true,
+   "s": 171
+  },
+  {
+   "passo": "popup-224",
+   "ok": true,
+   "s": 33
+  },
+  {
+   "passo": "migrazione-194",
+   "ok": true,
+   "s": 74
+  },
+  {
+   "passo": "convocazione-235",
+   "ok": true,
+   "s": 79
+  },
+  {
+   "passo": "toast-247",
+   "ok": true,
+   "s": 36
+  },
+  {
+   "passo": "brusio-238",
+   "ok": true,
+   "s": 10
+  },
+  {
+   "passo": "toast-intervista-247",
+   "ok": true,
+   "s": 59
+  },
+  {
+   "passo": "festa-oro-251",
+   "ok": true,
+   "s": 37
+  },
+  {
+   "passo": "crediti-254",
+   "ok": true,
+   "s": 20
+  },
+  {
+   "passo": "toast-256",
+   "ok": true,
+   "s": 67
+  },
+  {
+   "passo": "stadi-071",
+   "ok": true,
+   "s": 177
+  },
+  {
+   "passo": "career-critical",
+   "ok": true,
+   "s": 742
+  },
+  {
+   "passo": "esito-280",
+   "ok": true,
+   "s": 345
+  },
+  {
+   "passo": "ingresso-277",
+   "ok": true,
+   "s": 632
+  },
+  {
+   "passo": "partita-vera",
+   "ok": true,
+   "s": 507
+  },
+  {
+   "passo": "esiti-218",
+   "ok": true,
+   "s": 1056
+  },
+  {
+   "passo": "cross-218",
+   "ok": true,
+   "s": 218
+  },
+  {
+   "passo": "tabellino-228",
+   "ok": true,
+   "s": 305
+  },
+  {
+   "passo": "intervista-231",
+   "ok": true,
+   "s": 863
+  },
+  {
+   "passo": "scene-221",
+   "ok": true,
+   "s": 1578
+  },
+  {
+   "passo": "interazioni-226",
+   "ok": true,
+   "s": 1108
+  },
+  {
+   "passo": "schede-234",
+   "ok": true,
+   "s": 569
+  },
+  {
+   "passo": "conduci-242",
+   "ok": true,
+   "s": 144
+  },
+  {
+   "passo": "giornale-244",
+   "ok": true,
+   "s": 793
+  },
+  {
+   "passo": "schede-246",
+   "ok": true,
+   "s": 545
+  },
+  {
+   "passo": "schede-259",
+   "ok": true,
+   "s": 685
   }
  ]
 }
