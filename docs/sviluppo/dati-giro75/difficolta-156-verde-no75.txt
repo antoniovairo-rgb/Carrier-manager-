@@ -1,0 +1,37 @@
+  regista gavetta seme 1: 70 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 76 gare · 46 decisioni · ok · pageerror 0
+  regista affermazione seme 1: 75 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 78 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 69 gare · 41 decisioni · ok · pageerror 0
+  incursore elite seme 1: 78 gare · 40 decisioni · ok · pageerror 0
+  incursore affermazione seme 1: 75 gare · 42 decisioni · ok · pageerror 0
+  regista declino seme 1: 76 gare · 44 decisioni · ok · pageerror 0
+  incursore gavetta seme 1: 69 gare · 44 decisioni · ok · pageerror 0
+  regista elite seme 1: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 77 gare · 48 decisioni · ok · pageerror 0
+  incursore declino seme 1: 78 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  regista gavetta seme 2: 69 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 70 gare · 49 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 79 gare · 48 decisioni · ok · pageerror 0
+  incursore affermazione seme 2: 69 gare · 51 decisioni · ok · pageerror 0
+  regista affermazione seme 2: 69 gare · 47 decisioni · ok · pageerror 0
+  incursore gavetta seme 2: 69 gare · 45 decisioni · ok · pageerror 0
+  regista elite seme 2: 79 gare · 49 decisioni · ok · pageerror 0
+  incursore elite seme 2: 79 gare · 47 decisioni · ok · pageerror 0
+  regista declino seme 2: 76 gare · 46 decisioni · ok · pageerror 0
+  incursore declino seme 2: 79 gare · 45 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 24 carriere x 2 stagioni · 250 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         416  ✓5.92                       ✓0.127       ✓31.7      ✓55.6     ✓44.8
+affermazione    436  ✓6.47                       ✓0.378       ✓49.3      ✓79.2     ✓82.4
+elite           460  ✓6.92                       ✓0.507       ✓52        ✓89.1     ✓98.5
+declino         462  ✓6.36                       ✓0.26        ✓43.5      ✓62.8     ✓56.7
+  finalizzatore  gavetta: 5.93/0.144/30.9%/59.3'/50.6% · affermazione: 6.47/0.426/47.3%/80.8'/85.1% · elite: 6.97/0.561/57.4%/89.3'/98.9% · declino: 6.38/0.294/43.1%/58.8'/50%
+  regista        gavetta: 5.9/0.115/31.7%/53.7'/42.5% · affermazione: 6.48/0.326/54.2%/77.9'/79.6% · elite: 6.87/0.432/49.7%/88'/96.8% · declino: 6.34/0.263/42.1%/67.7'/64.4%
+  incursore      gavetta: 5.94/0.123/32.6%/53.9'/41.6% · affermazione: 6.45/0.382/46.5%/79'/82.8% · elite: 6.91/0.529/49%/90'/100% · declino: 6.37/0.223/45.2%/62.2'/55.8%
+celle entro tolleranza: 20/20 · carriere non concluse 0 · pageerror 0
+
+✅ CURVA OK — le quattro fasi nei bersagli A
