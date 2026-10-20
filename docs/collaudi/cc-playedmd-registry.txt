@@ -1,0 +1,5 @@
+✅ controprova — senza registro la giornata 34 VIENE servita: {"matchday":34,"week":34,"opp":"FC Ciociaro","type":null}
+✅ registro attivo — la giornata 34 NON viene più servita: null
+✅ registro per stagione — alla stagione successiva la giornata torna legittima: {"matchday":34,"week":34,"opp":"FC Cesenate","type":null}
+
+✅ PASS — una giornata committata non può essere riproposta, e il registro sopravvive al reload

@@ -1,0 +1,3 @@
+verde {"pop":true,"centrata":true,"verdetto":true,"chiusa":true,"stato":"kept","attesa":{"pop":false,"confronto":true}}
+rosso {"pop":false,"centrata":false,"verdetto":true,"chiusa":false,"stato":null,"attesa":null}
+✅ popup-224 verde (finestra centrata, chiusa dalla scelta, patto «kept») e il rosso si vede (riquadro in home)

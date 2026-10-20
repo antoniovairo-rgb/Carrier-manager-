@@ -1,0 +1,6 @@
+giornata di prova: md18 vs FC Balear (W.20) · oid=mall · casa=false
+A1 (persistenza rotta): sidecar vivo=true · selettore={"matchday":19,"week":21,"opp":"FC Madrid Este","type":null} · save su disco: {"week":20,"played":17}
+A2 (riapertura sana): voce md18 giocata=true · gare in storico=1 · sidecar residuo=false · selettore={"matchday":19,"week":21,"opp":"FC Madrid Este","type":null}
+B (prova distrutta): selettore={"matchday":18,"week":20,"opp":"FC Balear","type":null}
+B (rosso riprodotto): senza sidecar il selettore ripropone la stessa giornata — il sintomo del PO, misurato ✓
+✅ SIDECAR DUREVOLE OK (la prova sopravvive al kill · il risultato si recupera e si conta UNA volta · il big match non si ripropone)

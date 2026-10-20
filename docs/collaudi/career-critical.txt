@@ -1,0 +1,61 @@
+ROSSO) con __CPM_NO_P0_1 (logica pre-fix): voce LEGA GIOCATA — difetto riprodotto ✓ · classifica played 18
+A-F) recupero COPPA vs FC Balear (lega stessa sede presente):
+     voce COPPA  → GIOCATA ✓
+     voce LEGA   → non giocata ✓
+     turno coppa 2 · classifica played 17 pts 40 · storico 1
+
+G) recupero LEGA vs FC Maño (nessuna regressione):
+     voce LEGA  → GIOCATA ✓
+     voce COPPA → non giocata ✓ · storico 1
+
+H) la prova del fischio finale dopo che il risultato e' nel salvataggio (coppa committata: rosso true · verde true):
+   senza filtro (__CPM_NO_P0_5): sidecar ANCORA VIVO — difetto riprodotto ✓ · gara della settimana NESSUNA (la lega e' bloccata dalla rete G)
+   col filtro:                   sidecar consumato ✓ · gara della settimana md18 ✓
+
+I) prova di COPPA viva, gara di CAMPIONATO vs lo stesso club da giocare:
+   senza filtro: md18 → NESSUNA — difetto riprodotto ✓
+   col filtro:   md18 → md18 ✓
+
+J) andata in casa gia' giocata, RITORNO in trasferta da giocare (andata ancora committata: rosso true · verde true):
+   senza filtro di sede (__CPM_NO_P0_6): prova ANCORA VIVA — difetto riprodotto ✓ · ritorno NON GIOCABILE (verrebbe auto-simulato)
+   col filtro di sede:                   prova consumata ✓ · ritorno md20 ✓
+
+✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · competizione E sede fanno parte dell'identita' della gara)
+ROSSO) con __CPM_NO_P0_2 (scritture concorrenti): disco 1111 — il vecchio ha sovrascritto il nuovo, difetto riprodotto ✓
+A/E) vecchio lento vs nuovo veloce → disco 2222 · memoria 2222
+     bridge: inizio(1000) ritardo=0 | FINE(1000) | inizio(1111) ritardo=2500 | FINE(1111) | inizio(2222) ritardo=0 | FINE(2222)
+B) A→B→C con latenze decrescenti → disco 333 (atteso 333)
+C) salvataggio normale → disco 4242 (atteso 4242)
+D) ramo browser (localStorage) → disco 777 (atteso 777)
+F) riapertura dopo salvataggio → saldo riletto 9090 (atteso 9090)
+
+✅ PERSISTENZA MONOTONA OK (il piu' recente vince sempre · nessun blocco del salvataggio normale · browser e bridge nativo coerenti)
+ROSSO) con __CPM_NO_P0_3: gara FC Madrid Este · nel pre-partita riferimento CARICO → dopo l'uscita ANCORA CARICO — difetto riprodotto ✓
+     (è la condizione che permetteva a una gara di Nazionale di committare una giornata di campionato)
+
+1+2) gara della settimana: FC Madrid Este · uscita col bottone «Torna alla home»
+     riferimento: nel pre-partita md11 → dopo l'uscita nessuno ✓
+     calendario di campionato: 10 giocate → 10 · presenze 11 → 11
+
+3) riapertura dopo un'uscita → riferimento md11 (gara vera md11)
+
+4+5) settimana risolta col percorso reale (simulated): presenze 11 → 12 · gare di campionato giocate 10 → 11 · riferimento residuo no ✓
+
+✅ CICLO DI VITA DEL RIFERIMENTO OK (si invalida uscendo · il calendario non cambia per un'uscita · la partita giocata si committa ancora)
+ROSSO) con __CPM_NO_P0_4: doppio tap → settimana 12→14 (Δ2) · saldo Δ54000
+1) click singolo → settimana 12→13 (atteso +1) · saldo Δ27000
+2) doppio tap → settimana 12→13 (Δ1, atteso 1) · saldo Δ27000
+3+5) il gioco prosegue dopo il doppio tap: 4 passi del percorso reale → settimana 13→15
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at leggi (/home/user/Carrier-manager-/tests/visual/double-tap-test.mjs:116:28)
+    at evento (/home/user/Carrier-manager-/tests/visual/double-tap-test.mjs:128:21)
+    at async eventoConImpulso (/home/user/Carrier-manager-/tests/visual/double-tap-test.mjs:148:43)
+    at async file:///home/user/Carrier-manager-/tests/visual/double-tap-test.mjs:153:17 {
+  log: []
+}
+
+Node.js v22.22.0

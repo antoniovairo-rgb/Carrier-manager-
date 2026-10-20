@@ -1,0 +1,14 @@
+VERDE {"T1":{"tiroDa":72,"tiroA":82,"altri":0},"T2":{"mig":{"nutri":true,"lv":2,"fisio":false},"righe":["Personal trainer","Preparatore atletico","Mental coach"],"settMedie0":2.81,"settMedie3":1.7,"faticaRavv3":45,"faticaSingola3":50},"T3":{"morale0":70,"morale3":70,"negTensione0":-124,"negTensione3":-55,"nT":30,"pressione3":-0.013499999999999998,"pressioneLeggera":-0.03},"T4":{"bank":1122932,"atteso":1122932,"fonti":["impulso","impulso","ufficio"],"notizie":3,"pendente":false,"iv":null,"rischioF3":["Rischio basso: non si perde, fino a +5%","Rischio medio: 29% di probabilità di perdere, fino a −4% · fino a +10%","Rischio alto: 40% di probabilità di perdere, fino a −20% · fino a +30%"],"rischioImpulso":"⚖️ Rischio alto: 35% di probabilità di perdere, fino a −45% · fino a +45%"},"T5":{"reazioni":12,"dPop":-3,"ultima":"Barca: parla la stampa — «In barca mentre la squadra perde»: un quotidiano pubblica le foto. (popolarità -2, fiducia del mister -1)"},"T6":{"cond":[true,true],"conto":{"bankBalance":55000}}}
+  ✅ T1
+  ✅ T2
+  ✅ T3
+  ✅ T4
+  ✅ T5
+  ✅ T6
+ROSSO __CPM_NO_TRAINER281 → T1 cade ✅ · altri verdi: 5/5 · {"tiroDa":72,"tiroA":72,"altri":0}
+ROSSO __CPM_NO_PREP281 → T2 cade ✅ · altri verdi: 5/5 · {"mig":{"nutri":false,"lv":null,"fisio":true},"righe":["Personal trainer","Nutrizionista","Fisioterapista","Mental coach"],"settMedie0":2.81,"settMedie3":2.81,"faticaRavv3":50,"faticaSingola3":50}
+ROSSO __CPM_NO_MENTAL281 → T3 cade ✅ · altri verdi: 5/5 · {"morale0":70,"morale3":71,"negTensione0":-124,"negTensione3":-124,"nT":30,"pressione3":-0.03,"pressioneLeggera":-0.03}
+ROSSO __CPM_NO_INV281 → T4 cade ✅ · altri verdi: 5/5 · {"bank":1084404,"atteso":1122932,"fonti":["-"],"notizie":0,"pendente":true,"iv":null,"rischioF3":["Rischio basso: non si perde, fino a +5%","Rischio medio: 29% di probabilità di perdere, fino a −4% · fino a +10%","Rischio alto: 40% di probabilità di perdere, fino a −20% · fino a +30%"],"rischioImpulso":null}
+ROSSO __CPM_NO_BENI281 → T5 cade ✅ · altri verdi: 5/5 · {"reazioni":0,"dPop":0,"ultima":null}
+ROSSO __CPM_NO_VITA281 → T6 cade ✅ · altri verdi: 5/5 · {"cond":[false,false],"conto":{"chem":50,"bank":0}}
+ACQUISTI-281: ✅ VERDE

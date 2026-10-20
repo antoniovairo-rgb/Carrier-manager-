@@ -1,0 +1,3 @@
+scenari: twinWeek=true · twinSide=true · twinMdNum=true · hist2=true · histWk=true · soloClassifica=true · registro=true · ritorno=false · prossima=false · coppaViva=false
+
+✅ PASS — la partita gia' giocata non passa da nessuna porta, e le legittime passano tutte

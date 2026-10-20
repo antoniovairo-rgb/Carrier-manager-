@@ -1,0 +1,13 @@
+
+=== UNA COPPA DELLE NAZIONI INTERA ===
+
+  ✅ tre vittorie + finale vinta        → gare 4 · idx 4 · pts 12 · finale si · chiusa SI
+  ✅ tre vittorie + finale persa        → gare 4 · idx 4 · pts 9 · finale si · chiusa SI
+  ✅ tre vittorie + finale pari         → gare 4 · idx 4 · pts 10 · finale si · chiusa SI
+  ✅ girone da 4 punti (1V 1P 1X)       → gare 4 · idx 4 · pts 7 · finale si · chiusa SI
+  ✅ girone da 3 punti: niente finale   → gare 3 · idx 3 · pts 3 · finale no · chiusa SI
+  ✅ girone da 0 punti: niente finale   → gare 3 · idx 3 · pts 0 · finale no · chiusa SI
+  ✅ il trofeo si alza una volta sola, e nell'ultima gara → alzate 1
+
+✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.
+

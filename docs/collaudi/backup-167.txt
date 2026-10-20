@@ -1,0 +1,17 @@
+
+backup-167 (verde)
+  ✓ salvataggio normale: slot = 2222 (atteso 2222)
+  ✓ prima di sovrascrivere la versione buona va in riserva: riserva = 1000 (atteso 1000)
+  ✓ slot corrotto: la Home propone il ripristino nella finestra standard
+  ✓ con lo slot corrotto la riserva e' integra: 2222
+  ✓ la finestra dice quale carriera si ripristina
+  ✓ dopo «Ripristina» lo slot e' leggibile e uguale alla riserva: 2222 (atteso 2222)
+  ✓ la finestra si chiude dopo il ripristino
+  ✓ la carriera ripristinata si apre
+  ✓ la quota simulata ha davvero rifiutato scritture (2)
+  ✓ quota piena: il giocatore legge «Salvataggio non riuscito: la tua carriera è al sicuro nella copia di riserva»
+  ✓ l'avviso non contiene testo tecnico
+  ✓ durante il guasto nulla si perde: slot 2222 · riserva 1000 (attesi 2222 · 1000)
+  ✓ tolto il guasto il salvataggio riparte: slot 4444 · riserva 2222 (attesi 4444 · 2222)
+
+✓ backup-167: VERDE

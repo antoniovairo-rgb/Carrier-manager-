@@ -1,0 +1,9 @@
+ROSSO) con __CPM_NO_P0_2 (scritture concorrenti): disco 1111 — il vecchio ha sovrascritto il nuovo, difetto riprodotto ✓
+A/E) vecchio lento vs nuovo veloce → disco 2222 · memoria 2222
+     bridge: inizio(1000) ritardo=0 | FINE(1000) | inizio(1111) ritardo=2500 | FINE(1111) | inizio(2222) ritardo=0 | FINE(2222)
+B) A→B→C con latenze decrescenti → disco 333 (atteso 333)
+C) salvataggio normale → disco 4242 (atteso 4242)
+D) ramo browser (localStorage) → disco 777 (atteso 777)
+F) riapertura dopo salvataggio → saldo riletto 9090 (atteso 9090)
+
+✅ PERSISTENZA MONOTONA OK (il piu' recente vince sempre · nessun blocco del salvataggio normale · browser e bridge nativo coerenti)

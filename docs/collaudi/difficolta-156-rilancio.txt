@@ -1,0 +1,75 @@
+  finalizzatore affermazione seme 1: 75 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 77 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 75 gare · 45 decisioni · ok · pageerror 0
+  regista gavetta seme 1: 69 gare · 50 decisioni · ok · pageerror 0
+  regista affermazione seme 1: 75 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 41 decisioni · ok · pageerror 0
+  regista declino seme 1: 69 gare · 43 decisioni · ok · pageerror 0
+  incursore elite seme 1: 76 gare · 38 decisioni · ok · pageerror 0
+  incursore gavetta seme 1: 69 gare · 46 decisioni · ok · pageerror 0
+  incursore affermazione seme 1: 75 gare · 42 decisioni · ok · pageerror 0
+  regista elite seme 1: 75 gare · 49 decisioni · ok · pageerror 0
+  incursore declino seme 1: 69 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 69 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 71 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 79 gare · 43 decisioni · ok · pageerror 0
+  regista gavetta seme 2: 70 gare · 39 decisioni · ok · pageerror 0
+  regista affermazione seme 2: 70 gare · 47 decisioni · ok · pageerror 0
+  regista declino seme 2: 79 gare · 45 decisioni · ok · pageerror 0
+  incursore gavetta seme 2: 69 gare · 46 decisioni · ok · pageerror 0
+  regista elite seme 2: 77 gare · 46 decisioni · ok · pageerror 0
+  incursore affermazione seme 2: 70 gare · 39 decisioni · ok · pageerror 0
+  incursore elite seme 2: 77 gare · 47 decisioni · ok · pageerror 0
+  incursore declino seme 2: 78 gare · 42 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 24 carriere x 2 stagioni · 237 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         416  ✓5.9                        ✓0.118       ✓31.5      ✓54       ✓42.8
+affermazione    436  ✓6.38                       ✓0.346       ✓44        ✓77.5     ✓80.5
+elite           459  ✓6.85                       ✓0.462       ✓48.6      ✓87.9     ✓96.6
+declino         441  ✓6.38                       ✓0.256       ✓46.9      ✓66.1     ✓61.6
+  finalizzatore  gavetta: 5.99/0.158/37.4%/60'/51.8% · affermazione: 6.39/0.418/41.8%/79.5'/83.7% · elite: 6.8/0.442/45.5%/87.9'/96.6% · declino: 6.41/0.281/47.3%/58.9'/50%
+  regista        gavetta: 5.86/0.079/30.9%/47.2'/33.7% · affermazione: 6.4/0.31/46.9%/76.2'/78.7% · elite: 6.87/0.434/49.3%/87.3'/95.8% · declino: 6.35/0.243/50%/69.2'/67%
+  incursore      gavetta: 5.85/0.116/26.1%/55.1'/43.5% · affermazione: 6.36/0.31/43.4%/76.7'/79% · elite: 6.88/0.51/51%/88.5'/97.6% · declino: 6.38/0.245/43.5%/70.4'/68.3%
+celle entro tolleranza: 20/20 · carriere non concluse 0 · pageerror 0
+
+✅ CURVA OK — le quattro fasi nei bersagli A
+  finalizzatore affermazione seme 1: 79 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 70 gare · 45 decisioni · ok · pageerror 0
+  regista affermazione seme 1: 70 gare · 49 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 75 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 42 decisioni · ok · pageerror 0
+  regista gavetta seme 1: 70 gare · 44 decisioni · ok · pageerror 0
+  incursore affermazione seme 1: 77 gare · 43 decisioni · ok · pageerror 0
+  incursore elite seme 1: 70 gare · 40 decisioni · ok · pageerror 0
+  regista declino seme 1: 70 gare · 44 decisioni · ok · pageerror 0
+  incursore declino seme 1: 79 gare · 43 decisioni · ok · pageerror 0
+  regista elite seme 1: 69 gare · 43 decisioni · ok · pageerror 0
+  incursore gavetta seme 1: 69 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 70 gare · 43 decisioni · ok · pageerror 0
+  regista gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 76 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 69 gare · 46 decisioni · ok · pageerror 0
+  regista affermazione seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  regista elite seme 2: 70 gare · 47 decisioni · ok · pageerror 0
+  incursore gavetta seme 2: 69 gare · 46 decisioni · ok · pageerror 0
+  regista declino seme 2: 77 gare · 45 decisioni · ok · pageerror 0
+  incursore declino seme 2: 69 gare · 45 decisioni · ok · pageerror 0
+  incursore affermazione seme 2: 70 gare · 42 decisioni · ok · pageerror 0
+  incursore elite seme 2: 82 gare · 44 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · ROSSO (__CPM_NO_156) · 24 carriere x 2 stagioni · 223 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         416  ✓5.98                       ✗0.264       ✓33.9      ✗76.6     ✗80
+affermazione    435  ✗6.18                       ✓0.347       ✓41.8      ✗84       ✗90.3
+elite           430  ✗6.17                       ✗0.34        ✗39.1      ✓86.8     ✓95.1
+declino         446  ✓6.19                       ✗0.357       ✓39.5      ✗89.8     ✗99.6
+  finalizzatore  gavetta: 5.99/0.331/32.4%/84.1'/91% · affermazione: 6.21/0.409/43.6%/85.4'/92.6% · elite: 6.16/0.338/36%/85.9'/93.4% · declino: 6.29/0.43/45.7%/90'/100%
+  regista        gavetta: 5.98/0.245/36%/57'/51.2% · affermazione: 6.16/0.281/41%/77.2'/79.1% · elite: 6.2/0.345/44.6%/87.6'/96.7% · declino: 6.21/0.361/41.5%/89.3'/98.9%
+  incursore      gavetta: 5.96/0.217/33.3%/88.4'/97.6% · affermazione: 6.16/0.347/40.8%/90'/100% · elite: 6.16/0.336/36.8%/86.8'/95.2% · declino: 6.07/0.277/31.1%/90'/100%
+celle entro tolleranza: 8/20 · carriere non concluse 0 · pageerror 0
+fuori: gavetta.gol 0.264 (bersaglio 0.15) · gavetta.min 76.6 (bersaglio 55) · gavetta.tit 80 (bersaglio 45) · affermazione.voto 6.18 (bersaglio 6.4) · affermazione.min 84 (bersaglio 75) · affermazione.tit 90.3 (bersaglio 75) · elite.voto 6.17 (bersaglio 6.9) · elite.gol 0.34 (bersaglio 0.5) · elite.vitt 39.1 (bersaglio 55) · declino.gol 0.357 (bersaglio 0.25) · declino.min 89.8 (bersaglio 65) · declino.tit 99.6 (bersaglio 60)
+
+✅ ROSSO VISTO — senza la correzione la curva esce di tolleranza

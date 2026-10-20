@@ -1,0 +1,5 @@
+(A) finale vinta, stato coerente   → servita: null · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":true}]
+(B) finale vinta, stato NON avanzato→ servita: null · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":true}]
+(C) finale ANCORA DA GIOCARE       → servita: {"matchday":994,"week":35,"opp":"FC Avversario 4","type":"cup"} · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":false}]
+
+✅ PASS — un turno di coppa gia' giocato non torna, e quello da giocare arriva

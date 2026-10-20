@@ -1,0 +1,7 @@
+verde 360px: etichette 7 · spazio minimo 17.6 px (Club|Carriera) · spazi 17.7 17.7 17.6 17.7 17.6 18.7 · fuori dal bottone 0 · scroll orizzontale 0 · errori 0
+verde 412px: etichette 7 · spazio minimo 25.1 px (Home|Stagione) · spazi 25.1 25.1 25.1 25.1 25.1 26.1 · fuori dal bottone 0 · scroll orizzontale 0 · errori 0
+rosso 360px: etichette 7 · spazio minimo 12.6 px (Carriera|Agente) · spazi 17.9 18.7 18.5 12.6 17.2 18.1 · fuori dal bottone 0 · scroll orizzontale 0 · errori 0
+rosso 412px: etichette 7 · spazio minimo 20 px (Carriera|Agente) · spazi 25.4 26.1 25.9 20 24.7 25.5 · fuori dal bottone 0 · scroll orizzontale 0 · errori 0
+  360px: bottone piu' stretto 40.4 px
+  412px: bottone piu' stretto 47.8 px
+✅ barra-360-72 verde (etichette staccate a 360 e 412 px) e il rosso si vede

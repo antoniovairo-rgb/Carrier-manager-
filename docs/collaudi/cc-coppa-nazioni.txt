@@ -1,0 +1,14 @@
+
+=== IL TROFEO DELLA COPPA DELLE NAZIONI SI ALZA SOLO IN FINALE ===
+
+  FASE A (regola vecchia, __CPM_NO686): differenze viste 2
+    · girone finito, 6 punti, finale ancora da giocare → trofeo true (atteso false)
+    · girone finito, 9 punti (tre vittorie) — il caso del PO → trofeo true (atteso false)
+  ✅ girone finito, 6 punti, finale ancora da giocare → trofeo false (atteso false)
+  ✅ girone finito, 9 punti (tre vittorie) — il caso del PO → trofeo false (atteso false)
+  ✅ girone a meta → trofeo false (atteso false)
+  ✅ FINALE, ultima gara della coda → trofeo true (atteso true)
+  ✅ coda estesa ma non ancora alla finale → trofeo false (atteso false)
+
+✅ PASS — il trofeo si alza una volta sola, e solo vincendo la finale.
+

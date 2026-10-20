@@ -1,0 +1,23 @@
+ROSSO) con __CPM_NO_P0_1 (logica pre-fix): voce LEGA GIOCATA — difetto riprodotto ✓ · classifica played 18
+A-F) recupero COPPA vs FC Balear (lega stessa sede presente):
+     voce COPPA  → GIOCATA ✓
+     voce LEGA   → non giocata ✓
+     turno coppa 2 · classifica played 17 pts 40 · storico 1
+
+G) recupero LEGA vs FC Maño (nessuna regressione):
+     voce LEGA  → GIOCATA ✓
+     voce COPPA → non giocata ✓ · storico 1
+
+H) la prova del fischio finale dopo che il risultato e' nel salvataggio (coppa committata: rosso true · verde true):
+   senza filtro (__CPM_NO_P0_5): sidecar ANCORA VIVO — difetto riprodotto ✓ · gara della settimana NESSUNA (la lega e' bloccata dalla rete G)
+   col filtro:                   sidecar consumato ✓ · gara della settimana md18 ✓
+
+I) prova di COPPA viva, gara di CAMPIONATO vs lo stesso club da giocare:
+   senza filtro: md18 → NESSUNA — difetto riprodotto ✓
+   col filtro:   md18 → md18 ✓
+
+J) andata in casa gia' giocata, RITORNO in trasferta da giocare (andata ancora committata: rosso true · verde true):
+   senza filtro di sede (__CPM_NO_P0_6): prova ANCORA VIVA — difetto riprodotto ✓ · ritorno NON GIOCABILE (verrebbe auto-simulato)
+   col filtro di sede:                   prova consumata ✓ · ritorno md20 ✓
+
+✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · competizione E sede fanno parte dell'identita' della gara)

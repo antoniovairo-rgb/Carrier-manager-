@@ -1,0 +1,7 @@
+verde creazione: volto atteso null · img dei volti 11 · testo 1035 · ritratto eroe [{"w":144,"h":111,"x":134,"y":191,"nat":512,"ok":true}] · img rotte 0 · CH38 0 · errori 0
+verde home: volto atteso assets/portraits/ai/lotto-01/volto-0009.webp · img dei volti 1 · testo 1605 · ritratto eroe [{"w":31,"h":45,"x":26,"y":74,"nat":512,"ok":true}] · img rotte 0 · CH38 0 · errori 0
+verde carriera: volto atteso assets/portraits/ai/lotto-01/volto-0009.webp · img dei volti 1 · testo 1062 · ritratto eroe [{"w":31,"h":45,"x":26,"y":74,"nat":512,"ok":true}] · img rotte 0 · CH38 0 · errori 0
+rosso creazione: volto atteso null · img dei volti 0 · testo 948 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1
+rosso home: volto atteso null · img dei volti 0 · testo 1605 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1
+rosso carriera: volto atteso null · img dei volti 0 · testo 1062 · ritratto eroe [] · img rotte 0 · CH38 0 · errori 0 · volti negati 1
+✅ ritratto-171-72 verde (ritratto dell'eroe caricato in tre schermate, zero CH38) e il rosso si vede

@@ -1,0 +1,12 @@
+{"Mercato invernale":{"bg":{"r":255,"g":255,"b":255,"a":1},"L":1},"La tua storia":{"bg":{"r":255,"g":255,"b":255,"a":1},"L":1}}
+testi su fondo scuro o sfumato: 0 []
+testi sotto 4,5:1: 0 []
+ok   nessun errore di pagina 
+ok   «Mercato invernale» presente sulla home
+ok   «Mercato invernale» su fondo card neutro (L=1)
+ok   «La tua storia» presente sulla home
+ok   «La tua storia» su fondo card neutro (L=1)
+ok   nessun testo della home su fondo scuro o sfumato (0)
+ok   nessun testo della home sotto 4,5:1 (0)
+
+RIQUADRI HOME: PASS

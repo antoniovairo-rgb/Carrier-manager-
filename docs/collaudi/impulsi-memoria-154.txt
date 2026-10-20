@@ -1,0 +1,30 @@
+catalogo: 130 voci (105 impulsi + 25 seguiti) · catene di secondo livello: wi_seg_docu_puntata→wi_seg_docu_premio, wi_seg_lite_clan→wi_seg_lite_mister
+senza condizione: 1 (wi_scommessa_amici) · universali dichiarate: ["wi_scommessa_amici"]
+idonee per tutti gli 8 profili («universali di fatto»): 3 (wi_cena_squadra, wi_compagno_lite, wi_scommessa_amici)
+pool idoneo per profilo: primavera_s1 25 · primavera_s2 26 · pro_giovane_riserva 44 · pro_titolare 65 · pro_leader_ricco 64 · veterano_crisi 70 · svincolato 42 · pro_sosta 55
+settimane vissute: W7:lived:null · W8:lived:null · W9:lived:wi_compagno_lite · W10:lived:wi_seg_ospedale_lettera
+D) seguiti di spogliatoio (spo): 10 (wi_seg_docu_puntata, wi_seg_docu_rifiuto, wi_seg_cripto, wi_seg_prestito_reso, wi_seg_lite_pace, wi_seg_lite_clan, wi_seg_lite_mister, wi_seg_intervista, wi_seg_idolo, wi_seg_cena) · altri: 14
+D) prima del trasferimento: W7:wi_influencer · W8:wi_influencer · W9:wi_seg_lite_clan
+D) trasferimento: offerta generata, accettata true, club b04 → ath
+D) dopo il trasferimento: W10:wi_seg_lite_clan · W11:wi_seg_lite_clan · W12:wi_tifoso_fisso · W13:wi_prestito_inverno · W14:wi_famiglia_visita · W15:wi_media · W16:wi_media · W17:wi_dieta_brand · W18:wi_dieta_brand · W19:wi_primo_mister · W20:wi_primo_mister · W21:wi_auto_lusso
+✓ voci senza condizione = universali dichiarate (1)
+✓ universali di fatto <= 12 (3)
+✓ pool minimo per profilo >= 12 (25)
+✓ almeno 20 seguiti nel catalogo (25)
+✓ almeno 2 catene di secondo livello (2)
+✓ seguiti giudicati sulla regola: 24 (saltati per contesto: 1)
+✓ regola dei seguiti coerente su 24 (incoerenti: nessuno)
+✓ pop-up vero di wi_ospedale aperto e scelta cliccata
+✓ memoria scritta alla scelta: {"c":0,"s":3,"w":6,"a":82,"k":"b04"}
+✓ il seguito «wi_seg_ospedale_lettera» esce nella sua finestra: dopo 4 settimane
+✓ nessun errore di pagina (0)
+✓ almeno 8 seguiti di spogliatoio marcati (10)
+✓ spogliatoio: pronti nello stesso club e con memoria vecchia senza club, spenti in un altro club (incoerenti: nessuno)
+✓ seguiti non di spogliatoio: restano pronti anche dopo il cambio di club (incoerenti: nessuno)
+✓ catena avviata: «Non mi immischio» → «wi_seg_lite_clan» uscito (W9) e risolto «Mangio in camera»
+✓ memoria con il club: {"c":1,"s":3,"w":9,"a":85,"k":"b04"}
+✓ trasferimento vero avvenuto (ath)
+✓ il seguito del vecchio spogliatoio «wi_seg_lite_mister» non esce nel club nuovo: mai in 12 settimane
+✓ D) nessun errore di pagina (0)
+
+✅ PASS impulsi-memoria-154

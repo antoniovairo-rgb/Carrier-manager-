@@ -1,0 +1,12 @@
+ROSSO) con __CPM_NO_P0_3: gara FC Madrid Este · nel pre-partita riferimento CARICO → dopo l'uscita ANCORA CARICO — difetto riprodotto ✓
+     (è la condizione che permetteva a una gara di Nazionale di committare una giornata di campionato)
+
+1+2) gara della settimana: FC Madrid Este · uscita col bottone «Torna alla home»
+     riferimento: nel pre-partita md11 → dopo l'uscita nessuno ✓
+     calendario di campionato: 10 giocate → 10 · presenze 11 → 11
+
+3) riapertura dopo un'uscita → riferimento md11 (gara vera md11)
+
+4+5) settimana risolta col percorso reale (simulated): presenze 11 → 12 · gare di campionato giocate 10 → 11 · riferimento residuo no ✓
+
+✅ CICLO DI VITA DEL RIFERIMENTO OK (si invalida uscendo · il calendario non cambia per un'uscita · la partita giocata si committa ancora)

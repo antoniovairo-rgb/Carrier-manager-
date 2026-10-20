@@ -1,0 +1,15 @@
+
+errori-168 (verde)
+  ✓ all'avvio si chiede la memoria persistente: {"chiesto":true,"persistente":false}
+  ✓ errore in un setTimeout: registrato
+  ✓ promessa rifiutata: registrata
+  ✓ rifiuto audio.play() (NotAllowedError): NON registrato
+  ✓ ogni voce porta versione e ora
+  ✓ il taccuino (Impostazioni → Appunti di collaudo) mostra il registro degli errori
+  ✓ «Esporta registro» scarica il JSON (korward-log-2026-10-19.json, 2 errori)
+  ✓ errore di render: compare la schermata di recupero (niente pagina bianca)
+  ✓ la schermata di recupero offre «Esporta registro errori»
+  ✓ errore di render: registrato con lo stack dei componenti
+  ✓ registro limitato a 40 voci (3)
+
+✓ errori-168: VERDE
