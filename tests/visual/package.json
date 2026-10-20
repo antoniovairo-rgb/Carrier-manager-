@@ -385,6 +385,8 @@
     "stili-098": "node stili-098.mjs",
     "difficolta-156": "node difficolta-156.mjs && node difficolta-156.mjs --rosso",
     "stili-098-migrazione": "node stili-098-migrazione.mjs",
+    "stile-unico-75": "node stile-unico-75.mjs",
+    "pagella-75": "node pagella-75.mjs",
     "quota-190-vivo": "node quota-190-vivo.mjs",
     "finale-202": "node finale-202.mjs",
     "ripresa-202": "node ripresa-202.mjs",

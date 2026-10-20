@@ -400,6 +400,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const _cand23=candidatiEroe23(avatarId);const voltoScelto=_cand23.length?_cand23[voltoVar%_cand23.length]:null;
   const[archetypeId,setArchetypeId]=useState("finalizzatore");/* [giro 67 PO-098] 4 stili */
   const[enfant67,setEnfant67]=useState(false);/* [giro 67 PO-098] Enfant Prodige: tratto di crescita, non piu' uno stile */
+  const _unico75=stileUnico75();/* [giro 75 PO 19/10] stile unico: niente griglia degli stili, niente Enfant. Rosso __CPM_NO_STILEUNICO75 */
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
@@ -407,15 +408,15 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0];
+    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
-    if(enfant67){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
+    if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
     if(legacyBonus?.statBoost){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]+legacyBonus.statBoost,1,99);});}
     const age=17;
     const challenge=challengeId?CHALLENGES.find(c=>c.id===challengeId):null;
     if(onClearLegacy)onClearLegacy();
-    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
+    const newPlayerBase={name:name.trim(),nation,avatarId,voltoEroe:voltoScelto,foot:(Math.abs(hashStr((name||"")+(nation||"")))%100)<22?"L":"R",archetype:arc,tratti:{enfant:!_unico75&&!!enfant67},position:"Attaccante",age,stats,ovr:calcOvr(stats),club:null,trialsDone:0,trialStats:[],season:1,week:1,weekLived:false,u18Seasons:0,isU18:true,proStatus:"u18",goals:0,assists:0,matches:0,totalGoals:0,totalAssists:0,totalMatches:0,morale:legacyBonus?clamp(70+(legacyBonus.moraleBoost||0),0,100):70,fatigue:0,popularity:20,skillPoints:2,log:[],history:[],matchHistory:[],value:0.8,coachTrust:60,form:70,transferOffers:[],offerHistory:[],contract:{duration:1,wage:577,expiresAtSeason:2},aiData:{lastOpponentTactic:null,scoutReports:{},pressReports:{}},dreamClub:dreamClub||null,worldMemory:[],rival:null,saveVersion:SAVE_VERSION,...(legacyBonus?{legacyBonusLabel:legacyBonus.label}:{}),...(challenge?{challenge:{id:challenge.id,completed:false,failed:false}}:{})};
     onCreate({...newPlayerBase,teammates:generateTeammates(newPlayerBase),journalists:generateJournalists()});
   };
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
@@ -458,13 +459,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🎯 Stile e percorso</div>
+          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_unico75?"🗺️ Percorso":"🎯 Stile e percorso"}</div>
           <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
           </Card>
-          {/* S12.2: Archetype selection */}
-          <div>
+          {/* S12.2: Archetype selection — [giro 75] nascosta con lo stile unico */}
+          {!_unico75&&<div data-cpm="scelta-stile">
             <label style={lbl}>Stile di gioco</label>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
               {ARCHETYPES.map(arc=>{
@@ -489,7 +490,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               <input type="checkbox" checked={enfant67} onChange={e=>setEnfant67(e.target.checked)} style={{marginTop:2}}/>
               <span style={{fontSize:FS.caption,color:TH.text,lineHeight:1.45}}><span style={{fontWeight:FW.bold}}>✨ Enfant Prodige</span> · tratto di crescita: cresci più in fretta fino ai 22 anni, ma parti con 2 punti in meno su ogni attributo</span>
             </label>
-          </div>
+          </div>}
           {/* Club dei Sogni — tutti i club del gioco. [7.999.49 parte A] in fisarmonica chiusa: il bottone per iniziare non sta più dopo l'elenco dei club */}
           <details style={{marginBottom:0}}>
             <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⭐ Club dei sogni (facoltativo){dreamClub?<span style={{color:TH.txGreen,fontWeight:FW.bold}}> · {dreamClub.n}</span>:null}</summary>
@@ -2447,6 +2448,16 @@ function migratePlayer(player){
      if(_id67&&!(typeof window!=='undefined'&&window.__CPM_NO_STILI)&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id67)&&!ARCHETYPES.some(a=>a.id===_id67)){
        const _st67=ARCHETYPES.find(a=>a.id===stileDi(_id67,newP.stats))||ARCHETYPES[0];
        newP={...newP,archetype:_st67,archetipoOrig:_id67,tratti:{...(newP.tratti||{}),enfant:_id67==="enfant"||!!(newP.tratti&&newP.tratti.enfant)}};changed=true;}}
+    /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
+       vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
+       restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
+    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+     if(_id75!=="finalizzatore"||_enf75){
+       newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
+       if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
+       if(_enf75)newP.enfantPrima75=true;
+       if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
+       changed=true;}}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;

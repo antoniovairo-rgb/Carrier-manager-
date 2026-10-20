@@ -863,8 +863,13 @@ function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO
 /* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
 /* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
 function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
-function haTrattoEnfant(p){return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
-try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant};}catch(_e){}
+/* [giro 75, decisione PO 19/10 «togliamolo, rimane praticamente solo il Finalizzatore» · «togli anche enfant»] STILE UNICO: alla
+   creazione non si sceglie piu' lo stile (l'eroe e' Finalizzatore per tutti) e il tratto Enfant non esiste piu' (niente crescita x1,35,
+   niente costo -2). I salvataggi passano a Finalizzatore in migratePlayer (src/17), lo stile e l'Enfant di prima restano registrati in
+   stilePrima75 / enfantPrima75. Il motore conosce ancora i 4 stili (stileMotore). Rosso __CPM_NO_STILEUNICO75 = comportamento 7.999.174. */
+function stileUnico75(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_STILEUNICO75);}catch(_e){return true;}}
+function haTrattoEnfant(p){if(stileUnico75())return false;return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},

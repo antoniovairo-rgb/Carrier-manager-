@@ -1,0 +1,53 @@
+  finalizzatore gavetta seme 2: 69 gare · 51 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 78 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 79 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 76 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 70 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 78 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  finalizzatore affermazione seme 3: 75 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 3: 72 gare · 36 decisioni · ok · pageerror 0
+  finalizzatore declino seme 3: 78 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 3: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 4: 69 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 4: 69 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore elite seme 4: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 77 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore declino seme 4: 75 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 5: 69 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 5: 75 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore elite seme 5: 80 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 6: 69 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 6: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore elite seme 6: 75 gare · 52 decisioni · ok · pageerror 0
+  finalizzatore declino seme 5: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  finalizzatore gavetta seme 7: 70 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore declino seme 6: 77 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore elite seme 7: 79 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore declino seme 7: 75 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 7: 76 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 8: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 5: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 8: 70 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 9: 76 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 8: 75 gare · 51 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 9: 69 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore elite seme 9: 78 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore declino seme 8: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 10: 70 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore declino seme 9: 76 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 10: 69 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore declino seme 10: 75 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 10: 78 gare · 44 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 40 carriere x 2 stagioni · 462 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         692  ✓5.91                       ✓0.105       ✓32.9      ✓60.1     ✓51.2
+affermazione    728  ✓6.39                       ✓0.342       ✓43.3      ✓79.2     ✓82.7
+elite           768  ✓6.86                       ✓0.495       ✓50.1      ✓87.4     ✓95.9
+declino         763  ✓6.39                       ✓0.253       ✓46.5      ✓60.5     ✓53.5
+  finalizzatore  gavetta: 5.91/0.105/32.9%/60.1'/51.2% · affermazione: 6.39/0.342/43.3%/79.2'/82.7% · elite: 6.86/0.495/50.1%/87.4'/95.9% · declino: 6.39/0.253/46.5%/60.5'/53.5%
+celle entro tolleranza: 20/20 · carriere non concluse 0 · pageerror 0
+
+✅ CURVA OK — le quattro fasi nei bersagli A

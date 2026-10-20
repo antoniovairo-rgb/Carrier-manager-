@@ -1,0 +1,116 @@
+ROSSO) con __CPM_NO_P0_1 (logica pre-fix): voce LEGA GIOCATA — difetto riprodotto ✓ · classifica played 18
+A-F) recupero COPPA vs FC Balear (lega stessa sede presente):
+     voce COPPA  → GIOCATA ✓
+     voce LEGA   → non giocata ✓
+     turno coppa 2 · classifica played 17 pts 40 · storico 1
+
+G) recupero LEGA vs FC Maño (nessuna regressione):
+     voce LEGA  → GIOCATA ✓
+     voce COPPA → non giocata ✓ · storico 1
+
+H) la prova del fischio finale dopo che il risultato e' nel salvataggio (coppa committata: rosso true · verde true):
+   senza filtro (__CPM_NO_P0_5): sidecar ANCORA VIVO — difetto riprodotto ✓ · gara della settimana NESSUNA (la lega e' bloccata dalla rete G)
+   col filtro:                   sidecar consumato ✓ · gara della settimana md18 ✓
+
+I) prova di COPPA viva, gara di CAMPIONATO vs lo stesso club da giocare:
+   senza filtro: md18 → NESSUNA — difetto riprodotto ✓
+   col filtro:   md18 → md18 ✓
+
+J) andata in casa gia' giocata, RITORNO in trasferta da giocare (andata ancora committata: rosso true · verde true):
+   senza filtro di sede (__CPM_NO_P0_6): prova ANCORA VIVA — difetto riprodotto ✓ · ritorno NON GIOCABILE (verrebbe auto-simulato)
+   col filtro di sede:                   prova consumata ✓ · ritorno md20 ✓
+
+✅ RECOVERY PER COMPETIZIONE OK (la Coppa si committa in Coppa · il campionato resta intatto · la prova muore quando serve · competizione E sede fanno parte dell'identita' della gara)
+== recovery-competition exit 0
+ROSSO) con __CPM_NO_P0_2 (scritture concorrenti): disco 1111 — il vecchio ha sovrascritto il nuovo, difetto riprodotto ✓
+A/E) vecchio lento vs nuovo veloce → disco 2222 · memoria 2222
+     bridge: inizio(1000) ritardo=0 | FINE(1000) | inizio(1111) ritardo=2500 | FINE(1111) | inizio(2222) ritardo=0 | FINE(2222)
+B) A→B→C con latenze decrescenti → disco 333 (atteso 333)
+C) salvataggio normale → disco 4242 (atteso 4242)
+D) ramo browser (localStorage) → disco 777 (atteso 777)
+F) riapertura dopo salvataggio → saldo riletto 9090 (atteso 9090)
+
+✅ PERSISTENZA MONOTONA OK (il piu' recente vince sempre · nessun blocco del salvataggio normale · browser e bridge nativo coerenti)
+== save-monotonic exit 0
+ROSSO) con __CPM_NO_P0_3: gara FC Madrid Este · nel pre-partita riferimento CARICO → dopo l'uscita ANCORA CARICO — difetto riprodotto ✓
+     (è la condizione che permetteva a una gara di Nazionale di committare una giornata di campionato)
+
+1+2) gara della settimana: FC Madrid Este · uscita col bottone «Torna alla home»
+     riferimento: nel pre-partita md11 → dopo l'uscita nessuno ✓
+     calendario di campionato: 10 giocate → 10 · presenze 11 → 11
+
+3) riapertura dopo un'uscita → riferimento md11 (gara vera md11)
+
+4+5) settimana risolta col percorso reale (simulated): presenze 11 → 12 · gare di campionato giocate 10 → 11 · riferimento residuo no ✓
+
+✅ CICLO DI VITA DEL RIFERIMENTO OK (si invalida uscendo · il calendario non cambia per un'uscita · la partita giocata si committa ancora)
+== playing-mdref exit 0
+ROSSO) con __CPM_NO_P0_4: doppio tap → settimana 12→14 (Δ2) · saldo Δ54000
+1) click singolo → settimana 12→13 (atteso +1) · saldo Δ27000
+2) doppio tap → settimana 12→13 (Δ1, atteso 1) · saldo Δ27000
+3+5) il gioco prosegue dopo il doppio tap: 4 passi del percorso reale → settimana 13→15
+
+4) scelta d'evento cliccata DUE volte (l'invariante si misura sulle APPLICAZIONI, non sui valori:
+   quale evento viene estratto e' casuale, il numero di applicazioni no)
+   senza lock: 2 applicazioni · {"fatigue":8,"pop":10,"trust":-12,"morale":0}
+   con lock:   1 applicazione/i · {"fatigue":4,"pop":5,"trust":-6,"morale":0}
+
+✅ DOPPIO TAP OK (un tocco = una applicazione · nessun blocco permanente · gli eventi non raddoppiano)
+== double-tap exit 0
+scenari: twinWeek=true · twinSide=true · twinMdNum=true · hist2=true · histWk=true · soloClassifica=true · registro=true · ritorno=false · prossima=false · coppaViva=false
+
+✅ PASS — la partita gia' giocata non passa da nessuna porta, e le legittime passano tutte
+== stale-matchday exit 0
+✅ controprova — senza registro la giornata 34 VIENE servita: {"matchday":34,"week":34,"opp":"FC Ciociaro","type":null}
+✅ registro attivo — la giornata 34 NON viene più servita: null
+✅ registro per stagione — alla stagione successiva la giornata torna legittima: {"matchday":34,"week":34,"opp":"FC Cesenate","type":null}
+
+✅ PASS — una giornata committata non può essere riproposta, e il registro sopravvive al reload
+== playedmd-registry exit 0
+=== CAREER-INVARIANTS ===
+club totali: 252 · pageerror: 0
+
+✅ tutti gli invarianti di carriera tengono
+== career-invariants exit 0
+giornata di prova: md18 vs FC Balear (W.20) · oid=mall · casa=false
+A1 (persistenza rotta): sidecar vivo=true · selettore={"matchday":19,"week":21,"opp":"FC Madrid Este","type":null} · save su disco: {"week":20,"played":17}
+A2 (riapertura sana): voce md18 giocata=true · gare in storico=1 · sidecar residuo=false · selettore={"matchday":19,"week":21,"opp":"FC Madrid Este","type":null}
+B (prova distrutta): selettore={"matchday":18,"week":20,"opp":"FC Balear","type":null}
+B (rosso riprodotto): senza sidecar il selettore ripropone la stessa giornata — il sintomo del PO, misurato ✓
+✅ SIDECAR DUREVOLE OK (la prova sopravvive al kill · il risultato si recupera e si conta UNA volta · il big match non si ripropone)
+== pending-mr-durable exit 0
+(A) finale vinta, stato coerente   → servita: null · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":true}]
+(B) finale vinta, stato NON avanzato→ servita: null · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":true}]
+(C) finale ANCORA DA GIOCARE       → servita: {"matchday":994,"week":35,"opp":"FC Avversario 4","type":"cup"} · voci coppa: [{"r":1,"w":9,"p":true},{"r":2,"w":19,"p":true},{"r":3,"w":28,"p":true},{"r":4,"w":35,"p":false}]
+
+✅ PASS — un turno di coppa gia' giocato non torna, e quello da giocare arriva
+== cup-final-replay exit 0
+
+=== IL TROFEO DELLA COPPA DELLE NAZIONI SI ALZA SOLO IN FINALE ===
+
+  FASE A (regola vecchia, __CPM_NO686): differenze viste 2
+    · girone finito, 6 punti, finale ancora da giocare → trofeo true (atteso false)
+    · girone finito, 9 punti (tre vittorie) — il caso del PO → trofeo true (atteso false)
+  ✅ girone finito, 6 punti, finale ancora da giocare → trofeo false (atteso false)
+  ✅ girone finito, 9 punti (tre vittorie) — il caso del PO → trofeo false (atteso false)
+  ✅ girone a meta → trofeo false (atteso false)
+  ✅ FINALE, ultima gara della coda → trofeo true (atteso true)
+  ✅ coda estesa ma non ancora alla finale → trofeo false (atteso false)
+
+✅ PASS — il trofeo si alza una volta sola, e solo vincendo la finale.
+
+== coppa-nazioni exit 0
+
+=== UNA COPPA DELLE NAZIONI INTERA ===
+
+  ✅ tre vittorie + finale vinta        → gare 4 · idx 4 · pts 12 · finale si · chiusa SI
+  ✅ tre vittorie + finale persa        → gare 4 · idx 4 · pts 9 · finale si · chiusa SI
+  ✅ tre vittorie + finale pari         → gare 4 · idx 4 · pts 10 · finale si · chiusa SI
+  ✅ girone da 4 punti (1V 1P 1X)       → gare 4 · idx 4 · pts 7 · finale si · chiusa SI
+  ✅ girone da 3 punti: niente finale   → gare 3 · idx 3 · pts 3 · finale no · chiusa SI
+  ✅ girone da 0 punti: niente finale   → gare 3 · idx 3 · pts 0 · finale no · chiusa SI
+  ✅ il trofeo si alza una volta sola, e nell'ultima gara → alzate 1
+
+✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.
+
+== coppa-intera exit 0

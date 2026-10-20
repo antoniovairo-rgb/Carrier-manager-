@@ -1,0 +1,24 @@
+# Tronco 3 — catena notte su 7.999.175 (ramo lavoro/175, commit 74bda390)
+# Esito: 102/102 verdi. Il registro: 100 passi dichiarati «gia_verde» da esecuzioni interrotte sulla stessa versione (vedi nota sotto), 2 eseguiti nell'ultimo giro (schede-259, schede-246).
+# Nota: 2 esecuzioni sono state interrotte dal limite di tempo in sottofondo; la catena è stata ripresa con CPM_CI_FATTI sugli stessi passi già verdi (procedura del giro composto, decisione PO 14/10).
+
+✅ replay (71s)
+✅ avversario-106 (12s)
+✅ partita-rigiocata-194 (538s)
+✅ ripresa-202 (289s)
+✅ mister-215 (38s)
+✅ squalifica-222 (155s)
+✅ acquisti-281 (92s)
+✅ stile-unico-75 (28s)
+✅ typing-shortcuts (20s)
+✅ procuratore-253 (177s)
+✅ migrazione-194 (84s)
+✅ attesa-241 (102s)
+✅ difesa-220-giro31 (1224s)
+✅ testa-143 (341s)
+✅ cross-218 (240s)
+✅ difesa-220 (2164s)
+✅ schede-259 (772s)
+✅ schede-246 (567s)
+✅ catena notte su 7.999.175: 102/102 verdi
+FINE

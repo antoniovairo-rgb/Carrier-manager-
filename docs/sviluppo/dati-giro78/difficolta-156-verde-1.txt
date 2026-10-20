@@ -1,0 +1,52 @@
+  finalizzatore affermazione seme 1: 76 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 72 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 80 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore declino seme 1: 76 gare · 51 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 75 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 75 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 3: 76 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 4: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 4: 80 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 3: 75 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 4: 69 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 3: 69 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 3: 76 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore declino seme 4: 77 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 5: 78 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore declino seme 5: 78 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 5: 70 gare · 52 decisioni · ok · pageerror 0
+  finalizzatore elite seme 6: 75 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 6: 69 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 6: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 5: 78 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 6: 69 gare · 51 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 8: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 7: 70 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore declino seme 7: 76 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 8: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 7: 79 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 7: 69 gare · 51 decisioni · ok · pageerror 0
+  finalizzatore elite seme 8: 80 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore declino seme 9: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 9: 71 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 9: 76 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 10: 69 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore declino seme 8: 76 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore elite seme 9: 76 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore elite seme 10: 78 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore declino seme 10: 76 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 10: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  finalizzatore affermazione seme 10: 70 gare · 39 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · VERDE · 40 carriere x 2 stagioni · 505 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         695  ✓5.92                       ✓0.105       ✓33.4      ✓60.4     ✓51.9
+affermazione    723  ✓6.42                       ✓0.347       ✓45.4      ✓80.5     ✓84.7
+elite           777  ✓6.85                       ✓0.498       ✓50.3      ✓87.6     ✓96.3
+declino         755  ✓6.44                       ✓0.286       ✓49.1      ✓62.8     ✓57
+  finalizzatore  gavetta: 5.92/0.105/33.4%/60.4'/51.9% · affermazione: 6.42/0.347/45.4%/80.5'/84.7% · elite: 6.85/0.498/50.3%/87.6'/96.3% · declino: 6.44/0.286/49.1%/62.8'/57%
+celle entro tolleranza: 20/20 · carriere non concluse 0 · pageerror 0
+
+✅ CURVA OK — le quattro fasi nei bersagli A
