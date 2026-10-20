@@ -149,14 +149,17 @@ const CREDITI238=[
    «Senza riga licenza», giro 25b). Le voci tolte nel giro 25 sono tornate con la loro fonte (decisione PO 15/10 «Rimettile con
    la loro fonte»); i file d'origine non confermata restano nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
    il contenuto PO-238 e il link sottile). */
+/* [7.999.177 PO-290 «sistema il testo, lo leggeranno i player»] via note interne (giro, date, nomi di file, «dichiarata dal PO», sintesi
+   «pseudo-casuale»): ai crediti restano opera, autore e licenza in parole del giocatore. Rosso __CPM_NO_CRED290: testi della 7.999.176. */
+const _c290=!(typeof window!=='undefined'&&window.__CPM_NO_CRED290);
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
     {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
-    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
-    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
+    {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
-    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
        di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
        license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
@@ -172,8 +175,8 @@ const CREDITI254=[
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
     {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
-    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"},
-    {n:"Effetti sonori sintetizzati con Web Audio",aut:"Realizzati per Korward Elite"}]},
+    ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
+    {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
     {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
     {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"},

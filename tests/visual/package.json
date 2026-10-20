@@ -77,6 +77,7 @@
     "tabellino-banda": "node tabellino-banda.mjs",
     "festa": "node festa-942.mjs",
     "festa-3d": "node festa-3d.mjs",
+    "cori-291": "CPM_PROVA_ROSSO=1 node cori-291.mjs",
     "decisioni-50": "node decisioni-50.mjs",
     "ball-alive": "node ball-alive-test.mjs",
     "trama": "node trama-test.mjs",
