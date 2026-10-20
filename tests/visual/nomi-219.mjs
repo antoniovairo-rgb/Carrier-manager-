@@ -24,13 +24,15 @@ const srv = await startServer(); const b = await launchBrowser(); const esito = 
 for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, lontani: 0, usato: 0, scartato: 0, esempi: [] };
   const coda = [...(rosso ? SEMI_ROSSO : SEMI)];
   await Promise.all(Array.from({ length: PAR }, async () => { while (coda.length) { const sd = coda.shift();
-    const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+    for (let prova = 1; prova <= 2; prova++) { const parz = { nominati: tot.nominati, vicini: tot.vicini, lontani: tot.lontani, usato: tot.usato, scartato: tot.scartato, scambi: tot.scambi | 0, portieri: tot.portieri | 0, esempi: tot.esempi.length };
+    let ctx = null; try {
+    ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
     const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
     await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = 1; window.__CPM_PRESENT = 1;/* lo stacco d'apertura (teatro) e' spento sotto cpmtest: senza, lo scambio non avviene (lezione 7.345) */ if (r) { window.__CPM_NO_CAST219 = 1; window.__CPM_NO_SWAP219 = 1; } localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
     await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
     try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
-    await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }); await sleep(1500);
+    await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 60000 }); await sleep(1500);
     try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
     await page.evaluate(() => window.__CPM_CAREER.playMatch());
     await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
@@ -46,6 +48,16 @@ for (const rosso of [false, true]) { const tot = { nominati: 0, vicini: 0, lonta
     const W = await page.evaluate(() => window.__CPM_B4DIF || { usato: 0, scartato: 0 }); tot.usato += W.usato | 0; tot.scartato += W.scartato | 0;
     tot.scambi = (tot.scambi | 0) + await page.evaluate(() => (window.__CPM_SW219 || []).reduce((a, x) => a + (x.scambi | 0), 0));/* quante scene lo scambio ha davvero toccato */
     console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' fine ' + ph + ' nominati ' + ps.n + ' vicini ' + ps.v + ' lontani ' + ps.l); await ctx.close();
+    break;
+    } catch (e) {/* [giro 77, «instabile: rosso al primo tentativo»] nella catena 174 la prima prova e' finita con un CRASH di Node (ultima riga
+      «Node.js v22.22.0»): un solo await non protetto (attese di 20-90 s che sotto carico scadono) faceva rigettare il Promise.all e
+      cadere il processo, cioe' un rosso senza misura. Ora l'errore di un seme si stampa, i suoi conteggi parziali si tolgono e il seme si
+      rigioca UNA volta; se cade ancora resta fuori dal campione (dichiarato) e il giudizio resta quello di sempre (>= 12 nominati, 75%). */
+      Object.assign(tot, { nominati: parz.nominati, vicini: parz.vicini, lontani: parz.lontani, usato: parz.usato, scartato: parz.scartato, scambi: parz.scambi, portieri: parz.portieri }); tot.esempi.length = parz.esempi;
+      console.log((rosso ? 'rosso' : 'verde') + ' seme ' + sd + ' ERRORE alla prova ' + prova + ': ' + String(e && e.message || e).split('\n')[0].slice(0, 200));
+      try { if (ctx) await ctx.close(); } catch (e2) {}
+      if (prova === 2) tot.persi = (tot.persi | 0) + 1;
+    } }
   } }));
   esito[rosso ? 'rosso' : 'verde'] = tot; console.log((rosso ? 'ROSSO' : 'VERDE') + ' ' + JSON.stringify(tot));
 }
@@ -59,6 +71,7 @@ if (!(esito.verde.nominati >= 12 && V.vic >= 0.75)) g.push('verde: vicini ' + (1
 /* [7.999.157, decisione PO 10/10] tolta la soglia assoluta del rosso (<70%), tarata su UNA corsa (6/14 = 43%): alla corsa del rilascio il rosso e' venuto 75% contro verde 100%, difetto visibile (25 punti) ma dichiarato invisibile. La prova del rosso e' la SEPARAZIONE di almeno 20 punti; la soglia del verde (>=90% su >=12) non cambia. *//* [giro 18] la quota del rosso, con ~16 nominati, oscilla troppo per reggere da sola: il difetto si vede anche dalla CODA — nel verde nessun nominato oltre 35 u
    su 48 (massimo 33), nel rosso 5 su 16 fra 40 e 55 u. Prova del rosso: distacco di 20 punti OPPURE almeno un nominato oltre 35 u. */
 if (!(V.vic - R.vic >= 0.20 || esito.rosso.lontani >= 1)) g.push('rosso: il difetto non si vede (vicini ' + (100 * R.vic).toFixed(0) + '% contro ' + (100 * V.vic).toFixed(0) + '%, lontani oltre 35 u: ' + esito.rosso.lontani + ')');
+if ((esito.verde.persi | 0) + (esito.rosso.persi | 0)) console.log('semi persi per errore di strumento (rigiocati una volta, poi esclusi): verde ' + (esito.verde.persi | 0) + ' · rosso ' + (esito.rosso.persi | 0));
 console.log('informativo: difensore usato verde ' + (100 * V.uso).toFixed(0) + '% · rosso ' + (100 * R.uso).toFixed(0) + '%; scambi verde ' + (esito.verde.scambi | 0));
 if (g.length) { console.log('❌ nomi-219'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ nomi-219 verde (vicini ' + (100 * V.vic).toFixed(0) + '% su ' + esito.verde.nominati + '; rosso ' + (100 * R.vic).toFixed(0) + '% su ' + esito.rosso.nominati + ', lontani oltre 35 u ' + esito.rosso.lontani + ' (verde ' + esito.verde.lontani + '); portieri che aprono dal fondo, non giudicati: ' + ((esito.verde.portieri | 0) + (esito.rosso.portieri | 0)) + ')');

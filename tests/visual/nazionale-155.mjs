@@ -10,6 +10,16 @@
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const ROSSO = process.env.CPM_ROSSO || '';
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
+/* [giro 77, instabile 1 su 3] MISURATO: `__CPM_CAREER` si registra in un useEffect (src/18 ~1391), cioe' DOPO il commit; un passo
+   dato prima che il render del passo precedente (e quello dell'effetto della finestra, che aggiunge l'amichevole) sia arrivato
+   decide su una chiusura VECCHIA: «settimana 18 senza gara → avanza» mentre lo stato e' gia' alla 19 con l'amichevole, e
+   l'aggiornamento funzionale salta la 19. L'amichevole resta «19?» per sempre e blocca le finestre 28 e 35 (pendente): 3 stagioni
+   rosse su 4 con quattro stagioni in parallelo, 1 su 5 da sola. Il passo successivo parte solo quando il registro e' stato
+   ri-registrato dopo il passo e resta fermo 250 ms (nessun render in coda). */
+async function assesta(page) {
+  await page.waitForFunction(() => window.__CPM_CAREER !== window.__CPM_C155, null, { timeout: 5000 }).catch(() => {});
+  for (let i = 0; i < 40; i++) { const ok = await page.evaluate(() => { const C = window.__CPM_CAREER; const f = window.__CPM_C155b === C; window.__CPM_C155b = C; return f; }); if (ok) break; await sleep(250); }
+}
 async function stagione(svincolato) {
   const page = await browser.newPage({ viewport: { width: 900, height: 900 } }); await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 160)));
@@ -31,10 +41,10 @@ async function stagione(svincolato) {
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(1200);
   let iter = 0, last = null;
   while (iter++ < 200) {
-    const r = await page.evaluate(() => { const C = window.__CPM_CAREER; const res = C.step(); C.dismiss(); const s = C.snapshot(); return { res: String(res), season: s && s.season, week: s && s.week }; });
+    const r = await page.evaluate(() => { const C = window.__CPM_CAREER; window.__CPM_C155 = C; const res = C.step(); C.dismiss(); const s = C.snapshot(); return { res: String(res), season: s && s.season, week: s && s.week }; });
     last = r; if (r.res === 'seasonEnd' || r.season !== 5 || r.res.startsWith('error:')) break;
     if (r.res.startsWith('blocked:')) await page.evaluate(() => window.__CPM_CAREER.dismiss());
-    await sleep(140);
+    await assesta(page);
   }
   const R = await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('cpm-v3') || '{}'); const p = s.player || s;
     const lg = (p.calendar || []).filter(m => m && (!m.type || m.type === 'league') && m.week); const ws = new Set(lg.map(m => m.week));
