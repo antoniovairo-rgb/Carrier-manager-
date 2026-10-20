@@ -69,6 +69,20 @@ function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const 
 function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
   const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
 function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+/* [PO-288 · giro 83] IL PIANO DEL TRAINER SI LEGGE. Sui pulsanti-piano: il valore attuale della caratteristica, la RESA (settimane medie per un +1,
+   da 1/trainerQuota281: la stessa funzione che decide la crescita, nessuna stima a parte) e un «consigliato» sulle due caratteristiche che
+   pesano di piu' nel giudizio (OVR) e sono ancora basse. Pesi = quelli di calcOvr (src/05): il giudizio del gioco e' UNA formula per tutti i
+   ruoli, non esistono pesi per ruolo. REGOLA: punteggio = peso OVR x (99 - valore); candidate solo le caratteristiche sotto 85 (sopra la
+   crescita del piano e' gia' scarsa); primi 2 per punteggio, a parita' l'ordine di TRAINER_ATTR281. Solo visualizzazione: nessun effetto sul
+   motore. Rosso __CPM_NO_PT288 (la schermata di prima). */
+const PESI_OVR288={tiro:2.5,tecnica:2,"velocità":1.5,dribbling:1.5,posizionamento:1.5,"mentalità":1,fisico:1,passaggio:1};
+function trainerAiuto288(p,lv){
+  if(typeof window!=="undefined"&&window.__CPM_NO_PT288)return null;
+  const st=(p&&p.stats)||{};const pl={...p,perkTrainer:true,perkTrainerLv:lv>=1?Math.min(3,lv|0):1};
+  const righe=TRAINER_ATTR281.map(function(a){const v=Math.round(st[a]||0);const q=v>=99?0:trainerQuota281(pl,v);
+    return{a:a,v:v,q:q,sett:q>0?Math.round(1/q):null,score:PESI_OVR288[a]*(99-v),cons:false};});
+  righe.filter(function(r){return r.v<85;}).sort(function(x,y){return y.score-x.score||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);}).slice(0,2).forEach(function(r){r.cons=true;});
+  return{ovr:calcOvr(st),pct:[10,15,20][Math.max(1,Math.min(3,lv|0||1))-1],righe:righe};}
 function prepLv281(p){return staffLv24(p,"perkNutrition");}
 function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */
 function garaRavv281(p){const w=(p&&p.week)||1;return ((p&&p.calendar)||[]).filter(function(m){return m&&m.week===w;}).length>=2;}
