@@ -1,0 +1,24 @@
+Tronco 6 — catena notte — build 7.999.175 (commit 74bda3907029c59c10f0057d0a4cbde1a9e75533, ramo lavoro/175)
+Passi: 16 (recupero-103, titolo-110, debito-190, recupero-202, brain-202, svincolato-264, passaggi-228, scena-motore-147, gk-miss-229, lessico-218, design-system, bambini-236, crediti-254, rete-252, esiti-241, difesa-252)
+
+Esecuzione in due tempi: il primo giro è stato fermato dal limite di tempo in sottofondo dopo 12 passi (log parziale: docs/governo/catena-175/tronco-6-parte1.txt). Il secondo giro ha ripreso i 12 passi già verdi (CPM_CI_FATTI) e ha eseguito i restanti 4.
+
+✅ recupero-103 (88s)
+✅ titolo-110 (26s)
+✅ debito-190 (1s)
+✅ recupero-202 (727s)
+✅ brain-202 (428s)
+✅ svincolato-264 (137s)
+✅ passaggi-228 (83s)
+✅ lessico-218 (19s)
+✅ design-system (0s)
+✅ crediti-254 (23s)
+✅ rete-252 (329s)
+✅ esiti-241 (399s)
+✅ difesa-252 (371s)
+✅ scena-motore-147 (1076s)
+⚠️ gk-miss-229 (783s) — instabile: verde alla prova 2, primo rosso: ❌ ROSSO — 1 difetti: · girata giP6S post: tuffo su un pallone largo (passa a 6.35u, esce a 6.4u dal centro)
+✅ bambini-236 (1355s)
+
+Verdetto del runner: «catena notte su 7.999.175: 102/102 verdi» (nota: gk-miss-229 è ⚠️ instabile, non ✅ pulito).
+Nessun ❌ finale.

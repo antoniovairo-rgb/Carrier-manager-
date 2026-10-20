@@ -1,0 +1,21 @@
+# Tronco 5 — catena notte su 7.999.175 (build 74bda390)
+# Parte 1 (interrotta a 10 passi, sottofondo terminato):
+✅ classifica-102 (69s)
+✅ etichette-108 (20s)
+✅ rigori-190 (17s)
+✅ minuti-202 (186s)
+✅ possesso-209 (568s)
+✅ infortunio-263 (283s)
+✅ corpi-073 (528s)
+✅ popup-224 (49s)
+✅ convocazione-235 (128s)
+✅ statistiche-228 (214s)
+# Parte 2 (ripresa, 10 passi saltati perché già ✅):
+✅ piedi-252 (478s)
+✅ parata-258 (209s)
+✅ tecnica-045 (113s)
+✅ partita-vera (527s)
+✅ gk-dive-sync (237s)
+✅ tabellino-228 (310s)
+✅ catena notte su 7.999.175: 102/102 verdi
+FINE
