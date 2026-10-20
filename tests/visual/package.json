@@ -472,6 +472,7 @@
     "giornale-244": "node giornale-244.mjs",
     "ingresso-245": "node ingresso-245.mjs",
     "ingresso-277": "node ingresso-277.mjs",
+    "ingresso-285": "node ingresso-285.mjs",
     "schede-246": "node schede-246.mjs",
     "schede-260": "node schede-260.mjs",
     "schede-finale": "node schede-finale.mjs",
