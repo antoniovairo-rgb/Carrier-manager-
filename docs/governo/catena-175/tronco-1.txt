@@ -1,0 +1,20 @@
+✅ test:logic (4s)
+✅ euro-attesa-181 (46s)
+✅ pre-188 (25s)
+✅ scene-190 (1s)
+✅ ripartenza-207 (487s)
+❌ tempo-138 (1534s) — rosso {"fase":"ceremony","pagato":154,"residuo":0,"aperto":154} | ❌ tempo-138 |   · rosso: il difetto non si vede {"fase":"ceremony","pagato":154,"residuo":0,"aperto":154}
+✅ meta-conto-265 (72s)
+✅ tempo-138 (518s)
+✅ ripartenza-235 (449s)
+✅ manovre-150 (5s)
+✅ fila-227 (406s)
+✅ giornata-233 (31s)
+✅ prima-partita-237 (222s)
+✅ badge-255 (78s)
+✅ portiere-252 (630s)
+✅ camera-252 (305s)
+✅ rinvio-252 (331s)
+✅ goal-postarc (307s)
+✅ catena notte su 7.999.175: 102/102 verdi
+FINE
