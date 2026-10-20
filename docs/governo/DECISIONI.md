@@ -687,3 +687,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO (20/10 sera): «se sono in verificato, vanno in chiuso» → gli stati VERIFICATO e CHIUSO/CHIUSA passano nello storico delle voci chiuse (tools/backlog-verdetti.py e tools/governo-html.mjs). Voci aperte da 85 a 57.
 - PO (questionario, 20/10 sera): le 31 voci «DA VERIFICARE DAL PO» → **CHIUSE, si riaprono se emergono** (carriere e collaudi 3D le ricontrollano). Il residuo noto della PO-284 (pallone dell'angolo sul dischetto ~1 apertura su 8, seme 3) resta fra i punti di stabilità.
 - PO (questionario, 20/10 sera, «tutta questa roba in aperta è realmente aperta?»): **chiuse** PO-061, 263, 264, 265 (già su main, stato vecchio) e PO-207, 240, 258, 260, 261, 262, 266 (correzione su main, residuo non rimisurato; si riaprono se emergono). Restano aperte: le 5 della 7.999.177 (PO-285…289) e 10 residui veri in stabilità (PO-167, 022, 068, 153, 220, 224, 228, 229, 248, 250).
+
+## 20/10 sera — highlight dell'eroe: soglia più severa (PO, questionario)
+
+- PO: «agli highlights eroe devono essere perfetti in tutto e per tutto!».
+- PO (questionario): **«Stessa regola, soglia più severa»** — PO-229/248 restano residui in stabilità, ma nelle carriere e nei collaudi ogni difetto negli highlight dell'eroe (fluidità, esito, portiere, pallone, inquadratura, gesto) vale **almeno «medio»** e **blocca il rilascio** finché non è corretto.
+- Sessione principale: la regola entra nei prompt di tutti i collaudi da ora (anche le carriere 1 e 2 in corso, avvisate a fine lavoro: i loro difetti di highlight si riclassificano qui).
