@@ -662,3 +662,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «i colori delle statistiche post partita dovrebbero riprendere i colori delle due squadre» (foto in docs/governo/foto/po286-postpartita-colori.png).
 - Sessione principale: è un difetto di coerenza grafica (il pannello live 2D usa già i colori di maglia): entra nella 7.999.177 come la PO-285. Giro 81 (sotto-agente, ramo sviluppo/giro81-colori286), rosso `__CPM_NO_COL286`, guardiano colori-286; colori troppo simili fra loro o allo sfondo ripiegano su una tinta leggibile.
+
+## 20/10 sera — PO-287 via anche il Finalizzatore (PO, questionario)
+
+- PO: «elimina finalizzatore» (foto docs/governo/foto/po287-finalizzatore.png).
+- PO (questionario): **«Tutto: eroe neutro»** — via la scheda «Stile di gioco», i bonus alle statistiche (+8 tiro, +6 posizionamento, +3 fisico, −2 velocità, −3 passaggio, src/06:842) e le leve nel motore; **nella 7.999.177** (se la difficoltà PO-156 non torna, la 177 aspetta).
+- Sessione principale: giro 82 (sotto-agente, ramo sviluppo/giro82-neutro287), rosso `__CPM_NO_NEUTRO287`; i salvataggi restano leggibili (migrazione additiva); difficolta-156 e la quota gol rimisurate con l'eroe neutro, senza abbassare soglie.
