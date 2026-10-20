@@ -1,0 +1,24 @@
+# Tronco 4 — catena notte su 7.999.175 (build 74bda3907029c59c10f0057d0a4cbde1a9e75533, ramo lavoro/175)
+# Prima parte: passi 1-10 (il wrapper in sottofondo e' stato interrotto dopo apertura-261; passi gia' ✅ registrati). Seconda parte: ripresa con CPM_CI_FATTI esteso ai passi gia' ✅.
+# Esito: 18/18 passi ✅ · 0 ⚠️ · 0 ❌ · runner: 102/102 verdi
+
+✅ rinvio-coppe-107 (72s)
+✅ pro-rivale-176 (45s)
+✅ tetto-202 (8s)
+✅ presentazione-214 (55s)
+✅ investimento-223 (249s)
+✅ errori-168 (20s)
+✅ pagella-75 (840s)
+✅ validate-situations (712s)
+✅ backup-167 (65s)
+✅ apertura-261 (239s)
+✅ schede-260 (1187s)
+✅ esiti-60 (205s)
+✅ career-critical (809s)
+✅ testata-209 (562s)
+✅ scene-221 (1624s)
+✅ intervista-231 (900s)
+✅ schede-234 (634s)
+✅ difesa-220-scena (1629s)
+✅ catena notte su 7.999.175: 102/102 verdi
+FINE
