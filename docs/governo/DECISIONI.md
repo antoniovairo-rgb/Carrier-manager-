@@ -622,3 +622,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Collaudo carriera 174: nessun difetto di prodotto; F3 («1ª» vicina al bordo della card «Prossima partita» a 412 px) non confermata → da guardare nel prossimo collaudo.
 - Collaudo 3D 174: PO-282/283 confermati; media: piedi-252 margine stretto (0,395 su 0,40) → già nel giro 77; basse: 284f 001 in 6/18 su un seme, stessa partita con esiti diversi su due corse con CPU contesa (da indagare nella stabilità), ordine squadre nell'intestazione del 2° tempo.
 - La 7.999.175 = main + giro 75 + giro 78, appena il 78 consegna.
+
+## 20/10 — modello dei collaudi di stabilità (PO, questionario)
+
+- PO: **«Misto»** — Sonnet 5.5 per le 6 carriere intere e i collaudi 3D (giudizio a occhio, misure); Haiku 5.5 per i giri di soli controlli automatici (catene, salvataggi, rilanci). Motivo: costi misurati dei collaudi 172-174 (Sonnet 0,70-1,62 $, Haiku 0,29-0,45 $) e collaudo carriera 174 in Haiku con 2 foto guardate su 16.
