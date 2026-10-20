@@ -14,12 +14,14 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const SEMI = Number(args.semi || 10), STAG = Number(args.stagioni || 2), PAR = Number(args.par || 8), ROSSO = !!args.rosso || !!process.env.CPM_ROSSO156;
+const VECCHIO = !!args.finalizzatore || !!process.env.CPM_NO_NEUTRO287;/* [giro 82 PO-287] --finalizzatore: l'eroe di prima (Finalizzatore, __CPM_NO_NEUTRO287) per misurare la base della 7.999.176; senza, l'eroe e' neutro */
 const BERSAGLI = { gavetta: { voto: 6.0, gol: 0.15, vitt: 35, min: 55, tit: 45 }, affermazione: { voto: 6.4, gol: 0.30, vitt: 45, min: 75, tit: 75 },
   elite: { voto: 6.9, gol: 0.50, vitt: 55, min: 85, tit: 95 }, declino: { voto: 6.3, gol: 0.25, vitt: 45, min: 65, tit: 60 } };
 const TOLL = { voto: 0.2, gol: 0.08, vitt: 8, min: 8, tit: 10 };/* tolleranza dichiarata nel RAPPORTO-giro69 */
 /* due club per fase (seme dispari / pari): uno sopra il livello dell'eroe e uno sotto, nelle leghe dove le medie del banco L6-bis
    (OVR e prestigio per fase) ricadono; scelti perche' il gioco di prima (rosso) riproduca vittorie e titolarita' del banco. */
-const FASI = [{ f: 'gavetta', eta: 17, ovr: 67, club: ['utr', 'gron'] }, { f: 'affermazione', eta: 21, ovr: 74, club: ['rsoc', 'utr'] }, { f: 'elite', eta: 26, ovr: 81, club: ['fra', 'stu'] }, { f: 'declino', eta: 31, ovr: 82, club: ['lille', 'nice'] }];
+const FASI_TUTTE = [{ f: 'gavetta', eta: 17, ovr: 67, club: ['utr', 'gron'] }, { f: 'affermazione', eta: 21, ovr: 74, club: ['rsoc', 'utr'] }, { f: 'elite', eta: 26, ovr: 81, club: ['fra', 'stu'] }, { f: 'declino', eta: 31, ovr: 82, club: ['lille', 'nice'] }];
+const FASI = args.fasi ? FASI_TUTTE.filter(x => String(args.fasi).split(',').includes(x.f)) : FASI_TUTTE;/* [giro 82] --fasi=gavetta,... per misurare una fase sola (le altre restano nei bersagli: la verifica piena non si fa cosi') */
 const STILI = [{ id: 'finalizzatore', pos: 'Attaccante' }];/* [giro 78] stile unico (giro 75): gli altri stili non si creano piu' */
 const faseDi = a => a <= 20 ? 'gavetta' : a <= 25 ? 'affermazione' : a <= 30 ? 'elite' : 'declino';
 
@@ -29,13 +31,14 @@ const URL = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
 
 async function prep() {
   const page = await browser.newPage(); await installCdnRoutes(page);
+  await page.addInitScript((v) => { if (v) window.__CPM_NO_NEUTRO287 = 1; }, VECCHIO);
   await page.goto(URL, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => typeof baseStats === 'function' && typeof ARCHETYPES !== 'undefined' && typeof CLUBS !== 'undefined', null, { timeout: 150000 });
   const out = await page.evaluate(([F, S]) => { const r = {};
-    for (const st of S) for (const f of F) { const arc = ARCHETYPES.find(a => a.id === st.id); let s = 777 + f.eta; const o = Math.random; Math.random = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    for (const st of S) for (const f of F) { const arc = neutro287() ? null : ARCHETYPES.find(a => a.id === st.id); let s = 777 + f.eta; const o = Math.random; Math.random = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
       const st0 = baseStats(arc); Math.random = o; let best = null;
       for (let d = -40; d <= 40; d++) { const x = {}; Object.keys(st0).forEach(k => x[k] = Math.max(1, Math.min(99, st0[k] + d))); const ov = calcOvr(x); if (!best || Math.abs(ov - f.ovr) < Math.abs(best.ov - f.ovr)) best = { ov, x }; }
-      for (const cid of f.club) { const c = CLUBS.find(c => c.id === cid); r[st.id + '|' + f.f + '|' + cid] = { arc: JSON.parse(JSON.stringify(arc)), stats: best.x, ovr: best.ov, club: { id: c.id, n: c.n, a: c.a, p: c.p, c: c.c, c2: c.c2, nat: c.nat, lg: c.lg } }; } }
+      for (const cid of f.club) { const c = CLUBS.find(c => c.id === cid); r[st.id + '|' + f.f + '|' + cid] = { arc: arc ? JSON.parse(JSON.stringify(arc)) : null, stats: best.x, ovr: best.ov, club: { id: c.id, n: c.n, a: c.a, p: c.p, c: c.c, c2: c.c2, nat: c.nat, lg: c.lg } }; } }
     return r; }, [FASI, STILI]);
   await page.close(); return out;
 }
@@ -46,9 +49,9 @@ async function carriera(P, st, f, seme) {
   const pp = P[st.id + '|' + f.f + '|' + f.club[(seme + 1) % f.club.length]];
   const save = { phase: 'career', player: { name: `Curva ${st.id} ${f.eta} ${seme}`, nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 1, week: 1, age: f.eta, ovr: pp.ovr, tutorialDone: true,
     archetype: pp.arc, position: st.pos, foot: 'R', club: pp.club, stats: pp.stats, form: 70, morale: 72, fatigue: 10, coachTrust: 60, contract: { duration: STAG + 2, wage: 6000, expiresAtSeason: STAG + 3 } } };
-  await page.addInitScript(([s, seed, rosso]) => { let x = (seed >>> 0) || 1; Math.random = function () { x = (x * 1664525 + 1013904223) >>> 0; return x / 4294967296; };
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_156 = 1;
-    try { if (!sessionStorage.getItem('c156')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('c156', '1'); } } catch (e) {} }, [JSON.stringify(save), 15600 + seme * 7919 + f.eta * 131 + st.id.length, ROSSO]);
+  await page.addInitScript(([s, seed, rosso, vecchio]) => { let x = (seed >>> 0) || 1; Math.random = function () { x = (x * 1664525 + 1013904223) >>> 0; return x / 4294967296; };
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_156 = 1; if (vecchio) window.__CPM_NO_NEUTRO287 = 1;
+    try { if (!sessionStorage.getItem('c156')) { localStorage.setItem('cpm-v3', s); sessionStorage.setItem('c156', '1'); } } catch (e) {} }, [JSON.stringify(save), 15600 + seme * 7919 + f.eta * 131 + st.id.length, ROSSO, VECCHIO]);
   await page.goto(URL, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 150000 });
   await sleep(1200);
@@ -95,7 +98,7 @@ const agg = (filtro) => { const A = {}; for (const F of Object.keys(BERSAGLI)) A
   const o = {}; for (const F in A) { const a = A[F]; o[F] = { gare: a.gare, decisioni: a.dN, voto: +(a.r / Math.max(a.rN, 1)).toFixed(2), gol: +(a.g / Math.max(a.gare, 1)).toFixed(3), vitt: +(100 * a.V / Math.max(a.gare, 1)).toFixed(1), min: +(a.min / Math.max(a.dN, 1)).toFixed(1), tit: +(100 * a.tit / Math.max(a.dN, 1)).toFixed(1) }; }
   return o; };
 const tutte = agg(() => true); const perStile = Object.fromEntries(STILI.map(s => [s.id, agg(x => x.stile === s.id)]));
-console.log(`\n══ DIFFICOLTA-156 · ${ROSSO ? 'ROSSO (__CPM_NO_156)' : 'VERDE'} · ${ris.length} carriere x ${STAG} stagioni · ${Math.round((Date.now() - t0) / 1000)} s ══`);
+console.log(`\n══ DIFFICOLTA-156 · ${ROSSO ? 'ROSSO (__CPM_NO_156)' : 'VERDE'}${VECCHIO ? ' · FINALIZZATORE (__CPM_NO_NEUTRO287)' : ' · EROE NEUTRO'} · ${ris.length} carriere x ${STAG} stagioni · ${Math.round((Date.now() - t0) / 1000)} s ══`);
 console.log('fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)');
 let dentro = 0, celle = 0; const fuori = [];
 for (const F of Object.keys(BERSAGLI)) { const m = tutte[F], b = BERSAGLI[F]; const c = k => { const ok = Math.abs(m[k] - b[k]) <= TOLL[k] + 1e-9; celle++; if (ok) dentro++; else fuori.push(`${F}.${k} ${m[k]} (bersaglio ${b[k]})`); return (ok ? '✓' : '✗') + m[k]; };

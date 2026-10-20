@@ -859,7 +859,7 @@ function stileDi(a,stats){const id=(a&&a.id)||a||"";if(ARCHETYPES.some(x=>x.id==
 /* l'id «di lettura» per i rami scritti sugli 8 (obiettivi stagionali, _pSimStats): un vecchio id resta se stesso, uno stile parla col suo riferimento */
 function archLetturaDi(a){const id=(a&&a.id)||a||"";return ARCH8_DI_STILE[id]||id;}
 /* le tre leve dello stile per il motore (null = neutro). Rosso __CPM_NO_STILI */
-function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
+function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;if(neutro287())return null;/* [giro 82 PO-287] eroe neutro: nessuna leva di stile nel motore */const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
 /* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
 /* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
 function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
@@ -867,9 +867,14 @@ function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id
    creazione non si sceglie piu' lo stile (l'eroe e' Finalizzatore per tutti) e il tratto Enfant non esiste piu' (niente crescita x1,35,
    niente costo -2). I salvataggi passano a Finalizzatore in migratePlayer (src/17), lo stile e l'Enfant di prima restano registrati in
    stilePrima75 / enfantPrima75. Il motore conosce ancora i 4 stili (stileMotore). Rosso __CPM_NO_STILEUNICO75 = comportamento 7.999.174. */
+/* [giro 82, PO-287, decisione PO «elimina finalizzatore» · questionario «Tutto: eroe neutro»] EROE NEUTRO: niente stile di gioco da nessuna parte.
+   L'eroe non ha piu' archetipo (player.archetype=null): niente bonus/malus dello stile sulle statistiche di partenza, niente crescita
+   favorita, niente leve nel motore (stileMotore=null), niente bonus di successo per archetipo (succRate), niente obiettivi/testi per stile.
+   I salvataggi passano a neutro in migratePlayer (src/17): lo stile di prima resta in stilePrima287. Rosso __CPM_NO_NEUTRO287 = 7.999.176. */
+function neutro287(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_NEUTRO287);}catch(_e){return true;}}
 function stileUnico75(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_STILEUNICO75);}catch(_e){return true;}}
 function haTrattoEnfant(p){if(stileUnico75())return false;return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
-try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75};}catch(_e){}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75,neutro287};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},

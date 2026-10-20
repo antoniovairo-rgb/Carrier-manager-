@@ -953,7 +953,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
-  const _fin78=(archId&&archId.id||archId)==='finalizzatore';/* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
+  const _fin78=(archId&&archId.id||archId)==='finalizzatore'||(!archId&&typeof neutro287==='function'&&neutro287());/* [giro 82 PO-287] l'eroe neutro (senza archetipo) legge la stessa curva del Finalizzatore del giro 78 *//* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara

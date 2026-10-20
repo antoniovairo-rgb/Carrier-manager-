@@ -10203,7 +10203,7 @@ const getThisWeekMatchday=()=>{
             );
           })()}
           {/* S12.5: Archetype card */}
-          {(()=>{const arc=archDi(player.archetype)||ARCHETYPES[0];return(
+          {(()=>{const arc=neutro287()?null:(archDi(player.archetype)||ARCHETYPES[0]);if(!arc)return null;/* [giro 82 PO-287] eroe neutro: niente scheda «Stile di gioco» */return(
             <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
             <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>

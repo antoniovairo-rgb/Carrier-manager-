@@ -10,7 +10,7 @@ const ATTESO = { bomber: 'finalizzatore', centravanti: 'finalizzatore', trequart
 const srv = await startServer(); const b = await launchBrowser(); const err = []; const out = {};
 for (const rosso of [false, true]) {
   const page = await b.newPage(); await installCdnRoutes(page);
-  await page.addInitScript((r) => { window.__CPM_NO_STILEUNICO75 = 1; if (r) window.__CPM_NO_STILI = 1; }, rosso);/* [giro 75] questo guardiano prova lo strato del giro 67 (8 archetipi → 4 stili): dal giro 75 lo stile unico lo copre, quindi si spegne lo stile unico (lo prova stile-unico-75) */
+  await page.addInitScript((r) => { window.__CPM_NO_STILEUNICO75 = 1; window.__CPM_NO_NEUTRO287 = 1; /* [giro 82 PO-287] la 7.999.176: l'eroe neutro e' provato da neutro-287 */ if (r) window.__CPM_NO_STILI = 1; }, rosso);/* [giro 75] questo guardiano prova lo strato del giro 67 (8 archetipi → 4 stili): dal giro 75 lo stile unico lo copre, quindi si spegne lo stile unico (lo prova stile-unico-75) */
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!window.__CPM_MIGRATE && !!window.__CPM_STILI, null, { timeout: 90000 });
   const r = await page.evaluate((pl) => {
