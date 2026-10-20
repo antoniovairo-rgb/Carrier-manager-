@@ -657,3 +657,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO: «l'ingresso in campo lo velocizzerei ulteriormente». Misura di partenza: ~24 s di scena dopo il giro 54 (src/12-three-match-view.jsx:3204; prima 38,5 s, in origine 10,5 s).
 - PO (questionario): durata **~16 s**; modo **«Tagli di camera»** (il passo resta camminata 2,2 u/s, tetto del guardiano 2,3 invariato, decisione PO-245); **nella 7.999.177** insieme alle correzioni dei collaudi (eccezione voluta dal PO alla regola «solo stabilità»).
 - Sessione principale: giro 80 (sotto-agente locale, ramo sviluppo/giro80-ingresso285) con rosso `__CPM_NO_ING285` e guardiano ingresso-285.
+
+## 20/10 sera — PO-286 colori squadre nel tabellino post-partita
+
+- PO: «i colori delle statistiche post partita dovrebbero riprendere i colori delle due squadre» (foto in docs/governo/foto/po286-postpartita-colori.png).
+- Sessione principale: è un difetto di coerenza grafica (il pannello live 2D usa già i colori di maglia): entra nella 7.999.177 come la PO-285. Giro 81 (sotto-agente, ramo sviluppo/giro81-colori286), rosso `__CPM_NO_COL286`, guardiano colori-286; colori troppo simili fra loro o allo sfondo ripiegano su una tinta leggibile.
