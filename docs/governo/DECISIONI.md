@@ -651,3 +651,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO: «solo stabilità?» → sì, da ora solo collaudi e correzioni dei difetti trovati, niente funzioni nuove.
 - PO (questionario): i 21 residui PARZIALI → **«Solo se emergono»**: diventano «RESIDUO IN STABILITÀ», si correggono solo se le carriere intere o i collaudi li trovano come difetti alti o medi.
 - Sessione principale: PO-098, 154, 155, 156, 157, 168, 281 (pubblicate nella 174/175, stato vecchio) portate a «DA VERIFICARE DAL PO». PO-222 e PO-223 restano APERTO (zona G, da controllare nelle carriere).
+
+## 20/10 sera — PO-285 ingresso in campo più rapido (PO, questionario)
+
+- PO: «l'ingresso in campo lo velocizzerei ulteriormente». Misura di partenza: ~24 s di scena dopo il giro 54 (src/12-three-match-view.jsx:3204; prima 38,5 s, in origine 10,5 s).
+- PO (questionario): durata **~16 s**; modo **«Tagli di camera»** (il passo resta camminata 2,2 u/s, tetto del guardiano 2,3 invariato, decisione PO-245); **nella 7.999.177** insieme alle correzioni dei collaudi (eccezione voluta dal PO alla regola «solo stabilità»).
+- Sessione principale: giro 80 (sotto-agente locale, ramo sviluppo/giro80-ingresso285) con rosso `__CPM_NO_ING285` e guardiano ingresso-285.
