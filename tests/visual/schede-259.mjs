@@ -66,7 +66,7 @@ if (!process.env.CPM_SOLO_BROWSER && haINT259) {
         const attDi = (dd) => (m >= 70 && dd <= 0) ? 1 : (m >= 60 && dd >= 2) ? -0.6 : (dd < 0 ? 0.4 : 0);
         M.chiedi.atteggiamento('home', attDi(d)); M.chiedi.atteggiamento('away', attDi(-d));
         const tb = M.tabellino();
-        if ((tb.home.espulsioni | 0) > esp.n) { esp.n = tb.home.espulsioni | 0; esp.m = m; } if ((tb.away.espulsioni | 0) > espL.n) { espL.n = tb.away.espulsioni | 0; espL.m = m; } if ((tb.away.rigori | 0) > rig.n) { rig.n = tb.away.rigori | 0; rig.m = m; }
+        if ((tb.home.espulsioni | 0) > esp.n) { esp.n = tb.home.espulsioni | 0; esp.m = m; } if ((tb.away.espulsioni | 0) > espL.n) { espL.n = tb.away.espulsioni | 0; espL.m = m; } { const rl = INT259.rigLoro ? INT259.rigLoro(tb) : (tb.away.rigori | 0); if (rl > rig.n) { rig.n = rl; rig.m = m; } }/* [giro 79] rigori per loro = concessi da home (rigore-79.mjs) */
         const f = (!aperta) ? INT259.scegli({ mn: Math.min(m, 90), diff: d, energia: 60, panchina: false, ingresso: 0, fatte, ultima: null, espNoi: esp.n, espNoiMin: esp.m, espLoro: espL.n, espLoroMin: espL.m, rigContro: rig.n, rigControMin: rig.m }) : null;
         if (f) { fatte.push(f); T.schede++; const k = idxDi(f);
           if (k >= 0) { const r = INT259.applica(M, f, k, m); T.applicate++; if (r && JSON.stringify(r.prima) !== JSON.stringify(r.dopo)) T.cambiati++; }

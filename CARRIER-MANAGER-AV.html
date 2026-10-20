@@ -8692,7 +8692,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   // Memoria tag
   const memoriaTag=recs.topSeasonGoals>=10?`🏅 Record: ${recs.topSeasonGoals} gol in una stagione`:
     isYoungGB?`🏆 Miglior Giovane d'Europa S.${(playerCtx.goldenBoys||[])[0]||season}`:
-    age<=19?`✨ Enfant prodige (${age} anni)`:
+    (age<=19&&((typeof window!=='undefined'&&window.__CPM_NO_ENFANT79)||(typeof haTrattoEnfant==='function'&&haTrattoEnfant({tratti:playerCtx.tratti,archetype:playerCtx.archetype}))))?`✨ Enfant prodige (${age} anni)`:/* [giro 79 — rosso __CPM_NO_ENFANT79] la memoria «Enfant prodige» usciva per eta' <= 19 anche senza il tratto, tolto dal PO nella 175 (stile unico): ora solo col tratto (haTrattoEnfant, src/06) */
     season>=5?`📖 Veterano — ${season}ª stagione`:null;
 
   // SPRINT (epico)
@@ -26803,6 +26803,11 @@ const INT259={
   finale(c){if(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN252b)return true;
     return (c.finMin!=null&&c.finMin>=INT259.FIN&&INT259.recente(1,c.mn,c.finMin))||c.mn>=INT259.RETE;},
   recente(n,mn,m){return (n|0)>0&&m!=null&&(mn-m)>=0&&(mn-m)<=3;},
+  /* [giro 79, collaudo 7.999.175-3d riga 2 — rosso __CPM_NO_RIG79] I RIGORI DATI AGLI AVVERSARI. Il tabellino del motore conta il rigore sul lato
+     di chi ha commesso il fallo (ev 'rigore' con chi = difensore, r. ~338 e ~722): `away.rigori` sono i rigori CONCESSI dagli avversari, cioe' quelli
+     A FAVORE della squadra dell'eroe. Il live leggeva away e apriva «Rigore per loro» dopo il rigore dell'eroe (k4 15', k12 8', k13 34'). Il rigore
+     per loro e' quello che concede la squadra dell'eroe: home.rigori (nel live home = squadra dell'eroe, latiTabellino10). Guardiano rigore-79.mjs. */
+  rigLoro(t){if(!t||!t.home||!t.away)return 0;if(typeof window!=='undefined'&&window&&window.__CPM_NO_RIG79)return t.away.rigori|0;return t.home.rigori|0;},
   FATTI:[
     {id:'rigore_contro',quando:c=>!c.panchina&&INT259.recente(c.rigContro,c.mn,c.rigControMin)&&Math.abs(c.diff)<=1},
     {id:'espulsione_noi',quando:c=>!c.panchina&&INT259.recente(c.espNoi,c.mn,c.espNoiMin)&&Math.abs(c.diff)<=1},
@@ -34617,7 +34622,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_e.fP&&nx>=INT259.FIN){const _dl=(_a.p>_e.fP.a.p)||(_a.x-_e.fP.a.x>=0.2),_dn=(_h.p>_e.fP.h.p)||(_h.x-_e.fP.h.x>=0.2)||(_oc!=null&&_oc!==_e.fP.oc&&_oc>=INT259.FIN);
               if(_dl||_dn){_e.finm=nx;_e.fink=_dl?'loro':'noi';}}
             _e.fP={h:_h,a:_a,oc:_oc};}
-          if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}if((_t.away.rigori|0)>_e.rL){_e.rL=_t.away.rigori|0;_e.rLm=nx;}}
+          if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}{const _rl79=INT259.rigLoro(_t);if(_rl79>_e.rL){_e.rL=_rl79;_e.rLm=nx;}}}/* [giro 79] rigori per loro = concessi dalla squadra dell'eroe (rosso __CPM_NO_RIG79) */
           /* IL RACCONTO, cinque minuti dopo la scelta: nasce dalle differenze del tabellino del motore e del punteggio (INT259.racconta) */
           const _R=_N.r259;
           if(_R&&!_R.detto&&!_inHL77&&_M&&nx>=_R.m0+INT259.ATTESA){_R.detto=true;const _dopo=INT259.foto(_M,scoreRef.current);
@@ -40379,7 +40384,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>);})()}
           {/* [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco: considerazioni reali del giornalista/mister/tifosi, eventi per importanza/prestigio, pagelle, commenti dell'eroe»] RASSEGNA STAMPA integrata nel riepilogo ended — tutto DERIVATO da generateLocalPressAnalysis (headline multi-testata, analisi tattica, MVP/flop, voci mister+eroe, curva) + occhiello per importanza/prestigio della gara. Solo carriera (i provini restano sobri). */}
           {context!=="trial"&&(()=>{
-            const _rbP=Math.min(mStats.rb,30),_ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
+            const _rbP=Math.min(mStats.rb,30);let _ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
+            /* [giro 79, collaudo 7.999.175-3d riga 4 — rosso __CPM_NO_VOTO79] DUE VOTI NELLA STESSA SCHERMATA (k12): PAGELLA 8,1 (voto del motore, r. ~11915)
+               e «Cronaca di Sport … (voto 7.5)» dalle testate, che ricalcolavano il voto con la formula dei bonus delle scene. Il 7.999.20 aveva
+               unificato il voto REGISTRATO, non questo giornale. Ora le testate usano lo stesso voto della pagella, quando il motore c'e'. */
+            try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO79||window.__CPM_NO_NUMERI23))){const _q79=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q79&&typeof _q79.voto==='number')_ratP=_q79.voto;}}catch(_e79){}
+            try{if(typeof window!=='undefined')window.__CPM_VOTO79=_ratP;}catch(_e79b){}
             const _oppN=(opponent&&(opponent.n||opponent.name))||"l'avversario";
             // [7.118.0 collaudo PO «l'Italia ha vinto ai rigori ma non si capisce che ha passato il turno»]: su un
             //   KO pareggiato deciso ai rigori la rassegna diceva «0-0, la classifica non sorride» (falso: non c'è
@@ -57188,8 +57198,8 @@ const getThisWeekMatchday=()=>{
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:700,color:TH.text}}>{d.l}
-                          <span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span className="cpm-num" style={{fontWeight:600,color:TH.muted}}>Livello {lv}/3</span></div>
+                        <div data-cpm="staff24-titolo" style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:700,color:TH.text,flexWrap:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"wrap",rowGap:2}}>{d.l}{/* [giro 79, collaudo carriera 175 F2 — rosso __CPM_NO_LIV79] a 360 px «Livello» e «3/3» andavano a capo dentro lo stesso span: ora puntini + «Livello N/3» restano un blocco unico e, se non c'e' posto, scendono insieme sotto il nome */}
+                          <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
