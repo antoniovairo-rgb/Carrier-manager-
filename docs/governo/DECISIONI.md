@@ -714,3 +714,11 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 82 (9641f951, sviluppo/giro82-neutro287): eroe senza archetipo (scheda, bonus di creazione, succRate, crescita favorita, obiettivi e leve del motore spenti; `_pSimStats` tiene la curva dei minuti del giro 78). neutro-287 verde, rosso 68 violazioni con __CPM_NO_NEUTRO287. stile-unico-75 e stili-098-migrazione girano col rosso 287 acceso (provano gli strati vecchi).
 - Difficoltà PO-156: col neutro la gavetta usciva sul bordo (17-20/20); ritaratura: penalità del mister a 17-20 anni da -8 a -10 solo col neutro (src/08:283). Dopo: 20/20 in due corse piene. Bersagli e soglie invariati.
 - PO (questionario): salvataggi esistenti **«Lasciali come sono»** — le statistiche già create restano (il bonus non è separabile); lo stile di prima va in stilePrima287.
+
+## 20/10 notte — 7.999.177 assemblata; carriere interrotte dal riavvio
+
+- Il contenitore si è riavviato: le carriere 1 e 2 sono state interrotte (car1 a S2 W2, car2 a S3 W1) e, per lo stesso riferimento remoto fermo, giravano sulla 7.999.175 e non sulla 176. Salvati i 4 difetti bassi trovati (docs/collaudi/difetti-carriera-176-2-parziale.jsonl). Decisione: non si riprendono; le carriere ripartono sulla 7.999.177, due alla volta, dopo la catena.
+- lavoro/177 = main 176 (bd0392b3) + giri 80, 81, 82, 83, 84 (conflitti solo in ci-runner.mjs, uniti con lo script); GAME_VERSION 7.999.177; build identica; chiavi doppie 0. Lo script npm impulsi-289 era andato perso nell'unione: rimesso (impulsi-289 verde 6/6, rosso 6/6).
+- ingresso-59 («ingresso a scatti»): rosso anche sulla 7.999.176 a macchina scarica (blocco 4,6 s contro 4,2 s sulla 177) e fuori da ogni catena dal 7.999.59: difetto preesistente, non del giro 80. Non blocca la 177; va in un giro di misura dopo la catena (tocca la fluidità dell'ingresso, PO-080).
+- Giro 85 (sotto-agente, sviluppo/giro85-piccoli): evento «accordo commerciale secondario» senza soldi (regola PO-289) + i 4 difetti bassi della carriera 2 (provini, U18 «2 di 2», gala «5 sono per te», Trofeo d'Oro).
+- Catena notte 7.999.177 in due metà (108 passi).
