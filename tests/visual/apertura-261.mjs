@@ -77,7 +77,19 @@ if (GIUDICA) {
      di 4,3-6,9u, con passi di scena di 0,11-0,24 s: e' il tiro (30-41 u/s) visto a pochi fotogrammi, non un teletrasporto (lezione
      7.360). Rosso = arco oltre 2x il passo atteso +1u, oppure (senza arco misurabile) piu' di VMAX u/s di scena. */
   const VMAX = +(process.env.CPM_VMAX274 || 50);
-  const tele = bjTot.filter(x => x.ph === 'hl_result' && x.dt > 0 && (x.src === 'arco' && x.al != null && x.ad > 0 ? x.d > 2 * (x.al * x.dt / x.ad) + 1 : x.d / x.dt > VMAX));
+  /* [giro 77, «instabile: rosso al primo tentativo»] IL PASSO ATTESO SI CONTA SUL TEMPO D'ARCO CHE LA POSIZIONE RIFLETTE. Il render-loop
+     scrive il pallone sull'arco (src/12 r.~3872) PRIMA di avanzare `ballArcT += aDt` (r.~4150): lo spostamento del fotogramma k e' il
+     passo di tempo del fotogramma k-1. Il guardiano lo confrontava col dt del fotogramma k, quindi con fotogrammi irregolari un passo
+     normale sembrava un teletrasporto. MISURATO col testimone del fotogramma precedente (`prima`, `aT0`, src/12): «6,8 u in 0,014 s»
+     = 34,8 u x 0,197 s (dt precedente) / 1,01 s = 6,8 u esatti; «8,8 u in 0,096 s» = 22,1 x 0,279 / 0,70 = 8,8. Il difetto si
+     vedeva a fps ALTI e irregolari (macchina scarica: rosso 3 su 3), spariva a fps bassi (catena carica: la tolleranza 2x copriva).
+     Ora: passo atteso = lunghezza x (u a inizio fotogramma - u a inizio del precedente), u = clamp(T/durata); senza testimone, il
+     vecchio calcolo. Tolleranza invariata (2x +1 u) e rosso __CPM_SALTO274 invariato (25 u su un arco vivo). */
+  const passoAtteso = (x) => { const u = (T) => Math.min(Math.max(T, 0), x.ad) / x.ad;
+    if (x.prima && x.aT0 != null && x.prima.aT0 != null && x.prima.ar) return x.al * Math.abs(u(x.aT0) - u(x.prima.aT0));
+    return x.al * x.dt / x.ad; };
+  const dtEff = (x) => (x.src === 'arco' && x.prima && x.prima.dt > 0) ? Math.max(x.dt, x.prima.dt) : x.dt;/* la stessa precedenza vale per l'atterraggio dell'arco (arco gia' spento) */
+  const tele = bjTot.filter(x => x.ph === 'hl_result' && x.dt > 0 && (x.src === 'arco' && x.al != null && x.ad > 0 ? x.d > 2 * passoAtteso(x) + 1 : x.d / dtEff(x) > VMAX));
   console.log(`salti scoperti in conclusione ${bjTot.filter(x => x.ph === 'hl_result').length} · non spiegati dalla velocita' (teletrasporti) ${tele.length}${tele.length ? ': ' + tele.slice(0, 4).map(x => `${x.src}:${x.d}u in ${x.dt}s`).join(' ') : ''}`);
   if (ROSSO === '__CPM_SALTO274') { const ok = tele.length >= 1; console.log(ok ? `✅ ROSSO come atteso (__CPM_SALTO274): ${tele.length} teletrasporti contati` : '❌ il rosso non riproduce: il guardiano non vede il teletrasporto'); process.exit(ok ? 0 : 1); }
   if (ROSSO) { const ok = primaFuori >= Math.ceil(pi.length / 2) || scGrandi >= 1; console.log(ok ? `✅ ROSSO come atteso (${ROSSO}): prima immagine fuori ${primaFuori}/${pi.length}, scarti oltre 3u ${scGrandi}` : '❌ il rosso non riproduce'); process.exit(ok ? 0 : 1); }

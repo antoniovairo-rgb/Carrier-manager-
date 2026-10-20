@@ -1428,7 +1428,7 @@ const getThisWeekMatchday=()=>{
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
-      setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
+      setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto *//* [7.287.0] la probe euro-transfer deve poter eseguire il VERO acceptTransfer: si posa l'offerta… [giro 77: era una seconda chiave `setOffer` identica, tolta] */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
       apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
@@ -1490,7 +1490,6 @@ const getThisWeekMatchday=()=>{
       forceMoment:(id)=>{try{const m=CAREER_MOMENTS.find(x=>x.id===id);if(m)setCareerMomentModal(m);return !!m;}catch(e){return "error:"+(e&&e.message);}}, // [7.159.0] apre il modal di un career moment per lo screenshot/probe
       notify:(msg,color,opts)=>{try{notify(msg,color||TH.primary,opts);return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.286.0] la probe toast-timing misura la CODA: senza un modo di accodare a comando la misura dipenderebbe da quali eventi capitano nella settimana
       notifQ:()=>{try{return notifQRef.current.length;}catch(e){return -1;}}, // [7.286.0] profondità della coda
-      setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.287.0] la probe euro-transfer deve poter eseguire il VERO acceptTransfer: si posa l'offerta…
       acceptOffer:()=>{try{acceptTransfer();return true;}catch(e){return "error:"+(e&&e.message);}} // …e al render successivo (l'hook si registra a ogni render) la si accetta
     };
   }});
