@@ -1,0 +1,2 @@
+✅ difesa-220-giro31 (1469s)
+⚠️ difesa-252 (1442s) — instabile: verde alla prova 2, primo rosso:  | reale: fermi ≥ 0,8 1/4 · prova: 2/3 (correzione attiva in 1) · rosso: 3/3 | ❌ difesa-252 ROSSO

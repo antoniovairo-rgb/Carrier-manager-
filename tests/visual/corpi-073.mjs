@@ -9,7 +9,8 @@
    · 284f (default): la stessa apertura, DETERMINISTICA — il gancio test-only __CPM_MP_PLACE073 fa trovare allo staging un compagno logico
      gia' sulla bandierina (la condizione del flusso vero); 284v la misura su partite in autoplay (lenta, gli angoli escono di rado).
    Uso: node corpi-073.mjs [282,283,284f|284|284v] — CPM_ROSSO073=1 accende gli interruttori rossi (__CPM_NO_TAPPETO073 /
-   __CPM_NO_STACCO073 / __CPM_NO_BATT073). SEMI=3,11,29. Uscita 0 verde (o rosso visibile) · 1 rosso · 2 cieco. */
+   __CPM_NO_STACCO073 / __CPM_NO_BATT073) SEMI=3,11,29. [giro 79] 284f: almeno 2 aperture misurate per seme
+   (CPM_APERTURE073, riprova fino a CPM_TENTATIVI073=5) e misura (non verdetto) del primo scatto del pallone. Uscita 0 verde (o rosso visibile) · 1 rosso · 2 cieco. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const QUALI = (process.argv[2] || '282,283,284f').split(',');
@@ -99,19 +100,30 @@ if (QUALI.includes('284f')) {
   /* PO-284 DETERMINISTICO: la condizione del flusso vero (il crossatore del motore gia' entro 3 u dalla bandierina nel LOGICO, la sua
      mesh altrove) ricreata col gancio test-only __CPM_MP_PLACE073 subito prima di forzare la scena d'angolo. */
   const tot = [];
-  for (const sd of SEMI) {
+  /* [giro 79, collaudo 7.999.175-3d riga 1] GUARDIANO NON CIECO: ogni seme deve dare almeno APERTURE (2) aperture MISURATE (>= 4 campioni
+     nella finestra 0,75-2,4 s); un'apertura senza campioni (macchina carica: seme 29 a 0 campioni in due corse) si rifa' su una pagina
+     nuova, fino a TENTATIVI (5). Le soglie non cambiano: una sola apertura col codice 001 e' rosso. */
+  const APERTURE = +(process.env.CPM_APERTURE073 || 2), TENTATIVI = +(process.env.CPM_TENTATIVI073 || 5);
+  for (const sd of SEMI) { let misurate = 0;
+   for (let prova = 0; prova < TENTATIVI && misurate < APERTURE; prova++) {
     /* __CPM_NO554: sull'angolo vero (origine del motore, _ORIG26) la battuta d'apertura e' soppressa (_o98, src/15): la scena forzata non
        ha l'origine, quindi la si spegne qui, altrimenti il pallone in volo dopo ~620 ms entra nella misura come «di nessuno». */
-    const { ctx, page } = await pagina(() => { window.__CPM_NO554 = 1; }); const S = await scena(page, 'angolo', '.', sd);
-    if (!S) { console.log('284f: scena non costruita'); await ctx.close(); continue; }
-    const t0 = Date.now(); await page.evaluate(([gi]) => { const mp = window.__CPM_MP(); let k = -1; mp.forEach((q, i) => { if (k < 0 && i > 0 && q && q.t === 'home' && i !== 0 && !q.gk && q.x < 70) k = i; }); window.__CPM_MP_PLACE073(k, 96.4, 95.8); window.__CPM_FORCE_SIT(gi, false); }, [S.gi]);
+    const { ctx, page } = await pagina(() => { window.__CPM_NO554 = 1; window.__CPM_WS38_REC = 1; }); const S = await scena(page, 'angolo', '.', sd);
+    if (!S) { console.log('284f: scena non costruita'); await ctx.close(); break; }
+    const t0 = Date.now(); const n0 = await page.evaluate(([gi]) => { const n0 = (window.__CPM_SNAP42 || []).length; const mp = window.__CPM_MP(); let k = -1; mp.forEach((q, i) => { if (k < 0 && i > 0 && q && q.t === 'home' && i !== 0 && !q.gk && q.x < 70) k = i; }); window.__CPM_MP_PLACE073(k, 96.4, 95.8); window.__CPM_FORCE_SIT(gi, false); return n0; }, [S.gi]);
     const fr = []; while (Date.now() - t0 < 2600) { const s = await page.evaluate(() => { try { const st = window.__CPM_STATE(); return { ball: st.ball, hero: st.hero, pl: (st.players || []).filter(p => p.team === 'home' && !p.gk).map(p => ({ x: p.x, y: p.y })) }; } catch (e) { return null; } }); if (s) fr.push({ t: Date.now() - t0, ...s }); await sleep(60); }
     const sp = await page.evaluate(() => window.__CPM_SPOT073 && window.__CPM_SPOT073());
+    /* [giro 79] PRIMO SCATTO DEL PALLONE: dove lo mette lo stacco di scena (registro __CPM_SNAP42, mondo → logico) rispetto al punto della scena */
+    const sn = await page.evaluate((n0) => { const a = (window.__CPM_SNAP42 || []).slice(n0); let bt = null; try { bt = window.__CPM_STATE().ballTarget; } catch (e) {} return { a, bt }; }, n0);
+    const p1 = sn.a.length ? { x: sn.a[0][1] + 50, y: sn.a[0][2] / 0.68 + 50 } : null; const dSnap = (p1 && sn.bt && sn.bt.x != null) ? Math.hypot(p1.x - sn.bt.x, p1.y - sn.bt.y) : null;
+    if (process.env.VERB) console.log('  snap ' + JSON.stringify(await page.evaluate(() => ({ snap: (window.__CPM_SNAP42 || []).slice(-4), rsnp: (window.__CPM_RSNP401 || []).slice(-4), bt: (() => { try { return window.__CPM_STATE().ballTarget; } catch (e) { return null; } })() }))));/* [giro 79] dove lo scatto di scena mette il pallone e i ri-tagli */
     const W = fr.filter(f => f.t >= 750 && f.t <= 2400); const dw = (a, b) => Math.hypot(a.x - b.x, (a.y - b.y) * 0.68);
     let n001 = 0, mdMin = 1e9; for (const f of W) { const md = Math.min(...f.pl.filter(p => dw(p, f.hero) > 0.3).map(p => dw(p, f.ball))); const dh = dw(f.hero, f.ball); if (md > 3.5 && dh > 3.5) n001++; mdMin = Math.min(mdMin, md); }
     if (process.env.VERB) console.log(W.map(f => { const md = Math.min(...f.pl.filter(p => dw(p, f.hero) > 0.3).map(p => dw(p, f.ball))); return f.t + ':' + f.ball.x.toFixed(0) + ',' + f.ball.y.toFixed(0) + '/' + md.toFixed(1); }).join(' '));
-    console.log(`284f seme ${S.seme} campioni ${W.length} · 001 in ${n001}/${W.length} · compagno piu' vicino >= ${mdMin.toFixed(1)} u · battitore ${JSON.stringify(sp && sp.spot && sp.spot.taker)}`);
-    tot.push({ seme: S.seme, n: W.length, n001, mdMin, taker: sp && sp.spot ? sp.spot.taker : null, codice001: W.length >= 4 && n001 >= W.length * 0.75 }); await ctx.close();
+    console.log(`284f seme ${S.seme} campioni ${W.length} · 001 in ${n001}/${W.length} · compagno piu' vicino >= ${mdMin.toFixed(1)} u · battitore ${JSON.stringify(sp && sp.spot && sp.spot.taker)} · primo scatto del pallone a ${dSnap == null ? '-' : dSnap.toFixed(1)} u dal punto`);
+    tot.push({ seme: S.seme, sd, prova, n: W.length, n001, dSnap, mdMin, taker: sp && sp.spot ? sp.spot.taker : null, codice001: W.length >= 4 && n001 >= W.length * 0.75 }); await ctx.close();
+    if (W.length >= 4) misurate++; else console.log(`284f seme ${S.seme}: apertura non misurata (${W.length} campioni) — riprovo la scena`);
+   }
   }
   R['284f'] = tot;
 }
@@ -157,9 +169,14 @@ if (R['282']) { const m = Math.max(0, ...R['282'].tiltMax); if (!R['282'].esecuz
 if (R['283']) { const T = R['283']; const m = Math.max(0, ...T.map(t => t.piede)); if (!T.length || T.some(t => !t.nDis || t.tMax < 1.0)) CIECO.push('283 disappunto mai montato o visto solo fino a ' + Math.min(...T.map(t => t.tMax || 0)).toFixed(2) + ' s (il picco sta a ~1,0-1,1 s)');
   else if (T.some(t => !t.hl || t.hl.type !== 'header' || !t.clips.includes('header'))) G.push('283 la manovra non e\' un colpo di testa con la clip header');
   else if (!ROSSO && m > 0.25) G.push(`283 corpo sospeso nel disappunto: piede a ${m.toFixed(2)} m`); else if (ROSSO && m < 0.40) G.push(`283 rosso non visibile: piede a ${m.toFixed(2)} m`); }
-if (R['284f']) { const T = R['284f']; if (T.length < 2 || T.some(t => t.n < 4)) CIECO.push('284f meno di due aperture misurate');
+if (R['284f']) { const T0 = R['284f'], T = T0.filter(t => t.n >= 4); const pochi = SEMI.filter(sd => T.filter(t => t.sd === sd).length < +(process.env.CPM_APERTURE073 || 2));
+  if (!T0.length || pochi.length) CIECO.push('284f meno di ' + (process.env.CPM_APERTURE073 || 2) + ' aperture misurate per i semi ' + (pochi.join(',') || SEMI.join(',')));/* [giro 79] per seme, non nel totale */
   else { const sen = T.filter(t => t.taker == null).length, c001 = T.filter(t => t.codice001).length;
     if (!ROSSO && (sen || c001)) G.push(`284 apertura d'angolo: battitore assente in ${sen}/${T.length}, codice 001 in ${c001}/${T.length}`);
+    /* [giro 79] PRIMO SCATTO DEL PALLONE: solo misura, NON verdetto. In ~1 apertura su 8 lo scatto di scena mette il pallone sul punto di gioco
+       (66; 50,5) invece che sul punto della scena (corsa fra il battito «playing» e il commit della forzatura; RAPPORTO-giro79, punto aperto):
+       come verdetto renderebbe il guardiano rosso a intermittenza. Si stampa per tenerlo d'occhio. */
+    const lont = T.filter(t => t.dSnap != null && t.dSnap > 1.5).length; console.log(`284f primo scatto del pallone lontano dal punto (> 1,5 u) in ${lont}/${T.length} aperture (misura, non verdetto)`);
     if (ROSSO && !(sen >= 1 && c001 >= 1)) G.push(`284 rosso non visibile: battitore assente in ${sen}/${T.length}, codice 001 in ${c001}/${T.length}`); } }
 if (R['284v']) { const T = R['284v']; if (!T.length) CIECO.push('284v nessun angolo nelle partite');
   else { const bad = T.filter(t => t.codice001 || t.taker == null); if (!ROSSO && bad.length) G.push(`284 apertura d'angolo senza battitore in ${bad.length}/${T.length}`); else if (ROSSO && !bad.length) console.log(`⚠️ 284 rosso non riprodotto in ${T.length} angoli (la corsa dipende dal tempo: dichiarato)`); } }

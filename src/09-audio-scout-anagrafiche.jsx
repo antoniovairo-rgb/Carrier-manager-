@@ -734,7 +734,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   // Memoria tag
   const memoriaTag=recs.topSeasonGoals>=10?`🏅 Record: ${recs.topSeasonGoals} gol in una stagione`:
     isYoungGB?`🏆 Miglior Giovane d'Europa S.${(playerCtx.goldenBoys||[])[0]||season}`:
-    age<=19?`✨ Enfant prodige (${age} anni)`:
+    (age<=19&&((typeof window!=='undefined'&&window.__CPM_NO_ENFANT79)||(typeof haTrattoEnfant==='function'&&haTrattoEnfant({tratti:playerCtx.tratti,archetype:playerCtx.archetype}))))?`✨ Enfant prodige (${age} anni)`:/* [giro 79 — rosso __CPM_NO_ENFANT79] la memoria «Enfant prodige» usciva per eta' <= 19 anche senza il tratto, tolto dal PO nella 175 (stile unico): ora solo col tratto (haTrattoEnfant, src/06) */
     season>=5?`📖 Veterano — ${season}ª stagione`:null;
 
   // SPRINT (epico)
