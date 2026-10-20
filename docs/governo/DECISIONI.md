@@ -698,3 +698,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Giro 84 (f5771aee, sviluppo/giro84-impulsi289): 7 impulsi collegati allo stato vero dell'Ufficio (scuola calcio → academy24 al costo dell'Ufficio; mental coach e chef → staff privato; casa e auto → beni; sponsor del procuratore → player.sponsors), 1 seguito riscritto, 6 eventi dello staff del club chiariti «del club», 0 tolti. Censimento in docs/governo/po289-censimento.md. impulsi-289 verde 6/6, rosso 6/6.
 - Sessione principale: accettata la scelta del giro di togliere i bonus inventati (popolarità/morale extra) dagli impulsi collegati: restano gli effetti dell'Ufficio. L'evento settimanale «il tuo agente finalizza un accordo commerciale secondario. Entrate extra.» (soldi promessi che non arrivano) segue la stessa regola PO-289: entra in un giro di seguito per la 177. Gli investimenti d'impulso restano sul loro registro (giro 70) per non cambiare investimento-223 e meta-conto-265.
+
+## 20/10 notte — giro 81 (PO-286) consegnato
+
+- Giro 81 (cebdbce8, sviluppo/giro81-colori286): testata, barre del tabellino e nomi colonna con i colori di maglia; ripiego per fondo (contrasto ≥ 3:1, distanza fra le barre ≥ 120 redmean) sul secondo colore della maglia o su una variante. colori-286 verde, rosso con __CPM_NO_COL286. Foto in docs/governo/foto/po286-dopo*.png.
+- Sessione principale: accettata la scelta «visibilità per fondo» (lo stesso club può uscire con colore diverso fra testata scura e card chiara se uno dei due è invisibile). Nazionale e tema scuro in partita vera non verificati: da guardare nel collaudo della 177.
