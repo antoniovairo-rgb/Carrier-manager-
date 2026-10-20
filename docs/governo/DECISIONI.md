@@ -673,3 +673,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «come faccio a capire come mi aiuta meglio il personal trainer…» (foto docs/governo/foto/po288-trainer.png). Misura: i pulsanti del piano (src/18-career-app.jsx ~10783) non mostrano valori; effetto in src/08-panchina-derby-meteo-cori.jsx:66-71 (generale ×1,10/1,15/1,20; piano +1 con quota 0,08/0,12/0,16 a settimana, ridotta quando l'attributo è alto).
 - PO (questionario): **«Valore + resa + consiglio»**, **nella 7.999.177**. Giro 83 (sotto-agente, ramo sviluppo/giro83-trainer288), rosso `__CPM_NO_PT288`, guardiano trainer-288; numeri mostrati calcolati dalle stesse funzioni del motore (nessuna stima a parte).
+
+## 20/10 sera — sette voci chiuse dal PO
+
+- PO: «mettile in chiuso per il momento» → PO-098, PO-154, PO-155, PO-156, PO-157, PO-168, PO-281 da «DA VERIFICARE DAL PO» a **CHIUSO** (riapribili se le carriere o i collaudi trovano difetti). PO-098: descrizione segnata come superata (archetipi tolti, PO-190 e PO-287).
