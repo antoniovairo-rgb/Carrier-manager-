@@ -1,0 +1,151 @@
+{
+ "verde": {
+  "creazione": [
+   "finalizzatore",
+   "regista",
+   "incursore",
+   "trascinatore"
+  ],
+  "casi": {
+   "bomber": {
+    "stile": "finalizzatore",
+    "orig": "bomber",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "fantasista": {
+    "stile": "regista",
+    "orig": "fantasista",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "velocista": {
+    "stile": "incursore",
+    "orig": "velocista",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "trequartista": {
+    "stile": "regista",
+    "orig": "trequartista",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "leader": {
+    "stile": "trascinatore",
+    "orig": "leader",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "centravanti": {
+    "stile": "finalizzatore",
+    "orig": "centravanti",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "enfant": {
+    "stile": "trascinatore",
+    "orig": "enfant",
+    "enfant": true,
+    "enfantTratto": true,
+    "persi": [],
+    "idem": true
+   },
+   "tuttocampista": {
+    "stile": "trascinatore",
+    "orig": "tuttocampista",
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   }
+  }
+ },
+ "rosso": {
+  "creazione": [
+   "finalizzatore",
+   "regista",
+   "incursore",
+   "trascinatore"
+  ],
+  "casi": {
+   "bomber": {
+    "stile": "bomber",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "fantasista": {
+    "stile": "fantasista",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "velocista": {
+    "stile": "velocista",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "trequartista": {
+    "stile": "trequartista",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "leader": {
+    "stile": "leader",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "centravanti": {
+    "stile": "centravanti",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   },
+   "enfant": {
+    "stile": "enfant",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": true,
+    "persi": [],
+    "idem": true
+   },
+   "tuttocampista": {
+    "stile": "tuttocampista",
+    "orig": null,
+    "enfant": false,
+    "enfantTratto": false,
+    "persi": [],
+    "idem": true
+   }
+  }
+ }
+}
+✅ stili-098-migrazione verde (8 archetipi → 4 stili + tratto Enfant, idempotente, nessun campo perso; il rosso lascia l'archetipo)

@@ -1,0 +1,378 @@
+{
+ "rosso": false,
+ "semi": 2,
+ "stagioni": 2,
+ "tutte": {
+  "gavetta": {
+   "gare": 416,
+   "decisioni": 259,
+   "voto": 5.92,
+   "gol": 0.127,
+   "vitt": 31.7,
+   "min": 55.6,
+   "tit": 44.8
+  },
+  "affermazione": {
+   "gare": 436,
+   "decisioni": 273,
+   "voto": 6.47,
+   "gol": 0.378,
+   "vitt": 49.3,
+   "min": 79.2,
+   "tit": 82.4
+  },
+  "elite": {
+   "gare": 460,
+   "decisioni": 270,
+   "voto": 6.92,
+   "gol": 0.507,
+   "vitt": 52,
+   "min": 89.1,
+   "tit": 98.5
+  },
+  "declino": {
+   "gare": 462,
+   "decisioni": 270,
+   "voto": 6.36,
+   "gol": 0.26,
+   "vitt": 43.5,
+   "min": 62.8,
+   "tit": 56.7
+  }
+ },
+ "perStile": {
+  "finalizzatore": {
+   "gavetta": {
+    "gare": 139,
+    "decisioni": 83,
+    "voto": 5.93,
+    "gol": 0.144,
+    "vitt": 30.9,
+    "min": 59.3,
+    "tit": 50.6
+   },
+   "affermazione": {
+    "gare": 148,
+    "decisioni": 87,
+    "voto": 6.47,
+    "gol": 0.426,
+    "vitt": 47.3,
+    "min": 80.8,
+    "tit": 85.1
+   },
+   "elite": {
+    "gare": 148,
+    "decisioni": 89,
+    "voto": 6.97,
+    "gol": 0.561,
+    "vitt": 57.4,
+    "min": 89.3,
+    "tit": 98.9
+   },
+   "declino": {
+    "gare": 153,
+    "decisioni": 94,
+    "voto": 6.38,
+    "gol": 0.294,
+    "vitt": 43.1,
+    "min": 58.8,
+    "tit": 50
+   }
+  },
+  "regista": {
+   "gavetta": {
+    "gare": 139,
+    "decisioni": 87,
+    "voto": 5.9,
+    "gol": 0.115,
+    "vitt": 31.7,
+    "min": 53.7,
+    "tit": 42.5
+   },
+   "affermazione": {
+    "gare": 144,
+    "decisioni": 93,
+    "voto": 6.48,
+    "gol": 0.326,
+    "vitt": 54.2,
+    "min": 77.9,
+    "tit": 79.6
+   },
+   "elite": {
+    "gare": 155,
+    "decisioni": 94,
+    "voto": 6.87,
+    "gol": 0.432,
+    "vitt": 49.7,
+    "min": 88,
+    "tit": 96.8
+   },
+   "declino": {
+    "gare": 152,
+    "decisioni": 90,
+    "voto": 6.34,
+    "gol": 0.263,
+    "vitt": 42.1,
+    "min": 67.7,
+    "tit": 64.4
+   }
+  },
+  "incursore": {
+   "gavetta": {
+    "gare": 138,
+    "decisioni": 89,
+    "voto": 5.94,
+    "gol": 0.123,
+    "vitt": 32.6,
+    "min": 53.9,
+    "tit": 41.6
+   },
+   "affermazione": {
+    "gare": 144,
+    "decisioni": 93,
+    "voto": 6.45,
+    "gol": 0.382,
+    "vitt": 46.5,
+    "min": 79,
+    "tit": 82.8
+   },
+   "elite": {
+    "gare": 157,
+    "decisioni": 87,
+    "voto": 6.91,
+    "gol": 0.529,
+    "vitt": 49,
+    "min": 90,
+    "tit": 100
+   },
+   "declino": {
+    "gare": 157,
+    "decisioni": 86,
+    "voto": 6.37,
+    "gol": 0.223,
+    "vitt": 45.2,
+    "min": 62.2,
+    "tit": 55.8
+   }
+  }
+ },
+ "fuori": [],
+ "carriere": [
+  {
+   "stile": "regista",
+   "fase": "gavetta",
+   "seme": 1,
+   "gare": 70,
+   "dec": 47,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 1,
+   "gare": 76,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "affermazione",
+   "seme": 1,
+   "gare": 75,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 1,
+   "gare": 70,
+   "dec": 41,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 1,
+   "gare": 78,
+   "dec": 38,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 1,
+   "gare": 69,
+   "dec": 41,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "elite",
+   "seme": 1,
+   "gare": 78,
+   "dec": 40,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "affermazione",
+   "seme": 1,
+   "gare": 75,
+   "dec": 42,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "declino",
+   "seme": 1,
+   "gare": 76,
+   "dec": 44,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "gavetta",
+   "seme": 1,
+   "gare": 69,
+   "dec": 44,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "elite",
+   "seme": 1,
+   "gare": 76,
+   "dec": 45,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "declino",
+   "seme": 2,
+   "gare": 77,
+   "dec": 48,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "declino",
+   "seme": 1,
+   "gare": 78,
+   "dec": 41,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "gavetta",
+   "seme": 2,
+   "gare": 69,
+   "dec": 42,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "gavetta",
+   "seme": 2,
+   "gare": 69,
+   "dec": 40,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "affermazione",
+   "seme": 2,
+   "gare": 70,
+   "dec": 49,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "finalizzatore",
+   "fase": "elite",
+   "seme": 2,
+   "gare": 79,
+   "dec": 48,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "affermazione",
+   "seme": 2,
+   "gare": 69,
+   "dec": 51,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "affermazione",
+   "seme": 2,
+   "gare": 69,
+   "dec": 47,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "gavetta",
+   "seme": 2,
+   "gare": 69,
+   "dec": 45,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "elite",
+   "seme": 2,
+   "gare": 79,
+   "dec": 49,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "elite",
+   "seme": 2,
+   "gare": 79,
+   "dec": 47,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "regista",
+   "fase": "declino",
+   "seme": 2,
+   "gare": 76,
+   "dec": 46,
+   "fine": "ok",
+   "errori": 0
+  },
+  {
+   "stile": "incursore",
+   "fase": "declino",
+   "seme": 2,
+   "gare": 79,
+   "dec": 45,
+   "fine": "ok",
+   "errori": 0
+  }
+ ]
+}

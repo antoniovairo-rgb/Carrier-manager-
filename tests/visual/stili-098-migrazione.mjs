@@ -1,7 +1,8 @@
 /* [giro 67 PO-098] GUARDIANO DELLA MIGRAZIONE DEGLI ARCHETIPI (salvataggi compatibili). Nella pagina vera: per ognuno degli 8 vecchi
    archetipi un salvataggio passa da migratePlayer (window.__CPM_MIGRATE) e deve uscire con lo stile giusto, l'id di prima in
    archetipoOrig, il tratto Enfant solo per l'Enfant (che mantiene la crescita x1,35 sotto i 23 anni), nessun campo perso, e la seconda
-   migrazione non deve cambiare niente. La creazione offre 4 stili. Rosso (__CPM_NO_STILI): l'archetipo resta quello di prima. */
+   migrazione non deve cambiare niente. La creazione offre 4 stili. Rosso (__CPM_NO_STILI): l'archetipo resta quello di prima.
+   [giro 75] Dal giro 75 gira con __CPM_NO_STILEUNICO75 acceso in entrambi i bracci: lo stile unico e' provato da stile-unico-75. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
@@ -9,7 +10,7 @@ const ATTESO = { bomber: 'finalizzatore', centravanti: 'finalizzatore', trequart
 const srv = await startServer(); const b = await launchBrowser(); const err = []; const out = {};
 for (const rosso of [false, true]) {
   const page = await b.newPage(); await installCdnRoutes(page);
-  await page.addInitScript((r) => { if (r) window.__CPM_NO_STILI = 1; }, rosso);
+  await page.addInitScript((r) => { window.__CPM_NO_STILEUNICO75 = 1; if (r) window.__CPM_NO_STILI = 1; }, rosso);/* [giro 75] questo guardiano prova lo strato del giro 67 (8 archetipi → 4 stili): dal giro 75 lo stile unico lo copre, quindi si spegne lo stile unico (lo prova stile-unico-75) */
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!window.__CPM_MIGRATE && !!window.__CPM_STILI, null, { timeout: 90000 });
   const r = await page.evaluate((pl) => {

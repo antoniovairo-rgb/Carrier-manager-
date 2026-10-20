@@ -1,25 +1,26 @@
 #!/usr/bin/env node
 /* [giro 69 PO-156 «A — Curva netta»] Guardiano e strumento della curva di carriera per fase.
    Carriere SIMULATE sugli handler veri (__CPM_CAREER.step, come career-sim-test e il banco L6-bis) partendo da quattro eta'
-   (17 · 21 · 26 · 31, una per fase), tre stili (Finalizzatore attaccante · Regista centrocampista · Incursore attaccante) e
-   piu' semi; per ogni fase: voto medio, gol a gara, vittorie (tutte le gare in matchHistory, come fasi156.py del giro 67),
+   (17 · 21 · 26 · 31, una per fase), il solo stile Finalizzatore attaccante (giro 78: stile unico del giro 75; prima erano tre
+   stili x 2 semi, ora 1 stile x 10 semi = 40 carriere: a 24 lo stesso codice dava titolare in declino 57,9 e 47,1%
+   fra due giri, rumore grande quanto la tolleranza) e piu' semi; per ogni fase: voto medio, gol a gara, vittorie (tutte le gare in matchHistory, come fasi156.py del giro 67),
    minuti e % titolare dalla decisione del mister calcCoachDecision per ogni gara di campionato (stessa regola del banco L6-bis:
    titolare 90, panchina 90 - ingresso, non convocato 0).
    Partenza di ogni fase = medie misurate dal banco L6-bis per quella fase (OVR e prestigio del club, RAPPORTO-giro69 §1).
    Verde: le quattro fasi entro la tolleranza dei bersagli A. Rosso (__CPM_NO_156): la curva piatta deve uscire di tolleranza.
-   Uso: node difficolta-156.mjs [--semi=2] [--stagioni=2] [--par=6] [--rosso] [--json=file] */
+   Uso: node difficolta-156.mjs [--semi=10] [--par=8] [--stagioni=2] [--par=6] [--rosso] [--json=file] */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const SEMI = Number(args.semi || 2), STAG = Number(args.stagioni || 2), PAR = Number(args.par || 6), ROSSO = !!args.rosso || !!process.env.CPM_ROSSO156;
+const SEMI = Number(args.semi || 10), STAG = Number(args.stagioni || 2), PAR = Number(args.par || 8), ROSSO = !!args.rosso || !!process.env.CPM_ROSSO156;
 const BERSAGLI = { gavetta: { voto: 6.0, gol: 0.15, vitt: 35, min: 55, tit: 45 }, affermazione: { voto: 6.4, gol: 0.30, vitt: 45, min: 75, tit: 75 },
   elite: { voto: 6.9, gol: 0.50, vitt: 55, min: 85, tit: 95 }, declino: { voto: 6.3, gol: 0.25, vitt: 45, min: 65, tit: 60 } };
 const TOLL = { voto: 0.2, gol: 0.08, vitt: 8, min: 8, tit: 10 };/* tolleranza dichiarata nel RAPPORTO-giro69 */
 /* due club per fase (seme dispari / pari): uno sopra il livello dell'eroe e uno sotto, nelle leghe dove le medie del banco L6-bis
    (OVR e prestigio per fase) ricadono; scelti perche' il gioco di prima (rosso) riproduca vittorie e titolarita' del banco. */
 const FASI = [{ f: 'gavetta', eta: 17, ovr: 67, club: ['utr', 'gron'] }, { f: 'affermazione', eta: 21, ovr: 74, club: ['rsoc', 'utr'] }, { f: 'elite', eta: 26, ovr: 81, club: ['fra', 'stu'] }, { f: 'declino', eta: 31, ovr: 82, club: ['lille', 'nice'] }];
-const STILI = [{ id: 'finalizzatore', pos: 'Attaccante' }, { id: 'regista', pos: 'Centrocampista' }, { id: 'incursore', pos: 'Attaccante' }];
+const STILI = [{ id: 'finalizzatore', pos: 'Attaccante' }];/* [giro 78] stile unico (giro 75): gli altri stili non si creano piu' */
 const faseDi = a => a <= 20 ? 'gavetta' : a <= 25 ? 'affermazione' : a <= 30 ? 'elite' : 'declino';
 
 const srv = await startServer(); const port = srv.address().port;
