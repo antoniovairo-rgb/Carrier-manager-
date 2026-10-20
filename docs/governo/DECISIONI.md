@@ -645,3 +645,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - 7.999.176 su main (bd0392b3), catena notte 105/105 in locale.
 - Carriere intere della fase di stabilità (Sonnet, decisione PO «Misto»): con le sessioni cloud non più disponibili girano come sotto-agenti sulla stessa macchina (4 processori), quindi **due alla volta** invece di sei in parallelo (decisione della sessione principale: con più browser insieme i controlli sotto carico danno falsi rossi, misurato su difficolta-156 e difesa-220-giro31). Ordine: 1 attaccante + 2 molti trasferimenti; poi Nazionale + centrocampista; poi difensore + portiere (se il gioco li permette).
 - Il collaudo di release 176 è assorbito dalle carriere (coprono rigore, voto, Enfant e Ufficio dal vivo).
+
+## 20/10 sera — backlog e fase di stabilità (PO, questionario)
+
+- PO: «solo stabilità?» → sì, da ora solo collaudi e correzioni dei difetti trovati, niente funzioni nuove.
+- PO (questionario): i 21 residui PARZIALI → **«Solo se emergono»**: diventano «RESIDUO IN STABILITÀ», si correggono solo se le carriere intere o i collaudi li trovano come difetti alti o medi.
+- Sessione principale: PO-098, 154, 155, 156, 157, 168, 281 (pubblicate nella 174/175, stato vecchio) portate a «DA VERIFICARE DAL PO». PO-222 e PO-223 restano APERTO (zona G, da controllare nelle carriere).
