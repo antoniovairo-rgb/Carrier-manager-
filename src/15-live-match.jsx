@@ -1485,9 +1485,10 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
    delle ultime feste (ultimi 6, memoria del browser: comodita'; se manca si sceglie solo con l'hash). */
 function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   if(typeof window!=='undefined'&&window.__CPM_NO_CORI291)return [U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
-  const rep=["Oh "+N+", oh "+N+"!",N+" alé, "+N+" alé!","Tutti in piedi per "+N+"!","Chi non salta "+N+" non è!","Siamo tutti con "+N+"!",
-    "Facci un gol, "+N+"!",N+", "+N+", portaci in alto!","Grazie "+N+"!","Questa curva canta per "+N+"!",U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
-  const repGol=g>=3?["Tripletta! "+U+"!",N+", tre volte "+N+"!"]:g===2?["Doppietta di "+N+"!","Due gol, un solo "+N+"!"]:g===1?["Il gol è di "+N+"!","Ha segnato "+N+"!"]:["Lotta per noi, "+N+"!","Non mollare mai, "+N+"!"];
+  /* [PO-291 bis «rivedi i testi, non sono molto fluidi e corretti»] cori da curva veri, a partita finita (niente «facci un gol») */
+  const rep=[U+"! "+U+"! "+U+"!","C'è solo un "+N+"!","Oh "+N+", oh "+N+"!","Alé, alé, "+N+" alé!",N+", "+N+", olé olé!",
+    "Tutti in piedi per "+N+"!","Grazie, "+N+"!","Siamo tutti con te, "+N+"!",N+", uno di noi!","La curva è tutta per "+N+"!",N+", facci sognare!"];
+  const repGol=g>=3?["Tripletta di "+N+"!","Il pallone è tuo, "+N+"!"]:g===2?["Doppietta di "+N+"!","Due gol di "+N+"!"]:g===1?[N+", che gol!","Segna sempre lui, "+N+"!"]:[N+", cuore e grinta!",N+", non mollare mai!"];
   const tutti=repGol.concat(rep);usati=Array.isArray(usati)?usati:[];
   const kh=(k)=>{k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);};
   const liberi=tutti.filter(t=>usati.indexOf(t)<0),pool=liberi.length>=2?liberi:tutti;

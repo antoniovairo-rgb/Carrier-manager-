@@ -19,7 +19,7 @@ async function giro(rosso) {
   await ctx.close();
   const ko = [];
   r.forEach((f, i) => { if (f.c.length !== 2 || f.c[0] === f.c[1]) ko.push(`festa ${i + 1}: cori non distinti`); if (!f.c.every(t => /vairo/i.test(t))) ko.push(`festa ${i + 1}: coro senza il cognome`);
-    if (f.g !== 3 && f.c.some(t => /Tripletta|tre volte/.test(t))) ko.push(`festa ${i + 1}: tripletta con ${f.g} gol`);
+    if (f.g !== 3 && f.c.some(t => /Tripletta|pallone è tuo/.test(t))) ko.push(`festa ${i + 1}: tripletta con ${f.g} gol`);
     if (f.g !== 2 && f.c.some(t => /Doppietta|Due gol/.test(t))) ko.push(`festa ${i + 1}: doppietta con ${f.g} gol`); });
   const rip = []; r.forEach((f, i) => { for (let j = i + 1; j <= i + 3 && j < r.length; j++) f.c.forEach(t => { if (r[j].c.includes(t)) rip.push(`«${t}» festa ${i + 1} e ${j + 1}`); }); });
   if (rip.length) ko.push(`ripetuti a breve: ${rip.slice(0, 3).join('; ')}`);
