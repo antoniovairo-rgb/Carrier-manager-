@@ -1464,7 +1464,7 @@ const getThisWeekMatchday=()=>{
          Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
       apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[im.cat]||"💡";
-        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:impScelte289(im.choices,player),isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -2437,26 +2437,7 @@ const getThisWeekMatchday=()=>{
   // [7.29.0 ONDA 4 — §S10] SPONSOR & IMMAGINE: il secondo stipendio arriva a FASCE di fama (soglie di
   //   popolarità; con procuratore GLOBAL si aprono prima, §S5). Brand di fantasia seedati, max 1 sponsor per
   //   fascia (p.sponsors lazy); il reddito entra dal chokepoint weeklyEconomyFields (tutti i path — STAB).
-  const _SPON_TIERS=[
-    {k:"globale",min:86,e:"🌍",n:"testimonial globale",brands:["Aurea Sportswear","Nexon Worldwide","Vela Group"],wk:8000},
-    {k:"nazionale",min:72,e:"📺",n:"spot nazionale",brands:["Banca Adria","Caffè Milleluci","Volt Energy"],wk:3000},
-    {k:"tecnico",min:55,e:"👟",n:"sponsor tecnico (scarpe)",brands:["Vortex Boots","Falco Nove","Kappa Ridge"],wk:1200},
-    {k:"locale",min:35,e:"🏪",n:"sponsor locale",brands:["Concessionaria Del Corso","Panificio La Torre","Ottica Vidale"],wk:400},
-  ];
-  const sponsorView=(p)=>{try{
-    if((p.proStatus||"u18")!=="pro")return null;
-    const sn=p.season||1;const pop=p.popularity||0;
-    const owned=new Set((p.sponsors||[]).map(s=>s.tier));
-    const declined=(p.sponsorDecl&&p.sponsorDecl.season===sn)?p.sponsorDecl.tier:null;
-    const shift=p.agentStyle==="global"?6:0;/* §S5: l'agenzia global apre le porte prima */
-    const _maxOwnedMin=Math.max(-1,..._SPON_TIERS.filter(x=>owned.has(x.k)).map(x=>x.min));/* [7.162.0 super-test ECO-F11] */
-    const t=_SPON_TIERS.find(t=>pop>=(t.min-shift)&&!owned.has(t.k)&&declined!==t.k&&t.min>=_maxOwnedMin/* mai una fascia SOTTO quella già firmata: il testimonial globale non firma col panificio locale */);
-    if(!t)return null;
-    const seed=hashStr((p.name||"x")+"_sp_"+t.k+"_"+Math.floor((sn-1)/3));
-    const brand=t.brands[seed%t.brands.length];
-    const weekly=Math.round(t.wk*(0.9+((seed>>>3)%21)/100));/* [7.147.0] >>> (con segno il jitter poteva diventare negativo) */
-    return{tier:t.k,e:t.e,label:t.n,brand,weekly};
-  }catch(_e){return null;}};
+  /* [PO-289 · giro 84] _SPON_TIERS e sponsorView sono passati al modulo (src/08), invariati: li legge anche l'evento di vita dello sponsor del procuratore. */
   // bivio derivato: lo shooting cade nella settimana del big match (§S10 — mai casuale: serve uno sponsor
   //   attivo E una settimana calda dal calendario; una volta a stagione, p.sponsorEvS).
   const sponsorShoot=(p)=>{try{
@@ -4070,6 +4051,7 @@ const getThisWeekMatchday=()=>{
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
         ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
       };
+      if(choice.uff289)upd={...upd,...uffPatch289(upd,choice.uff289)};/* [PO-289] la scelta scrive lo stato vero dell'Ufficio (accademia, staff, bene, sponsor) */
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
         const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -4095,6 +4077,7 @@ const getThisWeekMatchday=()=>{
     if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
+    if(choice.uff289&&!(typeof window!=="undefined"&&window.__CPM_NO_IMP289))setTimeout(()=>notify(uffAvviso289(choice.uff289),TH.success),250);/* [PO-289] dove la trovi */
     // Sprint 69: notify bond milestone
     if(bondMilestone){
       const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -4242,7 +4225,7 @@ const getThisWeekMatchday=()=>{
         _lastImpulseId=impulse.id;
         setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[impulse.cat]||"💡";
-        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
+        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impScelte289(impulse.choices,player),isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
       }
     }

@@ -347,6 +347,8 @@ const _ult154=(p,n)=>(p.matchHistory||[]).slice(-n);
 const _vinte154=(p,n)=>_ult154(p,n).filter(m=>m&&m.won).length;
 const _perse154=(p,n)=>_ult154(p,n).filter(m=>m&&!m.won&&!m.drew).length;
 const _pro154=(p)=>(p.proStatus||"u18")==="pro";
+/* [PO-289 · giro 84] la condizione di sempre + «ha senso nell'Ufficio» (uffOk289, src/08); col rosso __CPM_NO_IMP289 resta la sola condizione di sempre */
+const _c289=(c0,spec)=>(p)=>c0(p)&&(no289()||uffOk289(p,spec));
 const _conto154=(p)=>(p.bankBalance||0);
 const _ruolo154=(p)=>p.squadRole||"rotazione";
 const _exClub154=(p)=>(p.history||[]).some(h=>h&&h.clubId&&p.club&&h.clubId!==p.club.id)||((p.season||1)>=3);
@@ -454,8 +456,9 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Dico quello che penso",ef:{popularity:9,coachTrust:-10,morale:4}},
     {txt:"🧊 Glissa con diplomazia",ef:{coachTrust:5,popularity:-2}},
   ]},
-  {id:"wi_personal_chef",cond:_cx154(p=>_conto154(p)>=30000),cat:"opportunità",txt:"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.",choices:[
-    {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3}},
+  {id:"wi_personal_chef",cond:_c289(_cx154(p=>_conto154(p)>=30000),"staff:perkNutrition")/* [PO-289] solo se non hai gia' il preparatore atletico dell'Ufficio */,cat:"opportunità",
+    get txt(){return no289()?"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.":"Uno specialista di nutrizione e recupero si propone come tuo preparatore atletico privato. Se lo prendi entra nello Staff privato, nell'Ufficio.";},choices:[
+    {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3},v289:{txt:"🥗 Lo assumo — {SETT}, lo gestisco dall'Ufficio",ef:{},uff289:"staff:perkNutrition"}},
     {txt:"🍕 Sto bene così",ef:{}},
   ]},
   {id:"wi_famiglia_visita",cond:_cx154(p=>_gara154(p)/* «proprio nella settimana piu' piena» */),cat:"scelta",txt:"I tuoi genitori vogliono venire a trovarti proprio nella settimana più piena.",choices:[
@@ -725,9 +728,10 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
     {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
   ]},
-  {id:"wi_scuola_calcio",cat:"opportunità",cond:p=>(p.popularity||20)>=42,txt:"Ti propongono di aprire una scuola calcio col tuo nome: investimento e un po' del tuo tempo.",choices:[
-    {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6}},
-    {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000}},
+  {id:"wi_scuola_calcio",cat:"opportunità",cond:_c289(p=>(p.popularity||20)>=42,"accademia")/* [PO-289] compare solo se l'Accademia dell'Ufficio non c'e' ancora e il conto basta per aprirla */,
+    get txt(){return no289()?"Ti propongono di aprire una scuola calcio col tuo nome: investimento e un po' del tuo tempo.":"Ti propongono di aprire una scuola calcio col tuo nome. Se ci metti faccia e soldi nasce la tua Accademia, quella vera: la trovi nell'Ufficio. Se presti solo il nome è una licenza: incassi, ma nessuna scuola è tua.";},choices:[
+    {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6},v289:{txt:"⚽ Ci metto faccia e soldi: apro l'Accademia ({COSTO} per aprirla, {SETT}) — la trovi nell'Ufficio",ef:{popularity:3},uff289:"accademia"}},
+    {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000},v289:{txt:"🤝 Presto solo il nome: una licenza, nessuna scuola è mia",ef:{popularity:3,bank:6000}}},
   ]},
   {id:"wi_giornata_libera",cond:_cx154(p=>_vinte154(p,1)>=1/* il giorno libero si concede dopo una vittoria */),cat:"scelta",txt:"Il mister concede un giorno libero: mare coi compagni o palestra da solo per limare i dettagli?",choices:[
     {txt:"🏖 Mare col gruppo",ef:{chem:7,morale:6,fatigue:3}},
@@ -764,8 +768,9 @@ const WEEKLY_IMPULSES=[
     {txt:"💙 Lo invito all'allenamento",ef:{morale:9,popularity:5,fatigue:2}},
     {txt:"🎁 Gli mando maglia e videomessaggio",ef:{morale:4,bank:-2000}},
   ]},
-  {id:"wi_mental_coach",cond:_cx154(p=>(p.morale||70)<62||_perse154(p,3)>=2/* la testa si allena quando pesa */),cat:"scelta",txt:"Un mental coach propone due giorni di lavoro sulla concentrazione.",choices:[
-    {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3}},
+  {id:"wi_mental_coach",cond:_c289(_cx154(p=>(p.morale||70)<62||_perse154(p,3)>=2/* la testa si allena quando pesa */),"staff:perkMental")/* [PO-289] solo se non hai gia' il mental coach dell'Ufficio */,cat:"scelta",
+    get txt(){return no289()?"Un mental coach propone due giorni di lavoro sulla concentrazione.":"Un mental coach si propone per un lavoro stabile sulla concentrazione: se lo ingaggi entra nel tuo Staff privato, nell'Ufficio.";},choices:[
+    {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3},v289:{txt:"🧘 Lo ingaggio — {SETT}, lo gestisco dall'Ufficio",ef:{},uff289:"staff:perkMental"}},
     {txt:"⚽ Preferisco il campo",ef:{form:2}},
   ]},
   {id:"wi_orologi_squadra",cond:_cx154(p=>_pro154(p)&&_conto154(p)>=44000),cat:"scelta",txt:"Vuoi cementare il gruppo regalando un orologio a ogni compagno. Costa parecchio.",choices:[
@@ -780,8 +785,9 @@ const WEEKLY_IMPULSES=[
     {txt:"💸 Ci sto",ef:{bank:8000,popularity:4,coachTrust:-2}},
     {txt:"🚫 Niente vetrine sui social",ef:{coachTrust:3}},
   ]},
-  {id:"wi_casa_citta",cond:p=>_brandOk453(p)&&((p.bank||0)+(p.bankBalance||0))>=250000/* [7.453.0] non si compra casa/un ristorante senza averci i soldi */,cat:"conseguenza",txt:"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.",choices:[
-    {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4}},
+  {id:"wi_casa_citta",cond:p=>_brandOk453(p)&&(no289()?((p.bank||0)+(p.bankBalance||0))>=250000:uffOk289(p,"bene:casa"))/* [7.453.0] non si compra casa/un ristorante senza averci i soldi · [PO-289] e se la casa dell'Ufficio non e' gia' tua */,cat:"conseguenza",
+    get txt(){return no289()?"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.":"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità. È la «Casa in città» dei tuoi beni: poi la trovi nell'Ufficio.";},choices:[
+    {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4},v289:{txt:"🏠 Compro — è casa mia ({COSTO})",ef:{popularity:1,coachTrust:2},uff289:"bene:casa"}},
     {txt:"🔑 Resto in affitto, più libero",ef:{morale:1}},
   ]},
   {id:"wi_primo_mister",cond:_cx154(p=>(p.season||1)>=3/* «il tuo primo allenatore»: serve un po' di strada fatta */),cat:"personale",txt:"Il tuo primo allenatore, oggi in difficoltà, ti chiede una mano per un provino ai suoi ragazzi.",choices:[
@@ -899,8 +905,9 @@ const WEEKLY_IMPULSES=[
     {txt:"🧘 La faccio nel tunnel",ef:{form:3,morale:4}},
     {txt:"😅 Me la sono già dimenticata",ef:{morale:1}},
   ]},
-  {id:"wi_seg_chef",seg:{da:"wi_personal_chef",c:0,min:4,max:10},cond:_sg154("wi_seg_chef"),cat:"seguito",txt:"Il mese di prova dello chef è finito: ti senti più leggero e i test lo confermano. Ti propone di restare per la stagione.",choices:[
-    {txt:"🥗 Lo confermo",ef:{bank:-20000,fatigue:-8,form:3}},
+  {id:"wi_seg_chef",seg:{da:"wi_personal_chef",c:0,min:4,max:10},cond:_sg154("wi_seg_chef"),cat:"seguito",
+    get txt(){return no289()?"Il mese di prova dello chef è finito: ti senti più leggero e i test lo confermano. Ti propone di restare per la stagione.":"Il preparatore atletico che hai preso nello Staff privato fa il punto con te: ti senti più leggero e i test lo confermano. Ti propone di rivedere il piano.";},choices:[
+    {txt:"🥗 Lo confermo",ef:{bank:-20000,fatigue:-8,form:3},v289:{txt:"🥗 Seguo il suo piano",ef:{fatigue:-8,form:3}}},/* [PO-289] niente 20.000 inventati: lo staff costa quello dell'Ufficio */
     {txt:"🍳 Ho imparato le ricette, faccio da me",ef:{form:1,morale:3}},
   ]},
   {id:"wi_seg_accademia",seg:{da:"wi_giovani_accademia",c:0,min:6,max:20},cond:_sg154("wi_seg_accademia"),cat:"seguito",txt:"I ragazzi della scuola calcio che hai visitato hanno vinto il loro torneo e ti dedicano la coppa.",choices:[
@@ -936,6 +943,16 @@ const WEEKLY_IMPULSES=[
     {txt:"🏷️ Basta il taglio del nastro",ef:{popularity:3,morale:3}},
   ]},
 ];
+/* [PO-289 · giro 84] il «preparatore atletico»/«nutrizionista» che propone una seduta e' personale DEL CLUB (gratis, una tantum), non lo staff
+   privato dell'Ufficio: il testo lo dice (col rosso __CPM_NO_IMP289 resta quello di prima). */
+[["wi_ciclo_forza","Il preparatore atletico propone","Il preparatore atletico del club propone"],
+ ["wi_staff","Il preparatore atletico ti propone","Il preparatore atletico del club ti propone"],
+ ["wi_analisi_video","Il preparatore atletico ti propone","Il preparatore atletico del club ti propone"],
+ ["wi_crioterapia","Il preparatore consiglia","Il preparatore del club consiglia"],
+ ["wi_sosta_nazionali","extra col preparatore.","extra col preparatore del club."],
+ ["wi_dieta_ferrea","Il nutrizionista propone","Il nutrizionista del club propone"]].forEach(function(r){
+  const im=WEEKLY_IMPULSES.find(function(x){return x.id===r[0];});if(!im||typeof im.txt!=="string"||im.txt.indexOf(r[1])<0)return;
+  const t0=im.txt;Object.defineProperty(im,"txt",{get:function(){return no289()?t0:t0.replace(r[1],r[2]);},configurable:true,enumerable:true});});
 
 /* ========================================
    SPRINT 24 — C: LA STAMPA TI RICORDA (GIORNALISTI)
@@ -1040,8 +1057,8 @@ const VITA_EVENTS=[
   {id:"vita_meme_scivolata",cat:"social",r:"c",cond:p=>(p.form||70)<50,txt:"🙈 La tua scivolata a vuoto è diventata un meme. Lo posti tu per primo con scritto «pattinaggio artistico: 9.5». I tifosi ti perdonano tutto.",ef:{morale:2,popularity:4}},
   // ---- VITA DELL'EROE ----
   {id:"vita_primo_stipendio",cat:"vita",r:"u",cond:p=>(p.salary||0)>=10,txt:"💶 Il primo stipendio VERO. Lo guardi sul telefono per dieci minuti. Poi chiami casa: stasera offri tu, e non si discute.",ef:{morale:8},mem:"Il primo stipendio vero"},
-  {id:"vita_auto",cat:"vita",r:"u",cond:p=>vitaSaldo281(p)>=80000/* [PO-281] il conto e' bankBalance: con p.bank non usciva mai */,txt:"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo.",ef:{bank:-45000,morale:10},mem:"L'auto dei sogni"},
-  {id:"vita_casa",cat:"vita",r:"u",cond:p=>vitaSaldo281(p)>=250000/* [PO-281] idem */,txt:"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.",ef:{bank:-180000,morale:12},mem:"La prima casa"},
+  {id:"vita_auto",cat:"vita",r:"u",cond:p=>no289()?vitaSaldo281(p)>=80000/* [PO-281] il conto e' bankBalance: con p.bank non usciva mai */:uffOk289(p,"bene:auto")/* [PO-289] l'auto dell'Ufficio, se non e' gia' tua */,txt:p=>no289()?"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo.":"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo. (La trovi nell'Ufficio, fra i beni.)",get ef(){return no289()?{bank:-45000,morale:10}:{bank:-150000,popularity:3,coachTrust:-2,uff289:"bene:auto"};},mem:"L'auto dei sogni"},
+  {id:"vita_casa",cat:"vita",r:"u",cond:p=>no289()?vitaSaldo281(p)>=250000/* [PO-281] idem */:uffOk289(p,"bene:casa")/* [PO-289] la casa dell'Ufficio, se non e' gia' tua */,txt:p=>no289()?"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.":"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai. (La trovi nell'Ufficio, fra i beni.)",get ef(){return no289()?{bank:-180000,morale:12}:{bank:-250000,popularity:1,coachTrust:2,uff289:"bene:casa"};},mem:"La prima casa"},
   {id:"vita_compleanno",cat:"vita",r:"c",cond:p=>((p.week||1)%38)===(((typeof hashStr==="function"?Math.abs(hashStr((p.name||"eroe")+"_bday")):7)%30)+3),txt:"🎂 Compleanno. Lo spogliatoio ti aspetta con una torta e una foto tua da bambino trovata chissà dove, stampata in formato POSTER.",ef:{morale:6}},
   {id:"vita_caffe_oratorio",cat:"vita",r:"r",txt:"☕ Al bar un signore ti paga il caffè senza dire una parola. Poi, sulla porta: «Ti vedevo giocare all'oratorio. Non cambiare.»",ef:{morale:7},mem:"Il caffè dell'oratorio"},
   {id:"vita_famiglia_stadio",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=30,txt:"👨‍👩‍👦 I tuoi in tribuna per la prima volta nello stadio grande. Li cerchi con lo sguardo al riscaldamento. Ci sono. Basta quello.",ef:{morale:9},mem:"La famiglia in tribuna"},
@@ -1053,7 +1070,7 @@ const VITA_EVENTS=[
   {id:"vita_gps_buffet",cat:"assurdo",r:"u",cond:p=>(p.goals||0)>=5,txt:"📡 Riunione dati: il preparatore proietta la tua velocità massima stagionale. L'ha registrata il GPS... durante la corsa al buffet del ritiro. Applauso liberatorio.",ef:{morale:6},mem:"Il record del buffet"},
   // ---- PROCURATORE / CONFIDENTE ----
   {id:"vita_agente_cena",cat:"agente",r:"c",cond:p=>!!p.agent,txt:p=>`🍝 ${_vitaAgName(p)} ti porta a cena. Niente contratti stavolta: si parla di calcio visto, di viaggi, del suo primo assistito. «Questa la offro io. Succede una volta ogni mai.»`,ef:{morale:5}},
-  {id:"vita_agente_sponsor",cat:"agente",r:"r",cond:p=>!!p.agent&&(p.popularity||20)>=50,txt:p=>`📦 ${_vitaAgName(p)}: «Uno sponsor di scarpini ha chiesto di te. Piccolo, ma serio. Ho detto che ci pensavi — cioè che accettavi.»`,ef:{bank:15000,popularity:3},next:"vita_agente_shooting",mem:"Il primo sponsor"},
+  {id:"vita_agente_sponsor",cat:"agente",r:"r",cond:p=>no289()?(!!p.agent&&(p.popularity||20)>=50):uffOk289(p,"sponsor")/* [PO-289] solo se il Procuratore ha davvero un'offerta in corso e non hai ancora sponsor */,txt:p=>{if(!no289()){const sp=sponsorView(p);if(sp)return `📦 ${_vitaAgName(p)}: «${sp.brand} ha chiesto di te: ${sp.label}, ${sp.weekly.toLocaleString("it-IT")}€ a settimana. Ho detto che ci pensavi — cioè che accettavi.» Il contratto lo trovi dal Procuratore.`;}return `📦 ${_vitaAgName(p)}: «Uno sponsor di scarpini ha chiesto di te. Piccolo, ma serio. Ho detto che ci pensavi — cioè che accettavi.»`;},get ef(){return no289()?{bank:15000,popularity:3}:{popularity:3,uff289:"sponsor"};},next:"vita_agente_shooting",mem:"Il primo sponsor"},
   {id:"vita_agente_shooting",cat:"agente",r:"r",cond:()=>false/* solo via catena */,txt:"📸 Il servizio fotografico dello sponsor: il fotografo ti fa ripetere QUARANTA volte «guarda l'orizzonte con fame». Non sai più dove sia l'orizzonte, né la fame. Le foto, però, spaccano.",ef:{morale:4,popularity:4}},
   {id:"vita_agente_curva",cat:"agente",r:"c",cond:p=>!!p.agent&&(p.form||70)<55,txt:p=>`📞 ${_vitaAgName(p)}, di sera: «Le carriere non sono rette, sono curve. Chi ti giudica su tre partite non ha mai giocato. Dormici su.» Funziona.`,ef:{morale:6}},
   {id:"vita_agente_orgoglio",cat:"agente",r:"r",cond:p=>!!p.agent,txt:p=>`🗣️ ${_vitaAgName(p)}: «Non te lo dico mai, ma questo periodo mi ha convinto. Non per i numeri. Per come ti alleni quando nessuno guarda.»`,ef:{morale:5},mem:"Le parole del procuratore"},
