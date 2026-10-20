@@ -703,3 +703,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Giro 81 (cebdbce8, sviluppo/giro81-colori286): testata, barre del tabellino e nomi colonna con i colori di maglia; ripiego per fondo (contrasto ≥ 3:1, distanza fra le barre ≥ 120 redmean) sul secondo colore della maglia o su una variante. colori-286 verde, rosso con __CPM_NO_COL286. Foto in docs/governo/foto/po286-dopo*.png.
 - Sessione principale: accettata la scelta «visibilità per fondo» (lo stesso club può uscire con colore diverso fra testata scura e card chiara se uno dei due è invisibile). Nazionale e tema scuro in partita vera non verificati: da guardare nel collaudo della 177.
+
+## 20/10 notte — giro 80 (PO-285) consegnato
+
+- Giro 80 (67be309d, sviluppo/giro80-ingresso285): ingresso da 23,9 s a 15,9 s di scena con 3 stacchi di camera (a 5, 12 e 16,5 s di coreografia), passo massimo in quadro 2,2 u/s, squadra schierata (scarto 0). ingresso-285 verde, rosso con __CPM_NO_ING285. Guardiani dell'ingresso 245/276/camminata-245/fila-206/fila-227/walkout-fermi-197/bambini-236/stadi-071/coppa-prestito verdi.
+- Aperti: ingresso-277 braccio rosso in timeout di caricamento sotto carico (verde e salto OK); ingresso-59 rosso «a scatti» (blocco 6,1 s, misura il thread principale) non confrontato con la base. Sessione principale: prima di assemblare la 177, ingresso-59 e ingresso-277 si rifanno a macchina scarica sulla 176 e sul ramo; si promuove solo se il rosso è del carico o già presente sulla 176. Controllo a occhio dei tre stacchi nel collaudo 3D della 177.
