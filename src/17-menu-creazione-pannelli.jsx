@@ -408,7 +408,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
+    const arc=neutro287()?null:(_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]));/* [giro 75] ARCHETYPES[0] = Finalizzatore · [giro 82 PO-287] eroe neutro: nessun archetipo */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
     if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
@@ -2439,7 +2439,7 @@ function migratePlayer(player){
       changed=true;
     }
     if(!('archetype' in newP)){
-      newP={...newP,archetype:ARCHETYPES[0]};
+      newP={...newP,archetype:neutro287()?null:ARCHETYPES[0]};/* [giro 82 PO-287] */
       changed=true;
     }
     /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
@@ -2451,13 +2451,21 @@ function migratePlayer(player){
     /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
        vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
        restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
-    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+    if(stileUnico75()&&!neutro287()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
      if(_id75!=="finalizzatore"||_enf75){
        newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
        if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
        if(_enf75)newP.enfantPrima75=true;
        if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
        changed=true;}}
+    /* [giro 82, PO-287, decisione PO «Tutto: eroe neutro»] EROE NEUTRO: l'archetipo (Finalizzatore o qualunque stile/vecchio archetipo) si toglie;
+       lo stile di prima resta in stilePrima287, l'Enfant in enfantPrima287. Le statistiche NON si toccano: i bonus di stile furono sommati UNA
+       volta alla creazione (baseStats) dentro numeri gia' casuali e clampati a 40-90, non sono separabili senza inventare i valori e
+       ridurre quanto il giocatore ha costruito. Additiva e idempotente (a archetype null la seconda passata non fa niente). Rosso __CPM_NO_NEUTRO287. */
+    if(neutro287()&&newP.archetype!=null){const _id287=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf287=!!(newP.tratti&&newP.tratti.enfant);
+      if(!('stilePrima287' in newP))newP={...newP,stilePrima287:_id287};
+      if(_enf287&&!('enfantPrima287' in newP))newP={...newP,enfantPrima287:true};
+      newP={...newP,archetype:null,tratti:{...(newP.tratti||{}),enfant:false}};changed=true;}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;

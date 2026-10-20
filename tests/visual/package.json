@@ -386,6 +386,7 @@
     "difficolta-156": "node difficolta-156.mjs && node difficolta-156.mjs --rosso",
     "stili-098-migrazione": "node stili-098-migrazione.mjs",
     "stile-unico-75": "node stile-unico-75.mjs",
+    "neutro-287": "node neutro-287.mjs",
     "pagella-75": "node pagella-75.mjs",
     "rigore-79": "node rigore-79.mjs",
     "voto-79": "node voto-79.mjs",

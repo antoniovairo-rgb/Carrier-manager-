@@ -4958,7 +4958,7 @@ const wPick=(evts,rnd)=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=(rnd?r
 function baseStats(archetype){
   const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
   const arc=archDi(archetype);/* [giro 67 PO-098] 4 stili + 8 archetipi */
-  if(arc)Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
+  if(arc&&!(typeof neutro287==='function'&&neutro287()))Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
   return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
 }
 function calcOvr(s){return Math.min(99,Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5));}
@@ -5799,7 +5799,7 @@ function stileDi(a,stats){const id=(a&&a.id)||a||"";if(ARCHETYPES.some(x=>x.id==
 /* l'id «di lettura» per i rami scritti sugli 8 (obiettivi stagionali, _pSimStats): un vecchio id resta se stesso, uno stile parla col suo riferimento */
 function archLetturaDi(a){const id=(a&&a.id)||a||"";return ARCH8_DI_STILE[id]||id;}
 /* le tre leve dello stile per il motore (null = neutro). Rosso __CPM_NO_STILI */
-function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
+function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;if(neutro287())return null;/* [giro 82 PO-287] eroe neutro: nessuna leva di stile nel motore */const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
 /* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
 /* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
 function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
@@ -5807,9 +5807,14 @@ function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id
    creazione non si sceglie piu' lo stile (l'eroe e' Finalizzatore per tutti) e il tratto Enfant non esiste piu' (niente crescita x1,35,
    niente costo -2). I salvataggi passano a Finalizzatore in migratePlayer (src/17), lo stile e l'Enfant di prima restano registrati in
    stilePrima75 / enfantPrima75. Il motore conosce ancora i 4 stili (stileMotore). Rosso __CPM_NO_STILEUNICO75 = comportamento 7.999.174. */
+/* [giro 82, PO-287, decisione PO «elimina finalizzatore» · questionario «Tutto: eroe neutro»] EROE NEUTRO: niente stile di gioco da nessuna parte.
+   L'eroe non ha piu' archetipo (player.archetype=null): niente bonus/malus dello stile sulle statistiche di partenza, niente crescita
+   favorita, niente leve nel motore (stileMotore=null), niente bonus di successo per archetipo (succRate), niente obiettivi/testi per stile.
+   I salvataggi passano a neutro in migratePlayer (src/17): lo stile di prima resta in stilePrima287. Rosso __CPM_NO_NEUTRO287 = 7.999.176. */
+function neutro287(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_NEUTRO287);}catch(_e){return true;}}
 function stileUnico75(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_STILEUNICO75);}catch(_e){return true;}}
 function haTrattoEnfant(p){if(stileUnico75())return false;return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
-try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75};}catch(_e){}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75,neutro287};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
@@ -7400,9 +7405,10 @@ function calcCoachDecision(player,matchWeight=1,rng){
      distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
      con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
      26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
-     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco).
+     [giro 82 PO-287, rosso __CPM_NO_NEUTRO287] con l'eroe neutro (senza il Finalizzatore) la gavetta misura titolare 53,3 · 55,8 · 58,8 e minuti 61,1 · 65 contro i limiti 55 e 63 (bersagli 45 e 55, nei giri 78: 47-55): a 17-20 anni la penalita' passa da -8 a -10 (centro della gavetta riportato verso i bersagli). */
   let _tit156=null;
-  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?((typeof neutro287==='function'&&neutro287())?-10:-8):_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
     const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
@@ -10531,7 +10537,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
-  const _fin78=(archId&&archId.id||archId)==='finalizzatore';/* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
+  const _fin78=(archId&&archId.id||archId)==='finalizzatore'||(!archId&&typeof neutro287==='function'&&neutro287());/* [giro 82 PO-287] l'eroe neutro (senza archetipo) legge la stessa curva del Finalizzatore del giro 78 *//* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
@@ -44145,7 +44151,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
+    const arc=neutro287()?null:(_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]));/* [giro 75] ARCHETYPES[0] = Finalizzatore · [giro 82 PO-287] eroe neutro: nessun archetipo */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
     if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
@@ -46176,7 +46182,7 @@ function migratePlayer(player){
       changed=true;
     }
     if(!('archetype' in newP)){
-      newP={...newP,archetype:ARCHETYPES[0]};
+      newP={...newP,archetype:neutro287()?null:ARCHETYPES[0]};/* [giro 82 PO-287] */
       changed=true;
     }
     /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
@@ -46188,13 +46194,21 @@ function migratePlayer(player){
     /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
        vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
        restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
-    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+    if(stileUnico75()&&!neutro287()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
      if(_id75!=="finalizzatore"||_enf75){
        newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
        if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
        if(_enf75)newP.enfantPrima75=true;
        if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
        changed=true;}}
+    /* [giro 82, PO-287, decisione PO «Tutto: eroe neutro»] EROE NEUTRO: l'archetipo (Finalizzatore o qualunque stile/vecchio archetipo) si toglie;
+       lo stile di prima resta in stilePrima287, l'Enfant in enfantPrima287. Le statistiche NON si toccano: i bonus di stile furono sommati UNA
+       volta alla creazione (baseStats) dentro numeri gia' casuali e clampati a 40-90, non sono separabili senza inventare i valori e
+       ridurre quanto il giocatore ha costruito. Additiva e idempotente (a archetype null la seconda passata non fa niente). Rosso __CPM_NO_NEUTRO287. */
+    if(neutro287()&&newP.archetype!=null){const _id287=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf287=!!(newP.tratti&&newP.tratti.enfant);
+      if(!('stilePrima287' in newP))newP={...newP,stilePrima287:_id287};
+      if(_enf287&&!('enfantPrima287' in newP))newP={...newP,enfantPrima287:true};
+      newP={...newP,archetype:null,tratti:{...(newP.tratti||{}),enfant:false}};changed=true;}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
@@ -56677,7 +56691,7 @@ const getThisWeekMatchday=()=>{
             );
           })()}
           {/* S12.5: Archetype card */}
-          {(()=>{const arc=archDi(player.archetype)||ARCHETYPES[0];return(
+          {(()=>{const arc=neutro287()?null:(archDi(player.archetype)||ARCHETYPES[0]);if(!arc)return null;/* [giro 82 PO-287] eroe neutro: niente scheda «Stile di gioco» */return(
             <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
             <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>

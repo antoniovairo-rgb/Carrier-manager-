@@ -278,9 +278,10 @@ function calcCoachDecision(player,matchWeight=1,rng){
      distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
      con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
      26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
-     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco).
+     [giro 82 PO-287, rosso __CPM_NO_NEUTRO287] con l'eroe neutro (senza il Finalizzatore) la gavetta misura titolare 53,3 · 55,8 · 58,8 e minuti 61,1 · 65 contro i limiti 55 e 63 (bersagli 45 e 55, nei giri 78: 47-55): a 17-20 anni la penalita' passa da -8 a -10 (centro della gavetta riportato verso i bersagli). */
   let _tit156=null;
-  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?((typeof neutro287==='function'&&neutro287())?-10:-8):_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
     const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
