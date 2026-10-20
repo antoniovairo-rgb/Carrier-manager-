@@ -353,6 +353,7 @@
     "meta-conto-265": "node meta-conto-265.mjs",
     "acquisti-281": "CPM_PROVA_ROSSO=1 node acquisti-281.mjs",
     "trainer-288": "CPM_PROVA_ROSSO=1 node trainer-288.mjs",
+    "impulsi-289": "CPM_PROVA_ROSSO=1 node impulsi-289.mjs",
     "migrazione-194:rosso": "CPM_RED=1 node migrazione-194.mjs",
     "recupero-103": "node recupero-103-test.mjs",
     "euro-attesa-181": "node euro-attesa-181-test.mjs",
