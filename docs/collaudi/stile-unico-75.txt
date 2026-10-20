@@ -1,0 +1,38 @@
+
+> cpm-visual-3d-validation@1.0.0 stile-unico-75
+> node stile-unico-75.mjs
+
+{
+ "verde": {
+  "crea": {
+   "griglia": false,
+   "enfant": false,
+   "testoStile": false,
+   "testoEnfant": false
+  },
+  "creato": {
+   "stile": "finalizzatore",
+   "enfant": false,
+   "enfantTratto": false,
+   "crescita": 1,
+   "statsBase": true
+  }
+ },
+ "rosso": {
+  "crea": {
+   "griglia": true,
+   "enfant": true,
+   "testoStile": true,
+   "testoEnfant": true
+  },
+  "creato": {
+   "stile": "regista",
+   "enfant": true,
+   "enfantTratto": true,
+   "crescita": 1.35,
+   "statsBase": false
+  },
+  "violazioni": 48
+ }
+}
+✅ stile-unico-75 verde (creazione senza scelta, eroe Finalizzatore senza Enfant; 16 casi di migrazione → Finalizzatore, idempotenti, statistiche e campi intatti) · rosso: 48 violazioni, la 174 torna

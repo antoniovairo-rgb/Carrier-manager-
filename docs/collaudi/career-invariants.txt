@@ -1,0 +1,9 @@
+
+> cpm-visual-3d-validation@1.0.0 career-invariants
+> node career-invariants.mjs
+
+=== CAREER-INVARIANTS ===
+club totali: 252 · pageerror: 0
+
+✅ tutti gli invarianti di carriera tengono
+EXIT=0

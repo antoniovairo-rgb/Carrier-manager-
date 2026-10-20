@@ -1,0 +1,12 @@
+
+> cpm-visual-3d-validation@1.0.0 career-sim
+> node career-sim-test.mjs
+
+══ CAREER-SIM · 2 stagioni simulate in 162 step ══
+  — rollover stagione 2→3 (iter 76)
+  — rollover stagione 3→4 (iter 161)
+  stato finale: S4 W1 · OVR 76 · 0 gol/0 presenze · banca 365k€ · contratto 1 anni
+  pageerrors: 0
+
+✅ CARRIERA OK — invarianti tenuti su 2 stagioni
+EXIT=0

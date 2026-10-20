@@ -1,0 +1,54 @@
+  finalizzatore declino seme 1: 77 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 1: 77 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 1: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 1: 70 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 2: 69 gare · 38 decisioni · ok · pageerror 0
+  finalizzatore elite seme 2: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 2: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 3: 76 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 3: 72 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore elite seme 3: 69 gare · 43 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: caricamento fallito, riprovo una volta (page.waitForFunction: Timeout 90000ms exceeded.)
+  finalizzatore gavetta seme 4: 69 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore declino seme 3: 75 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 4: 72 gare · 41 decisioni · ok · pageerror 0
+  finalizzatore declino seme 2: 78 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore elite seme 4: 70 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore declino seme 4: 76 gare · 46 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 5: 70 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 5: 77 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore elite seme 5: 79 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore declino seme 5: 76 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 6: 70 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 6: 70 gare · 50 decisioni · ok · pageerror 0
+  finalizzatore elite seme 6: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore declino seme 6: 76 gare · 47 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 7: 69 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 7: 76 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore elite seme 7: 76 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore declino seme 7: 77 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 8: 69 gare · 39 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 8: 69 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore elite seme 8: 69 gare · 48 decisioni · ok · pageerror 0
+  finalizzatore declino seme 8: 78 gare · 42 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 9: 69 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 9: 77 gare · 45 decisioni · ok · pageerror 0
+  finalizzatore elite seme 9: 77 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore declino seme 9: 76 gare · 37 decisioni · ok · pageerror 0
+  finalizzatore gavetta seme 10: 69 gare · 40 decisioni · ok · pageerror 0
+  finalizzatore affermazione seme 10: 70 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore elite seme 10: 69 gare · 44 decisioni · ok · pageerror 0
+  finalizzatore declino seme 10: 79 gare · 47 decisioni · ok · pageerror 0
+
+══ DIFFICOLTA-156 · ROSSO (__CPM_NO_156) · 40 carriere x 2 stagioni · 809 s ══
+fase           gare  voto (6,0/6,4/6,9/6,3 ±0,2)  gol (±0,08)  vitt (±8)  min (±8)  tit (±10)
+gavetta         696  ✓5.97                       ✗0.307       ✓31.9      ✗84.3     ✗91
+affermazione    733  ✓6.2                        ✗0.393       ✓43.2      ✗85.8     ✗93.2
+elite           716  ✗6.18                       ✗0.355       ✗36.7      ✓85.3     ✓92.6
+declino         768  ✓6.28                       ✗0.41        ✓44.8      ✗88.9     ✗98.1
+  finalizzatore  gavetta: 5.97/0.307/31.9%/84.3'/91% · affermazione: 6.2/0.393/43.2%/85.8'/93.2% · elite: 6.18/0.355/36.7%/85.3'/92.6% · declino: 6.28/0.41/44.8%/88.9'/98.1%
+celle entro tolleranza: 8/20 · carriere non concluse 0 · pageerror 0
+fuori: gavetta.gol 0.307 (bersaglio 0.15) · gavetta.min 84.3 (bersaglio 55) · gavetta.tit 91 (bersaglio 45) · affermazione.gol 0.393 (bersaglio 0.3) · affermazione.min 85.8 (bersaglio 75) · affermazione.tit 93.2 (bersaglio 75) · elite.voto 6.18 (bersaglio 6.9) · elite.gol 0.355 (bersaglio 0.5) · elite.vitt 36.7 (bersaglio 55) · declino.gol 0.41 (bersaglio 0.25) · declino.min 88.9 (bersaglio 65) · declino.tit 98.1 (bersaglio 60)
+
+✅ ROSSO VISTO — senza la correzione la curva esce di tolleranza
+EXIT=0

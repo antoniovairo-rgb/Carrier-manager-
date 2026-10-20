@@ -1,0 +1,35 @@
+{
+ "partiteGiocate": 25,
+ "etaIniziale": 17,
+ "dopo": {
+  "age": 19,
+  "stile": "finalizzatore",
+  "tratto": false
+ },
+ "trovato": null,
+ "passiFatti": 160,
+ "ultimiPassi": [
+  {
+   "i": 156,
+   "res": "blocked:nationsCup",
+   "scr": "dashboard"
+  },
+  {
+   "i": 157,
+   "res": "blocked:nationsCup",
+   "scr": "dashboard"
+  },
+  {
+   "i": 158,
+   "res": "blocked:nationsCup",
+   "scr": "dashboard"
+  },
+  {
+   "i": 159,
+   "res": "blocked:nationsCup",
+   "scr": "dashboard"
+  }
+ ],
+ "fine": null,
+ "errori": []
+}

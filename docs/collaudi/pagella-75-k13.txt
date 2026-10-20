@@ -1,0 +1,7 @@
+
+> cpm-visual-3d-validation@1.0.0 pagella-75
+> node pagella-75.mjs
+
+k13 verde: pagella 2 · registrato 2 · gol in gioco fluido 1 · accreditati 1 · {"home":2,"away":1} · ceremony 281s
+k13 rosso: pagella 2 · registrato 1 · gol in gioco fluido 1 · accreditati 0 · {"home":2,"away":1} · ceremony 284s
+✅ pagella-75 verde (1/1 partite con pagella = registrato; gol in gioco fluido accreditati) · rosso: 1/1 divergono

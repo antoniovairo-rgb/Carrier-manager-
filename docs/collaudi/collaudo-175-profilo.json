@@ -1,0 +1,19 @@
+{
+ "verde": {
+  "righeConStileOEnfant": [
+   "STILE DI GIOCO: FINALIZZATORE"
+  ],
+  "testoEnfantPagina": false,
+  "riga_dom": false,
+  "altezzaPagina": 915
+ },
+ "rosso": {
+  "righeConStileOEnfant": [
+   "STILE DI GIOCO: REGISTA",
+   "✨ Enfant Prodige · cresci più in fretta fino ai 22 anni"
+  ],
+  "testoEnfantPagina": true,
+  "riga_dom": true,
+  "altezzaPagina": 915
+ }
+}

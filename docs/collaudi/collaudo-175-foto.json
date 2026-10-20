@@ -1,0 +1,282 @@
+{
+ "creazione": {
+  "360": {
+   "premuto": true,
+   "avviato": true,
+   "pre": {
+    "griglia": false,
+    "casellaEnfant": false,
+    "testoStile": false,
+    "testoEnfant": false,
+    "scrollW": 0
+   },
+   "creato": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 59,
+     "tecnica": 55,
+     "fisico": 65,
+     "mentalità": 67,
+     "tiro": 69,
+     "passaggio": 50,
+     "dribbling": 55,
+     "posizionamento": 68
+    }
+   },
+   "scrollOrizzontale": 0,
+   "errori": []
+  },
+  "412": {
+   "premuto": true,
+   "avviato": true,
+   "pre": {
+    "griglia": false,
+    "casellaEnfant": false,
+    "testoStile": false,
+    "testoEnfant": false,
+    "scrollW": 0
+   },
+   "creato": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 59,
+     "tecnica": 55,
+     "fisico": 65,
+     "mentalità": 67,
+     "tiro": 69,
+     "passaggio": 50,
+     "dribbling": 55,
+     "posizionamento": 68
+    }
+   },
+   "scrollOrizzontale": 0,
+   "errori": []
+  }
+ },
+ "salvataggi": {
+  "412-prova": {
+   "profilo": {
+    "riga": false,
+    "testoEnfant": false,
+    "testoStile": ""
+   },
+   "schede": [
+    "Home",
+    "Stagione",
+    "Club",
+    "Carriera",
+    "Agente",
+    "Ufficio",
+    "Opzioni"
+   ],
+   "dopo": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 88,
+     "tecnica": 89,
+     "fisico": 91,
+     "mentalità": 91,
+     "tiro": 90,
+     "passaggio": 88,
+     "dribbling": 86,
+     "posizionamento": 92
+    },
+    "stilePrima75": null,
+    "enfantPrima75": null
+   },
+   "statsPrima": {
+    "velocità": 88,
+    "tecnica": 89,
+    "fisico": 91,
+    "mentalità": 91,
+    "tiro": 90,
+    "passaggio": 88,
+    "dribbling": 86,
+    "posizionamento": 92
+   },
+   "statsUguali": true,
+   "scrollOrizzontale": 0,
+   "errori": []
+  },
+  "412-enfant174": {
+   "profilo": {
+    "riga": false,
+    "testoEnfant": false,
+    "testoStile": ""
+   },
+   "schede": [
+    "Home",
+    "Stagione",
+    "Club",
+    "Carriera",
+    "Agente",
+    "Ufficio",
+    "Opzioni"
+   ],
+   "dopo": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 88,
+     "tecnica": 89,
+     "fisico": 91,
+     "mentalità": 91,
+     "tiro": 90,
+     "passaggio": 88,
+     "dribbling": 86,
+     "posizionamento": 92
+    },
+    "stilePrima75": "regista",
+    "enfantPrima75": true
+   },
+   "statsPrima": {
+    "velocità": 88,
+    "tecnica": 89,
+    "fisico": 91,
+    "mentalità": 91,
+    "tiro": 90,
+    "passaggio": 88,
+    "dribbling": 86,
+    "posizionamento": 92
+   },
+   "statsUguali": true,
+   "scrollOrizzontale": 0,
+   "errori": []
+  },
+  "360-prova": {
+   "profilo": {
+    "riga": false,
+    "testoEnfant": false,
+    "testoStile": ""
+   },
+   "schede": [
+    "Home",
+    "Stagione",
+    "Club",
+    "Carriera",
+    "Agente",
+    "Ufficio",
+    "Opzioni"
+   ],
+   "dopo": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 88,
+     "tecnica": 89,
+     "fisico": 91,
+     "mentalità": 91,
+     "tiro": 90,
+     "passaggio": 88,
+     "dribbling": 86,
+     "posizionamento": 92
+    },
+    "stilePrima75": null,
+    "enfantPrima75": null
+   },
+   "statsPrima": {
+    "velocità": 88,
+    "tecnica": 89,
+    "fisico": 91,
+    "mentalità": 91,
+    "tiro": 90,
+    "passaggio": 88,
+    "dribbling": 86,
+    "posizionamento": 92
+   },
+   "statsUguali": true,
+   "scrollOrizzontale": 0,
+   "errori": []
+  },
+  "360-enfant174": {
+   "profilo": {
+    "riga": false,
+    "testoEnfant": false,
+    "testoStile": ""
+   },
+   "schede": [
+    "Home",
+    "Stagione",
+    "Club",
+    "Carriera",
+    "Agente",
+    "Ufficio",
+    "Opzioni"
+   ],
+   "dopo": {
+    "stile": "finalizzatore",
+    "tratto": false,
+    "stats": {
+     "velocità": 88,
+     "tecnica": 89,
+     "fisico": 91,
+     "mentalità": 91,
+     "tiro": 90,
+     "passaggio": 88,
+     "dribbling": 86,
+     "posizionamento": 92
+    },
+    "stilePrima75": "regista",
+    "enfantPrima75": true
+   },
+   "statsPrima": {
+    "velocità": 88,
+    "tecnica": 89,
+    "fisico": 91,
+    "mentalità": 91,
+    "tiro": 90,
+    "passaggio": 88,
+    "dribbling": 86,
+    "posizionamento": 92
+   },
+   "statsUguali": true,
+   "scrollOrizzontale": 0,
+   "errori": []
+  }
+ },
+ "home": {
+  "360": {
+   "trovato": true,
+   "ultime": true,
+   "cardLarghezza": 346.6,
+   "padDx": 16,
+   "bordoDx": 0.892857,
+   "badgeN": 5,
+   "primoBadge": "V",
+   "primo1ª": "1ª",
+   "rigaDestra": 334.4,
+   "primoDestraCardPx": 18.9,
+   "primoDaPaddingPx": 2,
+   "ultimoBadgeDaPrimoPx": 113.9,
+   "testoRiga": "Ultime 5 V V V V N 1ª",
+   "scrollRiga": 0,
+   "cardX": 334.4,
+   "viewport": 360,
+   "scrollOrizzontale": 0,
+   "errori": []
+  },
+  "412": {
+   "trovato": true,
+   "ultime": true,
+   "cardLarghezza": 394.1,
+   "padDx": 16,
+   "bordoDx": 0.892857,
+   "badgeN": 5,
+   "primoBadge": "V",
+   "primo1ª": "1ª",
+   "rigaDestra": 384.1,
+   "primoDestraCardPx": 18.9,
+   "primoDaPaddingPx": 2,
+   "ultimoBadgeDaPrimoPx": 161.4,
+   "testoRiga": "Ultime 5 V V V V N 1ª",
+   "scrollRiga": 0,
+   "cardX": 384.1,
+   "viewport": 412,
+   "scrollOrizzontale": 0,
+   "errori": []
+  }
+ }
+}

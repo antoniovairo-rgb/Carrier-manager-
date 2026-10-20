@@ -1,0 +1,19 @@
+
+> cpm-visual-3d-validation@1.0.0 pagella-75
+> node pagella-75.mjs
+
+k4 rosso: pagella 2 · registrato 1 · gol in gioco fluido 1 · accreditati 0 · {"home":2,"away":1} · ceremony 320s
+k4 verde: pagella 2 · registrato 2 · gol in gioco fluido 1 · accreditati 1 · {"home":2,"away":1} · ceremony 327s
+  k12 verde: Error: page.evaluate: Target page, context or browser has been closed — riprovo una volta
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+browser.newContext: Target page, context or browser has been closed
+    at async gioca (/tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/col175-car/tests/visual/pagella-75.mjs:18:15)
+    at async file:///tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/col175-car/tests/visual/pagella-75.mjs:59:169
+    at async file:///tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/col175-car/tests/visual/pagella-75.mjs:55:1 {
+  log: []
+}
+
+Node.js v22.22.2
