@@ -11,7 +11,7 @@ durante il giro** (processi uccisi a metà corsa): le corse interrotte non sono 
 | nazionale-155 | strumento (passo dato su una chiusura React vecchia) | sonda: attesa della ri-registrazione | 5/5 verdi · rossi `fin` e `sv` visibili |
 | tempo-138 | strumento (il rosso spegneva il seme → partita del rosso non riproducibile) | rosso senza `__CPM_NO_SEME` | 5/5 verdi, rosso identico 5 su 5 (308/242) |
 | apertura-261 | strumento (passo atteso dell'arco calcolato sul dt sbagliato) | passo atteso sul tempo d'arco che la posizione riflette + testimone | 5/5 verdi · rossi `__CPM_SALTO274` e `__CPM_NO_APERTURA261` visibili |
-| nomi-219 | strumento (crash di Node, non una misura) | errore di un seme rigiocato una volta | vedi sezione |
+| nomi-219 | strumento (crash di Node, non una misura) | errore di un seme rigiocato una volta | **non verificata** (corsa uccisa dal riavvio a 10 semi su 27) |
 | difesa-220-giro31 | strumento + campione piccolo (fps 1,4-3,4 sotto carico) | **non corretto** — punto aperto | riprodotto 1/1 |
 | piedi-252 | **gioco sul filo della soglia** | **non corretto** — punto aperto | 2 verdi, 1 rossa su 3 |
 | difesa-220-scena | non indagato in questo giro | — | — |
@@ -164,4 +164,13 @@ valore e ordine. Dopo la modifica l'analizzatore non trova più chiavi doppie.
 - nazionale-155: 5/5 verdi + 2 rossi visibili — **fatto**.
 - apertura-261: 5/5 verdi + 2 rossi visibili — **fatto**.
 - tempo-138: 5/5 verdi, rosso visibile 5/5 — **fatto**.
-- nomi-219: in corso.
+- nomi-219: **non verificata**. Unica corsa partita sul build finale uccisa dal terzo riavvio del container dopo 10 semi
+  verdi (101-110: 10 nominati, 9 vicini, 0 lontani, nessun ERRORE). La correzione è solo gestione degli errori: va
+  verificata con 5 corse in una sessione senza riavvii.
+- Catena veloce sul build finale del ramo: test:vision ✅ · test:logic ✅ · typing-shortcuts ✅ · save-compat ✅ ·
+  **validate-situations 14/14 ✅ (fingerprint 00001505, 0 failure)** · replay ✅. career-critical: **non completato** (corsa
+  uccisa dal riavvio: «Target page, context or browser has been closed», recovery-competition-test.mjs:267 — è il browser
+  chiuso dal riavvio, non una misura). partita-vera e design-system: non eseguiti.
+- Osservazione: la firma «} … Node.js v22.22.0» lasciata da career-critical quando il browser muore è la stessa del primo
+  tentativo di nomi-219 nella catena 174. Ipotesi, **non confermata**: anche quel rosso potrebbe venire da un browser
+  morto (memoria/carico) più che da un'attesa scaduta.
