@@ -677,3 +677,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 20/10 sera — sette voci chiuse dal PO
 
 - PO: «mettile in chiuso per il momento» → PO-098, PO-154, PO-155, PO-156, PO-157, PO-168, PO-281 da «DA VERIFICARE DAL PO» a **CHIUSO** (riapribili se le carriere o i collaudi trovano difetti). PO-098: descrizione segnata come superata (archetipi tolti, PO-190 e PO-287).
+
+## 20/10 sera — PO-289 impulsi «finti» che doppiano l'Ufficio (PO, questionario)
+
+- PO: «è un impulso finto, è gestito dall'ufficio (rendilo credibile o elimina)» (scuola calcio, foto docs/governo/foto/po289-scuola-calcio.png).
+- PO (questionario): **«Collegalo all'Ufficio»** — «Ci metto faccia e soldi» apre davvero l'Accademia (academy24) con lo stesso costo; l'impulso compare solo se l'accademia non c'è ed è sostenibile; «Presto solo il nome» resta licenza. **Censimento + stessa regola** sugli altri impulsi che doppiano l'Ufficio (staff, investimenti, beni, sponsor); lista con file:riga al PO. **Nella 7.999.177**.
+- Sessione principale: giro 84 (sotto-agente, ramo sviluppo/giro84-impulsi289), rosso `__CPM_NO_IMP289`, guardiano impulsi-289. Se un impulso non si può collegare senza nuove funzioni, il giro lo toglie (scelta prudente) e lo segna nella lista.
