@@ -1,0 +1,210 @@
+{
+ "modo": "nuova",
+ "id": "4",
+ "seed": 2052,
+ "nome": "Coll175p4",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 307,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   2,
+   21,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   2,
+   21,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   2,
+   25,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   2,
+   66,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   30,
+   118,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   30,
+   125,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   30,
+   126,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   30,
+   148,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   71,
+   235,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   71,
+   265,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "ended",
+   90,
+   307,
+   "{\"home\":3,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 2,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 2' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🔁 LA GIOCATA Uno-due con FERRARI"
+  },
+  {
+   "min": 30,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 1–0 30' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🌀 LA GIOCATA Finta e cambio di passo"
+  },
+  {
+   "min": 71,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 71' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✈️ LA GIOCATA Testa di potenza"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 2,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 9,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 7.2
+   }
+  ],
+  "golLog": [
+   {
+    "m": 1,
+    "chi": 9,
+    "scena": true,
+    "t": "home"
+   },
+   {
+    "m": 84,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 87,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 3,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | COLL175P4 ILLUMINA: 1 ASSIST | PROVINI | FISCHIO FINALE | Selezione Granata | 3–0 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 90': «Teniamo palla nella loro metà» → nessun tiro concesso fino al fischio | IL TUO TABELLINO | › | ⚽ | 0 | Gol | 🎯 | 1 | Assist | 💥 | 1 | Tiri | 🔵 | 48% | Poss. | 🔗 | LE CONNESSIONI | › | 🎯 | ASSIST SERVITI A | Lombardi 2' | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 3 | Gol | 0 | 48% | Possesso | 52% | 12 | Tiri | 10 | 3 | Tiri in porta | 2 | 0.76 | Gol attesi (xG) | 0.99 | 29 | Azioni dalle fasce | 40 | 13 | Cross | 18 | 40% | Dribbling riusciti | 83% | 386 | Passaggi | 457 | 93% | Precisione passaggi | 92% | 21 | Recuperi | 11 | 2 | Parate | 0 | 5 | Calci d'angolo | 6 | 9 | Falli | 8 | 3 | Ammonizioni | 1 | 0 | Espulsioni | 0 | 8 | Rimesse laterali | 15 | IL TUO TABELLINO IN NUMERI | › | 👟 | 42 | Palloni ricevuti | 🎯 | 37/41 | Passaggi riusciti | ⚽ | 0/1 | Tiri in porta | 🛡️ | 2 | Recuperi | PAGELLA | 7.2 | Buona partita | 4.0 | 10.0 | MOMENTI CHIAVE | 2' | 🎯 Assist per Lombardi al 2' | 85' | ⚽ Gol di Spada | 88' | ⚽ Gol di Pecoraro | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 2,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 9,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 7.2
+   }
+  ],
+  "golLog": [
+   {
+    "m": 1,
+    "chi": 9,
+    "scena": true,
+    "t": "home"
+   },
+   {
+    "m": 84,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 87,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 3,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":73295.7,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🔁 Uno-due con FERRARI\",\"stat\":\"passaggio\",\"ok\":true,\"key\":\"assist\",\"hlType\":\"pass\",\"hlVariant\":\"one_two\",\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":73301.1,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":117144.4,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":176467.7,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"progression\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":176467.8,\"type\":\"CoherenceCheck\",\"gi\":1,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":176468.2,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":199442.9,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":285504.3,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"insertion\",\"label\":\"✈️ Testa di potenza\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":285504.3,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":285504.4,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":316252.3,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

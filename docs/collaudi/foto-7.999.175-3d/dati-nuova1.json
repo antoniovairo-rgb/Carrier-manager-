@@ -1,0 +1,288 @@
+{
+ "modo": "nuova",
+ "id": "1",
+ "seed": 1571,
+ "nome": "Coll175p1",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 380,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   2,
+   26,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   2,
+   33,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   2,
+   33,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   2,
+   37,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   2,
+   61,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   8,
+   70,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   8,
+   73,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   9,
+   82,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   16,
+   96,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   16,
+   98,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   17,
+   136,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   20,
+   142,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   20,
+   144,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   20,
+   148,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   20,
+   181,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   22,
+   183,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   22,
+   186,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   22,
+   186,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   23,
+   210,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   55,
+   279,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   56,
+   307,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "ended",
+   90,
+   380,
+   "{\"home\":2,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 2,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 2' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✂️ PALLA PERSA Palla persa · 🔁 Uno-due con FERRARI ✂️ Passaggio intercettato. 🔊 Pressione del pubblico ostile voto 5.8 Continua"
+  },
+  {
+   "min": 8,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 8' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🤼 LA GIOCATA Raddoppio coordinato col compagno"
+  },
+  {
+   "min": 16,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 16' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✈️ LA GIOCATA Testa di potenza"
+  },
+  {
+   "min": 20,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 20' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✂️ ANTICIPATO DALL'AVVERSARIO Anticipato dall'avversario · 🛡️ Proteggi palla e scarica su COLOMBO ✂️ L'avversario legge la giocata e intercetta. 🔊 Pressione del pubblico ostile voto 6.2 Continua"
+  },
+  {
+   "min": 22,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 22' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 💥 LA GIOCATA Botta sopra la barriera"
+  },
+  {
+   "min": 55,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 55' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ⚡ LA GIOCATA Conclusione di prima"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 7.6
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.5
+   }
+  ],
+  "golLog": [
+   {
+    "m": 62,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 79,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 2,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | VITTORIA DI CARATTERE | PROVINI | FISCHIO FINALE | Selezione Granata | 2–0 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | › | ⚽ | 0 | Gol | 🎯 | 0 | Assist | 💥 | 3 | Tiri | 🔵 | 56% | Poss. | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 2 | Gol | 0 | 56% | Possesso | 44% | 18 | Tiri | 8 | 7 | Tiri in porta | 1 | 1.70 | Gol attesi (xG) | 0.42 | 13 | Azioni dalle fasce | 13 | 14 | Cross | 12 | 55% | Dribbling riusciti | 25% | 373 | Passaggi | 438 | 93% | Precisione passaggi | 91% | 19 | Recuperi | 21 | 1 | Parate | 5 | 4 | Calci d'angolo | 3 | 14 | Falli | 10 | 4 | Ammonizioni | 2 | 0 | Espulsioni | 0 | 14 | Rimesse laterali | 10 | IL TUO TABELLINO IN NUMERI | › | 👟 | 31 | Palloni ricevuti | 🎯 | 16/21 | Passaggi riusciti | ⚽ | 0/3 | Tiri in porta | 🛡️ | 4 | Recuperi | PAGELLA | 6.5 | Sufficiente | 4.0 | 10.0 | MOMENTI CHIAVE | 63' | ⚽ Gol di Pecoraro | 80' | ⚽ Gol di Neri | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 7.6
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.5
+   }
+  ],
+  "golLog": [
+   {
+    "m": 62,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 79,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 2,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":91544.2,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🔁 Uno-due con FERRARI\",\"stat\":\"passaggio\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":\"one_two\",\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":91544.3,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":91545,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":119165.9,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":130860,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🤼 Raddoppio coordinato col compagno\",\"stat\":\"tecnica\",\"ok\":true,\"key\":\"recovery\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":130860.2,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":140472.8,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":156352.6,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"insertion\",\"label\":\"✈️ Testa di potenza\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":156352.6,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"blocked\",\"arcFam\":\"blocked\",\"overlayFam\":\"blocked\",\"ok\":true,\"detail\":null}",
+  "{\"t\":156352.7,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":193687.8,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":202588.1,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"shot\",\"label\":\"🛡️ Proteggi palla e scarica su COLOMBO\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":202588.1,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":202588.2,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":239160,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":244008.3,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"freekick\",\"label\":\"💥 Botta sopra la barriera\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"freekick\",\"hlVariant\":\"freekick_direct\",\"hlPattern\":\"SET_PIECE\",\"ballState\":\"set_ground\"}",
+  "{\"t\":244008.3,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":244008.4,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"freekick\",\"pattern\":\"SET_PIECE\",\"beats\":[{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":268262.8,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":336964.3,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"shot\",\"label\":\"⚡ Conclusione di prima\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_first_time\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":336964.3,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":336964.4,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":365055.8,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

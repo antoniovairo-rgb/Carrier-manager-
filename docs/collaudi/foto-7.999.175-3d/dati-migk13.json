@@ -1,0 +1,330 @@
+{
+ "modo": "mig",
+ "id": "k13",
+ "seed": 13,
+ "nome": "Q190-13",
+ "prima": {
+  "arch": {
+   "id": "centravanti",
+   "e": "🎯",
+   "name": "Centravanti",
+   "desc": "Equilibrio perfetto in area",
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "favored": [
+    "tiro",
+    "posizionamento",
+    "tecnica"
+   ]
+  }
+ },
+ "dopoMig": {
+  "arch": "finalizzatore",
+  "tratti": {
+   "enfant": false
+  },
+  "archetipoOrig": "centravanti"
+ },
+ "fasiFine": "ceremony",
+ "durataS": 434,
+ "hist": [
+  [
+   "matchday",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   0,
+   34,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   3,
+   38,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   3,
+   43,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   3,
+   46,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   3,
+   77,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   21,
+   107,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   21,
+   111,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   22,
+   141,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   25,
+   147,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   25,
+   150,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   25,
+   185,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   31,
+   194,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   31,
+   197,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   31,
+   233,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   35,
+   237,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   35,
+   240,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   36,
+   266,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   53,
+   298,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   53,
+   298,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   54,
+   334,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   55,
+   336,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   55,
+   338,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   55,
+   338,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   56,
+   371,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "ceremony",
+   90,
+   434,
+   "{\"home\":2,\"away\":1}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 3,
+   "testo": "TYN FC Tyneside 0–0 3' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ✂️ INTERCETTATO Intercettato · 🔁 Uno-due con SPENCER ✂️ L'avversario legge la giocata e intercetta. voto 5.7 Continua"
+  },
+  {
+   "min": 21,
+   "testo": "TYN FC Tyneside 0–0 21' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🤼 LA GIOCATA Raddoppio coordinato col compagno"
+  },
+  {
+   "min": 25,
+   "testo": "TYN FC Tyneside 0–0 25' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🔁 LA GIOCATA Uno-due con HAMMOND"
+  },
+  {
+   "min": 31,
+   "testo": "TYN FC Tyneside 0–0 31' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ✈️ LA GIOCATA Testa di potenza"
+  },
+  {
+   "min": 35,
+   "testo": "TYN FC Tyneside 0–0 35' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ⚽ LA GIOCATA Rigore — Potente all'incrocio"
+  },
+  {
+   "min": 53,
+   "testo": "TYN FC Tyneside 2–0 53' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🌀 LA GIOCATA Finta e cambio di passo"
+  },
+  {
+   "min": 55,
+   "testo": "TYN FC Tyneside 2–0 55' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ⚽ LA GIOCATA Volée di collo potente"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 15,
+    "gol": 1,
+    "voto": 6.9
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8
+   }
+  ],
+  "golLog": [
+   {
+    "m": 34,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 63,
+    "chi": 15,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ceremony"
+ },
+ "schermate": [
+  "TYN | FC Tyneside | 1–2 | 🏆 | ☀️ | ⚠️ | PREMIAZIONE | MER | FC Merseyside | 🏆 PREMIAZIONE | CAMPIONI! | Premier Division | Salta premiazione →"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 15,
+    "gol": 1,
+    "voto": 6.9
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8
+   }
+  ],
+  "golLog": [
+   {
+    "m": 34,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 63,
+    "chi": 15,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":133751,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🔁 Uno-due con SPENCER\",\"stat\":\"passaggio\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":\"one_two\",\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":133751.2,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":133752.3,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":167491.9,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":201393.8,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🤼 Raddoppio coordinato col compagno\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"through\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":201394.1,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":231916.9,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":241067.5,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"progression\",\"label\":\"🔁 Uno-due con HAMMOND\",\"stat\":\"passaggio\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":\"one_two\",\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":241067.5,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":241067.7,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":275935.5,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":287641.2,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"insertion\",\"label\":\"✈️ Testa di potenza\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":287641.2,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":287641.4,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":323969.3,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":331210.6,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"penalty\",\"label\":\"Rigore — Potente all'incrocio\",\"stat\":\"tiro\",\"ok\":true,\"key\":\"goal\"}",
+  "{\"t\":356960.8,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":389341.8,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"dribble\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":389341.8,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":389342.3,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":424247.2,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":428883.9,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"insertion\",\"label\":\"⚽ Volée di collo potente\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_volley\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":428883.9,\"type\":\"CoherenceCheck\",\"gi\":6,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":428884,\"type\":\"HighlightTimeline\",\"gi\":6,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":462084.4,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

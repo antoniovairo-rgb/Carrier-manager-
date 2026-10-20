@@ -1,0 +1,301 @@
+{
+ "modo": "nuova",
+ "id": "6",
+ "seed": 2078,
+ "nome": "Coll175p6",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 397,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   3,
+   25,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   3,
+   25,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   3,
+   29,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   3,
+   53,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   17,
+   77,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   17,
+   80,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   17,
+   80,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   17,
+   82,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   17,
+   105,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   21,
+   112,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   21,
+   114,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   21,
+   117,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   22,
+   148,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   26,
+   158,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   26,
+   158,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   26,
+   158,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   26,
+   161,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   26,
+   194,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   37,
+   220,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   37,
+   222,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   37,
+   222,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   38,
+   252,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   51,
+   281,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   51,
+   307,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   88,
+   371,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   88,
+   385,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "ended",
+   90,
+   397,
+   "{\"home\":1,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 3,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 3' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✂️ ANTICIPATO DALL'AVVERSARIO Anticipato dall'avversario · 🌀 Finta e cambio di passo ✂️ L'avversario legge la giocata e intercetta. 🔊 Pressione del pubblico ostile voto 5.7 Continua"
+  },
+  {
+   "min": 17,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 17' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🧠 LA GIOCATA Anticipa sul primo controllo"
+  },
+  {
+   "min": 21,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 21' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🧤 CONCLUSIONE CENTRALE Conclusione centrale · 🎯 Testa piazzata all'angolo ❌ Tiro debole, para comodo. ⚠️ Momento difficile voto 5.7 Continua"
+  },
+  {
+   "min": 26,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 26' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Filtrante per PECORARO"
+  },
+  {
+   "min": 37,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 1–0 37' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Testa piazzata all'angolo"
+  },
+  {
+   "min": 51,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 51' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 😤 LA GIOCATA Resisti alla carica e cerca il fallo"
+  },
+  {
+   "min": 88,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 88' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Filtrante per SCOTTI"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 7.9
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.9
+   }
+  ],
+  "golLog": [
+   {
+    "m": 25,
+    "chi": 5,
+    "scena": true,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | COLL175P6 ILLUMINA: 1 ASSIST | PROVINI | FISCHIO FINALE | Selezione Granata | 1–0 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 90': «Teniamo palla nella loro metà» → nessun tiro concesso fino al fischio | IL TUO TABELLINO | › | ⚽ | 0 | Gol | 🎯 | 1 | Assist | 💥 | 2 | Tiri | 🔵 | 48% | Poss. | 🔗 | LE CONNESSIONI | › | 🎯 | ASSIST SERVITI A | Bruno 26' | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 1 | Gol | 0 | 48% | Possesso | 52% | 19 | Tiri | 4 | 5 | Tiri in porta | 1 | 1.72 | Gol attesi (xG) | 0.20 | 31 | Azioni dalle fasce | 27 | 22 | Cross | 6 | 50% | Dribbling riusciti | 40% | 303 | Passaggi | 551 | 87% | Precisione passaggi | 92% | 29 | Recuperi | 20 | 1 | Parate | 4 | 5 | Calci d'angolo | 1 | 9 | Falli | 11 | 2 | Ammonizioni | 1 | 0 | Espulsioni | 0 | 24 | Rimesse laterali | 21 | IL TUO TABELLINO IN NUMERI | › | 👟 | 25 | Palloni ricevuti | 🎯 | 11/19 | Passaggi riusciti | ⚽ | 1/2 | Tiri in porta | 🛡️ | 4 | Recuperi | PAGELLA | 6.9 | Sufficiente | 4.0 | 10.0 | MOMENTI CHIAVE | 26' | 🎯 Assist per Bruno al 26' | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 7.9
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.9
+   }
+  ],
+  "golLog": [
+   {
+    "m": 25,
+    "chi": 5,
+    "scena": true,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":67306.1,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"dribble\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":67306.3,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":67307.1,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":95004,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":122371.5,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🧠 Anticipa sul primo controllo\",\"stat\":\"mentalità\",\"ok\":false,\"key\":\"through\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":122372.1,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":147081.5,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":155800.4,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"insertion\",\"label\":\"🎯 Testa piazzata all'angolo\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":155800.4,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":155800.6,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":190126.5,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":200505.6,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"dribble\",\"label\":\"🎯 Filtrante per PECORARO\",\"stat\":\"passaggio\",\"ok\":true,\"key\":\"assist\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"THROUGH_BALL\",\"ballState\":\"feet\"}",
+  "{\"t\":200505.8,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"pass\",\"pattern\":\"THROUGH_BALL\",\"beats\":[{\"tag\":\"hold\",\"kind\":\"carry\"},{\"tag\":\"through\",\"kind\":\"through\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":236039.8,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":264401.4,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"insertion\",\"label\":\"🎯 Testa piazzata all'angolo\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":264401.4,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":264401.5,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":294448.1,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":322300.5,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"shot\",\"label\":\"😤 Resisti alla carica e cerca il fallo\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"dribble\",\"hlVariant\":\"dribble_feint\",\"hlPattern\":\"DRIBBLE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":322300.5,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"dispossessed\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":322300.5,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"dribble\",\"pattern\":\"DRIBBLE_SHOT\",\"beats\":[{\"tag\":\"slow\",\"kind\":\"carry\"},{\"tag\":\"feint\",\"kind\":\"dribble\"},{\"tag\":\"burst\",\"kind\":\"dribble\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":348790.6,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":413200.2,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"progression\",\"label\":\"🎯 Filtrante per SCOTTI\",\"stat\":\"passaggio\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"THROUGH_BALL\",\"ballState\":\"feet\"}",
+  "{\"t\":413200.2,\"type\":\"CoherenceCheck\",\"gi\":6,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":413200.3,\"type\":\"HighlightTimeline\",\"gi\":6,\"htType\":\"pass\",\"pattern\":\"THROUGH_BALL\",\"beats\":[{\"tag\":\"hold\",\"kind\":\"carry\"},{\"tag\":\"through\",\"kind\":\"through\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":427037.2,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

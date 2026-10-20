@@ -1,0 +1,394 @@
+{
+ "modo": "mig",
+ "id": "k12",
+ "seed": 12,
+ "nome": "Q190-12",
+ "prima": {
+  "arch": {
+   "id": "centravanti",
+   "e": "🎯",
+   "name": "Centravanti",
+   "desc": "Equilibrio perfetto in area",
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "favored": [
+    "tiro",
+    "posizionamento",
+    "tecnica"
+   ]
+  }
+ },
+ "dopoMig": {
+  "arch": "finalizzatore",
+  "tratti": {
+   "enfant": false
+  },
+  "archetipoOrig": "centravanti"
+ },
+ "fasiFine": "ceremony",
+ "durataS": 464,
+ "hist": [
+  [
+   "matchday",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   0,
+   35,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   3,
+   39,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   3,
+   48,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   3,
+   83,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   9,
+   90,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   9,
+   93,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   9,
+   93,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   9,
+   121,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   19,
+   138,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   19,
+   140,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   19,
+   171,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   33,
+   200,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   33,
+   202,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   33,
+   203,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   33,
+   206,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   34,
+   236,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   37,
+   241,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   37,
+   244,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   37,
+   273,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   47,
+   289,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   47,
+   292,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   47,
+   325,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   50,
+   330,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   50,
+   332,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   51,
+   362,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   61,
+   380,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   61,
+   382,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   61,
+   382,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   61,
+   383,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   61,
+   410,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "ceremony",
+   90,
+   464,
+   "{\"home\":2,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 3,
+   "testo": "TYN FC Tyneside 0–0 3' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 💥 LA GIOCATA Tiro da fuori"
+  },
+  {
+   "min": 9,
+   "testo": "TYN FC Tyneside 0–0 9' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ⚽ LA GIOCATA Rigore — Potente all'incrocio"
+  },
+  {
+   "min": 19,
+   "testo": "TYN FC Tyneside 0–1 19' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🏃 LA GIOCATA Conduci palla al piede e tira"
+  },
+  {
+   "min": 33,
+   "testo": "TYN FC Tyneside 0–2 33' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🧤 IL GOL SEMBRAVA FATTO Il gol sembrava fatto · ⚡ Conclusione di prima ❌ Tiro debole, para comodo. voto 7.9 ⚽ gol 2 Continua"
+  },
+  {
+   "min": 37,
+   "testo": "TYN FC Tyneside 0–2 37' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🧠 LA GIOCATA Anticipa sul primo controllo"
+  },
+  {
+   "min": 47,
+   "testo": "TYN FC Tyneside 2–0 47' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION CAMBIO CAMPO MER FC Merseyside ⚽ LA GIOCATA Volée di collo potente"
+  },
+  {
+   "min": 50,
+   "testo": "TYN FC Tyneside 2–0 50' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🎯 LA GIOCATA Piazzato nell'angolo basso"
+  },
+  {
+   "min": 61,
+   "testo": "TYN FC Tyneside 2–0 61' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 📐 LA GIOCATA Curva a rientrare"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8.1
+   }
+  ],
+  "golLog": [
+   {
+    "m": 8,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 18,
+    "chi": 21,
+    "scena": true,
+    "t": "home"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 0
+  },
+  "fase": "ceremony"
+ },
+ "schermate": [
+  "TYN | FC Tyneside | 0–2 | 🏆 | ☀️ | ⚠️ | PREMIAZIONE | MER | FC Merseyside | 🏆 PREMIAZIONE | CAMPIONI! | Premier Division | Salta premiazione →",
+  "📰 Cifre del Calcio | Stag. 12 · G. 34 | Q190-12 SHOW: 2 GOL | 🏆 | CAMPIONI! | Premier Division | FC Merseyside · Stagione 12 | PREMIER DIVISION | FISCHIO FINALE | FC Tyneside | 0–2 | FC Merseyside | VITTORIA | ⏱ Sostituito al 78' · 78' giocati | 🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva! | 🧠 La tua scelta al 28': «Carico i compagni, reagiamo subito» → 24 palloni recuperati fino al fischio | IL TUO TABELLINO | › | ⚽ | 2 | Gol | 🎯 | 0 | Assist | 💥 | 9 | Tiri | 🔵 | 52% | Poss. | 🔗 | LE CONNESSIONI | › | ⚽ | GOL SU ASSIST DI | Russell 19' | TABELLINO DELLA GARA | › | FC Tyneside | — | FC Merseyside | 0 | Gol | 2 | 48% | Possesso | 52% | 2 | Tiri | 17 | 1 | Tiri in porta | 7 | 0.09 | Gol attesi (xG) | 2.59 | 13 | Azioni dalle fasce | 24 | 1 | Cross | 30 | 50% | Dribbling riusciti | 57% | 519 | Passaggi | 265 | 92% | Precisione passaggi | 82% | 28 | Recuperi | 33 | 4 | Parate | 1 | 0 | Calci d'angolo | 5 | 10 | Falli | 8 | 4 | Ammonizioni | 2 | 0 | Espulsioni | 0 | 15 | Rimesse laterali | 21 | IL TUO TABELLINO IN NUMERI | › | 👟 | 48 | Palloni ricevuti | 🎯 | 27/35 | Passaggi riusciti | ⚽ | 4/9 | Tiri in porta | 🛡️ | 4 | Recuperi | PAGELLA | 8.1 | Eccellente! | 4.0 | 10.0 | MISTER TARANTOLA · DOPO LA PARTITA | Partita dominata! 2 gol — hai dimostrato la tua classe. La tua valutazione individuale è alta. Così mi piaci. | MOMENTI CHIAVE | 10' | ⚽ Gol di Q190-12 | 19' | ⚽ Tuo gol al 19' (assist di Russell) | 78' | 🔁 78' Sostituzione: Samuelito Vairo Q190-12 esce — il mister ti risparmia per la prossima — esci tra gli applausi. | L'ANALISI | Big match dal peso specifico enorme in classifica. | Il pressing alto ha soffocato FC Tyneside. Samuelito Vairo Q190-12 ha sfruttato ogni spazio. | DALLE ALTRE TESTATE | CRONACA DI SPORT | Samuelito Vairo Q190-12 decide — 2 reti e FC Merseyside conquista 3 punti (voto 7.5) | ZONA MISTA | SPETTACOLO! Samuelito Vairo Q190-12 è un fenomeno: FC Merseyside vince 2-0 | SPORT IN RETE | Analisi: 2 reti e posizionamento premiato nel 2-0 | LE PAROLE DEL PROTAGONISTA | «Vittoria di squadra. Andiamo avanti step by step.» | MIGLIORE IN CAMPO | Samuelito Vairo Q190-12 | LA CURVA | «I tifosi esultano: serata perfetta!» | 📖 Veterano — 12ª stagione | #SamuelitoVairoQ190-12Gol🔥 | 🏟️ Torna alla dashboard"
+ ],
+ "motore2": {
+  "pag": [
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8.1
+   }
+  ],
+  "golLog": [
+   {
+    "m": 8,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 18,
+    "chi": 21,
+    "scena": true,
+    "t": "home"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8.1
+   }
+  ],
+  "golLog": [
+   {
+    "m": 8,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 18,
+    "chi": 21,
+    "scena": true,
+    "t": "home"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":143961.5,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"💥 Tiro da fuori\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":143961.6,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"post\",\"arcFam\":\"post\",\"overlayFam\":\"post\",\"ok\":true,\"detail\":null}",
+  "{\"t\":143962.4,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":179462.8,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":189565.4,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"penalty\",\"label\":\"Rigore — Potente all'incrocio\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"outKind\":\"saved\"}",
+  "{\"t\":189565.5,\"type\":\"CoherenceCheck\",\"gi\":1,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true}",
+  "{\"t\":217285.5,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":236801.5,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"progression\",\"label\":\"🏃 Conduci palla al piede e tira\",\"stat\":\"velocità\",\"ok\":true,\"key\":\"goal\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"BALL_CARRY\",\"ballState\":\"feet\"}",
+  "{\"t\":236801.6,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"shot\",\"pattern\":\"BALL_CARRY\",\"beats\":[{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"drive\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":266607.2,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":299353.8,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"shot\",\"label\":\"⚡ Conclusione di prima\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_first_time\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":299353.8,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":299354.2,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":331977.5,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":340301.3,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"recover\",\"label\":\"🧠 Anticipa sul primo controllo\",\"stat\":\"mentalità\",\"ok\":false,\"key\":\"through\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":340301.4,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":369535,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":388165.2,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"insertion\",\"label\":\"⚽ Volée di collo potente\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_volley\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":388165.2,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":388165.2,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":421943.7,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":428801.3,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"shot\",\"label\":\"🎯 Piazzato nell'angolo basso\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_one_on_one\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":428801.3,\"type\":\"CoherenceCheck\",\"gi\":6,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":428801.4,\"type\":\"HighlightTimeline\",\"gi\":6,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":458392.2,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}",
+  "{\"t\":479200.4,\"type\":\"ActionResolved\",\"gi\":7,\"intent\":\"freekick\",\"label\":\"📐 Curva a rientrare\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"freekick\",\"hlVariant\":\"freekick_direct\",\"hlPattern\":\"SET_PIECE\",\"ballState\":\"set_ground\"}",
+  "{\"t\":479200.5,\"type\":\"CoherenceCheck\",\"gi\":7,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":479202,\"type\":\"HighlightTimeline\",\"gi\":7,\"htType\":\"freekick\",\"pattern\":\"SET_PIECE\",\"beats\":[{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":506782.8,\"type\":\"HighlightAdvance\",\"from\":7,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

@@ -1,0 +1,329 @@
+{
+ "modo": "nuova",
+ "id": "detB",
+ "seed": 1571,
+ "nome": "Coll175det",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 277,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   3,
+   15,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   3,
+   19,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   3,
+   21,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   4,
+   34,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   7,
+   40,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   7,
+   42,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   7,
+   44,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   7,
+   48,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   22,
+   75,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_move",
+   22,
+   75,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_choose",
+   22,
+   75,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   22,
+   76,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "playing",
+   22,
+   94,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_intro",
+   29,
+   104,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_choose",
+   29,
+   106,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   29,
+   108,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "playing",
+   29,
+   120,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_intro",
+   33,
+   126,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   33,
+   128,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "playing",
+   34,
+   153,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_intro",
+   42,
+   166,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_choose",
+   42,
+   169,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   42,
+   169,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "playing",
+   42,
+   183,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "ended",
+   90,
+   277,
+   "{\"home\":1,\"away\":3}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 3,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 3' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🏃 LA GIOCATA Conduci palla al piede e tira"
+  },
+  {
+   "min": 7,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 7' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🛑 LA GIOCATA Chiusura immediata"
+  },
+  {
+   "min": 22,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 22' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🌀 LA GIOCATA Finta e cambio di passo"
+  },
+  {
+   "min": 29,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 29' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ⚽ LA GIOCATA Volée di collo potente"
+  },
+  {
+   "min": 33,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 33' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🔴 PRESSIONE! ⚽ LA GIOCATA Volée di collo potente"
+  },
+  {
+   "min": 42,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 42' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🌀 LA GIOCATA Finta e tiro"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 18,
+    "gol": 2,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 19,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 1,
+    "voto": 6.9
+   }
+  ],
+  "golLog": [
+   {
+    "m": 19,
+    "chi": 19,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 41,
+    "chi": 21,
+    "scena": true,
+    "t": "home"
+   },
+   {
+    "m": 70,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 91,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 3
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | COLL175DET NON BASTA | PROVINI | FISCHIO FINALE | Selezione Granata | 1–3 | Polisportiva Centro | SCONFITTA | 🧠 La tua scelta al 90': «Tutti avanti, pressing alto» → partita bloccata, nessun tiro fino al fischio | IL TUO TABELLINO | › | ⚽ | 1 | Gol | 🎯 | 0 | Assist | 💥 | 4 | Tiri | 🔵 | 55% | Poss. | 🔗 | LE CONNESSIONI | › | ⚽ | GOL SU ASSIST DI | Lombardi 42' | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 1 | Gol | 3 | 55% | Possesso | 45% | 12 | Tiri | 11 | 2 | Tiri in porta | 6 | 0.84 | Gol attesi (xG) | 1.63 | 32 | Azioni dalle fasce | 12 | 16 | Cross | 6 | 73% | Dribbling riusciti | 33% | 385 | Passaggi | 441 | 88% | Precisione passaggi | 89% | 32 | Recuperi | 23 | 3 | Parate | 1 | 1 | Calci d'angolo | 0 | 4 | Falli | 11 | 2 | Ammonizioni | 0 | 0 | Espulsioni | 0 | 17 | Rimesse laterali | 29 | IL TUO TABELLINO IN NUMERI | › | 👟 | 52 | Palloni ricevuti | 🎯 | 36/45 | Passaggi riusciti | ⚽ | 1/4 | Tiri in porta | 🛡️ | 2 | Recuperi | PAGELLA | 6.9 | Sufficiente | 4.0 | 10.0 | MOMENTI CHIAVE | 20' | 😨 Gol di Spada | 42' | ⚽ Tuo gol al 42' (assist di Lombardi) | 71' | 😨 Gol di De Luca | 90' | 😨 Gol di De Santis | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 18,
+    "gol": 2,
+    "voto": 8.3
+   },
+   {
+    "eroe": false,
+    "i": 19,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 1,
+    "voto": 6.9
+   }
+  ],
+  "golLog": [
+   {
+    "m": 19,
+    "chi": 19,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 41,
+    "chi": 21,
+    "scena": true,
+    "t": "home"
+   },
+   {
+    "m": 70,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 91,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 3
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":47371.8,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🏃 Conduci palla al piede e tira\",\"stat\":\"velocità\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"BALL_CARRY\",\"ballState\":\"feet\"}",
+  "{\"t\":47371.9,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"blocked\",\"arcFam\":\"blocked\",\"overlayFam\":\"blocked\",\"ok\":true,\"detail\":null}",
+  "{\"t\":47372.7,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"shot\",\"pattern\":\"BALL_CARRY\",\"beats\":[{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"drive\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":63048.7,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":71066.1,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🛑 Chiusura immediata\",\"stat\":\"velocità\",\"ok\":true,\"key\":\"recovery\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":71066.1,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":76925.2,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":103776.8,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"progression\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":103776.8,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":103776.9,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":122306.8,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":135274.6,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"insertion\",\"label\":\"⚽ Volée di collo potente\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_volley\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":135274.6,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":135274.7,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":149097,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":156864,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"insertion\",\"label\":\"⚽ Volée di collo potente\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_volley\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":156864,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":156864.6,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":181385.8,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":197964,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"shot\",\"label\":\"🌀 Finta e tiro\",\"stat\":\"dribbling\",\"ok\":true,\"key\":\"goal\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"DRIBBLE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":197964.2,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"DRIBBLE_SHOT\",\"beats\":[{\"tag\":\"slow\",\"kind\":\"carry\"},{\"tag\":\"feint\",\"kind\":\"dribble\"},{\"tag\":\"burst\",\"kind\":\"dribble\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":211924.7,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

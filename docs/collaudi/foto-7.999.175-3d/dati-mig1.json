@@ -1,0 +1,304 @@
+{
+ "modo": "mig",
+ "id": "1",
+ "seed": 1642,
+ "nome": "Coll175p1",
+ "prima": {
+  "arch": {
+   "id": "centravanti",
+   "e": "🎯",
+   "name": "Centravanti",
+   "desc": "Equilibrio perfetto in area",
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "favored": [
+    "tiro",
+    "posizionamento",
+    "tecnica"
+   ]
+  }
+ },
+ "dopoMig": {
+  "arch": "finalizzatore",
+  "tratti": {
+   "enfant": false
+  },
+  "archetipoOrig": "centravanti"
+ },
+ "fasiFine": "ceremony",
+ "durataS": 362,
+ "hist": [
+  [
+   "matchday",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   0,
+   41,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   4,
+   51,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   4,
+   55,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   5,
+   88,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   10,
+   98,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   10,
+   101,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   12,
+   106,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   41,
+   162,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   41,
+   164,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   42,
+   174,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   49,
+   191,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   49,
+   191,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   49,
+   227,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   77,
+   277,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   77,
+   279,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   78,
+   285,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   80,
+   288,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   80,
+   290,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   80,
+   291,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   81,
+   327,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   88,
+   339,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   88,
+   341,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   88,
+   352,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "ceremony",
+   90,
+   362,
+   "{\"home\":1,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 4,
+   "testo": "TYN FC Tyneside 0–0 4' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🧱 MURATO DALLA DIFESA Murato dalla difesa · 🏃 Conduci palla al piede e tira ❌ Murato dalla difesa. voto 5.9 Continua"
+  },
+  {
+   "min": 10,
+   "testo": "TYN FC Tyneside 0–0 10' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 💪 LA GIOCATA Contrasto pulito senza fallo"
+  },
+  {
+   "min": 49,
+   "testo": "TYN FC Tyneside 0–0 49' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION CAMBIO CAMPO MER FC Merseyside ✈️ LA GIOCATA Stacco in corsa potente"
+  },
+  {
+   "min": 80,
+   "testo": "TYN FC Tyneside 1–0 80' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 💥 LA GIOCATA Tiro di potenza"
+  },
+  {
+   "min": 88,
+   "testo": "TYN FC Tyneside 1–0 88' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ✈️ LA GIOCATA Stacco in corsa potente"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.6
+   }
+  ],
+  "golLog": [
+   {
+    "m": 58,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "golEroe": 0,
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ceremony"
+ },
+ "schermate": [
+  "TYN | FC Tyneside | 0–1 | 🏆 | ☀️ | ⚠️ | PREMIAZIONE | MER | FC Merseyside | 🏆 PREMIAZIONE | CAMPIONI! | Premier Division | Salta premiazione →"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 5,
+    "gol": 1,
+    "voto": 7.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.6
+   }
+  ],
+  "golLog": [
+   {
+    "m": 58,
+    "chi": 5,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "golEroe": 0,
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ceremony"
+ },
+ "tlJson": [
+  "{\"t\":155736.9,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🏃 Conduci palla al piede e tira\",\"stat\":\"velocità\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"BALL_CARRY\",\"ballState\":\"feet\"}",
+  "{\"t\":155737,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"blocked\",\"arcFam\":\"blocked\",\"overlayFam\":\"blocked\",\"ok\":true,\"detail\":null}",
+  "{\"t\":155737.7,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"shot\",\"pattern\":\"BALL_CARRY\",\"beats\":[{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"drive\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":192308.2,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":204867.6,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"💪 Contrasto pulito senza fallo\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"foul\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":204867.8,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":208426.6,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":268463.3,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"dribble\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":268463.3,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":268464.1,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":276078.4,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":295221.1,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"insertion\",\"label\":\"✈️ Stacco in corsa potente\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_diving\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":295221.2,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":295221.2,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":330934.9,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":383993.7,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"freekick\",\"label\":\"🎯 Punizione a giro\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"freekick\",\"hlVariant\":\"freekick_direct\",\"hlPattern\":\"SET_PIECE\",\"ballState\":\"set_ground\"}",
+  "{\"t\":383993.7,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":383993.8,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"freekick\",\"pattern\":\"SET_PIECE\",\"beats\":[{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":389383.3,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":394760,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"shot\",\"label\":\"💥 Tiro di potenza\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":394760,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":394760.2,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":430495.3,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":445460,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"insertion\",\"label\":\"✈️ Stacco in corsa potente\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_diving\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":445460,\"type\":\"CoherenceCheck\",\"gi\":6,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":445460,\"type\":\"HighlightTimeline\",\"gi\":6,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":456399.8,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

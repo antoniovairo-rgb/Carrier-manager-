@@ -1,0 +1,254 @@
+{
+ "modo": "nuova",
+ "id": "3",
+ "seed": 1713,
+ "nome": "Coll175p3",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 365,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   3,
+   28,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   3,
+   35,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   3,
+   38,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   3,
+   64,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   12,
+   78,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   12,
+   81,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   12,
+   84,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   12,
+   92,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   18,
+   101,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   18,
+   104,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   18,
+   108,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   18,
+   135,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   24,
+   144,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   24,
+   147,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   24,
+   152,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   25,
+   184,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   87,
+   306,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   87,
+   308,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   87,
+   309,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   88,
+   344,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "ended",
+   90,
+   365,
+   "{\"home\":1,\"away\":0}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 3,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 3' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 💨 CHE PECCATO! Che peccato! · 🏃 Conduci palla al piede e tira 😬 Tiro fuori! 🔊 Pressione del pubblico ostile voto 5.8 Continua"
+  },
+  {
+   "min": 12,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 12' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🛡️ CHIUSURA IMPECCABILE! Chiusura impeccabile! · 🧠 Anticipa sul primo controllo 💪 Pallone recuperato! voto 6.1 Continua"
+  },
+  {
+   "min": 18,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 18' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro Il portiere dice di no · 🏃 Conduci palla al piede e tira 😔 Para il portiere. 🔊 Pressione del pubblico ostile voto 6.1 Continua"
+  },
+  {
+   "min": 24,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 24' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro Il difensore si oppone · ⚽ Volée di collo potente 🧱 La difesa mura la conclusione. 🔊 Pressione del pubblico ostile voto 6.1 Continua"
+  },
+  {
+   "min": 87,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–1 87' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Piazzato nell'angolo basso"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 8
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.7
+   }
+  ],
+  "golLog": [
+   {
+    "m": 33,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | VITTORIA DI CARATTERE | PROVINI | FISCHIO FINALE | Selezione Granata | 1–0 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 90': «Teniamo palla nella loro metà» → nessun tiro concesso fino al fischio | IL TUO TABELLINO | › | ⚽ | 0 | Gol | 🎯 | 0 | Assist | 💥 | 5 | Tiri | 🔵 | 50% | Poss. | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 1 | Gol | 0 | 50% | Possesso | 50% | 19 | Tiri | 12 | 7 | Tiri in porta | 3 | 1.24 | Gol attesi (xG) | 0.89 | 28 | Azioni dalle fasce | 12 | 13 | Cross | 12 | 50% | Dribbling riusciti | 50% | 353 | Passaggi | 451 | 91% | Precisione passaggi | 93% | 24 | Recuperi | 17 | 3 | Parate | 6 | 3 | Calci d'angolo | 1 | 11 | Falli | 13 | 2 | Ammonizioni | 2 | 0 | Espulsioni | 0 | 15 | Rimesse laterali | 16 | IL TUO TABELLINO IN NUMERI | › | 👟 | 27 | Palloni ricevuti | 🎯 | 19/23 | Passaggi riusciti | ⚽ | 2/5 | Tiri in porta | 🛡️ | 2 | Recuperi | PAGELLA | 6.7 | Sufficiente | 4.0 | 10.0 | MOMENTI CHIAVE | 34' | ⚽ Gol di Pecoraro | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 8
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 0,
+    "voto": 6.7
+   }
+  ],
+  "golLog": [
+   {
+    "m": 33,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 1,
+   "away": 0
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":94718.6,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🏃 Conduci palla al piede e tira\",\"stat\":\"velocità\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"BALL_CARRY\",\"ballState\":\"feet\"}",
+  "{\"t\":94718.7,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":94719.5,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"shot\",\"pattern\":\"BALL_CARRY\",\"beats\":[{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"drive\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":123664.9,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":140911.5,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🧠 Anticipa sul primo controllo\",\"stat\":\"mentalità\",\"ok\":true,\"key\":\"recovery\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":140911.7,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":152147.3,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":163721.2,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"progression\",\"label\":\"🏃 Conduci palla al piede e tira\",\"stat\":\"velocità\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"BALL_CARRY\",\"ballState\":\"feet\"}",
+  "{\"t\":163721.2,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":163721.4,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"shot\",\"pattern\":\"BALL_CARRY\",\"beats\":[{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"drive\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":194932.5,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":207373.7,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"insertion\",\"label\":\"⚽ Volée di collo potente\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_volley\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":207373.7,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"blocked\",\"arcFam\":\"blocked\",\"overlayFam\":\"blocked\",\"ok\":true,\"detail\":null}",
+  "{\"t\":207373.7,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":243917.3,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":356610.7,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"freekick\",\"label\":\"🎯 Punizione a giro\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"freekick\",\"hlVariant\":\"freekick_direct\",\"hlPattern\":\"SET_PIECE\",\"ballState\":\"set_ground\"}",
+  "{\"t\":356610.8,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":356610.9,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"freekick\",\"pattern\":\"SET_PIECE\",\"beats\":[{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":0,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":360162.9,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":368310.4,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"dribble\",\"label\":\"🎯 Piazzato nell'angolo basso\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_one_on_one\",\"hlPattern\":\"ONE_ON_ONE\",\"ballState\":\"feet\"}",
+  "{\"t\":368310.4,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":368310.6,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"ONE_ON_ONE\",\"beats\":[{\"tag\":\"through\",\"kind\":\"through\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"carry\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":403329.9,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

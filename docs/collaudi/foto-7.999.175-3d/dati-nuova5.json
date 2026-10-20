@@ -1,0 +1,336 @@
+{
+ "modo": "nuova",
+ "id": "5",
+ "seed": 2065,
+ "nome": "Coll175p5",
+ "creazioneTesto": null,
+ "fasiFine": "ended",
+ "durataS": 362,
+ "hist": [
+  [
+   "playing",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   2,
+   20,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   2,
+   24,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   2,
+   28,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   2,
+   55,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   7,
+   62,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   7,
+   64,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   7,
+   66,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   7,
+   75,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   19,
+   95,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   19,
+   100,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   19,
+   103,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   19,
+   129,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   29,
+   146,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   29,
+   149,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   29,
+   151,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   29,
+   177,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   57,
+   224,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_choose",
+   57,
+   229,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   57,
+   229,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "playing",
+   57,
+   254,
+   "{\"home\":0,\"away\":1}"
+  ],
+  [
+   "hl_intro",
+   74,
+   281,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   74,
+   285,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "playing",
+   74,
+   307,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "hl_intro",
+   80,
+   316,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "hl_move",
+   80,
+   318,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "hl_choose",
+   80,
+   319,
+   "{\"home\":1,\"away\":1}"
+  ],
+  [
+   "hl_result",
+   80,
+   319,
+   "{\"home\":2,\"away\":1}"
+  ],
+  [
+   "playing",
+   80,
+   334,
+   "{\"home\":2,\"away\":1}"
+  ],
+  [
+   "ended",
+   90,
+   362,
+   "{\"home\":2,\"away\":1}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 2,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 2' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🧤 TENTATIVO RESPINTO Tentativo respinto · 💥 Tiro da fuori 🧤 Il portiere si distende e respinge. 🔊 Pressione del pubblico ostile voto 5.8 Continua"
+  },
+  {
+   "min": 7,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 7' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🛑 LA GIOCATA Chiusura immediata"
+  },
+  {
+   "min": 19,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 19' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ✂️ PALLA PERSA Palla persa · 🛡️ Proteggi palla e scarica su FERRARI ✂️ Passaggio intercettato. 🔊 Pressione del pubblico ostile voto 6.1 Continua"
+  },
+  {
+   "min": 29,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 0–0 29' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Testa piazzata all'angolo"
+  },
+  {
+   "min": 57,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 1–0 57' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🤝 LA GIOCATA Servi SCOTTI libero"
+  },
+  {
+   "min": 74,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 1–1 74' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro 🎯 LA GIOCATA Piazzato nell'angolo basso"
+  },
+  {
+   "min": 80,
+   "testo": "🎯 PROVINO 1/3 GRA Selezione Granata 1–1 80' ☀️ ⏸ 1× ⚠️ PROVINI POL Polisportiva Centro ⚽ LA GIOCATA Rigore — Tiro potente"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 8.1
+   },
+   {
+    "eroe": false,
+    "i": 19,
+    "gol": 1,
+    "voto": 6.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 1,
+    "voto": 7.2
+   }
+  ],
+  "golLog": [
+   {
+    "m": 42,
+    "chi": 19,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 56,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ended"
+ },
+ "schermate": [
+  "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | COLL175P5 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 2–1 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 79': «Rifiato col pallone» → ha pagato: gol fino al 90' | 🧠 La tua scelta al 90': «Teniamo palla nella loro metà» → nessun tiro concesso fino al fischio | IL TUO TABELLINO | › | ⚽ | 1 | Gol | 🎯 | 0 | Assist | 💥 | 4 | Tiri | 🔵 | 52% | Poss. | TABELLINO DELLA GARA | › | Selezione Granata | — | Polisportiva Centro | 2 | Gol | 1 | 52% | Possesso | 48% | 10 | Tiri | 11 | 5 | Tiri in porta | 3 | 1.10 | Gol attesi (xG) | 0.68 | 25 | Azioni dalle fasce | 22 | 11 | Cross | 5 | 62% | Dribbling riusciti | 40% | 377 | Passaggi | 456 | 90% | Precisione passaggi | 92% | 25 | Recuperi | 33 | 2 | Parate | 3 | 2 | Calci d'angolo | 1 | 10 | Falli | 10 | 3 | Ammonizioni | 2 | 0 | Espulsioni | 0 | 20 | Rimesse laterali | 18 | IL TUO TABELLINO IN NUMERI | › | 👟 | 63 | Palloni ricevuti | 🎯 | 39/51 | Passaggi riusciti | ⚽ | 3/4 | Tiri in porta | 🛡️ | 7 | Recuperi | PAGELLA | 7.2 | Buona partita | 4.0 | 10.0 | MOMENTI CHIAVE | 43' | 😨 Gol di Rossi | 58' | ⚽ Gol di Colombo | 80' | ⚽ Tuo rigore al 80' | 📋 Risultati provino"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 7,
+    "gol": 1,
+    "voto": 8.1
+   },
+   {
+    "eroe": false,
+    "i": 19,
+    "gol": 1,
+    "voto": 6.4
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 1,
+    "voto": 7.2
+   }
+  ],
+  "golLog": [
+   {
+    "m": 42,
+    "chi": 19,
+    "scena": false,
+    "t": "away"
+   },
+   {
+    "m": 56,
+    "chi": 7,
+    "scena": false,
+    "t": "home"
+   }
+  ],
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":70277.2,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"💥 Tiro da fuori\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":70277.2,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":70278,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":99756.8,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":109640,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🛑 Chiusura immediata\",\"stat\":\"velocità\",\"ok\":true,\"key\":\"recovery\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":109640.1,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":120763.7,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":145042.2,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"shot\",\"label\":\"🛡️ Proteggi palla e scarica su FERRARI\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":145042.2,\"type\":\"CoherenceCheck\",\"gi\":2,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":145042.6,\"type\":\"HighlightTimeline\",\"gi\":2,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":174577.1,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":194083.1,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"insertion\",\"label\":\"🎯 Testa piazzata all'angolo\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":194083.1,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":194083.4,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":222606.1,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":274677.4,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"shot\",\"label\":\"🤝 Servi SCOTTI libero\",\"stat\":\"passaggio\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":274677.5,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"overhit\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":274677.5,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":299030.5,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":330447.7,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"shot\",\"label\":\"🎯 Piazzato nell'angolo basso\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_one_on_one\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":330447.7,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"blocked\",\"arcFam\":\"blocked\",\"overlayFam\":\"blocked\",\"ok\":true,\"detail\":null}",
+  "{\"t\":330447.8,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":352670,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":364340.1,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"penalty\",\"label\":\"Rigore — Tiro potente\",\"stat\":\"tiro\",\"ok\":true,\"key\":\"goal\"}",
+  "{\"t\":379736.4,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}

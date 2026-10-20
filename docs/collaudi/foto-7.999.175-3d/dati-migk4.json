@@ -1,0 +1,342 @@
+{
+ "modo": "mig",
+ "id": "k4",
+ "seed": 4,
+ "nome": "Q190-4",
+ "prima": {
+  "arch": {
+   "id": "centravanti",
+   "e": "🎯",
+   "name": "Centravanti",
+   "desc": "Equilibrio perfetto in area",
+   "bonus": {
+    "tiro": 5,
+    "posizionamento": 6,
+    "tecnica": 4,
+    "passaggio": 2,
+    "velocità": -2
+   },
+   "favored": [
+    "tiro",
+    "posizionamento",
+    "tecnica"
+   ]
+  }
+ },
+ "dopoMig": {
+  "arch": "finalizzatore",
+  "tratti": {
+   "enfant": false
+  },
+  "archetipoOrig": "centravanti"
+ },
+ "fasiFine": "ceremony",
+ "durataS": 430,
+ "hist": [
+  [
+   "matchday",
+   0,
+   0,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   0,
+   36,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   2,
+   42,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   2,
+   42,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   2,
+   45,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   2,
+   76,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   10,
+   92,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "playing",
+   10,
+   106,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   16,
+   114,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   16,
+   117,
+   "{\"home\":0,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   16,
+   117,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "playing",
+   16,
+   143,
+   "{\"home\":1,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   23,
+   163,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_move",
+   23,
+   166,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   23,
+   166,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   23,
+   172,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   23,
+   201,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   30,
+   212,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_choose",
+   30,
+   214,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   30,
+   214,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   30,
+   249,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   43,
+   270,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   43,
+   274,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   43,
+   306,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_intro",
+   45,
+   308,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "hl_result",
+   45,
+   311,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "playing",
+   46,
+   342,
+   "{\"home\":2,\"away\":0}"
+  ],
+  [
+   "ceremony",
+   90,
+   430,
+   "{\"home\":2,\"away\":1}"
+  ]
+ ],
+ "esiti": [
+  {
+   "min": 2,
+   "testo": "TYN FC Tyneside 0–0 2' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ✂️ ANTICIPATO DALL'AVVERSARIO Anticipato dall'avversario · 🌀 Finta e cambio di passo ✂️ L'avversario legge la giocata e intercetta. voto 5.7 Continua"
+  },
+  {
+   "min": 10,
+   "testo": "TYN FC Tyneside 0–0 10' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🛡️ LA GIOCATA Scivolata netta"
+  },
+  {
+   "min": 16,
+   "testo": "TYN FC Tyneside 0–0 16' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ⚽ LA GIOCATA Rigore — Potente all'incrocio"
+  },
+  {
+   "min": 23,
+   "testo": "TYN FC Tyneside 0–2 23' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside Che peccato! · 💥 Tiro da fuori 💨 Sopra la traversa — che rimpianto! voto 8 ⚽ gol 2 Continua"
+  },
+  {
+   "min": 30,
+   "testo": "TYN FC Tyneside 0–2 30' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🎯 LA GIOCATA Controllo e tiro fermo"
+  },
+  {
+   "min": 43,
+   "testo": "TYN FC Tyneside 0–2 43' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside ✈️ LA GIOCATA Testa di potenza"
+  },
+  {
+   "min": 45,
+   "testo": "TYN FC Tyneside 0–2 45' ☀️ ⏸ 1× ⚠️ PREMIER DIVISION MER FC Merseyside 🔄 LA GIOCATA Girata secca e tiro"
+  }
+ ],
+ "motore1": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 18,
+    "gol": 1,
+    "voto": 7
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8.1
+   }
+  ],
+  "golLog": [
+   {
+    "m": 15,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 59,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ceremony"
+ },
+ "schermate": [
+  "TYN | FC Tyneside | 1–2 | 🏆 | ☀️ | ⚠️ | PREMIAZIONE | MER | FC Merseyside | 🏆 PREMIAZIONE | CAMPIONI! | Premier Division | Salta premiazione →"
+ ],
+ "motoreFin": {
+  "pag": [
+   {
+    "eroe": false,
+    "i": 18,
+    "gol": 1,
+    "voto": 7
+   },
+   {
+    "eroe": true,
+    "i": 21,
+    "gol": 2,
+    "voto": 8.1
+   }
+  ],
+  "golLog": [
+   {
+    "m": 15,
+    "chi": 21,
+    "scena": false,
+    "t": "home"
+   },
+   {
+    "m": 59,
+    "chi": 18,
+    "scena": false,
+    "t": "away"
+   }
+  ],
+  "golEroe": 2,
+  "pag75": 1,
+  "score": {
+   "home": 2,
+   "away": 1
+  },
+  "fase": "ended"
+ },
+ "tlJson": [
+  "{\"t\":134078.2,\"type\":\"ActionResolved\",\"gi\":0,\"intent\":\"progression\",\"label\":\"🌀 Finta e cambio di passo\",\"stat\":\"dribbling\",\"ok\":false,\"key\":\"intercept\",\"hlType\":\"pass\",\"hlVariant\":null,\"hlPattern\":\"COMBINATION\",\"ballState\":\"feet\"}",
+  "{\"t\":134078.3,\"type\":\"CoherenceCheck\",\"gi\":0,\"kind\":\"overlay_arc\",\"outKey\":\"intercept\",\"outKind\":\"intercepted\",\"arcFam\":\"intercepted\",\"overlayFam\":\"intercepted\",\"ok\":true,\"detail\":null}",
+  "{\"t\":134079.2,\"type\":\"HighlightTimeline\",\"gi\":0,\"htType\":\"pass\",\"pattern\":\"COMBINATION\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"give\",\"kind\":\"give\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":2,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":167896.2,\"type\":\"HighlightAdvance\",\"from\":0,\"chained\":false}",
+  "{\"t\":183723.2,\"type\":\"ActionResolved\",\"gi\":1,\"intent\":\"recover\",\"label\":\"🛡️ Scivolata netta\",\"stat\":\"fisico\",\"ok\":true,\"key\":\"recovery\",\"hlType\":\"tackle\",\"hlVariant\":null,\"hlPattern\":\"TACKLE\",\"ballState\":\"feet\"}",
+  "{\"t\":183723.5,\"type\":\"HighlightTimeline\",\"gi\":1,\"htType\":\"tackle\",\"pattern\":\"TACKLE\",\"beats\":[{\"tag\":\"approach\",\"kind\":\"carry\"},{\"tag\":\"tackle\",\"kind\":\"loose\"},{\"tag\":\"win\",\"kind\":\"carry\"},{\"tag\":\"layoff\",\"kind\":\"pass\"}],\"passes\":1,\"last\":\"layoff\",\"violations\":[]}",
+  "{\"t\":198428.8,\"type\":\"HighlightAdvance\",\"from\":1,\"chained\":false}",
+  "{\"t\":209131.8,\"type\":\"ActionResolved\",\"gi\":2,\"intent\":\"penalty\",\"label\":\"Rigore — Potente all'incrocio\",\"stat\":\"tiro\",\"ok\":true,\"key\":\"goal\"}",
+  "{\"t\":234000.9,\"type\":\"HighlightAdvance\",\"from\":2,\"chained\":false}",
+  "{\"t\":257823.8,\"type\":\"ActionResolved\",\"gi\":3,\"intent\":\"progression\",\"label\":\"💥 Tiro da fuori\",\"stat\":\"tiro\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":257823.8,\"type\":\"CoherenceCheck\",\"gi\":3,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":257824.3,\"type\":\"HighlightTimeline\",\"gi\":3,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":292468.4,\"type\":\"HighlightAdvance\",\"from\":3,\"chained\":false}",
+  "{\"t\":306292,\"type\":\"ActionResolved\",\"gi\":4,\"intent\":\"insertion\",\"label\":\"🎯 Controllo e tiro fermo\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"aerial\"}",
+  "{\"t\":306292,\"type\":\"CoherenceCheck\",\"gi\":4,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"wide\",\"arcFam\":\"wide\",\"overlayFam\":\"wide\",\"ok\":true,\"detail\":null}",
+  "{\"t\":306292.2,\"type\":\"HighlightTimeline\",\"gi\":4,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":341123.8,\"type\":\"HighlightAdvance\",\"from\":4,\"chained\":false}",
+  "{\"t\":366128.9,\"type\":\"ActionResolved\",\"gi\":5,\"intent\":\"insertion\",\"label\":\"✈️ Testa di potenza\",\"stat\":\"fisico\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"header\",\"hlVariant\":\"header_near_post\",\"hlPattern\":\"HEADER_ATTACK\",\"ballState\":\"aerial\"}",
+  "{\"t\":366129,\"type\":\"CoherenceCheck\",\"gi\":5,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":366129.1,\"type\":\"HighlightTimeline\",\"gi\":5,\"htType\":\"header\",\"pattern\":\"HEADER_ATTACK\",\"beats\":[{\"tag\":\"run\",\"kind\":\"carry\"},{\"tag\":\"cross\",\"kind\":\"cross\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"header\",\"kind\":\"header\"}],\"passes\":1,\"last\":\"header\",\"violations\":[]}",
+  "{\"t\":397992.9,\"type\":\"HighlightAdvance\",\"from\":5,\"chained\":false}",
+  "{\"t\":402723.1,\"type\":\"ActionResolved\",\"gi\":6,\"intent\":\"shot\",\"label\":\"🔄 Girata secca e tiro\",\"stat\":\"tecnica\",\"ok\":false,\"key\":\"miss\",\"hlType\":\"shot\",\"hlVariant\":\"shot_power\",\"hlPattern\":\"EDGE_SHOT\",\"ballState\":\"feet\"}",
+  "{\"t\":402723.1,\"type\":\"CoherenceCheck\",\"gi\":6,\"kind\":\"overlay_arc\",\"outKey\":\"miss\",\"outKind\":\"saved\",\"arcFam\":\"saved\",\"overlayFam\":\"saved\",\"ok\":true,\"detail\":null}",
+  "{\"t\":402723.2,\"type\":\"HighlightTimeline\",\"gi\":6,\"htType\":\"shot\",\"pattern\":\"EDGE_SHOT\",\"beats\":[{\"tag\":\"pass\",\"kind\":\"pass\"},{\"tag\":\"control\",\"kind\":\"carry\"},{\"tag\":\"shot\",\"kind\":\"shot\"}],\"passes\":1,\"last\":\"shot\",\"violations\":[]}",
+  "{\"t\":434266.5,\"type\":\"HighlightAdvance\",\"from\":6,\"chained\":false}"
+ ],
+ "errs": [
+  "console: [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+ ]
+}
