@@ -693,3 +693,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO: «agli highlights eroe devono essere perfetti in tutto e per tutto!».
 - PO (questionario): **«Stessa regola, soglia più severa»** — PO-229/248 restano residui in stabilità, ma nelle carriere e nei collaudi ogni difetto negli highlight dell'eroe (fluidità, esito, portiere, pallone, inquadratura, gesto) vale **almeno «medio»** e **blocca il rilascio** finché non è corretto.
 - Sessione principale: la regola entra nei prompt di tutti i collaudi da ora (anche le carriere 1 e 2 in corso, avvisate a fine lavoro: i loro difetti di highlight si riclassificano qui).
+
+## 20/10 notte — giro 84 (PO-289) consegnato
+
+- Giro 84 (f5771aee, sviluppo/giro84-impulsi289): 7 impulsi collegati allo stato vero dell'Ufficio (scuola calcio → academy24 al costo dell'Ufficio; mental coach e chef → staff privato; casa e auto → beni; sponsor del procuratore → player.sponsors), 1 seguito riscritto, 6 eventi dello staff del club chiariti «del club», 0 tolti. Censimento in docs/governo/po289-censimento.md. impulsi-289 verde 6/6, rosso 6/6.
+- Sessione principale: accettata la scelta del giro di togliere i bonus inventati (popolarità/morale extra) dagli impulsi collegati: restano gli effetti dell'Ufficio. L'evento settimanale «il tuo agente finalizza un accordo commerciale secondario. Entrate extra.» (soldi promessi che non arrivano) segue la stessa regola PO-289: entra in un giro di seguito per la 177. Gli investimenti d'impulso restano sul loro registro (giro 70) per non cambiare investimento-223 e meta-conto-265.
