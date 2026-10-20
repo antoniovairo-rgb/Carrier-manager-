@@ -6185,7 +6185,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(_e.fP&&nx>=INT259.FIN){const _dl=(_a.p>_e.fP.a.p)||(_a.x-_e.fP.a.x>=0.2),_dn=(_h.p>_e.fP.h.p)||(_h.x-_e.fP.h.x>=0.2)||(_oc!=null&&_oc!==_e.fP.oc&&_oc>=INT259.FIN);
               if(_dl||_dn){_e.finm=nx;_e.fink=_dl?'loro':'noi';}}
             _e.fP={h:_h,a:_a,oc:_oc};}
-          if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}if((_t.away.rigori|0)>_e.rL){_e.rL=_t.away.rigori|0;_e.rLm=nx;}}
+          if(_t){if((_t.home.espulsioni|0)>_e.eN){_e.eN=_t.home.espulsioni|0;_e.eNm=nx;}if((_t.away.espulsioni|0)>_e.eL){_e.eL=_t.away.espulsioni|0;_e.eLm=nx;}{const _rl79=INT259.rigLoro(_t);if(_rl79>_e.rL){_e.rL=_rl79;_e.rLm=nx;}}}/* [giro 79] rigori per loro = concessi dalla squadra dell'eroe (rosso __CPM_NO_RIG79) */
           /* IL RACCONTO, cinque minuti dopo la scelta: nasce dalle differenze del tabellino del motore e del punteggio (INT259.racconta) */
           const _R=_N.r259;
           if(_R&&!_R.detto&&!_inHL77&&_M&&nx>=_R.m0+INT259.ATTESA){_R.detto=true;const _dopo=INT259.foto(_M,scoreRef.current);
@@ -11947,7 +11947,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>);})()}
           {/* [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco: considerazioni reali del giornalista/mister/tifosi, eventi per importanza/prestigio, pagelle, commenti dell'eroe»] RASSEGNA STAMPA integrata nel riepilogo ended — tutto DERIVATO da generateLocalPressAnalysis (headline multi-testata, analisi tattica, MVP/flop, voci mister+eroe, curva) + occhiello per importanza/prestigio della gara. Solo carriera (i provini restano sobri). */}
           {context!=="trial"&&(()=>{
-            const _rbP=Math.min(mStats.rb,30),_ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
+            const _rbP=Math.min(mStats.rb,30);let _ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
+            /* [giro 79, collaudo 7.999.175-3d riga 4 — rosso __CPM_NO_VOTO79] DUE VOTI NELLA STESSA SCHERMATA (k12): PAGELLA 8,1 (voto del motore, r. ~11915)
+               e «Cronaca di Sport … (voto 7.5)» dalle testate, che ricalcolavano il voto con la formula dei bonus delle scene. Il 7.999.20 aveva
+               unificato il voto REGISTRATO, non questo giornale. Ora le testate usano lo stesso voto della pagella, quando il motore c'e'. */
+            try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO79||window.__CPM_NO_NUMERI23))){const _q79=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q79&&typeof _q79.voto==='number')_ratP=_q79.voto;}}catch(_e79){}
+            try{if(typeof window!=='undefined')window.__CPM_VOTO79=_ratP;}catch(_e79b){}
             const _oppN=(opponent&&(opponent.n||opponent.name))||"l'avversario";
             // [7.118.0 collaudo PO «l'Italia ha vinto ai rigori ma non si capisce che ha passato il turno»]: su un
             //   KO pareggiato deciso ai rigori la rassegna diceva «0-0, la classifica non sorride» (falso: non c'è

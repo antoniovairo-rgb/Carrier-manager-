@@ -102,6 +102,11 @@ const INT259={
   finale(c){if(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN252b)return true;
     return (c.finMin!=null&&c.finMin>=INT259.FIN&&INT259.recente(1,c.mn,c.finMin))||c.mn>=INT259.RETE;},
   recente(n,mn,m){return (n|0)>0&&m!=null&&(mn-m)>=0&&(mn-m)<=3;},
+  /* [giro 79, collaudo 7.999.175-3d riga 2 — rosso __CPM_NO_RIG79] I RIGORI DATI AGLI AVVERSARI. Il tabellino del motore conta il rigore sul lato
+     di chi ha commesso il fallo (ev 'rigore' con chi = difensore, r. ~338 e ~722): `away.rigori` sono i rigori CONCESSI dagli avversari, cioe' quelli
+     A FAVORE della squadra dell'eroe. Il live leggeva away e apriva «Rigore per loro» dopo il rigore dell'eroe (k4 15', k12 8', k13 34'). Il rigore
+     per loro e' quello che concede la squadra dell'eroe: home.rigori (nel live home = squadra dell'eroe, latiTabellino10). Guardiano rigore-79.mjs. */
+  rigLoro(t){if(!t||!t.home||!t.away)return 0;if(typeof window!=='undefined'&&window&&window.__CPM_NO_RIG79)return t.away.rigori|0;return t.home.rigori|0;},
   FATTI:[
     {id:'rigore_contro',quando:c=>!c.panchina&&INT259.recente(c.rigContro,c.mn,c.rigControMin)&&Math.abs(c.diff)<=1},
     {id:'espulsione_noi',quando:c=>!c.panchina&&INT259.recente(c.espNoi,c.mn,c.espNoiMin)&&Math.abs(c.diff)<=1},
