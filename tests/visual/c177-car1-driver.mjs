@@ -179,6 +179,74 @@ async function invarianti(p) {
   if ((p.totalGoals || 0) < (p.goals || 0)) dif({ tipo: 'coerenza', nome: 'gol totali < gol stagione', ...c });
 }
 
+
+/* ---- ispezioni di schede (Ufficio, Agente, Stagione, Carriera, Opzioni) ---- */
+async function vaiTab(lab) { return page.evaluate(l => { const nav = document.querySelector('.cpm-nav-tabs'); if (!nav) return false; const bt = [...nav.querySelectorAll('button')].find(x => x.offsetParent && x.innerText.trim().toLowerCase() === l.toLowerCase()); if (bt) { bt.click(); return true; } return false; }, lab); }
+async function ispeziona(nome, opz = {}) {
+  const c = await ctxNow(); const p = await P();
+  const out = { ...c, tipo: 'ispezione', nome };
+  try {
+    // scheda
+    for (const lab of opz.tabs || []) {
+      if (!await vaiTab(lab)) { dif({ tipo: 'schermata', nome: 'scheda non raggiungibile: ' + lab, ...c }); continue; }
+      await sleep(1000);
+      const t = await testo(page);
+      await scanTesto(t, 'scheda ' + lab);
+      await fotoAuto(`ins-S${c.s}W${c.w}-${nome}-${lab}`);
+      await page.evaluate(() => { const els = [...document.querySelectorAll('*')].filter(e => e.scrollHeight > e.clientHeight + 40 && ['auto', 'scroll'].includes(getComputedStyle(e).overflowY)); els.forEach(e => { e.scrollTop = e.scrollHeight; }); });
+      await sleep(500); await fotoAuto(`ins-S${c.s}W${c.w}-${nome}-${lab}-fondo`);
+      out['t_' + lab] = t.replace(/\n/g, ' | ').slice(0, 2500);
+      if (lab === 'Ufficio') await ufficioControlli(p, out);
+      await scrollSu(page);
+    }
+  } catch (e) { dif({ tipo: 'driver', nome: 'ispezione ' + nome + ' errore ' + String(e.message).slice(0, 120), ...c }); }
+  await vaiTab('Home'); await sleep(700);
+  app(EV, out);
+}
+async function ufficioControlli(p, out) {
+  const c = { s: p.season, w: p.week };
+  const tr = await page.evaluate(() => { const o = {}; document.querySelectorAll('[data-cpm^="trainer288-"], [data-cpm^="trainer281-"]').forEach(e => { o[e.getAttribute('data-cpm')] = e.innerText.trim().replace(/\n/g, ' '); }); return o; });
+  out.trainer = tr;
+  const stats = p.stats || {};
+  for (const k of Object.keys(tr)) {
+    const m = k.match(/^trainer288-val-(.+)$/);
+    if (m && m[1] !== 'generale') {
+      const num = +(tr[k].match(/(\d+)\s*$/) || [])[1];
+      if (stats[m[1]] != null && num !== stats[m[1]]) dif({ tipo: 'coerenza', nome: 'trainer: valore mostrato != statistica', attr: m[1], mostrato: tr[k], stat: stats[m[1]], ...c });
+    }
+  }
+  const cons = Object.keys(tr).filter(k => /^trainer288-cons-/.test(k)).map(k => k.replace('trainer288-cons-', ''));
+  out.consigliati = cons;
+  if (cons.length === 0 && Object.keys(tr).some(k => /trainer288-val/.test(k))) out.nessunConsigliato = true;
+  const staff = await page.evaluate(() => [...document.querySelectorAll('[data-cpm^="staff24-"][data-lv]')].map(e => ({ k: e.getAttribute('data-cpm'), lv: e.getAttribute('data-lv'), t: e.innerText.replace(/\n/g, ' ').slice(0, 220) })));
+  out.staff = staff;
+  const acc = await page.evaluate(() => { const e = document.querySelector('[data-cpm="accademia24"]'); return e ? { stato: e.getAttribute('data-stato'), t: e.innerText.replace(/\n/g, ' ').slice(0, 300) } : null; });
+  out.accademia = acc;
+}
+async function ufficioAzioni() {
+  const p = await P(); if (p.proStatus !== 'pro') return;
+  const c = { s: p.season, w: p.week }; const banca = p.bankBalance || 0; const az = [];
+  if (!await vaiTab('Ufficio')) return; await sleep(900);
+  // staff: alza il primo livello disponibile se il conto supera 40 settimane del costo (stima: 60k)
+  if (banca > 60000) {
+    const r = await page.evaluate(() => { const rows = [...document.querySelectorAll('[data-cpm^="staff24-"][data-lv]')]; for (const row of rows) { if (+row.getAttribute('data-lv') === 0) { const b = row.querySelector('button[aria-label^="Alza"]'); if (b && !b.disabled) { b.click(); return row.getAttribute('data-cpm'); } } } return null; });
+    if (r) { az.push('staff ' + r); await sleep(500); }
+  }
+  // piano del trainer: sul consigliato
+  const cons = await page.evaluate(() => { const e = document.querySelector('[data-cpm^="trainer288-cons-"]'); if (!e) return null; const k = e.getAttribute('data-cpm').replace('trainer288-cons-', ''); const b = document.querySelector('[data-cpm="trainer281-' + k + '"]'); if (b) { b.click(); return k; } return null; });
+  if (cons) az.push('piano trainer ' + cons);
+  await sleep(400);
+  // accademia
+  if (banca > 600000) { const f = await page.evaluate(() => { const b = document.querySelector('[data-cpm="accademia24-fonda"]'); if (b) { b.click(); return true; } return false; }); if (f) { az.push('accademia'); await sleep(500); } }
+  // investimento prudente a fine stagione precedente: se libero e conto alto
+  if (banca > 400000 && p.week <= 6) { const f = await page.evaluate(() => { const b = document.querySelector('[data-cpm="invest24-bilanciato"]') || document.querySelector('[data-cpm="invest24-prudente"]'); if (b) { b.click(); return b.getAttribute('data-cpm'); } return null; }); if (f) { az.push(f); await sleep(500); } }
+  // un bene alla volta se il conto e' molto alto
+  if (banca > 3000000) { const f = await page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm^="bene24-compra-"]')][0]; if (b) { b.click(); return b.getAttribute('data-cpm'); } return null; }); if (f) { az.push(f); await sleep(500); } }
+  const p2 = await P();
+  app(EV, { ...c, tipo: 'ufficio-azioni', banca, az, bancaDopo: p2.bankBalance, staffDopo: ['perkTrainer', 'perkNutrition', 'perkMental', 'perkFisio'].map(k => [k, p2[k], p2[k + 'Lv']]), accademia: p2.academy24 || null, focus: p2.perkTrainerFocus || null });
+  await vaiTab('Home'); await sleep(600);
+}
+
 /* ---- salva e ricarica ---- */
 function diffProfondo(a, b, pth = '', out = []) {
   if (out.length > 25) return out;
@@ -243,6 +311,8 @@ while (Date.now() < T_END) {
       if (arg.stop && new RegExp('^' + arg.stop.replace('S', 'S').replace('W', 'W') + '$').test('S' + p.season + 'W' + p.week) && !p.weekLived) await fine('STOP ' + arg.stop);
     } else { fermo++; if (fermo > 8) { dif({ tipo: 'blocco', nome: 'il tasto principale non fa avanzare', cta: c.t, ...(await ctxNow()) }); await fotoAuto('fermo-' + Date.now()); await page.evaluate(() => window.__CPM_CAREER.dismiss()); fermo = 0; if (iter > 3000) await fine('FERMO'); } }
     if (!p.weekLived && p.week >= 20 && drv.ricaricatoOk !== p.season) { await salvaRicarica('w' + p.week); drv.ricaricatoOk = p.season; saveDrv(); continue; }
+    if (!p.weekLived && p.proStatus === 'pro' && drv.uffStagione !== p.season && p.week >= 3) { drv.uffStagione = p.season; saveDrv(); await ispeziona('ufficio', { tabs: ['Ufficio'] }); await ufficioAzioni(); continue; }
+    if (!p.weekLived && p.week >= 12 && drv.tabsStagione !== p.season && (p.season <= 3 || p.season % 3 === 0)) { drv.tabsStagione = p.season; saveDrv(); await ispeziona('giro', { tabs: ['Stagione', 'Club', 'Carriera', 'Agente', 'Opzioni'] }); continue; }
     if (c.dis) { await sleep(1300); continue; }
     await page.click('[data-cpm="avanza23"]', { timeout: 4000 }).catch(() => {});
     await sleep(1300);
