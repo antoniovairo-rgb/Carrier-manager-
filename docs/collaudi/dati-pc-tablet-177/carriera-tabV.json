@@ -1,0 +1,2213 @@
+[
+ {
+  "fmt": "tabV",
+  "nome": "home-salvataggio",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 110,
+     "h": 28,
+     "t": "🗑️ Elimina"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-home-salvataggio.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "elimina-btn",
+  "w": 109.859375,
+  "h": 28.1875
+ },
+ {
+  "fmt": "tabV",
+  "nome": "conferma-elimina",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 110,
+     "h": 28,
+     "t": "🗑️ Elimina"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-conferma-elimina.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "carriera-ingresso",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-carriera-ingresso.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Home-alto",
+  "nota": "fisarmoniche aperte: 8",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi personali›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Notizie della settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Voci di mercato›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "⭐ Korward Champions Cup›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Classifica›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Home-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Home-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-focus",
+     "w": 701,
+     "h": 36,
+     "t": "La tua settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Duello capocannoniere›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "🎯 Record watch›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi personali›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 20,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Home-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Home-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Notizie della settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Voci di mercato›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "⭐ Korward Champions Cup›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Classifica›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Home-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Stagione-alto",
+  "nota": "fisarmoniche aperte: 4",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 240,
+     "h": 32,
+     "t": "📊Classifica"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 240,
+     "h": 32,
+     "t": "📅Calendario"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 240,
+     "h": 32,
+     "t": "🏆Coppe"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Classifica Premier Divis"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Stagione-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Stagione-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Dagli altri campionati›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Albo d'oro — storico cam"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 13,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Stagione-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Stagione-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-focus",
+     "w": 701,
+     "h": 36,
+     "t": "Marcatori storici›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 20,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Stagione-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Club-alto",
+  "nota": "fisarmoniche aperte: 7",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Stadio›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Sponsor di maglia›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Piazzamenti · migliore 1"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Club-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Club-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 34,
+     "t": "Contratto: scade a fine "
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Allenatore›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Staff tecnico›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Rosa24›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 13,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Club-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Club-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Bacheca del club9›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Lo spogliatoio3›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 20,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Club-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Carriera-alto",
+  "nota": "fisarmoniche aperte: 22",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 363,
+     "h": 32,
+     "t": "👤Profilo"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 363,
+     "h": 32,
+     "t": "🌍Nazionale"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Record di Carriera›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Statistiche6›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Biografia›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Statistiche Carriera›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 24,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Carriera-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Carriera-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Premi personali›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Corsa ai Premi›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "MVP del Mese28›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Memoria della Carriera37"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 17,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Carriera-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Carriera-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Achievement (18/34)›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Modalità Sfida›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 24,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Carriera-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Agente-alto",
+  "nota": "fisarmoniche aperte: 1",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Claudio Venturi ti dice›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Il tuo procuratore›"
+    },
+    {
+     "s": "button",
+     "w": 157,
+     "h": 24,
+     "t": "✂️ Licenzia il procurato"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Il tuo contratto›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Richiedi cessione›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 24,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Agente-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Agente-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Il tuo procuratore›"
+    },
+    {
+     "s": "button",
+     "w": 157,
+     "h": 24,
+     "t": "✂️ Licenzia il procurato"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Il tuo contratto›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Richiedi cessione›"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Qualsiasi"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Ambiziosa"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Top club"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Compito della settimana›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 17,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Agente-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Agente-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 157,
+     "h": 24,
+     "t": "✂️ Licenzia il procurato"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Il tuo contratto›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Richiedi cessione›"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Qualsiasi"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Ambiziosa"
+    },
+    {
+     "s": "button",
+     "w": 231,
+     "h": 29,
+     "t": "Top club"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Compito della settimana›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 17,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Agente-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Ufficio-alto",
+  "nota": "fisarmoniche aperte: 0",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Patrimonio›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Staff privato›"
+    },
+    {
+     "s": "button[trainer281-generale]",
+     "w": 115,
+     "h": 40,
+     "t": "generale 93+20% allename"
+    },
+    {
+     "s": "button[trainer281-velocità]",
+     "w": 105,
+     "h": 40,
+     "t": "velocità 88+1 ogni ~44 s"
+    },
+    {
+     "s": "button[trainer281-tecnica]",
+     "w": 105,
+     "h": 40,
+     "t": "tecnica 89+1 ogni ~44 se"
+    },
+    {
+     "s": "button[trainer281-fisico]",
+     "w": 104,
+     "h": 40,
+     "t": "fisico 91+1 ogni ~73 set"
+    },
+    {
+     "s": "button[trainer281-mentalità]",
+     "w": 104,
+     "h": 40,
+     "t": "mentalità 91+1 ogni ~73 "
+    },
+    {
+     "s": "button[trainer281-tiro]",
+     "w": 104,
+     "h": 40,
+     "t": "tiro 90+1 ogni ~73 sett."
+    },
+    {
+     "s": "button[trainer281-passaggio]",
+     "w": 105,
+     "h": 40,
+     "t": "passaggio 88+1 ogni ~44 "
+    },
+    {
+     "s": "button[trainer281-dribbling]",
+     "w": 105,
+     "h": 40,
+     "t": "dribbling 86+1 ogni ~20 "
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 32,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Ufficio-alto.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Ufficio-meta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:51"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Patrimonio›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Staff privato›"
+    },
+    {
+     "s": "button[trainer281-generale]",
+     "w": 115,
+     "h": 40,
+     "t": "generale 93+20% allename"
+    },
+    {
+     "s": "button[trainer281-velocità]",
+     "w": 105,
+     "h": 40,
+     "t": "velocità 88+1 ogni ~44 s"
+    },
+    {
+     "s": "button[trainer281-tecnica]",
+     "w": 105,
+     "h": 40,
+     "t": "tecnica 89+1 ogni ~44 se"
+    },
+    {
+     "s": "button[trainer281-fisico]",
+     "w": 104,
+     "h": 40,
+     "t": "fisico 91+1 ogni ~73 set"
+    },
+    {
+     "s": "button[trainer281-mentalità]",
+     "w": 104,
+     "h": 40,
+     "t": "mentalità 91+1 ogni ~73 "
+    },
+    {
+     "s": "button[trainer281-tiro]",
+     "w": 104,
+     "h": 40,
+     "t": "tiro 90+1 ogni ~73 sett."
+    },
+    {
+     "s": "button[trainer281-passaggio]",
+     "w": 105,
+     "h": 40,
+     "t": "passaggio 88+1 ogni ~44 "
+    },
+    {
+     "s": "button[trainer281-dribbling]",
+     "w": 105,
+     "h": 40,
+     "t": "dribbling 86+1 ogni ~20 "
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 32,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Ufficio-meta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "scheda-Ufficio-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Patrimonio›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 737,
+     "h": 31,
+     "t": "Staff privato›"
+    },
+    {
+     "s": "button[trainer281-generale]",
+     "w": 115,
+     "h": 40,
+     "t": "generale 93+20% allename"
+    },
+    {
+     "s": "button[trainer281-velocità]",
+     "w": 105,
+     "h": 40,
+     "t": "velocità 88+1 ogni ~44 s"
+    },
+    {
+     "s": "button[trainer281-tecnica]",
+     "w": 105,
+     "h": 40,
+     "t": "tecnica 89+1 ogni ~44 se"
+    },
+    {
+     "s": "button[trainer281-fisico]",
+     "w": 104,
+     "h": 40,
+     "t": "fisico 91+1 ogni ~73 set"
+    },
+    {
+     "s": "button[trainer281-mentalità]",
+     "w": 104,
+     "h": 40,
+     "t": "mentalità 91+1 ogni ~73 "
+    },
+    {
+     "s": "button[trainer281-tiro]",
+     "w": 104,
+     "h": 40,
+     "t": "tiro 90+1 ogni ~73 sett."
+    },
+    {
+     "s": "button[trainer281-passaggio]",
+     "w": 105,
+     "h": 40,
+     "t": "passaggio 88+1 ogni ~44 "
+    },
+    {
+     "s": "button[trainer281-dribbling]",
+     "w": 105,
+     "h": 40,
+     "t": "dribbling 86+1 ogni ~20 "
+    },
+    {
+     "s": "button[trainer281-posizionamento]",
+     "w": 122,
+     "h": 40,
+     "t": "posizionamento 92+1 ogni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 32,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-scheda-Ufficio-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "schede-info",
+  "schedaInfo": {
+   "Home": {
+    "navOk": true,
+    "fisarmoniche": 8,
+    "scroll": {
+     "alt": 2913,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   },
+   "Stagione": {
+    "navOk": true,
+    "fisarmoniche": 4,
+    "scroll": {
+     "alt": 3001,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   },
+   "Club": {
+    "navOk": true,
+    "fisarmoniche": 7,
+    "scroll": {
+     "alt": 2814,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   },
+   "Carriera": {
+    "navOk": true,
+    "fisarmoniche": 22,
+    "scroll": {
+     "alt": 6799,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   },
+   "Agente": {
+    "navOk": true,
+    "fisarmoniche": 1,
+    "scroll": {
+     "alt": 1466,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   },
+   "Ufficio": {
+    "navOk": true,
+    "fisarmoniche": 0,
+    "scroll": {
+     "alt": 997,
+     "vis": 914,
+     "doc": false
+    },
+    "nav": {
+     "navTop": 974,
+     "navH": 50,
+     "ultimoBottom": 1008,
+     "coperto": true,
+     "testo": "Home"
+    }
+   }
+  }
+ },
+ {
+  "fmt": "tabV",
+  "nome": "opzioni",
+  "nota": "fisarmoniche aperte: 0",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 38,
+     "h": 38,
+     "t": "✕"
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 52,
+     "h": 29,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 32,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-opzioni.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "opzioni-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 38,
+     "h": 38,
+     "t": "✕"
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "input",
+     "w": 699,
+     "h": 18,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 47,
+     "h": 27,
+     "t": ""
+    },
+    {
+     "s": "button",
+     "w": 52,
+     "h": 29,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 32,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-opzioni-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "opzioni-chiusura",
+  "ancoraAperte": false,
+  "viaEsc": false
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-impulso",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-impulso.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "impulso-bottoni",
+  "b": [
+   {
+    "t": "🎬 Accetto — mi racconto",
+    "w": 424,
+    "h": 54
+   },
+   {
+    "t": "🚪 No grazie, prima il campo",
+    "w": 424,
+    "h": 54
+   },
+   {
+    "t": "⚡ Vivi la Settimanaallenamento",
+    "w": 737,
+    "h": 62
+   },
+   {
+    "t": "🎉 Festeggia con la squadra",
+    "w": 699,
+    "h": 45
+   }
+  ]
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-impulso-dopo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-impulso-dopo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-3",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-3.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-4",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-4.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-5",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-5.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-6",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-6.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-7",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-7.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "popup-settimana-8",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-popup-settimana-8.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "salvataggio",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 19:52"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-salvataggio.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "ricarica-home",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 110,
+     "h": 28,
+     "t": "🗑️ Elimina"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-ricarica-home.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "ricarica-carriera",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:53"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 34,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-ricarica-carriera.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "salva-ricarica",
+  "preS": {
+   "name": "Samuelito Vairo",
+   "week": 38,
+   "season": 12,
+   "ovr": 93
+  },
+  "postS": {
+   "name": "Samuelito Vairo",
+   "week": 38,
+   "season": 12,
+   "ovr": 93
+  },
+  "uguali": true
+ },
+ {
+  "fmt": "tabV",
+  "nome": "errori",
+  "errs": []
+ }
+]

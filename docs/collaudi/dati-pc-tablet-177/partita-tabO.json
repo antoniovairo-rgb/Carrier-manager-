@@ -1,0 +1,3945 @@
+[
+ {
+  "fmt": "tabV",
+  "nome": "partita-home",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:17"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-home.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-prompt",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:17"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-prompt.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-conferenza",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:17"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-conferenza.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "conferenza-risposta",
+  "w": 378,
+  "h": 75
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-pre-dialogo3",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:17"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimana›"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-pre-dialogo3.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-matchday",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-matchday.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-formations",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-formations.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-walkout",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-walkout.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-walkout-2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-walkout-2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-walkout-4",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-walkout-4.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-walkout-6",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-walkout-6.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-playing",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    },
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-playing.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl1-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl1-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl1-move",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 259,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl1-move.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl1-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 269,
+     "h": 37,
+     "t": "1🌀 Finta e cambio di pa"
+    },
+    {
+     "s": "button",
+     "w": 263,
+     "h": 36,
+     "t": "2💥 Tiro da fuori"
+    },
+    {
+     "s": "button",
+     "w": 263,
+     "h": 36,
+     "t": "3🔁 Uno-due con PALUMBO"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl1-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl1-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    },
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl1-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl2-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl2-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl2-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 269,
+     "h": 37,
+     "t": "1💥 Conclusione potente"
+    },
+    {
+     "s": "button",
+     "w": 263,
+     "h": 36,
+     "t": "2🤝 Servi RIVA libero"
+    },
+    {
+     "s": "button",
+     "w": 263,
+     "h": 36,
+     "t": "3🎯 Conclusione precisa"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl2-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl2-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    },
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl2-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl2-move",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 259,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl2-move.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl3-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl3-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl3-move",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 259,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl3-move.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl3-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 269,
+     "h": 37,
+     "t": "1🌀 Finta e cambio di pa"
+    },
+    {
+     "s": "button",
+     "w": 263,
+     "h": 36,
+     "t": "2💥 Tiro da fuori"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl3-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-hl3-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 193,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    },
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-hl3-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-ceremony",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button[salta]",
+     "w": 170,
+     "h": 36,
+     "t": "Salta festeggiamenti →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 28,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-ceremony.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-ceremony-2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button[salta]",
+     "w": 170,
+     "h": 36,
+     "t": "Salta festeggiamenti →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 28,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 458,
+     "h": 879,
+     "iw": 458,
+     "ih": 879,
+     "ratioCss": 0.521,
+     "ratioBuf": 0.521,
+     "l": 15,
+     "t": 78,
+     "r": 473,
+     "b": 957
+    }
+   ]
+  },
+  "file": "tabV-partita-ceremony-2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "pilota-partita",
+  "info": {
+   "fasi": [
+    {
+     "ph": "matchday",
+     "t": 0
+    },
+    {
+     "ph": "formations",
+     "t": 3
+    },
+    {
+     "ph": "walkout",
+     "t": 24
+    },
+    {
+     "ph": "playing",
+     "t": 51
+    },
+    {
+     "ph": "hl_intro",
+     "t": 57
+    },
+    {
+     "ph": "hl_move",
+     "t": 61
+    },
+    {
+     "ph": "hl_choose",
+     "t": 64
+    },
+    {
+     "ph": "hl_result",
+     "t": 69
+    },
+    {
+     "ph": "playing",
+     "t": 72
+    },
+    {
+     "ph": "hl_intro",
+     "t": 76
+    },
+    {
+     "ph": "hl_choose",
+     "t": 77
+    },
+    {
+     "ph": "hl_result",
+     "t": 80
+    },
+    {
+     "ph": "playing",
+     "t": 83
+    },
+    {
+     "ph": "hl_intro",
+     "t": 130
+    },
+    {
+     "ph": "hl_choose",
+     "t": 135
+    },
+    {
+     "ph": "hl_result",
+     "t": 138
+    },
+    {
+     "ph": "playing",
+     "t": 141
+    },
+    {
+     "ph": "hl_intro",
+     "t": 148
+    },
+    {
+     "ph": "hl_move",
+     "t": 150
+    },
+    {
+     "ph": "hl_choose",
+     "t": 153
+    },
+    {
+     "ph": "hl_result",
+     "t": 156
+    },
+    {
+     "ph": "playing",
+     "t": 158
+    },
+    {
+     "ph": "hl_intro",
+     "t": 205
+    },
+    {
+     "ph": "hl_move",
+     "t": 209
+    },
+    {
+     "ph": "hl_choose",
+     "t": 212
+    },
+    {
+     "ph": "hl_result",
+     "t": 217
+    },
+    {
+     "ph": "playing",
+     "t": 220
+    },
+    {
+     "ph": "ceremony",
+     "t": 223
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 57,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@259x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🌀 Finta e cambio di pass@269x37",
+      "2💥 Tiro da fuori@263x36",
+      "3🔁 Uno-due con PALUMBO@263x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 0–0 | 8' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 55% · 45% | TIRI | 0 · 0 | IN PORTA | 0 · 0 | XG | 0,00 · 0,00 | STATISTICHE | PAGELLE | ▴ | Ilaria Bonomelli | commento tecnico | «Man",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 130,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Conclusione potente@269x37",
+      "2🤝 Servi RIVA libero@263x36",
+      "3🎯 Conclusione precisa@263x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 0–0 | 71' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 50% · 50% | TIRI | 7 · 2 | IN PORTA | 0 · 0 | XG | 0,53 · 0,09 | STATISTICHE | PAGELLE | ▴ | 🎯 Filtrante di Rosa (ALT) per Costa (ALT",
+     "btn": [],
+     "move": [
+      "✅ Pronto [0]@259x28"
+     ],
+     "prontoVia": "tocco",
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 205,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@259x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🌀 Finta e cambio di pass@269x37",
+      "2💥 Tiro da fuori@263x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 1–0 | 89' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 50% · 50% | TIRI | 8 · 4 | IN PORTA | 0 · 1 | XG | 0,61 · 0,17 | STATISTICHE | PAGELLE | ▴ | ↔️ Luzi (ALT) cambia gioco: la palla vola",
+     "btn": []
+    }
+   ],
+   "durataMs": 233639,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post1-fondo",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 694,
+     "h": 28,
+     "t": "Il tuo tabellino in nume"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post1-fondo.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post3",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post3.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "partita-post4",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 708,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 336,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 337,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-partita-post4.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "errori-partita",
+  "errs": []
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-home",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-home.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-prompt",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-prompt.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-conferenza",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 93,
+     "h": 23,
+     "t": "Salva · 20:21"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-conferenza.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "conferenza-risposta",
+  "w": 378,
+  "h": 75
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-pre-dialogo3",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 96,
+     "h": 23,
+     "t": "Salva · 20:22"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 71,
+     "h": 16,
+     "t": "Calendario ›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-pre-dialogo3.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-matchday",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-matchday.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-formations",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-formations.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-walkout",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-walkout.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-walkout-2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-walkout-2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-walkout-4",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-walkout-4.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-walkout-6",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[salta-ingresso]",
+     "w": 131,
+     "h": 36,
+     "t": "Salta ingresso →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-walkout-6.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-playing",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    },
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-playing.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl1-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl1-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl1-move",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 266,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl1-move.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl1-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 275,
+     "h": 37,
+     "t": "1🌀 Finta e cambio di pa"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 36,
+     "t": "2💥 Tiro da fuori"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 36,
+     "t": "3🔁 Uno-due con PALUMBO"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl1-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl1-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    },
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl1-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl2-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl2-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl2-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 275,
+     "h": 37,
+     "t": "1💥 Conclusione potente"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 36,
+     "t": "2🤝 Servi RIVA libero"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 36,
+     "t": "3🎯 Conclusione precisa"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl2-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl2-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    },
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl2-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl2-move",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 266,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl2-move.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl3-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl3-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl3-move",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 266,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl3-move.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl3-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 275,
+     "h": 37,
+     "t": "1🌀 Finta e cambio di pa"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 36,
+     "t": "2💥 Tiro da fuori"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl3-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-hl3-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 198,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    },
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-hl3-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-ceremony",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button[salta]",
+     "w": 170,
+     "h": 36,
+     "t": "Salta festeggiamenti →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 28,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-ceremony.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-ceremony-2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button[salta]",
+     "w": 170,
+     "h": 36,
+     "t": "Salta festeggiamenti →"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 28,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 467,
+     "h": 623,
+     "iw": 467,
+     "ih": 623,
+     "ratioCss": 0.75,
+     "ratioBuf": 0.75,
+     "l": 245,
+     "t": 80,
+     "r": 712,
+     "b": 703
+    }
+   ]
+  },
+  "file": "tabO-partita-ceremony-2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "pilota-partita",
+  "info": {
+   "fasi": [
+    {
+     "ph": "matchday",
+     "t": 0
+    },
+    {
+     "ph": "formations",
+     "t": 3
+    },
+    {
+     "ph": "walkout",
+     "t": 23
+    },
+    {
+     "ph": "playing",
+     "t": 50
+    },
+    {
+     "ph": "hl_intro",
+     "t": 54
+    },
+    {
+     "ph": "hl_move",
+     "t": 56
+    },
+    {
+     "ph": "hl_choose",
+     "t": 58
+    },
+    {
+     "ph": "hl_result",
+     "t": 62
+    },
+    {
+     "ph": "playing",
+     "t": 64
+    },
+    {
+     "ph": "hl_intro",
+     "t": 68
+    },
+    {
+     "ph": "hl_choose",
+     "t": 69
+    },
+    {
+     "ph": "hl_result",
+     "t": 72
+    },
+    {
+     "ph": "playing",
+     "t": 74
+    },
+    {
+     "ph": "hl_intro",
+     "t": 122
+    },
+    {
+     "ph": "hl_choose",
+     "t": 129
+    },
+    {
+     "ph": "hl_result",
+     "t": 133
+    },
+    {
+     "ph": "playing",
+     "t": 136
+    },
+    {
+     "ph": "hl_intro",
+     "t": 143
+    },
+    {
+     "ph": "hl_move",
+     "t": 146
+    },
+    {
+     "ph": "hl_choose",
+     "t": 150
+    },
+    {
+     "ph": "hl_result",
+     "t": 153
+    },
+    {
+     "ph": "playing",
+     "t": 155
+    },
+    {
+     "ph": "hl_intro",
+     "t": 202
+    },
+    {
+     "ph": "hl_move",
+     "t": 206
+    },
+    {
+     "ph": "hl_choose",
+     "t": 209
+    },
+    {
+     "ph": "hl_result",
+     "t": 214
+    },
+    {
+     "ph": "playing",
+     "t": 217
+    },
+    {
+     "ph": "ceremony",
+     "t": 220
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 54,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@266x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🌀 Finta e cambio di pass@275x37",
+      "2💥 Tiro da fuori@270x36",
+      "3🔁 Uno-due con PALUMBO@270x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 0–0 | 8' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 55% · 45% | TIRI | 0 · 0 | IN PORTA | 0 · 0 | XG | 0,00 · 0,00 | STATISTICHE | PAGELLE | ▴ | Ilaria Bonomelli | commento tecnico | «Man",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 123,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Conclusione potente@275x37",
+      "2🤝 Servi RIVA libero@270x36",
+      "3🎯 Conclusione precisa@270x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 0–0 | 71' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 50% · 50% | TIRI | 7 · 2 | IN PORTA | 0 · 0 | XG | 0,53 · 0,09 | STATISTICHE | PAGELLE | ▴ | 🎯 Filtrante di Rosa (ALT) per Costa (ALT",
+     "btn": [],
+     "move": [
+      "✅ Pronto [0]@266x28"
+     ],
+     "prontoVia": "tocco",
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 202,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@266x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🌀 Finta e cambio di pass@275x37",
+      "2💥 Tiro da fuori@270x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "ALT | FC Altoadige Primavera | 1–0 | 89' | ⛅ | ⏸ | 2× | ⚠️ | PRIMAVERA 2 | LAG | FC Laguna Primavera | ALT | LAG | POSSESSO | 48% · 52% | TIRI | 8 · 4 | IN PORTA | 0 · 1 | XG | 0,61 · 0,17 | STATISTICHE | PAGELLE | ▴ | ⚙️ Palumbo (LAG) appoggia in avanti per V",
+     "btn": []
+    }
+   ],
+   "durataMs": 231318,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 29,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 710,
+     "h": 28,
+     "t": "Il tuo tabellino in nume"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post1-fondo",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post1-fondo.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 96,
+     "h": 23,
+     "t": "Salva · 20:26"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 326,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post3",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 96,
+     "h": 23,
+     "t": "Salva · 20:26"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 326,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post3.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "partita-post4",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [
+    {
+     "s": "text",
+     "fs": 3.4,
+     "t": "Vetrarossa"
+    },
+    {
+     "s": "text",
+     "fs": 6.5,
+     "t": "ANTONIO VAIRO"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "T"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "ICD"
+    },
+    {
+     "s": "text",
+     "fs": 5.4,
+     "t": "F"
+    }
+   ],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 96,
+     "h": 23,
+     "t": "Salva · 20:26"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "La tua settimanaSettiman"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 695,
+     "h": 36,
+     "t": "Obiettivi della stagione"
+    },
+    {
+     "s": "button.cpm-focus",
+     "w": 326,
+     "h": 36,
+     "t": "Ultime notizie›"
+    },
+    {
+     "s": "button",
+     "w": 122,
+     "h": 26,
+     "t": "☕ Sostieni il progetto"
+    },
+    {
+     "s": "button",
+     "w": 123,
+     "h": 26,
+     "t": "💡 Idee e feedback"
+    }
+   ],
+   "testoMin": 3.4,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-partita-post4.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "errori-partita",
+  "errs": []
+ }
+]

@@ -1,0 +1,249 @@
+[
+ {
+  "fmt": "pc1366",
+  "nome": "tastiera-crea-tab",
+  "nota": "",
+  "m": {
+   "W": 1366,
+   "H": 768,
+   "scrollW": 1366,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button[altro-volto]",
+     "w": 251,
+     "h": 27,
+     "t": "↻ Altra variante di ques"
+    },
+    {
+     "s": "input",
+     "w": 474,
+     "h": 36,
+     "t": ""
+    },
+    {
+     "s": "summary",
+     "w": 474,
+     "h": 24,
+     "t": "⭐ Club dei sogni (facolt"
+    },
+    {
+     "s": "input",
+     "w": 474,
+     "h": 34,
+     "t": ""
+    },
+    {
+     "s": "summary",
+     "w": 474,
+     "h": 24,
+     "t": "⚡ Modalità Sfida (facolt"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1366-tastiera-crea-tab.png"
+ },
+ {
+  "fmt": "pc1366",
+  "nome": "tastiera-home-crea",
+  "R": {
+   "homeTab": [
+    {
+     "tag": "BUTTON",
+     "t": "Nuova carriera",
+     "ring": false,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "ℹ️Crediti",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "🏠Home",
+     "ring": false,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "🎬Rivedi intro",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "📂Importa",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "⚙️Opzioni",
+     "ring": true,
+     "dentro": true
+    },
+    null,
+    {
+     "tag": "BUTTON",
+     "t": "Nuova carriera",
+     "ring": true,
+     "dentro": true
+    }
+   ],
+   "homeNonFocus": [],
+   "creaNonFocus": [],
+   "creaTab": [
+    {
+     "tag": "BUTTON",
+     "t": "← Home",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "↻ Altra variante di questo v",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "INPUT",
+     "t": "Es. Giovanni Pisano",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "SELECT",
+     "t": "ItaliaSpagnaFranciaGermaniaI",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "SUMMARY",
+     "t": "⭐ Club dei sogni (facoltativ",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "SUMMARY",
+     "t": "⚡ Modalità Sfida (facoltativ",
+     "ring": true,
+     "dentro": true
+    },
+    null,
+    {
+     "tag": "BUTTON",
+     "t": "← Home",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    },
+    {
+     "tag": "BUTTON",
+     "t": "",
+     "ring": true,
+     "dentro": true
+    }
+   ],
+   "ctaRaggiunta": true,
+   "dopoInvio": "IL PROVINO · PASSO 1 DI 3 | 1 | 2 | 3 | GRA | La tua Selezione | La squadra dei provinanti | VS | POL | Polisportiva Cen"
+  }
+ }
+]

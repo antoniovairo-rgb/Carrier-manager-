@@ -1,0 +1,9901 @@
+[
+ {
+  "fmt": "tabV",
+  "nome": "home",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-home.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "crediti",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-crediti.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "home-dopo-crediti",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 21,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 138,
+     "h": 13,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-home-dopo-crediti.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "crea-1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 20,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-crea-1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "crea-fisarmoniche",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-crea-fisarmoniche.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "crea-nome",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-crea-nome.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "provino-pre",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-provino-pre.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-playing",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    },
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-playing.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl1-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 126,
+     "h": 19,
+     "t": "⚡ Tentativo di tiro"
+    },
+    {
+     "s": "div",
+     "w": 116,
+     "h": 15,
+     "t": "SPADA prova a chiudere."
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl1-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl1-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 280,
+     "h": 37,
+     "t": "1🌀 Finta e tiro"
+    },
+    {
+     "s": "div",
+     "w": 94,
+     "h": 18,
+     "t": "1🌀 Finta e tiro"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 70,
+     "h": 14,
+     "t": "🌀 Finta e tiro"
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "2🎯 Cerca l'angolo"
+    },
+    {
+     "s": "div",
+     "w": 106,
+     "h": 18,
+     "t": "2🎯 Cerca l'angolo"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 82,
+     "h": 14,
+     "t": "🎯 Cerca l'angolo"
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "3⚡ Conclusione di prima"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl1-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl1-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    },
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl1-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl2-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 214,
+     "h": 19,
+     "t": "🧠 Ricevi fra le linee: "
+    },
+    {
+     "s": "div",
+     "w": 337,
+     "h": 15,
+     "t": "Uno-due con FERRARI: te "
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl2-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl2-move",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl2-move.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl2-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 280,
+     "h": 37,
+     "t": "1🏃 Conduci palla al pie"
+    },
+    {
+     "s": "div",
+     "w": 176,
+     "h": 18,
+     "t": "1🏃 Conduci palla al pie"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 152,
+     "h": 14,
+     "t": "🏃 Conduci palla al pied"
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 189,
+     "h": 18,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 165,
+     "h": 14,
+     "t": "🎯 Lancio smarcante per "
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "3🔁 Uno-due con FERRARI"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl2-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl2-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 52,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    },
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl2-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl3-intro",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 240,
+     "h": 19,
+     "t": "🧠 Fra le linee, LUCA es"
+    },
+    {
+     "s": "div",
+     "w": 191,
+     "h": 15,
+     "t": "PECORARO taglia alle spa"
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl3-intro.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl3-move",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 270,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl3-move.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl3-scelta",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 280,
+     "h": 37,
+     "t": "1💥 Tiro da fuori"
+    },
+    {
+     "s": "div",
+     "w": 101,
+     "h": 18,
+     "t": "1💥 Tiro da fuori"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 77,
+     "h": 14,
+     "t": "💥 Tiro da fuori"
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 200,
+     "h": 18,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 176,
+     "h": 14,
+     "t": "🎯 Lancio smarcante per "
+    },
+    {
+     "s": "button",
+     "w": 274,
+     "h": 36,
+     "t": "3🌀 Finta e cambio di pa"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p1-hl3-scelta.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-hl3-esito",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "span",
+     "w": 16,
+     "h": 16,
+     "t": "🔗"
+    },
+    {
+     "s": "span",
+     "w": 99,
+     "h": 13,
+     "t": "Le connessioni"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p1-hl3-esito.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "pilota-p1",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 5
+    },
+    {
+     "ph": "hl_choose",
+     "t": 11
+    },
+    {
+     "ph": "hl_result",
+     "t": 16
+    },
+    {
+     "ph": "playing",
+     "t": 18
+    },
+    {
+     "ph": "hl_intro",
+     "t": 24
+    },
+    {
+     "ph": "hl_choose",
+     "t": 26
+    },
+    {
+     "ph": "hl_result",
+     "t": 29
+    },
+    {
+     "ph": "playing",
+     "t": 32
+    },
+    {
+     "ph": "hl_intro",
+     "t": 50
+    },
+    {
+     "ph": "hl_move",
+     "t": 56
+    },
+    {
+     "ph": "hl_choose",
+     "t": 61
+    },
+    {
+     "ph": "hl_result",
+     "t": 67
+    },
+    {
+     "ph": "playing",
+     "t": 70
+    },
+    {
+     "ph": "hl_intro",
+     "t": 103
+    },
+    {
+     "ph": "hl_choose",
+     "t": 106
+    },
+    {
+     "ph": "hl_result",
+     "t": 109
+    },
+    {
+     "ph": "playing",
+     "t": 111
+    },
+    {
+     "ph": "hl_intro",
+     "t": 161
+    },
+    {
+     "ph": "hl_move",
+     "t": 164
+    },
+    {
+     "ph": "hl_choose",
+     "t": 168
+    },
+    {
+     "ph": "hl_result",
+     "t": 172
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 5,
+     "introVia": "tocco",
+     "choose": [
+      "1🌀 Finta e tiro@280x37",
+      "2🎯 Cerca l'angolo@274x36",
+      "3⚡ Conclusione di prima@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 0–0 | 5' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | GRA | POL | POSSESSO | 55% · 45% | TIRI | 1 · 0 | IN PORTA | 0 · 0 | XG | 0,02 · 0,00 | STATISTICHE | PAGELLE | ▴ | Bruno Cascioli | commento tecnico",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 50,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@270x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🏃 Conduci palla al piede@280x37",
+      "2🎯 Lancio smarcante per F@274x36",
+      "3🔁 Uno-due con FERRARI@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 1–0 | 35' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | GRA | POL | POSSESSO | 54% · 46% | TIRI | 5 · 2 | IN PORTA | 3 · 0 | XG | 0,19 · 0,09 | STATISTICHE | PAGELLE | ▴ | 💥 Conclusione secca di Pecoraro",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 161,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@270x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1💥 Tiro da fuori@280x37",
+      "2🎯 Lancio smarcante per P@274x36",
+      "3🌀 Finta e cambio di pass@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | PROVA ILLUMINA: 1 ASSIST | PROVINI | FISCHIO FINALE | Selezione Granata | 1–0 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 82': «Teniamo palla nella loro metà» → un solo tiro concesso fino al fisch",
+     "btn": [
+      "Il tuo tabellino›@722x28",
+      "🔗Le connessioni›@722x31",
+      "Tabellino della gara@722x28",
+      "📋 Risultati provino@768x47"
+     ]
+    }
+   ],
+   "durataMs": 174945,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-post0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "span",
+     "w": 16,
+     "h": 16,
+     "t": "🔗"
+    },
+    {
+     "s": "span",
+     "w": 99,
+     "h": 13,
+     "t": "Le connessioni"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p1-post0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-post1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p1-post1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p1-post2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p1-post2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p2-playing",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    },
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p2-playing.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "pilota-p2",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 3
+    },
+    {
+     "ph": "hl_choose",
+     "t": 7
+    },
+    {
+     "ph": "hl_result",
+     "t": 10
+    },
+    {
+     "ph": "playing",
+     "t": 12
+    },
+    {
+     "ph": "hl_intro",
+     "t": 18
+    },
+    {
+     "ph": "hl_choose",
+     "t": 20
+    },
+    {
+     "ph": "hl_result",
+     "t": 23
+    },
+    {
+     "ph": "playing",
+     "t": 26
+    },
+    {
+     "ph": "hl_intro",
+     "t": 31
+    },
+    {
+     "ph": "hl_choose",
+     "t": 33
+    },
+    {
+     "ph": "hl_result",
+     "t": 37
+    },
+    {
+     "ph": "playing",
+     "t": 39
+    },
+    {
+     "ph": "hl_intro",
+     "t": 55
+    },
+    {
+     "ph": "hl_move",
+     "t": 57
+    },
+    {
+     "ph": "hl_choose",
+     "t": 59
+    },
+    {
+     "ph": "hl_result",
+     "t": 62
+    },
+    {
+     "ph": "playing",
+     "t": 65
+    },
+    {
+     "ph": "hl_intro",
+     "t": 67
+    },
+    {
+     "ph": "hl_choose",
+     "t": 69
+    },
+    {
+     "ph": "hl_result",
+     "t": 72
+    },
+    {
+     "ph": "hl_intro",
+     "t": 75
+    },
+    {
+     "ph": "hl_choose",
+     "t": 76
+    },
+    {
+     "ph": "hl_result",
+     "t": 80
+    },
+    {
+     "ph": "playing",
+     "t": 82
+    },
+    {
+     "ph": "hl_intro",
+     "t": 149
+    },
+    {
+     "ph": "hl_choose",
+     "t": 150
+    },
+    {
+     "ph": "hl_result",
+     "t": 153
+    },
+    {
+     "ph": "playing",
+     "t": 155
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 3,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Tiro da fuori@280x37",
+      "2🌀 Finta e cambio di pass@274x36",
+      "3🔁 Uno-due con COLOMBO@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–0 | 4' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 72% · 28% | TIRI | 1 · 0 | IN PORTA | 0 · 0 | XG | 0,02 · 0,00 | STATISTICHE | PAGELLE | ▴ | 🛡️ Pecoraro (GRA) ruba palla a Neri (S",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 31,
+     "introVia": "tocco",
+     "choose": [
+      "1🎯 Conclusione precisa@280x37",
+      "2⚡ Conclusione di prima@274x36",
+      "3🤝 Servi FERRARI libero@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 1–0 | 19' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 45% · 55% | TIRI | 3 · 1 | IN PORTA | 2 · 1 | XG | 0,12 · 0,06 | STATISTICHE | PAGELLE | ▴ | 🧤 Il portiere si distende e respinge.",
+     "btn": [],
+     "move": [
+      "✅ Pronto [0]@270x28"
+     ],
+     "prontoVia": "tocco",
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 67,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Conclusione potente@280x37",
+      "2🔄 Girata secca e tiro@274x36",
+      "3🛡️ Proteggi palla e scar@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 1–0 | 37' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | ⚽ | ✈️ Tentativo di inserimento in area | FERRARO ti marca stretto. | ⚔️ ATTACCO | Tocca per iniziare | 0 | ⚽ GOL | 0 | 🎯 ASSIST | 43% | ⚡ ENERG. | 4–1 |",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 4,
+     "t": 149,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Conclusione potente@280x37",
+      "2⚽ Volée di collo potente@274x36",
+      "3🎯 Conclusione precisa@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 2–1 | 77' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 45% · 55% | TIRI | 9 · 4 | IN PORTA | 4 · 3 | XG | 0,69 · 1,09 | STATISTICHE | PAGELLE | ▴ | 📢 Sotto di un gol al 77': il mister b",
+     "btn": [
+      "1Tutti avanti, press@346x74",
+      "2Costruiamo col pall@346x74",
+      "3Palla a me, la riso@346x74"
+     ]
+    }
+   ],
+   "durataMs": 202809,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "2×",
+    "dopo0": "1×",
+    "dopo1": "1,5×",
+    "dopo2": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p2-post0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p2-post0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p2-post1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p2-post1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p2-post2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p2-post2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p3-playing",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 201,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    },
+    {
+     "w": 475,
+     "h": 879,
+     "iw": 475,
+     "ih": 879,
+     "ratioCss": 0.54,
+     "ratioBuf": 0.54,
+     "l": 1,
+     "t": 100,
+     "r": 476,
+     "b": 979
+    }
+   ]
+  },
+  "file": "tabV-p3-playing.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "pilota-p3",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_choose",
+     "t": 7
+    },
+    {
+     "ph": "hl_result",
+     "t": 11
+    },
+    {
+     "ph": "playing",
+     "t": 13
+    },
+    {
+     "ph": "hl_intro",
+     "t": 15
+    },
+    {
+     "ph": "hl_choose",
+     "t": 17
+    },
+    {
+     "ph": "hl_result",
+     "t": 20
+    },
+    {
+     "ph": "playing",
+     "t": 22
+    },
+    {
+     "ph": "hl_intro",
+     "t": 34
+    },
+    {
+     "ph": "hl_choose",
+     "t": 36
+    },
+    {
+     "ph": "hl_result",
+     "t": 40
+    },
+    {
+     "ph": "playing",
+     "t": 42
+    },
+    {
+     "ph": "hl_intro",
+     "t": 78
+    },
+    {
+     "ph": "hl_choose",
+     "t": 81
+    },
+    {
+     "ph": "hl_result",
+     "t": 84
+    },
+    {
+     "ph": "playing",
+     "t": 86
+    },
+    {
+     "ph": "hl_intro",
+     "t": 129
+    },
+    {
+     "ph": "hl_choose",
+     "t": 131
+    },
+    {
+     "ph": "hl_result",
+     "t": 134
+    },
+    {
+     "ph": "playing",
+     "t": 136
+    },
+    {
+     "ph": "hl_intro",
+     "t": 146
+    },
+    {
+     "ph": "hl_choose",
+     "t": 148
+    },
+    {
+     "ph": "hl_result",
+     "t": 150
+    },
+    {
+     "ph": "playing",
+     "t": 153
+    },
+    {
+     "ph": "hl_intro",
+     "t": 153
+    },
+    {
+     "ph": "hl_move",
+     "t": 155
+    },
+    {
+     "ph": "hl_choose",
+     "t": 156
+    },
+    {
+     "ph": "hl_result",
+     "t": 159
+    },
+    {
+     "ph": "playing",
+     "t": 161
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 7,
+     "choose": [
+      "1😤 Resisti alla carica e @280x37",
+      "2🔄 Girata secca e tiro@274x36",
+      "3🛡️ Proteggi palla e scar@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 0–0 | 6' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 20% · 80% | TIRI | 0 · 0 | IN PORTA | 0 · 0 | XG | 0,00 · 0,00 | STATISTICHE | PAGELLE | ▴ | ✋ Intercetto di Scotti (GRA): la pall",
+     "btn": [],
+     "introVia": "tocco",
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 34,
+     "introVia": "tocco",
+     "choose": [
+      "1💥 Tiro da fuori@280x37",
+      "2🌀 Finta e cambio di pass@274x36",
+      "3🔁 Uno-due con FERRARI@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 0–0 | 25' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 32% · 68% | TIRI | 1 · 3 | IN PORTA | 0 · 0 | XG | 0,02 · 0,20 | STATISTICHE | PAGELLE | ▴ | Ilaria Bonomelli | commento tecnico ",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 129,
+     "introVia": "tocco",
+     "choose": [
+      "1✈️ Attacca il pallone@280x37",
+      "2🎯 Conclusione precisa@274x36",
+      "3💥 Conclusione potente@274x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 2–1 | 77' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 44% · 56% | TIRI | 7 · 8 | IN PORTA | 2 · 2 | XG | 0,37 · 0,63 | STATISTICHE | PAGELLE | ▴ | 😬 Tiro fuori! | Possesso palla | Se",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 4,
+     "t": 153,
+     "introVia": "tocco",
+     "move": [
+      "✅ Pronto [0]@270x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "🌀 Giro sopra la barrieraA@274x67",
+      "💥 Bordata potenteDritta e@274x67",
+      "⚡ Rasoterra sotto la barri@274x67",
+      "↗️ ↗️ Palla in areaLa mira@274x52"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 2–1 | 85' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 43% · 57% | TIRI | 9 · 8 | IN PORTA | 3 · 2 | XG | 0,60 · 0,63 | STATISTICHE | PAGELLE | ▴ | 🚀 Lancio lungo di Rosa (CEF) per To",
+     "btn": []
+    }
+   ],
+   "durataMs": 168926,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "2×",
+    "dopo0": "1×",
+    "dopo1": "1,5×",
+    "dopo2": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p3-post0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 722,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p3-post0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "p3-post1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-p3-post1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "offerte",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-offerte.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "inizio-carriera-0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-inizio-carriera-0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "benvenuto-0",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-benvenuto-0.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "benvenuto-1",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-benvenuto-1.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "benvenuto-2",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-benvenuto-2.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "benvenuto-3",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-benvenuto-3.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "benvenuto-4",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-benvenuto-4.png"
+ },
+ {
+  "fmt": "tabV",
+  "nome": "home-carriera-nuova",
+  "nota": "",
+  "m": {
+   "W": 768,
+   "H": 1024,
+   "scrollW": 768,
+   "scrollH": 1024,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 90,
+     "h": 23,
+     "t": "Salva · 19:16"
+    },
+    {
+     "s": "span",
+     "w": 32,
+     "h": 14,
+     "t": "· 19:16"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabV-home-carriera-nuova.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "home",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-home.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "crediti",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-crediti.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "home-dopo-crediti",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-home-dopo-crediti.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "crea-1",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-crea-1.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "crea-fisarmoniche",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-crea-fisarmoniche.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "crea-nome",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-crea-nome.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "provino-pre",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-provino-pre.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-playing",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    },
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-playing.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl1-intro",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 126,
+     "h": 19,
+     "t": "⚡ Tentativo di tiro"
+    },
+    {
+     "s": "div",
+     "w": 116,
+     "h": 15,
+     "t": "SPADA prova a chiudere."
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl1-intro.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl1-esito",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl1-esito.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl1-scelta",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 408,
+     "h": 37,
+     "t": "1🛑 Chiusura immediata"
+    },
+    {
+     "s": "div",
+     "w": 140,
+     "h": 18,
+     "t": "1🛑 Chiusura immediata"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 115,
+     "h": 14,
+     "t": "🛑 Chiusura immediata"
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "2🤼 Raddoppio coordinato"
+    },
+    {
+     "s": "div",
+     "w": 214,
+     "h": 18,
+     "t": "2🤼 Raddoppio coordinato"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 190,
+     "h": 14,
+     "t": "🤼 Raddoppio coordinato "
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "3💪 Contrasto pulito sen"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl1-scelta.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl2-intro",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 214,
+     "h": 19,
+     "t": "🧠 Ricevi fra le linee: "
+    },
+    {
+     "s": "div",
+     "w": 337,
+     "h": 15,
+     "t": "Uno-due con FERRARI: te "
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl2-intro.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl2-move",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 29,
+     "h": 19,
+     "t": "1,5×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 396,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl2-move.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl2-esito",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 29,
+     "h": 19,
+     "t": "1,5×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl2-esito.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl2-scelta",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 408,
+     "h": 37,
+     "t": "1🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 207,
+     "h": 18,
+     "t": "1🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 182,
+     "h": 14,
+     "t": "🎯 Lancio smarcante per "
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "2🎯 Filtrante per PECORA"
+    },
+    {
+     "s": "div",
+     "w": 155,
+     "h": 18,
+     "t": "2🎯 Filtrante per PECORA"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 131,
+     "h": 14,
+     "t": "🎯 Filtrante per PECORAR"
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "3🏃 Conduci palla al pie"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl2-scelta.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl3-intro",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 217,
+     "h": 19,
+     "t": "💥 Palla buona al limite"
+    },
+    {
+     "s": "div",
+     "w": 157,
+     "h": 15,
+     "t": "BRUNO è libero sul secon"
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl3-intro.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl3-scelta",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 408,
+     "h": 37,
+     "t": "1🌀 Roulette e tiro"
+    },
+    {
+     "s": "div",
+     "w": 111,
+     "h": 18,
+     "t": "1🌀 Roulette e tiro"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 87,
+     "h": 14,
+     "t": "🌀 Roulette e tiro"
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "2🤝 Servi BRUNO libero"
+    },
+    {
+     "s": "div",
+     "w": 131,
+     "h": 18,
+     "t": "2🤝 Servi BRUNO libero"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 107,
+     "h": 14,
+     "t": "🤝 Servi BRUNO libero"
+    },
+    {
+     "s": "button",
+     "w": 400,
+     "h": 36,
+     "t": "3💥 Conclusione potente"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl3-scelta.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl3-esito",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 325,
+     "h": 19,
+     "t": "🚩 Calcio d'angolo di FE"
+    },
+    {
+     "s": "div",
+     "w": 112,
+     "h": 15,
+     "t": "SPADA ti marca stretto."
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl3-esito.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl4-intro",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 292,
+     "h": 19,
+     "t": "📐 Punizione dal limite,"
+    },
+    {
+     "s": "div",
+     "w": 177,
+     "h": 15,
+     "t": "Posizione ideale per cal"
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl4-intro.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl4-move",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 396,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl4-move.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl4-scelta",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "🌀 Giro sopra la barrier"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "A scavalcare il muro, ve"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "💥 Bordata potente"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "Dritta e fortissima, anc"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "⚡ Rasoterra sotto la bar"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "Il colpo furbo: se il mu"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "↗️ ↗️ Palla in area"
+    },
+    {
+     "s": "div",
+     "w": 374,
+     "h": 15,
+     "t": "La mira è sul compagno, "
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl4-scelta.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-hl4-esito",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    },
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p1-hl4-esito.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "pilota-p1",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 5
+    },
+    {
+     "ph": "hl_result",
+     "t": 9
+    },
+    {
+     "ph": "playing",
+     "t": 13
+    },
+    {
+     "ph": "hl_intro",
+     "t": 18
+    },
+    {
+     "ph": "hl_choose",
+     "t": 19
+    },
+    {
+     "ph": "hl_result",
+     "t": 24
+    },
+    {
+     "ph": "playing",
+     "t": 26
+    },
+    {
+     "ph": "hl_intro",
+     "t": 62
+    },
+    {
+     "ph": "hl_move",
+     "t": 67
+    },
+    {
+     "ph": "hl_result",
+     "t": 70
+    },
+    {
+     "ph": "playing",
+     "t": 74
+    },
+    {
+     "ph": "hl_intro",
+     "t": 102
+    },
+    {
+     "ph": "hl_choose",
+     "t": 103
+    },
+    {
+     "ph": "hl_result",
+     "t": 108
+    },
+    {
+     "ph": "playing",
+     "t": 110
+    },
+    {
+     "ph": "hl_intro",
+     "t": 200
+    },
+    {
+     "ph": "hl_choose",
+     "t": 202
+    },
+    {
+     "ph": "hl_result",
+     "t": 206
+    },
+    {
+     "ph": "hl_choose",
+     "t": 211
+    },
+    {
+     "ph": "hl_result",
+     "t": 214
+    },
+    {
+     "ph": "playing",
+     "t": 215
+    },
+    {
+     "ph": "hl_intro",
+     "t": 220
+    },
+    {
+     "ph": "hl_move",
+     "t": 223
+    },
+    {
+     "ph": "hl_choose",
+     "t": 226
+    },
+    {
+     "ph": "hl_result",
+     "t": 232
+    },
+    {
+     "ph": "playing",
+     "t": 235
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 5,
+     "introVia": "Spazio",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 0–0 | 3' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | 🧱 MURATO DALLA DIFESA | ❌ 🌀 Finta e tiro | ❌ Murato dalla difesa. | 🔊 Pressione del pubblico ostile | ❌ Palla persa. | auto → | 0 | ⚽ GOL | 0 | 🎯",
+     "btn": [],
+     "choose": [
+      "1🛑 Chiusura immediata@408x37",
+      "2🤼 Raddoppio coordinato c@400x36",
+      "3💪 Contrasto pulito senza@400x36"
+     ],
+     "sceltaVia": "tasto 1",
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 62,
+     "introVia": "Spazio",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 0–0 | 34' | ☀️ | ⏸ | 1,5× | ⚠️ | PROVINI | POL | Polisportiva Centro | 🧤 IL PORTIERE DICE DI NO | ❌ 🏃 Conduci palla al piede e tira | 😔 Para il portiere. | 🔊 Pressione del pubblico ostile | ❌ Palla persa. | auto →",
+     "btn": [],
+     "choose": [
+      "1🎯 Lancio smarcante per P@408x37",
+      "2🎯 Filtrante per PECORARO@400x36",
+      "3🏃 Conduci palla al piede@400x36"
+     ],
+     "sceltaVia": "clic",
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 200,
+     "introVia": "Spazio",
+     "choose": [
+      "1🌀 Roulette e tiro@408x37",
+      "2🤝 Servi BRUNO libero@400x36",
+      "3💥 Conclusione potente@400x36"
+     ],
+     "sceltaVia": "tasto 1",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 1–1 | 81' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | ⚽ | 🚩 Calcio d'angolo di FERRARI: attacca il pallone! | SPADA ti marca stretto. | ⚔️ ATTACCO | Tocca per iniziare | 0 | ⚽ GOL | 0 | 🎯 ASSIST | 32%",
+     "btn": [],
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 4,
+     "t": 220,
+     "introVia": "Spazio",
+     "move": [
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "choose": [
+      "🌀 Giro sopra la barrieraA@400x52",
+      "💥 Bordata potenteDritta e@400x52",
+      "⚡ Rasoterra sotto la barri@400x52",
+      "↗️ ↗️ Palla in areaLa mira@400x52"
+     ],
+     "sceltaVia": "clic",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 1–1 | 90' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | GRA | POL | POSSESSO | 56% · 44% | TIRI | 16 · 5 | IN PORTA | 8 · 2 | XG | 1,21 · 0,36 | STATISTICHE | PAGELLE | ▴ | ✋ Intercetto di Marchetti (POL)",
+     "btn": []
+    }
+   ],
+   "durataMs": 237974,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-post0",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 174,
+     "h": 13,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p1-post0.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-post1",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p1-post1.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p1-post2",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p1-post2.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p2-playing",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    },
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p2-playing.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "pilota-p2",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 3
+    },
+    {
+     "ph": "hl_move",
+     "t": 4
+    },
+    {
+     "ph": "hl_result",
+     "t": 5
+    },
+    {
+     "ph": "playing",
+     "t": 9
+    },
+    {
+     "ph": "hl_intro",
+     "t": 14
+    },
+    {
+     "ph": "hl_move",
+     "t": 15
+    },
+    {
+     "ph": "hl_choose",
+     "t": 16
+    },
+    {
+     "ph": "hl_result",
+     "t": 19
+    },
+    {
+     "ph": "playing",
+     "t": 21
+    },
+    {
+     "ph": "hl_intro",
+     "t": 49
+    },
+    {
+     "ph": "hl_choose",
+     "t": 50
+    },
+    {
+     "ph": "hl_result",
+     "t": 52
+    },
+    {
+     "ph": "playing",
+     "t": 54
+    },
+    {
+     "ph": "hl_intro",
+     "t": 99
+    },
+    {
+     "ph": "hl_move",
+     "t": 100
+    },
+    {
+     "ph": "hl_result",
+     "t": 100
+    },
+    {
+     "ph": "playing",
+     "t": 104
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 3,
+     "introVia": "Spazio",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–0 | 2' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | 🧱 MURATO DALLA DIFESA | ❌ 💥 Tiro da fuori | 🧱 La difesa mura la conclusione. | 🔊 Pressione del pubblico ostile | ❌ Palla persa. | auto → | 0 | ⚽ GOL | ",
+     "btn": [],
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 14,
+     "introVia": "Spazio",
+     "move": [
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "choose": [
+      "🌀 Giro sopra la barrieraA@400x52",
+      "💥 Bordata potenteDritta e@400x52",
+      "⚡ Rasoterra sotto la barri@400x52",
+      "↗️ ↗️ Palla in areaLa mira@400x52"
+     ],
+     "sceltaVia": "clic",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–0 | 13' | ☀️ | ⏸ | 1× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 52% · 48% | TIRI | 3 · 0 | IN PORTA | 0 · 0 | XG | 0,41 · 0,00 | STATISTICHE | PAGELLE | ▴ | 🎯 Punizione di Prova: calcia forte so",
+     "btn": [],
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 99,
+     "introVia": "Spazio",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 1–1 | 58' | ☀️ | ⏸ | 1× | ⚠️ | PROVINI | SUD | Selezione Sud | ✂️ PALLA PERSA | ❌ 🌀 Finta e cambio di passo | ✂️ L'avversario legge la giocata e intercetta. | ⚠️ Momento difficile | ❌ Palla persa. | auto → | 0 | ⚽ GO",
+     "btn": [],
+     "contVia": "Invio",
+     "chiuso": true
+    }
+   ],
+   "durataMs": 194842,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "2×",
+    "dopo0": "1×",
+    "dopo1": "1,5×",
+    "dopo2": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p2-post0",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 174,
+     "h": 13,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p2-post0.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p2-post1",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p2-post1.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p2-post2",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p2-post2.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p3-playing",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 304,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    },
+    {
+     "w": 681,
+     "h": 935,
+     "iw": 681,
+     "ih": 935,
+     "ratioCss": 0.728,
+     "ratioBuf": 0.728,
+     "l": 411,
+     "t": 100,
+     "r": 1092,
+     "b": 1035
+    }
+   ]
+  },
+  "file": "pc1920-p3-playing.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "pilota-p3",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 0
+    },
+    {
+     "ph": "hl_intro",
+     "t": 9
+    },
+    {
+     "ph": "hl_choose",
+     "t": 11
+    },
+    {
+     "ph": "hl_result",
+     "t": 13
+    },
+    {
+     "ph": "playing",
+     "t": 16
+    },
+    {
+     "ph": "hl_intro",
+     "t": 120
+    },
+    {
+     "ph": "hl_move",
+     "t": 121
+    },
+    {
+     "ph": "hl_result",
+     "t": 122
+    },
+    {
+     "ph": "playing",
+     "t": 125
+    },
+    {
+     "ph": "hl_intro",
+     "t": 133
+    },
+    {
+     "ph": "hl_choose",
+     "t": 134
+    },
+    {
+     "ph": "hl_result",
+     "t": 136
+    },
+    {
+     "ph": "playing",
+     "t": 139
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 9,
+     "introVia": "Spazio",
+     "choose": [
+      "1🛑 Chiusura immediata@408x37",
+      "2🧠 Anticipa sul primo con@400x36",
+      "3🤼 Raddoppio coordinato c@400x36"
+     ],
+     "sceltaVia": "tasto 1",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 0–0 | 13' | ☀️ | ⏸ | 1× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 35% · 65% | TIRI | 1 · 0 | IN PORTA | 0 · 0 | XG | 0,04 · 0,00 | STATISTICHE | PAGELLE | ▴ | Ilaria Bonomelli | commento tecnico ",
+     "btn": [],
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@396x28"
+     ],
+     "prontoVia": "tasto 0",
+     "contVia": "Invio",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 133,
+     "introVia": "Spazio",
+     "choose": [
+      "1💥 Conclusione potente@408x37",
+      "2🎯 Conclusione precisa@400x36"
+     ],
+     "sceltaVia": "clic",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 2–0 | 86' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 44% · 56% | TIRI | 12 · 12 | IN PORTA | 3 · 4 | XG | 0,63 · 1,01 | STATISTICHE | PAGELLE | ▴ | 😬 Tiro fuori! | 0 | ⚽ GOL | 0 | \ud83c",
+     "btn": []
+    }
+   ],
+   "durataMs": 146265,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p3-post0",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 1054,
+     "h": 28,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 174,
+     "h": 13,
+     "t": "Il tuo tabellino in nume"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p3-post0.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "p3-post1",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-p3-post1.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "offerte",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-offerte.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "offerte-freccia",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-offerte-freccia.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "inizio-carriera-0",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-inizio-carriera-0.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "benvenuto-0",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-benvenuto-0.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "benvenuto-1",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-benvenuto-1.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "benvenuto-2",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-benvenuto-2.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "benvenuto-3",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-benvenuto-3.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "benvenuto-4",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-benvenuto-4.png"
+ },
+ {
+  "fmt": "pc1920",
+  "nome": "home-carriera-nuova",
+  "nota": "",
+  "m": {
+   "W": 1920,
+   "H": 1080,
+   "scrollW": 1920,
+   "scrollH": 1080,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:27"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:27"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "pc1920-home-carriera-nuova.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "home",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-home.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "crediti",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-crediti.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "home-dopo-crediti",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "span[crediti254-icona]",
+     "w": 19,
+     "h": 19,
+     "t": "ℹ️"
+    },
+    {
+     "s": "button.cpm-press.cpm-focus",
+     "w": 18,
+     "h": 31,
+     "t": "×"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "🎬"
+    },
+    {
+     "s": "div",
+     "w": 64,
+     "h": 14,
+     "t": "Rivedi intro"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "📂"
+    },
+    {
+     "s": "div",
+     "w": 44,
+     "h": 14,
+     "t": "Importa"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚙️"
+    },
+    {
+     "s": "div",
+     "w": 41,
+     "h": 14,
+     "t": "Opzioni"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-home-dopo-crediti.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "crea-1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-crea-1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "crea-fisarmoniche",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-crea-fisarmoniche.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "crea-nome",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-crea-nome.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "provino-pre",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-provino-pre.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-playing",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "1×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.017,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    },
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-playing.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl1-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 126,
+     "h": 19,
+     "t": "⚡ Tentativo di tiro"
+    },
+    {
+     "s": "div",
+     "w": 116,
+     "h": 15,
+     "t": "SPADA prova a chiudere."
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl1-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl1-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 379,
+     "h": 37,
+     "t": "1🌀 Finta e tiro"
+    },
+    {
+     "s": "div",
+     "w": 94,
+     "h": 18,
+     "t": "1🌀 Finta e tiro"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 70,
+     "h": 14,
+     "t": "🌀 Finta e tiro"
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "2🎯 Cerca l'angolo"
+    },
+    {
+     "s": "div",
+     "w": 106,
+     "h": 18,
+     "t": "2🎯 Cerca l'angolo"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 82,
+     "h": 14,
+     "t": "🎯 Cerca l'angolo"
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "3⚡ Conclusione di prima"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl1-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl1-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.017,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    },
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl1-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl2-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 214,
+     "h": 19,
+     "t": "🧠 Ricevi fra le linee: "
+    },
+    {
+     "s": "div",
+     "w": 337,
+     "h": 15,
+     "t": "Uno-due con FERRARI: te "
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl2-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl2-move",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 367,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl2-move.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl2-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 379,
+     "h": 37,
+     "t": "1🏃 Conduci palla al pie"
+    },
+    {
+     "s": "div",
+     "w": 176,
+     "h": 18,
+     "t": "1🏃 Conduci palla al pie"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 152,
+     "h": 14,
+     "t": "🏃 Conduci palla al pied"
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 189,
+     "h": 18,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 165,
+     "h": 14,
+     "t": "🎯 Lancio smarcante per "
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "3🔁 Uno-due con FERRARI"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl2-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl2-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 52,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.017,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    },
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl2-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl3-intro",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "div",
+     "w": 25,
+     "h": 25,
+     "t": "⚽"
+    },
+    {
+     "s": "div",
+     "w": 240,
+     "h": 19,
+     "t": "🧠 Fra le linee, LUCA es"
+    },
+    {
+     "s": "div",
+     "w": 191,
+     "h": 15,
+     "t": "PECORARO taglia alle spa"
+    },
+    {
+     "s": "div",
+     "w": 79,
+     "h": 14,
+     "t": "⚔️ ATTACCO"
+    },
+    {
+     "s": "div",
+     "w": 90,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 85,
+     "h": 2,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 83,
+     "h": 13,
+     "t": "Tocca per iniziare"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl3-intro.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl3-move",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 367,
+     "h": 28,
+     "t": "✅ Pronto [0]"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl3-move.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl3-scelta",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 379,
+     "h": 37,
+     "t": "1💥 Tiro da fuori"
+    },
+    {
+     "s": "div",
+     "w": 101,
+     "h": 18,
+     "t": "1💥 Tiro da fuori"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "1"
+    },
+    {
+     "s": "div",
+     "w": 77,
+     "h": 14,
+     "t": "💥 Tiro da fuori"
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 200,
+     "h": 18,
+     "t": "2🎯 Lancio smarcante per"
+    },
+    {
+     "s": "div",
+     "w": 18,
+     "h": 18,
+     "t": "2"
+    },
+    {
+     "s": "div",
+     "w": 176,
+     "h": 14,
+     "t": "🎯 Lancio smarcante per "
+    },
+    {
+     "s": "button",
+     "w": 371,
+     "h": 36,
+     "t": "3🌀 Finta e cambio di pa"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p1-hl3-scelta.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-hl3-esito",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "span",
+     "w": 16,
+     "h": 16,
+     "t": "🔗"
+    },
+    {
+     "s": "span",
+     "w": 99,
+     "h": 13,
+     "t": "Le connessioni"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p1-hl3-esito.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "pilota-p1",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 5
+    },
+    {
+     "ph": "hl_choose",
+     "t": 9
+    },
+    {
+     "ph": "hl_result",
+     "t": 13
+    },
+    {
+     "ph": "playing",
+     "t": 16
+    },
+    {
+     "ph": "hl_intro",
+     "t": 21
+    },
+    {
+     "ph": "hl_choose",
+     "t": 22
+    },
+    {
+     "ph": "hl_result",
+     "t": 25
+    },
+    {
+     "ph": "playing",
+     "t": 27
+    },
+    {
+     "ph": "hl_intro",
+     "t": 46
+    },
+    {
+     "ph": "hl_move",
+     "t": 50
+    },
+    {
+     "ph": "hl_choose",
+     "t": 53
+    },
+    {
+     "ph": "hl_result",
+     "t": 56
+    },
+    {
+     "ph": "playing",
+     "t": 59
+    },
+    {
+     "ph": "hl_intro",
+     "t": 92
+    },
+    {
+     "ph": "hl_choose",
+     "t": 97
+    },
+    {
+     "ph": "hl_result",
+     "t": 100
+    },
+    {
+     "ph": "playing",
+     "t": 102
+    },
+    {
+     "ph": "hl_intro",
+     "t": 151
+    },
+    {
+     "ph": "hl_move",
+     "t": 154
+    },
+    {
+     "ph": "hl_choose",
+     "t": 156
+    },
+    {
+     "ph": "hl_result",
+     "t": 161
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 5,
+     "introVia": "tocco",
+     "choose": [
+      "1🌀 Finta e tiro@379x37",
+      "2🎯 Cerca l'angolo@371x36",
+      "3⚡ Conclusione di prima@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 0–0 | 5' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | GRA | POL | POSSESSO | 55% · 45% | TIRI | 1 · 0 | IN PORTA | 0 · 0 | XG | 0,02 · 0,00 | STATISTICHE | PAGELLE | ▴ | Bruno Cascioli | commento tecnico",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 46,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🏃 Conduci palla al piede@379x37",
+      "2🎯 Lancio smarcante per F@371x36",
+      "3🔁 Uno-due con FERRARI@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | GRA | Selezione Granata | 1–0 | 35' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | POL | Polisportiva Centro | GRA | POL | POSSESSO | 54% · 46% | TIRI | 5 · 2 | IN PORTA | 3 · 0 | XG | 0,19 · 0,09 | STATISTICHE | PAGELLE | ▴ | 💥 Conclusione secca di Pecoraro",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 151,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1💥 Tiro da fuori@379x37",
+      "2🎯 Lancio smarcante per P@371x36",
+      "3🌀 Finta e cambio di pass@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | PROVA ILLUMINA: 1 ASSIST | PROVINI | FISCHIO FINALE | Selezione Granata | 1–0 | Polisportiva Centro | VITTORIA | 🧠 La tua scelta al 82': «Teniamo palla nella loro metà» → un solo tiro concesso fino al fisch",
+     "btn": [
+      "Il tuo tabellino›@978x28",
+      "🔗Le connessioni›@978x31",
+      "Tabellino della gara@978x28",
+      "📋 Risultati provino@1024x47"
+     ]
+    }
+   ],
+   "durataMs": 163287,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "1×",
+    "dopo0": "1,5×",
+    "dopo1": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-post0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 31,
+     "t": "🔗Le connessioni›"
+    },
+    {
+     "s": "span",
+     "w": 16,
+     "h": 16,
+     "t": "🔗"
+    },
+    {
+     "s": "span",
+     "w": 99,
+     "h": 13,
+     "t": "Le connessioni"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p1-post0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-post1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p1-post1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p1-post2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p1-post2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p2-playing",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.017,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    },
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p2-playing.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "pilota-p2",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_intro",
+     "t": 12
+    },
+    {
+     "ph": "hl_choose",
+     "t": 19
+    },
+    {
+     "ph": "hl_result",
+     "t": 23
+    },
+    {
+     "ph": "hl_intro",
+     "t": 25
+    },
+    {
+     "ph": "hl_choose",
+     "t": 26
+    },
+    {
+     "ph": "hl_result",
+     "t": 30
+    },
+    {
+     "ph": "playing",
+     "t": 32
+    },
+    {
+     "ph": "hl_intro",
+     "t": 45
+    },
+    {
+     "ph": "hl_move",
+     "t": 47
+    },
+    {
+     "ph": "hl_choose",
+     "t": 49
+    },
+    {
+     "ph": "hl_result",
+     "t": 52
+    },
+    {
+     "ph": "playing",
+     "t": 54
+    },
+    {
+     "ph": "hl_intro",
+     "t": 59
+    },
+    {
+     "ph": "hl_move",
+     "t": 61
+    },
+    {
+     "ph": "hl_choose",
+     "t": 64
+    },
+    {
+     "ph": "hl_result",
+     "t": 67
+    },
+    {
+     "ph": "playing",
+     "t": 70
+    },
+    {
+     "ph": "hl_intro",
+     "t": 85
+    },
+    {
+     "ph": "hl_move",
+     "t": 86
+    },
+    {
+     "ph": "hl_choose",
+     "t": 89
+    },
+    {
+     "ph": "hl_result",
+     "t": 92
+    },
+    {
+     "ph": "playing",
+     "t": 94
+    },
+    {
+     "ph": "hl_intro",
+     "t": 98
+    },
+    {
+     "ph": "hl_choose",
+     "t": 100
+    },
+    {
+     "ph": "hl_result",
+     "t": 104
+    },
+    {
+     "ph": "playing",
+     "t": 106
+    },
+    {
+     "ph": "hl_intro",
+     "t": 165
+    },
+    {
+     "ph": "hl_choose",
+     "t": 166
+    },
+    {
+     "ph": "hl_result",
+     "t": 170
+    },
+    {
+     "ph": "playing",
+     "t": 172
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 12,
+     "introVia": "tocco",
+     "choose": [
+      "1🛑 Chiusura immediata@379x37",
+      "2🛡️ Scivolata netta@371x36",
+      "3💪 Contrasto pulito senza@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–0 | 16' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | ⚽ | 🧠 Fra le linee, TEDESCO esce in ritardo! | SCOTTI apre per FERRARI, che ti serve. FERRARI taglia alle spalle della difesa. | ⚔️ ATTACCO | Tocca per i",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 45,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1💥 Tiro da fuori@379x37",
+      "2🎯 Lancio smarcante per C@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–0 | 35' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 44% · 56% | TIRI | 2 · 1 | IN PORTA | 1 · 1 | XG | 0,18 · 0,05 | STATISTICHE | PAGELLE | ▴ | 🟡 Fischia l'arbitro: fallo di Bruno (",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 85,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🔁 Uno-due con FERRARI@379x37",
+      "2💥 Tiro da fuori@371x36",
+      "3🌀 Finta e cambio di pass@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–1 | 52' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 46% · 54% | TIRI | 4 · 1 | IN PORTA | 2 · 1 | XG | 0,60 · 0,05 | STATISTICHE | PAGELLE | ▴ | Nadia Fracassi | commento tecnico | «M",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 4,
+     "t": 165,
+     "introVia": "tocco",
+     "choose": [
+      "1🔁 Uno-due con PECORARO@379x37",
+      "2🌀 Finta e cambio di pass@371x36",
+      "3💥 Tiro da fuori@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 2/3 | GRA | Selezione Granata | 0–1 | 88' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | SUD | Selezione Sud | GRA | SUD | POSSESSO | 48% · 52% | TIRI | 8 · 7 | IN PORTA | 4 · 2 | XG | 0,85 · 0,39 | STATISTICHE | PAGELLE | ▴ | 🛡️ Lombardi (GRA) chiude in scivolata",
+     "btn": []
+    }
+   ],
+   "durataMs": 177220,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "2×",
+    "dopo0": "1×",
+    "dopo1": "1,5×",
+    "dopo2": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p2-post0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p2-post0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p2-post1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 46,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p2-post1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p2-post2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p2-post2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p3-playing",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 14,
+     "h": 33,
+     "t": "⏸"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 19,
+     "t": "2×"
+    },
+    {
+     "s": "button",
+     "w": 22,
+     "h": 33,
+     "t": "⚠️"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Statistiche"
+    },
+    {
+     "s": "button",
+     "w": 281,
+     "h": 25,
+     "t": "Pagelle"
+    },
+    {
+     "s": "button",
+     "w": 34,
+     "h": 27,
+     "t": "▴"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": [
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.017,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    },
+    {
+     "w": 634,
+     "h": 623,
+     "iw": 634,
+     "ih": 623,
+     "ratioCss": 1.018,
+     "ratioBuf": 1.018,
+     "l": 1,
+     "t": 100,
+     "r": 635,
+     "b": 723
+    }
+   ]
+  },
+  "file": "tabO-p3-playing.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "pilota-p3",
+  "info": {
+   "fasi": [
+    {
+     "ph": "playing",
+     "t": 1
+    },
+    {
+     "ph": "hl_move",
+     "t": 9
+    },
+    {
+     "ph": "hl_choose",
+     "t": 11
+    },
+    {
+     "ph": "hl_result",
+     "t": 14
+    },
+    {
+     "ph": "playing",
+     "t": 16
+    },
+    {
+     "ph": "hl_intro",
+     "t": 20
+    },
+    {
+     "ph": "hl_choose",
+     "t": 22
+    },
+    {
+     "ph": "hl_result",
+     "t": 25
+    },
+    {
+     "ph": "playing",
+     "t": 28
+    },
+    {
+     "ph": "hl_intro",
+     "t": 36
+    },
+    {
+     "ph": "hl_choose",
+     "t": 38
+    },
+    {
+     "ph": "hl_result",
+     "t": 41
+    },
+    {
+     "ph": "playing",
+     "t": 43
+    },
+    {
+     "ph": "hl_intro",
+     "t": 71
+    },
+    {
+     "ph": "hl_choose",
+     "t": 73
+    },
+    {
+     "ph": "hl_result",
+     "t": 77
+    },
+    {
+     "ph": "playing",
+     "t": 79
+    },
+    {
+     "ph": "hl_intro",
+     "t": 145
+    },
+    {
+     "ph": "hl_move",
+     "t": 146
+    },
+    {
+     "ph": "hl_choose",
+     "t": 147
+    },
+    {
+     "ph": "hl_result",
+     "t": 150
+    }
+   ],
+   "hl": [
+    {
+     "n": 1,
+     "t": 9,
+     "move": [
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "🌀 Giro sopra la barrieraA@371x52",
+      "💥 Bordata potenteDritta e@371x67",
+      "⚡ Rasoterra sotto la barri@371x67",
+      "↗️ ↗️ Palla in areaLa mira@371x52"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 0–0 | 5' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 61% · 39% | TIRI | 1 · 0 | IN PORTA | 1 · 0 | XG | 0,28 · 0,00 | STATISTICHE | PAGELLE | ▴ | ⚙️ Bruno (GRA) appoggia in avanti per",
+     "btn": [],
+     "introVia": "tocco",
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 2,
+     "t": 36,
+     "introVia": "tocco",
+     "choose": [
+      "1😤 Resisti alla carica e @379x37",
+      "2🛡️ Proteggi palla e scar@371x36",
+      "3🔄 Girata secca e tiro@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | GRA | Selezione Granata | 1–0 | 22' | ☀️ | ⏸ | 2× | ⚠️ | PROVINI | CEF | Centro Federale | GRA | CEF | POSSESSO | 50% · 50% | TIRI | 3 · 1 | IN PORTA | 2 · 1 | XG | 0,39 · 0,05 | STATISTICHE | PAGELLE | ▴ | 🎯 Filtrante di Lombardi (GRA) per P",
+     "btn": [],
+     "contVia": "tocco",
+     "chiuso": true
+    },
+    {
+     "n": 3,
+     "t": 145,
+     "introVia": "tocco",
+     "move": [
+      "▲@42x42",
+      "◀@42x42",
+      "▼@42x42",
+      "✅ Pronto [0]@367x28"
+     ],
+     "prontoVia": "tocco",
+     "choose": [
+      "1🔁 Uno-due con COLOMBO@379x37",
+      "2💥 Tiro da fuori@371x36"
+     ],
+     "sceltaVia": "tocco",
+     "res": 1,
+     "testo": "🎯 PROVINO 3/3 | 📰 Zona Mista | Stag. 1 · Sett. 1 | PROVA SEGNA, FINISCE PARI | PROVINI | FISCHIO FINALE | Selezione Granata | 1–1 | Centro Federale | PAREGGIO | 🧠 La tua scelta al 83': «Andiamo a vincerla» → un contropiede subiti fino al fischio | IL TUO TA",
+     "btn": [
+      "Il tuo tabellino›@978x28",
+      "Tabellino della gara@978x28",
+      "📋 Risultati provino@1024x47"
+     ]
+    }
+   ],
+   "durataMs": 152265,
+   "fineFase": "ended",
+   "velocita": {
+    "w": 22,
+    "h": 19,
+    "t0": "2×",
+    "dopo0": "1×",
+    "dopo1": "1,5×",
+    "dopo2": "2×"
+   },
+   "blocchi": []
+  }
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p3-post0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Il tuo tabellino›"
+    },
+    {
+     "s": "span",
+     "w": 109,
+     "h": 13,
+     "t": "Il tuo tabellino"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 978,
+     "h": 28,
+     "t": "Tabellino della gara›"
+    },
+    {
+     "s": "span",
+     "w": 146,
+     "h": 13,
+     "t": "Tabellino della gara"
+    },
+    {
+     "s": "span",
+     "w": 13,
+     "h": 5,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 42,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p3-post0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "p3-post1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-p3-post1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "offerte",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [],
+   "testoMin": 11,
+   "testoMax": 27,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-offerte.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "inizio-carriera-0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-inizio-carriera-0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "benvenuto-0",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-benvenuto-0.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "benvenuto-1",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-benvenuto-1.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "benvenuto-2",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-benvenuto-2.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "benvenuto-3",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-benvenuto-3.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "benvenuto-4",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-benvenuto-4.png"
+ },
+ {
+  "fmt": "tabO",
+  "nome": "home-carriera-nuova",
+  "nota": "",
+  "m": {
+   "W": 1024,
+   "H": 768,
+   "scrollW": 1024,
+   "scrollH": 768,
+   "hOverflow": 0,
+   "fuori": [],
+   "piccoli": [],
+   "tocco": [
+    {
+     "s": "button",
+     "w": 38,
+     "h": 34,
+     "t": "Salta"
+    },
+    {
+     "s": "button.cpm-press",
+     "w": 92,
+     "h": 23,
+     "t": "Salva · 19:37"
+    },
+    {
+     "s": "span",
+     "w": 34,
+     "h": 14,
+     "t": "· 19:37"
+    },
+    {
+     "s": "div.cpm-press[figurina-testata]",
+     "w": 39,
+     "h": 53,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 35,
+     "h": 48,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "img",
+     "w": 31,
+     "h": 45,
+     "t": ""
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 37,
+     "t": "🏁 Avvia Stagioneritiro,"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 21,
+     "t": "🏁 Avvia Stagione"
+    },
+    {
+     "s": "div",
+     "w": 153,
+     "h": 14,
+     "t": "ritiro, raduno e present"
+    },
+    {
+     "s": "div",
+     "w": 7,
+     "h": 23,
+     "t": "›"
+    }
+   ],
+   "testoMin": 11,
+   "testoMax": 40,
+   "bianca": false,
+   "canvas": []
+  },
+  "file": "tabO-home-carriera-nuova.png"
+ }
+]
