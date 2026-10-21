@@ -396,7 +396,7 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
-function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
+function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -425,6 +425,9 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
+      {/* [7.999.177 PO-295 «da qui non si puo' tornare alla home»] pulsante «← Home» in testa alla creazione. Rosso __CPM_NO_IND295 */}
+      {onBack&&!(typeof window!=='undefined'&&window.__CPM_NO_IND295)&&(<div style={{display:"flex",justifyContent:"flex-start",maxWidth:900,margin:"0 auto 4px"}}>
+        <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
