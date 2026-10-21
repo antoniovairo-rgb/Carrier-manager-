@@ -722,3 +722,11 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - ingresso-59 («ingresso a scatti»): rosso anche sulla 7.999.176 a macchina scarica (blocco 4,6 s contro 4,2 s sulla 177) e fuori da ogni catena dal 7.999.59: difetto preesistente, non del giro 80. Non blocca la 177; va in un giro di misura dopo la catena (tocca la fluidità dell'ingresso, PO-080).
 - Giro 85 (sotto-agente, sviluppo/giro85-piccoli): evento «accordo commerciale secondario» senza soldi (regola PO-289) + i 4 difetti bassi della carriera 2 (provini, U18 «2 di 2», gala «5 sono per te», Trofeo d'Oro).
 - Catena notte 7.999.177 in due metà (108 passi).
+
+## 21/10 notte — richieste PO sul telefono (PO-290…296)
+
+- PO-290 Crediti per il giocatore, PO-291 cori della festa (varianti, poi testi riscritti e repertorio ampliato a 23+4), PO-295 «← Home» dalla creazione: giro 86 (sessione principale, ramo sviluppo/giro86-crediti290), nella 7.999.177 dopo la prova a catena finita.
+- PO-292 PC e tablet: collaudo dedicato dopo la catena (questionario).
+- PO-293 panchina coi corpi GLB dei giocatori: giro 87 (177 se verde, altrimenti 178). Interpretazione della sessione principale: «glb on» = stessi corpi CGTrader dei giocatori.
+- PO-294 bambini fermi all'arrivo: giro 88, nella 177.
+- PO-296 spazio fra i box: PO (questionario) «a metà, ~8 px», **nella 7.999.178**.
