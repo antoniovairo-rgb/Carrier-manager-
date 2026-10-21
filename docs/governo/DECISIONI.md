@@ -755,3 +755,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Collaudo 177 (aba5296f): 4 formati «usabili con difetti»; 0 alti, 7 medi (5 negli highlight: bloccano il rilascio della 178 finché aperti), 8 bassi.
 - PO (questionario): **«Partita a tutto schermo»** su PC e tablet (statistiche in colonna a destra; menu centrati senza lo spazio della barra laterale dove non c'è) e correzioni **nella 7.999.178** con PO-296 e PO-297. Poi un guardiano PC/tablet fisso in catena.
 - Nota di processo: la regola PO «nessun identificativo di modello negli artefatti» prevale sulla riga di attribuzione dei commit: da ora i commit dei giri e dei collaudi non portano più il nome del modello.
+
+## 21/10 notte — figlie nel cloud di nuovo disponibili (sessione principale, delega del PO «valuta tu»)
+
+- Le figlie cloud si creano di nuovo (prova riuscita: carriera 177 n.2, session_01PuQza83JFjWopMyTSazA6J). Regola: **lavori lunghi (carriere intere, catene notte, collaudi 3D) nel cloud**, una macchina ciascuno, in parallelo, senza falsi rossi da carico; **giri di correzione brevi** dentro la sessione (si avvisano da soli e condividono la build). Consumi: stesso lavoro, stessi token; non misurata una differenza netta. Le figlie cloud si controllano con un promemoria (non avvisano da sole).
