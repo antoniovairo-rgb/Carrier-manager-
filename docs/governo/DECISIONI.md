@@ -731,3 +731,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO-294 bambini fermi all'arrivo: giro 88, nella 177.
 - PO-296 spazio fra i box: PO (questionario) «a metà, ~8 px», **nella 7.999.178**.
 - PO-297 bordo della partita 2D: PO (questionario) **«Spalti coi colori dei club»**, **nella 7.999.178** (con PO-296).
+
+## 21/10 — catena notte 7.999.177 e blocco dei build
+
+- Catena notte 7.999.177 (lavoro/177 0d0cfa4a) in due metà: 106/108 al primo giro. Rossi: impulsi-289 (script npm perso nell'unione; rimesso, verde 6/6 e rosso 6/6) e corpi-073 («284f seme 29: apertura non misurata, 0 campioni»: strumento cieco sotto carico) da rifare da solo a macchina scarica prima del rilascio. Instabili (verdi alla 2ª/3ª prova): investimento-223, validate-situations, piedi-252 (0,389 su soglia 0,40), portiere-252 (braccio rosso cieco: KO 0/7 in entrambi).
+- Blocco: i cicli d'attesa con `pgrep -f "ci-runner.mjs"` nella propria riga di comando si trovano da soli e non finiscono mai; due di questi (giro 85) tenevano chiuso l'hook dei build. Chiusi col permesso del PO (kill dei due PID). Regola da ora: niente attese con pgrep -f sul nome cercato nella propria riga.
+- Giro 86 (0151e690): PO-290 Crediti, PO-291 cori, PO-295 «← Home»: cori-291, crea-home-295, crediti-254 verdi e rossi verificati; festa-3d e test:logic verdi.
