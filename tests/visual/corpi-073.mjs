@@ -10,7 +10,10 @@
      gia' sulla bandierina (la condizione del flusso vero); 284v la misura su partite in autoplay (lenta, gli angoli escono di rado).
    Uso: node corpi-073.mjs [282,283,284f|284|284v] — CPM_ROSSO073=1 accende gli interruttori rossi (__CPM_NO_TAPPETO073 /
    __CPM_NO_STACCO073 / __CPM_NO_BATT073) SEMI=3,11,29. [giro 79] 284f: almeno 2 aperture misurate per seme
-   (CPM_APERTURE073, riprova fino a CPM_TENTATIVI073=5) e misura (non verdetto) del primo scatto del pallone. Uscita 0 verde (o rosso visibile) · 1 rosso · 2 cieco. */
+   (CPM_APERTURE073, riprova fino a CPM_TENTATIVI073=5) e misura (non verdetto) del primo scatto del pallone. Uscita 0 verde (o rosso visibile) · 1 rosso · 2 cieco.
+   [giro 89] prima di forzare ogni scena si attende la quiete del filo principale (nessun long task > 300 ms negli ultimi CPM_QUIETE073=8 s): uno stallo
+   di caricamento di 2,4-4 s che cadeva dopo la forzatura dava 0 campioni (284f) e il disappunto visto solo fino a 0,80 s (283). Il compagno del
+   gancio __CPM_MP_PLACE073 si mette sul lato della bandierina scelto da hlBallSpot (y eroe < 50 → y 2,5). */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const QUALI = (process.argv[2] || '282,283,284f').split(',');
@@ -18,13 +21,24 @@ const ROSSO = process.env.CPM_ROSSO073 === '1';
 const SEMI = (process.env.SEMI || '3,11,29').split(',').map(Number);
 const srv = await startServer(); const b = await launchBrowser(); const R = { rosso: ROSSO };
 
+/* [giro 89] QUIETE DEL FILO PRINCIPALE. Dopo l'avvio la pagina fa ancora lavoro di caricamento in blocchi da 2-4 s (long task, misurati 2,4-4,0 s a ~5 s
+   dalla fine del precedente); se uno cade dopo la forzatura della scena, le campionature della finestra 0,75-2,4 s non escono (0 campioni: «cieco»
+   senza che il gioco sia cambiato: stallo presente anche sulla 176, solo spostato nel tempo). Prima di forzare si aspetta che non ci sia stato
+   alcun long task > 300 ms negli ultimi QUIETE s (CPM_QUIETE073, default 8; tetto 120 s). Nessuna soglia di misura cambia. */
+async function quiete(page) {
+  const Q = +(process.env.CPM_QUIETE073 || 8) * 1000; const t0 = Date.now(); let ultimo = null;
+  while (Date.now() - t0 < 120000) { ultimo = await page.evaluate(() => { const L = window.__LT073 || []; const now = performance.now(); let fine = 0; for (const [s, d] of L) if (d > 300) fine = Math.max(fine, s + d); return { età: now - fine, n: L.length }; });
+    if (ultimo.età >= Q) return ultimo; await sleep(500); }
+  console.log('quiete: tetto raggiunto, ultimo long task ' + (ultimo ? ultimo.età.toFixed(0) : '?') + ' ms fa'); return ultimo;
+}
 async function pagina(extra) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   if (extra) await page.addInitScript(extra);
+  await page.addInitScript(() => { window.__LT073 = []; try { new PerformanceObserver(l => l.getEntries().forEach(e => window.__LT073.push([e.startTime, e.duration]))).observe({ entryTypes: ['longtask'] }); } catch (e) {} });
   await page.addInitScript((r) => { window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) { window.__CPM_NO_TAPPETO073 = 1; window.__CPM_NO_STACCO073 = 1; window.__CPM_NO_BATT073 = 1; } }, ROSSO);
   await openMatch(page, srv.address().port, { skipLoadAll: true, name: 'Corpi073' });
   await page.waitForFunction(() => typeof window.__CPM_CORPI232 === 'function' && (window.__CPM_CORPI232() || {}).pronti, null, { timeout: 120000 }).catch(() => {});
-  await sleep(2500); return { ctx, page };
+  await sleep(2500); await quiete(page); return { ctx, page };
 }
 async function scena(page, tipo, rx, seme) {
   return page.evaluate(([tipo, rx, seme]) => {
@@ -110,7 +124,10 @@ if (QUALI.includes('284f')) {
        ha l'origine, quindi la si spegne qui, altrimenti il pallone in volo dopo ~620 ms entra nella misura come «di nessuno». */
     const { ctx, page } = await pagina(() => { window.__CPM_NO554 = 1; window.__CPM_WS38_REC = 1; }); const S = await scena(page, 'angolo', '.', sd);
     if (!S) { console.log('284f: scena non costruita'); await ctx.close(); break; }
-    const t0 = Date.now(); const n0 = await page.evaluate(([gi]) => { const n0 = (window.__CPM_SNAP42 || []).length; const mp = window.__CPM_MP(); let k = -1; mp.forEach((q, i) => { if (k < 0 && i > 0 && q && q.t === 'home' && i !== 0 && !q.gk && q.x < 70) k = i; }); window.__CPM_MP_PLACE073(k, 96.4, 95.8); window.__CPM_FORCE_SIT(gi, false); return n0; }, [S.gi]);
+    const t0 = Date.now(); const n0 = await page.evaluate(([gi]) => { const n0 = (window.__CPM_SNAP42 || []).length; const mp = window.__CPM_MP(); let k = -1; mp.forEach((q, i) => { if (k < 0 && i > 0 && q && q.t === 'home' && i !== 0 && !q.gk && q.x < 70) k = i; }); /* [giro 89] il lato della bandierina lo decide hlBallSpot dalla y dell'eroe (< 50 → bandierina a y 2,5, altrimenti 97,5): con l'eroe a ~43 (la
+         posizione di partenza di oggi) il compagno messo a y 95,8 stava a 93 u dal punto e il rosso __CPM_NO_BATT073 non mordeva (battitore dichiarato
+         dal flusso normale, 0/6 rossi). Il compagno si mette sul lato giusto, a 1,7 u dal punto come prima. */
+      const ht = window.__CPM_STATE().heroTarget; window.__CPM_MP_PLACE073(k, 96.4, ht && ht.y != null && ht.y < 50 ? 4.2 : 95.8); window.__CPM_FORCE_SIT(gi, false); return n0; }, [S.gi]);
     const fr = []; while (Date.now() - t0 < 2600) { const s = await page.evaluate(() => { try { const st = window.__CPM_STATE(); return { ball: st.ball, hero: st.hero, pl: (st.players || []).filter(p => p.team === 'home' && !p.gk).map(p => ({ x: p.x, y: p.y })) }; } catch (e) { return null; } }); if (s) fr.push({ t: Date.now() - t0, ...s }); await sleep(60); }
     const sp = await page.evaluate(() => window.__CPM_SPOT073 && window.__CPM_SPOT073());
     /* [giro 79] PRIMO SCATTO DEL PALLONE: dove lo mette lo stacco di scena (registro __CPM_SNAP42, mondo → logico) rispetto al punto della scena */
