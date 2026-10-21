@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (22)
+## Voci aperte o parziali (23)
 
-Per lotto: L3 1 · L6 4 · L7 5 · L8 3 · L1-bis 8 · L7 (tocca il flusso settimana: verificare confine zona G) 1.
+Per lotto: L3 1 · L6 4 · L7 5 · L8 3 · L1-bis 9 · L7 (tocca il flusso settimana: verificare confine zona G) 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,6 +42,7 @@ Per lotto: L3 1 · L6 4 · L7 5 · L8 3 · L1-bis 8 · L7 (tocca il flusso setti
 | PO-248 | 14/10 | «Puntiamo molto alla fluidità, credibilità degli highlights dell'eroe a tutto tondo!» | partita | RESIDUO IN STABILITÀ (PO 20/10: si corregge solo se emerge nei collaudi) — PARZIALE — parte rilasciata chiusa in L1 con la 7.999.171 (decisione PO 17/10); residuo in L1-bis verso la 7.999.172; prima: APERTO — priorità del PO sopra le altre L1: (1) banco di misura unico degli highlight dell'eroe su tutte le famiglie (fluidità: fotogrammi lunghi, piedi che scivolano, salti di pallone/corpo, passaggi fra clip; credibilità: esito riquadro=3D=motore, portiere, pallone all'apertura, gesto visibile, inquadratura), GLB acceso, con classifica dei difetti; (2) correzioni in ordine di peso, ognuna con interruttore rosso e guardiano; (3) collaudo del PO sul telefono col taccuino. Comprende PO-229, PO-218, PO-242, PO-022/068/123 | L1-bis | — | — | chat PO 14/10 sera |
 | PO-250 | 14/10 | Collaudo 166 (N1): riquadro di una punizione crossata («↗️ Palla in area», dal limite) che dice «⚡ Filtrante perfetto! La conclusione è respinta» — un cross da punizione chiamato filtrante | difetto | RESIDUO IN STABILITÀ (PO 20/10: si corregge solo se emerge nei collaudi) — PARZIALE — parte rilasciata chiusa in L1 con la 7.999.171 (decisione PO 17/10); residuo in L1-bis verso la 7.999.172; prima: APERTO — famiglia PO-218 (lessico degli esiti); 1 caso, finale Coppa delle Nazioni 27'; docs/collaudi/RAPPORTO-release-166.md sul ramo collaudo/release-166 | L1-bis | — | — | collaudo 166 |
 | PO-285 | 20/10 | PO: «l'ingresso in campo lo velocizzerei ulteriormente» (segue PO-277) | richiesta | APERTO — PO 20/10 (questionario): ~16 s di scena (oggi ~24 s), con **tagli di camera** (passo di camminata invariato, PO-245), nella 7.999.177; giro 80 | L1-bis | — | — | messaggio PO in chat, 20/10 |
+| PO-297 | 21/10 | PO (foto `docs/governo/foto/po297-partita2d-bordo.jpg`, partita 2D FC Merseyside-FC Manchester): «Migliora la grafica della partita 2D, c'è troppo nero attorno al campo: valuta se mettere degli "spalti" con i colori della competizione o dei club o qualche altra idea» | miglioramento (grafica) | APERTO — PO 21/10 (questionario): **spalti coi colori dei club** (erba fuori dalle linee, cartelloni a bordo campo come nel 3D, tribuna stilizzata coi colori di casa su tre lati e spicchio ospiti, si accende ai gol); **nella 7.999.178**. Rosso e guardiano; prestazioni del 2D da misurare sul telefono | L1-bis | — | — | foto PO in chat, 21/10 |
 
 ## Storico — voci chiuse (274)
 

@@ -730,3 +730,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO-293 panchina coi corpi GLB dei giocatori: giro 87 (177 se verde, altrimenti 178). Interpretazione della sessione principale: «glb on» = stessi corpi CGTrader dei giocatori.
 - PO-294 bambini fermi all'arrivo: giro 88, nella 177.
 - PO-296 spazio fra i box: PO (questionario) «a metà, ~8 px», **nella 7.999.178**.
+- PO-297 bordo della partita 2D: PO (questionario) **«Spalti coi colori dei club»**, **nella 7.999.178** (con PO-296).
