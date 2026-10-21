@@ -45,9 +45,10 @@ async function scanTesto(txt, dove) {
 }
 
 /* ---- gestione finestre ---- */
+const ovRip = {};
 const DANGER = /^(Rifiuta|Non ora|Chiudi|Salta|Annulla|No\b|Lascia)/i;
 async function gestisciOverlay(o, contesto) {
-  const c = await ctxNow(); const txt = o.txt; const kind = (txt.replace(/\n/g, ' ').slice(0, 40) + '|' + o.btns.length);
+  const c = await ctxNow(); const txt = o.txt; const kind = (txt.replace(/\n/g, ' ').slice(0, 40) + txt.replace(/\n/g, ' ').slice(-40) + '|' + o.btns.length);
   await scanTesto(txt, 'finestra');
   let idx = 0, tipo = 'altro';
   const b = o.btns;
@@ -68,8 +69,10 @@ async function gestisciOverlay(o, contesto) {
     tipo = 'rinnovo'; idx = b.findIndex(x => /Accett|Rinnova|Firma/i.test(x));
   } else {
     // scelta generica: primo bottone non "distruttivo"; se tutti lo sono, il primo
-    const nd = b.findIndex(x => !DANGER.test(x) && !/^Chiudi/.test(x));
+    const pref = b.findIndex(x => /^(Conferma|Tieni|Salva|Fatto)/i.test(x.replace(/^[^A-Za-zÀ-ù]+/, '')));
+    const nd = pref >= 0 ? pref : b.findIndex(x => !DANGER.test(x) && !/^Chiudi/.test(x));
     idx = nd >= 0 ? nd : 0;
+    ovRip[kind] = (ovRip[kind] || 0) + 1; if (ovRip[kind] > 6) { const alt = b.findIndex(x => /^Chiudi|^Salta|Annulla/i.test(x)); if (alt >= 0) idx = alt; if (ovRip[kind] === 7) dif({ tipo: 'blocco', nome: 'finestra ripetuta 7 volte', kind, btns: b.slice(0, 6), ...c }); }
     if (b.length >= 3 && /\?|scegli|decidi/i.test(txt)) { tipo = 'scelta'; drv.impIdx++; idx = (hash(txt) + drv.impIdx) % (b.length - (DANGER.test(b[b.length - 1]) ? 1 : 0)); }
   }
   if (idx < 0) idx = 0;
@@ -185,6 +188,7 @@ async function vaiTab(lab) { return page.evaluate(l => { const nav = document.qu
 async function ispeziona(nome, opz = {}) {
   const c = await ctxNow(); const p = await P();
   const out = { ...c, tipo: 'ispezione', nome };
+  for (let i = 0; i < 6; i++) { await sleep(1800); const o = await overlay(page); if (o) { await gestisciOverlay(o, 'pre-ispezione'); continue; } if (/RISPONDI TU|INTERVISTA/.test((await testo(page)).slice(0, 4000))) { await sleep(1500); continue; } break; }
   try {
     // scheda
     for (const lab of opz.tabs || []) {
