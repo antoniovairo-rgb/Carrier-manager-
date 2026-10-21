@@ -64,7 +64,7 @@ async function gestisciOverlay(o, contesto) {
     tipo = 'impulso'; drv.impIdx++; idx = (hash(txt) + drv.impIdx) % b.length;
     for (let k = 0; k < b.length && (DANGER.test(b[idx]) || /🔒/.test(b[idx])); k++) idx = (idx + 1) % b.length;
   } else if (/Offerta|offre|trasferimento|Proposta|prestito/i.test(txt.slice(0, 300)) && b.some(x => /Accett/i.test(x))) {
-    tipo = 'offerta'; idx = decidiOfferta(txt, b);
+    tipo = 'offerta'; idx = await decidiOfferta(txt, b);
   } else if (/rinnov|contratto/i.test(txt.slice(0, 300)) && b.some(x => /Accett|Rinnova|Firma/i.test(x))) {
     tipo = 'rinnovo'; idx = b.findIndex(x => /Accett|Rinnova|Firma/i.test(x));
   } else {
@@ -83,13 +83,14 @@ async function gestisciOverlay(o, contesto) {
   await clicIn(page, idx); await sleep(tipo === 'prompt-partita' ? 1200 : 600);
   return tipo;
 }
-function decidiOfferta(txt, b) {
-  // accetta se l'offerta nomina un club con prestigio maggiore (si legge "Prestigio N") o una promozione da Primavera a prima squadra
-  const acc = b.findIndex(x => /Accett/i.test(x)); const ri = b.findIndex(x => /Rifiut/i.test(x));
-  const m = [...txt.matchAll(/Prestigio\s*(\d+)/gi)].map(x => +x[1]);
-  if (m.length >= 2 && m[0] > m[1] + 3) return acc >= 0 ? acc : 0;
-  if (/prima squadra|professionist|contratto pro/i.test(txt)) return acc >= 0 ? acc : 0;
-  return ri >= 0 ? ri : 0;
+async function decidiOfferta(txt, b) {
+  // si accetta se il club che offre ha piu prestigio (almeno +8) e minutaggio stimato >= 45%, o se e' un contratto da professionista
+  const acc = b.findIndex(x => /^Accett/i.test(x)); const ri = b.findIndex(x => /^Rifiut/i.test(x));
+  const p = await P(); const cur = (p && p.club && p.club.p) || 0;
+  const pm = +((txt.match(/Prestigio club:\s*(\d+)/i) || [])[1] || 0); const mm = +((txt.match(/Minutaggio stimato:\s*(\d+)/i) || [])[1] || 0);
+  const ok = acc >= 0 && ((pm >= cur + 8 && mm >= 45) || (p && p.proStatus === 'u18' && /professionist/i.test(txt)));
+  app(EV, { tipo: 'decisione-offerta', s: p && p.season, w: p && p.week, cur, pm, mm, ok });
+  return ok ? acc : (ri >= 0 ? ri : 0);
 }
 
 /* ---- partita dal vivo ---- */
