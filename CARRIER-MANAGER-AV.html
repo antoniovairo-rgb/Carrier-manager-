@@ -19541,7 +19541,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(_cm._frDirty){for(const fr of _frs){for(let i=0;i<fr.n;i++){fr.body.setMatrixAt(i,fr.bases[i]);fr.head.setMatrixAt(i,fr.headBases[i]);}
             fr.body.instanceMatrix.needsUpdate=true;fr.head.instanceMatrix.needsUpdate=true;}_cm._frDirty=false;}}}
       // item 9: la cerimonia (tappeto-logo + mascotte) vive SOLO nella walkout → nascondi appena si esce (guard sul flag → lavoro una sola volta)
-      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots){m.c.visible=false;if(m.glb911&&m.glb911.root)m.glb911.root.visible=false;}}
+      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots){m.c.visible=false;m._s294=null;m._snap294=false;if(m._f294!=null){m._f294=null;if(m.glb911&&m.glb911.idle)m.glb911.idle.timeScale=1;}if(m.glb911&&m.glb911.root)m.glb911.root.visible=false;}}
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
@@ -19580,7 +19580,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            chiude l'ingresso nello STESSO fotogramma (walkT=WALK_DUR): la chiusura e' quella naturale (onWalkoutDone) e il riposo riparte (vedi l'idle della fila, ramo PO-206). Mezzo secondo di scena non bastava: sotto carico in headless durava piu' della rete di sicurezza. */
         if(typeof window!=='undefined'&&window.__CPM_SKIPWALK277&&!walkDone&&!window.__CPM_NO_ING277){window.__CPM_SKIPWALK277=false;
           const _sn277=(m)=>{if(!m||m._wx==null)return;m.position.x=m._wx;m.position.z=m._wz;m._px=m._wx;m._pz=m._wz;m._sp=0;};
-          sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);
+          sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);if(!window.__CPM_NO_BIMBI294){for(const _m294 of _mascots){if(_m294){_m294._lp227=null;_m294._sp227=0;_m294._snap294=true;}}}/* [giro 88 PO-294] «Salta ingresso»: i bambini vanno al posto senza velocita' residua */
           }
         {const _cs285=sr.current._cuts285;if(_cs285&&!walkDone){for(let _i285=0;_i285<_cs285.length;_i285++){const _c285=_cs285[_i285];if(_c285.d||walkT<_c285.t)continue;_c285.d=true;
           /* stacco [giro 80 PO-285]: i corpi avanzano di quanto avrebbero camminato nel tempo saltato (a WALK_V245, in linea retta verso il posto,
@@ -19602,12 +19602,35 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _av911=m.glb911;const _t911=(_av911&&_av911.root)?_av911.root:m.c;/* [7.911.0 C11] il corpo CH38 al posto della figura */
           m.c.visible=!_av911;if(_av911&&_av911.root)_av911.root.visible=true;
           _t911.position.set(p.position.x+_hz*0.72,0,p.position.z-_hx*0.72);_t911.rotation.y=p.rotation.y;
+          /* [giro 88 PO-294 «i bambini arrivati a destinazione devono stare fermi»] MISURATO (sonda del giro, GLB accesi): il bambino
+             seguiva la mano del giocatore (posizione = giocatore + 0,72 di lato, ruotata con la rotazione del giocatore): il giocatore
+             arrivato gira in coda verso la camera e il bambino gli orbita intorno (fino a 1,4 u di spostamento), e la clip «idle»
+             (10,2 s, ginocchia piegate di 40-55 gradi) girava libera: in fila, da lontano, sembrava una corsa sul posto. Arrivato il
+             giocatore (fermo sul posto), il bambino raggiunge a passo d'ingresso il suo posto fisso (a lato, fronte camera), si
+             ferma esatto e tiene l'idle nella finestra calma 0-1 s (stessa soluzione di PO-206). Dopo uno stacco o «Salta ingresso»
+             va al posto di colpo, senza velocita'. Rosso __CPM_NO_BIMBI294. */
+          const _on294=!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI294);let _fermo294=false,_spx294=p.position.x,_spz294=p.position.z;
+          if(_on294){
+            if(p._wx!=null&&Math.hypot(p.position.x-p._wx,p.position.z-p._wz)<0.001){
+              const _R=-Math.PI/2,_fx=p._wx+Math.cos(_R)*0.72,_fz=p._wz-Math.sin(_R)*0.72;
+              let _s=m._s294;
+              if(!_s){_s=m._s294={x:_t911.position.x,z:_t911.position.z,ry:_t911.rotation.y};_s.x=p.position.x+_hz*0.72;_s.z=p.position.z-_hx*0.72;_s.ry=p.rotation.y;}
+              if(m._snap294||Math.hypot(_fx-_s.x,_fz-_s.z)>1.6){_s.x=_fx;_s.z=_fz;_s.ry=_R;}
+              m._snap294=false;
+              const _dx=_fx-_s.x,_dz=_fz-_s.z,_d=Math.hypot(_dx,_dz);
+              if(_d<0.002){_s.x=_fx;_s.z=_fz;}else{const _L=Math.min(_d,WALK_V245*dt);_s.x+=_dx/_d*_L;_s.z+=_dz/_d*_L;}
+              const _da=((_R-_s.ry+Math.PI*3)%(Math.PI*2))-Math.PI;
+              if(Math.abs(_da)<0.004)_s.ry=_R;else _s.ry+=_da*Math.min(8*dt,1);
+              _t911.position.set(_s.x,0,_s.z);_t911.rotation.y=_s.ry;
+              _fermo294=(_s.x===_fx&&_s.z===_fz&&_s.ry===_R);_spx294=_s.x;_spz294=_s.z;
+            }else if(m._s294){m._s294=null;m._snap294=false;if(m._f294!=null){m._f294=null;if(_av911&&_av911.idle)_av911.idle.timeScale=1;}}
+          }
           if(_av911){
             /* [7.999.160 PO-227 «nella fila da fermi i bambini continuano a correre», collaudatrice giro 7: 22 bambini su 22 con jog a peso 1,00
                a velocita' 0] il peso della corsa era FISSO a 1. Ora segue la velocita' smussata del giocatore che il bambino accompagna:
                fermo = idle, in marcia = corsa (stessa idea dei giocatori, PO-197). Rosso __CPM_NO_FILA227. */
             let _rw227=1,_iw227=0.25;
-            {const _px=p.position.x,_pz=p.position.z;
+            {const _px=_spx294,_pz=_spz294;/* [giro 88 PO-294] arrivato: la velocita' e' quella del bambino stesso, non del giocatore */
               const _v227=(m._lp227&&dt>0)?Math.hypot(_px-m._lp227.x,_pz-m._lp227.z)/dt:0;
               m._lp227={x:_px,z:_pz};
               m._sp227=(m._sp227==null?_v227:m._sp227+(_v227-m._sp227)*Math.min(1,dt*6));
@@ -19617,7 +19640,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_av911.walk245&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){/* [giro 23 PO-245] il bambino CAMMINA: clip «walk» con la cadenza sulla velocita' vera (velocita' naturale della clip misurata una volta sul suo corpo) */
               if(_av911._v0k245==null){const _r=_passoNaturale7({run:_av911.walk245,visualRoot:_av911.visualRoot,root:_av911.root}),_h=_altezza7(_av911);_av911._v0k245=(_r>0&&_h>0.3)?_r*_h:0;}
               if(_av911.run)_av911.run.weight=0;_av911.walk245.weight=_rw227;_av911.walk245.timeScale=_av911._v0k245>0?clamp((m._sp227||0)/_av911._v0k245,0.5,2.5):1;}
-            else if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;if(_av911.mx)_av911.mx.update(dt);}}
+            else if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;
+            if(_on294&&_fermo294&&_av911.idle&&(m._sp227||0)<0.3){m._f294=(m._f294==null?(_mascots.indexOf(m)*0.7):m._f294)+dt*1.4;_av911.idle.timeScale=0;_av911.idle.time=0.5-0.5*Math.cos(m._f294);}/* [giro 88 PO-294] fermo sul posto: idle nella finestra calma 0-1 s, come i giocatori (PO-206) */
+            else if(m._f294!=null&&_av911.idle){m._f294=null;_av911.idle.timeScale=1;}
+            if(_av911.mx)_av911.mx.update(dt);}}
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else if(replaying){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
