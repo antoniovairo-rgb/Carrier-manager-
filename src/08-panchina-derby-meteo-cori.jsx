@@ -69,6 +69,20 @@ function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const 
 function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
   const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
 function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+/* [PO-288 · giro 83] IL PIANO DEL TRAINER SI LEGGE. Sui pulsanti-piano: il valore attuale della caratteristica, la RESA (settimane medie per un +1,
+   da 1/trainerQuota281: la stessa funzione che decide la crescita, nessuna stima a parte) e un «consigliato» sulle due caratteristiche che
+   pesano di piu' nel giudizio (OVR) e sono ancora basse. Pesi = quelli di calcOvr (src/05): il giudizio del gioco e' UNA formula per tutti i
+   ruoli, non esistono pesi per ruolo. REGOLA: punteggio = peso OVR x (99 - valore); candidate solo le caratteristiche sotto 85 (sopra la
+   crescita del piano e' gia' scarsa); primi 2 per punteggio, a parita' l'ordine di TRAINER_ATTR281. Solo visualizzazione: nessun effetto sul
+   motore. Rosso __CPM_NO_PT288 (la schermata di prima). */
+const PESI_OVR288={tiro:2.5,tecnica:2,"velocità":1.5,dribbling:1.5,posizionamento:1.5,"mentalità":1,fisico:1,passaggio:1};
+function trainerAiuto288(p,lv){
+  if(typeof window!=="undefined"&&window.__CPM_NO_PT288)return null;
+  const st=(p&&p.stats)||{};const pl={...p,perkTrainer:true,perkTrainerLv:lv>=1?Math.min(3,lv|0):1};
+  const righe=TRAINER_ATTR281.map(function(a){const v=Math.round(st[a]||0);const q=v>=99?0:trainerQuota281(pl,v);
+    return{a:a,v:v,q:q,sett:q>0?Math.round(1/q):null,score:PESI_OVR288[a]*(99-v),cons:false};});
+  righe.filter(function(r){return r.v<85;}).sort(function(x,y){return y.score-x.score||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);}).slice(0,2).forEach(function(r){r.cons=true;});
+  return{ovr:calcOvr(st),pct:[10,15,20][Math.max(1,Math.min(3,lv|0||1))-1],righe:righe};}
 function prepLv281(p){return staffLv24(p,"perkNutrition");}
 function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */
 function garaRavv281(p){const w=(p&&p.week)||1;return ((p&&p.calendar)||[]).filter(function(m){return m&&m.week===w;}).length>=2;}
@@ -87,7 +101,7 @@ function mentalTensione281(p,cat,ef){const q=mentalQuota281(p);if(!q||cat!=="ten
    il conto e' bankBalance) e quindi non uscivano mai. Rosso __CPM_NO_VITA281 = il campo sbagliato di prima. */
 function vitaSaldo281(p){return _no281("VITA")?((p&&p.bank)||0):((p&&p.bankBalance)||0);}
 function vitaConto281(p,ef){if(_no281("VITA"))return {chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
-  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{})};}
+  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),...(ef.uff289?uffPatch289(p,ef.uff289,true):{})/* [PO-289] bene/sponsor dell'Ufficio scritti davvero */};}
 const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
 function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
@@ -128,6 +142,75 @@ const BENI24=[
   {k:"barca",e:"⛵",l:"Barca",c:700000,st:"vistoso",pop:4,trust:-3,mor:0.5,fx:"Popolarità +4, fiducia del mister −3, morale +0,5 a settimana",tif:"Le foto sulla barca fanno il giro dei social.",mis:"Il mister ti ricorda che le vacanze finiscono a luglio."},
   {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia del mister +2, conta per l'eredità di carriera (valutazione finale)",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
 function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
+  const _SPON_TIERS=[
+  {k:"globale",min:86,e:"🌍",n:"testimonial globale",brands:["Aurea Sportswear","Nexon Worldwide","Vela Group"],wk:8000},
+  {k:"nazionale",min:72,e:"📺",n:"spot nazionale",brands:["Banca Adria","Caffè Milleluci","Volt Energy"],wk:3000},
+  {k:"tecnico",min:55,e:"👟",n:"sponsor tecnico (scarpe)",brands:["Vortex Boots","Falco Nove","Kappa Ridge"],wk:1200},
+  {k:"locale",min:35,e:"🏪",n:"sponsor locale",brands:["Concessionaria Del Corso","Panificio La Torre","Ottica Vidale"],wk:400},
+];
+const sponsorView=(p)=>{try{
+  if((p.proStatus||"u18")!=="pro")return null;
+  const sn=p.season||1;const pop=p.popularity||0;
+  const owned=new Set((p.sponsors||[]).map(s=>s.tier));
+  const declined=(p.sponsorDecl&&p.sponsorDecl.season===sn)?p.sponsorDecl.tier:null;
+  const shift=p.agentStyle==="global"?6:0;/* §S5: l'agenzia global apre le porte prima */
+  const _maxOwnedMin=Math.max(-1,..._SPON_TIERS.filter(x=>owned.has(x.k)).map(x=>x.min));/* [7.162.0 super-test ECO-F11] */
+  const t=_SPON_TIERS.find(t=>pop>=(t.min-shift)&&!owned.has(t.k)&&declined!==t.k&&t.min>=_maxOwnedMin/* mai una fascia SOTTO quella già firmata: il testimonial globale non firma col panificio locale */);
+  if(!t)return null;
+  const seed=hashStr((p.name||"x")+"_sp_"+t.k+"_"+Math.floor((sn-1)/3));
+  const brand=t.brands[seed%t.brands.length];
+  const weekly=Math.round(t.wk*(0.9+((seed>>>3)%21)/100));/* [7.147.0] >>> (con segno il jitter poteva diventare negativo) */
+  return{tier:t.k,e:t.e,label:t.n,brand,weekly};
+}catch(_e){return null;}};
+/* [PO-289 · giro 84, foto PO «e' un impulso finto, e' gestito dall'ufficio (rendilo credibile o elimina)»] UN IMPULSO NON PROMETTE
+   QUELLO CHE L'UFFICIO GIA' GESTISCE: LO TOCCA. «Scuola calcio col tuo nome» non apriva l'Accademia dell'Ufficio (30.000 inventati,
+   nessuno stato); la stessa cosa valeva per il mental coach / lo staff (nessun staff), la casa e l'auto (nessun bene, costi inventati) e lo
+   sponsor «del procuratore» (15.000 una tantum, nessun contratto). Ora la voce porta una specifica `uff289` ("accademia", "staff:perkMental",
+   "bene:casa", "sponsor") e: (1) COMPARE solo se ha senso (uffOk289: Ufficio aperto, cosa non ancora tua, conto che basta); (2) il costo e'
+   quello dell'Ufficio (impScelte289 lo scrive sulla scelta quando il pop-up si apre); (3) scegliere SCRIVE lo stato vero (uffPatch289:
+   academy24 / perk* / beni24 / sponsors) e il testo dice dove la trovi. Gli sponsor una tantum (spot, endorsement) non sono qui.
+   Rosso window.__CPM_NO_IMP289: tutto come nella 7.999.176. Nessun Math.random. Guardiano tests/visual/impulsi-289.mjs. */
+function no289(){return typeof window!=="undefined"&&!!window.__CPM_NO_IMP289;}
+function uffOk289(p,spec){if(no289()||!p||!spec)return false;
+  const w=String(spec).split(":"),t=w[0],k=w[1],b=(p.bankBalance||0),pro=((p.proStatus||"u18")==="pro");
+  if(t==="accademia")return pro&&!p.academy24&&b>=academyCost24(p).found;
+  if(t==="staff")return pro&&!staffLv24(p,k)&&!!STAFF24.find(function(s){return s.k===k;})&&b>=8*staffCost24(p,k,1);
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});return !!d&&(p.beni24||[]).indexOf(k)<0&&b>=d.c;}
+  if(t==="sponsor")return pro&&!!p.agent&&!(p.sponsors||[]).length&&!!sponsorView(p);
+  return false;}
+/* cosa esce dal conto adesso (la gestione settimanale, se c'e', la paga l'economia dell'Ufficio come per ogni altra voce) */
+function uffCosto289(p,spec){const w=String(spec).split(":"),t=w[0],k=w[1];
+  if(t==="accademia")return academyCost24(p).found;
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});return d?d.c:0;}
+  return 0;}
+function uffSett289(p,spec){const w=String(spec).split(":"),t=w[0],k=w[1];
+  if(t==="accademia")return academyCost24(p).week;
+  if(t==="staff")return staffCost24(p,k,1);
+  if(t==="sponsor"){const sp=sponsorView(p);return sp?sp.weekly:0;}
+  return 0;}
+/* lo stato vero. `b` e' l'oggetto su cui si sta lavorando (gia' con gli effetti della scelta); `senzaDiario` per i punti che non possono toccare log/ledger */
+function uffPatch289(b,spec,senzaDiario){if(no289()||!b||!spec)return {};
+  const w=String(spec).split(":"),t=w[0],k=w[1],lg=function(s){return senzaDiario?{}:{log:[s,...(b.log||[])].slice(0,60)};};
+  if(t==="accademia"){if(b.academy24)return {};
+    return {academy24:{name:academyName24(b),founded:b.season||1,grads:[],tot:0,paused:false},...lg("🏫 Hai fondato la "+academyName24(b)+" (stagione "+(b.season||1)+")")};}
+  if(t==="staff"){const d=STAFF24.find(function(s){return s.k===k;});if(!d||staffLv24(b,k))return {};
+    const m=(typeof b[d.lv]==="number"&&b[d.lv]>=1)?Math.min(3,b[d.lv]|0):1;
+    return {[d.k]:true,[d.lv]:m,...lg(d.e+" "+d.l+": livello "+m+" — lo gestisci dall'Ufficio")};}
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});if(!d||(b.beni24||[]).indexOf(k)>=0)return {};
+    return {beni24:[...(b.beni24||[]),k],...lg(d.e+" "+d.l+": "+d.tif+" "+d.mis)};}
+  if(t==="sponsor"){const sp=sponsorView(b);if(!sp)return {};
+    return {sponsors:[...(b.sponsors||[]),{tier:sp.tier,brand:sp.brand,weekly:sp.weekly,season:b.season||1}],
+      ...(senzaDiario?{}:{ledger:[...(b.ledger||[]),{t:"sponsor",who:sp.brand,what:"accordo "+sp.label+" da "+sp.weekly+"€/settimana",season:b.season||1,week:b.week||1,club:(b.club&&b.club.id)||""}].slice(-60),
+      log:[sp.e+" Accordo con "+sp.brand+" ("+sp.label+"): +"+sp.weekly.toLocaleString("it-IT")+"€/settimana.",...(b.log||[])].slice(0,60)})};}
+  return {};}
+function uffAvviso289(spec){const t=String(spec).split(":")[0];
+  return t==="accademia"?"🏫 Accademia aperta: la trovi nell'Ufficio":t==="staff"?"🧑‍⚕️ Nuovo membro dello staff: lo gestisci dall'Ufficio":t==="bene"?"🏡 Nuovo bene: lo trovi nell'Ufficio":"✍️ Sponsor firmato: lo trovi dal Procuratore";}
+/* le scelte con variante `v289` si risolvono quando il pop-up si apre (serve il giocatore per i costi veri): testo con {COSTO}/{SETT}, ef.bank = costo vero */
+function impScelte289(ch,p){if(no289()||!ch||!ch.some(function(c){return c&&c.v289;}))return ch;
+  return ch.map(function(c){const v=c&&c.v289;if(!v)return c;const out={...c,...v};delete out.v289;
+    if(v.uff289){const co=uffCosto289(p,v.uff289),sw=uffSett289(p,v.uff289);out.ef={...(v.ef||{})};if(co>0)out.ef.bank=-co;
+      out.txt=String(v.txt||c.txt).replace("{COSTO}",_eur49(co)).replace("{SETT}",_eur49(sw)+" a settimana");}
+    return out;});}
 function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
 /* [PO-281 · giro 70] 5) I BENI VIVONO NEL TEMPO. Prima: popolarita'/fiducia una volta all'acquisto e basta. Ora, circa una
    settimana su sei (hash di nome+stagione+settimana: deterministico), uno dei beni posseduti fa parlare qualcuno — stampa,
@@ -278,9 +361,10 @@ function calcCoachDecision(player,matchWeight=1,rng){
      distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
      con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
      26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
-     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco).
+     [giro 82 PO-287, rosso __CPM_NO_NEUTRO287] con l'eroe neutro (senza il Finalizzatore) la gavetta misura titolare 53,3 · 55,8 · 58,8 e minuti 61,1 · 65 contro i limiti 55 e 63 (bersagli 45 e 55, nei giri 78: 47-55): a 17-20 anni la penalita' passa da -8 a -10 (centro della gavetta riportato verso i bersagli). */
   let _tit156=null;
-  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?((typeof neutro287==='function'&&neutro287())?-10:-8):_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
     const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;

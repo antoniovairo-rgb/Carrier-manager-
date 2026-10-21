@@ -27,6 +27,7 @@ function ProTransitionScreen({player,onChoose}){
   const _dk=window.innerWidth>=640;
   const{offers,forced,perf}=React.useMemo(()=>generateProContracts(player),[player.name,player.season,player.club?.id,player.u18Seasons,player.ovr,player.hasAgent,player.squadRole]);/* [7.262.0] doppia rete: il seed rende le offerte stabili anche dopo un reload, il memo evita di rigenerarle a ogni render */
   const u18S=player.u18Seasons||0;
+  const _n85=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?u18S+1:Math.min(2,Math.max(1,u18S));/* [giro 85 bassa] u18Seasons e' GIA' incrementato alla chiusura (1 dopo la prima stagione): la barra contava una stagione in piu' («2 di 2» dopo una sola). Rosso __CPM_NO_PICCOLI85 */
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
     const h=e=>{
@@ -57,16 +58,16 @@ function ProTransitionScreen({player,onChoose}){
           {/* [7.999.49 parte A] il conteggio delle stagioni Under 18 resta solo nella barra qui sotto */}
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
-        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile."}</div>}
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
-          <span>Stagioni Under 18: {u18S+1} di 2</span>
+          <span>Stagioni Under 18: {_n85} di 2</span>
           <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
         <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
+          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
         </div>
       </div>
       {/* Offers */}
@@ -2274,7 +2275,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     const _ts=_t3(leagueTopScorer);if(_ts)seq.push({key:"capo",e:"⚽",title:"Capocannoniere",sub:`I migliori marcatori della ${lg}`,rows:_ts});
     const _mv=_t3(leagueMvp);if(_mv)seq.push({key:"mvp",e:"🏅",title:"MVP della stagione",sub:`Miglior giocatore della ${lg}`,rows:_mv});
     const _sc=_t3(scarpaOro);if(_sc)seq.push({key:"scarpa",e:"👟",title:"Re dei Bomber",sub:"I migliori marcatori dei campionati europei",rows:_sc});
-    const _po=_t3(palloneOro);if(_po)seq.push({key:"oro",e:"🌍",title:"Trofeo d'Oro",sub:"I migliori calciatori d'Europa — smoking, riflettori, una busta.",rows:_po});
+    const _po=_t3(palloneOro);if(_po)seq.push({key:"oro",e:"🌍",title:"Trofeo d'Oro",sub:(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"I migliori calciatori d'Europa — smoking, riflettori, una busta.":"I migliori calciatori d'Europa — giudicati su OVR, gol, assist e trofei.",rows:_po});
     return seq;}catch(_e){return[];}},[]);// eslint-disable-line
   const [galaAct,setGalaAct]=React.useState(0);
   const [galaN,setGalaN]=React.useState(0);// 0 busta chiusa · 1 rivela 3° · 2 rivela 2° · 3 rivela 1°
@@ -2314,7 +2315,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -2331,7 +2332,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
           <div data-cpm="gala51-fascia" style={{position:"absolute",left:12,right:12,bottom:"calc(16px + env(safe-area-inset-bottom, 0px))",maxWidth:460,margin:"0 auto",display:"flex",flexDirection:"column",gap:6}}>
             {g51===0&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{`Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"} · ${N===0?"nessuno per te":N===1?"1 è per te":N+" sono per te"}`}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                 <div style={{minWidth:0}}>
@@ -2342,7 +2343,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
             </React.Fragment>)}
             {mom&&_rv199<3&&(()=>{const rows=mom.a.rows||[];const _pos=[{k:2,l:"3° posto"},{k:1,l:"2° posto"}];return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div data-cpm="busta199" data-rev={_rv199} style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
@@ -2355,14 +2356,14 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setB199(x=>{let r=Math.min(3,(x.g===g51?x.rv:0)+1);if(r===1&&!rows[2])r=rows[1]?2:3;if(r===2&&!rows[1])r=3;return{g:g51,rv:r};})}>{_rv199===0?(rows[2]?"Svela il 3° posto":rows[1]?"Svela il 2° posto":"E il vincitore è…"):_rv199===1?"Svela il 2° posto":"E il vincitore è…"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const w=rows[0];const pos=rows.findIndex(x=>x&&x.isPlayer);const nw=_num(w,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div data-cpm="busta199-altro" style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(w&&w.name,false,34)}
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
                   </div>
                 </div>
                 <div style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
@@ -2370,7 +2371,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(me&&me.name,true,34)}
@@ -2555,8 +2556,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
 
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
-        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
-        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club)}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
+        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
+        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>

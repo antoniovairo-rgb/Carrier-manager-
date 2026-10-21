@@ -16,7 +16,7 @@ const URL0 = `http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpm
 async function braccio(rosso) {
   const ctx = await b.newContext({ viewport: { width: 360, height: 800 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errori = []; page.on('pageerror', e => errori.push(String(e.message).slice(0, 160)));
-  await page.addInitScript((r) => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} window.__CPM_GLB = false; if (r) window.__CPM_NO_STILEUNICO75 = 1; }, rosso);
+  await page.addInitScript((r) => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} window.__CPM_GLB = false; window.__CPM_NO_NEUTRO287 = 1; /* [giro 82 PO-287] questo guardiano prova lo stile unico del giro 75 (7.999.176): l'eroe neutro e' provato da neutro-287 */ if (r) window.__CPM_NO_STILEUNICO75 = 1; }, rosso);
   await page.goto(URL0, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!window.__CPM_MIGRATE && !!window.__CPM_STILI && !!document.getElementById('root').children.length, null, { timeout: 120000 });
   await sleep(800);

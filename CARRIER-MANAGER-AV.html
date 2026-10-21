@@ -1826,6 +1826,10 @@ function impulseFreshBucket(pool,recent,seen,condOk){
    Fire during doAdvanceWeek when weekLived=false (25% chance)
 ======================================== */
 let _lastWRE=-1,_lastImpulseId=null;/* [5.98.0 D1] anti-ripetizione consecutiva (memoria di sessione) */
+function cashAgente85(p){try{if(typeof window!=="undefined"&&window.__CPM_NO_AGENTE85)return 0;
+  const own=(p.sponsors||[]).reduce((a,x)=>a+((x&&x.weekly)||0),0);
+  let base=own;if(!base){const sv=typeof sponsorView==="function"?sponsorView(p):null;base=sv?sv.weekly:400;}
+  return Math.round(4*base/10)*10;}catch(_e){return 0;}}
 const WEEKLY_RANDOM_EVENTS=[
   {txt:"🤝 Il tuo agente chiama: interesse concreto da un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
   {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype!",ef:{popularity:8,morale:5},cond:p=>(p.week||1)<=5/* [7.161.0 BASSA] la maglia si presenta a inizio stagione, non a W25 */},
@@ -1863,7 +1867,8 @@ const WEEKLY_RANDOM_EVENTS=[
   {txt:"🎙️ Sei ospite in un podcast calcistico. La community esplode di commenti.",ef:{popularity:10,morale:5}},
   {txt:"💼 Contatto con uno sponsor sportivo. Proposta di endorsement personale.",ef:{morale:9,popularity:8,value:0.10}},
   {txt:"👟 Un brand ti manda materiale tecnico personalizzato. Ti senti una star.",ef:{morale:7,popularity:6}},
-  {txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario. Entrate extra.",ef:{morale:8,popularity:5,value:0.08}},
+  /* [PO-289 · giro 85] PROMETTEVA «Entrate extra» e non pagava nulla (misurato: ef = morale +8, popolarita' +5, valore +0,08; bankBalance invariato). Ora paga davvero: 4 settimane degli sponsor che hai (o, senza sponsor, dell'offerta del Procuratore, o della fascia locale) e il testo mostra la cifra. Esce solo da professionista con un agente. Rosso window.__CPM_NO_AGENTE85 = come prima. */
+  {txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario. Entrate extra.",ef:{morale:8,popularity:5,value:0.08},cash85:true,cond:p=>!(typeof window!=="undefined"&&window.__CPM_NO_AGENTE85)?((p.proStatus||"u18")==="pro"&&!!(p.hasAgent||p.agent)):true},
   {txt:"📦 Gadget ufficiali dallo sponsor del club distribuiti in spogliatoio. Squadra felice.",ef:{morale:7,fatigue:-5}},
   {txt:"🏅 Il club annuncia uno sponsor che include il tuo nome sul kit.",ef:{popularity:9,morale:6,value:0.05}},
   {txt:"🌐 Interview online con un media internazionale. La tua storia fa il giro del mondo.",ef:{popularity:14,morale:8,value:0.06}},
@@ -1984,6 +1989,8 @@ const _ult154=(p,n)=>(p.matchHistory||[]).slice(-n);
 const _vinte154=(p,n)=>_ult154(p,n).filter(m=>m&&m.won).length;
 const _perse154=(p,n)=>_ult154(p,n).filter(m=>m&&!m.won&&!m.drew).length;
 const _pro154=(p)=>(p.proStatus||"u18")==="pro";
+/* [PO-289 · giro 84] la condizione di sempre + «ha senso nell'Ufficio» (uffOk289, src/08); col rosso __CPM_NO_IMP289 resta la sola condizione di sempre */
+const _c289=(c0,spec)=>(p)=>c0(p)&&(no289()||uffOk289(p,spec));
 const _conto154=(p)=>(p.bankBalance||0);
 const _ruolo154=(p)=>p.squadRole||"rotazione";
 const _exClub154=(p)=>(p.history||[]).some(h=>h&&h.clubId&&p.club&&h.clubId!==p.club.id)||((p.season||1)>=3);
@@ -2091,8 +2098,9 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Dico quello che penso",ef:{popularity:9,coachTrust:-10,morale:4}},
     {txt:"🧊 Glissa con diplomazia",ef:{coachTrust:5,popularity:-2}},
   ]},
-  {id:"wi_personal_chef",cond:_cx154(p=>_conto154(p)>=30000),cat:"opportunità",txt:"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.",choices:[
-    {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3}},
+  {id:"wi_personal_chef",cond:_c289(_cx154(p=>_conto154(p)>=30000),"staff:perkNutrition")/* [PO-289] solo se non hai gia' il preparatore atletico dell'Ufficio */,cat:"opportunità",
+    get txt(){return no289()?"Uno chef specializzato in nutrizione sportiva si propone per un mese di prova. Costa.":"Uno specialista di nutrizione e recupero si propone come tuo preparatore atletico privato. Se lo prendi entra nello Staff privato, nell'Ufficio.";},choices:[
+    {txt:"🥗 Lo assumo",ef:{bank:-15000,fatigue:-10,form:3},v289:{txt:"🥗 Lo assumo — {SETT}, lo gestisco dall'Ufficio",ef:{},uff289:"staff:perkNutrition"}},
     {txt:"🍕 Sto bene così",ef:{}},
   ]},
   {id:"wi_famiglia_visita",cond:_cx154(p=>_gara154(p)/* «proprio nella settimana piu' piena» */),cat:"scelta",txt:"I tuoi genitori vogliono venire a trovarti proprio nella settimana più piena.",choices:[
@@ -2362,9 +2370,10 @@ const WEEKLY_IMPULSES=[
     {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
     {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
   ]},
-  {id:"wi_scuola_calcio",cat:"opportunità",cond:p=>(p.popularity||20)>=42,txt:"Ti propongono di aprire una scuola calcio col tuo nome: investimento e un po' del tuo tempo.",choices:[
-    {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6}},
-    {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000}},
+  {id:"wi_scuola_calcio",cat:"opportunità",cond:_c289(p=>(p.popularity||20)>=42,"accademia")/* [PO-289] compare solo se l'Accademia dell'Ufficio non c'e' ancora e il conto basta per aprirla */,
+    get txt(){return no289()?"Ti propongono di aprire una scuola calcio col tuo nome: investimento e un po' del tuo tempo.":"Ti propongono di aprire una scuola calcio col tuo nome. Se ci metti faccia e soldi nasce la tua Accademia, quella vera: la trovi nell'Ufficio. Se presti solo il nome è una licenza: incassi, ma nessuna scuola è tua.";},choices:[
+    {txt:"⚽ Ci metto faccia e soldi",ef:{bank:-30000,popularity:9,morale:6},v289:{txt:"⚽ Ci metto faccia e soldi: apro l'Accademia ({COSTO} per aprirla, {SETT}) — la trovi nell'Ufficio",ef:{popularity:3},uff289:"accademia"}},
+    {txt:"🤝 Presto solo il nome",ef:{popularity:3,bank:6000},v289:{txt:"🤝 Presto solo il nome: una licenza, nessuna scuola è mia",ef:{popularity:3,bank:6000}}},
   ]},
   {id:"wi_giornata_libera",cond:_cx154(p=>_vinte154(p,1)>=1/* il giorno libero si concede dopo una vittoria */),cat:"scelta",txt:"Il mister concede un giorno libero: mare coi compagni o palestra da solo per limare i dettagli?",choices:[
     {txt:"🏖 Mare col gruppo",ef:{chem:7,morale:6,fatigue:3}},
@@ -2401,8 +2410,9 @@ const WEEKLY_IMPULSES=[
     {txt:"💙 Lo invito all'allenamento",ef:{morale:9,popularity:5,fatigue:2}},
     {txt:"🎁 Gli mando maglia e videomessaggio",ef:{morale:4,bank:-2000}},
   ]},
-  {id:"wi_mental_coach",cond:_cx154(p=>(p.morale||70)<62||_perse154(p,3)>=2/* la testa si allena quando pesa */),cat:"scelta",txt:"Un mental coach propone due giorni di lavoro sulla concentrazione.",choices:[
-    {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3}},
+  {id:"wi_mental_coach",cond:_c289(_cx154(p=>(p.morale||70)<62||_perse154(p,3)>=2/* la testa si allena quando pesa */),"staff:perkMental")/* [PO-289] solo se non hai gia' il mental coach dell'Ufficio */,cat:"scelta",
+    get txt(){return no289()?"Un mental coach propone due giorni di lavoro sulla concentrazione.":"Un mental coach si propone per un lavoro stabile sulla concentrazione: se lo ingaggi entra nel tuo Staff privato, nell'Ufficio.";},choices:[
+    {txt:"🧘 Ci provo — testa libera",ef:{morale:6,form:3,fatigue:-3},v289:{txt:"🧘 Lo ingaggio — {SETT}, lo gestisco dall'Ufficio",ef:{},uff289:"staff:perkMental"}},
     {txt:"⚽ Preferisco il campo",ef:{form:2}},
   ]},
   {id:"wi_orologi_squadra",cond:_cx154(p=>_pro154(p)&&_conto154(p)>=44000),cat:"scelta",txt:"Vuoi cementare il gruppo regalando un orologio a ogni compagno. Costa parecchio.",choices:[
@@ -2417,8 +2427,9 @@ const WEEKLY_IMPULSES=[
     {txt:"💸 Ci sto",ef:{bank:8000,popularity:4,coachTrust:-2}},
     {txt:"🚫 Niente vetrine sui social",ef:{coachTrust:3}},
   ]},
-  {id:"wi_casa_citta",cond:p=>_brandOk453(p)&&((p.bank||0)+(p.bankBalance||0))>=250000/* [7.453.0] non si compra casa/un ristorante senza averci i soldi */,cat:"conseguenza",txt:"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.",choices:[
-    {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4}},
+  {id:"wi_casa_citta",cond:p=>_brandOk453(p)&&(no289()?((p.bank||0)+(p.bankBalance||0))>=250000:uffOk289(p,"bene:casa"))/* [7.453.0] non si compra casa/un ristorante senza averci i soldi · [PO-289] e se la casa dell'Ufficio non e' gia' tua */,cat:"conseguenza",
+    get txt(){return no289()?"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità.":"Puoi comprare casa in città: ti radichi alla piazza, ma immobilizzi liquidità. È la «Casa in città» dei tuoi beni: poi la trovi nell'Ufficio.";},choices:[
+    {txt:"🏠 Compro — è casa mia",ef:{bank:-45000,morale:6,popularity:4},v289:{txt:"🏠 Compro — è casa mia ({COSTO})",ef:{popularity:1,coachTrust:2},uff289:"bene:casa"}},
     {txt:"🔑 Resto in affitto, più libero",ef:{morale:1}},
   ]},
   {id:"wi_primo_mister",cond:_cx154(p=>(p.season||1)>=3/* «il tuo primo allenatore»: serve un po' di strada fatta */),cat:"personale",txt:"Il tuo primo allenatore, oggi in difficoltà, ti chiede una mano per un provino ai suoi ragazzi.",choices:[
@@ -2536,8 +2547,9 @@ const WEEKLY_IMPULSES=[
     {txt:"🧘 La faccio nel tunnel",ef:{form:3,morale:4}},
     {txt:"😅 Me la sono già dimenticata",ef:{morale:1}},
   ]},
-  {id:"wi_seg_chef",seg:{da:"wi_personal_chef",c:0,min:4,max:10},cond:_sg154("wi_seg_chef"),cat:"seguito",txt:"Il mese di prova dello chef è finito: ti senti più leggero e i test lo confermano. Ti propone di restare per la stagione.",choices:[
-    {txt:"🥗 Lo confermo",ef:{bank:-20000,fatigue:-8,form:3}},
+  {id:"wi_seg_chef",seg:{da:"wi_personal_chef",c:0,min:4,max:10},cond:_sg154("wi_seg_chef"),cat:"seguito",
+    get txt(){return no289()?"Il mese di prova dello chef è finito: ti senti più leggero e i test lo confermano. Ti propone di restare per la stagione.":"Il preparatore atletico che hai preso nello Staff privato fa il punto con te: ti senti più leggero e i test lo confermano. Ti propone di rivedere il piano.";},choices:[
+    {txt:"🥗 Lo confermo",ef:{bank:-20000,fatigue:-8,form:3},v289:{txt:"🥗 Seguo il suo piano",ef:{fatigue:-8,form:3}}},/* [PO-289] niente 20.000 inventati: lo staff costa quello dell'Ufficio */
     {txt:"🍳 Ho imparato le ricette, faccio da me",ef:{form:1,morale:3}},
   ]},
   {id:"wi_seg_accademia",seg:{da:"wi_giovani_accademia",c:0,min:6,max:20},cond:_sg154("wi_seg_accademia"),cat:"seguito",txt:"I ragazzi della scuola calcio che hai visitato hanno vinto il loro torneo e ti dedicano la coppa.",choices:[
@@ -2573,6 +2585,16 @@ const WEEKLY_IMPULSES=[
     {txt:"🏷️ Basta il taglio del nastro",ef:{popularity:3,morale:3}},
   ]},
 ];
+/* [PO-289 · giro 84] il «preparatore atletico»/«nutrizionista» che propone una seduta e' personale DEL CLUB (gratis, una tantum), non lo staff
+   privato dell'Ufficio: il testo lo dice (col rosso __CPM_NO_IMP289 resta quello di prima). */
+[["wi_ciclo_forza","Il preparatore atletico propone","Il preparatore atletico del club propone"],
+ ["wi_staff","Il preparatore atletico ti propone","Il preparatore atletico del club ti propone"],
+ ["wi_analisi_video","Il preparatore atletico ti propone","Il preparatore atletico del club ti propone"],
+ ["wi_crioterapia","Il preparatore consiglia","Il preparatore del club consiglia"],
+ ["wi_sosta_nazionali","extra col preparatore.","extra col preparatore del club."],
+ ["wi_dieta_ferrea","Il nutrizionista propone","Il nutrizionista del club propone"]].forEach(function(r){
+  const im=WEEKLY_IMPULSES.find(function(x){return x.id===r[0];});if(!im||typeof im.txt!=="string"||im.txt.indexOf(r[1])<0)return;
+  const t0=im.txt;Object.defineProperty(im,"txt",{get:function(){return no289()?t0:t0.replace(r[1],r[2]);},configurable:true,enumerable:true});});
 
 /* ========================================
    SPRINT 24 — C: LA STAMPA TI RICORDA (GIORNALISTI)
@@ -2677,8 +2699,8 @@ const VITA_EVENTS=[
   {id:"vita_meme_scivolata",cat:"social",r:"c",cond:p=>(p.form||70)<50,txt:"🙈 La tua scivolata a vuoto è diventata un meme. Lo posti tu per primo con scritto «pattinaggio artistico: 9.5». I tifosi ti perdonano tutto.",ef:{morale:2,popularity:4}},
   // ---- VITA DELL'EROE ----
   {id:"vita_primo_stipendio",cat:"vita",r:"u",cond:p=>(p.salary||0)>=10,txt:"💶 Il primo stipendio VERO. Lo guardi sul telefono per dieci minuti. Poi chiami casa: stasera offri tu, e non si discute.",ef:{morale:8},mem:"Il primo stipendio vero"},
-  {id:"vita_auto",cat:"vita",r:"u",cond:p=>vitaSaldo281(p)>=80000/* [PO-281] il conto e' bankBalance: con p.bank non usciva mai */,txt:"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo.",ef:{bank:-45000,morale:10},mem:"L'auto dei sogni"},
-  {id:"vita_casa",cat:"vita",r:"u",cond:p=>vitaSaldo281(p)>=250000/* [PO-281] idem */,txt:"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.",ef:{bank:-180000,morale:12},mem:"La prima casa"},
+  {id:"vita_auto",cat:"vita",r:"u",cond:p=>no289()?vitaSaldo281(p)>=80000/* [PO-281] il conto e' bankBalance: con p.bank non usciva mai */:uffOk289(p,"bene:auto")/* [PO-289] l'auto dell'Ufficio, se non e' gia' tua */,txt:p=>no289()?"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo.":"🚗 Ti concedi l'auto che disegnavi sul diario a scuola. Il concessionario ti chiede un selfie. Guidi piano, ridendo da solo. (La trovi nell'Ufficio, fra i beni.)",get ef(){return no289()?{bank:-45000,morale:10}:{bank:-150000,popularity:3,coachTrust:-2,uff289:"bene:auto"};},mem:"L'auto dei sogni"},
+  {id:"vita_casa",cat:"vita",r:"u",cond:p=>no289()?vitaSaldo281(p)>=250000/* [PO-281] idem */:uffOk289(p,"bene:casa")/* [PO-289] la casa dell'Ufficio, se non e' gia' tua */,txt:p=>no289()?"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai.":"🏠 Le chiavi della prima casa TUA. La prima notte dormi per terra sul materasso, felice come mai. (La trovi nell'Ufficio, fra i beni.)",get ef(){return no289()?{bank:-180000,morale:12}:{bank:-250000,popularity:1,coachTrust:2,uff289:"bene:casa"};},mem:"La prima casa"},
   {id:"vita_compleanno",cat:"vita",r:"c",cond:p=>((p.week||1)%38)===(((typeof hashStr==="function"?Math.abs(hashStr((p.name||"eroe")+"_bday")):7)%30)+3),txt:"🎂 Compleanno. Lo spogliatoio ti aspetta con una torta e una foto tua da bambino trovata chissà dove, stampata in formato POSTER.",ef:{morale:6}},
   {id:"vita_caffe_oratorio",cat:"vita",r:"r",txt:"☕ Al bar un signore ti paga il caffè senza dire una parola. Poi, sulla porta: «Ti vedevo giocare all'oratorio. Non cambiare.»",ef:{morale:7},mem:"Il caffè dell'oratorio"},
   {id:"vita_famiglia_stadio",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=30,txt:"👨‍👩‍👦 I tuoi in tribuna per la prima volta nello stadio grande. Li cerchi con lo sguardo al riscaldamento. Ci sono. Basta quello.",ef:{morale:9},mem:"La famiglia in tribuna"},
@@ -2690,7 +2712,7 @@ const VITA_EVENTS=[
   {id:"vita_gps_buffet",cat:"assurdo",r:"u",cond:p=>(p.goals||0)>=5,txt:"📡 Riunione dati: il preparatore proietta la tua velocità massima stagionale. L'ha registrata il GPS... durante la corsa al buffet del ritiro. Applauso liberatorio.",ef:{morale:6},mem:"Il record del buffet"},
   // ---- PROCURATORE / CONFIDENTE ----
   {id:"vita_agente_cena",cat:"agente",r:"c",cond:p=>!!p.agent,txt:p=>`🍝 ${_vitaAgName(p)} ti porta a cena. Niente contratti stavolta: si parla di calcio visto, di viaggi, del suo primo assistito. «Questa la offro io. Succede una volta ogni mai.»`,ef:{morale:5}},
-  {id:"vita_agente_sponsor",cat:"agente",r:"r",cond:p=>!!p.agent&&(p.popularity||20)>=50,txt:p=>`📦 ${_vitaAgName(p)}: «Uno sponsor di scarpini ha chiesto di te. Piccolo, ma serio. Ho detto che ci pensavi — cioè che accettavi.»`,ef:{bank:15000,popularity:3},next:"vita_agente_shooting",mem:"Il primo sponsor"},
+  {id:"vita_agente_sponsor",cat:"agente",r:"r",cond:p=>no289()?(!!p.agent&&(p.popularity||20)>=50):uffOk289(p,"sponsor")/* [PO-289] solo se il Procuratore ha davvero un'offerta in corso e non hai ancora sponsor */,txt:p=>{if(!no289()){const sp=sponsorView(p);if(sp)return `📦 ${_vitaAgName(p)}: «${sp.brand} ha chiesto di te: ${sp.label}, ${sp.weekly.toLocaleString("it-IT")}€ a settimana. Ho detto che ci pensavi — cioè che accettavi.» Il contratto lo trovi dal Procuratore.`;}return `📦 ${_vitaAgName(p)}: «Uno sponsor di scarpini ha chiesto di te. Piccolo, ma serio. Ho detto che ci pensavi — cioè che accettavi.»`;},get ef(){return no289()?{bank:15000,popularity:3}:{popularity:3,uff289:"sponsor"};},next:"vita_agente_shooting",mem:"Il primo sponsor"},
   {id:"vita_agente_shooting",cat:"agente",r:"r",cond:()=>false/* solo via catena */,txt:"📸 Il servizio fotografico dello sponsor: il fotografo ti fa ripetere QUARANTA volte «guarda l'orizzonte con fame». Non sai più dove sia l'orizzonte, né la fame. Le foto, però, spaccano.",ef:{morale:4,popularity:4}},
   {id:"vita_agente_curva",cat:"agente",r:"c",cond:p=>!!p.agent&&(p.form||70)<55,txt:p=>`📞 ${_vitaAgName(p)}, di sera: «Le carriere non sono rette, sono curve. Chi ti giudica su tre partite non ha mai giocato. Dormici su.» Funziona.`,ef:{morale:6}},
   {id:"vita_agente_orgoglio",cat:"agente",r:"r",cond:p=>!!p.agent,txt:p=>`🗣️ ${_vitaAgName(p)}: «Non te lo dico mai, ma questo periodo mi ha convinto. Non per i numeri. Per come ti alleni quando nessuno guarda.»`,ef:{morale:5},mem:"Le parole del procuratore"},
@@ -4958,7 +4980,7 @@ const wPick=(evts,rnd)=>{const tot=evts.reduce((s,e)=>s+(e.w||1),0);let r=(rnd?r
 function baseStats(archetype){
   const b={velocità:rng(55,72),tecnica:rng(54,70),fisico:rng(50,68),mentalità:rng(50,68),tiro:rng(60,74),passaggio:rng(48,65),dribbling:rng(55,72),posizionamento:rng(55,70)};
   const arc=archDi(archetype);/* [giro 67 PO-098] 4 stili + 8 archetipi */
-  if(arc)Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
+  if(arc&&!(typeof neutro287==='function'&&neutro287()))Object.entries(arc.bonus).forEach(([k,v])=>{if(b[k]!==undefined)b[k]=clamp(b[k]+v,40,90);});
   return Object.fromEntries(Object.entries(b).map(([k,v])=>[k,clamp(v,1,99)]));
 }
 function calcOvr(s){return Math.min(99,Math.round((s.tiro*2.5+s.tecnica*2+s.velocità*1.5+s.dribbling*1.5+s.posizionamento*1.5+s.mentalità+s.fisico+s.passaggio)/11.5));}
@@ -5799,7 +5821,7 @@ function stileDi(a,stats){const id=(a&&a.id)||a||"";if(ARCHETYPES.some(x=>x.id==
 /* l'id «di lettura» per i rami scritti sugli 8 (obiettivi stagionali, _pSimStats): un vecchio id resta se stesso, uno stile parla col suo riferimento */
 function archLetturaDi(a){const id=(a&&a.id)||a||"";return ARCH8_DI_STILE[id]||id;}
 /* le tre leve dello stile per il motore (null = neutro). Rosso __CPM_NO_STILI */
-function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
+function stileMotore(player){try{if(typeof window!=='undefined'&&window.__CPM_NO_STILI)return null;if(neutro287())return null;/* [giro 82 PO-287] eroe neutro: nessuna leva di stile nel motore */const id=stileDi(player&&player.archetype,player&&player.stats);const st=ARCHETYPES.find(x=>x.id===id);return st?{id,...st.motore}:null;}catch(_e){return null;}}
 /* Enfant come tratto: nuovo campo player.tratti.enfant; un salvataggio con l'archetipo «enfant» lo conserva (migrazione additiva) */
 /* lookup su 4 stili e 8 archetipi: i salvataggi non migrati e le carriere sintetiche delle sonde restano leggibili */
 function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id)||ARCHETYPES_8.find(x=>x.id===id)||null;}
@@ -5807,9 +5829,14 @@ function archDi(a){const id=(a&&a.id)||a||"";return ARCHETYPES.find(x=>x.id===id
    creazione non si sceglie piu' lo stile (l'eroe e' Finalizzatore per tutti) e il tratto Enfant non esiste piu' (niente crescita x1,35,
    niente costo -2). I salvataggi passano a Finalizzatore in migratePlayer (src/17), lo stile e l'Enfant di prima restano registrati in
    stilePrima75 / enfantPrima75. Il motore conosce ancora i 4 stili (stileMotore). Rosso __CPM_NO_STILEUNICO75 = comportamento 7.999.174. */
+/* [giro 82, PO-287, decisione PO «elimina finalizzatore» · questionario «Tutto: eroe neutro»] EROE NEUTRO: niente stile di gioco da nessuna parte.
+   L'eroe non ha piu' archetipo (player.archetype=null): niente bonus/malus dello stile sulle statistiche di partenza, niente crescita
+   favorita, niente leve nel motore (stileMotore=null), niente bonus di successo per archetipo (succRate), niente obiettivi/testi per stile.
+   I salvataggi passano a neutro in migratePlayer (src/17): lo stile di prima resta in stilePrima287. Rosso __CPM_NO_NEUTRO287 = 7.999.176. */
+function neutro287(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_NEUTRO287);}catch(_e){return true;}}
 function stileUnico75(){try{return !(typeof window!=='undefined'&&window.__CPM_NO_STILEUNICO75);}catch(_e){return true;}}
 function haTrattoEnfant(p){if(stileUnico75())return false;return !!(p&&((p.tratti&&p.tratti.enfant)||((p.archetype&&p.archetype.id)||p.archetype)==="enfant"));}
-try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75};}catch(_e){}
+try{if(typeof window!=='undefined')window.__CPM_STILI={ARCHETYPES,ARCHETYPES_8,stileDi,stileMotore,archLetturaDi,haTrattoEnfant,stileUnico75,neutro287};}catch(_e){}
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */
 const NPC_PERSONAS=[
   {id:"dominatore",  e:"👑", name:"Dominatore",  desc:"Possesso e pressione costante", lambdaMod:+0.15, trustMod:+3},
@@ -5853,7 +5880,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.176";/* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
+const GAME_VERSION="7.999.177";/* [7.999.177] Fase di stabilita con i ritocchi chiesti dal PO il 20/10: giro 80 ingresso in campo a ~16 s con tre stacchi di camera (PO-285), giro 81 colori di maglia nel tabellino e nella testata del post-partita (PO-286), giro 82 eroe neutro senza stile di gioco (PO-287), giro 83 piano del personal trainer con valore, resa e consigliato (PO-288), giro 84 impulsi collegati davvero all'Ufficio (PO-289). */ /* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -7191,6 +7218,20 @@ function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const 
 function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
   const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
 function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+/* [PO-288 · giro 83] IL PIANO DEL TRAINER SI LEGGE. Sui pulsanti-piano: il valore attuale della caratteristica, la RESA (settimane medie per un +1,
+   da 1/trainerQuota281: la stessa funzione che decide la crescita, nessuna stima a parte) e un «consigliato» sulle due caratteristiche che
+   pesano di piu' nel giudizio (OVR) e sono ancora basse. Pesi = quelli di calcOvr (src/05): il giudizio del gioco e' UNA formula per tutti i
+   ruoli, non esistono pesi per ruolo. REGOLA: punteggio = peso OVR x (99 - valore); candidate solo le caratteristiche sotto 85 (sopra la
+   crescita del piano e' gia' scarsa); primi 2 per punteggio, a parita' l'ordine di TRAINER_ATTR281. Solo visualizzazione: nessun effetto sul
+   motore. Rosso __CPM_NO_PT288 (la schermata di prima). */
+const PESI_OVR288={tiro:2.5,tecnica:2,"velocità":1.5,dribbling:1.5,posizionamento:1.5,"mentalità":1,fisico:1,passaggio:1};
+function trainerAiuto288(p,lv){
+  if(typeof window!=="undefined"&&window.__CPM_NO_PT288)return null;
+  const st=(p&&p.stats)||{};const pl={...p,perkTrainer:true,perkTrainerLv:lv>=1?Math.min(3,lv|0):1};
+  const righe=TRAINER_ATTR281.map(function(a){const v=Math.round(st[a]||0);const q=v>=99?0:trainerQuota281(pl,v);
+    return{a:a,v:v,q:q,sett:q>0?Math.round(1/q):null,score:PESI_OVR288[a]*(99-v),cons:false};});
+  righe.filter(function(r){return r.v<85;}).sort(function(x,y){return y.score-x.score||TRAINER_ATTR281.indexOf(x.a)-TRAINER_ATTR281.indexOf(y.a);}).slice(0,2).forEach(function(r){r.cons=true;});
+  return{ovr:calcOvr(st),pct:[10,15,20][Math.max(1,Math.min(3,lv|0||1))-1],righe:righe};}
 function prepLv281(p){return staffLv24(p,"perkNutrition");}
 function prepInfLv281(p){return _no281("PREP")?staffLv24(p,"perkFisio"):prepLv281(p);}/* chi guida il rischio infortuni */
 function garaRavv281(p){const w=(p&&p.week)||1;return ((p&&p.calendar)||[]).filter(function(m){return m&&m.week===w;}).length>=2;}
@@ -7209,7 +7250,7 @@ function mentalTensione281(p,cat,ef){const q=mentalQuota281(p);if(!q||cat!=="ten
    il conto e' bankBalance) e quindi non uscivano mai. Rosso __CPM_NO_VITA281 = il campo sbagliato di prima. */
 function vitaSaldo281(p){return _no281("VITA")?((p&&p.bank)||0):((p&&p.bankBalance)||0);}
 function vitaConto281(p,ef){if(_no281("VITA"))return {chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
-  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{})};}
+  return {...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry!=null?p.teamChemistry:60)+ef.chem,0,100)}:{}),...(ef.bank!=null?{bankBalance:Math.max(0,Math.round((p.bankBalance||0)+ef.bank))}:{}),...(ef.uff289?uffPatch289(p,ef.uff289,true):{})/* [PO-289] bene/sponsor dell'Ufficio scritti davvero */};}
 const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
 function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
@@ -7250,6 +7291,75 @@ const BENI24=[
   {k:"barca",e:"⛵",l:"Barca",c:700000,st:"vistoso",pop:4,trust:-3,mor:0.5,fx:"Popolarità +4, fiducia del mister −3, morale +0,5 a settimana",tif:"Le foto sulla barca fanno il giro dei social.",mis:"Il mister ti ricorda che le vacanze finiscono a luglio."},
   {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia del mister +2, conta per l'eredità di carriera (valutazione finale)",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
 function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
+  const _SPON_TIERS=[
+  {k:"globale",min:86,e:"🌍",n:"testimonial globale",brands:["Aurea Sportswear","Nexon Worldwide","Vela Group"],wk:8000},
+  {k:"nazionale",min:72,e:"📺",n:"spot nazionale",brands:["Banca Adria","Caffè Milleluci","Volt Energy"],wk:3000},
+  {k:"tecnico",min:55,e:"👟",n:"sponsor tecnico (scarpe)",brands:["Vortex Boots","Falco Nove","Kappa Ridge"],wk:1200},
+  {k:"locale",min:35,e:"🏪",n:"sponsor locale",brands:["Concessionaria Del Corso","Panificio La Torre","Ottica Vidale"],wk:400},
+];
+const sponsorView=(p)=>{try{
+  if((p.proStatus||"u18")!=="pro")return null;
+  const sn=p.season||1;const pop=p.popularity||0;
+  const owned=new Set((p.sponsors||[]).map(s=>s.tier));
+  const declined=(p.sponsorDecl&&p.sponsorDecl.season===sn)?p.sponsorDecl.tier:null;
+  const shift=p.agentStyle==="global"?6:0;/* §S5: l'agenzia global apre le porte prima */
+  const _maxOwnedMin=Math.max(-1,..._SPON_TIERS.filter(x=>owned.has(x.k)).map(x=>x.min));/* [7.162.0 super-test ECO-F11] */
+  const t=_SPON_TIERS.find(t=>pop>=(t.min-shift)&&!owned.has(t.k)&&declined!==t.k&&t.min>=_maxOwnedMin/* mai una fascia SOTTO quella già firmata: il testimonial globale non firma col panificio locale */);
+  if(!t)return null;
+  const seed=hashStr((p.name||"x")+"_sp_"+t.k+"_"+Math.floor((sn-1)/3));
+  const brand=t.brands[seed%t.brands.length];
+  const weekly=Math.round(t.wk*(0.9+((seed>>>3)%21)/100));/* [7.147.0] >>> (con segno il jitter poteva diventare negativo) */
+  return{tier:t.k,e:t.e,label:t.n,brand,weekly};
+}catch(_e){return null;}};
+/* [PO-289 · giro 84, foto PO «e' un impulso finto, e' gestito dall'ufficio (rendilo credibile o elimina)»] UN IMPULSO NON PROMETTE
+   QUELLO CHE L'UFFICIO GIA' GESTISCE: LO TOCCA. «Scuola calcio col tuo nome» non apriva l'Accademia dell'Ufficio (30.000 inventati,
+   nessuno stato); la stessa cosa valeva per il mental coach / lo staff (nessun staff), la casa e l'auto (nessun bene, costi inventati) e lo
+   sponsor «del procuratore» (15.000 una tantum, nessun contratto). Ora la voce porta una specifica `uff289` ("accademia", "staff:perkMental",
+   "bene:casa", "sponsor") e: (1) COMPARE solo se ha senso (uffOk289: Ufficio aperto, cosa non ancora tua, conto che basta); (2) il costo e'
+   quello dell'Ufficio (impScelte289 lo scrive sulla scelta quando il pop-up si apre); (3) scegliere SCRIVE lo stato vero (uffPatch289:
+   academy24 / perk* / beni24 / sponsors) e il testo dice dove la trovi. Gli sponsor una tantum (spot, endorsement) non sono qui.
+   Rosso window.__CPM_NO_IMP289: tutto come nella 7.999.176. Nessun Math.random. Guardiano tests/visual/impulsi-289.mjs. */
+function no289(){return typeof window!=="undefined"&&!!window.__CPM_NO_IMP289;}
+function uffOk289(p,spec){if(no289()||!p||!spec)return false;
+  const w=String(spec).split(":"),t=w[0],k=w[1],b=(p.bankBalance||0),pro=((p.proStatus||"u18")==="pro");
+  if(t==="accademia")return pro&&!p.academy24&&b>=academyCost24(p).found;
+  if(t==="staff")return pro&&!staffLv24(p,k)&&!!STAFF24.find(function(s){return s.k===k;})&&b>=8*staffCost24(p,k,1);
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});return !!d&&(p.beni24||[]).indexOf(k)<0&&b>=d.c;}
+  if(t==="sponsor")return pro&&!!p.agent&&!(p.sponsors||[]).length&&!!sponsorView(p);
+  return false;}
+/* cosa esce dal conto adesso (la gestione settimanale, se c'e', la paga l'economia dell'Ufficio come per ogni altra voce) */
+function uffCosto289(p,spec){const w=String(spec).split(":"),t=w[0],k=w[1];
+  if(t==="accademia")return academyCost24(p).found;
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});return d?d.c:0;}
+  return 0;}
+function uffSett289(p,spec){const w=String(spec).split(":"),t=w[0],k=w[1];
+  if(t==="accademia")return academyCost24(p).week;
+  if(t==="staff")return staffCost24(p,k,1);
+  if(t==="sponsor"){const sp=sponsorView(p);return sp?sp.weekly:0;}
+  return 0;}
+/* lo stato vero. `b` e' l'oggetto su cui si sta lavorando (gia' con gli effetti della scelta); `senzaDiario` per i punti che non possono toccare log/ledger */
+function uffPatch289(b,spec,senzaDiario){if(no289()||!b||!spec)return {};
+  const w=String(spec).split(":"),t=w[0],k=w[1],lg=function(s){return senzaDiario?{}:{log:[s,...(b.log||[])].slice(0,60)};};
+  if(t==="accademia"){if(b.academy24)return {};
+    return {academy24:{name:academyName24(b),founded:b.season||1,grads:[],tot:0,paused:false},...lg("🏫 Hai fondato la "+academyName24(b)+" (stagione "+(b.season||1)+")")};}
+  if(t==="staff"){const d=STAFF24.find(function(s){return s.k===k;});if(!d||staffLv24(b,k))return {};
+    const m=(typeof b[d.lv]==="number"&&b[d.lv]>=1)?Math.min(3,b[d.lv]|0):1;
+    return {[d.k]:true,[d.lv]:m,...lg(d.e+" "+d.l+": livello "+m+" — lo gestisci dall'Ufficio")};}
+  if(t==="bene"){const d=BENI24.find(function(x){return x.k===k;});if(!d||(b.beni24||[]).indexOf(k)>=0)return {};
+    return {beni24:[...(b.beni24||[]),k],...lg(d.e+" "+d.l+": "+d.tif+" "+d.mis)};}
+  if(t==="sponsor"){const sp=sponsorView(b);if(!sp)return {};
+    return {sponsors:[...(b.sponsors||[]),{tier:sp.tier,brand:sp.brand,weekly:sp.weekly,season:b.season||1}],
+      ...(senzaDiario?{}:{ledger:[...(b.ledger||[]),{t:"sponsor",who:sp.brand,what:"accordo "+sp.label+" da "+sp.weekly+"€/settimana",season:b.season||1,week:b.week||1,club:(b.club&&b.club.id)||""}].slice(-60),
+      log:[sp.e+" Accordo con "+sp.brand+" ("+sp.label+"): +"+sp.weekly.toLocaleString("it-IT")+"€/settimana.",...(b.log||[])].slice(0,60)})};}
+  return {};}
+function uffAvviso289(spec){const t=String(spec).split(":")[0];
+  return t==="accademia"?"🏫 Accademia aperta: la trovi nell'Ufficio":t==="staff"?"🧑‍⚕️ Nuovo membro dello staff: lo gestisci dall'Ufficio":t==="bene"?"🏡 Nuovo bene: lo trovi nell'Ufficio":"✍️ Sponsor firmato: lo trovi dal Procuratore";}
+/* le scelte con variante `v289` si risolvono quando il pop-up si apre (serve il giocatore per i costi veri): testo con {COSTO}/{SETT}, ef.bank = costo vero */
+function impScelte289(ch,p){if(no289()||!ch||!ch.some(function(c){return c&&c.v289;}))return ch;
+  return ch.map(function(c){const v=c&&c.v289;if(!v)return c;const out={...c,...v};delete out.v289;
+    if(v.uff289){const co=uffCosto289(p,v.uff289),sw=uffSett289(p,v.uff289);out.ef={...(v.ef||{})};if(co>0)out.ef.bank=-co;
+      out.txt=String(v.txt||c.txt).replace("{COSTO}",_eur49(co)).replace("{SETT}",_eur49(sw)+" a settimana");}
+    return out;});}
 function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
 /* [PO-281 · giro 70] 5) I BENI VIVONO NEL TEMPO. Prima: popolarita'/fiducia una volta all'acquisto e basta. Ora, circa una
    settimana su sei (hash di nome+stagione+settimana: deterministico), uno dei beni posseduti fa parlare qualcuno — stampa,
@@ -7400,9 +7510,10 @@ function calcCoachDecision(player,matchWeight=1,rng){
      distribuzione strettissima (sonda giro 69: una penalita' fissa di 13 punti portava la gavetta da 86% a 0% di titolarita'):
      con la soglia secca a 50 ogni profilo e' titolare sempre o mai. Ora (1) l'eta' pesa: -8 fino a 20 anni, +2 a 21-25, +6 a
      26-30, -7 a 31-32, -12 da 33 (solo professionisti); (2) titolare con probabilita' logistica sul punteggio (centro 50, scala 8),
-     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco). */
+     estratta da un hash di stagione/settimana/nome: la stessa gara da' sempre la stessa scelta (prompt, simulazione, banco).
+     [giro 82 PO-287, rosso __CPM_NO_NEUTRO287] con l'eroe neutro (senza il Finalizzatore) la gavetta misura titolare 53,3 · 55,8 · 58,8 e minuti 61,1 · 65 contro i limiti 55 e 63 (bersagli 45 e 55, nei giri 78: 47-55): a 17-20 anni la penalita' passa da -8 a -10 (centro della gavetta riportato verso i bersagli). */
   let _tit156=null;
-  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?-8:_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_156)&&(player.proStatus||'u18')==='pro'){const _a156=player.age||24;score+=_a156<=20?((typeof neutro287==='function'&&neutro287())?-10:-8):_a156<=25?2:_a156<=30?6:_a156<=32?-7:-12;
     const _u156=(Math.abs(hashStr("cd156|"+(player.season||1)+"|"+(player.week||1)+"|"+(player.name||"")))%1000)/1000;_tit156=_u156<1/(1+Math.exp(-(score-50)/8));}
   score=clamp(score,0,100);
   let status,reason,entryMinute=60;
@@ -10531,7 +10642,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
   const tg=sim.homeScore||0;
   if(tg===0)return{goals:0,assists:0};
   const o=(sim.ovr156!=null)?sim.ovr156:(ovr||65);/* [giro 69 PO-156] OVR in campo del veterano */
-  const _fin78=(archId&&archId.id||archId)==='finalizzatore';/* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
+  const _fin78=(archId&&archId.id||archId)==='finalizzatore'||(!archId&&typeof neutro287==='function'&&neutro287());/* [giro 82 PO-287] l'eroe neutro (senza archetipo) legge la stessa curva del Finalizzatore del giro 78 *//* [giro 78 PO-156] lo stile unico, letto prima della traduzione nell'archetipo */
   archId=(typeof archLetturaDi==='function')?archLetturaDi(archId):archId;/* [giro 67 PO-098] uno stile legge i rami del suo archetipo di riferimento */
   /* [7.261.0 collaudo PO «non essere severo con le simulazioni, l'eroe spesso non fa assist e gol»] la curva
      storica dava λ-gol ~0.33 a OVR 71 → 72% di sim SENZA gol dell'eroe anche a squadra in rete (vs ~1 gol/gara
@@ -13994,6 +14105,7 @@ function ThreeMatchView(props){
       return {heroMx,nanW,senza,avatars:aa.length,heroMixers:hero&&hero.mx?1:0,otherMixers:others,mixers:aa.filter(a=>a.mx).length,skeletonUpdates:aa.filter(a=>a.mx).length,actions:all.length,activeActions:active,scheduler:{enabled:!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false),frames:_animLodStats.frames,mixerUpdates:_animLodStats.mixerUpdates,lastFrameUpdates:_animLodStats.lastFrameUpdates,fullRate:_animLodStats.fullRate,halfRate:_animLodStats.halfRate,quarterRate:_animLodStats.quarterRate,protected:_animLodStats.protected}};
     };}catch(_e){}
     let mascotGlbAvatars=null;/* [7.911.0 — C11] i bambini dell'ingresso, corpi CH38: terza lista accanto a quella del campo e della panchina */
+    let _hideBench293=false;/* [giro 87 PO-293] vero = in panchina nessun procedurale: i corpi CGTrader arrivano dopo e li sostituiscono */
     let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
     let assistantRefGlbAvatars=null; // corpi Hyper degli assistenti: restano figli dei loro marker, che continuano a seguire il gioco.
     // [7.904.0] rotazione DELTA in spazio MONDO composta DOPO il bind — usata sia per costruire la posa
@@ -14105,7 +14217,13 @@ function ThreeMatchView(props){
           _appoggio.push({piedi,bacino,seated:!f._isCoach,coach:!!f._isCoach,home:!!f._home});
         });
       }
-      return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio};
+      /* [giro 87 PO-293] TIPO di ogni corpo di panchina: 'cgtrader' (pacchetto dei giocatori) · 'ch38' (footballer-panchina) · 'proc' (figura procedurale ancora VISIBILE).
+         `fuori` = nascosti dal taglio fuori-quadro (voluto, non conta come assente). */
+      const _tipi={cgtrader:0,ch38:0,proc:0};let _fuori=0;
+      _glbList.forEach(av=>{if(!av)return;if(av._hyper)_tipi.cgtrader++;else _tipi.ch38++;if(av._hyperBench293&&av._inQ293===false)_fuori++;});
+      (typeof benchFigs!=='undefined'?benchFigs:[]).forEach(f=>{if(f&&f.visible)_tipi.proc++;});
+      const _posti=(typeof benchFigs!=='undefined'?benchFigs:[]).map(f=>f?[+f.position.x.toFixed(2),+f.position.z.toFixed(2)]:null);/* posti dei 16 panchinari (x,z): la sonda li riconosce nella scena senza fidarsi del gancio */
+      return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio,tipi:_tipi,fuori:_fuori,posti:_posti,ids:[...(typeof benchFigs!=='undefined'?benchFigs:[]).map(f=>f&&f.uuid),..._glbList.map(a=>a&&a.root&&a.root.uuid)].filter(Boolean)};
     }catch(_e){return {err:String(_e&&_e.message||_e)};}};
     /* [7.904.0 gancio test-only] inquadratura fissa sul dugout, per fotografare la panchina da vicino coi
        piedi visibili (side: 'home'|'away'). Applicata a valle di ogni calcolo della regia (vedi il punto
@@ -14498,6 +14616,7 @@ function ThreeMatchView(props){
       const _hyperFull=_hyperMode==='full';
       const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderHighlightOptimized||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
+      _hideBench293=_useGLB&&_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_PANCH293);
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
          Qui scegliamo una variante reale dell'asset, lasciando invariati rig e clip. */
@@ -14814,7 +14933,50 @@ function ThreeMatchView(props){
         benchGlbAvatars=made;
         try{window.__CPM_HYPER_BENCH={avatars:made.length,seated:made.filter(a=>a._seated904).length,coaches:made.filter(a=>a._isCoach904).length,legacyVisible:benchFigs.filter(f=>f&&f.visible).length};}catch(_e){}
         return made;
-      };      const _replaceMascotsWithHyper=(pkg,mascots)=>{
+      };      /* [giro 87 PO-293 «in panchina ci devono essere glb on» — rosso __CPM_NO_PANCH293] PANCHINA COI CORPI CGTRADER DEI GIOCATORI.
+         Con la formazione CGTrader (default) il ramo CH38 della panchina (7.904) non gira (`!_hyperIntro`) e il ramo «full» e' spento:
+         i 16 panchinari restavano figure procedurali per tutta la partita. Qui i 14+2 (6 seduti + mister + vice per lato) diventano
+         corpi CGTrader dello stesso pacchetto dei giocatori (LOD2, il piu' leggero: stessa mesh/texture/scheletro, kit del club con
+         la stessa fabbrica `_applyHyperKit`). Seduti: clip 'sit-clap' (c'e' nel pacchetto) a velocita' ridotta, bacino/piedi
+         riportati sulla seduta con la stessa media dei 7.904 (misurata sulle ossa, non a occhio); in piedi: 'idle'. Nessun salto
+         ne' traslazione: «fermi/seduti senza volare». Prestazioni: fuori quadro il corpo e' nascosto e il mixer non gira; in quadro
+         il mixer aggiorna ogni 3 fotogrammi (dt accumulato). Prima che i corpi siano pronti la panchina e' VUOTA (non procedurale). */
+      const _replaceBenchWithCgtrader293=(pkg)=>{
+        if(typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return [];
+        const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const sitClip=_clip('sit-clap'),idleClip=_clip('idle');if(!sitClip||!idleClip)throw new Error('bench clips unavailable');
+        const _suit={shirt:'#232a35',shorts:'#171b22',socks:'#12141a',shoes:'#0b0b0d'};
+        const made=[];
+        benchFigs.forEach((fig,index)=>{if(!fig)return;try{
+          const seated=!fig._isCoach,root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('bench293-'+index));
+          root.add(visual);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),mh=Math.max(0.1,raw.max.y-raw.min.y),sk=_skeletonWorldHeight(visual),rawH=sk.height>0.5?sk.height:mh;
+          const appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+index));
+          const tgt=fig._isCoach?(index%8===6?1.82:1.76):_footballerHeight(appr.height,1.8);
+          visual.scale.setScalar(_scalaCorpo21()*(tgt/rawH));visual.updateMatrixWorld(true);
+          const gb=new THREE.Box3().setFromObject(visual);visual.position.y-=gb.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=false;}});
+          const kit=fig._isCoach?_suit:(fig._home?_homeKit:_awayKit);
+          _applyHyperBuild(visual,appr);_applyHyperKit(visual,kit,appr);_applyCgtraderNativeHair(visual,appr);
+          const mx=new THREE.AnimationMixer(visual),pose=mx.clipAction(seated?sitClip:idleClip);pose.play();pose.timeScale=seated?0:1;mx.setTime(seated?(window.__CPM_SITT293!=null?+window.__CPM_SITT293:0):(index%3)*0.2);/* seduti: UN fotogramma fermo della clip (il sit-clap vivo era un applauso/mano in testa) — nessun mixer da aggiornare */
+          const fb=pat=>{let r=null;visual.traverse(o=>{if(!r&&o.isBone&&pat.test(o.name||''))r=o;});return r;};
+          const toeL=fb(/^(?:ball\.l_|ball_l)$/i),toeR=fb(/^(?:ball\.r_|ball_r)$/i),hips=fb(/^pelvis$/i)||fb(/hips/i);
+          root.position.set(fig.position.x,0,fig.position.z);root.rotation.y=fig.rotation.y||0;scene.add(root);root.updateMatrixWorld(true);
+          const _v=new THREE.Vector3();let toeY=0,n=0;[toeL,toeR].forEach(b=>{if(b){b.getWorldPosition(_v);toeY+=_v.y;n++;}});toeY=n?toeY/n:0;
+          let hipY=0;if(hips){hips.getWorldPosition(_v);hipY=_v.y;}
+          let dy=0;
+          if(seated){/* bacino sulla seduta (0,77) e piedi a terra non combaciano entrambi: il divario si ripartisce a meta' come nei 7.904 */dy=(-toeY+(0.77-hipY))/2;}
+          else{dy=-toeY+0.04;}/* in piedi: la punta del piede a 4 cm dal suolo (osso della punta, non la suola) */
+          root.position.y=dy;root.updateMatrixWorld(true);
+          fig.visible=false;fig._nasc293=false;
+          made.push({root,visualRoot:visual,mx,idle:pose,run:null,proc:fig,_hyper:true,_hyperBench:true,_hyperBench293:true,_seated904:seated,_isCoach904:!!fig._isCoach,_home904:!!fig._home,_ph904:fig._ph||index,_seatY904:dy,_footBones904:{toeL,toeR,hips},_cgLod:pkg._cgLod||null,_dt293:0,_inQ293:true});
+        }catch(_e){try{console.warn('[CPM-293] corpo panchina fail',_e&&_e.message);}catch(_ee){}}});
+        if(made.length>=Math.ceil(benchFigs.length/2)){benchGlbAvatars=made;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+        else{made.forEach(a=>{try{if(a.root.parent)a.root.parent.remove(a.root);}catch(_e){}});benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});throw new Error('bench293: solo '+made.length+' corpi');}
+        try{window.__CPM_BENCH293={corpi:made.length,sedutiN:made.filter(a=>a._seated904).length,lod:pkg._cgLod||null};}catch(_e){}
+        return made;
+      };
+      const _replaceMascotsWithHyper=(pkg,mascots)=>{
         if(!(_hyperFull||(_hyperIntro&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)))||!mascots||!mascots.length)return [];
         const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const idleClip=_clip('idle'),runClip=_clip('jog');if(!idleClip||!runClip)throw new Error('Hyper Casual child clips are unavailable');
@@ -14911,10 +15073,11 @@ function ThreeMatchView(props){
              (CGTrader ottimizzata) i bambini dell'ingresso restavano figure procedurali, mentre il ramo CH38 dei bambini e'
              spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
           if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
+          if(_hideBench293){try{const _kb=(_trioLod&&packages&&packages[2])||pkg;if(!_kb.animations||!_kb.animations.length)_kb.animations=pkg.animations;_replaceBenchWithCgtrader293(_kb);}catch(_e293){try{console.warn('[CPM-293] panchina fail',_e293&&_e293.message);}catch(_e){}try{benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
-        }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
+        }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}try{if(typeof benchFigs!=='undefined'&&benchFigs)benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
          corpo dei 23 CH38 (eroe+21+arbitro — la panchina C8 non e' toccata, e' un asset/percorso separato).
@@ -15446,6 +15609,7 @@ function ThreeMatchView(props){
       const staff=mkFig(kitCol,1.4);staff.position.set(bx+(bx<0?7.5:-7.5),0,-36.2);staff._home=(bx<0);staff._isCoach=true;scene.add(staff);benchFigs.push(staff);
     };
     _mkBench(-14,_hColInt);_mkBench(14,_aColInt);
+    if(_hideBench293)benchFigs.forEach(f=>{f.visible=false;f._nasc293=true;});/* [giro 87 PO-293] panchina: nessun procedurale in attesa dei corpi CGTrader (vedi _replaceBenchWithCgtrader293) */
     // item 9 (5.49.2): MASCOTTE — un bambino per ogni calciatore, in DIVISA AVVERSARIA, tenuto per mano durante l'ingresso.
     //   Visibili SOLO nella cerimonia (walkout) → fuori dalla walkout sono nascosti (zero impatto su gioco/gate/perf in partita).
     const _mascots=[];
@@ -19430,7 +19594,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(_cm._frDirty){for(const fr of _frs){for(let i=0;i<fr.n;i++){fr.body.setMatrixAt(i,fr.bases[i]);fr.head.setMatrixAt(i,fr.headBases[i]);}
             fr.body.instanceMatrix.needsUpdate=true;fr.head.instanceMatrix.needsUpdate=true;}_cm._frDirty=false;}}}
       // item 9: la cerimonia (tappeto-logo + mascotte) vive SOLO nella walkout → nascondi appena si esce (guard sul flag → lavoro una sola volta)
-      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots){m.c.visible=false;if(m.glb911&&m.glb911.root)m.glb911.root.visible=false;}}
+      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots){m.c.visible=false;m._s294=null;m._snap294=false;if(m._f294!=null){m._f294=null;if(m.glb911&&m.glb911.idle)m.glb911.idle.timeScale=1;}if(m.glb911&&m.glb911.root)m.glb911.root.visible=false;}}
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
@@ -19443,6 +19607,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         WALK_DUR=10.5;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){let _u245=0;const _a245=(m)=>{if(!m||m._wStartX==null||m._wx==null)return;_u245=Math.max(_u245,(m._wDelay||0)+Math.hypot(m._wx-m._wStartX,m._wz-m._wStartZ)/WALK_V245);};
           sr.current.players.forEach(pp=>_a245(pp.mesh));_a245(hero);WALK_DUR=Math.max(10.5,_u245+2);}
         try{if(typeof window!=='undefined')window.__CPM_WALKDUR245=+WALK_DUR.toFixed(2);}catch(_e245d){}
+        /* [giro 80 PO-285 «l'ingresso in campo lo velocizzerei ulteriormente» — rosso __CPM_NO_ING285] decisione PO (questionario): scena di ~16 s
+           (dopo il giro 54 erano ~24) ottenuta con TAGLI DI CAMERA, non correndo: il passo resta camminata (WALK_V245 2,2 u/s, tetto del guardiano 2,3:
+           NON si alza, PO-245). Durante uno stacco il tempo di coreografia (walkT) salta avanti e i giocatori vengono portati avanti lungo il proprio
+           tragitto (lo stesso spostamento che fa «Salta ingresso», _sn277), mentre la camera cambia inquadratura nello stesso fotogramma: chi guarda
+           vede un montaggio, nessuno cammina piu' in fretta. Tre stacchi (5 s, 12 s, 16,5 s di coreografia) dividono il risparmio WALK_DUR-16 in
+           3/8, 5/16, 5/16. WALK_DUR (e __CPM_WALKDUR245) resta la durata di COREOGRAFIA; la durata di scena dichiarata e' __CPM_WALKSCENE285. */
+        sr.current._skip285=0;sr.current._cutF285=false;sr.current._cuts285=null;
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_ING285)&&WALK_DUR>16.5){const _S285=WALK_DUR-16;sr.current._cuts285=[{t:5,s:_S285*0.375,d:false},{t:12,s:_S285*0.3125,d:false},{t:16.5,s:_S285*0.3125,d:false}];}
+        try{if(typeof window!=='undefined'){window.__CPM_WALKSCENE285=sr.current._cuts285?16:+WALK_DUR.toFixed(2);window.__CPM_CUT285=0;}}catch(_e285a){}
       }
       _wasWalk=isWalk;
       /* [7.999.59 collaudo PO «le scene 3D all'ingresso in campo sono molto scattose e pesanti»] MISURATO (long task + profilo CPU
@@ -19460,24 +19633,57 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            chiude l'ingresso nello STESSO fotogramma (walkT=WALK_DUR): la chiusura e' quella naturale (onWalkoutDone) e il riposo riparte (vedi l'idle della fila, ramo PO-206). Mezzo secondo di scena non bastava: sotto carico in headless durava piu' della rete di sicurezza. */
         if(typeof window!=='undefined'&&window.__CPM_SKIPWALK277&&!walkDone&&!window.__CPM_NO_ING277){window.__CPM_SKIPWALK277=false;
           const _sn277=(m)=>{if(!m||m._wx==null)return;m.position.x=m._wx;m.position.z=m._wz;m._px=m._wx;m._pz=m._wz;m._sp=0;};
-          sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);
+          sr.current.players.forEach(pp=>_sn277(pp.mesh));_sn277(hero);walkT=Math.max(walkT,WALK_DUR);if(!window.__CPM_NO_BIMBI294){for(const _m294 of _mascots){if(_m294){_m294._lp227=null;_m294._sp227=0;_m294._snap294=true;}}}/* [giro 88 PO-294] «Salta ingresso»: i bambini vanno al posto senza velocita' residua */
           }
+        {const _cs285=sr.current._cuts285;if(_cs285&&!walkDone){for(let _i285=0;_i285<_cs285.length;_i285++){const _c285=_cs285[_i285];if(_c285.d||walkT<_c285.t)continue;_c285.d=true;
+          /* stacco [giro 80 PO-285]: i corpi avanzano di quanto avrebbero camminato nel tempo saltato (a WALK_V245, in linea retta verso il posto,
+             mai oltre: la squadra arriva schierata); poi walkT salta e la camera taglia in questo stesso fotogramma (_cutF285, vedi la carrellata) */
+          const _T0=walkT,_T1=walkT+_c285.s;
+          const _adv285=(m)=>{if(!m||m._wx==null||m._wStartX==null)return;const _mv=Math.max(0,_T1-Math.max(_T0,m._wDelay||0));if(_mv<=0)return;const _dx=m._wx-m.position.x,_dz=m._wz-m.position.z,_d=Math.hypot(_dx,_dz);if(_d<0.001)return;const _L=Math.min(_d,WALK_V245*_mv);m.position.x+=_dx/_d*_L;m.position.z+=_dz/_d*_L;m._px=m.position.x;m._pz=m.position.z;};
+          sr.current.players.forEach(pp=>_adv285(pp.mesh));_adv285(hero);
+          for(const _m285 of _mascots){if(_m285)_m285._lp227=null;}
+          walkT=_T1;sr.current._skip285=(sr.current._skip285||0)+_c285.s;sr.current._cutF285=true;
+          try{if(typeof window!=='undefined')window.__CPM_CUT285=(window.__CPM_CUT285||0)+1;}catch(_e285b){}
+          break;}}}
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
-        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
+        if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),s:+(walkT-(sr.current._skip285||0)).toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
         if(_ceremonyCarpet)_ceremonyCarpet.visible=true;
         for(const m of _mascots){const p=m.p;if(!p){continue;}const _hx=Math.sin(p.rotation.y),_hz=Math.cos(p.rotation.y);// "mano nella mano": di lato rispetto al verso di marcia
           const _av911=m.glb911;const _t911=(_av911&&_av911.root)?_av911.root:m.c;/* [7.911.0 C11] il corpo CH38 al posto della figura */
           m.c.visible=!_av911;if(_av911&&_av911.root)_av911.root.visible=true;
           _t911.position.set(p.position.x+_hz*0.72,0,p.position.z-_hx*0.72);_t911.rotation.y=p.rotation.y;
+          /* [giro 88 PO-294 «i bambini arrivati a destinazione devono stare fermi»] MISURATO (sonda del giro, GLB accesi): il bambino
+             seguiva la mano del giocatore (posizione = giocatore + 0,72 di lato, ruotata con la rotazione del giocatore): il giocatore
+             arrivato gira in coda verso la camera e il bambino gli orbita intorno (fino a 1,4 u di spostamento), e la clip «idle»
+             (10,2 s, ginocchia piegate di 40-55 gradi) girava libera: in fila, da lontano, sembrava una corsa sul posto. Arrivato il
+             giocatore (fermo sul posto), il bambino raggiunge a passo d'ingresso il suo posto fisso (a lato, fronte camera), si
+             ferma esatto e tiene l'idle nella finestra calma 0-1 s (stessa soluzione di PO-206). Dopo uno stacco o «Salta ingresso»
+             va al posto di colpo, senza velocita'. Rosso __CPM_NO_BIMBI294. */
+          const _on294=!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI294);let _fermo294=false,_spx294=p.position.x,_spz294=p.position.z;
+          if(_on294){
+            if(p._wx!=null&&Math.hypot(p.position.x-p._wx,p.position.z-p._wz)<0.001){
+              const _R=-Math.PI/2,_fx=p._wx+Math.cos(_R)*0.72,_fz=p._wz-Math.sin(_R)*0.72;
+              let _s=m._s294;
+              if(!_s){_s=m._s294={x:_t911.position.x,z:_t911.position.z,ry:_t911.rotation.y};_s.x=p.position.x+_hz*0.72;_s.z=p.position.z-_hx*0.72;_s.ry=p.rotation.y;}
+              if(m._snap294||Math.hypot(_fx-_s.x,_fz-_s.z)>1.6){_s.x=_fx;_s.z=_fz;_s.ry=_R;}
+              m._snap294=false;
+              const _dx=_fx-_s.x,_dz=_fz-_s.z,_d=Math.hypot(_dx,_dz);
+              if(_d<0.002){_s.x=_fx;_s.z=_fz;}else{const _L=Math.min(_d,WALK_V245*dt);_s.x+=_dx/_d*_L;_s.z+=_dz/_d*_L;}
+              const _da=((_R-_s.ry+Math.PI*3)%(Math.PI*2))-Math.PI;
+              if(Math.abs(_da)<0.004)_s.ry=_R;else _s.ry+=_da*Math.min(8*dt,1);
+              _t911.position.set(_s.x,0,_s.z);_t911.rotation.y=_s.ry;
+              _fermo294=(_s.x===_fx&&_s.z===_fz&&_s.ry===_R);_spx294=_s.x;_spz294=_s.z;
+            }else if(m._s294){m._s294=null;m._snap294=false;if(m._f294!=null){m._f294=null;if(_av911&&_av911.idle)_av911.idle.timeScale=1;}}
+          }
           if(_av911){
             /* [7.999.160 PO-227 «nella fila da fermi i bambini continuano a correre», collaudatrice giro 7: 22 bambini su 22 con jog a peso 1,00
                a velocita' 0] il peso della corsa era FISSO a 1. Ora segue la velocita' smussata del giocatore che il bambino accompagna:
                fermo = idle, in marcia = corsa (stessa idea dei giocatori, PO-197). Rosso __CPM_NO_FILA227. */
             let _rw227=1,_iw227=0.25;
-            {const _px=p.position.x,_pz=p.position.z;
+            {const _px=_spx294,_pz=_spz294;/* [giro 88 PO-294] arrivato: la velocita' e' quella del bambino stesso, non del giocatore */
               const _v227=(m._lp227&&dt>0)?Math.hypot(_px-m._lp227.x,_pz-m._lp227.z)/dt:0;
               m._lp227={x:_px,z:_pz};
               m._sp227=(m._sp227==null?_v227:m._sp227+(_v227-m._sp227)*Math.min(1,dt*6));
@@ -19487,7 +19693,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_av911.walk245&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMM245)){/* [giro 23 PO-245] il bambino CAMMINA: clip «walk» con la cadenza sulla velocita' vera (velocita' naturale della clip misurata una volta sul suo corpo) */
               if(_av911._v0k245==null){const _r=_passoNaturale7({run:_av911.walk245,visualRoot:_av911.visualRoot,root:_av911.root}),_h=_altezza7(_av911);_av911._v0k245=(_r>0&&_h>0.3)?_r*_h:0;}
               if(_av911.run)_av911.run.weight=0;_av911.walk245.weight=_rw227;_av911.walk245.timeScale=_av911._v0k245>0?clamp((m._sp227||0)/_av911._v0k245,0.5,2.5):1;}
-            else if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;if(_av911.mx)_av911.mx.update(dt);}}
+            else if(_av911.run){_av911.run.weight=_rw227;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=_iw227;
+            if(_on294&&_fermo294&&_av911.idle&&(m._sp227||0)<0.3){m._f294=(m._f294==null?(_mascots.indexOf(m)*0.7):m._f294)+dt*1.4;_av911.idle.timeScale=0;_av911.idle.time=0.5-0.5*Math.cos(m._f294);}/* [giro 88 PO-294] fermo sul posto: idle nella finestra calma 0-1 s, come i giocatori (PO-206) */
+            else if(m._f294!=null&&_av911.idle){m._f294=null;_av911.idle.timeScale=1;}
+            if(_av911.mx)_av911.mx.update(dt);}}
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else if(replaying){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
@@ -21145,7 +21354,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            che un salto da seduti comporterebbe. Mister/vice (in piedi) invece saltano come le comparse
            procedurali di prima (stesso hop, stesso range) più le braccia. */
         if(benchGlbAvatars){const _gsB2=goalBurstT>=0?(goalBurstHome?1:-1):0;
+          let _fr293=null;/* [giro 87 PO-293] panchina CGTrader: fuori quadro nascosta e senza mixer; in quadro mixer ogni 3 fotogrammi — nessun salto, nessuna traslazione */
+          if(benchGlbAvatars.length&&benchGlbAvatars[0]._hyperBench293){sr.current._fc293=((sr.current._fc293|0)+1);if(!sr.current._frs293){sr.current._frs293=new THREE.Frustum();sr.current._pm293=new THREE.Matrix4();sr.current._sph293=new THREE.Sphere();}
+            if(sr.current._fc293%6===1||!sr.current._frOk293){sr.current._pm293.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);sr.current._frs293.setFromProjectionMatrix(sr.current._pm293);sr.current._frOk293=true;_fr293=true;}}
           for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
+            if(av._hyperBench293){
+              if(_fr293){const sp=sr.current._sph293;sp.center.set(av.root.position.x,av.root.position.y+1.0,av.root.position.z);sp.radius=2.4;av._inQ293=sr.current._frs293.intersectsSphere(sp);av.root.visible=av._inQ293;}
+              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
+              continue;}
             if(av.mx)av.mx.update(dt);
             const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);
             const _ex2=mine>0?_goalExcite:0;
@@ -29347,6 +29563,34 @@ const _COL918={vetro:"rgba(24,35,56,0.74)"/* [7.922 collaudo PO: il fondo delle 
    Rosso __CPM_NO970: torna il colore sociale nudo. */
 const _sigla970=(c)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO970)return c;
   return (typeof semTesto945==='function')?semTesto945(c,"#545c6c"):c;}catch(_e){return c;}};
+/* [PO-286 — I COLORI DEL TABELLINO SONO QUELLI DELLE DUE SQUADRE] Le barre del «Tabellino della gara» erano TH.primary/TH.warning
+   fissi (bordeaux/arancio) mentre l'intestazione del risultato portava le maglie vere (verde e quasi nero): tre colori per due
+   squadre. Ora intestazione, barre e nomi colonna pescano dalla STESSA coppia, quella delle maglie indossate (stessa fonte del
+   pannello live). Regola di ripiego, nell'ordine: (1) un colore quasi invisibile sul fondo (contrasto < 3:1) cede il posto al
+   SECONDO colore della maglia se visibile, altrimenti diventa una variante schiarita/scurita (stessa tonalita'); (2) le due barre
+   devono distare almeno DIST286 (redmean): se no, l'ospite prova il secondo colore, poi una variante piu' chiara/scura.
+   Rosso window.__CPM_NO_COL286: tutto come in 7.999.176 (TH.primary/TH.warning, barre dell'intestazione nude). */
+const VIS286=3,DIST286=120;
+const _dist286=(a,b)=>{const x=_rgb945(a),y=_rgb945(b);if(!x||!y)return 999;const rm=(x[0]+y[0])/2,dr=x[0]-y[0],dg=x[1]-y[1],db=x[2]-y[2];
+  return Math.sqrt((2+rm/256)*dr*dr+4*dg*dg+(2+(255-rm)/256)*db*db);};
+const _vis286=(c,bg)=>{try{if(!c||c[0]!=='#')return c;const lf=_lum944(bg);if(lf==null)return c;let k=c;
+  for(let i=0;i<14&&_rap944(k,bg)<VIS286;i++)k=lf>0.18?_mixNero945(k,0.12):_mix944(k,0.14);return k;}catch(_e){return c;}};
+const _ok286=(c,bg)=>!!c&&c[0]==='#'&&_rap944(c,bg)>=VIS286;
+function colori286(k,bg){
+  /* k = {sx,sx2,dx,dx2}: maglia e secondo colore di casa (sinistra) e ospite (destra); ritorna {sx,dx} */
+  try{
+    const da=(k.sx||"#3b82f6"),db=(k.dx||"#ef4444");
+    const A=_ok286(da,bg)?da:(k.sx2&&_dist286(k.sx2,da)>40&&_ok286(k.sx2,bg)?k.sx2:_vis286(da,bg));
+    const cand=[db];if(k.dx2&&_dist286(k.dx2,db)>40)cand.push(k.dx2);
+    const vis=cand.filter(c=>_ok286(c,bg));
+    let B=null;for(const c of vis){if(_dist286(A,c)>=DIST286){B=c;break;}}
+    if(!B){const v=[];for(const q of [0.35,0.6,0.85])for(const c of cand){v.push(_vis286(_mix944(c,q),bg),_vis286(_mixNero945(c,q),bg));}
+      const ok=v.filter(c=>_ok286(c,bg));let best=null,bd=-1;
+      for(const c of ok){const d=_dist286(A,c);if(d>=DIST286){best=c;bd=1e9;break;}if(d>bd){bd=d;best=c;}}
+      B=best||_vis286(db,bg);}
+    return{sx:A,dx:B};
+  }catch(_e){return{sx:k&&k.sx,dx:k&&k.dx};}}
+try{if(typeof window!=='undefined')window.__CPM_FN286=colori286;}catch(_e){}/* [PO-286] hook di collaudo: la regola pura, per provarla su coppie sintetiche in tema chiaro e scuro */
 const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
 const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
 const _dec918=(v)=>(Math.round((+v||0)*100)/100).toFixed(2).replace(".",",");
@@ -29888,6 +30132,28 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
     const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
   return out;
 }
+/* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+   Prima la festa leggera cantava sempre gli stessi due cori. Ora due cori da un repertorio (con varianti sui gol dell'eroe in questa
+   partita), scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) scartando quelli
+   delle ultime feste (ultimi 12 = 6 feste, memoria del browser: comodita'; se manca si sceglie solo con l'hash). */
+function cori291(N,g,base,usati){const U=String(N).toUpperCase();
+  if(typeof window!=='undefined'&&window.__CPM_NO_CORI291)return [U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
+  /* [PO-291 bis «rivedi i testi, non sono molto fluidi e corretti»] cori da curva veri, a partita finita (niente «facci un gol») */
+  const rep=[U+"! "+U+"! "+U+"!","C'è solo un "+N+"!","Oh "+N+", oh "+N+"!","Alé, alé, "+N+" alé!",N+", "+N+", olé olé!",
+    "Tutti in piedi per "+N+"!","Grazie, "+N+"!","Siamo tutti con te, "+N+"!",N+", uno di noi!","La curva è tutta per "+N+"!",N+", facci sognare!",
+    "Forza "+N+"!",N+" campione!","Grande "+N+"!",N+", fenomeno!","Per sempre "+N+"!","Batti le mani per "+N+"!",N+", sei il nostro orgoglio!",
+    N+", che partita!",N+", non ti fermare!",N+", il nostro numero uno!","Un solo coro: "+N+"!",N+", sei la nostra gioia!"];
+  /* [PO-291 ter «aumenta le varianti»] 23 cori fissi + 4 sui gol dell'eroe in questa partita */
+  const repGol=g>=3?["Tripletta di "+N+"!","Il pallone è tuo, "+N+"!",N+", notte magica!",N+", tre gol e tutti in piedi!"]
+    :g===2?["Doppietta di "+N+"!","Due gol di "+N+"!",N+", ancora tu!",N+", due volte in rete!"]
+    :g===1?[N+", che gol!","Segna sempre lui, "+N+"!","Gol di "+N+", che emozione!",N+", il gol è tuo!"]
+    :[N+", cuore e grinta!",N+", non mollare mai!",N+", hai dato tutto!",N+", il gol arriverà!"];
+  const tutti=repGol.concat(rep);usati=Array.isArray(usati)?usati:[];
+  const kh=(k)=>{k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);};
+  const liberi=tutti.filter(t=>usati.indexOf(t)<0),pool=liberi.length>=2?liberi:tutti;
+  const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
+  return [c1,c2];}
+try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -31836,7 +32102,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let _cg=""; try{_cg=((typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"");}catch(_e){}
     if(!_cg)return;
     const _col="#f8fafc";/* testo chiaro: il colore del club (granata, blu scuro…) sul fondo scuro della pillola non si legge (foto 7.999.48) */
-    const _cori=[_cg.toUpperCase()+"! "+_cg.toUpperCase()+"! "+_cg.toUpperCase()+"!","C'è solo un "+_cg+"!"];
+    /* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+       Prima: sempre gli stessi due cori. Ora due cori presi da un repertorio (con varianti sui gol dell'eroe in questa partita),
+       scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) e scartando quelli
+       cantati nelle ultime feste (ultimi 6, memoria del browser: comodita', se manca si sceglie solo con l'hash). */
+    let usati=[];try{usati=JSON.parse(localStorage.getItem("cpm-cori291")||"[]");if(!Array.isArray(usati))usati=[];}catch(_e){usati=[];}
+    const _cori=cori291(_cg,(mStats&&mStats.goals)|0,(player.name||"x")+"|"+(player.season||1)+"|"+(player.week||1),usati);
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_CORI291)){try{localStorage.setItem("cpm-cori291",JSON.stringify(usati.concat(_cori).slice(-12)));}catch(_e){}}
     _cori.forEach((t,i)=>{
       chantTimersRef.current.push(setTimeout(()=>{setCrowdChant({text:t,type:"goal",key:Date.now()+i,clubCol:_col});if(typeof window!=='undefined')(window.__CPM_CORO48=window.__CPM_CORO48||[]).push(t);},900+i*3600));
       chantTimersRef.current.push(setTimeout(()=>setCrowdChant(null),900+i*3600+3000));
@@ -40213,6 +40485,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _hDrew=!winning&&!losing;
             const _celebTier=_hWon?((ceremony&&!ceremony.light)?3:(_isFinalKO||mw>=8)?2:(mw>=6||!!drby)?1:0):0;/* [7.42.0] la festa light non alza trofei */
             const _confN=(_celebTier>=1&&!_CPM_TEST)?(_celebTier>=2?18:10):0;
+            const _c286h=(typeof window!=='undefined'&&window.__CPM_NO_COL286)?{}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},"#101a33");
+            try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},testata:_c286h});}}catch(_e){}
             return(
             <div style={{margin:"0 -22px 16px",paddingBottom:14,background:"linear-gradient(165deg,#0b1224,#101a33 55%,#0d1526)",position:"relative",overflow:"hidden"}}>{/* [7.95.0] no top-margin: segue il masthead del giornale */}
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
@@ -40223,12 +40497,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
-                    <div style={{height:3,borderRadius:RAD.pill,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
+                    <div data-cpm="barra286-sx" style={{height:3,borderRadius:RAD.pill,background:_c286h.sx||scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
                   <div className="cpm-num" style={{fontSize:42,fontWeight:900,lineHeight:1,color:_hWon?"#4ade80":losing?"#f87171":"#e2e8f0",flexShrink:0}}>{isMatchHome?score.home:score.away}<span style={{color:"rgba(255,255,255,0.35)",fontSize:FS.title,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
-                    <div style={{height:3,borderRadius:RAD.pill,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
+                    <div data-cpm="barra286-dx" style={{height:3,borderRadius:RAD.pill,background:_c286h.dx||scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
                 <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
@@ -40312,12 +40586,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ["Rimesse laterali",_mine.rimesse,_loro.rimesse,_mine.rimesse,_loro.rimesse],
             ].filter(r=>(+r[3]||0)+(+r[4]||0)>0);
             if(!_righe.length)return null;
+            const _no286=typeof window!=='undefined'&&window.__CPM_NO_COL286;
+            const _c286=_no286?{sx:_ord.eroeSx?TH.primary:TH.warning,dx:_ord.eroeSx?TH.warning:TH.primary}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},TH.card);
+            const _t286={sx:_no286?(_ord.eroeSx?TH.primary:TH.muted):legCol944(_c286.sx,TH.card),dx:_no286?(_ord.eroeSx?TH.muted:TH.primary):legCol944(_c286.dx,TH.card)};
+            try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},tabellino:_c286,sfondo:TH.card});}}catch(_e){}
             return(<Sez210 id="post-gara" titolo="Tabellino della gara">
               <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
                 <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
-                  <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_ord.eroeSx?TH.primary:TH.muted}}>{_nSx}</span>
+                  <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.sx}}>{_nSx}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
-                  <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_ord.eroeSx?TH.muted:TH.primary}}>{_nDx}</span>
+                  <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
                 {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
@@ -40327,8 +40605,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:b>=a?TH.text:TH.muted,minWidth:34,textAlign:"right"}}>{r[2]}</span>
                     </div>
                     <div style={{display:"flex",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:3}}>
-                      <div style={{width:qa+"%",background:_ord.eroeSx?TH.primary:TH.warning}} />{/* [PO-280 bis] il colore dell'eroe segue la sua colonna */}
-                      <div style={{width:(100-qa)+"%",background:_ord.eroeSx?TH.warning:TH.primary}} />
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />{/* [PO-280 bis] il colore dell'eroe segue la sua colonna */}
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
                     </div>
                   </div>);})}
               </div>
@@ -40478,6 +40756,7 @@ function ProTransitionScreen({player,onChoose}){
   const _dk=window.innerWidth>=640;
   const{offers,forced,perf}=React.useMemo(()=>generateProContracts(player),[player.name,player.season,player.club?.id,player.u18Seasons,player.ovr,player.hasAgent,player.squadRole]);/* [7.262.0] doppia rete: il seed rende le offerte stabili anche dopo un reload, il memo evita di rigenerarle a ogni render */
   const u18S=player.u18Seasons||0;
+  const _n85=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?u18S+1:Math.min(2,Math.max(1,u18S));/* [giro 85 bassa] u18Seasons e' GIA' incrementato alla chiusura (1 dopo la prima stagione): la barra contava una stagione in piu' («2 di 2» dopo una sola). Rosso __CPM_NO_PICCOLI85 */
   const[selIdx,setSelIdx]=useState(0);
   useEffect(()=>{
     const h=e=>{
@@ -40508,16 +40787,16 @@ function ProTransitionScreen({player,onChoose}){
           {/* [7.999.49 parte A] il conteggio delle stagioni Under 18 resta solo nella barra qui sotto */}
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
-        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"⏳ Questa è la tua ultima stagione U18 disponibile.":"⏳ Se resti in U18, sarà la tua ultima stagione disponibile."}</div>}
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
-          <span>Stagioni Under 18: {u18S+1} di 2</span>
+          <span>Stagioni Under 18: {_n85} di 2</span>
           <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
         <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
+          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
         </div>
       </div>
       {/* Offers */}
@@ -42725,7 +43004,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     const _ts=_t3(leagueTopScorer);if(_ts)seq.push({key:"capo",e:"⚽",title:"Capocannoniere",sub:`I migliori marcatori della ${lg}`,rows:_ts});
     const _mv=_t3(leagueMvp);if(_mv)seq.push({key:"mvp",e:"🏅",title:"MVP della stagione",sub:`Miglior giocatore della ${lg}`,rows:_mv});
     const _sc=_t3(scarpaOro);if(_sc)seq.push({key:"scarpa",e:"👟",title:"Re dei Bomber",sub:"I migliori marcatori dei campionati europei",rows:_sc});
-    const _po=_t3(palloneOro);if(_po)seq.push({key:"oro",e:"🌍",title:"Trofeo d'Oro",sub:"I migliori calciatori d'Europa — smoking, riflettori, una busta.",rows:_po});
+    const _po=_t3(palloneOro);if(_po)seq.push({key:"oro",e:"🌍",title:"Trofeo d'Oro",sub:(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"I migliori calciatori d'Europa — smoking, riflettori, una busta.":"I migliori calciatori d'Europa — giudicati su OVR, gol, assist e trofei.",rows:_po});
     return seq;}catch(_e){return[];}},[]);// eslint-disable-line
   const [galaAct,setGalaAct]=React.useState(0);
   const [galaN,setGalaN]=React.useState(0);// 0 busta chiusa · 1 rivela 3° · 2 rivela 2° · 3 rivela 1°
@@ -42765,7 +43044,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -42782,7 +43061,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
           <div data-cpm="gala51-fascia" style={{position:"absolute",left:12,right:12,bottom:"calc(16px + env(safe-area-inset-bottom, 0px))",maxWidth:460,margin:"0 auto",display:"flex",flexDirection:"column",gap:6}}>
             {g51===0&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{`Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"} · ${N===0?"nessuno per te":N===1?"1 è per te":N+" sono per te"}`}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                 <div style={{minWidth:0}}>
@@ -42793,7 +43072,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
             </React.Fragment>)}
             {mom&&_rv199<3&&(()=>{const rows=mom.a.rows||[];const _pos=[{k:2,l:"3° posto"},{k:1,l:"2° posto"}];return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div data-cpm="busta199" data-rev={_rv199} style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
@@ -42806,14 +43085,14 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setB199(x=>{let r=Math.min(3,(x.g===g51?x.rv:0)+1);if(r===1&&!rows[2])r=rows[1]?2:3;if(r===2&&!rows[1])r=3;return{g:g51,rv:r};})}>{_rv199===0?(rows[2]?"Svela il 3° posto":rows[1]?"Svela il 2° posto":"E il vincitore è…"):_rv199===1?"Svela il 2° posto":"E il vincitore è…"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const w=rows[0];const pos=rows.findIndex(x=>x&&x.isPlayer);const nw=_num(w,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div data-cpm="busta199-altro" style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(w&&w.name,false,34)}
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
                   </div>
                 </div>
                 <div style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
@@ -42821,7 +43100,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(me&&me.name,true,34)}
@@ -43006,8 +43285,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
 
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
-        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
-        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club)}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
+        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
+        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>
@@ -43833,14 +44112,17 @@ const CREDITI238=[
    «Senza riga licenza», giro 25b). Le voci tolte nel giro 25 sono tornate con la loro fonte (decisione PO 15/10 «Rimettile con
    la loro fonte»); i file d'origine non confermata restano nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
    il contenuto PO-238 e il link sottile). */
+/* [7.999.177 PO-290 «sistema il testo, lo leggeranno i player»] via note interne (giro, date, nomi di file, «dichiarata dal PO», sintesi
+   «pseudo-casuale»): ai crediti restano opera, autore e licenza in parole del giocatore. Rosso __CPM_NO_CRED290: testi della 7.999.176. */
+const _c290=!(typeof window!=='undefined'&&window.__CPM_NO_CRED290);
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
-    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
-    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
-    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:_c290?"Royalty Free (standard)":"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
+    {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
-    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
        di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
        license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
@@ -43856,8 +44138,8 @@ const CREDITI254=[
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
     {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
-    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"},
-    {n:"Effetti sonori sintetizzati con Web Audio",aut:"Realizzati per Korward Elite"}]},
+    ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
+    {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
     {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
     {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"},
@@ -44077,7 +44359,7 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
-function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
+function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -44092,7 +44374,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
+    const arc=neutro287()?null:(_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]));/* [giro 75] ARCHETYPES[0] = Finalizzatore · [giro 82 PO-287] eroe neutro: nessun archetipo */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
     if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
@@ -44106,6 +44388,9 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
+      {/* [7.999.177 PO-295 «da qui non si puo' tornare alla home»] pulsante «← Home» in testa alla creazione. Rosso __CPM_NO_IND295 */}
+      {onBack&&!(typeof window!=='undefined'&&window.__CPM_NO_IND295)&&(<div style={{display:"flex",justifyContent:"flex-start",maxWidth:900,margin:"0 auto 4px"}}>
+        <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
@@ -44283,6 +44568,8 @@ const TRIAL_OPPONENTS=[
   {id:"t_sud",n:"Selezione Sud",name:"Selezione Sud",a:"SUD",abbr:"SUD",p:50,c:"#0891b2",col:"#0891b2",c2:"#fff",nat:"🇮🇹"},
   {id:"t_cef",n:"Centro Federale",name:"Centro Federale",a:"CEF",abbr:"CEF",p:54,c:"#16a34a",col:"#16a34a",c2:"#fff",nat:"🇮🇹"},
 ];
+/* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
+function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
@@ -44365,7 +44652,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       </Card>
       {/* progress dots */}
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
-      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.</div>}
+      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>{provinoMancano85(2-trialNum)} per convincere i club.</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
   return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
@@ -46123,7 +46410,7 @@ function migratePlayer(player){
       changed=true;
     }
     if(!('archetype' in newP)){
-      newP={...newP,archetype:ARCHETYPES[0]};
+      newP={...newP,archetype:neutro287()?null:ARCHETYPES[0]};/* [giro 82 PO-287] */
       changed=true;
     }
     /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
@@ -46135,13 +46422,21 @@ function migratePlayer(player){
     /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
        vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
        restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
-    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+    if(stileUnico75()&&!neutro287()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
      if(_id75!=="finalizzatore"||_enf75){
        newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
        if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
        if(_enf75)newP.enfantPrima75=true;
        if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
        changed=true;}}
+    /* [giro 82, PO-287, decisione PO «Tutto: eroe neutro»] EROE NEUTRO: l'archetipo (Finalizzatore o qualunque stile/vecchio archetipo) si toglie;
+       lo stile di prima resta in stilePrima287, l'Enfant in enfantPrima287. Le statistiche NON si toccano: i bonus di stile furono sommati UNA
+       volta alla creazione (baseStats) dentro numeri gia' casuali e clampati a 40-90, non sono separabili senza inventare i valori e
+       ridurre quanto il giocatore ha costruito. Additiva e idempotente (a archetype null la seconda passata non fa niente). Rosso __CPM_NO_NEUTRO287. */
+    if(neutro287()&&newP.archetype!=null){const _id287=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf287=!!(newP.tratti&&newP.tratti.enfant);
+      if(!('stilePrima287' in newP))newP={...newP,stilePrima287:_id287};
+      if(_enf287&&!('enfantPrima287' in newP))newP={...newP,enfantPrima287:true};
+      newP={...newP,archetype:null,tratti:{...(newP.tratti||{}),enfant:false}};changed=true;}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
@@ -47886,7 +48181,7 @@ const getThisWeekMatchday=()=>{
          Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
       apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[im.cat]||"💡";
-        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:impScelte289(im.choices,player),isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -48859,26 +49154,7 @@ const getThisWeekMatchday=()=>{
   // [7.29.0 ONDA 4 — §S10] SPONSOR & IMMAGINE: il secondo stipendio arriva a FASCE di fama (soglie di
   //   popolarità; con procuratore GLOBAL si aprono prima, §S5). Brand di fantasia seedati, max 1 sponsor per
   //   fascia (p.sponsors lazy); il reddito entra dal chokepoint weeklyEconomyFields (tutti i path — STAB).
-  const _SPON_TIERS=[
-    {k:"globale",min:86,e:"🌍",n:"testimonial globale",brands:["Aurea Sportswear","Nexon Worldwide","Vela Group"],wk:8000},
-    {k:"nazionale",min:72,e:"📺",n:"spot nazionale",brands:["Banca Adria","Caffè Milleluci","Volt Energy"],wk:3000},
-    {k:"tecnico",min:55,e:"👟",n:"sponsor tecnico (scarpe)",brands:["Vortex Boots","Falco Nove","Kappa Ridge"],wk:1200},
-    {k:"locale",min:35,e:"🏪",n:"sponsor locale",brands:["Concessionaria Del Corso","Panificio La Torre","Ottica Vidale"],wk:400},
-  ];
-  const sponsorView=(p)=>{try{
-    if((p.proStatus||"u18")!=="pro")return null;
-    const sn=p.season||1;const pop=p.popularity||0;
-    const owned=new Set((p.sponsors||[]).map(s=>s.tier));
-    const declined=(p.sponsorDecl&&p.sponsorDecl.season===sn)?p.sponsorDecl.tier:null;
-    const shift=p.agentStyle==="global"?6:0;/* §S5: l'agenzia global apre le porte prima */
-    const _maxOwnedMin=Math.max(-1,..._SPON_TIERS.filter(x=>owned.has(x.k)).map(x=>x.min));/* [7.162.0 super-test ECO-F11] */
-    const t=_SPON_TIERS.find(t=>pop>=(t.min-shift)&&!owned.has(t.k)&&declined!==t.k&&t.min>=_maxOwnedMin/* mai una fascia SOTTO quella già firmata: il testimonial globale non firma col panificio locale */);
-    if(!t)return null;
-    const seed=hashStr((p.name||"x")+"_sp_"+t.k+"_"+Math.floor((sn-1)/3));
-    const brand=t.brands[seed%t.brands.length];
-    const weekly=Math.round(t.wk*(0.9+((seed>>>3)%21)/100));/* [7.147.0] >>> (con segno il jitter poteva diventare negativo) */
-    return{tier:t.k,e:t.e,label:t.n,brand,weekly};
-  }catch(_e){return null;}};
+  /* [PO-289 · giro 84] _SPON_TIERS e sponsorView sono passati al modulo (src/08), invariati: li legge anche l'evento di vita dello sponsor del procuratore. */
   // bivio derivato: lo shooting cade nella settimana del big match (§S10 — mai casuale: serve uno sponsor
   //   attivo E una settimana calda dal calendario; una volta a stagione, p.sponsorEvS).
   const sponsorShoot=(p)=>{try{
@@ -50492,6 +50768,7 @@ const getThisWeekMatchday=()=>{
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
         ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
       };
+      if(choice.uff289)upd={...upd,...uffPatch289(upd,choice.uff289)};/* [PO-289] la scelta scrive lo stato vero dell'Ufficio (accademia, staff, bene, sponsor) */
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
         const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -50517,6 +50794,7 @@ const getThisWeekMatchday=()=>{
     if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
+    if(choice.uff289&&!(typeof window!=="undefined"&&window.__CPM_NO_IMP289))setTimeout(()=>notify(uffAvviso289(choice.uff289),TH.success),250);/* [PO-289] dove la trovi */
     // Sprint 69: notify bond milestone
     if(bondMilestone){
       const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -50664,7 +50942,7 @@ const getThisWeekMatchday=()=>{
         _lastImpulseId=impulse.id;
         setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[impulse.cat]||"💡";
-        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
+        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impScelte289(impulse.choices,player),isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
       }
     }
@@ -51180,8 +51458,10 @@ const getThisWeekMatchday=()=>{
       else if(!p.injured&&Math.random()<0.12){
         const _wrePool=WEEKLY_RANDOM_EVENTS.map((e,i)=>({e,i})).filter(x=>x.i!==_lastWRE&&(!x.e.cond||(function(){try{return x.e.cond(p);}catch(_e){return true;}})()));const _wreP=_wrePool.length?_wrePool[Math.floor(Math.random()*_wrePool.length)]:{e:WEEKLY_RANDOM_EVENTS[0],i:0};_lastWRE=_wreP.i;const re=_wreP.e;/* [5.98.0 D1/D2] niente doppioni consecutivi + rispetto delle cond */
         const ef=re.ef||{};
-        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
-        setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+        const _c85=re.cash85?cashAgente85(p):0;/* [PO-289 giro 85] l'agente paga davvero */
+        const extras={...(_c85>0?{bankBalance:Math.round((updP.bankBalance!=null?updP.bankBalance:(p.bankBalance||0))+_c85),...ledgerPush(updP.ledger?{...p,ledger:updP.ledger}:p,{t:"sponsor",who:"il tuo agente",what:"accordo commerciale secondario: +"+_eur49(_c85)}),log:["🤝 Accordo commerciale secondario via agente: +"+_eur49(_c85)+" sul conto.",...(updP.log||p.log||[])].slice(0,60)}:{}),morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        const _re85=_c85>0?{...re,txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario: "+_eur49(_c85)+" sul tuo conto."}:re;
+        setTimeout(()=>setWeekLiveModal({event:_re85,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
       // Sprint 23 — Rival NPC events (20% chance, pro only)
@@ -56624,7 +56904,7 @@ const getThisWeekMatchday=()=>{
             );
           })()}
           {/* S12.5: Archetype card */}
-          {(()=>{const arc=archDi(player.archetype)||ARCHETYPES[0];return(
+          {(()=>{const arc=neutro287()?null:(archDi(player.archetype)||ARCHETYPES[0]);if(!arc)return null;/* [giro 82 PO-287] eroe neutro: niente scheda «Stile di gioco» */return(
             <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
             <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>
@@ -57202,8 +57482,12 @@ const getThisWeekMatchday=()=>{
                           <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
-                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
-                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{a||"generale"}</button>;})}
+                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
+                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
+                              <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
+                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
+                              {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
                       <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
@@ -59268,7 +59552,7 @@ function App(){
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
-  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
+  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);

@@ -910,6 +910,34 @@ const _COL918={vetro:"rgba(24,35,56,0.74)"/* [7.922 collaudo PO: il fondo delle 
    Rosso __CPM_NO970: torna il colore sociale nudo. */
 const _sigla970=(c)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO970)return c;
   return (typeof semTesto945==='function')?semTesto945(c,"#545c6c"):c;}catch(_e){return c;}};
+/* [PO-286 — I COLORI DEL TABELLINO SONO QUELLI DELLE DUE SQUADRE] Le barre del «Tabellino della gara» erano TH.primary/TH.warning
+   fissi (bordeaux/arancio) mentre l'intestazione del risultato portava le maglie vere (verde e quasi nero): tre colori per due
+   squadre. Ora intestazione, barre e nomi colonna pescano dalla STESSA coppia, quella delle maglie indossate (stessa fonte del
+   pannello live). Regola di ripiego, nell'ordine: (1) un colore quasi invisibile sul fondo (contrasto < 3:1) cede il posto al
+   SECONDO colore della maglia se visibile, altrimenti diventa una variante schiarita/scurita (stessa tonalita'); (2) le due barre
+   devono distare almeno DIST286 (redmean): se no, l'ospite prova il secondo colore, poi una variante piu' chiara/scura.
+   Rosso window.__CPM_NO_COL286: tutto come in 7.999.176 (TH.primary/TH.warning, barre dell'intestazione nude). */
+const VIS286=3,DIST286=120;
+const _dist286=(a,b)=>{const x=_rgb945(a),y=_rgb945(b);if(!x||!y)return 999;const rm=(x[0]+y[0])/2,dr=x[0]-y[0],dg=x[1]-y[1],db=x[2]-y[2];
+  return Math.sqrt((2+rm/256)*dr*dr+4*dg*dg+(2+(255-rm)/256)*db*db);};
+const _vis286=(c,bg)=>{try{if(!c||c[0]!=='#')return c;const lf=_lum944(bg);if(lf==null)return c;let k=c;
+  for(let i=0;i<14&&_rap944(k,bg)<VIS286;i++)k=lf>0.18?_mixNero945(k,0.12):_mix944(k,0.14);return k;}catch(_e){return c;}};
+const _ok286=(c,bg)=>!!c&&c[0]==='#'&&_rap944(c,bg)>=VIS286;
+function colori286(k,bg){
+  /* k = {sx,sx2,dx,dx2}: maglia e secondo colore di casa (sinistra) e ospite (destra); ritorna {sx,dx} */
+  try{
+    const da=(k.sx||"#3b82f6"),db=(k.dx||"#ef4444");
+    const A=_ok286(da,bg)?da:(k.sx2&&_dist286(k.sx2,da)>40&&_ok286(k.sx2,bg)?k.sx2:_vis286(da,bg));
+    const cand=[db];if(k.dx2&&_dist286(k.dx2,db)>40)cand.push(k.dx2);
+    const vis=cand.filter(c=>_ok286(c,bg));
+    let B=null;for(const c of vis){if(_dist286(A,c)>=DIST286){B=c;break;}}
+    if(!B){const v=[];for(const q of [0.35,0.6,0.85])for(const c of cand){v.push(_vis286(_mix944(c,q),bg),_vis286(_mixNero945(c,q),bg));}
+      const ok=v.filter(c=>_ok286(c,bg));let best=null,bd=-1;
+      for(const c of ok){const d=_dist286(A,c);if(d>=DIST286){best=c;bd=1e9;break;}if(d>bd){bd=d;best=c;}}
+      B=best||_vis286(db,bg);}
+    return{sx:A,dx:B};
+  }catch(_e){return{sx:k&&k.sx,dx:k&&k.dx};}}
+try{if(typeof window!=='undefined')window.__CPM_FN286=colori286;}catch(_e){}/* [PO-286] hook di collaudo: la regola pura, per provarla su coppie sintetiche in tema chiaro e scuro */
 const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
 const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
 const _dec918=(v)=>(Math.round((+v||0)*100)/100).toFixed(2).replace(".",",");
@@ -1451,6 +1479,28 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
     const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
   return out;
 }
+/* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+   Prima la festa leggera cantava sempre gli stessi due cori. Ora due cori da un repertorio (con varianti sui gol dell'eroe in questa
+   partita), scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) scartando quelli
+   delle ultime feste (ultimi 12 = 6 feste, memoria del browser: comodita'; se manca si sceglie solo con l'hash). */
+function cori291(N,g,base,usati){const U=String(N).toUpperCase();
+  if(typeof window!=='undefined'&&window.__CPM_NO_CORI291)return [U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
+  /* [PO-291 bis «rivedi i testi, non sono molto fluidi e corretti»] cori da curva veri, a partita finita (niente «facci un gol») */
+  const rep=[U+"! "+U+"! "+U+"!","C'è solo un "+N+"!","Oh "+N+", oh "+N+"!","Alé, alé, "+N+" alé!",N+", "+N+", olé olé!",
+    "Tutti in piedi per "+N+"!","Grazie, "+N+"!","Siamo tutti con te, "+N+"!",N+", uno di noi!","La curva è tutta per "+N+"!",N+", facci sognare!",
+    "Forza "+N+"!",N+" campione!","Grande "+N+"!",N+", fenomeno!","Per sempre "+N+"!","Batti le mani per "+N+"!",N+", sei il nostro orgoglio!",
+    N+", che partita!",N+", non ti fermare!",N+", il nostro numero uno!","Un solo coro: "+N+"!",N+", sei la nostra gioia!"];
+  /* [PO-291 ter «aumenta le varianti»] 23 cori fissi + 4 sui gol dell'eroe in questa partita */
+  const repGol=g>=3?["Tripletta di "+N+"!","Il pallone è tuo, "+N+"!",N+", notte magica!",N+", tre gol e tutti in piedi!"]
+    :g===2?["Doppietta di "+N+"!","Due gol di "+N+"!",N+", ancora tu!",N+", due volte in rete!"]
+    :g===1?[N+", che gol!","Segna sempre lui, "+N+"!","Gol di "+N+", che emozione!",N+", il gol è tuo!"]
+    :[N+", cuore e grinta!",N+", non mollare mai!",N+", hai dato tutto!",N+", il gol arriverà!"];
+  const tutti=repGol.concat(rep);usati=Array.isArray(usati)?usati:[];
+  const kh=(k)=>{k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);};
+  const liberi=tutti.filter(t=>usati.indexOf(t)<0),pool=liberi.length>=2?liberi:tutti;
+  const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
+  return [c1,c2];}
+try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -3399,7 +3449,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let _cg=""; try{_cg=((typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"");}catch(_e){}
     if(!_cg)return;
     const _col="#f8fafc";/* testo chiaro: il colore del club (granata, blu scuro…) sul fondo scuro della pillola non si legge (foto 7.999.48) */
-    const _cori=[_cg.toUpperCase()+"! "+_cg.toUpperCase()+"! "+_cg.toUpperCase()+"!","C'è solo un "+_cg+"!"];
+    /* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+       Prima: sempre gli stessi due cori. Ora due cori presi da un repertorio (con varianti sui gol dell'eroe in questa partita),
+       scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) e scartando quelli
+       cantati nelle ultime feste (ultimi 6, memoria del browser: comodita', se manca si sceglie solo con l'hash). */
+    let usati=[];try{usati=JSON.parse(localStorage.getItem("cpm-cori291")||"[]");if(!Array.isArray(usati))usati=[];}catch(_e){usati=[];}
+    const _cori=cori291(_cg,(mStats&&mStats.goals)|0,(player.name||"x")+"|"+(player.season||1)+"|"+(player.week||1),usati);
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_CORI291)){try{localStorage.setItem("cpm-cori291",JSON.stringify(usati.concat(_cori).slice(-12)));}catch(_e){}}
     _cori.forEach((t,i)=>{
       chantTimersRef.current.push(setTimeout(()=>{setCrowdChant({text:t,type:"goal",key:Date.now()+i,clubCol:_col});if(typeof window!=='undefined')(window.__CPM_CORO48=window.__CPM_CORO48||[]).push(t);},900+i*3600));
       chantTimersRef.current.push(setTimeout(()=>setCrowdChant(null),900+i*3600+3000));
@@ -11776,6 +11832,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _hDrew=!winning&&!losing;
             const _celebTier=_hWon?((ceremony&&!ceremony.light)?3:(_isFinalKO||mw>=8)?2:(mw>=6||!!drby)?1:0):0;/* [7.42.0] la festa light non alza trofei */
             const _confN=(_celebTier>=1&&!_CPM_TEST)?(_celebTier>=2?18:10):0;
+            const _c286h=(typeof window!=='undefined'&&window.__CPM_NO_COL286)?{}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},"#101a33");
+            try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},testata:_c286h});}}catch(_e){}
             return(
             <div style={{margin:"0 -22px 16px",paddingBottom:14,background:"linear-gradient(165deg,#0b1224,#101a33 55%,#0d1526)",position:"relative",overflow:"hidden"}}>{/* [7.95.0] no top-margin: segue il masthead del giornale */}
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
@@ -11786,12 +11844,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
-                    <div style={{height:3,borderRadius:RAD.pill,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
+                    <div data-cpm="barra286-sx" style={{height:3,borderRadius:RAD.pill,background:_c286h.sx||scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
                   <div className="cpm-num" style={{fontSize:42,fontWeight:900,lineHeight:1,color:_hWon?"#4ade80":losing?"#f87171":"#e2e8f0",flexShrink:0}}>{isMatchHome?score.home:score.away}<span style={{color:"rgba(255,255,255,0.35)",fontSize:FS.title,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
-                    <div style={{height:3,borderRadius:RAD.pill,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
+                    <div data-cpm="barra286-dx" style={{height:3,borderRadius:RAD.pill,background:_c286h.dx||scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
                 <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
@@ -11875,12 +11933,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               ["Rimesse laterali",_mine.rimesse,_loro.rimesse,_mine.rimesse,_loro.rimesse],
             ].filter(r=>(+r[3]||0)+(+r[4]||0)>0);
             if(!_righe.length)return null;
+            const _no286=typeof window!=='undefined'&&window.__CPM_NO_COL286;
+            const _c286=_no286?{sx:_ord.eroeSx?TH.primary:TH.warning,dx:_ord.eroeSx?TH.warning:TH.primary}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},TH.card);
+            const _t286={sx:_no286?(_ord.eroeSx?TH.primary:TH.muted):legCol944(_c286.sx,TH.card),dx:_no286?(_ord.eroeSx?TH.muted:TH.primary):legCol944(_c286.dx,TH.card)};
+            try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},tabellino:_c286,sfondo:TH.card});}}catch(_e){}
             return(<Sez210 id="post-gara" titolo="Tabellino della gara">
               <div style={(typeof window!=='undefined'&&window.__CPM_NO_POST210)?{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}:{padding:"2px 2px"}}>{/* [7.999.139] dentro la card della fisarmonica niente seconda cornice */}
                 <div data-cpm="tab280" data-eroe={_ord.eroeSx?"sx":"dx"} style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,fontSize:FS.caption,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
-                  <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_ord.eroeSx?TH.primary:TH.muted}}>{_nSx}</span>
+                  <span data-cpm="tab280-sx" style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.sx}}>{_nSx}</span>
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
-                  <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_ord.eroeSx?TH.muted:TH.primary}}>{_nDx}</span>
+                  <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
                 {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
@@ -11890,8 +11952,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:b>=a?TH.text:TH.muted,minWidth:34,textAlign:"right"}}>{r[2]}</span>
                     </div>
                     <div style={{display:"flex",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:3}}>
-                      <div style={{width:qa+"%",background:_ord.eroeSx?TH.primary:TH.warning}} />{/* [PO-280 bis] il colore dell'eroe segue la sua colonna */}
-                      <div style={{width:(100-qa)+"%",background:_ord.eroeSx?TH.warning:TH.primary}} />
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />{/* [PO-280 bis] il colore dell'eroe segue la sua colonna */}
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
                     </div>
                   </div>);})}
               </div>

@@ -1464,7 +1464,7 @@ const getThisWeekMatchday=()=>{
          Non cambia il gioco: nessun pescaggio, nessun contatore. Zona G ferma per tutto il resto. Rosso __CPM_NO_APRIIMP157. */
       apriImpulso:(id)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_APRIIMP157)return "spento";const im=(WEEKLY_IMPULSES||[]).find(x=>x&&x.id===id);if(!im)return "sconosciuto";
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[im.cat]||"💡";
-        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:im.choices,isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
+        setWeekLiveModal({event:{txt:resolveEvText(im.txt,player),e:catIcon},changes:{},choices:impScelte289(im.choices,player),isImpulse:true,cat:im.cat,impId:im.id});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
         setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
         setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -2437,26 +2437,7 @@ const getThisWeekMatchday=()=>{
   // [7.29.0 ONDA 4 — §S10] SPONSOR & IMMAGINE: il secondo stipendio arriva a FASCE di fama (soglie di
   //   popolarità; con procuratore GLOBAL si aprono prima, §S5). Brand di fantasia seedati, max 1 sponsor per
   //   fascia (p.sponsors lazy); il reddito entra dal chokepoint weeklyEconomyFields (tutti i path — STAB).
-  const _SPON_TIERS=[
-    {k:"globale",min:86,e:"🌍",n:"testimonial globale",brands:["Aurea Sportswear","Nexon Worldwide","Vela Group"],wk:8000},
-    {k:"nazionale",min:72,e:"📺",n:"spot nazionale",brands:["Banca Adria","Caffè Milleluci","Volt Energy"],wk:3000},
-    {k:"tecnico",min:55,e:"👟",n:"sponsor tecnico (scarpe)",brands:["Vortex Boots","Falco Nove","Kappa Ridge"],wk:1200},
-    {k:"locale",min:35,e:"🏪",n:"sponsor locale",brands:["Concessionaria Del Corso","Panificio La Torre","Ottica Vidale"],wk:400},
-  ];
-  const sponsorView=(p)=>{try{
-    if((p.proStatus||"u18")!=="pro")return null;
-    const sn=p.season||1;const pop=p.popularity||0;
-    const owned=new Set((p.sponsors||[]).map(s=>s.tier));
-    const declined=(p.sponsorDecl&&p.sponsorDecl.season===sn)?p.sponsorDecl.tier:null;
-    const shift=p.agentStyle==="global"?6:0;/* §S5: l'agenzia global apre le porte prima */
-    const _maxOwnedMin=Math.max(-1,..._SPON_TIERS.filter(x=>owned.has(x.k)).map(x=>x.min));/* [7.162.0 super-test ECO-F11] */
-    const t=_SPON_TIERS.find(t=>pop>=(t.min-shift)&&!owned.has(t.k)&&declined!==t.k&&t.min>=_maxOwnedMin/* mai una fascia SOTTO quella già firmata: il testimonial globale non firma col panificio locale */);
-    if(!t)return null;
-    const seed=hashStr((p.name||"x")+"_sp_"+t.k+"_"+Math.floor((sn-1)/3));
-    const brand=t.brands[seed%t.brands.length];
-    const weekly=Math.round(t.wk*(0.9+((seed>>>3)%21)/100));/* [7.147.0] >>> (con segno il jitter poteva diventare negativo) */
-    return{tier:t.k,e:t.e,label:t.n,brand,weekly};
-  }catch(_e){return null;}};
+  /* [PO-289 · giro 84] _SPON_TIERS e sponsorView sono passati al modulo (src/08), invariati: li legge anche l'evento di vita dello sponsor del procuratore. */
   // bivio derivato: lo shooting cade nella settimana del big match (§S10 — mai casuale: serve uno sponsor
   //   attivo E una settimana calda dal calendario; una volta a stagione, p.sponsorEvS).
   const sponsorShoot=(p)=>{try{
@@ -4070,6 +4051,7 @@ const getThisWeekMatchday=()=>{
         ...(ef.chem!=null?{teamChemistry:clamp((p.teamChemistry||60)+ef.chem,0,100)}:{}),
         ...((weekLiveModal&&weekLiveModal.isImpulse&&weekLiveModal.impId&&!(typeof window!=="undefined"&&window.__CPM_NO154))?{impMem:{...(p.impMem||{}),[weekLiveModal.impId]:{c:Math.max(-1,(weekLiveModal.choices||[]).indexOf(choice)),s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}}:{}),/* [7.999.173 PO-154] la scelta si RICORDA: e' cio' che i seguiti leggono */
       };
+      if(choice.uff289)upd={...upd,...uffPatch289(upd,choice.uff289)};/* [PO-289] la scelta scrive lo stato vero dell'Ufficio (accademia, staff, bene, sponsor) */
       // Sprint 69: apply archetype bond_bonus on milestone
       if(bondMilestone){
         const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -4095,6 +4077,7 @@ const getThisWeekMatchday=()=>{
     if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
+    if(choice.uff289&&!(typeof window!=="undefined"&&window.__CPM_NO_IMP289))setTimeout(()=>notify(uffAvviso289(choice.uff289),TH.success),250);/* [PO-289] dove la trovi */
     // Sprint 69: notify bond milestone
     if(bondMilestone){
       const bb=bondMilestone.arcData?.bond_bonus||{};
@@ -4242,7 +4225,7 @@ const getThisWeekMatchday=()=>{
         _lastImpulseId=impulse.id;
         setPlayer(p=>({...p,weekLived:true,recentImpulses:[...(p.recentImpulses||[]),impulse.id].slice(-40),impulseSeen:{...(p.impulseSeen||{}),[impulse.id]:((p.impulseSeen||{})[impulse.id]||0)+1},...((typeof window!=="undefined"&&window.__CPM_NO154)?{}:{impMem:{...(p.impMem||{}),[impulse.id]:{c:-1,s:p.season||1,w:p.week||1,a:absW154(p),k:_clubK154(p)}}})}));/* [PO-154] la memoria nasce quando l'impulso esce (c:-1 = senza risposta) e si completa con la scelta *//* [7.106.0] memoria ravvicinata 40 · [7.159.0 C] +contatore a vita per l'anti-ripetizione di lungo periodo */
         const catIcon={opportunità:"🌟",scelta:"⚡",tensione:"🔥",conseguenza:"🎲",addio:"🏁",esordio:"🐣",primopro:"🌱",seguito:"🧵"}[impulse.cat]||"💡";
-        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impulse.choices,isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
+        setTimeout(()=>setWeekLiveModal({event:{txt:resolveEvText(impulse.txt,player),e:catIcon},changes:{},choices:impScelte289(impulse.choices,player),isImpulse:true,cat:impulse.cat,impId:impulse.id,coachMsg:_liveCoachMsg}),50);/* [7.8.5] resolveEvText → sostituisce {DERBY}/{RIVAL} anche negli impulsi */
         return;
       }
     }
@@ -4758,8 +4741,10 @@ const getThisWeekMatchday=()=>{
       else if(!p.injured&&Math.random()<0.12){
         const _wrePool=WEEKLY_RANDOM_EVENTS.map((e,i)=>({e,i})).filter(x=>x.i!==_lastWRE&&(!x.e.cond||(function(){try{return x.e.cond(p);}catch(_e){return true;}})()));const _wreP=_wrePool.length?_wrePool[Math.floor(Math.random()*_wrePool.length)]:{e:WEEKLY_RANDOM_EVENTS[0],i:0};_lastWRE=_wreP.i;const re=_wreP.e;/* [5.98.0 D1/D2] niente doppioni consecutivi + rispetto delle cond */
         const ef=re.ef||{};
-        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
-        setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+        const _c85=re.cash85?cashAgente85(p):0;/* [PO-289 giro 85] l'agente paga davvero */
+        const extras={...(_c85>0?{bankBalance:Math.round((updP.bankBalance!=null?updP.bankBalance:(p.bankBalance||0))+_c85),...ledgerPush(updP.ledger?{...p,ledger:updP.ledger}:p,{t:"sponsor",who:"il tuo agente",what:"accordo commerciale secondario: +"+_eur49(_c85)}),log:["🤝 Accordo commerciale secondario via agente: +"+_eur49(_c85)+" sul conto.",...(updP.log||p.log||[])].slice(0,60)}:{}),morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        const _re85=_c85>0?{...re,txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario: "+_eur49(_c85)+" sul tuo conto."}:re;
+        setTimeout(()=>setWeekLiveModal({event:_re85,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
       // Sprint 23 — Rival NPC events (20% chance, pro only)
@@ -10202,7 +10187,7 @@ const getThisWeekMatchday=()=>{
             );
           })()}
           {/* S12.5: Archetype card */}
-          {(()=>{const arc=archDi(player.archetype)||ARCHETYPES[0];return(
+          {(()=>{const arc=neutro287()?null:(archDi(player.archetype)||ARCHETYPES[0]);if(!arc)return null;/* [giro 82 PO-287] eroe neutro: niente scheda «Stile di gioco» */return(
             <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
             <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>
@@ -10780,8 +10765,12 @@ const getThisWeekMatchday=()=>{
                           <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
-                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
-                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{a||"generale"}</button>;})}
+                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
+                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
+                              <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
+                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
+                              {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
                       <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>

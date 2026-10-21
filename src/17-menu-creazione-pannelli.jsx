@@ -149,14 +149,17 @@ const CREDITI238=[
    «Senza riga licenza», giro 25b). Le voci tolte nel giro 25 sono tornate con la loro fonte (decisione PO 15/10 «Rimettile con
    la loro fonte»); i file d'origine non confermata restano nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
    il contenuto PO-238 e il link sottile). */
+/* [7.999.177 PO-290 «sistema il testo, lo leggeranno i player»] via note interne (giro, date, nomi di file, «dichiarata dal PO», sintesi
+   «pseudo-casuale»): ai crediti restano opera, autore e licenza in parole del giocatore. Rosso __CPM_NO_CRED290: testi della 7.999.176. */
+const _c290=!(typeof window!=='undefined'&&window.__CPM_NO_CRED290);
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
-    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
-    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
-    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:_c290?"Royalty Free (standard)":"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
+    {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
-    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
        di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
        license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
@@ -172,8 +175,8 @@ const CREDITI254=[
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
     {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
-    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"},
-    {n:"Effetti sonori sintetizzati con Web Audio",aut:"Realizzati per Korward Elite"}]},
+    ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
+    {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
     {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
     {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"},
@@ -393,7 +396,7 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
-function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
+function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -408,7 +411,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
-    const arc=_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]);/* [giro 75] ARCHETYPES[0] = Finalizzatore */
+    const arc=neutro287()?null:(_unico75?ARCHETYPES[0]:(ARCHETYPES.find(a=>a.id===archetypeId)||ARCHETYPES[0]));/* [giro 75] ARCHETYPES[0] = Finalizzatore · [giro 82 PO-287] eroe neutro: nessun archetipo */
     let stats=baseStats(arc);
     /* [giro 67 PO-098] il tratto Enfant costa 2 punti su ogni statistica di partenza e fa crescere x1,35 fino ai 22 anni (archGrowthMult) */
     if(enfant67&&!_unico75){Object.keys(stats).forEach(k=>{stats[k]=clamp(stats[k]-2,1,99);});}
@@ -422,6 +425,9 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
+      {/* [7.999.177 PO-295 «da qui non si puo' tornare alla home»] pulsante «← Home» in testa alla creazione. Rosso __CPM_NO_IND295 */}
+      {onBack&&!(typeof window!=='undefined'&&window.__CPM_NO_IND295)&&(<div style={{display:"flex",justifyContent:"flex-start",maxWidth:900,margin:"0 auto 4px"}}>
+        <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
@@ -599,6 +605,8 @@ const TRIAL_OPPONENTS=[
   {id:"t_sud",n:"Selezione Sud",name:"Selezione Sud",a:"SUD",abbr:"SUD",p:50,c:"#0891b2",col:"#0891b2",c2:"#fff",nat:"🇮🇹"},
   {id:"t_cef",n:"Centro Federale",name:"Centro Federale",a:"CEF",abbr:"CEF",p:54,c:"#16a34a",col:"#16a34a",c2:"#fff",nat:"🇮🇹"},
 ];
+/* [giro 85 bassa] «Manca ancora 2 provini»: concordanza col numero. Rosso __CPM_NO_PICCOLI85 = la frase di prima. */
+function provinoMancano85(n){const r=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85);return (r||n===1?"Manca":"Mancano")+" ancora "+n+" "+(n===1?"provino":"provini");}
 function TrialFlow({player:initPlayer,onComplete,resume}){
   // Sprint PROV — la squadra dell'eroe ai provini è in GRANATA
   const _granata={id:"trial-hero",n:"Selezione Granata",name:"Selezione Granata",a:"GRA",abbr:"GRA",p:50,c:"#7a1f2b",col:"#7a1f2b",c2:"#e8c98f",nat:"🇮🇹",lg:"Provini"};
@@ -681,7 +689,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       </Card>
       {/* progress dots */}
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
-      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.</div>}
+      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>{provinoMancano85(2-trialNum)} per convincere i club.</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
   return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
@@ -2439,7 +2447,7 @@ function migratePlayer(player){
       changed=true;
     }
     if(!('archetype' in newP)){
-      newP={...newP,archetype:ARCHETYPES[0]};
+      newP={...newP,archetype:neutro287()?null:ARCHETYPES[0]};/* [giro 82 PO-287] */
       changed=true;
     }
     /* [giro 67 PO-098] MIGRAZIONE ADDITIVA DEGLI ARCHETIPI: un vecchio archetipo (uno degli 8) diventa il suo stile; l'id di prima resta in
@@ -2451,13 +2459,21 @@ function migratePlayer(player){
     /* [giro 75, decisione PO 19/10] STILE UNICO: ogni eroe diventa Finalizzatore. Lo stile (o archetipo) di prima resta in stilePrima75, un
        vecchio archetipo anche in archetipoOrig, l'Enfant si spegne (tratti.enfant=false, enfantPrima75=true) ma le statistiche gia' guadagnate
        restano. Additiva e idempotente: la seconda passata non trova niente da cambiare. Rosso __CPM_NO_STILEUNICO75. */
-    if(stileUnico75()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
+    if(stileUnico75()&&!neutro287()){const _id75=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf75=!!(newP.tratti&&newP.tratti.enfant);
      if(_id75!=="finalizzatore"||_enf75){
        newP={...newP,archetype:ARCHETYPES[0],tratti:{...(newP.tratti||{}),enfant:false}};
        if(!('stilePrima75' in newP))newP.stilePrima75=_id75;
        if(_enf75)newP.enfantPrima75=true;
        if(_id75&&!newP.archetipoOrig&&typeof ARCHETYPES_8!=='undefined'&&ARCHETYPES_8.some(a=>a.id===_id75))newP.archetipoOrig=_id75;
        changed=true;}}
+    /* [giro 82, PO-287, decisione PO «Tutto: eroe neutro»] EROE NEUTRO: l'archetipo (Finalizzatore o qualunque stile/vecchio archetipo) si toglie;
+       lo stile di prima resta in stilePrima287, l'Enfant in enfantPrima287. Le statistiche NON si toccano: i bonus di stile furono sommati UNA
+       volta alla creazione (baseStats) dentro numeri gia' casuali e clampati a 40-90, non sono separabili senza inventare i valori e
+       ridurre quanto il giocatore ha costruito. Additiva e idempotente (a archetype null la seconda passata non fa niente). Rosso __CPM_NO_NEUTRO287. */
+    if(neutro287()&&newP.archetype!=null){const _id287=(newP.archetype&&newP.archetype.id)||newP.archetype||null;const _enf287=!!(newP.tratti&&newP.tratti.enfant);
+      if(!('stilePrima287' in newP))newP={...newP,stilePrima287:_id287};
+      if(_enf287&&!('enfantPrima287' in newP))newP={...newP,enfantPrima287:true};
+      newP={...newP,archetype:null,tratti:{...(newP.tratti||{}),enfant:false}};changed=true;}
     if(!('goldenBoys' in newP)){
       newP={...newP,goldenBoys:[]};
       changed=true;
