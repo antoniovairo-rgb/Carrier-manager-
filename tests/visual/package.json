@@ -207,6 +207,7 @@
     "taglia-pallone": "node taglia-pallone.mjs",
     "pallone-278": "node pallone-278.mjs",
     "panchina-riga": "node panchina-riga.mjs",
+    "panchina-293": "node panchina-293.mjs",
     "hud-c3": "node hud-c3.mjs",
     "design-system": "node design-system.mjs",
     "coinvolgimento": "node coinvolgimento-reparti.mjs",

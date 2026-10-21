@@ -878,6 +878,7 @@ function ThreeMatchView(props){
       return {heroMx,nanW,senza,avatars:aa.length,heroMixers:hero&&hero.mx?1:0,otherMixers:others,mixers:aa.filter(a=>a.mx).length,skeletonUpdates:aa.filter(a=>a.mx).length,actions:all.length,activeActions:active,scheduler:{enabled:!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false),frames:_animLodStats.frames,mixerUpdates:_animLodStats.mixerUpdates,lastFrameUpdates:_animLodStats.lastFrameUpdates,fullRate:_animLodStats.fullRate,halfRate:_animLodStats.halfRate,quarterRate:_animLodStats.quarterRate,protected:_animLodStats.protected}};
     };}catch(_e){}
     let mascotGlbAvatars=null;/* [7.911.0 — C11] i bambini dell'ingresso, corpi CH38: terza lista accanto a quella del campo e della panchina */
+    let _hideBench293=false;/* [giro 87 PO-293] vero = in panchina nessun procedurale: i corpi CGTrader arrivano dopo e li sostituiscono */
     let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
     let assistantRefGlbAvatars=null; // corpi Hyper degli assistenti: restano figli dei loro marker, che continuano a seguire il gioco.
     // [7.904.0] rotazione DELTA in spazio MONDO composta DOPO il bind — usata sia per costruire la posa
@@ -989,7 +990,13 @@ function ThreeMatchView(props){
           _appoggio.push({piedi,bacino,seated:!f._isCoach,coach:!!f._isCoach,home:!!f._home});
         });
       }
-      return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio};
+      /* [giro 87 PO-293] TIPO di ogni corpo di panchina: 'cgtrader' (pacchetto dei giocatori) · 'ch38' (footballer-panchina) · 'proc' (figura procedurale ancora VISIBILE).
+         `fuori` = nascosti dal taglio fuori-quadro (voluto, non conta come assente). */
+      const _tipi={cgtrader:0,ch38:0,proc:0};let _fuori=0;
+      _glbList.forEach(av=>{if(!av)return;if(av._hyper)_tipi.cgtrader++;else _tipi.ch38++;if(av._hyperBench293&&av._inQ293===false)_fuori++;});
+      (typeof benchFigs!=='undefined'?benchFigs:[]).forEach(f=>{if(f&&f.visible)_tipi.proc++;});
+      const _posti=(typeof benchFigs!=='undefined'?benchFigs:[]).map(f=>f?[+f.position.x.toFixed(2),+f.position.z.toFixed(2)]:null);/* posti dei 16 panchinari (x,z): la sonda li riconosce nella scena senza fidarsi del gancio */
+      return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio,tipi:_tipi,fuori:_fuori,posti:_posti,ids:[...(typeof benchFigs!=='undefined'?benchFigs:[]).map(f=>f&&f.uuid),..._glbList.map(a=>a&&a.root&&a.root.uuid)].filter(Boolean)};
     }catch(_e){return {err:String(_e&&_e.message||_e)};}};
     /* [7.904.0 gancio test-only] inquadratura fissa sul dugout, per fotografare la panchina da vicino coi
        piedi visibili (side: 'home'|'away'). Applicata a valle di ogni calcolo della regia (vedi il punto
@@ -1382,6 +1389,7 @@ function ThreeMatchView(props){
       const _hyperFull=_hyperMode==='full';
       const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderHighlightOptimized||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
+      _hideBench293=_useGLB&&_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_PANCH293);
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
          Qui scegliamo una variante reale dell'asset, lasciando invariati rig e clip. */
@@ -1698,7 +1706,50 @@ function ThreeMatchView(props){
         benchGlbAvatars=made;
         try{window.__CPM_HYPER_BENCH={avatars:made.length,seated:made.filter(a=>a._seated904).length,coaches:made.filter(a=>a._isCoach904).length,legacyVisible:benchFigs.filter(f=>f&&f.visible).length};}catch(_e){}
         return made;
-      };      const _replaceMascotsWithHyper=(pkg,mascots)=>{
+      };      /* [giro 87 PO-293 «in panchina ci devono essere glb on» — rosso __CPM_NO_PANCH293] PANCHINA COI CORPI CGTRADER DEI GIOCATORI.
+         Con la formazione CGTrader (default) il ramo CH38 della panchina (7.904) non gira (`!_hyperIntro`) e il ramo «full» e' spento:
+         i 16 panchinari restavano figure procedurali per tutta la partita. Qui i 14+2 (6 seduti + mister + vice per lato) diventano
+         corpi CGTrader dello stesso pacchetto dei giocatori (LOD2, il piu' leggero: stessa mesh/texture/scheletro, kit del club con
+         la stessa fabbrica `_applyHyperKit`). Seduti: clip 'sit-clap' (c'e' nel pacchetto) a velocita' ridotta, bacino/piedi
+         riportati sulla seduta con la stessa media dei 7.904 (misurata sulle ossa, non a occhio); in piedi: 'idle'. Nessun salto
+         ne' traslazione: «fermi/seduti senza volare». Prestazioni: fuori quadro il corpo e' nascosto e il mixer non gira; in quadro
+         il mixer aggiorna ogni 3 fotogrammi (dt accumulato). Prima che i corpi siano pronti la panchina e' VUOTA (non procedurale). */
+      const _replaceBenchWithCgtrader293=(pkg)=>{
+        if(typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return [];
+        const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const sitClip=_clip('sit-clap'),idleClip=_clip('idle');if(!sitClip||!idleClip)throw new Error('bench clips unavailable');
+        const _suit={shirt:'#232a35',shorts:'#171b22',socks:'#12141a',shoes:'#0b0b0d'};
+        const made=[];
+        benchFigs.forEach((fig,index)=>{if(!fig)return;try{
+          const seated=!fig._isCoach,root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('bench293-'+index));
+          root.add(visual);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),mh=Math.max(0.1,raw.max.y-raw.min.y),sk=_skeletonWorldHeight(visual),rawH=sk.height>0.5?sk.height:mh;
+          const appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+index));
+          const tgt=fig._isCoach?(index%8===6?1.82:1.76):_footballerHeight(appr.height,1.8);
+          visual.scale.setScalar(_scalaCorpo21()*(tgt/rawH));visual.updateMatrixWorld(true);
+          const gb=new THREE.Box3().setFromObject(visual);visual.position.y-=gb.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=false;}});
+          const kit=fig._isCoach?_suit:(fig._home?_homeKit:_awayKit);
+          _applyHyperBuild(visual,appr);_applyHyperKit(visual,kit,appr);_applyCgtraderNativeHair(visual,appr);
+          const mx=new THREE.AnimationMixer(visual),pose=mx.clipAction(seated?sitClip:idleClip);pose.play();pose.timeScale=seated?0:1;mx.setTime(seated?(window.__CPM_SITT293!=null?+window.__CPM_SITT293:0):(index%3)*0.2);/* seduti: UN fotogramma fermo della clip (il sit-clap vivo era un applauso/mano in testa) — nessun mixer da aggiornare */
+          const fb=pat=>{let r=null;visual.traverse(o=>{if(!r&&o.isBone&&pat.test(o.name||''))r=o;});return r;};
+          const toeL=fb(/^(?:ball\.l_|ball_l)$/i),toeR=fb(/^(?:ball\.r_|ball_r)$/i),hips=fb(/^pelvis$/i)||fb(/hips/i);
+          root.position.set(fig.position.x,0,fig.position.z);root.rotation.y=fig.rotation.y||0;scene.add(root);root.updateMatrixWorld(true);
+          const _v=new THREE.Vector3();let toeY=0,n=0;[toeL,toeR].forEach(b=>{if(b){b.getWorldPosition(_v);toeY+=_v.y;n++;}});toeY=n?toeY/n:0;
+          let hipY=0;if(hips){hips.getWorldPosition(_v);hipY=_v.y;}
+          let dy=0;
+          if(seated){/* bacino sulla seduta (0,77) e piedi a terra non combaciano entrambi: il divario si ripartisce a meta' come nei 7.904 */dy=(-toeY+(0.77-hipY))/2;}
+          else{dy=-toeY+0.04;}/* in piedi: la punta del piede a 4 cm dal suolo (osso della punta, non la suola) */
+          root.position.y=dy;root.updateMatrixWorld(true);
+          fig.visible=false;fig._nasc293=false;
+          made.push({root,visualRoot:visual,mx,idle:pose,run:null,proc:fig,_hyper:true,_hyperBench:true,_hyperBench293:true,_seated904:seated,_isCoach904:!!fig._isCoach,_home904:!!fig._home,_ph904:fig._ph||index,_seatY904:dy,_footBones904:{toeL,toeR,hips},_cgLod:pkg._cgLod||null,_dt293:0,_inQ293:true});
+        }catch(_e){try{console.warn('[CPM-293] corpo panchina fail',_e&&_e.message);}catch(_ee){}}});
+        if(made.length>=Math.ceil(benchFigs.length/2)){benchGlbAvatars=made;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+        else{made.forEach(a=>{try{if(a.root.parent)a.root.parent.remove(a.root);}catch(_e){}});benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});throw new Error('bench293: solo '+made.length+' corpi');}
+        try{window.__CPM_BENCH293={corpi:made.length,sedutiN:made.filter(a=>a._seated904).length,lod:pkg._cgLod||null};}catch(_e){}
+        return made;
+      };
+      const _replaceMascotsWithHyper=(pkg,mascots)=>{
         if(!(_hyperFull||(_hyperIntro&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)))||!mascots||!mascots.length)return [];
         const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const idleClip=_clip('idle'),runClip=_clip('jog');if(!idleClip||!runClip)throw new Error('Hyper Casual child clips are unavailable');
@@ -1795,10 +1846,11 @@ function ThreeMatchView(props){
              (CGTrader ottimizzata) i bambini dell'ingresso restavano figure procedurali, mentre il ramo CH38 dei bambini e'
              spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
           if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
+          if(_hideBench293){try{const _kb=(_trioLod&&packages&&packages[2])||pkg;if(!_kb.animations||!_kb.animations.length)_kb.animations=pkg.animations;_replaceBenchWithCgtrader293(_kb);}catch(_e293){try{console.warn('[CPM-293] panchina fail',_e293&&_e293.message);}catch(_e){}try{benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
-        }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
+        }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}try{if(typeof benchFigs!=='undefined'&&benchFigs)benchFigs.forEach(f=>{if(f._nasc293){f.visible=true;f._nasc293=false;}});}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
          corpo dei 23 CH38 (eroe+21+arbitro — la panchina C8 non e' toccata, e' un asset/percorso separato).
@@ -2330,6 +2382,7 @@ function ThreeMatchView(props){
       const staff=mkFig(kitCol,1.4);staff.position.set(bx+(bx<0?7.5:-7.5),0,-36.2);staff._home=(bx<0);staff._isCoach=true;scene.add(staff);benchFigs.push(staff);
     };
     _mkBench(-14,_hColInt);_mkBench(14,_aColInt);
+    if(_hideBench293)benchFigs.forEach(f=>{f.visible=false;f._nasc293=true;});/* [giro 87 PO-293] panchina: nessun procedurale in attesa dei corpi CGTrader (vedi _replaceBenchWithCgtrader293) */
     // item 9 (5.49.2): MASCOTTE — un bambino per ogni calciatore, in DIVISA AVVERSARIA, tenuto per mano durante l'ingresso.
     //   Visibili SOLO nella cerimonia (walkout) → fuori dalla walkout sono nascosti (zero impatto su gioco/gate/perf in partita).
     const _mascots=[];
@@ -8048,7 +8101,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            che un salto da seduti comporterebbe. Mister/vice (in piedi) invece saltano come le comparse
            procedurali di prima (stesso hop, stesso range) più le braccia. */
         if(benchGlbAvatars){const _gsB2=goalBurstT>=0?(goalBurstHome?1:-1):0;
+          let _fr293=null;/* [giro 87 PO-293] panchina CGTrader: fuori quadro nascosta e senza mixer; in quadro mixer ogni 3 fotogrammi — nessun salto, nessuna traslazione */
+          if(benchGlbAvatars.length&&benchGlbAvatars[0]._hyperBench293){sr.current._fc293=((sr.current._fc293|0)+1);if(!sr.current._frs293){sr.current._frs293=new THREE.Frustum();sr.current._pm293=new THREE.Matrix4();sr.current._sph293=new THREE.Sphere();}
+            if(sr.current._fc293%6===1||!sr.current._frOk293){sr.current._pm293.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);sr.current._frs293.setFromProjectionMatrix(sr.current._pm293);sr.current._frOk293=true;_fr293=true;}}
           for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
+            if(av._hyperBench293){
+              if(_fr293){const sp=sr.current._sph293;sp.center.set(av.root.position.x,av.root.position.y+1.0,av.root.position.z);sp.radius=2.4;av._inQ293=sr.current._frs293.intersectsSphere(sp);av.root.visible=av._inQ293;}
+              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
+              continue;}
             if(av.mx)av.mx.update(dt);
             const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);
             const _ex2=mine>0?_goalExcite:0;
