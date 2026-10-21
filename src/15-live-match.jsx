@@ -1479,6 +1479,28 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
     const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
   return out;
 }
+/* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+   Prima la festa leggera cantava sempre gli stessi due cori. Ora due cori da un repertorio (con varianti sui gol dell'eroe in questa
+   partita), scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) scartando quelli
+   delle ultime feste (ultimi 12 = 6 feste, memoria del browser: comodita'; se manca si sceglie solo con l'hash). */
+function cori291(N,g,base,usati){const U=String(N).toUpperCase();
+  if(typeof window!=='undefined'&&window.__CPM_NO_CORI291)return [U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
+  /* [PO-291 bis «rivedi i testi, non sono molto fluidi e corretti»] cori da curva veri, a partita finita (niente «facci un gol») */
+  const rep=[U+"! "+U+"! "+U+"!","C'è solo un "+N+"!","Oh "+N+", oh "+N+"!","Alé, alé, "+N+" alé!",N+", "+N+", olé olé!",
+    "Tutti in piedi per "+N+"!","Grazie, "+N+"!","Siamo tutti con te, "+N+"!",N+", uno di noi!","La curva è tutta per "+N+"!",N+", facci sognare!",
+    "Forza "+N+"!",N+" campione!","Grande "+N+"!",N+", fenomeno!","Per sempre "+N+"!","Batti le mani per "+N+"!",N+", sei il nostro orgoglio!",
+    N+", che partita!",N+", non ti fermare!",N+", il nostro numero uno!","Un solo coro: "+N+"!",N+", sei la nostra gioia!"];
+  /* [PO-291 ter «aumenta le varianti»] 23 cori fissi + 4 sui gol dell'eroe in questa partita */
+  const repGol=g>=3?["Tripletta di "+N+"!","Il pallone è tuo, "+N+"!",N+", notte magica!",N+", tre gol e tutti in piedi!"]
+    :g===2?["Doppietta di "+N+"!","Due gol di "+N+"!",N+", ancora tu!",N+", due volte in rete!"]
+    :g===1?[N+", che gol!","Segna sempre lui, "+N+"!","Gol di "+N+", che emozione!",N+", il gol è tuo!"]
+    :[N+", cuore e grinta!",N+", non mollare mai!",N+", hai dato tutto!",N+", il gol arriverà!"];
+  const tutti=repGol.concat(rep);usati=Array.isArray(usati)?usati:[];
+  const kh=(k)=>{k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);};
+  const liberi=tutti.filter(t=>usati.indexOf(t)<0),pool=liberi.length>=2?liberi:tutti;
+  const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
+  return [c1,c2];}
+try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -3427,7 +3449,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let _cg=""; try{_cg=((typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"");}catch(_e){}
     if(!_cg)return;
     const _col="#f8fafc";/* testo chiaro: il colore del club (granata, blu scuro…) sul fondo scuro della pillola non si legge (foto 7.999.48) */
-    const _cori=[_cg.toUpperCase()+"! "+_cg.toUpperCase()+"! "+_cg.toUpperCase()+"!","C'è solo un "+_cg+"!"];
+    /* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+       Prima: sempre gli stessi due cori. Ora due cori presi da un repertorio (con varianti sui gol dell'eroe in questa partita),
+       scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) e scartando quelli
+       cantati nelle ultime feste (ultimi 6, memoria del browser: comodita', se manca si sceglie solo con l'hash). */
+    let usati=[];try{usati=JSON.parse(localStorage.getItem("cpm-cori291")||"[]");if(!Array.isArray(usati))usati=[];}catch(_e){usati=[];}
+    const _cori=cori291(_cg,(mStats&&mStats.goals)|0,(player.name||"x")+"|"+(player.season||1)+"|"+(player.week||1),usati);
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_CORI291)){try{localStorage.setItem("cpm-cori291",JSON.stringify(usati.concat(_cori).slice(-12)));}catch(_e){}}
     _cori.forEach((t,i)=>{
       chantTimersRef.current.push(setTimeout(()=>{setCrowdChant({text:t,type:"goal",key:Date.now()+i,clubCol:_col});if(typeof window!=='undefined')(window.__CPM_CORO48=window.__CPM_CORO48||[]).push(t);},900+i*3600));
       chantTimersRef.current.push(setTimeout(()=>setCrowdChant(null),900+i*3600+3000));

@@ -965,7 +965,7 @@ function App(){
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
-  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
+  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);

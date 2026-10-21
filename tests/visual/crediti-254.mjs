@@ -29,22 +29,22 @@ const ATTESI = [
   ['Great Vibes', ['Great Vibes', 'Robert Leuschke', 'SIL Open Font License 1.1']],
   ['Barlow', ['Barlow', 'Barlow Condensed', 'Jeremy Tribby']],
   ['Mixkit 3022', ['Mixkit', '3022', 'Mixkit Sound Effects Free License']],
-  ['Brusio di folla', ['Brusio di folla', 'generato per Korward Elite']],
+  ['Brusio di folla', ['Brusio di folla', 'Realizzato per Korward Elite']],/* [PO-290] testo per il giocatore */
   ['DiceBear (libreria)', ['DiceBear', 'Florian Körner', 'MIT']],
   ['Avataaars', ['Avataaars', 'Pablo Stanley']],
   ['Micah', ['Micah', 'Micah Lanier', 'CC BY 4.0']],
   // [7.999.173 PO-267, giro 68] le voci DiceBear hanno fonte e riga Licenza (controllo DICEBEAR267 piu' sotto)
   ['React/ReactDOM', ['React', 'Three.js', 'Babel', 'MIT']],
   // [giro 25b, decisione PO 15/10 «Rimettile con la loro fonte»]
-  ['Microsoft Rocketbox', ['Microsoft Rocketbox', 'actor-journalist.glb', 'actor-presenter-f.glb', 'MIT']],
-  ['Animazioni Mixamo', ['Animazioni Mixamo', 'cgtrader-clip-mixamo.glb', 'footballer', 'royalty free', 'mixamo-faq']],
+  ['Microsoft Rocketbox', ['Microsoft Rocketbox', 'Giornalista e presentatori', 'MIT']],/* [PO-290] via i nomi di file */
+  ['Animazioni Mixamo', ['Animazioni Mixamo', 'gesti tecnici', 'CH38', 'royalty free', 'mixamo-faq']],/* [PO-290] via i nomi di file */
   ['GLTFLoader', ['GLTFLoader', 'SkeletonUtils', 'three@0.128.0', 'three.js authors']],
-  ['Effetti sonori', ['Web Audio', 'Realizzati per Korward Elite']],
+  ['Effetti sonori', ['Effetti sonori', 'Realizzati per Korward Elite']],/* [PO-290] via «Web Audio» */
   ['Icone', ["Icone dell'app", 'Realizzate per Korward Elite']],
 ];
 // [giro 25b, decisione PO 15/10 «Senza riga licenza»] voci che NON hanno riga Licenza ne' «Non posso confermarlo»,
 // e voci dove il documento dice «Non posso confermarlo» (lo devono mostrare, in grigio).
-const SENZA_LIC = ['Regular Male', 'Ritratti delle figurine', 'Web Audio', "Icone dell'app"];
+const SENZA_LIC = ['Regular Male', 'Ritratti delle figurine', 'Effetti sonori', "Icone dell'app"];
 /* [7.999.171 PO-267] «Non posso confermarlo» non si mostra piu' al giocatore: le voci non confermate stanno senza la riga
    (col rosso __CPM_NO_CRED267 tornano, e allora valgono i controlli di prima). */
 const R267 = !!process.env.CPM_NO_CRED267;
@@ -103,6 +103,10 @@ for (const w of [360, 412]) {
   if (!r.modal || !r.testa || !r.piede || r.titolo !== 'Crediti') ko.push(`${w}px: la finestra non e' il Modal standard (${JSON.stringify({ modal: r.modal, testa: r.testa, piede: r.piede, titolo: r.titolo })})`);
   // 2) niente «Fonte da completare», «Non posso confermarlo» in grigio
   if (r.manca || /Fonte da completare|fonte da completare/.test(r.testo)) ko.push(`${w}px: ${r.manca} voci portano ancora «Fonte da completare»`);
+  /* [7.999.177 PO-290 «sistema il testo, lo leggeranno i player»] niente note interne nei crediti: giri, nomi di file, «dichiarata dal PO»,
+     «pseudo-casuali», «API a pagamento», «Web Audio». Col rosso CPM_ROSSO=__CPM_NO_CRED290 tornano e il guardiano DEVE uscire 1. */
+  { const NOTE290 = /\bgiro \d|\.glb\b|dichiarata dal PO|pseudo-casual|API a pagamento|Web Audio|seme fisso/;
+    const m290 = (r.testo || '').match(NOTE290); if (m290) ko.push(`${w}px: nota interna nei crediti: «${m290[0]}» (PO-290)`); }
   if (!R267 && r.nc.length) ko.push(`${w}px: «Non posso confermarlo» mostrato ${r.nc.length} volte al giocatore (PO-267: la riga non va mostrata)`);
   if (r.nc.length < NONCONF_MIN) ko.push(`${w}px: «Non posso confermarlo» scritto ${r.nc.length} volte, il documento lo dice ${NONCONF_MIN}`);
   if (r.nc.some(c => c !== r.grigio)) ko.push(`${w}px: «Non posso confermarlo» non e' in grigio (${r.nc.join(' ')} contro ${r.grigio})`);
