@@ -745,3 +745,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 89 (e629aefe): corpi-073 non era cieco per il giro 82 (ipotesi smentita): uno stallo del filo principale di 2,4-4 s dopo il caricamento (browser senza GPU) cadeva nella finestra di misura. Lo strumento aspetta 8 s di quiete prima di forzare la scena (tetto 120 s); trovato e riparato anche il braccio rosso __CPM_NO_BATT073 cieco già sulla 176 (compagno sul lato sbagliato). 2 verdi, rossi visibili; nessuna soglia toccata. Pallone dell'angolo alla bandierina in ogni fotogramma: il residuo «pallone sul dischetto» non si riproduce sulla 177.
 - Spazio su disco al 95%: tolti i worktree dei giri 80-89 (rami già su origin) e delle carriere interrotte; ora 78%.
 - Catena notte completa sulla 7.999.177 finale (lavoro/177 e629aefe, 111 passi) in due metà.
+
+## 21/10 — release a contenuto chiuso (PO)
+
+- PO: «Ok» alla regola proposta: una release assemblata non si allarga più; le richieste nuove vanno nella successiva (la 177 si era allargata da 5 a 10 giri, con più catene rifatte). Eccezione solo per difetti alti/medi o di highlight dell'eroe trovati nella catena della release stessa.
