@@ -4741,8 +4741,10 @@ const getThisWeekMatchday=()=>{
       else if(!p.injured&&Math.random()<0.12){
         const _wrePool=WEEKLY_RANDOM_EVENTS.map((e,i)=>({e,i})).filter(x=>x.i!==_lastWRE&&(!x.e.cond||(function(){try{return x.e.cond(p);}catch(_e){return true;}})()));const _wreP=_wrePool.length?_wrePool[Math.floor(Math.random()*_wrePool.length)]:{e:WEEKLY_RANDOM_EVENTS[0],i:0};_lastWRE=_wreP.i;const re=_wreP.e;/* [5.98.0 D1/D2] niente doppioni consecutivi + rispetto delle cond */
         const ef=re.ef||{};
-        const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
-        setTimeout(()=>setWeekLiveModal({event:re,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
+        const _c85=re.cash85?cashAgente85(p):0;/* [PO-289 giro 85] l'agente paga davvero */
+        const extras={...(_c85>0?{bankBalance:Math.round((updP.bankBalance!=null?updP.bankBalance:(p.bankBalance||0))+_c85),...ledgerPush(updP.ledger?{...p,ledger:updP.ledger}:p,{t:"sponsor",who:"il tuo agente",what:"accordo commerciale secondario: +"+_eur49(_c85)}),log:["🤝 Accordo commerciale secondario via agente: +"+_eur49(_c85)+" sul conto.",...(updP.log||p.log||[])].slice(0,60)}:{}),morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),value:Math.max(0.5,(p.value||0.8)+(ef.value||0))};
+        const _re85=_c85>0?{...re,txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario: "+_eur49(_c85)+" sul tuo conto."}:re;
+        setTimeout(()=>setWeekLiveModal({event:_re85,changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
         updP={...updP,...extras};
       }
       // Sprint 23 — Rival NPC events (20% chance, pro only)

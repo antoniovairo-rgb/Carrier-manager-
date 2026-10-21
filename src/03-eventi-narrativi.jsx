@@ -189,6 +189,10 @@ function impulseFreshBucket(pool,recent,seen,condOk){
    Fire during doAdvanceWeek when weekLived=false (25% chance)
 ======================================== */
 let _lastWRE=-1,_lastImpulseId=null;/* [5.98.0 D1] anti-ripetizione consecutiva (memoria di sessione) */
+function cashAgente85(p){try{if(typeof window!=="undefined"&&window.__CPM_NO_AGENTE85)return 0;
+  const own=(p.sponsors||[]).reduce((a,x)=>a+((x&&x.weekly)||0),0);
+  let base=own;if(!base){const sv=typeof sponsorView==="function"?sponsorView(p):null;base=sv?sv.weekly:400;}
+  return Math.round(4*base/10)*10;}catch(_e){return 0;}}
 const WEEKLY_RANDOM_EVENTS=[
   {txt:"🤝 Il tuo agente chiama: interesse concreto da un club importante. Sei motivato!",ef:{morale:9,popularity:6}},
   {txt:"🎽 Il club presenta la nuova maglia. Sei in prima fila per la foto. Grande hype!",ef:{popularity:8,morale:5},cond:p=>(p.week||1)<=5/* [7.161.0 BASSA] la maglia si presenta a inizio stagione, non a W25 */},
@@ -226,7 +230,8 @@ const WEEKLY_RANDOM_EVENTS=[
   {txt:"🎙️ Sei ospite in un podcast calcistico. La community esplode di commenti.",ef:{popularity:10,morale:5}},
   {txt:"💼 Contatto con uno sponsor sportivo. Proposta di endorsement personale.",ef:{morale:9,popularity:8,value:0.10}},
   {txt:"👟 Un brand ti manda materiale tecnico personalizzato. Ti senti una star.",ef:{morale:7,popularity:6}},
-  {txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario. Entrate extra.",ef:{morale:8,popularity:5,value:0.08}},
+  /* [PO-289 · giro 85] PROMETTEVA «Entrate extra» e non pagava nulla (misurato: ef = morale +8, popolarita' +5, valore +0,08; bankBalance invariato). Ora paga davvero: 4 settimane degli sponsor che hai (o, senza sponsor, dell'offerta del Procuratore, o della fascia locale) e il testo mostra la cifra. Esce solo da professionista con un agente. Rosso window.__CPM_NO_AGENTE85 = come prima. */
+  {txt:"🤝 Il tuo agente finalizza un accordo commerciale secondario. Entrate extra.",ef:{morale:8,popularity:5,value:0.08},cash85:true,cond:p=>!(typeof window!=="undefined"&&window.__CPM_NO_AGENTE85)?((p.proStatus||"u18")==="pro"&&!!(p.hasAgent||p.agent)):true},
   {txt:"📦 Gadget ufficiali dallo sponsor del club distribuiti in spogliatoio. Squadra felice.",ef:{morale:7,fatigue:-5}},
   {txt:"🏅 Il club annuncia uno sponsor che include il tuo nome sul kit.",ef:{popularity:9,morale:6,value:0.05}},
   {txt:"🌐 Interview online con un media internazionale. La tua storia fa il giro del mondo.",ef:{popularity:14,morale:8,value:0.06}},
