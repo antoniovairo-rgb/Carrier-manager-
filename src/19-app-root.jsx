@@ -599,6 +599,7 @@ function IntroCinematic({onDone}){
 /* [7.999.49 parte A] strumenti di sviluppo (revisione azioni, debug audio) solo con ?dev=1 nell'indirizzo */
 function _cpmDev49(){try{return typeof window!=='undefined'&&/[?&]dev=1(&|$)/.test(window.location.search||"");}catch(_e){return false;}}
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
+  useEffect(()=>{if(!_pctab292()||!onClose)return;const f=e=>{if(e.key==="Escape"&&!(e.target&&/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))){e.preventDefault();onClose();}};document.addEventListener("keydown",f);return()=>document.removeEventListener("keydown",f);},[onClose]);/* [giro 90 PO-292 D8] Esc chiude Opzioni. Rosso __CPM_NO_PCTAB292 */
   const Seg=({active,label,onClick})=>(
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
@@ -606,9 +607,9 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
         <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
-        <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
+        <button onClick={onClose} className="cpm-press" style={{width:_tocco292()?44:34,height:_tocco292()?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
-      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
+      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
         {strumenti&&(
@@ -898,11 +899,15 @@ function App(){
         @media(min-width:560px){.cpm-scroll{padding:14px 14px calc(80px + env(safe-area-inset-bottom,0px));}}
         @media(min-width:900px){.cpm-scroll{padding:16px 24px 20px 244px;}}
         @media(min-width:1280px){.cpm-scroll{padding:18px 48px 20px 268px;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
+        @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
+        @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}
         .cpm-career{width:100%;position:relative;}
         @media(min-width:900px){.cpm-career{max-width:100%;margin:0;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`@media(min-width:1280px){.cpm-career{max-width:1180px;margin-left:auto;margin-right:auto;}}/* [giro 90 PO-292 D12] le schede della carriera a 1920 px si allargavano a 1566 px: righe con nome e valore a 1500 px di distanza. Rosso __CPM_NO_LARGO292. */`}
         .cpm-dash-grid{display:flex;flex-direction:column;gap:12px;}
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
         .cpm-offers{display:flex;flex-direction:column;gap:10px;}

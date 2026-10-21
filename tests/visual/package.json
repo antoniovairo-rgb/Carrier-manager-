@@ -210,6 +210,7 @@
     "pallone-278": "node pallone-278.mjs",
     "panchina-riga": "node panchina-riga.mjs",
     "panchina-293": "node panchina-293.mjs",
+    "pc-tablet-292": "CPM_PROVA_ROSSO=1 node pc-tablet-292.mjs",
     "hud-c3": "node hud-c3.mjs",
     "design-system": "node design-system.mjs",
     "coinvolgimento": "node coinvolgimento-reparti.mjs",

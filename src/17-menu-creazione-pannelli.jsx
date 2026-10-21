@@ -185,6 +185,7 @@ const CREDITI254=[
 const crediti254On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI254);
 const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
 function Crediti238({onClose}){
+  useEffect(()=>{if(!_pctab292()||!onClose)return;const f=e=>{if(e.key==="Escape"){e.preventDefault();onClose();}};document.addEventListener("keydown",f);return()=>document.removeEventListener("keydown",f);},[onClose]);/* [giro 90 PO-292 D8] Esc chiude i Crediti. Rosso __CPM_NO_PCTAB292 */
   const _n254=crediti254On();
   const _nc=<span data-cpm="crediti254-nonconf" style={{color:TH.muted}}>Non posso confermarlo</span>;
   /* [7.999.171 PO-267, collaudo carriera 170 D1 alta] «Non posso confermarlo» e' una nota di verifica interna, non un testo per il
@@ -291,7 +292,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               <div style={{fontSize:FS.small,fontWeight:700,color:TH.txRed}}>⚠️ Salvataggio {i+1} — dati corrotti</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
             </div>
-            <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:FS.small,fontWeight:700}}>🗑️ Elimina</button>
+            <button onClick={()=>setConfirmDel(i)} style={{padding:_tocco292()?"13px 14px":"6px 12px",borderRadius:RAD.sm,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:FS.small,fontWeight:700}}>🗑️ Elimina</button>
           </div>
         ):s?(
           <Card key={i} border={TH.cardBorder} style={{padding:"9px 12px"}}>
@@ -315,7 +316,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0,marginLeft:"auto"}}>
                 <Btn onClick={()=>onLoad(i)} v="primary" style={{padding:"8px 14px",fontSize:FS.body}}>{s.retired?"🏛️ Rivivi il finale →":"Continua →"}</Btn>
-                <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:RAD.xs,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
+                <button onClick={()=>setConfirmDel(i)} style={{padding:_tocco292()?"13px":"5px",borderRadius:RAD.xs,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
               </div>
             </div>
           </Card>
@@ -1954,7 +1955,7 @@ function TutorialOverlay({name,step,onNext,onSkip}){
           ))}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
+          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:_tocco292()?"14px 12px":"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
           <button onClick={onNext} style={{flex:1,background:TH.primary,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
             {isLast?"Inizia la carriera! 🚀":"Avanti →"}
           </button>

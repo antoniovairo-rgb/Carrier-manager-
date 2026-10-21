@@ -222,7 +222,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');
     if(!el)return;
-    const narrow=window.innerWidth<640;
+    const narrow=_narrowLay292();/* [giro 90 PO-292] < 640 px come prima, in piu' il tablet verticale */
     if(screen==="match"&&narrow){el.style.paddingLeft="0";el.style.paddingRight="0";el.style.paddingTop="0";}
     else{el.style.padding="";}
     return()=>{el.style.padding="";};
@@ -613,16 +613,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(k==="R"){e.preventDefault();goTab("profile");}
       else if(k==="G"){e.preventDefault();goTab("agente");}
       else if(k==="S"){e.preventDefault();goTab("club");}
+      else if(k==="L"&&_pctab292()){e.preventDefault();goTab("club");}/* [giro 90 PO-292 D9] «Club» annunciava [S] ma S salva: ora L apre il Club e il suggerimento dice [L] */
+      else if(k==="U"&&_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13)){e.preventDefault();goTab("ufficio");}/* [giro 90 PO-292 D9] «Ufficio» annunciava [U] ma non faceva niente */
       else if(k==="N"){e.preventDefault();goTab("nazionale");}
       else if(k==="M"||k==="H"){e.preventDefault();goTab("dashboard");}
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const tabs=(_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13))?["dashboard","stagione","club","carriera","agente","ufficio"]:["dashboard","stagione","club","carriera","agente"];/* [giro 90 PO-292 D9] le frecce arrivano anche all'Ufficio */
         const cur=tabs.indexOf(_tabToContainer(tab));if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const tabs=(_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13))?["dashboard","stagione","club","carriera","agente","ufficio"]:["dashboard","stagione","club","carriera","agente"];
         const cur=tabs.indexOf(_tabToContainer(tab));if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -6229,7 +6231,7 @@ const getThisWeekMatchday=()=>{
      funzionare e resta nel `title`, ma non occupa piu' una riga sotto ogni voce. */
   const _NAV954=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,
     fontWeight:att?FW.bold:600,letterSpacing:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"0.06em":"0.01em",textTransform:"uppercase",lineHeight:1.2,whiteSpace:"nowrap"});/* [7.999.14] sette voci nella barra: spaziatura stretta, mai a capo */
-  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:_pctab292()?"L":"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
 
   /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
@@ -7352,7 +7354,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
               <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}><VersioneTestata269 col={ink}/>
-              <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
+              <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:_tocco292()?"12px 14px":"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
                 Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
               </button></div>
             </div>
@@ -7489,7 +7491,7 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
-              <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
+              <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:_tocco292()?"12px 8px":0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
             </div>
             {/* [7.921 — C4 · «densa e sportiva in stile Football Manager», direzione del PO 15/09] LA STRISCIA
                 DELLA FORMA. Il cruscotto diceva la posizione in classifica a parole e nient'altro: qui ci sono
@@ -10978,7 +10980,7 @@ const getThisWeekMatchday=()=>{
                       {/* [7.999.49 parte A] la data d'ingaggio e' quella memorizzata (agent.since); se manca non si inventa */}
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Procuratore{player.agent&&player.agent.since&&player.agent.since.s?" · dalla stagione "+player.agent.since.s:""}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Commissione: {player.agentStyle==='boutique'?8:10}% del tuo stipendio</div>
-                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
+                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:_tocco292()?"13px 12px":"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
                     </div>
                     <div style={{background:txOpen?TH.winBg:TH.surface2,border:"1px solid "+(txOpen?TH.winBd:TH.divider),borderRadius:RAD.sm,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>Mercato</div>
@@ -11874,8 +11876,8 @@ const getThisWeekMatchday=()=>{
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
       {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</button>}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</button>
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</button>}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
