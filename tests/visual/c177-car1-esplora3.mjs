@@ -1,0 +1,12 @@
+import { apri, shot, testo, sleep, clickByText, dumpLS, giocaPartita } from './c177-car1-lib.mjs';
+const g = await apri({ save: { 'cpm-match-speed': '2' } }); const { page } = g;
+await clickByText(page, 'Nuova carriera'); await sleep(800);
+await page.fill('input[placeholder="Es. Giovanni Pisano"]', 'Luca Ferraro'); await sleep(300);
+await clickByText(page, 'Inizia i provini'); await sleep(1000);
+await clickByText(page, 'Inizia il provino');
+const r = await giocaPartita(page, { tag: 'tmp-prov1', politica: (n, sc) => n % sc.length, foto: 2 });
+console.log(JSON.stringify(r.hls, null, 1).slice(0, 5000));
+console.log('FINE', r.ph, r.ms, r.btns, '\n', r.txt);
+await shot(page, 'tmp-prov1-fine');
+console.log(g.errs.filter(e => !/BABEL/.test(e)));
+await g.close();

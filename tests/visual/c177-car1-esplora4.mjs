@@ -1,0 +1,14 @@
+import { apri, shot, testo, sleep, clickByText, dumpLS, DATI, caricaCarriera, bottoni, clic, snap } from './c177-car1-lib.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+const save = JSON.parse(fs.readFileSync(path.join(DATI, 'save-02-ingresso.json'), 'utf8')); save['cpm-match-speed'] = '2';
+const g = await apri({ save }); const { page } = g;
+await caricaCarriera(page);
+await page.evaluate(() => window.__CPM_CAREER.resolveOpening());
+await sleep(800);
+console.log(await clic(page, /La tua settimana/)); await sleep(1000);
+console.log('T1', (await testo(page)).replace(/\n/g, ' | ').slice(0, 1500)); console.log('B', (await bottoni(page)).join(' | ')); await shot(page, '11-tua-settimana');
+console.log('scroll', await (await import('./c177-car1-lib.mjs')).scrollFondo(page)); await sleep(500);
+await shot(page, '11-tua-settimana-fondo');
+console.log('T2', (await testo(page)).replace(/\n/g, ' | ').slice(-900));
+console.log(g.errs.filter(e => !/BABEL/.test(e)));
+await g.close();

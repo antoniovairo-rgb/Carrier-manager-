@@ -1,0 +1,13 @@
+import { apri, shot, testo, sleep, clickByText, dumpLS } from './c177-car1-lib.mjs';
+import fs from 'node:fs';
+const g = await apri(); const { page } = g;
+await clickByText(page, 'Nuova carriera'); await sleep(800);
+await page.fill('input[placeholder="Es. Giovanni Pisano"]', 'Luca Ferraro'); await sleep(300);
+await shot(page, 'tmp-crea2');
+await clickByText(page, 'Inizia i provini'); await sleep(1500);
+console.log('--- DOPO INIZIA\n', (await testo(page)).slice(0, 2500));
+await shot(page, 'tmp-p1');
+console.log(await page.evaluate(() => [...document.querySelectorAll('button')].map(e => (e.textContent || '').trim().slice(0, 50)).join(' | ')));
+console.log(g.errs.filter(e => !/BABEL/.test(e)));
+fs.writeFileSync('/tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/ls0.json', JSON.stringify(await dumpLS(page)));
+await g.close();

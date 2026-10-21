@@ -1,0 +1,12 @@
+import { apri, shot, testo, sleep, clickByText, dumpLS, DATI, snap } from './c177-car1-lib.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+const save = JSON.parse(fs.readFileSync(path.join(DATI, 'save-01-post-provini.json'), 'utf8')); save['cpm-match-speed'] = '2';
+const g = await apri({ save, test: false }); const { page } = g;
+console.log('RICARICA:', (await testo(page)).replace(/\n/g, ' | ').slice(0, 800));
+await shot(page, '07-ricarica-dopo-provini');
+console.log('BTN', await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.offsetParent).map(b => b.textContent.trim().slice(0, 40))));
+await clickByText(page, 'Continua|Prosegui', 3000); await sleep(1500);
+console.log('DOPO:', (await testo(page)).replace(/\n/g, ' | ').slice(0, 800));
+await shot(page, '08-offerte');
+console.log(g.errs.filter(e => !/BABEL/.test(e)));
+await g.close();
