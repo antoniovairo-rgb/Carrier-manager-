@@ -7,7 +7,7 @@ export const FOTO = path.join(ROOT, 'docs/collaudi/foto-carriera-177-1');
 export const DATI = path.join(ROOT, 'docs/collaudi/dati-carriera-177-1');
 export async function apri({ save = null, glb = false, test = true } = {}) {
   const srv = await startServer(ROOT); const port = srv.address().port; const b = await launchBrowser();
-  const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 1, hasTouch: true, isMobile: true });
+  const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 1, hasTouch: true, isMobile: true, serviceWorkers: 'block' });
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push('PAGEERROR ' + String(e.message).slice(0, 300)));
   page.on('console', m => { if (m.type() === 'error') errs.push('CONSOLE ' + m.text().slice(0, 300)); });

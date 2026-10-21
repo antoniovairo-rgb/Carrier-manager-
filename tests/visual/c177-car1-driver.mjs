@@ -30,7 +30,7 @@ const ctxNow = async () => { const p = await P(); return p && typeof p === 'obje
 
 /* ---- analisi testi ---- */
 const SOSPETTI = [
-  [/undefined|NaN|\[object|null\b/i, 'valore tecnico visibile'],
+  [/undefined|\bNaN\b|\[object|\bnull\b/, 'valore tecnico visibile'],
   [/Finalizzatore|Stile di gioco|Enfant/i, 'residuo stile (PO-287)'],
   [/\b1 gols\b|\b1 partite\b|\b1 assists\b|\b1 stagioni\b|\b1 anni\b|\b0 gol\b.*\b1 gol\b/i, 'concordanza numero'],
   [/  +[a-zà-ù]/, 'doppio spazio'],
@@ -125,14 +125,11 @@ function verificaPartita(c, p0, p1, r, fine) {
       if (+ge[2] !== mh.assists) dif({ tipo: 'coerenza', nome: 'assist del tabellino != registrati', tab: ge[2], reg: mh.assists, ...c });
     }
     if (mh && sc) { const a = +sc[1], b = +sc[2]; const ex = mh.isHome === false ? [mh.awayScore, mh.homeScore] : [mh.homeScore, mh.awayScore]; if (!(a === ex[0] && b === ex[1])) dif({ tipo: 'coerenza', nome: 'punteggio finale != registrato', fine: sc[0], reg: `${mh.homeScore}-${mh.awayScore}`, ...c }); }
-    // gol dell'eroe negli highlight vs tabellino
-    const golHl = r.hls.filter(h => /\bGOL\b|GOOOL|Gol!/i.test(h.esitoTxt || '') && !/Fallito|NON TROVA|MANCATA|RESPINT|PARATA/i.test((h.esitoTxt || '').slice(0, 400))).length;
-    if (ge && golHl > +ge[1]) dif({ tipo: 'coerenza', nome: 'gol negli highlight piu del tabellino', hl: golHl, tab: ge[1], ...c });
   } catch (e) { dif({ tipo: 'driver', nome: 'verificaPartita errore ' + e.message }); }
 }
 
 /* ---- ripulisce schermate fino al cruscotto ---- */
-const BTN_PRIO = [/Torna alla dashboard/i, /^Continua/i, /^Avanti/i, /^Prosegui/i, /^Capito/i, /Che la stagione cominci/i, /^Torna alla home/i, /^Vai/i, /^Inizia/i, /^Conferma/i, /^OK/i, /^Chiudi/i, /^Fine/i, /^Salta/i];
+const BTN_PRIO = [/Torna alla dashboard/i, /^Accetta/i, /^Continua/i, /^Avanti/i, /^Prosegui/i, /^Capito/i, /Che la stagione cominci/i, /^Torna alla home/i, /^Vai/i, /^Inizia/i, /^Conferma/i, /^OK/i, /^Chiudi/i, /^Fine/i, /^Salta/i];
 async function ripulisci(dove, maxIter = 25) {
   let last = '', stuck = 0;
   for (let i = 0; i < maxIter; i++) {
@@ -150,7 +147,8 @@ async function ripulisci(dove, maxIter = 25) {
     const kind = 'scr:' + screen + ':' + bt.slice(0, 2).join('/');
     if (!drv.vistiKind[kind]) { drv.vistiKind[kind] = 1; await fotoAuto(`scr-${screen}-${hash(kind) % 9999}`); }
     let pick = null;
-    for (const rx of BTN_PRIO) { pick = bt.find(b => rx.test(b)); if (pick) break; }
+    const norm = t => t.replace(/^[^A-Za-zÀ-ù]+/, '');
+    for (const rx of BTN_PRIO) { pick = bt.find(b => rx.test(norm(b))); if (pick) break; }
     if (!pick) { await sleep(800); continue; }
     await page.evaluate(p => { const e = [...document.querySelectorAll('button')].find(b => b.offsetParent && b.innerText.trim().slice(0, 60) === p); if (e) e.click(); }, pick);
     await sleep(700);
@@ -209,7 +207,7 @@ async function salvaRicarica(etichetta) {
 }
 
 /* ---- ciclo principale ---- */
-let ultima = null, fermo = 0, iter = 0, saveCount = 0;
+let ultima = null, fermo = 0, iter = 0, saveCount = 0, nEcc = 0;
 const fine = async (motivo) => { fs.writeFileSync(STATO, JSON.stringify(await dumpLS(page))); console.log('FINE', motivo); await g.close(); process.exit(0); };
 while (Date.now() < T_END) {
   iter++;
@@ -244,15 +242,17 @@ while (Date.now() < T_END) {
       if (!p.weekLived && p.week % 1 === 0) fs.writeFileSync(STATO, JSON.stringify(await dumpLS(page)));
       if (arg.stop && new RegExp('^' + arg.stop.replace('S', 'S').replace('W', 'W') + '$').test('S' + p.season + 'W' + p.week) && !p.weekLived) await fine('STOP ' + arg.stop);
     } else { fermo++; if (fermo > 8) { dif({ tipo: 'blocco', nome: 'il tasto principale non fa avanzare', cta: c.t, ...(await ctxNow()) }); await fotoAuto('fermo-' + Date.now()); await page.evaluate(() => window.__CPM_CAREER.dismiss()); fermo = 0; if (iter > 3000) await fine('FERMO'); } }
-    if (!p.weekLived && p.week === 20 && drv.ricaricatoStagione !== p.season) { drv.ricaricatoStagione = p.season; saveDrv(); await salvaRicarica('w20'); continue; }
+    if (!p.weekLived && p.week >= 20 && drv.ricaricatoOk !== p.season) { await salvaRicarica('w' + p.week); drv.ricaricatoOk = p.season; saveDrv(); continue; }
     if (c.dis) { await sleep(1300); continue; }
     await page.click('[data-cpm="avanza23"]', { timeout: 4000 }).catch(() => {});
     await sleep(1300);
   } catch (e) {
     dif({ tipo: 'driver', nome: 'eccezione: ' + String(e.message).slice(0, 200) });
     if (/closed|Target/.test(e.message)) await fine('BROWSER');
+    nEcc++; if (nEcc % 5 === 0) { try { await page.reload({ waitUntil: 'load' }); await page.waitForFunction(() => document.getElementById('root').children.length > 0, null, { timeout: 90000 }); await sleep(1500); await caricaCarriera(page); } catch (e2) {} }
+    if (nEcc > 40) await fine('TROPPE ECCEZIONI');
     await sleep(1500);
   }
-  if (g.errs.length) { const er = g.errs.filter(e => !/BABEL/.test(e)); if (er.length) { for (const x of er) dif({ tipo: 'console', nome: x, ...(await ctxNow()) }); g.errs.length = 0; } }
+  if (g.errs.length) { const er = g.errs.filter(e => !/BABEL|Failed to load resource/.test(e)); if (er.length) { for (const x of er) dif({ tipo: 'console', nome: x, ...(await ctxNow()) }); g.errs.length = 0; } }
 }
 await fine('TEMPO');

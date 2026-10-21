@@ -1,0 +1,12 @@
+import { apri, shot, testo, sleep, DATI, caricaCarriera, bottoni, dumpLS, snap } from './c177-car1-lib.mjs';
+import fs from 'node:fs'; import path from 'node:path';
+const save = JSON.parse(fs.readFileSync(path.join(DATI, 'stato-corrente.json'), 'utf8'));
+const g = await apri({ save }); const { page } = g;
+await caricaCarriera(page);
+const A = await snap(page); console.log('A', A.season, A.week);
+await page.reload({ waitUntil: 'load' });
+await page.waitForFunction(() => document.getElementById('root').children.length > 0, null, { timeout: 90000 }); await sleep(2000);
+console.log('dopo reload', (await testo(page)).replace(/\n/g, ' | ').slice(0, 300)); console.log(await bottoni(page));
+console.log(Object.keys(await dumpLS(page)));
+await shot(page, 'tmp-reload');
+await g.close();
