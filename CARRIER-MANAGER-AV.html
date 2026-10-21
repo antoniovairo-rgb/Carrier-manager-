@@ -30041,6 +30041,28 @@ function schedeAttesa241({player,home,away,homeRoster,awayRoster,isMatchHome,clo
     const g=loroXI[0];if(g&&g.name)out.push({t:"Tra i pali per "+nm(loro),v:g.name});}
   return out;
 }
+/* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+   Prima la festa leggera cantava sempre gli stessi due cori. Ora due cori da un repertorio (con varianti sui gol dell'eroe in questa
+   partita), scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) scartando quelli
+   delle ultime feste (ultimi 12 = 6 feste, memoria del browser: comodita'; se manca si sceglie solo con l'hash). */
+function cori291(N,g,base,usati){const U=String(N).toUpperCase();
+  if(typeof window!=='undefined'&&window.__CPM_NO_CORI291)return [U+"! "+U+"! "+U+"!","C'è solo un "+N+"!"];
+  /* [PO-291 bis «rivedi i testi, non sono molto fluidi e corretti»] cori da curva veri, a partita finita (niente «facci un gol») */
+  const rep=[U+"! "+U+"! "+U+"!","C'è solo un "+N+"!","Oh "+N+", oh "+N+"!","Alé, alé, "+N+" alé!",N+", "+N+", olé olé!",
+    "Tutti in piedi per "+N+"!","Grazie, "+N+"!","Siamo tutti con te, "+N+"!",N+", uno di noi!","La curva è tutta per "+N+"!",N+", facci sognare!",
+    "Forza "+N+"!",N+" campione!","Grande "+N+"!",N+", fenomeno!","Per sempre "+N+"!","Batti le mani per "+N+"!",N+", sei il nostro orgoglio!",
+    N+", che partita!",N+", non ti fermare!",N+", il nostro numero uno!","Un solo coro: "+N+"!",N+", sei la nostra gioia!"];
+  /* [PO-291 ter «aumenta le varianti»] 23 cori fissi + 4 sui gol dell'eroe in questa partita */
+  const repGol=g>=3?["Tripletta di "+N+"!","Il pallone è tuo, "+N+"!",N+", notte magica!",N+", tre gol e tutti in piedi!"]
+    :g===2?["Doppietta di "+N+"!","Due gol di "+N+"!",N+", ancora tu!",N+", due volte in rete!"]
+    :g===1?[N+", che gol!","Segna sempre lui, "+N+"!","Gol di "+N+", che emozione!",N+", il gol è tuo!"]
+    :[N+", cuore e grinta!",N+", non mollare mai!",N+", hai dato tutto!",N+", il gol arriverà!"];
+  const tutti=repGol.concat(rep);usati=Array.isArray(usati)?usati:[];
+  const kh=(k)=>{k=String(k);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;return Math.abs(h);};
+  const liberi=tutti.filter(t=>usati.indexOf(t)<0),pool=liberi.length>=2?liberi:tutti;
+  const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
+  return [c1,c2];}
+try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -31989,7 +32011,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let _cg=""; try{_cg=((typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"");}catch(_e){}
     if(!_cg)return;
     const _col="#f8fafc";/* testo chiaro: il colore del club (granata, blu scuro…) sul fondo scuro della pillola non si legge (foto 7.999.48) */
-    const _cori=[_cg.toUpperCase()+"! "+_cg.toUpperCase()+"! "+_cg.toUpperCase()+"!","C'è solo un "+_cg+"!"];
+    /* [7.999.177 PO-291 «dice sempre la stessa cosa "c'è solo un Vairo": genera varianti non ripetitive» — rosso __CPM_NO_CORI291]
+       Prima: sempre gli stessi due cori. Ora due cori presi da un repertorio (con varianti sui gol dell'eroe in questa partita),
+       scelti con un hash di nome+stagione+settimana (nessun Math.random: la carriera non cambia sequenza) e scartando quelli
+       cantati nelle ultime feste (ultimi 6, memoria del browser: comodita', se manca si sceglie solo con l'hash). */
+    let usati=[];try{usati=JSON.parse(localStorage.getItem("cpm-cori291")||"[]");if(!Array.isArray(usati))usati=[];}catch(_e){usati=[];}
+    const _cori=cori291(_cg,(mStats&&mStats.goals)|0,(player.name||"x")+"|"+(player.season||1)+"|"+(player.week||1),usati);
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_CORI291)){try{localStorage.setItem("cpm-cori291",JSON.stringify(usati.concat(_cori).slice(-12)));}catch(_e){}}
     _cori.forEach((t,i)=>{
       chantTimersRef.current.push(setTimeout(()=>{setCrowdChant({text:t,type:"goal",key:Date.now()+i,clubCol:_col});if(typeof window!=='undefined')(window.__CPM_CORO48=window.__CPM_CORO48||[]).push(t);},900+i*3600));
       chantTimersRef.current.push(setTimeout(()=>setCrowdChant(null),900+i*3600+3000));
@@ -43992,14 +44020,17 @@ const CREDITI238=[
    «Senza riga licenza», giro 25b). Le voci tolte nel giro 25 sono tornate con la loro fonte (decisione PO 15/10 «Rimettile con
    la loro fonte»); i file d'origine non confermata restano nel rapporto docs/sviluppo/RAPPORTO-giro25.md, non qui. Rosso __CPM_NO_CREDITI254 (torna
    il contenuto PO-238 e il link sottile). */
+/* [7.999.177 PO-290 «sistema il testo, lo leggeranno i player»] via note interne (giro, date, nomi di file, «dichiarata dal PO», sintesi
+   «pseudo-casuale»): ai crediti restano opera, autore e licenza in parole del giocatore. Rosso __CPM_NO_CRED290: testi della 7.999.176. */
+const _c290=!(typeof window!=='undefined'&&window.__CPM_NO_CRED290);
 const CREDITI254=[
   {sez:"Modelli 3D e animazioni",voci:[
-    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:"Royalty Free (standard) — dichiarata dal PO"},
-    {n:"Corpo «Regular Male»",d:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
-    {n:"Microsoft Rocketbox",d:"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
-    {n:"Animazioni Mixamo e modello CH38",d:"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
+    {n:"Giocatori 3D «Soccer Player - Rigged» (CGTrader)",d:(typeof window!=='undefined'&&window.__CPM_NO_CRED268)?"Ordine CGTrader #17876008 del 20/09/2026.":"Acquistati su CGTrader.",/* [7.999.172 PO-268] numero d'ordine e data tolti dal testo del giocatore; restano modello, autore e CGTrader come fonte. Rosso __CPM_NO_CRED268 */aut:"Hisenberg",lic:_c290?"Royalty Free (standard)":"Royalty Free (standard) — dichiarata dal PO"},
+    {n:"Corpo «Regular Male»",d:_c290?undefined:"Provenienza dichiarata dal PO.",aut:"Mixamo (Adobe)"},
+    {n:"Microsoft Rocketbox",d:_c290?"Giornalista e presentatori delle cerimonie.":"Giornalista e presentatori delle cerimonie (assets/actor-journalist.glb, actor-presenter.glb, actor-presenter-f.glb).",aut:"Microsoft (github.com/microsoft/Microsoft-Rocketbox)",lic:"MIT"},
+    {n:"Animazioni Mixamo e modello CH38",d:_c290?"Movimenti e gesti tecnici dei giocatori, e modello CH38.":"Clip di movimento e gesti tecnici (assets/anim-*.glb, cgtrader-clip-mixamo.glb, cgtrader-clip-po*.glb) e modello CH38 (assets/footballer*.glb).",aut:"Mixamo (Adobe)",lic:"«royalty free for personal, commercial, and non-profit projects, including creating video games» (FAQ Adobe, helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)"}]},
   {sez:"Illustrazioni e immagini",voci:[
-    {n:"Ritratti delle figurine",aut:"Generati con l'API a pagamento di OpenAI"},
+    {n:"Ritratti delle figurine",aut:_c290?"Generati con OpenAI":"Generati con l'API a pagamento di OpenAI"},
     /* [7.999.173 PO-267, giro 68] le due voci DiceBear nello stesso formato delle altre: autore, fonte e riga Licenza. La licenza
        di Avataaars e' quella dichiarata nei metadati della libreria inclusa (assets/dicebear-avatars.min.js: title «Avataaars»,
        license.name «Free for personal and commercial use», url avataaars.com); Micah porta il link della licenza e la fonte, come
@@ -44015,8 +44046,8 @@ const CREDITI254=[
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
     {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
-    {n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"},
-    {n:"Effetti sonori sintetizzati con Web Audio",aut:"Realizzati per Korward Elite"}]},
+    ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
+    {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
     {n:"DiceBear (libreria)",aut:"Florian Körner",lic:"MIT"},
     {n:"React/ReactDOM 18.2.0, Three.js r128, Babel standalone 7.23.6",lic:"MIT"},
@@ -44236,7 +44267,7 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
-function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
+function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
   const [,_rifV23]=React.useReducer(x=>x+1,0);React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rifV23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rifV23);};},[]);
@@ -44265,6 +44296,9 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const perPage=10;const totalPages=Math.ceil(AVATARS.length/perPage);const pageAvatars=AVATARS.slice(page*perPage,(page+1)*perPage);
   return(
     <div style={{width:"100%"}}>
+      {/* [7.999.177 PO-295 «da qui non si puo' tornare alla home»] pulsante «← Home» in testa alla creazione. Rosso __CPM_NO_IND295 */}
+      {onBack&&!(typeof window!=='undefined'&&window.__CPM_NO_IND295)&&(<div style={{display:"flex",justifyContent:"flex-start",maxWidth:900,margin:"0 auto 4px"}}>
+        <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
@@ -59422,7 +59456,7 @@ function App(){
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
-  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
+  if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
