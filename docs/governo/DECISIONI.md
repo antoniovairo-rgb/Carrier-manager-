@@ -749,3 +749,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 21/10 — release a contenuto chiuso (PO)
 
 - PO: «Ok» alla regola proposta: una release assemblata non si allarga più; le richieste nuove vanno nella successiva (la 177 si era allargata da 5 a 10 giri, con più catene rifatte). Eccezione solo per difetti alti/medi o di highlight dell'eroe trovati nella catena della release stessa.
+
+## 21/10 sera — collaudo PC e tablet (PO-292)
+
+- Collaudo 177 (aba5296f): 4 formati «usabili con difetti»; 0 alti, 7 medi (5 negli highlight: bloccano il rilascio della 178 finché aperti), 8 bassi.
+- PO (questionario): **«Partita a tutto schermo»** su PC e tablet (statistiche in colonna a destra; menu centrati senza lo spazio della barra laterale dove non c'è) e correzioni **nella 7.999.178** con PO-296 e PO-297. Poi un guardiano PC/tablet fisso in catena.
+- Nota di processo: la regola PO «nessun identificativo di modello negli artefatti» prevale sulla riga di attribuzione dei commit: da ora i commit dei giri e dei collaudi non portano più il nome del modello.
