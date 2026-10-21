@@ -1,0 +1,4 @@
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"2–1","reg":"1-2","s":1,"w":1,"club":"FC Altoadige Primavera"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /opt/pw-browsers/chromium --disable-field-trial-config --disable-background-networking --disable-background-ti"}

@@ -11,7 +11,7 @@ export async function apri({ save = null, glb = false, test = true } = {}) {
   const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push('PAGEERROR ' + String(e.message).slice(0, 300)));
   page.on('console', m => { if (m.type() === 'error') errs.push('CONSOLE ' + m.text().slice(0, 300)); });
-  await page.addInitScript(([s, g]) => { if (!g) window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (s) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); } }, [save, glb]);
+  await page.addInitScript(([s, g]) => { if (!g) window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (s && !sessionStorage.getItem('__c177init')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__c177init', '1'); } }, [save, glb]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${test ? '?cpmtest=1' : ''}`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
   await sleep(1500);
@@ -37,9 +37,10 @@ export async function leggiMatch(page) {
 }
 /* Gioca una partita viva fino al fischio finale e oltre (post-partita non incluso).
    politica: funzione (n, scelte[]) -> indice. Ritorna elenco di highlight registrati. */
-export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto = 0, onHL } = {}) {
+export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto = 0, onHL, fotoDir } = {}) {
+  const fd = async (nome) => { if (!fotoDir) return; try { await page.screenshot({ path: path.join(fotoDir, nome + '.png') }); } catch (e) {} };
   const hls = []; const t0 = Date.now(); let n = 0; let ultimoFine = null;
-  let stallo = 0, ultimaChiave = '', nMove = 0;
+  let stallo = 0, ultimaChiave = '', nMove = 0, fotoN = 0; const schede = [], schedeViste = new Set();
   while (Date.now() - t0 < maxMs) {
     const st = await page.evaluate(() => {
       const ph = window.__CPM_PHASE ? window.__CPM_PHASE() : null;
@@ -47,6 +48,7 @@ export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto =
       return { ph, btns, txt: document.body.innerText.slice(0, 1800) };
     });
     const chiave = st.ph + '|' + st.btns.join(',');
+    if (fotoDir && st.ph && st.ph.startsWith('hl')) { fotoN++; try { await page.screenshot({ path: path.join(fotoDir, `${tag}f${String(n).padStart(2, '0')}-${String(fotoN).padStart(3, '0')}-${st.ph}.jpg`), type: 'jpeg', quality: 55 }); } catch (e) {} }
     if (st.ph === 'hl_move') {
       if (foto && nMove < foto) { await shot(page, `${tag}-move${nMove}`); }
       nMove++;
@@ -61,7 +63,7 @@ export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto =
       if (sc.length) {
         const i = politica ? politica(n, sc, st.txt) : 0;
         const scena = await page.evaluate(() => window.__CPM_STATE ? (() => { const s = window.__CPM_STATE(); return { ball: s.ball && { x: s.ball.x, y: s.ball.y }, hero: s.hero && { x: s.hero.x, y: s.hero.y } }; })() : null).catch(() => null);
-        const rec = { n, min: (st.txt.match(/(\d+)'/) || [])[1], scena: st.txt.split('\n').slice(0, 14).join(' / ').slice(0, 500), scelte: sc, scelta: sc[i], posPrima: scena };
+        const rec = { n, puntPrima: (st.txt.match(/(\d+)\s*[–-]\s*(\d+)/) || [])[0] || null, min: (st.txt.match(/(\d+)'/) || [])[1], scena: st.txt.split('\n').slice(0, 14).join(' / ').slice(0, 500), scelte: sc, scelta: sc[i], posPrima: scena };
         if (foto && n < foto) await shot(page, `${tag}-hl${n}-scelta`);
         await page.evaluate(idx => { const FISSI = /^(⏸|▶|1×|1,5×|2×|⚠️|Statistiche|Pagelle|▴|▾)/; const b = [...document.querySelectorAll('button')].filter(b => b.offsetParent && !FISSI.test((b.textContent || '').trim())); if (b[idx]) b[idx].click(); }, i);
         hls.push(rec); ultimoFine = rec; n++; await sleep(600); continue;
@@ -71,10 +73,14 @@ export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto =
       /* l'esito resta a schermo pochi secondi: lo si legge SUBITO, poi si campiona il pallone finche' dura */
       const leggi = () => page.evaluate(() => { const s = window.__CPM_STATE ? window.__CPM_STATE() : null; return { ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, txt: document.body.innerText.slice(0, 1500), ball: s && s.ball && { x: s.ball.x, y: s.ball.y, h: s.ball.worldY }, act: s && s.act && { t: s.act.t, ok: s.act.ok, kind: s.act.kind }, hero: s && s.hero && { x: s.hero.x, y: s.hero.y } }; }).catch(() => null);
       let r = await leggi(); const primo = r; let ultimo = r; let fotoFatta = false; let conVoto = (r && /voto/i.test(r.txt)) ? r : null;
-      for (let k = 0; k < 14; k++) {
+      for (let k = 0; k < 20; k++) {
+        if (fotoDir) { fotoN++; try { await page.screenshot({ path: path.join(fotoDir, `${tag}f${String(n - 1).padStart(2, '0')}-${String(fotoN).padStart(3, '0')}-res.jpg`), type: 'jpeg', quality: 55 }); } catch (e) {} }
         if (foto && ultimoFine && hls.length <= foto && !fotoFatta && k === 3) { await shot(page, `${tag}-hl${hls.length - 1}-esito`); fotoFatta = true; }
         await sleep(300); const q = await leggi(); if (!q || q.ph !== 'hl_result') break; ultimo = q; if (!conVoto && /voto/i.test(q.txt)) conVoto = q;
       }
+      let dopo = null;
+      try { await sleep(1800); dopo = await page.evaluate(() => ({ ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null, txt: document.body.innerText.slice(0, 700) })); } catch (e) {}
+      if (ultimoFine && dopo) { ultimoFine.dopoTxt = dopo.txt.replace(/\n/g, ' / ').slice(0, 500); ultimoFine.puntDopo = (dopo.txt.match(/(\d+)\s*[–-]\s*(\d+)/) || [])[0] || null; }
       if (ultimoFine && primo) {
         ultimoFine.esitoTxt = ((conVoto || primo).txt).split('\n').slice(0, 26).join(' / ').slice(0, 800);
         ultimoFine.ball = ultimo.ball; ultimoFine.act = primo.act; ultimoFine.heroDopo = ultimo.hero;
@@ -85,7 +91,21 @@ export async function giocaPartita(page, { politica, tag, maxMs = 900000, foto =
     }
     if (!['playing','hl_intro','hl_choose','hl_result','hl_move'].includes(st.ph)) {
       /* fine partita o altro: esce al chiamante */
-      return { hls, ph: st.ph, btns: st.btns, txt: st.txt, ms: Date.now() - t0 };
+      return { hls, schede, ph: st.ph, btns: st.btns, txt: st.txt, ms: Date.now() - t0 };
+    }
+    if (st.ph === 'playing') {
+      const extra = st.btns.filter(b => !FISSI.test(b) && !/^Continua/.test(b));
+      if (extra.length) {
+        const k = extra.join('|');
+        if (!schedeViste.has(k + ':' + Math.floor((Date.now() - t0) / 20000))) {
+          schedeViste.add(k + ':' + Math.floor((Date.now() - t0) / 20000));
+          const i = politica ? politica(900 + schede.length, extra, st.txt) : 0;
+          schede.push({ btns: extra, scelta: extra[i], txt: st.txt.slice(0, 400) });
+          await fd(`${tag}scheda${schede.length}`);
+          await page.evaluate(idx => { const FISSI = /^(⏸|▶|1×|1,5×|2×|⚠️|Statistiche|Pagelle|▴|▾)/; const b = [...document.querySelectorAll('button')].filter(b => b.offsetParent && !FISSI.test((b.textContent || '').trim()) && !/^Continua/.test((b.textContent || '').trim())); if (b[idx]) b[idx].click(); }, i);
+          await sleep(600); continue;
+        }
+      }
     }
     if (chiave === ultimaChiave) stallo++; else { stallo = 0; ultimaChiave = chiave; }
     await sleep(700);
