@@ -98,7 +98,15 @@ async function partitaLive() {
   const c = await ctxNow(); const p0 = await P(); drv.live++; saveDrv();
   // pre-partita: formazioni -> ingresso (si guarda l'ingresso 1 volta su 5, altrimenti si salta)
   let guardaIngresso = (drv.live % 8 === 1);
-  for (let i = 0; i < 12; i++) { const ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null); if (ph === 'matchday') { await clic(page, /Vedi le formazioni/); await sleep(1200); break; } await sleep(600); }
+  let inMatch = false;
+  for (let i = 0; i < 40; i++) {
+    const ph = await page.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null);
+    if (ph === 'matchday') { await clic(page, /Vedi le formazioni/); await sleep(1200); inMatch = true; break; }
+    if (ph === 'formations' || ph === 'walkout' || ph === 'playing') { inMatch = true; break; }
+    const o = await overlay(page); if (o) { await gestisciOverlay(o, 'prepartita'); continue; }
+    await sleep(700);
+  }
+  if (!inMatch) { dif({ tipo: 'blocco', nome: 'partita live non parte', ...c }); return { hls: [] }; }
   const tIng = Date.now();
   if (guardaIngresso) {
     await clic(page, /Ingresso in campo/); let k = 0;
