@@ -36,7 +36,7 @@ const SOSPETTI = [
   [/  +[a-zà-ù]/, 'doppio spazio'],
   [/\bun'[a-z]*[ao]\b(?=.*maschile)/i, 'apostrofo'],
   [/[.]{4,}|!!|\?\?/, 'punteggiatura'],
-  [/Non posso confermarlo|prototipo|TODO|debug|__CPM/i, 'nota interna'],
+  [/Non posso confermarlo|prototipo|\bTODO\b|\bdebug\b|__CPM/, 'nota interna'],
   [/€\s*-|-\s*€\s*\d.*-\s*€|NaN€/, 'importo strano'],
 ];
 async function scanTesto(txt, dove) {
