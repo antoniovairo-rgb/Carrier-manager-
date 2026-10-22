@@ -80,3 +80,21 @@ st.fineStagione=async(o={})=>{const rec=[];const s0=await st.snap();
   rec.push(sc+'>'+nx.slice(0,30));await tocca(page,nx.split(' | ')[0],3000);await sleep(2500);
   const s=await st.snap();if(s&&s.season>s0.season&&sc!=='seasonEnd'&&/Inizia Stagione/.test(nx)){rec.push('nuova:'+s.season);break;}}
  return rec;};
+/* torneo della Nazionale dal pannello Carriera > Nazionale: gioca dal vivo ogni gara disponibile finché il pulsante sparisce */
+st.vaiNaz=async()=>{await page.evaluate(()=>{const b=[...document.querySelectorAll('button,div')].filter(e=>(e.innerText||'').trim()==='CARRIERA');if(b.length)b[b.length-1].click();});await sleep(1500);
+ await page.evaluate(()=>{const b=[...document.querySelectorAll('button')].filter(e=>/Nazionale/.test(e.innerText||'')&&(e.innerText||'').length<20);if(b[0])b[0].click();});await sleep(1500);};
+st.natTorneo=async(maxG=8)=>{const out=[];for(let g=0;g<maxG;g++){
+  for(let k=0;k<6;k++){const ov=await st.ovBtns();if(ov.some(x=>/^Chiudi/.test(x))){await tocca(page,'Chiudi',2500);await sleep(1000);continue;}const ch=await st.modali(await st.btns());if(!ch.length)break;await tocca(page,ch[0].split(' | ')[0],2500);await sleep(1200);}
+  await st.vaiNaz();const bb=await st.btns();const x=bb.find(y=>/^⚽ Gioca/.test(y));if(!x){out.push('nessuna gara: '+bb.filter(y=>/Simula|Qualific|Girone|Ottavi|Finale|Semifinale|Quarti/.test(y)).join('|'));break;}
+  const lab=x.split(' | ')[0];await tocca(page,lab,3000);await sleep(2500);
+  for(let i=0;i<10;i++){const b=await st.btns();
+   if(b.some(y=>/^Salta e gioca/.test(y))){await tocca(page,'Salta e gioca',3000);await sleep(2000);continue;}
+   if(b.some(y=>/^Ingresso in campo/.test(y))){await tocca(page,"Salta l'ingresso",3000);await sleep(2000);continue;}
+   if(b.some(y=>/^⏸/.test(y))){const r=await st.inMatch(81+g);break;}
+   const z=b.find(y=>/Gioca la partita|Vai alla Convocazione|Avanti|Continua|Inizia/.test(y));if(!z)break;await tocca(page,z.split(' | ')[0],3000);await sleep(2000);}
+  const fine=(st.fineTxt||'');const m=fine.match(/FISCHIO FINALE\n([^\n]+)\n(\d+–\d+)\n([^\n]+)\n([^\n]+)/);const hd=fine.split('\n').slice(2,4).join(' / ');
+  try{await foto(page,'nat-torneo-'+(st.contN=(st.contN||0)+1));}catch(e){}
+  fs.appendFileSync(OUT+'/partite-live.jsonl',JSON.stringify({k:'NAT:'+lab,hl:st.hl,fine:fine.slice(0,2500)})+'\n');
+  out.push(lab+' => '+(m?m.slice(1).join(' '):fine.slice(0,100).replace(/\n/g,' / ')));
+  await tocca(page,'Torna alla dashboard',3000);await sleep(2500);}
+ return out;};
