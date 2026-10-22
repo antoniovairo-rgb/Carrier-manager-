@@ -496,3 +496,8 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":13,"w":33}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":13,"w":34}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":25,"campo":26,"s":13,"w":35}
+{"tipo":"blocco","nome":"partita live non parte","s":13,"w":35,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":25,"campo":26,"s":13,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":26,"campo":27,"s":13,"w":37}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":28,"campo":29,"s":13,"w":38}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":30,"campo":31,"s":13,"w":39}
