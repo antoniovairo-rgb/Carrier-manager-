@@ -3,3 +3,4 @@
 {"cp": "s7w1", "stagione": 7, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "sam"], [".playedMd.md[len]", 38, 0], [".playedMd.s", "6", "7"]]}
 {"cp": "s8w1", "stagione": 8, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "fio"], [".playedMd.s", "7", "8"], [".playedMd.md[len]", 48, 0]]}
 {"cp": "s8w21", "stagione": 8, "settimana": 21, "n_diff": 0, "diff": []}
+{"cp": "s9w1", "stagione": 9, "settimana": 1, "n_diff": 6, "diff": [[".teammates[0].name", "Marcos Cruz", "Filippo Semeraro"], [".teammates[1].name", "Xacobo Piquer", "Mauro Raimondi"], [".teammates[2].name", "Carlos Campos", "Martino Giannico"], [".cup.club", "<assente>", "fio"], [".playedMd.s", "8", "9"], [".playedMd.md[len]", 46, 0]]}
