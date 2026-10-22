@@ -45,7 +45,7 @@ st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week
   if(b.some(x=>/^Salta e gioca/.test(x))){await tocca(page,opts.vedi?'Vedi le formazioni':'Salta e gioca',3000);ev.push('prematch');await sleep(1500);continue;}
   if(b.some(x=>/^Ingresso in campo/.test(x))){await tocca(page,opts.ingresso?'Ingresso in campo':"Salta l'ingresso",3000);ev.push('ingresso');await sleep(2000);continue;}
   if(b.some(x=>/^⏸/.test(x))){const r=await st.inMatch(opts.seed||7);ev.push('match:'+r);fs.appendFileSync(OUT+'/partite-live.jsonl',JSON.stringify({k:k0,hl:st.hl,fine:(st.fineTxt||'').slice(0,2500)})+'\n');continue;}
-  if(b.some(x=>/Torna alla dashboard/.test(x))){opts.postFoto&&await foto(page,opts.postFoto);ev.push('postmatch:'+(await st.txt(120)));await tocca(page,'Torna alla dashboard',3000);await sleep(1500);continue;}
+  if(b.some(x=>/Torna alla dashboard/.test(x))){if(ev.some(x=>/NAT-PROMPT/.test(x))){try{await foto(page,'nat-s'+s0.season+'w'+s0.week+'-post');}catch(e){}}opts.postFoto&&await foto(page,opts.postFoto);ev.push('postmatch:'+(await st.txt(120)));await tocca(page,'Torna alla dashboard',3000);await sleep(1500);continue;}
   const sb=await st.sbroglia();if(sb){ev.push(sb);await sleep(900);continue;}
   const hasCta=b.some(x=>/^(🏁|⚽|⚡|▶|➡|📅|🏆|⏭|✅)/.test(x)&&!NAV.test(x));
   const extra=await st.modali(b);
