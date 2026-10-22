@@ -463,3 +463,11 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":35}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":23,"s":12,"w":36}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":23,"s":12,"w":37}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":5,"s":12,"w":37}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":23,"s":12,"w":38}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":5,"s":12,"w":38}
+{"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"In sala | Lombardi | in sala | Neri | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"cruscotto","s":12,"w":38,"club":"FC Islington"}
+{"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"In sala | Lombardi | in sala | Neri | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"finestra","s":12,"w":38,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":23,"s":12,"w":39}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":5,"s":12,"w":39}
