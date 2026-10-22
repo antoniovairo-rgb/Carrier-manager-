@@ -45,12 +45,14 @@ export const clickTesto = async (page, rx) => {
 /* Gioca UNA partita dal vivo fino al fischio. Ritorna il resoconto: highlight (scelta, esito scritto, punteggio prima/dopo),
    timeline del motore, tabellone, testo dell'ultima schermata. scelte: array ciclico di indici (-1 = ultimo). */
 export async function giocaLive(S, { scelte = [0, 1, 2, -1], tetto = 420000, foto: fn = null, ingresso = false } = {}) {
-  let started = false;
+  let started = false; const fasi = []; let tCambio = Date.now();
   const p = S.page; const hls = []; let k = 0; let lastPh = '', t0 = Date.now(); let cur = null; let scoreFine = null; let cer = null, cerFoto = null;
   const sc = () => p.evaluate(() => { try { return window.__CPM_SCORE(); } catch (e) { return null; } });
   while (Date.now() - t0 < tetto) {
     await sleep(350);
     const ph = await fase(p);
+    if (ph !== lastPh) { fasi.push([Math.round((Date.now() - t0) / 1000), ph]); tCambio = Date.now(); }
+    if (!ph && Date.now() - tCambio > 30000) { fasi.push(['nullo>30s', await p.evaluate(() => document.body.innerText.slice(0, 120))]); tCambio = Date.now(); await clickTesto(p, /Salta e gioca|Salta l'ingresso|Salta ingresso|Gioca/); }
     if (ph !== lastPh) {
       if (ph === 'hl_choose') {
         const acts = await p.evaluate(() => [...document.querySelectorAll('button')].filter(x => x.offsetParent && x.textContent.trim().length > 5 && !/^(⏸|▶|\d(\.\d)?×|⚠️|Statistiche|Pagelle|▴|Scegli)/.test(x.textContent.trim())).map(x => x.textContent.trim().replace(/\s+/g, ' ')));
@@ -86,7 +88,7 @@ export async function giocaLive(S, { scelte = [0, 1, 2, -1], tetto = 420000, fot
   }
   const tl = await p.evaluate(() => { try { return (window.__CPM_TIMELINE ? window.__CPM_TIMELINE() : []).map(e => ({ t: e.type || e.ev, i: e.intent, k: e.key, ok: e.ok, l: e.label })); } catch (e) { return []; } });
   const testoFine = await testo(p);
-  return { hls, tl, scoreFine, testoFine, cer, cerFoto, durata: Date.now() - t0 };
+  return { hls, tl, scoreFine, testoFine, cer, cerFoto, fasi: fasi.slice(0, 60), durata: Date.now() - t0 };
 }
 
 export async function impostaNome(p, nome) {

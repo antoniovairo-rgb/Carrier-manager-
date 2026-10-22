@@ -3,7 +3,7 @@ import fs from 'fs'; import path from 'path';
 import * as L from './c177-car2-lib.mjs';
 const { sleep, clickTesto, testo, foto, difetto, registra, DATI } = L;
 
-export const NAV = /^(Salva|⚡ Vivi la Settimana|🏁 Avvia Stagione|[^ ]{1,4} Gioca vs|Calendario|La tua settimana|Obiettivi della stagione|Ultime notizie|☕ Sostieni|💡 Idee|Home$|Stagione$|Club$|Carriera$|Agente$|Ufficio$|Opzioni$)/;
+export const NAV = /^(Salva|⏭️ Avanza Settimana|🎉 Festeggia|⚡ Vivi la Settimana|🏁 Avvia Stagione|[^ ]{1,4} Gioca vs|Calendario|La tua settimana|Obiettivi della stagione|Ultime notizie|☕ Sostieni|💡 Idee|Home$|Stagione$|Club$|Carriera$|Agente$|Ufficio$|Opzioni$)/;
 /* bottoni cliccabili davvero (visibili, non coperti) con testo */
 export const cliccabili = page => page.evaluate(() => [...document.querySelectorAll('button,[role=button]')].filter(x => {
   if (x.offsetParent === null || x.disabled) return false; const q = x.getBoundingClientRect(); if (q.width < 4 || q.height < 4) return false;
@@ -35,6 +35,16 @@ let rot = 0;
 export async function passo(S, ctx) {
   const p = S.page; const cl = await cliccabili(p); const t = await testo(p); const modali = cl.filter(x => !NAV.test(x) && !/›\s*$/.test(x) && x.length > 0);
   const tag = (s, extra) => { ctx.ultimo = s; if (extra) ctx.log(s, extra); return s; };
+  /* 0. offerta di trasferimento sul tavolo (Accetta / Rifiuta) e presentazione del nuovo club */
+  if (cl.some(x => /^Accetta/.test(x)) && cl.some(x => /^Rifiuta/.test(x))) {
+    const tx = t.replace(/\n+/g, ' | '); const rigaClub = tx.split(' | ').slice(0, 4).join(' | '); const rinnovo = /rinnov/i.test(tx.slice(0, 600));
+    const dec = ctx.decidiOfferta ? ctx.decidiOfferta(tx, rinnovo) : 'accetta'; ctx.log('offerta', { testa: [...tx.slice(0, 1100)].join(''), decisione: dec });
+    const prima = await stato(S);
+    await clickTesto(p, dec === 'accetta' ? /^Accetta/ : /^Rifiuta/); await sleep(2200);
+    if (dec === 'accetta') { ctx.trasferimenti = (ctx.trasferimenti || 0) + 1; ctx.log('trasferimento', { da: prima && prima.club, st: prima && prima.st, wk: prima && prima.wk }); }
+    return tag('offerta-' + dec);
+  }
+  if (cl.some(x => /^🏟️ Inizia la tua storia/.test(x))) { ctx.log('presentazione-club', { t: [...t.replace(/\n+/g, ' | ').slice(0, 600)].join('') }); await clickTesto(p, /Inizia la tua storia/); await sleep(1800); return tag('presentazione'); }
   /* 1. finestra partita */
   if (cl.some(x => /^Gioca( la partita| ·)/.test(x)) && cl.some(x => /^Simula e avanza/.test(x))) {
     ctx.nPartite = (ctx.nPartite || 0) + 1;
@@ -60,14 +70,16 @@ export async function passo(S, ctx) {
     else pickRx = /^Più tardi/;
     const r = await clickTesto(p, pickRx); await sleep(800); ctx.log('confronto-agente', { testo: dom, scelta: r }); return tag('confronto');
   }
-  if (/INTERVISTA|GIORNALIST|RISPONDI TU|ZONA MISTA/i.test(t) && tutti.length >= 2 && tutti.length <= 6 && !/Gioca la partita|Impulso della settimana/.test(t)) {
-    const o = tutti.filter(x => !/^(Chiudi|Salva|Non ora)/.test(x)); let i = (rot++) % o.length; const dom = t.replace(/\n+/g, ' | ').match(/«[^»]{5,160}»/);
+  const risposte = tutti.filter(x => /^\S{1,4}\s?(Ambizioso|Diplomatico|Umile|No comment|Aggressivo|Polemico|Ironico|Sincero)[^«]{0,3}«/.test(x));
+  if ((risposte.length >= 2 || (/INTERVISTA|GIORNALIST|RISPONDI TU|ZONA MISTA/i.test(t) && tutti.length >= 2 && tutti.length <= 6)) && !/Gioca la partita|Impulso della settimana/.test(t)) {
+    const o = (risposte.length >= 2 ? risposte : tutti).filter(x => !/^(Chiudi|Salva|Non ora)/.test(x)); let i = (rot++) % o.length; const dom = t.replace(/\n+/g, ' | ').match(/«[^»]{5,160}»/);
     const vuoleVia = o.findIndex(x => /guardarci intorno|cambiare completamente aria|andare via|lasciare il club/i.test(x)); if (ctx.vogliaCambiare && vuoleVia >= 0) i = vuoleVia;
     await clickTesto(p, new RegExp([...o[i]].slice(0, 14).join('').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(650); return tag('intervista', { q: dom && dom[0], r: [...o[i]].slice(0, 90).join(''), tutte: o.length > 3 ? undefined : o });
   }
+  const overlayAttivo = !cl.some(x => /^Home$/.test(x));   /* una finestra copre la barra di navigazione: se «Home» non è cliccabile c'è un velo */
   /* 4. nulla di bloccante: chiusure comuni */
-  if (modali.length === 1 && /^(✅ ?)?(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp(modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
-  if (modali.length === 0) return null;
+  if (overlayAttivo && modali.length === 1 && /^(✅ ?)?(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp(modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
+  if (modali.length === 0 || !overlayAttivo) return null;
   /* 5. finestra non catalogata: se non è un flusso pesante (mercato/contratto) si sceglie a rotazione e si registra */
   const testaM = t.replace(/\n+/g, ' | ').slice(0, 260);
   if (!/offert|trasferi|contratto|rinnov|cession|prestito|svincol|procurator|presentazion|ritir|Nazionale|convocaz|premio|gala|trofe|promoz|retroc/i.test(testaM) && !ctx.fermaSuGenerico) {
@@ -87,9 +99,10 @@ export function mkCtx() {
 /* una settimana intera di gioco; ritorna 'ok' | 'fine-stagione' | 'IGNOTO:...' | 'bloccato' */
 export async function giocaSettimana(S, ctx) {
   const p = S.page; const s0 = await stato(S);
-  if (!/Simula e avanza/.test((await cliccabili(p)).join('|'))) await clickTesto(p, /^Home$/);
+  if (!/Simula e avanza/.test((await cliccabili(p)).join('|')) && s0 && s0.screen !== 'dashboard') { await clickTesto(p, /^Home$/); await sleep(500); }
   for (let it = 0; it < 80; it++) {
     const sc0 = await stato(S);
+    if (ctx.cerca && sc0 && sc0.screen === 'dashboard' && !it) { const m = await cercaMercato(S, ctx); if (m) { await clickTesto(p, /^Home$/); await sleep(500); } }
     if (sc0 && sc0.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni|calendar|standings|coppe)$/.test(sc0.screen)) return 'SCHERMATA:' + sc0.screen;
     const r = await passo(S, ctx);
     if (r === 'LIVE') {
@@ -101,10 +114,14 @@ export async function giocaSettimana(S, ctx) {
     }
     if (r && r.startsWith('IGNOTO')) return r;
     if (r === null) {
-      const s = await stato(S); if (!s) return 'bloccato:nostato';
+      const s = await stato(S); if (!s) return 'bloccato:nostato'; const cl0 = await cliccabili(p); if (ctx.sponsorVisto && ctx.sponsorVisto.split(':')[0] !== String(s.st)) ctx.sponsorVisto = null;
       if (s0 && (s.st !== s0.st || s.wk !== s0.wk)) return s.screen && /seasonEnd|seasonAwards/.test(s.screen) ? 'fine-stagione' : 'ok';
       if (s.screen && /seasonEnd|seasonAwards|careerEnd/.test(s.screen)) return 'fine-stagione';
+      if (cl0.some(x => /^Offerta di sponsor/.test(x)) && !ctx.sponsorVisto) { ctx.sponsorVisto = s.st + ':' + s.wk; await clickTesto(p, /^Offerta di sponsor/); await sleep(700); const tt = (await testo(p)).replace(/\n+/g, ' | '); const i = tt.indexOf('SPONSOR'); const f = await clickTesto(p, /^✍️|Firmo|Accetto/); ctx.log('sponsor', { t: [...tt.slice(i, i + 260)].join(''), firmato: f }); await sleep(700); continue; }
+      if (cl0.some(x => /^🎙️ Vai in sala stampa/.test(x))) { await clickTesto(p, /Vai in sala stampa/); ctx.log('sala-stampa', { st: s.st, wk: s.wk, club: s.club }); await sleep(900); continue; }
       if (await clickTesto(p, /Vivi la Settimana|Avvia Stagione/)) { await sleep(900); continue; }
+      if (await clickTesto(p, /Avanza Settimana/)) { await sleep(1200); continue; }
+      if (await clickTesto(p, /^🎉 Festeggia/)) { ctx.log('festa', await testo(p).then(x => x.slice(0, 200))); await sleep(1500); continue; }
       if (await clickTesto(p, /Gioca vs|Gioca la partita della|Gioca (il|la) /)) { await sleep(800); continue; }
       return 'bloccato:dashboard';
     }
@@ -223,4 +240,48 @@ export async function apertura(S, ctx) {
     break;
   }
   return out;
+}
+
+/* gala di fine stagione: si apre ogni busta come un giocatore, e si registra il testo di ogni premio */
+export async function galaFinale(S, ctx) {
+  const p = S.page; const visti = []; let last = '';
+  for (let i = 0; i < 70; i++) {
+    const t = (await testo(p)).replace(/\n+/g, ' | ');
+    if ((await cliccabili(p)).some(x => /^Vai al bilancio/.test(x))) { visti.push(t.slice(0, 1400)); break; }
+    const h = t.slice(0, 260); if (h !== last) { last = h; visti.push(h); }
+    const c = await clickTesto(p, /Apri la busta|Svela|E il vincitore|Prossimo premio|Avanti →|Continua/);
+    await sleep(c ? 1100 : 1800);
+    const st = await stato(S); if (st && st.screen && !/seasonAwards/.test(st.screen)) break;
+  }
+  ctx.log('gala', { passi: visti }); return visti;
+}
+
+/* finestra di mercato (settimane 1-5 e 19-23): una volta per finestra si fa girare il nome e si assegna «Cerca offerte» */
+export async function cercaMercato(S, ctx) {
+  const s = await stato(S); if (!s || s.pro !== 'pro') return null;
+  const win = (s.wk >= 1 && s.wk <= 5) ? 'E' : (s.wk >= 19 && s.wk <= 23) ? 'I' : null; if (!win) return null;
+  const k = s.st + win; ctx.finestre = ctx.finestre || {}; if (ctx.finestre[k]) return null; ctx.finestre[k] = 1;
+  const p = S.page; await clickTesto(p, /^Agente$/); await sleep(900);
+  const a = await clickTesto(p, /Fai girare il nome/); await sleep(900);
+  const b = await clickTesto(p, /Cerca offerte/); await sleep(700);
+  ctx.log('mercato', { st: s.st, wk: s.wk, finestra: win, faiGirare: a, compito: b });
+  return 'mercato';
+}
+
+/* fine stagione: «Chiudi la stagione» → galà → bilancio → parata/film → «Inizia Stagione N»; ritorna 'ok' a stagione nuova, o 'SCHERMATA:x' se serve la mano */
+export async function fineStagione(S, ctx) {
+  const p = S.page; const s0 = await stato(S); let giri = 0;
+  for (let i = 0; i < 40; i++) {
+    const st = await stato(S); if (!st) return 'nostato';
+    if (s0 && st.st > s0.st && st.screen === 'dashboard') return 'ok';
+    if (st.screen === 'seasonAwards') { const cl = await cliccabili(p); if (cl.some(x => /^Vai al bilancio/.test(x))) { await clickTesto(p, /^Vai al bilancio/); await sleep(2500); continue; } await galaFinale(S, ctx); continue; }
+    if (st.screen === 'seasonEnd') {
+      const t = (await testo(p)).replace(/\n+/g, ' | '); ctx.fineSig = ctx.fineSig || new Set(); const sg = t.slice(0, 70); if (!ctx.fineSig.has(sg + st.st)) { ctx.fineSig.add(sg + st.st); ctx.log('fine-stagione-schermata', { st: st.st, t: [...t.slice(0, 2400)].join('') }); if (ctx.fotoFine) await foto(S, '_fs' + st.st + '-' + (giri++)); }
+      const c = await clickTesto(p, /Inizia Stagione \d+|Continua →|Continua|Avanti/); await sleep(c ? 2200 : 1500); if (!c) return 'SCHERMATA:seasonEnd-senza-bottone'; continue; }
+    if (st.screen !== 'dashboard') return 'SCHERMATA:' + st.screen;
+    const cl = await cliccabili(p);
+    if (cl.some(x => /Chiudi la stagione/.test(x))) { await clickTesto(p, /Chiudi la stagione/); await sleep(2500); continue; }
+    const r = await passo(S, ctx); if (r && r.startsWith('IGNOTO')) return r; if (r === 'LIVE') return 'SCHERMATA:partita'; if (r === null) { if (await clickTesto(p, /Vivi la Settimana|Avanza Settimana/)) { await sleep(1200); continue; } return 'bloccato:fine'; }
+  }
+  return 'loop';
 }
