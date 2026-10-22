@@ -151,6 +151,12 @@ async function ripulisci(dove, maxIter = 25) {
     if (c && c.t) return 'cruscotto';
     const screen = await page.evaluate(() => window.__CPM_CAREER && window.__CPM_CAREER.screen());
     const bt = await bottoni(page); const t = (await testo(page)).slice(0, 600);
+    if (screen === 'match' && bt.some(x => /^Simula la partita/.test(x)) && dove !== 'post') {
+      drv.partiteViste++; const live = (drv.partiteViste % LIVE_EVERY === 1) || /finale|semifinale/i.test(t.slice(0, 200)); saveDrv();
+      app(EV, { ...(await ctxNow()), tipo: 'partita-schermata', live, txt: t.slice(0, 200) });
+      if (live) { await partitaLive(); } else { drv.sim++; saveDrv(); await clic(page, /^Simula la partita/); await sleep(1500); }
+      continue;
+    }
     const key = screen + '|' + bt.join(',') + t.slice(0, 80);
     if (key === last) stuck++; else { stuck = 0; last = key; }
     if (stuck >= 5) { dif({ tipo: 'blocco', nome: 'schermata ferma', screen, btns: bt.slice(0, 8), estratto: t.slice(0, 200).replace(/\n/g, ' | '), dove, ...(await ctxNow()) }); if (drv.nBlocco = (drv.nBlocco || 0) + 1, drv.nBlocco < 8) await fotoAuto(`blocco-${Date.now()}`); await page.evaluate(() => window.__CPM_CAREER.dismiss()); stuck = 0; if (i > 20) return 'blocco'; }

@@ -384,3 +384,19 @@
 {"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
 {"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
 {"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"blocco","nome":"il tasto principale non fa avanzare","cta":"🌍 Gioca vs Inghilterra — Coppa Nazioni · Partita 1/3 · 0pt · poi: FC Oriolan W.21 · ›","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"coerenza","nome":"matchHistory non cresce di 1 dopo partita live","g0":26,"g1":26,"s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"0–4","reg":"4-0","s":10,"w":21,"club":"FC Submarino"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":23,"s":10,"w":31}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":31}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":24,"s":10,"w":32}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":32}
