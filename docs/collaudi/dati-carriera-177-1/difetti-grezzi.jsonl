@@ -623,3 +623,17 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":5,"campo":6,"s":16,"w":18}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":17,"campo":20,"s":16,"w":19}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":5,"campo":6,"s":16,"w":19}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":22,"s":16,"w":20}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":5,"campo":6,"s":16,"w":20}
+{"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"K rward Elite Banca Pontebianco K rward osta: gli effetti li vedrai subito dopo.|4","btns":["🔥 Ambizioso\n«Personalmente? Che possiamo fare molto di più.»","🤝 Diplomatico\n«Penso esattamente quello che ho detto.»","🙏 Umile\n«Che io per primo devo dare di più.»","🤐 No comment\n«Su questo preferisco non rispondere.»"],"s":16,"w":21,"club":"FC Lisboa"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":22,"s":16,"w":21}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":5,"campo":6,"s":16,"w":21}
+{"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"K rward Elite Banca Pontebianco K rward osta: gli effetti li vedrai subito dopo.|3","btns":["🤝 Diplomatico\n«Più rispetto per i valori originali del gioco. Ma il calcio evolve e dobbi","🔥 Ambizioso\n«Meno teatranti e più giocatori veri. Il calcio deve tornare ad essere sport.","🙏 Umile\n«Non mi permetto di giudicare. Sono piccolo davanti alla storia del calcio.»"],"s":16,"w":21,"club":"FC Lisboa"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":23,"s":16,"w":22}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":6,"campo":7,"s":16,"w":22}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":23,"s":16,"w":23}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":6,"campo":7,"s":16,"w":23}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":23,"s":16,"w":24}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":6,"campo":7,"s":16,"w":24}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":21,"campo":24,"s":16,"w":25}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":8,"campo":9,"s":16,"w":25}
