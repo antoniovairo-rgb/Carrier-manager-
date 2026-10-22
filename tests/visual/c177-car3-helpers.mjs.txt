@@ -15,7 +15,7 @@ st.rot=0;
 st.sbroglia=async()=>{const b=await st.btns();const ph=await st.phase();
  const t=await testo(page);
  for(const r of [/^Gioca la partita/]){}
- const pri=[/^Tieni #/,/^Capito/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^Ok\b/i,/^🏟️ Torna alla dashboard/,/^Torna alla dashboard/,/^🎉/,/^Chiudi$/,/^Chiudi —/];
+ const pri=[/^Tieni #/,/^Capito/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^Ok\b/i,/^🏟️ Torna alla dashboard/,/^Torna alla dashboard/,/^🎉/,/^🏟️ Vai allo stadio/,/^🏟️ Inizia/,/^Chiudi$/];
  for(const r of pri){const x=b.find(y=>r.test(y));if(x){await tocca(page,x.split(' | ')[0],2000);return 'click:'+x.slice(0,50);}}
  return null;};
 /* in match: attende il fischio finale (tabellino a schermo) con autoplay seedato */
@@ -27,7 +27,8 @@ st.inMatch=async(seed,maxS=240)=>{await page.evaluate((s)=>{try{window.__CPM_AUT
   if(ph==='hl_result'&&last!=='hl_result'){const info=await page.evaluate(()=>{try{const tl=(window.__CPM_TIMELINE?window.__CPM_TIMELINE():[]).slice(-3);const sc=window.__CPM_SCORE?window.__CPM_SCORE():null;const stt=window.__CPM_STATE?window.__CPM_STATE():null;return {tl,sc,ball:stt&&stt.ball,txt:document.body.innerText.slice(0,500).replace(/\n/g,' / ')};}catch(e){return {err:String(e)};}});st.hl.push(info);}
   last=ph;}
  return 'timeout';};
-st.scelta=async()=>{const b=await st.btns();const cand=b.filter(x=>!NAV.test(x)&&!/^Salta|^Non ora|^Chiudi|^⏸|^2×|^⚠️|^1×|^1,5×/.test(x));
+st.modali=(b)=>{const iS=b.findIndex(x=>/^Salva/.test(x));const m=iS>0?b.slice(0,iS):[];return m.filter(x=>!/^Salta|^Non ora|^Chiudi|^⏸|^2×|^⚠️|^1×|^1,5×|^Ritira/.test(x));};
+st.scelta=async(forza)=>{const b=await st.btns();const cand=st.modali(b);
  if(cand.length<1)return null;const ok=cand.filter(x=>!/🔒/.test(x));const arr=ok.length?ok:cand;const x=arr[(st.rot++)%arr.length];await tocca(page,x.split(' | ')[0].replace(/🔒.*$/,'').trim(),2500);return 'scelta:'+x.slice(0,70);};
 /* una settimana intera. opts: live (bool), seed. Ritorna riepilogo. */
 st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week;const ev=[];let live=!!opts.live;
@@ -42,7 +43,7 @@ st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week
   if(b.some(x=>/Torna alla dashboard/.test(x))){opts.postFoto&&await foto(page,opts.postFoto);ev.push('postmatch:'+(await st.txt(120)));await tocca(page,'Torna alla dashboard',3000);await sleep(1500);continue;}
   const sb=await st.sbroglia();if(sb){ev.push(sb);await sleep(900);continue;}
   const hasCta=b.some(x=>/^(🏁|⚽|⚡|▶|➡|📅|🏆|⏭|✅)/.test(x)&&!NAV.test(x));
-  const extra=b.filter(x=>!NAV.test(x)&&!/^(⚡|🏁|⚽|▶|➡|📅|🏆|⏭|✅|🏥)/.test(x));
+  const extra=st.modali(b);
   const mod=extra.length>0||/Impulso|SETTIMANA \d+ ·|scelta|Scegli|decid/i.test(t);
   if(mod){const sc=await st.scelta();if(sc){ev.push(sc);await sleep(1200);continue;}}
   const c=await st.cta();ev.push('cta:'+c);if(c===null||/^DIS/.test(c)){const sc=await st.scelta();ev.push('?'+sc+'|'+t.slice(0,100));if(!sc){await sleep(1500);}}
