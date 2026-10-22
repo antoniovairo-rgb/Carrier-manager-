@@ -539,6 +539,29 @@ function _kit917(casa,osp){let A=_rgb917(casa),B=_rgb917(osp);
   if(erbaCome(B))B=_dist917(chiaro,A)<150?scuro:chiaro;
   if(_dist917(A,B)<150)B=_dist917(A,chiaro)>=_dist917(A,scuro)?chiaro:scuro;
   return{casa:A,osp:B};}
+/* [giro 92 PO-297 — SPALTI COI COLORI DEI CLUB] le tinte della tribuna: il fondo dei gradoni, l'erba fuori dalle linee e tre tinte di tifosi
+   per squadra (maglia, secondo colore, sciarpa). Maglie troppo scure o troppo simili: la stessa regola di leggibilita' del giro 81
+   (colori286, contro il fondo dei gradoni), cosi' una maglia nera non torna a fare il nero che il PO voleva togliere. */
+function _spalti297(casa,casa2,osp,osp2){
+  const base="#26324a",hex=(r)=>"#"+r.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("");
+  const hx=(c)=>{const r=_rgb917(c);return hex(r);};
+  const A0=hx(casa||"#8e1f33"),B0=hx(osp||"#e2e8f0"),A2=casa2?hx(casa2):null,B2=osp2?hx(osp2):null;
+  let k={sx:A0,dx:B0};try{k=colori286({sx:A0,sx2:A2,dx:B0,dx2:B2},base);}catch(_e){}
+  const mix=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return hex(a.map((v,i)=>v+(b[i]-v)*q));};
+  const sec=(p,c2)=>{try{if(c2&&c2[0]==='#'&&_dist286(c2,p)>60){const v=_vis286(c2,base);if(_dist286(v,p)>60)return v;}}catch(_e){}return _lum917(_rgb917(p))>0.5?mix(p,"#0f172a",0.35):mix(p,"#ffffff",0.45);};
+  return{base,erba:"#1e6331",casa:[k.sx,sec(k.sx,A2),"#e5e7eb"],osp:[k.dx,sec(k.dx,B2),_lum917(_rgb917(k.dx))>0.5?mix(k.dx,"#0f172a",0.2):mix(k.dx,"#ffffff",0.2)]};}
+/* il rettangolo dell'erba esterna (fino ai cartelloni), in pixel, e quanti metri oltre le linee: ai lati 2,5 m e dietro le porte 4,5 m,
+   ma mai piu' di meta' dello spazio libero (sul telefono in verticale ai lati restano ~13 px: l'erba ne prende meta', il resto e' tribuna) */
+function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
+  const x0=Math.min(PX(0,0),PX(LUN,LAR)),x1=Math.max(PX(0,0),PX(LUN,LAR)),y0=Math.min(PY(0,0),PY(LUN,LAR)),y1=Math.max(PY(0,0),PY(LUN,LAR));
+  const liberoX=Math.min(x0,W-x1),liberoY=Math.min(y0,H-y1);
+  const mx=Math.min((vert?2.5:4.5)*s,liberoX*0.5),my=Math.min((vert?4.5:2.5)*s,liberoY*0.5);
+  return{x0:x0-mx,x1:x1+mx,y0:y0-my,y1:y1+my,m:{a:(vert?my:mx)/s,b:(vert?mx:my)/s}};}
+/* il settore ospiti: lo spicchio di tribuna nell'angolo in alto a destra (dietro la porta lontana e il primo tratto del lato) */
+function _ospRect297(W,H,x0,y0,x1,y1,vert){
+  if(vert)return[x0+(x1-x0)*0.62,-2,W-(x0+(x1-x0)*0.62)+2,y0+(y1-y0)*0.16];
+  return[x1-(x1-x0)*0.16,-2,W-(x1-(x1-x0)*0.16)+2,y0+(y1-y0)*0.38];}
+function _osp297(x,y,W,H,x0,y0,x1,y1,vert){const q=_ospRect297(W,H,x0,y0,x1,y1,vert);return x>=q[0]&&x<=q[0]+q[2]&&y>=q[1]&&y<=q[1]+q[3];}
 /* i portieri: un colore che stacca da ENTRAMBE le divise (come nella realta') */
 function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[163,230,53],[249,115,22]];
   for(let i=0;i<cand.length;i++){const c=cand[i];if(_dist917(c,a)>170&&_dist917(c,b)>170&&usati.every(u=>_dist917(c,u)>170))return c;}
@@ -567,8 +590,9 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false}){
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0}){
   const cRef=React.useRef(null);
+  const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};/* [giro 92 PO-297] i gol dello stadio (casa/ospiti) per accendere la tribuna: letti dal giro di disegno, fuori dalle dipendenze */
   const rafRef=React.useRef(0);
   const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
   React.useEffect(()=>{
@@ -595,6 +619,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       const dt=M.t?Math.min(0.1,(ora-M.t)/1000):0.016;M.t=ora;
       /* verticale sul telefono (porte in alto e in basso), coricato se lo spazio e' largo */
       const vert=H>=W*0.92;
+      const _sp297=!(typeof window!=='undefined'&&window.__CPM_NO_SPALTI297);
       /* [7.999.12 collaudo PO «il campo va sopra le statistiche brevi in alto»] il campo si disegnava sotto la striscia delle statistiche
          (e la porta in basso sotto le linguette Statistiche/Pagelle): la sua area e' lo spazio LIBERO fra le due, misurato sul DOM.
          Rosso __CPM_NO_CAMPO12. */
@@ -602,6 +627,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         let st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
         if(!(window.__CPM_NO_LARGO292)){const _pa=cv.parentElement;if(st&&_pa&&!_pa.contains(st))st=null;if(li&&_pa&&!_pa.contains(li))li=null;}/* [giro 90 PO-292] il pannello nella colonna a destra non riserva spazio nel campo */
         M.t12=st?Math.max(0,(st.getBoundingClientRect().bottom-rc.top)*sc+4):0;M.b12=li?Math.max(0,(rc.bottom-li.getBoundingClientRect().top)*sc+4):0;
+        if(li&&li.getAttribute('data-cima297')==='1'){M.t12=Math.max(M.t12,(li.getBoundingClientRect().bottom-rc.top)*sc+4);M.b12=0;}/* [giro 92 PO-297 B] la barra chiusa sta in cima, sotto la striscia: il campo comincia sotto di lei */
         /* [7.999.19 collaudo PO «il campo 2D sovrascrive in parte le statistiche brevi, non vedo i numeri»] sul telefono del PO le
            linguette stanno a META' schermo: il margine in basso supera mezzo campo e questa sicura azzerava ENTRAMBI i margini, cosi' la
            porta in alto tornava sotto la striscia. Ora il margine in alto si rispetta sempre; quello in basso finche' al campo resta almeno il 40% dell'altezza.
@@ -627,6 +653,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         if(M.rifai||(_pc&&_pc.isContextLost&&_pc.isContextLost())||(_gc&&_gc.isContextLost&&_gc.isContextLost())){M.sfondo=null;M.rifai=false;M.rifatto=(M.rifatto|0)+1;try{if(typeof window!=='undefined')window.__CPM_SFONDO12=M.rifatto;}catch(_eW){}}}catch(_e12){}}
       if(!M.sfondo||M.W!==W||M.H!==H||M.dpr!==dpr){
         /* ——— LO SFONDO: prato, fasce del taglio, righe, porte. Disegnato una volta sola. ——— */
+        const _t297=(typeof performance!=='undefined'&&performance.now)?performance.now():0;
         const off=(typeof document!=='undefined')?document.createElement('canvas'):null;
         if(!off)return;
         off.width=Math.round(W*dpr);off.height=Math.round(H*dpr);
@@ -635,12 +662,40 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* fuori campo: il buio dello stadio */
         const fondo=o.createLinearGradient(0,0,0,H);fondo.addColorStop(0,"#0a1220");fondo.addColorStop(1,"#050a14");
         o.fillStyle=fondo;o.fillRect(0,0,W,H);
+        /* [giro 92 PO-297 «c'e' troppo nero attorno al campo», decisione PO: SPALTI COI COLORI DEI CLUB] attorno al campo: l'erba
+           continua oltre le linee, una fila di cartelloni come nel 3D e dietro la tribuna stilizzata coi tifosi nei colori della
+           squadra di casa dello stadio su tre lati, con uno spicchio (il settore ospiti) nei colori di chi viene in trasferta.
+           Tutto nella tela di servizio disegnata UNA volta: al giro di disegno resta solo il lampo dei gol. Rosso __CPM_NO_SPALTI297. */
+        if(_sp297){try{
+          const SP=_spalti297(tifoCasa||kitCasa,tifoCasa2,tifoOsp||kitOspiti,tifoOsp2);M.sp297=SP;
+          o.fillStyle=SP.base;o.fillRect(0,0,W,H);
+          /* i tifosi: teste a griglia sfalsata, colore seedato dalla posizione (deterministico, nessun Math.random) */
+          const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),passo=Math.max(3.6,Math.min(6,s*0.9)),tes=Math.max(1.5,passo*0.46);
+          const ox0=est.x0,oy0=est.y0,ox1=est.x1,oy1=est.y1;
+          for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
+            if(x>ox0-tes&&x<ox1+tes&&y>oy0-tes&&y<oy1+tes)continue;
+            const osp=_osp297(x,y,W,H,ox0,oy0,ox1,oy1,vert);const pal=osp?SP.osp:SP.casa;
+            const h=((Math.imul((x*7)|0,73856093)^Math.imul((y*7)|0,19349663))>>>0)%100;
+            if(h<12)continue;/* qualche posto vuoto */
+            o.fillStyle=h<52?pal[0]:h<80?pal[1]:pal[2];o.fillRect(x-tes/2,y-tes/2,tes,tes*1.1);}}
+          /* il divisorio del settore ospiti */
+          M.osp297=_ospRect297(W,H,ox0,oy0,ox1,oy1,vert);
+          if(M.osp297){const q=M.osp297;o.strokeStyle="rgba(15,23,42,0.85)";o.lineWidth=2;o.strokeRect(q[0],q[1],q[2],q[3]);}
+          /* l'erba oltre le linee, fino ai cartelloni */
+          o.fillStyle=SP.erba;o.fillRect(ox0,oy0,ox1-ox0,oy1-oy0);
+          /* i cartelloni: una fila di pannelli attorno al prato, a tinte alternate */
+          const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
+          let k=0;const pan=(x,y,w,h)=>{o.fillStyle=COLC[k%COLC.length];o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
+          for(let x=ox0;x<ox1;x+=seg){const w=Math.min(seg-1,ox1-x);pan(x,oy0-sp,w,sp);pan(x,oy1,w,sp);}
+          for(let y=oy0-sp;y<oy1+sp;y+=seg){const h=Math.min(seg-1,oy1+sp-y);pan(ox0-sp,y,sp,h);pan(ox1,y,sp,h);}
+        }catch(_e297){}}
         /* il prato */
         /* [23/09 POC — collaudo PO «il prato 2D e 3D non devono essere diversi»] LO STESSO PRATO DEL 3D: palette dello
            stadio (getStadiumPalette), correzione del meteo (pioggia piu' scuro, neve sbiancato, sole piu' chiaro), numero e
            verso delle fasce dal seme del club, fasce piu' nette nelle grandi sfide — le stesse regole di ThreeMatchView.
            Rosso __CPM_NO_PRATO2D23: il verde fisso di prima. */
         const _pr23=!(typeof window!=='undefined'&&window.__CPM_NO_PRATO2D23)&&typeof getStadiumPalette==='function';
+        const _ext297=_sp297?_cart297(PX,PY,vert,LUN,LAR,s,W,H).m:{a:0,b:0};/* [giro 92 PO-297] le fasce del taglio continuano oltre le linee, fino ai cartelloni */
         if(_pr23){try{
           const pal=getStadiumPalette(clubPrato||{});const rgb=n=>[(n>>16)&255,(n>>8)&255,n&255];
           let A=rgb(pal.grassA),B=rgb(pal.grassB);
@@ -652,7 +707,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           const SB=bigGame?mul(B,1.12):B;const css=c=>"rgb("+c.map(v=>Math.round(v)).join(",")+")";
           const ps=Math.abs(hashStr(((clubPrato&&(clubPrato.id||clubPrato.n))||"x")+"_pitch")),N=[6,7,8,9,10][ps%5],orizz=((ps>>3)&1)===0;
           for(let i=0;i<N;i++){o.fillStyle=css(i%2?A:SB);
-            const a0=orizz?0:(i/N)*LUN,a1=orizz?LUN:((i+1)/N)*LUN,b0=orizz?(i/N)*LAR:0,b1=orizz?((i+1)/N)*LAR:LAR;
+            const E=_ext297,a0=orizz?-E.a:(i?(i/N)*LUN:-E.a),a1=orizz?LUN+E.a:(i<N-1?((i+1)/N)*LUN:LUN+E.a),b0=orizz?(i?(i/N)*LAR:-E.b):-E.b,b1=orizz?(i<N-1?((i+1)/N)*LAR:LAR+E.b):LAR+E.b;
             const x1=PX(a0,b0),y1=PY(a0,b0),x2=PX(a1,b1),y2=PY(a1,b1);
             o.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1)+0.5,Math.abs(y2-y1)+0.5);}
         }catch(_e){}}
@@ -674,7 +729,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         o.restore();
         /* i riflettori: luce al centro, bordi in ombra */
         const luce=o.createRadialGradient(W/2,H*0.42,Math.min(W,H)*0.10,W/2,H*0.5,Math.max(W,H)*0.78);
-        luce.addColorStop(0,"rgba(255,255,255,0.07)");luce.addColorStop(0.55,"rgba(255,255,255,0)");luce.addColorStop(1,"rgba(0,0,0,0.34)");
+        luce.addColorStop(0,"rgba(255,255,255,0.07)");luce.addColorStop(0.55,"rgba(255,255,255,0)");luce.addColorStop(1,_sp297?"rgba(0,0,0,0.20)":"rgba(0,0,0,0.34)");/* [giro 92 PO-297] coi tifosi l'ombra dei bordi e' piu' leggera: a 0,34 gli spalti tornavano neri negli angoli */
         o.fillStyle=luce;o.fillRect(0,0,W,H);
         /* ——— LA SEGNATURA ——— */
         const L=(x1,y1,x2,y2)=>{o.beginPath();o.moveTo(PX(x1,y1),PY(x1,y1));o.lineTo(PX(x2,y2),PY(x2,y2));o.stroke();};
@@ -708,12 +763,25 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* gli archi delle bandierine */
         ARC(0,0,1,0,Math.PI/2);ARC(0,LAR,1,-Math.PI/2,0);
         ARC(LUN,0,1,Math.PI/2,Math.PI);ARC(LUN,LAR,1,Math.PI,Math.PI*1.5);
-        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;
+        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;try{M.ms297=+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-_t297).toFixed(1);}catch(_e){}/* [giro 92] quanto costa disegnare lo sfondo (una volta) */
       }
       g.setTransform(1,0,0,1,0,0);
       g.clearRect(0,0,cv.width,cv.height);
       g.drawImage(M.sfondo,0,0);
       g.setTransform(dpr,0,0,dpr,0,0);
+      /* [giro 92 PO-297] AL GOL LA TRIBUNA SI ACCENDE per 1,6 s: un velo luminoso che pulsa sugli spalti di chi ha segnato (tre lati
+         per la casa, lo spicchio per gli ospiti). Solo due rettangoli ritagliati per fotogramma, e solo durante il lampo. */
+      if(_sp297&&M.sp297){try{const gq=golRef.current||{h:0,a:0};
+        if(!M.gol297)M.gol297={h:gq.h,a:gq.a,t:0,chi:null,n:0};
+        const G7=M.gol297;if(gq.h>G7.h||gq.a>G7.a){G7.chi=gq.a>G7.a?"osp":"casa";G7.t=ora;G7.n++;G7.off=false;}G7.h=gq.h;G7.a=gq.a;
+        const el=ora-G7.t;if(G7.t&&el<1600){const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+          const k=(1-el/1600)*(0.62+0.38*Math.abs(Math.sin(el/90)));
+          g.save();g.beginPath();g.rect(0,0,W,H);g.rect(est.x0-4,est.y0-4,est.x1-est.x0+8,est.y1-est.y0+8);
+          g.clip("evenodd");/* mai sul prato: fuori dall'erba esterna */g.beginPath();g.rect(q[0],q[1],q[2],q[3]);if(G7.chi!=="osp")g.rect(0,0,W,H);g.clip("evenodd");/* gli ospiti: solo lo spicchio; la casa: tutto tranne lo spicchio */
+          g.globalCompositeOperation="lighter";g.fillStyle="rgba(255,236,170,"+(0.42*k).toFixed(3)+")";g.fillRect(0,0,W,H);g.restore();
+          try{if(typeof window!=='undefined')window.__CPM_LAMPO297={chi:G7.chi,n:G7.n,ms:Math.round(el)};}catch(_e){}}
+        else if(G7.t&&!G7.off){G7.off=true;try{if(typeof window!=='undefined'&&window.__CPM_LAMPO297)window.__CPM_LAMPO297.spento=true;}catch(_e){}}
+      }catch(_eG){}}
 
       /* ——— I VENTIDUE E IL PALLONE, dalle posizioni del motore ——— */
       let st=null;try{st=motore&&motore.stato?motore.stato():null;}catch(_e){}
@@ -746,6 +814,14 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       const CX=(q)=>PX((q.x/100)*LUN,(q.y/100)*LAR),CY=(q)=>PY((q.x/100)*LUN,(q.y/100)*LAR);
       const r=Math.max(7,Math.min(12,s*1.16));/* [7.926 collaudo PO: nella partita 2D si devono vedere i numeri degli altri giocatori] col pannello delle statistiche davanti il campo si schiaccia, la scala scende e i pallini restavano a 5 px di raggio: il numero non ci entrava e sparivano tutti. Pavimento a 7. *//* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
       const padrone=(st.poss&&st.poss.padrone!=null)?st.poss.padrone:-1;
+      /* [giro 92 PO-297] testimone di collaudo (inerte, solo se la sonda lo arma): campo, erba esterna, spicchio ospiti e i ventidue in
+         coordinate dello SCHERMO, per misurare il nero fuori dal campo e chi finisce sotto la barra Statistiche/Pagelle */
+      try{if(typeof window!=='undefined'&&window.__CPM_W297){const rc=cv.getBoundingClientRect(),k=rc.width/W,X=(v)=>Math.round(rc.left+v*k),Y=(v)=>Math.round(rc.top+v*k);
+        const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+        const pt=[];for(let i=0;i<G.length;i++)if(M.g[i])pt.push([X(CX(M.g[i])),Y(CY(M.g[i]))]);if(M.e)pt.push([X(CX(M.e)),Y(CY(M.e))]);
+        window.__CPM_W297={dpr,k,vert,campo:[X(ox),Y(oy),Math.round(pw*k),Math.round(ph*k)],erba:[X(est.x0),Y(est.y0),Math.round((est.x1-est.x0)*k),Math.round((est.y1-est.y0)*k)],
+          osp:[X(q[0]),Y(q[1]),Math.round(q[2]*k),Math.round(q[3]*k)],cv:[Math.round(rc.left),Math.round(rc.top),Math.round(rc.width),Math.round(rc.height)],r:Math.round(r*k),gioc:pt,
+          spalti:_sp297&&M.sp297?{casa:M.sp297.casa,osp:M.sp297.osp,base:M.sp297.base,fonte:[tifoCasa,tifoOsp]}:null,t12:Math.round(_t12*k),b12:Math.round(_b12*k),msSfondo:M.ms297,ms:+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-ora).toFixed(2)};}}catch(_e297){}
       const puls=0.5+0.5*Math.sin(ora/260);
 
       /* la scia del pallone: dove e' passato negli ultimi istanti */
@@ -898,7 +974,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
     const _vis12=()=>{try{if(document.visibilityState==='visible')memRef.current.rifai=true;}catch(_e){}};/* [7.999.12] al ritorno dal background lo sfondo si ridisegna */
     try{document.addEventListener('visibilitychange',_vis12);if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_RIFAI12=()=>{memRef.current.rifai=true;};/* solo collaudo: il danno che fa il telefono (tela di servizio svuotata) e la tela visibile da campionare */window.__CPM_DANNO12=()=>{const M=memRef.current;if(M.sfondo){const v=document.createElement('canvas');v.width=M.sfondo.width;v.height=M.sfondo.height;M.sfondo=v;M.sfondoCtx=v.getContext('2d');return true;}return false;};window.__CPM_CAMPO2D_CV=()=>cRef.current;}}catch(_e){}
     return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}try{document.removeEventListener('visibilitychange',_vis12);}catch(_e){}};
-  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame]);
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame,tifoCasa,tifoCasa2,tifoOsp,tifoOsp2]);
   return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
 }
 
@@ -1217,6 +1293,11 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   const _no927=(typeof window!=='undefined'&&window.__CPM_NO927);/* ROSSO di collaudo: la stesura di prima, senza memoria e aperta d'ufficio */
   const [vista,setVista]=React.useState(_no927?"pag":_MEM927.vista);/* [7.922 collaudo PO: la tabella pagelle deve essere il default, un po' di statistiche sono gia' sopra] la striscia alta porta gia' possesso, tiri, in porta e xG: il pannello si apre su cio' che li' non c'e'. */
   const [aperto,setAperto]=React.useState(_no927?true:((inColonna&&!_MEM927.scelto)?true:_MEM927.aperto));/* [giro 90 PO-292] nella colonna le pagelle nascono aperte finche' il giocatore non sceglie */
+  /* [giro 92 PO-297 B, foto PO: «la barra STATISTICHE / PAGELLE copre parte del campo e dei giocatori»] MISURATO a 412x915: da chiusa la
+     barra stava a meta' campo (y 664-701, sopra la cronaca) e il campo, che non le riserva spazio da quando sta cosi' in basso (7.999.22),
+     ci passava sotto con i suoi pallini. Da chiusa ora sale in cima, sotto la striscia alta, e il campo comincia sotto di lei; aperta
+     torna dov'era (il pannello e' vetro sopra il campo per scelta del PO). Rosso __CPM_NO_BARRA297. */
+  const _cima297=!aperto&&!inColonna&&!(typeof window!=='undefined'&&window.__CPM_NO_BARRA297);
   React.useEffect(function(){if(_no927)return;_MEM927.aperto=aperto;_MEM927.vista=vista;},[aperto,vista,_no927]);/* la scelta sopravvive allo smontaggio: e' l'unico punto che scrive la memoria */
   /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
      riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
@@ -1289,7 +1370,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       borderRadius:RAD.xs}}>{et}</button>);
   return(
     <div data-cpm="pannello918" style={{position:"absolute",inset:0,zIndex:6,pointerEvents:"none",
-      display:"flex",flexDirection:"column",justifyContent:inColonna?"flex-start":"space-between"}}>
+      display:"flex",flexDirection:"column",justifyContent:(inColonna||_cima297)?"flex-start":"space-between"}}>
       {/* LA STRISCIA ALTA: il possesso e le quattro voci che dicono l'andamento in un colpo d'occhio */}
       <div data-cpm="striscia918" style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
@@ -1314,7 +1395,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         </div>
       </div>
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
-      <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
+      <div data-cpm="linguette918" data-cima297={_cima297?"1":"0"} style={{margin:SP.sm,marginTop:_cima297?0:SP.sm,marginBottom:_cima297?SP.sm:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
         pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:_lungo80?"calc(43% + 40px)":"43%",maxHeight:_lungo80?"calc(43% + 40px)":"43%"}:{}),...(inColonna?{marginBottom:SP.sm,height:"auto",maxHeight:"none",flex:aperto?"1 1 0":"0 0 auto",minHeight:0}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
@@ -2766,6 +2847,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */
     window.__CPM_CLOCK=()=>{try{return clockRef.current|0;}catch(e){return null;}};/* [7.500.0 F4] il MINUTO dal ref di LiveMatch: come fase e tabellone, sopravvive allo smontaggio del 3D al fischio finale — `__CPM_STATE().clock` li' resta congelato, ed e' la trappola gia' pagata tre volte */
     window.__CPM_SCORE=()=>{try{return{home:scoreRef.current.home|0,away:scoreRef.current.away|0};}catch(e){return null;}};
+    window.__CPM_SALTA297=(min,h,aw)=>{try{const m=min|0;setClock(m);clockRef.current=m;if(h!=null){const sc={home:h|0,away:aw|0};setScore(sc);scoreRef.current=sc;}return true;}catch(e){return false;}};/* [giro 92 PO-297] solo collaudo: porta il minuto (secondo tempo) e il punteggio, per misurare l'intestazione e il lampo degli spalti */
     window.__CPM_KO536=()=>{try{return (kickRef.current|0)>0||(kickoffRef.current|0)>0||!!(spRef.current&&spRef.current.kind==="pen_for")||!!(counterRef.current&&counterRef.current.fin);}catch(e){return false;}};/* [7.532.0 v2] il FERMO DICHIARATO include anche il rigore sul dischetto e l'attesa di risoluzione del contropiede: teatro con copione, come il kickoff (striscia 2,3s misurata oltre grazia) *//* [7.532.0] testimone della FINESTRA DI KICKOFF per ball-alive: al calcio d'inizio la palla E' ferma per regolamento — il guardiano grazia la finestra dichiarata (tetto 6s), col rosso NO536 la macchina non esiste e la grazia muore da sola */
     /* [7.536.0] LE TRE VOCI INSIEME, A COMANDO (test-only): telecronaca, panchina e coro hanno gate
        diversi (la riga esce dalla trama, la panchina dai momenti del mister, il coro dai tick quieti) e
@@ -10420,7 +10502,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;
   }catch(_e){return null;}})();
 
-  const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  /* [giro 92 PO-297 C, decisione PO: SQUADRE FISSE COME IN TV] la squadra di casa resta a sinistra nell'intestazione per tutta la partita,
+     anche nel secondo tempo: il cambio di campo si vede solo sul prato (e nella scritta «cambio campo» dei primi minuti della ripresa).
+     Supera la direttiva 7.893 per l'intestazione; il tabellone 3D resta com'e'. Rosso __CPM_NO_FISSE297 = la barra che si specchia. */
+  const _fisse297=!(typeof window!=='undefined'&&window.__CPM_NO_FISSE297);
+  const _ripresa297=((clock|0)>45)&&phase!=="ceremony";
+  const _swap893=!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
      approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
      risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di
@@ -10603,7 +10690,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118}}>{_compTag901}</div>
-                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
+                  {(_swap893||(_fisse297&&_ripresa297&&!(typeof window!=='undefined'&&window.__CPM_NO893)))&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
                 </div>
               </div>
               {/* Away team */}
@@ -10755,7 +10842,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
+                  <Campo2D tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
                   {!(typeof window!=='undefined'&&window.__CPM_NO918)&&!_panCol292&&_pan918el()}
                 </div>);})()}
               <ThreeMatchView key={"tmv"+glbTry} heroFoot={player.foot||"R"}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
@@ -11364,7 +11451,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 //   è già gestito sopra → qui è sempre la panchina d'attesa).
                 return(
                   <React.Fragment>
-                    <div data-cpm="panca64" ref={el=>{/* [7.999.64 collaudo PO «la grafica che dice che sono in panchina/a disposizione si accavalla». Rosso __CPM_NO_PANCA64] nella vista 2D in cima c'e' la striscia delle statistiche: il riquadro scende sotto di lei */try{if(!el||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))return;const st=document.querySelector('[data-cpm="striscia918"]'),par=el.offsetParent;if(!st||!par||window.__CPM_PANCOL292){el.style.top="0px";return;}/* [giro 90 PO-292] pannello nella colonna a destra: la striscia non e' sul campo */const d=Math.round(st.getBoundingClientRect().bottom-par.getBoundingClientRect().top+4);el.style.top=(d>0?d:0)+"px";}catch(_e){}}} style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
+                    <div data-cpm="panca64" ref={el=>{/* [7.999.64 collaudo PO «la grafica che dice che sono in panchina/a disposizione si accavalla». Rosso __CPM_NO_PANCA64] nella vista 2D in cima c'e' la striscia delle statistiche: il riquadro scende sotto di lei */try{if(!el||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))return;const st=document.querySelector('[data-cpm="striscia918"]'),par=el.offsetParent;if(!st||!par||window.__CPM_PANCOL292){el.style.top="0px";return;}/* [giro 90 PO-292] pannello nella colonna a destra: la striscia non e' sul campo */const _li297=document.querySelector('[data-cpm="linguette918"][data-cima297="1"]');/* [giro 92 PO-297 B] la barra chiusa sta sotto la striscia: il riquadro scende sotto di lei */const d=Math.round(Math.max(st.getBoundingClientRect().bottom,_li297?_li297.getBoundingClientRect().bottom:0)-par.getBoundingClientRect().top+4);el.style.top=(d>0?d:0)+"px";}catch(_e){}}} style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:3}}>
                         <div style={{width:8,height:8,borderRadius:"50%",background:isWarmup?"#f59e0b":"#94a3b8",boxShadow:isWarmup?"0 0 8px #f59e0b":undefined,animation:isWarmup?"pulse 1.2s infinite":undefined}}/>
                         <div style={{fontSize:isNarrow?12:14,letterSpacing:2.5,fontWeight:900,textTransform:"uppercase",color:isWarmup?"#f59e0b":"#e2e8f0",textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{isWarmup?"RISCALDAMENTO":"A DISPOSIZIONE"}</div>
