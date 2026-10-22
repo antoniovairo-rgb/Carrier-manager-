@@ -3,12 +3,23 @@ import fs from 'fs'; import path from 'path';
 import * as L from './c177-car2-lib.mjs';
 const { sleep, clickTesto, testo, foto, difetto, registra, DATI } = L;
 
-export const NAV = /^(Salva|⚡ Vivi la Settimana|🏁 Avvia Stagione|⚽ Gioca vs|Calendario|La tua settimana|Obiettivi della stagione|Ultime notizie|☕ Sostieni|💡 Idee|Home$|Stagione$|Club$|Carriera$|Agente$|Ufficio$|Opzioni$)/;
+export const NAV = /^(Salva|⚡ Vivi la Settimana|🏁 Avvia Stagione|[^ ]{1,4} Gioca vs|Calendario|La tua settimana|Obiettivi della stagione|Ultime notizie|☕ Sostieni|💡 Idee|Home$|Stagione$|Club$|Carriera$|Agente$|Ufficio$|Opzioni$)/;
 /* bottoni cliccabili davvero (visibili, non coperti) con testo */
 export const cliccabili = page => page.evaluate(() => [...document.querySelectorAll('button,[role=button]')].filter(x => {
   if (x.offsetParent === null || x.disabled) return false; const q = x.getBoundingClientRect(); if (q.width < 4 || q.height < 4) return false;
   const cx = q.left + q.width / 2, cy = q.top + q.height / 2; if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight) return false; const e = document.elementFromPoint(cx, cy); return e && (x === e || x.contains(e)); })
   .map(x => (x.textContent || '').trim().replace(/\s+/g, ' ')));
+
+
+export const overlayBtns = page => page.evaluate(() => {
+  const all = [...document.querySelectorAll('button,[role=button]')];
+  const hdr = [...document.querySelectorAll('div,span,p')].find(x => x.children.length < 6 && /^K.?rward/.test((x.textContent || '').trim()) && (x.textContent || '').length < 30);
+  return all.filter(x => {
+    if (x.offsetParent === null || x.disabled) return false; const q = x.getBoundingClientRect(); if (q.width < 4 || q.height < 4) return false;
+    const cx = q.left + q.width / 2, cy = q.top + q.height / 2; if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight) return false; const e = document.elementFromPoint(cx, cy); if (!(e && (x === e || x.contains(e)))) return false;
+    if (hdr && !(hdr.compareDocumentPosition(x) & Node.DOCUMENT_POSITION_PRECEDING)) return false; return true; })
+    .map(x => (x.textContent || '').trim().replace(/\s+/g, ' '));
+});
 
 export async function stato(S) {
   return S.page.evaluate(() => { const C = window.__CPM_CAREER; if (!C) return null; const s = C.snapshot(); if (!s || typeof s === 'string') return null;
@@ -22,14 +33,14 @@ const SCARTA = /^(Salva|Chiudi|Non ora|Annulla|Rifiuta|No grazie|Esci|Torna|← 
 let rot = 0;
 /* un passo: ritorna una etichetta di ciò che ha fatto, o null se non c'è nulla da risolvere (dashboard pulita) */
 export async function passo(S, ctx) {
-  const p = S.page; const cl = await cliccabili(p); const t = await testo(p); const modali = cl.filter(x => !NAV.test(x) && x.length > 0);
+  const p = S.page; const cl = await cliccabili(p); const t = await testo(p); const modali = cl.filter(x => !NAV.test(x) && !/›\s*$/.test(x) && x.length > 0);
   const tag = (s, extra) => { ctx.ultimo = s; if (extra) ctx.log(s, extra); return s; };
   /* 1. finestra partita */
-  if (cl.some(x => /^Gioca la partita/.test(x))) {
+  if (cl.some(x => /^Gioca( la partita| ·)/.test(x)) && cl.some(x => /^Simula e avanza/.test(x))) {
     ctx.nPartite = (ctx.nPartite || 0) + 1;
     const live = ctx.forzaLive != null ? ctx.forzaLive : ((ctx.nPartite - 1) % 4 === 0);
     const intro = t.slice(t.indexOf('SETTIMANA'), t.indexOf('SETTIMANA') + 300).replace(/\n+/g, ' | ');
-    if (live) { await clickTesto(p, /^Gioca la partita/); await sleep(1200); return 'LIVE'; }
+    if (live) { await clickTesto(p, /^Gioca( la partita| ·)/); await sleep(1200); return 'LIVE'; }
     await clickTesto(p, /Simula e avanza/); await sleep(1500); return tag('sim', intro.slice(0, 160));
   }
   /* 2. impulso della settimana */
@@ -39,12 +50,23 @@ export async function passo(S, ctx) {
     await sleep(700); return tag('impulso', { q: testoI, scelte: modali, scelta: sc[i] });
   }
   /* 3. intervista */
-  if (/INTERVISTA|GIORNALISTA INCALZA|RISPONDI TU/.test(t) && modali.some(x => /Ambizioso|Diplomatico|Umile|No comment|Aggressivo|Polemico/.test(x))) {
-    const o = modali.filter(x => /Ambizioso|Diplomatico|Umile|No comment|Aggressivo|Polemico|Sincero|Ironico/.test(x)); const i = (rot++) % o.length; const dom = t.replace(/\n+/g, ' | ').match(/«[^»]{5,160}»/);
-    await clickTesto(p, new RegExp(o[i].slice(0, 12).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(650); return tag('intervista', { q: dom && dom[0], r: o[i].slice(0, 80) });
+  const tutti = cl.filter(x => !NAV.test(x) && !/›\s*$/.test(x) && x.length > 0);
+  /* 3a. «Il confronto» col procuratore (PO-253): scheda in linea nella home, con risposte sul club e proposta di sponsor */
+  if (/Il confronto/.test(t) && tutti.some(x => /^(Sto benissimo qui|Sto bene, ma vorrei|Credo sia il momento|Voglio cambiare completamente|Vediamo|Più tardi)/.test(x))) {
+    const dom = [...t.replace(/\n+/g, ' | ').slice(t.indexOf('Il confronto'), t.indexOf('Il confronto') + 600)].join('');
+    let pickRx = null; const has = rx => tutti.some(x => rx.test(x));
+    if (has(/^Sto benissimo qui/)) pickRx = ctx.vogliaCambiare ? /^Voglio cambiare completamente/ : ((rot++ % 2) ? /^Sto bene, ma vorrei/ : /^Sto benissimo qui/);
+    else if (has(/^Vediamo/)) pickRx = /^Vediamo/;
+    else pickRx = /^Più tardi/;
+    const r = await clickTesto(p, pickRx); await sleep(800); ctx.log('confronto-agente', { testo: dom, scelta: r }); return tag('confronto');
+  }
+  if (/INTERVISTA|GIORNALIST|RISPONDI TU|ZONA MISTA/i.test(t) && tutti.length >= 2 && tutti.length <= 6 && !/Gioca la partita|Impulso della settimana/.test(t)) {
+    const o = tutti.filter(x => !/^(Chiudi|Salva|Non ora)/.test(x)); let i = (rot++) % o.length; const dom = t.replace(/\n+/g, ' | ').match(/«[^»]{5,160}»/);
+    const vuoleVia = o.findIndex(x => /guardarci intorno|cambiare completamente aria|andare via|lasciare il club/i.test(x)); if (ctx.vogliaCambiare && vuoleVia >= 0) i = vuoleVia;
+    await clickTesto(p, new RegExp([...o[i]].slice(0, 14).join('').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(650); return tag('intervista', { q: dom && dom[0], r: [...o[i]].slice(0, 90).join(''), tutte: o.length > 3 ? undefined : o });
   }
   /* 4. nulla di bloccante: chiusure comuni */
-  if (modali.length === 1 && /^(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp('^' + modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
+  if (modali.length === 1 && /^(✅ ?)?(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp(modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
   if (modali.length === 0) return null;
   /* 5. finestra non catalogata: se non è un flusso pesante (mercato/contratto) si sceglie a rotazione e si registra */
   const testaM = t.replace(/\n+/g, ' | ').slice(0, 260);
@@ -65,8 +87,10 @@ export function mkCtx() {
 /* una settimana intera di gioco; ritorna 'ok' | 'fine-stagione' | 'IGNOTO:...' | 'bloccato' */
 export async function giocaSettimana(S, ctx) {
   const p = S.page; const s0 = await stato(S);
-  if (!/^(Gioca la partita)/.test((await cliccabili(p)).join('|'))) await clickTesto(p, /^Home$/);
+  if (!/Simula e avanza/.test((await cliccabili(p)).join('|'))) await clickTesto(p, /^Home$/);
   for (let it = 0; it < 80; it++) {
+    const sc0 = await stato(S);
+    if (sc0 && sc0.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni|calendar|standings|coppe)$/.test(sc0.screen)) return 'SCHERMATA:' + sc0.screen;
     const r = await passo(S, ctx);
     if (r === 'LIVE') {
       const res = await L.giocaLive(S, { scelte: ctx.scelte || [0, 1, 2, -1], ingresso: ctx.nLive % 3 === 0, foto: async n => (ctx.fotoLive ? await foto(S, '_' + ctx.fotoLive + n) : null) });
@@ -81,7 +105,7 @@ export async function giocaSettimana(S, ctx) {
       if (s0 && (s.st !== s0.st || s.wk !== s0.wk)) return s.screen && /seasonEnd|seasonAwards/.test(s.screen) ? 'fine-stagione' : 'ok';
       if (s.screen && /seasonEnd|seasonAwards|careerEnd/.test(s.screen)) return 'fine-stagione';
       if (await clickTesto(p, /Vivi la Settimana|Avvia Stagione/)) { await sleep(900); continue; }
-      if (await clickTesto(p, /^⚽ Gioca vs/)) { await sleep(800); continue; }
+      if (await clickTesto(p, /Gioca vs|Gioca la partita della|Gioca (il|la) /)) { await sleep(800); continue; }
       return 'bloccato:dashboard';
     }
   }
@@ -172,6 +196,31 @@ export async function giro(S, ctx, n) {
     if (s && (s.wk % 6 === 0) && ctx.ultimaClassSett !== s.st + ':' + s.wk) { ctx.ultimaClassSett = s.st + ':' + s.wk; await controllaClassificaUI(S, ctx); }
     out.push(r);
     if (r !== 'ok') break;
+  }
+  return out;
+}
+
+/* settimana d'apertura (ritiro, raduno, presidente, maglia, presentazione...): si percorre come un giocatore, prima opzione non di salto */
+export async function wizardApertura(S, ctx, { scelta = 0 } = {}) {
+  const p = S.page; const passi = [];
+  for (let i = 0; i < 40; i++) {
+    const t = await testo(p); const cl = await cliccabili(p); const m = cl.filter(x => !NAV.test(x) && x && !/^Chiudi — riprendi|^Salva/.test(x)); if (!m.length || /^(\S+ \| )?K⚽rward/.test(t)) break;
+    const testa = [...t.replace(/\n+/g, ' | ').slice(0, 380)].join('');
+    const scelte = m.filter(x => !/^Salta|^Chiudi|^Vai al finale/.test(x)); const pick = (scelte.length ? scelte[Math.min(scelta, scelte.length - 1)] : m[0]);
+    if (!pick) { passi.push({ testa, nessuno: true }); break; }
+    passi.push({ testa, scelte: m, pick }); ctx.log('apertura', { testa, scelte: m, pick });
+    await clickTesto(p, new RegExp([...pick].slice(0, 20).join('').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(1200);
+    const st = await stato(S); if (st && st.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni)$/.test(st.screen)) { passi.push({ schermata: st.screen }); break; }
+  }
+  return passi;
+}
+
+export async function apertura(S, ctx) {
+  const p = S.page; const out = [];
+  for (let i = 0; i < 10; i++) {
+    const cl = await cliccabili(p);
+    if (cl.some(x => /^🏁 Avvia Stagione/.test(x))) { await clickTesto(p, /Avvia Stagione/); await sleep(1300); const r = await wizardApertura(S, ctx); out.push(...r.map(x => (x.pick || x.schermata || '?'))); continue; }
+    break;
   }
   return out;
 }
