@@ -346,3 +346,24 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":17,"campo":18,"s":9,"w":20}
 {"tipo":"salvataggio","nome":"stato diverso dopo salva e ricarica","n":1,"esempio":[{"pth":".cup.club","b":"\"vill\""}],"s":9,"w":20,"club":"FC Submarino"}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":17,"campo":18,"s":9,"w":21}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":18,"campo":19,"s":9,"w":22}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":9,"w":23}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":9,"w":24}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":9,"w":25}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":9,"w":26}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":22,"campo":23,"s":9,"w":27}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":22,"campo":23,"s":9,"w":28}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":22,"campo":23,"s":9,"w":29}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":9,"w":30}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":27,"campo":28,"s":9,"w":31}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":28,"campo":29,"s":9,"w":32}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":33}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":34}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":35}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":37}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":38}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":30,"s":9,"w":39}
+{"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"👕 NUMERO DI MAGLIA Stagione 10 Priorità 93 94 95 96 97 99 ✅ Conferma #– Annulla|91","btns":["1","2","3","4","5","6"],"s":10,"w":1,"club":"FC Submarino"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"In sala | Ferretti | in sala | Neri | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"finestra","s":10,"w":14,"club":"FC Submarino"}

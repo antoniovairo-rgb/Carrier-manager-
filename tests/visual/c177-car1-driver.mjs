@@ -56,7 +56,7 @@ async function gestisciOverlay(o, contesto) {
   if (iv >= 0 && b.some(x => /Simula/.test(x))) {
     tipo = 'prompt-partita';
     drv.partiteViste++;
-    const live = (drv.partiteViste % LIVE_EVERY === 1) || drv.forzaLive;
+    const live = (drv.partiteViste % LIVE_EVERY === 1) || drv.forzaLive || /finale|supercoppa|spareggio|semifinale/i.test(txt.slice(0, 300));
     drv.forzaLive = false;
     idx = live ? iv : b.findIndex(x => /Simula/.test(x));
     drv.prossima = live ? 'live' : 'sim'; saveDrv();
