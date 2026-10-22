@@ -7,3 +7,4 @@
 {"cp": "s10w1", "stagione": 10, "settimana": 1, "n_diff": 3, "diff": [[".playedMd.s", "9", "10"], [".playedMd.md[len]", 38, 0], [".cup.club", "<assente>", "bol"]]}
 {"cp": "s11w1", "stagione": 11, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "napoli"], [".playedMd.s", "10", "11"], [".playedMd.md[len]", 38, 0]]}
 {"cp": "s12w1", "stagione": 12, "settimana": 1, "n_diff": 6, "diff": [[".playedMd.s", "11", "12"], [".playedMd.md[len]", 44, 0], [".teammates[0].name", "Isaac Hughes", "Cristian Valente"], [".teammates[1].name", "Gary Howard", "Dino Caputo"], [".teammates[2].name", "Carter Nixon", "Stefano Battaglia"], [".cup.club", "<assente>", "napoli"]]}
+{"cp": "s13w1", "stagione": 13, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "roma"], [".playedMd.s", "12", "13"], [".playedMd.md[len]", 38, 0]]}
