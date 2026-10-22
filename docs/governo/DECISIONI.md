@@ -774,3 +774,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 22/10 — pausa fino a lunedì 26/10 ore 16:00 (PO)
 
 - PO: «Metti in pausa / sospeso nuove attività fino a lunedì alle 16:00». PO (questionario): **i 4 lavori già avviati nel cloud finiscono** (carriere 177 n.1, n.2, n.3; giro 92) e salvano su GitHub; **nessun lavoro nuovo**, niente assemblaggio né rilascio della 178. Tolto il controllo automatico che avrebbe lanciato lavori nuovi; programmata la ripresa per lunedì 26/10 alle 16:00 Roma (15:00 UTC).
+- PO (22/10, poco dopo): **«Metti tutto in pausa»** — interrotte anche le 4 figlie cloud a metà lavoro (resta quanto già pushato sui loro rami). La ripresa di lunedì 26/10 ore 16 le riavvia da dove si sono fermate.
