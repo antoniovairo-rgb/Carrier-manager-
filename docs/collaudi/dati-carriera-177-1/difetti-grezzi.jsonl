@@ -481,3 +481,18 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":13,"campo":14,"s":13,"w":20}
 {"tipo":"salvataggio","nome":"stato diverso dopo salva e ricarica","n":1,"esempio":[{"pth":".cup.club","b":"\"ars\""}],"s":13,"w":20,"club":"FC Islington"}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":15,"campo":16,"s":13,"w":21}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":20,"s":13,"w":22}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":20,"s":13,"w":23}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":20,"s":13,"w":24}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":19,"campo":20,"s":13,"w":25}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":13,"w":26}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":13,"w":27}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":13,"w":28}
+{"tipo":"blocco","nome":"partita live non parte","s":13,"w":28,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":13,"w":29}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":20,"campo":21,"s":13,"w":30}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":22,"campo":23,"s":13,"w":31}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":13,"w":32}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":13,"w":33}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":24,"campo":25,"s":13,"w":34}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":25,"campo":26,"s":13,"w":35}
