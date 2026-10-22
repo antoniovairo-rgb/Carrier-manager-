@@ -563,3 +563,7 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":33,"s":14,"w":39}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":9,"s":14,"w":39}
 {"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"👕 NUMERO DI MAGLIA Stagione 15 Priorità 94 95 96 97 98 99 ✅ Conferma #– Annulla|83","btns":["10","11","12","13","14","15"],"s":15,"w":1,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":14,"campo":15,"s":15,"w":15}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":5,"campo":6,"s":15,"w":15}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":16,"campo":17,"s":15,"w":16}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":6,"campo":7,"s":15,"w":16}
