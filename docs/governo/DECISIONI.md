@@ -765,3 +765,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 90 (c5434ccb + 8e7c6c9b, PO-292): partita e highlight a tutto schermo su PC/tablet, statistiche a destra; D1-D9, D11, D12, D14 chiusi, D10 parziale, D13 non riprodotto; pc-tablet-292 verde, rosso coi due interruttori. panca-64 rosso anche su main (schede d'interazione in panchina = 1): non del giro, da guardare.
 - Giro 91 (eae79599, PO-296): spazio fra riquadri ~8 px (token SP.box, Card e Fisarmonica; la Fisarmonica sommava margine 12 al gap delle colonne: 22-23 px). spazio-296 verde, rosso 32/34. calendario-offerte-195 rosso in entrambi i bracci (anche con l'interruttore): instabile, da verificare sulla base.
 - PO (questionario, D15 del collaudo PC/tablet): **«Squadre fisse come in tv»** — intestazione e tabellone con la squadra di casa sempre a sinistra per tutta la partita; il cambio di campo si vede solo sul prato. Supera la direttiva 7.893 per l'intestazione. Va nel giro 92 con PO-297.
+
+## 22/10 mattina — riavvio della macchina: tutto nel cloud
+
+- Un riavvio della macchina ha fermato i due lavori interni (carriera 177 n.1 alla stagione 10, giro 92 senza commit). Dati della carriera salvati (43690b94). Decisione della sessione principale: **anche i giri vanno nel cloud** finché i riavvii continuano; qui restano solo assemblaggio, rilascio e governo.
+- Nel cloud: carriera 177 n.1 (ripresa, session_01GfKuZv4wGQgmBqGfKNj6Nw), n.2 molti trasferimenti (stagione 8), n.3 Nazionale, giro 92 partita 2D (session_013oKHaLnihBXutJLnsxE6BA, base giro 91).
