@@ -430,3 +430,17 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":21}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":16,"s":12,"w":22}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":22}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":16,"s":12,"w":23}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":23}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":18,"s":12,"w":24}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":24}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":18,"s":12,"w":25}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":25}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":18,"s":12,"w":26}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":26}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":27}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":27}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":28}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":28}
+{"tipo":"blocco","nome":"partita live non parte","s":12,"w":28,"club":"FC Islington"}
+{"tipo":"blocco","nome":"schermata ferma","screen":"nationalCallup","btns":["Gioca la partita"],"estratto":"CONVOCAZIONE NAZIONALE | 🇮🇹 | Nazionale Italia | Presenza n. 9 · Amichevole internazionale | 10 | PROSSIMA PARTITA | 🇮🇹 | Italia | vs | Argentina | 🇦🇷 | BONUS DOPO LA PARTITA | +8 | Popolarità | +€0.15M | Valore | +12 | Morale | G","dove":"schermata","s":12,"w":28,"club":"FC Islington"}
