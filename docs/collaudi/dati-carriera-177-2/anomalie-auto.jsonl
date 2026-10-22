@@ -7,3 +7,11 @@
 {"st":2,"wk":36,"tipo":"testo","msg":"articolo prima della sigla: « simulate non entrano nella media | Prima parte con il FC Clermont: 22 partite · 2 gol · 1 assist | 🤝 | 44/100 | Fidu»"}
 {"st":9,"wk":36,"tipo":"classifica-ui","msg":"nessuna tabella di classifica trovata"}
 {"st":10,"wk":36,"tipo":"classifica-ui","msg":"nessuna tabella di classifica trovata"}
+{"st":11,"wk":8,"tipo":"gol","msg":"goals stagione 6 ≠ somma storico partite 4","club":"FC Vellamare"}
+{"st":11,"wk":10,"tipo":"gol","msg":"goals stagione 8 ≠ somma storico partite 6","club":"FC Vellamare"}
+{"st":11,"wk":11,"tipo":"assist","msg":"assist stagione 5 ≠ somma storico 4"}
+{"st":11,"wk":12,"tipo":"gol","msg":"goals stagione 9 ≠ somma storico partite 7","club":"FC Vellamare"}
+{"st":11,"wk":13,"tipo":"assist","msg":"assist stagione 6 ≠ somma storico 5"}
+{"st":11,"wk":15,"tipo":"gol","msg":"goals stagione 10 ≠ somma storico partite 8","club":"FC Vellamare"}
+{"st":11,"wk":15,"tipo":"assist","msg":"assist stagione 7 ≠ somma storico 6"}
+{"st":11,"wk":17,"tipo":"gol","msg":"goals stagione 12 ≠ somma storico partite 10","club":"FC Vellamare"}

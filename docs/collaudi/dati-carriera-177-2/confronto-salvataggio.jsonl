@@ -5,3 +5,4 @@
 {"cp": "s8w21", "stagione": 8, "settimana": 21, "n_diff": 0, "diff": []}
 {"cp": "s9w1", "stagione": 9, "settimana": 1, "n_diff": 6, "diff": [[".teammates[0].name", "Marcos Cruz", "Filippo Semeraro"], [".teammates[1].name", "Xacobo Piquer", "Mauro Raimondi"], [".teammates[2].name", "Carlos Campos", "Martino Giannico"], [".cup.club", "<assente>", "fio"], [".playedMd.s", "8", "9"], [".playedMd.md[len]", 46, 0]]}
 {"cp": "s10w1", "stagione": 10, "settimana": 1, "n_diff": 3, "diff": [[".playedMd.s", "9", "10"], [".playedMd.md[len]", 38, 0], [".cup.club", "<assente>", "bol"]]}
+{"cp": "s11w1", "stagione": 11, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "napoli"], [".playedMd.s", "10", "11"], [".playedMd.md[len]", 38, 0]]}
