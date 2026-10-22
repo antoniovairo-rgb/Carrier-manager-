@@ -53,7 +53,7 @@ export async function giocaLive(S, { scelte = [0, 1, 2, -1], tetto = 420000, fot
     const ph = await fase(p);
     if (ph !== lastPh) { fasi.push([Math.round((Date.now() - t0) / 1000), ph]); tCambio = Date.now(); }
     if (ph && ph !== 'playing' && !/^hl_/.test(ph) && Date.now() - tCambio > 40000 && !diagFatto) { diagFatto = true; fasi.push(['fermo>40s', ph, await p.evaluate(() => document.body.innerText.slice(0, 160).replace(/\n+/g, ' | ')), (await p.evaluate(() => [...document.querySelectorAll('button')].filter(x => x.offsetParent).map(x => x.textContent.trim().slice(0, 24)).slice(0, 8)))]); await foto({ page: p }, '_fermo-' + Date.now()); }
-    if (!ph && !started && Date.now() - t0 > 20000) { fasi.push(['nessuna-partita', Math.round((Date.now() - t0) / 1000)]); return { hls, tl: [], scoreFine: null, testoFine: await testo(p), cer, cerFoto, fasi, durata: Date.now() - t0, nonPartita: true }; }
+    if (!ph && !started && Date.now() - t0 > 100000) { fasi.push(['nessuna-partita', Math.round((Date.now() - t0) / 1000)]); return { hls, tl: [], scoreFine: null, testoFine: await testo(p), cer, cerFoto, fasi, durata: Date.now() - t0, nonPartita: true }; }
     if (!ph && Date.now() - tCambio > 30000) { fasi.push(['nullo>30s', await p.evaluate(() => document.body.innerText.slice(0, 120))]); tCambio = Date.now(); await clickTesto(p, /Salta e gioca|Salta l'ingresso|Salta ingresso|Gioca/); }
     if (ph !== lastPh) {
       if (ph === 'hl_choose') {

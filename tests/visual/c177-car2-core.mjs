@@ -103,6 +103,7 @@ export async function giocaSettimana(S, ctx) {
   for (let it = 0; it < 80; it++) {
     const sc0 = await stato(S);
     if (ctx.cerca && sc0 && sc0.screen === 'dashboard' && !it) { const m = await cercaMercato(S, ctx); if (m) { await clickTesto(p, /^Home$/); await sleep(500); } }
+    if (sc0 && sc0.screen === 'match' && !ctx.inRipresa) { ctx.inRipresa = 1; const rr = await L.giocaLive(S, { scelte: ctx.scelte || [0, 1, 2, -1], ingresso: false }); ctx.inRipresa = 0; ctx.nLive++; ctx.log('live-ripreso', { sc: rr.scoreFine, hls: rr.hls, tl: (rr.tl || []).slice(-14), fasi: rr.fasi }); for (let j = 0; j < 4; j++) { const c = await clickTesto(p, /Torna alla dashboard|Salta festeggiamenti|Continua/); if (!c) break; await sleep(900); } continue; }
     if (sc0 && sc0.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni|calendar|standings|coppe|clubPresentation)$/.test(sc0.screen)) return 'SCHERMATA:' + sc0.screen;
     const r = await passo(S, ctx);
     if (r === 'LIVE') {
@@ -210,6 +211,7 @@ export async function giro(S, ctx, n) {
     if (S.errors.length > (ctx.erroriVisti || 0)) { const nuovi = S.errors.slice(ctx.erroriVisti || 0); ctx.erroriVisti = S.errors.length; nuovi.forEach(e => anomalia(ctx, s && s.st, s && s.wk, 'pageerror', e.m)); }
     if (S.cons.length > (ctx.consVisti || 0)) { const nuovi = S.cons.slice(ctx.consVisti || 0); ctx.consVisti = S.cons.length; nuovi.filter(e => !/BABEL\] Note/.test(e.m)).forEach(e => anomalia(ctx, s && s.st, s && s.wk, 'console-error', e.m)); }
     await lintTesti(S, ctx);
+    if (s && s.wk % 6 === 0 && r === 'ok') await salvaCheckpoint(S, 'latest');
     if (s && (s.wk % 6 === 0) && ctx.ultimaClassSett !== s.st + ':' + s.wk) { ctx.ultimaClassSett = s.st + ':' + s.wk; await controllaClassificaUI(S, ctx); }
     out.push(r);
     if (r !== 'ok') break;
