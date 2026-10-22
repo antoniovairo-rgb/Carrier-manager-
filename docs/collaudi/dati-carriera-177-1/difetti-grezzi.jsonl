@@ -400,3 +400,21 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":31}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":24,"s":10,"w":32}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":32}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":24,"s":10,"w":33}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":33}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":1,"campo":24,"s":10,"w":34}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":10,"w":34}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":26,"s":10,"w":35}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":6,"s":10,"w":35}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":26,"s":10,"w":36}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":7,"s":10,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":3,"campo":26,"s":10,"w":36}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":7,"s":10,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":4,"campo":27,"s":10,"w":37}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":7,"s":10,"w":37}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":4,"campo":27,"s":10,"w":38}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":7,"s":10,"w":38}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":28,"s":10,"w":39}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":2,"campo":7,"s":10,"w":39}
+{"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"ala | Lombardi | in sala | Ferretti | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"cruscotto","s":11,"w":6,"club":"FC Werkstadt"}
+{"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"ala | Lombardi | in sala | Ferretti | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"finestra","s":11,"w":6,"club":"FC Werkstadt"}
