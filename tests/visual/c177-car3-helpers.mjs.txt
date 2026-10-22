@@ -98,3 +98,15 @@ st.natTorneo=async(maxG=8)=>{const out=[];for(let g=0;g<maxG;g++){
   out.push(lab+' => '+(m?m.slice(1).join(' '):fine.slice(0,100).replace(/\n/g,' / ')));
   await tocca(page,'Torna alla dashboard',3000);await sleep(2500);}
  return out;};
+st.confrontaReload=async()=>{const a=await st.snap();await sleep(2500);await st.salva();
+ await page.reload({waitUntil:'load'});await page.waitForFunction(()=>{const r=document.getElementById('root');return r&&r.children.length>0;},null,{timeout:60000});await sleep(2000);
+ await tocca(page,'Continua →',8000);await sleep(3500);const b=await st.snap();if(!b)return {err:'nessun snapshot dopo reload'};
+ const diff=[];const skip=new Set(['weekLived','log','diary','_t']);const walk=(x,y,p)=>{if(diff.length>25)return;if(typeof x!==typeof y){diff.push(p+': '+String(JSON.stringify(x)).slice(0,60)+' -> '+String(JSON.stringify(y)).slice(0,60));return;}
+  if(x&&typeof x==='object'){const ks=new Set([...Object.keys(x),...Object.keys(y||{})]);for(const k of ks){if(!p&&skip.has(k))continue;walk(x[k],y?y[k]:undefined,p?p+'.'+k:k);}}else if(x!==y)diff.push(p+': '+String(x).slice(0,60)+' -> '+String(y).slice(0,60));};
+ walk(a,b,'');return {season:b.season,week:b.week,diff};};
+st.stagione=async(o={})=>{const res=[];let guard=0;
+ while(guard++<8){const r=await st.corri(10,{every:o.every||12});res.push(r.out.slice(-1)[0]);{const q=await st.snap();if(q&&((q.euroMondiale&&q.euroMondiale.active&&!q.euroMondiale.done)||(q.nationsCupQueue&&q.nationsCupQueue.active&&!q.nationsCupQueue.done))){try{res.push('TORNEO:'+JSON.stringify(await st.natTorneo(8)));await tocca(page,'HOME',2500);}catch(e){res.push('TORNEO-ERR:'+String(e).slice(0,80));}}}if(r.out.some(x=>/FINE-STAGIONE-PRONTA|SCHERMATA|NOSNAP|ANOMALIA/.test(x))){res.push(r.out.filter(x=>/FINE|SCHERM|NOSNAP|ANOM/.test(x)).join(','));break;}
+   const s=await st.snap();if(s&&s.week>=39)break;}
+ let rl=null;try{rl=await st.confrontaReload();fs.appendFileSync(OUT+'/reload.jsonl',JSON.stringify({ts:Date.now(),...rl})+'\n');}catch(e){rl={err:String(e).slice(0,100)};}
+ const fin=await st.fineStagione({foto:false});await st.salva();const s=await st.snap();
+ return {res,reload:rl&&(rl.err||rl.diff),fin:fin.slice(-3),s:s.season,age:s.age,club:s.club.n,lg:s.club.lg,ovr:s.ovr,caps:s.nationalCaps,ng:s.nationalGoals,tg:s.totalGoals,bank:s.bankBalance,pro:s.proStatus,retired:s.retired||null};};
