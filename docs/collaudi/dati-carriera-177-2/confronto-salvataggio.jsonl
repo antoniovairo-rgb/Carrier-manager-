@@ -1,3 +1,5 @@
 {"cp": "s6w1", "stagione": 6, "settimana": 1, "n_diff": 6, "diff": [[".cup.club", "<assente>", "whu"], [".teammates[0].name", "Sascha Koch", "Liam Vaughan"], [".teammates[1].name", "Dennis Horn", "Blake Cook"], [".teammates[2].name", "Bernd Sommer", "Bradley White"], [".playedMd.s", "5", "6"], [".playedMd.md[len]", 43, 0]]}
 {"cp": "s6w1-mar", "stagione": 6, "settimana": 1, "n_diff": 0, "diff": []}
 {"cp": "s7w1", "stagione": 7, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "sam"], [".playedMd.md[len]", 38, 0], [".playedMd.s", "6", "7"]]}
+{"cp": "s8w1", "stagione": 8, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "fio"], [".playedMd.s", "7", "8"], [".playedMd.md[len]", 48, 0]]}
+{"cp": "s8w21", "stagione": 8, "settimana": 21, "n_diff": 0, "diff": []}

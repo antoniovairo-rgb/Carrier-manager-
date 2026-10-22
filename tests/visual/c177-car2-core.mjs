@@ -124,6 +124,8 @@ export async function giocaSettimana(S, ctx) {
       if (await clickTesto(p, /Vivi la Settimana|Avvia Stagione/)) { await sleep(900); continue; }
       if (await clickTesto(p, /Avanza Settimana/)) { await sleep(1200); continue; }
       if (await clickTesto(p, /^🎉 Festeggia/)) { ctx.log('festa', await testo(p).then(x => x.slice(0, 200))); await sleep(1500); continue; }
+      if (await clickTesto(p, /^(🌍|🏆|🇪🇺|🥇)[^›]*(Qualif|Mondiale|Europe|Nazion|Amichevole|Coppa|Gruppo|Finale|Semifinale|Quarti|Ottavi)[^›]*›/)) { ctx.log('partita-speciale', { st: s.st, wk: s.wk }); await sleep(1000); continue; }
+      if (await clickTesto(p, /^Una stretta di mano/)) { await sleep(900); continue; }
       if (await clickTesto(p, /Gioca vs|Gioca la partita della|Gioca (il|la) /)) { await sleep(800); continue; }
       return 'bloccato:dashboard';
     }
