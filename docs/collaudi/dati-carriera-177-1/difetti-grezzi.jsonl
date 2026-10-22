@@ -613,3 +613,6 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":7,"campo":19,"s":15,"w":37}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":15,"campo":33,"s":15,"w":38}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":8,"campo":20,"s":15,"w":38}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":17,"campo":35,"s":15,"w":39}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":8,"campo":20,"s":15,"w":39}
+{"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"Il confronto Luigi Pastore Il tuo procurrno. Voglio cambiare completamente aria.|4","btns":["Sto benissimo qui.","Sto bene, ma vorrei sentirmi più importante.","Credo sia il momento di guardarci intorno.","Voglio cambiare completamente aria."],"s":16,"w":2,"club":"FC Lisboa"}
