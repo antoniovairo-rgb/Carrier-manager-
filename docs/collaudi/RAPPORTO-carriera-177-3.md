@@ -1,0 +1,73 @@
+# Collaudo 7.999.177 — Carriera intera n.3 «Nazionale»
+
+Build collaudata: **7.999.177** (ramo `collaudo/7.999.177-carriera-3`, nato da `main` 78384a44).
+Telefono simulato **412×915**, `?cpmtest=1`, **corpi GLB accesi** (dalla 1ª partita di campionato in poi; i provini sono stati giocati a GLB spento).
+Il gioco non è stato toccato: niente modifiche a `src/`, `GAME_VERSION`, `docs/governo/`.
+
+## Riassunto
+
+| Voce | Valore |
+|---|---|
+| Eroe | Marco Valdes, attaccante, **Italia** (soglia del CT: OVR 78) |
+| Percorso | 3 provini → FC Salernum Primavera (S1-S2) → FC Empolese, Lega B (S3, S4) con prestito a FC Rio Verde (S3) → FC Adana, Liga Anatolica (S5-S8) con prestito a FC Valmora, Lega A (S7) → FC Rendalto, Liga Lusitana (S8-S12) con breve passaggio a FC Fiandria (S8) → FC Manchester, Premier Division (S12-S13) → FC Leipzig, Deutsche Liga (S14-S16) → FC Islington, Premier Division (S17-S18) |
+| Stagioni | **18** (S1 a 17 anni → ritiro annunciato a S18, 34 anni; «Il giorno dell'addio» raggiunto) |
+| Presenze / gol / assist in carriera | **709 / 319 / 142** (dati della schermata di fine carriera) |
+| Nazionale | **43 presenze, 28 gol**. Prima convocazione S6 W19 (amichevole con l'Argentina, gol). Mondiale S8 (qualificati, eliminati agli ottavi dalla Spagna), Coppa delle Nazioni S10 (tre gare del girone, 6 punti, poi 0-2 con la Spagna), Europeo S12 (non qualificati), Coppa delle Nazioni S14, Mondiale S16 (eliminati nel girone), Coppa delle Nazioni S18 (finale persa ai rigori con la Germania) |
+| Trofei | **9**: Lega A (S7), Coppa (S10, S11, S12), Europa Cup (S11), Premier Division (S12, S13), Champions Cup (S16), Deutsche Liga (S16) |
+| Premi | MVP S7 e S16, Giovane dell'Anno S4/S6/S7, Squadra dell'Anno 8 volte |
+| OVR | massimo **90** (S14-S15); 62 alla creazione, 86 al ritiro |
+| Conto finale | €98,8 milioni |
+| Partite giocate dal vivo | 147 tabellini registrati (campionato, coppe, coppe europee e **tutte** le gare della Nazionale) |
+| Salva + ricarica | 12 volte, a fine stagione da S7 a S18: nessun dato del giocatore perso; differenze solo nei registri interni (D17) |
+| Errori di pagina / console | **0** pageerror e 0 errori di console in tutti i blocchi di settimane registrati (l'unica riga è l'avviso di Babel sul file oltre i 500 KB) |
+| Crash, pagine bianche | nessuno |
+
+Difetti: **3 alti, 7 medi, 11 bassi** (D1-D21).
+
+## Tabella difetti
+
+| # | Gravità | Stag./sett. | Schermata | Cosa succede | Come riprodurlo | Foto / dati |
+|---|---|---|---|---|---|---|
+| D1 | **alta** | S9-S11 (finestre 9, 19, 28, 35) | Convocazioni della Nazionale — nessuna schermata | Eroe Italia con OVR 84-88 (soglia 78), 17-33 gol a stagione, titolare: **zero convocazioni in S9, S10 (finestre) e S11**, senza nessun messaggio («il CT ti convoca» o «non ti convoca»). Il testimone `__CPM_CALLUP` a S10 W9 e W19 dice idoneità +27,8 e +30,7 e `passa: true`. Nel codice (`src/18`, `_tryNatCallup`) se nella settimana della finestra il club ha già una gara la settimana dell'amichevole diventa 99 e non viene creata nulla: qui le finestre W9 e W19 coincidevano con la Coppa (S10 W9 Coppa vs FC Estoril, W19 Coppa vs FC Lisboa). Conferma indiretta: appena passato in Premier (S13) le finestre W28 e W35 tornano a dare convocazioni. Presenze bloccate a 12 da S8 a S10 e a 16 per tutta la S11. | Pro con un club la cui Coppa cade nelle settimane 9/19/28/35; arrivare alla finestra e leggere il registro del giocatore: nessuna riga «Sosta…». | `settimane.jsonl` (caps 12→12→16→16 da S8 a S11) |
+| D2 | **alta** | S10 W10 e W14 | Partita dal vivo (Champions Cup, gironi) · rigore dell'eroe | Dopo il rigore segnato dall'eroe compare, un minuto dopo e senza scena, un secondo gol a lui attribuito in terza persona: «30' ⚽ Tuo rigore al 30' · 31' ⚽ Gol di Valdes» (FC Rendalto–FC Marseille 2-0) e «72' ⚽ Tuo rigore al 72' · 73' ⚽ Gol di Valdes» (FC Rendalto–FC Frankfurt 2-1). Al highlight successivo il tabellone è già 2-0; tabellino eroe 2 gol contro 1 solo gol nelle scene; titolo «VALDES SHOW: 2 GOL». Il rigore sembra contato due volte (risultato e statistiche falsati). 2 casi su 14 rigori segnati dal vivo, entrambi in coppa europea. | Giocare dal vivo una gara di coppa europea con rigore dell'eroe segnato e leggere «Momenti chiave». | `partite-live.jsonl` k=1010, k=1014 |
+| D3 | **alta** | fine S11 → S12 W1-5; fine S16 → S17 W1-4 | Contratto scaduto: home, Agente, Club | Riprodotto due volte. Il contratto scade senza nessuna proposta di rinnovo nel percorso di fine stagione. Nella stagione nuova il club porta lo stesso l'eroe in ritiro, alla presentazione e alla conferenza; «Simula e avanza» lo lascia a 0 presenze per 4 settimane; il prompt della Champions Cup dice «Sei titolare — Titolare inamovibile» e poi «Gioca» viene rifiutato con «Sei svincolato: rinnova col club o firma con una nuova squadra», e la settimana non avanza più. L'Agente mostra «⛔ Contratto scaduto: serve un nuovo accordo» ma **non c'è il pulsante «Negozia rinnovo»** (presente in S2) e il Club dice solo «Contratto: scaduto»: il rinnovo indicato dal messaggio non esiste nell'interfaccia. Si esce solo con «Ascolta l'offerta» (S12) o «Fai girare il nome» (S17) e firmando altrove. | Arrivare all'ultima stagione di contratto senza rinnovare, chiudere la stagione, avviare la successiva e provare a giocare; aprire AGENTE e CLUB. | `s17-agente-svincolato.png`, `s12-svincolato-offerta.png` |
+| D4 | media | S1 W1 (e provini) | Post-partita · Tabellino della gara | Possesso 50%-50% ma passaggi 537 contro 289; nel provino 2 possesso 49/51 con passaggi 327 contro 519. Falli 19 contro 8 con 3 ammonizioni contro 1. | Giocare dal vivo e aprire «Tabellino della gara». | `s01w01-postpartita.png` |
+| D5 | media | S3 W1 (e S4 W1) | Ufficio · Personal trainer (novità 177) | Attivando il Livello 1 («+10% efficacia allenamenti») la resa resta identica: tutti gli attributi dicono ancora «+1 ogni ~13 sett.» come a Livello 0. A Livello 3 («+20%»), un anno dopo, dice «~6 sett.» (più del doppio): i numeri non corrispondono alla percentuale dichiarata. | UFFICIO, Personal trainer, «+» e rileggere la tabella. | `s03-ufficio-trainer1.png`, `s04-ufficio-trainer3.png` |
+| D6 | media | S6 W19 e ogni gara dell'Italia | Post-partita della Nazionale · «Dalle altre testate», «L'analisi» | Articolo sbagliato: «**Il Italia** cede 1-2 a Argentina», «lacune difensive **del Italia**», «Il Italia ha sofferto in fase difensiva»; anche «a Argentina / a Olanda / a Inghilterra». Contati 34 «Il Italia» e 15 «del Italia» nei 147 tabellini. | Giocare una gara della Nazionale con l'Italia e leggere il post-partita. | `partite-live.jsonl` k=619 |
+| D7 | media | S8 W21 | Sala stampa dopo una gara della Nazionale (Mondiale, girone) | La scheda dell'intervista mostra il club, non la Nazionale: «RDL 1–1 Argentina · In casa · Il tuo voto 7,1 · 1 gol», fascia «FC Rendalto», per Italia–Argentina. | Giocare una gara del Mondiale dal pannello Carriera › Nazionale e chiudere il post-partita. | `s08-girone2-click.png` |
+| D8 | media | S12 W5 | Home · Prossima partita | «Coppa Europea · **900ª giornata**»: il codice interno del turno stampato come giornata (lo stesso difetto corretto per la Nazionale in PO-233). | Club in coppa europea, gironi: leggere la scheda «Prossima partita». | (testo in `settimane.jsonl` S12) |
+| D9 | media | S12 W5-7 | Offerta di trasferimento contro ruolo reale | L'offerta di FC Manchester prometteva «Il tuo ruolo: Titolare · 6 nel tuo reparto» e «Minutaggio stimato: 76%»; dopo la firma il profilo dice «Riserva» (prossimo gradino Rotazione) e in 3 settimane l'eroe (OVR 88) ha 1 presenza. | Firmare per FC Manchester in S12 W5 e aprire Carriera › Profilo dopo 2-3 settimane. | `s12-svincolato-offerta.png` |
+| D10 | media | S12 W1-5 | Inizio stagione da svincolato (parte del D3) | Da svincolato: ritiro, presentazione, conferenza e prompt «Sei titolare» come se il contratto fosse in vigore; 4 settimane senza presenze senza che la home spieghi perché. Tenuto separato dal D3 perché riguarda i testi del club, non il rinnovo. | Come D3. | `settimane.jsonl` S12 W2-5 |
+| D11 | bassa | S1 W1 | Formazioni pre-partita | FC Empolese Primavera ha due giocatori con la maglia 11 (COSTA e PISANI). | Vedi le formazioni prima della 1ª giornata. | `s01w01-formazioni.png` |
+| D12 | bassa | S1 W1 | Presentazione di squadra (3D) | Il pulsante «Salta» in basso a destra è grigio chiaro sul verde: quasi illeggibile. | Avvia Stagione → Vai allo stadio. | `s01-presentazione-18s.png` |
+| D13 | bassa | S3 W1 | Ufficio · Personal trainer | La tabella «+1 ogni ~13 sett.» ha lo stesso valore per gli otto attributi (da 62 a 73): non dice dove il piano rende di più. | UFFICIO, Personal trainer. | `s03-ufficio.png` |
+| D14 | bassa | S3, S5 | Galà di fine stagione | «STASERA 5 PREMI» con i cinque titoli, poi «Nessun premio individuale questa stagione» per l'eroe: la serata annunciata non lo riguarda (già visto nei collaudi 176). | Fine stagione senza premi individuali. | `s03-gala-0.png` |
+| D15 | bassa | S6 W1 | Carriera › Nazionale | «Il CT della Nazionale chiama da OVR 78 in su: **te ne mancano 1**.» (singolare: «te ne manca 1»). | Carriera › Nazionale con OVR 77. | `s06-tab-nazionale.png` |
+| D16 | bassa | S6-S17 | Post-partita · «La tua scelta al N'» | «→ **un contropiede subiti** fino al fischio» (3 volte) e «gol subito **fino al 81'**», «al 88'», «al 80'»… (24 volte; davanti a 8, 11, 80-89 serve «all'»). | Scegliere un'indicazione del mister a fine gara e leggere il post-partita. | `nat-s7w19-post.png` |
+| D17 | bassa | S7-S18 (fine stagione) | Salva + ricarica | Dopo salva + ricarica + Continua lo stato non è identico in 11 prove su 12: `playedMd.md` acquista le voci delle amichevoli della Nazionale della stagione (1489, 1498, 1505) che prima del ricaricamento non c'erano, e `cup.active` passa da true a false (S9-S12) o `cup.club` compare (S10, S13-S18). Gol, presenze, OVR, conto, contratto e convocazioni sono sempre uguali. | Salvare e ricaricare a fine stagione e confrontare `player`. | `reload.jsonl` |
+| D18 | bassa | S8 W21 | Post-partita: testata contro tabellino (colori di maglia, novità 177) | La stessa squadra ha due colori nella stessa schermata: nella testata Italia ha la riga bianca e Francia grigia, nel tabellino Italia è blu e Francia verde scuro; idem per i club (Salernum bianca in testata, granata nel tabellino; Olanda arancio/rosso). | Qualunque post-partita. | `s08-qualif1-post.png`, `nat-s7w19-post.png` |
+| D19 | bassa | S8 W21, S10-S21 | Tabellino della gara | In 3 tabellini su 58 controllati le parate non tornano con tiri in porta e gol (differenza di 1): Italia–Francia 2-1 con 5 tiri in porta italiani e 2 parate francesi (attese 3); k=331 e k=507 uguale. | Confrontare Gol, Tiri in porta e Parate. | `partite-live.jsonl` |
+| D20 | bassa | S8 W21 | Carriera › Nazionale › Mondiale | Le sei gare del Mondiale (2 qualificazioni, 3 di girone, ottavi) si giocano tutte di fila nella settimana 21 dal pannello, senza settimane fra le fasi (il pannello annunciava «Settimana 20», la regola interna mette la fase finale dalla 24). Stesso schema per Coppa delle Nazioni ed Europeo. | S8 W20: avanzare e premere «Gioca» nel pannello finché ci sono gare. | `s08-nazionale-qualif.png` |
+| D21 | bassa | S18 fine | Fine carriera | «Marco Valdes · 34 anni · **17 stagioni**» e «17 Stagioni», ma le stagioni giocate sono 18 (S1 a 17 anni → S18 a 34, tutte con presenze). Sotto «Leggenda Assoluta» compaiono **8 coppe** contro «9 Trofei» nelle statistiche; «Leggenda Assoluta» viola su viola, poco leggibile. La Nazionale compare solo come «43 Caps Naz.»: i 28 gol e i tornei giocati non ci sono. | Annunciare il ritiro nel passo «L'ultima stagione?» del wizard, chiudere la stagione, «Il giorno dell'addio». | `s18-fine-carriera-1.png`, `s18-fine-carriera-stat.png` |
+
+## Cosa ho guardato e non è difettoso
+
+- **Novità 177**: nessuna traccia di «Finalizzatore» in tutto il testo raccolto (774 righe di settimana, 147 tabellini, 114 schermate di fine stagione); ingresso in campo misurato **16 s** dal tocco su «Ingresso in campo» al gioco; bambini e corpi visibili all'ingresso (`s01w01-ingresso-5s.png`); colori di maglia presenti anche nel post-partita della Nazionale (ma vedi D18). Panchina coi corpi veri, cori della festa e bambini fermi all'ingresso non li ho giudicati con prove sufficienti: non posso confermarlo.
+- **Coerenza Nazionale**: presenze e gol in Nazionale tornano sempre con la somma di `natHistory` (12/12, 7/7 a S8; 43/28 a fine carriera); nessuna convocazione arrivata da infortunato, squalificato o svincolato.
+- **Highlight dell'eroe** (159 gare con scene registrate): gol e assist delle scene = tabellino dell'eroe in tutte tranne le due del D2.
+- **Ritiro**: annuncio nel wizard d'apertura a 34 anni, stagione d'addio giocata, «Il giorno dell'addio», lettera, fine carriera; dopo il ricaricamento lo slot resta «Carriera conclusa · S.18» (`s18-dopo-ricarica.png`).
+- Nessun calo anomalo di presenze, gol o presenze in Nazionale da una settimana all'altra nello stesso club.
+
+## Limiti del collaudo
+
+- Le scelte negli impulsi, nelle interviste e nelle offerte le ha fatte il banco a rotazione: per questo l'eroe ha accettato offerte e prestiti (7 club) senza una strategia; la carriera è comunque arrivata in Nazionale e al ritiro.
+- Le partite di campionato giocate dal vivo sono state circa 1 ogni 8-12 (non 1 ogni 4 come chiesto) da S7 in poi, per i tempi della CPU senza GPU; tutte le gare della Nazionale e dei suoi tornei sono state giocate dal vivo.
+- Le scelte dentro gli highlight le ha fatte il pilota automatico seedato (`__CPM_AUTOPLAY`), non a mano; il confronto esito scritto / 3D è stato fatto sui testimoni (`__CPM_TIMELINE`, `__CPM_SCORE`) e su poche foto, non scena per scena.
+- I provini sono stati giocati a GLB spento; il resto a GLB acceso.
+- La sessione è stata riavviata due volte dall'ambiente: il banco riparte dall'ultimo salvataggio (`salvataggio-corrente.json`), nessun dato di gioco è andato perso.
+
+## File
+
+- Dati: `docs/collaudi/dati-carriera-177-3/` — `settimane.jsonl` (registro settimana per settimana), `partite-live.jsonl` (testimoni degli highlight e tabellini), `fine-stagioni.jsonl`, `reload.jsonl`, `difetti.jsonl`, `snapshot-pre-ritiro.json`, `salvataggio-corrente.json`.
+- Foto: `docs/collaudi/foto-carriera-177-3/` (39).
+- Script: `tests/visual/c177-car3-lib.mjs`, `c177-car3-server.mjs` (banco persistente con comandi via HTTP locale), `c177-car3-helpers.mjs.txt` (le funzioni di guida: settimana, partita, torneo della Nazionale, fine stagione, salva e ricarica), `c177-car3-esplora.mjs`.
