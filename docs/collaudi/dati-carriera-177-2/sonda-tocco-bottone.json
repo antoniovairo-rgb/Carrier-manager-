@@ -1,0 +1,902 @@
+[
+ {
+  "delay": 150,
+  "gi": 3,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Cerca l'angoloTIRO · 61",
+   "🌀Dribbling portiere e tiroTECNICA · 55",
+   "🎯Assist retropassaggioPASSAGGIO · 53"
+  ],
+  "k": 0,
+  "click": "🎯Cerca l'angoloTIRO · 61",
+  "outcome": {
+   "actionLabel": "🦵 Tiro a giro",
+   "text": "😬 Tiro fuori!",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 10,
+  "fase": "hl_choose",
+  "lista": [
+   "🪄Scavetto sul portiereTECNICA · 55",
+   "💥Conclusione potenteTIRO · 61",
+   "🌀Dribbling portiere e tiroTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "💥Conclusione potenteTIRO · 61",
+  "outcome": {
+   "actionLabel": "💥 Tiro di potenza",
+   "text": "😬 Tiro fuori!",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 17,
+  "fase": "hl_choose",
+  "lista": [
+   "↗️Cross tesoPASSAGGIO · 53",
+   "↗️Cross a rientrareTECNICA · 55",
+   "🎯Cerca l'angoloTIRO · 61"
+  ],
+  "k": 2,
+  "click": "🎯Cerca l'angoloTIRO · 61",
+  "outcome": {
+   "actionLabel": "🦵 Tiro a giro",
+   "text": "😔 Tiro centrale — parata facile.",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 24,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Assist filtrantePASSAGGIO · 53",
+   "⚡Accelera verso portaVELOCITÀ · 61"
+  ],
+  "k": 1,
+  "click": "⚡Accelera verso portaVELOCITÀ · 61",
+  "outcome": {
+   "actionLabel": "⚡ Accelera verso porta",
+   "text": "🏆 Senza storia — gol splendido!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 31,
+  "fase": "hl_choose",
+  "lista": [
+   "🛡️Scivolata nettaFISICO · 62",
+   "✋Intercetta di piedeTECNICA · 55"
+  ],
+  "k": 0,
+  "click": "🛡️Scivolata nettaFISICO · 62",
+  "outcome": {
+   "actionLabel": "🛡️ Scivolata netta",
+   "text": "🔒 Intercetto netto — palla nostra!",
+   "ok": true,
+   "key": "recovery"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 38,
+  "fase": "hl_choose",
+  "lista": [
+   "↩️Dai e vai precisoPASSAGGIO · 53",
+   "⚡Accelera in profonditàVELOCITÀ · 61"
+  ],
+  "k": 1,
+  "click": "⚡Accelera in profonditàVELOCITÀ · 61",
+  "outcome": {
+   "actionLabel": "⚡ Accelera in profondità",
+   "text": "😤 Palo! Fortuna avversaria.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 45,
+  "fase": "hl_choose",
+  "lista": [
+   "🧱Corpo sulla traiettoriaFISICO · 62",
+   "✋Devia col piedeTECNICA · 55",
+   "😱Tentativo disperatoFISICO · 62"
+  ],
+  "k": 0,
+  "click": "🧱Corpo sulla traiettoriaFISICO · 62",
+  "outcome": {
+   "actionLabel": "🧱 Corpo sulla traiettoria",
+   "text": "🛡️ SALVATO! Che intervento!",
+   "ok": true,
+   "key": "save"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 52,
+  "fase": "hl_choose",
+  "lista": [
+   "✈️Attacca il palloneFISICO · 62",
+   "🌀Scavalco il portiereTECNICA · 55",
+   "🎯Pallone al compagnoPASSAGGIO · 53"
+  ],
+  "k": 1,
+  "click": "🌀Scavalco il portiereTECNICA · 55",
+  "outcome": {
+   "actionLabel": "🌀 Scavalco il portiere",
+   "text": "🎯 Destro perfetto — nessuna speranza!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 59,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Lancio smarcantePASSAGGIO · 53",
+   "🔥Prendo in mano la squadraMENTALITÀ · 67"
+  ],
+  "k": 0,
+  "click": "🎯Lancio smarcantePASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🎯 Lancio smarcante",
+   "text": "✂️ Passaggio intercettato.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 66,
+  "fase": "hl_choose",
+  "lista": [
+   "↘️Tocco sotto morbidoPASSAGGIO · 53",
+   "🦵Tiro a porta semiapertaTIRO · 61",
+   "🌀Dribbling portiere e appoggiaTECNICA · 55"
+  ],
+  "k": 0,
+  "click": "↘️Tocco sotto morbidoPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "↘️ Tocco sotto morbido",
+   "text": "🤝 Passaggio da manuale!",
+   "ok": true,
+   "key": "assist"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 73,
+  "fase": "hl_choose",
+  "lista": [
+   "⚡Conclusione di primaTECNICA · 55",
+   "🦵Tiro di collo d'istintoTIRO · 61",
+   "🎯Controllo e concludeTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "🦵Tiro di collo d'istintoTIRO · 61",
+  "outcome": {
+   "actionLabel": "🦵 Tiro di collo d'istinto",
+   "text": "💫 Che capolavoro — gol dell'anno!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 80,
+  "fase": "hl_choose",
+  "lista": [
+   "✈️Taglio sul secondo paloFISICO · 62",
+   "⚡Conclusione di primaTIRO · 61",
+   "🤝Sponda verso il centro dell'areaPASSAGGIO · 53"
+  ],
+  "k": 2,
+  "click": "🤝Sponda verso il centro dell'areaPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🤝 Sponda verso il centro dell'area",
+   "text": "✂️ Passaggio intercettato.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 87,
+  "fase": "hl_choose",
+  "lista": [
+   "⚡Cross cieco di primaPASSAGGIO · 53",
+   "🎯Cross a rientrare guardatoPASSAGGIO · 53",
+   "🦵Tiro senza pensarciTIRO · 61"
+  ],
+  "k": 0,
+  "click": "⚡Cross cieco di primaPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "⚡ Cross cieco di prima",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 94,
+  "fase": "hl_choose",
+  "lista": [
+   "🦵Step-over e scatto e tiroVELOCITÀ · 61",
+   "🌀Step-over e crossDRIBBLING · 55",
+   "💥Finta e tiro immediatoTIRO · 61"
+  ],
+  "k": 1,
+  "click": "🌀Step-over e crossDRIBBLING · 55",
+  "outcome": {
+   "actionLabel": "🌀 Step-over e cross",
+   "text": "✂️ Passaggio intercettato.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 101,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Giro e crossDRIBBLING · 55",
+   "🌀Virata, scatto e tiroVELOCITÀ · 61"
+  ],
+  "k": 0,
+  "click": "🎯Giro e crossDRIBBLING · 55",
+  "outcome": {
+   "actionLabel": "🎯 Giro e cross",
+   "text": "😬 Nessuno ci arriva, il cross finisce fuori.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 108,
+  "fase": "hl_choose",
+  "lista": [
+   "✈️Attacca il palloneFISICO · 62",
+   "🎯Colpo di testa miratoFISICO · 62",
+   "🔙Retropassaggio per riorganizzarePASSAGGIO · 53"
+  ],
+  "k": 0,
+  "click": "✈️Attacca il palloneFISICO · 62",
+  "outcome": {
+   "actionLabel": "✈️ Spizzata di testa",
+   "text": "👁️ Ha visto il taglio prima di tutti.",
+   "ok": true,
+   "key": "assist"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 115,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Cerca l'angoloTECNICA · 55",
+   "🦵Tiro interno piede classicoTIRO · 61",
+   "⚡Conclusione di primaPASSAGGIO · 53"
+  ],
+  "k": 1,
+  "click": "🦵Tiro interno piede classicoTIRO · 61",
+  "outcome": {
+   "actionLabel": "🦵 Tiro interno piede classico",
+   "text": "💥 GOOOOOL! Folla in delirio!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 122,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Parabola d'esterno 40mPASSAGGIO · 53",
+   "📏Lancio lungo di colloPASSAGGIO · 53",
+   "↩️Passaggio sicuro cortoPASSAGGIO · 53"
+  ],
+  "k": 2,
+  "click": "↩️Passaggio sicuro cortoPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "↩️ Passaggio sicuro corto",
+   "text": "💭 Poteva fare molto di più.",
+   "ok": false,
+   "key": "nothing"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 129,
+  "fase": "hl_choose",
+  "lista": [
+   "🤼Raddoppio coordinato col compagnoTECNICA · 55",
+   "🏃Sprint di copertura urgenteVELOCITÀ · 61"
+  ],
+  "k": 0,
+  "click": "🤼Raddoppio coordinato col compagnoTECNICA · 55",
+  "outcome": {
+   "actionLabel": "🤼 Raddoppio coordinato col compagno",
+   "text": "😔 Supera la pressione.",
+   "ok": false,
+   "key": "through"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 136,
+  "fase": "hl_choose",
+  "lista": [
+   "🛑Blocca il cross con il corpoFISICO · 62",
+   "✋Devia in cornerTECNICA · 55",
+   "📣Chiama il portiereTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "✋Devia in cornerTECNICA · 55",
+  "outcome": {
+   "actionLabel": "✋ Devia in corner",
+   "text": "💣 Non ci si crede.",
+   "ok": false,
+   "key": "goal_against"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 143,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Assist preciso — vinci il derbyPASSAGGIO · 53",
+   "💥Conclusione potenteTIRO · 61"
+  ],
+  "k": 0,
+  "click": "🎯Assist preciso — vinci il derbyPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🎯 Assist preciso — vinci il derby",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 150,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Dribbling provocatorio — il fallo c'è!DRIBBLING · 55",
+   "⚡Scatto improvviso provocatorioVELOCITÀ · 61",
+   "💥Conclusione potenteTIRO · 61"
+  ],
+  "k": 0,
+  "click": "🌀Dribbling provocatorio — il fallo c'è!DRIBBLING · 55",
+  "outcome": {
+   "actionLabel": "🌀 Dribbling provocatorio — il fallo c'è!",
+   "text": "❌ Palla persa nel contrasto.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 157,
+  "fase": "hl_choose",
+  "lista": [
+   "🤸Gettati sulla traiettoriaFISICO · 62",
+   "✋Devia di piede sul paloTECNICA · 55",
+   "📣Avvisa il portiereTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "✋Devia di piede sul paloTECNICA · 55",
+  "outcome": {
+   "actionLabel": "✋ Devia di piede sul palo",
+   "text": "😨 Gol avversario.",
+   "ok": false,
+   "key": "goal_against"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 150,
+  "gi": 164,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Rientra e tira col sinistroTECNICA · 55",
+   "🎯Cross teso verso il secondo paloPASSAGGIO · 53",
+   "💥Conclusione potenteTIRO · 61"
+  ],
+  "k": 2,
+  "click": "💥Conclusione potenteTIRO · 61",
+  "outcome": {
+   "actionLabel": "💥 Tiro di collo pieno",
+   "text": "😔 Para il portiere.",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 5,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Tiro angolato e precisoD'interno, rasoterra sull'angolo: quasi sempre nello specchio — ma un grande portiere può arrivarci.",
+   "💥Tiro potenteDi collo pieno, forte e teso: difficilissimo da trattenere — ma il rischio di sbagliare mira sale.",
+   "🚀Potente all'incrocioLa sassata sotto l'incrocio: se esce bene è imparabile — palo, traversa e fuori dietro l'angolo."
+  ],
+  "k": 0,
+  "click": "🎯Tiro angolato e precisoD'interno, rasoterra sull'angolo: quasi sempre nello specchio — ma un grande portiere può arrivarci.",
+  "outcome": {
+   "actionLabel": "Rigore — Tiro angolato e preciso",
+   "text": "🧤 PARATA! Il portiere vola alto centro e ci arriva!",
+   "ok": false,
+   "key": "save"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 12,
+  "fase": "hl_choose",
+  "lista": [
+   "🦵Esterno a giroTIRO · 61",
+   "🎯Rientra e tiraTECNICA · 55",
+   "🤸Colpo d'esternoTIRO · 61"
+  ],
+  "k": 1,
+  "click": "🎯Rientra e tiraTECNICA · 55",
+  "outcome": {
+   "actionLabel": "🎯 Rientra e tira",
+   "text": "😬 Tiro fuori!",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 19,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Dribbling netto e assistTECNICA · 55",
+   "⚡Sterzata e assistVELOCITÀ · 61",
+   "🎯Cerca l'angoloTIRO · 61"
+  ],
+  "k": 2,
+  "click": "🎯Cerca l'angoloTIRO · 61",
+  "outcome": {
+   "actionLabel": "💥 Tiro a giro",
+   "text": "❌ Tiro debole, para comodo.",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 26,
+  "fase": "hl_choose",
+  "lista": [
+   "⚡Conclusione di primaTECNICA · 55",
+   "🦵Tiro di primaTIRO · 61",
+   "🔄Doppio passo e tiroTECNICA · 55"
+  ],
+  "k": 0,
+  "click": "⚡Conclusione di primaTECNICA · 55",
+  "outcome": {
+   "actionLabel": "💫 Appoggio di prima preciso",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 33,
+  "fase": "hl_choose",
+  "lista": [
+   "🧱Blocca con il corpoFISICO · 62",
+   "✋Devia col piedeTECNICA · 55",
+   "📣Chiama il portiereTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "✋Devia col piedeTECNICA · 55",
+  "outcome": {
+   "actionLabel": "✋ Devia col piede",
+   "text": "😰 Errore difensivo — costoso.",
+   "ok": false,
+   "key": "goal_against"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 40,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Dribbling stretto e tiroDRIBBLING · 55",
+   "⚡Finta, scatto e tiroVELOCITÀ · 61",
+   "🔙Retropassaggio sicuroPASSAGGIO · 53"
+  ],
+  "k": 2,
+  "click": "🔙Retropassaggio sicuroPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🔙 Retropassaggio sicuro",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 47,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Assist al compagnoPASSAGGIO · 53",
+   "⚡Scatta e tiraVELOCITÀ · 61"
+  ],
+  "k": 0,
+  "click": "🎯Assist al compagnoPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🎯 Assist al compagno",
+   "text": "✂️ Passaggio intercettato.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 54,
+  "fase": "hl_choose",
+  "lista": [
+   "🏃Pressing aggressivoVELOCITÀ · 61",
+   "✋Intercetta il retropassaggioTECNICA · 55",
+   "📣Copri le linee di passaggioMENTALITÀ · 67"
+  ],
+  "k": 1,
+  "click": "✋Intercetta il retropassaggioTECNICA · 55",
+  "outcome": {
+   "actionLabel": "✋ Intercetta il retropassaggio",
+   "text": "😬 L'avversario passa.",
+   "ok": false,
+   "key": "through"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 61,
+  "fase": "hl_choose",
+  "lista": [
+   "🤝Sponda corta e tiraTECNICA · 55",
+   "⚡Conclusione di primaTIRO · 61",
+   "↩️Retropassaggio al limitePASSAGGIO · 53"
+  ],
+  "k": 2,
+  "click": "↩️Retropassaggio al limitePASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "↩️ Retropassaggio al limite",
+   "text": "👁️ Che giocata! Il portiere ci mette i guantoni — palla viva!",
+   "ok": true,
+   "key": "chance"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 68,
+  "fase": "hl_choose",
+  "lista": [
+   "🤸Giocata acrobaticaFISICO · 62",
+   "🦵Tiro di colloTIRO · 61",
+   "🎯Controllo e tiraTECNICA · 55"
+  ],
+  "k": 0,
+  "click": "🤸Giocata acrobaticaFISICO · 62",
+  "outcome": {
+   "actionLabel": "⚡ Sforbiciata al volo",
+   "text": "🧤 Il portiere si distende e respinge.",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 75,
+  "fase": "hl_choose",
+  "lista": [
+   "⚡Conclusione di primaTIRO · 61",
+   "🎯Tocco preciso per il golTECNICA · 55",
+   "🌀Dribbla il portiere e segnaDRIBBLING · 55"
+  ],
+  "k": 1,
+  "click": "🎯Tocco preciso per il golTECNICA · 55",
+  "outcome": {
+   "actionLabel": "🎯 Tocco preciso per il gol",
+   "text": "💫 Che capolavoro — gol dell'anno!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 82,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Cross a rientrarePASSAGGIO · 53",
+   "🌀Dribbling e cross in areaTECNICA · 55"
+  ],
+  "k": 1,
+  "click": "🌀Dribbling e cross in areaTECNICA · 55",
+  "outcome": {
+   "actionLabel": "🌀 Dribbling e cross in area",
+   "text": "🎯 Palla d'oro in area! Il compagno non riesce a concludere — palla che balla!",
+   "ok": true,
+   "key": "chance"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 89,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Esterno a rientrarePASSAGGIO · 53",
+   "💥Tiro dall'angolo strettoTIRO · 61",
+   "↗️Cross interno normalePASSAGGIO · 53"
+  ],
+  "k": 0,
+  "click": "🌀Esterno a rientrarePASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🌀 Esterno a rientrare",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 96,
+  "fase": "hl_choose",
+  "lista": [
+   "↗️Cross al centro da fondoPASSAGGIO · 53",
+   "🌀Scarta il portiere da fondoDRIBBLING · 55",
+   "🦵Tiro da angolo impossibileTIRO · 61"
+  ],
+  "k": 1,
+  "click": "🌀Scarta il portiere da fondoDRIBBLING · 55",
+  "outcome": {
+   "actionLabel": "🌀 Scarta il portiere da fondo",
+   "text": "❌ Tiro debole, para comodo.",
+   "ok": false,
+   "key": "miss_easy"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 103,
+  "fase": "hl_choose",
+  "lista": [
+   "🤸Controllo acrobatico e tiraTECNICA · 55",
+   "⚡Conclusione di primaFISICO · 62",
+   "🦵Tiro di primaTIRO · 61"
+  ],
+  "k": 2,
+  "click": "🦵Tiro di primaTIRO · 61",
+  "outcome": {
+   "actionLabel": "🦵 Tiro di prima",
+   "text": "💫 Che capolavoro — gol dell'anno!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 110,
+  "fase": "hl_choose",
+  "lista": [
+   "↩️Ricevo dopo il veloPASSAGGIO · 53",
+   "🏃Faccio il velo e attaccoPOSIZIONAMENTO · 62"
+  ],
+  "k": 1,
+  "click": "🏃Faccio il velo e attaccoPOSIZIONAMENTO · 62",
+  "outcome": {
+   "actionLabel": "🏃 Faccio il velo e attacco",
+   "text": "🎯 Destro perfetto — nessuna speranza!",
+   "ok": true,
+   "key": "goal"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 117,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Taglio diagonale e tiroVELOCITÀ · 61",
+   "🌀Dribbling dopo il taglio e tiroDRIBBLING · 55",
+   "↩️Appoggio per il compagnoPASSAGGIO · 53"
+  ],
+  "k": 1,
+  "click": "🌀Dribbling dopo il taglio e tiroDRIBBLING · 55",
+  "outcome": {
+   "actionLabel": "🌀 Dribbling dopo il taglio e tiro",
+   "text": "😔 Tiro centrale — parata facile.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 124,
+  "fase": "hl_choose",
+  "lista": [
+   "✈️Attacca il palloneFISICO · 62",
+   "⚡Controlla al volo e lanciaVELOCITÀ · 61"
+  ],
+  "k": 1,
+  "click": "⚡Controlla al volo e lanciaVELOCITÀ · 61",
+  "outcome": {
+   "actionLabel": "⚡ Controlla al volo e lancia",
+   "text": "🎯 Visione assoluta!",
+   "ok": true,
+   "key": "assist"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 131,
+  "fase": "hl_choose",
+  "lista": [
+   "🛡️Fallo intelligente in zonaMENTALITÀ · 67",
+   "⚡Recupero in velocità inveceVELOCITÀ · 61",
+   "💪Contrasto pulito senza falloFISICO · 62"
+  ],
+  "k": 0,
+  "click": "🛡️Fallo intelligente in zonaMENTALITÀ · 67",
+  "outcome": {
+   "actionLabel": "🛡️ Fallo intelligente in zona",
+   "text": "⚠️ Rischio fallo! Punizione concessa.",
+   "ok": false,
+   "key": "foul"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 138,
+  "fase": "hl_choose",
+  "lista": [
+   "📣Allineamento difensivo immediatoMENTALITÀ · 67",
+   "💪Contrasto fisico duroFISICO · 62",
+   "⚡Pressing immediato sul portatoreVELOCITÀ · 61"
+  ],
+  "k": 1,
+  "click": "💪Contrasto fisico duroFISICO · 62",
+  "outcome": {
+   "actionLabel": "💪 Contrasto fisico duro",
+   "text": "😰 Errore difensivo — costoso.",
+   "ok": false,
+   "key": "goal_against"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 145,
+  "fase": "hl_choose",
+  "lista": [
+   "🌟Gol dell'anno — ci provo!TIRO · 61",
+   "🎯Assist decisivo per la vittoriaPASSAGGIO · 53",
+   "⚡Gioco sul sicuroVELOCITÀ · 61"
+  ],
+  "k": 2,
+  "click": "⚡Gioco sul sicuroVELOCITÀ · 61",
+  "outcome": {
+   "actionLabel": "⚡ Gioco sul sicuro",
+   "text": "🧤 Il portiere esce e fa sua la palla.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 152,
+  "fase": "hl_choose",
+  "lista": [
+   "🎯Terzo uomo smarcatoPASSAGGIO · 53",
+   "📋Schema a tre — dai, ricevi, tiraPASSAGGIO · 53"
+  ],
+  "k": 1,
+  "click": "📋Schema a tre — dai, ricevi, tiraPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "📋 Schema a tre — dai, ricevi, tira",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 159,
+  "fase": "hl_choose",
+  "lista": [
+   "⚽Taglio preciso sul palo lontanoVELOCITÀ · 61",
+   "✈️Testa in profonditàFISICO · 62",
+   "↩️Serve il compagno al centroPASSAGGIO · 53"
+  ],
+  "k": 1,
+  "click": "✈️Testa in profonditàFISICO · 62",
+  "outcome": {
+   "actionLabel": "✈️ Testa in profondità",
+   "text": "❌ Murato dalla difesa.",
+   "ok": false,
+   "key": "miss"
+  },
+  "ph": "hl_result"
+ },
+ {
+  "delay": 2500,
+  "gi": 166,
+  "fase": "hl_choose",
+  "lista": [
+   "🌀Slalom completato e tiroDRIBBLING · 55",
+   "⚡Scatto nello stretto e tiroVELOCITÀ · 61",
+   "🎯Assist per il compagno smarcatoPASSAGGIO · 53"
+  ],
+  "k": 2,
+  "click": "🎯Assist per il compagno smarcatoPASSAGGIO · 53",
+  "outcome": {
+   "actionLabel": "🎯 Assist per il compagno smarcato",
+   "text": "✂️ L'avversario legge la giocata e intercetta.",
+   "ok": false,
+   "key": "intercept"
+  },
+  "ph": "hl_result"
+ }
+]

@@ -45,33 +45,38 @@ export const clickTesto = async (page, rx) => {
 /* Gioca UNA partita dal vivo fino al fischio. Ritorna il resoconto: highlight (scelta, esito scritto, punteggio prima/dopo),
    timeline del motore, tabellone, testo dell'ultima schermata. scelte: array ciclico di indici (-1 = ultimo). */
 export async function giocaLive(S, { scelte = [0, 1, 2, -1], tetto = 420000, foto: fn = null, ingresso = false } = {}) {
-  let started = false; const fasi = []; let tCambio = Date.now();
+  let started = false; let diagFatto = false; const fasi = []; let tCambio = Date.now();
   const p = S.page; const hls = []; let k = 0; let lastPh = '', t0 = Date.now(); let cur = null; let scoreFine = null; let cer = null, cerFoto = null;
   const sc = () => p.evaluate(() => { try { return window.__CPM_SCORE(); } catch (e) { return null; } });
   while (Date.now() - t0 < tetto) {
     await sleep(350);
     const ph = await fase(p);
     if (ph !== lastPh) { fasi.push([Math.round((Date.now() - t0) / 1000), ph]); tCambio = Date.now(); }
+    if (ph && ph !== 'playing' && !/^hl_/.test(ph) && Date.now() - tCambio > 40000 && !diagFatto) { diagFatto = true; fasi.push(['fermo>40s', ph, await p.evaluate(() => document.body.innerText.slice(0, 160).replace(/\n+/g, ' | ')), (await p.evaluate(() => [...document.querySelectorAll('button')].filter(x => x.offsetParent).map(x => x.textContent.trim().slice(0, 24)).slice(0, 8)))]); await foto({ page: p }, '_fermo-' + Date.now()); }
+    if (!ph && !started && Date.now() - t0 > 20000) { fasi.push(['nessuna-partita', Math.round((Date.now() - t0) / 1000)]); return { hls, tl: [], scoreFine: null, testoFine: await testo(p), cer, cerFoto, fasi, durata: Date.now() - t0, nonPartita: true }; }
     if (!ph && Date.now() - tCambio > 30000) { fasi.push(['nullo>30s', await p.evaluate(() => document.body.innerText.slice(0, 120))]); tCambio = Date.now(); await clickTesto(p, /Salta e gioca|Salta l'ingresso|Salta ingresso|Gioca/); }
     if (ph !== lastPh) {
       if (ph === 'hl_choose') {
         const acts = await p.evaluate(() => [...document.querySelectorAll('button')].filter(x => x.offsetParent && x.textContent.trim().length > 5 && !/^(⏸|▶|\d(\.\d)?×|⚠️|Statistiche|Pagelle|▴|Scegli)/.test(x.textContent.trim())).map(x => x.textContent.trim().replace(/\s+/g, ' ')));
         const hdr = await p.evaluate(() => { const t = document.body.innerText.split('\n'); const i = t.findIndex(x => /Scegli prima/.test(x)); return t.slice(Math.max(0, i - 3), i).join(' | '); });
-        cur = { situazione: hdr, azioni: acts, min: await p.evaluate(() => window.__CPM_CLOCK && window.__CPM_CLOCK()), prima: await sc() };
+        cur = { tChoose: Date.now(), situazione: hdr, azioni: acts, min: await p.evaluate(() => window.__CPM_CLOCK && window.__CPM_CLOCK()), prima: await sc() };
       }
       lastPh = ph;
     }
     if (ph === 'hl_move') { await clickTesto(p, /^Scegli/); }
+    if (ph === 'hl_choose' && cur && cur.scelta == null && Date.now() - (cur.tChoose || Date.now()) < (+process.env.C177_ATTESA || 2200)) continue;   /* un giocatore legge prima di toccare */
     if (ph === 'hl_choose' && cur && cur.scelta == null) {
       const n = cur.azioni.length; if (!n) continue;
       let i = scelte[k++ % scelte.length];
+      const nTlPre = await p.evaluate(() => (window.__CPM_TIMELINE ? window.__CPM_TIMELINE().length : 0));
       const rr = await p.evaluate(ix => { const b = [...document.querySelectorAll('button')].filter(x => x.offsetParent && x.textContent.trim().length > 5 && !/^(⏸|▶|\d(\.\d)?×|⚠️|Statistiche|Pagelle|▴|Scegli)/.test(x.textContent.trim()));
         const lista = b.map(x => x.textContent.trim().replace(/\s+/g, ' ')); const j = (ix < 0 || ix >= b.length) ? b.length - 1 : ix; if (!b.length) return null; b[j].click(); return { lista, cliccato: lista[j], j }; }, i);
       if (!rr) continue;
-      cur.nTl0 = await p.evaluate(() => (window.__CPM_TIMELINE ? window.__CPM_TIMELINE().length : 0));
-      cur.scelta = rr.cliccato; cur.listaAlClick = rr.lista; cur.min2 = await p.evaluate(() => window.__CPM_CLOCK && window.__CPM_CLOCK());
+      cur.nTl0 = nTlPre;
+      cur.tClick = Date.now(); cur.scelta = rr.cliccato; cur.listaAlClick = rr.lista; cur.min2 = await p.evaluate(() => window.__CPM_CLOCK && window.__CPM_CLOCK());
       await sleep(250);
     }
+    if (ph === 'hl_choose' && cur && cur.scelta != null && Date.now() - (cur.tClick || 0) > 1500 && (cur.riclick || 0) < 3) { cur.riclick = (cur.riclick || 0) + 1; cur.tClick = Date.now(); await clickTesto(p, new RegExp(cur.scelta.slice(0, 12).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); }
     if (ph === 'hl_result' && cur && cur.scelta != null) {
       if (cur.tr0 == null) cur.tr0 = Date.now();
       const tx = await p.evaluate(() => { const t = document.body.innerText.split('\n').map(x => x.trim()).filter(x => x); const i = t.findIndex(x => /LA GIOCATA/.test(x)); return i >= 0 ? t.slice(i, i + 14).join(' | ') : t.slice(0, 30).join(' | '); });

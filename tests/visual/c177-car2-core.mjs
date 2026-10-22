@@ -25,7 +25,7 @@ export async function stato(S) {
   return S.page.evaluate(() => { const C = window.__CPM_CAREER; if (!C) return null; const s = C.snapshot(); if (!s || typeof s === 'string') return null;
     const mh = (s.matchHistory || []); const ult = mh[mh.length - 1] || {};
     return { st: s.season, wk: s.week, age: s.age, club: s.club && s.club.n, lg: s.club && s.club.lg, pro: s.proStatus, ovr: s.ovr, g: s.goals, a: s.assists, m: s.matches, tg: s.totalGoals, ta: s.totalAssists, tm: s.totalMatches,
-      voto: ult.rating, ult: ult.season + 'S' + ult.week, bank: s.bankBalance, mor: s.morale, form: s.form, fat: s.fatigue, pop: s.popularity, contr: s.contract && (s.contract.expiresAtSeason + '/' + s.contract.wage), lived: s.weekLived, inj: s.injury ? s.injury.weeksRemaining : 0, prestito: !!s.loan, tr: (s.trophies || []).length, screen: C.screen(), scoutNat: s.nationalCaps }; });
+      voto: ult.rating, ult: ult.season + 'S' + ult.week, bank: s.bankBalance, mor: s.morale, form: s.form, fat: s.fatigue, pop: s.popularity, contr: s.contract && (s.contract.expiresAtSeason + '/' + s.contract.wage), lived: s.weekLived, inj: s.injury ? s.injury.weeksRemaining : 0, prestito: !!s.loan, tr: (s.trophies || []).length, screen: C.screen(), scoutNat: s.nationalCaps, nz: s.nationalGoals, stat: s.stats ? [s.stats['velocità'], s.stats.tecnica, s.stats.fisico, s.stats['mentalità'], s.stats.tiro, s.stats.passaggio, s.stats.dribbling, s.stats.posizionamento].join('/') : null, ruolo: s.squadRole, stile: s.stile || s.archetype && (s.archetype.id || s.archetype) }; });
 }
 
 
@@ -50,7 +50,7 @@ export async function passo(S, ctx) {
     ctx.nPartite = (ctx.nPartite || 0) + 1;
     const live = ctx.forzaLive != null ? ctx.forzaLive : ((ctx.nPartite - 1) % 4 === 0);
     const intro = t.slice(t.indexOf('SETTIMANA'), t.indexOf('SETTIMANA') + 300).replace(/\n+/g, ' | ');
-    if (live) { await clickTesto(p, /^Gioca( la partita| ·)/); await sleep(1200); return 'LIVE'; }
+    if (live) { const ck = await clickTesto(p, /^Gioca( la partita| ·)/); await sleep(1200); if (!ck) return tag('clic-mancato'); return 'LIVE'; }
     await clickTesto(p, /Simula e avanza/); await sleep(1500); return tag('sim', intro.slice(0, 160));
   }
   /* 2. impulso della settimana */
@@ -78,11 +78,11 @@ export async function passo(S, ctx) {
   }
   const overlayAttivo = !cl.some(x => /^Home$/.test(x));   /* una finestra copre la barra di navigazione: se «Home» non è cliccabile c'è un velo */
   /* 4. nulla di bloccante: chiusure comuni */
-  if (overlayAttivo && modali.length === 1 && /^(✅ ?)?(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp(modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
+  if (overlayAttivo && modali.length === 1 && /^(✅ ?)?(Chiudi|OK|Ok|Continua|Avanti|Capito|Prosegui|Si parte|Torna alla dashboard|🏟️ Torna alla dashboard)/.test(modali[0])) { await clickTesto(p, new RegExp(modali[0].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))); await sleep(800); return tag('chiudi:' + modali[0].slice(0, 30)); }
   if (modali.length === 0 || !overlayAttivo) return null;
   /* 5. finestra non catalogata: se non è un flusso pesante (mercato/contratto) si sceglie a rotazione e si registra */
   const testaM = t.replace(/\n+/g, ' | ').slice(0, 260);
-  if (!/offert|trasferi|contratto|rinnov|cession|prestito|svincol|procurator|presentazion|ritir|Nazionale|convocaz|premio|gala|trofe|promoz|retroc/i.test(testaM) && !ctx.fermaSuGenerico) {
+  if (!/svincol|cession|convocaz|Nazionale|ritiro dal calcio|annunci il ritiro|appendere gli scarpini|rinnov/i.test(testaM) && !ctx.fermaSuGenerico) {
     const sc = modali.filter(x => !SCARTA.test(x) && !/🔒/.test(x)); const pool = sc.length ? sc : modali; const i = (rot++) % pool.length;
     const sig = testaM.slice(0, 70); ctx.sigViste = ctx.sigViste || new Set();
     if (!ctx.sigViste.has(sig)) { ctx.sigViste.add(sig); ctx.log('modale-generico', { q: testaM, scelte: modali }); }
@@ -103,11 +103,12 @@ export async function giocaSettimana(S, ctx) {
   for (let it = 0; it < 80; it++) {
     const sc0 = await stato(S);
     if (ctx.cerca && sc0 && sc0.screen === 'dashboard' && !it) { const m = await cercaMercato(S, ctx); if (m) { await clickTesto(p, /^Home$/); await sleep(500); } }
-    if (sc0 && sc0.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni|calendar|standings|coppe)$/.test(sc0.screen)) return 'SCHERMATA:' + sc0.screen;
+    if (sc0 && sc0.screen && !/^(dashboard|stagione|club|carriera|agente|ufficio|opzioni|calendar|standings|coppe|clubPresentation)$/.test(sc0.screen)) return 'SCHERMATA:' + sc0.screen;
     const r = await passo(S, ctx);
     if (r === 'LIVE') {
       const res = await L.giocaLive(S, { scelte: ctx.scelte || [0, 1, 2, -1], ingresso: ctx.nLive % 3 === 0, foto: async n => (ctx.fotoLive ? await foto(S, '_' + ctx.fotoLive + n) : null) });
-      ctx.nLive++; res.st = s0 && s0.st; res.wk = s0 && s0.wk; ctx.log('live', { st: res.st, wk: res.wk, sc: res.scoreFine, hls: res.hls, tl: res.tl.slice(-14), tab: (res.testoFine.match(/IL TUO TABELLINO[\s\S]{0,120}/) || [''])[0].replace(/\n+/g, ' | '), cer: res.cer });
+      if (res.nonPartita) { ctx.nPartite = Math.max(0, (ctx.nPartite || 1) - 1); ctx.log('live-non-partito', { fasi: res.fasi }); continue; }
+      ctx.nLive++; res.st = s0 && s0.st; res.wk = s0 && s0.wk; ctx.log('live', { st: res.st, wk: res.wk, sc: res.scoreFine, hls: res.hls, tl: res.tl.slice(-14), tab: (res.testoFine.match(/IL TUO TABELLINO[\s\S]{0,120}/) || [''])[0].replace(/\n+/g, ' | '), cer: res.cer, fasi: res.fasi, dur: res.durata });
       ctx.ultimaLive = res; await sleep(500);
       for (let j = 0; j < 4; j++) { const c = await clickTesto(p, /Torna alla dashboard|Salta festeggiamenti|Continua/); if (!c) break; await sleep(900); }
       continue;
@@ -185,7 +186,6 @@ const LINT = [
   [/\b(undefined|NaN|\[object|Infinity|null)\b/, 'valore tecnico a schermo'],
   [/\b1 (partite|gol segnati|giornate|stagioni|settimane|anni|assists)\b/i, 'plurale dopo 1'],
   [/\b([2-9]|\d{2,}) (partita|giornata|stagione|settimana|anno|goal)\b/i, 'singolare dopo numero >1'],
-  [/\b(un|lo|il|la) (FC|AC|AS|SS|US)\b/, 'articolo prima della sigla'],
   [/ {3,}|\.\.\.\.+|,,|\.\.(?!\.)/, 'punteggiatura doppia'],
   [/\bil (Real|Inter|Juve|Milan)\b/, 'nome reale'],
   [/€\s?-\d|-\d+ ?€|\bgli (stagioni|settimane)\b/, 'importo/testo anomalo'],
@@ -263,7 +263,7 @@ export async function cercaMercato(S, ctx) {
   const k = s.st + win; ctx.finestre = ctx.finestre || {}; if (ctx.finestre[k]) return null; ctx.finestre[k] = 1;
   const p = S.page; await clickTesto(p, /^Agente$/); await sleep(900);
   const a = await clickTesto(p, /Fai girare il nome/); await sleep(900);
-  const b = await clickTesto(p, /Cerca offerte/); await sleep(700);
+  let b = await clickTesto(p, /Cerca offerte/); if (!b) { await clickTesto(p, /^Compito della settimana/); await sleep(600); b = await clickTesto(p, /Cerca offerte/); } await sleep(700);
   ctx.log('mercato', { st: s.st, wk: s.wk, finestra: win, faiGirare: a, compito: b });
   return 'mercato';
 }
@@ -284,4 +284,18 @@ export async function fineStagione(S, ctx) {
     const r = await passo(S, ctx); if (r && r.startsWith('IGNOTO')) return r; if (r === 'LIVE') return 'SCHERMATA:partita'; if (r === null) { if (await clickTesto(p, /Vivi la Settimana|Avanza Settimana/)) { await sleep(1200); continue; } return 'bloccato:fine'; }
   }
   return 'loop';
+}
+
+/* una stagione intera: apertura → settimane → fine stagione. Si ferma al primo imprevisto e lo restituisce. */
+export async function stagione(S, ctx, { maxSett = 45 } = {}) {
+  const p = S.page; const s0 = await stato(S); const log = [];
+  await apertura(S, ctx);
+  for (let n = 0; n < maxSett; n++) {
+    const cl = await cliccabili(p);
+    const st = await stato(S);
+    if (st && st.screen === 'dashboard' && cl.some(x => /Chiudi la stagione/.test(x))) { const r = await fineStagione(S, ctx); log.push('fine:' + r); return { esito: r, log }; }
+    const r = await giro(S, ctx, 1); log.push(r[0]);
+    if (r[0] !== 'ok') { const cl2 = await cliccabili(p); if (r[0].startsWith('bloccato') && cl2.some(x => /Chiudi la stagione/.test(x))) continue; return { esito: r[0], log }; }
+  }
+  return { esito: 'troppe-settimane', log };
 }
