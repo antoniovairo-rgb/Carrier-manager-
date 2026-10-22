@@ -15,7 +15,7 @@ st.rot=0;
 st.sbroglia=async()=>{const b=await st.btns();const ph=await st.phase();
  const t=await testo(page);
  for(const r of [/^Gioca la partita/]){}
- const pri=[/^Tieni #/,/^Capito/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^Ok\b/i,/^🏟️ Torna alla dashboard/,/^Torna alla dashboard/,/^🎉/,/^🏟️ Vai allo stadio/,/^🏟️ Inizia/,/^Chiudi$/];
+ const pri=[/^Tieni #/,/Capito/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^Ok\b/i,/^🏟️ Torna alla dashboard/,/^Torna alla dashboard/,/^🎉/,/^🏟️ Vai allo stadio/,/^🏟️ Inizia/,/^Chiudi$/];
  for(const r of pri){const x=b.find(y=>r.test(y));if(x){await tocca(page,x.split(' | ')[0],2000);return 'click:'+x.slice(0,50);}}
  return null;};
 /* in match: attende il fischio finale (tabellino a schermo) con autoplay seedato */
@@ -66,3 +66,16 @@ st.corri=async(n,o={})=>{const out=[];const e0=st.errori.length;for(let k=0;k<n;
   if(ev.some(x=>/timeout|\?null/.test(x)))out.push('ANOMALIA:'+JSON.stringify(ev).slice(0,300));
   if(st.errori.length>e0+30)break;}
  return {out,errNuovi:st.errori.slice(e0).slice(0,5),nErr:st.errori.length-e0};};
+/* fine stagione guidata: registra ogni schermata in fine-stagioni.jsonl, ritorna riepilogo breve */
+st.fineStagione=async(o={})=>{const rec=[];const s0=await st.snap();
+ const r=await st.sett({live:false});rec.push('sett:'+r.slice(-1));
+ for(let i=0;i<14;i++){const sc=await page.evaluate(()=>window.__CPM_CAREER.screen());const b=await st.btns();const t=await st.txt(900);
+  fs.appendFileSync(OUT+'/fine-stagioni.jsonl',JSON.stringify({s:s0.season,i,sc,t,b:b.slice(0,8)})+'\n');
+  if(o.foto&&i<6)await foto(page,'s'+String(s0.season).padStart(2,'0')+'-fine-'+i);
+  const pre=[/Chiudi la stagione/,/^Salta il galà/,/^Vai al bilancio/,/Inizia Stagione/,/^Apri la busta/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^🏟️ Inizia/,/^Accetta/,/^Resta/,/^Rinnova/,/^Firma/];
+  let nx=null;for(const p of pre){nx=b.find(y=>p.test(y));if(nx)break;}
+  if(!nx){const ch=await st.modali(b);if(ch.length&&sc==='dashboard'&&/Impulso|scelta|SETTIMANA/i.test(t)){nx=ch[0];}}
+  if(!nx){rec.push('fermo:'+sc);break;}
+  rec.push(sc+'>'+nx.slice(0,30));await tocca(page,nx.split(' | ')[0],3000);await sleep(2500);
+  const s=await st.snap();if(s&&s.season>s0.season&&sc!=='seasonEnd'&&/Inizia Stagione/.test(nx)){rec.push('nuova:'+s.season);break;}}
+ return rec;};
