@@ -666,3 +666,15 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":29,"campo":32,"s":16,"w":39}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":10,"campo":11,"s":16,"w":39}
 {"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"👕 NUMERO DI MAGLIA Stagione 17 Priorità 93 94 95 96 97 99 ✅ Conferma #– Annulla|91","btns":["1","2","3","4","5","6"],"s":17,"w":1,"club":"FC Lisboa"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":15,"campo":16,"s":17,"w":15}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":15,"campo":16,"s":17,"w":16}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":16,"campo":17,"s":17,"w":17}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":16,"campo":17,"s":17,"w":18}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":18,"s":17,"w":19}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":17,"w":19}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":18,"s":17,"w":20}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":17,"w":20}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":18,"s":17,"w":21}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":17,"w":21}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":18,"s":17,"w":22}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":5,"s":17,"w":22}
