@@ -501,3 +501,18 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":26,"campo":27,"s":13,"w":37}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":28,"campo":29,"s":13,"w":38}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":30,"campo":31,"s":13,"w":39}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"4–2","reg":"2-4","s":14,"w":12,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":9,"campo":10,"s":14,"w":13}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":11,"s":14,"w":14}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":13,"s":14,"w":15}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":13,"campo":14,"s":14,"w":16}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":14,"campo":15,"s":14,"w":17}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":14,"campo":15,"s":14,"w":18}
+{"tipo":"coerenza","nome":"matchHistory non cresce di 1 dopo partita live","g0":23,"g1":0,"s":14,"w":18,"club":"FC Islington"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":16,"s":14,"w":19}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":6,"s":14,"w":19}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":16,"s":14,"w":20}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":6,"s":14,"w":20}
+{"tipo":"salvataggio","nome":"stato diverso dopo salva e ricarica","n":2,"esempio":[{"pth":".teammates.2.archetype","a":"\"ex_capitano\"","b":"\"capitano\""},{"pth":".teammates.2.icon","a":"\"🎖️\"","b":"\"🤝\""}],"s":14,"w":20,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":0,"campo":16,"s":14,"w":21}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":6,"s":14,"w":21}
