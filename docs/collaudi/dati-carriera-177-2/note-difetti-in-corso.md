@@ -1,0 +1,12 @@
+# Note difetti (bozza, verificati nel corso del gioco)
+- ALTA/MEDIA? tocco immediato sul pannello scelta (<~0,5 s): ActionResolved assente, risultato con altra azione (misurato nei primi 4 stagioni con pilota veloce; con attesa >=0,9 s: 0/151 mismatch). Sonda: sonda-tocco-bottone.json
+- MEDIA highlight difensivi: esito "Fallito" con testo d'attacco ("Troppo lento — il marcatore intercetta", "Il difensore anticipa e recupera palla") quando l'eroe difende (S1 W12/13/14, eventi.jsonl live)
+- MEDIA gala/bilancio: rivale Phil Dupont 10 gol (gala S2, "gol in campionato") vs 8 gol nel bilancio S2/S3
+- BASSA Trofeo d'Oro: vincitore 27 gol, 2° 42, 3° 34 (gala S2)
+- BASSA Agente: "Contratto in scadenza e stipendio sotto il mercato" con stipendio 263k > stima 238k (S2 W23, Gelsenkirchen)
+- BASSA impulso "TV la sera prima della gara" in settimana 39 a stagione chiusa (S1)
+- BASSA contratto: offerta "1 stagione" -> scade a fine stagione +1 (Clermont S2: fine st.3, '1 stagione rimasta')
+- BASSA/MEDIA spogliatoio: dopo rientro da prestito i compagni restano quelli del club prestito finche' non si ricarica (confronto-salvataggio S6W1: teammates cambiano)
+- BASSA tabellone: ordine squadre si inverte al 46' (campo cambiato)
+- BASSA popolarita' +3 dichiarato, +1 effettivo (S1 W1); popolarita' 100/100 a 19 anni
+- INFO prima partita dopo ricaricamento: caricamento lento (>20 s) prima che la fase parta
