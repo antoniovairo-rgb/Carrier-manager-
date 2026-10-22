@@ -118,7 +118,7 @@ function DiarioSfoglia({diary,DTYPE}){
    Rosso window.__CPM_NO_HOME066: torna la Fisarmonica di prima. Guardiano tests/visual/home-066.mjs. */
 function FisHome66({id,titolo,aperta=false,cardStyle={},cardProps={},children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_HOME066)return <Fisarmonica id={id} titolo={titolo} aperta={aperta}><Card {...cardProps} style={cardStyle}>{children}</Card></Fisarmonica>;
-  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:SP.sm}}>{children}</Card>;
+  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:_sb(SP.sm)}}>{children}</Card>;
 }
 /* [PO-223 · giro 33, eccezione PO 15/10 «Sì, solo questi due»] LA RESA DELL'INVESTIMENTO DIPENDE DA PUNTATA E SCELTA.
    Prima: al cambio di stagione un accredito FISSO di 55.000€ per qualunque puntata (20.000, 28.000 o 40.000) e qualunque scelta,
@@ -6393,7 +6393,7 @@ const getThisWeekMatchday=()=>{
            Rosso __CPM_NO_IMPULSO23: il pop-up di prima. */
         !(typeof window!=='undefined'&&window.__CPM_NO_IMPULSO23)?(
         <Modal open dismissable={false} width={420}>
-          <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+          <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{L.weekHeader} {player.week} · {player.club?.name||player.club?.n}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
               {weekLiveModal.isSpogliatoio&&weekLiveModal.teammate?.name
@@ -6525,7 +6525,7 @@ const getThisWeekMatchday=()=>{
             <div style={{background:"rgba(255,255,255,0.04)",borderRadius:RAD.sm,padding:"7px 12px",marginBottom:18,borderLeft:"3px solid "+_T.boxBd}}>
               <div style={{fontSize:FS.body,color:_T.boxTxt,lineHeight:1.75}}>{resolveEvText(careerMomentModal.txt,player)}</div>
             </div>
-            <div style={{display:"flex",flexDirection:"column",gap:9}}>
+            <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
               {(careerMomentModal.choices||[]).map((ch,i)=>(
                 <button key={i} onClick={()=>handleCareerMoment(ch)} style={{textAlign:"left",background:"transparent",border:"1.5px solid "+_T.optBd,borderRadius:RAD.sm,padding:"11px 14px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
                   onMouseEnter={e=>{e.currentTarget.style.background=_T.optBgH;e.currentTarget.style.borderColor=_T.optBdH;}}
@@ -6849,7 +6849,7 @@ const getThisWeekMatchday=()=>{
             const _tn=_dec?(_dec.status==="starter"?{bg:TH.bgGreen,bd:TH.bdGreen,tx:TH.txGreen,l:"Sei titolare"}:_dec.status==="bench"?{bg:TH.bgAmber,bd:TH.bdAmber,tx:TH.txAmber,l:"Parti dalla panchina"}:{bg:TH.bgRed,bd:TH.bdRed,tx:TH.txRed,l:"Non convocato"}):null;
             const _derby=showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId);
             return(
-          <div data-cpm="partita23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+          <div data-cpm="partita23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Settimana {player.week||1} · {_tipo}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
               <div style={{flexShrink:0}}>{(()=>{try{return <TeamBadge team={_av} size={44}/>;}catch(_e){return null;}})()}</div>
@@ -6914,7 +6914,7 @@ const getThisWeekMatchday=()=>{
               const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
               try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo'};}}catch(_e){}
               const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
-              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
+              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:_sb(SP.md)}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.sm,textAlign:"center"}}>
                   {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · N · P",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
@@ -7349,7 +7349,7 @@ const getThisWeekMatchday=()=>{
             <div style={{height:3,borderRadius:RAD.pill,background:TH.track,overflow:"hidden",marginTop:5}}><div style={{height:"100%",width:clamp(v,0,100)+"%",background:col,borderRadius:RAD.pill}}/></div>
           </div>);
         return(
-        <div style={{position:"relative",borderRadius:RAD.xs,overflow:"hidden",marginBottom:10,boxShadow:TH.el1,background:TH.card}}>
+        <div style={{position:"relative",borderRadius:RAD.xs,overflow:"hidden",marginBottom:_sb(10),boxShadow:TH.el1,background:TH.card}}>
           <div style={{background:cc,color:ink,borderBottom:c2?("3px solid "+c2):("3px solid "+inkVelo945(ink,0.28))}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
@@ -7390,11 +7390,11 @@ const getThisWeekMatchday=()=>{
       {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
-        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
       {/* Sub-nav pills — Carriera container */}
       {(tab==="profile"||tab==="nazionale")&&(
-        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
 
       {/* [6.5.4 collaudo PO] CTA PRIMARIA STICKY in cima al dashboard — «vivi settimana / gioca / avanza» sempre
@@ -7403,7 +7403,7 @@ const getThisWeekMatchday=()=>{
         const cs=getContinuaState();
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
-            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-10px 0 12px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-"+_sb(10)+"px 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
             sporgeva di 12 px per lato oltre le card, con un'ombra che ne disegnava il bordo: ora ha la stessa larghezza
             delle card e nessun bordo visibile. Rosso __CPM_NO_CTA23 */}
             {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
@@ -7487,7 +7487,7 @@ const getThisWeekMatchday=()=>{
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(
-          <Card style={{marginBottom:9,padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
+          <Card style={{marginBottom:_sb(9),padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
@@ -7542,7 +7542,7 @@ const getThisWeekMatchday=()=>{
           prima arrivavano dopo sette card narrative (a 360 px alla terza schermata). */}
       {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
       {tab==="dashboard"&&(
-        <div style={{marginBottom:9}}>
+        <div style={{marginBottom:_sb(9)}}>
           <Card elevation={2}>
             <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {(week>38&&!(typeof window!=="undefined"&&window.__CPM_NO_SETT193))?"Fine stagione":(L.week+" "+week+" di 38")}{/* [7.999.113 PO-193 foto «SETTIMANA 39 DI 38»] oltre la 38ª la stagione e' finita: la testata dice come la riga in alto «Fine stagione». Rosso __CPM_NO_SETT193 */}</div>
             {(()=>{
@@ -7610,7 +7610,7 @@ const getThisWeekMatchday=()=>{
           </Card>
         </div>
       )}
-      {tab==="dashboard"&&(<div style={{marginBottom:9}}>
+      {tab==="dashboard"&&(<div style={{marginBottom:_sb(9)}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
             {[{l:"Fiducia del mister",v:Math.round(player.coachTrust||60),e:"🤝",c:TH.primary},{l:"Popolarità",v:Math.round(player.popularity||20),e:"⭐",c:TH.accent}].map(it=>(
@@ -8272,7 +8272,7 @@ const getThisWeekMatchday=()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
         return(
-          <Card momento="La tua settimana" momentoNota={th26&&th26.k!=="crociera"?th26.t:null}/* [7.999.49 parte A] «Settimana di campionato» non aggiungeva nulla al titolo */ style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
+          <Card momento="La tua settimana" momentoNota={th26&&th26.k!=="crociera"?th26.t:null}/* [7.999.49 parte A] «Settimana di campionato» non aggiungeva nulla al titolo */ style={{marginBottom:_sb(9)}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
               FISARMONICA. MISURATO sul salvataggio nuovo (stagione 12, quello del PO): 473 px, il 25,8 %
               dell'intera Dashboard — piu' del doppio di qualunque altro blocco. Dentro ci sono sei
               sezioni di testo (il tema della settimana, il meteo interiore, le aspettative, dentro la
@@ -8891,7 +8891,7 @@ const getThisWeekMatchday=()=>{
 
       {/* CALENDAR  (BUG 4 — shows real scheduled matches) */}
       {tab==="calendar"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+        <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
           {/* Upcoming matches from calendar */}
           {(player.calendar||[]).length>0&&(()=>{
             const upcoming=(player.calendar||[]).filter(md=>md.week>=(week)&&!md.played).sort((a,b)=>a.week-b.week||(a.matchday||0)-(b.matchday||0)).slice(0,8);
@@ -9482,7 +9482,7 @@ const getThisWeekMatchday=()=>{
         })();
         const roleIcons={Portiere:"🧤",Difensore:"🛡️",Terzino:"🏃",Mediano:"🔄",Centrocampista:"⚙️",Trequartista:"🎨",Mezzala:"🎯",Ala:"⚡",Centravanti:"🎯",Attaccante:"⚡","Under-21":"🌟",Jolly:"🔁"};
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(8)}}>
             {/* Header Club */}
             <Card style={{padding:"7px 12px"}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
@@ -9778,7 +9778,7 @@ const getThisWeekMatchday=()=>{
                   <Meter value={player.teamChemistry||60} color={TH.success} label="Chimica di squadra" right={(player.teamChemistry||60)+"/100"} height={5} mb={2}/>
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>✨ Forma e morale {(_ch>0?"+":_ch<0?"\u2212":"+")+Math.abs(_ch)} a settimana · cresce vincendo</div>
                 </div>);})()}
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{display:"flex",flexDirection:"column",gap:_sb(8)}}>
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
                   const bond=tm.bond||40;
@@ -9820,7 +9820,7 @@ const getThisWeekMatchday=()=>{
 
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+        <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
           {/* Sprint D1: badge gerarchia */}
           {(()=>{
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
@@ -9873,7 +9873,7 @@ const getThisWeekMatchday=()=>{
             var assists=hist.map(function(h){return h.assists||0;});assists.push(player.assists||0);
             return(
               <Fisarmonica id="s24-statistiche-carriera" titolo="Statistiche Carriera"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
-                <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
                   {[{l:"⚽ Gol",data:goals,c:TH.success},{l:"🎯 Assist",data:assists,c:TH.primary},{l:"📊 OVR",data:ovrs,c:TH.warning}].map(function(row){
                     return(
                       <div key={row.l} style={{display:"flex",alignItems:"center",gap:8}}>
@@ -10739,7 +10739,7 @@ const getThisWeekMatchday=()=>{
         var currentTask=player.agentTask;
         var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9,paddingBottom:8}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
             {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
             {(!_uff13||tab==="ufficio")&&(player.proStatus||"u18")!=="u18"&&(
               <>{/* [7.999.49 parte A] tre fisarmoniche al posto di una: Patrimonio · Staff privato · Acquisti e investimenti */}
@@ -10922,7 +10922,7 @@ const getThisWeekMatchday=()=>{
                       </div>
                       {!ap.hold&&_span>0&&<div className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>{(_gain<0?"\u2212":"+")+_eur49(Math.abs(_gain)*1e6)} su +{_eur49(_span*1e6)}</div>}
                     </div>
-                    {_ag49&&<div style={{marginTop:11,display:"flex",gap:8,flexWrap:"wrap"}}>
+                    {_ag49&&<div style={{marginTop:_sb(11),display:"flex",gap:8,flexWrap:"wrap"}}>
                       <Btn v="ghost" style={{flex:"1 1 150px",padding:"10px",fontSize:FS.caption}} onClick={()=>setSw379("conferma")}>Cambia procuratore</Btn>
                     </div>}
                   </Card></Fisarmonica>);})()}
@@ -11253,7 +11253,7 @@ const getThisWeekMatchday=()=>{
         const _bar=(won,drew)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:drew?TH.drawFg:TH.lossFg,background:won?TH.winBg:drew?TH.drawBg:TH.lossBg,padding:"1px 7px",borderRadius:RAD.pill,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"N":"P"}</span>;/* [7.999.49 parte A] glossario V/N/P */
         const _gate49=(NAT_CALL_LEVEL[natName]||72)-8,_ovr49=player.ovr||60;
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
             {/* Header nazionale */}
             <Card style={{padding:"16px 14px",background:`linear-gradient(135deg,${natCol}20,${TH.card})`,border:`1px solid ${natCol}55`}}>
               <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:9}}>
@@ -11617,7 +11617,7 @@ const getThisWeekMatchday=()=>{
         const _bar=(won)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:TH.lossFg,background:won?TH.winBg:TH.lossBg,padding:"1px 6px",borderRadius:RAD.pill,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
         const _cupEx=(cup&&cup.club&&player.club&&cup.club!==player.club.id)?((CLUBS.find(c=>c.id===cup.club)||{}).n||null):null;/* [7.293.0] cammino di una maglia lasciata */
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
             {/* COPPA NAZIONALE */}
             {_isPro&&cup&&(
               <Fisarmonica id="s24-coppa-nazionale-s-2" titolo={<>Coppa Nazionale — S.{player.season||1}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid #fde68a"}}>

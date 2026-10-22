@@ -118,7 +118,7 @@ function ScoutReportScreen({report,opponent,onClose,loading,mister,mine}){
       <div style={{fontSize:G?FS.bodyLg:FS.body,color:TH.text,lineHeight:1.45,paddingTop:2}}>{t}</div></div>);
     return(
     <div ref={_ref217} data-cpm="analisi217" style={{display:"flex",flexDirection:"column",minHeight:_h217!=null?_h217:"100dvh",gap:SP.md}}>
-      <div data-cpm="analisi217-corpo" style={{display:"flex",flexDirection:"column",gap:SP.md,flex:"1 0 auto"}}>
+      <div data-cpm="analisi217-corpo" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md),flex:"1 0 auto"}}>
       {/* la testata ASSORBE l'altezza che avanza (contenuto centrato): il vuoto non finisce fra le card ne' sotto il pulsante */}
       <Card elevation={2} style={{padding:`${SP.lg}px ${SP.lg}px ${SP.md}px`,flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}}>
         <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,textAlign:"center"}}>Analisi pre-partita</div>
@@ -184,7 +184,7 @@ function ScoutReportScreen({report,opponent,onClose,loading,mister,mine}){
        prima le tre card finivano a meta' schermo e «Entra in campo» restava sotto, con mezza schermata vuota.
        Rosso window.__CPM_NO_PO217: il contenitore torna alto quanto il contenuto. */
     return(
-    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,...((typeof window!=='undefined'&&window.__CPM_NO_PO217)?{marginBottom:SP.sm}:{minHeight:"100dvh",paddingBottom:SP.lg})}}>
+    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md),...((typeof window!=='undefined'&&window.__CPM_NO_PO217)?{marginBottom:SP.sm}:{minHeight:"100dvh",paddingBottom:SP.lg})}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
           <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
@@ -601,7 +601,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
       {(mySide?lato!==mySide:lato==="away")&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
     </div>);
     return(
-    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:SP.md}}>
+    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
           <span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>

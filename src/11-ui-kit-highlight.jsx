@@ -62,8 +62,11 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
      sull'altezza pagando in leggibilita'. */
   const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
+  /* [giro 91 PO-296] PUNTO UNICO dello spazio fra riquadri: il margine inferiore che un chiamante da' a una Card (8-16 px, le 100 e passa Card impilate dell'app)
+     e' lo spazio FRA due riquadri, e vale SP.box. Fuori da 8-16 (0, 4, 6 e i valori grandi di proposito) non si tocca; con __CPM_NO_SPAZIO296 resta il valore scritto dal chiamante. */
+  const _mb296=style&&style.marginBottom,_st296=(typeof _mb296==="number"&&_mb296>=8&&_mb296<=16)?{...style,marginBottom:_sb(_mb296)}:style;
   const _padM=momento?(_ap?pad:"6px 12px"):pad;
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,...style}} {...rest}>
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
     {momento!=null&&(
       <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
         style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
@@ -181,7 +184,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
   const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
   return(
-    <div style={{marginBottom:SP.md,...style}}>
+    <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
       <button onClick={cambia} aria-expanded={apr} className="cpm-press"
         style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:undefined,cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),

@@ -259,7 +259,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:18,boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -282,7 +282,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       </div>
       <PwaInstallBanner/>
       {/* Save slots */}
-      <div className="cpm-slots" style={{marginBottom:10}}>
+      <div className="cpm-slots" style={{marginBottom:_sb(10)}}>
         {/* [7.999.49 parte A] a carriera zero un solo bottone (usa il primo salvataggio libero); le righe vuote solo se almeno uno è occupato */}
         {!hasAny?(
           <Btn onClick={()=>onNew(0)} v="primary" fw style={{padding:"12px 14px",fontSize:FS.bodyLg}}>Nuova carriera</Btn>
@@ -327,7 +327,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         ))}
       </div>
-      {!hasAny&&<Card style={{marginBottom:9,padding:"7px 12px"}}>
+      {!hasAny&&<Card style={{marginBottom:_sb(9),padding:"7px 12px"}}>
         <p style={{fontSize:FS.small,color:TH.muted,margin:"0 0 12px",lineHeight:1.7}}>Crea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.</p>
       </Card>}
       {/* Card di sovrascrittura: solo quando TUTTI gli slot sono pieni (nessuno slot vuoto disponibile) */}
@@ -814,7 +814,7 @@ function NationalCallupScreen(props){
   const occhiello={fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8};
   return(
     <div data-cpm="convocazione235" style={{width:"100%",maxWidth:480,margin:"0 auto",padding:`${SP.lg}px ${SP.lg}px ${SP.xxl}px`,boxSizing:"border-box",
-      display:"flex",flexDirection:"column",gap:SP.md,opacity:shown?1:0,transition:"opacity 0.45s"}}>
+      display:"flex",flexDirection:"column",gap:_sb(SP.md),opacity:shown?1:0,transition:"opacity 0.45s"}}>
       {isFirst&&<Card tone="warn" shadow={false} density="tight">
         <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.txAmber}}>Traguardo di carriera · prima convocazione</div>
       </Card>}

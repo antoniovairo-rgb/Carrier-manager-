@@ -908,9 +908,10 @@ function App(){
         .cpm-career{width:100%;position:relative;}
         @media(min-width:900px){.cpm-career{max-width:100%;margin:0;}}
         ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`@media(min-width:1280px){.cpm-career{max-width:1180px;margin-left:auto;margin-right:auto;}}/* [giro 90 PO-292 D12] le schede della carriera a 1920 px si allargavano a 1566 px: righe con nome e valore a 1500 px di distanza. Rosso __CPM_NO_LARGO292. */`}
-        .cpm-dash-grid{display:flex;flex-direction:column;gap:12px;}
+        .cpm-dash-grid{display:flex;flex-direction:column;gap:${_sb(12)}px;}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
-        .cpm-offers{display:flex;flex-direction:column;gap:10px;}
+        .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-proto{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}

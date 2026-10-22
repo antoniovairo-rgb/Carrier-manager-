@@ -211,6 +211,7 @@
     "panchina-riga": "node panchina-riga.mjs",
     "panchina-293": "node panchina-293.mjs",
     "pc-tablet-292": "CPM_PROVA_ROSSO=1 node pc-tablet-292.mjs",
+    "spazio-296": "node spazio-296.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_POST=1 node spazio-296.mjs",
     "hud-c3": "node hud-c3.mjs",
     "design-system": "node design-system.mjs",
     "coinvolgimento": "node coinvolgimento-reparti.mjs",
