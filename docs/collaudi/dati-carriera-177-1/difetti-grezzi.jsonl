@@ -444,3 +444,22 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":28}
 {"tipo":"blocco","nome":"partita live non parte","s":12,"w":28,"club":"FC Islington"}
 {"tipo":"blocco","nome":"schermata ferma","screen":"nationalCallup","btns":["Gioca la partita"],"estratto":"CONVOCAZIONE NAZIONALE | 🇮🇹 | Nazionale Italia | Presenza n. 9 · Amichevole internazionale | 10 | PROSSIMA PARTITA | 🇮🇹 | Italia | vs | Argentina | 🇦🇷 | BONUS DOPO LA PARTITA | +8 | Popolarità | +€0.15M | Valore | +12 | Morale | G","dove":"schermata","s":12,"w":28,"club":"FC Islington"}
+{"tipo":"driver","nome":"eccezione: page.evaluate: Target page, context or browser has been closed"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":28}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":28}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":29}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":29}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":30}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":30}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":31}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":31}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":32}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":0,"campo":3,"s":12,"w":32}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":5,"campo":20,"s":12,"w":33}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":33}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":6,"campo":21,"s":12,"w":34}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":34}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":6,"campo":21,"s":12,"w":35}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":35}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":23,"s":12,"w":36}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":4,"s":12,"w":36}

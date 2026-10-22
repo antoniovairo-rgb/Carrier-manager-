@@ -141,7 +141,7 @@ function verificaPartita(c, p0, p1, r, fine) {
 }
 
 /* ---- ripulisce schermate fino al cruscotto ---- */
-const BTN_PRIO = [/Torna alla dashboard/i, /^Accetta/i, /^Continua/i, /^Avanti/i, /^Prosegui/i, /^Capito/i, /Che la stagione cominci/i, /^Torna alla home/i, /^Vai/i, /^Inizia/i, /^Conferma/i, /^OK/i, /^Chiudi/i, /^Fine/i, /^Salta/i];
+const BTN_PRIO = [/Torna alla dashboard/i, /^Gioca la partita/i, /^Accetta/i, /^Continua/i, /^Avanti/i, /^Prosegui/i, /^Capito/i, /Che la stagione cominci/i, /^Torna alla home/i, /^Vai/i, /^Inizia/i, /^Conferma/i, /^OK/i, /^Chiudi/i, /^Fine/i, /^Salta/i];
 async function ripulisci(dove, maxIter = 25) {
   let last = '', stuck = 0;
   for (let i = 0; i < maxIter; i++) {
