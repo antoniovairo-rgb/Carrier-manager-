@@ -770,3 +770,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - Un riavvio della macchina ha fermato i due lavori interni (carriera 177 n.1 alla stagione 10, giro 92 senza commit). Dati della carriera salvati (43690b94). Decisione della sessione principale: **anche i giri vanno nel cloud** finché i riavvii continuano; qui restano solo assemblaggio, rilascio e governo.
 - Nel cloud: carriera 177 n.1 (ripresa, session_01GfKuZv4wGQgmBqGfKNj6Nw), n.2 molti trasferimenti (stagione 8), n.3 Nazionale, giro 92 partita 2D (session_013oKHaLnihBXutJLnsxE6BA, base giro 91).
+
+## 22/10 — pausa fino a lunedì 26/10 ore 16:00 (PO)
+
+- PO: «Metti in pausa / sospeso nuove attività fino a lunedì alle 16:00». PO (questionario): **i 4 lavori già avviati nel cloud finiscono** (carriere 177 n.1, n.2, n.3; giro 92) e salvano su GitHub; **nessun lavoro nuovo**, niente assemblaggio né rilascio della 178. Tolto il controllo automatico che avrebbe lanciato lavori nuovi; programmata la ripresa per lunedì 26/10 alle 16:00 Roma (15:00 UTC).
