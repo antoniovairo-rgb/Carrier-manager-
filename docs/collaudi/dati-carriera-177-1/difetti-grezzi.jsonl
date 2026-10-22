@@ -543,3 +543,17 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":30}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":7,"campo":24,"s":14,"w":31}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":31}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"1–2","reg":"2-1","s":14,"w":31,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":7,"campo":26,"s":14,"w":32}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":32}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":7,"campo":26,"s":14,"w":33}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":33}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":9,"campo":28,"s":14,"w":34}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":34}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"2–4","reg":"4-2","s":14,"w":34,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":9,"campo":30,"s":14,"w":35}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":35}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":9,"campo":30,"s":14,"w":36}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":1,"campo":7,"s":14,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":9,"campo":30,"s":14,"w":37}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":9,"s":14,"w":37}
