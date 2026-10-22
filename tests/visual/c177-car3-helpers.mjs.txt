@@ -51,7 +51,7 @@ st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week
   const extra=await st.modali(b);
   const mod=extra.length>0||/Impulso|SETTIMANA \d+ ·|scelta|Scegli|decid/i.test(t);
   if(mod){const sc=await st.scelta();if(sc){ev.push(sc);await sleep(1200);continue;}}
-  const c=await st.cta();ev.push('cta:'+c);if(c===null||/^DIS/.test(c)){const sc=await st.scelta();ev.push('?'+sc+'|'+t.slice(0,100));if(!sc){await sleep(1500);}}
+  const c=await st.cta();ev.push('cta:'+c);if(c===null){await page.evaluate(()=>{const b=[...document.querySelectorAll('button,div')].filter(e=>(e.innerText||'').trim()==='HOME');if(b.length)b[b.length-1].click();});await sleep(1200);}if(c===null||/^DIS/.test(c)){const sc=await st.scelta();ev.push('?'+sc+'|'+t.slice(0,100));if(!sc){await sleep(1500);}}
   await sleep(1400);
  }
  return ev;};
