@@ -41,6 +41,7 @@ st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week
   const s=await st.snap();if(s&&(s.season*100+s.week)!==k0&&i>0){ev.push('→sett '+s.season+'/'+s.week);break;}
   const b=await st.btns();const t=await st.txt(250);
   if(!opts.chiudi&&b.some(x=>/Chiudi la stagione/.test(x))){ev.push('STOP-FINE-STAGIONE');break;}
+  if(!b.some(x=>/^⏸/.test(x))){const ov=(await st.ovBtns()).filter(x=>!st.EXCL.test(x)&&!/^Gioca la partita|^Simula/.test(x));if(ov.length&&!b.some(x=>/Torna alla dashboard/.test(x))){const x=ov[(st.rot++)%ov.length];await tocca(page,x.split(' | ')[0],2500);ev.push('ov:'+x.slice(0,50));await sleep(1200);continue;}}
   if(b.some(x=>/^Gioca la partita/.test(x))){const tt=await testo(page);const nat=/Europe|Mondiale|Qualific|Amichevole Internaz|Coppa delle Nazioni|Convocaz|NAZIONALE ·|Nazionale di/i.test(tt.slice(0,400).replace(/COPPA NAZIONALE/gi,''));if(nat)ev.push('NAT-PROMPT:'+tt.slice(0,160).replace(/\n/g,' / '));const q=(live||nat)?'Gioca la partita':'Simula e avanza';await tocca(page,q,3000);ev.push('prompt:'+q);await sleep(1500);continue;}
   if(b.some(x=>/^Salta e gioca/.test(x))){await tocca(page,opts.vedi?'Vedi le formazioni':'Salta e gioca',3000);ev.push('prematch');await sleep(1500);continue;}
   if(b.some(x=>/^Ingresso in campo/.test(x))){await tocca(page,opts.ingresso?'Ingresso in campo':"Salta l'ingresso",3000);ev.push('ingresso');await sleep(2000);continue;}
