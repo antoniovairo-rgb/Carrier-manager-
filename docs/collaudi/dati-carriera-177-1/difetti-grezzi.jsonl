@@ -725,3 +725,12 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":13,"s":18,"w":17}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":18}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":19}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":20}
+{"tipo":"salvataggio","nome":"stato diverso dopo salva e ricarica","n":1,"esempio":[{"pth":".cup.club","b":"\"bay\""}],"s":18,"w":20,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":13,"campo":15,"s":18,"w":21}
+{"tipo":"coerenza","nome":"matchHistory non cresce di 1 dopo partita live","g0":26,"g1":26,"s":18,"w":21,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol del tabellino != gol registrati","tab":"0","reg":1,"s":18,"w":21,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"0–4","reg":"1-1","s":18,"w":21,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"matchHistory non cresce di 1 dopo partita live","g0":26,"g1":26,"s":18,"w":21,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"1–0","reg":"1-1","s":18,"w":21,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":13,"campo":15,"s":18,"w":22}
