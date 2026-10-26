@@ -121,8 +121,9 @@ export async function giocaSettimana(S, ctx) {
       if (s.screen && /seasonEnd|seasonAwards|careerEnd/.test(s.screen)) return 'fine-stagione';
       if (cl0.some(x => /^Offerta di sponsor/.test(x)) && !ctx.sponsorVisto) { ctx.sponsorVisto = s.st + ':' + s.wk; await clickTesto(p, /^Offerta di sponsor/); await sleep(700); const tt = (await testo(p)).replace(/\n+/g, ' | '); const i = tt.indexOf('SPONSOR'); const f = await clickTesto(p, /^✍️|Firmo|Accetto/); ctx.log('sponsor', { t: [...tt.slice(i, i + 260)].join(''), firmato: f }); await sleep(700); continue; }
       if (cl0.some(x => /^🎙️ Vai in sala stampa/.test(x))) { await clickTesto(p, /Vai in sala stampa/); ctx.log('sala-stampa', { st: s.st, wk: s.wk, club: s.club }); await sleep(900); continue; }
+      if (await clickTesto(p, /Sessione Riabilitazione/)) { ctx.log('riabilitazione', { st: s.st, wk: s.wk }); await sleep(1200); continue; }
       if (await clickTesto(p, /Vivi la Settimana|Avvia Stagione/)) { await sleep(900); continue; }
-      if (await clickTesto(p, /Avanza Settimana/)) { await sleep(1200); continue; }
+      if (await clickTesto(p, /Avanza Settimana|Avanza \(infortunato\)/)) { await sleep(1200); continue; }
       if (await clickTesto(p, /^🎉 Festeggia/)) { ctx.log('festa', await testo(p).then(x => x.slice(0, 200))); await sleep(1500); continue; }
       if (await clickTesto(p, /^(🌍|🏆|🇪🇺|🥇)[^›]*(Qualif|Mondiale|Europe|Nazion|Amichevole|Coppa|Gruppo|Finale|Semifinale|Quarti|Ottavi)[^›]*›/)) { ctx.log('partita-speciale', { st: s.st, wk: s.wk }); await sleep(1000); continue; }
       if (await clickTesto(p, /^Una stretta di mano/)) { await sleep(900); continue; }
@@ -251,7 +252,8 @@ export async function galaFinale(S, ctx) {
   const p = S.page; const visti = []; let last = '';
   for (let i = 0; i < 70; i++) {
     const t = (await testo(p)).replace(/\n+/g, ' | ');
-    if ((await cliccabili(p)).some(x => /^Vai al bilancio/.test(x)) || /Vai al bilancio della stagione/.test(t)) { visti.push(t.slice(0, 1400)); break; }   /* il bottone sta sotto la piega: cliccabili() non scorre, un giocatore sì */
+    const cc0 = await cliccabili(p); const galaViva = cc0.some(x => /^(Apri la busta|Svela|E il vincitore|Prossimo premio|Avanti →)/.test(x));
+    if (cc0.some(x => /^Vai al bilancio/.test(x)) || (!galaViva && /Vai al bilancio della stagione/.test(t))) { visti.push(t.slice(0, 1400)); break; }   /* il bottone sta sotto la piega: cliccabili() non scorre, un giocatore sì */
     const h = t.slice(0, 260); if (h !== last) { last = h; visti.push(h); ctx._galaRip = 0; } else if (++ctx._galaRip === 5) { const bb = await cliccabili(p); ctx.log('gala-bloccato', { t: t.slice(0, 700), bottoni: bb }); await foto(S, '_gala-bloccato-' + Date.now()); }
     if ((ctx._galaRip || 0) > 12) { visti.push('GALA-BLOCCATO'); break; }
     const c = await clickTesto(p, /Apri la busta|Svela|E il vincitore|Prossimo premio|Avanti →|Continua/);
@@ -279,7 +281,7 @@ export async function fineStagione(S, ctx) {
   for (let i = 0; i < 40; i++) {
     const st = await stato(S); if (!st) return 'nostato';
     if (s0 && st.st > s0.st && st.screen === 'dashboard') return 'ok';
-    if (st.screen === 'seasonAwards') { const tt = await testo(p); if (/Vai al bilancio della stagione/.test(tt)) { await clickTesto(p, /^Vai al bilancio/); await sleep(2500); continue; } await galaFinale(S, ctx); continue; }
+    if (st.screen === 'seasonAwards') { const tt = await testo(p); if (/Vai al bilancio della stagione/.test(tt) && !(await cliccabili(p)).some(x => /^Apri la busta/.test(x))) { await clickTesto(p, /^Vai al bilancio/); await sleep(2500); continue; } await galaFinale(S, ctx); continue; }
     if (st.screen === 'seasonEnd') {
       const t = (await testo(p)).replace(/\n+/g, ' | '); ctx.fineSig = ctx.fineSig || new Set(); const sg = t.slice(0, 70); if (!ctx.fineSig.has(sg + st.st)) { ctx.fineSig.add(sg + st.st); ctx.log('fine-stagione-schermata', { st: st.st, t: [...t.slice(0, 2400)].join('') }); if (ctx.fotoFine) await foto(S, '_fs' + st.st + '-' + (giri++)); }
       const c = await clickTesto(p, /Inizia Stagione \d+|Continua →|Continua|Avanti/); await sleep(c ? 2200 : 1500); if (!c) return 'SCHERMATA:seasonEnd-senza-bottone'; continue; }

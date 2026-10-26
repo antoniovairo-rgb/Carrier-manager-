@@ -16,3 +16,4 @@
 {"st":11,"wk":15,"tipo":"assist","msg":"assist stagione 7 ≠ somma storico 6"}
 {"st":11,"wk":17,"tipo":"gol","msg":"goals stagione 12 ≠ somma storico partite 10","club":"FC Vellamare"}
 {"st":12,"wk":36,"tipo":"classifica-ui","msg":"nessuna tabella di classifica trovata"}
+{"st":15,"wk":2,"tipo":"settimana","msg":"rollover stagione 14→15 ma settimana 2"}
