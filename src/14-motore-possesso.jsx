@@ -1133,7 +1133,7 @@ function creaMotorePossesso(cfg){
   const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||!S.richieste.piazzati||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
     if(!f._o27){f._o27=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const l=T.team;const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(T),zona:zonaDi(advDi(f.x,l),f.y),press:0,x:+f.x.toFixed(1),y:+f.y.toFixed(1),chiesto:null,attese:0,tipo:kind,origine:{kind,chi:chi(T),x:+f.x.toFixed(1),y:+f.y.toFixed(1)},finestra:false,liberi:0,cast:{ricevente:null,difensore:null,portiere:chi(K)}});return true;}
-    if(f._o27<40){f._o27++;return true;}return false;};
+    if(f._o27<40||(f._acc94&&f._o27<400&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2))){f._o27++;return true;}return false;};/* [giro 94 D2] _acc94: il live ha accettato la scena (inserita): il motore la aspetta, non calcia lui dopo 40 passi (tetto di sicurezza 400) */
   function tickFermo(){const f=S.fermo;S.poss.t++;f.t++;S.conta.fermo++;S.palla.x=f.x;S.palla.y=f.y;
     if(f.t<f.tot)return;
     const l=f.lato;S.poss.lato=l;
@@ -1141,7 +1141,7 @@ function creaMotorePossesso(cfg){
     if(f.kind==="throw"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=clamp(f.y,2,98);S.fermo=null;const R=scegliRicevente(T.p,{})||(piuVicino(f.x,f.y,l,{noGk:true,escl:T.p.i})||{}).p;ev("battuta",{kind:"throw",chi:chi(T.p)});if(R){S.palla.x=f.x;S.palla.y=f.y;passa(T.p,R,{sicuro:true,kind:"corto"});}else tenuta(T.p,null);return;}
     if(f.kind==="goal_kick"){const gk=portiereDi(l);gk.x=f.x;gk.y=f.y;S.fermo=null;ev("battuta",{kind:"goal_kick",chi:chi(gk)});S.palla.x=f.x;S.palla.y=f.y;const R=scegliRicevente(gk,{});if(R)passa(gk,R,{sicuro:true,kind:hyp(R.x,R.y,gk.x,gk.y)>26?"lancio":"corto"});else tenuta(gk,null);return;}
     if(f.kind==="corner"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===T.p.i||q.gk)continue;const sc=advDi(q.x,l)-Math.abs(q.y-50)*0.5+(q.eroe?3:0)+_bonusCross26(q,l)+rnd()*5;if(sc>bs){bs=sc;R=q;}}ev("battuta",{kind:"corner",chi:chi(T.p)});cross(T.p,R,{corner:true});return;}
-    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
+    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(T.eroe&&S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=="undefined"&&window&&window.__CPM_NO_C3D2)){S.fermo=null;const K94=portiereDi(altro(l));if(K94){S.palla.x=K94.x;S.palla.y=K94.y;tenuta(K94,null);}return;}/* [giro 94 D2] niente secondo rigore dell'eroe dopo quello giocato in scena */if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
     /* punizione */
     const _tir27=advDi(f.x,l)>=78&&Math.abs(f.y-50)<=18;const _H27=_tir27&&S.richieste.piazzati&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27)?g.find(q=>q.eroe&&q.team===l&&attivo(q)):null;/* [7.999.27] dal limite, tirabile: la batte l'eroe */
     const T=(_H27?{p:_H27}:null)||((B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true}));if(!T){libero(f.x,f.y);return;}if(_tir27&&_piaz27(f,T.p,"punizione"))return;T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
@@ -1434,7 +1434,18 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        (l'eroe) e porta i ventidue nella formazione da palla ferma con le sue regole (tick dopo tick,
        corsa vera, niente teletrasporto). Tiene la palla ferma per `hold` tick (6): se la scena non si
        apre, il piazzato lo batte lui e il gioco continua. */
-    piazzato(o){o=o||{};const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
+    /* [giro 94 D2 collaudo 177-3 «30' Tuo rigore · 31' Gol di Valdes» — rosso __CPM_NO_C3D2] IL PIAZZATO DELL'EROE SI CALCIA UNA VOLTA.
+       Misurato (sonda-rigore-94, partita k13 del salvataggio 190): occasione_eroe del rigore al 34', gol della scena al 35', poi al 36'
+       il motore — fermo ancora sul dischetto ad aspettare la scena (_piaz27, tetto 40 passi) — batte lui il rigore con l'eroe e segna di
+       nuovo. Qui il live dichiara che la scena ha giocato il piazzato: il fermo dell'eroe sparisce e il pallone va al portiere di chi
+       difendeva (la ripresa vera la decide poi il live, col calcio d'inizio dopo il gol o con riprendi).
+       Seconda misura (stessa partita): al momento della scena il fermo era GIA' vuoto; il secondo calcio nasceva da un piazzato nuovo chiesto
+       dal ponte verso l'highlight programmato (stesso rigore, scena gia' giocata). Quindi: per 4 minuti dopo il piazzato giocato in scena
+       il motore non fa calciare all'eroe un altro piazzato (ne' da fermo pendente ne' da ponte); il pallone va al portiere di chi difende. */
+    attendiPiazzato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;const f=S.fermo;if(!f||!f._o27)return false;f._acc94=1;return true;},/* [giro 94 D2] misura 3 (sonda-rigore-94 k13): la scena del rigore inserita al 34' si apriva al 35', quando il motore aveva gia' finito i 40 passi d'attesa e calciato nei sotto-passi: il suo gol arrivava al 36' come secondo gol dell'eroe */
+    piazzatoGiocato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;S.noPiaz94=(S.min|0)+4;const f=S.fermo;if(!f||!f._o27)return false;
+      S.conta.piaz94=(S.conta.piaz94|0)+1;S.fermo=null;const K=portiereDi(altro(f.lato));if(K){S.palla.x=K.x;S.palla.y=K.y;tenuta(K,null);}return true;},
+    piazzato(o){o=o||{};if(S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)){S.conta.piazNo94=(S.conta.piazNo94|0)+1;return;}/* [giro 94 D2] il ponte non rifischia il piazzato appena giocato in scena */const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
       S.richieste.verso=null;fermoSet(kind,l,+o.x||50,+o.y||50,{scena:1});
       if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,o.hold?clamp(o.hold|0,1,12):6);
         if(o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},

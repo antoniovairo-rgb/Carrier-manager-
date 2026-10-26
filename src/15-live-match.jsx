@@ -5954,7 +5954,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
-              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}_ins26=true;}catch(_e26){}}
+              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}_ins26=true;if(_pz27){try{_M.chiedi.attendiPiazzato&&_M.chiedi.attendiPiazzato();}catch(_e94a){}}/* [giro 94 D2] la scena del piazzato e' accettata: il motore la aspetta */}catch(_e26){}}
             /* [7.999.98 PO-178 — guardiano orfano piazzati-eroe rosso] MISURATO: nello stesso minuto il motore emette DUE occasioni
                dell'eroe (il rigore con origine e una «spalle»); la scena del rigore veniva inserita, ma qui si registrava la PRIMA
                dell'elenco, e la scheda aperta era «Solo davanti al portiere!» invece del rigore. Se la scena dell'origine e' stata
@@ -9748,6 +9748,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         res.outKind=(!opt.chip&&_M3.risolviEroe.dado(_pw))?"wide":"saved";res.ok=false;if(opt.chip&&res.outKind==="saved")res.chipStay=true;}
       if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SP3=window.__CPM_SP3||[]).push({p:res.pGoalEV,prima:_prima3,dopo:res.outKind,k:_aimIntent,chip:!!opt.chip,min:clockRef.current|0});}catch(_e3){}}
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)&&_M3&&_M3.registra)_M3.registra('tiro','home',{esito:res.outKind==="goal"?'gol':res.outKind==="saved"?'parato':res.outKind==="post"?'legno':'fuori',xg:+res.pGoalEV||0});}catch(_e3r){}/* nel motore «home» e' sempre la squadra dell'eroe */
+    try{const _M94=motoreRef.current;if(_M94&&_M94.chiedi&&_M94.chiedi.piazzatoGiocato){const _f94=(typeof window!=='undefined'&&window.__CPM_REC)?(_M94._S&&_M94._S.fermo?(_M94._S.fermo.kind+':'+(_M94._S.fermo._o27|0)):('nullo:'+(_M94._S&&_M94._S.poss&&_M94._S.poss.stato))):null;const _sc94=(typeof window!=='undefined'&&window.__CPM_REC)?!!(_M94.stato()||{}).scena:null;const _g94=_M94.chiedi.piazzatoGiocato();if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:clockRef.current|0,t:'piazzato_giocato',tolto:!!_g94,fermo:_f94,scena:_sc94});}}catch(_e94p){}/* [giro 94 D2] la scena ha calciato il piazzato dell'eroe: il motore non lo ricalcia */
     gkDiveRef.current=res.gkDir;const gkLabel=RIGORE_DIRS[res.gkDir]||"";
     setEnergy(e=>clamp(e-(opt.nrg||8),0,100));
     setMxStats(st=>({...st,shots:st.shots+1}));

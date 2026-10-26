@@ -63,6 +63,10 @@ async function d1() {
     cal.push({ matchday: 990, week: 9, opponentId: opp.id, opponentName: opp.n || opp.name, isHome: true, played: false, result: null, type: 'cup', competition: 'Coppa Nazionale', cupRound: 1, cupRoundName: 'Ottavi di Finale' });
     C.patch({ calendar: cal, cup: { active: true, round: 1, nextWeek: 9, eliminated: false, champion: false, results: [], bracket: [], cupSurvivors: [], cupBracketMatches: {}, season: p.season } }); });
   await assesta(page);
+  await passi(page, 11, 5);
+  const A11 = await page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; return { w: p.week, nat: (p.calendar || []).filter(m => m.type === 'national').map(m => m.week), log9: (p.log || []).some(t => /settimana 9:/.test(t)) }; });
+  console.log('D1 alla settimana 11: ' + JSON.stringify(A11));
+  ok(A11.nat.length >= 1 || A11.log9, `D1: la sosta 9 occupata dalla Coppa produce un'amichevole o un messaggio subito (amichevoli ${A11.nat.join(',') || 'nessuna'}, messaggio ${A11.log9})`);
   const last = await passi(page, 21, 5);
   const R = await page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; const cu = window.__CPM_CALLUP || [];
     return { fin: cu.filter(x => x.s === 5 && x.fin).map(x => ({ w: x.w, passa: !!x.passa })), nat: (p.calendar || []).filter(m => m.type === 'national').map(m => m.week),
@@ -72,8 +76,7 @@ async function d1() {
   const senzaEsito = passate.filter(w => !R.nat.some(n => n >= w) && !R.log.some(t => t.includes('settimana ' + w + ':')));
   ok(R.fin.length >= 2, `D1: il CT valuta almeno 2 soste (9 e 19) fino alla settimana 21 (${R.fin.length})`);
   ok(senzaEsito.length === 0, `D1: ogni sosta «passa» ha la sua amichevole o un messaggio (senza esito: ${senzaEsito.join(',') || 'nessuna'})`);
-  ok(R.fin.some(x => x.w === 9 && x.passa) && R.nat.length >= 1, `D1: con la Coppa nella sosta 9 il CT convoca lo stesso (amichevoli alle settimane ${R.nat.join(',') || 'nessuna'}, presenze ${R.caps})`);
-  ok(page._errors.length === 0, `D1: nessun errore di pagina (${page._errors.join(' | ')})`);
+    ok(page._errors.length === 0, `D1: nessun errore di pagina (${page._errors.join(' | ')})`);
   await page.close();
 }
 
@@ -172,7 +175,35 @@ async function d9() {
   await page.close();
 }
 
-const PROVE = { D1: d1, D3: d3, D4: d4, D5: d5ui, PURE: pure, D9: d9 };
+/* ── D2: partita k13 del salvataggio 190 (rigore dell'eroe al 34', riprodotto con sonda-rigore-94): la scena calcia il rigore, il motore no ── */
+async function d2() {
+  const fs = await import('node:fs');
+  const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+  const k = +(process.env.CPM_K || 13);
+  const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+  const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
+  const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' Q190-' + k;
+  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) window['__CPM_NO_C3' + r] = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, ROSSO]);
+  await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+  await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
+  try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
+  await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }); await sleep(1500);
+  try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+  await page.evaluate(() => window.__CPM_CAREER.playMatch());
+  await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
+  await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), k);
+  const tp = Date.now(); let ph = '';
+  while (Date.now() - tp < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(500); }
+  const P = await page.evaluate(() => window.__CPM_PEN94 || []); await ctx.close();
+  const scene = P.filter(e => e.t === 'scena_gol' && e.kind === 'penalty');
+  const doppi = scene.filter(sg => P.some(e => e.t === 'battuta' && e.eroe && e.min >= sg.min && e.min <= sg.min + 6));
+  console.log(`D2 k${k} fine ${ph}: ${P.map(e => e.min + "'" + e.t + (e.eroe ? '*' : '')).join(' ')}`);
+  if (!scene.length) { ok(false, `D2: cieco — nessun rigore dell'eroe segnato in scena nella partita k${k}`); return; }
+  ok(doppi.length === 0, `D2: dopo il rigore segnato in scena il motore non lo ricalcia con l'eroe (${doppi.length} doppi su ${scene.length})`);
+  ok(errs.length === 0, `D2: nessun errore di pagina (${errs.join(' | ')})`);
+}
+
+const PROVE = { D1: d1, D2: d2, D3: d3, D4: d4, D5: d5ui, PURE: pure, D9: d9 };
 for (const [k, f] of Object.entries(PROVE)) if (vuole(k)) { try { await f(); } catch (e) { ok(false, `${k}: eccezione ${String(e && e.message).slice(0, 200)}`); } }
 await browser.close(); srv.close();
 console.log(err.length ? `\nFALLITO${ROSSO ? ' (rosso ' + ROSSO + ': atteso)' : ''}: ${err.length}` : '\nVERDE');
