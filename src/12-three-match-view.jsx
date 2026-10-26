@@ -4296,7 +4296,7 @@ function ThreeMatchView(props){
                  `hlOutcomeKind!=="chance"` sul ramo del gol e' quella che lo garantisce: senza, un passaggio
                  con premio GOL ed esito occasione sarebbe caduto in `in_net`, cioe' il falso gol. */
               else if(_hs===true&&_ht==="pass"){
-              if(P.hlOutcomeKind==="chance"&&P.hlOneTwo===true){heroPostT=0;heroPostType="fist";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}// [7.8.10] combinazione «dai e vai» (pass+goal→chance): la palla RESTA all'eroe, la CATENA (ricevi e TIRA) segna → niente rete sul passaggio d'avvio
+              if(P.hlOutcomeKind==="chance"&&P.hlOneTwo===true&&!(P.hlMate298&&!(typeof window!=="undefined"&&window.__CPM_NO_ASSIST298))){heroPostT=0;heroPostType="fist";if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh=null;}}// [7.8.10] combinazione «dai e vai» (pass+goal→chance): la palla RESTA all'eroe, la CATENA (ricevi e TIRA) segna → niente rete sul passaggio d'avvio
               else if(P.hlReward==="goal"&&P.hlOutcomeKind!=="chance"){hlPostArcT=0;hlOutcomeVariant="goal";hlPostArcType="in_net";}// [7.1.2 classe B] «dai, ricevi, TIRA»: reward GOAL ⇒ finalizza l'EROE, non il compagno
               else{hlPostArcT=0;hlPostArcType="assist_recv";sr.current._arRcv=null;sr.current._arLandX=null;if(passTargetMesh){passTargetMesh._rcvT=0;passTargetMesh._runToX=Math.min(passTargetMesh.position.x+12,AWAY_GOAL_X-6);passTargetMesh._runToZ=passTargetMesh.position.z;/* [7.240.0 gi25 «Non si vede il compagno che riceve e tira»] il puntatore RESTA: azzerarlo qui lasciava il driver di assist_recv senza ricevente dopo il gesto _rcvT (0.52s) → nessuno correva sulla palla e il tiro partiva da solo */}}}
             else if(_hs===true&&(_ht==="tackle"||_ht==="dribble"||_ht==="build"||!_ht)){
@@ -4774,8 +4774,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _isCh93=P.hlOutcomeKind==="chance";
           const _u3=Math.min(hlPostArcT/0.80,1);
           ball.position.y=0.22+Math.sin(_u3*Math.PI)*3.2;
-          ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);
-          if(_isCh93&&_u3>=0.72){
+          /* [giro 93 PO-298, rosso __CPM_NO_ASSIST298] IL COMPAGNO SPRECA COME HA DECISO IL MOTORE. Sul passaggio arrivato e non
+             convertito (esito «occasione» con hlMate298) il tiro del compagno finisce come dice giocaScena: parato resta il ramo di
+             sempre (tuffo e respinta prima della linea); fuori esce oltre il palo senza tuffo; palo sul legno con il portiere battuto;
+             murato respinto presto, senza portiere. Prima ogni spreco era una parata, e con la chiave di fallimento un intercetto. */
+          const _m298=(_isCh93&&!(typeof window!=='undefined'&&window.__CPM_NO_ASSIST298)&&/^(wide|post|blocked)$/.test(P.hlMate298||""))?P.hlMate298:null;
+          if(_m298){if(sr.current._zs298==null)sr.current._zs298=(ball.position.z>=0?1:-1);const _zs=sr.current._zs298;
+            if(_m298==="wide"){ball.position.x+=((_GLX+0.8)-ball.position.x)*aDt*3.2;ball.position.z+=((_zs*6.2)-ball.position.z)*aDt*2.6;}
+            else if(_m298==="post"){ball.position.x+=((_GLX-0.2)-ball.position.x)*aDt*3.4;ball.position.z+=((_zs*3.35)-ball.position.z)*aDt*3.0;if(_u3>=0.55&&awayGkMesh&&!oppActType)oppActType="gk_dive";}
+            else{ball.position.x+=((AWAY_GOAL_X-9)-ball.position.x)*aDt*3.2;ball.position.z*=(1-aDt*1.6);}
+            if(_m298==="wide"&&_u3>=1){sr.current._zs298=null;hlPostArcT=-1;hlPostArcType=null;contactFlashT=0;}
+            else if(_m298==="post"&&_u3>=0.9){sr.current._zs298=null;hlPostArcType="deflect";hlPostVY=5;hlPostVZ=-_zs*6;hlPostArcT=0;contactFlashT=0;}
+            else if(_m298==="blocked"&&_u3>=0.45){sr.current._zs298=null;hlPostArcType="deflect";hlPostVY=4;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}}
+          else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;if(!_m298)ball.position.z*=(1-aDt*1.6);
+          if(_m298){}
+          else if(_isCh93&&_u3>=0.72){
             if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
             hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}
           else{

@@ -1598,7 +1598,21 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
       const MIO_GK=g.find(q=>q&&q.gk&&q.team===H.team)||null;
       const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});/* il portiere reagisce se il pallone passa entro 12 unita' dal centro porta */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
-      if(famPass){
+      /* [giro 93 PO-298 «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] IL PASSAGGIO ARRIVATO E IL TIRO
+         SBAGLIATO DEL COMPAGNO SONO DUE FATTI. giocaScena decide il passaggio (intercettato o no) e poi il tiro del compagno; quando il
+         passaggio arriva e il compagno non segna, il live mandava qui la chiave di fallimento dell'assist e il motore scriveva
+         «intercetto» del difensore (misurato: 4 passaggi arrivati su 8 scene raccontati come intercetti). Ora: passaggio riuscito,
+         tiro del compagno con l'esito deciso (parata, fuori, palo, murato), nessun rammarico dell'eroe. */
+      const _sp298=(d.spreca298&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298))?String(d.spreca298):null;
+      const Rs=_sp298?(R0||(()=>{const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;})()):null;
+      if(_sp298&&Rs){
+        E(_crx218?'cross':'passaggio',{da:chi(H),a:chi(Rs),kind:'corto',from:da(H),to:da(Rs),fuori:false});
+        const es=_sp298==='wide'?'fuori':_sp298;const to=es==='blocked'?null:porta(es);
+        if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});
+        E('tiro',{chi:chi(Rs),from:da(Rs),intent:_crx218?'header':null,to,esito:es});
+        if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(Rs),corner:false});else if(es==='post')E('palo',{chi:chi(Rs)});else if(es==='blocked'&&D)E('murato',{chi:chi(D),su:chi(Rs)});
+      }
+      else if(famPass){
         E(_crx218?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
         /* [giro 11 PO-218 cross] IL CROSS SBAGLIATO HA IL SUO FATTO. Misurato (enumerazione su motore vero, cast con difensore e portiere):
            il cross bloccato dal portiere (riquadro «Il portiere esce e la prende», 3D presa) era registrato «intercetto» del difensore, e il
@@ -1724,7 +1738,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
         const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
         if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
-        const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) */const es=esitoTiroV2(Rv,o.intent==='header'?'header':'shot',{pressRaw:_a221?1:3});
+        const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) *//* [giro 93 PO-298, rosso __CPM_NO_ASSIST298] IL COMPAGNO SERVITO DAVANTI ALLA PORTA HA UNA GRANDE OCCASIONE. Misurato (12 partite,
+   politica «assist»): passaggio arrivato 42 volte su 44, compagno a segno 8 volte su 42 (19%) — il suo tiro era un tiro qualunque del
+   motore (xG del punto, con la frenata dei compagni nella partita vissuta). Ora vale la «grande occasione» della decisione PO 7.999.2:
+   0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
+const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
+if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
+const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
         return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}
       return null;}finally{H.x=x0;H.y=y0;}}catch(_e){return null;}};
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno
