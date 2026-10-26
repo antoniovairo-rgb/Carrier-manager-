@@ -706,3 +706,11 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":34}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":28,"s":17,"w":35}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":35}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":28,"s":17,"w":36}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":36}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":29,"s":17,"w":37}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":4,"campo":9,"s":17,"w":37}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":29,"s":17,"w":38}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":4,"campo":9,"s":17,"w":38}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":13,"campo":31,"s":17,"w":39}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":4,"campo":9,"s":17,"w":39}
