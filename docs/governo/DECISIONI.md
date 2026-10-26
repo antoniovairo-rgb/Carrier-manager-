@@ -775,3 +775,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 - PO: «Metti in pausa / sospeso nuove attività fino a lunedì alle 16:00». PO (questionario): **i 4 lavori già avviati nel cloud finiscono** (carriere 177 n.1, n.2, n.3; giro 92) e salvano su GitHub; **nessun lavoro nuovo**, niente assemblaggio né rilascio della 178. Tolto il controllo automatico che avrebbe lanciato lavori nuovi; programmata la ripresa per lunedì 26/10 alle 16:00 Roma (15:00 UTC).
 - PO (22/10, poco dopo): **«Metti tutto in pausa»** — interrotte anche le 4 figlie cloud a metà lavoro (resta quanto già pushato sui loro rami). La ripresa di lunedì 26/10 ore 16 le riavvia da dove si sono fermate.
+
+## 26/10 — ripresa dopo la pausa
+
+- PO: «riprendi» + PO-298 «il 90/95% degli assist dell'eroe falliscono». Il contenitore era stato sostituito: repo riclonato in /home/user/cm.
+- Stato trovato: giro 92 finito prima della pausa (08b81b23 + foto 13e76767: spalti dei club, barra, squadre fisse; partita2d-297 e 12 guardiani verdi); carriera 177 n.3 «Nazionale» finita (18 stagioni, ritiro a 34 anni, 43 presenze e 28 gol in Nazionale; **3 alti, 7 medi, 11 bassi**: D1 convocazioni mancanti S9-S11, D2 doppio gol dopo il rigore dell'eroe — highlight, bloccante —, D3 contratto scaduto senza rinnovo); carriere n.1 e n.2 interrotte a metà.
+- Nel cloud: giro 93 assist PO-298 (base giro 92), giro 94 difetti alti/medi della carriera n.3 (base giro 92), carriere n.1 e n.2 riprese, carriera n.4 centrocampista nuova. Archiviate le figlie del 22/10.
+- La 178 si assembla con i giri 90-94 (regola «contenuto chiuso»: 93 e 94 entrano perché sono difetti alti/medi e di highlight).
