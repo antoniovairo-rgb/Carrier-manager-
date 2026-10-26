@@ -7,13 +7,17 @@
      · nessun passaggio RIUSCITO raccontato come fallimento del passaggio (riquadro «intercetta/palla persa», tono «cattivo» senza dire
        che il compagno ha sbagliato) e nessun 3D che fa intercettare un passaggio arrivato;
      · gol del compagno ⟺ assist registrato nel tabellino del motore (gol con assist dell'eroe);
-     · quota di passaggi riusciti e quota di gol del compagno dentro bande larghe (misurate, dichiarate in testa al rapporto).
+     · quota di passaggi riusciti (pavimento 70%) e conversione del compagno sul passaggio arrivato (banda larga 10-75%).
+   MISURATO (12 partite, semi 1234,2021,5,42,11,77,3,8,13,21,34,55): PRIMA 46 scene — passaggio arrivato 97,8%, gol del compagno deciso
+   dal motore 21,7%, gol nel tabellino 15,2% (3 gol del motore cancellati dalla conversione in «occasione»), scene mostrate «fallite»
+   78,3% (35 con il passaggio arrivato, raccontato «intercettato» da riquadro, 3D e motore). DOPO 48 scene — passaggio arrivato 93,8%,
+   gol del compagno 25,0% (26,7% dei passaggi arrivati), tabellino = motore, «fallite» 6,3% (solo gli intercetti veri), 0 difetti.
    Rosso: __CPM_NO_ASSIST298 (il difetto deve vedersi). Uso: node assist-298.mjs   (CPM_ARMI=verde|rosso per un braccio solo,
    CPM_SEMI=1,2,3 per altri semi, CPM_MISURA=1 stampa e non giudica). */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI_V = (process.env.CPM_SEMI || '1234,2021,7,99').split(',').map(Number), SEMI_R = (process.env.CPM_SEMI_ROSSO || process.env.CPM_SEMI || '1234,2021').split(',').map(Number);
+const SEMI_V = (process.env.CPM_SEMI || '1234,2021,7,99,5').split(',').map(Number), SEMI_R = (process.env.CPM_SEMI_ROSSO || process.env.CPM_SEMI || '1234,2021').split(',').map(Number);
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
 const srv = await startServer(); const b = await launchBrowser(); const esito = {};
 const _PERSO = /intercett|palla persa|anticipat|legge la giocata|fuori misura|non arriva|lungo|corto|chius/i;
@@ -79,9 +83,10 @@ if (V) {
   if (V.difetti.length) g.push('verde: ' + V.difetti.length + ' difetti (passaggio riuscito raccontato fallito, gol non registrato)');
   const qp = V.pasOk / Math.max(1, V.giudicate), qg = V.gol / Math.max(1, V.giudicate);
   if (!(qp >= 0.70)) g.push('verde: passaggi riusciti ' + (100 * qp).toFixed(1) + '% (pavimento 70%)');
-  if (!(qg >= 0.25 && qg <= 0.70)) g.push('verde: gol del compagno ' + (100 * qg).toFixed(1) + '% (banda 25-70%)');
+  const qc = V.gol / Math.max(1, V.pasOk);/* conversione del compagno sul passaggio arrivato: su ~17 scene il binomio balla di ±11 punti, quindi banda larga */
+  if (!(qc >= 0.10 && qc <= 0.75)) g.push('verde: compagno a segno ' + (100 * qc).toFixed(1) + '% dei passaggi arrivati (banda 10-75%)');
   if (V.badPasOk) g.push('verde: ' + V.badPasOk + ' passaggi riusciti mostrati col tono «fallito»');
 }
 if (R && !(R.difetti.length >= 1 || R.badPasOk >= 1)) g.push('rosso: il difetto non si vede (' + R.giudicate + ' scene)');
 if (g.length) { console.log('❌ assist-298'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
-console.log('✅ assist-298 verde' + (R ? ' (e il rosso si vede)' : ''));
+console.log(V ? '✅ assist-298 verde' + (R ? ' (e il rosso si vede)' : ' (braccio rosso non eseguito)') : '✅ assist-298: il rosso si vede (braccio verde non eseguito)');
