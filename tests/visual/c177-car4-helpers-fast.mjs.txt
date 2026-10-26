@@ -1,0 +1,113 @@
+// corpo asincrono caricato dal banco (c177-car4-server.mjs) all'avvio: definisce gli helper in `st`
+st.phase=()=>page.evaluate(()=>window.__CPM_PHASE?window.__CPM_PHASE():null);
+st.btns=()=>page.evaluate(()=>[...document.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();return r.width>0&&r.height>0;}).map(b=>(b.innerText||'').trim().replace(/\n/g,' | ').slice(0,90)).filter(x=>x));
+st.txt=async(n=400)=>(await testo(page)).slice(0,n).replace(/\n/g,' / ');
+st.dif=(o)=>{o.ts=new Date().toISOString();fs.appendFileSync(OUT+'/difetti.jsonl',JSON.stringify(o)+'\n');return 'dif#'+(fs.readFileSync(OUT+'/difetti.jsonl','utf8').trim().split('\n').length);};
+st.salva=async()=>{const d=await page.evaluate(()=>{const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^cpm/.test(k))o[k]=localStorage.getItem(k);}return o;});fs.writeFileSync(SAVEF,JSON.stringify(d));return d['cpm-v3']?d['cpm-v3'].length:0;};
+st.cta=async()=>page.evaluate(()=>{const b=document.querySelector('[data-cpm="avanza23"]');if(!b)return null;const t=(b.innerText||'').replace(/\n/g,' | ');if(b.disabled)return 'DIS:'+t;b.click();return t;});
+st.snap=()=>page.evaluate(()=>{try{const C=window.__CPM_CAREER;const s=C.snapshot();return s;}catch(e){return null;}});
+st.riga=async(extra)=>{const s=await st.snap();if(!s)return null;
+ const r={s:s.season,w:s.week,age:s.age,club:s.club&&s.club.n,lega:s.club&&s.club.lg,naz:!!(s.nationalCaps),caps:s.nationalCaps||0,natGoals:s.nationalGoals,ovr:s.ovr,gol:s.goals,ass:s.assists,pres:s.matches,totGol:s.totalGoals,form:s.form,morale:s.morale,fatica:s.fatigue,banca:s.bankBalance,pro:s.proStatus,inj:s.injury?s.injury.type+':'+s.injury.weeksRemaining:null,...(extra||{})};
+ fs.appendFileSync(OUT+'/settimane.jsonl',JSON.stringify(r)+'\n');return r;};
+const NAV=/^(Salva|Calendario|La tua settimana|Obiettivi|Ultime notizie|☕|💡|HOME|STAGIONE|CLUB|CARRIERA|AGENTE|UFFICIO|OPZIONI)/;
+st.rot=0;
+/* una passata di "sbroglio": chiude/risolve la finestra che copre la home. Ritorna descrizione o null */
+st.sbroglia=async()=>{const b=await st.btns();const ph=await st.phase();
+ const t=await testo(page);
+ for(const r of [/^Gioca la partita/]){}
+ const pri=[/^Tieni #/,/Capito/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^Ok\b/i,/^🏟️ Torna alla dashboard/,/^Torna alla dashboard/,/^🎉/,/^🏟️ Vai allo stadio/,/^🏟️ Inizia/,/^Chiudi$/];
+ for(const r of pri){const x=b.find(y=>r.test(y));if(x){await tocca(page,x.split(' | ')[0],2000);return 'click:'+x.slice(0,50);}}
+ return null;};
+/* in match: attende il fischio finale (tabellino a schermo) con autoplay seedato */
+st.inMatch=async(seed,maxS=240)=>{await page.evaluate((s)=>{try{window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300});}catch(e){}},seed);
+ st.hl=[];let last='';const t0=Date.now();
+ while((Date.now()-t0)<maxS*1000){await sleep(500);const b=await st.btns();
+  if(b.some(x=>/Torna alla dashboard|Risultati provino|^Continua|Chiudi$/.test(x))&&!b.some(x=>/^⏸/.test(x))){st.fineTxt=await testo(page);return 'fine';}
+  const ph=await page.evaluate(()=>window.__CPM_PHASE?window.__CPM_PHASE():null);
+  if(ph==='hl_result'&&last!=='hl_result'){const info=await page.evaluate(()=>{try{const tl=(window.__CPM_TIMELINE?window.__CPM_TIMELINE():[]).slice(-3);const sc=window.__CPM_SCORE?window.__CPM_SCORE():null;const stt=window.__CPM_STATE?window.__CPM_STATE():null;return {tl,sc,ball:stt&&stt.ball,txt:document.body.innerText.slice(0,500).replace(/\n/g,' / ')};}catch(e){return {err:String(e)};}});st.hl.push(info);if(st.dbg){try{await foto(page,'dbg-hl-'+st.hl.length);}catch(e){}}}
+  last=ph;}
+ return 'timeout';};
+st.ovBtns=()=>page.evaluate(()=>{let best=null,bz=-1;for(const e of document.querySelectorAll('div')){const cs=getComputedStyle(e);if(cs.position!=='fixed')continue;const r=e.getBoundingClientRect();if(r.width<250||r.height<250)continue;const z=parseInt(cs.zIndex)||0;if(z>=bz){bz=z;best=e;}}
+ if(!best)return [];if(best.querySelector&&document.querySelector('canvas')&&best.contains(document.querySelector('canvas')))return [];
+ return [...best.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();return r.width>0&&r.height>0;}).map(b=>(b.innerText||'').trim().replace(/\n/g,' | ').slice(0,90)).filter(x=>x);});
+st.EXCL=/^Salta|^Non ora|^Chiudi|^⏸|^2×|^⚠️|^1×|^1,5×|^Ritira|^×|^✕/;
+st.modali=async(b)=>{if(b.some(x=>/^⏸/.test(x)))return [];const ov=await st.ovBtns();const o=ov.filter(x=>!st.EXCL.test(x));if(o.length)return o;
+ const iS=b.findIndex(x=>/^Salva/.test(x));const m=iS>0?b.slice(0,iS):(iS<0?b:[]);return m.filter(x=>!st.EXCL.test(x));};
+st.scelta=async(forza)=>{const b=await st.btns();const cand=await st.modali(b);
+ if(cand.length<1)return null;const ok=cand.filter(x=>!/🔒/.test(x));const arr=ok.length?ok:cand;const x=arr[(st.rot++)%arr.length];await tocca(page,x.split(' | ')[0].replace(/🔒.*$/,'').trim(),2500);return 'scelta:'+x.slice(0,70);};
+/* una settimana intera. opts: live (bool), seed. Ritorna riepilogo. */
+st.sett=async(opts={})=>{const s0=await st.snap();const k0=s0.season*100+s0.week;const ev=[];const _push=ev.push.bind(ev);ev.push=(x)=>{if(ev.length<40)_push(x);else if(ev.length===40)_push('…troncato');};let live=!!opts.live;
+ for(let i=0;i<70;i++){
+  const s=await st.snap();if(s&&(s.season*100+s.week)!==k0&&i>0){ev.push('→sett '+s.season+'/'+s.week);break;}
+  const b=await st.btns();const t=await st.txt(250);
+  if(!opts.chiudi&&b.some(x=>/Chiudi la stagione/.test(x))){ev.push('STOP-FINE-STAGIONE');break;}
+  if(!b.some(x=>/^⏸/.test(x))){const ov=(await st.ovBtns()).filter(x=>!st.EXCL.test(x)&&!/^Gioca la partita|^Simula/.test(x));if(ov.length&&!b.some(x=>/Torna alla dashboard/.test(x))){const x=ov[(st.rot++)%ov.length];await tocca(page,x.split(' | ')[0],2500);ev.push('ov:'+x.slice(0,50));await sleep(500);continue;}}
+  if(b.some(x=>/^Gioca la partita/.test(x))){const tt=await testo(page);const nat=/Europe|Mondiale|Qualific|Amichevole Internaz|Coppa delle Nazioni|Convocaz|NAZIONALE ·|Nazionale di/i.test(tt.slice(0,400).replace(/COPPA NAZIONALE/gi,''));if(nat)ev.push('NAT-PROMPT:'+tt.slice(0,160).replace(/\n/g,' / '));const q=(live||nat)?'Gioca la partita':'Simula e avanza';await tocca(page,q,3000);ev.push('prompt:'+q);await sleep(600);continue;}
+  if(b.some(x=>/^Salta e gioca/.test(x))){await tocca(page,opts.vedi?'Vedi le formazioni':'Salta e gioca',3000);ev.push('prematch');await sleep(600);continue;}
+  if(b.some(x=>/^Ingresso in campo/.test(x))){await tocca(page,opts.ingresso?'Ingresso in campo':"Salta l'ingresso",3000);ev.push('ingresso');await sleep(900);continue;}
+  if(b.some(x=>/^⏸/.test(x))){const r=await st.inMatch(opts.seed||7);ev.push('match:'+r);fs.appendFileSync(OUT+'/partite-live.jsonl',JSON.stringify({k:k0,hl:st.hl,fine:(st.fineTxt||'').slice(0,2500)})+'\n');continue;}
+  if(b.some(x=>/Torna alla dashboard/.test(x))){if(ev.some(x=>/NAT-PROMPT/.test(x))){try{await foto(page,'nat-s'+s0.season+'w'+s0.week+'-post');}catch(e){}}opts.postFoto&&await foto(page,opts.postFoto);ev.push('postmatch:'+(await st.txt(120)));await tocca(page,'Torna alla dashboard',3000);await sleep(600);continue;}
+  const sb=await st.sbroglia();if(sb){ev.push(sb);await sleep(400);continue;}
+  const hasCta=b.some(x=>/^(🏁|⚽|⚡|▶|➡|📅|🏆|⏭|✅)/.test(x)&&!NAV.test(x));
+  const extra=await st.modali(b);
+  const mod=extra.length>0||/Impulso|SETTIMANA \d+ ·|scelta|Scegli|decid/i.test(t);
+  if(mod){const sc=await st.scelta();if(sc){ev.push(sc);await sleep(500);continue;}}
+  const c=await st.cta();ev.push('cta:'+c);if(c===null){await page.evaluate(()=>{const b=[...document.querySelectorAll('button,div')].filter(e=>(e.innerText||'').trim()==='HOME');if(b.length)b[b.length-1].click();});await sleep(500);}if(c===null||/^DIS/.test(c)){const sc=await st.scelta();ev.push('?'+sc+'|'+t.slice(0,100));if(!sc){await sleep(600);}}
+  await sleep(450);
+ }
+ return ev;};
+
+st.corri=async(n,o={})=>{const out=[];const e0=st.errori.length;for(let k=0;k<n;k++){const s=await st.snap();if(!s){out.push('NOSNAP');break;}
+  const scr=await page.evaluate(()=>window.__CPM_CAREER.screen());
+  if(scr&&/seasonEnd|seasonAwards|careerEnd|proTransition/.test(scr)){out.push('SCHERMATA:'+scr);break;}
+  if((await st.btns()).some(x=>/Chiudi la stagione/.test(x))){out.push('FINE-STAGIONE-PRONTA');break;}
+  st.cont=(st.cont||0)+1;const live=(st.cont%(o.every||4))===0;
+  const ev=await st.sett({live,seed:(st.cont*37)%1000+3,vedi:false,ingresso:live&&(st.cont%8===0)});
+  const r=await st.riga({live,ev:ev.filter(x=>!/^click|^cta|^→/.test(x)).map(x=>x.slice(0,140))});out.push((r?r.s+'/'+r.w+' ovr'+r.ovr+' g'+r.gol:'?')+(live?' LIVE':'')+(ev.some(x=>/NAT-PROMPT/.test(x))?' NAT':''));
+  if(ev.some(x=>/timeout|\?null/.test(x)))out.push('ANOMALIA:'+JSON.stringify(ev).slice(0,300));
+  if(st.errori.length>e0+30)break;}
+ return {out,errNuovi:st.errori.slice(e0).slice(0,5),nErr:st.errori.length-e0};};
+/* fine stagione guidata: registra ogni schermata in fine-stagioni.jsonl, ritorna riepilogo breve */
+st.fineStagione=async(o={})=>{const rec=[];const s0=await st.snap();
+ const r=await st.sett({live:false});rec.push('sett:'+r.slice(-1));
+ for(let i=0;i<14;i++){const sc=await page.evaluate(()=>window.__CPM_CAREER.screen());const b=await st.btns();const t=await st.txt(900);
+  fs.appendFileSync(OUT+'/fine-stagioni.jsonl',JSON.stringify({s:s0.season,i,sc,t,b:b.slice(0,8)})+'\n');
+  if(o.foto&&i<6)await foto(page,'s'+String(s0.season).padStart(2,'0')+'-fine-'+i);
+  const pre=[/Chiudi la stagione/,/^Salta il galà/,/^Vai al bilancio/,/Inizia Stagione/,/^Apri la busta/,/^Avanti/,/^Continua/,/^Conferma/,/^Prosegui/,/^🏟️ Inizia/,/^Accetta/,/^Resta/,/^Rinnova/,/^Firma/];
+  let nx=null;const ch0=sc==='dashboard'?await st.modali(b):[];
+  if(ch0.length){nx=ch0[(st.rot++)%ch0.length];}
+  if(!nx){for(const p of pre){nx=b.find(y=>p.test(y));if(nx)break;}}
+  if(!nx){rec.push('fermo:'+sc);break;}
+  rec.push(sc+'>'+nx.slice(0,30));await tocca(page,nx.split(' | ')[0],3000);await sleep(2500);
+  const s=await st.snap();if(s&&s.season>s0.season&&sc!=='seasonEnd'&&/Inizia Stagione/.test(nx)){rec.push('nuova:'+s.season);break;}}
+ return rec;};
+/* torneo della Nazionale dal pannello Carriera > Nazionale: gioca dal vivo ogni gara disponibile finché il pulsante sparisce */
+st.vaiNaz=async()=>{await page.evaluate(()=>{const b=[...document.querySelectorAll('button,div')].filter(e=>(e.innerText||'').trim()==='CARRIERA');if(b.length)b[b.length-1].click();});await sleep(600);
+ await page.evaluate(()=>{const b=[...document.querySelectorAll('button')].filter(e=>/Nazionale/.test(e.innerText||'')&&(e.innerText||'').length<20);if(b[0])b[0].click();});await sleep(600);};
+st.natTorneo=async(maxG=8)=>{const out=[];for(let g=0;g<maxG;g++){
+  for(let k=0;k<6;k++){const ov=await st.ovBtns();if(ov.some(x=>/^Chiudi/.test(x))){await tocca(page,'Chiudi',2500);await sleep(1000);continue;}const ch=await st.modali(await st.btns());if(!ch.length)break;await tocca(page,ch[0].split(' | ')[0],2500);await sleep(500);}
+  await st.vaiNaz();const bb=await st.btns();const x=bb.find(y=>/^⚽ Gioca/.test(y));if(!x){out.push('nessuna gara: '+bb.filter(y=>/Simula|Qualific|Girone|Ottavi|Finale|Semifinale|Quarti/.test(y)).join('|'));break;}
+  const lab=x.split(' | ')[0];await tocca(page,lab,3000);await sleep(2500);
+  for(let i=0;i<10;i++){const b=await st.btns();
+   if(b.some(y=>/^Salta e gioca/.test(y))){await tocca(page,'Salta e gioca',3000);await sleep(900);continue;}
+   if(b.some(y=>/^Ingresso in campo/.test(y))){await tocca(page,"Salta l'ingresso",3000);await sleep(900);continue;}
+   if(b.some(y=>/^⏸/.test(y))){const r=await st.inMatch(81+g);break;}
+   const z=b.find(y=>/Gioca la partita|Vai alla Convocazione|Avanti|Continua|Inizia/.test(y));if(!z)break;await tocca(page,z.split(' | ')[0],3000);await sleep(900);}
+  const fine=(st.fineTxt||'');const m=fine.match(/FISCHIO FINALE\n([^\n]+)\n(\d+–\d+)\n([^\n]+)\n([^\n]+)/);const hd=fine.split('\n').slice(2,4).join(' / ');
+  try{await foto(page,'nat-torneo-'+(st.contN=(st.contN||0)+1));}catch(e){}
+  fs.appendFileSync(OUT+'/partite-live.jsonl',JSON.stringify({k:'NAT:'+lab,hl:st.hl,fine:fine.slice(0,2500)})+'\n');
+  out.push(lab+' => '+(m?m.slice(1).join(' '):fine.slice(0,100).replace(/\n/g,' / ')));
+  await tocca(page,'Torna alla dashboard',3000);await sleep(2500);}
+ return out;};
+st.confrontaReload=async()=>{const a=await st.snap();await sleep(2500);await st.salva();
+ await page.reload({waitUntil:'load'});await page.waitForFunction(()=>{const r=document.getElementById('root');return r&&r.children.length>0;},null,{timeout:60000});await sleep(900);
+ await tocca(page,'Continua →',8000);await sleep(3500);const b=await st.snap();if(!b)return {err:'nessun snapshot dopo reload'};
+ const diff=[];const skip=new Set(['weekLived','log','diary','_t']);const walk=(x,y,p)=>{if(diff.length>25)return;if(typeof x!==typeof y){diff.push(p+': '+String(JSON.stringify(x)).slice(0,60)+' -> '+String(JSON.stringify(y)).slice(0,60));return;}
+  if(x&&typeof x==='object'){const ks=new Set([...Object.keys(x),...Object.keys(y||{})]);for(const k of ks){if(!p&&skip.has(k))continue;walk(x[k],y?y[k]:undefined,p?p+'.'+k:k);}}else if(x!==y)diff.push(p+': '+String(x).slice(0,60)+' -> '+String(y).slice(0,60));};
+ walk(a,b,'');return {season:b.season,week:b.week,diff};};
+st.stagione=async(o={})=>{const res=[];let guard=0;
+ while(guard++<8){const r=await st.corri(10,{every:o.every||12});res.push(r.out.slice(-1)[0]);{const q=await st.snap();if(q&&((q.euroMondiale&&q.euroMondiale.active&&!q.euroMondiale.done)||(q.nationsCupQueue&&q.nationsCupQueue.active&&!q.nationsCupQueue.done))){try{res.push('TORNEO:'+JSON.stringify(await st.natTorneo(8)));await tocca(page,'HOME',2500);}catch(e){res.push('TORNEO-ERR:'+String(e).slice(0,80));}}}if(r.out.some(x=>/FINE-STAGIONE-PRONTA|SCHERMATA|NOSNAP|ANOMALIA/.test(x))){res.push(r.out.filter(x=>/FINE|SCHERM|NOSNAP|ANOM/.test(x)).join(','));break;}
+   const s=await st.snap();if(s&&s.week>=39)break;}
+ let rl=null;try{rl=await st.confrontaReload();fs.appendFileSync(OUT+'/reload.jsonl',JSON.stringify({ts:Date.now(),...rl})+'\n');}catch(e){rl={err:String(e).slice(0,100)};}
+ const fin=await st.fineStagione({foto:false});await st.salva();const s=await st.snap();
+ return {res,reload:rl&&(rl.err||rl.diff),fin:fin.slice(-3),s:s.season,age:s.age,club:s.club.n,lg:s.club.lg,ovr:s.ovr,caps:s.nationalCaps,ng:s.nationalGoals,tg:s.totalGoals,bank:s.bankBalance,pro:s.proStatus,retired:s.retired||null};};
