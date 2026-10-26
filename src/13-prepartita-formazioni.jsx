@@ -933,7 +933,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
   const aRoster=awayRoster||generateTeamRoster(awayTeam,player?.season||1);
   // Home: hero (last slot) = player jersey num, teammates = 1-15 excluding hero's num
   const _heroNum=player?.jerseyNum||10;
-  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==_heroNum).slice(0,10);
+  const HOME_NUMS=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==_heroNum).slice(0,11);/* [giro 94 D11 collaudo 177-3 «due maglie numero 11»] erano 10 numeri per 11 giocatori: l'ultimo ripiegava sull'11 gia' dato */
   const AWAY_NUMS=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].filter(n=>n!==_heroNum).slice(0,10);
   const withNums=(roster,isHome=false)=>{
     // Check if player is in this roster (by name at index 10)

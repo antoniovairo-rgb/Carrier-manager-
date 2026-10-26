@@ -176,7 +176,7 @@ const INT259={
     if(r.panca){const ent=r.ingresso|0;return{k:'ingresso',n:ent,testo:"🪑 "+quale+": il mister ha deciso, "+nm+" entra al "+ent+"'.",breve:"entri al "+ent+"'"};}
     if(gF>0)return{k:'golNoi',n:gF,testo:"✅ "+quale+" ha pagato: "+(gF>1?gF+" gol":"gol")+" nei "+min+" minuti dopo la scelta.",breve:"ha pagato: "+(gF>1?gF+" gol":"gol")+" in "+min+"'"};
     if(gS>0)return{k:'golLoro',n:gS,testo:"❌ "+(o.tipo==='spinta'?"Ci siamo sbilanciati e ci hanno puniti":"Ci hanno puniti lo stesso")+": "+(gS>1?gS+" gol subiti":"gol subito")+" dopo "+quale+".",breve:"ci hanno puniti: "+(gS>1?gS+" gol subiti":"gol subito")};
-    if(o.tipo==='spinta'&&cp>0)return{k:'contro',n:cp,testo:"⚠️ "+quale+": la squadra è alta e loro ripartono, "+(cp===1?"un contropiede":cp+" contropiedi")+" alle nostre spalle in "+min+" minuti.",breve:(cp===1?"un contropiede":cp+" contropiedi")+" subiti"};
+    if(o.tipo==='spinta'&&cp>0)return{k:'contro',n:cp,testo:"⚠️ "+quale+": la squadra è alta e loro ripartono, "+(cp===1?"un contropiede":cp+" contropiedi")+" alle nostre spalle in "+min+" minuti.",breve:(cp===1?"un contropiede subito":cp+" contropiedi subiti")/* [giro 94 D16] accordo al singolare */};
     if(o.tipo==='eroe'&&r.occ!=null)return{k:'occEroe',n:r.occ|0,testo:"⭐ "+quale+": la palla buona è arrivata a "+nm+" al "+(r.occ|0)+"'.",breve:"occasione per te al "+(r.occ|0)+"'"};
     if(tL>=tN+2)return{k:'tiriLoro',n:tL,testo:"⚠️ Dopo "+quale+" abbiamo concesso "+tiri(tL)+" in "+min+" minuti"+(tN?" (noi "+tN+")":", noi nessuno")+".",breve:"concessi "+tiri(tL)};
     if(o.tipo==='spinta'&&rec>=2&&rec>=tN)return{k:'recNoi',n:rec,testo:"✅ Il pressing di "+quale+" morde: "+rec+" palloni recuperati in "+min+" minuti.",breve:rec+" palloni recuperati"};
@@ -199,7 +199,7 @@ const INT259={
      l'ultima fino al fischio. Prima (giro 57, prima stesura) tutte arrivavano al fischio e lo stesso gol veniva raccontato da due scelte.
      L = elenco delle scelte (con .m0 .foto .occ .occ0), fF/mF = fotogramma e minuto del fischio. Restituisce per ogni scelta {m1,dopo,occ,fino}. */
   attivoFin280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN280);},
-  fino(r){return r.fino==null?" fino al fischio":" fino al "+(r.fino|0)+"'";},
+  fino(r){if(r.fino==null)return " fino al fischio";const m=r.fino|0;return (/^(1|8|11|8\d)$/.test(String(m))?" fino all'":" fino al ")+m+"'";},/* [giro 94 D16] «all'81'», «all'8'», «all'11'» */
   finestre(L,fF,mF){const on=INT259.attivoFin280();return L.map((r,i)=>{const nx=on?L.slice(i+1).find(q=>q&&q.foto&&(q.m0|0)>=(r.m0|0)):null;
     const dopo=nx?nx.foto:fF,m1=nx?(nx.m0|0):mF;const ok=(o)=>o!=null&&o>=(r.m0|0)&&o!==r.occ0&&(!nx||o<m1);
     return{m1,dopo,fino:nx?m1:null,occ:ok(r.occ)?r.occ:(dopo&&ok(dopo.occ)?dopo.occ:null)};});},
@@ -1452,6 +1452,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const tabellino=()=>{const h=S.tab.home,a=S.tab.away;
     const _pt=(h.possesso||0)+(a.possesso||0);
     const _p=(q)=>_pt>0?Math.round(100*q/_pt):50;
+    /* [giro 94 D4 collaudo 177-3 «possesso 50-50 con passaggi 537 contro 289» — rosso __CPM_NO_C3D4] il possesso a tempo (minuti col
+       pallone) e i passaggi contati evento per evento divergevano: banco 48 partite, scarto mediano 10 punti, massimo 21, 23 su 48 oltre 10.
+       Il possesso che si legge nel tabellino e' quello delle statistiche vere (quota dei passaggi): una sola misura per due righe. */
+    const _pp=(h.passaggi|0)+(a.passaggi|0);
+    if(_pp>=40&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D4)){const ph=Math.round(100*(h.passaggi|0)/_pp);return{home:Object.assign({},h,{possesso:ph,possessoTempo:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:100-ph,possessoTempo:_p(a.possesso||0)})};}
     return{home:Object.assign({},h,{possesso:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:_p(a.possesso||0)})};};
   /* [7.915.0 — IL TABELLINO VEDE ANCHE GLI HIGHLIGHT] Il PO ha fotografato una partita vinta 3-0 con il
      tabellino che dichiarava 4 tiri e 2 in porta per la sua squadra: i suoi tre gol non erano contati. Non era

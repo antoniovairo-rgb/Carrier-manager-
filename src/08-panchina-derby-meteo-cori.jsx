@@ -68,7 +68,12 @@ function trainerQuota281(p,v){const lv=staffLv24(p,"perkTrainer");v=v||60;const 
 /* stats -> stats con il +1 del piano (o invariate). Chiamata UNA volta per settimana avanzata da weeklyGrowthFields. */
 function trainerPiano281(p,stats){const f=trainerFocus281(p);if(!f)return stats;const v=stats[f]||60;if(v>=99)return stats;
   const u=(_h281((p.name||"x")+"|"+(p.season||1)+"|"+(p.week||1)+"|pt281")%1000)/1000;return u<trainerQuota281(p,v)?{...stats,[f]:Math.min(99,v+1)}:stats;}
-function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
+function trainerFx281(p,lv){const f=p&&p.perkTrainerFocus;if(_no281("TRAINER")||!f)return null;
+  /* [giro 94 D5 collaudo 177-3 «i numeri non corrispondono» — rosso __CPM_NO_C3D5] il testo del livello usa la STESSA quota del motore
+     (trainerQuota281, con il rendimento decrescente sul valore attuale), non la quota piena: prima diceva «ogni 13» dove il motore ne dava 20. */
+  if(!(typeof window!=="undefined"&&window.__CPM_NO_C3D5)){const v=((p.stats||{})[f])||60;if(v>=99)return "Piano su "+f+": già al massimo";
+    const qv=trainerQuota281({...p,perkTrainer:true,perkTrainerLv:Math.max(1,Math.min(3,lv|0||1))},v);return "Piano su "+f+" ("+v+"): +1 circa ogni "+Math.round(1/qv)+" settimane";}
+  const q=[0,0.08,0.12,0.16][lv||1];return "Piano su "+f+": +1 circa ogni "+Math.round(1/q)+" settimane (meno quando l'attributo è già alto)";}
 /* [PO-288 · giro 83] IL PIANO DEL TRAINER SI LEGGE. Sui pulsanti-piano: il valore attuale della caratteristica, la RESA (settimane medie per un +1,
    da 1/trainerQuota281: la stessa funzione che decide la crescita, nessuna stima a parte) e un «consigliato» sulle due caratteristiche che
    pesano di piu' nel giudizio (OVR) e sono ancora basse. Pesi = quelli di calcOvr (src/05): il giudizio del gioco e' UNA formula per tutti i
@@ -325,6 +330,15 @@ function calcSquadRole(player){
   const avgRat=recent.length?recent.reduce((s,m)=>s+(m.rating||6),0)/recent.length:6.5;/* [7.39.0 §9.2] a storico vuoto (inizio stagione: matchHistory è STAGIONALE) beneficio del dubbio 6.5 — il vecchio 6.0 bloccava strutturalmente rotazione (≥6.2) e titolare (≥6.8): la «gerarchia iniziale dal ritiro» usciva SEMPRE riserva; il gradino titolare resta da dimostrare sul campo */
   const isCap=player.isCaptain||false;
   if(proStatus==='u18')return'primavera';
+  /* [giro 94 D9 collaudo 177-3 «offerta: Titolare, minutaggio 76%; dopo la firma Riserva con 1 presenza in 3 settimane» — rosso
+     __CPM_NO_C3D9] la promessa dell'offerta firmata (ruoloPromesso94, scritto da acceptTransfer) vale per la stagione della firma: il
+     ruolo non scende sotto quello promesso finche' il rendimento regge (media voti >= 6,0). Prima il nuovo club ripartiva da fiducia 50
+     e storico vuoto, cioe' «riserva» per costruzione, qualunque cosa avesse promesso. */
+  const _pr94=player.ruoloPromesso94;
+  if(_pr94&&_pr94.s===(player.season||1)&&avgRat>=6.0&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D9)){
+    const _ord94=['primavera','riserva','rotazione','titolare','leader'];
+    const _r94=(isCap&&ovr>=80&&trust>=75)?'leader':(ovr>=78&&trust>=72&&avgRat>=6.8)?'titolare':(ovr>=68&&trust>=55&&avgRat>=6.2)?'rotazione':(ovr>=58&&trust>=40)?'riserva':'primavera';
+    return _ord94.indexOf(_r94)>=_ord94.indexOf(_pr94.r)?_r94:_pr94.r;}
   if(isCap&&ovr>=80&&trust>=75)return'leader';
   if(ovr>=78&&trust>=72&&avgRat>=6.8)return'titolare';
   if(ovr>=68&&trust>=55&&avgRat>=6.2)return'rotazione';

@@ -671,7 +671,7 @@ function generateLocalScoutReport(opponentClub,playerStats,recentMatches,player)
   const recSuffix=p>=80?`Il ${name} è di alto livello: servirà la gara perfetta, ma se colpisci lì puoi far male. ${h2hNote}.`
     :p>=60?`Con un approccio compatto e ripartenze veloci, sfruttando quelle debolezze, puoi impensierire il ${name}. ${h2hNote}.`
     :`Il ${name} è alla tua portata: colpisci i loro punti deboli e resta concentrato. ${h2hNote}.`;
-  return{weaknesses,strengths,recommendation:recBase+recSuffix,difficulty:prof.difficulty,league:lg,h2h:prevH2H.length>0?{w:h2hW,d:h2hD,l:h2hL,total:prevH2H.length}:null,memNote:memNote||null,exploits:[prof.defWeak,prof.gkWeak],solid:prof.solid};
+  return{weaknesses,strengths,recommendation:(typeof artNaz94==='function'?artNaz94(recBase+recSuffix):recBase+recSuffix)/* [giro 94 D6] */,difficulty:prof.difficulty,league:lg,h2h:prevH2H.length>0?{w:h2hW,d:h2hD,l:h2hL,total:prevH2H.length}:null,memNote:memNote||null,exploits:[prof.defWeak,prof.gkWeak],solid:prof.solid};
 }
 async function generateScoutReport(opponentClub,playerStats,recentMatches){
   if(_aiMockMode){
@@ -691,6 +691,23 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
 }
 
 // ---- LOCAL PRESS ANALYSIS (always available, no API needed) ----
+/* [giro 94 D6 collaudo 177-3 «Il Italia cede 1-2 a Argentina», «lacune difensive del Italia» — rosso __CPM_NO_C3D6] I TESTI DELLA STAMPA
+   SONO SCRITTI PER I CLUB («Il FC Rendalto», «del FC Rendalto», «a FC Marseille»): con le nazionali l'articolo va col genere e con
+   l'elisione del nome. Qui si corregge la frase finita, per ogni nazione nota: articolo (il/lo/la/l'), preposizioni articolate
+   (del/al/dal/nel/sul) e la «a»/«da»/«di»/«in»/«su» semplice davanti al nome. Funzione pura (guardiano carriera3-94). */
+const NAZ_ART94={Italia:"l'",Spagna:"la ",Francia:"la ",Germania:"la ",Inghilterra:"l'",Portogallo:"il ",Brasile:"il ",Argentina:"l'",Olanda:"l'",Belgio:"il ",
+  Croazia:"la ",Uruguay:"l'",Svizzera:"la ",Danimarca:"la ",Polonia:"la ",Austria:"l'",Svezia:"la ",Messico:"il ",Giappone:"il ",Marocco:"il ",Senegal:"il ",Colombia:"la ",Serbia:"la ",Turchia:"la ",Scozia:"la ",Galles:"il ",Irlanda:"l'",Norvegia:"la ",Grecia:"la ",Ucraina:"l'",Nigeria:"la ",Camerun:"il ",Cile:"il ",Canada:"il ",Australia:"l'"};
+function artNaz94(txt){if(typeof txt!=="string"||(typeof window!=="undefined"&&window.__CPM_NO_C3D6))return txt;let t=txt;
+  for(const n in NAZ_ART94){if(t.indexOf(n)<0)continue;const a=NAZ_ART94[n];const el=a==="l'";const f=a==="la ";
+    const P={di:el?"dell'":f?"della ":"del ",a:el?"all'":f?"alla ":"al ",da:el?"dall'":f?"dalla ":"dal ",in:el?"nell'":f?"nella ":"nel ",su:el?"sull'":f?"sulla ":"sul "};
+    const K={de:"di",al:"a",da:"da",ne:"in",su:"su"};
+    t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])(Il|il|Lo|lo|La|la|L'|l')\\s*"+n+"(?![A-Za-zÀ-ÿ])","g"),(m,pre,x)=>pre+(/^[A-Z]/.test(x)?a.charAt(0).toUpperCase()+a.slice(1):a)+n);
+    t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])(del|dello|della|dell'|al|allo|alla|all'|dal|dallo|dalla|dall'|nel|nello|nella|nell'|sul|sullo|sulla|sull')\\s*"+n+"(?![A-Za-zÀ-ÿ])","g"),(m,pre,x)=>pre+P[K[x.slice(0,2)]]+n);
+    t=t.replace(new RegExp("(^|[^A-Za-zÀ-ÿ'])(di|a|da|in|su|contro|con)\\s+"+n+"(?![A-Za-zÀ-ÿ])","g"),(m,pre,x)=>pre+((x==="contro"||x==="con")?x+" "+a:P[x])+n);
+    t=t.replace(new RegExp("(^|[.!?]\\s+)"+n+"(?=\\s+[a-zà-ÿ])","g"),(m,pre)=>pre+a.charAt(0).toUpperCase()+a.slice(1)+n);/* soggetto a inizio frase */
+  }
+  return t;}
+function artNaz94Obj(o){if(typeof o==="string")return artNaz94(o);if(Array.isArray(o))return o.map(artNaz94Obj);if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=artNaz94Obj(o[k]);return r;}return o;}
 function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const won=matchResult.won,drew=matchResult.drew,lost=!won&&!drew;
   const goals=playerPerf.goals||0,assists=playerPerf.assists||0;
@@ -863,7 +880,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     `${club} fuori ai rigori — la lotteria degli undici metri premia ${opp} (${score})`,
     `Rigori fatali: il cammino del ${club} si ferma dagli undici metri contro ${opp}`,
   ]):null;
-  return{
+  return artNaz94Obj({/* [giro 94 D6] articoli delle nazionali */
     headlines:_titleHeads||_koHeads||[headA,headB,headC,headD,headE],
     titleWon,titleName:titleWon?titleName:null,
     papers:NEWSPAPERS.map(p=>p.name),
@@ -874,7 +891,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
     fanReactions:titleWon?["Città in festa: notte indimenticabile!","I tifosi sognano — che trionfo!"]:fanReactions,
     quotes,trending:titleWon?`#${club.replace(/\s/g,"")}Campione🏆`:trending,memoriaTag,
     isLocal:true,
-  };
+  });
 }
 
 async function generatePressAnalysis(matchResult,playerPerf,playerCtx={}){
