@@ -724,3 +724,4 @@
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":13,"s":18,"w":16}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":13,"s":18,"w":17}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":18}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":19}
