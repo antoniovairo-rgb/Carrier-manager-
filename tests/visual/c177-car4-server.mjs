@@ -2,7 +2,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import { apri, sleep, foto, tocca, testo, SAVEF, OUT } from './c177-car4-lib.mjs';
-let sv = null; if (fs.existsSync(SAVEF) && process.env.RIPRENDI) sv = JSON.parse(fs.readFileSync(SAVEF, 'utf8'));
+let sv = null; const SV2=process.env.SAVE2||SAVEF; if (fs.existsSync(SV2) && process.env.RIPRENDI) sv = JSON.parse(fs.readFileSync(SV2, 'utf8'));
 const { page, browser, errori } = await apri({ salvataggio: sv, glb: process.env.GLB === '1' });
 const st = { errori, log: [] };
 const AsyncF = Object.getPrototypeOf(async function () {}).constructor;
@@ -15,4 +15,4 @@ http.createServer((req, res) => {
       res.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' }); res.end(typeof r === 'string' ? r : JSON.stringify(r));
     } catch (e) { res.writeHead(500); res.end('ERR ' + e.message); }
   });
-}).listen(7177, () => console.log('pronto 7177'));
+}).listen(+(process.env.PORTA||7177), () => console.log('pronto'));
