@@ -704,3 +704,5 @@
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":33}
 {"tipo":"coerenza","nome":"gol stagione != somma partite","somma":8,"campo":26,"s":17,"w":34}
 {"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":34}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":28,"s":17,"w":35}
+{"tipo":"coerenza","nome":"assist stagione != somma partite","somma":3,"campo":8,"s":17,"w":35}
