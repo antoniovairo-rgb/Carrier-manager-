@@ -994,6 +994,9 @@ function generateRetirementBio(p,legacyScore){
   return bio;
 }
 
+/* [giro 94 D21 collaudo 177-3 «17 stagioni» per una carriera S1→S18] le stagioni giocate sono quelle archiviate nello storico (la
+   schermata riceve il giocatore con la stagione appena chiusa gia' dentro `history`); `season-1` valeva solo dopo il passaggio d'anno. */
+function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const n=new Set(((p&&p.history)||[]).map(h=>h&&h.season).filter(x=>x!=null)).size;return Math.max(a,n);}catch(_e){return a;}}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -1053,8 +1056,8 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   };
   // [6.58.0] CERIMONIA DI RITIRO — overlay celebrativo (tap-to-continue); riusa keyframes esistenti (flash-safe)
   if(cer){
-    const _tCount=Math.min(8,(p.trophies||[]).length);
-    const _cSeasons=Math.max(0,(p.season||1)-1);
+    const _tCount=Math.min(8,(p.trophies||[]).length);const _tTot94=(p.trophies||[]).length;
+    const _cSeasons=stagioniGiocate94(p);
     const _cGoals=p.totalGoals||p.goals||0,_cMatches=p.totalMatches||p.matches||0;
     const _conf=Array.from({length:16},(_,i)=>({left:(i*61+13)%100,delay:((i%8)*0.24).toFixed(2),dur:(2.6+(i%5)*0.4).toFixed(2),col:["#f0b33a","#a3263a","#e0526a","#ffffff"][i%4]}));
     return(
@@ -1068,11 +1071,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.82)",marginTop:8,animation:"celebTitle .8s ease-out .7s both"}}>{_cSeasons} stagion{_cSeasons===1?"e":"i"} · {_cGoals} gol · {_cMatches} presenze{(p.age||0)?` · ${p.age} anni`:""}</div>
           <div style={{marginTop:12,display:"inline-flex",alignItems:"center",gap:8,padding:"8px 16px",borderRadius:RAD.pill,background:grade.color+"22",border:`1.5px solid ${grade.color}`,animation:"celebTitle .8s ease-out .9s both"}}>
             <span style={{fontSize:FS.title}}>{grade.e}</span>
-            <span style={{fontSize:FS.body,fontWeight:900,color:grade.color}}>{grade.label}</span>
+            <span style={{fontSize:FS.body,fontWeight:900,color:"#fff"}}>{grade.label}</span>{/* [giro 94 D21] viola su viola: l'etichetta in bianco, il colore resta nel bordo */}
             <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)"}}>· {legacyScore}/1000</span>
           </div>
           {_tCount>0&&<div style={{marginTop:18,display:"flex",gap:7,justifyContent:"center",flexWrap:"wrap"}}>
             {Array.from({length:_tCount}).map((_,i)=><span key={i} style={{fontSize:FS.h,animation:`trophyRise .7s ease-out ${(1.1+i*0.12).toFixed(2)}s both`}}>🏆</span>)}
+            {_tTot94>_tCount&&<span style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f0b33a",alignSelf:"center"}}>+{_tTot94-_tCount}</span>}{/* [giro 94 D21] le icone si fermano a 8: il numero vero si legge */}
           </div>}
           <div style={{marginTop:_tCount>0?18:22,fontSize:FS.small,color:"rgba(255,255,255,0.7)",fontStyle:"italic",lineHeight:1.5,animation:"celebTitle .8s ease-out 1.25s both"}}>“{p.name} lascia il calcio giocato. Lo stadio è in piedi: un ultimo giro di campo, sotto una pioggia di applausi.”</div>
           <div style={{marginTop:20,animation:"celebTitle .8s ease-out 1.5s both"}}>
@@ -1117,7 +1121,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       <div style={{textAlign:"center",padding:"28px 16px 16px"}}>
         <div style={{fontSize:56,marginBottom:8}}>👟</div>
         <h1 style={{fontSize:FS.h,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
-        <p style={{fontSize:FS.body,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {Math.max(0,(p.season||1)-1)} stagioni</p>
+        <p style={{fontSize:FS.body,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {stagioniGiocate94(p)} stagioni</p>
       </div>
 
       {/* Legacy grade */}
@@ -1133,7 +1137,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       {/* Career stats */}
       <Fisarmonica id="ritiro-statistiche-carriera" titolo="📊 Statistiche Carriera" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
-          {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
+          {[{l:"Stagioni",v:stagioniGiocate94(p),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"},...((p.nationalCaps||0)>0?[{l:"Gol Naz.",v:p.nationalGoals||0,e:"🥅"}]:[])].map(s=>(
             <div key={s.l} style={{background:TH.bg,borderRadius:RAD.sm,padding:"8px 4px"}}>
               <div style={{fontSize:FS.subhead}}>{s.e}</div>
               <div style={{fontSize:FS.title,fontWeight:900,color:TH.text}}>{s.v}</div>

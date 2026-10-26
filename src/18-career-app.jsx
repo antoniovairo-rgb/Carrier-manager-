@@ -66,11 +66,19 @@ const _etichettaTurno957=(md)=>{
   try{
     if(!md)return "";
     if(md.type==="cup")return md.cupRoundName?(" \u00b7 "+md.cupRoundName):"";
+    if(!(typeof window!=="undefined"&&window.__CPM_NO_C3D8)&&(md.type==="euro_group"||md.type==="euro"||(md.matchday>=900&&md.matchday<990)))return md.type==="euro"?"":(" \u00b7 Fase a gironi"+((md.matchday>=900&&md.matchday<906)?(" \u00b7 "+(md.matchday-899)+"\u00aa giornata"):""));/* [giro 94 D8 collaudo 177-3 «Coppa Europea · 900ª giornata» — rosso __CPM_NO_C3D8] i gironi europei usano il codice 900+giornata (come la coppa 990+ e la Nazionale 1470+): si stampa la fase e la giornata del girone, mai il codice */
     if(md.matchday==null||md.matchday>=990)return "";/* codici interni: coppa 990+, nazionale 1470+ */
     return " \u00b7 "+md.matchday+"\u00aa giornata";
   }catch(_e){return "";}
 };
 
+/* [giro 94 D7 collaudo 177-3 «sala stampa di Italia-Argentina con RDL e la fascia del FC Rendalto» — rosso __CPM_NO_C3D7] la scheda
+   della sala stampa porta la squadra con cui si e' GIOCATA la partita: dopo una gara della Nazionale e' la Nazionale (sigla e colori
+   da NAT_CLUB_DATA), altrimenti il club. Funzione pura (guardiano carriera3-94). */
+function clubIntervista94(player,context){
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_C3D7)&&/^(national|nazionale|nationsCup|euroMondiale)/.test(String(context||''))&&typeof NAT_CLUB_DATA!=='undefined'){
+    const n=(player&&player.nation)||'Italia';return {...(NAT_CLUB_DATA[n]||{a:String(n).slice(0,3).toUpperCase(),c:'#1e3a8a',c2:'#fff'}),n,name:n};}
+  return (player&&player.club)||null;}
 /* [7.999.49 parte A] importi all'italiana per Club, Procuratore e Ufficio: «€11,4 mln», «€450 mila», «€800» */
 const _eur49=(v,dec)=>{v=Math.round(+v||0);const a=Math.abs(v),sg=v<0?"\u2212":"";
   if(a>=1e6)return sg+"\u20ac"+(a/1e6).toLocaleString("it-IT",{maximumFractionDigits:dec==null?1:dec})+" mln";
@@ -372,6 +380,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   // Sprint 116/123 — calculate and lock coach decision when match prompt opens
+  /* [giro 94 D3/D10 collaudo 177-3 «il contratto scade senza proposta di rinnovo; la stagione nuova tratta lo svincolato come tesserato»]
+     (a) nelle ultime settimane dell'ultimo anno il club apre il discorso del rinnovo: avviso + riga di registro, una volta a stagione
+         (la card in home porta al rinnovo); (b) se la stagione nuova parte da svincolato il gioco lo dice e porta al Procuratore,
+         dove ci sono il rinnovo e la ricerca di una squadra. Rosso __CPM_NO_C3D3. */
+  useEffect(()=>{try{
+    if((typeof window!=='undefined'&&window.__CPM_NO_C3D3))return;const p=player;if((p.proStatus||"u18")!=="pro"||p.loan||p.retired)return;const sn=p.season||1,w=p.week||1;
+    if(!p.contractExpired&&(p.contract?.duration||2)<=1&&(p.renewalSeason||0)!==sn&&w>=28&&w<=38&&(p.renewWarn94||0)!==sn){
+      setPlayer(q=>((q.renewWarn94||0)===(q.season||1)?q:{...q,renewWarn94:q.season||1,log:[`📋 Il contratto con ${q.club?.n||"il club"} scade a fine stagione: il club è pronto a parlare del rinnovo (Procuratore › Negozia rinnovo).`,...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>notify(`📋 Contratto in scadenza a fine stagione: ${p.club?.n||"il club"} ti propone di parlare del rinnovo.`,TH.warning),900);}
+    if(p.contractExpired&&(p.svincWarn94||0)!==sn){
+      setPlayer(q=>((q.svincWarn94||0)===(q.season||1)?q:{...q,svincWarn94:q.season||1,log:[`⛔ Contratto scaduto: sei svincolato e non puoi giocare con ${q.club?.n||"il club"}. Rinnova o cerca una squadra dal Procuratore.`,...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>{notify("⛔ Sei svincolato: senza contratto non giochi. Rinnova o cerca una nuova squadra.",TH.danger);try{goTab("agente");}catch(_e){}},900);}
+  }catch(_e94){}},[player.season,player.week,player.contractExpired]);// eslint-disable-line
   useEffect(()=>{
     if(!showMatchPrompt){setCoachDecision(null);coachDecisionRef.current=null;return;}
     const isLeague=showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro"&&showMatchPrompt.type!=="national";
@@ -388,6 +409,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(cd.status==="starter"&&(player.fatigue||0)>62&&_mwC38<=6&&((player.squadRole||"rotazione")==="titolare"||(player.squadRole||"")==="leader"))cd={status:"bench",entryMinute:58+((hashStr((player.name||"x")+"|to|"+(player.week||1))>>>3)%14),reason:"Turnover di coppa: il mister ti fa rifiatare — entrerai a gara in corso."};
     }
     else cd={status:"starter",reason:"",entryMinute:0};
+    /* [giro 94 D3/D10 collaudo 177-3 «Sei titolare — Titolare inamovibile» da svincolato, poi «Gioca» rifiutato] senza contratto il club
+       non ti schiera: il prompt lo dice e resta solo Simula (che lascia la squadra giocare senza di te). Rosso __CPM_NO_C3D3. */
+    if(player.contractExpired&&showMatchPrompt.type!=="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))cd={status:"not_called",reason:"Sei svincolato: senza contratto il club non può schierarti. Rinnova o firma con un'altra squadra (Procuratore)."};
     setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
@@ -986,6 +1010,9 @@ const getThisWeekMatchday=()=>{
        UNA volta per stagione se questa e' l'ultima: annunciando si apre la STAGIONE D'ADDIO */
     if(isPro&&(p.age||17)>=34&&!p.retireAnnounced&&(p.retireAskedSeason||0)<sn&&!p.retired)out.push("addio");
     if(p.euro?.active&&p.euro.phase==="group"&&((p.euro.groupResults||[]).length===0)&&p.drawSeen!==sn&&(p.euro.groupOpponents||[]).length>=3)out.push("sorteggi");
+    /* [giro 94 D10 collaudo 177-3] DA SVINCOLATO IL CLUB NON TI APRE LA STAGIONE: niente ritiro, presentazione, conferenza o maglia di
+       una squadra che non ti ha sotto contratto (resta solo l'annuncio dell'addio, che e' tuo). Rosso __CPM_NO_C3D3. */
+    if(isPro&&p.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))return out.filter(x=>x==="addio");
     return out;
   }catch(_e){return [];}};
   const openingGate=()=>{const pend=openingPending();if(!pend.length)return false;
@@ -3563,7 +3590,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     };
     const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};
@@ -4373,7 +4400,8 @@ const getThisWeekMatchday=()=>{
           const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
           const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
           const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
-          let _natW=weekVal;if(fin){if(_usedW.has(_natW))_natW=99;}else{do{_natW++;}while(_natW<=37&&_usedW.has(_natW));}/* [7.999.173] la finestra si gioca nella sosta stessa; se la sosta e' occupata da un'altra gara, salta */
+          let _natW=weekVal;if(fin){if(_usedW.has(_natW)){_natW=99;/* [giro 94 D1 collaudo 177-3 «Italia OVR 84-88, zero convocazioni in S9-S11, nessun messaggio» — rosso __CPM_NO_C3D1] le soste del CT (9/19/28/35) SONO le settimane dei turni di Coppa (CUP_ROUND_WEEKS): col club in Coppa la finestra era sempre occupata e l'amichevole finiva a «settimana 99», cioe' da nessuna parte e in silenzio. Ora si gioca nella prima settimana libera dopo la sosta (fino alla 37); se non c'e', il gioco lo dice (sotto). */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_C3D1)){for(let _w94=weekVal+1;_w94<=37;_w94++){if(!_usedW.has(_w94)){_natW=_w94;break;}}}}}else{do{_natW++;}while(_natW<=37&&_usedW.has(_natW));}/* [7.999.173] la finestra si gioca nella sosta stessa; se la sosta e' occupata da un'altra gara, salta */
           const _ct155=fin?ctListView(player):null;const _ruolo155=_ct155?(_ct155.rank===1?"titolare":"a disposizione"):null;
           /* [7.999.35 collaudo PO «calendario sbagliato»: in settimana 28, in pieno girone dell'Europeo, la home mostrava
              «FC Merseyside vs Belgio · Premier Division»] L'amichevole della convocazione prendeva la prima settimana libera
@@ -4384,6 +4412,11 @@ const getThisWeekMatchday=()=>{
           if(_natW<=37&&!_torneo35){
             setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale",...(fin?{finestra:true,ctRole:_ruolo155,ctRel:_rel155?_rel155.v:null}:{})}],...(fin?{log:[`🌍 Sosta di settimana ${_natW}: il CT ti convoca (${_ruolo155}) per l'amichevole con ${_callupOpp}. ${_rel155?_rel155.label+".":""}`,...(pp.log||[])].slice(0,60)}:{})}));
             setTimeout(()=>notify(fin?`🌍 Il CT ti convoca per la sosta: amichevole vs ${_callupOpp}, settimana ${_natW} — ${_ruolo155}.`:`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
+          }
+          else if(fin&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D1)){/* [giro 94 D1] convocato ma senza una settimana dove giocare: lo si dice, mai il silenzio */
+            const _perche94=_torneo35?"la Nazionale e' impegnata nel torneo":"la sosta coincide con gli impegni del club e non c'e' una settimana libera";
+            setPlayer(pp=>({...pp,log:[`📋 Sosta di settimana ${weekVal}: il CT ti avrebbe convocato, ma ${_perche94}.`,...(pp.log||[])].slice(0,60)}));
+            setTimeout(()=>notify(`📋 Il CT ti voleva per la sosta, ma ${_perche94}.`,TH.warning),700);
           }
         }else if(fin&&ovr>=ovrGate-3){/* [7.999.173 PO-155] la lista del CT esce anche quando non ci sei: con il perche' */
           const _why155=ovr<ovrGate?`serve OVR ${ovrGate}`:(isFirst&&elig<2&&elig>=0)?"per il debutto serve ancora qualcosa in campo":"davanti a te c'è chi rende di più";
@@ -5967,7 +6000,7 @@ const getThisWeekMatchday=()=>{
            partite, che e' il registro del club corrente — [6.45.0 RC] senza quel reset la dashboard mostrava le
            gare del VECCHIO club come risultati di stagione corrente e le guardie anti-doppione ci inciampavano. */
         matchHistory:[],seasonCarry:_carry293,
-        contract:_newContract98,coach:_newCoach98,coachTrust:50,loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
+        contract:_newContract98,coach:_newCoach98,coachTrust:50,...((()=>{/* [giro 94 D9 — rosso __CPM_NO_C3D9] la promessa dell'offerta entra in squadra: ruolo e fiducia del mister coerenti col minutaggio stimato che il giocatore ha letto prima di firmare */if(typeof window!=='undefined'&&window.__CPM_NO_C3D9)return {};const _m94=+tc.minutaggio||0;if(!(_m94>0))return {};const _r94=_m94>=70?'titolare':_m94>=45?'rotazione':'riserva';return {coachTrust:_r94==='titolare'?74:_r94==='rotazione'?60:50,squadRole:_r94,ruoloPromesso94:{r:_r94,s:p.season||1,min:_m94}};})()),loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
         morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),growthBoost:(tc.growthBonus>0?{pct:tc.growthBonus,until:p.season||1}:p.growthBoost||null),/* [7.999.50] crescita dell'offerta fino a fine stagione */offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
@@ -6026,7 +6059,7 @@ const getThisWeekMatchday=()=>{
         <div style={{display:"flex",gap:5}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:RAD.xs,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
         <div style={{display:"flex",gap:8,width:"100%",maxWidth:400}}>
           <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?"🎉 Che la stagione cominci →":"Avanti →"}</Btn>
-          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0}}>Salta</Btn>}
+          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
         </div>
       </div>
     </div>);})():null;
@@ -8449,11 +8482,19 @@ const getThisWeekMatchday=()=>{
           </div>
         </FisHome66>);})()}
       {/* DASHBOARD */}
+      {tab==="dashboard"&&!player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&(player.proStatus||"u18")==="pro"&&!player.loan&&(player.contract?.duration||2)<=1&&(player.renewalSeason||0)!==(player.season||1)&&(player.week||1)>=28&&(
+        <Card data-cpm="rinnovo94" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>{/* [giro 94 D3] l'avviso di scadenza prima della fine */}
+          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Il contratto scade a fine stagione</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Il club è pronto a parlare del rinnovo. Se non firmi, dalla prossima stagione sarai svincolato e non potrai giocare.</div>
+          <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
+        </Card>
+      )}
       {tab==="dashboard"&&player.contractExpired&&(
         <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
           <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
+          {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn onClick={()=>goTab("agente")} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Procuratore)</Btn>}
         </Card>
       )}
       {/* Finestra Mercato card — Sprint 106 */}
@@ -10281,7 +10322,7 @@ const getThisWeekMatchday=()=>{
                     <span style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?`${_myLg49} gol in campionato · ${_pos49+1}º`:`${_g} gol · stima ~${_topEst}`}</span>
                   </div>
                   {_bar(_capoPct,"#16a34a")}
-                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?(_pos49===0?`✅ Sei primo nella classifica marcatori (${_lead49.name} ne ha ${_lead49.goals})`:`${_lead49.name} guida con ${_lead49.goals} gol: te ne mancano ${Math.max(0,_lead49.goals-_myLg49)}`):(_capoPct>=100?`Sei sopra il ritmo tipico del capocannoniere (~${_topEst}, stima)`:`Il capocannoniere di solito arriva a ~${_topEst} gol (stima)`)}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?(_pos49===0?`✅ Sei primo nella classifica marcatori (${_lead49.name} ne ha ${_lead49.goals})`:`${_lead49.name} guida con ${_lead49.goals} gol: te ne manca${Math.max(0,_lead49.goals-_myLg49)===1?'':'no'} ${Math.max(0,_lead49.goals-_myLg49)}`):(_capoPct>=100?`Sei sopra il ritmo tipico del capocannoniere (~${_topEst}, stima)`:`Il capocannoniere di solito arriva a ~${_topEst} gol (stima)`)}</div>
                 </div>
                 <div style={{marginBottom:_isGB?8:0}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
@@ -10767,11 +10808,11 @@ const getThisWeekMatchday=()=>{
                           <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
-                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
+                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
                             style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
-                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
+                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
@@ -11103,7 +11144,7 @@ const getThisWeekMatchday=()=>{
                   {isOverpaid49&&<div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
                   {/* [6.84.0 collaudo PO «il pulsante rinnova o va eliminato o portato nel Tab agente»] CTA rinnovo
                       SPOSTATA qui dal sottotab Profilo — stessa guardia (ultimo anno, entro W35, non svincolato/in prestito, non già rinnovato) */}
-                  {(player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1)&&!player.loan&&(
+                  {(((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1))||(player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)/* [giro 94 D3] il messaggio «serve un nuovo accordo» deve avere il suo pulsante */))&&!player.loan&&(
                     <Btn onClick={openNegoModal} v="primary" fw style={{marginTop:8}}>📋 Negozia rinnovo</Btn>
                   )}
                   {(player.agentRenewalBonus||0)>0&&(
@@ -11272,7 +11313,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>In attesa della prima convocazione</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{_ovr49>=_gate49
                     ?`Hai il livello per la Nazionale (OVR ${_gate49}+). Il CT sceglie settimana per settimana guardando gol, presenze nel club, forma e popolarità: la chiamata non ha una data fissa.`
-                    :`Il CT della Nazionale chiama da OVR ${_gate49} in su: te ne mancano ${_gate49-_ovr49}. Contano anche gol, presenze nel club, forma e popolarità.`}</div>
+                    :`Il CT della Nazionale chiama da OVR ${_gate49} in su: te ne manca${_gate49-_ovr49===1?'':'no'} ${_gate49-_ovr49}. Contano anche gol, presenze nel club, forma e popolarità.`}</div>
                   <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:8}}>
                     <span className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:800,color:_ovr49>=_gate49?TH.txGreen:TH.goldText}}>{_ovr49}</span>
                     <span style={{fontSize:FS.caption,color:TH.muted}}>OVR (min. {_gate49})</span>
