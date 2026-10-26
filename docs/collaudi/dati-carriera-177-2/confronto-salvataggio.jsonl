@@ -10,3 +10,4 @@
 {"cp": "s13w1", "stagione": 13, "settimana": 1, "n_diff": 3, "diff": [[".cup.club", "<assente>", "roma"], [".playedMd.s", "12", "13"], [".playedMd.md[len]", 38, 0]]}
 {"cp":"s14w1","stagione":14,"settimana":1,"continua":"Continua →","n_diff":0,"diff":[]}
 {"cp":"s15w1","stagione":15,"settimana":1,"continua":"Continua →","n_diff":6,"diff":[[".teammates.0.name","Alfie Burke","Ettore Salerno"],[".teammates.1.name","Wayne Walsh","Martino Fabbri"],[".teammates.2.name","Jake Russell","Nico Moretti"],[".playedMd.s",14,15],[".playedMd.md[len]",35,0],[".cup.club","<assente>","<presente>"]]}
+{"cp":"s16w1","stagione":16,"settimana":1,"continua":"Continua →","n_diff":3,"diff":[[".playedMd.s",15,16],[".playedMd.md[len]",37,0],[".cup.club","<assente>","<presente>"]]}
