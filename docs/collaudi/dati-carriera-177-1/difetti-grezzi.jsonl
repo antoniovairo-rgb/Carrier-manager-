@@ -717,3 +717,10 @@
 {"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"K rward Elite Ottobrenove K rward Elite osta: gli effetti li vedrai subito dopo.|3","btns":["🤝 Diplomatico\n«Sì, tantissimo. I sacrifici fatti da giovane sono la base di tutto quello ","🔥 Ambizioso\n«In parte. Il salto è enorme. Ma avevo le qualità per farcela e ce l'ho fatta","🙏 Umile\n«Mi ha dato le basi. Poi ogni giorno imparo qualcosa di nuovo dai professionisti."],"s":18,"w":5,"club":"FC Valdenau"}
 {"tipo":"blocco","nome":"finestra ripetuta 7 volte","kind":"K rward Elite Ottobrenove K rward Elite osta: gli effetti li vedrai subito dopo.|4","btns":["🔥 Ambizioso\n«Era uno stimolo. Chi vuole vincere lo prende così.»","🤝 Diplomatico\n«No, parlavo di me prima che degli altri.»","🙏 Umile\n«Se qualcuno l'ha presa male, glielo chiarisco di persona.»","🤐 No comment\n«Su questo preferisco non rispondere.»"],"s":18,"w":5,"club":"FC Valdenau"}
 {"tipo":"testo","nome":"residuo stile (PO-287)","estratto":"n sala | Ricci | in sala | Esposito | in sala | «Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?» | RISPONDI TU | Luca Ferraro | 🤝 Diplomatico | «S","dove":"finestra","s":18,"w":7,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"punteggio finale != registrato","fine":"0–3","reg":"3-0","s":18,"w":12,"club":"FC Valdenau"}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":12,"s":18,"w":13}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":12,"s":18,"w":14}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":10,"campo":12,"s":18,"w":15}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":13,"s":18,"w":16}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":11,"campo":13,"s":18,"w":17}
+{"tipo":"coerenza","nome":"gol stagione != somma partite","somma":12,"campo":14,"s":18,"w":18}
