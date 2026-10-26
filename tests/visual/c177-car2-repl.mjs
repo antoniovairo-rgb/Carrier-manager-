@@ -4,7 +4,7 @@ import * as L from './c177-car2-lib.mjs';
 const CMD = path.join(L.SCRATCH, 'cmd'); fs.mkdirSync(CMD, { recursive: true });
 const cp = process.env.CP; // checkpoint opzionale (json di localStorage)
 const S = await L.apri();
-await S.ctx.addInitScript(([cpData]) => { try { localStorage.setItem('cpm-match-speed', '2'); if (cpData) { const o = JSON.parse(cpData); for (const k in o) localStorage.setItem(k, o[k]); } } catch (e) {} }, [cp ? fs.readFileSync(cp, 'utf8') : null]);
+await S.ctx.addInitScript(([cpData]) => { try { localStorage.setItem('cpm-match-speed', '2'); if (cpData && !sessionStorage.getItem('cpfed')) { sessionStorage.setItem('cpfed', '1'); const o = JSON.parse(cpData); for (const k in o) localStorage.setItem(k, o[k]); } } catch (e) {} }, [cp ? fs.readFileSync(cp, 'utf8') : null]);
 await L.vai(S);
 if (cp) { await L.clickTesto(S.page, /CONTINUA/); await L.sleep(2500); }
 fs.writeFileSync(path.join(CMD, 'ready'), 'ok');

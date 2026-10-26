@@ -251,8 +251,9 @@ export async function galaFinale(S, ctx) {
   const p = S.page; const visti = []; let last = '';
   for (let i = 0; i < 70; i++) {
     const t = (await testo(p)).replace(/\n+/g, ' | ');
-    if ((await cliccabili(p)).some(x => /^Vai al bilancio/.test(x))) { visti.push(t.slice(0, 1400)); break; }
-    const h = t.slice(0, 260); if (h !== last) { last = h; visti.push(h); }
+    if ((await cliccabili(p)).some(x => /^Vai al bilancio/.test(x)) || /Vai al bilancio della stagione/.test(t)) { visti.push(t.slice(0, 1400)); break; }   /* il bottone sta sotto la piega: cliccabili() non scorre, un giocatore sì */
+    const h = t.slice(0, 260); if (h !== last) { last = h; visti.push(h); ctx._galaRip = 0; } else if (++ctx._galaRip === 5) { const bb = await cliccabili(p); ctx.log('gala-bloccato', { t: t.slice(0, 700), bottoni: bb }); await foto(S, '_gala-bloccato-' + Date.now()); }
+    if ((ctx._galaRip || 0) > 12) { visti.push('GALA-BLOCCATO'); break; }
     const c = await clickTesto(p, /Apri la busta|Svela|E il vincitore|Prossimo premio|Avanti →|Continua/);
     await sleep(c ? 1100 : 1800);
     const st = await stato(S); if (st && st.screen && !/seasonAwards/.test(st.screen)) break;
@@ -278,7 +279,7 @@ export async function fineStagione(S, ctx) {
   for (let i = 0; i < 40; i++) {
     const st = await stato(S); if (!st) return 'nostato';
     if (s0 && st.st > s0.st && st.screen === 'dashboard') return 'ok';
-    if (st.screen === 'seasonAwards') { const cl = await cliccabili(p); if (cl.some(x => /^Vai al bilancio/.test(x))) { await clickTesto(p, /^Vai al bilancio/); await sleep(2500); continue; } await galaFinale(S, ctx); continue; }
+    if (st.screen === 'seasonAwards') { const tt = await testo(p); if (/Vai al bilancio della stagione/.test(tt)) { await clickTesto(p, /^Vai al bilancio/); await sleep(2500); continue; } await galaFinale(S, ctx); continue; }
     if (st.screen === 'seasonEnd') {
       const t = (await testo(p)).replace(/\n+/g, ' | '); ctx.fineSig = ctx.fineSig || new Set(); const sg = t.slice(0, 70); if (!ctx.fineSig.has(sg + st.st)) { ctx.fineSig.add(sg + st.st); ctx.log('fine-stagione-schermata', { st: st.st, t: [...t.slice(0, 2400)].join('') }); if (ctx.fotoFine) await foto(S, '_fs' + st.st + '-' + (giri++)); }
       const c = await clickTesto(p, /Inizia Stagione \d+|Continua →|Continua|Avanti/); await sleep(c ? 2200 : 1500); if (!c) return 'SCHERMATA:seasonEnd-senza-bottone'; continue; }
