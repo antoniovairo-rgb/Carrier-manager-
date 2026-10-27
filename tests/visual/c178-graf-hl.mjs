@@ -41,7 +41,9 @@ if (!lista.length) { /* catalogo per famiglia -> N scene per famiglia equidistan
   const famCount = Object.fromEntries(Object.entries(fam).map(([k, v]) => [k, v.length])); console.log('catalogo famiglie:', JSON.stringify(famCount), 'totale scene', TOTALE);
 }
 for (const x of lista) { if (x.k == null) { const s = cat[x.gi]; x.k = 0; x.fam = x.fam || famigliaDi({ type: s.type }, { l: s.acts[0].l, t: s.acts[0].t, v: s.acts[0].v }); x.e = x.e || ESITI[x.fam][0]; } }
-const risultati = []; let usate = 0; const PER = +(process.env.C178_PER_PAGINA || 3);
+let risultati = []; try { risultati = JSON.parse(fs.readFileSync(path.join(OUT, 'risultati.json'))).risultati || []; } catch (e) {}
+const fatti = new Set(risultati.map(r => r.id)); lista = lista.filter(x => !fatti.has(`gi${x.gi}-${x.e}`)); console.log('gia fatte', fatti.size, 'da fare', lista.length);
+let usate = 0; const PER = +(process.env.C178_PER_PAGINA || 3);
 const scena = () => page.evaluate(() => window.__CPM_SCENET || 0).catch(() => 0);
 const attendi = async (ds, capMs) => { const s0 = await scena(); const t0 = Date.now(); while (Date.now() - t0 < capMs) { if ((await scena()) - s0 >= ds) return true; await sleep(70); } return false; };
 const foto = async (nome) => { await page.evaluate(() => { window.__CPM_FROZEN = true; }); await sleep(180); const p = path.join(OUT, nome + '.jpg'); try { await page.screenshot({ path: p, type: 'jpeg', quality: 60, timeout: 40000 }); } catch (e) {} await page.evaluate(() => { window.__CPM_FROZEN = false; }); return p; };
