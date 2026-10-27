@@ -2535,7 +2535,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(typeof via==='string'&&!o.via)o.via=via;
     const _left=(o.minAt||0)-Date.now();
     if(_left>40){fxTimeout(()=>_for(),_left);return;}/* il 3D è arrivato prima del floor di suspense → rimanda al floor */
-    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),t:Date.now()});}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
+    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),pa:!!(_c&&_c.pa),pat:(_c&&_c.pat)||null,wpa:!!o.waitPA,t:Date.now()});window.__CPM_CB95=()=>cineBusyRef.current;}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
     try{o.cb();}catch(_e){}},[]);// eslint-disable-line
   /* [giro 95 D3, collaudo carriera 177 n.1 S1 W8 «Conclusione potente»: riquadro «GRANDE PARATA DEL PORTIERE» col pallone ancora ai piedi
      dell'eroe, portiere fuori dal quadro, eroe sovrapposto al difensore] La riserva dei 2,6 s era in tempo di PARETE: se la costruzione e

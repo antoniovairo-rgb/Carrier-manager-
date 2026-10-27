@@ -17,7 +17,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harne
 const FX = (f) => JSON.parse(fs.readFileSync(new URL('./fixtures/' + f, import.meta.url)));
 const SALVA = { s1: 'save-c177-s1w15.json', s5: 'save-c177-s5w20.json', s12: 'save-190-s12-ovr93.json' };
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
-const SEMI = (process.env.CPM_SEMI || '1234,2021').split(',').map(Number);
+const SEMI = (process.env.CPM_SEMI || '1234,2021,7').split(',').map(Number);
 const SAVES = (process.env.CPM_SALVA || 's1,s5,s12').split(',');
 const RE_PASS = 'Filtrante|Uno-due|Lancio smarcante|Servi .* libero|Sponda|scarica su|Appoggio|Cross';
 const RE_DRIB = 'Finta e cambio|cerca il fallo|il fallo c|Doppio passo|Sterzata|Dribbling';
@@ -59,8 +59,8 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
       cur.d3 = await page.evaluate(() => { try { const s = window.__CPM_STATE(); const gk = s.players.find(p => p.team === 'away' && p.gk); const opp = s.players.filter(p => p.team === 'away' && !p.gk);
         const dh = Math.min(...opp.map(p => Math.hypot(p.x - s.hero.x, p.y - s.hero.y))); return { gk: gk && { x: gk.x, y: gk.y }, ball: { x: s.ball.x, y: s.ball.y, h: s.ball.worldY }, hero: { x: s.hero.x, y: s.hero.y }, dHeroOpp: +dh.toFixed(2), gkBall: gk ? +Math.hypot(gk.x - s.ball.x, gk.y - s.ball.y).toFixed(1) : null }; } catch (e) { return null; } }).catch(() => null);
     }
-    if (ph === 'hl_result' && cur && (cur.rev == null || Date.now() - cur.t - cur.rev < 1500)) { const dd = await page.evaluate(() => { try { const s = window.__CPM_STATE(); const opp = s.players.filter(p => p.team === 'away' && !p.gk); const gk = s.players.find(p => p.team === 'away' && p.gk); return { d: Math.min(...opp.map(p => Math.hypot(p.x - s.hero.x, p.y - s.hero.y))), gb: gk ? Math.hypot(gk.x - s.ball.x, gk.y - s.ball.y) : 99 }; } catch (e) { return null; } }).catch(() => null);
-      if (dd) { if (cur.rev == null) cur.minDHO = Math.min(cur.minDHO == null ? 99 : cur.minDHO, dd.d); cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, dd.gb); } }
+    if (ph === 'hl_result' && cur && (cur.rev == null || Date.now() - cur.t - cur.rev < 1500)) {/* il portiere va guardato FITTO: la parata dura mezzo secondo */
+      for (let k = 0; k < 4; k++) { const gb = await page.evaluate(() => window.__CPM_GKB95 ? window.__CPM_GKB95() : null).catch(() => null); if (gb != null) cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, gb); await sleep(40); } }
     if (ph !== 'hl_result' && cur) { cur.durata = Date.now() - cur.t; hls.push(cur); cur = null; }
     await sleep(120);
   }
@@ -104,7 +104,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')');
       }
       if (isFallo(lab)) { T.fallo = (T.fallo | 0) + 1; if ((g && g.fam === 'assist') || /assist|compagno|intercett|servit/i.test(ovl)) T.difetti.push('D1 ' + tag + ': fallo cercato giocato/raccontato come passaggio «' + ovl + '» (motore ' + (g ? g.fam : '-') + ')'); }
-      T.righe.push(tag + ' tipo=' + r.tipo + ' 3D=' + (h.st && h.st.act ? h.st.act.t : '-') + ' g=' + (g ? g.fam + ':' + g.esito : '-') + ' key=' + r.key + ' ok=' + r.ok + ' kind=' + (r.outKind || '-') + ' rev=' + h.rev + ' dur=' + h.durata + ' «' + ovl + '»' + (h.d3 ? ' gk-palla=' + h.d3.gkBall + ' eroe-dif=' + h.d3.dHeroOpp + ' palla-eroe=' + (h.d3.ball ? Math.hypot(h.d3.ball.x - h.d3.hero.x, h.d3.ball.y - h.d3.hero.y).toFixed(1) : '-') : '') + ' minGB=' + (h.minGB != null ? h.minGB.toFixed(1) : '-') + ' minDHO=' + (h.minDHO != null ? h.minDHO.toFixed(2) : '-') + ' via=' + (h.rv ? h.rv.via + (h.rv.busy ? '+occupata' : '') : '-'));
+      T.righe.push(tag + ' tipo=' + r.tipo + ' 3D=' + (h.st && h.st.act ? h.st.act.t : '-') + ' g=' + (g ? g.fam + ':' + g.esito : '-') + ' key=' + r.key + ' ok=' + r.ok + ' kind=' + (r.outKind || '-') + ' rev=' + h.rev + ' dur=' + h.durata + ' «' + ovl + '»' + (h.d3 ? ' gk-palla=' + h.d3.gkBall + ' eroe-dif=' + h.d3.dHeroOpp + ' palla-eroe=' + (h.d3.ball ? Math.hypot(h.d3.ball.x - h.d3.hero.x, h.d3.ball.y - h.d3.hero.y).toFixed(1) : '-') : '') + ' minGB=' + (h.minGB != null ? h.minGB.toFixed(1) : '-') + ' via=' + (h.rv ? h.rv.via + (h.rv.busy ? '+occupata' : '') : '-'));
     }
     console.log(arm + ' ' + sk + ' seme ' + sd + ' ' + pol + (senza ? ' (scena senza esito)' : '') + ' fine ' + M.ph + ' highlight ' + M.hls.length + ' tabellone ' + JSON.stringify(M.tab));
   }

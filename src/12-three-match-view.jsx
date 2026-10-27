@@ -3014,6 +3014,7 @@ function ThreeMatchView(props){
         const _u=new THREE.Vector3(ball.position.x,0,ball.position.z).project(camera),_v=new THREE.Vector3(ball.position.x,1.75,ball.position.z).project(camera);const _uomo=Math.hypot((_v.x-_u.x)*_ww/2,(_v.y-_u.y)*_hh/2);/* uomo di 1,75u in piedi sul punto del pallone */
         return{r:_g.radius,seg:[_g.widthSegments,_g.heightSegments],sc:+ball.scale.x.toFixed(3),reff:+_re.toFixed(3),haloR:_hg.radius,haloSc:+ballHalo.scale.x.toFixed(3),haloOp:+ballHalo.material.opacity.toFixed(3),haloVis:!!ballHalo.visible,vis:!!ball.visible,y:+ball.position.y.toFixed(2),
           ndc:[+_c.x.toFixed(4),+_c.y.toFixed(4)],on:Math.abs(_c.x)<=1&&Math.abs(_c.y)<=1&&_c.z<1,dpx:+_d.toFixed(1),uomo:+_uomo.toFixed(1),rap:_uomo>0.5?+(_d/_uomo).toFixed(3):null,rect:(function(){const _b=renderer.domElement.getBoundingClientRect();return{x:_b.x,y:_b.y,w:_b.width,h:_b.height};})(),fase:(propsRef.current&&propsRef.current.matchPhase)||null};}catch(_e){return{err:String(_e)};}};/* [giro 55 PO-278] test-only: taglia (a schermo, contro un uomo alla stessa profondita') e alone del pallone per il guardiano pallone-278 */
+      window.__CPM_GKB95=function(){try{if(!awayGkMesh)return null;return +Math.hypot(awayGkMesh.position.x-ball.position.x,(awayGkMesh.position.z-ball.position.z)/0.68).toFixed(2);}catch(_e){return null;}};/* [giro 95 D3] distanza portiere avversario-pallone (unita' logiche), lettura leggera per la sonda highlight-95 (test-only) */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
       /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
          possesso ambientale (7.537) leggeva la palla dalle MESH e i giocatori da `matchPlayers` (l'array
@@ -4786,7 +4787,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_m298==="wide"&&_u3>=1){sr.current._zs298=null;hlPostArcT=-1;hlPostArcType=null;contactFlashT=0;}
             else if(_m298==="post"&&_u3>=0.9){sr.current._zs298=null;hlPostArcType="deflect";hlPostVY=5;hlPostVZ=-_zs*6;hlPostArcT=0;contactFlashT=0;}
             else if(_m298==="blocked"&&_u3>=0.45){sr.current._zs298=null;hlPostArcType="deflect";hlPostVY=4;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}}
-          else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;if(!_m298)ball.position.z*=(1-aDt*1.6);
+          else{/* [giro 95 D3, collaudo carriera 177 n.1 «GRANDE PARATA DEL PORTIERE» senza portiere nel quadro] il tiro del compagno parato si
+               respingeva a 7 dalla porta, a 10-40 unita' dal portiere (misurato con highlight-95: pallone mai entro 6 dal portiere su 4 assist
+               «para il portiere»). Ora il tiro va sul portiere e la respinta parte dalle sue mani, sempre prima della linea. Rosso __CPM_NO_G95D3. */
+            const _gk95=(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3))?awayGkMesh:null;
+            if(_gk95){ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*2.2;}
+            else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;}if(!_m298&&!(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)))ball.position.z*=(1-aDt*1.6);
           if(_m298){}
           else if(_isCh93&&_u3>=0.72){
             if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
