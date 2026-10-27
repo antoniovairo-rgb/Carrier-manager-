@@ -789,3 +789,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 26/10 sera — tutto in pausa a tempo indeterminato (PO)
 
 - PO: «metti tutto in pausa, finché te lo dico io!». Interrotte le 6 figlie cloud (catena 178 tronchi 1-3; carriere 177 n.1, n.2, n.4); tolto il controllo programmato; nessuna ripresa automatica. Si riparte solo su indicazione del PO: catena 178 da rifare (lavoro/178 f85b476f), carriere da riprendere dall'ultimo push dei loro rami.
+- PO (questionario, 27/10): sospese anche le due attività programmate di altre sessioni sullo stesso gioco — «Korward Elite — avanzamento missione ogni ora» (trig_011XwbEKP2YyUFG4yGoDc4mV) e «Korward Elite — allineamento notturno di produzione (main)» (trig_01SbJpnx39mQXWYCXpMy8HKx). Disattivate, non cancellate: si riattivano alla ripresa. Non toccate le attività di altri progetti (Valmora, Delia).
