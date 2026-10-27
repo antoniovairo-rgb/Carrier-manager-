@@ -800,3 +800,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ## 27/10 notte — PO-299 collaudo grafico approfondito
 - PO: «avvisami quando la 178 è pronta» → notifica sul telefono a rilascio avvenuto (nel controllo programmato).
 - PO-299: collaudo grafico dal vivo di tutte le schermate, highlight, figurine, impulsi e scene 3D su telefono/tablet/PC, base lavoro/178 (session_01QEYiaAMbMEkmCCQyqmrJc3). Lo spazio fra i box è già stato ridotto a ~8 px nel giro 91 (PO-296), dentro la 178: il collaudo misura dove è rimasto largo. Decisione tecnica (madre): i difetti alti/medi e tutti quelli di highlight trovati entrano nella 178 con un giro unico insieme agli esiti del giro 95, poi la catena; i bassi vanno nella 179. La 178 si pubblica dopo questo collaudo.
+
+## 28/10 00:00 (Roma) — controllo: carriera 177 n.2 conclusa
+- Carriera n.2 «molti trasferimenti» conclusa: 18 stagioni, 16 club (18 cambi di maglia), 326 gol, 125 assist, 8 trofei, OVR max 88. Difetti → PO-300 (1 alta, 3 medie contando B15 per la regola highlight, 14 bassi). Sessione archiviata.
+- Decisione tecnica (madre): i difetti alti/medi di PO-300 entrano nella 178 con un giro 96 costruito SOPRA il giro 95 (tocca gli stessi file degli highlight; in parallelo creerebbe conflitti). Bassi → 179.
+- Avviata la carriera n.5 «difensore» sulla 178 (lavoro/178), con prova esplicita dei tocchi rapidi e delle scene difensive.
+- Stato: giro 95 in corso (guardiano in prova), collaudo grafico PO-299 in corso, carriera n.4 alla stagione 10.
