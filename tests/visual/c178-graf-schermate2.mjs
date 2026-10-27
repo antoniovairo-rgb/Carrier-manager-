@@ -3,6 +3,9 @@
 import { startServer, launchBrowser, apriPagina, entraInCarriera, premi, scelti, sleep, SAVE, misura, salva } from './c178-graf-lib.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const errs = [], mancanti = [], R = {};
 const HOOK = [
+  ['fin-impulso', () => window.__CPM_CAREER.apriSettimana('impulso')], ['fin-spogliatoio', () => window.__CPM_CAREER.apriSettimana('spogliatoio')], ['fin-settimana-vissuta', () => window.__CPM_CAREER.apriSettimana('vissuta')],
+  ['fin-partita-titolare', () => window.__CPM_CAREER.apriPartita('starter')], ['fin-partita-panchina', () => window.__CPM_CAREER.apriPartita('bench')], ['fin-offerta', () => window.__CPM_CAREER.forceOffer()],
+  ['fin-intervista-vittoria', () => window.__CPM_CAREER.forceInterview('win')], ['fin-intervista-sconfitta', () => window.__CPM_CAREER.forceInterview('loss')], ['fin-procuratore-intro', () => window.__CPM_CAREER.apriIntro253()],
   ['sch-press', () => window.__CPM_CAREER.goScreen('press')], ['sch-postmatch', () => window.__CPM_CAREER.goScreen('postmatch')], ['sch-seasonEnd', () => window.__CPM_CAREER.goScreen('seasonEnd')],
   ['sch-careerEnd', () => window.__CPM_CAREER.goScreen('careerEnd')], ['sch-nationalCallup', () => window.__CPM_CAREER.goScreen('nationalCallup')], ['sch-proTransition', () => window.__CPM_CAREER.goScreen('proTransition')],
   ['sch-clubPresentation', () => window.__CPM_CAREER.goScreen('clubPresentation')], ['fin-saga', () => window.__CPM_CAREER.forceSaga('capitano')], ['fin-momento-carriera', () => window.__CPM_CAREER.forceMoment('cm_rigore_vita')],

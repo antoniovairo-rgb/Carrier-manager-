@@ -37,7 +37,7 @@ export async function ferma(page, maxMs = 6000) { let prev = null, uguali = 0; c
   while (Date.now() - t0 < maxMs) { let t = null; try { t = await page.evaluate(() => (document.body.textContent || '').replace(/\d{1,2}:\d{2}/g, '·').length + '|' + ROOT.querySelectorAll('*').length); } catch (e) {}
     if (t != null && t === prev) { if (++uguali >= 2) return; } else { uguali = 0; prev = t; } await sleep(250); } }
 export async function congela(page) {
-  await page.evaluate(() => { if (!document.getElementById('__c178')) { const st = document.createElement('style'); st.id = '__c178'; st.textContent = '*,*::before,*::after{transition:none!important;animation-play-state:paused!important}'; document.head.appendChild(st); } });
+  await page.evaluate(() => { if (!document.getElementById('__c178')) { const st = document.createElement('style'); st.id = '__c178'; st.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}'; document.head.appendChild(st); } });
   await sleep(150);
 }
 export async function entraInCarriera(page, errs) {
