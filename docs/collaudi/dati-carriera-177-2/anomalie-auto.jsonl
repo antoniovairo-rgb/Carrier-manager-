@@ -19,3 +19,26 @@
 {"st":15,"wk":2,"tipo":"settimana","msg":"rollover stagione 14→15 ma settimana 2"}
 {"st":16,"wk":2,"tipo":"settimana","msg":"rollover stagione 15→16 ma settimana 2"}
 {"st":17,"wk":2,"tipo":"settimana","msg":"rollover stagione 16→17 ma settimana 2"}
+{"st":18,"wk":6,"tipo":"gol","msg":"goals stagione 4 ≠ somma storico partite 2","club":"AC Dorvelli"}
+{"st":18,"wk":9,"tipo":"gol","msg":"goals stagione 5 ≠ somma storico partite 3","club":"AC Dorvelli"}
+{"st":18,"wk":10,"tipo":"gol","msg":"goals stagione 7 ≠ somma storico partite 5","club":"AC Dorvelli"}
+{"st":18,"wk":11,"tipo":"gol","msg":"goals stagione 10 ≠ somma storico partite 8","club":"AC Dorvelli"}
+{"st":18,"wk":15,"tipo":"gol","msg":"goals stagione 11 ≠ somma storico partite 9","club":"AC Dorvelli"}
+{"st":18,"wk":17,"tipo":"assist","msg":"assist stagione 9 ≠ somma storico 8"}
+{"st":18,"wk":18,"tipo":"gol","msg":"goals stagione 13 ≠ somma storico partite 11","club":"AC Dorvelli"}
+{"st":18,"wk":19,"tipo":"assist","msg":"assist stagione 10 ≠ somma storico 9"}
+{"st":18,"wk":20,"tipo":"assist","msg":"assist stagione 11 ≠ somma storico 10"}
+{"st":18,"wk":21,"tipo":"gol","msg":"goals stagione 15 ≠ somma storico partite 13","club":"AC Dorvelli"}
+{"st":18,"wk":21,"tipo":"assist","msg":"assist stagione 12 ≠ somma storico 11"}
+{"st":18,"wk":22,"tipo":"assist","msg":"assist stagione 13 ≠ somma storico 12"}
+{"st":18,"wk":24,"tipo":"assist","msg":"assist stagione 16 ≠ somma storico 14"}
+{"st":18,"wk":25,"tipo":"gol","msg":"goals stagione 16 ≠ somma storico partite 14","club":"AC Dorvelli"}
+{"st":18,"wk":26,"tipo":"gol","msg":"goals stagione 18 ≠ somma storico partite 16","club":"AC Dorvelli"}
+{"st":18,"wk":27,"tipo":"gol","msg":"goals stagione 19 ≠ somma storico partite 16","club":"AC Dorvelli"}
+{"st":18,"wk":28,"tipo":"gol","msg":"goals stagione 21 ≠ somma storico partite 18","club":"AC Dorvelli"}
+{"st":18,"wk":33,"tipo":"gol","msg":"goals stagione 22 ≠ somma storico partite 19","club":"AC Dorvelli"}
+{"st":18,"wk":34,"tipo":"gol","msg":"goals stagione 24 ≠ somma storico partite 21","club":"AC Dorvelli"}
+{"st":18,"wk":35,"tipo":"assist","msg":"assist stagione 17 ≠ somma storico 15"}
+{"st":18,"wk":36,"tipo":"gol","msg":"goals stagione 25 ≠ somma storico partite 22","club":"AC Dorvelli"}
+{"st":18,"wk":36,"tipo":"classifica-ui","msg":"nessuna tabella di classifica trovata"}
+{"st":18,"wk":37,"tipo":"gol","msg":"goals stagione 27 ≠ somma storico partite 24","club":"AC Dorvelli"}
