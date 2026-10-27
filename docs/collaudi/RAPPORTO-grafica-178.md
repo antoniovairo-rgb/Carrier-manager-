@@ -10,7 +10,7 @@ Strumenti (tutti in `tests/visual/`): `c178-graf-lib.mjs` (rilevatore in pagina)
 - **Highlight 3D: 68 esecuzioni al telefono** (2 serie da 34 con semi di partita diversi: «Marco Rossi» e «Luca Verdi»; 10 famiglie: tiro, testa, volée, cross, passaggio/assist, dribbling, contrasto, rigore, punizione, difesa) + 10 su PC + 4 su tablet verticale = **82**. Tutte arrivate a `hl_result`, 0 errori di pagina, 0 scene senza portiere.
 - **Difetti: 5 alti, 12 medi, 7 bassi** (tabella D1…D24).
 - **Spazio fra i box (PO-296):** la riduzione c'è e regge sulle schede principali (mediana 7,8 px, massimo 9 px). **Restano larghi:** Opzioni di carriera (15,7 px), Fine stagione/offerte (16,8 px su telefono e tablet verticale), finestre di intervista (12 px) e primo incontro col procuratore (13,4 px).
-- Nessuno scorrimento orizzontale, nessun elemento fuori schermo, nessuna immagine rotta, nessun «undefined/NaN», nessun carattere sostitutivo, testo minimo 11 px (tranne 15 nodi <10 px per formato, vedi D20) in nessuno dei 4 formati.
+- Nessuno scorrimento orizzontale, nessun elemento fuori schermo, nessuna immagine rotta, nessun «undefined/NaN», nessun carattere sostitutivo; restano 15 nodi di testo sotto i 10 px per formato (D20).
 
 ## Tabella difetti
 
