@@ -1285,6 +1285,10 @@ const _BRAIN82_UI=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82);
 function _brainIn82(action,sit,pPos,stats,ex){ex=ex||{};const rew=(action&&action.rew)||"";const st=(action&&action.stat)||"tecnica";
   let intent=null;try{if(sit&&typeof isPenaltySit==="function"&&isPenaltySit(sit))intent="penalty";else if(sit&&typeof isSetPieceSit==="function"&&isSetPieceSit(sit)&&sit.ballAt!=="corner")intent="freekick";}catch(_e){}
   if(!intent&&/testa|colpo di testa|incorn/i.test(String((action&&action.label)||"")))intent="header";
+  /* [giro 95 D1, collaudo carriera 177 n.1] il FALLO CERCATO («Resisti alla carica e cerca il fallo») ha premio assist per la catena, ma non
+     e' un passaggio: il motore lo giocava come assist (passaggio al compagno e tiro del compagno) e dal giro 93 poteva uscire «assist
+     servito, il compagno spreca» su un duello per il fallo. E' un duello: famiglia dribbling. Rosso __CPM_NO_G95D1. */
+  if(action&&action.falloCercato&&rew==="assist"&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D1))return{fam:"dribbling",stat:st,intent,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:stats||{},mods:+ex.mods||0,mult:ex.mult==null?1:ex.mult,alta:!!ex.alta};
   const fam=rew==="goal"?"tiro":rew==="assist"?"assist":((sit&&sit.type==="def")||rew==="recovery")?"difesa":(st==="dribbling"?"dribbling":"altro");
   return{fam,stat:st,intent,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:stats||{},mods:+ex.mods||0,mult:ex.mult==null?1:ex.mult,alta:!!ex.alta};}
 const _DOPPIE77={"Gol":1,"Possesso":1,"Tiri":1,"Tiri in porta":1,"Gol attesi (xG)":1};
@@ -2374,6 +2378,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [outcome,setOutcome]=useState(null);
   const golSubito85Ref=useRef(0);/* [7.999.85 PO-151, collaudo Codex 30/09 su 7.999.82: codice 003 «0-1 sul tabellone prima che il tiro arrivi in porta», scene 133/134/36/44/45/157 fail] il gol SUBITO nella scena difensiva entrava nel punteggio alla risoluzione dell'azione, mentre quello dell'eroe aspetta il pallone in rete (6.5.1). Ora aspetta la rivelazione dell'esito (resultReveal, la stessa che mostra la banda in basso) o, al piu' tardi, l'uscita dalla scena. Rosso __CPM_NO_GA85 */
   const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
+  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;},[resultReveal]);/* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
   useEffect(()=>{const n=golSubito85Ref.current|0;if(!n)return;if((phase==="hl_result"&&resultReveal)||(phase!=="hl_result"&&phase!=="hl_choose"&&phase!=="hl_move"&&phase!=="hl_intro")){golSubito85Ref.current=0;setScore(sc=>({...sc,away:sc.away+n}));}},[phase,resultReveal]);/* [7.999.85] il gol subito entra nel tabellone quando l'esito si vede, non prima */
   const [chosenAct,setChosenAct]=useState(null);
   const [selectedActionIdx,setSelectedActionIdx]=useState(0);
@@ -2524,10 +2529,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   minAt (=_rd92, la 5.92.0 resta) + fallback timer (2600ms) se il segnale non arriva (azione senza arco /
   //   renderer degradato). handleContinue marca il pendente come consumato (skip = niente reveal postumo).
   const outcomeRevealRef=useRef(null);
-  const fireOutcomeReveal=useCallback(function _for(){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+  const fireOutcomeReveal=useCallback(function _for(via){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+    if(via===undefined&&typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;/* [giro 95 D4] solo sonde: simula una scena che non dichiara mai l'esito (prova della rete di sicurezza) */
+    if(o.waitPA&&via===undefined&&!o.paWait){o.paWait=1;revealRiserva95(Date.now(),null,true);return;}/* [giro 95 D3] l'esito e' il tiro del compagno: l'arrivo del passaggio non basta, si aspetta che il 3D mostri il tiro */
+    if(typeof via==='string'&&!o.via)o.via=via;
     const _left=(o.minAt||0)-Date.now();
     if(_left>40){fxTimeout(()=>_for(),_left);return;}/* il 3D è arrivato prima del floor di suspense → rimanda al floor */
-    o.fired=true;try{o.cb();}catch(_e){}},[]);// eslint-disable-line
+    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),t:Date.now()});}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
+    try{o.cb();}catch(_e){}},[]);// eslint-disable-line
+  /* [giro 95 D3, collaudo carriera 177 n.1 S1 W8 «Conclusione potente»: riquadro «GRANDE PARATA DEL PORTIERE» col pallone ancora ai piedi
+     dell'eroe, portiere fuori dal quadro, eroe sovrapposto al difensore] La riserva dei 2,6 s era in tempo di PARETE: se la costruzione e
+     l'arco della conclusione durano di piu' (telefono lento, costruzioni R5 lunghe) l'esito si rivelava PRIMA che il 3D lo mostrasse e il
+     riquadro raccontava una parata che non c'era ancora. Ora la riserva aspetta che il renderer abbia finito di mostrare la conclusione
+     (stesso segnale cineBusy della 7.461, contato in secondi DI SCENA come la 7.864: tetto 6 s di scena, guardia di parete 30 s); il
+     renderer che arriva all'esito (onOutcomeShown) resta il percorso normale. Solo nel gioco vero (sotto il gate la finestra resta
+     quella fissa: percorso bit-identico). Rosso __CPM_NO_G95D3. */
+  const revealRiserva95=useCallback(function _rr(t0,ck0,pa){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+    try{const _gv=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D3;
+      const _c=cineBusyRef.current;if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;if(ck0==null)ck0=_ck;
+        if(((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6&&Date.now()-(t0||Date.now())<30000){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa),180);return;}}}catch(_e){}
+    if(typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
+    fireOutcomeReveal(pa?'scena-tiro':'riserva');},[]);// eslint-disable-line
   const [pressureCinema,setPressureCinema]=useState(null); // Sprint 97: {text,col,key}
   const streakRef=useRef(0); // Sprint 97: consecutive HL successes
   // M2 · MATCH MEMORY (effimera, NON salvata): memoria narrativa della partita → continuità cronaca (Manifesto Cap.5.6).
@@ -2908,7 +2930,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(sit.intent==="penalty"&&handleRigoreRef.current){const _dd=["tl","tc","tr","bl","bc","br"];handleRigoreRef.current(_dd[Math.floor(_ar()*6)%6]);return;}
           if(!sit.actions||!sit.actions.length)return;
           const pol=o.policy||"seeded",n=sit.actions.length;
-          let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */if(pol==="assist"){const _ia=sit.actions.findIndex(a=>a&&a.rew==="assist");if(_ia>=0)k=_ia;}/* [giro 93 PO-298] politica «assist»: sceglie la giocata da assist quando c'e' — solo autoplay di sonda */if(pol==="cross"){const _ic=sit.actions.findIndex(a=>/cross|traverson|pennell|fendente|mette in mezzo/i.test((a&&a.label)||""));if(_ic>=0)k=_ic;}/* [giro 11 PO-218] politica «cross»: sceglie il cross quando c'e' — solo autoplay di sonda */
+          let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */if(pol==="assist"){const _ia=sit.actions.findIndex(a=>a&&a.rew==="assist");if(_ia>=0)k=_ia;}/* [giro 93 PO-298] politica «assist»: sceglie la giocata da assist quando c'e' — solo autoplay di sonda */if(pol==="re"&&o.re){const _rr=new RegExp(o.re,"i");const _ir=sit.actions.findIndex(a=>_rr.test((a&&a.label)||""));if(_ir>=0)k=_ir;}/* [giro 95] politica «re»: sceglie la prima giocata che risponde all'espressione data — solo autoplay di sonda (highlight-95) */if(pol==="cross"){const _ic=sit.actions.findIndex(a=>/cross|traverson|pennell|fendente|mette in mezzo/i.test((a&&a.label)||""));if(_ic>=0)k=_ic;}/* [giro 11 PO-218] politica «cross»: sceglie il cross quando c'e' — solo autoplay di sonda */
           if(handleActionRef.current)handleActionRef.current(sit.actions[Math.max(0,Math.min(n-1,k))]);
         }
       }catch(_e){}},(o.tickMs|0)||350);
@@ -9403,6 +9425,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       //   «Scatta in profondità» (build) e «dai, ricevi, TIRA» (pass) segnavano sulla corsa/sul passaggio.
       if(_cnD.type==="dribble"||_cnD.type==="build"||_cnD.type==="pass"){_chanceDrb=true;_chance78=true;key="chance";_outKind="chance";}
     }catch(_e){}}
+    /* [giro 95 D2] la finta riuscita (premio «chance», scelta di dribbling) e' un uomo saltato: palla al piede e conclusione da giocare,
+       come il dribbling da gol qui sopra. Rosso __CPM_NO_G95D2 (la finta torna premio assist, cioe' passaggio). */
+    if(ok&&action&&action.drb95&&key==="chance"&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){_chanceDrb=true;_chance78=true;_outKind="chance";}
     // DEFENSIVE OUTCOME (5.65.0): per un highlight DIFENSIVO decidi UNA sola volta (stesso seed → coerenza
     //   3D/overlay/cronaca) l'esito realistico della respinta/recupero. Elimina il rinvio lungo automatico
     //   verso la porta avversaria: la traiettoria diventa varia (tieni possesso / passa / riparti / respinta
@@ -9455,6 +9480,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const txt=_sp298?_txSpreca298(_sp298,action.label,_ricNome298(castBrainRef.current),_seedOvl):_ch241?_ch241[_seedOvl%_ch241.length]:_cond70?_COND70[_seedOvl%_COND70.length]:_woodTx?_woodTx[_seedOvl%_woodTx.length]:_txP218?_txP218[_seedOvl%_txP218.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_reb840?_reb840[_seedOvl%_reb840.length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:((typeof window!=='undefined'&&window.__CPM_OUTTX_FORZA&&OUTCOME_TX[key]&&OUTCOME_TX[key].find(x=>x.indexOf(window.__CPM_OUTTX_FORZA)>=0))||pick(OUTCOME_TX[key]||["Azione completata."]))));/* __CPM_OUTTX_FORZA: solo sonde, impone la frase che contiene il testo dato */// [5.90.0] cronaca dedicata all'uomo saltato
     if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:clockRef.current|0,txt:"▶ scelta: "+String((action&&action.label)||"")+" → "+String(key||"")+(ok?" riuscito":" fallito"),intro:1});}catch(_e838){}}/* [7.838 strumento, AC] anche la SCELTA del player entra nel diario: e' l'azione che lui ha fatto prima dell'esito */
     const _ovl=_sp298?_ovlSpreca298(_sp298,action.label,_ricNome298(castBrainRef.current),_seedOvl):hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind,_isDefHL76?null:_wood);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
+    if(ok&&key==="chance"&&action&&action.drb95&&_ovl&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D2)){try{const _pd=HL_OVERLAY_POOLS.dribble;_ovl.text=_pd[(((_seedOvl|0)%_pd.length)+_pd.length)%_pd.length];_ovl.cat="dribble";_ovl.icon=(typeof _OVL_CAT_ICON!=='undefined'&&_OVL_CAT_ICON.dribble)||_ovl.icon;}catch(_e95){}}/* [giro 95 D2] la finta riuscita si racconta da dribbling («Salta l'uomo!»), non da occasione creata */
     // [7.137.0 collaudo PO «la squalifica per espulsione deve essere REALE, dalla partita, non randomica»] CARTELLINO REALE:
     //   un fallo COMMESSO dall'eroe (key "foul") può portare un giallo SEEDATO; alla 2ª ammonizione o (raro) rosso diretto →
     //   ESPULSIONE reale in campo (evento cronaca + flash + uscita dal campo riusando il binario SOSTITUITO). A fine partita
@@ -9607,14 +9633,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {const _t0858=Date.now();let _ck0864=(cineBusyRef.current&&typeof cineBusyRef.current.ck==='number')?cineBusyRef.current.ck:null;/* 9 s di scena contati dalla programmazione, come i 9 s di parete: a 30 fps nulla cambia */const _tick858=()=>{try{const _c=cineBusyRef.current;const _busy=!!(_c&&_c.on&&(_c.tl||_c.arc||_c.pa));const _no864=(typeof window!=='undefined'&&window.__CPM_NO864);if(!_no864&&_c&&typeof _c.ck==='number'){if(_ck0864==null)_ck0864=_c.ck;const _sc864=_c.ck-_ck0864;if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&_sc864<9&&(Date.now()-_t0858)<30000){fxTimeout(_tick858,180);return;}}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=window.__CPM_WS&&window.__CPM_WS();(window.__CPM_TICK858=window.__CPM_TICK858||[]).push({t:Date.now(),dt:Date.now()-_t0858,on:!!(_c&&_c.on),tl:!!(_c&&_c.tl),arc:!!(_c&&_c.arc),pa:!!(_c&&_c.pa),busy:_busy,pat:_c&&_c.pat,pt:_c&&_c.pt,sl:_c&&_c.sl,bx3:_c&&_c.bx,at:_c&&_c.at,rx:_w?_w.rx:null,fired:!!(goalCelebRef.current&&goalCelebRef.current.fired),ar:(window.__CPM_AR53?{d:window.__CPM_AR53.d,t:window.__CPM_AR53.t,rto:window.__CPM_AR53.rto,rx:window.__CPM_AR53.rx}:null),dp:(window.__CPM_DISPATCH?{ht:window.__CPM_DISPATCH.ht,post:window.__CPM_DISPATCH.post,tgt:window.__CPM_DISPATCH.tgt,rcv:window.__CPM_DISPATCH.rcv,near:window.__CPM_DISPATCH.near}:null)});}catch(_e){}}/* testimone del tetto (test-only) */if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&(Date.now()-_t0858)<9000){fxTimeout(_tick858,180);return;}}catch(_e858){}fireGoalCeleb('timer');};fxTimeout(_tick858,5200);}// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#60a5fa",key:Date.now()});setResultReveal(true);_comFn15();}};// [7.54.0 BL-15] bottom + sovraimpressione + cronaca all'ASSESTAMENTO reale della palla (onOutcomeShown), non più a 1800 fisso
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      fxTimeout(()=>revealRiserva95(Date.now(),null),2600);
     } else if(ok&&!["goal","assist"].includes(key)){
-      outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);_comFn15();}};
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,waitPA:!!(_sp298&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)&&((!_CPM_TEST&&!_SIT_TEST)||(typeof window!=='undefined'&&(window.__CPM_CINE||window.__CPM_REALWAIT)))),/* [giro 95 D3] «assist servito, il compagno spreca»: l'esito e' il tiro del compagno */cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);_comFn15();}};
+      fxTimeout(()=>revealRiserva95(Date.now(),null),2600);
     } else if(!ok){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()});setResultReveal(true);_comFn15();
         if(key==="miss_easy"||key==="goal_against")flashScreen({col:"rgba(239,68,68,0.35)",dur:400});}};// [7.54.0 BL-15] overlay/cronaca/flash all'IMPATTO reale (parata/palo/fuori dal 3D), non più a 1800 fisso
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      fxTimeout(()=>revealRiserva95(Date.now(),null),2600);
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];
@@ -10155,6 +10181,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _sc229=_ck229?(_c.ck-(_avanza461._ck0||0))*1000:_att461;
         if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&(_ck229?(_sc229<6000&&_att461<30000):_att461<6000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}
       }catch(_e461){}
+      /* [giro 95 D4, collaudo carriera 177 n.1: 271 highlight su 1.238 col solo «LA GIOCATA · nome» nei 6 s, senza esito ne' voto] LA SCENA
+         NON SI CHIUDE SENZA IL SUO ESITO. La finestra poteva chiudersi prima del reveal (riserva dei 2,6 s, gol in attesa della rete) e
+         l'esito non compariva mai; oppure compariva nello stesso istante della chiusura. Ora, nel gioco vero, se l'esito non e' ancora a
+         schermo lo si mostra e si lascia leggere (1,6 s); se e' appena comparso si aspetta che abbia avuto 1,4 s. Lo skip manuale resta
+         libero; sotto il gate la finestra resta quella fissa. Rosso __CPM_NO_G95D4. */
+      try{const _gv4=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D4;
+        if(_gv4&&!_avanza461._d4){const _r=revealAt95.current;
+          if(!_r){_avanza461._d4=1;const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);
+            try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
+            t2=setTimeout(_avanza461,1600);return;}
+          if(Date.now()-_r<1400){_avanza461._d4=1;t2=setTimeout(_avanza461,1400-(Date.now()-_r));return;}}}catch(_e95){}
       handleContinue();
     };
     const t=setTimeout(()=>{
