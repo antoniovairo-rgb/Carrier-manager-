@@ -2931,6 +2931,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const sit=situationsRef.current[hlIdxRef.current];if(!sit)return;
           if(sit.intent==="penalty"&&handleRigoreRef.current){const _dd=["tl","tc","tr","bl","bc","br"];handleRigoreRef.current(_dd[Math.floor(_ar()*6)%6]);return;}
           if(!sit.actions||!sit.actions.length)return;
+          if(o.policy==="mano")return;/* [giro 96b] politica «mano»: l'autoplay porta la partita fino al pannello e lascia il tocco alla sonda (esiti-96 D1) — solo autoplay di sonda */
           const pol=o.policy||"seeded",n=sit.actions.length;
           let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */if(pol==="assist"){const _ia=sit.actions.findIndex(a=>a&&a.rew==="assist");if(_ia>=0)k=_ia;}/* [giro 93 PO-298] politica «assist»: sceglie la giocata da assist quando c'e' — solo autoplay di sonda */if(pol==="re"&&o.re){const _rr=new RegExp(o.re,"i");const _ir=sit.actions.findIndex(a=>_rr.test((a&&a.label)||""));if(_ir>=0)k=_ir;}/* [giro 95] politica «re»: sceglie la prima giocata che risponde all'espressione data — solo autoplay di sonda (highlight-95) */if(pol==="cross"){const _ic=sit.actions.findIndex(a=>/cross|traverson|pennell|fendente|mette in mezzo/i.test((a&&a.label)||""));if(_ic>=0)k=_ic;}/* [giro 11 PO-218] politica «cross»: sceglie il cross quando c'e' — solo autoplay di sonda */
           if(handleActionRef.current)handleActionRef.current(sit.actions[Math.max(0,Math.min(n-1,k))]);
@@ -9319,6 +9320,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
     if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){/* [7.211.0] esito forzato anche in revisione · [7.229.0 #47] +cpmtest: il CRITICO automatico gira sotto ?cpmtest=1 e credeva di forzare successo/fallimento — il flag NON veniva mai consumato (solo ?sit=N e revisione lo leggevano) → ogni coppia RIUSCITO/FALLITO del critico misurava DUE VOLTE lo stesso roll naturale seedato, e i falsi «gol senza rete» erano fallimenti naturali etichettati successo. Il GATE resta intatto per costruzione: non setta mai questo flag */ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
     let key=ok?action.rew:action.fail;
+    if(!ok&&typeof window!=='undefined'&&window.__CPM_NO_G96B_B15&&/Contrasto pulito senza fallo/.test(action.label||""))key="foul";/* [giro 96b B15] rosso: il contrasto «senza fallo» torna a poter finire in fallo */
     // M1 · UNIFIED OUTCOME MODEL: su un'azione FALLITA il TIPO di esito (palo/parata/murato/fuori) lo decide
     //   UNA sola volta il motore (decideExecution) con lo STESSO ctx/seed del render 3D → identico valore →
     //   3D byte-identico (golden stabile) MA ora overlay + cronaca leggono lo stesso esito. Fine divergenza.
@@ -10237,10 +10239,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _arcId107=player.archetype?.id||player.archetype;const _rw82=(a)=>_rateUI82(motoreRef.current,a,sit,pPos,player.stats,0,()=>succRate(a,player.stats,pPos.x,oppPrestige,_arcId107));const worst=actions.reduce((a,b)=>_rw82(a)<=_rw82(b)?a:b);
       if(_hlActionFiredRef.current)return;_hlActionFiredRef.current=true;/* [7.163.0 super-test LIVE-F2] stessa guardia di handleAction: niente doppia risoluzione tap⇄timeout */
       const tackleTexts=["Il difensore anticipa e recupera palla.","Intervento difensivo! Palla persa.","Il pressing paga: il difensore chiude l'azione.","Troppo lento — il marcatore intercetta."];
-      const txt=pick(tackleTexts);
+      /* [giro 96b D2 — collaudo 177 n.2] L'ESITAZIONE SI RACCONTA NELLA FAMIGLIA DELLA SCENA. Se l'eroe DIFENDE, chi
+         arriva non e' «il marcatore che intercetta» (testo d'attacco): e' il portatore che ti salta. Chiave
+         `through`/«beaten», la stessa del fallimento di una chiusura. E il titolo dice «Troppo tardi», non il nome
+         di un'azione che il giocatore non ha scelto (`timeout` sull'esito). Rosso __CPM_NO_G96B_D2. */
+      const _no96bD2=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D2;
+      const _def96b=!_no96bD2&&sit.type==="def";
+      const txt=_def96b?pick(["Arrivi tardi: il portatore ti salta.","Esiti un attimo e lui è già oltre.","Troppo tardi — l'avversario passa.","Il portatore ti brucia sul tempo."]):pick(tackleTexts);
+      try{cpmEmit("ActionTimeout",{gi:hlIdxRef.current,intent:sit.intent||null,def:sit.type==="def",key:_def96b?"through":"intercept"});}catch(_e){}
       addCom(txt,"#f87171",clock);
       flashScreen({col:"rgba(239,68,68,0.3)",dur:400});
-      setOutcome({text:txt,ok:false,actionLabel:worst.label,outKey:"intercept",outKind:"intercepted"});/* [7.163.0 LIVE-F2] l'auto-tackle entra nel Unified Outcome Model: outKind onesto → il 3D mostra l'INTERCETTO (prima ricalcolava un esito di famiglia tiro: cronaca «recupera palla» col portiere che parava = divergenza M1) */
+      setOutcome({text:txt,ok:false,actionLabel:worst.label,outKey:_def96b?"through":"intercept",outKind:_def96b?"beaten":"intercepted",timeout:!_no96bD2});/* [7.163.0 LIVE-F2] l'auto-tackle entra nel Unified Outcome Model: outKind onesto → il 3D mostra l'INTERCETTO (prima ricalcolava un esito di famiglia tiro: cronaca «recupera palla» col portiere che parava = divergenza M1) */
       try{setMomentum(m=>clamp(m-8,0,100));}catch(_e){}/* esitare non è più gratis: stesso costo-momentum di un'azione fallita */
       try{const _mm=matchMemRef.current;if(_mm)_mm.misses=(_mm.misses||0)+1;}catch(_e){}
       setChosenAct(worst);
@@ -10880,7 +10889,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(_largo292()?{flex:"1 1 0",minWidth:0,position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"})}>
+            <div data-cpm="vista3d-box" style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(_largo292()?{flex:"1 1 0",minWidth:0,position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"})}>
               {/* [7.917.0 — F1] IL CAMPO DALL'ALTO fra un highlight e l'altro (decisione del PO 15/09). Il 3D non
                   si smonta — resta caldo, sospeso — e il campo gli si posa SOPRA, dentro lo stesso riquadro.
                   [7.917.1 difetto fotografato] da fratello in colonna il campo si prendeva meta' schermo (410x379 su
@@ -11640,6 +11649,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _CAT901={tecnica:"TECNICA",tiro:"TIRO",passaggio:"PASSAGGIO",dribbling:"DRIBBLING","velocità":"VELOCITÀ",fisico:"FISICO","mentalità":"MENTALITÀ",posizionamento:"POSIZIONAMENTO",difesa:"DIFESA"};
                   const _split901=(s)=>{const str=String(s||"");const sp=str.indexOf(" ");return sp<=0?{icon:"⚽",txt:str}:{icon:str.slice(0,sp),txt:str.slice(sp+1)};};
                   const _sub901=intentIntro(curSit.intro,_scoreDiff);
+                  /* [giro 96b D1 — collaudo 177 n.2, ALTA: 177 highlight su 1.366 senza ActionResolved] UN TASTO CHE SI VEDE
+                     SI PUO' TOCCARE. Le righe nascono disarmate (7.926, 250 ms dal 7.956) ma restavano a schermo a opacita'
+                     0,45 e `disabled`: il tocco rapido cadeva nel vuoto, nessuno lo diceva, e dopo 9-16 s l'auto-anticipo
+                     risolveva una scelta che il giocatore non aveva fatto. Ora, finche' non sono armate, le righe NON si
+                     vedono e non prendono il dito (visibility hidden + pointer-events none): la protezione del 7.926 resta
+                     (il dito del D-pad che ricade non sceglie niente), e ogni tasto visibile registra il tocco.
+                     Rosso __CPM_NO_G96B_D1 = righe visibili e morte. */
+                  const _no96bD1=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D1;
                   const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
@@ -11687,7 +11704,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
                             <div style={{fontSize:FS.body,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
@@ -11700,7 +11717,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   );
                 })()
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String(chosenAct?.label||"");const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(chosenAct?.label||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
                 <div data-cpm="incorso94" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,boxSizing:"border-box",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.86) 30%,rgba(5,8,16,0.94) 100%)",padding:"16px 14px 14px",display:"flex",alignItems:"center",gap:11}}>
                   {/* [7.999.83 #94] «in corso»: prima una riga da 12 px con clessidra («⏳ 🎯 Assist filtrante…»), di un altro
                       vestito rispetto a scheda e esito. Ora lo stesso linguaggio della scheda delle scelte: riquadro
@@ -11710,7 +11727,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{width:34,height:34,borderRadius:RAD.sm,background:"rgba(196,181,253,0.16)",border:"1px solid rgba(196,181,253,0.35)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}><EmoText>{_ic94}</EmoText></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                     <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.5,color:"#a5b4fc",textTransform:"uppercase"}}>La giocata</div>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}><EmoText>{_tx94}</EmoText></div>
+                    <div data-cpm="esito-titolo" style={(typeof window!=='undefined'&&window.__CPM_NO_G96B_D7)?{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}:{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{_tx94}</EmoText></div>
                   </div>
                   <div aria-hidden="true" style={{display:"flex",gap:4,flexShrink:0}}>{[0,1,2].map(k=><span key={k} style={{width:6,height:6,borderRadius:"50%",background:"#c4b5fd",animation:"cpmPunto94 1.2s ease-in-out "+(k*0.18)+"s infinite"}}/>)}</div>
                 </div>
@@ -11720,6 +11737,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               ))}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
+              {/* [giro 96b D6 — collaudo grafico 178: «il riquadro d'esito copre piedi e pallone dell'eroe»] Misurato su 30 scene
+                  forzate (412x915): in 11 piedi o pallone finivano sotto il bordo del riquadro durante la finestra d'esito — la
+                  regia tiene l'eroe nel quarto basso del quadro (piedi a 755-805 px, riquadro da ~737). La camera non si tocca
+                  (src/12 e' di un altro cantiere): quando il riquadro compare, la VISTA 3D sale di 14vh con la stessa
+                  dissolvenza del riquadro, come un tilt della regia — l'azione resta sopra la banda, il pezzo di cielo/tribuna
+                  in alto (gia' troppo, nota D8) esce dal quadro. Nessun ridimensionamento del canvas (un cambio di misura
+                  svuota il disegno, vedi D14). Rosso __CPM_NO_G96B_D6. */}
+              {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!_no901&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D6)&&<style>{'[data-cpm="vista3d-box"] canvas{transform:translateY(-14vh);transition:transform .32s ease-out}'}</style>}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 /* [7.901.0 — C3: L'ESITO E' UNA BANDA BASSA, ≤40% DELLO SCHERMO. Decisione del PO sulla
                    tavola approvata (Esito.dc.html): titolo dell'esito (verde se positivo), riga di cronaca,
@@ -11739,7 +11764,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ):(()=>{
                   const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _voto901=Math.round(_raw901*10)/10;try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO20||window.__CPM_NO_VOTO29))&&motoreRef.current&&motoreRef.current.pagelle){const _k29=hlIdx+'|'+(outcome&&outcome.outKey)+'|'+score.home+'-'+score.away+'|'+mStats.goals+'|'+mStats.assists;const _C29=voto29Ref.current;if(_C29.k!==_k29){const _e29=motoreRef.current.pagelle().find(x=>x&&x.eroe);_C29.k=_k29;_C29.v=(_e29&&typeof _e29.voto==='number')?_e29.voto:null;}if(_C29.v!=null)_voto901=_C29.v;}}catch(_e29b){}/* [7.999.29] anche il voto nel riquadro di fine scena e' la pagella del motore: prima era una terza formula (bonus delle scene). Calcolato UNA volta per esito (cache voto29Ref): chiamato a ogni render faceva oscillare il guardiano passo-velocita (misurato: rosso 3 volte su 4, verde 3 su 3 con il riquadro spento) */
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
-                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(chosenAct?.label?(" · "+chosenAct.label):"");
+                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":chosenAct?.label?(" · "+chosenAct.label):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
                   return(
                   <div data-cpm="esito" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
                     <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
@@ -11747,7 +11772,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <div style={{width:20,height:20,borderRadius:RAD.xs,background:outcome.ok?"rgba(74,222,128,0.16)":"rgba(248,113,113,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                         {outcome.ok?<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12l5 5L20 6"></path></svg>:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>}
                       </div>
-                      <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>
+                      <div data-cpm="esito-titolo" style={(typeof window!=='undefined'&&window.__CPM_NO_G96B_D7)?{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}:{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>{/* [giro 96b D7] il titolo dell'esito non si tronca mai: va a capo (12 scene su 68 al collaudo, 5/30 misurate). Rosso __CPM_NO_G96B_D7 */}
                     </div>
                     <div style={{fontSize:FS.body,lineHeight:1.3,fontWeight:700,color:"#e8edf6",textShadow:"0 1px 6px rgba(0,0,0,0.7)",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.text}</EmoText></div>
                     {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.cause}</EmoText></div>}

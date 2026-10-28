@@ -501,7 +501,7 @@ S("🤼 Raddoppio difensivo!",["difesa","centro"],{x:[18,55],y:[20,80]},{x:[22,4
 S("✋ Intercetto in verticale!",["centro","difesa"],{x:[22,58],y:[22,78]},{x:[26,46],y:[28,72]},[
   A("✋ Anticipo sulla traiettoria","tecnica",8,"recovery","through",13),A("⚡ Sprint anticipato","velocità",6,"recovery","through",16),A("💪 Contrasto di spalla","fisico",4,"recovery","foul",12)],false,2,"👁️ Il passaggio sta per partire! Anticipalo!","def",null,{pressure:"high",support:1,nearby_def:1,lanes:[]}),
 S("🛡️ Fallo tattico — ferma il contropiede!",["centro","trequarti"],{x:[38,70],y:[20,80]},{x:[40,58],y:[28,72]},[
-  A("🛡️ Fallo intelligente in zona","mentalità",5,"save","foul",10),A("⚡ Recupero in velocità invece","velocità",6,"recovery","through",18),A("💪 Contrasto pulito senza fallo","fisico",3,"recovery","foul",14)],false,2,"🧠 Meglio un fallo tattico che un gol subito!","def",null,{pressure:"high",support:1,nearby_def:1,lanes:[]}),
+  A("🛡️ Fallo intelligente in zona","mentalità",5,"save","foul",10),A("⚡ Recupero in velocità invece","velocità",6,"recovery","through",18),A("💪 Contrasto pulito senza fallo","fisico",3,"recovery","through",14)/* [giro 96b B15] il nome promette niente fallo: il rischio e' essere saltati (through), come la chiusura e l'anticipo; il fallo resta della scivolata e del fallo tattico */],false,2,"🧠 Meglio un fallo tattico che un gol subito!","def",null,{pressure:"high",support:1,nearby_def:1,lanes:[]}),
 S("🧱 Blocco del tiro in area!",["propria"],{x:[5,22],y:[22,78]},{x:[7,18],y:[30,70]},[
   A("🧱 Blocco col corpo sulla traiettoria","fisico",9,"save","goal_against",16),A("✋ Devia col piede sul palo","tecnica",5,"save","goal_against",12),A("😱 Tentativo disperato","fisico",3,"save","goal_against",10)],false,0,"💥 Tiro in arrivo! Mettiti sulla traiettoria!","def",null,{pressure:"high",support:1,nearby_def:2,lanes:[]}),
 S("🏃 Recupero sulla linea di fondo!",["propria"],{x:[2,15],y:[10,30]},{x:[4,12],y:[12,26]},[
@@ -1027,7 +1027,7 @@ function scenaDalMotoreCross(occ,player,seed){
    motore (contrasto riuscito, oppure l'avversario la scampa e prosegue). Rosso __CPM_NO_P6D. */
 const P6_DIFESA=[
   {k:'chiusura',g:'lunge',l:'🛑 Chiusura immediata',st:'velocità',b:8,rew:'recovery',fail:'through',n:20,w:(c)=>1.2},
-  {k:'contrasto',g:'lunge',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'foul',n:14,w:(c)=>1.0},
+  {k:'contrasto',g:'lunge',l:'💪 Contrasto pulito senza fallo',st:'fisico',b:3,rew:'recovery',fail:'through',n:14,w:(c)=>1.0},/* [giro 96b B15] vedi sopra: «senza fallo» non puo' finire in fallo; rosso __CPM_NO_G96B_B15 */
   {k:'scivolata',g:'slide',l:'🛡️ Scivolata netta',st:'fisico',b:6,rew:'recovery',fail:'foul',n:16,w:(c)=>c.press>=2?1.0:0.6},
   {k:'anticipo',g:'lunge',l:'🧠 Anticipa sul primo controllo',st:'mentalità',b:7,rew:'recovery',fail:'through',n:12,w:(c)=>1.0},
   {k:'raddoppio',g:'lunge',l:'🤼 Raddoppio coordinato col compagno',st:'tecnica',b:6,rew:'recovery',fail:'through',n:14,w:(c)=>c.press>=1?0.8:0.3},

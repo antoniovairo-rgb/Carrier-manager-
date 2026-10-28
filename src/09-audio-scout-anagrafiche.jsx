@@ -1226,6 +1226,15 @@ function titleClinchedNow(p){try{
 }catch(_e){return null;}}
 function rivalSeasonGoals(p,opts){try{
   const r=p&&p.rival;if(!r||!r.name)return 0;
+  /* [giro 96b D3 — collaudo 177 n.2: rivale 10 gol nel gala, 8 nel bilancio] A STAGIONE CHIUSA IL CONTO E' QUELLO
+     ARCHIVIATO. Il seme del conto contiene l'OVR del rivale, e la chiusura di stagione (seasonClosedAt) lo fa
+     crescere (61→63 nel salvataggio del collaudo): ogni schermata che ricalcolava DOPO la chiusura usava un seme
+     diverso e dava un altro numero (8) da quello archiviato e mostrato nel gala (10). Ora, chiusa la stagione,
+     tutte leggono la riga dell'albo del rivale per questa stagione: una sola fonte. Rosso __CPM_NO_G96B_D3. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D3)&&(p.seasonClosedAt|0)>0&&(p.seasonClosedAt|0)===(p.season|0)){
+    const _h=(r.history||[]).filter(x=>x&&(x.season|0)===(p.season|0)).slice(-1)[0];
+    if(_h&&_h.goals!=null)return _h.goals|0;
+  }
   const cal=(p.calendar||[]).filter(m=>m&&!m.type);
   const M=Math.max(1,cal.length||34);
   const played=(opts&&opts.full)?M:Math.max(0,Math.min(M,cal.length?cal.filter(m=>m.played).length:Math.round((((p.week||1)-1)*M)/38)));
