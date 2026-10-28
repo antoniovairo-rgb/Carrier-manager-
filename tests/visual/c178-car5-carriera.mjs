@@ -127,7 +127,7 @@ while (it < MAXIT) {
     const cart = (await bottoni(page)).filter(b => /→\s*$/.test(b) && !/Avvia Stagione|Vivi la Settimana|Inizia Stagione/.test(b));
     for (const c of cart) { const k = 'carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30); if ((volte.get(k) || 0) >= 2) continue; volte.set(k, (volte.get(k) || 0) + 1); jl('carte.jsonl', { s: P.season, w: P.week, carta: c }); const okc = await clickByText(page, c.slice(0, 24).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 2000); if (okc) { await sleep(900); break; } }
     if (cart.some(c => (volte.get('carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30)) || 0) >= 1) && (await overlay(page))) continue;
-    const ok = await clickByText(page, 'Chiudi la stagione|Vivi la Settimana|Sessione Riabilitazione|Riabilitazione|Avvia Stagione|Gioca vs|Gioca|Avanza|Prossima settimana', 2500);
+    const ok = await clickByText(page, 'Chiudi la stagione|Vivi la Settimana|Qualif\\.|Mondiale —|Europeo —|Coppa delle Nazioni —|Sessione Riabilitazione|Riabilitazione|Avvia Stagione|Gioca vs|Gioca|Avanza|Prossima settimana', 2500);
     if (!ok) { await clickByText(page, '^HOME$', 1500); const bs = await bottoni(page); if (it % 10 === 0) log('dashboard senza CTA', bs.slice(0, 8)); await sleep(800); }
     else await sleep(1000);
     continue;
