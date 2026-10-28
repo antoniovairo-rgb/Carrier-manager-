@@ -40,3 +40,163 @@
 {"s":1,"w":39,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","d":{"popularity":[57,58],"coachTrust":[100,99]}}
 {"s":1,"w":39,"tipo":"intervista","scelta":"Chiudi","d":{}}
 {"s":1,"w":39,"tipo":"impulso","scelta":"📱 Porte aperte","d":{"fatigue":[44,48],"popularity":[58,62],"coachTrust":[99,93]}}
+{"s":2,"w":1,"tipo":"impulso","scelta":"«Perfetto, ci conto sul serio.»","d":{"fatigue":[32,28]}}
+{"s":2,"w":1,"tipo":"intervista","scelta":"🤝 Diplomatico «Più rispetto per il lavoro quotidiano che non si vede. Non solo i risultat","toast":[],"d":{"popularity":[70,71],"coachTrust":[95,98]}}
+{"s":2,"w":1,"tipo":"intervista","scelta":"🤝 Diplomatico «A pensare prima di parlare, come in campo prima di passare.»","toast":["😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +4"],"d":{"popularity":[71,72],"coachTrust":[98,99]}}
+{"s":2,"w":1,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":2,"tipo":"impulso","scelta":"🎮 Ti rilassi con i compagni","toast":[],"d":{"fatigue":[45,39]}}
+{"s":2,"w":3,"tipo":"impulso","scelta":"😐 «È il calcio. Si va avanti»","toast":[],"d":{}}
+{"s":2,"w":3,"tipo":"impulso","scelta":"Non ora","toast":[],"d":{}}
+{"s":2,"w":3,"tipo":"impulso","scelta":"Gioca · parti dalla panchina","toast":[],"d":{}}
+{"s":2,"w":3,"tipo":"intervista","scelta":"🙏 Umile «Vengo per imparare e mettermi a disposizione»","toast":[],"d":{"coachTrust":[50,55]}}
+{"s":2,"w":3,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["⭐ Popolarità -2","🤝 Fiducia del mister +1"],"d":{"popularity":[72,70],"coachTrust":[55,56]}}
+{"s":2,"w":3,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":4,"tipo":"intervista","scelta":"🔥 Ambizioso «Fisicamente eravamo stanchi. Ma anche tatticamente potevamo fare meglio.»","toast":[],"d":{"morale":[97,98],"popularity":[70,63],"coachTrust":[56,49]}}
+{"s":2,"w":4,"tipo":"intervista","scelta":"🤝 Diplomatico «No, parlavo di me prima che degli altri.»","toast":["DOMANI IN EDICOLA · BRT 0-1 FC LYON","😄 Morale +2","⭐ Popolarità +2","🤝 Fiducia del mister -1"],"d":{"morale":[98,99],"popularity":[63,64],"coachTrust":[49,50]}}
+{"s":2,"w":4,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":4,"tipo":"impulso","scelta":"🔥 Rispondo in conferenza","toast":["-2 ⭐+3 🤝-4"],"d":{"morale":[99,97],"popularity":[64,66],"coachTrust":[50,46]}}
+{"s":2,"w":5,"tipo":"impulso","scelta":"📅 Rimandiamo di un mese","toast":[],"d":{"morale":[97,93],"fatigue":[43,40]}}
+{"s":2,"w":5,"tipo":"impulso","scelta":"Gioca · parti dalla panchina","toast":[],"d":{}}
+{"s":2,"w":6,"tipo":"intervista","scelta":"🤝 Diplomatico «Sempre qualcosa. Il mister individua le aree e noi lavoriamo per migliorar","toast":[],"d":{"morale":[96,99],"popularity":[66,67],"coachTrust":[46,53]}}
+{"s":2,"w":6,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["DOMANI IN EDICOLA · BRT 0-2 FC RENNESE","😄 Morale +3","🤝 Fiducia del mister +8"],"d":{"popularity":[67,65],"coachTrust":[53,54]}}
+{"s":2,"w":6,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":6,"tipo":"impulso","scelta":"🕹 Chiedo troppo, salta tutto","toast":["Personal trainer · livello 1 — +10% efficacia allenamenti, €700 a settimana"],"d":{"morale":[99,97]}}
+{"s":2,"w":6,"tipo":"impulso","scelta":"Non ora","toast":[],"d":{}}
+{"s":2,"w":6,"tipo":"impulso","scelta":"Gioca · parti dalla panchina","toast":[],"d":{}}
+{"s":2,"w":7,"tipo":"intervista","scelta":"🙏 Umile «Grande lavoro di tutta la squadra. Il portiere è stato straordinario.»","toast":[],"d":{"morale":[97,100],"popularity":[65,66],"coachTrust":[54,62]}}
+{"s":2,"w":7,"tipo":"intervista","scelta":"🤝 Diplomatico «Con serenità: la squadra ha tanti leader.»","toast":["DOMANI IN EDICOLA · BRT 1-0 FC MONTPEL","😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +9"],"d":{"popularity":[66,67],"coachTrust":[62,63]}}
+{"s":2,"w":7,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":7,"tipo":"impulso","scelta":"💪 Accetto subito — esperienza preziosa","toast":["+7 💪+7 ⚡+6 🤝+5"],"d":{"form":[93,95],"fatigue":[29,35],"coachTrust":[63,68]}}
+{"s":2,"w":8,"tipo":"intervista","scelta":"🤝 Diplomatico «Fatta di routine, sacrifici e lavoro. Ma è ciò che amo. Non cambierei null","toast":[],"d":{"morale":[97,100],"popularity":[67,69],"coachTrust":[68,72]}}
+{"s":2,"w":8,"tipo":"intervista","scelta":"🔥 Ambizioso «La personalità. Ho chiesto la palla anche nei momenti difficili.»","toast":["DOMANI IN EDICOLA · BRT 3-0 FC MARSEILLE","😄 Morale +6","⭐ Popolarità +7","🤝 Fiducia del mister +4"],"d":{"popularity":[69,70]}}
+{"s":2,"w":8,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":9,"tipo":"impulso","scelta":"🍻 Basta una cena insieme","toast":[],"d":{"bankBalance":[45782,41782]}}
+{"s":2,"w":10,"tipo":"intervista","scelta":"🤝 Diplomatico «Un'emozione speciale ogni volta. L'energia del pubblico cambia tutto.»","toast":[],"d":{"popularity":[70,73],"coachTrust":[72,76]}}
+{"s":2,"w":10,"tipo":"intervista","scelta":"🤝 Diplomatico «La continuità: ho fatto le cose semplici per novanta minuti.»","toast":["😄 Morale +6","⭐ Popolarità +9","🤝 Fiducia del mister +5"],"d":{"popularity":[73,74],"coachTrust":[76,77]}}
+{"s":2,"w":10,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":11,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":2,"w":11,"tipo":"impulso","scelta":"Simula e avanza la settimana","toast":[],"d":{"form":[93,91],"morale":[99,97],"fatigue":[43,25],"bankBalance":[48596,52003],"value":[2.93,2.94]}}
+{"s":2,"w":12,"tipo":"impulso","scelta":"📝 Chiarisco con un comunicato","toast":[],"d":{"morale":[97,100],"popularity":[75,76]}}
+{"s":2,"w":13,"tipo":"intervista","scelta":"🤝 Diplomatico «Con serietà e umiltà. Le aspettative alte significano che ti considerano f","toast":[],"d":{"morale":[96,100],"popularity":[76,77],"coachTrust":[77,82]}}
+{"s":2,"w":13,"tipo":"intervista","scelta":"🔥 Ambizioso «Che i fatti fanno più rumore delle frasi fatte.»","toast":["DOMANI IN EDICOLA · BRT 1-0 FC CLERMONT","😄 Morale +5","⭐ Popolarità +6","🤝 Fiducia del mister +5"],"d":{"popularity":[77,78]}}
+{"s":2,"w":13,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":13,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":2,"w":14,"tipo":"impulso","scelta":"🎂 Esco a salutarli tutti","toast":[],"d":{"morale":[97,100],"fatigue":[25,28],"popularity":[78,81]}}
+{"s":2,"w":14,"tipo":"impulso","scelta":"Non ora","toast":[],"d":{}}
+{"s":2,"w":14,"tipo":"impulso","scelta":"Gioca · parti dalla panchina","toast":[],"d":{}}
+{"s":2,"w":14,"tipo":"impulso","scelta":"😤 Rispondi a tono","toast":[],"d":{"morale":[97,100],"popularity":[78,70]}}
+{"s":2,"w":15,"tipo":"impulso","scelta":"🙏 Ringrazio con un video","toast":[],"d":{"popularity":[70,71]}}
+{"s":2,"w":17,"tipo":"intervista","scelta":"🤝 Diplomatico «Un percorso di crescita costante. Il club e i compagni mi hanno aiutato mo","toast":[],"d":{"morale":[96,100],"popularity":[71,73],"coachTrust":[90,97]}}
+{"s":2,"w":17,"tipo":"intervista","scelta":"🤝 Diplomatico «Poco: la strada è giusta, serve continuità.»","toast":["DOMANI IN EDICOLA · BRT 0-1 FC STRASBURGO","😄 Morale +6","⭐ Popolarità +5","🤝 Fiducia del mister +8"],"d":{"coachTrust":[97,98]}}
+{"s":2,"w":17,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":17,"tipo":"impulso","scelta":"📺 Ci vado — occasione unica","toast":["-2 ⚡+4 ⭐+9"],"d":{"form":[88,86],"fatigue":[26,30],"popularity":[73,76]}}
+{"s":2,"w":18,"tipo":"impulso","scelta":"🧊 Non è roba per me","toast":[],"d":{"morale":[97,98]}}
+{"s":2,"w":19,"tipo":"impulso","scelta":"✅ Firmo — è riconoscimento","toast":[],"d":{"morale":[97,100],"popularity":[76,79],"value":[3.55,3.5999999999999996]}}
+{"s":2,"w":20,"tipo":"impulso","scelta":"😐 Resto al metodo classico","toast":["Personal trainer · livello 2 — +15% efficacia allenamenti, €1,3 mila a settimana"],"d":{"fatigue":[45,39]}}
+{"s":2,"w":21,"tipo":"impulso","scelta":"🥦 Accetto e mi adatto","toast":[],"d":{"form":[82,80],"morale":[100,98],"bankBalance":[82106,94106]}}
+{"s":2,"w":22,"tipo":"intervista","scelta":"🙏 Umile «Non è un segreto, è passione vera. Ci crediamo fino all'ultimo respiro.»","toast":[],"d":{"morale":[96,100],"popularity":[79,81]}}
+{"s":2,"w":22,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["DOMANI IN EDICOLA · BRT 2-1 FC NANTESE","😄 Morale +5","⭐ Popolarità +3","🤝 Fiducia del mister +9"],"d":{"popularity":[81,79]}}
+{"s":2,"w":22,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":22,"tipo":"impulso","scelta":"🏋️ Al coperto — tecnica e tattica senza rischi","toast":["+3 ⚡+7"],"d":{"form":[88,91],"fatigue":[37,44]}}
+{"s":2,"w":23,"tipo":"impulso","scelta":"🌧 Esco a lavorare duro","toast":[],"d":{"form":[89,94],"fatigue":[26,32]}}
+{"s":2,"w":25,"tipo":"impulso","scelta":"«È colpa del sistema di gioco.»","toast":[],"d":{"morale":[100,98],"coachTrust":[100,97]}}
+{"s":2,"w":26,"tipo":"intervista","scelta":"🔥 Ambizioso «Non mi pesa. Sono abituato alle aspettative. Le trasformo in carburante.»","toast":[],"d":{"morale":[99,100],"popularity":[81,82],"coachTrust":[97,94]}}
+{"s":2,"w":26,"tipo":"intervista","scelta":"🤝 Diplomatico «La responsabilità è del gruppo, e io ne faccio parte.»","toast":["DOMANI IN EDICOLA · BRT 2-1 FC MONTPEL","😄 Morale +8","⭐ Popolarità +6","🤝 Fiducia del mister -1"],"d":{"popularity":[82,83],"coachTrust":[94,96]}}
+{"s":2,"w":26,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":26,"tipo":"impulso","scelta":"❤️ Aggiungo gli scarpini autografati","toast":["+5 ⭐+9"],"d":{"popularity":[83,85],"bankBalance":[108341,103341]}}
+{"s":2,"w":27,"tipo":"impulso","scelta":"🚪 No grazie, prima il campo","toast":[],"d":{"coachTrust":[96,99]}}
+{"s":2,"w":28,"tipo":"impulso","scelta":"🤝 Gli dedico cinque minuti","toast":[],"d":{"morale":[97,99],"fatigue":[30,31],"popularity":[85,86]}}
+{"s":2,"w":29,"tipo":"impulso","scelta":"🤝 Passo — voglio restare autentico","toast":["+5 🤝+3"],"d":{"morale":[97,100],"coachTrust":[96.8,99.8]}}
+{"s":2,"w":30,"tipo":"impulso","scelta":"😏 Dico che decido a fine stagione","toast":[],"d":{"popularity":[86,87],"coachTrust":[99.8,97.8]}}
+{"s":2,"w":31,"tipo":"intervista","scelta":"🤝 Diplomatico «Sa motivare il gruppo e ha una chiarezza tattica invidiabile. Lo rispettia","toast":[],"d":{"morale":[97,100],"popularity":[87,88],"coachTrust":[97.8,100]}}
+{"s":2,"w":31,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["DOMANI IN EDICOLA · BRT 1-0 FC TOLOSA","😄 Morale +4","⭐ Popolarità +1","🤝 Fiducia del mister +11"],"d":{"popularity":[88,86]}}
+{"s":2,"w":31,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":31,"tipo":"impulso","scelta":"😶 Un po' mi rode","toast":["-2 💪+2"],"d":{"morale":[100,98]}}
+{"s":2,"w":33,"tipo":"intervista","scelta":"🎙️ Accetto — voglio raccontarmi","toast":["+7 ⭐+14"],"d":{"morale":[97,100],"popularity":[86,89],"value":[5.44,5.5200000000000005]}}
+{"s":2,"w":34,"tipo":"impulso","scelta":"🚫 Rifiuto netto — è la regola","toast":[],"d":{"morale":[97,100]}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"🤝 Diplomatico «Molto competitivo. Non ci sono partite facili. Ogni gara richiede il massi","toast":[],"d":{"morale":[99,100],"popularity":[89,90]}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"🔥 Ambizioso «Che i fatti fanno più rumore delle frasi fatte.»","toast":["DOMANI IN EDICOLA · BRT 4-0 FC LE HAVRE","😄 Morale +4","⭐ Popolarità +5","🤝 Fiducia del mister +4"],"d":{"popularity":[90,91]}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"🤝 Diplomatico «Di non smettere mai di imparare, anche dai più giovani. Saggio.»","toast":[],"d":{"morale":[99,100],"popularity":[89,90]}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"🤝 Diplomatico «La guardo, ma la classifica si fa una partita alla volta.»","toast":["DOMANI IN EDICOLA · BRT 3-1 FC LE HAVRE","😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +9"],"d":{"popularity":[90,91]}}
+{"s":2,"w":35,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":35,"tipo":"impulso","scelta":"👂 Ascolto la proposta","toast":["+3 🤝-4"],"d":{"coachTrust":[100,96],"value":[5.54,5.74]}}
+{"s":2,"w":36,"tipo":"impulso","scelta":"❌ Non ho tempo per questo","toast":["🔥 Grazie, mister! Voglio cont… 🤝+8 😄+9"],"d":{"morale":[100,98]}}
+{"s":2,"w":37,"tipo":"intervista","scelta":"🙏 Umile «Ci sono alti e bassi normali. L'importante è non mollare mai come gruppo.»","toast":[],"d":{"popularity":[91,92]}}
+{"s":2,"w":37,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["😄 Morale +4","⭐ Popolarità +1","🤝 Fiducia del mister +7"],"d":{"popularity":[92,90]}}
+{"s":2,"w":37,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":2,"w":38,"tipo":"impulso","scelta":"🎙️ Registro un saluto per loro","toast":[],"d":{"morale":[99,100],"popularity":[90,91]}}
+{"s":2,"w":39,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":1,"tipo":"intervista","scelta":"🤝 Diplomatico «Fanno parte del gioco. Prendo quelle costruttive e ignoro il resto. Avanti","toast":[],"d":{}}
+{"s":3,"w":1,"tipo":"intervista","scelta":"🤝 Diplomatico «A pensare prima di parlare, come in campo prima di passare.»","toast":["😄 Morale +4","⭐ Popolarità +3","🤝 Fiducia del mister +5"],"d":{}}
+{"s":3,"w":1,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":2,"tipo":"intervista","scelta":"🙏 Umile «Che io per primo devo dare di più.»","toast":["DOMANI IN EDICOLA · BRT 1-1 FC NANTESE","😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +8"],"d":{}}
+{"s":3,"w":2,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":2,"tipo":"intervista","scelta":"🤝 Diplomatico «Fondamentale. Se non ti diverti non esprimi il meglio. È la base di tutto.","toast":[],"d":{}}
+{"s":3,"w":2,"tipo":"intervista","scelta":"🔥 Ambizioso «La personalità. Ho chiesto la palla anche nei momenti difficili.»","toast":["😄 Morale +7","⭐ Popolarità +7","🤝 Fiducia del mister +4"],"d":{}}
+{"s":3,"w":2,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":3,"tipo":"impulso","scelta":"🔒 «Sono concentrato qui»","toast":[],"d":{"morale":[98,99]}}
+{"s":3,"w":4,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":5,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":5,"tipo":"intervista","scelta":"🙏 Umile «Molto bene. Ogni giorno imparo qualcosa di nuovo. Sono grato di essere qui.»","toast":[],"d":{}}
+{"s":3,"w":5,"tipo":"intervista","scelta":"🙏 Umile «Preferisco che parlino i fatti, anche se ci mettono di più.»","toast":["DOMANI IN EDICOLA · BRT 1-1 FC NIZZA","😄 Morale +6","⭐ Popolarità +6","🤝 Fiducia del mister +9"],"d":{}}
+{"s":3,"w":5,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":6,"tipo":"impulso","scelta":"😅 Ridi imbarazzato e cambi argomento","toast":["Personal trainer · livello 3 — +20% efficacia allenamenti, €2 mila a settimana"],"d":{"morale":[98,100]}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"🔥 Ambizioso «Le aspettative alte sono il mio pane. Sono un giocatore che ama le grandi sf","toast":[],"d":{"coachTrust":[100,97]}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"🔥 Ambizioso «Era uno stimolo. Chi vuole vincere lo prende così.»","toast":["😄 Morale +8","⭐ Popolarità +8","🤝 Fiducia del mister -5"],"d":{"coachTrust":[97,95]}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"🤝 Diplomatico «Quanto lavoro fuori dal campo. La gente vede i 90 minuti, non le ore dietr","toast":[],"d":{"coachTrust":[95,100]}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"🙏 Umile «Poco. Se penso troppo avanti, sbaglio la prossima.»","toast":["DOMANI IN EDICOLA · BRT 0-0 FC PELVANNI","😄 Morale +6","⭐ Popolarità +6","🤝 Fiducia del mister +7"],"d":{}}
+{"s":3,"w":7,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":9,"tipo":"impulso","scelta":"🎂 Esco a salutarli tutti","toast":[],"d":{"morale":[97,100],"fatigue":[43,46]}}
+{"s":3,"w":10,"tipo":"impulso","scelta":"🚶 Non mi interessa","toast":[],"d":{"form":[87,88],"morale":[97,94]}}
+{"s":3,"w":10,"tipo":"intervista","scelta":"🙏 Umile «Non è sempre facile. Ma ho persone accanto che mi aiutano a stare bene.»","toast":[],"d":{"morale":[93,97]}}
+{"s":3,"w":10,"tipo":"intervista","scelta":"🔥 Ambizioso «Bene. Mi piace averla, e mi piace portarla.»","toast":["DOMANI IN EDICOLA · BRT 1-2 MANCHESTER ROVERS","😄 Morale +6","⭐ Popolarità +6","🤝 Fiducia del mister +4"],"d":{"morale":[97,99]}}
+{"s":3,"w":10,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":11,"tipo":"impulso","scelta":"📺 Accetto — è riconoscimento","toast":["+5 ⭐+14"],"d":{"fatigue":[28,33],"value":[9.42,9.5]}}
+{"s":3,"w":12,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":13,"tipo":"impulso","scelta":"🔥 Rispondo per le rime","toast":[],"d":{"morale":[100,97],"coachTrust":[95.7,91.7]}}
+{"s":3,"w":14,"tipo":"intervista","scelta":"🔥 Ambizioso «Il più tattico del mondo. Chi sa giocare qui sa giocare ovunque. Sono pronto","toast":[],"d":{"morale":[97,100],"coachTrust":[91.7,89.7]}}
+{"s":3,"w":14,"tipo":"intervista","scelta":"🔥 Ambizioso «Più alto di quello che mi darete voi, come sempre.»","toast":["DOMANI IN EDICOLA · BRT 2-1 FC RENNESE","😄 Morale +8","⭐ Popolarità +7","🤝 Fiducia del mister -3"],"d":{"coachTrust":[89.7,88.7]}}
+{"s":3,"w":14,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":14,"tipo":"impulso","scelta":"🚙 Tengo la mia, niente distrazioni","toast":["-1 🤝+4"],"d":{"morale":[100,99],"coachTrust":[88.7,92.7]}}
+{"s":3,"w":15,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":16,"tipo":"intervista","scelta":"🤝 Diplomatico «Tutti lo sono a modo loro. Ogni ruolo del campo è fondamentale per il coll","toast":[],"d":{"morale":[96,100]}}
+{"s":3,"w":16,"tipo":"intervista","scelta":"🔥 Ambizioso «Che i fatti fanno più rumore delle frasi fatte.»","toast":["DOMANI IN EDICOLA · BRT 1-3 FC LILLESE","😄 Morale +5","⭐ Popolarità +6","🤝 Fiducia del mister +6"],"d":{}}
+{"s":3,"w":16,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":17,"tipo":"impulso","scelta":"😐 Era solo un sogno. Al lavoro.","toast":[],"d":{"form":[81,83],"fatigue":[38,34]}}
+{"s":3,"w":18,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":19,"tipo":"impulso","scelta":"🙈 Non mi immischio","toast":[],"d":{}}
+{"s":3,"w":20,"tipo":"intervista","scelta":"🤝 Diplomatico «Dipende dall'umore. A volte ritmo, a volte calma. L'importante è entrare n","toast":[],"d":{"morale":[98,100]}}
+{"s":3,"w":20,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","toast":["DOMANI IN EDICOLA · BRT 1-1 FC CAEN","😄 Morale +6","⭐ Popolarità +7","🤝 Fiducia del mister +2"],"d":{"coachTrust":[100,99]}}
+{"s":3,"w":20,"tipo":"intervista","scelta":"Chiudi","toast":["Coppa · Quarti di Finale: ❌ ELIMINATO vs FC Caen (1-1)"],"d":{}}
+{"s":3,"w":20,"tipo":"impulso","scelta":"💸 Ci sto","toast":[],"d":{"coachTrust":[99,97],"bankBalance":[42435,50435]}}
+{"s":3,"w":21,"tipo":"impulso","scelta":"🍕 Sto bene così","toast":[],"d":{}}
+{"s":3,"w":22,"tipo":"impulso","scelta":"🕊 Mi siedo a un tavolo nuovo, in mezzo","toast":[],"d":{"fatigue":[33,35]}}
+{"s":3,"w":23,"tipo":"impulso","scelta":"📵 Rimandiamo a dopo la partita","toast":[],"d":{"morale":[95,93],"coachTrust":[97,100]}}
+{"s":3,"w":24,"tipo":"intervista","scelta":"🔥 Ambizioso «Non mi preparo: sono già pronto. La pressione mi esalta, non mi blocca.»","toast":[],"d":{"morale":[97,100],"coachTrust":[100,97]}}
+{"s":3,"w":24,"tipo":"intervista","scelta":"🔥 Ambizioso «È un messaggio per tutti: noi ci siamo.»","toast":["DOMANI IN EDICOLA · BRT 2-1 FC CAEN","😄 Morale +10","⭐ Popolarità +8","🤝 Fiducia del mister -4"],"d":{"coachTrust":[97,96]}}
+{"s":3,"w":24,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":25,"tipo":"intervista","scelta":"🤝 Diplomatico «È una sfida che mi aiuta a crescere. Il fisico lo costruisco col tempo.»","toast":[],"d":{"morale":[94,98]}}
+{"s":3,"w":25,"tipo":"intervista","scelta":"🙏 Umile «Che io per primo devo dare di più.»","toast":["😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +7"],"d":{"morale":[98,99]}}
+{"s":3,"w":25,"tipo":"intervista","scelta":"Chiudi","toast":["Sto benissimo fisicamente, p → +5 fiducia"],"d":{}}
+{"s":3,"w":26,"tipo":"impulso","scelta":"📱 Guardi video motivazionali fino all'alba","toast":["Sto benissimo fisicamente, p → +5 fiducia"],"d":{"morale":[97,100],"fatigue":[19,29]}}
+{"s":3,"w":27,"tipo":"impulso","scelta":"🎁 Gli mando maglia e videomessaggio","toast":[],"d":{"morale":[98,100],"bankBalance":[68334,66334]}}
+{"s":3,"w":28,"tipo":"intervista","scelta":"🔥 Ambizioso «Personalmente? Che possiamo fare molto di più.»","toast":["DOMANI IN EDICOLA · BRT 5-0 FC TROYES","😄 Morale +8","⭐ Popolarità +12","🤝 Fiducia del mister +4"],"d":{"coachTrust":[100,99]}}
+{"s":3,"w":28,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":28,"tipo":"impulso","scelta":"🏋️ Mi alleno da solo — non mi fermo mai","toast":["+6 ⚡+8 🤝+3"],"d":{"form":[92,95],"fatigue":[50,58],"coachTrust":[99,100]}}
+{"s":3,"w":29,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":30,"tipo":"impulso","scelta":"🤝 Lo aiuto, senza dirlo a nessuno","toast":[],"d":{"bankBalance":[74005,59005]}}
+{"s":3,"w":31,"tipo":"impulso","scelta":"🏃 Passo — ho bisogno di recuperare","toast":[],"d":{"morale":[98,100],"fatigue":[43,35]}}
+{"s":3,"w":33,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":34,"tipo":"intervista","scelta":"🤝 Diplomatico «Ogni partita ha la sua storia. Ma quelle con i compagni migliori sono le p","toast":[],"d":{"coachTrust":[88,92]}}
+{"s":3,"w":34,"tipo":"intervista","scelta":"🤝 Diplomatico «A pensare prima di parlare, come in campo prima di passare.»","toast":["😄 Morale +6","⭐ Popolarità +6","🤝 Fiducia del mister +5"],"d":{"coachTrust":[92,93]}}
+{"s":3,"w":34,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":35,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":3,"w":36,"tipo":"impulso","scelta":"🤝 Gli dico di tenerla ancora","toast":[],"d":{}}
+{"s":3,"w":37,"tipo":"impulso","scelta":"🚿 Preferisco la doccia calda normale","toast":[],"d":{"morale":[96,100],"fatigue":[43,36]}}
+{"s":3,"w":38,"tipo":"intervista","scelta":"🙏 Umile «Mi sento bene e cerco di trasformarlo in gioco. Non voglio sprecare questo momen","toast":[],"d":{"form":[90,93],"morale":[90,95],"coachTrust":[91.6,98.6]}}
+{"s":3,"w":38,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["DOMANI IN EDICOLA · BRT 2-3 FC MONACO","😄 Morale +5","⭐ Popolarità +3","🤝 Fiducia del mister +8","💪 Forma +3"],"d":{"popularity":[100,98],"coachTrust":[98.6,99.6]}}
+{"s":3,"w":38,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":3,"w":38,"tipo":"impulso","scelta":"🎉 Organizzo tutto io","toast":["+5"],"d":{"morale":[95,100],"bankBalance":[97529,89529]}}
+{"s":3,"w":39,"tipo":"impulso","scelta":"🏦 Tengo i soldi fermi","toast":[],"d":{}}

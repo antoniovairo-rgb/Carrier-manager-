@@ -45,9 +45,9 @@ export const leggiEsito = page => evalSafe(page, () => { const e = document.quer
 export const statoHL = page => evalSafe(page, () => { try { const s = window.__CPM_STATE ? window.__CPM_STATE() : null; const o = window.__CPM_OUTCOME || null; return { act: s && s.act, ball: s && s.ball && { x: s.ball.x, y: s.ball.y, h: s.ball.worldY, held: s.ball.heldBy }, clock: s && s.clock, outcome: o && { text: o.text, ok: o.ok, key: o.outKey, label: o.actionLabel } }; } catch (e) { return { err: String(e) }; } });
 
 /* ───────── finestre sovrapposte (modali, interviste, offerte): lettura generica e clic come un giocatore ───────── */
-export const overlay = page => evalSafe(page, () => {
+const overlayRaw = page => evalSafe(page, () => {
   const vis = e => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
-  const fx = [...document.querySelectorAll('body *')].filter(e => { const s = getComputedStyle(e); if (s.position !== 'fixed' || !vis(e)) return false; const r = e.getBoundingClientRect(); return r.width >= 280 && r.height >= 220 && (parseInt(s.zIndex) || 0) >= 50; });
+  const fx = [...document.querySelectorAll('body *')].filter(e => { const s = getComputedStyle(e); if (s.position !== 'fixed' || !vis(e)) return false; const r = e.getBoundingClientRect(); return r.width >= 240 && r.height >= 150 && (parseInt(s.zIndex) || 0) >= 5 && !(r.height < 130); });
   if (!fx.length) return null;
   fx.sort((a, b) => (parseInt(getComputedStyle(b).zIndex) || 0) - (parseInt(getComputedStyle(a).zIndex) || 0));
   const o = fx[0];
@@ -55,3 +55,5 @@ export const overlay = page => evalSafe(page, () => {
   const opz = cand.map(e => { const r = e.getBoundingClientRect(); return { txt: (e.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 90), x: r.x + r.width / 2, y: r.y + r.height / 2, dis: !!e.disabled, w: r.width }; });
   return { dc: o.dataset.cpm || null, z: parseInt(getComputedStyle(o).zIndex) || 0, testo: (o.innerText || '').replace(/\n+/g, ' / ').slice(0, 700), opz };
 });
+
+export const overlay = page => overlayRaw(page).then(x => (x && x.__err) ? null : x);
