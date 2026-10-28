@@ -16228,7 +16228,8 @@ function ThreeMatchView(props){
         o.c=[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)];
         {let n=0,inP=0,cielo=0;const cp=camera.position;for(let i=0;i<12;i++)for(let j=0;j<12;j++){n++;const v=new V(-1+(i+0.5)/6,-1+(j+0.5)/6,0.5).unproject(camera).sub(cp);
           if(v.y>=-1e-4){cielo++;continue;}const t=-cp.y/v.y,x=cp.x+v.x*t,z=cp.z+v.z*t;if(Math.abs(x)<=51&&Math.abs(z)<=35.5)inP++;}
-         o.campo=+(inP/n).toFixed(3);o.cielo=+(cielo/n).toFixed(3);}
+         o.campo=+(inP/n).toFixed(3);o.cielo=+(cielo/n).toFixed(3);
+         {const fw=new V();camera.getWorldDirection(fw);const hz=Math.hypot(fw.x,fw.z)||1;const v=new V(cp.x+fw.x/hz*1000,cp.y,cp.z+fw.z/hz*1000).project(camera);o.oriz=+Math.max(0,Math.min(1,(1-v.y)/2)).toFixed(3);}}
         const corpi=[];const gl=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars.length)?glbAvatars:null;
         if(gl){gl.forEach((a,i)=>{if(a&&a.root&&a.root.visible)corpi.push([+a.root.position.x.toFixed(2),+a.root.position.z.toFixed(2),a.proc===hero?'E':(a._isGk?'G'+i:i)]);});}
         else{(sr.current.players||[]).forEach((pp,i)=>{const m=pp&&pp.mesh;if(m&&m!==hero&&m.visible!==false)corpi.push([+m.position.x.toFixed(2),+m.position.z.toFixed(2),i]);});if(hero&&hero.visible!==false)corpi.push([+hero.position.x.toFixed(2),+hero.position.z.toFixed(2),'E']);}
@@ -16240,7 +16241,7 @@ function ThreeMatchView(props){
           const ga=gl&&gl.find(a=>a&&a.proc===awayGkMesh);if(ga){o.gkG=ga._gName||null;o.gkW=+((ga._gw||0).toFixed(2));try{o.gkY=+ga.root.position.y.toFixed(2);}catch(_e){}}}
         if(_ceremonyCarpet&&_ceremonyCarpet.visible){try{_ceremonyCarpet.updateMatrixWorld(true);const up=new V(0,1,0).transformDirection(_ceremonyCarpet.matrixWorld);const fw=new V();camera.getWorldDirection(fw);const h=Math.hypot(fw.x,fw.z)||1;
           const v=new V(0,0.07,0).project(camera);o.tap=[+((up.x*fw.x+up.z*fw.z)/h).toFixed(3),(v.z<1&&Math.abs(v.x)<1.2&&Math.abs(v.y)<1.2)?1:0];}catch(_e){}}
-        o.arc=!!ballArcActive;o.act=(typeof actType!=='undefined')?(actType||null):null;o.k96=sr.current._k96?sr.current._k96.n:0;
+        o.arc=!!ballArcActive;o.act=(typeof actType!=='undefined')?(actType||null):null;o.k96=sr.current._k96?sr.current._k96.n:0;o.ws=sr.current._ws96||'';
         return o;}catch(_e){return{err:String(_e&&_e.message||_e)};}};
       // [6.40.0 diag] sonda GESTO EROE (test-only): legge le rotazioni degli arti del protagonista → serve a
       //   misurare oggettivamente se l'animazione d'azione (cross/dribble/tiro) parte davvero o «resta fermo».
@@ -16846,6 +16847,7 @@ function ThreeMatchView(props){
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      {const _K96=sr.current._k96;if(_K96&&_K96.on){try{camera.quaternion.copy(_K96.q);if(camera.fov!==_K96.fov){camera.fov=_K96.fov;camera.updateProjectionMatrix();}camera.updateMatrixWorld(true);}catch(_e){}_K96.on=0;}}/* [giro 96a] la regia riparte dalla SUA camera: la correzione del quadro (vedi «QUADRO DELL'EROE») vale solo per il fotogramma disegnato */
       const __w266c=(tg)=>{try{const W=sr.current._w266m;if(!W||typeof window==='undefined'||!window.__CPM_W266)return;const L=(window.__CPM_W266T=window.__CPM_W266T||[]);if(L.length>6000)return;for(const ii in W.ms){const mm=W.ms[ii];L.push([W.f,tg,+ii,+(mm.position.x+50).toFixed(1),+(mm.position.z/0.68+50).toFixed(1),(propsRef.current&&propsRef.current.matchPhase)||'']);}}catch(_e){}};/* [giro 43 PO-266] testimone solo sonde */
       if(sr.current._w266m){sr.current._w266m.f++;if(sr.current._w266m.f>400)sr.current._w266m=null;}__w266c('S');
       /* [7.917.0 — F1] SOSPENSIONE PER IL CAMPO 2D. Fra un highlight e l'altro la scena 3D non si vede: il
@@ -21031,6 +21033,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             const _pre613=(typeof window!=='undefined'&&window.__CPM_BV613!==undefined)?{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2)}:null;/* [7.613.0] dov'era il pallone PRIMA di questa scrittura: se fra il frame scorso e questo l'ha mosso un ALTRO scrittore, il salto e' suo, non del volo */
             ball.position.x=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(_bxg):clamp(G2X(_bxg),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);/* [7.533.0 MP-0e H2] clamp specchio dello scrittore 13 (nota al sito 11): il volo dichiarato puo' puntare 98,6 game, la palla muore SULLA linea */ball.position.z=G2Z(_byg);if((sr.current._ws524=13)&&sr.current._bj0)(sr.current._bj0.src='buildup-volo',sr.current._bj0.srcs.push('buildup-volo'));
+            /* [giro 96a PO-299 D11 — IL VOLO DI COSTRUZIONE HA UNA VELOCITA' DA PALLONE. Rosso __CPM_NO_G96D11]
+               MISURATO (scena3d-96, scrittore dichiarato nel fotogramma): i salti del pallone del collaudo (gi16 cross e intercetto,
+               gi100, gi89: 3,0-3,6u in 0,05 s di scena) sono TUTTI di questo scrittore, sul ritorno dell'uno-due verso l'eroe: il
+               piano del beat percorre 10-11u in ~0,2 s con la sua rampa, 60-72 u/s di punta — un pallone che a schermo «sparisce e
+               ricompare». Sui beat di VOLO (non conduzione: li' il pallone sta al piede del portatore, 7.613) il pallone insegue il
+               punto del piano a non piu' di 48 u/s: il ritardo che ne nasce sta sotto l'unita' alla fine del beat. */
+            if(sg.kind!=='carry'&&sg.kind!=='dribble'&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D11)){const _ddx=ball.position.x-_bx229,_ddz=ball.position.z-_bz229,_dd=Math.hypot(_ddx,_ddz),_mx=48*Math.max(aDt,1e-3);
+              if(_dd>_mx){ball.position.x=_bx229+_ddx/_dd*_mx;ball.position.z=_bz229+_ddz/_dd*_mx;}}
             /* [7.613.0 strumentazione, solo collaudo] IL VOLO DI COSTRUZIONE SI RACCONTA FRAME PER FRAME.
                COLLAUDO PO (SIT #10, dal DISPOSITIVO a 60 fps, quindi non un singhiozzo del laboratorio):
                «SALTO del pallone di 8,1 unita' in 32 ms, scrittore buildup-volo». Un lerp non salta da solo:
@@ -23432,6 +23442,27 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           tLx+=(_hx5-tLx)*_wL5;tLy+=((_hy5+0.2)-tLy)*_wL5;tLz+=(_hz5-tLz)*_wL5;
         }
       }/* soglia 10u: a 18 la panoramica partiva a volo già a metà (misurati ancora 3-4 campioni fuori quadro nel primo secondo); sotto i 10u palla ed eroe stanno comunque nello stesso quadro */
+      /* [giro 96a PO-299 D3 — L'INQUADRATURA A DUE SULLE PALLE LUNGHE. Rosso __CPM_NO_G96D3]
+         MISURATO (scena3d-96, gi15 «Giocata corta» al telefono): l'eroe batte da (23,28) e il pallone finisce in porta a (39,4), 29u
+         piu' in la'; la camera restava di lato all'eroe a 12u (pallone a ndc x -3..-5, cioe' tre quadri fuori) e poi vagava sul campo
+         vuoto (x 11 -> 0,4 -> 13 in tre secondi): eroe fuori nel 47-59% dei fotogrammi, esito mai visto. Di lato, in un quadro
+         verticale, eroe e pallone a 29u non ci stanno con nessuna ottica. DIETRO l'eroe, sulla linea pallone-eroe, ci stanno tutti e
+         due per costruzione: sono allineati con lo sguardo. Sull'esito, quando il pallone si allontana dall'eroe oltre 10u (piazzati,
+         cross, lanci), il bersaglio della camera scivola — con un peso che cresce da 10 a 16u di distanza, quindi senza salti — su
+         un punto 13,5u dietro l'eroe e 5u in alto, entro i bordi del terreno, che guarda a meta' fra l'eroe e il pallone. Esclusi gli
+         highlight difensivi (la storia e' chi interviene, 7.482) e il gol dell'eroe stesso vicino alla porta (pallone entro 10u). */
+      if(isResult&&hero&&ball&&!P.hlDef&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D3)){
+        const _dx96=ball.position.x-hero.position.x,_dz96=ball.position.z-hero.position.z,_d96=Math.hypot(_dx96,_dz96);
+        const _w96=clamp((_d96-10)/6,0,1);
+        if(_w96>0){const _ux=-_dx96/_d96,_uz=-_dz96/_d96;
+          const _px=clamp(hero.position.x+_ux*13.5,-53,53),_pz=clamp(hero.position.z+_uz*13.5,-37,37),_py=5;
+          const _lx=hero.position.x+_dx96*0.5,_lz=hero.position.z+_dz96*0.5;
+          const _dh=Math.hypot(hero.position.x-_px,hero.position.z-_pz),_db=Math.hypot(ball.position.x-_px,ball.position.z-_pz),_dl=Math.hypot(_lx-_px,_lz-_pz)||1;
+          const _dep=(Math.atan2(_py-0.9,Math.max(_dh,1))+Math.atan2(_py-Math.max(0.2,ball.position.y),Math.max(_db,1)))/2;
+          const _ly=_py-Math.tan(_dep)*_dl;
+          tPx+=(_px-tPx)*_w96;tPy+=(_py-tPy)*_w96;tPz+=(_pz-tPz)*_w96;
+          tLx+=(_lx-tLx)*_w96;tLy+=(_ly-tLy)*_w96;tLz+=(_lz-tLz)*_w96;}
+      }
       if(isHL&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&subEntryT<0&&subExitT<0&&hero&&hero.visible){
         const _dxC=hero.position.x-tPx,_dzC=hero.position.z-tPz,_dyC=(hero.position.y+1.1)-tPy;
         const _lxC=tLx-tPx,_lzC=tLz-tPz,_lyC=tLy-tPy;
@@ -25101,7 +25132,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          velocita' del pallone; nessun effetto senza l'interruttore. */
       if(typeof window!=='undefined'&&window.__CPM_SALTO274&&P.matchPhase==='hl_result'&&ballArcActive&&ballArcT>0.2*ballArcDur&&sr.current._s274!==P.hlSitKey&&sr.current._bj0){
         sr.current._s274=P.hlSitKey;ball.position.x+=25;sr.current._bj0.src='prova274';sr.current._bj0.srcs.push('prova274');}
-      if(sr.current._bj0){const _b0=sr.current._bj0;sr.current._bj0=null;try{window.__CPM_BJN478=(window.__CPM_BJN478||0)+1;
+      if(sr.current._bj0){const _b0=sr.current._bj0;sr.current._bj0=null;try{sr.current._ws96=(_b0.srcs||[]).join('+');window.__CPM_BJN478=(window.__CPM_BJN478||0)+1;
         if(window.__CPM_TIENI31ON&&propsRef.current&&propsRef.current.hlDef&&propsRef.current.matchPhase==='hl_result'){const _W=(window.__CPM_W31=window.__CPM_W31||[]);if(_W.length<6000)_W.push({k:propsRef.current.hlSitKey,s:_b0.srcs.join('+'),x:+(ball.position.x+50).toFixed(1),y:+(ball.position.z/0.68+50).toFixed(1),q:sr.current._post31?((sr.current._post31.win===hero?'E':'W')+(sr.current._post31.pres?'p':'')+(sr.current._post31.ok?'+':'-')):'',a:ballArcActive?1:0,pa:hlPostArcType||''});}/* [giro 31] testimone test-only: chi scrive il pallone nell'esito difensivo */
         /* [7.497.0 F2 — OSSERVAZIONE, NON ARBITRATO] Quanti sistemi hanno scritto il pallone in QUESTO
            fotogramma. L'audit ha contato 62 righe che ne scrivono la posizione senza un arbitro; qui si
@@ -25351,6 +25382,92 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){window.__CPM_PAN72={ph:_ph72||null,off:+_cur72.toFixed(1),H:_H72};}
       }catch(_e72){}
       if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_CAMSTEP93ON){try{const _R93=sr.current,_c93=camera.position;if(_R93._cp93){const _st93=Math.hypot(_c93.x-_R93._cp93.x,_c93.y-_R93._cp93.y,_c93.z-_R93._cp93.z);if(_st93>2.5){const W=(window.__CPM_CAMSTEP93=window.__CPM_CAMSTEP93||[]);if(W.length<60)W.push({t:Math.round(performance.now()),st:+_st93.toFixed(2),dtr:+((_R93._dtReal708||0)*1000).toFixed(0),dt:+(dt*1000).toFixed(0),ph:(propsRef.current||{}).matchPhase,snap:!!_R93._cutSnap,sc:!!_R93._sceneCut,cut:!!(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())});}}_R93._cp93={x:_c93.x,y:_c93.y,z:_c93.z};}catch(_e93){}}/* [PO-144 strumento, solo collaudo] passi di camera oltre 2,5u per fotogramma, con il passo reale */
+      /* [giro 96a PO-299 D2/D3/D8 — QUADRO DELL'EROE, ULTIMA PAROLA PRIMA DEL DISEGNO. Rossi __CPM_NO_G96D2 (tutto il blocco),
+         __CPM_NO_G96D3 (pallone d'esito), __CPM_NO_G96D8 (orizzonte e figurina)]
+         MISURATO (scena3d-96, GLB acceso, testimone __CPM_G96 con piedi E testa dell'eroe): sul PC 1440x900 l'eroe esce dal quadro
+         nel 5-22% dei fotogrammi (gi18 dribbling col corpo tagliato dal bordo basso, gi15 punizione 0,18-0,22), sul telefono le
+         punizioni gi15 lo perdono nel 47-59% e il pallone d'esito a fine scena nel 95-100% (gi15, gi64), e in tutti i formati un
+         terzo o piu' del quadro sta sopra l'orizzonte (0,33-0,42: tribuna, tabellone, cielo). La regia (otto passate, reti
+         post-lerp, freni dello sguardo) ragiona sul quadro verticale e quando il soggetto passa al pallone spegne le reti sull'eroe.
+         QUI non si aggiunge un'altra rete alla regia: la regia resta com'e' e questo blocco CORREGGE SOLO IL FOTOGRAMMA DISEGNATO
+         (orientamento e ottica), e la correzione si toglie all'inizio del fotogramma dopo (vedi la riga dopo requestAnimationFrame).
+         Nessuna memoria e nessuna retroazione: e' una funzione continua dello stato del fotogramma, quindi non puo' innescare il
+         dondolio dello sguardo (codice 007) che le reti a valle hanno sempre prodotto quando rimisuravano cio' che avevano corretto.
+         Priorita': (1) eroe intero (piedi e testa) dentro il quadro, rampa morbida dal 76% al 90% del semiquadro; (2) sull'esito il
+         pallone, anche allargando l'ottica fino a un tetto (62 gradi in verticale, 56 in orizzontale) — se non ci sta nemmeno cosi'
+         l'ottica non si allarga per lui; (3) non piu' del 15% del quadro sopra l'orizzonte, inclinando in giu' finche' eroe,
+         pallone e la porta gia' inquadrata restano dentro; (4) sull'esito un eroe piu' piccolo del 7% dell'altezza si avvicina stringendo l'ottica, mai
+         oltre cio' che i punti (1)-(2) consentono. La camera non si sposta: cambia solo dove guarda e quanto apre. */
+      try{const K=sr.current._k96||(sr.current._k96={on:0,q:new THREE.Quaternion(),fov:46,n:0,a:new THREE.Vector3(),y:new THREE.Vector3(0,1,0),qq:new THREE.Quaternion()});
+        const _ph96=String(P.matchPhase||''),_W96=(typeof window!=='undefined')?window:{};
+        if(/^hl_/.test(_ph96)&&hero&&!P.ceremony&&!P.shootout&&!replaying&&!_W96.__CPM_NO_G96D2){
+          K.q.copy(camera.quaternion);K.fov=camera.fov;K.on=1;
+          const _res=_ph96==='hl_result',_asp=camera.aspect||0.75,_land=_asp>1.05;
+          const _soft=n=>{const a=0.76,L=0.90,m=Math.abs(n);return m<=a?n:Math.sign(n)*(a+(L-a)*(1-Math.exp(-(m-a)/(L-a))));};
+          const _pt=[[hero.position.x,0.05,hero.position.z],[hero.position.x,1.85,hero.position.z]];
+          const _wB=_res&&ball&&!_W96.__CPM_NO_G96D3;
+          const _ang=(p)=>{const v=K.a.set(p[0],p[1],p[2]).applyMatrix4(camera.matrixWorldInverse);if(v.z>-0.3)return null;return[Math.atan2(v.x,-v.z),Math.atan2(v.y,-v.z)];};
+          const _off=()=>K.a.set(0,0,-10).applyMatrix4(camera.projectionMatrix).y;
+          camera.updateMatrixWorld(true);
+          let H=_pt.map(_ang).filter(Boolean),B=_wB?_ang([ball.position.x,Math.max(0.11,ball.position.y),ball.position.z]):null;
+          if(H.length===2){
+            /* (2)+(4) ottica */
+            let tV=Math.tan(camera.fov*Math.PI/360);
+            const _need=(pts)=>{const xs=pts.map(q=>q[0]),ys=pts.map(q=>q[1]);const ax=(Math.max(...xs)-Math.min(...xs))/2,ay=(Math.max(...ys)-Math.min(...ys))/2;
+              return Math.max(Math.tan(ax)/(0.80*_asp),Math.tan(ay)/0.74);};
+            const _fMax=_land?56:62,_tMax=Math.tan(_fMax*Math.PI/360);
+            let tN=_need(H);
+            if(B){const tb=_need(H.concat([B]));const fb=Math.min(tb,_tMax);const w=clamp((_tMax*1.25-tb)/(_tMax*0.25),0,1);tN=Math.max(tN,tN+(fb-tN)*w);}
+            let tT=Math.max(tV,tN);
+            if(_res&&!_W96.__CPM_NO_G96D8){const hg=(Math.tan(H[1][1])-Math.tan(H[0][1]))/tV/2;if(hg>0.005&&hg<0.07){const tIn=Math.max(Math.tan(15*Math.PI/180),tV*hg/0.07);tT=Math.max(Math.min(tV,tIn),tN);}}
+            tT=Math.min(tT,Math.max(tV,_tMax));
+            if(Math.abs(tT-tV)>1e-4){camera.fov=Math.atan(tT)*360/Math.PI;camera.updateProjectionMatrix();tV=tT;}
+            const tH=tV*_asp;
+            /* (1)+(2) orizzontale: giro attorno alla verticale del mondo, due passate per l'accoppiamento con l'inclinazione */
+            for(let it=0;it<2;it++){camera.updateMatrixWorld(true);H=_pt.map(_ang).filter(Boolean);if(H.length<2)break;B=_wB?_ang([ball.position.x,Math.max(0.11,ball.position.y),ball.position.z]):null;
+              const nd=(th)=>{const n=Math.tan(th)/tH;return th-Math.atan(_soft(n)*tH);};
+              let rp=0,rn=0;H.forEach(q=>{const d=nd(q[0]);if(d>rp)rp=d;if(d<rn)rn=d;});let r=(rp&&rn)?(rp+rn)/2:rp+rn;
+              const AH=Math.atan(0.93*tH),lo=Math.max(...H.map(q=>q[0]))-AH,hi=Math.min(...H.map(q=>q[0]))+AH;
+              if(B){r=r+nd(B[0]-r);if(lo<=hi)r=clamp(r,lo,hi);}
+              if(Math.abs(r)>1e-5){K.qq.setFromAxisAngle(K.y,-r);camera.quaternion.premultiply(K.qq);}}
+            /* (1)+(2)+(3) verticale: inclinazione attorno all'asse orizzontale della camera */
+            camera.updateMatrixWorld(true);H=_pt.map(_ang).filter(Boolean);B=_wB?_ang([ball.position.x,Math.max(0.11,ball.position.y),ball.position.z]):null;
+            if(H.length===2){const oy=_off();
+              const ndv=(ps)=>{const n=Math.tan(ps)/tV+oy;return ps-Math.atan((_soft(n)-oy)*tV);};
+              let rp=0,rn=0;H.forEach(q=>{const d=ndv(q[1]);if(d>rp)rp=d;if(d<rn)rn=d;});let r=(rp&&rn)?(rp+rn)/2:rp+rn;
+              const lo=Math.max(...H.map(q=>q[1]))-Math.atan((0.93-oy)*tV),hi=Math.min(...H.map(q=>q[1]))-Math.atan((-0.93-oy)*tV);
+              let loB=-9,hiB=9;if(B){r=r+ndv(B[1]-r);loB=B[1]-Math.atan((0.93-oy)*tV);hiB=B[1]-Math.atan((-0.93-oy)*tV);}
+              if(!_W96.__CPM_NO_G96D8){const fw=K.a.set(0,0,-1).applyQuaternion(camera.quaternion);const hz=Math.hypot(fw.x,fw.z)||1;
+                const hd=K.a.set(fw.x/hz,0,fw.z/hz).applyQuaternion(K.qq.copy(camera.quaternion).invert());const psH=Math.atan2(hd.y,-hd.z);
+                const rPre=r,rHor=psH-Math.atan((0.70-oy)*tV);if(r>rHor)r=rHor;
+                /* la porta che sta gia' nel quadro non esce dall'alto per colpa dell'inclinazione */
+                for(const gx of [48.6,-48.6]){const G=_ang([gx,2.44,0]);if(!G)continue;const nG=Math.tan(G[1])/tV+oy,nX=Math.tan(G[0])/tH;
+                  if(nG<0.9&&Math.abs(nX)<1){const rG=G[1]-Math.atan((0.88-oy)*tV);if(r<rG)r=Math.max(r,Math.min(rG,rPre));}}}
+              if(B&&Math.max(lo,loB)<=Math.min(hi,hiB))r=clamp(r,Math.max(lo,loB),Math.min(hi,hiB));else if(lo<=hi)r=clamp(r,lo,hi);
+              if(Math.abs(r)>1e-5)camera.rotateX(r);}
+            camera.updateMatrixWorld(true);K.n++;
+          }
+        }
+      }catch(_e96){}
+      /* [giro 96a PO-299 D5 — I CORPI NON SI COMPENETRANO. Rosso __CPM_NO_G96D5]
+         MISURATO (scena3d-96 sui corpi DISEGNATI, radici GLB visibili): due corpi a meno di 0,45u per 4-8 fotogrammi in gi31, gi64,
+         gi18, gi3 (fino a 0,12u, portiere sopra l'attaccante), e gia' all'apertura (gi31 0,22u per 6 fotogrammi, gi128 0,33u). Le
+         reti di separazione dell'AI off-ball lavorano sulle posizioni LOGICHE e si spengono nei gesti e nei congelamenti di
+         lettura, quindi i corpi a schermo si sovrappongono proprio negli highlight. Qui, solo negli highlight e solo sui corpi
+         disegnati, ogni coppia piu' vicina di 0,62u si allarga sulla congiungente: l'eroe non si sposta mai (il pallone e' ai suoi
+         piedi e la regia lo inquadra), l'altro fa tutto il passo; fra due comprimari meta' ciascuno. Il punto di partenza e' SEMPRE la
+         posizione logica del corpo (proc), quindi lo spostamento vale per il fotogramma disegnato e non si accumula. */
+      try{if(glbAvatars&&glbAvatars.length&&/^hl_/.test(String(P.matchPhase||''))&&!P.ceremony&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D5)){
+        const _L96=[];for(const a of glbAvatars){if(a&&a.root&&a.root.visible&&a.proc){a._sx96=a.proc.position.x;a._sz96=a.proc.position.z;_L96.push(a);}}
+        const _MIN96=0.62;
+        for(let it=0;it<3;it++){let mv=0;
+          for(let i=0;i<_L96.length;i++)for(let j=i+1;j<_L96.length;j++){const A=_L96[i],B=_L96[j];let dx=B._sx96-A._sx96,dz=B._sz96-A._sz96,d=Math.hypot(dx,dz);
+            if(d>=_MIN96)continue;if(d<1e-3){dx=(i%2?1:-1);dz=0.3;d=Math.hypot(dx,dz);}const ux=dx/d,uz=dz/d,g=_MIN96-d;
+            const eA=A.proc===hero,eB=B.proc===hero;const kA=eA?0:(eB?1:0.5),kB=eB?0:(eA?1:0.5);
+            A._sx96-=ux*g*kA;A._sz96-=uz*g*kA;B._sx96+=ux*g*kB;B._sz96+=uz*g*kB;mv++;}
+          if(!mv)break;}
+        for(const a of _L96){a.root.position.x=a._sx96;a.root.position.z=a._sz96;}
+      }}catch(_e96s){}
       /* [7.999.97 PO-051 «il nome dei giocatori degli highlights in piccolo sarebbe carino»] targhette piccole (numero + cognome)
          sopra i giocatori, SOLO nelle fasi hl_* e solo per chi sta entro 18u dal pallone (piu' l'eroe, in oro): in cronaca e nel
          resto del campo nessuna scritta, per non affollare il quadro. Sprite in scena (non figli della mesh procedurale, che col
@@ -25372,6 +25489,31 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           const _corpo102=m=>{if(_no102)return true;const av=_R51._av102&&_R51._av102.get(m);if(av)return !!(av.root&&av.root.visible);return m.visible!==false;};
           let _orf102=0;
           for(const g of _R51._tag51){const v=_on51&&(g.gold||Math.hypot(g.m.position.x-bx,g.m.position.z-bz)<18)&&_corpo102(g.m);g.sp.visible=v;if(v){g.sp.position.set(g.m.position.x,2.35,g.m.position.z);_n51++;{const av=_R51._av102&&_R51._av102.get(g.m);if(av&&!(av.root&&av.root.visible))_orf102++;}}}
+          /* [giro 96a PO-299 D10 — TARGHETTE DELLA STESSA TAGLIA, MAI UNA SOPRA L'ALTRA. Rosso __CPM_NO_G96D10]
+             MISURATO (scena3d-96, rettangolo a schermo di ogni targhetta): le targhette erano oggetti della scena a misura fissa
+             (2,1 x 0,39u), quindi in prospettiva quella in primo piano era 2-7 volte la piu' lontana (gi5 7,2x, gi58 4,9x) e copriva
+             i corpi, e in 14 scene su 16 almeno due si sovrapponevano oltre un quarto (fino a 47 fotogrammi su gi100). Ora ogni
+             targhetta ha la stessa altezza a SCHERMO (2,8% del quadro, fra 20 e 28 px; quella dell'eroe +12%), sta sopra il corpo
+             DISEGNATO, e si collocano in ordine — eroe, poi dal piu' vicino al pallone — saltando di una riga in su se urtano una gia'
+             messa; se urtano ancora, o escono dal quadro, quella targhetta in questo fotogramma non si disegna (l'eroe sempre). */
+          if(_on51&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D10)&&camera&&renderer){try{
+            const _Hp=(renderer.domElement&&renderer.domElement.clientHeight)||600,_Wp=(renderer.domElement&&renderer.domElement.clientWidth)||400;
+            const _tpx=clamp(0.028*_Hp,20,28),_tV=Math.tan(camera.fov*Math.PI/360);
+            const _fw=_R51._fw96||(_R51._fw96=new THREE.Vector3()),_pv=_R51._pv96||(_R51._pv96=new THREE.Vector3());camera.getWorldDirection(_fw);
+            const _vis=_R51._tag51.filter(g=>g.sp.visible).map(g=>{const av=_R51._av102&&_R51._av102.get(g.m);const r=(av&&av.root)?av.root.position:g.m.position;return{g,x:r.x,z:r.z,db:g.gold?-1:Math.hypot(r.x-bx,r.z-bz)};}).sort((a,b)=>a.db-b.db);
+            const _placed=[];
+            for(const t of _vis){const px=_tpx*(t.g.gold?1.12:1);let y=2.35;
+              _pv.set(t.x,y,t.z);const d=_pv.clone().sub(camera.position).dot(_fw);if(d<0.3){t.g.sp.visible=false;continue;}
+              const hW=px/_Hp*2*d*_tV;t.g.sp.scale.set(hW*2.1/0.39,hW,1);
+              const hN=2*px/_Hp,wN=2*px*(2.1/0.39)*(t.g.sp._w96||1)/_Wp;
+              const box=(yy)=>{_pv.set(t.x,yy,t.z).project(camera);return[_pv.x-wN/2,_pv.y-hN/2,_pv.x+wN/2,_pv.y+hN/2,_pv.z];};
+              const hit=(b)=>_placed.some(q=>{const ox=Math.max(0,Math.min(b[2],q[2])-Math.max(b[0],q[0])),oy=Math.max(0,Math.min(b[3],q[3])-Math.max(b[1],q[1]));return ox*oy>0.12*(b[2]-b[0])*(b[3]-b[1]);});
+              let b=box(y);
+              if(hit(b)){y+=hW*1.15;b=box(y);}
+              const fuori=b[4]>=1||b[0]<-1||b[2]>1||b[1]<-1||b[3]>1;
+              if(!t.g.gold&&(hit(b)||fuori)){t.g.sp.visible=false;_n51--;continue;}
+              t.g.sp.position.set(t.x,y,t.z);_placed.push(b);}
+          }catch(_e96t){}}
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       __w266c('R');

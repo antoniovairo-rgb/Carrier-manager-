@@ -7,7 +7,7 @@
      D2/D3  eroe fuori quadro (piedi O testa fuori dal quadro) per scena: <= 0,05 dei fotogrammi della conclusione · pallone in quadro a fine scena
      D4     rigore: il portiere non comincia il tuffo prima che il pallone lasci il piede, e sull'esito «parata» il tuffo si vede col pallone in volo
      D5     compenetrazione: due corpi disegnati a meno di 0,45 u per 4+ fotogrammi in una scena = rosso (anche all'apertura)
-     D8     quota di prato nel quadro: mediana >= 0,50 per formato, nessuna scena con cielo > 0,02; eroe a fine scena non piu' piccolo di 0,045 del quadro
+     D8     quota di prato nel quadro: mediana >= 0,58 per formato (prima 0,50-0,54); quota del quadro sopra l'orizzonte (90° percentile della scena) <= 0,20 (prima 0,33-0,42); eroe a fine scena non piu' piccolo di 0,06 del quadro
      D9     non giudicato qui (il «GOOOOL!» e' un sovrimpresso DOM di src/15: punto aperto del giro 96a)
      D10    targhette: in ogni fotogramma la piu' grande non supera 1,6 volte la piu' piccola, nessuna coppia sovrapposta oltre il 25%
      D11    salti del pallone: nessuno spostamento > 3 u in < 0,06 s di scena fuori dagli stacchi
@@ -95,7 +95,7 @@ function analizza(fr, rig, esito) {
   a.pallaFineFuori = fin.length ? +(fin.filter(x => x.b && !dentro(x.b)).length / fin.length).toFixed(2) : null;
   /* D8 */
   const cm = F.filter(x => !x.cut && x.campo != null).map(x => x.campo).sort((p, q) => p - q);
-  a.campo = cm.length ? cm[Math.floor(cm.length / 2)] : null; a.cielo = Math.max(0, ...F.map(x => x.cielo || 0));
+  a.campo = cm.length ? cm[Math.floor(cm.length / 2)] : null; { const oz = F.filter(x => !x.cut && x.oriz != null).map(x => x.oriz).sort((p, q) => p - q); a.cielo = oz.length ? oz[Math.floor(oz.length * 0.9)] : 0; }
   const tg = fin.filter(x => x.hf && x.hh).map(x => Math.abs(x.hh[1] - x.hf[1]) / 2); a.tagliaFine = tg.length ? +Math.min(...tg).toFixed(3) : null;
   /* D5: compenetrazione */
   let comp = 0, cmin = 99, cex = null; F.forEach(x => { const c = x.corpi || []; let dm = 99, pr = null;
@@ -125,7 +125,7 @@ function giudica(r, f) {
   if (a.fuori != null && a.fuori > 0.05) out.push(`D2/D3 eroe fuori quadro ${a.fuori}`);
   if (a.pallaFineFuori != null && a.pallaFineFuori > 0.34 && !/riesce|sbaglia/.test(r.esito)) out.push(`D3 pallone fuori quadro a fine scena ${a.pallaFineFuori}`);
   if (a.cielo > 0.20) out.push(`D8 quadro sopra l'orizzonte ${a.cielo}`);
-  if (a.tagliaFine != null && a.tagliaFine < 0.045) out.push(`D8 eroe figurina a fine scena ${a.tagliaFine}`);
+  if (a.tagliaFine != null && a.tagliaFine < 0.06) out.push(`D8 eroe figurina a fine scena ${a.tagliaFine}`);
   if (a.comp >= 4) out.push(`D5 compenetrazione ${a.comp} fotogrammi (${a.compEx})`);
   if (a.etRap > 1.6) out.push(`D10 targhette ${a.etRap}x`);
   if (a.etSovr > 3) out.push(`D10 targhette sovrapposte ${a.etSovr}`);
@@ -186,7 +186,7 @@ await browser.close(); srv.close();
 
 /* D8 per formato: mediana del prato */
 const perF = {}; tutti.filter(r => r.an && r.an.campo != null).forEach(r => (perF[r.f] = perF[r.f] || []).push(r.an.campo));
-const d8 = []; for (const [k, v] of Object.entries(perF)) { v.sort((a, b) => a - b); const m = v[Math.floor(v.length / 2)]; console.log(`D8 ${k}: mediana prato ${m}`); if (m < 0.5) d8.push(`D8 ${k} prato mediano ${m} < 0,50`); }
+const d8 = []; for (const [k, v] of Object.entries(perF)) { v.sort((a, b) => a - b); const m = v[Math.floor(v.length / 2)]; console.log(`D8 ${k}: mediana prato ${m}`); if (m < 0.58) d8.push(`D8 ${k} prato mediano ${m} < 0,58`); }
 const scene = tutti.filter(r => r.an); const giudicate = scene.filter(r => !r.ko.some(x => /non giudicabile|errore/.test(x)));
 const ko = tutti.filter(r => r.ko && r.ko.length); const fail = ko.length + d8.length;
 const per = {}; for (const r of ko) for (const m of r.ko) { const c = (m.match(/^D\d+(\/D\d+)?/) || ['altro'])[0]; per[c] = (per[c] || 0) + 1; } for (const m of d8) per.D8 = (per.D8 || 0) + 1;
