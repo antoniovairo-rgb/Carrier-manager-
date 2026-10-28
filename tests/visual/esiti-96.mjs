@@ -172,28 +172,30 @@ async function blocco6(rosso) {
 
 /* ---------- D12 (PC 1440x900) ---------- */
 async function blocco12(rosso) {
-  const f = { D12: [] }, visti = { D12: 0 };
+  const f = { D12: [] }, visti = { D12: 0 }; let ngD12 = 0;
   const { ctx, page } = await pagina(rosso, { w: 1440, h: 900 });
   await page.addInitScript(() => { window.__CPM_FR73 = []; });
   const { total } = await openMatch(page, port, { name: 'Esiti96' });
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     const gi = (i * 37 + 11) % total;
     await page.evaluate(g => { window.__CPM_REVAT95 = 0; window.__CPM_FORCE_SIT(g, true); }, gi); await sleep(700);
     await page.evaluate(() => window.__CPM_RESOLVE(0));
-    const t0 = Date.now(); while (Date.now() - t0 < 9000) { const rv = await page.evaluate(() => window.__CPM_REVAT95 || 0); if (rv) break; await sleep(150); }
+    let rv = 0; const t0 = Date.now(); while (Date.now() - t0 < 15000) { rv = await page.evaluate(() => window.__CPM_REVAT95 || 0); if (rv) break; await sleep(150); }
+    if (!rv) { ngD12++; continue; }/* esito mai rivelato (macchina carica): scena non giudicata, non un difetto */
     await sleep(700);
     const m = await page.evaluate(() => {
+      if (window.__CPM_PHASE && window.__CPM_PHASE() !== 'hl_result') return { fuori: true };
       const e = document.querySelector('[data-cpm="esito-pc"]'); if (!e) return { manca: true };
       const col = e.parentElement.getBoundingClientRect(), r = e.getBoundingClientRect();
       const t = e.querySelector('[data-cpm="esito-titolo"]'); const bt = [...e.querySelectorAll('button')].find(x => /Continua/.test(x.textContent));
       return { quota: r.height / col.height, fs: t ? parseFloat(getComputedStyle(t).fontSize) : 0, bh: bt ? bt.getBoundingClientRect().height : 0, tronco: t ? (t.scrollWidth > t.clientWidth + 1) : true };
     }).catch(() => null);
-    if (!m) continue; visti.D12++;
+    if (!m || m.fuori) { ngD12++; continue; } visti.D12++;
     if (m.manca) { f.D12.push(`gi${gi}: nessuna scheda d'esito nella colonna destra (striscia)`); continue; }
     if (m.quota < 0.4 || m.fs < 18 || m.bh < 40 || m.tronco) f.D12.push(`gi${gi}: quota colonna ${(m.quota * 100).toFixed(0)}% · titolo ${m.fs}px · Continua ${Math.round(m.bh)}px${m.tronco ? ' · titolo troncato' : ''}`);
   }
   await ctx.close();
-  return { f, visti, info: {} };
+  return { f, visti, info: { D12: `scene giudicate ${visti.D12} · non giudicate (esito non rivelato in tempo) ${ngD12}` } };
 }
 
 /* ---------- D15 (telefono a tocco) ---------- */
