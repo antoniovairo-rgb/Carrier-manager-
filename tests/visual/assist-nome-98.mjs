@@ -71,6 +71,7 @@ async function parteA(arm) {
           if (!okM) T.d1Bad.push(sd + ' «' + r.label + '» il motore registra ' + golMot);
           if (golMot) T.d1Mot++;
           const k = Object.keys(B4).find(x => x.endsWith('|' + r.hl)); const e = k && B4[k] && B4[k].ricevente; if (e) { T.b4.n++; if (e.idx === e.brain) T.b4.ok++; } } }
+      if (/cerca il fallo/i.test(String(r.label || '')) && !r.ok && /intercett|passaggio|compagno|servit/i.test(String(r.ovl || '') + ' ' + String(r.txt || ''))) T.d3Bad.push(sd + ' «' + r.label + '» fallo cercato raccontato come passaggio («' + r.ovl + '» «' + r.txt + '»)');
       if (/Proteggi palla/i.test(String(r.label || ''))) { T.d3n++; if (r.key === 'intercept') T.d3Int++;
         if (r.g137) T.d3d++;
         const _bugia = !r.ok && (/intercett|passaggio|letto dalla difesa|regalato/i.test(String(r.ovl || '') + ' ' + String(r.txt || '')) || r.outKind === 'intercepted');
