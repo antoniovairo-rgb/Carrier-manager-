@@ -172,8 +172,8 @@ for (const f of formati) {
     tutti.push(r);
     console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
   }
-  /* D13: ingresso in campo — logo del cerchio letto dalla camera (percorso vero: salvataggio -> partita -> walkout) */
-  try {
+  /* D13: ingresso in campo — logo del cerchio letto dalla camera (percorso vero: salvataggio -> partita -> walkout); telefono e PC */
+  if (['tel', 'pc'].includes(f.k) || process.env.CPM_G96_INGRESSO_TUTTI) try {
     errs.push(...page._errs.map(e => f.k + ' ' + e)); await page._ctx.close().catch(() => {}); page = await ingresso(f);
     const t = page._tap;
     const d13 = { f: f.k, id: `${f.k}-walkout`, tap: t };
