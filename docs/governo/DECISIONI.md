@@ -825,3 +825,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - PO (questionario): «Solo la 178». Restano i giri 96a e 96b, poi la catena; la carriera 177 n.4 finisce (ultima stagione); carriera 178 n.5 IN PAUSA alla stagione 9 (session_01QEYiaCjkfKB9SJFDCeLtgd interrotta, ramo collaudo/7.999.178-carriera-5 conservato); carriera n.6 portiere NON avviata. Controlli della madre ogni 3 ore.
 - PO (questionario): Korward Elite da ogni ora a ogni 4 ore (trig_011XwbEKP2YyUFG4yGoDc4mV, «52 */4 * * *»).
 - Costi misurati dalle sessioni concluse (campo cost_usd del registro sessioni, equivalente a listino: Non posso confermare come si traduce nei crediti del tuo piano): giro 95 ≈ 9,2 $; giro 97 ≈ 10,9 $; collaudo grafico ≈ 7,8 $; ripresa carriera n.2 ≈ 3,0 $.
+
+## 28/10 11:00 (Roma) — controllo: carriera 177 n.4 conclusa, giro 98
+- Carriera n.4 conclusa (costo registrato ≈ 7,7 $) → PO-301. Nuovo difetto ALTO negli highlight: il compagno nominato nella scelta d'assist non è quello che segna/riceve l'assist (12 su 18). Per la regola «highlight perfetti» blocca la 178.
+- Decisione tecnica (madre): giro 98 SUBITO in parallelo ai 96a/96b, sopra il giro 95, con modifiche piccole e localizzate (D1 nome del compagno, «Proteggi palla e scarica», assist dopo parata, retrocessione dalla Lega B, lista cessioni dopo il rinnovo); in sequenza avrebbe ritardato la 178 di un giro intero. Indicazione di consumo contenuto nel prompt. D5/D6 già coperti dal giro 94, D2 dai giri 93/95 (da riconfermare in catena). Bassi → 179.
+- Sessione carriera n.4 archiviata. Nessuna nuova carriera (scelta PO «Solo la 178»).
