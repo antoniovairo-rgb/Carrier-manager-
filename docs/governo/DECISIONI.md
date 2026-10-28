@@ -830,3 +830,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Carriera n.4 conclusa (costo registrato ≈ 7,7 $) → PO-301. Nuovo difetto ALTO negli highlight: il compagno nominato nella scelta d'assist non è quello che segna/riceve l'assist (12 su 18). Per la regola «highlight perfetti» blocca la 178.
 - Decisione tecnica (madre): giro 98 SUBITO in parallelo ai 96a/96b, sopra il giro 95, con modifiche piccole e localizzate (D1 nome del compagno, «Proteggi palla e scarica», assist dopo parata, retrocessione dalla Lega B, lista cessioni dopo il rinnovo); in sequenza avrebbe ritardato la 178 di un giro intero. Indicazione di consumo contenuto nel prompt. D5/D6 già coperti dal giro 94, D2 dai giri 93/95 (da riconfermare in catena). Bassi → 179.
 - Sessione carriera n.4 archiviata. Nessuna nuova carriera (scelta PO «Solo la 178»).
+
+## 28/10 — PO: «metti in pausa fino a nuovo ordine!»
+- Interrotte le figlie: giro 96a (session_01QEYiaAyXaWY2suDiTNkXHh), giro 96b (session_01QEYiaBuHrtktqkyfdCjskC), giro 98 (session_01QEYiaAkocHDg6jwW1Nx3XV). NON archiviate: si riprendono dal loro ramo (sviluppo/giro96a-scena3d, sviluppo/giro96b-esiti, sviluppo/giro98-assist-nome; il lavoro non pushato prima dell'interruzione può essere perso). Carriera 178 n.5 già in pausa.
+- Spenti: controllo programmato della madre (trig_01YH3qyrfN26bHAbMytcMEC2) e, come nella pausa precedente, le attività Korward Elite (avanzamento ogni 4 ore trig_011XwbEKP2YyUFG4yGoDc4mV, allineamento notturno trig_01SbJpnx39mQXWYCXpMy8HKx). Non toccato: «Giro di ricerca Delia» (altro progetto).
+- Alla ripresa: riprendere 96a, 96b, 98 dai rami; poi assemblaggio 95+96a+96b+97+98 in lavoro/178, catena, rilascio con notifica al PO.
