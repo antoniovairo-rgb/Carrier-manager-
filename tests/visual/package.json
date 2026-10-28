@@ -212,6 +212,7 @@
     "panchina-293": "node panchina-293.mjs",
     "pc-tablet-292": "CPM_PROVA_ROSSO=1 node pc-tablet-292.mjs",
     "spazio-296": "node spazio-296.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_POST=1 node spazio-296.mjs",
+    "schermate-97": "node schermate-97.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_D14=1 node schermate-97.mjs",
     "partita2d-297": "CPM_PROVA_ROSSO=1 node partita2d-297.mjs",
     "hud-c3": "node hud-c3.mjs",
     "design-system": "node design-system.mjs",
