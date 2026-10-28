@@ -1,0 +1,6 @@
+const res=[];for(let i=0;i<N;i++){const q=await st.snap();if(!q){res.push('NOSNAP');break;}
+ st.cont=(st.cont||0)+1;st.keyp='S'+q.season+'W'+q.week;
+ const ev=await st.sett({live:true,seed:(st.cont*37)%1000+3});
+ const r=await st.riga({live:true,ev:ev.filter(x=>!/^click|^cta|^→/.test(x)).map(x=>x.slice(0,140))});res.push(r?r.s+'/'+r.w:'?');
+ if(ev.some(x=>/STOP-FINE/.test(x)))break;}
+return JSON.stringify(res);
