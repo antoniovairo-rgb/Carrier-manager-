@@ -1,0 +1,42 @@
+{"s":1,"w":16,"tipo":"intervista","scelta":"🤝 Diplomatico «Molto bene. Il gruppo è motivato e il lavoro si vede sul campo.»","d":{"morale":[98,100],"popularity":[24,25],"coachTrust":[69,74]}}
+{"s":1,"w":16,"tipo":"intervista","scelta":"🤝 Diplomatico «A pensare prima di parlare, come in campo prima di passare.»","d":{"popularity":[25,26],"coachTrust":[74,75]}}
+{"s":1,"w":16,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":16,"tipo":"impulso","scelta":"🥅 Resto e calcio finché fa buio","d":{"form":[81,87],"fatigue":[50,57],"coachTrust":[75,79]}}
+{"s":1,"w":17,"tipo":"impulso","scelta":"😐 Non è il momento giusto per me","d":{"morale":[98,100]}}
+{"s":1,"w":18,"tipo":"impulso","scelta":"«Perfetto, ci conto sul serio.»","d":{"morale":[98,100],"fatigue":[49,45]}}
+{"s":1,"w":19,"tipo":"impulso","scelta":"🛌 Salto — devo recuperare","d":{"fatigue":[28,22]}}
+{"s":1,"w":20,"tipo":"impulso","scelta":"🙃 Incasso e sorrido","d":{"morale":[97,96]}}
+{"s":1,"w":21,"tipo":"intervista","scelta":"🙏 Umile «Quella che massimizza le qualità di tutti. Non esiste una tattica perfetta.»","d":{"morale":[98,100],"popularity":[26,28],"coachTrust":[79,85]}}
+{"s":1,"w":21,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","d":{"popularity":[28,26],"coachTrust":[85,86]}}
+{"s":1,"w":21,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":21,"tipo":"impulso","scelta":"📢 No, voglio muovermi ora — mettimi in lista","d":{"morale":[100,96],"popularity":[26,28],"coachTrust":[86,81]}}
+{"s":1,"w":22,"tipo":"impulso","scelta":"💪 Ciclo completo — massimo impegno","d":{"form":[81,88],"fatigue":[43,58]}}
+{"s":1,"w":23,"tipo":"impulso","scelta":"😤 Il posto se lo riprende in campo","d":{"coachTrust":[81,85]}}
+{"s":1,"w":24,"tipo":"intervista","scelta":"🤝 Rispondo con diplomazia","d":{"popularity":[28,31],"coachTrust":[85,88]}}
+{"s":1,"w":25,"tipo":"intervista","scelta":"🙏 Umile «Sì. Ho imparato molto da alcuni compagni. Il calcio è scambio continuo.»","d":{"morale":[98,100],"popularity":[31,33],"coachTrust":[88,94]}}
+{"s":1,"w":25,"tipo":"intervista","scelta":"🙏 Umile «Più che altro me la prendo con me stesso quando sbaglio.»","d":{"popularity":[33,34],"coachTrust":[94,95]}}
+{"s":1,"w":25,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":25,"tipo":"impulso","scelta":"🧊 Due giorni di scarico","d":{"form":[92,93],"fatigue":[33,23]}}
+{"s":1,"w":26,"tipo":"impulso","scelta":"🛋 Tifo dal divano","d":{"fatigue":[31,26]}}
+{"s":1,"w":27,"tipo":"impulso","scelta":"✅ Capito","d":{}}
+{"s":1,"w":28,"tipo":"impulso","scelta":"🏠 Resto con il club — è un momento delicato","d":{"form":[87,90],"morale":[98,100],"coachTrust":[95,100]}}
+{"s":1,"w":29,"tipo":"impulso","scelta":"✅ Capito","d":{}}
+{"s":1,"w":30,"tipo":"intervista","scelta":"🔥 Ambizioso «Guardo soprattutto per studiare gli avversari. Ma l'amore per il calcio c'è.","d":{"morale":[98,100],"popularity":[34,36],"coachTrust":[100,99]}}
+{"s":1,"w":30,"tipo":"intervista","scelta":"🔥 Ambizioso «Più alto di quello che mi darete voi, come sempre.»","d":{"popularity":[36,37],"coachTrust":[99,98]}}
+{"s":1,"w":30,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":30,"tipo":"impulso","scelta":"✅ Capito","d":{}}
+{"s":1,"w":31,"tipo":"impulso","scelta":"📸 Mi fermo 20 minuti con loro","d":{"morale":[98,100],"fatigue":[33,37],"popularity":[41,48]}}
+{"s":1,"w":32,"tipo":"impulso","scelta":"🤝 Partecipo solo all'evento","d":{"popularity":[48,50]}}
+{"s":1,"w":33,"tipo":"impulso","scelta":"❄️ Ci vivo dentro","d":{"form":[89,92],"fatigue":[33,25]}}
+{"s":1,"w":34,"tipo":"intervista","scelta":"🤝 Diplomatico «Di non smettere mai di imparare, anche dai più giovani. Saggio.»","d":{"morale":[98,100],"popularity":[50,52],"coachTrust":[98,100]}}
+{"s":1,"w":34,"tipo":"intervista","scelta":"🔥 Ambizioso «L'intensità. Nelle ultime partite ce n'è stata poca.»","d":{"popularity":[52,53],"coachTrust":[100,99]}}
+{"s":1,"w":34,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":34,"tipo":"impulso","scelta":"✅ Capito","d":{}}
+{"s":1,"w":35,"tipo":"impulso","scelta":"😴 Stacco e ricarico","d":{"form":[93,92],"fatigue":[52,42]}}
+{"s":1,"w":36,"tipo":"impulso","scelta":"✋ Fermalo — non è il momento","d":{"coachTrust":[99,100]}}
+{"s":1,"w":37,"tipo":"impulso","scelta":"🎮 Divento ambassador","d":{"popularity":[53,56],"bankBalance":[0,18000]}}
+{"s":1,"w":38,"tipo":"impulso","scelta":"«Non sono il tipo adatto a questi discorsi.»","d":{"morale":[98,99]}}
+{"s":1,"w":39,"tipo":"intervista","scelta":"🤝 Diplomatico «Sempre qualcosa. Il mister individua le aree e noi lavoriamo per migliorar","d":{"morale":[98,100],"popularity":[56,57]}}
+{"s":1,"w":39,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","d":{"popularity":[57,58],"coachTrust":[100,99]}}
+{"s":1,"w":39,"tipo":"intervista","scelta":"Chiudi","d":{}}
+{"s":1,"w":39,"tipo":"impulso","scelta":"📱 Porte aperte","d":{"fatigue":[44,48],"popularity":[58,62],"coachTrust":[99,93]}}

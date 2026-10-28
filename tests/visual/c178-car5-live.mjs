@@ -72,7 +72,9 @@ export async function giocaLive(page, ctx) {
       if (curr && !curr.risultato) {
         /* aspetta il riquadro d'esito */
         let es = null; for (let k = 0; k < 60 && !es; k++) { es = await leggiEsito(page); if (!es || es.__err) { es = null; await sleep(150); } }
+        if (!es) { curr.esitoAssente = true; curr.shotEsito = `noesito-${ctx.tag}-${hlN}`; await foto(page, curr.shotEsito); curr.testoBody = await evalSafe(page, () => document.body.innerText.replace(/\n+/g, ' / ').slice(0, 400)); rec.flags.push(`esito-assente hl${hlN}`); }
         const st = await statoHL(page); curr.esito = es; curr.stato1 = st; curr.risultato = true;
+        await foto(page, `ultimo-esito`);
         await sleep(1200);
         const st2 = await statoHL(page); curr.stato2 = st2;
       }
