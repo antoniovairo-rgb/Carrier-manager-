@@ -19,7 +19,7 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const lista = (v, d) => (v || d).split(',').filter(Boolean).map(Number);
+const lista = (v, d) => (v || d).split(',').filter(x => /^[0-9]+$/.test(x)).map(Number);
 /* semi per braccio: «assist» = partita normale con la politica assist (D1) · «protegge» = politica re «Proteggi palla» (D3, solo verde:
    il rosso del D3 lo giudica la parte C) · «d4» = stessa politica col percorso senza giocaScena (__CPM_NO_BRAIN137, stato forzato): e' li'
    che il passaggio riuscito diventa «occasione» e apre il seguito (dal giro 93 il percorso col motore non lo apre piu'). */
@@ -35,7 +35,7 @@ const ult = (s) => String(s || '').trim().split(/\s+/).pop();
 async function partita(sd, rosso, pol) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-  await page.addInitScript(([s, r, R, d4]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (d4) window.__CPM_NO_BRAIN137 = 1; if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI, pol === 'd4']);
+  await page.addInitScript(([s, r, R, d4]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (d4) { window.__CPM_NO_BRAIN137 = 1; setInterval(() => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose') window.__CPM_FORCE_OUTCOME = 'success'; } catch (e) {} }, 60); } if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI, pol === 'd4']);
   await page.goto(URL0, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -185,6 +185,7 @@ if (V && V.A) { const A = V.A;
   if (A.d1Giud < 4) g.push('verde D1: solo ' + A.d1Giud + ' assist con ricevente nominato (pavimento 4)');
   if (A.d1Bad.length) g.push('verde D1: ' + A.d1Bad.length + ' assist accreditati al compagno sbagliato');
   if (A.d3Bad.length) g.push('verde D3: ' + A.d3Bad.length + ' protezioni risolte come passaggio intercettato');
+  if (A.d4Seg < 1) g.push('verde D4: nessun seguito dopo un passaggio respinto (cieco)');
   if (A.d4Bad.length) g.push('verde D4: ' + A.d4Bad.length + ' seguiti del passaggio respinto con una giocata d\'assist'); }
 if (V && V.B) { const B = V.B;
   if (B.errori.length) g.push('verde B: ' + B.errori.join(' | '));
