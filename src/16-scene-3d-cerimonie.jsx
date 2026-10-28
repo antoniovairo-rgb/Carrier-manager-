@@ -75,7 +75,7 @@ function ProTransitionScreen({player,onChoose}){
       
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
-          <Card key={o.id} style={{marginBottom:8,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
+          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
           border={isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder}
           bg={o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card}>
           <div style={{display:"flex",gap:10,alignItems:"center"}}>

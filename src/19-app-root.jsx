@@ -609,7 +609,7 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
         <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
         <button onClick={onClose} className="cpm-press" style={{width:_tocco292()?44:34,height:_tocco292()?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
-      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
+      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
         {strumenti&&(
@@ -913,7 +913,7 @@ function App(){
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
         .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
-        .cpm-proto{display:flex;flex-direction:column;gap:8px;}
+        .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-slots{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
@@ -930,7 +930,7 @@ function App(){
         button:focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
         .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:11px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
         @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
-        .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;z-index:100;}
+        .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:${(typeof window!=='undefined'&&window.__CPM_NO_G97D1)?'600px':'none'};z-index:100;}/* [giro 97 PO-299 D1] a 820 px la barra era larga 600 (672 a schermo) e il contenuto 789: ai lati scorrevano le card. Sotto i 900 px (niente sidebar) la barra prende tutta la larghezza. Rosso __CPM_NO_G97D1 */
         .cpm-nav-hint{display:none;}
         .cpm-nav-tabs button div:nth-child(3){display:none;}
         .cpm-nav-tabs{display:flex;align-items:stretch;backdrop-filter:blur(12px);border-top:1px solid #e2e8f0;padding-bottom:env(safe-area-inset-bottom,0px);}
@@ -945,6 +945,8 @@ function App(){
           .cpm-nav-tabs button div:nth-child(3){display:none;}
           .cpm-nav-lang{display:none;}
         }
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D17)?'':'@media(min-width:900px){.cpm-nav-strisce{order:2;flex-direction:column;flex-shrink:0;border-top:1px solid rgba(100,116,139,0.18)!important;}.cpm-nav-strisce>button{flex:none!important;width:100%;text-align:left;padding-left:16px!important;padding-right:16px!important;border-left:none!important;}.cpm-nav-strisce>button+button{border-top:1px solid rgba(100,116,139,0.18)!important;}}'}/* [giro 97 PO-299 D17] su PC e tablet orizzontale le due strisce Sostieni/Idee stavano affiancate in cima alla sidebar, 122 px ciascuna e troncate («Sostieni il pro…»): ora una sotto l'altra, a tutta larghezza, in fondo alla sidebar. Rosso __CPM_NO_G97D17 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D16)?'':'@media(pointer:coarse){.cpm-t40:not([style*="position"]){position:relative;}.cpm-t40::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}.cpm-t40i{min-height:42px;}.cpm-tabs40>button{min-height:42px;}.cpm-gap40{gap:12px!important;}.cpm-t40h{min-height:40px!important;}.cpm-scroll .cpm-t40h{min-height:36px!important;}.cpm-nav-strisce>.cpm-t40::after{top:auto;bottom:0;transform:translateX(-50%);}}@media(pointer:coarse) and (max-width:899px){.cpm-root:has(.cpm-nav-bar) .cpm-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));}}'}/* [giro 97 PO-299 D16] al tocco i tasti sotto i 40 px (Salva 23, strisce 26, Licenzia 24, Calendario 16, testate delle fisarmoniche 31-36, x delle finestre): .cpm-t40 allarga SOLO l'area che riceve il tocco (pseudo-elemento trasparente centrato, 42x42 minimo), la grafica e lo spazio fra i box del giro 91 non cambiano. Dove il tasto taglia il contenuto (overflow) o e' un campo di testo serve l'altezza vera: .cpm-tabs40 (linguette) e .cpm-t40i (campi). Le strisce allargano solo VERSO L'ALTO (sotto c'e' la barra dei tab, che le copriva e non va derubata); .cpm-gap40 allarga lo spazio fra due tasti attaccati (- e + dello staff, 5 px) che si rubavano l'area a vicenda. In fondo alla colonna 16 px d'aria in piu' (80 -> 96): l'area allargata delle strisce sale di ~18 px sopra la barra e copriva l'ultima riga a fine scorrimento (Milestone 36 px). Le testate delle fisarmoniche (.cpm-t40h) stanno a 0-8 px l'una dall'altra e le aree allargate si coprivano: li' serve l'altezza vera, 36 px dentro la .cpm-scroll (zoom 1,12 = 40 a schermo) e 40 fuori. Rosso __CPM_NO_G97D16 */
         @media(max-width:380px){
           .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }

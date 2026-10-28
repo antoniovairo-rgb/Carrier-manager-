@@ -6678,7 +6678,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={chiudiIntervista24} style={{padding:"11px"}}>Chiudi</Btn>
               </div>);})():(<>
             {/* Question */}
-            <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
+            <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:_sb(12)/* [giro 97 PO-299 D18] 12 px fra domanda e «Rispondi tu». Rosso __CPM_NO_SPAZIO296 */,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
                 «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club")}»
               </div>
@@ -7387,7 +7387,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
               <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}><VersioneTestata269 col={ink}/>
-              <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:_tocco292()?"12px 14px":"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
+              <button onClick={doSave} className="cpm-press cpm-t40" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:_tocco292()?"12px 14px":"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
                 Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
               </button></div>
             </div>
@@ -7524,7 +7524,7 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
-              <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:_tocco292()?"12px 8px":0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
+              <button onClick={()=>goTab("calendar")} className="cpm-press cpm-t40" style={{background:"transparent",border:"none",padding:_tocco292()?"12px 8px":0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
             </div>
             {/* [7.921 — C4 · «densa e sportiva in stile Football Manager», direzione del PO 15/09] LA STRISCIA
                 DELLA FORMA. Il cruscotto diceva la posizione in classifica a parole e nient'altro: qui ci sono
@@ -8048,7 +8048,7 @@ const getThisWeekMatchday=()=>{
             </>)}
           </div>}>
           <div data-cpm="procuratore23">
-            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:_sb(SP.md)/* [giro 97 PO-299 D18] 13,4 px fra la testata del procuratore e le sue parole. Rosso __CPM_NO_SPAZIO296 */}}>
               <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
               <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
                 <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
@@ -9665,7 +9665,7 @@ const getThisWeekMatchday=()=>{
 
             {/* Contratto — [7.999.49 parte A] per esteso solo nel Procuratore (dove si decide il rinnovo): qui una riga breve */}
             {(()=>{const _c49=_contratto49(player);if(!_c49)return null;return(
-              <button onClick={()=>setTab("agente")} className="cpm-press" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+              <button onClick={()=>setTab("agente")} className="cpm-press cpm-t40 cpm-t40h" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
                 <span style={{flex:1,minWidth:0,fontSize:FS.caption,color:_c49.scaduto||_c49.left<=0?TH.txRed:TH.muted}}><b style={{color:TH.text}}>Contratto:</b> {_c49.scaduto?"scaduto":_c49.breve.charAt(0).toLowerCase()+_c49.breve.slice(1)}</span>
                 <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.brandText,flexShrink:0}}>Procuratore ›</span>
               </button>);})()}
@@ -10799,7 +10799,7 @@ const getThisWeekMatchday=()=>{
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
                     notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
-                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -10809,14 +10809,14 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
                           {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
-                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
+                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
                             style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
                               <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
-                      <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
+                      <div className="cpm-gap40" style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
                     </div>
                   );
                 })}
@@ -10832,7 +10832,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{academyName24(player)}</div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>Un vivaio col tuo nome: a fine stagione esce un ragazzo, la piazza apprezza (popolarità). Costo d'apertura {k(co.found)} · gestione {k(co.week)} a settimana</div>
                       </div>
-                      <button data-cpm="accademia24-fonda" onClick={function(){if((player.bankBalance||0)<co.found){notify("💸 Fondi insufficienti: fondare l'accademia costa "+k(co.found),TH.danger);return;}
+                      <button className="cpm-t40" data-cpm="accademia24-fonda" onClick={function(){if((player.bankBalance||0)<co.found){notify("💸 Fondi insufficienti: fondare l'accademia costa "+k(co.found),TH.danger);return;}
                         setPlayer(function(p){var c=academyCost24(p);if((p.bankBalance||0)<c.found)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-c.found),academy24:{name:academyName24(p),founded:p.season||1,grads:[],tot:0,paused:false},log:["🏫 Hai fondato la "+academyName24(p)+" (stagione "+(p.season||1)+")",...(p.log||[])].slice(0,60)};});
                         notify("🏫 "+academyName24(player)+" fondata! Il primo ragazzo esce a fine stagione.",TH.success);}} style={bs}>FONDA →</button>
                     </div>);
@@ -10845,7 +10845,7 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{ac.name||academyName24(player)} <span style={{fontWeight:600,color:TH.muted}}>· dalla stagione {ac.founded}</span></div>
                           <div style={{fontSize:FS.caption,color:TH.muted}}>{ac.paused?"In pausa: nessun ragazzo a fine stagione, nessun costo":("Attiva · "+k(co.week)+" a settimana · "+(ac.tot|0)+" ragazzi usciti")}</div>
                         </div>
-                        <button data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
+                        <button className="cpm-t40" data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
                       </div>
                       {last.length>0&&(ac.tot|0)>last.length&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,paddingLeft:30}}>Gli ultimi {last.length} di {ac.tot|0}</div>}{last.length>0&&<div style={{display:"flex",flexDirection:"column",gap:2,marginTop:6,paddingLeft:30,maxHeight:150,overflowY:"auto"}}>{last.map(function(g,i){return <div key={i} style={{display:"flex",gap:8,fontSize:FS.caption,color:TH.text}}><span className="cpm-num" style={{color:TH.muted,minWidth:34}}>S.{g.s}</span><span style={{flex:1}}>{g.n}</span><span style={{color:TH.muted}}>{g.pos}</span><b className="cpm-num" style={{color:g.r>=70?TH.success:TH.text,minWidth:22,textAlign:"right"}}>{g.r}</b></div>;})}</div>}
                     </div>);
@@ -10861,7 +10861,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{d.fx}{own?"":" · "+kk}</div>
                       </div>
                       {own?<span style={{fontSize:FS.caption,fontWeight:800,color:TH.success,minWidth:78,textAlign:"center"}}>✓ TUO</span>:
-                      <button data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
+                      <button className="cpm-t40" data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
                         setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
                         style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
@@ -10882,7 +10882,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>Investimento {d.l.toLowerCase()} · <span className="cpm-num">{k(iv.amt)}</span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>Esito a fine stagione: da {Math.round(d.min*100)}% a +{Math.round(d.max*100)}%. Ritiro anticipato: −1%.</div>
                       </div>
-                      <button data-cpm="invest24-ritira" onClick={function(){setPlayer(function(p){var v=p.invest24;if(!v)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)+v.amt*0.99),invest24:null};});notify("↩️ Investimento ritirato: tornano "+k(iv.amt*0.99),TH.muted);}} style={bs(false)}>RITIRA</button>
+                      <button className="cpm-t40" data-cpm="invest24-ritira" onClick={function(){setPlayer(function(p){var v=p.invest24;if(!v)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)+v.amt*0.99),invest24:null};});notify("↩️ Investimento ritirato: tornano "+k(iv.amt*0.99),TH.muted);}} style={bs(false)}>RITIRA</button>
                     </div>);}
                   var amt=Math.floor(b*0.25/10000)*10000;
                   return(
@@ -10895,7 +10895,7 @@ const getThisWeekMatchday=()=>{
                           {amt>=10000&&!(typeof window!=='undefined'&&window.__CPM_NO_INV281)&&<div data-cpm="rischio281-ufficio" style={{display:"flex",flexDirection:"column",gap:1,marginTop:3}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <div key={pr} style={{fontSize:FS.caption,color:TH.muted}}>{d.e} <b style={{color:TH.text}}>{d.l}</b> · {rischioTesto281(rischioF3_281(pr))}</div>;})}</div>}{/* [PO-281] rischio leggibile prima della scelta */}
                         </div>
                       </div>
-                      {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
+                      {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} className="cpm-t40" data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
                     </div>);
                 })()}
               </Card></Fisarmonica></>
@@ -11021,7 +11021,7 @@ const getThisWeekMatchday=()=>{
                       {/* [7.999.49 parte A] la data d'ingaggio e' quella memorizzata (agent.since); se manca non si inventa */}
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Procuratore{player.agent&&player.agent.since&&player.agent.since.s?" · dalla stagione "+player.agent.since.s:""}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Commissione: {player.agentStyle==='boutique'?8:10}% del tuo stipendio</div>
-                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:_tocco292()?"13px 12px":"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
+                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} className="cpm-t40" style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:_tocco292()?"13px 12px":"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
                     </div>
                     <div style={{background:txOpen?TH.winBg:TH.surface2,border:"1px solid "+(txOpen?TH.winBd:TH.divider),borderRadius:RAD.sm,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>Mercato</div>
@@ -11916,9 +11916,9 @@ const getThisWeekMatchday=()=>{
       </div>{/* [7.96.0] pulsante lingua rimosso (i18n rimandata) */}
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
-      {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</button>}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</button>
+      {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
