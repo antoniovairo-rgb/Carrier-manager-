@@ -2378,7 +2378,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [outcome,setOutcome]=useState(null);
   const golSubito85Ref=useRef(0);/* [7.999.85 PO-151, collaudo Codex 30/09 su 7.999.82: codice 003 «0-1 sul tabellone prima che il tiro arrivi in porta», scene 133/134/36/44/45/157 fail] il gol SUBITO nella scena difensiva entrava nel punteggio alla risoluzione dell'azione, mentre quello dell'eroe aspetta il pallone in rete (6.5.1). Ora aspetta la rivelazione dell'esito (resultReveal, la stessa che mostra la banda in basso) o, al piu' tardi, l'uscita dalla scena. Rosso __CPM_NO_GA85 */
   const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
-  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_REVAT95=revealAt95.current;}catch(_e){}},[resultReveal]);/* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
+  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_REVAT95=revealAt95.current;}catch(_e){}},[resultReveal]);
+  useEffect(()=>{if(phase==="hl_result"){revealAt95._in=1;return;}if(revealAt95._in){revealAt95._in=0;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_VIS95=window.__CPM_VIS95||[]).push({rev:revealAt95.current,out:Date.now()});}catch(_e){}}},[phase]);/* [giro 95 D4] testimone: per ogni scena, quando e' comparso l'esito e quando la scena si e' chiusa (orologio della pagina) *//* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
   useEffect(()=>{const n=golSubito85Ref.current|0;if(!n)return;if((phase==="hl_result"&&resultReveal)||(phase!=="hl_result"&&phase!=="hl_choose"&&phase!=="hl_move"&&phase!=="hl_intro")){golSubito85Ref.current=0;setScore(sc=>({...sc,away:sc.away+n}));}},[phase,resultReveal]);/* [7.999.85] il gol subito entra nel tabellone quando l'esito si vede, non prima */
   const [chosenAct,setChosenAct]=useState(null);
   const [selectedActionIdx,setSelectedActionIdx]=useState(0);
@@ -2535,7 +2536,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(typeof via==='string'&&!o.via)o.via=via;
     const _left=(o.minAt||0)-Date.now();
     if(_left>40){fxTimeout(()=>_for(),_left);return;}/* il 3D è arrivato prima del floor di suspense → rimanda al floor */
-    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),pa:!!(_c&&_c.pa),pat:(_c&&_c.pat)||null,wpa:!!o.waitPA,t:Date.now()});window.__CPM_CB95=()=>cineBusyRef.current;}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
+    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),pa:!!(_c&&_c.pa),pat:(_c&&_c.pat)||null,wpa:!!o.waitPA,cap:o.cap||null,t:Date.now()});window.__CPM_CB95=()=>cineBusyRef.current;}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
     try{o.cb();}catch(_e){}},[]);// eslint-disable-line
   /* [giro 95 D3, collaudo carriera 177 n.1 S1 W8 «Conclusione potente»: riquadro «GRANDE PARATA DEL PORTIERE» col pallone ancora ai piedi
      dell'eroe, portiere fuori dal quadro, eroe sovrapposto al difensore] La riserva dei 2,6 s era in tempo di PARETE: se la costruzione e
@@ -2547,7 +2548,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const revealRiserva95=useCallback(function _rr(t0,ck0,pa){const o=outcomeRevealRef.current;if(!o||o.fired)return;
     try{const _gv=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D3;
       const _c=cineBusyRef.current;if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;if(ck0==null)ck0=_ck;
-        if(((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6&&Date.now()-(t0||Date.now())<30000){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa),180);return;}}}catch(_e){}
+        if(((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6&&Date.now()-(t0||Date.now())<30000){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa),180);return;}
+        o.cap=(Date.now()-(t0||Date.now())>=30000)?'parete':'scena';}}catch(_e){}/* [giro 95] testimone: la riserva ha smesso di aspettare per un tetto (parete = fotogrammi troppo lenti, non giudicabile) */
     if(typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
     fireOutcomeReveal(pa?'scena-tiro':'riserva');},[]);// eslint-disable-line
   const [pressureCinema,setPressureCinema]=useState(null); // Sprint 97: {text,col,key}

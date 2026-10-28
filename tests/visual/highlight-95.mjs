@@ -65,9 +65,10 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
     await sleep(120);
   }
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
+  const VIS = await page.evaluate(() => window.__CPM_VIS95 || []).catch(() => []);
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
-  hls.forEach(h => { const r = R[h.n] || null; const core = r ? String(r.label || '').replace(/^\S+\s/, '').slice(0, 14) : ''; h.r = (r && (!h.inct || h.inct.indexOf(core) >= 0)) ? r : null; if (r && !h.r) h.scartato = 1; });/* l'abbinamento scena↔testimone si verifica sul nome della giocata mostrato «in corso» */
+  hls.forEach((h, i) => { h.vis = VIS[i] || null; const r = R[h.n] || null; const core = r ? String(r.label || '').replace(/^\S+\s/, '').slice(0, 14) : ''; h.r = (r && (!h.inct || h.inct.indexOf(core) >= 0)) ? r : null; if (r && !h.r) h.scartato = 1; });/* l'abbinamento scena↔testimone si verifica sul nome della giocata mostrato «in corso» */
   return { hls, R, ph, tab };
 }
 for (const arm of ARMI) { const rosso = arm === 'rosso';
@@ -79,8 +80,9 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
     try { fatti[i] = await gioca(L.sk, L.sd, rosso, L.pol, L.senza); } catch (e) { fatti[i] = { hls: [], ph: 'errore ' + String(e).slice(0, 80), tab: null }; } } }));
   for (let i = 0; i < lavori.length; i++) { const { sk, sd, pol, senza } = lavori[i]; const M = fatti[i];
     for (const h of M.hls) { T.hl++; const r = h.r; const lab = r ? r.label : '?'; const tag = sk + '/' + sd + ' «' + String(lab).slice(0, 34) + '»';
-      if (h.rev != null && h.durata - h.rev < 1200) { T.d4++; T.difetti.push('D4 ' + tag + ': esito a schermo solo ' + (h.durata - h.rev) + ' ms prima della chiusura'); }
-      if (h.rev == null) { T.d4++; T.difetti.push('D4 ' + tag + ': esito mai mostrato in ' + h.durata + ' ms (solo «LA GIOCATA»)'); }
+      if (h.vis) { if (!h.vis.rev) { T.d4++; T.difetti.push('D4 ' + tag + ': esito mai mostrato (solo «LA GIOCATA»)'); } else if (h.vis.out - h.vis.rev < 1200) { T.d4++; T.difetti.push('D4 ' + tag + ': esito a schermo solo ' + (h.vis.out - h.vis.rev) + ' ms prima della chiusura'); } }
+      else if (h.rev == null) { T.d4++; T.difetti.push('D4 ' + tag + ': esito mai mostrato in ' + h.durata + ' ms (solo «LA GIOCATA»)'); }/* orologio della pagina (testimone __CPM_VIS95); la lettura della sonda e' solo il ripiego */
+      const _cap = h.rv && h.rv.cap === 'parete'; if (_cap) T.nonGiud = (T.nonGiud | 0) + 1;/* la riserva ha smesso per la guardia di parete: fotogrammi troppo lenti, D3 non giudicabile */
       if (!r) continue;
       const ovl = String(r.ovl || ''); const g = r.g137;
       if (isPass(lab)) { T.pass++; const k = (g ? g.esito : 'nog') + '/' + r.key; T.esitiPass[k] = (T.esitiPass[k] | 0) + 1;
@@ -99,8 +101,8 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
         if (g && g.fam !== 'dribbling') T.difetti.push('D2 ' + tag + ': il motore lo gioca come ' + g.fam);
         if (/tiro|para|fuori di poco|specchio|intercett/i.test(ovl)) T.difetti.push('D2 ' + tag + ': esito «' + ovl + '» non da dribbling');
       }
-      if (h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione');
-      if (/parat|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
+      if (!_cap && h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione');
+      if (!_cap && /parat|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')');
       }
       if (isFallo(lab)) { T.fallo = (T.fallo | 0) + 1; if ((g && g.fam === 'assist') || /assist|compagno|intercett|servit/i.test(ovl)) T.difetti.push('D1 ' + tag + ': fallo cercato giocato/raccontato come passaggio «' + ovl + '» (motore ' + (g ? g.fam : '-') + ')'); }
@@ -109,7 +111,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
     console.log(arm + ' ' + sk + ' seme ' + sd + ' ' + pol + (senza ? ' (scena senza esito)' : '') + ' fine ' + M.ph + ' highlight ' + M.hls.length + ' tabellone ' + JSON.stringify(M.tab));
   }
   esito[arm] = T; const pc = (a, n) => n ? (100 * a / n).toFixed(1) + '%' : '-';
-  console.log(arm.toUpperCase() + ' highlight ' + T.hl + ' · D4 senza esito ' + T.d4 + ' · passaggi ' + T.pass + ' arrivati ' + pc(T.pasOk, T.pasGiud) + ' gol compagno ' + T.golComp + ' assist ' + T.assistTab + ' esiti ' + JSON.stringify(T.esitiPass) + ' · finte ' + T.drib + ' riuscite ' + pc(T.dribOk, T.drib) + ' ' + JSON.stringify(T.esitiDrib) + ' · falli cercati ' + (T.fallo | 0) + ' · parate giudicate ' + T.d3giud + ' · difetti ' + T.difetti.length);
+  console.log(arm.toUpperCase() + ' highlight ' + T.hl + ' · D4 senza esito ' + T.d4 + ' · passaggi ' + T.pass + ' arrivati ' + pc(T.pasOk, T.pasGiud) + ' gol compagno ' + T.golComp + ' assist ' + T.assistTab + ' esiti ' + JSON.stringify(T.esitiPass) + ' · finte ' + T.drib + ' riuscite ' + pc(T.dribOk, T.drib) + ' ' + JSON.stringify(T.esitiDrib) + ' · falli cercati ' + (T.fallo | 0) + ' · parate giudicate ' + T.d3giud + ' · non giudicabili (guardia di parete) ' + (T.nonGiud | 0) + ' · difetti ' + T.difetti.length);
   if (process.env.CPM_RIGHE) T.righe.forEach(x => console.log('    ' + x));
   T.difetti.slice(0, 14).forEach(x => console.log('  · ' + x));
 }
@@ -120,6 +122,7 @@ if (V) {
   if (V.pass < 12) g.push('verde: solo ' + V.pass + ' passaggi giudicati (pavimento 12)');
   if (V.drib < 4) g.push('verde: solo ' + V.drib + ' finte giudicate (pavimento 4)');
   if (V.difetti.length) g.push('verde: ' + V.difetti.length + ' difetti');
+  if ((V.nonGiud | 0) > 0.3 * V.hl) g.push('verde: cieco, ' + V.nonGiud + ' scene oltre la guardia di parete su ' + V.hl + ' (macchina troppo carica: ridurre CPM_PAR)');
   if (!(V.pasOk / Math.max(1, V.pasGiud) >= 0.70)) g.push('verde: passaggi arrivati ' + (100 * V.pasOk / Math.max(1, V.pasGiud)).toFixed(1) + '% (pavimento 70%)');
 }
 if (R) { for (const d of ['D1', 'D2', 'D3', 'D4']) if (!R.difetti.some(x => x.startsWith(d))) g.push('rosso: ' + d + ' non si vede'); }
