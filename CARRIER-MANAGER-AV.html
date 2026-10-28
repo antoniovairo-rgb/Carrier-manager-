@@ -16217,6 +16217,31 @@ function ThreeMatchView(props){
         const c=camera.position;
         return { ok:true, camera:{x:+c.x.toFixed(2),y:+c.y.toFixed(2),z:+c.z.toFixed(2),abovePitch:c.y>0.5}, hero:proj(hero), ball:proj(ball), phase:(propsRef.current&&propsRef.current.matchPhase)||null, clock:(propsRef.current&&propsRef.current.matchClock)||null };
       };
+      /* [giro 96a PO-299, testimone di sola prova] TUTTO IL QUADRO IN UNA LETTURA, per il guardiano scena3d-96: piedi e testa dell'eroe
+         (ndc), pallone, quota del quadro che cade sul prato, corpi DISEGNATI (radici GLB visibili, o mesh senza GLB), targhette visibili
+         col loro rettangolo a schermo, portiere avversario col suo gesto. Nessuna scrittura sullo stato del gioco. */
+      window.__CPM_G96=function(){try{
+        const V=THREE.Vector3,pj=(x,y,z)=>{const v=new V(x,y,z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
+        const P=propsRef.current||{},o={ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,fov:+camera.fov.toFixed(1),asp:+camera.aspect.toFixed(3)};
+        if(hero){o.hf=pj(hero.position.x,0.05,hero.position.z);o.hh=pj(hero.position.x,1.85,hero.position.z);o.hw=[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)];}
+        if(ball){o.b=pj(ball.position.x,ball.position.y,ball.position.z);o.bw=[+ball.position.x.toFixed(2),+ball.position.y.toFixed(2),+ball.position.z.toFixed(2)];}
+        o.c=[+camera.position.x.toFixed(2),+camera.position.y.toFixed(2),+camera.position.z.toFixed(2)];
+        {let n=0,inP=0,cielo=0;const cp=camera.position;for(let i=0;i<12;i++)for(let j=0;j<12;j++){n++;const v=new V(-1+(i+0.5)/6,-1+(j+0.5)/6,0.5).unproject(camera).sub(cp);
+          if(v.y>=-1e-4){cielo++;continue;}const t=-cp.y/v.y,x=cp.x+v.x*t,z=cp.z+v.z*t;if(Math.abs(x)<=51&&Math.abs(z)<=35.5)inP++;}
+         o.campo=+(inP/n).toFixed(3);o.cielo=+(cielo/n).toFixed(3);}
+        const corpi=[];const gl=(typeof glbAvatars!=='undefined'&&glbAvatars&&glbAvatars.length)?glbAvatars:null;
+        if(gl){gl.forEach((a,i)=>{if(a&&a.root&&a.root.visible)corpi.push([+a.root.position.x.toFixed(2),+a.root.position.z.toFixed(2),a.proc===hero?'E':(a._isGk?'G'+i:i)]);});}
+        else{(sr.current.players||[]).forEach((pp,i)=>{const m=pp&&pp.mesh;if(m&&m!==hero&&m.visible!==false)corpi.push([+m.position.x.toFixed(2),+m.position.z.toFixed(2),i]);});if(hero&&hero.visible!==false)corpi.push([+hero.position.x.toFixed(2),+hero.position.z.toFixed(2),'E']);}
+        o.corpi=corpi;
+        {const et=[];const tg=sr.current._tag51||[];const fw=new V();camera.getWorldDirection(fw);const th=Math.tan(camera.fov*Math.PI/360);
+          tg.forEach(g=>{if(!g.sp.visible)return;const d=new V().copy(g.sp.position).sub(camera.position).dot(fw);if(d<=0.05)return;const c=g.sp.position.clone().project(camera);
+            const h=(g.sp.scale.y/(d*th)),w=(g.sp.scale.x*(g.sp._w96||1))/(d*th*camera.aspect);et.push([+c.x.toFixed(3),+c.y.toFixed(3),+h.toFixed(4),+w.toFixed(4),g.gold?1:0]);});o.et=et;}
+        if(awayGkMesh){o.gk=[+awayGkMesh.position.x.toFixed(2),+awayGkMesh.position.y.toFixed(2),+awayGkMesh.position.z.toFixed(2)];o.gkA=(oppMesh===awayGkMesh)?(oppActType||null):null;o.gkT=+(+oppActT||0).toFixed(2);
+          const ga=gl&&gl.find(a=>a&&a.proc===awayGkMesh);if(ga){o.gkG=ga._gName||null;o.gkW=+((ga._gw||0).toFixed(2));try{o.gkY=+ga.root.position.y.toFixed(2);}catch(_e){}}}
+        if(_ceremonyCarpet&&_ceremonyCarpet.visible){try{_ceremonyCarpet.updateMatrixWorld(true);const up=new V(0,1,0).transformDirection(_ceremonyCarpet.matrixWorld);const fw=new V();camera.getWorldDirection(fw);const h=Math.hypot(fw.x,fw.z)||1;
+          const v=new V(0,0.07,0).project(camera);o.tap=[+((up.x*fw.x+up.z*fw.z)/h).toFixed(3),(v.z<1&&Math.abs(v.x)<1.2&&Math.abs(v.y)<1.2)?1:0];}catch(_e){}}
+        o.arc=!!ballArcActive;o.act=(typeof actType!=='undefined')?(actType||null):null;o.k96=sr.current._k96?sr.current._k96.n:0;
+        return o;}catch(_e){return{err:String(_e&&_e.message||_e)};}};
       // [6.40.0 diag] sonda GESTO EROE (test-only): legge le rotazioni degli arti del protagonista → serve a
       //   misurare oggettivamente se l'animazione d'azione (cross/dribble/tiro) parte davvero o «resta fermo».
       window.__CPM_GESTURE=function(){ if(!hero)return null; const r=(m)=>m?{x:+(m.rotation.x||0).toFixed(3),z:+(m.rotation.z||0).toFixed(3)}:null;
@@ -19733,7 +19758,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         walkT+=dt;
         if(_CPM_TEST&&typeof window!=='undefined'&&Array.isArray(window.__CPM_WALK245)&&window.__CPM_WALK245.length<4000){try{window.__CPM_WALK245.push({t:+walkT.toFixed(3),s:+(walkT-(sr.current._skip285||0)).toFixed(3),p:_mascots.filter(q=>q&&q.p).map(q=>[q.casa?1:0,+q.p.position.x.toFixed(2),+q.p.position.z.toFixed(2),+(q.p._wx??0).toFixed(2),+(q.p._wz??0).toFixed(2)])});}catch(_e245){}}/* [giro 19 PO-245] testimone test-only dell'ingresso: tempo di scena e posizioni dei calciatori accompagnati */
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
-        if(_ceremonyCarpet)_ceremonyCarpet.visible=true;
+        if(_ceremonyCarpet){const _was96=_ceremonyCarpet.visible;_ceremonyCarpet.visible=true;
+          /* [giro 96a PO-299 D13, «logo Korward Elite del cerchio specchiato/capovolto visto dalla camera». Rosso __CPM_NO_G96D13]
+             MISURATO (scena3d-96, testimone __CPM_G96.tap = coseno fra l'alto del logo e lo sguardo della camera): il tappeto era fisso con
+             l'alto verso -z, e la camera dell'ingresso gira attorno al centrocampo — logo dritto solo nel 40% delle letture al telefono
+             (53% sul tablet orizzontale), capovolto nel resto. Ora l'alto del logo punta LONTANO dalla camera (si legge come un cartello a
+             terra): all'accensione si allinea, poi segue la camera con un giro massimo di ~50 gradi al secondo, cosi' il tappeto non
+             «gira» a vista sui movimenti rapidi. */
+          if(camera&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D13)){const _fx=_ceremonyCarpet.position.x-camera.position.x,_fz=_ceremonyCarpet.position.z-camera.position.z;
+            if(Math.hypot(_fx,_fz)>0.5){const _tg=Math.atan2(-_fx,-_fz);let _c=_ceremonyCarpet.rotation.z;
+              if(!_was96)_c=_tg;else{const _d=((_tg-_c+Math.PI*3)%(Math.PI*2))-Math.PI,_mx=0.9*dt;_c+=Math.max(-_mx,Math.min(_mx,_d));}
+              _ceremonyCarpet.rotation.z=_c;}}}
         for(const m of _mascots){const p=m.p;if(!p){continue;}const _hx=Math.sin(p.rotation.y),_hz=Math.cos(p.rotation.y);// "mano nella mano": di lato rispetto al verso di marcia
           const _av911=m.glb911;const _t911=(_av911&&_av911.root)?_av911.root:m.c;/* [7.911.0 C11] il corpo CH38 al posto della figura */
           m.c.visible=!_av911;if(_av911&&_av911.root)_av911.root.visible=true;
@@ -21199,6 +21234,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_R.length<3000&&awayGkMesh)_R.push({ck:+sr.current._ck229.toFixed(3),ph:P.matchPhase||null,ok:P.hlOutcomeKind||null,at:ballArcActive?1:0,aT:+(+ballArcT).toFixed(3),aD:+(+ballArcDur).toFixed(2),
             bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gy:+awayGkMesh.position.y.toFixed(2),
             op:(oppActType&&oppMesh===awayGkMesh)?String(oppActType):null,oT:(oppActType&&oppMesh===awayGkMesh)?+(+oppActT).toFixed(3):null,tz:(oppMesh===awayGkMesh&&awayGkMesh._diveToZ!=null)?+(+awayGkMesh._diveToZ).toFixed(2):null});}catch(_e229){}}
+        sr.current._pk96=!!(oppActType&&/^gk_/.test(String(oppActType))&&oppMesh&&oppMesh===awayGkMesh&&ballArcActive&&ballArcT<0&&(P.hlType==='penalty'||P.hlType==='freekick')&&!(typeof window!=='undefined'&&window.__CPM_NO_G96D4));/* [giro 96a D4] portiere fermo finche' il piazzato non e' calciato */
         if(oppActType&&oppMesh){
           /* ⚠️ [7.800.0 — IL PORTIERE HA UN TEMPO DI REAZIONE. Rosso __CPM_NO800]
              MISURATO (quattro partite intere, 39 tuffi con un arco in corso): l'istante del tuffo era
@@ -21219,6 +21255,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              avanzare il tempo dell'azione: con `oppActT` fermo a zero il corpo resta nella posa iniziale
              — il portiere in piedi — e tutto il resto del fotogramma continua a girare. */
           let _fermo800=false;
+          /* [giro 96a PO-299 D4, «rigore: portiere a terra col pallone ancora al piede». Rosso __CPM_NO_G96D4] MISURATO (scena3d-96,
+             gi5 rigore parata, tempo di scena): il gesto del portiere (gk_block) si armava a 1,66 s e il portiere arrivava sul palo a 2,11,
+             mentre il pallone lasciava il dischetto solo a 2,23 (arco armato con ballArcT negativo = rincorsa e caricamento). Sui piazzati
+             (rigore, punizione) il corpo del portiere non parte prima del contatto: il tempo dell'azione resta fermo finche' l'arco e' nella
+             rincorsa; al contatto parte tutto — tuffo, distesa e clip — col pallone. */
+          if(sr.current._pk96)_fermo800=true;
           if(oppActType==="gk_dive"&&!(typeof window!=='undefined'&&window.__CPM_NO800)){
             if(oppActT===0&&typeof ballArcActive!=='undefined'&&ballArcActive&&typeof ballArcT!=='undefined'&&ballArcT<0.10&&sr.current._gkWait800==null)sr.current._gkWait800=0.25;
             if((sr.current._gkWait800||0)>0){
@@ -24415,7 +24457,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
         /* The stale-action guard remains mandatory for normal highlights. The review-only dribble approach is intentionally pre-result, so its authored clip must survive until the choice phase. */ if(sr.current._actSitKey403!==P.hlSitKey&&!_cgtraderDribbleApproach)_gName=null;
         // PORTIERE avversario: la parata è segnalata da oppActType==='gk_dive' (oppMesh=awayGkMesh). La traslazione laterale/verticale
         // resta guidata dalla reazione procedurale; il GLB ci sovrappone la CLIP di tuffo per gli arti.
-        const _gkWant=(oppActType==='gk_dive')?'dive':(oppActType==='gk_catch')?'catch':(oppActType==='gk_block')?'block':null;// [5.83.0 IA-3] clip catch GLB finalmente usata · [7.203.0] clip BLOCK finalmente usata (era scaricata a ogni partita e mai suonata)
+        const _gkWant=sr.current._pk96?null:(oppActType==='gk_dive')?'dive':(oppActType==='gk_catch')?'catch':(oppActType==='gk_block')?'block':null;// [5.83.0 IA-3] clip catch GLB finalmente usata · [7.203.0] clip BLOCK finalmente usata (era scaricata a ogni partita e mai suonata)
         /* [23/09 — ROSTER CINEMATOGRAFICO, ricostruito dalla copia di recupero e rimesso in `src/` dove va.
            IL PROBLEMA, MISURATO PRIMA DI TOCCARE NULLA: con `cgtrader-highlight-optimized` la scena rendeva
            813.559 triangoli. Il corpo CGTrader ne ha 34.995 — cioe' 23,2 corpi pieni: tutti gli avatar erano
@@ -25319,7 +25361,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const tx=(m._num?m._num+' ':'')+nm,w=Math.min(250,x.measureText(tx).width+20);x.fillStyle='rgba(7,9,16,0.62)';
             if(x.roundRect){x.beginPath();x.roundRect(128-w/2,6,w,36,10);x.fill();}else x.fillRect(128-w/2,6,w,36);
             x.fillStyle=gold?'#f5c542':'#ffffff';x.fillText(tx,128,25);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
-            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
+            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp._w96=w/256;sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
           (_R51.players||[]).forEach(pp=>{if(pp&&pp.mesh)_mk51(pp.mesh,false);});if(hero)_mk51(hero,true);}
         if(_R51._tag51){let _n51=0;const bx=ball?ball.position.x:0,bz=ball?ball.position.z:0;
           /* [7.999.102 collaudo PO 01/10 «nomi senza giocatori in campo»] con i corpi CGTrader si disegnano solo eroe, portiere e i 3 piu'
