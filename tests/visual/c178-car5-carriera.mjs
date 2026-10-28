@@ -128,11 +128,12 @@ while (it < MAXIT) {
     for (const c of cart) { const k = 'carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30); if ((volte.get(k) || 0) >= 2) continue; volte.set(k, (volte.get(k) || 0) + 1); jl('carte.jsonl', { s: P.season, w: P.week, carta: c }); const okc = await clickByText(page, c.slice(0, 24).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 2000); if (okc) { await sleep(900); break; } }
     if (cart.some(c => (volte.get('carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30)) || 0) >= 1) && (await overlay(page))) continue;
     const ok = await clickByText(page, 'Chiudi la stagione|Vivi la Settimana|Sessione Riabilitazione|Riabilitazione|Avvia Stagione|Gioca vs|Gioca|Avanza|Prossima settimana', 2500);
-    if (!ok) { const bs = await bottoni(page); if (it % 10 === 0) log('dashboard senza CTA', bs.slice(0, 8)); await sleep(800); }
+    if (!ok) { await clickByText(page, '^HOME$', 1500); const bs = await bottoni(page); if (it % 10 === 0) log('dashboard senza CTA', bs.slice(0, 8)); await sleep(800); }
     else await sleep(1000);
     continue;
   }
   /* schermate speciali (fine stagione, premi, nazionale, ...) */
+  if (/^(coppe|standings|calendar|club|profile|agente|ufficio|nazionale|stagione|carriera)$/i.test(String(sc))) { await clickByText(page, '^HOME$', 2000); await sleep(800); continue; }
   const tx = (await testo(page)).replace(/\n+/g, ' / ').slice(0, 400);
   if (!volte.has('scr:' + sc + ':' + (P && P.season))) { volte.set('scr:' + sc + ':' + (P && P.season), 1); jl('schermate.jsonl', { s: P && P.season, w: P && P.week, sc, tx, bs: (await bottoni(page)).slice(0, 10) }); await foto(page, `scr-${sc}-s${P && P.season}`, SCR); log('schermata', sc, tx.slice(0, 120)); }
   const ok = await clickByText(page, '^\\W*(Continua|Avanti|Nuova stagione|Prosegui|Inizia|Vai|Capito|Chiudi|Conferma|Salta|Ok|OK|Entra|Accetta|Fine|Torna)', 2000); await sleep(ok ? 900 : 1500);
