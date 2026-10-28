@@ -23,14 +23,14 @@ const lista = (v, d) => (v || d).split(',').filter(x => /^[0-9]+$/.test(x)).map(
 /* semi per braccio: «assist» = partita normale con la politica assist (D1) · «protegge» = politica re «Proteggi palla» (D3, solo verde:
    il rosso del D3 lo giudica la parte C) · «d4» = stessa politica col percorso senza giocaScena (__CPM_NO_BRAIN137, stato forzato): e' li'
    che il passaggio riuscito diventa «occasione» e apre il seguito (dal giro 93 il percorso col motore non lo apre piu'). */
-const SEMI = { verde: { assist: lista(process.env.CPM_SEMI, '1234,2021,7'), protegge: lista(process.env.CPM_SEMI_PR, '5'), d4: lista(process.env.CPM_SEMI_D4, '11,77') },
-  rosso: { assist: lista(process.env.CPM_SEMI_R, '1234'), protegge: [], d4: lista(process.env.CPM_SEMI_D4R, '11,77') } };
+const SEMI = { verde: { assist: lista(process.env.CPM_SEMI, '1234,2021,7'), protegge: lista(process.env.CPM_SEMI_PR, '5'), d4: lista(process.env.CPM_SEMI_D4, '11,77,3') },
+  rosso: { assist: lista(process.env.CPM_SEMI_R, '1234'), protegge: [], d4: lista(process.env.CPM_SEMI_D4R, '11,77,3') } };
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
 const PARTI = (process.env.CPM_PARTI || 'A,B').split(',');
 const ROSSI = ['__CPM_NO_G98D1', '__CPM_NO_G98D3', '__CPM_NO_G98D4', '__CPM_NO_G98D7', '__CPM_NO_G98D8'];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const esito = {};
 const URL0 = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
-const ult = (s) => String(s || '').trim().split(/\s+/).pop();
+const ult = (s) => String(s || '').trim().split(/\s+/).pop().toLowerCase();
 
 async function partita(sd, rosso, pol) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
@@ -64,9 +64,9 @@ async function parteA(arm) {
         if (offre) T.d4Bad.push(sd + ' seguito con la giocata d\'assist «' + r.label + '» key=' + r.key); }
       pend = (r.rew === 'assist' && r.key === 'chance');
       if (r.ok && r.key === 'assist') { T.assist++;
-        const nominato = r.ric98 && String(r.label || '').includes(ult(r.ric98));
+        const nominato = r.ric98 && String(r.label || '').toLowerCase().includes(ult(r.ric98));
         if (nominato) { T.d1Giud++; const atteso = ult(r.ric98); const okN = ult(r.to98) === atteso;
-          const golMot = (r.ev || []).find(e => /^gol/.test(e)); const okM = !golMot || golMot.includes(atteso);
+          const golMot = (r.ev || []).find(e => /^gol/.test(e)); const okM = !golMot || golMot.toLowerCase().includes(atteso);
           if (okN) T.d1Ok++; else T.d1Bad.push(sd + ' «' + r.label + '» accreditato a ' + r.to98 + ' (atteso ' + atteso + ')');
           if (!okM) T.d1Bad.push(sd + ' «' + r.label + '» il motore registra ' + golMot);
           if (golMot) T.d1Mot++;
