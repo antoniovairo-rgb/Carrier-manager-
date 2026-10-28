@@ -14,14 +14,16 @@
      D12 PC 1440x900: l'esito occupa la colonna destra (>= 40% della sua altezza), titolo >= 18 px, «Continua» >= 40 px.
      D15 telefono a tocco: pausa, velocita', ⚠️, «Salta ingresso», «Salta festeggiamenti» ricevono il tocco su >= 40x40 px
          (misura vera con elementFromPoint, come schermate-97).
+     D14 entrando in cerimonia dal gioco la vista 3D non cambia misura (il cambio di misura svuota il disegno: indizio del nero
+         al fischio finale del collaudo 178; il nero in se' non e' riprodotto in headless).
    Rossi: __CPM_NO_G96B_D1 … __CPM_NO_G96B_D15 (CPM_ARMI=verde,rosso; il rosso li accende tutti e ogni punto deve cadere).
    Uso: node esiti-96.mjs  (CPM_ARMI=verde · CPM_N1=40 scene D1 · CPM_N6=30 scene D6/D7 · CPM_PUNTI=D1,D6 per un sottoinsieme) */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
-const PUNTI = (process.env.CPM_PUNTI || 'D1,D2,D3,B15,D6,D7,D12,D15').split(',');
+const PUNTI = (process.env.CPM_PUNTI || 'D1,D2,D3,B15,D6,D7,D12,D15,D14').split(',');
 const N1 = +(process.env.CPM_N1 || 40), N6 = +(process.env.CPM_N6 || 30);
-const ROSSI = ['D1', 'D2', 'D3', 'B15', 'D6', 'D7', 'D12', 'D15'].map(k => '__CPM_NO_G96B_' + k);
+const ROSSI = ['D1', 'D2', 'D3', 'B15', 'D6', 'D7', 'D12', 'D15', 'D14'].map(k => '__CPM_NO_G96B_' + k);
 const FX = (f) => JSON.parse(fs.readFileSync(new URL('./fixtures/' + f, import.meta.url)));
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const errs = [];
@@ -213,7 +215,7 @@ function TOCCO(re) {
   return out;
 }
 async function blocco15(rosso) {
-  const f = { D15: [] }, visti = { D15: 0 }, misure = [];
+  const f = { D15: [], D14: [] }, visti = { D15: 0, D14: 0 }, misure = [];
   const { ctx, page } = await pagina(rosso, { touch: true, rec: false });
   const raw = FX('save-c177-s1w15.json'); const ls = raw['cpm-v3'] ? { ...raw } : { 'cpm-v3': JSON.stringify(raw) }; delete ls['cpm-v3-riserva']; delete ls['cpm-match-resume'];
   await page.addInitScript(l => { for (const k in l) localStorage.setItem(k, l[k]); localStorage.setItem('cpm-devtools', '1'); }, ls);
@@ -240,11 +242,14 @@ async function blocco15(rosso) {
   await sleep(1500);
   const l2 = await page.evaluate(TOCCO, '^(⏸|▶|1×|1,5×|2×|⚠️)$');
   if (l2.length < 3) f.D15.push(`comandi della barra trovati ${l2.length} su 3 (pausa, velocita', ⚠️)`); giudica(l2, 'barra');
+  const cvH = () => page.evaluate(() => { const cv = [...document.querySelectorAll('canvas')].sort((a, b) => b.width * b.height - a.width * a.height)[0]; return cv ? Math.round(cv.getBoundingClientRect().height) : 0; });
+  const h0 = await cvH();
   await page.evaluate(() => { window.__CPM_CER_HOLD = true; return window.__CPM_FORCE_CEREMONY({ light: true, name: 'Colpo fuori casa', festa: { titolo: 'Colpo fuori casa', punteggio: '2 – 3', avversario: 'FC Prova', casa: false, voci: [{ n: 1, et: 'gol', oro: true }] } }); });
   await sleep(1500);
+  const h1 = await cvH(); if (h0 && h1) { visti.D14++; if (h0 !== h1) f.D14.push(`la vista 3D cambia misura entrando in cerimonia: ${h0} → ${h1} px`); }
   const l3 = await page.evaluate(TOCCO, 'Salta festeggiamenti'); if (!l3.length) f.D15.push('«Salta festeggiamenti» non raggiunto'); giudica(l3, 'cerimonia');
   await ctx.close();
-  return { f, visti, info: { D15: misure.join(' · ') } };
+  return { f, visti, info: { D15: misure.join(' · '), D14: `canvas ${h0} → ${h1} px` } };
 }
 
 const esiti = {};
@@ -254,7 +259,7 @@ for (const arm of ARMI) {
   if (['D1', 'D2', 'D3', 'B15'].some(ha)) unisci(await blocco1(rosso));
   if (['D6', 'D7'].some(ha)) unisci(await blocco6(rosso));
   if (ha('D12')) unisci(await blocco12(rosso));
-  if (ha('D15')) unisci(await blocco15(rosso));
+  if (ha('D15') || ha('D14')) unisci(await blocco15(rosso));
   console.log(`\n=== braccio ${arm.toUpperCase()} ===`);
   for (const k of PUNTI) {
     console.log(`  ${k.padEnd(4)} visti ${String(V[k] || 0).padStart(3)} · difetti ${String((F[k] || []).length).padStart(3)}${I[k] ? '  — ' + I[k] : ''}`);

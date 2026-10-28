@@ -176,14 +176,21 @@ async function d9() {
 }
 
 /* ── D2: partita k13 del salvataggio 190 (rigore dell'eroe al 34', riprodotto con sonda-rigore-94): la scena calcia il rigore, il motore no ── */
+/* [giro 96b] D2 era ROSSO PER CECITA', non per difetto: la partita k13 non contiene piu' alcun rigore (registro __CPM_PEN94 vuoto)
+   da quando il motore e' cambiato — il guardiano dipendeva da UN seme. Ora (1) ogni fallo in area e' rigore (__CPM_RIG190_K=1,
+   aggancio di solo collaudo del 7.999.121) e (2) se la prima partita non ne porta uno dell'eroe si prova la successiva (al massimo
+   tre). Il giudizio (nessun rigore ricalciato dal motore dopo il rigore segnato in scena) e' identico. */
 async function d2() {
+  for (const k of (process.env.CPM_K || '7,13,21').split(',').map(Number)) { const r = await d2k(k, true); if (r !== 'cieco') return; }
+  ok(false, `D2: cieco — nessun rigore dell'eroe segnato in scena nelle partite ${process.env.CPM_K || '7,13,21'}`);
+}
+async function d2k(k, multi) {
   const fs = await import('node:fs');
   const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-  const k = +(process.env.CPM_K || 13);
   const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' Q190-' + k;
-  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) window['__CPM_NO_C3' + r] = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, ROSSO]);
+  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_RIG190_K = 1; if (r) window['__CPM_NO_C3' + r] = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, ROSSO]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -198,7 +205,7 @@ async function d2() {
   const scene = P.filter(e => e.t === 'scena_gol' && e.kind === 'penalty');
   const doppi = scene.filter(sg => P.some(e => e.t === 'battuta' && e.eroe && e.min >= sg.min && e.min <= sg.min + 6));
   console.log(`D2 k${k} fine ${ph}: ${P.map(e => e.min + "'" + e.t + (e.eroe ? '*' : '')).join(' ')}`);
-  if (!scene.length) { ok(false, `D2: cieco — nessun rigore dell'eroe segnato in scena nella partita k${k}`); return; }
+  if (!scene.length) return 'cieco';
   ok(doppi.length === 0, `D2: dopo il rigore segnato in scena il motore non lo ricalcia con l'eroe (${doppi.length} doppi su ${scene.length})`);
   ok(errs.length === 0, `D2: nessun errore di pagina (${errs.join(' | ')})`);
 }
@@ -206,5 +213,8 @@ async function d2() {
 const PROVE = { D1: d1, D2: d2, D3: d3, D4: d4, D5: d5ui, PURE: pure, D9: d9 };
 for (const [k, f] of Object.entries(PROVE)) if (vuole(k)) { try { await f(); } catch (e) { ok(false, `${k}: eccezione ${String(e && e.message).slice(0, 200)}`); } }
 await browser.close(); srv.close();
+/* [giro 96b] un rosso CIECO non e' un rosso: se le sole cadute sono «cieco», il braccio rosso non ha dimostrato niente */
+const _ciechi96 = err.filter(m => /cieco/.test(m)).length;
+if (ROSSO && err.length && _ciechi96 === err.length) { console.log(`\nROSSO NON DIMOSTRATO (rosso ${ROSSO}): ${_ciechi96} prove cieche, nessuna caduta vera`); process.exit(3); }
 console.log(err.length ? `\nFALLITO${ROSSO ? ' (rosso ' + ROSSO + ': atteso)' : ''}: ${err.length}` : '\nVERDE');
 process.exit(err.length ? 1 : 0);

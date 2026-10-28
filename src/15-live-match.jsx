@@ -2168,6 +2168,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      RIMEDIO: la fine partita e' un evento unico e da qui in poi lo e' anche nel codice. Il secondo
      ingresso torna subito. Rosso appaiato __CPM_NO977 = il comportamento di prima. */
   const fine977Ref=useRef(false);
+  const striscia96bRef=useRef(true);/* [giro 96b D14] la striscia sotto la vista 3D com'era prima della cerimonia */
   useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
   function _goEndOrCeremony(){
     if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
@@ -10379,7 +10380,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _sot695=(_sal689||!(typeof window!=='undefined'&&window.__CPM_NO892))&&!(typeof window!=='undefined'&&window.__CPM_NO695);/* [7.695.0] la cronaca in sottopancia: era acceso solo dentro la scena saliente; [7.892] sempre */
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
-  const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);/* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
+  const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);
+  if(phase!=="ceremony")striscia96bRef.current=!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);/* [giro 96b D14] stato della striscia nella fase prima della cerimonia *//* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
   const matchPhase3D=["walkout","hl_move","hl_choose","hl_result","hl_intro","playing"].includes(phase)?phase:"match";
   const hlZone=situations[hlIdx]?.zones?.[0]||null; // ATE-4: zona corrente per zone ring
   // National context — derive home team from player's national team data
@@ -11983,7 +11985,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       )}
 
       {/* Mobile cronaca + compact stats — below the card, hidden during HL to free space for DPad */}
-      {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase)&&(show3D||phase==="walkout")&&(
+      {/* [giro 96b D14 — collaudo grafico 178: al fischio finale sfondo nero con la sola scheda «Fischio finale…»] Misurato
+          (412x915): entrando in cerimonia da `playing` questa striscia (38 px) spariva e la vista 3D cresceva 775 → 813 px:
+          `setSize` svuota il disegno fino al fotogramma dopo, e il primo fotogramma della cerimonia e' il piu' pesante della
+          partita. Il nero non l'ho riprodotto in headless (come il giro 97), ma il cambio di misura lo tolgo: in cerimonia la
+          striscia resta COME ERA nella fase prima (visibile se si arriva dal gioco, nascosta se si arriva da un highlight),
+          quindi il canvas non cambia misura. Rosso __CPM_NO_G96B_D14. */}
+      {isNarrow&&(phase==="ceremony"&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D14)?striscia96bRef.current:!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase))&&(show3D||phase==="walkout")&&(
         <div data-cpm="striscia"/* [7.901.0] etichetta stabile: la sonda hud-c3 la usa come fondo della zona di campo (dal fondo della barra a qui), nessun cambio di stile */ style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           {/* Compact stats bar */}
           {(()=>{const _rb_cs=Math.min(mStats.rb,30);const _raw_cs=clamp(5.8+_rb_cs*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(

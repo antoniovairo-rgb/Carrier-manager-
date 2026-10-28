@@ -63,6 +63,10 @@ for (const [nome, pl] of SCENARI) {
      Object.assign(TH, TH_DARK) viene cancellato al render successivo. Solo per il collaudo: si devia quella riassegnazione
      verso TH_DARK. E' una prova di robustezza dei token, non una schermata che il giocatore puo' vedere. */
   if (SCURO) { await page.evaluate(() => { try { const oa = Object.assign; Object.assign = function (t, ...src) { if (t === TH && src[0] === TH_LIGHT_ORIG) return oa(t, TH_DARK); return oa(t, ...src); }; Object.assign(TH, TH_DARK); document.body.style.background = TH.bg; } catch (_e) {} try { window.__CPM_CAREER.goTab('profile'); } catch (_e) {} }); await sleep(400); await page.evaluate(() => { try { window.__CPM_CAREER.goTab('dashboard'); } catch (_e) {} }); await sleep(600); }
+  /* [giro 96b] la home e' la scheda «dashboard». Da svincolato il gioco PORTA DI PROPOSITO alla scheda Procuratore 900 ms dopo
+     l'avvio (giro 94, D3: «rinnova o cerca una squadra»): il censimento misurava quella scheda con la regola della home (A1) e
+     la trovava «fuori standard» — la fisarmonica delle schede e' giusta li'. Si torna alla dashboard e si misura la home. */
+  try { const ok = await page.evaluate(() => window.__CPM_CAREER && window.__CPM_CAREER.goTab ? window.__CPM_CAREER.goTab('dashboard') : false); if (ok) await sleep(700); } catch (_e) {}
   /* apre i «momenti» chiusi (Card con momento) — sono button aria-expanded=false DENTRO la colonna */
   await page.evaluate(() => { const sc = document.querySelector('.cpm-scroll'); if (!sc) return; for (const el of sc.querySelectorAll('button[aria-expanded="false"]')) try { el.click(); } catch (_e) {} });
   await sleep(900);
