@@ -30681,6 +30681,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _dito292=_tocco292();/* rilevato a ogni render: costa una lettura di matchMedia */
   /* [giro 90 PO-292 D1] i comandi dell'intestazione (pausa, velocita', taccuino) a tocco su tablet: bersaglio pieno da 44 px (nella 177: 14x33 e 22x19) */
   const _hb292=_dito292?{minWidth:44,minHeight:44,boxSizing:"border-box",display:"inline-flex",alignItems:"center",justifyContent:"center",padding:0}:null;
+  /* [giro 96b D15 — collaudo grafico 178: sul TELEFONO pausa 14x33, «1×» 22x19, ⚠️ 22x33, «Salta ingresso» e «Salta
+     festeggiamenti» 36 px] Stesso metodo del giro 97 (.cpm-t40): l'area di tocco cresce con un ::after da 42 px, il disegno
+     no. Qui la classe e' locale (cpm-t40m) e vive in uno <style> della partita. Sul telefono a tocco i tre comandi in riga si
+     distanziano quanto basta perche' le aree non si rubino il dito (centri a >= 40 px). Rosso __CPM_NO_G96B_D15. */
+  const _t40m96b=!_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&(function(){try{return !!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}})();
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro
@@ -39505,6 +39510,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left"}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
+              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}}'}</style>}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
                 <div style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>
                   <span style={{color:_swap893?_aCol901:_hCol901}}>{_swap893?_aVal901:_hVal901}</span>
@@ -39517,19 +39523,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.small,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{}),...(_t40m96b?{marginLeft:10,marginRight:22}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button
+                    <button className="cpm-t40m"
                       onClick={()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];setMatchSpeed(_n);try{localStorage.setItem("cpm-match-speed",String(_n));}catch(_e){}}}
                       title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
                       aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
-                      style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0"}:{})}}>
+                      style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0"}:{}),...(_t40m96b?{marginRight:devToolsOn()?20:0}:{})}}>
                       {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                     </button>
                   )}
                   {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} className="cpm-t40m" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                   )}
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
@@ -39870,7 +39876,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>)}
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
               {/* [7.31.0 direttiva PO] OVERLAY CALCI DI RIGORE — tabellino broadcast ✓/✗ kick-by-kick, suspense
                   sul kicker, banner finale (passi il turno / eliminati). Il 3D sotto anima i rigori veri. */}
@@ -40128,7 +40134,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {phase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_ING277)&&(/* [giro 54 PO-277 «l'ingresso deve essere saltabile» — rosso __CPM_NO_ING277] stesso stile di «Salta premiazione»; sopra il velo d'attesa (zIndex 41): saltando, il caricamento dei corpi prosegue e l'eventuale residuo lo copre l'attesa del fischio */
-                <button onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
+                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
@@ -40526,7 +40532,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   dissolvenza del riquadro, come un tilt della regia — l'azione resta sopra la banda, il pezzo di cielo/tribuna
                   in alto (gia' troppo, nota D8) esce dal quadro. Nessun ridimensionamento del canvas (un cambio di misura
                   svuota il disegno, vedi D14). Rosso __CPM_NO_G96B_D6. */}
-              {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!_no901&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D6)&&<style>{'[data-cpm="vista3d-box"] canvas{transform:translateY(-14vh);transition:transform .32s ease-out}'}</style>}
+              {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!_no901&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D6)&&<style>{'[data-cpm="vista3d-box"] canvas{transform:translateY(-18vh);transition:transform .32s ease-out}'}</style>}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 /* [7.901.0 — C3: L'ESITO E' UNA BANDA BASSA, ≤40% DELLO SCHERMO. Decisione del PO sulla
                    tavola approvata (Esito.dc.html): titolo dell'esito (verde se positivo), riga di cronaca,
@@ -40677,7 +40683,29 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
                 <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
               )}
-              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
+              {/* [giro 96b D12 — collaudo grafico 178, PC 1440x900: «il pannello destro e' quasi vuoto, l'esito e' una striscia
+                  rossa sottile»] Sul largo l'esito diventa il CONTENUTO della colonna: scheda che prende lo spazio libero
+                  (flex 1), titolo grande che va a capo, frase, causa, voto/gol/assist e un «Continua» vero (46 px) — lo stesso
+                  contenuto della banda del telefono. Le statistiche restano sotto. Rosso __CPM_NO_G96B_D12 = la striscia di prima. */}
+              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(()=>{
+                const _tc=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
+                const _tt=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")));
+                const _az=outcome.timeout?"⏱ Troppo tardi":(chosenAct?.label||"");
+                return(
+                <div data-cpm="esito-pc" style={{flex:"1 1 auto",minHeight:0,overflowY:"auto",display:"flex",flexDirection:"column",gap:12,padding:"20px 18px",background:outcome.ok?"linear-gradient(180deg,rgba(5,50,20,0.55),rgba(15,23,42,0))":"linear-gradient(180deg,rgba(60,8,8,0.55),rgba(15,23,42,0))",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+                  <div data-cpm="esito-titolo" style={{fontSize:FS.title,fontWeight:900,lineHeight:1.15,color:_tc,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+_tt}</EmoText></div>
+                  {_az&&<div style={{fontSize:FS.bodyLg,fontWeight:800,color:"#e9e4ff",lineHeight:1.25,overflowWrap:"anywhere"}}><EmoText>{_az}</EmoText></div>}
+                  <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.88)",lineHeight:1.45}}><EmoText>{outcome.text}</EmoText></div>
+                  {outcome.cause&&<div style={{fontSize:FS.body,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",lineHeight:1.35}}><EmoText>{outcome.cause}</EmoText></div>}
+                  {aiCommentary&&<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.6)",fontStyle:"italic",lineHeight:1.4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                    {mStats.goals>0&&<div style={{padding:"4px 10px",borderRadius:RAD.pill,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:FS.small,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
+                    {mStats.assists>0&&<div style={{padding:"4px 10px",borderRadius:RAD.pill,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:FS.small,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
+                  </div>
+                  <div style={{flex:1}}/>
+                  <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{height:46,flexShrink:0,border:"none",borderRadius:RAD.sm,background:TH.primary,color:"#fff",fontSize:FS.body,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                </div>);})()}
+              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
