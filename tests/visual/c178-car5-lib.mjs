@@ -4,7 +4,7 @@ import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath }
 export { sleep, clickByText };
 const QUI = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(QUI, '..', '..');
-export const DATI = path.join(ROOT, 'docs/collaudi/dati-carriera-178-5');
+export const DATI = process.env.C178_DATI ? path.resolve(process.env.C178_DATI) : path.join(ROOT, 'docs/collaudi/dati-carriera-178-5');
 export const FOTO = path.join(ROOT, 'docs/collaudi/foto-carriera-178-5');
 export const SCR = process.env.C178_SCR || '/tmp/claude-0/-home-user-Carrier-manager-/a0f17158-39e0-5c25-a099-08d6e73df7ad/scratchpad';
 export async function avvia() {
@@ -47,7 +47,7 @@ export const statoHL = page => evalSafe(page, () => { try { const s = window.__C
 /* ───────── finestre sovrapposte (modali, interviste, offerte): lettura generica e clic come un giocatore ───────── */
 const overlayRaw = page => evalSafe(page, () => {
   const vis = e => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
-  const fx = [...document.querySelectorAll('body *')].filter(e => { const s = getComputedStyle(e); if (s.position !== 'fixed' || !vis(e)) return false; const r = e.getBoundingClientRect(); return r.width >= 240 && r.height >= 150 && (parseInt(s.zIndex) || 0) >= 5 && !(r.height < 130); });
+  const fx = [...document.querySelectorAll('body *')].filter(e => { const s = getComputedStyle(e); if (s.position !== 'fixed' || !vis(e)) return false; const r = e.getBoundingClientRect(); const z = parseInt(s.zIndex) || 0; return (r.width >= 240 && r.height >= 150 && z >= 5) || (r.width >= 300 && r.height >= 300 && z >= 0); });
   if (!fx.length) return null;
   fx.sort((a, b) => (parseInt(getComputedStyle(b).zIndex) || 0) - (parseInt(getComputedStyle(a).zIndex) || 0));
   const o = fx[0];

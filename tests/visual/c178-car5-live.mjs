@@ -102,5 +102,12 @@ export async function giocaLive(page, ctx) {
   rec.sc1 = await punteggio(page); rec.ms = Date.now() - t0;
   rec.fine = (await fase(page)) === 'ended';
   rec.testoFine = await evalSafe(page, () => document.body.innerText.replace(/\n+/g, ' / ').slice(0, 900));
+  if (rec.fine) {
+    /* apre i due tabellini e legge i marcatori/assist/minuti come li vede il giocatore */
+    for (const pre of ['TABELLINO DELLA GARA', 'IL TUO TABELLINO']) { await evalSafe(page, p => { const b = [...document.querySelectorAll('button')].find(x => x.offsetParent && (x.innerText || '').trim().startsWith(p)); if (b) b.click(); }, pre); await sleep(500); }
+    rec.tabellino = await evalSafe(page, () => document.body.innerText.replace(/\n+/g, ' / ').slice(0, 2600));
+    await foto(page, `tabellino-${ctx.tag}`);
+    await evalSafe(page, () => window.scrollTo(0, 400)); await foto(page, `tabellino-${ctx.tag}-b`);
+  }
   return rec;
 }

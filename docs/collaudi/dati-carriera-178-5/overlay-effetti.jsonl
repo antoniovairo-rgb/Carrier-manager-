@@ -200,3 +200,66 @@
 {"s":3,"w":38,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
 {"s":3,"w":38,"tipo":"impulso","scelta":"🎉 Organizzo tutto io","toast":["+5"],"d":{"morale":[95,100],"bankBalance":[97529,89529]}}
 {"s":3,"w":39,"tipo":"impulso","scelta":"🏦 Tengo i soldi fermi","toast":[],"d":{}}
+{"s":4,"w":1,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":2,"tipo":"intervista","scelta":"🔥 Ambizioso «Il calcio è al primo posto. La vita privata si adatta. È la mia scelta.»","toast":[],"d":{"coachTrust":[100,98]}}
+{"s":4,"w":2,"tipo":"intervista","scelta":"🤝 Diplomatico «Il voto lo lascio a voi. Io guardo cosa migliorare.»","toast":["😄 Morale +7","⭐ Popolarità +4","🤝 Fiducia del mister -1"],"d":{"coachTrust":[98,99]}}
+{"s":4,"w":2,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":3,"tipo":"impulso","scelta":"😶 Non ti impicci","toast":[],"d":{"morale":[96,93]}}
+{"s":4,"w":4,"tipo":"intervista","scelta":"🙏 Umile «Poco. Se penso troppo avanti, sbaglio la prossima.»","toast":["DOMANI IN EDICOLA · BRT 0-1 FC MOSELLA","😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister +5"],"d":{}}
+{"s":4,"w":4,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":4,"tipo":"impulso","scelta":"🎓 Ci vado di persona","toast":["+7 ⚡+4"],"d":{"fatigue":[33,37]}}
+{"s":4,"w":5,"tipo":"impulso","scelta":"😔 Sono di fretta — un sorriso e via","toast":[],"d":{"morale":[96,99]}}
+{"s":4,"w":6,"tipo":"impulso","scelta":"💰 Firmo — è il mio momento","toast":[],"d":{"popularity":[98,99],"coachTrust":[100,94],"bankBalance":[131973,166973]}}
+{"s":4,"w":7,"tipo":"impulso","scelta":"Sorridi senza dire nulla.","toast":[],"d":{"morale":[94,99]}}
+{"s":4,"w":8,"tipo":"intervista","scelta":"🔥 Ambizioso «Volevamo di più anche qui. Ma in trasferta non si torna mai a mani vuote per","toast":[],"d":{"morale":[98,100],"popularity":[99,100],"coachTrust":[94,92]}}
+{"s":4,"w":8,"tipo":"intervista","scelta":"🔥 Ambizioso «Era uno stimolo. Chi vuole vincere lo prende così.»","toast":["DOMANI IN EDICOLA · BRT 2-2 FC LILLESE","😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister -4"],"d":{"coachTrust":[92,90]}}
+{"s":4,"w":8,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":9,"tipo":"impulso","scelta":"😂 Ci sto — ridiamoci su","toast":[],"d":{"coachTrust":[97,94],"bankBalance":[188195,206195]}}
+{"s":4,"w":10,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":11,"tipo":"impulso","scelta":"🥹 Lo invito alla prossima partita","toast":[],"d":{"morale":[98,100],"bankBalance":[220343,219343]}}
+{"s":4,"w":12,"tipo":"impulso","scelta":"💪 Prendo le responsabilità — sono pronto","toast":["+6 💪+4 ⚡+5 🤝+10"],"d":{"form":[92,95],"fatigue":[41,46]}}
+{"s":4,"w":13,"tipo":"impulso","scelta":"🍕 Uno sgarro me lo concedo","toast":[],"d":{"form":[93,91]}}
+{"s":4,"w":14,"tipo":"impulso","scelta":"🏖 Mare col gruppo","toast":[],"d":{"morale":[98,100],"fatigue":[38,41]}}
+{"s":4,"w":15,"tipo":"impulso","scelta":"🤔 Troppo rischio adesso","toast":["+1"],"d":{"morale":[98,99]}}
+{"s":4,"w":16,"tipo":"intervista","scelta":"🤝 Diplomatico «Con responsabilità. Essere amato dai tifosi è un privilegio, non un diritt","toast":[],"d":{"morale":[98,100]}}
+{"s":4,"w":16,"tipo":"intervista","scelta":"🤝 Diplomatico «Poco: la strada è giusta, serve continuità.»","toast":["DOMANI IN EDICOLA · BRT 1-2 FC TOLOSA","😄 Morale +6","⭐ Popolarità +8","🤝 Fiducia del mister +5"],"d":{}}
+{"s":4,"w":16,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":17,"tipo":"impulso","scelta":"🎓 Resto un'ora con lui","toast":[],"d":{"fatigue":[42,48]}}
+{"s":4,"w":18,"tipo":"impulso","scelta":"⚽ Preferisco il campo","toast":[],"d":{"form":[88,90]}}
+{"s":4,"w":19,"tipo":"impulso","scelta":"🏠 Compro — è casa mia (€250 mila)","toast":[],"d":{"bankBalance":[275935,25935]}}
+{"s":4,"w":20,"tipo":"intervista","scelta":"🙏 Umile «Non lo so. Forse la fortuna di avere le persone giuste intorno.»","toast":[],"d":{"morale":[97,100]}}
+{"s":4,"w":20,"tipo":"intervista","scelta":"🤐 No comment «Su questo preferisco non rispondere.»","toast":["DOMANI IN EDICOLA · BRT 2-0 FC RENNESE","😄 Morale +3","⭐ Popolarità +2","🤝 Fiducia del mister +8"],"d":{"popularity":[100,98]}}
+{"s":4,"w":20,"tipo":"intervista","scelta":"Chiudi","toast":["Coppa · Quarti di Finale: ✅ PASSA vs FC Rennese (2-0)"],"d":{}}
+{"s":4,"w":20,"tipo":"impulso","scelta":"😪 Ho già troppe cose in testa","toast":[],"d":{"fatigue":[52,47]}}
+{"s":4,"w":21,"tipo":"impulso","scelta":"🏥 Ci vado con i regali","toast":[],"d":{"morale":[97,100],"fatigue":[30,34],"popularity":[98,99]}}
+{"s":4,"w":22,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":23,"tipo":"impulso","scelta":"🔟 La prendo — me la merito","toast":[],"d":{"form":[89,88]}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"🔥 Ambizioso «La concretezza sotto porta. Creiamo tanto ma convertiamo poco. Dobbiamo migl","toast":[],"d":{"morale":[99,100],"coachTrust":[100,98]}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"🤝 Diplomatico «Ne parliamo spesso. Il rapporto è sincero, in tutte e due le direzioni.»","toast":["DOMANI IN EDICOLA · BRT 3-0 FC REMENSE","😄 Morale +5","⭐ Popolarità +4"],"d":{"coachTrust":[98,100]}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":23,"tipo":"impulso","scelta":"🔟 La prendo — me la merito","toast":[],"d":{"form":[89,88]}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"🤝 Diplomatico «Ogni campionato ha la sua specificità. Quello in cui gioco è sempre il più","toast":[],"d":{"morale":[99,100]}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"🤝 Diplomatico «La guardo, ma la classifica si fa una partita alla volta.»","toast":["DOMANI IN EDICOLA · BRT 2-1 FC REMENSE","😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister +5"],"d":{}}
+{"s":4,"w":24,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":25,"tipo":"impulso","scelta":"📸 Li pubblico con un grazie","toast":[],"d":{"morale":[99,100]}}
+{"s":4,"w":26,"tipo":"impulso","scelta":"👨‍👩‍👦 Li ospito — le radici contano","toast":[],"d":{"morale":[98,100],"fatigue":[52,58]}}
+{"s":4,"w":27,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":28,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":29,"tipo":"impulso","scelta":"😶 Silenzio stampa totale","toast":["Coppa · Semifinale: ✅ PASSA (sim.) vs FC Lyon (1-1 · ai rigori)"],"d":{"morale":[98,100],"popularity":[100,97]}}
+{"s":4,"w":30,"tipo":"intervista","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":31,"tipo":"impulso","scelta":"🗑️ Cancello e mi scuso","toast":[],"d":{"morale":[98,95],"popularity":[100,96]}}
+{"s":4,"w":33,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":34,"tipo":"intervista","scelta":"🔥 Ambizioso «Molto. E voglio che questa maglia significhi qualcosa di ancora più grande g","toast":[],"d":{"morale":[97,100],"popularity":[97,98],"coachTrust":[100,98]}}
+{"s":4,"w":34,"tipo":"intervista","scelta":"🙏 Umile «Se qualcuno l'ha presa male, glielo chiarisco di persona.»","toast":["DOMANI IN EDICOLA · BRT 1-1 FC RENNESE","😄 Morale +8","⭐ Popolarità +8"],"d":{"popularity":[98,99],"coachTrust":[98,100]}}
+{"s":4,"w":34,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":34,"tipo":"impulso","scelta":"⌚ Li prendo per tutti","toast":["+3"],"d":{"bankBalance":[132045,110045]}}
+{"s":4,"w":35,"tipo":"impulso","scelta":"🤫 Solo una piccola, che sarà mai…","toast":[],"d":{"morale":[97,93],"popularity":[99,96],"coachTrust":[100,92]}}
+{"s":4,"w":36,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":4,"w":37,"tipo":"impulso","scelta":"🔒 Sono concentrato qui","toast":["+5"],"d":{"coachTrust":[92,97]}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"🤝 Diplomatico «Senza dubbio. È la mia vita, la mia passione. Non riesco a immaginarmi alt","toast":[],"d":{"morale":[97,100],"popularity":[96,97],"coachTrust":[97,100]}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"🔥 Ambizioso «Che i fatti fanno più rumore delle frasi fatte.»","toast":["DOMANI IN EDICOLA · BRT 3-4 FC MONTPEL","😄 Morale +7","⭐ Popolarità +8","🤝 Fiducia del mister +4"],"d":{"popularity":[97,98]}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"🙏 Umile «Ha ragione. Non sono ancora al mio livello massimo. Me ne assumo la responsabili","toast":[],"d":{"popularity":[98,99]}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"🙏 Umile «Con gratitudine. E con la voglia di non deluderli.»","toast":["😄 Morale +1","⭐ Popolarità +3","🤝 Fiducia del mister +10"],"d":{"popularity":[99,100]}}
+{"s":4,"w":38,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":4,"w":39,"tipo":"impulso","scelta":"🗣️ Ammetto lo sbaglio e chiedo scusa","toast":[],"d":{"morale":[98,96],"popularity":[100,96]}}

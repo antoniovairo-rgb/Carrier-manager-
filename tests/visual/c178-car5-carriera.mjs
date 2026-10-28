@@ -5,6 +5,7 @@ import { avvia, nuovaPagina, foto, testo, bottoni, sleep, clickByText, jl, evalS
 import { giocaLive } from './c178-car5-live.mjs';
 import { visita, azioni } from './c178-car5-visite.mjs';
 import fs from 'node:fs'; import path from 'node:path'; import zlib from 'node:zlib';
+const MAXLIVE = +(process.env.C178_MAXLIVE || 1e9); let nLive = 0;
 const MAXIT = +(process.env.C178_MAXIT || 100000), STAGMAX = +(process.env.C178_STAGMAX || 99);
 const conta = { n: +(process.env.C178_CONTA || 0) }; let matchIdx = +(process.env.C178_MATCHIDX || 0);
 const S = await avvia(); let page = await nuovaPagina(S, { glb: false });
@@ -15,6 +16,7 @@ const apriCarriera = async () => {
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }); await sleep(1500);
 };
 await apriCarriera();
+if (process.env.C178_RUOLO) { await page.evaluate(r => window.__CPM_CAREER.patch({ position: r }), process.env.C178_RUOLO); await sleep(500); }
 const CAR = (m, ...a) => evalSafe(page, ([m, a]) => { const C = window.__CPM_CAREER; return C && C[m] ? C[m](...a) : null; }, [m, a]);
 const compat = p => p && { s: p.season, w: p.week, wl: !!p.weekLived, age: p.age, ovr: p.ovr, club: p.club && p.club.n, lg: p.club && p.club.lg, form: p.form, morale: p.morale, fat: p.fatigue, pop: p.popularity, trust: p.coachTrust, g: p.goals, a: p.assists, m: p.matches, tg: p.totalGoals, ta: p.totalAssists, tm: p.totalMatches, bank: p.bankBalance, val: p.value, ct: p.contract, inj: p.injury && p.injury.weeksRemaining, caps: p.nationalCaps, pos: p.position, mh: (p.matchHistory || []).length, diary: (p.diary || []).length, trophies: (p.trophies || []).length };
 const snap = async () => { const s = await CAR('snapshot'); return (s && !s.__err && typeof s === 'object') ? s : null; };
@@ -24,7 +26,7 @@ let STUCKED = false, RITIRATO = false;
 let it = 0, lastSig = '', same = 0, lastSeason = 0, lastP = null, prevP = null, visitato = new Set();
 const salvaStato = async (nome) => {
   const st = await page.evaluate(() => Object.fromEntries(Object.keys(localStorage).map(k => [k, localStorage.getItem(k)])));
-  fs.writeFileSync(path.join(SCR, 'stato-corrente.json'), JSON.stringify(st));
+  fs.writeFileSync(path.join(SCR, process.env.C178_STATOOUT || 'stato-corrente.json'), JSON.stringify(st));
   if (nome) fs.writeFileSync(path.join(DATI, nome + '.json.gz'), zlib.gzipSync(JSON.stringify(st)));
 };
 /* confronto salva/ricarica: stesse cifre prima e dopo */
@@ -89,6 +91,7 @@ while (it < MAXIT) {
   it++; if (it % 10 === 0) { await salvaStato(); fs.writeFileSync(path.join(DATI, 'progress.json'), JSON.stringify({ matchIdx, conta, lastSeason })); }
   const ov = await overlay(page); const ph = await fase(page);
   const P = await snap(); if (P) { prevP = lastP; lastP = P; }
+  if (nLive >= MAXLIVE) { log('MAXLIVE raggiunto'); break; }
   const sc = await CAR('screen');
   const sig = [P && P.season, P && P.week, P && P.weekLived, sc, ph, ov && ov.testo.slice(0, 40)].join('|');
   if (sig === lastSig) same++; else { same = 0; lastSig = sig; }
@@ -108,7 +111,7 @@ while (it < MAXIT) {
       /* match screen: «Salta e gioca» */
       for (let k = 0; k < 6; k++) { const ph2 = await fase(page); if (ph2 && ph2 !== 'ended') break; await clickByText(page, 'Salta e gioca', 2000); await sleep(1500); }
       const pb = lastP; const rec = await giocaLive(page, { tag: `s${pb.season}w${pb.week}`, stagione: pb.season, settimana: pb.week, conta });
-      jl('partite.jsonl', { ...rec, hl: rec.hl.length });
+      jl('partite.jsonl', { ...rec, hl: rec.hl.length }); nLive++;
       log('  LIVE finita', JSON.stringify({ hl: rec.hl.length, sc: rec.sc1, fl: rec.flags, fine: rec.fine, s: Math.round(rec.ms / 1000) }));
       await pumpPost();
       const Q = await snap(); if (Q) jl('post-live.jsonl', { s: Q.season, w: Q.week, sc: rec.sc1, g: Q.goals, a: Q.assists, m: Q.matches, ult: (Q.matchHistory || []).slice(-1)[0] });
@@ -122,9 +125,9 @@ while (it < MAXIT) {
     log('visita', JSON.stringify(Object.fromEntries(Object.entries(v.tab).map(([k, x]) => [k, x.sz && (x.sz.anom || x.sz.scrollX || x.sz.fuori.length) ? x.sz : 'ok']))), v.classifica ? JSON.stringify(v.classifica) : ''); continue; }
     /* carte della home con una scelta («… →»): una per giro, al massimo due volte per stagione ciascuna */
     const cart = (await bottoni(page)).filter(b => /→\s*$/.test(b) && !/Avvia Stagione|Vivi la Settimana|Inizia Stagione/.test(b));
-    for (const c of cart) { const k = 'carta:' + (P && P.season) + ':' + c.slice(0, 30); if ((volte.get(k) || 0) >= 2) continue; volte.set(k, (volte.get(k) || 0) + 1); jl('carte.jsonl', { s: P.season, w: P.week, carta: c }); const okc = await clickByText(page, c.slice(0, 24).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 2000); if (okc) { await sleep(900); break; } }
-    if (cart.some(c => (volte.get('carta:' + (P && P.season) + ':' + c.slice(0, 30)) || 0) === 1 || (volte.get('carta:' + (P && P.season) + ':' + c.slice(0, 30)) || 0) === 2) && (await overlay(page))) continue;
-    const ok = await clickByText(page, 'Chiudi la stagione|Vivi la Settimana|Avvia Stagione|Gioca vs|Gioca|Avanza|Prossima settimana', 2500);
+    for (const c of cart) { const k = 'carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30); if ((volte.get(k) || 0) >= 2) continue; volte.set(k, (volte.get(k) || 0) + 1); jl('carte.jsonl', { s: P.season, w: P.week, carta: c }); const okc = await clickByText(page, c.slice(0, 24).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 2000); if (okc) { await sleep(900); break; } }
+    if (cart.some(c => (volte.get('carta:' + (P && P.season) + ':' + (P && P.week) + ':' + c.slice(0, 30)) || 0) >= 1) && (await overlay(page))) continue;
+    const ok = await clickByText(page, 'Chiudi la stagione|Vivi la Settimana|Sessione Riabilitazione|Riabilitazione|Avvia Stagione|Gioca vs|Gioca|Avanza|Prossima settimana', 2500);
     if (!ok) { const bs = await bottoni(page); if (it % 10 === 0) log('dashboard senza CTA', bs.slice(0, 8)); await sleep(800); }
     else await sleep(1000);
     continue;
