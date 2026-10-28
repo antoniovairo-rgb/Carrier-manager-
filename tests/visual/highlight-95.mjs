@@ -11,7 +11,13 @@
      D3  riquadro «parata del portiere» ⟹ nel 3D il portiere avversario e' vicino al pallone; l'eroe non calcia dentro un difensore.
      D4  ogni highlight mostra il suo esito (riquadro con l'esito) prima che la scena si chiuda: mai solo «LA GIOCATA».
    Rossi: __CPM_NO_G95D1 … __CPM_NO_G95D4 (CPM_ARMI=verde,rosso; il rosso li accende tutti e quattro e ogni difetto deve vedersi).
-   Uso: node highlight-95.mjs   (CPM_MISURA=1 stampa e non giudica; CPM_SEMI=1,2; CPM_SALVA=s1,s5,s12; CPM_RIGHE=1). */
+   MISURATO (giro 95, 3 salvataggi x 3 semi x politiche passaggio/dribbling + una partita «scena senza esito»):
+     VERDE 118 highlight · passaggi arrivati 94,3% (35) · gol del compagno = assist 9/9 · finte 9 giocate da dribbling (riuscite 66,7%,
+           mai «tiro» ne' «intercettato») · D4 0 · difetti 0 · 16 scene non giudicabili per la guardia di parete (headless lento);
+     ROSSO 110 highlight · 238 difetti: D1 (passaggio arrivato raccontato intercettato), D2 (finta giocata da passaggio, riuscita 11%),
+           D3 (esito rivelato dalla riserva mentre il 3D mostrava ancora la conclusione), D4 (esito mai a schermo o per 0,5 s).
+   ⚠️ Macchina carica = fotogrammi lenti = scene oltre la guardia di parete (30 s): con CPM_PAR=4 il verde diventava cieco su D3; si usa 3.
+   Uso: node highlight-95.mjs   (CPM_MISURA=1 stampa e non giudica; CPM_SEMI=1,2; CPM_SALVA=s1,s5,s12; CPM_RIGHE=1; CPM_PAR=3). */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const FX = (f) => JSON.parse(fs.readFileSync(new URL('./fixtures/' + f, import.meta.url)));
