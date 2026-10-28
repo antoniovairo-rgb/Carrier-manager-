@@ -19,8 +19,12 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI = (process.env.CPM_SEMI || '1234,2021,7,99').split(',').map(Number);
-const SEMI_PR = (process.env.CPM_SEMI_PR || '5,42').split(',').map(Number);
+const lista = (v, d) => (v || d).split(',').filter(Boolean).map(Number);
+/* semi per braccio: «assist» = partita normale con la politica assist (D1) · «protegge» = politica re «Proteggi palla» (D3, solo verde:
+   il rosso del D3 lo giudica la parte C) · «d4» = stessa politica col percorso senza giocaScena (__CPM_NO_BRAIN137, stato forzato): e' li'
+   che il passaggio riuscito diventa «occasione» e apre il seguito (dal giro 93 il percorso col motore non lo apre piu'). */
+const SEMI = { verde: { assist: lista(process.env.CPM_SEMI, '1234,2021,7'), protegge: lista(process.env.CPM_SEMI_PR, '5'), d4: lista(process.env.CPM_SEMI_D4, '11,77') },
+  rosso: { assist: lista(process.env.CPM_SEMI_R, '1234'), protegge: [], d4: lista(process.env.CPM_SEMI_D4R, '11,77') } };
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
 const PARTI = (process.env.CPM_PARTI || 'A,B').split(',');
 const ROSSI = ['__CPM_NO_G98D1', '__CPM_NO_G98D3', '__CPM_NO_G98D4', '__CPM_NO_G98D7', '__CPM_NO_G98D8'];
@@ -31,7 +35,7 @@ const ult = (s) => String(s || '').trim().split(/\s+/).pop();
 async function partita(sd, rosso, pol) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-  await page.addInitScript(([s, r, R]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI]);
+  await page.addInitScript(([s, r, R, d4]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (d4) window.__CPM_NO_BRAIN137 = 1; if (r) R.forEach(k => { window[k] = 1; }); localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso, ROSSI, pol === 'd4']);
   await page.goto(URL0, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -50,11 +54,12 @@ async function partita(sd, rosso, pol) {
 
 async function parteA(arm) {
   const rosso = arm === 'rosso'; const T = { assist: 0, d1Giud: 0, d1Ok: 0, d1Bad: [], d1Mot: 0, d3d: 0, d3n: 0, d3Int: 0, d3Bad: [], d4Seg: 0, d4Bad: [], gol: 0, ass: 0, partite: 0, b4: { ok: 0, n: 0 }, righe: [] };
-  for (const [sd, pol] of [...SEMI.map(s => [s, 'assist']), ...SEMI_PR.map(s => [s, 'protegge'])]) {
-    const { R, B4, ph } = await partita(sd, rosso, pol); T.partite++;
+  const S = SEMI[arm] || SEMI.verde;
+  for (const [sd, pol] of [...S.assist.map(s => [s, 'assist']), ...S.protegge.map(s => [s, 'protegge']), ...S.d4.map(s => [s, 'd4'])]) {
+    const { R, B4, ph } = await partita(sd, rosso, pol); if (pol !== 'd4') T.partite++;
     let pend = false;/* l'ultima scena era una giocata d'assist finita in «occasione» (passaggio respinto): la prossima scena di seguito e' la ribattuta */
     for (const r of R) {
-      if (r.ok && r.key === 'goal') T.gol++; if (r.ok && r.key === 'assist') T.ass++;
+      if (pol !== 'd4') { if (r.ok && r.key === 'goal') T.gol++; if (r.ok && r.key === 'assist') T.ass++; }
       if (r.ch98 && pend) { T.d4Seg++; const offre = /Servi|Filtrante|Uno-due|Sponda|Scarico|Appoggio|Proteggi/i.test(String(r.label || '')) && r.rew === 'assist';
         if (offre) T.d4Bad.push(sd + ' seguito con la giocata d\'assist «' + r.label + '» key=' + r.key); }
       pend = (r.rew === 'assist' && r.key === 'chance');
@@ -68,8 +73,10 @@ async function parteA(arm) {
           const k = Object.keys(B4).find(x => x.endsWith('|' + r.hl)); const e = k && B4[k] && B4[k].ricevente; if (e) { T.b4.n++; if (e.idx === e.brain) T.b4.ok++; } } }
       if (/Proteggi palla/i.test(String(r.label || ''))) { T.d3n++; if (r.key === 'intercept') T.d3Int++;
         if (r.g137) T.d3d++;
-        if (r.g137 && r.g137.esito === 'intercettato') T.d3Bad.push(sd + ' «' + r.label + '» risolta come passaggio intercettato (key ' + r.key + ', riquadro «' + r.ovl + '»)');
-        T.righe.push(sd + ' «' + String(r.label).slice(0, 34) + '» key=' + r.key + ' ok=' + r.ok + ' motore=' + (r.g137 ? r.g137.fam + ':' + r.g137.esito : '-') + ' tipo3D=' + r.tipo + ' «' + r.ovl + '»'); }
+        const _bugia = !r.ok && (/intercett|passaggio|letto dalla difesa|regalato/i.test(String(r.ovl || '') + ' ' + String(r.txt || '')) || r.outKind === 'intercepted');
+        if (r.g137 && !r.ok && !r.g137.duello && r.g137.esito === 'intercettato') T.d3Bad.push(sd + ' «' + r.label + '» persa come un passaggio (motore: intercettato senza duello)');
+        if (_bugia) T.d3Bad.push(sd + ' «' + r.label + '» raccontata come passaggio intercettato (key ' + r.key + ', esito ' + r.outKind + ', riquadro «' + r.ovl + '» «' + r.txt + '»)');
+        T.righe.push(sd + ' «' + String(r.label).slice(0, 34) + '» key=' + r.key + ' ok=' + r.ok + ' motore=' + (r.g137 ? r.g137.fam + ':' + r.g137.esito : '-') + ' duello=' + (r.g137 ? r.g137.duello : '-') + ' esito=' + r.outKind + ' tipo3D=' + r.tipo + ' «' + r.ovl + '» «' + String(r.txt || '').slice(0, 60) + '»'); }
     }
     console.log(arm + ' ' + pol + ' seme ' + sd + ' fine ' + ph + ' scene ' + R.length);
   }
@@ -140,7 +147,27 @@ async function parteB(arm) {
   return out;
 }
 
-for (const arm of ARMI) { esito[arm] = {}; if (PARTI.includes('A')) esito[arm].A = await parteA(arm); if (PARTI.includes('B')) esito[arm].B = await parteB(arm); }
+/* Parte C (node, senza browser) — D3-bis sul motore: «Proteggi palla e scarica» giocata con giocaScena({fam:'assist',stat:'fisico',prot})
+   sulle 24 configurazioni vere della vissuta S12 (fixtures/cfg-202-s12.json). Verde: ogni palla persa e' un duello (duello:true) e la
+   quota persa scende col FISICO dell'eroe (50 → 95) e non col passaggio. Rosso __CPM_NO_G98D3: si perde come un passaggio. */
+function parteC(arm) {
+  const src = fs.readFileSync(new URL('../../src/14-motore-possesso.jsx', import.meta.url), 'utf8');
+  const code = src.slice(src.indexOf('/* CMAV-SRC-HEADER-END */') + '/* CMAV-SRC-HEADER-END */'.length);
+  const CFG = JSON.parse(fs.readFileSync(new URL('./fixtures/cfg-202-s12.json', import.meta.url)));
+  const W = arm === 'rosso' ? { __CPM_NO_G98D3: 1 } : {};
+  const crea = Function('decideExecution', 'window', code + '\nreturn creaMotorePossesso;')(undefined, W);
+  const giro = (fis, pas) => { let n = 0, persi = 0, duelli = 0;
+    for (let k = 0; k < CFG.length; k++) for (let r = 0; r < 25; r++) { const M = crea(Object.assign({}, CFG[k], { seed: ((CFG[k].seed >>> 0) ^ ((r + 1) * 2654435761)) >>> 0 }));
+      const g = M.giocaScena({ fam: 'assist', stat: 'fisico', prot: true, x: 84, y: 46, stats: { fisico: fis, passaggio: pas } }); if (!g) continue; n++;
+      if (!g.ok && g.esito === 'intercettato') { persi++; if (g.duello) duelli++; } }
+    return { n, persi, duelli, q: n ? persi / n : null }; };
+  const out = { f50: giro(50, 80), f95: giro(95, 80), p50: giro(80, 50), p95: giro(80, 95) };
+  const pc = (x) => x.q == null ? '-' : (100 * x.q).toFixed(1) + '%';
+  console.log(arm.toUpperCase() + ' C · D3 protezione: persa con fisico 50 ' + pc(out.f50) + ' · fisico 95 ' + pc(out.f95) + ' · passaggio 50 ' + pc(out.p50) + ' · passaggio 95 ' + pc(out.p95) + ' · duelli/persi ' + (out.f50.duelli + out.f95.duelli + out.p50.duelli + out.p95.duelli) + '/' + (out.f50.persi + out.f95.persi + out.p50.persi + out.p95.persi) + ' (n=' + out.f50.n + ' per braccio)');
+  return out;
+}
+
+for (const arm of ARMI) { esito[arm] = {}; if (PARTI.includes('C') || !process.env.CPM_PARTI) esito[arm].C = parteC(arm); if (PARTI.includes('A')) esito[arm].A = await parteA(arm); if (PARTI.includes('B')) esito[arm].B = await parteB(arm); }
 await b.close(); srv.close();
 if (process.env.CPM_MISURA) process.exit(0);
 const g = [];
@@ -148,7 +175,6 @@ const V = esito.verde, R = esito.rosso;
 if (V && V.A) { const A = V.A;
   if (A.d1Giud < 4) g.push('verde D1: solo ' + A.d1Giud + ' assist con ricevente nominato (pavimento 4)');
   if (A.d1Bad.length) g.push('verde D1: ' + A.d1Bad.length + ' assist accreditati al compagno sbagliato');
-  if (A.d3n < 3) g.push('verde D3: solo ' + A.d3n + ' scene «Proteggi palla» (pavimento 3)');
   if (A.d3Bad.length) g.push('verde D3: ' + A.d3Bad.length + ' protezioni risolte come passaggio intercettato');
   if (A.d4Bad.length) g.push('verde D4: ' + A.d4Bad.length + ' seguiti del passaggio respinto con una giocata d\'assist'); }
 if (V && V.B) { const B = V.B;
@@ -157,9 +183,15 @@ if (V && V.B) { const B = V.B;
   else if (B.d7.retro) g.push('verde D7: «RETROCESSIONE» in Lega B');
   if (B.d7cl) g.push('verde D7: la classifica di Lega B mostra «Retrocesse»');
   if (!B.d8 || B.d8.listed || B.d8.home) g.push('verde D8: dopo il rinnovo ancora in lista cessioni ' + JSON.stringify(B.d8)); }
+if (V && V.C) { const C = V.C; const persi = C.f50.persi + C.f95.persi + C.p50.persi + C.p95.persi, du = C.f50.duelli + C.f95.duelli + C.p50.duelli + C.p95.duelli;
+  if (C.f50.n < 300) g.push('verde D3: motore senza giocaScena (n=' + C.f50.n + ')');
+  if (du !== persi) g.push('verde D3: ' + (persi - du) + ' protezioni perse come passaggio (senza duello)');
+  if (!(C.f50.q > C.f95.q + 0.08)) g.push('verde D3: la protezione non dipende dal fisico (' + C.f50.q + ' contro ' + C.f95.q + ')');
+  if (!(Math.abs(C.p50.q - C.p95.q) <= 0.06)) g.push('verde D3: la protezione dipende ancora dal passaggio (' + C.p50.q + ' contro ' + C.p95.q + ')');
+  if (!(C.f95.q >= 0.03 && C.f50.q <= 0.50)) g.push('verde D3: quote poco credibili (fisico 95 ' + C.f95.q + ', fisico 50 ' + C.f50.q + ')'); }
+if (R && R.C) { const C = R.C; if ((C.f50.duelli + C.f95.duelli) > 0 || Math.abs(C.p50.q - C.p95.q) <= 0.06) g.push('rosso D3 (motore): il difetto non si vede'); }
 if (R && R.A) { const A = R.A;
   if (!A.d1Bad.length) g.push('rosso D1: il difetto non si vede (' + A.d1Giud + ' assist nominati)');
-  if (!A.d3Bad.length) g.push('rosso D3: il difetto non si vede (' + A.d3n + ' protezioni)');
   if (!A.d4Bad.length) g.push('rosso D4: il difetto non si vede (' + A.d4Seg + ' seguiti)'); }
 if (R && R.B) { const B = R.B;
   if (!(B.d7 && B.d7.retro)) g.push('rosso D7: il difetto non si vede ' + JSON.stringify(B.d7));
