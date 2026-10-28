@@ -38286,7 +38286,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     let _assistBy=null,_assistTo=null;
     if(ok&&(key==="goal"||key==="assist")){const _ckC=clockRef.current;const _tm=_matePool||[];/* [7.118.0] compagni NAZIONALI in gara di nazionale, non del club */
       if(_tm.length){const _pk=slt=>{const m=_tm[Math.abs(hashStr("al|"+(player.season||1)+"|"+(player.week||1)+"|"+_ckC+"|"+slt))%_tm.length];const nm=(m&&m.name)||"";return{name:(((typeof _surnBG==="function"&&_surnBG(nm))||nm.split(" ").pop())||nm||"un compagno"),full:nm,archetype:m&&m.archetype};/* [7.304.0 collaudo PO «non è Luca ma De Luca!»] SECONDO sito di troncamento, mai toccato dal 7.299.0: qui il cognome si ricavava ancora con split(" ").pop(), che sui cognomi con particella tiene solo l'ultimo token */};
-        if(key==="assist"){const r=_pk("to");_assistTo=r.name;assistLinksRef.current.given.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}
+        if(key==="assist"){let r=_pk("to");/* [giro 98 D1, collaudo carriera 177 n.4: il compagno nominato nella scelta («Servi THEIS libero») non era quello che segnava — 12 casi su 18] IL COMPAGNO SCELTO E' QUELLO CHE RICEVE E SEGNA: il nome si prende dal ricevente del cast del motore (lo stesso che da' il nome all'opzione e che il 3D serve), non da un sorteggio seminato sulla rosa. Rosso __CPM_NO_G98D1 */try{const _cr98=!(typeof window!=='undefined'&&window.__CPM_NO_G98D1)&&castBrainRef.current&&castBrainRef.current.ricevente;if(_cr98&&_cr98.nome&&!_cr98.eroe&&_cr98.i!==21){const _fn98=String(_cr98.nome);const _m98=_tm.find(q=>q&&q.name===_fn98);r={name:(((typeof _surnBG==="function"&&_surnBG(_fn98))||_fn98.split(" ").pop())||_fn98),full:_fn98,archetype:(_m98&&_m98.archetype)||null};}}catch(_e98){}_assistTo=r.name;assistLinksRef.current.given.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}
         else if(key==="goal"){const _assisted=(Math.abs(hashStr("ga|"+(player.season||1)+"|"+(player.week||1)+"|"+_ckC))%100)<66;if(_assisted){const r=_pk("by");_assistBy=r.name;assistLinksRef.current.received.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}}
       }}
     try{cpmEv("esito",{min:clockRef.current|0,key:String(key||""),ok:!!ok,at:String((action&&action.stat)||"")});}catch(_e761){}/* [7.761.0] OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO: il metro delle righe fondate (7.760) ha trovato «smentite» che erano tiri dell'eroe finiti alla linea di porta nella finestra della riga — senza l'evento, il giudice non poteva saperlo. Qui, prima delle statistiche, per OGNI esito. */
@@ -38297,7 +38297,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',def:!!(_fkSit&&_fkSit.type==='def')/* [giro 60 PO-218] la scena difensiva non e' un tiro dell'eroe */,gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */,spreca298:_sp298});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,rew:(action&&action.rew)||null,g137:_g137?{ok:!!_g137.ok,esito:_g137.esito||null,fam:_g137.fam||null}:null,det:_det298,sp298:_sp298,cat:(_ovl&&_ovl.cat)||null,tone:(_ovl&&_ovl.tone)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',def:!!(_fkSit&&_fkSit.type==='def')/* [giro 60 PO-218] la scena difensiva non e' un tiro dell'eroe */,gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */,spreca298:_sp298});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,rew:(action&&action.rew)||null,g137:_g137?{ok:!!_g137.ok,esito:_g137.esito||null,fam:_g137.fam||null}:null,det:_det298,sp298:_sp298,cat:(_ovl&&_ovl.cat)||null,tone:(_ovl&&_ovl.tone)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ric98:(castBrainRef.current&&castBrainRef.current.ricevente&&castBrainRef.current.ricevente.nome)||null,to98:_assistTo,ch98:!!(situations[hlIdx]&&situations[hlIdx]._chainDepth),na98:!!(situations[hlIdx]&&situations[hlIdx]._na98),ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}if(brain137()&&!ok&&(_t202==='blocked'||/intercept|dispossess|beaten|lost|stopped/i.test(String(_outKind||key||''))))_t202='perso';rip202Ref.current=_t202;}catch(_e202){}/* [7.999.137] anche il pallone perso (intercetto, contrasto, tiro murato) riparte con l'avversario */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
@@ -38478,7 +38478,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(ok&&!_falloOk38&&!_sp298&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
       else if(_crossChain704)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.0.4] cross consegnato in area → il secondo tempo finalizza (il cross non era gol) · [7.201.0] MAI `header`: il cross l'ha messo l'EROE, non può incornarlo lui — o lo prolunga un compagno (sponda) o nasce una mischia/un rimbalzo */
-      else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
+      else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1,_noAss98:(action&&action.rew==="assist")};/* [giro 98 D4] dopo il passaggio al compagno respinto dal portiere il seguito e' la ribattuta: niente secondo passaggio da assist (vedi handleContinue) */// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
       else if(situations[hlIdx]?.chainOn==="aerial")/* [6.3.2 R1a] campo dichiarativo bakato in S(), non piu regex sul testo */
         pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.201.0] `header` fuori: la consegna aerea (cross/corner/punizione/rimessa) l'ha battuta l'eroe */
     }
@@ -38699,8 +38699,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     cpmEmit("HighlightAdvance",{from:hlIdx,chained:!!pendingChainSitRef.current});// LMQP-1
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
-    if(pendingChainSitRef.current){try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}try{if(typeof scenaSecondoTempo==="function"){const _g22=scenaSecondoTempo(pendingChainSitRef.current,castBrainRef.current,player,((bgSimSeedRef.current^((clockRef.current|0)*7919+nx*131))>>>0));if(_g22)pendingChainSitRef.current={..._g22,_chainDepth:1};}}catch(_e22){}/* [giro 17 PO-022 strato 8b] il secondo tempo si costruisce dal cast del motore (src/04 scenaSecondoTempo); rosso __CPM_NO_SEG022 */try{const _c22=pendingChainSitRef.current;cpmEv("fonte022",{min:clockRef.current|0,hl:nx,tipo:"seguito",fonte:(_c22&&_c22._p6)?"motore":"catena-scritta",gen:(_c22&&_c22._p6)||null,sk:String((_c22&&_c22.text)||"").slice(0,50)});}catch(_e022){}/* [giro 17 PO-022] testimone inerte, vedi fonte022 sopra */
-      const chain=pendingChainSitRef.current;
+    if(pendingChainSitRef.current){const _na98=!!pendingChainSitRef.current._noAss98&&!(typeof window!=='undefined'&&window.__CPM_NO_G98D4);try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}try{if(typeof scenaSecondoTempo==="function"){const _g22=scenaSecondoTempo(pendingChainSitRef.current,castBrainRef.current,player,((bgSimSeedRef.current^((clockRef.current|0)*7919+nx*131))>>>0));if(_g22)pendingChainSitRef.current={..._g22,_chainDepth:1};}}catch(_e22){}/* [giro 17 PO-022 strato 8b] il secondo tempo si costruisce dal cast del motore (src/04 scenaSecondoTempo); rosso __CPM_NO_SEG022 */try{const _c22=pendingChainSitRef.current;cpmEv("fonte022",{min:clockRef.current|0,hl:nx,tipo:"seguito",fonte:(_c22&&_c22._p6)?"motore":"catena-scritta",gen:(_c22&&_c22._p6)||null,sk:String((_c22&&_c22.text)||"").slice(0,50)});}catch(_e022){}/* [giro 17 PO-022] testimone inerte, vedi fonte022 sopra */
+      let chain=pendingChainSitRef.current;
+      /* [giro 98 D4, collaudo carriera 177 n.4, S3 gara 331: «Servi FERRETTI libero» → «il portiere ci mette i guantoni — palla viva», poi nella
+         mischia di nuovo «Servi FERRETTI libero» e il gol su respinta registrato come assist dell'eroe] Il passaggio non e' diventato gol: la
+         ribattuta e' la conclusione da giocare, non un secondo passaggio da assist. Si tolgono le opzioni con premio assist (restano le
+         conclusioni, almeno due). Rosso __CPM_NO_G98D4 */
+      if(_na98&&chain&&Array.isArray(chain.actions)){const _ac98=chain.actions.filter(a=>a&&a.rew!=="assist");if(_ac98.length>=2&&_ac98.length<chain.actions.length)chain={...chain,actions:_ac98,_na98:true};}
       pendingChainSitRef.current=null;
       setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
       setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] la catena e' la stessa azione: non consuma un'occasione */
@@ -43698,7 +43703,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const _isTopFlight132=!_isYouth99&&(_pair99===null||_isUpperLg99===true);
   const trophies=player.trophies||[];
   const numTeams=finalStandings?.length||18;
-  const isRelegated=!_isYouth99&&playerPos>=numTeams-3;/* [6.99.0] in Primavera non si retrocede */
+  /* [giro 98 D7, collaudo carriera 177 n.4: «⬇️ RETROCESSIONE» col club 16° in Lega B, che non ha una serie sotto] si retrocede solo da una
+     lega che ha una divisione inferiore (lato alto di LEAGUE_PAIRS): la carriera, infatti, dalla Lega B non sposta nessuno verso il basso.
+     Rosso __CPM_NO_G98D7 */
+  const _hasLower98=(typeof window!=='undefined'&&window.__CPM_NO_G98D7)?true:(_isUpperLg99===true);
+  const isRelegated=!_isYouth99&&_hasLower98&&playerPos>=numTeams-3;/* [6.99.0] in Primavera non si retrocede */
   const isPromoted=!_isTopFlight132&&playerPos<=2&&!isChampion;
   // Sprint 132: European zone flags for top-flight leagues
   const _isCL132=_isTopFlight132&&playerPos>=1&&playerPos<=3&&!isChampion;
@@ -44087,7 +44096,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                 <span style={{color:"#22c55e"}}>🟢 Conf. (7)</span>
               </>
             ):<span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>}
-            {!_isYouth99&&<span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>}
+            {!_isYouth99&&_hasLower98&&<span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>}
           </div>
         </Card></Fisarmonica>
       )}
@@ -44110,7 +44119,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                   ))}
                 </div>
               ))}
-              <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+              {_hasLower98&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
                 <div style={{fontSize:FS.small,fontWeight:700,color:"#dc2626",marginBottom:3}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse"}</div>
                 {relegTeams.map((t,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:FS.caption}}>
@@ -44119,7 +44128,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                     <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                   </div>
                 ))}
-              </div>
+              </div>}
             </>
           ):(
             promoTeams.length>0&&(
@@ -44135,7 +44144,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                     </div>
                   ))}
                 </div>
-                <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+                {_hasLower98&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>{/* [giro 98 D7] senza serie inferiore niente elenco delle retrocesse */}
                   <div style={{fontSize:FS.small,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
                   {relegTeams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:FS.caption}}>
@@ -44144,7 +44153,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                       <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                     </div>
                   ))}
-                </div>
+                </div>}
               </>
             )
           )}
@@ -52731,7 +52740,7 @@ const getThisWeekMatchday=()=>{
        valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
        gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
     const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
-    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8, collaudo carriera 177 n.4: dopo «Contratto rinnovato!» la home diceva ancora «Sei in lista cessioni» e a W8 il giocatore e' stato ceduto] chi rinnova resta: il rinnovo toglie dalla lista cessioni e chiude la richiesta di cessione. Rosso __CPM_NO_G98D8 */agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -52794,7 +52803,7 @@ const getThisWeekMatchday=()=>{
          collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
       const _firm270b=tc.duration||2;
       const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
-      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8] idem sul rinnovo via offerta */agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -56212,11 +56221,12 @@ const getThisWeekMatchday=()=>{
         //   le SECONDE divisioni (lato basso di LEAGUE_PAIRS) non hanno zone europee: top 3 = PROMOZIONE (la 1ª campione), ultime 3 retrocesse.
         const _isSecondDiv96=LEAGUE_PAIRS.some(([u,l])=>l===selLg);
         const _isYouthLg99=/^Primavera/i.test(selLg||"");/* [6.99.0 collaudo PO] Primavera 1/2: niente coppe europee né retrocessioni — conta solo il titolo */
+        const _noRel98=!(typeof window!=='undefined'&&window.__CPM_NO_G98D7)&&!LEAGUE_PAIRS.some(([u])=>u===selLg);/* [giro 98 D7] niente zona retrocessione dove non c'e' una serie inferiore (seconde divisioni e leghe senza gemella): la carriera non retrocede nessuno da li' */
         const zoneOf=_isYouthLg99
           ?(i)=>(i===0?"champ":null)
           :_isSecondDiv96
-          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6)return"rel";return null;}
-          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
+          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;}
+          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;};
         return(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {/* [23/09 POC — collaudo PO «i pulsanti di scelta lega sono troppo semplici», «farei piu' un elenco a discesa»]
@@ -56265,8 +56275,8 @@ const getThisWeekMatchday=()=>{
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
                 :_isSecondDiv96
-                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]]
-                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],[ZONE_COLORS.rel,"⬇ Retrocesse"]]).map(([c,l])=>(
+                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]])]
+                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse"]])]).map(([c,l])=>(
                 <span key={l} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:FS.caption,color:TH.muted,fontWeight:FW.semibold}}><span style={{width:8,height:8,borderRadius:RAD.pill,background:c,display:"inline-block"}}/>{l}</span>
               ))}
             </div>
