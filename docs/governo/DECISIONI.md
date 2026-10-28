@@ -806,3 +806,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Decisione tecnica (madre): i difetti alti/medi di PO-300 entrano nella 178 con un giro 96 costruito SOPRA il giro 95 (tocca gli stessi file degli highlight; in parallelo creerebbe conflitti). Bassi → 179.
 - Avviata la carriera n.5 «difensore» sulla 178 (lavoro/178), con prova esplicita dei tocchi rapidi e delle scene difensive.
 - Stato: giro 95 in corso (guardiano in prova), collaudo grafico PO-299 in corso, carriera n.4 alla stagione 10.
+
+## 28/10 01:30 (Roma) — controllo: collaudo grafico PO-299 concluso
+- Esito: 49 schermate in 4 formati e 82 highlight; 5 alti, 12 medi, 7 bassi. Figurine ok (proporzione 5:7, nessuna immagine rotta). Spazio fra i box ok quasi ovunque; restano 4 schermate larghe.
+- Decisione tecnica (madre), per non creare conflitti coi file degli highlight: giro 97 SUBITO in parallelo sulle schermate (D1 barra su tablet verticale, D14 cerimonia nera, D16 tasti piccoli, D17 strisce su PC, D18 spazi rimasti) senza toccare src/12, src/14, src/15; giro 96 sopra il giro 95 quando questo finisce, con PO-300 e i difetti 3D degli highlight (D2-D13, D15). Bassi D19-D24 → 179 (D24 «TuttoSport» da verificare col controllo dei nomi reali).
+- Giro 95: in chiusura (guardiano rilanciato dopo un riavvio del contenitore). Carriera 177 n.4: stagione 12. Carriera 178 n.5: avviata.
