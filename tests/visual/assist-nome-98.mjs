@@ -43,7 +43,7 @@ async function partita(sd, rosso, pol) {
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
-  await page.evaluate(([s, p]) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, p === 'protegge' ? { seed: s, policy: 're', re: 'Proteggi palla', tickMs: 150 } : { seed: s, policy: 'assist', tickMs: 150 }), [sd, pol]);
+  await page.evaluate(([s, p]) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, p === 'protegge' ? { seed: s, policy: 're', re: 'Proteggi palla', tickMs: 150 } : p === 'seeded' ? { seed: s, tickMs: 150 } : { seed: s, policy: 'assist', tickMs: 150 }), [sd, pol]);
   const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(1000); }
   const R = await page.evaluate(() => window.__CPM_RES218 || []);
@@ -166,6 +166,15 @@ function parteC(arm) {
   console.log(arm.toUpperCase() + ' C · D3 protezione: persa con fisico 50 ' + pc(out.f50) + ' · fisico 95 ' + pc(out.f95) + ' · passaggio 50 ' + pc(out.p50) + ' · passaggio 95 ' + pc(out.p95) + ' · duelli/persi ' + (out.f50.duelli + out.f95.duelli + out.p50.duelli + out.p95.duelli) + '/' + (out.f50.persi + out.f95.persi + out.p50.persi + out.p95.persi) + ' (n=' + out.f50.n + ' per braccio)');
   return out;
 }
+
+/* CPM_GOL=semi: misura gol e assist dell'eroe a partita col pilota seminato (scelte casuali, nessuna politica), dal tabellino del
+   motore (pagelle dell'eroe); il rosso (tutti gli interruttori del giro 98) e' il «prima». Solo misura, non giudica. */
+if (process.env.CPM_GOL) { for (const arm of ARMI) { let g = 0, a = 0, n = 0;
+    for (const sd of lista(process.env.CPM_GOL, '')) { const { R, ph, sc } = await partita(sd, arm === 'rosso', 'seeded'); n++;
+      R.forEach(r => { if (r.ok && r.key === 'goal') g++; if (r.ok && r.key === 'assist') a++; });
+      console.log(arm + ' seeded seme ' + sd + ' fine ' + ph + ' scene ' + R.length + ' punteggio ' + JSON.stringify(sc)); }
+    console.log(arm.toUpperCase() + ' GOL · partite ' + n + ' · gol eroe (scene) ' + (g / n).toFixed(2) + '/p · assist eroe ' + (a / n).toFixed(2) + '/p'); }
+  await b.close(); srv.close(); process.exit(0); }
 
 for (const arm of ARMI) { esito[arm] = {}; if (PARTI.includes('C') || !process.env.CPM_PARTI) esito[arm].C = parteC(arm); if (PARTI.includes('A')) esito[arm].A = await parteA(arm); if (PARTI.includes('B')) esito[arm].B = await parteB(arm); }
 await b.close(); srv.close();
