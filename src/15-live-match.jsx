@@ -2378,7 +2378,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [outcome,setOutcome]=useState(null);
   const golSubito85Ref=useRef(0);/* [7.999.85 PO-151, collaudo Codex 30/09 su 7.999.82: codice 003 «0-1 sul tabellone prima che il tiro arrivi in porta», scene 133/134/36/44/45/157 fail] il gol SUBITO nella scena difensiva entrava nel punteggio alla risoluzione dell'azione, mentre quello dell'eroe aspetta il pallone in rete (6.5.1). Ora aspetta la rivelazione dell'esito (resultReveal, la stessa che mostra la banda in basso) o, al piu' tardi, l'uscita dalla scena. Rosso __CPM_NO_GA85 */
   const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
-  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;},[resultReveal]);/* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
+  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_REVAT95=revealAt95.current;}catch(_e){}},[resultReveal]);/* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
   useEffect(()=>{const n=golSubito85Ref.current|0;if(!n)return;if((phase==="hl_result"&&resultReveal)||(phase!=="hl_result"&&phase!=="hl_choose"&&phase!=="hl_move"&&phase!=="hl_intro")){golSubito85Ref.current=0;setScore(sc=>({...sc,away:sc.away+n}));}},[phase,resultReveal]);/* [7.999.85] il gol subito entra nel tabellone quando l'esito si vede, non prima */
   const [chosenAct,setChosenAct]=useState(null);
   const [selectedActionIdx,setSelectedActionIdx]=useState(0);

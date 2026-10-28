@@ -46,15 +46,15 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   await page.evaluate(([s, re]) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 're', re, tickMs: 150 }), [sd, pol === 'drib' ? RE_DRIB : RE_PASS]);
   const hls = []; let cur = null; const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < 480000) {
-    const st = await page.evaluate(() => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const inc = !!document.querySelector('[data-cpm="incorso94"]');
-      const res = (window.__CPM_RES218 || []).length; const txt = ph === 'hl_result' ? document.body.innerText.slice(0, 900) : ''; return { ph, inc, res, txt }; }).catch(() => null);
+    const st = await page.evaluate(() => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const inc = !!document.querySelector('[data-cpm="incorso94"]'); const rv = window.__CPM_REVAT95 || 0; const ie = document.querySelector('[data-cpm="incorso94"]'); const inct = ie ? ie.textContent : '';
+      const res = (window.__CPM_RES218 || []).length; const txt = ph === 'hl_result' ? document.body.innerText.slice(0, 900) : ''; return { ph, inc, res, txt, rv, inct }; }).catch(() => null);
     if (!st) break; ph = st.ph;
     if (ph === 'ended' || ph === 'ceremony') break;
     if (ph === 'hl_result' && !cur) {
-      cur = { t: Date.now(), rev: null, n: st.res, inc0: st.inc };
+      cur = { t: Date.now(), rev: null, n: st.res - 1, inc0: st.inc, inct: st.inct };/* il testimone della scena e' gia' scritto quando la fase diventa hl_result: e' l'ultimo */
       cur.st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { act: s.act, ball: s.ball && { x: s.ball.x, y: s.ball.y }, hero: s.hero && { x: s.hero.x, y: s.hero.y } }; } catch (e) { return null; } }).catch(() => null);
     }
-    if (ph === 'hl_result' && cur && cur.rev == null && !st.inc && /Continua/.test(st.txt)) {
+    if (ph === 'hl_result' && cur && cur.rev == null && st.rv > 0 && Date.now() - cur.t > 300) {/* l'esito e' a schermo quando il gioco lo dice (resultReveal), non quando il DOM sembra pronto */
       cur.rev = Date.now() - cur.t; cur.rv = await page.evaluate(() => (window.__CPM_REV95 || []).slice(-1)[0] || null).catch(() => null); cur.txt = st.txt.split('\n').slice(0, 30).join(' / ');
       cur.d3 = await page.evaluate(() => { try { const s = window.__CPM_STATE(); const gk = s.players.find(p => p.team === 'away' && p.gk); const opp = s.players.filter(p => p.team === 'away' && !p.gk);
         const dh = Math.min(...opp.map(p => Math.hypot(p.x - s.hero.x, p.y - s.hero.y))); return { gk: gk && { x: gk.x, y: gk.y }, ball: { x: s.ball.x, y: s.ball.y, h: s.ball.worldY }, hero: { x: s.hero.x, y: s.hero.y }, dHeroOpp: +dh.toFixed(2), gkBall: gk ? +Math.hypot(gk.x - s.ball.x, gk.y - s.ball.y).toFixed(1) : null }; } catch (e) { return null; } }).catch(() => null);
@@ -67,7 +67,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
-  hls.forEach(h => { h.r = R[h.n] || null; });
+  hls.forEach(h => { const r = R[h.n] || null; const core = r ? String(r.label || '').replace(/^\S+\s/, '').slice(0, 14) : ''; h.r = (r && (!h.inct || h.inct.indexOf(core) >= 0)) ? r : null; if (r && !h.r) h.scartato = 1; });/* l'abbinamento scena↔testimone si verifica sul nome della giocata mostrato «in corso» */
   return { hls, R, ph, tab };
 }
 for (const arm of ARMI) { const rosso = arm === 'rosso';
@@ -104,7 +104,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')');
       }
       if (isFallo(lab)) { T.fallo = (T.fallo | 0) + 1; if ((g && g.fam === 'assist') || /assist|compagno|intercett|servit/i.test(ovl)) T.difetti.push('D1 ' + tag + ': fallo cercato giocato/raccontato come passaggio «' + ovl + '» (motore ' + (g ? g.fam : '-') + ')'); }
-      T.righe.push(tag + ' tipo=' + r.tipo + ' 3D=' + (h.st && h.st.act ? h.st.act.t : '-') + ' g=' + (g ? g.fam + ':' + g.esito : '-') + ' key=' + r.key + ' ok=' + r.ok + ' kind=' + (r.outKind || '-') + ' rev=' + h.rev + ' dur=' + h.durata + ' «' + ovl + '»' + (h.d3 ? ' gk-palla=' + h.d3.gkBall + ' eroe-dif=' + h.d3.dHeroOpp + ' palla-eroe=' + (h.d3.ball ? Math.hypot(h.d3.ball.x - h.d3.hero.x, h.d3.ball.y - h.d3.hero.y).toFixed(1) : '-') : '') + ' minGB=' + (h.minGB != null ? h.minGB.toFixed(1) : '-') + ' via=' + (h.rv ? h.rv.via + (h.rv.busy ? '+occupata' : '') : '-'));
+      T.righe.push(tag + ' tipo=' + r.tipo + ' 3D=' + (h.st && h.st.act ? h.st.act.t : '-') + ' g=' + (g ? g.fam + ':' + g.esito : '-') + ' key=' + r.key + ' ok=' + r.ok + ' kind=' + (r.outKind || '-') + ' rev=' + h.rev + ' dur=' + h.durata + ' «' + ovl + '»' + (h.d3 ? ' gk-palla=' + h.d3.gkBall + ' eroe-dif=' + h.d3.dHeroOpp + ' palla-eroe=' + (h.d3.ball ? Math.hypot(h.d3.ball.x - h.d3.hero.x, h.d3.ball.y - h.d3.hero.y).toFixed(1) : '-') : '') + ' minGB=' + (h.minGB != null ? h.minGB.toFixed(1) : '-') + ' via=' + (h.rv ? h.rv.via + (h.rv.busy ? '+occupata' : '') + (h.rv.wpa ? '+tiroCompagno' : '') + ' hl' + h.rv.hl : '-'));
     }
     console.log(arm + ' ' + sk + ' seme ' + sd + ' ' + pol + (senza ? ' (scena senza esito)' : '') + ' fine ' + M.ph + ' highlight ' + M.hls.length + ' tabellone ' + JSON.stringify(M.tab));
   }
