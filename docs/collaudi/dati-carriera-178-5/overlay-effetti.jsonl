@@ -423,3 +423,83 @@
 {"s":6,"w":37,"tipo":"impulso","scelta":"🤝 Gli dedico cinque minuti","toast":["+2 ⚡+1 ⭐+5"],"d":{"fatigue":[52,53]}}
 {"s":6,"w":38,"tipo":"impulso","scelta":"🛌 Prima la partita, sempre","toast":[],"d":{"popularity":[100,98],"coachTrust":[99,100]}}
 {"s":6,"w":39,"tipo":"impulso","scelta":"📰 Che esca pure","toast":[],"d":{"morale":[100,98],"popularity":[98,99]}}
+{"s":7,"w":1,"tipo":"impulso","scelta":"🚶 Non mi interessa","toast":["-3 💪+1"],"d":{"form":[84,85],"morale":[100,97]}}
+{"s":7,"w":2,"tipo":"impulso","scelta":"❄️ Ci vivo dentro","toast":[],"d":{"form":[83,86],"fatigue":[50,42]}}
+{"s":7,"w":3,"tipo":"intervista","scelta":"🤝 Diplomatico «Con serietà e umiltà. Le aspettative alte significano che ti considerano f","toast":[],"d":{"morale":[98,100]}}
+{"s":7,"w":3,"tipo":"intervista","scelta":"🔥 Ambizioso «Personalmente? Che possiamo fare molto di più.»","toast":["DOMANI IN EDICOLA · VER 3-0 FC ORIOLAN","😄 Morale +5","⭐ Popolarità +6","🤝 Fiducia del mister +4"],"d":{"coachTrust":[100,99]}}
+{"s":7,"w":3,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":3,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":4,"tipo":"impulso","scelta":"🗣️ Segnali la cosa al mister","toast":[],"d":{"morale":[99,95]}}
+{"s":7,"w":5,"tipo":"impulso","scelta":"🧘 Rispiri, lasci andare, dormi","toast":[],"d":{"form":[93,95],"morale":[98,100],"fatigue":[48,43]}}
+{"s":7,"w":6,"tipo":"intervista","scelta":"🙏 Umile «'Lavoro'. Non mi accontento mai. C'è sempre un aspetto da migliorare.»","toast":[],"d":{}}
+{"s":7,"w":6,"tipo":"intervista","scelta":"🙏 Umile «Voglio diventare un giocatore su cui i compagni possono contare sempre.»","toast":["😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister +11"],"d":{}}
+{"s":7,"w":6,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":7,"tipo":"intervista","scelta":"🤝 Diplomatico «La intensità mentale. Non è solo fisico. Ogni giorno è una sfida psicologi","toast":[],"d":{"morale":[99,100]}}
+{"s":7,"w":7,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","toast":["DOMANI IN EDICOLA · VER 1-4 FC CATALUNYA","😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +4"],"d":{"coachTrust":[100,99]}}
+{"s":7,"w":7,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":7,"tipo":"impulso","scelta":"«Grazie per avermi detto questo.»","toast":["+8 💪+3"],"d":{"form":[88,91]}}
+{"s":7,"w":9,"tipo":"impulso","scelta":"🤝 Passo — voglio restare autentico","toast":[],"d":{"morale":[99,100]}}
+{"s":7,"w":10,"tipo":"intervista","scelta":"🤝 Diplomatico «È stata la sfida più bella. L'intensità è diversa ma mi sono adattato.»","toast":[],"d":{}}
+{"s":7,"w":10,"tipo":"intervista","scelta":"🙏 Umile «Che io per primo devo dare di più.»","toast":["😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +6"],"d":{}}
+{"s":7,"w":10,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"🤝 Diplomatico «Dobbiamo analizzare bene cosa non va. Non si possono perdere punti così.»","toast":[],"d":{"morale":[99,97]}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"🔥 Ambizioso «L'intensità. Nelle ultime partite ce n'è stata poca.»","toast":["DOMANI IN EDICOLA · VER 1-2 FC BILBAO","😄 Morale -1","⭐ Popolarità +2","🤝 Fiducia del mister +4"],"d":{"morale":[97,98],"coachTrust":[100,99]}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"🔥 Ambizioso «Quando vinco mi diverto. La vittoria è il divertimento massimo per me.»","toast":[],"d":{"morale":[86,93],"coachTrust":[92,90]}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"🙏 Umile «No, è un messaggio per me stesso. Devo alzare il livello.»","toast":["😄 Morale +8","⭐ Popolarità +6","🤝 Fiducia del mister -1"],"d":{"morale":[93,94],"coachTrust":[90,91]}}
+{"s":7,"w":11,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":12,"tipo":"impulso","scelta":"«Ottima osservazione. Ci lavoro.»","toast":[],"d":{"form":[79,88],"coachTrust":[91,95]}}
+{"s":7,"w":13,"tipo":"impulso","scelta":"⏱ Oggi ho già dato tutto","toast":[],"d":{"fatigue":[50,48]}}
+{"s":7,"w":14,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":15,"tipo":"intervista","scelta":"🤝 Diplomatico «Straordinario. Il loro supporto è fondamentale. Li rispetto enormemente.»","toast":[],"d":{"morale":[97,100],"coachTrust":[95,97]}}
+{"s":7,"w":15,"tipo":"intervista","scelta":"🔥 Ambizioso «Personalmente? Che possiamo fare molto di più.»","toast":["DOMANI IN EDICOLA · VER 5-1 FC BALEAR","😄 Morale +4","⭐ Popolarità +9","🤝 Fiducia del mister +1"],"d":{"coachTrust":[97,96]}}
+{"s":7,"w":15,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":15,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":17,"tipo":"intervista","scelta":"🙏 Umile «Diversi. Mi piace imparare dagli avversari forti. Ogni sfida è una lezione.»","toast":[],"d":{}}
+{"s":7,"w":17,"tipo":"intervista","scelta":"🙏 Umile «Preferisco che parlino i fatti, anche se ci mettono di più.»","toast":["😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister +7"],"d":{}}
+{"s":7,"w":17,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":18,"tipo":"impulso","scelta":"🧪 Lo provo — sono curioso","toast":[],"d":{"form":[86,90],"fatigue":[41,27]}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"🤝 Diplomatico «La crescita umana oltre che tecnica. Ho imparato tantissimo da ogni person","toast":[],"d":{}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"🔥 Ambizioso «Personalmente? Che possiamo fare molto di più.»","toast":["DOMANI IN EDICOLA · VER 2-0 FC ILICITANO","😄 Morale +8","⭐ Popolarità +9","🤝 Fiducia del mister +5"],"d":{"coachTrust":[100,99]}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":18,"tipo":"impulso","scelta":"🔥 Mi supero — voglio essere visto","toast":[],"d":{"form":[86,94],"fatigue":[41,47]}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"🤝 Diplomatico «Ci sono tanti campioni in questa lega. Ogni settimana affronti qualità alt","toast":[],"d":{}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"🤝 Diplomatico «La continuità: ho fatto le cose semplici per novanta minuti.»","toast":["DOMANI IN EDICOLA · VER 2-1 FC ILICITANO","😄 Morale +4","⭐ Popolarità +4","🤝 Fiducia del mister +5"],"d":{}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"Chiudi","toast":["Mercato invernale aperto! Settimane 19-23."],"d":{}}
+{"s":7,"w":19,"tipo":"intervista","scelta":"❌ Declino","toast":["+3 ⭐-3"],"d":{"popularity":[100,97]}}
+{"s":7,"w":20,"tipo":"impulso","scelta":"🍕 Uno sgarro me lo concedo","toast":["+4 💪-2"],"d":{"form":[93,91]}}
+{"s":7,"w":21,"tipo":"impulso","scelta":"🔟 La prendo — me la merito","toast":[],"d":{"form":[89,88],"morale":[99,100]}}
+{"s":7,"w":22,"tipo":"intervista","scelta":"🤝 Diplomatico «È una sensazione meravigliosa. Ti dà energia pura. Lo dedico a tutto il gr","toast":[],"d":{}}
+{"s":7,"w":22,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","toast":["DOMANI IN EDICOLA · VER 1-0 FC ORIOLAN","😄 Morale +9","⭐ Popolarità +11","🤝 Fiducia del mister +2"],"d":{"coachTrust":[100,99]}}
+{"s":7,"w":22,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":22,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":23,"tipo":"intervista","scelta":"🙏 Umile «La pazienza e la voglia di imparare. Non ho mai pensato di sapere già tutto.»","toast":[],"d":{}}
+{"s":7,"w":23,"tipo":"intervista","scelta":"🙏 Umile «Voglio diventare un giocatore su cui i compagni possono contare sempre.»","toast":["😄 Morale +5","⭐ Popolarità +5","🤝 Fiducia del mister +9"],"d":{}}
+{"s":7,"w":23,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":25,"tipo":"impulso","scelta":"✈️ Li porto in tribuna d'onore","toast":[],"d":{"bankBalance":[3977498,3971498]}}
+{"s":7,"w":26,"tipo":"intervista","scelta":"🔥 Ambizioso «Non sogno, programmo. Darò tutto per portare un trofeo qui. Lo voglio.»","toast":[],"d":{"morale":[98,100],"coachTrust":[100,98]}}
+{"s":7,"w":26,"tipo":"intervista","scelta":"🔥 Ambizioso «Più alto di quello che mi darete voi, come sempre.»","toast":["DOMANI IN EDICOLA · VER 2-2 FC CATALUNYA","😄 Morale +10","⭐ Popolarità +8","🤝 Fiducia del mister -3"],"d":{"coachTrust":[98,97]}}
+{"s":7,"w":26,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":26,"tipo":"impulso","scelta":"💌 Mando due parole di stima","toast":["+2"],"d":{}}
+{"s":7,"w":27,"tipo":"impulso","scelta":"🎮 Firmo — sarò un personaggio","toast":[],"d":{"bankBalance":[4086956,4111956]}}
+{"s":7,"w":28,"tipo":"impulso","scelta":"🏋️ Al coperto — tecnica e tattica senza rischi","toast":[],"d":{"form":[87,90],"fatigue":[47,54]}}
+{"s":7,"w":29,"tipo":"impulso","scelta":"🔥 Rispondo per le rime","toast":[],"d":{"morale":[100,97],"coachTrust":[100,96]}}
+{"s":7,"w":30,"tipo":"intervista","scelta":"🤝 Diplomatico «Molto competitivo. Non ci sono partite facili. Ogni gara richiede il massi","toast":[],"d":{"morale":[98,100],"coachTrust":[96,100]}}
+{"s":7,"w":30,"tipo":"intervista","scelta":"🙏 Umile «Ad ascoltare. Chi ascolta impara più in fretta.»","toast":["DOMANI IN EDICOLA · VER 2-0 FC BILBAO","😄 Morale +4","⭐ Popolarità +3","🤝 Fiducia del mister +6"],"d":{}}
+{"s":7,"w":30,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":30,"tipo":"impulso","scelta":"😅 Ridi imbarazzato e cambi argomento","toast":["+4"],"d":{}}
+{"s":7,"w":31,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":33,"tipo":"impulso","scelta":"✅ Capito","toast":[],"d":{}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"🤝 Diplomatico «'Crescita'. Ogni settimana mi sento più parte di questo gruppo fantastico.","toast":[],"d":{"morale":[98,100]}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"🔥 Ambizioso «Personalmente? Che possiamo fare molto di più.»","toast":["DOMANI IN EDICOLA · VER 2-3 FC BALEAR","😄 Morale +6","⭐ Popolarità +6","🤝 Fiducia del mister +5"],"d":{"coachTrust":[100,99]}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"🔥 Ambizioso «Roba che pompa l'adrenalina. Entro in campo come una macchina da guerra.»","toast":[],"d":{"coachTrust":[99,97]}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"🙏 Umile «Ho detto quello che penso. Ma adesso conta il lavoro, non le parole.»","toast":["😄 Morale +7","⭐ Popolarità +6","🤝 Fiducia del mister -1"],"d":{"coachTrust":[97,98]}}
+{"s":7,"w":34,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":35,"tipo":"impulso","scelta":"💸 Ci sto","toast":[],"d":{"coachTrust":[98,96],"bankBalance":[4573788,4581788]}}
+{"s":7,"w":36,"tipo":"impulso","scelta":"🍕 Sto bene così","toast":[],"d":{}}
+{"s":7,"w":37,"tipo":"impulso","scelta":"💪 Prendo le responsabilità — sono pronto","toast":[],"d":{"form":[82,86],"morale":[99,100],"fatigue":[27,32],"coachTrust":[94.2,100]}}
+{"s":7,"w":38,"tipo":"intervista","scelta":"🤝 Diplomatico «Ci lavoriamo in allenamento. Il mister ha già identificato le soluzioni.»","toast":[],"d":{}}
+{"s":7,"w":38,"tipo":"intervista","scelta":"🔥 Ambizioso «Ci penso eccome: siamo qui per vincere qualcosa.»","toast":["DOMANI IN EDICOLA · VER 1-2 FC PUCELA","😄 Morale +2","⭐ Popolarità +3","🤝 Fiducia del mister +6"],"d":{"morale":[99,100],"coachTrust":[100,99]}}
+{"s":7,"w":38,"tipo":"intervista","scelta":"Chiudi","toast":[],"d":{}}
+{"s":7,"w":38,"tipo":"impulso","scelta":"«Non sono il tipo adatto a questi discorsi.»","toast":["+1"],"d":{}}
