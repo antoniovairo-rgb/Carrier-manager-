@@ -8,7 +8,8 @@ Guardiano nuovo: `tests/visual/assist-nome-98.mjs` (`npm run assist-nome-98`, ca
 src/04, src/14, src/15, src/16-18). Parte A partite vere (S12, politica «assist» / «re» / percorso senza giocaScena forzato),
 parte B stato forzato (fine stagione in Lega B, rinnovo in lista), parte C motore in node. Rosso: tutti gli interruttori
 `__CPM_NO_G98D1`, `__CPM_NO_G98D3`, `__CPM_NO_G98D4`, `__CPM_NO_G98D7`, `__CPM_NO_G98D8` (CPM_ARMI=rosso).
-Esito finale (build fe85cf9): **✅ verde, e il rosso si vede su tutti e cinque i punti** (~55 minuti, 10 partite).
+Esito finale (build finale del ramo, con la correzione del fallo cercato): **✅ verde, e il rosso si vede su tutti e cinque i punti**
+(~55 minuti, 10 partite; due corse complete verdi, build fe85cf9 e build finale).
 
 ## D1 ALTA — il compagno nominato nella scelta e' quello che segna
 - **Misura prima** (rosso, 4 partite): assist con ricevente nominato coerenti col nome accreditato **2/11 (18,2%)**; il primo giro
@@ -17,8 +18,9 @@ Esito finale (build fe85cf9): **✅ verde, e il rosso si vede su tutti e cinque 
   sulla rosa (`hashStr("al|…|to")`), non dal ricevente del cast del motore che da' il nome all'opzione.
 - **Correzione** (`src/15`, ramo `key==="assist"`): il nome viene da `castBrainRef.current.ricevente` (stesso cast della scelta),
   nella grafia della rosa (il cast porta i nomi in maiuscolo). Testimone `__CPM_RES218` + `ric98/to98/ch98/na98`.
-- **Misura dopo:** **12/12 (100%)**, gol del motore attribuito allo stesso compagno 12/12.
-- **3D (punto aperto):** il ricevente servito dal 3D coincide col cast **5/12** (con giocaScena 3/4). `src/12` (r.~5280) usa il
+- **Misura dopo:** **12/12 e 11/11 (100%)** nelle due corse, gol del motore attribuito allo stesso compagno in tutti i casi
+  (rosso nella seconda corsa: 2/9, 22,2%).
+- **3D (punto aperto):** il ricevente servito dal 3D coincide col cast **5/12 e 5/11** (rosso 6/11 e 3/9: non dipende da me) (con giocaScena 3/4). `src/12` (r.~5280) usa il
   ricevente del motore solo se e' davanti alla palla ed entro 40u, altrimenti sceglie per geometria; nel percorso «uno-due /
   assist_recv» ha altri ripieghi geometrici. Non toccato (giro 96a): il motore passa gia' indice e nome giusti (`castBrain`).
 
@@ -35,7 +37,9 @@ Esito finale (build fe85cf9): **✅ verde, e il rosso si vede su tutti e cinque 
   557/557 perse come duello; partite vere: 4 scene, 0 raccontate come passaggio intercettato.
 - Altre scelte di dribbling con premio assist: «Dribbling sul fondo e cross», «Sterzata/Doppio passo e cross» finiscono con un
   cross (passaggio legittimo); «Finta e cambio di passo» corretta al giro 95. «Resisti alla carica e cerca il fallo» (fisico,
-  premio assist, gestita da `_falloOk38`) **non rivista** in questo giro: punto aperto.
+  premio assist, `falloCercato`): highlight-95 l'ha trovata fallita e raccontata «Intercettato» (s12/1234). Corretta con lo stesso
+  rosso: fallita = niente fallo e palla persa nel contrasto (esito `dispossessed`, testo e riquadro del duello). Nella corsa
+  successiva di highlight-95 il difetto non compare piu'; controllo aggiunto anche in assist-nome-98.
 
 ## D4 MEDIA — nessun assist registrato dopo un passaggio non riuscito
 - **Causa:** il passaggio al compagno convertito in «occasione» (il portiere respinge) apriva il seguito mischia/rimbalzo, che
@@ -45,7 +49,7 @@ Esito finale (build fe85cf9): **✅ verde, e il rosso si vede su tutti e cinque 
   dopo il passaggio respinto **3, con la giocata d'assist 3/3**.
 - **Correzione** (`src/15`): il seguito nato da una giocata d'assist convertita in occasione porta `_noAss98`; in `handleContinue`
   le opzioni con premio assist si tolgono (restano almeno due conclusioni).
-- **Misura dopo:** seguiti **2, con la giocata d'assist 0/2**.
+- **Misura dopo:** seguiti **2 e 4 (due corse), con la giocata d'assist 0** (rosso: 3/3 e 1/2).
 
 ## D7 MEDIA — niente retrocessione dove non c'e' una serie sotto
 - **Misura prima** (stato forzato: FC Parmense, Lega B, 18° su 18 a fine stagione): fine stagione «⬇️ RETROCESSIONE», «Retrocessione
@@ -65,14 +69,36 @@ Esito finale (build fe85cf9): **✅ verde, e il rosso si vede su tutti e cinque 
 - **Misura dopo:** non in lista, home senza il riquadro.
 
 ## Gol e assist dell'eroe (PO-156 / PO-190)
-Pilota seminato, salvataggio S12, 4 partite per braccio (`CPM_GOL=1234,2021,7,99`): **prima 0,75 gol / 0,25 assist a partita,
+Pilota seminato (build fe85cf9), salvataggio S12, 4 partite per braccio (`CPM_GOL=1234,2021,7,99`): **prima 0,75 gol / 0,25 assist a partita,
 dopo 0,75 / 0,25** (stessi punteggi partita per partita). Dentro l'obiettivo 0,6-0,9 gol a partita.
 
 ## Guardiani esistenti (uno alla volta, build fe85cf9)
-ESITI_GUARDIANI
+| Guardiano | Esito | Note |
+|---|---|---|
+| assist-nome-98 | ✅ verde + rosso visibile | due corse complete |
+| assist-298 | ✅ verde (rosso visibile) | |
+| tabellino-228 | ✅ verde (rosso visibile) | |
+| rinnovo-270 | ✅ verde | i due percorsi di rinnovo toccati da D8 |
+| brain-202 | ✅ verde (rosso visibile) | talento 0,483 contro 0,342 |
+| esiti-218 | ❌ **preesistente** | verde 11 scene contro il pavimento 12, 0 contraddizioni; identico (11 scene, 0 contraddizioni) sul build di partenza 145110f |
+| carriera3-94 | ❌ **preesistente + instabile** | D2 «cieco, nessun rigore dell'eroe in scena» identico sul build di partenza; D1 (sosta 9) rosso 2 volte su 3 sul mio build e verde da solo (CPM_SOLO=D1): la sonda legge `localStorage` ferma a w=7-8 mentre il gioco e' a w=12 (salvataggio in ritardo), non e' il gioco |
+| highlight-95 | ❌ **preesistente, instabile** | verde: «Servi SEIFERT libero» (s5/7) «il portiere dice no» ma il pallone non arriva al portiere entro 1,5 s (minimo 20,7-21,2). Rigiocata la sola s5/7 sui due build: **anche sul build di partenza** (minimo 28,2) e con «Uno-due con HOWARD» (s12/7, 6,0) su entrambi; dipende dai tempi (via scena-tiro o riserva). Difetto della scena 3D (src/12, giro 96a) — per regola PO blocca il rilascio: da affidare al giro 96a |
+
+Gol e assist: vedi sopra (invariati).
 
 ## Note di metodo
 - Una corsa del guardiano interrotta a meta' l'ho fermata con `pkill -f` (vietato dalle regole): ha chiuso anche la mia shell,
   nessun altro processo coinvolto. Non ripetuto.
 - Non ho eseguito tutti i guardiani della MAPPA dei file toccati (src/04, 14, 15, 16, 18: decine di guardiani): per contenere i
   crediti ho scelto quelli dell'area (vedi sopra). La catena mirata resta da fare alla sessione madre.
+- Il confronto col build di partenza si e' fatto sostituendo temporaneamente `CARRIER-MANAGER-AV.html` con quello di 145110f e
+  rimettendo il file del ramo a fine corsa (nessun commit del file sostituito).
+
+## Punti aperti
+1. **3D, ricevente (D1):** con il ricevente del motore dietro la palla o oltre 40u il 3D serve un altro compagno (5/11). Il nome
+   giusto arriva gia' da `castBrain`; la scelta va fatta in src/12 (giro 96a).
+2. **highlight-95 «Servi SEIFERT libero» / «Uno-due con HOWARD»:** pallone che non raggiunge il portiere dopo «il portiere dice no»,
+   preesistente e dipendente dai tempi (src/12). Blocca il rilascio per regola PO.
+3. **esiti-218** sotto il pavimento di scene (11/12) e **carriera3-94** (D2 cieco; D1 sonda che legge il salvataggio in ritardo):
+   preesistenti, da riparare nelle sonde.
+4. Catena mirata completa (MAPPA di src/04, 14, 15, 16, 18) non eseguita: alla sessione madre.
