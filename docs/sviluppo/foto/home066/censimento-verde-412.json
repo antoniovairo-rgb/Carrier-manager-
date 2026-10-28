@@ -782,7 +782,17 @@
    "nome": "pro-svincolato",
    "riquadri": [
     {
-     "i": 2,
+     "i": 0,
+     "titolo": "⛔ Sei svincolato: senza contratto non giochi. Ri",
+     "h": 58,
+     "raggio": "12px",
+     "fondo": "rgb(255, 255, 255)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
+     "i": 3,
      "titolo": "Liga Ibérica · 21ª giornata PROSSIMA PARTITA Cal",
      "h": 212,
      "raggio": "12px",
@@ -792,7 +802,7 @@
      "fisarmonica": false
     },
     {
-     "i": 3,
+     "i": 4,
      "titolo": "STAGIONE 4 · SETTIMANA 23 DI 38 18 Partite 9 Gol",
      "h": 118,
      "raggio": "12px",
@@ -802,7 +812,7 @@
      "fisarmonica": false
     },
     {
-     "i": 4,
+     "i": 5,
      "titolo": "🤝 60/100 Fiducia del mister ⭐ 50/100 Popolarità",
      "h": 77,
      "raggio": "0px",
@@ -812,7 +822,7 @@
      "fisarmonica": false
     },
     {
-     "i": 5,
+     "i": 6,
      "titolo": "Il progetto del club › 🌍 A un passo dall'Europa",
      "h": 168,
      "raggio": "12px",
@@ -822,7 +832,7 @@
      "fisarmonica": true
     },
     {
-     "i": 6,
+     "i": 7,
      "titolo": "Offerta di sponsor · Concessionaria Del Corso › ",
      "h": 189,
      "raggio": "12px",
@@ -832,7 +842,7 @@
      "fisarmonica": true
     },
     {
-     "i": 7,
+     "i": 8,
      "titolo": "Il tuo procuratore: boutique o global? › IL TUO ",
      "h": 259,
      "raggio": "12px",
@@ -842,7 +852,7 @@
      "fisarmonica": true
     },
     {
-     "i": 8,
+     "i": 9,
      "titolo": "È arrivato uno che gioca nel tuo ruolo › ⏳ NEL P",
      "h": 219,
      "raggio": "12px",
@@ -852,7 +862,7 @@
      "fisarmonica": true
     },
     {
-     "i": 9,
+     "i": 10,
      "titolo": "Il mondo fuori › 🎙️ Alessandro Müller parla di ",
      "h": 197,
      "raggio": "12px",
@@ -862,7 +872,7 @@
      "fisarmonica": true
     },
     {
-     "i": 10,
+     "i": 11,
      "titolo": "🎯 La corsa al capocannoniere › LA CORSA AL CAPO",
      "h": 244,
      "raggio": "12px",
@@ -872,7 +882,7 @@
      "fisarmonica": true
     },
     {
-     "i": 11,
+     "i": 12,
      "titolo": "La tua settimana › 📅 Settimana di campionato Si",
      "h": 441,
      "raggio": "12px",
@@ -882,7 +892,7 @@
      "fisarmonica": true
     },
     {
-     "i": 12,
+     "i": 13,
      "titolo": "Duello capocannoniere › #17 Luca Gomez MAD 12 #1",
      "h": 133,
      "raggio": "12px",
@@ -892,9 +902,9 @@
      "fisarmonica": true
     },
     {
-     "i": 13,
+     "i": 14,
      "titolo": "📋 Contratto scaduto — sei svincolato Rinnova co",
-     "h": 109,
+     "h": 161,
      "raggio": "12px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -902,7 +912,7 @@
      "fisarmonica": false
     },
     {
-     "i": 14,
+     "i": 15,
      "titolo": "🏷️ Mercato Invernale aperto 1 settimana rimanen",
      "h": 53,
      "raggio": "12px",
@@ -912,7 +922,7 @@
      "fisarmonica": false
     },
     {
-     "i": 15,
+     "i": 16,
      "titolo": "Obiettivi della stagione › OBIETTIVI STAGIONE 4 ",
      "h": 172,
      "raggio": "12px",
@@ -922,7 +932,7 @@
      "fisarmonica": true
     },
     {
-     "i": 16,
+     "i": 17,
      "titolo": "Obiettivi personali › 🏹 La prima stagione da pr",
      "h": 132,
      "raggio": "12px",
@@ -932,7 +942,7 @@
      "fisarmonica": true
     },
     {
-     "i": 17,
+     "i": 18,
      "titolo": "Notizie della settimana › ⚽ Miglior attacco dell",
      "h": 164,
      "raggio": "12px",
@@ -942,7 +952,7 @@
      "fisarmonica": true
     },
     {
-     "i": 18,
+     "i": 19,
      "titolo": "Voci di mercato › VOCI DI MERCATO — W.23 🔥 I bo",
      "h": 212,
      "raggio": "12px",
@@ -952,7 +962,7 @@
      "fisarmonica": true
     },
     {
-     "i": 19,
+     "i": 20,
      "titolo": "Classifica › CLASSIFICA · W.23/38 1 CFM ★ CFM 51",
      "h": 241,
      "raggio": "12px",
@@ -962,9 +972,9 @@
      "fisarmonica": true
     },
     {
-     "i": 20,
+     "i": 21,
      "titolo": "Ultime notizie › 🤵 Marco Gestini segue la tua c",
-     "h": 215,
+     "h": 252,
      "raggio": "12px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -1176,7 +1186,7 @@
  "errori": [],
  "esito": "VERDE",
  "totali": {
-  "riquadri": 112,
+  "riquadri": 113,
   "fuoriStandard": 0,
   "scenari": 7,
   "sforamentoPagina": []
