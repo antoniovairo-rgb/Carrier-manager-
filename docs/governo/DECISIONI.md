@@ -835,3 +835,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Interrotte le figlie: giro 96a (session_01QEYiaAyXaWY2suDiTNkXHh), giro 96b (session_01QEYiaBuHrtktqkyfdCjskC), giro 98 (session_01QEYiaAkocHDg6jwW1Nx3XV). NON archiviate: si riprendono dal loro ramo (sviluppo/giro96a-scena3d, sviluppo/giro96b-esiti, sviluppo/giro98-assist-nome; il lavoro non pushato prima dell'interruzione può essere perso). Carriera 178 n.5 già in pausa.
 - Spenti: controllo programmato della madre (trig_01YH3qyrfN26bHAbMytcMEC2) e, come nella pausa precedente, le attività Korward Elite (avanzamento ogni 4 ore trig_011XwbEKP2YyUFG4yGoDc4mV, allineamento notturno trig_01SbJpnx39mQXWYCXpMy8HKx). Non toccato: «Giro di ricerca Delia» (altro progetto).
 - Alla ripresa: riprendere 96a, 96b, 98 dai rami; poi assemblaggio 95+96a+96b+97+98 in lavoro/178, catena, rilascio con notifica al PO.
+
+## 01/11 — PO: «Allora niente figma»
+- PO-302 (nuova grafica): niente Figma. La proposta resta sulla tela Claude Design https://claude.ai/artifact/1ET6iHQHviKDEBbXvt8kta (V1 chiara: 26 tavole telefono/PC/finestre; V2 «Notte da stadio»: 6 tavole). Verifica fatta sulla documentazione Figma: server MCP disponibile anche sul piano Starter, ma 20 letture al mese e scrittura sulla tela gratuita solo durante la beta. In attesa della scelta del PO fra V1 e V2; progetto in pausa.
