@@ -838,3 +838,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ## 01/11 — PO: «Allora niente figma»
 - PO-302 (nuova grafica): niente Figma. La proposta resta sulla tela Claude Design https://claude.ai/artifact/1ET6iHQHviKDEBbXvt8kta (V1 chiara: 26 tavole telefono/PC/finestre; V2 «Notte da stadio»: 6 tavole). Verifica fatta sulla documentazione Figma: server MCP disponibile anche sul piano Starter, ma 20 letture al mese e scrittura sulla tela gratuita solo durante la beta. In attesa della scelta del PO fra V1 e V2; progetto in pausa.
+
+## 01/11 — PO: «Porta tutte le schermate alla versione 2»
+- PO-302: la V2 «Notte da stadio» è la direzione scelta. Tela https://claude.ai/artifact/1ET6iHQHviKDEBbXvt8kta: V2 completa in 26 tavole (9 schede telefono, 8 momenti/finestre telefono, 9 schede PC), collegate fra loro con Play. La V1 resta sulla tela come riferimento. Da portare nel gioco nella 179 (regola del contenuto chiuso), quando il PO fa ripartire il progetto.
