@@ -8422,7 +8422,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,TH.v2?TH.card:ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
         </div>
       )}
       {/* [6.10.0 Ondata 2] Recent form strip RIMOSSA: duplicava il last-5 già mostrato (con contesto streak) nella season-card del grid. */}
@@ -9217,7 +9217,7 @@ const getThisWeekMatchday=()=>{
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}
                   style={{borderRadius:RAD.xs,padding:"5px 3px",textAlign:"center",fontSize:FS.caption,
-                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?"#fefce8":TH.bgRed:past?TH.surface2:"transparent",
+                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?(TH.v2?TH.drawBg:"#fefce8"):TH.bgRed:past?TH.surface2:"transparent",
                     border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
@@ -11396,7 +11396,7 @@ const getThisWeekMatchday=()=>{
                 <div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
                   {(()=>{const ct=(typeof ctDiNazione==="function")?ctDiNazione(player.nation,player.season):null;if(!ct)return null;const s0=ct.ciclo*4+1;
                     return <div data-cpm="ct54" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>Commissario tecnico: <b style={{color:TH.text}}>{ct.name.replace(/^CT /,"")}</b> · {ct.style} · in carica dalla stagione {s0}</div>;})()}{/* [7.999.54] il CT ha un nome e cambia a ogni ciclo di 4 stagioni */}
                 </div>
@@ -11425,7 +11425,7 @@ const getThisWeekMatchday=()=>{
                 ))}
                 <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <div style={{fontSize:FS.small,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":"🎽"}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Status</div>
                 </div>
               </div>
@@ -11442,7 +11442,7 @@ const getThisWeekMatchday=()=>{
                   {ct.list.map((x,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 9px",borderRadius:RAD.sm,background:x.me?natCol+"18":TH.bg,border:x.me?`1px solid ${natCol}66`:`1px solid ${TH.cardBorder}`}}>
                       <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:900,color:i===0?TH.txAmber:TH.faint,minWidth:16}}>{i+1}º</span>
-                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?natCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
+                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?(TH.v2?legCol944(natCol,TH.surface2):natCol):TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
                       <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint}}>{x.caps} {x.caps===1?"presenza":"presenze"}</span>
                     </div>
                   ))}
@@ -11455,7 +11455,7 @@ const getThisWeekMatchday=()=>{
             {/* Convocazione pendente */}
             {nationalCallupData&&(
               <Card style={{padding:"14px",border:`2px solid ${natCol}`,background:`${natCol}0e`}}>
-                <div style={{fontSize:FS.caption,color:natCol,textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
+                <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
                 <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:3}}>
                   {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Presenza n. ${nationalCallupData.newCaps}`}
                 </div>
@@ -11500,7 +11500,7 @@ const getThisWeekMatchday=()=>{
                 <Fisarmonica id="s24-calendario-nazionale-prossim" titolo={_next?"Tornei della Nazionale":"Prossimi tornei della Nazionale"} aperta={true}>{/* [7.999.49 parte A] l'elenco e' di tornei, non di partite */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                   {_next&&(
                     <div style={{padding:"8px 10px",background:`${natCol}12`,border:`1px solid ${natCol}33`,borderRadius:RAD.sm,marginBottom:_sched.length?10:0}}>
-                      <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
+                      <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
                       <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{_next.l}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>{_next.s}</div>
                     </div>

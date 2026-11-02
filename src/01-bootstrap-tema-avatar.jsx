@@ -571,7 +571,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text;
+  const inkPill=TH.v2?inkSu945(c1):(_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
