@@ -147,6 +147,10 @@ for (const f of SCELTI) {
   const c = await page.evaluate(CARRIERA); visti.CARR++;
   if (!c.fig) KO('CARR', f, 'manca la figurina grande'); else { if (!/232, 180, 74/.test(c.cornice)) KO('CARR', f, 'cornice non d\'oro con OVR 86'); if (c.attr !== 6) KO('CARR', f, 'attributi sulla carta ' + c.attr); }
   if (!c.barre || c.oro !== 1) KO('CARR', f, `grafico dei gol: barre ${c.barre}, record in oro ${c.oro}`);
+  const mc = await page.evaluate(MISURA, '[data-cpm="carriera-v2"]');
+  const ox2 = await page.evaluate(() => { const sc = document.querySelector('.cpm-scroll'); return Math.max(sc.scrollWidth - sc.clientWidth, document.documentElement.scrollWidth - innerWidth); });
+  if (ox2 > 1) KO('TXT', f, 'carriera: scorrimento orizzontale ' + ox2 + ' px'); if (mc.tagliati.length) KO('TXT', f, 'carriera: testi tagliati: ' + mc.tagliati.slice(0, 4).join(' | '));
+  if (mc.n) { conMin = Math.min(conMin, mc.min); if (mc.peggiori.length) KO('CON', f, 'carriera: ' + mc.peggiori.slice(0, 4).join(' | ')); }
   /* SCH [tappa 2]: Stagione, Club, Agente, Ufficio */
   const SCHEDE = [
     ['standings', '[data-cpm="stagione-v2"]', () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
@@ -166,10 +170,6 @@ for (const f of SCELTI) {
     if (oxs > 1) KO('TXT', f, tb + ': scorrimento orizzontale ' + oxs + ' px'); if (ms.tagliati.length) KO('TXT', f, tb + ': testi tagliati: ' + ms.tagliati.slice(0, 4).join(' | '));
     if (ms.n) { conMin = Math.min(conMin, ms.min); if (ms.peggiori.length) KO('CON', f, tb + ': ' + ms.peggiori.slice(0, 4).join(' | ')); }
   }
-  const mc = await page.evaluate(MISURA, '[data-cpm="carriera-v2"]');
-  const ox2 = await page.evaluate(() => { const sc = document.querySelector('.cpm-scroll'); return Math.max(sc.scrollWidth - sc.clientWidth, document.documentElement.scrollWidth - innerWidth); });
-  if (ox2 > 1) KO('TXT', f, 'carriera: scorrimento orizzontale ' + ox2 + ' px'); if (mc.tagliati.length) KO('TXT', f, 'carriera: testi tagliati: ' + mc.tagliati.slice(0, 4).join(' | '));
-  if (mc.n) { conMin = Math.min(conMin, mc.min); if (mc.peggiori.length) KO('CON', f, 'carriera: ' + mc.peggiori.slice(0, 4).join(' | ')); }
   console.log(`  ${f.k.padEnd(4)} fondo ${s.bodyBg} · barra ${laterale ? 'laterale' : 'in basso'} (${s.tabs.length} voci, attiva ${att ? att.t : '-'}) · numeri TV ${s.numTV}/${s.numTot} · spazi ${s.gaps.join('/')} px · contrasto min home ${mh.min} (${mh.n} testi) carriera ${mc.min} (${mc.n}) · grafico ${c.barre} barre, oro ${c.oro}`);
   await ctx.close();
 }
