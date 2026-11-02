@@ -95,31 +95,36 @@ async function parteD9(arm) {
   return { ok, cieco: mis.length < Math.ceil(COLORI.length * 0.8) };
 }
 
+/* RIC su partite vere: salvataggio S12, pilota automatico «assist» (come assist-nome-98). Il cast del motore esiste solo nel flusso vero
+   (le scene forzate non hanno cast). Per ogni scena con ricevente nominato e un passaggio servito nella conclusione (__CPM_B4, solo
+   sonde) si confronta il compagno servito nel 3D col nominato. */
+const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+async function partitaVera(sd, rosso) {
+  const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+  const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
+  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (r) window.__CPM_NO_G99RIC = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+  await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+  await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
+  try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
+  await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }); await sleep(1500);
+  try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+  await page.evaluate(() => window.__CPM_CAREER.playMatch());
+  await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
+  await page.evaluate(s => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'assist', tickMs: 150 }), sd);
+  const t0 = Date.now(); while (Date.now() - t0 < 420000) { const ph = await fase(page); if (ph === 'ended' || ph === 'ceremony') break; await sleep(1000); }
+  const B4 = await page.evaluate(() => window.__CPM_B4 || {}); await ctx.close(); return B4;
+}
 async function parteRIC(arm) {
-  const rosso = arm === 'rosso'; let page = await nuova(rosso); let usate = 0; const T = { n: 0, ok: 0, senza: 0, ko: [] };
-  const cat = await page.evaluate(() => SITUATIONS.map((s, gi) => ({ gi, hl: s.type, a: (s.actions || []).map(a => ({ r: a.rew || a.reward || null, l: String(a.label || a.l || '') })) })));
-  const scene = cat.filter(s => s.hl !== 'def').map(s => ({ gi: s.gi, k: s.a.findIndex(x => x.r === 'assist' && !/cross|traversone|pennell|fondo|fallo/i.test(x.l)) })).filter(s => s.k >= 0);
-  const N = +(process.env.CPM_G99_RIC_N || 24); const passo = Math.max(1, Math.floor(scene.length / N));
-  for (let q = 0; q < N && q * passo < scene.length; q++) {
-    const s = scene[q * passo];
-    if (usate >= 8) { await page._ctx.close(); page = await nuova(rosso); usate = 0; } usate++;
-    await page.evaluate(() => { window.__CPM_FORCE_INTRO = 1; delete window.__CPM_FORCE_KIND; window.__CPM_PT219 = []; window.__CPM_B4RIC = { usato: 0, scartato: 0, senzaCast: 0, dist: [] }; });
-    if (!await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), s.gi).catch(() => false)) continue;
-    const t0 = Date.now(); while (Date.now() - t0 < 8000 && (await fase(page)) !== 'hl_choose') await sleep(150);
-    await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_B4 = {}; });
-    if (!await page.evaluate(k => window.__CPM_RESOLVE(k), s.k).catch(() => false)) continue;
-    const t1 = Date.now(); while (Date.now() - t1 < 9000 && /^hl_/.test(await fase(page) || '')) await sleep(150);
-    const b4 = await page.evaluate(() => Object.values(window.__CPM_B4 || {}));
-    const e = b4.map(x => x.ricevente).find(Boolean); const W = await page.evaluate(() => window.__CPM_B4RIC || {});
-    if (!e || e.brain == null || e.brain === 21) { T.senza++; continue; }
-    const primo = { i: e.idx, ric: e.brain, d: e.d, sc: W.scartato };
-    T.n++; if (primo.i === primo.ric) T.ok++; else T.ko.push(`gi${s.gi} «${cat[s.gi].a[s.k].l}» servito ${primo.i} nominato ${primo.ric} a ${primo.d}u (scartati ${primo.sc})`);
-  }
-  await page._ctx.close();
-  const pc = T.n ? (100 * T.ok / T.n).toFixed(1) : '-'; const ok = T.n >= 6 && T.ok === T.n;
-  console.log(`${arm.toUpperCase()} RIC · passaggi d'assist col ricevente nominato ${T.n} (senza cast ${T.senza}) · servito = nominato ${T.ok}/${T.n} (${pc}%) → ${ok ? 'VERDE' : 'ROSSO'}`);
+  const rosso = arm === 'rosso'; const T = { n: 0, ok: 0, ko: [] };
+  const semi = (process.env.CPM_G99_SEMI || '1234,2021').split(',').map(Number);
+  for (const sd of semi) { const B4 = await partitaVera(sd, rosso);
+    for (const [k, e] of Object.entries(B4)) { const r = e.ricevente; if (!r || r.brain == null || r.brain === 21) continue;
+      T.n++; if (r.idx === r.brain) T.ok++; else T.ko.push(`seme ${sd} scena ${k} (${e.sit}) servito ${r.idx} nominato ${r.brain} a ${r.d}u`); }
+    console.log(`  ${arm} RIC seme ${sd}: ${T.ok}/${T.n} finora`); }
+  const pc = T.n ? (100 * T.ok / T.n).toFixed(1) : '-'; const ok = T.n >= 4 && T.ok === T.n;
+  console.log(`${arm.toUpperCase()} RIC · scene col ricevente nominato servito nel 3D ${T.n} · servito = nominato ${T.ok}/${T.n} (${pc}%) → ${ok ? 'VERDE' : 'ROSSO'}`);
   T.ko.slice(0, 8).forEach(x => console.log('    · ' + x));
-  return { ok, cieco: T.n < 6 };
+  return { ok, cieco: T.n < 4 };
 }
 
 const esito = {};
