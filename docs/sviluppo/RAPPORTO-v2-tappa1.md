@@ -59,7 +59,7 @@ OVR, ruolo, nazione, volto (stesso catalogo della testata, ripiego sull'avatar),
 | | valore |
 |---|---|
 | contrasto minimo nei riquadri V2 e nella barra (4 formati, WCAG) | **4,99:1** (home), 6,56:1 (carriera) |
-| voci della barra (tocco) | 52 px di altezza, >= 46 px di larghezza a 412 px |
+| voci della barra (tocco) | 52 px di altezza; larghezza minima 40,3 px a 412, 45,9 a 360 (barra-360-72) |
 | spazio fra i riquadri V2 della home | **7,8 px** a schermo (giro 91: ~8) |
 | scorrimento orizzontale | 0 px nei 4 formati |
 | `griglia-mobile` (360-430 px, 13 schermate) | contrasto sotto soglia **0** su tutte dopo le correzioni (vedi sotto) |
@@ -78,7 +78,22 @@ Giudica palette, caratteri, barra (pillola, tocco, D1/D17), home (prossima parti
 
 ## Guardiani esistenti (uno alla volta)
 
-RISULTATI_GUARDIANI
+| guardiano | esito | note |
+|---|---|---|
+| `design-system` | **verde** | primo giro rosso: 2 raggi a mano nella figurina piccola → token (difetto vero, corretto) |
+| `griglia-mobile` (360-430 px) | **verde**, contrasto sotto soglia 0 su 12 schermate su 13 | primo giro: 29 testi sotto soglia su 4 schermate (difetti veri, corretti); al secondo giro restavano 2 nodi in Nazionale (colore della Nazionale nella riga «tu»), corretti dopo; non rigirato dopo l'ultima correzione e dopo i ritocchi di raggi/barra |
+| `spazio-296` | **verde** + rosso | 44 schermate, distanze 6-10 px |
+| `schermate-97` | **verde** + rosso | primo giro rosso D16: ultime fisarmoniche sotto la barra V2 (35-39 px) → riserva in fondo 140 px (difetto vero, corretto) |
+| `pc-tablet-292` | **verde** + rosso | primo giro rosso su un solo punto della partita a 1366 px («con Tab il fuoco non arriva a una scelta della punizione», src/15 non toccato): al secondo giro verde, da tenere d'occhio come instabile |
+| `barra-360-72` | **verde** + rosso | primo giro rosso: a 360 px voci da 32,9 px e etichette a 12,4 px (difetto vero) → sotto i 380 px la barra V2 torna a filo dei bordi: voci >= 45,9 px, etichette a 15,1 px |
+| `home-066` | **verde** (120 riquadri, 7 situazioni) | primo giro rosso: raggi 14/18/22 e corpi 16/18/26/30/34 fuori scala (difetti veri → token); la regola F1 «card neutra» non si applica piu' al solo riquadro della prossima partita, che la V2 vuole nel colore del club (guardiano aggiornato e spiegato, soglie invariate) |
+| `piccoli-85` | **verde** | |
+| `stile-unico-75` | **verde** | |
+| `crea-home-295` | **verde** | |
+| `crediti-254` | **verde** | nessun font nuovo: crediti invariati |
+| `grafica-v2` (nuovo) | **verde** + **rosso** | contrasto minimo 4,99:1, spazi 7,8 px |
+
+Non lanciati (fuori dalla consegna): catena intera, gate 14/14, guardiani di partita.
 
 ## Difetti veri trovati e corretti
 
