@@ -365,7 +365,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[darkMode,setDarkMode]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   const[showSettings,setShowSettings]=useState(false);/* [7.92.0] menu Impostazioni dedicato */
   // Mutate global TH in-place so module-scope components (Card, Btn, StatBar) pick up the theme
-  Object.assign(TH,darkMode?TH_DARK:TH_LIGHT_ORIG);
+  Object.assign(TH,temaAttivo(darkMode));/* [PO-302] V2 salvo __CPM_NO_V2 */
   useEffect(()=>{document.body.style.background=TH.bg;},[darkMode]);
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
@@ -7434,6 +7434,7 @@ const getThisWeekMatchday=()=>{
           visibile senza scorrere (prima era in fondo alla prima card, sotto stats/forma → serviva scorrere). */}
       {tab==="dashboard"&&(()=>{
         const cs=getContinuaState();
+        if(TH.v2){let _md302=null;try{_md302=getThisWeekMatchday();}catch(_e){_md302=null;}if(_md302)return null;}/* [PO-302 V2] con la partita della settimana il comando vive nel riquadro della prossima partita (stesso handler, stesso data-cpm) */
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
             boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-"+_sb(10)+"px 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
@@ -7448,14 +7449,14 @@ const getThisWeekMatchday=()=>{
                 pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
                 affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
             <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
-              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?`linear-gradient(135deg,${cs.color},${cs.color}cc)`:`linear-gradient(135deg,${cs.color},color-mix(in srgb, ${cs.color} 82%, #ffffff))`)/* [7.998.0] opaco: «cc» lasciava trasparire la pagina sotto il bottone appiccicato */,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:TH.v2?V2.testo:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?`linear-gradient(135deg,${cs.color},${cs.color}cc)`:`linear-gradient(135deg,${cs.color},color-mix(in srgb, ${cs.color} 82%, #ffffff))`)/* [7.998.0] opaco: «cc» lasciava trasparire la pagina sotto il bottone appiccicato */,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
-                <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:"#fff",marginBottom:2}}>{cs.label}</div>
-                <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:"rgba(255,255,255,0.72)"}}>{cs.sub}</div>
+                <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:(TH.v2?V2.bg:"#fff"),marginBottom:2,...(TH.v2?{fontFamily:FONT_TV,fontSize:FS.title,textTransform:"uppercase",letterSpacing:"0.04em"}:{})}}>{cs.label}</div>
+                <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:(TH.v2?"rgba(13,15,20,0.75)":"rgba(255,255,255,0.72)")}}>{cs.sub}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 {/* [23/09 POC] scritta Enter tolta (richiesta PO); il tasto funziona */}
-                <span style={{fontSize:FS.subhead,color:cs.disabled?TH.faint:"rgba(255,255,255,0.9)"}}>›</span>
+                <span style={{fontSize:FS.subhead,color:cs.disabled?TH.faint:(TH.v2?V2.bg:"rgba(255,255,255,0.9)")}}>›</span>
               </div>
             </button>
           </div>
@@ -7519,6 +7520,51 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"normal",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{t.n||t.name}</div>
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
+        if(TH.v2){/* [PO-302 V2 · V2Home] la prossima partita nel colore del club: stemmi su piastrella chiara, forma V/N/P, comando principale */
+          const _cc=(me&&me.c)||TH.primary,_ink=inkSu945(_cc),_v=(q)=>inkVelo945(_ink,q);
+          const _fo=_naz35?null:(opp.p||null),_fm=(me&&me.p)||(player.club&&player.club.p)||null;
+          const _giu=(_fo!=null&&_fm!=null)?(_fo-_fm>=8?"più forte":_fm-_fo>=8?"più debole":"alla pari"):null;
+          let _imp=null;const _der=_naz35?null:isDerby(player.club?.id,opp.id||md.opponentId);
+          if(_der)_imp=`${_der.e} ${_der.name}`;
+          else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
+            if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp="⚠️ Zona retrocessione";else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
+          const _inf=[];if(_fo!=null)_inf.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_inf.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
+          const _io=(t)=>t===me;
+          const squadra=(t,pos)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,minWidth:0}}>
+            <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 20px rgba(0,0,0,0.25)"}}><TeamBadge team={t} size={46}/></div>
+            <span style={{...fsTV(FS.subhead,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",textAlign:"center",overflowWrap:"anywhere"}}>{t.n||t.name}</span>
+            {_io(t)?<FormaV2 lista={player.matchHistory}/>:null}
+            {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
+          </div>);
+          return(
+          <section data-cpm="prossima-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:_cc,color:_ink,marginBottom:_sb(9)}}>
+            <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
+            <div aria-hidden="true" style={{position:"absolute",left:"50%",top:0,bottom:0,width:2,marginLeft:-1,background:_v(0.10)}}/>
+            <div aria-hidden="true" style={{position:"absolute",left:"50%",top:"50%",width:148,height:148,margin:"-74px 0 0 -74px",borderRadius:"50%",border:"2px solid "+_v(0.10)}}/>
+            <div style={{position:"relative",padding:"16px 18px 18px",display:"flex",flexDirection:"column",gap:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>Prossima · {comp}{_etichettaTurno957(md)}</span>
+                <span className="cpm-num" style={{...fsTV(FS.body,FW.bold),letterSpacing:"0.06em",background:"rgba(0,0,0,0.28)",color:"#ffffff",borderRadius:999,padding:"5px 10px",whiteSpace:"nowrap",flexShrink:0}}>{"SETT. "+md.week+" · "+(home?"CASA":"TRASFERTA")}</span>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) auto minmax(0,1fr)",alignItems:"start"}}>
+                {squadra(home?me:opp,home?myPos:oppPos)}
+                <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
+                {squadra(home?opp:me,home?oppPos:myPos)}
+              </div>
+              {(_inf.length||_imp)&&<div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85)}}>
+                {_inf.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}{_imp&&<span style={{color:_ink,fontWeight:FW.bold}}>{_imp}</span>}</div>}
+              <div style={{display:"flex",gap:8}}>
+                <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
+                  style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:V2.testo,color:cs.disabled?TH.faint:V2.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
+                  <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
+                  {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                </button>
+                <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:52,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer",flexShrink:0}}>Calendario</button>
+              </div>
+            </div>
+          </section>);
+        }
         return(
           <Card style={{marginBottom:_sb(9),padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
@@ -7590,8 +7636,8 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
                   {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Voto medio",v:avgRat.toFixed(1).replace(".",","),c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
                     <div key={i} style={{textAlign:"center",flex:1}}>
-                      <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px */}
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                      <div className="cpm-num" style={TH.v2?{...fsTV(FS.display,FW.black),color:i===3?V2.oro:V2.testo,marginBottom:3}:{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px · [PO-302 V2] 34 px Barlow Condensed, il voto in oro */}
+                      <div style={TH.v2?{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:V2.sec}:{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
                       {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
                     </div>
                   ))}
@@ -7643,6 +7689,17 @@ const getThisWeekMatchday=()=>{
           </Card>
         </div>
       )}
+      {tab==="dashboard"&&TH.v2&&(()=>{/* [PO-302 V2 · V2Home] la figurina piccola con gli anelli di forma e morale */
+        const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
+        return(<section data-cpm="eroe-v2" style={{display:"flex",alignItems:"center",gap:12,background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 14px",marginBottom:_sb(9)}}>
+          <FiguraV2 player={player} w={54}/>
+          <div style={{display:"flex",flexDirection:"column",gap:2,flex:"1 1 0",minWidth:0}}>
+            <span style={{fontWeight:FW.bold,fontSize:FS.subhead,color:V2.testo,overflowWrap:"anywhere"}}>{player.name}</span>
+            <span style={{fontSize:FS.small,color:V2.sec}}>{[player.position||"Attaccante",(player.age||18)+" anni",_rl].filter(Boolean).join(" · ")}</span>
+          </div>
+          <AnelloV2 v={player.form||70} col={V2.verde} label="Forma"/>
+          <AnelloV2 v={player.morale||70} col={V2.blu} label="Morale"/>
+        </section>);})()}
       {tab==="dashboard"&&(<div style={{marginBottom:_sb(9)}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
@@ -7814,7 +7871,7 @@ const getThisWeekMatchday=()=>{
         const be=bondEvent(player);if(!be)return null;
         return _pop224(
         <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#112240)",TH.card),border:_n30("1px solid rgba(56,189,248,0.25)","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
+          <div style={{fontSize:FS.caption,color:TH.v2?V2.oro:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6,display:"flex",alignItems:"center",gap:8,fontWeight:TH.v2?FW.bold:undefined}}>{TH.v2&&<span aria-hidden="true" style={{width:8,height:8,borderRadius:"50%",background:V2.oro}}/>}Lo spogliatoio</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{be.e}</span>
             <div style={{flex:1,minWidth:0}}>
@@ -8365,7 +8422,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,TH.v2?TH.card:ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
         </div>
       )}
       {/* [6.10.0 Ondata 2] Recent form strip RIMOSSA: duplicava il last-5 già mostrato (con contesto streak) nella season-card del grid. */}
@@ -9160,7 +9217,7 @@ const getThisWeekMatchday=()=>{
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}
                   style={{borderRadius:RAD.xs,padding:"5px 3px",textAlign:"center",fontSize:FS.caption,
-                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?"#fefce8":TH.bgRed:past?TH.surface2:"transparent",
+                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?(TH.v2?TH.drawBg:"#fefce8"):TH.bgRed:past?TH.surface2:"transparent",
                     border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
@@ -9863,6 +9920,42 @@ const getThisWeekMatchday=()=>{
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
         <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
+          {TH.v2&&(()=>{/* [PO-302 · grafica V2, V2Carriera/V2CarrieraPC] la figurina grande con cornice (oro da OVR 85, argento sotto),
+              i sei attributi sulla carta, i totali di carriera e i gol per stagione dallo storico vero (il record in oro). Solo lettura. */
+            const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
+            const _w=Math.min(250,Math.round((typeof window!=="undefined"?window.innerWidth:400)*0.62));
+            const _tot=[{v:player.totalMatches||0,l:"Presenze"},{v:player.totalGoals||0,l:"Gol"},{v:player.totalAssists||0,l:"Assist"},{v:(player.trophies||[]).length,l:"Trofei",oro:true}];
+            const _per={};(player.history||[]).forEach(h=>{if(!h||h.season==null)return;_per[h.season]=(_per[h.season]||0)+(+h.goals||0);});
+            const _sn=player.season||1;_per[_sn]=(_per[_sn]||0)+(+player.goals||0);
+            const _ss=Object.keys(_per).map(Number).sort((a,b)=>a-b),_max=Math.max(1,..._ss.map(k=>_per[k]));
+            const _rec=_ss.length?_ss.reduce((b,k)=>_per[k]>_per[b]?k:b,_ss[0]):null,_recV=_rec!=null?_per[_rec]:0;
+            const _recT=(player.records&&player.records.topSeasonGoals)||0;
+            return(<div data-cpm="carriera-v2" style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"flex-start",gap:16,padding:"6px 0"}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,flex:"0 0 auto"}}>
+                <FiguraV2 player={player} w={_w} grande/>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textAlign:"center"}}>
+                  <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:V2.testo}}>{player.name}</span>
+                  <span style={{fontSize:FS.body,color:V2.sec}}>{[(player.age||18)+" anni",player.club&&(player.club.n||player.club.name),_rl].filter(Boolean).join(" · ")}</span>
+                </div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:_sb(10),flex:"1 1 300px",minWidth:0,maxWidth:560}}>
+                <section aria-label="Totali di carriera" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 4px"}}>
+                  {_tot.map((k,i)=>(<div key={k.l} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,borderRight:i<3?"1px solid "+V2.bordo:"none",minWidth:0}}>
+                    <span className="cpm-num" style={{...fsTV(FS.display,FW.black),color:k.oro?V2.oro:V2.testo}}>{k.v}</span>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:V2.sec}}>{k.l}</span></div>))}
+                </section>
+                <section style={{background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:14,display:"flex",flexDirection:"column",gap:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:V2.sec}}>Gol per stagione</span>
+                    {(_recV>0||_recT>0)&&<span className="cpm-num" style={{fontSize:FS.small,color:V2.oro,fontWeight:FW.bold}}>{_recV>=_recT?`Record: ${_recV} (St. ${_rec})`:`Record: ${_recT}`}</span>}
+                  </div>
+                  <div data-cpm="gol-stagioni-v2" role="img" aria-label={"Gol per stagione: "+_ss.map(k=>"stagione "+k+" "+_per[k]).join(", ")} style={{display:"flex",alignItems:"flex-end",gap:4,height:64}}>
+                    {_ss.map(k=>(<div key={k} title={"Stagione "+k+": "+_per[k]+" gol"+(k===_sn?" (in corso)":"")} style={{flex:"1 1 0",maxWidth:40,height:Math.round(_per[k]/_max*64),minHeight:2,borderRadius:"3px 3px 0 0",background:(k===_rec&&_recV>0)?V2.oro:(k===_sn?"#5b6478":"#3a4152")}}/>))}
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:V2.sec}}><span>St. {_ss[0]}</span><span>St. {_ss[_ss.length-1]}{_ss[_ss.length-1]===_sn?" · in corso":""}</span></div>
+                </section>
+              </div>
+            </div>);})()}
           {/* Sprint D1: badge gerarchia */}
           {(()=>{
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
@@ -11303,7 +11396,7 @@ const getThisWeekMatchday=()=>{
                 <div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
                   {(()=>{const ct=(typeof ctDiNazione==="function")?ctDiNazione(player.nation,player.season):null;if(!ct)return null;const s0=ct.ciclo*4+1;
                     return <div data-cpm="ct54" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>Commissario tecnico: <b style={{color:TH.text}}>{ct.name.replace(/^CT /,"")}</b> · {ct.style} · in carica dalla stagione {s0}</div>;})()}{/* [7.999.54] il CT ha un nome e cambia a ogni ciclo di 4 stagioni */}
                 </div>
@@ -11332,7 +11425,7 @@ const getThisWeekMatchday=()=>{
                 ))}
                 <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <div style={{fontSize:FS.small,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":"🎽"}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Status</div>
                 </div>
               </div>
@@ -11349,7 +11442,7 @@ const getThisWeekMatchday=()=>{
                   {ct.list.map((x,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 9px",borderRadius:RAD.sm,background:x.me?natCol+"18":TH.bg,border:x.me?`1px solid ${natCol}66`:`1px solid ${TH.cardBorder}`}}>
                       <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:900,color:i===0?TH.txAmber:TH.faint,minWidth:16}}>{i+1}º</span>
-                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?natCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
+                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?(TH.v2?legCol944(natCol,TH.surface2):natCol):TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
                       <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint}}>{x.caps} {x.caps===1?"presenza":"presenze"}</span>
                     </div>
                   ))}
@@ -11362,7 +11455,7 @@ const getThisWeekMatchday=()=>{
             {/* Convocazione pendente */}
             {nationalCallupData&&(
               <Card style={{padding:"14px",border:`2px solid ${natCol}`,background:`${natCol}0e`}}>
-                <div style={{fontSize:FS.caption,color:natCol,textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
+                <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
                 <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:3}}>
                   {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Presenza n. ${nationalCallupData.newCaps}`}
                 </div>
@@ -11407,7 +11500,7 @@ const getThisWeekMatchday=()=>{
                 <Fisarmonica id="s24-calendario-nazionale-prossim" titolo={_next?"Tornei della Nazionale":"Prossimi tornei della Nazionale"} aperta={true}>{/* [7.999.49 parte A] l'elenco e' di tornei, non di partite */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                   {_next&&(
                     <div style={{padding:"8px 10px",background:`${natCol}12`,border:`1px solid ${natCol}33`,borderRadius:RAD.sm,marginBottom:_sched.length?10:0}}>
-                      <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
+                      <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
                       <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{_next.l}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>{_next.s}</div>
                     </div>
@@ -11906,7 +11999,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* BOTTOM NAV */}
-      <div className="cpm-nav-bar" style={{zIndex:100}}>
+      <div className={"cpm-nav-bar"+(TH.v2?" cpm-v2nav":"")} style={{zIndex:100,"--cpm-club":(player.club&&player.club.c)||TH.primary}}>{/* [PO-302 V2] la barra V2 e' disegnata dal CSS di src/19 (.cpm-v2nav) */}
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(/* [23/09 POC] «togli enter ovunque» */
           <span key={h.k} style={{fontSize:FS.caption,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>

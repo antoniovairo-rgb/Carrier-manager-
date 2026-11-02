@@ -492,6 +492,33 @@ const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_no
   lossFg:"#f87171", lossBg:"#331519", lossBd:"#5b2530",
   growth:"#4ade80", regression:"#f87171", energy:"#38bdf8",
   injury:"#f87171", suspension:"#fb923c", record:"#22d3ee"};
+/* [PO-302 · grafica V2 «Notte da stadio», tappa 1] LA V2 E' IL TEMA DEL GIOCO. Palette dalle tavole
+   docs/design/grafica-v2 (LEGGIMI.md): fondo #0d0f14, superfici #1a1e27 / #11141b (incassi) / #262b37 (tasti
+   secondari), testo #f4f1ea e #9aa3b2, oro #e8b44a solo per eroe/voti/record/premi, verde/giallo/rosso/blu per gli
+   stati. Parte da TH_DARK (dk:true: tutte le varianti scure gia' tarate restano valide) e ne sostituisce i valori.
+   I bordi sono scritti in esadecimale (non rgba) perche' molte card ci appendono un'alfa («+"55"»).
+   Contrasti misurati (WCAG): #9aa3b2 su #1a1e27 6,6:1 · faint #8f98a8 su #262b37 4,9:1 · #f4f1ea su #0d0f14 17:1.
+   Il tema chiaro non ha piu' un comando (7.947: un tema solo): l'interruttore rosso __CPM_NO_V2 riporta la grafica
+   di prima (TH chiaro, barra e home della 178). */
+const v2On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_V2);
+const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
+const V2={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#262a33",testo:"#f4f1ea",sec:"#9aa3b2",
+  oro:"#e8b44a",verde:"#4ade80",giallo:"#fbbf24",rosso:"#f87171",blu:"#60a5fa",anello:"#2a2f3b",
+  oroCornice:"linear-gradient(145deg,#fbe7a1 0%,#e8b44a 35%,#9c6a12 65%,#f5d27a 100%)",
+  argCornice:"linear-gradient(145deg,#ffffff 0%,#cbd5e1 40%,#64748b 70%,#e2e8f0 100%)"};
+const TH_V2={...TH_DARK,v2:true,
+  bg:V2.bg,bgGrad:V2.bg,card:V2.sup,cardBorder:V2.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
+  text:V2.testo,muted:V2.sec,faint:"#8f98a8",navBg:V2.sup,
+  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
+  success:V2.verde,danger:V2.rosso,warning:V2.giallo,gold:V2.oro,goldText:V2.oro,accent:"#a78bfa",
+  surface2:V2.inc,surface3:V2.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  cardBg:V2.inc,border:"#2a2f3b",
+  el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
+  primaryTint:"#2a1620",primaryBorder:"#4a2530",
+  winFg:V2.verde,drawFg:V2.giallo,lossFg:V2.rosso,growth:V2.verde,regression:V2.rosso,energy:V2.blu,
+  injury:V2.rosso,record:V2.oro};
+/* il tema da applicare: V2 salvo il rosso; col rosso, la scelta di prima (chiaro o, se richiesto, lo scuro storico) */
+const temaAttivo=(scuro)=>v2On()?TH_V2:(scuro?TH_DARK:TH_LIGHT_ORIG);
 /* [7.178.0 RC-15] pastelli semantici theme-aware: i bg chiari hardcoded con testo TH.text erano illeggibili in dark-mode */
 const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 
@@ -811,7 +838,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text;
+  const inkPill=TH.v2?inkSu945(c1):(_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
@@ -10799,9 +10826,9 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
 const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
-    primary:{background:TH.primary,color:"#fff",fontWeight:700},
+    primary:TH.v2?{background:V2.testo,color:V2.bg,fontWeight:700}:{background:TH.primary,color:"#fff",fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
     green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
-    secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
+    secondary:TH.v2?{background:V2.tasto,color:V2.testo,border:"1px solid "+V2.tasto}:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},/* [PO-302 V2] tasto secondario #262b37, testo 12,8:1 */
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
     outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
@@ -10840,6 +10867,67 @@ const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO
     {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
     <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
   </div></div>);};
+/* [PO-302 · grafica V2, tappa 1] I MATTONI DELLA V2: numeri in carattere TV, anello conico, forma V/N/P, ritratto e
+   figurina con cornice. Solo presentazione: leggono i dati gia' nel salvataggio, nessun campo nuovo.
+   Cornice: il gioco non aveva una regola oro/argento per l'eroe; scelta prudente (consegna PO-302): ORO da OVR 85, ARGENTO sotto. */
+const fsTV=(size,peso)=>({fontFamily:FONT_TV,fontWeight:peso||FW.black,fontSize:size,lineHeight:1,fontVariantNumeric:"tabular-nums"});
+const corniceV2=(ovr)=>((+ovr||0)>=85?V2.oroCornice:V2.argCornice);
+function AnelloV2({v,max=100,col,label,size=46}){
+  const n=Math.round(+v||0),pct=Math.max(0,Math.min(100,Math.round(n/max*100))),ins=size-10;
+  return(<div data-cpm="anello-v2" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,flexShrink:0}}>
+    <div role="img" aria-label={(label||"")+": "+n} style={{width:size,height:size,borderRadius:"50%",background:`conic-gradient(${col} 0 ${pct}%, ${V2.anello} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div className="cpm-num" style={{width:ins,height:ins,borderRadius:"50%",background:V2.sup,display:"flex",alignItems:"center",justifyContent:"center",...fsTV(FS.bodyLg,FW.bold),color:V2.testo}}>{n}</div></div>
+    {label&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:V2.sec}}>{label}</span>}
+  </div>);}
+/* forma: le ultime partite come quadratini col segno V/N/P (inchiostro scuro su tinta chiara: >=7:1 su ognuna) */
+function FormaV2({lista,lato=18}){
+  const L=(lista||[]).slice(-5);if(!L.length)return null;
+  const es=(m)=>m.won?["V","#4ade80"]:m.drew?["N","#e5e7eb"]:["P","#fca5a5"];
+  return(<div data-cpm="forma-v2" role="img" aria-label={"Forma: "+L.map(m=>es(m)[0]).join(" ")} style={{display:"flex",gap:3}}>
+    {L.map((m,i)=>{const e=es(m);const r=(m.homeScore!=null&&m.awayScore!=null)?(" "+m.homeScore+"-"+m.awayScore):"";
+      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
+  </div>);}
+/* il ritratto dell'eroe: lo stesso volto della testata (catalogo VOLTI23), ripiego sull'avatar disegnato */
+function RitrattoV2({nome,avatarId,w,h}){
+  const [,rif]=React.useReducer(x=>x+1,0);
+  React.useEffect(()=>{try{if(VOLTI23.idx)return;VOLTI23.ascolta.add(rif);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(rif);};}catch(_e){}},[]);
+  let url=null;try{url=voltoUrl("giocatore",nome);}catch(_e){url=null;}
+  if(url)return <img src={url} alt="" width={w} height={h} loading="lazy" decoding="async" style={{width:w,height:h,objectFit:"cover",objectPosition:"50% 12%",display:"block",borderRadius:RAD.sm}}/>;
+  return <div style={{width:w,height:h,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden"}}><AvatarSVG id={avatarId||0} size={Math.min(w,h)}/></div>;}
+const _abbr3V2=(t,d)=>String(t||d||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase()||d;
+/* la figurina V2. piccola (home): OVR + ruolo. grande (Carriera › Profilo): OVR, ruolo, nazione, volto, cognome, sei attributi */
+function FiguraV2({player,w=54,grande=false}){
+  const p=player||{},ovr=Math.round(p.ovr||60),club=(p.club&&p.club.c)||"#8e1f33",ink=inkSu945(club);
+  const ruolo=_abbr3V2(p.position,"ATT"),h=Math.round(w*1.4);
+  const righe={backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.06) 0 14px, rgba(255,255,255,0) 14px 28px)"};
+  if(!grande)return(
+    <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:RAD.sm,padding:2,background:corniceV2(ovr),flexShrink:0}}>
+      <div style={{width:"100%",height:"100%",borderRadius:RAD.xs,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
+        <span className="cpm-num" style={fsTV(FS.title,FW.black)}>{ovr}</span>
+        <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.08em"}}>{ruolo}</span>
+      </div></div>);
+  const S=p.stats||{},cogn=String(p.name||"").trim().split(/\s+/).slice(-1)[0].toUpperCase();
+  const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
+  const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
+  const naz=_abbr3V2(p.nation,"");
+  return(
+    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+            <span className="cpm-num" style={fsTV(w>=220?FS.displayLg:FS.display,FW.black)}>{ovr}</span>
+            <span style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.12em"}}>{ruolo}</span>
+            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:RAD.xs,padding:"2px 6px"}}>{naz}</span>}
+          </div>
+          <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
+        </div>
+        <div style={{marginTop:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
+          <span style={{...fsTV(fsC,FW.black),letterSpacing:"0.06em",textAlign:"center",whiteSpace:"nowrap"}}>{cogn}</span>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",rowGap:4,columnGap:6}}>
+            {att.map(([k,a])=>(<span key={a} className="cpm-num" style={{display:"flex",justifyContent:"center",gap:5,...fsTV(FS.bodyLg,FW.bold)}}><span style={{fontWeight:FW.black}}>{Math.round(S[k]||0)}</span><span style={{fontWeight:FW.semibold,letterSpacing:"0.06em"}}>{a}</span></span>))}
+          </div>
+        </div>
+      </div></div>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -44854,7 +44942,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </div>
           </Card>
         ):(
-          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.v2?TH.surface2:"rgba(255,255,255,0.4)"/* [PO-302 V2] il velo bianco era pensato per il fondo avorio: sul fondo notte diventava un grigio #6e7074 con il testo a 1,6:1 */}}>
             <div style={{fontSize:FS.small,color:TH.faint}}>Salvataggio {i+1} — libero</div>
             <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>Nuova carriera</Btn>
           </div>
@@ -47658,7 +47746,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const[darkMode,setDarkMode]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   const[showSettings,setShowSettings]=useState(false);/* [7.92.0] menu Impostazioni dedicato */
   // Mutate global TH in-place so module-scope components (Card, Btn, StatBar) pick up the theme
-  Object.assign(TH,darkMode?TH_DARK:TH_LIGHT_ORIG);
+  Object.assign(TH,temaAttivo(darkMode));/* [PO-302] V2 salvo __CPM_NO_V2 */
   useEffect(()=>{document.body.style.background=TH.bg;},[darkMode]);
   const[notif,setNotif]=useState(null);
   const[weekEvent,setWeekEvent]=useState(null);
@@ -54727,6 +54815,7 @@ const getThisWeekMatchday=()=>{
           visibile senza scorrere (prima era in fondo alla prima card, sotto stats/forma → serviva scorrere). */}
       {tab==="dashboard"&&(()=>{
         const cs=getContinuaState();
+        if(TH.v2){let _md302=null;try{_md302=getThisWeekMatchday();}catch(_e){_md302=null;}if(_md302)return null;}/* [PO-302 V2] con la partita della settimana il comando vive nel riquadro della prossima partita (stesso handler, stesso data-cpm) */
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
             boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-"+_sb(10)+"px 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
@@ -54741,14 +54830,14 @@ const getThisWeekMatchday=()=>{
                 pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
                 affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
             <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
-              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?`linear-gradient(135deg,${cs.color},${cs.color}cc)`:`linear-gradient(135deg,${cs.color},color-mix(in srgb, ${cs.color} 82%, #ffffff))`)/* [7.998.0] opaco: «cc» lasciava trasparire la pagina sotto il bottone appiccicato */,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:TH.v2?V2.testo:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?`linear-gradient(135deg,${cs.color},${cs.color}cc)`:`linear-gradient(135deg,${cs.color},color-mix(in srgb, ${cs.color} 82%, #ffffff))`)/* [7.998.0] opaco: «cc» lasciava trasparire la pagina sotto il bottone appiccicato */,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
-                <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:"#fff",marginBottom:2}}>{cs.label}</div>
-                <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:"rgba(255,255,255,0.72)"}}>{cs.sub}</div>
+                <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:(TH.v2?V2.bg:"#fff"),marginBottom:2,...(TH.v2?{fontFamily:FONT_TV,fontSize:FS.title,textTransform:"uppercase",letterSpacing:"0.04em"}:{})}}>{cs.label}</div>
+                <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:(TH.v2?"rgba(13,15,20,0.75)":"rgba(255,255,255,0.72)")}}>{cs.sub}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 {/* [23/09 POC] scritta Enter tolta (richiesta PO); il tasto funziona */}
-                <span style={{fontSize:FS.subhead,color:cs.disabled?TH.faint:"rgba(255,255,255,0.9)"}}>›</span>
+                <span style={{fontSize:FS.subhead,color:cs.disabled?TH.faint:(TH.v2?V2.bg:"rgba(255,255,255,0.9)")}}>›</span>
               </div>
             </button>
           </div>
@@ -54812,6 +54901,51 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"normal",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{t.n||t.name}</div>
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
+        if(TH.v2){/* [PO-302 V2 · V2Home] la prossima partita nel colore del club: stemmi su piastrella chiara, forma V/N/P, comando principale */
+          const _cc=(me&&me.c)||TH.primary,_ink=inkSu945(_cc),_v=(q)=>inkVelo945(_ink,q);
+          const _fo=_naz35?null:(opp.p||null),_fm=(me&&me.p)||(player.club&&player.club.p)||null;
+          const _giu=(_fo!=null&&_fm!=null)?(_fo-_fm>=8?"più forte":_fm-_fo>=8?"più debole":"alla pari"):null;
+          let _imp=null;const _der=_naz35?null:isDerby(player.club?.id,opp.id||md.opponentId);
+          if(_der)_imp=`${_der.e} ${_der.name}`;
+          else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
+            if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp="⚠️ Zona retrocessione";else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+          const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
+          const _inf=[];if(_fo!=null)_inf.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_inf.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
+          const _io=(t)=>t===me;
+          const squadra=(t,pos)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,minWidth:0}}>
+            <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 20px rgba(0,0,0,0.25)"}}><TeamBadge team={t} size={46}/></div>
+            <span style={{...fsTV(FS.subhead,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",textAlign:"center",overflowWrap:"anywhere"}}>{t.n||t.name}</span>
+            {_io(t)?<FormaV2 lista={player.matchHistory}/>:null}
+            {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
+          </div>);
+          return(
+          <section data-cpm="prossima-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:_cc,color:_ink,marginBottom:_sb(9)}}>
+            <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
+            <div aria-hidden="true" style={{position:"absolute",left:"50%",top:0,bottom:0,width:2,marginLeft:-1,background:_v(0.10)}}/>
+            <div aria-hidden="true" style={{position:"absolute",left:"50%",top:"50%",width:148,height:148,margin:"-74px 0 0 -74px",borderRadius:"50%",border:"2px solid "+_v(0.10)}}/>
+            <div style={{position:"relative",padding:"16px 18px 18px",display:"flex",flexDirection:"column",gap:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>Prossima · {comp}{_etichettaTurno957(md)}</span>
+                <span className="cpm-num" style={{...fsTV(FS.body,FW.bold),letterSpacing:"0.06em",background:"rgba(0,0,0,0.28)",color:"#ffffff",borderRadius:999,padding:"5px 10px",whiteSpace:"nowrap",flexShrink:0}}>{"SETT. "+md.week+" · "+(home?"CASA":"TRASFERTA")}</span>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) auto minmax(0,1fr)",alignItems:"start"}}>
+                {squadra(home?me:opp,home?myPos:oppPos)}
+                <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
+                {squadra(home?opp:me,home?oppPos:myPos)}
+              </div>
+              {(_inf.length||_imp)&&<div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85)}}>
+                {_inf.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}{_imp&&<span style={{color:_ink,fontWeight:FW.bold}}>{_imp}</span>}</div>}
+              <div style={{display:"flex",gap:8}}>
+                <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
+                  style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:V2.testo,color:cs.disabled?TH.faint:V2.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
+                  <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
+                  {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
+                </button>
+                <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:52,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer",flexShrink:0}}>Calendario</button>
+              </div>
+            </div>
+          </section>);
+        }
         return(
           <Card style={{marginBottom:_sb(9),padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
@@ -54883,8 +55017,8 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
                   {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Voto medio",v:avgRat.toFixed(1).replace(".",","),c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
                     <div key={i} style={{textAlign:"center",flex:1}}>
-                      <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px */}
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                      <div className="cpm-num" style={TH.v2?{...fsTV(FS.display,FW.black),color:i===3?V2.oro:V2.testo,marginBottom:3}:{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px · [PO-302 V2] 34 px Barlow Condensed, il voto in oro */}
+                      <div style={TH.v2?{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:V2.sec}:{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
                       {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
                     </div>
                   ))}
@@ -54936,6 +55070,17 @@ const getThisWeekMatchday=()=>{
           </Card>
         </div>
       )}
+      {tab==="dashboard"&&TH.v2&&(()=>{/* [PO-302 V2 · V2Home] la figurina piccola con gli anelli di forma e morale */
+        const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
+        return(<section data-cpm="eroe-v2" style={{display:"flex",alignItems:"center",gap:12,background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 14px",marginBottom:_sb(9)}}>
+          <FiguraV2 player={player} w={54}/>
+          <div style={{display:"flex",flexDirection:"column",gap:2,flex:"1 1 0",minWidth:0}}>
+            <span style={{fontWeight:FW.bold,fontSize:FS.subhead,color:V2.testo,overflowWrap:"anywhere"}}>{player.name}</span>
+            <span style={{fontSize:FS.small,color:V2.sec}}>{[player.position||"Attaccante",(player.age||18)+" anni",_rl].filter(Boolean).join(" · ")}</span>
+          </div>
+          <AnelloV2 v={player.form||70} col={V2.verde} label="Forma"/>
+          <AnelloV2 v={player.morale||70} col={V2.blu} label="Morale"/>
+        </section>);})()}
       {tab==="dashboard"&&(<div style={{marginBottom:_sb(9)}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
@@ -55107,7 +55252,7 @@ const getThisWeekMatchday=()=>{
         const be=bondEvent(player);if(!be)return null;
         return _pop224(
         <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#112240)",TH.card),border:_n30("1px solid rgba(56,189,248,0.25)","1px solid "+TH.cardBorder)}}>
-          <div style={{fontSize:FS.caption,color:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
+          <div style={{fontSize:FS.caption,color:TH.v2?V2.oro:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6,display:"flex",alignItems:"center",gap:8,fontWeight:TH.v2?FW.bold:undefined}}>{TH.v2&&<span aria-hidden="true" style={{width:8,height:8,borderRadius:"50%",background:V2.oro}}/>}Lo spogliatoio</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{be.e}</span>
             <div style={{flex:1,minWidth:0}}>
@@ -55658,7 +55803,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,TH.v2?TH.card:ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
         </div>
       )}
       {/* [6.10.0 Ondata 2] Recent form strip RIMOSSA: duplicava il last-5 già mostrato (con contesto streak) nella season-card del grid. */}
@@ -56453,7 +56598,7 @@ const getThisWeekMatchday=()=>{
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}
                   style={{borderRadius:RAD.xs,padding:"5px 3px",textAlign:"center",fontSize:FS.caption,
-                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?"#fefce8":TH.bgRed:past?TH.surface2:"transparent",
+                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?(TH.v2?TH.drawBg:"#fefce8"):TH.bgRed:past?TH.surface2:"transparent",
                     border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
@@ -57156,6 +57301,42 @@ const getThisWeekMatchday=()=>{
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
         <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
+          {TH.v2&&(()=>{/* [PO-302 · grafica V2, V2Carriera/V2CarrieraPC] la figurina grande con cornice (oro da OVR 85, argento sotto),
+              i sei attributi sulla carta, i totali di carriera e i gol per stagione dallo storico vero (il record in oro). Solo lettura. */
+            const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
+            const _w=Math.min(250,Math.round((typeof window!=="undefined"?window.innerWidth:400)*0.62));
+            const _tot=[{v:player.totalMatches||0,l:"Presenze"},{v:player.totalGoals||0,l:"Gol"},{v:player.totalAssists||0,l:"Assist"},{v:(player.trophies||[]).length,l:"Trofei",oro:true}];
+            const _per={};(player.history||[]).forEach(h=>{if(!h||h.season==null)return;_per[h.season]=(_per[h.season]||0)+(+h.goals||0);});
+            const _sn=player.season||1;_per[_sn]=(_per[_sn]||0)+(+player.goals||0);
+            const _ss=Object.keys(_per).map(Number).sort((a,b)=>a-b),_max=Math.max(1,..._ss.map(k=>_per[k]));
+            const _rec=_ss.length?_ss.reduce((b,k)=>_per[k]>_per[b]?k:b,_ss[0]):null,_recV=_rec!=null?_per[_rec]:0;
+            const _recT=(player.records&&player.records.topSeasonGoals)||0;
+            return(<div data-cpm="carriera-v2" style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"flex-start",gap:16,padding:"6px 0"}}>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,flex:"0 0 auto"}}>
+                <FiguraV2 player={player} w={_w} grande/>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textAlign:"center"}}>
+                  <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:V2.testo}}>{player.name}</span>
+                  <span style={{fontSize:FS.body,color:V2.sec}}>{[(player.age||18)+" anni",player.club&&(player.club.n||player.club.name),_rl].filter(Boolean).join(" · ")}</span>
+                </div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:_sb(10),flex:"1 1 300px",minWidth:0,maxWidth:560}}>
+                <section aria-label="Totali di carriera" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 4px"}}>
+                  {_tot.map((k,i)=>(<div key={k.l} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,borderRight:i<3?"1px solid "+V2.bordo:"none",minWidth:0}}>
+                    <span className="cpm-num" style={{...fsTV(FS.display,FW.black),color:k.oro?V2.oro:V2.testo}}>{k.v}</span>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:V2.sec}}>{k.l}</span></div>))}
+                </section>
+                <section style={{background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:14,display:"flex",flexDirection:"column",gap:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:V2.sec}}>Gol per stagione</span>
+                    {(_recV>0||_recT>0)&&<span className="cpm-num" style={{fontSize:FS.small,color:V2.oro,fontWeight:FW.bold}}>{_recV>=_recT?`Record: ${_recV} (St. ${_rec})`:`Record: ${_recT}`}</span>}
+                  </div>
+                  <div data-cpm="gol-stagioni-v2" role="img" aria-label={"Gol per stagione: "+_ss.map(k=>"stagione "+k+" "+_per[k]).join(", ")} style={{display:"flex",alignItems:"flex-end",gap:4,height:64}}>
+                    {_ss.map(k=>(<div key={k} title={"Stagione "+k+": "+_per[k]+" gol"+(k===_sn?" (in corso)":"")} style={{flex:"1 1 0",maxWidth:40,height:Math.round(_per[k]/_max*64),minHeight:2,borderRadius:"3px 3px 0 0",background:(k===_rec&&_recV>0)?V2.oro:(k===_sn?"#5b6478":"#3a4152")}}/>))}
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:V2.sec}}><span>St. {_ss[0]}</span><span>St. {_ss[_ss.length-1]}{_ss[_ss.length-1]===_sn?" · in corso":""}</span></div>
+                </section>
+              </div>
+            </div>);})()}
           {/* Sprint D1: badge gerarchia */}
           {(()=>{
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
@@ -58596,7 +58777,7 @@ const getThisWeekMatchday=()=>{
                 <div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
                   {(()=>{const ct=(typeof ctDiNazione==="function")?ctDiNazione(player.nation,player.season):null;if(!ct)return null;const s0=ct.ciclo*4+1;
                     return <div data-cpm="ct54" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>Commissario tecnico: <b style={{color:TH.text}}>{ct.name.replace(/^CT /,"")}</b> · {ct.style} · in carica dalla stagione {s0}</div>;})()}{/* [7.999.54] il CT ha un nome e cambia a ogni ciclo di 4 stagioni */}
                 </div>
@@ -58625,7 +58806,7 @@ const getThisWeekMatchday=()=>{
                 ))}
                 <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <div style={{fontSize:FS.small,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":"🎽"}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
+                  <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Status</div>
                 </div>
               </div>
@@ -58642,7 +58823,7 @@ const getThisWeekMatchday=()=>{
                   {ct.list.map((x,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 9px",borderRadius:RAD.sm,background:x.me?natCol+"18":TH.bg,border:x.me?`1px solid ${natCol}66`:`1px solid ${TH.cardBorder}`}}>
                       <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:900,color:i===0?TH.txAmber:TH.faint,minWidth:16}}>{i+1}º</span>
-                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?natCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
+                      <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?(TH.v2?legCol944(natCol,TH.surface2):natCol):TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
                       <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint}}>{x.caps} {x.caps===1?"presenza":"presenze"}</span>
                     </div>
                   ))}
@@ -58655,7 +58836,7 @@ const getThisWeekMatchday=()=>{
             {/* Convocazione pendente */}
             {nationalCallupData&&(
               <Card style={{padding:"14px",border:`2px solid ${natCol}`,background:`${natCol}0e`}}>
-                <div style={{fontSize:FS.caption,color:natCol,textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
+                <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
                 <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:3}}>
                   {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Presenza n. ${nationalCallupData.newCaps}`}
                 </div>
@@ -58700,7 +58881,7 @@ const getThisWeekMatchday=()=>{
                 <Fisarmonica id="s24-calendario-nazionale-prossim" titolo={_next?"Tornei della Nazionale":"Prossimi tornei della Nazionale"} aperta={true}>{/* [7.999.49 parte A] l'elenco e' di tornei, non di partite */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                   {_next&&(
                     <div style={{padding:"8px 10px",background:`${natCol}12`,border:`1px solid ${natCol}33`,borderRadius:RAD.sm,marginBottom:_sched.length?10:0}}>
-                      <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
+                      <div style={{fontSize:FS.caption,color:(TH.v2?legCol944(natCol,TH.card):natCol),fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
                       <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{_next.l}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>{_next.s}</div>
                     </div>
@@ -59199,7 +59380,7 @@ const getThisWeekMatchday=()=>{
       })()}
 
       {/* BOTTOM NAV */}
-      <div className="cpm-nav-bar" style={{zIndex:100}}>
+      <div className={"cpm-nav-bar"+(TH.v2?" cpm-v2nav":"")} style={{zIndex:100,"--cpm-club":(player.club&&player.club.c)||TH.primary}}>{/* [PO-302 V2] la barra V2 e' disegnata dal CSS di src/19 (.cpm-v2nav) */}
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(/* [23/09 POC] «togli enter ovunque» */
           <span key={h.k} style={{fontSize:FS.caption,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
@@ -59921,7 +60102,7 @@ function HomeNavBar({onImport,onSettings}){
   const fileRef=React.useRef(null);
   const cellStyle=(border)=>({flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:border?`1px solid ${TH.cardBorder}`:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,borderTop:"2px solid transparent",transition:"all .15s"});
   return(
-    <div className="cpm-nav-bar" style={{zIndex:100}}>
+    <div className={"cpm-nav-bar"+(TH.v2?" cpm-v2nav":"")} style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
@@ -59946,7 +60127,7 @@ function App(){
      src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */
   const _chipFisso269=typeof window!=='undefined'&&!!(window.__CPM_NO_CHIP269||window.__CPM_NO_BADGE255);
   const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
-  Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
+  Object.assign(TH,temaAttivo(dark));/* [PO-302] V2 salvo __CPM_NO_V2 */// tema applicato anche fuori dalla carriera
   useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
   /* [7.179.0 collaudo PO «il font doveva essere ingrandito in TUTTE le schermate!»] ZOOM tipografico +12% BASE su
      ogni schermata (home, creazione, provini, prepartita, carriera): retry rAF perché al primo commit .cpm-scroll
@@ -60157,6 +60338,38 @@ function App(){
         @media(max-width:380px){
           .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }
+        ${v2On()?`/* [PO-302 · grafica V2 «Notte da stadio», V2Home/V2HomePC] LA BARRA V2. Telefono e tablet verticale: un riquadro
+           #1a1e27 a raggio 20 staccato di 12 px dai bordi, la scheda attiva e' una PILLOLA CHIARA (#f4f1ea, testo #0d0f14) col
+           pallino del colore del club. La fascia esterna resta a tutta larghezza e opaca (#0d0f14): giro 97 D1, le card non
+           scorrono visibili ai lati della barra. PC e tablet orizzontale (>= 900 px): barra laterale #11141b, voci a pillola alte
+           46 px, Sostieni/Idee in fondo a tutta larghezza (giro 97 D17). Rosso __CPM_NO_V2. */
+        html,body{background:${V2.bg};}
+        .cpm-v2nav .cpm-nav-tabs{background:${V2.sup}!important;border:1px solid ${V2.bordo}!important;border-radius:20px;padding:5px!important;gap:2px;backdrop-filter:none;}
+        .cpm-v2nav .cpm-nav-tabs button{border-top:none!important;border-left:none!important;border-radius:14px;min-height:52px;padding:6px 1px!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+        .cpm-v2nav .cpm-nav-tabs button::before{content:"";width:6px;height:6px;border-radius:50%;background:transparent;flex-shrink:0;}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{background:${V2.testo}!important;}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act::before{background:var(--cpm-club,#8e1f33);}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{color:${V2.bg}!important;}
+        .cpm-v2nav .cpm-nav-tabs button:not(.cpm-tab-act) div{color:${V2.sec}!important;}
+        .cpm-v2nav .cpm-nav-strisce{background:${V2.sup}!important;border:1px solid ${V2.bordo}!important;border-bottom:none!important;border-radius:20px 20px 0 0;}
+        .cpm-v2nav:has(.cpm-nav-strisce) .cpm-nav-tabs{border-top-left-radius:0;border-top-right-radius:0;border-top-color:${V2.anello}!important;}
+        @media(max-width:899px){
+          .cpm-v2nav{background:${V2.bg};padding:6px 12px calc(10px + env(safe-area-inset-bottom,0px));}
+          .cpm-v2nav .cpm-nav-tabs{padding-bottom:5px!important;}
+          @media(max-width:380px){.cpm-v2nav{padding-left:0;padding-right:0;}.cpm-v2nav .cpm-nav-tabs,.cpm-v2nav .cpm-nav-strisce{border-left:none!important;border-right:none!important;border-radius:0!important;}.cpm-v2nav .cpm-nav-tabs{padding:2px!important;gap:0;}.cpm-v2nav .cpm-nav-tabs button{padding-left:0!important;padding-right:0!important;min-width:41px!important;}}/* a 360 px i 12 px di margine stringevano le voci a 32,9 px e lo spazio fra le etichette a 12,4 (barra-360-72): sotto i 380 px la barra torna a filo dei bordi */
+          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;}/* barra V2 alta ~124 px con le strisce (6+40+62+16): a 112 l'ultima fisarmonica restava sotto la barra (schermate-97 D16, 35-39 px) */
+        }
+        @media(min-width:900px){
+          .cpm-v2nav{background:${V2.inc};border-right:1px solid ${V2.bordo}!important;padding:16px 8px;gap:12px;}
+          .cpm-v2nav .cpm-nav-tabs{background:transparent!important;border:none!important;border-radius:0;padding:0!important;gap:4px;}
+          .cpm-v2nav .cpm-nav-tabs button{min-height:46px;border-radius:12px;padding:0 14px!important;flex-direction:row!important;justify-content:flex-start;gap:10px;}
+          .cpm-v2nav .cpm-nav-tabs button div{font-family:'Barlow','Segoe UI',sans-serif!important;font-size:15px!important;text-transform:none!important;letter-spacing:0!important;font-weight:500!important;}
+          .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{font-weight:700!important;}
+          .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{border-left:none!important;}
+          .cpm-v2nav .cpm-nav-strisce{background:transparent!important;border:none!important;border-radius:0;gap:8px;}
+          .cpm-v2nav .cpm-nav-strisce>button{background:${V2.sup}!important;border:none!important;border-radius:12px;min-height:44px;text-align:center!important;font-size:14px!important;font-weight:600!important;}
+          .cpm-v2nav:has(.cpm-nav-strisce) .cpm-nav-tabs{border-top:none!important;}
+        }`:''}
       `}</style>
       <Notif msg={appMsg?.msg} color={appMsg?.color}/>
       <div className="cpm-scroll">{ch}</div>

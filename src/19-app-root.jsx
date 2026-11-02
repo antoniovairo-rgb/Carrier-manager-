@@ -714,7 +714,7 @@ function HomeNavBar({onImport,onSettings}){
   const fileRef=React.useRef(null);
   const cellStyle=(border)=>({flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:border?`1px solid ${TH.cardBorder}`:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:TH.faint,borderTop:"2px solid transparent",transition:"all .15s"});
   return(
-    <div className="cpm-nav-bar" style={{zIndex:100}}>
+    <div className={"cpm-nav-bar"+(TH.v2?" cpm-v2nav":"")} style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
@@ -739,7 +739,7 @@ function App(){
      src/17). Qui il chip fisso resta solo per i rossi: __CPM_NO_CHIP269 (il chip di prima) e __CPM_NO_BADGE255 (PROD/TEST · KE). */
   const _chipFisso269=typeof window!=='undefined'&&!!(window.__CPM_NO_CHIP269||window.__CPM_NO_BADGE255);
   const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
-  Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
+  Object.assign(TH,temaAttivo(dark));/* [PO-302] V2 salvo __CPM_NO_V2 */// tema applicato anche fuori dalla carriera
   useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
   /* [7.179.0 collaudo PO «il font doveva essere ingrandito in TUTTE le schermate!»] ZOOM tipografico +12% BASE su
      ogni schermata (home, creazione, provini, prepartita, carriera): retry rAF perché al primo commit .cpm-scroll
@@ -950,6 +950,38 @@ function App(){
         @media(max-width:380px){
           .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }
+        ${v2On()?`/* [PO-302 · grafica V2 «Notte da stadio», V2Home/V2HomePC] LA BARRA V2. Telefono e tablet verticale: un riquadro
+           #1a1e27 a raggio 20 staccato di 12 px dai bordi, la scheda attiva e' una PILLOLA CHIARA (#f4f1ea, testo #0d0f14) col
+           pallino del colore del club. La fascia esterna resta a tutta larghezza e opaca (#0d0f14): giro 97 D1, le card non
+           scorrono visibili ai lati della barra. PC e tablet orizzontale (>= 900 px): barra laterale #11141b, voci a pillola alte
+           46 px, Sostieni/Idee in fondo a tutta larghezza (giro 97 D17). Rosso __CPM_NO_V2. */
+        html,body{background:${V2.bg};}
+        .cpm-v2nav .cpm-nav-tabs{background:${V2.sup}!important;border:1px solid ${V2.bordo}!important;border-radius:20px;padding:5px!important;gap:2px;backdrop-filter:none;}
+        .cpm-v2nav .cpm-nav-tabs button{border-top:none!important;border-left:none!important;border-radius:14px;min-height:52px;padding:6px 1px!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+        .cpm-v2nav .cpm-nav-tabs button::before{content:"";width:6px;height:6px;border-radius:50%;background:transparent;flex-shrink:0;}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{background:${V2.testo}!important;}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act::before{background:var(--cpm-club,#8e1f33);}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{color:${V2.bg}!important;}
+        .cpm-v2nav .cpm-nav-tabs button:not(.cpm-tab-act) div{color:${V2.sec}!important;}
+        .cpm-v2nav .cpm-nav-strisce{background:${V2.sup}!important;border:1px solid ${V2.bordo}!important;border-bottom:none!important;border-radius:20px 20px 0 0;}
+        .cpm-v2nav:has(.cpm-nav-strisce) .cpm-nav-tabs{border-top-left-radius:0;border-top-right-radius:0;border-top-color:${V2.anello}!important;}
+        @media(max-width:899px){
+          .cpm-v2nav{background:${V2.bg};padding:6px 12px calc(10px + env(safe-area-inset-bottom,0px));}
+          .cpm-v2nav .cpm-nav-tabs{padding-bottom:5px!important;}
+          @media(max-width:380px){.cpm-v2nav{padding-left:0;padding-right:0;}.cpm-v2nav .cpm-nav-tabs,.cpm-v2nav .cpm-nav-strisce{border-left:none!important;border-right:none!important;border-radius:0!important;}.cpm-v2nav .cpm-nav-tabs{padding:2px!important;gap:0;}.cpm-v2nav .cpm-nav-tabs button{padding-left:0!important;padding-right:0!important;min-width:41px!important;}}/* a 360 px i 12 px di margine stringevano le voci a 32,9 px e lo spazio fra le etichette a 12,4 (barra-360-72): sotto i 380 px la barra torna a filo dei bordi */
+          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;}/* barra V2 alta ~124 px con le strisce (6+40+62+16): a 112 l'ultima fisarmonica restava sotto la barra (schermate-97 D16, 35-39 px) */
+        }
+        @media(min-width:900px){
+          .cpm-v2nav{background:${V2.inc};border-right:1px solid ${V2.bordo}!important;padding:16px 8px;gap:12px;}
+          .cpm-v2nav .cpm-nav-tabs{background:transparent!important;border:none!important;border-radius:0;padding:0!important;gap:4px;}
+          .cpm-v2nav .cpm-nav-tabs button{min-height:46px;border-radius:12px;padding:0 14px!important;flex-direction:row!important;justify-content:flex-start;gap:10px;}
+          .cpm-v2nav .cpm-nav-tabs button div{font-family:'Barlow','Segoe UI',sans-serif!important;font-size:15px!important;text-transform:none!important;letter-spacing:0!important;font-weight:500!important;}
+          .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{font-weight:700!important;}
+          .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{border-left:none!important;}
+          .cpm-v2nav .cpm-nav-strisce{background:transparent!important;border:none!important;border-radius:0;gap:8px;}
+          .cpm-v2nav .cpm-nav-strisce>button{background:${V2.sup}!important;border:none!important;border-radius:12px;min-height:44px;text-align:center!important;font-size:14px!important;font-weight:600!important;}
+          .cpm-v2nav:has(.cpm-nav-strisce) .cpm-nav-tabs{border-top:none!important;}
+        }`:''}
       `}</style>
       <Notif msg={appMsg?.msg} color={appMsg?.color}/>
       <div className="cpm-scroll">{ch}</div>

@@ -321,7 +321,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </div>
           </Card>
         ):(
-          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.v2?TH.surface2:"rgba(255,255,255,0.4)"/* [PO-302 V2] il velo bianco era pensato per il fondo avorio: sul fondo notte diventava un grigio #6e7074 con il testo a 1,6:1 */}}>
             <div style={{fontSize:FS.small,color:TH.faint}}>Salvataggio {i+1} — libero</div>
             <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>Nuova carriera</Btn>
           </div>

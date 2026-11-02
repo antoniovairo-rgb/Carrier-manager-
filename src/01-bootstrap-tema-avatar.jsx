@@ -225,6 +225,33 @@ const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_no
   lossFg:"#f87171", lossBg:"#331519", lossBd:"#5b2530",
   growth:"#4ade80", regression:"#f87171", energy:"#38bdf8",
   injury:"#f87171", suspension:"#fb923c", record:"#22d3ee"};
+/* [PO-302 · grafica V2 «Notte da stadio», tappa 1] LA V2 E' IL TEMA DEL GIOCO. Palette dalle tavole
+   docs/design/grafica-v2 (LEGGIMI.md): fondo #0d0f14, superfici #1a1e27 / #11141b (incassi) / #262b37 (tasti
+   secondari), testo #f4f1ea e #9aa3b2, oro #e8b44a solo per eroe/voti/record/premi, verde/giallo/rosso/blu per gli
+   stati. Parte da TH_DARK (dk:true: tutte le varianti scure gia' tarate restano valide) e ne sostituisce i valori.
+   I bordi sono scritti in esadecimale (non rgba) perche' molte card ci appendono un'alfa («+"55"»).
+   Contrasti misurati (WCAG): #9aa3b2 su #1a1e27 6,6:1 · faint #8f98a8 su #262b37 4,9:1 · #f4f1ea su #0d0f14 17:1.
+   Il tema chiaro non ha piu' un comando (7.947: un tema solo): l'interruttore rosso __CPM_NO_V2 riporta la grafica
+   di prima (TH chiaro, barra e home della 178). */
+const v2On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_V2);
+const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
+const V2={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#262a33",testo:"#f4f1ea",sec:"#9aa3b2",
+  oro:"#e8b44a",verde:"#4ade80",giallo:"#fbbf24",rosso:"#f87171",blu:"#60a5fa",anello:"#2a2f3b",
+  oroCornice:"linear-gradient(145deg,#fbe7a1 0%,#e8b44a 35%,#9c6a12 65%,#f5d27a 100%)",
+  argCornice:"linear-gradient(145deg,#ffffff 0%,#cbd5e1 40%,#64748b 70%,#e2e8f0 100%)"};
+const TH_V2={...TH_DARK,v2:true,
+  bg:V2.bg,bgGrad:V2.bg,card:V2.sup,cardBorder:V2.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
+  text:V2.testo,muted:V2.sec,faint:"#8f98a8",navBg:V2.sup,
+  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
+  success:V2.verde,danger:V2.rosso,warning:V2.giallo,gold:V2.oro,goldText:V2.oro,accent:"#a78bfa",
+  surface2:V2.inc,surface3:V2.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  cardBg:V2.inc,border:"#2a2f3b",
+  el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
+  primaryTint:"#2a1620",primaryBorder:"#4a2530",
+  winFg:V2.verde,drawFg:V2.giallo,lossFg:V2.rosso,growth:V2.verde,regression:V2.rosso,energy:V2.blu,
+  injury:V2.rosso,record:V2.oro};
+/* il tema da applicare: V2 salvo il rosso; col rosso, la scelta di prima (chiaro o, se richiesto, lo scuro storico) */
+const temaAttivo=(scuro)=>v2On()?TH_V2:(scuro?TH_DARK:TH_LIGHT_ORIG);
 /* [7.178.0 RC-15] pastelli semantici theme-aware: i bg chiari hardcoded con testo TH.text erano illeggibili in dark-mode */
 const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 
@@ -544,7 +571,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text;
+  const inkPill=TH.v2?inkSu945(c1):(_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
