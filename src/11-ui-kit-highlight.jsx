@@ -140,7 +140,7 @@ function FormaV2({lista,lato=18}){
   const es=(m)=>m.won?["V","#4ade80"]:m.drew?["N","#e5e7eb"]:["P","#fca5a5"];
   return(<div data-cpm="forma-v2" role="img" aria-label={"Forma: "+L.map(m=>es(m)[0]).join(" ")} style={{display:"flex",gap:3}}>
     {L.map((m,i)=>{const e=es(m);const r=(m.homeScore!=null&&m.awayScore!=null)?(" "+m.homeScore+"-"+m.awayScore):"";
-      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:4,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
+      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
   </div>);}
 /* il ritratto dell'eroe: lo stesso volto della testata (catalogo VOLTI23), ripiego sull'avatar disegnato */
 function RitrattoV2({nome,avatarId,w,h}){
@@ -158,21 +158,21 @@ function FiguraV2({player,w=54,grande=false}){
   if(!grande)return(
     <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:RAD.sm,padding:2,background:corniceV2(ovr),flexShrink:0}}>
       <div style={{width:"100%",height:"100%",borderRadius:RAD.xs,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
-        <span className="cpm-num" style={fsTV(FS.subhead+1,FW.black)}>{ovr}</span>
+        <span className="cpm-num" style={fsTV(FS.title,FW.black)}>{ovr}</span>
         <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.08em"}}>{ruolo}</span>
       </div></div>);
   const S=p.stats||{},cogn=String(p.name||"").trim().split(/\s+/).slice(-1)[0].toUpperCase();
   const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
-  const lib=w-28,fsC=Math.max(FS.subhead,Math.min(28,Math.floor(lib/Math.max(1,cogn.length*0.5))));/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
+  const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
   const naz=_abbr3V2(p.nation,"");
   return(
-    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:22,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
-      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:18,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
+    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-            <span className="cpm-num" style={fsTV(Math.round(w*0.22),FW.black)}>{ovr}</span>
+            <span className="cpm-num" style={fsTV(w>=220?FS.displayLg:FS.display,FW.black)}>{ovr}</span>
             <span style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.12em"}}>{ruolo}</span>
-            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:4,padding:"2px 6px"}}>{naz}</span>}
+            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:RAD.xs,padding:"2px 6px"}}>{naz}</span>}
           </div>
           <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
         </div>

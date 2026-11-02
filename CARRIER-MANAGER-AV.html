@@ -511,7 +511,7 @@ const TH_V2={...TH_DARK,v2:true,
   text:V2.testo,muted:V2.sec,faint:"#8f98a8",navBg:V2.sup,
   primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
   success:V2.verde,danger:V2.rosso,warning:V2.giallo,gold:V2.oro,goldText:V2.oro,accent:"#a78bfa",
-  surface2:V2.inc,surface3:"#20242e",divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  surface2:V2.inc,surface3:V2.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
   cardBg:V2.inc,border:"#2a2f3b",
   el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620",primaryBorder:"#4a2530",
@@ -10885,7 +10885,7 @@ function FormaV2({lista,lato=18}){
   const es=(m)=>m.won?["V","#4ade80"]:m.drew?["N","#e5e7eb"]:["P","#fca5a5"];
   return(<div data-cpm="forma-v2" role="img" aria-label={"Forma: "+L.map(m=>es(m)[0]).join(" ")} style={{display:"flex",gap:3}}>
     {L.map((m,i)=>{const e=es(m);const r=(m.homeScore!=null&&m.awayScore!=null)?(" "+m.homeScore+"-"+m.awayScore):"";
-      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:4,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
+      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
   </div>);}
 /* il ritratto dell'eroe: lo stesso volto della testata (catalogo VOLTI23), ripiego sull'avatar disegnato */
 function RitrattoV2({nome,avatarId,w,h}){
@@ -10903,21 +10903,21 @@ function FiguraV2({player,w=54,grande=false}){
   if(!grande)return(
     <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:RAD.sm,padding:2,background:corniceV2(ovr),flexShrink:0}}>
       <div style={{width:"100%",height:"100%",borderRadius:RAD.xs,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
-        <span className="cpm-num" style={fsTV(FS.subhead+1,FW.black)}>{ovr}</span>
+        <span className="cpm-num" style={fsTV(FS.title,FW.black)}>{ovr}</span>
         <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.08em"}}>{ruolo}</span>
       </div></div>);
   const S=p.stats||{},cogn=String(p.name||"").trim().split(/\s+/).slice(-1)[0].toUpperCase();
   const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
-  const lib=w-28,fsC=Math.max(FS.subhead,Math.min(28,Math.floor(lib/Math.max(1,cogn.length*0.5))));/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
+  const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
   const naz=_abbr3V2(p.nation,"");
   return(
-    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:22,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
-      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:18,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
+    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-            <span className="cpm-num" style={fsTV(Math.round(w*0.22),FW.black)}>{ovr}</span>
+            <span className="cpm-num" style={fsTV(w>=220?FS.displayLg:FS.display,FW.black)}>{ovr}</span>
             <span style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.12em"}}>{ruolo}</span>
-            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:4,padding:"2px 6px"}}>{naz}</span>}
+            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:RAD.xs,padding:"2px 6px"}}>{naz}</span>}
           </div>
           <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
         </div>
@@ -54913,13 +54913,13 @@ const getThisWeekMatchday=()=>{
           const _inf=[];if(_fo!=null)_inf.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_inf.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
           const _io=(t)=>t===me;
           const squadra=(t,pos)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,minWidth:0}}>
-            <div style={{width:64,height:64,borderRadius:18,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 20px rgba(0,0,0,0.25)"}}><TeamBadge team={t} size={46}/></div>
+            <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 20px rgba(0,0,0,0.25)"}}><TeamBadge team={t} size={46}/></div>
             <span style={{...fsTV(FS.subhead,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",textAlign:"center",overflowWrap:"anywhere"}}>{t.n||t.name}</span>
             {_io(t)?<FormaV2 lista={player.matchHistory}/>:null}
             {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
           </div>);
           return(
-          <section data-cpm="prossima-v2" style={{position:"relative",borderRadius:22,overflow:"hidden",background:_cc,color:_ink,marginBottom:_sb(9)}}>
+          <section data-cpm="prossima-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:_cc,color:_ink,marginBottom:_sb(9)}}>
             <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
             <div aria-hidden="true" style={{position:"absolute",left:"50%",top:0,bottom:0,width:2,marginLeft:-1,background:_v(0.10)}}/>
             <div aria-hidden="true" style={{position:"absolute",left:"50%",top:"50%",width:148,height:148,margin:"-74px 0 0 -74px",borderRadius:"50%",border:"2px solid "+_v(0.10)}}/>
@@ -54930,18 +54930,18 @@ const getThisWeekMatchday=()=>{
               </div>
               <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) auto minmax(0,1fr)",alignItems:"start"}}>
                 {squadra(home?me:opp,home?myPos:oppPos)}
-                <span style={{...fsTV(30,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
+                <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
                 {squadra(home?opp:me,home?oppPos:myPos)}
               </div>
               {(_inf.length||_imp)&&<div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85)}}>
                 {_inf.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}{_imp&&<span style={{color:_ink,fontWeight:FW.bold}}>{_imp}</span>}</div>}
               <div style={{display:"flex",gap:8}}>
                 <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
-                  style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:14,border:"none",background:cs.disabled?TH.track:V2.testo,color:cs.disabled?TH.faint:V2.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
-                  <span style={{...fsTV(FS.subhead+1,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
+                  style={{flex:"1 1 0",minWidth:0,minHeight:52,borderRadius:RAD.md,border:"none",background:cs.disabled?TH.track:V2.testo,color:cs.disabled?TH.faint:V2.bg,cursor:cs.disabled?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"6px 10px",fontFamily:"inherit"}}>
+                  <span style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",lineHeight:1.05}}>{cs.label}</span>
                   {cs.sub&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:cs.disabled?TH.faint:"rgba(13,15,20,0.75)",textAlign:"center"}}>{cs.sub}</span>}
                 </button>
-                <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:52,padding:"0 16px",borderRadius:14,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer",flexShrink:0}}>Calendario</button>
+                <button onClick={()=>goTab("calendar")} className="cpm-press" style={{minHeight:52,padding:"0 16px",borderRadius:RAD.md,border:"1px solid "+_v(0.4),background:"rgba(0,0,0,0.18)",color:_ink,fontFamily:"inherit",fontWeight:FW.semibold,fontSize:FS.bodyLg,cursor:"pointer",flexShrink:0}}>Calendario</button>
               </div>
             </div>
           </section>);
@@ -55017,7 +55017,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
                   {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Voto medio",v:avgRat.toFixed(1).replace(".",","),c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
                     <div key={i} style={{textAlign:"center",flex:1}}>
-                      <div className="cpm-num" style={TH.v2?{...fsTV(34,FW.black),color:i===3?V2.oro:V2.testo,marginBottom:3}:{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px · [PO-302 V2] 34 px Barlow Condensed, il voto in oro */}
+                      <div className="cpm-num" style={TH.v2?{...fsTV(FS.display,FW.black),color:i===3?V2.oro:V2.testo,marginBottom:3}:{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px · [PO-302 V2] 34 px Barlow Condensed, il voto in oro */}
                       <div style={TH.v2?{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:V2.sec}:{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
                       {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
                     </div>
@@ -55072,10 +55072,10 @@ const getThisWeekMatchday=()=>{
       )}
       {tab==="dashboard"&&TH.v2&&(()=>{/* [PO-302 V2 · V2Home] la figurina piccola con gli anelli di forma e morale */
         const _rl={primavera:"Primavera",riserva:"riserva",rotazione:"in rotazione",titolare:"titolare",leader:"leader dello spogliatoio"}[player.squadRole||"riserva"]||"";
-        return(<section data-cpm="eroe-v2" style={{display:"flex",alignItems:"center",gap:12,background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:18,padding:"12px 14px",marginBottom:_sb(9)}}>
+        return(<section data-cpm="eroe-v2" style={{display:"flex",alignItems:"center",gap:12,background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 14px",marginBottom:_sb(9)}}>
           <FiguraV2 player={player} w={54}/>
           <div style={{display:"flex",flexDirection:"column",gap:2,flex:"1 1 0",minWidth:0}}>
-            <span style={{fontWeight:FW.bold,fontSize:FS.bodyLg+1,color:V2.testo,overflowWrap:"anywhere"}}>{player.name}</span>
+            <span style={{fontWeight:FW.bold,fontSize:FS.subhead,color:V2.testo,overflowWrap:"anywhere"}}>{player.name}</span>
             <span style={{fontSize:FS.small,color:V2.sec}}>{[player.position||"Attaccante",(player.age||18)+" anni",_rl].filter(Boolean).join(" · ")}</span>
           </div>
           <AnelloV2 v={player.form||70} col={V2.verde} label="Forma"/>
@@ -57315,17 +57315,17 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,flex:"0 0 auto"}}>
                 <FiguraV2 player={player} w={_w} grande/>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textAlign:"center"}}>
-                  <span style={{...fsTV(26,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:V2.testo}}>{player.name}</span>
+                  <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",color:V2.testo}}>{player.name}</span>
                   <span style={{fontSize:FS.body,color:V2.sec}}>{[(player.age||18)+" anni",player.club&&(player.club.n||player.club.name),_rl].filter(Boolean).join(" · ")}</span>
                 </div>
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:_sb(10),flex:"1 1 300px",minWidth:0,maxWidth:560}}>
-                <section aria-label="Totali di carriera" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:18,padding:"12px 4px"}}>
+                <section aria-label="Totali di carriera" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:"12px 4px"}}>
                   {_tot.map((k,i)=>(<div key={k.l} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,borderRight:i<3?"1px solid "+V2.bordo:"none",minWidth:0}}>
-                    <span className="cpm-num" style={{...fsTV(30,FW.black),color:k.oro?V2.oro:V2.testo}}>{k.v}</span>
+                    <span className="cpm-num" style={{...fsTV(FS.display,FW.black),color:k.oro?V2.oro:V2.testo}}>{k.v}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:V2.sec}}>{k.l}</span></div>))}
                 </section>
-                <section style={{background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:18,padding:14,display:"flex",flexDirection:"column",gap:10}}>
+                <section style={{background:V2.sup,border:"1px solid "+V2.bordo,borderRadius:RAD.lg,padding:14,display:"flex",flexDirection:"column",gap:10}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8,flexWrap:"wrap"}}>
                     <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:V2.sec}}>Gol per stagione</span>
                     {(_recV>0||_recT>0)&&<span className="cpm-num" style={{fontSize:FS.small,color:V2.oro,fontWeight:FW.bold}}>{_recV>=_recT?`Record: ${_recV} (St. ${_rec})`:`Record: ${_recT}`}</span>}
@@ -60356,7 +60356,8 @@ function App(){
         @media(max-width:899px){
           .cpm-v2nav{background:${V2.bg};padding:6px 12px calc(10px + env(safe-area-inset-bottom,0px));}
           .cpm-v2nav .cpm-nav-tabs{padding-bottom:5px!important;}
-          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))!important;}
+          @media(max-width:380px){.cpm-v2nav{padding-left:0;padding-right:0;}.cpm-v2nav .cpm-nav-tabs,.cpm-v2nav .cpm-nav-strisce{border-left:none!important;border-right:none!important;border-radius:0!important;}.cpm-v2nav .cpm-nav-tabs{padding:2px!important;gap:0;}.cpm-v2nav .cpm-nav-tabs button{padding-left:0!important;padding-right:0!important;min-width:41px!important;}}/* a 360 px i 12 px di margine stringevano le voci a 32,9 px e lo spazio fra le etichette a 12,4 (barra-360-72): sotto i 380 px la barra torna a filo dei bordi */
+          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;}/* barra V2 alta ~124 px con le strisce (6+40+62+16): a 112 l'ultima fisarmonica restava sotto la barra (schermate-97 D16, 35-39 px) */
         }
         @media(min-width:900px){
           .cpm-v2nav{background:${V2.inc};border-right:1px solid ${V2.bordo}!important;padding:16px 8px;gap:12px;}

@@ -968,7 +968,8 @@ function App(){
         @media(max-width:899px){
           .cpm-v2nav{background:${V2.bg};padding:6px 12px calc(10px + env(safe-area-inset-bottom,0px));}
           .cpm-v2nav .cpm-nav-tabs{padding-bottom:5px!important;}
-          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))!important;}
+          @media(max-width:380px){.cpm-v2nav{padding-left:0;padding-right:0;}.cpm-v2nav .cpm-nav-tabs,.cpm-v2nav .cpm-nav-strisce{border-left:none!important;border-right:none!important;border-radius:0!important;}.cpm-v2nav .cpm-nav-tabs{padding:2px!important;gap:0;}.cpm-v2nav .cpm-nav-tabs button{padding-left:0!important;padding-right:0!important;min-width:41px!important;}}/* a 360 px i 12 px di margine stringevano le voci a 32,9 px e lo spazio fra le etichette a 12,4 (barra-360-72): sotto i 380 px la barra torna a filo dei bordi */
+          .cpm-root:has(.cpm-v2nav) .cpm-scroll{padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;}/* barra V2 alta ~124 px con le strisce (6+40+62+16): a 112 l'ultima fisarmonica restava sotto la barra (schermate-97 D16, 35-39 px) */
         }
         @media(min-width:900px){
           .cpm-v2nav{background:${V2.inc};border-right:1px solid ${V2.bordo}!important;padding:16px 8px;gap:12px;}

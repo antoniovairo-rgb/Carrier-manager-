@@ -92,9 +92,14 @@ for (const [nome, pl] of SCENARI) {
       let sc0 = box; if (!haScatola(cs)) { const k = [...box.children].find(x => visibile(x) && haScatola(getComputedStyle(x)) && x.getBoundingClientRect().width > rb.width * 0.8); if (k) { sc0 = k; cs = getComputedStyle(k); } }
       const v = { i, titolo: testo.slice(0, 48), h: Math.round(rb.height), raggio: cs.borderTopLeftRadius, fondo: cs.backgroundColor, viol: [] };
       if (haScatola(cs) && !radOk(cs, sc0)) v.viol.push('R1 raggio esterno ' + cs.borderTopLeftRadius);
-      const fb = rgb(cs.backgroundColor); const chiaro = fb && fb.a > 0.5 && lum(fb) > 0.6;
+      /* [PO-302 · grafica V2, tappa 1] il riquadro della PROSSIMA PARTITA e' nel colore del club per scelta del PO (tavola
+         V2Home, «Colore del club come protagonista»): la regola «card neutra» (F1, 7.999.30) e il raggio della card chiara non
+         si applicano a QUEL riquadro, riconosciuto dal suo data-cpm. Tutte le altre regole (raggi della scala, corpi, sforamento)
+         restano, e tutti gli altri riquadri restano giudicati come prima. */
+      const clubV2 = box.matches('[data-cpm="prossima-v2"]');
+      const fb = rgb(cs.backgroundColor); const chiaro = !clubV2 && fb && fb.a > 0.5 && lum(fb) > 0.6;
       if (chiaro && sc0.tagName !== 'BUTTON' && Math.round(parseFloat(cs.borderTopLeftRadius)) !== 12) v.viol.push('R1 card con raggio ' + cs.borderTopLeftRadius + ' invece di RAD.md');
-      if (fb && fb.a > 0.5 && cs.backgroundColor !== fondoCard && !/gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo non neutro ' + cs.backgroundColor);
+      if (!clubV2 && fb && fb.a > 0.5 && cs.backgroundColor !== fondoCard && !/gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo non neutro ' + cs.backgroundColor);
       if (/gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo sfumato');
       const fisK = [...box.querySelectorAll('button[aria-expanded]')].find(bt => Math.round(parseFloat(getComputedStyle(bt).borderTopLeftRadius)) === 6);
       if (fisK) v.viol.push('A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento');
