@@ -2677,7 +2677,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const _isTopFlight132=!_isYouth99&&(_pair99===null||_isUpperLg99===true);
   const trophies=player.trophies||[];
   const numTeams=finalStandings?.length||18;
-  const isRelegated=!_isYouth99&&playerPos>=numTeams-3;/* [6.99.0] in Primavera non si retrocede */
+  /* [giro 98 D7, collaudo carriera 177 n.4: «⬇️ RETROCESSIONE» col club 16° in Lega B, che non ha una serie sotto] si retrocede solo da una
+     lega che ha una divisione inferiore (lato alto di LEAGUE_PAIRS): la carriera, infatti, dalla Lega B non sposta nessuno verso il basso.
+     Rosso __CPM_NO_G98D7 */
+  const _hasLower98=(typeof window!=='undefined'&&window.__CPM_NO_G98D7)?true:(_isUpperLg99===true);
+  const isRelegated=!_isYouth99&&_hasLower98&&playerPos>=numTeams-3;/* [6.99.0] in Primavera non si retrocede */
   const isPromoted=!_isTopFlight132&&playerPos<=2&&!isChampion;
   // Sprint 132: European zone flags for top-flight leagues
   const _isCL132=_isTopFlight132&&playerPos>=1&&playerPos<=3&&!isChampion;
@@ -3066,7 +3070,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                 <span style={{color:"#22c55e"}}>🟢 Conf. (7)</span>
               </>
             ):<span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>}
-            {!_isYouth99&&<span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>}
+            {!_isYouth99&&_hasLower98&&<span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>}
           </div>
         </Card></Fisarmonica>
       )}
@@ -3089,7 +3093,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                   ))}
                 </div>
               ))}
-              <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+              {_hasLower98&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
                 <div style={{fontSize:FS.small,fontWeight:700,color:"#dc2626",marginBottom:3}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse"}</div>
                 {relegTeams.map((t,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:FS.caption}}>
@@ -3098,7 +3102,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                     <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                   </div>
                 ))}
-              </div>
+              </div>}
             </>
           ):(
             promoTeams.length>0&&(
@@ -3114,7 +3118,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                     </div>
                   ))}
                 </div>
-                <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>
+                {_hasLower98&&<div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:8}}>{/* [giro 98 D7] senza serie inferiore niente elenco delle retrocesse */}
                   <div style={{fontSize:FS.small,fontWeight:700,color:"#dc2626",marginBottom:4}}>⬇️ {_relegDestLg99?`Retrocesse in ${_relegDestLg99}`:"Retrocesse alla lega inferiore"}</div>
                   {relegTeams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:FS.caption}}>
@@ -3123,7 +3127,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                       <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                     </div>
                   ))}
-                </div>
+                </div>}
               </>
             )
           )}

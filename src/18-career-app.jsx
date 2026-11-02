@@ -5717,7 +5717,7 @@ const getThisWeekMatchday=()=>{
        valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
        gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
     const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
-    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8, collaudo carriera 177 n.4: dopo «Contratto rinnovato!» la home diceva ancora «Sei in lista cessioni» e a W8 il giocatore e' stato ceduto] chi rinnova resta: il rinnovo toglie dalla lista cessioni e chiude la richiesta di cessione. Rosso __CPM_NO_G98D8 */agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -5780,7 +5780,7 @@ const getThisWeekMatchday=()=>{
          collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
       const _firm270b=tc.duration||2;
       const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
-      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8] idem sul rinnovo via offerta */agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -9198,11 +9198,12 @@ const getThisWeekMatchday=()=>{
         //   le SECONDE divisioni (lato basso di LEAGUE_PAIRS) non hanno zone europee: top 3 = PROMOZIONE (la 1ª campione), ultime 3 retrocesse.
         const _isSecondDiv96=LEAGUE_PAIRS.some(([u,l])=>l===selLg);
         const _isYouthLg99=/^Primavera/i.test(selLg||"");/* [6.99.0 collaudo PO] Primavera 1/2: niente coppe europee né retrocessioni — conta solo il titolo */
+        const _noRel98=!(typeof window!=='undefined'&&window.__CPM_NO_G98D7)&&!LEAGUE_PAIRS.some(([u])=>u===selLg);/* [giro 98 D7] niente zona retrocessione dove non c'e' una serie inferiore (seconde divisioni e leghe senza gemella): la carriera non retrocede nessuno da li' */
         const zoneOf=_isYouthLg99
           ?(i)=>(i===0?"champ":null)
           :_isSecondDiv96
-          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6)return"rel";return null;}
-          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
+          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;}
+          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;};
         return(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {/* [23/09 POC — collaudo PO «i pulsanti di scelta lega sono troppo semplici», «farei piu' un elenco a discesa»]
@@ -9251,8 +9252,8 @@ const getThisWeekMatchday=()=>{
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
                 :_isSecondDiv96
-                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]]
-                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],[ZONE_COLORS.rel,"⬇ Retrocesse"]]).map(([c,l])=>(
+                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]])]
+                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse"]])]).map(([c,l])=>(
                 <span key={l} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:FS.caption,color:TH.muted,fontWeight:FW.semibold}}><span style={{width:8,height:8,borderRadius:RAD.pill,background:c,display:"inline-block"}}/>{l}</span>
               ))}
             </div>

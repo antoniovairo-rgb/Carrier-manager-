@@ -902,6 +902,7 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
     const _c221=REG.filter(t=>_rew95(t)==='assist'&&t.w(c)>0&&scelte.indexOf(t)<0).sort((a,b)=>b.w(c)-a.w(c));if(_c221.length)scelte[scelte.length-1]=_c221[0];}
   const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,_rew95(t),t.fail,t.n));
   actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].drb&&_rew95(scelte[i])==='chance')a.drb95=true;});/* [giro 95 D2] */
+  actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].prot)a.prot98=true;});/* [giro 98 D3-bis] la protezione porta il suo segno fino al motore e al riquadro */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
   const x=+occ.x,y=+occ.y;
@@ -938,7 +939,7 @@ function _p6Nomi(occ){const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p
    Rosso __CPM_NO_P6S. */
 const P6_SPALLE=[
   {k:'girata',l:'🔄 Girata secca e tiro',st:'tecnica',b:-2,rew:'goal',fail:'miss',n:14,w:(c)=>1.3},
-  {k:'protegge',l:(c)=>'🛡️ Proteggi palla e scarica su '+(c.ricVicino||'un compagno'),st:'fisico',b:5,rew:'assist',fail:'intercept',n:10,w:(c)=>1.1},
+  {k:'protegge',l:(c)=>'🛡️ Proteggi palla e scarica su '+(c.ricVicino||'un compagno'),st:'fisico',b:5,rew:'assist',fail:'intercept',n:10,w:(c)=>1.1,prot:1},/* [giro 98 D3-bis] prot: si gioca da protezione (duello fisico col marcatore, poi lo scarico) */
   {k:'sponda',l:(c)=>'🤝 Sponda di prima per '+c.ric,st:'passaggio',b:3,rew:'assist',fail:'intercept',n:8,w:(c)=>c.ric?1.2:0},
   {k:'fallo',l:'😤 Resisti alla carica e cerca il fallo',st:'fisico',b:2,rew:'assist',fail:'intercept',n:9,w:(c)=>0.9},/* come «Dribbling provocatorio — il fallo c'è!» del catalogo: rew assist, falloCercato dal factory */
   {k:'potenza',l:'💥 Tiro di potenza di prima',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>0.6},
