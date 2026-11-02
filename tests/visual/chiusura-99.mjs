@@ -102,7 +102,7 @@ const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.j
 async function partitaVera(sd, rosso) {
   const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
-  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; if (r) window.__CPM_NO_G99RIC = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+  await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; window.__CPM_G99DIAG = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G99RIC = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -119,11 +119,11 @@ async function parteRIC(arm) {
   const semi = (process.env.CPM_G99_SEMI || '1234,2021').split(',').map(Number);
   for (const sd of semi) { const B4 = await partitaVera(sd, rosso);
     for (const [k, e] of Object.entries(B4)) { const r = e.ricevente; if (!r || r.brain == null || r.brain === 21) continue;
-      T.n++; if (r.idx === r.brain) T.ok++; else T.ko.push(`seme ${sd} scena ${k} (${e.sit}) servito ${r.idx} nominato ${r.brain} a ${r.d}u`); }
+      T.n++; if (r.idx === r.brain) T.ok++; else T.ko.push(`seme ${sd} scena ${k} (${e.sit}) servito ${r.idx} nominato ${r.brain} a ${r.d}u` + (process.env.CPM_G99_DIAG ? ' ' + JSON.stringify(e.ult99 || []) : '')); }
     console.log(`  ${arm} RIC seme ${sd}: ${T.ok}/${T.n} finora`); }
   const pc = T.n ? (100 * T.ok / T.n).toFixed(1) : '-'; const ok = T.n >= 4 && T.ok === T.n;
   console.log(`${arm.toUpperCase()} RIC · scene col ricevente nominato servito nel 3D ${T.n} · servito = nominato ${T.ok}/${T.n} (${pc}%) → ${ok ? 'VERDE' : 'ROSSO'}`);
-  T.ko.slice(0, 8).forEach(x => console.log('    · ' + x));
+  T.ko.slice(0, 12).forEach(x => console.log('    · ' + x));
   return { ok, cieco: T.n < 4 };
 }
 
