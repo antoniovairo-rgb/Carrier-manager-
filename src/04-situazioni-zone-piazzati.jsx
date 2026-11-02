@@ -883,6 +883,13 @@ const P6_CONCLUSIONE=[
    (esito gol / assist, o statistica dribbling). Nessun sorteggio in piu': cambia solo il peso dentro la scelta seminata. Rosso __CPM_NO_STILI. */
 function _pesoStile67(player,t){try{const m=(typeof stileMotore==='function')?stileMotore(player):null;if(!m||!m.scena||!t)return 1;const k=m.scena;
   if(t.st==='dribbling')return +k.dribbling||1;if(t.rew==='assist')return +k.assist||1;if(t.rew==='goal')return +k.goal||1;return 1;}catch(_e){return 1;}}
+/* [giro 95 D2, collaudo carriera 177 n.1: «Finta e cambio di passo» giocata dal 3D come passaggio, 63 volte su 80 «anticipato/intercettato»,
+   una volta raccontata «tiro fuori di poco»] La finta aveva premio «assist»: il motore la giocava come un passaggio al compagno (giocaScena
+   fam assist, probabilita' del passaggio), il 3D come un passaggio (regola 7.798: conduzione con premio assist = consegna) e dal giro 93
+   il riquadro diceva «Assist da gol — X non inquadra la porta». La scelta di dribbling si gioca da dribbling: premio «chance» (uomo
+   saltato, palla al piede), famiglia del motore «dribbling» con la sua probabilita', tipo 3D «dribble», errore = palla persa nel
+   duello; riuscita, apre la conclusione da giocare (catena dopo_dribbling). Rosso __CPM_NO_G95D2. */
+function _rew95(t){return (t&&t.drb&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D2))?'chance':(t&&t.rew);}
 function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
@@ -891,9 +898,10 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   while(scelte.length<3&&pool.length){const tot=pool.reduce((a,o)=>a+o.w,0);let r=rnd()*tot,i=0;for(;i<pool.length-1;i++){r-=pool[i].w;if(r<=0)break;}
     scelte.push(pool[i].t);pool.splice(i,1);}
   if(scelte.length<2)return null;
-  if(!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PASS221))&&!/^(difesa|rigore)$/.test(tipo||'')&&!scelte.some(t=>t.rew==='assist')){/* [7.999.156 PO-221, decisione PO 09/10] ogni scena offensiva offre almeno un'opzione di passaggio/assist: la piu' pesante disponibile prende il posto dell'ultima scelta (nessun sorteggio in piu') */
-    const _c221=REG.filter(t=>t.rew==='assist'&&t.w(c)>0&&scelte.indexOf(t)<0).sort((a,b)=>b.w(c)-a.w(c));if(_c221.length)scelte[scelte.length-1]=_c221[0];}
-  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,t.rew,t.fail,t.n));
+  if(!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PASS221))&&!/^(difesa|rigore)$/.test(tipo||'')&&!scelte.some(t=>_rew95(t)==='assist')){/* [7.999.156 PO-221, decisione PO 09/10] ogni scena offensiva offre almeno un'opzione di passaggio/assist: la piu' pesante disponibile prende il posto dell'ultima scelta (nessun sorteggio in piu') */
+    const _c221=REG.filter(t=>_rew95(t)==='assist'&&t.w(c)>0&&scelte.indexOf(t)<0).sort((a,b)=>b.w(c)-a.w(c));if(_c221.length)scelte[scelte.length-1]=_c221[0];}
+  const actions=scelte.map(t=>A(typeof t.l==='function'?t.l(c):t.l,t.st,t.b,_rew95(t),t.fail,t.n));
+  actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].drb&&_rew95(scelte[i])==='chance')a.drb95=true;});/* [giro 95 D2] */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
   const x=+occ.x,y=+occ.y;
@@ -966,7 +974,7 @@ const P6_LINEE=[
   {k:'lancio',l:(c)=>'🎯 Lancio smarcante per '+c.ric,st:'passaggio',b:0,rew:'assist',fail:'intercept',n:10,w:(c)=>_r068()&&c.ric?0.8:0},/* [giro 17 PO-068] */
   {k:'fuori',l:'💥 Tiro da fuori',st:'tiro',b:-6,rew:'goal',fail:'miss',n:14,w:(c)=>c.press<2?1:0.6},
   {k:'conduci',l:'🏃 Conduci palla al piede e tira',st:'velocità',b:-2,rew:'goal',fail:'intercept',n:16,w:(c)=>c.press<1.5?1:0.5},
-  {k:'finta',l:'🌀 Finta e cambio di passo',st:'dribbling',b:0,rew:'assist',fail:'intercept',n:14,w:(c)=>c.press>=1?1:0.6},
+  {k:'finta',l:'🌀 Finta e cambio di passo',st:'dribbling',b:0,rew:'assist',fail:'intercept',n:14,w:(c)=>c.press>=1?1:0.6,drb:1},/* [giro 95 D2] drb: si gioca da dribbling (_rew95) */
 ];
 function scenaDalMotoreFascia(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6F||window.__CPM_NO_P6))return null;}catch(_e){}
