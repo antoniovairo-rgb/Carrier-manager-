@@ -841,3 +841,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ## 01/11 — PO: «Porta tutte le schermate alla versione 2»
 - PO-302: la V2 «Notte da stadio» è la direzione scelta. Tela https://claude.ai/artifact/1ET6iHQHviKDEBbXvt8kta: V2 completa in 26 tavole (9 schede telefono, 8 momenti/finestre telefono, 9 schede PC), collegate fra loro con Play. La V1 resta sulla tela come riferimento. Da portare nel gioco nella 179 (regola del contenuto chiuso), quando il PO fa ripartire il progetto.
+
+## 02/11 — PO: «Prosegui nel lavoro» (fine della pausa del 28/10)
+- I giri 96a, 96b e 98 avevano già chiuso i rapporti prima della pausa: sessioni archiviate. La madre ha unito 95+96a+96b+98+97 in lavoro/178 (55879106; conflitti solo in ci-runner/package.json, risolti per unione), build e check-src identici, nota di GAME_VERSION aggiornata.
+- Aperti degli highlight rimasti (bloccanti per la regola PO): «GOOOOL!» poco leggibile (DOM in src/15) e ricevente dell'assist nel 3D che coincide col compagno nominato solo 5 volte su 12. Più i guardiani non eseguiti dal 96b. → giro 99 sulla 178 unita (session_01QEYiaBr5PMv87ea1q6PsfZ, sviluppo/giro99-chiusura). Poi catena in 3 tronchi e rilascio.
+- Riaccesa l'attività Korward Elite notturna; la riaccensione dell'avanzamento ogni 4 ore è stata rifiutata dal controllo di sicurezza dell'ambiente: resta spenta finché il PO non la riattiva o non lo conferma. Carriera n.5 resta in pausa («Solo la 178»).
