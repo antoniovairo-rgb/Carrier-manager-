@@ -14,6 +14,8 @@
    ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_SPAZIO296 (gli spazi della 177) e pretende che il giudizio CADA (mediana fuori 7-9 su almeno una
    schermata per formato). CPM_MISURA=1 stampa tutte le distanze con l'origine (marginBottom/marginTop/gap del genitore) e non giudica.
    CPM_FOTO_296=<prefisso> salva foto in <scratchpad>/<prefisso>-<formato>-<schermata>.png; CPM_SENZA_POST=1 salta il post-partita (lento, ~3 min).
+   [giro 97 PO-299 D18] aggiunte intervista, primo incontro col procuratore, Opzioni di carriera e Fine stagione/offerte (su pagina nuova
+   ciascuna): sul codice del giro 91 cadono con 12 · 13,4 · 15,7 · 16,8 px; il rosso resta __CPM_NO_SPAZIO296, che riporta anche questi.
    Non prova dispositivi veri: e' Chromium headless alla taglia del telefono del PO e a quella del PC. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from './lib/harness.mjs';
@@ -133,7 +135,21 @@ for (const fk of SCELTI) {
         await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); await sleep(300);
         const r = await page.evaluate(fn); if (r !== true) { mancanti.push(fk + ' ' + id + ' ' + r); continue; } await sleep(500); await misura(page, f, id);
         try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {} await sleep(300); }
+      /* [giro 97 PO-299 D18] le quattro schermate rimaste larghe nel collaudo grafico 178: intervista (12 px), primo incontro col procuratore
+         (13,4), Opzioni di carriera (15,7), Fine stagione/offerte (16,8). Ognuna su pagina NUOVA (sotto): la cerimonia e le finestre
+         non si chiudono tutte con dismiss() e contaminerebbero le misure successive (lezione del censimento 178). */
     }
+    await ctx.close(); }
+  for (const [id, fn] of [['intervista', () => window.__CPM_CAREER.forceInterview('win')], ['procuratore-intro', () => window.__CPM_CAREER.apriIntro253()], ['carriera-opzioni', null], ['fine-stagione-offerte', () => window.__CPM_CAREER.goScreen('proTransition')]]) {
+    const { ctx, page } = await apri(f, { save: SAVE }, '?cpmtest=1');
+    await sleep(1200);
+    try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 8000 }); } catch (e) { mancanti.push(fk + ' Continua'); }
+    const vivo = await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }).then(() => true).catch(() => false);
+    if (!vivo) { mancanti.push(fk + ' ' + id + ' (carriera)'); await ctx.close(); continue; }
+    await sleep(900); try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {} await sleep(400);
+    await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); await sleep(300);
+    const r = fn ? await page.evaluate(fn).catch(e => 'err ' + e.message) : await premi(page, '^Opzioni$');
+    if (r !== true) mancanti.push(fk + ' ' + id + ' ' + r); else { await sleep(900); await misura(page, f, id); }
     await ctx.close(); }
   /* 3b) pre-partita: contesto nuovo col salvataggio di fixtures (ha la partita in settimana), la stessa via del giocatore */
   { const { ctx, page } = await apri(f, { save: SAVE_PARTITA }, '?cpmtest=1');
@@ -189,6 +205,6 @@ if (mancanti.length) console.log('schermate non raggiunte: ' + mancanti.join(', 
 const totSchermate = Object.values(R).reduce((s, o) => s + Object.keys(o).length, 0);
 let esito;
 if (ROSSO) { esito = cadute > 0; console.log(esito ? `ROSSO ATTESO OK: con __CPM_NO_SPAZIO296 cadono ${cadute} schermate su ${totSchermate}` : 'ROSSO NON RIUSCITO: con l\'interruttore acceso il guardiano resta verde'); fail.slice(0, 8).forEach(s => console.log('  ' + s)); }
-else { esito = cadute === 0 && totSchermate >= 8 * SCELTI.length && mancanti.filter(x => !/post-partita/.test(x) || !SENZA_POST).length === 0; fail.forEach(s => console.log('  ✗ ' + s));
+else { esito = cadute === 0 && totSchermate >= 12 * SCELTI.length && mancanti.filter(x => !/post-partita/.test(x) || !SENZA_POST).length === 0; fail.forEach(s => console.log('  ✗ ' + s));
   console.log(esito ? `spazio-296 VERDE: ${totSchermate} schermate misurate, distanze fra riquadri-carta 6-10 px, nessuna sovrapposizione` : `spazio-296 ROSSO: ${cadute} schermate cadute, ${mancanti.length} non raggiunte`); }
 await b.close(); srv.close(); process.exit(esito ? 0 : 1);
