@@ -156,8 +156,8 @@ function FiguraV2({player,w=54,grande=false}){
   const ruolo=_abbr3V2(p.position,"ATT"),h=Math.round(w*1.4);
   const righe={backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.06) 0 14px, rgba(255,255,255,0) 14px 28px)"};
   if(!grande)return(
-    <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:8,padding:2,background:corniceV2(ovr),flexShrink:0}}>
-      <div style={{width:"100%",height:"100%",borderRadius:6,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
+    <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:RAD.sm,padding:2,background:corniceV2(ovr),flexShrink:0}}>
+      <div style={{width:"100%",height:"100%",borderRadius:RAD.xs,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
         <span className="cpm-num" style={fsTV(FS.subhead+1,FW.black)}>{ovr}</span>
         <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.08em"}}>{ruolo}</span>
       </div></div>);
