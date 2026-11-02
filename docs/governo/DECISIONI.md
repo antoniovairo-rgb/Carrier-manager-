@@ -849,3 +849,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ## 02/11 — PO: priorità alla nuova grafica (questionario: «Subito, in parallelo»)
 - La V2 parte subito per la 179 in parallelo alla chiusura della 178 (che esce senza ritardi). Ramo lavoro/179 da lavoro/178 con i riferimenti in docs/design/grafica-v2/ (26 tavole della tela + LEGGIMI). Tappa 1 (session_01QEYiaBNPzUeeTiAZduNdLu, sviluppo/v2-tappa1): tema «Notte da stadio» predefinito con interruttore __CPM_NO_V2, barre di navigazione, Home, Carriera. Tappa 2: Stagione, Club, Agente, Ufficio, momenti e finestre. Tappa 3: partita 2D, highlight, post partita (src/12/14/15), dopo il rilascio della 178.
+
+## 02/11 notte — grafica V2 tappa 1 conclusa, tappa 2 avviata
+- Tappa 1 (sviluppo/v2-tappa1, rapporto docs/sviluppo/RAPPORTO-v2-tappa1.md, costo registrato ≈ 14,2 $): tema TH_V2 predefinito (__CPM_NO_V2 riporta la 178), barra in basso e laterale, Home (prossima partita nel colore del club, forma V/N/P, numeri della stagione, figurina con anelli), Carriera › Profilo (figurina grande, 6 attributi, totali, gol per stagione). Contrasto minimo 4,99:1, spazi 7,8 px, tocco ≥40 px, 0 scorrimento orizzontale. Guardiano grafica-v2 verde e rosso; 13 guardiani di grafica verdi, 9 difetti veri di leggibilità corretti. Unita in lavoro/179 (bf2d42eb).
+- PO (questionario): «Simula accanto a Gioca» (scorciatoia che passa comunque dalla decisione del mister) e «Testata compatta» (Salva e Opzioni come icone, barra a 6 voci, niente doppioni di Forma/Morale, altri valori ricollocati).
+- Tappa 2 avviata (sviluppo/v2-tappa2): testata, Simula, Stagione, Club, Agente, Ufficio, momenti e finestre della carriera. Tappa 3 (partita, highlight, post partita) dopo il rilascio della 178.
