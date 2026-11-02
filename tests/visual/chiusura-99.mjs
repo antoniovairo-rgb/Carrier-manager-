@@ -106,15 +106,14 @@ async function parteRIC(arm) {
     await page.evaluate(() => { window.__CPM_FORCE_INTRO = 1; delete window.__CPM_FORCE_KIND; window.__CPM_PT219 = []; window.__CPM_B4RIC = { usato: 0, scartato: 0, senzaCast: 0, dist: [] }; });
     if (!await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), s.gi).catch(() => false)) continue;
     const t0 = Date.now(); while (Date.now() - t0 < 8000 && (await fase(page)) !== 'hl_choose') await sleep(150);
-    await sleep(400);
-    const ric = await page.evaluate(() => { const C = window.__CPM_CAST && window.__CPM_CAST(); return null; }).catch(() => null);
-    await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; });
+    await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_B4 = {}; });
     if (!await page.evaluate(k => window.__CPM_RESOLVE(k), s.k).catch(() => false)) continue;
     const t1 = Date.now(); while (Date.now() - t1 < 9000 && /^hl_/.test(await fase(page) || '')) await sleep(150);
-    const pt = await page.evaluate(() => (window.__CPM_PT219 || []).slice());
-    const servito = pt.filter(x => x.ph === 'hl_result' || x.ph === 'hl_move'); const primo = servito[0] || pt[0];
-    if (!primo || primo.ric == null) { T.senza++; continue; }
-    T.n++; if (primo.i === primo.ric) T.ok++; else T.ko.push(`gi${s.gi} servito ${primo.i} nominato ${primo.ric}`);
+    const b4 = await page.evaluate(() => Object.values(window.__CPM_B4 || {}));
+    const e = b4.map(x => x.ricevente).find(Boolean); const W = await page.evaluate(() => window.__CPM_B4RIC || {});
+    if (!e || e.brain == null || e.brain === 21) { T.senza++; continue; }
+    const primo = { i: e.idx, ric: e.brain, d: e.d, sc: W.scartato };
+    T.n++; if (primo.i === primo.ric) T.ok++; else T.ko.push(`gi${s.gi} «${cat[s.gi].a[s.k].l}» servito ${primo.i} nominato ${primo.ric} a ${primo.d}u (scartati ${primo.sc})`);
   }
   await page._ctx.close();
   const pc = T.n ? (100 * T.ok / T.n).toFixed(1) : '-'; const ok = T.n >= 6 && T.ok === T.n;
