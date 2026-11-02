@@ -11,7 +11,11 @@
    CARR Carriera › Profilo: figurina grande con cornice d'oro (l'eroe del banco ha OVR 86), sei attributi, grafico dei gol con il record in oro;
    TXT  nessun testo tagliato nei riquadri V2 e nella barra, nessuno scorrimento orizzontale;
    CON  contrasto WCAG del testo nei riquadri V2 e nella barra: >= 4,5:1 (>= 3:1 da 24 px, o 18,66 px in grassetto). Stampa il minimo.
-   ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_V2 (la grafica della 178) e pretende che PAL, NAV e HOME cadano in ogni formato.
+   [tappa 2] TEST testata compatta (stemma, Salva e Opzioni come icone >= 44 px con aria-label), barra a 6 voci senza Opzioni,
+        Simula accanto a Gioca nel riquadro della prossima partita, tre anelli (Forma, Morale, Fatica) nella card dell'eroe;
+   SCH  schede: Stagione (titolo V2 con distanza dalla vetta e forma, riga tua nel colore del club), Club (fascia del club, due anelli,
+        OVR su piastrella), Agente (titolo, barra del contratto), Ufficio (titolo, tacche del trainer); contrasto, tagli, scorrimento.
+   ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_V2 (la grafica della 178) e pretende che PAL, NAV, HOME, TEST e SCH cadano in ogni formato.
    CPM_FORMATI=tel,tabv,tabo,pc per un sottoinsieme. Chromium headless: nessun dispositivo vero. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 import { SAVE, INIT } from './lib/banco-g0.mjs';
@@ -76,7 +80,7 @@ function CARRIERA() {
 }
 
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
-const errs = [], mancanti = [], fail = { PAL: [], FONT: [], NAV: [], HOME: [], CARR: [], TXT: [], CON: [] }, visti = { PAL: 0, FONT: 0, NAV: 0, HOME: 0, CARR: 0, TXT: 0, CON: 0 };
+const errs = [], mancanti = [], fail = { PAL: [], FONT: [], NAV: [], HOME: [], CARR: [], TXT: [], CON: [], TEST: [], SCH: [] }, visti = { PAL: 0, FONT: 0, NAV: 0, HOME: 0, CARR: 0, TXT: 0, CON: 0, TEST: 0, SCH: 0 };
 const KO = (k, f, m) => fail[k].push(`${f.k}: ${m}`);
 let conMin = 99;
 for (const f of SCELTI) {
@@ -121,10 +125,21 @@ for (const f of SCELTI) {
   /* HOME */ visti.HOME++;
   if (!s.pros) KO('HOME', f, 'manca il riquadro della prossima partita V2');
   else { if (['26,30,39', '13,15,20', '255,255,255'].includes(s.pros.bg)) KO('HOME', f, 'prossima partita non nel colore del club (' + s.pros.bg + ')'); if (s.pros.stemmi < 2 || !s.pros.forma || !s.pros.cmd) KO('HOME', f, `prossima partita incompleta (stemmi ${s.pros.stemmi}, forma ${s.pros.forma}, comando ${s.pros.cmd})`); }
-  if (!s.eroe || !s.eroe.fig || s.eroe.anelli !== 2) KO('HOME', f, 'figurina piccola o anelli mancanti');
+  if (!s.eroe || !s.eroe.fig || s.eroe.anelli !== 3) KO('HOME', f, 'figurina piccola o anelli (Forma, Morale, Fatica) mancanti: ' + (s.eroe && s.eroe.anelli));/* [tappa 2] la Fatica e' scesa dalla testata */
+  /* TEST [tappa 2] */ visti.TEST++;
+  const te = await page.evaluate(() => { const h = document.querySelector('[data-cpm="testata-v2"]'); if (!h) return null; const r = x => { const b = x.getBoundingClientRect(); return { w: b.width, h: b.height }; };
+    const bt = [...h.querySelectorAll('button')].map(b => ({ l: b.getAttribute('aria-label') || '', ...r(b) }));
+    return { stemma: h.querySelectorAll('svg,img').length, bt, voci: [...document.querySelectorAll('.cpm-nav-tabs button')].map(b => (b.textContent || '').trim()),
+      sim: !!document.querySelector('[data-cpm="prossima-v2"] [data-cpm="simula-v2"]') }; });
+  if (!te) KO('TEST', f, 'manca la testata compatta');
+  else { const sal = te.bt.find(b => /Salva/.test(b.l)), opz = te.bt.find(b => /Opzioni/.test(b.l));
+    if (!sal || !opz) KO('TEST', f, 'Salva/Opzioni senza aria-label nella testata');
+    const pic = te.bt.filter(b => b.w < 44 || b.h < 44); if (pic.length) KO('TEST', f, 'icone sotto 44 px: ' + pic.map(b => `${b.l} ${Math.round(b.w)}x${Math.round(b.h)}`).join(', '));
+    if (te.voci.length !== 6 || te.voci.some(v => /Opzioni/.test(v))) KO('TEST', f, 'barra: ' + te.voci.length + ' voci (' + te.voci.join('|') + ')');
+    if (!te.sim) KO('TEST', f, 'manca Simula nel riquadro della prossima partita'); }
   const gl = s.gaps.filter(g => g < 5 || g > 12); if (s.gaps.length < 2 || gl.length) KO('HOME', f, 'spazio fra i riquadri ' + s.gaps.join(', ') + ' px');
   /* TXT + CON home e barra */
-  const mh = await page.evaluate(MISURA, '[data-cpm="prossima-v2"],[data-cpm="eroe-v2"],.cpm-v2nav');
+  const mh = await page.evaluate(MISURA, '[data-cpm="prossima-v2"],[data-cpm="eroe-v2"],[data-cpm="testata-v2"],.cpm-v2nav');
   visti.TXT++; if (s.ox > 1) KO('TXT', f, 'scorrimento orizzontale ' + s.ox + ' px'); if (mh.tagliati.length) KO('TXT', f, 'testi tagliati: ' + mh.tagliati.slice(0, 4).join(' | '));
   if (mh.n) { visti.CON++; conMin = Math.min(conMin, mh.min); if (mh.peggiori.length) KO('CON', f, 'home/barra: ' + mh.peggiori.slice(0, 4).join(' | ')); }
   /* CARR */
@@ -132,6 +147,25 @@ for (const f of SCELTI) {
   const c = await page.evaluate(CARRIERA); visti.CARR++;
   if (!c.fig) KO('CARR', f, 'manca la figurina grande'); else { if (!/232, 180, 74/.test(c.cornice)) KO('CARR', f, 'cornice non d\'oro con OVR 86'); if (c.attr !== 6) KO('CARR', f, 'attributi sulla carta ' + c.attr); }
   if (!c.barre || c.oro !== 1) KO('CARR', f, `grafico dei gol: barre ${c.barre}, record in oro ${c.oro}`);
+  /* SCH [tappa 2]: Stagione, Club, Agente, Ufficio */
+  const SCHEDE = [
+    ['standings', '[data-cpm="stagione-v2"]', () => { const v = document.querySelector('[data-cpm="vetta-v2"]'), r = document.querySelector('[data-cpm="riga-mia-v2"]');
+      return [!v ? 'manca la distanza dalla vetta' : !/vetta|seconda/i.test(v.textContent) ? 'vetta: ' + v.textContent : null, !document.querySelector('[data-cpm="stagione-v2"] [data-cpm="forma-v2"]') ? 'manca la forma V/N/P' : null,
+        !r ? 'manca la riga tua' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(r).backgroundColor) ? 'riga tua non nel colore del club' : null]; }],
+    ['club', '[data-cpm="club-v2"],[data-cpm="club-anelli-v2"]', () => { const c = document.querySelector('[data-cpm="club-v2"]');
+      return [!c ? 'manca la fascia del club' : /26, 30, 39|13, 15, 20/.test(getComputedStyle(c).backgroundColor) ? 'fascia non nel colore del club' : null,
+        document.querySelectorAll('[data-cpm="club-anelli-v2"] [data-cpm="anello-v2"]').length !== 2 ? 'anelli fiducia/popolarita\' mancanti' : null]; }],
+    ['agente', '[data-cpm="agente-v2"],[data-cpm="contratto-v2"]', () => [!document.querySelector('[data-cpm="agente-v2"]') ? 'manca il titolo Agente' : null, !document.querySelector('[data-cpm="contratto-v2"]') ? 'manca la barra del contratto' : null]],
+    ['ufficio', '[data-cpm="ufficio-v2"]', () => [!document.querySelector('[data-cpm="ufficio-v2"]') ? 'manca il titolo Ufficio' : null, document.querySelectorAll('[data-cpm="tacca-v2"]').length < 3 ? 'mancano le tacche dello staff' : null]],
+  ];
+  for (const [tb, sel, giudica] of SCHEDE) {
+    await page.evaluate(t => window.__CPM_CAREER.goTab(t), tb); await sleep(900); visti.SCH++;
+    (await page.evaluate(giudica)).filter(Boolean).forEach(m => KO('SCH', f, tb + ': ' + m));
+    const ms = await page.evaluate(MISURA, sel + ',[data-cpm="testata-v2"]');
+    const oxs = await page.evaluate(() => { const sc = document.querySelector('.cpm-scroll'); return Math.max(sc ? sc.scrollWidth - sc.clientWidth : 0, document.documentElement.scrollWidth - innerWidth); });
+    if (oxs > 1) KO('TXT', f, tb + ': scorrimento orizzontale ' + oxs + ' px'); if (ms.tagliati.length) KO('TXT', f, tb + ': testi tagliati: ' + ms.tagliati.slice(0, 4).join(' | '));
+    if (ms.n) { conMin = Math.min(conMin, ms.min); if (ms.peggiori.length) KO('CON', f, tb + ': ' + ms.peggiori.slice(0, 4).join(' | ')); }
+  }
   const mc = await page.evaluate(MISURA, '[data-cpm="carriera-v2"]');
   const ox2 = await page.evaluate(() => { const sc = document.querySelector('.cpm-scroll'); return Math.max(sc.scrollWidth - sc.clientWidth, document.documentElement.scrollWidth - innerWidth); });
   if (ox2 > 1) KO('TXT', f, 'carriera: scorrimento orizzontale ' + ox2 + ' px'); if (mc.tagliati.length) KO('TXT', f, 'carriera: testi tagliati: ' + mc.tagliati.slice(0, 4).join(' | '));
@@ -145,8 +179,9 @@ for (const [k, v] of Object.entries(fail)) v.forEach(x => console.log(`  ✗ ${k
 let esito;
 if (ROSSO) {
   const cade = k => SCELTI.every(f => fail[k].some(x => x.startsWith(f.k + ':')));
-  esito = ['PAL', 'NAV', 'HOME'].every(cade) && !errs.length;
-  console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_V2 cadono PAL, NAV e HOME in ogni formato' : `ROSSO NON RIUSCITO: cadono ${['PAL', 'NAV', 'HOME'].filter(cade).join(', ') || 'nessuno'}`);
+  const K = ['PAL', 'NAV', 'HOME', 'TEST', 'SCH'];
+  esito = K.every(cade) && !errs.length;
+  console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_V2 cadono PAL, NAV, HOME, TEST e SCH in ogni formato' : `ROSSO NON RIUSCITO: cadono ${K.filter(cade).join(', ') || 'nessuno'}`);
 } else {
   const ciechi = Object.entries(visti).filter(([, n]) => n === 0).map(([k]) => k);
   esito = Object.values(fail).every(v => !v.length) && !ciechi.length && !mancanti.length && !errs.length;

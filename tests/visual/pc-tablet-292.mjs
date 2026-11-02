@@ -98,7 +98,7 @@ async function giro(sigla, rosso, completo) {
       const attiva = () => page.evaluate(() => { const x = document.querySelector('.cpm-nav-tabs .cpm-tab-act'); return x ? (x.textContent || '').trim() : null; });
       const t = {}; await page.keyboard.press('u'); await sleep(900); t.u = await attiva(); await page.keyboard.press('l'); await sleep(900); t.l = await attiva();
       await page.keyboard.press('m'); await sleep(900); for (let i = 0; i < 5; i++) { await page.keyboard.press('ArrowRight'); await sleep(500); } t.frecce = await attiva(); await page.keyboard.press('m'); await sleep(700); mis.tab = t;
-      const op = await page.evaluate(() => { const x = [...document.querySelectorAll('.cpm-nav-tabs button')].find(q => /Opzioni/.test(q.textContent || '')); if (x) { x.click(); return true; } return false; });
+      const op = await page.evaluate(() => { const x = [...document.querySelectorAll('.cpm-nav-tabs button, [data-cpm="testata-v2"] button')].find(q => /Opzioni/.test((q.textContent || '') + (q.getAttribute('aria-label') || '')));/* [PO-302 tappa 2] in V2 Opzioni sta nella testata */ if (x) { x.click(); return true; } return false; });
       if (op) { await sleep(900); const aperte = await page.evaluate(() => /⚙️ Opzioni/.test(document.body.innerText)); await page.keyboard.press('Escape'); await sleep(700); mis.opzioni = { aperte, dopoEsc: await page.evaluate(() => /⚙️ Opzioni/.test(document.body.innerText)) }; if (mis.opzioni.dopoEsc) await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '✕'); if (x) x.click(); }); await sleep(400); }
     }
     await page.evaluate(() => window.__CPM_CAREER.playMatch());

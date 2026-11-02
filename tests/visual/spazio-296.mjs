@@ -105,7 +105,7 @@ async function apri(f, init, query) {
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
   return { ctx, page };
 }
-const premi = (page, rx) => page.evaluate(s => { const r = new RegExp(s); const x = [...document.querySelectorAll('button')].find(y => r.test((y.textContent || '').trim())); if (x) { x.click(); return true; } return false; }, rx);
+const premi = (page, rx) => page.evaluate(s => { const r = new RegExp(s); const x = [...document.querySelectorAll('button')].find(y => r.test((y.textContent || '').trim() || y.getAttribute('aria-label') || ''));/* [PO-302 tappa 2] Opzioni e' un'icona con aria-label nella testata V2 */ if (x) { x.click(); return true; } return false; }, rx);
 const mancanti = [];
 
 for (const fk of SCELTI) {

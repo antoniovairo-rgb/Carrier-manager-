@@ -613,7 +613,7 @@ async function apri(browser, port, taglia, initArg, query, errori) {
   return page;
 }
 
-const premi = (page, rx) => page.evaluate(s => { const r = new RegExp(s); const b = [...document.querySelectorAll('button')].find(x => r.test((x.textContent || '').trim())); if (b) { b.click(); return (b.textContent || '').trim().slice(0, 30); } return null; }, rx);
+const premi = (page, rx) => page.evaluate(s => { const r = new RegExp(s); const b = [...document.querySelectorAll('button')].find(x => r.test((x.textContent || '').trim() || x.getAttribute('aria-label') || ''));/* [PO-302 tappa 2] Opzioni e' un'icona con aria-label nella testata V2 */ if (b) { b.click(); return (b.textContent || '').trim().slice(0, 30); } return null; }, rx);
 
 /* ── corsa ─────────────────────────────────────────────────────────────────────────────────── */
 const HTML = path.join(ROOT, 'CARRIER-MANAGER-AV.html');
