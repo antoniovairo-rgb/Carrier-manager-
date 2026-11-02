@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Intervista</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <section aria-hidden="true" style="position: relative; height: 250px; flex-shrink: 0; background: #11141b; overflow: hidden;">
+    <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr)); opacity: 0.5;">
+      <sc-for list="{{wall}}" as="w" hint-placeholder-count="24"><div style="display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: {{w.c}};">{{w.t}}</div></sc-for>
+    </div>
+    <div style="position: absolute; inset: 0; background: linear-gradient(0deg, #0d0f14 5%, rgba(13,15,20,0) 60%);"></div>
+    <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#f4f1ea" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 50%; top: 56px; margin-left: -60px; opacity: 0.9;"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+  </section>
+
+  <main style="flex-grow: 1; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #e8b44a;">Sala stampa · dopo il 2–0</span>
+      <span style="font-size: 13px; color: #9aa3b2;">Giornalista di Sport Abend</span>
+    </div>
+    <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.1;">«Gol e assist nel derby: è la tua miglior partita in maglia Valdenau?»</span>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+      <sc-for list="{{answers}}" as="a" hint-placeholder-count="4">
+        <button type="button" style="min-height: 60px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: #1a1e27; padding: 10px 14px; text-align: left; display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 12px; align-items: stretch; font-family: 'Barlow', sans-serif; color: #f4f1ea;">
+          <span style="border-radius: 2px; background: {{a.color}};"></span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: {{a.color}};">{{a.tone}} · {{a.effect}}</span>
+            <span style="font-size: 15px; line-height: 1.35;">{{a.text}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const brands = ['SPORT ABEND', 'KORWARD', 'VALDENAU', 'DEUTSCHE LIGA'];
+    const wall = Array.from({ length: 24 }, (_, i) => ({ t: brands[i % 4], c: i % 3 === 0 ? '#8e1f33' : '#3a4152' }));
+    return { wall, answers: [
+      { tone: 'Umile', effect: 'spogliatoio +', color: '#4ade80', text: 'Il merito è della squadra: Pohl ha fatto un lavoro enorme.' },
+      { tone: 'Ambizioso', effect: 'tifosi +', color: '#e8b44a', text: 'Posso fare ancora meglio. Voglio il titolo.' },
+      { tone: 'Diplomatico', effect: 'neutro', color: '#60a5fa', text: 'Una bella serata, ma conta solo la prossima.' },
+      { tone: 'No comment', effect: 'stampa −', color: '#9aa3b2', text: 'Preferisco non parlare di me.' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Post partita su PC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; display: flex; flex-direction: column; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <header style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: 280px; flex-shrink: 0; overflow: hidden;">
+    <div style="background: {{home}};"></div><div style="background: {{away}};"></div>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 24px, rgba(255,255,255,0) 24px 48px);"></div>
+    <div style="position: absolute; inset: 0; background: linear-gradient(0deg, #0d0f14 0%, rgba(13,15,20,0.1) 60%);"></div>
+    <div style="position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; padding: 0 60px;">
+      <div style="display: flex; align-items: center; justify-content: flex-end; gap: 18px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 44px; text-transform: uppercase;">Valdenau</span><span style="width: 80px; height: 80px; border-radius: 22px; background: #f4f1ea; color: {{home}}; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px;">VAL</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; padding: 0 40px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85);">Finale · Giornata 12</span>
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 150px; line-height: 0.85; font-variant-numeric: tabular-nums;">2<span style="color: rgba(255,255,255,0.45); padding: 0 10px;">:</span>0</span>
+        <span style="font-size: 15px; color: rgba(255,255,255,0.85);">Brandi 38' · Pohl 63'</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 18px;"><span style="width: 80px; height: 80px; border-radius: 22px; background: #f4f1ea; color: {{away}}; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px;">RUH</span><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 44px; text-transform: uppercase;">Ruhrpott</span></div>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1; padding: 8px 48px 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px; min-height: 0;">
+    <section style="background: #1a1e27; border: 1px solid rgba(232,180,74,0.4); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #e8b44a;">Migliore in campo</span>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 96px; height: 96px; border-radius: 50%; background: conic-gradient(#e8b44a 0 80%, #2a2f3b 0); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><div style="width: 80px; height: 80px; border-radius: 50%; background: #1a1e27; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 36px; color: #e8b44a;">8.0</div></div>
+        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-weight: 700; font-size: 22px;">Luca Brandi</span><span style="font-size: 14px; color: #9aa3b2;">1 gol · 1 assist · 4 tiri · 90'</span></div>
+      </div>
+      <div style="border-left: 3px solid #e8b44a; padding: 2px 0 2px 12px; font-size: 15px; line-height: 1.45; color: #d6cfc0;">«Brandi ha deciso il derby con un gol e un uno-due da manuale.»</div>
+    </section>
+
+    <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="6">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: grid; grid-template-columns: 60px minmax(0, 1fr) 60px; align-items: baseline;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; color: {{s.hc}};">{{s.h}}</span><span style="text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9aa3b2;">{{s.label}}</span><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; text-align: right; color: {{s.ac}};">{{s.a}}</span></div>
+          <div style="display: flex; gap: 5px; height: 8px;"><div style="flex-grow: 1; display: flex; justify-content: flex-end; background: #2a2f3b; border-radius: 999px; overflow: hidden;"><div style="width: {{s.hp}}; background: {{home}}; border-radius: 999px;"></div></div><div style="flex-grow: 1; display: flex; background: #2a2f3b; border-radius: 999px; overflow: hidden;"><div style="width: {{s.ap}}; background: {{away}}; border-radius: 999px;"></div></div></div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9aa3b2;">Momenti chiave</span>
+      <sc-for list="{{moments}}" as="m" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: baseline; min-height: 54px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-top: 8px;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; color: {{m.c}};">{{m.min}}</span><span style="font-size: 15px; line-height: 1.4;">{{m.text}}</span></div>
+      </sc-for>
+      <a href="V2HomePC.dc.html" style="margin-top: auto; min-height: 56px; border-radius: 16px; background: #f4f1ea; color: #0d0f14; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;">Continua</a>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"home":{"editor":"color","default":"#8e1f33"},"away":{"editor":"color","default":"#1d4ed8"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const raw = [['Possesso', 54, 46, '%'], ['Tiri', 14, 7, ''], ['In porta', 6, 2, ''], ['Passaggi', 412, 338, ''], ['Angoli', 6, 3, ''], ['Falli', 9, 13, '']];
+    const stats = raw.map((r) => { const t = r[1] + r[2]; const hw = r[0] === 'Falli' ? r[1] < r[2] : r[1] > r[2]; return { label: r[0], h: r[1] + r[3], a: r[2] + r[3], hp: Math.round(r[1] / t * 100) + '%', ap: Math.round(r[2] / t * 100) + '%', hc: hw ? '#f4f1ea' : '#9aa3b2', ac: hw ? '#9aa3b2' : '#f4f1ea' }; });
+    const moments = [
+      { min: "38'", text: 'Gol di Brandi: conclusione potente sul primo palo.', c: '#4ade80' },
+      { min: "51'", text: 'Ammonito Krause (Ruhrpott) per un fallo su Pohl.', c: '#fbbf24' },
+      { min: "63'", text: 'Gol di Pohl su uno-due con Brandi: assist per Brandi.', c: '#4ade80' },
+      { min: "80'", text: 'Grande parata di Seifert su colpo di testa.', c: '#60a5fa' }
+    ];
+    return { home: this.props.home ?? '#8e1f33', away: this.props.away ?? '#1d4ed8', stats, moments };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Stagione</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; padding: 16px; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+    <div style="display: flex; flex-direction: column;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9aa3b2;">Deutsche Liga · St. 14</span>
+      <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 34px; text-transform: uppercase; line-height: 1;">Classifica</span>
+    </div>
+    <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; color: #e8b44a;">−4 dalla vetta</span>
+  </div>
+
+  <div role="tablist" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; background: #1a1e27; border-radius: 14px; padding: 4px;">
+    <button type="button" role="tab" aria-selected="true" style="min-height: 42px; border: 0; border-radius: 10px; background: #f4f1ea; color: #0d0f14; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 14px;">Classifica</button>
+    <button type="button" role="tab" aria-selected="false" style="min-height: 42px; border: 0; border-radius: 10px; background: transparent; color: #9aa3b2; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 14px;">Calendario</button>
+    <button type="button" role="tab" aria-selected="false" style="min-height: 42px; border: 0; border-radius: 10px; background: transparent; color: #9aa3b2; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 14px;">Coppe</button>
+  </div>
+
+  <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; overflow: hidden;">
+    <div style="display: grid; grid-template-columns: 30px minmax(0, 1fr) 78px 34px; gap: 8px; padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9aa3b2; border-bottom: 1px solid rgba(255,255,255,0.06);">
+      <span>#</span><span>Squadra</span><span>Forma</span><span style="text-align: right;">Pt</span>
+    </div>
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+      <div style="display: grid; grid-template-columns: 30px minmax(0, 1fr) 78px 34px; gap: 8px; align-items: center; padding: 0 14px; min-height: 50px; border-bottom: 1px solid rgba(255,255,255,0.04); background: {{r.bg}}; box-shadow: {{r.edge}};">
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; color: {{r.posColor}};">{{r.pos}}</span>
+        <span style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+          <span style="width: 22px; height: 22px; border-radius: 7px; background: {{r.color}}; flex-shrink: 0;"></span>
+          <span style="font-weight: {{r.weight}}; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{r.name}}</span>
+        </span>
+        <span style="display: flex; gap: 3px;">
+          <sc-for list="{{r.form}}" as="f" hint-placeholder-count="5">
+            <span style="width: 12px; height: 12px; border-radius: 3px; background: {{f.c}};"></span>
+          </sc-for>
+        </span>
+        <span style="text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums;">{{r.pt}}</span>
+      </div>
+    </sc-for>
+  </section>
+
+  <div style="display: flex; gap: 14px; font-size: 12px; color: #9aa3b2; padding: 0 4px;">
+    <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: #60a5fa;"></span>Coppa dei Campioni</span>
+    <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: #f87171;"></span>Retrocessione</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const col = { V: '#4ade80', N: '#9aa3b2', P: '#f87171' };
+    const base = [
+      ['Bayern Südstadt', '#b91c1c', 27, 'VVVNV'], ['Rheinland 04', '#166534', 24, 'VNVVP'], ['FC Valdenau', '#8e1f33', 23, 'VVNVP'],
+      ['Hanse Nord', '#0f766e', 21, 'NVPVV'], ['FC Ruhrpott', '#1d4ed8', 19, 'VPPVN'], ['Elbtal', '#7c3aed', 16, 'PNVNV'],
+      ['Schwarzwald', '#475569', 14, 'PPVNN'], ['Moselufer', '#b45309', 12, 'NPPVP'], ['Altmark', '#64748b', 9, 'PPNPV'], ['Spreewald', '#0369a1', 6, 'PPPNP']
+    ];
+    const rows = base.map((r, i) => {
+      const me = r[0] === 'FC Valdenau';
+      return {
+        pos: i + 1, name: r[0], color: r[1], pt: r[2],
+        form: r[3].split('').map((x) => ({ c: col[x] })),
+        bg: me ? 'rgba(142,31,51,0.28)' : 'transparent',
+        weight: me ? 700 : 500,
+        posColor: me ? '#f4f1ea' : '#9aa3b2',
+        edge: i < 4 ? 'inset 3px 0 0 #60a5fa' : (i >= 8 ? 'inset 3px 0 0 #f87171' : 'none')
+      };
+    });
+    return { rows };
+  }
+}
+</script>
+</body>
+</html>

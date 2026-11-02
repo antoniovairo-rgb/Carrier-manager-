@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Creazione giocatore</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; padding: 18px 16px 16px; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+    <div style="display: flex; flex-direction: column;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #e8b44a;">Passo 2 di 4</span>
+      <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 34px; text-transform: uppercase; line-height: 1;">Chi sei</span>
+    </div>
+    <div style="display: flex; gap: 4px;" aria-hidden="true"><span style="width: 22px; height: 4px; border-radius: 2px; background: #e8b44a;"></span><span style="width: 22px; height: 4px; border-radius: 2px; background: #e8b44a;"></span><span style="width: 22px; height: 4px; border-radius: 2px; background: #2a2f3b;"></span><span style="width: 22px; height: 4px; border-radius: 2px; background: #2a2f3b;"></span></div>
+  </div>
+
+  <div style="display: flex; gap: 14px; align-items: center; background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 14px;">
+    <div style="width: 84px; height: 118px; border-radius: 12px; padding: 3px; box-sizing: border-box; background: linear-gradient(145deg, #e5e7eb, #94a3b8); flex-shrink: 0;">
+      <div style="width: 100%; height: 100%; border-radius: 9px; background: #8e1f33; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 6px 0;">
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; line-height: 1;">62</span>
+        <svg width="54" height="58" viewBox="0 0 96 104" aria-hidden="true"><circle cx="48" cy="36" r="22" fill="{{skin}}"/><path d="M8 104c4-26 20-38 40-38s36 12 40 38z" fill="rgba(255,255,255,0.25)"/></svg>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1;">Luca Brandi</span>
+      <span style="font-size: 13px; color: #9aa3b2;">17 anni · Spagna · destro</span>
+      <span style="font-size: 12px; color: #9aa3b2;">La tua figurina cresce con la carriera.</span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <label for="v2nome" style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Nome e cognome</label>
+    <input id="v2nome" type="text" value="Luca Brandi" style="min-height: 50px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); padding: 0 14px; font-family: 'Barlow', sans-serif; font-size: 17px; color: #f4f1ea; background: #1a1e27;">
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;"><label for="v2naz" style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Nazionalità</label><select id="v2naz" style="min-height: 50px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); padding: 0 12px; font-family: 'Barlow', sans-serif; font-size: 16px; color: #f4f1ea; background: #1a1e27;"><option>Spagna</option><option>Italia</option></select></div>
+    <div style="display: flex; flex-direction: column; gap: 6px;"><span id="v2piede" style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Piede</span>
+      <div role="radiogroup" aria-labelledby="v2piede" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; background: #1a1e27; border-radius: 14px; padding: 4px;">
+        <button type="button" role="radio" aria-checked="true" style="min-height: 42px; border: 0; border-radius: 10px; background: #f4f1ea; color: #0d0f14; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 14px;">Destro</button>
+        <button type="button" role="radio" aria-checked="false" style="min-height: 42px; border: 0; border-radius: 10px; background: transparent; color: #9aa3b2; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 14px;">Sinistro</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px;">
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Aspetto</span>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px;">
+      <sc-for list="{{faces}}" as="f" hint-placeholder-count="6">
+        <button type="button" aria-label="{{f.label}}" aria-pressed="{{f.on}}" style="aspect-ratio: 1; max-width: 100%; border-radius: 50%; border: {{f.border}}; background: {{f.skin}}; padding: 0; min-height: 44px;"></button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 8px; margin-top: auto;">
+    <a href="#" style="min-height: 52px; padding: 0 18px; border-radius: 14px; background: #1a1e27; display: flex; align-items: center; font-weight: 600; font-size: 15px; text-decoration: none;">Indietro</a>
+    <a href="#" style="flex-grow: 1; min-height: 52px; border-radius: 14px; background: #f4f1ea; color: #0d0f14; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Ai provini</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { pick: 2 }; }
+  renderVals() {
+    const skins = ['#f4d6bd', '#f1c9a5', '#e0ac82', '#c68b5e', '#8d5a3b', '#6f4430'];
+    const faces = skins.map((s, i) => ({ skin: s, label: 'Carnagione ' + (i + 1), on: i === this.state.pick ? 'true' : 'false', border: i === this.state.pick ? '3px solid #e8b44a' : '2px solid rgba(255,255,255,0.08)' }));
+    return { faces, skin: skins[this.state.pick] };
+  }
+}
+</script>
+</body>
+</html>
