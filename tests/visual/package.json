@@ -215,6 +215,7 @@
     "schermate-97": "node schermate-97.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_D14=1 node schermate-97.mjs",
     "grafica-v2": "node grafica-v2.mjs && CPM_PROVA_ROSSO=1 node grafica-v2.mjs",
     "simula-v2": "node simula-v2.mjs && CPM_PROVA_ROSSO=1 node simula-v2.mjs",
+    "momenti-v2": "node momenti-v2.mjs && CPM_PROVA_ROSSO=1 node momenti-v2.mjs",
     "foto-v2-tappa2": "node foto-v2-tappa2.mjs",
     "partita2d-297": "CPM_PROVA_ROSSO=1 node partita2d-297.mjs",
     "hud-c3": "node hud-c3.mjs",
