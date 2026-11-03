@@ -13,7 +13,7 @@ const srv = await startServer(); const port = srv.address().port; const b = awai
 async function misura(rosso, w) {
   const ctx = await b.newContext({ viewport: { width: w, height: 915 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx);
   const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(o => { window.__CPM_GLB = false; if (o.r) window.__CPM_NO_BARRA72 = 1; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
+  await page.addInitScript(o => { window.__CPM_GLB = false; if (o.r) { window.__CPM_NO_BARRA72 = 1; window.__CPM_NO_V2 = 1; }/* [PO-302 tappa 2] la barra V2 ha 6 voci (Opzioni in testata): a 6 voci uguali il difetto non si riproduce piu', quindi il rosso torna alla barra di prima per intero (7 voci, larghezze uguali). Soglie invariate. */ localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}

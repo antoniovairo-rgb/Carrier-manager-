@@ -183,6 +183,19 @@ function FiguraV2({player,w=54,grande=false}){
           </div>
         </div>
       </div></div>);}
+/* [PO-302 tappa 2] il titolo di scheda V2 (V2Stagione/V2Agente/V2Ufficio): occhiello maiuscolo, titolo in carattere TV, a destra un dato */
+function TitoloV2({occhiello,titolo,destra,cpm}){
+  return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
+    <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
+      {occhiello&&<span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.14em",textTransform:"uppercase",color:V2.sec}}>{occhiello}</span>}
+      <h2 style={{margin:0,...fsTV(FS.display,FW.bold),textTransform:"uppercase",letterSpacing:"0.02em",color:V2.testo,overflowWrap:"anywhere"}}>{titolo}</h2>
+    </div>
+    {destra||null}
+  </div>);}
+/* tacche d'intensita' (interesse di mercato, livello del trainer): n accese su tot, colore unico */
+function TaccheV2({n,tot=3,col,label,w=14}){
+  return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
+    {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||V2.verde):V2.anello}}/>)}</span>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
