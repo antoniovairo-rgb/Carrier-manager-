@@ -37,8 +37,36 @@ non toccati.
 cieca). In `ci-runner.mjs`: catene carriera e completa, MAPPA `src/12-|13-` e `src/15-`, tra i LENTI; in `package.json`.
 Durata: D9 ~5 min per braccio, RIC ~9 min per braccio con 2 semi.
 
-## Guardiani non eseguiti dopo 96b e 98
-(in compilazione)
+## Guardiani non eseguiti dopo 96b e 98 (uno alla volta, sulla build unita + giro 99)
+| Guardiano | Esito | Durata | Note |
+|---|---|---|---|
+| validate-situations | ✅ verde | 619 s | fingerprint 00001505, 0 failure (B15 non rompe il gate) |
+| pagella-75 | ✅ verde | 843 s | |
+| voto-79 | ✅ verde | 303 s | |
+| tabellino-228 | ✅ verde | 296 s | |
+| pc-tablet-292 | ✅ verde | 784 s | |
+| partita-vera | ✅ verde | 504 s | |
+| difficolta-156 | ✅ verde | 773 s | |
+| catalogo-022 | ✅ verde | 281 s | |
+| esiti-60 | ✅ verde | 167 s | |
+| esito-280 | ✅ verde | 328 s | |
+| nomi-219 | ✅ verde | 2597 s | lento (verde vicini 89%, rosso 59%) |
+| cross-218 | ✅ verde | 207 s | |
+| highlight-95 | ❌ **preesistente, instabile** | >3000 s (tetto) | verde 120 highlight, 3 difetti D3 «para il portiere ma il pallone non arriva al portiere entro 1,5 s»: s5/7 «Servi SEIFERT libero» (min 20,7), s5/2021 «Filtrante per ROTH» (17,9), s5/7 «Palla in area» (6,8). Rigiocato s5 con `CPM_FLAG=__CPM_NO_G99RIC` (correzione del ricevente spenta): SEIFERT ricompare (min 19,9) → non nato dal giro 99; è il difetto già segnalato preesistente nel giro 98 (stesso 20,7). ROTH e «Palla in area» non si riproducono sulla corsa ridotta né accesi né spenti. Rosso «D4 non si vede» sul braccio rosso finito al tetto (giro 96b: bracci rossi già incompleti). Aggiunto `CPM_FLAG` alla sonda per isolare le cause. |
+| assist-298 | ✅ verde | 1893 s | (girato in parallelo con due riprove di highlight-95: verde lo stesso) |
+| scena3d-96 | ❌ **instabile, non dal giro 99** | 1307 s | unico rosso: tel-gi16 «eroe figurina a fine scena» 0,059 (soglia 0,06). Rigiocato da solo due volte: 0,107 e 0,092, verde. Scene forzate = nessun cast → la correzione del ricevente è inerte; il D9 è DOM. Variabilità al limite su pagina riusata (lezione 7.483). Soglia non toccata. |
+| esiti-96 | ✅ verde | 789 s | |
+| assist-nome-98 | ⏱ verde completo, rosso interrotto | >3000 s (tetto) | solo lento. Verde: D1 nome coerente 100% su 14, **3D ricevente = cast 11/14** (giro 98: 5/12), D3 0, D4 0, B ok. |
+| schermate-97 | ✅ verde | 288 s | |
 
 ## Punti aperti
-(in compilazione)
+1. **highlight-95 D3 «il portiere dice no / para il portiere»: il pallone del tiro del compagno non arriva al portiere** (SEIFERT,
+   preesistente e instabile, giro 98 n.2; ROTH e «Palla in area» visti una volta). Regola PO: difetto d'highlight = almeno medio,
+   blocca il rilascio. Non corretto qui: non riproducibile in modo stabile e non nato da questo giro; serve un giro dedicato con
+   sonda mirata sulla scena (pagina nuova, `__CPM_PRESENT`).
+2. **assist-nome-98 e highlight-95 oltre i 50 minuti**: bracci rossi non completati in questa sessione (solo tempo).
+3. **chiusura-99 RIC** misura nel regime del giocatore (`__CPM_PRESENT=1`); senza (sotto `cpmtest`) il nominato deve correre e il
+   3D lo serve 11/14 (assist-nome-98). La scelta prudente è stata non toccare `_asIfPlay`.
+4. chiusura-99 completo (D9 + RIC, due bracci, default 2 semi) non rigirato in un colpo solo: le parti sono state misurate
+   separatamente (D9 verde+rosso nella stessa corsa; RIC rosso 6/12, verde 12/12 su 4 semi).
+5. D9: giudizio finale sul telefono del PO (pillola scura e filetto del club sono una scelta di regia).
