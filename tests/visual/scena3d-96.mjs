@@ -165,7 +165,7 @@ for (const f of formati) {
       const t0 = Date.now(); let fotoN = 0; const s0 = await scena(page);
       while (Date.now() - t0 < 60000) { const ph = await page.evaluate(() => window.__CPM_PHASE()).catch(() => null); const ds = (await scena(page)) - s0;
         if (FOTO && fotoN < 3 && ds >= [0.5, 1.6, 3.0][fotoN]) { await page.screenshot({ path: path.join(OUT, `${r.id}-${fotoN + 2}.jpg`), type: 'jpeg', quality: 55 }).catch(() => {}); fotoN++; }
-        if (ph !== 'hl_result' && ph !== 'hl_choose' && ph !== 'hl_move' && ph !== 'hl_intro' && Date.now() - t0 > 1500) break; if (ds > 5.0) break; await sleep(120); }
+        if (ph !== 'hl_result' && ph !== 'hl_choose' && ph !== 'hl_move' && ph !== 'hl_intro' && Date.now() - t0 > 1500) break; if (ds > (+process.env.CPM_G96_DS || 7.0)) break;/* [giro 100] 7,0 s di scena e non 5,0: a 5,0 la «fine scena» di gi16 (cross) cadeva sulla rampa in cui la camera lascia l'eroe per seguire il pallone in area, e la durata di quella rampa varia coi fotogrammi headless (1,2-1,8 s di scena) — minimo 0,059-0,101 sulla stessa scena. A 7,0 la camera e' assestata (0,07, costante fino alla chiusura vera): la misura e' la stessa a ogni corsa. Soglia 0,06 invariata. */ await sleep(120); }
       r.fr = await page.evaluate(() => { window.__G96.on = false; return window.__G96.fr.slice(); });
     } catch (e) { r.errore = String(e.message || e).slice(0, 160); }
     r.an = analizza(r.fr || [], r.rig, r.esito); if (process.env.CPM_G96_DUMP) fs.writeFileSync(path.join(OUT, r.id + '-fr.json'), JSON.stringify(r.fr || [])); delete r.fr; r.ko = r.errore ? ['errore: ' + r.errore] : giudica(r, f);
