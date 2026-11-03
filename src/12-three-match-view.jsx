@@ -3771,7 +3771,7 @@ function ThreeMatchView(props){
           const pl=sr.current.players||[];const idxOf=mm=>{if(mm===hero)return 21;const j=pl.findIndex(pp=>pp&&pp.mesh===mm);return j;};
           const meshOf=ci=>ci==null?null:(ci===21?hero:(pl[ci]&&pl[ci].mesh));
           const rec=(role,mm,ci)=>{if(!mm||e[role])return;const cm=meshOf(ci);e[role]={idx:idxOf(mm),brain:ci==null?null:ci,d:cm?+Math.hypot(mm.position.x-cm.position.x,mm.position.z-cm.position.z).toFixed(1):null,fase:P.matchPhase};};
-          if(P.matchPhase==='hl_result')rec('ricevente',passTargetMesh,e.cast.ricevente);/* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
+          if(P.matchPhase==='hl_result')rec('ricevente',passTargetMesh,e.cast.ricevente);if(P.matchPhase==='hl_result'&&passTargetMesh&&window.__CPM_G99DIAG){const _cm=meshOf(e.cast.ricevente);const _l=e.ult99||(e.ult99=[]);const _ix=idxOf(passTargetMesh);if(!_l.length||_l[_l.length-1].i!==_ix)_l.push({i:_ix,t:String(P.hlType||''),a:String(actType||''),post:String(hlPostArcType||''),o2:!!P.hlOneTwo,rew:String(P.hlReward||''),r99:sr.current._r99?[sr.current._r99.k===P.hlSitKey,sr.current._r99.i]:null,cm:_cm?[+(_cm.position.x).toFixed(1),+(_cm.position.z).toFixed(1)]:null,b:ball?[+ball.position.x.toFixed(1),+ball.position.z.toFixed(1)]:null,h:[+hero.position.x.toFixed(1),+hero.position.z.toFixed(1)],def:!!P.hlDef});}/* [giro 99] diagnosi solo sonde: chi e' servito, in che ramo, dov'era il nominato *//* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
           if(oppActType&&/^gk_/.test(oppActType))rec('portiere',oppMesh,e.cast.portiere);
           if(oppActType&&/^opp_/.test(oppActType))rec('difensore',oppMesh,e.cast.difensore);
           const _mf=sr.current._mateFx;if(_mf&&_mf.name==='tackle')rec('difensore',_mf.mesh,e.cast.difensore);}
@@ -5309,7 +5309,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                7.475: mai all'indietro) ed entro 40u, e' lui. Altrimenti resta la scelta geometrica (contata nel testimone). */
             if(_fwd&&!(typeof window!=='undefined'&&window.__CPM_NO_B4RIC)){try{const _C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const _ri=_C&&_C.ricevente?_C.ricevente.i:null;
               const _pm=(_ri!=null&&_ri!==21&&sr.current.players[_ri])?sr.current.players[_ri].mesh:null;
-              const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40;
+              const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&(Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40||(sr.current._r99&&sr.current._r99.k===P.hlSitKey&&sr.current._r99.i===_ri&&!(typeof window!=='undefined'&&window.__CPM_NO_G99RIC)));/* [giro 99] il nominato portato sul punto di ricezione si serve sempre se e' davanti alla palla (anche lungo) */
               if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
               if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
             }catch(_eB4r){}}
@@ -7178,8 +7178,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const dd=(C&&C.tipo31==='difesa'&&C.dEroe31!=null&&isFinite(+C.dEroe31))?clamp(+C.dEroe31,1.8,3):2.2;
             S=sr.current._c31={k:P.hlSitKey,i:ci,d:dd};}
           if(S.i<0)return null;return {i:S.i,x:clamp(hx+S.d,2,98),y:clamp(hy,3,97)};}catch(_e){return null;}})();
+        /* [giro 99 — IL COMPAGNO NOMINATO E' QUELLO CHE RICEVE. Rosso __CPM_NO_G99RIC] MISURATO (assist-nome-98, giro 98): il 3D serviva il
+           ricevente del cast solo 5 volte su 12 — il ramo del passaggio lo usa solo se e' davanti alla palla ed entro 40u, e il nominato
+           stava spesso dietro o lontano (slot di formazione). Ora nelle scene d'attacco il ricevente del cast ha un punto di ricezione
+           credibile DAVANTI all'eroe (12u avanti, 9u verso il centro; in area piu' largo), preso allo snap d'apertura (stacco nero: nessun
+           teletrasporto visibile) e poi tenuto col moto normale (animOne, velocita' limitata). */
+        const _r99=(function(){try{if((typeof window!=='undefined'&&window.__CPM_NO_G99RIC)||P.hlDef||!/^hl_/.test(P.matchPhase||''))return null;
+          const hx=+P.playerX,hy=+P.playerY;if(!isFinite(hx)||!isFinite(hy))return null;const ap=P.allPlayers||[];
+          let S=sr.current._r99;if(!S||S.k!==P.hlSitKey){const C=P.castBrain&&P.castBrain.current;let ci=-1;
+            if(C&&C.ricevente&&C.ricevente.i!=null&&C.ricevente.i!==21){const q=ap[C.ricevente.i];if(q&&q.team==='home'&&!q.gk)ci=C.ricevente.i;}
+            const sg=hy<50?1:-1;S=sr.current._r99={k:P.hlSitKey,i:ci,x:clamp(hx+(hx>80?6:12),4,93),y:clamp(hy+sg*(hx>80?14:9),8,92)};}
+          return S.i<0?null:S;}catch(_e){return null;}})();
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[(_sw219&&_sw219[i]!=null)?_sw219[i]:i],pp=_players[i];if(!t||!pp)continue;/* [7.2.0] durante la premiazione il movimento off-ball è guidato dal blocco ceremony (giro/curva/podio) */
-          const _pt31=(_c31&&_c31.i===i)?_c31:null;
+          const _pt31=(_c31&&_c31.i===i)?_c31:((_r99&&_r99.i===i)?_r99:null);/* [giro 99] il ricevente nominato sul suo punto di ricezione, stesso canale del portatore difensivo */
           // FIX passaggio: il compagno destinatario/ricevente NON si sposta — resta fermo ad accogliere la palla (ricezione leggibile)
           if(pp.mesh===passTargetMesh||(pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0)||(pp.mesh._failRunT!=null&&pp.mesh._failRunT>=0)||pp.mesh._celT371===1||pp.mesh._carry526!=null||(sr.current._pkCol415&&pp.mesh===sr.current._pkCol415.m))continue;/* [7.618.0] anche il RACCOGLITORE e' fuori dal driver di formazione: senza questo, il driver lo tirava allo slot ogni frame e il pallone vagante restava solo (misurato: driver del raccoglitore vivo 28 frame, avversario piu' vicino fermo a 7-8u) — decima istanza di «piu' autorita' sulla stessa grandezza» *//* [7.523.0 PORTATORE] chi conduce/riceve e' fuori dal driver di formazione *//* [7.371.0] chi sta correndo a festeggiare non viene riportato in posizione dall'AI off-ball: due driver sullo stesso mesh = il difetto del 5.43.13 */
           if(sr.current._adv773&&sr.current._adv773.mesh===pp.mesh&&!(typeof window!=='undefined'&&window.__CPM_NO_REPARTO90))continue;/* [7.999.89+ PO-132 #134 codice 006/011] MISURATO (sonda _reparto90, tempo reale): l'attaccante che porta palla prima del gol subito (7.773) era guidato ANCHE da questo driver di formazione, che lo riportava al suo posto a ogni fotogramma — con la palla ai piedi restava fermo a x 21,8, oppure non raggiungeva mai il pallone a 9,6u. Pallone fermo 1,5 s, reparto fermo con lui, poi tiro da lontano. Mentre avanza, il corpo e' solo dell'avanzata. Rosso __CPM_NO_REPARTO90. */
