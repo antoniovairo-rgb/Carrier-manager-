@@ -7381,7 +7381,7 @@ const getThisWeekMatchday=()=>{
         const ico={width:44,height:44,borderRadius:RAD.md,background:V2.sup,border:"1px solid "+V2.bordo,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0,flexShrink:0,color:V2.testo};
         return(
         <header data-cpm="testata-v2" style={{display:"flex",alignItems:"center",gap:10,padding:"2px 0 4px",marginBottom:_sb(9)}}>
-          <div style={{width:44,height:44,borderRadius:RAD.md,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{(()=>{try{return <TeamBadge team={me} size={34}/>;}catch(_e){return null;}})()}</div>
+          <div style={{width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{(()=>{try{return <TeamBadge team={me} size={42}/>;}catch(_e){return null;}})()}</div>{/* niente piastrella chiara: la sigla bianca dello stemma veniva misurata (griglia-mobile) sul chiaro della piastrella, 1:1 */}
           <div style={{display:"flex",flexDirection:"column",gap:2,flex:"1 1 0",minWidth:0}}>
             <span style={{...fsTV(FS.subhead,FW.bold),letterSpacing:"0.06em",textTransform:"uppercase",color:V2.testo,overflowWrap:"anywhere",lineHeight:1.1}}>{me.n||me.name||"\u2013"}</span>
             <span className="cpm-num" style={{fontSize:FS.caption,color:V2.sec,lineHeight:1.3}}>
@@ -9651,7 +9651,7 @@ const getThisWeekMatchday=()=>{
               <section data-cpm="club-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:cc,color:ink}}>
                 <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
                 <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
-                  <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.testo,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
+                  <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
                     <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{club.n||club.name}</span>
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>

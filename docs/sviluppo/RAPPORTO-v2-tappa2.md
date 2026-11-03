@@ -100,7 +100,28 @@ Nazionale», «prima il torneo della Nazionale», o il motivo del tasto principa
 - `lib/banco-v2.mjs`: il banco di `grafica-v2` estratto per le sonde nuove (con `prep` per ritoccare il salvataggio).
 - `foto-v2-tappa2.mjs`: strumento delle foto (non guardiano).
 
-**Esistenti, uno alla volta** (vedi tabella in fondo, aggiornata a fine giro).
+**Esistenti, uno alla volta**
+
+| guardiano | esito | note |
+|---|---|---|
+| `design-system` | **verde** | nessun raggio a mano, nessun corpo sotto 11 px |
+| `griglia-mobile` (360-430, 13 schermate) | **verde**, contrasto sotto soglia **0** ovunque | primo giro: 1 nodo su ogni scheda di carriera (2 nel Club) = la sigla SVG dello stemma misurata sulla piastrella chiara (1:1) → stemma della testata senza piastrella, piastrella scura nella fascia del Club (correzione del gioco). Artefatti `docs/collaudo-grafico/g0` riportati a com'erano |
+| `spazio-296` | **verde** + rosso | 44 schermate, distanze 6-10 px |
+| `schermate-97` | **verde** + rosso | D1 · D16 · D17 · D14 |
+| `pc-tablet-292` | **verde** + rosso al 2° giro | 1° giro rosso solo sul punto 5 («con Tab il fuoco non arriva a una scelta della punizione», partita, `src/15` non toccato): stesso punto instabile già segnalato in tappa 1 → **da riparare** (instabile due volte) |
+| `barra-360-72` | **verde** + rosso | rosso aggiornato alla barra di prima intera (vedi sotto) |
+| `home-066` | **verde** | 127 riquadri in 7 situazioni, 0 fuori standard (censimento aggiornato) |
+| `classifica-102` | **verde** | |
+| `trainer-288` | **verde** + rosso | |
+| `procuratore-253` | **verde** + rosso | |
+| `piccoli-85` | **verde** + rosso | |
+| `stile-unico-75` | **verde** + rosso | |
+| `crea-home-295` | **verde** + rosso | |
+| `impulsi-289` | **verde** + rosso | |
+| `acquisti-281` | **verde** + rosso | |
+
+Non lanciati: catena intera, gate 14/14, guardiani di partita (`src/12/14/15` non toccati), `intervista-231`, `finestra-230`,
+`popup-224`, `rinnovo-270`, `livello-79` (finestre del punto 5, non toccate in questa tappa).
 
 Sonde adattate all'icona Opzioni (non soglie): `griglia-mobile` e `spazio-296` (la funzione `premi` legge anche
 `aria-label`), `pc-tablet-292` (cerca Opzioni anche nella testata).

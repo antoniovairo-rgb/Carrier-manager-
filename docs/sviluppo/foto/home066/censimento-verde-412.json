@@ -7,9 +7,19 @@
    "nome": "u18-inizio",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CIO FC CIOCIARO PRIMAVERA Primavera 2 · St. 1 · ",
+     "h": 99,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · PRIMAVERA 2 · 1ª GIORNATA SETT. 1 · T",
-     "h": 325,
+     "h": 383,
      "raggio": "20px",
      "fondo": "rgb(245, 158, 11)",
      "viol": [],
@@ -28,8 +38,8 @@
     },
     {
      "i": 3,
-     "titolo": "66 ATT Probe Home Attaccante · 17 anni · Primave",
-     "h": 114,
+     "titolo": "66 ATT Probe Home Italia · Attaccante · 17 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -84,9 +94,19 @@
    "nome": "pro-inizio",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 2/38 ",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · LIGA IBÉRICA · 2ª GIORNATA SETT. 2 · ",
-     "h": 305,
+     "h": 375,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -105,8 +125,8 @@
     },
     {
      "i": 3,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -241,9 +261,19 @@
    "nome": "pro-meta",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 19/38",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · COPPA NAZIONALE · FINALE SETT. 19 · C",
-     "h": 274,
+     "h": 343,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -262,8 +292,8 @@
     },
     {
      "i": 3,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -438,9 +468,19 @@
    "nome": "pro-fine",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 36/38",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · LIGA IBÉRICA · 32ª GIORNATA SETT. 36 ",
-     "h": 305,
+     "h": 375,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -459,8 +499,8 @@
     },
     {
      "i": 3,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -635,9 +675,19 @@
    "nome": "pro-infortunato",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 12/38",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · LIGA IBÉRICA · 11ª GIORNATA SETT. 12 ",
-     "h": 331,
+     "h": 389,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -656,8 +706,8 @@
     },
     {
      "i": 3,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -842,9 +892,19 @@
      "fisarmonica": false
     },
     {
+     "i": 1,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 23/38",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 2,
      "titolo": "PROSSIMA · LIGA IBÉRICA · 21ª GIORNATA SETT. 23 ",
-     "h": 305,
+     "h": 375,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -863,8 +923,8 @@
     },
     {
      "i": 4,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -1049,9 +1109,19 @@
    "nome": "pro-record",
    "riquadri": [
     {
+     "i": 0,
+     "titolo": "CFM CF MADRID Liga Ibérica · St. 4 · Sett. 30/38",
+     "h": 78,
+     "raggio": "0px",
+     "fondo": "rgba(0, 0, 0, 0)",
+     "viol": [],
+     "figurine": 0,
+     "fisarmonica": false
+    },
+    {
      "i": 1,
      "titolo": "PROSSIMA · LIGA IBÉRICA · 27ª GIORNATA SETT. 30 ",
-     "h": 332,
+     "h": 402,
      "raggio": "20px",
      "fondo": "rgb(255, 255, 255)",
      "viol": [],
@@ -1070,8 +1140,8 @@
     },
     {
      "i": 3,
-     "titolo": "80 ATT Probe Home Attaccante · 25 anni · in rota",
-     "h": 114,
+     "titolo": "80 ATT Probe Home Italia · Attaccante · 25 anni ",
+     "h": 197,
      "raggio": "16px",
      "fondo": "rgb(26, 30, 39)",
      "viol": [],
@@ -1256,7 +1326,7 @@
  "errori": [],
  "esito": "VERDE",
  "totali": {
-  "riquadri": 120,
+  "riquadri": 127,
   "fuoriStandard": 0,
   "scenari": 7,
   "sforamentoPagina": []
