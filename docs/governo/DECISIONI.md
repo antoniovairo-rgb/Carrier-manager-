@@ -885,3 +885,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Tronco 2 (catena/178-t2, d32a03fd): 40 verdi, 1 rosso: esiti-218 — scena seme 2021 «Tiro rasoterra»: il motore dice tiro fuori, il riquadro dice «Il difensore si oppone» (contraddizione PO-218). Verde nelle catene 175–177: regressione probabile dei giri 95–100. Difetto di verità del racconto → blocca il rilascio.
 - Tronchi 1 e 3 ancora in corso alle 21:30 UTC (t1 ripete highlight-95; t3 all'ultimo passo, difesa-220-scena).
 - Decisione tecnica (sessione madre): giro 101 su lavoro/178, ramo sviluppo/giro101-esiti (session_01QEYiaCs1jCcSsu4V67AtDS): misura, correzione con interruttore __CPM_NO_G101, guardiani dell'highlight verdi. Poi rigioco mirato dei passi toccati e rilascio.
+
+### 03/11 notte (22:20 UTC) — tronco 3 con un rosso nuovo, giro 102 avviato
+- Tronco 3 (catena/178-t3, a3e2351d): 40 verdi su 41 del tronco, 1 rosso: esiti-241 — «Dribbling provocatorio, il fallo c'è!» raccontato come occasione/assist («Palla d'oro!») senza fallo. Verde nella catena 176: regressione probabile dei giri 95–100, stessa famiglia di esiti-218.
+- Decisione tecnica (sessione madre): giro 102 in parallelo al 101, su lavoro/178, ramo sviluppo/giro102-esiti241 (session_01QEYiaCQSZ1QQHBxCDeG7cD), interruttore __CPM_NO_G102. Tronco 1 ancora in corso (highlight-95 al 3° tentativo).
