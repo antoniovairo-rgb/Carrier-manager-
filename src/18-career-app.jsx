@@ -1657,6 +1657,13 @@ const getThisWeekMatchday=()=>{
   // applicabile: U18/svincolato) così può essere spread-ato direttamente in un return di setPlayer; la
   // logica è IDENTICA al blocco storico (agente 10% · trainer 5% · nutrizione 4% · sospensione se fondi<0).
   // Va applicato UNA volta per settimana avanzata (i chiamanti lo fanno solo sul ramo che incrementa week).
+  /* [PO-303 · decisione PO «Sì, dalla 179 in poi»] STORICO MENSILE DEL PATRIMONIO. Un «mese» e' un blocco di 4 settimane di gioco: alla fine
+     delle settimane 4, 8, 12... il chokepoint dell'economia (lo stesso per i tre path della settimana) registra {s:stagione,w:settimana,v:patrimonio}.
+     Idempotente (un punto per stagione+settimana), tetto 36 punti. Nessun dato inventato: la serie parte dal primo mese vissuto dopo
+     l'aggiornamento. Rosso __CPM_NO_PATR303 = nessun punto registrato. */
+  const patrimonioPunto303=(p,bank)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_PATR303)return {};const w=p.week||1;if(w%4!==0)return {};
+    const s=p.season||1,a=Array.isArray(p.patrimonio303)?p.patrimonio303:[];if(a.some(x=>x&&x.s===s&&x.w===w))return {};
+    return {patrimonio303:[...a,{s,w,v:Math.round(bank)}].slice(-36)};}catch(_e){return {};}};
   const weeklyEconomyFields=(p)=>{
     if((p.proStatus||"u18")==="u18"||p.contractExpired)return {};
     const wg=(p.contract?.wage||0);
@@ -1691,7 +1698,7 @@ const getThisWeekMatchday=()=>{
     const _ah=agentHintCheck({...p,bankBalance:Math.round(bb)});
     const _ahF=_ah.due?{agentHint:{...(p.agentHint||{}),due:_ah.due,fee:_ah.fee,n:((p.agentHint&&+p.agentHint.n)||0)+1,s:p.season||1,w:p.week||1,
       spSeen:(p.agentHint&&p.agentHint.spSeen)||(_ah.due==="sponsor")}}:{};
-    return {bankBalance:Math.round(bb),perkTrainer:pt,perkNutrition:pn,...(pf!==p.perkFisio?{perkFisio:pf}:{}),...(pm!==p.perkMental?{perkMental:pm}:{}),...(_acP24?{academy24:_acP24}:{}),..._winRst,..._ahF,..._ciF,..._ivF,..._rdF};
+    return {bankBalance:Math.round(bb),...patrimonioPunto303(p,bb),perkTrainer:pt,perkNutrition:pn,...(pf!==p.perkFisio?{perkFisio:pf}:{}),...(pm!==p.perkMental?{perkMental:pm}:{}),...(_acP24?{academy24:_acP24}:{}),..._winRst,..._ahF,..._ciF,..._ivF,..._rdF};
   };
   // [6.82.0] STORICO NAZIONALE (collaudo PO «non c'è lo storico delle partite giocate in nazionale»):
   //   ogni presenza lascia una riga PERSISTENTE in p.natHistory (cap 60 — matchHistory è stagionale e si
@@ -11017,6 +11024,19 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.caption,color:TH.muted}}>Patrimonio:</div>
                   <div className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:TH.text,lineHeight:1.05,...(TH.v2?fsTV(FS.displayLg,FW.bold):{})}}>{_eur49(player.bankBalance||0,2)}</div>
                 </div>
+                {(()=>{/* [PO-303 · V2UfficioPC] IL PATRIMONIO NEL TEMPO: barre degli ultimi 12 mesi registrati (player.patrimonio303, un punto ogni
+                   4 settimane), l'ultima in verde; sopra, la differenza con il mese prima. Solo dati veri: con meno di due mesi lo dice. Rosso __CPM_NO_PATR303 */
+                  if(typeof window!=='undefined'&&window.__CPM_NO_PATR303)return null;
+                  const _ser=(Array.isArray(player.patrimonio303)?player.patrimonio303:[]).filter(x=>x&&typeof x.v==="number").slice(-12);
+                  if(_ser.length<2)return(<div data-cpm="patrimonio303" data-punti={_ser.length} style={{marginTop:SP.sm,fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{_ser.length?"Primo mese registrato: il grafico del patrimonio si riempie un punto ogni 4 settimane.":"Lo storico del patrimonio parte da qui: un punto ogni 4 settimane di gioco."}</div>);
+                  const _vs=_ser.map(x=>x.v),_mn=Math.min(..._vs),_mx=Math.max(..._vs),_d=_vs[_vs.length-1]-_vs[_vs.length-2];
+                  return(<div data-cpm="patrimonio303" data-punti={_ser.length} style={{marginTop:SP.sm}}>
+                    <div data-cpm="patrimonio303-delta" style={{fontSize:FS.small,fontWeight:FW.bold,color:_d>=0?TH.success:TH.danger,marginBottom:SP.sm}}>{(_d>=0?"▲ ":"▼ ")+_eur49(Math.abs(_d),2)+" nell'ultimo mese"}</div>
+                    <div role="img" aria-label={"Patrimonio negli ultimi "+_ser.length+" mesi registrati"} style={{display:"flex",alignItems:"flex-end",gap:6,height:96}}>
+                      {_ser.map((x,i)=>(<div key={x.s+"-"+x.w} data-cpm="patrimonio303-barra" title={"Stagione "+x.s+" · sett. "+x.w+": "+_eur49(x.v,2)} style={{flex:"1 1 0",minWidth:0,height:Math.round(12+(_mx>_mn?(x.v-_mn)/(_mx-_mn):1)*84),borderRadius:"4px 4px 0 0",background:i===_ser.length-1?(TH.v2?V2.verde:TH.success):(TH.v2?"#3a4152":TH.track)}}/>))}
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",marginTop:4,fontSize:FS.caption,color:TH.muted}}><span>St. {_ser[0].s} · sett. {_ser[0].w}</span><span>St. {_ser[_ser.length-1].s} · sett. {_ser[_ser.length-1].w}</span></div>
+                  </div>);})()}
                 {/* [7.999.49 parte A] la commissione del procuratore si legge in un punto solo: nella scheda Procuratore */}
               </Card></Fisarmonica>
               {/* [7.989.0 Patrimonio F1] staff privato a tre livelli: − / + cambia il livello, il costo e l'effetto si leggono sulla riga */}

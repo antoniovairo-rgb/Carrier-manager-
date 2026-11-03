@@ -122,8 +122,8 @@ async function giro(sigla, rosso, completo) {
       if (!f.touch) { await page.keyboard.press('2'); await sleep(2500); mis.rigTasto = await faseDi(page); }
       await forza(page, 13, true); await attendiFase(page, /hl_choose/); await sleep(1500); mis.punSt = await page.evaluate(IN_PAGINA.stato);
       if (!f.touch) {
-        let fuoco = false; for (let i = 0; i < 20 && !fuoco; i++) { await page.keyboard.press('Tab'); fuoco = await page.evaluate(() => { const a = document.activeElement; return !!(a && a.getAttribute && a.getAttribute('data-sp292') != null); }); }
-        mis.punFuoco = fuoco; if (fuoco) { await page.keyboard.press('Enter'); await sleep(2500); mis.punTasto = await faseDi(page); }
+        let fuoco = false; const _seq = []; for (let i = 0; i < 20 && !fuoco; i++) { await page.keyboard.press('Tab'); const _q = await page.evaluate(() => { const a = document.activeElement; return { sp: !!(a && a.getAttribute && a.getAttribute('data-sp292') != null), t: a ? a.tagName + ':' + ((a.getAttribute && a.getAttribute('aria-label')) || a.textContent || '').trim().slice(0, 14) : '-' }; }); fuoco = _q.sp; _seq.push(_q.t); }
+        mis.punFuoco = fuoco; if (!fuoco) mis.punDiag = await page.evaluate(() => ({ fase: window.__CPM_PHASE(), sp: document.querySelectorAll('[data-sp292]').length, pausa: [...document.querySelectorAll('button')].some(b => /Riprendi/.test(b.title || '')) })).then(d => ({ ...d, seq: [...new Set(_seq)].join(' | ') })); if (fuoco) { await page.keyboard.press('Enter'); await sleep(2500); mis.punTasto = await faseDi(page); }
       }
       /* 1b) il 3D forzato sul rigore: eroe e porta a camera ferma */
       await forza(page, 5, false); mis.rig3d = await assesta(page, 60000);
@@ -162,7 +162,7 @@ function giudica(sigla, r) {
   if (pc && m.tab) { if (!/Ufficio/i.test(m.tab.u || '')) ko.push(`9: il tasto U non apre l'Ufficio (scheda attiva: ${m.tab.u})`); if (!/Club/i.test(m.tab.l || '')) ko.push(`9: il tasto L non apre il Club (scheda attiva: ${m.tab.l})`); if (!/Ufficio/i.test(m.tab.frecce || '')) ko.push(`9: le frecce non arrivano all'Ufficio (scheda attiva: ${m.tab.frecce})`); }
   if (pc && m.tasti2 !== undefined) { if (m.tasti2 === 'hl_choose') ko.push('5: il tasto 2 non sceglie nella scelta numerata'); }
   if (pc && m.rigTasto !== undefined) { if (m.rigTasto === 'hl_choose') ko.push('5: il tasto 2 non sceglie sul rigore'); }
-  if (pc && m.punFuoco !== undefined) { if (!m.punFuoco) ko.push('5: con Tab il fuoco non arriva a una scelta della punizione'); else if (m.punTasto === 'hl_choose') ko.push('5: Invio sulla punizione non sceglie'); }
+  if (pc && m.punFuoco !== undefined) { if (!m.punFuoco) ko.push('5: con Tab il fuoco non arriva a una scelta della punizione' + (m.punDiag ? ' ' + JSON.stringify(m.punDiag) : '')); else if (m.punTasto === 'hl_choose') ko.push('5: Invio sulla punizione non sceglie'); }
   return ko;
 }
 const TUTTO = { ok: true };
