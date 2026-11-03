@@ -876,3 +876,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 03/11 sera — catena 178 rilanciata
 - Controllo delle 16:24 UTC: i 3 tronchi su Haiku si sono fermati senza finire né spingere nulla (tronco 1 fermo al passo 2/41 con carriera3-94 rosso, da verificare; tronco 2 a metà; tronco 3 fermo su domande). Decisione tecnica (sessione madre): archiviati e rilanciati su Sonnet con attesa in primo piano fino a fine corsa e divieto di domande. Sessioni: session_01QEYiaCVuUbFcC1y6zdctsf, session_01QEYia8JvZP4hXVTu9h5NYK, session_01QEYiaCVJWgm5uAqp98o8t3. Costo dei tre tentativi Haiku ≈ 1,1 $.
+
+### 03/11 sera — «Riprendi»: tappa 3 V2 avviata in parallelo alla catena 178
+- Alle 20:00 UTC i 3 tronchi Sonnet della catena 178 sono ancora in corso (nessun ramo spinto). Il contenuto della 178 è chiuso: la catena verifica soltanto.
+- Decisione tecnica (sessione madre): lavoro/178 (4a4ff494) unito in lavoro/179 → d7bb7a90 (conflitto ci-runner per unione delle liste); tappa 3 V2 avviata subito su sviluppo/v2-tappa3 (session_01QEYiaCFkRrmynZqqeQVP6Z): partita 2D, highlight, post partita, ingresso/festa, coppe, galà, Nazionale, Creazione, PO-303 patrimonio (migrazione additiva), pc-tablet-292 punto 5. Se la catena 178 richiede riparazioni, si riuniscono in 179 a valle.
