@@ -11,14 +11,17 @@
    Parte C — 3D del TIRO MURATO (tipo forzato «blocked», gi0/0 tiro e gi7/0 testa): un difensore deve opporsi (opp_tackle sul punto del
      muro). MISURATO prima: nessun gesto su 2/2.
    VERDE: A1 0 su >=2, A2 0 su >=5, A3 0, B 0 contraddizioni su 3 scene, C 2/2. ROSSO: A1, A2, A3 tutte >=1, B >=2, C 0/2.
+   Parte D [giro 102] — braccio rosso __CPM_NO_G102 (la conversione del giro 100 D3 «consegna → incornata sul portiere» torna su ogni
+     consegna in area): gi14/gi16 riusciti devono mostrare il portiere che si tuffa su una consegna (>=1 su 2). Nel verde: 0.
+     MISURATO sul build 7.999.178 (catena notte 178): verde B 2/3 contraddizioni (gi14, gi16); dopo la correzione 0/3.
    Uso: node esiti-241.mjs */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 import { contraddizioni } from './lib/esiti-241.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const esito = {};
 const SCENE = [[14, 0, 'success'], [16, 0, 'success'], [150, 0, 'success'], [0, 0, 'fail', 'blocked'], [7, 0, 'fail', 'blocked']];
-for (const rosso of [false, true]) {
+for (const rosso of [false, true, 'g102']) {
   const R = {};
-  { const page = await b.newPage(); await installCdnRoutes(page);
+  if (rosso !== 'g102') { const page = await b.newPage(); await installCdnRoutes(page);
     await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_ESITI241 = 1; }, rosso);
     await openMatch(page, port, { skipLoadAll: true, name: 'Esiti241' });
     await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7, policy: 'seeded', tickMs: 300 }));
@@ -37,8 +40,9 @@ for (const rosso of [false, true]) {
     await page.close(); }
   R.b = [];
   for (const [gi, k, OUTC, KIND] of SCENE) {
+    if (rosso === 'g102' && !(gi === 14 || gi === 16)) continue;
     const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-    await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_V241 = {}; if (r) window.__CPM_NO_ESITI241 = 1; }, rosso);
+    await page.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_V241 = {}; if (r === true) window.__CPM_NO_ESITI241 = 1; if (r === 'g102') window.__CPM_NO_G102 = 1; }, rosso);
     await openMatch(page, port, { skipLoadAll: true, name: 'Esiti241' });
     await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 7, policy: 'seeded', tickMs: 300 }));
     await page.waitForFunction(() => window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ() && typeof window.__CPM_FORCE_SIT === 'function', null, { timeout: 90000 }).catch(() => {});
@@ -57,7 +61,8 @@ for (const rosso of [false, true]) {
     else { r.contr = contraddizioni(r); R.b.push(r); }
     await page.close();
   }
-  esito[rosso ? 'rosso' : 'verde'] = R;
+  esito[rosso === 'g102' ? 'g102' : rosso ? 'rosso' : 'verde'] = R;
+  if (rosso === 'g102') { console.log(`ROSSO G102 (__CPM_NO_G102) B contraddizioni ${R.b.filter(x => x.contr.length).length}/${R.b.length}`); R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}»${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`)); continue; }
   console.log(`C muro con difensore ${(R.c || []).filter(x => x.muro).length}/${(R.c || []).length}`);
   console.log(`${rosso ? 'ROSSO' : 'VERDE'} A1 fallo cercato ${R.a1}/${R.nfc} · A2 dribbling col lessico del passaggio ${R.a2}/${R.ndr} · A3 motore ${R.a3 ? 'tiro' : 'contrasto'} (${R.a3ev}) · B contraddizioni ${R.b.filter(x => x.contr.length).length}/${R.b.length}`);
   R.b.forEach(x => console.log(`  gi${x.gi} «${x.label}» ${x.outKey}/${x.outKind} «${x.overlay}» «${x.text}»${x.contr.length ? ' ❌ ' + x.contr.join(' | ') : ''}`));
@@ -72,5 +77,6 @@ if (!(Ro.a1 >= 1 && Ro.a2 >= 1 && Ro.a3 >= 1)) g.push(`rosso A: il difetto non s
 if (!(Ro.b.filter(x => x.contr.length).length >= 2)) g.push('rosso B: ' + Ro.b.filter(x => x.contr.length).length + ' scene contraddittorie (attese >= 2)');
 if (!((V.c || []).length === 2 && V.c.every(x => x.muro))) g.push('verde C: tiro/testa murati senza difensore nel 3D ' + (V.c || []).filter(x => !x.muro).map(x => 'gi' + x.gi).join(','));
 if (!((Ro.c || []).filter(x => x.muro).length === 0)) g.push('rosso C: il difensore c\'e\' anche spento');
+if (!(esito.g102.b.length === 2 && esito.g102.b.filter(x => x.contr.length).length >= 1)) g.push('rosso G102: ' + esito.g102.b.filter(x => x.contr.length).length + ' consegne in area col portiere in tuffo su ' + esito.g102.b.length + ' (attese >= 1)');
 if (g.length) { console.log('❌ esiti-241'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ esiti-241 verde (riquadro, motore e 3D concordi su chance e fallo cercato) e il rosso si vede');
