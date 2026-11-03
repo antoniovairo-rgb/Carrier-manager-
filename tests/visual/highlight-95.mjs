@@ -41,6 +41,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   if (raw['cpm-v3']) { ls = { ...raw }; const sv = JSON.parse(ls['cpm-v3']); (sv.player || sv).name += ' ' + sd; ls['cpm-v3'] = JSON.stringify(sv); delete ls['cpm-v3-riserva']; delete ls['cpm-match-resume']; }
   else { const sv = JSON.parse(JSON.stringify(raw)); (sv.player || sv).name += ' ' + sd; ls = { 'cpm-v3': JSON.stringify(sv) }; }
   ls['cpm-match-speed'] = '2';
+  if (process.env.CPM_FLAG) await page.addInitScript(f => { f.split(',').forEach(k => { if (k) window[k] = 1; }); }, process.env.CPM_FLAG);/* [giro 99] interruttori extra per isolare la causa di un difetto (es. CPM_FLAG=__CPM_NO_G99RIC) */
   await page.addInitScript(([s, r, rw, se]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (rw) window.__CPM_REALWAIT = 1; if (r) { window.__CPM_NO_G95D1 = 1; window.__CPM_NO_G95D2 = 1; window.__CPM_NO_G95D3 = 1; window.__CPM_NO_G95D4 = 1; window.__CPM_NO_ASSIST298 = 1; } if (se) window.__CPM_G95_SENZAESITO = 1; if (!sessionStorage.getItem('__g95')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__g95', '1'); } }, [ls, rosso, REALWAIT, senza]);
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
