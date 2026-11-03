@@ -1459,6 +1459,12 @@ const getThisWeekMatchday=()=>{
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto *//* [7.287.0] la probe euro-transfer deve poter eseguire il VERO acceptTransfer: si posa l'offerta… [giro 77: era una seconda chiave `setOffer` identica, tolta] */
+      apriFine302:(tipo)=>{try{/* [PO-302 tappa 2b] solo sonde: apre fine stagione (dati dalla classifica corrente) o fine carriera (stesso doRetire del gioco) */
+        if(tipo==="carriera"){doRetire();return true;}
+        const fs=[...(player.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||((b.gf||0)-(b.ga||0))-((a.gf||0)-(a.ga||0)));const ci=player.club&&player.club.id;
+        const pp=Math.max(0,fs.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club&&player.club.n)));
+        setSeasonEndData({season:player.season,club:player.club,finalStandings:fs,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion:fs[0]||null,playerPos:pp,isChampion:pp===0,awards:(player.lastAwards&&player.lastAwards.aw)||null,seasonObjectives:player.seasonObjectives||[],rival:null,euro:player.euro||null,leagueOverrides:player.leagueOverrides||{}});
+        setScreen("seasonEnd");return true;}catch(e){return "error:"+(e&&e.message);}},
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
       apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
@@ -6635,7 +6641,7 @@ const getThisWeekMatchday=()=>{
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
               <Figurina tipo={giornalistaDonna(interviewModal.paper)?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":interviewModal.matchCtx==="presentazione"?"🎙️ Conferenza stampa":"Intervista"}</div>
+                <div data-cpm="iv-occhiello-v2" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.goldText,textTransform:"uppercase",letterSpacing:"0.16em"}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":interviewModal.matchCtx==="presentazione"?"🎙️ Conferenza stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
@@ -6679,8 +6685,8 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={chiudiIntervista24} style={{padding:"11px"}}>Chiudi</Btn>
               </div>);})():(<>
             {/* Question */}
-            <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:_sb(12)/* [giro 97 PO-299 D18] 12 px fra domanda e «Rispondi tu». Rosso __CPM_NO_SPAZIO296 */,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
-              <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
+            <div data-cpm="iv-domanda-v2" style={{padding:"2px 0",marginBottom:_sb(12)/* [giro 97 PO-299 D18] 12 px fra domanda e «Rispondi tu». Rosso __CPM_NO_SPAZIO296 */}}>{/* [PO-302 tappa 2b · V2Intervista] la domanda grande in carattere TV, senza riquadro */}
+              <div style={{...fsTV(FS.h,FW.bold),lineHeight:1.15,color:TH.text,textWrap:"balance",overflowWrap:"anywhere"}}>
                 «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club")}»
               </div>
             </div>
@@ -6697,18 +6703,19 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(interviewModal.q?.a||[]).map((ans,i)=>{
                 // [7.8.11] etichette dal dizionario condiviso IV_TONE_LBL/COL (bottone ⟺ feedback coerenti)
-                const toneColor=IV_TONE_COL[ans.tone]||"#2563eb";
+                const toneColor=(TH.v2?IV_TONE_V2:IV_TONE_COL)[ans.tone]||(TH.v2?V2.blu:"#2563eb");/* [PO-302 tappa 2b] sul fondo notte i toni della tavola (umile verde, ambizioso oro, diplomatico blu): i colori di prima erano 3:1 */
                 const toneLabel=IV_TONE_LBL[ans.tone]||ans.tone;
                 // [6.5.4 direttiva PO] niente più suggerimento «Chimica ±N» nelle scelte: l'esito NON deve
                 //   condizionare la risposta (decisione di ruolo, non di ottimizzazione). Solo il TONO resta visibile.
                 return(
-                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ data-cpm="risposta24" onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
-                    onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
-                    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
-                      <span style={{fontSize:FS.caption,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:RAD.xl,background:`${toneColor}15`}}>{toneLabel}</span>
-                    </div>
-                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>«{(ans.txt||"").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}»</div>
+                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ data-cpm="risposta24" onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.lg,padding:"10px 14px",minHeight:60,cursor:"pointer",transition:"all 0.15s",outline:"none",display:"grid",gridTemplateColumns:"4px minmax(0,1fr)",gap:12,alignItems:"stretch",width:"100%",fontFamily:"inherit"}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=toneColor;}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor=TH.cardBorder;}}>
+                    <span aria-hidden="true" style={{borderRadius:2,background:toneColor}}/>{/* [PO-302 tappa 2b · V2Intervista] barra del tono; l'effetto NON si scrive (direttiva 6.5.4: la scelta non va condizionata dall'esito) */}
+                    <span style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:toneColor}}>{toneLabel}</span>
+                    <span style={{fontSize:FS.bodyLg,color:TH.text,lineHeight:1.35}}>«{(ans.txt||"").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}»</span>
+                    </span>
                   </button>
                 );
               })}
@@ -6939,11 +6946,43 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>Ci hai lavorato tutta la carriera. È arrivato il momento.</div>
               </div>
             )}
-            <div style={{textAlign:"center",marginBottom:12}}>
-              <TeamBadge team={transferOffer.club} size={56}/>
-              <div style={{fontSize:FS.subhead,fontWeight:900,color:TH.text,marginTop:8}}>{transferOffer.club.n}</div>
-              <div style={{fontSize:FS.small,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
-            </div>
+            {(()=>{/* [PO-302 tappa 2b · V2Offerta] LA FASCIA DEL CLUB che offre: colore del club con le righe diagonali, stemma su piastrella,
+                nome in carattere TV; inchiostro scelto per contrasto (inkSu945) come la fascia del Club. Stessi dati di prima (nome, nazione, lega). */
+              const _oc=transferOffer.club||{},_cc=_oc.c||"#8e1f33",_ink=inkSu945(_cc);
+              return(<section data-cpm="offerta-v2" style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",background:_cc,color:_ink,marginBottom:_sb(SP.sm)}}>
+                <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
+                <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:16}}>
+                  <div style={{width:64,height:64,borderRadius:RAD.lg,background:V2.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={_oc} size={48}/></div>
+                  <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.16em",textTransform:"uppercase"}}>{transferOffer.isRenewal?"Proposta di rinnovo":"Offerta ufficiale"}</span>
+                    <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_oc.n}</span>
+                    <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{_oc.nat} · {_oc.lg}</span>
+                  </div>
+                </div>
+              </section>);})()}
+            {(()=>{/* [PO-302 tappa 2b · V2Offerta] IL CONFRONTO oggi → nuovo club: stipendio, durata, ruolo (dal minutaggio stimato), prestigio del club.
+                In verde cio' che migliora. Solo i dati che il gioco ha: una riga senza il valore di oggi non si scrive. */
+              const o=transferOffer,ct=player.contract||{},cl=player.club||{};
+              const _min=+o.minutaggio||0,_rNew=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";
+              const _rNow={primavera:"Primavera",riserva:"Riserva",rotazione:"In rotazione",titolare:"Titolare",leader:"Leader"}[player.squadRole||""]||null;
+              const _rv={Primavera:0,Riserva:1,"In rotazione":2,Titolare:3,Leader:4};
+              const rows=[
+                o.wage>0&&ct.wage>0?["Stipendio",_fmtWageY133(ct.wage)+"/anno",_fmtWageY133(o.wage)+"/anno",o.wage>ct.wage]:o.wage>0?["Stipendio","\u2013",_fmtWageY133(o.wage)+"/anno",false]:null,
+                o.duration?["Durata",ct.duration?ct.duration+" st.":"\u2013",o.duration+" st.",!!ct.duration&&o.duration>ct.duration]:null,
+                o.minutaggio!=null&&_rNow?["Ruolo",_rNow,_rNew,(_rv[_rNew]||0)>(_rv[_rNow]||0)]:null,
+                o.club&&o.club.p!=null&&cl.p!=null?["Prestigio",String(cl.p),String(o.club.p),o.club.p>cl.p]:null,
+              ].filter(Boolean);
+              if(!rows.length)return null;
+              return(<section data-cpm="confronto-v2" style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.lg,padding:"6px 14px",marginBottom:_sb(SP.sm)}}>
+                <div style={{display:"grid",gridTemplateColumns:"66px minmax(0,1fr) 14px minmax(0,1fr)",columnGap:10,alignItems:"center",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:TH.muted,padding:"6px 0 2px"}}>
+                  <span/><span style={{textAlign:"right"}}>Oggi</span><span/><span>{(transferOffer.club&&transferOffer.club.a)||"Nuovo"}</span></div>
+                {rows.map(([l,a,b2,meglio],k)=>(<div key={l} style={{display:"grid",gridTemplateColumns:"66px minmax(0,1fr) 14px minmax(0,1fr)",columnGap:10,alignItems:"center",minHeight:40,borderTop:k?"1px solid "+TH.divider:"none"}}>
+                  <span style={{fontSize:FS.small,color:TH.muted}}>{l}</span>
+                  <span className="cpm-num" style={{fontSize:FS.body,color:TH.text,textAlign:"right"}}>{a}</span>
+                  <span aria-hidden="true" style={{color:TH.muted}}>{"\u2192"}</span>
+                  <span className="cpm-num" data-cpm={meglio?"meglio-v2":undefined} style={{fontSize:FS.body,fontWeight:FW.bold,color:meglio?TH.success:TH.text}}>{b2}</span>
+                </div>))}
+              </section>);})()}
             {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
               const _ante212=!(typeof window!=='undefined'&&window.__CPM_NO_ANTE212)&&!(lg&&player.club&&lg===player.club.lg)?(()=>{try{return legaDopoTrasferimento212(player,c,player.leagueOverrides||{});}catch(_e){return null;}})():null;/* [7.999.134 PO-212] la classifica che troverai dopo la firma */
               const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
@@ -6982,16 +7021,15 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{co.desc}</div></div></div>}
                   </div>);})()}
               </div>);}catch(_e){return null;}})()}
-            <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
-              <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type==="prestito con obbligo"?"prestito con obbligo di riscatto":transferOffer.type==="prestito con opzione"?"prestito con diritto di riscatto":transferOffer.type}</div>
+            <Card style={{padding:"12px",marginBottom:_sb(SP.sm)}} shadow={false}>{/* [PO-302 tappa 2b] riquadro neutro: stipendio, durata e prestigio stanno nel confronto qui sopra */}
+              <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>📩 Offerta: {transferOffer.type==="prestito con obbligo"?"prestito con obbligo di riscatto":transferOffer.type==="prestito con opzione"?"prestito con diritto di riscatto":transferOffer.type}</div>
               <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.7}}>
                 {/* [7.999.49 parte A] stipendio, durata e riscatto dell'offerta, se l'oggetto li porta */}
-                {transferOffer.wage>0&&<>Stipendio: <strong>{_fmtWageY133(transferOffer.wage)}/anno</strong>{transferOffer.duration?<> · Durata: <strong>{transferOffer.duration} stagion{transferOffer.duration===1?"e":"i"}</strong></>:null}<br/></>}
                 {transferOffer.buyClause>0&&<>Riscatto: <strong>€{(transferOffer.buyClause/1e6).toLocaleString("it-IT",{maximumFractionDigits:1})} mln</strong>{transferOffer.type==="prestito con obbligo"?` · scatta con almeno ${transferOffer.minMatches||10} presenze`:" · a scelta del club"}<br/></>}
                 Minutaggio stimato: <strong>{transferOffer.minutaggio}%</strong><br/>
                 Morale: <strong style={{color:TH.txGreen}}>+{transferOffer.moralBonus}</strong> <span style={{fontSize:FS.caption}}>(su 100)</span><br/>
                 Crescita in allenamento: <strong style={{color:TH.accentText}}>+{transferOffer.growthBonus}%</strong> <span style={{fontSize:FS.caption}}>(fino a fine stagione)</span><br/>
-                Prestigio club: <strong>{transferOffer.club.p}</strong>
+                {player.club?.p==null&&<>Prestigio club: <strong>{transferOffer.club.p}</strong></>}{/* nel confronto quando c'e' il prestigio di oggi */}
               </div>
             </Card>
             {/* Sprint 29 — MW7: agent counter-offer */}
@@ -9070,18 +9108,21 @@ const getThisWeekMatchday=()=>{
                   const opp=md.opponentData||((_nat247&&typeof NAT_CLUB_DATA!=='undefined'&&NAT_CLUB_DATA[md.opponentName])?{n:md.opponentName,...NAT_CLUB_DATA[md.opponentName]}:null)||(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName,a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#888",c2:"#fff"});
                   const isCur=md.week===week;
                   const _euroComp=euroSig(md.competition||(player.euro?.competition||"UCL"));/* [6.74.0 QA-P0] sigla display fantasia */
-                  const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
+                  const _compColor=isCur?TH.brandText:TH.text;/* [PO-302 tappa 2b] la competizione la dicono le etichette: il nome resta leggibile (granata/ambra/viola sul fondo notte erano sotto 4,5:1) */
                   const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):(md.type==="national"&&!(typeof window!=="undefined"&&window.__CPM_NO_GIORN233))?(md.competition||"Nazionale"):`${md.matchday}ª giornata`;/* [7.999.165 PO-233 «Che significa 1489 giornata?»] per la Nazionale il calendario usa il codice interno 1470+settimana (vedi _etichettaTurno957 sopra): qui si stampava come giornata. Ora la riga dice la competizione («Amichevole Internazionale»). Rosso __CPM_NO_GIORN233 */
                   return(
-                    <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?TH.bgBlue:"transparent",borderRadius:isCur?6:0,paddingLeft:isCur?8:0}}>
+                    <div key={i} data-cpm="riga-cal-v2" style={{display:"flex",alignItems:"center",gap:10,minHeight:50,padding:"6px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?TH.bgBlue:"transparent",borderRadius:isCur?RAD.sm:0,paddingLeft:isCur?8:0,paddingRight:isCur?8:0}}>{/* [PO-302 tappa 2b] riga compatta a blocchi: avversario, poi etichette CASA/FUORI e competizione */}
                       <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                          {isCur&&"▶ "}vs {md.opponentName}<span style={{fontWeight:FW.regular,color:TH.muted}}>{md.isHome?" · in casa":" · in trasferta"}</span>
-                          {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&!_nat247&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
-                          {_isEuro&&<span style={{fontSize:FS.caption,marginLeft:5,background:"#ede9fe",color:TH.accentText,border:"1px solid #ddd6fe",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
+                          {isCur&&"▶ "}vs {md.opponentName}
                         </div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_nat247&&<span data-cpm="naz247" style={{marginRight:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}{_nat247?" ":""}{_compLabel} · sett. {md.week}</div>
+                        <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:"4px 6px",marginTop:3,fontSize:FS.caption,color:TH.muted}}>
+                          <TagV2 t={md.isHome?"Casa":"Fuori"} c={md.isHome?TH.success:TH.muted}/>
+                          {md.type==="cup"&&<TagV2 t={"Coppa · "+(md.cupRoundName||"Turno")} c={TH.goldText}/>}
+                          {md.type==="national"&&<TagV2 cpm={_nat247?"naz247":undefined} t="🏳️ Nazionale" c={TH.txBlue}/>}
+                          {_isEuro&&<TagV2 t={_euroComp} c={TH.accentText}/>}
+                          <span>{_compLabel} · sett. {md.week}</span></div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
                         ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
@@ -9103,10 +9144,10 @@ const getThisWeekMatchday=()=>{
                   <MatchBadge r={m.won?"W":m.drew?"D":"L"} size={22}/>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>sett. {m.week}{m.isHome===true?" · in casa":m.isHome===false?" · in trasferta":""}{m.goals?` · ${m.goals} gol`:""}{m.assists?` · ${m.assists} assist`:""}</div>
+                    <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:"4px 6px",marginTop:2,fontSize:FS.caption,color:TH.muted}}>{m.isHome===true?<TagV2 t="Casa" c={TH.success}/>:m.isHome===false?<TagV2 t="Fuori"/>:null}<span>sett. {m.week}{m.goals?` · ${m.goals} gol`:""}{m.assists?` · ${m.assists} assist`:""}</span></div>
                     {m.assistLinks&&(((m.assistLinks.given||[]).length)||((m.assistLinks.received||[]).length))?(<div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{/* [7.110.0] connessioni assist della gara */}{(m.assistLinks.given||[]).length?<span>🎯→ {(m.assistLinks.given).map(x=>x.name).join(", ")}</span>:null}{(m.assistLinks.given||[]).length&&(m.assistLinks.received||[]).length?"  ·  ":""}{(m.assistLinks.received||[]).length?<span>⚽← {(m.assistLinks.received).map(x=>x.name).join(", ")}</span>:null}</div>):null}
                   </div>
-                  <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,minWidth:44,textAlign:"center",letterSpacing:-.3}}>{m.homeScore}<span style={{color:TH.faint,margin:"0 1px"}}>–</span>{m.awayScore}</div>
+                  <div className="cpm-num" style={{...fsTV(FS.title,FW.bold),color:TH.text,minWidth:44,textAlign:"center"}}>{m.homeScore}<span style={{color:TH.faint,margin:"0 1px"}}>–</span>{m.awayScore}</div>
                   <div style={{textAlign:"right",minWidth:28}}>
                     <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:m.rating>=8?TH.txGreen:m.rating>=6.5?TH.txAmber:TH.txRed,lineHeight:1}}>{typeof m.rating==="number"?m.rating.toFixed(1).replace(".",","):"—"}</div>
                     <div style={{fontSize:FS.caption,color:TH.faint}}>voto</div>

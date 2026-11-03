@@ -77,6 +77,7 @@ const APP_ENV=(()=>{try{const h=(location.hostname||"").toLowerCase();if(h.endsW
 //   diversi → «scelgo "critico" ma mi scrive "umile"»). Un solo dizionario usato da entrambi i punti di render.
 const IV_TONE_LBL={diplomatico:"🤝 Diplomatico",diretto:"🔥 Ambizioso",umile:"🙏 Umile"};
 const IV_TONE_COL={diplomatico:"#2563eb",diretto:"#f97316",umile:"#7c3aed"};
+const IV_TONE_V2={diplomatico:"#60a5fa",diretto:"#e8b44a",umile:"#4ade80"};/* [PO-302 tappa 2b] i toni sul fondo notte (V2Intervista): blu, oro, verde della palette V2 */
 /* [7.994.0 INTERVISTA «scarna» - scelte PO: contesto partita, conseguenze visibili, sala viva, domanda di rilancio]
    IL RILANCIO: il giornalista incalza sulla risposta appena data. Una sola domanda in piu', scelta dal TONO della
    prima risposta (incalza chi e' stato ambizioso, apre chi e' stato umile, stana chi e' stato diplomatico), in modo

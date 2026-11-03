@@ -192,6 +192,8 @@ function TitoloV2({occhiello,titolo,destra,cpm}){
     </div>
     {destra||null}
   </div>);}
+/* [PO-302 tappa 2b · V2Stagione] etichetta a blocchetto (CASA / FUORI / COPPA / competizione): maiuscolo spaziato sull'incasso, colore = significato */
+function TagV2({t,c,cpm}){return(<span data-cpm={cpm||"tag-v2"} style={{display:"inline-flex",alignItems:"center",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.1em",textTransform:"uppercase",lineHeight:1.3,padding:"2px 7px",borderRadius:RAD.xs,background:TH.surface2,color:c||TH.muted,whiteSpace:"nowrap"}}>{t}</span>);}
 /* tacche d'intensita' (interesse di mercato, livello del trainer): n accese su tot, colore unico */
 function TaccheV2({n,tot=3,col,label,w=14}){
   return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
