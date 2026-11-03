@@ -880,3 +880,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 03/11 sera — «Riprendi»: tappa 3 V2 avviata in parallelo alla catena 178
 - Alle 20:00 UTC i 3 tronchi Sonnet della catena 178 sono ancora in corso (nessun ramo spinto). Il contenuto della 178 è chiuso: la catena verifica soltanto.
 - Decisione tecnica (sessione madre): lavoro/178 (4a4ff494) unito in lavoro/179 → d7bb7a90 (conflitto ci-runner per unione delle liste); tappa 3 V2 avviata subito su sviluppo/v2-tappa3 (session_01QEYiaCFkRrmynZqqeQVP6Z): partita 2D, highlight, post partita, ingresso/festa, coppe, galà, Nazionale, Creazione, PO-303 patrimonio (migrazione additiva), pc-tablet-292 punto 5. Se la catena 178 richiede riparazioni, si riuniscono in 179 a valle.
+
+### 03/11 notte — catena 178: tronco 2 con un rosso nuovo, giro 101 avviato
+- Tronco 2 (catena/178-t2, d32a03fd): 40 verdi, 1 rosso: esiti-218 — scena seme 2021 «Tiro rasoterra»: il motore dice tiro fuori, il riquadro dice «Il difensore si oppone» (contraddizione PO-218). Verde nelle catene 175–177: regressione probabile dei giri 95–100. Difetto di verità del racconto → blocca il rilascio.
+- Tronchi 1 e 3 ancora in corso alle 21:30 UTC (t1 ripete highlight-95; t3 all'ultimo passo, difesa-220-scena).
+- Decisione tecnica (sessione madre): giro 101 su lavoro/178, ramo sviluppo/giro101-esiti (session_01QEYiaCs1jCcSsu4V67AtDS): misura, correzione con interruttore __CPM_NO_G101, guardiani dell'highlight verdi. Poi rigioco mirato dei passi toccati e rilascio.
