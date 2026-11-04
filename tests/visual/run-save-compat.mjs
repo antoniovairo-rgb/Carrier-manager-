@@ -15,6 +15,7 @@ const REQUIRED = [
   'calendar', 'standings', 'aiData', 'trophies', 'seasonObjectives', 'foot', 'diary',
   'teamChemistry', 'squadRole', 'euro', 'euroMondiale', 'cup', 'milestones', 'playerAwards',
   'totalGoals', 'totalAssists', 'totalMatches', 'loan', 'campDone',
+  'patrimonio303', /* [PO-303] storico mensile del patrimonio: serie vuota sui salvataggi vecchi */
 ];
 
 (async () => {
