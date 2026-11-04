@@ -3820,7 +3820,7 @@ function ThreeMatchView(props){
           if(Math.abs(ball.position.x-_gx)>3.2)_rete573=true;}
       }
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&_rete573){try{const _w=(window.__CPM_RETE573=window.__CPM_RETE573||{f:0});_w.f++;}catch(_e){}}
-      if(P.cineBusy){try{sr.current._ck864=(sr.current._ck864||0)+dt;P.cineBusy.current={on:isResult,tl:!!tlOn,arc:!!ballArcActive,pa:hlPostArcT>=0,rete:_rete573,ck:sr.current._ck864,/* [7.864.0] orologio di scena: somma dei dt del renderer, per un tetto che non morde a frame-rate basso */pat:hlPostArcType,pt:+(+hlPostArcT).toFixed(2),sl:+(+slow).toFixed(2),bx:+ball.position.x.toFixed(1),at:+(+ballArcT).toFixed(2)};}catch(_e461){}}
+      if(P.cineBusy){try{sr.current._ck864=(sr.current._ck864||0)+dt;let _bz103=false;if(typeof window!=='undefined'&&window.__CPM_BUSY103&&(_CPM_TEST||window.__CPM_REC)){if(isResult){if(sr.current._ck103s==null)sr.current._ck103s=sr.current._ck864;const _e103s=sr.current._ck864-sr.current._ck103s,_da103=+window.__CPM_BUSY103DA||0;_bz103=_e103s>=_da103&&(_e103s-_da103)<+window.__CPM_BUSY103;}else sr.current._ck103s=null;}/* __CPM_BUSY103DA: secondi di scena di SILENZIO prima che la conclusione cominci (caso «non ancora cominciata») *//* [giro 103] solo sonde: conclusione dichiarata occupata per N s di scena dall'inizio di hl_result (guardiano riserva-103) */sr.current._nb103=isResult?((sr.current._nb103||0)+((tlOn||ballArcActive||hlPostArcT>=0)?1:0)):0;/* [giro 103] fotogrammi occupati da inizio hl_result: «non occupata» con zero fotogrammi occupati vuol dire «non ancora cominciata» */P.cineBusy.current={on:isResult,nb:sr.current._nb103,tl:!!tlOn||_bz103,arc:!!ballArcActive,pa:hlPostArcT>=0,rete:_rete573,ck:sr.current._ck864,/* [7.864.0] orologio di scena: somma dei dt del renderer, per un tetto che non morde a frame-rate basso */pat:hlPostArcType,pt:+(+hlPostArcT).toFixed(2),sl:+(+slow).toFixed(2),bx:+ball.position.x.toFixed(1),at:+(+ballArcT).toFixed(2)};}catch(_e461){}}
       /* [7.457.0 — MISURA, «esito dichiarato ≠ 3D»] PERCHE' IL BUILD-UP E' ANCORA VIVO? Il post-arco
          che porta la palla in rete aspetta la fine del build-up (guardia 5.43.9, r.~12542). Le prove
          del PO dicono «arco/post-arco vivi 30 · 17 · 118 · 144 fotogrammi» con la palla ferma: qui si
@@ -3858,6 +3858,7 @@ function ThreeMatchView(props){
          del frame e un'etichetta scritta da chi riassegna il pallone di colpo — e si legge a fine frame,
          accanto allo stacco nero. La domanda «chi lo fa» ha una risposta sola, e non e' una deduzione. */
       sr.current._ws524=0;/* [7.524.0 — strumento, pattern 7.404: la misura DOV'E' il fenomeno] codice dello SCRITTORE del pallone in questo fotogramma (0=nessuno): scalare sempre attivo, entra nell'anello del testimone cosi' la bozza del PO puo' dire CHI ha mosso la palla nel fotogramma incriminato — `_bj0` (la firma ricca) e' armata solo nei test e sul telefono non c'e' */
+      if(ball){sr.current._f103x=ball.position.x;sr.current._f103y=ball.position.y;sr.current._f103z=ball.position.z;sr.current._g103p=sr.current._g103n;sr.current._g103n=false;}/* [giro 103] pallone a inizio fotogramma (la colla di conduzione limita lo scatto al passaggio volo→conduzione) */
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST))sr.current._bj0={x:ball.position.x,z:ball.position.z,src:null,srcs:[],aT0:+(+ballArcT).toFixed(3)/* [giro 77] tempo dell'arco a inizio fotogramma (testimone) */};else sr.current._bj0=null;
       if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
       if(sr.current._ballSnap&&isHL){sr.current._ballSnap=false;
@@ -4606,9 +4607,16 @@ function ThreeMatchView(props){
           const _cgD=sr.current._cgDur||0.65;
           const _u2=Math.min(hlPostArcT/_cgD,1);
           const _uh74=Math.min(_u2+0.25,1);// [6.74.0 3D-5] la testata parte dalla QUOTA a cui arriva il cross (~2.7u, continuità C0), non da terra
-          ball.position.y=0.22+Math.sin(_uh74*Math.PI)*(_cgD>1.0?5.5:3.0);/* [7.250.0 gi30 «troppo distante»] la consegna LUNGA (da centrocampo) vola ALTA (lofted 5.5): un pallone a campanile in area si legge come LANCIO, non come un tiro teso da 40 metri */
+          const _no103b=(typeof window!=='undefined'&&window.__CPM_NO_G103B);const _bx103=ball.position.x,_bz103=ball.position.z;
+          /* [giro 103 — scena3d-96 D11 della catena 178, misurato e attribuito: pc-gi18-riesce 3,9u in 0,05 s, scrittore esito:cross_goal subito
+             dopo ricevente-pass, pallone a x 23,6] sul passaggio RACCOLTO (arrival-gate assist_recv→cross_goal) il pallone e' a terra, ma la
+             consegna partiva dalla quota di un cross (0,22+sin(0,25π)·3 ≈ 2,3): scalino verticale di ~2u in UN fotogramma, a qualunque fps.
+             Ora la quota parte da dove sta il pallone e lo scarto sfuma lungo la consegna (pattern _y100 del giro 100); e la partenza
+             orizzontale (3,8·distanza: 62 u/s da x 23,6) resta sotto la velocita' da pallone del giro 96a (48 u/s). Rosso __CPM_NO_G103B. */
+          {const _yb=0.22+Math.sin(_uh74*Math.PI)*(_cgD>1.0?5.5:3.0);let _o=0;if(!_no103b){const _s=sr.current._cg103;if(!_s||hlPostArcT<_s.t)sr.current._cg103={t:hlPostArcT,off:ball.position.y-_yb,u0:_u2};const _q=sr.current._cg103;_q.t=hlPostArcT;_o=_q.off*Math.max(0,1-(_u2-_q.u0)/Math.max(1e-3,1-_q.u0));}
+          ball.position.y=_yb+_o;}/* [7.250.0 gi30 «troppo distante»] la consegna LUNGA (da centrocampo) vola ALTA (lofted 5.5): un pallone a campanile in area si legge come LANCIO, non come un tiro teso da 40 metri */
           const _cgR=3.8*(0.65/_cgD);
-          ball.position.x+=((AWAY_GOAL_X-6)-ball.position.x)*aDt*_cgR;ball.position.z+=(0-ball.position.z)*aDt*_cgR*0.37;/* [7.252.0 gi30 «il tiro del compagno più in profondità»] la consegna atterra a goal-6 (dentro l'area piccola-grande): il terzo uomo conclude da posizione profonda *//* [7.247.0 gi29 «il tiro avviene da distanza siderale»] la consegna ATTERRA IN AREA (goal-8 ≈ il dischetto), non sulla porta: prima puntava AWAY_GOAL_X+1 per tutto il volo e da centrocampo leggeva come un tiro da 40 metri che entra — ora lancio → area → incornata del terzo uomo → in_net fa l'ultimo tratto */
+          ball.position.x+=((AWAY_GOAL_X-6)-ball.position.x)*aDt*_cgR;ball.position.z+=(0-ball.position.z)*aDt*_cgR*0.37;if(!_no103b){const _dx=ball.position.x-_bx103,_dz=ball.position.z-_bz103,_dd=Math.hypot(_dx,_dz),_mx=48*Math.max(aDt,1e-3);if(_dd>_mx){ball.position.x=_bx103+_dx/_dd*_mx;ball.position.z=_bz103+_dz/_dd*_mx;}}/* [giro 103] velocita' da pallone (48 u/s, come il volo di costruzione 96a) *//* [7.252.0 gi30 «il tiro del compagno più in profondità»] la consegna atterra a goal-6 (dentro l'area piccola-grande): il terzo uomo conclude da posizione profonda *//* [7.247.0 gi29 «il tiro avviene da distanza siderale»] la consegna ATTERRA IN AREA (goal-8 ≈ il dischetto), non sulla porta: prima puntava AWAY_GOAL_X+1 per tutto il volo e da centrocampo leggeva come un tiro da 40 metri che entra — ora lancio → area → incornata del terzo uomo → in_net fa l'ultimo tratto */
           // [6.74.0 3D-5] il ricevente accompagna/incorna: convergenza sul pallone + gesto di ricezione al 1° frame
           if(crossRcvMesh){if(hlPostArcT<=aDt&&crossRcvMesh._rcvT==null&&!crossRcvMesh._cgRun)crossRcvMesh._rcvT=0;
             if(crossRcvMesh._cgRun)animOne(crossRcvMesh,ball.position.x-1.4,ball.position.z,aDt,ak,ball.position.x-1.4,ball.position.z);
@@ -4631,7 +4639,13 @@ function ThreeMatchView(props){
           const _cgLate=hlPostArcT>=_cgD+((typeof window!=='undefined'&&window.__CPM_NO605)?2.2:0.8);
           if(_uh74>=0.93&&sr.current._cgHold==null&&(_cgNear||_cgLate))sr.current._cgHold=0.22;/* [7.253.0 gi30 «lontanissimo il tiro»] STACCO PERCETTIVO sull'uomo dell'incornata: lancio→testa→rete era UN volo continuo da centrocampo alla porta e leggeva come un tiro da 40m — ora la palla SOSPENDE ~0.22s a quota testa sul terzo uomo (contatto leggibile) e solo poi entra. [7.335.0 collaudo PO «la palla passa senza una dinamica chiara da un compagno a un altro»] lo stacco si arma SOLO a contatto: prima la sospensione TELETRASPORTAVA la palla sul mesh dell'uomo in ritardo (misurato game 84.6→51.3 = mezzo campo all'indietro) — ora la palla resta parcheggiata in area e ASPETTA l'arrivo */
           if(sr.current._cgHold!=null&&sr.current._cgHold>0){sr.current._cgHold-=aDt;
-            if(crossRcvMesh&&_cgNear){ball.position.x=crossRcvMesh.position.x+0.6;ball.position.z=crossRcvMesh.position.z;ball.position.y=1.9;if((sr.current._ws524=8)&&sr.current._bj0)(sr.current._bj0.src='ricevente-cross',sr.current._bj0.srcs.push('ricevente-cross'));}}
+            if(crossRcvMesh&&_cgNear){ball.position.x=crossRcvMesh.position.x+0.6;ball.position.z=crossRcvMesh.position.z;ball.position.y=1.9;
+              /* [giro 103 — scena3d-96 D11 nella corsa finale, tel-gi18-riesce 3,7u in 0,05 s, scrittori «ricevente-cross+esito:cross_goal»] la
+                 sospensione sull'incornata incollava il pallone alla testa del compagno appena entro 3,2u: scatto fino a ~3u piu' il cambio di
+                 quota, nello stesso fotogramma del passo della consegna. Ora, fra 1,5 e 6u dalla posizione d'inizio fotogramma, il pallone ci
+                 arriva a velocita' da pallone (48 u/s), come la colla di conduzione. Rosso __CPM_NO_G103B. */
+              if(!_no103b&&sr.current._f103x!=null){const _ox=sr.current._f103x,_oy=sr.current._f103y,_oz=sr.current._f103z;const _dx=ball.position.x-_ox,_dy=ball.position.y-_oy,_dz=ball.position.z-_oz,_dd=Math.hypot(_dx,_dy,_dz),_mx=48*Math.max(aDt,1e-3);
+                if(_dd>1.5&&_dd<6&&_dd>_mx){ball.position.x=_ox+_dx/_dd*_mx;ball.position.y=_oy+_dy/_dd*_mx;ball.position.z=_oz+_dz/_dd*_mx;}}if((sr.current._ws524=8)&&sr.current._bj0)(sr.current._bj0.src='ricevente-cross',sr.current._bj0.srcs.push('ricevente-cross'));}}
           if(_uh74>=0.93&&sr.current._cgHold!=null&&sr.current._cgHold<=0){sr.current._cgHold=null;/* [7.252.0 gi30 «rimbalza in area senza senso»] l'incornata del terzo uomo colpisce la palla IN ARIA (~93% dell'arco, ancora in discesa) — prima la transizione aspettava il tocco a terra e la ripartenza verso la rete leggeva come un rimbalzo */
             // [5.83.0 IA-3] il tuffo sul CROSS arriva al 2° TOCCO (l'incornata), non al lancio del traversone
             if(awayGkMesh&&!P.hlDef&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T3",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}/* [6.74.0 3D-3] anche sull'incornata da cross il tuffo resta corto (il gol sta entrando) */
@@ -4819,12 +4833,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                respingeva a 7 dalla porta, a 10-40 unita' dal portiere (misurato con highlight-95: pallone mai entro 6 dal portiere su 4 assist
                «para il portiere»). Ora il tiro va sul portiere e la respinta parte dalle sue mani, sempre prima della linea. Rosso __CPM_NO_G95D3. */
             const _gk95=(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3))?awayGkMesh:null;
-            if(_gk95){ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*2.2;}
+            if(_gk95){const _kz103=(typeof window!=='undefined'&&window.__CPM_NO_G103D)?2.2:3.2;ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*_kz103;}
             else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;}if(!_m298&&!(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)))ball.position.z*=(1-aDt*1.6);
+          /* [giro 103 — scena3d-96 D11 nel verde di consegna-103: pc-gi18 3,1u in 0,05 s, scrittore esito:assist_shot dopo ricevente-pass] il
+             tiro del compagno insegue il bersaglio con 3,2 x distanza: da 15u fa ~50 u/s piu' la salita dell'arco, oltre la velocita' da
+             pallone. Il passo del fotogramma resta sotto 48 u/s (dall'inizio fotogramma; oltre 6u e' un riposizionamento e non si tocca).
+             Rosso __CPM_NO_G103B. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G103B)&&sr.current._f103x!=null){const _ox=sr.current._f103x,_oy=sr.current._f103y,_oz=sr.current._f103z;const _dx=ball.position.x-_ox,_dy=ball.position.y-_oy,_dz=ball.position.z-_oz,_dd=Math.hypot(_dx,_dy,_dz),_mx=48*Math.max(aDt,1e-3);
+            if(_dd<6&&_dd>_mx){ball.position.x=_ox+_dx/_dd*_mx;ball.position.y=_oy+_dy/_dd*_mx;ball.position.z=_oz+_dz/_dd*_mx;}}
           if(_m298){}
           else if(_isCh93&&_u3>=0.72){
             if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
-            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}
+            /* [giro 103 — highlight-95 D3 verde nei rigiochi finali: HOWARD s12/7 «Uno-due», «para il portiere» col pallone a 6,0 dal
+               portiere (5,8-6,1 in tutte le corse, con e senza le altre correzioni: scena sul filo della soglia 6)] il pallone convergeva sul
+               portiere in x a 3,2/s ma in z a 2,2/s e la respinta partiva a u 0,72 dovunque fosse: col portiere spostato di lato restavano 5-6
+               unita'. Ora la z converge come la x e la respinta aspetta il contatto (entro 2,5 dal portiere) o la fine del volo (u 1); il
+               tuffo parte a 0,72 come prima. Rosso __CPM_NO_G103D. */
+            if((typeof window!=='undefined'&&window.__CPM_NO_G103D)||!awayGkMesh||_u3>=1||Math.hypot(awayGkMesh.position.x-ball.position.x,awayGkMesh.position.z-ball.position.z)<2.5){
+            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}}
           else{
             /* [7.407.0 collaudo PO gi118 «il portiere non tenta mai la parata» su assist] IL GOL DEL
                COMPAGNO MERITA UN TUFFO. Il tuffo era armato solo dal ramo CHANCE (la respinta lo esige);
@@ -7907,7 +7933,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    il piede non e' piu' il riferimento da cui il beat successivo riparte. Resta incollato. */
                 ball.position.x=_hm.position.x+Math.cos(_thN382)*0.95;
                 ball.position.z=_hm.position.z+Math.sin(_thN382)*0.95;
-                ball.position.y=0.42;if((sr.current._ws524=14)&&sr.current._bj0)(sr.current._bj0.src='testa',sr.current._bj0.srcs.push('testa'));}
+                ball.position.y=0.42;
+                /* [giro 103 — scena3d-96 D11, pc-gi64-parata 3,5u in 0,05 s, scrittori «buildup-volo+testa» nello stesso fotogramma: il
+                   residuo dichiarato dal 7.515] al passaggio volo→conduzione il volo (tappato a 48 u/s dal giro 96a) e' indietro sul piano e
+                   la colla recuperava tutto il ritardo in UN fotogramma, a qualunque fps. Ora, solo se il pallone e' lontano dal piede (>1,5u
+                   dalla posizione d'inizio fotogramma), lo raggiunge a velocita' da pallone (48 u/s): 2-3 fotogrammi, poi colla esatta. Non e'
+                   l'easing revocato nel 7.387 (sempre attivo, 0,2 s): sotto 1,5u la colla resta istantanea. Rosso __CPM_NO_G103C. */
+                const _first103=!sr.current._g103p;sr.current._g103n=true;let _lag103=0;
+                if(_first103&&typeof window!=='undefined'&&+window.__CPM_G103LAG>0&&(_CPM_TEST||window.__CPM_REC)){_lag103=+window.__CPM_G103LAG;sr.current._f103x=ball.position.x-_lag103;sr.current._f103y=0.42;sr.current._f103z=ball.position.z;}/* [giro 103] solo sonde (colla-103): al primo fotogramma di colla il pallone si finge indietro di N u, come dopo un volo in ritardo */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G103C)&&sr.current._f103x!=null){const _ox=sr.current._f103x,_oy=sr.current._f103y,_oz=sr.current._f103z;
+                  const _dx=ball.position.x-_ox,_dy=ball.position.y-_oy,_dz=ball.position.z-_oz,_dd=Math.hypot(_dx,_dy,_dz),_mx=48*Math.max(aDt,1e-3);
+                  if(_dd>1.5&&_dd<6&&_dd>_mx){/* oltre 6u non e' ritardo del volo ma un riposizionamento (apertura di scena, stacco): colla secca come prima */ball.position.x=_ox+_dx/_dd*_mx;ball.position.y=_oy+_dy/_dd*_mx;ball.position.z=_oz+_dz/_dd*_mx;}}
+                if(_lag103>0){try{const _L=(window.__CPM_G103C=window.__CPM_G103C||[]);if(_L.length<400)_L.push({passo:+Math.hypot(ball.position.x-sr.current._f103x,ball.position.y-sr.current._f103y,ball.position.z-sr.current._f103z).toFixed(3),tetto:+(48*Math.max(aDt,1e-3)).toFixed(3),lag:_lag103});}catch(_e){}}
+                if((sr.current._ws524=14)&&sr.current._bj0)(sr.current._bj0.src='testa',sr.current._bj0.srcs.push('testa'));}
             }
           }
         }

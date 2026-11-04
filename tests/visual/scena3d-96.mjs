@@ -35,7 +35,7 @@ const LISTE = {
 };
 const OUTMAP = { gol: ['success', null], parata: ['fail', 'saved'], fuori: ['fail', 'wide'], riesce: ['success', null], sbaglia: ['fail', null], intercetto: ['fail', 'intercepted'] };
 const ROSSO = (process.env.CPM_G96_ROSSO || '').split(',').map(s => s.trim()).filter(Boolean);
-const ROSSI = ROSSO.includes('tutti') ? ['D2', 'D3', 'D4', 'D5', 'D8', 'D10', 'D11', 'D13'] : ROSSO;
+const ROSSI = (ROSSO.includes('tutti') ? ['D2', 'D3', 'D4', 'D5', 'D8', 'D10', 'D11', 'D13'] : ROSSO).concat((process.env.CPM_FLAG || '').split(',').filter(Boolean));
 const formati = (process.env.CPM_G96_FORMATI || 'tel,pc,tabv,tabo').split(',').filter(k => FORMATI[k]).map(k => FORMATI[k]);
 const PER = +(process.env.CPM_G96_PER || 4);
 const OUT = path.join(ROOT, 'tests', 'visual', 'out', 'scena3d-96' + (ROSSI.length ? '-rosso' : '')); fs.mkdirSync(OUT, { recursive: true });
@@ -43,7 +43,7 @@ const FOTO = !!process.env.CPM_G96_FOTO;
 
 const INIT = (rossi) => {
   window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1;
-  for (const r of rossi) window['__CPM_NO_G96' + r] = 1;
+  for (const r of rossi) { if (/^__CPM_/.test(r)) window[r] = 1; else window['__CPM_NO_G96' + r] = 1; }/* [giro 103] voce che comincia con __CPM_ = interruttore extra (CPM_FLAG) */
   window.__G96 = { on: false, fr: [] };
   const loop = () => { try { const B = window.__G96; if (B.on && B.fr.length < 5000 && window.__CPM_G96) { const o = window.__CPM_G96(); o.ck = typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null; o.cut = window.__CPM_CUTLIVE ? !!window.__CPM_CUTLIVE() : false; o.phx = window.__CPM_PHASE ? window.__CPM_PHASE() : null; B.fr.push(o); } } catch (e) {} requestAnimationFrame(loop); };
   requestAnimationFrame(loop);
@@ -63,21 +63,25 @@ async function ingresso(f) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await browser.newContext(opt); await installCdnRoutes(ctx); const page = await ctx.newPage(); page._ctx = ctx;
   page._errs = []; page.on('pageerror', e => page._errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_GLB = true; for (const r of o.r) window['__CPM_NO_G96' + r] = 1; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: ROSSI });
+  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_GLB = true; for (const r of o.r) { if (/^__CPM_/.test(r)) window[r] = 1; else window['__CPM_NO_G96' + r] = 1; } localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: ROSSI });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(1500);
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
-  await page.evaluate(() => { window.__T96 = []; const g = () => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'walkout' && window.__CPM_G96) { const o = window.__CPM_G96(); if (o && o.tap) window.__T96.push(o.tap); } } catch (e) {} requestAnimationFrame(g); }; requestAnimationFrame(g); });
+  await page.evaluate(() => { window.__T96 = []; const g = () => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'walkout' && window.__CPM_G96) { const o = window.__CPM_G96(); if (o && o.tap) window.__T96.push([o.tap[0], o.tap[1], typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null]); } } catch (e) {} requestAnimationFrame(g); }; requestAnimationFrame(g); });
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   const ph = () => page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
   for (let k = 0; k < 60; k++) { if ((await ph()) === 'walkout') break;
     await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua/i.test(b.textContent || '') && !/Salta/i.test(b.textContent || '')); if (x) x.click(); }).catch(() => {});
     await sleep(700); }
-  const t0 = Date.now(); let visto = false; while (Date.now() - t0 < 150000) { const p = await ph(); if (p === 'walkout') visto = true; else if (visto) break; if (visto && (await page.evaluate(() => window.__T96.length)) > 400) break; await sleep(300); }
+  /* [giro 103] l'ingresso si guarda FINO ALLA FINE (la chiude walkT, tempo di scena): prima la sonda smetteva a 150 s di parete o a 400
+     letture, cioe' a fotogrammi lenti vedeva solo l'inizio (tappeto che gira dopo uno stacco: 0,81-0,84 a macchina carica) e a fotogrammi
+     veloci si fermava a 6-7 s di scena. Ora la porzione giudicata e' la stessa a ogni velocita'; il tetto di parete resta come rete. */
+  const t0 = Date.now(); let visto = false, finito = false; while (Date.now() - t0 < 600000) { const p = await ph(); if (p === 'walkout') visto = true; else if (visto) { finito = true; break; } await sleep(300); }
   const T = await page.evaluate(() => window.__T96 || []); const vis = T.filter(t => t[1]);
-  page._tap = { walkout: visto, letture: vis.length, dritto: vis.length ? +(vis.filter(t => t[0] > 0.17).length / vis.length).toFixed(2) : 0, cosMin: vis.length ? Math.min(...vis.map(t => t[0])) : null };
+  const sc = T.filter(t => t[2] != null).map(t => t[2]);
+  page._tap = { walkout: visto, finito, scena: sc.length ? +(Math.max(...sc) - Math.min(...sc)).toFixed(1) : null, letture: vis.length, dritto: vis.length ? +(vis.filter(t => t[0] > 0.17).length / vis.length).toFixed(2) : 0, cosMin: vis.length ? Math.min(...vis.map(t => t[0])) : null };
   return page;
 }
 const scena = p => p.evaluate(() => window.__CPM_SCENET || 0).catch(() => 0);
@@ -109,8 +113,13 @@ function analizza(fr, rig, esito) {
       const mn = Math.min(A[2] * A[3], B[2] * B[3]); if (mn > 0 && ox * oy / mn > 0.25) { etOv++; if (!etEx) etEx = `@${(x.ck || 0).toFixed(2)} ${x.ph}`; } } });
   a.etRap = +etR.toFixed(2); a.etSovr = etOv; a.etEx = etEx;
   /* D11: salti del pallone */
-  let sal = 0, sEx = []; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; const ds = q.ck - p.ck; if (ds > 0 && p.bw && q.bw && !p.cut && !q.cut && p.sk === q.sk) { const d = Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2]); if (d > 3 && d / ds > 60 && ds < 0.06) { sal++; if (sEx.length < 3) sEx.push(`${d.toFixed(1)}u/${ds.toFixed(3)}s ${q.ph}`); } } }
+  let sal = 0, sEx = []; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; const ds = q.ck - p.ck; if (ds > 0 && p.bw && q.bw && !p.cut && !q.cut && p.sk === q.sk) { const d = Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2]); if (d > 3 && d / ds > 60 && ds < 0.06) { sal++; if (sEx.length < 3) sEx.push(`${d.toFixed(1)}u/${ds.toFixed(3)}s ${q.ph} scrittore ${q.ws || '-'} (prima ${p.ws || '-'}) palla ${JSON.stringify(q.bw)}`); }/* [giro 103] il salto porta chi l'ha scritto: nella catena 178 D11 e' comparso una volta senza attribuzione e non si e' riprodotto in 62 scene */ } }
   a.salti = sal; a.saltiEx = sEx;
+  /* [giro 103] ingressi nella consegna in area dal passaggio RACCOLTO (ricevente-pass → esito:cross_goal) e scalino massimo in quel fotogramma */
+  let cgN = 0, cgMax = 0; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; if (/ricevente-pass/.test(p.ws || '') && /esito:cross_goal/.test(q.ws || '') && p.bw && q.bw && !q.cut) { cgN++; cgMax = Math.max(cgMax, Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2])); } }
+  a.cg = cgN; a.cgMax = +cgMax.toFixed(2);
+  let soN = 0, soMax = 0; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; if (/ricevente-cross/.test(q.ws || '') && p.bw && q.bw && !q.cut && !p.cut && q.ck - p.ck > 0) { soN++; soMax = Math.max(soMax, Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2])); } }
+  a.so = soN; a.soMax = +soMax.toFixed(2);/* [giro 103] fotogrammi della sospensione sull'incornata (ricevente-cross) e passo massimo */
   /* D4: rigore */
   if (rig) { const R = F.filter(x => x.ph === 'hl_result' && x.gk && x.bw); let prima = 0, inVolo = 0, maxPre = 0, b0 = null, z0 = null, partito = false;
     R.forEach(x => { if (b0 == null) { b0 = x.bw; z0 = x.gk[2]; } if (!partito && Math.hypot(x.bw[0] - b0[0], x.bw[2] - b0[2]) > 0.3) partito = true;
@@ -170,14 +179,14 @@ for (const f of formati) {
     } catch (e) { r.errore = String(e.message || e).slice(0, 160); }
     r.an = analizza(r.fr || [], r.rig, r.esito); if (process.env.CPM_G96_DUMP) fs.writeFileSync(path.join(OUT, r.id + '-fr.json'), JSON.stringify(r.fr || [])); delete r.fr; r.ko = r.errore ? ['errore: ' + r.errore] : giudica(r, f);
     tutti.push(r);
-    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
+    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti} consegna ${r.an.cg}/${r.an.cgMax} sospensione ${r.an.so}/${r.an.soMax}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
   }
   /* D13: ingresso in campo — logo del cerchio letto dalla camera (percorso vero: salvataggio -> partita -> walkout); telefono e PC */
   if (['tel', 'pc'].includes(f.k) || process.env.CPM_G96_INGRESSO_TUTTI) try {
     errs.push(...page._errs.map(e => f.k + ' ' + e)); await page._ctx.close().catch(() => {}); page = await ingresso(f);
     const t = page._tap;
     const d13 = { f: f.k, id: `${f.k}-walkout`, tap: t };
-    d13.ko = !t ? ['D13 testimone del tappeto assente'] : (t.letture < 3 ? ['D13 tappeto mai visto: ' + t.letture + ' letture'] : (t.dritto < 0.9 ? [`D13 logo del cerchio capovolto: ${t.dritto} delle letture dritte`] : []));
+    d13.ko = !t ? ['D13 testimone del tappeto assente'] : (t.letture < 3 ? ['D13 tappeto mai visto: ' + t.letture + ' letture'] : !t.finito ? ['D13 ingresso non finito in 600 s: non giudicabile'] : (t.dritto < 0.9 ? [`D13 logo del cerchio capovolto: ${t.dritto} delle letture dritte`] : []));
     tutti.push(d13); console.log(`${d13.id.padEnd(24)} ${d13.ko.length ? '✗ ' + d13.ko.join(' · ') : '✓'}  ${JSON.stringify(t)}`);
   } catch (e) { tutti.push({ f: f.k, id: f.k + '-walkout', ko: ['D13 errore ' + String(e.message).slice(0, 100)] }); }
   errs.push(...page._errs.map(e => f.k + ' ' + e)); await page._ctx.close().catch(() => {});

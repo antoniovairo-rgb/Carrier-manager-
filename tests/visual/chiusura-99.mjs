@@ -59,6 +59,7 @@ async function parteD9(arm) {
     let fatto = false;
     for (let tent = 0; tent < 4 && !fatto; tent++, ti += 7) {
       const s = tiri[ti % tiri.length];
+      try {
       await page.evaluate(c => { if (c === 'club') delete window.__CPM_G99COL; else window.__CPM_G99COL = c; window.__CPM_FORCE_INTRO = 1; delete window.__CPM_FORCE_KIND; }, col);
       if (!await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), s.gi).catch(() => false)) continue;
       const t0 = Date.now(); while (Date.now() - t0 < 8000 && (await fase(page)) !== 'hl_choose') await sleep(150);
@@ -69,23 +70,38 @@ async function parteD9(arm) {
       await sleep(650);/* la scritta e' scesa (goalDrop) e sta ferma: si ferma ogni animazione e si fotografa */
       const box = await page.evaluate(sl => { const el = document.querySelector(sl.startsWith('text=') ? 'body' : sl); let e = el;
         if (sl.startsWith('text=')) { e = [...document.querySelectorAll('div')].find(d => d.childNodes.length === 1 && d.textContent === 'GOOOOL!'); }
+        if (!e) return null;
+        /* [giro 103] COPIA STATICA del sovrimpresso: il gioco smonta «GOOOOL!» con un timer di parete (2,6 s) e sotto carico le tre fotografie
+           durano di piu' — l'elemento spariva fra A e C (TypeError su null: il crash della catena 178, 218 s). La copia non appartiene a React,
+           quindi resta finche' la sonda la toglie; l'originale si nasconde. */
+        let k = e; while (k.parentElement && !(k.style && k.style.zIndex === '22')) k = k.parentElement;
+        const cl = k.cloneNode(true); cl.setAttribute('data-g103copia', '1'); k.parentElement.appendChild(cl); k.style.visibility = 'hidden'; k.setAttribute('data-g103orig', '1');
+        e = sl.startsWith('text=') ? [...cl.querySelectorAll('div')].find(d => d.childNodes.length === 1 && d.textContent === 'GOOOOL!') : cl.querySelector(sl);
         if (!e) return null; e.setAttribute('data-g99m', '1'); document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = 'paused'; });
+        /* [giro 103] fermo-immagine DETERMINISTICO: prima si fotografava la scritta dove la trovava l'attesa (650 ms dopo un selettore che
+           sotto carico arriva tardi), e oltre l'80% di goalDrop la scritta sfuma e cresce (scala 1,05): maschera 3.500 px invece di 2.400 e
+           contrasto col quadro 2,7. Ora la scritta sta sempre al 65% (opacita' 1, scala 1), lo scossone del contenitore e' finito e il
+           quadro 3D e' congelato (__CPM_FROZEN: dt=0) per le tre fotografie. */
+        window.__CPM_FROZEN = 1;
+        let o = e; while (o) { for (const an of (o.getAnimations ? o.getAnimations() : [])) { try { an.pause(); const nm = an.animationName || ''; const tt = an.effect && an.effect.getTiming ? an.effect.getTiming() : {}; const dur = +tt.duration || 0;
+          an.currentTime = nm === 'goalDrop' ? 0.65 * (dur || 2600) : (dur || 0); } catch (_e) {} } o = o.parentElement; }
         const r = e.getBoundingClientRect(); return { x: Math.max(0, r.x - 4), y: Math.max(0, r.y - 4), width: r.width + 8, height: r.height + 8, col: getComputedStyle(e).color }; }, sel);
       if (!box) continue; const clip = { x: box.x, y: box.y, width: box.width, height: box.height };
       const A = png(await page.screenshot({ clip }));
-      /* [giro 101] se la scritta e' stata smontata fra due foto (misurato 3/3 nel braccio rosso: «Cannot read properties of null») il
-         tentativo si scarta come gli altri `continue`, invece di far morire il guardiano: un braccio senza misure resta «cieco» e fallisce */
-      if (!await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); if (!e) return false; e._c = e.style.color; e.style.color = 'transparent'; return true; })) { await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); }); continue; }
+      await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); e.style.webkitTextFillColor = 'transparent'; });
       const B = png(await page.screenshot({ clip }));
-      if (!await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); if (!e) return false; e.style.color = e._c; let o = e; while (o.parentElement && !(o.style && o.style.zIndex === '22')) o = o.parentElement; o.style.visibility = 'hidden'; return true; })) { await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); }); continue; }
+      await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); e.style.webkitTextFillColor = ''; document.querySelector('[data-g103copia]').style.visibility = 'hidden'; });
       const C = png(await page.screenshot({ clip }));
-      await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); const e = document.querySelector('[data-g99m]'); if (e) e.removeAttribute('data-g99m'); });
+      await page.evaluate(() => { delete window.__CPM_FROZEN; document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); document.querySelectorAll('[data-g103copia]').forEach(n => n.remove()); document.querySelectorAll('[data-g103orig]').forEach(n => { n.style.visibility = ''; n.removeAttribute('data-g103orig'); }); });
+      const tc = (String(box.col).match(/\d+/g) || [255, 255, 255]).map(Number);/* [giro 103] maschera = pixel di RIEMPIMENTO: diversi fra A e B e, in A, del colore della lettera (niente bordi sfumati del contorno) */
       const lt = [], lb = [], lc = []; for (let i = 0; i < A.d.length; i += 4) { const dd = Math.abs(A.d[i] - B.d[i]) + Math.abs(A.d[i + 1] - B.d[i + 1]) + Math.abs(A.d[i + 2] - B.d[i + 2]);
-        if (dd > 90) { lt.push(lum(A.d, i)); lb.push(lum(B.d, i)); lc.push(lum(C.d, i)); } }
+        const df = Math.abs(A.d[i] - tc[0]) + Math.abs(A.d[i + 1] - tc[1]) + Math.abs(A.d[i + 2] - tc[2]);
+        if (dd > 90 && df < 120) { lt.push(lum(A.d, i)); lb.push(lum(B.d, i)); lc.push(lum(C.d, i)); } }
       if (lt.length < 60) { righe.push({ col, gi: s.gi, ko: 'maschera vuota ' + lt.length }); fatto = true; continue; }
       const L = med(lt), loc = rap(L, med(lb)), qua = rap(L, med(lc));
       righe.push({ col, gi: s.gi, px: lt.length, testo: box.col, locale: +loc.toFixed(2), quadro: +qua.toFixed(2), min: +Math.min(loc, qua).toFixed(2) }); fatto = true;
       const t1 = Date.now(); while (Date.now() - t1 < 15000 && /^hl_/.test(await fase(page) || '')) await sleep(200);
+      } catch (e) { errori.push(`D9 ${arm} ${col} tentativo ${tent}: ${String(e && e.message || e).split('\n')[0].slice(0, 160)}`); await page.evaluate(() => { delete window.__CPM_FROZEN; document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); document.querySelectorAll('[data-g103copia]').forEach(n => n.remove()); document.querySelectorAll('[data-g103orig]').forEach(n => { n.style.visibility = ''; n.removeAttribute('data-g103orig'); }); }).catch(() => {}); }
     }
     if (!fatto) righe.push({ col, ko: 'nessun gol misurato' });
   }
@@ -102,7 +118,11 @@ async function parteD9(arm) {
    sonde) si confronta il compagno servito nel 3D col nominato. */
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
 async function partitaVera(sd, rosso) {
-  const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
+  const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } });
+  try { return await partitaVera0(ctx, sd, rosso); } finally { await ctx.close().catch(() => {}); }
+}
+async function partitaVera0(ctx, sd, rosso) {
+  const page = await ctx.newPage(); await installCdnRoutes(page);
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + sd;
   await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_B4REC = true; window.__CPM_G99DIAG = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G99RIC = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
@@ -114,12 +134,14 @@ async function partitaVera(sd, rosso) {
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate(s => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'assist', tickMs: 150 }), sd);
   const t0 = Date.now(); while (Date.now() - t0 < 420000) { const ph = await fase(page); if (ph === 'ended' || ph === 'ceremony') break; await sleep(1000); }
-  const B4 = await page.evaluate(() => window.__CPM_B4 || {}); await ctx.close(); return B4;
+  return await page.evaluate(() => window.__CPM_B4 || {});
 }
 async function parteRIC(arm) {
   const rosso = arm === 'rosso'; const T = { n: 0, ok: 0, ko: [] };
   const semi = (process.env.CPM_G99_SEMI || '1234,2021').split(',').map(Number);
-  for (const sd of semi) { const B4 = await partitaVera(sd, rosso);
+  for (const sd of semi) { let B4 = null;
+    for (let t = 0; t < 2 && !B4; t++) { try { B4 = await partitaVera(sd, rosso); } catch (e) { errori.push(`RIC ${arm} seme ${sd} tentativo ${t}: ${String(e && e.message || e).split('\n')[0].slice(0, 160)}`); } }
+    if (!B4) continue;
     for (const [k, e] of Object.entries(B4)) { const r = e.ricevente; if (!r || r.brain == null || r.brain === 21) continue;
       T.n++; if (r.idx === r.brain) T.ok++; else T.ko.push(`seme ${sd} scena ${k} (${e.sit}) servito ${r.idx} nominato ${r.brain} a ${r.d}u` + (process.env.CPM_G99_DIAG ? ' ' + JSON.stringify(e.ult99 || []) : '')); }
     console.log(`  ${arm} RIC seme ${sd}: ${T.ok}/${T.n} finora`); }
@@ -129,9 +151,12 @@ async function parteRIC(arm) {
   return { ok, cieco: T.n < 4 };
 }
 
+const errori = [];
+process.on('unhandledRejection', e => { console.log('✗ chiusura-99 eccezione non gestita: ' + String(e && e.stack || e).slice(0, 600)); process.exit(3); });
 const esito = {};
 for (const arm of ARMI) { esito[arm] = {}; if (PARTI.includes('D9')) esito[arm].D9 = await parteD9(arm); if (PARTI.includes('RIC')) esito[arm].RIC = await parteRIC(arm); }
 await browser.close(); srv.close();
+errori.forEach(x => console.log('  ⚠ ' + x));
 let fail = 0;
 if (esito.verde) for (const [k, v] of Object.entries(esito.verde)) { if (v.cieco) { console.log(`✗ ${k} passata cieca`); fail++; } else if (!v.ok) fail++; }
 if (esito.rosso) for (const [k, v] of Object.entries(esito.rosso)) { if (v.cieco) { console.log(`✗ rosso ${k} cieco`); fail++; } else if (v.ok) { console.log(`✗ il rosso di ${k} non si vede: il guardiano non giudica`); fail++; } }
