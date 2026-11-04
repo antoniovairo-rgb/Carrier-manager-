@@ -53,7 +53,8 @@ for (const rosso of [false, true, 'g102']) {
     await page.evaluate(([o, kd]) => { window.__CPM_FORCE_OUTCOME = o; if (kd) window.__CPM_FORCE_KIND = kd; window.__CPM_V241 = {}; window.__R241 = (window.__CPM_RES218 || []).length; }, [OUTC, KIND || null]);
     const lab = await page.evaluate(k => { const s = SITUATIONS[window.__CPM_LAST_FORCED_GI]; window.__CPM_RESOLVE(k); return s && s.actions[k] ? s.actions[k].label : null; }, k);
     const tR = Date.now(); let s0 = null;
-    while (Date.now() - tR < 40000) { await sleep(400); const s = await page.evaluate(() => (typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null)).catch(() => null); if (s != null) { if (s0 == null) s0 = s; if (s - s0 >= 4) break; } }
+    const lungo = (gi === 14 || gi === 16);/* [giro 102] sulla consegna in area il tuffo del portiere (difetto del braccio __CPM_NO_G102) arriva DOPO l'incornata: con due guardiani in parallelo 4 s di scena non bastavano a vederlo (rosso G102 0/2 sotto carico, 1/1 da solo). Finestra piu' lunga in TUTTI i bracci: il verde guarda di piu', non di meno */
+    while (Date.now() - tR < (lungo ? 90000 : 40000)) { await sleep(400); const s = await page.evaluate(() => (typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null)).catch(() => null); if (s != null) { if (s0 == null) s0 = s; if (s - s0 >= (lungo ? 7 : 4)) break; } }
     const r = await page.evaluate(() => { const o = window.__CPM_OUTCOME || {}; const res = (window.__CPM_RES218 || []).slice(window.__R241 || 0).slice(-1)[0] || {}; const W = window.__CPM_V241 || {};
       return { ok: o.ok, outKey: o.outKey || null, outKind: o.outKind || null, overlay: o.overlay || null, text: o.text || null, ev: res.ev || [], v: (W.all || []).slice(-1)[0] || null }; });
     r.label = lab; r.gi = gi;
