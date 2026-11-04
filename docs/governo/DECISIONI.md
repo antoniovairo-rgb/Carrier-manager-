@@ -906,3 +906,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Domanda del PO: «Ancora non è stata pubblicata??». Il giro 103 (session_01QEYiaBAYMyNg3pTRSScWo1) lavora da ~16 ore; ultimo commit a72dca2a, corse finali in corso (scena3d-96 rosso per D2/D3 nella corsa 2).
 - Questionario, risposta PO: **«Tetto alle 21:00 Roma»** (scartati «Aspetta senza tetto» e «Pubblica senza il giro 103»).
 - Attuazione (sessione madre): alle 20:00 UTC, se il giro 103 non ha finito, si interrompe e si prende l'ultimo commit spinto di sviluppo/giro103-tronco1; unione in lavoro/178, build + check-src, verifica finale mirata (Sonnet). Si pubblica se restano rossi solo di strumento; un difetto vero dell'highlight dell'eroe resta bloccante (regola PO).
+
+### 04/11 21:00 Roma — tetto applicato: giro 103 fermato e unito, verifica finale avviata
+- Giro 103 interrotto alle 20:00 UTC come da decisione PO (ultimo commit 1492cb5c; la sessione riportava «gate verdi, restano corsia B corsa 1 e A2 corsa 2»; sezione «Rigiochi finali» del rapporto non compilata). Costo ~47,0 $.
+- Unito in lavoro/178 → 97f145b4 (conflitto su tests/visual/chiusura-99.mjs risolto con la versione del 103, che contiene una riparazione più ampia dello stesso crash del 101); check-src allineato.
+- Verifica finale su Sonnet, ramo catena/178-finale: esiti-218, esiti-241, highlight-95, parata-100, chiusura-99, scena3d-96, riserva-103, consegna-103, colla-103, contatto-103, assist-298, assist-nome-98, esiti-96, cross-218, ball-owner, test:logic, save-compat. Rossi solo di strumento → rilascio; difetto vero dell'highlight dell'eroe → resta bloccato.
