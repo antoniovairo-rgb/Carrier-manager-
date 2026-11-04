@@ -61,7 +61,7 @@ interruttore per la prova del rosso dev'essere suo). La prova del rosso resta `_
 | esiti-96 | ✅ | VERDE OK D1, D2, D3, B15, D6, D7, D12, D15, D14; rosso atteso: cadono tutti |
 | chiusura-99 | ❌ (1 scena) | RIC verde 6/6 (100%), rosso 2/6; D9 rosso visibile (mediana 1,23, 5 sotto 3); **D9 verde: gi0 colore club contrasto 2,8 < 3** (altre 5 scene 5,2–6,2). Corsa precedente (gi0 non pescata): D9 verde 6/6, mediana 5,20, 0 sotto 3 |
 | parata-100 | ❌ (1 scena) | da solo: verde 4 parate, **1 difetto**: ROTH s5/2021 regime gioco, portiere-pallone minimo **42,0** (soglia 6); rosso visibile (SEIFERT 24,9). Prima corsa (sotto carico, 3 browser): verde 0 difetti ma rosso cieco (2 parate, 2 non giudicabili per guardia di parete) |
-<!-- ASSISTNOME -->
+| assist-nome-98 | ✅ | verde A 4 partite (gol eroe 0,50/p, assist 0,75/p), B e C verdi; rosso A/B visibili. 51 min da solo. Due corse precedenti interrotte dal tetto del sottofondo (2 h) e dal riavvio del container, non dal guardiano |
 
 ### chiusura-99: riparazione della sonda
 Tre corse di fila sono morte con `TypeError: Cannot read properties of null (reading 'style')` (`chiusura-99.mjs:78`, braccio rosso
@@ -79,7 +79,7 @@ Non posso confermare se nella catena notte 178 questi due guardiani fossero verd
 `catena/178-*` (ci sono solo t2 e t3).
 
 
-`node tools/check-src.mjs`: CARRIER-MANAGER-AV.html allineato a HEAD (nessun frammento toccato).
+`node tools/build-src.mjs`: byte identici (nessun frammento toccato) · `node tools/check-src.mjs`: allineato a HEAD.
 
 ## 4. Punti aperti
 - **esiti-241 rosso** nel tronco 3 della catena notte 178 (`catena-178-t3.out`: «gi150 Dribbling provocatorio — il fallo c'è!» chance/win_freekick): stesso «122/123» dichiarato da t2 e t3, quindi i rossi della catena sono almeno due. Fuori dal mandato di questo giro, non toccato.
