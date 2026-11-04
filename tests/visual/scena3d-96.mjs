@@ -35,7 +35,7 @@ const LISTE = {
 };
 const OUTMAP = { gol: ['success', null], parata: ['fail', 'saved'], fuori: ['fail', 'wide'], riesce: ['success', null], sbaglia: ['fail', null], intercetto: ['fail', 'intercepted'] };
 const ROSSO = (process.env.CPM_G96_ROSSO || '').split(',').map(s => s.trim()).filter(Boolean);
-const ROSSI = ROSSO.includes('tutti') ? ['D2', 'D3', 'D4', 'D5', 'D8', 'D10', 'D11', 'D13'] : ROSSO;
+const ROSSI = (ROSSO.includes('tutti') ? ['D2', 'D3', 'D4', 'D5', 'D8', 'D10', 'D11', 'D13'] : ROSSO).concat((process.env.CPM_FLAG || '').split(',').filter(Boolean));
 const formati = (process.env.CPM_G96_FORMATI || 'tel,pc,tabv,tabo').split(',').filter(k => FORMATI[k]).map(k => FORMATI[k]);
 const PER = +(process.env.CPM_G96_PER || 4);
 const OUT = path.join(ROOT, 'tests', 'visual', 'out', 'scena3d-96' + (ROSSI.length ? '-rosso' : '')); fs.mkdirSync(OUT, { recursive: true });
@@ -43,7 +43,7 @@ const FOTO = !!process.env.CPM_G96_FOTO;
 
 const INIT = (rossi) => {
   window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1;
-  for (const r of rossi) window['__CPM_NO_G96' + r] = 1;
+  for (const r of rossi) { if (/^__CPM_/.test(r)) window[r] = 1; else window['__CPM_NO_G96' + r] = 1; }/* [giro 103] voce che comincia con __CPM_ = interruttore extra (CPM_FLAG) */
   window.__G96 = { on: false, fr: [] };
   const loop = () => { try { const B = window.__G96; if (B.on && B.fr.length < 5000 && window.__CPM_G96) { const o = window.__CPM_G96(); o.ck = typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null; o.cut = window.__CPM_CUTLIVE ? !!window.__CPM_CUTLIVE() : false; o.phx = window.__CPM_PHASE ? window.__CPM_PHASE() : null; B.fr.push(o); } } catch (e) {} requestAnimationFrame(loop); };
   requestAnimationFrame(loop);
@@ -63,7 +63,7 @@ async function ingresso(f) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await browser.newContext(opt); await installCdnRoutes(ctx); const page = await ctx.newPage(); page._ctx = ctx;
   page._errs = []; page.on('pageerror', e => page._errs.push(String(e.message).slice(0, 160)));
-  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_GLB = true; for (const r of o.r) window['__CPM_NO_G96' + r] = 1; localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: ROSSI });
+  await page.addInitScript(o => { window.__CPM_PRESENT = 1; window.__CPM_GLB = true; for (const r of o.r) { if (/^__CPM_/.test(r)) window[r] = 1; else window['__CPM_NO_G96' + r] = 1; } localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: ROSSI });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -115,6 +115,9 @@ function analizza(fr, rig, esito) {
   /* D11: salti del pallone */
   let sal = 0, sEx = []; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; const ds = q.ck - p.ck; if (ds > 0 && p.bw && q.bw && !p.cut && !q.cut && p.sk === q.sk) { const d = Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2]); if (d > 3 && d / ds > 60 && ds < 0.06) { sal++; if (sEx.length < 3) sEx.push(`${d.toFixed(1)}u/${ds.toFixed(3)}s ${q.ph} scrittore ${q.ws || '-'} (prima ${p.ws || '-'}) palla ${JSON.stringify(q.bw)}`); }/* [giro 103] il salto porta chi l'ha scritto: nella catena 178 D11 e' comparso una volta senza attribuzione e non si e' riprodotto in 62 scene */ } }
   a.salti = sal; a.saltiEx = sEx;
+  /* [giro 103] ingressi nella consegna in area dal passaggio RACCOLTO (ricevente-pass → esito:cross_goal) e scalino massimo in quel fotogramma */
+  let cgN = 0, cgMax = 0; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; if (/ricevente-pass/.test(p.ws || '') && /esito:cross_goal/.test(q.ws || '') && p.bw && q.bw && !q.cut) { cgN++; cgMax = Math.max(cgMax, Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2])); } }
+  a.cg = cgN; a.cgMax = +cgMax.toFixed(2);
   /* D4: rigore */
   if (rig) { const R = F.filter(x => x.ph === 'hl_result' && x.gk && x.bw); let prima = 0, inVolo = 0, maxPre = 0, b0 = null, z0 = null, partito = false;
     R.forEach(x => { if (b0 == null) { b0 = x.bw; z0 = x.gk[2]; } if (!partito && Math.hypot(x.bw[0] - b0[0], x.bw[2] - b0[2]) > 0.3) partito = true;
@@ -174,7 +177,7 @@ for (const f of formati) {
     } catch (e) { r.errore = String(e.message || e).slice(0, 160); }
     r.an = analizza(r.fr || [], r.rig, r.esito); if (process.env.CPM_G96_DUMP) fs.writeFileSync(path.join(OUT, r.id + '-fr.json'), JSON.stringify(r.fr || [])); delete r.fr; r.ko = r.errore ? ['errore: ' + r.errore] : giudica(r, f);
     tutti.push(r);
-    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
+    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti} consegna ${r.an.cg}/${r.an.cgMax}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
   }
   /* D13: ingresso in campo — logo del cerchio letto dalla camera (percorso vero: salvataggio -> partita -> walkout); telefono e PC */
   if (['tel', 'pc'].includes(f.k) || process.env.CPM_G96_INGRESSO_TUTTI) try {
