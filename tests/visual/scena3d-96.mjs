@@ -118,6 +118,8 @@ function analizza(fr, rig, esito) {
   /* [giro 103] ingressi nella consegna in area dal passaggio RACCOLTO (ricevente-pass → esito:cross_goal) e scalino massimo in quel fotogramma */
   let cgN = 0, cgMax = 0; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; if (/ricevente-pass/.test(p.ws || '') && /esito:cross_goal/.test(q.ws || '') && p.bw && q.bw && !q.cut) { cgN++; cgMax = Math.max(cgMax, Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2])); } }
   a.cg = cgN; a.cgMax = +cgMax.toFixed(2);
+  let soN = 0, soMax = 0; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; if (/ricevente-cross/.test(q.ws || '') && p.bw && q.bw && !q.cut && !p.cut && q.ck - p.ck > 0) { soN++; soMax = Math.max(soMax, Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2])); } }
+  a.so = soN; a.soMax = +soMax.toFixed(2);/* [giro 103] fotogrammi della sospensione sull'incornata (ricevente-cross) e passo massimo */
   /* D4: rigore */
   if (rig) { const R = F.filter(x => x.ph === 'hl_result' && x.gk && x.bw); let prima = 0, inVolo = 0, maxPre = 0, b0 = null, z0 = null, partito = false;
     R.forEach(x => { if (b0 == null) { b0 = x.bw; z0 = x.gk[2]; } if (!partito && Math.hypot(x.bw[0] - b0[0], x.bw[2] - b0[2]) > 0.3) partito = true;
@@ -177,7 +179,7 @@ for (const f of formati) {
     } catch (e) { r.errore = String(e.message || e).slice(0, 160); }
     r.an = analizza(r.fr || [], r.rig, r.esito); if (process.env.CPM_G96_DUMP) fs.writeFileSync(path.join(OUT, r.id + '-fr.json'), JSON.stringify(r.fr || [])); delete r.fr; r.ko = r.errore ? ['errore: ' + r.errore] : giudica(r, f);
     tutti.push(r);
-    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti} consegna ${r.an.cg}/${r.an.cgMax}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
+    console.log(`${r.id.padEnd(24)} ${r.ko.length ? '✗ ' + r.ko.join(' · ') : '✓'}  [fuori ${r.an.fuori} campo ${r.an.campo} cielo ${r.an.cielo} taglia ${r.an.tagliaFine} comp ${r.an.comp}/${r.an.compMin} ap ${r.compA}/${r.compAmin} et ${r.an.etRap}x/${r.an.etSovr} salti ${r.an.salti} consegna ${r.an.cg}/${r.an.cgMax} sospensione ${r.an.so}/${r.an.soMax}${r.rig ? ` rig ${r.an.tuffoPrima}/${r.an.spostPre}/${r.an.tuffoInVolo}` : ''}]`);
   }
   /* D13: ingresso in campo — logo del cerchio letto dalla camera (percorso vero: salvataggio -> partita -> walkout); telefono e PC */
   if (['tel', 'pc'].includes(f.k) || process.env.CPM_G96_INGRESSO_TUTTI) try {
