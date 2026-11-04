@@ -70,6 +70,14 @@ contatto (entro 2,5 dal portiere) o la fine del volo (u 1); il tuffo parte a 0,7
 *Misura*: HOWARD **verde 2,6 · rosso 6,2**; nella stessa partita «Sponda di prima per HOWARD» 2,3 e «Scarica su SPENCER» 1,9.
 *Guardiano* **`contatto-103`** (highlight-95 su s12/7, verde contro `__CPM_NO_G103D`).
 
+**Un guardiano declassato.** `lento-103` (highlight-95 a CPU ×6 sul flusso vero) **non è deterministico**: lo stesso braccio senza le
+correzioni dà minimo portiere-pallone **33,6 a load 15-19** e **3,5 a load 9** — il difetto dipende dal carico reale della macchina,
+non solo dal rallentamento della CPU. Nella corsa finale 1 il suo rosso non si è visto. Resta come **sonda** di collaudo, **fuori dalle
+catene**; la prova del rosso di `__CPM_NO_G103A` è tutta in `riserva-103`, che ora ha **due casi**: A «conclusione lunga» (occupata
+subito; verde esito a conclusione finita 8,05 s di scena · rosso in corsa 6,68-6,78) e B «conclusione non ancora cominciata» (gancio
+`__CPM_BUSY103DA`: la conclusione comincia dopo 3 s di scena; si giudica il minimo di 2,6 s di scena dalla risoluzione — verde
+2,61-2,66 · rosso 1,36-1,98). Entrambi i casi: verde 0 difetti, rosso visto su tutte le scene giudicate.
+
 Ganci di sola prova aggiunti (attivi solo con `__CPM_REC`/`_CPM_TEST`): `__CPM_PARETE103` (allunga la guardia di parete di riserva e
 chiusura perché la misura conti i secondi di scena anche a macchina carica), `__CPM_G103SOLORISERVA`, `__CPM_BUSY103`, campi `c103`/
 `rr103` nel testimone `__CPM_REV95`. highlight-95 e parata-100 armano `__CPM_PARETE103` (meno scene «non giudicabili»).

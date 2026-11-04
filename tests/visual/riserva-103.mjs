@@ -26,8 +26,8 @@ const CPU = +(process.env.CPM_CPU || 4), BUSY = +(process.env.CPM_G103_BUSY || 8
 const DA = +(process.env.CPM_G103_DA || 0);
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const fase = p => p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
-async function braccio(arm) {
-  const rosso = arm === 'rosso';
+async function braccio(arm, cpu) {
+  const rosso = arm === 'rosso'; const CPUQ = cpu || CPU;
   const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   await page.addInitScript(([r, bz, da]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_BUSY103 = bz; if (da) window.__CPM_BUSY103DA = da; window.__CPM_G103SOLORISERVA = 1; if (r) window.__CPM_NO_G103A = 1;
     window.__R103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
@@ -35,7 +35,7 @@ async function braccio(arm) {
         if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.c26 == null && performance.now() - cur.t0 >= 2600) cur.c26 = c.ck - cur.ck0;
         if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck - cur.ck0; cur.revMs = performance.now() - cur.t0; cur.rv = window.__CPM_REV95[window.__CPM_REV95.length - 1]; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [rosso, BUSY, DA]);
   await openMatch(page, port, { name: 'Riserva Centotre' });
-  if (CPU > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU }); }
+  if (CPUQ > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPUQ }); }
   const cat = await page.evaluate(() => SITUATIONS.map(s => (s.actions || []).map(a => { let h = {}; try { h = deriveHL(s, a) || {}; } catch (e) {} return h.type || null; })));
   const out = [];
   /* riscaldamento: la PRIMA scena forzata su pagina nuova non arriva mai all'esito in nessuno dei due bracci (misurato: 4 su 4), quindi
@@ -56,6 +56,11 @@ async function braccio(arm) {
   await ctx.close(); return out;
 }
 const R = {}; for (const a of ARMI) R[a] = await braccio(a);
+/* [giro 103] il rosso si vede solo a fotogrammi lenti: a fps alti i due comportamenti COINCIDONO per costruzione (2,6 s di parete = 2,6 s
+   di scena, tetto 8,6 in entrambi). Se la macchina e' troppo veloce le scene non sono giudicabili (scena nei primi 2,6 s > 2,0): si
+   RALLENTA di piu', senza toccare le soglie. Misurato: a load 8 servono CPU x8-x16, a load 15 bastava x2. */
+if (R.rosso) { let cpu = CPU; for (let t = 0; t < 2 && R.rosso.filter(x => !x.ko && x.c26 != null && x.c26 <= 2.0).length < 2; t++) {
+  cpu = Math.min(cpu * 2, 16); console.log(`  rosso troppo veloce: si rallenta a CPU x${cpu}`); R.rosso = await braccio('rosso', cpu); } }
 await browser.close(); srv.close();
 const g = [];
 if (R.verde) { const ok = R.verde.filter(x => !x.ko && /^(riserva|chiusura)$/.test(x.via) && x.cap !== 'parete');/* in verde puo' arrivare prima la chiusura della finestra: stesso tetto, stessa regola */ if (ok.length < 2) g.push(`verde cieco: ${ok.length} scene giudicate`);
