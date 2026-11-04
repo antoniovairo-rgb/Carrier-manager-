@@ -77,6 +77,7 @@ carico.
 | esiti-241 corse 3-4 (seconda stesura, accanto a highlight-95) | ❌ | 653 / 647 s | verde B **0/3**; rosso G102 0/2 e rosso B 1/3 → carico: finestra di 4 s troppo corta per il tuffo |
 | sonda-g102 gi14 da sola | — | ~60 s ×2 | rosso G102: `cross_goal>assist_shot>deflect` + `gk_dive` · verde: `cross_goal>deflect`, nessun gesto |
 | esiti-241 corsa 5 (finestra 7 s, accanto a esiti-218) | ✅ | 601 s | verde B **0/3** · rosso B 2/3 · rosso G102 **2/2** |
+| esiti-241 corsa 6 (versione finale, da solo) | ✅ | 462 s | verde A1 0/2 · A2 0/16 · A3 contrasto · B **0/3** · C 2/2 · rosso B 2/3 · rosso G102 **2/2** |
 | highlight-95 corsa 1 (prima stesura, accanto a parata-100) | ❌ verde | — | «↗️ Palla in area» s5/7 minimo 6,8 dal portiere → prima stesura bocciata, aggiunta `hlSpreca102` |
 | highlight-95 (seconda stesura, accanto ad altri guardiani) | ✅ verde | ~60 min | verde **118 highlight, 0 difetti** (4 parate giudicate, 25 non giudicabili per la guardia di parete); rosso D1/D2/D3 visibili; D4 «non visto» perché il browser è morto col riavvio del container sulle partite s12 (rosso s12 «errore… browser has been closed») |
 | highlight-95 solo rosso, s12 seme 1234 + scena senza esito | ✅ D4 visibile | 260 s | rosso **D4 senza esito 7** (il ❌ della corsa ridotta è atteso: D1-D3 non hanno partite qui) |
