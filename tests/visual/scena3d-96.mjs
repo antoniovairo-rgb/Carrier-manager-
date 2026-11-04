@@ -69,15 +69,19 @@ async function ingresso(f) {
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(1500);
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
-  await page.evaluate(() => { window.__T96 = []; const g = () => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'walkout' && window.__CPM_G96) { const o = window.__CPM_G96(); if (o && o.tap) window.__T96.push(o.tap); } } catch (e) {} requestAnimationFrame(g); }; requestAnimationFrame(g); });
+  await page.evaluate(() => { window.__T96 = []; const g = () => { try { if (window.__CPM_PHASE && window.__CPM_PHASE() === 'walkout' && window.__CPM_G96) { const o = window.__CPM_G96(); if (o && o.tap) window.__T96.push([o.tap[0], o.tap[1], typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null]); } } catch (e) {} requestAnimationFrame(g); }; requestAnimationFrame(g); });
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   const ph = () => page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
   for (let k = 0; k < 60; k++) { if ((await ph()) === 'walkout') break;
     await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua/i.test(b.textContent || '') && !/Salta/i.test(b.textContent || '')); if (x) x.click(); }).catch(() => {});
     await sleep(700); }
-  const t0 = Date.now(); let visto = false; while (Date.now() - t0 < 150000) { const p = await ph(); if (p === 'walkout') visto = true; else if (visto) break; if (visto && (await page.evaluate(() => window.__T96.length)) > 400) break; await sleep(300); }
+  /* [giro 103] l'ingresso si guarda FINO ALLA FINE (la chiude walkT, tempo di scena): prima la sonda smetteva a 150 s di parete o a 400
+     letture, cioe' a fotogrammi lenti vedeva solo l'inizio (tappeto che gira dopo uno stacco: 0,81-0,84 a macchina carica) e a fotogrammi
+     veloci si fermava a 6-7 s di scena. Ora la porzione giudicata e' la stessa a ogni velocita'; il tetto di parete resta come rete. */
+  const t0 = Date.now(); let visto = false, finito = false; while (Date.now() - t0 < 600000) { const p = await ph(); if (p === 'walkout') visto = true; else if (visto) { finito = true; break; } await sleep(300); }
   const T = await page.evaluate(() => window.__T96 || []); const vis = T.filter(t => t[1]);
-  page._tap = { walkout: visto, letture: vis.length, dritto: vis.length ? +(vis.filter(t => t[0] > 0.17).length / vis.length).toFixed(2) : 0, cosMin: vis.length ? Math.min(...vis.map(t => t[0])) : null };
+  const sc = T.filter(t => t[2] != null).map(t => t[2]);
+  page._tap = { walkout: visto, finito, scena: sc.length ? +(Math.max(...sc) - Math.min(...sc)).toFixed(1) : null, letture: vis.length, dritto: vis.length ? +(vis.filter(t => t[0] > 0.17).length / vis.length).toFixed(2) : 0, cosMin: vis.length ? Math.min(...vis.map(t => t[0])) : null };
   return page;
 }
 const scena = p => p.evaluate(() => window.__CPM_SCENET || 0).catch(() => 0);
@@ -109,7 +113,7 @@ function analizza(fr, rig, esito) {
       const mn = Math.min(A[2] * A[3], B[2] * B[3]); if (mn > 0 && ox * oy / mn > 0.25) { etOv++; if (!etEx) etEx = `@${(x.ck || 0).toFixed(2)} ${x.ph}`; } } });
   a.etRap = +etR.toFixed(2); a.etSovr = etOv; a.etEx = etEx;
   /* D11: salti del pallone */
-  let sal = 0, sEx = []; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; const ds = q.ck - p.ck; if (ds > 0 && p.bw && q.bw && !p.cut && !q.cut && p.sk === q.sk) { const d = Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2]); if (d > 3 && d / ds > 60 && ds < 0.06) { sal++; if (sEx.length < 3) sEx.push(`${d.toFixed(1)}u/${ds.toFixed(3)}s ${q.ph}`); } } }
+  let sal = 0, sEx = []; for (let i = 1; i < F.length; i++) { const p = F[i - 1], q = F[i]; const ds = q.ck - p.ck; if (ds > 0 && p.bw && q.bw && !p.cut && !q.cut && p.sk === q.sk) { const d = Math.hypot(q.bw[0] - p.bw[0], q.bw[1] - p.bw[1], q.bw[2] - p.bw[2]); if (d > 3 && d / ds > 60 && ds < 0.06) { sal++; if (sEx.length < 3) sEx.push(`${d.toFixed(1)}u/${ds.toFixed(3)}s ${q.ph} scrittore ${q.ws || '-'} (prima ${p.ws || '-'}) palla ${JSON.stringify(q.bw)}`); }/* [giro 103] il salto porta chi l'ha scritto: nella catena 178 D11 e' comparso una volta senza attribuzione e non si e' riprodotto in 62 scene */ } }
   a.salti = sal; a.saltiEx = sEx;
   /* D4: rigore */
   if (rig) { const R = F.filter(x => x.ph === 'hl_result' && x.gk && x.bw); let prima = 0, inVolo = 0, maxPre = 0, b0 = null, z0 = null, partito = false;
@@ -177,7 +181,7 @@ for (const f of formati) {
     errs.push(...page._errs.map(e => f.k + ' ' + e)); await page._ctx.close().catch(() => {}); page = await ingresso(f);
     const t = page._tap;
     const d13 = { f: f.k, id: `${f.k}-walkout`, tap: t };
-    d13.ko = !t ? ['D13 testimone del tappeto assente'] : (t.letture < 3 ? ['D13 tappeto mai visto: ' + t.letture + ' letture'] : (t.dritto < 0.9 ? [`D13 logo del cerchio capovolto: ${t.dritto} delle letture dritte`] : []));
+    d13.ko = !t ? ['D13 testimone del tappeto assente'] : (t.letture < 3 ? ['D13 tappeto mai visto: ' + t.letture + ' letture'] : !t.finito ? ['D13 ingresso non finito in 600 s: non giudicabile'] : (t.dritto < 0.9 ? [`D13 logo del cerchio capovolto: ${t.dritto} delle letture dritte`] : []));
     tutti.push(d13); console.log(`${d13.id.padEnd(24)} ${d13.ko.length ? '✗ ' + d13.ko.join(' · ') : '✓'}  ${JSON.stringify(t)}`);
   } catch (e) { tutti.push({ f: f.k, id: f.k + '-walkout', ko: ['D13 errore ' + String(e.message).slice(0, 100)] }); }
   errs.push(...page._errs.map(e => f.k + ' ' + e)); await page._ctx.close().catch(() => {});

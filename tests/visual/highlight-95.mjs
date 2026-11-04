@@ -42,7 +42,11 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   else { const sv = JSON.parse(JSON.stringify(raw)); (sv.player || sv).name += ' ' + sd; ls = { 'cpm-v3': JSON.stringify(sv) }; }
   ls['cpm-match-speed'] = '2';
   if (process.env.CPM_FLAG) await page.addInitScript(f => { f.split(',').forEach(k => { if (k) window[k] = 1; }); }, process.env.CPM_FLAG);/* [giro 99] interruttori extra per isolare la causa di un difetto (es. CPM_FLAG=__CPM_NO_G99RIC) */
-  await page.addInitScript(([s, r, rw, se]) => { window.__CPM_GLB = false; window.__CPM_REC = true; if (rw) window.__CPM_REALWAIT = 1; if (r) { window.__CPM_NO_G95D1 = 1; window.__CPM_NO_G95D2 = 1; window.__CPM_NO_G95D3 = 1; window.__CPM_NO_G95D4 = 1; window.__CPM_NO_ASSIST298 = 1; } if (se) window.__CPM_G95_SENZAESITO = 1; if (!sessionStorage.getItem('__g95')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__g95', '1'); } }, [ls, rosso, REALWAIT, senza]);
+  await page.addInitScript(([s, r, rw, se]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PARETE103 = 150000;/* [giro 103] riserva e chiusura contano i secondi DI SCENA anche a macchina carica: meno scene «non giudicabili» per la guardia di parete */ if (rw) window.__CPM_REALWAIT = 1; if (r) { window.__CPM_NO_G95D1 = 1; window.__CPM_NO_G95D2 = 1; window.__CPM_NO_G95D3 = 1; window.__CPM_NO_G95D4 = 1; window.__CPM_NO_ASSIST298 = 1; } if (se) window.__CPM_G95_SENZAESITO = 1; if (!sessionStorage.getItem('__g95')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__g95', '1'); } }, [ls, rosso, REALWAIT, senza]);
+  if (process.env.CPM_G103DIAG) await page.addInitScript(() => {/* [giro 103] registratore della scena: per ogni hl_result, orologio DI SCENA all'ingresso, ultimo fotogramma occupato, rivelazione */
+    const H = window.__H103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
+      if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (!cur) { cur = { ck0: c.ck, occ: null, rev: null, n: (window.__CPM_REV95 || []).length, fr: 0, t0: performance.now() }; H.push(cur); }
+        cur.fr++; cur.ck = c.ck; if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck; cur.revMs = performance.now() - cur.t0; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); });
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -73,6 +77,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   }
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
   const VIS = await page.evaluate(() => window.__CPM_VIS95 || []).catch(() => []);
+  if (process.env.CPM_G103DIAG) { const H = await page.evaluate(() => window.__H103 || []).catch(() => []); for (const x of H) if (x.occ != null) console.log(`  [g103] ${saveKey}/${sd} ${pol} occupata ${(x.occ - x.ck0).toFixed(2)} s di scena · esito a ${x.rev != null ? (x.rev - x.ck0).toFixed(2) : '-'} s (${x.revMs != null ? Math.round(x.revMs) : '-'} ms) · fotogrammi ${x.fr}`); }
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
   hls.forEach((h, i) => { h.vis = VIS[i] || null; const r = R[h.n] || null; const core = r ? String(r.label || '').replace(/^\S+\s/, '').slice(0, 14) : ''; h.r = (r && (!h.inct || h.inct.indexOf(core) >= 0)) ? r : null; if (r && !h.r) h.scartato = 1; });/* l'abbinamento scena↔testimone si verifica sul nome della giocata mostrato «in corso» */
@@ -108,7 +113,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
         if (g && g.fam !== 'dribbling') T.difetti.push('D2 ' + tag + ': il motore lo gioca come ' + g.fam);
         if (/tiro|para|fuori di poco|specchio|intercett/i.test(ovl)) T.difetti.push('D2 ' + tag + ': esito «' + ovl + '» non da dribbling');
       }
-      if (!_cap && h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione');
+      if (!_cap && h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione' + (process.env.CPM_G103DIAG ? ' ' + JSON.stringify({ cap: h.rv.cap, c: h.rv.c103, rr: h.rv.rr103 }) : ''));
       if (!_cap && /parat|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')');
       }

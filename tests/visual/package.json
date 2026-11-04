@@ -513,6 +513,8 @@
     "assist-nome-98": "node assist-nome-98.mjs",
     "chiusura-99": "node chiusura-99.mjs",
     "parata-100": "node parata-100.mjs",
+    "riserva-103": "node riserva-103.mjs",
+    "occupata-103": "node occupata-103.mjs",
     "doppio-gesto-148": "node doppio-gesto-148.mjs",
     "testa-146": "node testa-146.mjs",
     "glb-pronti-232": "node glb-pronti-232.mjs",

@@ -29,7 +29,7 @@ async function gioca(sk, sd, rosso, regime) {
   else { const sv = JSON.parse(JSON.stringify(raw)); (sv.player || sv).name += ' ' + sd; ls = { 'cpm-v3': JSON.stringify(sv) }; }
   ls['cpm-match-speed'] = '2';
   if (process.env.CPM_FLAG) await page.addInitScript(f => { f.split(',').forEach(k => { if (k) window[k] = 1; }); }, process.env.CPM_FLAG);
-  await page.addInitScript(([s, r, pr]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; if (pr) window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G100D3 = 1;
+  await page.addInitScript(([s, r, pr]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000;/* [giro 103] la riserva conta 6 s DI SCENA anche a macchina carica: niente parate «non giudicabili» per la guardia di parete */ if (pr) window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G100D3 = 1;
     if (!sessionStorage.getItem('__p100')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__p100', '1'); }
     const L = window.__P100 = []; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (ph === 'hl_result' && L.length < 40000) { const a = window.__CPM_ARC || {};
       L.push([Date.now(), (window.__CPM_RES218 || []).length, window.__CPM_GKB95 ? window.__CPM_GKB95() : null, a.pa || null, window.__CPM_REVAT95 || 0, a.ok || null, a.pt, a.tl ? 1 : 0, a.arc ? 1 : 0]); } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); },
@@ -67,8 +67,16 @@ for (const arm of ARMI) { const rosso = arm === 'rosso'; const lav = []; for (co
   const fatti = new Array(lav.length); let k = 0;
   await Promise.all(Array.from({ length: Math.min(PAR, lav.length) }, async () => { while (k < lav.length) { const i = k++; const L = lav[i];
     try { fatti[i] = await gioca(L.sk, L.sd, rosso, L.rg); } catch (e) { fatti[i] = { out: [], ph: 'errore ' + String(e).slice(0, 80), n: 0 }; } } }));
+  /* [giro 103] copertura: il pilota gioca in tempo reale e la stessa partita non e' riproducibile a seme fisso. Se un braccio resta senza
+     la scena che deve giudicare (verde: nessuna parata sul ramo cross_goal o meno di 3 del compagno; rosso: nessuna parata giudicabile)
+     si rigiocano le stesse partite, al massimo due volte, dichiarandolo. Le soglie non cambiano. */
+  const _cieco = () => { const o = fatti.flatMap(M => (M && M.out) || []).filter(x => !(x.rv && x.rv.cap === 'parete'));
+    return rosso ? !o.length : (o.filter(x => /assist/.test(x.g)).length < 3 || !o.some(x => /cross_goal/.test(x.pas))); };
+  for (let giro = 1; giro <= 2 && _cieco(); giro++) { console.log(arm + ' copertura insufficiente: secondo giro ' + giro); const base = lav.length; const ext = lav.slice(0, base).map(L => ({ ...L, rip: giro }));
+    let j = 0; await Promise.all(Array.from({ length: Math.min(PAR, ext.length) }, async () => { while (j < ext.length) { const i = j++; const L = ext[i];
+      try { fatti.push(await gioca(L.sk, L.sd, rosso, L.rg)); } catch (e) { fatti.push({ out: [], ph: 'errore ' + String(e).slice(0, 80), n: 0 }); } lav.push(L); } })); }
   const T = { par: 0, dif: [], comp: 0 };
-  lav.forEach((L, i) => { const M = fatti[i]; console.log(arm + ' ' + L.rg + ' ' + L.sk + '/' + L.sd + ' fine ' + M.ph + ' scene ' + M.n + ' parate ' + M.out.length);
+  lav.forEach((L, i) => { const M = fatti[i]; console.log(arm + ' ' + L.rg + ' ' + L.sk + '/' + L.sd + (L.rip ? ' (ripetuta ' + L.rip + ')' : '') + ' fine ' + M.ph + ' scene ' + M.n + ' parate ' + M.out.length);
     for (const o of M.out) { T.par++; if (/assist/.test(o.g)) T.comp++; if (/cross_goal/.test(o.pas)) T.cg = (T.cg | 0) + 1; const tag = L.rg + ' ' + L.sk + '/' + L.sd + ' «' + String(o.lab).slice(0, 30) + '»';
       if (o.rv && o.rv.cap === 'parete') { T.ng = (T.ng | 0) + 1; continue; }
       if (o.minGB > 6) T.dif.push(tag + ' «' + o.ovl + '» minGB ' + o.minGB.toFixed(1));
