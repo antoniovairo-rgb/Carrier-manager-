@@ -4833,7 +4833,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                respingeva a 7 dalla porta, a 10-40 unita' dal portiere (misurato con highlight-95: pallone mai entro 6 dal portiere su 4 assist
                «para il portiere»). Ora il tiro va sul portiere e la respinta parte dalle sue mani, sempre prima della linea. Rosso __CPM_NO_G95D3. */
             const _gk95=(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3))?awayGkMesh:null;
-            if(_gk95){ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*2.2;}
+            if(_gk95){const _kz103=(typeof window!=='undefined'&&window.__CPM_NO_G103D)?2.2:3.2;ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*_kz103;}
             else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;}if(!_m298&&!(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)))ball.position.z*=(1-aDt*1.6);
           /* [giro 103 — scena3d-96 D11 nel verde di consegna-103: pc-gi18 3,1u in 0,05 s, scrittore esito:assist_shot dopo ricevente-pass] il
              tiro del compagno insegue il bersaglio con 3,2 x distanza: da 15u fa ~50 u/s piu' la salita dell'arco, oltre la velocita' da
@@ -4844,7 +4844,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_m298){}
           else if(_isCh93&&_u3>=0.72){
             if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
-            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}
+            /* [giro 103 — highlight-95 D3 verde nei rigiochi finali: HOWARD s12/7 «Uno-due», «para il portiere» col pallone a 6,0 dal
+               portiere (5,8-6,1 in tutte le corse, con e senza le altre correzioni: scena sul filo della soglia 6)] il pallone convergeva sul
+               portiere in x a 3,2/s ma in z a 2,2/s e la respinta partiva a u 0,72 dovunque fosse: col portiere spostato di lato restavano 5-6
+               unita'. Ora la z converge come la x e la respinta aspetta il contatto (entro 2,5 dal portiere) o la fine del volo (u 1); il
+               tuffo parte a 0,72 come prima. Rosso __CPM_NO_G103D. */
+            if((typeof window!=='undefined'&&window.__CPM_NO_G103D)||!awayGkMesh||_u3>=1||Math.hypot(awayGkMesh.position.x-ball.position.x,awayGkMesh.position.z-ball.position.z)<2.5){
+            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}}
           else{
             /* [7.407.0 collaudo PO gi118 «il portiere non tenta mai la parata» su assist] IL GOL DEL
                COMPAGNO MERITA UN TUFFO. Il tuffo era armato solo dal ramo CHANCE (la respinta lo esige);
