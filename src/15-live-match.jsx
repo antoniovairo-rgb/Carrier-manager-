@@ -10755,7 +10755,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
                 <div data-cpm="risultato-v2" style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap",...(_v2t3?{background:V2.testo,borderRadius:RAD.xs,padding:"2px 9px",fontFamily:FONT_TV,fontWeight:800}:{})}}>
                   <span style={{color:_v2t3?V2.bg:(_swap893?_aCol901:_hCol901)}}>{_swap893?_aVal901:_hVal901}</span>
-                  <span style={{color:_v2t3?"rgba(13,15,20,0.55)":"rgba(255,255,255,0.35)",padding:"0 5px"}}>–</span>
+                  <span style={{color:_v2t3?"rgba(13,15,20,0.72)":"rgba(255,255,255,0.35)",padding:"0 5px"}}>–</span>
                   <span style={{color:_v2t3?V2.bg:(_swap893?_hCol901:_aCol901)}}>{_swap893?_hVal901:_aVal901}</span>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:3,marginTop:2}}>
