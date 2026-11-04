@@ -901,3 +901,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 102 (f3da0d86): esiti-241 — la riga «fallo cercato» veniva dal braccio rosso; il rosso vero era nel verde: su gi14/gi16 (cross riuscito, esito occasione) il 3D faceva tuffare il portiere mentre riquadro e cronaca dicono «palla che balla in area». Causa: giro 100 D3 (conversione cross_goal → assist_shot su ogni consegna). Correzione in src/12 e src/15: la conversione vale solo per il passaggio raccolto lontano o se il motore scrive il tiro del compagno; interruttore __CPM_NO_G102.
 - Restano per il giro 103 (in corso): parata-100 intermittente (ROTH 42,0 contro soglia 6 in una corsa), chiusura-99 D9 verde (gi0 colore club a contrasto 2,8), highlight-95 D3, scena3d-96 D11.
 - lavoro/178 → d0dd9063, check-src allineato.
+
+### 04/11 sera — decisione PO: tetto alle 21:00 Roma per chiudere la 178
+- Domanda del PO: «Ancora non è stata pubblicata??». Il giro 103 (session_01QEYiaBAYMyNg3pTRSScWo1) lavora da ~16 ore; ultimo commit a72dca2a, corse finali in corso (scena3d-96 rosso per D2/D3 nella corsa 2).
+- Questionario, risposta PO: **«Tetto alle 21:00 Roma»** (scartati «Aspetta senza tetto» e «Pubblica senza il giro 103»).
+- Attuazione (sessione madre): alle 20:00 UTC, se il giro 103 non ha finito, si interrompe e si prende l'ultimo commit spinto di sviluppo/giro103-tronco1; unione in lavoro/178, build + check-src, verifica finale mirata (Sonnet). Si pubblica se restano rossi solo di strumento; un difetto vero dell'highlight dell'eroe resta bloccante (regola PO).
