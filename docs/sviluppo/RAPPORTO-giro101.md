@@ -56,11 +56,34 @@ interruttore per la prova del rosso dev'essere suo). La prova del rosso resta `_
 | cross-218 | ✅ | riquadro, motore e 3D concordi sul cross sbagliato; il rosso si vede |
 | test:logic | ✅ | 43/43 |
 | save-compat | ✅ | 12 pass · 0 fail |
-<!-- RESTO -->
+| highlight-95 | ✅ | verde 114 highlight · D4 senza esito 0 · difetti 0; rosso: D4 senza esito 9, finte riuscite 11,1% (il rosso si vede). 88 min con altri guardiani in parallelo |
+| assist-298 | ✅ | verde 20 scene (18 giudicate) · passaggi 94,4% · difetti 0; rosso 34 difetti |
+| esiti-96 | ✅ | VERDE OK D1, D2, D3, B15, D6, D7, D12, D15, D14; rosso atteso: cadono tutti |
+| chiusura-99 | ❌ (1 scena) | RIC verde 6/6 (100%), rosso 2/6; D9 rosso visibile (mediana 1,23, 5 sotto 3); **D9 verde: gi0 colore club contrasto 2,8 < 3** (altre 5 scene 5,2–6,2). Corsa precedente (gi0 non pescata): D9 verde 6/6, mediana 5,20, 0 sotto 3 |
+| parata-100 | ❌ (1 scena) | da solo: verde 4 parate, **1 difetto**: ROTH s5/2021 regime gioco, portiere-pallone minimo **42,0** (soglia 6); rosso visibile (SEIFERT 24,9). Prima corsa (sotto carico, 3 browser): verde 0 difetti ma rosso cieco (2 parate, 2 non giudicabili per guardia di parete) |
+<!-- ASSISTNOME -->
+
+### chiusura-99: riparazione della sonda
+Tre corse di fila sono morte con `TypeError: Cannot read properties of null (reading 'style')` (`chiusura-99.mjs:78`, braccio rosso
+D9): la scritta «GOOOOL!» marcata `data-g99m` viene smontata fra la seconda e la terza foto. La sonda ora, se l'elemento non c'è più,
+**scarta il tentativo** (`continue`, come gli altri casi in cui la forzatura non riesce) invece di morire; se non resta nessuna misura il
+braccio è «cieco» e fallisce come prima. Nessuna soglia cambiata. Dopo la riparazione la sonda arriva sempre in fondo (2 corse).
+
+### Due rossi che restano, fuori dal mandato
+Il gioco **non è stato toccato** in questo giro (src/ identico), quindi i due rossi qui sotto valgono anche per 4a4ff494:
+- **parata-100 verde, ROTH 42,0**: la parata scritta del tiro del compagno senza pallone al portiere, nel regime «gioco». Il giro 100 aveva
+  misurato ROTH a 2,8–3,5: il difetto D3 è **intermittente**. Cantiere del giro 100 (src/12, ramo `assist_shot`/`cross_goal`).
+- **chiusura-99 D9 verde, gi0 col colore del club**: scritta del gol a contrasto 2,8. Dipende da quale scena la sonda pesca (la stessa
+  corsa sul primo colore ha preso gi8 un'altra volta). Cantiere del giro 99 (grafica della scritta).
+Non posso confermare se nella catena notte 178 questi due guardiani fossero verdi: il tronco che li contiene non è sui rami
+`catena/178-*` (ci sono solo t2 e t3).
+
 
 `node tools/check-src.mjs`: CARRIER-MANAGER-AV.html allineato a HEAD (nessun frammento toccato).
 
 ## 4. Punti aperti
+- **esiti-241 rosso** nel tronco 3 della catena notte 178 (`catena-178-t3.out`: «gi150 Dribbling provocatorio — il fallo c'è!» chance/win_freekick): stesso «122/123» dichiarato da t2 e t3, quindi i rossi della catena sono almeno due. Fuori dal mandato di questo giro, non toccato.
+- parata-100 ROTH e chiusura-99 gi0 (sopra).
 - La non riproducibilità del **numero** di scene a seme fisso resta (autoplay a tempo reale): il terzo seme la rende innocua per il
   pavimento, non la elimina. Se servisse un conteggio deterministico, il cantiere è l'autoplay (fuori ambito qui).
 - Il braccio rosso con tre semi vede 5 contraddizioni invece di 3-4: nessun impatto sulla soglia (≥1).

@@ -73,9 +73,11 @@ async function parteD9(arm) {
         const r = e.getBoundingClientRect(); return { x: Math.max(0, r.x - 4), y: Math.max(0, r.y - 4), width: r.width + 8, height: r.height + 8, col: getComputedStyle(e).color }; }, sel);
       if (!box) continue; const clip = { x: box.x, y: box.y, width: box.width, height: box.height };
       const A = png(await page.screenshot({ clip }));
-      await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); e._c = e.style.color; e.style.color = 'transparent'; });
+      /* [giro 101] se la scritta e' stata smontata fra due foto (misurato 3/3 nel braccio rosso: «Cannot read properties of null») il
+         tentativo si scarta come gli altri `continue`, invece di far morire il guardiano: un braccio senza misure resta «cieco» e fallisce */
+      if (!await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); if (!e) return false; e._c = e.style.color; e.style.color = 'transparent'; return true; })) { await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); }); continue; }
       const B = png(await page.screenshot({ clip }));
-      await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); e.style.color = e._c; let o = e; while (o.parentElement && !(o.style && o.style.zIndex === '22')) o = o.parentElement; o.style.visibility = 'hidden'; });
+      if (!await page.evaluate(() => { const e = document.querySelector('[data-g99m]'); if (!e) return false; e.style.color = e._c; let o = e; while (o.parentElement && !(o.style && o.style.zIndex === '22')) o = o.parentElement; o.style.visibility = 'hidden'; return true; })) { await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); }); continue; }
       const C = png(await page.screenshot({ clip }));
       await page.evaluate(() => { document.querySelectorAll('*').forEach(n => { n.style.animationPlayState = ''; }); const e = document.querySelector('[data-g99m]'); if (e) e.removeAttribute('data-g99m'); });
       const lt = [], lb = [], lc = []; for (let i = 0; i < A.d.length; i += 4) { const dd = Math.abs(A.d[i] - B.d[i]) + Math.abs(A.d[i + 1] - B.d[i + 1]) + Math.abs(A.d[i + 2] - B.d[i + 2]);
