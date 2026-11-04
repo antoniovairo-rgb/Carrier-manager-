@@ -78,13 +78,42 @@ carico.
 | sonda-g102 gi14 da sola | — | ~60 s ×2 | rosso G102: `cross_goal>assist_shot>deflect` + `gk_dive` · verde: `cross_goal>deflect`, nessun gesto |
 | esiti-241 corsa 5 (finestra 7 s, accanto a esiti-218) | ✅ | 601 s | verde B **0/3** · rosso B 2/3 · rosso G102 **2/2** |
 | highlight-95 corsa 1 (prima stesura, accanto a parata-100) | ❌ verde | — | «↗️ Palla in area» s5/7 minimo 6,8 dal portiere → prima stesura bocciata, aggiunta `hlSpreca102` |
-| highlight-95 (seconda stesura, accanto ad altri guardiani) | ⚠️ verde ✅, rosso D4 non visto | ~60 min | verde **118 highlight, 0 difetti** (4 parate giudicate, 25 non giudicabili per la guardia di parete); rosso: D1 e D3 visibili, D4 no |
-| parata-100 (accanto a highlight-95) | ⚠️ verde ✅ | 1020 s | verde **4/4 parate al portiere, 0 difetti** (1 sul ramo cross_goal); rosso «non si vede» con 2 non giudicabili |
+| highlight-95 (seconda stesura, accanto ad altri guardiani) | ✅ verde | ~60 min | verde **118 highlight, 0 difetti** (4 parate giudicate, 25 non giudicabili per la guardia di parete); rosso D1/D2/D3 visibili; D4 «non visto» perché il browser è morto col riavvio del container sulle partite s12 (rosso s12 «errore… browser has been closed») |
+| highlight-95 solo rosso, s12 seme 1234 + scena senza esito | ✅ D4 visibile | 260 s | rosso **D4 senza esito 7** (il ❌ della corsa ridotta è atteso: D1-D3 non hanno partite qui) |
+| parata-100 (accanto a highlight-95) | ⚠️ verde ✅ | 1020 s | verde **4/4 parate al portiere, 0 difetti** (1 sul ramo cross_goal); rosso «non si vede» con 2 non giudicabili (carico: 5 pagine) |
 | parata-100 solo rosso, da solo | ✅ | 308 s | rosso SEIFERT **minGB 22,3** (giro 100: 22,4), 0 non giudicabili |
 | assist-298 verde (accanto a highlight-95) | ✅ | — | 16 scene giudicate (pavimento 15) · passaggi riusciti 93,8% · gol compagno 25% · **0 difetti** |
 | assist-298 solo rosso | ✅ | 533 s | difetti visibili (uno-due HOWARD/SPENCER) |
-| assist-nome-98 (verde e rosso) | ⚠️ verde ✅, rosso D4 non visto | 3025 s | verde: nome coerente 100% su 12, 3D ricevente = cast 8/12, D3 0, D4 0; rosso: D1 visibile, D3 visibile, B visibile, **D4 0 seguiti** |
-| esiti-218 (guardiano della base, accanto a esiti-241) | ❌ copertura | 1066 s | verde **0 contraddizioni** su 11 scene (pavimento 12) · rosso 4 contraddizioni — preesistente, diagnosticato dal giro 101 |
+| assist-nome-98 (verde e rosso) | ⚠️ verde ✅ | 3025 s | verde: nome coerente 100% su 12, 3D ricevente = cast 8/12, D3 0, D4 0, B ok; rosso: D1/D3/B visibili, D4 «0 seguiti» |
+| assist-nome-98 solo rosso parte A | ✅ | 1086 s | rosso **D4 visibile** (seme 3: seguito con giocata d'assist dopo passaggio respinto) → il «0 seguiti» era frequenza |
+| esiti-96 | ✅ | 759 s | verde OK D1, D2, D3, B15, D6, D7, D12, D15, D14 · rosso atteso su tutti |
+| chiusura-99 (corsa intera ×3) | ❌ strumento | 80-97 s | si schianta in parte D9: `document.querySelector('[data-g99m]')` nullo (il riquadro «GOOOOL!» sparisce fra due fotografie) — nessun giudizio emesso |
+| chiusura-99 D9 sul build di BASE 4a4ff494 (verde) | ❌ | — | gol 6/6, 1 sotto contrasto 3 → **rosso già sulla base** (la corsa non si è schiantata) |
+| chiusura-99 D9 sul ramo (verde, poi rosso) | ✅ | ~2×100 s | verde 6/6, mediana 5,81, 0 sotto 3 · rosso mediana 1,37, 5 sotto 3 |
+| chiusura-99 RIC (verde e rosso) | ✅ | 1098 s | verde servito = nominato **6/6 (100%)**; rosso visibile |
+| esiti-218 (guardiano della base, accanto a esiti-241) | ❌ copertura | 1066 s | verde **0 contraddizioni** su 11 scene (pavimento 12) · rosso 4 — preesistente, diagnosticato dal giro 101 |
 | esiti-218 (seconda corsa) | ❌ copertura | 1074 s | verde 0 contraddizioni su 11 scene |
+| esiti-218 **versione giro 101** (`origin/sviluppo/giro101-esiti`, file temporaneo non committato) sul ramo | ✅ | 1607 s | verde **18 scene / 0** · rosso 19 / 5 |
 | test:logic | ✅ | — | 43/43 |
 | save-compat | ✅ | — | 12 pass · 0 fail |
+
+`node tools/build-src.mjs` + `node tools/check-src.mjs`: identico byte per byte, allineato.
+
+## 5. Punti aperti e note per l'unione
+
+1. **Causa comune col giro 101?** No, per quanto ho misurato. Il giro 101 ripara il racconto del **tiro dell'eroe** (esiti-218: il
+   riquadro dice «murato» dove il motore dice «fuori», src/05/15) e il suo rosso nella catena era di **copertura** (11 scene su 12,
+   0 contraddizioni). Il rosso di esiti-241 era del **3D** (src/12): il giro 100 D3 aveva esteso il tuffo del portiere a ogni consegna
+   in area. Stessa famiglia («il racconto deve dire la verità del motore»), cause diverse. File toccati da questo giro: `src/12`
+   (quattro righe), `src/15` (una prop sulla riga di `<ThreeMatchView>`), `tests/visual/esiti-241.mjs`, `tests/visual/sonda-g102.mjs`
+   (sonda, non guardiano), questo rapporto. Nessun conflitto atteso con `src/05`.
+2. **Il registro della catena inganna**: `ci-runner` riporta il primo `❌` dell'uscita, che per i guardiani verde+rosso può essere una
+   riga del **braccio rosso** (contraddizione voluta). Qui ha mandato a cercare un difetto su gi150 che non c'era. Suggerimento (non
+   applicato, fuori ambito): riportare la riga dopo «❌ <nome>» (il motivo), non il primo ❌.
+3. **`hlMate298` mai passata al 3D** (vedi §2): rami del giro 93/95 spenti. Da decidere a parte, con misura.
+4. **chiusura-99 D9 si schianta nella corsa intera** (3/3 su questo ramo; sulla base la stessa parte da sola è risultata **rossa**
+   per contrasto, 1 gol sotto 3). La mia modifica non tocca il riquadro del gol né i tiri da gol usati da D9 (`shot`/`goal`, non
+   `cross_goal`/`chance`). Da riparare la sonda (attesa dell'elemento prima della seconda fotografia) e, se ricompare, il contrasto.
+5. **Sensibilità al carico**: parata-100 rosso e la parte D di esiti-241 cambiano esito con più di due pagine attive. La catena
+   gira due guardiani alla volta: per esiti-241 la finestra di 7 s su gi14/gi16 ha retto accanto a esiti-218 (G102 2/2).
+6. `GAME_VERSION` non toccata: la riparazione chiude la 7.999.178.
