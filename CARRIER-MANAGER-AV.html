@@ -17159,6 +17159,7 @@ function ThreeMatchView(props){
          del frame e un'etichetta scritta da chi riassegna il pallone di colpo — e si legge a fine frame,
          accanto allo stacco nero. La domanda «chi lo fa» ha una risposta sola, e non e' una deduzione. */
       sr.current._ws524=0;/* [7.524.0 — strumento, pattern 7.404: la misura DOV'E' il fenomeno] codice dello SCRITTORE del pallone in questo fotogramma (0=nessuno): scalare sempre attivo, entra nell'anello del testimone cosi' la bozza del PO puo' dire CHI ha mosso la palla nel fotogramma incriminato — `_bj0` (la firma ricca) e' armata solo nei test e sul telefono non c'e' */
+      if(ball){sr.current._f103x=ball.position.x;sr.current._f103y=ball.position.y;sr.current._f103z=ball.position.z;sr.current._g103p=sr.current._g103n;sr.current._g103n=false;}/* [giro 103] pallone a inizio fotogramma (la colla di conduzione limita lo scatto al passaggio volo→conduzione) */
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST))sr.current._bj0={x:ball.position.x,z:ball.position.z,src:null,srcs:[],aT0:+(+ballArcT).toFixed(3)/* [giro 77] tempo dell'arco a inizio fotogramma (testimone) */};else sr.current._bj0=null;
       if(P.hlSitKey!=null&&P.hlSitKey>=0&&sr.current._lastBallKey!==P.hlSitKey){sr.current._lastBallKey=P.hlSitKey;sr.current._ballSnap=true;}
       if(sr.current._ballSnap&&isHL){sr.current._ballSnap=false;
@@ -21215,7 +21216,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                    il piede non e' piu' il riferimento da cui il beat successivo riparte. Resta incollato. */
                 ball.position.x=_hm.position.x+Math.cos(_thN382)*0.95;
                 ball.position.z=_hm.position.z+Math.sin(_thN382)*0.95;
-                ball.position.y=0.42;if((sr.current._ws524=14)&&sr.current._bj0)(sr.current._bj0.src='testa',sr.current._bj0.srcs.push('testa'));}
+                ball.position.y=0.42;
+                /* [giro 103 — scena3d-96 D11, pc-gi64-parata 3,5u in 0,05 s, scrittori «buildup-volo+testa» nello stesso fotogramma: il
+                   residuo dichiarato dal 7.515] al passaggio volo→conduzione il volo (tappato a 48 u/s dal giro 96a) e' indietro sul piano e
+                   la colla recuperava tutto il ritardo in UN fotogramma, a qualunque fps. Ora, solo se il pallone e' lontano dal piede (>1,5u
+                   dalla posizione d'inizio fotogramma), lo raggiunge a velocita' da pallone (48 u/s): 2-3 fotogrammi, poi colla esatta. Non e'
+                   l'easing revocato nel 7.387 (sempre attivo, 0,2 s): sotto 1,5u la colla resta istantanea. Rosso __CPM_NO_G103C. */
+                const _first103=!sr.current._g103p;sr.current._g103n=true;let _lag103=0;
+                if(_first103&&typeof window!=='undefined'&&+window.__CPM_G103LAG>0&&(_CPM_TEST||window.__CPM_REC)){_lag103=+window.__CPM_G103LAG;sr.current._f103x=ball.position.x-_lag103;sr.current._f103y=0.42;sr.current._f103z=ball.position.z;}/* [giro 103] solo sonde (colla-103): al primo fotogramma di colla il pallone si finge indietro di N u, come dopo un volo in ritardo */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO_G103C)&&sr.current._f103x!=null){const _ox=sr.current._f103x,_oy=sr.current._f103y,_oz=sr.current._f103z;
+                  const _dx=ball.position.x-_ox,_dy=ball.position.y-_oy,_dz=ball.position.z-_oz,_dd=Math.hypot(_dx,_dy,_dz),_mx=48*Math.max(aDt,1e-3);
+                  if(_dd>1.5&&_dd<6&&_dd>_mx){/* oltre 6u non e' ritardo del volo ma un riposizionamento (apertura di scena, stacco): colla secca come prima */ball.position.x=_ox+_dx/_dd*_mx;ball.position.y=_oy+_dy/_dd*_mx;ball.position.z=_oz+_dz/_dd*_mx;}}
+                if(_lag103>0){try{const _L=(window.__CPM_G103C=window.__CPM_G103C||[]);if(_L.length<400)_L.push({passo:+Math.hypot(ball.position.x-sr.current._f103x,ball.position.y-sr.current._f103y,ball.position.z-sr.current._f103z).toFixed(3),tetto:+(48*Math.max(aDt,1e-3)).toFixed(3),lag:_lag103});}catch(_e){}}
+                if((sr.current._ws524=14)&&sr.current._bj0)(sr.current._bj0.src='testa',sr.current._bj0.srcs.push('testa'));}
             }
           }
         }
