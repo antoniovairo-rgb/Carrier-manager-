@@ -47,6 +47,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
     const H = window.__H103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
       if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (!cur) { cur = { ck0: c.ck, occ: null, rev: null, n: (window.__CPM_REV95 || []).length, fr: 0, t0: performance.now() }; H.push(cur); }
         cur.fr++; cur.ck = c.ck; if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck; cur.revMs = performance.now() - cur.t0; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); });
+  if (+process.env.CPM_CPU > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [giro 103] carico riproducibile per le misure (CDP) */
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -58,7 +59,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   const hls = []; let cur = null; const t0 = Date.now(); let ph = '';
   while (Date.now() - t0 < 480000) {
     const st = await page.evaluate(() => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const inc = !!document.querySelector('[data-cpm="incorso94"]'); const rv = window.__CPM_REVAT95 || 0; const ie = document.querySelector('[data-cpm="incorso94"]'); const inct = ie ? ie.textContent : '';
-      const res = (window.__CPM_RES218 || []).length; const txt = ph === 'hl_result' ? document.body.innerText.slice(0, 900) : ''; return { ph, inc, res, txt, rv, inct }; }).catch(() => null);
+      const res = (window.__CPM_RES218 || []).length; const txt = ph === 'hl_result' ? document.body.innerText.slice(0, 900) : ''; const sc = typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null; return { ph, inc, res, txt, rv, inct, sc }; }).catch(() => null);
     if (!st) break; ph = st.ph;
     if (ph === 'ended' || ph === 'ceremony') break;
     if (ph === 'hl_result' && !cur) {
@@ -66,11 +67,14 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
       cur.st = await page.evaluate(() => { try { const s = window.__CPM_STATE(); return { act: s.act, ball: s.ball && { x: s.ball.x, y: s.ball.y }, hero: s.hero && { x: s.hero.x, y: s.hero.y } }; } catch (e) { return null; } }).catch(() => null);
     }
     if (ph === 'hl_result' && cur && cur.rev == null && st.rv > 0 && Date.now() - cur.t > 300) {/* l'esito e' a schermo quando il gioco lo dice (resultReveal), non quando il DOM sembra pronto */
-      cur.rev = Date.now() - cur.t; cur.rv = await page.evaluate(() => (window.__CPM_REV95 || []).slice(-1)[0] || null).catch(() => null); cur.txt = st.txt.split('\n').slice(0, 30).join(' / ');
+      cur.rev = Date.now() - cur.t; cur.revSc = st.sc; cur.rv = await page.evaluate(() => (window.__CPM_REV95 || []).slice(-1)[0] || null).catch(() => null); cur.txt = st.txt.split('\n').slice(0, 30).join(' / ');
       cur.d3 = await page.evaluate(() => { try { const s = window.__CPM_STATE(); const gk = s.players.find(p => p.team === 'away' && p.gk); const opp = s.players.filter(p => p.team === 'away' && !p.gk);
         const dh = Math.min(...opp.map(p => Math.hypot(p.x - s.hero.x, p.y - s.hero.y))); return { gk: gk && { x: gk.x, y: gk.y }, ball: { x: s.ball.x, y: s.ball.y, h: s.ball.worldY }, hero: { x: s.hero.x, y: s.hero.y }, dHeroOpp: +dh.toFixed(2), gkBall: gk ? +Math.hypot(gk.x - s.ball.x, gk.y - s.ball.y).toFixed(1) : null }; } catch (e) { return null; } }).catch(() => null);
     }
-    if (ph === 'hl_result' && cur && (cur.rev == null || Date.now() - cur.t - cur.rev < 1500)) {/* il portiere va guardato FITTO: la parata dura mezzo secondo */
+    /* [giro 103] «entro 1,5 s dall'esito» in secondi DI SCENA (__CPM_SCENET), non di parete: a 1-2 fps (catena carica) 1,5 s di parete sono
+       meno di un decimo di scena e il pallone del tiro del compagno, partito all'esito, veniva giudicato «mai arrivato al portiere» (47,0 e
+       33,6 su ROTH s5/2021 nelle corse finali, 3,4 a carico normale). Soglia e finestra invariate; a 20+ fps parete = scena. */
+    if (ph === 'hl_result' && cur && (cur.rev == null || ((cur.revSc != null && st.sc != null) ? (st.sc - cur.revSc < 1.5) : (Date.now() - cur.t - cur.rev < 1500)))) {/* il portiere va guardato FITTO: la parata dura mezzo secondo */
       for (let k = 0; k < 4; k++) { const gb = await page.evaluate(() => window.__CPM_GKB95 ? window.__CPM_GKB95() : null).catch(() => null); if (gb != null) cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, gb); await sleep(40); } }
     if (ph !== 'hl_result' && cur) { cur.durata = Date.now() - cur.t; hls.push(cur); cur = null; }
     await sleep(120);
@@ -114,7 +118,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
         if (/tiro|para|fuori di poco|specchio|intercett/i.test(ovl)) T.difetti.push('D2 ' + tag + ': esito «' + ovl + '» non da dribbling');
       }
       if (!_cap && h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione' + (process.env.CPM_G103DIAG ? ' ' + JSON.stringify({ cap: h.rv.cap, c: h.rv.c103, rr: h.rv.rr103 }) : ''));
-      if (!_cap && /parat|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
+      if (!_cap && /parat|parar|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')');
       }
       if (isFallo(lab)) { T.fallo = (T.fallo | 0) + 1; if ((g && g.fam === 'assist') || /assist|compagno|intercett|servit/i.test(ovl)) T.difetti.push('D1 ' + tag + ': fallo cercato giocato/raccontato come passaggio «' + ovl + '» (motore ' + (g ? g.fam : '-') + ')'); }

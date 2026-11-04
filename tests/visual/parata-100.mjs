@@ -20,7 +20,7 @@ const SAVES = (process.env.CPM_SALVA || 's5').split(',');
 const REGIMI = (process.env.CPM_REGIMI || 'gioco,prova').split(',');
 const PAR = +(process.env.CPM_PAR || 2);
 const RE_PASS = 'Filtrante|Uno-due|Lancio smarcante|Servi .* libero|Sponda|scarica su|Appoggio|Cross|Palla in area';
-const RE_PARATA = /parat|portiere|respint|dice di no|centrale/i;
+const RE_PARATA = /parat|parar|portiere|respint|dice di no|centrale/i;/* [giro 103] anche «si fa parare il tiro» */
 const srv = await startServer(); const b = await launchBrowser();
 async function gioca(sk, sd, rosso, regime) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
@@ -32,7 +32,7 @@ async function gioca(sk, sd, rosso, regime) {
   await page.addInitScript(([s, r, pr]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000;/* [giro 103] la riserva conta 6 s DI SCENA anche a macchina carica: niente parate «non giudicabili» per la guardia di parete */ if (pr) window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G100D3 = 1;
     if (!sessionStorage.getItem('__p100')) { for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); sessionStorage.setItem('__p100', '1'); }
     const L = window.__P100 = []; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (ph === 'hl_result' && L.length < 40000) { const a = window.__CPM_ARC || {};
-      L.push([Date.now(), (window.__CPM_RES218 || []).length, window.__CPM_GKB95 ? window.__CPM_GKB95() : null, a.pa || null, window.__CPM_REVAT95 || 0, a.ok || null, a.pt, a.tl ? 1 : 0, a.arc ? 1 : 0]); } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); },
+      L.push([Date.now(), (window.__CPM_RES218 || []).length, window.__CPM_GKB95 ? window.__CPM_GKB95() : null, a.pa || null, window.__CPM_REVAT95 || 0, a.ok || null, a.pt, a.tl ? 1 : 0, a.arc ? 1 : 0, typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null]); } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); },
   [ls, rosso, regime === 'gioco']);
   await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
@@ -54,7 +54,9 @@ async function gioca(sk, sd, rosso, regime) {
   const out = [];
   for (const s of scene) { const r = R[s.n - 1]; if (!r) continue; const ovl = String(r.ovl || ''); if (!RE_PARATA.test(ovl)) continue;
     const rev = (s.fr.find(f => f[4] > 0) || [])[4] || 0; const lim = rev ? rev + 1500 : Infinity;
-    let minGB = 99; for (const f of s.fr) if (f[0] <= lim && f[2] != null) minGB = Math.min(minGB, f[2]);
+    /* [giro 103] 1,5 s dall'esito in secondi DI SCENA (come highlight-95): a pochi fps 1,5 s di parete sono pochi fotogrammi */
+    const fRev = rev ? s.fr.find(f => f[0] >= rev) : null; const limSc = (fRev && fRev[9] != null) ? fRev[9] + 1.5 : null;
+    let minGB = 99; for (const f of s.fr) if ((limSc != null && f[9] != null ? f[9] <= limSc : f[0] <= lim) && f[2] != null) minGB = Math.min(minGB, f[2]);
     const fs0 = s.fr.find(f => f[3] === 'assist_shot' || f[3] === 'cross_goal'); const dive = s.fr.find(f => f[5] === 'gk_dive');
     const pas = [...new Set(s.fr.map(f => f[3]))].join('>');
     out.push({ lab: r.label, ovl, key: r.key, min: r.min != null ? r.min : (r.clock != null ? r.clock : null), g: r.g137 ? r.g137.fam + ':' + r.g137.esito : '-', minGB, rev: !!rev,

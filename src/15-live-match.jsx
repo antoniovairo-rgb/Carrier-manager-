@@ -2563,7 +2563,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const revealRiserva95=useCallback(function _rr(t0,ck0,pa,ckR){const o=outcomeRevealRef.current;if(!o||o.fired)return;
     try{const _gv=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D3;
       const _par103=(window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000;/* [giro 103] solo sonde (__CPM_REC): la guardia di parete si puo' allungare perche' la misura conti i 6 s DI SCENA anche su una macchina carica (a pochi fps 6 s di scena superano 30 s di parete e la scena diventava «non giudicabile»). Senza la bandiera: 30 s, percorso identico */
-      const _c=cineBusyRef.current;if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;
+      const _c=cineBusyRef.current;
+      /* [giro 103, misurato con highlight-95 a CPU x6: ROTH «Uno-due», esito dalla riserva a 2,8 s di parete col pallone ancora ai piedi
+         dell'eroe] a fotogrammi lentissimi, dopo 2,6 s di parete il renderer non ha ancora COMINCIATO la conclusione: «non occupata» non
+         vuol dire «finita». La riserva aspetta anche i suoi 2,6 s DI SCENA dalla risoluzione (a 20+ fps sono gia' passati). Rosso __CPM_NO_G103A. */
+      if(_gv&&typeof ckR==='number'&&!window.__CPM_NO_G103A&&_c&&typeof _c.ck==='number'&&((_c.ck-ckR)<2.6||(o.waitPA&&!(_c.nb>0)&&(_c.ck-ckR)<8.6))&&Date.now()-(t0||Date.now())<_par103)/* sulle scene col tiro del compagno (waitPA) l'esito E' il 3D: finche' la conclusione non e' nemmeno cominciata non si rivela (tetto 8,6 s di scena) */{fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR),180);return;}
+      if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;
         if(ck0==null)ck0=_ck;const _r103=typeof ckR==='number'&&_ck!=null&&!window.__CPM_NO_G103A&&(_ck-ckR)<8.6;
         if((((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6||_r103)&&Date.now()-(t0||Date.now())<_par103){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR),180);return;}
         o.cap=(Date.now()-(t0||Date.now())>=_par103)?'parete':'scena';o.rr103={ms:Date.now()-(t0||Date.now()),ck0:ck0,ck:_ck};}}catch(_e){}/* [giro 95] testimone: la riserva ha smesso di aspettare per un tetto (parete = fotogrammi troppo lenti, non giudicabile) */
@@ -10216,6 +10221,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(_ck229&&_att461===0)_avanza461._ck0=_c.ck;
         const _sc229=_ck229?(_c.ck-(_avanza461._ck0||0))*1000:_att461;
         const _e103=_ck229&&typeof _ckE103==='number'&&!window.__CPM_NO_G103A&&(_c.ck-_ckE103)*1000<6000+dur;/* [giro 103] come la riserva: a fotogrammi lenti la finestra (dur, parete) vale meno scena, e il tetto contato dal suo avvio chiudeva a conclusione in corsa. Si aspetta finche' vale l'uno O l'altro tetto: mai piu' corto di prima */
+        if(_on&&_ck229&&typeof _ckE103==='number'&&!window.__CPM_NO_G103A&&((_c.ck-_ckE103)*1000<dur||(outcomeRevealRef.current&&outcomeRevealRef.current.waitPA&&!(_c.nb>0)&&(_c.ck-_ckE103)*1000<dur+6000))&&_att461<((window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}/* [giro 103] la finestra d'esito dura anche in secondi DI SCENA: a fotogrammi lentissimi, dopo `dur` di parete la conclusione puo' non essere ancora cominciata */
         if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&(_ck229?((_sc229<6000||_e103)&&_att461<((window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000)):_att461<6000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}
       }catch(_e461){}
       /* [giro 95 D4, collaudo carriera 177 n.1: 271 highlight su 1.238 col solo «LA GIOCATA · nome» nei 6 s, senza esito ne' voto] LA SCENA
