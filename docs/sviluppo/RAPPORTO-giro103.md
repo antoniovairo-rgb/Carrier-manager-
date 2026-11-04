@@ -61,6 +61,15 @@ giudicata). *Guardiano* **`lento-103`**: highlight-95 a CPU ×6 su s5/2021, verd
 ora è di **scena** (`__CPM_SCENET`), identica a 20+ fps. «Si fa parare il tiro» non rientrava nell'espressione delle parate (`parat`)
 e la scena non veniva giudicata: aggiunto `parar`. Soglia (6) e finestra (1,5 s) invariate.
 
+**Terza causa, trovata dai rigiochi finali** (build 2e4fe12): l'unico difetto verde residuo di highlight-95, in entrambe le corse, è
+**HOWARD s12/7 «Uno-due»**, «para il portiere su HOWARD» col pallone a **6,0** e **6,9** dal portiere. La stessa scena dava **5,8** con
+le correzioni A/B/C spente e **6,1** accese: è sul filo della soglia 6 indipendentemente da esse (prima finiva «non giudicabile»). In
+src/12 il tiro del compagno parato convergeva sul portiere in x a 3,2/s ma in z solo a 2,2/s, e la respinta partiva a u 0,72 dovunque
+fosse il pallone: col portiere spostato di lato restavano 5-6 unità. *Correzione*: z converge come x e la respinta aspetta il
+contatto (entro 2,5 dal portiere) o la fine del volo (u 1); il tuffo parte a 0,72 come prima. Rosso **`__CPM_NO_G103D`**.
+*Misura*: HOWARD **verde 2,6 · rosso 6,2**; nella stessa partita «Sponda di prima per HOWARD» 2,3 e «Scarica su SPENCER» 1,9.
+*Guardiano* **`contatto-103`** (highlight-95 su s12/7, verde contro `__CPM_NO_G103D`).
+
 Ganci di sola prova aggiunti (attivi solo con `__CPM_REC`/`_CPM_TEST`): `__CPM_PARETE103` (allunga la guardia di parete di riserva e
 chiusura perché la misura conti i secondi di scena anche a macchina carica), `__CPM_G103SOLORISERVA`, `__CPM_BUSY103`, campi `c103`/
 `rr103` nel testimone `__CPM_REV95`. highlight-95 e parata-100 armano `__CPM_PARETE103` (meno scene «non giudicabili»).
@@ -141,9 +150,12 @@ si allinea dopo uno stacco), a fotogrammi veloci si fermava a 6-7 s di scena; la
 guarda fino alla fine vera (rete 600 s; «non finito» = non giudicabile, rosso) e il testimone porta la copertura in secondi di scena.
 Soglia 0,9 invariata. Prima misura dopo: tel-walkout finito, 10,4 s di scena, 210 letture, 0,93.
 
-**4d. D2/D3 pc-gi31 0,338** in una corsa su due (verde nell'altra), a load 14: eroe fuori dal quadro ~1,15 s di scena a metà di
-`hl_result` (proiezione dei piedi a (-10,7; -27,3), testa dietro il piano camera). Visto una volta; non corretto: vedi i rigiochi
-finali.
+**4d. D2/D3 «eroe fuori quadro» su PC — preesistente, non corretto.** Visto 4 volte, sempre su PC e a macchina carica, anche sulla
+**base 178**: base pc-gi31 0,338 e pc-gi18 0,216; build pc-gi31 0,091; più, a load 20, pc-gi15 D8 taglia 0,057 e D3 pallone fuori quadro
+a fine scena (che a carico moderato tornano verdi 4 su 4, sia su base sia su build: taglia 0,161-0,166). Nel dump di pc-gi31 l'eroe
+proiettato esce di molto dal quadro (piedi a (-10,7; -27,3), testa dietro il piano camera) per ~1,15 s di scena. Coerente con il
+difetto noto «camera in tempo di scena sotto i 20 fps» (CLAUDE.md, 7.708: il riscalo della camera è stato revocato dal PO). È una
+decisione di prodotto già presa: **non lo tocco** e lo segnalo; scena3d-96 lo può mostrare a macchina molto carica.
 
 **Gate** (src/12 toccato): validate-situations sul build con le correzioni B e C — prima corsa **rossa su `final-state` gi136**
 («goal_against» con pallone a x 63,3), seconda corsa **PASS 00001505, 0 failure**; base 178 nello stesso momento PASS 00001505. In

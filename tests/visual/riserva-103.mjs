@@ -18,16 +18,22 @@ const { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } = await
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
 const SCENE = (process.env.CPM_G103_SCENE || '17,4,1').split(',').map(Number);
 const CPU = +(process.env.CPM_CPU || 4), BUSY = +(process.env.CPM_G103_BUSY || 8);
+/* [giro 103] due casi: A «conclusione lunga» (occupata subito, 8 s di scena: il tetto contato dall'avvio della riserva scade prima) e
+   B «conclusione non ancora cominciata» (3 s di scena di silenzio, poi occupata: la riserva leggeva «non occupata» come «finita» e
+   rivelava l'esito col pallone ancora ai piedi dell'eroe — difetto misurato sul flusso vero a CPU x6). Nel caso B si giudica il minimo
+   di 2,6 s DI SCENA dalla risoluzione (misurato verde 2,61-2,66 · rosso 1,36-1,98): il ramo «aspetta che la conclusione sia cominciata»
+   vale solo sulle scene col tiro del compagno (waitPA), che non si forzano. */
+const DA = +(process.env.CPM_G103_DA || 0);
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const fase = p => p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()).catch(() => null);
 async function braccio(arm) {
   const rosso = arm === 'rosso';
   const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(([r, bz]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_BUSY103 = bz; window.__CPM_G103SOLORISERVA = 1; if (r) window.__CPM_NO_G103A = 1;
+  await page.addInitScript(([r, bz, da]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_BUSY103 = bz; if (da) window.__CPM_BUSY103DA = da; window.__CPM_G103SOLORISERVA = 1; if (r) window.__CPM_NO_G103A = 1;
     window.__R103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
       if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (!cur) { cur = { ck0: c.ck, t0: performance.now(), n: (window.__CPM_REV95 || []).length, occ: null, rev: null }; window.__R103.push(cur); }
         if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.c26 == null && performance.now() - cur.t0 >= 2600) cur.c26 = c.ck - cur.ck0;
-        if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck - cur.ck0; cur.revMs = performance.now() - cur.t0; cur.rv = window.__CPM_REV95[window.__CPM_REV95.length - 1]; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [rosso, BUSY]);
+        if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck - cur.ck0; cur.revMs = performance.now() - cur.t0; cur.rv = window.__CPM_REV95[window.__CPM_REV95.length - 1]; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [rosso, BUSY, DA]);
   await openMatch(page, port, { name: 'Riserva Centotre' });
   if (CPU > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU }); }
   const cat = await page.evaluate(() => SITUATIONS.map(s => (s.actions || []).map(a => { let h = {}; try { h = deriveHL(s, a) || {}; } catch (e) {} return h.type || null; })));
@@ -43,8 +49,8 @@ async function braccio(arm) {
     const t1 = Date.now(); let r = null; while (Date.now() - t1 < (warm ? 60000 : 160000)) { r = await page.evaluate(n => window.__R103.slice(n).find(x => x.rev != null) || null, n0).catch(() => null); if (r && r.rev != null) break; await sleep(300); }
     if (warm) continue;
     if (!r || r.rev == null) { out.push({ gi, ko: 'esito mai rivelato in 160 s' }); continue; }
-    const busy = !!(r.rv && r.rv.busy); out.push({ gi, via: r.rv && r.rv.via, cap: r.rv && r.rv.cap, busy, rev: +r.rev.toFixed(2), revMs: Math.round(r.revMs), c26: r.c26 != null ? +r.c26.toFixed(2) : null });
-    const o = out[out.length - 1]; console.log(`  ${arm} gi${gi}: esito a ${o.rev} s di scena (${o.revMs} ms) via ${o.via}${o.cap ? '+' + o.cap : ''} ${busy ? 'a CONCLUSIONE IN CORSA' : 'a conclusione finita'} · scena nei primi 2,6 s ${o.c26}`);
+    const busy = !!(r.rv && r.rv.busy); out.push({ gi, via: r.rv && r.rv.via, cap: r.rv && r.rv.cap, busy: DA ? (r.rev < 2.6) : busy,/* caso B: le scene di tiro non sono «tiro del compagno», quindi la riserva deve solo rispettare il minimo di 2,6 s DI SCENA dalla risoluzione — misurato verde 2,61-2,66 · rosso 1,36-1,98 */ rev: +r.rev.toFixed(2), revMs: Math.round(r.revMs), c26: r.c26 != null ? +r.c26.toFixed(2) : null });/* col caso B il difetto e' l'esito rivelato PRIMA che la conclusione cominci */
+    const o = out[out.length - 1]; console.log(`  ${arm} gi${gi}: esito a ${o.rev} s di scena (${o.revMs} ms) via ${o.via}${o.cap ? '+' + o.cap : ''} ${o.busy ? (DA ? 'PRIMA dei 2,6 s di scena' : 'a CONCLUSIONE IN CORSA') : (DA ? 'dopo i 2,6 s di scena' : 'a conclusione finita')} · scena nei primi 2,6 s ${o.c26}`);
   }
   out.filter(x => x.ko).forEach(x => console.log(`  ${arm} gi${x.gi}: ✗ ${x.ko}`));
   await ctx.close(); return out;
@@ -53,8 +59,12 @@ const R = {}; for (const a of ARMI) R[a] = await braccio(a);
 await browser.close(); srv.close();
 const g = [];
 if (R.verde) { const ok = R.verde.filter(x => !x.ko && /^(riserva|chiusura)$/.test(x.via) && x.cap !== 'parete');/* in verde puo' arrivare prima la chiusura della finestra: stesso tetto, stessa regola */ if (ok.length < 2) g.push(`verde cieco: ${ok.length} scene giudicate`);
-  const male = ok.filter(x => x.busy); if (male.length) g.push(`verde: ${male.length} esiti rivelati a conclusione in corsa`); console.log(`VERDE scene giudicate ${ok.length}/${R.verde.length} · a conclusione in corsa ${male.length}`); }
+  const male = ok.filter(x => x.busy); if (male.length) g.push(`verde: ${male.length} esiti rivelati ${DA ? 'prima dei 2,6 s di scena' : 'a conclusione in corsa'}`); console.log(`VERDE scene giudicate ${ok.length}/${R.verde.length} · ${DA ? "prima dei 2,6 s di scena" : "a conclusione in corsa"} ${male.length}`); }
 if (R.rosso) { const ok = R.rosso.filter(x => !x.ko && x.via === 'riserva' && x.cap !== 'parete' && x.c26 != null && x.c26 <= 2.0); if (ok.length < 2) g.push(`rosso non giudicabile: ${ok.length} scene lente a sufficienza`);
-  const visti = ok.filter(x => x.busy); if (ok.length >= 2 && visti.length < ok.length) g.push(`rosso: il difetto si vede solo su ${visti.length}/${ok.length}`); console.log(`ROSSO scene giudicate ${ok.length}/${R.rosso.length} · a conclusione in corsa ${visti.length}`); }
+  const visti = ok.filter(x => x.busy); if (ok.length >= 2 && visti.length < ok.length) g.push(`rosso: il difetto si vede solo su ${visti.length}/${ok.length}`); console.log(`ROSSO scene giudicate ${ok.length}/${R.rosso.length} · ${DA ? 'prima dei 2,6 s di scena' : 'a conclusione in corsa'} ${visti.length}`); }
+/* [giro 103] caso B in un processo figlio (browser e pagina propri): conclusione che comincia dopo 3 s di scena */
+if (!DA && !process.env.CPM_G103_SOLOA && !g.length) { console.log('— caso B: conclusione non ancora cominciata —'); const { spawnSync } = await import('node:child_process');
+  const r = spawnSync(process.execPath, ['riserva-103.mjs'], { env: { ...process.env, CPM_G103_DA: '3', CPM_G103_BUSY: '4', CPM_G103_SCENE: process.env.CPM_G103_SCENE || '17,4,1' }, encoding: 'utf8', cwd: new URL('.', import.meta.url).pathname, maxBuffer: 1 << 26, stdio: ['ignore', 'pipe', 'inherit'] });
+  process.stdout.write(r.stdout || ''); if (r.status !== 0) g.push('caso B (conclusione non ancora cominciata) rosso'); }
 if (g.length) { console.log('✗ riserva-103 ROSSO'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✓ riserva-103 VERDE' + (R.rosso ? ' (e il rosso si vede)' : '')); process.exit(0);
