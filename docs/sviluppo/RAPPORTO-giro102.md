@@ -64,6 +64,27 @@ condizione. Va decisa a parte.
   arriva dopo l'incornata e con due guardiani in parallelo 4 s non bastavano (braccio G102 0/2 in due corse sotto carico, 2/2 da
   solo). Nel verde la finestra più lunga guarda di più, non di meno.
 
-## 4. Corse
+## 4. Corse (build del ramo, `CARRIER-MANAGER-AV.html` ricomposto da `src/`)
 
-(in compilazione)
+⚠️ Il container della sessione è ripartito **due volte** a metà dei rituali: le corse interrotte non contano e sono state rifatte.
+Dove un guardiano ha girato in parallelo con un altro lo scrivo, perché alcuni (parata-100, esiti-241 parte D) sono sensibili al
+carico.
+
+| guardiano | esito | durata | numeri |
+|---|---|---|---|
+| esiti-241 corsa 1 (base 4a4ff494, prima della correzione) | ❌ | 390 s | verde B **2/3** (gi14, gi16 portiere in tuffo su consegna) · gi150 corretto |
+| esiti-241 corsa 2 (prima stesura) | ✅ | 467 s | verde B **0/3** · rosso B 2/3 · rosso G102 **2/2** |
+| esiti-241 corse 3-4 (seconda stesura, accanto a highlight-95) | ❌ | 653 / 647 s | verde B **0/3**; rosso G102 0/2 e rosso B 1/3 → carico: finestra di 4 s troppo corta per il tuffo |
+| sonda-g102 gi14 da sola | — | ~60 s ×2 | rosso G102: `cross_goal>assist_shot>deflect` + `gk_dive` · verde: `cross_goal>deflect`, nessun gesto |
+| esiti-241 corsa 5 (finestra 7 s, accanto a esiti-218) | ✅ | 601 s | verde B **0/3** · rosso B 2/3 · rosso G102 **2/2** |
+| highlight-95 corsa 1 (prima stesura, accanto a parata-100) | ❌ verde | — | «↗️ Palla in area» s5/7 minimo 6,8 dal portiere → prima stesura bocciata, aggiunta `hlSpreca102` |
+| highlight-95 (seconda stesura, accanto ad altri guardiani) | ⚠️ verde ✅, rosso D4 non visto | ~60 min | verde **118 highlight, 0 difetti** (4 parate giudicate, 25 non giudicabili per la guardia di parete); rosso: D1 e D3 visibili, D4 no |
+| parata-100 (accanto a highlight-95) | ⚠️ verde ✅ | 1020 s | verde **4/4 parate al portiere, 0 difetti** (1 sul ramo cross_goal); rosso «non si vede» con 2 non giudicabili |
+| parata-100 solo rosso, da solo | ✅ | 308 s | rosso SEIFERT **minGB 22,3** (giro 100: 22,4), 0 non giudicabili |
+| assist-298 verde (accanto a highlight-95) | ✅ | — | 16 scene giudicate (pavimento 15) · passaggi riusciti 93,8% · gol compagno 25% · **0 difetti** |
+| assist-298 solo rosso | ✅ | 533 s | difetti visibili (uno-due HOWARD/SPENCER) |
+| assist-nome-98 (verde e rosso) | ⚠️ verde ✅, rosso D4 non visto | 3025 s | verde: nome coerente 100% su 12, 3D ricevente = cast 8/12, D3 0, D4 0; rosso: D1 visibile, D3 visibile, B visibile, **D4 0 seguiti** |
+| esiti-218 (guardiano della base, accanto a esiti-241) | ❌ copertura | 1066 s | verde **0 contraddizioni** su 11 scene (pavimento 12) · rosso 4 contraddizioni — preesistente, diagnosticato dal giro 101 |
+| esiti-218 (seconda corsa) | ❌ copertura | 1074 s | verde 0 contraddizioni su 11 scene |
+| test:logic | ✅ | — | 43/43 |
+| save-compat | ✅ | — | 12 pass · 0 fail |
