@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (14)
+## Voci aperte o parziali (19)
 
-Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 9 · L7 (tocca il flusso settimana: verificare confine zona G) 1.
+Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · L2 2.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
