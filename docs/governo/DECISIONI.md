@@ -930,3 +930,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Verifica mirata (catena/178-finale2, 8e991e17): 11/11 guardiani verdi, 129/129, nessuna ripetizione, nessun riavvio del container.
 - Rituale: lavoro/178 in poc → ROADMAP «7.999.178 pubblicata» (88ebc04a) → main = poc (ls-remote 88ebc04a, poi d45361d0 coi verdetti) → backlog-verdetti.py, governo-html.mjs, governo ripubblicato (versione 126). Avviso al PO inviato.
 - lavoro/178 unita in lavoro/179 → 76b04b4a (conflitti ci-runner per unione delle liste, compresa la MAPPA di src/15). Prossimo: tappa 4 V2 (unificazione) su lavoro/179, con CPM_CI_PAR=0 nelle verifiche (decisione PO 05/11).
+
+### 05/11 sera — tappa 4 V2 unita, 7.999.179 chiusa, catena notte avviata
+- Tappa 4 (75ffedd8, ~12,2 $): tema unico TINTE/TH; 197 rami V1 collassati con codemod su AST; __CPM_NO_V2 tolto (quello del motore rinominato __CPM_NO_MOTORE2); rosso grafico dal banco con __CPM_TEMA_PROVA (solo cpmtest); guardiano nuovo tema-unico; corretti due contrasti preesistenti (testate della rassegna nel post partita 1,76→5,06; sigla squadra nelle pagelle PC 1,12→5,95); peso −19.843 B. Verdi in sequenza: grafica-v2, simula-v2, momenti-v2, partita-v2, patrimonio-303, intro-292, pc-tablet-292, tema-unico, griglia-mobile, design-system, career-critical, test:logic, save-compat, barra-360-72, motore-unico. Aperto, preesistente: a 360 px il nome del club va a capo dentro la parola («SALERN/UM»).
+- Unita in lavoro/179 → 98aa67e6; GAME_VERSION 7.999.179 → ccea45f3.
+- Catena notte 179 (136 passi) in 3 tronchi su Sonnet, CPM_CI_PAR=0 e memoria/disco registrati (decisione PO 05/11): session_01QEYiaAdzqAGcPkf6NbfKEo, session_01QEYiaBfn2G7DHrcRFGUM6y, session_01QEYia9WgGrXYunEy4Z5t6P.
