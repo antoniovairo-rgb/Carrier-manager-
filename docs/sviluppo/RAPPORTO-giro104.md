@@ -105,11 +105,14 @@ Macchina carica durante tutti i rigiochi (load 6-20 su 4 core: due-tre rituali i
 | riserva-104 | ✅ verde 4 intercettati · 0 D3 · rosso 2 D3 | ✅ verde 4 · 0 D3 · rosso 1 D3 |
 | riserva-103 | ✅ A verde 0 in corsa / rosso 2 · B verde 0 / rosso 3 | ✅ A verde 0 / rosso 2 (gi17 «mai rivelato in 160 s» in entrambi i bracci: preesistente, uguale con `__CPM_NO_G104A`; pavimento 2/3). **Prova 3** a carico più basso (load 8-9): ✅ A verde 3/3 a conclusione finita (gi17 compreso) / rosso 2 in corsa · B verde 0 / rosso 2 |
 | chiusura-99 | ✅ verde D9 6/6 med. 5,59 · RIC 6/6 — rosso D9 1,36 · RIC 3/6 | ✅ verde D9 5,59 · RIC 6/6 — rosso D9 1,50 · RIC 3/6 |
-| assist-nome-98 | ✅ verde+rosso (D1 verde 12 assist col nominato, nome 100% · rosso 22,2%) | ❌ verde pieno (D1 13, nome 100%) ma **rosso D4 cieco per copertura** («0 seguiti» dopo un passaggio respinto). Strumento corretto (rigioco dichiarato, f1a8d99); rosso parte A rigiocato da solo: ✅ (D4 3 seguiti, 1 con giocata d'assist — il rigioco non è servito, quindi quel ramo non è ancora esercitato). Terza prova completa: vedi sotto |
+| assist-nome-98 | ✅ verde+rosso (D1 verde 12 assist col nominato, nome 100% · rosso 22,2%) | ❌ verde pieno (D1 13, nome 100%) ma **rosso D4 cieco per copertura** («0 seguiti» dopo un passaggio respinto). Strumento corretto (rigioco dichiarato, f1a8d99); rosso parte A rigiocato da solo: ✅ (D4 3 seguiti, 1 con giocata d'assist — il rigioco non è servito, quindi quel ramo non è ancora esercitato). **Prova 3** (completa, avviata 09:03): al tetto delle 10:00 era ancora in corsa sul braccio rosso; verde parte A completa: D1 12 assist col nominato, nome 100%, D4 1 seguito / 0 con giocata d'assist. **Esito finale non disponibile** |
 | highlight-95 s1/1234 | ⚠️ verde 18 highlight **0 difetti**, rosso 40 difetti (pavimenti 12 passaggi / 4 finte non raggiungibili su una sola partita, D2 rosso non visto per lo stesso motivo) | — |
 | highlight-95 completo | ✅ «verde (e il rosso si vede)»: verde 88 highlight · **0 difetti** · 0 non giudicabili · 8 letture di un'altra scena neutralizzate; rosso 106 highlight, D1-D4 visti | — |
 
 ## Fuori ambito / punti aperti
+0. **Consegna al tetto delle 10:00 UTC**: assist-nome-98 prova 3 non conclusa (sopra). Tutto il resto della lista richiesta è stato
+   rigiocato almeno due volte (highlight-95: completo + s1/1234; riserva-103 tre volte) tranne test:logic e save-compat (una volta sul
+   build finale, verdi). Non eseguiti: gate 14/14 e catena completa (riparazione mirata, come i giri 95-103).
 1. highlight-95 «verde: 1 difetti» della catena: non attribuito. Candidato misurato: D3 «pallone mai al portiere» (SCHRÖDER s5/1234,
    minimo 30,8) a CPU ×3 e carico 15-20, classe `lento-103`. Serve la prossima catena col runner nuovo (log completo).
    Il richiamo tardivo della riserva su riquadro altrui non si è visto in modo naturale (`__CPM_G104X` 0).
