@@ -925,3 +925,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Domanda del PO: «ma perchè si riavvia??» (riavvii del container delle sessioni di verifica: worker_epoch 1→3 nella verifica del 04-05/11). Causa non confermabile; ipotesi principale: carico di due browser 3D in parallelo; anche il recupero della macchina da parte della piattaforma.
 - Decisione PO: **«Sì, dalla 179 un controllo alla volta»**.
 - Attuazione: dalle catene e verifiche della 179 in poi le sessioni figlie lanciano il runner con CPM_CI_PAR=0 (passi lenti in sequenza) e registrano memoria e disco (free -m, df -h) prima di ogni passo. La verifica mirata della 178 in corso non viene toccata.
+
+### 05/11 pomeriggio — 7.999.178 PUBBLICATA
+- Verifica mirata (catena/178-finale2, 8e991e17): 11/11 guardiani verdi, 129/129, nessuna ripetizione, nessun riavvio del container.
+- Rituale: lavoro/178 in poc → ROADMAP «7.999.178 pubblicata» (88ebc04a) → main = poc (ls-remote 88ebc04a, poi d45361d0 coi verdetti) → backlog-verdetti.py, governo-html.mjs, governo ripubblicato (versione 126). Avviso al PO inviato.
+- lavoro/178 unita in lavoro/179 → 76b04b4a (conflitti ci-runner per unione delle liste, compresa la MAPPA di src/15). Prossimo: tappa 4 V2 (unificazione) su lavoro/179, con CPM_CI_PAR=0 nelle verifiche (decisione PO 05/11).
