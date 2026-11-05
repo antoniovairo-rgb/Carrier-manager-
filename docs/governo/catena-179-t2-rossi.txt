@@ -1,0 +1,157 @@
+=== squalifica-222 (out/ci-rossi/squalifica-222-2026-11-05T18-25-16-134Z.log)
+PO-222 · settimana di lega W1 · coppa iniettata in W9
+braccio              via      presenze  totali  storico  ultima voce
+sano                 bottone  0→0       0→0     0→0      null  [Simula]
+squalificato         bottone  0→0       0→0     0→0      null  [Simula]
+squalificato-banco   step     0→0       0→0     0→1      {"cup":false,"nc":false,"sq":true,"inj":false,"svinc":false,"rating":null,"goals":0,"assists":0}  [simulated ]
+infortunato          step     0→0       0→0     0→1      {"cup":false,"nc":false,"sq":false,"inj":true,"svinc":false,"rating":null,"goals":0,"assists":0}  [simulated ]
+svincolato           step     0→0       0→0     0→1      {"cup":false,"nc":false,"sq":false,"inj":false,"svinc":true,"rating":null,"goals":0,"assists":0}  [simulated ]
+non-convocato        nonconv  0→0       0→0     0→0      null  [Simula]
+sano-coppa           bottone  0→0       0→0     0→0      null  [Simula]
+infortunato-coppa    step     0→0       0→0     0→1      {"cup":true,"nc":false,"sq":false,"inj":true,"svinc":false,"rating":null,"goals":0,"assists":0}  [simulated ]
+squalificato-coppa   bottone  0→0       0→0     0→0      null  [Simula]
+✗ sano: la settimana avanza (misura non cieca)
+✓ sano: nessun errore di pagina 
+✗ squalificato: la settimana avanza (misura non cieca)
+✓ squalificato: nessun errore di pagina 
+✓ squalificato-banco: la settimana avanza (misura non cieca)
+✓ squalificato-banco: nessun errore di pagina 
+✓ infortunato: la settimana avanza (misura non cieca)
+✓ infortunato: nessun errore di pagina 
+✓ svincolato: la settimana avanza (misura non cieca)
+✓ svincolato: nessun errore di pagina 
+✗ non-convocato: la settimana avanza (misura non cieca)
+✓ non-convocato: nessun errore di pagina 
+✗ sano-coppa: la settimana avanza (misura non cieca)
+✓ sano-coppa: nessun errore di pagina 
+✓ infortunato-coppa: la settimana avanza (misura non cieca)
+✓ infortunato-coppa: nessun errore di pagina 
+✗ squalificato-coppa: la settimana avanza (misura non cieca)
+✓ squalificato-coppa: nessun errore di pagina 
+✗ sano: presenza +1 (controllo)
+✓ squalificato: nessuna presenza (stagione +0, carriera +0)
+✓ squalificato: nessun gol/assist accreditato
+✗ squalificato: voce di storico marcata «squalificato», senza voto
+✓ squalificato-banco: nessuna presenza (stagione +0, carriera +0)
+✓ squalificato-banco: nessun gol/assist accreditato
+✓ squalificato-banco: voce di storico marcata «squalificato», senza voto
+✓ squalificato: squalifica viva prima della partita (misura non cieca)
+✓ squalificato-banco: squalifica viva prima della partita (misura non cieca)
+✗ non convocato (bottone): nessuna presenza, voce marcata «nonConvocato»
+✗ coppa sano: presenza +1 e voce di coppa (controllo)
+✓ coppa infortunato: nessuna presenza, voce senza voto
+✗ coppa squalificato: nessuna presenza, voce marcata
+✗ squalificato (bottone): squalifica scontata dopo la partita
+✓ infortunato/svincolato: nessuna presenza (non-regressione)
+
+✗ ROSSO squalifica-222: 11 controlli falliti
+=== infortunio-263 (out/ci-rossi/infortunio-263-2026-11-05T18-37-31-635Z.log)
+PO-263 · lega: tiro W4 · neutra W5 · coppa iniettata in S2 W3
+braccio               via      fatica      infortunio        ultima voce
+sano-tiro             bottone  90→90       no                null
+squalificato-tiro     bottone  90→90       no                null
+nonconv-tiro          nonconv  90→90       no                null
+svincolato-tiro       step     90→84       no                {"cup":false,"nc":false,"sq":false,"svinc":true,"rating":null}
+sano-fatica           bottone  60→60       no                null
+squalificato-fatica   bottone  60→60       no                null
+nonconv-fatica        nonconv  60→60       no                null
+svincolato-fatica     step     60→54       no                {"cup":false,"nc":false,"sq":false,"svinc":true,"rating":null}
+sano-coppa            bottone  90→90       no                null
+squalificato-coppa    bottone  90→90       no                null
+svincolato-coppa      step     90→84       no                {"cup":true,"nc":false,"sq":false,"svinc":true,"rating":null}
+✗ sano-tiro: la settimana avanza (misura non cieca)
+✓ sano-tiro: nessun errore di pagina 
+✗ squalificato-tiro: la settimana avanza (misura non cieca)
+✓ squalificato-tiro: nessun errore di pagina 
+✗ nonconv-tiro: la settimana avanza (misura non cieca)
+✓ nonconv-tiro: nessun errore di pagina 
+✓ svincolato-tiro: la settimana avanza (misura non cieca)
+✓ svincolato-tiro: nessun errore di pagina 
+✗ sano-fatica: la settimana avanza (misura non cieca)
+✓ sano-fatica: nessun errore di pagina 
+✗ squalificato-fatica: la settimana avanza (misura non cieca)
+✓ squalificato-fatica: nessun errore di pagina 
+✗ nonconv-fatica: la settimana avanza (misura non cieca)
+✓ nonconv-fatica: nessun errore di pagina 
+✓ svincolato-fatica: la settimana avanza (misura non cieca)
+✓ svincolato-fatica: nessun errore di pagina 
+✗ sano-coppa: la settimana avanza (misura non cieca)
+✓ sano-coppa: nessun errore di pagina 
+✗ squalificato-coppa: la settimana avanza (misura non cieca)
+✓ squalificato-coppa: nessun errore di pagina 
+✓ svincolato-coppa: la settimana avanza (misura non cieca)
+✓ svincolato-coppa: nessun errore di pagina 
+✗ lega, sano a fatica 90: il tiro seedato lo infortuna (controllo: la misura vede il tiro)
+✓ squalificato-tiro: nessun infortunio in una partita non giocata
+✗ squalificato-tiro: fatica da settimana senza gara (90→90, attesa 84)
+✓ nonconv-tiro: nessun infortunio in una partita non giocata
+✗ nonconv-tiro: fatica da settimana senza gara (90→90, attesa 84)
+✓ svincolato-tiro: nessun infortunio in una partita non giocata
+✓ svincolato-tiro: fatica da settimana senza gara (90→84, attesa 84)
+✓ squalifica viva prima della partita (misura non cieca)
+✗ non convocato: la decisione del mister e' arrivata alla simulazione (misura non cieca)
+✗ sano, settimana neutra: fatica di partita (60→60, controllo)
+✗ squalificato-fatica: fatica da settimana senza gara (60→60, attesa 54), niente +6..11 di partita
+✗ nonconv-fatica: fatica da settimana senza gara (60→60, attesa 54), niente +6..11 di partita
+✓ svincolato-fatica: fatica da settimana senza gara (60→54, attesa 54), niente +6..11 di partita
+✗ coppa, sano a fatica 90: il tiro +11 lo infortuna (controllo)
+✗ squalificato-coppa: nessun infortunio, fatica da settimana senza gara (90→90, attesa 84)
+✓ svincolato-coppa: nessun infortunio, fatica da settimana senza gara (90→84, attesa 84)
+
+✗ ROSSO infortunio-263: 17 controlli falliti
+=== crea-home-295 (out/ci-rossi/crea-home-295-2026-11-05T19-26-07-821Z.log)
+  ❌ 412px: la creazione non si apre
+  ❌ 1280px: la creazione non si apre
+  ✅ col rosso il pulsante manca (412px: la creazione non si apre)
+CREA-HOME-295: ❌ ROSSO
+=== validate-situations (out/ci-rossi/validate-situations-2026-11-05T20-45-35-887Z.log)
+match pronto · 191 Situations · gameVersion 7.999.179
+  …40/191
+  …80/191
+  …120/191
+  …160/191
+final-state: campione 24 Situations risolte
+final-state: assestamento palla · media 5706ms · 0/24 al limite
+timeline: 82 eventi · 24 risolti · 24 coerenti · baseline compared · intents 10 types 5
+bg-coherence: 223 voci · 28 con at · archi {"shot":77,"pass":74,"cross":21,"tackle":29,"save":22} · 0 issue
+post-highlight: campione 6 Situations
+motion: campione 24 · alive 20/21 20/21 20/21 21/21 20/21 21/21 21/21 20/21 21/21 20/21 20/21 20/21 19/21 19/21 20/21 21/21 19/21 21/21 21/21 19/21 19/21 21/21 21/21 19/21
+ball-motion: 6 azioni offensive · minBackStep -0.8
+perf: 7.1fps (avg 140.51ms · p95 183.3ms) · heap 155.4MB · load 12697ms · leak-slope 2.52MB/s · canvas 1
+live-smoke: clock 1'→4' · numHL 3→4 · fase hl_intro · 0 pageerror
+ai-vision: skip (provider sconosciuto: "none" — registrati: [ollama, anthropic, openai, gemini])
+
+⏱  dove vanno i minuti del gate:
+    365s   51%  situations (191 × force+check+shot)
+    184s   26%  final-state (risoluzione azione)
+     63s    9%  motion
+     42s    6%  live-smoke
+     23s    3%  ball-motion
+     18s    3%  boot
+     13s    2%  post-highlight
+      9s    1%  determinism
+      4s    1%  perf-monitor
+    720s  100%  TOTALE
+
+
+=== QUALITY GATE — VALIDAZIONE SITUATIONS ===
+gameVersion 7.999.179 · 191 Situations
+  ✅ initial-state    OK · 2 warn
+  ✅ orientation      OK
+  ✅ visual           OK · 1 warn
+  ✅ movements        OK · 23 warn
+  ✅ golden           OK
+  ✅ final-state      OK · 1 warn
+  ✅ determinism      OK
+  ✅ post-highlight   OK
+  ❌ data-coherence   11 issue
+  ✅ timeline         OK
+  ✅ motion           OK
+  ✅ ball-motion      OK
+  ✅ bg-coherence     OK · 1 warn
+  ✅ live-smoke       OK
+report HTML → tests/visual/out/validate/index.html
+run-summary → tests/visual/out/validate/run-summary.json · fingerprint d1825b7e · 11 failure
+gate-history → 3 run · stabile (streak 0 run pulite)
+
+❌ FAIL — data-coherence
