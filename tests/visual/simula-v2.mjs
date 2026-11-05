@@ -2,9 +2,13 @@
 /* [PO-302 · grafica V2, tappa 2 · decisione PO 02/11] GUARDIANO «SIMULA ACCANTO A GIOCA».
    A settimana vissuta: il tasto Simula del riquadro della prossima partita apre LO STESSO prompt della partita (decisione del
    mister) con la scelta Simula gia' fatta — niente «Gioca», il tasto di conferma e' Simula — e confermando la settimana avanza.
-   A settimana non vissuta: Simula e' spento e dice il motivo. ROSSO (CPM_PROVA_ROSSO=1 → __CPM_NO_V2): il tasto non c'e'. */
+   A settimana non vissuta: Simula e' spento e dice il motivo.
+   CON [tappa 4]: a settimana vissuta il testo del tasto Simula acceso ha contrasto WCAG >= 4,5:1 (3:1 sui testi grandi), lib/misura-v2.mjs.
+   ROSSO [tappa 4] (CPM_PROVA_ROSSO=1): token alterati dal banco di prova (lib/tema-prova.mjs, notte sbiadita a basso contrasto) → cade CON.
+   Fino alla tappa 3 il rosso era __CPM_NO_V2 (il tasto spariva con la grafica della 178): tolto col tema unico. */
 import { startServer, launchBrowser, sleep } from './lib/harness.mjs';
 import { apriBancoV2 } from './lib/banco-v2.mjs';
+import { MISURA } from './lib/misura-v2.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = !!process.env.CPM_PROVA_ROSSO;
@@ -23,6 +27,8 @@ const statoSim = (page) => page.evaluate(() => { const x = document.querySelecto
   if (!s) ko.push('B: manca il tasto Simula');
   else if (s.dis) ko.push('B: Simula spento a settimana vissuta (' + s.motivo + ')');
   else {
+    const mc = await page.evaluate(MISURA, '[data-cpm="simula-v2"]'); console.log(`  B contrasto del tasto Simula: min ${mc.min} su ${mc.n} testi`);
+    if (!mc.n) ko.push('B CON: nessun testo misurato nel tasto Simula'); else if (mc.peggiori.length) ko.push('B CON: ' + mc.peggiori.slice(0, 3).join(' | '));
     await page.click('[data-cpm="simula-v2"]'); await sleep(1200);
     const p = await page.evaluate(() => { const m = document.querySelector('[data-cpm="partita23"]'); if (!m) return null;
       return { scelta: !!m.querySelector('[data-cpm="simula-scelta"]'), gioca: [...m.querySelectorAll('button')].some(x => /^Gioca/.test((x.textContent || '').trim())), conf: !!m.querySelector('[data-cpm="simula-conferma"]'),
@@ -38,6 +44,6 @@ const statoSim = (page) => page.evaluate(() => { const x = document.querySelecto
 await b.close(); srv.close();
 if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 3).join(' | '));
 let ok;
-if (ROSSO) { ok = ko.some(x => /manca il tasto Simula/.test(x)); console.log(ok ? 'ROSSO ATTESO OK: con __CPM_NO_V2 il tasto Simula non c\'e\'' : 'ROSSO NON RIUSCITO'); }
+if (ROSSO) { ok = ko.some(x => /^B CON: .*:1/.test(x)); console.log(ok ? 'ROSSO ATTESO OK: col tema di prova a basso contrasto cade CON sul tasto Simula' : 'ROSSO NON RIUSCITO: ' + ko.join(' | ')); }
 else { ko.forEach(x => console.log('  ✗ ' + x)); ok = !ko.length && !errs.length; console.log(ok ? 'simula-v2 VERDE' : 'simula-v2 ROSSO'); }
 process.exit(ok ? 0 : 1);

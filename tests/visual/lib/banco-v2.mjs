@@ -2,11 +2,13 @@
    generato con la funzione del gioco e la giornata successiva servita, storico dei gol sintetico per il grafico della Carriera. */
 import { installCdnRoutes, sleep } from './harness.mjs';
 import { SAVE, INIT } from './banco-g0.mjs';
-export async function apriBancoV2(b, port, f, { rosso = false, errs = [], mancanti = [], prep = '' } = {}) {
+import { armaTemaRosso } from './tema-prova.mjs';
+export async function apriBancoV2(b, port, f, { rosso = false, temaRosso = false, errs = [], mancanti = [], prep = '' } = {}) {/* rosso/temaRosso: tema di prova a basso contrasto (lib/tema-prova.mjs) */
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1 }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 120)}`));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: rosso ? ['__CPM_NO_V2'] : [], save: SAVE });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], save: SAVE });
+  if (rosso || temaRosso) await armaTemaRosso(page);
   await page.addInitScript(() => { try { const v = sessionStorage.getItem('v2s'); if (v) localStorage.setItem('cpm-v3', v); } catch (e) {} });
   await page.addInitScript(() => { const s = document.createElement('style'); s.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}'; document.addEventListener('DOMContentLoaded', () => document.head.appendChild(s)); });
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;

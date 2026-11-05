@@ -7,7 +7,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..','..');
 const boot=fs.readFileSync(path.join(ROOT,'src','01-bootstrap-tema-avatar.jsx'),'utf8');
-const iL=boot.indexOf('let TH = {'), iD=boot.indexOf('const TH_DARK=');
+const iL=boot.indexOf('const TINTE={'), iD=boot.indexOf('if(_temaProva&&_temaProva.th)');/* [tappa V2 4] un tema solo: TINTE + TH (prima: il TH chiaro fino a TH_DARK) */
 const TEMA={}; { const re=/([a-zA-Z0-9_]+)\s*:\s*"(#[0-9a-fA-F]{6})"/g; let m;
   const blocco=boot.slice(iL,iD); while((m=re.exec(blocco)))if(!TEMA[m[2].toLowerCase()])TEMA[m[2].toLowerCase()]=m[1]; }
 const rgb=(h)=>{h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];

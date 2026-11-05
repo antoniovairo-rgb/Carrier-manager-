@@ -3,12 +3,14 @@
    Passi successivi in pagina: forzaHL(page, gi) → hl_choose · finePartita(page) → 'ended' (orologio portato all'89'). */
 import fs from 'node:fs';
 import { installCdnRoutes, sleep } from './harness.mjs';
+import { armaTemaRosso } from './tema-prova.mjs';
 const SAVE = JSON.parse(fs.readFileSync(new URL('../fixtures/save-194-primavera-w38.json', import.meta.url)));
-export async function apriPartitaV2(b, port, f, { rosso = false, errs = [], ingresso = false, rossi = [] } = {}) {
+export async function apriPartitaV2(b, port, f, { rosso = false, temaRosso = false, errs = [], ingresso = false, rossi = [] } = {}) {/* rosso/temaRosso: tema di prova a basso contrasto (lib/tema-prova.mjs) */
   const opt = { viewport: { width: f.w, height: f.h }, serviceWorkers: 'block', deviceScaleFactor: 1 }; if (f.touch) { opt.hasTouch = true; opt.isMobile = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 140)}`));
-  await page.addInitScript(([s, r, rs]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_V2 = true; for (const k of rs) window[k] = true; try { if (!localStorage.getItem('cpm-v3')) localStorage.setItem('cpm-v3', JSON.stringify(s)); localStorage.setItem('cpm-match-speed', '1'); } catch (e) {} }, [SAVE, rosso, rossi]);
+  if (rosso || temaRosso) await armaTemaRosso(page);
+  await page.addInitScript(([s, r, rs]) => { window.__CPM_GLB = false; for (const k of rs) window[k] = true; try { if (!localStorage.getItem('cpm-v3')) localStorage.setItem('cpm-v3', JSON.stringify(s)); localStorage.setItem('cpm-match-speed', '1'); } catch (e) {} }, [SAVE, rosso, rossi]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => [...document.querySelectorAll('button')].some(x => /Continua/.test(x.textContent || '')), null, { timeout: 90000 }); await sleep(800);
   await page.evaluate(() => [...document.querySelectorAll('button')].find(x => /Continua/.test(x.textContent || '')).click());

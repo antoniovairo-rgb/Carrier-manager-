@@ -5,7 +5,7 @@
  * BOOTSTRAP · TEMA · AVATAR
  *
  * Alias React/THREE, i flag di test da querystring (_SIT_TEST, _CPM_TEST, _CPM_*),
- * la tavolozza TH + TH_DARK/TH_LIGHT, i token FS/FW/SP/RAD/MO, il catalogo AVATARS
+ * il tema unico TINTE + TH (tappa V2 4: niente piu' chiaro/scuro), i token FS/FW/SP/RAD/MO, il catalogo AVATARS
  * e i volti NPC, i componenti AvatarSVG / NpcFace / NpcFaceCoach /
  * Player3DViewer, EmoText, TeamBadge e le utility di nome/cognome.
  *
@@ -60,43 +60,46 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.tes
 }
 
 /* ========================================
-   LIGHT THEME  (req #1)
+   IL TEMA DEL GIOCO — «Notte da stadio»
 ======================================== */
-let TH = {
-  bg:"#f5f3ef", bgGrad:"linear-gradient(160deg,#f7f5f1 0%,#f1efe9 100%)",/* [PALETTE A · scelta PO 14/09 «la A»] base avorio neutra al posto dell'azzurrino: il granata resta la marca, la base smette di contraddirlo */
-  card:"#ffffff", cardBorder:"#e7e3dc", shadow:"0 2px 12px rgba(0,0,0,0.07)",
-  text:"#1e293b", muted:"#526279", faint:"#596a80",/* [G1.1 grafica] i due grigi del testo secondario sul tema chiaro: erano 4,76:1 e 2,56:1 su bianco (2,4:1 e 4,0-4,4:1 sui fondi tinti): 917 nodi su 2291 sotto la soglia WCAG nella griglia G0, il piu' delle volte proprio questi due. Ora >=5,27:1 e >=4,69:1 su tutti e cinque i fondi chiari del gioco. La gerarchia resta (faint piu' chiaro di muted). Il tema scuro ha i suoi valori in TH_DARK e non cambia. */
-  primary:"#8e1f33", primaryDk:"#6a1326",
-  success:"#16a34a", danger:"#dc2626", warning:"#d97706",
-  gold:"#b45309", accent:"#7c3aed",
-  brandText:"#8e1f33", accentText:"#7c3aed",/* [G1.6 grafica] marca e accento COME TESTO: sul chiaro coincidono coi pieni; TH_DARK li schiarisce (#ee9aaa 6,9:1 e #a78bfa 5,4:1 su #1e293b) perche' i pieni su card scura stanno a 1,7:1 e 2,6:1 */
-  navBg:"rgba(255,255,255,0.96)",
-  // Sprint D: token semantici per card (light = valori attuali → zero regressione di giorno)
-  bgBlue:"#eff6ff", bdBlue:"#bfdbfe", txBlue:"#1e40af",
-  bgGreen:"#f0fdf4", bdGreen:"#bbf7d0", txGreen:"#166534",
-  bgRed:"#fff1f2", bdRed:"#fecaca", txRed:"#b91c1c",
-  bgAmber:"#fef3c7", bdAmber:"#fcd34d", txAmber:"#92400e",
-  bgPurple:"#f5f3ff", bdPurple:"#c4b5fd", txPurple:"#7c3aed",
-  /* ===== UX/UI OVERHAUL · Design System tokens (FASE 1 · Ondata 1) =====
-     Valori LIGHT pinnati all'output attuale → zero regressione visiva il giorno 1.
-     Le schermate delle ondate successive consumeranno questi token invece di inventare hex. */
-  // Superfici / elevazione / overlay (il backbone dark-theme mancante)
-  surface2:"#f1eee8", surface3:"#ffffff", divider:"#e9e5de", track:"#e4e0d8", scrim:"rgba(15,23,42,0.45)",
-  cardBg:"#f4f7fb",  // FIX: TH.cardBg usato (Club tab) ma mai definito → alias di surface2
-  border:"#e6edf5",  // FIX: TH.border usato (ProTransition) ma mai definito → alias di divider
-  el1:"0 2px 12px rgba(0,0,0,0.07)", el2:"0 4px 16px rgba(0,0,0,0.10)", el3:"0 12px 40px rgba(0,0,0,0.18)",
-  // Scala brand (sostituisce il "granata-su-blu" accidentale delle selezioni)
-  primaryTint:"#f7e9ec", primaryBorder:"#e3c3cb",
-  // Oro metallico trofei (disambiguato da warning)
-  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
-  goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
-  // Token semantici di dominio (fg/bg/bd)
-  winFg:"#166534"/* [7.968] era #137036: due verdi scuri a 11 punti di distanza, indistinguibili a occhio e contati come due tinte dal censimento. Questo e' l'inchiostro verde approvato, lo stesso a cui si aggancia `semTesto945` */, winBg:"#e7f6ec", winBd:"#b7e4c4",
-  drawFg:"#a16207", drawBg:"#fbf3dd", drawBd:"#f0dca6",
-  lossFg:"#b91c1c", lossBg:"#fbe9e9", lossBd:"#f3c9c9",
-  growth:"#16a34a", regression:"#dc2626", energy:"#0284c7",
-  injury:"#dc2626", suspension:"#ea580c", record:"#0891b2",
-};
+/* [PO-302 tappa 4 · decisione PO 03/11 «La grafica deve essere unica, meno manutenzione»] UN SOLO TEMA, UN SOLO ASPETTO.
+   Fino alla tappa 3 qui vivevano quattro tavolozze (TH chiaro, TH_LIGHT_ORIG, TH_DARK, TH_V2) e un interruttore
+   (__CPM_NO_V2) che riportava la grafica della 178; ogni schermata portava due rami (TH.v2 ? nuovo : vecchio). Ora i
+   token sotto sono i SOLI token: TINTE e' la tavolozza delle tavole docs/design/grafica-v2 (LEGGIMI.md) e TH ne deriva
+   tutto il resto (le varianti semantiche scure tarate nel G1.7 restano quelle). Nessun selettore di tema: la vecchia
+   preferenza «cpm-dark» di un salvataggio non e' piu' letta e non serve migrarla (vive in localStorage, non nel save).
+   Contrasti misurati (WCAG): #9aa3b2 su #1a1e27 6,6:1 · faint #8f98a8 su #262b37 4,9:1 · #f4f1ea su #0d0f14 17:1.
+   I bordi sono in esadecimale (non rgba) perche' molte card ci appendono un'alfa («+"55"»). */
+const TINTE={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#262a33",testo:"#f4f1ea",sec:"#9aa3b2",
+  oro:"#e8b44a",verde:"#4ade80",giallo:"#fbbf24",rosso:"#f87171",blu:"#60a5fa",anello:"#2a2f3b",
+  oroCornice:"linear-gradient(145deg,#fbe7a1 0%,#e8b44a 35%,#9c6a12 65%,#f5d27a 100%)",
+  argCornice:"linear-gradient(145deg,#ffffff 0%,#cbd5e1 40%,#64748b 70%,#e2e8f0 100%)"};
+/* IL BANCO DI PROVA PUO' ALTERARE I TOKEN, IL GIOCO NO. Solo sotto ?cpmtest=1 (mai nella build dello store) una sonda puo'
+   impostare window.__CPM_TEMA_PROVA={tinte:{...},th:{...}} con page.addInitScript prima del caricamento: i valori
+   sostituiscono quelli qui sopra PRIMA che TH ne derivi. E' il braccio rosso dei guardiani grafici (grafica-v2,
+   momenti-v2, partita-v2, simula-v2, patrimonio-303): un token a basso contrasto deve farli cadere. */
+const _temaProva=(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")&&window.__CPM_TEMA_PROVA)?window.__CPM_TEMA_PROVA:null;
+if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catch(_e){}}
+const TH = {
+  bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
+  text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
+  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
+  success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
+  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  cardBg:TINTE.inc,border:"#2a2f3b",
+  el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
+  primaryTint:"#2a1620",primaryBorder:"#4a2530",
+  winFg:TINTE.verde,drawFg:TINTE.giallo,lossFg:TINTE.rosso,growth:TINTE.verde,regression:TINTE.rosso,energy:TINTE.blu,
+  injury:TINTE.rosso,record:TINTE.oro,
+  /* varianti semantiche scure (Sprint D, G1.7) e oro da festa (giro 23 PO-251): misurate sul fondo notte */
+  bgBlue:"#16233b",bdBlue:"#1e3a5f",txBlue:"#93c5fd",
+  bgGreen:"#102b1d",bdGreen:"#1d4d33",txGreen:"#86efac",
+  bgRed:"#2c1518",bdRed:"#5b2530",txRed:"#fca5a5",
+  bgAmber:"#2a1f0c",bdAmber:"#5a430f",txAmber:"#fcd34d",
+  bgPurple:"#1d1733",bdPurple:"#3b2a63",txPurple:"#c4b5fd",
+  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)",
+  winBg:"#12321f",winBd:"#1d4d33",drawBg:"#2c2410",drawBd:"#4a3a12",lossBg:"#331519",lossBd:"#5b2530",suspension:"#fb923c"};
+if(_temaProva&&_temaProva.th){try{Object.assign(TH,_temaProva.th);}catch(_e){}}
 
 /* [7.944 C4.1 — I COLORI DEI CLUB SONO DATI, E I DATI NON SANNO CHE E' NOTTE.]
    Misurato con la griglia mobile a 412 px sul tema SCURO: i peggiori contrasti della schermata non
@@ -204,56 +207,7 @@ function inkSu945(col){
     return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
 function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
-const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
-const TH_LIGHT=TH; // alias used for dark-mode shadowing
-const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",
-  // Sprint D: varianti scure dei token semantici (bg scuro + testo chiaro leggibile)
-  bgBlue:"#16233b", bdBlue:"#1e3a5f", txBlue:"#93c5fd",
-  bgGreen:"#102b1d", bdGreen:"#1d4d33", txGreen:"#86efac",
-  bgRed:"#2c1518", bdRed:"#5b2530", txRed:"#fca5a5",
-  bgAmber:"#2a1f0c", bdAmber:"#5a430f", txAmber:"#fcd34d",
-  bgPurple:"#1d1733", bdPurple:"#3b2a63", txPurple:"#c4b5fd",
-  // UX/UI OVERHAUL · varianti scure dei nuovi token (bg scuri + fg leggibili)
-  surface2:"#172033", surface3:"#21304a", divider:"#2c3a52", track:"#2c3a52", scrim:"rgba(0,0,0,0.62)",
-  cardBg:"#172033", border:"#2c3a52",
-  el1:"0 2px 12px rgba(0,0,0,0.4)", el2:"0 4px 16px rgba(0,0,0,0.5)", el3:"0 12px 48px rgba(0,0,0,0.6)",
-  primaryTint:"#2a1620", primaryBorder:"#4a2530",
-  festaGrad:"linear-gradient(135deg,#ffe08a,#f5c542 45%,#c98a1a)",festaInk:"#2a1a02",festaGlow:"rgba(245,197,66,0.45)",/* [giro 23 PO-251 «Oro da festa»] variante ufficiale per i SOLI momenti di trofeo (Btn v="festa"): stessa in chiaro e in scuro, la festa sta sempre su fondo notte */
-  goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#d4922a",
-  winFg:"#4ade80", winBg:"#12321f", winBd:"#1d4d33",
-  drawFg:"#fbbf24", drawBg:"#2c2410", drawBd:"#4a3a12",
-  lossFg:"#f87171", lossBg:"#331519", lossBd:"#5b2530",
-  growth:"#4ade80", regression:"#f87171", energy:"#38bdf8",
-  injury:"#f87171", suspension:"#fb923c", record:"#22d3ee"};
-/* [PO-302 · grafica V2 «Notte da stadio», tappa 1] LA V2 E' IL TEMA DEL GIOCO. Palette dalle tavole
-   docs/design/grafica-v2 (LEGGIMI.md): fondo #0d0f14, superfici #1a1e27 / #11141b (incassi) / #262b37 (tasti
-   secondari), testo #f4f1ea e #9aa3b2, oro #e8b44a solo per eroe/voti/record/premi, verde/giallo/rosso/blu per gli
-   stati. Parte da TH_DARK (dk:true: tutte le varianti scure gia' tarate restano valide) e ne sostituisce i valori.
-   I bordi sono scritti in esadecimale (non rgba) perche' molte card ci appendono un'alfa («+"55"»).
-   Contrasti misurati (WCAG): #9aa3b2 su #1a1e27 6,6:1 · faint #8f98a8 su #262b37 4,9:1 · #f4f1ea su #0d0f14 17:1.
-   Il tema chiaro non ha piu' un comando (7.947: un tema solo): l'interruttore rosso __CPM_NO_V2 riporta la grafica
-   di prima (TH chiaro, barra e home della 178). */
-const v2On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_V2);
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
-const V2={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#262a33",testo:"#f4f1ea",sec:"#9aa3b2",
-  oro:"#e8b44a",verde:"#4ade80",giallo:"#fbbf24",rosso:"#f87171",blu:"#60a5fa",anello:"#2a2f3b",
-  oroCornice:"linear-gradient(145deg,#fbe7a1 0%,#e8b44a 35%,#9c6a12 65%,#f5d27a 100%)",
-  argCornice:"linear-gradient(145deg,#ffffff 0%,#cbd5e1 40%,#64748b 70%,#e2e8f0 100%)"};
-const TH_V2={...TH_DARK,v2:true,
-  bg:V2.bg,bgGrad:V2.bg,card:V2.sup,cardBorder:V2.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
-  text:V2.testo,muted:V2.sec,faint:"#8f98a8",navBg:V2.sup,
-  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
-  success:V2.verde,danger:V2.rosso,warning:V2.giallo,gold:V2.oro,goldText:V2.oro,accent:"#a78bfa",
-  surface2:V2.inc,surface3:V2.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
-  cardBg:V2.inc,border:"#2a2f3b",
-  el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
-  primaryTint:"#2a1620",primaryBorder:"#4a2530",
-  winFg:V2.verde,drawFg:V2.giallo,lossFg:V2.rosso,growth:V2.verde,regression:V2.rosso,energy:V2.blu,
-  injury:V2.rosso,record:V2.oro};
-/* il tema da applicare: V2 salvo il rosso; col rosso, la scelta di prima (chiaro o, se richiesto, lo scuro storico) */
-const temaAttivo=(scuro)=>v2On()?TH_V2:(scuro?TH_DARK:TH_LIGHT_ORIG);
-/* [7.178.0 RC-15] pastelli semantici theme-aware: i bg chiari hardcoded con testo TH.text erano illeggibili in dark-mode */
-const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
@@ -571,7 +525,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=TH.v2?inkSu945(c1):(_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
+  const inkPill=inkSu945(c1);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}

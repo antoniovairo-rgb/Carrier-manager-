@@ -6,7 +6,8 @@
    PAL    le superfici sono quelle V2 (#1a1e27 riquadri, #11141b etichette), il gol in oro;
    TOCCO  risposte, tasti della finestra e righe del calendario >= 40 px di altezza;
    TXT    nessun testo tagliato, nessuno scorrimento orizzontale;  CON  contrasto WCAG >= 4,5:1 (3:1 sui testi grandi).
-   ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_V2 (tema di prima) e pretende che PAL cada su ogni schermata in ogni formato.
+   ROSSO [tappa 4]: CPM_PROVA_ROSSO=1 altera i token dal banco di prova (lib/tema-prova.mjs: __CPM_TEMA_PROVA, notte sbiadita a basso
+   contrasto; prima era __CPM_NO_V2, tolto col tema unico) e pretende che PAL cada su ogni schermata e CON in ogni formato.
    CPM_FORMATI=tel,pc per un sottoinsieme. Chromium headless: nessun dispositivo vero. */
 import { startServer, launchBrowser, sleep } from './lib/harness.mjs';
 import { apriBancoV2 } from './lib/banco-v2.mjs';
@@ -70,8 +71,9 @@ await b.close(); srv.close();
 if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 4).join(' | ')); if (mancanti.length) console.log('non raggiunte: ' + mancanti.join(', '));
 for (const [k, v] of Object.entries(fail)) v.forEach(x => console.log(`  ✗ ${k} ${x}`));
 let esito; const SCH = Object.keys(GIUDICI);
-if (ROSSO) { const cade = SCELTI.every(f => SCH.every(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))));
-  esito = cade && !errs.length; console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_V2 cade PAL su ogni schermata in ogni formato' : 'ROSSO NON RIUSCITO');
+if (ROSSO) { const cade = SCELTI.every(f => SCH.every(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))) && fail.CON.some(x => x.startsWith(`${f.k}:`)));
+  esito = cade && !errs.length; if (!esito) console.log(`ROSSO: PAL cade in ${SCELTI.map(f => f.k + ' ' + SCH.filter(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))).length + '/' + SCH.length).join(', ')} · CON cade in ${SCELTI.filter(f => fail.CON.some(x => x.startsWith(`${f.k}:`))).map(f => f.k).join(', ') || 'nessuno'}`);
+  console.log(esito ? 'ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato' : 'ROSSO NON RIUSCITO');
 } else { esito = Object.values(fail).every(v => !v.length) && !errs.length && !mancanti.length && visti === SCELTI.length * SCH.length;
   console.log(esito ? `momenti-v2 VERDE: ${SCELTI.length} formati x ${SCH.length} schermate · contrasto minimo ${conMin.toFixed(2)}:1` : 'momenti-v2 ROSSO'); }
 process.exit(esito ? 0 : 1);

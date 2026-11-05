@@ -76,8 +76,7 @@ const APP_ENV=(()=>{try{const h=(location.hostname||"").toLowerCase();if(h.endsW
 //   mappava umile→"🎯 Critico" mentre il FEEDBACK post-scelta mappava umile→"🙏 Umile" (stesso tono, due nomi
 //   diversi → «scelgo "critico" ma mi scrive "umile"»). Un solo dizionario usato da entrambi i punti di render.
 const IV_TONE_LBL={diplomatico:"🤝 Diplomatico",diretto:"🔥 Ambizioso",umile:"🙏 Umile"};
-const IV_TONE_COL={diplomatico:"#2563eb",diretto:"#f97316",umile:"#7c3aed"};
-const IV_TONE_V2={diplomatico:"#60a5fa",diretto:"#e8b44a",umile:"#4ade80"};/* [PO-302 tappa 2b] i toni sul fondo notte (V2Intervista): blu, oro, verde della palette V2 */
+const IV_TONE_TINTA={diplomatico:"#60a5fa",diretto:"#e8b44a",umile:"#4ade80"};/* [PO-302 tappa 2b] i toni sul fondo notte (V2Intervista): blu, oro, verde della palette V2 */
 /* [7.994.0 INTERVISTA «scarna» - scelte PO: contesto partita, conseguenze visibili, sala viva, domanda di rilancio]
    IL RILANCIO: il giornalista incalza sulla risposta appena data. Una sola domanda in piu', scelta dal TONO della
    prima risposta (incalza chi e' stato ambizioso, apre chi e' stato umile, stana chi e' stato diplomatico), in modo
@@ -87,7 +86,7 @@ const IV_TONE_V2={diplomatico:"#60a5fa",diretto:"#e8b44a",umile:"#4ade80"};/* [P
    LA PRIMA PAGINA: dopo la seconda risposta, il titolo di domani della testata del giornalista. Il titolo dipende
    dal tono della PRIMA risposta e dal risultato; gli effetti si mostrano solo ORA, a scelta fatta (direttiva PO
    6.5.4: l'esito non deve condizionare la risposta). */
-IV_TONE_LBL.nocomment="🤐 No comment";IV_TONE_COL.nocomment="#64748b";
+IV_TONE_LBL.nocomment="🤐 No comment";
 const IV_NOCOMMENT24={tone:"nocomment",txt:"Su questo preferisco non rispondere.",ef:{p:-2,t:1}};
 const RILANCIO24={
   diretto:[

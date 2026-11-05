@@ -3,7 +3,7 @@
    SONDA/GUARDIANO: carica la carriera (salvataggio save-190) a 360 e 412 px e misura, coi rettangoli REALI del testo (Range sul nodo
    di testo, non il box del bottone che e' sempre largo 1/6), lo spazio vuoto fra due etichette vicine della barra in basso.
    VERDE: spazio minimo >= CPM_GAP_MIN px (default 15; misurato prima 12,6 a 360 px, dopo 17,6) a entrambe le larghezze, nessuna etichetta oltre il proprio bottone.
-   ROSSO (__CPM_NO_BARRA72, barra di prima: sei bottoni di larghezza uguale): spazio minimo a 360 px < 15 px. Larghezza minima di un bottone >= 40 px: a spazi uguali HOME misura 40,4 px a 360 (prima 51), alto ~46 — sopra i 24 px di WCAG 2.2 AA, sotto i 44 consigliati: scelta dichiarata nel RAPPORTO-giro72.
+   ROSSO (__CPM_NO_BARRA72, bottoni di larghezza uguale): fino alla tappa V2 3 spazio minimo a 360 px < 15 px sulla barra a 7 voci (con __CPM_NO_V2); dalla tappa 4 (barra unica a 6 voci) lo spazio minimo deve scendere di >= 3 px rispetto al verde. Larghezza minima di un bottone >= 40 px: a spazi uguali HOME misura 40,4 px a 360 (prima 51), alto ~46 — sopra i 24 px di WCAG 2.2 AA, sotto i 44 consigliati: scelta dichiarata nel RAPPORTO-giro72.
    Foto in out/barra-360-72-<braccio>-<larghezza>.png. Uso: node barra-360-72.mjs */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -13,7 +13,7 @@ const srv = await startServer(); const port = srv.address().port; const b = awai
 async function misura(rosso, w) {
   const ctx = await b.newContext({ viewport: { width: w, height: 915 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx);
   const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(o => { window.__CPM_GLB = false; if (o.r) { window.__CPM_NO_BARRA72 = 1; window.__CPM_NO_V2 = 1; }/* [PO-302 tappa 2] la barra V2 ha 6 voci (Opzioni in testata): a 6 voci uguali il difetto non si riproduce piu', quindi il rosso torna alla barra di prima per intero (7 voci, larghezze uguali). Soglie invariate. */ localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
+  await page.addInitScript(o => { window.__CPM_GLB = false; if (o.r) { window.__CPM_NO_BARRA72 = 1; }/* [PO-302 tappa 4] __CPM_NO_V2 non esiste piu' (tema e barra unici): il rosso resta il solo __CPM_NO_BARRA72. [PO-302 tappa 2] la barra V2 ha 6 voci (Opzioni in testata): a 6 voci uguali il difetto non si riproduce piu', quindi il rosso torna alla barra di prima per intero (7 voci, larghezze uguali). Soglie invariate. */ localStorage.setItem('cpm-v3', JSON.stringify(o.s)); }, { s: SAVE, r: rosso });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -43,6 +43,12 @@ for (const w of [360, 412]) { const v = R['verde' + w];
   else { const st = Math.min(...v.L.map(x => x.b1 - x.b0)); if (st < 40) g.push(`verde ${w}: bottone largo ${st.toFixed(1)} px (< 40)`); console.log(`  ${w}px: bottone piu' stretto ${st.toFixed(1)} px`);
     if (v.min.px < GAP_MIN) g.push(`verde ${w}: ${v.min.fra} a ${v.min.px} px (< ${GAP_MIN})`); if (v.fuori.length) g.push(`verde ${w}: etichette oltre il bottone ${v.fuori.join(',')}`); if (v.scrollX > 0) g.push(`verde ${w}: scroll orizzontale ${v.scrollX}`); }
   if (v.errori.length) g.push(`verde ${w}: errori di pagina ${v.errori.join(' | ')}`); }
-if (!(R.rosso360.min && R.rosso360.min.px < GAP_MIN)) g.push('rosso: il difetto di prima non si vede a 360 px');
-console.log(g.length ? '❌ barra-360-72\n  · ' + g.join('\n  · ') : '✅ barra-360-72 verde (etichette staccate a 360 e 412 px) e il rosso si vede');
+/* [PO-302 tappa 4 — tema e barra unici] Il difetto originale (etichette a < 15 px) viveva sulla barra a 7 voci della 178, che
+   esisteva solo dietro __CPM_NO_V2: tolto quello, a 6 voci uguali il difetto NON e' piu' riproducibile (misurato: rosso 20,6 px a 360).
+   La soglia del VERDE resta GAP_MIN (15 px). Il ROSSO dimostra che il rimedio 72 e' ancora quello che separa le etichette: con
+   __CPM_NO_BARRA72 (larghezze uguali) lo spazio minimo a 360 px deve scendere di almeno 3 px rispetto al verde. */
+const _rv = R.verde360.min && R.verde360.min.px, _rr = R.rosso360.min && R.rosso360.min.px;
+if (!(_rr != null && _rv != null && _rr <= _rv - 3)) g.push(`rosso: con __CPM_NO_BARRA72 lo spazio minimo a 360 px non peggiora (${_rr} contro ${_rv} px del verde)`);
+else console.log(`  rosso: con __CPM_NO_BARRA72 lo spazio minimo a 360 px scende da ${_rv} a ${_rr} px (la barra a 7 voci della 178 non esiste piu': il difetto < ${GAP_MIN} px non e' riproducibile)`);
+console.log(g.length ? '❌ barra-360-72\n  · ' + g.join('\n  · ') : '✅ barra-360-72 verde (etichette staccate a 360 e 412 px) e il rosso si vede (larghezze uguali: spazio minimo piu\' stretto)');
 process.exit(g.length ? 1 : 0);

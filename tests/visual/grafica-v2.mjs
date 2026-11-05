@@ -15,10 +15,13 @@
         Simula accanto a Gioca nel riquadro della prossima partita, tre anelli (Forma, Morale, Fatica) nella card dell'eroe;
    SCH  schede: Stagione (titolo V2 con distanza dalla vetta e forma, riga tua nel colore del club), Club (fascia del club, due anelli,
         OVR su piastrella), Agente (titolo, barra del contratto), Ufficio (titolo, tacche del trainer); contrasto, tagli, scorrimento.
-   ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_V2 (la grafica della 178) e pretende che PAL, NAV, HOME, TEST e SCH cadano in ogni formato.
+   ROSSO [tappa 4]: CPM_PROVA_ROSSO=1 altera i token dal banco di prova (lib/tema-prova.mjs: __CPM_TEMA_PROVA, una notte sbiadita a basso
+   contrasto) e pretende che PAL e CON cadano in ogni formato. Fino alla tappa 3 il rosso era __CPM_NO_V2 (la grafica della 178): tolto con
+   il tema unico, e con lui la possibilita' di far cadere NAV/HOME/TEST/SCH, che giudicano la STRUTTURA (ora un solo markup).
    CPM_FORMATI=tel,tabv,tabo,pc per un sottoinsieme. Chromium headless: nessun dispositivo vero. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 import { SAVE, INIT } from './lib/banco-g0.mjs';
+import { armaTemaRosso } from './lib/tema-prova.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = !!process.env.CPM_PROVA_ROSSO;
@@ -87,7 +90,8 @@ for (const f of SCELTI) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1 }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 120)}`));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO ? ['__CPM_NO_V2'] : [], save: SAVE });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], save: SAVE });
+  if (ROSSO) await armaTemaRosso(page);
   await page.addInitScript(() => { try { const v = sessionStorage.getItem('v2s'); if (v) localStorage.setItem('cpm-v3', v); } catch (e) {} });
   await page.addInitScript(() => { const s = document.createElement('style'); s.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}'; document.addEventListener('DOMContentLoaded', () => document.head.appendChild(s)); });
   const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
@@ -179,9 +183,9 @@ for (const [k, v] of Object.entries(fail)) v.forEach(x => console.log(`  ✗ ${k
 let esito;
 if (ROSSO) {
   const cade = k => SCELTI.every(f => fail[k].some(x => x.startsWith(f.k + ':')));
-  const K = ['PAL', 'NAV', 'HOME', 'TEST', 'SCH'];
+  const K = ['PAL', 'CON'];
   esito = K.every(cade) && !errs.length;
-  console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_V2 cadono PAL, NAV, HOME, TEST e SCH in ogni formato' : `ROSSO NON RIUSCITO: cadono ${K.filter(cade).join(', ') || 'nessuno'}`);
+  console.log(esito ? 'ROSSO ATTESO OK: col tema di prova a basso contrasto cadono PAL e CON in ogni formato' : `ROSSO NON RIUSCITO: cadono ${K.filter(cade).join(', ') || 'nessuno'}`);
 } else {
   const ciechi = Object.entries(visti).filter(([, n]) => n === 0).map(([k]) => k);
   esito = Object.values(fail).every(v => !v.length) && !ciechi.length && !mancanti.length && !errs.length;
