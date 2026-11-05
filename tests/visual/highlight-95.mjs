@@ -147,10 +147,10 @@ const g = [], V = esito.verde, R = esito.rosso;
 if (V) {
   if (V.pass < 12) g.push('verde: solo ' + V.pass + ' passaggi giudicati (pavimento 12)');
   if (V.drib < 4) g.push('verde: solo ' + V.drib + ' finte giudicate (pavimento 4)');
-  if (V.difetti.length) g.push('verde: ' + V.difetti.length + ' difetti');
+  if (V.difetti.length) g.push('verde: ' + V.difetti.length + ' difetti — ' + V.difetti.slice(0, 2).map(x => x.slice(0, 160)).join(' ‖ '));/* [giro 104] il verde dichiara QUALE difetto: prima la coda (le tre righe che il runner riporta) erano l'ultimo difetto ATTESO del braccio rosso, «❌» e «verde: 1 difetti» — nella catena 178-finale il «D3 Uno-due con LUZI» era del rosso, quello del verde non e' mai stato scritto */
   if ((V.nonGiud | 0) > 0.3 * V.hl) g.push('verde: cieco, ' + V.nonGiud + ' scene oltre la guardia di parete su ' + V.hl + ' (macchina troppo carica: ridurre CPM_PAR)');
   if (!(V.pasOk / Math.max(1, V.pasGiud) >= 0.70)) g.push('verde: passaggi arrivati ' + (100 * V.pasOk / Math.max(1, V.pasGiud)).toFixed(1) + '% (pavimento 70%)');
 }
 if (R) { for (const d of ['D1', 'D2', 'D3', 'D4']) if (!R.difetti.some(x => x.startsWith(d))) g.push('rosso: ' + d + ' non si vede'); }
-if (g.length) { console.log('❌ highlight-95'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+if (g.length) { console.log('❌ highlight-95'); g.sort((a, b) => (/^verde: \d+ difetti/.test(a) ? 1 : 0) - (/^verde: \d+ difetti/.test(b) ? 1 : 0)).forEach(x => console.log('  · ' + x)); process.exit(1); }/* i difetti del verde per ultimi: sono quelli che restano nella coda */
 console.log(V ? '✅ highlight-95 verde' + (R ? ' (e il rosso si vede)' : ' (braccio rosso non eseguito)') : '✅ highlight-95: il rosso si vede (braccio verde non eseguito)');
