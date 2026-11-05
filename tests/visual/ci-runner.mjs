@@ -65,7 +65,11 @@ import { spawn } from 'node:child_process';
 const LENTI = new Set(['chiusura-99', 'parata-100', 'riserva-103', 'lento-103', 'contatto-103', 'consegna-103', 'colla-103', 'assist-298', 'highlight-95', 'scena3d-96', 'esiti-96', 'partita2d-297', 'spazio-296', 'schermate-97', 'pc-tablet-292', 'ingresso-285', 'panchina-293', 'voto-79', 'linee-61', 'esito-280', 'ingresso-277', 'inquadra-273', 'salti-274', 'memoria-275', 'ingresso-camminata-245', 'coppa-prestito-245', 'conduci-242', 'giornale-244', 'schede-246', 'testata-209', 'gk-dive-sync', 'gk-miss-229', 'goal-postarc', 'partita-vera', 'scena-motore-147', 'esiti-218', 'cross-218', 'nomi-219', 'difesa-220', 'scene-221', 'career-critical', 'intervista-231', 'tabellino-228', 'interazioni-226', 'schede-234', 'bambini-236', 'difesa-220-scena', 'schede-259']);
 const corri = (p) => new Promise(res => { const t0 = Date.now(); const ch = spawn('npm', ['run', '-s', p], { env }); let out = '';
   ch.stdout.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); }); ch.stderr.on('data', d => { out += d; if (out.length > 2e6) out = out.slice(-1e6); });
-  ch.on('close', code => res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) })); });
+  ch.on('close', code => { let file = '';
+    /* [giro 104] una prova rossa lascia il suo log COMPLETO: le tre righe di coda non bastano a dire quale braccio e' caduto (catena 178-finale,
+       chiusura-99: la coda erano i difetti attesi del braccio rosso, il motivo vero del verde non e' mai stato scritto da nessuna parte). */
+    if (code !== 0) { try { const d = new URL('./out/ci-rossi/', import.meta.url); fs.mkdirSync(d, { recursive: true }); const f = new URL(`${p}-${new Date().toISOString().replace(/[:.]/g, '-')}.log`, d); fs.writeFileSync(f, out); file = f.pathname; } catch (e) {} }
+    res({ ok: code === 0, s: Math.round((Date.now() - t0) / 1000), coda: out.trim().split('\n').slice(-3).join(' | ').slice(0, 240) + (file ? ' | log ' + file.replace(/^.*\/tests\/visual\//, '') : '') }); }); });
 const esito = async (p) => { let r = await corri(p); let prove = 1;
   while (!r.ok && process.env.CPM_CI_NORETRY !== '1' && prove < (+process.env.CPM_CI_MAXPROVE || 3)) { const r2 = await corri(p); prove++; if (r2.ok) { r = { ...r2, s: r.s + r2.s, instabile: true, primo: r.coda }; break; } r = { ...r2, s: r.s + r2.s }; }
   return { ...r, prove }; };
