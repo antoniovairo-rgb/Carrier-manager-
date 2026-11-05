@@ -514,6 +514,7 @@
     "chiusura-99": "node chiusura-99.mjs",
     "parata-100": "node parata-100.mjs",
     "riserva-103": "node riserva-103.mjs",
+    "riserva-104": "node riserva-104.mjs",
     "consegna-103": "node consegna-103.mjs",
     "colla-103": "node colla-103.mjs",
     "lento-103": "node lento-103.mjs",

@@ -17072,7 +17072,7 @@ function ThreeMatchView(props){
           const pl=sr.current.players||[];const idxOf=mm=>{if(mm===hero)return 21;const j=pl.findIndex(pp=>pp&&pp.mesh===mm);return j;};
           const meshOf=ci=>ci==null?null:(ci===21?hero:(pl[ci]&&pl[ci].mesh));
           const rec=(role,mm,ci)=>{if(!mm||e[role])return;const cm=meshOf(ci);e[role]={idx:idxOf(mm),brain:ci==null?null:ci,d:cm?+Math.hypot(mm.position.x-cm.position.x,mm.position.z-cm.position.z).toFixed(1):null,fase:P.matchPhase};};
-          if(P.matchPhase==='hl_result')rec('ricevente',passTargetMesh,e.cast.ricevente);if(P.matchPhase==='hl_result'&&passTargetMesh&&window.__CPM_G99DIAG){const _cm=meshOf(e.cast.ricevente);const _l=e.ult99||(e.ult99=[]);const _ix=idxOf(passTargetMesh);if(!_l.length||_l[_l.length-1].i!==_ix)_l.push({i:_ix,t:String(P.hlType||''),a:String(actType||''),post:String(hlPostArcType||''),o2:!!P.hlOneTwo,rew:String(P.hlReward||''),r99:sr.current._r99?[sr.current._r99.k===P.hlSitKey,sr.current._r99.i]:null,cm:_cm?[+(_cm.position.x).toFixed(1),+(_cm.position.z).toFixed(1)]:null,b:ball?[+ball.position.x.toFixed(1),+ball.position.z.toFixed(1)]:null,h:[+hero.position.x.toFixed(1),+hero.position.z.toFixed(1)],def:!!P.hlDef});}/* [giro 99] diagnosi solo sonde: chi e' servito, in che ramo, dov'era il nominato *//* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
+          if(P.matchPhase==='hl_result'&&passTargetMesh&&!e.prim104){const _i104=idxOf(passTargetMesh);e.prim104={idx:_i104,conc:!!sr.current._ccx460};}/* [giro 104] diagnosi: il vecchio dato, letto al PRIMO fotogramma di hl_result */if(P.matchPhase==='hl_result'&&(sr.current._ccx460||window.__CPM_B4PRIMO))rec('ricevente',passTargetMesh,e.cast.ricevente);/* [giro 104, solo sonde] il ricevente si legge solo a conclusione PARTITA (fireConclusion dichiara _ccx460): con la costruzione R5 la conclusione parte a costruzione finita e nei fotogrammi prima passTargetMesh e' ancora quello della scena precedente — il testimone registrava il ricevente di un'altra scena (chiusura-99 instabile). __CPM_B4PRIMO = lettura vecchia */if(P.matchPhase==='hl_result'&&passTargetMesh&&window.__CPM_G99DIAG){const _cm=meshOf(e.cast.ricevente);const _l=e.ult99||(e.ult99=[]);const _ix=idxOf(passTargetMesh);if(!_l.length||_l[_l.length-1].i!==_ix)_l.push({i:_ix,t:String(P.hlType||''),a:String(actType||''),post:String(hlPostArcType||''),o2:!!P.hlOneTwo,rew:String(P.hlReward||''),r99:sr.current._r99?[sr.current._r99.k===P.hlSitKey,sr.current._r99.i]:null,cm:_cm?[+(_cm.position.x).toFixed(1),+(_cm.position.z).toFixed(1)]:null,b:ball?[+ball.position.x.toFixed(1),+ball.position.z.toFixed(1)]:null,h:[+hero.position.x.toFixed(1),+hero.position.z.toFixed(1)],def:!!P.hlDef});}/* [giro 99] diagnosi solo sonde: chi e' servito, in che ramo, dov'era il nominato *//* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
           if(oppActType&&/^gk_/.test(oppActType))rec('portiere',oppMesh,e.cast.portiere);
           if(oppActType&&/^opp_/.test(oppActType))rec('difensore',oppMesh,e.cast.difensore);
           const _mf=sr.current._mateFx;if(_mf&&_mf.name==='tackle')rec('difensore',_mf.mesh,e.cast.difensore);}
@@ -18641,6 +18641,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
               if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
             }catch(_eB4r){}}
+            /* [giro 104, solo sonde] il ricevente AL LANCIO del passaggio: il testimone B4 lo leggeva al primo fotogramma di hl_result, ma questo
+               ramo gira in fireConclusion, che puo' partire DOPO la costruzione — nei fotogrammi di costruzione passTargetMesh e' ancora quello
+               della scena prima. Qui il dato nasce. */
+            if(typeof window!=='undefined'&&window.__CPM_B4REC){try{const _C4=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;if(_C4){const _W4=(window.__CPM_B4=window.__CPM_B4||{});const _k4=(_C4.min|0)+'|'+(_C4.hl|0);const _e4=_W4[_k4];const _pl4=sr.current.players||[];const _ix4=passTargetMesh===hero?21:_pl4.findIndex(pp=>pp&&pp.mesh===passTargetMesh);if(_e4&&!_e4.lancio)_e4.lancio={idx:_ix4,brain:_C4.ricevente?_C4.ricevente.i:null,ph:String(P.matchPhase||'')};}}catch(_e104){}}
             /* [7.464.0 codice 008 «il pallone viaggia da solo» — collaudo PO #56, #30, #105, #188] IL PALLONE
                VA A UN UOMO, NON A UN PUNTO. Se nessun compagno supera il filtro (davanti di almeno -3u e
                entro 34), `_ptX/_ptZ` restavano al ripiego CIECO di due righe sopra — `palla + 9u in avanti`,
@@ -31558,12 +31562,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   minAt (=_rd92, la 5.92.0 resta) + fallback timer (2600ms) se il segnale non arriva (azione senza arco /
   //   renderer degradato). handleContinue marca il pendente come consumato (skip = niente reveal postumo).
   const outcomeRevealRef=useRef(null);
+  const prevOR104=useRef(null);/* [giro 104, solo sonde] riquadro e orologio di scena della scena precedente, per il gancio __CPM_G104STALE */
   const fireOutcomeReveal=useCallback(function _for(via){const o=outcomeRevealRef.current;if(!o||o.fired)return;
     if(via===undefined&&typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
     if(via===undefined&&typeof window!=='undefined'&&window.__CPM_G103SOLORISERVA)return;/* [giro 103] solo sonde: l'esito puo' arrivare solo dalla riserva (guardiano riserva-103) *//* [giro 95 D4] solo sonde: simula una scena che non dichiara mai l'esito (prova della rete di sicurezza) */
-    if(o.waitPA&&via===undefined&&!o.paWait){o.paWait=1;revealRiserva95(Date.now(),null,true);return;}/* [giro 95 D3] l'esito e' il tiro del compagno: l'arrivo del passaggio non basta, si aspetta che il 3D mostri il tiro */
+    if(o.waitPA&&via===undefined&&!o.paWait){o.paWait=1;revealRiserva95(Date.now(),null,true,undefined,o);return;}/* [giro 95 D3] l'esito e' il tiro del compagno: l'arrivo del passaggio non basta, si aspetta che il 3D mostri il tiro */
     if(typeof via==='string'&&!o.via)o.via=via;
     const _left=(o.minAt||0)-Date.now();
+    if(typeof via==='string'&&_left>40){try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_G104D=window.__CPM_G104D||[]).push({hl:hlIdxRef.current,via,left:_left});}catch(_e){}}/* [giro 104] testimone: una via dichiarata PRIMA del pavimento (la riserva nasce dopo il pavimento: qui non dovrebbe arrivare mai) */
     if(_left>40){fxTimeout(()=>_for(),_left);return;}/* il 3D è arrivato prima del floor di suspense → rimanda al floor */
     o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),pa:!!(_c&&_c.pa),pat:(_c&&_c.pat)||null,wpa:!!o.waitPA,cap:o.cap||null,t:Date.now(),c103:_c?{tl:!!_c.tl,arc:!!_c.arc,pa:!!_c.pa,pat:_c.pat||null,pt:_c.pt,at:_c.at,sl:_c.sl,bx:_c.bx,ck:_c.ck}:null,rr103:o.rr103||null});window.__CPM_CB95=()=>cineBusyRef.current;}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
     try{o.cb();}catch(_e){}},[]);// eslint-disable-line
@@ -31582,17 +31588,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      l'attesa non e' mai piu' corta di prima e a 20+ fps (parete = scena) il percorso e' identico. Stessa guardia di parete. Stesso
      rimedio alla chiusura della finestra d'esito (_avanza461, «via chiusura»). Rosso __CPM_NO_G103A. */
   const ckNow103=()=>{try{const _c=cineBusyRef.current;return(_c&&typeof _c.ck==='number')?_c.ck:null;}catch(_e){return null;}};
-  const revealRiserva95=useCallback(function _rr(t0,ck0,pa,ckR){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+  const revealRiserva95=useCallback(function _rr(t0,ck0,pa,ckR,o0){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+    /* [giro 104 — highlight-95 D3 nella catena 178-finale, «Uno-due con LUZI»: esito «via riserva» a scena occupata] La riserva leggeva
+       SEMPRE il riquadro corrente: un suo richiamo programmato per una scena poteva agire sul riquadro della scena DOPO. Se arriva prima
+       del pavimento minAt della nuova scena, fireOutcomeReveal scrive o.via='riserva' e rimanda; poco dopo il renderer rivela (a scena
+       occupata, com'e' normale) e il registro dice «riserva + occupata» su una scena che la riserva non ha mai aspettato — con i tetti
+       (ckR, ck0, t0) di un'altra scena. Ora la riserva vale solo per il riquadro per cui e' nata. Rosso __CPM_NO_G104A. */
+    if(o0&&o!==o0){try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_G104X=window.__CPM_G104X||[]).push({hl:hlIdxRef.current,t:Date.now(),minAt:o.minAt||0,via:o.via||null});}catch(_e){}if(!(typeof window!=='undefined'&&window.__CPM_NO_G104A))return;}
     try{const _gv=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D3;
       const _par103=(window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000;/* [giro 103] solo sonde (__CPM_REC): la guardia di parete si puo' allungare perche' la misura conti i 6 s DI SCENA anche su una macchina carica (a pochi fps 6 s di scena superano 30 s di parete e la scena diventava «non giudicabile»). Senza la bandiera: 30 s, percorso identico */
       const _c=cineBusyRef.current;
       /* [giro 103, misurato con highlight-95 a CPU x6: ROTH «Uno-due», esito dalla riserva a 2,8 s di parete col pallone ancora ai piedi
          dell'eroe] a fotogrammi lentissimi, dopo 2,6 s di parete il renderer non ha ancora COMINCIATO la conclusione: «non occupata» non
          vuol dire «finita». La riserva aspetta anche i suoi 2,6 s DI SCENA dalla risoluzione (a 20+ fps sono gia' passati). Rosso __CPM_NO_G103A. */
-      if(_gv&&typeof ckR==='number'&&!window.__CPM_NO_G103A&&_c&&typeof _c.ck==='number'&&((_c.ck-ckR)<2.6||(o.waitPA&&!(_c.nb>0)&&(_c.ck-ckR)<8.6))&&Date.now()-(t0||Date.now())<_par103)/* sulle scene col tiro del compagno (waitPA) l'esito E' il 3D: finche' la conclusione non e' nemmeno cominciata non si rivela (tetto 8,6 s di scena) */{fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR),180);return;}
+      if(_gv&&typeof ckR==='number'&&!window.__CPM_NO_G103A&&_c&&typeof _c.ck==='number'&&((_c.ck-ckR)<2.6||(o.waitPA&&!(_c.nb>0)&&(_c.ck-ckR)<8.6))&&Date.now()-(t0||Date.now())<_par103)/* sulle scene col tiro del compagno (waitPA) l'esito E' il 3D: finche' la conclusione non e' nemmeno cominciata non si rivela (tetto 8,6 s di scena) */{fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR,o0),180);return;}
       if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;
         if(ck0==null)ck0=_ck;const _r103=typeof ckR==='number'&&_ck!=null&&!window.__CPM_NO_G103A&&(_ck-ckR)<8.6;
-        if((((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6||_r103)&&Date.now()-(t0||Date.now())<_par103){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR),180);return;}
+        if((((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6||_r103)&&Date.now()-(t0||Date.now())<_par103){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR,o0),180);return;}
         o.cap=(Date.now()-(t0||Date.now())>=_par103)?'parete':'scena';o.rr103={ms:Date.now()-(t0||Date.now()),ck0:ck0,ck:_ck};}}catch(_e){}/* [giro 95] testimone: la riserva ha smesso di aspettare per un tetto (parete = fotogrammi troppo lenti, non giudicabile) */
     if(typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
     fireOutcomeReveal(pa?'scena-tiro':'riserva');},[]);// eslint-disable-line
@@ -38690,14 +38702,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {const _t0858=Date.now();let _ck0864=(cineBusyRef.current&&typeof cineBusyRef.current.ck==='number')?cineBusyRef.current.ck:null;/* 9 s di scena contati dalla programmazione, come i 9 s di parete: a 30 fps nulla cambia */const _tick858=()=>{try{const _c=cineBusyRef.current;const _busy=!!(_c&&_c.on&&(_c.tl||_c.arc||_c.pa));const _no864=(typeof window!=='undefined'&&window.__CPM_NO864);if(!_no864&&_c&&typeof _c.ck==='number'){if(_ck0864==null)_ck0864=_c.ck;const _sc864=_c.ck-_ck0864;if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&_sc864<9&&(Date.now()-_t0858)<30000){fxTimeout(_tick858,180);return;}}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=window.__CPM_WS&&window.__CPM_WS();(window.__CPM_TICK858=window.__CPM_TICK858||[]).push({t:Date.now(),dt:Date.now()-_t0858,on:!!(_c&&_c.on),tl:!!(_c&&_c.tl),arc:!!(_c&&_c.arc),pa:!!(_c&&_c.pa),busy:_busy,pat:_c&&_c.pat,pt:_c&&_c.pt,sl:_c&&_c.sl,bx3:_c&&_c.bx,at:_c&&_c.at,rx:_w?_w.rx:null,fired:!!(goalCelebRef.current&&goalCelebRef.current.fired),ar:(window.__CPM_AR53?{d:window.__CPM_AR53.d,t:window.__CPM_AR53.t,rto:window.__CPM_AR53.rto,rx:window.__CPM_AR53.rx}:null),dp:(window.__CPM_DISPATCH?{ht:window.__CPM_DISPATCH.ht,post:window.__CPM_DISPATCH.post,tgt:window.__CPM_DISPATCH.tgt,rcv:window.__CPM_DISPATCH.rcv,near:window.__CPM_DISPATCH.near}:null)});}catch(_e){}}/* testimone del tetto (test-only) */if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&(Date.now()-_t0858)<9000){fxTimeout(_tick858,180);return;}}catch(_e858){}fireGoalCeleb('timer');};fxTimeout(_tick858,5200);}// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#60a5fa",key:Date.now()});setResultReveal(true);_comFn15();}};// [7.54.0 BL-15] bottom + sovraimpressione + cronaca all'ASSESTAMENTO reale della palla (onOutcomeShown), non più a 1800 fisso
-      {const _k103=ckNow103();fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103),2600);}
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     } else if(ok&&!["goal","assist"].includes(key)){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,waitPA:!!(_sp298&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)&&((!_CPM_TEST&&!_SIT_TEST)||(typeof window!=='undefined'&&(window.__CPM_CINE||window.__CPM_REALWAIT)))),/* [giro 95 D3] «assist servito, il compagno spreca»: l'esito e' il tiro del compagno */cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);_comFn15();}};
-      {const _k103=ckNow103();fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103),2600);}
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     } else if(!ok){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()});setResultReveal(true);_comFn15();
         if(key==="miss_easy"||key==="goal_against")flashScreen({col:"rgba(239,68,68,0.35)",dur:400});}};// [7.54.0 BL-15] overlay/cronaca/flash all'IMPATTO reale (parata/palo/fuori dal 3D), non più a 1800 fisso
-      {const _k103=ckNow103();fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103),2600);}
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];

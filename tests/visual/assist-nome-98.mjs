@@ -55,7 +55,8 @@ async function partita(sd, rosso, pol) {
 async function parteA(arm) {
   const rosso = arm === 'rosso'; const T = { assist: 0, d1Giud: 0, d1Ok: 0, d1Bad: [], d1Mot: 0, d3d: 0, d3n: 0, d3Int: 0, d3Bad: [], d4Seg: 0, d4Bad: [], gol: 0, ass: 0, partite: 0, b4: { ok: 0, n: 0 }, righe: [] };
   const S = SEMI[arm] || SEMI.verde;
-  for (const [sd, pol] of [...S.assist.map(s => [s, 'assist']), ...S.protegge.map(s => [s, 'protegge']), ...S.d4.map(s => [s, 'd4'])]) {
+  const lavori = [...S.assist.map(s => [s, 'assist']), ...S.protegge.map(s => [s, 'protegge']), ...S.d4.map(s => [s, 'd4'])]; let rip104 = 0;
+  for (let li = 0; li < lavori.length; li++) { const [sd, pol] = lavori[li];
     const { R, B4, ph } = await partita(sd, rosso, pol); if (pol !== 'd4') T.partite++;
     let pend = false;/* l'ultima scena era una giocata d'assist finita in «occasione» (passaggio respinto): la prossima scena di seguito e' la ribattuta */
     for (const r of R) {
@@ -80,6 +81,10 @@ async function parteA(arm) {
         T.righe.push(sd + ' «' + String(r.label).slice(0, 34) + '» key=' + r.key + ' ok=' + r.ok + ' motore=' + (r.g137 ? r.g137.fam + ':' + r.g137.esito : '-') + ' duello=' + (r.g137 ? r.g137.duello : '-') + ' esito=' + r.outKind + ' tipo3D=' + r.tipo + ' «' + r.ovl + '» «' + String(r.txt || '').slice(0, 60) + '»'); }
     }
     console.log(arm + ' ' + pol + ' seme ' + sd + ' fine ' + ph + ' scene ' + R.length);
+    /* [giro 104] D4 cieco per copertura (rigiochi finali del giro 104: rosso «0 seguiti», nessuna scena seguita a un passaggio respinto):
+       come parata-100 nel giro 103, si rigiocano partite d4 con altri semi, al massimo due volte, DICHIARANDOLO. Soglie invariate. */
+    if (li === lavori.length - 1 && T.d4Seg === 0 && rip104 < 2 && S.d4.length) { rip104++; const ex = S.d4.map(x => x + 1000 * rip104);
+      console.log(`  ${arm} D4: 0 seguiti dopo un passaggio respinto — rigioco DICHIARATO coi semi ${ex.join(',')} (${rip104}/2)`); ex.forEach(x => lavori.push([x, 'd4'])); }
   }
   const pc = (a, n) => n ? (100 * a / n).toFixed(1) + '%' : '-';
   console.log(arm.toUpperCase() + ' A · partite ' + T.partite + ' · gol eroe ' + (T.gol / T.partite).toFixed(2) + '/p · assist eroe ' + (T.ass / T.partite).toFixed(2) + '/p');
