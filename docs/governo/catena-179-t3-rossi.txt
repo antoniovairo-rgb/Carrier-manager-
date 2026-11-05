@@ -1,0 +1,85 @@
+=== out/ci-rossi/giornata-233-2026-11-05T19-04-48-233Z.log
+verde {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+rosso {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":["1509ª giornata"],"amichevole":false}
+❌ giornata-233
+  · verde: {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+=== out/ci-rossi/giornata-233-2026-11-05T19-05-36-859Z.log
+verde {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+rosso {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":["1509ª giornata"],"amichevole":false}
+❌ giornata-233
+  · verde: {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+=== out/ci-rossi/giornata-233-2026-11-05T19-06-25-196Z.log
+verde {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+rosso {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":["1509ª giornata"],"amichevole":false}
+❌ giornata-233
+  · verde: {"riga":"vs Portogallo | CASA | 🏳️ NAZIONALE","codici":[],"amichevole":false}
+=== out/ci-rossi/convocazione-235-2026-11-05T19-22-25-494Z.log
+verde spagna 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-360.png
+rosso spagna 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-360.png
+verde prima-convocazione 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-360.png
+rosso prima-convocazione 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-360.png
+verde spagna 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-412.png
+rosso spagna 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-412.png
+verde prima-convocazione 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-412.png
+rosso prima-convocazione 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-412.png
+❌ ROSSO — verde spagna 360 · verde prima-convocazione 360 · verde spagna 412 · verde prima-convocazione 412
+=== out/ci-rossi/convocazione-235-2026-11-05T19-24-40-578Z.log
+verde spagna 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-360.png
+rosso spagna 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-360.png
+verde prima-convocazione 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-360.png
+rosso prima-convocazione 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-360.png
+verde spagna 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-412.png
+rosso spagna 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-412.png
+verde prima-convocazione 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-412.png
+rosso prima-convocazione 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-412.png
+❌ ROSSO — verde spagna 360 · verde prima-convocazione 360 · verde spagna 412 · verde prima-convocazione 412
+=== out/ci-rossi/convocazione-235-2026-11-05T19-26-53-851Z.log
+verde spagna 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-360.png
+rosso spagna 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-360.png
+verde prima-convocazione 360px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-360.png
+rosso prima-convocazione 360px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-360.png
+verde spagna 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-spagna-412.png
+rosso spagna 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-spagna-412.png
+verde prima-convocazione 412px: bottone NON primario h48 · card del kit 3 · gradienti 0 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/dopo-prima-convocazione-412.png
+rosso prima-convocazione 412px: bottone NON primario h47 · card del kit 2 · gradienti 1 · testi sotto contrasto 0 · scorrimento no → NO · tests/visual/out/convocazione-235/prima-prima-convocazione-412.png
+❌ ROSSO — verde spagna 360 · verde prima-convocazione 360 · verde spagna 412 · verde prima-convocazione 412
+=== out/ci-rossi/portiere-252-2026-11-05T21-19-02-081Z.log
+  verde gi13 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.435,"dzPiano":3.01,"aPortata":true,"partenza":-0.353,"armato":-0.413,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.81,-0.8,-0.8,-2.73],"pz":-0.8}
+  verde gi13 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.419,"dzPiano":2.38,"avvicinamento":0.55,"aPortata":true,"partenza":-0.329,"armato":-0.418,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.11,-2.59,-2.59,-3.98],"pz":-2.73}
+  verde gi15 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.786,"dzPiano":6.4,"aPortata":false,"partenza":-0.696,"armato":-0.785,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-1.87,4.5,4.51,1.11],"pz":4.53}
+  verde gi15 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.769,"dzPiano":10.17,"aPortata":false,"partenza":-0.684,"armato":-0.745,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.65,3.34,3.34,0.68],"pz":4.52}
+  verde gi16 intercepted n.g. (bruciapelo (< 0.2 s)) · {"ops":[],"gesto":false,"kickToPiano":0.017,"dzPiano":4.26,"avvicinamento":1.01,"nonGiud":"bruciapelo (< 0.2 s)"}
+  verde gi67 success     ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.703,"dzPiano":4.04,"aPortata":true,"partenza":-0.595,"armato":-0.691,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.97,-1.31,-1.05,-1.05],"pz":0.07}
+  verde gi1 saved       ok · {"ops":["gk_block"],"gesto":true,"kickToPiano":0.393,"dzPiano":1.38,"aPortata":true,"partenza":-0.339,"armato":-0.373,"riflesso":true,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-4.45,-5.85,-5.91,-7.97],"pz":-5.83}
+  verde gi9 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.614,"dzPiano":5.33,"aPortata":false,"partenza":-0.531,"armato":-0.598,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.1,0.23,0.23,-1.23],"pz":0.23}
+  rosso gi13 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.442,"dzPiano":0.96,"aPortata":true,"partenza":-0.352,"armato":-0.441,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.81,-2.03,-1.95,-2.57],"pz":-2.85}
+  rosso gi13 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.439,"dzPiano":4.62,"aPortata":false,"partenza":-0.379,"armato":-0.438,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.62,0.27,0.84,-3.85],"pz":-1}
+  rosso gi15 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.781,"dzPiano":5.15,"aPortata":false,"partenza":-0.691,"armato":-0.78,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-0.63,3.28,3.3,0.33],"pz":4.52}
+  rosso gi15 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.706,"dzPiano":7.71,"aPortata":false,"partenza":-0.617,"armato":-0.678,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.19,3.3,3.3,-0.72],"pz":4.52}
+  rosso gi16 intercepted n.g. (bruciapelo (< 0.2 s)) · {"ops":[],"gesto":false,"kickToPiano":0.013,"dzPiano":4.65,"avvicinamento":0.93,"nonGiud":"bruciapelo (< 0.2 s)"}
+  rosso gi67 success     ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.719,"dzPiano":2.43,"aPortata":true,"partenza":-0.611,"armato":-0.707,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.67,-0.42,0.16,0.16],"pz":-1.24}
+  rosso gi1 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.602,"dzPiano":5.56,"avvicinamento":0.63,"aPortata":false,"partenza":-0.512,"armato":-0.582,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.2,1.42,1.51,1.51],"pz":0.36}
+  rosso gi9 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.567,"dzPiano":3.13,"aPortata":true,"partenza":-0.484,"armato":-0.551,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.04,-0.69,-0.6,-2.6],"pz":-1.91}
+
+verde: KO 0/7 · rosso: KO 0/7
+❌ portiere-252 ROSSO
+=== out/ci-rossi/portiere-252-2026-11-05T21-33-19-230Z.log
+  verde gi13 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.419,"dzPiano":4.48,"avvicinamento":0.46,"aPortata":true,"partenza":-0.36,"armato":-0.418,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.62,-0.99,-0.99,-4.6],"pz":-1.14}
+  verde gi13 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.419,"dzPiano":4.43,"avvicinamento":0.64,"aPortata":true,"partenza":-0.36,"armato":-0.418,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-4,0.76,0.76,-3.26],"pz":0.43}
+  verde gi15 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.815,"dzPiano":6.52,"aPortata":false,"partenza":-0.729,"armato":-0.79,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-1.99,4.51,4.51,0.74],"pz":4.53}
+  verde gi15 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.786,"dzPiano":7.71,"aPortata":false,"partenza":-0.696,"armato":-0.785,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.19,4.5,4.51,1.11],"pz":4.52}
+  verde gi16 intercepted n.g. (bruciapelo (< 0.2 s)) · {"ops":[],"gesto":false,"kickToPiano":0.028,"dzPiano":4.38,"avvicinamento":1.1,"nonGiud":"bruciapelo (< 0.2 s)"}
+  verde gi67 success     ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.727,"dzPiano":3.53,"aPortata":true,"partenza":-0.619,"armato":-0.715,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.79,-1.51,-1.15,-1.15],"pz":-0.26}
+  verde gi1 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.602,"dzPiano":5.19,"avvicinamento":1.45,"aPortata":false,"partenza":-0.512,"armato":-0.582,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-4.42,1.45,1.48,1.48],"pz":0.77}
+  verde gi9 fail        ok · {"ops":["gk_block"],"gesto":true,"kickToPiano":0.535,"dzPiano":0.55,"avvicinamento":0.05,"aPortata":true,"partenza":-0.486,"armato":-0.519,"riflesso":true,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-4.43,-3.85,-4.69,-7.22],"pz":-3.88}
+  rosso gi13 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.44,"dzPiano":2.2,"aPortata":true,"partenza":-0.369,"armato":-0.428,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-4.61,-1.17,-0.99,-3.67],"pz":-2.41}
+  rosso gi13 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.439,"dzPiano":2.6,"aPortata":true,"partenza":-0.352,"armato":-0.413,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.11,-1.35,-0.82,-4.07],"pz":-2.51}
+  rosso gi15 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.777,"dzPiano":5.16,"aPortata":false,"partenza":-0.686,"armato":-0.776,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-0.63,3.28,3.3,0.33],"pz":4.53}
+  rosso gi15 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.754,"dzPiano":6.52,"aPortata":false,"partenza":-0.663,"armato":-0.753,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-1.99,3.3,3.3,-0.6],"pz":4.53}
+  rosso gi16 intercepted n.g. (bruciapelo (< 0.2 s)) · {"ops":[],"gesto":false,"kickToPiano":0.031,"dzPiano":4.17,"avvicinamento":0.95,"nonGiud":"bruciapelo (< 0.2 s)"}
+  rosso gi67 success     ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.756,"dzPiano":3.38,"aPortata":true,"partenza":-0.648,"armato":-0.744,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-3.92,-0.42,0.05,0.05],"pz":-0.54}
+  rosso gi1 saved       ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.599,"dzPiano":4.92,"avvicinamento":0.17,"aPortata":false,"partenza":-0.512,"armato":-0.581,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.21,0.38,0.42,0.42],"pz":-0.29}
+  rosso gi9 fail        ok · {"ops":["gk_dive"],"gesto":true,"kickToPiano":0.595,"dzPiano":5.15,"aPortata":false,"partenza":-0.512,"armato":-0.579,"riflesso":false,"tardi":false,"fermo":false,"verso":false,"parataSenzaGesto":false,"gz":[-5.59,1.23,1.34,-0.12],"pz":-0.44}
+
+verde: KO 0/7 · rosso: KO 0/7
+❌ portiere-252 ROSSO
