@@ -1,0 +1,2 @@
+Nessun guardiano rosso né instabile nel giro valido (129/129 verdi, nessuna ripetizione).
+Nota: il primo lancio (10:08) è fallito in 0-1s per node_modules assenti (npm ci impossibile: nessun package-lock; usato npm install) — errore d'ambiente, non dei guardiani; le sue righe restano in testa al .log.

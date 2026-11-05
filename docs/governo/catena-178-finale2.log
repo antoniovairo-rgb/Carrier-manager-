@@ -1,0 +1,26 @@
+❌ assist-nome-98 (1s) — } |  | Node.js v22.23.4 | log out/ci-rossi/assist-nome-98-2026-11-05T10-08-13-696Z.log
+❌ test:logic (0s) — # skipped 0 | # todo 0 | # duration_ms 325.215429
+❌ save-compat (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/save-compat-2026-11-05T10-08-15-579Z.log
+❌ esiti-241 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/esiti-241-2026-11-05T10-08-16-089Z.log
+❌ highlight-95 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/highlight-95-2026-11-05T10-08-16-584Z.log
+❌ parata-100 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/parata-100-2026-11-05T10-08-16-591Z.log
+❌ riserva-103 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/riserva-103-2026-11-05T10-08-17-096Z.log
+❌ riserva-104 (0s) — ✗ rosso: solo 0 highlight | ✗ rosso: nessun D3 — il difetto non si vede, il guardiano non giudica | ✗ riserva-104 ROSSO | log out/ci-rossi/riserva-104-2026-11-05T10-08-17-371Z.log
+❌ chiusura-99 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/chiusura-99-2026-11-05T10-08-17-842Z.log
+❌ scena3d-96 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/scena3d-96-2026-11-05T10-08-17-839Z.log
+❌ esiti-218 (0s) — } |  | Node.js v22.23.4 | log out/ci-rossi/esiti-218-2026-11-05T10-08-18-321Z.log
+❌ catena notte su 7.999.178: 118/129 verdi
+FINE
+✅ assist-nome-98 (3079s)
+✅ test:logic (3s)
+✅ save-compat (11s)
+✅ esiti-241 (498s)
+✅ highlight-95 (4270s)
+✅ parata-100 (1082s)
+✅ riserva-103 (1011s)
+✅ riserva-104 (495s)
+✅ chiusura-99 (1449s)
+✅ scena3d-96 (1892s)
+✅ esiti-218 (1586s)
+✅ catena notte su 7.999.178: 129/129 verdi
+FINE
