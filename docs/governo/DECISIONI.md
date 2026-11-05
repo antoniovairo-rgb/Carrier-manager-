@@ -935,3 +935,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Tappa 4 (75ffedd8, ~12,2 $): tema unico TINTE/TH; 197 rami V1 collassati con codemod su AST; __CPM_NO_V2 tolto (quello del motore rinominato __CPM_NO_MOTORE2); rosso grafico dal banco con __CPM_TEMA_PROVA (solo cpmtest); guardiano nuovo tema-unico; corretti due contrasti preesistenti (testate della rassegna nel post partita 1,76→5,06; sigla squadra nelle pagelle PC 1,12→5,95); peso −19.843 B. Verdi in sequenza: grafica-v2, simula-v2, momenti-v2, partita-v2, patrimonio-303, intro-292, pc-tablet-292, tema-unico, griglia-mobile, design-system, career-critical, test:logic, save-compat, barra-360-72, motore-unico. Aperto, preesistente: a 360 px il nome del club va a capo dentro la parola («SALERN/UM»).
 - Unita in lavoro/179 → 98aa67e6; GAME_VERSION 7.999.179 → ccea45f3.
 - Catena notte 179 (136 passi) in 3 tronchi su Sonnet, CPM_CI_PAR=0 e memoria/disco registrati (decisione PO 05/11): session_01QEYiaAdzqAGcPkf6NbfKEo, session_01QEYiaBfn2G7DHrcRFGUM6y, session_01QEYia9WgGrXYunEy4Z5t6P.
+
+### 06/11 notte (00:00 UTC) — catena 179: rossi nei tronchi 2 e 3, giro 105
+- Tronco 2 (catena/179-t2, d62a7f5c): rossi validate-situations (GATE, data-coherence), squalifica-222 (11 controlli), infortunio-263 (17), crea-home-295 (la creazione non si apre a 1280 px). Un riavvio del container (risorse.log salvato).
+- Tronco 3 (catena/179-t3, 03346cdb): rossi giornata-233, convocazione-235 (bottone non primario a 412 px); instabile portiere-252.
+- Tronco 1 ancora in corso (14/46, rosso carriera3-94).
+- Erano verdi nella 178: primo sospetto le tappe V2 e PO-303, da misurare. Decisione tecnica: giro 105 su lavoro/179 (session_01QEYia9mGrkjXgJPmUvygtj, ramo sviluppo/giro105-catena179), tetto 12:00 UTC del 06/11, CPM_CI_PAR=0.
