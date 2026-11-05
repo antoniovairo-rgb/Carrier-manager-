@@ -102,12 +102,12 @@ Macchina carica durante tutti i rigiochi (load 6-20 su 4 core: due-tre rituali i
 |---|---|---|
 | test:logic | ✅ 43/43 | — |
 | save-compat | ✅ 12 pass · 0 fail | — (una corsa a macchina carica PRIMA della correzione era uscita «0 pass · 1 fail»; rigiocata subito 12/12) |
-| riserva-104 | ✅ verde 4 intercettati · 0 D3 · rosso 2 D3 | ✅ verde 4 · 0 D3 (rosso: vedi log) |
+| riserva-104 | ✅ verde 4 intercettati · 0 D3 · rosso 2 D3 | ✅ verde 4 · 0 D3 · rosso 1 D3 |
 | riserva-103 | ✅ A verde 0 in corsa / rosso 2 · B verde 0 / rosso 3 | ✅ A verde 0 / rosso 2 (gi17 «mai rivelato in 160 s» in entrambi i bracci: preesistente, uguale con `__CPM_NO_G104A`; pavimento 2/3) |
 | chiusura-99 | ✅ verde D9 6/6 med. 5,59 · RIC 6/6 — rosso D9 1,36 · RIC 3/6 | ✅ verde D9 5,59 · RIC 6/6 — rosso D9 1,50 · RIC 3/6 |
-| assist-nome-98 | ✅ verde+rosso (D1 verde 12 assist col nominato, nome 100% · rosso 22,2%) | _in corsa_ |
+| assist-nome-98 | ✅ verde+rosso (D1 verde 12 assist col nominato, nome 100% · rosso 22,2%) | ❌ verde pieno (D1 13, nome 100%) ma **rosso D4 cieco per copertura** («0 seguiti» dopo un passaggio respinto). Strumento corretto (rigioco dichiarato, f1a8d99); rosso parte A rigiocato da solo: ✅ (D4 3 seguiti, 1 con giocata d'assist — il rigioco non è servito, quindi quel ramo non è ancora esercitato). Terza prova completa: vedi sotto |
 | highlight-95 s1/1234 | ⚠️ verde 18 highlight **0 difetti**, rosso 40 difetti (pavimenti 12 passaggi / 4 finte non raggiungibili su una sola partita, D2 rosso non visto per lo stesso motivo) | — |
-| highlight-95 completo | _in corsa_ | — |
+| highlight-95 completo | ✅ «verde (e il rosso si vede)»: verde 88 highlight · **0 difetti** · 0 non giudicabili · 8 letture di un'altra scena neutralizzate; rosso 106 highlight, D1-D4 visti | — |
 
 ## Fuori ambito / punti aperti
 1. highlight-95 «verde: 1 difetti» della catena: non attribuito. Candidato misurato: D3 «pallone mai al portiere» (SCHRÖDER s5/1234,
