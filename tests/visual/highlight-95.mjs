@@ -83,7 +83,9 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   }
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
   const VIS = await page.evaluate(() => window.__CPM_VIS95 || []).catch(() => []);
-  const REV = await page.evaluate(() => window.__CPM_REV95 || []).catch(() => []);/* [giro 104] tutte le rivelazioni della partita, per abbinarle alla scena per indice (hl) e non per ordine di lettura */
+  const REV = await page.evaluate(() => window.__CPM_REV95 || []).catch(() => []);
+  const G104 = await page.evaluate(() => ({ x: (window.__CPM_G104X || []).length, d: (window.__CPM_G104D || []).length, xs: (window.__CPM_G104X || []).slice(0, 3), ds: (window.__CPM_G104D || []).slice(0, 3) })).catch(() => null);
+  if (G104 && (G104.x || G104.d)) console.log(`  [g104] ${saveKey}/${sd} ${pol}: riserva su riquadro altrui ${G104.x} ${JSON.stringify(G104.xs)} · via dichiarata prima del pavimento ${G104.d} ${JSON.stringify(G104.ds)}`);/* [giro 104] testimoni del gioco *//* [giro 104] tutte le rivelazioni della partita, per abbinarle alla scena per indice (hl) e non per ordine di lettura */
   if (process.env.CPM_G103DIAG) { const H = await page.evaluate(() => window.__H103 || []).catch(() => []); for (const x of H) if (x.occ != null) console.log(`  [g103] ${saveKey}/${sd} ${pol} occupata ${(x.occ - x.ck0).toFixed(2)} s di scena · esito a ${x.rev != null ? (x.rev - x.ck0).toFixed(2) : '-'} s (${x.revMs != null ? Math.round(x.revMs) : '-'} ms) · fotogrammi ${x.fr}`); }
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
