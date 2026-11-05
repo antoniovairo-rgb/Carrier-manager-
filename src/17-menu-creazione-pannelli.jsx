@@ -321,7 +321,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </div>
           </Card>
         ):(
-          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.v2?TH.surface2:"rgba(255,255,255,0.4)"/* [PO-302 V2] il velo bianco era pensato per il fondo avorio: sul fondo notte diventava un grigio #6e7074 con il testo a 1,6:1 */}}>
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.surface2/* [PO-302 V2] il velo bianco era pensato per il fondo avorio: sul fondo notte diventava un grigio #6e7074 con il testo a 1,6:1 */}}>
             <div style={{fontSize:FS.small,color:TH.faint}}>Salvataggio {i+1} — libero</div>
             <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>Nuova carriera</Btn>
           </div>
@@ -431,7 +431,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
-        {TH.v2?<div data-cpm="crea-v2" style={{display:"flex",justifyContent:"center"}}><TitoloV2 cpm="crea-titolo-v2" occhiello="Nuova carriera · chi sei" titolo="Crea il tuo calciatore"/></div>:<h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>}{/* [PO-302 tappa 3 · V2Creazione] titolo V2 (occhiello + carattere TV); rosso __CPM_NO_V2 */}
+        <div data-cpm="crea-v2" style={{display:"flex",justifyContent:"center"}}><TitoloV2 cpm="crea-titolo-v2" occhiello="Nuova carriera · chi sei" titolo="Crea il tuo calciatore"/></div>{/* [PO-302 tappa 3 · V2Creazione] titolo V2 (occhiello + carattere TV) */}
         {/* [7.999.49 parte A] tolta «Ruolo fisso: Attaccante»: il ruolo lo dice già la figurina */}
       </div>
       <Card style={{maxWidth:900,margin:"0 auto",padding:"16px 16px 18px"}}>
@@ -467,7 +467,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_unico75?"🗺️ Percorso":"🎯 Stile e percorso"}</div>
-          <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid "+(TH.v2?TH.bdBlue:"#bfdbfe")}} shadow={false}>
+          <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid "+TH.bdBlue}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
           </Card>
@@ -531,7 +531,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:FS.body,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
-          <Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={TH.v2?{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:V2.testo,color:V2.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}:{padding:"14px",fontSize:FS.bodyLg}}>Inizia i provini</Btn>
+          <Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Inizia i provini</Btn>
           {!name.trim()&&<div style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:-8}}>Scrivi il nome per iniziare</div>}{/* [7.999.49 parte A] il bottone disattivato dice perché */}
         </div>
       </div>{/* end cpm-create */}

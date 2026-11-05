@@ -3,14 +3,14 @@
    · gol a partita e loro origine (motore / highlight), allineati al tabellone;
    · le giocate dell'eroe negli highlight: xG del motore, qualita' della giocata, probabilita' usata;
    · che la vecchia via (microsim) non produca piu' gol.
-   CPM_ROSSO=1 → __CPM_NO_V2: il gioco torna al microsim e il guardiano deve andare ROSSO. */
+   CPM_ROSSO=1 → __CPM_NO_MOTORE2: il gioco torna al microsim e il guardiano deve andare ROSSO. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
 const N = +(process.env.CPM_PARTITE || 4), ROSSO = process.env.CPM_ROSSO === '1', TETTO_MS = 300000;
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const R = [];
 for (let k = 0; k < N; k++) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
-  await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO_V2 = 1; }, ROSSO);
+  await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_REC = true; if (r) window.__CPM_NO_MOTORE2 = 1; }, ROSSO);
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Unico' + (k * 37 + 11) });
     await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 5100 + k * 97);

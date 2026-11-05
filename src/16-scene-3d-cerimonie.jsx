@@ -2544,7 +2544,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* PREMI EUROPEI — [7.999.49 parte A] stesso ordine del gala (Re dei Bomber, poi Trofeo d'Oro); i podi gia' svelati al gala
           stanno in una fisarmonica, aperta se un premio europeo e' tuo */}
       <Fisarmonica id="premi-europei49" titolo="Premi europei" icona="🌍" quante={2} aperta={!_g51&&!!(palloneOro.playerWins||scarpaOro.playerWins)}>
-      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
+      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?"rgba(34,197,94,0.12)":TH.card,border:scarpaOro.playerWins?("1.5px solid "+"rgba(34,197,94,0.45)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>I migliori marcatori dei campionati europei</div>
         <Podio23 righe={scarpaOro.top3} label="gol" extra={c=>c.league||c.club} pari/>
@@ -2554,7 +2554,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.small,fontWeight:800,color:TH.txGreen,textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Re dei Bomber è tua!</div>}
       </Card>
 
-      <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
+      <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"rgba(245,158,11,0.13)":TH.card,border:palloneOro.playerWins?("1.5px solid "+"rgba(245,158,11,0.5)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
         <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
@@ -2693,7 +2693,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   //   SOTTO lo spot Conference → nessuna Europa, e la schermata non lo diceva. Scelta PO: regola invariata +
   //   AVVISO trasparente quando si manca l'Europa per un soffio (8°, subito sotto il 7° Conference).
   const _justMissedEuro132=_isTopFlight132&&!isChampion&&!isRelegated&&!_isEuroZone132&&playerPos===7;
-  const bgColor=isChampion?thPastel("#fef9c3","rgba(245,158,11,0.14)"):(isPromoted||_isEuroZone132)?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):isRelegated?thPastel("#fff1f2","rgba(239,68,68,0.12)"):thPastel("#f8fafc",TH.surface2);/* [7.178.0 RC-15] */
+  const bgColor=isChampion?"rgba(245,158,11,0.14)":(isPromoted||_isEuroZone132)?"rgba(34,197,94,0.12)":isRelegated?"rgba(239,68,68,0.12)":TH.surface2;/* [7.178.0 RC-15] */
   const borderColor=isChampion?"#fde68a":(isPromoted||_isEuroZone132)?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
   const statusEmoji=isChampion?"🏆":_isCL132?"🌍":_isEL132?"🟠":_isConL132?"🟢":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
   const statusLabel=isChampion?"CAMPIONE!":_isCL132?"COPPA CAMPIONI":_isEL132?"COPPA EUROPA":_isConL132?"COPPA CONFERENCE":isPromoted?"PROMOZIONE":isRelegated?"RETROCESSIONE":"Fine stagione";// 5.49.3: nomi competizioni di fantasia (de-branding)

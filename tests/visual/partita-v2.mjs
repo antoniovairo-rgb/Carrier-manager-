@@ -7,7 +7,8 @@
    PAL    i colori sono quelli V2 (fondo #0d0f14, superfici #1a1e27, testo #f4f1ea, oro #e8b44a);
    TOCCO  scelte dell'highlight e tasto finale >= 44 px di altezza;  TXT nessuno scorrimento orizzontale;
    CON    contrasto WCAG >= 4,5:1 (3:1 sui testi grandi) sui riquadri V2 della schermata (lib/misura-v2.mjs).
-   ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_V2 e pretende che PAL cada su ogni schermata in ogni formato.
+   ROSSO [tappa 4]: CPM_PROVA_ROSSO=1 altera i token dal banco di prova (lib/tema-prova.mjs: __CPM_TEMA_PROVA, notte sbiadita a basso
+   contrasto; prima era __CPM_NO_V2, tolto col tema unico) e pretende che PAL cada su ogni schermata e CON in ogni formato.
    CPM_FORMATI=tel360,pc per un sottoinsieme. Chromium headless, GLB spento: nessun dispositivo vero. */
 import { startServer, launchBrowser, sleep } from './lib/harness.mjs';
 import { apriPartitaV2, forzaHL, finePartita } from './lib/partita-v2.mjs';
@@ -65,8 +66,9 @@ await b.close(); srv.close();
 if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 4).join(' | ')); if (mancanti.length) console.log('non raggiunte: ' + mancanti.join(', '));
 for (const [k, v] of Object.entries(fail)) v.forEach(x => console.log(`  ✗ ${k} ${x}`));
 let esito; const SCH = Object.keys(GIUDICI);
-if (ROSSO) { const cade = SCELTI.every(f => SCH.every(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))));
-  esito = cade && !errs.length; console.log(esito ? 'ROSSO ATTESO OK: con __CPM_NO_V2 cade PAL su ogni schermata in ogni formato' : 'ROSSO NON RIUSCITO');
+if (ROSSO) { const cade = SCELTI.every(f => SCH.every(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))) && fail.CON.some(x => x.startsWith(`${f.k}:`)));
+  esito = cade && !errs.length; if (!esito) console.log(`ROSSO: PAL cade in ${SCELTI.map(f => f.k + ' ' + SCH.filter(sc => fail.PAL.some(x => x.startsWith(`${f.k}:${sc}:`))).length + '/' + SCH.length).join(', ')} · CON cade in ${SCELTI.filter(f => fail.CON.some(x => x.startsWith(`${f.k}:`))).map(f => f.k).join(', ') || 'nessuno'}`);
+  console.log(esito ? 'ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato' : 'ROSSO NON RIUSCITO');
 } else { esito = Object.values(fail).every(v => !v.length) && !errs.length && !mancanti.length && visti === SCELTI.length * SCH.length;
   console.log(esito ? `partita-v2 VERDE: ${SCELTI.length} formati x ${SCH.length} schermate · contrasto minimo ${conMin.toFixed(2)}:1` : 'partita-v2 ROSSO'); }
 process.exit(esito ? 0 : 1);

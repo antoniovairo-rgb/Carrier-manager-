@@ -81,9 +81,9 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
 const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
-    primary:TH.v2?{background:V2.testo,color:V2.bg,fontWeight:700}:{background:TH.primary,color:"#fff",fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
+    primary:{background:TINTE.testo,color:TINTE.bg,fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
     green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
-    secondary:TH.v2?{background:V2.tasto,color:V2.testo,border:"1px solid "+V2.tasto}:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},/* [PO-302 V2] tasto secondario #262b37, testo 12,8:1 */
+    secondary:{background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.tasto},/* [PO-302 V2] tasto secondario #262b37, testo 12,8:1 */
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
     outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
@@ -126,13 +126,13 @@ const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO
    figurina con cornice. Solo presentazione: leggono i dati gia' nel salvataggio, nessun campo nuovo.
    Cornice: il gioco non aveva una regola oro/argento per l'eroe; scelta prudente (consegna PO-302): ORO da OVR 85, ARGENTO sotto. */
 const fsTV=(size,peso)=>({fontFamily:FONT_TV,fontWeight:peso||FW.black,fontSize:size,lineHeight:1,fontVariantNumeric:"tabular-nums"});
-const corniceV2=(ovr)=>((+ovr||0)>=85?V2.oroCornice:V2.argCornice);
+const corniceV2=(ovr)=>((+ovr||0)>=85?TINTE.oroCornice:TINTE.argCornice);
 function AnelloV2({v,max=100,col,label,size=46}){
   const n=Math.round(+v||0),pct=Math.max(0,Math.min(100,Math.round(n/max*100))),ins=size-10;
   return(<div data-cpm="anello-v2" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,flexShrink:0}}>
-    <div role="img" aria-label={(label||"")+": "+n} style={{width:size,height:size,borderRadius:"50%",background:`conic-gradient(${col} 0 ${pct}%, ${V2.anello} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-      <div className="cpm-num" style={{width:ins,height:ins,borderRadius:"50%",background:V2.sup,display:"flex",alignItems:"center",justifyContent:"center",...fsTV(FS.bodyLg,FW.bold),color:V2.testo}}>{n}</div></div>
-    {label&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:V2.sec}}>{label}</span>}
+    <div role="img" aria-label={(label||"")+": "+n} style={{width:size,height:size,borderRadius:"50%",background:`conic-gradient(${col} 0 ${pct}%, ${TINTE.anello} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div className="cpm-num" style={{width:ins,height:ins,borderRadius:"50%",background:TINTE.sup,display:"flex",alignItems:"center",justifyContent:"center",...fsTV(FS.bodyLg,FW.bold),color:TINTE.testo}}>{n}</div></div>
+    {label&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:TINTE.sec}}>{label}</span>}
   </div>);}
 /* forma: le ultime partite come quadratini col segno V/N/P (inchiostro scuro su tinta chiara: >=7:1 su ognuna) */
 function FormaV2({lista,lato=18}){
@@ -140,7 +140,7 @@ function FormaV2({lista,lato=18}){
   const es=(m)=>m.won?["V","#4ade80"]:m.drew?["N","#e5e7eb"]:["P","#fca5a5"];
   return(<div data-cpm="forma-v2" role="img" aria-label={"Forma: "+L.map(m=>es(m)[0]).join(" ")} style={{display:"flex",gap:3}}>
     {L.map((m,i)=>{const e=es(m);const r=(m.homeScore!=null&&m.awayScore!=null)?(" "+m.homeScore+"-"+m.awayScore):"";
-      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:V2.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
+      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:TINTE.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
   </div>);}
 /* il ritratto dell'eroe: lo stesso volto della testata (catalogo VOLTI23), ripiego sull'avatar disegnato */
 function RitrattoV2({nome,avatarId,w,h}){
@@ -187,8 +187,8 @@ function FiguraV2({player,w=54,grande=false}){
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
-      {occhiello&&<span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.14em",textTransform:"uppercase",color:V2.sec}}>{occhiello}</span>}
-      <h2 style={{margin:0,...fsTV(FS.display,FW.bold),textTransform:"uppercase",letterSpacing:"0.02em",color:V2.testo,overflowWrap:"anywhere"}}>{titolo}</h2>
+      {occhiello&&<span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.14em",textTransform:"uppercase",color:TINTE.sec}}>{occhiello}</span>}
+      <h2 style={{margin:0,...fsTV(FS.display,FW.bold),textTransform:"uppercase",letterSpacing:"0.02em",color:TINTE.testo,overflowWrap:"anywhere"}}>{titolo}</h2>
     </div>
     {destra||null}
   </div>);}
@@ -197,7 +197,7 @@ function TagV2({t,c,cpm}){return(<span data-cpm={cpm||"tag-v2"} style={{display:
 /* tacche d'intensita' (interesse di mercato, livello del trainer): n accese su tot, colore unico */
 function TaccheV2({n,tot=3,col,label,w=14}){
   return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
-    {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||V2.verde):V2.anello}}/>)}</span>);}
+    {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||TINTE.verde):TINTE.anello}}/>)}</span>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
