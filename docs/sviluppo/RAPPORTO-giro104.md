@@ -29,7 +29,7 @@ il tiro». Il motivo del verde («1 difetti») non è nella coda: **non posso co
 **Misura (verde).**
 - s1/1234 sette volte (CPU normale e rallentata ×4, ×6, ×8 via CDP) e tre giri completi del verde (18 partite ciascuno; il secondo e il
   terzo a CPU ×3, il terzo a carico 15-20 su 4 core, più pesante della catena): D3 «riserva» **0**; occupazione della conclusione
-  **massimo 2,96 s di scena** su 243 finestre (il tetto della riserva è 8,6 s); su 133 scene annotate **nessuna «riserva + occupata»**.
+  **massimo 2,96 s di scena** su 243 finestre registrate (comprese due corse con l'esito forzato a «fallito», `CPM_G104FAIL`, scartate come metodo perché creano incoerenze D1 artificiali; il tetto della riserva è 8,6 s); su 133 scene annotate **nessuna «riserva + occupata»**.
 - Unico difetto verde visto in tutte le mie corse: nel terzo giro completo (CPU ×3, carico 15-20) **«D3 s5/1234 «Uno-due con SCHRÖDER»:
   para il portiere ma il pallone non arriva mai al portiere entro 1,5 s dall'esito (minimo 30,8)»**, rivelazione «riserva» su una scena
   col tiro del compagno a 3,0 s di parete. È la classe già descritta dal giro 103 (`lento-103`: dipende dal carico reale, non
@@ -54,7 +54,7 @@ conclusione.
   Anticipato dall'avversario», pallone a 0,0 dall'eroe, arco in pre-volo; «Stacco in corsa potente»). Verde: **4 richiami altrui
   intercettati, 0 D3**.
 - *In modo naturale non si è mai visto*: testimone `__CPM_G104X` (richiami su riquadro altrui) **0** nel giro completo a CPU ×3 e carico
-  15-20 e in tutte le altre corse dopo la build. Lo dichiaro: è un difetto latente, non la causa della catena.
+  15-20 e nei due rigiochi finali di highlight-95 (completo verde+rosso, 38 partite; s1/1234 verde+rosso). Lo dichiaro: è un difetto latente, non la causa della catena.
 - *Correzione* (src/15): la riserva porta il riquadro per cui è nata (`o0`, dai tre punti che la programmano, dal ramo «tiro del
   compagno» e dai suoi richiami a 180 ms) e se il riquadro corrente è un altro non fa nulla. Nessun tempo cambiato: quando il riquadro è
   il suo il percorso è identico. L'ho tenuta perché è innocua sul percorso normale e chiude per costruzione una strada che produce
@@ -103,7 +103,7 @@ Macchina carica durante tutti i rigiochi (load 6-20 su 4 core: due-tre rituali i
 | test:logic | ✅ 43/43 | — |
 | save-compat | ✅ 12 pass · 0 fail | — (una corsa a macchina carica PRIMA della correzione era uscita «0 pass · 1 fail»; rigiocata subito 12/12) |
 | riserva-104 | ✅ verde 4 intercettati · 0 D3 · rosso 2 D3 | ✅ verde 4 · 0 D3 · rosso 1 D3 |
-| riserva-103 | ✅ A verde 0 in corsa / rosso 2 · B verde 0 / rosso 3 | ✅ A verde 0 / rosso 2 (gi17 «mai rivelato in 160 s» in entrambi i bracci: preesistente, uguale con `__CPM_NO_G104A`; pavimento 2/3) |
+| riserva-103 | ✅ A verde 0 in corsa / rosso 2 · B verde 0 / rosso 3 | ✅ A verde 0 / rosso 2 (gi17 «mai rivelato in 160 s» in entrambi i bracci: preesistente, uguale con `__CPM_NO_G104A`; pavimento 2/3). **Prova 3** a carico più basso (load 8-9): ✅ A verde 3/3 a conclusione finita (gi17 compreso) / rosso 2 in corsa · B verde 0 / rosso 2 |
 | chiusura-99 | ✅ verde D9 6/6 med. 5,59 · RIC 6/6 — rosso D9 1,36 · RIC 3/6 | ✅ verde D9 5,59 · RIC 6/6 — rosso D9 1,50 · RIC 3/6 |
 | assist-nome-98 | ✅ verde+rosso (D1 verde 12 assist col nominato, nome 100% · rosso 22,2%) | ❌ verde pieno (D1 13, nome 100%) ma **rosso D4 cieco per copertura** («0 seguiti» dopo un passaggio respinto). Strumento corretto (rigioco dichiarato, f1a8d99); rosso parte A rigiocato da solo: ✅ (D4 3 seguiti, 1 con giocata d'assist — il rigioco non è servito, quindi quel ramo non è ancora esercitato). Terza prova completa: vedi sotto |
 | highlight-95 s1/1234 | ⚠️ verde 18 highlight **0 difetti**, rosso 40 difetti (pavimenti 12 passaggi / 4 finte non raggiungibili su una sola partita, D2 rosso non visto per lo stesso motivo) | — |
