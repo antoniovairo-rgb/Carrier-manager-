@@ -920,3 +920,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 05/11 mattina (10:07 UTC) — giro 104 unito, verifica mirata 178
 - Giro 104 (fec65d8c, ~15,7 $): le due righe «rosse» della verifica finale erano del braccio ROSSO (difetti attesi); il motivo vero del verde non era mai stato scritto dalle sonde → non determinabile. Strumento corretto: le sonde dichiarano per ultimo braccio e motivo; il runner salva il log completo delle prove rosse; highlight-95 abbina la rivelazione per indice (10 letture su 93 erano di un'altra scena sotto carico). Gioco: chiuso per costruzione un meccanismo latente (riserva che agisce sul riquadro della scena successiva), mai osservato in modo naturale; rosso __CPM_NO_G104A, guardiano riserva-104. Misure: RIC 51/51, D9 5/5, D3 riserva 0 in tutte le corse del verde. Candidato non riprodotto a carico normale: D3 «pallone mai al portiere» sotto carico alto (classe lento-103).
 - Unito in lavoro/178 → b14ccf0f, check-src allineato. Verifica mirata Sonnet su catena/178-finale2 (session_01QEYia9BeXufY75NTBmw6zt).
+
+### 05/11 — decisione PO: dalla 179 un controllo pesante alla volta
+- Domanda del PO: «ma perchè si riavvia??» (riavvii del container delle sessioni di verifica: worker_epoch 1→3 nella verifica del 04-05/11). Causa non confermabile; ipotesi principale: carico di due browser 3D in parallelo; anche il recupero della macchina da parte della piattaforma.
+- Decisione PO: **«Sì, dalla 179 un controllo alla volta»**.
+- Attuazione: dalle catene e verifiche della 179 in poi le sessioni figlie lanciano il runner con CPM_CI_PAR=0 (passi lenti in sequenza) e registrano memoria e disco (free -m, df -h) prima di ogni passo. La verifica mirata della 178 in corso non viene toccata.
