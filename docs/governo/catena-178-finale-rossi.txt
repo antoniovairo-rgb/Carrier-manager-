@@ -1,0 +1,4 @@
+Nessun rosso definitivo. Due guardiani "instabili" (rosso al 1o giro, verde al rigioco automatico del runner):
+- highlight-95: primo rosso "D3 s1/1234 «Uno-due con LUZI»: esito «Anticipato dall'avversario» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione"; verde alla prova 2 -> rosso 1/2
+- chiusura-99: primo rosso "seme 2021 scena 22|2 (2) servito 9 nominato 8 a 31.4u; scena 81|6 (6) servito 8 nominato 5 a 39.7u"; verde alla prova 3 -> rosso 1/3 (due rossi poi verde)
+Note: container riavviato 2 volte durante la corsa; catena ripresa escludendo i passi gia' verdi. ball-owner (non in CATENE.notte) giocato a parte: verde (0 movimenti senza padrone; 1o lancio in timeout 560s senza esito, 2o verde su 2014 fotogrammi).

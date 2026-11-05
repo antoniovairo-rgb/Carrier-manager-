@@ -1,0 +1,35 @@
+✅ assist-nome-98 (3227s)
+✅ test:logic (3s)
+✅ save-compat (12s)
+✅ parata-100 (1148s)
+✅ riserva-103 (944s)
+✅ contatto-103 (586s)
+✅ consegna-103 (1673s)
+✅ colla-103 (608s)
+⚠️ chiusura-99 (4237s) — instabile: verde alla prova 3, primo rosso:     · seme 2021 scena 22|2 (2) servito 9 nominato 8 a 31.4u |     · seme 2021 scena 81|6 (6) servito 8 nominato 5 a 39.7u | ✗ chiusura-99 ROSSO (1)
+✅ scena3d-96 (2134s)
+✅ esiti-96 (881s)
+✅ esiti-218 (1615s)
+✅ cross-218 (238s)
+✅ catena notte su 7.999.178: 128/128 verdi
+
+> cpm-visual-3d-validation@1.0.0 ball-owner
+> node ball-owner-test.mjs
+
+
+=== CHI COMANDA IL PALLONE · F2 osservazione ===
+  fotogrammi osservati           2014   su 3/3 partite
+  con almeno uno dichiarato      1809   89.8%
+  con PIU' d'uno (conflitto)      215   10.7%
+  in cui il pallone si muove     1166   57.9%
+     …senza nessun padrone          0   0.0% del movimento
+
+  chi si pesta i piedi con chi:
+       143x  buildup-volo+testa
+        46x  portatore31+arco
+        12x  ricevente-pass+esito:assist_recv
+        10x  scena+consegna
+         3x  scena+avvicinamento
+         1x  arco+vincitore
+
+✅ baseline F2 misurata su 2014 fotogrammi · 0 movimenti senza padrone da attribuire
