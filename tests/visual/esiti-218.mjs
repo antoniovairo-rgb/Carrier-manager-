@@ -8,8 +8,12 @@
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const save = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
-const SEMI = [1234, 2021];
-const srv = await startServer(); const b = await launchBrowser(); const esito = {};
+const SEMI = [1234, 2021, 777];
+/* [giro 101] terzo seme: il pavimento di 12 scene stava sul filo con due partite (misurato 11-13 a seme fisso: il numero di scene
+   dell'eroe che arrivano al motore non e' riproducibile fra due corse, autoplay a tempo reale). Rosso della catena notte 178 =
+   «verde: 0 contraddizioni su 11 scene», cioe' copertura e non esito. Il pavimento NON si abbassa: si aggiunge una partita
+   (seme 777: 7 scene, 0 contraddizioni). E ogni partita deve arrivare al fischio, altrimenti la corsa non e' giudicata. */
+const srv = await startServer(); const b = await launchBrowser(); const esito = {}; const nonFinite = [];
 const contraddizione = (r) => {
   const ev = r.ev || [], fam = r.fam;
   const t = ev.find(e => e.startsWith('tiro:')); const es = t ? t.split(':')[1].split('(')[0] : null;
@@ -33,6 +37,7 @@ for (const rosso of [false, true]) { const tot = { scene: 0, contr: [] };
     await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), sd);
     const t0 = Date.now(); let ph = '';
     while (Date.now() - t0 < 420000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(1000); }
+    if (ph !== 'ended' && ph !== 'ceremony') nonFinite.push((rosso ? 'rosso ' : 'verde ') + sd + ' fermo in ' + ph);
     const R = await page.evaluate(() => window.__CPM_RES218 || []);
     for (const r of R) { tot.scene++; const c = contraddizione(r); if (c) tot.contr.push(sd + ' «' + r.label + '» ' + c + ' — riquadro «' + (r.ovl || '') + '» · motore ' + (r.ev || []).join(',')); }
     console.log((rosso ? 'rosso ' : 'verde ') + 'seme ' + sd + ' fine ' + ph + ' scene ' + R.length); await ctx.close();
@@ -42,6 +47,7 @@ for (const rosso of [false, true]) { const tot = { scene: 0, contr: [] };
 await b.close(); srv.close();
 const V = esito.verde, R = esito.rosso, g = [];
 if (!(V.scene >= 12 && V.contr.length === 0)) g.push('verde: ' + V.contr.length + ' contraddizioni su ' + V.scene + ' scene');
+if (nonFinite.length) g.push('partite non arrivate al fischio: ' + nonFinite.join(', '));
 if (!(R.contr.length >= 1)) g.push('rosso: nessuna contraddizione anche spento (' + R.scene + ' scene)');
 if (g.length) { console.log('❌ esiti-218'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ esiti-218 verde (e il rosso si vede)');

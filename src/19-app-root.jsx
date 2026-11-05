@@ -599,6 +599,7 @@ function IntroCinematic({onDone}){
 /* [7.999.49 parte A] strumenti di sviluppo (revisione azioni, debug audio) solo con ?dev=1 nell'indirizzo */
 function _cpmDev49(){try{return typeof window!=='undefined'&&/[?&]dev=1(&|$)/.test(window.location.search||"");}catch(_e){return false;}}
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
+  useEffect(()=>{if(!_pctab292()||!onClose)return;const f=e=>{if(e.key==="Escape"&&!(e.target&&/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))){e.preventDefault();onClose();}};document.addEventListener("keydown",f);return()=>document.removeEventListener("keydown",f);},[onClose]);/* [giro 90 PO-292 D8] Esc chiude Opzioni. Rosso __CPM_NO_PCTAB292 */
   const Seg=({active,label,onClick})=>(
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
@@ -606,9 +607,9 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
         <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
-        <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
+        <button onClick={onClose} className="cpm-press" style={{width:_tocco292()?44:34,height:_tocco292()?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
-      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
+      <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
         {strumenti&&(
@@ -898,16 +899,21 @@ function App(){
         @media(min-width:560px){.cpm-scroll{padding:14px 14px calc(80px + env(safe-area-inset-bottom,0px));}}
         @media(min-width:900px){.cpm-scroll{padding:16px 24px 20px 244px;}}
         @media(min-width:1280px){.cpm-scroll{padding:18px 48px 20px 268px;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
+        @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
+        @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}
         .cpm-career{width:100%;position:relative;}
         @media(min-width:900px){.cpm-career{max-width:100%;margin:0;}}
-        .cpm-dash-grid{display:flex;flex-direction:column;gap:12px;}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`@media(min-width:1280px){.cpm-career{max-width:1180px;margin-left:auto;margin-right:auto;}}/* [giro 90 PO-292 D12] le schede della carriera a 1920 px si allargavano a 1566 px: righe con nome e valore a 1500 px di distanza. Rosso __CPM_NO_LARGO292. */`}
+        .cpm-dash-grid{display:flex;flex-direction:column;gap:${_sb(12)}px;}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
-        .cpm-offers{display:flex;flex-direction:column;gap:10px;}
+        .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
-        .cpm-proto{display:flex;flex-direction:column;gap:8px;}
+        .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}
         @media(min-width:900px){.cpm-proto{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-slots{display:flex;flex-direction:column;gap:8px;}
         @media(min-width:900px){.cpm-slots{display:grid;grid-template-columns:1fr 1fr 1fr;}}
@@ -924,7 +930,7 @@ function App(){
         button:focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
         .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:11px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
         @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
-        .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;z-index:100;}
+        .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:${(typeof window!=='undefined'&&window.__CPM_NO_G97D1)?'600px':'none'};z-index:100;}/* [giro 97 PO-299 D1] a 820 px la barra era larga 600 (672 a schermo) e il contenuto 789: ai lati scorrevano le card. Sotto i 900 px (niente sidebar) la barra prende tutta la larghezza. Rosso __CPM_NO_G97D1 */
         .cpm-nav-hint{display:none;}
         .cpm-nav-tabs button div:nth-child(3){display:none;}
         .cpm-nav-tabs{display:flex;align-items:stretch;backdrop-filter:blur(12px);border-top:1px solid #e2e8f0;padding-bottom:env(safe-area-inset-bottom,0px);}
@@ -939,6 +945,8 @@ function App(){
           .cpm-nav-tabs button div:nth-child(3){display:none;}
           .cpm-nav-lang{display:none;}
         }
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D17)?'':'@media(min-width:900px){.cpm-nav-strisce{order:2;flex-direction:column;flex-shrink:0;border-top:1px solid rgba(100,116,139,0.18)!important;}.cpm-nav-strisce>button{flex:none!important;width:100%;text-align:left;padding-left:16px!important;padding-right:16px!important;border-left:none!important;}.cpm-nav-strisce>button+button{border-top:1px solid rgba(100,116,139,0.18)!important;}}'}/* [giro 97 PO-299 D17] su PC e tablet orizzontale le due strisce Sostieni/Idee stavano affiancate in cima alla sidebar, 122 px ciascuna e troncate («Sostieni il pro…»): ora una sotto l'altra, a tutta larghezza, in fondo alla sidebar. Rosso __CPM_NO_G97D17 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D16)?'':'@media(pointer:coarse){.cpm-t40:not([style*="position"]){position:relative;}.cpm-t40::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}.cpm-t40i{min-height:42px;}.cpm-tabs40>button{min-height:42px;}.cpm-gap40{gap:12px!important;}.cpm-t40h{min-height:40px!important;}.cpm-scroll .cpm-t40h{min-height:36px!important;}.cpm-nav-strisce>.cpm-t40::after{top:auto;bottom:0;transform:translateX(-50%);}}@media(pointer:coarse) and (max-width:899px){.cpm-root:has(.cpm-nav-bar) .cpm-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));}}'}/* [giro 97 PO-299 D16] al tocco i tasti sotto i 40 px (Salva 23, strisce 26, Licenzia 24, Calendario 16, testate delle fisarmoniche 31-36, x delle finestre): .cpm-t40 allarga SOLO l'area che riceve il tocco (pseudo-elemento trasparente centrato, 42x42 minimo), la grafica e lo spazio fra i box del giro 91 non cambiano. Dove il tasto taglia il contenuto (overflow) o e' un campo di testo serve l'altezza vera: .cpm-tabs40 (linguette) e .cpm-t40i (campi). Le strisce allargano solo VERSO L'ALTO (sotto c'e' la barra dei tab, che le copriva e non va derubata); .cpm-gap40 allarga lo spazio fra due tasti attaccati (- e + dello staff, 5 px) che si rubavano l'area a vicenda. In fondo alla colonna 16 px d'aria in piu' (80 -> 96): l'area allargata delle strisce sale di ~18 px sopra la barra e copriva l'ultima riga a fine scorrimento (Milestone 36 px). Le testate delle fisarmoniche (.cpm-t40h) stanno a 0-8 px l'una dall'altra e le aree allargate si coprivano: li' serve l'altezza vera, 36 px dentro la .cpm-scroll (zoom 1,12 = 40 a schermo) e 40 fuori. Rosso __CPM_NO_G97D16 */
         @media(max-width:380px){
           .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }

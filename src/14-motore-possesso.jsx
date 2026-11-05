@@ -176,7 +176,7 @@ const INT259={
     if(r.panca){const ent=r.ingresso|0;return{k:'ingresso',n:ent,testo:"🪑 "+quale+": il mister ha deciso, "+nm+" entra al "+ent+"'.",breve:"entri al "+ent+"'"};}
     if(gF>0)return{k:'golNoi',n:gF,testo:"✅ "+quale+" ha pagato: "+(gF>1?gF+" gol":"gol")+" nei "+min+" minuti dopo la scelta.",breve:"ha pagato: "+(gF>1?gF+" gol":"gol")+" in "+min+"'"};
     if(gS>0)return{k:'golLoro',n:gS,testo:"❌ "+(o.tipo==='spinta'?"Ci siamo sbilanciati e ci hanno puniti":"Ci hanno puniti lo stesso")+": "+(gS>1?gS+" gol subiti":"gol subito")+" dopo "+quale+".",breve:"ci hanno puniti: "+(gS>1?gS+" gol subiti":"gol subito")};
-    if(o.tipo==='spinta'&&cp>0)return{k:'contro',n:cp,testo:"⚠️ "+quale+": la squadra è alta e loro ripartono, "+(cp===1?"un contropiede":cp+" contropiedi")+" alle nostre spalle in "+min+" minuti.",breve:(cp===1?"un contropiede":cp+" contropiedi")+" subiti"};
+    if(o.tipo==='spinta'&&cp>0)return{k:'contro',n:cp,testo:"⚠️ "+quale+": la squadra è alta e loro ripartono, "+(cp===1?"un contropiede":cp+" contropiedi")+" alle nostre spalle in "+min+" minuti.",breve:(cp===1?"un contropiede subito":cp+" contropiedi subiti")/* [giro 94 D16] accordo al singolare */};
     if(o.tipo==='eroe'&&r.occ!=null)return{k:'occEroe',n:r.occ|0,testo:"⭐ "+quale+": la palla buona è arrivata a "+nm+" al "+(r.occ|0)+"'.",breve:"occasione per te al "+(r.occ|0)+"'"};
     if(tL>=tN+2)return{k:'tiriLoro',n:tL,testo:"⚠️ Dopo "+quale+" abbiamo concesso "+tiri(tL)+" in "+min+" minuti"+(tN?" (noi "+tN+")":", noi nessuno")+".",breve:"concessi "+tiri(tL)};
     if(o.tipo==='spinta'&&rec>=2&&rec>=tN)return{k:'recNoi',n:rec,testo:"✅ Il pressing di "+quale+" morde: "+rec+" palloni recuperati in "+min+" minuti.",breve:rec+" palloni recuperati"};
@@ -199,7 +199,7 @@ const INT259={
      l'ultima fino al fischio. Prima (giro 57, prima stesura) tutte arrivavano al fischio e lo stesso gol veniva raccontato da due scelte.
      L = elenco delle scelte (con .m0 .foto .occ .occ0), fF/mF = fotogramma e minuto del fischio. Restituisce per ogni scelta {m1,dopo,occ,fino}. */
   attivoFin280(){return !(typeof window!=='undefined'&&window&&window.__CPM_NO_FIN280);},
-  fino(r){return r.fino==null?" fino al fischio":" fino al "+(r.fino|0)+"'";},
+  fino(r){if(r.fino==null)return " fino al fischio";const m=r.fino|0;return (/^(1|8|11|8\d)$/.test(String(m))?" fino all'":" fino al ")+m+"'";},/* [giro 94 D16] «all'81'», «all'8'», «all'11'» */
   finestre(L,fF,mF){const on=INT259.attivoFin280();return L.map((r,i)=>{const nx=on?L.slice(i+1).find(q=>q&&q.foto&&(q.m0|0)>=(r.m0|0)):null;
     const dopo=nx?nx.foto:fF,m1=nx?(nx.m0|0):mF;const ok=(o)=>o!=null&&o>=(r.m0|0)&&o!==r.occ0&&(!nx||o<m1);
     return{m1,dopo,fino:nx?m1:null,occ:ok(r.occ)?r.occ:(dopo&&ok(dopo.occ)?dopo.occ:null)};});},
@@ -1133,7 +1133,7 @@ function creaMotorePossesso(cfg){
   const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||!S.richieste.piazzati||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
     if(!f._o27){f._o27=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const l=T.team;const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(T),zona:zonaDi(advDi(f.x,l),f.y),press:0,x:+f.x.toFixed(1),y:+f.y.toFixed(1),chiesto:null,attese:0,tipo:kind,origine:{kind,chi:chi(T),x:+f.x.toFixed(1),y:+f.y.toFixed(1)},finestra:false,liberi:0,cast:{ricevente:null,difensore:null,portiere:chi(K)}});return true;}
-    if(f._o27<40){f._o27++;return true;}return false;};
+    if(f._o27<40||(f._acc94&&f._o27<400&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2))){f._o27++;return true;}return false;};/* [giro 94 D2] _acc94: il live ha accettato la scena (inserita): il motore la aspetta, non calcia lui dopo 40 passi (tetto di sicurezza 400) */
   function tickFermo(){const f=S.fermo;S.poss.t++;f.t++;S.conta.fermo++;S.palla.x=f.x;S.palla.y=f.y;
     if(f.t<f.tot)return;
     const l=f.lato;S.poss.lato=l;
@@ -1141,7 +1141,7 @@ function creaMotorePossesso(cfg){
     if(f.kind==="throw"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=clamp(f.y,2,98);S.fermo=null;const R=scegliRicevente(T.p,{})||(piuVicino(f.x,f.y,l,{noGk:true,escl:T.p.i})||{}).p;ev("battuta",{kind:"throw",chi:chi(T.p)});if(R){S.palla.x=f.x;S.palla.y=f.y;passa(T.p,R,{sicuro:true,kind:"corto"});}else tenuta(T.p,null);return;}
     if(f.kind==="goal_kick"){const gk=portiereDi(l);gk.x=f.x;gk.y=f.y;S.fermo=null;ev("battuta",{kind:"goal_kick",chi:chi(gk)});S.palla.x=f.x;S.palla.y=f.y;const R=scegliRicevente(gk,{});if(R)passa(gk,R,{sicuro:true,kind:hyp(R.x,R.y,gk.x,gk.y)>26?"lancio":"corto"});else tenuta(gk,null);return;}
     if(f.kind==="corner"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===T.p.i||q.gk)continue;const sc=advDi(q.x,l)-Math.abs(q.y-50)*0.5+(q.eroe?3:0)+_bonusCross26(q,l)+rnd()*5;if(sc>bs){bs=sc;R=q;}}ev("battuta",{kind:"corner",chi:chi(T.p)});cross(T.p,R,{corner:true});return;}
-    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
+    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(T.eroe&&S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=="undefined"&&window&&window.__CPM_NO_C3D2)){S.fermo=null;const K94=portiereDi(altro(l));if(K94){S.palla.x=K94.x;S.palla.y=K94.y;tenuta(K94,null);}return;}/* [giro 94 D2] niente secondo rigore dell'eroe dopo quello giocato in scena */if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
     /* punizione */
     const _tir27=advDi(f.x,l)>=78&&Math.abs(f.y-50)<=18;const _H27=_tir27&&S.richieste.piazzati&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27)?g.find(q=>q.eroe&&q.team===l&&attivo(q)):null;/* [7.999.27] dal limite, tirabile: la batte l'eroe */
     const T=(_H27?{p:_H27}:null)||((B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true}));if(!T){libero(f.x,f.y);return;}if(_tir27&&_piaz27(f,T.p,"punizione"))return;T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
@@ -1434,7 +1434,18 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        (l'eroe) e porta i ventidue nella formazione da palla ferma con le sue regole (tick dopo tick,
        corsa vera, niente teletrasporto). Tiene la palla ferma per `hold` tick (6): se la scena non si
        apre, il piazzato lo batte lui e il gioco continua. */
-    piazzato(o){o=o||{};const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
+    /* [giro 94 D2 collaudo 177-3 «30' Tuo rigore · 31' Gol di Valdes» — rosso __CPM_NO_C3D2] IL PIAZZATO DELL'EROE SI CALCIA UNA VOLTA.
+       Misurato (sonda-rigore-94, partita k13 del salvataggio 190): occasione_eroe del rigore al 34', gol della scena al 35', poi al 36'
+       il motore — fermo ancora sul dischetto ad aspettare la scena (_piaz27, tetto 40 passi) — batte lui il rigore con l'eroe e segna di
+       nuovo. Qui il live dichiara che la scena ha giocato il piazzato: il fermo dell'eroe sparisce e il pallone va al portiere di chi
+       difendeva (la ripresa vera la decide poi il live, col calcio d'inizio dopo il gol o con riprendi).
+       Seconda misura (stessa partita): al momento della scena il fermo era GIA' vuoto; il secondo calcio nasceva da un piazzato nuovo chiesto
+       dal ponte verso l'highlight programmato (stesso rigore, scena gia' giocata). Quindi: per 4 minuti dopo il piazzato giocato in scena
+       il motore non fa calciare all'eroe un altro piazzato (ne' da fermo pendente ne' da ponte); il pallone va al portiere di chi difende. */
+    attendiPiazzato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;const f=S.fermo;if(!f||!f._o27)return false;f._acc94=1;return true;},/* [giro 94 D2] misura 3 (sonda-rigore-94 k13): la scena del rigore inserita al 34' si apriva al 35', quando il motore aveva gia' finito i 40 passi d'attesa e calciato nei sotto-passi: il suo gol arrivava al 36' come secondo gol dell'eroe */
+    piazzatoGiocato(){if(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)return false;S.noPiaz94=(S.min|0)+4;const f=S.fermo;if(!f||!f._o27)return false;
+      S.conta.piaz94=(S.conta.piaz94|0)+1;S.fermo=null;const K=portiereDi(altro(f.lato));if(K){S.palla.x=K.x;S.palla.y=K.y;tenuta(K,null);}return true;},
+    piazzato(o){o=o||{};if(S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2)){S.conta.piazNo94=(S.conta.piazNo94|0)+1;return;}/* [giro 94 D2] il ponte non rifischia il piazzato appena giocato in scena */const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
       S.richieste.verso=null;fermoSet(kind,l,+o.x||50,+o.y||50,{scena:1});
       if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,o.hold?clamp(o.hold|0,1,12):6);
         if(o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
@@ -1452,6 +1463,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const tabellino=()=>{const h=S.tab.home,a=S.tab.away;
     const _pt=(h.possesso||0)+(a.possesso||0);
     const _p=(q)=>_pt>0?Math.round(100*q/_pt):50;
+    /* [giro 94 D4 collaudo 177-3 «possesso 50-50 con passaggi 537 contro 289» — rosso __CPM_NO_C3D4] il possesso a tempo (minuti col
+       pallone) e i passaggi contati evento per evento divergevano: banco 48 partite, scarto mediano 10 punti, massimo 21, 23 su 48 oltre 10.
+       Il possesso che si legge nel tabellino e' quello delle statistiche vere (quota dei passaggi): una sola misura per due righe. */
+    const _pp=(h.passaggi|0)+(a.passaggi|0);
+    if(_pp>=40&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D4)){const ph=Math.round(100*(h.passaggi|0)/_pp);return{home:Object.assign({},h,{possesso:ph,possessoTempo:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:100-ph,possessoTempo:_p(a.possesso||0)})};}
     return{home:Object.assign({},h,{possesso:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:_p(a.possesso||0)})};};
   /* [7.915.0 — IL TABELLINO VEDE ANCHE GLI HIGHLIGHT] Il PO ha fotografato una partita vinta 3-0 con il
      tabellino che dichiarava 4 tiri e 2 in porta per la sua squadra: i suoi tre gol non erano contati. Non era
@@ -1598,7 +1614,21 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
       const MIO_GK=g.find(q=>q&&q.gk&&q.team===H.team)||null;
       const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});/* il portiere reagisce se il pallone passa entro 12 unita' dal centro porta */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
-      if(famPass){
+      /* [giro 93 PO-298 «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] IL PASSAGGIO ARRIVATO E IL TIRO
+         SBAGLIATO DEL COMPAGNO SONO DUE FATTI. giocaScena decide il passaggio (intercettato o no) e poi il tiro del compagno; quando il
+         passaggio arriva e il compagno non segna, il live mandava qui la chiave di fallimento dell'assist e il motore scriveva
+         «intercetto» del difensore (misurato: 4 passaggi arrivati su 8 scene raccontati come intercetti). Ora: passaggio riuscito,
+         tiro del compagno con l'esito deciso (parata, fuori, palo, murato), nessun rammarico dell'eroe. */
+      const _sp298=(d.spreca298&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298))?String(d.spreca298):null;
+      const Rs=_sp298?(R0||(()=>{const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;})()):null;
+      if(_sp298&&Rs){
+        E(_crx218?'cross':'passaggio',{da:chi(H),a:chi(Rs),kind:'corto',from:da(H),to:da(Rs),fuori:false});
+        const es=_sp298==='wide'?'fuori':_sp298;const to=es==='blocked'?null:porta(es);
+        if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});
+        E('tiro',{chi:chi(Rs),from:da(Rs),intent:_crx218?'header':null,to,esito:es});
+        if(es==='saved'&&K)E('parata',{gk:chi(K),chi:chi(Rs),corner:false});else if(es==='post')E('palo',{chi:chi(Rs)});else if(es==='blocked'&&D)E('murato',{chi:chi(D),su:chi(Rs)});
+      }
+      else if(famPass){
         E(_crx218?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
         /* [giro 11 PO-218 cross] IL CROSS SBAGLIATO HA IL SUO FATTO. Misurato (enumerazione su motore vero, cast con difensore e portiere):
            il cross bloccato dal portiere (riquadro «Il portiere esce e la prende», 3D presa) era registrato «intercetto» del difensore, e il
@@ -1723,8 +1753,19 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(o.fam==='tiro'){const _r221=(!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_RES221))&&intent!=='penalty'&&intent!=='freekick')?((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8):1;/* [7.999.159] 1,4 → 1,8: col tetto di 7 scene i gol dell'eroe erano scesi a 0,50 su 60 partite (collaudatrice 2), sotto 0,6-0,9; misura su 16 partite: 0,62 → 0,75 *//* [7.999.156 PO-221, decisione PO 09/10 «se i gol restano sotto 0,6 alzo la resa»] MISURATO su 12 partite per braccio: con 16' fra le occasioni l'eroe passa da 8,0 a 7,0 scene e da 0,75 a 0,50 gol a partita (obiettivo 0,6-0,9). I tiri su azione delle scene valgono 1,4 volte; rigore e punizione diretta restano il loro xG. Rosso __CPM_NO_RES221, __CPM_RES221_K solo per tarare */const es=esitoTiroV2(H,intent,{pressRaw:press,res221:_r221});return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'tiro'};}
       if(o.fam==='assist'){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}
         const b=D?attrsDi(D):{posizionamento:forza.away};const _i221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_INT221))?Math.max(0,A(o.stat==='dribbling'?'dribbling':'passaggio')-70)*0.006:0;/* [7.999.156 PO-221] uno-due, finta e filtrante intercettati meno se l'eroe ha passaggio/dribbling buoni */const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008+_i221,0.5,_i221>0?0.97:0.95);
-        if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
-        const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) */const es=esitoTiroV2(Rv,o.intent==='header'?'header':'shot',{pressRaw:_a221?1:3});
+        /* [giro 98 D3-bis, collaudo carriera 177 n.4: «Proteggi palla e scarica» giocata come un passaggio, 11 intercetti su 11] LA PROTEZIONE
+           E' UN DUELLO FISICO COL MARCATORE: si perde (palla portata via, duello:true) secondo fisico dell'eroe contro fisico del marcatore,
+           non secondo passaggio contro posizionamento; vinto il duello lo scarico corto arriva e il compagno conclude come in ogni assist.
+           Rosso __CPM_NO_G98D3 */
+        if(o.prot&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G98D3)){const _du98=clamp(0.82+(A('fisico')-b.fisico)*0.008,0.55,0.95);if(rnd()>=_du98)return{ok:false,esito:'intercettato',duello:true,fam:'assist'};}
+        else if(rnd()>=pas)return{ok:false,esito:'intercettato',fam:'assist'};
+        const _p221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_POS221));/* [7.999.157 PO-221, decisione PO 10/10 «compagno in posizione da gol»] il passaggio riuscito di un assist mette il compagno davanti alla porta: almeno 88 di avanzamento e quasi centrale (prima: 10 piu' avanti dell'eroe e solo un poco verso il centro, anche da fuori area larghi). Misurato su 7.999.156: compagno a segno 2 volte su 34 */const Rv={team:H.team,eroe:false,x:_p221?Math.min(92,Math.max(88,x+10)):Math.min(94,x+10),y:_p221?50+(y-50)*0.15:50+(y-50)*0.3,i:-1};const _a221=!(typeof window!=='undefined'&&window&&(window.__CPM_NO_221||window.__CPM_NO_ASS221));/* [7.999.156 PO-221, decisione PO 09/10] un assist vero mette il compagno davanti alla porta: dopo il passaggio riuscito tira con pressione 1 invece di 3 (misurato: passaggio arrivato 8 volte su 9, compagno a segno 1 volta su 8) *//* [giro 93 PO-298, rosso __CPM_NO_ASSIST298] IL COMPAGNO SERVITO DAVANTI ALLA PORTA HA UNA GRANDE OCCASIONE. Misurato (12 partite,
+   politica «assist»): passaggio arrivato 42 volte su 44, compagno a segno 8 volte su 42 (19%) — il suo tiro era un tiro qualunque del
+   motore (xG del punto, con la frenata dei compagni nella partita vissuta). Ora vale la «grande occasione» della decisione PO 7.999.2:
+   0,28+0,8·xG del punto, tetto 0,6 (prima della gestione del vantaggio e del debito, che restano). */
+const _pr298=_a221?1:3,_in298=o.intent==='header'?'header':'shot';let _r298=1;
+if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_ASSIST298)){const _x0=xgV2(Rv,_in298,_pr298);const _fi=(cfg.fin202&&+cfg.fin202.home)||1;_r298=clamp(clamp(0.28+0.8*_x0,0.28,0.6)/Math.max(0.01,_x0*_fi),1,12);}
+const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
         return{ok:es==='goal',esito:es,xg:+(S._xgV2||0).toFixed(3),fam:'assist'};}
       return null;}finally{H.x=x0;H.y=y0;}}catch(_e){return null;}};
   /* [7.999.131 PO-202 strumento] REGISTRATORE della partita vissuta: con window.__CPM_REG202 acceso (solo sonde) ogni chiamata dall'esterno

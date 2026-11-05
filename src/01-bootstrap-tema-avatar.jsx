@@ -232,7 +232,11 @@ const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
 const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
-const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32};                                                       // 4pt grid
+const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                                                  // 4pt grid · box = lo spazio FRA riquadri fratelli
+/* [giro 91 PO-296 — «Ridurrei anche lo spazio tra i box in tutte le schermate», decisione PO: a meta', circa 8 px (erano 14-16)] PUNTO UNICO: lo spazio fra
+   due riquadri fratelli (card, fisarmoniche, finestre) e' SP.box (7 px CSS = ~8 a schermo dentro lo zoom 1,12 dello scroll). `_sb(vecchio)` lo restituisce, e con
+   l'interruttore rosso __CPM_NO_SPAZIO296 restituisce `vecchio`: gli spazi della 177. Il padding interno dei riquadri e i testi non si toccano. */
+const _sb=(vecchio)=>(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?vecchio:SP.box;
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
    cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua

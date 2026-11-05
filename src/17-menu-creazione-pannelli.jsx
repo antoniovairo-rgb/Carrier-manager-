@@ -185,6 +185,7 @@ const CREDITI254=[
 const crediti254On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI254);
 const crediti238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_CREDITI238);
 function Crediti238({onClose}){
+  useEffect(()=>{if(!_pctab292()||!onClose)return;const f=e=>{if(e.key==="Escape"){e.preventDefault();onClose();}};document.addEventListener("keydown",f);return()=>document.removeEventListener("keydown",f);},[onClose]);/* [giro 90 PO-292 D8] Esc chiude i Crediti. Rosso __CPM_NO_PCTAB292 */
   const _n254=crediti254On();
   const _nc=<span data-cpm="crediti254-nonconf" style={{color:TH.muted}}>Non posso confermarlo</span>;
   /* [7.999.171 PO-267, collaudo carriera 170 D1 alta] «Non posso confermarlo» e' una nota di verifica interna, non un testo per il
@@ -258,7 +259,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:18,boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -281,7 +282,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       </div>
       <PwaInstallBanner/>
       {/* Save slots */}
-      <div className="cpm-slots" style={{marginBottom:10}}>
+      <div className="cpm-slots" style={{marginBottom:_sb(10)}}>
         {/* [7.999.49 parte A] a carriera zero un solo bottone (usa il primo salvataggio libero); le righe vuote solo se almeno uno è occupato */}
         {!hasAny?(
           <Btn onClick={()=>onNew(0)} v="primary" fw style={{padding:"12px 14px",fontSize:FS.bodyLg}}>Nuova carriera</Btn>
@@ -291,7 +292,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               <div style={{fontSize:FS.small,fontWeight:700,color:TH.txRed}}>⚠️ Salvataggio {i+1} — dati corrotti</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
             </div>
-            <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:FS.small,fontWeight:700}}>🗑️ Elimina</button>
+            <button onClick={()=>setConfirmDel(i)} style={{padding:_tocco292()?"13px 14px":"6px 12px",borderRadius:RAD.sm,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:FS.small,fontWeight:700}}>🗑️ Elimina</button>
           </div>
         ):s?(
           <Card key={i} border={TH.cardBorder} style={{padding:"9px 12px"}}>
@@ -315,7 +316,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0,marginLeft:"auto"}}>
                 <Btn onClick={()=>onLoad(i)} v="primary" style={{padding:"8px 14px",fontSize:FS.body}}>{s.retired?"🏛️ Rivivi il finale →":"Continua →"}</Btn>
-                <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:RAD.xs,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
+                <button onClick={()=>setConfirmDel(i)} style={{padding:_tocco292()?"13px":"5px",borderRadius:RAD.xs,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
               </div>
             </div>
           </Card>
@@ -326,7 +327,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
         ))}
       </div>
-      {!hasAny&&<Card style={{marginBottom:9,padding:"7px 12px"}}>
+      {!hasAny&&<Card style={{marginBottom:_sb(9),padding:"7px 12px"}}>
         <p style={{fontSize:FS.small,color:TH.muted,margin:"0 0 12px",lineHeight:1.7}}>Crea il tuo calciatore, supera i provini e costruisci la tua carriera calcistica nei principali campionati europei.</p>
       </Card>}
       {/* Card di sovrascrittura: solo quando TUTTI gli slot sono pieni (nessuno slot vuoto disponibile) */}
@@ -458,10 +459,10 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               </div>
             )}
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
-            {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
+            {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" className="cpm-t40" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome (obbligatorio)</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
-          <div><label style={lbl}>Nazionalità</label><select style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
+          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+          <div><label style={lbl}>Nazionalità</label><select className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -505,6 +506,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               value={dreamSearch}
               onChange={e=>setDreamSearch(e.target.value)}
               placeholder="Cerca squadra…"
+              className="cpm-t40i"
               style={{...inp,fontSize:FS.small,padding:"7px 12px",marginBottom:6}}
             />
             <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:4,marginBottom:4,paddingRight:2}}>
@@ -813,7 +815,7 @@ function NationalCallupScreen(props){
   const occhiello={fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8};
   return(
     <div data-cpm="convocazione235" style={{width:"100%",maxWidth:480,margin:"0 auto",padding:`${SP.lg}px ${SP.lg}px ${SP.xxl}px`,boxSizing:"border-box",
-      display:"flex",flexDirection:"column",gap:SP.md,opacity:shown?1:0,transition:"opacity 0.45s"}}>
+      display:"flex",flexDirection:"column",gap:_sb(SP.md),opacity:shown?1:0,transition:"opacity 0.45s"}}>
       {isFirst&&<Card tone="warn" shadow={false} density="tight">
         <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.txAmber}}>Traguardo di carriera · prima convocazione</div>
       </Card>}
@@ -993,6 +995,9 @@ function generateRetirementBio(p,legacyScore){
   return bio;
 }
 
+/* [giro 94 D21 collaudo 177-3 «17 stagioni» per una carriera S1→S18] le stagioni giocate sono quelle archiviate nello storico (la
+   schermata riceve il giocatore con la stagione appena chiusa gia' dentro `history`); `season-1` valeva solo dopo il passaggio d'anno. */
+function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const n=new Set(((p&&p.history)||[]).map(h=>h&&h.season).filter(x=>x!=null)).size;return Math.max(a,n);}catch(_e){return a;}}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -1052,8 +1057,8 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   };
   // [6.58.0] CERIMONIA DI RITIRO — overlay celebrativo (tap-to-continue); riusa keyframes esistenti (flash-safe)
   if(cer){
-    const _tCount=Math.min(8,(p.trophies||[]).length);
-    const _cSeasons=Math.max(0,(p.season||1)-1);
+    const _tCount=Math.min(8,(p.trophies||[]).length);const _tTot94=(p.trophies||[]).length;
+    const _cSeasons=stagioniGiocate94(p);
     const _cGoals=p.totalGoals||p.goals||0,_cMatches=p.totalMatches||p.matches||0;
     const _conf=Array.from({length:16},(_,i)=>({left:(i*61+13)%100,delay:((i%8)*0.24).toFixed(2),dur:(2.6+(i%5)*0.4).toFixed(2),col:["#f0b33a","#a3263a","#e0526a","#ffffff"][i%4]}));
     return(
@@ -1067,11 +1072,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.82)",marginTop:8,animation:"celebTitle .8s ease-out .7s both"}}>{_cSeasons} stagion{_cSeasons===1?"e":"i"} · {_cGoals} gol · {_cMatches} presenze{(p.age||0)?` · ${p.age} anni`:""}</div>
           <div style={{marginTop:12,display:"inline-flex",alignItems:"center",gap:8,padding:"8px 16px",borderRadius:RAD.pill,background:grade.color+"22",border:`1.5px solid ${grade.color}`,animation:"celebTitle .8s ease-out .9s both"}}>
             <span style={{fontSize:FS.title}}>{grade.e}</span>
-            <span style={{fontSize:FS.body,fontWeight:900,color:grade.color}}>{grade.label}</span>
+            <span style={{fontSize:FS.body,fontWeight:900,color:"#fff"}}>{grade.label}</span>{/* [giro 94 D21] viola su viola: l'etichetta in bianco, il colore resta nel bordo */}
             <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)"}}>· {legacyScore}/1000</span>
           </div>
           {_tCount>0&&<div style={{marginTop:18,display:"flex",gap:7,justifyContent:"center",flexWrap:"wrap"}}>
             {Array.from({length:_tCount}).map((_,i)=><span key={i} style={{fontSize:FS.h,animation:`trophyRise .7s ease-out ${(1.1+i*0.12).toFixed(2)}s both`}}>🏆</span>)}
+            {_tTot94>_tCount&&<span style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f0b33a",alignSelf:"center"}}>+{_tTot94-_tCount}</span>}{/* [giro 94 D21] le icone si fermano a 8: il numero vero si legge */}
           </div>}
           <div style={{marginTop:_tCount>0?18:22,fontSize:FS.small,color:"rgba(255,255,255,0.7)",fontStyle:"italic",lineHeight:1.5,animation:"celebTitle .8s ease-out 1.25s both"}}>“{p.name} lascia il calcio giocato. Lo stadio è in piedi: un ultimo giro di campo, sotto una pioggia di applausi.”</div>
           <div style={{marginTop:20,animation:"celebTitle .8s ease-out 1.5s both"}}>
@@ -1116,7 +1122,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       <div style={{textAlign:"center",padding:"28px 16px 16px"}}>
         <div style={{fontSize:56,marginBottom:8}}>👟</div>
         <h1 style={{fontSize:FS.h,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
-        <p style={{fontSize:FS.body,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {Math.max(0,(p.season||1)-1)} stagioni</p>
+        <p style={{fontSize:FS.body,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {stagioniGiocate94(p)} stagioni</p>
       </div>
 
       {/* Legacy grade */}
@@ -1132,7 +1138,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       {/* Career stats */}
       <Fisarmonica id="ritiro-statistiche-carriera" titolo="📊 Statistiche Carriera" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
-          {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
+          {[{l:"Stagioni",v:stagioniGiocate94(p),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"},...((p.nationalCaps||0)>0?[{l:"Gol Naz.",v:p.nationalGoals||0,e:"🥅"}]:[])].map(s=>(
             <div key={s.l} style={{background:TH.bg,borderRadius:RAD.sm,padding:"8px 4px"}}>
               <div style={{fontSize:FS.subhead}}>{s.e}</div>
               <div style={{fontSize:FS.title,fontWeight:900,color:TH.text}}>{s.v}</div>
@@ -1954,7 +1960,7 @@ function TutorialOverlay({name,step,onNext,onSkip}){
           ))}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
+          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:_tocco292()?"14px 12px":"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
           <button onClick={onNext} style={{flex:1,background:TH.primary,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
             {isLast?"Inizia la carriera! 🚀":"Avanti →"}
           </button>

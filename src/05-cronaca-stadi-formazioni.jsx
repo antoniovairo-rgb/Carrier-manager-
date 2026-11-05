@@ -457,6 +457,24 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
   return {text:pool[i].replace(/\{nome\}/g,heroFirst||"").replace(/\s+!/g,"!").trim(),
           tone:good.indexOf(cat)>=0?"good":(cat==="nothing"?"neutral":"bad"), cat, fam:_nk||null, icon};
 }
+/* [giro 93 PO-298 «un buon 90/95% degli assist dell'eroe falliscono!»] ASSIST PERFETTO, IL COMPAGNO SPRECA: riquadro e cronaca di un
+   passaggio arrivato a un compagno che poi non segna. Prima erano «Intercettato» / «Ti portano via il pallone». Il nome e' il cognome del
+   ricevente dichiarato dal motore (cast), altrimenti «il compagno». */
+function _ricNome298(cast){try{const n=String((cast&&cast.ricevente&&cast.ricevente.nome)||"").trim().split(/\s+/).pop();return n||"il compagno";}catch(_e){return "il compagno";}}
+const _SPRECA_OVL298={
+  saved:["{G} perfetto — para il portiere su {C}","{G} servito — {C} si fa parare il tiro","{G} da gol — il portiere dice no a {C}"],
+  wide:["{G} perfetto — {C} spreca","{G} servito — {C} calcia fuori","{G} da gol — {C} non inquadra la porta"],
+  post:["{G} perfetto — {C} colpisce il palo","{G} servito — il legno ferma {C}"],
+  blocked:["{G} perfetto — murato il tiro di {C}","{G} servito — la difesa chiude {C} sul tiro"]};
+const _SPRECA_TX298={
+  saved:["🅰️ Palla perfetta per {C}, ma il portiere gli chiude lo specchio.","🅰️ Il passaggio è d'oro: {C} calcia, para il portiere."],
+  wide:["🅰️ Palla perfetta per {C}… che la manda fuori. Che spreco!","🅰️ Il passaggio è d'oro, {C} non trova la porta."],
+  post:["🅰️ Palla perfetta per {C}: palo pieno!","🅰️ Il passaggio è d'oro, {C} colpisce il legno."],
+  blocked:["🅰️ Palla perfetta per {C}, ma il tiro viene murato.","🅰️ Il passaggio è d'oro: {C} calcia, la difesa respinge."]};
+function _giocata298(label){return /cross|traverson|pennell|fendente|mette in mezzo/i.test(String(label||""))?"Cross":"Assist";}
+function _ovlSpreca298(es,label,ric,seed){const P=_SPRECA_OVL298[es]||_SPRECA_OVL298.saved;const i=(((seed|0)%P.length)+P.length)%P.length;
+  return {text:P[i].replace(/\{G\}/g,_giocata298(label)).replace(/\{C\}/g,ric||"il compagno"),tone:"good",cat:"spreca",fam:null,icon:"🅰️"};}
+function _txSpreca298(es,label,ric,seed){const P=_SPRECA_TX298[es]||_SPRECA_TX298.saved;const i=(((seed|0)%P.length)+P.length)%P.length;return P[i].replace(/\{C\}/g,ric||"il compagno");}
 // [7.136.0] mappe iconcina esito — per categoria (cat) e per famiglia granulare del "miss" (fam)
 const _OVL_CAT_ICON={goal:"⚽",assist:"🅰️",chance:"✨",pass:"🎯",cross:"↗️",dribble:"🌀",recovery:"🔄",tackle:"🛡️",save_hero:(typeof window!=="undefined"&&window.__CPM_NO_SALVA84)?"🧤":"🛡️",miss:"❌",miss_big:"😱",pass_fail:"✂️",dribble_fail:"🚫",def_fail:"⚠️",nothing:"😐",conceded:"🥅",foul:"🟨"};
 const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",intercepted:"✂️",wide:"💨",corner:"🚩",foul:"🟢",offside:"🚩"};

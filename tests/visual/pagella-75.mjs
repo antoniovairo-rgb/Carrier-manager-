@@ -5,6 +5,7 @@
    Qui si rigiocano le tre partite in due bracci:
    - verde: pagella (M.pagelle(), voce eroe) == risultato registrato (__CPM_GOLEROE228) in tutte e tre;
    - rosso (__CPM_NO_PAGELLA75): almeno una delle tre torna a divergere, altrimenti il guardiano guarda a vuoto.
+   [giro 94] entrambi i bracci girano con __CPM_NO_C3D2 (vedi addInitScript).
    Uso: K=4,12,13 PAR=2 node pagella-75.mjs  (~14 min con PAR=2). */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -19,7 +20,7 @@ async function gioca(b, url, k, rosso) {
   page.on('pageerror', e => rec.errori.push(String(e.message).slice(0, 160)));
   try {
     const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' Q190-' + k;/* stesso nome di quota-190-vivo: stessa partita */
-    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_PAGELLA75 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
+    await page.addInitScript(([s, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_NO_C3D2 = 1;/* [giro 94] i casi-testimone k12/k13 (gol dell'eroe in gioco fluido) erano rigori calciati dal motore al posto della scena: il D2 del giro 94 li ha tolti e il guardiano restava cieco. Si ricrea quella condizione in ENTRAMBI i bracci: l'invariante pagella = registrato resta misurato */ if (r) window.__CPM_NO_PAGELLA75 = 1; localStorage.setItem('cpm-match-speed', '4'); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, rosso]);
     await page.goto(url, { waitUntil: 'load', timeout: 90000 });
     await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
     try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}

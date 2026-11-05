@@ -66,11 +66,19 @@ const _etichettaTurno957=(md)=>{
   try{
     if(!md)return "";
     if(md.type==="cup")return md.cupRoundName?(" \u00b7 "+md.cupRoundName):"";
+    if(!(typeof window!=="undefined"&&window.__CPM_NO_C3D8)&&(md.type==="euro_group"||md.type==="euro"||(md.matchday>=900&&md.matchday<990)))return md.type==="euro"?"":(" \u00b7 Fase a gironi"+((md.matchday>=900&&md.matchday<906)?(" \u00b7 "+(md.matchday-899)+"\u00aa giornata"):""));/* [giro 94 D8 collaudo 177-3 «Coppa Europea · 900ª giornata» — rosso __CPM_NO_C3D8] i gironi europei usano il codice 900+giornata (come la coppa 990+ e la Nazionale 1470+): si stampa la fase e la giornata del girone, mai il codice */
     if(md.matchday==null||md.matchday>=990)return "";/* codici interni: coppa 990+, nazionale 1470+ */
     return " \u00b7 "+md.matchday+"\u00aa giornata";
   }catch(_e){return "";}
 };
 
+/* [giro 94 D7 collaudo 177-3 «sala stampa di Italia-Argentina con RDL e la fascia del FC Rendalto» — rosso __CPM_NO_C3D7] la scheda
+   della sala stampa porta la squadra con cui si e' GIOCATA la partita: dopo una gara della Nazionale e' la Nazionale (sigla e colori
+   da NAT_CLUB_DATA), altrimenti il club. Funzione pura (guardiano carriera3-94). */
+function clubIntervista94(player,context){
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_C3D7)&&/^(national|nazionale|nationsCup|euroMondiale)/.test(String(context||''))&&typeof NAT_CLUB_DATA!=='undefined'){
+    const n=(player&&player.nation)||'Italia';return {...(NAT_CLUB_DATA[n]||{a:String(n).slice(0,3).toUpperCase(),c:'#1e3a8a',c2:'#fff'}),n,name:n};}
+  return (player&&player.club)||null;}
 /* [7.999.49 parte A] importi all'italiana per Club, Procuratore e Ufficio: «€11,4 mln», «€450 mila», «€800» */
 const _eur49=(v,dec)=>{v=Math.round(+v||0);const a=Math.abs(v),sg=v<0?"\u2212":"";
   if(a>=1e6)return sg+"\u20ac"+(a/1e6).toLocaleString("it-IT",{maximumFractionDigits:dec==null?1:dec})+" mln";
@@ -118,7 +126,7 @@ function DiarioSfoglia({diary,DTYPE}){
    Rosso window.__CPM_NO_HOME066: torna la Fisarmonica di prima. Guardiano tests/visual/home-066.mjs. */
 function FisHome66({id,titolo,aperta=false,cardStyle={},cardProps={},children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_HOME066)return <Fisarmonica id={id} titolo={titolo} aperta={aperta}><Card {...cardProps} style={cardStyle}>{children}</Card></Fisarmonica>;
-  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:SP.sm}}>{children}</Card>;
+  return <Card {...cardProps} momento={titolo} momentoAperto={!!aperta} style={{...cardStyle,borderRadius:RAD.md,borderTop:undefined,marginBottom:_sb(SP.sm)}}>{children}</Card>;
 }
 /* [PO-223 · giro 33, eccezione PO 15/10 «Sì, solo questi due»] LA RESA DELL'INVESTIMENTO DIPENDE DA PUNTATA E SCELTA.
    Prima: al cambio di stagione un accredito FISSO di 55.000€ per qualunque puntata (20.000, 28.000 o 40.000) e qualunque scelta,
@@ -222,7 +230,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');
     if(!el)return;
-    const narrow=window.innerWidth<640;
+    const narrow=_narrowLay292();/* [giro 90 PO-292] < 640 px come prima, in piu' il tablet verticale */
     if(screen==="match"&&narrow){el.style.paddingLeft="0";el.style.paddingRight="0";el.style.paddingTop="0";}
     else{el.style.padding="";}
     return()=>{el.style.padding="";};
@@ -372,6 +380,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const showMatchPromptRef=useRef(null);
   useEffect(()=>{showMatchPromptRef.current=showMatchPrompt;},[showMatchPrompt]);
   // Sprint 116/123 — calculate and lock coach decision when match prompt opens
+  /* [giro 94 D3/D10 collaudo 177-3 «il contratto scade senza proposta di rinnovo; la stagione nuova tratta lo svincolato come tesserato»]
+     (a) nelle ultime settimane dell'ultimo anno il club apre il discorso del rinnovo: avviso + riga di registro, una volta a stagione
+         (la card in home porta al rinnovo); (b) se la stagione nuova parte da svincolato il gioco lo dice e porta al Procuratore,
+         dove ci sono il rinnovo e la ricerca di una squadra. Rosso __CPM_NO_C3D3. */
+  useEffect(()=>{try{
+    if((typeof window!=='undefined'&&window.__CPM_NO_C3D3))return;const p=player;if((p.proStatus||"u18")!=="pro"||p.loan||p.retired)return;const sn=p.season||1,w=p.week||1;
+    if(!p.contractExpired&&(p.contract?.duration||2)<=1&&(p.renewalSeason||0)!==sn&&w>=28&&w<=38&&(p.renewWarn94||0)!==sn){
+      setPlayer(q=>((q.renewWarn94||0)===(q.season||1)?q:{...q,renewWarn94:q.season||1,log:[`📋 Il contratto con ${q.club?.n||"il club"} scade a fine stagione: il club è pronto a parlare del rinnovo (Procuratore › Negozia rinnovo).`,...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>notify(`📋 Contratto in scadenza a fine stagione: ${p.club?.n||"il club"} ti propone di parlare del rinnovo.`,TH.warning),900);}
+    if(p.contractExpired&&(p.svincWarn94||0)!==sn){
+      setPlayer(q=>((q.svincWarn94||0)===(q.season||1)?q:{...q,svincWarn94:q.season||1,log:[`⛔ Contratto scaduto: sei svincolato e non puoi giocare con ${q.club?.n||"il club"}. Rinnova o cerca una squadra dal Procuratore.`,...(q.log||[])].slice(0,60)}));
+      setTimeout(()=>{notify("⛔ Sei svincolato: senza contratto non giochi. Rinnova o cerca una nuova squadra.",TH.danger);try{goTab("agente");}catch(_e){}},900);}
+  }catch(_e94){}},[player.season,player.week,player.contractExpired]);// eslint-disable-line
   useEffect(()=>{
     if(!showMatchPrompt){setCoachDecision(null);coachDecisionRef.current=null;return;}
     const isLeague=showMatchPrompt.type!=="cup"&&showMatchPrompt.type!=="euro_group"&&showMatchPrompt.type!=="euro"&&showMatchPrompt.type!=="national";
@@ -388,6 +409,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(cd.status==="starter"&&(player.fatigue||0)>62&&_mwC38<=6&&((player.squadRole||"rotazione")==="titolare"||(player.squadRole||"")==="leader"))cd={status:"bench",entryMinute:58+((hashStr((player.name||"x")+"|to|"+(player.week||1))>>>3)%14),reason:"Turnover di coppa: il mister ti fa rifiatare — entrerai a gara in corso."};
     }
     else cd={status:"starter",reason:"",entryMinute:0};
+    /* [giro 94 D3/D10 collaudo 177-3 «Sei titolare — Titolare inamovibile» da svincolato, poi «Gioca» rifiutato] senza contratto il club
+       non ti schiera: il prompt lo dice e resta solo Simula (che lascia la squadra giocare senza di te). Rosso __CPM_NO_C3D3. */
+    if(player.contractExpired&&showMatchPrompt.type!=="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))cd={status:"not_called",reason:"Sei svincolato: senza contratto il club non può schierarti. Rinnova o firma con un'altra squadra (Procuratore)."};
     setCoachDecision(cd);coachDecisionRef.current=cd; // ref lock: startMatch always reads same decision shown in UI
   },[showMatchPrompt]);// eslint-disable-line
   const[focusTrainingStat,setFocusTrainingStat]=useState(null); // Sprint 29: Focus training stat picker
@@ -613,16 +637,18 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       else if(k==="R"){e.preventDefault();goTab("profile");}
       else if(k==="G"){e.preventDefault();goTab("agente");}
       else if(k==="S"){e.preventDefault();goTab("club");}
+      else if(k==="L"&&_pctab292()){e.preventDefault();goTab("club");}/* [giro 90 PO-292 D9] «Club» annunciava [S] ma S salva: ora L apre il Club e il suggerimento dice [L] */
+      else if(k==="U"&&_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13)){e.preventDefault();goTab("ufficio");}/* [giro 90 PO-292 D9] «Ufficio» annunciava [U] ma non faceva niente */
       else if(k==="N"){e.preventDefault();goTab("nazionale");}
       else if(k==="M"||k==="H"){e.preventDefault();goTab("dashboard");}
       // Arrow keys for tab switching
       else if(e.key==="ArrowLeft"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const tabs=(_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13))?["dashboard","stagione","club","carriera","agente","ufficio"]:["dashboard","stagione","club","carriera","agente"];/* [giro 90 PO-292 D9] le frecce arrivano anche all'Ufficio */
         const cur=tabs.indexOf(_tabToContainer(tab));if(cur>0)goTab(tabs[cur-1]);
       }else if(e.key==="ArrowRight"&&!inModal){
         e.preventDefault();
-        const tabs=["dashboard","stagione","club","carriera","agente"];
+        const tabs=(_pctab292()&&!(typeof window!=="undefined"&&window.__CPM_NO_UFF13))?["dashboard","stagione","club","carriera","agente","ufficio"]:["dashboard","stagione","club","carriera","agente"];
         const cur=tabs.indexOf(_tabToContainer(tab));if(cur<tabs.length-1)goTab(tabs[cur+1]);
       }
     };
@@ -984,6 +1010,9 @@ const getThisWeekMatchday=()=>{
        UNA volta per stagione se questa e' l'ultima: annunciando si apre la STAGIONE D'ADDIO */
     if(isPro&&(p.age||17)>=34&&!p.retireAnnounced&&(p.retireAskedSeason||0)<sn&&!p.retired)out.push("addio");
     if(p.euro?.active&&p.euro.phase==="group"&&((p.euro.groupResults||[]).length===0)&&p.drawSeen!==sn&&(p.euro.groupOpponents||[]).length>=3)out.push("sorteggi");
+    /* [giro 94 D10 collaudo 177-3] DA SVINCOLATO IL CLUB NON TI APRE LA STAGIONE: niente ritiro, presentazione, conferenza o maglia di
+       una squadra che non ti ha sotto contratto (resta solo l'annuncio dell'addio, che e' tuo). Rosso __CPM_NO_C3D3. */
+    if(isPro&&p.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3))return out.filter(x=>x==="addio");
     return out;
   }catch(_e){return [];}};
   const openingGate=()=>{const pend=openingPending();if(!pend.length)return false;
@@ -3561,7 +3590,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:(player.club||null)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,club:(typeof window!=='undefined'&&window.__CPM_NO_TESTA209)?null:clubIntervista94(player,result.context)/* [giro 11 PO-209/211] il club con cui si e' GIOCATA la partita: un trasferimento firmato prima di guardare l'intervista non la riscrive. Rosso __CPM_NO_TESTA209 */,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     };
     const _iv243=()=>{if(!(typeof window!=='undefined'&&window.__CPM_NO_IV243))_intervistaPost231();};
@@ -4371,7 +4400,8 @@ const getThisWeekMatchday=()=>{
           const _oppPool=_allNat.filter(n=>n!==(player.nation||"Italia"));
           const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
           const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
-          let _natW=weekVal;if(fin){if(_usedW.has(_natW))_natW=99;}else{do{_natW++;}while(_natW<=37&&_usedW.has(_natW));}/* [7.999.173] la finestra si gioca nella sosta stessa; se la sosta e' occupata da un'altra gara, salta */
+          let _natW=weekVal;if(fin){if(_usedW.has(_natW)){_natW=99;/* [giro 94 D1 collaudo 177-3 «Italia OVR 84-88, zero convocazioni in S9-S11, nessun messaggio» — rosso __CPM_NO_C3D1] le soste del CT (9/19/28/35) SONO le settimane dei turni di Coppa (CUP_ROUND_WEEKS): col club in Coppa la finestra era sempre occupata e l'amichevole finiva a «settimana 99», cioe' da nessuna parte e in silenzio. Ora si gioca nella prima settimana libera dopo la sosta (fino alla 37); se non c'e', il gioco lo dice (sotto). */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_C3D1)){for(let _w94=weekVal+1;_w94<=37;_w94++){if(!_usedW.has(_w94)){_natW=_w94;break;}}}}}else{do{_natW++;}while(_natW<=37&&_usedW.has(_natW));}/* [7.999.173] la finestra si gioca nella sosta stessa; se la sosta e' occupata da un'altra gara, salta */
           const _ct155=fin?ctListView(player):null;const _ruolo155=_ct155?(_ct155.rank===1?"titolare":"a disposizione"):null;
           /* [7.999.35 collaudo PO «calendario sbagliato»: in settimana 28, in pieno girone dell'Europeo, la home mostrava
              «FC Merseyside vs Belgio · Premier Division»] L'amichevole della convocazione prendeva la prima settimana libera
@@ -4382,6 +4412,11 @@ const getThisWeekMatchday=()=>{
           if(_natW<=37&&!_torneo35){
             setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale",...(fin?{finestra:true,ctRole:_ruolo155,ctRel:_rel155?_rel155.v:null}:{})}],...(fin?{log:[`🌍 Sosta di settimana ${_natW}: il CT ti convoca (${_ruolo155}) per l'amichevole con ${_callupOpp}. ${_rel155?_rel155.label+".":""}`,...(pp.log||[])].slice(0,60)}:{})}));
             setTimeout(()=>notify(fin?`🌍 Il CT ti convoca per la sosta: amichevole vs ${_callupOpp}, settimana ${_natW} — ${_ruolo155}.`:`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
+          }
+          else if(fin&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D1)){/* [giro 94 D1] convocato ma senza una settimana dove giocare: lo si dice, mai il silenzio */
+            const _perche94=_torneo35?"la Nazionale e' impegnata nel torneo":"la sosta coincide con gli impegni del club e non c'e' una settimana libera";
+            setPlayer(pp=>({...pp,log:[`📋 Sosta di settimana ${weekVal}: il CT ti avrebbe convocato, ma ${_perche94}.`,...(pp.log||[])].slice(0,60)}));
+            setTimeout(()=>notify(`📋 Il CT ti voleva per la sosta, ma ${_perche94}.`,TH.warning),700);
           }
         }else if(fin&&ovr>=ovrGate-3){/* [7.999.173 PO-155] la lista del CT esce anche quando non ci sei: con il perche' */
           const _why155=ovr<ovrGate?`serve OVR ${ovrGate}`:(isFirst&&elig<2&&elig>=0)?"per il debutto serve ancora qualcosa in campo":"davanti a te c'è chi rende di più";
@@ -5682,7 +5717,7 @@ const getThisWeekMatchday=()=>{
        valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
        gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
     const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
-    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8, collaudo carriera 177 n.4: dopo «Contratto rinnovato!» la home diceva ancora «Sei in lista cessioni» e a W8 il giocatore e' stato ceduto] chi rinnova resta: il rinnovo toglie dalla lista cessioni e chiude la richiesta di cessione. Rosso __CPM_NO_G98D8 */agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -5745,7 +5780,7 @@ const getThisWeekMatchday=()=>{
          collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
       const _firm270b=tc.duration||2;
       const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
-      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8] idem sul rinnovo via offerta */agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -5965,7 +6000,7 @@ const getThisWeekMatchday=()=>{
            partite, che e' il registro del club corrente — [6.45.0 RC] senza quel reset la dashboard mostrava le
            gare del VECCHIO club come risultati di stagione corrente e le guardie anti-doppione ci inciampavano. */
         matchHistory:[],seasonCarry:_carry293,
-        contract:_newContract98,coach:_newCoach98,coachTrust:50,loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
+        contract:_newContract98,coach:_newCoach98,coachTrust:50,...((()=>{/* [giro 94 D9 — rosso __CPM_NO_C3D9] la promessa dell'offerta entra in squadra: ruolo e fiducia del mister coerenti col minutaggio stimato che il giocatore ha letto prima di firmare */if(typeof window!=='undefined'&&window.__CPM_NO_C3D9)return {};const _m94=+tc.minutaggio||0;if(!(_m94>0))return {};const _r94=_m94>=70?'titolare':_m94>=45?'rotazione':'riserva';return {coachTrust:_r94==='titolare'?74:_r94==='rotazione'?60:50,squadRole:_r94,ruoloPromesso94:{r:_r94,s:p.season||1,min:_m94}};})()),loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
         morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),growthBoost:(tc.growthBonus>0?{pct:tc.growthBonus,until:p.season||1}:p.growthBoost||null),/* [7.999.50] crescita dell'offerta fino a fine stagione */offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
@@ -6024,7 +6059,7 @@ const getThisWeekMatchday=()=>{
         <div style={{display:"flex",gap:5}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:RAD.xs,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
         <div style={{display:"flex",gap:8,width:"100%",maxWidth:400}}>
           <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?"🎉 Che la stagione cominci →":"Avanti →"}</Btn>
-          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0}}>Salta</Btn>}
+          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
         </div>
       </div>
     </div>);})():null;
@@ -6229,7 +6264,7 @@ const getThisWeekMatchday=()=>{
      funzionare e resta nel `title`, ma non occupa piu' una riga sotto ogni voce. */
   const _NAV954=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,
     fontWeight:att?FW.bold:600,letterSpacing:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"0.06em":"0.01em",textTransform:"uppercase",lineHeight:1.2,whiteSpace:"nowrap"});/* [7.999.14] sette voci nella barra: spaziatura stretta, mai a capo */
-  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:_pctab292()?"L":"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
 
   /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
@@ -6391,7 +6426,7 @@ const getThisWeekMatchday=()=>{
            Rosso __CPM_NO_IMPULSO23: il pop-up di prima. */
         !(typeof window!=='undefined'&&window.__CPM_NO_IMPULSO23)?(
         <Modal open dismissable={false} width={420}>
-          <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+          <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{L.weekHeader} {player.week} · {player.club?.name||player.club?.n}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
               {weekLiveModal.isSpogliatoio&&weekLiveModal.teammate?.name
@@ -6523,7 +6558,7 @@ const getThisWeekMatchday=()=>{
             <div style={{background:"rgba(255,255,255,0.04)",borderRadius:RAD.sm,padding:"7px 12px",marginBottom:18,borderLeft:"3px solid "+_T.boxBd}}>
               <div style={{fontSize:FS.body,color:_T.boxTxt,lineHeight:1.75}}>{resolveEvText(careerMomentModal.txt,player)}</div>
             </div>
-            <div style={{display:"flex",flexDirection:"column",gap:9}}>
+            <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
               {(careerMomentModal.choices||[]).map((ch,i)=>(
                 <button key={i} onClick={()=>handleCareerMoment(ch)} style={{textAlign:"left",background:"transparent",border:"1.5px solid "+_T.optBd,borderRadius:RAD.sm,padding:"11px 14px",cursor:"pointer",fontFamily:"inherit",outline:"none",display:"block",width:"100%"}}
                   onMouseEnter={e=>{e.currentTarget.style.background=_T.optBgH;e.currentTarget.style.borderColor=_T.optBdH;}}
@@ -6643,7 +6678,7 @@ const getThisWeekMatchday=()=>{
                 <Btn v="primary" fw onClick={chiudiIntervista24} style={{padding:"11px"}}>Chiudi</Btn>
               </div>);})():(<>
             {/* Question */}
-            <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
+            <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:_sb(12)/* [giro 97 PO-299 D18] 12 px fra domanda e «Rispondi tu». Rosso __CPM_NO_SPAZIO296 */,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
                 «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,((interviewModal&&interviewModal.club)||player.club)?.n||((interviewModal&&interviewModal.club)||player.club)?.name||"il club")}»
               </div>
@@ -6847,7 +6882,7 @@ const getThisWeekMatchday=()=>{
             const _tn=_dec?(_dec.status==="starter"?{bg:TH.bgGreen,bd:TH.bdGreen,tx:TH.txGreen,l:"Sei titolare"}:_dec.status==="bench"?{bg:TH.bgAmber,bd:TH.bdAmber,tx:TH.txAmber,l:"Parti dalla panchina"}:{bg:TH.bgRed,bd:TH.bdRed,tx:TH.txRed,l:"Non convocato"}):null;
             const _derby=showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId);
             return(
-          <div data-cpm="partita23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+          <div data-cpm="partita23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Settimana {player.week||1} · {_tipo}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
               <div style={{flexShrink:0}}>{(()=>{try{return <TeamBadge team={_av} size={44}/>;}catch(_e){return null;}})()}</div>
@@ -6912,7 +6947,7 @@ const getThisWeekMatchday=()=>{
               const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):_ante212?_ante212.newStandings:(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
               try{if(typeof window!=='undefined'&&window.__CPM_REC){const _i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));window.__CPM_ANTE212={club:c.id,pos:_i+1,pts:_i>=0?(rows[_i].pts|0):null,giocate:_i>=0?(rows[_i].played|0):null,n:rows.length,fonte:_ante212?'trasferimento':'mondo'};}}catch(_e){}
               const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
-              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
+              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:_sb(SP.md)}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.sm,textAlign:"center"}}>
                   {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · N · P",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
@@ -7347,12 +7382,12 @@ const getThisWeekMatchday=()=>{
             <div style={{height:3,borderRadius:RAD.pill,background:TH.track,overflow:"hidden",marginTop:5}}><div style={{height:"100%",width:clamp(v,0,100)+"%",background:col,borderRadius:RAD.pill}}/></div>
           </div>);
         return(
-        <div style={{position:"relative",borderRadius:RAD.xs,overflow:"hidden",marginBottom:10,boxShadow:TH.el1,background:TH.card}}>
+        <div style={{position:"relative",borderRadius:RAD.xs,overflow:"hidden",marginBottom:_sb(10),boxShadow:TH.el1,background:TH.card}}>
           <div style={{background:cc,color:ink,borderBottom:c2?("3px solid "+c2):("3px solid "+inkVelo945(ink,0.28))}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:FS.body,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
               <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}><VersioneTestata269 col={ink}/>
-              <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
+              <button onClick={doSave} className="cpm-press cpm-t40" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:_tocco292()?"12px 14px":"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
                 Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
               </button></div>
             </div>
@@ -7371,8 +7406,8 @@ const getThisWeekMatchday=()=>{
                 <div className="cpm-num" style={{fontSize:FS.caption,color:ink,fontWeight:FW.semibold,...(window.__CPM_NO_L7_SUB?{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}:{lineHeight:1.3})}}>
                   {player.club?.n||player.club?.name||"\u2013"}
                   {(()=>{const lg=player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":"";return lg?" \u00b7 "+lg:"";})()}
-                  {" \u00b7 St. "+season+(week>38?" \u00b7 Fine stagione":" \u00b7 Sett. "+week+"/38")}{/* [7.999.49 parte A] niente «W.»: forma stretta del glossario */}
-                  {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0 posto";/* [7.999.49] «in classifica» veniva tagliato a 412 px */})()}
+                  {" \u00b7 St.\u00a0"+season+(week>38?" \u00b7 Fine\u00a0stagione":" \u00b7 Sett.\u00a0"+week+"/38")}{/* [giro 97 PO-299 D19] spazi non divisibili dentro ogni voce: a 412 px «posto» andava a capo da solo; ora si va a capo solo fra una voce e l'altra */}{/* [7.999.49 parte A] niente «W.»: forma stretta del glossario */}
+                  {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0\u00a0posto";/* [7.999.49] «in classifica» veniva tagliato a 412 px */})()}
                 </div>
               </div>
               <div style={{flexShrink:0,textAlign:"center",lineHeight:1}}>
@@ -7388,11 +7423,11 @@ const getThisWeekMatchday=()=>{
       {typeof window!=="undefined"&&window.__CPM_CRASH168===tab&&(()=>{throw new Error("prova-168: errore di render nella scheda "+tab);})()}{/* [PO-168] hook di prova del guardiano errori-168 */}
       {/* Sub-nav pills — Stagione container */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
-        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
       {/* Sub-nav pills — Carriera container */}
       {(tab==="profile"||tab==="nazionale")&&(
-        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:_sb(SP.md)}}/>
       )}
 
       {/* [6.5.4 collaudo PO] CTA PRIMARIA STICKY in cima al dashboard — «vivi settimana / gioca / avanza» sempre
@@ -7401,7 +7436,7 @@ const getThisWeekMatchday=()=>{
         const cs=getContinuaState();
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
-            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-10px 0 12px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-"+_sb(10)+"px 0 "+_sb(12)+"px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
             sporgeva di 12 px per lato oltre le card, con un'ombra che ne disegnava il bordo: ora ha la stessa larghezza
             delle card e nessun bordo visibile. Rosso __CPM_NO_CTA23 */}
             {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
@@ -7485,11 +7520,11 @@ const getThisWeekMatchday=()=>{
             {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
           </div>);
         return(
-          <Card style={{marginBottom:9,padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
+          <Card style={{marginBottom:_sb(9),padding:16,borderRadius:_h66(RAD.lg,RAD.md)/* [PO-066] il raggio delle altre card */,boxShadow:TH.el2}}>
             <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{_etichettaTurno957(md)}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
               {lab("Prossima partita")}
-              <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
+              <button onClick={()=>goTab("calendar")} className="cpm-press cpm-t40" style={{background:"transparent",border:"none",padding:_tocco292()?"12px 8px":0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
             </div>
             {/* [7.921 — C4 · «densa e sportiva in stile Football Manager», direzione del PO 15/09] LA STRISCIA
                 DELLA FORMA. Il cruscotto diceva la posizione in classifica a parole e nient'altro: qui ci sono
@@ -7540,7 +7575,7 @@ const getThisWeekMatchday=()=>{
           prima arrivavano dopo sette card narrative (a 360 px alla terza schermata). */}
       {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
       {tab==="dashboard"&&(
-        <div style={{marginBottom:9}}>
+        <div style={{marginBottom:_sb(9)}}>
           <Card elevation={2}>
             <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {(week>38&&!(typeof window!=="undefined"&&window.__CPM_NO_SETT193))?"Fine stagione":(L.week+" "+week+" di 38")}{/* [7.999.113 PO-193 foto «SETTIMANA 39 DI 38»] oltre la 38ª la stagione e' finita: la testata dice come la riga in alto «Fine stagione». Rosso __CPM_NO_SETT193 */}</div>
             {(()=>{
@@ -7571,7 +7606,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{const c=player.seasonCarry;if(!c||c.season!==(player.season||1))return null;
               const sp=(c.spells||[]).filter(x=>x&&((x.g||0)+(x.a||0)+(x.m||0))>0);if(!sp.length)return null;
               return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>
-                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> partite · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
+                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> {(x.m===1&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D6))?"partita":"partite"} · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
               </div>);})()}
             {(()=>{
               /* [7.465.0 collaudo PO «anche se simulate le ho giocate le ultime 5 partite»] UNA PARTITA SIMULATA
@@ -7608,7 +7643,7 @@ const getThisWeekMatchday=()=>{
           </Card>
         </div>
       )}
-      {tab==="dashboard"&&(<div style={{marginBottom:9}}>
+      {tab==="dashboard"&&(<div style={{marginBottom:_sb(9)}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
             {[{l:"Fiducia del mister",v:Math.round(player.coachTrust||60),e:"🤝",c:TH.primary},{l:"Popolarità",v:Math.round(player.popularity||20),e:"⭐",c:TH.accent}].map(it=>(
@@ -8013,7 +8048,7 @@ const getThisWeekMatchday=()=>{
             </>)}
           </div>}>
           <div data-cpm="procuratore23">
-            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:_sb(SP.md)/* [giro 97 PO-299 D18] 13,4 px fra la testata del procuratore e le sue parole. Rosso __CPM_NO_SPAZIO296 */}}>
               <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
               <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
                 <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
@@ -8270,7 +8305,7 @@ const getThisWeekMatchday=()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
         return(
-          <Card momento="La tua settimana" momentoNota={th26&&th26.k!=="crociera"?th26.t:null}/* [7.999.49 parte A] «Settimana di campionato» non aggiungeva nulla al titolo */ style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
+          <Card momento="La tua settimana" momentoNota={th26&&th26.k!=="crociera"?th26.t:null}/* [7.999.49 parte A] «Settimana di campionato» non aggiungeva nulla al titolo */ style={{marginBottom:_sb(9)}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
               FISARMONICA. MISURATO sul salvataggio nuovo (stagione 12, quello del PO): 473 px, il 25,8 %
               dell'intera Dashboard — piu' del doppio di qualunque altro blocco. Dentro ci sono sei
               sezioni di testo (il tema della settimana, il meteo interiore, le aspettative, dentro la
@@ -8447,11 +8482,19 @@ const getThisWeekMatchday=()=>{
           </div>
         </FisHome66>);})()}
       {/* DASHBOARD */}
+      {tab==="dashboard"&&!player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&(player.proStatus||"u18")==="pro"&&!player.loan&&(player.contract?.duration||2)<=1&&(player.renewalSeason||0)!==(player.season||1)&&(player.week||1)>=28&&(
+        <Card data-cpm="rinnovo94" bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>{/* [giro 94 D3] l'avviso di scadenza prima della fine */}
+          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Il contratto scade a fine stagione</div>
+          <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Il club è pronto a parlare del rinnovo. Se non firmi, dalla prossima stagione sarai svincolato e non potrai giocare.</div>
+          <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
+        </Card>
+      )}
       {tab==="dashboard"&&player.contractExpired&&(
         <Card bg={_h66(TH.bgAmber,undefined)} border={_h66(TH.bdAmber,undefined)} style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>📋 Contratto scaduto — sei svincolato</div>
           <div style={{fontSize:FS.caption,color:_h66(TH.txAmber,TH.text),opacity:_h66(0.85,1),marginBottom:8}}>Rinnova con il tuo club o aspetta un'offerta dal mercato.</div>
           <Btn onClick={openNegoModal} v="outline" fw>📋 Negozia rinnovo</Btn>
+          {!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)&&<Btn onClick={()=>goTab("agente")} v="ghost" fw style={{marginTop:6}}>💼 Cerca una squadra (Procuratore)</Btn>}
         </Card>
       )}
       {/* Finestra Mercato card — Sprint 106 */}
@@ -8889,7 +8932,7 @@ const getThisWeekMatchday=()=>{
 
       {/* CALENDAR  (BUG 4 — shows real scheduled matches) */}
       {tab==="calendar"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+        <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
           {/* Upcoming matches from calendar */}
           {(player.calendar||[]).length>0&&(()=>{
             const upcoming=(player.calendar||[]).filter(md=>md.week>=(week)&&!md.played).sort((a,b)=>a.week-b.week||(a.matchday||0)-(b.matchday||0)).slice(0,8);
@@ -9155,11 +9198,12 @@ const getThisWeekMatchday=()=>{
         //   le SECONDE divisioni (lato basso di LEAGUE_PAIRS) non hanno zone europee: top 3 = PROMOZIONE (la 1ª campione), ultime 3 retrocesse.
         const _isSecondDiv96=LEAGUE_PAIRS.some(([u,l])=>l===selLg);
         const _isYouthLg99=/^Primavera/i.test(selLg||"");/* [6.99.0 collaudo PO] Primavera 1/2: niente coppe europee né retrocessioni — conta solo il titolo */
+        const _noRel98=!(typeof window!=='undefined'&&window.__CPM_NO_G98D7)&&!LEAGUE_PAIRS.some(([u])=>u===selLg);/* [giro 98 D7] niente zona retrocessione dove non c'e' una serie inferiore (seconde divisioni e leghe senza gemella): la carriera non retrocede nessuno da li' */
         const zoneOf=_isYouthLg99
           ?(i)=>(i===0?"champ":null)
           :_isSecondDiv96
-          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6)return"rel";return null;}
-          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
+          ?(i)=>{if(i===0)return"champ";if(i<3)return"promo";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;}
+          :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6&&!_noRel98)return"rel";return null;};
         return(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {/* [23/09 POC — collaudo PO «i pulsanti di scelta lega sono troppo semplici», «farei piu' un elenco a discesa»]
@@ -9208,8 +9252,8 @@ const getThisWeekMatchday=()=>{
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
                 :_isSecondDiv96
-                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]]
-                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],[ZONE_COLORS.rel,"⬇ Retrocesse"]]).map(([c,l])=>(
+                ?[[ZONE_COLORS.champ,"🏆 Campione (promossa)"],[ZONE_COLORS.promo,"⬆ Promosse (2-3)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse (ultime 3)"]])]
+                :[[ZONE_COLORS.champ,"🏆 Campione"],[ZONE_COLORS.cl,"⬆ CL (1-4)"],[ZONE_COLORS.el,"🟠 EL (5-6)"],[ZONE_COLORS.conf,"🟢 Conf. (7)"],...(_noRel98?[]:[[ZONE_COLORS.rel,"⬇ Retrocesse"]])]).map(([c,l])=>(
                 <span key={l} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:FS.caption,color:TH.muted,fontWeight:FW.semibold}}><span style={{width:8,height:8,borderRadius:RAD.pill,background:c,display:"inline-block"}}/>{l}</span>
               ))}
             </div>
@@ -9480,7 +9524,7 @@ const getThisWeekMatchday=()=>{
         })();
         const roleIcons={Portiere:"🧤",Difensore:"🛡️",Terzino:"🏃",Mediano:"🔄",Centrocampista:"⚙️",Trequartista:"🎨",Mezzala:"🎯",Ala:"⚡",Centravanti:"🎯",Attaccante:"⚡","Under-21":"🌟",Jolly:"🔁"};
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(8)}}>
             {/* Header Club */}
             <Card style={{padding:"7px 12px"}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
@@ -9622,7 +9666,7 @@ const getThisWeekMatchday=()=>{
 
             {/* Contratto — [7.999.49 parte A] per esteso solo nel Procuratore (dove si decide il rinnovo): qui una riga breve */}
             {(()=>{const _c49=_contratto49(player);if(!_c49)return null;return(
-              <button onClick={()=>setTab("agente")} className="cpm-press" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+              <button onClick={()=>setTab("agente")} className="cpm-press cpm-t40 cpm-t40h" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
                 <span style={{flex:1,minWidth:0,fontSize:FS.caption,color:_c49.scaduto||_c49.left<=0?TH.txRed:TH.muted}}><b style={{color:TH.text}}>Contratto:</b> {_c49.scaduto?"scaduto":_c49.breve.charAt(0).toLowerCase()+_c49.breve.slice(1)}</span>
                 <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.brandText,flexShrink:0}}>Procuratore ›</span>
               </button>);})()}
@@ -9776,7 +9820,7 @@ const getThisWeekMatchday=()=>{
                   <Meter value={player.teamChemistry||60} color={TH.success} label="Chimica di squadra" right={(player.teamChemistry||60)+"/100"} height={5} mb={2}/>
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>✨ Forma e morale {(_ch>0?"+":_ch<0?"\u2212":"+")+Math.abs(_ch)} a settimana · cresce vincendo</div>
                 </div>);})()}
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{display:"flex",flexDirection:"column",gap:_sb(8)}}>
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
                   const bond=tm.bond||40;
@@ -9818,7 +9862,7 @@ const getThisWeekMatchday=()=>{
 
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
-        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+        <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
           {/* Sprint D1: badge gerarchia */}
           {(()=>{
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
@@ -9871,7 +9915,7 @@ const getThisWeekMatchday=()=>{
             var assists=hist.map(function(h){return h.assists||0;});assists.push(player.assists||0);
             return(
               <Fisarmonica id="s24-statistiche-carriera" titolo="Statistiche Carriera"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
-                <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
                   {[{l:"⚽ Gol",data:goals,c:TH.success},{l:"🎯 Assist",data:assists,c:TH.primary},{l:"📊 OVR",data:ovrs,c:TH.warning}].map(function(row){
                     return(
                       <div key={row.l} style={{display:"flex",alignItems:"center",gap:8}}>
@@ -10279,7 +10323,7 @@ const getThisWeekMatchday=()=>{
                     <span style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?`${_myLg49} gol in campionato · ${_pos49+1}º`:`${_g} gol · stima ~${_topEst}`}</span>
                   </div>
                   {_bar(_capoPct,"#16a34a")}
-                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?(_pos49===0?`✅ Sei primo nella classifica marcatori (${_lead49.name} ne ha ${_lead49.goals})`:`${_lead49.name} guida con ${_lead49.goals} gol: te ne mancano ${Math.max(0,_lead49.goals-_myLg49)}`):(_capoPct>=100?`Sei sopra il ritmo tipico del capocannoniere (~${_topEst}, stima)`:`Il capocannoniere di solito arriva a ~${_topEst} gol (stima)`)}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?(_pos49===0?`✅ Sei primo nella classifica marcatori (${_lead49.name} ne ha ${_lead49.goals})`:`${_lead49.name} guida con ${_lead49.goals} gol: te ne manca${Math.max(0,_lead49.goals-_myLg49)===1?'':'no'} ${Math.max(0,_lead49.goals-_myLg49)}`):(_capoPct>=100?`Sei sopra il ritmo tipico del capocannoniere (~${_topEst}, stima)`:`Il capocannoniere di solito arriva a ~${_topEst} gol (stima)`)}</div>
                 </div>
                 <div style={{marginBottom:_isGB?8:0}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
@@ -10737,7 +10781,7 @@ const getThisWeekMatchday=()=>{
         var currentTask=player.agentTask;
         var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9,paddingBottom:8}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9),paddingBottom:8}}>
             {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
             {(!_uff13||tab==="ufficio")&&(player.proStatus||"u18")!=="u18"&&(
               <>{/* [7.999.49 parte A] tre fisarmoniche al posto di una: Patrimonio · Staff privato · Acquisti e investimenti */}
@@ -10756,7 +10800,7 @@ const getThisWeekMatchday=()=>{
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
                     notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
-                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -10765,15 +10809,15 @@ const getThisWeekMatchday=()=>{
                           <span data-cpm="staff24-blocco" style={{display:"inline-flex",alignItems:"center",gap:6,minWidth:0}}><span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span data-cpm="staff24-livello" className="cpm-num" style={{fontWeight:600,color:TH.muted,whiteSpace:(typeof window!=='undefined'&&window.__CPM_NO_LIV79)?undefined:"nowrap"}}>Livello {lv}/3</span></span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(((d.k==="perkTrainer"&&trainerFx281(player,lv))||d.fx[lv-1])+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+((d.k==="perkTrainer"&&trainerFx281(player,shown))||d.fx[shown-1])+" · "+_eur49(c)+" a settimana")}</div>
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
-                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
-                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
+                          {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
+                          {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
                             style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
-                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
+                              <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
                         </div>}
                       </div>
-                      <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
+                      <div className="cpm-gap40" style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
                     </div>
                   );
                 })}
@@ -10789,7 +10833,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{academyName24(player)}</div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>Un vivaio col tuo nome: a fine stagione esce un ragazzo, la piazza apprezza (popolarità). Costo d'apertura {k(co.found)} · gestione {k(co.week)} a settimana</div>
                       </div>
-                      <button data-cpm="accademia24-fonda" onClick={function(){if((player.bankBalance||0)<co.found){notify("💸 Fondi insufficienti: fondare l'accademia costa "+k(co.found),TH.danger);return;}
+                      <button className="cpm-t40" data-cpm="accademia24-fonda" onClick={function(){if((player.bankBalance||0)<co.found){notify("💸 Fondi insufficienti: fondare l'accademia costa "+k(co.found),TH.danger);return;}
                         setPlayer(function(p){var c=academyCost24(p);if((p.bankBalance||0)<c.found)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-c.found),academy24:{name:academyName24(p),founded:p.season||1,grads:[],tot:0,paused:false},log:["🏫 Hai fondato la "+academyName24(p)+" (stagione "+(p.season||1)+")",...(p.log||[])].slice(0,60)};});
                         notify("🏫 "+academyName24(player)+" fondata! Il primo ragazzo esce a fine stagione.",TH.success);}} style={bs}>FONDA →</button>
                     </div>);
@@ -10802,7 +10846,7 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{ac.name||academyName24(player)} <span style={{fontWeight:600,color:TH.muted}}>· dalla stagione {ac.founded}</span></div>
                           <div style={{fontSize:FS.caption,color:TH.muted}}>{ac.paused?"In pausa: nessun ragazzo a fine stagione, nessun costo":("Attiva · "+k(co.week)+" a settimana · "+(ac.tot|0)+" ragazzi usciti")}</div>
                         </div>
-                        <button data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
+                        <button className="cpm-t40" data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
                       </div>
                       {last.length>0&&(ac.tot|0)>last.length&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,paddingLeft:30}}>Gli ultimi {last.length} di {ac.tot|0}</div>}{last.length>0&&<div style={{display:"flex",flexDirection:"column",gap:2,marginTop:6,paddingLeft:30,maxHeight:150,overflowY:"auto"}}>{last.map(function(g,i){return <div key={i} style={{display:"flex",gap:8,fontSize:FS.caption,color:TH.text}}><span className="cpm-num" style={{color:TH.muted,minWidth:34}}>S.{g.s}</span><span style={{flex:1}}>{g.n}</span><span style={{color:TH.muted}}>{g.pos}</span><b className="cpm-num" style={{color:g.r>=70?TH.success:TH.text,minWidth:22,textAlign:"right"}}>{g.r}</b></div>;})}</div>}
                     </div>);
@@ -10818,7 +10862,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{d.fx}{own?"":" · "+kk}</div>
                       </div>
                       {own?<span style={{fontSize:FS.caption,fontWeight:800,color:TH.success,minWidth:78,textAlign:"center"}}>✓ TUO</span>:
-                      <button data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
+                      <button className="cpm-t40" data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
                         setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
                         style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
@@ -10839,7 +10883,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>Investimento {d.l.toLowerCase()} · <span className="cpm-num">{k(iv.amt)}</span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted}}>Esito a fine stagione: da {Math.round(d.min*100)}% a +{Math.round(d.max*100)}%. Ritiro anticipato: −1%.</div>
                       </div>
-                      <button data-cpm="invest24-ritira" onClick={function(){setPlayer(function(p){var v=p.invest24;if(!v)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)+v.amt*0.99),invest24:null};});notify("↩️ Investimento ritirato: tornano "+k(iv.amt*0.99),TH.muted);}} style={bs(false)}>RITIRA</button>
+                      <button className="cpm-t40" data-cpm="invest24-ritira" onClick={function(){setPlayer(function(p){var v=p.invest24;if(!v)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)+v.amt*0.99),invest24:null};});notify("↩️ Investimento ritirato: tornano "+k(iv.amt*0.99),TH.muted);}} style={bs(false)}>RITIRA</button>
                     </div>);}
                   var amt=Math.floor(b*0.25/10000)*10000;
                   return(
@@ -10852,7 +10896,7 @@ const getThisWeekMatchday=()=>{
                           {amt>=10000&&!(typeof window!=='undefined'&&window.__CPM_NO_INV281)&&<div data-cpm="rischio281-ufficio" style={{display:"flex",flexDirection:"column",gap:1,marginTop:3}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <div key={pr} style={{fontSize:FS.caption,color:TH.muted}}>{d.e} <b style={{color:TH.text}}>{d.l}</b> · {rischioTesto281(rischioF3_281(pr))}</div>;})}</div>}{/* [PO-281] rischio leggibile prima della scelta */}
                         </div>
                       </div>
-                      {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
+                      {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} className="cpm-t40" data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
                     </div>);
                 })()}
               </Card></Fisarmonica></>
@@ -10920,7 +10964,7 @@ const getThisWeekMatchday=()=>{
                       </div>
                       {!ap.hold&&_span>0&&<div className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>{(_gain<0?"\u2212":"+")+_eur49(Math.abs(_gain)*1e6)} su +{_eur49(_span*1e6)}</div>}
                     </div>
-                    {_ag49&&<div style={{marginTop:11,display:"flex",gap:8,flexWrap:"wrap"}}>
+                    {_ag49&&<div style={{marginTop:_sb(11),display:"flex",gap:8,flexWrap:"wrap"}}>
                       <Btn v="ghost" style={{flex:"1 1 150px",padding:"10px",fontSize:FS.caption}} onClick={()=>setSw379("conferma")}>Cambia procuratore</Btn>
                     </div>}
                   </Card></Fisarmonica>);})()}
@@ -10978,7 +11022,7 @@ const getThisWeekMatchday=()=>{
                       {/* [7.999.49 parte A] la data d'ingaggio e' quella memorizzata (agent.since); se manca non si inventa */}
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Procuratore{player.agent&&player.agent.since&&player.agent.since.s?" · dalla stagione "+player.agent.since.s:""}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>Commissione: {player.agentStyle==='boutique'?8:10}% del tuo stipendio</div>
-                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
+                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} className="cpm-t40" style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:_tocco292()?"13px 12px":"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
                     </div>
                     <div style={{background:txOpen?TH.winBg:TH.surface2,border:"1px solid "+(txOpen?TH.winBd:TH.divider),borderRadius:RAD.sm,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>Mercato</div>
@@ -11101,7 +11145,7 @@ const getThisWeekMatchday=()=>{
                   {isOverpaid49&&<div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
                   {/* [6.84.0 collaudo PO «il pulsante rinnova o va eliminato o portato nel Tab agente»] CTA rinnovo
                       SPOSTATA qui dal sottotab Profilo — stessa guardia (ultimo anno, entro W35, non svincolato/in prestito, non già rinnovato) */}
-                  {(player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1)&&!player.loan&&(
+                  {(((player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1))||(player.contractExpired&&!(typeof window!=='undefined'&&window.__CPM_NO_C3D3)/* [giro 94 D3] il messaggio «serve un nuovo accordo» deve avere il suo pulsante */))&&!player.loan&&(
                     <Btn onClick={openNegoModal} v="primary" fw style={{marginTop:8}}>📋 Negozia rinnovo</Btn>
                   )}
                   {(player.agentRenewalBonus||0)>0&&(
@@ -11251,7 +11295,7 @@ const getThisWeekMatchday=()=>{
         const _bar=(won,drew)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:drew?TH.drawFg:TH.lossFg,background:won?TH.winBg:drew?TH.drawBg:TH.lossBg,padding:"1px 7px",borderRadius:RAD.pill,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"N":"P"}</span>;/* [7.999.49 parte A] glossario V/N/P */
         const _gate49=(NAT_CALL_LEVEL[natName]||72)-8,_ovr49=player.ovr||60;
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
             {/* Header nazionale */}
             <Card style={{padding:"16px 14px",background:`linear-gradient(135deg,${natCol}20,${TH.card})`,border:`1px solid ${natCol}55`}}>
               <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:9}}>
@@ -11270,7 +11314,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>In attesa della prima convocazione</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{_ovr49>=_gate49
                     ?`Hai il livello per la Nazionale (OVR ${_gate49}+). Il CT sceglie settimana per settimana guardando gol, presenze nel club, forma e popolarità: la chiamata non ha una data fissa.`
-                    :`Il CT della Nazionale chiama da OVR ${_gate49} in su: te ne mancano ${_gate49-_ovr49}. Contano anche gol, presenze nel club, forma e popolarità.`}</div>
+                    :`Il CT della Nazionale chiama da OVR ${_gate49} in su: te ne manca${_gate49-_ovr49===1?'':'no'} ${_gate49-_ovr49}. Contano anche gol, presenze nel club, forma e popolarità.`}</div>
                   <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:8}}>
                     <span className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:800,color:_ovr49>=_gate49?TH.txGreen:TH.goldText}}>{_ovr49}</span>
                     <span style={{fontSize:FS.caption,color:TH.muted}}>OVR (min. {_gate49})</span>
@@ -11615,7 +11659,7 @@ const getThisWeekMatchday=()=>{
         const _bar=(won)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:TH.lossFg,background:won?TH.winBg:TH.lossBg,padding:"1px 6px",borderRadius:RAD.pill,minWidth:16,textAlign:"center",display:"inline-block"}}>{won?"V":"X"}</span>;
         const _cupEx=(cup&&cup.club&&player.club&&cup.club!==player.club.id)?((CLUBS.find(c=>c.id===cup.club)||{}).n||null):null;/* [7.293.0] cammino di una maglia lasciata */
         return(
-          <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <div style={{display:"flex",flexDirection:"column",gap:_sb(9)}}>
             {/* COPPA NAZIONALE */}
             {_isPro&&cup&&(
               <Fisarmonica id="s24-coppa-nazionale-s-2" titolo={<>Coppa Nazionale — S.{player.season||1}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid #fde68a"}}>
@@ -11873,9 +11917,9 @@ const getThisWeekMatchday=()=>{
       </div>{/* [7.96.0] pulsante lingua rimosso (i18n rimandata) */}
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
       {/* [7.999.49 parte A] le due strisce (sostegno + idee) coprivano ~75 px sopra la navigazione: ora una riga sola, due voci affiancate. Rosso __CPM_NO_STRISCE49 */}
-      {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
-        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</button>}
-        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{flex:"1 1 0",minWidth:0,padding:"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</button>
+      {!hideStrips&&!(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&(<div className="cpm-nav-strisce" style={{display:"flex",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2}}>
+        {DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",background:"transparent",color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>☕ Sostieni il progetto</span></button>}{/* [giro 97 PO-299 D16] il taglio «…» passa allo span: sul bottone tagliava anche l'area di tocco allargata */}
+        <button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" className="cpm-t40" style={{flex:"1 1 0",minWidth:0,padding:_tocco292()?"13px 6px":"5px 6px",border:"none",borderLeft:"1px solid "+TH.cardBorder,background:"transparent",color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,whiteSpace:"nowrap"}}><span style={{display:"block",overflow:"hidden",textOverflow:"ellipsis"}}>💡 Idee e feedback</span></button>
       </div>)}
       {!hideStrips&&(typeof window!=="undefined"&&window.__CPM_NO_STRISCE49)&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}

@@ -44,7 +44,9 @@ if (!isMainThread) {
     for (let m = 46; m <= 93; m++) for (let b = 0; b < 22; b++) tk({ min: Math.min(m, 90), dt: 1 / 22, dec: true });
     const T = M.tabellino(); S.n++;
     for (const s of ['home', 'away']) { S.passaggi += T[s].passaggi; S.cross += T[s].cross; S.tiri += T[s].tiri; S.gol += T[s].gol; S.xg += +T[s].xg || 0; }
-    const pt = (T.home.possesso || 0) + (T.away.possesso || 0); S.poss += pt > 0 ? 100 * T.home.possesso / pt : 50;
+    /* [giro 94 D4] il tabellino mostra ora il possesso come quota dei passaggi; questo banco misura il possesso A TEMPO del motore (possessoTempo), come prima */
+    const _h = T.home.possessoTempo != null ? T.home.possessoTempo : T.home.possesso, _a = T.away.possessoTempo != null ? T.away.possessoTempo : T.away.possesso;
+    const pt = (_h || 0) + (_a || 0); S.poss += pt > 0 ? 100 * _h / pt : 50;
     const xg0 = S.xgEroe - xgPrima; S.xgEroe2 += xg0 * xg0;
     const E = (M.pagelle() || []).find(p => p.eroe); if (E) { S.golEroe += E.gol | 0; S.golEroe2 += (E.gol | 0) ** 2; S.tiriEroe += E.tiri | 0; S.tiriEroe2 += (E.tiri | 0) ** 2; }
   }

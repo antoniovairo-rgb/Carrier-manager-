@@ -62,11 +62,14 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
      sull'altezza pagando in leggibilita'. */
   const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
+  /* [giro 91 PO-296] PUNTO UNICO dello spazio fra riquadri: il margine inferiore che un chiamante da' a una Card (8-16 px, le 100 e passa Card impilate dell'app)
+     e' lo spazio FRA due riquadri, e vale SP.box. Fuori da 8-16 (0, 4, 6 e i valori grandi di proposito) non si tocca; con __CPM_NO_SPAZIO296 resta il valore scritto dal chiamante. */
+  const _mb296=style&&style.marginBottom,_st296=(typeof _mb296==="number"&&_mb296>=8&&_mb296<=16)?{...style,marginBottom:_sb(_mb296)}:style;
   const _padM=momento?(_ap?pad:"6px 12px"):pad;
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,...style}} {...rest}>
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
     {momento!=null&&(
-      <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
-        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+      <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus cpm-t40 cpm-t40h"
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
         <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
@@ -90,7 +93,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
   };
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
-  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
+  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:_tocco292()?Math.max(sz.minHeight||0,40):sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
 };
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */
@@ -181,9 +184,9 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
   const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
   return(
-    <div style={{marginBottom:SP.md,...style}}>
-      <button onClick={cambia} aria-expanded={apr} className="cpm-press"
-        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",cursor:"pointer",
+    <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
+      <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:undefined,cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
@@ -287,7 +290,7 @@ function ModalPannello({children,title,footer,onClose,dismissable=true,width=440
   return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
+        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
       </div>}
       <div data-cpm="finestra-corpo" style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div data-cpm="finestra-piede" style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
@@ -357,7 +360,7 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 /* Tabs — segmented control coerente. items:[{id,label,icon}] · value · onChange. */
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
-  return(<div style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
+  return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
       <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
   </div>);

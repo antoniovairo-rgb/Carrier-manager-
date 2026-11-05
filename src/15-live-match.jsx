@@ -23,6 +23,18 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [giro 90 PO-292, collaudo PC/tablet 7.999.177 — decisione PO «Partita a tutto schermo»] ASSISTENTI DI IMPAGINAZIONE.
+   Rosso __CPM_NO_LARGO292 = l'impaginazione della 177 (colonna da 1100 px, campo al 62%, tablet verticale a due colonne);
+   rosso __CPM_NO_PCTAB292 = gli altri ritocchi (zone di tocco, suggerimenti da tastiera, tasti 1-3 nei rigori, Esc). Il telefono
+   (< 640 px) non passa mai di qui: ogni funzione risponde come prima sotto i 640 px. */
+function _largo292(){try{return typeof window!=='undefined'&&!window.__CPM_NO_LARGO292;}catch(_e){return false;}}
+function _pctab292(){try{return typeof window!=='undefined'&&!window.__CPM_NO_PCTAB292;}catch(_e){return false;}}
+/* tablet VERTICALE (640-899 px, piu' alto che largo): la partita usa l'impaginazione a una colonna del telefono, con i comandi sul campo,
+   cosi' il 3D prende tutta la larghezza invece del 62% */
+function _vert292(){try{const w=window.innerWidth;return _largo292()&&w>=640&&w<900&&window.innerHeight>w;}catch(_e){return false;}}
+function _narrowLay292(){try{return window.innerWidth<640||_vert292();}catch(_e){return false;}}
+/* dito: puntatore grossolano su schermo >= 640 px (tablet). Sul telefono < 640 px non cambia mai niente. */
+function _tocco292(){try{return _pctab292()&&window.innerWidth>=640&&!!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 /* [7.662.0 — L2 DELLA LIBRERIA AZIONI SALIENTI: IL COMPOSITORE, DIETRO IL VETRO.
    Direttiva PO 29/08 («libreria ampia, mai ripetitiva») → docs/LIBRERIA-AZIONI-SALIENTI.md +
    docs/MODULI-AZIONI-SALIENTI.md (le 58 schede). Questo blocco e' il MOTORE DI COMPOSIZIONE:
@@ -527,6 +539,29 @@ function _kit917(casa,osp){let A=_rgb917(casa),B=_rgb917(osp);
   if(erbaCome(B))B=_dist917(chiaro,A)<150?scuro:chiaro;
   if(_dist917(A,B)<150)B=_dist917(A,chiaro)>=_dist917(A,scuro)?chiaro:scuro;
   return{casa:A,osp:B};}
+/* [giro 92 PO-297 — SPALTI COI COLORI DEI CLUB] le tinte della tribuna: il fondo dei gradoni, l'erba fuori dalle linee e tre tinte di tifosi
+   per squadra (maglia, secondo colore, sciarpa). Maglie troppo scure o troppo simili: la stessa regola di leggibilita' del giro 81
+   (colori286, contro il fondo dei gradoni), cosi' una maglia nera non torna a fare il nero che il PO voleva togliere. */
+function _spalti297(casa,casa2,osp,osp2){
+  const base="#26324a",hex=(r)=>"#"+r.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("");
+  const hx=(c)=>{const r=_rgb917(c);return hex(r);};
+  const A0=hx(casa||"#8e1f33"),B0=hx(osp||"#e2e8f0"),A2=casa2?hx(casa2):null,B2=osp2?hx(osp2):null;
+  let k={sx:A0,dx:B0};try{k=colori286({sx:A0,sx2:A2,dx:B0,dx2:B2},base);}catch(_e){}
+  const mix=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return hex(a.map((v,i)=>v+(b[i]-v)*q));};
+  const sec=(p,c2)=>{try{if(c2&&c2[0]==='#'&&_dist286(c2,p)>60){const v=_vis286(c2,base);if(_dist286(v,p)>60)return v;}}catch(_e){}return _lum917(_rgb917(p))>0.5?mix(p,"#0f172a",0.35):mix(p,"#ffffff",0.45);};
+  return{base,erba:"#1e6331",casa:[k.sx,sec(k.sx,A2),"#e5e7eb"],osp:[k.dx,sec(k.dx,B2),_lum917(_rgb917(k.dx))>0.5?mix(k.dx,"#0f172a",0.2):mix(k.dx,"#ffffff",0.2)]};}
+/* il rettangolo dell'erba esterna (fino ai cartelloni), in pixel, e quanti metri oltre le linee: ai lati 2,5 m e dietro le porte 4,5 m,
+   ma mai piu' di meta' dello spazio libero (sul telefono in verticale ai lati restano ~13 px: l'erba ne prende meta', il resto e' tribuna) */
+function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
+  const x0=Math.min(PX(0,0),PX(LUN,LAR)),x1=Math.max(PX(0,0),PX(LUN,LAR)),y0=Math.min(PY(0,0),PY(LUN,LAR)),y1=Math.max(PY(0,0),PY(LUN,LAR));
+  const liberoX=Math.min(x0,W-x1),liberoY=Math.min(y0,H-y1);
+  const mx=Math.min((vert?2.5:4.5)*s,liberoX*0.5),my=Math.min((vert?4.5:2.5)*s,liberoY*0.5);
+  return{x0:x0-mx,x1:x1+mx,y0:y0-my,y1:y1+my,m:{a:(vert?my:mx)/s,b:(vert?mx:my)/s}};}
+/* il settore ospiti: lo spicchio di tribuna nell'angolo in alto a destra (dietro la porta lontana e il primo tratto del lato) */
+function _ospRect297(W,H,x0,y0,x1,y1,vert){
+  if(vert)return[x0+(x1-x0)*0.62,-2,W-(x0+(x1-x0)*0.62)+2,y0+(y1-y0)*0.16];
+  return[x1-(x1-x0)*0.16,-2,W-(x1-(x1-x0)*0.16)+2,y0+(y1-y0)*0.38];}
+function _osp297(x,y,W,H,x0,y0,x1,y1,vert){const q=_ospRect297(W,H,x0,y0,x1,y1,vert);return x>=q[0]&&x<=q[0]+q[2]&&y>=q[1]&&y<=q[1]+q[3];}
 /* i portieri: un colore che stacca da ENTRAMBE le divise (come nella realta') */
 function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[163,230,53],[249,115,22]];
   for(let i=0;i<cand.length;i++){const c=cand[i];if(_dist917(c,a)>170&&_dist917(c,b)>170&&usati.every(u=>_dist917(c,u)>170))return c;}
@@ -555,8 +590,9 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false}){
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0}){
   const cRef=React.useRef(null);
+  const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};/* [giro 92 PO-297] i gol dello stadio (casa/ospiti) per accendere la tribuna: letti dal giro di disegno, fuori dalle dipendenze */
   const rafRef=React.useRef(0);
   const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
   React.useEffect(()=>{
@@ -583,12 +619,15 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       const dt=M.t?Math.min(0.1,(ora-M.t)/1000):0.016;M.t=ora;
       /* verticale sul telefono (porte in alto e in basso), coricato se lo spazio e' largo */
       const vert=H>=W*0.92;
+      const _sp297=!(typeof window!=='undefined'&&window.__CPM_NO_SPALTI297);
       /* [7.999.12 collaudo PO «il campo va sopra le statistiche brevi in alto»] il campo si disegnava sotto la striscia delle statistiche
          (e la porta in basso sotto le linguette Statistiche/Pagelle): la sua area e' lo spazio LIBERO fra le due, misurato sul DOM.
          Rosso __CPM_NO_CAMPO12. */
       let _t12=0,_b12=0;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMPO12)){try{if(!M.m12||ora-M.m12>500){M.m12=ora;const rc=cv.getBoundingClientRect(),sc=rc.height>0?H/rc.height:1;
-        const st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
+        let st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
+        if(!(window.__CPM_NO_LARGO292)){const _pa=cv.parentElement;if(st&&_pa&&!_pa.contains(st))st=null;if(li&&_pa&&!_pa.contains(li))li=null;}/* [giro 90 PO-292] il pannello nella colonna a destra non riserva spazio nel campo */
         M.t12=st?Math.max(0,(st.getBoundingClientRect().bottom-rc.top)*sc+4):0;M.b12=li?Math.max(0,(rc.bottom-li.getBoundingClientRect().top)*sc+4):0;
+        if(li&&li.getAttribute('data-cima297')==='1'){M.t12=Math.max(M.t12,(li.getBoundingClientRect().bottom-rc.top)*sc+4);M.b12=0;}/* [giro 92 PO-297 B] la barra chiusa sta in cima, sotto la striscia: il campo comincia sotto di lei */
         /* [7.999.19 collaudo PO «il campo 2D sovrascrive in parte le statistiche brevi, non vedo i numeri»] sul telefono del PO le
            linguette stanno a META' schermo: il margine in basso supera mezzo campo e questa sicura azzerava ENTRAMBI i margini, cosi' la
            porta in alto tornava sotto la striscia. Ora il margine in alto si rispetta sempre; quello in basso finche' al campo resta almeno il 40% dell'altezza.
@@ -614,6 +653,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         if(M.rifai||(_pc&&_pc.isContextLost&&_pc.isContextLost())||(_gc&&_gc.isContextLost&&_gc.isContextLost())){M.sfondo=null;M.rifai=false;M.rifatto=(M.rifatto|0)+1;try{if(typeof window!=='undefined')window.__CPM_SFONDO12=M.rifatto;}catch(_eW){}}}catch(_e12){}}
       if(!M.sfondo||M.W!==W||M.H!==H||M.dpr!==dpr){
         /* ——— LO SFONDO: prato, fasce del taglio, righe, porte. Disegnato una volta sola. ——— */
+        const _t297=(typeof performance!=='undefined'&&performance.now)?performance.now():0;
         const off=(typeof document!=='undefined')?document.createElement('canvas'):null;
         if(!off)return;
         off.width=Math.round(W*dpr);off.height=Math.round(H*dpr);
@@ -622,12 +662,40 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* fuori campo: il buio dello stadio */
         const fondo=o.createLinearGradient(0,0,0,H);fondo.addColorStop(0,"#0a1220");fondo.addColorStop(1,"#050a14");
         o.fillStyle=fondo;o.fillRect(0,0,W,H);
+        /* [giro 92 PO-297 «c'e' troppo nero attorno al campo», decisione PO: SPALTI COI COLORI DEI CLUB] attorno al campo: l'erba
+           continua oltre le linee, una fila di cartelloni come nel 3D e dietro la tribuna stilizzata coi tifosi nei colori della
+           squadra di casa dello stadio su tre lati, con uno spicchio (il settore ospiti) nei colori di chi viene in trasferta.
+           Tutto nella tela di servizio disegnata UNA volta: al giro di disegno resta solo il lampo dei gol. Rosso __CPM_NO_SPALTI297. */
+        if(_sp297){try{
+          const SP=_spalti297(tifoCasa||kitCasa,tifoCasa2,tifoOsp||kitOspiti,tifoOsp2);M.sp297=SP;
+          o.fillStyle=SP.base;o.fillRect(0,0,W,H);
+          /* i tifosi: teste a griglia sfalsata, colore seedato dalla posizione (deterministico, nessun Math.random) */
+          const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),passo=Math.max(3.6,Math.min(6,s*0.9)),tes=Math.max(1.5,passo*0.46);
+          const ox0=est.x0,oy0=est.y0,ox1=est.x1,oy1=est.y1;
+          for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
+            if(x>ox0-tes&&x<ox1+tes&&y>oy0-tes&&y<oy1+tes)continue;
+            const osp=_osp297(x,y,W,H,ox0,oy0,ox1,oy1,vert);const pal=osp?SP.osp:SP.casa;
+            const h=((Math.imul((x*7)|0,73856093)^Math.imul((y*7)|0,19349663))>>>0)%100;
+            if(h<12)continue;/* qualche posto vuoto */
+            o.fillStyle=h<52?pal[0]:h<80?pal[1]:pal[2];o.fillRect(x-tes/2,y-tes/2,tes,tes*1.1);}}
+          /* il divisorio del settore ospiti */
+          M.osp297=_ospRect297(W,H,ox0,oy0,ox1,oy1,vert);
+          if(M.osp297){const q=M.osp297;o.strokeStyle="rgba(15,23,42,0.85)";o.lineWidth=2;o.strokeRect(q[0],q[1],q[2],q[3]);}
+          /* l'erba oltre le linee, fino ai cartelloni */
+          o.fillStyle=SP.erba;o.fillRect(ox0,oy0,ox1-ox0,oy1-oy0);
+          /* i cartelloni: una fila di pannelli attorno al prato, a tinte alternate */
+          const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
+          let k=0;const pan=(x,y,w,h)=>{o.fillStyle=COLC[k%COLC.length];o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
+          for(let x=ox0;x<ox1;x+=seg){const w=Math.min(seg-1,ox1-x);pan(x,oy0-sp,w,sp);pan(x,oy1,w,sp);}
+          for(let y=oy0-sp;y<oy1+sp;y+=seg){const h=Math.min(seg-1,oy1+sp-y);pan(ox0-sp,y,sp,h);pan(ox1,y,sp,h);}
+        }catch(_e297){}}
         /* il prato */
         /* [23/09 POC — collaudo PO «il prato 2D e 3D non devono essere diversi»] LO STESSO PRATO DEL 3D: palette dello
            stadio (getStadiumPalette), correzione del meteo (pioggia piu' scuro, neve sbiancato, sole piu' chiaro), numero e
            verso delle fasce dal seme del club, fasce piu' nette nelle grandi sfide — le stesse regole di ThreeMatchView.
            Rosso __CPM_NO_PRATO2D23: il verde fisso di prima. */
         const _pr23=!(typeof window!=='undefined'&&window.__CPM_NO_PRATO2D23)&&typeof getStadiumPalette==='function';
+        const _ext297=_sp297?_cart297(PX,PY,vert,LUN,LAR,s,W,H).m:{a:0,b:0};/* [giro 92 PO-297] le fasce del taglio continuano oltre le linee, fino ai cartelloni */
         if(_pr23){try{
           const pal=getStadiumPalette(clubPrato||{});const rgb=n=>[(n>>16)&255,(n>>8)&255,n&255];
           let A=rgb(pal.grassA),B=rgb(pal.grassB);
@@ -639,7 +707,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           const SB=bigGame?mul(B,1.12):B;const css=c=>"rgb("+c.map(v=>Math.round(v)).join(",")+")";
           const ps=Math.abs(hashStr(((clubPrato&&(clubPrato.id||clubPrato.n))||"x")+"_pitch")),N=[6,7,8,9,10][ps%5],orizz=((ps>>3)&1)===0;
           for(let i=0;i<N;i++){o.fillStyle=css(i%2?A:SB);
-            const a0=orizz?0:(i/N)*LUN,a1=orizz?LUN:((i+1)/N)*LUN,b0=orizz?(i/N)*LAR:0,b1=orizz?((i+1)/N)*LAR:LAR;
+            const E=_ext297,a0=orizz?-E.a:(i?(i/N)*LUN:-E.a),a1=orizz?LUN+E.a:(i<N-1?((i+1)/N)*LUN:LUN+E.a),b0=orizz?(i?(i/N)*LAR:-E.b):-E.b,b1=orizz?(i<N-1?((i+1)/N)*LAR:LAR+E.b):LAR+E.b;
             const x1=PX(a0,b0),y1=PY(a0,b0),x2=PX(a1,b1),y2=PY(a1,b1);
             o.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1)+0.5,Math.abs(y2-y1)+0.5);}
         }catch(_e){}}
@@ -661,7 +729,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         o.restore();
         /* i riflettori: luce al centro, bordi in ombra */
         const luce=o.createRadialGradient(W/2,H*0.42,Math.min(W,H)*0.10,W/2,H*0.5,Math.max(W,H)*0.78);
-        luce.addColorStop(0,"rgba(255,255,255,0.07)");luce.addColorStop(0.55,"rgba(255,255,255,0)");luce.addColorStop(1,"rgba(0,0,0,0.34)");
+        luce.addColorStop(0,"rgba(255,255,255,0.07)");luce.addColorStop(0.55,"rgba(255,255,255,0)");luce.addColorStop(1,_sp297?"rgba(0,0,0,0.20)":"rgba(0,0,0,0.34)");/* [giro 92 PO-297] coi tifosi l'ombra dei bordi e' piu' leggera: a 0,34 gli spalti tornavano neri negli angoli */
         o.fillStyle=luce;o.fillRect(0,0,W,H);
         /* ——— LA SEGNATURA ——— */
         const L=(x1,y1,x2,y2)=>{o.beginPath();o.moveTo(PX(x1,y1),PY(x1,y1));o.lineTo(PX(x2,y2),PY(x2,y2));o.stroke();};
@@ -695,12 +763,25 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* gli archi delle bandierine */
         ARC(0,0,1,0,Math.PI/2);ARC(0,LAR,1,-Math.PI/2,0);
         ARC(LUN,0,1,Math.PI/2,Math.PI);ARC(LUN,LAR,1,Math.PI,Math.PI*1.5);
-        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;
+        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;try{M.ms297=+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-_t297).toFixed(1);}catch(_e){}/* [giro 92] quanto costa disegnare lo sfondo (una volta) */
       }
       g.setTransform(1,0,0,1,0,0);
       g.clearRect(0,0,cv.width,cv.height);
       g.drawImage(M.sfondo,0,0);
       g.setTransform(dpr,0,0,dpr,0,0);
+      /* [giro 92 PO-297] AL GOL LA TRIBUNA SI ACCENDE per 1,6 s: un velo luminoso che pulsa sugli spalti di chi ha segnato (tre lati
+         per la casa, lo spicchio per gli ospiti). Solo due rettangoli ritagliati per fotogramma, e solo durante il lampo. */
+      if(_sp297&&M.sp297){try{const gq=golRef.current||{h:0,a:0};
+        if(!M.gol297)M.gol297={h:gq.h,a:gq.a,t:0,chi:null,n:0};
+        const G7=M.gol297;if(gq.h>G7.h||gq.a>G7.a){G7.chi=gq.a>G7.a?"osp":"casa";G7.t=ora;G7.n++;G7.off=false;}G7.h=gq.h;G7.a=gq.a;
+        const el=ora-G7.t;if(G7.t&&el<1600){const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+          const k=(1-el/1600)*(0.62+0.38*Math.abs(Math.sin(el/90)));
+          g.save();g.beginPath();g.rect(0,0,W,H);g.rect(est.x0-4,est.y0-4,est.x1-est.x0+8,est.y1-est.y0+8);
+          g.clip("evenodd");/* mai sul prato: fuori dall'erba esterna */g.beginPath();g.rect(q[0],q[1],q[2],q[3]);if(G7.chi!=="osp")g.rect(0,0,W,H);g.clip("evenodd");/* gli ospiti: solo lo spicchio; la casa: tutto tranne lo spicchio */
+          g.globalCompositeOperation="lighter";g.fillStyle="rgba(255,236,170,"+(0.42*k).toFixed(3)+")";g.fillRect(0,0,W,H);g.restore();
+          try{if(typeof window!=='undefined')window.__CPM_LAMPO297={chi:G7.chi,n:G7.n,ms:Math.round(el)};}catch(_e){}}
+        else if(G7.t&&!G7.off){G7.off=true;try{if(typeof window!=='undefined'&&window.__CPM_LAMPO297)window.__CPM_LAMPO297.spento=true;}catch(_e){}}
+      }catch(_eG){}}
 
       /* ——— I VENTIDUE E IL PALLONE, dalle posizioni del motore ——— */
       let st=null;try{st=motore&&motore.stato?motore.stato():null;}catch(_e){}
@@ -733,6 +814,14 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       const CX=(q)=>PX((q.x/100)*LUN,(q.y/100)*LAR),CY=(q)=>PY((q.x/100)*LUN,(q.y/100)*LAR);
       const r=Math.max(7,Math.min(12,s*1.16));/* [7.926 collaudo PO: nella partita 2D si devono vedere i numeri degli altri giocatori] col pannello delle statistiche davanti il campo si schiaccia, la scala scende e i pallini restavano a 5 px di raggio: il numero non ci entrava e sparivano tutti. Pavimento a 7. *//* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
       const padrone=(st.poss&&st.poss.padrone!=null)?st.poss.padrone:-1;
+      /* [giro 92 PO-297] testimone di collaudo (inerte, solo se la sonda lo arma): campo, erba esterna, spicchio ospiti e i ventidue in
+         coordinate dello SCHERMO, per misurare il nero fuori dal campo e chi finisce sotto la barra Statistiche/Pagelle */
+      try{if(typeof window!=='undefined'&&window.__CPM_W297){const rc=cv.getBoundingClientRect(),k=rc.width/W,X=(v)=>Math.round(rc.left+v*k),Y=(v)=>Math.round(rc.top+v*k);
+        const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+        const pt=[];for(let i=0;i<G.length;i++)if(M.g[i])pt.push([X(CX(M.g[i])),Y(CY(M.g[i]))]);if(M.e)pt.push([X(CX(M.e)),Y(CY(M.e))]);
+        window.__CPM_W297={dpr,k,vert,campo:[X(ox),Y(oy),Math.round(pw*k),Math.round(ph*k)],erba:[X(est.x0),Y(est.y0),Math.round((est.x1-est.x0)*k),Math.round((est.y1-est.y0)*k)],
+          osp:[X(q[0]),Y(q[1]),Math.round(q[2]*k),Math.round(q[3]*k)],cv:[Math.round(rc.left),Math.round(rc.top),Math.round(rc.width),Math.round(rc.height)],r:Math.round(r*k),gioc:pt,
+          spalti:_sp297&&M.sp297?{casa:M.sp297.casa,osp:M.sp297.osp,base:M.sp297.base,fonte:[tifoCasa,tifoOsp]}:null,t12:Math.round(_t12*k),b12:Math.round(_b12*k),msSfondo:M.ms297,ms:+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-ora).toFixed(2)};}}catch(_e297){}
       const puls=0.5+0.5*Math.sin(ora/260);
 
       /* la scia del pallone: dove e' passato negli ultimi istanti */
@@ -885,7 +974,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
     const _vis12=()=>{try{if(document.visibilityState==='visible')memRef.current.rifai=true;}catch(_e){}};/* [7.999.12] al ritorno dal background lo sfondo si ridisegna */
     try{document.addEventListener('visibilitychange',_vis12);if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_RIFAI12=()=>{memRef.current.rifai=true;};/* solo collaudo: il danno che fa il telefono (tela di servizio svuotata) e la tela visibile da campionare */window.__CPM_DANNO12=()=>{const M=memRef.current;if(M.sfondo){const v=document.createElement('canvas');v.width=M.sfondo.width;v.height=M.sfondo.height;M.sfondo=v;M.sfondoCtx=v.getContext('2d');return true;}return false;};window.__CPM_CAMPO2D_CV=()=>cRef.current;}}catch(_e){}
     return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}try{document.removeEventListener('visibilitychange',_vis12);}catch(_e){}};
-  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame]);
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame,tifoCasa,tifoCasa2,tifoOsp,tifoOsp2]);
   return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
 }
 
@@ -1196,14 +1285,23 @@ const _BRAIN82_UI=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82);
 function _brainIn82(action,sit,pPos,stats,ex){ex=ex||{};const rew=(action&&action.rew)||"";const st=(action&&action.stat)||"tecnica";
   let intent=null;try{if(sit&&typeof isPenaltySit==="function"&&isPenaltySit(sit))intent="penalty";else if(sit&&typeof isSetPieceSit==="function"&&isSetPieceSit(sit)&&sit.ballAt!=="corner")intent="freekick";}catch(_e){}
   if(!intent&&/testa|colpo di testa|incorn/i.test(String((action&&action.label)||"")))intent="header";
+  /* [giro 95 D1, collaudo carriera 177 n.1] il FALLO CERCATO («Resisti alla carica e cerca il fallo») ha premio assist per la catena, ma non
+     e' un passaggio: il motore lo giocava come assist (passaggio al compagno e tiro del compagno) e dal giro 93 poteva uscire «assist
+     servito, il compagno spreca» su un duello per il fallo. E' un duello: famiglia dribbling. Rosso __CPM_NO_G95D1. */
+  if(action&&action.falloCercato&&rew==="assist"&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D1))return{fam:"dribbling",stat:st,intent,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:stats||{},mods:+ex.mods||0,mult:ex.mult==null?1:ex.mult,alta:!!ex.alta};
   const fam=rew==="goal"?"tiro":rew==="assist"?"assist":((sit&&sit.type==="def")||rew==="recovery")?"difesa":(st==="dribbling"?"dribbling":"altro");
   return{fam,stat:st,intent,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:stats||{},mods:+ex.mods||0,mult:ex.mult==null?1:ex.mult,alta:!!ex.alta};}
 const _DOPPIE77={"Gol":1,"Possesso":1,"Tiri":1,"Tiri in porta":1,"Gol attesi (xG)":1};
-function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
+function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe,inColonna=false}){/* [giro 90 PO-292] inColonna: il pannello vive nella colonna a destra (PC e tablet orizzontale), non sopra il campo */
   const [dati,setDati]=React.useState(null);
   const _no927=(typeof window!=='undefined'&&window.__CPM_NO927);/* ROSSO di collaudo: la stesura di prima, senza memoria e aperta d'ufficio */
   const [vista,setVista]=React.useState(_no927?"pag":_MEM927.vista);/* [7.922 collaudo PO: la tabella pagelle deve essere il default, un po' di statistiche sono gia' sopra] la striscia alta porta gia' possesso, tiri, in porta e xG: il pannello si apre su cio' che li' non c'e'. */
-  const [aperto,setAperto]=React.useState(_no927?true:_MEM927.aperto);
+  const [aperto,setAperto]=React.useState(_no927?true:((inColonna&&!_MEM927.scelto)?true:_MEM927.aperto));/* [giro 90 PO-292] nella colonna le pagelle nascono aperte finche' il giocatore non sceglie */
+  /* [giro 92 PO-297 B, foto PO: «la barra STATISTICHE / PAGELLE copre parte del campo e dei giocatori»] MISURATO a 412x915: da chiusa la
+     barra stava a meta' campo (y 664-701, sopra la cronaca) e il campo, che non le riserva spazio da quando sta cosi' in basso (7.999.22),
+     ci passava sotto con i suoi pallini. Da chiusa ora sale in cima, sotto la striscia alta, e il campo comincia sotto di lei; aperta
+     torna dov'era (il pannello e' vetro sopra il campo per scelta del PO). Rosso __CPM_NO_BARRA297. */
+  const _cima297=!aperto&&!inColonna&&!(typeof window!=='undefined'&&window.__CPM_NO_BARRA297);
   React.useEffect(function(){if(_no927)return;_MEM927.aperto=aperto;_MEM927.vista=vista;},[aperto,vista,_no927]);/* la scelta sopravvive allo smontaggio: e' l'unico punto che scrive la memoria */
   /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
      riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
@@ -1217,7 +1315,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
      telefono (testo reso piu' alto) le 11 pagelle scorrevano. Il pannello scende di 40 px: la CIMA resta dove il PO l'ha voluta (7.999.64),
      il margine per la cronaca passa da 214 a 174. Rosso __CPM_NO_LUNGO80. */
   const _lungo80=!(typeof window!=='undefined'&&window.__CPM_NO_LUNGO80);
-  const [spazio,setSpazio]=React.useState(_fermo13?(_lungo80?174:214):152);
+  const [spazio,setSpazio]=React.useState(inColonna?12:(_fermo13?(_lungo80?174:214):152));
   React.useEffect(()=>{
     if(typeof document==='undefined')return;
     const misura=()=>{try{
@@ -1270,13 +1368,13 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   const perLato=(l)=>(_dati189.p||[]).filter(r=>r.team===l).sort((a,b)=>b.voto-a.voto||a.i-b.i).slice(0,11);
   const colonna=(l,col)=>perLato(l).map(r=><Pagella918 key={"pg"+r.i} r={r} u={_uomo918(r.i,rosaCasa,rosaOsp,nomeEroe,numEroe)} colTeam={col}/>);
   const tasto=(id,et)=>(
-    <button onClick={()=>setVista(id)} style={{flex:1,padding:"6px 4px",border:"none",cursor:"pointer",
+    <button onClick={()=>setVista(id)} style={{flex:1,padding:_tocco292()?"15px 4px":"6px 4px",border:"none",cursor:"pointer",
       background:vista===id?"rgba(148,163,184,0.20)":"transparent",color:vista===id?_COL918.testo:_COL918.fioco,
       fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",
       borderRadius:RAD.xs}}>{et}</button>);
   return(
     <div data-cpm="pannello918" style={{position:"absolute",inset:0,zIndex:6,pointerEvents:"none",
-      display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+      display:"flex",flexDirection:"column",justifyContent:(inColonna||_cima297)?"flex-start":"space-between"}}>
       {/* LA STRISCIA ALTA: il possesso e le quattro voci che dicono l'andamento in un colpo d'occhio */}
       <div data-cpm="striscia918" style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
@@ -1301,13 +1399,13 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         </div>
       </div>
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
-      <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
+      <div data-cpm="linguette918" data-cima297={_cima297?"1":"0"} style={{margin:SP.sm,marginTop:_cima297?0:SP.sm,marginBottom:_cima297?SP.sm:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
-        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:_lungo80?"calc(43% + 40px)":"43%",maxHeight:_lungo80?"calc(43% + 40px)":"43%"}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
+        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:_lungo80?"calc(43% + 40px)":"43%",maxHeight:_lungo80?"calc(43% + 40px)":"43%"}:{}),...(inColonna?{marginBottom:SP.sm,height:"auto",maxHeight:"none",flex:aperto?"1 1 0":"0 0 auto",minHeight:0}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
           {tasto("stat","Statistiche")}
           {tasto("pag","Pagelle")}
-          <button onClick={()=>setAperto(a=>!a)} aria-label={aperto?"Nascondi":"Mostra"} style={{width:34,padding:"6px 0",border:"none",cursor:"pointer",
+          <button onClick={()=>{_MEM927.scelto=true;setAperto(a=>!a);}} aria-label={aperto?"Nascondi":"Mostra"} style={{width:_tocco292()?44:34,padding:_tocco292()?"15px 0":"6px 0",border:"none",cursor:"pointer",
             background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold}}>{aperto?"▾":"▴"}</button>
         </div>
         {aperto&&vista==="stat"&&(
@@ -1796,8 +1894,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Sprint 81 — attendance uses the HOME club (not always player.club) · ora derivato dal crowdCtx (coerenza card↔spalti)
   const [attendance]=useState(()=>crowdCtx.attendance);
   // responsive layout: narrow = stacked vertically (phones + tablets up to 640px)
-  const [isNarrow,setIsNarrow]=useState(()=>window.innerWidth<640);
-  useEffect(()=>{const fn=()=>setIsNarrow(window.innerWidth<640);window.addEventListener("resize",fn);return()=>window.removeEventListener("resize",fn);},[]);
+  const [isNarrow,setIsNarrow]=useState(()=>_narrowLay292());/* [giro 90 PO-292] < 640 px come prima; in piu' il tablet verticale (rosso __CPM_NO_LARGO292) */
+  useEffect(()=>{const fn=()=>setIsNarrow(_narrowLay292());window.addEventListener("resize",fn);return()=>window.removeEventListener("resize",fn);},[]);
+  const _dito292=_tocco292();/* rilevato a ogni render: costa una lettura di matchMedia */
+  /* [giro 90 PO-292 D1] i comandi dell'intestazione (pausa, velocita', taccuino) a tocco su tablet: bersaglio pieno da 44 px (nella 177: 14x33 e 22x19) */
+  const _hb292=_dito292?{minWidth:44,minHeight:44,boxSizing:"border-box",display:"inline-flex",alignItems:"center",justifyContent:"center",padding:0}:null;
+  /* [giro 96b D15 — collaudo grafico 178: sul TELEFONO pausa 14x33, «1×» 22x19, ⚠️ 22x33, «Salta ingresso» e «Salta
+     festeggiamenti» 36 px] Stesso metodo del giro 97 (.cpm-t40): l'area di tocco cresce con un ::after da 42 px, il disegno
+     no. Qui la classe e' locale (cpm-t40m) e vive in uno <style> della partita. Sul telefono a tocco i tre comandi in riga si
+     distanziano quanto basta perche' le aree non si rubino il dito (centri a >= 40 px). Rosso __CPM_NO_G96B_D15. */
+  const _t40m96b=!_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&(function(){try{return !!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}})();
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro
@@ -2062,6 +2168,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      RIMEDIO: la fine partita e' un evento unico e da qui in poi lo e' anche nel codice. Il secondo
      ingresso torna subito. Rosso appaiato __CPM_NO977 = il comportamento di prima. */
   const fine977Ref=useRef(false);
+  const striscia96bRef=useRef(true);/* [giro 96b D14] la striscia sotto la vista 3D com'era prima della cerimonia */
   useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
   function _goEndOrCeremony(){
     if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
@@ -2277,6 +2384,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [outcome,setOutcome]=useState(null);
   const golSubito85Ref=useRef(0);/* [7.999.85 PO-151, collaudo Codex 30/09 su 7.999.82: codice 003 «0-1 sul tabellone prima che il tiro arrivi in porta», scene 133/134/36/44/45/157 fail] il gol SUBITO nella scena difensiva entrava nel punteggio alla risoluzione dell'azione, mentre quello dell'eroe aspetta il pallone in rete (6.5.1). Ora aspetta la rivelazione dell'esito (resultReveal, la stessa che mostra la banda in basso) o, al piu' tardi, l'uscita dalla scena. Rosso __CPM_NO_GA85 */
   const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
+  const revealAt95=useRef(0);useEffect(()=>{revealAt95.current=resultReveal?Date.now():0;try{if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_REVAT95=revealAt95.current;}catch(_e){}},[resultReveal]);
+  useEffect(()=>{if(phase==="hl_result"){revealAt95._in=1;return;}if(revealAt95._in){revealAt95._in=0;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_VIS95=window.__CPM_VIS95||[]).push({rev:revealAt95.current,out:Date.now()});}catch(_e){}}},[phase]);/* [giro 95 D4] testimone: per ogni scena, quando e' comparso l'esito e quando la scena si e' chiusa (orologio della pagina) *//* [giro 95 D4] quando l'esito e' comparso (0 = non ancora) */
   useEffect(()=>{const n=golSubito85Ref.current|0;if(!n)return;if((phase==="hl_result"&&resultReveal)||(phase!=="hl_result"&&phase!=="hl_choose"&&phase!=="hl_move"&&phase!=="hl_intro")){golSubito85Ref.current=0;setScore(sc=>({...sc,away:sc.away+n}));}},[phase,resultReveal]);/* [7.999.85] il gol subito entra nel tabellone quando l'esito si vede, non prima */
   const [chosenAct,setChosenAct]=useState(null);
   const [selectedActionIdx,setSelectedActionIdx]=useState(0);
@@ -2414,7 +2523,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(g.com)try{g.com();}catch(_e){}// [7.54.0 BL-15] anche la CRONACA del gol/assist esce all'ingresso in rete (prima a _rd92 fisso: la riga poteva precedere la palla in volo)
     flashScreen({col:"rgba(255,255,255,0.42)",dur:600});// [6.5.1 SICUREZZA] via il lampo 0.75 → 0.42 governato
     setFloatGoal({text:g.assist?"🎯 ASSIST!":"⚽ GOL!",col:"#f59e0b",key:g.gk});
-    setGoalCinema({text:g.assist?"ASSIST!":"GOOOOL!",col:g.clubCol,key:g.gk,shakeKey:g.gk,assist:!!g.assist,scorer:g.scorerName,assister:g.assisterName});
+    setGoalCinema({text:g.assist?"ASSIST!":"GOOOOL!",col:(typeof window!=="undefined"&&window.__CPM_REC&&window.__CPM_G99COL)||g.clubCol,/* [giro 99] __CPM_G99COL solo sonde: colore del club forzato per misurare il contrasto su club diversi */key:g.gk,shakeKey:g.gk,assist:!!g.assist,scorer:g.scorerName,assister:g.assisterName});
     setWaveEvent({t:g.gk,home:true,stadiumHome:isMatchHome});// [6.24.0] home=lato-mesh (eroe=casa mesh) per esultanza giocatori/coriandoli; stadiumHome=lato TRIBUNA reale (l'eroe segna in trasferta → esulta la curva OSPITE, non quella di casa)
     setActionEffect({type:"goal",key:g.gk});
     fxTimeout(()=>setGoalCinema(null),2600);
@@ -2427,10 +2536,52 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   minAt (=_rd92, la 5.92.0 resta) + fallback timer (2600ms) se il segnale non arriva (azione senza arco /
   //   renderer degradato). handleContinue marca il pendente come consumato (skip = niente reveal postumo).
   const outcomeRevealRef=useRef(null);
-  const fireOutcomeReveal=useCallback(function _for(){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+  const prevOR104=useRef(null);/* [giro 104, solo sonde] riquadro e orologio di scena della scena precedente, per il gancio __CPM_G104STALE */
+  const fireOutcomeReveal=useCallback(function _for(via){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+    if(via===undefined&&typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
+    if(via===undefined&&typeof window!=='undefined'&&window.__CPM_G103SOLORISERVA)return;/* [giro 103] solo sonde: l'esito puo' arrivare solo dalla riserva (guardiano riserva-103) *//* [giro 95 D4] solo sonde: simula una scena che non dichiara mai l'esito (prova della rete di sicurezza) */
+    if(o.waitPA&&via===undefined&&!o.paWait){o.paWait=1;revealRiserva95(Date.now(),null,true,undefined,o);return;}/* [giro 95 D3] l'esito e' il tiro del compagno: l'arrivo del passaggio non basta, si aspetta che il 3D mostri il tiro */
+    if(typeof via==='string'&&!o.via)o.via=via;
     const _left=(o.minAt||0)-Date.now();
+    if(typeof via==='string'&&_left>40){try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_G104D=window.__CPM_G104D||[]).push({hl:hlIdxRef.current,via,left:_left});}catch(_e){}}/* [giro 104] testimone: una via dichiarata PRIMA del pavimento (la riserva nasce dopo il pavimento: qui non dovrebbe arrivare mai) */
     if(_left>40){fxTimeout(()=>_for(),_left);return;}/* il 3D è arrivato prima del floor di suspense → rimanda al floor */
-    o.fired=true;try{o.cb();}catch(_e){}},[]);// eslint-disable-line
+    o.fired=true;try{if(typeof window!=='undefined'&&window.__CPM_REC){const _c=cineBusyRef.current;(window.__CPM_REV95=window.__CPM_REV95||[]).push({hl:hlIdxRef.current,via:o.via||'scena',busy:!!(_c&&_c.on&&(_c.tl||_c.arc)),pa:!!(_c&&_c.pa),pat:(_c&&_c.pat)||null,wpa:!!o.waitPA,cap:o.cap||null,t:Date.now(),c103:_c?{tl:!!_c.tl,arc:!!_c.arc,pa:!!_c.pa,pat:_c.pat||null,pt:_c.pt,at:_c.at,sl:_c.sl,bx:_c.bx,ck:_c.ck}:null,rr103:o.rr103||null});window.__CPM_CB95=()=>cineBusyRef.current;}}catch(_e){}/* [giro 95] testimone: chi ha rivelato l'esito e se la scena stava ancora mostrando la conclusione */
+    try{o.cb();}catch(_e){}},[]);// eslint-disable-line
+  /* [giro 95 D3, collaudo carriera 177 n.1 S1 W8 «Conclusione potente»: riquadro «GRANDE PARATA DEL PORTIERE» col pallone ancora ai piedi
+     dell'eroe, portiere fuori dal quadro, eroe sovrapposto al difensore] La riserva dei 2,6 s era in tempo di PARETE: se la costruzione e
+     l'arco della conclusione durano di piu' (telefono lento, costruzioni R5 lunghe) l'esito si rivelava PRIMA che il 3D lo mostrasse e il
+     riquadro raccontava una parata che non c'era ancora. Ora la riserva aspetta che il renderer abbia finito di mostrare la conclusione
+     (stesso segnale cineBusy della 7.461, contato in secondi DI SCENA come la 7.864: tetto 6 s di scena, guardia di parete 30 s); il
+     renderer che arriva all'esito (onOutcomeShown) resta il percorso normale. Solo nel gioco vero (sotto il gate la finestra resta
+     quella fissa: percorso bit-identico). Rosso __CPM_NO_G95D3. */
+  /* [giro 103 — highlight-95 D3 nella catena 178, «Tiro a giro»: esito rivelato dalla riserva col 3D ancora sulla conclusione] La riserva
+     partiva dopo 2,6 s DI PARETE e da li' contava 6 s DI SCENA: a 30 fps fanno 8,6 s di scena dalla risoluzione, ma a fotogrammi lenti
+     (dt tappato a 0,05: telefono sotto i 20 fps, headless carico) quei 2,6 s di parete valgono pochi decimi di scena e il tetto vero
+     scendeva verso 6,3 s — una conclusione lunga (costruzione R5 + arco) restava a meta' quando la riserva scattava. Ora il tetto si conta
+     DALLA RISOLUZIONE, in secondi di scena (8,6 = 2,6 + 6), IN AGGIUNTA al vecchio: si aspetta finche' vale l'uno o l'altro, quindi
+     l'attesa non e' mai piu' corta di prima e a 20+ fps (parete = scena) il percorso e' identico. Stessa guardia di parete. Stesso
+     rimedio alla chiusura della finestra d'esito (_avanza461, «via chiusura»). Rosso __CPM_NO_G103A. */
+  const ckNow103=()=>{try{const _c=cineBusyRef.current;return(_c&&typeof _c.ck==='number')?_c.ck:null;}catch(_e){return null;}};
+  const revealRiserva95=useCallback(function _rr(t0,ck0,pa,ckR,o0){const o=outcomeRevealRef.current;if(!o||o.fired)return;
+    /* [giro 104 — highlight-95 D3 nella catena 178-finale, «Uno-due con LUZI»: esito «via riserva» a scena occupata] La riserva leggeva
+       SEMPRE il riquadro corrente: un suo richiamo programmato per una scena poteva agire sul riquadro della scena DOPO. Se arriva prima
+       del pavimento minAt della nuova scena, fireOutcomeReveal scrive o.via='riserva' e rimanda; poco dopo il renderer rivela (a scena
+       occupata, com'e' normale) e il registro dice «riserva + occupata» su una scena che la riserva non ha mai aspettato — con i tetti
+       (ckR, ck0, t0) di un'altra scena. Ora la riserva vale solo per il riquadro per cui e' nata. Rosso __CPM_NO_G104A. */
+    if(o0&&o!==o0){try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_G104X=window.__CPM_G104X||[]).push({hl:hlIdxRef.current,t:Date.now(),minAt:o.minAt||0,via:o.via||null});}catch(_e){}if(!(typeof window!=='undefined'&&window.__CPM_NO_G104A))return;}
+    try{const _gv=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D3;
+      const _par103=(window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000;/* [giro 103] solo sonde (__CPM_REC): la guardia di parete si puo' allungare perche' la misura conti i 6 s DI SCENA anche su una macchina carica (a pochi fps 6 s di scena superano 30 s di parete e la scena diventava «non giudicabile»). Senza la bandiera: 30 s, percorso identico */
+      const _c=cineBusyRef.current;
+      /* [giro 103, misurato con highlight-95 a CPU x6: ROTH «Uno-due», esito dalla riserva a 2,8 s di parete col pallone ancora ai piedi
+         dell'eroe] a fotogrammi lentissimi, dopo 2,6 s di parete il renderer non ha ancora COMINCIATO la conclusione: «non occupata» non
+         vuol dire «finita». La riserva aspetta anche i suoi 2,6 s DI SCENA dalla risoluzione (a 20+ fps sono gia' passati). Rosso __CPM_NO_G103A. */
+      if(_gv&&typeof ckR==='number'&&!window.__CPM_NO_G103A&&_c&&typeof _c.ck==='number'&&((_c.ck-ckR)<2.6||(o.waitPA&&!(_c.nb>0)&&(_c.ck-ckR)<8.6))&&Date.now()-(t0||Date.now())<_par103)/* sulle scene col tiro del compagno (waitPA) l'esito E' il 3D: finche' la conclusione non e' nemmeno cominciata non si rivela (tetto 8,6 s di scena) */{fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR,o0),180);return;}
+      if(_gv&&_c&&_c.on&&(_c.tl||_c.arc||((pa||o.waitPA)&&_c.pa))){const _ck=typeof _c.ck==='number'?_c.ck:null;
+        if(ck0==null)ck0=_ck;const _r103=typeof ckR==='number'&&_ck!=null&&!window.__CPM_NO_G103A&&(_ck-ckR)<8.6;
+        if((((_ck!=null&&ck0!=null)?(_ck-ck0):0)<6||_r103)&&Date.now()-(t0||Date.now())<_par103){fxTimeout(()=>_rr(t0||Date.now(),ck0,pa,ckR,o0),180);return;}
+        o.cap=(Date.now()-(t0||Date.now())>=_par103)?'parete':'scena';o.rr103={ms:Date.now()-(t0||Date.now()),ck0:ck0,ck:_ck};}}catch(_e){}/* [giro 95] testimone: la riserva ha smesso di aspettare per un tetto (parete = fotogrammi troppo lenti, non giudicabile) */
+    if(typeof window!=='undefined'&&window.__CPM_G95_SENZAESITO)return;
+    fireOutcomeReveal(pa?'scena-tiro':'riserva');},[]);// eslint-disable-line
   const [pressureCinema,setPressureCinema]=useState(null); // Sprint 97: {text,col,key}
   const streakRef=useRef(0); // Sprint 97: consecutive HL successes
   // M2 · MATCH MEMORY (effimera, NON salvata): memoria narrativa della partita → continuità cronaca (Manifesto Cap.5.6).
@@ -2750,6 +2901,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */
     window.__CPM_CLOCK=()=>{try{return clockRef.current|0;}catch(e){return null;}};/* [7.500.0 F4] il MINUTO dal ref di LiveMatch: come fase e tabellone, sopravvive allo smontaggio del 3D al fischio finale — `__CPM_STATE().clock` li' resta congelato, ed e' la trappola gia' pagata tre volte */
     window.__CPM_SCORE=()=>{try{return{home:scoreRef.current.home|0,away:scoreRef.current.away|0};}catch(e){return null;}};
+    window.__CPM_SALTA297=(min,h,aw)=>{try{const m=min|0;setClock(m);clockRef.current=m;if(h!=null){const sc={home:h|0,away:aw|0};setScore(sc);scoreRef.current=sc;}return true;}catch(e){return false;}};/* [giro 92 PO-297] solo collaudo: porta il minuto (secondo tempo) e il punteggio, per misurare l'intestazione e il lampo degli spalti */
     window.__CPM_KO536=()=>{try{return (kickRef.current|0)>0||(kickoffRef.current|0)>0||!!(spRef.current&&spRef.current.kind==="pen_for")||!!(counterRef.current&&counterRef.current.fin);}catch(e){return false;}};/* [7.532.0 v2] il FERMO DICHIARATO include anche il rigore sul dischetto e l'attesa di risoluzione del contropiede: teatro con copione, come il kickoff (striscia 2,3s misurata oltre grazia) *//* [7.532.0] testimone della FINESTRA DI KICKOFF per ball-alive: al calcio d'inizio la palla E' ferma per regolamento — il guardiano grazia la finestra dichiarata (tetto 6s), col rosso NO536 la macchina non esiste e la grazia muore da sola */
     /* [7.536.0] LE TRE VOCI INSIEME, A COMANDO (test-only): telecronaca, panchina e coro hanno gate
        diversi (la riga esce dalla trama, la panchina dai momenti del mister, il coro dai tick quieti) e
@@ -2809,8 +2961,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const sit=situationsRef.current[hlIdxRef.current];if(!sit)return;
           if(sit.intent==="penalty"&&handleRigoreRef.current){const _dd=["tl","tc","tr","bl","bc","br"];handleRigoreRef.current(_dd[Math.floor(_ar()*6)%6]);return;}
           if(!sit.actions||!sit.actions.length)return;
+          if(o.policy==="mano")return;/* [giro 96b] politica «mano»: l'autoplay porta la partita fino al pannello e lascia il tocco alla sonda (esiti-96 D1) — solo autoplay di sonda */
           const pol=o.policy||"seeded",n=sit.actions.length;
-          let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */if(pol==="cross"){const _ic=sit.actions.findIndex(a=>/cross|traverson|pennell|fendente|mette in mezzo/i.test((a&&a.label)||""));if(_ic>=0)k=_ic;}/* [giro 11 PO-218] politica «cross»: sceglie il cross quando c'e' — solo autoplay di sonda */
+          let k=pol==="first"?0:pol==="last"?(n-1):Math.floor(_ar()*n)%n;if(pol==="pass"){const _ip=sit.actions.findIndex(a=>/Filtrante|Uno-due|Appoggio|scarica su|ti serve|per te/i.test((a&&a.label)||""));if(_ip>=0)k=_ip;}/* [PO-219 collaudo] politica «pass»: sceglie il passaggio quando c'e' — solo autoplay di sonda */if(pol==="assist"){const _ia=sit.actions.findIndex(a=>a&&a.rew==="assist");if(_ia>=0)k=_ia;}/* [giro 93 PO-298] politica «assist»: sceglie la giocata da assist quando c'e' — solo autoplay di sonda */if(pol==="re"&&o.re){const _rr=new RegExp(o.re,"i");const _ir=sit.actions.findIndex(a=>_rr.test((a&&a.label)||""));if(_ir>=0)k=_ir;}/* [giro 95] politica «re»: sceglie la prima giocata che risponde all'espressione data — solo autoplay di sonda (highlight-95) */if(pol==="cross"){const _ic=sit.actions.findIndex(a=>/cross|traverson|pennell|fendente|mette in mezzo/i.test((a&&a.label)||""));if(_ic>=0)k=_ic;}/* [giro 11 PO-218] politica «cross»: sceglie il cross quando c'e' — solo autoplay di sonda */
           if(handleActionRef.current)handleActionRef.current(sit.actions[Math.max(0,Math.min(n-1,k))]);
         }
       }catch(_e){}},(o.tickMs|0)||350);
@@ -5856,12 +6009,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
-              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}_ins26=true;}catch(_e26){}}
+              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}_ins26=true;if(_pz27){try{_M.chiedi.attendiPiazzato&&_M.chiedi.attendiPiazzato();}catch(_e94a){}}/* [giro 94 D2] la scena del piazzato e' accettata: il motore la aspetta */}catch(_e26){}}
             /* [7.999.98 PO-178 — guardiano orfano piazzati-eroe rosso] MISURATO: nello stesso minuto il motore emette DUE occasioni
                dell'eroe (il rigore con origine e una «spalle»); la scena del rigore veniva inserita, ma qui si registrava la PRIMA
                dell'elenco, e la scheda aperta era «Solo davanti al portiere!» invece del rigore. Se la scena dell'origine e' stata
                inserita, l'occasione corrente e' quella. Rosso __CPM_NO_ORIG98. */
             /* [7.999.158 PO-221 parte 2, misura 16 partite su 7.999.157] LA PUNIZIONE RESPINTA DAL TETTO NON DIVENTA L'OCCASIONE CORRENTE: il tetto «1 punizione a partita» bloccava l'inserimento, ma l'occasione restava qui come fatto corrente e la scena successiva (finestra o slot aggiunto) si apriva comunque come punizione: 27 scene-punizione su 16 partite contro 14 passate dal ramo col tetto. Rosso __CPM_NO_PZTOT221. */const _pzRif221=(e)=>!!(e&&e.origine&&e.origine.kind==="punizione"&&e.tipo==="punizione"&&!_ins26&&(occ28Ref.current.punz221|0)>=1&&!(typeof window!=='undefined'&&(window.__CPM_NO_221||window.__CPM_NO_PUNZ221||window.__CPM_NO_PZTOT221)));const _oc=(_ins26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG98))?_oc26:_evM870.find(e=>e&&e.t==='occasione_eroe'&&!_pzRif221(e));if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null,preludio:_oc.preludio||null};}/* [7.999.150 strato 5] la copia porta anche il preludio (gli ultimi passaggi veri) */
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _P94=(window.__CPM_PEN94=window.__CPM_PEN94||[]);for(const _e94 of _evM870){if(_e94&&(_e94.t==='rigore'||(_e94.t==='battuta'&&_e94.kind==='pen')||(_e94.t==='tiro'&&_e94.intent==='penalty')||(_e94.t==='gol'&&_e94.chi&&_e94.chi.eroe)||(_e94.t==='occasione_eroe'&&_e94.origine&&_e94.origine.kind==='rigore'))&&_P94.length<300)_P94.push({min:nx|0,t:_e94.t,eroe:!!(_e94.chi&&_e94.chi.eroe),per:_e94.per||null,ph:String(phaseRef.current)});}}catch(_e94r){}}/* [giro 94 D2] testimone dei rigori del motore (solo __CPM_REC) */
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
@@ -9173,9 +9327,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        (fino a x2) escono dalla decisione. Il contesto della scena resta com'era (marcatura, meteo, momento, forma, morale, fatica, mister,
        pubblico, analisi, fiducia) e arriva al motore come `mods`; i freni di partita (gestione del vantaggio e del protagonista,
        anti-farm) come `mult`. Il malus fisso delle punizioni non serve piu': la punizione diretta e' il suo xG. Rosso __CPM_NO_BRAIN82. */
-    let _pBR82=null;const _brain82=!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82)&&!!(motoreRef.current&&motoreRef.current.probEroe);
+    let _pBR82=null,_det298=null;const _brain82=!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82)&&!!(motoreRef.current&&motoreRef.current.probEroe);
     if(_brain82){try{const _o82=_brainIn82(action,_fkSit,pPos,player.stats,{mods:-defPenalty-weatherPenalty+momentumBonus+formMod+_mor281-fatiguePenalty+tacticMod+_atmo281+_scout88.mod+_fid752,mult:_cruise80*_hgD86/adapt,alta:(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&_ORIG26.sit===_fkSit)});
-      const _r82=motoreRef.current.probEroe(_o82);if(_r82&&isFinite(_r82.p))_pBR82=_r82.p;
+      const _r82=motoreRef.current.probEroe(_o82);if(_r82&&isFinite(_r82.p))_pBR82=_r82.p;_det298=(_r82&&_r82.det)||null;
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_BRAIN82=window.__CPM_BRAIN82||[]);if(_W.length<400)_W.push({fam:_o82.fam,rew:action.rew||null,stat:action.stat||null,det:_r82&&_r82.det,vecchio:+(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76)).toFixed(3)});}catch(_e){}}}catch(_e82){_pBR82=null;}}
     const _pB2=_pBR82!=null?_pBR82:(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76));
     if(!brain137()&&_v2h&&(action.rew==="goal"||action.rew==="assist")&&motoreRef.current&&motoreRef.current.addebita){try{motoreRef.current.addebita(_pB2);}catch(_e36){}}/* [7.999.36] la scena dell'eroe e' un'occasione della squadra: i suoi gol attesi si tolgono ai tiri successivi del motore */
@@ -9187,14 +9341,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _op137=(occPos137Ref.current&&occPos137Ref.current.hl===hlIdx)?occPos137Ref.current:null;/* il punto dove il motore ha visto l'occasione; altrimenti quello della scena */
         /* l'origine dice che tiro e': dalla punizione e' una punizione diretta (xG del piazzato, senza talento), dal cross o dall'angolo un colpo di testa */
         const _int137=(_op137&&_op137.orig==='punizione'&&_o137.fam==='tiro')?'freekick':(_op137&&_op137.orig==='rigore'&&_o137.fam==='tiro')?'penalty':(_op137&&(_op137.orig==='cross'||_op137.orig==='angolo')&&!_o137.intent)?'header':(_o137.intent||null);
-        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
+        _g137=motoreRef.current.giocaScena({fam:_o137.fam,stat:_o137.stat,prot:!!(action&&action.prot98),/* [giro 98 D3-bis] */intent:_int137,x:_op137?_op137.x:((pPos&&pPos.x)||60),y:_op137?_op137.y:((pPos&&pPos.y)||50),stats:player.stats||{}});
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_SCENA137=window.__CPM_SCENA137||[]);if(_W.length<400)_W.push({fam:_o137.fam,intent:_o137.intent||null,g:_g137,p136:_pB2});}catch(_e){}}}
     }catch(_e137){_g137=null;}}
     let ok=_g137?!!_g137.ok:_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
+    const _forz298=!!(typeof window!=='undefined'&&window.__CPM_FORCE_OUTCOME);/* [giro 93 PO-298] l'esito forzato dalle sonde resta com'e' */
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
     if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){/* [7.211.0] esito forzato anche in revisione · [7.229.0 #47] +cpmtest: il CRITICO automatico gira sotto ?cpmtest=1 e credeva di forzare successo/fallimento — il flag NON veniva mai consumato (solo ?sit=N e revisione lo leggevano) → ogni coppia RIUSCITO/FALLITO del critico misurava DUE VOLTE lo stesso roll naturale seedato, e i falsi «gol senza rete» erano fallimenti naturali etichettati successo. Il GATE resta intatto per costruzione: non setta mai questo flag */ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
     let key=ok?action.rew:action.fail;
+    if(!ok&&typeof window!=='undefined'&&window.__CPM_NO_G96B_B15&&/Contrasto pulito senza fallo/.test(action.label||""))key="foul";/* [giro 96b B15] rosso: il contrasto «senza fallo» torna a poter finire in fallo */
     // M1 · UNIFIED OUTCOME MODEL: su un'azione FALLITA il TIPO di esito (palo/parata/murato/fuori) lo decide
     //   UNA sola volta il motore (decideExecution) con lo STESSO ctx/seed del render 3D → identico valore →
     //   3D byte-identico (golden stabile) MA ora overlay + cronaca leggono lo stesso esito. Fine divergenza.
@@ -9240,6 +9396,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [7.999.159 PO-218, rilievo Codex ×3 e collaudatrice] FUORIGIOCO CONTRO INTERCETTO: _outKind nasce da decideExecution e puo' dire «offside» mentre il motore, che legge la chiave, registra l'intercetto: riquadro e cronaca dicevano «bandierina alzata». Con la chiave intercept il racconto segue il motore. Rosso __CPM_NO_FG218. */
     if(key==='intercept'&&_outKind==='offside'&&!(typeof window!=='undefined'&&window.__CPM_NO_FG218))_outKind='intercepted';
     if(!ok&&_g137&&_g137.fam==='tiro'){const _m137={saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito];if(_m137){_outKind=_m137;if(_m137==='post'&&!_wood)_wood='post';}}/* [7.999.137] il tipo di errore e' quello deciso dal motore */
+    /* [giro 93 PO-298, PO giocando: «un buon 90/95% degli assist dell'eroe falliscono!», rosso __CPM_NO_ASSIST298] L'ASSIST ERA GIUDICATO
+       SUL GOL DEL COMPAGNO. giocaScena decide due fatti: il passaggio (intercettato o arrivato) e il tiro del compagno. Qui contava solo
+       il secondo: passaggio arrivato e tiro parato/fuori diventavano la chiave di fallimento dell'assist, e riquadro, 3D e motore
+       raccontavano un passaggio INTERCETTATO (misurato su 8 scene: 7 passaggi arrivati, 4 mostrati intercettati). Ora il passaggio
+       arrivato e' una giocata riuscita dell'eroe (chiave «chance», come ogni passaggio chiave completato senza gol): il 3D consegna la
+       palla al compagno che tira e non segna, il riquadro dice «assist perfetto» e come il compagno ha sprecato, il motore registra il
+       passaggio e il tiro del compagno. Nessun assist accreditato, nessuna catena (il seguito lo ha gia' deciso il motore). */
+    const _sp298=(!ok&&!_forz298&&_g137&&_g137.fam==='assist'&&!_g137.ok&&_g137.esito&&_g137.esito!=='intercettato'&&!(typeof window!=='undefined'&&window.__CPM_NO_ASSIST298))?({saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito]||'saved'):null;
+    if(_sp298){ok=true;key="chance";_outKind="chance";_wood=null;}
     /* [7.669.0] LO STATO NARRATIVO IMPARA DA CIO' CHE L'EROE FA: e' l'unico modo perche' le
        interazioni abbiano memoria vera (il difensore che stringe la marcatura DOPO due dribbling
        subiti, il compagno che incoraggia DOPO un'occasione divorata). Solo conteggi, nessun effetto
@@ -9261,7 +9426,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        il motore conta il fallo), chiave di successo `chance` (nessun assist accreditato, nessun gol del compagno, nessuna catena). */
     let _falloOk38=false;if(ok&&action&&action.falloCercato&&!(typeof window!=='undefined'&&window.__CPM_NO_FALLO38)){_falloOk38=true;key="chance";_outKind="win_freekick";}
     let _chance78=false,_crossChain704=false;
-    if(ok&&key==="assist"&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){try{/* [7.113.0 audit massivo · fix C3] la conversione assist→chance NON scatta su una sit già di CATENA (_chainDepth): l'injection del «secondo tempo» è essa stessa _chainDepth-guardata → altrimenti la chance non genera follow-up e l'assist si perdeva nel nulla (dead-end). Allineato alla guardia della conversione dribble (sotto) e dell'injection */
+    const _golMot298=!!(_g137&&_g137.fam==='assist'&&_g137.ok&&!(typeof window!=='undefined'&&window.__CPM_NO_ASSIST298));/* [giro 93 PO-298] il gol del compagno lo ha gia' deciso il motore (giocaScena): convertirlo in «occasione» lo cancellava. Misurato prima: 3 gol del motore su 10 spariti cosi' (tabellino 7, motore 10, su 46 scene) */
+    if(ok&&key==="assist"&&!_golMot298&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){try{/* [7.113.0 audit massivo · fix C3] la conversione assist→chance NON scatta su una sit già di CATENA (_chainDepth): l'injection del «secondo tempo» è essa stessa _chainDepth-guardata → altrimenti la chance non genera follow-up e l'assist si perdeva nel nulla (dead-end). Allineato alla guardia della conversione dribble (sotto) e dell'injection */
       const _cnA=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
       if(situations[hlIdx]?.chainOn==="aerial"){
         // [7.0.4 · 7.8.4 collaudo PO «alcune azioni a CATENA hanno ancora il finto gol alla PRIMA azione»] QUALSIASI
@@ -9293,6 +9459,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       //   «Scatta in profondità» (build) e «dai, ricevi, TIRA» (pass) segnavano sulla corsa/sul passaggio.
       if(_cnD.type==="dribble"||_cnD.type==="build"||_cnD.type==="pass"){_chanceDrb=true;_chance78=true;key="chance";_outKind="chance";}
     }catch(_e){}}
+    /* [giro 95 D2] la finta riuscita (premio «chance», scelta di dribbling) e' un uomo saltato: palla al piede e conclusione da giocare,
+       come il dribbling da gol qui sopra. Rosso __CPM_NO_G95D2 (la finta torna premio assist, cioe' passaggio). */
+    if(ok&&action&&action.drb95&&key==="chance"&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){_chanceDrb=true;_chance78=true;_outKind="chance";}
     // DEFENSIVE OUTCOME (5.65.0): per un highlight DIFENSIVO decidi UNA sola volta (stesso seed → coerenza
     //   3D/overlay/cronaca) l'esito realistico della respinta/recupero. Elimina il rinvio lungo automatico
     //   verso la porta avversaria: la traiettoria diventa varia (tieni possesso / passa / riparti / respinta
@@ -9342,9 +9511,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(_chanceDrb&&_cn241.type!=="pass")return null;/* uomo saltato / corsa: resta il pool del dribbling (7.5.90) */
       if((situations[hlIdx]&&situations[hlIdx].intent)==="onetwo")return _CHANCE_TX241.unodue;
       return /filtrant|imbucat|verticalizz|profondit|tra le linee/i.test(String(action.label||""))?_CHANCE_TX241.filtrante:_CHANCE_TX241.respinta;}catch(_e241){return null;}})();/* [giro 41 PO-250/PO-218] la riga della chance segue cio' che il 3D mostra (pool in src/05), scelta col seme del riquadro. Rosso __CPM_NO_CHANCE241 */
-    const txt=_ch241?_ch241[_seedOvl%_ch241.length]:_cond70?_COND70[_seedOvl%_COND70.length]:_woodTx?_woodTx[_seedOvl%_woodTx.length]:_txP218?_txP218[_seedOvl%_txP218.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_reb840?_reb840[_seedOvl%_reb840.length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:((typeof window!=='undefined'&&window.__CPM_OUTTX_FORZA&&OUTCOME_TX[key]&&OUTCOME_TX[key].find(x=>x.indexOf(window.__CPM_OUTTX_FORZA)>=0))||pick(OUTCOME_TX[key]||["Azione completata."]))));/* __CPM_OUTTX_FORZA: solo sonde, impone la frase che contiene il testo dato */// [5.90.0] cronaca dedicata all'uomo saltato
+    /* [giro 98 D3-bis] «Proteggi palla e scarica» persa nel duello col marcatore (il motore lo dichiara: duello) si racconta e si mostra
+       come palla portata via, non come passaggio intercettato. Rosso __CPM_NO_G98D3 */
+    const _du98=(!ok&&action&&action.prot98&&(_g137?(_g137.duello||_g137.esito==='intercettato'):key==="intercept")&&!(typeof window!=='undefined'&&window.__CPM_NO_G98D3));/* senza giocaScena (percorso di riserva) la protezione persa e' comunque un duello perso */
+    /* [giro 98 D3-bis, altre scelte di protezione] «Resisti alla carica e cerca il fallo» (falloCercato) fallita: niente fallo e palla
+       persa nel contrasto, non un passaggio intercettato (highlight-95 la trovava raccontata «Intercettato»). Stesso rosso. */
+    const _fc98=(!ok&&!_du98&&action&&action.falloCercato&&key==="intercept"&&!(typeof window!=='undefined'&&window.__CPM_NO_G98D3));
+    if(_du98||_fc98)_outKind="dispossessed";
+    const _du98tx=_fc98?["😤 Resisti alla carica, ma l'arbitro lascia correre: il difensore ti porta via il pallone.","🛡️ Niente fallo: il marcatore entra pulito e recupera il pallone."]:_du98?["💪 Il marcatore vince il corpo a corpo e ti porta via il pallone.","😤 Spinto via dal difensore: palla persa prima dello scarico.","🛡️ Provi a coprirla col corpo, ma il marcatore la sporca e la recupera."]:null;
+    const txt=_du98tx?_du98tx[(((_seedOvl|0)%_du98tx.length)+_du98tx.length)%_du98tx.length]:_sp298?_txSpreca298(_sp298,action.label,_ricNome298(castBrainRef.current),_seedOvl):_ch241?_ch241[_seedOvl%_ch241.length]:_cond70?_COND70[_seedOvl%_COND70.length]:_woodTx?_woodTx[_seedOvl%_woodTx.length]:_txP218?_txP218[_seedOvl%_txP218.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_reb840?_reb840[_seedOvl%_reb840.length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:((typeof window!=='undefined'&&window.__CPM_OUTTX_FORZA&&OUTCOME_TX[key]&&OUTCOME_TX[key].find(x=>x.indexOf(window.__CPM_OUTTX_FORZA)>=0))||pick(OUTCOME_TX[key]||["Azione completata."]))));/* __CPM_OUTTX_FORZA: solo sonde, impone la frase che contiene il testo dato */// [5.90.0] cronaca dedicata all'uomo saltato
     if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:clockRef.current|0,txt:"▶ scelta: "+String((action&&action.label)||"")+" → "+String(key||"")+(ok?" riuscito":" fallito"),intro:1});}catch(_e838){}}/* [7.838 strumento, AC] anche la SCELTA del player entra nel diario: e' l'azione che lui ha fatto prima dell'esito */
-    const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind,_isDefHL76?null:_wood);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
+    const _ovl=_sp298?_ovlSpreca298(_sp298,action.label,_ricNome298(castBrainRef.current),_seedOvl):hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind,_isDefHL76?null:_wood);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
+    if((_du98||_fc98)&&_ovl){try{const _pd=["Ti portano via il pallone","Perso il duello","Il marcatore vince il contrasto"];_ovl.text=_pd[(((_seedOvl|0)%_pd.length)+_pd.length)%_pd.length];_ovl.cat="dribble_fail";_ovl.icon=(typeof _OVL_CAT_ICON!=='undefined'&&_OVL_CAT_ICON.dribble_fail)||_ovl.icon;}catch(_e98){}}/* [giro 98 D3-bis] */
+    if(ok&&key==="chance"&&action&&action.drb95&&_ovl&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D2)){try{const _pd=HL_OVERLAY_POOLS.dribble;_ovl.text=_pd[(((_seedOvl|0)%_pd.length)+_pd.length)%_pd.length];_ovl.cat="dribble";_ovl.icon=(typeof _OVL_CAT_ICON!=='undefined'&&_OVL_CAT_ICON.dribble)||_ovl.icon;}catch(_e95){}}/* [giro 95 D2] la finta riuscita si racconta da dribbling («Salta l'uomo!»), non da occasione creata */
     // [7.137.0 collaudo PO «la squalifica per espulsione deve essere REALE, dalla partita, non randomica»] CARTELLINO REALE:
     //   un fallo COMMESSO dall'eroe (key "foul") può portare un giallo SEEDATO; alla 2ª ammonizione o (raro) rosso diretto →
     //   ESPULSIONE reale in campo (evento cronaca + flash + uscita dal campo riusando il binario SOSTITUITO). A fine partita
@@ -9375,7 +9554,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     let _assistBy=null,_assistTo=null;
     if(ok&&(key==="goal"||key==="assist")){const _ckC=clockRef.current;const _tm=_matePool||[];/* [7.118.0] compagni NAZIONALI in gara di nazionale, non del club */
       if(_tm.length){const _pk=slt=>{const m=_tm[Math.abs(hashStr("al|"+(player.season||1)+"|"+(player.week||1)+"|"+_ckC+"|"+slt))%_tm.length];const nm=(m&&m.name)||"";return{name:(((typeof _surnBG==="function"&&_surnBG(nm))||nm.split(" ").pop())||nm||"un compagno"),full:nm,archetype:m&&m.archetype};/* [7.304.0 collaudo PO «non è Luca ma De Luca!»] SECONDO sito di troncamento, mai toccato dal 7.299.0: qui il cognome si ricavava ancora con split(" ").pop(), che sui cognomi con particella tiene solo l'ultimo token */};
-        if(key==="assist"){const r=_pk("to");_assistTo=r.name;assistLinksRef.current.given.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}
+        if(key==="assist"){let r=_pk("to");/* [giro 98 D1, collaudo carriera 177 n.4: il compagno nominato nella scelta («Servi THEIS libero») non era quello che segnava — 12 casi su 18] IL COMPAGNO SCELTO E' QUELLO CHE RICEVE E SEGNA: il nome si prende dal ricevente del cast del motore (lo stesso che da' il nome all'opzione e che il 3D serve), non da un sorteggio seminato sulla rosa. Rosso __CPM_NO_G98D1 */try{const _cr98=!(typeof window!=='undefined'&&window.__CPM_NO_G98D1)&&castBrainRef.current&&castBrainRef.current.ricevente;if(_cr98&&_cr98.nome&&!_cr98.eroe&&_cr98.i!==21){const _fn98=String(_cr98.nome);const _lc98=(x)=>String(x||"").toLowerCase();const _m98=_tm.find(q=>q&&_lc98(q.name)===_lc98(_fn98))||_tm.find(q=>q&&_lc98(String(q.name||"").split(" ").pop())===_lc98(_fn98.split(" ").pop()));const _nf98=(_m98&&_m98.name)||_fn98;/* il cast puo' portare il nome in maiuscolo: si usa la grafia della rosa */const _sn98=(((typeof _surnBG==="function"&&_surnBG(_nf98))||_nf98.split(" ").pop())||_nf98);r={name:(_sn98===_sn98.toUpperCase()?_sn98.charAt(0)+_sn98.slice(1).toLowerCase():_sn98),full:_nf98,archetype:(_m98&&_m98.archetype)||null};}}catch(_e98){}_assistTo=r.name;assistLinksRef.current.given.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}
         else if(key==="goal"){const _assisted=(Math.abs(hashStr("ga|"+(player.season||1)+"|"+(player.week||1)+"|"+_ckC))%100)<66;if(_assisted){const r=_pk("by");_assistBy=r.name;assistLinksRef.current.received.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}}
       }}
     try{cpmEv("esito",{min:clockRef.current|0,key:String(key||""),ok:!!ok,at:String((action&&action.stat)||"")});}catch(_e761){}/* [7.761.0] OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO: il metro delle righe fondate (7.760) ha trovato «smentite» che erano tiri dell'eroe finiti alla linea di porta nella finestra della riga — senza l'evento, il giudice non poteva saperlo. Qui, prima delle statistiche, per OGNI esito. */
@@ -9386,7 +9565,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',def:!!(_fkSit&&_fkSit.type==='def')/* [giro 60 PO-218] la scena difensiva non e' un tiro dell'eroe */,gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',def:!!(_fkSit&&_fkSit.type==='def')/* [giro 60 PO-218] la scena difensiva non e' un tiro dell'eroe */,gkCall:!!(action&&action.gkCall),carta:_carta9,outKind:_outKind||null/* [7.999.154 PO-218] il motore racconta lo stesso errore del riquadro e del 3D */,spreca298:_sp298});_brain23(_evB2);try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_RES218=window.__CPM_RES218||[]).push({hl:hlIdx,label:(action&&action.label)||null,rew:(action&&action.rew)||null,g137:_g137?{ok:!!_g137.ok,esito:_g137.esito||null,fam:_g137.fam||null,duello:!!_g137.duello}:null,det:_det298,sp298:_sp298,cat:(_ovl&&_ovl.cat)||null,tone:(_ovl&&_ovl.tone)||null,defGesto:(action&&action.defGesto)||null,key:key,ok:!!ok,outKind:_outKind||null,fam:(_ovl&&_ovl.fam)||null,ovl:(_ovl&&_ovl.text)||null,txt:(typeof txt==='string'?txt:null),tipo:_cnB.type||'',variante:_cnB.variant||'',ric98:(castBrainRef.current&&castBrainRef.current.ricevente&&castBrainRef.current.ricevente.nome)||null,to98:_assistTo,ch98:!!(situations[hlIdx]&&situations[hlIdx]._chainDepth),na98:!!(situations[hlIdx]&&situations[hlIdx]._na98),ev:(_evB2||[]).map(e=>e.t+(e.esito?':'+e.esito:'')+(e.chi&&e.chi.nome?'('+e.chi.nome+')':''))});}catch(_e218){}/* [PO-218/220 testimone, solo sonde] esito scelto e fatti che il motore racconta dopo la scena */
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         try{let _t202=null;for(const _e of _evB2){if(_e&&_e.t==='tiro')_t202=_e.esito||null;}if(brain137()&&!ok&&(_t202==='blocked'||/intercept|dispossess|beaten|lost|stopped/i.test(String(_outKind||key||''))))_t202='perso';rip202Ref.current=_t202;}catch(_e202){}/* [7.999.137] anche il pallone perso (intercetto, contrasto, tiro murato) riparte con l'avversario */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
@@ -9497,14 +9676,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {const _t0858=Date.now();let _ck0864=(cineBusyRef.current&&typeof cineBusyRef.current.ck==='number')?cineBusyRef.current.ck:null;/* 9 s di scena contati dalla programmazione, come i 9 s di parete: a 30 fps nulla cambia */const _tick858=()=>{try{const _c=cineBusyRef.current;const _busy=!!(_c&&_c.on&&(_c.tl||_c.arc||_c.pa));const _no864=(typeof window!=='undefined'&&window.__CPM_NO864);if(!_no864&&_c&&typeof _c.ck==='number'){if(_ck0864==null)_ck0864=_c.ck;const _sc864=_c.ck-_ck0864;if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&_sc864<9&&(Date.now()-_t0858)<30000){fxTimeout(_tick858,180);return;}}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=window.__CPM_WS&&window.__CPM_WS();(window.__CPM_TICK858=window.__CPM_TICK858||[]).push({t:Date.now(),dt:Date.now()-_t0858,on:!!(_c&&_c.on),tl:!!(_c&&_c.tl),arc:!!(_c&&_c.arc),pa:!!(_c&&_c.pa),busy:_busy,pat:_c&&_c.pat,pt:_c&&_c.pt,sl:_c&&_c.sl,bx3:_c&&_c.bx,at:_c&&_c.at,rx:_w?_w.rx:null,fired:!!(goalCelebRef.current&&goalCelebRef.current.fired),ar:(window.__CPM_AR53?{d:window.__CPM_AR53.d,t:window.__CPM_AR53.t,rto:window.__CPM_AR53.rto,rx:window.__CPM_AR53.rx}:null),dp:(window.__CPM_DISPATCH?{ht:window.__CPM_DISPATCH.ht,post:window.__CPM_DISPATCH.post,tgt:window.__CPM_DISPATCH.tgt,rcv:window.__CPM_DISPATCH.rcv,near:window.__CPM_DISPATCH.near}:null)});}catch(_e){}}/* testimone del tetto (test-only) */if(!(typeof window!=='undefined'&&window.__CPM_NO858)&&_busy&&(Date.now()-_t0858)<9000){fxTimeout(_tick858,180);return;}}catch(_e858){}fireGoalCeleb('timer');};fxTimeout(_tick858,5200);}// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#60a5fa",key:Date.now()});setResultReveal(true);_comFn15();}};// [7.54.0 BL-15] bottom + sovraimpressione + cronaca all'ASSESTAMENTO reale della palla (onOutcomeShown), non più a 1800 fisso
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     } else if(ok&&!["goal","assist"].includes(key)){
-      outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);_comFn15();}};
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,waitPA:!!(_sp298&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)&&((!_CPM_TEST&&!_SIT_TEST)||(typeof window!=='undefined'&&(window.__CPM_CINE||window.__CPM_REALWAIT)))),/* [giro 95 D3] «assist servito, il compagno spreca»: l'esito e' il tiro del compagno */cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#a78bfa",key:Date.now()});setResultReveal(true);_comFn15();}};
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     } else if(!ok){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:_ovl.tone==="neutral"?"#cbd5e1":"#f87171",key:Date.now()});setResultReveal(true);_comFn15();
         if(key==="miss_easy"||key==="goal_against")flashScreen({col:"rgba(239,68,68,0.35)",dur:400});}};// [7.54.0 BL-15] overlay/cronaca/flash all'IMPATTO reale (parata/palo/fuori dal 3D), non più a 1800 fisso
-      fxTimeout(()=>fireOutcomeReveal(),2600);
+      {const _k103=ckNow103(),_o104=outcomeRevealRef.current;fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_k103,_o104),2600);
+        /* [giro 104, solo sonde: __CPM_G104STALE con __CPM_REC] riproduce in modo deterministico il richiamo tardivo della riserva della scena
+           PRECEDENTE (suo riquadro, suo orologio di risoluzione) che arriva subito dopo questa risoluzione, prima del pavimento */
+        try{const _pv=prevOR104.current;if(typeof window!=='undefined'&&window.__CPM_REC&&window.__CPM_G104STALE&&_pv&&_pv.o&&_pv.o!==_o104)fxTimeout(()=>revealRiserva95(Date.now(),null,undefined,_pv.ck,_pv.o),60);prevOR104.current={o:_o104,ck:_k103};}catch(_e){}}
     }
     // Particle effect based on action outcome
     const shotActions=["tiro","shot","cross","punizione","rigore","volée","colpo di testa","tiro a giro","tocco sotto"];
@@ -9519,7 +9707,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        — fatica, pressione, qualita' — quindi una probe non puo' riprodurre a comando quello che il PO ha
        visto in partita. Senza, l'unica alternativa e' dedurre dal codice, cioe' indovinare. Test-only. */
     if((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND){key=window.__CPM_FORCE_KIND;_outKind=window.__CPM_FORCE_KIND;}
-    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
+    setOutcome({text:txt,ok,actionLabel:action.label,outKey:key,mate298:_sp298,overlay:_ovl.text,overlayIcon:_ovl.icon,overlayTone:_ovl.tone,outKind:_outKind,woodwork:_wood,/* [7.217.0] palo o traversa: deciso qui, il 3D lo obbedisce invece di dedurlo per conto suo */revealMs:_rd92,defTraj:_defTraj,cause:(ok?(_posC84[0]&&_posC84[0][1]):(_negC84[0]&&_negC84[0][1]))||null});setChosenAct(action);// [5.84.0 UX-2b] · [7.136.0] overlayIcon
     // LMQP-1/3: registra l'esito risolto + i fatti cinematici DECISI A RUNTIME (deriveHL/hlBallState),
     //   così il check timeline valida gli invarianti CINE sulla decisione LIVE (testa⟹aerea, volée⟹aerea, set-piece⟹palla ferma).
     let _cine={};try{const _s=situationsRef.current[hlIdxRef.current];if(_s){const _h=(typeof deriveHL==="function"&&deriveHL(_s,action))||{};_cine={type:_h.type||null,variant:_h.variant||null,pattern:_h.pattern||null,ballState:(typeof hlBallState==="function"?hlBallState(_s):null)};}}catch(_e){}
@@ -9545,15 +9733,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         last:(_beats[_beats.length-1]||{}).tag||null, violations:_viol});
     } }catch(_e){}
     // Sprint 97 — streak bonus: consecutive successes amplify momentum
-    if(ok){streakRef.current=Math.min(streakRef.current+1,5);}
-    else{streakRef.current=0;}
+    if(ok&&!_sp298){streakRef.current=Math.min(streakRef.current+1,5);}
+    else{streakRef.current=0;}/* [giro 93 PO-298] l'assist sprecato dal compagno non allunga la serie */
     const _streakBonus97=ok?streakRef.current*4:0;
     /* [6.4.5 R5.1] LE OCCASIONI CONTANO: un corner/palo/fallo guadagnato in attacco è un fallimento
        SOLO sul tabellino — stai pressando. Non crolli (delta +2 invece di -8): il momentum riflette la
        pericolosità reale dell'azione, non solo goal/non-goal. */
     const _dangerFail=(!ok)&&(_outKind==="corner"||_outKind==="post"||((_outKind==="fouled"||_outKind==="win_freekick")&&pPos.x>=60));
     setMomentum(m=>{
-      const nm=clamp(m+(ok?10:(_dangerFail?2:-8))+_streakBonus97,0,100);
+      const nm=clamp(m+((ok&&!_sp298)?10:((_dangerFail||_sp298)?2:-8))+_streakBonus97,0,100);/* [giro 93 PO-298] l'assist sprecato e' un'occasione mancata della squadra: +2 come palo/corner, non il +10 della giocata decisiva */
       // Trigger pressure cinema at thresholds
       if(nm>=85&&m<85){// 5.43.8: su gol/assist il DOMINIO parte con l'esultanza (palla in rete, via fireGoalCeleb); altrimenti differito breve
         if(goalCelebRef.current&&!goalCelebRef.current.fired){goalCelebRef.current.domino=true;}
@@ -9564,10 +9752,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     // Sprint 77 + Fase 6 (NEXT-GEN chaining robusto): un assist da palla messa in area innesca un
     //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
-    if(ok&&!_falloOk38&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
+    if(ok&&!_falloOk38&&!_sp298&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
       else if(_crossChain704)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.0.4] cross consegnato in area → il secondo tempo finalizza (il cross non era gol) · [7.201.0] MAI `header`: il cross l'ha messo l'EROE, non può incornarlo lui — o lo prolunga un compagno (sponda) o nasce una mischia/un rimbalzo */
-      else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
+      else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1,_noAss98:(action&&action.rew==="assist")};/* [giro 98 D4] dopo il passaggio al compagno respinto dal portiere il seguito e' la ribattuta: niente secondo passaggio da assist (vedi handleContinue) */// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
       else if(situations[hlIdx]?.chainOn==="aerial")/* [6.3.2 R1a] campo dichiarativo bakato in S(), non piu regex sul testo */
         pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.201.0] `header` fuori: la consegna aerea (cross/corner/punizione/rimessa) l'ha battuta l'eroe */
     }
@@ -9649,6 +9837,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         res.outKind=(!opt.chip&&_M3.risolviEroe.dado(_pw))?"wide":"saved";res.ok=false;if(opt.chip&&res.outKind==="saved")res.chipStay=true;}
       if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SP3=window.__CPM_SP3||[]).push({p:res.pGoalEV,prima:_prima3,dopo:res.outKind,k:_aimIntent,chip:!!opt.chip,min:clockRef.current|0});}catch(_e3){}}
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)&&_M3&&_M3.registra)_M3.registra('tiro','home',{esito:res.outKind==="goal"?'gol':res.outKind==="saved"?'parato':res.outKind==="post"?'legno':'fuori',xg:+res.pGoalEV||0});}catch(_e3r){}/* nel motore «home» e' sempre la squadra dell'eroe */
+    try{const _M94=motoreRef.current;if(_M94&&_M94.chiedi&&_M94.chiedi.piazzatoGiocato){const _f94=(typeof window!=='undefined'&&window.__CPM_REC)?(_M94._S&&_M94._S.fermo?(_M94._S.fermo.kind+':'+(_M94._S.fermo._o27|0)):('nullo:'+(_M94._S&&_M94._S.poss&&_M94._S.poss.stato))):null;const _sc94=(typeof window!=='undefined'&&window.__CPM_REC)?!!(_M94.stato()||{}).scena:null;const _g94=_M94.chiedi.piazzatoGiocato();if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:clockRef.current|0,t:'piazzato_giocato',tolto:!!_g94,fermo:_f94,scena:_sc94});}}catch(_e94p){}/* [giro 94 D2] la scena ha calciato il piazzato dell'eroe: il motore non lo ricalcia */
     gkDiveRef.current=res.gkDir;const gkLabel=RIGORE_DIRS[res.gkDir]||"";
     setEnergy(e=>clamp(e-(opt.nrg||8),0,100));
     setMxStats(st=>({...st,shots:st.shots+1}));
@@ -9691,6 +9880,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1450);
       fxTimeout(()=>{try{AudioMgr.event({type:'GoalTeam'});}catch(_a){}/* [7.62.0 AUDIO] boato sul gol da rigore (non passa da fireGoalCeleb) */addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(sc=>({...sc,home:sc.home+1}));},1450);
       pushMatchEvent(clockRef.current,"player_goal",em=>"⚽ Tuo "+_kickWordLow+" al "+em+"'");
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_PEN94=window.__CPM_PEN94||[]).push({min:clockRef.current|0,t:'scena_gol',kind:_spKind373});}catch(_e94s){}}
       setMStats(st=>({...st,goals:st.goals+1,rb:st.rb+5}));
       try{const _mm=matchMemRef.current;if(_mm)_mm.goals=(_mm.goals||0)+1;}catch(_e){}
       setActionEffect({type:"goal",key:Date.now()});
@@ -9786,8 +9976,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     cpmEmit("HighlightAdvance",{from:hlIdx,chained:!!pendingChainSitRef.current});// LMQP-1
     const nx=hlIdx+1;
     // Sprint 77 — Situation Chaining: inject chain before advancing
-    if(pendingChainSitRef.current){try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}try{if(typeof scenaSecondoTempo==="function"){const _g22=scenaSecondoTempo(pendingChainSitRef.current,castBrainRef.current,player,((bgSimSeedRef.current^((clockRef.current|0)*7919+nx*131))>>>0));if(_g22)pendingChainSitRef.current={..._g22,_chainDepth:1};}}catch(_e22){}/* [giro 17 PO-022 strato 8b] il secondo tempo si costruisce dal cast del motore (src/04 scenaSecondoTempo); rosso __CPM_NO_SEG022 */try{const _c22=pendingChainSitRef.current;cpmEv("fonte022",{min:clockRef.current|0,hl:nx,tipo:"seguito",fonte:(_c22&&_c22._p6)?"motore":"catena-scritta",gen:(_c22&&_c22._p6)||null,sk:String((_c22&&_c22.text)||"").slice(0,50)});}catch(_e022){}/* [giro 17 PO-022] testimone inerte, vedi fonte022 sopra */
-      const chain=pendingChainSitRef.current;
+    if(pendingChainSitRef.current){const _na98=!!pendingChainSitRef.current._noAss98&&!(typeof window!=='undefined'&&window.__CPM_NO_G98D4);try{cpmEv("scena",{min:clockRef.current|0,src:"secondo-tempo"});}catch(_e){}try{if(typeof scenaSecondoTempo==="function"){const _g22=scenaSecondoTempo(pendingChainSitRef.current,castBrainRef.current,player,((bgSimSeedRef.current^((clockRef.current|0)*7919+nx*131))>>>0));if(_g22)pendingChainSitRef.current={..._g22,_chainDepth:1};}}catch(_e22){}/* [giro 17 PO-022 strato 8b] il secondo tempo si costruisce dal cast del motore (src/04 scenaSecondoTempo); rosso __CPM_NO_SEG022 */try{const _c22=pendingChainSitRef.current;cpmEv("fonte022",{min:clockRef.current|0,hl:nx,tipo:"seguito",fonte:(_c22&&_c22._p6)?"motore":"catena-scritta",gen:(_c22&&_c22._p6)||null,sk:String((_c22&&_c22.text)||"").slice(0,50)});}catch(_e022){}/* [giro 17 PO-022] testimone inerte, vedi fonte022 sopra */
+      let chain=pendingChainSitRef.current;
+      /* [giro 98 D4, collaudo carriera 177 n.4, S3 gara 331: «Servi FERRETTI libero» → «il portiere ci mette i guantoni — palla viva», poi nella
+         mischia di nuovo «Servi FERRETTI libero» e il gol su respinta registrato come assist dell'eroe] Il passaggio non e' diventato gol: la
+         ribattuta e' la conclusione da giocare, non un secondo passaggio da assist. Si tolgono le opzioni con premio assist (restano le
+         conclusioni, almeno due). Rosso __CPM_NO_G98D4 */
+      if(_na98&&chain&&Array.isArray(chain.actions)){const _ac98=chain.actions.filter(a=>a&&a.rew!=="assist");if(_ac98.length>=2&&_ac98.length<chain.actions.length)chain={...chain,actions:_ac98,_na98:true};}
       pendingChainSitRef.current=null;
       setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
       setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] la catena e' la stessa azione: non consuma un'occasione */
@@ -9924,6 +10119,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // Always-current refs so the keyboard handler never uses a stale closure
   const _kbAction=useRef(handleAction);_kbAction.current=handleAction;
   const _kbContinue=useRef(handleContinue);_kbContinue.current=handleContinue;
+  const _kbSet=useRef(handleSetPiece);_kbSet.current=handleSetPiece;/* [giro 90 PO-292 D6] */
   const _kbEnd=useRef(handleEnd);_kbEnd.current=handleEnd;
 
   useEffect(()=>{
@@ -9951,6 +10147,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(_kbOpts[idx])pendingActionRef.current=_kbOpts[idx];
         setPhase("hl_choose");
         return;
+      }
+      /* [giro 90 PO-292 D6] rigori e punizioni da tastiera: 1-3 scelgono lo stile numerato, Invio/Spazio attiva quello col fuoco (nella 177 i tasti non
+         facevano niente e Invio sul pulsante col fuoco non partiva: serviva il mouse). Rosso __CPM_NO_PCTAB292. */
+      if(phase==="hl_choose"&&_kbAim&&_pctab292()&&sit){
+        const _so=(typeof setPieceOptions==="function")?setPieceOptions(sit,player,(pPosRef.current&&pPosRef.current.x)||50):[];
+        const _ix=/^[1-9]$/.test(e.key)?parseInt(e.key)-1:-1;
+        if(_ix>=0&&_so[_ix]){e.preventDefault();_kbSet.current(_so[_ix]);return;}
+        if(e.key==="Enter"){const _ae=document.activeElement,_bi=_ae&&_ae.getAttribute?_ae.getAttribute("data-sp292"):null;if(_bi!=null&&_so[+_bi]){e.preventDefault();_kbSet.current(_so[+_bi]);return;}}
       }
       if(phase==="hl_choose"&&!_kbAim){
         if(["1","2","3"].includes(e.key)){
@@ -10002,7 +10206,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   useEffect(()=>{
     if(phase!=="hl_result"||paused)return;
     resultShownRef.current=Date.now()+((outcome&&outcome.revealMs)||0);// [5.84.0 UX-3 · 5.92.0] la guardia anti-tap parte dal REVEAL
-    const dur=postHighlightDuration(outcome,chosenAct)+Math.min((((outcome&&outcome.revealMs)||0)*0.5)|0,950);// [5.92.1] la suspense vive DENTRO la finestra del result: compensa solo metà reveal, cap 950ms — durata totale sempre <4000 (guardia UX del check post-highlight)
+    const dur=postHighlightDuration(outcome,chosenAct)+Math.min((((outcome&&outcome.revealMs)||0)*0.5)|0,950);
+    const _ckE103=(()=>{try{const _c=cineBusyRef.current;return(_c&&typeof _c.ck==='number')?_c.ck:null;}catch(_e){return null;}})();/* [giro 103] orologio di scena all'ingresso in hl_result: il tetto della chiusura vale anche contato da qui (dur + 6 s di scena) */// [5.92.1] la suspense vive DENTRO la finestra del result: compensa solo metà reveal, cap 950ms — durata totale sempre <4000 (guardia UX del check post-highlight)
     if(typeof window!=='undefined'&&/[?&]cpmtest=1\b/.test(window.location.search||""))window.__CPM_RESULT_DUR=dur;// VISUAL-TEST
     // [6.76.0 LMV-L4] gol/assist con palla ANCORA in volo (build-up lunghi: cross/testa fino a ~5.2s):
     //   l'auto-advance non taglia più reveal+esultanza — se la celebrazione non è ancora partita rinvia UNA
@@ -10032,8 +10237,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _ck229=!(typeof window!=='undefined'&&window.__CPM_NO_CK229)&&_c&&typeof _c.ck==='number';
         if(_ck229&&_att461===0)_avanza461._ck0=_c.ck;
         const _sc229=_ck229?(_c.ck-(_avanza461._ck0||0))*1000:_att461;
-        if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&(_ck229?(_sc229<6000&&_att461<30000):_att461<6000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}
+        const _e103=_ck229&&typeof _ckE103==='number'&&!window.__CPM_NO_G103A&&(_c.ck-_ckE103)*1000<6000+dur;/* [giro 103] come la riserva: a fotogrammi lenti la finestra (dur, parete) vale meno scena, e il tetto contato dal suo avvio chiudeva a conclusione in corsa. Si aspetta finche' vale l'uno O l'altro tetto: mai piu' corto di prima */
+        if(_on&&_ck229&&typeof _ckE103==='number'&&!window.__CPM_NO_G103A&&((_c.ck-_ckE103)*1000<dur||(outcomeRevealRef.current&&outcomeRevealRef.current.waitPA&&!(_c.nb>0)&&(_c.ck-_ckE103)*1000<dur+6000))&&_att461<((window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}/* [giro 103] la finestra d'esito dura anche in secondi DI SCENA: a fotogrammi lentissimi, dopo `dur` di parete la conclusione puo' non essere ancora cominciata */
+        if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&(_ck229?((_sc229<6000||_e103)&&_att461<((window.__CPM_REC&&+window.__CPM_PARETE103>30000)?+window.__CPM_PARETE103:30000)):_att461<6000)){_att461+=180;t2=setTimeout(_avanza461,180);return;}
       }catch(_e461){}
+      /* [giro 95 D4, collaudo carriera 177 n.1: 271 highlight su 1.238 col solo «LA GIOCATA · nome» nei 6 s, senza esito ne' voto] LA SCENA
+         NON SI CHIUDE SENZA IL SUO ESITO. La finestra poteva chiudersi prima del reveal (riserva dei 2,6 s, gol in attesa della rete) e
+         l'esito non compariva mai; oppure compariva nello stesso istante della chiusura. Ora, nel gioco vero, se l'esito non e' ancora a
+         schermo lo si mostra e si lascia leggere (1,6 s); se e' appena comparso si aspetta che abbia avuto 1,4 s. Lo skip manuale resta
+         libero; sotto il gate la finestra resta quella fissa. Rosso __CPM_NO_G95D4. */
+      try{const _gv4=(typeof window!=='undefined')&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT)&&!window.__CPM_NO_G95D4;
+        if(_gv4&&!_avanza461._d4){const _r=revealAt95.current;
+          if(!_r){_avanza461._d4=1;const o=outcomeRevealRef.current;if(o&&!o.fired){o.via=o.via||'chiusura';o.minAt=0;fireOutcomeReveal('chiusura');}else setResultReveal(true);
+            try{if(window.__CPM_REC)(window.__CPM_D495=window.__CPM_D495||[]).push({hl:hlIdxRef.current,t:Date.now()});}catch(_e){}
+            t2=setTimeout(_avanza461,1600);return;}
+          if(Date.now()-_r<1400){_avanza461._d4=1;t2=setTimeout(_avanza461,1400-(Date.now()-_r));return;}}}catch(_e95){}
       handleContinue();
     };
     const t=setTimeout(()=>{
@@ -10077,10 +10295,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _arcId107=player.archetype?.id||player.archetype;const _rw82=(a)=>_rateUI82(motoreRef.current,a,sit,pPos,player.stats,0,()=>succRate(a,player.stats,pPos.x,oppPrestige,_arcId107));const worst=actions.reduce((a,b)=>_rw82(a)<=_rw82(b)?a:b);
       if(_hlActionFiredRef.current)return;_hlActionFiredRef.current=true;/* [7.163.0 super-test LIVE-F2] stessa guardia di handleAction: niente doppia risoluzione tap⇄timeout */
       const tackleTexts=["Il difensore anticipa e recupera palla.","Intervento difensivo! Palla persa.","Il pressing paga: il difensore chiude l'azione.","Troppo lento — il marcatore intercetta."];
-      const txt=pick(tackleTexts);
+      /* [giro 96b D2 — collaudo 177 n.2] L'ESITAZIONE SI RACCONTA NELLA FAMIGLIA DELLA SCENA. Se l'eroe DIFENDE, chi
+         arriva non e' «il marcatore che intercetta» (testo d'attacco): e' il portatore che ti salta. Chiave
+         `through`/«beaten», la stessa del fallimento di una chiusura. E il titolo dice «Troppo tardi», non il nome
+         di un'azione che il giocatore non ha scelto (`timeout` sull'esito). Rosso __CPM_NO_G96B_D2. */
+      const _no96bD2=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D2;
+      const _def96b=!_no96bD2&&sit.type==="def";
+      const txt=_def96b?pick(["Arrivi tardi: il portatore ti salta.","Esiti un attimo e lui è già oltre.","Troppo tardi — l'avversario passa.","Il portatore ti brucia sul tempo."]):pick(tackleTexts);
+      try{cpmEmit("ActionTimeout",{gi:hlIdxRef.current,intent:sit.intent||null,def:sit.type==="def",key:_def96b?"through":"intercept"});}catch(_e){}
       addCom(txt,"#f87171",clock);
       flashScreen({col:"rgba(239,68,68,0.3)",dur:400});
-      setOutcome({text:txt,ok:false,actionLabel:worst.label,outKey:"intercept",outKind:"intercepted"});/* [7.163.0 LIVE-F2] l'auto-tackle entra nel Unified Outcome Model: outKind onesto → il 3D mostra l'INTERCETTO (prima ricalcolava un esito di famiglia tiro: cronaca «recupera palla» col portiere che parava = divergenza M1) */
+      setOutcome({text:txt,ok:false,actionLabel:worst.label,outKey:_def96b?"through":"intercept",outKind:_def96b?"beaten":"intercepted",timeout:!_no96bD2});/* [7.163.0 LIVE-F2] l'auto-tackle entra nel Unified Outcome Model: outKind onesto → il 3D mostra l'INTERCETTO (prima ricalcolava un esito di famiglia tiro: cronaca «recupera palla» col portiere che parava = divergenza M1) */
       try{setMomentum(m=>clamp(m-8,0,100));}catch(_e){}/* esitare non è più gratis: stesso costo-momentum di un'azione fallita */
       try{const _mm=matchMemRef.current;if(_mm)_mm.misses=(_mm.misses||0)+1;}catch(_e){}
       setChosenAct(worst);
@@ -10205,7 +10430,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _sot695=(_sal689||!(typeof window!=='undefined'&&window.__CPM_NO892))&&!(typeof window!=='undefined'&&window.__CPM_NO695);/* [7.695.0] la cronaca in sottopancia: era acceso solo dentro la scena saliente; [7.892] sempre */
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
-  const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);/* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
+  const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);
+  if(phase!=="ceremony")striscia96bRef.current=!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);/* [giro 96b D14] stato della striscia nella fase prima della cerimonia *//* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
   const matchPhase3D=["walkout","hl_move","hl_choose","hl_result","hl_intro","playing"].includes(phase)?phase:"match";
   const hlZone=situations[hlIdx]?.zones?.[0]||null; // ATE-4: zona corrente per zone ring
   // National context — derive home team from player's national team data
@@ -10395,7 +10621,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;
   }catch(_e){return null;}})();
 
-  const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  /* [giro 92 PO-297 C, decisione PO: SQUADRE FISSE COME IN TV] la squadra di casa resta a sinistra nell'intestazione per tutta la partita,
+     anche nel secondo tempo: il cambio di campo si vede solo sul prato (e nella scritta «cambio campo» dei primi minuti della ripresa).
+     Supera la direttiva 7.893 per l'intestazione; il tabellone 3D resta com'e'. Rosso __CPM_NO_FISSE297 = la barra che si specchia. */
+  const _fisse297=!(typeof window!=='undefined'&&window.__CPM_NO_FISSE297);
+  const _ripresa297=((clock|0)>45)&&phase!=="ceremony";
+  const _swap893=!_fisse297&&!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
      approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
      risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di
@@ -10416,7 +10647,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _hVal901=isMatchHome?score.home:score.away,_hCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9"):"#f1f5f9";/* [23/09 POC — collaudo PO «il risultato rosso e verde non mi piace»] punteggio neutro, come un tabellone tv. Rosso __CPM_NO_SCORE23 */
   const _aVal901=isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
-    <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -10471,7 +10702,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
+                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>
                     {paused?"▶":"⏸"}
                   </button>
                 )}
@@ -10494,7 +10725,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
                     style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.sm,cursor:"pointer",marginLeft:2,
                       fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"9px 8px",minWidth:44,lineHeight:1,fontFamily:"inherit",
-                      color:"#f1f5f9",fontVariantNumeric:"tabular-nums"}}>
+                      color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0 -14px 2px"}:{})}}>
                     {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                   </button>
                 )}
@@ -10505,7 +10736,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     L'intestazione esiste anche a fine partita (mostra «FT») e il testimone regge: l'anello
                     vive nel ref del componente e la closure di __CPM_WATCH_SNAP continua a leggerlo. */}
                 {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                  <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.small,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                  <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.small,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -6px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                 )}
               </div>
               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
@@ -10549,6 +10780,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left"}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
+              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}}'}</style>}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
                 <div style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>
                   <span style={{color:_swap893?_aCol901:_hCol901}}>{_swap893?_aVal901:_hVal901}</span>
@@ -10561,24 +10793,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.small,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{}),...(_t40m96b?{marginLeft:10,marginRight:22}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button
+                    <button className="cpm-t40m"
                       onClick={()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];setMatchSpeed(_n);try{localStorage.setItem("cpm-match-speed",String(_n));}catch(_e){}}}
                       title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
                       aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
-                      style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums"}}>
+                      style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0"}:{}),...(_t40m96b?{marginRight:devToolsOn()?20:0}:{})}}>
                       {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                     </button>
                   )}
                   {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} className="cpm-t40m" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{})}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                   )}
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118}}>{_compTag901}</div>
-                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
+                  {(_swap893||(_fisse297&&_ripresa297&&!(typeof window!=='undefined'&&window.__CPM_NO893)))&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
                 </div>
               </div>
               {/* Away team */}
@@ -10697,11 +10929,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND!==undefined){_hlOutcomeKind=window.__CPM_FORCE_KIND;}
             }
           }
+          /* [giro 90 PO-292, D4/D7/D11 — «Partita a tutto schermo»] con lo spazio largo (PC e tablet orizzontale) le statistiche e le pagelle della
+             vista 2D non stanno piu' SOPRA il campo ma nella colonna a destra: il campo prende tutta la larghezza e la striscia dei tiri non
+             si sovrappone piu' ai timbri dell'esito. Rosso __CPM_NO_LARGO292 = il pannello sopra il campo, come nella 177. */
+          const _panCol292=_largo292()&&!isNarrow&&phase==="playing"&&!(typeof window!=='undefined'&&(window.__CPM_NO917||window.__CPM_NO918));
+          try{if(typeof window!=='undefined')window.__CPM_PANCOL292=!!_panCol292;}catch(_e292){}/* letto dal riquadro «A disposizione» (panca64) */
+          const _pan918el=()=>(<PannelloLive2D motore={motoreRef.current}
+                    latoSx={isMatchHome?"home":"away"}
+                    siglaSx={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"CASA").slice(0,3).toUpperCase()}
+                    siglaDx={((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"OSP").slice(0,3).toUpperCase()}
+                    colSx={isMatchHome?(heroKitCol||"#8e1f33"):(awayKitCol||"#e2e8f0")}
+                    colDx={isMatchHome?(awayKitCol||"#e2e8f0"):(heroKitCol||"#8e1f33")}
+                    rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster}
+                    nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()):null}
+                    numEroe={player&&player.jerseyNum?player.jerseyNum:null} inColonna={_panCol292}/>);
           return(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
+            <div data-cpm="vista3d-box" style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(_largo292()?{flex:"1 1 0",minWidth:0,position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"})}>
               {/* [7.917.0 — F1] IL CAMPO DALL'ALTO fra un highlight e l'altro (decisione del PO 15/09). Il 3D non
                   si smonta — resta caldo, sospeso — e il campo gli si posa SOPRA, dentro lo stesso riquadro.
                   [7.917.1 difetto fotografato] da fratello in colonna il campo si prendeva meta' schermo (410x379 su
@@ -10716,16 +10962,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
-                  {!(typeof window!=='undefined'&&window.__CPM_NO918)&&<PannelloLive2D motore={motoreRef.current}
-                    latoSx={isMatchHome?"home":"away"}
-                    siglaSx={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"CASA").slice(0,3).toUpperCase()}
-                    siglaDx={((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"OSP").slice(0,3).toUpperCase()}
-                    colSx={isMatchHome?(heroKitCol||"#8e1f33"):(awayKitCol||"#e2e8f0")}
-                    colDx={isMatchHome?(awayKitCol||"#e2e8f0"):(heroKitCol||"#8e1f33")}
-                    rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster}
-                    nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()):null}
-                    numEroe={player&&player.jerseyNum?player.jerseyNum:null} />}
+                  <Campo2D tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
+                  {!(typeof window!=='undefined'&&window.__CPM_NO918)&&!_panCol292&&_pan918el()}
                 </div>);})()}
               <ThreeMatchView key={"tmv"+glbTry} heroFoot={player.foot||"R"}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
@@ -10735,7 +10973,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumVenue={(function(){try{return getStadiumName(homeTeamObj)||null;}catch(_e){return null;}})()}/* [7.658.0] il NOME DELLO STADIO (es. Stadio Valmora) per il cartellone LED — precisazione PO: e' LUI il cartellone da fare piccolo e a scorrimento, non gli striscioni dei tifosi */ stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
@@ -10908,7 +11146,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>)}
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" className="cpm-t40m" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
               {/* [7.31.0 direttiva PO] OVERLAY CALCI DI RIGORE — tabellino broadcast ✓/✗ kick-by-kick, suspense
                   sul kicker, banner finale (passi il turno / eliminati). Il 3D sotto anima i rigori veri. */}
@@ -10939,7 +11177,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     :_lastRev?<div style={{fontSize:FS.body,fontWeight:900,marginTop:7,color:_lastRev.scored?"#4ade80":"#f87171"}}>{_lastRev.scored?"GOOOL!":( _lastRev.wide?"FUORI!":"PARATO!")}</div>
                     :<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.8)",fontWeight:700,marginTop:7}}>Si decide tutto dagli undici metri…</div>}
                 </div>
-                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
+                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
                 </React.Fragment>);})()}
               {/* item 4 (5.49.2): GRAFICA TV PRE-PARTITA — confronto classifica delle due squadre, stile broadcast. Solo durante l'ingresso (walkout). */}
               {/* [7.13.0] SERATA DI PRESENTAZIONE — lo speaker annuncia la squadra sul walkout del 1° match in casa */}
@@ -11030,7 +11268,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
-              </div>):(<div data-cpm="fg-slot" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":"max(7%, 76px)",/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+              </div>):(<div data-cpm="fg-slot" data-pilla-top={(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)":"max(7%, 76px)")}/* [giro 90 PO-292] dove parte la pillola d'esito: la legge il guardiano pc-tablet-292 */ style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)"/* [giro 90 PO-292 D7] tablet verticale: sotto la striscia delle statistiche della vista 2D */:"max(7%, 76px)"),/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
@@ -11043,7 +11281,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{fontSize:isNarrow?28:40,fontWeight:900,color:pressureCinema.col,letterSpacing:4,animation:"pressureDrop 1.8s ease-out forwards",textShadow:`0 0 24px ${pressureCinema.col}`,fontStyle:"italic",WebkitTextStroke:"1px rgba(255,255,255,0.5)"}}>{pressureCinema.text}</div>
               </div>}
               {goalCinema&&<div key={goalCinema.key} style={{position:"absolute",inset:0,zIndex:22,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:`goalShake 0.55s ease-out`}}>
-                <div style={{fontSize:isNarrow?38:52,fontWeight:900,color:goalCinema.col,letterSpacing:6,animation:"goalDrop 2.6s ease-out forwards",textShadow:`0 0 30px ${goalCinema.col},0 0 60px ${goalCinema.col}`,fontStyle:"italic",WebkitTextStroke:"1px rgba(255,255,255,0.6)"}}>{goalCinema.text}</div>
+                {(typeof window!=="undefined"&&window.__CPM_NO_G99D9)?<div style={{fontSize:isNarrow?38:52,fontWeight:900,color:goalCinema.col,letterSpacing:6,animation:"goalDrop 2.6s ease-out forwards",textShadow:`0 0 30px ${goalCinema.col},0 0 60px ${goalCinema.col}`,fontStyle:"italic",WebkitTextStroke:"1px rgba(255,255,255,0.6)"}}>{goalCinema.text}</div>
+                :<div data-cpm="gol99" style={{fontSize:isNarrow?38:52,fontWeight:900,color:"#ffffff",letterSpacing:isNarrow?4:6,animation:"goalDrop 2.6s ease-out forwards",fontStyle:"normal",WebkitTextStroke:"2px rgba(0,0,0,0.9)",paintOrder:"stroke fill",textShadow:"0 2px 0 #000,0 3px 10px rgba(0,0,0,0.95),0 0 24px rgba(0,0,0,0.7)",background:"rgba(6,10,20,0.72)",borderRadius:RAD.md,padding:isNarrow?"4px 16px 6px":"6px 24px 8px",borderBottom:`4px solid ${goalCinema.col||"#f59e0b"}`,lineHeight:1.1}}>{goalCinema.text}</div>}{/* [giro 99 D9 PO-299 «GOOOOL! poco leggibile»] era il colore del club, in corsivo, con l'alone dello STESSO colore: su cartelloni/maglie del club la scritta spariva. Ora bianco pieno, contorno scuro, ombra nera, dritto, su pillola scura; il colore del club resta solo come filetto sotto. Misura con chiusura-99 (contrasto campionato dal quadro). Rosso __CPM_NO_G99D9 */}
                 <div style={{marginTop:8,display:"flex",flexDirection:"column",alignItems:"center",gap:2,animation:"goalDrop 2.6s ease-out forwards",animationDelay:"0.15s"}}>{/* [7.112.0 collaudo PO «mostra i nomi di marcatore e assist-man durante il live match»] */}
                   <div style={{fontSize:isNarrow?16:20,color:"#fff",fontWeight:900,letterSpacing:2,textShadow:"0 2px 12px rgba(0,0,0,0.92)"}}><EmoText>{"⚽ "+(goalCinema.scorer||_surnBG(player.name||"")||"GOL")}</EmoText></div>
                   {goalCinema.assister&&<div style={{fontSize:isNarrow?11:13,color:"rgba(255,255,255,0.85)",fontWeight:700,letterSpacing:1.5,textShadow:"0 1px 7px rgba(0,0,0,0.92)"}}><EmoText>{"🅰️ Assist: "+goalCinema.assister}</EmoText></div>}
@@ -11166,7 +11405,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {phase==="walkout"&&!(typeof window!=='undefined'&&window.__CPM_NO_ING277)&&(/* [giro 54 PO-277 «l'ingresso deve essere saltabile» — rosso __CPM_NO_ING277] stesso stile di «Salta premiazione»; sopra il velo d'attesa (zIndex 41): saltando, il caricamento dei corpi prosegue e l'eventuale residuo lo copre l'attesa del fischio */
-                <button onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
+                <button className="cpm-t40m" onClick={()=>{if(window.__CPM_NO_ING277S){setPhase("playing");return;}/* rosso del solo salto: taglio secco della fase (corpi in attesa senza clip → attesa PO-232 fino al tetto) */try{window.__CPM_SKIPWALK277=true;}catch(_e){}/* il 3D porta tutti al posto e chiude da se' (onWalkoutDone); se il 3D e' fermo (velo, contesto perso) si passa comunque al gioco */setTimeout(()=>{if(phaseRef.current==="walkout"){try{window.__CPM_SKIPWALK277=false;}catch(_e){}setPhase("playing");}},4000);}} data-cpm="salta-ingresso" style={{position:"absolute",bottom:14,right:14,zIndex:41,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>Salta ingresso →</button>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
@@ -11323,7 +11562,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         </span>
                       </div>
                     </div>
-                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
+                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
                   </React.Fragment>
                 );
                 // [7.135.0 collaudo PO «anche quando inizio dalla panchina togliere il livello nero e fare il tasto salta
@@ -11333,14 +11572,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 //   è già gestito sopra → qui è sempre la panchina d'attesa).
                 return(
                   <React.Fragment>
-                    <div data-cpm="panca64" ref={el=>{/* [7.999.64 collaudo PO «la grafica che dice che sono in panchina/a disposizione si accavalla». Rosso __CPM_NO_PANCA64] nella vista 2D in cima c'e' la striscia delle statistiche: il riquadro scende sotto di lei */try{if(!el||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))return;const st=document.querySelector('[data-cpm="striscia918"]'),par=el.offsetParent;if(!st||!par){el.style.top="0px";return;}const d=Math.round(st.getBoundingClientRect().bottom-par.getBoundingClientRect().top+4);el.style.top=(d>0?d:0)+"px";}catch(_e){}}} style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
+                    <div data-cpm="panca64" ref={el=>{/* [7.999.64 collaudo PO «la grafica che dice che sono in panchina/a disposizione si accavalla». Rosso __CPM_NO_PANCA64] nella vista 2D in cima c'e' la striscia delle statistiche: il riquadro scende sotto di lei */try{if(!el||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))return;const st=document.querySelector('[data-cpm="striscia918"]'),par=el.offsetParent;if(!st||!par||window.__CPM_PANCOL292){el.style.top="0px";return;}/* [giro 90 PO-292] pannello nella colonna a destra: la striscia non e' sul campo */const _li297=document.querySelector('[data-cpm="linguette918"][data-cima297="1"]');/* [giro 92 PO-297 B] la barra chiusa sta sotto la striscia: il riquadro scende sotto di lei */const d=Math.round(Math.max(st.getBoundingClientRect().bottom,_li297?_li297.getBoundingClientRect().bottom:0)-par.getBoundingClientRect().top+4);el.style.top=(d>0?d:0)+"px";}catch(_e){}}} style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:3}}>
                         <div style={{width:8,height:8,borderRadius:"50%",background:isWarmup?"#f59e0b":"#94a3b8",boxShadow:isWarmup?"0 0 8px #f59e0b":undefined,animation:isWarmup?"pulse 1.2s infinite":undefined}}/>
                         <div style={{fontSize:isNarrow?12:14,letterSpacing:2.5,fontWeight:900,textTransform:"uppercase",color:isWarmup?"#f59e0b":"#e2e8f0",textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{isWarmup?"RISCALDAMENTO":"A DISPOSIZIONE"}</div>
                       </div>{/* [7.145.0] via la riga punteggio (ridondante + invertita in trasferta) */}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.4,maxWidth:340,margin:"3px auto 0"}}>{isWarmup?warmMsg:(benchReason||obsMsg)}</div>
                     </div>
-                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
+                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:_dito292?"13px 18px":"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
                   </React.Fragment>
                 );
               })()}
@@ -11469,6 +11708,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _CAT901={tecnica:"TECNICA",tiro:"TIRO",passaggio:"PASSAGGIO",dribbling:"DRIBBLING","velocità":"VELOCITÀ",fisico:"FISICO","mentalità":"MENTALITÀ",posizionamento:"POSIZIONAMENTO",difesa:"DIFESA"};
                   const _split901=(s)=>{const str=String(s||"");const sp=str.indexOf(" ");return sp<=0?{icon:"⚽",txt:str}:{icon:str.slice(0,sp),txt:str.slice(sp+1)};};
                   const _sub901=intentIntro(curSit.intro,_scoreDiff);
+                  /* [giro 96b D1 — collaudo 177 n.2, ALTA: 177 highlight su 1.366 senza ActionResolved] UN TASTO CHE SI VEDE
+                     SI PUO' TOCCARE. Le righe nascono disarmate (7.926, 250 ms dal 7.956) ma restavano a schermo a opacita'
+                     0,45 e `disabled`: il tocco rapido cadeva nel vuoto, nessuno lo diceva, e dopo 9-16 s l'auto-anticipo
+                     risolveva una scelta che il giocatore non aveva fatto. Ora, finche' non sono armate, le righe NON si
+                     vedono e non prendono il dito (visibility hidden + pointer-events none): la protezione del 7.926 resta
+                     (il dito del D-pad che ricade non sceglie niente), e ogni tasto visibile registra il tocco.
+                     Rosso __CPM_NO_G96B_D1 = righe visibili e morte. */
+                  const _no96bD1=typeof window!=='undefined'&&!!window.__CPM_NO_G96B_D1;
                   const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
@@ -11516,7 +11763,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:(_no96bD1?0.45:0),visibility:(sceltePronte||_no96bD1)?"visible":"hidden",pointerEvents:(sceltePronte||_no96bD1)?"auto":"none",transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
                             <div style={{fontSize:FS.body,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
@@ -11529,7 +11776,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   );
                 })()
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String(chosenAct?.label||"");const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String((outcome&&outcome.timeout)?"⏱ Troppo tardi":(chosenAct?.label||""));const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
                 <div data-cpm="incorso94" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,boxSizing:"border-box",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.86) 30%,rgba(5,8,16,0.94) 100%)",padding:"16px 14px 14px",display:"flex",alignItems:"center",gap:11}}>
                   {/* [7.999.83 #94] «in corso»: prima una riga da 12 px con clessidra («⏳ 🎯 Assist filtrante…»), di un altro
                       vestito rispetto a scheda e esito. Ora lo stesso linguaggio della scheda delle scelte: riquadro
@@ -11539,7 +11786,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{width:34,height:34,borderRadius:RAD.sm,background:"rgba(196,181,253,0.16)",border:"1px solid rgba(196,181,253,0.35)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}><EmoText>{_ic94}</EmoText></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                     <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.5,color:"#a5b4fc",textTransform:"uppercase"}}>La giocata</div>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}><EmoText>{_tx94}</EmoText></div>
+                    <div data-cpm="esito-titolo" style={(typeof window!=='undefined'&&window.__CPM_NO_G96B_D7)?{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}:{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{_tx94}</EmoText></div>
                   </div>
                   <div aria-hidden="true" style={{display:"flex",gap:4,flexShrink:0}}>{[0,1,2].map(k=><span key={k} style={{width:6,height:6,borderRadius:"50%",background:"#c4b5fd",animation:"cpmPunto94 1.2s ease-in-out "+(k*0.18)+"s infinite"}}/>)}</div>
                 </div>
@@ -11549,6 +11796,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               ))}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
+              {/* [giro 96b D6 — collaudo grafico 178: «il riquadro d'esito copre piedi e pallone dell'eroe»] Misurato su 30 scene
+                  forzate (412x915): in 11 piedi o pallone finivano sotto il bordo del riquadro durante la finestra d'esito — la
+                  regia tiene l'eroe nel quarto basso del quadro (piedi a 755-805 px, riquadro da ~737). La camera non si tocca
+                  (src/12 e' di un altro cantiere): quando il riquadro compare, la VISTA 3D sale di 14vh con la stessa
+                  dissolvenza del riquadro, come un tilt della regia — l'azione resta sopra la banda, il pezzo di cielo/tribuna
+                  in alto (gia' troppo, nota D8) esce dal quadro. Nessun ridimensionamento del canvas (un cambio di misura
+                  svuota il disegno, vedi D14). Rosso __CPM_NO_G96B_D6. */}
+              {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!_no901&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D6)&&<style>{'[data-cpm="vista3d-box"] canvas{transform:translateY(-18vh);transition:transform .32s ease-out}'}</style>}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 /* [7.901.0 — C3: L'ESITO E' UNA BANDA BASSA, ≤40% DELLO SCHERMO. Decisione del PO sulla
                    tavola approvata (Esito.dc.html): titolo dell'esito (verde se positivo), riga di cronaca,
@@ -11568,7 +11823,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 ):(()=>{
                   const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _voto901=Math.round(_raw901*10)/10;try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO20||window.__CPM_NO_VOTO29))&&motoreRef.current&&motoreRef.current.pagelle){const _k29=hlIdx+'|'+(outcome&&outcome.outKey)+'|'+score.home+'-'+score.away+'|'+mStats.goals+'|'+mStats.assists;const _C29=voto29Ref.current;if(_C29.k!==_k29){const _e29=motoreRef.current.pagelle().find(x=>x&&x.eroe);_C29.k=_k29;_C29.v=(_e29&&typeof _e29.voto==='number')?_e29.voto:null;}if(_C29.v!=null)_voto901=_C29.v;}}catch(_e29b){}/* [7.999.29] anche il voto nel riquadro di fine scena e' la pagella del motore: prima era una terza formula (bonus delle scene). Calcolato UNA volta per esito (cache voto29Ref): chiamato a ogni render faceva oscillare il guardiano passo-velocita (misurato: rosso 3 volte su 4, verde 3 su 3 con il riquadro spento) */
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
-                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(chosenAct?.label?(" · "+chosenAct.label):"");
+                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(outcome.timeout?" · ⏱ Troppo tardi":chosenAct?.label?(" · "+chosenAct.label):"");/* [giro 96b D2] l'esitazione non porta il nome di un'azione non scelta */
                   return(
                   <div data-cpm="esito" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
                     <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
@@ -11576,7 +11831,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <div style={{width:20,height:20,borderRadius:RAD.xs,background:outcome.ok?"rgba(74,222,128,0.16)":"rgba(248,113,113,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                         {outcome.ok?<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12l5 5L20 6"></path></svg>:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>}
                       </div>
-                      <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>
+                      <div data-cpm="esito-titolo" style={(typeof window!=='undefined'&&window.__CPM_NO_G96B_D7)?{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}:{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.2,whiteSpace:"normal",overflowWrap:"anywhere",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>{/* [giro 96b D7] il titolo dell'esito non si tronca mai: va a capo (12 scene su 68 al collaudo, 5/30 misurate). Rosso __CPM_NO_G96B_D7 */}
                     </div>
                     <div style={{fontSize:FS.body,lineHeight:1.3,fontWeight:700,color:"#e8edf6",textShadow:"0 1px 6px rgba(0,0,0,0.7)",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.text}</EmoText></div>
                     {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.cause}</EmoText></div>}
@@ -11600,16 +11855,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>
 
             {/* RIGHT: info + action panel — desktop only for HL controls */}
-            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{flex:1,display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",minWidth:180,overflow:"hidden"}}>
+            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{...(_largo292()?{flex:"0 0 clamp(300px,27vw,460px)"}:{flex:1,minWidth:180}),display:"flex",flexDirection:"column",background:"#0f172a",borderLeft:"1px solid rgba(255,255,255,0.08)",overflow:"hidden"}}>
 
               {/* Action zone — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_move"&&curSit&&(
                 <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{color:"#f59e0b",fontSize:FS.caption,fontWeight:700,marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                    {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:42}/>}
+                    {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>}
                     <div style={{flex:1}}>
-                      <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label}{!isNarrow?" · WASD":""}</div>
+                      <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)",marginBottom:3}}>📍 {ZONES[zone]?.label}{(!isNarrow&&!_dito292)?" · WASD":""}</div>
                       {curSit.maxMoves>0&&<div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700,marginBottom:3}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>}
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
@@ -11632,7 +11887,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       )}
                     </div>
                   </div>
-                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
+                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:_dito292?"13px 7px":"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:_dito292?FS.small:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto{_dito292?"":" [0]"}</button>}{/* [giro 90 PO-292 D2/D14] a tocco: bersaglio >= 40 px e niente suggerimento da tastiera */}
                 </div>
               )}
 
@@ -11643,7 +11898,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {/* DPad still visible in hl_choose when moves remain */}
                   {showDPad(curSit)&&(
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                      <DPad onMove={handleDPad} dark size={isNarrow?52:42}/>
+                      <DPad onMove={handleDPad} dark size={isNarrow?52:(_dito292?46:42)}/>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)",marginBottom:2}}>📍 {ZONES[zone]?.label}</div>
                         <div style={{fontSize:FS.caption,color:"#60a5fa",fontWeight:700}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</div>
@@ -11659,16 +11914,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {false&&!isAimSit(curSit)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; Enter
                   </div>}{/* [6.44.0] niente hint tastiera sui rigori/punizioni · [6.45.0 RC] via «←→»: la navigazione con le frecce non era mai stata implementata (selectedActionIdx mai aggiornato) → hint fuorviante */}
-                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>💡 Muoviti (WASD) per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] */}
+                  {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>{_dito292?"💡 Muoviti col pad per cambiare le opzioni d'azione.":"💡 Muoviti (WASD) per cambiare le opzioni d'azione."}</div>}{/* [5.84.0 UX-2c] */}
                   <div style={{display:"flex",flexDirection:"column",gap:5}}>
                     {isAimSit(curSit)?(
                       <div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",textAlign:"center",marginBottom:8,fontStyle:"italic"}}>🤫 Silenzio. Solo tu e il portiere.</div>
                         <div style={{display:"flex",flexDirection:"column",gap:5}}>{/* [7.51.0 SET-PIECE 2.0] scelte di STILE al posto della griglia di mira */}
-                          {setPieceOptions(curSit,player,pPos.x).map((o)=>(
-                            <button key={o.id} onClick={()=>handleSetPiece(o)}
-                              style={{padding:"9px 12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-                              <div style={{fontSize:FS.small,fontWeight:800}}>{o.icon} {o.label}</div>
+                          {setPieceOptions(curSit,player,pPos.x).map((o,_oi)=>(
+                            <button key={o.id} onClick={()=>handleSetPiece(o)} data-sp292={_oi}/* [giro 90 PO-292 D6] indice per Invio sul pulsante col fuoco */
+                              style={{padding:_dito292?"13px 12px":"9px 12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+                              <div style={{fontSize:FS.small,fontWeight:800}}>{(_pctab292()&&!_dito292)?<span style={{display:"inline-block",minWidth:16,marginRight:6,textAlign:"center",borderRadius:RAD.xs,background:"rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:900}}>{_oi+1}</span>:null}{o.icon} {o.label}</div>
                               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",marginTop:2,lineHeight:1.35}}>{o.desc}</div>
                             </button>
                           ))}
@@ -11682,7 +11937,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:isNarrow?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
@@ -11699,7 +11954,29 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
                 <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
               )}
-              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
+              {/* [giro 96b D12 — collaudo grafico 178, PC 1440x900: «il pannello destro e' quasi vuoto, l'esito e' una striscia
+                  rossa sottile»] Sul largo l'esito diventa il CONTENUTO della colonna: scheda che prende lo spazio libero
+                  (flex 1), titolo grande che va a capo, frase, causa, voto/gol/assist e un «Continua» vero (46 px) — lo stesso
+                  contenuto della banda del telefono. Le statistiche restano sotto. Rosso __CPM_NO_G96B_D12 = la striscia di prima. */}
+              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(()=>{
+                const _tc=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
+                const _tt=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")));
+                const _az=outcome.timeout?"⏱ Troppo tardi":(chosenAct?.label||"");
+                return(
+                <div data-cpm="esito-pc" style={{flex:"1 1 auto",minHeight:0,overflowY:"auto",display:"flex",flexDirection:"column",gap:12,padding:"20px 18px",background:outcome.ok?"linear-gradient(180deg,rgba(5,50,20,0.55),rgba(15,23,42,0))":"linear-gradient(180deg,rgba(60,8,8,0.55),rgba(15,23,42,0))",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+                  <div data-cpm="esito-titolo" style={{fontSize:FS.title,fontWeight:900,lineHeight:1.15,color:_tc,whiteSpace:"normal",overflowWrap:"anywhere"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+_tt}</EmoText></div>
+                  {_az&&<div style={{fontSize:FS.bodyLg,fontWeight:800,color:"#e9e4ff",lineHeight:1.25,overflowWrap:"anywhere"}}><EmoText>{_az}</EmoText></div>}
+                  <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.88)",lineHeight:1.45}}><EmoText>{outcome.text}</EmoText></div>
+                  {outcome.cause&&<div style={{fontSize:FS.body,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",lineHeight:1.35}}><EmoText>{outcome.cause}</EmoText></div>}
+                  {aiCommentary&&<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.6)",fontStyle:"italic",lineHeight:1.4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                    {mStats.goals>0&&<div style={{padding:"4px 10px",borderRadius:RAD.pill,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:FS.small,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
+                    {mStats.assists>0&&<div style={{padding:"4px 10px",borderRadius:RAD.pill,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:FS.small,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
+                  </div>
+                  <div style={{flex:1}}/>
+                  <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{height:46,flexShrink:0,border:"none",borderRadius:RAD.sm,background:TH.primary,color:"#fff",fontSize:FS.body,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                </div>);})()}
+              {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(typeof window!=='undefined'&&window.__CPM_NO_G96B_D12)&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                   <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
@@ -11737,6 +12014,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               </div>}
 
+              {_panCol292&&<div data-cpm="colonna-stat292" style={{position:"relative",flex:1,minHeight:0}}>{_pan918el()}</div>}{/* [giro 90 PO-292] statistiche e pagelle della vista 2D nella colonna */}
               {/* Live commentary feed — hidden on mobile overlay */}
               <div style={{flex:1,padding:"6px 10px",overflowY:"auto",minHeight:0,display:"none"}}>{/* [7.529.0 collaudo PO «il box cronaca esterno e' ridondante: nascondilo» — il banner in campo e' la telecronaca */}
                 {/* [7.524.0 collaudo PO «la riga di testo della cronaca è illegibile, troppo piccola»] righe 10→13.
@@ -11758,7 +12036,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       )}
 
       {/* Mobile cronaca + compact stats — below the card, hidden during HL to free space for DPad */}
-      {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase)&&(show3D||phase==="walkout")&&(
+      {/* [giro 96b D14 — collaudo grafico 178: al fischio finale sfondo nero con la sola scheda «Fischio finale…»] Misurato
+          (412x915): entrando in cerimonia da `playing` questa striscia (38 px) spariva e la vista 3D cresceva 775 → 813 px:
+          `setSize` svuota il disegno fino al fotogramma dopo, e il primo fotogramma della cerimonia e' il piu' pesante della
+          partita. Il nero non l'ho riprodotto in headless (come il giro 97), ma il cambio di misura lo tolgo: in cerimonia la
+          striscia resta COME ERA nella fase prima (visibile se si arriva dal gioco, nascosta se si arriva da un highlight),
+          quindi il canvas non cambia misura. Rosso __CPM_NO_G96B_D14. */}
+      {isNarrow&&(phase==="ceremony"&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D14)?striscia96bRef.current:!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase))&&(show3D||phase==="walkout")&&(
         <div data-cpm="striscia"/* [7.901.0] etichetta stabile: la sonda hud-c3 la usa come fondo della zona di campo (dal fondo della barra a qui), nessun cambio di stile */ style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           {/* Compact stats bar */}
           {(()=>{const _rb_cs=Math.min(mStats.rb,30);const _raw_cs=clamp(5.8+_rb_cs*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
