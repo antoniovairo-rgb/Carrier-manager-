@@ -81,9 +81,9 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
 const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
-    primary:{background:TH.primary,color:"#fff",fontWeight:700},
+    primary:{background:TINTE.testo,color:TINTE.bg,fontWeight:700},/* [PO-302 V2] il tasto principale e' chiaro su fondo scuro (#f4f1ea su #0d0f14, 17:1) */
     green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
-    secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
+    secondary:{background:TINTE.tasto,color:TINTE.testo,border:"1px solid "+TINTE.tasto},/* [PO-302 V2] tasto secondario #262b37, testo 12,8:1 */
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
     outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
@@ -122,6 +122,82 @@ const Notif=({msg,color,alto})=>{if(typeof window!=='undefined'&&window.__CPM_NO
     {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
     <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
   </div></div>);};
+/* [PO-302 · grafica V2, tappa 1] I MATTONI DELLA V2: numeri in carattere TV, anello conico, forma V/N/P, ritratto e
+   figurina con cornice. Solo presentazione: leggono i dati gia' nel salvataggio, nessun campo nuovo.
+   Cornice: il gioco non aveva una regola oro/argento per l'eroe; scelta prudente (consegna PO-302): ORO da OVR 85, ARGENTO sotto. */
+const fsTV=(size,peso)=>({fontFamily:FONT_TV,fontWeight:peso||FW.black,fontSize:size,lineHeight:1,fontVariantNumeric:"tabular-nums"});
+const corniceV2=(ovr)=>((+ovr||0)>=85?TINTE.oroCornice:TINTE.argCornice);
+function AnelloV2({v,max=100,col,label,size=46}){
+  const n=Math.round(+v||0),pct=Math.max(0,Math.min(100,Math.round(n/max*100))),ins=size-10;
+  return(<div data-cpm="anello-v2" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,flexShrink:0}}>
+    <div role="img" aria-label={(label||"")+": "+n} style={{width:size,height:size,borderRadius:"50%",background:`conic-gradient(${col} 0 ${pct}%, ${TINTE.anello} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div className="cpm-num" style={{width:ins,height:ins,borderRadius:"50%",background:TINTE.sup,display:"flex",alignItems:"center",justifyContent:"center",...fsTV(FS.bodyLg,FW.bold),color:TINTE.testo}}>{n}</div></div>
+    {label&&<span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.08em",textTransform:"uppercase",color:TINTE.sec}}>{label}</span>}
+  </div>);}
+/* forma: le ultime partite come quadratini col segno V/N/P (inchiostro scuro su tinta chiara: >=7:1 su ognuna) */
+function FormaV2({lista,lato=18}){
+  const L=(lista||[]).slice(-5);if(!L.length)return null;
+  const es=(m)=>m.won?["V","#4ade80"]:m.drew?["N","#e5e7eb"]:["P","#fca5a5"];
+  return(<div data-cpm="forma-v2" role="img" aria-label={"Forma: "+L.map(m=>es(m)[0]).join(" ")} style={{display:"flex",gap:3}}>
+    {L.map((m,i)=>{const e=es(m);const r=(m.homeScore!=null&&m.awayScore!=null)?(" "+m.homeScore+"-"+m.awayScore):"";
+      return <span key={i} title={(m.opponent||"")+r} style={{width:lato,height:lato,borderRadius:RAD.xs,background:e[1],color:TINTE.bg,display:"inline-flex",alignItems:"center",justifyContent:"center",...fsTV(FS.caption,FW.bold)}}>{e[0]}</span>;})}
+  </div>);}
+/* il ritratto dell'eroe: lo stesso volto della testata (catalogo VOLTI23), ripiego sull'avatar disegnato */
+function RitrattoV2({nome,avatarId,w,h}){
+  const [,rif]=React.useReducer(x=>x+1,0);
+  React.useEffect(()=>{try{if(VOLTI23.idx)return;VOLTI23.ascolta.add(rif);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(rif);};}catch(_e){}},[]);
+  let url=null;try{url=voltoUrl("giocatore",nome);}catch(_e){url=null;}
+  if(url)return <img src={url} alt="" width={w} height={h} loading="lazy" decoding="async" style={{width:w,height:h,objectFit:"cover",objectPosition:"50% 12%",display:"block",borderRadius:RAD.sm}}/>;
+  return <div style={{width:w,height:h,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden"}}><AvatarSVG id={avatarId||0} size={Math.min(w,h)}/></div>;}
+const _abbr3V2=(t,d)=>String(t||d||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase()||d;
+/* la figurina V2. piccola (home): OVR + ruolo. grande (Carriera › Profilo): OVR, ruolo, nazione, volto, cognome, sei attributi */
+function FiguraV2({player,w=54,grande=false}){
+  const p=player||{},ovr=Math.round(p.ovr||60),club=(p.club&&p.club.c)||"#8e1f33",ink=inkSu945(club);
+  const ruolo=_abbr3V2(p.position,"ATT"),h=Math.round(w*1.4);
+  const righe={backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.06) 0 14px, rgba(255,255,255,0) 14px 28px)"};
+  if(!grande)return(
+    <div data-cpm="figurina-v2" title={"OVR "+ovr} style={{width:w,height:h,borderRadius:RAD.sm,padding:2,background:corniceV2(ovr),flexShrink:0}}>
+      <div style={{width:"100%",height:"100%",borderRadius:RAD.xs,background:club,...righe,color:ink,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"6px 0"}}>
+        <span className="cpm-num" style={fsTV(FS.title,FW.black)}>{ovr}</span>
+        <span style={{...fsTV(FS.caption,FW.bold),letterSpacing:"0.08em"}}>{ruolo}</span>
+      </div></div>);
+  const S=p.stats||{},cogn=String(p.name||"").trim().split(/\s+/).slice(-1)[0].toUpperCase();
+  const att=[["tiro","TIR"],["passaggio","PAS"],["dribbling","DRI"],["velocità","VEL"],["fisico","FIS"],["tecnica","TEC"]];
+  const lib=w-28,fsC=[24,20,17].find(z=>cogn.length*z*0.5<=lib)||FS.subhead;/* il cognome si restringe, non si taglia (Barlow Condensed ~0,5 em) */
+  const naz=_abbr3V2(p.nation,"");
+  return(
+    <div data-cpm="figurina-v2-grande" style={{width:w,height:h,borderRadius:RAD.xl,padding:4,background:corniceV2(ovr),boxShadow:"0 24px 48px rgba(0,0,0,0.55)",flexShrink:0}}>
+      <div style={{position:"relative",width:"100%",height:"100%",borderRadius:RAD.lg,overflow:"hidden",background:club,...righe,color:ink,display:"flex",flexDirection:"column"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"14px 14px 0",gap:6}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+            <span className="cpm-num" style={fsTV(w>=220?FS.displayLg:FS.display,FW.black)}>{ovr}</span>
+            <span style={{...fsTV(FS.bodyLg,FW.bold),letterSpacing:"0.12em"}}>{ruolo}</span>
+            {naz&&<span style={{marginTop:6,fontSize:FS.caption,fontWeight:FW.bold,background:"rgba(0,0,0,0.6)",color:"#ffffff",borderRadius:RAD.xs,padding:"2px 6px"}}>{naz}</span>}
+          </div>
+          <RitrattoV2 nome={p.name} avatarId={p.avatarId} w={Math.round(w*0.5)} h={Math.round(w*0.56)}/>
+        </div>
+        <div style={{marginTop:"auto",background:"rgba(0,0,0,0.62)",color:"#ffffff",padding:"10px 14px 14px",display:"flex",flexDirection:"column",gap:8}}>
+          <span style={{...fsTV(fsC,FW.black),letterSpacing:"0.06em",textAlign:"center",whiteSpace:"nowrap"}}>{cogn}</span>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",rowGap:4,columnGap:6}}>
+            {att.map(([k,a])=>(<span key={a} className="cpm-num" style={{display:"flex",justifyContent:"center",gap:5,...fsTV(FS.bodyLg,FW.bold)}}><span style={{fontWeight:FW.black}}>{Math.round(S[k]||0)}</span><span style={{fontWeight:FW.semibold,letterSpacing:"0.06em"}}>{a}</span></span>))}
+          </div>
+        </div>
+      </div></div>);}
+/* [PO-302 tappa 2] il titolo di scheda V2 (V2Stagione/V2Agente/V2Ufficio): occhiello maiuscolo, titolo in carattere TV, a destra un dato */
+function TitoloV2({occhiello,titolo,destra,cpm}){
+  return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
+    <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
+      {occhiello&&<span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.14em",textTransform:"uppercase",color:TINTE.sec}}>{occhiello}</span>}
+      <h2 style={{margin:0,...fsTV(FS.display,FW.bold),textTransform:"uppercase",letterSpacing:"0.02em",color:TINTE.testo,overflowWrap:"anywhere"}}>{titolo}</h2>
+    </div>
+    {destra||null}
+  </div>);}
+/* [PO-302 tappa 2b · V2Stagione] etichetta a blocchetto (CASA / FUORI / COPPA / competizione): maiuscolo spaziato sull'incasso, colore = significato */
+function TagV2({t,c,cpm}){return(<span data-cpm={cpm||"tag-v2"} style={{display:"inline-flex",alignItems:"center",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.1em",textTransform:"uppercase",lineHeight:1.3,padding:"2px 7px",borderRadius:RAD.xs,background:TH.surface2,color:c||TH.muted,whiteSpace:"nowrap"}}>{t}</span>);}
+/* tacche d'intensita' (interesse di mercato, livello del trainer): n accese su tot, colore unico */
+function TaccheV2({n,tot=3,col,label,w=14}){
+  return(<span data-cpm="tacche-v2" role="img" aria-label={label||(n+" su "+tot)} style={{display:"inline-flex",gap:3,flexShrink:0}}>
+    {Array.from({length:tot}).map((_,i)=><span key={i} style={{width:w,height:6,borderRadius:3,background:i<n?(col||TINTE.verde):TINTE.anello}}/>)}</span>);}
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */

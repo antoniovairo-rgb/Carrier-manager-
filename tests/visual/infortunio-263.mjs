@@ -101,7 +101,7 @@ async function braccio(id, extra, via, sett) {
   let azione = '';
   if (via === 'bottone' || via === 'nonconv') {
     await page.evaluate((st) => window.__CPM_CAREER.apriPartita(st), via === 'nonconv' ? 'not_called' : 'starter'); await sleep(500);
-    azione = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || ''));
+    azione = await page.evaluate(() => { const b = ((c => c.length ? c : [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || '') && x.getAttribute('data-cpm') !== 'simula-v2'))([...document.querySelectorAll('[data-cpm="simula-conferma"]')])) /* [giro 105] il bottone del PROMPT, non il tasto Simula della Home (PO-302, data-cpm simula-v2) che riapre il prompt */;
       if (!b.length) return 'nessun bottone Simula'; const t = (b[b.length - 1].textContent || '').trim(); b[b.length - 1].click(); return t; });
   } else {
     for (let i = 0; i < 5; i++) {

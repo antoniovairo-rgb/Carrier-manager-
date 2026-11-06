@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Ingresso in campo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #0a0c11; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <svg width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Tunnel e campo: le squadre entrano in fila" style="position: absolute; inset: 0;">
+    <defs><pattern id="tifo" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#ffffff"/></pattern></defs>
+    <rect x="0" y="0" width="390" height="360" fill="#0f1320"/>
+    <rect x="0" y="120" width="390" height="200" fill="{{home}}" opacity="0.7"/>
+    <rect x="0" y="120" width="390" height="200" fill="url(#tifo)" opacity="0.35"/>
+    <text x="195" y="236" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="56" fill="#f4f1ea" opacity="0.9" letter-spacing="4">VALDENAU</text>
+    <circle cx="30" cy="40" r="14" fill="#fff7d6"/><circle cx="360" cy="40" r="14" fill="#fff7d6"/>
+    <polygon points="0,360 390,360 390,844 0,844" fill="#2b7a37"/>
+    <polygon points="60,360 130,360 40,844 -60,844" fill="#2f8440"/><polygon points="200,360 270,360 330,844 220,844" fill="#2f8440"/>
+    <ellipse cx="195" cy="840" rx="240" ry="120" fill="#000000" opacity="0.45"/>
+  </svg>
+
+  <div style="position: absolute; left: 0; right: 0; top: 410px; display: flex; justify-content: center; align-items: flex-end; gap: 16px;">
+    <sc-for list="{{line}}" as="p" hint-placeholder-count="6">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <span style="width: 14px; height: 14px; border-radius: 50%; background: #e0ac82;"></span>
+        <div style="width: {{p.w}}; height: {{p.h}}; border-radius: 14px 14px 5px 5px; background: {{p.c}}; box-shadow: {{p.ring}};"></div>
+        <span style="width: 34px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.4);"></span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: 16px; top: 16px; display: flex; align-items: stretch; border-radius: 10px; overflow: hidden; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.06em;">
+    <span style="background: {{home}}; padding: 5px 10px;">VAL</span><span style="background: #f4f1ea; color: #0d0f14; padding: 5px 10px;">VS</span><span style="background: {{away}}; padding: 5px 10px;">RUH</span>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 92px; display: flex; flex-direction: column; gap: 4px;">
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #e8b44a;">Giornata 12 · Stadio Am Wald · 48.200 spettatori</span>
+    <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 44px; text-transform: uppercase; line-height: 0.95;">Valdenau<br>Ruhrpott</span>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.15); margin-right: 14px; overflow: hidden;"><div style="width: 35%; height: 100%; background: #f4f1ea;"></div></div>
+    <button type="button" style="min-height: 48px; padding: 0 18px; border-radius: 14px; border: 0; background: rgba(13,15,20,0.75); color: #f4f1ea; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 15px;">Salta</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"home":{"editor":"color","default":"#8e1f33"},"away":{"editor":"color","default":"#1d4ed8"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const home = this.props.home ?? '#8e1f33';
+    const away = this.props.away ?? '#1d4ed8';
+    const line = [away, home, away, home, away, home].map((c, i) => { const hero = i === 3; return { c, w: hero ? '34px' : '26px', h: hero ? '84px' : '68px', ring: hero ? '0 0 0 3px #e8b44a' : 'none' }; });
+    return { home, away, line };
+  }
+}
+</script>
+</body>
+</html>

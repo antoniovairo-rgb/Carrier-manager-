@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Post partita</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <header style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: 210px; overflow: hidden;">
+    <div style="background: {{home}};"></div>
+    <div style="background: {{away}};"></div>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px);"></div>
+    <div style="position: absolute; inset: 0; background: linear-gradient(0deg, #0d0f14 0%, rgba(13,15,20,0.15) 55%);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 18px; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.85);">Finale · Giornata 12</span>
+      <div style="display: flex; align-items: center; gap: 18px; margin-top: 10px;">
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: 0.06em;">VAL</span>
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 92px; line-height: 0.9; font-variant-numeric: tabular-nums;">2<span style="color: rgba(255,255,255,0.5); padding: 0 6px;">:</span>0</span>
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: 0.06em;">RUH</span>
+      </div>
+      <span style="font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 6px;">Brandi 38' · Pohl 63'</span>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
+    <section style="display: flex; align-items: center; gap: 14px; background: #1a1e27; border: 1px solid rgba(232,180,74,0.4); border-radius: 18px; padding: 14px;">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: conic-gradient(#e8b44a 0 80%, #2a2f3b 0); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <div style="width: 58px; height: 58px; border-radius: 50%; background: #1a1e27; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; line-height: 1; color: #e8b44a;">8.0</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #e8b44a;">Migliore in campo</span>
+        <span style="font-weight: 700; font-size: 18px;">Luca Brandi</span>
+        <span style="font-size: 13px; color: #9aa3b2;">1 gol · 1 assist · 4 tiri · 90'</span>
+      </div>
+    </section>
+
+    <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: baseline;">
+            <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; color: {{s.hc}};">{{s.h}}</span>
+            <span style="text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #9aa3b2;">{{s.label}}</span>
+            <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; text-align: right; font-variant-numeric: tabular-nums; color: {{s.ac}};">{{s.a}}</span>
+          </div>
+          <div style="display: flex; gap: 4px; height: 6px;">
+            <div style="flex-grow: 1; display: flex; justify-content: flex-end; background: #2a2f3b; border-radius: 999px; overflow: hidden;"><div style="width: {{s.hp}}; background: {{home}}; border-radius: 999px;"></div></div>
+            <div style="flex-grow: 1; display: flex; background: #2a2f3b; border-radius: 999px; overflow: hidden;"><div style="width: {{s.ap}}; background: {{away}}; border-radius: 999px;"></div></div>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px; margin-top: auto;">
+      <a href="#" style="min-height: 52px; border-radius: 14px; background: #1a1e27; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; text-decoration: none;">Pagelle</a>
+      <a href="V2Home.dc.html" style="min-height: 52px; border-radius: 14px; background: #f4f1ea; color: #0d0f14; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Continua</a>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"home":{"editor":"color","default":"#8e1f33"},"away":{"editor":"color","default":"#1d4ed8"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const raw = [['Possesso', 54, 46, '%'], ['Tiri', 14, 7, ''], ['In porta', 6, 2, ''], ['Passaggi', 412, 338, ''], ['Falli', 9, 13, '']];
+    const stats = raw.map((r) => {
+      const t = r[1] + r[2];
+      const hWin = r[0] === 'Falli' ? r[1] < r[2] : r[1] > r[2];
+      return { label: r[0], h: r[1] + r[3], a: r[2] + r[3], hp: Math.round(r[1] / t * 100) + '%', ap: Math.round(r[2] / t * 100) + '%', hc: hWin ? '#f4f1ea' : '#9aa3b2', ac: hWin ? '#9aa3b2' : '#f4f1ea' };
+    });
+    return { home: this.props.home ?? '#8e1f33', away: this.props.away ?? '#1d4ed8', stats };
+  }
+}
+</script>
+</body>
+</html>

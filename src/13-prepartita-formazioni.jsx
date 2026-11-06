@@ -446,7 +446,7 @@ function PressScreen({report,matchResult,onClose}){
         <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
         {(report.headlines||[]).map((h,i)=>(
           <div key={i} style={{padding:"8px 10px",background:TH.surface2,borderRadius:RAD.xs,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
-            <div style={{fontSize:FS.caption,color:paperColors[i]||TH.brandText,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
+            <div style={{fontSize:FS.caption,color:legCol944(paperColors[i]||TH.brandText,TH.surface2),fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>{/* [PO-302 tappa 4] il colore della testata e' un DATO (#003da5 Cronaca di Sport): sul fondo notte faceva 1,76:1. legCol944 lo alza finche' si legge, tonalita' intatta */}
             <div style={{fontSize:FS.small,fontWeight:i===0?800:600,color:TH.text,lineHeight:1.3}}>{h}</div>
           </div>
         ))}

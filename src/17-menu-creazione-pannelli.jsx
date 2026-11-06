@@ -321,7 +321,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </div>
           </Card>
         ):(
-          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.surface2/* [PO-302 V2] il velo bianco era pensato per il fondo avorio: sul fondo notte diventava un grigio #6e7074 con il testo a 1,6:1 */}}>
             <div style={{fontSize:FS.small,color:TH.faint}}>Salvataggio {i+1} — libero</div>
             <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>Nuova carriera</Btn>
           </div>
@@ -431,7 +431,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         <Btn data-cpm="crea295-home" v="ghost" onClick={onBack}>← Home</Btn></div>)}
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
-        <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
+        <div data-cpm="crea-v2" style={{display:"flex",justifyContent:"center"}}><TitoloV2 cpm="crea-titolo-v2" occhiello="Nuova carriera · chi sei" titolo="Crea il tuo calciatore"/></div>{/* [PO-302 tappa 3 · V2Creazione] titolo V2 (occhiello + carattere TV) */}
         {/* [7.999.49 parte A] tolta «Ruolo fisso: Attaccante»: il ruolo lo dice già la figurina */}
       </div>
       <Card style={{maxWidth:900,margin:"0 auto",padding:"16px 16px 18px"}}>
@@ -467,7 +467,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>{_unico75?"🗺️ Percorso":"🎯 Stile e percorso"}</div>
-          <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}} shadow={false}>
+          <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid "+TH.bdBlue}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
           </Card>
@@ -531,7 +531,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:FS.body,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
-          <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:FS.bodyLg}}>Inizia i provini</Btn>
+          <Btn onClick={go} disabled={!name.trim()} fw data-cpm="crea-avanti-v2" style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Inizia i provini</Btn>
           {!name.trim()&&<div style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:-8}}>Scrivi il nome per iniziare</div>}{/* [7.999.49 parte A] il bottone disattivato dice perché */}
         </div>
       </div>{/* end cpm-create */}
@@ -1118,36 +1118,41 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   }
   return(
     <div style={{width:"100%",paddingBottom:40}}>
-      {/* Header */}
-      <div style={{textAlign:"center",padding:"28px 16px 16px"}}>
-        <div style={{fontSize:56,marginBottom:8}}>👟</div>
-        <h1 style={{fontSize:FS.h,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Carriera</h1>
-        <p style={{fontSize:FS.body,color:TH.muted,margin:0}}>{p.name} · {p.age} anni · {stagioniGiocate94(p)} stagioni</p>
-      </div>
-
-      {/* Legacy grade */}
-      <Card style={{marginBottom:9,padding:"18px",textAlign:"center"}} bg={grade.color+"11"} border={grade.color+"44"}>
-        <div style={{fontSize:36,marginBottom:4}}>{grade.e}</div>
-        <div style={{fontSize:FS.subhead,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
-        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>Legacy Score: {legacyScore} / 1000</div>
-        <div style={{background:TH.cardBorder,borderRadius:RAD.sm,height:8,overflow:"hidden"}}>
-          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:RAD.sm}}/>
-        </div>
-      </Card>
-
-      {/* Career stats */}
-      <Fisarmonica id="ritiro-statistiche-carriera" titolo="📊 Statistiche Carriera" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
-          {[{l:"Stagioni",v:stagioniGiocate94(p),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"},...((p.nationalCaps||0)>0?[{l:"Gol Naz.",v:p.nationalGoals||0,e:"🥅"}]:[])].map(s=>(
-            <div key={s.l} style={{background:TH.bg,borderRadius:RAD.sm,padding:"8px 4px"}}>
-              <div style={{fontSize:FS.subhead}}>{s.e}</div>
-              <div style={{fontSize:FS.title,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-        {bestSeason&&<div style={{background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 10px",fontSize:FS.caption,color:TH.txAmber}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · Livello {bestSeason.ovr}</div>}
-      </Card></Fisarmonica>
+      {/* [PO-302 tappa 2b · V2FineCarriera] L'ADDIO: occhiello oro, nome in carattere TV, stagioni · club · eta' del ritiro, giudizio
+          della carriera con il Legacy Score; poi i totali a tessere (gol e trofei in oro) e IL PERCORSO club per club con la barra delle
+          stagioni. Stessi dati dell'intestazione, del riquadro Legacy e delle «Statistiche Carriera» di prima: nessuno tolto. */}
+      {(()=>{const _nm=String(p.name||"").trim().split(/\s+/),_nome=_nm.length>1?_nm.slice(0,-1).join(" "):"",_cogn=_nm[_nm.length-1]||"";
+        /* il percorso: stagioni consecutive con lo stesso club diventano un tratto */
+        const _tr=[];(history||[]).forEach(h=>{if(!h)return;const k=h.clubId||h.club;const u=_tr[_tr.length-1];if(u&&u.k===k){u.to=h.season;u.n++;}else _tr.push({k,club:h.club||"\u2013",clubId:h.clubId,from:h.season,to:h.season,n:1});});
+        const _max=Math.max(1,..._tr.map(t=>t.n));const _col=id=>{try{const c=(CLUBS||[]).find(x=>x.id===id);return (c&&c.c)||TH.primary;}catch(_e){return TH.primary;}};
+        const _tot=[{l:"Presenze",v:p.totalMatches||0},{l:"Gol",v:p.totalGoals||0,oro:1},{l:"Assist",v:p.totalAssists||0},{l:"Trofei",v:trophies.length,oro:1},{l:"Stagioni",v:stagioniGiocate94(p)},{l:"Caps Naz.",v:p.nationalCaps||0},...((p.nationalCaps||0)>0?[{l:"Gol Naz.",v:p.nationalGoals||0}]:[])];
+        return(<>
+        <section data-cpm="finecarriera-v2" style={{display:"flex",flexDirection:"column",gap:4,padding:"20px 2px 4px",marginBottom:_sb(SP.sm)}}>
+          <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.18em",textTransform:"uppercase",color:TH.goldText}}>👟 Fine di un'era</span>
+          <h1 style={{margin:0,display:"flex",flexDirection:"column",textTransform:"uppercase",letterSpacing:"0.02em",color:TH.text,overflowWrap:"anywhere"}}>
+            {_nome&&<span style={fsTV(FS.h,FW.bold)}>{_nome}</span>}<span style={fsTV(FS.displayLg,FW.bold)}>{_cogn}</span></h1>
+          <span style={{fontSize:FS.body,color:TH.muted}}>{stagioniGiocate94(p)} stagioni · {clubs.length||1} club · ritirato a {p.age} anni</span>
+          <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",marginTop:8}}>
+            <span style={{display:"inline-flex",alignItems:"center",gap:6,minHeight:32,padding:"4px 12px",borderRadius:RAD.pill,background:TH.card,border:"1px solid "+TH.cardBorder,fontSize:FS.small,fontWeight:FW.bold,color:TH.goldText}}>{grade.e} {grade.label}</span>
+            <span className="cpm-num" style={{fontSize:FS.small,color:TH.muted}}>Legacy Score: {legacyScore} / 1000</span>
+          </div>
+          <div style={{background:TH.track,borderRadius:RAD.pill,height:6,overflow:"hidden",marginTop:4}}><div style={{width:`${pct}%`,height:"100%",background:TH.goldText,borderRadius:RAD.pill}}/></div>
+        </section>
+        <section data-cpm="finecarriera-totali-v2" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(96px,1fr))",gap:SP.sm,marginBottom:_sb(SP.sm)}}>
+          {_tot.map(k=>(<div key={k.l} style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.lg,padding:"12px 6px",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+            <span className="cpm-num" style={{...fsTV(FS.display,FW.bold),color:k.oro?TH.goldText:TH.text}}>{k.v}</span>
+            <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.12em",textTransform:"uppercase",color:TH.muted}}>{k.l}</span></div>))}
+        </section>
+        {bestSeason&&<div style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderLeft:"3px solid "+TH.goldText,borderRadius:RAD.md,padding:"8px 12px",fontSize:FS.small,color:TH.text,marginBottom:_sb(SP.sm)}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol{bestSeason.ovr!=null?" · Livello "+bestSeason.ovr:""}</div>}
+        {_tr.length>0&&<section data-cpm="percorso-v2" style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.lg,padding:"12px 14px",marginBottom:_sb(SP.sm),display:"flex",flexDirection:"column",gap:10}}>
+          <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.14em",textTransform:"uppercase",color:TH.muted}}>Il percorso</span>
+          {_tr.map((t,i)=>(<div key={i} style={{display:"flex",flexDirection:"column",gap:4}}>
+            <div style={{display:"flex",justifyContent:"space-between",gap:10,alignItems:"baseline"}}><span style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,overflowWrap:"anywhere"}}>{t.club}</span>
+              <span className="cpm-num" style={{fontSize:FS.small,color:TH.muted,flexShrink:0}}>{t.from===t.to?"St. "+t.from:"St. "+t.from+"\u2013"+t.to}</span></div>
+            <div role="img" aria-label={t.n+(t.n===1?" stagione":" stagioni")} style={{height:8,borderRadius:RAD.pill,background:TH.track,overflow:"hidden"}}><div data-cpm="barra-percorso-v2" style={{width:(t.n/_max*100)+"%",height:"100%",borderRadius:RAD.pill,background:_col(t.clubId)}}/></div>
+          </div>))}
+        </section>}
+        </>);})()}
 
       {/* [7.992.0 Patrimonio F4] l'eredità fuori dal campo */}
       {(function(){var lp=legacyPatrimonio24(p);var ac=p.academy24,bn=(p.beni24||[]);if(!lp.netto&&!ac&&!bn.length)return null;
@@ -2556,6 +2561,7 @@ function migratePlayer(player){
       newP={...newP,agent:agentInit({id:_ar,arch:_ar,name:_nm,season:newP.season||1,week:newP.week||1})};changed=true;
     }catch(_e){}}
     if(!('bankBalance' in newP)){newP={...newP,bankBalance:0};changed=true;}// v8 [5.81.0] economia
+    if(!Array.isArray(newP.patrimonio303)&&!(typeof window!=='undefined'&&window.__CPM_NO_PATR303)){newP={...newP,patrimonio303:[]};changed=true;}/* [PO-303, dalla 179] storico mensile del patrimonio: ADDITIVO, i salvataggi vecchi partono con la serie vuota (nessun mese passato inventato). Nessun bump di SAVE_VERSION: il campo e' facoltativo per tutto il codice che lo legge */
     if(!('perkTrainer' in newP)){newP={...newP,perkTrainer:false};changed=true;}
     if(!('perkNutrition' in newP)){newP={...newP,perkNutrition:false};changed=true;}
     /* [PO-281 · giro 70] nutrizionista + fisioterapista = PREPARATORE ATLETICO (chiave perkNutrition). Additiva e una volta sola

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Torneo Nazionale</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <header style="position: relative; padding: 22px 16px 18px; background: {{nat}}; overflow: hidden; display: flex; flex-direction: column; gap: 4px;">
+    <div aria-hidden="true" style="position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; border: 22px solid rgba(250,204,21,0.35);"></div>
+    <span style="position: relative; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #fde68a;">Mondiale · Fase a gironi</span>
+    <span style="position: relative; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 40px; text-transform: uppercase; line-height: 1;">Spagna</span>
+    <span style="position: relative; font-size: 14px; color: rgba(255,255,255,0.9);">Girone C · Brandi n.9 · 2 gol in 2 partite</span>
+  </header>
+
+  <main style="flex-grow: 1; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px;">
+    <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; overflow: hidden;">
+      <div style="display: grid; grid-template-columns: 26px minmax(0, 1fr) 30px 30px 36px; gap: 8px; padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9aa3b2; border-bottom: 1px solid rgba(255,255,255,0.06);"><span>#</span><span>Girone C</span><span style="text-align: right;">G</span><span style="text-align: right;">DR</span><span style="text-align: right;">Pt</span></div>
+      <sc-for list="{{group}}" as="g" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: 26px minmax(0, 1fr) 30px 30px 36px; gap: 8px; align-items: center; padding: 0 14px; min-height: 50px; border-bottom: 1px solid rgba(255,255,255,0.04); background: {{g.bg}}; box-shadow: {{g.edge}};">
+          <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; color: #9aa3b2;">{{g.pos}}</span>
+          <span style="font-weight: {{g.weight}}; font-size: 15px;">{{g.name}}</span>
+          <span style="text-align: right; color: #9aa3b2;">2</span>
+          <span style="text-align: right; color: #9aa3b2;">{{g.dr}}</span>
+          <span style="text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px;">{{g.pt}}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Terza giornata · decisiva</span>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center;">
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; text-transform: uppercase;">Spagna</span>
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; color: #596273; padding: 0 10px;">VS</span>
+        <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; text-transform: uppercase; text-align: right;">Uruguay</span>
+      </div>
+      <span style="font-size: 14px; color: #cbd5e1;">Basta un pareggio per chiudere primi.</span>
+      <button type="button" style="min-height: 52px; border: 0; border-radius: 14px; background: #f4f1ea; color: #0d0f14; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase;">Scendi in campo</button>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"nat":{"editor":"color","default":"#b91c1c"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const g = [['Spagna', 4, '+3'], ['Uruguay', 4, '+2'], ['Giappone', 3, '0'], ['Canada', 0, '-5']];
+    const group = g.map((r, i) => { const me = r[0] === 'Spagna'; return { pos: i + 1, name: r[0], pt: r[1], dr: r[2], bg: me ? 'rgba(232,180,74,0.10)' : 'transparent', weight: me ? 700 : 500, edge: i < 2 ? 'inset 3px 0 0 #4ade80' : 'none' }; });
+    return { nat: this.props.nat ?? '#b91c1c', group };
+  }
+}
+</script>
+</body>
+</html>

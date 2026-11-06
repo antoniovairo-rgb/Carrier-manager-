@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 /* [7.999.110 GUARDIANO — collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile»] Carriera a W.38 con il titolo già
    matematico. Il riquadro «Campioni di …!» deve stare SOPRA la «Prossima partita» e la scritta «È matematica» e la frase devono avere
-   contrasto ≥ 4,5 col fondo del riquadro (WCAG AA). CPM_RED=1 → __CPM_NO_TITOLO110: tornano i colori crema → deve FALLIRE. */
+   contrasto ≥ 4,5 col fondo del riquadro (WCAG AA). CPM_RED=1 → tema di prova sbiadito (giro 105; prima __CPM_NO_TITOLO110, cieco col tema unico) → deve FALLIRE. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { armaTemaRosso } from './lib/tema-prova.mjs';
 const RED = process.env.CPM_RED === '1';
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const URL = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
-async function apri(ctx, init) { const page = await ctx.newPage(); await installCdnRoutes(page); if (init) await page.addInitScript(init.fn, init.arg);
+/* [giro 105] col tema unico scuro (V2 tappa 4) i «colori di prima» di __CPM_NO_TITOLO110 (crema) sono leggibili: il rosso non
+   riproduceva piu' niente. Il braccio rosso si fa come prescrive l'invariante «tema unico»: token alterati dal banco di prova
+   (lib/tema-prova.mjs), che deve far cadere il contrasto misurato (misura giro 105: verde 8,78/14,79 · rosso 2,27/2,12).
+   __CPM_NO_TITOLO110 NON si accende piu': rimette la crema cablata #fef3c7, leggibile sul fondo scuro, e maschererebbe il rosso. */
+async function apri(ctx, init, rosso) { const page = await ctx.newPage(); await installCdnRoutes(page); if (rosso) await armaTemaRosso(page); if (init) await page.addInitScript(init.fn, init.arg);
   await page.goto(URL, { waitUntil: 'load', timeout: 60000 }); await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 60000 }); await sleep(1200); return page; }
 const ctx0 = await browser.newContext(); const p0 = await apri(ctx0, { fn: () => { window.__CPM_GLB = false; }, arg: null });
 const SAVE = await p0.evaluate(() => {
@@ -19,7 +24,7 @@ const SAVE = await p0.evaluate(() => {
 });
 await ctx0.close();
 const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } });
-const page = await apri(ctx, { fn: ([s, r]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_TITOLO110 = 1; localStorage.setItem('cpm-v3', JSON.stringify(s)); }, arg: [SAVE, RED] });
+const page = await apri(ctx, { fn: ([s, r]) => { window.__CPM_GLB = false; localStorage.setItem('cpm-v3', JSON.stringify(s)); }, arg: [SAVE, RED] }, RED);
 try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
 await page.waitForFunction(() => !!window.__CPM_CAREER, { timeout: 20000 }).catch(() => {}); await sleep(3000);
 try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {} await sleep(500);
@@ -28,7 +33,7 @@ const r = await page.evaluate(() => {
   const ctr = (a, b) => { const x = lum(a), y = lum(b); return +((Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05)).toFixed(2); };
   const divs = [...document.querySelectorAll('div')];
   const titolo = divs.filter(d => /CAMPIONI DI/.test(d.textContent || '') && /matematica/i.test(d.textContent || '')).sort((a, b) => a.textContent.length - b.textContent.length)[0];
-  const prossima = divs.filter(d => /PROSSIMA PARTITA/i.test(d.textContent || '')).sort((a, b) => a.textContent.length - b.textContent.length)[0];
+  const prossima = document.querySelector('[data-cpm="prossima-v2"]') /* [giro 105] la card V2 della prossima gara dice «Prossima · <competizione>», non «Prossima partita» */ || divs.filter(d => /PROSSIMA PARTITA/i.test(d.textContent || '')).sort((a, b) => a.textContent.length - b.textContent.length)[0];
   if (!titolo) return { err: 'riquadro titolo assente' };
   let card = titolo; while (card && getComputedStyle(card).backgroundColor.match(/rgba\(0, 0, 0, 0\)|transparent/)) card = card.parentElement;
   const bg = card ? getComputedStyle(card).backgroundColor : 'rgb(255,255,255)';

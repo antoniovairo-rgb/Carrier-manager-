@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Stagione su PC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; display: flex; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <aside style="width: 236px; flex-shrink: 0; background: #11141b; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; padding: 22px 14px; gap: 22px; box-sizing: border-box;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px;">
+      <div style="width: 40px; height: 40px; border-radius: 12px; background: #8e1f33; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px;">VAL</div>
+      <div style="display: flex; flex-direction: column; line-height: 1.15;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: 0.06em; text-transform: uppercase;">FC Valdenau</span><span style="font-size: 12px; color: #9aa3b2;">St. 14 · G11</span></div>
+    </div>
+    <nav aria-label="Schede" style="display: flex; flex-direction: column; gap: 4px;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="6">
+        <a href="{{t.href}}" style="min-height: 46px; border-radius: 12px; padding: 0 14px; display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: {{t.weight}}; color: {{t.color}}; background: {{t.bg}};"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.dot}};"></span>{{t.label}}</a>
+      </sc-for>
+    </nav>
+  </aside>
+
+  <main style="flex-grow: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; min-width: 0;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div style="display: flex; flex-direction: column;"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9aa3b2;">Deutsche Liga · Stagione 14 · Giornata 11 di 34</span><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 48px; text-transform: uppercase; line-height: 1;">Classifica</span></div>
+      <div role="tablist" style="display: flex; gap: 4px; background: #1a1e27; border-radius: 14px; padding: 4px;">
+        <button type="button" role="tab" aria-selected="true" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: #f4f1ea; color: #0d0f14; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 15px;">Classifica</button>
+        <button type="button" role="tab" aria-selected="false" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: transparent; color: #9aa3b2; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 15px;">Calendario</button>
+        <button type="button" role="tab" aria-selected="false" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: transparent; color: #9aa3b2; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 15px;">Coppe</button>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 16px; align-items: start;">
+      <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) repeat(4, 44px) 96px 54px; gap: 8px; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9aa3b2; border-bottom: 1px solid rgba(255,255,255,0.06);"><span>#</span><span>Squadra</span><span style="text-align: right;">V</span><span style="text-align: right;">N</span><span style="text-align: right;">P</span><span style="text-align: right;">DR</span><span>Forma</span><span style="text-align: right;">Pt</span></div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) repeat(4, 44px) 96px 54px; gap: 8px; align-items: center; padding: 0 20px; min-height: 54px; font-size: 15px; font-variant-numeric: tabular-nums; border-bottom: 1px solid rgba(255,255,255,0.04); background: {{r.bg}}; box-shadow: {{r.edge}};">
+            <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; color: {{r.posColor}};">{{r.pos}}</span>
+            <span style="display: flex; align-items: center; gap: 10px;"><span style="width: 24px; height: 24px; border-radius: 8px; background: {{r.color}};"></span><span style="font-weight: {{r.weight}};">{{r.name}}</span></span>
+            <span style="text-align: right; color: #9aa3b2;">{{r.v}}</span><span style="text-align: right; color: #9aa3b2;">{{r.n}}</span><span style="text-align: right; color: #9aa3b2;">{{r.p}}</span><span style="text-align: right; color: #9aa3b2;">{{r.dr}}</span>
+            <span style="display: flex; gap: 3px;"><sc-for list="{{r.form}}" as="f" hint-placeholder-count="5"><span style="width: 14px; height: 14px; border-radius: 4px; background: {{f.c}};"></span></sc-for></span>
+            <span style="text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px;">{{r.pt}}</span>
+          </div>
+        </sc-for>
+      </section>
+      <section style="background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Prossime partite</span>
+        <sc-for list="{{fixtures}}" as="f" hint-placeholder-count="5">
+          <div style="display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 56px; border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: #9aa3b2;">{{f.md}}</span>
+            <span style="font-weight: 600; font-size: 15px;">{{f.match}}</span>
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: {{f.c}}; border: 1px solid {{f.c}}; border-radius: 999px; padding: 3px 9px;">{{f.tag}}</span>
+          </div>
+        </sc-for>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = [['Home', 'V2HomePC.dc.html'], ['Stagione', 'V2StagionePC.dc.html', true], ['Club', 'V2ClubPC.dc.html'], ['Carriera', 'V2CarrieraPC.dc.html'], ['Agente', 'V2AgentePC.dc.html'], ['Ufficio', 'V2UfficioPC.dc.html']];
+    const tabs = T.map((t) => ({ label: t[0], href: t[1], weight: t[2] ? 700 : 500, color: t[2] ? '#0d0f14' : '#9aa3b2', bg: t[2] ? '#f4f1ea' : 'transparent', dot: t[2] ? '#8e1f33' : 'transparent' }));
+    const col = { V: '#4ade80', N: '#9aa3b2', P: '#f87171' };
+    const base = [['Bayern Südstadt', '#b91c1c', 8, 3, 0, '+18', 27, 'VVVNV'], ['Rheinland 04', '#166534', 7, 3, 1, '+12', 24, 'VNVVP'], ['FC Valdenau', '#8e1f33', 7, 2, 2, '+10', 23, 'VVNVP'], ['Hanse Nord', '#0f766e', 6, 3, 2, '+6', 21, 'NVPVV'], ['FC Ruhrpott', '#1d4ed8', 5, 4, 2, '+5', 19, 'VPPVN'], ['Elbtal', '#7c3aed', 4, 4, 3, '+1', 16, 'PNVNV'], ['Schwarzwald', '#475569', 4, 2, 5, '-2', 14, 'PPVNN'], ['Moselufer', '#b45309', 3, 3, 5, '-4', 12, 'NPPVP'], ['Altmark', '#64748b', 2, 3, 6, '-9', 9, 'PPNPV'], ['Spreewald', '#0369a1', 1, 3, 7, '-13', 6, 'PPPNP']];
+    const rows = base.map((r, i) => { const me = r[0] === 'FC Valdenau'; return { pos: i + 1, name: r[0], color: r[1], v: r[2], n: r[3], p: r[4], dr: r[5], pt: r[6], form: r[7].split('').map((x) => ({ c: col[x] })), bg: me ? 'rgba(142,31,51,0.28)' : 'transparent', weight: me ? 700 : 500, posColor: me ? '#f4f1ea' : '#9aa3b2', edge: i < 4 ? 'inset 3px 0 0 #60a5fa' : (i >= 8 ? 'inset 3px 0 0 #f87171' : 'none') }; });
+    const fixtures = [
+      { md: 'G12', match: 'Valdenau – Ruhrpott', tag: 'Casa', c: '#4ade80' },
+      { md: 'G13', match: 'Elbtal – Valdenau', tag: 'Fuori', c: '#9aa3b2' },
+      { md: 'COPPA', match: 'Valdenau – Lisboa', tag: 'Campioni', c: '#60a5fa' },
+      { md: 'G14', match: 'Valdenau – Moselufer', tag: 'Casa', c: '#4ade80' },
+      { md: 'G15', match: 'Bayern Südstadt – Valdenau', tag: 'Big match', c: '#e8b44a' }
+    ];
+    return { tabs, rows, fixtures };
+  }
+}
+</script>
+</body>
+</html>

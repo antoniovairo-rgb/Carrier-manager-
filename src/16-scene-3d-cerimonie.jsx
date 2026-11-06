@@ -2544,7 +2544,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* PREMI EUROPEI — [7.999.49 parte A] stesso ordine del gala (Re dei Bomber, poi Trofeo d'Oro); i podi gia' svelati al gala
           stanno in una fisarmonica, aperta se un premio europeo e' tuo */}
       <Fisarmonica id="premi-europei49" titolo="Premi europei" icona="🌍" quante={2} aperta={!_g51&&!!(palloneOro.playerWins||scarpaOro.playerWins)}>
-      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
+      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?"rgba(34,197,94,0.12)":TH.card,border:scarpaOro.playerWins?("1.5px solid "+"rgba(34,197,94,0.45)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>I migliori marcatori dei campionati europei</div>
         <Podio23 righe={scarpaOro.top3} label="gol" extra={c=>c.league||c.club} pari/>
@@ -2554,7 +2554,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.small,fontWeight:800,color:TH.txGreen,textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Re dei Bomber è tua!</div>}
       </Card>
 
-      <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
+      <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?"rgba(245,158,11,0.13)":TH.card,border:palloneOro.playerWins?("1.5px solid "+"rgba(245,158,11,0.5)"):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"Migliori calciatori d'Europa":"Migliori calciatori d'Europa (OVR, gol, assist, trofei)"}</div>
         <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>(c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club))+(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&c.ovr!=null?` · OVR ${c.ovr}`:"")}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
@@ -2693,7 +2693,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   //   SOTTO lo spot Conference → nessuna Europa, e la schermata non lo diceva. Scelta PO: regola invariata +
   //   AVVISO trasparente quando si manca l'Europa per un soffio (8°, subito sotto il 7° Conference).
   const _justMissedEuro132=_isTopFlight132&&!isChampion&&!isRelegated&&!_isEuroZone132&&playerPos===7;
-  const bgColor=isChampion?thPastel("#fef9c3","rgba(245,158,11,0.14)"):(isPromoted||_isEuroZone132)?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):isRelegated?thPastel("#fff1f2","rgba(239,68,68,0.12)"):thPastel("#f8fafc",TH.surface2);/* [7.178.0 RC-15] */
+  const bgColor=isChampion?"rgba(245,158,11,0.14)":(isPromoted||_isEuroZone132)?"rgba(34,197,94,0.12)":isRelegated?"rgba(239,68,68,0.12)":TH.surface2;/* [7.178.0 RC-15] */
   const borderColor=isChampion?"#fde68a":(isPromoted||_isEuroZone132)?"#bbf7d0":isRelegated?"#fecaca":TH.cardBorder;
   const statusEmoji=isChampion?"🏆":_isCL132?"🌍":_isEL132?"🟠":_isConL132?"🟢":isPromoted?"⬆️":isRelegated?"⬇️":"🏁";
   const statusLabel=isChampion?"CAMPIONE!":_isCL132?"COPPA CAMPIONI":_isEL132?"COPPA EUROPA":_isConL132?"COPPA CONFERENCE":isPromoted?"PROMOZIONE":isRelegated?"RETROCESSIONE":"Fine stagione";// 5.49.3: nomi competizioni di fantasia (de-branding)
@@ -2830,32 +2830,36 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           {!_isNat&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:800,color:"rgba(255,255,255,0.88)"}}>{(club?.n||club?.name||"Il club")} entra nella storia — nessun campionato vale una notte così.</div>}
           {euroChamp&&_natWin25&&<div style={{marginTop:8,fontSize:FS.small,fontWeight:900,color:"#fde68a"}}>… e in Nazionale: {_natTitle} Una stagione irripetibile.</div>}
         </div>);})()}
-      {/* Header cinematico Sprint 87 */}
-      <div style={{textAlign:"center",marginBottom:14,paddingTop:6,
-        background:isChampion?"linear-gradient(160deg,#fef9c3,#fef08a,#fef9c3)":(isPromoted||_isEuroZone132)?"linear-gradient(160deg,#f0fdf4,#bbf7d0,#f0fdf4)":isRelegated?"linear-gradient(160deg,#fff1f2,#fecaca,#fff1f2)":"transparent",
-        borderRadius:RAD.lg,padding:"16px 8px 12px",marginTop:4}}>
-        <div style={{fontSize:isChampion?52:44,marginBottom:6,display:"inline-block",
-          animation:isChampion||isPromoted||_isEuroZone132?"pulse87 1.2s ease-in-out infinite":"none"}}>
-          {statusEmoji}
-        </div>
-        <h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine Stagione {season}</h1>
-        <p style={{color:TH.muted,fontSize:FS.small,margin:"0 0 6px"}}>{club?.n||club?.name} · {club?.lg||"Pro"}</p>
-        <div style={{fontSize:FS.body,fontWeight:800,fontStyle:"italic",color:isChampion?"#713f12":isRelegated?"#9f1239":(isPromoted||_isEuroZone132)?"#166534":TH.muted}}>{headline}</div>
-        {isChampion&&<div style={{marginTop:8,fontSize:FS.body,fontWeight:800,color:TH.txAmber,letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
+      {/* [PO-302 tappa 2b · V2FineStagione] IL BILANCIO: occhiello «Stagione N · bilancio», posizione e lega in carattere TV, club e
+          traguardo; sotto, i quattro numeri della stagione (gol in oro). Sostituisce l'intestazione pastello e il riquadro stato+numeri:
+          stessi dati (emoji/etichetta del traguardo, posizione su N, titolo del giornale, festeggiamenti), nessuno tolto. */}
+      <section data-cpm="finestagione-v2" style={{display:"flex",flexDirection:"column",gap:4,padding:"6px 2px 0",marginBottom:_sb(SP.sm),marginTop:4}}>
+        <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.16em",textTransform:"uppercase",color:TH.goldText}}>Stagione {season} · bilancio</span>
+        <h1 style={{margin:0,...fsTV(FS.display,FW.bold),textTransform:"uppercase",letterSpacing:"0.02em",color:TH.text,overflowWrap:"anywhere"}}>{playerPos+1}° in {club?.lg||"Pro"}</h1>
+        <span style={{fontSize:FS.body,color:TH.muted}}>{club?.n||club?.name} · <span style={{color:isChampion?TH.goldText:(isPromoted||_isEuroZone132)?TH.success:isRelegated?TH.danger:TH.muted,fontWeight:FW.bold}}>{statusEmoji} {statusLabel}</span> · {playerPos+1}/{numTeams}</span>
+        <div style={{fontSize:FS.body,fontWeight:FW.bold,fontStyle:"italic",color:TH.text,marginTop:4}}>{headline}</div>
+        {isChampion&&<div style={{marginTop:8,fontSize:FS.body,fontWeight:800,color:TH.goldText,letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
         {/* [7.8.3 collaudo PO «la qualificazione in Europa va festeggiata, soprattutto per una piccola come la Salernitana!»] festeggiamento dedicato per la qualificazione europea (e la promozione), con enfasi per le piazze piccole (prestigio basso) */}
         {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";return(
           <div style={{marginTop:8}}>
-            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.txGreen,letterSpacing:0.4}}>{_small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉"}</div>
-            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.txGreen}}>{club?.n||club?.name} qualificato in {_comp}!</div>
-            {_small&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.txGreen,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉"}</div>
+            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{club?.n||club?.name} qualificato in {_comp}!</div>
+            {_small&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
           </div>);})()}
-        {!isChampion&&isPromoted&&<div style={{marginTop:8,fontSize:FS.bodyLg,fontWeight:900,color:TH.txGreen,letterSpacing:0.4}}>🎉 PROMOSSI! Si sale di categoria! 🎉</div>}
+        {!isChampion&&isPromoted&&<div style={{marginTop:8,fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>🎉 PROMOSSI! Si sale di categoria! 🎉</div>}
         {/* [7.157.0] «a un soffio dall'Europa»: 8° = subito sotto lo spot Conference (7°) → l'Europa non parte. Chiarisce PERCHÉ, così non sembra un bug. */}
         {_justMissedEuro132&&<div style={{marginTop:8}}>
-          <div style={{fontSize:FS.body,fontWeight:900,color:TH.txAmber,letterSpacing:0.3}}>🎯 A un soffio dall'Europa!</div>
+          <div style={{fontSize:FS.body,fontWeight:900,color:TH.goldText,letterSpacing:0.3}}>🎯 A un soffio dall'Europa!</div>
           <div style={{marginTop:3,fontSize:FS.caption,fontWeight:700,color:TH.muted,fontStyle:"italic"}}>8° posto — la zona Conference chiude al 7°. Bastava una posizione: l'anno prossimo l'Europa è a un passo.</div>
         </div>}
-      </div>
+      </section>
+      <section data-cpm="finestagione-numeri-v2" style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.lg,padding:"12px 4px",marginBottom:_sb(SP.sm)}}>
+        {[{l:"Partite",v:playerStats.matches,c:TH.text},{l:"Gol",v:playerStats.goals,c:TH.goldText},{l:"Assist",v:playerStats.assists,c:TH.text},{l:"OVR",v:playerStats.ovr,c:TH.text}].map((k,i)=>(
+          <div key={k.l} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,borderRight:i<3?"1px solid "+TH.divider:"none"}}>
+            <span className="cpm-num" style={{...fsTV(FS.display,FW.bold),color:k.c}}>{k.v}</span>
+            <span style={{fontSize:FS.caption,fontWeight:FW.semibold,letterSpacing:"0.12em",textTransform:"uppercase",color:TH.muted}}>{k.l}</span>
+          </div>))}
+      </section>
       {/* Sprint 100: narrative + coach dialog */}
       <Card style={{marginBottom:8,padding:"12px 14px"}}>
         <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.55,marginBottom:_coachLine100?10:0,fontStyle:"italic"}}>{narrative}</div>
@@ -2882,22 +2886,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       </Card>;})()}
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}`}</style>
 
-      {/* Status banner + stats */}
-      <Card style={{marginBottom:12,padding:"12px 16px"}} bg={bgColor} border={borderColor}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-          <div style={{fontSize:FS.body,fontWeight:900,color:TH.text}}>{statusEmoji} {statusLabel}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,textAlign:"center"}}>
-          {[{l:"Partite",v:playerStats.matches,e:"📅"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"OVR",v:playerStats.ovr,e:"⭐"}].map(s=>(
-            <div key={s.l}>
-              <div style={{fontSize:FS.title}}>{s.e}</div>
-              <div style={{fontSize:FS.title,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </Card>
+      {/* [PO-302 tappa 2b] traguardo, posizione e numeri della stagione sono nel bilancio in cima */}
 
       {/* [7.11.0 Sprint «Emozioni»] IL FILM DELLA STAGIONE — i momenti VERI dal diario + la miglior partita */}
       {(()=>{
@@ -3176,7 +3165,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           {notifBusy?"📣 Riepilogo in corso…":"🏁 Il giorno dell'addio →"}
         </Btn>
       ):(
-      <Btn onClick={onNewSeason} v="primary" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
+      <Btn onClick={onNewSeason} v="primary" fw disabled={!!notifBusy} style={{padding:"14px",minHeight:54,...fsTV(FS.title,FW.bold),textTransform:"uppercase",letterSpacing:"0.08em",marginTop:4,...(notifBusy?{opacity:.55}:{})}}>{/* [PO-302 tappa 2b] tasto chiaro in carattere TV */}
         {notifBusy?"📣 Riepilogo in corso…":`🆕 Inizia Stagione ${season+1} →`}
       </Btn>
       )}

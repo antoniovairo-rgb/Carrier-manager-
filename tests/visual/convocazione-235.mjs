@@ -36,7 +36,7 @@ async function misura(larg, rosso, dati, nome) {
     const rgb = (s) => { const m = String(s).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(x => +x); return { r: p[0], g: p[1], b: p[2], a: p[3] == null ? 1 : p[3] }; };
     const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
     const contr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
-    const prim = rgb((() => { const d = document.createElement('div'); d.style.color = TH.primary; document.body.appendChild(d); const c = getComputedStyle(d).color; d.remove(); return c; })());
+    const prim = rgb((() => { const d = document.createElement('div'); d.style.color = (typeof TINTE !== 'undefined' && TINTE.testo) || TH.primary; /* [giro 105] grafica unica V2: lo sfondo del Btn primario e' TINTE.testo (src/11, PO-302), non piu' TH.primary */ document.body.appendChild(d); const c = getComputedStyle(d).color; d.remove(); return c; })());
     const card = rgb((() => { const d = document.createElement('div'); d.style.color = TH.card; document.body.appendChild(d); const c = getComputedStyle(d).color; d.remove(); return c; })());
     const all = [...host.querySelectorAll('*')];
     const gradienti = all.filter(e => /gradient/.test(getComputedStyle(e).backgroundImage) && !e.closest('svg')).length;

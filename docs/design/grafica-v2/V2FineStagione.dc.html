@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>V2 Fine stagione e gala</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f4f1ea}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 20px 16px 16px; background: #0d0f14; color: #f4f1ea; font-family: 'Barlow', 'Segoe UI', system-ui, sans-serif; overflow: hidden;">
+
+  <div style="display: flex; flex-direction: column; gap: 2px;">
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #e8b44a;">Stagione 14 · bilancio</span>
+    <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 40px; text-transform: uppercase; line-height: 0.95;">2° in Deutsche Liga</span>
+    <span style="font-size: 13px; color: #9aa3b2;">FC Valdenau · qualificato in Coppa dei Campioni</span>
+  </div>
+
+  <section style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #1a1e27; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 12px 4px;">
+    <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+      <div style="display: flex; flex-direction: column; align-items: center; border-right: {{k.sep}};"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 30px; line-height: 1; color: {{k.color}};">{{k.v}}</span><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9aa3b2;">{{k.label}}</span></div>
+    </sc-for>
+  </section>
+
+  <section style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(145deg, #fbe7a1 0%, #e8b44a 35%, #9c6a12 65%, #f5d27a 100%);">
+    <div style="border-radius: 18px; background: #14110b; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #e8b44a;">Galà dei premi</span>
+      <sc-for list="{{awards}}" as="a" hint-placeholder-count="3">
+        <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; min-height: 56px; border-bottom: 1px solid rgba(232,180,74,0.15);">
+          <span style="width: 40px; height: 40px; border-radius: 12px; background: {{a.bg}}; color: {{a.fg}}; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M12 14v4M8 21h8"/></svg></span>
+          <span style="display: flex; flex-direction: column;"><span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; text-transform: uppercase; letter-spacing: 0.02em;">{{a.title}}</span><span style="font-size: 13px; color: #c9b89a;">{{a.who}}</span></span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="border-left: 3px solid #f4f1ea; padding: 2px 0 2px 12px; display: flex; flex-direction: column; gap: 2px;">
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa3b2;">Il mister</span>
+    <span style="font-size: 15px; line-height: 1.4;">«33 gol e il secondo posto: la prossima stagione voglio il titolo.»</span>
+  </div>
+
+  <a href="#" style="margin-top: auto; min-height: 54px; border-radius: 14px; background: #f4f1ea; color: #0d0f14; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Verso la stagione 15</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const sep = '1px solid rgba(255,255,255,0.08)';
+    return {
+      kpis: [{ label: 'Pres.', v: '40', color: '#f4f1ea', sep }, { label: 'Gol', v: '33', color: '#e8b44a', sep }, { label: 'Assist', v: '7', color: '#f4f1ea', sep }, { label: 'OVR', v: '89', color: '#f4f1ea', sep: 'none' }],
+      awards: [
+        { title: 'Capocannoniere', who: 'Luca Brandi · 33 gol', bg: '#e8b44a', fg: '#14110b' },
+        { title: 'Squadra dell’anno', who: 'Luca Brandi · attaccante', bg: '#3a2a10', fg: '#e8b44a' },
+        { title: 'Pallone d’Oro · 2°', who: 'Vince R. Okafor', bg: '#262218', fg: '#c9b89a' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
