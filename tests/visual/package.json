@@ -213,6 +213,7 @@
     "pc-tablet-292": "CPM_PROVA_ROSSO=1 node pc-tablet-292.mjs",
     "spazio-296": "node spazio-296.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_POST=1 node spazio-296.mjs",
     "schermate-97": "node schermate-97.mjs && CPM_PROVA_ROSSO=1 CPM_SENZA_D14=1 node schermate-97.mjs",
+    "home-colori-106": "node home-colori-106.mjs && CPM_ROSSO=ABD node home-colori-106.mjs",
     "grafica-v2": "node grafica-v2.mjs && CPM_PROVA_ROSSO=1 node grafica-v2.mjs",
     "simula-v2": "node simula-v2.mjs && CPM_PROVA_ROSSO=1 node simula-v2.mjs",
     "momenti-v2": "node momenti-v2.mjs && CPM_PROVA_ROSSO=1 node momenti-v2.mjs",
