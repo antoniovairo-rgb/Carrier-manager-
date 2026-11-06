@@ -45,9 +45,9 @@ function ProTransitionScreen({player,onChoose}){
         {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {player.season||(u18S+1)} completata</p></>);})()}
       </div>
       {/* Primavera awards */}
-      {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:RAD.md,background:a.type==="campione_primavera"?"#fef9c3":"#eff6ff",color:a.type==="campione_primavera"?"#92400e":TH.primary,fontWeight:700,border:`1px solid ${a.type==="campione_primavera"?"#fde68a":"#bfdbfe"}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
+      {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:RAD.md,background:_no108("03")?(a.type==="campione_primavera"?"#fef9c3":"#eff6ff"):(a.type==="campione_primavera"?TH.bgAmber:TH.bgBlue),color:_no108("03")?(a.type==="campione_primavera"?"#92400e":TH.primary):(a.type==="campione_primavera"?TH.txAmber:TH.txBlue),fontWeight:700,border:`1px solid ${_no108("03")?(a.type==="campione_primavera"?"#fde68a":"#bfdbfe"):(a.type==="campione_primavera"?TH.bdAmber:TH.bdBlue)}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
       {/* Player status card */}
-      <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
+      <Card style={{marginBottom:12,padding:"12px 14px"}} bg={_no108("03")?(forced?"#fff1f2":"#eff6ff"):(forced?TH.bgRed:TINTE.sup)} border={_no108("03")?(forced?"#fecaca":"#bfdbfe"):(forced?TH.bdRed:TINTE.bordo)}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={33}/>
           <div style={{flex:1}}>
@@ -64,10 +64,10 @@ function ProTransitionScreen({player,onChoose}){
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
           <span>Stagioni Under 18: {_n85} di 2</span>
-          <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
+          <span style={{color:forced?TH.danger:(_no108("03")?TH.primary:TINTE.oro)}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
-        <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
+        <div style={{height:6,background:(_no108("03")?"#e2e8f0":TH.track),borderRadius:RAD.pill,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?(_no108("03")?"#ef4444":TINTE.rosso):TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
         </div>
       </div>
       {/* Offers */}
@@ -75,25 +75,25 @@ function ProTransitionScreen({player,onChoose}){
       
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
-          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
-          border={isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder}
-          bg={o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card}>
+          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
+          border={_no108("03")?(isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder):(isSel?TINTE.oro:o.isMain?TH.bdBlue:o.isStayU18?TH.bdAmber:TH.cardBorder)}
+          bg={_no108("03")?(o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card):(o.isMain?TH.bgBlue:o.isStayU18?TH.bgAmber:TH.card)}>
           <div style={{display:"flex",gap:10,alignItems:"center"}}>
             <TeamBadge team={o.club||{col:"#888",col2:"#fff",n:"?"}} size={46}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               {!(typeof window!=='undefined'&&window.__CPM_NO_LEGA196)&&(o.club?.lg)&&<div data-cpm="lega196" style={{fontSize:FS.caption,color:TH.text,fontWeight:FW.semibold,marginTop:1}}>{(o.club.nat?o.club.nat+" ":"")+o.club.lg+(o.isStayU18?" · giovanili":" · prima squadra")}</div>}{/* [7.999.114 collaudo PO-196 «non si capisce in che serie giocano le squadre offerenti»] la lega del club (gia' risolta per il primo contratto: Lega B per una Primavera 2) e la bandiera. Rosso __CPM_NO_LEGA196 */}
-              <div style={{fontSize:FS.caption,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
+              <div style={{fontSize:FS.caption,color:o.isMain?(_no108("03")?TH.primary:TH.txBlue):o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno"+(o.isStayU18?" (stipendio attuale)":""):"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:_no108("03")?(o.moralBonus>=0?"#dcfce7":"#fee2e2"):(o.moralBonus>=0?TH.bgGreen:TH.bgRed),color:_no108("03")?(o.moralBonus>=0?TH.success:TH.danger):(o.moralBonus>=0?TH.txGreen:TH.txRed)}}>
                   Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>Crescita +{o.growthBonus}% nella prima stagione</span>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:(_no108("03")?"#f3e8ff":TH.bgPurple),color:(_no108("03")?TH.accentText:TH.txPurple)}}>Crescita +{o.growthBonus}% nella prima stagione</span>
                 {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:(_no108("03")?TH.brandText:TH.txBlue)}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
@@ -251,6 +251,11 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   /* [7.999.67 collaudo PO «alcuni testi sopra non si leggono bene»] la scena e' in scala 0,775: i testi a 11 px arrivavano a ~8,5 px, e le due righe basse di marchi
      stavano dietro microfoni e bottiglietta, tagliate. Marchi piu' grandi e solo nelle righe libere, tabellino piu' alto, riga del voto leggibile. Rosso __CPM_NO_IV68. */
   const _v68=_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV68);
+  /* [giro 108 G180-10 · collaudo grafico 180] LA SALA STAMPA IN TONI NOTTE. Era l'ultima scena col fondo chiaro della V1 (pannello
+     bianco, banco chiaro): «Elite» #92400e sul grigio 3,3:1. Pannello, tabellino e striscia passano alle superfici TINTE, i marchi
+     all'inchiostro del tema; il colore del club resta nel nome (reso leggibile sul fondo con legCol944) e nella moquette. Rosso __CPM_NO_G108_10. */
+  const _n108=!_no108("10");
+  const cNomeS=_n108?legCol944(cNome,TINTE.sup):cNome;
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
      TRE per riga a 412 px: con cinque si tagliavano sul bordo (misurato sullo scatto della v1). */
@@ -258,36 +263,36 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
     for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
     <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?((typeof window!=="undefined"&&window.__CPM_NO_IV12)?{left:0,right:0,top:0,height:"40%"}:{left:"-14.5%",width:"129%",top:0,height:"40%",transform:"scale(0.775)",transformOrigin:"top center"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] la scena resta com'e' ma in scala: occupa il 31% invece del 40%, senza deformarsi */:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
-      background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
+      background:_n108?"linear-gradient(180deg,"+TINTE.sup+" 0%,"+TINTE.inc+" 44%,"+TINTE.bg+" 100%)":"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
       <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,
-        background:"linear-gradient(180deg,#ffffff,#f1f4f9)",
-        border:"1px solid rgba(15,23,42,0.12)",boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
+        background:_n108?"linear-gradient(180deg,"+TINTE.tasto+","+TINTE.sup+")":"linear-gradient(180deg,#ffffff,#f1f4f9)",
+        border:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.12)"),boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
         {_rid.map((riga,r)=>(
           <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
             justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
             {(_v68&&r>=4)?null:riga.map((marchio,k)=>(
               <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
                 flex:"0 0 auto",fontSize:_v68?14:11,fontWeight:900,letterSpacing:.2,
-                color:marchio?"#7a1526":cNome,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
+                color:marchio?(_n108?TINTE.testo:"#7a1526"):cNomeS,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
-                      border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-                    <span style={{fontWeight:700,fontStyle:"italic",color:(_v24&&_lum24(c2)>0.75)?"#b45309":c2,marginLeft:2}}>Elite</span></>)
-                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
+                      border:"2px solid "+(_n108?TINTE.testo:"#7a1526"),boxSizing:"border-box"}}/>rward
+                    <span style={{fontWeight:700,fontStyle:"italic",color:_n108?TINTE.oro:((_v24&&_lum24(c2)>0.75)?"#b45309":c2),marginLeft:2}}>Elite</span></>)
+                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:_n108?TINTE.sec:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNomeS}}>{nome}</span>))}
               </span>))}
           </div>))}
         {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla.
             [7.999.1] hs/as sono gia' dal lato dell'eroe (src/15 _buildEndResult: won = home>away) e il club dell'eroe sta a sinistra:
             in trasferta non si inverte piu'. Rosso __CPM_NO_TAB25. */}
         {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:_v68?"30%":(100/3)+"%",height:_v68?"42%":(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
-          background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
+          background:_n108?TINTE.bg:"#ffffff",borderTop:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.14)"),borderBottom:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.14)"),padding:"9px 16px",textAlign:"center",
           boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
-            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:_n108?TINTE.testo:"#0f172a"}}>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_n108?legCol944(cNome,TINTE.bg):cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
             <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{(partita.casa===false&&typeof window!=="undefined"&&window.__CPM_NO_TAB25)?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
-          <div style={{fontSize:_v68?14:11,color:_v68?"#1e293b":"#475569",fontWeight:_v68?600:400,marginTop:_v68?4:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
+          <div style={{fontSize:_v68?14:11,color:_n108?TINTE.sec:(_v68?"#1e293b":"#475569"),fontWeight:_v68?600:400,marginTop:_v68?4:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
         </div>)}
         {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
         <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
@@ -295,7 +300,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
       {/* il pavimento: la riga d'appoggio del pannello e la moquette col colore del club */}
       <span style={{position:"absolute",left:0,right:0,top:"46%",height:1,background:"rgba(15,23,42,0.18)"}}/>
       <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
-        background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
+        background:"linear-gradient(180deg,"+(_n108?"rgba(13,15,20,0.62)":"rgba(255,255,255,0.62)")+","+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
       {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
       {/* [24/09 POC — commento PO «i microfoni e la scena sono davvero terribili»] via i microfoni disegnati: la sala stampa la
           dicono il pannello coi marchi e le figurine nel riquadro dell'intervista. Rosso __CPM_NO_MICRO23. */}
@@ -883,7 +888,7 @@ function TavoloStampa24({club=null,nome="",testate=[],sponsor=""}){
   const tela=lum(c1)>0.8?(lum(c2)<0.8?c2:"#1f2937"):c1;/* una tovaglia bianca su pannello bianco sparirebbe */
   const ink=lum(tela)>0.55?"#0f172a":"#ffffff";
   const T=(testate&&testate.length?testate:[{c:"#ef4444",s:"TV"},{c:"#3b82f6",s:"RS"},{c:"#7c3aed",s:"CS"}]).slice(0,3);
-  const cog=String(nome||"").trim().toUpperCase();
+  const cog=_no108("10")?String(nome||"").trim().toUpperCase():(String(nome||"").trim().split(/\s+/).slice(-1)[0]||"").toUpperCase();/* [giro 108 G180-10] sulla targa il solo cognome: il nome intero si troncava («MASSIMILIANO BAR») */
   const uid="t24";
   const mics=[{x:172,h:40,r:-10},{x:200,h:46,r:0},{x:228,h:39,r:10}];
   return(
@@ -943,19 +948,19 @@ function StrisciaScena948({club,tono}){
   return(
     <div style={{position:"absolute",left:0,right:0,bottom:0,display:"flex",alignItems:"center",
       justifyContent:"space-between",gap:8,padding:"6px 10px",pointerEvents:"none",
-      background:"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))",
-      borderTop:"1px solid rgba(15,23,42,0.12)"}}>
+      background:_no108("10")?"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))":TINTE.sup,
+      borderTop:"1px solid "+(_no108("10")?"rgba(15,23,42,0.12)":TINTE.bordo)}}>
       <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,fontSize:FS.caption,
-        letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
+        letterSpacing:.2,color:_no108("10")?"#7a1526":TINTE.testo,whiteSpace:"nowrap"}}>
         K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
-          border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-        <span style={{fontWeight:700,fontStyle:"italic",color:"#92400e"}}>Elite</span>
+          border:"2px solid "+(_no108("10")?"#7a1526":TINTE.testo),boxSizing:"border-box"}}/>rward
+        <span style={{fontWeight:700,fontStyle:"italic",color:_no108("10")?"#92400e":TINTE.oro}}>Elite</span>
       </span>
-      <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
+      <span style={{fontSize:FS.caption,fontWeight:800,color:_no108("10")?"#475569":TINTE.sec,whiteSpace:"nowrap",
         overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23)?spon:null}</span>{/* [23/09 POC — collaudo PO «lo sponsor deve comparire sui cartelloni pubblicitari non li'»] lo sponsor sta sui cartelloni dello stadio (buildStadium, stadCfg.sponsor), non nella striscia. Rosso __CPM_NO_SPONSOR23 */}
       <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
         {(()=>{try{return <TeamBadge team={club} size={16}/>;}catch(_e){return null;}})()}
-        <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",
+        <span style={{fontSize:FS.caption,fontWeight:800,color:_no108("10")?"#0f172a":TINTE.testo,whiteSpace:"nowrap",
           overflow:"hidden",textOverflow:"ellipsis",maxWidth:130}}>{nome}</span>
       </span>
       {tono?<span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.9}}/>:null}
@@ -2332,8 +2337,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
           <div data-cpm="gala51-fascia" style={{position:"absolute",left:12,right:12,bottom:"calc(16px + env(safe-area-inset-bottom, 0px))",maxWidth:460,margin:"0 auto",display:"flex",flexDirection:"column",gap:6}}>
             {g51===0&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                 <div style={{minWidth:0}}>
                   <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{N>0?"Chiara Loreti apre la prima busta":"Chiara Loreti e Tommaso Varesi presentano la serata"}</div>
@@ -2343,8 +2348,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
             </React.Fragment>)}
             {mom&&_rv199<3&&(()=>{const rows=mom.a.rows||[];const _pos=[{k:2,l:"3° posto"},{k:1,l:"2° posto"}];return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div data-cpm="busta199" data-rev={_rv199} style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div data-cpm="busta199" data-rev={_rv199} style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                   <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_rv199===0?"Chiara Loreti apre la busta…":"E il premio va a…"}</div>
@@ -2356,8 +2361,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setB199(x=>{let r=Math.min(3,(x.g===g51?x.rv:0)+1);if(r===1&&!rows[2])r=rows[1]?2:3;if(r===2&&!rows[1])r=3;return{g:g51,rv:r};})}>{_rv199===0?(rows[2]?"Svela il 3° posto":rows[1]?"Svela il 2° posto":"E il vincitore è…"):_rv199===1?"Svela il 2° posto":"E il vincitore è…"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const w=rows[0];const pos=rows.findIndex(x=>x&&x.isPlayer);const nw=_num(w,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div data-cpm="busta199-altro" style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div data-cpm="busta199-altro" style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(w&&w.name,false,34)}
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
@@ -2366,18 +2371,18 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                     <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
                   </div>
                 </div>
-                <div style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
+                <div style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
               </div>
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(me&&me.name,true,34)}
                   {n0!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{n0}</div>}
                   <div style={{minWidth:0}}>
-                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.primary}}>Il premio è tuo</div>
+                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:(_no108("02")?TH.primary:TINTE.oro)}}>Il premio è tuo</div>
                     <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(player&&player.name)||""}{me&&me.club?" · "+me.club:""}{n0!=null?" · "+n0+" gol":""}</div>
                   </div>
                 </div>
@@ -2389,19 +2394,19 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {rie&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>Consegnati stasera</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>Consegnati stasera</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {_altri51.length===0&&<div style={{fontSize:FS.small,color:TH.text}}>Stasera hai vinto tutti i premi per cui eri in corsa.</div>}
                 {_altri51.map(a=>{const w=a.rows&&a.rows[0];const pos=(a.rows||[]).findIndex(x=>x&&x.isPlayer);return(
                   <div key={a.key} style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.small,color:TH.text,minWidth:0}}>
                     {_fig(w&&w.name,false,20)}
                     <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><b>{a.e} {a.title}</b> · {w?w.name:"—"}</span>
-                    <span style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{pos>0?`tu ${pos+1}°`:"non in corsa"}</span>
+                    <span style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{pos>0?`tu ${pos+1}°`:"non in corsa"}</span>
                   </div>);})}
               </div>
               <Btn v="primary" fw onClick={_chiudi}>Vai al bilancio della stagione →</Btn>
             </React.Fragment>)}
-            {!rie&&<button onClick={_chiudi} style={{alignSelf:"center",background:"none",border:"none",color:"rgba(255,255,255,0.75)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il galà</button>}
+            {!rie&&<button data-cpm="salta-gala" onClick={_chiudi} style={{alignSelf:"center",background:"none",border:"none",...(_no108("18")?{}:{minHeight:44,minWidth:120,padding:"0 16px"}),color:"rgba(255,255,255,0.75)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il galà</button>}
           </div>
         </div>);})()}
       {_galaOn&&!_g51&&(
