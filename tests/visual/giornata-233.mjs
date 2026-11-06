@@ -20,7 +20,9 @@ for (const rosso of [false, true]) {
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
   await page.evaluate(() => window.__CPM_CAREER.goTab('calendar')); await sleep(1500);
   const t = await page.evaluate(() => document.body.innerText);
-  const riga = (t.split('\n').map((x, i, a) => /Portogallo/.test(x) ? x + ' | ' + (a[i + 1] || '') + ' | ' + (a[i + 2] || '') : null).filter(Boolean)[0]) || '';
+  /* [giro 105] nella riga V2 i TagV2 (Casa · Nazionale) sono blocchi a se' in innerText e la competizione scende alla 4a riga:
+     si legge la riga fino al «sett.» che la chiude (tetto 6 righe), invece delle due righe fisse successive */
+  const riga = (t.split('\n').map((x, i, a) => { if (!/Portogallo/.test(x)) return null; const r = [x]; for (let k = 1; k <= 6 && a[i + k] != null; k++) { r.push(a[i + k]); if (/sett\./.test(a[i + k])) break; } return r.join(' | '); }).filter(Boolean)[0]) || '';
   const codici = (t.match(/\b(\d{3,})ª giornata/g) || []).filter(x => parseInt(x) >= 990);
   esito[rosso ? 'rosso' : 'verde'] = { riga, codici, amichevole: /Amichevole Internazionale/.test(riga) };
   console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(esito[rosso ? 'rosso' : 'verde']));
