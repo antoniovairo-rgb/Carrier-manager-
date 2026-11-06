@@ -971,3 +971,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 06/11 sera — giro 108 unito, 7.999.180 chiusa, verifica finale
 - Giro 108 (680f8b4e, ~13,0 $): i 6 alti e 17 medi del collaudo 180 riparati (galà, passaggio U18, Nazionale, pillola del pre-partita, KORWARD, tablet; telefonata del CT, sala stampa, rosa V1 → oro a livello di token, granata V1, tocco 44 px, sigla nel tabellone a 360, intro dell'highlight); G180-01 verificato su tutte le schede ed esteso alla scheda Club; G180-06 già coperto dal 106. Guardiano collaudo-108 verde 18/18, rosso 17/17. Regressione in sequenza verde (gate 14/14 fingerprint 00001505). Bassi non toccati salvo G180-23 in parte; G180-31 resta per la 181.
 - Unito in lavoro/180; GAME_VERSION 7.999.180 → b4b450c8. Verifica finale Sonnet, un controllo alla volta, ramo catena/180-finale.
+
+### 06/11 sera — 7.999.180 PUBBLICATA
+- Verifica finale (catena/180-finale, 2e930a5a): 17/18 verdi; pc-tablet-292 rosso 2/2 nel braccio verde per «zone di tocco < 40 px» (⏸ 14x33, 1× 22x19). Analisi della sessione madre: strumento — la sonda misurava il rettangolo visibile, mentre il giro 108 ha portato l'area di tocco a 44 px col ::after (stesso criterio di collaudo-108). Sonda corretta (c9a0dd9b), rigiocata qui: VERDE, rosso 177 ancora cade sul tocco nei due tablet.
+- Rituale: lavoro/180 in poc → ROADMAP «7.999.180 pubblicata» → BACKLOG PO-304/306/307/308 CHIUSE, PO-309 (9 bassi G180) APERTA per la 181 → main.
