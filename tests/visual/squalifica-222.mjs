@@ -88,7 +88,7 @@ async function braccio(id, extra, via, sett) {
   if (via === 'bottone' || via === 'nonconv') {
     // il prompt partita vero (Gioca/Simula/Annulla) e il click sul suo «Simula»
     await page.evaluate((st) => window.__CPM_CAREER.apriPartita(st), via === 'nonconv' ? 'not_called' : 'starter'); await sleep(500);
-    azione = await page.evaluate(() => { const b = [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || ''));
+    azione = await page.evaluate(() => { const b = ((c => c.length ? c : [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || '') && x.getAttribute('data-cpm') !== 'simula-v2'))([...document.querySelectorAll('[data-cpm="simula-conferma"]')])) /* [giro 105] il bottone del PROMPT, non il tasto Simula della Home (PO-302, data-cpm simula-v2) che riapre il prompt */;
       if (!b.length) return 'nessun bottone Simula'; window.__nc222 = [...document.querySelectorAll('button')].some(x => /non convocato/.test(x.textContent || '')); const t = (b[b.length - 1].textContent || '').trim(); b[b.length - 1].click(); return t; });
   } else {
     // step() dichiara «simulated» anche quando simulateAndAdvance esce su openingGate (interazione d'apertura rimasta pendente):
