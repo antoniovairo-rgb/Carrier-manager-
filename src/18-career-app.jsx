@@ -6575,7 +6575,7 @@ const getThisWeekMatchday=()=>{
                   onMouseEnter={e=>{e.currentTarget.style.background=_T.optBgH;e.currentTarget.style.borderColor=_T.optBdH;}}
                   onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=_T.optBd;}}>
                   <div style={{fontSize:FS.body,color:_T.optTxt,lineHeight:1.5}}>{ch.txt}</div>
-                  {ch.mem&&<div style={{fontSize:FS.caption,color:_T.memCol,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
+                  {ch.mem&&<div style={{fontSize:FS.caption,color:_no108("09")?_T.memCol:(_epic?TINTE.oro:TINTE.sec)/* [giro 108 G180-09] il colore velato (alfa 0,5) scendeva a 3,12:1 sul fondo della finestra. Rosso __CPM_NO_G108_09 */,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
                 </button>
               ))}
             </div>
@@ -7760,7 +7760,7 @@ const getThisWeekMatchday=()=>{
               </div>;
             })()}
             {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
-            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
+            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:_no108("22")?TH.primary:legCol944((player.club&&player.club.c)||TINTE.oro,TH.track)/* [giro 108 G180-22] la barra della stagione nel colore del club (reso visibile sul binario), non nel granata V1 */,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
           </Card>
         </div>
       )}
@@ -11012,7 +11012,7 @@ const getThisWeekMatchday=()=>{
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
                           {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
-                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
                               <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
@@ -11535,7 +11535,7 @@ const getThisWeekMatchday=()=>{
                 {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol in Naz.",e:"⚽"},{v:String(Math.round((natGoals/caps)*10)/10).replace(".",","),l:"Gol a partita",e:"📊"}].map((s,i)=>(
                   <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
                     <div style={{fontSize:FS.caption,marginBottom:2}}>{s.e}</div>
-                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?natCol:i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
+                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?(_no108("04")?natCol:TINTE.testo):i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
                     <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{s.l}</div>
                   </div>
                 ))}

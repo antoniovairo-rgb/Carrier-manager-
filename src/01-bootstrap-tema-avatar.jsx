@@ -83,7 +83,7 @@ if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catc
 const TH = {
   bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
-  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
+  primary:"#8e1f33",primaryDk:"#6a1326",brandText:(typeof window!=='undefined'&&window.__CPM_NO_G108_21)?"#ee9aaa":TINTE.oro/* [giro 108 G180-21] il rosa della V1 (#ee9aaa) restava come colore di testo in 24 schermate: diventa l'oro del tema. Rosso __CPM_NO_G108_21 */,accentText:"#a78bfa",
   success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
   surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
   cardBg:TINTE.inc,border:"#2a2f3b",
@@ -222,6 +222,9 @@ function fondoClub106(col){
     let c=col.length===4?_versoNotte106(col,0):col;
     for(let q=0;q<=1.0001;q+=0.02){c=_versoNotte106(col,q);const l=_lum944(c);if(l!=null&&l<=ABBAGLIO106.lum&&can(c)<=ABBAGLIO106.can)break;}
     return c; }catch(_e){ return col; }}
+/* [giro 108 · collaudo grafico 180] UN INTERRUTTORE ROSSO PER OGNI CORREZIONE: _no108("02") e' vero sotto window.__CPM_NO_G108_02
+   e rimette la grafica della 7.999.179 su quel solo difetto (prova del rosso del guardiano collaudo-108). */
+function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
 function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
@@ -542,7 +545,9 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=inkSu945(c1);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
+  const inkPill=inkSu945(c1);
+  /* [giro 108 G180-08] il marchio KORWARD era bianco fisso: sulla cornice d'argento 1,54:1. L'inchiostro lo sceglie il contrasto col fondo della cornice (bianco o notte TINTE.bg). Rosso __CPM_NO_G108_08 */
+  const inkMarchio=_no108("08")?"#ffffff":(_rap944("#ffffff",c1)>=_rap944(TINTE.bg,c1)?"#ffffff":TINTE.bg);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
@@ -551,9 +556,9 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
       boxShadow:w>=140?TH.el3:TH.el1,...style}} {...(rest||{})}>
       <div aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:2,
         background:"linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,0.18) 47%, rgba(255,255,255,0.05) 53%, rgba(255,255,255,0) 62%)"}}/>
-      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",gap:6,color:"#ffffff",
-        fontWeight:FW.bold,letterSpacing:w>=140?3:1,fontSize:hTop>=18?FS.small:FS.caption,lineHeight:1,textShadow:"0 1px 2px rgba(0,0,0,.35)",whiteSpace:"nowrap",overflow:"hidden"}}>
-        {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:"rgba(255,255,255,0.7)"}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:"rgba(255,255,255,0.7)"}}/>}</div>}
+      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",gap:6,color:inkMarchio,
+        fontWeight:FW.bold,letterSpacing:w>=140?3:1,fontSize:hTop>=18?FS.small:FS.caption,lineHeight:1,textShadow:inkMarchio==="#ffffff"?"0 1px 2px rgba(0,0,0,.35)":"none",whiteSpace:"nowrap",overflow:"hidden"}}>
+        {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}</div>}
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
