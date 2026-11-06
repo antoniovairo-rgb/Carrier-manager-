@@ -32,7 +32,7 @@ for (let w = 2; w <= 20 && !W; w++) { await page.evaluate((w) => window.__CPM_CA
 if (!W) ko.push('nessuna settimana con giornata di lega: misura cieca');
 await page.evaluate(() => window.__T272.length = 0);
 await page.evaluate(() => window.__CPM_CAREER.apriPartita('starter')); await sleep(500);
-const azione = await page.evaluate(() => { const bt = [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || ''));
+const azione = await page.evaluate(() => { const bt = ((c => c.length ? c : [...document.querySelectorAll('button')].filter(x => /Simula/.test(x.textContent || '') && !/Non puoi/.test(x.textContent || '') && x.getAttribute('data-cpm') !== 'simula-v2'))([...document.querySelectorAll('[data-cpm="simula-conferma"]')])) /* [giro 105] il bottone del PROMPT, non il tasto Simula della Home (PO-302, data-cpm simula-v2) che riapre il prompt */;
   if (!bt.length) return null; bt[bt.length - 1].click(); return (bt[bt.length - 1].textContent || '').trim(); });
 if (!azione) ko.push('bottone «Simula» non trovato');
 await sleep(1500);

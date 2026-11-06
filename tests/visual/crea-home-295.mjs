@@ -2,6 +2,7 @@
 /* [7.999.177 PO-295 guardiano] «Da qui non si può tornare alla home» (creazione del calciatore, telefono).
    Pagina pulita a 412 e 1280 px: «Nuova carriera» → schermata «Crea il tuo calciatore» → c'e' [data-cpm=crea295-home] visibile
    nella prima schermata (senza scorrere) → il click riporta alla home (torna «Nuova carriera»), senza errori di pagina.
+   [giro 105] il titolo V2 (TitoloV2) e' in text-transform:uppercase e innerText lo restituisce MAIUSCOLO: confronto senza maiuscole.
    ROSSO: CPM_PROVA_ROSSO=1 accende __CPM_NO_IND295 e pretende che il controllo cada. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -13,10 +14,10 @@ async function prova(w, rosso) {
   const nuova = () => page.evaluate(() => [...document.querySelectorAll('button')].some(x => /^\s*Nuova carriera\s*$/.test(x.textContent || '')));
   await page.waitForFunction(() => [...document.querySelectorAll('button')].some(x => /Nuova carriera/.test(x.textContent || '')), null, { timeout: 60000 });
   await page.evaluate(() => [...document.querySelectorAll('button')].find(x => /^\s*Nuova carriera\s*$/.test(x.textContent || '')).click());
-  await page.waitForFunction(() => /Crea il tuo calciatore/.test(document.body.innerText), null, { timeout: 30000 }).catch(() => {});
+  await page.waitForFunction(() => /Crea il tuo calciatore/i.test(document.body.innerText), null, { timeout: 30000 }).catch(() => {});
   await sleep(400);
   const ko = [];
-  if (!/Crea il tuo calciatore/.test(await page.evaluate(() => document.body.innerText))) ko.push(`${w}px: la creazione non si apre`);
+  if (!/Crea il tuo calciatore/i.test(await page.evaluate(() => document.body.innerText))) ko.push(`${w}px: la creazione non si apre`);
   const btn = await page.evaluate(() => { const e = document.querySelector('[data-cpm="crea295-home"]'); if (!e) return null; const r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, h: innerHeight, w: r.width }; });
   if (!btn) ko.push(`${w}px: nessun pulsante per tornare alla home`);
   else {
