@@ -951,3 +951,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 06/11 mattina — 7.999.179 PUBBLICATA
 - Verifica mirata (catena/179-finale, ec10c96f, su e9d934b1): riserva-103, contatto-103, portiere-252, titolo-110 verdi 2/2; carriera3-94 rosso 2/2 solo per D2 «cieco» (deciso = strumento, PO-305).
 - Rituale: lavoro/179 in poc → ROADMAP «7.999.179 pubblicata» → BACKLOG PO-302 e PO-303 CHIUSE, PO-304 (nome del club a capo a 360 px) e PO-305 (carriera3-94 D2) APERTE per la 180 → main = poc (5495b9c7) → verdetti e governo ripubblicato (versione 127). Avviso al PO inviato.
+
+### 06/11 — collaudo PO della 179: «Si vede malissimo» (PO-306), giro 106
+- Foto del PO (telefono, FC Merseyside rosso vivo) su lavoro/180 (999eb196). Difetto ALTO di grafica: per la regola «release a contenuto chiuso» entra nella prossima versione, 7.999.180.
+- Analisi della sessione madre: i guardiani V2 erano verdi a 360 px ma ciechi — misuravano un solo club scuro e nomi corti. La card della prossima gara usa il colore sociale pieno, non smorzato verso il fondo notte come nelle tavole.
+- Decisione tecnica: giro 106 (session_01QEYiaAFKKydvgRmzTR6gTh, ramo sviluppo/giro106-home-telefono, tetto 6 ore): testata compatta (PO-304), card con colore sociale smorzato e contrasto ≥ 4,5:1 misurato su più colori sociali, scheda della stagione non coperta, «Zona retrocessione» inequivocabile; guardiano esteso a più colori e nomi lunghi.
