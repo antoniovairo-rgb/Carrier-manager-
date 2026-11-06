@@ -13,7 +13,7 @@ correggere nel gioco. Resta aperto **carriera3-94 D2** (sezione 7).
 
 | # | Guardiano | Misura | Gioco o strumento | Regressione 179? | Correzione | Dopo |
 |---|---|---|---|---|---|---|
-| 1 | validate-situations (data-coherence) | 1 guardia di consistenza fallita: `pass→assist_recv→assist_shot` | strumento | **no**: identica su 7.999.178 (b14ccf0f) | regex della guardia | (vedi rigioco) |
+| 1 | validate-situations (data-coherence) | 1 guardia di consistenza fallita: `pass→assist_recv→assist_shot` | strumento | **no**: identica su 7.999.178 (b14ccf0f) | regex della guardia | 14/14, fingerprint 00001505 |
 | 2 | squalifica-222 | 11 falliti, rosso riprodotto in locale | strumento | indiretta (PO-302) | clic sul Simula del prompt | verde |
 | 3 | infortunio-263 | 17 falliti | strumento | indiretta (PO-302) | idem | verde |
 | — | simulata-272 | stesso schema, non ancora caduto | strumento | — | idem (preventiva) | verde |
@@ -23,7 +23,7 @@ correggere nel gioco. Resta aperto **carriera3-94 D2** (sezione 7).
 | 7 | carriera3-94 D1 | settimana letta 7 invece di 12 | strumento (corsa) | no | attesa dell'autosave | verde, rosso D1 visibile |
 | 7 | carriera3-94 D2 | «cieco: nessun rigore» | **aperto** | **no**: identico su 178 | — | rosso (sez. 7) |
 | — | titolo-110 (tronco 1) | `sopra:null`; rosso cieco | strumento | indiretta (V2 tappa 2/4) | card `prossima-v2`; rosso col tema di prova | verde, rosso visibile |
-| 8 | portiere-252 | instabile, KO 0/7 in entrambi i bracci | solo annotato | — | — | — |
+| 8 | portiere-252 | instabile, KO 0/7 in entrambi i bracci | solo annotato | — | — | verde al rigioco (verde KO 0/7 · rosso KO 1/7) |
 
 ## Dettaglio
 
@@ -65,7 +65,15 @@ ancora cade.
 **D2 (aperto).** «Cieco: nessun rigore dell'eroe segnato in scena nelle partite 7, 13, 21». Misurato identico su 7.999.179 e su
 7.999.178 (b14ccf0f); il seme 7 è cieco anche su `4a4ff49` (base delle catene 178). Sonda di diagnosi: la partita si gioca
 (4-1, fischio a ~210 s), il motore emette eventi (`__CPM_EVM870` > 0), ma `__CPM_PEN94` resta vuoto — nemmeno i gol dell'eroe.
-(Esito del D2 completo su `4a4ff49`: vedi sotto.)
+D2 completo (semi 7, 13, 21) cieco anche su `4a4ff49`, cioè **lo stesso codice** che nella catena 178 (tronco 1) era verde in
+437 s. Quindi dipende dalla macchina, non dal codice. Misura a sostegno: la stessa partita (seme 7, stesso salvataggio) giocata due
+volte qui diverge nel finale — 4-1 contro 5-1, gli ultimi due tiri del motore cambiano (`__CPM_EVM870`: identici fino al tick 1881,
+poi 1968/2007 contro 1956/2071). In nove partite intere (3 semi x 3 build) il testimone non ha registrato **nessun** evento
+`rigore`, nemmeno con `__CPM_RIG190_K=1`.
+Non l'ho corretto: renderlo non cieco significa ridisegnare la prova (più semi = minuti in più nella catena notturna, oppure un
+modo deterministico di provocare il rigore dell'eroe), ed è una scelta da prendere fuori da una sessione figlia.
+**Ipotesi, non verificata:** il motore della partita in autoplay non è riproducibile al tiro (dipende dal ritmo dei fotogrammi),
+e qui il ritmo non porta mai il fallo in area.
 
 ### 8. portiere-252
 Annotato soltanto, come chiesto: instabile nella catena (verde alla 3ª prova); nei log entrambi i bracci danno KO 0/7.
@@ -79,5 +87,29 @@ Annotato soltanto, come chiesto: instabile nella catena (verde alla 3ª prova); 
   dichiarato lento-103 «declassata a sonda (non deterministica)», ma la catena `completa` di `ci-runner.mjs` la contiene ancora:
   da decidere fuori da questa sessione.
 
-## Rigioco finale
-(vedi sezione aggiornata alla chiusura)
+## Rigioco finale (in sequenza, un controllo alla volta, 06/11 01:42-02:44 UTC)
+
+| Guardiano | Esito | Durata |
+|---|---|---|
+| validate-situations | ✅ 14/14, fingerprint 00001505 | 670 s |
+| squalifica-222 | ✅ | 152 s |
+| infortunio-263 | ✅ | 204 s |
+| simulata-272 | ✅ | 17 s |
+| crea-home-295 | ✅ | 33 s |
+| convocazione-235 | ✅ (rosso riconosciuto) | 91 s |
+| giornata-233 | ✅ (rosso visibile) | 34 s |
+| titolo-110 | ✅ | 26 s |
+| test:logic | ✅ 43/43 | 3 s |
+| save-compat | ✅ | 11 s |
+| career-critical | ✅ | 700 s |
+| grafica-v2 | ✅ (rosso atteso riconosciuto) | 251 s |
+| tema-unico | ✅ (rosso atteso riconosciuto) | 56 s |
+| carriera3-94 | ❌ solo D2 «cieco» (preesistente, sez. 7) | 893 s |
+| portiere-252 | ✅ (verde KO 0/7 · rosso KO 1/7) | 643 s |
+
+`node tools/build-src.mjs`: byte identici, nessuna modifica nei frammenti. `node tools/check-src.mjs`: allineato.
+Nessun bump di `GAME_VERSION`: il gioco non è cambiato (solo strumenti). Nessuna riga di roadmap: non è un rilascio.
+
+## Errore mio, dichiarato
+Nella sonda di diagnosi di D2 ho letto `window.__CPM_EV.length` e ho visto 0: `__CPM_EV` è una funzione (si legge con
+`__CPM_EV()`), quindi quello zero non significa niente e non l'ho usato.
