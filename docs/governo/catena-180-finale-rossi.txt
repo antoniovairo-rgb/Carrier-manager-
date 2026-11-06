@@ -1,0 +1,33 @@
+### pc-tablet-292 — rosso 2/2 — braccio VERDE (corsa reale, prima parte); il braccio rosso di prova e' ok
+Motivo: zone di tocco < 40 px (⏸@14x33, 1x@22x19) su PC 1366x768, PC 1920x1080?/Tablet 768x1024 e 1024x768, in gioco/movimento/scelta/rigore/punizione
+--- corsa 2/2 (ultime 40 righe)
+
+> cpm-visual-3d-validation@1.0.0 pc-tablet-292
+> CPM_PROVA_ROSSO=1 node pc-tablet-292.mjs
+
+PC 1366x768: scheda 48x18x1270x688 · campo 899x623 · eroe ndc 0.344,-0.253 alto 9.1% · pre-partita 133/133 · tocco<40 3
+PC 1920x1080: scheda 48x18x1824x1000 · campo 1362x935 · eroe ndc 0.349,-0.24 alto 9.1% · pre-partita 410/410 · tocco<40 3
+Tablet 768x1024: scheda 0x0x768x986 · campo 766x920 · eroe ndc 0.035,-0.231 alto 8.4% · pre-partita - · tocco<40 2
+  ❌ 3: zone di tocco < 40 px in gioco: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in movimento: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in scelta: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in rigore: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in punizione: ⏸@14x33, 1×@22x19
+Tablet 1024x768: scheda 24x16x976x688 · campo 674x623 · eroe ndc 0.028,-0.231 alto 8.4% · pre-partita 24/24 · tocco<40 2
+  ❌ 3: zone di tocco < 40 px in gioco: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in movimento: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in scelta: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in rigore: ⏸@14x33, 1×@22x19
+  ❌ 3: zone di tocco < 40 px in punizione: ⏸@14x33, 1×@22x19
+Telefono 412x915: scheda 0x0x412x877 · campo 410x811 · eroe ndc -0.018,-0.256 alto 8.3% · pre-partita - · tocco<40 3
+Telefono 412x915: ✅ identico con e senza gli interruttori
+  (177) PC 1366x768: scheda 268x18x1050x688 · campo 650x623 · eroe ndc 0.031,-0.228 alto 8.4% · pre-partita 268/48 · piccoli ⏸@14x33,1×@22x19,⚠️@22x33
+ROSSO PC 1366x768: 1,6,2,8,9,5
+  (177) PC 1920x1080: scheda 520x18x1100x1000 · campo 681x935 · eroe ndc 0.59,-0.246 alto 8.5% · pre-partita 520/300 · piccoli ⏸@14x33,1×@22x19,⚠️@22x33
+ROSSO PC 1920x1080: 1,6,2,8,9,5
+  (177) Tablet 768x1024: scheda 14x14x740x944 · campo 458x879 · eroe ndc 0.066,-0.221 alto 8.3% · pre-partita 14/14 · piccoli ⏸@14x33,1×@22x19,⚠️@22x33
+ROSSO Tablet 768x1024: 1,6,3
+  (177) Tablet 1024x768: scheda 244x16x756x688 · campo 467x623 · eroe ndc 0.038,-0.231 alto 8.3% · pre-partita 244/24 · piccoli ⏸@14x33,1×@22x19,⚠️@22x33
+ROSSO Tablet 1024x768: 1,6,2,3
+  ✅ il rosso (la 177) fa cadere larghezza, tocco, tasti e striscia nel campo
+PC-TABLET-292: ❌ ROSSO

@@ -1,0 +1,76 @@
+== collaudo-108
+Fri Nov  6 17:39:08 UTC 2026
+Mem:           16086         503       15071          15         744       15582
+/dev/vda        252G  9.8G   29G  26% /
+== home-colori-106
+Fri Nov  6 18:12:18 UTC 2026
+Mem:           16086         597       14578          15        1157       15488
+/dev/vda        252G  9.8G   29G  26% /
+== freccia-107
+Fri Nov  6 18:18:41 UTC 2026
+Mem:           16086         561       14612          15        1159       15524
+/dev/vda        252G  9.8G   29G  26% /
+== grafica-v2
+Fri Nov  6 18:22:45 UTC 2026
+Mem:           16086         556       14568          15        1210       15529
+/dev/vda        252G  9.8G   29G  26% /
+== momenti-v2
+Fri Nov  6 18:26:31 UTC 2026
+Mem:           16086         544       14580          15        1210       15541
+/dev/vda        252G  9.8G   29G  26% /
+== partita-v2
+Fri Nov  6 18:33:56 UTC 2026
+Mem:           16086         531       14592          15        1210       15554
+/dev/vda        252G  9.8G   29G  26% /
+== simula-v2
+Fri Nov  6 18:43:30 UTC 2026
+Mem:           16086         531       14592          15        1211       15554
+/dev/vda        252G  9.8G   29G  26% /
+== tema-unico
+Fri Nov  6 18:45:16 UTC 2026
+Mem:           16086         548       14575          15        1211       15537
+/dev/vda        252G  9.8G   29G  26% /
+== griglia-mobile
+Fri Nov  6 18:46:21 UTC 2026
+Mem:           16086         558       14562          15        1214       15527
+/dev/vda        252G  9.8G   29G  26% /
+== design-system
+Fri Nov  6 18:50:07 UTC 2026
+Mem:           16086         539       14576          15        1219       15546
+/dev/vda        252G  9.8G   29G  26% /
+== career-critical
+Fri Nov  6 18:50:29 UTC 2026
+Mem:           16086         522       14592          15        1219       15563
+/dev/vda        252G  9.8G   29G  26% /
+== test:logic
+Fri Nov  6 19:01:06 UTC 2026
+Mem:           16086         536       14577          15        1221       15549
+/dev/vda        252G  9.8G   29G  26% /
+== save-compat
+Fri Nov  6 19:01:31 UTC 2026
+Mem:           16086         541       14572          15        1221       15544
+/dev/vda        252G  9.8G   29G  26% /
+== validate-situations
+Fri Nov  6 19:01:57 UTC 2026
+Mem:           16086         581       14532          15        1221       15504
+/dev/vda        252G  9.8G   29G  26% /
+== partita2d-297
+Fri Nov  6 19:12:56 UTC 2026
+Mem:           16086         535       14567          15        1232       15550
+/dev/vda        252G  9.8G   29G  26% /
+== pc-tablet-292
+Fri Nov  6 19:16:00 UTC 2026
+Mem:           16086         531       14571          15        1233       15554
+/dev/vda        252G  9.8G   29G  26% /
+== pc-tablet-292
+Fri Nov  6 19:28:44 UTC 2026
+Mem:           16086         541       14559          15        1234       15544
+/dev/vda        252G  9.8G   29G  26% /
+== intro-292
+Fri Nov  6 19:41:33 UTC 2026
+Mem:           16086         544       14556          15        1235       15541
+/dev/vda        252G  9.8G   29G  26% /
+== patrimonio-303
+Fri Nov  6 19:43:37 UTC 2026
+Mem:           16086         534       14566          15        1235       15551
+/dev/vda        252G  9.8G   29G  26% /
