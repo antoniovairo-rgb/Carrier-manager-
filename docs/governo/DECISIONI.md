@@ -941,3 +941,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Tronco 3 (catena/179-t3, 03346cdb): rossi giornata-233, convocazione-235 (bottone non primario a 412 px); instabile portiere-252.
 - Tronco 1 ancora in corso (14/46, rosso carriera3-94).
 - Erano verdi nella 178: primo sospetto le tappe V2 e PO-303, da misurare. Decisione tecnica: giro 105 su lavoro/179 (session_01QEYia9mGrkjXgJPmUvygtj, ramo sviluppo/giro105-catena179), tetto 12:00 UTC del 06/11, CPM_CI_PAR=0.
+
+### 06/11 mattina — giro 105 unito, verifica mirata 179
+- Giro 105 (98e9caed, ~8,7 $): nessun rosso della catena 179 era un difetto del gioco. Otto sonde non conoscevano il markup unico V2 (tasto Simula della Home, titolo in maiuscolo, bottone primario chiaro, TagV2 su righe proprie, card prossima-v2, corsa con l'autosave) e la guardia analitica di data-coherence era rotta dal giro 102 (già nella 178, catene 178 girate prima). Corretti solo gli strumenti, rossi ancora visibili; src/ invariato. Rigioco in sequenza: tutto verde (gate 14/14 fingerprint 00001505) tranne carriera3-94 D2 «cieco: nessun rigore dell'eroe» — preesistente, identico sulla 178 e su 4a4ff49, dipende dalla macchina.
+- Tronco 1 (catena/179-t1): rossi carriera3-94, lento-103, titolo-110 (corretto dal 105); instabili riserva-103, contatto-103.
+- Decisioni tecniche (sessione madre): lento-103 tolto dalle catene completa/carriera e dalla MAPPA (il giro 103 l'aveva declassata a sonda non deterministica); carriera3-94 D2 cieco = strumento, da ridisegnare nella 180 (rigore dell'eroe provocato in modo deterministico). Unito in lavoro/179 → e9d934b1.
+- Verifica mirata Sonnet (session_01QEYiaAD3exUSqR5jcB2Tug, catena/179-finale): riserva-103, contatto-103, carriera3-94, portiere-252, titolo-110, due corse ciascuno, in sequenza. Un difetto del verde nell'highlight dell'eroe resta bloccante.
