@@ -1,0 +1,170 @@
+=== carriera3-94 (out/ci-rossi/carriera3-94-2026-11-05T18-07-48-736Z.log)
+D1 alla settimana 11: {"w":7,"nat":[],"log9":false}
+NO   D1: la sosta 9 occupata dalla Coppa produce un'amichevole o un messaggio subito (amichevoli nessuna, messaggio false)
+D1 {"last":{"res":"lived","season":5,"week":22},"fin":[{"w":9,"passa":true},{"w":19,"passa":false}],"nat":[],"caps":0,"log":[]}
+ok   D1: il CT valuta almeno 2 soste (9 e 19) fino alla settimana 21 (2)
+NO   D1: ogni sosta «passa» ha la sua amichevole o un messaggio (senza esito: 9)
+ok   D1: nessun errore di pagina ()
+D2 k7 fine ceremony: 
+D2 k13 fine ceremony: 
+D2 k21 fine ceremony: 
+NO   D2: cieco — nessun rigore dell'eroe segnato in scena nelle partite 7,13,21
+D3 avviso: {"log":"📋 Il contratto con FC Werkstadt scade a fine stagione: il club è pronto a parlare del rinnovo (Procuratore › Negozia rinnovo).","card":true}
+ok   D3: prima della fine c'e' l'avviso di scadenza con il rinnovo (registro true, riquadro true)
+D3 stagione nuova: {"s":6,"sv":true,"ap":[],"log":"⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.","rinnovo":true}
+ok   D3: la stagione nuova parte da svincolato (S6, svincolato true)
+ok   D10: niente ritiro/presentazione/conferenza del club da svincolato ([])
+ok   D3: il gioco dice che sei svincolato (⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.)
+ok   D3: nell'Agente c'e' il pulsante «Negozia rinnovo» anche a contratto scaduto
+ok   D3: nessun errore di pagina ()
+D4 48 partite: scarto possesso/quota passaggi max 0, oltre 5 punti 0
+ok   D4: possesso del tabellino coerente coi passaggi (scarto max 0, partite oltre 5 punti 0/48)
+D5 schermata livello 0: non attivo
+ok   D5: a livello 0 la resa del piano dice «non attivo» (non attivo)
+D5 [{"lv":1,"atteso":24,"testo":"Piano su tiro (80): +1 circa ogni 24 settimane","ok":true},{"lv":2,"atteso":16,"testo":"Piano su tiro (80): +1 circa ogni 16 settimane","ok":true},{"lv":3,"atteso":12,"testo":"Piano su tiro (80): +1 circa ogni 12 settimane","ok":true}]
+D6 {"n":2232,"cattivi":[],"nCattivi":0}
+D7 {"naz":"Italia/ITA","club":"FC Rendalto"}
+D8 [" · Fase a gironi · 1ª giornata"," · Fase a gironi · 5ª giornata"," · 12ª giornata"]
+ok   D5: il testo del trainer dice le settimane della quota del motore (24/16/12)
+ok   D6: articoli delle nazionali (0 frasi sbagliate su 2232)
+ok   D7: sala stampa della Nazionale con la Nazionale (Italia/ITA), del club col club (FC Rendalto)
+ok   D8: nessun codice interno come giornata ( · Fase a gironi · 1ª giornata |  · Fase a gironi · 5ª giornata |  · 12ª giornata)
+ok   pure: nessun errore di pagina
+D9 {"club":"FC Valmora","ruolo":"titolare","calc":"titolare","fid":74,"dec":8}
+ok   D9: firmato «Titolare 76%», il ruolo resta titolare (ruolo titolare, ricalcolato titolare)
+ok   D9: il mister lo schiera titolare in almeno 5 gare su 8 (8)
+
+FALLITO: 3
+=== carriera3-94 (out/ci-rossi/carriera3-94-2026-11-05T18-22-37-997Z.log)
+D1 alla settimana 11: {"w":7,"nat":[],"log9":false}
+NO   D1: la sosta 9 occupata dalla Coppa produce un'amichevole o un messaggio subito (amichevoli nessuna, messaggio false)
+D1 {"last":{"res":"lived","season":5,"week":22},"fin":[{"w":9,"passa":true},{"w":19,"passa":false}],"nat":[19],"caps":0,"log":["🌍 Sosta di settimana 19: il CT ti convoca (titolare) per l'amichevole con Argentina. Il CT ti segue con fiducia."]}
+ok   D1: il CT valuta almeno 2 soste (9 e 19) fino alla settimana 21 (2)
+ok   D1: ogni sosta «passa» ha la sua amichevole o un messaggio (senza esito: nessuna)
+ok   D1: nessun errore di pagina ()
+D2 k7 fine ceremony: 
+D2 k13 fine ceremony: 
+D2 k21 fine ceremony: 
+NO   D2: cieco — nessun rigore dell'eroe segnato in scena nelle partite 7,13,21
+D3 avviso: {"log":"📋 Il contratto con FC Werkstadt scade a fine stagione: il club è pronto a parlare del rinnovo (Procuratore › Negozia rinnovo).","card":true}
+ok   D3: prima della fine c'e' l'avviso di scadenza con il rinnovo (registro true, riquadro true)
+D3 stagione nuova: {"s":6,"sv":true,"ap":[],"log":"⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.","rinnovo":true}
+ok   D3: la stagione nuova parte da svincolato (S6, svincolato true)
+ok   D10: niente ritiro/presentazione/conferenza del club da svincolato ([])
+ok   D3: il gioco dice che sei svincolato (⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.)
+ok   D3: nell'Agente c'e' il pulsante «Negozia rinnovo» anche a contratto scaduto
+ok   D3: nessun errore di pagina ()
+D4 48 partite: scarto possesso/quota passaggi max 0, oltre 5 punti 0
+ok   D4: possesso del tabellino coerente coi passaggi (scarto max 0, partite oltre 5 punti 0/48)
+D5 schermata livello 0: non attivo
+ok   D5: a livello 0 la resa del piano dice «non attivo» (non attivo)
+D5 [{"lv":1,"atteso":24,"testo":"Piano su tiro (80): +1 circa ogni 24 settimane","ok":true},{"lv":2,"atteso":16,"testo":"Piano su tiro (80): +1 circa ogni 16 settimane","ok":true},{"lv":3,"atteso":12,"testo":"Piano su tiro (80): +1 circa ogni 12 settimane","ok":true}]
+D6 {"n":2232,"cattivi":[],"nCattivi":0}
+D7 {"naz":"Italia/ITA","club":"FC Rendalto"}
+D8 [" · Fase a gironi · 1ª giornata"," · Fase a gironi · 5ª giornata"," · 12ª giornata"]
+ok   D5: il testo del trainer dice le settimane della quota del motore (24/16/12)
+ok   D6: articoli delle nazionali (0 frasi sbagliate su 2232)
+ok   D7: sala stampa della Nazionale con la Nazionale (Italia/ITA), del club col club (FC Rendalto)
+ok   D8: nessun codice interno come giornata ( · Fase a gironi · 1ª giornata |  · Fase a gironi · 5ª giornata |  · 12ª giornata)
+ok   pure: nessun errore di pagina
+D9 {"club":"FC Valmora","ruolo":"titolare","calc":"titolare","fid":74,"dec":8}
+ok   D9: firmato «Titolare 76%», il ruolo resta titolare (ruolo titolare, ricalcolato titolare)
+ok   D9: il mister lo schiera titolare in almeno 5 gare su 8 (8)
+
+FALLITO: 2
+=== carriera3-94 (out/ci-rossi/carriera3-94-2026-11-05T18-37-21-007Z.log)
+D1 alla settimana 11: {"w":12,"nat":[19],"log9":false}
+ok   D1: la sosta 9 occupata dalla Coppa produce un'amichevole o un messaggio subito (amichevoli 19, messaggio false)
+D1 {"last":{"res":"lived","season":5,"week":22},"fin":[{"w":9,"passa":true},{"w":19,"passa":false}],"nat":[19],"caps":0,"log":["🌍 Sosta di settimana 19: il CT ti convoca (titolare) per l'amichevole con Argentina. Il CT ti segue con fiducia."]}
+ok   D1: il CT valuta almeno 2 soste (9 e 19) fino alla settimana 21 (2)
+ok   D1: ogni sosta «passa» ha la sua amichevole o un messaggio (senza esito: nessuna)
+ok   D1: nessun errore di pagina ()
+D2 k7 fine ceremony: 
+D2 k13 fine ceremony: 
+D2 k21 fine ceremony: 
+NO   D2: cieco — nessun rigore dell'eroe segnato in scena nelle partite 7,13,21
+D3 avviso: {"log":"📋 Il contratto con FC Werkstadt scade a fine stagione: il club è pronto a parlare del rinnovo (Procuratore › Negozia rinnovo).","card":true}
+ok   D3: prima della fine c'e' l'avviso di scadenza con il rinnovo (registro true, riquadro true)
+D3 stagione nuova: {"s":6,"sv":true,"ap":[],"log":"⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.","rinnovo":true}
+ok   D3: la stagione nuova parte da svincolato (S6, svincolato true)
+ok   D10: niente ritiro/presentazione/conferenza del club da svincolato ([])
+ok   D3: il gioco dice che sei svincolato (⛔ Contratto scaduto: sei svincolato e non puoi giocare con FC Werkstadt. Rinnova o cerca una squadra dal Procuratore.)
+ok   D3: nell'Agente c'e' il pulsante «Negozia rinnovo» anche a contratto scaduto
+ok   D3: nessun errore di pagina ()
+D4 48 partite: scarto possesso/quota passaggi max 0, oltre 5 punti 0
+ok   D4: possesso del tabellino coerente coi passaggi (scarto max 0, partite oltre 5 punti 0/48)
+D5 schermata livello 0: non attivo
+ok   D5: a livello 0 la resa del piano dice «non attivo» (non attivo)
+D5 [{"lv":1,"atteso":24,"testo":"Piano su tiro (80): +1 circa ogni 24 settimane","ok":true},{"lv":2,"atteso":16,"testo":"Piano su tiro (80): +1 circa ogni 16 settimane","ok":true},{"lv":3,"atteso":12,"testo":"Piano su tiro (80): +1 circa ogni 12 settimane","ok":true}]
+D6 {"n":2232,"cattivi":[],"nCattivi":0}
+D7 {"naz":"Italia/ITA","club":"FC Rendalto"}
+D8 [" · Fase a gironi · 1ª giornata"," · Fase a gironi · 5ª giornata"," · 12ª giornata"]
+ok   D5: il testo del trainer dice le settimane della quota del motore (24/16/12)
+ok   D6: articoli delle nazionali (0 frasi sbagliate su 2232)
+ok   D7: sala stampa della Nazionale con la Nazionale (Italia/ITA), del club col club (FC Rendalto)
+ok   D8: nessun codice interno come giornata ( · Fase a gironi · 1ª giornata |  · Fase a gironi · 5ª giornata |  · 12ª giornata)
+ok   pure: nessun errore di pagina
+D9 {"club":"FC Valmora","ruolo":"titolare","calc":"titolare","fid":74,"dec":8}
+ok   D9: firmato «Titolare 76%», il ruolo resta titolare (ruolo titolare, ricalcolato titolare)
+ok   D9: il mister lo schiera titolare in almeno 5 gare su 8 (8)
+
+FALLITO: 1
+=== riserva-103 (out/ci-rossi/riserva-103-2026-11-05T20-57-18-532Z.log)
+  verde gi4: esito a 8.15 s di scena (10256 ms) via riserva a conclusione finita · scena nei primi 2,6 s 2.14
+  verde gi1: esito a 8.09 s di scena (11005 ms) via chiusura a conclusione finita · scena nei primi 2,6 s 1.72
+  verde gi17: ✗ esito mai rivelato in 160 s
+  rosso gi4: esito a 8.19 s di scena (10083 ms) via chiusura a conclusione finita · scena nei primi 2,6 s 2
+  rosso gi1: esito a 8.2 s di scena (10739 ms) via riserva a conclusione finita · scena nei primi 2,6 s 2.08
+  rosso gi17: ✗ esito mai rivelato in 160 s
+  rosso troppo veloce: si rallenta a CPU x8
+  rosso gi4: esito a 7.73 s di scena (11438 ms) via riserva+scena a CONCLUSIONE IN CORSA · scena nei primi 2,6 s 1.6
+  rosso gi1: esito a 7.84 s di scena (11063 ms) via riserva+scena a CONCLUSIONE IN CORSA · scena nei primi 2,6 s 1.7
+  rosso gi17: ✗ esito mai rivelato in 160 s
+VERDE scene giudicate 2/3 · a conclusione in corsa 0
+ROSSO scene giudicate 2/3 · a conclusione in corsa 2
+— caso B: conclusione non ancora cominciata —
+  verde gi4: esito a 2.73 s di scena (3159 ms) via riserva dopo i 2,6 s di scena · scena nei primi 2,6 s 2.26
+  verde gi1: esito a 2.59 s di scena (3695 ms) via riserva PRIMA dei 2,6 s di scena · scena nei primi 2,6 s 1.78
+  verde gi17: ✗ esito mai rivelato in 160 s
+  rosso gi4: esito a 2.16 s di scena (2561 ms) via riserva PRIMA dei 2,6 s di scena · scena nei primi 2,6 s 2.21
+  rosso gi1: esito a 2.19 s di scena (2572 ms) via riserva PRIMA dei 2,6 s di scena · scena nei primi 2,6 s 2.23
+  rosso gi17: ✗ esito mai rivelato in 160 s
+  rosso troppo veloce: si rallenta a CPU x8
+  rosso gi4: esito a 1.76 s di scena (2527 ms) via riserva PRIMA dei 2,6 s di scena · scena nei primi 2,6 s 1.81
+  rosso gi1: esito a 1.74 s di scena (2633 ms) via riserva PRIMA dei 2,6 s di scena · scena nei primi 2,6 s 1.74
+  rosso gi17: ✗ esito mai rivelato in 160 s
+VERDE scene giudicate 2/3 · prima dei 2,6 s di scena 1
+ROSSO scene giudicate 2/3 · prima dei 2,6 s di scena 2
+✗ riserva-103 ROSSO
+  · verde: 1 esiti rivelati prima dei 2,6 s di scena
+✗ riserva-103 ROSSO
+  · caso B (conclusione non ancora cominciata) rosso
+=== lento-103 (out/ci-rossi/lento-103-2026-11-05T21-28-44-146Z.log)
+VERDE parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+ROSSO parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+✗ lento-103 ROSSO
+  · rosso: il difetto non si vede
+=== lento-103 (out/ci-rossi/lento-103-2026-11-05T21-37-35-736Z.log)
+VERDE parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+ROSSO parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+✗ lento-103 ROSSO
+  · rosso: il difetto non si vede
+=== lento-103 (out/ci-rossi/lento-103-2026-11-05T21-46-53-490Z.log)
+VERDE parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+ROSSO parate giudicate 3 · difetti 0 · D3 «pallone mai al portiere» 0
+✗ lento-103 ROSSO
+  · rosso: il difetto non si vede
+=== contatto-103 (out/ci-rossi/contatto-103-2026-11-05T21-54-09-980Z.log)
+VERDE parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+ROSSO parate giudicate 2 · difetti 0 · D3 «pallone mai al portiere» 0
+✗ contatto-103 ROSSO
+  · rosso: il difetto non si vede
+=== titolo-110 (out/ci-rossi/titolo-110-2026-11-06T00-30-12-779Z.log)
+{"sopra":null,"bg":"rgb(26, 30, 39)","cCap":8.78,"cFrase":14.79}
+❌ FAIL titolo-110
+=== titolo-110 (out/ci-rossi/titolo-110-2026-11-06T00-30-35-045Z.log)
+{"sopra":null,"bg":"rgb(26, 30, 39)","cCap":8.78,"cFrase":14.79}
+❌ FAIL titolo-110
+=== titolo-110 (out/ci-rossi/titolo-110-2026-11-06T00-30-56-833Z.log)
+{"sopra":null,"bg":"rgb(26, 30, 39)","cCap":8.78,"cFrase":14.79}
+❌ FAIL titolo-110
