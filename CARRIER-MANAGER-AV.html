@@ -40642,9 +40642,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.title,marginBottom:8}}>⚽</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
-                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.3)":TINTE.sec/* [giro 108 G180-32] testo velato a 0,3/0,2 di opacita' sul velo della presentazione: 2,68 e 1,87:1 sul PC. Rosso __CPM_NO_G108_32 */,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.3)":TINTE.testo/* [giro 108 G180-32] testo velato a 0,3/0,2 di opacita' sul velo della presentazione: 2,68 e 1,87:1 sul PC (TINTE.sec sul prato velato resta a 3,6:1, misurato). Rosso __CPM_NO_G108_32 */,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
-                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.2)":TINTE.sec,marginTop:6}}>{"Tocca per iniziare"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.2)":TINTE.testo,marginTop:6}}>{"Tocca per iniziare"}</div>
                 </div>
               )}
               {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}

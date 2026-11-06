@@ -24,8 +24,11 @@ const GIRI = {
 };
 const arm = m => path.join(BASE, m);
 function gioca(m) {
-  const dir = arm(m); fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(path.join(dir, 'foto'), { recursive: true });
-  for (const [sonda, formati, club] of GIRI[m]) {
+  /* C108_GIRI=partita (o schermate) rigioca solo quella sonda e tiene i dati dell'altra */
+  const solo = process.env.C108_GIRI || ''; const dir = arm(m);
+  if (!solo) fs.rmSync(dir, { recursive: true, force: true }); else if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) if (f.startsWith(solo + '-')) fs.rmSync(path.join(dir, f));
+  fs.mkdirSync(path.join(dir, 'foto'), { recursive: true });
+  for (const [sonda, formati, club] of GIRI[m]) { if (solo && sonda !== solo) continue;
     const env = { ...process.env, C180_DATI: dir, C180_FOTO: path.join(dir, 'foto'), C180_FORMATI: formati, C180_CLUB: club,
       C180_SOLO: sonda === 'schermate' ? SCH : PAR, C180_ROSSI: m === 'rosso' ? ROSSI.join(',') : '', C180_PARTE: 'fuori,carriera,finestre,flusso' };
     const t0 = Date.now(); console.log(`· ${m}: ${sonda} ${formati} ${club}`);

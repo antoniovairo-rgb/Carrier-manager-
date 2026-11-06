@@ -44,8 +44,10 @@ for (const f of scelti()) for (const club of scelteClub()) {
       await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '▶' || /riprend/i.test(q.textContent || '')); if (x) x.click(); else document.body.click(); }); await sleep(500); });
     /* highlight: una scena d'attacco (tiro) forzata, poi la scelta e l'esito (gol) */
     const gi = await page.evaluate(() => { const i = SITUATIONS.findIndex(s => s.type !== 'def' && (s.actions || []).some(a => /tir|calci/i.test(a.label || ''))); return i < 0 ? 0 : i; });
-    await passo('hl', async () => { await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_SIT(g, false); }, gi); await sleep(900); await M('hl-intro');
-      await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(900); await M('hl-scelta');
+    /* [giro 108] l'intro forzata durava 300 ms (default di __CPM_FORCE_INTRO_MS): la foto «hl-intro» arrivava a scelta gia' aperta e il velo
+       della presentazione (G180-32) non veniva mai misurato. Si tiene 8 s per la foto, poi si torna a 300 ms. */
+    await passo('hl', async () => { await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_INTRO_MS = 8000; window.__CPM_FORCE_SIT(g, false); }, gi); await sleep(900); await M('hl-intro', { fermaMs: 300 });
+      await page.evaluate(g => { window.__CPM_FORCE_INTRO_MS = 300; window.__CPM_FORCE_SIT(g, true); }, gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(900); await M('hl-scelta');
       await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_FORCE_KIND = 'goal'; window.__CPM_RESOLVE(0); }); const ff = await aspettaFase(page, /hl_result/, 20000); await sleep(1400); await M('hl-esito-gol');
       if (!ff) mancanti.push('hl-esito (fase ' + await fase(page) + ')'); });
     await passo('hl-fallito', async () => { await page.evaluate(g => { delete window.__CPM_FORCE_KIND; window.__CPM_FORCE_SIT(g, true); }, gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(700);
