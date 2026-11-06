@@ -76,7 +76,9 @@ Due correzioni dello **strumento** durante la taratura, nessuna del gioco:
 
 Foto: `docs/sviluppo/foto-giro107/freccia-<formato>-<sede>-{1-chiuso,2-aperto}.png`.
 
-## Rigioco
+## Rigioco (in sequenza, sul build del ramo)
+
+**Tutti verdi, ogni braccio rosso riconosciuto.**
 
 | Controllo | Esito |
 |---|---|
@@ -85,9 +87,9 @@ Foto: `docs/sviluppo/foto-giro107/freccia-<formato>-<sede>-{1-chiuso,2-aperto}.p
 | save-compat | 12 pass · 0 fail |
 | tema-unico | verde · rosso atteso (cade P) |
 | partita2d-297 | verde · rosso A/B/C cade |
-| pc-tablet-292 | _in corsa_ |
-| partita-v2 | _da fare_ |
-| momenti-v2 | _da fare_ |
+| pc-tablet-292 | verde · rosso (la 177) cade su PC e tablet; telefono identico con e senza interruttori |
+| partita-v2 | verde: 3 formati x 4 schermate, contrasto minimo 4,87:1 · rosso atteso |
+| momenti-v2 | verde: 4 formati x 5 schermate, contrasto minimo 4,83:1 · rosso atteso |
 | build-src / check-src | ricomposto, identico byte per byte |
 
 ## Osservazioni per il collaudo 180 (non corrette qui)
