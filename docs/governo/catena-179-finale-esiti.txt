@@ -1,0 +1,10 @@
+riserva-103 1 exit=0
+riserva-103 2 exit=0
+contatto-103 1 exit=0
+contatto-103 2 exit=0
+carriera3-94 1 exit=1
+carriera3-94 2 exit=1
+portiere-252 1 exit=0
+portiere-252 2 exit=0
+titolo-110 1 exit=0
+titolo-110 2 exit=0
