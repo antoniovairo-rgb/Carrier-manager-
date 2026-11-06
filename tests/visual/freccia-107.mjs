@@ -35,7 +35,10 @@ const MIS = () => {
   return { aperto: !!cont, vista: (bs.find(x => x.getAttribute('aria-pressed') === 'true' || /0\.2/.test(x.style.background)) || {}).textContent || null,
     simbolo, verso, ariaExp: bt.getAttribute('aria-expanded'), freccia: R(bt), linguette: bs.slice(0, -1).map(R), barra: R(li.firstElementChild), pannello: R(li), contenuto: cont,
     striscia: R(document.querySelector('[data-cpm="striscia918"]')), tabellone: R([...document.querySelectorAll('[data-cpm="barra"]')].find(e => e.getBoundingClientRect().width)),
-    cronaca: R(document.querySelector('[data-cpm="com661"]')), W: innerWidth, H: innerHeight, clock: window.__CPM_CLOCK && window.__CPM_CLOCK() };
+    /* la cronaca si misura sul TESTO: il riquadro com661 ha un'imbottitura trasparente sopra la riga (t820: riquadro da 963, testo da 990) */
+    cronaca: (() => { const c = document.querySelector('[data-cpm="com661"]'); if (!c) return null; let u = null; const tw = document.createTreeWalker(c, NodeFilter.SHOW_TEXT); let n;
+      while ((n = tw.nextNode())) { if (!(n.nodeValue || '').trim()) continue; const rg = document.createRange(); rg.selectNodeContents(n); for (const r of rg.getClientRects()) { if (r.width < 1) continue; u = u ? [Math.min(u[0], r.left), Math.min(u[1], r.top), Math.max(u[2], r.right), Math.max(u[3], r.bottom)] : [r.left, r.top, r.right, r.bottom]; } }
+      return u ? [u[0], u[1], u[2] - u[0], u[3] - u[1]].map(v => Math.round(v)) : null; })(), W: innerWidth, H: innerHeight, clock: window.__CPM_CLOCK && window.__CPM_CLOCK() };
 };
 const freccia = page => page.evaluate(() => { const li = document.querySelector('[data-cpm="linguette918"]'); [...li.querySelectorAll('button')].pop().click(); });
 const linguetta = (page, t) => page.evaluate(t => { const li = document.querySelector('[data-cpm="linguette918"]'); [...li.querySelectorAll('button')].find(x => (x.textContent || '').trim() === t).click(); }, t);
