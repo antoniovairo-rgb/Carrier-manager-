@@ -41,7 +41,14 @@ const IN_PAGINA = {
     const cvs = [...document.querySelectorAll('canvas')].filter(vis).sort((a, c) => c.getBoundingClientRect().width * c.getBoundingClientRect().height - a.getBoundingClientRect().width * a.getBoundingClientRect().height);
     const pausa = [...document.querySelectorAll('button')].find(x => /^(⏸|▶)$/.test((x.textContent || '').trim()) && vis(x));
     let card = null; if (pausa && cvs[0]) { let a = pausa; while (a && !a.contains(cvs[0])) a = a.parentElement; if (a) card = r2(a.getBoundingClientRect()); }
-    const btn = [...document.querySelectorAll('button,[role=button]')].filter(vis).map(x => { const r = x.getBoundingClientRect(); return { t: (x.textContent || '').trim().slice(0, 28), r: r2(r) }; });
+    const btn = [...document.querySelectorAll('button,[role=button]')].filter(vis).map(x => { const r = x.getBoundingClientRect();
+      /* [7.999.180] AREA DI TOCCO EFFETTIVA (stesso criterio di c180-lib EXTRA108): rettangolo del tasto unito al suo ::after trasparente
+         (.cpm-t40/.cpm-t40m), che riceve davvero il dito; il giro 108 ha portato l'area a 44 px senza ingrandire il disegno.
+         `r` resta il rettangolo visibile (serve per toccare il centro e per il confronto con/senza interruttori). */
+      let ew = r.width, eh = r.height; const a = getComputedStyle(x, '::after');
+      if (a && a.content && a.content !== 'none' && a.position === 'absolute') { const cb = getComputedStyle(x); const zx = r.width / (parseFloat(cb.width) || r.width || 1), zy = r.height / (parseFloat(cb.height) || r.height || 1);
+        ew = Math.max(ew, (parseFloat(a.width) || 0) * (isFinite(zx) && zx > 0 ? zx : 1)); eh = Math.max(eh, (parseFloat(a.height) || 0) * (isFinite(zy) && zy > 0 ? zy : 1)); }
+      return { t: (x.textContent || '').trim().slice(0, 28), r: r2(r), e: [Math.round(ew), Math.round(eh)] }; });
     const st = document.querySelector('[data-cpm="striscia918"]');
     const testo = (document.body.innerText || '');
     return { W, H, hs: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - W, card, cv: cvs[0] ? r2(cvs[0].getBoundingClientRect()) : null, btn,
@@ -81,7 +88,7 @@ async function assesta(page, maxMs = 60000, scatta = null) { /* ultimo fotogramm
 const forza = (page, gi, scelta) => page.evaluate(([g, c]) => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_INTRO_MS = 2500; window.__CPM_FORCE_SIT(g, c); }, [gi, scelta]);
 const faseDi = page => page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
 async function attendiFase(page, rx, ms = 20000) { const t0 = Date.now(); while (Date.now() - t0 < ms) { const p = await faseDi(page); if (rx.test(p || '')) return p; await sleep(250); } return await faseDi(page); }
-const piccoli = (st, min = 40) => st.btn.filter(x => x.r[2] < min || x.r[3] < min).map(x => `${x.t}@${x.r[2]}x${x.r[3]}`);
+const piccoli = (st, min = 40) => st.btn.filter(x => { const w = x.e ? x.e[0] : x.r[2], h = x.e ? x.e[1] : x.r[3]; return w < min || h < min; }).map(x => `${x.t}@${x.e ? x.e[0] + 'x' + x.e[1] : x.r[2] + 'x' + x.r[3]}`);
 
 async function giro(sigla, rosso, completo) {
   const f = FORMATI[sigla]; const ko = [], mis = {}; const { ctx, page, errs } = await apri(f, rosso);
