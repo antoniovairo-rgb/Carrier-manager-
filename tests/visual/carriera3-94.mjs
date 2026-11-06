@@ -44,6 +44,11 @@ async function passi(page, fino, stag) {
     if (r.res.startsWith('blocked:')) await page.evaluate(() => window.__CPM_CAREER.dismiss());
     await assesta(page);
   }
+  /* [giro 105] l'autosave e' a debounce di 600 ms sul cambio di player (src/18): con i passi incalzati non scrive finche'
+     non c'e' una pausa, e leggere localStorage subito dopo era una corsa (persa sempre sulla 179, passi 4,4 s contro 4,8).
+     Si aspetta che il salvataggio raggiunga la settimana viva (tetto 6 s); se non la raggiunge, la lettura resta quella vera. */
+  await page.waitForFunction(() => { try { const C = window.__CPM_CAREER; return JSON.parse(localStorage.getItem('cpm-v3')).player.week === C.snapshot().week; } catch (e) { return false; } }, null, { timeout: 6000 }).catch(() => {});
+  await sleep(200);
   return last;
 }
 const STATS = { 'velocità': 88, tecnica: 88, fisico: 86, 'mentalità': 87, tiro: 89, passaggio: 86, dribbling: 88, posizionamento: 87 };
