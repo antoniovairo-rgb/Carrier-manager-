@@ -1,0 +1,798 @@
+misure 438 · gruppi 744
+{
+  contrasto: 50,
+  'contrasto illeggibile': 30,
+  'fondo chiaro': 110,
+  'parola spezzata': 57,
+  'resto V1': 193,
+  'testi sovrapposti': 158,
+  'testo tagliato': 6,
+  'tocco < 44 px': 140
+}
+[contrasto] auto-la-telefonata-del-ct · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «Rimarrà nella storia: "» 3.12:1 (soglia 4.5, 11px/400) testo #606992 fondo #1a1e27 · auto-la-telefonata-del-ct-pc-giallo.png
+[contrasto] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «17» 4.43:1 (soglia 4.5, 12px/700) testo #ef4444 fondo #1a1e27 · classifica-pc-giallo.png
+[contrasto] classifica · 3 casi (pc-rosso,s360-rosso,s412-scuro) · «5» 3.89:1 (soglia 4.5, 12px/700) testo #f97316 fondo #563522 · classifica-pc-rosso.png
+[contrasto] club · 1 casi (s412-rosso) · «(medico sociale) · 📋» 4.47:1 (soglia 4.5, 12px/400) testo #ffffff fondo #c55347 · club-412-rosso.png
+[contrasto] formazioni · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «HYDE» 4.49:1 (soglia 4.5, 11px/600) testo #dae6da fondo #2f7334 · formazioni-pc-giallo.png
+[contrasto] gala · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «Trofeo d'Oro» 2.33:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f7f4f5 · gala-pc-giallo.png
+[contrasto] gala · 4 casi (s360-giallo,s412-giallo,s412-rosso,s412-scuro) · «Trofeo d'Oro» 2.31:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f4f4f4 · gala-360-giallo.png
+[contrasto] gala · 2 casi (s360-rosso,s360-scuro) · «Trofeo d'Oro» 2.31:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f4f4f5 · gala-360-rosso.png
+[contrasto] hl-intro · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «1» 4.27:1 (soglia 4.5, 11px/900) testo #ffffff fondo #3c74ed · hl-intro-pc-giallo.png
+[contrasto] hl-intro · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «3» 4.35:1 (soglia 4.5, 11px/900) testo #9aa3b2 fondo #383c44 · hl-intro-pc-giallo.png
+[contrasto] hl-scelta · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «1» 4.27:1 (soglia 4.5, 11px/900) testo #ffffff fondo #3c74ed · hl-scelta-pc-giallo.png
+[contrasto] hl-scelta · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «3» 4.35:1 (soglia 4.5, 11px/900) testo #9aa3b2 fondo #383c44 · hl-scelta-pc-giallo.png
+[contrasto] home · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «SETT. 12 · CASA» 3.84:1 (soglia 4.5, 13px/700) testo #ffffff fondo #b17611 · home-pc-giallo.png
+[contrasto] home · 1 casi (pc-rosso) · «2» 3.52:1 (soglia 4.5, 11px/600) testo #fae2e2 fondo #df3b3b · home-pc-rosso.png
+[contrasto] home · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «Prossima ·» 3.66:1 (soglia 4.5, 11px/700) testo #fae0e0 fondo #de3131 · home-pc-rosso.png
+[contrasto] home · 2 casi (pc-rosso,s412-rosso) · «VS» 2.47:1 (soglia 3, 32px/800) testo #f2adad fondo #de3131 · home-pc-rosso.png
+[contrasto] home · 2 casi (pc-rosso,s412-rosso) · «1» 3.82:1 (soglia 4.5, 11px/600) testo #fadede fondo #dc2626 · home-pc-rosso.png
+[contrasto] home · 1 casi (s360-rosso) · «2» 3.65:1 (soglia 4.5, 11px/600) testo #fae0e0 fondo #de3232 · home-360-rosso.png
+[contrasto] ingresso · 1 casi (s360-giallo) · «FC Wolverhampton» 3.76:1 (soglia 4.5, 13px/700) testo #0f172a fondo #9b6917 · ingresso-360-giallo.png
+[contrasto] intervista-sconfitta · 1 casi (s360-giallo) · «Elite» 3.33:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b2b4 · intervista-sconfitta-360-giallo.png
+[contrasto] intervista-sconfitta · 1 casi (s360-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b1b4 · intervista-sconfitta-360-rosso.png
+[contrasto] intervista-sconfitta · 1 casi (s360-scuro) · «Elite» 3.29:1 (soglia 4.5, 11px/700) testo #92400e fondo #aeb1b4 · intervista-sconfitta-360-scuro.png
+[contrasto] intervista-sconfitta · 1 casi (s412-giallo) · «Elite» 3.37:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b3b4 · intervista-sconfitta-412-giallo.png
+[contrasto] intervista-sconfitta · 1 casi (s412-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b1b4 · intervista-sconfitta-412-rosso.png
+[contrasto] intervista-sconfitta · 1 casi (s412-scuro) · «Elite» 3.3:1 (soglia 4.5, 11px/700) testo #92400e fondo #afb1b4 · intervista-sconfitta-412-scuro.png
+[contrasto] intervista-vittoria · 1 casi (s360-giallo) · «Elite» 3.33:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b2b4 · intervista-vittoria-360-giallo.png
+[contrasto] intervista-vittoria · 1 casi (s360-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b1b4 · intervista-vittoria-360-rosso.png
+[contrasto] intervista-vittoria · 1 casi (s360-scuro) · «Elite» 3.29:1 (soglia 4.5, 11px/700) testo #92400e fondo #aeb1b4 · intervista-vittoria-360-scuro.png
+[contrasto] intervista-vittoria · 1 casi (s412-giallo) · «Elite» 3.37:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b3b4 · intervista-vittoria-412-giallo.png
+[contrasto] intervista-vittoria · 1 casi (s412-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b1b4 · intervista-vittoria-412-rosso.png
+[contrasto] intervista-vittoria · 1 casi (s412-scuro) · «Elite» 3.3:1 (soglia 4.5, 11px/700) testo #92400e fondo #afb1b4 · intervista-vittoria-412-scuro.png
+[contrasto] menu · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «ℹ️» 2.07:1 (soglia 4.5, 13px/400) testo #f4f1ea fondo #8cafbf · menu-pc-rosso.png
+[contrasto] offerta-mercato · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «5» 4.27:1 (soglia 4.5, 12px/700) testo #a78bfa fondo #383554 · offerta-mercato-pc-giallo.png
+[contrasto] offerta-mercato · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · «5» 4.12:1 (soglia 4.5, 12px/700) testo #a78bfa fondo #3b3758 · offerta-mercato-360-giallo.png
+[contrasto] partita2d-statistiche · 1 casi (pc-rosso) · «⚔️ ATTACCO» 2.68:1 (soglia 4.5, 11px/400) testo #536255 fondo #091f0c · partita2d-statistiche-pc-rosso.png
+[contrasto] pausa · 1 casi (pc-giallo) · «Premi P o tocca per riprendere» 4.47:1 (soglia 4.5, 11px/400) testo #7a8280 fondo #0e1b18 · pausa-pc-giallo.png
+[contrasto] pausa · 1 casi (pc-scuro) · «Premi P o tocca per riprendere» 4.35:1 (soglia 4.5, 11px/400) testo #7f8685 fondo #172322 · pausa-pc-scuro.png
+[contrasto] pausa · 1 casi (s360-rosso) · «FC Manchester» 3.24:1 (soglia 4.5, 13px/700) testo #0f172a fondo #7f6530 · pausa-360-rosso.png
+[contrasto] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «Premier Division» 3.81:1 (soglia 4.5, 11px/800) testo #e11d48 fondo #16171c · post-partita-pc-giallo.png
+[contrasto] procuratore-intro · 1 casi (s360-giallo) · «Elite» 3.33:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b2b4 · procuratore-intro-360-giallo.png
+[contrasto] procuratore-intro · 1 casi (s360-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b0b1b4 · procuratore-intro-360-rosso.png
+[contrasto] procuratore-intro · 1 casi (s360-scuro) · «Elite» 3.29:1 (soglia 4.5, 11px/700) testo #92400e fondo #aeb1b4 · procuratore-intro-360-scuro.png
+[contrasto] procuratore-intro · 1 casi (s412-giallo) · «Elite» 3.37:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b3b4 · procuratore-intro-412-giallo.png
+[contrasto] procuratore-intro · 1 casi (s412-rosso) · «Elite» 3.31:1 (soglia 4.5, 11px/700) testo #92400e fondo #b1b1b4 · procuratore-intro-412-rosso.png
+[contrasto] procuratore-intro · 1 casi (s412-scuro) · «Elite» 3.3:1 (soglia 4.5, 11px/700) testo #92400e fondo #afb1b4 · procuratore-intro-412-scuro.png
+[contrasto] sch-seasonAwards · 2 casi (pc-giallo,pc-scuro) · «Trofeo d'Oro» 2.33:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f7f4f5 · sch-seasonAwards-pc-giallo.png
+[contrasto] sch-seasonAwards · 1 casi (pc-rosso) · «Trofeo d'Oro» 2.33:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f7f4f4 · sch-seasonAwards-pc-rosso.png
+[contrasto] sch-seasonAwards · 3 casi (s360-giallo,s360-rosso,s360-scuro) · «Trofeo d'Oro» 2.31:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f4f4f5 · sch-seasonAwards-360-giallo.png
+[contrasto] sch-seasonAwards · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Trofeo d'Oro» 2.31:1 (soglia 4.5, 11px/400) testo #9aa3b2 fondo #f4f4f4 · sch-seasonAwards-412-giallo.png
+[contrasto] ufficio · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «86» 4.41:1 (soglia 4.5, 11px/900) testo #ffffff fondo #af616f · ufficio-pc-giallo.png
+[contrasto illeggibile] creazione · 1 casi (pc-rosso) · «KORWARD» 1.54:1 (soglia 4.5, 11px/700) testo #ffffff fondo #ccd1d8 · creazione-pc-rosso.png
+[contrasto illeggibile] creazione · 2 casi (s360-rosso,s412-rosso) · «KORWARD» 1.54:1 (soglia 4.5, 11px/700) testo #ffffff fondo #ccd1d7 · creazione-360-rosso.png
+[contrasto illeggibile] figurina · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «KORWARD» 1.55:1 (soglia 4.5, 12px/700) testo #ffffff fondo #cad0d7 · figurina-pc-giallo.png
+[contrasto illeggibile] figurina · 3 casi (s360-giallo,s360-rosso,s360-scuro) · «KORWARD» 1.55:1 (soglia 4.5, 12px/700) testo #ffffff fondo #cbd0d8 · figurina-360-giallo.png
+[contrasto illeggibile] figurina · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «KORWARD» 1.55:1 (soglia 4.5, 12px/700) testo #ffffff fondo #cbd0d7 · figurina-412-giallo.png
+[contrasto illeggibile] gala · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «Chiara Loreti apre la prima busta» 1.03:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f7f4f5 · gala-pc-giallo.png
+[contrasto illeggibile] gala · 1 casi (s360-giallo) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f5f6f6 · gala-360-giallo.png
+[contrasto illeggibile] gala · 2 casi (s360-rosso,s360-scuro) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f7f6f3 · gala-360-rosso.png
+[contrasto illeggibile] gala · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f5f5f6 · gala-412-giallo.png
+[contrasto illeggibile] hl-esito-gol · 1 casi (s360-giallo) · «FC Wolverhampton» 1.37:1 (soglia 4.5, 13px/700) testo #0f172a fondo #373028 · hl-esito-gol-360-giallo.png
+[contrasto illeggibile] hl-esito-parata · 1 casi (s360-giallo) · «FC Wolverhampton» 1.37:1 (soglia 4.5, 13px/700) testo #0f172a fondo #373028 · hl-esito-parata-360-giallo.png
+[contrasto illeggibile] hl-intro · 1 casi (s360-giallo) · «FC Wolverhampton» 1.37:1 (soglia 4.5, 13px/700) testo #0f172a fondo #373028 · hl-intro-360-giallo.png
+[contrasto illeggibile] hl-scelta · 1 casi (s360-giallo) · «FC Wolverhampton» 1.37:1 (soglia 4.5, 13px/700) testo #0f172a fondo #373028 · hl-scelta-360-giallo.png
+[contrasto illeggibile] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · «14» 1.66:1 (soglia 3, 20px/900) testo #003399 fondo #0f1626 · nazionale-pc-giallo.png
+[contrasto illeggibile] nazionale · 3 casi (s360-giallo,s360-rosso,s360-scuro) · «14» 1.64:1 (soglia 3, 20px/900) testo #003399 fondo #111826 · nazionale-360-giallo.png
+[contrasto illeggibile] nazionale · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «14» 1.64:1 (soglia 3, 20px/900) testo #003399 fondo #101826 · nazionale-412-giallo.png
+[contrasto illeggibile] partita2d-chiuso · 1 casi (s360-giallo) · «FC Wolverhampton» 1.19:1 (soglia 4.5, 13px/700) testo #0f172a fondo #272629 · partita2d-chiuso-360-giallo.png
+[contrasto illeggibile] partita2d-pagelle · 1 casi (s360-giallo) · «FC Wolverhampton» 1.19:1 (soglia 4.5, 13px/700) testo #0f172a fondo #292626 · partita2d-pagelle-360-giallo.png
+[contrasto illeggibile] partita2d-statistiche · 1 casi (pc-rosso) · «Tocca per iniziare» 1.87:1 (soglia 4.5, 11px/400) testo #3a4b3d fondo #091e0c · partita2d-statistiche-pc-rosso.png
+[contrasto illeggibile] partita2d-statistiche · 1 casi (s360-giallo) · «FC Wolverhampton» 1.2:1 (soglia 4.5, 13px/700) testo #0f172a fondo #282728 · partita2d-statistiche-360-giallo.png
+[contrasto illeggibile] pausa · 1 casi (s360-giallo) · «FC Wolverhampton» 1.01:1 (soglia 4.5, 13px/700) testo #0f172a fondo #16181d · pausa-360-giallo.png
+[contrasto illeggibile] prepartita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «Premier Division» 1.4:1 (soglia 4.5, 11px/700) testo #ffffff fondo #dbd9db · prepartita-pc-giallo.png
+[contrasto illeggibile] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «Massimiliano Bartolomucci» 1.04:1 (soglia 4.5, 13px/800) testo #f4f1ea fondo #eff6ff · sch-proTransition-pc-giallo.png
+[contrasto illeggibile] sch-proTransition · 6 casi (pc-giallo,pc-rosso,pc-scuro,s412-giallo,s412-rosso,s412-scuro) · «FC Wolverhampton» 1.09:1 (soglia 4.5, 13px/700) testo #f4f1ea fondo #fefce8 · sch-proTransition-pc-giallo.png
+[contrasto illeggibile] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «14» 1.53:1 (soglia 4.5, 11px/400) testo #fbbf24 fondo #eff6ff · sch-proTransition-pc-giallo.png
+[contrasto illeggibile] sch-seasonAwards · 2 casi (pc-giallo,pc-scuro) · «Chiara Loreti apre la prima busta» 1.03:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f7f4f5 · sch-seasonAwards-pc-giallo.png
+[contrasto illeggibile] sch-seasonAwards · 1 casi (pc-rosso) · «Chiara Loreti apre la prima busta» 1.03:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f7f4f4 · sch-seasonAwards-pc-rosso.png
+[contrasto illeggibile] sch-seasonAwards · 2 casi (s360-giallo,s360-rosso) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f6f6f4 · sch-seasonAwards-360-giallo.png
+[contrasto illeggibile] sch-seasonAwards · 1 casi (s360-scuro) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f7f6f3 · sch-seasonAwards-360-scuro.png
+[contrasto illeggibile] sch-seasonAwards · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Chiara Loreti apre la prima busta» 1.04:1 (soglia 4.5, 12px/700) testo #f4f1ea fondo #f5f5f6 · sch-seasonAwards-412-giallo.png
+[fondo chiaro] agente · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · agente-pc-giallo.png
+[fondo chiaro] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · div «» 529x7 fondo rgb(251, 191, 36) · agente-pc-giallo.png
+[fondo chiaro] auto-la-telefonata-del-ct · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · auto-la-telefonata-del-ct-pc-giallo.png
+[fondo chiaro] auto-la-telefonata-del-ct · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · auto-la-telefonata-del-ct-pc-giallo.png
+[fondo chiaro] calendario · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · calendario-pc-giallo.png
+[fondo chiaro] carriera · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · carriera-pc-giallo.png
+[fondo chiaro] carriera · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «86ATTITABARTOLOMUCCI84TI» 271x383 fondo rgb(245, 158, 11) · carriera-pc-giallo.png
+[fondo chiaro] carriera · 6 casi (pc-giallo,pc-rosso,pc-scuro,s412-giallo,s412-rosso,s412-scuro) · div «» 45x72 fondo rgb(232, 180, 74) · carriera-pc-giallo.png
+[fondo chiaro] classifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · classifica-pc-giallo.png
+[fondo chiaro] club · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · club-pc-giallo.png
+[fondo chiaro] club · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[club-v2] «WLVFC Wolverhampton🏴󠁧�» 1086x140 fondo rgb(245, 158, 11) · club-pc-giallo.png
+[fondo chiaro] club · 5 casi (pc-giallo,pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» 755x6 fondo rgb(74, 222, 128) · club-pc-giallo.png
+[fondo chiaro] coppe · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · coppe-pc-giallo.png
+[fondo chiaro] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · creazione-pc-rosso.png
+[fondo chiaro] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «ATTACCANTE» 99x18 fondo rgb(226, 232, 240) · creazione-pc-rosso.png
+[fondo chiaro] festa-nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · festa-nazionale-pc-giallo.png
+[fondo chiaro] festa-nazionale · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · festa-nazionale-pc-giallo.png
+[fondo chiaro] festa-nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div[tabellino24] «WLV0 – 2FC TestIn casa ·» 1323x47 fondo rgb(255, 255, 255) · festa-nazionale-pc-giallo.png
+[fondo chiaro] festa-titolo · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · festa-titolo-pc-giallo.png
+[fondo chiaro] festa-titolo · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 613x43 fondo rgb(245, 158, 11) · festa-titolo-pc-giallo.png
+[fondo chiaro] festa-titolo · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 613x43 fondo rgb(147, 197, 253) · festa-titolo-pc-rosso.png
+[fondo chiaro] figurina · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · figurina-pc-giallo.png
+[fondo chiaro] figurina · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «ATTACCANTE» 99x18 fondo rgb(226, 232, 240) · figurina-pc-giallo.png
+[fondo chiaro] figurina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · figurina-pc-giallo.png
+[fondo chiaro] formazioni · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · formazioni-pc-giallo.png
+[fondo chiaro] gala · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · gala-pc-giallo.png
+[fondo chiaro] gala · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «Chiara Loreti apre la pr» 515x65 fondo rgba(255, 255, 255, 0.95) · gala-pc-giallo.png
+[fondo chiaro] hl-esito-gol · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · hl-esito-gol-pc-giallo.png
+[fondo chiaro] hl-esito-gol · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · hl-esito-gol-pc-giallo.png
+[fondo chiaro] hl-esito-gol · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · hl-esito-gol-pc-rosso.png
+[fondo chiaro] hl-esito-parata · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · hl-esito-parata-pc-giallo.png
+[fondo chiaro] hl-esito-parata · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · hl-esito-parata-pc-giallo.png
+[fondo chiaro] hl-esito-parata · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · hl-esito-parata-pc-rosso.png
+[fondo chiaro] hl-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · hl-intro-pc-giallo.png
+[fondo chiaro] hl-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · hl-intro-pc-giallo.png
+[fondo chiaro] hl-intro · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · hl-intro-pc-rosso.png
+[fondo chiaro] hl-intro · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[tempo-hl-v2] «» 318x4 fondo rgb(232, 180, 74) · hl-intro-360-giallo.png
+[fondo chiaro] hl-scelta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · hl-scelta-pc-giallo.png
+[fondo chiaro] hl-scelta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · hl-scelta-pc-giallo.png
+[fondo chiaro] hl-scelta · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · hl-scelta-pc-rosso.png
+[fondo chiaro] hl-scelta · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[tempo-hl-v2] «» 318x4 fondo rgb(232, 180, 74) · hl-scelta-360-giallo.png
+[fondo chiaro] home · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · home-pc-giallo.png
+[fondo chiaro] home · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · home-pc-giallo.png
+[fondo chiaro] ingresso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · ingresso-pc-giallo.png
+[fondo chiaro] ingresso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 595x43 fondo rgb(245, 158, 11) · ingresso-pc-giallo.png
+[fondo chiaro] ingresso · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 595x43 fondo rgb(147, 197, 253) · ingresso-pc-rosso.png
+[fondo chiaro] intervista-sconfitta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · intervista-sconfitta-pc-giallo.png
+[fondo chiaro] intervista-sconfitta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · intervista-sconfitta-pc-giallo.png
+[fondo chiaro] intervista-sconfitta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div[tabellino24] «WLV0 – 2FC TestIn casa ·» 1323x47 fondo rgb(255, 255, 255) · intervista-sconfitta-pc-giallo.png
+[fondo chiaro] intervista-vittoria · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · intervista-vittoria-pc-giallo.png
+[fondo chiaro] intervista-vittoria · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · intervista-vittoria-pc-giallo.png
+[fondo chiaro] intervista-vittoria · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div[tabellino24] «WLV2 – 1FC TestIn casa ·» 1323x47 fondo rgb(255, 255, 255) · intervista-vittoria-pc-giallo.png
+[fondo chiaro] menu · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · menu-pc-rosso.png
+[fondo chiaro] menu-crediti · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · menu-crediti-pc-rosso.png
+[fondo chiaro] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «⚙️ Opzioni✕🎧 Audio🔇 Si» 1440x900 fondo rgb(240, 247, 255) · menu-opzioni-pc-rosso.png
+[fondo chiaro] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button «» 42x24 fondo rgb(74, 222, 128) · menu-opzioni-pc-rosso.png
+[fondo chiaro] nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · nazionale-pc-giallo.png
+[fondo chiaro] notifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · notifica-pc-giallo.png
+[fondo chiaro] offerta-mercato · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · offerta-mercato-pc-giallo.png
+[fondo chiaro] offerta-mercato · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · offerta-mercato-pc-giallo.png
+[fondo chiaro] offerte · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · offerte-pc-rosso.png
+[fondo chiaro] partita-panchina · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · partita-panchina-pc-giallo.png
+[fondo chiaro] partita-panchina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · partita-panchina-pc-giallo.png
+[fondo chiaro] partita-titolare · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · partita-titolare-pc-giallo.png
+[fondo chiaro] partita-titolare · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · partita-titolare-pc-giallo.png
+[fondo chiaro] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · partita2d-chiuso-pc-giallo.png
+[fondo chiaro] partita2d-chiuso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · partita2d-chiuso-pc-giallo.png
+[fondo chiaro] partita2d-chiuso · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · partita2d-chiuso-pc-rosso.png
+[fondo chiaro] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · partita2d-pagelle-pc-giallo.png
+[fondo chiaro] partita2d-pagelle · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · partita2d-pagelle-pc-giallo.png
+[fondo chiaro] partita2d-pagelle · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · partita2d-pagelle-pc-rosso.png
+[fondo chiaro] partita2d-statistiche · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · partita2d-statistiche-pc-giallo.png
+[fondo chiaro] partita2d-statistiche · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · partita2d-statistiche-pc-giallo.png
+[fondo chiaro] partita2d-statistiche · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · partita2d-statistiche-pc-rosso.png
+[fondo chiaro] pausa · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · pausa-pc-giallo.png
+[fondo chiaro] pausa · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[scudo-casa] «WLVFC Wolverhampton» 601x43 fondo rgb(245, 158, 11) · pausa-pc-giallo.png
+[fondo chiaro] pausa · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div[scudo-casa] «MCHFC Manchester» 601x43 fondo rgb(147, 197, 253) · pausa-pc-rosso.png
+[fondo chiaro] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · post-partita-pc-giallo.png
+[fondo chiaro] post-partita · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div[barra286-sx] «» 268x3 fondo rgb(245, 158, 11) · post-partita-pc-giallo.png
+[fondo chiaro] post-partita · 2 casi (pc-giallo,s412-giallo) · div[barra286-dx] «» 268x3 fondo rgb(255, 255, 255) · post-partita-pc-giallo.png
+[fondo chiaro] post-partita · 2 casi (pc-rosso,s412-rosso) · div[barra286-sx] «» 268x3 fondo rgb(147, 197, 253) · post-partita-pc-rosso.png
+[fondo chiaro] post-partita · 1 casi (pc-scuro) · div[barra286-sx] «» 268x3 fondo rgb(245, 245, 245) · post-partita-pc-scuro.png
+[fondo chiaro] prepartita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · prepartita-pc-giallo.png
+[fondo chiaro] presentazione-0 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · presentazione-0-pc-giallo.png
+[fondo chiaro] presentazione-2 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · presentazione-2-pc-giallo.png
+[fondo chiaro] procuratore-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · procuratore-intro-pc-giallo.png
+[fondo chiaro] procuratore-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · procuratore-intro-pc-giallo.png
+[fondo chiaro] procuratore-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div[tabellino24] «WLV0 – 2FC TestIn casa ·» 1323x47 fondo rgb(255, 255, 255) · procuratore-intro-pc-giallo.png
+[fondo chiaro] saga-capitano · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · saga-capitano-pc-giallo.png
+[fondo chiaro] sch-careerEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-careerEnd-pc-giallo.png
+[fondo chiaro] sch-clubPresentation · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-clubPresentation-pc-giallo.png
+[fondo chiaro] sch-nationalCallup · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-nationalCallup-pc-giallo.png
+[fondo chiaro] sch-postmatch · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-postmatch-pc-giallo.png
+[fondo chiaro] sch-press · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-press-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «Massimiliano Bartolomucc» 1333x80 fondo rgb(239, 246, 255) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «» 1333x7 fondo rgb(226, 232, 240) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «» 666x7 fondo rgb(251, 191, 36) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «Morale +14» 69x18 fondo rgb(220, 252, 231) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «Crescita +20% nella prim» 200x18 fondo rgb(243, 232, 255) · sch-proTransition-pc-giallo.png
+[fondo chiaro] sch-seasonAwards · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-seasonAwards-pc-giallo.png
+[fondo chiaro] sch-seasonAwards · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «Chiara Loreti apre la pr» 515x65 fondo rgba(255, 255, 255, 0.95) · sch-seasonAwards-pc-giallo.png
+[fondo chiaro] sch-seasonEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · sch-seasonEnd-pc-giallo.png
+[fondo chiaro] settimana-impulso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · settimana-impulso-pc-giallo.png
+[fondo chiaro] settimana-impulso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · settimana-impulso-pc-giallo.png
+[fondo chiaro] settimana-spogliatoio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · settimana-spogliatoio-pc-giallo.png
+[fondo chiaro] settimana-spogliatoio · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · settimana-spogliatoio-pc-giallo.png
+[fondo chiaro] settimana-vissuta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · settimana-vissuta-pc-giallo.png
+[fondo chiaro] settimana-vissuta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» 1086x388 fondo rgb(245, 158, 11) · settimana-vissuta-pc-giallo.png
+[fondo chiaro] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «*{box-sizing:border-box;» 1440x900 fondo rgb(240, 247, 255) · ufficio-pc-giallo.png
+[parola spezzata] agente · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · agente-360-giallo.png
+[parola spezzata] agente · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · agente-360-rosso.png
+[parola spezzata] agente · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · agente-360-scuro.png
+[parola spezzata] auto-la-telefonata-del-ct · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · auto-la-telefonata-del-ct-360-giallo.png
+[parola spezzata] auto-la-telefonata-del-ct · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · auto-la-telefonata-del-ct-360-rosso.png
+[parola spezzata] auto-la-telefonata-del-ct · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · auto-la-telefonata-del-ct-360-scuro.png
+[parola spezzata] calendario · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · calendario-360-giallo.png
+[parola spezzata] calendario · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · calendario-360-rosso.png
+[parola spezzata] calendario · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · calendario-360-scuro.png
+[parola spezzata] carriera · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · carriera-360-giallo.png
+[parola spezzata] carriera · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · carriera-360-rosso.png
+[parola spezzata] carriera · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · carriera-360-scuro.png
+[parola spezzata] classifica · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · classifica-360-giallo.png
+[parola spezzata] classifica · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · classifica-360-rosso.png
+[parola spezzata] classifica · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · classifica-360-scuro.png
+[parola spezzata] club · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · club-360-giallo.png
+[parola spezzata] club · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · club-360-rosso.png
+[parola spezzata] club · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · club-360-scuro.png
+[parola spezzata] coppe · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · coppe-360-giallo.png
+[parola spezzata] coppe · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · coppe-360-rosso.png
+[parola spezzata] coppe · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · coppe-360-scuro.png
+[parola spezzata] festa-nazionale · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · festa-nazionale-360-giallo.png
+[parola spezzata] festa-nazionale · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · festa-nazionale-360-rosso.png
+[parola spezzata] festa-nazionale · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · festa-nazionale-360-scuro.png
+[parola spezzata] home · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · home-360-giallo.png
+[parola spezzata] home · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · home-360-rosso.png
+[parola spezzata] home · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · home-360-scuro.png
+[parola spezzata] intervista-sconfitta · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · intervista-sconfitta-360-giallo.png
+[parola spezzata] intervista-sconfitta · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · intervista-sconfitta-360-rosso.png
+[parola spezzata] intervista-sconfitta · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · intervista-sconfitta-360-scuro.png
+[parola spezzata] intervista-vittoria · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · intervista-vittoria-360-giallo.png
+[parola spezzata] intervista-vittoria · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · intervista-vittoria-360-rosso.png
+[parola spezzata] intervista-vittoria · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · intervista-vittoria-360-scuro.png
+[parola spezzata] nazionale · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · nazionale-360-giallo.png
+[parola spezzata] nazionale · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · nazionale-360-rosso.png
+[parola spezzata] nazionale · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · nazionale-360-scuro.png
+[parola spezzata] offerta-mercato · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · offerta-mercato-360-giallo.png
+[parola spezzata] offerta-mercato · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · offerta-mercato-360-rosso.png
+[parola spezzata] offerta-mercato · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · offerta-mercato-360-scuro.png
+[parola spezzata] partita-panchina · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · partita-panchina-360-giallo.png
+[parola spezzata] partita-panchina · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · partita-panchina-360-rosso.png
+[parola spezzata] partita-panchina · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · partita-panchina-360-scuro.png
+[parola spezzata] partita-titolare · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · partita-titolare-360-giallo.png
+[parola spezzata] partita-titolare · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · partita-titolare-360-rosso.png
+[parola spezzata] partita-titolare · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · partita-titolare-360-scuro.png
+[parola spezzata] procuratore-intro · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · procuratore-intro-360-giallo.png
+[parola spezzata] procuratore-intro · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · procuratore-intro-360-rosso.png
+[parola spezzata] procuratore-intro · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · procuratore-intro-360-scuro.png
+[parola spezzata] settimana-spogliatoio · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · settimana-spogliatoio-360-giallo.png
+[parola spezzata] settimana-spogliatoio · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · settimana-spogliatoio-360-rosso.png
+[parola spezzata] settimana-spogliatoio · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · settimana-spogliatoio-360-scuro.png
+[parola spezzata] settimana-vissuta · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · settimana-vissuta-360-giallo.png
+[parola spezzata] settimana-vissuta · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · settimana-vissuta-360-rosso.png
+[parola spezzata] settimana-vissuta · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · settimana-vissuta-360-scuro.png
+[parola spezzata] ufficio · 2 casi (s360-giallo,s412-giallo) · «Wolverhampton» in «FC Wolverhampton» · ufficio-360-giallo.png
+[parola spezzata] ufficio · 1 casi (s360-rosso) · «Merseyside» in «FC Merseyside» · ufficio-360-rosso.png
+[parola spezzata] ufficio · 1 casi (s360-scuro) · «Tyneside» in «FC Tyneside» · ufficio-360-scuro.png
+[resto V1] agente · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «€45 mln» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · agente-pc-giallo.png
+[resto V1] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · agente-pc-giallo.png
+[resto V1] agente · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Agente» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · agente-pc-giallo.png
+[resto V1] auto-la-telefonata-del-ct · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · auto-la-telefonata-del-ct-pc-giallo.png
+[resto V1] auto-la-telefonata-del-ct · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · auto-la-telefonata-del-ct-pc-giallo.png
+[resto V1] auto-la-telefonata-del-ct · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · auto-la-telefonata-del-ct-pc-giallo.png
+[resto V1] auto-la-telefonata-del-ct · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · auto-la-telefonata-del-ct-pc-rosso.png
+[resto V1] auto-la-telefonata-del-ct · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · auto-la-telefonata-del-ct-pc-rosso.png
+[resto V1] auto-la-telefonata-del-ct · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · auto-la-telefonata-del-ct-pc-rosso.png
+[resto V1] auto-la-telefonata-del-ct · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · auto-la-telefonata-del-ct-pc-rosso.png
+[resto V1] calendario · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «📅Calendario» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · calendario-pc-giallo.png
+[resto V1] calendario · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «📅» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · calendario-pc-giallo.png
+[resto V1] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · div «12SUS · c⚽» fondo rgb(22, 35, 59) testo rgb(238, 154, 170) · calendario-pc-giallo.png
+[resto V1] calendario · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button «Stagione» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · calendario-360-giallo.png
+[resto V1] carriera · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «👤Profilo» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · carriera-pc-giallo.png
+[resto V1] carriera · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «👤» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · carriera-pc-giallo.png
+[resto V1] carriera · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «86ATTITABARTOLOMUCCI84TI» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · carriera-pc-giallo.png
+[resto V1] carriera · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «86ATTITA» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · carriera-pc-giallo.png
+[resto V1] carriera · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Carriera» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · carriera-pc-rosso.png
+[resto V1] classifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «📊Classifica» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · classifica-pc-giallo.png
+[resto V1] classifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «📊» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · classifica-pc-giallo.png
+[resto V1] classifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · tr[riga-mia-v2] «1WLVWLV ★104511811+717» fondo rgba(15, 23, 42, 0.28) testo rgb(244, 241, 234) · classifica-pc-giallo.png
+[resto V1] club · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[club-v2] «WLVFC Wolverhampton🏴󠁧�» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · club-pc-giallo.png
+[resto V1] club · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · club-pc-giallo.png
+[resto V1] club · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «WLV» fondo rgb(17, 20, 27) testo rgb(15, 23, 42) · club-pc-giallo.png
+[resto V1] club · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «Procuratore ›» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · club-pc-rosso.png
+[resto V1] club · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · club-pc-rosso.png
+[resto V1] club · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Club» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · club-pc-rosso.png
+[resto V1] coppe · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «🏆Coppe» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · coppe-pc-giallo.png
+[resto V1] coppe · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «🏆» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · coppe-pc-giallo.png
+[resto V1] coppe · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Stagione» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · coppe-pc-giallo.png
+[resto V1] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «ATTACCANTE» fondo rgb(226, 232, 240) testo rgb(15, 23, 42) · creazione-pc-rosso.png
+[resto V1] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button «» fondo rgb(42, 22, 32) testo rgb(255, 255, 255) · creazione-pc-rosso.png
+[resto V1] creazione · 1 casi (pc-rosso) · div «📋 Percorso carriera» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · creazione-pc-rosso.png
+[resto V1] festa-nazionale · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · festa-nazionale-pc-giallo.png
+[resto V1] festa-nazionale · 5 casi (pc-giallo,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · festa-nazionale-pc-giallo.png
+[resto V1] festa-nazionale · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · festa-nazionale-pc-giallo.png
+[resto V1] festa-nazionale · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · festa-nazionale-pc-rosso.png
+[resto V1] festa-nazionale · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · festa-nazionale-pc-rosso.png
+[resto V1] festa-nazionale · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · festa-nazionale-pc-rosso.png
+[resto V1] festa-nazionale · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · festa-nazionale-pc-rosso.png
+[resto V1] festa-nazionale · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «KrwardEliteVesta Assicur» fondo rgba(0, 0, 0, 0) testo rgb(0, 0, 0) · festa-nazionale-pc-rosso.png
+[resto V1] festa-nazionale · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div[tabellino24] «MER0 – 2FC TestIn casa ·» fondo rgb(255, 255, 255) testo rgb(0, 0, 0) · festa-nazionale-pc-rosso.png
+[resto V1] festa-titolo · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · festa-titolo-pc-giallo.png
+[resto V1] festa-titolo · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[colonna-partita-v2] «📻 CRONACA2'😔 Non trova» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · festa-titolo-360-giallo.png
+[resto V1] figurina · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «ATTACCANTE» fondo rgb(226, 232, 240) testo rgb(15, 23, 42) · figurina-pc-giallo.png
+[resto V1] figurina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · figurina-pc-giallo.png
+[resto V1] figurina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · figurina-pc-giallo.png
+[resto V1] figurina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · figurina-pc-giallo.png
+[resto V1] figurina · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · figurina-pc-rosso.png
+[resto V1] figurina · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · figurina-pc-rosso.png
+[resto V1] figurina · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · figurina-pc-rosso.png
+[resto V1] figurina · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · figurina-pc-rosso.png
+[resto V1] gala · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «Stasera 1 premio · 1 è p» fondo rgb(142, 31, 51) testo rgb(255, 255, 255) · gala-pc-giallo.png
+[resto V1] hl-esito-gol · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · hl-esito-gol-pc-giallo.png
+[resto V1] hl-esito-parata · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · hl-esito-parata-pc-giallo.png
+[resto V1] hl-esito-parata · 3 casi (pc-giallo,pc-rosso,pc-scuro) · div[esito-pc] «❌ Tentativo respinto🦵 T» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · hl-esito-parata-pc-giallo.png
+[resto V1] hl-intro · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · hl-intro-pc-giallo.png
+[resto V1] hl-scelta · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · hl-scelta-pc-giallo.png
+[resto V1] home · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · home-pc-giallo.png
+[resto V1] home · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · home-pc-giallo.png
+[resto V1] home · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · home-pc-giallo.png
+[resto V1] home · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · home-pc-rosso.png
+[resto V1] home · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · home-pc-rosso.png
+[resto V1] home · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · home-pc-rosso.png
+[resto V1] home · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · home-pc-rosso.png
+[resto V1] ingresso · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · ingresso-pc-giallo.png
+[resto V1] ingresso · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[colonna-partita-v2] «📻 CRONACAIn attesa…» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · ingresso-360-giallo.png
+[resto V1] intervista-sconfitta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · intervista-sconfitta-pc-giallo.png
+[resto V1] intervista-sconfitta · 5 casi (pc-giallo,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · intervista-sconfitta-pc-giallo.png
+[resto V1] intervista-sconfitta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · intervista-sconfitta-pc-giallo.png
+[resto V1] intervista-sconfitta · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-sconfitta · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-sconfitta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-sconfitta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-sconfitta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «KrwardEliteVesta Assicur» fondo rgba(0, 0, 0, 0) testo rgb(0, 0, 0) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-sconfitta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div[tabellino24] «MER0 – 2FC TestIn casa ·» fondo rgb(255, 255, 255) testo rgb(0, 0, 0) · intervista-sconfitta-pc-rosso.png
+[resto V1] intervista-vittoria · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · intervista-vittoria-pc-giallo.png
+[resto V1] intervista-vittoria · 5 casi (pc-giallo,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · intervista-vittoria-pc-giallo.png
+[resto V1] intervista-vittoria · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · intervista-vittoria-pc-giallo.png
+[resto V1] intervista-vittoria · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · intervista-vittoria-pc-rosso.png
+[resto V1] intervista-vittoria · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · intervista-vittoria-pc-rosso.png
+[resto V1] intervista-vittoria · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · intervista-vittoria-pc-rosso.png
+[resto V1] intervista-vittoria · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · intervista-vittoria-pc-rosso.png
+[resto V1] intervista-vittoria · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «KrwardEliteVesta Assicur» fondo rgba(0, 0, 0, 0) testo rgb(0, 0, 0) · intervista-vittoria-pc-rosso.png
+[resto V1] intervista-vittoria · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div[tabellino24] «MER2 – 1FC TestIn casa ·» fondo rgb(255, 255, 255) testo rgb(0, 0, 0) · intervista-vittoria-pc-rosso.png
+[resto V1] menu · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «v 7.999.179K⚽rwardEliteS» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · menu-pc-rosso.png
+[resto V1] menu · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button «🏠Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · menu-pc-rosso.png
+[resto V1] menu-crediti · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «v 7.999.179K⚽rwardEliteS» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · menu-crediti-pc-rosso.png
+[resto V1] menu-crediti · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «Modelli 3D e animazioni» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · menu-crediti-pc-rosso.png
+[resto V1] menu-crediti · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button «🏠Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · menu-crediti-pc-rosso.png
+[resto V1] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «v 7.999.179K⚽rwardEliteS» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · menu-opzioni-pc-rosso.png
+[resto V1] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button «🏠Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · menu-opzioni-pc-rosso.png
+[resto V1] nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «🌍Nazionale» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · nazionale-pc-giallo.png
+[resto V1] nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «🌍» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · nazionale-pc-giallo.png
+[resto V1] nazionale · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Carriera» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · nazionale-pc-giallo.png
+[resto V1] notifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · notifica-pc-giallo.png
+[resto V1] notifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · notifica-pc-giallo.png
+[resto V1] notifica · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · notifica-pc-giallo.png
+[resto V1] offerta-mercato · 8 casi (pc-giallo,pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-giallo) · div «🤵 Il tuo procuratore pr» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · offerta-mercato-pc-giallo.png
+[resto V1] offerta-mercato · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · offerta-mercato-pc-giallo.png
+[resto V1] offerta-mercato · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · offerta-mercato-pc-giallo.png
+[resto V1] offerta-mercato · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · offerta-mercato-pc-giallo.png
+[resto V1] offerta-mercato · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · offerta-mercato-pc-rosso.png
+[resto V1] offerta-mercato · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · offerta-mercato-pc-rosso.png
+[resto V1] offerta-mercato · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · offerta-mercato-pc-rosso.png
+[resto V1] offerte · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div «TATTorino Athletic Prima» fondo rgb(42, 22, 32) testo rgb(244, 241, 234) · offerte-pc-rosso.png
+[resto V1] partita-panchina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · partita-panchina-pc-giallo.png
+[resto V1] partita-panchina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · partita-panchina-pc-giallo.png
+[resto V1] partita-panchina · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · partita-panchina-pc-giallo.png
+[resto V1] partita-panchina · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · partita-panchina-pc-rosso.png
+[resto V1] partita-panchina · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · partita-panchina-pc-rosso.png
+[resto V1] partita-panchina · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · partita-panchina-pc-rosso.png
+[resto V1] partita-panchina · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · partita-panchina-pc-rosso.png
+[resto V1] partita-titolare · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · partita-titolare-pc-giallo.png
+[resto V1] partita-titolare · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · partita-titolare-pc-giallo.png
+[resto V1] partita-titolare · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · partita-titolare-pc-giallo.png
+[resto V1] partita-titolare · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · partita-titolare-pc-rosso.png
+[resto V1] partita-titolare · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · partita-titolare-pc-rosso.png
+[resto V1] partita-titolare · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · partita-titolare-pc-rosso.png
+[resto V1] partita-titolare · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · partita-titolare-pc-rosso.png
+[resto V1] partita2d-chiuso · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · partita2d-chiuso-pc-giallo.png
+[resto V1] partita2d-chiuso · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[colonna-partita-v2] «📻 CRONACA1'🟡 Fischia l» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · partita2d-chiuso-360-giallo.png
+[resto V1] partita2d-pagelle · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · partita2d-pagelle-pc-giallo.png
+[resto V1] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «9Bartolomucci5,8» fondo rgba(142, 31, 51, 0.38) testo rgb(244, 241, 234) · partita2d-pagelle-pc-giallo.png
+[resto V1] partita2d-pagelle · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[colonna-partita-v2] «📻 CRONACA2'↔️ Cooper (W» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · partita2d-pagelle-360-giallo.png
+[resto V1] partita2d-statistiche · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · partita2d-statistiche-pc-giallo.png
+[resto V1] partita2d-statistiche · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[colonna-partita-v2] «📻 CRONACA2'🎧 Remo Vita» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · partita2d-statistiche-360-giallo.png
+[resto V1] pausa · 6 casi (pc-giallo,pc-rosso,s360-giallo,s360-rosso,s412-giallo,s412-rosso) · div «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · pausa-pc-giallo.png
+[resto V1] pausa · 4 casi (s360-giallo,s360-scuro,s412-giallo,s412-scuro) · div[colonna-partita-v2] «📻 CRONACA3'🟡 Fischia l» fondo rgb(15, 23, 42) testo rgb(244, 241, 234) · pausa-360-giallo.png
+[resto V1] prepartita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «La tua squadra · Casa» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · prepartita-pc-giallo.png
+[resto V1] presentazione-0 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · presentazione-0-pc-giallo.png
+[resto V1] presentazione-2 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · presentazione-2-pc-giallo.png
+[resto V1] presentazione-2 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · presentazione-2-pc-giallo.png
+[resto V1] presentazione-2 · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · presentazione-2-pc-giallo.png
+[resto V1] procuratore-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · procuratore-intro-pc-giallo.png
+[resto V1] procuratore-intro · 5 casi (pc-giallo,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · procuratore-intro-pc-giallo.png
+[resto V1] procuratore-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · procuratore-intro-pc-giallo.png
+[resto V1] procuratore-intro · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · procuratore-intro-pc-rosso.png
+[resto V1] procuratore-intro · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · procuratore-intro-pc-rosso.png
+[resto V1] procuratore-intro · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · procuratore-intro-pc-rosso.png
+[resto V1] procuratore-intro · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · procuratore-intro-pc-rosso.png
+[resto V1] procuratore-intro · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «KrwardEliteVesta Assicur» fondo rgba(0, 0, 0, 0) testo rgb(0, 0, 0) · procuratore-intro-pc-rosso.png
+[resto V1] procuratore-intro · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div[tabellino24] «MER0 – 2FC TestIn casa ·» fondo rgb(255, 255, 255) testo rgb(0, 0, 0) · procuratore-intro-pc-rosso.png
+[resto V1] saga-capitano · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · saga-capitano-pc-giallo.png
+[resto V1] saga-capitano · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · saga-capitano-pc-giallo.png
+[resto V1] saga-capitano · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · saga-capitano-pc-giallo.png
+[resto V1] sch-careerEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-careerEnd-pc-giallo.png
+[resto V1] sch-careerEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-careerEnd-pc-giallo.png
+[resto V1] sch-careerEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-careerEnd-pc-giallo.png
+[resto V1] sch-clubPresentation · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-clubPresentation-pc-giallo.png
+[resto V1] sch-clubPresentation · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-clubPresentation-pc-giallo.png
+[resto V1] sch-clubPresentation · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-clubPresentation-pc-giallo.png
+[resto V1] sch-nationalCallup · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-nationalCallup-pc-giallo.png
+[resto V1] sch-nationalCallup · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-nationalCallup-pc-giallo.png
+[resto V1] sch-nationalCallup · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-nationalCallup-pc-giallo.png
+[resto V1] sch-postmatch · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-postmatch-pc-giallo.png
+[resto V1] sch-postmatch · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-postmatch-pc-giallo.png
+[resto V1] sch-postmatch · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-postmatch-pc-giallo.png
+[resto V1] sch-press · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-press-pc-giallo.png
+[resto V1] sch-press · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-press-pc-giallo.png
+[resto V1] sch-press · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-press-pc-giallo.png
+[resto V1] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «Puoi ancora restare» fondo rgba(0, 0, 0, 0) testo rgb(142, 31, 51) · sch-proTransition-pc-giallo.png
+[resto V1] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «WLVFC Wolverhampton🏴󠁧�» fondo rgb(239, 246, 255) testo rgb(244, 241, 234) · sch-proTransition-pc-giallo.png
+[resto V1] sch-proTransition · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «⭐ Consigliato: primo con» fondo rgb(22, 35, 59) testo rgb(238, 154, 170) · sch-proTransition-pc-giallo.png
+[resto V1] sch-seasonAwards · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «Stasera 1 premio · 1 è p» fondo rgb(142, 31, 51) testo rgb(255, 255, 255) · sch-seasonAwards-pc-giallo.png
+[resto V1] sch-seasonEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · div «KrwardEliteWLVFC Wolverh» fondo rgba(0, 0, 0, 0) testo rgb(244, 241, 234) · sch-seasonEnd-pc-giallo.png
+[resto V1] sch-seasonEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · span «FC Wolverhampton» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · sch-seasonEnd-pc-giallo.png
+[resto V1] sch-seasonEnd · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «Salta» fondo rgba(15, 23, 42, 0.72) testo rgb(255, 255, 255) · sch-seasonEnd-pc-giallo.png
+[resto V1] settimana-impulso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · settimana-impulso-pc-giallo.png
+[resto V1] settimana-impulso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · settimana-impulso-pc-giallo.png
+[resto V1] settimana-impulso · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · settimana-impulso-pc-giallo.png
+[resto V1] settimana-impulso · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · settimana-impulso-pc-rosso.png
+[resto V1] settimana-impulso · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · settimana-impulso-pc-rosso.png
+[resto V1] settimana-impulso · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · settimana-impulso-pc-rosso.png
+[resto V1] settimana-impulso · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · settimana-impulso-pc-rosso.png
+[resto V1] settimana-spogliatoio · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · settimana-spogliatoio-pc-giallo.png
+[resto V1] settimana-spogliatoio · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · settimana-spogliatoio-pc-giallo.png
+[resto V1] settimana-spogliatoio · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · settimana-spogliatoio-pc-giallo.png
+[resto V1] settimana-spogliatoio · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · settimana-spogliatoio-pc-rosso.png
+[resto V1] settimana-spogliatoio · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · settimana-spogliatoio-pc-rosso.png
+[resto V1] settimana-spogliatoio · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · settimana-spogliatoio-pc-rosso.png
+[resto V1] settimana-spogliatoio · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · settimana-spogliatoio-pc-rosso.png
+[resto V1] settimana-vissuta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · section[prossima-v2] «Prossima · Premier Divis» fondo rgb(245, 158, 11) testo rgb(15, 23, 42) · settimana-vissuta-pc-giallo.png
+[resto V1] settimana-vissuta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(0, 0, 0, 0) testo rgb(15, 23, 42) · settimana-vissuta-pc-giallo.png
+[resto V1] settimana-vissuta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · div «» fondo rgba(15, 23, 42, 0.1) testo rgb(15, 23, 42) · settimana-vissuta-pc-giallo.png
+[resto V1] settimana-vissuta · 4 casi (pc-rosso,pc-scuro,s412-rosso,s412-scuro) · div «» fondo rgb(142, 31, 51) testo rgb(244, 241, 234) · settimana-vissuta-pc-rosso.png
+[resto V1] settimana-vissuta · 2 casi (pc-rosso,pc-scuro) · button «☕ Sostieni il progetto» fondo rgb(26, 30, 39) testo rgb(238, 154, 170) · settimana-vissuta-pc-rosso.png
+[resto V1] settimana-vissuta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · span «☕ Sostieni il progetto» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · settimana-vissuta-pc-rosso.png
+[resto V1] settimana-vissuta · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · button «Home» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · settimana-vissuta-pc-rosso.png
+[resto V1] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[trainer281-generale] «generale 86non attivo» fondo rgb(142, 31, 51) testo rgb(255, 255, 255) · ufficio-pc-giallo.png
+[resto V1] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button «+» fondo rgba(0, 0, 0, 0) testo rgb(238, 154, 170) · ufficio-pc-giallo.png
+[resto V1] ufficio · 5 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso) · button «Ufficio» fondo rgb(244, 241, 234) testo rgb(238, 154, 170) · ufficio-360-giallo.png
+[testi sovrapposti] agente · 2 casi (s360-rosso,s360-scuro) · «Il tuo procuratore» e «Home» 19x10 px · agente-360-rosso.png
+[testi sovrapposti] agente · 2 casi (s360-rosso,s360-scuro) · «Il tuo procuratore» e «Stagione» 42x10 px · agente-360-rosso.png
+[testi sovrapposti] agente · 2 casi (s360-rosso,s360-scuro) · «Il tuo procuratore» e «Club» 23x10 px · agente-360-rosso.png
+[testi sovrapposti] agente · 1 casi (s412-scuro) · «Il tuo contratto» e «Home» 24x11 px · agente-412-scuro.png
+[testi sovrapposti] agente · 1 casi (s412-scuro) · «Il tuo contratto» e «Stagione» 42x11 px · agente-412-scuro.png
+[testi sovrapposti] calendario · 1 casi (s360-giallo) · «Casa» e «Stagione» 33x12 px · calendario-360-giallo.png
+[testi sovrapposti] calendario · 1 casi (s360-giallo) · «17ª giornata» e «Club» 23x12 px · calendario-360-giallo.png
+[testi sovrapposti] calendario · 1 casi (s360-giallo) · «· sett.» e «Carriera» 35x12 px · calendario-360-giallo.png
+[testi sovrapposti] calendario · 1 casi (s360-giallo) · «18» e «Carriera» 4x12 px · calendario-360-giallo.png
+[testi sovrapposti] calendario · 1 casi (s412-giallo) · «Stagione» e «Home» 24x13 px · calendario-412-giallo.png
+[testi sovrapposti] calendario · 1 casi (s412-giallo) · «12» e «Stagione» 14x13 px · calendario-412-giallo.png
+[testi sovrapposti] calendario · 1 casi (s412-giallo) · «— calendario» e «Stagione» 23x13 px · calendario-412-giallo.png
+[testi sovrapposti] calendario · 1 casi (s412-giallo) · «— calendario» e «Club» 23x13 px · calendario-412-giallo.png
+[testi sovrapposti] carriera · 1 casi (s360-giallo) · «Presenze» e «Home» 18x8 px · carriera-360-giallo.png
+[testi sovrapposti] carriera · 1 casi (s360-giallo) · «80» e «Club» 22x5 px · carriera-360-giallo.png
+[testi sovrapposti] carriera · 1 casi (s360-giallo) · «Gol» e «Club» 17x8 px · carriera-360-giallo.png
+[testi sovrapposti] carriera · 1 casi (s360-giallo) · «Assist» e «Carriera» 26x8 px · carriera-360-giallo.png
+[testi sovrapposti] carriera · 1 casi (s412-scuro) · «St.» e «Home» 10x9 px · carriera-412-scuro.png
+[testi sovrapposti] carriera · 1 casi (s412-scuro) · «· in corso» e «Ufficio» 34x9 px · carriera-412-scuro.png
+[testi sovrapposti] classifica · 1 casi (s360-giallo) · «TYN» e «Stagione» 10x6 px · classifica-360-giallo.png
+[testi sovrapposti] classifica · 3 casi (s360-giallo,s412-giallo,s412-scuro) · «18» e «Agente» 14x11 px · classifica-360-giallo.png
+[testi sovrapposti] classifica · 1 casi (s360-giallo) · «15» e «Ufficio» 16x12 px · classifica-360-giallo.png
+[testi sovrapposti] classifica · 2 casi (s360-rosso,s360-scuro) · «GRI» e «Stagione» 14x8 px · classifica-360-rosso.png
+[testi sovrapposti] classifica · 2 casi (s360-rosso,s360-scuro) · «16» e «Agente» 14x7 px · classifica-360-rosso.png
+[testi sovrapposti] classifica · 2 casi (s360-rosso,s360-scuro) · «14» e «Ufficio» 16x8 px · classifica-360-rosso.png
+[testi sovrapposti] classifica · 1 casi (s412-giallo) · «14» e «Home» 12x7 px · classifica-412-giallo.png
+[testi sovrapposti] classifica · 1 casi (s412-giallo) · «MCR» e «Stagione» 26x9 px · classifica-412-giallo.png
+[testi sovrapposti] classifica · 2 casi (s412-giallo,s412-scuro) · «11» e «Ufficio» 16x8 px · classifica-412-giallo.png
+[testi sovrapposti] classifica · 1 casi (s412-scuro) · «15» e «Home» 12x14 px · classifica-412-scuro.png
+[testi sovrapposti] classifica · 1 casi (s412-scuro) · «STA» e «Stagione» 23x13 px · classifica-412-scuro.png
+[testi sovrapposti] classifica · 1 casi (s412-scuro) · «10» e «Club» 6x14 px · classifica-412-scuro.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «Contratto:» e «Home» 18x13 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «scade a fine stagione 13» e «Home» 18x13 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «scade a fine stagione 13» e «Stagione» 42x13 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «scade a fine stagione 13» e «Club» 23x13 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «scade a fine stagione 13» e «Carriera» 34x13 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-giallo) · «Procuratore ›» e «Ufficio» 28x6 px · club-360-giallo.png
+[testi sovrapposti] club · 1 casi (s360-rosso) · «Allenatore» e «Home» 19x10 px · club-360-rosso.png
+[testi sovrapposti] club · 1 casi (s360-rosso) · «Allenatore» e «Stagione» 42x10 px · club-360-rosso.png
+[testi sovrapposti] club · 1 casi (s412-scuro) · «Chimica di squadra» e «Home» 24x8 px · club-412-scuro.png
+[testi sovrapposti] club · 1 casi (s412-scuro) · «Chimica di squadra» e «Stagione» 42x8 px · club-412-scuro.png
+[testi sovrapposti] club · 1 casi (s412-scuro) · «72/100» e «Ufficio» 34x9 px · club-412-scuro.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «CFM» e «🏔️» 13x8 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «CF Madrid» e «La Scalata» 42x14 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «MCH» e «Segna 50 gol in una sing» 15x5 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «FC Manchester» e «Segna 50 gol in una sing» 88x10 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «CAT» e «💎» 12x8 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC Catalunya» e «Talento Puro» 54x8 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «MER» e «Gioca almeno 5 stagioni » 14x8 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «FC Merseyside» e «Gioca almeno 5 stagioni » 85x12 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «GLW» e «🌟 Capitano Azzurro» 15x7 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «FC Goldwald» e «🌟 Capitano Azzurro» 73x12 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «VAL» e «🎂» 12x3 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 1 casi (pc-rosso) · «FC Valmora» e «Sempreverde» 58x8 px · creazione-pc-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «CFM» e «Vinci il campionato entr» 14x8 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «CF Madrid» e «Vinci il campionato entr» 59x11 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «MCH» e «⚽ Macchina da Gol» 15x8 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «FC Manchester» e «⚽ Macchina da Gol» 68x13 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «MER» e «🏟️ Bandiera del Club» 14x6 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «FC Merseyside» e «🏟️ Bandiera del Club» 74x9 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «TAT» e «🌍» 12x8 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «Torino Athletic» e «Centurione» 46x14 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «VAL» e «Gioca ancora a 34 anni o» 13x7 px · creazione-360-rosso.png
+[testi sovrapposti] creazione · 2 casi (s360-rosso,s412-rosso) · «FC Valmora» e «Gioca ancora a 34 anni o» 67x13 px · creazione-360-rosso.png
+[testi sovrapposti] formazioni · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «10» e «10» 9x9 px · formazioni-pc-giallo.png
+[testi sovrapposti] formazioni · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · «11» e «11» 9x9 px · formazioni-pc-giallo.png
+[testi sovrapposti] formazioni · 6 casi (pc-rosso,pc-scuro,s360-rosso,s360-scuro,s412-rosso,s412-scuro) · «12» e «12» 9x9 px · formazioni-pc-rosso.png
+[testi sovrapposti] hl-esito-gol · 2 casi (s360-giallo,s412-giallo) · «FC Wolverhampton» e «2'» 11x9 px · hl-esito-gol-360-giallo.png
+[testi sovrapposti] hl-esito-gol · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · hl-esito-gol-360-giallo.png
+[testi sovrapposti] hl-esito-gol · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · hl-esito-gol-360-rosso.png
+[testi sovrapposti] hl-esito-gol · 1 casi (s360-scuro) · «TYN» e «FC Tyneside» 9x6 px · hl-esito-gol-360-scuro.png
+[testi sovrapposti] hl-esito-parata · 2 casi (s360-giallo,s412-giallo) · «FC Wolverhampton» e «2'» 11x9 px · hl-esito-parata-360-giallo.png
+[testi sovrapposti] hl-esito-parata · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · hl-esito-parata-360-giallo.png
+[testi sovrapposti] hl-esito-parata · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · hl-esito-parata-360-rosso.png
+[testi sovrapposti] hl-esito-parata · 1 casi (s360-scuro) · «TYN» e «FC Tyneside» 9x6 px · hl-esito-parata-360-scuro.png
+[testi sovrapposti] hl-intro · 2 casi (s360-giallo,s412-giallo) · «FC Wolverhampton» e «2'» 11x9 px · hl-intro-360-giallo.png
+[testi sovrapposti] hl-intro · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · hl-intro-360-giallo.png
+[testi sovrapposti] hl-intro · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · hl-intro-360-rosso.png
+[testi sovrapposti] hl-intro · 1 casi (s360-scuro) · «TYN» e «FC Tyneside» 9x6 px · hl-intro-360-scuro.png
+[testi sovrapposti] hl-scelta · 2 casi (s360-giallo,s412-giallo) · «FC Wolverhampton» e «2'» 11x9 px · hl-scelta-360-giallo.png
+[testi sovrapposti] hl-scelta · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · hl-scelta-360-giallo.png
+[testi sovrapposti] hl-scelta · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · hl-scelta-360-rosso.png
+[testi sovrapposti] hl-scelta · 1 casi (s360-scuro) · «TYN» e «FC Tyneside» 9x6 px · hl-scelta-360-scuro.png
+[testi sovrapposti] home · 1 casi (s360-giallo) · «Gol» e «Club» 20x7 px · home-360-giallo.png
+[testi sovrapposti] home · 1 casi (s412-rosso) · «84» e «Carriera» 17x14 px · home-412-rosso.png
+[testi sovrapposti] home · 1 casi (s412-rosso) · «67» e «Agente» 17x14 px · home-412-rosso.png
+[testi sovrapposti] home · 1 casi (s412-rosso) · «18» e «Ufficio» 17x14 px · home-412-rosso.png
+[testi sovrapposti] intervista-sconfitta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «0 – 2» 37x13 px · intervista-sconfitta-pc-giallo.png
+[testi sovrapposti] intervista-sconfitta · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «FC Test» 33x10 px · intervista-sconfitta-pc-giallo.png
+[testi sovrapposti] intervista-sconfitta · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «0 – 2» 37x13 px · intervista-sconfitta-pc-rosso.png
+[testi sovrapposti] intervista-sconfitta · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «FC Test» 20x10 px · intervista-sconfitta-pc-rosso.png
+[testi sovrapposti] intervista-sconfitta · 3 casi (pc-scuro,s360-scuro,s412-scuro) · «FC TYNESIDE» e «0 – 2» 37x13 px · intervista-sconfitta-pc-scuro.png
+[testi sovrapposti] intervista-sconfitta · 2 casi (pc-scuro,s360-scuro) · «FC TYNESIDE» e «FC Test» 14x10 px · intervista-sconfitta-pc-scuro.png
+[testi sovrapposti] intervista-sconfitta · 1 casi (s360-giallo) · «FC WOLVERHAMPTON» e «WLV» 8x12 px · intervista-sconfitta-360-giallo.png
+[testi sovrapposti] intervista-sconfitta · 2 casi (s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «In casa» 33x8 px · intervista-sconfitta-360-giallo.png
+[testi sovrapposti] intervista-sconfitta · 1 casi (s360-rosso) · «FC MERSEYSIDE» e «In casa» 25x8 px · intervista-sconfitta-360-rosso.png
+[testi sovrapposti] intervista-vittoria · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «2 – 1» 37x13 px · intervista-vittoria-pc-giallo.png
+[testi sovrapposti] intervista-vittoria · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «FC Test» 33x10 px · intervista-vittoria-pc-giallo.png
+[testi sovrapposti] intervista-vittoria · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «2 – 1» 37x13 px · intervista-vittoria-pc-rosso.png
+[testi sovrapposti] intervista-vittoria · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «FC Test» 20x10 px · intervista-vittoria-pc-rosso.png
+[testi sovrapposti] intervista-vittoria · 3 casi (pc-scuro,s360-scuro,s412-scuro) · «FC TYNESIDE» e «2 – 1» 37x13 px · intervista-vittoria-pc-scuro.png
+[testi sovrapposti] intervista-vittoria · 2 casi (pc-scuro,s360-scuro) · «FC TYNESIDE» e «FC Test» 14x10 px · intervista-vittoria-pc-scuro.png
+[testi sovrapposti] intervista-vittoria · 1 casi (s360-giallo) · «FC WOLVERHAMPTON» e «WLV» 8x12 px · intervista-vittoria-360-giallo.png
+[testi sovrapposti] intervista-vittoria · 2 casi (s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «In casa» 33x8 px · intervista-vittoria-360-giallo.png
+[testi sovrapposti] intervista-vittoria · 2 casi (s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «In casa» 33x8 px · intervista-vittoria-360-rosso.png
+[testi sovrapposti] intervista-vittoria · 2 casi (s360-scuro,s412-scuro) · «FC TYNESIDE» e «In casa» 29x8 px · intervista-vittoria-360-scuro.png
+[testi sovrapposti] intervista-vittoria · 1 casi (s360-scuro) · «rward» e «· 1 gol» 19x8 px · intervista-vittoria-360-scuro.png
+[testi sovrapposti] nazionale · 1 casi (s360-giallo) · «Oggi la maglia numero 9 » e «Home» 18x14 px · nazionale-360-giallo.png
+[testi sovrapposti] nazionale · 1 casi (s360-giallo) · «Oggi la maglia numero 9 » e «Stagione» 42x14 px · nazionale-360-giallo.png
+[testi sovrapposti] nazionale · 1 casi (s360-giallo) · «Oggi la maglia numero 9 » e «Club» 23x14 px · nazionale-360-giallo.png
+[testi sovrapposti] nazionale · 1 casi (s360-giallo) · «Oggi la maglia numero 9 » e «Carriera» 44x14 px · nazionale-360-giallo.png
+[testi sovrapposti] nazionale · 1 casi (s360-giallo) · «Oggi la maglia numero 9 » e «Agente» 28x14 px · nazionale-360-giallo.png
+[testi sovrapposti] nazionale · 2 casi (s360-rosso,s360-scuro) · «🤝 Rapporto col CT:» e «Stagione» 42x6 px · nazionale-360-rosso.png
+[testi sovrapposti] nazionale · 2 casi (s360-rosso,s360-scuro) · «Il CT ti segue con fiduc» e «Carriera» 42x6 px · nazionale-360-rosso.png
+[testi sovrapposti] nazionale · 2 casi (s360-rosso,s360-scuro) · «Il CT ti segue con fiduc» e «Agente» 34x6 px · nazionale-360-rosso.png
+[testi sovrapposti] nazionale · 1 casi (s412-giallo) · «Coppa delle Nazioni» e «Stagione» 42x8 px · nazionale-412-giallo.png
+[testi sovrapposti] nazionale · 1 casi (s412-rosso) · «Stagione» e «Stagione» 17x13 px · nazionale-412-rosso.png
+[testi sovrapposti] nazionale · 1 casi (s412-rosso) · «14» e «Stagione» 11x13 px · nazionale-412-rosso.png
+[testi sovrapposti] nazionale · 1 casi (s412-rosso) · «· Settimana 20» e «Club» 23x13 px · nazionale-412-rosso.png
+[testi sovrapposti] partita2d-chiuso · 1 casi (s360-giallo) · «FC Wolverhampton» e «1'» 11x9 px · partita2d-chiuso-360-giallo.png
+[testi sovrapposti] partita2d-chiuso · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · partita2d-chiuso-360-giallo.png
+[testi sovrapposti] partita2d-chiuso · 1 casi (s360-giallo) · «SUS» e «FC Sussex» 7x6 px · partita2d-chiuso-360-giallo.png
+[testi sovrapposti] partita2d-chiuso · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · partita2d-chiuso-360-rosso.png
+[testi sovrapposti] partita2d-pagelle · 1 casi (s360-giallo) · «FC Wolverhampton» e «1'» 11x9 px · partita2d-pagelle-360-giallo.png
+[testi sovrapposti] partita2d-pagelle · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · partita2d-pagelle-360-giallo.png
+[testi sovrapposti] partita2d-pagelle · 1 casi (s360-giallo) · «SUS» e «FC Sussex» 7x6 px · partita2d-pagelle-360-giallo.png
+[testi sovrapposti] partita2d-pagelle · 1 casi (s360-rosso) · «FC Manchester» e «2'» 11x9 px · partita2d-pagelle-360-rosso.png
+[testi sovrapposti] partita2d-statistiche · 1 casi (s360-giallo) · «FC Wolverhampton» e «2'» 11x9 px · partita2d-statistiche-360-giallo.png
+[testi sovrapposti] partita2d-statistiche · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · partita2d-statistiche-360-giallo.png
+[testi sovrapposti] partita2d-statistiche · 1 casi (s360-giallo) · «SUS» e «FC Sussex» 7x6 px · partita2d-statistiche-360-giallo.png
+[testi sovrapposti] partita2d-statistiche · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · partita2d-statistiche-360-rosso.png
+[testi sovrapposti] pausa · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «PAUSA» e «⚔️ ATTACCO» 68x6 px · pausa-pc-rosso.png
+[testi sovrapposti] pausa · 2 casi (s360-giallo,s412-giallo) · «FC Wolverhampton» e «1'» 11x9 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 1 casi (s360-giallo) · «FC Wolverhampton» e «☁️» 14x7 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 1 casi (s360-giallo) · «SUS» e «FC Sussex» 8x6 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 4 casi (s360-giallo,s360-scuro,s412-giallo,s412-scuro) · «parate» e «PAUSA» 42x6 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 2 casi (s360-giallo,s360-scuro) · «calci d'angolo» e «PAUSA» 68x7 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 2 casi (s360-giallo,s360-scuro) · «falli» e «Premi P o tocca per ripr» 30x8 px · pausa-360-giallo.png
+[testi sovrapposti] pausa · 1 casi (s360-rosso) · «FC Manchester» e «1'» 11x9 px · pausa-360-rosso.png
+[testi sovrapposti] pausa · 2 casi (s412-giallo,s412-scuro) · «calci d'angolo» e «Premi P o tocca per ripr» 86x6 px · pausa-412-giallo.png
+[testi sovrapposti] procuratore-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «0 – 2» 37x13 px · procuratore-intro-pc-giallo.png
+[testi sovrapposti] procuratore-intro · 3 casi (pc-giallo,s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «FC Test» 33x10 px · procuratore-intro-pc-giallo.png
+[testi sovrapposti] procuratore-intro · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «0 – 2» 37x13 px · procuratore-intro-pc-rosso.png
+[testi sovrapposti] procuratore-intro · 3 casi (pc-rosso,s360-rosso,s412-rosso) · «FC MERSEYSIDE» e «FC Test» 20x10 px · procuratore-intro-pc-rosso.png
+[testi sovrapposti] procuratore-intro · 3 casi (pc-scuro,s360-scuro,s412-scuro) · «FC TYNESIDE» e «0 – 2» 37x13 px · procuratore-intro-pc-scuro.png
+[testi sovrapposti] procuratore-intro · 2 casi (pc-scuro,s360-scuro) · «FC TYNESIDE» e «FC Test» 14x10 px · procuratore-intro-pc-scuro.png
+[testi sovrapposti] procuratore-intro · 1 casi (s360-giallo) · «FC WOLVERHAMPTON» e «WLV» 8x12 px · procuratore-intro-360-giallo.png
+[testi sovrapposti] procuratore-intro · 2 casi (s360-giallo,s412-giallo) · «FC WOLVERHAMPTON» e «In casa» 33x8 px · procuratore-intro-360-giallo.png
+[testi sovrapposti] procuratore-intro · 1 casi (s360-rosso) · «FC MERSEYSIDE» e «In casa» 25x8 px · procuratore-intro-360-rosso.png
+[testi sovrapposti] ufficio · 1 casi (s360-giallo) · «tiro» e «Carriera» 13x8 px · ufficio-360-giallo.png
+[testi sovrapposti] ufficio · 1 casi (s360-giallo) · «84» e «Carriera» 14x8 px · ufficio-360-giallo.png
+[testi sovrapposti] ufficio · 2 casi (s360-rosso,s360-scuro) · «mentalità» e «Stagione» 42x7 px · ufficio-360-rosso.png
+[testi sovrapposti] ufficio · 2 casi (s360-rosso,s360-scuro) · «non attivo» e «Stagione» 39x6 px · ufficio-360-rosso.png
+[testi sovrapposti] ufficio · 2 casi (s360-rosso,s360-scuro) · «non attivo» e «Carriera» 36x14 px · ufficio-360-rosso.png
+[testi sovrapposti] ufficio · 1 casi (s412-giallo) · «🏃» e «Home» 11x14 px · ufficio-412-giallo.png
+[testi sovrapposti] ufficio · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Non attivo. Livello 1: R» e «Stagione» 42x14 px · ufficio-412-giallo.png
+[testi sovrapposti] ufficio · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Non attivo. Livello 1: R» e «Club» 23x14 px · ufficio-412-giallo.png
+[testi sovrapposti] ufficio · 3 casi (s412-giallo,s412-rosso,s412-scuro) · «Non attivo. Livello 1: R» e «Carriera» 43x14 px · ufficio-412-giallo.png
+[testo tagliato] hl-esito-gol · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · div[vista3d-box]«⚽ GOL!GOOOOL!⚽ Bartolomucc» larghezza 359>346 · hl-esito-gol-360-giallo.png
+[testo tagliato] hl-esito-parata · 1 casi (pc-giallo) · div[vista3d-box]«🧤 Tentativo respinto» larghezza 970>953 · hl-esito-parata-pc-giallo.png
+[testo tagliato] hl-esito-parata · 1 casi (pc-scuro) · div[vista3d-box]«💨 Che peccato!» larghezza 985>953 · hl-esito-parata-pc-scuro.png
+[testo tagliato] hl-esito-parata · 1 casi (s360-scuro) · div[vista3d-box]«🧱 Il difensore si oppone[» larghezza 362>346 · hl-esito-parata-360-scuro.png
+[testo tagliato] hl-esito-parata · 1 casi (s412-scuro) · div[vista3d-box]«💨 Occasione mancata[data-» larghezza 423>410 · hl-esito-parata-412-scuro.png
+[testo tagliato] menu · 3 casi (pc-rosso,s360-rosso,s412-rosso) · div«v 7.999.179K⚽rwardEliteSim» altezza 271>231 · menu-pc-rosso.png
+[tocco < 44 px] agente · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40«✂️ Licenzia il procuratore» 157x24 · agente-pc-giallo.png
+[tocco < 44 px] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Luigi Pastore ti dice›» 1086x31 · agente-pc-giallo.png
+[tocco < 44 px] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Il tuo procuratore›» 1086x31 · agente-pc-giallo.png
+[tocco < 44 px] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Il tuo contratto›» 1086x31 · agente-pc-giallo.png
+[tocco < 44 px] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Compito della settimana›» 1086x31 · agente-pc-giallo.png
+[tocco < 44 px] agente · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Richiedi cessione›» 1086x32 · agente-pc-giallo.png
+[tocco < 44 px] agente · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · agente-360-giallo.png
+[tocco < 44 px] agente · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · agente-360-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Prossime partite›» 1086x31 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Stagione 12 — calendario›» 1086x31 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📊Classifica» 357x32 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📅Calendario» 357x32 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«🏆Coppe» 357x32 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Partite giocate›» 1086x32 · calendario-pc-giallo.png
+[tocco < 44 px] calendario · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · calendario-360-giallo.png
+[tocco < 44 px] calendario · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · calendario-360-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Statistiche6›» 1086x31 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«👤Profilo» 537x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«🌍Nazionale» 537x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Biografia›» 1086x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Record personali3›» 1086x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Bacheca trofei3›» 1086x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Storico allenatori4›» 1086x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Rivale: Bruno Salvatori›» 1086x32 · carriera-pc-giallo.png
+[tocco < 44 px] carriera · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · carriera-360-giallo.png
+[tocco < 44 px] carriera · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · carriera-360-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Classifica Premier Divisio» 1086x31 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📊Classifica» 357x32 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📅Calendario» 357x32 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«🏆Coppe» 357x32 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Dagli altri campionati›» 1086x32 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«⚽ Capocannonieri›» 1086x33 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Albo d'oro — storico campi» 1057x36 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Marcatori storici›» 1057x36 · classifica-pc-giallo.png
+[tocco < 44 px] classifica · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · classifica-360-giallo.png
+[tocco < 44 px] classifica · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · classifica-360-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Lo spogliatoio3›» 1086x31 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Stadio›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Sponsor di maglia›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Piazzamenti›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Allenatore›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Staff tecnico›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Rosa24›» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 1 casi (pc-giallo) · button.cpm-press.cpm-t40«Bacheca — FC Wolverhampton» 1086x32 · club-pc-giallo.png
+[tocco < 44 px] club · 1 casi (pc-rosso) · button.cpm-press.cpm-t40«Bacheca — FC Merseyside›» 1086x32 · club-pc-rosso.png
+[tocco < 44 px] club · 1 casi (pc-scuro) · button.cpm-press.cpm-t40«Bacheca — FC Tyneside›» 1086x32 · club-pc-scuro.png
+[tocco < 44 px] club · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · club-360-giallo.png
+[tocco < 44 px] club · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · club-360-giallo.png
+[tocco < 44 px] coppe · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📊Classifica» 357x32 · coppe-pc-giallo.png
+[tocco < 44 px] coppe · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«📅Calendario» 357x32 · coppe-pc-giallo.png
+[tocco < 44 px] coppe · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«🏆Coppe» 357x32 · coppe-pc-giallo.png
+[tocco < 44 px] coppe · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · coppe-360-giallo.png
+[tocco < 44 px] coppe · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · coppe-360-giallo.png
+[tocco < 44 px] creazione · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button[altro-volto].cpm-t40«↻ Altra variante di questo» 252x27 · creazione-pc-rosso.png
+[tocco < 44 px] creazione · 1 casi (pc-rosso) · input.cpm-t40i 474x34 · creazione-pc-rosso.png
+[tocco < 44 px] creazione · 1 casi (pc-rosso) · select.cpm-t40i«ItaliaSpagnaFranciaGermani» 474x38 · creazione-pc-rosso.png
+[tocco < 44 px] festa-titolo · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · festa-titolo-pc-giallo.png
+[tocco < 44 px] festa-titolo · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[salta].cpm-t40m«Salta premiazione →» 152x36 · festa-titolo-pc-giallo.png
+[tocco < 44 px] gala · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Salta il galà» 60x14 · gala-pc-giallo.png
+[tocco < 44 px] hl-esito-gol · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · hl-esito-gol-pc-giallo.png
+[tocco < 44 px] hl-esito-gol · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · hl-esito-gol-pc-giallo.png
+[tocco < 44 px] hl-esito-gol · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · hl-esito-gol-pc-giallo.png
+[tocco < 44 px] hl-esito-parata · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · hl-esito-parata-pc-giallo.png
+[tocco < 44 px] hl-esito-parata · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · hl-esito-parata-pc-giallo.png
+[tocco < 44 px] hl-esito-parata · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · hl-esito-parata-pc-giallo.png
+[tocco < 44 px] hl-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-intro · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-intro · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«2🎯 Piazzato basso» 372x36 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-intro · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«3🪄 Scavetto sul portiere» 372x36 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-intro · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«1🎯 Conclusione precisa» 379x37 · hl-intro-pc-giallo.png
+[tocco < 44 px] hl-scelta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · hl-scelta-pc-giallo.png
+[tocco < 44 px] hl-scelta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · hl-scelta-pc-giallo.png
+[tocco < 44 px] hl-scelta · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · hl-scelta-pc-giallo.png
+[tocco < 44 px] hl-scelta · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«2🎯 Piazzato basso» 372x36 · hl-scelta-pc-giallo.png
+[tocco < 44 px] hl-scelta · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«3🪄 Scavetto sul portiere» 372x36 · hl-scelta-pc-giallo.png
+[tocco < 44 px] hl-scelta · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button«1🎯 Conclusione precisa» 379x37 · hl-scelta-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Il progetto del club›» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Offerta di sponsor · Vorte» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 1 casi (pc-giallo) · button.cpm-focus.cpm-t40«❤️ Vita privata›» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Il tuo procuratore: boutiq» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Adesso guardano te›» 1051x36 · home-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«Il mondo fuori›» 1051x36 · home-pc-giallo.png
+[tocco < 44 px] home · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«🌱 Il ragazzo della Primav» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 1 casi (pc-giallo) · button.cpm-focus.cpm-t40«La tua settimana›» 1057x36 · home-pc-giallo.png
+[tocco < 44 px] home · 1 casi (pc-rosso) · button.cpm-focus.cpm-t40«La tua storia›» 1057x36 · home-pc-rosso.png
+[tocco < 44 px] home · 2 casi (pc-rosso,pc-scuro) · button.cpm-focus.cpm-t40«La tua settimanaBig match›» 1057x36 · home-pc-rosso.png
+[tocco < 44 px] home · 1 casi (pc-scuro) · button.cpm-focus.cpm-t40«Duello capocannoniere›» 1057x36 · home-pc-scuro.png
+[tocco < 44 px] home · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · home-360-giallo.png
+[tocco < 44 px] home · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · home-360-giallo.png
+[tocco < 44 px] ingresso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[salta-ingresso-v2].cpm-t40m«Salta ingresso →» 131x36 · ingresso-pc-giallo.png
+[tocco < 44 px] menu-crediti · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button.cpm-press.cpm-focus«×» 18x31 · menu-crediti-pc-rosso.png
+[tocco < 44 px] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · input 698x16 · menu-opzioni-pc-rosso.png
+[tocco < 44 px] menu-opzioni · 3 casi (pc-rosso,s360-rosso,s412-rosso) · button 42x24 · menu-opzioni-pc-rosso.png
+[tocco < 44 px] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«La maglia numero 9 — La li» 1086x31 · nazionale-pc-giallo.png
+[tocco < 44 px] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Prossimi tornei della Nazi» 1086x31 · nazionale-pc-giallo.png
+[tocco < 44 px] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«👤Profilo» 537x32 · nazionale-pc-giallo.png
+[tocco < 44 px] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-focus«🌍Nazionale» 537x32 · nazionale-pc-giallo.png
+[tocco < 44 px] nazionale · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button.cpm-press.cpm-t40«Partite in Nazionale›» 1086x32 · nazionale-pc-giallo.png
+[tocco < 44 px] nazionale · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · nazionale-360-giallo.png
+[tocco < 44 px] nazionale · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · nazionale-360-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Statistiche» 158x25 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Pagelle» 158x25 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-chiuso · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«▴» 34x27 · partita2d-chiuso-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Statistiche» 158x25 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Pagelle» 158x25 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-pagelle · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«▾» 34x27 · partita2d-pagelle-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⏸» 14x33 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 8 casi (pc-giallo,pc-scuro,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · button«Statistiche» 158x25 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 8 casi (pc-giallo,pc-scuro,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · button«Pagelle» 158x25 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] partita2d-statistiche · 8 casi (pc-giallo,pc-scuro,s360-giallo,s360-rosso,s360-scuro,s412-giallo) · button«▾» 34x27 · partita2d-statistiche-pc-giallo.png
+[tocco < 44 px] pausa · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«▶» 18x33 · pausa-pc-giallo.png
+[tocco < 44 px] pausa · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«1×» 22x19 · pausa-pc-giallo.png
+[tocco < 44 px] pausa · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-t40m«⚠️» 22x33 · pausa-pc-giallo.png
+[tocco < 44 px] pausa · 6 casi (pc-giallo,pc-scuro,s360-giallo,s360-scuro,s412-giallo,s412-scuro) · button«Statistiche» 158x25 · pausa-pc-giallo.png
+[tocco < 44 px] pausa · 6 casi (pc-giallo,pc-scuro,s360-giallo,s360-scuro,s412-giallo,s412-scuro) · button«Pagelle» 158x25 · pausa-pc-giallo.png
+[tocco < 44 px] pausa · 6 casi (pc-giallo,pc-scuro,s360-giallo,s360-scuro,s412-giallo,s412-scuro) · button«▾» 34x27 · pausa-pc-giallo.png
+[tocco < 44 px] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-press.cpm-t40«Il tuo tabellino›» 1054x28 · post-partita-pc-giallo.png
+[tocco < 44 px] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-press.cpm-t40«Tabellino della gara›» 1054x28 · post-partita-pc-giallo.png
+[tocco < 44 px] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-press.cpm-t40«Il tuo tabellino in numeri» 1054x28 · post-partita-pc-giallo.png
+[tocco < 44 px] post-partita · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button.cpm-press.cpm-t40«🔗Le connessioni›» 1054x31 · post-partita-pc-giallo.png
+[tocco < 44 px] sch-seasonAwards · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button«Salta il galà» 60x14 · sch-seasonAwards-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[bene24-compra-casa].cpm-t40«COMPRA» 87x29 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[bene24-compra-auto].cpm-t40«COMPRA» 87x29 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[bene24-compra-barca].cpm-t40«COMPRA» 87x29 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[bene24-compra-fondazione].cpm-t40«COMPRA» 87x29 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[accademia24-fonda].cpm-t40«FONDA →» 87x30 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 9 casi (pc-giallo,pc-rosso,pc-scuro,s360-giallo,s360-rosso,s360-scuro) · button[invest24-prudente].cpm-t40«🛡️ Prudente» 93x30 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button[invest24-bilanciato].cpm-t40«⚖️ Bilanciato» 97x30 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 3 casi (pc-giallo,pc-rosso,pc-scuro) · button[invest24-rischioso].cpm-t40«🎲 Rischioso» 95x30 · ufficio-pc-giallo.png
+[tocco < 44 px] ufficio · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«☕ Sostieni il progetto» 180x26 · ufficio-360-giallo.png
+[tocco < 44 px] ufficio · 6 casi (s360-giallo,s360-rosso,s360-scuro,s412-giallo,s412-rosso,s412-scuro) · button.cpm-t40«💡 Idee e feedback» 181x26 · ufficio-360-giallo.png
+
+mancanti: [
+  'partita-pc-giallo: rigori: non raggiungibili da una gara di campionato',
+  'partita-pc-rosso: rigori: non raggiungibili da una gara di campionato',
+  'partita-pc-scuro: rigori: non raggiungibili da una gara di campionato',
+  'partita-s360-giallo: rigori: non raggiungibili da una gara di campionato',
+  'partita-s360-rosso: rigori: non raggiungibili da una gara di campionato',
+  'partita-s360-scuro: rigori: non raggiungibili da una gara di campionato',
+  'partita-s412-giallo: rigori: non raggiungibili da una gara di campionato',
+  'partita-s412-rosso: rigori: non raggiungibili da una gara di campionato',
+  'partita-s412-scuro: rigori: non raggiungibili da una gara di campionato',
+  'schermate-pc-giallo: carriera-opzioni',
+  'schermate-pc-giallo: momento-esordio → false',
+  'schermate-pc-giallo: coppa-nazioni → no-nc',
+  'schermate-pc-rosso: provini-intro',
+  'schermate-pc-rosso: carriera-opzioni',
+  'schermate-pc-rosso: momento-esordio → false',
+  'schermate-pc-rosso: coppa-nazioni → no-nc',
+  'schermate-pc-scuro: carriera-opzioni',
+  'schermate-pc-scuro: momento-esordio → false',
+  'schermate-pc-scuro: coppa-nazioni → no-nc',
+  'schermate-s360-giallo: carriera-opzioni',
+  'schermate-s360-giallo: momento-esordio → false',
+  'schermate-s360-giallo: coppa-nazioni → no-nc',
+  'schermate-s360-rosso: provini-intro',
+  'schermate-s360-rosso: carriera-opzioni',
+  'schermate-s360-rosso: momento-esordio → false',
+  'schermate-s360-rosso: coppa-nazioni → no-nc',
+  'schermate-s360-scuro: carriera-opzioni',
+  'schermate-s360-scuro: momento-esordio → false',
+  'schermate-s360-scuro: coppa-nazioni → no-nc',
+  'schermate-s412-giallo: carriera-opzioni',
+  'schermate-s412-giallo: momento-esordio → false',
+  'schermate-s412-giallo: coppa-nazioni → no-nc',
+  'schermate-s412-rosso: provini-intro',
+  'schermate-s412-rosso: carriera-opzioni',
+  'schermate-s412-rosso: momento-esordio → false',
+  'schermate-s412-rosso: coppa-nazioni → no-nc',
+  'schermate-s412-scuro: carriera-opzioni',
+  'schermate-s412-scuro: momento-esordio → false',
+  'schermate-s412-scuro: coppa-nazioni → no-nc'
+]
+errori: []

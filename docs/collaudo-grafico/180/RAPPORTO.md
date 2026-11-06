@@ -67,11 +67,11 @@ pausa, highlight (presentazione, scelta, esito gol, esito parata), festa del tit
 | G180-10 | Intervista, presentazione del procuratore | 360, 412, pc | tutti | intervista-sconfitta-360-giallo.png | sala stampa illustrata con **fondo chiaro** (pannello sponsor bianco, banco chiaro); sigla «Elite» #92400e su grigio 3,3:1; targa del nome sul banco troncata «MASSIMILIANO BAR» (foto) | media | sala in toni notte (coerente con le tavole V2Intervista); targa col solo cognome |
 | G180-11 | Classifica | 360, pc | rosso; giallo | classifica-pc-rosso.png, classifica-pc-giallo.png | posizione «5» #f97316 su #563522 3,89:1; «17» #ef4444 su #1a1e27 4,43:1 | bassa | colori di stato V2 (#f87171, #fbbf24) |
 | G180-12 | fascia «Sostieni il progetto · Idee e feedback» (tutte le schede) | 360, 412 | tutti | home-360-rosso.png | tasti **180x26 px** (sotto i 44); testo «Sostieni il progetto» in **rosa V1 #ee9aaa** | media | fascia alta 44 px o voci spostate nelle Opzioni; testo TINTE.sec/oro |
-| G180-13 | partita: tasti del tabellone (avviso ⚠️, velocità «1×», pausa ⏸) | 412 (360 uguale) | tutti | partita2d-chiuso-412-rosso.png | ⚠️ 22x33, «1×» **22x19**, ⏸ 14x33 px | media | zona di tocco 44x44 (come la freccia del giro 107) senza ingrandire il disegno |
+| G180-13 | partita: tasti del tabellone (avviso ⚠️, velocità «1×», pausa ⏸ / ripresa ▶), in ogni fase | 360, 412, pc | tutti | partita2d-chiuso-412-rosso.png | ⚠️ 22x33, «1×» **22x19**, ⏸ 14x33, ▶ 18x33 px (stesse misure in 2D, highlight, festa, pausa) | media | zona di tocco 44x44 (come la freccia del giro 107) senza ingrandire il disegno |
 | G180-14 | partita 2D: freccetta e linguette Statistiche/Pagelle | 360, 412, pc | tutti | partita2d-pagelle-412-rosso.png | freccia 34x27, linguette 25 px, simbolo invertito rispetto al verso del pannello | media | **corretto** nel giro 107 (`sviluppo/giro107-freccetta`, `docs/sviluppo/RAPPORTO-giro107.md`) |
 | G180-15 | partita: tabellone a 820x1180 (tablet verticale) | 820 (fuori dai tre formati, osservato nel giro 107) | — | ../../sviluppo/foto-giro107/freccia-t820-trasf-2-aperto.png | il tasto «1×» **copre il punteggio «0 - 0»**; «PRIMAVERA 2» tagliato | **alta** (coperto) | il tasto velocità fuori dal blocco del punteggio |
-| G180-16 | partita: tabellone | 360, 412 | tutti | partita2d-chiuso-412-rosso.png | nomi delle squadre troncati con i puntini: «FC MANCHE…», «FC MERSEY…» | bassa | sigla (MER) sotto una larghezza, nome intero sopra |
-| G180-17 | highlight: esito gol | 412 | rosso | hl-esito-gol-412-rosso.png | riquadro del banner «GOOOOL! Bartolomucci» più largo del contenitore: 427 px su 410 | media | `max-width:100%` e a capo sul nome |
+| G180-16 | partita: tabellone | 360, 412 | tutti | partita2d-chiuso-360-giallo.png, partita2d-chiuso-412-rosso.png | nomi delle squadre troncati con i puntini: a 360 «FC WO…», «FC S…» (4 lettere: squadra non riconoscibile dal nome), a 412 «FC MANCHE…», «FC MERSEY…» | media (360) · bassa (412) | sigla (MER) sotto una larghezza, nome intero sopra |
+| G180-17 | highlight: esito (gol e altri esiti) | 360, 412, pc | tutti | hl-esito-gol-360-rosso.png, hl-esito-parata-412-scuro.png | il riquadro del banner d'esito è più largo del contenitore 3D: 359/346 (360), 423–427/410 (412), 970–985/953 (pc); **in foto il testo non risulta tagliato** | bassa | `max-width:100%` e a capo sul nome |
 | G180-18 | Galà e Premi di stagione | 360, 412 | tutti | gala-412-giallo.png | «Salta il galà» **60x14 px** | media | tasto testuale con zona di tocco 44 px |
 | G180-19 | Agente | 360, 412 | tutti | agente-412-rosso.png | «✂️ Licenzia il procuratore» 157x24 px | media | altezza 44 px |
 | G180-20 | Stagione (Classifica/Calendario/Coppe), Carriera (Profilo/Nazionale), righe-fisarmonica di Agente e Calendario | pc | tutti | calendario-pc-giallo.png, agente-pc-giallo.png | sottoschede 357x32 e 537x32; righe-fisarmonica 1086x31 | bassa (mouse) | 44 px per coerenza col telefono |
@@ -90,9 +90,39 @@ pausa, highlight (presentazione, scelta, esito gol, esito parata), festa del tit
 - **Dati incrociati**: posizione in classifica uguale fra testata («1° posto»), card della prossima partita («1ª in classifica») e
   Classifica; presenze in Nazionale uguali fra riquadro e lista del CT (14); giornata del pre-partita («11 di 34») coerente col
   calendario a 18 squadre.
-- **Nessuno** scorrimento orizzontale, elemento fuori schermo, `undefined`/`NaN` o carattere sostitutivo in nessuna delle 334 misure;
+- **Nessuno** scorrimento orizzontale, elemento fuori schermo, `undefined`/`NaN` o carattere sostitutivo in nessuna delle 438 misure (334 di carriera, 104 di partita);
   **nessun contenuto coperto** dalla barra in basso a fine scorrimento.
 
 ## Partita
 
-_Sezione completata al termine del censimento della partita (vedi sotto)._
+Carriera vera del club di prova (Premier Division, giornata 11 in trasferta a FC Manchester per il rosso), 3 formati x 3 club, 13 fasi
+ciascuno, **0 errori di pagina**. Gli highlight di calendario sono stati ridotti al minimo (`__CPM_SET_NUMHL`) per fotografare la 2D;
+l'highlight misurato è una scena di tiro forzata con esito gol e poi parata.
+
+Rilievi propri della partita (oltre a G180-07, G180-13…G180-17, G180-23, G180-24, G180-27 della tabella):
+
+| id | schermata | formato | club | foto | misura | gravità | proposta |
+|---|---|---|---|---|---|---|---|
+| G180-28 | Post-partita | 360, 412, pc | tutti | post-partita-412-rosso.png | nome della competizione «Premier Division» #e11d48 su #16171c **3,81:1** (11 px/800) | media | TINTE.rosso #f87171 o TINTE.sec |
+| G180-29 | Post-partita | 360, 412 | tutti | post-partita-412-rosso.png | righe-fisarmonica «Il tuo tabellino», «Tabellino della gara», «Le connessioni» alte 28–31 px | media | 44 px |
+| G180-30 | Ingresso, festa del titolo | 360, 412 | tutti | ingresso-412-rosso.png, festa-titolo-412-rosso.png | «Salta ingresso →» 131x36, «Salta premiazione →» 152x36 | media | 44 px |
+| G180-31 | Highlight: scelte | pc | tutti | hl-scelta-pc-giallo.png | tasti delle tre giocate alti 36–37 px; numeri «1» bianco su #3c74ed 4,27:1, «3» #9aa3b2 su #383c44 4,35:1 | bassa | 44 px; numeri in TINTE.testo |
+| G180-32 | Partita 2D a pannello chiuso, sul PC | pc | rosso | partita2d-statistiche-pc-rosso.png | durante l'avvio di un highlight il velo scuro abbassa «Tocca per iniziare» a **1,87:1** e «⚔️ ATTACCO» a 2,68:1 | media | testi della presentazione sopra il velo, non sotto |
+| G180-33 | Ingresso in campo | 360 | giallo | ingresso-360-giallo.png | «FC Wolverhampton» #0f172a su #9b6917 3,76:1 | bassa | inchiostro scuro pieno o fondo giallo più chiaro |
+
+Falsi dello strumento, **esclusi** dopo la verifica in foto: il nome nel tabellone «FC Wolverhampton» misurato a 1,01–1,37:1 a 360 (il
+nome intero sta in un elemento troncato con i puntini e il suo rettangolo esce dal blocco giallo: in foto si legge «FC WO…» nero su giallo,
+vedi G180-16); le sovrapposizioni «10/10», «11/11» nelle formazioni (testo e sua copia d'ombra); le sovrapposizioni con «PAUSA» (il velo
+della pausa copre per costruzione il pannello dietro).
+
+## Sintesi
+
+- **33 difetti** (G180-01…G180-33): **6 alti** (G180-02, G180-03, G180-04, G180-07, G180-08, G180-15), 18 medi, 9 bassi (G180-16 contato fra i medi: media a 360, bassa a 412).
+- La famiglia più diffusa è il **testo chiaro su superficie chiara rimasta dalla V1** (G180-02, G180-03, G180-08, G180-10): sono le
+  schermate che i guardiani V2 non coprono (galà, passaggio U18, creazione, sala stampa).
+- Il **colore del club come fondo** regge sul club scuro ma non su quelli saturi o chiari (G180-05, G180-06, G180-07): è la lezione della
+  179, e vale anche per il pre-partita, non solo per la Home.
+- La **testata col nome del club** si spezza a metà parola a 360 su tutte le schede (G180-01), non solo sulla Home.
+- La freccetta della partita 2D (G180-14) è corretta nel giro 107; gli altri tasti piccoli del tabellone (G180-13) no.
+
+Dati grezzi: `c180-sintesi.mjs` (744 gruppi di rilievi, prima della verifica manuale); foto in questa cartella (438 PNG a 128 colori).
