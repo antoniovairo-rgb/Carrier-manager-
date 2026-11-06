@@ -57,7 +57,7 @@ la soglia ed è giusto così), D su 8/8. Prima del rimedio, su Merseyside: lumin
 può differire di qualche pixel (lo zoom 1,12 della colonna è lo stesso). I nomi lunghi provati arrivano a 17
 caratteri (FC Kaiserslautern); un nome con una sola parola di 15+ lettere non esiste nel database oggi.
 
-## Regressione (in sequenza, `CPM_CI_PAR=0`, build finale salvo dove detto)
+## Regressione (in sequenza, `CPM_CI_PAR=0`, build finale)
 
 | passo | esito |
 |---|---|
@@ -72,8 +72,8 @@ caratteri (FC Kaiserslautern); un nome con una sola parola di 15+ lettere non es
 | save-compat | 12 pass · 0 fail |
 | chip-269 (in più: ho spostato il chip della versione) | verde · rosso atteso |
 
-grafica-v2, momenti-v2, tema-unico, griglia-mobile e design-system sono stati eseguiti prima dell'ultima correzione
-(nomi delle squadre nel riquadro: solo corpo del carattere e `overflowWrap`); dopo, rigiocati home-colori-106 verde e rosso.
+Tutti i passi sono girati sul build del commit 8934095, che contiene già tutte le correzioni del gioco (il secondo
+commit aggiunge solo rapporto e foto, nonostante il titolo citi i nomi delle squadre).
 
 `node tools/build-src.mjs` + `node tools/check-src.mjs`: IDENTICO BYTE PER BYTE.
 
