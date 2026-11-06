@@ -967,3 +967,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Giro 107 (553659f7): PO-308 era il tasto ▾/▴ del pannello Statistiche/Pagelle (la capsula del verso è spenta dalla 7.893, non toccata): simbolo invertito dal giro 92 corretto (chevron di casa), tocco 44 px, linguetta che apre il pannello; guardiano freccia-107.
 - Collaudo 180 (3931841b, ~21,8 $): 438 foto, 33 difetti (6 alti, 18 medi, 9 bassi). Famiglia principale: testi chiari su superfici chiare rimaste dalla V1 (galà, passaggio U18, creazione, sala stampa) e colore del club come fondo.
 - Uniti in lavoro/180 → efa72a94, check-src allineato. Decisione tecnica: giro 108 (session_01QEYiaCNfPymPiEQj5G3m9r, sviluppo/giro108-collaudo180, tetto 6 ore) su alti e medi; i 9 bassi in BACKLOG per la 181.
+
+### 06/11 sera — giro 108 unito, 7.999.180 chiusa, verifica finale
+- Giro 108 (680f8b4e, ~13,0 $): i 6 alti e 17 medi del collaudo 180 riparati (galà, passaggio U18, Nazionale, pillola del pre-partita, KORWARD, tablet; telefonata del CT, sala stampa, rosa V1 → oro a livello di token, granata V1, tocco 44 px, sigla nel tabellone a 360, intro dell'highlight); G180-01 verificato su tutte le schede ed esteso alla scheda Club; G180-06 già coperto dal 106. Guardiano collaudo-108 verde 18/18, rosso 17/17. Regressione in sequenza verde (gate 14/14 fingerprint 00001505). Bassi non toccati salvo G180-23 in parte; G180-31 resta per la 181.
+- Unito in lavoro/180; GAME_VERSION 7.999.180 → b4b450c8. Verifica finale Sonnet, un controllo alla volta, ramo catena/180-finale.
