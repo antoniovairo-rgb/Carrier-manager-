@@ -4,7 +4,11 @@
    Foto in docs/collaudo-grafico/180/<schermata>-<formato>-<club>.png, dati in DATI_DIR/schermate-<formato>-<club>.json. Non tocca src/. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, SAVE, TRIALPROG, INIT, entraInCarriera } from './c178-graf-lib.mjs';
-import { FORMATI, scelti, scelteClub, saveDi, misura180, salvaDati, premi, NOME_LUNGO } from './c180-lib.mjs';
+import { FORMATI, scelti, scelteClub, saveDi, misura180, salvaDati, premi, NOME_LUNGO, preparaCalendario } from './c180-lib.mjs';
+const OVL = () => { const W = innerWidth, H = innerHeight; let o = null; for (const e of document.body.querySelectorAll('*')) { const c = getComputedStyle(e); if (c.position !== 'fixed' || c.display === 'none' || +c.opacity < 0.1) continue; const r = e.getBoundingClientRect(); if (r.width * r.height < 0.5 * W * H) continue; if ((parseInt(c.zIndex) || 0) >= 50 && e.querySelector('button')) o = e; }
+  if (!o) return null; const t = (o.innerText || '').split('\n').map(x => x.trim()).filter(x => x.length > 3); return { nome: (t.find(x => !/^[⚡🏆]/.test(x) && x.length > 6) || t[0] || 'finestra').toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) }; };
+const CHIUDI_OVL = () => { const W = innerWidth, H = innerHeight; let o = null; for (const e of document.body.querySelectorAll('*')) { const c = getComputedStyle(e); if (c.position !== 'fixed' || c.display === 'none') continue; const r = e.getBoundingClientRect(); if (r.width * r.height >= 0.5 * W * H && (parseInt(c.zIndex) || 0) >= 50 && e.querySelector('button')) o = e; }
+  if (o) { const b = [...o.querySelectorAll('button')].filter(x => x.getBoundingClientRect().width > 0); (b.find(x => /chiudi|continua|ok|✕/i.test(x.textContent || '')) || b[0]).click(); } };
 const PARTI = (process.env.C180_PARTE || 'fuori,carriera,finestre,flusso').split(',');
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function apri(f, init, query, errs) {
@@ -40,6 +44,9 @@ for (const f of scelti()) for (const club of scelteClub()) {
     const { ctx, page } = await apri(f, { save: S }, '?cpmtest=1', errs);
     const vivo = await entraInCarriera(page, errs);
     if (!vivo) mancanti.push('carriera'); else {
+      const cal = await preparaCalendario(page, S); if (!cal.md) mancanti.push('gara della settimana: ' + JSON.stringify(cal)); await page.evaluate(() => { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.goTab('dashboard'); }); await sleep(500);
+      /* finestre che il gioco apre da solo all'arrivo nella settimana: si misurano e si chiudono con la prima risposta */
+      for (let i = 0; i < 4; i++) { const ov = await page.evaluate(OVL); if (!ov) break; await M(page, 'auto-' + ov.nome, { noFondo: false }); await page.evaluate(CHIUDI_OVL); await sleep(700); }
       if (PARTI.includes('carriera')) for (const [id, tab] of [['home', 'dashboard'], ['classifica', 'standings'], ['calendario', 'calendar'], ['coppe', 'coppe'], ['club', 'club'], ['carriera', 'profile'], ['nazionale', 'nazionale'], ['agente', 'agente'], ['ufficio', 'ufficio']]) {
         const r = await page.evaluate(x => window.__CPM_CAREER.goTab(x), tab); if (r !== true) { mancanti.push(id); continue; } await sleep(350); await M(page, id); }
       if (PARTI.includes('finestre')) {

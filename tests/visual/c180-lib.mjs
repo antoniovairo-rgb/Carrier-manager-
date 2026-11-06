@@ -69,7 +69,8 @@ export function RIGHE() {
     const rg = document.createRange(); rg.selectNodeContents(n); const rs = [...rg.getClientRects()].filter(r => r.width > 2 && r.height > 4 && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W);
     if (!rs.length) continue; k++;
     const fs = parseFloat(c.fontSize), fw = parseInt(c.fontWeight) || 400;
-    for (const r of rs.slice(0, 3)) out.push({ t: v.trim().slice(0, 40), col: c.color, fs, fw, x: Math.max(0, Math.round(r.left)), y: Math.max(0, Math.round(r.top)), w: Math.round(Math.min(r.right, W) - Math.max(0, r.left)), h: Math.round(Math.min(r.bottom, H) - Math.max(0, r.top)), s: sel(p), sh: c.textShadow !== 'none' ? 1 : 0, svg: p.ownerSVGElement ? 1 : 0 });
+    const libero = r => { const x = Math.min(W - 1, Math.max(0, r.left + Math.min(r.width / 2, 8))), y = Math.min(H - 1, Math.max(0, r.top + r.height / 2)); const t = document.elementFromPoint(x, y); return !!t && (t === p || p.contains(t) || t.contains(p)); };
+    for (const r of rs.slice(0, 3)) if (libero(r)) out.push({ t: v.trim().slice(0, 40), col: c.color, fs, fw, x: Math.max(0, Math.round(r.left)), y: Math.max(0, Math.round(r.top)), w: Math.round(Math.min(r.right, W) - Math.max(0, r.left)), h: Math.round(Math.min(r.bottom, H) - Math.max(0, r.top)), s: sel(p), sh: c.textShadow !== 'none' ? 1 : 0, svg: p.ownerSVGElement ? 1 : 0 });
     /* parole spezzate senza trattino: lettere della stessa parola su righe diverse */
     if (rs.length > 1 && spezzate.length < 12) {
       const re = /[\p{L}]{4,}/gu; let m;
@@ -78,7 +79,7 @@ export function RIGHE() {
     }
   }
   /* fasce fisse (non a tutto schermo) e testi del contenuto che finiscono sotto */
-  const fasce = []; for (const e of document.body.querySelectorAll('*')) { const c = gcs(e); if (c.position !== 'fixed' && c.position !== 'sticky') continue; if (c.display === 'none' || +c.opacity < 0.1) continue; const r = e.getBoundingClientRect(); if (r.width < 0.3 * W || r.height < 20 || r.width * r.height > 0.5 * W * H) continue; if (!(e.textContent || '').trim() && !e.querySelector('button,svg,img')) continue; fasce.push({ e, r }); }
+  const fasce = []; for (const e of document.body.querySelectorAll('*')) { const c = gcs(e); if (c.position !== 'fixed' && c.position !== 'sticky') continue; if (c.display === 'none' || +c.opacity < 0.1) continue; const r = e.getBoundingClientRect(); if (r.width < 0.3 * W || r.height < 20 || r.width * r.height > 0.5 * W * H) continue; if (!(e.textContent || '').trim() && !e.querySelector('button,svg,img')) continue; if (r.top < H * 0.5) continue; fasce.push({ e, r }); }
   const coperti = [];
   if (fasce.length) { const tw2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let m2;
     while ((m2 = tw2.nextNode()) && coperti.length < 10) { const p = m2.parentElement; if (!p || !/[\p{L}\p{N}]/u.test(m2.nodeValue || '')) continue; if (fasce.some(f => f.e.contains(p))) continue; const c = gcs(p); if (c.display === 'none' || c.visibility === 'hidden' || opac(p) < 0.15) continue;
@@ -87,8 +88,8 @@ export function RIGHE() {
       for (const f of fasce) { const oy = Math.min(r.bottom, f.r.bottom) - Math.max(r.top, f.r.top), ox = Math.min(r.right, f.r.right) - Math.max(r.left, f.r.left); if (oy > r.height * 0.5 && ox > 4) { coperti.push({ t: (m2.nodeValue || '').trim().slice(0, 36), fascia: (f.e.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 30), y: Math.round(r.top), fy: Math.round(f.r.top) }); break; } } } }
   /* stile: famiglie, raggi, colori V1 (avorio/granata) */
   const fam = {}, rag = {}, v1 = [];
-  /* tavolozza V1 tolta alla tappa 4 (git 75ffedd): avorio f5f3ef/f7f5f1/f1efe9, granata 8e1f33/6a1326, tinte f7e9ec/e3c3cb, ardesia scura 0f172a/1e293b */
-  const V1 = /rgba?\((245, 243, 239|247, 245, 241|241, 239, 233|142, 31, 51|106, 19, 38|247, 233, 236|227, 195, 203|15, 23, 42|30, 41, 59)[,)]/;
+  /* tavolozza V1 tolta alla tappa 4 (git 75ffedd): avorio f5f3ef/f7f5f1/f1efe9, granata 8e1f33/6a1326, tinte f7e9ec/e3c3cb, ardesia scura 0f172a/1e293b, rosa brandText scuro ee9aaa */
+  const V1 = /rgba?\((245, 243, 239|247, 245, 241|241, 239, 233|142, 31, 51|106, 19, 38|247, 233, 236|227, 195, 203|15, 23, 42|30, 41, 59|238, 154, 170)[,)]/;
   const chiari = []; const lumS = s => { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (!m) return null; const p = m[1].split(',').map(Number); if (p.length > 3 && p[3] < 0.85) return null; return (0.2126 * p[0] + 0.7152 * p[1] + 0.0722 * p[2]) / 255; };
   for (const e of document.body.querySelectorAll('*')) { const c = gcs(e); if (c.display === 'none') continue; const r = e.getBoundingClientRect(); if (r.width < 2 || r.bottom < 0 || r.top > H) continue;
     const ff = (c.fontFamily || '').split(',')[0].replace(/["']/g, '').trim(); if ((e.textContent || '').trim() && e.children.length === 0) fam[ff] = (fam[ff] || 0) + 1;
@@ -118,6 +119,25 @@ export function contrasti(png, righe, dpr = 1) {
     res.push({ t: r.t, rap: Math.round(rap * 100) / 100, soglia, fs: r.fs, fw: r.fw, testo: '#' + t.map(v => Math.round(v).toString(16).padStart(2, '0')).join(''), fondo: '#' + bg.map(v => v.toString(16).padStart(2, '0')).join(''), y: r.y, x: r.x, s: r.s, sh: r.sh });
   }
   return res;
+}
+/* [collaudo 180] IL BANCO DI CARRIERA NON AVEVA IL CALENDARIO: senza, la Home non rende la card della PROSSIMA partita, cioe' proprio il
+   blocco bocciato dal PO sulla 179. Si genera con la funzione vera del gioco sulla lega del club e si marcano giocate le giornate gia'
+   nello storico (stesso numero), poi si applica con il gancio di collaudo `patch`. Ritorna la gara della settimana (o null). */
+export async function preparaCalendario(page, S) {
+  const P = S.player;
+  const r = await page.evaluate(([club, season, week, n, mh, st]) => { try { const C = window.__CPM_CAREER; const lc = CLUBS.filter(c => c.lg === club.lg);
+    const cal = generateSeasonCalendar(club, lc, (season || 1) * 777 + hashStr(club.id)); let k = 0;
+    /* le prime n giornate di lega sono quelle dello storico; la settimana corrente diventa quella della giornata successiva */
+    let wk = week; for (const m of cal) { if (m.type) continue; if (k < n) { m.played = true; k++; } else { wk = m.week; break; } }
+    /* lo storico prende avversario, sede e settimana dalle giornate giocate (le guardie anti-loop confrontano le due fonti) */
+    const gio = cal.filter(m => m.played); const mh2 = mh.map((h, i) => gio[i] ? { ...h, opponent: gio[i].opponentName, isHome: !!gio[i].isHome, week: gio[i].week, season } : h);
+    for (let i = 0; i < gio.length; i++) { const h = mh2[i]; if (h) gio[i].result = { homeScore: h.homeScore, awayScore: h.awayScore, won: h.won, drew: h.drew }; }
+    C.patch({ calendar: cal, week: wk, weekLived: false, matchHistory: mh2, standings: st, playedMd: { s: season, md: gio.map(m => m.matchday) } }); return { n: cal.length, giocate: k, settimana: wk }; } catch (e) { return { errore: String(e.message) }; } }, [P.club, P.season, P.week, (P.matchHistory || []).length, P.matchHistory || [], P.standings]);
+  await sleep(700); let md = null;
+  for (let t = 0; t < 4; t++) { md = await page.evaluate(() => window.__CPM_CAREER.thisWeekMd()).catch(() => null); if (md && md.matchday) break;
+    /* il gioco puo' «risanare» una giornata come gia' giocata (rilevatore 7.418): si va alla prossima che considera aperta */
+    await page.evaluate(() => { const C = window.__CPM_CAREER; const p = C.snapshot(); const m = (p.calendar || []).find(x => !x.played && !x.type && x.week >= (p.week || 1)); if (m) C.patch({ week: m.week, weekLived: false }); }); await sleep(700); }
+  return { ...r, md };
 }
 export const fotoNome = (sch, f, club) => `${sch}-${f.k.replace('s', '')}-${club}.png`;
 /* misura completa: D() del 178 + righe + contrasto sui pixel + coperture a fine scorrimento. Una foto PNG piccola nel repo. */
