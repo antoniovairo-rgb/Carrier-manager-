@@ -1302,6 +1302,15 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
      ci passava sotto con i suoi pallini. Da chiusa ora sale in cima, sotto la striscia alta, e il campo comincia sotto di lei; aperta
      torna dov'era (il pannello e' vetro sopra il campo per scelta del PO). Rosso __CPM_NO_BARRA297. */
   const _cima297=!aperto&&!inColonna&&!(typeof window!=='undefined'&&window.__CPM_NO_BARRA297);
+  /* [giro 107 · collaudo 180, richiesta PO 06/11 «rivedere il posizionamento e la logica della freccetta sulle statistiche / pagelle»]
+     MISURATO (sonda freccia-107, partita 2D di carriera, casa e trasferta): (A) il simbolo era invertito rispetto al movimento — da chiusa
+     la barra sta in CIMA (giro 92) e mostrava «▴», ma il pannello si apre SOTTO; aperta mostrava «▾» e richiudendo la barra risale. Era il
+     verso giusto prima del giro 92, quando la barra chiusa stava in basso. Ora e' il chevron di casa delle fisarmoniche («›», ruotato di 90°
+     quando e' aperto, `aria-expanded`): stesso segno di ogni altra fisarmonica del gioco. Rosso __CPM_NO_G107A.
+     (B) il tasto era 34x27 px su telefono e PC (44x45 solo sul tablet): ora freccia e linguette sono alte almeno 44 px ovunque e la freccia
+     e' larga 44. Rosso __CPM_NO_G107B. (C) toccare «Statistiche» o «Pagelle» a pannello chiuso cambiava solo l'evidenza della linguetta e non
+     mostrava niente: ora la linguetta APRE il pannello su quella vista. Rosso __CPM_NO_G107C. */
+  const _g107a=!(typeof window!=='undefined'&&window.__CPM_NO_G107A),_g107b=!(typeof window!=='undefined'&&window.__CPM_NO_G107B),_g107c=!(typeof window!=='undefined'&&window.__CPM_NO_G107C);
   React.useEffect(function(){if(_no927)return;_MEM927.aperto=aperto;_MEM927.vista=vista;},[aperto,vista,_no927]);/* la scelta sopravvive allo smontaggio: e' l'unico punto che scrive la memoria */
   /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
      riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
@@ -1368,7 +1377,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   const perLato=(l)=>(_dati189.p||[]).filter(r=>r.team===l).sort((a,b)=>b.voto-a.voto||a.i-b.i).slice(0,11);
   const colonna=(l,col)=>perLato(l).map(r=><Pagella918 key={"pg"+r.i} r={r} u={_uomo918(r.i,rosaCasa,rosaOsp,nomeEroe,numEroe)} colTeam={col}/>);
   const tasto=(id,et)=>(
-    <button onClick={()=>setVista(id)} style={{flex:1,padding:_tocco292()?"15px 4px":"6px 4px",border:"none",cursor:"pointer",
+    <button onClick={()=>{setVista(id);if(_g107c&&!aperto){_MEM927.scelto=true;setAperto(true);}}} aria-pressed={vista===id} style={{flex:1,padding:_tocco292()?"15px 4px":"6px 4px",...(_g107b?{minHeight:44}:{}),border:"none",cursor:"pointer",
       background:vista===id?"rgba(148,163,184,0.20)":"transparent",color:vista===id?_COL918.testo:_COL918.fioco,
       fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",
       borderRadius:RAD.xs}}>{et}</button>);
@@ -1402,11 +1411,11 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       <div data-cpm="linguette918" data-cima297={_cima297?"1":"0"} style={{margin:SP.sm,marginTop:_cima297?0:SP.sm,marginBottom:_cima297?SP.sm:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
         pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:_lungo80?"calc(43% + 40px)":"43%",maxHeight:_lungo80?"calc(43% + 40px)":"43%"}:{}),...(inColonna?{marginBottom:SP.sm,height:"auto",maxHeight:"none",flex:aperto?"1 1 0":"0 0 auto",minHeight:0}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
-        <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
+        <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:_g107b?"0 6px":"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
           {tasto("stat","Statistiche")}
           {tasto("pag","Pagelle")}
-          <button onClick={()=>{_MEM927.scelto=true;setAperto(a=>!a);}} aria-label={aperto?"Nascondi":"Mostra"} style={{width:_tocco292()?44:34,padding:_tocco292()?"15px 0":"6px 0",border:"none",cursor:"pointer",
-            background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold}}>{aperto?"▾":"▴"}</button>
+          <button data-cpm="freccia107" onClick={()=>{_MEM927.scelto=true;setAperto(a=>!a);}} aria-label={aperto?"Nascondi":"Mostra"} aria-expanded={!!aperto} title={aperto?"Nascondi statistiche e pagelle":"Mostra statistiche e pagelle"} style={{width:(_tocco292()||_g107b)?44:34,padding:_tocco292()?"15px 0":"6px 0",...(_g107b?{minHeight:44,flex:"0 0 auto",display:"flex",alignItems:"center",justifyContent:"center"}:{}),border:"none",cursor:"pointer",
+            background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:_g107a?FS.body:FS.small,fontWeight:FW.bold}}>{_g107a?(<span aria-hidden data-verso={aperto?"giu":"destra"} style={{display:"inline-block",lineHeight:1,transform:aperto?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>):(aperto?"▾":"▴")}</button>
         </div>
         {aperto&&vista==="stat"&&(
           <div data-cpm="stat77" style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto",flex:1,minHeight:0}}>
