@@ -947,3 +947,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Tronco 1 (catena/179-t1): rossi carriera3-94, lento-103, titolo-110 (corretto dal 105); instabili riserva-103, contatto-103.
 - Decisioni tecniche (sessione madre): lento-103 tolto dalle catene completa/carriera e dalla MAPPA (il giro 103 l'aveva declassata a sonda non deterministica); carriera3-94 D2 cieco = strumento, da ridisegnare nella 180 (rigore dell'eroe provocato in modo deterministico). Unito in lavoro/179 → e9d934b1.
 - Verifica mirata Sonnet (session_01QEYiaAD3exUSqR5jcB2Tug, catena/179-finale): riserva-103, contatto-103, carriera3-94, portiere-252, titolo-110, due corse ciascuno, in sequenza. Un difetto del verde nell'highlight dell'eroe resta bloccante.
+
+### 06/11 mattina — 7.999.179 PUBBLICATA
+- Verifica mirata (catena/179-finale, ec10c96f, su e9d934b1): riserva-103, contatto-103, portiere-252, titolo-110 verdi 2/2; carriera3-94 rosso 2/2 solo per D2 «cieco» (deciso = strumento, PO-305).
+- Rituale: lavoro/179 in poc → ROADMAP «7.999.179 pubblicata» → BACKLOG PO-302 e PO-303 CHIUSE, PO-304 (nome del club a capo a 360 px) e PO-305 (carriera3-94 D2) APERTE per la 180 → main = poc (5495b9c7) → verdetti e governo ripubblicato (versione 127). Avviso al PO inviato.
