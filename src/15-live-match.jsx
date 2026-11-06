@@ -1058,7 +1058,7 @@ function Riga918({et,sx,dx,colSx,colDx,fmt,fitta}){
 function Pagella918({r,u,colTeam}){
   return(
     <div style={{display:"flex",alignItems:"center",gap:6,padding:"2px 4px",borderRadius:RAD.xs,
-      background:r.eroe?"rgba(142,31,51,0.38)":"transparent"}}>
+      background:r.eroe?(_no108("22")?"rgba(142,31,51,0.38)":fondoClub106(colTeam||TINTE.sup)):"transparent",boxShadow:(r.eroe&&!_no108("22"))?"inset 2px 0 0 "+TINTE.oro:"none"}}>{/* [giro 108 G180-22] la riga dell'eroe nel colore del club smorzato (fondoClub106) col filo d'oro, non nel granata V1 */}
       <span style={{width:15,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:_sigla970(colTeam),fontVariantNumeric:"tabular-nums"}}>{u.num}</span>
       <span style={{flex:1,minWidth:0,fontSize:FS.caption,fontWeight:r.eroe?FW.bold:FW.medium,color:_COL918.testo,
         overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nome||("n. "+u.num)}</span>
@@ -1913,6 +1913,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      no. Qui la classe e' locale (cpm-t40m) e vive in uno <style> della partita. Sul telefono a tocco i tre comandi in riga si
      distanziano quanto basta perche' le aree non si rubino il dito (centri a >= 40 px). Rosso __CPM_NO_G96B_D15. */
   const _t40m96b=!_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&(function(){try{return !!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}})();
+  /* [giro 108 G180-15] sul tablet verticale (820x1180) il bersaglio pieno da 44 px di _hb292, con margine -14, saliva di 14 px sul
+     punteggio della barra V2 e il tasto «1×» lo copriva. Nella barra V2 anche il tablet usa l'area di tocco allargata del telefono
+     (::after, disegno invariato) e la stessa spaziatura. Rosso __CPM_NO_G108_15. */
+  const _t40m108=_no108("15")?_t40m96b:(_t40m96b||(_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)));
+  const _hbV2108=_no108("15")?_hb292:null;
+  /* [giro 108 G180-16] a 360 px il nome nella barra V2 restava a 4 lettere coi puntini («FC WO…»): sotto i 400 px un nome oltre i
+     7 caratteri («FC SUSSEX» compreso) lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
+  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>7?t.a:n;}catch(_e){return n;}};
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro
@@ -10793,10 +10801,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
                 <TeamBadge team={homeTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(homeTeamObj,"Squadra")}</div>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
-              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}}'}</style>}
+              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
                 <div data-cpm="risultato-v2" style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap",background:TINTE.testo,borderRadius:RAD.xs,padding:"2px 9px",fontFamily:FONT_TV,fontWeight:800}}>
                   <span style={{color:TINTE.bg}}>{_swap893?_aVal901:_hVal901}</span>
@@ -10809,14 +10817,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div data-cpm="minuto-v2" style={{fontSize:FS.small,fontWeight:800,color:TINTE.oro,letterSpacing:.3,fontVariantNumeric:"tabular-nums",fontFamily:FONT_TV,fontSize:FS.bodyLg}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{}),...(_t40m96b?{marginLeft:10,marginRight:22}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m"
                       onClick={()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];setMatchSpeed(_n);try{localStorage.setItem("cpm-match-speed",String(_n));}catch(_e){}}}
                       title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
                       aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
-                      style={{background:TINTE.tasto,border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0"}:{}),...(_t40m96b?{marginRight:devToolsOn()?20:0}:{})}}>
+                      style={{background:TINTE.tasto,border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hbV2108?{..._hbV2108,margin:"-14px 0"}:{}),...(_t40m108?{marginRight:devToolsOn()?(_no108("13")?20:24):0}:{})}}>
                       {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                     </button>
                   )}
@@ -10832,7 +10840,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
                 <TeamBadge team={awayTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(awayTeamObj,"Avversario")}</div>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
@@ -11528,9 +11536,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.title,marginBottom:8}}>⚽</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.3)":TINTE.testo/* [giro 108 G180-32] testo velato a 0,3/0,2 di opacita' sul velo della presentazione: 2,68 e 1,87:1 sul PC (TINTE.sec sul prato velato resta a 3,6:1, misurato). Rosso __CPM_NO_G108_32 */,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{"Tocca per iniziare"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.2)":TINTE.testo,marginTop:6}}>{"Tocca per iniziare"}</div>
                 </div>
               )}
               {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}
@@ -12140,7 +12148,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
               <div style={{padding:"12px 14px 0"}}>
-                <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
+                <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_no108("28")?_compCol:legCol944(_compCol,"#16171c")/* [giro 108 G180-28] il colore della lega come testo scendeva a 3,81:1 (Premier Division #e11d48): reso leggibile sul fondo del giornale. Rosso __CPM_NO_G108_28 */}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
                 <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:5,fontWeight:700}}>FISCHIO FINALE</div>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>

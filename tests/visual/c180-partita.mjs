@@ -5,7 +5,7 @@
    Uso: C180_FORMATI=... C180_CLUB=... ; foto in docs/collaudo-grafico/180/. Non tocca src/. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, INIT, SAVE, entraInCarriera } from './c178-graf-lib.mjs';
-import { scelti, scelteClub, saveDi, preparaCalendario, misura180, salvaDati, premi } from './c180-lib.mjs';
+import { scelti, scelteClub, saveDi, preparaCalendario, misura180, salvaDati, premi, ROSSI, SOLO } from './c180-lib.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const fase = p => p.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null).catch(() => null);
 const aspettaFase = async (p, rx, ms) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { const f = await fase(p); if (f && rx.test(f)) return f; await sleep(250); } return null; };
@@ -14,8 +14,8 @@ for (const f of scelti()) for (const club of scelteClub()) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], save: saveDi(SAVE, club) });
-  const M = (sch, o) => misura180(page, f, sch, club, R, { vivo: true, noFondo: true, fermaMs: 1500, ...(o || {}) });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSI, save: saveDi(SAVE, club) });
+  const M = async (sch, o) => { if (SOLO && !SOLO.test(sch)) return null; return misura180(page, f, sch, club, R, { vivo: true, noFondo: true, fermaMs: 1500, ...(o || {}) }); };
   const passo = async (nome, fn) => { try { await fn(); } catch (e) { mancanti.push(nome + ': ' + String(e.message).slice(0, 80)); } };
   try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });
@@ -44,8 +44,10 @@ for (const f of scelti()) for (const club of scelteClub()) {
       await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '▶' || /riprend/i.test(q.textContent || '')); if (x) x.click(); else document.body.click(); }); await sleep(500); });
     /* highlight: una scena d'attacco (tiro) forzata, poi la scelta e l'esito (gol) */
     const gi = await page.evaluate(() => { const i = SITUATIONS.findIndex(s => s.type !== 'def' && (s.actions || []).some(a => /tir|calci/i.test(a.label || ''))); return i < 0 ? 0 : i; });
-    await passo('hl', async () => { await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_SIT(g, false); }, gi); await sleep(900); await M('hl-intro');
-      await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(900); await M('hl-scelta');
+    /* [giro 108] l'intro forzata durava 300 ms (default di __CPM_FORCE_INTRO_MS): la foto «hl-intro» arrivava a scelta gia' aperta e il velo
+       della presentazione (G180-32) non veniva mai misurato. Si tiene 8 s per la foto, poi si torna a 300 ms. */
+    await passo('hl', async () => { await page.evaluate(g => { window.__CPM_FORCE_INTRO = 1; window.__CPM_FORCE_INTRO_MS = 8000; window.__CPM_FORCE_SIT(g, false); }, gi); await sleep(900); await M('hl-intro', { fermaMs: 300 });
+      await page.evaluate(g => { window.__CPM_FORCE_INTRO_MS = 300; window.__CPM_FORCE_SIT(g, true); }, gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(900); await M('hl-scelta');
       await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_FORCE_KIND = 'goal'; window.__CPM_RESOLVE(0); }); const ff = await aspettaFase(page, /hl_result/, 20000); await sleep(1400); await M('hl-esito-gol');
       if (!ff) mancanti.push('hl-esito (fase ' + await fase(page) + ')'); });
     await passo('hl-fallito', async () => { await page.evaluate(g => { delete window.__CPM_FORCE_KIND; window.__CPM_FORCE_SIT(g, true); }, gi); await aspettaFase(page, /hl_choose/, 9000); await sleep(700);

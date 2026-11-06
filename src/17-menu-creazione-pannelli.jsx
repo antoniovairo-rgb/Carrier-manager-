@@ -259,7 +259,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>

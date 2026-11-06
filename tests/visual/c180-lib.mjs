@@ -20,7 +20,40 @@ export const FORMATI = {
   s360: { k: 's360', nome: '360x800', w: 360, h: 800, touch: true },
   s412: { k: 's412', nome: '412x915', w: 412, h: 915, touch: true },
   pc: { k: 'pc', nome: '1440x900', w: 1440, h: 900, touch: false },
+  t820: { k: 't820', nome: '820x1180', w: 820, h: 1180, touch: true }, /* [giro 108] tablet verticale (G180-15), solo su richiesta */
 };
+/* [giro 108] interruttori rossi passati dal guardiano (C180_ROSSI=__CPM_NO_G108_02,...) e filtro delle schermate (C180_SOLO=regex) */
+export const ROSSI = (process.env.C180_ROSSI || '').split(',').map(s => s.trim()).filter(Boolean);
+export const SOLO = process.env.C180_SOLO ? new RegExp(process.env.C180_SOLO) : null;
+/* [giro 108] AREA DI TOCCO EFFETTIVA: il rettangolo del tasto unito al suo ::after trasparente (.cpm-t40 / .cpm-t40m, giro 97 e 96b),
+   che e' l'area che riceve davvero il dito. Il D() del 178 misura solo il rettangolo. In piu': il punteggio della barra coperto da un
+   tasto (G180-15), i nomi della barra troncati coi puntini (G180-16) e il conto dei resti V1 granata/rosa (G180-21/22). */
+export function EXTRA108() {
+  const W = innerWidth, H = innerHeight, out = { tocchi: [], punteggioCoperto: null, nomiTroncati: [], granata: 0, rosa: 0, granataEs: [], rosaEs: [] };
+  const vis = e => { const c = getComputedStyle(e); if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.1) return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W; };
+  for (const b of document.querySelectorAll('button,[role="button"],a[href]')) { if (!vis(b)) continue; const r = b.getBoundingClientRect(); let w = r.width, h = r.height;
+    const a = getComputedStyle(b, '::after'); if (a && a.content && a.content !== 'none' && a.position === 'absolute') { const cb = getComputedStyle(b); const zx = r.width / (parseFloat(cb.width) || r.width || 1), zy = r.height / (parseFloat(cb.height) || r.height || 1); /* lo ::after e' in px CSS del tasto: dentro uno zoom va riportato a schermo */
+      w = Math.max(w, (parseFloat(a.width) || 0) * (isFinite(zx) && zx > 0 ? zx : 1)); h = Math.max(h, (parseFloat(a.height) || 0) * (isFinite(zy) && zy > 0 ? zy : 1)); }
+    if (Math.min(w, h) < 43.5) out.tocchi.push({ t: (b.textContent || b.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 30), w: Math.round(r.width), h: Math.round(r.height), ew: Math.round(w), eh: Math.round(h) }); }
+  /* coperto = il TESTO di un tasto sopra le CIFRE del punteggio (i rettangoli dei testi, non delle scatole: una scatola con margine negativo che sfiora il bordo non copre niente) */
+  const tr = e => { const g = document.createRange(); g.selectNodeContents(e); return g.getBoundingClientRect(); };
+  const sc = document.querySelector('[data-cpm="risultato-v2"]'); if (sc && vis(sc)) { const s = tr(sc); out.punteggioCoperto = false;
+    for (const b of document.querySelectorAll('button')) { if (!vis(b)) continue; const bg = getComputedStyle(b).backgroundColor; const pieno = !/rgba\(0, 0, 0, 0\)|transparent/.test(bg); /* un tasto col fondo pieno copre con la sua scatola */
+      const r = pieno ? b.getBoundingClientRect() : tr(b); if (r.width < 1) continue; const ox = Math.min(r.right, s.right) - Math.max(r.left, s.left), oy = Math.min(r.bottom, s.bottom) - Math.max(r.top, s.top); if (ox > 2 && oy > 2) { out.punteggioCoperto = (b.textContent || '').trim().slice(0, 12) + ' ' + Math.round(ox) + 'x' + Math.round(oy); break; } } }
+  for (const k of ['scudo-casa', 'scudo-ospiti']) { const z = document.querySelector('[data-cpm="' + k + '"]'); if (!z || !vis(z)) continue; for (const e of z.querySelectorAll('div')) { if (e.children.length) continue; const t = (e.textContent || '').trim(); if (t && e.scrollWidth > e.clientWidth + 1) out.nomiTroncati.push(t.slice(0, 24)); } }
+  const G = /142, 31, 51/, P = /238, 154, 170/;
+  for (const e of document.body.querySelectorAll('*')) { if (!vis(e)) continue; const c = getComputedStyle(e); const s = c.color + '|' + c.backgroundColor + '|' + c.backgroundImage + '|' + c.borderTopColor;
+    const t = (e.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 24);
+    if (G.test(s)) { out.granata++; if (out.granataEs.length < 4) out.granataEs.push(t || e.tagName); }
+    if (P.test(c.color) && (e.textContent || '').trim()) { out.rosa++; if (out.rosaEs.length < 4) out.rosaEs.push(t); } }
+  /* fondi chiari (luminanza > 0,6, opachi) su elementi grandi dentro le scene illustrate (sala stampa) e i fondi V1 chiari del passaggio pro */
+  const lumP = p => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(p[0]) + 0.7152 * f(p[1]) + 0.0722 * f(p[2]); };
+  out.scenaChiara = []; for (const sc2 of document.querySelectorAll('[data-cpm-scena="intervista2d"]')) for (const e of [sc2, ...sc2.querySelectorAll('div')]) { const r = e.getBoundingClientRect(); if (r.width * r.height < 4000 || e.closest('svg')) continue; const c = getComputedStyle(e);
+    for (const m of ((c.backgroundColor || '') + ' ' + (c.backgroundImage || '')).matchAll(/rgba?\(([^)]+)\)/g)) { const p = m[1].split(',').map(Number); if (p.length > 3 && p[3] < 0.85) continue; if (lumP(p) > 0.6) { out.scenaChiara.push(`rgb(${p.slice(0, 3).join(',')}) ${Math.round(r.width)}x${Math.round(r.height)}`); break; } } }
+  const V1C = /rgb\((239, 246, 255|254, 252, 232|220, 252, 231|243, 232, 255|254, 226, 226|255, 241, 242|254, 249, 195|226, 232, 240)\)/;
+  out.chiariV1 = []; for (const e of document.body.querySelectorAll('*')) { if (!vis(e)) continue; const c = getComputedStyle(e); if (V1C.test(c.backgroundColor) && out.chiariV1.length < 6) out.chiariV1.push(c.backgroundColor + ' «' + (e.textContent || '').trim().slice(0, 20) + '»'); }
+  return out;
+}
 export const scelti = () => (process.env.C180_FORMATI || 's360,s412,pc').split(',').filter(k => FORMATI[k]).map(k => FORMATI[k]);
 /* i club si leggono dal database del gioco (src/02), non si inventano */
 const SRC02 = fs.readFileSync(path.join(QUI, '../../src/02-club-leghe-albo.jsx'), 'utf8');
@@ -145,6 +178,7 @@ export async function misura180(page, f, sch, club, R, opt = {}) {
   await ferma(page, opt.fermaMs || 5000); if (!opt.vivo) await congela(page);
   const m = await page.evaluate(D, f.touch).catch(e => ({ errore: String(e.message).slice(0, 100) }));
   const q = await page.evaluate(RIGHE).catch(e => ({ righe: [], spezzate: [], coperti: [], fasce: [], fam: {}, rag: {}, v1: [], errore: String(e.message).slice(0, 100) }));
+  const x108 = await page.evaluate(EXTRA108).catch(e => ({ errore: String(e.message).slice(0, 100) }));
   let buf = null; try { buf = await page.screenshot({ type: 'png', timeout: 45000 }); } catch (e) {}
   const nome = fotoNome(sch, f, club);
   let ctr = [];
@@ -161,7 +195,7 @@ export async function misura180(page, f, sch, club, R, opt = {}) {
   const sotto = ctr.filter(c => c.rap < c.soglia);
   const r = { sch, f: f.k, club, foto: nome, hs: m.hs, nFuori: m.nFuori, fuori: m.fuori, piccoli: m.piccoli, nPiccoli: m.nPiccoli, nTasti: m.nTasti, tagliati: m.tagliati, nTagliati: m.nTagliati, ellissi: m.ellissi, nEllissi: m.nEllissi,
     sovTesti: m.sovTesti, sovr: m.sovr, imgRotte: m.imgRotte, sostitutivi: m.sostitutivi, undefinedNaN: m.undefinedNaN, minFs: m.minFs, nSotto10: m.nSotto10, overlay: m.overlay, altezza: m.altezza,
-    nRighe: ctr.length, nSottoCtr: sotto.length, sottoCtr: sotto.sort((a, b) => a.rap / a.soglia - b.rap / b.soglia).slice(0, 10), spezzate: q.spezzate, coperti: q.coperti, fondo, fasce: q.fasce, fam: q.fam, rag: q.rag, v1: q.v1, chiari: q.chiari, testo: q.testo };
+    nRighe: ctr.length, nSottoCtr: sotto.length, sottoCtr: sotto.sort((a, b) => a.rap / a.soglia - b.rap / b.soglia).slice(0, 10), spezzate: q.spezzate, coperti: q.coperti, fondo, fasce: q.fasce, fam: q.fam, rag: q.rag, v1: q.v1, chiari: q.chiari, testo: q.testo, x108, ...(process.env.C180_TUTTI ? { ctrTutti: ctr.map(c => ({ t: c.t, rap: c.rap, soglia: c.soglia, testo: c.testo, fondo: c.fondo })) } : {}) };
   (R[sch] = R[sch] || {})[f.k + '-' + club] = r;
   const fl = [r.hs > 0 ? 'HS' + r.hs : '', r.nFuori ? 'fuori' + r.nFuori : '', r.nTagliati ? 'tagl' + r.nTagliati : '', (r.sovTesti || []).length ? 'sovT' + r.sovTesti.length : '', r.nSottoCtr ? 'ctr' + r.nSottoCtr : '', r.spezzate.length ? 'spez' + r.spezzate.length : '', (fondo && fondo.coperti.length) ? 'COPERTO' + fondo.coperti.length : '', r.v1.length ? 'V1' : '', r.undefinedNaN ? 'NaN' : ''].filter(Boolean).join(' ');
   process.stdout.write(`  ${f.k.padEnd(4)} ${club.padEnd(6)} ${sch.padEnd(26)} righe ${String(r.nRighe).padStart(3)} tasti<40:${String(r.nPiccoli).padStart(2)}/${String(r.nTasti).padStart(3)} ${fl}\n`);

@@ -6575,7 +6575,7 @@ const getThisWeekMatchday=()=>{
                   onMouseEnter={e=>{e.currentTarget.style.background=_T.optBgH;e.currentTarget.style.borderColor=_T.optBdH;}}
                   onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=_T.optBd;}}>
                   <div style={{fontSize:FS.body,color:_T.optTxt,lineHeight:1.5}}>{ch.txt}</div>
-                  {ch.mem&&<div style={{fontSize:FS.caption,color:_T.memCol,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
+                  {ch.mem&&<div style={{fontSize:FS.caption,color:_no108("09")?_T.memCol:(_epic?TINTE.oro:TINTE.sec)/* [giro 108 G180-09] il colore velato (alfa 0,5) scendeva a 3,12:1 sul fondo della finestra. Rosso __CPM_NO_G108_09 */,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
                 </button>
               ))}
             </div>
@@ -7760,7 +7760,7 @@ const getThisWeekMatchday=()=>{
               </div>;
             })()}
             {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
-            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
+            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:_no108("22")?TH.primary:legCol944((player.club&&player.club.c)||TINTE.oro,TH.track)/* [giro 108 G180-22] la barra della stagione nel colore del club (reso visibile sul binario), non nel granata V1 */,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
           </Card>
         </div>
       )}
@@ -9678,7 +9678,9 @@ const getThisWeekMatchday=()=>{
                 <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
                   <div style={{width:64,height:64,borderRadius:RAD.lg,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
-                    <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{club.n||club.name}</span>
+                    {(()=>{const _nm=club.n||club.name||"";const _lw=Math.max(0,...String(_nm).split(/\s+/).map(w=>w.length));/* [giro 108 G180-01] il nome del club nella scheda Club si spezzava dentro la parola a 360 px («WOLVERHAMP/TON»): a capo solo fra parole, e la parola piu' lunga decide il corpo (stessa regola della testata del giro 106). Rosso __CPM_NO_G108_01 */
+                    return _no108("01")?<span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_nm}</span>
+                    :<span style={{...fsTV(_lw>=13?FS.subhead:_lw>=11?FS.title:FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"normal",wordBreak:"normal",hyphens:"none"}}>{_nm}</span>;})()}
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>
                     {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
                     {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
@@ -10933,7 +10935,7 @@ const getThisWeekMatchday=()=>{
         var agentName=(player.agent&&player.agent.name)||AGENT_NAMES[aIdx];/* [7.379.0 R6] col catalogo il procuratore ha un nome SCELTO: la derivazione dal nome del giocatore resta come rete per chi non ha ancora la relazione */
         var trust=player.coachTrust||60;
         var trustLabel=trust>=70?"Eccellente":trust>=50?"Buono":trust>=30?"Nella media":"In difficoltà";
-        var trustColor=trust>=70?TH.success:trust>=50?TH.primary:trust>=30?TH.warning:TH.danger;
+        var trustColor=trust>=70?TH.success:trust>=50?(_no108("22")?TH.primary:TINTE.blu):trust>=30?TH.warning:TH.danger;
         var valRaw=player.value||0.5;
         var valK=Math.round(valRaw*1000);// [5.80.0 BUG-11] era ×10000: il tab agente mostrava un valore 10× diverso dal profilo (0.8M€ vs "€8.0M")
         var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
@@ -11001,7 +11003,7 @@ const getThisWeekMatchday=()=>{
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
                     notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
-                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -11012,7 +11014,7 @@ const getThisWeekMatchday=()=>{
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
                           {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
-                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
                               <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
@@ -11026,7 +11028,7 @@ const getThisWeekMatchday=()=>{
               <Fisarmonica id="uff-acquisti" titolo="Acquisti e investimenti" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 {/* [7.990.0 Patrimonio F2] accademia col tuo nome */}
                 {(function(){var ac=player.academy24,co=academyCost24(player),k=function(v){return _eur49(v);};
-                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
+                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
                   if(!ac)return(
                     <div data-cpm="accademia24" data-stato="assente" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>🏫</span>
@@ -11066,7 +11068,7 @@ const getThisWeekMatchday=()=>{
                       <button className="cpm-t40" data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
                         setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
-                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
+                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
                     </div>);})}
                   {(player.beni24||[]).length>0&&(player.stampa281||[]).length>0&&<div data-cpm="beni281-reazioni" style={{marginTop:4,display:"flex",flexDirection:"column",gap:3}}>{/* [PO-281] le reazioni nel tempo, le ultime tre */}
                     <div style={{fontSize:FS.caption,color:TH.faint}}>Ultime voci sul tuo stile di vita e sui tuoi affari</div>
@@ -11076,7 +11078,7 @@ const getThisWeekMatchday=()=>{
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
                 {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){return _eur49(Math.abs(v));};
                   var hist=(player.investHist24||[]),last=hist[hist.length-1];
-                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
+                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
                   if(iv&&iv.amt>0){var d=INVEST24[iv.prof]||INVEST24.prudente;return(
                     <div data-cpm="invest24" data-stato="attivo" data-amt={iv.amt} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -11535,7 +11537,7 @@ const getThisWeekMatchday=()=>{
                 {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol in Naz.",e:"⚽"},{v:String(Math.round((natGoals/caps)*10)/10).replace(".",","),l:"Gol a partita",e:"📊"}].map((s,i)=>(
                   <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
                     <div style={{fontSize:FS.caption,marginBottom:2}}>{s.e}</div>
-                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?natCol:i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
+                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?(_no108("04")?natCol:TINTE.testo):i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
                     <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{s.l}</div>
                   </div>
                 ))}

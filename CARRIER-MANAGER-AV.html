@@ -350,7 +350,7 @@ if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catc
 const TH = {
   bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
-  primary:"#8e1f33",primaryDk:"#6a1326",brandText:"#ee9aaa",accentText:"#a78bfa",
+  primary:"#8e1f33",primaryDk:"#6a1326",brandText:(typeof window!=='undefined'&&window.__CPM_NO_G108_21)?"#ee9aaa":TINTE.oro/* [giro 108 G180-21] il rosa della V1 (#ee9aaa) restava come colore di testo in 24 schermate: diventa l'oro del tema. Rosso __CPM_NO_G108_21 */,accentText:"#a78bfa",
   success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
   surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
   cardBg:TINTE.inc,border:"#2a2f3b",
@@ -489,6 +489,9 @@ function fondoClub106(col){
     let c=col.length===4?_versoNotte106(col,0):col;
     for(let q=0;q<=1.0001;q+=0.02){c=_versoNotte106(col,q);const l=_lum944(c);if(l!=null&&l<=ABBAGLIO106.lum&&can(c)<=ABBAGLIO106.can)break;}
     return c; }catch(_e){ return col; }}
+/* [giro 108 · collaudo grafico 180] UN INTERRUTTORE ROSSO PER OGNI CORREZIONE: _no108("02") e' vero sotto window.__CPM_NO_G108_02
+   e rimette la grafica della 7.999.179 su quel solo difetto (prova del rosso del guardiano collaudo-108). */
+function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
 function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
@@ -809,7 +812,9 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
   const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
-  const inkPill=inkSu945(c1);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
+  const inkPill=inkSu945(c1);
+  /* [giro 108 G180-08] il marchio KORWARD era bianco fisso: sulla cornice d'argento 1,54:1. L'inchiostro lo sceglie il contrasto col fondo della cornice (bianco o notte TINTE.bg). Rosso __CPM_NO_G108_08 */
+  const inkMarchio=_no108("08")?"#ffffff":(_rap944("#ffffff",c1)>=_rap944(TINTE.bg,c1)?"#ffffff":TINTE.bg);/* [PO-302 V2] col tema notte TH.text e' chiaro: sulla pillola grigia #e2e8f0 faceva 1,09:1. L'inchiostro lo sceglie il contrasto */
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
   return(
     <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={usate.length>=3?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
@@ -818,9 +823,9 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
       boxShadow:w>=140?TH.el3:TH.el1,...style}} {...(rest||{})}>
       <div aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:2,
         background:"linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,0.18) 47%, rgba(255,255,255,0.05) 53%, rgba(255,255,255,0) 62%)"}}/>
-      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",gap:6,color:"#ffffff",
-        fontWeight:FW.bold,letterSpacing:w>=140?3:1,fontSize:hTop>=18?FS.small:FS.caption,lineHeight:1,textShadow:"0 1px 2px rgba(0,0,0,.35)",whiteSpace:"nowrap",overflow:"hidden"}}>
-        {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:"rgba(255,255,255,0.7)"}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:"rgba(255,255,255,0.7)"}}/>}</div>}
+      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",gap:6,color:inkMarchio,
+        fontWeight:FW.bold,letterSpacing:w>=140?3:1,fontSize:hTop>=18?FS.small:FS.caption,lineHeight:1,textShadow:inkMarchio==="#ffffff"?"0 1px 2px rgba(0,0,0,.35)":"none",whiteSpace:"nowrap",overflow:"hidden"}}>
+        {w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}{_largTesto23("KORWARD",hTop>=18?FS.small:FS.caption,FW.bold)+6*(w>=140?3:1)<=lato?"KORWARD":null}{w>=140&&<span style={{width:Math.round(w*0.07),height:1,background:inkMarchio==="#ffffff"?"rgba(255,255,255,0.7)":inkMarchio}}/>}</div>}
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
@@ -26312,7 +26317,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
     <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
-          <span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
+          {_no108("07")?<span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
+          :<span data-cpm="pillola-comp108" style={{display:"inline-flex",alignItems:"center",gap:6,background:TINTE.inc,border:"1px solid "+TINTE.bordo,color:TINTE.testo,borderRadius:RAD.pill,padding:"4px 12px 4px 6px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase"}}><span aria-hidden="true" style={{width:18,height:12,borderRadius:RAD.xs,background:_cs99.bg,flexShrink:0,boxShadow:"inset 0 0 0 1px rgba(255,255,255,0.18)"}}/>{_cs99.e} {_cs99.label}</span>}{/* [giro 108 G180-07] la sfumatura della bandiera sotto il testo bianco scendeva a 1,40:1 (Premier Division: bianco-rosso-bianco). La pillola va su fondo pieno notte e la bandiera resta come campione di colore accanto. Rosso __CPM_NO_G108_07 */}
           {roundLabel&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{roundLabel}</span>}
         </div>
         {isBigMatch&&<div style={{marginTop:SP.sm}}><Badge tone={isEpic?"info":"loss"} size="sm">{isEpic?"Partita epica":"Big match"}</Badge>{matchContext&&<span style={{fontSize:FS.small,color:TH.muted,marginLeft:8}}>{matchContext}</span>}</div>}
@@ -30158,7 +30164,7 @@ function Riga918({et,sx,dx,colSx,colDx,fmt,fitta}){
 function Pagella918({r,u,colTeam}){
   return(
     <div style={{display:"flex",alignItems:"center",gap:6,padding:"2px 4px",borderRadius:RAD.xs,
-      background:r.eroe?"rgba(142,31,51,0.38)":"transparent"}}>
+      background:r.eroe?(_no108("22")?"rgba(142,31,51,0.38)":fondoClub106(colTeam||TINTE.sup)):"transparent",boxShadow:(r.eroe&&!_no108("22"))?"inset 2px 0 0 "+TINTE.oro:"none"}}>{/* [giro 108 G180-22] la riga dell'eroe nel colore del club smorzato (fondoClub106) col filo d'oro, non nel granata V1 */}
       <span style={{width:15,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:_sigla970(colTeam),fontVariantNumeric:"tabular-nums"}}>{u.num}</span>
       <span style={{flex:1,minWidth:0,fontSize:FS.caption,fontWeight:r.eroe?FW.bold:FW.medium,color:_COL918.testo,
         overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nome||("n. "+u.num)}</span>
@@ -31013,6 +31019,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      no. Qui la classe e' locale (cpm-t40m) e vive in uno <style> della partita. Sul telefono a tocco i tre comandi in riga si
      distanziano quanto basta perche' le aree non si rubino il dito (centri a >= 40 px). Rosso __CPM_NO_G96B_D15. */
   const _t40m96b=!_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&(function(){try{return !!(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}})();
+  /* [giro 108 G180-15] sul tablet verticale (820x1180) il bersaglio pieno da 44 px di _hb292, con margine -14, saliva di 14 px sul
+     punteggio della barra V2 e il tasto «1×» lo copriva. Nella barra V2 anche il tablet usa l'area di tocco allargata del telefono
+     (::after, disegno invariato) e la stessa spaziatura. Rosso __CPM_NO_G108_15. */
+  const _t40m108=_no108("15")?_t40m96b:(_t40m96b||(_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)));
+  const _hbV2108=_no108("15")?_hb292:null;
+  /* [giro 108 G180-16] a 360 px il nome nella barra V2 restava a 4 lettere coi puntini («FC WO…»): sotto i 400 px un nome oltre i
+     7 caratteri («FC SUSSEX» compreso) lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
+  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>7?t.a:n;}catch(_e){return n;}};
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro
@@ -39893,10 +39907,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
                 <TeamBadge team={homeTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(homeTeamObj,"Squadra")}</div>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
-              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}}'}</style>}
+              {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
                 <div data-cpm="risultato-v2" style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap",background:TINTE.testo,borderRadius:RAD.xs,padding:"2px 9px",fontFamily:FONT_TV,fontWeight:800}}>
                   <span style={{color:TINTE.bg}}>{_swap893?_aVal901:_hVal901}</span>
@@ -39909,14 +39923,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div data-cpm="minuto-v2" style={{fontSize:FS.small,fontWeight:800,color:TINTE.oro,letterSpacing:.3,fontVariantNumeric:"tabular-nums",fontFamily:FONT_TV,fontSize:FS.bodyLg}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -3px"}:{}),...(_t40m96b?{marginLeft:10,marginRight:22}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m"
                       onClick={()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];setMatchSpeed(_n);try{localStorage.setItem("cpm-match-speed",String(_n));}catch(_e){}}}
                       title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
                       aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
-                      style={{background:TINTE.tasto,border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hb292?{..._hb292,margin:"-14px 0"}:{}),...(_t40m96b?{marginRight:devToolsOn()?20:0}:{})}}>
+                      style={{background:TINTE.tasto,border:"none",borderRadius:RAD.xs,cursor:"pointer",fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums",...(_hbV2108?{..._hbV2108,margin:"-14px 0"}:{}),...(_t40m108?{marginRight:devToolsOn()?(_no108("13")?20:24):0}:{})}}>
                       {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                     </button>
                   )}
@@ -39932,7 +39946,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
                 <TeamBadge team={awayTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(awayTeamObj,"Avversario")}</div>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
@@ -40628,9 +40642,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.title,marginBottom:8}}>⚽</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.3)":TINTE.testo/* [giro 108 G180-32] testo velato a 0,3/0,2 di opacita' sul velo della presentazione: 2,68 e 1,87:1 sul PC (TINTE.sec sul prato velato resta a 3,6:1, misurato). Rosso __CPM_NO_G108_32 */,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{"Tocca per iniziare"}</div>
+                  <div style={{fontSize:FS.caption,color:_no108("32")?"rgba(255,255,255,0.2)":TINTE.testo,marginTop:6}}>{"Tocca per iniziare"}</div>
                 </div>
               )}
               {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}
@@ -41240,7 +41254,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
               <div style={{padding:"12px 14px 0"}}>
-                <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
+                <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_no108("28")?_compCol:legCol944(_compCol,"#16171c")/* [giro 108 G180-28] il colore della lega come testo scendeva a 3,81:1 (Premier Division #e11d48): reso leggibile sul fondo del giornale. Rosso __CPM_NO_G108_28 */}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
                 <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:5,fontWeight:700}}>FISCHIO FINALE</div>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
@@ -41522,9 +41536,9 @@ function ProTransitionScreen({player,onChoose}){
         {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {player.season||(u18S+1)} completata</p></>);})()}
       </div>
       {/* Primavera awards */}
-      {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:RAD.md,background:a.type==="campione_primavera"?"#fef9c3":"#eff6ff",color:a.type==="campione_primavera"?"#92400e":TH.primary,fontWeight:700,border:`1px solid ${a.type==="campione_primavera"?"#fde68a":"#bfdbfe"}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
+      {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:RAD.md,background:_no108("03")?(a.type==="campione_primavera"?"#fef9c3":"#eff6ff"):(a.type==="campione_primavera"?TH.bgAmber:TH.bgBlue),color:_no108("03")?(a.type==="campione_primavera"?"#92400e":TH.primary):(a.type==="campione_primavera"?TH.txAmber:TH.txBlue),fontWeight:700,border:`1px solid ${_no108("03")?(a.type==="campione_primavera"?"#fde68a":"#bfdbfe"):(a.type==="campione_primavera"?TH.bdAmber:TH.bdBlue)}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
       {/* Player status card */}
-      <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
+      <Card style={{marginBottom:12,padding:"12px 14px"}} bg={_no108("03")?(forced?"#fff1f2":"#eff6ff"):(forced?TH.bgRed:TINTE.sup)} border={_no108("03")?(forced?"#fecaca":"#bfdbfe"):(forced?TH.bdRed:TINTE.bordo)}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={33}/>
           <div style={{flex:1}}>
@@ -41541,10 +41555,10 @@ function ProTransitionScreen({player,onChoose}){
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
           <span>Stagioni Under 18: {_n85} di 2</span>
-          <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
+          <span style={{color:forced?TH.danger:(_no108("03")?TH.primary:TINTE.oro)}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
-        <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
+        <div style={{height:6,background:(_no108("03")?"#e2e8f0":TH.track),borderRadius:RAD.pill,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${_n85*50}%`,background:forced?(_no108("03")?"#ef4444":TINTE.rosso):TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
         </div>
       </div>
       {/* Offers */}
@@ -41552,25 +41566,25 @@ function ProTransitionScreen({player,onChoose}){
       
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
-          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
-          border={isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder}
-          bg={o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card}>
+          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
+          border={_no108("03")?(isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder):(isSel?TINTE.oro:o.isMain?TH.bdBlue:o.isStayU18?TH.bdAmber:TH.cardBorder)}
+          bg={_no108("03")?(o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card):(o.isMain?TH.bgBlue:o.isStayU18?TH.bgAmber:TH.card)}>
           <div style={{display:"flex",gap:10,alignItems:"center"}}>
             <TeamBadge team={o.club||{col:"#888",col2:"#fff",n:"?"}} size={46}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               {!(typeof window!=='undefined'&&window.__CPM_NO_LEGA196)&&(o.club?.lg)&&<div data-cpm="lega196" style={{fontSize:FS.caption,color:TH.text,fontWeight:FW.semibold,marginTop:1}}>{(o.club.nat?o.club.nat+" ":"")+o.club.lg+(o.isStayU18?" · giovanili":" · prima squadra")}</div>}{/* [7.999.114 collaudo PO-196 «non si capisce in che serie giocano le squadre offerenti»] la lega del club (gia' risolta per il primo contratto: Lega B per una Primavera 2) e la bandiera. Rosso __CPM_NO_LEGA196 */}
-              <div style={{fontSize:FS.caption,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
+              <div style={{fontSize:FS.caption,color:o.isMain?(_no108("03")?TH.primary:TH.txBlue):o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno"+(o.isStayU18?" (stipendio attuale)":""):"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:_no108("03")?(o.moralBonus>=0?"#dcfce7":"#fee2e2"):(o.moralBonus>=0?TH.bgGreen:TH.bgRed),color:_no108("03")?(o.moralBonus>=0?TH.success:TH.danger):(o.moralBonus>=0?TH.txGreen:TH.txRed)}}>
                   Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>Crescita +{o.growthBonus}% nella prima stagione</span>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:(_no108("03")?"#f3e8ff":TH.bgPurple),color:(_no108("03")?TH.accentText:TH.txPurple)}}>Crescita +{o.growthBonus}% nella prima stagione</span>
                 {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:(_no108("03")?TH.brandText:TH.txBlue)}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
@@ -41728,6 +41742,11 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   /* [7.999.67 collaudo PO «alcuni testi sopra non si leggono bene»] la scena e' in scala 0,775: i testi a 11 px arrivavano a ~8,5 px, e le due righe basse di marchi
      stavano dietro microfoni e bottiglietta, tagliate. Marchi piu' grandi e solo nelle righe libere, tabellino piu' alto, riga del voto leggibile. Rosso __CPM_NO_IV68. */
   const _v68=_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV68);
+  /* [giro 108 G180-10 · collaudo grafico 180] LA SALA STAMPA IN TONI NOTTE. Era l'ultima scena col fondo chiaro della V1 (pannello
+     bianco, banco chiaro): «Elite» #92400e sul grigio 3,3:1. Pannello, tabellino e striscia passano alle superfici TINTE, i marchi
+     all'inchiostro del tema; il colore del club resta nel nome (reso leggibile sul fondo con legCol944) e nella moquette. Rosso __CPM_NO_G108_10. */
+  const _n108=!_no108("10");
+  const cNomeS=_n108?legCol944(cNome,TINTE.sup):cNome;
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
      TRE per riga a 412 px: con cinque si tagliavano sul bordo (misurato sullo scatto della v1). */
@@ -41735,36 +41754,36 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
     for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
     <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?((typeof window!=="undefined"&&window.__CPM_NO_IV12)?{left:0,right:0,top:0,height:"40%"}:{left:"-14.5%",width:"129%",top:0,height:"40%",transform:"scale(0.775)",transformOrigin:"top center"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] la scena resta com'e' ma in scala: occupa il 31% invece del 40%, senza deformarsi */:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
-      background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
+      background:_n108?"linear-gradient(180deg,"+TINTE.sup+" 0%,"+TINTE.inc+" 44%,"+TINTE.bg+" 100%)":"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
       <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,
-        background:"linear-gradient(180deg,#ffffff,#f1f4f9)",
-        border:"1px solid rgba(15,23,42,0.12)",boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
+        background:_n108?"linear-gradient(180deg,"+TINTE.tasto+","+TINTE.sup+")":"linear-gradient(180deg,#ffffff,#f1f4f9)",
+        border:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.12)"),boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
         {_rid.map((riga,r)=>(
           <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
             justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
             {(_v68&&r>=4)?null:riga.map((marchio,k)=>(
               <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
                 flex:"0 0 auto",fontSize:_v68?14:11,fontWeight:900,letterSpacing:.2,
-                color:marchio?"#7a1526":cNome,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
+                color:marchio?(_n108?TINTE.testo:"#7a1526"):cNomeS,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
-                      border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-                    <span style={{fontWeight:700,fontStyle:"italic",color:(_v24&&_lum24(c2)>0.75)?"#b45309":c2,marginLeft:2}}>Elite</span></>)
-                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
+                      border:"2px solid "+(_n108?TINTE.testo:"#7a1526"),boxSizing:"border-box"}}/>rward
+                    <span style={{fontWeight:700,fontStyle:"italic",color:_n108?TINTE.oro:((_v24&&_lum24(c2)>0.75)?"#b45309":c2),marginLeft:2}}>Elite</span></>)
+                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:_n108?TINTE.sec:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNomeS}}>{nome}</span>))}
               </span>))}
           </div>))}
         {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla.
             [7.999.1] hs/as sono gia' dal lato dell'eroe (src/15 _buildEndResult: won = home>away) e il club dell'eroe sta a sinistra:
             in trasferta non si inverte piu'. Rosso __CPM_NO_TAB25. */}
         {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:_v68?"30%":(100/3)+"%",height:_v68?"42%":(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
-          background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
+          background:_n108?TINTE.bg:"#ffffff",borderTop:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.14)"),borderBottom:"1px solid "+(_n108?TINTE.bordo:"rgba(15,23,42,0.14)"),padding:"9px 16px",textAlign:"center",
           boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
-            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:_n108?TINTE.testo:"#0f172a"}}>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_n108?legCol944(cNome,TINTE.bg):cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
             <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{(partita.casa===false&&typeof window!=="undefined"&&window.__CPM_NO_TAB25)?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
-          <div style={{fontSize:_v68?14:11,color:_v68?"#1e293b":"#475569",fontWeight:_v68?600:400,marginTop:_v68?4:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
+          <div style={{fontSize:_v68?14:11,color:_n108?TINTE.sec:(_v68?"#1e293b":"#475569"),fontWeight:_v68?600:400,marginTop:_v68?4:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
         </div>)}
         {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
         <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
@@ -41772,7 +41791,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
       {/* il pavimento: la riga d'appoggio del pannello e la moquette col colore del club */}
       <span style={{position:"absolute",left:0,right:0,top:"46%",height:1,background:"rgba(15,23,42,0.18)"}}/>
       <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
-        background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
+        background:"linear-gradient(180deg,"+(_n108?"rgba(13,15,20,0.62)":"rgba(255,255,255,0.62)")+","+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
       {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
       {/* [24/09 POC — commento PO «i microfoni e la scena sono davvero terribili»] via i microfoni disegnati: la sala stampa la
           dicono il pannello coi marchi e le figurine nel riquadro dell'intervista. Rosso __CPM_NO_MICRO23. */}
@@ -42360,7 +42379,7 @@ function TavoloStampa24({club=null,nome="",testate=[],sponsor=""}){
   const tela=lum(c1)>0.8?(lum(c2)<0.8?c2:"#1f2937"):c1;/* una tovaglia bianca su pannello bianco sparirebbe */
   const ink=lum(tela)>0.55?"#0f172a":"#ffffff";
   const T=(testate&&testate.length?testate:[{c:"#ef4444",s:"TV"},{c:"#3b82f6",s:"RS"},{c:"#7c3aed",s:"CS"}]).slice(0,3);
-  const cog=String(nome||"").trim().toUpperCase();
+  const cog=_no108("10")?String(nome||"").trim().toUpperCase():(String(nome||"").trim().split(/\s+/).slice(-1)[0]||"").toUpperCase();/* [giro 108 G180-10] sulla targa il solo cognome: il nome intero si troncava («MASSIMILIANO BAR») */
   const uid="t24";
   const mics=[{x:172,h:40,r:-10},{x:200,h:46,r:0},{x:228,h:39,r:10}];
   return(
@@ -42420,19 +42439,19 @@ function StrisciaScena948({club,tono}){
   return(
     <div style={{position:"absolute",left:0,right:0,bottom:0,display:"flex",alignItems:"center",
       justifyContent:"space-between",gap:8,padding:"6px 10px",pointerEvents:"none",
-      background:"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))",
-      borderTop:"1px solid rgba(15,23,42,0.12)"}}>
+      background:_no108("10")?"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))":TINTE.sup,
+      borderTop:"1px solid "+(_no108("10")?"rgba(15,23,42,0.12)":TINTE.bordo)}}>
       <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,fontSize:FS.caption,
-        letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
+        letterSpacing:.2,color:_no108("10")?"#7a1526":TINTE.testo,whiteSpace:"nowrap"}}>
         K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
-          border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-        <span style={{fontWeight:700,fontStyle:"italic",color:"#92400e"}}>Elite</span>
+          border:"2px solid "+(_no108("10")?"#7a1526":TINTE.testo),boxSizing:"border-box"}}/>rward
+        <span style={{fontWeight:700,fontStyle:"italic",color:_no108("10")?"#92400e":TINTE.oro}}>Elite</span>
       </span>
-      <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
+      <span style={{fontSize:FS.caption,fontWeight:800,color:_no108("10")?"#475569":TINTE.sec,whiteSpace:"nowrap",
         overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23)?spon:null}</span>{/* [23/09 POC — collaudo PO «lo sponsor deve comparire sui cartelloni pubblicitari non li'»] lo sponsor sta sui cartelloni dello stadio (buildStadium, stadCfg.sponsor), non nella striscia. Rosso __CPM_NO_SPONSOR23 */}
       <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
         {(()=>{try{return <TeamBadge team={club} size={16}/>;}catch(_e){return null;}})()}
-        <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",
+        <span style={{fontSize:FS.caption,fontWeight:800,color:_no108("10")?"#0f172a":TINTE.testo,whiteSpace:"nowrap",
           overflow:"hidden",textOverflow:"ellipsis",maxWidth:130}}>{nome}</span>
       </span>
       {tono?<span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.9}}/>:null}
@@ -43809,8 +43828,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
           <div data-cpm="gala51-fascia" style={{position:"absolute",left:12,right:12,bottom:"calc(16px + env(safe-area-inset-bottom, 0px))",maxWidth:460,margin:"0 auto",display:"flex",flexDirection:"column",gap:6}}>
             {g51===0&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{(()=>{const Nt=(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?N:_mom201.filter(x=>(x.a.rows||[]).some(r=>r&&r.isPlayer)).length;return `Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"}`+(Nt===0&&!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)?"":` · ${Nt===0?"nessuno per te":Nt===1?"1 è per te":Nt+" sono per te"}`);})()}</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                 <div style={{minWidth:0}}>
                   <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{N>0?"Chiara Loreti apre la prima busta":"Chiara Loreti e Tommaso Varesi presentano la serata"}</div>
@@ -43820,8 +43839,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
             </React.Fragment>)}
             {mom&&_rv199<3&&(()=>{const rows=mom.a.rows||[];const _pos=[{k:2,l:"3° posto"},{k:1,l:"2° posto"}];return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div data-cpm="busta199" data-rev={_rv199} style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div data-cpm="busta199" data-rev={_rv199} style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
                   <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_rv199===0?"Chiara Loreti apre la busta…":"E il premio va a…"}</div>
@@ -43833,8 +43852,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>setB199(x=>{let r=Math.min(3,(x.g===g51?x.rv:0)+1);if(r===1&&!rows[2])r=rows[1]?2:3;if(r===2&&!rows[1])r=3;return{g:g51,rv:r};})}>{_rv199===0?(rows[2]?"Svela il 3° posto":rows[1]?"Svela il 2° posto":"E il vincitore è…"):_rv199===1?"Svela il 2° posto":"E il vincitore è…"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const w=rows[0];const pos=rows.findIndex(x=>x&&x.isPlayer);const nw=_num(w,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div data-cpm="busta199-altro" style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div data-cpm="busta199-altro" style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(w&&w.name,false,34)}
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
@@ -43843,18 +43862,18 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                     <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
                   </div>
                 </div>
-                <div style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
+                <div style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
               </div>
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {mom&&_rv199>=3&&!!(mom.a.rows&&mom.a.rows[0]&&mom.a.rows[0].isPlayer)&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&(mom.a.key==="scarpa"||mom.a.key==="oro"))?"Europa":lg}</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   {_fig(me&&me.name,true,34)}
                   {n0!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{n0}</div>}
                   <div style={{minWidth:0}}>
-                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.primary}}>Il premio è tuo</div>
+                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:(_no108("02")?TH.primary:TINTE.oro)}}>Il premio è tuo</div>
                     <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(player&&player.name)||""}{me&&me.club?" · "+me.club:""}{n0!=null?" · "+n0+" gol":""}</div>
                   </div>
                 </div>
@@ -43866,19 +43885,19 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
             </React.Fragment>);})()}
             {rie&&(<React.Fragment>
-              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>Consegnati stasera</span>
-              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+              <span style={{alignSelf:"flex-start",background:(_no108("22")?TH.primary:TINTE.oro),color:(_no108("22")?"#fff":TINTE.bg),fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>Consegnati stasera</span>
+              <div style={{background:(_no108("02")?"rgba(255,255,255,0.95)":TINTE.sup),border:"1px solid "+(_no108("02")?"transparent":TINTE.bordo),borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 {_altri51.length===0&&<div style={{fontSize:FS.small,color:TH.text}}>Stasera hai vinto tutti i premi per cui eri in corsa.</div>}
                 {_altri51.map(a=>{const w=a.rows&&a.rows[0];const pos=(a.rows||[]).findIndex(x=>x&&x.isPlayer);return(
                   <div key={a.key} style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.small,color:TH.text,minWidth:0}}>
                     {_fig(w&&w.name,false,20)}
                     <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><b>{a.e} {a.title}</b> · {w?w.name:"—"}</span>
-                    <span style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{pos>0?`tu ${pos+1}°`:"non in corsa"}</span>
+                    <span style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{pos>0?`tu ${pos+1}°`:"non in corsa"}</span>
                   </div>);})}
               </div>
               <Btn v="primary" fw onClick={_chiudi}>Vai al bilancio della stagione →</Btn>
             </React.Fragment>)}
-            {!rie&&<button onClick={_chiudi} style={{alignSelf:"center",background:"none",border:"none",color:"rgba(255,255,255,0.75)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il galà</button>}
+            {!rie&&<button data-cpm="salta-gala" onClick={_chiudi} style={{alignSelf:"center",background:"none",border:"none",...(_no108("18")?{}:{minHeight:44,minWidth:120,padding:"0 16px"}),color:"rgba(255,255,255,0.75)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il galà</button>}
           </div>
         </div>);})()}
       {_galaOn&&!_g51&&(
@@ -44963,7 +44982,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -54045,7 +54064,7 @@ const getThisWeekMatchday=()=>{
                   onMouseEnter={e=>{e.currentTarget.style.background=_T.optBgH;e.currentTarget.style.borderColor=_T.optBdH;}}
                   onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=_T.optBd;}}>
                   <div style={{fontSize:FS.body,color:_T.optTxt,lineHeight:1.5}}>{ch.txt}</div>
-                  {ch.mem&&<div style={{fontSize:FS.caption,color:_T.memCol,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
+                  {ch.mem&&<div style={{fontSize:FS.caption,color:_no108("09")?_T.memCol:(_epic?TINTE.oro:TINTE.sec)/* [giro 108 G180-09] il colore velato (alfa 0,5) scendeva a 3,12:1 sul fondo della finestra. Rosso __CPM_NO_G108_09 */,marginTop:3,fontStyle:"italic"}}>Rimarrà nella storia: "{ch.mem}"</div>}
                 </button>
               ))}
             </div>
@@ -55230,7 +55249,7 @@ const getThisWeekMatchday=()=>{
               </div>;
             })()}
             {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
-            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
+            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:_no108("22")?TH.primary:legCol944((player.club&&player.club.c)||TINTE.oro,TH.track)/* [giro 108 G180-22] la barra della stagione nel colore del club (reso visibile sul binario), non nel granata V1 */,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
           </Card>
         </div>
       )}
@@ -57148,7 +57167,9 @@ const getThisWeekMatchday=()=>{
                 <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
                   <div style={{width:64,height:64,borderRadius:RAD.lg,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
-                    <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{club.n||club.name}</span>
+                    {(()=>{const _nm=club.n||club.name||"";const _lw=Math.max(0,...String(_nm).split(/\s+/).map(w=>w.length));/* [giro 108 G180-01] il nome del club nella scheda Club si spezzava dentro la parola a 360 px («WOLVERHAMP/TON»): a capo solo fra parole, e la parola piu' lunga decide il corpo (stessa regola della testata del giro 106). Rosso __CPM_NO_G108_01 */
+                    return _no108("01")?<span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_nm}</span>
+                    :<span style={{...fsTV(_lw>=13?FS.subhead:_lw>=11?FS.title:FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"normal",wordBreak:"normal",hyphens:"none"}}>{_nm}</span>;})()}
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>
                     {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
                     {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
@@ -58403,7 +58424,7 @@ const getThisWeekMatchday=()=>{
         var agentName=(player.agent&&player.agent.name)||AGENT_NAMES[aIdx];/* [7.379.0 R6] col catalogo il procuratore ha un nome SCELTO: la derivazione dal nome del giocatore resta come rete per chi non ha ancora la relazione */
         var trust=player.coachTrust||60;
         var trustLabel=trust>=70?"Eccellente":trust>=50?"Buono":trust>=30?"Nella media":"In difficoltà";
-        var trustColor=trust>=70?TH.success:trust>=50?TH.primary:trust>=30?TH.warning:TH.danger;
+        var trustColor=trust>=70?TH.success:trust>=50?(_no108("22")?TH.primary:TINTE.blu):trust>=30?TH.warning:TH.danger;
         var valRaw=player.value||0.5;
         var valK=Math.round(valRaw*1000);// [5.80.0 BUG-11] era ×10000: il tab agente mostrava un valore 10× diverso dal profilo (0.8M€ vs "€8.0M")
         var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
@@ -58471,7 +58492,7 @@ const getThisWeekMatchday=()=>{
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
                     notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
-                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -58482,7 +58503,7 @@ const getThisWeekMatchday=()=>{
                         {d.k==="perkTrainer"&&!(typeof window!=='undefined'&&window.__CPM_NO_TRAINER281)&&<div data-cpm="trainer281-piano" style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:4}}>{/* [PO-281] il piano del trainer: l'attributo lo sceglie il giocatore */}
                           {(function(){var A=trainerAiuto288(player,lv||shown);return A&&<div data-cpm="trainer288-legenda" style={{flexBasis:"100%",fontSize:FS.caption,color:TH.muted}}>{/* [PO-288] valore attuale · settimane per +1 · consigliato */}Valore attuale · settimane medie per +1 col piano{lv?" (livello "+lv+")":" — attiva il trainer per far lavorare il piano"} · ★ pesa di più nel giudizio ed è ancora basso</div>;})()}
                           {[null].concat(TRAINER_ATTR281).map(function(a){var on=(player.perkTrainerFocus||null)===a;var A=trainerAiuto288(player,lv||shown);var R=A&&a?A.righe.find(function(r){return r.a===a;}):null;return <button key={a||"gen"} className="cpm-t40" data-cpm={"trainer281-"+(a||"generale")} onClick={function(){setPlayer(function(p){return{...p,perkTrainerFocus:a};});notify(a?("🏋️ Piano del trainer: "+a+" — la crescita va lì"):"🏋️ Piano generale: +"+[10,15,20][Math.max(0,(lv||shown)-1)]+"% su tutti gli allenamenti",TH.success);}}
-                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
+                            style={{padding:"3px 8px",borderRadius:RAD.pill,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.text,fontSize:FS.caption,fontWeight:FW.semibold,cursor:"pointer",fontFamily:"inherit"}}>{A?(<span style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1.25}}>
                               <span data-cpm={"trainer288-val-"+(a||"generale")}>{(a||"generale")+" "}<b>{a?R.v:A.ovr}</b></span>
                               <span data-cpm={"trainer288-resa-"+(a||"generale")} style={{fontSize:FS.caption,opacity:0.8,fontWeight:FW.regular}}>{(!lv&&!(typeof window!=="undefined"&&window.__CPM_NO_C3D5))?"non attivo"/* [giro 94 D5] a livello 0 il trainer non lavora: la resa del livello 1 mostrata qui faceva sembrare inutile l'attivazione */:a?(R.sett?("+1 ogni ~"+R.sett+" sett."):"al massimo"):("+"+A.pct+"% allenamenti")}</span>
                               {R&&R.cons&&<span data-cpm={"trainer288-cons-"+a} title="Pesa molto nel giudizio ed è ancora bassa: qui il piano ti aiuta di più" style={{fontSize:FS.caption,fontWeight:FW.bold,color:on?"#fff":TH.success}}>{"★ consigliato"}</span>}</span>):(a||"generale")}</button>;})}
@@ -58496,7 +58517,7 @@ const getThisWeekMatchday=()=>{
               <Fisarmonica id="uff-acquisti" titolo="Acquisti e investimenti" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 {/* [7.990.0 Patrimonio F2] accademia col tuo nome */}
                 {(function(){var ac=player.academy24,co=academyCost24(player),k=function(v){return _eur49(v);};
-                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
+                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
                   if(!ac)return(
                     <div data-cpm="accademia24" data-stato="assente" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>🏫</span>
@@ -58536,7 +58557,7 @@ const getThisWeekMatchday=()=>{
                       <button className="cpm-t40" data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
                         setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
-                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
+                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
                     </div>);})}
                   {(player.beni24||[]).length>0&&(player.stampa281||[]).length>0&&<div data-cpm="beni281-reazioni" style={{marginTop:4,display:"flex",flexDirection:"column",gap:3}}>{/* [PO-281] le reazioni nel tempo, le ultime tre */}
                     <div style={{fontSize:FS.caption,color:TH.faint}}>Ultime voci sul tuo stile di vita e sui tuoi affari</div>
@@ -58546,7 +58567,7 @@ const getThisWeekMatchday=()=>{
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
                 {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){return _eur49(Math.abs(v));};
                   var hist=(player.investHist24||[]),last=hist[hist.length-1];
-                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
+                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
                   if(iv&&iv.amt>0){var d=INVEST24[iv.prof]||INVEST24.prudente;return(
                     <div data-cpm="invest24" data-stato="attivo" data-amt={iv.amt} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -59005,7 +59026,7 @@ const getThisWeekMatchday=()=>{
                 {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol in Naz.",e:"⚽"},{v:String(Math.round((natGoals/caps)*10)/10).replace(".",","),l:"Gol a partita",e:"📊"}].map((s,i)=>(
                   <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
                     <div style={{fontSize:FS.caption,marginBottom:2}}>{s.e}</div>
-                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?natCol:i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
+                    <div style={{fontSize:FS.title,fontWeight:900,color:i===0?(_no108("04")?natCol:TINTE.testo):i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
                     <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{s.l}</div>
                   </div>
                 ))}
@@ -60536,7 +60557,7 @@ function App(){
           .cpm-nav-lang{display:none;}
         }
         ${(typeof window!=='undefined'&&window.__CPM_NO_G97D17)?'':'@media(min-width:900px){.cpm-nav-strisce{order:2;flex-direction:column;flex-shrink:0;border-top:1px solid rgba(100,116,139,0.18)!important;}.cpm-nav-strisce>button{flex:none!important;width:100%;text-align:left;padding-left:16px!important;padding-right:16px!important;border-left:none!important;}.cpm-nav-strisce>button+button{border-top:1px solid rgba(100,116,139,0.18)!important;}}'}/* [giro 97 PO-299 D17] su PC e tablet orizzontale le due strisce Sostieni/Idee stavano affiancate in cima alla sidebar, 122 px ciascuna e troncate («Sostieni il pro…»): ora una sotto l'altra, a tutta larghezza, in fondo alla sidebar. Rosso __CPM_NO_G97D17 */
-        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D16)?'':'@media(pointer:coarse){.cpm-t40:not([style*="position"]){position:relative;}.cpm-t40::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,42px);height:max(100%,42px);transform:translate(-50%,-50%);}.cpm-t40i{min-height:42px;}.cpm-tabs40>button{min-height:42px;}.cpm-gap40{gap:12px!important;}.cpm-t40h{min-height:40px!important;}.cpm-scroll .cpm-t40h{min-height:36px!important;}.cpm-nav-strisce>.cpm-t40::after{top:auto;bottom:0;transform:translateX(-50%);}}@media(pointer:coarse) and (max-width:899px){.cpm-root:has(.cpm-nav-bar) .cpm-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));}}'}/* [giro 97 PO-299 D16] al tocco i tasti sotto i 40 px (Salva 23, strisce 26, Licenzia 24, Calendario 16, testate delle fisarmoniche 31-36, x delle finestre): .cpm-t40 allarga SOLO l'area che riceve il tocco (pseudo-elemento trasparente centrato, 42x42 minimo), la grafica e lo spazio fra i box del giro 91 non cambiano. Dove il tasto taglia il contenuto (overflow) o e' un campo di testo serve l'altezza vera: .cpm-tabs40 (linguette) e .cpm-t40i (campi). Le strisce allargano solo VERSO L'ALTO (sotto c'e' la barra dei tab, che le copriva e non va derubata); .cpm-gap40 allarga lo spazio fra due tasti attaccati (- e + dello staff, 5 px) che si rubavano l'area a vicenda. In fondo alla colonna 16 px d'aria in piu' (80 -> 96): l'area allargata delle strisce sale di ~18 px sopra la barra e copriva l'ultima riga a fine scorrimento (Milestone 36 px). Le testate delle fisarmoniche (.cpm-t40h) stanno a 0-8 px l'una dall'altra e le aree allargate si coprivano: li' serve l'altezza vera, 36 px dentro la .cpm-scroll (zoom 1,12 = 40 a schermo) e 40 fuori. Rosso __CPM_NO_G97D16 */
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G97D16)?'':'@media(pointer:coarse){.cpm-t40:not([style*="position"]){position:relative;}.cpm-t40::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("44")?42:44)+'px);height:max(100%,'+(_no108("44")?42:44)+'px);transform:translate(-50%,-50%);}.cpm-t40i{min-height:42px;}.cpm-tabs40>button{min-height:42px;}.cpm-gap40{gap:12px!important;}.cpm-t40h{min-height:40px!important;}.cpm-scroll .cpm-t40h{min-height:36px!important;}.cpm-nav-strisce>.cpm-t40::after{top:auto;bottom:0;transform:translateX(-50%);}}@media(pointer:coarse) and (max-width:899px){.cpm-root:has(.cpm-nav-bar) .cpm-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));}}'}/* [giro 97 PO-299 D16] al tocco i tasti sotto i 40 px (Salva 23, strisce 26, Licenzia 24, Calendario 16, testate delle fisarmoniche 31-36, x delle finestre): .cpm-t40 allarga SOLO l'area che riceve il tocco (pseudo-elemento trasparente centrato, 42x42 minimo), la grafica e lo spazio fra i box del giro 91 non cambiano. Dove il tasto taglia il contenuto (overflow) o e' un campo di testo serve l'altezza vera: .cpm-tabs40 (linguette) e .cpm-t40i (campi). Le strisce allargano solo VERSO L'ALTO (sotto c'e' la barra dei tab, che le copriva e non va derubata); .cpm-gap40 allarga lo spazio fra due tasti attaccati (- e + dello staff, 5 px) che si rubavano l'area a vicenda. In fondo alla colonna 16 px d'aria in piu' (80 -> 96): l'area allargata delle strisce sale di ~18 px sopra la barra e copriva l'ultima riga a fine scorrimento (Milestone 36 px). Le testate delle fisarmoniche (.cpm-t40h) stanno a 0-8 px l'una dall'altra e le aree allargate si coprivano: li' serve l'altezza vera, 36 px dentro la .cpm-scroll (zoom 1,12 = 40 a schermo) e 40 fuori. Rosso __CPM_NO_G97D16 */
         @media(max-width:380px){
           .cpm-scroll{padding-left:6px!important;padding-right:6px!important;}
         }
