@@ -31025,8 +31025,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _t40m108=_no108("15")?_t40m96b:(_t40m96b||(_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)));
   const _hbV2108=_no108("15")?_hb292:null;
   /* [giro 108 G180-16] a 360 px il nome nella barra V2 restava a 4 lettere coi puntini («FC WO…»): sotto i 400 px un nome oltre i
-     9 caratteri lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
-  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>9?t.a:n;}catch(_e){return n;}};
+     7 caratteri («FC SUSSEX» compreso) lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
+  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>7?t.a:n;}catch(_e){return n;}};
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro
@@ -57167,7 +57167,9 @@ const getThisWeekMatchday=()=>{
                 <div style={{position:"relative",display:"flex",alignItems:"center",gap:14,padding:"16px 16px"}}>
                   <div style={{width:64,height:64,borderRadius:RAD.lg,background:TINTE.inc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><TeamBadge team={club} size={48}/></div>
                   <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:3}}>
-                    <span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{club.n||club.name}</span>
+                    {(()=>{const _nm=club.n||club.name||"";const _lw=Math.max(0,...String(_nm).split(/\s+/).map(w=>w.length));/* [giro 108 G180-01] il nome del club nella scheda Club si spezzava dentro la parola a 360 px («WOLVERHAMP/TON»): a capo solo fra parole, e la parola piu' lunga decide il corpo (stessa regola della testata del giro 106). Rosso __CPM_NO_G108_01 */
+                    return _no108("01")?<span style={{...fsTV(FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"anywhere"}}>{_nm}</span>
+                    :<span style={{...fsTV(_lw>=13?FS.subhead:_lw>=11?FS.title:FS.h,FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",overflowWrap:"normal",wordBreak:"normal",hyphens:"none"}}>{_nm}</span>;})()}
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold}}>{club.nat||""} {club.lg||"\u2013"}{currentStanding?" \u00b7 "+currentStanding.pos+"\u00b0 su "+currentStanding.total+" \u00b7 "+currentStanding.pts+" pt":""}</span>
                     {pj&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}</span>}
                     {cv&&<span style={{fontSize:FS.small,fontWeight:FW.bold}}>{cv.st.e} Curva: {cv.st.l}</span>}
@@ -58422,7 +58424,7 @@ const getThisWeekMatchday=()=>{
         var agentName=(player.agent&&player.agent.name)||AGENT_NAMES[aIdx];/* [7.379.0 R6] col catalogo il procuratore ha un nome SCELTO: la derivazione dal nome del giocatore resta come rete per chi non ha ancora la relazione */
         var trust=player.coachTrust||60;
         var trustLabel=trust>=70?"Eccellente":trust>=50?"Buono":trust>=30?"Nella media":"In difficoltà";
-        var trustColor=trust>=70?TH.success:trust>=50?TH.primary:trust>=30?TH.warning:TH.danger;
+        var trustColor=trust>=70?TH.success:trust>=50?(_no108("22")?TH.primary:TINTE.blu):trust>=30?TH.warning:TH.danger;
         var valRaw=player.value||0.5;
         var valK=Math.round(valRaw*1000);// [5.80.0 BUG-11] era ×10000: il tab agente mostrava un valore 10× diverso dal profilo (0.8M€ vs "€8.0M")
         var valStr=valK>=1000?(valK/1000).toFixed(1)+"M":valK+"k";
@@ -58490,7 +58492,7 @@ const getThisWeekMatchday=()=>{
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
                     notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
-                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} className="cpm-t40" style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
@@ -58515,7 +58517,7 @@ const getThisWeekMatchday=()=>{
               <Fisarmonica id="uff-acquisti" titolo="Acquisti e investimenti" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 {/* [7.990.0 Patrimonio F2] accademia col tuo nome */}
                 {(function(){var ac=player.academy24,co=academyCost24(player),k=function(v){return _eur49(v);};
-                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
+                  var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
                   if(!ac)return(
                     <div data-cpm="accademia24" data-stato="assente" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>🏫</span>
@@ -58555,7 +58557,7 @@ const getThisWeekMatchday=()=>{
                       <button className="cpm-t40" data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
                         setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
                         notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
-                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
+                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(_no108("22")?TH.primary:TINTE.oro),background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
                     </div>);})}
                   {(player.beni24||[]).length>0&&(player.stampa281||[]).length>0&&<div data-cpm="beni281-reazioni" style={{marginTop:4,display:"flex",flexDirection:"column",gap:3}}>{/* [PO-281] le reazioni nel tempo, le ultime tre */}
                     <div style={{fontSize:FS.caption,color:TH.faint}}>Ultime voci sul tuo stile di vita e sui tuoi affari</div>
@@ -58565,7 +58567,7 @@ const getThisWeekMatchday=()=>{
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
                 {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){return _eur49(Math.abs(v));};
                   var hist=(player.investHist24||[]),last=hist[hist.length-1];
-                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
+                  var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?(_no108("22")?TH.primary:TINTE.oro):TH.cardBorder),background:on?(_no108("22")?TH.primary:TINTE.oro):"transparent",color:on?(_no108("22")?"#fff":TINTE.bg):TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
                   if(iv&&iv.amt>0){var d=INVEST24[iv.prof]||INVEST24.prudente;return(
                     <div data-cpm="invest24" data-stato="attivo" data-amt={iv.amt} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>

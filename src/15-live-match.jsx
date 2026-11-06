@@ -1919,8 +1919,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _t40m108=_no108("15")?_t40m96b:(_t40m96b||(_dito292&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)));
   const _hbV2108=_no108("15")?_hb292:null;
   /* [giro 108 G180-16] a 360 px il nome nella barra V2 restava a 4 lettere coi puntini («FC WO…»): sotto i 400 px un nome oltre i
-     9 caratteri lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
-  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>9?t.a:n;}catch(_e){return n;}};
+     7 caratteri («FC SUSSEX» compreso) lascia il posto alla sigla del club (MER, WOL), che si legge intera. Rosso __CPM_NO_G108_16. */
+  const _nomeBarra108=(t,fb)=>{const n=(t&&(t.n||t.name))||fb;try{if(_no108("16")||!(t&&t.a)||window.innerWidth>=400)return n;return String(n).length>7?t.a:n;}catch(_e){return n;}};
   // persistent seeded rosters for both teams
   // homeRoster = football home team; awayRoster = football away team (player is in the correct side)
   /* [7.173.0 collaudo PO «partita con il rivale Pablo Bernard, ma non gioca»] quando il calendario ti mette contro

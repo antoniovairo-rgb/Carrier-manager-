@@ -5,7 +5,7 @@
    Uso: C180_FORMATI=... C180_CLUB=... ; foto in docs/collaudo-grafico/180/. Non tocca src/. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, INIT, SAVE, entraInCarriera } from './c178-graf-lib.mjs';
-import { scelti, scelteClub, saveDi, preparaCalendario, misura180, salvaDati, premi } from './c180-lib.mjs';
+import { scelti, scelteClub, saveDi, preparaCalendario, misura180, salvaDati, premi, ROSSI, SOLO } from './c180-lib.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const fase = p => p.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null).catch(() => null);
 const aspettaFase = async (p, rx, ms) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { const f = await fase(p); if (f && rx.test(f)) return f; await sleep(250); } return null; };
@@ -14,8 +14,8 @@ for (const f of scelti()) for (const club of scelteClub()) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], save: saveDi(SAVE, club) });
-  const M = (sch, o) => misura180(page, f, sch, club, R, { vivo: true, noFondo: true, fermaMs: 1500, ...(o || {}) });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSI, save: saveDi(SAVE, club) });
+  const M = async (sch, o) => { if (SOLO && !SOLO.test(sch)) return null; return misura180(page, f, sch, club, R, { vivo: true, noFondo: true, fermaMs: 1500, ...(o || {}) }); };
   const passo = async (nome, fn) => { try { await fn(); } catch (e) { mancanti.push(nome + ': ' + String(e.message).slice(0, 80)); } };
   try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 120000 });

@@ -4,7 +4,7 @@
    Foto in docs/collaudo-grafico/180/<schermata>-<formato>-<club>.png, dati in DATI_DIR/schermate-<formato>-<club>.json. Non tocca src/. */
 import fs from 'node:fs';
 import { startServer, launchBrowser, installCdnRoutes, sleep, SAVE, TRIALPROG, INIT, entraInCarriera } from './c178-graf-lib.mjs';
-import { FORMATI, scelti, scelteClub, saveDi, misura180, salvaDati, premi, NOME_LUNGO, preparaCalendario } from './c180-lib.mjs';
+import { FORMATI, scelti, scelteClub, saveDi, misura180, salvaDati, premi, NOME_LUNGO, preparaCalendario, ROSSI, SOLO } from './c180-lib.mjs';
 const OVL = () => { const W = innerWidth, H = innerHeight; let o = null; for (const e of document.body.querySelectorAll('*')) { const c = getComputedStyle(e); if (c.position !== 'fixed' || c.display === 'none' || +c.opacity < 0.1) continue; const r = e.getBoundingClientRect(); if (r.width * r.height < 0.5 * W * H) continue; if ((parseInt(c.zIndex) || 0) >= 50 && e.querySelector('button')) o = e; }
   if (!o) return null; const t = (o.innerText || '').split('\n').map(x => x.trim()).filter(x => x.length > 3); return { nome: (t.find(x => !/^[⚡🏆]/.test(x) && x.length > 6) || t[0] || 'finestra').toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) }; };
 const CHIUDI_OVL = () => { const W = innerWidth, H = innerHeight; let o = null; for (const e of document.body.querySelectorAll('*')) { const c = getComputedStyle(e); if (c.position !== 'fixed' || c.display === 'none') continue; const r = e.getBoundingClientRect(); if (r.width * r.height >= 0.5 * W * H && (parseInt(c.zIndex) || 0) >= 50 && e.querySelector('button')) o = e; }
@@ -15,7 +15,7 @@ async function apri(f, init, query, errs) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1, serviceWorkers: 'block' }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 140)}`));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: [], ...(init || {}) });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSI, ...(init || {}) });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${query || ''}`, { waitUntil: 'load', timeout: 120000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
   return { ctx, page };
@@ -23,7 +23,7 @@ async function apri(f, init, query, errs) {
 for (const f of scelti()) for (const club of scelteClub()) {
   const R = {}, errs = [], mancanti = []; const t0 = Date.now();
   console.log(`\n=== ${f.nome} · club ${club}`);
-  const M = (page, sch, o) => misura180(page, f, sch, club, R, o);
+  const M = async (page, sch, o) => { if (SOLO && !SOLO.test(sch)) return null; return misura180(page, f, sch, club, R, o); };
   if (PARTI.includes('fuori') && club === 'rosso') { /* fuori carriera: il club non c'entra, si misura una volta */
     const { ctx, page } = await apri(f, {}, '?cpmtest=1', errs); await sleep(1500);
     await M(page, 'menu');
