@@ -48412,7 +48412,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
 
   const _containerDefault={stagione:"standings",carriera:"profile"};/* [7.67.0 collaudo PO «appena clicco sul Tab sono più interessato alla classifica»] Stagione apre sulla CLASSIFICA */
   const _tabToContainer=t=>["calendar","standings","coppe"].includes(t)?"stagione":["profile","nazionale"].includes(t)?"carriera":t;
-  const goTab=t=>{const r=_containerDefault[t]||t;setTab(r);setScreen(r);try{safeLS.set("cpm-active-tab",r);}catch(_e){}};/* [7.149.0] persiste il tab per l'auto-ripresa (stesso punto dopo background) */
+  /* [giro 113 PO-318 «quando cambio Tab del menù la posizione deve azzerarsi su»] a scorrere è il solo `.cpm-scroll` (non la finestra):
+     cambiando scheda lo si riporta a 0, istantaneo. Con le sottoschede (Stagione/Carriera) la parte sotto riparte dalla loro cima, e le
+     sottoschede restano in vista. Un solo punto: ogni cambio di `screen` (barra, sottoschede, ripresa, ritorno da partita). Rosso __CPM_NO_G113. */
+  const _scorri113=(sub)=>{try{if(typeof window!=="undefined"&&window.__CPM_NO_G113)return;const el=document.querySelector('.cpm-scroll');if(!el)return;
+    let y=0;if(sub){const tb=el.querySelector('.cpm-tabs40');if(tb){const d=tb.getBoundingClientRect().top-el.getBoundingClientRect().top;y=Math.max(0,Math.min(el.scrollTop,el.scrollTop+d-8));}}
+    if(el.scrollTop!==y)el.scrollTo({top:y,left:0,behavior:"instant"});}catch(_e){}};
+  const _prevScr113=useRef(screen);const _sub113=useRef(false);
+  React.useLayoutEffect(()=>{const pv=_prevScr113.current;_prevScr113.current=screen;if(pv===screen)return;_scorri113(_sub113.current&&_tabToContainer(pv)===_tabToContainer(screen));_sub113.current=false;},[screen]);// eslint-disable-line
+  const goTab=t=>{const r=_containerDefault[t]||t;_sub113.current=_tabToContainer(r)===_tabToContainer(screen);if(r===screen){_scorri113(_sub113.current);_sub113.current=false;}setTab(r);setScreen(r);try{safeLS.set("cpm-active-tab",r);}catch(_e){}};/* [7.149.0] persiste il tab per l'auto-ripresa (stesso punto dopo background) */
   // Sprint A: early return from injury
   // §9.6: relapse_risk graduato — più settimane mancano e più la gravità è alta, più rischi la ricaduta
   const injuryRelapseRisk=(p)=>{
