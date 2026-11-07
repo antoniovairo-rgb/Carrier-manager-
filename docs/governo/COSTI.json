@@ -152,5 +152,33 @@
   "cache_read_tokens": 7851566,
   "worker_epoch": 1,
   "rilevato": "2026-11-07"
+ },
+ {
+  "sessione": "session_01QEYiaB43gsKJZqPfSXLQYR",
+  "titolo": "collaudo 184 · altezza, intro, provini, creazione",
+  "versione": "7.999.184",
+  "tipo": "collaudo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-07T20:23:58Z",
+  "chiusa": "2026-11-07T21:35:26Z",
+  "cost_usd": 7.48055798,
+  "output_tokens": 77617,
+  "cache_read_tokens": 19656637,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-07"
+ },
+ {
+  "sessione": "session_01QEYiaB6U3BVY3WY32eFHuM",
+  "titolo": "verifica uscita Play Store",
+  "versione": "7.999.184",
+  "tipo": "collaudo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-07T20:23:59Z",
+  "chiusa": "2026-11-07T20:30:58Z",
+  "cost_usd": 1.27020608,
+  "output_tokens": 35229,
+  "cache_read_tokens": 3492803,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-07"
  }
 ]
