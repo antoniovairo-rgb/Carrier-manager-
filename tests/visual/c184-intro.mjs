@@ -54,6 +54,11 @@ for (const f of scelti()) {
     if (!(await page.evaluate(intro))) { R.foto.push({ t, chiusa: true }); continue; }
     const tEff = Math.round((Date.now() - t0) / 100) / 10;
     const q = await page.evaluate(RIGHE).catch(() => ({ righe: [], spezzate: [] }));
+    /* le didascalie hanno pointer-events:none: RIGHE() le scarta (elementFromPoint trova la tela). Qui si prendono tutte le righe dei testi foglia */
+    q.righe = await page.evaluate(() => { const out = []; let ov = null; for (const e of document.body.querySelectorAll('div')) { const c = getComputedStyle(e); if (c.position === 'fixed' && (parseInt(c.zIndex) || 0) >= 10000) ov = e; } if (!ov) return out;
+      for (const e of ov.querySelectorAll('div,button')) { if (e.children.length && e.tagName !== 'BUTTON') continue; const tx = (e.innerText || '').trim(); if (!tx) continue; const c = getComputedStyle(e); if (+c.opacity < 0.3) continue;
+        const rg = document.createRange(); rg.selectNodeContents(e); for (const r of [...rg.getClientRects()].filter(r => r.width > 2 && r.height > 4).slice(0, 3)) out.push({ t: tx.slice(0, 40), col: c.color, fs: parseFloat(c.fontSize), fw: parseInt(c.fontWeight) || 400, x: Math.max(0, Math.round(r.left)), y: Math.max(0, Math.round(r.top)), w: Math.round(r.width), h: Math.round(r.height), s: e.tagName, sh: c.textShadow !== 'none' ? 1 : 0, svg: 0 }); }
+      return out; }).catch(() => q.righe);
     const x = await page.evaluate(EXTRA108).catch(() => ({ tocchi: [] }));
     const lay = await page.evaluate(() => { const W = innerWidth, H = innerHeight; const out = { fuori: [], tasti: [] };
       let ov = null; for (const e of document.body.querySelectorAll('div')) { const c = getComputedStyle(e); if (c.position === 'fixed' && (parseInt(c.zIndex) || 0) >= 10000) ov = e; }

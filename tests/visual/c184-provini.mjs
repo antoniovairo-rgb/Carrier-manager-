@@ -42,20 +42,19 @@ for (const f of scelti()) {
     crea.tastiera = await page.evaluate(() => { const i = document.activeElement; const r = i && i.getBoundingClientRect(); const bt = document.querySelector('[data-cpm="crea-avanti-v2"]'); const rb = bt && bt.getBoundingClientRect();
       return { fuoco: i ? i.tagName + (i.placeholder ? '[' + i.placeholder + ']' : '') : null, campoTop: r ? Math.round(r.top) : null, campoBottom: r ? Math.round(r.bottom) : null, vista: innerHeight, campoVisibile: !!r && r.top >= 0 && r.bottom <= innerHeight, avantiTop: rb ? Math.round(rb.top) : null, avantiVisibile: !!rb && rb.top >= 0 && rb.bottom <= innerHeight }; });
     await M('creazione-tastiera-simulata'); await page.setViewportSize({ width: f.w, height: f.h }); await sleep(500); }
-  await page.keyboard.press('Enter'); await sleep(600); crea.enterAvvia = (await schermo(page)) !== 'creazione';
-  if (crea.enterAvvia) note.push('Enter nel campo nome avvia i provini');
-  if ((await schermo(page)) === 'creazione') {
+  {
     await M('creazione-nome');
     /* fisarmoniche */
     await page.evaluate(() => { for (const d of document.querySelectorAll('details')) d.open = true; }); await sleep(500); await M('creazione-fisarmoniche-aperte');
     await page.evaluate(() => { for (const d of document.querySelectorAll('details')) d.open = false; for (const e of document.querySelectorAll('*')) if (e.scrollTop) e.scrollTop = 0; window.scrollTo(0, 0); }); await sleep(300);
-    const tc = Date.now(); await page.locator('[data-cpm="crea-avanti-v2"]').click(); crea.clickAvanti = (await page.evaluate(() => (document.querySelector('[data-cpm="crea-avanti-v2"]') || {}).innerText || '')).trim();
+    const tc = Date.now(); await inp.focus().catch(() => {}); await page.keyboard.press('Enter'); await sleep(400); crea.enterAvvia = (await schermo(page)) !== 'creazione';
+    if (!crea.enterAvvia) await page.locator('[data-cpm="crea-avanti-v2"]').click(); crea.clickAvanti = (await page.evaluate(() => (document.querySelector('[data-cpm="crea-avanti-v2"]') || {}).innerText || '')).trim();
     await page.waitForFunction(() => /IL PROVINO · PASSO/.test(document.body.innerText || ''), null, { timeout: 20000 }).catch(() => {}); crea.msAlProvino = Date.now() - tc; }
   R.crea = crea; ev('creazione-fine', { ...crea });
   /* ── PROVINI ── */
   const visti = new Set(); let ricaricato = false, hlGiocati = 0, saltato = false, ultimoFase = null, ultimoSch = null; const t1 = Date.now();
   while (Date.now() - t1 < 420000) {
-    const sch = await schermo(page); const ph = await fase(page);
+    const sch = await schermo(page); let ph = await fase(page); if (/provino-(pre|post)|offerte|creazione/.test(sch || '') || (sch === 'carriera' && !/./.test(ph || ''))) ph = null; /* __CPM_PHASE resta all'ultimo valore dopo lo smontaggio di LiveMatch */
     if (ph !== ultimoFase || sch !== ultimoSch) { ev(ph ? 'fase:' + ph : 'schermo:' + sch, { sch }); ultimoFase = ph; ultimoSch = sch; }
     const chiave = ph ? `partita-${(sch || '').replace(/\D/g, '') || 'x'}-${ph}` : sch;
     if (sch === 'carriera' && !ph) { await sleep(1500); await M('carriera-arrivo'); break; }
@@ -65,6 +64,7 @@ for (const f of scelti()) {
     if (ph === 'playing' && hlGiocati >= 1 && !saltato) { await page.evaluate(() => { window.__CPM_SET_NUMHL && window.__CPM_SET_NUMHL(1); window.__CPM_SALTA297 && window.__CPM_SALTA297(88); }); saltato = true; ev('salto-88'); }
     if (ph === 'playing' && hlGiocati === 0) { const tP = tl.filter(x => x.k === 'fase:playing').pop(); if (tP && (Date.now() - T0) / 1000 - tP.t > 40) { await page.evaluate(() => { window.__CPM_SET_NUMHL && window.__CPM_SET_NUMHL(1); window.__CPM_SALTA297 && window.__CPM_SALTA297(88); }); hlGiocati = 1; saltato = true; ev('nessun-highlight-in-40s'); } }
     if (!ph && /provino-post/.test(sch || '')) { saltato = false; hlGiocati = 0;
+      if (sch === 'provino-post-1') break; /* il resto del percorso (ripresa, provino 3, offerte) si misura fuori da cpmtest: li' la ripresa e' spenta */
       if (sch === 'provino-post-1' && !ricaricato) { ricaricato = true; ev('ricarica'); await page.reload({ waitUntil: 'load' }); await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); await sleep(2500);
         const dopo = await schermo(page); const testo = await page.evaluate(() => (document.body.innerText || '').slice(0, 300)); R.ripresa = { dopo, testo }; ev('dopo-ricarica', { dopo }); await M('ripresa-dopo-chiusura');
         if (dopo !== 'provino-pre-2' && dopo !== 'provino-post-1') { const k = await premi(page, 'Continua|Riprendi'); ev('ripresa-tasto', { k }); await sleep(2500); R.ripresa.dopoTasto = await schermo(page); }
@@ -74,14 +74,29 @@ for (const f of scelti()) {
     if (!ph && /provino-pre/.test(sch || '')) { await premi(page, 'Inizia il provino'); await sleep(800); continue; }
     if (!ph && sch === 'offerte') { await sleep(800); if (!visti.has('offerte-scelta')) { visti.add('offerte-scelta'); const k = await premi(page, 'Firma|Scegli|Accetta'); ev('offerta-tasto', { k }); await sleep(1500);
         const k2 = await premi(page, 'Conferma|Firma|Sì|Accetta'); if (k2) ev('offerta-conferma', { k: k2 }); await sleep(2000); continue; } }
-    if (ph === 'ended') { await sleep(800); const k = await premi(page, 'Continua|Torna|Prosegui|Avanti|Chiudi|Fine'); if (k) ev('fine-partita-tasto', { k }); await sleep(800); continue; }
+    if (ph === 'ended') { await sleep(800); const k = await premi(page, 'Risultati|RISULTATI|Continua|Torna|Prosegui|Avanti|Chiudi|Fine'); if (k) ev('fine-partita-tasto', { k }); await sleep(800); continue; }
     if (ph === 'matchday' || ph === 'formations') { await sleep(500); const k = await premi(page, 'Salta e gioca|Entra in campo|Vedi le formazioni|Gioca|Inizia'); if (!k) await page.keyboard.press('Enter'); await sleep(700); continue; }
     if (ph === 'walkout') { await premi(page, 'Salta'); await sleep(700); continue; }
     if (ph === 'hl_result' || ph === 'hl_intro' || ph === 'hl_move') { await sleep(400); continue; }
     if (!ph && !sch) { const k = await premi(page, 'Continua|Avanti|Chiudi|OK|Inizia'); if (k) ev('tasto', { k }); }
     await sleep(500);
   }
-  OUT[f.k] = { R: { crea: R.crea, ripresa: R.ripresa, msCalcoloOfferte: R.msCalcoloOfferte }, A, tl, note, errs, ms: Date.now() - T0 };
+  /* ── RIPRESA DOPO CHIUSURA (senza cpmtest: la ripresa dei provini e' spenta sotto test, src/19 r.~785) ── */
+  const URL0 = `http://localhost:${port}/CARRIER-MANAGER-AV.html`;
+  const env = await page.evaluate(() => { try { return JSON.parse(localStorage.getItem('cpm-trial-prog') || 'null'); } catch (e) { return null; } });
+  R.envelope = env ? { ph: env.ph, res: (env.res || []).length, slot: env.slot } : null; ev('envelope', R.envelope || {});
+  const carica = async () => { await page.goto(URL0, { waitUntil: 'load', timeout: 120000 }); await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 }); await sleep(3000); };
+  if (env && env.p) {
+    const tr = Date.now(); await carica(); R.ripresa = { dopo: await schermo(page), ms: Date.now() - tr }; ev('ripresa', R.ripresa); await M('ripresa-dopo-chiusura');
+    const r1 = (env.res || [])[0] || { goals: 0, assists: 0, rating: 6 };
+    await page.evaluate(([e, r]) => localStorage.setItem('cpm-trial-prog', JSON.stringify({ ...e, ph: 'trial', tn: 2, res: [r, { goals: 1, assists: 0, rating: 6.8 }] })), [env, r1]); await carica(); ev('pre-3', { sch: await schermo(page) }); await M('provino-pre-3');
+    await page.evaluate(([e, r]) => localStorage.setItem('cpm-trial-prog', JSON.stringify({ ...e, ph: 'offers', res: [r, { goals: 1, assists: 0, rating: 6.8 }, { goals: 2, assists: 1, rating: 7.6 }] })), [env, r1]); await carica(); ev('offerte', { sch: await schermo(page) }); await M('offerte');
+    const ofs = await page.evaluate(() => [...document.querySelectorAll('button')].filter(b => b.getBoundingClientRect().width > 0).map(b => (b.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 40))); R.tastiOfferte = ofs;
+    const k = await premi(page, 'Firma|Scegli|Accetta'); ev('offerta-tasto', { k }); await sleep(1500); if (k) await M('offerta-dopo-tasto');
+    for (let i = 0; i < 3 && (await schermo(page)) !== 'carriera'; i++) { const k2 = await premi(page, 'Conferma|Firma|Sì|Accetta|Continua|Inizia'); ev('offerta-conferma', { k: k2 }); await sleep(2000); }
+    const tc = Date.now(); await page.waitForFunction(() => !!window.__CPM_CAREER || /SETTIMANA|Vivi la Settimana/i.test(document.body.innerText || ''), null, { timeout: 20000 }).catch(() => {}); ev('carriera', { ms: Date.now() - tc }); await sleep(1500); await M('carriera-arrivo');
+  }
+  OUT[f.k] = { R: { crea: R.crea, ripresa: R.ripresa, envelope: R.envelope, tastiOfferte: R.tastiOfferte }, A, tl, note, errs, ms: Date.now() - T0 };
   fs.writeFileSync(path.join(DATI_DIR, `provini-${f.k}.json`), JSON.stringify(OUT[f.k], null, 1));
   console.log(`${f.nome}: ${Math.round((Date.now() - T0) / 1000)} s · errori ${errs.length} · linea del tempo:\n  ` + tl.map(x => `${x.t}s ${x.k}${x.k2 ? '' : ''}`).join(' | '));
   await ctx.close();
