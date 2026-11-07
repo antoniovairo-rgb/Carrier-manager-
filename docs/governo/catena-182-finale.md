@@ -34,3 +34,7 @@ Build: GAME_VERSION 7.999.182, `check-src` allineato (HEAD 2b9f642). Sessione di
 - **portiere-252**: uscita 1, «rosso NON VISTO: 0 KO su 7 portieri giudicati (seme 1, 8 scene)» — atteso e dichiarato.
 - **contatto-103**: uscita 1 (471 s). Righe finali: «VERDE parate giudicate 2 · difetti 0 · D3 … 0 / ROSSO parate giudicate 2 · difetti 0 · D3 … 0 / ✗ contatto-103 ROSSO / · rosso: il difetto non si vede». Cioè il braccio verde è pulito, ma il braccio rosso non vede il difetto (solo 2 parate giudicate). NON è fra i rossi attesi. **Non l'ho rigiocato** (la consegna prevedeva un rigioco): la catena è finita a 16:39 con il tetto delle 4 ore alle ~16:43 e il controllo ne richiede ~8 min. Esito singolo, non confermato da un secondo giro: da rigiocare.
 - Non è stato riparato nulla; src/, tests/ e gioco non toccati. Giro lanciato con CPM_CI_PAR=0, un controllo alla volta.
+
+## Rigioco della sessione madre (07/11 ~17:15 UTC)
+
+- **contatto-103** rigiocato una volta sullo stesso build (lavoro/182, check-src allineato), CPM_CI_PAR=0: uscita **0** — «VERDE parate giudicate 2 · difetti 0 · ROSSO parate giudicate 2 · difetti 1 (D3 s12/7 Uno-due con HOWARD) · ✓ contatto-103 VERDE (e il rosso si vede)». Il rosso del primo giro era instabilità del braccio rosso (2 parate giudicate = il pavimento, margine zero, già segnalato dal giro 111): registrato come PO-319 per la 183.
