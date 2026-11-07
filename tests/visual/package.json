@@ -224,6 +224,7 @@
     "foto-v2-tappa4": "node foto-v2-tappa4.mjs",
     "foto-v2-tappa2": "node foto-v2-tappa2.mjs",
     "partita2d-297": "CPM_PROVA_ROSSO=1 node partita2d-297.mjs",
+    "spalti-109": "CPM_PROVA_ROSSO=1 node spalti-109.mjs",
     "freccia-107": "CPM_PROVA_ROSSO=1 node freccia-107.mjs",
     "collaudo-108": "node collaudo-108.mjs verde && node collaudo-108.mjs rosso",
     "hud-c3": "node hud-c3.mjs",

@@ -29649,6 +29649,7 @@ function _kit917(casa,osp){let A=_rgb917(casa),B=_rgb917(osp);
    per squadra (maglia, secondo colore, sciarpa). Maglie troppo scure o troppo simili: la stessa regola di leggibilita' del giro 81
    (colori286, contro il fondo dei gradoni), cosi' una maglia nera non torna a fare il nero che il PO voleva togliere. */
 function _spalti297(casa,casa2,osp,osp2){
+  if(!_no109())return _spalti109(casa,casa2,osp,osp2);
   const base="#26324a",hex=(r)=>"#"+r.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("");
   const hx=(c)=>{const r=_rgb917(c);return hex(r);};
   const A0=hx(casa||"#8e1f33"),B0=hx(osp||"#e2e8f0"),A2=casa2?hx(casa2):null,B2=osp2?hx(osp2):null;
@@ -29656,6 +29657,35 @@ function _spalti297(casa,casa2,osp,osp2){
   const mix=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return hex(a.map((v,i)=>v+(b[i]-v)*q));};
   const sec=(p,c2)=>{try{if(c2&&c2[0]==='#'&&_dist286(c2,p)>60){const v=_vis286(c2,base);if(_dist286(v,p)>60)return v;}}catch(_e){}return _lum917(_rgb917(p))>0.5?mix(p,"#0f172a",0.35):mix(p,"#ffffff",0.45);};
   return{base,erba:"#1e6331",casa:[k.sx,sec(k.sx,A2),"#e5e7eb"],osp:[k.dx,sec(k.dx,B2),_lum917(_rgb917(k.dx))>0.5?mix(k.dx,"#0f172a",0.2):mix(k.dx,"#ffffff",0.2)]};}
+/* [giro 109 PO-312 — foto PO 180 «Nella live 2D i colori dei tifosi / spalti non sono coerenti con i colori dei club»: FC Merseyside
+   #dc2626 in casa, tribuna bianca e grigia, cartelloni bianco/blu/notte, il rosso assente] MISURATO (tests/visual/spalti-109.mjs, sette
+   coppie di club veri x tre formati): la regola di leggibilita' di colori286 (contrasto >= 3:1 sul fondo #26324a) scartava il ROSSO
+   (2,6:1) e lo sostituiva col secondo colore bianco; la terza tinta dei tifosi era un bianco fisso #e5e7eb e i cartelloni portavano
+   blu #1d4ed8 e notte #0f172a, estranei a entrambi i club. Ora: (1) i tifosi portano la maglia del club e il suo secondo colore cosi'
+   come sono (un puntino in tribuna non e' un testo: basta che si STACCHI dal fondo, soglia 1,6:1, e solo i colori quasi invisibili —
+   neri, blu notte — si schiariscono tenendo la tinta); (2) la terza tinta e' la maglia piu' scura, mai un bianco inventato; (3) il
+   fondo dei gradoni e' il token neutro TINTE.tasto (scuro, poco saturo: il campo resta l'unica cosa chiara); (4) i tifosi sono un po'
+   piu' grandi (la tribuna si legge come gente, non come fondo); (5) i cartelloni alternano i due colori di casa e il loro tono notte
+   (fondoClub106), con un pannello per gli ospiti ogni sei. Rosso __CPM_NO_G109 = la 7.999.180. */
+function _no109(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G109;}catch(_e){return false;}}
+const VIS109=1.6,DIST109=90;
+function _spalti109(casa,casa2,osp,osp2){
+  const base=(TINTE&&TINTE.tasto)||"#262b37",hex=(r)=>"#"+r.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("");
+  const hx=(c)=>hex(_rgb917(c));
+  const mix=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return hex(a.map((v,i)=>v+(b[i]-v)*q));};
+  /* si stacca dal fondo: schiarisce (tinta conservata) finche' il puntino non arriva a VIS109 */
+  const vede=(c)=>{let k=c;for(let i=0;i<12&&_rap944(k,base)<VIS109;i++)k=mix(k,"#ffffff",0.12);return k;};
+  const tre=(p0,s0)=>{const P=vede(hx(p0)),S0=s0?vede(hx(s0)):null;
+    const S=(S0&&_dist286(S0,P)>60)?S0:(_lum917(_rgb917(P))>0.5?vede(mix(P,"#0f172a",0.40)):mix(P,"#ffffff",0.40));
+    /* maglia quasi invisibile sul fondo (nero, blu notte) e secondo colore vero e visibile (FC Frankfurt nero/rosso): la maggioranza
+       dei tifosi porta il secondo colore, il nero schiarito resta come seconda tinta — un muro di grigi non e' nessun club */
+    if(_rap944(hx(p0),base)<VIS109&&S0&&S===S0)return[S,P,vede(mix(S,"#000000",0.28))];
+    return[P,S,vede(mix(P,"#000000",0.28))];};
+  const casaP=tre(casa||"#8e1f33",casa2),ospP0=tre(osp||"#e2e8f0",osp2);
+  /* ospiti col colore di casa (rosso contro rosso): nel loro spicchio vince il secondo colore, se e' davvero diverso */
+  const ospP=(_dist286(ospP0[0],casaP[0])<DIST109&&_dist286(ospP0[1],casaP[0])>=DIST109)?[ospP0[1],ospP0[0],ospP0[2]]:ospP0;
+  const cart=[casaP[0],fondoClub106(casaP[0]),casaP[1],fondoClub106(casaP[1]),casaP[0],ospP[0]];
+  return{base,erba:"#1e6331",casa:casaP,osp:ospP,cart,tes:0.60,peso:[56,82,100]};}
 /* il rettangolo dell'erba esterna (fino ai cartelloni), in pixel, e quanti metri oltre le linee: ai lati 2,5 m e dietro le porte 4,5 m,
    ma mai piu' di meta' dello spazio libero (sul telefono in verticale ai lati restano ~13 px: l'erba ne prende meta', il resto e' tribuna) */
 function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
@@ -29776,21 +29806,22 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           const SP=_spalti297(tifoCasa||kitCasa,tifoCasa2,tifoOsp||kitOspiti,tifoOsp2);M.sp297=SP;
           o.fillStyle=SP.base;o.fillRect(0,0,W,H);
           /* i tifosi: teste a griglia sfalsata, colore seedato dalla posizione (deterministico, nessun Math.random) */
-          const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),passo=Math.max(3.6,Math.min(6,s*0.9)),tes=Math.max(1.5,passo*0.46);
+          const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),passo=Math.max(3.6,Math.min(6,s*0.9)),tes=Math.max(1.5,passo*(SP.tes||0.46)),PE=SP.peso||[52,80,100];
+          try{if(typeof window!=='undefined'&&window.__CPM_SP109)window.__CPM_SP109={base:SP.base,casa:SP.casa,osp:SP.osp,cart:SP.cart||null};}catch(_e109){}/* [giro 109] testimone di collaudo (inerte, solo se la sonda lo arma) */
           const ox0=est.x0,oy0=est.y0,ox1=est.x1,oy1=est.y1;
           for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
             if(x>ox0-tes&&x<ox1+tes&&y>oy0-tes&&y<oy1+tes)continue;
             const osp=_osp297(x,y,W,H,ox0,oy0,ox1,oy1,vert);const pal=osp?SP.osp:SP.casa;
             const h=((Math.imul((x*7)|0,73856093)^Math.imul((y*7)|0,19349663))>>>0)%100;
             if(h<12)continue;/* qualche posto vuoto */
-            o.fillStyle=h<52?pal[0]:h<80?pal[1]:pal[2];o.fillRect(x-tes/2,y-tes/2,tes,tes*1.1);}}
+            o.fillStyle=h<PE[0]?pal[0]:h<PE[1]?pal[1]:h<PE[2]?pal[2]:SP.base;o.fillRect(x-tes/2,y-tes/2,tes,tes*1.1);}}
           /* il divisorio del settore ospiti */
           M.osp297=_ospRect297(W,H,ox0,oy0,ox1,oy1,vert);
           if(M.osp297){const q=M.osp297;o.strokeStyle="rgba(15,23,42,0.85)";o.lineWidth=2;o.strokeRect(q[0],q[1],q[2],q[3]);}
           /* l'erba oltre le linee, fino ai cartelloni */
           o.fillStyle=SP.erba;o.fillRect(ox0,oy0,ox1-ox0,oy1-oy0);
           /* i cartelloni: una fila di pannelli attorno al prato, a tinte alternate */
-          const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
+          const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=SP.cart||[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
           let k=0;const pan=(x,y,w,h)=>{o.fillStyle=COLC[k%COLC.length];o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
           for(let x=ox0;x<ox1;x+=seg){const w=Math.min(seg-1,ox1-x);pan(x,oy0-sp,w,sp);pan(x,oy1,w,sp);}
           for(let y=oy0-sp;y<oy1+sp;y+=seg){const h=Math.min(seg-1,oy1+sp-y);pan(ox0-sp,y,sp,h);pan(ox1,y,sp,h);}
@@ -29997,10 +30028,23 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           try{const _u=_uomo918(i,rosaCasa,rosaOsp,null,null);
             if(_u&&_u.nome){const X=CX(q),Y=CY(q);
               g.font="700 "+Math.max(10,Math.round(r*1.0))+"px system-ui,-apple-system,sans-serif";g.textAlign="center";
-              const lw=g.measureText(_u.nome).width,hh=Math.max(13,r*1.55),yy=Y-r-hh-4;
+              const lw=g.measureText(_u.nome).width,hh=Math.max(13,r*1.55);let yy=Y-r-hh-4;
+              /* [giro 109 rilievo foto PO 180: «Vairo» e «Nash» uno sopra l'altro sul pallone] il cognome del portatore e quello dell'eroe
+                 vicino finivano nello stesso rettangolo, e l'eroe (disegnato dopo) copriva il portatore. Se i due rettangoli si toccano, il
+                 portatore porta il nome SOTTO il suo pallino; se si toccano anche cosi', vince il nome dell'eroe. Solo disegno.
+                 Rosso __CPM_NO_G109_NOMI. */
+              let _salta109=false;
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G109_NOMI)&&M.e&&nomeEroe&&!(st.eroe&&st.eroe.attivo===false)){try{
+                const XE=CX(M.e),YE=CY(M.e),RE=r*1.22,fP=g.font;g.font="700 "+Math.max(9,Math.round(r*1.05))+"px system-ui,-apple-system,sans-serif";
+                const lwE=g.measureText(nomeEroe).width,hhE=Math.max(13,r*1.7),yE=YE-RE-hhE-3;g.font=fP;
+                const tocca=(y0)=>Math.abs(X-XE)<(lw+10)/2+(lwE+12)/2+2&&y0<yE+hhE+2&&y0+hh>yE-2&&!(X===XE&&Y===YE);
+                if(tocca(yy)){yy=Y+r+4;if(tocca(yy))_salta109=true;}
+                try{if(typeof window!=='undefined'&&window.__CPM_NOMI109){window.__CPM_NOMI109.n=(window.__CPM_NOMI109.n|0)+1;if(tocca(Y-r-hh-4))window.__CPM_NOMI109.vicini=(window.__CPM_NOMI109.vicini|0)+1;if(_salta109)window.__CPM_NOMI109.saltati=(window.__CPM_NOMI109.saltati|0)+1;}}catch(_eW){}
+              }catch(_e109){}}
+              if(!_salta109){
               g.fillStyle="rgba(2,6,23,0.72)";
               if(g.roundRect){g.beginPath();g.roundRect(X-lw/2-5,yy,lw+10,hh,hh/2);g.fill();}else g.fillRect(X-lw/2-5,yy,lw+10,hh);
-              g.fillStyle="#fde68a";g.textBaseline="middle";g.fillText(_u.nome,X,yy+hh/2);g.textBaseline="alphabetic";}
+              g.fillStyle="#fde68a";g.textBaseline="middle";g.fillText(_u.nome,X,yy+hh/2);g.textBaseline="alphabetic";}}
           }catch(_e){}}
       }
       /* l'eroe: cerchio bianco, nome e numero veri.
@@ -30053,8 +30097,13 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       if(s>0&&(vert?oy:ox)>10){
         g.font="800 "+Math.max(9,Math.round(s*0.95))+"px system-ui,-apple-system,sans-serif";
         g.textAlign="center";g.textBaseline="middle";
-        const eti=(sig,kit,mx)=>{if(!sig)return;const X=PX(mx,LAR/2),Y=PY(mx,LAR/2);
+        const eti=(sig,kit,mx)=>{if(!sig)return;const X=PX(mx,LAR/2);let Y=PY(mx,LAR/2);
           const lw=g.measureText(sig).width,hh=Math.max(14,s*1.5);
+          /* [giro 109 rilievo foto PO 180: la sigla «CRA» sopra la porta sporgeva sotto la barra Statistiche/Pagelle] 3,6 m oltre la
+             linea di porta cadono dentro il margine riservato alla barra (_t12) o alle linguette in basso (_b12): la sigla si tiene
+             nello spazio libero del campo. Solo disegno. Rosso __CPM_NO_G109_ETI. */
+          if(vert&&!(typeof window!=='undefined'&&window.__CPM_NO_G109_ETI)){Y=Math.max(Y,_t12+hh/2+1);Y=Math.min(Y,H-_b12-hh/2-1);}
+          try{if(typeof window!=='undefined'&&window.__CPM_ETI109)window.__CPM_ETI109[sig]={y0:Y-hh/2,y1:Y+hh/2,t12:_t12,b12:_b12,H};}catch(_eW){}
           g.fillStyle=_rgba917(kit,0.92);
           if(g.roundRect){g.beginPath();g.roundRect(X-lw/2-7,Y-hh/2,lw+14,hh,4);g.fill();}else g.fillRect(X-lw/2-7,Y-hh/2,lw+14,hh);
           g.fillStyle=_lum917(kit)>0.55?"#0f172a":"#ffffff";g.fillText(sig,X,Y+0.5);};
