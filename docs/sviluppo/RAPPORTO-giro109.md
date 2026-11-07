@@ -114,7 +114,28 @@ sfondo è disegnato una volta, come prima.
 
 ## Rituali (in sequenza, un controllo alla volta, `CPM_CI_PAR=0`, build finale)
 
-Vedi tabella in fondo, aggiornata a catena chiusa.
+Tutti sullo stesso build (`CARRIER-MANAGER-AV.html` del commit 90f2ed1, invariato dopo; `node tools/check-src.mjs` allineato).
+
+| passo | esito | durata |
+|---|---|---|
+| spalti-109 (verde + rosso) | ✅ verde 21/21 + partita 4/4 · rosso 21/21 e sigla sporgente su 360x720/412x830 | ~6 min |
+| partita-v2 (verde + rosso) | ✅ | 9 min 32 s |
+| partita2d-297 (rosso) | ✅ | 3 min |
+| freccia-107 | ✅ | 3 min 35 s |
+| collaudo-108 (verde + rosso) | ✅ «VERDE: nessun difetto del giro 108 presente» · «ROSSO ATTESO OK» | 32 min |
+| home-colori-106 | ✅ | 5 min 43 s |
+| pc-tablet-292 | ✅ | 12 min |
+| tema-unico | ✅ (rosso atteso OK) | 47 s |
+| design-system | ✅ SISTEMA GRAFICO OK | statico |
+| griglia-mobile | ✅ | 3 min 17 s |
+| career-critical | ✅ | 10 min 14 s |
+| test:logic | ✅ 43 pass · 0 fail | 3 s |
+| save-compat | ✅ 12 pass · 0 fail | 8 s |
+| validate-situations | ✅ PASS · fingerprint 00001505 · 0 failure | 9 min 43 s |
+
+⚠️ Il container è stato riavviato durante la prima corsa di `career-critical` (interrotta, NON vale): rifatta da capo, con
+`test:logic`, `save-compat` e `validate-situations` dopo di lei. I passi precedenti avevano già chiuso il loro esito sullo
+stesso build. `collaudo-108` riscrive le foto di `docs/collaudo-grafico/g0/`: ripristinate, non fanno parte di questo giro.
 
 ## Scelte prudenti (sessione figlia, nessuna decisione di prodotto)
 
