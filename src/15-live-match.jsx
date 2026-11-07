@@ -1414,6 +1414,9 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   if(!_dati189)return null;
   const A=_dati189.t[latoSx==="away"?"away":"home"]||{},B=_dati189.t[latoSx==="away"?"home":"away"]||{};
   const prec=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
+  /* [giro 110 G180-27] al 1'-2' il possesso a tempo e' un campione di UN minuto: «100% · 0%» (misurato 86%·14% al 1', 90%·10% al 3'). Il motore stesso passa
+     dal tempo ai passaggi solo da 40 in su (tabellino): sotto quella soglia la striscia dice «–» e la barra sta a meta'. Rosso __CPM_NO_G110_27. */
+  const _poco110=_g110(27)&&(((+A.passaggi)||0)+((+B.passaggi)||0))<40;
   /* [7.999.77 collaudo PO «brutte le statistiche con lo scroll, le mostrerei tutte»] a 412x915 il pannello (43%) teneva 9 righe
      su 16: gol, possesso, tiri, tiri in porta e xG erano ripetuti sotto la striscia alta e il tabellone che li mostrano gia'
      sulla stessa schermata. Nel pannello restano le voci che la striscia non ha, a righe piu' fitte: tutte visibili senza
@@ -1439,13 +1442,13 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
           <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colSx),letterSpacing:.6}}>{siglaSx}</span>
           <div style={{flex:1,display:"flex",height:7,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
-            <div style={{width:(A.possesso||50)+"%",background:colSx,transition:"width .5s ease"}}/>
-            <div style={{width:(100-(A.possesso||50))+"%",background:colDx,transition:"width .5s ease"}}/>
+            <div style={{width:(_poco110?50:(A.possesso||50))+"%",background:colSx,transition:"width .5s ease"}}/>
+            <div style={{width:(100-(_poco110?50:(A.possesso||50)))+"%",background:colDx,transition:"width .5s ease"}}/>
           </div>
           <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colDx),letterSpacing:.6}}>{siglaDx}</span>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",marginTop:5,gap:SP.xs}}>
-          {[["possesso",(A.possesso||50)+"%",(100-(A.possesso||50))+"%"],
+          {[["possesso",_poco110?"–":(A.possesso||50)+"%",_poco110?"–":(100-(A.possesso||50))+"%"],
             ["tiri",_num918(A.tiri),_num918(B.tiri)],
             ["in porta",_num918(A.inPorta),_num918(B.inPorta)],
             ["xG",_dec918(A.xg),_dec918(B.xg)]].map(c=>(
@@ -1480,7 +1483,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             <Riga918 et="calci d'angolo" sx={A.corner} dx={B.corner} colSx={colSx} colDx={colDx}/>
             <Riga918 et="falli" sx={A.falli} dx={B.falli} colSx={colSx} colDx={colDx}/>
             <Riga918 et="ammonizioni" sx={A.ammonizioni} dx={B.ammonizioni} colSx={colSx} colDx={colDx}/>
-            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).filter(r=>!_stat77||!_DOPPIE77[r.et]).map(r=>(<Riga918 key={r.et} fitta={_stat77} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
+            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).filter(r=>!_stat77||!_DOPPIE77[r.et]).filter(r=>!(_poco110&&r.et==="Possesso")).map(r=>(<Riga918 key={r.et} fitta={_stat77} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
           </div>)}
         {aperto&&vista==="pag"&&(
           <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto",flex:1,minHeight:0,alignItems:"flex-start"}}>
@@ -11341,8 +11344,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
-              </div>):(<div data-cpm="fg-slot" data-pilla-top={(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)":"max(7%, 76px)")}/* [giro 90 PO-292] dove parte la pillola d'esito: la legge il guardiano pc-tablet-292 */ style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)"/* [giro 90 PO-292 D7] tablet verticale: sotto la striscia delle statistiche della vista 2D */:"max(7%, 76px)"),/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
-                <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
+              </div>):(<div data-cpm="fg-slot" data-pilla-top={(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)":"max(7%, 76px)")}/* [giro 90 PO-292] dove parte la pillola d'esito: la legge il guardiano pc-tablet-292 */ style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)"/* [giro 90 PO-292 D7] tablet verticale: sotto la striscia delle statistiche della vista 2D */:"max(7%, 76px)"),/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:_g110(17)?"5%":0,right:_g110(17)?"5%":0/* [giro 110 G180-17] floatUp scala la scatola a 1,1: a tutta larghezza usciva dal campo di 13-37 px (359/346 a 360, 427/410 a 412, 985/953 sul PC); al 90% la scatola scalata sta dentro */,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:_g110(17)?"100%":"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
               </div>}</div>)}
@@ -11929,7 +11932,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>
 
             {/* RIGHT: info + action panel — desktop only for HL controls */}
-            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{...(_largo292()?{flex:"0 0 clamp(300px,27vw,460px)"}:{flex:1,minWidth:180}),display:"flex",flexDirection:"column",background:TINTE.bg,borderLeft:"1px solid rgba(255,255,255,0.08)",overflow:"hidden"}} data-cpm="colonna-partita-v2">
+            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:_g110(23)?TINTE.bg:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{...(_largo292()?{flex:"0 0 clamp(300px,27vw,460px)"}:{flex:1,minWidth:180}),display:"flex",flexDirection:"column",background:TINTE.bg,borderLeft:"1px solid rgba(255,255,255,0.08)",overflow:"hidden"}} data-cpm="colonna-partita-v2">
 
               {/* Action zone — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_move"&&curSit&&(
@@ -12011,9 +12014,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",minHeight:_g110(31)?44:undefined/* [giro 110 G180-31] sul PC le tre giocate stavano a 36-37 px */,background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":TINTE.sec,flexShrink:0}}>{i+1}</div>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
                           {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}

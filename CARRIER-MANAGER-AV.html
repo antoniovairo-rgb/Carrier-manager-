@@ -388,6 +388,8 @@ function _mix944(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
   if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
   const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
   return '#'+v.map(c=>Math.round(c+(255-c)*q).toString(16).padStart(2,'0')).join('');}
+/* [giro 110 · PO-309] interruttore rosso di un difetto del collaudo 180: window.__CPM_NO_G110_<NN> = true riporta il comportamento della 181. */
+function _g110(n){try{return !(typeof window!=='undefined'&&window['__CPM_NO_G110_'+n]);}catch(_e){return true;}}
 function legCol944(col,fondo){
   /* [G8.4] LA RIGA CHE DICEVA «solo nel tema scuro» E' STATA TOLTA, ed era il difetto.
      Di giorno questa funzione restituiva il colore intatto: sul tema chiaro #16a34a su bianco
@@ -471,7 +473,7 @@ function semTesto945(col,fondo){
 function inkSu945(col){
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
     if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
-    return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
+    {const _ar=_g110(23)?TINTE.bg:'#0f172a';/* [giro 110 G180-23] l'inchiostro scuro e' il TINTE.bg del tema unico, non l'ardesia V1 */ return _rap944('#ffffff',col)>=_rap944(_ar,col)?'#ffffff':_ar; }}catch(_e){ return '#ffffff'; }}
 /* [giro 106 · foto PO 179 «Si vede malissimo»] IL COLORE DEL CLUB SMORZATO VERSO LA NOTTE. Col colore sociale VIVO (FC Merseyside
    #dc2626, i gialli #f59e0b, i bianchi #f5f5f5) il riquadro della prossima partita diventava un muro saturo e il velo rosa
    dell'inchiostro scendeva a ~2:1. Le tavole V2Home sono disegnate su #8e1f33 (luminanza 0,070, canale piu' alto 142): quella
@@ -493,7 +495,7 @@ function fondoClub106(col){
    e rimette la grafica della 7.999.179 su quel solo difetto (prova del rosso del guardiano collaudo-108). */
 function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
-function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
+function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):((_g110(23)?'rgba(13,15,20,':'rgba(15,23,42,')+q+')');}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
@@ -10787,10 +10789,10 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      e' lo spazio FRA due riquadri, e vale SP.box. Fuori da 8-16 (0, 4, 6 e i valori grandi di proposito) non si tocca; con __CPM_NO_SPAZIO296 resta il valore scritto dal chiamante. */
   const _mb296=style&&style.marginBottom,_st296=(typeof _mb296==="number"&&_mb296>=8&&_mb296<=16)?{...style,marginBottom:_sb(_mb296)}:style;
   const _padM=momento?(_ap?pad:"6px 12px"):pad;
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:_g110(25)?RAD.lg/* [giro 110 G180-25] le tavole dicono 14-24 px per i riquadri: il riquadro-carta era a 12 (17 riquadri su 28 a 360, 25 su 38 sul PC), pillole e tasti piccoli restano a 6-8 */:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
     {momento!=null&&(
       <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus cpm-t40 cpm-t40h"
-        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:(_mouse110()?36:32),padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
         <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
@@ -10983,7 +10985,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   return(
     <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
       <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
-        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:undefined,cursor:"pointer",
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:(_mouse110()?36:undefined),cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
@@ -11155,11 +11157,13 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 }
 
 /* Tabs — segmented control coerente. items:[{id,label,icon}] · value · onChange. */
+/* [giro 110 G180-20] col MOUSE (puntatore preciso) le righe-fisarmonica e le sottoschede stavano a 31-33 px: pavimento 36, come il tasto "sm" del kit. Rosso __CPM_NO_G110_20. */
+function _mouse110(){try{return _g110(20)&&!!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches&&!window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
   return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
@@ -26586,8 +26590,8 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
         {/* accento all'orlo */}
         <rect x="14" y="46.6" width="24" height={_trim?"2.4":"2"} fill={_trim||detail} opacity={_trim?"0.95":"0.5"}/>
         {/* numero: ombra + testo */}
-        <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif">{number}</text>
-        <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif" letterSpacing="-0.6">{number}</text>
+        <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily={_g110(24)?"'Barlow','Segoe UI',system-ui,Roboto,sans-serif":"Arial,Helvetica,sans-serif"}>{number}</text>
+        <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily={_g110(24)?"'Barlow','Segoe UI',system-ui,Roboto,sans-serif":"Arial,Helvetica,sans-serif"} letterSpacing="-0.6">{number}</text>
       </svg>
       <div style={{fontSize:FS.caption,color:isPlayer?(labelW?"#fde68a":TH.goldText):"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:labelW||(S+8),lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
         {lastName}
@@ -30520,6 +30524,9 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   if(!_dati189)return null;
   const A=_dati189.t[latoSx==="away"?"away":"home"]||{},B=_dati189.t[latoSx==="away"?"home":"away"]||{};
   const prec=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
+  /* [giro 110 G180-27] al 1'-2' il possesso a tempo e' un campione di UN minuto: «100% · 0%» (misurato 86%·14% al 1', 90%·10% al 3'). Il motore stesso passa
+     dal tempo ai passaggi solo da 40 in su (tabellino): sotto quella soglia la striscia dice «–» e la barra sta a meta'. Rosso __CPM_NO_G110_27. */
+  const _poco110=_g110(27)&&(((+A.passaggi)||0)+((+B.passaggi)||0))<40;
   /* [7.999.77 collaudo PO «brutte le statistiche con lo scroll, le mostrerei tutte»] a 412x915 il pannello (43%) teneva 9 righe
      su 16: gol, possesso, tiri, tiri in porta e xG erano ripetuti sotto la striscia alta e il tabellone che li mostrano gia'
      sulla stessa schermata. Nel pannello restano le voci che la striscia non ha, a righe piu' fitte: tutte visibili senza
@@ -30545,13 +30552,13 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
           <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colSx),letterSpacing:.6}}>{siglaSx}</span>
           <div style={{flex:1,display:"flex",height:7,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
-            <div style={{width:(A.possesso||50)+"%",background:colSx,transition:"width .5s ease"}}/>
-            <div style={{width:(100-(A.possesso||50))+"%",background:colDx,transition:"width .5s ease"}}/>
+            <div style={{width:(_poco110?50:(A.possesso||50))+"%",background:colSx,transition:"width .5s ease"}}/>
+            <div style={{width:(100-(_poco110?50:(A.possesso||50)))+"%",background:colDx,transition:"width .5s ease"}}/>
           </div>
           <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colDx),letterSpacing:.6}}>{siglaDx}</span>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",marginTop:5,gap:SP.xs}}>
-          {[["possesso",(A.possesso||50)+"%",(100-(A.possesso||50))+"%"],
+          {[["possesso",_poco110?"–":(A.possesso||50)+"%",_poco110?"–":(100-(A.possesso||50))+"%"],
             ["tiri",_num918(A.tiri),_num918(B.tiri)],
             ["in porta",_num918(A.inPorta),_num918(B.inPorta)],
             ["xG",_dec918(A.xg),_dec918(B.xg)]].map(c=>(
@@ -30586,7 +30593,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             <Riga918 et="calci d'angolo" sx={A.corner} dx={B.corner} colSx={colSx} colDx={colDx}/>
             <Riga918 et="falli" sx={A.falli} dx={B.falli} colSx={colSx} colDx={colDx}/>
             <Riga918 et="ammonizioni" sx={A.ammonizioni} dx={B.ammonizioni} colSx={colSx} colDx={colDx}/>
-            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).filter(r=>!_stat77||!_DOPPIE77[r.et]).map(r=>(<Riga918 key={r.et} fitta={_stat77} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
+            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).filter(r=>!_stat77||!_DOPPIE77[r.et]).filter(r=>!(_poco110&&r.et==="Possesso")).map(r=>(<Riga918 key={r.et} fitta={_stat77} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
           </div>)}
         {aperto&&vista==="pag"&&(
           <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto",flex:1,minHeight:0,alignItems:"flex-start"}}>
@@ -40447,8 +40454,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
-              </div>):(<div data-cpm="fg-slot" data-pilla-top={(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)":"max(7%, 76px)")}/* [giro 90 PO-292] dove parte la pillola d'esito: la legge il guardiano pc-tablet-292 */ style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)"/* [giro 90 PO-292 D7] tablet verticale: sotto la striscia delle statistiche della vista 2D */:"max(7%, 76px)"),/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
-                <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
+              </div>):(<div data-cpm="fg-slot" data-pilla-top={(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)":"max(7%, 76px)")}/* [giro 90 PO-292] dove parte la pillola d'esito: la legge il guardiano pc-tablet-292 */ style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} data-cpm="pillola-esito" style={{position:"absolute",top:(typeof window!=="undefined"&&window.__CPM_NO_PILLOLA58)?"7%":(_vert292()&&phase==="playing"?"max(7%, 160px)"/* [giro 90 PO-292 D7] tablet verticale: sotto la striscia delle statistiche della vista 2D */:"max(7%, 76px)"),/* [giro 58, segnalazione del giro 54 «pillola PALLA PERSA sopra il tabellone» — rosso __CPM_NO_PILLOLA58] e' la pillola d'esito di ogni highlight (GOL!, PARATA, PALLA PERSA…): parte al 7% del campo e floatUp la porta 60 px piu' su. MISURATO (pillola-58): a fine corsa 0 px dal fondo del tabellone a 412x915 e 12 px OLTRE a 412x740, dove il campo la taglia e sembra entrarci dentro. Ora parte almeno 76 px sotto il bordo del campo: a fine corsa 19 px sotto, a entrambe le altezze. */left:_g110(17)?"5%":0,right:_g110(17)?"5%":0/* [giro 110 G180-17] floatUp scala la scatola a 1,1: a tutta larghezza usciva dal campo di 13-37 px (359/346 a 360, 427/410 a 412, 985/953 sul PC); al 90% la scatola scalata sta dentro */,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:_g110(17)?"100%":"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
               </div>}</div>)}
@@ -41035,7 +41042,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>
 
             {/* RIGHT: info + action panel — desktop only for HL controls */}
-            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{...(_largo292()?{flex:"0 0 clamp(300px,27vw,460px)"}:{flex:1,minWidth:180}),display:"flex",flexDirection:"column",background:TINTE.bg,borderLeft:"1px solid rgba(255,255,255,0.08)",overflow:"hidden"}} data-cpm="colonna-partita-v2">
+            <div style={isNarrow?(["hl_move","hl_choose","hl_result","hl_intro"].includes(phase)?{display:"none"}:{background:_g110(23)?TINTE.bg:"#0f172a",borderTop:"1px solid rgba(255,255,255,0.10)"}):{...(_largo292()?{flex:"0 0 clamp(300px,27vw,460px)"}:{flex:1,minWidth:180}),display:"flex",flexDirection:"column",background:TINTE.bg,borderLeft:"1px solid rgba(255,255,255,0.08)",overflow:"hidden"}} data-cpm="colonna-partita-v2">
 
               {/* Action zone — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_move"&&curSit&&(
@@ -41117,9 +41124,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}
-                          style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
+                          style={{padding:(isNarrow||_dito292)?"12px 10px":"8px 10px",minHeight:_g110(31)?44:undefined/* [giro 110 G180-31] sul PC le tre giocate stavano a 36-37 px */,background:(isSel?"#1f2a24":TINTE.sup),border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
-                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":TINTE.sec,flexShrink:0}}>{i+1}</div>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:isSel?(_g110(31)?"#1d4ed8":"#2563eb"):"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":(_g110(31)?TINTE.testo:TINTE.sec),flexShrink:0}}>{i+1}</div>
                             <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
                           {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}
@@ -53608,7 +53615,7 @@ const getThisWeekMatchday=()=>{
         <div style={{display:"flex",gap:5}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:RAD.xs,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
         <div style={{display:"flex",gap:8,width:"100%",maxWidth:400}}>
           <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?"🎉 Che la stagione cominci →":"Avanti →"}</Btn>
-          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
+          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:_g110(23)?"rgba(13,15,20,0.72)":"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
         </div>
       </div>
     </div>);})():null;
@@ -56875,6 +56882,7 @@ const getThisWeekMatchday=()=>{
         const rows=getRows(selLg);
         const N=rows.length;
         const ZONE_COLORS={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
+        const NUMZ110={cl:TINTE.blu,el:TINTE.giallo,conf:TINTE.verde,rel:TINTE.rosso,champ:TINTE.oro,promo:TINTE.verde};/* [giro 110 G180-11] la posizione in classifica usa i colori di stato V2 (6:1 sul fondo), non la tinta della zona alzata a caso: #ef4444 faceva 4,43:1 */
         // [6.96.0 collaudo PO «in Serie B sono riportate le qualificazioni europee, non è coerente! 3 promozioni e retrocessioni»]
         //   le SECONDE divisioni (lato basso di LEAGUE_PAIRS) non hanno zone europee: top 3 = PROMOZIONE (la 1ª campione), ultime 3 retrocesse.
         const _isSecondDiv96=LEAGUE_PAIRS.some(([u,l])=>l===selLg);
@@ -56913,7 +56921,7 @@ const getThisWeekMatchday=()=>{
                       {/* [7.73.0 UI Kit] barra accento: zona → colore zona, altrimenti riga eroe → brand */}
                       <td style={{width:4,padding:0}}><div style={{width:4,height:30,background:zc||(my?TH.primary:"transparent"),borderRadius:RAD.pill}}/></td>
                       {/* [7.73.0 UI Kit] posizione a MEDAGLIA (top-3, stessa terna dei capocannonieri) · pill brand per l'eroe · numero semplice altrimenti */}
-                      <td style={{textAlign:"center",padding:"6px 3px"}}>{(()=>{const mBg=i===0?"#f59e0b":i===1?"#9ca3af":i===2?"#b45309":null;if(mBg)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:mBg,color:i===2?"#fff":TH.bg,alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;if(my)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:TH.primary,color:"#fff",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;return<span className="cpm-num" style={{color:zone?legCol944(zc):TH.muted,fontWeight:zone?FW.bold:FW.regular}}>{i+1}</span>;})()}</td>
+                      <td style={{textAlign:"center",padding:"6px 3px"}}>{(()=>{const mBg=i===0?"#f59e0b":i===1?"#9ca3af":i===2?"#b45309":null;if(mBg)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:mBg,color:i===2?"#fff":TH.bg,alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;if(my)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:TH.primary,color:"#fff",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;return<span className="cpm-num" style={{color:zone?(_g110(11)?NUMZ110[zone]:legCol944(zc)):TH.muted,fontWeight:zone?FW.bold:FW.regular}}>{i+1}</span>;})()}</td>
                       <td style={{padding:"6px 3px",fontWeight:my?FW.bold:FW.regular,color:my?TH.brandText:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-flex",width:18,height:18,marginRight:6,verticalAlign:"middle"}}><TeamBadge team={t} size={18}/></span>{t.a||t.abbr||t.n||t.name}{my&&" ★"}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.played}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.winFg}}>{t.wins}</td>

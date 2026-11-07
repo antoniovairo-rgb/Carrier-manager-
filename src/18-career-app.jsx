@@ -6070,7 +6070,7 @@ const getThisWeekMatchday=()=>{
         <div style={{display:"flex",gap:5}}>{_bs.map((_,i)=>(<span key={i} style={{width:i===_i?20:7,height:7,borderRadius:RAD.xs,background:i<=_i?"#f59e0b":"rgba(255,255,255,0.28)",transition:"all .25s"}}/>))}</div>
         <div style={{display:"flex",gap:8,width:"100%",maxWidth:400}}>
           <Btn v="primary" fw onClick={()=>{if(_last)doSerataPres();else setPresEvent({beat:_i+1});}}>{_last?"🎉 Che la stagione cominci →":"Avanti →"}</Btn>
-          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
+          {!_last&&<Btn v="ghost" onClick={doSerataPres} style={{flexShrink:0,color:"#fff",background:_g110(23)?"rgba(13,15,20,0.72)":"rgba(15,23,42,0.72)",borderColor:"rgba(255,255,255,0.85)"}}>Salta</Btn>/* [giro 94 D12] sul prato verde il fantasma era illeggibile: testo bianco su fondo scuro velato */}
         </div>
       </div>
     </div>);})():null;
@@ -9337,6 +9337,7 @@ const getThisWeekMatchday=()=>{
         const rows=getRows(selLg);
         const N=rows.length;
         const ZONE_COLORS={cl:"#3b82f6",el:"#f97316",conf:"#22c55e",rel:"#ef4444",champ:"#f59e0b",promo:"#22c55e"};
+        const NUMZ110={cl:TINTE.blu,el:TINTE.giallo,conf:TINTE.verde,rel:TINTE.rosso,champ:TINTE.oro,promo:TINTE.verde};/* [giro 110 G180-11] la posizione in classifica usa i colori di stato V2 (6:1 sul fondo), non la tinta della zona alzata a caso: #ef4444 faceva 4,43:1 */
         // [6.96.0 collaudo PO «in Serie B sono riportate le qualificazioni europee, non è coerente! 3 promozioni e retrocessioni»]
         //   le SECONDE divisioni (lato basso di LEAGUE_PAIRS) non hanno zone europee: top 3 = PROMOZIONE (la 1ª campione), ultime 3 retrocesse.
         const _isSecondDiv96=LEAGUE_PAIRS.some(([u,l])=>l===selLg);
@@ -9375,7 +9376,7 @@ const getThisWeekMatchday=()=>{
                       {/* [7.73.0 UI Kit] barra accento: zona → colore zona, altrimenti riga eroe → brand */}
                       <td style={{width:4,padding:0}}><div style={{width:4,height:30,background:zc||(my?TH.primary:"transparent"),borderRadius:RAD.pill}}/></td>
                       {/* [7.73.0 UI Kit] posizione a MEDAGLIA (top-3, stessa terna dei capocannonieri) · pill brand per l'eroe · numero semplice altrimenti */}
-                      <td style={{textAlign:"center",padding:"6px 3px"}}>{(()=>{const mBg=i===0?"#f59e0b":i===1?"#9ca3af":i===2?"#b45309":null;if(mBg)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:mBg,color:i===2?"#fff":TH.bg,alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;if(my)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:TH.primary,color:"#fff",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;return<span className="cpm-num" style={{color:zone?legCol944(zc):TH.muted,fontWeight:zone?FW.bold:FW.regular}}>{i+1}</span>;})()}</td>
+                      <td style={{textAlign:"center",padding:"6px 3px"}}>{(()=>{const mBg=i===0?"#f59e0b":i===1?"#9ca3af":i===2?"#b45309":null;if(mBg)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:mBg,color:i===2?"#fff":TH.bg,alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;if(my)return<span className="cpm-num" style={{display:"inline-flex",width:20,height:20,borderRadius:RAD.pill,background:TH.primary,color:"#fff",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black}}>{i+1}</span>;return<span className="cpm-num" style={{color:zone?(_g110(11)?NUMZ110[zone]:legCol944(zc)):TH.muted,fontWeight:zone?FW.bold:FW.regular}}>{i+1}</span>;})()}</td>
                       <td style={{padding:"6px 3px",fontWeight:my?FW.bold:FW.regular,color:my?TH.brandText:TH.text,whiteSpace:"nowrap"}}><span style={{display:"inline-flex",width:18,height:18,marginRight:6,verticalAlign:"middle"}}><TeamBadge team={t} size={18}/></span>{t.a||t.abbr||t.n||t.name}{my&&" ★"}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.muted}}>{t.played}</td>
                       <td style={{textAlign:"center",padding:"6px 3px",color:TH.winFg}}>{t.wins}</td>

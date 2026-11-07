@@ -121,6 +121,8 @@ function _mix944(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
   if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
   const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
   return '#'+v.map(c=>Math.round(c+(255-c)*q).toString(16).padStart(2,'0')).join('');}
+/* [giro 110 · PO-309] interruttore rosso di un difetto del collaudo 180: window.__CPM_NO_G110_<NN> = true riporta il comportamento della 181. */
+function _g110(n){try{return !(typeof window!=='undefined'&&window['__CPM_NO_G110_'+n]);}catch(_e){return true;}}
 function legCol944(col,fondo){
   /* [G8.4] LA RIGA CHE DICEVA «solo nel tema scuro» E' STATA TOLTA, ed era il difetto.
      Di giorno questa funzione restituiva il colore intatto: sul tema chiaro #16a34a su bianco
@@ -204,7 +206,7 @@ function semTesto945(col,fondo){
 function inkSu945(col){
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
     if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
-    return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
+    {const _ar=_g110(23)?TINTE.bg:'#0f172a';/* [giro 110 G180-23] l'inchiostro scuro e' il TINTE.bg del tema unico, non l'ardesia V1 */ return _rap944('#ffffff',col)>=_rap944(_ar,col)?'#ffffff':_ar; }}catch(_e){ return '#ffffff'; }}
 /* [giro 106 · foto PO 179 «Si vede malissimo»] IL COLORE DEL CLUB SMORZATO VERSO LA NOTTE. Col colore sociale VIVO (FC Merseyside
    #dc2626, i gialli #f59e0b, i bianchi #f5f5f5) il riquadro della prossima partita diventava un muro saturo e il velo rosa
    dell'inchiostro scendeva a ~2:1. Le tavole V2Home sono disegnate su #8e1f33 (luminanza 0,070, canale piu' alto 142): quella
@@ -226,7 +228,7 @@ function fondoClub106(col){
    e rimette la grafica della 7.999.179 su quel solo difetto (prova del rosso del guardiano collaudo-108). */
 function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
-function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
+function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):((_g110(23)?'rgba(13,15,20,':'rgba(15,23,42,')+q+')');}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
