@@ -2,7 +2,7 @@
 
 Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un **Android App Bundle (.aab)** pubblicabile. Il **sorgente di lavoro non cambia mai**: il packaging produce solo artefatti derivati.
 
-> Stato roadmap: **1.1 precompila JSX** ✅ · **1.2 bundle locale/offline** ✅ · **1.6 build store (AI off)** ✅ · **1.3 Capacitor** ✅ scaffold. Manca solo la build dell'AAB su una macchina con Android SDK (qui in cloud `dl.google.com` è bloccato).
+> Stato roadmap: **1.1 precompila JSX** ✅ · **1.2 bundle locale/offline** ✅ · **1.6 build store (AI off)** ✅ · **1.3 Capacitor** ✅ scaffold. **Giro 116 (07/11/2026): l'AAB non firmato è stato costruito davvero in sessione cloud** (Capacitor 8.6.0, target API 36, 110 MB) — vedi `docs/governo/USCITA-STORE-184.md` §9. Resta la firma con la chiave di upload (solo PO).
 
 ## Cosa c'è nel repo
 
@@ -18,7 +18,7 @@ Pipeline per trasformare il gioco (singolo file `CARRIER-MANAGER-AV.html`) in un
 ## Prerequisiti (sulla TUA macchina)
 
 - **Node 18+** e **npm**.
-- **JDK 17+** (`java -version`). *(In questo ambiente cloud è già presente JDK 21.)*
+- **JDK 21** (`java -version`) e **Node ≥ 22**: li richiede Capacitor 8 (`@capacitor/cli` 8.6.0 ha `engines.node >=22`; i `compileOptions` di `@capacitor/android` 8.6.0 usano `VERSION_21`). *(Cloud: JDK 21.0.12 presente.)*
 - **Android SDK** — il modo più semplice è installare **Android Studio** (include SDK, build-tools, platform-tools e un device/emulatore). In alternativa solo le *command-line tools* + `sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"`.
 - Variabile `ANDROID_HOME` (o `ANDROID_SDK_ROOT`) che punta all'SDK, oppure `android/local.properties` con `sdk.dir=/percorso/Android/Sdk`.
 
@@ -114,7 +114,7 @@ non dalla fine dello sviluppo → gli inviti vanno mandati **subito**, in parall
 
 - **Account Play Developer**: 25 $ una tantum. I nuovi account *personali* richiedono un **test chiuso con ≥12 tester per 14 giorni** prima della produzione → da pianificare.
 - **Formato**: **AAB obbligatorio** (l'APK non è accettato per i nuovi upload).
-- **Target API level**: i nuovi upload devono targettizzare un'API recente (al 2025 ≈ **API 35 / Android 15**). È una *moving target* annuale — verifica in Console al momento del rilascio e allinea `targetSdkVersion` in `android/variables.gradle`.
+- **Target API level**: dal **31/08/2026** nuove app e aggiornamenti devono puntare ad **API 36 (Android 16) o superiore** (https://developer.android.com/google/play/requirements/target-sdk, letta il 07/11/2026). Con **Capacitor 8.6.0** il template `variables.gradle` generato da `cap add android` dà **minSdk 24 · compileSdk 36 · targetSdk 36** (AGP 8.13.0, Gradle 8.14.3: letti nel pacchetto npm e nel progetto generato). Capacitor 6.2.1 dava 34/34/22, Capacitor 7.6.10 35/35/23: **non bastano più**.
 - **Versioning**: ad ogni upload incrementa `versionCode` (intero) in `android/app/build.gradle`; `versionName` è la stringa mostrata.
 
 ## Permessi
