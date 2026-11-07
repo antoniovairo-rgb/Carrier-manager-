@@ -988,3 +988,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 07/11 — puntino rosso della barra (PO-313)
 - PO: «Il puntino rosso sui pulsanti non mi fa impazzire». Questionario: «Lineetta oro sotto» (scartati «Nessun segno» e «Puntino oro»); «Dentro la 181» (scartati «Nella 182» e «Subito da solo»).
 - Fatto dalla sessione madre su lavoro/181 (9ffc0013): oro scuro della cornice #9c6a12 invece di TINTE.oro, perché sulla pillola chiara l'oro chiaro farebbe ~1,9:1 (sotto il 3:1 dei segni d'interfaccia); misurato 4,15:1. Guardiano lineetta-181 verde 3/3 e rosso 3/3; design-system e grafica-v2 verdi.
+
+### 07/11 mattina — 7.999.181 PUBBLICATA
+- Giro 109 (81716e8d, ~0,7 $ dichiarati dalla sessione): causa misurata — la regola di contrasto dei TESTI (colori286, ≥ 3:1) scartava il rosso dei tifosi sul fondo blu (2,6:1), terza tinta bianca fissa, cartelloni blu/notte fissi, fondo blu saturo. Correzione _spalti109 (rosso __CPM_NO_G109), guardiano spalti-109 verde 21/21 e rosso 21/21. Sigla della porta (rosso _ETI) e nomi sovrapposti (rosso _NOMI, non provato dal vivo).
+- Unito con PO-313 in lavoro/181, GAME_VERSION 7.999.181 (773c7477); spalti-109 e lineetta-181 rigiocati sul build unito: verdi. Rilascio: poc → main.
