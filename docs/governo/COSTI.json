@@ -96,5 +96,33 @@
   "cache_read_tokens": 31204482,
   "worker_epoch": 1,
   "rilevato": "2026-11-07"
+ },
+ {
+  "sessione": "session_01QEYiaBwGw1jgJwdGADTjDT",
+  "titolo": "giro 111 · controlli instabili e rigore dell'eroe",
+  "versione": "7.999.182",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-07T08:35:18Z",
+  "chiusa": "2026-11-07T12:12:19Z",
+  "cost_usd": 3.27607224,
+  "output_tokens": 66621,
+  "cache_read_tokens": 18174423,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-07"
+ },
+ {
+  "sessione": "session_01QEYia8fkgymQGig9BgpjgF",
+  "titolo": "giro 112b · ogni club col suo modulo",
+  "versione": "7.999.182",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-07T08:44:42Z",
+  "chiusa": "2026-11-07T12:31:14Z",
+  "cost_usd": 11.3896909,
+  "output_tokens": 110567,
+  "cache_read_tokens": 34300205,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-07"
  }
 ]
