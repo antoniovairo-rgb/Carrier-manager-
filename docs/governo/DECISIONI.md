@@ -984,3 +984,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Foto del PO (partita 2D, FC Merseyside rosso contro CRA): spalti e cartelloni prevalentemente blu e bianchi, il rosso del club quasi assente.
 - Questionario, risposta PO: **«Solo spalti, subito»** (scartati «Avvia la 181 completa» e «Aspetta»). La 7.999.181 è una correttiva con il solo PO-312; PO-305/309/310/311 passano alla 7.999.182.
 - Attuazione: lavoro/181 da main (7.999.180); giro 109 su PO-312.
+
+### 07/11 — puntino rosso della barra (PO-313)
+- PO: «Il puntino rosso sui pulsanti non mi fa impazzire». Questionario: «Lineetta oro sotto» (scartati «Nessun segno» e «Puntino oro»); «Dentro la 181» (scartati «Nella 182» e «Subito da solo»).
+- Fatto dalla sessione madre su lavoro/181 (9ffc0013): oro scuro della cornice #9c6a12 invece di TINTE.oro, perché sulla pillola chiara l'oro chiaro farebbe ~1,9:1 (sotto il 3:1 dei segni d'interfaccia); misurato 4,15:1. Guardiano lineetta-181 verde 3/3 e rosso 3/3; design-system e grafica-v2 verdi.
