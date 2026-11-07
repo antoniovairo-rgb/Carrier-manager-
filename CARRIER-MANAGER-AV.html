@@ -28121,10 +28121,15 @@ function creaMotorePossesso(cfg){
        due passate: a 0,22 i gialli tornavano giusti (2,08 su 2,4) ma i rossi restavano al doppio del vero
        (0,25 su 0,11); a 0,09 rientrano entrambi. Il secondo giallo costa undici volte il primo. */
     const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1)*(V2?K2.gialli:1);/* NON si normalizza: si sorteggia una volta per FALLO, e i falli sono gia' normalizzati */
-    if(V2&&rnd()<K2.rossoDiretto){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
+    /* [giro 115 G184-22] nel primo provino nessuna espulsione nei primi cfg.calmaRossi minuti (il collaudo l'ha vista come PRIMO
+       evento della vita del giocatore, al 2'). I sorteggi restano gli stessi in numero e ordine: il rosso diretto esce come prima
+       (return, senza il secondo rnd), solo senza cartellino; il secondo giallo resta un giallo. Rosso __CPM_NO_G115_22. */
+    const _calma115=(cfg.calmaRossi|0)>0&&(S.min|0)<(cfg.calmaRossi|0);
+    if(V2&&rnd()<K2.rossoDiretto){if(_calma115)return;_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
     if(rnd()>=_p)return;
     _st.g++;
-    if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
+    if(_st.g>=2&&_calma115){_st.g=1;ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});}
+    else if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
     else ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});
   }catch(_e){}};
   /* [7.999.121 PO-190 «goleade» — decisione PO 03/10 «ridurre i gol dell'eroe»] MISURATO dal salvataggio S12 (testimone __CPM_SP3 col
@@ -30853,7 +30858,7 @@ function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
   return [c1,c2];}
 try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
-function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
+function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -30917,6 +30922,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     var _sdHL=hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0;
     var _rHL=seededRng((_sdHL^0x5bf03635)>>>0);
     var v=Array.from({length:n},function(_,i){return _no500?(8+step*i+Math.floor(_rHL()*Math.max(2,step-3))):Math.min(86,8+step*i+Math.floor(_rHL()*Math.max(2,Math.min(10,step-3))));});/* [7.500.0] tetto all'86': un highlight al 90' non avrebbe il tempo di essere giocato */
+    /* [giro 115 G184-22] il PRIMO provino e' il primo minuto di gioco della vita del giocatore: il primo highlight arriva al 4'
+       (~7 s a 1x) invece che fra l'8' e il 17'. Solo il valore del primo minuto: i sorteggi di _rHL sono gia' stati fatti tutti,
+       nello stesso numero e nello stesso ordine (invariante 7.511). Rosso __CPM_NO_G115_22. */
+    if(context==="trial"&&primoProvino&&v.length&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))v[0]=Math.min(v[0],4);
     hlTimesRef.current=v;
     return v;
   });
@@ -34035,7 +34044,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
           if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current){if(stagedRef45.current&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO45)){if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.evitate++;_w45.ultima={x:+_stM870.eroe.x.toFixed(1),y:+_stM870.eroe.y.toFixed(1),fase:phaseRef.current};}catch(_e45){}}}else{if(stagedRef45.current&&typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.rosse=(_w45.rosse|0)+1;}catch(_e45){}}setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});}}/* [7.999.45] il motore non riscrive l'eroe gia' messo in scena (testimone __CPM_STACCO45: evitate / rosse) */
     };
+    const _per115=Math.max(40,Math.round(MATCH_TICK_MS/_SUB898/((typeof window!=='undefined'&&window.__CPM_NO484)?1:((context==="trial"&&primoProvino&&(hlIdx|0)===0&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?Math.max(2,matchSpeed||1):(matchSpeed||1)))));/* [giro 115] il periodo del battito, calcolato una volta (prima stava in coda al setInterval) */
     const iv=setInterval(()=>{
+      if(_CPM_TEST&&phaseRef.current==="playing"){try{window.__CPM_SCENA115=(window.__CPM_SCENA115||0)+_per115;}catch(_e){}}/* [giro 115] tempo di SCENA del gioco fluido (ms di battiti), letto da flussi-115 */
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);
@@ -34331,7 +34342,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _budget803=hlTimesRef.current.length;
         const _attesi803=Math.floor(_budget803*Math.max(0,Math.min(1,(nx-12)/76)));
         const _indietro803=(hlIdx<_attesi803);
-        const _apertoDa803=Math.min(_prog803|0,12)+((typeof window!=='undefined'&&window.__CPM_NO844)?0:((hashStr("apre844|"+_sm819())>>>0)%10));/* [7.844.0] e l'apertura della finestra e' seminata per partita (0-9 minuti in piu', finestra 8'-17'): la stessa ora in ogni gara e' un copione. v1 con 0-5: n°24 14/13/25/13, due semi su quattro allo stesso minuto */
+        const _apertoDa803=Math.min(_prog803|0,12)+((typeof window!=='undefined'&&window.__CPM_NO844)||(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?0:((hashStr("apre844|"+_sm819())>>>0)%10));/* [giro 115 G184-22] nel primo provino niente minuti in piu' seminati: la finestra apre al minuto del calendario (4') *//* [7.844.0] e l'apertura della finestra e' seminata per partita (0-9 minuti in piu', finestra 8'-17'): la stessa ora in ogni gara e' un copione. v1 con 0-5: n°24 14/13/25/13, due semi su quattro allo stesso minuto */
         /* [7.879 LA SCENA NASCE DA UN FATTO, NON DA UN MINUTO. Rosso __CPM_NO879]
            Misurato in browser: 0 scene su 4 si aprivano con l'eroe che aveva il pallone, e il mondo
            saltava all'apertura (eroe fino a 10u, pallone fino a 24u). La scena veniva appiccicata sopra
@@ -35189,7 +35200,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -38174,7 +38185,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso 7.478 */
         return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};
       });
-    },Math.max(40,Math.round(MATCH_TICK_MS/_SUB898/((typeof window!=='undefined'&&window.__CPM_NO484)?1:(matchSpeed||1)))));/* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
+    },_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>clearInterval(iv);
   },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
@@ -41443,12 +41454,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:5,fontWeight:700}}>FISCHIO FINALE</div>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
+                    {/* [giro 115 G184-23] i nomi delle squadre vanno su due righe invece di troncarsi («SELEZIONE GRANA…» a 360). Rosso __CPM_NO_G115_23 */}<div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
                     <div data-cpm="barra286-sx" style={{height:3,borderRadius:RAD.pill,background:_c286h.sx||scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
                   <div className="cpm-num" data-cpm="post-risultato-v2" style={{fontSize:FS.hero,fontWeight:800,lineHeight:1,color:TINTE.testo,flexShrink:0,fontFamily:FONT_TV}}>{isMatchHome?score.home:score.away}<span style={{color:TINTE.sec,fontSize:FS.display,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
+                    <div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
                     <div data-cpm="barra286-dx" style={{height:3,borderRadius:RAD.pill,background:_c286h.dx||scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
@@ -45305,6 +45316,9 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
+/* [giro 115 PO-321] interruttori rossi del giro: __CPM_NO_G115_<NN> riporta il punto G184-<NN> com'era nella 183 */
+function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
+const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
@@ -45369,8 +45383,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
             {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" className="cpm-t40" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
-          <div><label style={lbl}>Nazionalità</label><select className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
+          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name"
+            enterKeyHint={_no115("31")?undefined:"next"}
+            onKeyDown={e=>{if(e.key!=="Enter")return;if(_no115("31")){go();return;}e.preventDefault();try{const n=document.querySelector('[data-cpm="crea-nazione"]');if(n){n.focus();}else e.target.blur();}catch(_e){}}}
+            onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>
+            {!_no115("30")&&<div data-cpm="nome-contatore" aria-live="polite" style={{display:"flex",justifyContent:"space-between",gap:8,marginTop:4,fontSize:FS.caption,color:name.length>=NOME_MAX115?TH.txAmber:TH.muted}}><span>{name.length>=NOME_MAX115?"Hai raggiunto il limite: abbrevia il secondo nome se serve":" "}</span><span style={{fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{name.length}/{NOME_MAX115}</span></div>}{/* [giro 115 G184-30] il limite si vede: prima il nome veniva troncato in silenzio · [G184-31] Invio porta alla nazionalita', non avvia i provini · [G184-32] il campo resta in vista quando si apre la tastiera */}{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+          <div><label style={lbl}>Nazionalità</label><select data-cpm="crea-nazione" className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -45529,7 +45547,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
      non era ancora avanzato → si rigiocava un provino e il riepilogo ne mostrava 4. I risultati sono cappati a 3
      e l'append ha la guardia. */
   const _res0=(resume&&Array.isArray(resume.res))?resume.res.slice(0,3):[];
-  const[trialNum,setTrialNum]=useState(()=>Math.min(_res0.length,2)),[results,setResults]=useState(()=>_res0),[phase,setPhase]=useState("pre");
+  const[trialNum,setTrialNum]=useState(()=>Math.min(_res0.length,2)),[results,setResults]=useState(()=>_res0),[phase,setPhase]=useState(()=>(_res0.length>=3&&!_no115("20"))?"post":"pre");/* [giro 115 G184-20] tre risultati salvati = si riapre sul riepilogo (che ora resta a schermo), non sul provino 3 */
   const[oppList]=useState(()=>{try{if(resume&&Array.isArray(resume.opps)&&resume.opps.length===3){const l=resume.opps.map(id=>TRIAL_OPPONENTS.find(o=>o.id===id)).filter(Boolean);if(l.length===3)return l;}}catch(_e){}return shuffle(TRIAL_OPPONENTS).slice(0,3);});
   useEffect(()=>{try{let _sl=null;try{const _pv=JSON.parse(safeLS.get("cpm-trial-prog")||"null");if(_pv&&Number.isInteger(_pv.slot))_sl=_pv.slot;}catch(_e2){}safeLS.set("cpm-trial-prog",JSON.stringify({ph:"trial",p:initPlayer,tn:trialNum,res:results,opps:oppList.map(o=>o.id),slot:_sl}));}catch(_e){}},[trialNum,results]);// eslint-disable-line — [7.330.0] persistenza avanzamento provini · [7.332.0] lo SLOT dell'envelope precedente si PRESERVA (TrialFlow non conosce currentSlot; perderlo = firma su slot 0 = carriera sovrascritta)
   const opp=oppList[trialNum]||oppList[0];
@@ -45546,7 +45564,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {i:"🎯",t:"Piazzati su misura",d:"Su rigori e punizioni scegli lo STILE del tiro — angolato, potente, all'incrocio… — ognuno con il suo rischio e la sua ricompensa."},/* [7.331.0 collaudo PO «in nessuna azione si può mirare»] la barra di mira non esiste più dal SET-PIECE 2.0 (7.51.0) */
     {i:"⭐",t:"Conta tutto",d:"Gol, assist e voto finale decidono le offerte dei club alla fine dei tre provini."},
   ];
-  const onMatchEnd=r=>{if(results.length>=3)return;/* [7.331.0] mai un 4° risultato */const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2)setTimeout(()=>onComplete(nr),300);};
+  const onMatchEnd=r=>{if(results.length>=3)return;/* [7.331.0] mai un 4° risultato */const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2&&_no115("20"))setTimeout(()=>onComplete(nr),300);};/* [giro 115 G184-20] il voto del terzo provino si vede: le offerte partono dal tasto del riepilogo */
   useEffect(()=>{
     if(phase==="match")return;
     const h=e=>{
@@ -45555,7 +45573,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON")return;
       e.preventDefault();
       if(phase==="pre"){setPhase("match");}
-      else if(phase==="post"){const done=trialNum>=2;if(!done){setTrialNum(n=>n+1);setPhase("pre");}}
+      else if(phase==="post"){const done=trialNum>=2;if(!done){setTrialNum(n=>n+1);setPhase("pre");}else if(!_no115("20")&&results.length>=3)onComplete(results.slice(0,3));}
     };
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[phase,trialNum]);// eslint-disable-line
@@ -45565,18 +45583,20 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');if(!el)return;
     if(phase==="match"){el.style.padding="0";el.style.overflowY="hidden";}
-    else{el.style.padding="";el.style.overflowY="";}
+    else{el.style.padding="";el.style.overflowY="";if(!_no115("02"))el.style.paddingBottom="calc(14px + env(safe-area-inset-bottom,0px))";}/* [giro 115 G184-02] nei provini non c'e' barra di navigazione: i suoi 80 px di riserva non servono, l'azione scende in fondo */
     return()=>{el.style.padding="";el.style.overflowY="";};
   },[phase]);
   // 5.70.0 — contenitore match a ALTEZZA PIENA (come la carriera: height:100% + flex:1 attorno a LiveMatch),
   //   così il campo 3D riceve un'altezza reale invece di collassare.
-  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
+  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid "+(_no115("24")?"#bfdbfe":TH.bdBlue),fontSize:FS.caption,color:TH.brandText,fontWeight:700}} data-cpm="provino-cartellino">🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" primoProvino={trialNum===0} onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
   if(phase==="post"){const last=results[results.length-1],done=trialNum>=2;
     const _r=+(last.rating||6),_g=last.goals||0,_a=last.assists||0;
     const _emoji=_r>=7.5?"🌟":_r>=6.5?"👏":_r>=5.5?"🙂":"😕";
     const _title=_r>=7.5?"Prestazione da predestinato!":_r>=6.5?"Bella prova, gli scout ti hanno notato":_r>=5.5?"Prova sufficiente":"Provino in salita";
     const _react=_r>=7.5?"Gli osservatori prendono appunti freneticamente: un talento così non passa inosservato.":_r>=6.5?"Diversi osservatori annuiscono in tribuna. Sei sul taccuino dei club.":_r>=5.5?"Una prova onesta. C'è margine per convincere del tutto i club nei prossimi provini.":"Non la tua giornata migliore. Testa alta: hai ancora occasioni per ribaltare il giudizio.";
-    return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
+    const _pieno02=!_no115("02"),_rie20=done&&!_no115("20")&&results.length>=3;
+    return <div data-cpm="provino-post" style={_pieno02?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+      <div style={_pieno02?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:4}:undefined}>{/* [giro 115 G184-02] «schermata piena»: il blocco centrale prende l'altezza che avanza, il tasto sta in fondo */}
       <div style={{textAlign:"center",marginBottom:10}}>
         <div style={{fontSize:46,marginBottom:4,animation:"pulse87 1.4s ease-in-out infinite"}}>{_emoji}</div>
         <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800}}>PROVINO {trialNum+1} DI 3 · COMPLETATO</div>
@@ -45598,23 +45618,35 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{display:"flex",gap:11,alignItems:"flex-start"}}><div style={{fontSize:FS.title,lineHeight:1}}>🔭</div><div style={{flex:1,fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{_react}</div></div>
       </Card>
       {/* progress dots */}
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?(_no115("21")?"#fff":inkSu945(TH.success)):TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      {_rie20&&<div data-cpm="provini-riepilogo"><Card style={{padding:"12px 14px",marginBottom:9}}>
+        <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:8}}>📋 I tuoi tre provini</div>
+        {results.slice(0,3).map((r,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderTop:i?"1px solid "+TH.cardBorder:"none",fontSize:FS.small,color:TH.text}}>
+          <span style={{flex:1,fontWeight:700}}>Provino {i+1}{oppList[i]?<span style={{color:TH.muted,fontWeight:500}}> · {oppList[i].n}</span>:null}</span>
+          <span style={{color:TH.muted,whiteSpace:"nowrap"}}>⚽ {r.goals||0} · 🎯 {r.assists||0}</span>
+          <span style={{fontWeight:900,minWidth:34,textAlign:"right",fontVariantNumeric:"tabular-nums"}}>{r.rating}</span></div>)}
+        <div style={{display:"flex",gap:10,paddingTop:8,borderTop:"1px solid "+TH.cardBorder,fontSize:FS.small,fontWeight:800,color:TH.text}}><span style={{flex:1}}>Totale</span><span style={{whiteSpace:"nowrap"}}>⚽ {_totG} · 🎯 {_totA}</span><span style={{minWidth:34,textAlign:"right"}}>{(results.slice(0,3).reduce((a,r)=>a+(+r.rating||0),0)/3).toFixed(1)}</span></div>
+      </Card></div>}{/* [giro 115 G184-20] riepilogo dei tre provini: prima la schermata durava 300 ms e il voto decisivo non si vedeva mai */}
       {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>{provinoMancano85(2-trialNum)} per convincere i club.</div>}
-      <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
+      </div>
+      {_rie20?<Btn data-cpm="provini-offerte" onClick={()=>onComplete(results.slice(0,3))} fw style={{padding:"14px",fontSize:FS.bodyLg}}>Vedi le offerte dei club →</Btn>
+      :<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>}
     </div>;}
-  return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
+  const _pieno02p=!_no115("02");
+  return <div data-cpm="provino-pre" style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+    <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
       <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:8}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?(_no115("21")?"#fff":inkSu945(i<trialNum?TH.success:TH.warning)):TH.faint}} data-cpm="provino-passo">{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
     </div>
     {/* VS hero */}
     <Card style={{padding:0,overflow:"hidden",marginBottom:9}} shadow>
-      <div style={{background:"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
+      <div style={{background:_no115("24")?"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:"#e8c98f"}}>La squadra dei provinanti</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:_no115("24")?"#e8c98f":TINTE.oro}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}
@@ -45630,6 +45662,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       {_howTips.map((t,i)=><div key={i} style={{display:"flex",gap:11,marginBottom:i<_howTips.length-1?11:0,alignItems:"flex-start"}}><div style={{fontSize:FS.title,width:24,textAlign:"center"}}>{t.i}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:FS.small,color:TH.text}}>{t.t}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1,lineHeight:1.45}}>{t.d}</div></div></div>)}
     </Card>}
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
+    </div>
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
   </div>;
 }
@@ -46873,8 +46906,8 @@ function TutorialOverlay({name,step,onNext,onSkip}){
           ))}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:_tocco292()?"14px 12px":"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
-          <button onClick={onNext} style={{flex:1,background:TH.primary,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
+          <button data-cpm="tutorial-salta" onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:(_tocco292()||!_no115("25"))?"14px 12px":"8px 4px",minHeight:_no115("25")?undefined:44,minWidth:_no115("25")?undefined:44,textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>{/* [giro 115 G184-25] 44 px anche sul telefono (era 38x34) */}
+          <button data-cpm="tutorial-avanti" onClick={onNext} style={{flex:1,background:_no115("25")?TH.primary:TINTE.testo,color:_no115("25")?"#fff":TINTE.bg,border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
             {isLast?"Inizia la carriera! 🚀":"Avanti →"}
           </button>
         </div>
@@ -60025,28 +60058,52 @@ function SitTest({sitN}){
    per device (localStorage 'cpm-intro-seen'), sempre skippabile, SPENTA sotto ?cpmtest=1 (harness/validator
    attraversano il flusso create→trial). Pattern GalaStage3D: scena Three dedicata, dispose profondo,
    fallback poster se WebGL/reduced-motion. */
-function IntroCinematic({onDone}){
+function IntroCinematic({onDone,nome,riascolto}){
   const ref=React.useRef(null);
+  /* [giro 115 PO-321 «Sistemiamo anche il video iniziale»] sette correzioni del collaudo 184, ognuna col suo rosso
+     (__CPM_NO_G115_<NN> = comportamento della 183):
+     10 · il micro-tutorial dura ~6 s invece di 2,1: la scena va al RALENTI (0,31x) mentre si leggono le tre istruzioni,
+          poi riprende alla stessa velocita' (tutta la coreografia vive su UN orologio di scena, _el115) — niente ritocchi
+          ai tempi del tiro/gol/festa, che restano quelli collaudati dal PO;
+     11 · velo scuro in alto dietro le didascalie (+ testo bilanciato: «d'Oro.» non va piu' a capo da sola);
+     12 · «Salta» alto 44 px e sotto la safe-area;
+     13 · suoni GIA' presenti nel gioco via AudioMgr (fischio, tiro, rete, boato, applauso): AudioMgr rispetta il muto
+          totale delle Opzioni e non suona finche' un gesto non ha sbloccato l'audio — nessun file nuovo;
+     15 · riascolto: la CTA dice «Chiudi»; chiusura automatica 3,5 s dopo la CTA (era 13 s);
+     16 · corpo delle didascalie in clamp() sulla larghezza (PC);
+     17 · l'eroe dell'intro ha il nome del giocatore quando esiste (decisione PO 7.37: eroe con un nome). */
+  const _n10=_no115("10"),_n15=_no115("15"),_n17=_no115("17");
+  const _nm17=(!_n17&&nome&&String(nome).trim())?String(nome).trim():null;
+  const _cog17=_nm17?(_nm17.split(/\s+/).slice(-1)[0]||_nm17).toUpperCase():"PISANO";
+  /* orologio di scena: reale fino a 6,3 s; 6,3→8,0 di scena in 5,5 s reali (ralenti del tutorial); poi reale con 3,8 s di ritardo */
+  const _RS115=6.3,_SS115=1.7,_RR115=5.5;
+  const _el115=(raw)=>{if(_n10||raw<_RS115)return raw;if(raw<_RS115+_RR115)return _RS115+(raw-_RS115)*_SS115/_RR115;return raw-(_RR115-_SS115);};
+  const _rate115=(raw)=>(!_n10&&raw>=_RS115&&raw<_RS115+_RR115)?_SS115/_RR115:1;
+  const _test115=(typeof _CPM_TEST!=="undefined"&&_CPM_TEST);
+  const _suona115=(k)=>{if(_no115("13"))return;try{if(_test115){const w=window.__CPM_INTRO115||(window.__CPM_INTRO115={});(w.suoni=w.suoni||[]).push(k);}}catch(_e){}try{AudioMgr.play(k);}catch(_e){}};/* AudioMgr: muto totale (bus master a 0) e sblocco dopo un gesto (play tace finche' l'AudioContext non e' pronto) */
   const[beat,setBeat]=useState(0);
   const[flash,setFlash]=useState(false);
   const stRef=React.useRef({t0:0});
   const CAPS=[
     {t:0,   big:"KORWARD ELITE",sub:"La tua storia comincia stanotte."},
-    {t:4,   big:null,sub:"Giovanni Pisano. Numero 9. Una carriera vera, una settimana alla volta."},/* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
+    {t:4,   big:null,sub:_nm17?(_nm17+". Una carriera vera, una settimana alla volta."):"Giovanni Pisano. Numero 9. Una carriera vera, una settimana alla volta."},/* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
     {t:6.3, big:null,sub:"Il live match, come lo giocherai davvero:",chips:["⏱️ 1 · Tieniti pronto: arriva l'highlight","🕹️ 2 · Effettua i movimenti negli spazi","👆 3 · Scegli l'azione — anche su rigori e punizioni"]},
     {t:8.4,big:null,sub:null},
-    {t:9.6,big:"⚽ GOOOL DI PISANO!",sub:"Vivi il momento — in 3D, azione per azione."},
+    {t:9.6,big:"⚽ GOOOL DI "+_cog17+"!",sub:"Vivi il momento — in 3D, azione per azione."},
     {t:12.8,big:null,sub:"Ogni gol scrive la tua leggenda."},
     {t:16.3,big:"Dalla Primavera al Trofeo d'Oro.",sub:"Tre provini ti separano dal tuo primo contratto.",cta:true},
   ];
   React.useEffect(()=>{
+    const _S13=[[0.2,"ref.whistle"],[8.8,"ball.kick"],[9.15,"ball.net"],[9.6,"crowd.roar"],[16.3,"crowd.applause"]];let _s13=0;
     const iv=setInterval(()=>{
-      const el=(Date.now()-stRef.current.t0)/1000;
+      const raw=(Date.now()-stRef.current.t0)/1000;const el=_el115(raw);
       let b=0;for(let i=0;i<CAPS.length;i++)if(el>=CAPS[i].t)b=i;
       setBeat(b);
+      while(_s13<_S13.length&&el>=_S13[_s13][0]){_suona115(_S13[_s13][1]);_s13++;}
+      try{if(_test115){const w=window.__CPM_INTRO115||(window.__CPM_INTRO115={});w.raw=raw;w.el=el;w.beat=b;const bl=(w.beats=w.beats||[]);if(!bl.length||bl[bl.length-1].b!==b)bl.push({b,raw:Math.round(raw*100)/100});}}catch(_e){}
       if(el>=9.5&&el<9.9)setFlash(true);
       if(el>=9.9)setFlash(false);
-      if(el>29.4){clearInterval(iv);onDone&&onDone();}
+      if(el>(_n15?29.4:19.8)){clearInterval(iv);try{if(_test115){window.__CPM_INTRO115.chiusa={raw:Math.round(raw*100)/100,auto:true};}}catch(_e){}onDone&&onDone();}
     },120);
     return()=>clearInterval(iv);
   },[]);// eslint-disable-line
@@ -60248,7 +60305,7 @@ function IntroCinematic({onDone}){
     const camLook=new THREE.Vector3(0,1.4,-4);
     let raf=null;let netKick=0;let shakeIntro=0;
     const tick=()=>{
-      const el=(Date.now()-stRef.current.t0)/1000;
+      const _raw115=(Date.now()-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
       // ---- coreografia eroe/palla [7.32.3 collaudo PO «palla ANCORA dietro · movimenti lenti e poco
       //      fluidi · post-gol troppo lungo»] traiettoria PURA posAt(t): la direzione della palla è la
       //      DERIVATA ESATTA del moto (differenza finita sul path analitico) → davanti ai piedi in OGNI
@@ -60310,7 +60367,7 @@ function IntroCinematic({onDone}){
         if(heroActs.jog)heroActs.jog.timeScale=clamp(0.55+(stG.vNow||1)*0.55,0.6,1.7);/* [7.37.1 collaudo PO «movimenti da migliorare in fluidità»] cadenza del passo dalla VELOCITÀ REALE del path (anti foot-slide) */
         if(heroAv)heroAv.rotation.x=-0.05*Math.min(stG.vNow||0,2.4)*Math.min(1,run*1.4);/* [7.42.0] lean CONTINUO (il gate on/off a run>0.3 scattava = robotico) */
         const _mdt=Math.min(0.12,(Date.now()-(stG.lastT||Date.now()))/1000);stG.lastT=Date.now();/* [7.32.7] cap 0.05→0.12: a fps bassi le clip restavano in SLOW-MO rispetto al corpo (gliding) */
-        mixers.forEach(m=>m.update(_mdt));
+        mixers.forEach(m=>m.update(_mdt*_rate115(_raw115)));/* [giro 115 G184-10] le clip rallentano col corpo (niente piedi che scivolano) */
         try{if(typeof _corrPostura23==='function'&&window.__CPM_INTRO_CG23){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
         if(stG.lifted&&heroActs.lift){const _ap=heroActs.lift.getClip().duration*0.34;if(heroActs.lift.time>=_ap){heroActs.lift.time=_ap;heroActs.lift.paused=true;}}/* congela all'apice (due mani sopra la testa) */
       }
@@ -60379,23 +60436,28 @@ function IntroCinematic({onDone}){
     return()=>{try{disposed=true;clearTimeout(_fbT);if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
   },[]);// eslint-disable-line
   const cap=CAPS[beat]||CAPS[0];
+  const _n11=_no115("11"),_n12=_no115("12"),_n16=_no115("16");
+  const _fz16=(px,vw,mx)=>_n16?px:`clamp(${px}px, ${vw}vw, ${mx}px)`;/* [giro 115 G184-16] su PC le didascalie crescono con la larghezza */
+  const _chi15=!!riascolto&&!_n15;
+  const _chiudi15=()=>{try{if(_test115){window.__CPM_INTRO115.chiusa={raw:Math.round((Date.now()-stRef.current.t0)/100)/10,auto:false};}}catch(_e){}onDone&&onDone();};
   return(
     <div style={{position:"fixed",inset:0,zIndex:(typeof window!=="undefined"&&window.__CPM_NO_INTRO12)?70:10050,background:"#050810",overflow:"hidden",fontFamily:"inherit"}}>{/* [7.999.12 collaudo PO «Rivedi l'intro non funziona più»] l'intro partiva SOTTO il pannello Opzioni (zIndex 9998): ora sta sopra tutto. Rosso __CPM_NO_INTRO12 */}
       <div ref={ref} style={{position:"absolute",inset:0}}/>
       {flash&&<div style={{position:"absolute",inset:0,background:"#fff",opacity:0.4,pointerEvents:"none"}}/>}
-      <div style={{position:"absolute",left:0,right:0,top:"9%",textAlign:"center",pointerEvents:"none",padding:"0 20px"}}>
+      {!_n11&&(cap.big||cap.sub||cap.chips)&&<div data-cpm="intro-velo" style={{position:"absolute",left:0,right:0,top:0,height:cap.chips?"62%":"48%",background:"linear-gradient(180deg,rgba(5,8,16,0.86) 0%,rgba(5,8,16,0.74) 55%,rgba(5,8,16,0) 100%)",pointerEvents:"none",transition:"height .4s ease"}}/>}{/* [giro 115 G184-11] velo dietro le didascalie: la bandiera bianca dello stadio le portava a 2:1 */}
+      <div style={{position:"absolute",left:0,right:0,top:"9%",textAlign:"center",pointerEvents:"none",padding:"0 20px",textWrap:_n11?undefined:"balance"}}>
         {cap.big&&(cap.big==="KORWARD ELITE"
           ?<div key={"b"+beat} style={{display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both",filter:"drop-shadow(0 3px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 22px rgba(163,38,58,0.5))"}}><Wordmark size={44}/></div>/* [7.32.1 collaudo PO «la scritta deve essere uguale a quella del logo»] */
-          :<div key={"b"+beat} style={{fontSize:cap.big.length>14?24:38,fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
-        {cap.sub&&<div key={"s"+beat} style={{fontSize:FS.bodyLg,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
+          :<div key={"b"+beat} style={{fontSize:cap.big.length>14?_fz16(24,2.6,40):_fz16(38,3.8,60),fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
+        {cap.sub&&<div key={"s"+beat} data-cpm="intro-sub" style={{fontSize:_fz16(FS.bodyLg,1.6,28),maxWidth:_n16?undefined:"min(92vw, 900px)",margin:_n16?undefined:"0 auto",color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
         {cap.chips&&<div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"center",marginTop:14}}>
-          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:FS.body,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
+          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:_fz16(FS.body,1.05,22),fontWeight:800,animation:`celebTitle .5s ease-out ${_n10?(0.3+i*0.55):(0.3+i*1.2)}s both`}} data-cpm="intro-chip">{c}</div>))}{/* [giro 115 G184-10] una istruzione ogni 1,2 s: ognuna resta a schermo >= 3 s */}
         </div>}
       </div>
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
-        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
+        <button data-cpm="intro-cta" onClick={_chiudi15} style={{padding:"15px 34px",minHeight:44,borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>{_chi15?"Chiudi ✕":"🎬 Comincia dal provino →"}</button>{/* [giro 115 G184-15] riascolto da Home/Profilo: si chiude e basta, quindi dice «Chiudi» */}
       </div>}
-      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
+      <button data-cpm="intro-salta" onClick={_chiudi15} style={{position:"absolute",top:_n12?14:"calc(14px + env(safe-area-inset-top, 0px))",right:_n12?14:"calc(14px + env(safe-area-inset-right, 0px))",padding:_n12?"8px 15px":"10px 18px",minHeight:_n12?undefined:44,minWidth:_n12?undefined:44,borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:_n12?FS.small:FS.body,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
   );
 }
@@ -60684,7 +60746,7 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,colorScheme:"dark",/* [G1.6 grafica] i controlli nativi (select/option, scrollbar) seguono il tema: senza color-scheme le <option> restano nere sul fondo scuro (541 nodi a 1,29:1 nella Creazione, tema scuro) */fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
-      {showIntro&&<IntroCinematic onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
+      {showIntro&&<IntroCinematic riascolto nome={player&&player.name} onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
       {/* [7.331.0 direttiva PO «questo pulsante opzioni deve essere visibile solo nella home e a carriera avviata»]
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
@@ -60819,7 +60881,7 @@ function App(){
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
-  if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
+  if(phase==="cinematic"&&player)return wrap(<IntroCinematic nome={player&&player.name} onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
   if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots} lang={lang} toggleLang={toggleLang} onNewGamePlusCB={(bonus)=>{setLegacyBonus(bonus);setPhase("create");}} onExitToMenu={()=>{try{safeLS.set("cpm-active","");safeLS.set("cpm-match-resume","");}catch(_e){}setPlayer(null);setPhase("home");refreshSlots();}}/>);/* [7.149.0] uscita al menu: azzera l'auto-ripresa (carriera + partita) → prossimo boot torna alla home */

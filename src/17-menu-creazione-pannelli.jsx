@@ -397,6 +397,9 @@ function LogoMark({size=32,shadow=true}){
     </svg>
   );
 }
+/* [giro 115 PO-321] interruttori rossi del giro: __CPM_NO_G115_<NN> riporta il punto G184-<NN> com'era nella 183 */
+function _no115(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G115_'+k];}catch(_e){return false;}}
+const NOME_MAX115=22;
 function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
   const[name,setName]=useState(""),[nation,setNation]=useState("Italia"),[avatarId,setAvatarId]=useState(0),[page,setPage]=useState(0),[voltoVar,setVoltoVar]=useState(0);
   /* [23/09 POC — SCELTA DEL VOLTO DELL'EROE] i candidati seguono l'aspetto scelto (carnagione e capelli, cosi' il ritratto somiglia all'eroe 3D); «altro volto» scorre le alternative. Il volto scelto e' salvato in player.voltoEroe. */
@@ -461,8 +464,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
             {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" className="cpm-t40" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
-          <div><label style={lbl}>Nazionalità</label><select className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
+          <div><label style={lbl}>Nome (obbligatorio)</label><input className="cpm-t40i" style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={NOME_MAX115} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name"
+            enterKeyHint={_no115("31")?undefined:"next"}
+            onKeyDown={e=>{if(e.key!=="Enter")return;if(_no115("31")){go();return;}e.preventDefault();try{const n=document.querySelector('[data-cpm="crea-nazione"]');if(n){n.focus();}else e.target.blur();}catch(_e){}}}
+            onFocus={e=>{if(_no115("32"))return;const el=e.target;const vai=()=>{try{if(document.activeElement===el)el.scrollIntoView({block:"center",behavior:"smooth"});}catch(_e){}};setTimeout(vai,320);const vv=window.visualViewport;const h=()=>vai();try{(vv||window).addEventListener("resize",h);el.addEventListener("blur",()=>{try{(vv||window).removeEventListener("resize",h);}catch(_e){}},{once:true});}catch(_e){}}}/>
+            {!_no115("30")&&<div data-cpm="nome-contatore" aria-live="polite" style={{display:"flex",justifyContent:"space-between",gap:8,marginTop:4,fontSize:FS.caption,color:name.length>=NOME_MAX115?TH.txAmber:TH.muted}}><span>{name.length>=NOME_MAX115?"Hai raggiunto il limite: abbrevia il secondo nome se serve":" "}</span><span style={{fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{name.length}/{NOME_MAX115}</span></div>}{/* [giro 115 G184-30] il limite si vede: prima il nome veniva troncato in silenzio · [G184-31] Invio porta alla nazionalita', non avvia i provini · [G184-32] il campo resta in vista quando si apre la tastiera */}{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+          <div><label style={lbl}>Nazionalità</label><select data-cpm="crea-nazione" className="cpm-t40i" style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
         </div>
         {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -621,7 +628,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
      non era ancora avanzato → si rigiocava un provino e il riepilogo ne mostrava 4. I risultati sono cappati a 3
      e l'append ha la guardia. */
   const _res0=(resume&&Array.isArray(resume.res))?resume.res.slice(0,3):[];
-  const[trialNum,setTrialNum]=useState(()=>Math.min(_res0.length,2)),[results,setResults]=useState(()=>_res0),[phase,setPhase]=useState("pre");
+  const[trialNum,setTrialNum]=useState(()=>Math.min(_res0.length,2)),[results,setResults]=useState(()=>_res0),[phase,setPhase]=useState(()=>(_res0.length>=3&&!_no115("20"))?"post":"pre");/* [giro 115 G184-20] tre risultati salvati = si riapre sul riepilogo (che ora resta a schermo), non sul provino 3 */
   const[oppList]=useState(()=>{try{if(resume&&Array.isArray(resume.opps)&&resume.opps.length===3){const l=resume.opps.map(id=>TRIAL_OPPONENTS.find(o=>o.id===id)).filter(Boolean);if(l.length===3)return l;}}catch(_e){}return shuffle(TRIAL_OPPONENTS).slice(0,3);});
   useEffect(()=>{try{let _sl=null;try{const _pv=JSON.parse(safeLS.get("cpm-trial-prog")||"null");if(_pv&&Number.isInteger(_pv.slot))_sl=_pv.slot;}catch(_e2){}safeLS.set("cpm-trial-prog",JSON.stringify({ph:"trial",p:initPlayer,tn:trialNum,res:results,opps:oppList.map(o=>o.id),slot:_sl}));}catch(_e){}},[trialNum,results]);// eslint-disable-line — [7.330.0] persistenza avanzamento provini · [7.332.0] lo SLOT dell'envelope precedente si PRESERVA (TrialFlow non conosce currentSlot; perderlo = firma su slot 0 = carriera sovrascritta)
   const opp=oppList[trialNum]||oppList[0];
@@ -638,7 +645,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {i:"🎯",t:"Piazzati su misura",d:"Su rigori e punizioni scegli lo STILE del tiro — angolato, potente, all'incrocio… — ognuno con il suo rischio e la sua ricompensa."},/* [7.331.0 collaudo PO «in nessuna azione si può mirare»] la barra di mira non esiste più dal SET-PIECE 2.0 (7.51.0) */
     {i:"⭐",t:"Conta tutto",d:"Gol, assist e voto finale decidono le offerte dei club alla fine dei tre provini."},
   ];
-  const onMatchEnd=r=>{if(results.length>=3)return;/* [7.331.0] mai un 4° risultato */const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2)setTimeout(()=>onComplete(nr),300);};
+  const onMatchEnd=r=>{if(results.length>=3)return;/* [7.331.0] mai un 4° risultato */const res={goals:r.goals,assists:r.assists,rating:r.rating};const nr=[...results,res];setResults(nr);setPlayer(p=>({...p,totalGoals:(p.totalGoals||0)+r.goals,totalAssists:(p.totalAssists||0)+r.assists,totalMatches:(p.totalMatches||0)+1}));setPhase("post");if(trialNum>=2&&_no115("20"))setTimeout(()=>onComplete(nr),300);};/* [giro 115 G184-20] il voto del terzo provino si vede: le offerte partono dal tasto del riepilogo */
   useEffect(()=>{
     if(phase==="match")return;
     const h=e=>{
@@ -647,7 +654,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON")return;
       e.preventDefault();
       if(phase==="pre"){setPhase("match");}
-      else if(phase==="post"){const done=trialNum>=2;if(!done){setTrialNum(n=>n+1);setPhase("pre");}}
+      else if(phase==="post"){const done=trialNum>=2;if(!done){setTrialNum(n=>n+1);setPhase("pre");}else if(!_no115("20")&&results.length>=3)onComplete(results.slice(0,3));}
     };
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[phase,trialNum]);// eslint-disable-line
@@ -657,18 +664,20 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
   useEffect(()=>{
     const el=document.querySelector('.cpm-scroll');if(!el)return;
     if(phase==="match"){el.style.padding="0";el.style.overflowY="hidden";}
-    else{el.style.padding="";el.style.overflowY="";}
+    else{el.style.padding="";el.style.overflowY="";if(!_no115("02"))el.style.paddingBottom="calc(14px + env(safe-area-inset-bottom,0px))";}/* [giro 115 G184-02] nei provini non c'e' barra di navigazione: i suoi 80 px di riserva non servono, l'azione scende in fondo */
     return()=>{el.style.padding="";el.style.overflowY="";};
   },[phase]);
   // 5.70.0 — contenitore match a ALTEZZA PIENA (come la carriera: height:100% + flex:1 attorno a LiveMatch),
   //   così il campo 3D riceve un'altezza reale invece di collassare.
-  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
+  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:RAD.xl,background:TH.bgBlue,border:"1px solid "+(_no115("24")?"#bfdbfe":TH.bdBlue),fontSize:FS.caption,color:TH.brandText,fontWeight:700}} data-cpm="provino-cartellino">🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" primoProvino={trialNum===0} onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
   if(phase==="post"){const last=results[results.length-1],done=trialNum>=2;
     const _r=+(last.rating||6),_g=last.goals||0,_a=last.assists||0;
     const _emoji=_r>=7.5?"🌟":_r>=6.5?"👏":_r>=5.5?"🙂":"😕";
     const _title=_r>=7.5?"Prestazione da predestinato!":_r>=6.5?"Bella prova, gli scout ti hanno notato":_r>=5.5?"Prova sufficiente":"Provino in salita";
     const _react=_r>=7.5?"Gli osservatori prendono appunti freneticamente: un talento così non passa inosservato.":_r>=6.5?"Diversi osservatori annuiscono in tribuna. Sei sul taccuino dei club.":_r>=5.5?"Una prova onesta. C'è margine per convincere del tutto i club nei prossimi provini.":"Non la tua giornata migliore. Testa alta: hai ancora occasioni per ribaltare il giudizio.";
-    return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
+    const _pieno02=!_no115("02"),_rie20=done&&!_no115("20")&&results.length>=3;
+    return <div data-cpm="provino-post" style={_pieno02?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+      <div style={_pieno02?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:4}:undefined}>{/* [giro 115 G184-02] «schermata piena»: il blocco centrale prende l'altezza che avanza, il tasto sta in fondo */}
       <div style={{textAlign:"center",marginBottom:10}}>
         <div style={{fontSize:46,marginBottom:4,animation:"pulse87 1.4s ease-in-out infinite"}}>{_emoji}</div>
         <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800}}>PROVINO {trialNum+1} DI 3 · COMPLETATO</div>
@@ -690,23 +699,35 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{display:"flex",gap:11,alignItems:"flex-start"}}><div style={{fontSize:FS.title,lineHeight:1}}>🔭</div><div style={{flex:1,fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{_react}</div></div>
       </Card>
       {/* progress dots */}
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?(_no115("21")?"#fff":inkSu945(TH.success)):TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      {_rie20&&<div data-cpm="provini-riepilogo"><Card style={{padding:"12px 14px",marginBottom:9}}>
+        <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:8}}>📋 I tuoi tre provini</div>
+        {results.slice(0,3).map((r,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderTop:i?"1px solid "+TH.cardBorder:"none",fontSize:FS.small,color:TH.text}}>
+          <span style={{flex:1,fontWeight:700}}>Provino {i+1}{oppList[i]?<span style={{color:TH.muted,fontWeight:500}}> · {oppList[i].n}</span>:null}</span>
+          <span style={{color:TH.muted,whiteSpace:"nowrap"}}>⚽ {r.goals||0} · 🎯 {r.assists||0}</span>
+          <span style={{fontWeight:900,minWidth:34,textAlign:"right",fontVariantNumeric:"tabular-nums"}}>{r.rating}</span></div>)}
+        <div style={{display:"flex",gap:10,paddingTop:8,borderTop:"1px solid "+TH.cardBorder,fontSize:FS.small,fontWeight:800,color:TH.text}}><span style={{flex:1}}>Totale</span><span style={{whiteSpace:"nowrap"}}>⚽ {_totG} · 🎯 {_totA}</span><span style={{minWidth:34,textAlign:"right"}}>{(results.slice(0,3).reduce((a,r)=>a+(+r.rating||0),0)/3).toFixed(1)}</span></div>
+      </Card></div>}{/* [giro 115 G184-20] riepilogo dei tre provini: prima la schermata durava 300 ms e il voto decisivo non si vedeva mai */}
       {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>{provinoMancano85(2-trialNum)} per convincere i club.</div>}
-      <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
+      </div>
+      {_rie20?<Btn data-cpm="provini-offerte" onClick={()=>onComplete(results.slice(0,3))} fw style={{padding:"14px",fontSize:FS.bodyLg}}>Vedi le offerte dei club →</Btn>
+      :<Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>}
     </div>;}
-  return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
+  const _pieno02p=!_no115("02");
+  return <div data-cpm="provino-pre" style={_pieno02p?{width:"100%",maxWidth:560,margin:"0 auto",minHeight:"100%",display:"flex",flexDirection:"column"}:{width:"100%",maxWidth:560,margin:"0 auto"}}>
+    <div style={_pieno02p?{flex:1,display:"flex",flexDirection:"column",justifyContent:"center"}:undefined}>{/* [giro 115 G184-02] «schermata piena» */}
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
       <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:8}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?(_no115("21")?"#fff":inkSu945(i<trialNum?TH.success:TH.warning)):TH.faint}} data-cpm="provino-passo">{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
     </div>
     {/* VS hero */}
     <Card style={{padding:0,overflow:"hidden",marginBottom:9}} shadow>
-      <div style={{background:"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
+      <div style={{background:_no115("24")?"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:"#e8c98f"}}>La squadra dei provinanti</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:_no115("24")?"#e8c98f":TINTE.oro}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}
@@ -722,6 +743,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       {_howTips.map((t,i)=><div key={i} style={{display:"flex",gap:11,marginBottom:i<_howTips.length-1?11:0,alignItems:"flex-start"}}><div style={{fontSize:FS.title,width:24,textAlign:"center"}}>{t.i}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:FS.small,color:TH.text}}>{t.t}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1,lineHeight:1.45}}>{t.d}</div></div></div>)}
     </Card>}
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
+    </div>
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
   </div>;
 }
@@ -1965,8 +1987,8 @@ function TutorialOverlay({name,step,onNext,onSkip}){
           ))}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:_tocco292()?"14px 12px":"8px 4px",textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>
-          <button onClick={onNext} style={{flex:1,background:TH.primary,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
+          <button data-cpm="tutorial-salta" onClick={onSkip} style={{background:"none",border:"none",color:TH.faint,fontSize:FS.small,cursor:"pointer",padding:(_tocco292()||!_no115("25"))?"14px 12px":"8px 4px",minHeight:_no115("25")?undefined:44,minWidth:_no115("25")?undefined:44,textDecoration:"underline",whiteSpace:"nowrap"}}>Salta</button>{/* [giro 115 G184-25] 44 px anche sul telefono (era 38x34) */}
+          <button data-cpm="tutorial-avanti" onClick={onNext} style={{flex:1,background:_no115("25")?TH.primary:TINTE.testo,color:_no115("25")?"#fff":TINTE.bg,border:"none",borderRadius:RAD.md,padding:"13px 0",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em"}}>
             {isLast?"Inizia la carriera! 🚀":"Avanti →"}
           </button>
         </div>
