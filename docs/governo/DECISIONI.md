@@ -979,3 +979,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 07/11 — verifica di affaan-m/everything-claude-code (richiesta PO)
 - Letto in sola lettura (v2.2.3, 06/11; MIT; ~71 agenti, 314 skill, 98 comandi, ganci su 7 eventi), non installato, copia cancellata. Esito: non utile all'app (non tocca la scalabilità del gioco a file unico), sovrapposto alle nostre 10 skill e al protocollo di CLAUDE.md, ganci che girerebbero in ogni sessione figlia; il loro GateGuard costa ~45% di passaggi in più senza efficacia misurata (fonte: loro CHANGELOG). Stelle non confermabili (accesso GitHub non abilitato in sessione).
 - Decisione PO: «Sì, registrale per la 181» → PO-310 (costo per sessione, strumento nostro) e PO-311 (regole per i controlli instabili).
+
+### 07/11 — collaudo PO della 180: spalti della 2D (PO-312), decisione «Solo spalti, subito»
+- Foto del PO (partita 2D, FC Merseyside rosso contro CRA): spalti e cartelloni prevalentemente blu e bianchi, il rosso del club quasi assente.
+- Questionario, risposta PO: **«Solo spalti, subito»** (scartati «Avvia la 181 completa» e «Aspetta»). La 7.999.181 è una correttiva con il solo PO-312; PO-305/309/310/311 passano alla 7.999.182.
+- Attuazione: lavoro/181 da main (7.999.180); giro 109 su PO-312.
