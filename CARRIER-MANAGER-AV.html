@@ -60569,9 +60569,16 @@ function App(){
         html,body{background:${TINTE.bg};}
         .cpm-v2nav .cpm-nav-tabs{background:${TINTE.sup}!important;border:1px solid ${TINTE.bordo}!important;border-radius:20px;padding:5px!important;gap:2px;backdrop-filter:none;}
         .cpm-v2nav .cpm-nav-tabs button{border-top:none!important;border-left:none!important;border-radius:14px;min-height:52px;padding:6px 1px!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
-        .cpm-v2nav .cpm-nav-tabs button::before{content:"";width:6px;height:6px;border-radius:50%;background:transparent;flex-shrink:0;}
+        ${(typeof window!=="undefined"&&window.__CPM_NO_PUNTINO181)?`.cpm-v2nav .cpm-nav-tabs button::before{content:"";width:6px;height:6px;border-radius:50%;background:transparent;flex-shrink:0;}`
+        /* [7.999.181 · collaudo PO 07/11 «Il puntino rosso sui pulsanti non mi fa impazzire» → questionario: «Lineetta oro sotto»]
+           al posto del pallino del colore del club, una lineetta corta d'oro SOTTO la scritta della scheda attiva (telefono e tablet
+           verticale, `order:2` nella colonna); sul PC, dove la voce e' in riga, la stessa lineetta in verticale a sinistra della
+           scritta. Tinta: l'oro scuro della cornice (#9c6a12, gia' in TINTE.oroCornice) e non TINTE.oro #e8b44a, perche' la pillola
+           attiva e' chiara (#f4f1ea) e l'oro chiaro li' sopra fa circa 1,9:1, sotto il 3:1 dei segni d'interfaccia (WCAG 1.4.11);
+           #9c6a12 su #f4f1ea fa circa 4:1. Rosso __CPM_NO_PUNTINO181 = il pallino della 7.999.180. */
+        :`.cpm-v2nav .cpm-nav-tabs button::before{content:"";width:18px;height:3px;border-radius:2px;background:transparent;flex-shrink:0;order:2;}`}
         .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{background:${TINTE.testo}!important;}
-        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act::before{background:var(--cpm-club,#8e1f33);}
+        .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act::before{background:${(typeof window!=="undefined"&&window.__CPM_NO_PUNTINO181)?"var(--cpm-club,#8e1f33)":"#9c6a12"};}
         .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{color:${TINTE.bg}!important;}
         .cpm-v2nav .cpm-nav-tabs button:not(.cpm-tab-act) div{color:${TINTE.sec}!important;}
         .cpm-v2nav .cpm-nav-strisce{background:${TINTE.sup}!important;border:1px solid ${TINTE.bordo}!important;border-bottom:none!important;border-radius:20px 20px 0 0;}
@@ -60586,6 +60593,7 @@ function App(){
           .cpm-v2nav{background:${TINTE.inc};border-right:1px solid ${TINTE.bordo}!important;padding:16px 8px;gap:12px;}
           .cpm-v2nav .cpm-nav-tabs{background:transparent!important;border:none!important;border-radius:0;padding:0!important;gap:4px;}
           .cpm-v2nav .cpm-nav-tabs button{min-height:46px;border-radius:12px;padding:0 14px!important;flex-direction:row!important;justify-content:flex-start;gap:10px;}
+          ${(typeof window!=="undefined"&&window.__CPM_NO_PUNTINO181)?"":".cpm-v2nav .cpm-nav-tabs button::before{width:3px;height:18px;order:0;}"}
           .cpm-v2nav .cpm-nav-tabs button div{font-family:'Barlow','Segoe UI',sans-serif!important;font-size:15px!important;text-transform:none!important;letter-spacing:0!important;font-weight:500!important;}
           .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act div{font-weight:700!important;}
           .cpm-v2nav .cpm-nav-tabs button.cpm-tab-act{border-left:none!important;}
