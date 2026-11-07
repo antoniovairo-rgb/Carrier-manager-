@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (19)
+## Voci aperte o parziali (21)
 
-Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: verificare confine zona G) 1 ·  2.
+Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: verificare confine zona G) 1 ·  4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -41,10 +41,8 @@ Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: v
 | PO-309 | 06/11 | Collaudo 180: difetti BASSI non toccati nella 180 (G180-11 posizioni in classifica nei colori V1, 17 banner d'esito più largo del contenitore, 20 sottoschede e fisarmoniche a 31-32 px col mouse, 23 resti ardesia V1 nella colonna di cronaca e nei tasti «Salta», 24 nomi in Arial nelle formazioni, 25 raggi fuori dalle tavole, 27 possesso 100%·0% al 1'-2', 31 tasti e numeri delle giocate su PC, 33 nome sul giallo nell'ingresso) | difetto (grafica) basso | APERTO — per la 7.999.182 |  |  |  |  |
 | PO-310 | 07/11 | PO (dopo la verifica del repository affaan-m/everything-claude-code, non installato): idea da riprendere a mano — riepilogo automatico del costo di ogni sessione | miglioramento (processo) | APERTO — per la 7.999.182: strumento nostro (es. tools/costi-sessioni) che raccoglie il costo di ogni sessione figlia (get_session usage.cost_usd) per giro e per versione, scritto in docs/governo e mostrato nella pagina di governo; nessun gancio esterno installato |  |  |  |  |
 | PO-311 | 07/11 | PO (stessa verifica): idea da riprendere a mano — regole per i controlli instabili | miglioramento (controlli) | APERTO — per la 7.999.182: regole scritte nei nostri strumenti (CLAUDE.md o skill game-qa) per i guardiani che passano a volte sì e a volte no: ogni sonda dichiara braccio e motivo per ultimo (già nel giro 104), area di tocco effettiva, misura in tempo di scena e non di parete, attesa di eventi e non di tempi fissi, ripetizione dichiarata; censimento dei guardiani instabili delle catene 178-180 (riserva-103, contatto-103, portiere-252, carriera3-94 D2) con piano di riparazione |  |  |  |  |
-| PO-312 | 07/11 | Collaudo PO sulla 7.999.180 (foto docs/collaudo-po/180-partita2d-spalti-merseyside.jpg, telefono, FC Merseyside rosso contro CRA bianco/nero, 5'): «Nella live 2D i colori dei tifosi / spalti non sono coerenti con i colori dei club» | difetto (grafica partita 2D) medio | CHIUSO 07/11 con la 7.999.181 — giro 109: spalti coi colori dei club (_spalti109, guardiano spalti-109), sigla della porta e nomi sovrapposti corretti; la correzione dei nomi va guardata al prossimo collaudo dal telefono (caso non riprodotto dalla sonda) |  |  |  |  |
-| PO-313 | 07/11 | Collaudo PO sulla 7.999.180 (foto della classifica, telefono): «Il puntino rosso sui pulsanti non mi fa impazzire» → questionario «Lineetta oro sotto», «Dentro la 181» | miglioramento (grafica) | CHIUSO 07/11 con la 7.999.181 — lineetta oro #9c6a12 sotto la scheda attiva (PC a sinistra), guardiano lineetta-181 |  |  |  |  |
 
-## Storico — voci chiuse (290)
+## Storico — voci chiuse (292)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -338,6 +336,8 @@ Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: v
 | PO-306 | 06/11 | Collaudo PO sulla 7.999.179 pubblicata (foto docs/collaudo-po/179-home-telefono-merseyside.jpg, telefono, FC Merseyside): «Si vede malissimo» | difetto (grafica) ALTO | CHIUSO 06/11 con la 7.999.180 — giro 106 (fondoClub106, testata, «Avversario in zona retrocessione»; guardiano home-colori-106) + collaudo 180 e giro 108 |  |  |  |  |
 | PO-307 | 06/11 | PO: «fai una verifica di qualità grafica, visiva e coerenza su tutte le schermate e pop up» | collaudo (grafica) | CHIUSO 06/11 con la 7.999.180 — collaudo docs/collaudo-grafico/180/RAPPORTO.md (438 foto, 33 difetti); 6 alti e 17 medi riparati nel giro 108 (guardiano collaudo-108); i 9 bassi in PO-309 |  |  |  |  |
 | PO-308 | 06/11 | PO: «Durante la partita 2D rivedere il posizionamento e la logica della freccetta sulle statistiche / pagelle» (precisazione PO: è la freccetta del pannello statistiche/pagelle, non la capsula del verso d'attacco) | difetto (partita 2D) | CHIUSO 06/11 con la 7.999.180 — giro 107: tasto del pannello Statistiche/Pagelle col verso giusto, tocco 44 px, linguetta che apre; guardiano freccia-107 |  |  |  |  |
+| PO-312 | 07/11 | Collaudo PO sulla 7.999.180 (foto docs/collaudo-po/180-partita2d-spalti-merseyside.jpg, telefono, FC Merseyside rosso contro CRA bianco/nero, 5'): «Nella live 2D i colori dei tifosi / spalti non sono coerenti con i colori dei club» | difetto (grafica partita 2D) medio | CHIUSO 07/11 con la 7.999.181 — giro 109: spalti coi colori dei club (_spalti109, guardiano spalti-109), sigla della porta e nomi sovrapposti corretti; la correzione dei nomi va guardata al prossimo collaudo dal telefono (caso non riprodotto dalla sonda) |  |  |  |  |
+| PO-313 | 07/11 | Collaudo PO sulla 7.999.180 (foto della classifica, telefono): «Il puntino rosso sui pulsanti non mi fa impazzire» → questionario «Lineetta oro sotto», «Dentro la 181» | miglioramento (grafica) | CHIUSO 07/11 con la 7.999.181 — lineetta oro #9c6a12 sotto la scheda attiva (PC a sinistra), guardiano lineetta-181 |  |  |  |  |
 
 ## Ricostruzione (fonti e regole di stato)
 
