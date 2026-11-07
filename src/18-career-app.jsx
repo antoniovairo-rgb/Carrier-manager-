@@ -7010,7 +7010,7 @@ const getThisWeekMatchday=()=>{
                   const l5=_l5.slice(-5);
                   const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";
                   let _nRuolo=null;try{const R=generateTeamRoster(c,player.season||1);const _pos=String(player.position||"").toLowerCase();
-                    const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
+                    const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano|Esterno/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
                     if(_grp)_nRuolo=R.filter(x=>_grp.test(x.role)).length;}catch(_e){}
                   const co=coachDiClub23(c,player.season||1,player);
                   const _col={V:TH.winFg||"#166534",N:TH.drawFg||"#a16207",P:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,N:TH.drawBg,P:TH.lossBg};/* [7.999.49 parte A] V·N·P */

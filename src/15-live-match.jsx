@@ -1980,11 +1980,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
     if(!isMatchHome){const r=generateTeamRoster(opponent,player.season||1).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;}/* [7.173.0 collaudo PO «partita col rivale ma non gioca»] il RIVALE di carriera è nell XI del suo club */
     const _hRosterClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;
-    const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti"};return r;
+    const r=generateTeamRoster(_hRosterClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti",...(r[10]&&r[10].ln!=null?{ln:r[10].ln}:{})};/* [giro 112b] l'eroe tiene la linea della punta */return r;
   });
   const [awayRoster]=useState(()=>{
     const isNatCtxR=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
-    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti"};return r;}
+    if(!isMatchHome){const _aClub=isNatCtxR?(NAT_CLUB_DATA[player.nation||"Italia"]||player.club):player.club||opponent;const r=generateTeamRoster(_aClub,player.season||1).slice(0,11);if(!benchStart)r[10]={name:player.name,role:"Centravanti",...(r[10]&&r[10].ln!=null?{ln:r[10].ln}:{})};/* [giro 112b] l'eroe tiene la linea della punta */return r;}
     const r=generateTeamRoster(opponent,player.season||1).slice(0,11);if(_rvInXI)r[10]={...r[10],name:player.rival.name};return r;/* [7.173.0] rivale nell XI avversario */
   });
   // [7.118.0 collaudo PO «compagni di squadra in nazionale errati, sono quelli del club!»] In una gara di
@@ -1998,6 +1998,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const _heroSideRoster=isMatchHome?homeRoster:awayRoster;// rosa del lato dell'eroe (già nazionale in nat-ctx)
   /* [7.825.0 — L'ASSIST LO FA UNO CHE E' IN CAMPO. Rosso __CPM_NO825] Playtest n°6: «Moretti segna su assist di Landi! 1-0.» e al 28' «Moretti corre ad abbracciare Scotti: il gol e' di tutti e due». Landi non gioca: i compagni dell'assist venivano da `player.teammates` (la rosa di carriera), non dall'undici in campo. Ora dall'undici; l'archetipo della carriera si recupera per nome quando c'e'. */
   const _matePool=(_isNatCtx||!(typeof window!=='undefined'&&window.__CPM_NO825))?_heroSideRoster.filter(r=>r&&r.name&&r.name!==player.name&&!/^(POR|GK|Portiere)$/i.test(String(r.pos||r.role||""))).map(r=>{const _tm=(player.teammates||[]).find(q=>q&&q.name===r.name);return {name:r.name,archetype:(_tm&&_tm.archetype)||null};}):(player.teammates||[]);// compagni per assist-link: nazionali in nat-ctx, club altrimenti
+  /* [giro 112b PO-314] I MODULI DELLA PARTITA, una volta: la squadra dell'eroe (club o nazionale) e l'avversario hanno il modulo
+     del LORO club (moduloClub). Con una tattica AI valida il modulo dell'avversario diventa quello che l'AI dichiara (all'arrivo
+     della tattica, prima del fischio): anteprima, motore, preset e trama lo seguono; le posizioni di nascita restano quelle del club. */
+  const modCasa112Ref=useRef(null),modOsp112Ref=useRef(null);
+  if(modCasa112Ref.current==null){try{modCasa112Ref.current=moduloClub(_heroSideClub);modOsp112Ref.current=moduloClub(opponent);}catch(_e){modCasa112Ref.current="4-3-3";modOsp112Ref.current="4-3-3";}}
   // 22 players + referee — generated once per match
   const matchPlayersRef=useRef(null);/* [BL-07] specchio live per l'hook diagnostico __CPM_MP (pattern ref standard) */
   /* [7.186.0 collaudo PO «punizione senza barriera e giocatori mal posizionati»] predicato UNICO di set-piece:
@@ -2019,7 +2024,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // Sprint 79 — prestige-aware away formation: elite teams press higher (lower x = closer to home goal)
     const _oppP79=opponent?.p||opponent?.prestige||65;
     const aOff=_oppP79>=75?-6:_oppP79>=60?0:6; // high prestige presses, low prestige sits deep
-    const _mp=[
+    /* [giro 112b PO-314] i ventidue nascono nel modulo dei LORO club (moduloClub, unica fonte): stessa sequenza di 21 scarti j()
+       nello stesso ordine — cambiano solo le coordinate (invariante dei sorteggi, lezione 7.511). Il 4-3-3 e il rosso
+       __CPM_NO_G112 restano la tabella storica qui sotto, identica. */
+    const _sH112=sagoma112(modCasa112Ref.current,"mpH"),_sA112=sagoma112(modOsp112Ref.current,"mpA");
+    const _leg112=(modCasa112Ref.current==="4-3-3"&&modOsp112Ref.current==="4-3-3")||_no112();
+    const _mp=!_leg112?[..._sH112.slice(0,10).map((q,i)=>({...j(q.x,q.y),team:"home",...(i===0?{gk:true}:{})})),
+      ..._sA112.map((q,i)=>({...j(i===0?q.x:q.x+aOff,q.y),team:"away",...(i===0?{gk:true}:{})}))]:[
       // Home team (10 outfield + GK, protagonist is separate)
       {...j(8,50),team:"home",gk:true},{...j(18,12),team:"home"},{...j(18,38),team:"home"},
       {...j(18,62),team:"home"},{...j(18,88),team:"home"},{...j(38,25),team:"home"},
@@ -2043,6 +2054,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        Il ruolo nasce dallo SLOT di formazione (la disposizione qui sopra e' gia' per reparti):
        0/10 GK · 1-4/11-14 DF · 5-7/15-17 MF · 8-9/18-20 AT. E' l'anagrafe del Match Engine. */
     _mp.forEach((e,i)=>{const _k=(i===0||i===10)?"GK":((i>=1&&i<=4)||(i>=11&&i<=14))?"DF":((i>=5&&i<=7)||(i>=15&&i<=17))?"MF":"AT";e.rl=_k;});
+    if(!_leg112)_mp.forEach((e,i)=>{e.rl=i<10?repartoSlot112(modCasa112Ref.current,i):repartoSlot112(modOsp112Ref.current,i-10);});/* [giro 112b] il reparto segue il modulo */
     return _mp;
   });
   /* [7.588.0 SOLO COLLAUDO, spento se manca la bandiera] CHI RIMETTE INDIETRO GLI OSPITI.
@@ -3116,8 +3128,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const _f5=(typeof window!=='undefined'&&window.__CPM_FORCE_FORM538)||null;
     const _homeIsHero=isMatchHome;const _ot=oppTacticRef.current;
     let form;
-    if(dir>0)form=(_f5&&_f5.home)||(_homeIsHero?_formFromRoster538(homeRoster,"h"):(_ot&&_ot.formation));
-    else form=(_f5&&_f5.away)||(_homeIsHero?(_ot&&_ot.formation):_formFromRoster538(awayRoster,"a"));
+    /* [giro 112b PO-314] la trama usa lo STESSO modulo del campo: quello del club (o dell'AI per l'avversario). Il rosso
+       __CPM_NO_G112 torna alla deduzione dai ruoli (che con la rosa 4-3-3 contava la punta fra i centrocampisti: 4-4-2). */
+    const _n112=_no112();const _mc=_n112?null:modCasa112Ref.current,_mo=_n112?null:modOsp112Ref.current;
+    if(dir>0)form=(_f5&&_f5.home)||(_homeIsHero?(_mc||_formFromRoster538(homeRoster,"h")):(_mo||(_ot&&_ot.formation)));
+    else form=(_f5&&_f5.away)||(_homeIsHero?(_mo||(_ot&&_ot.formation)):(_mc||_formFromRoster538(awayRoster,"a")));
+    if(typeof window!=='undefined'){try{(window.__CPM_G112_TRAMA=window.__CPM_G112_TRAMA||{})[dir>0?"home":"away"]=form;}catch(_e){}}
     return TRAMA_ID538[form]||TRAMA_ID538.dflt;};
   const kickRef=useRef(0);
   const kickoffRef=useRef(0),kickoffSideRef=useRef("away");
@@ -3374,7 +3390,32 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     defend_goal:[{x:5,y:50},{x:8,y:20},{x:8,y:42},{x:8,y:58},{x:8,y:80},{x:16,y:30},{x:16,y:50},{x:16,y:70},{x:26,y:38},{x:26,y:62}],
     opp_goal:  [{x:5,y:50},{x:75,y:18},{x:75,y:38},{x:75,y:62},{x:75,y:82},{x:64,y:25},{x:64,y:75},{x:52,y:22},{x:52,y:50},{x:52,y:78}],
   };
-  // ATE-1: mappa preset drift → tipo arco palla per ThreeMatchView durante "playing"
+  /* [giro 112b] l'anteprima dell'avversario mostra il modulo giocato: se l'AI ne ha dichiarato uno diverso da quello del club, i
+     ruoli e le righe dei suoi titolari lo seguono (nomi intatti). Senza AI e' la rosa del club cosi' com'e'. */
+  const _rosaVista112=(r,eAvv)=>{try{if(!eAvv||_no112())return r;const m=modOsp112Ref.current;return (m&&m!==moduloClub(opponent))?rosaConModulo112(r,m):r;}catch(_e){return r;}};
+  /* [giro 112b PO-314] I PRESET DI MOVIMENTO NEL MODULO DELLA SQUADRA. DRIFT_PRESETS resta la tabella (le chiavi e l'identita'
+     degli oggetti servono a chi cerca il preset attivo); chi muove i ventuno chiede qui la versione nel modulo: di ogni preset
+     si prendono l'altezza media di difesa / centrocampo / attacco e lo spostamento laterale medio di ciascun reparto, e li si
+     applica alla sagoma del modulo (mediani a meta' fra difesa e centrocampo, trequarti a meta' fra centrocampo e attacco).
+     Il 4-3-3 restituisce il preset storico identico. Cache per oggetto preset: nessuna allocazione per tick. */
+  const _presetCache112=useRef(null);
+  const presetModulo112=(P)=>{if(!P)return P;const mod=modCasa112Ref.current;if(_no112()||mod==="4-3-3"||!moduloValido112(mod))return P;
+    const C=_presetCache112.current||(_presetCache112.current=new Map());const hit=C.get(P);if(hit&&hit.m===mod)return hit.v;
+    const av=(a,b,k)=>{let t=0;for(let i=a;i<=b;i++)t+=(P[i]&&P[i][k])||0;return t/(b-a+1);};
+    const Dx=av(1,4,"x"),Mx=av(5,7,"x"),Ax=av(8,9,"x"),dD=av(1,4,"y")-50,dM=av(5,7,"y")-50,dA=av(8,9,"y")-50;
+    const XX={D:Dx,DM:Dx+(Mx-Dx)*0.55,M:Mx,AM:Mx+(Ax-Mx)*0.55,A:Ax,P:Ax,CF:Ax},DY={D:dD,DM:dM,M:dM,AM:dA,A:dA,P:dA,CF:dA};
+    const t=moduliTab112()[mod];const v=[{x:P[0].x,y:P[0].y}];
+    for(let i=0;i<9;i++){const q=t[i];v.push({x:+XX[q.k].toFixed(2),y:clamp(+(q.y+DY[q.k]).toFixed(2),3,97)});}
+    C.set(P,{m:mod,v});return v;};
+  /* gli ospiti negli highlight: la sagoma del loro modulo (il 4-3-3 tiene FORMATION_AWAY e il suo indice storico) */
+  const _hlA112=(idx)=>{const mod=modOsp112Ref.current;if(_no112()||mod==="4-3-3"||!moduloValido112(mod))return null;
+    const t=sagoma112(mod,"hlA");const q=t[Math.min(Math.max(idx-10,0),10)];return q?[q.x,q.y]:null;};
+  /* testimone (sola lettura): i posti con cui nascono i ventidue, i preset e i moduli — il guardiano moduli-112 li legge */
+  const _g112Ref=useRef(false);
+  if(typeof window!=='undefined'&&_CPM_TEST&&!_g112Ref.current){_g112Ref.current=true;try{window.__CPM_G112={casa:{modulo:modCasa112Ref.current,base:sagoma112(modCasa112Ref.current,"mpH"),/* 11 posti: lo slot 10 e' l'eroe */
+      preset:Object.fromEntries(Object.keys(DRIFT_PRESETS).map(k=>[k,presetModulo112(DRIFT_PRESETS[k])])),club:{id:_heroSideClub&&_heroSideClub.id,n:_heroSideClub&&(_heroSideClub.n||_heroSideClub.name)}},
+    ospite:{modulo:modOsp112Ref.current,base:sagoma112(modOsp112Ref.current,"mpA"),preset:sagoma112(modOsp112Ref.current,"hlA"),aOff:(()=>{const p=opponent?.p||opponent?.prestige||65;return p>=75?-6:p>=60?0:6;})(),club:{id:opponent&&opponent.id,n:opponent&&(opponent.n||opponent.name)}}};}catch(_e){}}
+  // ATE-1: mappa preset drift → tipo arco palla per ThreeMatchView during "playing"
   const BG_ARC_MAP={attack_goal:"shot",attack:"shot",wide_right:"cross",opp_goal:"save",defend_goal:"save",retreat:"tackle",midfield:"pass"};
 
   const keysRef=useRef(new Set());
@@ -3614,6 +3655,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     setPhase("formations");
     const tactic=await generateOpponentTactic(opponent,player.stats,player.week||1);
     if(!_lmAliveRef.current)return;/* [7.121.0 rifiniture] guardia unmount anche sul tactic AI */
+    try{const _fa=!_no112()&&tactic&&moduloValido112(tactic.formation);if(_fa)modOsp112Ref.current=_fa;}catch(_e){}/* [giro 112b] il modulo mostrato e' quello giocato */
     setOppTactic(tactic);
     setOppTacticLoading(false);
     // save tactic to player via callback if available (handled by parent via onMatchEnd context)
@@ -5951,7 +5993,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -8288,7 +8330,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(!MOTORE870||_inHL77){/* [7.870] i ventidue li muove il motore */
         const _solo850=!(nx%3===0||_ognitick588)&&!(typeof window!=='undefined'&&window.__CPM_NO850);
         if(nx%3===0||_ognitick588||_solo850){
-          const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
+          const dt=presetModulo112(driftTargetsRef.current||DRIFT_PRESETS.midfield);/* [giro 112b] nel modulo della squadra */
           /* [7.625.1 strumentazione] CUSTODIA PER TICK, non alla riga: il metro npd-alla-riga (7.624) e'
              SQUALIFICATO anche lui — campiona l'istante del lancio (la riga muove il bersaglio, la palla
              parte) e quindi misura la GITTATA dei passaggi, non la custodia: per questo ne' il guadagno
@@ -8373,7 +8415,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               sx=s.x;sy=s.y;k=0.04;// 4.85.0: micro-jitter ridotto (era 0.6) → movimento verso lo slot, niente twitch casuale
             }else{
               // Away (difensori): mantengono la LINEA verso lo slot di formazione, jitter minimo (era 0.7, puro random)
-              const as=FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};
+              const as=_hlA112(idx)||FORMATION_AWAY[Math.min(Math.max(idx-11,0),FORMATION_AWAY.length-1)]||{};/* [giro 112b] nel modulo degli ospiti */
               sx=as[0]!=null?as[0]:pl.x;sy=as[1]!=null?as[1]:pl.y;k=0.03;
             }
             if(_ko544&&!pl.gk){
@@ -10749,7 +10791,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         return<MatchdayCard mySide={isMatchHome===false?"away":"home"} exClub={_ex313} homeTeam={homeTeamObj} awayTeam={awayTeamObj} stadium={stadium} stadiumKind={(crowdCtx&&crowdCtx.stadiumTpl&&crowdCtx.stadiumTpl.kind)||null} attendance={attendance} league={isNatCtx?_compLabel:(context==="euro_group"||context==="euro_ko")?euroSig(player.euro?.competition||"UCL"):context==="cup"?_cupDisp:player.club?.lg||(player.club?.isU18||context==="trial"?(player.club?.lg||"Primavera"):null)}/* [6.47.0] la prepartita nazionale mostra la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico «Nazionale» */ onContinue={handleGoToFormations} onSkip={()=>setPhase("playing")} scoutReport={scoutReport} scoutLoading={scoutLoading} onShowScout={()=>setShowScout(true)} matchWeight={mw} matchContext={mCtx} weatherObj={weather} kickoffHour={kickoffHour} onBack={context==="trial"?null:onQuit}/* [7.118.0 collaudo PO «manca pulsante torna alla dashboard!»] il ritorno alla dashboard c'è ora anche per nazionale/coppe/europee (prima solo career): onQuit è pura NAVIGAZIONE — la gara resta una voce di calendario PENDENTE (mai saltata: Avanza auto-simula le nazionali, 6.81.0), quindi non re-introduce lo skip del 6.80.0. Solo i provini restano senza uscita. */ onSimulate={(["national","nationsCup","euroMondiale_qualif","euroMondiale_group","euroMondiale_ko"].includes(context)&&onSimulateNat)?onSimulateNat:null} roundLabel={_roundLabel}/>;/* [6.80.0 collaudo PO «sono riuscito a saltare l'amichevole con la nazionale»] il ritorno alla dashboard esiste SOLO per il campionato: nazionale/coppe/europee non si abbandonano */
       })()}
       {phase==="matchday"&&showScout&&<ScoutReportScreen report={scoutReport} opponent={opponent?{...opponent,lg:(((player.leagueOverrides||{})[opponent.id])||opponent.lg)}:opponent}/* [7.170.0] lega avversaria override-aware (neopromosse/retrocesse) anche nell'analisi prematch */ loading={scoutLoading} onClose={()=>setShowScout(false)} mister={(()=>{try{return misterInPartita(player,context);}catch(_e){return null;}})()/* [PO-217] la voce del consiglio: il mister di QUESTA partita (CT in Nazionale) */} mine={(homeTeamObj&&opponent&&homeTeamObj.id===opponent.id)?awayTeamObj:homeTeamObj/* lo stemma che NON e' l'avversario (in Nazionale home e' sempre la tua) */}/>}
-      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={homeRoster} awayRoster={awayRoster} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
+      {phase==="formations"&&<FormationView homeTeam={homeTeamObj} awayTeam={awayTeamObj} player={player} homeRoster={_rosaVista112(homeRoster,!isMatchHome)} awayRoster={_rosaVista112(awayRoster,isMatchHome)} onContinue={()=>setPhase("walkout")} onSkip={()=>setPhase("playing")} oppTactic={oppTactic} oppTacticLoading={oppTacticLoading} homeKitCol={scoreHomeCol} awayKitCol={scoreAwayCol} competition={(context==="euro_group"||context==="euro_ko")?(player.euro?.competition||null):null} euroRound={_roundLabel}/* [7.32.7] etichetta turno UNIFICATA (giornata campionato · turno coppa · fase euro/nazionale) — per euro produce le stesse stringhe di prima */ contextLabel={(!_leagueCtx&&context!=="euro_group"&&context!=="euro_ko")?_compLabel:null}/>}{/* [6.42.0] passa l'etichetta competizione per coppa/nazionale (euro ha già il suo path via competition) */}
 
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
