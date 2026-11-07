@@ -975,3 +975,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 06/11 sera — 7.999.180 PUBBLICATA
 - Verifica finale (catena/180-finale, 2e930a5a): 17/18 verdi; pc-tablet-292 rosso 2/2 nel braccio verde per «zone di tocco < 40 px» (⏸ 14x33, 1× 22x19). Analisi della sessione madre: strumento — la sonda misurava il rettangolo visibile, mentre il giro 108 ha portato l'area di tocco a 44 px col ::after (stesso criterio di collaudo-108). Sonda corretta (c9a0dd9b), rigiocata qui: VERDE, rosso 177 ancora cade sul tocco nei due tablet.
 - Rituale: lavoro/180 in poc → ROADMAP «7.999.180 pubblicata» → BACKLOG PO-304/306/307/308 CHIUSE, PO-309 (9 bassi G180) APERTA per la 181 → main.
+
+### 07/11 — verifica di affaan-m/everything-claude-code (richiesta PO)
+- Letto in sola lettura (v2.2.3, 06/11; MIT; ~71 agenti, 314 skill, 98 comandi, ganci su 7 eventi), non installato, copia cancellata. Esito: non utile all'app (non tocca la scalabilità del gioco a file unico), sovrapposto alle nostre 10 skill e al protocollo di CLAUDE.md, ganci che girerebbero in ogni sessione figlia; il loro GateGuard costa ~45% di passaggi in più senza efficacia misurata (fonte: loro CHANGELOG). Stelle non confermabili (accesso GitHub non abilitato in sessione).
+- Decisione PO: «Sì, registrale per la 181» → PO-310 (costo per sessione, strumento nostro) e PO-311 (regole per i controlli instabili).
