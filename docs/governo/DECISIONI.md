@@ -1003,3 +1003,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 07/11 sera — 7.999.182 PUBBLICATA
 - Verifica finale 20/22 verdi; portiere-252 rosso atteso (PO-316, braccio rosso cieco già dichiarato); contatto-103 rosso al primo giro, rigiocato dalla madre sullo stesso build: verde e rosso visto → instabilità dello strumento, PO-319. Decisione tecnica della madre: si pubblica (nessun rosso del gioco). Rilascio poc → main. Poi 7.999.183 dedicata a PO-318.
+
+### 07/11 sera — 7.999.183 PUBBLICATA
+- Giro 113 (PO-318) 50 minuti, 1,46 $; unito in lavoro/183, GAME_VERSION 7.999.183; rigiocati dalla madre uno alla volta scorri-113, save-compat, griglia-mobile, pc-tablet-292, career-critical: tutti verdi. Rilascio poc → main.

@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (22)
+## Voci aperte o parziali (21)
 
-Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: verificare confine zona G) 1 ·  4 · 7.999.183 1.
+Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: verificare confine zona G) 1 ·  4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -40,10 +40,9 @@ Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: v
 | PO-315 | 07/11 | Giro 111 (RAPPORTO-giro111 «Da annotare per il gioco» 1): in una prova naturale (k7) dopo il gol di rigore al 77' l'eroe ha avuto una seconda battuta di rigore al 78' (__CPM_PEN94); con il rigore provocato dalla sonda non si riproduce (0 doppi). Possibile sfasamento fra minuto del motore (guardia noPiaz94) e clockRef della scena, oppure effetto della registrazione: non posso confermarlo | difetto (highlight) da misurare | APERTO — per la 7.999.183: sonda dedicata che riproduca il caso naturale; se confermato è un difetto di highlight dell'eroe (almeno medio) |  |  |  |  |
 | PO-316 | 07/11 | Giro 111: portiere-252 resta rosso nel completo perché il braccio rosso è quasi cieco (1 KO su ~33 portieri: il difetto vecchio compare solo con tiri angolati e il bersaglio è Math.random non seedato); il verde ora è stabile 3/3 | difetto (strumento) | APERTO — per la 7.999.183: ridisegnare il braccio rosso (tiro angolato fissato), mai soglie |  |  |  |  |
 | PO-317 | 07/11 | Giro 111: riserva-103, la scena gi17 non rivela mai l'esito nemmeno dopo 20 s di scena (entrambi i bracci, 3 giri); censimento fermo a 1 esecuzione per il tetto di 4 ore | difetto (strumento) da misurare | APERTO — per la 7.999.183: capire se gi17 chiude in altro modo (gioco o sonda) e completare le 5 esecuzioni |  |  |  |  |
-| PO-318 | 07/11 | PO: «Quando cambio Tab del menù la posizione deve azzerarsi su» (frase troncata, letta come «in cima»; confermata dalla scelta del PO) — lettura del codice: goTab (src/18 r.~741) cambia scheda senza riportare lo scorrimento in cima | difetto (navigazione) | APERTO — per la 7.999.183 dedicata, subito dopo la 182 (decisione PO «In cima, nella 183 subito dopo»): misura, correzione, interruttore rosso, guardiano su telefono e PC, schede in basso e sottoschede | 7.999.183 |  |  |  |
 | PO-319 | 07/11 | Verifica finale 182: contatto-103 rosso al primo giro («rosso: il difetto non si vede», 2 parate giudicate), verde al rigioco della madre sullo stesso build (rosso visto). Braccio rosso con margine zero (pavimento di 2 parate), già segnalato dal giro 111 | difetto (strumento) | APERTO — per la 7.999.183 o successiva: più scene di parata nel braccio rosso (scene provocate, mai soglie più basse) |  |  |  |  |
 
-## Storico — voci chiuse (297)
+## Storico — voci chiuse (298)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -344,6 +343,7 @@ Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: v
 | PO-312 | 07/11 | Collaudo PO sulla 7.999.180 (foto docs/collaudo-po/180-partita2d-spalti-merseyside.jpg, telefono, FC Merseyside rosso contro CRA bianco/nero, 5'): «Nella live 2D i colori dei tifosi / spalti non sono coerenti con i colori dei club» | difetto (grafica partita 2D) medio | CHIUSO 07/11 con la 7.999.181 — giro 109: spalti coi colori dei club (_spalti109, guardiano spalti-109), sigla della porta e nomi sovrapposti corretti; la correzione dei nomi va guardata al prossimo collaudo dal telefono (caso non riprodotto dalla sonda) |  |  |  |  |
 | PO-313 | 07/11 | Collaudo PO sulla 7.999.180 (foto della classifica, telefono): «Il puntino rosso sui pulsanti non mi fa impazzire» → questionario «Lineetta oro sotto», «Dentro la 181» | miglioramento (grafica) | CHIUSO 07/11 con la 7.999.181 — lineetta oro #9c6a12 sotto la scheda attiva (PC a sinistra), guardiano lineetta-181 |  |  |  |  |
 | PO-314 | 07/11 | PO: «Ma giocano tutti con il 4-3-3??» — misura della sessione madre: nella partita 2D le pedine hanno posizioni fisse a 4-3-3 per tutte le squadre (src/15 matchPlayers r.~2022-2031 e DRIFT_PRESETS r.~3363-3375); il modulo cambia solo i pesi dei passaggi (TRAMA_ID538); il modulo «dichiarato» dell'avversario in pre-partita, senza chiave AI, dipende solo dal prestigio (generateOpponentTactic, src/09 r.~559) · poi «Ma anche nell'anteprima della partita è sempre 433»: causa a monte misurata — generateTeamRoster (src/09 r.~1003) dà a ogni club gli stessi ruoli 4-3-3, quindi anteprima (rosterRows) e modulo dedotto dalla rosa sono sempre 4-3-3 | difetto (partita 2D) medio | CHIUSO 07/11 con la 7.999.182 — giro 112b: moduloClub() unica fonte per rosa, anteprima, modulo dichiarato, campo 2D, motore e trama (252 club: 4-4-2 59 · 3-5-2 56 · 4-3-3 53 · 4-2-3-1 42 · 5-3-2 42); guardiano moduli-112; replay invariato | 7.999.182 |  |  |  |
+| PO-318 | 07/11 | PO: «Quando cambio Tab del menù la posizione deve azzerarsi su» (frase troncata, letta come «in cima»; confermata dalla scelta del PO) — lettura del codice: goTab (src/18 r.~741) cambia scheda senza riportare lo scorrimento in cima | difetto (navigazione) | CHIUSO 07/11 con la 7.999.183 — giro 113: a scorrere era .cpm-scroll (la finestra resta a 0); un solo punto (useLayoutEffect sul cambio di schermata in CareerApp) lo riporta a 0; menù: da 179-900 px a 0 in 3 formati, sottoschede sempre visibili; guardiano scorri-113 (rosso 18 casi) | 7.999.183 |  |  |  |
 
 ## Ricostruzione (fonti e regole di stato)
 

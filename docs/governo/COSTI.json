@@ -138,5 +138,19 @@
   "cache_read_tokens": 7538369,
   "worker_epoch": 1,
   "rilevato": "2026-11-07"
+ },
+ {
+  "sessione": "session_01QEYia8hcKWZaDpTYmM2ydM",
+  "titolo": "giro 113 · pagina in cima al cambio scheda",
+  "versione": "7.999.183",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-07T17:14:08Z",
+  "chiusa": "2026-11-07T18:06:27Z",
+  "cost_usd": 1.4631027,
+  "output_tokens": 20522,
+  "cache_read_tokens": 7851566,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-07"
  }
 ]
