@@ -102,7 +102,7 @@ In sequenza, uno alla volta, tetto 900 s per passo:
 | `npm run career-critical` | **verde** | 524 s |
 | `npm run collaudo-108` | **NON CONCLUSO**: tagliato dal tetto (900 s) durante il braccio verde (schermate/partita); le righe «mancanti» stampate (`carriera-opzioni`, `momento-esordio`, `coppa-nazioni`, `provini-intro`) non le ho confrontate con la base: **non posso confermare** | >900 s |
 | `npm run pc-tablet-292` | **concluso senza errori** (uscita 0; il braccio rosso stampa le sue violazioni attese) | 652 s |
-| `npm run validate-situations` | vedi riga finale sotto | — |
+| `npm run validate-situations` | **✅ PASS**, fingerprint 00001505, 0 failure | 566 s |
 | `node tools/build-src.mjs` + `node tools/check-src.mjs` | allineati («IDENTICO BYTE PER BYTE») | — |
 
 Poiché il giro non tocca `src/` né il gioco, `collaudo-108` e `validate-situations` giudicano un file identico alla base: il
