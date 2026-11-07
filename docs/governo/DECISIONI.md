@@ -996,3 +996,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 07/11 mattina — avvio lotto 7.999.182 («Prosegui» del PO)
 - Ramo lavoro/182 da main 9d3f8d66. Giro 110 (PO-309, nove difetti grafici bassi G180) e giro 111 (PO-305 rigore dell'eroe deterministico + PO-311 regole e censimento dei controlli instabili) in due sessioni figlie parallele, su Sonnet (lavoro a basso rischio; contenitori separati, un controllo alla volta dentro ciascuna).
 - PO-310 fatto dalla sessione madre: tools/costi-sessioni.mjs e scheda «Costi». Misura: 7.999.180 almeno 41,55 $ in 4 sessioni figlie (1 parziale), 7.999.181 almeno 0,72 $ (parziale).
+- 07/11 — PO-314 («giocano tutti con il 4-3-3?»): misura confermata (pedine 2D fisse a 4-3-3, modulo avversario dal solo prestigio). Difetto medio: il PO sceglie «182: modulo vero + avversario dalla rosa». Giro 112 su Opus (tocca il motore della partita: invariante dei sorteggi da rispettare).
