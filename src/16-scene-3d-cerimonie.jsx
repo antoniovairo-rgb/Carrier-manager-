@@ -40,7 +40,7 @@ function ProTransitionScreen({player,onChoose}){
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-08] passaggio ai professionisti a schermata piena */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
         {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {player.season||(u18S+1)} completata</p></>);})()}
       </div>
@@ -73,9 +73,9 @@ function ProTransitionScreen({player,onChoose}){
       {/* Offers */}
       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
       
-      <div className="cpm-proto">
+      <div className="cpm-proto" style={_g114()?{flex:"1 0 auto"}:undefined}>
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
-          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
+          <Card key={o.id} style={{...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
           border={_no108("03")?(isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder):(isSel?TINTE.oro:o.isMain?TH.bdBlue:o.isStayU18?TH.bdAmber:TH.cardBorder)}
           bg={_no108("03")?(o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card):(o.isMain?TH.bgBlue:o.isStayU18?TH.bgAmber:TH.card)}>
           <div style={{display:"flex",gap:10,alignItems:"center"}}>
@@ -103,8 +103,9 @@ function ProTransitionScreen({player,onChoose}){
           </div>
         </Card>
       );})}
-      <div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
+      {!_g114()&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>}
       </div>{/* end cpm-proto */}
+      {_g114()&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>}
     </div>
   );
 }

@@ -507,6 +507,11 @@ const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                    
    due riquadri fratelli (card, fisarmoniche, finestre) e' SP.box (7 px CSS = ~8 a schermo dentro lo zoom 1,12 dello scroll). `_sb(vecchio)` lo restituisce, e con
    l'interruttore rosso __CPM_NO_SPAZIO296 restituisce `vecchio`: gli spazi della 177. Il padding interno dei riquadri e i testi non si toccano. */
 const _sb=(vecchio)=>(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?vecchio:SP.box;
+/* [giro 114 PO-320 «Sfrutta tutta l'altezza nelle schermate!»] REGOLA UNICA «SCHERMATA PIENA»: quando la pagina non scorre l'area utile si riempie —
+   il blocco principale cresce (flex:1) e le azioni stanno ancorate in fondo (margin-top:auto), mai testi ingranditi; se il contenuto scorre non cambia nulla.
+   Una classe sola (.cpm-piena / .cpm-piena-az, src/19) + questo interruttore. Rosso __CPM_NO_G114 = il comportamento della 7.999.183. */
+const _g114=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G114);
+const piena114=()=>_g114()?"cpm-piena":"";
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
    cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua
@@ -11160,9 +11165,9 @@ function ModalPannello({children,title,footer,onClose,dismissable=true,width=440
     </div>);
 }
 /* z = livello dello scrim (le finestre-impulso stanno a 9997, sotto i dialoghi bloccanti); cpm/pannelloCpm = data-cpm di scrim e pannello. */
-function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm}){
+function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm,foglio=false}){
   if(!open)return null;
-  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
+  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className={"cpm-fade"+(foglio&&_g114()?" cpm-foglio114":"")/* [giro 114 G184-06] sul telefono la finestra e' un foglio ancorato in basso (azioni sotto il pollice), centrata da 900 px */} style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
     <ModalPannello title={title} footer={footer} onClose={onClose} dismissable={dismissable} width={width} style={style} cpm={pannelloCpm}>{children}</ModalPannello>
   </div>);
 }
@@ -26382,8 +26387,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
       {(mySide?lato!==mySide:lato==="away")&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
     </div>);
     return(
-    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
-      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md),...(_g114()?{flex:"1 0 auto"}:{})/* [giro 114 G184-01] schermata piena */}}>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"space-evenly"}:{})}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
           {_no108("07")?<span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
           :<span data-cpm="pillola-comp108" style={{display:"inline-flex",alignItems:"center",gap:6,background:TINTE.inc,border:"1px solid "+TINTE.bordo,color:TINTE.testo,borderRadius:RAD.pill,padding:"4px 12px 4px 6px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase"}}><span aria-hidden="true" style={{width:18,height:12,borderRadius:RAD.xs,background:_cs99.bg,flexShrink:0,boxShadow:"inset 0 0 0 1px rgba(255,255,255,0.18)"}}/>{_cs99.e} {_cs99.label}</span>}{/* [giro 108 G180-07] la sfumatura della bandiera sotto il testo bianco scendeva a 1,40:1 (Premier Division: bianco-rosso-bianco). La pillola va su fondo pieno notte e la bandiera resta come campione di colore accanto. Rosso __CPM_NO_G108_07 */}
@@ -26418,13 +26423,15 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
             <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div></div>}
         </Card>)}
       {/* [7.999.49 parte A] etichette che dicono la differenza fra i tre bottoni */}
+      <div className={_g114()?"cpm-piena-az":undefined} style={_g114()?undefined:{display:"contents"}}>{/* [giro 114 G184-01/35] azioni ancorate in fondo, tasti a 44 px */}
       <Btn onClick={onContinue} v="primary" size="lg" fw>Vedi le formazioni</Btn>
       <div style={{display:"flex",gap:SP.sm}}>
-        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
-        <Btn onClick={onSkip} v="secondary" fw>Salta e gioca</Btn>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
+        <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw>Simula la partita</Btn>}
-      {onBack&&<Btn onClick={onBack} v="ghost" fw>Torna alla home</Btn>}
+      {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
+      {onBack&&<Btn onClick={onBack} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Torna alla home</Btn>}
+      </div>
     </div>);
   }
   return(
@@ -31375,7 +31382,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        è il colore finale del gradiente del pannello broadcast (#0d1528), nelle fasi 3D il nero-blu del canvas. */
     el.style.background=(phase==="matchday"||phase==="ended"||(phase==="formations"&&!window.__CPM_NO_FORMAZ23))?"":(phase==="formations"?"#0d1528":"#050810");/* [23/09 POC] formazioni nel kit chiaro: fondo della pagina *//* [7.184.2] fondo scuro: sotto le card broadcast si vedeva il chiaro della pagina («spazio bianco inutile») · [7.184.3] zoom 1 per TUTTA la partita: `zoom` NON propaga l'altezza al contenitore di scroll (proprietà non-standard) → lo scroller credeva che il contenuto stesse nello schermo, non scrollava, e il CTA in eccesso restava irraggiungibile (misurato: bottone a y=733 su viewport 620 con scrollHeight==clientHeight) */
     const wr=document.querySelector('.cpm-match-wrap');/* [7.184.3] la finestra ad altezza fissa del match (flex:1+overflow:hidden) va APERTA nelle fasi DOM, o il contenuto in eccesso non entra nemmeno nel calcolo dello scroll */
-    if(_zoomDom184){el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex="0 0 auto";}}
+    if(_zoomDom184){el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex=(phase==="matchday"&&_g114())?"1 0 auto":"0 0 auto";}}
     else{el.style.overflowY="hidden";el.style.paddingBottom="0px";if(wr){wr.style.overflow="hidden";wr.style.flex="1";}}
     return()=>{el.style.zoom="1.12";el.style.background="";el.style.overflowY="";el.style.paddingBottom="";if(wr){wr.style.overflow="";wr.style.flex="";}};},[phase,_zoomDom184]);
   const stagedRef45=useRef(false);/* [7.999.45 taccuino PO SIT #3 «001, eroe >= 43,3 u»] la scena ha messo in posizione l'eroe: finche' non si torna a 'playing' il motore non lo riscrive. Rosso __CPM_NO_STACCO45 */
@@ -39962,7 +39969,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _strisciaV2=(f,lato)=>({background:f.c,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 10px, rgba(255,255,255,0) 10px 20px)",alignSelf:"stretch",margin:"8px 0",padding:"0 8px",borderRadius:RAD.sm});
   const _aVal901=isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
-    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
+    <div style={{width:"100%",maxWidth:isNarrow?undefined:((_largo292()&&(show3D||phase==="walkout"))?undefined:1100),marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(phase==="matchday"&&!showScout&&_g114())?{flex:"1 0 auto",display:"flex",flexDirection:"column"}/* [giro 114 G184-01] il pre-partita riempie l'area utile */:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
         const mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);
         const drby=isDerby(player.club?.id,opponent?.id);
@@ -41716,7 +41723,7 @@ function ProTransitionScreen({player,onChoose}){
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-08] passaggio ai professionisti a schermata piena */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
         {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {player.season||(u18S+1)} completata</p></>);})()}
       </div>
@@ -41749,9 +41756,9 @@ function ProTransitionScreen({player,onChoose}){
       {/* Offers */}
       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
       
-      <div className="cpm-proto">
+      <div className="cpm-proto" style={_g114()?{flex:"1 0 auto"}:undefined}>
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
-          <Card key={o.id} style={{marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
+          <Card key={o.id} style={{...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),marginBottom:(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?8:0/* [giro 97 PO-299 D18] il margine si sommava al gap di .cpm-proto: 16,8 px fra due offerte. Lo spazio lo da' il gap (SP.box). Rosso __CPM_NO_SPAZIO296 */,padding:"12px 14px",outline:isSel?"2px solid "+(_no108("03")?TH.primary:TINTE.oro):"none",transition:"outline .1s"}}
           border={_no108("03")?(isSel?TH.primary:o.isMain?"#bfdbfe":o.isStayU18?"#fef9c3":TH.cardBorder):(isSel?TINTE.oro:o.isMain?TH.bdBlue:o.isStayU18?TH.bdAmber:TH.cardBorder)}
           bg={_no108("03")?(o.isMain?"#eff6ff":o.isStayU18?"#fefce8":TH.card):(o.isMain?TH.bgBlue:o.isStayU18?TH.bgAmber:TH.card)}>
           <div style={{display:"flex",gap:10,alignItems:"center"}}>
@@ -41779,8 +41786,9 @@ function ProTransitionScreen({player,onChoose}){
           </div>
         </Card>
       );})}
-      <div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
+      {!_g114()&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>}
       </div>{/* end cpm-proto */}
+      {_g114()&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>}
     </div>
   );
 }
@@ -45154,7 +45162,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const hasAny=slots.some(Boolean);
   const allFull=slots.every(Boolean);// card di sovrascrittura solo quando non c'è alcuno slot vuoto
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-04] menu iniziale a schermata piena */} style={{width:"100%"}}>
       {confirmDel!==null&&(
         <Modal open dismissable={false} width={340} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.h,marginBottom:8}}>🗑️</div>
@@ -45167,7 +45175,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -45471,18 +45479,18 @@ function OffersScreen({player,trialStats,onChoose}){
     return()=>window.removeEventListener("keydown",onKey);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
       
-      <div className="cpm-offers" style={{marginBottom:9}}>
+      <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
           const isSel=i===selIdx;
           return(
-            <Card key={club.id} interactive border={isSel?TH.primary:i===_top49?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s"}}>
+            <Card key={club.id} interactive border={isSel?TH.primary:i===_top49?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s",...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{})}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <TeamBadge team={club} size={44}/>
+                  <TeamBadge team={club} size={_g114()?64:44}/>
                   <div><div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{club.name||club.n}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · {club.lg} · Prestigio {club.p}/100</div></div>{/* [7.999.49 parte A] le squadre Primavera hanno n, non name */}
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
@@ -53720,7 +53728,7 @@ const getThisWeekMatchday=()=>{
   );
 
   if(screen==="proTransition")return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()} style={{width:"100%"}}>
       <ProTransitionScreen player={player} onChoose={onProChoose}/>
     </div>
   );
@@ -54118,7 +54126,7 @@ const getThisWeekMatchday=()=>{
            mano; il compagno che parla e' la sua FIGURINA; le scelte sono Btn del kit, larghe come il pollice.
            Rosso __CPM_NO_IMPULSO23: il pop-up di prima. */
         !(typeof window!=='undefined'&&window.__CPM_NO_IMPULSO23)?(
-        <Modal open dismissable={false} width={420}>
+        <Modal open dismissable={false} width={420} foglio>
           <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{L.weekHeader} {player.week} · {player.club?.name||player.club?.n}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
@@ -54242,7 +54250,7 @@ const getThisWeekMatchday=()=>{
           ?{cardBg:"linear-gradient(135deg,#1a1204,#2a1e06)",cardBd:"1px solid rgba(245,196,66,0.55)",glow:"0 0 40px rgba(245,196,66,0.28)",kicker:"👑 Un Momento Leggendario",kickerCol:"rgba(253,224,71,0.85)",name:"#fff7e0",boxBd:"#f5c542",boxTxt:"#fde9b0",optTxt:"#fff7e0",optBd:"rgba(245,196,66,0.22)",optBdH:"rgba(245,196,66,0.65)",optBgH:"rgba(245,196,66,0.12)",memCol:"rgba(245,196,66,0.55)"}
           :{cardBg:"linear-gradient(135deg,#0f172a,#1a1535)",cardBd:"1px solid rgba(124,58,237,0.4)",glow:"none",kicker:"⚡ Un Momento Che Ricorderai",kickerCol:"rgba(165,180,252,0.7)",name:"#e0e7ff",boxBd:"#7c3aed",boxTxt:"#c7d2fe",optTxt:"#e0e7ff",optBd:"rgba(165,180,252,0.15)",optBdH:"rgba(165,180,252,0.5)",optBgH:"rgba(124,58,237,0.12)",memCol:"rgba(165,180,252,0.5)"};
         return(
-        <div style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div className={_g114()?"cpm-foglio114":undefined}/* [giro 114 G184-07] il «momento» e' un foglio sul telefono */ style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card data-cpm="finestra230" style={{maxWidth:420,width:"100%",padding:"24px",...(finestraOn230()?finestraStd():{background:_T.cardBg,border:_T.cardBd,boxShadow:_T.glow})}}>
             <div style={{textAlign:"center",marginBottom:10}}>
               <div style={{fontSize:_epic?13:14,letterSpacing:3,textTransform:"uppercase",color:_T.kickerCol,marginBottom:4,fontWeight:_epic?800:400}}>{_T.kicker}</div>
@@ -54508,7 +54516,7 @@ const getThisWeekMatchday=()=>{
            settimana: allineato a sinistra, stemma dell'avversario al posto del pallone gigante, decisione del mister
            con i token semantici, azione primaria del kit. Rosso __CPM_NO_MATCHPROMPT23. */
         (typeof window!=='undefined'&&window.__CPM_NO_MATCHPROMPT23)?(
-        <Modal open dismissable={false} width={380} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
+        <Modal open dismissable={false} width={380} style={{textAlign:"center"}} foglio>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             {showMatchPrompt.type==="national"?(
               <><div style={{fontSize:FS.display,marginBottom:4}}>🏳️</div><div style={{fontSize:FS.caption,fontWeight:700,color:TH.txBlue,background:TH.bgBlue,border:"1px solid #bfdbfe",borderRadius:RAD.sm,padding:"3px 12px",display:"inline-block",marginBottom:6}}>NAZIONALE · Amichevole Internazionale</div></>
             ):showMatchPrompt.type==="cup"?(
@@ -54569,7 +54577,7 @@ const getThisWeekMatchday=()=>{
             </div>
           </Modal>
         ):(
-        <Modal open onClose={()=>setShowMatchPrompt(null)} width={420}>
+        <Modal open onClose={()=>setShowMatchPrompt(null)} width={420} foglio>
           {(()=>{const _av=(typeof CLUBS!=="undefined"&&CLUBS.find(c=>c.id===showMatchPrompt.opponentId))||{n:showMatchPrompt.opponentName,a:(showMatchPrompt.opponentName||"?").replace(/^FC\s+/,"").slice(0,3).toUpperCase()};
             const _tipo=showMatchPrompt.type==="national"?"Nazionale · amichevole":showMatchPrompt.type==="cup"?("Coppa nazionale"+(showMatchPrompt.cupRoundName?" · "+showMatchPrompt.cupRoundName:"")):(showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?({UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[showMatchPrompt.competition||player.euro?.competition||"UCL"]||"Coppa europea"):(player.club?.lg||"Campionato");
             const _dec=coachDecision&&showMatchPrompt.type!=="national"?coachDecision:null;
@@ -56791,7 +56799,7 @@ const getThisWeekMatchday=()=>{
                           <span>{_compLabel} · sett. {md.week}</span></div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
-                        ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
+                        ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0,...(_g114()?{minHeight:44}:{})/* [giro 114 G184-35] «Gioca ›» a 44 px */}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
                         :isCur?<span style={{padding:"5px 10px",fontSize:FS.caption,fontWeight:700,color:TH.muted,background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.pill,whiteSpace:"nowrap"}}>⏳ Poi</span>:null}{/* [7.184.2] la 2ª gara della settimana è informativa: si gioca dopo la prima */}
                     </div>
                   );
@@ -60414,7 +60422,7 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
         <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
-        <button onClick={onClose} className="cpm-press" style={{width:_tocco292()?44:34,height:_tocco292()?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
+        <button onClick={onClose} className="cpm-press" aria-label="Chiudi" style={{width:(_tocco292()||_g114())?44:34,height:(_tocco292()||_g114())?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
@@ -60447,12 +60455,12 @@ function AudioSettings(){
   const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
   const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+    <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
   return(
-    <Card style={{padding:'12px 14px'}}>
+    <Card style={{padding:'12px 14px',...(_g114()?{flex:'1 0 auto',display:'flex',flexDirection:'column',justifyContent:'space-evenly'}:{})/* [giro 114 G184-05] il blocco Audio cresce e distribuisce le righe */}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
       </div>
@@ -60707,6 +60715,16 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
         @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
         @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
+        ${_g114()?`/* [giro 114 PO-320] SCHERMATA PIENA: .cpm-piena e' il figlio diretto di .cpm-scroll e prende tutta l'area utile (vista meno barra e safe-area); il blocco principale cresce, .cpm-piena-az sta in fondo. Se la pagina scorre, non cambia nulla. */
+        .cpm-scroll:has(>.cpm-piena){display:flex;flex-direction:column;}
+        .cpm-piena{flex:1 0 auto;display:flex;flex-direction:column;width:100%;}
+        .cpm-piena-az{margin-top:auto;display:flex;flex-direction:column;gap:${SP.sm}px;}
+        .cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll:has(>.cpm-piena){padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));}/* senza barra di navigazione i 80 px di riserva in fondo sono vuoto puro */
+        .cpm-scroll:has(>.cpm-career [data-cpm="anteprima-sezione"]){display:flex;flex-direction:column;}/* Coppe vuota / anteprime: la carta cresce e centra il suo contenuto */
+        .cpm-career:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;}
+        .cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;}
+        .cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;}
+        @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}

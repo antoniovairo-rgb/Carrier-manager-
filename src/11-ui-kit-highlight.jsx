@@ -373,9 +373,9 @@ function ModalPannello({children,title,footer,onClose,dismissable=true,width=440
     </div>);
 }
 /* z = livello dello scrim (le finestre-impulso stanno a 9997, sotto i dialoghi bloccanti); cpm/pannelloCpm = data-cpm di scrim e pannello. */
-function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm}){
+function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm,foglio=false}){
   if(!open)return null;
-  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
+  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className={"cpm-fade"+(foglio&&_g114()?" cpm-foglio114":"")/* [giro 114 G184-06] sul telefono la finestra e' un foglio ancorato in basso (azioni sotto il pollice), centrata da 900 px */} style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
     <ModalPannello title={title} footer={footer} onClose={onClose} dismissable={dismissable} width={width} style={style} cpm={pannelloCpm}>{children}</ModalPannello>
   </div>);
 }
