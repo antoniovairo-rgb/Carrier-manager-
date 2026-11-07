@@ -8,14 +8,18 @@ import { startServer, launchBrowser } from './lib/harness.mjs';
 import { pagina252, scena252, kDi } from './lib/scena-252.mjs';
 const S = { GK_TARDI: 0.05, GK_REAZ: 0.20, GK_PORTATA: 4.5 };
 const CASI = [[13, 'fail', null], [13, 'fail', 'saved'], [15, 'fail', null], [15, 'fail', 'saved'], [16, 'fail', 'intercepted'], [67, 'success', null], [1, 'fail', 'saved'], [9, 'fail', null]];
+/* [giro 111 PO-311] SEME FISSO: il bersaglio dei tiri e' Math.random del gioco; la sonda lo rende una sequenza fissa (ripristinata prima
+   di OGNI scena), cosi' le stesse 8 scene danno gli stessi angoli a ogni giro e verde e rosso sono confrontabili. CPM_SEME252=0 lo spegne
+   (come prima del giro 111); CPM_SEME252=<n> cambia la serie. */
+const SEME = process.env.CPM_SEME252 != null ? +process.env.CPM_SEME252 : 1;
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const bracci = process.env.CPM_SOLO ? [process.env.CPM_SOLO] : ['verde', 'rosso'];
 const ris = {};
 for (const br of bracci) { ris[br] = [];
-  for (const [gi, out, kind] of CASI) {
-    const page = await pagina252(b, port, br === 'rosso' ? { __CPM_NO_GK252: 1, __CPM_NO_PARATA258: 1 } : {});/* [giro 40 PO-258] l'arco della parata ora finisce sul piano del portiere: z finale = z al piano, e col solo NO_GK252 il difetto non si riproduce piu' (misurato: rosso 0/8; con entrambi gi15 KO come sulla base) */
+  for (const [gi, out, kind] of CASI.filter(c => !process.env.CPM_GI || process.env.CPM_GI.split(',').map(Number).includes(c[0]))) {
+    const page = await pagina252(b, port, Object.assign(br === 'rosso' ? { __CPM_NO_GK252: 1, __CPM_NO_PARATA258: 1 } : {}, SEME ? { __SEME252: SEME * 7919 + CASI.findIndex(c => c[0] === gi && c[1] === out && c[2] === kind) } : {}));/* [giro 40 PO-258] l'arco della parata ora finisce sul piano del portiere: z finale = z al piano, e col solo NO_GK252 il difetto non si riproduce piu' (misurato: rosso 0/8; con entrambi gi15 KO come sulla base) */
     const k = await kDi(page, gi, null);
-    const r = await scena252(page, { gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_GK229 = []; }, raccogli: () => ({ gk: (window.__CPM_GK229 || []).slice(), kind: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind || null : null, dbg: window.__CPM_GK252 || null }) });
+    const r = await scena252(page, { gi, k, out, kind, secondi: 4, prima: () => { window.__CPM_GK229 = []; if (window.__SEME252_RESET) window.__SEME252_RESET(window.__SEME252); }, raccogli: () => ({ gk: (window.__CPM_GK229 || []).slice(), kind: window.__CPM_OUTCOME ? window.__CPM_OUTCOME.outKind || null : null, dbg: window.__CPM_GK252 || null }) });
     await page.close();
     const p = analizzaPortiere((r && r.gk) || [], { kind: (r && r.kind) || null }, { kind });
     const ko = !p.nonGiud && (p.tardi || p.verso || p.fermo);
@@ -28,7 +32,10 @@ else { const V = ris.verde.filter(x => !x.p.nonGiud), R = ris.rosso.filter(x => 
   if (V.length < 4) { console.log('❌ CIECO: ' + V.length + ' portieri giudicati'); setTimeout(() => process.exit(2), 100); }
   else { const ok = V.every(x => !x.ko) && R.filter(x => x.ko).length >= 1;/* il difetto vecchio e' intermittente: in catena il rosso ha dato 2/8, 2/8, 2/8 e 1/7 — ne basta uno per provare che il guardiano vede */
     console.log(`\nverde: KO ${V.filter(x => x.ko).length}/${V.length} · rosso: KO ${R.filter(x => x.ko).length}/${R.length}`);
-    console.log(ok ? '✅ portiere-252 VERDE' : '❌ portiere-252 ROSSO'); setTimeout(() => process.exit(ok ? 0 : 1), 100); } }
+    /* [giro 111 PO-311] braccio e motivo per ULTIMI: la coda dice chi ha fallito e perche' */
+    const why = []; V.filter(x => x.ko).forEach(x => why.push(`verde KO su gi${x.gi} ${x.kind || x.out} (${['tardi', 'verso', 'fermo'].filter(f => x.p[f]).join('+')})`));
+    if (!R.filter(x => x.ko).length) why.push(`rosso NON VISTO: 0 KO su ${R.length} portieri giudicati (seme ${SEME}, 8 scene)`);
+    console.log(ok ? `✅ portiere-252 VERDE (seme ${SEME}; rosso visto: ${R.filter(x => x.ko).length} KO)` : '❌ portiere-252 ROSSO — ' + why.join(' · ')); setTimeout(() => process.exit(ok ? 0 : 1), 100); } }
 
 function analizzaPortiere(R, act, e) {
   if (!R.length) return { nonGiud: 'nessun campione del portiere' };
@@ -66,8 +73,15 @@ function analizzaPortiere(R, act, e) {
     ? ((iArm >= 0 && R[iArm].ck - piano.ck > S.GK_TARDI) || (Math.abs(piano.z - gz0) > 1.2 && iMov >= 0 && R[iMov].ck - piano.ck > S.GK_TARDI))
     : (iMov >= 0 && R[iMov].ck - piano.ck > S.GK_TARDI);
   out.fermo = aPortata && iMov < 0 && !out.gesto;
-  const latoP = Math.sign(piano.z - gz0), latoG = Math.sign(zFin - gz0);
-  out.verso = Math.abs(piano.z - gz0) > 0.6 && Math.abs(zFin - gz0) > 0.3 && latoP !== latoG;
+  /* [giro 111 PO-311] «VERSO L'OPPOSTO» si giudica sulla REAZIONE (posizione 0,4 s di scena dopo il piano), non sulla z di FINE scena: a
+     parata fatta il portiere si riposiziona (cammina via dal pallone) e la z finale misurava quel ritorno, non la reazione. Misurato nel
+     censimento (5 giri): gi9 «riflesso» dava KO nel braccio verde in 3 giri su 5 con la reazione GIUSTA (verso il pallone, +0,3…+0,9u)
+     e la z finale a 1,1…1,3u dalla partenza dall'altra parte. Nessuna soglia cambiata (0,6 e 0,3 invariate): cambia SOLO il campione.
+     Il KO vero (rosso gi1: reazione +2,5u dal lato opposto al pallone) resta KO. */
+  const at04 = ck => { let r = R[R.length - 1]; for (const x of R) if (x.ck >= ck) { r = x; break; } return +r.gz; };
+  const zReaz = at04(piano.ck + 0.4);
+  const latoP = Math.sign(piano.z - gz0), latoG = Math.sign(zReaz - gz0);
+  out.verso = Math.abs(piano.z - gz0) > 0.6 && Math.abs(zReaz - gz0) > 0.3 && latoP !== latoG;
   out.parataSenzaGesto = (e.kind === 'saved' || act.kind === 'saved') && !out.gesto;
   /* [giro 22] posizione del portiere al piano e 0,4 s dopo: separa una reazione sbagliata dal riposizionamento a gesto finito */
   { const at = ck => { let r = R[R.length - 1]; for (const x of R) if (x.ck >= ck) { r = x; break; } return +(+r.gz).toFixed(2); }; out.gz = [+(+gz0).toFixed(2), at(piano.ck), at(piano.ck + 0.4), +(+zFin).toFixed(2)]; out.pz = +(+piano.z).toFixed(2); }

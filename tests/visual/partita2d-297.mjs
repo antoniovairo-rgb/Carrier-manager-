@@ -95,11 +95,16 @@ async function giro(sigla, rosso) {
     mis.pixel = await page.evaluate(PIXEL); await foto('partita');
     mis.costo = await page.evaluate(() => ({ sfondo: window.__CPM_W297.msSfondo, fotogramma: window.__CPM_W297.ms }));
     /* il gol, nei primi minuti (prima degli highlight in calendario, che spengono il 2D): un gol in piu' alla squadra dell'eroe */
+    /* [giro 112b] il lampo si misura a partita IN PAUSA: e' un effetto a tempo reale del campo 2D, e se durante i 2,2 s parte un
+       highlight (fase hl_intro) il campo smette di disegnare e `spento` non arriva mai — misurato col modulo vero del club di prova,
+       che fa nascere un'occasione prima. In pausa il cronometro e' fermo, nessun highlight parte, il campo continua a disegnare. */
+    await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '⏸'); if (x) x.click(); }); await sleep(400);
     await page.evaluate(() => { window.__CPM_LAMPO297 = null; const s = window.__CPM_SCORE(); window.__CPM_SALTA297(window.__CPM_CLOCK(), s.home + 1, s.away); });
     await page.waitForFunction(() => window.__CPM_LAMPO297 && window.__CPM_LAMPO297.ms < 900, null, { timeout: 4000, polling: 50 }).catch(() => {}); await foto('gol');
     mis.lampo = await page.evaluate(() => window.__CPM_LAMPO297); await sleep(2200);
     mis.lampoSpento = await page.evaluate(() => !!(window.__CPM_LAMPO297 && window.__CPM_LAMPO297.spento));
     mis.pixelDopo = await page.evaluate(PIXEL);
+    await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '▶'); if (x) x.click(); }); await sleep(400);/* si riparte: la pausa seguente la mette la sonda */
     mis.fps = await FPS(page);
     /* pausa: il cronometro si ferma (niente highlight in calendario che spengono il 2D), il campo 2D continua a disegnarsi */
     mis.pausa = await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => (q.textContent || '').trim() === '⏸'); if (x) { x.click(); return true; } return false; }); await sleep(800);

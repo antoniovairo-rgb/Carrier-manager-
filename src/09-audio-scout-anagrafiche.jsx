@@ -547,7 +547,7 @@ async function callClaudeAPI(systemPrompt,userMessage){
 async function generateOpponentTactic(opponentClub,playerStats,gameWeek){
   if(_aiMockMode){
     const fms=["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2"];
-    const f=fms[Math.floor((opponentClub.p||65)/20)%fms.length];
+    const f=_no112()?fms[Math.floor((opponentClub.p||65)/20)%fms.length]:moduloClub(opponentClub);/* [giro 112b] il modulo del club, unica fonte */
     return{formation:f,pressure:clamp(40+(opponentClub.p||65)/2,40,95),reasoning:"Tattica simulata (mock mode)."};
   }
   const sys="Sei un assistente tattico di calcio. Rispondi SOLO con JSON valido, nessun testo extra.";
@@ -557,7 +557,7 @@ async function generateOpponentTactic(opponentClub,playerStats,gameWeek){
     return{formation:res.data.formation||"4-4-2",pressure:clamp(Number(res.data.pressure)||65,30,100),reasoning:res.data.reasoning||"Tattica standard."};
   }
   const fms=["4-4-2","4-3-3","3-5-2","4-2-3-1","5-3-2"];
-  return{formation:fms[Math.floor((opponentClub.p||65)/20)%fms.length],pressure:clamp(40+(opponentClub.p||65)/2,40,95),reasoning:"Tattica deterministica (AI non disponibile)."};
+  return{formation:_no112()?fms[Math.floor((opponentClub.p||65)/20)%fms.length]:moduloClub(opponentClub),/* [giro 112b] senza AI il modulo scritto e' quello del club */pressure:clamp(40+(opponentClub.p||65)/2,40,95),reasoning:"Tattica deterministica (AI non disponibile)."};
 }
 
 async function generateHighlightCommentary(situation,action,result,playerStats,zone){
@@ -996,6 +996,66 @@ function _auditCopyrightSafety(){
 }
 if(typeof window!=="undefined"){window._auditCopyright=_auditCopyrightSafety;try{if(localStorage.getItem("cpm-debug")==="1")_auditCopyrightSafety();}catch(e){}}
 function hashStr(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)^s.charCodeAt(i);h=h>>>0;}return h;}
+/* [giro 112b PO-314 — PO 07/11 «Ma giocano tutti con il 4-3-3??» · «Ma anche nell'anteprima della partita è sempre 433». Rosso __CPM_NO_G112]
+   MISURATO: generateTeamRoster dava a OGNI club gli stessi ruoli dei titolari (4-3-3), quindi rosa, anteprima e modulo dedotto erano
+   sempre 4-3-3; il campo 2D (matchPlayers, DRIFT_PRESETS, posti del motore) aveva sagome fisse 4-3-3; il modulo «dichiarato»
+   dell'avversario senza chiave AI veniva dalla fascia di prestigio. ORA: ogni club ha UN modulo suo, deterministico dall'identita'
+   (id, o nome), stabile fra le stagioni, nessun campo nel salvataggio — i dati dei club non portano indizi di stile, quindi hash puro.
+   moduloClub e' l'UNICA fonte: ruoli dei titolari, anteprima, modulo scritto dell'avversario, posizioni e preset del campo, trama.
+   La tabella: per ogni modulo gli slot 1..10 (lo 0 e' il portiere) con ruolo, linea (1 = difesa, dal fondo), y e «tipo» di x
+   (D difesa · DM mediani · M centrocampo · AM trequarti · A ali · P punte in coppia · CF punta sola). Lo slot 10 resta SEMPRE un
+   attaccante: e' quello dell'eroe o del rivale. I NOMI restano per indice di slot (la rosa e' la stessa gente).
+   Funzione e non costante: la chiama anche l'audit di copyright al caricamento, prima che una const sarebbe pronta. */
+function moduliTab112(){if(moduliTab112._t)return moduliTab112._t;
+  const S=(ro,ln,y,k)=>({ro,ln,y,k});
+  moduliTab112._t={
+    "4-3-3":[S("Difensore",1,12,"D"),S("Difensore",1,38,"D"),S("Terzino",1,62,"D"),S("Terzino",1,88,"D"),S("Mediano",2,25,"M"),S("Centrocampista",2,50,"M"),S("Trequartista",2,75,"M"),S("Ala",3,22,"A"),S("Ala",3,78,"A"),S("Centravanti",3,50,"CF")],
+    "4-4-2":[S("Terzino",1,12,"D"),S("Difensore",1,38,"D"),S("Difensore",1,62,"D"),S("Terzino",1,88,"D"),S("Esterno",2,14,"M"),S("Mediano",2,38,"M"),S("Centrocampista",2,62,"M"),S("Esterno",2,86,"M"),S("Attaccante",3,36,"P"),S("Centravanti",3,64,"P")],
+    "3-5-2":[S("Difensore",1,25,"D"),S("Difensore",1,50,"D"),S("Difensore",1,75,"D"),S("Esterno",2,10,"M"),S("Mediano",2,30,"M"),S("Centrocampista",2,50,"M"),S("Mezzala",2,70,"M"),S("Esterno",2,90,"M"),S("Attaccante",3,36,"P"),S("Centravanti",3,64,"P")],
+    "4-2-3-1":[S("Terzino",1,12,"D"),S("Difensore",1,38,"D"),S("Difensore",1,62,"D"),S("Terzino",1,88,"D"),S("Mediano",2,36,"DM"),S("Mediano",2,64,"DM"),S("Ala",3,18,"AM"),S("Trequartista",3,50,"AM"),S("Ala",3,82,"AM"),S("Centravanti",4,50,"CF")],
+    "5-3-2":[S("Terzino",1,10,"D"),S("Difensore",1,30,"D"),S("Difensore",1,50,"D"),S("Difensore",1,70,"D"),S("Terzino",1,90,"D"),S("Mediano",2,25,"M"),S("Centrocampista",2,50,"M"),S("Mezzala",2,75,"M"),S("Attaccante",3,36,"P"),S("Centravanti",3,64,"P")]};
+  return moduliTab112._t;}
+const MODULI_112_ELENCO=["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2"];
+function _no112(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G112;}catch(_e){return false;}}
+/* il modulo del club: `vero`=true ignora l'interruttore rosso (serve al guardiano per sapere cosa avrebbe dovuto vedere) */
+function moduloClub(club,vero){if(!vero&&_no112())return "4-3-3";
+  const k=String((club&&(club.id||club.n||club.name))||"x");let h=hashStr("modulo112|"+k);
+  h=Math.imul(h^(h>>>16),0x45d9f3b)>>>0;h=Math.imul(h^(h>>>16),0x45d9f3b)>>>0;h=(h^(h>>>16))>>>0;
+  return ["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2"][h%5];}
+/* LE SAGOME DEL CAMPO 2D per modulo, una sola funzione per tutti i consumatori: 11 posti {x,y} (slot 0..10, x come la vede la
+   squadra di casa del campo — l'eroe e' sempre «home» nel campo) per quattro contesti: `mpH`/`mpA` = nascita dei ventidue
+   (matchPlayers, prima dello scarto di prestigio degli ospiti), `motH`/`motA` = posti del motore del possesso, `hlA` = posti degli
+   ospiti negli highlight (FORMATION_AWAY). Il 4-3-3 (e il rosso) restituisce ESATTAMENTE le tabelle storiche: nessuna regressione
+   per i club 4-3-3. Gli altri moduli: x per «tipo» di linea, y dalla tabella. Lo slot 10 di casa e' l'eroe (60,50 come sempre). */
+function sagoma112(f,ctx){const mod=_no112()?"4-3-3":(moduloValido112(f)||"4-3-3");
+  const _C=sagoma112._c||(sagoma112._c={});const _k=mod+"|"+ctx;if(_C[_k])return _C[_k];/* memo: tabelle condivise, nessuno le modifica */
+  return (_C[_k]=_sagoma112(mod,ctx));}
+function _sagoma112(mod,ctx){
+  const P=a=>a.map(q=>({x:q[0],y:q[1]}));
+  if(mod==="4-3-3"){
+    if(ctx==="mpH")return P([[8,50],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78],[60,50]]);
+    if(ctx==="mpA")return P([[95,50],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]]);
+    if(ctx==="motH")return P([[5,50],[18,14],[18,38],[18,62],[18,86],[38,25],[38,50],[38,75],[56,22],[56,78],[60,50]]);
+    if(ctx==="motA")return P([[95,50],[82,14],[82,38],[82,62],[82,86],[62,25],[62,50],[62,75],[44,20],[40,50],[44,80]]);
+    return P([[95,50],[78,15],[78,35],[78,65],[78,85],[62,25],[62,50],[62,75],[45,20],[40,50],[45,80]]);}
+  const X={mpH:{GK:8,D:18,DM:30,M:38,AM:48,A:55,P:55,CF:60},mpA:{GK:95,D:82,DM:70,M:62,AM:56,A:48,P:48,CF:46},
+    motH:{GK:5,D:18,DM:30,M:38,AM:48,A:56,P:56,CF:60},motA:{GK:95,D:82,DM:70,M:62,AM:56,A:44,P:42,CF:40},
+    hlA:{GK:95,D:78,DM:70,M:62,AM:54,A:45,P:44,CF:40}}[ctx]||{GK:95,D:78,DM:70,M:62,AM:54,A:45,P:44,CF:40};
+  const t=moduliTab112()[mod];const out=[{x:X.GK,y:50}];
+  t.forEach((q,i)=>{if(i===9&&(ctx==="mpH"||ctx==="motH")){out.push({x:60,y:50});return;}out.push({x:X[q.k],y:q.y});});
+  return out;}
+/* il reparto del motore (DF/MF/AT) per slot: dal tipo di linea del modulo */
+function repartoSlot112(f,i){if(i===0)return "GK";const mod=_no112()?"4-3-3":(moduloValido112(f)||"4-3-3");
+  if(mod==="4-3-3")return (i>=1&&i<=4)?"DF":(i>=5&&i<=7)?"MF":"AT";
+  const k=(moduliTab112()[mod][i-1]||{}).k;return k==="D"?"DF":(k==="DM"||k==="M"||k==="AM")?"MF":"AT";}
+/* un modulo e' valido se e' uno dei cinque che il campo sa disegnare (l'AI puo' rispondere altro) */
+function moduloValido112(f){return MODULI_112_ELENCO.indexOf(String(f||""))>=0?String(f):null;}
+/* le linee di un modulo dalla tabella (es. "4-2-3-1"): e' il conto che il guardiano confronta */
+function lineeModulo112(f){const t=moduliTab112()[f]||moduliTab112()["4-3-3"];const c={};t.forEach(q=>{c[q.ln]=(c[q.ln]||0)+1;});return Object.keys(c).sort((a,b)=>a-b).map(x=>c[x]).join("-");}
+/* rimette ruoli e linee di un modulo sui primi 11 di una rosa gia' fatta, nomi intatti: serve quando il modulo mostrato
+   (tattica AI) non e' quello del club. Lo slot 10 dell'eroe resta com'e'. */
+function rosaConModulo112(roster,f){const t=moduliTab112()[moduloValido112(f)||"4-3-3"];if(!Array.isArray(roster))return roster;
+  return roster.map((r,i)=>{if(!r||i===0||i>10)return r;const q=t[i-1];if(i===10&&r.ln==null)return r;return {...r,role:q.ro,ln:q.ln};});}
 function generateTeamRoster(club,season){
   const nat=club?.nat||"🇮🇹";
   const names=NAME_BY_NAT[nat]||NAME_BY_NAT["🇮🇹"];
@@ -1015,7 +1075,10 @@ function generateTeamRoster(club,season){
   const ss=Math.max(1,season||1),_TEN=7;/* anni medi di permanenza in uno slot */
   const _usati49=new Set();/* [7.999.49 parte A] lo slot i e lo slot i+13 di generazioni diverse pescavano lo STESSO indice del pool:
      nella rosa del Club comparivano due «Sergio Monti» con ruoli diversi. Un nome gia' usato scala al cognome successivo (deterministico). */
-  return roles.map((role,i)=>{
+  /* [giro 112b] i ruoli dei titolari seguono il modulo del club (rosso __CPM_NO_G112: i ruoli 4-3-3 di sempre, senza linee) */
+  const _mod112=_no112()?null:moduliTab112()[moduloClub(club)];
+  return roles.map((role0,i)=>{
+    const _q112=(_mod112&&i>=1&&i<=10)?_mod112[i-1]:null;const role=_q112?_q112.ro:role0;
     const _ph=Math.abs(hashStr((club?.id||"x")+"_ph_"+i))%_TEN;// fase d'ingaggio dello slot (sfalsa i rinnovi)
     const _gen=Math.floor((ss+_ph)/_TEN);// "generazione" del titolare dello slot: cambia solo ogni ~7 stagioni
     const _off=_gen*13;// offset nel pool → nome diverso SOLO quando cambia la generazione (mercato), altrimenti stabile
@@ -1023,6 +1086,7 @@ function generateTeamRoster(club,season){
     if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))_ln=lastPool[(i+_off+7)%lastPool.length];// [5.96.0 CR-1] mai un nome+cognome di calciatore reale in rosa
     if(!(typeof window!=='undefined'&&window.__CPM_NO_ROSA49)){for(let _k=1;_usati49.has(_fn+" "+_ln)&&_k<lastPool.length;_k++){_ln=lastPool[(i+_off+_k)%lastPool.length];if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))continue;}}
     _usati49.add(_fn+" "+_ln);
+    if(_mod112&&i<=10)return{name:`${_fn} ${_ln}`,role,ln:i===0?0:_q112.ln};
     return{name:`${_fn} ${_ln}`,role};});
 }
 function seededShuffle(arr,seed){

@@ -594,6 +594,8 @@ ambientali hanno bpos NELLO specchio (98/2) e `at:"shot"` esplicito: mai rimappa
 misurare la cronaca (inchioda il wizard in hl_result e `playing` non torna più); la svolta a cambio
 giocata/ripresa è voluta e marcata `ng` — si giudicano i passi interni.
 
+**Controlli instabili (PO-311, giro 111):** regole scritte in `docs/governo/PROCESSO.md` («Controlli instabili»): braccio e motivo stampati per ultimi · area di tocco effettiva (rettangolo ∪ `::after`) · tempo di scena e non di parete · si attende un evento, mai un tempo fisso · ripetizione dichiarata (quante volte, cosa è verde) · vietato abbassare soglie · «non giudicato» = rosso, e ciò che il gioco non produce si provoca dalla sonda.
+
 **Trappola falso-verde, variante MONITOR (7.531):** un watcher `tail -n +1 -f` armato nello stesso
 istante del rituale può leggere i marcatori `COMPLETA` del giro PRECEDENTE prima che la troncatura li
 cancelli (race sull'inode) — è arrivato un «B verde + A 8/8» a rituale appena partito. Armare i

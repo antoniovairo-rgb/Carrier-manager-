@@ -66,10 +66,10 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      e' lo spazio FRA due riquadri, e vale SP.box. Fuori da 8-16 (0, 4, 6 e i valori grandi di proposito) non si tocca; con __CPM_NO_SPAZIO296 resta il valore scritto dal chiamante. */
   const _mb296=style&&style.marginBottom,_st296=(typeof _mb296==="number"&&_mb296>=8&&_mb296<=16)?{...style,marginBottom:_sb(_mb296)}:style;
   const _padM=momento?(_ap?pad:"6px 12px"):pad;
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:_g110(25)?RAD.lg/* [giro 110 G180-25] le tavole dicono 14-24 px per i riquadri: il riquadro-carta era a 12 (17 riquadri su 28 a 360, 25 su 38 sul PC), pillole e tasti piccoli restano a 6-8 */:RAD.md,padding:_padM,boxShadow:el,..._st296}} {...rest}>
     {momento!=null&&(
       <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus cpm-t40 cpm-t40h"
-        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:_tocco292()?44:(_mouse110()?36:32),padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
         <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
         <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
@@ -262,7 +262,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   return(
     <div data-cpm-fis="1" style={{marginBottom:_sb(SP.md),...style}}>{/* [giro 91 PO-296] data-cpm-fis: dentro una colonna flex con `gap` lo spazio lo da' il gap, non il margine (regola in src/19) */}
       <button onClick={cambia} aria-expanded={apr} className="cpm-press cpm-t40 cpm-t40h"
-        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:undefined,cursor:"pointer",
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",minHeight:_tocco292()?44:(_mouse110()?36:undefined),cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
@@ -434,11 +434,13 @@ function BottomSheet({open=true,onClose,children,title,style={}}){
 }
 
 /* Tabs — segmented control coerente. items:[{id,label,icon}] · value · onChange. */
+/* [giro 110 G180-20] col MOUSE (puntatore preciso) le righe-fisarmonica e le sottoschede stavano a 31-33 px: pavimento 36, come il tasto "sm" del kit. Rosso __CPM_NO_G110_20. */
+function _mouse110(){try{return _g110(20)&&!!(window.matchMedia&&window.matchMedia("(pointer: fine)").matches&&!window.matchMedia("(pointer: coarse)").matches);}catch(_e){return false;}}
 function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
   return(<div className="cpm-tabs40" style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,minHeight:_mouse110()?36:undefined,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
