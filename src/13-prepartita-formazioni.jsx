@@ -873,8 +873,8 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
         {/* accento all'orlo */}
         <rect x="14" y="46.6" width="24" height={_trim?"2.4":"2"} fill={_trim||detail} opacity={_trim?"0.95":"0.5"}/>
         {/* numero: ombra + testo */}
-        <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif">{number}</text>
-        <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif" letterSpacing="-0.6">{number}</text>
+        <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily={_g110(24)?"'Barlow','Segoe UI',system-ui,Roboto,sans-serif":"Arial,Helvetica,sans-serif"}>{number}</text>
+        <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily={_g110(24)?"'Barlow','Segoe UI',system-ui,Roboto,sans-serif":"Arial,Helvetica,sans-serif"} letterSpacing="-0.6">{number}</text>
       </svg>
       <div style={{fontSize:FS.caption,color:isPlayer?(labelW?"#fde68a":TH.goldText):"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:labelW||(S+8),lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
         {lastName}
