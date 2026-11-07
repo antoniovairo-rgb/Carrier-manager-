@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
+import { tabella as tabellaCosti } from './costi-sessioni.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const leggi = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -85,6 +86,9 @@ const wRows = [
   ['Rischi ad alta probabilità o impatto', `${rischiAlti.length}: ${rischiAlti.join(' · ')}`],
 ];
 
+// [PO-310] costi delle sessioni figlie (docs/governo/COSTI.json)
+let costi = { cols: ['Nota'], rows: [['COSTI.json assente o illeggibile']] }; try { costi = tabellaCosti(); } catch {}
+
 let commit = '';
 try { commit = execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch {}
 const ver = (leggi('src/07-versione-save-interviste.jsx').match(/const GAME_VERSION="([^"]+)"/) || [])[1] || '';
@@ -100,6 +104,7 @@ const DATI = {
     { id: 'registro', nome: 'Registro release', cols: rCols, rows: rRows, ordine: [],
       menu: ['Data', 'Esito'], larga: ['Passo'] },
     { id: 'stato', nome: 'Stato settimanale', cols: wCols, rows: wRows, ordine: [], menu: [], larga: ['Valore'] },
+    { id: 'costi', nome: 'Costi', cols: costi.cols, rows: costi.rows, ordine: [], menu: ['Versione', 'Tipo', 'Modello'], larga: ['Sessione', 'Affidabilità'] },
     { id: 'stabilita', nome: 'Stabilità', cols: sCols, rows: sRows, ordine: [], menu: ['Catena', 'Ultimo esito'], larga: ['Cosa copre'] },
   ],
 };
@@ -108,7 +113,7 @@ const html = `<title>Governo Korward Elite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Registro di cantiere: una testata stretta, cinque schede, tabelle dense e filtrabili colonna per colonna. */
+/* Registro di cantiere: una testata stretta, sei schede, tabelle dense e filtrabili colonna per colonna. */
 :root{
   --bg:#f3f5f1; --panel:#ffffff; --ink:#17201b; --muted:#5b6a61; --rule:#d5ddd6; --accent:#1f7a4d; --accent-ink:#ffffff;
   --st-ok:#1f7a4d; --st-ok-bg:#e1f1e7; --st-run:#8a5a00; --st-run-bg:#fbefd6; --st-open:#a3321f; --st-open-bg:#f8e2dc; --st-wait:#3b5aa8; --st-wait-bg:#e2e8f7;
