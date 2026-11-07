@@ -454,6 +454,7 @@
     "presentazione-200": "node presentazione-200.mjs",
     "guanti-201": "node guanti-201.mjs",
     "formazioni-204": "node formazioni-204.mjs",
+    "moduli-112": "node moduli-112.mjs",
     "ripartenza-207": "node ripartenza-207.mjs",
     "ripartenza-piazzato": "node ripartenza-piazzato-27.mjs",
     "ripartenza-235": "node ripartenza-235.mjs",

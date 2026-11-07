@@ -886,6 +886,15 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){window.__CPM_JerseyIc
 
 /* Groups roster [{name,role,num?}] into formation rows ATT→MID→DEF→GK */
 function rosterRows(roster){
+  /* [giro 112b PO-314] con le linee del modulo nella rosa (campo `ln`, generateTeamRoster) le righe sono quelle VERE del modulo
+     (4-2-3-1 ha quattro righe, non tre). Chi non ha `ln` (l'eroe o il rivale messi nello slot 10, rose esterne) va nella riga del
+     suo reparto: portiere 0, attaccante l'ultima. Senza linee (rosso __CPM_NO_G112) il raggruppamento per nome del ruolo di sempre. */
+  if(Array.isArray(roster)&&roster.some(p=>p&&p.ln!=null)&&!(typeof window!=='undefined'&&window.__CPM_NO_G112)){
+    const mx=Math.max(...roster.map(p=>(p&&p.ln!=null)?p.ln:0));const L={};
+    roster.forEach((p,i)=>{if(!p)return;const entry={...p,num:p.num||i+1};let ln=p.ln;
+      if(ln==null){const r=(p.role||"").toUpperCase();ln=(r==="GK"||r==="POR"||r.includes("PORTIERE"))?0:(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))?1:(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("MEZZALA")||r.includes("ESTERNO"))?Math.min(2,mx):mx;}
+      (L[ln]=L[ln]||[]).push(entry);});
+    return Object.keys(L).map(Number).sort((a,b)=>b-a).map(k=>L[k]);}
   const gk=[],def=[],mid=[],att=[];
   roster.forEach((p,i)=>{
     const r=(p.role||"").toUpperCase();
@@ -930,7 +939,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     const h=e=>{if(_scrive386(e))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();onContinue();}};
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[onContinue]);
-  const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"ATT"}:r);
+  const hRoster=homeRoster||generateTeamRoster(homeTeam,player?.season||1).map((r,i)=>i===10?{name:player?.name||"Tu",role:"ATT",...(r.ln!=null?{ln:r.ln}:{})}:r);
   const aRoster=awayRoster||generateTeamRoster(awayTeam,player?.season||1);
   // Home: hero (last slot) = player jersey num, teammates = 1-15 excluding hero's num
   const _heroNum=player?.jerseyNum||10;
@@ -967,7 +976,9 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
   //   del box rosso d'allarme, CTA ambra. Logica numeri/eroe (withNums/hRoster/aRoster) INVARIATA.
   const _rgba=(h,a)=>{try{const c=hexToRgb(h);return "rgba("+c.r+","+c.g+","+c.b+","+a+")";}catch(e){return "rgba(255,255,255,"+a+")";}};
   const ACC="#f59e0b";
-  const _fmtOf=(rr)=>{let d=0,m=0,a=0;(rr||[]).forEach(p=>{const r=(p.role||"").toUpperCase();if(r==="GK"||r==="POR"||r.includes("PORTIERE"))return;if(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))d++;else if(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("TREQUARTISTA")||r.includes("MEZZALA"))m++;else a++;});return d+"-"+m+"-"+a;};
+  const _fmtOf=(rr)=>{/* [giro 112b] il modulo scritto e' il conto delle righe vere (portiere escluso) */
+    if(Array.isArray(rr)&&rr.some(p=>p&&p.ln!=null)&&!(typeof window!=='undefined'&&window.__CPM_NO_G112)){const rw=rosterRows(rr);return rw.slice(0,-1).reverse().map(x=>x.length).join("-");}
+    let d=0,m=0,a=0;(rr||[]).forEach(p=>{const r=(p.role||"").toUpperCase();if(r==="GK"||r==="POR"||r.includes("PORTIERE"))return;if(r==="DEF"||r.includes("DIFENSORE")||r.includes("TERZINO"))d++;else if(r==="MID"||r==="CEN"||r.includes("CENTROCAMPISTA")||r.includes("MEDIANO")||r.includes("TREQUARTISTA")||r.includes("MEZZALA"))m++;else a++;});return d+"-"+m+"-"+a;};
   const _homeNums=withNums(hRoster,true),_awayNums=withNums(aRoster,false);
   const _pips=p=>clamp(Math.round((p||60)/20),1,5);
   const _pipRow=(p,rev)=>(<div style={{display:"flex",gap:3,marginTop:4,flexDirection:rev?"row-reverse":"row"}}>{[0,1,2,3,4].map(i=><span key={i} style={{width:6,height:6,borderRadius:"50%",background:i<_pips(p)?"rgba(255,255,255,0.85)":"rgba(255,255,255,0.2)"}}/>)}</div>);
@@ -1010,6 +1021,12 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         const righe=Math.max(1,rosterRows(_homeNums).length+rosterRows(_awayNums).length);
         const libero=window.innerHeight-r.bottom-12;setGap204(g=>{const n=clamp(Math.floor((libero+g*righe)/righe),0,36);return n===g?g:n;});}catch(_e){}};
       mis();window.addEventListener('resize',mis);return()=>window.removeEventListener('resize',mis);},[]);
+    /* [giro 112b PO-314] UNA LINEA E' UNA RIGA. A 84 px d'etichetta su un telefono da 360 una riga da 4 maglie andava gia' a capo
+       nella 181 (misurato: il 4-3-3 si leggeva 3-3-3-1, foto docs/sviluppo/foto-giro112/prima-tel-…) e con i moduli veri le righe
+       da 5 (difesa a 5, centrocampo a 5) peggio ancora. L'etichetta si stringe quanto serve perche' n maglie + gli spazi entrino
+       nella larghezza del campetto (il riquadro dell'eroe compreso), mai sotto 58 px: il cognome va coi puntini, la linea resta una.
+       Dove c'e' spazio resta 84 px. Rosso __CPM_NO_G112 (84 fissi). */
+    const _lw112=(n)=>{if(typeof window!=='undefined'&&window.__CPM_NO_G112)return 84;try{const w=(ref204.current&&ref204.current.getBoundingClientRect().width)||(window.innerWidth-32);return clamp(Math.floor((w-14-3*(n-1))/n),58,84);}catch(_e){return 64;}};
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
@@ -1020,8 +1037,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2,padding:gap204?`${Math.floor(gap204/2)}px 0 ${Math.ceil(gap204/2)}px`:0}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={84}/></div>
-            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={84} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={_lw112(row.length)}/></div>
+            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={_lw112(row.length)} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
       </div>
     </Card>);

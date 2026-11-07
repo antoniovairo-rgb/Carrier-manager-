@@ -272,8 +272,10 @@ function creaMotorePossesso(cfg){
   const vantDi=(l)=>V2?((forza[l]-forza[l==='home'?'away':'home'])+(STADIO===l?K2.campo:STADIO&&STADIO!==l?-K2.campo:0)):0;
   const attrsDi=(p)=>{const f=p.eroe?clamp((+(cfg.eroe&&cfg.eroe.ovr)||forza.home),40,95):forza[p.team];const v=Math.round(f);return{tiro:v,tecnica:v,passaggio:v,dribbling:v,velocità:v,fisico:v,mentalità:v,posizionamento:v};};
   /* posti di modulo (per indice): casa 0-9 + eroe, ospiti 10-20 */
-  const SLOT_H=[{x:5,y:50},{x:18,y:14},{x:18,y:38},{x:18,y:62},{x:18,y:86},{x:38,y:25},{x:38,y:50},{x:38,y:75},{x:56,y:22},{x:56,y:78}];
-  const SLOT_A=[{x:95,y:50},{x:82,y:14},{x:82,y:38},{x:82,y:62},{x:82,y:86},{x:62,y:25},{x:62,y:50},{x:62,y:75},{x:44,y:20},{x:40,y:50},{x:44,y:80}];
+  /* [giro 112b PO-314] i posti di modulo arrivano dalla partita (cfg.slot, sagoma112: il modulo dei due club); senza, il 4-3-3 storico */
+  const _sl112=(cfg.slot&&Array.isArray(cfg.slot.h)&&cfg.slot.h.length>=10&&Array.isArray(cfg.slot.a)&&cfg.slot.a.length>=11)?cfg.slot:null;
+  const SLOT_H=_sl112?_sl112.h.slice(0,10).map(q=>({x:+q.x,y:+q.y})):[{x:5,y:50},{x:18,y:14},{x:18,y:38},{x:18,y:62},{x:18,y:86},{x:38,y:25},{x:38,y:50},{x:38,y:75},{x:56,y:22},{x:56,y:78}];
+  const SLOT_A=_sl112?_sl112.a.slice(0,11).map(q=>({x:+q.x,y:+q.y})):[{x:95,y:50},{x:82,y:14},{x:82,y:38},{x:82,y:62},{x:82,y:86},{x:62,y:25},{x:62,y:50},{x:62,y:75},{x:44,y:20},{x:40,y:50},{x:44,y:80}];
   const SLOT_EROE={x:60,y:50};
   const slotDi=(p)=>p.eroe?SLOT_EROE:(p.team===HOME?SLOT_H[p.i]:SLOT_A[p.i-10]);
   const attivo=(p)=>!!p&&(!p.eroe||eroeAttivo)&&!(V2&&S&&S.cartellini&&S.cartellini[p.i]&&S.cartellini[p.i].r);
@@ -1776,8 +1778,8 @@ const es=esitoTiroV2(Rv,_in298,{pressRaw:_pr298,res221:_r298});
     _reg202.cfg=_cl(cfg);_reg202.log=[];const L=_reg202.log;const W=(n,f)=>function(){if(L.length<60000)L.push([n,_cl(Array.prototype.slice.call(arguments))]);return f.apply(this,arguments);};
     const ch={};for(const k in chiedi)ch[k]=typeof chiedi[k]==='function'?W('chiedi.'+k,chiedi[k]):chiedi[k];
     const re={};for(const k in risolviEroe)re[k]=typeof risolviEroe[k]==='function'?W('risolviEroe.'+k,risolviEroe[k]):risolviEroe[k];
-    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena)};}
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena};
+    return{tick:W('tick',tick),chiedi:ch,stato,tabellino,pagelle,registra:W('registra',registra),risolviEroe:re,HERO,_g:g,_S:S,occasione:W('occasione',occasione),espulsi,v2:V2,xgPunto,addebita:W('addebita',addebita),tattica:TAT,probEroe:W('probEroe',probEroe),giocaScena:W('giocaScena',giocaScena),_slot:{h:SLOT_H,a:SLOT_A}};}
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe,giocaScena,_slot:{h:SLOT_H,a:SLOT_A}};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]
