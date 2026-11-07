@@ -74,6 +74,34 @@ Le domande si raggruppano. Mentre si aspetta, si lavora sulle voci indipendenti.
 ## Riconciliazione
 A ogni fine lotto: ogni richiesta PO arrivata nel frattempo deve avere il suo `PO-…` nel backlog.
 
+## Controlli instabili (regole, PO-311, giro 111)
+Un controllo che a parità di codice dà verde e rosso non è un controllo: costa catene rifatte e toglie fiducia a quelli stabili.
+Regole per scriverli e per ripararli. Valgono per ogni sonda e guardiano in `tests/visual`.
+1. **Braccio e motivo per ultimi.** L'ultima riga stampata dice quale braccio (verde / rosso) e **perché** (primi due difetti, o
+   «cieco: …», o «non giudicato: …»). La coda del runner è la sola cosa che si legge: se il motivo è sopra, non c'è.
+2. **Area di tocco effettiva.** Un tasto si misura col rettangolo unito all'area `::after` trasparente (`.cpm-t40`/`.cpm-t40m`),
+   non col solo rettangolo: è ciò che riceve il dito (`EXTRA108` in `c180-lib.mjs`).
+3. **Tempo di scena, non di parete.** Ogni durata, intervallo, velocità o precedenza si misura sul tempo di scena che il gioco
+   dichiara (`ck`, `__CPM_CB95`, clock del render-loop), mai su `Date.now()`/`performance.now()` né su campioni a intervallo fisso:
+   a fotogrammi lenti (`dt` tappato a 0,05, CPU rallentata, runner contesi) 1 s di parete vale meno scena. Il confronto fra due
+   campioni porta con sé il tempo, e le coppie troppo distanti si scartano.
+4. **Si aspetta un evento o una condizione, mai un tempo fisso.** `waitForFunction` / ciclo con tetto sulla condizione
+   (fase `__CPM_PHASE`, registro ri-registrato, salvataggio alla settimana attesa), non `sleep(N)` e poi leggo. Il tetto serve
+   a non appendersi, non a decidere: se scade, il controllo dichiara «non giudicato».
+5. **Ripetizione dichiarata.** Un controllo che si ripete dice **quante volte** e **che cosa conta come verde** (es. «5 giri
+   consecutivi, tutti verdi, D2 giudicato in ognuno»). Il rosso del braccio rosso si dimostra con la stessa regola. Un verde
+   «all'ultimo giro» dopo rossi non è verde: è «instabile» e si ripara.
+6. **Mai abbassare una soglia per far passare un controllo.** Si cambia ciò che si misura (strumento, evento atteso, tempo di scena)
+   o si dichiara il caso «non giudicato»; una soglia si cambia solo con la misura che la giustifica e per volere del PO.
+7. **Non giudicato = rosso.** Un controllo che non riesce a mettere in scena ciò che deve giudicare (nessun rigore, nessuna parata,
+   nessuna scena) esce rosso con scritto «non giudicato»: un verde che non ha guardato nulla è peggio di un rosso. Ciò che il gioco
+   non produce da solo si provoca **dalla sonda** (seme fisso, stato scritto tramite gli agganci di collaudo, situazione forzata),
+   mai con un ramo speciale nel gioco.
+8. **La causa si cerca prima di ripetere.** Un guardiano instabile si censisce (5 esecuzioni di fila, una alla volta, con durata e
+   motivo di ogni rosso e `free -m`/`df -h` prima), si individua se la causa è nello **strumento** (attese a tempo fisso,
+   dipendenza dalla velocità della macchina, soglia sul filo) o nel **gioco** (difetto vero, solo annotato dalle sessioni di controllo),
+   e si ripara lo strumento seguendo le regole sopra. Lo si dichiara stabile solo dopo altre 5 esecuzioni consecutive.
+
 ## Codex
 Solo collaudatore. Le direttive le scriviamo noi (`reports/codex/PROMPT-*.md`). Scrive solo in
 `reports/codex/` e `tests/codex/`, pusha solo su rami `codex/…`.

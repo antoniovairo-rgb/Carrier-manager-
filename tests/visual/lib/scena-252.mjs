@@ -11,6 +11,11 @@ export async function pagina252(b, port, flags = {}) {
   await page.addInitScript(f => {
     window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_REC229 = 1;
     for (const [k, v] of Object.entries(f)) window[k] = v;
+    /* [giro 111 PO-311] SEME FISSO DELLA SONDA (opzionale: flag __SEME252 = intero): il bersaglio dei tiri del gioco e' Math.random non
+       seedato (pre-esistente), quindi la stessa scena forzata ripetuta da' z di arrivo diverse e un guardiano che dipende dall'angolo
+       del tiro oscilla da solo. Con il seme, la sequenza e' la stessa a ogni giro. Il gioco non cambia: la sonda sostituisce
+       Math.random nella SUA pagina, come gia' fa per il tempo. Senza il flag nulla cambia per gli altri guardiani. */
+    if (typeof window.__SEME252 === 'number') { let a = window.__SEME252 >>> 0; window.__SEME252_RESET = n => { a = n >>> 0; }; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
     /* campionatore per fotogramma (come __B248 del banco): tempo di SCENA, fase, stacco nero vivo, eroe/pallone dalle mesh */
     window.__S252 = { on: false, fr: [] };
     const loop = () => { try { const S = window.__S252; if (S.on && S.fr.length < 6000) { const p = window.__CPM_PROBE && window.__CPM_PROBE();

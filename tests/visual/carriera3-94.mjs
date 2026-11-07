@@ -187,7 +187,7 @@ async function d9() {
    tre). Il giudizio (nessun rigore ricalciato dal motore dopo il rigore segnato in scena) e' identico. */
 async function d2() {
   for (const k of (process.env.CPM_K || '7,13,21').split(',').map(Number)) { const r = await d2k(k, true); if (r !== 'cieco') return; }
-  ok(false, `D2: cieco — nessun rigore dell'eroe segnato in scena nelle partite ${process.env.CPM_K || '7,13,21'}`);
+  ok(false, `D2: NON GIUDICATO (rosso, mai verde) — nessun rigore dell'eroe segnato in scena, nemmeno provocato dalla sonda, nelle partite ${process.env.CPM_K || '7,13,21'}`);
 }
 async function d2k(k, multi) {
   const fs = await import('node:fs');
@@ -204,12 +204,44 @@ async function d2k(k, multi) {
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), k);
-  const tp = Date.now(); let ph = '';
-  while (Date.now() - tp < 480000) { ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break; await sleep(500); }
+  /* [giro 111 PO-305] IL RIGORE LO PROVOCA LA SONDA, MAI IL GIOCO E MAI LA FORTUNA. Sul motore vero il fallo in area non arrivava in
+     nessuna delle partite di prova (dipende dal ritmo della macchina): D2 non giudicava. Ora, dal minuto di motore 8 e a gioco
+     fluido (nessun piazzato in corso, nessuna scena aperta), la sonda scrive nel motore (gancio di collaudo __CPM_MOTORE_OBJ) lo
+     STESSO stato che scrive fermoSet("pen"): rigore per la squadra dell'eroe, eroe battitore. E' lo stato, non il caso: il resto
+     (la scena, il piazzato giocato, la guardia dei 4 minuti) e' il gioco vero. Se il rigore e' sbagliato dall'eroe se ne provoca un
+     altro 9 minuti di motore dopo (max 4); l'osservazione si chiude 7 minuti dopo il gol in scena. Mai un ramo nel gioco. */
+  const tp = Date.now(); let ph = ''; let inj = 0, ultimo = -99, gol = null, due = null;
+  while (Date.now() - tp < 480000) {
+    ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph === 'ended' || ph === 'ceremony') break;
+    const st = await page.evaluate(({ ultimo, inj, due }) => { try {
+      const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); if (!M || !M._S) return { cieco: 1 }; const S = M._S, min = S.min | 0;
+      const P = window.__CPM_PEN94 || []; const g = P.filter(e => e.t === 'scena_gol' && e.kind === 'penalty');
+      const libero = window.__CPM_PHASE() === 'playing' && !S.fermo && !S.scena && S.poss && S.poss.stato !== 'fermo';
+      const pen = () => { const H = M._g[M.HERO]; if (!H) return false;
+        S.fermo = { kind: 'pen', lato: 'home', x: 89, y: 50, t: 0, tot: 3, batt: H.i }; S.cond = null;
+        S.poss.stato = 'fermo'; S.poss.lato = 'home'; S.poss.padrone = null; S.poss.ricevente = null; S.poss.t = 0; S.palla.x = 89; S.palla.y = 50; return true; };
+      /* SECONDO rigore dell'eroe, subito dopo quello segnato in scena: e' lo stato che il difetto del giro 94 produceva (la scena arrivava
+         tardi, il motore ricalciava il suo rigore con l'eroe). Con la guardia (piazzatoGiocato, 4 minuti) il motore lo lascia al portiere;
+         senza (rosso __CPM_NO_C3D2) calcia: e' cosi' che il braccio rosso esiste e D2 lo vede. */
+      if (g.length) { if (!due && libero && min >= g[0].min + 1 && pen()) return { min, gol: g[0].min, due: min }; return { min, gol: g[0].min }; }
+      if (libero && min >= 8 && min - ultimo >= 9 && inj < 4 && pen()) return { min, iniettato: min };
+      return { min }; } catch (e) { return { err: String(e && e.message).slice(0, 120) }; } }, { ultimo, inj, due });
+    if (st && st.iniettato != null) { inj++; ultimo = st.iniettato; console.log(`D2 k${k}: rigore provocato dalla sonda al minuto di motore ${st.iniettato} (${inj})`); }
+    if (st && st.due != null) { due = st.due; console.log(`D2 k${k}: secondo rigore dell'eroe offerto al motore al minuto ${st.due}`); }
+    if (st && st.cieco) { await sleep(500); continue; }
+    if (st && st.gol != null) { gol = st.gol; if ((st.min | 0) >= gol + 7) break; }
+    await sleep(300);
+  }
+  const fin = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ(); const S = M._S; return { min: S.min, fermo: S.fermo && { kind: S.fermo.kind, o27: S.fermo._o27, acc: S.fermo._acc94, t: S.fermo.t, batt: S.fermo.batt }, noPiaz: S.noPiaz94, stato: S.poss && S.poss.stato, pz: M.stato && (M.stato().scena || null) }; } catch (e) { return String(e && e.message); } });
+  console.log('D2 stato finale motore: ' + JSON.stringify(fin));
   const P = await page.evaluate(() => window.__CPM_PEN94 || []); await ctx.close();
+  console.log(`D2 k${k}: rigori provocati ${inj}, primo gol in scena ${gol}`);
   const scene = P.filter(e => e.t === 'scena_gol' && e.kind === 'penalty');
-  const doppi = scene.filter(sg => P.some(e => e.t === 'battuta' && e.eroe && e.min >= sg.min && e.min <= sg.min + 6));
+  /* [giro 111] «ricalciato» = o la battuta/il tiro di rigore dell'eroe (difetto storico) o una SECONDA scena di rigore dell'eroe (occasione) dentro i
+     4 minuti della guardia; la prova offre al motore proprio quel secondo rigore */
+  const doppi = scene.filter(sg => P.some(e => (e.t === 'battuta' && e.eroe && e.min >= sg.min && e.min <= sg.min + 6) || (e.t === 'occasione_eroe' && e.min > sg.min && e.min <= sg.min + 3)));
   console.log(`D2 k${k} fine ${ph}: ${P.map(e => e.min + "'" + e.t + (e.eroe ? '*' : '')).join(' ')}`);
+  console.log('D2 dettaglio: ' + JSON.stringify(P.filter(e => e.t === 'piazzato_giocato')));
   if (!scene.length) return 'cieco';
   ok(doppi.length === 0, `D2: dopo il rigore segnato in scena il motore non lo ricalcia con l'eroe (${doppi.length} doppi su ${scene.length})`);
   ok(errs.length === 0, `D2: nessun errore di pagina (${errs.join(' | ')})`);
@@ -219,7 +251,7 @@ const PROVE = { D1: d1, D2: d2, D3: d3, D4: d4, D5: d5ui, PURE: pure, D9: d9 };
 for (const [k, f] of Object.entries(PROVE)) if (vuole(k)) { try { await f(); } catch (e) { ok(false, `${k}: eccezione ${String(e && e.message).slice(0, 200)}`); } }
 await browser.close(); srv.close();
 /* [giro 96b] un rosso CIECO non e' un rosso: se le sole cadute sono «cieco», il braccio rosso non ha dimostrato niente */
-const _ciechi96 = err.filter(m => /cieco/.test(m)).length;
+const _ciechi96 = err.filter(m => /cieco|NON GIUDICATO/.test(m)).length;
 if (ROSSO && err.length && _ciechi96 === err.length) { console.log(`\nROSSO NON DIMOSTRATO (rosso ${ROSSO}): ${_ciechi96} prove cieche, nessuna caduta vera`); process.exit(3); }
 console.log(err.length ? `\nFALLITO${ROSSO ? ' (rosso ' + ROSSO + ': atteso)' : ''}: ${err.length}` : '\nVERDE');
 process.exit(err.length ? 1 : 0);

@@ -31,9 +31,9 @@ async function braccio(arm, cpu) {
   const ctx = await browser.newContext({ viewport: { width: 412, height: 915 } }); const page = await ctx.newPage(); await installCdnRoutes(page);
   await page.addInitScript(([r, bz, da]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; window.__CPM_BUSY103 = bz; if (da) window.__CPM_BUSY103DA = da; window.__CPM_G103SOLORISERVA = 1; if (r) window.__CPM_NO_G103A = 1;
     window.__R103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
-      if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (!cur) { cur = { ck0: c.ck, t0: performance.now(), n: (window.__CPM_REV95 || []).length, occ: null, rev: null }; window.__R103.push(cur); }
+      if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (cur) cur.dur = c.ck - cur.ck0; if (!cur) { cur = { ck0: c.ck, t0: performance.now(), n: (window.__CPM_REV95 || []).length, occ: null, rev: null }; window.__R103.push(cur); }
         if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.c26 == null && performance.now() - cur.t0 >= 2600) cur.c26 = c.ck - cur.ck0;
-        if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck - cur.ck0; cur.revMs = performance.now() - cur.t0; cur.rv = window.__CPM_REV95[window.__CPM_REV95.length - 1]; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [rosso, BUSY, DA]);
+        if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck - cur.ck0; cur.revMs = performance.now() - cur.t0; cur.rv = window.__CPM_REV95[window.__CPM_REV95.length - 1]; } } else { if (cur) cur.fine = true; cur = null; } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, [rosso, BUSY, DA]);
   if (process.env.CPM_FLAG) await page.addInitScript(f => { f.split(',').forEach(k => { if (k) window[k] = 1; }); }, process.env.CPM_FLAG);/* [giro 104] interruttori extra (es. CPM_FLAG=__CPM_NO_G104A) */
   await openMatch(page, port, { name: 'Riserva Centotre' });
   if (CPUQ > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPUQ }); }
@@ -47,9 +47,9 @@ async function braccio(arm, cpu) {
     const t0 = Date.now(); while (Date.now() - t0 < 15000 && (await fase(page)) !== 'hl_choose') await sleep(150);
     const n0 = await page.evaluate(() => window.__R103.length);
     if (!await page.evaluate(kk => window.__CPM_RESOLVE(kk), k).catch(() => false)) { out.push({ gi, ko: 'risoluzione' }); continue; }
-    const t1 = Date.now(); let r = null; while (Date.now() - t1 < (warm ? 60000 : 160000)) { r = await page.evaluate(n => window.__R103.slice(n).find(x => x.rev != null) || null, n0).catch(() => null); if (r && r.rev != null) break; await sleep(300); }
+    const t1 = Date.now(); let r = null, why = null;/* [giro 111 PO-311] si aspetta l'EVENTO (esito rivelato · finestra d'esito chiusa · 20 s di SCENA), non 160 s di parete: una scena che non rivela mai costava 160 s per braccio */ while (Date.now() - t1 < (warm ? 60000 : 160000)) { r = await page.evaluate(n => window.__R103.slice(n)[0] || null, n0).catch(() => null); if (r && r.rev != null) break; if (r && (r.fine || (r.dur || 0) >= (+process.env.CPM_G103_SCENAMAX || 20))) { why = r.fine ? 'finestra chiusa' : (+process.env.CPM_G103_SCENAMAX || 20) + ' s di scena'; break; } await sleep(300); }
     if (warm) continue;
-    if (!r || r.rev == null) { out.push({ gi, ko: 'esito mai rivelato in 160 s' }); continue; }
+    if (!r || r.rev == null) { out.push({ gi, ko: 'esito mai rivelato (' + (why || 'tetto di parete 160 s') + ')' }); continue; }
     const busy = !!(r.rv && r.rv.busy); out.push({ gi, via: r.rv && r.rv.via, cap: r.rv && r.rv.cap, busy: DA ? (r.rev < 2.6) : busy,/* caso B: le scene di tiro non sono «tiro del compagno», quindi la riserva deve solo rispettare il minimo di 2,6 s DI SCENA dalla risoluzione — misurato verde 2,61-2,66 · rosso 1,36-1,98 */ rev: +r.rev.toFixed(2), revMs: Math.round(r.revMs), c26: r.c26 != null ? +r.c26.toFixed(2) : null });/* col caso B il difetto e' l'esito rivelato PRIMA che la conclusione cominci */
     const o = out[out.length - 1]; console.log(`  ${arm} gi${gi}: esito a ${o.rev} s di scena (${o.revMs} ms) via ${o.via}${o.cap ? '+' + o.cap : ''} ${o.busy ? (DA ? 'PRIMA dei 2,6 s di scena' : 'a CONCLUSIONE IN CORSA') : (DA ? 'dopo i 2,6 s di scena' : 'a conclusione finita')} · scena nei primi 2,6 s ${o.c26}`);
   }
