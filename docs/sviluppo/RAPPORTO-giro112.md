@@ -114,7 +114,30 @@ build vera di `lavoro/182`.
 
 ## 5. Controlli (uno alla volta, `CPM_CI_PAR=0`; memoria e disco registrati prima di ognuno)
 
-RISULTATI_CONTROLLI
+Memoria libera 13,4-15,5 GB e disco libero 29 GB prima di ogni controllo (registro della sessione). Tutti sul build finale
+salvo dove detto.
+
+| controllo | esito |
+|---|---|
+| `moduli-112` (nuovo) | ✅ verde 6 misure, 10 club, 5 moduli; rosso visibile (`__CPM_NO_G112`: tutto 4-3-3) — build finale |
+| `replay` | ✅ PASS, 8 highlight completi |
+| `validate-situations` | ✅ PASS 14/14, fingerprint 00001505, 0 failure (build prima della correzione della finta) |
+| `partita-v2` | ✅ verde (contrasto minimo 4,87:1) e rosso atteso |
+| `partita2d-297` | ❌ due giri sulla sonda originale (PC: «lampo non spento dopo 2,2 s», la base `lavoro/182` verde); causa misurata: `hl_intro` parte dentro la finestra del lampo e il 2D smette di disegnare. Sonda corretta (lampo misurato in pausa): ✅ verde, rosso A/B/C visibile |
+| `freccia-107` | ✅ verde, rosso visibile |
+| `spalti-109` | ✅ verde 21 misure, rosso 21/21 |
+| `collaudo-108` | ✅ verde, rosso atteso |
+| `highlight-95` | ⚠️ braccio verde completo (96 highlight): 1 difetto **D2** «Finta e cambio di passo» fallita raccontata «Intercettato» (s12/2021). Causa: la correzione del giro 95 copriva solo la finta riuscita; con le posizioni del modulo vero la chiave d'errore `intercept` arrivava al riquadro. **Corretto** (finta fallita = palla persa nel duello, stesso rosso `__CPM_NO_G95D2`). Rigiocato solo il braccio verde su s12: la finta fallita esce `dribble/intercept/dispossessed`, nessun D2; il giro mirato non supera i pavimenti di copertura (8 passaggi < 12, 1 finta < 4) perché un salvataggio solo è troppo poco, quindi **non è un verde completo**. Il braccio rosso del giro completo è stato interrotto a 58 minuti per il tetto di tempo: **non vale**. |
+| `career-critical` | ✅ PASS (catena intera) |
+| `test:logic` | ✅ 43 pass · 0 fail |
+| `save-compat` | ✅ 12 pass · 0 fail |
+| `pc-tablet-292` | ✅ verde, rosso visibile |
+| `griglia-mobile` | ✅ uscita 0 (65 scatti; «prepartita: playMatch → nomatch» non misurato, come dichiarato dallo strumento); scatti rigenerati non committati |
+| `formazioni-204` | ✅ verde (412x915 respiro 36 px, 360x740 senza scorrimento), rosso visibile |
+| `scena3d-96`, `partita-vera` | **non eseguiti**: tetto di 4 ore raggiunto (highlight-95 ha preso un'ora). Da rigiocare prima della promozione |
+
+Da rifare prima della promozione, sul build finale: `highlight-95` completo (verde + rosso), `scena3d-96`, `partita-vera`,
+`validate-situations` (la correzione della finta tocca `handleAction`, che il gate esercita).
 
 ## 6. Scelte prudenti e cose rimaste fuori
 
@@ -132,6 +155,7 @@ RISULTATI_CONTROLLI
   (comportamento storico), nei moduli nuovi l'indice è quello giusto (`idx-10`).
 - La riga dell'anteprima a 360 px andava a capo già nella 181: corretta qui perché il guardiano la conta (è una linea del
   modulo), con lo stesso interruttore rosso.
+- `GAME_VERSION` non toccata e roadmap non scritta: è il lotto della madre.
 - Sonda `partita2d-297`: il lampo del gol ora si misura a partita in pausa. Col modulo vero del club di prova un highlight
   partiva dentro la finestra di 2,2 s (fase `hl_intro` misurata), il campo 2D smetteva di disegnare e `spento` non arrivava
   mai; la base `lavoro/182` passava perché lì l'highlight non cadeva in quella finestra. Nessuna soglia cambiata, il rosso
