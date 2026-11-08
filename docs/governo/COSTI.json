@@ -320,5 +320,33 @@
   "cache_read_tokens": 19343120,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYiaCG2Jape1eHtvywR2i",
+  "titolo": "giro 124 · bambini (fermato dopo ~1 minuto, istruzione superata)",
+  "versione": "7.999.186",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-08T14:01:57Z",
+  "chiusa": "2026-11-08T14:02:54Z",
+  "cost_usd": 0.382518,
+  "output_tokens": 1433,
+  "cache_read_tokens": 572600,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia8zusachj9DbVSbtcr",
+  "titolo": "giro 124b · colori dei bambini",
+  "versione": "7.999.186",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-08T14:02:55Z",
+  "chiusa": "2026-11-08T14:47:15Z",
+  "cost_usd": 1.19642648,
+  "output_tokens": 18753,
+  "cache_read_tokens": 5574411,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
