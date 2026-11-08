@@ -4183,7 +4183,7 @@ function _pesoStile67(player,t){try{const m=(typeof stileMotore==='function')?st
    saltato, palla al piede), famiglia del motore «dribbling» con la sua probabilita', tipo 3D «dribble», errore = palla persa nel
    duello; riuscita, apre la conclusione da giocare (catena dopo_dribbling). Rosso __CPM_NO_G95D2. */
 function _rew95(t){return (t&&t.drb&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D2))?'chance':(t&&t.rew);}
-function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
+function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo,ancora){
   let h=(seed>>>0)||1;const rnd=()=>{h=(Math.imul(h^(h>>>15),2246822507)+0x9e3779b9)>>>0;return (h>>>8)/16777216;};
   const stat=(k)=>{try{return +((player&&player.stats&&player.stats[k])||60);}catch(_e){return 60;}};
   const pool=REG.map(t=>({t,w:t.w(c)*(0.6+stat(t.st)/100)*_pesoStile67(player,t)})).filter(o=>o.w>0);
@@ -4198,13 +4198,16 @@ function _p6Costruisci(occ,player,seed,REG,c,titoli,intro,zones,ctx,tipo){
   actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].prot)a.prot98=true;});/* [giro 98 D3-bis] la protezione porta il suo segno fino al motore e al riquadro */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_GESTO220))actions.forEach((a,i)=>{if(a&&scelte[i]&&scelte[i].g)a.defGesto=scelte[i].g;});/* [7.999.155 PO-220 «l'eroe nelle scene difensive sembra fare una passeggiata»] il gesto difensivo lo dichiara la scena: chiusura, contrasto e raddoppio finivano nel ripiego «press» (sola locomozione). Rosso __CPM_NO_GESTO220 */
   const text=titoli[Math.floor(rnd()*titoli.length)%titoli.length];
+  /* [giro 126 PO-328] l'ancora la puo' spostare solo lo strato, DOPO la scelta delle opzioni (nessun sorteggio in piu' o in meno):
+     serve a sapere se la scena offre davvero una conclusione. Senza «ancora» il costruttore e' identico a prima. */
+  if(typeof ancora==='function'){const _a126=ancora(scelte,occ);if(_a126)occ={...occ,x:_a126.x,y:_a126.y,_g126:{x:+occ.x,y:+occ.y}};}
   const x=+occ.x,y=+occ.y;
   const sz={x:[clamp(x-2,2,96),clamp(x+2,4,98)],y:[clamp(y-3,3,95),clamp(y+3,5,97)]};
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const _man=_p6Manovra(occ);/* [7.999.150 strato 5] la manovra vera apre l'introduzione */
   const _pz=(tipo==='punizione'||tipo==='rigore');/* [7.999.153 strato 8a] il piazzato si batte da fermo */
   const s=S(text,zones,_pz?sz:mz,sz,actions,_pz,_pz?0:-1,_man?(_man.txt+' '+intro).trim():intro,tipo==='difesa'?'def':'off',null,ctx);/* [7.999.152] la scena difensiva nasce type def */
-  s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;
+  s._p6=tipo;s._p6seed=seed>>>0;s._p6man=_man?_man.k:null;if(occ._g126)s._g126=occ._g126;
   s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] il marcatore e la sua distanza, come li ha misurati il motore */
   return s;
 }
@@ -4286,7 +4289,16 @@ function scenaDalMotoreLinee(occ,player,seed){
   const titoli=['🧠 Ricevi fra le linee: hai spazio!','🧠 Fra le linee, '+(N.dif?N.dif+' esce in ritardo':'il mediano esce in ritardo')+'!'];
   const intro=N.ric?(N.ric+' taglia alle spalle della difesa.'):'Nessun taglio in profondità: valuta il tiro o il dai e vai.';
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:c.press>=1.5?2:1,lanes:['central_run']};
-  return _p6Costruisci(occ,player,seed,P6_LINEE,c,titoli,intro,['trequarti'],ctx,'fra-le-linee');
+  /* [giro 126 PO-328 «alcuni highlights sono da distanza troppo importante»] MISURATO (giro 125, flusso vero 24 partite): 27 dei 29
+     tiri oltre 30 m nascono qui — il motore dichiara «fra le linee» in trequarti (x logico 56-70, eroe portato a 68) e la scena offriva
+     «Tiro da fuori» / «Conduci e tira» da quel punto: 28,8-39,3 m dalla porta, mediana ~36. Un tiro da fuori credibile parte da 18-30 m.
+     Ora, SOLO se fra le opzioni scelte c'e' una conclusione, l'ancora sale a x 74,4-76,2 (piu' era avanzata, piu' resta avanti) e
+     stringe al corridoio centrale y 35-65: 22-27 m dal centro della porta. Le scene di sola rifinitura (filtrante, uno-due, finta)
+     restano dove le ha messe il motore. Rosso __CPM_NO_G126 (tutto il giro) / __CPM_NO_G126L (solo questo strato). */
+  const _anc126L=(typeof window!=='undefined'&&(window.__CPM_NO_G126||window.__CPM_NO_G126L))?null:(sc,o)=>{
+    if(!sc.some(t=>_rew95(t)==='goal'))return null;const x0=+o.x,y0=+o.y;
+    const nx=x0<77?77-(77-x0)*0.12:x0,ny=clamp(y0,35,65);return (nx!==x0||ny!==y0)?{x:nx,y:ny}:null;};
+  return _p6Costruisci(occ,player,seed,P6_LINEE,c,titoli,intro,['trequarti'],ctx,'fra-le-linee',_anc126L);
 }
 /* [7.999.151 PO-022 Passo 6, strato 6] CROSS E ANGOLO NASCONO DALL'OCCASIONE DEL MOTORE. Il motore dichiara il cross (o l'angolo) destinato
    all'eroe con la sua origine: chi crossa e da dove. Prima la scena si pescava dall'intero catalogo fra le schede «aeree»; ora si
@@ -4474,6 +4486,13 @@ function scenaDalMotore(occ,player,seed){
 function scenaDalMotoreConclusione(occ,player,seed){
   try{if(typeof window!=='undefined'&&(window.__CPM_NO_P6C||window.__CPM_NO_P6))return null;}catch(_e){}
   if(!occ||occ.tipo!=='conclusione'||occ.x==null||occ.y==null)return null;
+  /* [giro 126 PO-328] «Spazio per il tiro dal limite» / «Palla buona al limite dell'area» partivano fino a 31 m (giro 125): la zona
+     «limite» del motore va da x logico 70 a 84 (fino a 28,6 u dalla linea) e comprende anche l'area larga (|y-50|>22). Il titolo
+     promette il limite: l'ancora va a x 81,5-83,5 (in proporzione a dove l'aveva il motore) e y 39-61, cioe' 16-19 m dal centro
+     della porta. Si sposta solo un punto, prima di ogni sorteggio della scena (che non dipendono dalla posizione).
+     Rosso __CPM_NO_G126 / __CPM_NO_G126C. */
+  if(occ.zona==='limite'&&!(typeof window!=='undefined'&&(window.__CPM_NO_G126||window.__CPM_NO_G126C))){const _x0=+occ.x,_y0=+occ.y;
+    const _nx=clamp(81.5+(_x0-70)/7,81.5,83.5),_ny=clamp(_y0,39,61);if(_nx!==_x0||_ny!==_y0)occ={...occ,x:_nx,y:_ny,_g126:{x:_x0,y:_y0}};}
   const x=+occ.x,y=+occ.y,press=+occ.press||0,limite=occ.zona==='limite';
   const cast=occ.cast||{};const nm=(p)=>(p&&p.nome)?String(p.nome).split(' ').slice(-1)[0]:null;
   const ric=((occ.liberi|0)>0)?nm(cast.ricevente):null,dif=nm(cast.difensore),gk=nm(cast.portiere);
@@ -4499,7 +4518,7 @@ function scenaDalMotoreConclusione(occ,player,seed){
   const mz={x:[clamp(x-8,2,90),clamp(x+8,10,98)],y:[clamp(y-12,3,85),clamp(y+12,15,97)]};
   const ctx={pressure:press>=1.5?'high':press>=0.5?'medium':'low',support:Math.min(occ.liberi|0,3),nearby_def:press>=1.5?2:press>=0.5?1:0,lanes:['central_run'],cn:uno?{oneOnOne:true}:undefined};
   const s=S(text,limite?['bordo','area']:['area'],mz,sz,actions,false,-1,intro,'off',null,ctx);
-  s._p6='conclusione';s._p6seed=seed>>>0;
+  s._p6='conclusione';s._p6seed=seed>>>0;if(occ._g126)s._g126=occ._g126;
   s._p6dist=(occ.pressDist!=null)?+occ.pressDist:null;s._p6dif=(occ.cast&&occ.cast.difensore&&occ.cast.difensore.i!=null)?occ.cast.difensore.i:null;/* [giro 17 PO-123] come in _p6Costruisci */
   return s;
 }

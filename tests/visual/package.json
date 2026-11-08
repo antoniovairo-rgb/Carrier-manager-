@@ -430,6 +430,7 @@
     "tabellino-228": "node tabellino-228.mjs",
     "tabellone-117": "node tabellone-117.mjs",
     "angolo-117": "node angolo-117.mjs",
+    "distanze-126": "node distanze-126.mjs",
     "volee-d3-119": "CPM_GUARDIANO=1 node volee-d3-119.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
