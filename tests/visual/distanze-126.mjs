@@ -78,6 +78,7 @@ const scarso = []; if (tiri.length < MIN.tiri) scarso.push(`tiri ${tiri.length}<
 if (teste.length < MIN.teste) scarso.push(`teste ${teste.length}<${MIN.teste}`); if (finite < Math.ceil(lavori.length * 2 / 3)) scarso.push(`partite finite ${finite}/${lavori.length}`);
 const difetti = oT.length + oL.length + oH.length;
 console.log(`  partite finite ${finite}/${lavori.length} · campione minimo: tiri ${MIN.tiri}, dal limite ${MIN.limite}, teste ${MIN.teste}`);
-if (scarso.length) { console.log(`NON GIUDICATO (= ROSSO): campione sotto il minimo — ${scarso.join(' · ')}`); process.exit(1); }
+/* un difetto visto e' rosso a qualunque campione; l'assenza di difetti vale solo sopra il campione minimo */
 if (difetti) { console.log(`ROSSO: ${oT.length} tiri > ${S_TIRO} m · ${oL.length} tiri «dal limite» > ${S_LIM} m · ${oH.length} teste > ${S_TESTA} m`); process.exit(1); }
+if (scarso.length) { console.log(`NON GIUDICATO (= ROSSO): campione sotto il minimo — ${scarso.join(' · ')}`); process.exit(1); }
 console.log(`VERDE: nessun tiro > ${S_TIRO} m, nessun «dal limite» > ${S_LIM} m, nessuna testa > ${S_TESTA} m`);
