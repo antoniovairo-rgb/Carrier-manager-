@@ -40,8 +40,8 @@ porta, passa accanto al portiere uscito e dopo l'esito è a ~5 u da lui (rosso d
 **Relazione col rimedio del giro 117.** Il rimedio non crea il difetto: sposta l'ancora delle scene d'angolo/cross in area (x
 87-93), dove il brain fa uscire il portiere — ed è lì che il taglio 258 non ha il ramo per «portiere vicino» né per «pallone ancora
 sulla bandierina». Il ramo mancante è nel codice di prima (src/12, giro 40), non nel rimedio 117: la condizione dipende solo da
-dove stanno pallone e portiere all'armo. Misura sulla scena d'angolo **già in area** (ancora che il rimedio 117 non sposta):
-vedi §4. Sul flusso della base (lavoro/184 senza rimedio) non l'ho cercato su più semi/salvataggi: non posso confermare né
+dove stanno pallone e portiere all'armo (vale identica per un angolo già in area, che il rimedio 117 non sposta — dedotto
+dal codice, non misurato su un angolo in area con portiere uscito). Sul flusso della base (lavoro/184 senza rimedio) non l'ho cercato su più semi/salvataggi: non posso confermare né
 escludere che sia comparso sulla base.
 
 **Correzione di una conclusione del giro 117.** Il rapporto 117 scrive che il testimone per fotogramma `__CPM_GKMIN117` «ha dato di
@@ -70,4 +70,43 @@ Scena d'angolo/cross dal motore (`scenaDalMotoreCross`), volée scelta, esito fo
 
 ## 4. Catena dei controlli (uno alla volta, `free -m` e `df -h` prima di ciascuno)
 
-(compilata in fondo al giro)
+| controllo | esito |
+|---|---|
+| test:logic | ✅ 43 pass · 0 fail |
+| save-compat | ✅ 12 pass · 0 fail |
+| volee-d3-119 (nuovo) | ✅ verde 0,83 / 0,64 / 0,32 u, rosso visibile 4,42 / 5,03 u |
+| angolo-117 | ❌ **instabile**, vedi sotto (rosso visibile 6/6 in entrambe le corse) |
+| highlight-95 completo, corsa 1 | ✅ verde 97 highlight, 15 parate giudicate, **0 difetti**; rosso visibile (D1-D4) · 68 min |
+| replay | ✅ 8 highlight |
+| validate-situations | ✅ 14/14, fingerprint 00001505, 0 failure |
+| tabellone-117 | ✅ ripresa e percorso normale verdi, rosso visibile |
+| highlight-95 braccio verde, corsa 2 | ✅ 102 highlight, 18 parate giudicate, **0 difetti** · s1/2021 «pass» uscita **4-2 con 7 highlight** (la forma della partita del D3 nel giro 117) · 34 min |
+| highlight-95 braccio verde, corsa 3 | ⏳ non eseguita: tetto delle 4 ore |
+| scena3d-96 | ⏳ non eseguito: tetto delle 4 ore |
+| partita-vera | ⏳ non eseguito: tetto delle 4 ore |
+
+**Il D3 nel braccio verde e la scena s1/2021.** Nella corsa 1 completa la seconda volée di s1/2021 (la scena del D3) **non è
+uscita** (partita 3-1 con 6 highlight, una volée segnata): il verde senza D3 di quella corsa non prova da solo il rimedio su
+quella scena. La prova deterministica del rimedio è il guardiano `volee-d3-119` (scena forzata, rosso visibile). Sulla sonda vera
+il caso è uscito 2 volte su 3 corse mirate sotto carico **prima** del rimedio; dopo il rimedio, 0 D3 in 1 corsa mirata e 2 corse
+complete del verde. Nella corsa 2 s1/2021 è uscita 4-2 con 7 highlight come la partita del D3, ma senza `CPM_RIGHE` la sonda non
+stampa le scene: non posso confermare che la volée parata ci fosse. Quindi non dichiaro chiuso dalla sonda vera il D3 di quella
+scena; lo dichiaro chiuso sulla scena forzata equivalente (GLB acceso).
+
+**`angolo-117` instabile (regola PROCESSO «Controlli instabili»: si ripara, non si ripete).** Due corse sul build di questo giro,
+due rossi diversi, ciascuno su un solo caso e su un colpo di testa **riuscito** (che non entra nel ramo della parata toccato qui):
+- corsa 1: `angolo-lato-alto-ok` pallone a 1,1 u al contatto (soglia 1,0); gli altri 7 casi 0,3-0,5;
+- corsa 2: `angolo-area-basso-ok` pallone a 2,4 u, angolo 35° (caso in area, che nessun rimedio sposta); `angolo-lato-alto-ok` 0,5.
+Ipotesi (non verificata): il testimone `__CPM_CONT53` registra la distanza nel **primo fotogramma con l'arco già partito**
+(`ballArcT >= 0`), cioè fino a un passo di scena (0,05 s) dopo il contatto: è la trappola «velocità × intervallo» del 7.360/7.502.
+L'arco non conserva la sua origine (non c'è una variabile x/z d'origine), quindi la riparazione chiede un testimone nuovo
+(origine registrata all'armo) e una nuova misura: non sta nel tempo di questo giro. Soglia non toccata.
+
+## 5. Cosa resta alla madre
+
+1. Corse 2-3 del braccio verde di highlight-95, `scena3d-96`, `partita-vera`: da eseguire (in sequenza) sul build di questo ramo.
+2. Riparare la misura di `angolo-117` (origine dell'arco all'armo) prima di usarlo come cancello.
+3. Decisione (non mia): il rimedio è attivo di default. Interruttori: `__CPM_NO_G119P` spegne solo il ramo nuovo della parata;
+   `__CPM_NO_G117A` spegne lo spostamento dell'ancora del giro 117.
+4. Con GLB spento l'arco della conclusione su angolo parte dalla bandierina (il volo al piede 274 è solo GLB): non è il telefono,
+   ma è ciò che vedono tutte le sonde GLB-spento. Non l'ho toccato.
