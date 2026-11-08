@@ -423,6 +423,7 @@
     "ripresa-202": "node ripresa-202.mjs",
     "tetto-202": "node tetto-202.mjs",
     "tabellino-228": "node tabellino-228.mjs",
+    "angolo-117": "node angolo-117.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
     "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",

@@ -4265,6 +4265,14 @@ function scenaDalMotoreCross(occ,player,seed){
                      :['✈️ Cross'+(cr?' di '+cr:'')+': attacca il pallone in area!','✈️ Il cross'+(cr?' di '+cr:'')+' arriva alto in area!'];
   const intro=dif?(dif+' ti marca stretto.'):'Sei solo sul pallone: scegli bene.';
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:dif?2:1,lanes:['central_run'],it:'insertion',bs:'aerial'};
+  /* [giro 117 PO-323 «Calcio d'angolo di HOWARD: attacca il pallone! — corpo↔porta al contatto 159°, eroe a x -2.1 · troppo distante»]
+     MISURATO (angolo-117): il motore dichiara l'occasione col ricevente DOV'E' (anche a centrocampo, x logico 48-50) e la scena si
+     costruiva li': il pallone dalla bandierina andava a cercare l'eroe a 40 unita' dalla porta, lo stacco avveniva a x 57 col corpo
+     girato (73° nel fallito). Ma il titolo dice «attacca il pallone» in AREA: su un cross o un angolo l'attaccante e' in area. Ora
+     l'ancora della scena, se e' fuori, entra fra il dischetto e l'area piccola (x 87-93, y 38-62); dentro resta identica (le scene
+     gia' in area non cambiano di un decimo). Nessun sorteggio in piu': si sposta solo un punto. Rosso __CPM_NO_G117A. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G117A)){const _x117=+occ.x,_y117=+occ.y;const _cx=clamp(_x117,87,93),_cy=clamp(_y117,38,62);
+    if(_cx!==_x117||_cy!==_y117)occ={...occ,x:_cx,y:_cy,_g117:{x:_x117,y:_y117}};}
   return _p6Costruisci(occ,player,seed,P6_CROSS,c,titoli,intro,['area'],ctx,angolo?'angolo':'cross');
 }
 /* [7.999.152 PO-022 Passo 6, strato 7 — decisione PO 08/10: al massimo una scena difensiva a partita, in aggiunta] LA DIFESA NASCE
@@ -10670,7 +10678,7 @@ const draftBugNote=(snap,ctx)=>{try{
   /* [7.999.53 taccuino #3] l'angolo corpo↔porta nell'istante del contatto (testimone __CPM_CONT53, sempre acceso):
      in headless e' 8-11°; il numero vero del difetto «al tiro non guarda la porta» arriva da qui, dal telefono. */
   try{const C=((snap&&snap.cont)||[]).filter(e=>c.sceneKey!=null&&e.sk===c.sceneKey&&/shot|penalty|freekick|header|volley/.test(String(e.tipo||''))).pop();
-    if(C)L.push(`corpo↔porta al contatto: ${C.a}°${C.a>35?' — MISURATO girato: al tiro il corpo non guarda la porta':''} (eroe a x ${C.x}, z ${C.z})`);}catch(_e){}
+    if(C)L.push(`corpo↔porta al contatto: ${C.a}°${C.a>35?' — MISURATO girato: al tiro il corpo non guarda la porta':''} (eroe a x ${C.x}, z ${C.z}${C.db!=null?`, pallone a ${C.db} u, porta a ${C.gx} u`:''})`);}catch(_e){}/* [giro 117 PO-323] distanze al contatto */
   if(!L.length)return "";
   return `Cosa ho visto (bozza automatica):\n· ${L.join("\n· ")}\n\nCosa non va secondo me: `;
 }catch(_e){return "";}};
@@ -25181,7 +25189,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            if(_P53.matchPhase==='hl_result'){const _k53=String(_P53.hlSitKey);if(ballArcActive&&(ballArcT||0)>=0&&sr.current._c53!==_k53){sr.current._c53=_k53;
              const _a53=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _ry=(((_a53&&(_a53.root||_a53.visualRoot))||hero).rotation.y)||0;
              const _tg=Math.atan2(48.6-hero.position.x,0-hero.position.z);let _d=Math.abs(_ry-_tg)%(2*Math.PI);if(_d>Math.PI)_d=2*Math.PI-_d;
-             const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53});if(L53.length>40)L53.shift();}}
+             const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53,db:(function(){try{const _b=sr.current.ball||ball;return +Math.hypot(_b.position.x-hero.position.x,(_b.position.z-hero.position.z)/0.68).toFixed(1);}catch(_e){return null;}})(),gx:+(48.6-hero.position.x).toFixed(1)});/* [giro 117 PO-323] + distanza eroe↔pallone al contatto (u logiche) e distanza dalla linea di porta: «troppo distante» ora ha un numero */if(L53.length>40)L53.shift();}}
            else sr.current._c53=null;}catch(_e53){}}
          if(typeof window!=='undefined'&&window.__CPM_TIRO34_REC&&hero){try{const _P34=propsRef.current||{};
           if(_P34.matchPhase==='hl_result'){const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);
