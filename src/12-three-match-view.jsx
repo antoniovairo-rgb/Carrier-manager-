@@ -70,7 +70,10 @@ function _specchiaClip23(clip,root,nome){try{
        mira al punto piu' vicino DENTRO la porta: si sbaglia di poco, non si guarda la bandierina. Rosso __CPM_NO_MIRA20;
    (c) rovesciata (7.999.19): spalle alla porta. Rosso __CPM_NO_ROV19. */
 function _mira20(a,px,pz,tx,tz,goalX,eroe){if(!a||a._tgt517==null)return null;const W=(typeof window!=='undefined')?window:{};let t=a._tgt517;
-  if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6)t=Math.atan2(goalX-px,Math.max(-3.3,Math.min(3.3,tz))-pz);/* x della LINEA di porta: il bersaglio di un tiro sbagliato puo' stare davanti alla porta (x 41,5 misurato) */
+  if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6){const _gl121=W.__CPM_NO_G121M?goalX:(goalX>0?48.6:-48.6);t=Math.atan2(_gl121-px,Math.max(-3.3,Math.min(3.3,tz))-pz);}
+  /* [giro 121 PO-323, rosso __CPM_NO_G121M] il corpo mira la LINEA di porta (48,6, piano dei pali), non goalX = AWAY_GOAL_X = 46 (la rete
+     interna dei sorgenti 3D). Con lo stacco in area (eroe a x 44, 4,2-4,6 u dalla linea, ancora G117A) il punto a 46 sta 2 u davanti
+     e uno scarto laterale di 2,4 u diventava 40-50° di rotazione: misurato 38° corpo↔porta al contatto (angolo-117, caso in area). *//* x della LINEA di porta: il bersaglio di un tiro sbagliato puo' stare davanti alla porta (x 41,5 misurato) */
   if(a._gAct&&a._gAct===a._gScissor&&!W.__CPM_NO_ROV19)t+=Math.PI;return t;}
 /* [giro 19 PO-242 «Conduci palla al piede e tira» fallito, collaudi 164 N1 / 165 K1. Rosso __CPM_NO_COND242] il ramo «conduzione persa»
    (5.43.5) saltava l'arco di tiro anche quando l'azione finisce in TIRO e il motore registra tiro parato/fuori: il riquadro diceva

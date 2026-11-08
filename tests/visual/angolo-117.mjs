@@ -27,7 +27,7 @@ const CASI = [
 ];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const solo = process.env.CPM_SOLO || ''; const esito = { verde: [], rosso: [], g121: [] };
-/* [giro 121] tre bracci: verde · rosso (__CPM_NO_G117A, casi lontani) · g121 (__CPM_NO_G121H + __CPM_NO_G121C, casi in area: il colpo di
+/* [giro 121] tre bracci: verde · rosso (__CPM_NO_G117A, casi lontani) · g121 (__CPM_NO_G121H + __CPM_NO_G121C + __CPM_NO_G121M, casi in area: il colpo di
    testa muore prima del contatto e l'eroe stacca girato — misurato 136-146° al contatto vero). */
 for (const braccio of ['verde', 'rosso', 'g121']) {
   if (solo && solo !== braccio) continue; const rosso = braccio === 'rosso';
@@ -36,7 +36,7 @@ for (const braccio of ['verde', 'rosso', 'g121']) {
     if (process.env.CPM_CASI && !process.env.CPM_CASI.split(',').includes(caso.k)) continue;
     if (rosso && !caso.lontano) continue;
     const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-    await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; if (r === 'rosso') window.__CPM_NO_G117A = 1; if (r === 'g121') { window.__CPM_NO_G121H = 1; window.__CPM_NO_G121C = 1; } }, braccio);
+    await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; if (r === 'rosso') window.__CPM_NO_G117A = 1; if (r === 'g121') { window.__CPM_NO_G121H = 1; window.__CPM_NO_G121C = 1; window.__CPM_NO_G121M = 1; } }, braccio);
     await openMatch(page, port, { skipLoadAll: true, name: 'Angolo 117' }); await sleep(1500);
     await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 90000 }).catch(() => {});
     const pr = await page.evaluate(({ caso }) => { const C = { ricevente: { nome: 'Leo SPENCER' }, difensore: { nome: 'Max BAILEY' }, portiere: { nome: 'Ian CARR' }, crossatore: { nome: 'Tom HOWARD' } }, P = { stats: {}, foot: 'R' };
@@ -78,7 +78,7 @@ if (!solo || solo === 'rosso') {
 }
 if (!solo || solo === 'g121') {
   const R = esito.g121; const visti = R.filter(r => r.ang != null && r.ang > SOGLIA.ang).length;
-  console.log(`ROSSO (__CPM_NO_G121H+__CPM_NO_G121C): ${R.length} casi in area · girati (>${SOGLIA.ang}°) ${visti}`);
+  console.log(`ROSSO (__CPM_NO_G121H+C+M): ${R.length} casi in area · girati (>${SOGLIA.ang}°) ${visti}`);
   /* il rosso g121 dipende dal tempo di scena (l'attesa TESTA146 deve durare piu' del gesto residuo): misurato 2/2 e 1/2 girati sui due
      casi in area. Si pretende che il difetto si veda su almeno un caso, e la corsa stampa quanti. */
   if (R.length === 0 || visti < 1) g.push('rosso g121: l\'eroe girato al contatto non ricompare su nessun caso in area ' + JSON.stringify(R));
