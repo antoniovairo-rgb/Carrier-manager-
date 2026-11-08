@@ -194,5 +194,19 @@
   "cache_read_tokens": 31915346,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYiaAYRyRBixsW6hmg2Wm",
+  "titolo": "giro 118 · portiere dell'intro e privacy in app",
+  "versione": "7.999.184",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-08T02:01:16Z",
+  "chiusa": "2026-11-08T03:13:00Z",
+  "cost_usd": 2.29052494,
+  "output_tokens": 33135,
+  "cache_read_tokens": 13385241,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
