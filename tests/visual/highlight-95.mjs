@@ -77,7 +77,11 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
        meno di un decimo di scena e il pallone del tiro del compagno, partito all'esito, veniva giudicato «mai arrivato al portiere» (47,0 e
        33,6 su ROTH s5/2021 nelle corse finali, 3,4 a carico normale). Soglia e finestra invariate; a 20+ fps parete = scena. */
     if (ph === 'hl_result' && cur && (cur.rev == null || ((cur.revSc != null && st.sc != null) ? (st.sc - cur.revSc < 1.5) : (Date.now() - cur.t - cur.rev < 1500)))) {/* il portiere va guardato FITTO: la parata dura mezzo secondo */
-      for (let k = 0; k < 4; k++) { const gb = await page.evaluate(() => window.__CPM_GKB95 ? window.__CPM_GKB95() : null).catch(() => null); if (gb != null) cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, gb); await sleep(40); } }
+      for (let k = 0; k < 4; k++) { const gb = await page.evaluate(() => window.__CPM_GKB95 ? window.__CPM_GKB95() : null).catch(() => null); if (gb != null) cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, gb); await sleep(40); }
+      /* [giro 117] + il minimo PER FOTOGRAMMA della scena (testimone __CPM_GKMIN117, src/12, solo __CPM_REC): l'interrogazione ogni ~0,5 s
+         a macchina carica perdeva la parata ravvicinata (passaggio a 2,4 u, pallone respinto fermo a 6,7 — s1/2021 «Volée di collo
+         potente»). Soglia (6) e finestra invariate: il testimone e' letto solo dentro la stessa finestra. */
+      { const gm = await page.evaluate(() => window.__CPM_GKMIN117 ? window.__CPM_GKMIN117.min : null).catch(() => null); if (gm != null) cur.minGB = Math.min(cur.minGB == null ? 99 : cur.minGB, gm); } }
     if (ph !== 'hl_result' && cur) { cur.durata = Date.now() - cur.t; hls.push(cur); cur = null; }
     await sleep(120);
   }
