@@ -17682,7 +17682,7 @@ function ThreeMatchView(props){
           const _hp=sr.current._hp146||(sr.current._hp146=new THREE.Vector3());if(_hb)_hb.getWorldPosition(_hp);else _hp.set(hero.position.x,(hero.position.y||0)+2.0,hero.position.z);
           const _d146=_hp.distanceTo(ball.position);const S=sr.current;if(S._w146k!==P.hlSitKey){S._w146k=P.hlSitKey;S._w146=0;S._l146=false;}
           if(!S._l146&&!(_d146>0.9&&S._w146<0.8))S._l146=true;/* partito: una volta sola per scena, niente nuove attese mentre il pallone vola via */
-          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*7,1);ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
+          if(!S._l146){S._w146+=aDt;ballArcT=-aDt;const _g=Math.min(aDt*((typeof window!=='undefined'&&window.__CPM_NO_G121C)?7:14),1);/* [giro 121 PO-323, rosso __CPM_NO_G121C] MISURATO (angolo-117, scena d'angolo in area, testimone __CPM_TESTA146): col guadagno 7/s la distanza testa-pallone resta in equilibrio a 0,91-1,14 u, appena sopra la soglia 0,9 — ritardo d'inseguimento lag≈v/k con la testa che si muove a 5-7 u/s (stacco + deriva dell'eroe) — e l'attesa va SEMPRE al tetto: contatto tardivo, corpo derivato di 16-37°. Guadagno 14/s: lag dimezzato. */ball.position.x+=(_hp.x-ball.position.x)*_g;ball.position.y+=(_hp.y-ball.position.y)*_g;ball.position.z+=(_hp.z-ball.position.z)*_g;ballArcY0=ball.position.y;}
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_TESTA146=window.__CPM_TESTA146||[]);if(W.length<200)W.push([String(P.hlSitKey||''),+_d146.toFixed(2),+S._w146.toFixed(2),(_hv&&glbAvatars&&_hv===glbAvatars[0])?1:0,_hb?1:0,+(_hv&&_hv.root?Math.hypot(_hv.root.position.x-hero.position.x,_hv.root.position.z-hero.position.z):-1).toFixed(2)]);/* [giro 17 PO-143 #64] testimone: avatar visibile? osso trovato? scarto radice-eroe */}}catch(_e146){}}
         /* [giro 31 PO-220, rosso __CPM_NO_ARRIVO31] IL PALLONE D'ESITO PARTE AL CONTATTO. L'arco difensivo partiva 0,35 s dopo l'inizio
            dell'esito, qualunque cosa facesse l'eroe: quando il gesto partiva tardi (0,9-1,2 s) al contatto il pallone era gia' a 5-14 u
@@ -17693,6 +17693,19 @@ function ThreeMatchView(props){
           if(actType==="tackle"&&actT<0.31&&S._ww31<1.2){S._ww31+=aDt;ballArcT=-aDt;}}
         {const _V274=sr.current._volo274;if(_V274&&_V274.on&&_V274.k===P.hlSitKey&&ballArcT<0&&!(typeof window!=='undefined'&&window.__CPM_NO_VOLO274)&&_V274.f<_V274.D-Math.abs(_V274.t0)&&_V274.tr<2.4){ballArcT=Math.min(ballArcT,_V274.t0-aDt);}}/* [giro 53 PO-274] il calcio aspetta il pallone in volo (sotto, ramo _cgKickContact) */
         ballArcT+=aDt;
+        /* [giro 121 PO-323, strumento sola lettura] IL CONTATTO VERO. __CPM_CONT53 annota il primo fotogramma con ballArcT>=0, ma le
+           attese del colpo di testa (TESTA146, ARRIVO31) rimettono ballArcT=-aDt e dopo l'incremento vale 0 esatto: il testimone scattava
+           nel primo fotogramma d'ATTESA, col pallone ancora in convergenza verso la testa (angolo-117 instabile: 1,1 e 2,4 u su casi
+           diversi, rapporto 119 §4). Qui si annota il fotogramma in cui l'arco PARTE (ballArcT da <=0 a >0): il moto orizzontale di
+           questo fotogramma e' stato scritto con u=0, quindi il pallone e' sull'origine dell'arco (_arcSrcX/Z, catturata finche' T<=0).
+           Una riga per arco (max 4 per scena, col flag bg), solo hl_result. Spento da __CPM_NO_CONT121. */
+        if(_preT74<=0&&ballArcT>0&&isResult&&hero&&typeof window!=='undefined'&&!window.__CPM_NO_CONT121){try{const _P121=P||{};const S=sr.current;const _k121=String(_P121.hlSitKey);
+          if(S._k121!==_k121){S._k121=_k121;S._n121=0;}if(S._n121<4){S._n121++;
+            const _a121=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _ry=(((_a121&&(_a121.root||_a121.visualRoot))||hero).rotation.y)||0;
+            const _tg=Math.atan2(48.6-hero.position.x,0-hero.position.z);let _d=Math.abs(_ry-_tg)%(2*Math.PI);if(_d>Math.PI)_d=2*Math.PI-_d;
+            const _ox=(_arcSrcX!=null)?_arcSrcX:ball.position.x,_oz=(_arcSrcZ!=null)?_arcSrcZ:ball.position.z;
+            const L=(window.__CPM_CONT121=window.__CPM_CONT121||[]);L.push({sk:_P121.hlSitKey!=null?+_P121.hlSitKey:-1,i:S._n121,tipo:_P121.hlType||null,act:actType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a121,
+              db:+Math.hypot(_ox-hero.position.x,(_oz-hero.position.z)/0.68).toFixed(2),dbm:+Math.hypot(ball.position.x-hero.position.x,(ball.position.z-hero.position.z)/0.68).toFixed(2),by:+ball.position.y.toFixed(2),gx:+(48.6-hero.position.x).toFixed(1),bg:ballArcIsBG?1:0,tx:+(+ballArcTgtX).toFixed(1),tz:+(+ballArcTgtZ).toFixed(1),at:(function(){let d=Math.abs(_ry-Math.atan2(ballArcTgtX-hero.position.x,ballArcTgtZ-hero.position.z))%(2*Math.PI);if(d>Math.PI)d=2*Math.PI-d;return Math.round(d*180/Math.PI);})(),pre:+(+_preT74).toFixed(3),dt:+(+aDt).toFixed(3)});if(L.length>40)L.shift();}}catch(_e121){}}
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
         /* [7.534.0 MP-1] LA PANCIA HA UN PROFILO: «tesa» = sin^0.7 (spalle larghe, il tiro sale presto e
@@ -21899,7 +21912,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                un difensore a 10 metri non si butta a terra, accorcia. `aerial`/`call` non passano da qui.
                __CPM_NO440: interruttore test-only per riprodurre il rosso nel guardiano. */
             {const _dgF=P.hlDefGesto;if(_dlT>(_p220?8:6.5)&&(_dgF==='slide'||_dgF==='lunge'||!_dgF)&&!(typeof window!=='undefined'&&window.__CPM_NO440))sr.current._dgFar440=P.hlSitKey;}}
-          if(!_hold415){actT+=aDt;sr.current._tkW415=0;}
+          /* [giro 121 PO-323 «corpo↔porta al contatto 159°», rosso __CPM_NO_G121H] IL COLPO DI TESTA NON FINISCE PRIMA DEL CONTATTO.
+             MISURATO (angolo-117, testimone nuovo __CPM_CONT121 al fotogramma in cui l'arco parte, GLB acceso): sulle scene d'angolo in
+             area l'attesa TESTA146 (il colpo aspetta il pallone sulla testa, tetto 0,8 s) comincia col gesto gia' a 0,63 s su 1,15 di
+             vita; il pallone non arriva sotto 0,9 u dalla testa, l'attesa va al tetto e il gesto muore prima (actType nullo). Morto il
+             gesto muore la mira latchata (7.517) e il corpo GLB torna sull'orientamento della mesh logica: contatto con l'eroe girato di
+             136-146° (CONT53, che scattava al primo fotogramma d'attesa, diceva 0-31°). Ora, finche' l'attesa e' aperta, la vita del
+             colpo di testa si ferma 0,15 s prima della fine: il gesto (e la mira) arrivano vivi al contatto e si chiudono subito dopo.
+             Nessun sorteggio aggiunto o tolto. */
+          const _hold121=actType==="header"&&P.matchPhase==="hl_result"&&sr.current._w146k===P.hlSitKey&&sr.current._l146===false&&actT>=gwOf("header","vita")-0.15&&!(typeof window!=='undefined'&&window.__CPM_NO_G121H);
+          if(!_hold415&&!_hold121){actT+=aDt;sr.current._tkW415=0;}
           const _T=gwOf(actType,"vita"),u=Math.min(actT/_T,1),sw=Math.sin(u*Math.PI);/* [7.512.0 R2] vita del gesto dalla tabella unica: chiude il colpo di testa troncato al 65% (actType moriva a 0,75s su clip scalata a 1,15s) *//* [7.244.0 batch PO «non si vede la scivolata/il contrasto» sui gi31/32/45] il gesto difensivo durava 0.6s con inviluppo a seno — a 60fps saliva e spariva PRIMA che l'occhio si assestasse (verdetto a 1.9-2.25s = eroe in piedi da oltre un secondo). Ora il tackle dura 1.7s con inviluppo salita→TENUTA→recupero (la scivolata RESTA a terra ~0.9s, come nel calcio vero): il movimento verso la palla resta su _T2=0.6 invariato */
           /* [giro 16 PO-220 testimone, solo sonde: armato da __CPM_TK220ON] LA CHIUSURA DIFENSIVA MISURATA AL CONTATTO. Per ogni scena
              difensiva: attesa prima del gesto (att, l'aggancio 7.415), distanza eroe-pallone e portatore-pallone quando la posa arriva a
