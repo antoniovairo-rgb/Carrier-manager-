@@ -34,7 +34,7 @@ Build: HEAD 4556ca5 (lavoro/185), GAME_VERSION 7.999.185, check-src allineato. S
 | audit-copyright | 0 | 11s | OK: nessun riferimento al mondo reale | free 13765/16086MB | df avail 29G used 27% |
 
 ## Esito
-Nessun rosso: 29/29 controlli con uscita 0, nessun rigioco necessario. Nessun file di src/, tests/ o del gioco modificato.
+Nessun rosso: 28/28 controlli con uscita 0, nessun rigioco necessario. Nessun file di src/, tests/ o del gioco modificato.
 
 Note dichiarate (non rossi):
 - griglia-mobile: stampa «NON misurato: prepartita: playMatch → nomatch», uscita 0.
