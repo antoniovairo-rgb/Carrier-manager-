@@ -607,7 +607,7 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
         <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
-        <button onClick={onClose} className="cpm-press" style={{width:_tocco292()?44:34,height:_tocco292()?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
+        <button onClick={onClose} className="cpm-press" aria-label="Chiudi" style={{width:(_tocco292()||_g114())?44:34,height:(_tocco292()||_g114())?44:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:_sb(14)/* [giro 97 PO-299 D18] 14 (15,7 a schermo) fra Audio, Strumenti e Sessione: lo spazio fra riquadri del giro 91. Rosso __CPM_NO_SPAZIO296 */,...((typeof window!=='undefined'&&!window.__CPM_NO_LARGO292&&window.innerWidth>=900)?{width:'100%',maxWidth:760,margin:'0 auto',boxSizing:'border-box'}:{})}}>{/* [giro 90 PO-292 D12] Opzioni a 1850 px: colonna da 760 */}
         {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
@@ -640,12 +640,12 @@ function AudioSettings(){
   const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
   const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+    <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
   return(
-    <Card style={{padding:'12px 14px'}}>
+    <Card style={{padding:'12px 14px',...(_g114()?{flex:'1 0 auto',display:'flex',flexDirection:'column',justifyContent:'space-evenly'}:{})/* [giro 114 G184-05] il blocco Audio cresce e distribuisce le righe */}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
       </div>
@@ -900,6 +900,16 @@ function App(){
         ${(typeof window!=='undefined'&&window.__CPM_NO_LARGO292)?'':`/* [giro 90 PO-292 D5, «Partita a tutto schermo»] dove la barra laterale NON c'e' (creazione, offerte, pre-partita, formazioni, partita) il margine riservato alla barra non serve: colonna centrata e piena. Rosso __CPM_NO_LARGO292. */
         @media(min-width:900px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:24px;}}
         @media(min-width:1280px){.cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll{padding-left:48px;}}`}
+        ${_g114()?`/* [giro 114 PO-320] SCHERMATA PIENA: .cpm-piena e' il figlio diretto di .cpm-scroll e prende tutta l'area utile (vista meno barra e safe-area); il blocco principale cresce, .cpm-piena-az sta in fondo. Se la pagina scorre, non cambia nulla. */
+        .cpm-scroll:has(>.cpm-piena){display:flex;flex-direction:column;}
+        .cpm-piena{flex:1 0 auto;display:flex;flex-direction:column;width:100%;}
+        .cpm-piena-az{margin-top:auto;display:flex;flex-direction:column;gap:${SP.sm}px;}
+        .cpm-root:not(:has(.cpm-nav-bar)) .cpm-scroll:has(>.cpm-piena){padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));}/* senza barra di navigazione i 80 px di riserva in fondo sono vuoto puro */
+        .cpm-scroll:has(>.cpm-career [data-cpm="anteprima-sezione"]){display:flex;flex-direction:column;}/* Coppe vuota / anteprime: la carta cresce e centra il suo contenuto */
+        .cpm-career:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;}
+        .cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;}
+        .cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;}
+        @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}

@@ -246,7 +246,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   const hasAny=slots.some(Boolean);
   const allFull=slots.every(Boolean);// card di sovrascrittura solo quando non c'è alcuno slot vuoto
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-04] menu iniziale a schermata piena */} style={{width:"100%"}}>
       {confirmDel!==null&&(
         <Modal open dismissable={false} width={340} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.h,marginBottom:8}}>🗑️</div>
@@ -259,7 +259,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
-      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
+      <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:_sb(18),boxShadow:TH.el2,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{}),background:_no108("22")?"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)":"linear-gradient(150deg,"+TINTE.tasto+" 0%,"+TINTE.sup+" 46%,"+TINTE.bg+" 120%)",border:_no108("22")?"none":"1px solid "+TINTE.bordo}}>{/* [giro 108 G180-22] la testata del menu iniziale era l'ultimo gradiente granata della V1: ora sulla superficie V2. Rosso __CPM_NO_G108_22 */}
         <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(130% 85% at 84% -12%,rgba(255,255,255,0.22),transparent 55%)"}}/>
         <div aria-hidden style={{position:"absolute",left:-30,bottom:-40,width:180,height:180,borderRadius:"50%",border:"18px solid rgba(255,255,255,0.05)"}}/>
         <VersioneTestata269 col="rgba(255,255,255,0.85)" style={{position:"absolute",top:9,right:12,zIndex:1}}/>
@@ -563,18 +563,18 @@ function OffersScreen({player,trialStats,onChoose}){
     return()=>window.removeEventListener("keydown",onKey);
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()/* [giro 114 G184-03] offerte a schermata piena */} style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
       {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
       
-      <div className="cpm-offers" style={{marginBottom:9}}>
+      <div className="cpm-offers" style={{marginBottom:9,...(_g114()?{flex:"1 0 auto"}:{})}}>
         {offers.map((club,i)=>{
           const isSel=i===selIdx;
           return(
-            <Card key={club.id} interactive border={isSel?TH.primary:i===_top49?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s"}}>
+            <Card key={club.id} interactive border={isSel?TH.primary:i===_top49?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s",...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"center"}:{})}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <TeamBadge team={club} size={44}/>
+                  <TeamBadge team={club} size={_g114()?64:44}/>
                   <div><div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{club.name||club.n}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · {club.lg} · Prestigio {club.p}/100</div></div>{/* [7.999.49 parte A] le squadre Primavera hanno n, non name */}
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>

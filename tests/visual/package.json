@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "lineetta-181": "node lineetta-181.mjs",
+    "altezza-114": "node altezza-114.mjs",
     "scorri-113": "node scorri-113.mjs",
     "validate-situations": "node validate-situations.mjs",
     "panchina-glb": "node panchina-glb.mjs",

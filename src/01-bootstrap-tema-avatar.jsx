@@ -240,6 +240,11 @@ const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                    
    due riquadri fratelli (card, fisarmoniche, finestre) e' SP.box (7 px CSS = ~8 a schermo dentro lo zoom 1,12 dello scroll). `_sb(vecchio)` lo restituisce, e con
    l'interruttore rosso __CPM_NO_SPAZIO296 restituisce `vecchio`: gli spazi della 177. Il padding interno dei riquadri e i testi non si toccano. */
 const _sb=(vecchio)=>(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?vecchio:SP.box;
+/* [giro 114 PO-320 «Sfrutta tutta l'altezza nelle schermate!»] REGOLA UNICA «SCHERMATA PIENA»: quando la pagina non scorre l'area utile si riempie —
+   il blocco principale cresce (flex:1) e le azioni stanno ancorate in fondo (margin-top:auto), mai testi ingranditi; se il contenuto scorre non cambia nulla.
+   Una classe sola (.cpm-piena / .cpm-piena-az, src/19) + questo interruttore. Rosso __CPM_NO_G114 = il comportamento della 7.999.183. */
+const _g114=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G114);
+const piena114=()=>_g114()?"cpm-piena":"";
 /* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
    rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
    cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua
