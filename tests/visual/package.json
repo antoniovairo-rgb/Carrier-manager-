@@ -426,6 +426,7 @@
     "tetto-202": "node tetto-202.mjs",
     "tabellino-228": "node tabellino-228.mjs",
     "tabellone-117": "node tabellone-117.mjs",
+    "angolo-117": "node angolo-117.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
     "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",

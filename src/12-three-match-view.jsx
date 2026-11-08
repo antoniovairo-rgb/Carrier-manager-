@@ -11733,7 +11733,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            if(_P53.matchPhase==='hl_result'){const _k53=String(_P53.hlSitKey);if(ballArcActive&&(ballArcT||0)>=0&&sr.current._c53!==_k53){sr.current._c53=_k53;
              const _a53=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _ry=(((_a53&&(_a53.root||_a53.visualRoot))||hero).rotation.y)||0;
              const _tg=Math.atan2(48.6-hero.position.x,0-hero.position.z);let _d=Math.abs(_ry-_tg)%(2*Math.PI);if(_d>Math.PI)_d=2*Math.PI-_d;
-             const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53});if(L53.length>40)L53.shift();}}
+             const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53,db:(function(){try{const _b=sr.current.ball||ball;return +Math.hypot(_b.position.x-hero.position.x,(_b.position.z-hero.position.z)/0.68).toFixed(1);}catch(_e){return null;}})(),gx:+(48.6-hero.position.x).toFixed(1)});/* [giro 117 PO-323] + distanza eroe↔pallone al contatto (u logiche) e distanza dalla linea di porta: «troppo distante» ora ha un numero */if(L53.length>40)L53.shift();}}
            else sr.current._c53=null;}catch(_e53){}}
          if(typeof window!=='undefined'&&window.__CPM_TIRO34_REC&&hero){try{const _P34=propsRef.current||{};
           if(_P34.matchPhase==='hl_result'){const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);
