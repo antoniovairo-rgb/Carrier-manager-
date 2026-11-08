@@ -1020,3 +1020,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 08/11 mattina — 7.999.184 PUBBLICATA
 - Verifica finale 22/22 verdi senza PO-323 (highlight-95: 0 parate senza pallone in 96 highlight → il D3 nasce solo col rimedio dell'angolo). Giro 119: causa del D3 trovata e corretta (__CPM_NO_G119P), ma 3 controlli lunghi non eseguiti e angolo-117 instabile. Decisione PO: «Pubblica 184 ora, angolo nella 185». Unione lavoro/184 → poc: unico conflitto COSTI.json/COSTI.md, risolto a mano (unione delle righe); unione verificata prima di ogni push. Rilascio poc → main.
+- 08/11 10:20 — PO-326 Albo d'oro poco chiaro (etichette dei campioni di tutte le leghe mescolate): decisione PO «In alto i tuoi titoli, sotto per lega», nella 185 (giro 122, Sonnet).
