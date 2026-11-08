@@ -601,8 +601,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
       {(mySide?lato!==mySide:lato==="away")&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
     </div>);
     return(
-    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
-      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:_sb(SP.md),...(_g114()?{flex:"1 0 auto"}:{})/* [giro 114 G184-01] schermata piena */}}>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`,...(_g114()?{flex:"1 0 auto",display:"flex",flexDirection:"column",justifyContent:"space-evenly"}:{})}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
           {_no108("07")?<span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
           :<span data-cpm="pillola-comp108" style={{display:"inline-flex",alignItems:"center",gap:6,background:TINTE.inc,border:"1px solid "+TINTE.bordo,color:TINTE.testo,borderRadius:RAD.pill,padding:"4px 12px 4px 6px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase"}}><span aria-hidden="true" style={{width:18,height:12,borderRadius:RAD.xs,background:_cs99.bg,flexShrink:0,boxShadow:"inset 0 0 0 1px rgba(255,255,255,0.18)"}}/>{_cs99.e} {_cs99.label}</span>}{/* [giro 108 G180-07] la sfumatura della bandiera sotto il testo bianco scendeva a 1,40:1 (Premier Division: bianco-rosso-bianco). La pillola va su fondo pieno notte e la bandiera resta come campione di colore accanto. Rosso __CPM_NO_G108_07 */}
@@ -637,13 +637,15 @@ function MatchdayCard({homeTeam,awayTeam,stadium,stadiumKind=null,attendance,lea
             <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div></div>}
         </Card>)}
       {/* [7.999.49 parte A] etichette che dicono la differenza fra i tre bottoni */}
+      <div className={_g114()?"cpm-piena-az":undefined} style={_g114()?undefined:{display:"contents"}}>{/* [giro 114 G184-01/35] azioni ancorate in fondo, tasti a 44 px */}
       <Btn onClick={onContinue} v="primary" size="lg" fw>Vedi le formazioni</Btn>
       <div style={{display:"flex",gap:SP.sm}}>
-        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
-        <Btn onClick={onSkip} v="secondary" fw>Salta e gioca</Btn>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
+        <Btn onClick={onSkip} v="secondary" fw style={_g114()?{minHeight:44}:undefined}>Salta e gioca</Btn>
       </div>
-      {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw>Simula la partita</Btn>}
-      {onBack&&<Btn onClick={onBack} v="ghost" fw>Torna alla home</Btn>}
+      {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Simula la partita</Btn>}
+      {onBack&&<Btn onClick={onBack} v="ghost" fw style={_g114()?{minHeight:44}:undefined}>Torna alla home</Btn>}
+      </div>
     </div>);
   }
   return(

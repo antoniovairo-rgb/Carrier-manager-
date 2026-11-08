@@ -7,6 +7,7 @@
    Uso:  CPM_CHROME=<chrome> node tools/gen-store-graphics.mjs */
 import { launchBrowser } from '../tests/visual/lib/harness.mjs';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { inflateSync, deflateSync } from 'node:zlib';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -40,6 +41,35 @@ const FEATURE = `<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="50
   <text x="398" y="346" font-family="Arial,Helvetica,sans-serif" font-weight="500" font-size="27" letter-spacing="1" fill="#f3cdd4" opacity="0.92">From prospect to legend</text>
 </svg>`;
 
+
+/* PNG -> PNG RGBA (colour type 6): decodifica i filtri di riga, aggiunge alfa=255 se manca, ricodifica con filtro 0. Solo 8 bit, non interlacciato. */
+function pngConAlfa(png) {
+  const sig = png.subarray(0, 8); let o = 8, ihdr, idat = [];
+  while (o < png.length) { const len = png.readUInt32BE(o), t = png.toString('latin1', o + 4, o + 8), d = png.subarray(o + 8, o + 8 + len); if (t === 'IHDR') ihdr = d; if (t === 'IDAT') idat.push(d); o += 12 + len; }
+  const w = ihdr.readUInt32BE(0), h = ihdr.readUInt32BE(4), ct = ihdr[9];
+  if (ihdr[8] !== 8 || ihdr[12] !== 0 || (ct !== 2 && ct !== 6)) throw new Error('PNG non gestito (bit/colour type/interlace)');
+  if (ct === 6) return png;
+  const bpp = 3, raw = inflateSync(Buffer.concat(idat)), stride = w * bpp, cur = Buffer.alloc(stride), prev = Buffer.alloc(stride);
+  const out = Buffer.alloc(h * (1 + w * 4));
+  for (let y = 0; y < h; y++) {
+    const f = raw[y * (stride + 1)]; raw.copy(cur, 0, y * (stride + 1) + 1, (y + 1) * (stride + 1));
+    for (let i = 0; i < stride; i++) {
+      const a = i >= bpp ? cur[i - bpp] : 0, b = prev[i], c = i >= bpp ? prev[i - bpp] : 0; let x = cur[i];
+      if (f === 1) x += a; else if (f === 2) x += b; else if (f === 3) x += (a + b) >> 1;
+      else if (f === 4) { const p = a + b - c, pa = Math.abs(p - a), pb = Math.abs(p - b), pc = Math.abs(p - c); x += (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c); }
+      cur[i] = x & 255;
+    }
+    out[y * (1 + w * 4)] = 0;
+    for (let x = 0; x < w; x++) { const q = y * (1 + w * 4) + 1 + x * 4; out[q] = cur[x * 3]; out[q + 1] = cur[x * 3 + 1]; out[q + 2] = cur[x * 3 + 2]; out[q + 3] = 255; }
+    cur.copy(prev);
+  }
+  const crcT = new Int32Array(256).map((_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; return c; });
+  const crc = b => { let c = -1; for (const v of b) c = crcT[(c ^ v) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; };
+  const chunk = (t, d) => { const h4 = Buffer.alloc(8); h4.writeUInt32BE(d.length, 0); h4.write(t, 4, 'latin1'); const c4 = Buffer.alloc(4); c4.writeUInt32BE(crc(Buffer.concat([h4.subarray(4), d])), 0); return Buffer.concat([h4, d, c4]); };
+  const nh = Buffer.from(ihdr); nh[9] = 6;
+  return Buffer.concat([sig, chunk('IHDR', nh), chunk('IDAT', deflateSync(out)), chunk('IEND', Buffer.alloc(0))]);
+}
+
 const ASSETS = [['play-icon-512.png', 512, 512, ICON], ['feature-graphic.png', 1024, 500, FEATURE]];
 
 const browser = await launchBrowser();
@@ -48,7 +78,10 @@ console.log('=== GRAFICA LISTING PLAY STORE (granata) ===');
 for (const [name, w, h, svg] of ASSETS) {
   await page.setViewportSize({ width: w, height: h });
   await page.setContent(`<!doctype html><style>*{margin:0;padding:0}</style>${svg}`, { waitUntil: 'load' });
-  const buf = await page.screenshot({ clip: { x: 0, y: 0, width: w, height: h } });
+  /* [giro 116 — PO-322] Google chiede per l'icona un PNG a 32 bit CON canale alfa (answer/9866151); per la feature graphic un 24 bit SENZA alfa.
+     Chrome salva un PNG RGB quando l'immagine e' tutta opaca: per l'icona si forza il formato RGBA (colour type 6, alfa=255 dove e' piena). */
+  let buf = await page.screenshot({ clip: { x: 0, y: 0, width: w, height: h }, omitBackground: name.startsWith('play-icon') });
+  if (name.startsWith('play-icon')) buf = pngConAlfa(buf);
   writeFileSync(join(OUT, name), buf);
   console.log(`  ✔ store-assets/${name}  (${w}×${h})`);
 }

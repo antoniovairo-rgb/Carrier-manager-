@@ -6046,7 +6046,7 @@ const getThisWeekMatchday=()=>{
   );
 
   if(screen==="proTransition")return(
-    <div style={{width:"100%"}}>
+    <div className={piena114()} style={{width:"100%"}}>
       <ProTransitionScreen player={player} onChoose={onProChoose}/>
     </div>
   );
@@ -6444,7 +6444,7 @@ const getThisWeekMatchday=()=>{
            mano; il compagno che parla e' la sua FIGURINA; le scelte sono Btn del kit, larghe come il pollice.
            Rosso __CPM_NO_IMPULSO23: il pop-up di prima. */
         !(typeof window!=='undefined'&&window.__CPM_NO_IMPULSO23)?(
-        <Modal open dismissable={false} width={420}>
+        <Modal open dismissable={false} width={420} foglio>
           <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:_sb(SP.md)}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{L.weekHeader} {player.week} · {player.club?.name||player.club?.n}</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
@@ -6568,7 +6568,7 @@ const getThisWeekMatchday=()=>{
           ?{cardBg:"linear-gradient(135deg,#1a1204,#2a1e06)",cardBd:"1px solid rgba(245,196,66,0.55)",glow:"0 0 40px rgba(245,196,66,0.28)",kicker:"👑 Un Momento Leggendario",kickerCol:"rgba(253,224,71,0.85)",name:"#fff7e0",boxBd:"#f5c542",boxTxt:"#fde9b0",optTxt:"#fff7e0",optBd:"rgba(245,196,66,0.22)",optBdH:"rgba(245,196,66,0.65)",optBgH:"rgba(245,196,66,0.12)",memCol:"rgba(245,196,66,0.55)"}
           :{cardBg:"linear-gradient(135deg,#0f172a,#1a1535)",cardBd:"1px solid rgba(124,58,237,0.4)",glow:"none",kicker:"⚡ Un Momento Che Ricorderai",kickerCol:"rgba(165,180,252,0.7)",name:"#e0e7ff",boxBd:"#7c3aed",boxTxt:"#c7d2fe",optTxt:"#e0e7ff",optBd:"rgba(165,180,252,0.15)",optBdH:"rgba(165,180,252,0.5)",optBgH:"rgba(124,58,237,0.12)",memCol:"rgba(165,180,252,0.5)"};
         return(
-        <div style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div className={_g114()?"cpm-foglio114":undefined}/* [giro 114 G184-07] il «momento» e' un foglio sul telefono */ style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card data-cpm="finestra230" style={{maxWidth:420,width:"100%",padding:"24px",...(finestraOn230()?finestraStd():{background:_T.cardBg,border:_T.cardBd,boxShadow:_T.glow})}}>
             <div style={{textAlign:"center",marginBottom:10}}>
               <div style={{fontSize:_epic?13:14,letterSpacing:3,textTransform:"uppercase",color:_T.kickerCol,marginBottom:4,fontWeight:_epic?800:400}}>{_T.kicker}</div>
@@ -6834,7 +6834,7 @@ const getThisWeekMatchday=()=>{
            settimana: allineato a sinistra, stemma dell'avversario al posto del pallone gigante, decisione del mister
            con i token semantici, azione primaria del kit. Rosso __CPM_NO_MATCHPROMPT23. */
         (typeof window!=='undefined'&&window.__CPM_NO_MATCHPROMPT23)?(
-        <Modal open dismissable={false} width={380} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
+        <Modal open dismissable={false} width={380} style={{textAlign:"center"}} foglio>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             {showMatchPrompt.type==="national"?(
               <><div style={{fontSize:FS.display,marginBottom:4}}>🏳️</div><div style={{fontSize:FS.caption,fontWeight:700,color:TH.txBlue,background:TH.bgBlue,border:"1px solid #bfdbfe",borderRadius:RAD.sm,padding:"3px 12px",display:"inline-block",marginBottom:6}}>NAZIONALE · Amichevole Internazionale</div></>
             ):showMatchPrompt.type==="cup"?(
@@ -6895,7 +6895,7 @@ const getThisWeekMatchday=()=>{
             </div>
           </Modal>
         ):(
-        <Modal open onClose={()=>setShowMatchPrompt(null)} width={420}>
+        <Modal open onClose={()=>setShowMatchPrompt(null)} width={420} foglio>
           {(()=>{const _av=(typeof CLUBS!=="undefined"&&CLUBS.find(c=>c.id===showMatchPrompt.opponentId))||{n:showMatchPrompt.opponentName,a:(showMatchPrompt.opponentName||"?").replace(/^FC\s+/,"").slice(0,3).toUpperCase()};
             const _tipo=showMatchPrompt.type==="national"?"Nazionale · amichevole":showMatchPrompt.type==="cup"?("Coppa nazionale"+(showMatchPrompt.cupRoundName?" · "+showMatchPrompt.cupRoundName:"")):(showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?({UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[showMatchPrompt.competition||player.euro?.competition||"UCL"]||"Coppa europea"):(player.club?.lg||"Campionato");
             const _dec=coachDecision&&showMatchPrompt.type!=="national"?coachDecision:null;
@@ -9117,7 +9117,7 @@ const getThisWeekMatchday=()=>{
                           <span>{_compLabel} · sett. {md.week}</span></div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
-                        ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
+                        ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0,...(_g114()?{minHeight:44}:{})/* [giro 114 G184-35] «Gioca ›» a 44 px */}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
                         :isCur?<span style={{padding:"5px 10px",fontSize:FS.caption,fontWeight:700,color:TH.muted,background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.pill,whiteSpace:"nowrap"}}>⏳ Poi</span>:null}{/* [7.184.2] la 2ª gara della settimana è informativa: si gioca dopo la prima */}
                     </div>
                   );

@@ -27,6 +27,8 @@ const page = await browser.newPage();
 const errs = [], externalHits = [];
 page.on('console', m => { if (m.type() === 'error' && !/manifest|ServiceWorker|sw\.js/i.test(m.text())) errs.push(m.text().slice(0, 160)); });
 page.on('pageerror', e => errs.push('PE:' + e.message.slice(0, 160)));
+const notFound = [], okLocal = { n: 0 };/* [giro 116] ogni richiesta locale deve rispondere: un asset escluso per errore dal pacchetto e' un 404 */
+page.on('response', r => { const u = r.url(); if (!/^https?:\/\/(localhost|127\.0\.0\.1)/.test(u)) return; if (r.status() >= 400 && !/sw\.js|manifest|favicon/i.test(u)) notFound.push(r.status() + ' ' + u.replace(/^https?:\/\/[^/]+/, '')); else okLocal.n++; });
 // BLOCCA qualsiasi richiesta NON-locale → se la dist dipendesse ancora da una CDN, fallirebbe a caricare.
 await page.route(/^https?:\/\//, route => { const u = route.request().url(); if (/^https?:\/\/(localhost|127\.0\.0\.1)/.test(u)) return route.continue(); externalHits.push(u.slice(0, 80)); return route.abort(); });
 
@@ -40,9 +42,10 @@ console.log('=== VALIDAZIONE DIST (offline) ===');
 console.log(`React montato (root popolato): ${mounted ? '✅' : '❌'}`);
 console.log(`home raggiunta (bottoni: ${home.btns}, "Nuova carriera": ${home.hasNuova ? 'sì' : 'no'}): ${home.btns > 0 && home.hasNuova ? '✅' : '❌'}`);
 console.log(`richieste esterne (CDN) tentate: ${externalHits.length ? '❌ ' + externalHits.slice(0, 5).join(' ') : '✅ NESSUNA → davvero offline'}`);
+console.log(`richieste locali: ${okLocal.n} ok · ${notFound.length ? '❌ ' + notFound.length + ' fallite: ' + notFound.slice(0, 4).join(' ') : '✅ 0 fallite (nessun asset mancante)'}`);
 console.log(`errori console: ${errs.length ? '❌ ' + errs.slice(0, 4).join(' | ') : '✅ nessuno'}`);
 console.log(WEB ? `flag build store (deve mancare nella build per il sito): ${storeFlag ? '❌ presente' : '✅ assente'}` : `flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
-const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
+const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && notFound.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
 console.log(ok ? '\n✅ DIST OFFLINE FUNZIONANTE' : '\n❌ DIST da rivedere');
 await browser.close(); srv.close();
 process.exit(ok ? 0 : 1);

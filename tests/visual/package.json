@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "lineetta-181": "node lineetta-181.mjs",
+    "altezza-114": "node altezza-114.mjs",
     "scorri-113": "node scorri-113.mjs",
+    "flussi-115": "node flussi-115.mjs && CPM_ROSSO=1 node flussi-115.mjs",
     "validate-situations": "node validate-situations.mjs",
     "panchina-glb": "node panchina-glb.mjs",
     "d7-corpi": "node d7-corpi.mjs",
@@ -423,6 +425,7 @@
     "ripresa-202": "node ripresa-202.mjs",
     "tetto-202": "node tetto-202.mjs",
     "tabellino-228": "node tabellino-228.mjs",
+    "tabellone-117": "node tabellone-117.mjs",
     "statistiche-228": "node statistiche-228.mjs",
     "passaggi-228": "node passaggi-228.mjs",
     "passaggi-228-vivo-misura": "node passaggi-228-vivo-misura.mjs",
@@ -562,7 +565,8 @@
     "portiere-252": "node portiere-252.mjs",
     "aereo-252": "node aereo-252.mjs",
     "camera-252": "node camera-252.mjs",
-    "reazione-252": "node reazione-252.mjs"
+    "reazione-252": "node reazione-252.mjs",
+    "intro-118": "node intro-118.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

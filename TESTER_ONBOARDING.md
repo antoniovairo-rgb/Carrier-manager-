@@ -2,8 +2,23 @@
 
 > Serve per soddisfare il requisito Google Play del **test chiuso** (account sviluppatore personale:
 > ≥12 tester iscritti per 14 giorni consecutivi prima di poter passare in produzione).
-> ⚠️ Il numero e la durata esatti sono quelli che la **Play Console** mostra sul TUO account nella
-> schermata *Test → Test chiuso*: quella è la fonte autorevole, non questo file.
+> Fonte: pagina Google Play Console «Test requirements for new personal developer accounts»
+> (https://support.google.com/googleplay/android-developer/answer/14151465), **riletta il 07/11/2026**.
+> Dice: gli account personali creati dopo il 13/11/2023 devono eseguire un closed test con **almeno 12 tester**
+> iscritti **ininterrottamente per 14 giorni**; se un tester esce e rientra il conteggio riparte. La pagina
+> non riporta una data di aggiornamento. Resta autorevole ciò che la Console mostra sul TUO account.
+> ID pacchetto dell'app: **`com.korward.elite`**.
+
+**Passi secondo la pagina Google (riletta il 07/11/2026):**
+1. Completa la configurazione dell'app in Console («Complete app setup») prima di avviare il closed test.
+2. Esegui un closed test con ≥12 tester iscritti (reclutali nella tua rete personale/professionale).
+3. Di' ai tester che devono **restare iscritti** per tutti i 14 giorni consecutivi.
+4. Consulta i feedback in Console (*Testing feedback*) e riassumili nella richiesta di accesso alla produzione.
+5. Dalla Dashboard scegli **«Apply for production»**: il modulo ha tre sezioni — *About your closed test*,
+   *About your app/game*, *About your production readiness*.
+6. Google scrive «Review usually takes seven days or less», ma può richiedere di più. Se i tester sono meno di 12 o il
+   coinvolgimento è insufficiente, il closed test può dover continuare.
+La pagina **non** descrive i click in Console per aggiungere tester: per quelli vale la guida Google «Set up an open, closed, or internal test».
 
 ---
 
@@ -14,7 +29,7 @@
 3. **Tester:** crea un elenco di indirizzi email, oppure — più comodo — un **Gruppo Google**
    (`groups.google.com`, gruppo privato) e incolla l'indirizzo del gruppo. Così aggiungi o togli
    persone senza ricaricare nulla.
-4. Copia il **link di partecipazione** (`https://play.google.com/apps/testing/com.elevora.football`).
+4. Copia il **link di partecipazione** (`https://play.google.com/apps/testing/com.korward.elite`).
    È quello che manderai.
 
 Il conteggio dei 14 giorni parte da quando i tester **si iscrivono**, non da quando finisci lo
@@ -41,7 +56,7 @@ test palesemente finto può costare la review. Con 12 persone vere si risolve in
 
 ## 3. Il messaggio da inoltrare
 
-> Ciao! Ho scritto un gioco per Android — **Elevora**, un simulatore di carriera calcistica: controlli
+> Ciao! Ho scritto un gioco per Android — **Korward Elite**, un simulatore di carriera calcistica: controlli
 > un solo giocatore, dalle giovanili fino ai grandi stadi, e ogni scelta dentro e fuori dal campo
 > costruisce la sua storia. È gratis, senza pubblicità e senza acquisti.
 >
