@@ -376,5 +376,33 @@
   "cache_read_tokens": 5855223,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia9uPm2HUxMgtvdpbho",
+  "titolo": "giro 123 · parata del tiro e angolo",
+  "versione": "7.999.186",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-08T14:01:08Z",
+  "chiusa": "2026-11-08T18:39:06Z",
+  "cost_usd": 5.87020456,
+  "output_tokens": 51380,
+  "cache_read_tokens": 16680302,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYiaCLcs9iqxkcsVYwVyQ",
+  "titolo": "giro 126 · distanze dei tiri",
+  "versione": "7.999.186",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-08T16:10:34Z",
+  "chiusa": "2026-11-08T19:50:03Z",
+  "cost_usd": 4.4774369,
+  "output_tokens": 36110,
+  "cache_read_tokens": 11718457,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
