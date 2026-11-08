@@ -5745,10 +5745,31 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                direzione, durata scalata sulla corda per tenere la velocita', distesa piena al contatto e respinta dalle sue mani. */
             if(awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_PARATA258)){
               const _gx258=awayGkMesh.position.x+0.45,_sx258=ball.position.x,_sz258=ball.position.z;
+              if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_SV119={k:String(P.hlSitKey),v:P.hlVariant||null,gx:+awayGkMesh.position.x.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),sx:+_sx258.toFixed(2),sz:+_sz258.toFixed(2),tx:+ballArcTgtX.toFixed(2),tz:+ballArcTgtZ.toFixed(2),hx:+hero.position.x.toFixed(2),hz:+hero.position.z.toFixed(2),aT:+(ballArcT||0).toFixed(2)};}catch(_e){}}/* [giro 119 strumento, solo __CPM_REC] la geometria della parata all'armo dell'arco, in ENTRAMBI i rami (applicato o no il taglio 258) */
               if(ballArcTgtX>_gx258+0.3&&_sx258<_gx258-2){
                 const _u258=(_gx258-_sx258)/(ballArcTgtX-_sx258),_px258=ballArcTgtX;
                 ballArcTgtZ=_sz258+(ballArcTgtZ-_sz258)*_u258;ballArcTgtX=_gx258;ballArcDur=Math.max(0.2,ballArcDur*_u258);
                 if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA258=window.__CPM_PARATA258||[]);if(W.length<100)W.push({t,gx:+awayGkMesh.position.x.toFixed(2),prima:+_px258.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u258.toFixed(2)});}catch(_e){}}
+              }
+              /* [giro 119 PO-323, rosso __CPM_NO_G119P — «Volée di collo potente»: «Grande parata del portiere» ma il pallone non arriva al
+                 portiere (highlight-95 D3, minimo 6,8-6,9)] MISURATO sul flusso vero (s1/2021, catena carica, CPM_D3DIAG): nella scena
+                 d'angolo il brain della scena (scenaMuovi) porta il portiere FUORI incontro all'eroe in area — portiere a x 91,1 col
+                 tiratore a 87,6-90,3 (logico), cioe' a 1-1,5 u davanti al pallone. Il taglio qui sopra vale solo con il pallone ad almeno
+                 2 u dal portiere, e sull'angolo il pallone all'armo e' ancora sulla bandierina (il volo al piede 274): in tutti e due i casi
+                 l'arco della parata andava fino alla porta (x >= 42) e il pallone si fermava sulla linea a 7-8 u dal portiere che «parava».
+                 Il rimedio del giro 117 (stacco in area) rende questo caso frequente; il ramo mancante e' di prima. Ora: l'origine del tiro
+                 e' il piede dell'eroe quando il pallone all'armo e' ancora lontano (oltre 4 u, la soglia del volo 274), e col portiere
+                 davanti a meno di 2 u l'arco finisce sul suo corpo (corpo largo 0,9 u, quota scalata sulla corda). Il ramo di sopra,
+                 quando scatta, resta identico. Nessun sorteggio. */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_G119P)&&ballArcTgtX>_gx258+0.3){
+                const _far119=Math.hypot(_sx258-hero.position.x,_sz258-hero.position.z)>4;
+                const _ox119=_far119?hero.position.x:_sx258,_oz119=_far119?hero.position.z:_sz258;
+                if(_ox119<_gx258-0.2&&(_far119||_sx258>=_gx258-2)){
+                  const _u119=clamp((_gx258-_ox119)/Math.max(0.05,ballArcTgtX-_ox119),0,1),_px119=ballArcTgtX;
+                  ballArcTgtZ=_oz119+(ballArcTgtZ-_oz119)*_u119;if(_gx258-_ox119<2)ballArcTgtZ=clamp(ballArcTgtZ,awayGkMesh.position.z-0.9,awayGkMesh.position.z+0.9);
+                  ballArcTgtX=_gx258;ballArcDur=Math.max(0.2,ballArcDur*_u119);if(_gx258-_ox119<2)ballArcH=Math.min(ballArcH,Math.max(0.3,ballArcH*_u119*2));
+                  if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_PARATA119=window.__CPM_PARATA119||[]);if(W.length<100)W.push({t,far:_far119?1:0,gx:+awayGkMesh.position.x.toFixed(2),ox:+_ox119.toFixed(2),prima:+_px119.toFixed(2),dopo:+ballArcTgtX.toFixed(2),u:+_u119.toFixed(2)});}catch(_e){}}
+                }
               }
             }
           }
@@ -6772,6 +6793,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(isHL&&_awG&&propsRef.current&&propsRef.current.hlGkOut){/* [7.248.0 gi52 «Non si vede il portiere che esce»] la regola «GK fermo sulla linea durante l'HL» (5.49.0) vale per i tiri normali — ma la scena che DICHIARA l'uscita (flag factory gkOutSit) la deve MOSTRARE: il GK avversario esce incontro alla palla per tutto l'highlight. Bound del gate rispettati (away GK ≥80) e uscita deterministica dalla posizione palla. */
               _gx=clamp(_bGX+7,80,92);_gy=clamp(50+(_bGY-50)*0.35,36,64);
             }
+            if(isHL&&_awG&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_GKAT119){_gx=+window.__CPM_GKAT119.x;_gy=+window.__CPM_GKAT119.y;}/* [giro 119, solo ?cpmtest=1] la sonda volee-d3-119 piazza il portiere USCITO come lo mette il brain in scena (scenaMuovi), che nelle scene forzate non gira */
             {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=_gx;_ob.y=_gy;_ob.gk=true;_ob.hm=i<10;_ob.li=0;_ob.att=false;_ob.def=false;_tg.push(_ob);
              if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GKT705=window.__CPM_GKT705||{});_w[_ob.hm?'home':'away']={x:+_gx.toFixed(1),y:+_gy.toFixed(1)};}catch(_e){}}/* [7.705 strumentazione] il BERSAGLIO del portiere, per attribuire il nuoto: sopra 62 = scrittore a monte, mesh oltre il bersaglio = scrittore a valle */}continue;}
           const _hm=i<10,_li=_hm?i:i-10; // 1-4=DIF, 5-7=CEN, 8+=ATT (0=GK)
