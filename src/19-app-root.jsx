@@ -529,6 +529,18 @@ function IntroCinematic({onDone,nome,riascolto}){
         const _mdt=Math.min(0.12,(Date.now()-(stG.lastT||Date.now()))/1000);stG.lastT=Date.now();/* [7.32.7] cap 0.05→0.12: a fps bassi le clip restavano in SLOW-MO rispetto al corpo (gliding) */
         mixers.forEach(m=>m.update(_mdt*_rate115(_raw115)));/* [giro 115 G184-10] le clip rallentano col corpo (niente piedi che scivolano) */
         try{if(typeof _corrPostura23==='function'&&window.__CPM_INTRO_CG23){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
+        /* [giro 118 PO-325 «il portiere sembra che voli»] CAUSA MISURATA (intro-118): la clip gk-ready tiene i piedi del portiere
+           sollevati di ~9 cm dal prato (osso ball_l/ball_r a +0,086..0,096 per tutta l'attesa, mentre l'attaccante in appoggio sta a
+           -0,04..0) e, dopo il tuffo, y restava all'ULTIMO valore dell'arco sin(...) (0,22 a 8 fps, fino a 0,62) perche' dopo el=9,5 nessuno
+           la riportava a 0. Rimedio: a riposo l'osso ball piu' basso si riporta al prato (corr = quota misurata, tetto 0,3); dopo il tuffo
+           y torna a 0. Interruttore rosso __CPM_NO_G118. */
+        try{if(!window.__CPM_NO_G118){if(el>=9.5&&gk.position.y!==0)gk.position.y=0;gkAv.position.y=gk.position.y;
+          if(el<8.75){if(!stG.gB){stG.gB=[];gkAv.traverse(o=>{if(o.isBone&&/^ball_[lr]$/i.test(o.name||""))stG.gB.push(o);});}
+            if(stG.gB.length){gkAv.updateMatrixWorld(true);const _v=new THREE.Vector3();let _lo=1e9;stG.gB.forEach(o=>{o.getWorldPosition(_v);if(_v.y<_lo)_lo=_v.y;});
+              if(_lo>0&&_lo<1e8)gkAv.position.y-=Math.min(0.3,_lo);}}}}catch(_e){}
+        try{if(_test115){/* [giro 118 PO-325] testimone: piedi/scala/posizione del portiere e dell'attaccante, solo sotto ?cpmtest=1 */
+          const _m=(av)=>{av.updateMatrixWorld(true);let lo=1e9,ft=1e9,hi=-1e9;const v=new THREE.Vector3();av.traverse(o=>{if(!o.isBone)return;o.getWorldPosition(v);if(v.y<lo)lo=v.y;if(v.y>hi)hi=v.y;if(/^ball_[lr]$/i.test(o.name||"")&&v.y<ft)ft=v.y;});return {lo:Math.round(lo*1000)/1000,ft:Math.round(ft*1000)/1000,hi:Math.round(hi*1000)/1000,x:Math.round(av.position.x*100)/100,y:Math.round(av.position.y*1000)/1000,z:Math.round(av.position.z*100)/100,sx:Math.round(av.scale.x*1000)/1000,sy:Math.round(av.scale.y*1000)/1000};};
+          const w=window.__CPM_INTRO118||(window.__CPM_INTRO118={});w.av={gk:gkAv,hero:heroAv};const L=(w.s=w.s||[]);if(L.length<4000)L.push({el:Math.round(el*100)/100,gk:_m(gkAv),hero:_m(heroAv),gkIdle:gkActs.idle?{w:Math.round(gkActs.idle.getEffectiveWeight()*100)/100,t:Math.round(gkActs.idle.time*100)/100}:null});}}catch(_e){}
         if(stG.lifted&&heroActs.lift){const _ap=heroActs.lift.getClip().duration*0.34;if(heroActs.lift.time>=_ap){heroActs.lift.time=_ap;heroActs.lift.paused=true;}}/* congela all'apice (due mani sopra la testa) */
       }
       /* [7.32.5 collaudo PO «la palla continua a perdersela per strada, rimane spesso dietro!»] fix
@@ -653,6 +665,11 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
             <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:FS.body}}>🏠 Torna al menu principale</Btn>
           </Card>
         )}{/* [7.149.0] uscita al menu (azzera l'auto-ripresa); presente SOLO durante la carriera, non nelle schermate pre-carriera */}
+        {!(typeof window!=='undefined'&&window.__CPM_NO_G118P)&&(
+          <Card style={{padding:'12px 14px'}}>{/* [giro 118 PO-322] informativa sulla privacy raggiungibile dall'app (richiesta Google Play) */}
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🔒 Privacy</div>
+            <a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>
+          </Card>)}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
       </div>
     </div>
