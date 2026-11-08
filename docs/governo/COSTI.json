@@ -180,5 +180,19 @@
   "cache_read_tokens": 8450333,
   "worker_epoch": 2,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia9VHSB92uCxxDPfRzJ",
+  "titolo": "giro 115 · intro, provini, creazione",
+  "versione": "7.999.184",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-07T22:26:41Z",
+  "chiusa": "2026-11-08T01:15:21Z",
+  "cost_usd": 10.44101548,
+  "output_tokens": 90416,
+  "cache_read_tokens": 31915346,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
