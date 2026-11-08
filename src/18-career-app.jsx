@@ -9524,11 +9524,58 @@ const getThisWeekMatchday=()=>{
         // Group by league
         const leagues=[...new Set(rows.map(e=>e.league).filter(Boolean))];
         const isPlayerChamp=e=>!e.inProgress&&e.champion===e.playerClub;
+        /* [giro 122 PO-326, foto 184 «Non mi è chiara questa schermata, che c'entra nerazzurri??»] L'albo mescolava i campioni di TUTTE le leghe
+           senza dire quale e «Hai vinto la lega!» non diceva né quale né quante volte. Decisione PO: «In alto i tuoi titoli, sotto per lega».
+           In cima SOLO il giocatore (campionati con club+lega, Coppe, Euro, o il miglior piazzamento se non ha mai vinto); le etichette dei
+           campioni vivono DENTRO ciascuna lega e contano solo le sue stagioni chiuse; lega attuale aperta, le altre in fisarmonica, dalla più
+           recente. Rosso __CPM_NO_G122 = albo di prima. */
+        const _old=typeof window!=='undefined'&&!!window.__CPM_NO_G122;
+        const _curLg=player.club&&player.club.lg;
+        const legheOrd=[...leagues].sort((a,b)=>{
+          const ra=a===_curLg?1e9:Math.max(0,...arch.filter(e=>e.league===a).map(e=>+e.season||0));
+          const rb=b===_curLg?1e9:Math.max(0,...arch.filter(e=>e.league===b).map(e=>+e.season||0));
+          return rb-ra;});
+        const _aperta=(lg,i)=>_curLg&&leagues.includes(_curLg)?lg===_curLg:i===0;
+        const _titoli={};arch.filter(isPlayerChamp).forEach(e=>{const k=(e.league||"")+"|"+e.playerClub;_titoli[k]=_titoli[k]||{lg:e.league||"",club:e.playerClub,n:0};_titoli[k].n++;});
+        const gruppiTitoli=Object.values(_titoli).sort((a,b)=>b.n-a.n);
+        const nTitoli=gruppiTitoli.reduce((a,g)=>a+g.n,0);
+        const nCoppe=arch.filter(e=>e.isPlayerCupChamp).length,nEuro=arch.filter(e=>e.isPlayerEuroChamp).length;
+        const bestE=arch.filter(e=>e.playerPos>0).sort((a,b)=>a.playerPos-b.playerPos||(+b.season||0)-(+a.season||0))[0];
+        const _riga={fontSize:FS.caption,fontWeight:FW.semibold,color:TH.goldText};
+        const riepilogo=(nTitoli>0||nCoppe>0||nEuro>0||bestE)?(
+          <div data-cpm="albo122-riepilogo" style={{marginBottom:8,padding:"7px 12px",borderRadius:RAD.sm,background:nTitoli>0?TH.bgAmber:TH.surface2,border:"1px solid "+(nTitoli>0?TH.bdAmber:TH.divider),display:"flex",flexDirection:"column",gap:3}}>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>I tuoi titoli</div>
+            {nTitoli>0&&<div style={{..._riga,fontWeight:FW.black}}>🏆 {nTitoli} {nTitoli===1?"campionato vinto":"campionati vinti"}{gruppiTitoli.length===1?" · "+gruppiTitoli[0].club+(gruppiTitoli[0].lg?", "+gruppiTitoli[0].lg:""):""}</div>}
+            {nTitoli>0&&gruppiTitoli.length>1&&gruppiTitoli.slice(0,4).map((g,i)=><div key={i} style={_riga}>{g.club}{g.lg?" · "+g.lg:""} <span className="cpm-num" style={{color:TH.muted}}>×{g.n}</span></div>)}
+            {nTitoli>0&&gruppiTitoli.length>4&&<div style={{..._riga,color:TH.muted}}>+{gruppiTitoli.length-4} altri</div>}
+            {nTitoli===0&&bestE&&<div style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.text}}>{bestE.playerPos===2?"🥈":bestE.playerPos===3?"🥉":"📊"} Miglior piazzamento: {bestE.playerPos}° · {bestE.playerClub}{bestE.league?", "+bestE.league:""} (S.{bestE.season})</div>}
+            {nCoppe>0&&<div style={_riga}>🥇 {nCoppe} {nCoppe===1?"Coppa vinta":"Coppe vinte"}</div>}
+            {nEuro>0&&<div style={_riga}>🌍 {nEuro} {nEuro===1?"Coppa europea vinta":"Coppe europee vinte"}</div>}
+          </div>):null;
+        const chipsLega=(lg)=>{
+          const tc={};arch.filter(e=>e.league===lg&&e.champion).forEach(e=>{tc[e.champion]=(tc[e.champion]||0)+1;});
+          const top=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3);
+          if(!top.length)return null;
+          return(<div data-cpm="albo122-etichette" data-lega={lg} style={{display:"flex",gap:6,marginBottom:6,flexWrap:"wrap"}}>
+            {top.map(([club,n],i)=>(
+              <div key={club} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 9px",borderRadius:RAD.pill,background:i===0?TH.bgAmber:TH.surface2,border:"1px solid "+(i===0?TH.bdAmber:TH.divider),fontSize:FS.caption}}>
+                <span>{i===0?"👑":i===1?"🥈":"🥉"}</span>
+                <span style={{fontWeight:FW.bold,color:i===0?TH.goldText:TH.text}}>{club}</span>
+                <span className="cpm-num" style={{color:TH.muted}}>×{n}</span>
+              </div>))}
+          </div>);};
+        const avvolgi=(lg,i,body)=>_old?body:(
+          <Fisarmonica key={lg} id={"albo122-"+lg} titolo={lg} quante={arch.filter(e=>e.league===lg).length+" stag."} aperta={_aperta(lg,i)} style={{marginBottom:6}}>
+            <div data-cpm="albo122-lega" data-lega={lg} style={{padding:"8px 10px",border:"1px solid "+TH.cardBorder,borderTop:"none",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px"}}>
+              {chipsLega(lg)}{body}
+            </div>
+          </Fisarmonica>);
         return(
           <Card momento="Albo d'oro — storico campioni" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{marginTop:8,padding:"9px 12px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Albo d'Oro — Storico Campioni</div>
             {/* Dominator summary */}
-            {topClubs.length>0&&(
+            {!_old&&riepilogo}
+            {_old&&topClubs.length>0&&(
               <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
                 {topClubs.map(([club,n],i)=>(
                   <div key={club} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 9px",borderRadius:RAD.pill,background:i===0?TH.bgAmber:TH.surface2,border:"1px solid "+(i===0?TH.bdAmber:TH.divider),fontSize:FS.caption}}>
@@ -9540,18 +9587,18 @@ const getThisWeekMatchday=()=>{
               </div>
             )}
             {/* Best finish badge */}
-            {bestPos>0&&bestPos<=3&&(
+            {_old&&bestPos>0&&bestPos<=3&&(
               <div style={{marginBottom:8,padding:"6px 12px",borderRadius:RAD.sm,background:bestPos===1?TH.bgAmber:TH.surface2,border:"1px solid "+(bestPos===1?TH.bdAmber:TH.divider),fontSize:FS.caption,fontWeight:FW.semibold,color:bestPos===1?TH.goldText:TH.text}}>
                 {bestPos===1?"🏆 Hai vinto la lega!":bestPos===2?"🥈 Miglior piazzamento in campionato: 2° posto":"🥉 Miglior piazzamento in campionato: 3° posto"}
               </div>
             )}
             {/* Per-league sections */}
-            {leagues.map(lg=>{
+            {(_old?leagues:legheOrd).map((lg,_li)=>{
               const entries=rows.filter(e=>e.league===lg);
               return(
-                <div key={lg} style={{marginBottom:leagues.length>1?14:0}}>
-                  {leagues.length>1&&<div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6,borderBottom:"1px solid "+TH.cardBorder,paddingBottom:4}}>{lg}</div>}
-                  <div>{/* [7.184.0 collaudo PO «evita lo scroll»] via il box interno maxHeight:260+overflowY — l'albo scorre con la pagina */}
+                <div key={lg} style={{marginBottom:_old&&leagues.length>1?14:0}}>
+                  {_old&&leagues.length>1&&<div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6,borderBottom:"1px solid "+TH.cardBorder,paddingBottom:4}}>{lg}</div>}
+                  {avvolgi(lg,_li,<div>{/* [7.184.0 collaudo PO «evita lo scroll»] via il box interno maxHeight:260+overflowY — l'albo scorre con la pagina */}
                     {entries.map((e,i)=>{
                       const isChamp=isPlayerChamp(e);
                       const isTop3=(e.playerPos>0&&e.playerPos<=3);
@@ -9577,7 +9624,7 @@ const getThisWeekMatchday=()=>{
                         </div>
                       );
                     })}
-                  </div>
+                  </div>)}
                 </div>
               );
             })}

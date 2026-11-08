@@ -7,6 +7,7 @@
   "scripts": {
     "lineetta-181": "node lineetta-181.mjs",
     "altezza-114": "node altezza-114.mjs",
+    "albo-122": "node albo-122.mjs",
     "scorri-113": "node scorri-113.mjs",
     "flussi-115": "node flussi-115.mjs && CPM_ROSSO=1 node flussi-115.mjs",
     "validate-situations": "node validate-situations.mjs",
