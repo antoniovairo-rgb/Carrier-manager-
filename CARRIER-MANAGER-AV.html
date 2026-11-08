@@ -45,7 +45,23 @@
 /* F-1: PWA — Service Worker + gestione install prompt (manifest/icone sono statici, vedi <link> sopra) */
 (function(){
   // Service Worker — richiesto da Chrome Android 73+ per completare l'installazione PWA
-  if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(function(){});}
+  /* [giro 120 PO-322] registrazione con la VERSIONE (sw.js?v=<GAME_VERSION>): cache per versione, guscio precaricato, apertura senza
+     rete (misura e motivo in sw.js). GAME_VERSION nasce nello script di gioco, quindi si registra al «load»; poi si consegna al
+     service worker l'elenco dei file stessa-origine gia' caricati (pagina compresa), che altrimenti arrivati prima del suo controllo
+     andrebbero persi. Rosso __CPM_NO_G120S = registrazione di prima. Sonda: tests/visual/sw-cache-120.mjs. */
+  if('serviceWorker' in navigator){
+    if(window.__CPM_NO_G120S){navigator.serviceWorker.register('./sw.js').catch(function(){});}
+    else window.addEventListener('load',function(){try{
+      var v=(typeof GAME_VERSION!=='undefined'&&GAME_VERSION)||'sviluppo';
+      navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(v)).catch(function(){});
+      var consegna=function(){try{var sw=navigator.serviceWorker.controller;if(!sw)return;var o=location.origin,u=[location.href.split('#')[0]];
+        (performance.getEntriesByType('resource')||[]).forEach(function(x){if(x.name&&x.name.indexOf(o)===0)u.push(x.name.split('#')[0]);});
+        sw.postMessage({tipo:'cpm-cache',urls:u});}catch(_e){}};
+      /* subito se controlla gia', altrimenti al primo controllo; e di nuovo dopo 60 s (i GLB dell'intro arrivano dopo il «load») */
+      if(navigator.serviceWorker.controller)consegna();else navigator.serviceWorker.addEventListener('controllerchange',consegna);
+      setTimeout(consegna,60000);
+    }catch(_e){}});
+  }
   window._cpmDp=null;
   window._cpmInstall=function(){if(!window._cpmDp)return;window._cpmDp.prompt();window._cpmDp.userChoice.then(function(){window._cpmDp=null;window.dispatchEvent(new Event('cpm_installed'));});};
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window._cpmDp=e;window.dispatchEvent(new Event('cpm_installready'));});
