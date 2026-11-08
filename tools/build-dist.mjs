@@ -83,9 +83,26 @@ const assetsSrc = path.join(ROOT, 'assets');
 const CON_CH38 = !!process.env.CPM_DIST_CON_CH38;
 const _ch38Dist = /[\\/]assets[\\/](footballer[a-z-]*\.glb|anim-[a-z-]+\.glb)$/;
 let _ch38Esclusi = 0;
+/* [giro 116 — PO-322] file che il gioco NON referenzia: fuori dal pacchetto store.
+   (a) assets/source/ = sorgenti d'autore (FBX, TEXTURES.zip, .blend, modello CGTrader originale, 142 MB) — nessuna riga di src/ li apre,
+       solo gli script Python di tools/ (render offline); distribuirli in un AAB e' anche un rischio di licenza.
+   (b) README.md dentro assets/ (documentazione).
+   (c) elenco ESPLICITO di file di assets/ il cui nome non compare in nessun sorgente (src/, CARRIER-MANAGER-AV.html, sw.js): misurato con
+       grep del nome; i file a nome COSTRUITO a runtime (portraits/, avatar-N, anim-*, hair-colors/, korward-regular-*) restano TUTTI.
+   CPM_DIST_CON_SORGENTI=1 rimette tutto. Dopo la copia, controllo: ogni './assets/...' letterale della pagina deve esistere nella dist. */
+const CON_SORGENTI = !!process.env.CPM_DIST_CON_SORGENTI;
+const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp))$/;
+let _srcEsclusi = 0;
+const _sz = s => { const st = fs.statSync(s); if (!st.isDirectory()) return st.size; let t = 0; for (const f of fs.readdirSync(s)) t += _sz(path.join(s, f)); return t; };
 if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true,
-  filter: s => { if (!CON_CH38 && _ch38Dist.test(s)) { _ch38Esclusi += fs.statSync(s).size; return false; } return true; } });
+  filter: s => {
+    if (!CON_CH38 && _ch38Dist.test(s)) { _ch38Esclusi += fs.statSync(s).size; return false; }
+    if (!CON_SORGENTI && _srcDist.test(s)) { _srcEsclusi += _sz(s); return false; }
+    return true; } });
 console.log(`CH38 escluso dal pacchetto: ${(_ch38Esclusi / 1048576).toFixed(2)} MB${CON_CH38 ? ' (CPM_DIST_CON_CH38: incluso)' : ''}`);
+console.log(`Sorgenti/non referenziati esclusi: ${(_srcEsclusi / 1048576).toFixed(2)} MB${CON_SORGENTI ? ' (CPM_DIST_CON_SORGENTI: inclusi)' : ''}`);
+{ const miss = new Set(); for (const m of html.matchAll(/['"`]\.\/(assets\/[A-Za-z0-9_./-]+\.(?:glb|png|webp|jpg|jpeg|json|wav|mp3|ogg|js))['"`]/g)) if (!fs.existsSync(path.join(DIST, m[1])) && (CON_CH38 || !_ch38Dist.test('/' + m[1]))) miss.add(m[1]); /* CH38 e' escluso di proposito (giro 39) */
+  if (miss.size) { console.error('FATAL: file referenziati dalla pagina ma assenti dalla dist:\n  ' + [...miss].join('\n  ')); process.exit(3); } }
 /* [7.310.1] la dist copiava SOLO sw.js: manifest e icone PWA restavano fuori, e la pagina — che le
    referenzia con <link rel="manifest"> e <link rel="icon"> — chiedeva `icon-192.png` a ogni avvio
    ottenendo un 404 (misurato con validate-dist: unico errore di console della build offline).
