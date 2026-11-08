@@ -27,9 +27,11 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.185 | giro 119 · angolo e parata (per la 185) | sviluppo | claude-opus-5-5 | 3,7 | 8,31 $ | 71739 | 1 | completo (un solo avvio) |
 | 7.999.185 | giro 120 · app Android come PLINTO (TWA) | sviluppo | claude-opus-5-5 | 1,0 | 7,51 $ | 75192 | 1 | completo (un solo avvio) |
 | 7.999.185 | giro 122 · Albo d'oro per lega | sviluppo | claude-sonnet-5-5 | 1,1 | 1,24 $ | 23642 | 1 | completo (un solo avvio) |
+| 7.999.186 | giro 121 · angolo di testa (per la 186) | sviluppo | claude-opus-5-5 | 4,4 | 6,88 $ | 69992 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
 | 7.999.183 | **TOTALE 7.999.183** (1 sessioni) |  |  |  | 1,46 $ |  |  | tutte complete |
 | 7.999.184 | **TOTALE 7.999.184** (8 sessioni) |  |  |  | almeno 35,27 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.185 | **TOTALE 7.999.185** (3 sessioni) |  |  |  | 17,06 $ |  |  | tutte complete |
+| 7.999.186 | **TOTALE 7.999.186** (1 sessioni) |  |  |  | 6,88 $ |  |  | tutte complete |

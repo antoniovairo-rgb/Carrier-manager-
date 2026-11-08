@@ -306,5 +306,19 @@
   "cache_read_tokens": 5088761,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYiaCW3uhJy22Wz43EMiq",
+  "titolo": "giro 121 · angolo di testa (per la 186)",
+  "versione": "7.999.186",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-08T08:51:26Z",
+  "chiusa": "2026-11-08T13:15:40Z",
+  "cost_usd": 6.87922126,
+  "output_tokens": 69992,
+  "cache_read_tokens": 19343120,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
