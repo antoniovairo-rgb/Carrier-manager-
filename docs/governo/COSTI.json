@@ -348,5 +348,19 @@
   "cache_read_tokens": 5574411,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia9jtWR9CMsQwwB2bq3",
+  "titolo": "giro 125 · censimento distanze degli highlight",
+  "versione": "7.999.186",
+  "tipo": "collaudo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-08T14:03:23Z",
+  "chiusa": "2026-11-08T15:57:30Z",
+  "cost_usd": 1.84031652,
+  "output_tokens": 31848,
+  "cache_read_tokens": 8950903,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
