@@ -25191,6 +25191,12 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
              const _tg=Math.atan2(48.6-hero.position.x,0-hero.position.z);let _d=Math.abs(_ry-_tg)%(2*Math.PI);if(_d>Math.PI)_d=2*Math.PI-_d;
              const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53,db:(function(){try{const _b=sr.current.ball||ball;return +Math.hypot(_b.position.x-hero.position.x,(_b.position.z-hero.position.z)/0.68).toFixed(1);}catch(_e){return null;}})(),gx:+(48.6-hero.position.x).toFixed(1)});/* [giro 117 PO-323] + distanza eroe↔pallone al contatto (u logiche) e distanza dalla linea di porta: «troppo distante» ora ha un numero */if(L53.length>40)L53.shift();}}
            else sr.current._c53=null;}catch(_e53){}}
+         /* [giro 117 strumento, sola lettura — solo __CPM_REC] il MINIMO portiere avversario↔pallone di ogni scena, a ogni fotogramma: la
+            sonda highlight-95 (D3) lo campionava per interrogazione, circa ogni mezzo secondo a macchina carica, e una parata ravvicinata
+            (il pallone passa a 2,4 u dal portiere e si ferma respinto a 6,7) cadeva fra due campioni. Misura di tempo di scena, non di parete. */
+         if(typeof window!=='undefined'&&window.__CPM_REC&&awayGkMesh){try{const _P17=propsRef.current||{};
+           if(_P17.matchPhase==='hl_result'){const _k17=String(_P17.hlSitKey);const _d17=Math.hypot(awayGkMesh.position.x-ball.position.x,(awayGkMesh.position.z-ball.position.z)/0.68);
+             const W=window.__CPM_GKMIN117;if(!W||W.k!==_k17)window.__CPM_GKMIN117={k:_k17,min:_d17};else if(_d17<W.min)W.min=_d17;}else window.__CPM_GKMIN117=null;}catch(_e17){}}/* fuori dalla scena si azzera: due scene di fila con la stessa chiave non si sommano */
          if(typeof window!=='undefined'&&window.__CPM_TIRO34_REC&&hero){try{const _P34=propsRef.current||{};
           if(_P34.matchPhase==='hl_result'){const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);
             if(_av){const R=_av.visualRoot||_av.root;if(_av._pL34===undefined){_av._pL34=_findBone904(R,/^(ball_l|LeftToeBase|mixamorig:?LeftToeBase)$/i)||null;_av._pR34=_findBone904(R,/^(ball_r|RightToeBase|mixamorig:?RightToeBase)$/i)||null;}
