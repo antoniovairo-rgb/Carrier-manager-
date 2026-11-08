@@ -117,6 +117,6 @@ su **ogni** punto (un punto che resta verde = controllo cieco).
 | test:logic | ✅ 43 pass · 0 fail |
 | save-compat | ✅ 12 pass · 0 fail |
 | partita2d-297 | ✅ VERDE |
-| highlight-95 | braccio VERDE chiuso: 100 highlight · D4 senza esito 0 · passaggi arrivati 89,3% · gol del compagno = assist 15/15; braccio ROSSO **ancora in corsa** al momento del commit (vedi riga finale) |
+| highlight-95 | braccio VERDE chiuso: 100 highlight · D4 senza esito 0 · passaggi arrivati 89,3% · gol del compagno = assist 15/15; braccio ROSSO (i suoi interruttori D1-D4, che questo giro non tocca) **interrotto** dopo ~60 min complessivi, al tetto delle 4 ore: **non vale**, da rifare nella catena del rilascio |
 
 `node tools/build-src.mjs` + `node tools/check-src.mjs`: identico byte per byte.
