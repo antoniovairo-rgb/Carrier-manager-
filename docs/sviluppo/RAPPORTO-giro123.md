@@ -58,10 +58,14 @@ questo, vive solo nel ramo GLB (rapporto 119 §1), e highlight-95 gira GLB spent
 
 ## 3. Correzione (src/12, nessun sorteggio aggiunto o tolto, motore non toccato)
 
-1. **`__CPM_NO_G123T` (rosso)**: nel fotogramma di fine arco (`u >= 1`) di una **parata della famiglia tiro** (shot/penalty/freekick/
-   header, `hlSuccess === false`, `hlOutcomeKind` saved/save, scena dell'eroe non difensiva) il pallone va sul bersaglio dell'arco
-   (il piano del portiere del taglio 258) prima della respinta. Firma `arco` nel testimone F2 (`_ws524 = 2`, `srcs` senza doppione).
-   Alla velocità dell'arco è meno di un passo di fotogramma. Non tocca gol, pali, fuori, murati, passaggi, cross, difesa.
+1. **`__CPM_NO_G123T` (rosso)**: sulla **parata della famiglia tiro** (shot/penalty/freekick/header, `hlSuccess === false`,
+   `hlOutcomeKind` saved/save, scena dell'eroe non difensiva), se a `u >= 1` il pallone non è ancora sul bersaglio dell'arco (il piano
+   del portiere del taglio 258, oltre 0,3 u) l'arco dura **un fotogramma in più**: la scrittura normale dell'arco (u = 1) ce lo porta
+   con un passo solo, poi la respinta. Una volta per arco (chiave scena + origine + durata). Non tocca gol, pali, fuori, murati,
+   passaggi, cross, difesa.
+   **Prima stesura bocciata** (commit `Giro 123: la parata della famiglia tiro finisce sul bersaglio…`): nel fotogramma di fine arco
+   il pallone veniva *spostato* sul bersaglio. scena3d-96 l'ha bocciata: **D11 salto del pallone 3,2 u in 0,050 s su gi15 parata
+   (pc e tabv), scrittore `arco`** — due passi in un fotogramma. Sostituita dalla geometria qui sopra (commit successivo).
 2. **`__CPM_GKMIN117` anche a modelli spenti** (sola lettura, solo `__CPM_REC`, spento da `__CPM_NO_GKMIN123`): stessa grandezza e
    stessa regola del giro 117 (minimo per fotogramma della scena `hl_result`, azzerato fuori), scritto solo se `glbAvatars` è nullo,
    così le due copie non si sommano. La soglia del D3 (6 u) e la finestra (1,5 s di scena) **non sono cambiate**.
@@ -72,6 +76,25 @@ lo copre il volo 274. Fuori dal lavoro chiesto, lo lascio alla madre.
 
 ## 4. Dimostrazioni (una alla volta)
 
+**Sul build finale** (geometria «un fotogramma in più»):
+
+| controllo | esito |
+|---|---|
+| s12/7 «Tiro di potenza», verde ×3 | ✅ fotogramma **0,45 · 0,22 · 0,35 u** (sonda 0,5 · 0,2 · 0,4) |
+| scena3d-96 | ✅ 31/31 scene, rossi per punto {}, 0 errori di pagina (gi15 parata: 0 salti in tutte e quattro le viste) · 24 min |
+| test:logic | ✅ 43 pass · 0 fail |
+| save-compat | ✅ 12 pass · 0 fail |
+| volee-d3-119 | ✅ verde 0,65 · 0,67 · 0,52 u · rosso 4,26 · 4,57 (cross in area 0,63, caso di controllo) · 4 min |
+| replay | ✅ 8 highlight, completi e coerenti |
+| tabellone-117 | ✅ ripresa e percorso normale verdi, rosso visibile · 5 min |
+| s12/7 rosso `__CPM_NO_G123T` | ⏳ non rieseguito sul build finale (le due corse sotto valgono per lo stesso interruttore sulla prima stesura) |
+| angolo-117 ×2 | ⏳ **non rieseguito** sul build finale: tetto delle 5 ore |
+| highlight-95 completo + corsa del solo verde | ⏳ **non rieseguiti** sul build finale: tetto delle 5 ore |
+| partita-vera, validate-situations | ⏳ **non eseguiti**: tetto delle 5 ore |
+
+**Sulla prima stesura (scatto sul bersaglio, poi bocciata da scena3d-96)** — valgono come misura del principio (il pallone che
+arriva al portiere toglie il D3), non come verde del build finale:
+
 | controllo | esito |
 |---|---|
 | s12/7 «Tiro di potenza», verde ×3 | ✅ fotogramma **0,45 · 0,36 · 0,45 u** (sonda 0,5 · 0,4 · 0,5) |
@@ -81,3 +104,17 @@ lo copre il volo 274. Fuori dal lavoro chiesto, lo lascio alla madre.
 | volee-d3-119 | ✅ verde 0,65 · 0,67 · 0,64 u · rosso 3,6 · 5,54 (cross in area 0,62, caso di controllo) · 4 min |
 | highlight-95 completo (`CPM_RIGHE=1 CPM_D3DIAG=1`) | ✅ verde 100 highlight, 29 passaggi (86,2%), 13 gol compagno = 13 assist, 19 parate giudicate, **0 difetti** (i quattro «Tiro di potenza»: 1,2 · 0,9 · 0,6 · 1,7 u) · rosso visibile (106 highlight, 194 difetti, D4 senza esito 5) · 63 min |
 | highlight-95 solo braccio verde, corsa 2 | ✅ 91 highlight, 27 passaggi (88,9%), 14 gol compagno = 14 assist, 15 parate giudicate, **0 difetti** («Tiro di potenza»: 1,2 · 1,8 · 0,9 · 0,8 · 1,0 u) · 31 min |
+| scena3d-96 | ❌ D11 salto 3,2 u su gi15 parata (pc, tabv) — causa della seconda stesura |
+
+## 5. Cosa resta alla madre
+
+1. Sul build finale: angolo-117 ×2, highlight-95 completo verde+rosso, una corsa del solo verde, partita-vera, validate-situations,
+   e una corsa del rosso `__CPM_NO_G123T` sulla scena s12/7. Ordine consigliato: validate-situations (il gate gira GLB spento, cioè
+   esattamente dove agisce il rimedio) prima di highlight-95.
+2. La scena che apre col pallone a centrocampo e l'eroe a 51 u (GLB spento, nessun volo 274): l'arco del tiro attraversa mezzo campo in
+   0,23 s. Il rimedio di questo giro fa arrivare il pallone al portiere, non sposta l'origine. Decisione della madre.
+3. L'interruttore `__CPM_NO_G119P` sposta in modo stabile l'origine dell'arco all'armo di questa scena (−5,99 → −7,64) anche se il suo
+   ramo non scatta mai: non so spiegarlo, non posso confermarne la causa (§1).
+4. `GAME_VERSION` non toccata. Interruttori nuovi: `__CPM_NO_G123T` (rimedio), `__CPM_NO_GKMIN123` (testimone a GLB spento).
+5. Metodo: le corse della bisezione sono una alla volta in primo piano; i controlli lunghi in un processo di sfondo con attesa in
+   primo piano sul file (riga `FINE`), `free -m` e `df -h` registrati in testa a ogni log.
