@@ -1026,3 +1026,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - 08/11 15:10 — PO-327 bambini dell'ingresso: decisione PO «Tutti con la maglia di casa», nella 186 (giro 124, Sonnet, base lavoro/185).
 - 08/11 15:10 — PO-327: dopo due risposte, decisione PO «Come oggi (maglia avversaria), solo colori giusti» → giro 124 fermato, giro 124b. PO-328 (highlight da troppo lontano, soprattutto i colpi di testa): giro 125 di sola misura (censimento per tipo di highlight), correzioni nella 186 insieme a PO-323.
 - 08/11 17:10 — Giro 125 (censimento PO-328): colpi di testa senza i rimedi dell'angolo mediana 26 m (max 46), coi rimedi 10,7 m (max 14) → li risolve PO-323; i tiri restano lontani (39% oltre 30 m, 27/29 da scene «fra le linee»). Decisione tecnica della madre: giro 126 (Opus) corregge l'ancora delle scene di tiro nel costruttore (src/04), senza toccare i sorteggi del motore.
+
+### 08/11 sera — 7.999.185 PUBBLICATA
+- Verifica finale 28/28 verdi (senza PO-323, decisione PO). Unione lavoro/185 → poc senza conflitti, controllata prima del push. Rilascio poc → main: da qui la TWA apre il sito con la modalità app. Restano al PO i passi in Play Console e l'impronta SHA-256 per assetlinks.json.
