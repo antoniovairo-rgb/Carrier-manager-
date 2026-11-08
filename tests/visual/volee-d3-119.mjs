@@ -24,7 +24,11 @@ const CASI = [
 ];
 const SOLO = (process.env.CPM_CASI || '').split(',').filter(Boolean);
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const out = [];
-for (const caso of CASI) { if (SOLO.length && !SOLO.includes(caso.k)) continue;
+const GUARD = !!process.env.CPM_GUARDIANO;/* guardiano: GLB acceso, portiere uscito a 2 u, tre scene (due angoli lontani spostati dal rimedio 117 + un cross in area), verde e rosso */
+const ARMI = GUARD ? ['verde', 'rosso'] : ['libero']; const GCASI = ['angolo-lontano-48-50', 'angolo-lontano-70-80', 'cross-area-90-54'];
+if (GUARD) { process.env.CPM_GLB = '1'; process.env.CPM_GKVICINO = '2'; }
+for (const arm of ARMI) { if (GUARD) process.env.CPM_FLAG = arm === 'rosso' ? '__CPM_NO_G119P' : '';
+for (const caso of CASI) { if (SOLO.length && !SOLO.includes(caso.k)) continue; if (GUARD && !GCASI.includes(caso.k)) continue;
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   await page.addInitScript(([f, g]) => { window.__CPM_GLB = !!g; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; (f || '').split(',').forEach(k => { if (k) window[k] = 1; }); }, [process.env.CPM_FLAG || '', process.env.CPM_GLB === '1']);
   await openMatch(page, port, { skipLoadAll: true, name: 'Volee 119' }); await sleep(1500);
@@ -50,9 +54,17 @@ for (const caso of CASI) { if (SOLO.length && !SOLO.includes(caso.k)) continue;
   const p258 = await page.evaluate(() => ({ p258: window.__CPM_PARATA258 || [], p119: window.__CPM_PARATA119 || [], sv: window.__CPM_SV119 || null }));
   const R119 = await page.evaluate(() => { const R = window.__R119 || { all: [], post: [] }; return { tr: R.tr, nAll: R.all.length, minAll: R.all.length ? Math.min(...R.all) : null, nPost: R.post.length, minPost: R.post.length ? Math.min(...R.post) : null }; });
   min = R119.minPost; R119.gkmin = await page.evaluate(() => window.__CPM_GKMIN117 ? +window.__CPM_GKMIN117.min.toFixed(2) : null).catch(() => null);
-  const o = { k: caso.k, R119, gkPos: pr.gkPos || null, seed: pr.seed, sz: pr.sz, hlType: pr.hl.type, variant: pr.hl.variant, pre, at, min, gbSamp: samp.slice(0, 8), p258 };
-  out.push(o); console.log(JSON.stringify(o)); await page.close();
+  const o = { arm, k: caso.k, R119, gkPos: pr.gkPos || null, seed: pr.seed, sz: pr.sz, hlType: pr.hl.type, variant: pr.hl.variant, pre, at, min, gbSamp: samp.slice(0, 8), p258 };
+  out.push(o); if (o.R119) delete o.R119.tr; console.log(JSON.stringify(o)); await page.close();
+}
 }
 await b.close(); srv.close();
+if (GUARD) {/* soglie fissate DOPO la misura (giro 119, GLB acceso, portiere a 2 u): verde 0,26-0,72 u dopo l'esito, rosso 4,97-5,08 sugli angoli */
+  const g = [], V = out.filter(o => o.arm === 'verde'), R = out.filter(o => o.arm === 'rosso');
+  for (const o of V) { if (o.min == null) g.push('verde: non giudicato ' + o.k); else if (o.min > 1.5) g.push(`verde: ${o.k} il pallone dopo l'esito resta a ${o.min} u dal portiere (> 1,5)`); }
+  const Ra = R.filter(o => /angolo/.test(o.k)); if (Ra.length < 2 || Ra.some(o => o.min == null || o.min < 3)) g.push('rosso: il difetto non si vede sugli angoli ' + JSON.stringify(Ra.map(o => o.k + ':' + o.min)));
+  console.log('VERDE ' + JSON.stringify(V.map(o => o.k + ':' + o.min)) + ' · ROSSO ' + JSON.stringify(R.map(o => o.k + ':' + o.min)));
+  if (g.length) { console.log('❌ volee-d3-119'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
+  console.log('✅ volee-d3-119 verde (e il rosso si vede)'); process.exit(0); }
 const fuori = out.filter(o => o.min != null && o.min > 6);
 console.log(`CASI ${out.length} · minimo portiere↔pallone > 6: ${fuori.length} ${JSON.stringify(fuori.map(o => o.k + ':' + o.min))} · non misurati ${out.filter(o => o.min == null).length}`);
