@@ -1,0 +1,12 @@
+# La chiave di firma non entra mai nel repository (stessa regola di PLINTO).
+*.keystore
+*.jks
+keystore.properties
+
+# Prodotti della compilazione e stato locale: si rigenerano.
+.gradle/
+build/
+app/build/
+local.properties
+*.aab
+*.apk

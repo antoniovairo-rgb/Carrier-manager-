@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Trasparente e senza titolo: l'Activity non disegna niente di suo. Un tema normale mostrerebbe un lampo bianco. -->
+    <style name="Theme.Avvio" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="android:windowBackground">@color/coloreSfondo</item>
+    </style>
+</resources>

@@ -865,6 +865,14 @@ function App(){
     else appNotify("Salvataggio non valido o corrotto.");
   };
   const startNew=(slot=0)=>{setCurrentSlot(slot);trialResumeRef.current=null;try{safeLS.set("cpm-trial-prog","");}catch(_e){}setPhase("create");};/* [7.330.0] nuova partenza esplicita = i provini in sospeso si abbandonano */
+  /* [giro 120 PO-322 TWA] tasto Indietro di Android nell'app: la carriera decide da sé (__CPM_BACK_CAREER), dalla creazione si torna
+     alla Home, dalla Home si esce, provini/offerte/partita restano dove sono. Solo modalita' app (src/00-head.html). Rosso __CPM_NO_G120. */
+  useEffect(()=>{if(typeof window==="undefined"||!window.__CPM_APP_TWA)return;
+    window.__CPM_BACK_APP=()=>{
+      if(phase==="career"){const h=window.__CPM_BACK_CAREER;return typeof h==="function"?(h()||"exit"):"exit";}
+      if(phase==="create"){setPhase("home");return "handled";}
+      if(phase==="home"||phase==="loading")return "exit";
+      return "stay";};});// eslint-disable-line
   useEffect(()=>{try{if(typeof window!=="undefined"&&!window.__CPM_STORE_BUILD)window.__CPM_CUR_SLOT=currentSlot;}catch(_e){}},[currentSlot]);/* [7.332.0] diagnostica: lo slot corrente osservabile dal guardiano trial-persist (mai in store build) */
   const deleteSlot=async(slot)=>{await storage.del(slot);await refreshSlots();};
   const ripristinaSlot=async(slot)=>{const ok=await storage.ripristina(slot);await refreshSlots();

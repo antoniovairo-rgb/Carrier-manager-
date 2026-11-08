@@ -70,6 +70,9 @@ jobs:
           # sulla pagina 404 di GitHub, che fa credere al giocatore che il gioco non esista piu'.
           cp 404.html _site/
           cp icon-192.png icon-512.png icon-maskable-512.png _site/
+          # [giro 120 PO-322] manifest web della TWA (letto da Bubblewrap, twa/twa-manifest.json) + icona mascherabile 192. Solo questi due:
+          # il progetto Android in twa/android/ NON va sul sito.
+          mkdir -p _site/twa && cp twa/manifest-twa.webmanifest twa/icone/icon-maskable-192.png _site/twa/
           cp -r assets _site/
           # [7.999.11] radice e indirizzo storico servono la versione PRECOMPILATA (dist-web): stesso gioco, senza Babel nel browser
           cp dist-web/index.html _site/index.html

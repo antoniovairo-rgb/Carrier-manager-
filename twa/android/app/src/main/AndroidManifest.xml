@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [giro 120 · PO-322] Korward Elite TWA. Copia ragionata del manifest di PLINTO (antoniovairo-rgb/plinto,
+     android/app/src/main/AndroidManifest.xml): ogni riga qui sotto che PLINTO ha imparato su un telefono vero e' tenuta. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Nessun permesso: il contenuto lo carica il browser di sistema, che i suoi permessi li ha gia'. -->
+
+    <!-- appCategory="game": con targetSdk 36 Android 16 ignora l'orientamento chiesto sugli schermi >= 600 dp
+         (tablet, pieghevoli aperti); i giochi sono l'eccezione dichiarata (lezione PLINTO PO-035). Il gioco regge
+         comunque l'orizzontale su tablet (formato «tabo» delle sonde c178). -->
+    <application
+        android:appCategory="game"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/appName"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:manageSpaceActivity="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity">
+
+        <!-- La meta' "app" del patto col sito. L'altra e' https://antoniovairo-rgb.github.io/.well-known/assetlinks.json
+             (repository antoniovairo-rgb.github.io, condiviso con PLINTO): se le due non combaciano il gioco si apre
+             con la barra dell'indirizzo in cima, senza nessun errore. -->
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/assetStatements" />
+
+        <!-- NON FACOLTATIVA (PLINTO, prima installazione su telefono vero: l'app moriva all'avvio senza questa
+             Activity — LauncherActivity attiva il componente senza controllare che esista). -->
+        <activity android:name="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity">
+            <meta-data
+                android:name="android.support.customtabs.trusted.MANAGE_SPACE_URL"
+                android:value="@string/urlIniziale" />
+        </activity>
+
+        <activity
+            android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
+            android:exported="true"
+            android:label="@string/appName"
+            android:theme="@style/Theme.Avvio">
+
+            <!-- ?app=twa: e' cosi' che il sito sa di essere dentro l'app (src/00-head.html, giro 120) e si comporta
+                 come la build store: AI spenta, nessuna rete esterna, Indietro di Android gestito in pagina. -->
+            <meta-data
+                android:name="android.support.customtabs.trusted.DEFAULT_URL"
+                android:value="@string/urlAvvio" />
+
+            <meta-data
+                android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR"
+                android:resource="@color/coloreTema" />
+            <meta-data
+                android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR"
+                android:resource="@color/coloreTema" />
+
+            <!-- Verticale, dichiarato QUI: la finestra la apre Android leggendo questo file, non il sito
+                 (il manifest web copre solo chi installa dal browser). Il gioco e' disegnato per il telefono in piedi. -->
+            <meta-data
+                android:name="android.support.customtabs.trusted.SCREEN_ORIENTATION"
+                android:value="portrait" />
+
+            <!-- «default» come la 11915 di PLINTO, l'ultima approvata dopo due rifiuti con «sticky-immersive»
+                 (PLINTO PO-017): prima si supera la revisione, l'immersiva si prova dopo, da sola. -->
+            <meta-data
+                android:name="android.support.customtabs.trusted.DISPLAY_MODE"
+                android:value="default" />
+
+            <meta-data
+                android:name="android.support.customtabs.trusted.SPLASH_IMAGE_DRAWABLE"
+                android:resource="@drawable/splash" />
+            <meta-data
+                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_BACKGROUND_COLOR"
+                android:resource="@color/coloreSfondo" />
+            <meta-data
+                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_FADE_OUT_DURATION"
+                android:value="300" />
+
+            <!-- SENZA QUESTA RIGA L'APP SI CHIUDE ALL'AVVIO (PLINTO, primo telefono vero): l'immagine d'avvio la
+                 disegna il browser in un altro processo e la riceve da questo FileProvider. -->
+            <meta-data
+                android:name="android.support.customtabs.trusted.FILE_PROVIDER_AUTHORITY"
+                android:value="@string/providerAutorita" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- I collegamenti al gioco si aprono nell'app. SOLO il percorso del gioco: il dominio e' condiviso con
+                 PLINTO, e senza pathPrefix un link a PLINTO proporrebbe anche Korward Elite. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="antoniovairo-rgb.github.io"
+                    android:pathPrefix="/Carrier-manager-/" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.google.androidbrowserhelper.trusted.FocusActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/providerAutorita"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <!-- exported="true" non e' una svista: chi si collega e' il BROWSER, un'altra app (PLINTO, stessa lezione). -->
+        <service
+            android:name="com.google.androidbrowserhelper.trusted.DelegationService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+    </application>
+</manifest>

@@ -1,0 +1,7 @@
+// [giro 120 · PO-322] Korward Elite come Trusted Web Activity, sullo stampo di PLINTO (antoniovairo-rgb/plinto, cartella android/).
+// Progetto vuoto di proposito: tutta la configurazione sta in app/build.gradle. Una TWA e' un solo modulo.
+// La versione del plugin non e' libera: `compileSdk 36` richiede AGP >= 8.9.1, che a sua volta richiede Gradle >= 8.11.1
+// (in CI e in sessione si usa Gradle 8.14.3).
+plugins {
+    id 'com.android.application' version '8.9.1' apply false
+}

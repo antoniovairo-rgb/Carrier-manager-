@@ -15,7 +15,8 @@ tests/visual/out/
 tests/character-lab/evidence/
 # Capacitor: il progetto nativo android/ è build-output riproducibile (nessun codice
 # nativo custom: tutta la config sta in capacitor.config.json). Si rigenera con `npx cap add android`.
-android/
+/android/
+# [giro 120] il progetto della TWA (twa/android/) invece E' sorgente, scritto a mano: va versionato (le sue esclusioni in twa/android/.gitignore)
 
 # [security audit 2026-08-13] RETE DI SICUREZZA sui segreti.
 # L'audit ha verificato che in 1702 commit non è mai finito dentro un .env, una keystore
