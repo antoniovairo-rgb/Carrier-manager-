@@ -39,6 +39,32 @@
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
+/* [giro 120 · PO-322 «uscita su Google Play come PLINTO»] MODALITA' APP (Trusted Web Activity com.korward.elite).
+   La TWA apre il sito con ?app=twa (start_url del manifest twa/ e urlAvvio del progetto Android); come seconda prova vale il
+   referrer «android-app://com.korward.elite». Riconosciuta, la pagina si comporta come la build store: __CPM_STORE_BUILD=true
+   (funzione AI spenta, campo chiave nascosto, sonde di collaudo spente) — la donazione PayPal RESTA (decisione PO). Il segno
+   resta per la sessione della scheda (sessionStorage), cosi' una ricarica senza parametro non torna alla versione web.
+   Tasto Indietro di Android: una voce di cronologia «guardia»; il popstate chiede al gioco (window.__CPM_BACK_APP) se
+   gestirlo ('handled'/'stay' = si rimette la guardia) o lasciare uscire ('exit' = la prossima pressione chiude l'app).
+   Rosso: window.__CPM_NO_G120 (comportamento web di sempre). Guardiano: tests/visual twa-120. */
+(function(){try{
+  if(window.__CPM_NO_G120)return;
+  var q=location.search||'',r=document.referrer||'',tw=/[?&]app=twa(&|$)/.test(q)||r.indexOf('android-app://com.korward.elite')===0;
+  try{if(tw)sessionStorage.setItem('cpm-app-twa','1');else if(sessionStorage.getItem('cpm-app-twa')==='1')tw=true;}catch(_e){}
+  if(!tw)return;
+  window.__CPM_APP_TWA=true;window.__CPM_STORE_BUILD=true;
+  var log=window.__CPM_G120_LOG=[],armata=false;
+  var arma=function(){if(armata)return;try{history.pushState({cpm120:1},'');armata=true;}catch(_e){}};
+  try{history.replaceState({cpm120:0},'');}catch(_e){}
+  arma();
+  window.addEventListener('popstate',function(){armata=false;var esito='exit';
+    try{var h=window.__CPM_BACK_APP;if(typeof h==='function')esito=h()||'exit';}catch(_e){esito='exit';}
+    log.push(esito);if(esito!=='exit')arma();});
+  /* dopo un 'exit' la guardia torna al primo tocco: l'Indietro successivo e' di nuovo del gioco */
+  document.addEventListener('pointerdown',arma,true);
+}catch(_e){}})();
+</script>
+<script>
 /* F-1: PWA — Service Worker + gestione install prompt (manifest/icone sono statici, vedi <link> sopra) */
 (function(){
   // Service Worker — richiesto da Chrome Android 73+ per completare l'installazione PWA

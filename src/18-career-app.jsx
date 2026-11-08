@@ -747,6 +747,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const _prevScr113=useRef(screen);const _sub113=useRef(false);
   React.useLayoutEffect(()=>{const pv=_prevScr113.current;_prevScr113.current=screen;if(pv===screen)return;_scorri113(_sub113.current&&_tabToContainer(pv)===_tabToContainer(screen));_sub113.current=false;},[screen]);// eslint-disable-line
   const goTab=t=>{const r=_containerDefault[t]||t;_sub113.current=_tabToContainer(r)===_tabToContainer(screen);if(r===screen){_scorri113(_sub113.current);_sub113.current=false;}setTab(r);setScreen(r);try{safeLS.set("cpm-active-tab",r);}catch(_e){}};/* [7.149.0] persiste il tab per l'auto-ripresa (stesso punto dopo background) */
+  /* [giro 120 PO-322 TWA] tasto Indietro di Android nell'app (solo modalita' app, vedi src/00-head.html): chiude il riquadro aperto,
+     da una scheda torna alla Home della carriera, in partita e nei passaggi obbligati NON fa niente (mai abbandonare una partita:
+     principio 6.55.0), dalla Home lascia uscire. Registrato a ogni render → closure fresca. Rosso __CPM_NO_G120. */
+  useEffect(()=>{if(typeof window==="undefined"||!window.__CPM_APP_TWA)return;
+    window.__CPM_BACK_CAREER=()=>{
+      if(screen==="match")return "stay";
+      if(weekLiveModal){setWeekLiveModal(null);return "handled";}
+      if(showMatchPrompt){setShowMatchPrompt(null);return "handled";}
+      if(showAdvanceConfirm){setShowAdvanceConfirm(false);return "handled";}
+      if(transferOffer)return "stay";
+      if(screen==="postmatch"||screen==="press"){setScreen("dashboard");setTab("dashboard");return "handled";}
+      if(screen==="dashboard")return "exit";
+      if(["stagione","standings","calendar","coppe","club","carriera","profile","nazionale","agente","ufficio"].includes(screen)){goTab("dashboard");return "handled";}
+      return "stay";};
+    return ()=>{try{window.__CPM_BACK_CAREER=null;}catch(_e){}};});// eslint-disable-line
   // Sprint A: early return from injury
   // §9.6: relapse_risk graduato — più settimane mancano e più la gravità è alta, più rischi la ricaduta
   const injuryRelapseRisk=(p)=>{
