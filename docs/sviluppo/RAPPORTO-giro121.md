@@ -78,6 +78,8 @@ fotogramma dopo e in un altro istante; resta sotto la soglia 1,0.
 | intro-118 | ✅ verde |
 | test:logic | ✅ 43 pass · 0 fail |
 | save-compat | ✅ 12 pass · 0 fail |
+| highlight-95 solo braccio verde, corsa 2 (`CPM_RIGHE=1 CPM_D3DIAG=1`) | ✅ 96 highlight, 26 passaggi (88,5%), 13 gol compagno = 13 assist, 14 parate giudicate, **0 difetti** · ~30 min |
+| highlight-95 solo braccio verde, corsa 3 | ⏳ non eseguita: tetto delle 5 ore |
 
 ## 3. Il D3 nel verde di highlight-95 — NON chiuso, documentato
 
@@ -98,6 +100,11 @@ corso la base su questo seme). Indizi: all'esito il pallone sta già a ~18 u dal
 l'arco «parato» non finisse sul portiere — la famiglia del taglio 258/G119P, ma su un tiro da fuori area dove G119P (origine al
 piede quando il pallone è a oltre 4 u dall'eroe) può scattare.
 
+- nella corsa 2 del verde la **stessa scena** (`s12/7 «Tiro di potenza»`, parata, «Conclusione centrale») è uscita con `3D=shot` e
+  **minimo 0,4 u**: il pallone arriva al portiere. Nella corsa col D3 la riga diceva `3D=null` (il 3D non aveva il tiro montato al
+  campionamento). Lo stesso highlight dà quindi esiti diversi a seconda della corsa (la partita dipende dall'orologio a parete, come
+  annotato nel giro 119): è una scena che *a volte* non porta il pallone al portiere, non una che non lo porta mai.
+
 **Prossimo passo per la madre:** `CPM_SALVA=s12 CPM_SEMI=7 CPM_ARMI=verde CPM_POL=drib CPM_D3DIAG=1 node highlight-95.mjs` (≈ 6 min)
 sul build di questo ramo e, accanto, con `__CPM_NO_G119P` e sulla base lavoro/185, per sapere se il rimedio 119 lo produce, lo
 lascia o lo riduce.
@@ -110,12 +117,13 @@ presto). Il numero del telefono resta il giudice: headless e telefono hanno temp
 del colpo di testa che sopravvive al gesto) dipende proprio dal tempo di scena. Il taccuino porta già `__CPM_CONT53` con **distanza
 eroe↔pallone (`db`) e distanza dalla linea di porta (`gx`)** dal giro 117; il testimone nuovo `__CPM_CONT121` (contatto vero, con
 gesto montato e angolo corpo↔bersaglio) è sempre acceso ma **non è ancora scritto nella bozza del taccuino**: va aggiunto lì perché
-la prossima nota del PO porti il numero all'istante giusto (non fatto in questo giro: tocca src/10, fuori dal lavoro chiesto).
+la prossima nota del PO porti il numero all'istante giusto (non fatto in questo giro: tocca src/10, fuori dal lavoro chiesto). Nota d'ordine: per stare nel tetto ho eseguito la catena
+obbligatoria prima delle corse extra del verde, invertendo l'ordine chiesto (corse extra in fondo).
 
 ## 5. Cosa resta alla madre
 
 1. Il D3 di `s12/7 «Tiro di potenza»` (§3): diagnosi e decisione.
-2. Seconda/terza corsa del solo braccio verde di highlight-95: vedi riga in fondo (una eseguita entro il tetto).
+2. Terza corsa del solo braccio verde di highlight-95 (la seconda è verde, §2).
 3. Decisione (non mia): tutti i rimedi sono attivi di default. Interruttori: `__CPM_NO_G121H`, `__CPM_NO_G121C`, `__CPM_NO_G121M`
    (giro 121), `__CPM_NO_G119P`, `__CPM_NO_G117A` (giri 119/117), testimone `__CPM_NO_CONT121`.
 4. `GAME_VERSION` non toccata (7.999.184 nel codice).
