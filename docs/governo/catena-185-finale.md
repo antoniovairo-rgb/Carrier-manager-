@@ -24,3 +24,21 @@ Build: HEAD 4556ca5 (lavoro/185), GAME_VERSION 7.999.185, check-src allineato. S
 | griglia-mobile | 0 | 226s | uscita 0; scritti REPORT.md/dati.json, 65 scatti; riga: «NON misurato: prepartita: playMatch → nomatch» (dichiarata, non rossa) | free 14403/16086MB | df avail 29G used 26% |
 | partita-v2 | 0 | 578s | verde+rosso: rosso atteso cade (PAL/CON) | free 14282/16086MB | df avail 29G used 26% |
 | partita2d-297 | 0 | 192s | VERDE; rosso: A,B,C cadono | free 14405/16086MB | df avail 29G used 26% |
+| validate-situations | 0 | 677s | PASS; 14/14 categorie, fingerprint 00001505, 0 failure | free 14361/16086MB | df avail 29G used 26% |
+| scena3d-96 | 0 | 1635s | VERDE: 31/31 scene giudicate, rossi per punto {}, errori di pagina 0 | free 14295/16086MB | df avail 29G used 26% |
+| partita-vera | 0 | 506s | OK: bande d'accettazione tengono; 1 riga «non giudicabile (campione sotto minimo) tabellone» (0 partite), le altre ✅ | free 14353/16086MB | df avail 29G used 26% |
+| highlight-95 | 0 | 3995s | VERDE+ROSSO (verde+rosso, CPM_D3DIAG=1): verde senza alcun D3, D4 0; rosso D4 5, D3 e D1 solo nel braccio rosso (atteso) | free 14345/16086MB | df avail 29G used 26% |
+| career-critical | 0 | 668s | PASS (recovery-competition … catena completa; coppa chiusa una volta, trofeo in finale) | free 14327/16086MB | df avail 29G used 26% |
+| build-web | 0 | 10s | dist web: React montato, 0 CDN, 0 fallite, flag store assente | free 14336/16086MB | df avail 29G used 26% |
+| build-store | 0 | 9s | dist store: React montato, 0 CDN, 0 fallite, flag store attivo | free 13994/16086MB | df avail 29G used 26% |
+| audit-copyright | 0 | 11s | OK: nessun riferimento al mondo reale | free 13765/16086MB | df avail 29G used 27% |
+
+## Esito
+Nessun rosso: 29/29 controlli con uscita 0, nessun rigioco necessario. Nessun file di src/, tests/ o del gioco modificato.
+
+Note dichiarate (non rossi):
+- griglia-mobile: stampa «NON misurato: prepartita: playMatch → nomatch», uscita 0.
+- partita-vera: una riga «non giudicabile (campione sotto minimo) tabellone — 0 partite», uscita 0 con «PARTITA-VERA OK».
+- highlight-95 (CPM_D3DIAG=1): nel braccio verde nessuna riga D3; le righe D3 (es. s1/1234 «✈️ Stacco in corsa potente») compaiono solo nel braccio rosso, dove il difetto deve vedersi.
+- flussi-115: braccio rosso con 50 NO su 51 è l'esito atteso; verde 54/54.
+- validate-situations: 191 scene non rilanciate a parte; fingerprint 00001505.
