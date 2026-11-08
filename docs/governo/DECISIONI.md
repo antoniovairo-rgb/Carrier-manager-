@@ -1029,3 +1029,4 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 08/11 sera — 7.999.185 PUBBLICATA
 - Verifica finale 28/28 verdi (senza PO-323, decisione PO). Unione lavoro/185 → poc senza conflitti, controllata prima del push. Rilascio poc → main: da qui la TWA apre il sito con la modalità app. Restano al PO i passi in Play Console e l'impronta SHA-256 per assetlinks.json.
+- 08/11 18:25 — Sito verificato dopo il rilascio 185: pagina con 7.999.185, twa/manifest-twa.webmanifest e sw.js rispondono 200 (deploy GitHub Pages riuscito alle 17:01 UTC).
