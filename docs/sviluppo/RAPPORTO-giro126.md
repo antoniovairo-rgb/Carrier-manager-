@@ -83,3 +83,9 @@ Dati: `docs/sviluppo/giro126/distanze-126-{verde,rosso}.json` e log.
 | distanze-126 verde + rosso | ✅ verde · rosso visibile |
 | angolo-117 | ✅ verde 8 casi (porta max 6,3 u) · rosso 117A 6/6 · rosso g121 2/2 |
 | volee-d3-119 | ✅ verde (0,64/0,63/0,33) · rosso visibile (5,28/5,94) |
+| highlight-95 COMPLETO verde+rosso | ✅ verde 103 highlight, D4 senza esito 0 · rosso 106 highlight, D1/D3/D4 visibili («e il rosso si vede») · log `giro126/c-highlight95.log` |
+| scena3d-96 | ✅ 31/31 scene giudicate, nessun rosso, 0 errori di pagina |
+| test:logic | ✅ 43/43 |
+| save-compat | ✅ 12 pass · 0 fail |
+| replay | ✅ 8 highlight, completi e coerenti |
+| tabellone-117 | ✅ verde (ripresa e percorso normale) e il rosso si vede |
