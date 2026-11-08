@@ -40,5 +40,18 @@ assetlinks pubblicato oggi: 1 blocco, `io.github.antoniovairo_rgb.plinto`, 2 imp
   `validate-situations`: vedi §5.
 - `node tools/build-src.mjs` + `node tools/check-src.mjs`: identico byte per byte.
 
-## 5. Esiti finali dei rituali lunghi
-(compilati a fine giro)
+## 5. Esiti finali dei rituali lunghi (uno alla volta, sul build finale del ramo)
+- `flussi-115`: verde **54/54**, rosso atteso (cade su 17/17 punti).
+- `validate-situations`: **PASS**, fingerprint `00001505`.
+- `validate-dist --web` (build del sito): verde, flag store assente · `validate-dist` (build store, riserva Capacitor):
+  verde, flag store attivo · `audit-copyright`: 0 riferimenti.
+- Non eseguiti: catena completa `npm run ci` / `notte` (giro di sviluppo, non rilascio); workflow `twa-build.yml` in CI
+  (nessun tag e nessun avvio manuale da una sessione figlia).
+
+## 6. Per la madre
+1. Promuovere il ramo: senza `main` il sito non ha né la modalità app né `twa/manifest-twa.webmanifest`.
+2. Pubblicare il blocco `assetlinks.json` di USCITA-STORE-184 §10.5 nel repository `antoniovairo-rgb.github.io` (con
+   l'impronta di Play App Signing che solo il PO legge in Play Console), senza toccare il blocco di PLINTO.
+3. Riga di roadmap: questo giro non e' un rilascio (nessun bump), la riga va scritta alla release che lo include.
+4. Rischio dichiarato: il tasto Indietro e' provato in headless con `history.back()` dentro Chromium, **non** dentro
+   una vera finestra TWA su Android — va confermato sul telefono.
