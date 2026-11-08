@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appName">Korward Elite</string>
+
+    <!-- Unico sul telefono: prefisso = nome del pacchetto. Usato nel <provider> e nella meta-data: devono combaciare. -->
+    <string name="providerAutorita" translatable="false">com.korward.elite.fileprovider</string>
+
+    <!-- La barra finale conta: senza, GitHub Pages risponde con un reindirizzamento e la finestra di fiducia parte due volte. -->
+    <string name="urlIniziale" translatable="false">https://antoniovairo-rgb.github.io/Carrier-manager-/</string>
+
+    <!-- L'avvio: lo stesso indirizzo con ?app=twa → modalita' app (src/00-head.html). -->
+    <string name="urlAvvio" translatable="false">https://antoniovairo-rgb.github.io/Carrier-manager-/?app=twa</string>
+
+    <!-- La meta' "app" del patto: «mi fido di quel sito». L'altra meta' (assetlinks.json sul dominio) dice
+         «mi fido di questa app» e deve contenere l'impronta SHA-256 di Play App Signing. -->
+    <string name="assetStatements" translatable="false">
+        [{
+          \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+          \"target\": {
+            \"namespace\": \"web\",
+            \"site\": \"https://antoniovairo-rgb.github.io\"
+          }
+        }]
+    </string>
+</resources>

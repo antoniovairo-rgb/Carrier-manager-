@@ -1,0 +1,52 @@
+/*
+ * [giro 120 · PO-322] KORWARD ELITE per Android: una Trusted Web Activity (decisione PO dell'08/11: «lo stesso sistema di PLINTO»).
+ *
+ * NON C'E' CODICE. L'unica Activity la fornisce `androidbrowserhelper`, la libreria ufficiale di Google: apre a tutto
+ * schermo il sito gia' pubblicato (https://antoniovairo-rgb.github.io/Carrier-manager-/?app=twa) col motore di Chrome
+ * installato sul telefono. Pubblicando una versione nuova su GitHub Pages, l'app si aggiorna da sola: l'`.aab` si
+ * ricarica sullo store solo se cambiano icona, nome, permessi o la configurazione qui sotto.
+ *
+ * Scritto a mano come PLINTO (non generato da Bubblewrap): stessa struttura, stesse versioni, stesse lezioni dei primi
+ * giorni su telefono vero (vedi i commenti di AndroidManifest.xml). La configurazione Bubblewrap equivalente sta in
+ * twa/twa-manifest.json, come alternativa documentata.
+ *
+ * Il pacchetto Capacitor offline (cartella android/ generata da `npx cap add android`, workflow android-build.yml) RESTA
+ * come riserva: ha lo STESSO applicationId. Su Play si carica UNO dei due, firmato con la stessa chiave di caricamento.
+ */
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.korward.elite'
+    compileSdk 36
+
+    defaultConfig {
+        // NON SI PUO' PIU' CAMBIARE dopo la prima pubblicazione: e' l'identita' dell'app per sempre.
+        applicationId 'com.korward.elite'
+        // Il minimo dichiarato da androidbrowserhelper 2.7 (Android 7.0).
+        minSdk 24
+        // Google Play rifiuta il caricamento sotto 36 dal 31 agosto 2026 (errore bloccante al caricamento).
+        targetSdk 36
+        // Contatore di caricamenti: va alzato a OGNI caricamento (Play brucia anche i numeri delle bozze cancellate).
+        // Il workflow twa-build.yml lo stampa da solo (2000 + numero della corsa); questo e' il valore delle build locali.
+        versionCode 2000
+        versionName '7.999.184'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // L'unica dipendenza. La 2.7 e' la prima che sa stare in un'app che targetta SDK 36 (edge-to-edge di Android 16).
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.3'
+}
