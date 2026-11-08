@@ -39,12 +39,29 @@ angolo corpo↔porta **136-146°**, gesto **già morto** (`act` nullo); CONT53 s
 2. `__CPM_NO_G121H` (rosso): finché l'attesa è aperta, la vita del colpo di testa si ferma 0,15 s prima della fine — il gesto (e la
    mira) arrivano vivi al contatto e si chiudono subito dopo. Con il solo (2) l'angolo al contatto restava variabile (8-37° sullo
    stesso caso: il corpo deriva durante l'attesa lunga), per questo serve anche (1).
+3. `__CPM_NO_G121M` (rosso): `_mira20` (giro 20, mira latchata dell'eroe) orientava il corpo verso `(AWAY_GOAL_X, z del bersaglio
+   stretto a ±3,3)`, ma `AWAY_GOAL_X` = 46 è la rete interna dei sorgenti 3D, **non la linea di porta (48,6)**. Con lo stacco in area
+   (eroe a x ≈ 44, 4,2-4,6 u dalla linea, effetto dell'ancora G117A) quel punto sta 2 u davanti: uno scarto laterale di 2,4 u diventava
+   40-50° di rotazione. Misurato: corsa 2 del guardiano rossa, `angolo-area-fail` **38°** (bersaglio z 2,4). Ora la mira usa la linea
+   48,6: sugli stessi casi 1-20°. Vale per ogni gesto direzionale dell'eroe con bersaglio verso la porta (GLB acceso; il gate gira GLB
+   spento e non lo vede).
 
 **Guardiano `angolo-117` ora a tre bracci:** verde · rosso `__CPM_NO_G117A` (casi lontani, porta ≥ 25 u) · rosso `g121`
 (`__CPM_NO_G121H`+`__CPM_NO_G121C`, casi in area, angolo > 35°). Il rosso g121 dipende dal tempo di scena (l'attesa deve sopravvivere
 al gesto residuo): misurato 2/2 e 1/2 casi girati; il guardiano pretende **almeno un** caso girato e stampa quanti.
 
-**Tre corse consecutive:** (sotto, §2)
+**Corse di angolo-117 sul build finale (tre consecutive, una alla volta, ~12 min ciascuna):**
+
+| corsa | verde (8 casi): angoli al contatto | porta max | pallone max | rosso G117A | rosso g121 |
+|---|---|---|---|---|---|
+| 1 | 4 · 4 · 15 · 30 · 18 · 26 · 5 · 15 | 6,6 u | 0,58 u | 6/6 ≥ 25 u | 1/2 girati |
+| 2 | 3 · 4 · 23 · 29 · 14 · 2 · 4 · 17 | 6,7 u | 0,58 u | 6/6 | 2/2 |
+| 3 | 4 · 10 · 25 · 26 · 8 · 4 · 2 · 9 | 6,3 u | 0,58 u | 6/6 | 1/2 |
+
+Prima, sullo stesso guardiano con i soli rimedi 1-2: una corsa verde e una rossa (38°, causa al punto 3) — non contate fra le tre.
+Il margine più stretto è 30° su 35° (`angolo-lato-alto-fail`): lo dichiaro, non è stato toccato niente per allargarlo.
+Il pallone al contatto è salito da 0,1-0,4 u (CONT53) a 0,4-0,6 u (CONT121): è l'origine vera dell'arco, che CONT53 misurava un
+fotogramma dopo e in un altro istante; resta sotto la soglia 1,0.
 
 ## 2. Catena dei controlli (uno alla volta, `free -m` e `df -h` prima di ciascuno)
 

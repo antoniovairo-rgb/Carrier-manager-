@@ -132,6 +132,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso';
       }
       if (!_cap && h.rv && h.rv.via === 'riserva' && h.rv.busy) T.difetti.push('D3 ' + tag + ': esito «' + ovl + '» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione' + ' ' + JSON.stringify({ cap: h.rv.cap, c: h.rv.c103, rr: h.rv.rr103 }));/* [giro 104] la diagnosi si stampa SEMPRE: nella catena 178 il D3 e' comparso una volta senza dire cosa teneva occupata la scena */
       if (!_cap && /parat|parar|portiere|respint|dice di no|centrale/i.test(ovl) && h.minGB != null) { T.d3giud++;
+        if (process.env.CPM_D3DIAG && h.minGB > 4) console.log('D3DIAG ' + tag + ' minGB=' + h.minGB.toFixed(1) + ' ' + JSON.stringify({ tipo: r.tipo, kind: r.outKind || null, d3: h.d3 || null, st: h.st || null }));/* [giro 121] diagnosi anche sotto soglia (scene al limite) */
         if (h.minGB > 6) T.difetti.push('D3 ' + tag + ': «' + ovl + '» ma il pallone non arriva mai al portiere entro 1,5 s dall\'esito (minimo ' + h.minGB.toFixed(1) + ')' + (process.env.CPM_D3DIAG ? ' ' + JSON.stringify({ tipo: r.tipo, kind: r.outKind || null, d3: h.d3 || null, st: h.st || null }) : ''));/* [giro 117] CPM_D3DIAG=1: dove stavano eroe, pallone e portiere */
       }
       if (isFallo(lab)) { T.fallo = (T.fallo | 0) + 1; if ((g && g.fam === 'assist') || /assist|compagno|intercett|servit/i.test(ovl)) T.difetti.push('D1 ' + tag + ': fallo cercato giocato/raccontato come passaggio «' + ovl + '» (motore ' + (g ? g.fam : '-') + ')'); }
