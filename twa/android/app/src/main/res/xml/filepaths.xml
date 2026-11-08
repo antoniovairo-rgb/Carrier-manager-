@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- `twa_splash/` e' il nome che androidbrowserhelper usa per l'immagine d'avvio: non si cambia. -->
+<paths>
+    <files-path path="twa_splash/" name="twa_splash" />
+</paths>

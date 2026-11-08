@@ -1,0 +1,74 @@
+name: Android AAB (TWA)
+
+# [giro 120 · PO-322] Compila l'Android App Bundle della Trusted Web Activity com.korward.elite (cartella twa/android/,
+# scritta a mano sullo stampo di PLINTO). PLINTO non ha un workflow: il PO compila in Android Studio. Qui c'e' in piu' la
+# strada «senza PC», con gli STESSI segreti del workflow Capacitor (android-build.yml): stessa app, stessa chiave di caricamento.
+# Senza segreti esce un .aab NON firmato (firmabile dopo). Nessuna pubblicazione automatica su Play: il primo caricamento e'
+# manuale e lo fa il PO. Il pacchetto Capacitor offline resta la riserva (android-build.yml, invariato).
+on:
+  workflow_dispatch: {}
+  push:
+    tags: ['twa-v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build-twa-aab:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle 8.14.3
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+
+      # versionCode: Play rifiuta un numero gia' visto (anche di bozze cancellate). 2000 + numero della corsa, sopra ogni
+      # codice che il workflow Capacitor puo' aver stampato (100 + corsa). versionName = GAME_VERSION del gioco.
+      - name: Stamp versionCode/versionName
+        run: |
+          VC=$((2000 + ${{ github.run_number }}))
+          VN=$(grep -o 'const GAME_VERSION="[0-9.]*' CARRIER-MANAGER-AV.html | head -1 | cut -d'"' -f2)
+          sed -i -E "s/versionCode [0-9]+/versionCode $VC/" twa/android/app/build.gradle
+          sed -i -E "s/versionName '[^']*'/versionName '$VN'/" twa/android/app/build.gradle
+          grep -E "versionCode|versionName" twa/android/app/build.gradle
+
+      - name: Build AAB (release, non firmato)
+        run: |
+          gradle -p twa/android --no-daemon bundleRelease
+          ls -la twa/android/app/build/outputs/bundle/release
+
+      # firma SOLO se i segreti ci sono (Settings → Secrets): ANDROID_KEYSTORE_BASE64 · ANDROID_KEYSTORE_PASSWORD ·
+      # ANDROID_KEY_ALIAS · ANDROID_KEY_PASSWORD — gli stessi del workflow Capacitor.
+      - name: Sign AAB (se keystore configurata)
+        if: env.HAS_KEYSTORE == 'true'
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/upload.jks
+          AAB=twa/android/app/build/outputs/bundle/release/app-release.aab
+          jarsigner -keystore $RUNNER_TEMP/upload.jks \
+            -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+            -keypass "${{ secrets.ANDROID_KEY_PASSWORD }}" \
+            -sigalg SHA256withRSA -digestalg SHA-256 \
+            "$AAB" "${{ secrets.ANDROID_KEY_ALIAS }}"
+          jarsigner -verify "$AAB" && echo "AAB firmato e verificato"
+          rm -f $RUNNER_TEMP/upload.jks
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: korward-elite-twa-aab
+          path: twa/android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+          retention-days: 14

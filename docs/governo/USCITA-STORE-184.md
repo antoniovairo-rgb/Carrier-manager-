@@ -206,3 +206,88 @@ Ramo `sviluppo/giro116-store`, base `lavoro/184` = 7.999.183. `src/`, `CARRIER-M
 - **Nota di peso:** 105 MB di AAB contro i 107 MB di tar.gz della dist: compatibile con il limite Google di 500 MB sul base module (§5); il valore compresso «ufficiale» lo calcola la Console.
 
 **9.8 Verifiche di non-regressione:** `check-src` allineato byte per byte · `validate-dist` verde · `test:logic` 43/43 · `save-compat` 12 pass/0 fail.
+
+## 10. TWA come PLINTO (giro 120, 08/11/2026)
+
+Decisione PO dell'08/11: Korward Elite esce su Google Play **con lo stesso sistema di PLINTO** — una Trusted Web Activity che apre la versione web — invece del pacchetto Capacitor offline, che **resta come riserva** (cartella `android/` generata, workflow `android-build.yml`, invariati). Ramo `sviluppo/giro120-twa`, base `lavoro/184`. `GAME_VERSION` non toccata. Nessuna credenziale, nessun account, nulla inviato a Google, nessuna chiave generata o committata, nessun push fuori da questo repository.
+
+### 10.1 Come è fatto PLINTO (letto, non copiato a memoria)
+Fonte: clone pubblico in sola lettura di `antoniovairo-rgb/plinto`, commit `874b6f4` (`add_repo` mi è stato negato dalla sessione; il repository è pubblico e l'ho clonato anonimo, senza scrivere nulla).
+- **Niente Bubblewrap, niente workflow AAB.** `android/` è un progetto Gradle scritto a mano: un modulo, nessun codice, l'unica dipendenza è `com.google.androidbrowserhelper:androidbrowserhelper:2.7.3`; AGP 8.9.1, `compileSdk`/`targetSdk` 36, `minSdk` 24, Java 17. Il PO compila in Android Studio (`android/COME-PUBBLICARE.md`). I workflow di PLINTO sono solo `pages.yml` e `verifica.yml`.
+- **AndroidManifest**: `appCategory="game"`; `ManageDataLauncherActivity` dichiarata (senza, l'app moriva all'avvio — difetto del primo telefono vero); `FILE_PROVIDER_AUTHORITY` + `<provider>` per l'immagine d'avvio (senza, l'app si chiudeva all'avvio); `SCREEN_ORIENTATION=portrait` dichiarato **nel manifest Android** (il manifest web non basta); `DISPLAY_MODE=default` (le versioni con `sticky-immersive` sono state rifiutate in revisione); `DelegationService exported=true`; intent-filter `autoVerify` sull'host **senza percorso**.
+- **URL d'avvio** con parametro (`?origine=play`) perché il sito sappia di essere nell'app.
+- **Icona adattiva** con primo piano disegnato con margine (la «normale» veniva ritagliata).
+- **Tasto Indietro** gestito **in pagina** (`src/ui/useTastoIndietro.js`: voci di cronologia proprie + `popstate`).
+- **Manifest web**: `start_url "./"`, `scope "./"`, `display standalone`, `orientation portrait`, icone any + maskable 512.
+- **Service worker**: cache col nome della versione (`sw.js?v=<versione>`), guscio precaricato all'installazione, documento in rete per primo, solo stessa origine.
+- **assetlinks.json** su `https://antoniovairo-rgb.github.io/.well-known/assetlinks.json` (repository `antoniovairo-rgb.github.io`, con `.nojekyll`). Scaricato oggi: **1 blocco**, `android_app` · `io.github.antoniovairo_rgb.plinto` · **2 impronte** (non riportate). Il dominio è **condiviso**: lo stesso file deve dichiarare anche Korward Elite.
+
+**Cosa riuso:** tutta la struttura del progetto Android (stesse versioni, stesse meta-data, stesse lezioni dei primi giorni), l'URL d'avvio con parametro, l'Indietro in pagina, il service worker con cache per versione. **In più rispetto a PLINTO:** `pathPrefix /Carrier-manager-/` sull'intent-filter (dominio condiviso), un workflow CI per l'AAB, un guardiano della modalità app.
+
+### 10.2 Dove sta la versione web
+`https://antoniovairo-rgb.github.io/Carrier-manager-/` → HTTP 200, 6.684.828 byte: è la build precompilata `dist-web/index.html` (stessa di `CARRIER-MANAGER-AV.html`, che il deploy copia identica). La TWA apre **`https://antoniovairo-rgb.github.io/Carrier-manager-/?app=twa`**. `manifest.webmanifest` e `sw.js` rispondono 200.
+
+### 10.3 Cosa è pronto (in questo ramo)
+| cosa | dove | stato |
+|---|---|---|
+| Progetto Android TWA | `twa/android/` | **compila**: `gradle bundleRelease` → `app-release.aab` **3.798.657 byte** (contro 105 MB del Capacitor), **non firmato**. Manifest fuso: `com.korward.elite`, minSdk 24, **targetSdk 36**, `appCategory=game`, versionCode 2000, versionName 7.999.184. Primo tentativo fallito per **HTTP 429 «Too Many Requests» da `repo.maven.apache.org`** (`groovy-3.0.22.pom`, limite del proxy di sessione), secondo riuscito. AAB non committato. |
+| Manifest web dedicato | `twa/manifest-twa.webmanifest` (pubblicato in `/Carrier-manager-/twa/` dal deploy) | `start_url /Carrier-manager-/?app=twa`, scope `/Carrier-manager-/`, standalone, verticale, colori TINTE `#0d0f14`, icone 192/512 any + 192/512 maskable |
+| Config Bubblewrap equivalente | `twa/twa-manifest.json` | alternativa documentata (packageId, host, startUrl, colori, firma con percorso **fuori dal repo**); non usata per la build |
+| Workflow AAB | `.github/workflows/twa-build.yml` | manuale o tag `twa-v*`; versionCode = 2000 + corsa; firma coi **4 segreti già previsti** per Capacitor (stessa app, stessa chiave di caricamento); senza segreti → AAB non firmato. **Non eseguito in CI** (nessun tag, nessun avvio manuale da qui). |
+| Modalità app nel gioco | `src/00-head.html`, `src/18`, `src/19`, `src/17` | `?app=twa` o referrer `android-app://com.korward.elite` → `__CPM_STORE_BUILD=true` (AI spenta, campo chiave nascosto), PayPal resta, Indietro gestito; rosso `__CPM_NO_G120`; guardiano **`twa-120` 12/12** |
+| Apertura senza rete | `sw.js`, `src/00-head.html` | seconda apertura offline **ora monta** (prima: «This site can't be reached»); sonda `sw-cache-120` verde + rosso |
+
+**Difetti dei primi giorni di PLINTO, uno per uno:**
+| difetto PLINTO | qui |
+|---|---|
+| blocco all'avvio | `ManageDataLauncherActivity` + `FILE_PROVIDER_AUTHORITY`/`<provider>` presenti (verificato nel manifest fuso). Prova su telefono: **non posso confermarla da qui** |
+| icona ritagliata dalla maschera | primo piano adattivo da `resources/icon-foreground.png`: disegno entro il **28%** del lato dal centro, dentro il cerchio visibile del 33%. L'icona maskable del sito arriva al **34%**: come primo piano sarebbe stata ritagliata (misura sui pixel) |
+| barra dell'indirizzo visibile | dipende **solo** da `assetlinks.json` con l'impronta di Play App Signing → **manca, la può fare solo il PO** (10.5) |
+| Indietro che chiude l'app | gestito in pagina: da una scheda → Home della carriera, riquadri si chiudono, in partita/provini/offerte non succede niente, dalla Home la pressione successiva esce (guardiano `twa-120`) |
+| schermata iniziale che scorre | `html,body{overflow:hidden}` già nel gioco; scorre solo `.cpm-scroll` con `overscroll-behavior:contain`. `altezza-114` rigiocato. Sul telefono: **non posso confermarlo da qui** |
+| orientamento non bloccato | `SCREEN_ORIENTATION=portrait` nel manifest Android + `appCategory=game` (Android 16 ignora il blocco su schermi ≥ 600 dp salvo i giochi; se l'eccezione valga per la finestra di Chrome **non posso confermarlo** — PLINTO dice lo stesso). Il gioco regge comunque l'orizzontale su tablet (formato `tabo` delle sonde c178) |
+
+### 10.4 Primo avvio e rete (sonda `sw-cache-120`, build del sito servita in locale)
+- Primo avvio con intro, 25 s: **63,0 MB** (GLB 39,6 · pagina 12,8 · immagini 10,6); col service worker di prima **56,0 MB**. I +7 MB sono la pagina riletta per metterla in cache. Il server locale non manda intestazioni di cache: su GitHub Pages (che ne manda) la rilettura può venire dalla cache HTTP del browser — **non posso confermare il numero reale**.
+- **Prima:** seconda apertura senza rete → **non monta**. **Ora:** seconda e terza apertura senza rete montano, **0 file persi**.
+- ⚠️ Strategia invariata **network-first**: con la rete ogni apertura ricontrolla tutto (in locale, senza intestazioni di cache, la seconda visita ha riscaricato 56 MB in entrambi i bracci — limite superiore, non misura del sito vero).
+
+### 10.5 PROPOSTA per la madre: `assetlinks.json` (repository `antoniovairo-rgb.github.io`, NON toccato)
+Il file vive su un dominio **condiviso con PLINTO**: si **aggiunge** un blocco, il blocco di PLINTO resta identico (stesse 2 impronte, da non toccare). Contenuto proposto per `.well-known/assetlinks.json`:
+```json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.antoniovairo_rgb.plinto",
+      "sha256_cert_fingerprints": ["<IMPRONTA PLINTO 1, invariata>", "<IMPRONTA PLINTO 2, invariata>"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.korward.elite",
+      "sha256_cert_fingerprints": [
+        "IMPRONTA-SHA-256-DI-PLAY-APP-SIGNING-DI-com.korward.elite"
+      ]
+    }
+  }
+]
+```
+- L'impronta la legge **solo il PO**: Play Console → app Korward Elite → *Integrità dell'app* (Configurazione) → **certificato della chiave di firma dell'app**, SHA-256. **Non** quella di caricamento: con Play App Signing la firma vera la mette Google (lezione PLINTO, `COME-PUBBLICARE.md` passo 3).
+- Per provare un APK firmato in locale prima dello store, si può aggiungere nella stessa lista anche l'impronta della chiave di caricamento.
+- Il repository radice deve avere `.nojekyll` (o `_config.yml` con `include: [".well-known"]`, come fa PLINTO in `sito-radice/`).
+- Nota per la madre su PLINTO (nessuna azione da qui): l'intent-filter di PLINTO non ha percorso, quindi un link a `…/Carrier-manager-/` sul telefono può proporre anche PLINTO. Nel prossimo pacchetto di PLINTO un `pathPrefix="/Plinto/"` lo evita.
+
+### 10.6 Cosa manca, e chi
+| # | cosa | chi |
+|---|---|---|
+| 1 | Chiave di caricamento (una sola per `com.korward.elite`: se il PO ne ha già una per il Capacitor, **la stessa**) + 4 segreti GitHub, oppure firma in Android Studio aprendo `twa/android` | **PO** |
+| 2 | Creare l'app in Console, caricare il primo AAB della TWA a mano (test interno, poi test chiuso 12 tester · 14 giorni) | **PO** |
+| 3 | Leggere l'impronta SHA-256 di Play App Signing | **PO** |
+| 4 | Pubblicare il blocco di 10.5 in `antoniovairo-rgb.github.io` | madre / PO |
+| 5 | Promuovere questo ramo su `main` (serve perché il sito pubblichi la modalità app, il service worker nuovo e `twa/manifest-twa.webmanifest`) | madre |
+| 6 | Prova su telefono vero: avvio, icona, niente barra, Indietro, verticale, apertura senza rete | **PO** |
+| 7 | Scheda Data Safety: la TWA non raccoglie dati, ma il **sito** è caricato dalla rete (GitHub Pages): da rileggere con la privacy policy | **PO** |

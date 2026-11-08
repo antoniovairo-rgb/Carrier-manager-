@@ -752,6 +752,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
    AI SETTINGS CARD
 ======================================== */
 function AISettingsCard({player}){
+  if(typeof window!=="undefined"&&window.__CPM_STORE_BUILD)return null;/* [giro 120 PO-322] build store e app TWA: nessun campo chiave API (la funzione AI e' spenta in callClaudeAPI) */
   const[key,setKey]=useState(()=>safeLS.get("cpm-api-key")||"");
   const[mock,setMock]=useState(()=>safeLS.get("cpm-ai-mock")==="true");
   const[saved,setSaved]=useState(false);

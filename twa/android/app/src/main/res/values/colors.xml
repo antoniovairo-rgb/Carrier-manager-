@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colori del tema TINTE (src/01-bootstrap-tema-avatar.jsx: TINTE.bg), gli stessi di twa/manifest-twa.webmanifest:
+         barra di stato e schermata d'avvio devono essere indistinguibili dal gioco. -->
+    <color name="coloreTema">#0d0f14</color>
+    <color name="coloreSfondo">#0d0f14</color>
+</resources>
