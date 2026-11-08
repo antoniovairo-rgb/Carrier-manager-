@@ -62,6 +62,8 @@ function isNationalEvent(type){return _NATIONAL_SCOPES.has(EVENT_SCOPE[type]);}/
 //   aperto nel browser di sistema. NESSUNA ricompensa in-app → resta fuori da Google Play Billing (regola Play) e
 //   il Data Safety resta "nessun dato". Imposta l'URL del tuo provider; se VUOTO il bottone NON appare (ship-safe).
 const DONATION_URL="https://paypal.me/elevoraCPM";// link donazione esterna (PayPal); "" per nasconderlo
+const PRIVACY_URL="https://antoniovairo-rgb.github.io/Carrier-manager-/privacy.html";/* [giro 118 PO-322] informativa privacy: Google la chiede raggiungibile anche DENTRO l'app (Opzioni). Si apre fuori dall'app, come la donazione. Rosso __CPM_NO_G118P */
+const openPrivacy=()=>{try{window.open(PRIVACY_URL,"_blank","noopener,noreferrer");}catch(e){}};
 const openDonation=()=>{try{if(!DONATION_URL)return;window.open(DONATION_URL,"_blank","noopener,noreferrer");}catch(e){}};
 // #6: indirizzo feedback OFFUSCATO (non in chiaro nel sorgente) — ricomposto a runtime dai char-code → niente scraping banale
 const _feedbackTo=()=>String.fromCharCode(107,111,114,119,97,114,100,46,100,101,118,116,101,97,109,64,103,109,97,105,108,46,99,111,109);/* [21/09 · direttiva PO: «la mail delle idee non deve essere inviata piu' alla mia mail, ma a korward.devteam@gmail.com»] La casella personale del PO esce dal gioco. Resta l'offuscamento in codici di carattere: e' li' perche' un indirizzo scritto in chiaro dentro una pagina pubblica viene raccolto dai raccoglitori di spam, e la casella nuova merita la stessa protezione della vecchia. */
