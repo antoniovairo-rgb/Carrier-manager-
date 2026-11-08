@@ -707,10 +707,15 @@ function creaMotorePossesso(cfg){
        due passate: a 0,22 i gialli tornavano giusti (2,08 su 2,4) ma i rossi restavano al doppio del vero
        (0,25 su 0,11); a 0,09 rientrano entrambi. Il secondo giallo costa undici volte il primo. */
     const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1)*(V2?K2.gialli:1);/* NON si normalizza: si sorteggia una volta per FALLO, e i falli sono gia' normalizzati */
-    if(V2&&rnd()<K2.rossoDiretto){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
+    /* [giro 115 G184-22] nel primo provino nessuna espulsione nei primi cfg.calmaRossi minuti (il collaudo l'ha vista come PRIMO
+       evento della vita del giocatore, al 2'). I sorteggi restano gli stessi in numero e ordine: il rosso diretto esce come prima
+       (return, senza il secondo rnd), solo senza cartellino; il secondo giallo resta un giallo. Rosso __CPM_NO_G115_22. */
+    const _calma115=(cfg.calmaRossi|0)>0&&(S.min|0)<(cfg.calmaRossi|0);
+    if(V2&&rnd()<K2.rossoDiretto){if(_calma115)return;_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
     if(rnd()>=_p)return;
     _st.g++;
-    if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
+    if(_st.g>=2&&_calma115){_st.g=1;ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});}
+    else if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
     else ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});
   }catch(_e){}};
   /* [7.999.121 PO-190 «goleade» — decisione PO 03/10 «ridurre i gol dell'eroe»] MISURATO dal salvataggio S12 (testimone __CPM_SP3 col

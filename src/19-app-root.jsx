@@ -218,28 +218,52 @@ function SitTest({sitN}){
    per device (localStorage 'cpm-intro-seen'), sempre skippabile, SPENTA sotto ?cpmtest=1 (harness/validator
    attraversano il flusso create→trial). Pattern GalaStage3D: scena Three dedicata, dispose profondo,
    fallback poster se WebGL/reduced-motion. */
-function IntroCinematic({onDone}){
+function IntroCinematic({onDone,nome,riascolto}){
   const ref=React.useRef(null);
+  /* [giro 115 PO-321 «Sistemiamo anche il video iniziale»] sette correzioni del collaudo 184, ognuna col suo rosso
+     (__CPM_NO_G115_<NN> = comportamento della 183):
+     10 · il micro-tutorial dura ~6 s invece di 2,1: la scena va al RALENTI (0,31x) mentre si leggono le tre istruzioni,
+          poi riprende alla stessa velocita' (tutta la coreografia vive su UN orologio di scena, _el115) — niente ritocchi
+          ai tempi del tiro/gol/festa, che restano quelli collaudati dal PO;
+     11 · velo scuro in alto dietro le didascalie (+ testo bilanciato: «d'Oro.» non va piu' a capo da sola);
+     12 · «Salta» alto 44 px e sotto la safe-area;
+     13 · suoni GIA' presenti nel gioco via AudioMgr (fischio, tiro, rete, boato, applauso): AudioMgr rispetta il muto
+          totale delle Opzioni e non suona finche' un gesto non ha sbloccato l'audio — nessun file nuovo;
+     15 · riascolto: la CTA dice «Chiudi»; chiusura automatica 3,5 s dopo la CTA (era 13 s);
+     16 · corpo delle didascalie in clamp() sulla larghezza (PC);
+     17 · l'eroe dell'intro ha il nome del giocatore quando esiste (decisione PO 7.37: eroe con un nome). */
+  const _n10=_no115("10"),_n15=_no115("15"),_n17=_no115("17");
+  const _nm17=(!_n17&&nome&&String(nome).trim())?String(nome).trim():null;
+  const _cog17=_nm17?(_nm17.split(/\s+/).slice(-1)[0]||_nm17).toUpperCase():"PISANO";
+  /* orologio di scena: reale fino a 6,3 s; 6,3→8,0 di scena in 5,5 s reali (ralenti del tutorial); poi reale con 3,8 s di ritardo */
+  const _RS115=6.3,_SS115=1.7,_RR115=5.5;
+  const _el115=(raw)=>{if(_n10||raw<_RS115)return raw;if(raw<_RS115+_RR115)return _RS115+(raw-_RS115)*_SS115/_RR115;return raw-(_RR115-_SS115);};
+  const _rate115=(raw)=>(!_n10&&raw>=_RS115&&raw<_RS115+_RR115)?_SS115/_RR115:1;
+  const _test115=(typeof _CPM_TEST!=="undefined"&&_CPM_TEST);
+  const _suona115=(k)=>{if(_no115("13"))return;try{if(_test115){const w=window.__CPM_INTRO115||(window.__CPM_INTRO115={});(w.suoni=w.suoni||[]).push(k);}}catch(_e){}try{AudioMgr.play(k);}catch(_e){}};/* AudioMgr: muto totale (bus master a 0) e sblocco dopo un gesto (play tace finche' l'AudioContext non e' pronto) */
   const[beat,setBeat]=useState(0);
   const[flash,setFlash]=useState(false);
   const stRef=React.useRef({t0:0});
   const CAPS=[
     {t:0,   big:"KORWARD ELITE",sub:"La tua storia comincia stanotte."},
-    {t:4,   big:null,sub:"Giovanni Pisano. Numero 9. Una carriera vera, una settimana alla volta."},/* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
+    {t:4,   big:null,sub:_nm17?(_nm17+". Una carriera vera, una settimana alla volta."):"Giovanni Pisano. Numero 9. Una carriera vera, una settimana alla volta."},/* [7.37.0 direttiva PO: l'eroe dell'intro ha un NOME] */
     {t:6.3, big:null,sub:"Il live match, come lo giocherai davvero:",chips:["⏱️ 1 · Tieniti pronto: arriva l'highlight","🕹️ 2 · Effettua i movimenti negli spazi","👆 3 · Scegli l'azione — anche su rigori e punizioni"]},
     {t:8.4,big:null,sub:null},
-    {t:9.6,big:"⚽ GOOOL DI PISANO!",sub:"Vivi il momento — in 3D, azione per azione."},
+    {t:9.6,big:"⚽ GOOOL DI "+_cog17+"!",sub:"Vivi il momento — in 3D, azione per azione."},
     {t:12.8,big:null,sub:"Ogni gol scrive la tua leggenda."},
     {t:16.3,big:"Dalla Primavera al Trofeo d'Oro.",sub:"Tre provini ti separano dal tuo primo contratto.",cta:true},
   ];
   React.useEffect(()=>{
+    const _S13=[[0.2,"ref.whistle"],[8.8,"ball.kick"],[9.15,"ball.net"],[9.6,"crowd.roar"],[16.3,"crowd.applause"]];let _s13=0;
     const iv=setInterval(()=>{
-      const el=(Date.now()-stRef.current.t0)/1000;
+      const raw=(Date.now()-stRef.current.t0)/1000;const el=_el115(raw);
       let b=0;for(let i=0;i<CAPS.length;i++)if(el>=CAPS[i].t)b=i;
       setBeat(b);
+      while(_s13<_S13.length&&el>=_S13[_s13][0]){_suona115(_S13[_s13][1]);_s13++;}
+      try{if(_test115){const w=window.__CPM_INTRO115||(window.__CPM_INTRO115={});w.raw=raw;w.el=el;w.beat=b;const bl=(w.beats=w.beats||[]);if(!bl.length||bl[bl.length-1].b!==b)bl.push({b,raw:Math.round(raw*100)/100});}}catch(_e){}
       if(el>=9.5&&el<9.9)setFlash(true);
       if(el>=9.9)setFlash(false);
-      if(el>29.4){clearInterval(iv);onDone&&onDone();}
+      if(el>(_n15?29.4:19.8)){clearInterval(iv);try{if(_test115){window.__CPM_INTRO115.chiusa={raw:Math.round(raw*100)/100,auto:true};}}catch(_e){}onDone&&onDone();}
     },120);
     return()=>clearInterval(iv);
   },[]);// eslint-disable-line
@@ -441,7 +465,7 @@ function IntroCinematic({onDone}){
     const camLook=new THREE.Vector3(0,1.4,-4);
     let raf=null;let netKick=0;let shakeIntro=0;
     const tick=()=>{
-      const el=(Date.now()-stRef.current.t0)/1000;
+      const _raw115=(Date.now()-stRef.current.t0)/1000;const el=_el115(_raw115);/* [giro 115 G184-10] orologio di scena (ralenti del tutorial) */
       // ---- coreografia eroe/palla [7.32.3 collaudo PO «palla ANCORA dietro · movimenti lenti e poco
       //      fluidi · post-gol troppo lungo»] traiettoria PURA posAt(t): la direzione della palla è la
       //      DERIVATA ESATTA del moto (differenza finita sul path analitico) → davanti ai piedi in OGNI
@@ -503,7 +527,7 @@ function IntroCinematic({onDone}){
         if(heroActs.jog)heroActs.jog.timeScale=clamp(0.55+(stG.vNow||1)*0.55,0.6,1.7);/* [7.37.1 collaudo PO «movimenti da migliorare in fluidità»] cadenza del passo dalla VELOCITÀ REALE del path (anti foot-slide) */
         if(heroAv)heroAv.rotation.x=-0.05*Math.min(stG.vNow||0,2.4)*Math.min(1,run*1.4);/* [7.42.0] lean CONTINUO (il gate on/off a run>0.3 scattava = robotico) */
         const _mdt=Math.min(0.12,(Date.now()-(stG.lastT||Date.now()))/1000);stG.lastT=Date.now();/* [7.32.7] cap 0.05→0.12: a fps bassi le clip restavano in SLOW-MO rispetto al corpo (gliding) */
-        mixers.forEach(m=>m.update(_mdt));
+        mixers.forEach(m=>m.update(_mdt*_rate115(_raw115)));/* [giro 115 G184-10] le clip rallentano col corpo (niente piedi che scivolano) */
         try{if(typeof _corrPostura23==='function'&&window.__CPM_INTRO_CG23){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
         if(stG.lifted&&heroActs.lift){const _ap=heroActs.lift.getClip().duration*0.34;if(heroActs.lift.time>=_ap){heroActs.lift.time=_ap;heroActs.lift.paused=true;}}/* congela all'apice (due mani sopra la testa) */
       }
@@ -572,23 +596,28 @@ function IntroCinematic({onDone}){
     return()=>{try{disposed=true;clearTimeout(_fbT);if(raf)cancelAnimationFrame(raf);scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose();});}});renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.parentNode.removeChild(renderer.domElement);}catch(_e){}};
   },[]);// eslint-disable-line
   const cap=CAPS[beat]||CAPS[0];
+  const _n11=_no115("11"),_n12=_no115("12"),_n16=_no115("16");
+  const _fz16=(px,vw,mx)=>_n16?px:`clamp(${px}px, ${vw}vw, ${mx}px)`;/* [giro 115 G184-16] su PC le didascalie crescono con la larghezza */
+  const _chi15=!!riascolto&&!_n15;
+  const _chiudi15=()=>{try{if(_test115){window.__CPM_INTRO115.chiusa={raw:Math.round((Date.now()-stRef.current.t0)/100)/10,auto:false};}}catch(_e){}onDone&&onDone();};
   return(
     <div style={{position:"fixed",inset:0,zIndex:(typeof window!=="undefined"&&window.__CPM_NO_INTRO12)?70:10050,background:"#050810",overflow:"hidden",fontFamily:"inherit"}}>{/* [7.999.12 collaudo PO «Rivedi l'intro non funziona più»] l'intro partiva SOTTO il pannello Opzioni (zIndex 9998): ora sta sopra tutto. Rosso __CPM_NO_INTRO12 */}
       <div ref={ref} style={{position:"absolute",inset:0}}/>
       {flash&&<div style={{position:"absolute",inset:0,background:"#fff",opacity:0.4,pointerEvents:"none"}}/>}
-      <div style={{position:"absolute",left:0,right:0,top:"9%",textAlign:"center",pointerEvents:"none",padding:"0 20px"}}>
+      {!_n11&&(cap.big||cap.sub||cap.chips)&&<div data-cpm="intro-velo" style={{position:"absolute",left:0,right:0,top:0,height:cap.chips?"62%":"48%",background:"linear-gradient(180deg,rgba(5,8,16,0.86) 0%,rgba(5,8,16,0.74) 55%,rgba(5,8,16,0) 100%)",pointerEvents:"none",transition:"height .4s ease"}}/>}{/* [giro 115 G184-11] velo dietro le didascalie: la bandiera bianca dello stadio le portava a 2:1 */}
+      <div style={{position:"absolute",left:0,right:0,top:"9%",textAlign:"center",pointerEvents:"none",padding:"0 20px",textWrap:_n11?undefined:"balance"}}>
         {cap.big&&(cap.big==="KORWARD ELITE"
           ?<div key={"b"+beat} style={{display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both",filter:"drop-shadow(0 3px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 22px rgba(163,38,58,0.5))"}}><Wordmark size={44}/></div>/* [7.32.1 collaudo PO «la scritta deve essere uguale a quella del logo»] */
-          :<div key={"b"+beat} style={{fontSize:cap.big.length>14?24:38,fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
-        {cap.sub&&<div key={"s"+beat} style={{fontSize:FS.bodyLg,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
+          :<div key={"b"+beat} style={{fontSize:cap.big.length>14?_fz16(24,2.6,40):_fz16(38,3.8,60),fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
+        {cap.sub&&<div key={"s"+beat} data-cpm="intro-sub" style={{fontSize:_fz16(FS.bodyLg,1.6,28),maxWidth:_n16?undefined:"min(92vw, 900px)",margin:_n16?undefined:"0 auto",color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
         {cap.chips&&<div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"center",marginTop:14}}>
-          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:FS.body,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
+          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:_fz16(FS.body,1.05,22),fontWeight:800,animation:`celebTitle .5s ease-out ${_n10?(0.3+i*0.55):(0.3+i*1.2)}s both`}} data-cpm="intro-chip">{c}</div>))}{/* [giro 115 G184-10] una istruzione ogni 1,2 s: ognuna resta a schermo >= 3 s */}
         </div>}
       </div>
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
-        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
+        <button data-cpm="intro-cta" onClick={_chiudi15} style={{padding:"15px 34px",minHeight:44,borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>{_chi15?"Chiudi ✕":"🎬 Comincia dal provino →"}</button>{/* [giro 115 G184-15] riascolto da Home/Profilo: si chiude e basta, quindi dice «Chiudi» */}
       </div>}
-      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
+      <button data-cpm="intro-salta" onClick={_chiudi15} style={{position:"absolute",top:_n12?14:"calc(14px + env(safe-area-inset-top, 0px))",right:_n12?14:"calc(14px + env(safe-area-inset-right, 0px))",padding:_n12?"8px 15px":"10px 18px",minHeight:_n12?undefined:44,minWidth:_n12?undefined:44,borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:_n12?FS.small:FS.body,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
   );
 }
@@ -877,7 +906,7 @@ function App(){
   };
   const wrap=ch=>(
     <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,colorScheme:"dark",/* [G1.6 grafica] i controlli nativi (select/option, scrollbar) seguono il tema: senza color-scheme le <option> restano nere sul fondo scuro (541 nodi a 1,29:1 nella Creazione, tema scuro) */fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
-      {showIntro&&<IntroCinematic onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
+      {showIntro&&<IntroCinematic riascolto nome={player&&player.name} onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
       {/* [7.331.0 direttiva PO «questo pulsante opzioni deve essere visibile solo nella home e a carriera avviata»]
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
@@ -1022,7 +1051,7 @@ function App(){
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)} onBack={()=>setPhase("home")}/>);
-  if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
+  if(phase==="cinematic"&&player)return wrap(<IntroCinematic nome={player&&player.name} onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
   if(phase==="trial"&&player)return wrap(<TrialFlow player={player} onComplete={onTrials} resume={trialResumeRef.current}/>);{/* [7.330.0] ripresa provini · [7.331.0] niente più segnale onLive: il tasto Opzioni non esiste nelle fasi pre-carriera */}
   if(phase==="offers"&&player)return wrap(<OffersScreen player={player} trialStats={trials} onChoose={onChoose}/>);
   if(phase==="career"&&player)return wrap(<CareerApp player={player} currentSlot={currentSlot} onRefreshSlots={refreshSlots} lang={lang} toggleLang={toggleLang} onNewGamePlusCB={(bonus)=>{setLegacyBonus(bonus);setPhase("create");}} onExitToMenu={()=>{try{safeLS.set("cpm-active","");safeLS.set("cpm-match-resume","");}catch(_e){}setPlayer(null);setPhase("home");refreshSlots();}}/>);/* [7.149.0] uscita al menu: azzera l'auto-ripresa (carriera + partita) → prossimo boot torna alla home */
