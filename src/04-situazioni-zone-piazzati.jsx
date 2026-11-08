@@ -1019,6 +1019,14 @@ function scenaDalMotoreCross(occ,player,seed){
                      :['✈️ Cross'+(cr?' di '+cr:'')+': attacca il pallone in area!','✈️ Il cross'+(cr?' di '+cr:'')+' arriva alto in area!'];
   const intro=dif?(dif+' ti marca stretto.'):'Sei solo sul pallone: scegli bene.';
   const ctx={pressure:c.press>=1.5?'high':c.press>=0.5?'medium':'low',support:1,nearby_def:dif?2:1,lanes:['central_run'],it:'insertion',bs:'aerial'};
+  /* [giro 117 PO-323 «Calcio d'angolo di HOWARD: attacca il pallone! — corpo↔porta al contatto 159°, eroe a x -2.1 · troppo distante»]
+     MISURATO (angolo-117): il motore dichiara l'occasione col ricevente DOV'E' (anche a centrocampo, x logico 48-50) e la scena si
+     costruiva li': il pallone dalla bandierina andava a cercare l'eroe a 40 unita' dalla porta, lo stacco avveniva a x 57 col corpo
+     girato (73° nel fallito). Ma il titolo dice «attacca il pallone» in AREA: su un cross o un angolo l'attaccante e' in area. Ora
+     l'ancora della scena, se e' fuori, entra fra il dischetto e l'area piccola (x 87-93, y 38-62); dentro resta identica (le scene
+     gia' in area non cambiano di un decimo). Nessun sorteggio in piu': si sposta solo un punto. Rosso __CPM_NO_G117A. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G117A)){const _x117=+occ.x,_y117=+occ.y;const _cx=clamp(_x117,87,93),_cy=clamp(_y117,38,62);
+    if(_cx!==_x117||_cy!==_y117)occ={...occ,x:_cx,y:_cy,_g117:{x:_x117,y:_y117}};}
   return _p6Costruisci(occ,player,seed,P6_CROSS,c,titoli,intro,['area'],ctx,angolo?'angolo':'cross');
 }
 /* [7.999.152 PO-022 Passo 6, strato 7 — decisione PO 08/10: al massimo una scena difensiva a partita, in aggiunta] LA DIFESA NASCE
