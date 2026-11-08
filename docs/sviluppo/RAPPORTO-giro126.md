@@ -89,3 +89,4 @@ Dati: `docs/sviluppo/giro126/distanze-126-{verde,rosso}.json` e log.
 | save-compat | ✅ 12 pass · 0 fail |
 | replay | ✅ 8 highlight, completi e coerenti |
 | tabellone-117 | ✅ verde (ripresa e percorso normale) e il rosso si vede |
+| validate-situations | ✅ 14/14 PASS · fingerprint 00001505 · 0 failure |
