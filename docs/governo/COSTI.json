@@ -278,5 +278,33 @@
   "cache_read_tokens": 24673284,
   "worker_epoch": 1,
   "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia93XPB78cZ3bGj5isF",
+  "titolo": "giro 120 · app Android come PLINTO (TWA)",
+  "versione": "7.999.185",
+  "tipo": "sviluppo",
+  "modello": "claude-opus-5-5",
+  "creata": "2026-11-08T07:56:19Z",
+  "chiusa": "2026-11-08T08:54:58Z",
+  "cost_usd": 7.5089161,
+  "output_tokens": 75192,
+  "cache_read_tokens": 20813122,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
+ },
+ {
+  "sessione": "session_01QEYia9AfVt1cFpipjYf9qw",
+  "titolo": "giro 122 · Albo d'oro per lega",
+  "versione": "7.999.185",
+  "tipo": "sviluppo",
+  "modello": "claude-sonnet-5-5",
+  "creata": "2026-11-08T09:39:00Z",
+  "chiusa": "2026-11-08T10:47:57Z",
+  "cost_usd": 1.23781756,
+  "output_tokens": 23642,
+  "cache_read_tokens": 5088761,
+  "worker_epoch": 1,
+  "rilevato": "2026-11-08"
  }
 ]
