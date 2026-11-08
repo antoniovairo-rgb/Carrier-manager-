@@ -90,3 +90,15 @@ Dati: `docs/sviluppo/giro126/distanze-126-{verde,rosso}.json` e log.
 | replay | ✅ 8 highlight, completi e coerenti |
 | tabellone-117 | ✅ verde (ripresa e percorso normale) e il rosso si vede |
 | validate-situations | ✅ 14/14 PASS · fingerprint 00001505 · 0 failure |
+| partita-vera | ✅ OK, le bande tengono. Dichiarato dal guardiano: «tabellone» **non giudicabile** (campione sotto minimo, 0-0) — non è un verde di quel punto; il tabellone è coperto da tabellone-117 (verde) |
+
+Ordine eseguito: distanze-126 (verde, rosso) → angolo-117 → volee-d3-119 → highlight-95 → scena3d-96 → test:logic → save-compat → replay →
+tabellone-117 → validate-situations → partita-vera. Un controllo alla volta, `free -m`/`df -h` in testa a ogni log. Build: `node
+tools/build-src.mjs` e `node tools/check-src.mjs` allineati (7.038.883 byte, 21 frammenti).
+
+## 6. Cosa resta fuori / non fatto
+- **GLB acceso** non misurato (come nel 125): la posizione dell'eroe è logica e non dipende dal modello, ma il campione GLB manca.
+- Il braccio di un solo sotto-punto (`__CPM_NO_G126L` da solo) non è stato rigiocato a parte: il rosso globale separa già le due famiglie
+  per titolo (fra le linee / dal limite), e i due rimedi stanno in due funzioni diverse.
+- Nessuna ancora più interna per i tiri dopo angolo: vedi §1, il difetto era un errore di classificazione della sonda del 125.
+- `GAME_VERSION` invariato, nessuna promozione su `main` (sessione figlia).
