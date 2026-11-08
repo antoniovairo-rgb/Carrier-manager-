@@ -94,7 +94,7 @@ non esercitato dal guardiano). Il ramo «istantanea vecchia senza g117» non è 
 | replay | ✅ 8 highlight |
 | validate-situations | ✅ 14/14, fingerprint 00001505, 0 failure |
 | highlight-95 | ❌ **rosso nel verde: 1 difetto D3** (vedi sotto); braccio rosso fermato da me dopo 60 min (vedi sotto) |
-| scena3d-96 | ⏳ non eseguito: tetto delle 4 ore |
+| scena3d-96 | ⏳ incompleto: fermato al tetto delle 4 ore dopo 25 scene ✓ e 0 ✗ (corsa interrotta = non vale) |
 | partita-vera | ⏳ non eseguito: tetto delle 4 ore |
 | career-critical | ✅ catena intera, uscita 0 (la prima corsa, interrotta dal mio timeout a 9 min 40, non conta; rifatta da capo) |
 | test:logic | ✅ 43 pass · 0 fail |
