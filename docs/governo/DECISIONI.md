@@ -1071,3 +1071,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 09/11 19:00 UTC — PO-331 card «Prossima» e Nazionale
 - PO, questionario: «Finale in primo piano» e «188». Decisione tecnica (madre): giro 131 su `sviluppo/giro131-prossima` da `lavoro/187`; la card legge la stessa fonte del comando principale (coda Coppa Nazioni e Euro/Mondiale prima del calendario del club), rosso `__CPM_NO_G131`, guardiano nuovo; la 187 esce senza.
+
+### 09/11 19:50 UTC — Backlog: riconciliazione dopo la 187
+- PO: «come mai nel backlog ci sono ancora molte cose?». Conteggio: 25 voci non chiuse. 10 residui in stabilità (decisione PO 20/10: si correggono solo se emergono nei collaudi: PO-022, 068, 153, 167, 220, 224, 228, 229, 248, 250); 3 in corsa (PO-329, 330 nella 187; PO-331 nella 188); PO-322 store parziale (passi del PO su Play Console); 11 con stato vecchio non aggiornato (PO-292, 296, 297, 298, 299, 300, 301 dell'epoca 178; PO-315, 316, 317, 319 della 183).
+- PO, questionario: «Dopo la 187». Giro di sola lettura che confronta le 11 voci con release e codice: chiuse con prova quelle fatte, le altre al PO con proposta di versione.
