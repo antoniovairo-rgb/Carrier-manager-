@@ -1,0 +1,374 @@
+[
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "folla": "accesa",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 15,
+    "frameMs": 262.7,
+    "frameP95": 667.3,
+    "renderMs": 6.96,
+    "uploadMBs": 6,
+    "uploads": 15,
+    "calls": 282,
+    "tri": 31386,
+    "tex": 38,
+    "geo": 282
+   },
+   "tv": {
+    "frames": 22,
+    "frameMs": 201,
+    "frameP95": 541.1,
+    "renderMs": 9.63,
+    "uploadMBs": 8.04,
+    "uploads": 24,
+    "calls": 290,
+    "tri": 30923,
+    "tex": 58,
+    "geo": 561
+   },
+   "vicino": {
+    "frames": 22,
+    "frameMs": 201,
+    "frameP95": 414.4,
+    "renderMs": 5.16,
+    "uploadMBs": 2.4,
+    "uploads": 6,
+    "calls": 60,
+    "tri": 21474,
+    "tex": 60,
+    "geo": 607
+   }
+  }
+ },
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "folla": "statica",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 53,
+    "frameMs": 80.6,
+    "frameP95": 151.9,
+    "renderMs": 15.84,
+    "uploadMBs": 0.05,
+    "uploads": 4,
+    "calls": 388,
+    "tri": 36806,
+    "tex": 42,
+    "geo": 380
+   },
+   "tv": {
+    "frames": 102,
+    "frameMs": 48.5,
+    "frameP95": 64.5,
+    "renderMs": 11.74,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 244,
+    "tri": 28609,
+    "tex": 61,
+    "geo": 612
+   },
+   "vicino": {
+    "frames": 110,
+    "frameMs": 44.9,
+    "frameP95": 76.3,
+    "renderMs": 8.72,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 60,
+    "tri": 21474,
+    "tex": 63,
+    "geo": 636
+   }
+  }
+ },
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "folla": "spenta",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 105,
+    "frameMs": 45.5,
+    "frameP95": 59.7,
+    "renderMs": 9.75,
+    "uploadMBs": 0.13,
+    "uploads": 12,
+    "calls": 432,
+    "tri": 19992,
+    "tex": 50,
+    "geo": 457
+   },
+   "tv": {
+    "frames": 142,
+    "frameMs": 34.8,
+    "frameP95": 55.8,
+    "renderMs": 11.06,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 201,
+    "tri": 7343,
+    "tex": 60,
+    "geo": 609
+   },
+   "vicino": {
+    "frames": 229,
+    "frameMs": 21.6,
+    "frameP95": 37.2,
+    "renderMs": 5.71,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 49,
+    "tri": 1694,
+    "tex": 62,
+    "geo": 636
+   }
+  }
+ },
+ {
+  "vp": "360x800",
+  "giro": 1,
+  "folla": "accesa",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 19,
+    "frameMs": 230.1,
+    "frameP95": 614.6,
+    "renderMs": 8.96,
+    "uploadMBs": 6.8,
+    "uploads": 17,
+    "calls": 282,
+    "tri": 31386,
+    "tex": 38,
+    "geo": 282
+   },
+   "tv": {
+    "frames": 18,
+    "frameMs": 259.2,
+    "frameP95": 973.8,
+    "renderMs": 9.12,
+    "uploadMBs": 7.24,
+    "uploads": 22,
+    "calls": 287,
+    "tri": 30831,
+    "tex": 58,
+    "geo": 557
+   },
+   "vicino": {
+    "frames": 25,
+    "frameMs": 191.7,
+    "frameP95": 481.6,
+    "renderMs": 4.66,
+    "uploadMBs": 2.4,
+    "uploads": 6,
+    "calls": 60,
+    "tri": 21474,
+    "tex": 60,
+    "geo": 581
+   }
+  }
+ },
+ {
+  "vp": "360x800",
+  "giro": 1,
+  "folla": "statica",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 57,
+    "frameMs": 74.3,
+    "frameP95": 100,
+    "renderMs": 8.39,
+    "uploadMBs": 0.06,
+    "uploads": 5,
+    "calls": 402,
+    "tri": 37468,
+    "tex": 43,
+    "geo": 394
+   },
+   "tv": {
+    "frames": 91,
+    "frameMs": 53.7,
+    "frameP95": 72.6,
+    "renderMs": 6.2,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 231,
+    "tri": 28031,
+    "tex": 62,
+    "geo": 598
+   },
+   "vicino": {
+    "frames": 105,
+    "frameMs": 46.4,
+    "frameP95": 75.2,
+    "renderMs": 4.19,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 60,
+    "tri": 21474,
+    "tex": 64,
+    "geo": 622
+   }
+  }
+ },
+ {
+  "vp": "360x800",
+  "giro": 1,
+  "folla": "spenta",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 80,
+    "frameMs": 55.3,
+    "frameP95": 82.4,
+    "renderMs": 7.14,
+    "uploadMBs": 0.12,
+    "uploads": 11,
+    "calls": 462,
+    "tri": 21396,
+    "tex": 49,
+    "geo": 457
+   },
+   "tv": {
+    "frames": 143,
+    "frameMs": 34.5,
+    "frameP95": 51.8,
+    "renderMs": 4.82,
+    "uploadMBs": 0.01,
+    "uploads": 1,
+    "calls": 217,
+    "tri": 8245,
+    "tex": 62,
+    "geo": 636
+   },
+   "vicino": {
+    "frames": 224,
+    "frameMs": 22.1,
+    "frameP95": 30.1,
+    "renderMs": 2.61,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "calls": 49,
+    "tri": 1694,
+    "tex": 64,
+    "geo": 663
+   }
+  }
+ }
+]
