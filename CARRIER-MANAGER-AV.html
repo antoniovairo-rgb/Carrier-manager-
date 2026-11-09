@@ -11630,9 +11630,10 @@ function _folla129Atlas(){
     if(kind==="child"){const k=0.66;x.translate(cx,oy+CH);x.scale(k,k);x.translate(-cx,-(oy+CH));m.translate(cx,oy+CH);m.scale(k,k);m.translate(-cx,-(oy+CH));}
     const shW=15.5*broad*(female?0.9:1),hipW=12*broad,headY=oy+24,hr=8.6,shY=oy+38;
     /* gambe e scarpe: colore vero, tono medio (le scure si vedevano troppo dietro i sedili vuoti) */
-    const gp=x.createLinearGradient(0,oy+76,0,oy+124);gp.addColorStop(0,"#646a7a");gp.addColorStop(1,"#4c5160");
+    const _pc=["#3d4760","#34353d","#5a5446","#454a55","#2f3a52"][v%5];/* [giro 129] pantaloni vari e che SFUMANO nel colore del gradino: chiari e pieni si leggevano come barre */
+    const gp=x.createLinearGradient(0,oy+78,0,oy+126);gp.addColorStop(0,_pc);gp.addColorStop(0.55,"#2a2b34");gp.addColorStop(1,"#1d1d27");
     paint(BA,gp,c=>{c.rect(cx-hipW+1,oy+76,hipW-2,46);c.rect(cx+1,oy+76,hipW-2,46);});
-    paint(BA,"#34343c",c=>{c.rect(cx-hipW,oy+121,hipW,7);c.rect(cx+1,oy+121,hipW,7);});
+    paint(BA,"#1d1d27",c=>{c.rect(cx-hipW,oy+121,hipW,7);c.rect(cx+1,oy+121,hipW,7);});
     /* busto: trapezio spalle→fianchi, grigio ombreggiato (luce da sinistra) che si tinge col colore della maglia */
     const tg=x.createLinearGradient(cx-shW,0,cx+shW,0);tg.addColorStop(0,"#ececec");tg.addColorStop(0.55,"#cdcdcd");tg.addColorStop(1,"#959595");
     const torso=c=>{c.moveTo(cx-shW,shY+5);c.quadraticCurveTo(cx-shW,shY-1,cx-shW+6,shY-2);c.lineTo(cx+shW-6,shY-2);c.quadraticCurveTo(cx+shW,shY-1,cx+shW,shY+5);c.lineTo(cx+hipW,oy+80);c.lineTo(cx-hipW,oy+80);c.closePath();};
@@ -11768,7 +11769,8 @@ function buildFolla129(scene,planes,o){
   for(let k=0;k<n;k++){const e=L[k];E.set(0,e.yaw,0);Q.setFromEuler(E);const sc=0.93+e.r2*0.12;S.set(sc,sc,sc);Pv.set(e.x,e.y-0.04,e.z);M.compose(Pv,Q,S);im.setMatrixAt(k,M);}
   im.instanceMatrix.needsUpdate=true;scene.add(im);
   let slots=0,occ=0;for(const k in per){slots+=per[k].slots;occ+=per[k].occ;}
-  const info={n,slots,occ,ratio:slots?+(occ/slots).toFixed(4):0,dens:o.dens,per,capacity:o.capacity,fill:o.fill,awayFill:o.awayFill,planes:planes.length,
+  let sig=0;for(let k=0;k<n;k++){const e=L[k];sig=(sig*31+((e.x*100)|0)+((e.z*100)|0)*7+iA[k*4]*13+((iA[k*4+1]*1000)|0))|0;}/* firma del determinismo (guardiano folla) */
+  const info={sig,n,slots,occ,ratio:slots?+(occ/slots).toFixed(4):0,dens:o.dens,per,capacity:o.capacity,fill:o.fill,awayFill:o.awayFill,planes:planes.length,
     tri:n*2,atlas:AT.cv.width+"x"+AT.cv.height,gpuMB:+((AT.cv.width*AT.cv.height*4*1.333*2+n*(64+48+36))/1048576).toFixed(1),buildMs:+(((typeof performance!=='undefined'?performance.now():0)-_t0)).toFixed(1)};
   try{if(typeof window!=='undefined')window.__CPM_FOLLA129=info;}catch(_e){}
   return {mesh:im,U,info};

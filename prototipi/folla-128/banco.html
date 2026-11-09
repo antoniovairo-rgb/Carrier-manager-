@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Banco folla 128</title>
+<title>Banco folla</title>
 <style>
   :root{--fondo:#0b0f17;--testo:#e8ecf3;--tenue:#9aa3b2;--accento:#3b82f6;--riquadro:rgba(10,14,22,.82)}
   @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--fondo:#0b0f17;--testo:#e8ecf3}}
@@ -16,6 +16,7 @@
   #modi a,#modi button{flex:1 1 auto;min-width:54px;min-height:40px;border:1px solid #2a3344;border-radius:8px;background:#141b28;color:var(--testo);text-decoration:none;display:flex;align-items:center;justify-content:center;font:600 14px system-ui}
   #modi a.on{background:var(--accento);border-color:var(--accento)}
   #note{color:var(--tenue);font-size:12px;margin-top:4px}
+  #gioco button,#gioco a{min-height:40px;padding:0 10px;border:1px solid #2a3344;border-radius:8px;background:#141b28;color:var(--testo);text-decoration:none;display:flex;align-items:center;font:600 13px system-ui}
 </style>
 </head>
 <body>
@@ -24,7 +25,11 @@
   <div id="modi">
     <a href="?m=oggi">Oggi</a><a href="?m=A">A</a><a href="?m=Ao">A-oggi</a><a href="?m=B">B</a><a href="?m=C">C</a><a href="?m=spenta">Spenta</a><button id="gol" type="button">Gol</button>
   </div>
-  <div id="note">Banco del giro 128 (studio, non e' il gioco): stadio semplificato con quattro settori a due anelli. Lascia girare 20 secondi per modo e annota fps e p95.</div>
+  <div id="note">Banco del giro 128, aggiornato al giro 129 (studio, non e' il gioco): stadio semplificato con quattro settori a due anelli. Lascia girare 20 secondi per modo e annota fps e p95. <b>A</b> = la folla a sagome entrata nel gioco (densita' vera), <b>A-oggi</b> = la stessa alla densita' di prima (la ritirata).</div>
+  <div id="gioco" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center">
+    <span>Nel gioco su questo telefono:</span><button type="button" data-d="vera">Densita' vera</button><button type="button" data-d="oggi">Densita' ridotta</button><a href="../../index.html">Apri il gioco</a>
+    <span id="dg" style="color:var(--tenue)"></span>
+  </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="folla-proto.js"></script>
@@ -34,6 +39,9 @@
   var Q=new URLSearchParams(location.search), MODE=Q.get('m')||'oggi';
   document.querySelectorAll('#modi a').forEach(function(a){if(a.getAttribute('href')==='?m='+MODE)a.classList.add('on');});
   document.getElementById('mm').textContent=MODE;
+  /* [giro 129] la manopola di densita' della folla del gioco vive in localStorage 'cpm-folla' (stessa origine del sito) */
+  function dgShow(){var v='vera';try{v=localStorage.getItem('cpm-folla')||'vera';}catch(e){}document.getElementById('dg').textContent='ora: '+(v==='oggi'?'ridotta':'vera')+' (vale dalla prossima partita)';}
+  document.querySelectorAll('#gioco button').forEach(function(b){b.onclick=function(){try{localStorage.setItem('cpm-folla',b.getAttribute('data-d'));}catch(e){}dgShow();};});dgShow();
   var isDesktop=Math.min(innerWidth,innerHeight)>700;
   var renderer=new THREE.WebGLRenderer({antialias:isDesktop,powerPreference:'high-performance'});
   renderer.setPixelRatio(isDesktop?Math.min(devicePixelRatio,2):Math.min(devicePixelRatio,1.5));/* come il gioco */

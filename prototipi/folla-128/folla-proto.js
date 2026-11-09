@@ -34,7 +34,7 @@
       const broad = 0.86 + ((v * 7) % 5) * 0.06, cap = v % 4 === 2, scarf = v % 3 === 1, bald = v === 7, beard = v % 5 === 3, glasses = v % 6 === 4, female = v % 4 === 1;
       const shirtY = oy + 58, shW = 20 * broad, hipW = 15 * broad;
       // GAMBE/pantaloni (si vedono solo in parte dietro le sedute)
-      const grdP = x.createLinearGradient(0, oy + 96, 0, oy + 128); grdP.addColorStop(0, '#9a9a9a'); grdP.addColorStop(1, '#5a5a5a');
+      const grdP = x.createLinearGradient(0, oy + 96, 0, oy + 128); grdP.addColorStop(0, '#7a7a7a'); grdP.addColorStop(1, '#2a2a2a'); // [giro 129] sfumano nel gradino
       x.fillStyle = grdP; x.fillRect(cx - hipW + 1, oy + 96, hipW - 2, 32); x.fillRect(cx + 1, oy + 96, hipW - 2, 32);
       m.fillStyle = '#00ff00'; m.fillRect(cx - hipW + 1, oy + 96, hipW - 2, 32); m.fillRect(cx + 1, oy + 96, hipW - 2, 32);
       // BUSTO: trapezio spalle→fianchi, ombreggiato (luce dall'alto a sinistra)
@@ -80,7 +80,7 @@
   function seatTexture(THREE, homeHex) {
     const c = document.createElement('canvas'); c.width = 64; c.height = 64; const x = c.getContext('2d');
     x.fillStyle = '#26262f'; x.fillRect(0, 0, 64, 64);
-    const s = hex(homeHex).map(t => Math.round((t * 0.55 + 0.35 * 0.45) * 255));
+    const s = hex(homeHex).map(t => Math.round((t * 0.30 + 0.27 * 0.70) * 0.82 * 255)); // [giro 129] meno rosato, come nel gioco
     x.fillStyle = 'rgb(' + s.join(',') + ')'; x.fillRect(8, 18, 48, 26); x.fillStyle = 'rgba(0,0,0,0.35)'; x.fillRect(8, 40, 48, 4); x.fillStyle = '#1b1b22'; x.fillRect(0, 54, 64, 10);
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 4; return t;
   }

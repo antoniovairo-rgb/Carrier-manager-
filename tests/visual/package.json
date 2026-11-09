@@ -358,6 +358,7 @@
     "ci:grafica": "node ci-runner.mjs grafica",
     "ci:guardiani": "node ci-runner.mjs guardiani",
     "griglia-mobile": "node griglia-mobile.mjs",
+    "folla": "node folla-129.mjs",
     "analisi-217": "node analisi-217.mjs",
     "home-066": "node home-066.mjs",
     "l7-schermate": "CPM_L7_GUARDIA=1 node l7-schermate.mjs",
