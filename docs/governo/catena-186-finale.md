@@ -31,6 +31,22 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 25 | partita-vera | 0 | 507 | ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   — riga 21 del log: «non giudicabile (campione sotto minimo) tabellone — gol raccontati 0-3 · punteggio finale 0-0 su 0 partite» (un solo criterio non giudicato, nessun rosso) | free=14268/16086MB df=29G libero |
 | 26 | highlight-95 | 0 | 4035 |   · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false ✅ highlight-95 verde (e il rosso si vede)  — braccio verde: 0 difetti (D3DIAG riga 39 con minGB=4.9, sotto la soglia di difetto 6, vedi sotto); rosso: 7 D4, il rosso si vede. RIGA D3DIAG INTERA in fondo al rapporto | free=14263/16086MB df=29G libero |
 | 27 | career-critical | 0 | 685 | ✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.   | free=14256/16086MB df=29G libero |
-| 28 | build-web | - | - | non ancora eseguito | - |
-| 29 | build-dist | - | - | non ancora eseguito | - |
-| 30 | audit-copyright | - | - | non ancora eseguito | - |
+| 28 | build-web | 0 | 10 |  ✅ DIST OFFLINE FUNZIONANTE  | free=14181/16086MB df=29G libero |
+| 29 | build-dist | 0 | 10 |  ✅ DIST OFFLINE FUNZIONANTE  | free=14106/16086MB df=29G libero |
+| 30 | audit-copyright | 0 | 11 | === GATE COPYRIGHT / DE-BRANDING === ✅ OK — nessun riferimento al mondo reale (club/leghe/competizioni/record/nomi).  | free=13799/16086MB df=29G libero |
+
+## Esito
+
+- 29 controlli su 29 eseguiti. **Un solo rosso: `collaudo-110`**, rigiocato una volta con lo stesso esito (uscita 1 in entrambe le passate, 352 s e 344 s). Braccio **verde**, `G180-17` formato pc: «banner d'esito: 2 campioni, 0 con la scatola fuori dal campo» (verde 2/3; i bracci rosso cadono come devono). Nella 1ª passata il rosso cadeva su t360,t412; nella 2ª su t360,t412,pc: stesso motivo di rosso nel braccio verde. Non riparato (sola verifica).
+- Tutti gli altri controlli: uscita 0. `validate-situations`: 14/14, fingerprint 00001505, 0 failure. `highlight-95` completo (verde + rosso) con CPM_D3DIAG=1: verde 0 difetti, rosso si vede (7 D4).
+- Note non rosse: `griglia-mobile` dichiara «NON misurato: prepartita: playMatch → nomatch»; `partita-vera` dichiara un criterio «non giudicabile (campione sotto minimo) tabellone».
+- `griglia-mobile` riscrive screenshot in `docs/collaudo-grafico/g0/`: ripristinati con git checkout, non committati.
+- Le durate sono quelle misurate dal wrapper (inizio-fine di ogni comando); bambini-124 e angolo-117 risultano ~900 s perché la prima chiamata è finita in sottofondo e la catena è proseguita.
+
+## Riga D3DIAG intera nel braccio verde di highlight-95 (minGB=4.9, sotto la soglia di difetto 6)
+
+```
+D3DIAG s5/1234 «↗️ Palla in area» minGB=4.9 {"tipo":"freekick","kind":"saved","d3":{"gk":{"x":96.9,"y":51.9},"ball":{"x":86.1,"y":40.8,"h":1.17},"hero":{"x":83.7,"y":38.2},"dHeroOpp":2.4,"gkBall":15.5,"c53":null,"sv":{"k":"0","v":"freekick_cross_high","gx":46.85,"gz":1.19,"sx":35.6,"sz":-7.07,"tx":42,"tz":3.3,"hx":32.8,"hz":-8.64,"aT":-0.55},"p258":null,"p119":null,"gkmin":15.42,"scT":0.95,"gkAct":{"last":"gk_dive","lastTz":3.3},"gkT":{"home":{"x":5,"y":48.7},"away":{"x":95,"y":48.7}}},"st":{"act":{"t":"freekick","aT":0.02,"tgt":{"x":85.6,"y":39.6,"tl":0},"ht":"freekick","ok":false,"pat":"SET_PIECE","rew":"assist","kind":"saved"},"ball":{"x":85.6,"y":39.6},"hero":{"x":82.8,"y":37.3},"gk":{"x":96.9,"y":51.8}}}
+```
+
+Claude-Session: https://claude.ai/code/session_01QEYia9niBYVkvhhuvXaAMs
