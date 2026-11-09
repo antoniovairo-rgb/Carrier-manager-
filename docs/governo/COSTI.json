@@ -432,5 +432,19 @@
     "cache_read_tokens": 14192732,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYiaCVmnCjk4pxWpWJ1PJ",
+    "titolo": "giro 127 ingresso dalla panchina inquadrato dal prato (PO-329)",
+    "versione": "7.999.187",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T13:01:53Z",
+    "chiusa": "2026-11-09T15:27:50Z",
+    "cost_usd": 7.13834164,
+    "output_tokens": 59356,
+    "cache_read_tokens": 20966821,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
   }
 ]

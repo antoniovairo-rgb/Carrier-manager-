@@ -1043,3 +1043,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 15:10 UTC — PO-330 tifosi: scelta A sagome
 - PO, questionario: «A sagome (Consigliata)». Folla di persone disegnate a densità vera (~22.000), animazione nel vertex shader, zero ridisegni di tela in partita. Ritirata dichiarata: densità di oggi (A-oggi) se il telefono soffre.
 - Decisione tecnica (madre): giro 129 per la 7.999.187 su `sviluppo/giro129-folla`, base `lavoro/186`; catena grafica + guardiano nuovo «nessuna tela ridisegnata in partita»; rosso `__CPM_NO_FOLLA129`.
+
+### 09/11 16:12 UTC — Giro 127 (PO-329) finito
+- Camera dell'ingresso dalla panchina ora sul prato, di fronte all'eroe. Misura prima (rosso `__CPM_NO_G127`): 11-94 fotogrammi per scena con camera dentro/dietro la tribuna; dopo: 0 su 6 casi (3 formati × casa/trasferta), eroe inquadrato 100%. Guardiano nuovo `panchina-127`. Controlli verdi: panchina-127, scena3d-96, intro-118, bambini-124, partita-v2, replay, test:logic, save-compat. Rapporto `docs/sviluppo/RAPPORTO-giro127.md` sul ramo `sviluppo/giro127-panchina`.
+- Resta fuori (registrato, non segnalato dal PO): la regia d'uscita del sostituito usa lo stesso schema di camera; da misurare in un giro futuro.
+- Costo 7,14 $ (un avvio). Sessione archiviata. Unione in `lavoro/187` dopo il rilascio della 186.
