@@ -19,9 +19,9 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 13 | intro-118 | 0 | 115 | intro-118 VERDE BRACCIO: verde  | free=14240/16086MB df=29G libero |
 | 14 | altezza-114 | 0 | 463 |  PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso  | free=14287/16086MB df=29G libero |
 | 15 | flussi-115 | 0 | 829 | flussi-115 · 51 controlli · 1 OK · 50 NO · 0 non giudicati braccio ROSSO: atteso rosso — cade su tutti i 17 punti (50 controlli rossi)  | free=14174/16086MB df=29G libero |
-| 16 | collaudo-110 | - | - | non ancora eseguito | - |
-| 17 | scorri-113 | - | - | non ancora eseguito | - |
-| 18 | moduli-112 | - | - | non ancora eseguito | - |
+| 16 | collaudo-110 | 1 | 344 | ❌ collaudo-110 NON OK braccio: verde+rosso · motivo: almeno un difetto non torna (vedi sopra)  — ROSSO in entrambe le passate (1ª 352s, 2ª 344s): braccio VERDE, G180-17 pc: «banner d'esito: 2 campioni, 0 con la scatola fuori dal campo» (campioni insufficienti, verde 2/3); resto verde. Identico nelle due passate | free=14295/16086MB df=29G libero |
+| 17 | scorri-113 | 0 | 171 | ✅ rosso: con __CPM_NO_G113 resta in basso (il guardiano lo vede) BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 18 (es. t360 menù Stagione→Home: 590)  | free=14276/16086MB df=29G libero |
+| 18 | moduli-112 | 0 | 378 | [rosso] tel ata(4-2-3-1) vs fio(3-5-2) a capo 2 · rosa ["4-3-3","4-3-3"] · anteprima ["4-3-3","4-3-3"] · campo {"casa":"4-3-3","ospite":"4-3-3"} · motore {"casa":"4-3-3","ospite":"4-3-3"} · preset undefined / undefined · fuori posto 0 · trama null ✅ m | free=14196/16086MB df=29G libero |
 | 19 | pc-tablet-292 | - | - | non ancora eseguito | - |
 | 20 | griglia-mobile | - | - | non ancora eseguito | - |
 | 21 | partita-v2 | - | - | non ancora eseguito | - |
