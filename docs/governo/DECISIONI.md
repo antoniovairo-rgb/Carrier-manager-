@@ -1065,3 +1065,26 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 09/11 18:35 UTC — 186 su main, sito fermo per un guasto di GitHub Actions
 - main = 341bf752 (7.999.186). Il deploy di Pages fallisce senza partire (0 job, «workflow file issue») due volte, sul push e a mano. Il workflow è identico a quello che ha pubblicato la 185. githubstatus.com alle 18:33 UTC: «Actions major_outage», incidente «Actions and Checks API» in indagine. Causa esterna: si rilancia il deploy a guasto risolto. La notifica di pubblicazione parte solo col sito sulla 186.
+
+### 09/11 18:50 UTC — 7.999.186 sul sito
+- GitHub Actions tornato operativo alle ~18:44 UTC; deploy di Pages rilanciato a mano (run 42676717089) riuscito. Sito verificato: radice e CARRIER-MANAGER-AV.html servono 7.999.186, privacy.html 200. Notifica «CPM 7.999.186 pronta e pubblicata» inviata.
+
+### 09/11 19:00 UTC — PO-331 card «Prossima» e Nazionale
+- PO, questionario: «Finale in primo piano» e «188». Decisione tecnica (madre): giro 131 su `sviluppo/giro131-prossima` da `lavoro/187`; la card legge la stessa fonte del comando principale (coda Coppa Nazioni e Euro/Mondiale prima del calendario del club), rosso `__CPM_NO_G131`, guardiano nuovo; la 187 esce senza.
+
+### 09/11 19:50 UTC — Backlog: riconciliazione dopo la 187
+- PO: «come mai nel backlog ci sono ancora molte cose?». Conteggio: 25 voci non chiuse. 10 residui in stabilità (decisione PO 20/10: si correggono solo se emergono nei collaudi: PO-022, 068, 153, 167, 220, 224, 228, 229, 248, 250); 3 in corsa (PO-329, 330 nella 187; PO-331 nella 188); PO-322 store parziale (passi del PO su Play Console); 11 con stato vecchio non aggiornato (PO-292, 296, 297, 298, 299, 300, 301 dell'epoca 178; PO-315, 316, 317, 319 della 183).
+- PO, questionario: «Dopo la 187». Giro di sola lettura che confronta le 11 voci con release e codice: chiuse con prova quelle fatte, le altre al PO con proposta di versione.
+
+### 09/11 20:40 UTC — Giro 131 (PO-331) finito
+- Card «Prossima» e comando leggono la stessa fonte (`prossimaNazionale131()`): con la Nazionale in coda la card mostra Nazionale contro avversario, turno («Finale», «Partita n/N», girone/KO Euro-Mondiale) e la riga «Poi: <club> · sett. N». Prima: 6/8 controlli rossi riprodotti; dopo: guardiano `prossima-131` verde 8/8, rosso `__CPM_NO_G131` 6/8. Catena verde (griglia-mobile, design-system, career-critical, test:logic, save-compat, altezza-114, pc-tablet-292). Rapporto `docs/sviluppo/RAPPORTO-giro131.md` sul ramo `sviluppo/giro131-prossima`. Costo 3,57 $. Sessione archiviata. Si unisce alla 188.
+- Domande aperte del giro portate al PO.
+
+### 09/11 20:45 UTC — PO-332 premiazione e domande del giro 131
+- PO, questionario: PO-332 (premiazione: braccia a T, compagni girati) «188»; colore della card con la Nazionale: «Colore Nazionale» (come il giro 131); amichevoli della Nazionale uniformate: «Sì, nella 188» (registrata PO-333); Nazionale in coda con «Vivi la settimana» sul pulsante: «Va bene così».
+- Decisione tecnica (madre): giro 132 (PO-332) su `sviluppo/giro132-premiazione` da `lavoro/187`; giro 133 (PO-333) su `sviluppo/giro133-amichevoli` da `sviluppo/giro131-prossima` (stesso file src/18, per non creare conflitti).
+
+### 09/11 21:30 UTC — PO-334 privacy senza la mail personale
+- PO (foto della pagina privacy): «Perché rimanda ad una pagina esterna? Non deve esserci la mia mail personale». Correzione immediata (dato personale pubblicato, fuori dal codice del gioco: nessun effetto sulla verifica 187): privacy.html, PRIVACY_POLICY.md e STORE_LISTING.md ora indicano korward.devteam@gmail.com, la casella che il PO ha scelto il 21/09 per le idee; nella pagina l'indirizzo è scritto in codici di carattere (contro i raccoglitori di spam). Data di aggiornamento 9 novembre 2026.
+- Limite dichiarato: la casella personale resta nella storia git e in eventuali copie in cache; si toglierebbe solo riscrivendo la storia (force push, vietato).
+- Pagina esterna: Google chiede l'informativa a un indirizzo pubblico; dentro l'app il giro 118 l'apre fuori dall'app. Scelta su come mostrarla chiesta al PO.

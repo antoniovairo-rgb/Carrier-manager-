@@ -1,6 +1,6 @@
 # Informativa sulla privacy — Korward Elite: Football Career Simulator
 
-_Ultimo aggiornamento: 6 agosto 2026_
+_Ultimo aggiornamento: 9 novembre 2026_
 
 Korward Elite ("l'app", "il gioco") è un simulatore di carriera calcistica gratuito. Questa informativa
 spiega quali dati l'app tratta. **Versione breve: l'app non raccoglie, non invia e non condivide
@@ -55,4 +55,4 @@ data di aggiornamento in alto.
 
 ## 8. Contatti
 
-Per domande sulla privacy: antoniovairo@gmail.com
+Per domande sulla privacy: korward.devteam@gmail.com
