@@ -116,7 +116,7 @@
     const tc = new THREE.CanvasTexture(AT.cv), tm = new THREE.CanvasTexture(AT.mk); [tc, tm].forEach(t => { t.anisotropy = 4; });
     const n = seats.length; const geo = new THREE.PlaneGeometry(0.62, 1.24); geo.translate(0, 0.62, 0);
     const iv = new Float32Array(n * 4); // variante, fase, soglia d'eccitazione, scala
-    const mat = new THREE.MeshBasicMaterial({ map: tc, alphaTest: 0.5, transparent: false, side: THREE.DoubleSide });
+    const mat = new THREE.MeshLambertMaterial({ map: tc, alphaTest: 0.5, transparent: false, side: THREE.DoubleSide });
     mat.onBeforeCompile = sh => {
       sh.uniforms.uT = U.uT; sh.uniforms.uEx = U.uEx; sh.uniforms.uMask = { value: tm }; sh.uniforms.uNV = { value: AT.NV };
       sh.vertexShader = 'attribute vec4 iV;\nuniform float uT;uniform float uEx;uniform float uNV;\nvarying vec2 vAtl;\n' + sh.vertexShader
@@ -151,14 +151,12 @@
     const parts = [];
     const add = (g, region, arm, side) => { g = g.toNonIndexed(); const n = g.attributes.position.count; const c = new Float32Array(n * 3);
       for (let i = 0; i < n; i++) { c[i * 3] = region; c[i * 3 + 1] = arm ? 1 : 0; c[i * 3 + 2] = side || 0; } g.setAttribute('color', new THREE.BufferAttribute(c, 3)); g.deleteAttribute('uv'); parts.push(g); };
-    const torso = new THREE.CylinderGeometry(0.21, 0.16, 0.55, 6, 1); torso.scale(1, 1, 0.62); torso.translate(0, 0.98, 0); add(torso, 0);
-    const sh = new THREE.SphereGeometry(0.2, 6, 2, 0, Math.PI * 2, 0, Math.PI / 2); sh.scale(1.1, 0.35, 0.65); sh.translate(0, 1.25, 0); add(sh, 0);
-    const neck = new THREE.CylinderGeometry(0.05, 0.06, 0.08, 5, 1); neck.translate(0, 1.33, 0); add(neck, 0.25);
-    const head = new THREE.SphereGeometry(0.115, 7, 5); head.scale(0.9, 1.08, 0.95); head.translate(0, 1.47, 0); add(head, 0.25);
-    const hair = new THREE.SphereGeometry(0.122, 7, 3, 0, Math.PI * 2, 0, Math.PI * 0.5); hair.scale(0.92, 1.0, 1.0); hair.translate(0, 1.49, -0.01); add(hair, 0.5);
-    [-1, 1].forEach(sd => { const a = new THREE.CylinderGeometry(0.045, 0.04, 0.5, 4, 1); a.translate(0, -0.25, 0); a.translate(sd * 0.24, 1.24, 0); add(a, 0, true, sd);
-      const h = new THREE.SphereGeometry(0.045, 4, 3); h.translate(sd * 0.24, 0.72, 0); add(h, 0.25, true, sd); });
-    [-1, 1].forEach(sd => { const l = new THREE.CylinderGeometry(0.07, 0.06, 0.72, 4, 1); l.translate(sd * 0.09, 0.36, 0); add(l, 0.75); });
+    // ~100 triangoli: cilindri aperti (nessun tappo nascosto), testa 6x4, capelli a calotta, niente mani/collo separati
+    const torso = new THREE.CylinderGeometry(0.22, 0.16, 0.6, 6, 1, false); torso.scale(1, 1, 0.62); torso.translate(0, 1.0, 0); add(torso, 0);
+    const head = new THREE.SphereGeometry(0.12, 6, 4); head.scale(0.9, 1.1, 0.95); head.translate(0, 1.45, 0); add(head, 0.25);
+    const hair = new THREE.SphereGeometry(0.128, 6, 2, 0, Math.PI * 2, 0, Math.PI * 0.5); hair.translate(0, 1.47, -0.01); add(hair, 0.5);
+    [-1, 1].forEach(sd => { const a = new THREE.CylinderGeometry(0.05, 0.045, 0.5, 4, 1, true); a.translate(0, -0.25, 0); a.translate(sd * 0.25, 1.26, 0); add(a, 0, true, sd); });
+    [-1, 1].forEach(sd => { const l = new THREE.CylinderGeometry(0.075, 0.06, 0.72, 4, 1, true); l.translate(sd * 0.09, 0.36, 0); add(l, 0.75); });
     const merged = mergeGeos(THREE, parts); merged.computeVertexNormals(); return merged;
   }
   function mergeGeos(THREE, gs) { let n = 0; gs.forEach(g => n += g.attributes.position.count);

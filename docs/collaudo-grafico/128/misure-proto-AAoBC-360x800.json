@@ -1,0 +1,298 @@
+[
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "modo": "A",
+  "st": {
+   "mode": "A",
+   "planes": 12,
+   "impostori": 22139,
+   "figure3D": 0,
+   "triFolla": 44278,
+   "buildMs": 36.5
+  },
+  "viste": {
+   "gioco": {
+    "frames": 9,
+    "frameMs": 406.9,
+    "frameP95": 953.6,
+    "renderMs": 22.92,
+    "uploadMBs": 0.32,
+    "uploads": 7,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 275,
+    "tri": 55984,
+    "tex": 45,
+    "geo": 283
+   },
+   "tv": {
+    "frames": 10,
+    "frameMs": 365.7,
+    "frameP95": 681.6,
+    "renderMs": 7.63,
+    "uploadMBs": 0.03,
+    "uploads": 3,
+    "uploadMsTot": 0.2,
+    "uploadMsPerFrame": 0,
+    "calls": 255,
+    "tri": 54045,
+    "tex": 64,
+    "geo": 532
+   },
+   "vicino": {
+    "frames": 13,
+    "frameMs": 337,
+    "frameP95": 648.4,
+    "renderMs": 5.89,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 53,
+    "tri": 46072,
+    "tex": 66,
+    "geo": 556
+   },
+   "ingresso": {
+    "frames": 12,
+    "frameMs": 377.7,
+    "frameP95": 454.3,
+    "renderMs": 9.59,
+    "uploadMBs": 0.01,
+    "uploads": 1,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 355,
+    "tri": 60779,
+    "tex": 69,
+    "geo": 648
+   }
+  },
+  "errs": [
+   "[BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+  ]
+ },
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "modo": "Ao",
+  "st": {
+   "mode": "A",
+   "planes": 12,
+   "impostori": 6712,
+   "figure3D": 0,
+   "triFolla": 13424,
+   "buildMs": 21.9
+  },
+  "viste": {
+   "gioco": {
+    "frames": 25,
+    "frameMs": 164.4,
+    "frameP95": 586.7,
+    "renderMs": 15.54,
+    "uploadMBs": 0.32,
+    "uploads": 7,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 275,
+    "tri": 25130,
+    "tex": 45,
+    "geo": 282
+   },
+   "tv": {
+    "frames": 34,
+    "frameMs": 140.7,
+    "frameP95": 237.9,
+    "renderMs": 11.2,
+    "uploadMBs": 0.02,
+    "uploads": 2,
+    "uploadMsTot": 0.1,
+    "uploadMsPerFrame": 0,
+    "calls": 224,
+    "tri": 21775,
+    "tex": 67,
+    "geo": 561
+   },
+   "vicino": {
+    "frames": 37,
+    "frameMs": 129.1,
+    "frameP95": 249.5,
+    "renderMs": 7.69,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 53,
+    "tri": 15218,
+    "tex": 69,
+    "geo": 585
+   },
+   "ingresso": {
+    "frames": 35,
+    "frameMs": 136.4,
+    "frameP95": 158.8,
+    "renderMs": 12.56,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 354,
+    "tri": 29891,
+    "tex": 74,
+    "geo": 732
+   }
+  },
+  "errs": [
+   "[BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+  ]
+ },
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "modo": "B",
+  "st": {
+   "mode": "B",
+   "planes": 12,
+   "impostori": 0,
+   "figure3D": 6787,
+   "triFolla": 746570,
+   "buildMs": 16.1
+  },
+  "viste": {
+   "gioco": {
+    "frames": 7,
+    "frameMs": 554.9,
+    "frameP95": 1043.6,
+    "renderMs": 18.34,
+    "uploadMBs": 0.02,
+    "uploads": 5,
+    "uploadMsTot": 0.1,
+    "uploadMsPerFrame": 0,
+    "calls": 273,
+    "tri": 758116,
+    "tex": 43,
+    "geo": 281
+   },
+   "tv": {
+    "frames": 8,
+    "frameMs": 537.3,
+    "frameP95": 556.9,
+    "renderMs": 13.04,
+    "uploadMBs": 0.02,
+    "uploads": 2,
+    "uploadMsTot": 0.1,
+    "uploadMsPerFrame": 0,
+    "calls": 293,
+    "tri": 758327,
+    "tex": 60,
+    "geo": 535
+   },
+   "vicino": {
+    "frames": 7,
+    "frameMs": 532.6,
+    "frameP95": 569.7,
+    "renderMs": 9.67,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 53,
+    "tri": 748364,
+    "tex": 64,
+    "geo": 558
+   },
+   "ingresso": {
+    "frames": 7,
+    "frameMs": 565,
+    "frameP95": 620.2,
+    "renderMs": 10.1,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 324,
+    "tri": 761511,
+    "tex": 66,
+    "geo": 617
+   }
+  },
+  "errs": [
+   "[BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+  ]
+ },
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "modo": "C",
+  "st": {
+   "mode": "C",
+   "planes": 12,
+   "impostori": 19310,
+   "figure3D": 2841,
+   "triFolla": 351130,
+   "buildMs": 40.2
+  },
+  "viste": {
+   "gioco": {
+    "frames": 7,
+    "frameMs": 540.1,
+    "frameP95": 929.1,
+    "renderMs": 75.41,
+    "uploadMBs": 0.32,
+    "uploads": 7,
+    "uploadMsTot": 0.2,
+    "uploadMsPerFrame": 0,
+    "calls": 275,
+    "tri": 362756,
+    "tex": 45,
+    "geo": 283
+   },
+   "tv": {
+    "frames": 7,
+    "frameMs": 540.6,
+    "frameP95": 1169.3,
+    "renderMs": 12.77,
+    "uploadMBs": 0.01,
+    "uploads": 1,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 290,
+    "tri": 362763,
+    "tex": 62,
+    "geo": 535
+   },
+   "vicino": {
+    "frames": 7,
+    "frameMs": 536.2,
+    "frameP95": 567.7,
+    "renderMs": 8.39,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 54,
+    "tri": 352924,
+    "tex": 66,
+    "geo": 559
+   },
+   "ingresso": {
+    "frames": 8,
+    "frameMs": 519.3,
+    "frameP95": 604.4,
+    "renderMs": 14.79,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 325,
+    "tri": 366071,
+    "tex": 68,
+    "geo": 618
+   }
+  },
+  "errs": [
+   "[BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB."
+  ]
+ }
+]

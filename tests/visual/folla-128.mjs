@@ -20,6 +20,7 @@ export const CAMS = {
   gioco: null, // la camera della scena forzata (inquadratura di gioco vera)
   tv: { x: 0, y: 16, z: 34, lx: 0, ly: 4, lz: -30 },
   vicino: { x: 6, y: 9, z: -22, lx: 0, ly: 11, lz: -60 },
+  ingresso: { x: -6, y: 13, z: 10, lx: -3, ly: 9, lz: -50 }, // come la foto del PO 184: dal campo, alta, verso la tribuna
 };
 /* init script condiviso: cattura scena/renderer, cronometra render, conta i byte caricati sulla GPU */
 export function initProbe(o) {
@@ -83,6 +84,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
     console.log(JSON.stringify(r)); risultati.push(r); await ctx.close();
   }
-  fs.writeFileSync(path.join(OUT, '..', `misure-oggi-${VPS.map(v => v.join('x')).join('_')}.json`), JSON.stringify(risultati, null, 1));
+  fs.writeFileSync(path.join(OUT, '..', `misure-oggi-${VPS.map(v => v.join('x')).join('_')}${process.env.CPM_BRACCI ? '-' + process.env.CPM_BRACCI.replace(/,/g, '') : ''}.json`), JSON.stringify(risultati, null, 1));
   await b.close(); srv.close();
 }

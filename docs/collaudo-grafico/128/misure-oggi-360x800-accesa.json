@@ -1,0 +1,84 @@
+[
+ {
+  "vp": "360x800",
+  "giro": 0,
+  "folla": "accesa",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "1024x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 12,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "errs": [],
+  "viste": {
+   "gioco": {
+    "frames": 16,
+    "frameMs": 261,
+    "frameP95": 657.5,
+    "renderMs": 8.35,
+    "uploadMBs": 6,
+    "uploads": 15,
+    "uploadMsTot": 10.1,
+    "uploadMsPerFrame": 0.6,
+    "calls": 282,
+    "tri": 31386,
+    "tex": 38,
+    "geo": 282
+   },
+   "tv": {
+    "frames": 17,
+    "frameMs": 257.9,
+    "frameP95": 515.9,
+    "renderMs": 8.28,
+    "uploadMBs": 8.83,
+    "uploads": 25,
+    "uploadMsTot": 19.7,
+    "uploadMsPerFrame": 1.2,
+    "calls": 294,
+    "tri": 31139,
+    "tex": 58,
+    "geo": 563
+   },
+   "vicino": {
+    "frames": 27,
+    "frameMs": 163.8,
+    "frameP95": 382.6,
+    "renderMs": 3.97,
+    "uploadMBs": 2.4,
+    "uploads": 6,
+    "uploadMsTot": 3.1,
+    "uploadMsPerFrame": 0.1,
+    "calls": 60,
+    "tri": 21474,
+    "tex": 60,
+    "geo": 607
+   },
+   "ingresso": {
+    "frames": 24,
+    "frameMs": 167.6,
+    "frameP95": 382.3,
+    "renderMs": 8.65,
+    "uploadMBs": 8.41,
+    "uploads": 22,
+    "uploadMsTot": 10.6,
+    "uploadMsPerFrame": 0.4,
+    "calls": 362,
+    "tri": 36291,
+    "tex": 66,
+    "geo": 710
+   }
+  }
+ }
+]
