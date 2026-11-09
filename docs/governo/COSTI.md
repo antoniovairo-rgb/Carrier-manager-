@@ -34,10 +34,11 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.185 | verifica finale 7.999.185 | catena | claude-sonnet-5-5 | 3,6 | 1,12 $ | 14350 | 1 | completo (un solo avvio) |
 | 7.999.186 | giro 123 · parata del tiro e angolo | sviluppo | claude-opus-5-5 | 4,6 | 5,87 $ | 51380 | 1 | completo (un solo avvio) |
 | 7.999.186 | giro 126 · distanze dei tiri | sviluppo | claude-opus-5-5 | 3,7 | 4,48 $ | 36110 | 1 | completo (un solo avvio) |
+| 7.999.186 | verifica finale 7.999.186 (interrotta per la pausa, nulla salvato) | catena | claude-sonnet-5-5 | 1,6 | 0,83 $ | 8295 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
 | 7.999.183 | **TOTALE 7.999.183** (1 sessioni) |  |  |  | 1,46 $ |  |  | tutte complete |
 | 7.999.184 | **TOTALE 7.999.184** (8 sessioni) |  |  |  | almeno 35,27 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.185 | **TOTALE 7.999.185** (4 sessioni) |  |  |  | 18,18 $ |  |  | tutte complete |
-| 7.999.186 | **TOTALE 7.999.186** (6 sessioni) |  |  |  | 20,65 $ |  |  | tutte complete |
+| 7.999.186 | **TOTALE 7.999.186** (7 sessioni) |  |  |  | almeno 21,48 $ |  |  | 1 sessioni parziali: totale minimo |
