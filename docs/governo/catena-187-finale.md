@@ -29,6 +29,10 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 23 | griglia-mobile | 0 | 213 | → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=15509/16086MB df=29G libero |
 | 24 | partita-v2 | 0 | 552 |   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato  | free=15391/16086MB df=29G libero |
 | 25 | partita2d-297 | 0 | 193 | ROSSO: A cade · B cade · C cade ✅ partita2d-297 VERDE  | free=15505/16086MB df=29G libero |
+| 26 | validate-situations | 0 | 697 | gate-history → 1 run · stabile (streak 1 run pulite) ✅ PASS  | free=15511/16086MB df=29G libero |
+| 27 | scena3d-96-tel | 0 | 543 | scene giudicate 16/16 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15488/16086MB df=29G libero |
+| 28 | scena3d-96-pc | 0 | 871 | scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15506/16086MB df=29G libero |
+| 29 | scena3d-96-tab | 0 | 298 | scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15515/16086MB df=29G libero |
 
 ## Esito
 
