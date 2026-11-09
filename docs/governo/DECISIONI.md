@@ -1058,3 +1058,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 09/11 17:26 UTC — Verifica 186: collaudo-110 rosso, giro 130 di misura
 - Verifica finale 186 a 24 controlli su 31 (gate 14/14 verde). `collaudo-110` rosso due volte identico: punto G180-17 pc, banner d'esito con 2 campioni su 3 richiesti (non giudicato = rosso). Decisione tecnica (madre): giro 130 su `collaudo/giro130-g180` misura 186 contro 185; se è la sonda la si ripara senza abbassare soglie, se è la 186 si scrive la causa. La 186 non esce finché collaudo-110 non è verde.
+
+### 09/11 18:25 UTC — Rilascio 7.999.186
+- Verifica finale (catena/186-finale) 28/29 verdi; collaudo-110 rosso per lo strumento (giro 130: finestra fissa della sonda, 2-8 campioni sia sulla 186 sia sulla 185). Sonda riparata (attende la nascita della pillola), soglia di 3 campioni invariata, verde+rosso in due passate sulla 186. `src/` non toccato dopo la verifica: i risultati restano validi. Decisione tecnica (madre): si pubblica.
+- Chiuse PO-323, PO-327, PO-328. Costi: verifica 1,47 $ (ripresa), giro 130 1,60 $.

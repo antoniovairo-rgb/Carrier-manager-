@@ -460,5 +460,33 @@
     "cache_read_tokens": 25216975,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYia9niBYVkvhhuvXaAMs",
+    "titolo": "verifica finale 7.999.186 (ripresa dopo la pausa)",
+    "versione": "7.999.186",
+    "tipo": "catena",
+    "modello": "claude-sonnet-5-5",
+    "creata": "2026-11-09T13:01:52Z",
+    "chiusa": "2026-11-09T17:50:22Z",
+    "cost_usd": 1.47094376,
+    "output_tokens": 17804,
+    "cache_read_tokens": 8476343,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYiaBCwyibQbseh41bjmh",
+    "titolo": "giro 130 sonda collaudo-110 G180-17",
+    "versione": "7.999.186",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T17:25:49Z",
+    "chiusa": "2026-11-09T18:01:12Z",
+    "cost_usd": 1.59658328,
+    "output_tokens": 11171,
+    "cache_read_tokens": 2902260,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
   }
 ]

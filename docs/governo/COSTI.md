@@ -38,11 +38,13 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.187 | giro 128 studio tifosi più umani (PO-330) | collaudo | claude-opus-5-5 | 0,6 | 5,95 $ | 71119 | 1 | completo (un solo avvio) |
 | 7.999.187 | giro 127 ingresso dalla panchina inquadrato dal prato (PO-329) | sviluppo | claude-opus-5-5 | 2,4 | 7,14 $ | 59356 | 1 | completo (un solo avvio) |
 | 7.999.187 | giro 129 folla a sagome (PO-330 A) | sviluppo | claude-opus-5-5 | 1,0 | 9,28 $ | 97710 | 1 | completo (un solo avvio) |
+| 7.999.186 | verifica finale 7.999.186 (ripresa dopo la pausa) | catena | claude-sonnet-5-5 | 4,8 | 1,47 $ | 17804 | 1 | completo (un solo avvio) |
+| 7.999.186 | giro 130 sonda collaudo-110 G180-17 | collaudo | claude-opus-5-5 | 0,6 | 1,60 $ | 11171 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
 | 7.999.183 | **TOTALE 7.999.183** (1 sessioni) |  |  |  | 1,46 $ |  |  | tutte complete |
 | 7.999.184 | **TOTALE 7.999.184** (8 sessioni) |  |  |  | almeno 35,27 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.185 | **TOTALE 7.999.185** (4 sessioni) |  |  |  | 18,18 $ |  |  | tutte complete |
-| 7.999.186 | **TOTALE 7.999.186** (7 sessioni) |  |  |  | almeno 21,48 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (3 sessioni) |  |  |  | 22,37 $ |  |  | tutte complete |
