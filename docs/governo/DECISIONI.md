@@ -1039,3 +1039,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 15:06 UTC — Giro 128 (PO-330, studio tifosi) finito
 - Rapporto: `docs/collaudo-grafico/128/RAPPORTO.md` sul ramo `collaudo/giro128-tifosi`. Oggi la folla è una tela 2D ridisegnata ogni 110 ms (≈32 MB GPU su telefono); prototipi A sagome (44k triangoli, ≈4 MB), B figure 3D (747k triangoli), C miscela (351k). Raccomandazione del giro: A. Fps sul telefono non misurati («Non posso confermarlo» finché non gira il banco).
 - Foto di confronto mandate al PO; scelta chiesta con questionario. Costo 5,95 $ (un avvio). Sessione archiviata.
+
+### 09/11 15:10 UTC — PO-330 tifosi: scelta A sagome
+- PO, questionario: «A sagome (Consigliata)». Folla di persone disegnate a densità vera (~22.000), animazione nel vertex shader, zero ridisegni di tela in partita. Ritirata dichiarata: densità di oggi (A-oggi) se il telefono soffre.
+- Decisione tecnica (madre): giro 129 per la 7.999.187 su `sviluppo/giro129-folla`, base `lavoro/186`; catena grafica + guardiano nuovo «nessuna tela ridisegnata in partita»; rosso `__CPM_NO_FOLLA129`.
