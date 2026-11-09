@@ -1048,3 +1048,10 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Camera dell'ingresso dalla panchina ora sul prato, di fronte all'eroe. Misura prima (rosso `__CPM_NO_G127`): 11-94 fotogrammi per scena con camera dentro/dietro la tribuna; dopo: 0 su 6 casi (3 formati × casa/trasferta), eroe inquadrato 100%. Guardiano nuovo `panchina-127`. Controlli verdi: panchina-127, scena3d-96, intro-118, bambini-124, partita-v2, replay, test:logic, save-compat. Rapporto `docs/sviluppo/RAPPORTO-giro127.md` sul ramo `sviluppo/giro127-panchina`.
 - Resta fuori (registrato, non segnalato dal PO): la regia d'uscita del sostituito usa lo stesso schema di camera; da misurare in un giro futuro.
 - Costo 7,14 $ (un avvio). Sessione archiviata. Unione in `lavoro/187` dopo il rilascio della 186.
+
+### 09/11 17:16 UTC — Giro 129 (PO-330 A sagome) finito
+- Folla a sagome nel gioco: 19.067 tifosi (50.000 posti, 85%), zero tele ridisegnate e zero caricamenti di texture in partita (prima 18-26 ridisegni e 22-40 caricamenti in 6 s). Conteggio coerente con l'affluenza (scarto ≤ 0,025). Rosso `__CPM_NO_FOLLA129`; manopola `cpm-folla` = vera | oggi (ritirata senza rilascio). Guardiano `npm run folla`. Catena grafica + folla + scena3d-96 (solo formato telefono) verdi. Rapporto `docs/collaudo-grafico/129/RAPPORTO.md` sul ramo `sviluppo/giro129-folla`.
+- Fps sul telefono: non confermati. Headless: p95 migliore, media pari o un po' peggiore. Banco di prova sul sito dopo la promozione della 187.
+- Decisione tecnica (madre): prima del rilascio della 187, la catena finale esegue scena3d-96 anche su PC e tablet (non fatti nel giro per il tetto di tempo).
+- Domande aperte dal rapporto, da porre al PO dopo la prova sul telefono: densità di default; prime file in 3D in futuro.
+- Costo 9,28 $ (un avvio). Sessione archiviata.

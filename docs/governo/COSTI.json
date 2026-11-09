@@ -446,5 +446,19 @@
     "cache_read_tokens": 20966821,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYiaAzV87naJYzcpKEofd",
+    "titolo": "giro 129 folla a sagome (PO-330 A)",
+    "versione": "7.999.187",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T15:57:12Z",
+    "chiusa": "2026-11-09T16:59:48Z",
+    "cost_usd": 9.2790814,
+    "output_tokens": 97710,
+    "cache_read_tokens": 25216975,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
   }
 ]
