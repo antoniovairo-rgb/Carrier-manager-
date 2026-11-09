@@ -16,6 +16,13 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 10 | distanze-126 | 1 | 3570 |   partite finite 13/24 · campione minimo: tiri 40, dal limite 8, teste 6 NON GIUDICATO (= ROSSO): campione sotto il minimo — partite finite 13/24  | free=15539/16086MB df=29G libero |
 | 11 | tabellone-117 | 0 | 325 | {"percorso":"ripresa","rosso":true,"err":null,"prima":{"score":{"home":1,"away":0},"motore":{"home":1,"away":0},"log":1,"ev":["home"],"t216":null,"r117":null,"min":11},"snap":{"clock":11,"score":{"home":1,"away":0},"g117":false},"rientro":{"score":{"home":1,"away":0},"motore":{"home":0,"away":0},"log":0,"ev":[],"t216":null,"r117 | free=15505/16086MB df=29G libero |
 | 12 | tabellino-228 | 0 | 308 | k4 rosso: tabellino 0-4 (mio-loro), tabellone 3-0, motore 4-0, golLog [{"min":52,"tick":1211,"lato":"home","scena":true,"chi":9},{"min":52,"tick":1211,"lato":"home","scena":true,"chi":21},{"min":73,"tick":1693,"lato":"home","scena":false,"chi":6},{"min":93,"tick":2189,"lato":"home","scena":false,"chi":6}], fischio [{"min":90,"mi | free=15522/16086MB df=29G libero |
+| 13 | twa-120 | 0 | 45 |   OK  rosso: l'interruttore __CPM_NO_G120 fa cadere modo/AI/rete/Indietro: cadono modo, ai, rete, indietro su 4 twa-120 ✅ VERDE — 12/12 controlli · nessun motivo  | free=15516/16086MB df=29G libero |
+| 14 | sw-cache-120 | 0 | 92 | errori JS: nessuno sw-cache-120 [rosso] ✅ — atteso: seconda apertura senza rete che NON monta (comportamento di prima)  | free=15492/16086MB df=29G libero |
+| 15 | albo-122 | 0 | 149 | ✅ rosso: con __CPM_NO_G122 il guardiano boccia l'albo di prima BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 6 (es. t360 · riepilogo assente (albo di prima))  | free=15262/16086MB df=29G libero |
+| 16 | intro-118 | 0 | 113 | intro-118 VERDE BRACCIO: verde  | free=15320/16086MB df=29G libero |
+| 17 | altezza-114 | 0 | 461 | ✓ rosso 1440x900: 6 schermate fuori regola col rosso (menu, opzioni, offerte, calendario, passaggio-pro) PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso  | free=15511/16086MB df=29G libero |
+| 18 | flussi-115 | 0 | 827 | flussi-115 · 51 controlli · 1 OK · 50 NO · 0 non giudicati braccio ROSSO: atteso rosso — cade su tutti i 17 punti (50 controlli rossi)  | free=15501/16086MB df=29G libero |
+| 19 | collaudo-110 | 0 | 368 | ✅ collaudo-110 OK braccio: verde+rosso · motivo: ogni difetto verde col codice nuovo e rosso con il suo interruttore  | free=15511/16086MB df=29G libero |
 
 ## Esito
 
