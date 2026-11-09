@@ -601,7 +601,7 @@ function ThreeMatchView(props){
          senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
       try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null,kind:(!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)&&_c.kind)||null};}catch(_e){}
-      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current._tun46=_sc.tunnel||null;/* [giro 46] bocca del tunnel per la camera dell'ingresso */sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
+      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current._tun46=_sc.tunnel||null;/* [giro 46] bocca del tunnel per la camera dell'ingresso */sr.current.goalNet=_sc.goalNet;sr.current._stands127=_sc.stands127||null;/* [giro 127 PO-329] volumi delle tribune per il testimone __CPM_G127 */sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
        scena resta con le parti già aggiunte (gradinate e folla: ecco perché lo stadio sembra abitato) ma
@@ -2933,6 +2933,24 @@ function ThreeMatchView(props){
       /* [giro 96a PO-299, testimone di sola prova] TUTTO IL QUADRO IN UNA LETTURA, per il guardiano scena3d-96: piedi e testa dell'eroe
          (ndc), pallone, quota del quadro che cade sul prato, corpi DISEGNATI (radici GLB visibili, o mesh senza GLB), targhette visibili
          col loro rettangolo a schermo, portiere avversario col suo gesto. Nessuna scrittura sullo stato del gioco. */
+      /* [giro 127 PO-329, testimone di sola prova] INGRESSO DALLA PANCHINA: dove sta la telecamera rispetto ai VOLUMI delle quattro
+         tribune (coordinate locali di ciascun gruppo: dentro/dietro = entro la larghezza, oltre il fronte verso il retro, sotto la cima) e
+         quanti GRADONI sono in vista dalla loro faccia POSTERIORE (camera dal lato opposto alla normale che guarda il campo e il cielo,
+         gradone dentro il tronco di vista). Eroe in ndc. Nessuna scrittura sullo stato del gioco. */
+      window.__CPM_G127=function(){try{
+        const V=THREE.Vector3,cp=camera.position,o={se:sr.current._se127!=null?+(+sr.current._se127).toFixed(2):-1,c:[+cp.x.toFixed(2),+cp.y.toFixed(2),+cp.z.toFixed(2)]};
+        const fw=new V();camera.getWorldDirection(fw);o.d=[+fw.x.toFixed(3),+fw.y.toFixed(3),+fw.z.toFixed(3)];
+        if(hero){const pj=(y)=>{const v=new V(hero.position.x,y,hero.position.z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};o.hf=pj(0.05);o.hh=pj(1.85);o.hw=[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)];}
+        camera.updateMatrixWorld();const fr=new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
+        o.dentro=[];o.retro=0;o.trib=[];
+        for(const g of (sr.current._stands127||[])){if(!g||!g.userData||!g.userData.dim127)continue;g.updateMatrixWorld(true);const dm=g.userData.dim127;
+          const l=g.worldToLocal(cp.clone());const inW=Math.abs(l.x)<=dm.W/2+1,oltre=l.z>=-dm.D/2,sotto=l.y<=dm.H*1.4+3;
+          o.trib.push([+l.x.toFixed(1),+l.y.toFixed(1),+l.z.toFixed(1),dm.W,dm.D,+dm.H.toFixed(1)]);
+          if(inW&&oltre&&sotto)o.dentro.push(o.trib.length-1);
+          g.traverse(m=>{if(!m.isMesh||!m.userData||!m.userData.tier127||!m.visible)return;
+            const n=new V(0,0,1).transformDirection(m.matrixWorld);if(n.y<0)n.negate();const pc=new V().setFromMatrixPosition(m.matrixWorld);
+            if(cp.clone().sub(pc).dot(n)<0&&fr.intersectsObject(m))o.retro++;});}
+        return o;}catch(e){return {err:String(e&&e.message||e)};}};
       window.__CPM_G96=function(){try{
         const V=THREE.Vector3,pj=(x,y,z)=>{const v=new V(x,y,z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
         const P=propsRef.current||{},o={ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,fov:+camera.fov.toFixed(1),asp:+camera.aspect.toFixed(3)};
@@ -10120,9 +10138,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         tPx=clamp(rbx-30,-96,-8);tPy=30;tPz=rbz*0.45+32;tLx=rbx+6;tLy=1.3;tLz=rbz*0.6;
         kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.8,1);}
       // item 2 (5.49.6): regia dell'INGRESSO SUBENTRANTE — camera bassa che inquadra l'eroe alla linea e poi mentre entra in campo.
+      sr.current._se127=subEntryT;/* [giro 127] tempo della scena d'ingresso per il testimone __CPM_G127 */
       if(subEntryT>=0){const _hx2=hero.position.x,_hz2=hero.position.z,_near=subEntryT<1.5?1:0;/* [6.5.2] soglia allineata al nuovo beat istruzioni */
+        /* [giro 127 PO-329 «quando l'eroe entra dalla panchina si vedono erroneamente le tribune da dietro (se piu' semplice, cambiare
+           inquadratura di fronte e non di spalle)» — rosso __CPM_NO_G127] MISURATO (sonda panchina-127, GLB acceso, due stadi): la camera
+           stava a z = eroe-11 cioe' ~-44,5, OLTRE la linea laterale e dentro il volume della tribuna sul lato panchine (coordinate locali
+           del gruppo: 9-13 u oltre il fronte, a quota 4,8 sotto i gradoni) e guardava il campo attraverso il retro dei gradoni: 36-52
+           fotogrammi su 84 dentro la tribuna, 44-50 con gradoni visti dalla faccia posteriore. Ora la camera sta sul PRATO, di fronte
+           all'eroe, e guarda verso la panchina: alle sue spalle c'e' il fronte della tribuna (gradoni dal lato giusto). Il gesto e i tempi
+           della scena (SUB_DUR, attesa, corsa) non cambiano. Se l'eroe arriva vicino alla linea opposta la distanza di 11 u si recupera
+           di lato (verso l'attacco) invece di uscire dal campo. */
+        if(typeof window!=='undefined'&&window.__CPM_NO_G127){
         tPx=_hx2-12;tPy=5.0+_near*0.6;tPz=_hz2-11;// bassa, lato campo verso l'eroe + la panchina
-        tLx=_hx2+3;tLy=1.7;tLz=_hz2+2;kp=Math.min(dt*2.4,1);kl=Math.min(dt*3,1);}
+        tLx=_hx2+3;tLy=1.7;tLz=_hz2+2;}
+        else{const _cz127=Math.min(_hz2+11,26),_dz127=_cz127-_hz2,_dx127=Math.sqrt(Math.max(0,121-_dz127*_dz127));
+        tPx=_hx2+2+_dx127;tPy=3.6+_near*0.4;tPz=_cz127;// sul prato, davanti all'eroe, verso la panchina
+        tLx=_hx2;tLy=1.4;tLz=_hz2-2;sr.current._sub127=[tPx,tPy,tPz,tLx,tLy,tLz];}
+        kp=Math.min(dt*2.4,1);kl=Math.min(dt*3,1);
+        if(sr.current._sub127){kp=Math.min(dt*3.2,1);kl=Math.min(dt*8,1);}/* [giro 127] misurato: con kl dt*3 lo sguardo restava ~3 u indietro sull'eroe che corre (ndc 0,8) */}
+      else if(sr.current._sub127)sr.current._sub127=null;
       // [7.127.0] REGIA USCITA: la camera SEGUE l'eroe che cammina verso il dugout (altrimenti l'uscita resta fuori quadro)
       if(subExitT>=0){const _hx3=hero.position.x,_hz3=hero.position.z;
         tPx=_hx3-13;tPy=5.4;tPz=_hz3-12;// bassa, lato campo, segue l'eroe verso l'area tecnica
@@ -10482,6 +10516,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
         try{if(sr.current._tocc503)sr.current._tocc503.push('saliente689');}catch(_e){}
       }
       else if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
+      /* [giro 127 PO-329] anche lo STACCO di un highlight accodato durante l'ingresso dalla panchina scatta sulla regia dell'ingresso:
+         misurato a 1440x900, lo snap portava la camera sul bersaglio dell'highlight e la scena congelata la teneva li' (eroe a ndc 1,3). */
+      if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
       if(sr.current._cutSnap||sr.current._sceneCut){try{if(sr.current._tocc503)sr.current._tocc503.push('snap');}catch(_e){}/* [7.503.1] */
         const _dSnap=Math.hypot(tPx-camera.position.x,tPy-camera.position.y,tPz-camera.position.z);
         const _no471=(typeof window!=='undefined'&&window.__CPM_NO471);const _nowMs471=performance.now();
@@ -10773,6 +10810,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);/* tre quarti: ~49 gradi fuori dall'asse del volo, cosi' la palla attraversa il quadro */
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;tLx=_kp.x;tLy=1.25;tLz=_kp.z;
          _prc.cam=(_prc.cam|0)+1;}}
+      /* [giro 127 PO-329] la regia dell'ingresso dalla panchina ha l'ULTIMA parola prima dell'arbitro d'inerzia (regola 7.521): misurato,
+         le passate degli highlight che si accodano durante la scena spostavano lo sguardo e l'eroe finiva sul bordo del quadro (ndc ±0,8). */
+      if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('arb:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
@@ -11010,7 +11050,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          nello stesso fotogramma (r. ~7000) ma si esegue solo al fotogramma dopo (r. ~3633), quindi qui il pallone e' ancora dove l'aveva
          lasciato la cronaca — misurato fino a 46u dall'eroe — e la guardia girava lo sguardo verso un pallone che non c'e' piu' (scarto
          15-27u dal bersaglio dello snap, eroe fuori quadro per l'apertura). Dal fotogramma dopo la guardia lavora sul pallone vero. */
-      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&!(sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261))&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
+      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&(subEntryT<0||(typeof window!=='undefined'&&window.__CPM_NO_G127))/* [giro 127] durante l'ingresso dalla panchina la storia e' l'eroe: la guardia-palla dell'highlight accodato non ruota lo sguardo */&&!(sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261))&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
         const _cxB=camera.position.x,_cyB=camera.position.y,_czB=camera.position.z;
         const _dxB=ball.position.x-_cxB,_dzB=ball.position.z-_czB,_dyB=(ball.position.y+0.2)-_cyB;
         const _lxB=camLook.x-_cxB,_lzB=camLook.z-_czB,_lyB=camLook.y-_cyB;

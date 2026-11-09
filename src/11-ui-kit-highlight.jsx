@@ -1020,6 +1020,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const m=new THREE.MeshLambertMaterial({color:0xffffff,map:tex,side:THREE.DoubleSide});
       const t=new THREE.Mesh(new THREE.PlaneGeometry(standW,L),m);
       t.position.set(0,(y0+y1)/2,(z0+z1)/2);t.rotation.x=Math.atan2(dz,dy);// fronte-basso → retro-alto
+      t.userData.tier127=1;/* [giro 127 PO-329] gradone riconoscibile dal testimone di sola prova __CPM_G127 (faccia posteriore in vista) */
       g.add(t);return m;
     };
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
@@ -1173,7 +1174,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       frontRows.push(front);
     }
     g.position.set(cx,0,cz);g.rotation.y=rotY;
-    scene.add(g);return {mats:[mLow,mUp],front};
+    g.userData.dim127={W:standW,D:standD,H:standH};/* [giro 127 PO-329] volume della tribuna per il testimone __CPM_G127 */
+    scene.add(g);return {mats:[mLow,mUp],front,g};
   };
 
   // Settori — Ovest/Est dietro le porte visive (z±), curve sui lati corti (x±)
@@ -1614,7 +1616,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   try{if(typeof window!=='undefined'){/* [giro 46] testimone: tipologia e costo dell'impianto (mesh = tetto dei draw call, indipendente dalla camera) */
     let nM=0,tri=0;scene.traverse(o=>{if(o.isMesh&&o.geometry){nM++;const g=o.geometry,c=((g.index?g.index.count:(g.attributes.position?g.attributes.position.count:0))/3);tri+=o.isInstancedMesh?c*o.count:c;}});
     const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.kind=K46;w.tpl=(T&&T.template)||null;w.cap=_capB;w.crown=_crown46;w.meshes=nM;w.tri=Math.round(tri);w.light=lightColor;}}catch(_e){}
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
+  return {stands127:[_ovStand.g,_esStand.g,_sudStand.g,_nordStand.g].filter(Boolean),homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================
