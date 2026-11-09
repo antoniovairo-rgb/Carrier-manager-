@@ -11,6 +11,11 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 5 | panchina-127-pc | 0 | 472 | braccio: verde+rosso · formati 1440x900 ✅ panchina-127 verde (e il rosso si vede)  | free=15555/16086MB df=29G libero |
 | 6 | folla | 0 | 162 |   ✓ F5 manopola di densita': 'oggi' 6391 tifosi contro 'vera' 19067 FOLLA: verde PASSA · rosso visto  | free=15554/16086MB df=29G libero |
 | 7 | bambini-124 | 0 | 879 | ROSSO (__CPM_NO_G124) rosso-rosso: {"n":44,"errMax":72,"es":[{"i":0,"casa":true,"n":"HyperShirt","exp":[0,188,212],"got":[0,188,212]},{"i":0,"casa":true,"n":"HyperShorts","exp":[24,24,38],"got":[86,86,108]}]} ✅ bambini-124 verde (e il rosso si vede)  | free=15530/16086MB df=29G libero |
+| 8 | angolo-117 | 0 | 811 | ROSSO (__CPM_NO_G121H+C+M): 2 casi in area · girati (>35°) 2 ✅ angolo-117 verde (e il rosso si vede)  | free=15545/16086MB df=29G libero |
+| 9 | volee-d3-119 | 0 | 252 | VERDE ["angolo-lontano-48-50:0.65","angolo-lontano-70-80:0.68","cross-area-90-54:0.6"] · ROSSO ["angolo-lontano-48-50:5.01","angolo-lontano-70-80:8.05","cross-area-90-54:0.35"] ✅ volee-d3-119 verde (e il rosso si vede)  | free=15537/16086MB df=29G libero |
+| 10 | distanze-126 | 1 | 3570 |   partite finite 13/24 · campione minimo: tiri 40, dal limite 8, teste 6 NON GIUDICATO (= ROSSO): campione sotto il minimo — partite finite 13/24  | free=15539/16086MB df=29G libero |
+| 11 | tabellone-117 | 0 | 325 | {"percorso":"ripresa","rosso":true,"err":null,"prima":{"score":{"home":1,"away":0},"motore":{"home":1,"away":0},"log":1,"ev":["home"],"t216":null,"r117":null,"min":11},"snap":{"clock":11,"score":{"home":1,"away":0},"g117":false},"rientro":{"score":{"home":1,"away":0},"motore":{"home":0,"away":0},"log":0,"ev":[],"t216":null,"r117 | free=15505/16086MB df=29G libero |
+| 12 | tabellino-228 | 0 | 308 | k4 rosso: tabellino 0-4 (mio-loro), tabellone 3-0, motore 4-0, golLog [{"min":52,"tick":1211,"lato":"home","scena":true,"chi":9},{"min":52,"tick":1211,"lato":"home","scena":true,"chi":21},{"min":73,"tick":1693,"lato":"home","scena":false,"chi":6},{"min":93,"tick":2189,"lato":"home","scena":false,"chi":6}], fischio [{"min":90,"mi | free=15522/16086MB df=29G libero |
 
 ## Esito
 
