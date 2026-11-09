@@ -1062,3 +1062,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 18:25 UTC — Rilascio 7.999.186
 - Verifica finale (catena/186-finale) 28/29 verdi; collaudo-110 rosso per lo strumento (giro 130: finestra fissa della sonda, 2-8 campioni sia sulla 186 sia sulla 185). Sonda riparata (attende la nascita della pillola), soglia di 3 campioni invariata, verde+rosso in due passate sulla 186. `src/` non toccato dopo la verifica: i risultati restano validi. Decisione tecnica (madre): si pubblica.
 - Chiuse PO-323, PO-327, PO-328. Costi: verifica 1,47 $ (ripresa), giro 130 1,60 $.
+
+### 09/11 18:35 UTC — 186 su main, sito fermo per un guasto di GitHub Actions
+- main = 341bf752 (7.999.186). Il deploy di Pages fallisce senza partire (0 job, «workflow file issue») due volte, sul push e a mano. Il workflow è identico a quello che ha pubblicato la 185. githubstatus.com alle 18:33 UTC: «Actions major_outage», incidente «Actions and Checks API» in indagine. Causa esterna: si rilancia il deploy a guasto risolto. La notifica di pubblicazione parte solo col sito sulla 186.
