@@ -1096,3 +1096,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 22:30 UTC — Privacy dentro l'app e pulsante dell'amichevole
 - PO, questionario: informativa privacy «Dentro l'app» (PO-334, nella 188; la pagina pubblica resta per Google Play) e pulsante dell'amichevole con «poi: <club>» (PO-335, «Sì, nella 188»).
 - Decisione tecnica (madre): un solo giro 134 su `sviluppo/giro134-privacy-poi` da `sviluppo/giro133-amichevoli` (stesso file src/18).
+
+### 09/11 23:13 UTC — Verifica 187: distanze-126 non giudicato, giro 135 di misura
+- Verifica 187 a 29 controlli su 33 alle 22:32 UTC; `distanze-126` uscita 1 in 3570 s: 13/24 partite finite, campione sotto il minimo (= rosso). Sulla 186: 24/24 in 2595 s. Tutto il resto verde finora (panchina-127 tre formati, folla, scena3d-96 tutti i formati, validate-situations).
+- Decisione tecnica (madre): giro 135 su `collaudo/giro135-distanze` misura la durata di una partita in quattro bracci (187, 187 senza folla a sagome, 187 densità «oggi», 186). Se è la sonda a tempo fisso la si ripara senza toccare campione e soglie; se la folla rallenta il gioco si scrive causa e proposta. La 187 non esce finché distanze-126 non è verde. PO avvisato con notifica.
