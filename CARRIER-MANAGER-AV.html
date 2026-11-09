@@ -25661,6 +25661,13 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           const _mf=sr.current._mateFx;const _chi31=[];
           if(sr.current._celLift371===1&&hero)_chi31.push(hero);
           if(_mf&&_mf.name==='lift'&&_mf.mesh)_chi31.push(_mf.mesh);
+          /* [giro 132 · PO-332 «nella premiazione braccia a T anziche' alzate»] RETE DELL'ALZATA. Sul corpo CGTrader col pacchetto
+             Mixamo la clip giusta e' mx-victory (vedi _scegliGesto23); ma l'alzata dipende da una clip che puo' mancare o non
+             attecchire — MISURATO sul corpo «regular» (che non ha le clip Mixamo): `throwin` congelata, mani 0,60-0,68 SOTTO la
+             testa, e la foto del PO mostra lo stesso. Qui, dopo il mixer, se l'eroe col trofeo ha le mani sotto la testa le braccia
+             si PUNTANO in alto (strette, a reggere la coppa, senza i pugni ritmati dell'esultanza). Rosso __CPM_NO_G132. */
+          const _rete132=!!(hero&&sr.current._cerLift===1&&_PREM132&&!(typeof window!=='undefined'&&window.__CPM_NO_G132));
+          if(_rete132&&_chi31.indexOf(hero)<0)_chi31.push(hero);
           for(const _av of (glbAvatars||[])){if(!_av||!_av.proc)continue;const _in31=_chi31.indexOf(_av.proc)>=0,_clip31=!!(_av.gestures&&_av.gestures.lift),_want=_in31&&!_clip31;
             _av._esu31=(_av._esu31||0)+((_want?1:0)-(_av._esu31||0))*Math.min(aDt*7,1);const _k=_clip31&&_in31?1:_av._esu31;if(_k<0.02)continue;
             try{const R=_av.visualRoot||_av.root;
@@ -25669,11 +25676,15 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
               const B=_av._b31;if(!B)continue;
               const v=sr.current._v31||(sr.current._v31={a:new THREE.Vector3(),b:new THREE.Vector3(),d:new THREE.Vector3(),lat:new THREE.Vector3(),t:new THREE.Vector3(),q:new THREE.Quaternion(),pw:new THREE.Quaternion()});
               R.updateMatrixWorld(true);B.uL.getWorldPosition(v.a);B.uR.getWorldPosition(v.b);v.lat.subVectors(v.a,v.b);v.lat.y=0;if(v.lat.lengthSq()<1e-8)continue;v.lat.normalize();
-              _av._ph31=(_av._ph31||0)+aDt*9;const _pump=0.12*Math.sin(_av._ph31);
+              _av._ph31=(_av._ph31||0)+aDt*9;const _pump=(_rete132&&_av.proc===hero)?0:0.12*Math.sin(_av._ph31);/* [giro 132] chi regge la coppa non batte i pugni */
               const aim=(bone,child,side)=>{bone.updateMatrixWorld(true);bone.getWorldPosition(v.a);child.getWorldPosition(v.b);v.d.subVectors(v.b,v.a).normalize();
                 v.t.set(0,1,0).addScaledVector(v.lat,side*(0.42+_pump)).normalize();const dir=v.d.clone().lerp(v.t,_k).normalize();v.q.setFromUnitVectors(v.d,dir);
                 bone.parent.updateMatrixWorld(true);bone.parent.getWorldQuaternion(v.pw);bone.quaternion.copy(v.pw.clone().invert().multiply(v.q).multiply(v.pw).multiply(bone.quaternion.clone()));bone.updateMatrixWorld(true);};
-              if(!_clip31){aim(B.uL,B.lL,1);aim(B.lL,B.hL,1);aim(B.uR,B.lR,-1);aim(B.lR,B.hR,-1);}/* con la clip vera le braccia le muove lei: qui si misura soltanto */
+              let _sotto132=false;if(_rete132&&_av.proc===hero){if(_av._hd132===undefined)_av._hd132=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i)||null;
+                if(_av._hd132){_av._hd132.getWorldPosition(v.a);B.hL.getWorldPosition(v.b);const _yl=v.b.y;B.hR.getWorldPosition(v.b);_sotto132=Math.min(_yl,v.b.y)<v.a.y+0.15;}
+                try{if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const W=(window.__CPM_RETE132=window.__CPM_RETE132||{fot:0,sotto:0});W.fot++;if(_sotto132)W.sotto++;}}catch(_e){}}
+              if(_sotto132){aim(B.uL,B.lL,0.45);aim(B.lL,B.hL,0.2);aim(B.uR,B.lR,-0.45);aim(B.lR,B.hR,-0.2);}/* laterale 0,19 e 0,08: braccia quasi verticali, mani vicine sopra la testa */
+              else if(!_clip31){aim(B.uL,B.lL,1);aim(B.lL,B.hL,1);aim(B.uR,B.lR,-1);aim(B.lR,B.hR,-1);}/* con la clip vera le braccia le muove lei: qui si misura soltanto */
               if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_ESULTA31=window.__CPM_ESULTA31||{fotogrammi:0,eroe:0,compagno:0,maniSopraTesta:0,clip:0,procedurale:0});W.fotogrammi++;if(_clip31)W.clip=(W.clip|0)+1;else W.procedurale=(W.procedurale|0)+1;if(_av.proc===hero)W.eroe++;else W.compagno++;
                 const hd=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i);if(hd&&_k>0.8){hd.getWorldPosition(v.a);B.hL.getWorldPosition(v.b);const hy=v.b.y;B.hR.getWorldPosition(v.b);if(hy>v.a.y||v.b.y>v.a.y)W.maniSopraTesta++;}}/* almeno una mano sopra la testa: la clip vera alterna i pugni */
             }catch(_e31){}}
