@@ -26,9 +26,9 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 20 | griglia-mobile | 0 | 217 | → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  — uscita 0; riga finale del log: «NON misurato: prepartita: playMatch → nomatch» (dichiarato dal gioco, non un rosso) | free=14280/16086MB df=29G libero |
 | 21 | partita-v2 | 0 | 563 |   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato  | free=14243/16086MB df=29G libero |
 | 22 | partita2d-297 | 0 | 189 |  ✅ partita2d-297 VERDE  | free=14274/16086MB df=29G libero |
-| 23 | validate-situations | - | - | non ancora eseguito | - |
-| 24 | scena3d-96 | - | - | non ancora eseguito | - |
-| 25 | partita-vera | - | - | non ancora eseguito | - |
+| 23 | validate-situations | 0 | 664 |  ✅ PASS  | free=14266/16086MB df=29G libero |
+| 24 | scena3d-96 | 0 | 1668 | scene giudicate 31/31 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=14249/16086MB df=29G libero |
+| 25 | partita-vera | 0 | 507 | ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   | free=14268/16086MB df=29G libero |
 | 26 | highlight-95 | - | - | non ancora eseguito | - |
 | 27 | career-critical | - | - | non ancora eseguito | - |
 | 28 | build-web | - | - | non ancora eseguito | - |
