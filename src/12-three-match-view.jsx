@@ -6489,6 +6489,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         else{_tint(_cm.homeMats,1,1,1);_tint(_cm.awayMats,1,1,1);}}
       // CROWD 2.0 §3/§10 — TIFOSI ANIMATI, cadenza ADATTIVA: burst pieno su gol/occasioni, a riposo la cadenza
       // viene dal contesto (stadio caldo=vivo · partita normale=calmo · spalti radi=quasi statico). Round-robin: ≤1 upload texture/frame.
+      /* [giro 129 PO-330] FOLLA A SAGOME: il tifo e' tre uniform (tempo, eccitazione, chi ha segnato) — nessuna tela ridisegnata.
+         Sotto ?cpmtest=1 resta ferma come la folla di prima (presentazione, il gate non la valida) salvo __CPM_FOLLA129_ANIM;
+         __CPM_FOLLA129_EX/_GS forzano il tifo per le foto, solo in prova. */
+      if(sr.current.crowdMats&&sr.current.crowdMats.folla129){const _U=sr.current.crowdMats.folla129.U;
+        const _an=!_CPM_TEST||(typeof window!=='undefined'&&!!window.__CPM_FOLLA129_ANIM);
+        _U.uT.value=_an?now*0.001:0;_U.uEx.value=_an?_atmoExc:0;_U.uGs.value=_an?(goalBurstT>=0?(goalBurstStadHome?1:-1):0):0;
+        if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FOLLA129_EX!=null){_U.uEx.value=+window.__CPM_FOLLA129_EX;_U.uGs.value=+(window.__CPM_FOLLA129_GS||0);}}
       if(sr.current.crowdMats&&sr.current.crowdMats.crowdAnims){const _cm=sr.current.crowdMats;const _ca=_cm.crowdAnims;
         const _gs=goalBurstT>=0?(goalBurstStadHome?1:-1):0;
         // cadenza SEMPRE step-gated (round-robin, mai ogni-frame): le canvas v2 sono 6× più grandi — un
