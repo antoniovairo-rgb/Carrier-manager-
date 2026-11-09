@@ -10,9 +10,9 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 4 | bambini-124 | 0 | 903 | ROSSO (__CPM_NO_G124) rosso-rosso: {"n":44,"errMax":72,"es":[{"i":0,"casa":true,"n":"HyperShirt","exp":[0,188,212],"got":[0,188,212]},{"i":0,"casa":true,"n":"HyperShorts","exp":[24,24,38],"got":[86,86,108]}]} ✅ bambini-124 verde (e il rosso si vede)  | free=14587/16086MB df=29G libero |
 | 5 | angolo-117 | 0 | 859 | ROSSO (__CPM_NO_G121H+C+M): 2 casi in area · girati (>35°) 2 ✅ angolo-117 verde (e il rosso si vede)  | free=13156/16086MB df=29G libero |
 | 6 | volee-d3-119 | 0 | 320 | VERDE ["angolo-lontano-48-50:0.68","angolo-lontano-70-80:0.62","cross-area-90-54:0.39"] · ROSSO ["angolo-lontano-48-50:6.98","angolo-lontano-70-80:9.18","cross-area-90-54:0.34"] ✅ volee-d3-119 verde (e il rosso si vede)  | free=11380/16086MB df=29G libero |
-| 7 | distanze-126 | - | - | non ancora eseguito | - |
-| 8 | tabellone-117 | - | - | non ancora eseguito | - |
-| 9 | tabellino-228 | - | - | non ancora eseguito | - |
+| 7 | distanze-126 | 0 | 2595 |   partite finite 24/24 · campione minimo: tiri 40, dal limite 8, teste 6 VERDE: nessun tiro > 30 m, nessun «dal limite» > 22 m, nessuna testa > 16.5 m  | free=14521/16086MB df=29G libero |
+| 8 | tabellone-117 | 0 | 319 | {"percorso":"ripresa","rosso":false,"err":null,"prima":{"score":{"home":1,"away":0},"motore":{"home":1,"away":0},"log":1,"ev":["home"],"t216":null,"r117":null,"min":11},"snap":{"clock":11,"score":{"home":1,"away":0},"g117":true},"rientro":{"score":{"home":1,"a | free=14418/16086MB df=29G libero |
+| 9 | tabellino-228 | 0 | 310 | k4 rosso: tabellino 0-4 (mio-loro), tabellone 3-0, motore 4-0, golLog [{"min":52,"tick":1211,"lato":"home","scena":true,"chi":9},{"min":52,"tick":1211,"lato":"home","scena":true,"chi":21},{"min":65,"tick":1489,"lato":"home","scena":true,"chi":21},{"min":93,"ti | free=14515/16086MB df=29G libero |
 | 10 | twa-120 | - | - | non ancora eseguito | - |
 | 11 | sw-cache-120 | - | - | non ancora eseguito | - |
 | 12 | albo-122 | - | - | non ancora eseguito | - |
