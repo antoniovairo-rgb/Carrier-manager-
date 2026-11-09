@@ -3497,6 +3497,16 @@ const getThisWeekMatchday=()=>{
     return null;
   };
 
+  /* [giro 133 · PO-333 «Sì, nella 188»] la gara del CLUB che segue un'amichevole della Nazionale (voce type "national" del
+     calendario del club): la prima gara di club non giocata dopo l'amichevole, dal calendario. Serve alla riga «Poi:» della
+     card, la stessa del giro 131. */
+  const prossimaClubDopo133=(nz)=>{try{
+    if(!nz)return null;const _cupDead=!!(player.cup&&(!player.cup.active||player.cup.eliminated||player.cup.champion));
+    const _w=nz.week||player.week||1;
+    return (player.calendar||[]).filter(m=>m&&m!==nz&&!m.played&&m.type!=="national"&&(m.week||0)>=_w&&!_isStaleMd(player,m)&&!(m.type==="cup"&&_cupDead))
+      .sort((a,b)=>(a.week||0)-(b.week||0))[0]||null;
+  }catch(_e){return null;}};
+
   const getContinuaState=()=>{
     if(player.injured){
       const iWeeks=player.injuryWeeks||1;
@@ -7607,6 +7617,10 @@ const getThisWeekMatchday=()=>{
         /* [7.999.35 collaudo PO «calendario sbagliato»] un'amichevole della Nazionale e' una partita della NAZIONALE: prima la card
            la mostrava come gara di campionato (intestazione della lega, il club come squadra di casa, la posizione in classifica). */
         const _naz35=!!md._g131||(md.type==="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35));const _ndt35=(n)=>{try{return (typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[n])||null;}catch(_e){return null;}};
+        /* [giro 133 · PO-333] l'AMICHEVOLE della Nazionale (voce del calendario del club) come finale/girone del giro 131: niente
+           forma del club sotto la Nazionale, riga «Poi:» con la gara del club che segue. Rosso __CPM_NO_G133 = com'era (giro 131). */
+        const _am133=_naz35&&!md._g131&&!(typeof window!=='undefined'&&window.__CPM_NO_G133);
+        const _poi=_poi131||(_am133?prossimaClubDopo133(md):null);
         const opp=_naz35?{...(_ndt35(md.opponentName)||{a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"}),n:md.opponentName||"Avversario"}:(md.opponentData||lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName||"Avversario",a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"});
         const me=_naz35?{...(_ndt35(player.nation||"Italia")||{a:(player.nation||"ITA").slice(0,3).toUpperCase(),c:TH.primary,c2:"#ffffff"}),n:player.nation||"Italia"}:(player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"});
         const home=md.isHome!==false;
@@ -7640,7 +7654,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{const _tn=t.n||t.name||"";const _pl=Math.max(0,..._tn.split(/\s+/).map(w=>w.length));const _no=typeof window!=="undefined"&&!!window.__CPM_NO_G106A;
               /* [giro 106 A] «FC WOLVERHAMPTO / N»: overflowWrap anywhere spezzava la parola a 360 px. Va a capo solo fra parole; la parola piu' lunga decide il gradino (>=13 lettere 13 px, >=11 15 px) */
               return <span data-cpm="squadra-nome106" style={{...fsTV(_no?FS.subhead:(_pl>=13?FS.body:_pl>=11?FS.bodyLg:FS.subhead),FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",textAlign:"center",overflowWrap:_no?"anywhere":"normal",maxWidth:"100%"}}>{_tn}</span>;})()}
-            {_io(t)&&!md._g131?<FormaV2 lista={player.matchHistory}/>:null}{/* [giro 131] la forma e' quella del CLUB: sotto la Nazionale non va */}
+            {_io(t)&&!md._g131&&!_am133?<FormaV2 lista={player.matchHistory}/>:null}{/* [giro 131] la forma e' quella del CLUB: sotto la Nazionale non va */}
             {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
           </div>);
           return(
@@ -7658,7 +7672,7 @@ const getThisWeekMatchday=()=>{
                 <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
                 {squadra(home?opp:me,home?oppPos:myPos)}
               </div>
-              {_poi131&&<div data-cpm="poi131" className="cpm-num" style={{textAlign:"center",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85),marginTop:-6}}>{"Poi: "+(_poi131.opponentName||"club")+" · sett. "+_poi131.week+" · "+(_poi131.isHome!==false?"casa":"trasferta")}</div>}
+              {_poi&&<div data-cpm="poi131" className="cpm-num" style={{textAlign:"center",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85),marginTop:-6}}>{"Poi: "+(_poi.opponentName||"club")+" · sett. "+_poi.week+" · "+(_poi.isHome!==false?"casa":"trasferta")}</div>}
               {(_inf.length||_imp)&&<div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85)}}>
                 {_inf.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}{_imp&&<span data-cpm="peso106" style={{color:_ink,fontWeight:FW.bold,...((typeof window!=="undefined"&&window.__CPM_NO_G106D)?{}:{flexBasis:"100%",textAlign:"center"})}}>{_imp}</span>}</div>}
               {(()=>{/* [PO-302 tappa 2 · decisione PO 02/11] GIOCA + SIMULA. Simula non salta le regole: apre lo stesso prompt (decisione del
