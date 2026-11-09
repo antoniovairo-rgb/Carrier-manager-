@@ -51621,6 +51621,45 @@ const getThisWeekMatchday=()=>{
     applyNatTournamentTrigger(player);
   };
 
+  /* [giro 131 · PO-331, decisione PO 09/11 «Finale in primo piano»] UNA SOLA FONTE per la prossima gara della
+     Nazionale. Prima il comando principale leggeva la coda della Coppa Nazioni / Euro-Mondiale e la card
+     «Prossima» solo il calendario del club: sulla foto del PO la card annunciava FC Merseyside-FC Dorset
+     mentre il tasto diceva «Gioca vs Inghilterra — Coppa Nazioni · Finale». Qui sta la descrizione (avversario,
+     torneo, turno, gara del club che segue), e la usano entrambi. Stesso ordine di handleContinua. */
+  const prossimaNazionale131=()=>{
+    const _ncq=player.nationsCupQueue;
+    if(_ncq?.active&&!_ncq?.done){
+      const _ncOpp=(_ncq.opponents||[])[_ncq.matchIdx||0]||"?";
+      const _ncIdx=_ncq.matchIdx||0;
+      const _clubMd=getThisWeekMatchday();
+      /* ⚠️ [7.700.0 collaudo PO, screenshot «Coppa Nazioni · Partita 4/3 · 9pt»] il totale si legge dalla coda
+         (la finale allunga la coda a quattro gare) e la finale si chiama col suo nome. */
+      const _ncTot700=Math.max(1,(_ncq.opponents||[]).length);
+      const _ncFin700=!!_ncq.isFinal&&_ncIdx>=_ncTot700-1;
+      const _turno=_ncFin700?"Finale":`Partita ${_ncIdx+1}/${_ncTot700}`;
+      return{kind:"nationsCup",opp:_ncOpp,comp:"Coppa Nazioni",turno:_turno,clubMd:_clubMd,
+        label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":_turno} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,action:"nationsCup"};
+    }
+    const _em=player.euroMondiale;
+    if(_em?.active&&!_em?.done&&!_emInAttesa(_em)){
+      const _emType=_em.type||"Torneo";
+      const _clubMd=getThisWeekMatchday();
+      if(_em.phase==="qualificazioni"&&!_em.qualDone){
+        const _emQOpp=(_em.qualOpponents||[])[_em.qualMatchIdx||0]||"?";
+        const _turno=`Qualificazione ${(_em.qualMatchIdx||0)+1}/${(_em.qualOpponents||[]).length||2}`;
+        return{kind:"euroMondiale",opp:_emQOpp,comp:`Qualif. ${_emType}`,turno:_turno,clubMd:_clubMd,
+          label:`🌍 Qualif. ${_emType} — vs ${_emQOpp}`,sub:`${_turno} · ${_em.qualPts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,action:"euroMondiale"};
+      }
+      const _emOpp=_em.phase==="group"?(_em.groupOpponents||[])[_em.groupMatchIdx||0]:_em.koOpponent;
+      const _emCol=_emType==="Mondiale"?"#4f46e5":"#0369a1";
+      const _emRound=_em.phase==="group"?`Girone · Giornata ${(_em.groupMatchIdx||0)+1}/${(_em.groupOpponents||[]).length||3}`:(EM_KO_LABEL[_em.koPhase]||"Fase KO");
+      const _emComp=_emType==="Mondiale"?"Coppa del Mondo":"Europeo";
+      return{kind:"euroMondiale",opp:_emOpp||"?",comp:_emComp,turno:_emRound,clubMd:_clubMd,
+        label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emComp} · ${_emRound}${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:_emCol,action:"euroMondiale"};
+    }
+    return null;
+  };
+
   const getContinuaState=()=>{
     if(player.injured){
       const iWeeks=player.injuryWeeks||1;
@@ -51638,35 +51677,10 @@ const getThisWeekMatchday=()=>{
     if(!player.weekLived&&(player.week||1)===1)return{label:L.startSeason,sub:L.startSeasonSub,color:TH.brandText,disabled:false};
     if(!player.weekLived)return{label:L.liveWeek,sub:L.liveWeekSub,color:TH.brandText,disabled:false};
     // Sprint 158: national team matches have priority over club matches
-    const _ncq=player.nationsCupQueue;
-    if(_ncq?.active&&!_ncq?.done){
-      const _ncOpp=(_ncq.opponents||[])[_ncq.matchIdx||0]||"?";
-      const _ncIdx=_ncq.matchIdx||0;
-      const _clubMd=getThisWeekMatchday();
-      /* ⚠️ [7.700.0 collaudo PO, screenshot «Coppa Nazioni · Partita 4/3 · 9pt»] IL CARTELLO DICEVA UN
-         NUMERO IMPOSSIBILE. Il totale era CABLATO a tre, ma dal 7.41 la coppa ha una FINALE vera: superato
-         il girone la coda si allunga a quattro gare, e la quarta veniva annunciata come «Partita 4/3».
-         Il calendario aveva ragione, il cartello no — e un numero impossibile fa sembrare rotto anche cio'
-         che funziona (il PO ha scritto «mi vuole far rigiocare la finale!» guardando questa riga).
-         Ora il totale si legge dalla coda, e la finale si chiama col suo nome invece che con un numero. */
-      const _ncTot700=Math.max(1,(_ncq.opponents||[]).length);
-      const _ncFin700=!!_ncq.isFinal&&_ncIdx>=_ncTot700-1;
-      return{label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":`Partita ${_ncIdx+1}/${_ncTot700}`} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,disabled:false,action:"nationsCup"};
-    }
-    const _em=player.euroMondiale;
-    if(_em?.active&&!_em?.done&&!_emInAttesa(_em)){
-      const _emType=_em.type||"Torneo";
-      if(_em.phase==="qualificazioni"&&!_em.qualDone){
-        const _emQOpp=(_em.qualOpponents||[])[_em.qualMatchIdx||0]||"?";
-        const _clubMd=getThisWeekMatchday();
-        return{label:`🌍 Qualif. ${_emType} — vs ${_emQOpp}`,sub:`Qualificazione ${(_em.qualMatchIdx||0)+1}/${(_em.qualOpponents||[]).length||2} · ${_em.qualPts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,disabled:false,action:"euroMondiale"};
-      }
-      const _emOpp=_em.phase==="group"?(_em.groupOpponents||[])[_em.groupMatchIdx||0]:_em.koOpponent;
-      const _emCol=_emType==="Mondiale"?"#4f46e5":"#0369a1";
-      const _clubMd=getThisWeekMatchday();
-      const _emRound=_em.phase==="group"?`Girone · Giornata ${(_em.groupMatchIdx||0)+1}/${(_em.groupOpponents||[]).length||3}`:(EM_KO_LABEL[_em.koPhase]||"Fase KO");
-      return{label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emType==="Mondiale"?"Coppa del Mondo":"Europeo"} · ${_emRound}${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:_emCol,disabled:false,action:"euroMondiale"};
-    }
+    /* [giro 131 · PO-331] le gare della Nazionale vengono da prossimaNazionale131(): la stessa descrizione
+       la legge la card «Prossima» della home, cosi' card e comando non possono piu' divergere. */
+    const _nz131=prossimaNazionale131();
+    if(_nz131)return{label:_nz131.label,sub:_nz131.sub,color:_nz131.color,disabled:false,action:_nz131.action};
     const md=getThisWeekMatchday();
     if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";const isNatM=md.type==="national";return{label:`${isNatM?"🏳️":isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isNatM?`Nazionale · Amichevole internazionale`:isCupM?`${L.cup} · ${md.cupRoundName||"Turno"}`:isEuroM?`${euroSig(md.competition)||"Europa"} · ${md.cupRoundName||"Gironi"}`:`${md.isHome?"🏠 In casa":"✈️ In trasferta"}`,/* [7.999.49 parte A] niente «W.»: la settimana sta in testata; casa/trasferta a parole */color:isNatM?"#2563eb":isCupM?TH.goldText:isEuroM?"#1d4ed8":TH.txGreen,disabled:false};}
     if((player.week||1)>38)return{label:"🏁 Chiudi la stagione",sub:`S.${player.season||1} completata — premi e verdetti`,color:TH.brandText,disabled:false};/* [7.257.0 screenshot PO «W.39/38 → W.40»] oltre la W.38 l'avanzamento NON va a W.40: fa scattare il rollover (design 6.70/5.75, weekVal>38) — il CTA ora dice la verità invece di promettere una settimana che non esiste */
@@ -55745,11 +55759,17 @@ const getThisWeekMatchday=()=>{
         </>);})()}
       {tab==="dashboard"&&(()=>{
         let md=null;try{md=getThisWeekMatchday();}catch(_e){md=null;}
+        /* [giro 131 · PO-331 «Finale in primo piano»] se la prossima gara da giocare e' della Nazionale (stessa fonte del
+           comando principale: prossimaNazionale131), la card mostra QUELLA: Nazionale contro l'avversario vero, torneo e
+           turno, e sotto una riga piccola con la gara del club che segue. Rosso __CPM_NO_G131 = com'era (solo calendario del club). */
+        let _nz131=null;try{_nz131=(typeof window!=='undefined'&&window.__CPM_NO_G131)?null:prossimaNazionale131();}catch(_e){_nz131=null;}
+        const _poi131=_nz131?md:null;
+        if(_nz131)md={type:"national",opponentName:_nz131.opp,isHome:true,week:player.week||1,competition:_nz131.comp,_g131:true};
         if(!md)return null;
         const lc=(()=>{try{return getLeagueClubs(player)||[];}catch(_e){return [];}})();
         /* [7.999.35 collaudo PO «calendario sbagliato»] un'amichevole della Nazionale e' una partita della NAZIONALE: prima la card
            la mostrava come gara di campionato (intestazione della lega, il club come squadra di casa, la posizione in classifica). */
-        const _naz35=md.type==="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35);const _ndt35=(n)=>{try{return (typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[n])||null;}catch(_e){return null;}};
+        const _naz35=!!md._g131||(md.type==="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35));const _ndt35=(n)=>{try{return (typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[n])||null;}catch(_e){return null;}};
         const opp=_naz35?{...(_ndt35(md.opponentName)||{a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"}),n:md.opponentName||"Avversario"}:(md.opponentData||lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName||"Avversario",a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"});
         const me=_naz35?{...(_ndt35(player.nation||"Italia")||{a:(player.nation||"ITA").slice(0,3).toUpperCase(),c:TH.primary,c2:"#ffffff"}),n:player.nation||"Italia"}:(player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"});
         const home=md.isHome!==false;
@@ -55783,17 +55803,17 @@ const getThisWeekMatchday=()=>{
             {(()=>{const _tn=t.n||t.name||"";const _pl=Math.max(0,..._tn.split(/\s+/).map(w=>w.length));const _no=typeof window!=="undefined"&&!!window.__CPM_NO_G106A;
               /* [giro 106 A] «FC WOLVERHAMPTO / N»: overflowWrap anywhere spezzava la parola a 360 px. Va a capo solo fra parole; la parola piu' lunga decide il gradino (>=13 lettere 13 px, >=11 15 px) */
               return <span data-cpm="squadra-nome106" style={{...fsTV(_no?FS.subhead:(_pl>=13?FS.body:_pl>=11?FS.bodyLg:FS.subhead),FW.bold),textTransform:"uppercase",letterSpacing:"0.04em",textAlign:"center",overflowWrap:_no?"anywhere":"normal",maxWidth:"100%"}}>{_tn}</span>;})()}
-            {_io(t)?<FormaV2 lista={player.matchHistory}/>:null}
+            {_io(t)&&!md._g131?<FormaV2 lista={player.matchHistory}/>:null}{/* [giro 131] la forma e' quella del CLUB: sotto la Nazionale non va */}
             {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
           </div>);
           return(
-          <section data-cpm="prossima-v2" data-club106={_cc} style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",backgroundColor:_cf,backgroundImage:_sfum106,color:_ink,marginBottom:_sb(9)}}>
+          <section data-cpm="prossima-v2" data-club106={_cc} data-g131={_nz131?_nz131.kind:"club"} style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",backgroundColor:_cf,backgroundImage:_sfum106,color:_ink,marginBottom:_sb(9)}}>
             <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
             <div aria-hidden="true" style={{position:"absolute",left:"50%",top:0,bottom:0,width:2,marginLeft:-1,background:_v(0.10)}}/>
             <div aria-hidden="true" style={{position:"absolute",left:"50%",top:"50%",width:148,height:148,margin:"-74px 0 0 -74px",borderRadius:"50%",border:"2px solid "+_v(0.10)}}/>
             <div style={{position:"relative",padding:"16px 18px 18px",display:"flex",flexDirection:"column",gap:14}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
-                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>Prossima · {comp}{_etichettaTurno957(md)}</span>
+                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>Prossima · {comp}{_nz131?(" · "+_nz131.turno):_etichettaTurno957(md)}</span>
                 <span className="cpm-num" style={{...fsTV(FS.body,FW.bold),letterSpacing:"0.06em",background:"rgba(0,0,0,0.28)",color:"#ffffff",borderRadius:999,padding:"5px 10px",whiteSpace:"nowrap",flexShrink:0}}>{"SETT. "+md.week+" · "+(home?"CASA":"TRASFERTA")}</span>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) auto minmax(0,1fr)",alignItems:"start"}}>
@@ -55801,6 +55821,7 @@ const getThisWeekMatchday=()=>{
                 <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
                 {squadra(home?opp:me,home?oppPos:myPos)}
               </div>
+              {_poi131&&<div data-cpm="poi131" className="cpm-num" style={{textAlign:"center",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85),marginTop:-6}}>{"Poi: "+(_poi131.opponentName||"club")+" · sett. "+_poi131.week+" · "+(_poi131.isHome!==false?"casa":"trasferta")}</div>}
               {(_inf.length||_imp)&&<div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:_v(0.85)}}>
                 {_inf.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}{_imp&&<span data-cpm="peso106" style={{color:_ink,fontWeight:FW.bold,...((typeof window!=="undefined"&&window.__CPM_NO_G106D)?{}:{flexBasis:"100%",textAlign:"center"})}}>{_imp}</span>}</div>}
               {(()=>{/* [PO-302 tappa 2 · decisione PO 02/11] GIOCA + SIMULA. Simula non salta le regole: apre lo stesso prompt (decisione del
