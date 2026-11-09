@@ -23,6 +23,12 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 17 | altezza-114 | 0 | 461 | ✓ rosso 1440x900: 6 schermate fuori regola col rosso (menu, opzioni, offerte, calendario, passaggio-pro) PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso  | free=15511/16086MB df=29G libero |
 | 18 | flussi-115 | 0 | 827 | flussi-115 · 51 controlli · 1 OK · 50 NO · 0 non giudicati braccio ROSSO: atteso rosso — cade su tutti i 17 punti (50 controlli rossi)  | free=15501/16086MB df=29G libero |
 | 19 | collaudo-110 | 0 | 368 | ✅ collaudo-110 OK braccio: verde+rosso · motivo: ogni difetto verde col codice nuovo e rosso con il suo interruttore  | free=15511/16086MB df=29G libero |
+| 20 | scorri-113 | 0 | 175 | ✅ rosso: con __CPM_NO_G113 resta in basso (il guardiano lo vede) BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 18 (es. t360 menù Stagione→Home: 590)  | free=15500/16086MB df=29G libero |
+| 21 | moduli-112 | 0 | 382 | [rosso] tel ata(4-2-3-1) vs fio(3-5-2) a capo 2 · rosa ["4-3-3","4-3-3"] · anteprima ["4-3-3","4-3-3"] · campo {"casa":"4-3-3","ospite":"4-3-3"} · motore {"casa":"4-3-3","ospite":"4-3-3"} · preset undefined / undefined · fuori posto 0 · trama null ✅ moduli-112 · braccio verde: rosa = anteprima = campo = modulo su 6 mis | free=15321/16086MB df=29G libero |
+| 22 | pc-tablet-292 | 0 | 787 |   ✅ il rosso (la 177) fa cadere larghezza, tocco, tasti e striscia nel campo PC-TABLET-292: ✅ VERDE  | free=15475/16086MB df=29G libero |
+| 23 | griglia-mobile | 0 | 213 | → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=15509/16086MB df=29G libero |
+| 24 | partita-v2 | 0 | 552 |   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato  | free=15391/16086MB df=29G libero |
+| 25 | partita2d-297 | 0 | 193 | ROSSO: A cade · B cade · C cade ✅ partita2d-297 VERDE  | free=15505/16086MB df=29G libero |
 
 ## Esito
 
