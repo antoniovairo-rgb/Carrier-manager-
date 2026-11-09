@@ -11628,17 +11628,17 @@ function _folla129Atlas(){
     const broad=0.86+((v*7)%5)*0.055,female=(v%4===1)&&kind!=="vip",beard=(v%5===3)&&kind!=="child",glasses=(v%6===4),hoodie=(v%7===5)&&kind==="base";
     x.save();m.save();x.beginPath();x.rect(ox,oy,CW,CH);x.clip();m.beginPath();m.rect(ox,oy,CW,CH);m.clip();
     if(kind==="child"){const k=0.66;x.translate(cx,oy+CH);x.scale(k,k);x.translate(-cx,-(oy+CH));m.translate(cx,oy+CH);m.scale(k,k);m.translate(-cx,-(oy+CH));}
-    const shW=15.5*broad*(female?0.9:1),hipW=12*broad,headY=oy+24,hr=8.6,shY=oy+38;
+    const shW=13.6*broad*(female?0.9:1),hipW=10.6*broad,headY=oy+22,hr=7.6,shY=oy+34;/* [giro 129, foto col CH38 accanto] proporzioni vere: spalle all'82% dell'altezza, anca al 52%, testa ~13% (prima busto lungo, gambe corte, testa al 17%) */
     /* gambe e scarpe: colore vero, tono medio (le scure si vedevano troppo dietro i sedili vuoti) */
     const _pc=["#3d4760","#34353d","#5a5446","#454a55","#2f3a52"][v%5];/* [giro 129] pantaloni vari e che SFUMANO nel colore del gradino: chiari e pieni si leggevano come barre */
-    const gp=x.createLinearGradient(0,oy+78,0,oy+126);gp.addColorStop(0,_pc);gp.addColorStop(0.55,"#2a2b34");gp.addColorStop(1,"#1d1d27");
-    paint(BA,gp,c=>{c.rect(cx-hipW+1,oy+76,hipW-2,46);c.rect(cx+1,oy+76,hipW-2,46);});
+    const gp=x.createLinearGradient(0,oy+72,0,oy+126);gp.addColorStop(0,_pc);gp.addColorStop(0.55,"#2a2b34");gp.addColorStop(1,"#1d1d27");
+    paint(BA,gp,c=>{c.rect(cx-hipW+1,oy+70,hipW-2,52);c.rect(cx+1,oy+70,hipW-2,52);});
     paint(BA,"#1d1d27",c=>{c.rect(cx-hipW,oy+121,hipW,7);c.rect(cx+1,oy+121,hipW,7);});
     /* busto: trapezio spalle→fianchi, grigio ombreggiato (luce da sinistra) che si tinge col colore della maglia */
     const tg=x.createLinearGradient(cx-shW,0,cx+shW,0);tg.addColorStop(0,"#ececec");tg.addColorStop(0.55,"#cdcdcd");tg.addColorStop(1,"#959595");
-    const torso=c=>{c.moveTo(cx-shW,shY+5);c.quadraticCurveTo(cx-shW,shY-1,cx-shW+6,shY-2);c.lineTo(cx+shW-6,shY-2);c.quadraticCurveTo(cx+shW,shY-1,cx+shW,shY+5);c.lineTo(cx+hipW,oy+80);c.lineTo(cx-hipW,oy+80);c.closePath();};
+    const torso=c=>{c.moveTo(cx-shW,shY+5);c.quadraticCurveTo(cx-shW,shY-1,cx-shW+6,shY-2);c.lineTo(cx+shW-6,shY-2);c.quadraticCurveTo(cx+shW,shY-1,cx+shW,shY+5);c.lineTo(cx+hipW,oy+72);c.lineTo(cx-hipW,oy+72);c.closePath();};
     paint(SH,tg,torso);
-    x.fillStyle="rgba(0,0,0,0.16)";x.fillRect(cx-1,shY+3,2,34);
+    x.fillStyle="rgba(0,0,0,0.16)";x.fillRect(cx-1,shY+3,2,30);
     if(kind==="vip"){paint(BA,"#e9e9ee",c=>{c.moveTo(cx-6,shY-2);c.lineTo(cx+6,shY-2);c.lineTo(cx,shY+16);c.closePath();});paint(BA,"#7a1f2b",c=>c.rect(cx-1.5,shY+1,3,14));}
     if(hoodie)paint(SH,"#bdbdbd",ell(cx,shY-1,11,5,Math.PI,Math.PI*2));
     /* braccia per posa: 0 giu' · 1 su · 2 applauso · 3 mani in testa */
@@ -11649,7 +11649,7 @@ function _folla129Atlas(){
       else if(p===1){ex=sx+sd*6;ey=shY-16;hx=sx+sd*5;hy=oy+6;}
       else if(p===2){ex=sx+sd*4;ey=shY+18;hx=cx+sd*2.5;hy=shY+2;}
       else if(p===3){ex=sx+sd*9;ey=headY-4;hx=cx+sd*6;hy=headY-9;}
-      else{ex=sx+sd*3;ey=shY+20;hx=sx+sd*3;hy=oy+76;}
+      else{ex=sx+sd*3;ey=shY+18;hx=sx+sd*3;hy=oy+70;}
       line(SH,"#c4c4c4",7.5,c=>{c.moveTo(sx,sy);c.lineTo(ex,ey);});
       line(SK,"#c8c8c8",5.5,c=>{c.moveTo(ex,ey);c.lineTo(hx,hy);});
       paint(SK,"#d0d0d0",ell(hx,hy,3.4,3.4));};
