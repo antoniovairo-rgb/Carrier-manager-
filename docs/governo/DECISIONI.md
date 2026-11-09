@@ -1055,3 +1055,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Decisione tecnica (madre): prima del rilascio della 187, la catena finale esegue scena3d-96 anche su PC e tablet (non fatti nel giro per il tetto di tempo).
 - Domande aperte dal rapporto, da porre al PO dopo la prova sul telefono: densità di default; prime file in 3D in futuro.
 - Costo 9,28 $ (un avvio). Sessione archiviata.
+
+### 09/11 17:26 UTC — Verifica 186: collaudo-110 rosso, giro 130 di misura
+- Verifica finale 186 a 24 controlli su 31 (gate 14/14 verde). `collaudo-110` rosso due volte identico: punto G180-17 pc, banner d'esito con 2 campioni su 3 richiesti (non giudicato = rosso). Decisione tecnica (madre): giro 130 su `collaudo/giro130-g180` misura 186 contro 185; se è la sonda la si ripara senza abbassare soglie, se è la 186 si scrive la causa. La 186 non esce finché collaudo-110 non è verde.
