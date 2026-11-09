@@ -1092,3 +1092,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 22:25 UTC — Giro 133 (PO-333) finito
 - Amichevoli della Nazionale nella card «Prossima»: niente forma del club, riga «Poi: <club> · sett. N» (prima gara di club dopo l'amichevole). Guardiano `prossima-131` esteso a 10 controlli: verde 10/10, rosso131 6/10, rosso133 cade solo sull'amichevole. Catena verde (griglia-mobile, design-system, career-critical, test:logic, save-compat). Il ramo `sviluppo/giro133-amichevoli` contiene anche il giro 131: si unisce lui alla 188. Costo 2,38 $. Sessione archiviata.
 - Privacy (PO-334): sito verificato alle 22:23 UTC, la pagina non contiene più la mail personale e porta la data 9 novembre 2026 (deploy 21:24 UTC riuscito).
+
+### 09/11 22:30 UTC — Privacy dentro l'app e pulsante dell'amichevole
+- PO, questionario: informativa privacy «Dentro l'app» (PO-334, nella 188; la pagina pubblica resta per Google Play) e pulsante dell'amichevole con «poi: <club>» (PO-335, «Sì, nella 188»).
+- Decisione tecnica (madre): un solo giro 134 su `sviluppo/giro134-privacy-poi` da `sviluppo/giro133-amichevoli` (stesso file src/18).
