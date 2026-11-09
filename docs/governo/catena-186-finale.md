@@ -28,9 +28,9 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 22 | partita2d-297 | 0 | 189 |  ✅ partita2d-297 VERDE  | free=14274/16086MB df=29G libero |
 | 23 | validate-situations | 0 | 664 |  ✅ PASS  | free=14266/16086MB df=29G libero |
 | 24 | scena3d-96 | 0 | 1668 | scene giudicate 31/31 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=14249/16086MB df=29G libero |
-| 25 | partita-vera | 0 | 507 | ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   | free=14268/16086MB df=29G libero |
-| 26 | highlight-95 | - | - | non ancora eseguito | - |
-| 27 | career-critical | - | - | non ancora eseguito | - |
+| 25 | partita-vera | 0 | 507 | ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   — riga 21 del log: «non giudicabile (campione sotto minimo) tabellone — gol raccontati 0-3 · punteggio finale 0-0 su 0 partite» (un solo criterio non giudicato, nessun rosso) | free=14268/16086MB df=29G libero |
+| 26 | highlight-95 | 0 | 4035 |   · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false ✅ highlight-95 verde (e il rosso si vede)  — braccio verde: 0 difetti (D3DIAG riga 39 con minGB=4.9, sotto la soglia di difetto 6, vedi sotto); rosso: 7 D4, il rosso si vede. RIGA D3DIAG INTERA in fondo al rapporto | free=14263/16086MB df=29G libero |
+| 27 | career-critical | 0 | 685 | ✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.   | free=14256/16086MB df=29G libero |
 | 28 | build-web | - | - | non ancora eseguito | - |
 | 29 | build-dist | - | - | non ancora eseguito | - |
 | 30 | audit-copyright | - | - | non ancora eseguito | - |
