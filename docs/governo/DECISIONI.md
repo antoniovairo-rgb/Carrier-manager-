@@ -1068,3 +1068,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 09/11 18:50 UTC — 7.999.186 sul sito
 - GitHub Actions tornato operativo alle ~18:44 UTC; deploy di Pages rilanciato a mano (run 42676717089) riuscito. Sito verificato: radice e CARRIER-MANAGER-AV.html servono 7.999.186, privacy.html 200. Notifica «CPM 7.999.186 pronta e pubblicata» inviata.
+
+### 09/11 19:00 UTC — PO-331 card «Prossima» e Nazionale
+- PO, questionario: «Finale in primo piano» e «188». Decisione tecnica (madre): giro 131 su `sviluppo/giro131-prossima` da `lavoro/187`; la card legge la stessa fonte del comando principale (coda Coppa Nazioni e Euro/Mondiale prima del calendario del club), rosso `__CPM_NO_G131`, guardiano nuovo; la 187 esce senza.
