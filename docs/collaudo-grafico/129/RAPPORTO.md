@@ -88,7 +88,9 @@ deploy non gira.
 ## 5. Catena
 
 Un controllo alla volta (`CPM_CI_PAR=0`), `free -m`/`df -h` prima di ognuno: `griglia-mobile` ✓ · `design-system` ✓ ·
-`test:logic` ✓ · `save-compat` ✓ (12/0) · `career-critical` vedi §7 · `folla` ✓ · `scena3d-96` vedi §7.
+`test:logic` ✓ · `save-compat` ✓ (12/0) · `career-critical` ✓ · `folla` ✓ (verde passa, rosso visto 3/3) ·
+`scena3d-96` ✓ (solo formato telefono, GLB acceso: 16/16 scene, 0 errori di pagina; PC e tablet non eseguiti per il tetto di tempo).
+`griglia-mobile` segnala «NON misurato: prepartita: playMatch → nomatch» (non è un rosso; non ho verificato se c'era già prima).
 `griglia-mobile` ha riscritto le sue foto in `docs/collaudo-grafico/g0/`: non le ho committate (artefatti del controllo).
 
 ## 6. Cosa resta e limiti
