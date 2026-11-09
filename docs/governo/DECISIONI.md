@@ -1075,3 +1075,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 19:50 UTC — Backlog: riconciliazione dopo la 187
 - PO: «come mai nel backlog ci sono ancora molte cose?». Conteggio: 25 voci non chiuse. 10 residui in stabilità (decisione PO 20/10: si correggono solo se emergono nei collaudi: PO-022, 068, 153, 167, 220, 224, 228, 229, 248, 250); 3 in corsa (PO-329, 330 nella 187; PO-331 nella 188); PO-322 store parziale (passi del PO su Play Console); 11 con stato vecchio non aggiornato (PO-292, 296, 297, 298, 299, 300, 301 dell'epoca 178; PO-315, 316, 317, 319 della 183).
 - PO, questionario: «Dopo la 187». Giro di sola lettura che confronta le 11 voci con release e codice: chiuse con prova quelle fatte, le altre al PO con proposta di versione.
+
+### 09/11 20:40 UTC — Giro 131 (PO-331) finito
+- Card «Prossima» e comando leggono la stessa fonte (`prossimaNazionale131()`): con la Nazionale in coda la card mostra Nazionale contro avversario, turno («Finale», «Partita n/N», girone/KO Euro-Mondiale) e la riga «Poi: <club> · sett. N». Prima: 6/8 controlli rossi riprodotti; dopo: guardiano `prossima-131` verde 8/8, rosso `__CPM_NO_G131` 6/8. Catena verde (griglia-mobile, design-system, career-critical, test:logic, save-compat, altezza-114, pc-tablet-292). Rapporto `docs/sviluppo/RAPPORTO-giro131.md` sul ramo `sviluppo/giro131-prossima`. Costo 3,57 $. Sessione archiviata. Si unisce alla 188.
+- Domande aperte del giro portate al PO.

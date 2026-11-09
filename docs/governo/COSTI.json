@@ -488,5 +488,19 @@
     "cache_read_tokens": 2902260,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYiaB8CUdeium6hGL8Qoi",
+    "titolo": "giro 131 card Prossima con la Nazionale (PO-331)",
+    "versione": "7.999.188",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T19:00:48Z",
+    "chiusa": "2026-11-09T20:05:41Z",
+    "cost_usd": 3.5711067,
+    "output_tokens": 26738,
+    "cache_read_tokens": 8990910,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
   }
 ]
