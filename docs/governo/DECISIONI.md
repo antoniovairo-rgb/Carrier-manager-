@@ -1065,3 +1065,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 09/11 18:35 UTC — 186 su main, sito fermo per un guasto di GitHub Actions
 - main = 341bf752 (7.999.186). Il deploy di Pages fallisce senza partire (0 job, «workflow file issue») due volte, sul push e a mano. Il workflow è identico a quello che ha pubblicato la 185. githubstatus.com alle 18:33 UTC: «Actions major_outage», incidente «Actions and Checks API» in indagine. Causa esterna: si rilancia il deploy a guasto risolto. La notifica di pubblicazione parte solo col sito sulla 186.
+
+### 09/11 18:50 UTC — 7.999.186 sul sito
+- GitHub Actions tornato operativo alle ~18:44 UTC; deploy di Pages rilanciato a mano (run 42676717089) riuscito. Sito verificato: radice e CARRIER-MANAGER-AV.html servono 7.999.186, privacy.html 200. Notifica «CPM 7.999.186 pronta e pubblicata» inviata.
