@@ -1079,3 +1079,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 20:40 UTC — Giro 131 (PO-331) finito
 - Card «Prossima» e comando leggono la stessa fonte (`prossimaNazionale131()`): con la Nazionale in coda la card mostra Nazionale contro avversario, turno («Finale», «Partita n/N», girone/KO Euro-Mondiale) e la riga «Poi: <club> · sett. N». Prima: 6/8 controlli rossi riprodotti; dopo: guardiano `prossima-131` verde 8/8, rosso `__CPM_NO_G131` 6/8. Catena verde (griglia-mobile, design-system, career-critical, test:logic, save-compat, altezza-114, pc-tablet-292). Rapporto `docs/sviluppo/RAPPORTO-giro131.md` sul ramo `sviluppo/giro131-prossima`. Costo 3,57 $. Sessione archiviata. Si unisce alla 188.
 - Domande aperte del giro portate al PO.
+
+### 09/11 20:45 UTC — PO-332 premiazione e domande del giro 131
+- PO, questionario: PO-332 (premiazione: braccia a T, compagni girati) «188»; colore della card con la Nazionale: «Colore Nazionale» (come il giro 131); amichevoli della Nazionale uniformate: «Sì, nella 188» (registrata PO-333); Nazionale in coda con «Vivi la settimana» sul pulsante: «Va bene così».
+- Decisione tecnica (madre): giro 132 (PO-332) su `sviluppo/giro132-premiazione` da `lavoro/187`; giro 133 (PO-333) su `sviluppo/giro133-amichevoli` da `sviluppo/giro131-prossima` (stesso file src/18, per non creare conflitti).
