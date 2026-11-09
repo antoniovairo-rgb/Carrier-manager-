@@ -12,12 +12,15 @@
    senza gara di club: Nazionale contro l'avversario, nessuna forma del club sotto la Nazionale, riga «Poi:» con la prima gara di
    club non giocata dopo l'amichevole, fondo nel colore della Nazionale. Nei casi Nazionale si controllano anche forma e fondo.
    BRACCIO ROSSO 133: __CPM_NO_G133 (com'era al giro 131) — deve cadere SOLO sul caso amichevole, i casi del giro 131 restano verdi.
+   [giro 134 · PO-335 «Sì»] caso amichevole: il COMANDO principale deve dire «poi: <club> W.N» con la STESSA gara (avversario e
+   settimana) della riga «Poi:» della card, come gia' fanno Coppa Nazioni ed Euro (una sola fonte: prossimaClubDopo133).
+   BRACCIO ROSSO 134: __CPM_NO_G134A (pulsante di prima) — deve cadere SOLO sul caso amichevole.
    Uso: P131_FORMATI=s360,pc  P131_BRACCI=verde,rosso  P131_FOTO=<cartella>. Esce !=0 se il verde e' rosso o il rosso non cade. */
 import fs from 'node:fs';
 import path from 'node:path';
 import { startServer, launchBrowser, installCdnRoutes, sleep, SAVE, INIT, entraInCarriera } from './c178-graf-lib.mjs';
 import { preparaCalendario, FORMATI } from './c180-lib.mjs';
-const BRACCI = (process.env.P131_BRACCI || 'verde,rosso,rosso133').split(',');
+const BRACCI = (process.env.P131_BRACCI || 'verde,rosso,rosso133,rosso134').split(',');
 const SCELTI = (process.env.P131_FORMATI || 's360,pc').split(',').map(k => FORMATI[k]).filter(Boolean);
 const FOTO = process.env.P131_FOTO || '';
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
@@ -29,7 +32,7 @@ const CASI = [
   { id: 'nessuna', opp: null, patch: { nationsCupQueue: null, euroMondiale: null } },
   { id: 'amichevole', opp: 'Portogallo', amich: true, turno: /Amichevole Internazionale/i, patch: { nationsCupQueue: null, euroMondiale: null } },
 ];
-const ROSSI = { verde: [], rosso: ['__CPM_NO_G131'], rosso133: ['__CPM_NO_G133'] };
+const ROSSI = { verde: [], rosso: ['__CPM_NO_G131'], rosso133: ['__CPM_NO_G133'], rosso134: ['__CPM_NO_G134A'] };
 /* amichevole: una settimana >= quella corrente senza gare di club, con una gara di club non giocata dopo; si aggiunge la voce
    del calendario come la scrive il gioco (src/18, convocazione CT: matchday 1470+W, type "national"). Torna la gara attesa per «Poi». */
 const PREP_AMICH = (opp) => { const C = window.__CPM_CAREER; const p = C.snapshot(); const cal = p.calendar || []; const club = cal.filter(m => m.type !== 'national');
@@ -93,6 +96,9 @@ for (const braccio of BRACCI) {
           if (!poiAtt) motivo.push('non giudicato (gara del club attesa per «Poi» sconosciuta)');
           else if (!norm(r.poi).includes(norm(poiAtt))) motivo.push(`riga «Poi» «${r.poi}» non porta ${poiAtt}`);
           else if (c.amich && !(r.poi || '').includes('sett. ' + am.poiW)) motivo.push(`riga «Poi» «${r.poi}» non porta la settimana ${am.poiW}`);
+          if (c.amich && am) { const mc = /poi:\s*(.+?)\s+W\.(\d+)/i.exec(r.cmd || ''); const mp = /(\d+)/.exec((r.poi || '').replace(/^.*sett\.\s*/i, ''));
+            if (!mc) motivo.push(`comando «${(r.cmd || '').slice(0, 90)}» senza «poi: <club> W.N»`);
+            else if (norm(mc[1]) !== norm(am.poi) || +mc[2] !== am.poiW || !norm(r.poi).includes(norm(mc[1])) || !mp || +mp[1] !== +mc[2]) motivo.push(`comando «poi: ${mc[1]} W.${mc[2]}» ≠ riga «Poi» «${r.poi}» (attesa ${am.poi} W.${am.poiW})`); }
           if (r.forma) motivo.push('forma del club sotto la Nazionale');
           if (!r.fondoNaz || r.fondo !== r.fondoNaz) motivo.push(`fondo ${r.fondo} ≠ colore della Nazionale ${r.fondoNaz}`);
         } else if (r.poi) motivo.push(`riga «Poi» presente senza Nazionale: «${r.poi}»`);
@@ -110,6 +116,7 @@ await b.close(); srv.close();
 let fallito = false; console.log('\n=== prossima-131: esito per braccio');
 for (const e of esito) {
   if (e.braccio === 'verde') { const ok = e.rossi === 0 && e.n === CASI.length * SCELTI.length; if (!ok) fallito = true; console.log(`  VERDE: ${e.n} controlli, ${e.rossi} rossi → ${ok ? 'PASSA' : 'FALLISCE'}`); }
+  else if (e.braccio === 'rosso134') { const ok = e.n === CASI.length * SCELTI.length && e.casiRossi.length === 1 && e.casiRossi[0] === 'amichevole' && e.rossi === SCELTI.length; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G134A): ${e.rossi}/${e.n} rossi, casi caduti: ${e.casiRossi.join(',') || 'nessuno'} → ${ok ? 'CADE COME DEVE (solo il pulsante dell\'amichevole)' : 'NON CADE COME DEVE'}`); }
   else if (e.braccio === 'rosso133') { const ok = e.n === CASI.length * SCELTI.length && e.casiRossi.length === 1 && e.casiRossi[0] === 'amichevole' && e.rossi === SCELTI.length; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G133): ${e.rossi}/${e.n} rossi, casi caduti: ${e.casiRossi.join(',') || 'nessuno'} → ${ok ? 'CADE COME DEVE (solo l\'amichevole, casi del giro 131 verdi)' : 'NON CADE COME DEVE'}`); }
   else { const ok = e.rossi > 0 && e.primoRosso === CASI[0].id; if (!ok) fallito = true; console.log(`  ROSSO (__CPM_NO_G131): ${e.rossi}/${e.n} rossi, primo caso caduto: ${e.primoRosso || 'nessuno'} → ${ok ? 'CADE COME DEVE' : 'NON CADE: il guardiano e\' cieco'}`); }
 }
