@@ -22,10 +22,10 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 16 | collaudo-110 | 1 | 344 | ❌ collaudo-110 NON OK braccio: verde+rosso · motivo: almeno un difetto non torna (vedi sopra)  — ROSSO in entrambe le passate (1ª 352s, 2ª 344s): braccio VERDE, G180-17 pc: «banner d'esito: 2 campioni, 0 con la scatola fuori dal campo» (campioni insufficienti, verde 2/3); resto verde. Identico nelle due passate | free=14295/16086MB df=29G libero |
 | 17 | scorri-113 | 0 | 171 | ✅ rosso: con __CPM_NO_G113 resta in basso (il guardiano lo vede) BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 18 (es. t360 menù Stagione→Home: 590)  | free=14276/16086MB df=29G libero |
 | 18 | moduli-112 | 0 | 378 | [rosso] tel ata(4-2-3-1) vs fio(3-5-2) a capo 2 · rosa ["4-3-3","4-3-3"] · anteprima ["4-3-3","4-3-3"] · campo {"casa":"4-3-3","ospite":"4-3-3"} · motore {"casa":"4-3-3","ospite":"4-3-3"} · preset undefined / undefined · fuori posto 0 · trama null ✅ m | free=14196/16086MB df=29G libero |
-| 19 | pc-tablet-292 | - | - | non ancora eseguito | - |
-| 20 | griglia-mobile | - | - | non ancora eseguito | - |
-| 21 | partita-v2 | - | - | non ancora eseguito | - |
-| 22 | partita2d-297 | - | - | non ancora eseguito | - |
+| 19 | pc-tablet-292 | 0 | 790 |   ✅ il rosso (la 177) fa cadere larghezza, tocco, tasti e striscia nel campo PC-TABLET-292: ✅ VERDE  | free=14246/16086MB df=29G libero |
+| 20 | griglia-mobile | 0 | 217 | → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  — uscita 0; riga finale del log: «NON misurato: prepartita: playMatch → nomatch» (dichiarato dal gioco, non un rosso) | free=14280/16086MB df=29G libero |
+| 21 | partita-v2 | 0 | 563 |   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in ogni formato  | free=14243/16086MB df=29G libero |
+| 22 | partita2d-297 | 0 | 189 |  ✅ partita2d-297 VERDE  | free=14274/16086MB df=29G libero |
 | 23 | validate-situations | - | - | non ancora eseguito | - |
 | 24 | scena3d-96 | - | - | non ancora eseguito | - |
 | 25 | partita-vera | - | - | non ancora eseguito | - |
