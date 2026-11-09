@@ -16466,7 +16466,7 @@ function ThreeMatchView(props){
       window.__CPM_G127=function(){try{
         const V=THREE.Vector3,cp=camera.position,o={se:sr.current._se127!=null?+(+sr.current._se127).toFixed(2):-1,c:[+cp.x.toFixed(2),+cp.y.toFixed(2),+cp.z.toFixed(2)]};
         const fw=new V();camera.getWorldDirection(fw);o.d=[+fw.x.toFixed(3),+fw.y.toFixed(3),+fw.z.toFixed(3)];
-        if(hero){const pj=(y)=>{const v=new V(hero.position.x,y,hero.position.z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};o.hf=pj(0.05);o.hh=pj(1.85);o.hw=[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)];}
+        if(hero){const pj=(y)=>{const v=new V(hero.position.x,y,hero.position.z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};o.hf=pj(0.05);o.hh=pj(1.85);o.hw=[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)];o.hv=hero.visible?1:0;try{const a=(glbAvatars||[]).find(x=>x&&x.proc===hero);o.gv=a&&a.root?(a.root.visible?1:0):-1;}catch(_e){o.gv=-2;}}
         camera.updateMatrixWorld();const fr=new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
         o.dentro=[];o.retro=0;o.trib=[];
         for(const g of (sr.current._stands127||[])){if(!g||!g.userData||!g.userData.dim127)continue;g.updateMatrixWorld(true);const dm=g.userData.dim127;
@@ -18663,8 +18663,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // item 2 (5.49.6): edge del trigger d'ingresso subentrante → l'eroe parte dalla LINEA LATERALE (area tecnica home) e avvia la sequenza.
-      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;hero.position.set(-6,0,-35.5);hero._px=-6;hero._pz=-35.5;hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;hero.position.set(-6,0,-35.5);hero._px=-6;hero._pz=-35.5;hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
+      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
@@ -20922,7 +20922,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   V3 veterano · V4 esplosivo.
           const V=hero._subVar||0;
           const _hold=[1.5,1.0,1.4,2.0,0.6][V],_runEnd=[3.5,3.2,3.6,3.9,2.9][V];
-          const _stx=-6,_stz=-35.5,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);// touchline (area tecnica home) → posizione in campo
+          const _stx=-6,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
           let _hex,_hez;
           if(subEntryT<_hold){_hex=_stx;_hez=_stz;}// istruzioni/pronto: fermo alla linea
           else if(subEntryT<_runEnd){const _r=(subEntryT-_hold)/Math.max(0.1,_runEnd-_hold);
@@ -23679,10 +23679,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         tLx=_hx2+3;tLy=1.7;tLz=_hz2+2;}
         else{const _cz127=Math.min(_hz2+11,26),_dz127=_cz127-_hz2,_dx127=Math.sqrt(Math.max(0,121-_dz127*_dz127));
         tPx=_hx2+2+_dx127;tPy=3.6+_near*0.4;tPz=_cz127;// sul prato, davanti all'eroe, verso la panchina
-        tLx=_hx2;tLy=1.4;tLz=_hz2-2;sr.current._sub127=[tPx,tPy,tPz,tLx,tLy,tLz];}
+        {const _pv127=sr.current._sub127p;let _lx127=0,_lz127=0;if(_pv127&&dt>0){const _vx=(_hx2-_pv127[0])/dt,_vz=(_hz2-_pv127[1])/dt;if(Math.hypot(_vx,_vz)<30){_lx127=_vx*0.125;_lz127=_vz*0.125;}}sr.current._sub127p=[_hx2,_hz2];/* anticipo dello sguardo pari al ritardo a regime del lerp kl=dt*8 (v/8 = 0,125 s di corsa), cosi' l'eroe che entra non resta sul bordo del quadro */
+        tLx=_hx2+_lx127;tLy=1.4;tLz=_hz2-2+_lz127;}sr.current._sub127=[tPx,tPy,tPz,tLx,tLy,tLz];}
         kp=Math.min(dt*2.4,1);kl=Math.min(dt*3,1);
         if(sr.current._sub127){kp=Math.min(dt*3.2,1);kl=Math.min(dt*8,1);}/* [giro 127] misurato: con kl dt*3 lo sguardo restava ~3 u indietro sull'eroe che corre (ndc 0,8) */}
-      else if(sr.current._sub127)sr.current._sub127=null;
+      else if(sr.current._sub127){sr.current._sub127=null;sr.current._sub127p=null;}
       // [7.127.0] REGIA USCITA: la camera SEGUE l'eroe che cammina verso il dugout (altrimenti l'uscita resta fuori quadro)
       if(subExitT>=0){const _hx3=hero.position.x,_hz3=hero.position.z;
         tPx=_hx3-13;tPy=5.4;tPz=_hz3-12;// bassa, lato campo, segue l'eroe verso l'area tecnica
