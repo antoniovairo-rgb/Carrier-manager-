@@ -506,6 +506,11 @@ function Toast({children,tone="info",icon,onClose,style={}}){
 function makeCrowdTex(spec){
   const q=CROWD_CFG.quality,S=spec.sector||{};
   const W=spec.isMobile?q.texWMobile:q.texW,H=q.texH;
+  /* [giro 129 PO-330 «A sagome». Rosso __CPM_NO_FOLLA129 = la folla dipinta di prima] F129: la tela diventa una GRADINATA DI SOLI
+     SEDILI, statica e disegnata una volta; le persone sono impostori 3D istanziati da buildFolla129 sugli stessi posti che
+     questa funzione decide (riempimento per anello/fila, gruppi e vuoti 7.187, corridoi, spicchio ospiti, VIP, famiglie).
+     Densita' «vera» = un posto ogni ~0,62u (x2,9 colonne, x1,35 file basse); «oggi» = la griglia di prima. */
+  const F129=spec.f129||null,_dK129=F129?(F129.dens==="oggi"?1:2.9):1,_rK129=F129?(F129.dens==="oggi"?1:1.35):1;
   const c=document.createElement("canvas");c.width=W;c.height=H;
   const ctx=c.getContext("2d");
   const homeHex=spec.homeHex||"#2563eb",awayHex=spec.awayHex||"#dc2626";
@@ -521,17 +526,17 @@ function makeCrowdTex(spec){
   const rnd=()=>{_s=(_s*1664525+1013904223)>>>0;return _s/4294967296;};
   // Geometria bande: alta = file 0..rowsUp-1 (fondo, piccole e fitte) · bassa = file grandi verso il campo
   const splitY=Math.round(H*(1-q.tierSplit));
-  const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit));
-  const colsUp=Math.round(colsLow*1.3);
+  const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit*_dK129));
+  const colsUp=F129?colsLow:Math.round(colsLow*1.3);/* [giro 129] in 3D la prospettiva la fa la camera: stesse colonne nei due anelli */
   const _rm92=Math.max(0.5,spec.rowsMul||1);// [5.92→6.2 CROWD-SCALE] file ∝ altezza reale del settore (anche <1 sugli impianti piccoli: tifoso-target costante)
-  const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92);
+  const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92*_rK129);
   const uH=splitY/rowsUp,cWU=W/colsUp,cWL=W/colsLow;
   /* [6.2.0 CROWD-SCALE] scala prospettica PARAMETRICA su rowsLow: l array fisso da 6 file rendeva
      lw[r]=undefined per r>=6 → rH=NaN → le file extra del fix 5.92 erano INVISIBILI (anello basso
      inchiodato a 6 file giganti qualunque fosse rowsMul) */
-  const lw=Array.from({length:rowsLow},(_,r)=>1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
+  const lw=Array.from({length:rowsLow},(_,r)=>F129?1:1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
   // sedile vuoto: plastica nei colori del CLUB DI CASA (lo stadio è suo), desaturata
-  const seatBase=_mix(homeHex,"#5a6272",0.45);
+  const seatBase=F129?_shade(_mix(homeHex,"#3c424e",0.70),0.82):_mix(homeHex,"#5a6272",0.45);/* [giro 129] sedili meno rosati: col club rosso il 45% di tinta dava una gradinata rosa fra le sagome */
   const _grass46=!!spec.grass;/* [giro 46 PO-071] BORGO: il settore e' un terrapieno d'erba con la gente in piedi, non una gradinata a sedili */
   // VIP box (Tribuna Ovest): campata centrale della fila alta dell'anello inferiore
   const vipC0=S.vip?Math.floor(colsLow*0.40):-1,vipC1=S.vip?Math.ceil(colsLow*0.60):-1;
@@ -564,14 +569,34 @@ function makeCrowdTex(spec){
   const _dMean=(_nUp*0.225+_nLo*0.75)/Math.max(1,(_nUp+_nLo));
   /* CALORE per settore: in curva si sta IN PIEDI e si canta anche a stadio semivuoto; in tribuna ci si alza
      solo quando la partita scotta → la quota di seduti scende con l'intensità (la curva parte già bassa). */
+  /* [giro 129] CONTEGGIO ONESTO (misurato: con la logica di prima un settore al fill 0,80 ne mostrava 0,65-0,71 dei posti
+     non-corridoio). Due perdite: la catena dei gruppi ripartiva VUOTA a ogni fila e dopo ogni corridoio (deficit ~p·cK/(1-cK)
+     posti per tratto), e la rampa di profondita' saturava a 1 sulle prime file buttando via massa. Solo a sagome: la catena
+     parte dal suo stato stazionario e la rampa si sposta di un offset tarato (bisezione deterministica, nessun dado) perche'
+     la media attesa sui posti veri (non corridoio, non VIP) sia il riempimento del settore. La folla di prima resta com'era. */
+  const _calib129=(target,wedgeSide)=>{if(!F129)return 0;let lo=-1,hi=1;
+    const _ev=(c)=>{let sum=0,cnt=0;
+      const rowsDef=[];for(let r=0;r<rowsUp;r++)rowsDef.push(["up",r,colsUp]);for(let r=0;r<rowsLow;r++)rowsDef.push(["low",r,colsLow]);
+      for(const [band,r,rc] of rowsDef){const depth=band==="up"?(r/Math.max(1,rowsUp-1))*0.45:0.5+(r/Math.max(1,rowsLow-1))*0.5;
+        for(let cl=0;cl<rc;cl++){const _u=cl/Math.max(1,rc);if(_isAisle(_u))continue;
+          if(band==="low"&&r===0&&cl>=vipC0&&cl<vipC1)continue;
+          const inW=!!S.wedge&&cl<Math.round(rc*S.wedge);if(inW!==wedgeSide)continue;
+          const b=Math.max(0,Math.min(1,target+(depth-_dMean)*0.85+c));
+          sum+=Math.max(0,Math.min(1,b+(_clAt(_u)-0.5)*_clAmp));cnt++;}}
+      return cnt?sum/cnt:target;};
+    if(target<=0)return -1;if(target>=1)return 1;
+    for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(_ev(mid)<target)lo=mid;else hi=mid;}return (lo+hi)/2;};
+  const _c129=_calib129(fill,false),_c129w=S.wedge?_calib129(Math.max(0,Math.min(1,spec.wedgeFill!=null?spec.wedgeFill:fill)),true):0;
   const _seatedBase=(S.seated!=null?S.seated:0.4);
   const _seatedP=Math.max(0.02,_seatedBase*(1-(spec.ultras?0.55:0.42)*inten));
   const pushRow=(band,r,rowCols,cW,rH,by)=>{
+    const _ri129=band==="up"?r:rowsUp+r;
     let _prevOcc=false;/* [7.187.0 P3] stato della catena: azzerato a ogni FILA (i gruppi non scavalcano le file) */
     // riempimento per fila: l'anello BASSO si riempie per primo (le file davanti prima) → a bassa
     // affluenza restano gruppetti sparsi in basso e anello alto vuoto, come negli stadi veri (§6)
     const depth=band==="up"?(r/(rowsUp-1))*0.45:0.5+(r/(rowsLow-1))*0.5;
-    const rowFill=Math.max(0,Math.min(1,fill+(depth-_dMean)*0.85));/* [7.187.0 P1] rampa centrata sul fill medio */
+    const rowFill=Math.max(0,Math.min(1,fill+(depth-_dMean)*0.85+_c129));/* [7.187.0 P1] rampa centrata sul fill medio · [giro 129] +offset tarato (0 nella folla di prima) */
+    let _fresh129=!!F129;
     const dk=0.55+0.50*depth;// profondità: fondo più scuro, fronte in piena luce
     for(let cl=0;cl<rowCols;cl++){
       const bx=cl*cW;
@@ -580,8 +605,9 @@ function makeCrowdTex(spec){
       const inWedge=!!S.wedge&&cl<Math.round(rowCols*S.wedge);
       const _u=cl/Math.max(1,rowCols);
       const _wf=(spec.wedgeFill!=null?spec.wedgeFill:fill);
-      const _base=inWedge?Math.max(0,Math.min(1,_wf+(depth-_dMean)*0.85)):rowFill;
-      let _p=Math.max(0,Math.min(1,(_base+(_clAt(_u)-0.5)*_clAmp)*_aisleComp));/* blocchi pieni/vuoti + compensazione corridoi */
+      const _base=inWedge?Math.max(0,Math.min(1,_wf+(depth-_dMean)*0.85+_c129w)):rowFill;
+      let _p=Math.max(0,Math.min(1,(_base+(_clAt(_u)-0.5)*_clAmp)*(F129?1:_aisleComp)));/* blocchi pieni/vuoti + compensazione corridoi · [giro 129] a sagome i corridoi non sono posti: niente compensazione */
+      if(_fresh129&&!vip&&!_isAisle(_u)){_prevOcc=rnd()<_p;_fresh129=false;}/* [giro 129] la catena parte dal suo stato stazionario */
       /* [7.187.0 P3] GRUPPI CONTIGUI: il dado indipendente per posto dava «sale e pepe» anche dentro i blocchi.
          Catena a 2 stati lungo la fila (si compra/abbona in gruppo, i vicini sono sempre gli stessi): la
          probabilità stazionaria resta ESATTAMENTE _p (nessun spettatore in più o in meno), cambia solo la
@@ -589,14 +615,14 @@ function makeCrowdTex(spec){
       const _cK=(S.ultras?0.62:0.50);
       const _pc=_prevOcc?(_p+_cK*(1-_p)):(_p*(1-_cK));
       const occ=vip?true:(_isAisle(_u)?false:rnd()<_pc);
-      _prevOcc=occ;
-      if(!occ){seats.push({empty:true,bx,by,cW,rH,col:cl,seatCol:_shade(seatBase,(0.72+rnd()*0.2)*dk)});continue;}
+      _prevOcc=occ;if(F129&&_isAisle(_u))_fresh129=true;
+      if(!occ){seats.push({empty:true,aisle:!vip&&_isAisle(_u),bx,by,cW,rH,col:cl,ri:_ri129,band,seatCol:_shade(seatBase,(0.72+rnd()*0.2)*dk)});continue;}
       const isAwayFan=spec.isAway||inWedge;
       const teamCol=isAwayFan?awayHex:homeHex;
       const team=rnd()<(S.team!=null?S.team:0.6);
       const clBase=vip?"#23262e":(team?teamCol:CLOTHES[(rnd()*CLOTHES.length)|0]);
       const fam=!vip&&!!S.families&&rnd()<S.families;
-      seats.push({empty:false,bx,by,cW,rH,col:cl,band,vip,fam,depth,
+      seats.push({empty:false,bx,by,cW,rH,col:cl,ri:_ri129,band,vip,fam,depth,dk,
         x:bx+cW/2+(rnd()-.5)*cW*0.22,
         isH:!isAwayFan,base:teamCol,
         cloth:_shade(clBase,(0.80+rnd()*0.44)*dk),
@@ -618,6 +644,24 @@ function makeCrowdTex(spec){
   {let by=splitY;for(let r=0;r<rowsLow;r++){const rH=(H-splitY)*lw[r]/lwSum;pushRow("low",r,colsLow,cWL,rH,by);by+=rH;}}
   // tre viste della stessa canvas: anello basso / anello alto / intera (per gli angoli)
   // mipmap ON (canvas POT): senza, la texture inclinata degenera in shimmering beige a distanza (alias sui texel pelle)
+  if(F129){/* [giro 129] UNA texture per la tela (prima tre: texLow/texUp/texFull, tre caricamenti dello stesso disegno); le bande
+       si scelgono con le UV del piano (mkTier), non con offset/repeat. Disegno UNA volta: sedili, ballatoio, box VIP, striscioni. */
+    const gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,_grass46?"#2a4423":"#0c0c18");gr.addColorStop(1,_grass46?"#3a5e2f":"#191926");
+    ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+    if(!_grass46){ctx.fillStyle="rgba(120,125,150,0.35)";ctx.fillRect(0,splitY-2,W,3);
+      for(const s of seats){const{cW,rH}=s;ctx.fillStyle="#1d1d27";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);
+        ctx.fillStyle=s.empty?s.seatCol:_shade(seatBase,0.72*(0.55+0.5*(s.depth||0.5)));ctx.fillRect(s.bx+cW*0.16,s.by+rH*0.40,cW*0.68,rH*0.34);}}
+    if(S.vip){ctx.fillStyle="rgba(14,18,30,0.42)";ctx.fillRect(vipC0*cWL,splitY,(vipC1-vipC0)*cWL,(H-splitY)*lw[0]/lwSum);
+      ctx.strokeStyle="rgba(212,175,55,0.55)";ctx.lineWidth=2;ctx.strokeRect(vipC0*cWL+1,splitY+1,(vipC1-vipC0)*cWL-2,(H-splitY)*lw[0]/lwSum-2);}
+    if(S.banner&&fill>0.45){const bh=13,by=H-bh;const segW=W/7;
+      for(let i=0;i<7;i++){ctx.fillStyle=i%2?_shade(spec.isAway?awayHex:homeHex,0.55):(spec.isAway?awayHex:homeHex);ctx.fillRect(i*segW+3,by,segW-6,bh-2);}
+      ctx.fillStyle="rgba(255,255,255,0.85)";for(let i=0;i<7;i++)ctx.fillRect(i*segW+segW*0.22,by+bh*0.38,segW*0.56,2);}
+    const t1=new THREE.CanvasTexture(c);t1.wrapS=t1.wrapT=THREE.ClampToEdgeWrapping;t1.anisotropy=4;
+    const _pssF=(spec.passion!=null?spec.passion:0.6);
+    const _olaF=fill>=(CROWD_CFG.anim.olaMinFill-_pssF*0.14)&&inten>=(CROWD_CFG.anim.olaMinIntensity-_pssF*0.10);
+    return {f129:true,tex:t1,texLow:t1,texUp:t1,texFull:t1,redraw:null,seats,W,H,splitY,tierSplit:q.tierSplit,colsLow,rowsUp,rowsLow,
+      allowOla:_olaF,inten,isAway:!!spec.isAway,key:spec.key||"x",seedKey:spec.seedKey||spec.key||"x",fill,homeHex,awayHex};
+  }
   const mkTex=(offY,repY)=>{const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;t.offset.y=offY;t.repeat.y=repY;t.anisotropy=4;return t;};
   const texLow=mkTex(0,q.tierSplit),texUp=mkTex(q.tierSplit,1-q.tierSplit),texFull=mkTex(0,1);
   const lighten=(hex,k)=>{const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=r+(255-r)*k|0;g=g+(255-g)*k|0;b=b+(255-b)*k|0;return"rgb("+r+","+g+","+b+")";};
@@ -693,6 +737,179 @@ function makeCrowdTex(spec){
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
+
+/* ══════════ [giro 129 PO-330 «A sagome»] FOLLA A IMPOSTORI ══════════
+   Un quadrato per tifoso, preso da un ATLANTE di persone disegnato qui dal codice (nessuna risorsa esterna): 32 varianti
+   (adulti, sciarpa, bandiera, ombrello, bambini, VIP) x 4 pose (braccia giu' · braccia su · applauso · mani in testa).
+   Due tele: COLORE (ombreggiatura in grigio dove si tinge, colori veri altrove) e MASCHERA (r maglia · g pelle · r+g capelli
+   · b accessorio): maglia/pelle/capelli/accessorio si tingono PER ISTANZA, l'ombreggiatura resta. Il tifo (gol nostro/loro,
+   applauso, ola, chi si alza) e' nel vertex shader, guidato da tre uniform: zero ridisegni, zero caricamenti in partita.
+   I posti e chi ci siede vengono da makeCrowdTex (F129): questa funzione li porta soltanto nel mondo. */
+let _F129_ATLAS=null;
+function _folla129Atlas(){
+  if(_F129_ATLAS)return _F129_ATLAS;
+  const CW=64,CH=128,NV=32,NP=4,W=CW*NV,H=CH*NP;
+  const cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
+  const mk=document.createElement("canvas");mk.width=W;mk.height=H;const m=mk.getContext("2d");
+  m.fillStyle="#000";m.fillRect(0,0,W,H);
+  const SH="#ff0000",SK="#00ff00",HA="#ffff00",AU="#0000ff",BA="#000000";
+  /* paint: stessa forma sulle due tele; sulla maschera il colore della regione (nero = colore vero, non si tinge) */
+  const paint=(reg,fill,fn)=>{x.fillStyle=fill;x.beginPath();fn(x);x.fill();m.fillStyle=reg;m.beginPath();fn(m);m.fill();};
+  const line=(reg,stroke,w,fn)=>{x.strokeStyle=stroke;x.lineWidth=w;x.lineCap="round";x.beginPath();fn(x);x.stroke();m.strokeStyle=reg;m.lineWidth=w;m.lineCap="round";m.beginPath();fn(m);m.stroke();};
+  const ell=(cx,cy,rx,ry,a0,a1)=>c=>c.ellipse(cx,cy,rx,ry,0,a0==null?0:a0,a1==null?Math.PI*2:a1);
+  const rect=(x0,y0,w,h)=>c=>c.rect(x0,y0,w,h);
+  for(let v=0;v<NV;v++)for(let p=0;p<NP;p++){
+    const ox=v*CW,oy=p*CH,cx=ox+CW/2;
+    const kind=v>=30?"vip":v>=27?"child":v>=24?"umb":v>=22?"flag":v>=18?"scarf":"base";
+    const capV=kind==="base"&&v>=14;
+    const broad=0.86+((v*7)%5)*0.055,female=(v%4===1)&&kind!=="vip",beard=(v%5===3)&&kind!=="child",glasses=(v%6===4),hoodie=(v%7===5)&&kind==="base";
+    x.save();m.save();x.beginPath();x.rect(ox,oy,CW,CH);x.clip();m.beginPath();m.rect(ox,oy,CW,CH);m.clip();
+    if(kind==="child"){const k=0.66;x.translate(cx,oy+CH);x.scale(k,k);x.translate(-cx,-(oy+CH));m.translate(cx,oy+CH);m.scale(k,k);m.translate(-cx,-(oy+CH));}
+    const shW=15.5*broad*(female?0.9:1),hipW=12*broad,headY=oy+24,hr=8.6,shY=oy+38;
+    /* gambe e scarpe: colore vero, tono medio (le scure si vedevano troppo dietro i sedili vuoti) */
+    const gp=x.createLinearGradient(0,oy+76,0,oy+124);gp.addColorStop(0,"#646a7a");gp.addColorStop(1,"#4c5160");
+    paint(BA,gp,c=>{c.rect(cx-hipW+1,oy+76,hipW-2,46);c.rect(cx+1,oy+76,hipW-2,46);});
+    paint(BA,"#34343c",c=>{c.rect(cx-hipW,oy+121,hipW,7);c.rect(cx+1,oy+121,hipW,7);});
+    /* busto: trapezio spalle→fianchi, grigio ombreggiato (luce da sinistra) che si tinge col colore della maglia */
+    const tg=x.createLinearGradient(cx-shW,0,cx+shW,0);tg.addColorStop(0,"#ececec");tg.addColorStop(0.55,"#cdcdcd");tg.addColorStop(1,"#959595");
+    const torso=c=>{c.moveTo(cx-shW,shY+5);c.quadraticCurveTo(cx-shW,shY-1,cx-shW+6,shY-2);c.lineTo(cx+shW-6,shY-2);c.quadraticCurveTo(cx+shW,shY-1,cx+shW,shY+5);c.lineTo(cx+hipW,oy+80);c.lineTo(cx-hipW,oy+80);c.closePath();};
+    paint(SH,tg,torso);
+    x.fillStyle="rgba(0,0,0,0.16)";x.fillRect(cx-1,shY+3,2,34);
+    if(kind==="vip"){paint(BA,"#e9e9ee",c=>{c.moveTo(cx-6,shY-2);c.lineTo(cx+6,shY-2);c.lineTo(cx,shY+16);c.closePath();});paint(BA,"#7a1f2b",c=>c.rect(cx-1.5,shY+1,3,14));}
+    if(hoodie)paint(SH,"#bdbdbd",ell(cx,shY-1,11,5,Math.PI,Math.PI*2));
+    /* braccia per posa: 0 giu' · 1 su · 2 applauso · 3 mani in testa */
+    const flagV=kind==="flag",umbV=kind==="umb";
+    const arm=(sd)=>{const sx=cx+sd*(shW-3),sy=shY+3;let ex,ey,hx,hy;
+      if(umbV&&sd>0){ex=sx+sd*2;ey=shY+20;hx=cx+3;hy=shY+6;}
+      else if(flagV&&sd>0){ex=sx+sd*6;ey=p===1?shY-14:shY+8;hx=cx+20;hy=p===1?oy+12:shY-4;}
+      else if(p===1){ex=sx+sd*6;ey=shY-16;hx=sx+sd*5;hy=oy+6;}
+      else if(p===2){ex=sx+sd*4;ey=shY+18;hx=cx+sd*2.5;hy=shY+2;}
+      else if(p===3){ex=sx+sd*9;ey=headY-4;hx=cx+sd*6;hy=headY-9;}
+      else{ex=sx+sd*3;ey=shY+20;hx=sx+sd*3;hy=oy+76;}
+      line(SH,"#c4c4c4",7.5,c=>{c.moveTo(sx,sy);c.lineTo(ex,ey);});
+      line(SK,"#c8c8c8",5.5,c=>{c.moveTo(ex,ey);c.lineTo(hx,hy);});
+      paint(SK,"#d0d0d0",ell(hx,hy,3.4,3.4));};
+    /* sciarpa al collo (prima delle braccia) */
+    if(kind==="scarf"&&p!==1){paint(AU,"#dcdcdc",c=>c.rect(cx-shW+4,shY-4,(shW-4)*2,6));paint(AU,"#c8c8c8",c=>{c.rect(cx-7,shY+2,5,22);c.rect(cx+2,shY+2,5,18);});}
+    /* collo e testa (ovale, orecchie), ombreggiati */
+    paint(SK,"#bcbcbc",rect(cx-3.5,headY+6,7,shY-headY-5));
+    const hg=x.createRadialGradient(cx-3,headY-3,2,cx,headY,hr+3);hg.addColorStop(0,"#ececec");hg.addColorStop(1,"#a8a8a8");
+    paint(SK,hg,ell(cx,headY,hr*0.84,hr));
+    paint(SK,"#b4b4b4",c=>{c.ellipse(cx-hr*0.84,headY+1,2.2,3,0,0,Math.PI*2);c.ellipse(cx+hr*0.84,headY+1,2.2,3,0,0,Math.PI*2);});
+    /* tratti del volto, appena accennati */
+    paint(BA,"rgba(28,20,16,0.85)",c=>{c.rect(cx-4.4,headY-0.5,2.4,1.8);c.rect(cx+2,headY-0.5,2.4,1.8);});
+    if(p===1||p===3)paint(BA,"#4a1c1c",ell(cx,headY+5,2.6,2.2));else paint(BA,"#6a3a30",rect(cx-2.6,headY+5,5.2,1.2));
+    if(glasses){x.strokeStyle="#111";x.lineWidth=1.1;x.strokeRect(cx-5.6,headY-2.2,4.4,3.4);x.strokeRect(cx+1.2,headY-2.2,4.4,3.4);}
+    /* capelli (si tingono; con calvo il gioco li tinge col colore della pelle) / barba / cappellino */
+    if(beard)paint(HA,"#9a9a9a",ell(cx,headY+4.5,hr*0.66,4.6,0,Math.PI));
+    if(capV){paint(AU,"#cfcfcf",ell(cx,headY-3.2,hr*0.92,hr*0.72,Math.PI,Math.PI*2));paint(AU,"#a6a6a6",rect(cx-2,headY-4.6,hr+3,2.8));}
+    else{paint(HA,"#b9b9b9",ell(cx,headY-2.4,hr*0.9,hr*0.82,Math.PI*1.02,Math.PI*1.98));
+      if(female)paint(HA,"#adadad",c=>{c.rect(cx-hr*0.92,headY-3,3.6,16);c.rect(cx+hr*0.92-3.6,headY-3,3.6,16);});}
+    arm(-1);arm(1);
+    if(kind==="scarf"&&p===1){paint(AU,"#dcdcdc",c=>c.rect(cx-shW-6,oy+3,(shW+6)*2,6));}
+    if(flagV){const px=cx+20;paint(BA,"#d6d6de",rect(px-0.9,p===1?oy+0:oy+10,1.8,p===1?40:50));
+      paint(AU,"#d8d8d8",rect(px-24,p===1?oy+1:oy+11,24,13));x.fillStyle="rgba(0,0,0,0.18)";x.fillRect(px-24,(p===1?oy+1:oy+11)+9,24,4);}
+    if(umbV){paint(BA,"#5a5a60",rect(cx+1,headY-14,1.6,32));
+      const ug=x.createLinearGradient(cx-27,0,cx+27,0);ug.addColorStop(0,"#e0e0e0");ug.addColorStop(1,"#a0a0a0");
+      paint(AU,ug,c=>{c.ellipse(cx+1,headY-6,27,15,0,Math.PI,Math.PI*2);c.closePath();});
+      x.fillStyle="rgba(255,255,255,0.22)";x.fillRect(cx-26,headY-7,54,1.2);}
+    x.restore();m.restore();
+  }
+  _F129_ATLAS={cv,mk,NV,NP,CW,CH};return _F129_ATLAS;
+}
+function buildFolla129(scene,planes,o){
+  const _t0=(typeof performance!=='undefined'?performance.now():0);
+  const AT=_folla129Atlas();const oggi=o.dens==="oggi";const dK=oggi?1:2.9;
+  const COLW=0.56,ROWL=0.80;/* passo minimo: un piano stretto (angoli, fascia sommitale) prende un posto ogni k */
+  const hx=h=>{const n=parseInt(String(h||"#808080").slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
+  const un=(rgb,dk)=>rgb.map(t=>Math.max(0,Math.min(255,Math.round(t/Math.max(0.4,dk||1)*0.94))));
+  const per={};const L=[];
+  const _up=new THREE.Vector3(),_v=new THREE.Vector3();
+  for(const P of planes){
+    const ob=P.obj,mesh=P.mesh;mesh.updateWorldMatrix(true,false);const wm=mesh.matrixWorld;
+    const ts=ob.tierSplit,v0=P.band==="low"?0:P.band==="up"?ts:0,v1=P.band==="low"?ts:1;
+    const rowsIn=P.band==="low"?ob.rowsLow:P.band==="up"?ob.rowsUp:ob.rowsUp+ob.rowsLow,r0=P.band==="low"?ob.rowsUp:0;
+    const kR=Math.max(1,Math.ceil(ROWL/(P.L/Math.max(1,rowsIn)))),kC=Math.max(1,Math.ceil(COLW/(P.W/Math.max(1,ob.colsLow))));
+    _up.set(0,1,0).transformDirection(wm);const yaw=Math.atan2(-_up.x,-_up.z);
+    const sec=per[ob.key]||(per[ob.key]={slots:0,occ:0,fill:+(+ob.fill).toFixed(3),planes:0});sec.planes++;
+    let h=Math.abs(hashStr("f129_"+ob.seedKey+"_"+P.band+"_"+sec.planes))>>>0;const rr=()=>{h=(h*1664525+1013904223)>>>0;return h/4294967296;};
+    for(const st of ob.seats){
+      if(st.ri<r0||st.ri>=r0+rowsIn||((st.ri-r0)%kR)||(st.col%kC))continue;
+      if(st.aisle)continue;/* i corridoi non sono posti: non entrano nel conteggio */
+      sec.slots++;if(st.empty)continue;
+      const cy=st.by+st.rH*0.80,tt=((1-cy/ob.H)-v0)/(v1-v0);if(tt<0||tt>1)continue;
+      sec.occ++;
+      _v.set((st.x/ob.W-0.5)*P.W,(tt-0.5)*P.L,0).applyMatrix4(wm);
+      L.push({x:_v.x,y:_v.y,z:_v.z,yaw,st,ob,r1:rr(),r2:rr(),r3:rr()});
+    }
+  }
+  const n=L.length;
+  const geo=new THREE.PlaneGeometry(1.0,2.0);geo.translate(0,0.94,0);
+  const iA=new Float32Array(n*4),iB=new Float32Array(n*4),iC=new Float32Array(n*4);
+  const cSh=new Uint8Array(n*3),cSk=new Uint8Array(n*3),cHa=new Uint8Array(n*3),cAu=new Uint8Array(n*3);
+  const U={uT:{value:0},uEx:{value:0},uGs:{value:0},uRH:{value:0.9}};
+  const tc=new THREE.CanvasTexture(AT.cv),tm=new THREE.CanvasTexture(AT.mk);tc.anisotropy=4;
+  const mat=new THREE.MeshLambertMaterial({map:tc,alphaTest:0.3,side:THREE.DoubleSide});
+  mat.onBeforeCompile=sh=>{
+    sh.uniforms.uT=U.uT;sh.uniforms.uEx=U.uEx;sh.uniforms.uGs=U.uGs;sh.uniforms.uRH=U.uRH;sh.uniforms.uMask={value:tm};
+    sh.vertexShader="attribute vec4 iA;attribute vec4 iB;attribute vec4 iC;attribute vec3 cSh;attribute vec3 cSk;attribute vec3 cHa;attribute vec3 cAu;\nuniform float uT;uniform float uEx;uniform float uGs;uniform float uRH;\nvarying vec2 vAtl;varying vec3 vSh;varying vec3 vSk;varying vec3 vHa;varying vec3 vAu;\n"+sh.vertexShader.replace("#include <begin_vertex>",[
+      "vec3 transformed=vec3(position);",
+      "float ex=uEx,gs=uGs,ph=iA.y,vip=step(29.5,iA.x);",
+      "float isH=step(0.5,iB.x);",
+      "float hot=step(0.001,ex)*step(0.5,abs(gs));",
+      "float mine=(gs>0.0)?isH:(1.0-isH);",
+      "float cheer=hot*mine,desp=hot*(1.0-mine);",
+      "float wf=mod(uT*5.0,iC.y+10.0)-5.0;",
+      "float ola=(1.0-cheer)*(1.0-desp)*step(0.5,iB.z)*max(0.0,1.0-abs(iC.x-wf)/2.4)*(1.0-ex);",
+      "float clap=(1.0-vip)*step(0.5,iC.z)*step(0.06,ex)*step(ex,0.75)*(1.0-step(0.5,abs(gs)))*step(iA.w,0.55)*step(0.15,sin(uT*9.0+ph));",
+      "float idleUp=step(0.3,iC.w)*step(0.965,sin(uT*0.09*iA.z+ph*3.1));",
+      "float standUp=(1.0-vip)*step(0.5,iB.y)*max(cheer,max(step(0.4,ola),idleUp));",
+      "float sit=step(0.5,iB.y)*(1.0-standUp);",
+      "float dy=0.0,pose=0.0;",
+      "if(vip<0.5){",
+      " if(cheer>0.5){dy=(0.5+0.5*abs(sin(uT*8.0+ph)))*0.42*uRH*ex;pose=step(0.2,ex);}",
+      " else if(desp>0.5){dy=-0.10*uRH*ex;pose=3.0;}",
+      " else{dy=sin(uT*iA.z+ph)*uRH*0.04+ola*uRH*0.55;pose=(clap>0.5&&ola<=0.5)?2.0:step(0.5,ola);}",
+      "}",
+      "dy-=sit*0.52;",
+      "transformed.y+=dy;",
+      "float u=uv.x*0.94+0.03;if(iB.w>0.5)u=1.0-u;",
+      "vAtl=vec2((iA.x+u)/32.0,(3.0-pose+uv.y*0.985+0.005)/4.0);",
+      "vSh=cSh;vSk=cSk;vHa=cHa;vAu=cAu;"].join("\n"));
+    sh.fragmentShader="uniform sampler2D uMask;\nvarying vec2 vAtl;varying vec3 vSh;varying vec3 vSk;varying vec3 vHa;varying vec3 vAu;\n"+sh.fragmentShader.replace("#include <map_fragment>",[
+      "vec4 tcol=texture2D(map,vAtl);vec3 mk=texture2D(uMask,vAtl).rgb;",
+      "float wH=mk.r*mk.g;float wS=max(mk.r-wH,0.0);float wK=max(mk.g-wH,0.0);float wA=mk.b;",
+      "float wB=clamp(1.0-wH-wS-wK-wA,0.0,1.0);float lum=tcol.g*1.18;",
+      "vec3 cc=tcol.rgb*wB+lum*(vSh*wS+vSk*wK+vHa*wH+vAu*wA);",
+      "diffuseColor*=vec4(cc,tcol.a);"].join("\n"));
+  };
+  mat.customProgramCacheKey=()=>"folla129";
+  const SKF=[[245,197,163],[232,168,112],[217,160,106],[200,149,106],[160,106,66],[139,80,48],[124,74,30],[95,56,24]];
+  for(let k=0;k<n;k++){const e=L[k],st=e.st,ob=e.ob;
+    const vh=(e.r1*1e6)|0;
+    let va;
+    if(st.vip)va=30+(vh&1);else if(st.umb)va=24+vh%3;else if(st.flag)va=22+(vh&1);else if(st.scarf)va=18+vh%4;
+    else if(st.fam&&e.r2<0.6)va=27+vh%3;else if(st.cap)va=14+vh%4;else va=vh%14;
+    iA[k*4]=va;iA[k*4+1]=st.ph||0;iA[k*4+2]=st.sp||1;iA[k*4+3]=st.clapP==null?1:st.clapP;
+    iB[k*4]=st.isH?1:0;iB[k*4+1]=st.seated?1:0;iB[k*4+2]=(ob.allowOla&&st.band==="low"&&!st.vip)?1:0;iB[k*4+3]=e.r3<0.5?1:0;
+    iC[k*4]=st.col/dK;iC[k*4+1]=ob.colsLow/dK;iC[k*4+2]=st.band==="low"?1:0;iC[k*4+3]=ob.inten;
+    const dk=st.dk||1,sk=un(hx(st.skin),dk);
+    cSh.set(st.vip?[35,38,46]:un(hx(st.cloth),dk),k*3);cSk.set(sk,k*3);
+    cHa.set(st.hair?un(hx(st.hair),dk):sk,k*3);
+    cAu.set(st.umb?hx(st.umbCol):(va>=14&&va<18)?hx(st.capCol):hx(st.base),k*3);}
+  geo.setAttribute("iA",new THREE.InstancedBufferAttribute(iA,4));geo.setAttribute("iB",new THREE.InstancedBufferAttribute(iB,4));geo.setAttribute("iC",new THREE.InstancedBufferAttribute(iC,4));
+  geo.setAttribute("cSh",new THREE.InstancedBufferAttribute(cSh,3,true));geo.setAttribute("cSk",new THREE.InstancedBufferAttribute(cSk,3,true));
+  geo.setAttribute("cHa",new THREE.InstancedBufferAttribute(cHa,3,true));geo.setAttribute("cAu",new THREE.InstancedBufferAttribute(cAu,3,true));
+  const im=new THREE.InstancedMesh(geo,mat,Math.max(1,n));im.count=n;im.frustumCulled=false;im.name="folla129";
+  const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),S=new THREE.Vector3(),E=new THREE.Euler(),Pv=new THREE.Vector3();
+  for(let k=0;k<n;k++){const e=L[k];E.set(0,e.yaw,0);Q.setFromEuler(E);const sc=0.93+e.r2*0.12;S.set(sc,sc,sc);Pv.set(e.x,e.y-0.04,e.z);M.compose(Pv,Q,S);im.setMatrixAt(k,M);}
+  im.instanceMatrix.needsUpdate=true;scene.add(im);
+  let slots=0,occ=0;for(const k in per){slots+=per[k].slots;occ+=per[k].occ;}
+  const info={n,slots,occ,ratio:slots?+(occ/slots).toFixed(4):0,dens:o.dens,per,capacity:o.capacity,fill:o.fill,awayFill:o.awayFill,planes:planes.length,
+    tri:n*2,atlas:AT.cv.width+"x"+AT.cv.height,gpuMB:+((AT.cv.width*AT.cv.height*4*1.333*2+n*(64+48+36))/1048576).toFixed(1),buildMs:+(((typeof performance!=='undefined'?performance.now():0)-_t0)).toFixed(1)};
+  try{if(typeof window!=='undefined')window.__CPM_FOLLA129=info;}catch(_e){}
+  return {mesh:im,U,info};
+}
 
 function getStadiumPalette(club){
   // Helper: hex string/number → {r,g,b} 0-1
@@ -914,7 +1131,13 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurvaAw=Math.min(1,_awBase+(1-_awBase)*_curvaK*0.85);/* anche il settore ospiti è compatto (chi viaggia è il nucleo) */
   const _movedC=(_fillCurva-_bfC)*sideW+(_fillCurvaAw-_awBase)*sideW*0.35;// posti spostati nelle curve
   const _fillTrib=Math.max(0.03,_bfC-_movedC/(2*Math.max(1,endW)));// tolti equamente alle due tribune
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
+  /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
+     window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+    let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
+    return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
+  const _f129Planes=[];
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -934,7 +1157,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _nord=makeCrowdTex(mkSpec("curvaNord",SEC.curvaNord,true,sideW,_fillCurvaAw,_nrdRM));
   const _est=makeCrowdTex(mkSpec("tribunaEst",_finE,false,endW,_fillTrib,_endRM));/* [7.187.0] tribune: le prime a svuotarsi */
   const _ovest=makeCrowdTex(mkSpec("tribunaOvest",_finO,false,endW,_fillTrib,_ovRM));
-  const crowdAnims=[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];
+  const crowdAnims=_F129?null:[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];/* [giro 129] a sagome nessuna tela si ridisegna: il tifo e' nel vertex shader */
 
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
   // + LOD1 (§2): prime file di BUSTI 3D instanziati (2 draw call per settore, bob solo nei burst)
@@ -1015,25 +1238,29 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _bz=standD*0.49,_run=standH*1.7,_L=Math.hypot(_run,standH+0.8);
       const sl=new THREE.Mesh(new THREE.PlaneGeometry(standW,_L),_grassM46);sl.position.set(0,(standH+0.8)/2,_bz+_run/2);
       sl.rotation.x=-Math.atan2(_run,standH+0.8);g.add(sl);}
-    const mkTier=(z0,y0,z1,y1,tex)=>{
+    const mkTier=(z0,y0,z1,y1,tex,band129)=>{
       const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);
       const m=new THREE.MeshLambertMaterial({color:0xffffff,map:tex,side:THREE.DoubleSide});
-      const t=new THREE.Mesh(new THREE.PlaneGeometry(standW,L),m);
+      const _pg=new THREE.PlaneGeometry(standW,L);
+      if(crowdObj.f129){const ts=crowdObj.tierSplit,v0=band129==="low"?0:band129==="up"?ts:0,v1=band129==="low"?ts:1;/* [giro 129] banda scelta con le UV: una texture sola */
+        const uv=_pg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setY(i,v0+uv.getY(i)*(v1-v0));uv.needsUpdate=true;}
+      const t=new THREE.Mesh(_pg,m);
+      if(crowdObj.f129)_f129Planes.push({mesh:t,obj:crowdObj,band:band129||"full",W:standW,L});
       t.position.set(0,(y0+y1)/2,(z0+z1)/2);t.rotation.x=Math.atan2(dz,dy);// fronte-basso → retro-alto
       g.add(t);return m;
     };
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
     let mLow,mUp;
     if(_nt===1){// anello UNICO ripido (provincia/comunale · curva-muro tedesca)
-      mLow=mkTier(-standD/2+0.6,3.0,standD*0.40,standH+0.6,crowdObj.texFull);/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA · [6.5.1 Polish D] top arretrato 0.30→0.40 + cap +1.0→+0.6 → RAKE più dolce (stessa altezza distribuita su più profondità = incline meno ripido) */
-      mUp=mkTier(standD*0.40,standH+0.6,standD*0.44,standH+0.8,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp) · [6.5.1] start allineato al nuovo top di mLow
+      mLow=mkTier(-standD/2+0.6,3.0,standD*0.40,standH+0.6,crowdObj.texFull,"full");/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA · [6.5.1 Polish D] top arretrato 0.30→0.40 + cap +1.0→+0.6 → RAKE più dolce (stessa altezza distribuita su più profondità = incline meno ripido) */
+      mUp=mkTier(standD*0.40,standH+0.6,standD*0.44,standH+0.8,crowdObj.texUp,"up");// fascia sommitale minima (tiene vivo texUp) · [6.5.1] start allineato al nuovo top di mLow
     }else{
-      mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
-      mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp);
+      mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow,"low");
+      mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp,"up");
       const walk=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.10),cM);
       walk.position.set(0,standH*0.645,-standD*0.06);g.add(walk);
       if(_nt>=3){// terzo anello (spagnolo/sudamericano): riusa texUp, arretrato e più alto
-        mkTier(standD*0.34,standH+1.6,standD*0.52,standH*1.34+2.2,crowdObj.texUp);
+        mkTier(standD*0.34,standH+1.6,standD*0.52,standH*1.34+2.2,crowdObj.texUp,"up");
         const walk2=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.08),cM);
         walk2.position.set(0,standH+1.5,standD*0.33);g.add(walk2);
       }
@@ -1146,7 +1373,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // LOD1 — prime file 3D: busti instanziati appena dietro la balaustra (seedati, deterministici)
     let front=null;
     const nFront=Math.round(CROWD_CFG.anim.frontRowPerStand*Math.min(1,(frontFill||0)*1.4));
-    if(nFront>2){
+    if(nFront>2&&!crowdObj.f129){/* [giro 129] a sagome le prime file sono gia' persone: niente busti cilindro+sfera */
       let fs=Math.abs(hashStr("front_"+cx+"_"+cz+"_"+(crowd.seed||0)))>>>0;
       const fr=()=>{fs=(fs*1664525+1013904223)>>>0;return fs/4294967296;};
       const teamHex=isAway?awayHex:homeHex;
@@ -1202,6 +1429,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _y0=1.6,_run=24,_rise=Math.max(1,cH-_y0),_th=Math.atan2(_rise,_run),_len=Math.hypot(_run,_rise);
       const ramp=new THREE.Mesh(new THREE.PlaneGeometry(24,_len),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?_sud.texFull:_nord.texFull}));
       ramp.position.set(0,_y0+_rise/2,0);ramp.rotation.x=-(Math.PI/2-_th);g.add(ramp);
+      if(_F129)_f129Planes.push({mesh:ramp,obj:x>0?_sud:_nord,band:"full",W:24,L:_len});
       const back=new THREE.Mesh(new THREE.BoxGeometry(24,cH,0.8),cM);back.position.set(0,cH/2,-12.4);g.add(back);
       const _sh=new THREE.Shape();_sh.moveTo(12,0);_sh.lineTo(-12.8,0);_sh.lineTo(-12.8,cH);_sh.lineTo(12,_y0);_sh.lineTo(12,0);
       const _sg=new THREE.ShapeGeometry(_sh);
@@ -1614,7 +1842,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   try{if(typeof window!=='undefined'){/* [giro 46] testimone: tipologia e costo dell'impianto (mesh = tetto dei draw call, indipendente dalla camera) */
     let nM=0,tri=0;scene.traverse(o=>{if(o.isMesh&&o.geometry){nM++;const g=o.geometry,c=((g.index?g.index.count:(g.attributes.position?g.attributes.position.count:0))/3);tri+=o.isInstancedMesh?c*o.count:c;}});
     const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.kind=K46;w.tpl=(T&&T.template)||null;w.cap=_capB;w.crown=_crown46;w.meshes=nM;w.tri=Math.round(tri);w.light=lightColor;}}catch(_e){}
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
+  let _folla129=null;
+  if(_F129&&_f129Planes.length){try{_folla129=buildFolla129(scene,_f129Planes,{dens:_F129.dens,isMobile:isMob,meteo:crowd.meteo23||"",capacity:_capB||null,fill:crowd.fill,awayFill:crowd.awayFill});}
+    catch(e){try{if(typeof window!=='undefined')window.__CPM_FOLLA129_ERR=String(e&&e.message||e);}catch(_e){}}}
+  return {folla129:_folla129,homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================
