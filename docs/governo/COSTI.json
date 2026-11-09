@@ -502,5 +502,19 @@
     "cache_read_tokens": 8990910,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYia9YWA7f4BMekGnq6mK",
+    "titolo": "giro 133 amichevoli della Nazionale nella card Prossima (PO-333)",
+    "versione": "7.999.188",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T21:20:17Z",
+    "chiusa": "2026-11-09T21:44:44Z",
+    "cost_usd": 2.37885276,
+    "output_tokens": 17363,
+    "cache_read_tokens": 5407760,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-09"
   }
 ]

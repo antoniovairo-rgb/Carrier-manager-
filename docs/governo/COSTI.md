@@ -41,6 +41,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.186 | verifica finale 7.999.186 (ripresa dopo la pausa) | catena | claude-sonnet-5-5 | 4,8 | 1,47 $ | 17804 | 1 | completo (un solo avvio) |
 | 7.999.186 | giro 130 sonda collaudo-110 G180-17 | collaudo | claude-opus-5-5 | 0,6 | 1,60 $ | 11171 | 1 | completo (un solo avvio) |
 | 7.999.188 | giro 131 card Prossima con la Nazionale (PO-331) | sviluppo | claude-opus-5-5 | 1,1 | 3,57 $ | 26738 | 1 | completo (un solo avvio) |
+| 7.999.188 | giro 133 amichevoli della Nazionale nella card Prossima (PO-333) | sviluppo | claude-opus-5-5 | 0,4 | 2,38 $ | 17363 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -49,4 +50,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.185 | **TOTALE 7.999.185** (4 sessioni) |  |  |  | 18,18 $ |  |  | tutte complete |
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (3 sessioni) |  |  |  | 22,37 $ |  |  | tutte complete |
-| 7.999.188 | **TOTALE 7.999.188** (1 sessioni) |  |  |  | 3,57 $ |  |  | tutte complete |
+| 7.999.188 | **TOTALE 7.999.188** (2 sessioni) |  |  |  | 5,95 $ |  |  | tutte complete |
