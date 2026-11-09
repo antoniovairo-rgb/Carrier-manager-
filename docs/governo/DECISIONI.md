@@ -1035,3 +1035,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - 08/11 22:50 — Due note del PO per domani: PO-329 (ingresso dall'eroe dalla panchina: tribune viste da dietro) e PO-330 (tifosi «pupazzi» da umanizzare) → 7.999.187 (la 186 è a contenuto chiuso). Alla ripresa del 09/11 14:00 partono in parallelo alla verifica 186.
 - 09/11 14:00 — Ripresa dopo la pausa: verifica 186 rilanciata (la prima interrotta non aveva salvato nulla; ora rapporto parziale ogni 3 controlli). Avviati per la 187: giro 127 (PO-329 ingresso dalla panchina) e giro 128 (PO-330 studio sui tifosi, sola misura).
 - 09/11 14:30 — Guida per Play Console scritta per il PO (Claude Doc https://claude.ai/artifact/FpRX2b2HxeoAgKszSC1vBy): 7 passi come per PLINTO, testi della scheda (frase «Funziona offline» tolta: la TWA richiede la rete al primo avvio), risposte ai questionari, messaggio ai tester, punti aperti (PayPal, prova sul telefono, screenshot, impronta SHA-256).
+
+### 09/11 15:06 UTC — Giro 128 (PO-330, studio tifosi) finito
+- Rapporto: `docs/collaudo-grafico/128/RAPPORTO.md` sul ramo `collaudo/giro128-tifosi`. Oggi la folla è una tela 2D ridisegnata ogni 110 ms (≈32 MB GPU su telefono); prototipi A sagome (44k triangoli, ≈4 MB), B figure 3D (747k triangoli), C miscela (351k). Raccomandazione del giro: A. Fps sul telefono non misurati («Non posso confermarlo» finché non gira il banco).
+- Foto di confronto mandate al PO; scelta chiesta con questionario. Costo 5,95 $ (un avvio). Sessione archiviata.
