@@ -80,7 +80,7 @@ una schermata "Info/Crediti" in-app:
 
 | Campo | Valore |
 |---|---|
-| Email sviluppatore | antoniovairo@gmail.com |
+| Email sviluppatore | korward.devteam@gmail.com (decisione PO 09/11: mai la casella personale; stessa casella delle idee, direttiva 21/09) |
 | Privacy policy URL | https://antoniovairo-rgb.github.io/Carrier-manager-/privacy.html |
 | Contiene annunci | No |
 | Acquisti in-app | No (donazione solo via link esterno, nessuna ricompensa) |

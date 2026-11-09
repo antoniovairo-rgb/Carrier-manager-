@@ -1083,3 +1083,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 09/11 20:45 UTC — PO-332 premiazione e domande del giro 131
 - PO, questionario: PO-332 (premiazione: braccia a T, compagni girati) «188»; colore della card con la Nazionale: «Colore Nazionale» (come il giro 131); amichevoli della Nazionale uniformate: «Sì, nella 188» (registrata PO-333); Nazionale in coda con «Vivi la settimana» sul pulsante: «Va bene così».
 - Decisione tecnica (madre): giro 132 (PO-332) su `sviluppo/giro132-premiazione` da `lavoro/187`; giro 133 (PO-333) su `sviluppo/giro133-amichevoli` da `sviluppo/giro131-prossima` (stesso file src/18, per non creare conflitti).
+
+### 09/11 21:30 UTC — PO-334 privacy senza la mail personale
+- PO (foto della pagina privacy): «Perché rimanda ad una pagina esterna? Non deve esserci la mia mail personale». Correzione immediata (dato personale pubblicato, fuori dal codice del gioco: nessun effetto sulla verifica 187): privacy.html, PRIVACY_POLICY.md e STORE_LISTING.md ora indicano korward.devteam@gmail.com, la casella che il PO ha scelto il 21/09 per le idee; nella pagina l'indirizzo è scritto in codici di carattere (contro i raccoglitori di spam). Data di aggiornamento 9 novembre 2026.
+- Limite dichiarato: la casella personale resta nella storia git e in eventuali copie in cache; si toglierebbe solo riscrivendo la storia (force push, vietato).
+- Pagina esterna: Google chiede l'informativa a un indirizzo pubblico; dentro l'app il giro 118 l'apre fuori dall'app. Scelta su come mostrarla chiesta al PO.
