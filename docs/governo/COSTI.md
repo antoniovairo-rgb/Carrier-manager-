@@ -55,6 +55,8 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.189 | giro 142b presentazione della squadra e marchio (PO-343, D23) | sviluppo | claude-opus-5-5 | 1,1 | 6,05 $ | 57599 | 1 | completo (un solo avvio) |
 | 7.999.189 | giro 138 lotto strumenti (festa-57, portiere-252, contatto-103, riserva-103, griglia-mobile) | collaudo | claude-opus-5-5 | 4,0 | 13,19 $ | 121653 | 1 | completo (un solo avvio) |
 | 7.999.189 | giro 139 doppio rigore (PO-315) | sviluppo | claude-opus-5-5 | 3,7 | 5,90 $ | 55718 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 143 curve 2D al secondo tempo (PO-345) | sviluppo | claude-opus-5-5 | 0,7 | 3,20 $ | 30290 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 144 saluto del chiamato e marchio sala stampa (PO-347, PO-346) | sviluppo | claude-opus-5-5 | 1,0 | 5,40 $ | 49838 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -64,4 +66,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
-| 7.999.189 | **TOTALE 7.999.189** (7 sessioni) |  |  |  | 46,96 $ |  |  | tutte complete |
+| 7.999.189 | **TOTALE 7.999.189** (9 sessioni) |  |  |  | 55,56 $ |  |  | tutte complete |

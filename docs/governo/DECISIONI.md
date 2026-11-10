@@ -1163,3 +1163,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - 139 (PO-315): doppio rigore riprodotto e corretto (`_piaz27`, rosso `__CPM_NO_G139`, guardiano rigore-139); highlight-95 interrotto al tetto, si rigioca nella verifica 189. 5,90 $.
 - Avviati: 143 curve 2D al secondo tempo (sopra 141), 144 saluto e marchio sala stampa (sopra 142b), 145 lotto strumenti 2 (sopra 138).
 - Sessioni archiviate.
+
+### 10/11 13:35 UTC — Giri 143 e 144 finiti
+- 143 (PO-345): stadio 2D ruotato di 180° al secondo tempo come il 3D (una fonte del tempo `_tempo143` per 3D e 2D, ridisegno solo al cambio di tempo); partita2d-141 esteso 16/16, rosso `__CPM_NO_G143`. Precisazione della madre: la frase di BACKLOG su «curva di casa sempre dietro la porta d'attacco» era imprecisa; vale la scelta del PO «come nel 3D». Spicchio ospiti che passa da Est a Ovest con la rotazione: decisione tecnica, coerente col 3D. Segnalato dal giro: `folla` rosso (F1/F2) già sulla base del giro 141 — sulla 188 era verde (catena 188 r.11): da controllare nella verifica 189 e, se rosso, misurare subito. 3,20 $.
+- 144 (PO-347, PO-346): saluto procedurale (nessuna clip di saluto negli asset), mano sopra la spalla 2,6 s, palmo verso la tribuna, ritorno in fila; trovato e corretto che l'ultimo beat chiamava un compagno invece dell'eroe; marchio «Korward» in sala stampa (piastrelle e tovaglia). Domande minori decise dalla madre: tempi del gesto, «o» piena sulla tovaglia, braccio destro per tutti: vanno bene così. 5,40 $.
+- Sessioni archiviate. In attesa del giro 145 per formare lavoro/189.

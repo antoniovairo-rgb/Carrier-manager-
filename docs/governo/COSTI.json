@@ -698,5 +698,33 @@
     "cache_read_tokens": 16483402,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYia9dwqEGvAUBsbu5AVv",
+    "titolo": "giro 143 curve 2D al secondo tempo (PO-345)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T12:26:13Z",
+    "chiusa": "2026-11-10T13:09:29Z",
+    "cost_usd": 3.20375028,
+    "output_tokens": 30290,
+    "cache_read_tokens": 6827959,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaApdJQdsaZJ3Qk2CHG",
+    "titolo": "giro 144 saluto del chiamato e marchio sala stampa (PO-347, PO-346)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T12:26:13Z",
+    "chiusa": "2026-11-10T13:26:49Z",
+    "cost_usd": 5.4028107,
+    "output_tokens": 49838,
+    "cache_read_tokens": 14411271,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
