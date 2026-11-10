@@ -19834,7 +19834,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                Ora il bruciapelo forza il riflesso solo entro 1,2u (la stessa soglia del riflesso su ogni altro tiro, giro 22/7.999.162);
                oltre, e' un tuffo vero, che parte al calcio legato al volo (7.465: distesa = progresso dell'arco) — quindi prima del piano.
                Cambia solo il gesto: esito, arco e bersaglio restano quelli decisi dal motore. Deterministico, nessun sorteggio. */
-            const _close148=_closeShot203&&!(_gk252&&!(typeof window!=='undefined'&&window.__CPM_NO_G148)&&_dz203>=1.2);
+            const _close148=_closeShot203&&!(_gk252&&t!=='penalty'&&!(typeof window!=='undefined'&&window.__CPM_NO_G148)&&_dz203>=1.2);/* il RIGORE resta escluso: misurato (scena3d-96 tel, gi58 parata) col tuffo al posto del riflesso il portiere si muove prima del tiro (D4, 3 fotogrammi) — il rigore ha il suo regime */
             oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_close148)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
             /* [PO-252/5, seconda misura] il riflesso della PARATA aspetta il calcio e rimira in volo il punto in cui il pallone vero
                attraversa il suo piano — lo stesso canale del 7.999.162 (_blk229), che finora valeva solo sul tiro sbagliato. Misurato in

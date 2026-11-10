@@ -50,6 +50,7 @@ oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_close148)&&!_tuffoTesto23(P))?"g
   prima che il pallone arrivi sul piano.
 - Esito, arco, bersaglio: invariati (si cambia solo `oppActType`). Nessun sorteggio nuovo. Vale solo col canale del giro 22 acceso
   (`_gk252`): il braccio rosso storico di `portiere-252` (`__CPM_NO_GK252`) resta identico.
+- **Il rigore è escluso** (seconda stesura, dopo `scena3d-96`: vedi Catena).
 - Interruttore rosso: `__CPM_NO_G148`.
 
 ## Misura dopo
@@ -79,11 +80,12 @@ linea del pallone. ⚠️ In headless il campionamento è rado (pochi fotogrammi
 | `gk-dive-sync` | ✅ PASS |
 | `intro-118` | VERDE |
 | `validate-situations` | ✅ PASS 14/14, fingerprint 00001505, 0 failure |
-| `highlight-95` (completo) | verde: 108 highlight, D4 senza esito 0 — braccio rosso: STATO_H95 |
-| `scena3d-96` (un formato per chiamata) | STATO_S96 |
-| `partita-vera` | STATO_PV |
-| `test:logic` | STATO_TL |
-| `save-compat` | STATO_SC |
+| `portiere-252` `CPM_GI=1`, gi1@88,86 ×3 sulla build col rigore escluso | ok 3/3 (tuffi) |
+| `highlight-95` (completo) | verde: 108 highlight, D4 senza esito 0 — braccio rosso: ✅ «verde (e il rosso si vede)» — rosso 110 highlight, D4 senza esito 7 |
+| `scena3d-96` (un formato per chiamata) | **trovata una regressione mia e corretta**: tel, corsa tagliata dal mio tetto a 560 s (non vale come corsa intera), ma prima del taglio ✗ `tel-gi58-parata` «D4 tuffo prima del tiro (3 fotogrammi, 0,17u)». Isolata (`CPM_G96_LISTA=58:parata`): ✗ col correttivo, ✓ con `__CPM_NO_G148` → il rigore passava dal riflesso al tuffo. Correzione: il rigore è escluso (`t!=='penalty'`). Dopo: gi58 tel ✓. **Non eseguiti per il tetto delle 4 ore**: `scena3d-96` tel intero e i formati pc, tabv, tabo |
+| `partita-vera` | **non eseguito** (tetto delle 4 ore) |
+| `test:logic` | ✅ 43 pass, 0 fail |
+| `save-compat` | ✅ 12 pass, 0 fail |
 
 ## Domande aperte per il PO (non decise)
 
@@ -97,3 +99,11 @@ linea del pallone. ⚠️ In headless il campionamento è rado (pochi fotogrammi
    del piano). È la causa a monte; la lascio come cantiere.
 3. **Rosso r1 del 147** (portiere fermo col pallone a 4,98u nel braccio `__CPM_NO_GK252`): fuori portata per la sonda (> 4,5u),
    non giudicato. Non toccato.
+
+⚠️ **Le corse della catena prima di `scena3d-96` (portiere-252, contatto-103, gk-dive-sync, intro-118, validate-situations,
+highlight-95, test:logic, save-compat) sono sulla prima stesura**, che differiva dalla finale solo sul rigore. Sulla finale ho rifatto
+gi58 tel e 3 corse di gi1@88,86. **Da rifare sulla build finale prima di unire**: catena completa, compresi `scena3d-96` nei quattro
+formati e `partita-vera`.
+
+4. **Il tuffo del rigore** (gi58): con il tuffo al posto del riflesso il portiere si muove 0,09-0,17u prima del tiro. È il motivo
+   dell'esclusione; perché il tuffo del rigore si muova prima del calcio non l'ho misurato.
