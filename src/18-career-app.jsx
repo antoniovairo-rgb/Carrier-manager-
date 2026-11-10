@@ -3475,7 +3475,7 @@ const getThisWeekMatchday=()=>{
       const _ncFin700=!!_ncq.isFinal&&_ncIdx>=_ncTot700-1;
       const _turno=_ncFin700?"Finale":`Partita ${_ncIdx+1}/${_ncTot700}`;
       return{kind:"nationsCup",opp:_ncOpp,comp:"Coppa Nazioni",turno:_turno,clubMd:_clubMd,
-        label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":_turno} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,action:"nationsCup"};
+        label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":_turno} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${poiWN137(_clubMd.opponentName,_clubMd.week)}`:""}`,color:TH.txBlue,action:"nationsCup"};
     }
     const _em=player.euroMondiale;
     if(_em?.active&&!_em?.done&&!_emInAttesa(_em)){
@@ -3485,14 +3485,14 @@ const getThisWeekMatchday=()=>{
         const _emQOpp=(_em.qualOpponents||[])[_em.qualMatchIdx||0]||"?";
         const _turno=`Qualificazione ${(_em.qualMatchIdx||0)+1}/${(_em.qualOpponents||[]).length||2}`;
         return{kind:"euroMondiale",opp:_emQOpp,comp:`Qualif. ${_emType}`,turno:_turno,clubMd:_clubMd,
-          label:`🌍 Qualif. ${_emType} — vs ${_emQOpp}`,sub:`${_turno} · ${_em.qualPts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,action:"euroMondiale"};
+          label:`🌍 Qualif. ${_emType} — vs ${_emQOpp}`,sub:`${_turno} · ${_em.qualPts||0}pt${_clubMd?` · poi: ${poiWN137(_clubMd.opponentName,_clubMd.week)}`:""}`,color:TH.txBlue,action:"euroMondiale"};
       }
       const _emOpp=_em.phase==="group"?(_em.groupOpponents||[])[_em.groupMatchIdx||0]:_em.koOpponent;
       const _emCol=_emType==="Mondiale"?"#4f46e5":"#0369a1";
       const _emRound=_em.phase==="group"?`Girone · Giornata ${(_em.groupMatchIdx||0)+1}/${(_em.groupOpponents||[]).length||3}`:(EM_KO_LABEL[_em.koPhase]||"Fase KO");
       const _emComp=_emType==="Mondiale"?"Coppa del Mondo":"Europeo";
       return{kind:"euroMondiale",opp:_emOpp||"?",comp:_emComp,turno:_emRound,clubMd:_clubMd,
-        label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emComp} · ${_emRound}${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:_emCol,action:"euroMondiale"};
+        label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emComp} · ${_emRound}${_clubMd?` · poi: ${poiWN137(_clubMd.opponentName,_clubMd.week)}`:""}`,color:_emCol,action:"euroMondiale"};
     }
     return null;
   };
@@ -3500,6 +3500,11 @@ const getThisWeekMatchday=()=>{
   /* [giro 133 · PO-333 «Sì, nella 188»] la gara del CLUB che segue un'amichevole della Nazionale (voce type "national" del
      calendario del club): la prima gara di club non giocata dopo l'amichevole, dal calendario. Serve alla riga «Poi:» della
      card, la stessa del giro 131. */
+  /* [giro 137 · PO-340 «Tieni insieme club e W.N»] MISURATO (prossima-131, Range sul testo del comando): a 360x800 il gruppo
+     «<club> W.N» del sottotitolo andava a capo in 4 casi Nazionale su 4 e a 412x915 in 2 su 4 («W.20» da solo sull'ultima riga).
+     Spazi non separabili fra le parole del gruppo (e trattino non separabile): il gruppo va a capo intero. Una sola fonte per
+     Coppa Nazioni, Euro/Mondiale (qualificazioni e fase finale) e amichevoli. Rosso __CPM_NO_G137W (spazi normali). */
+  const poiWN137=(n,w)=>{const t=`${n} W.${w}`;if(typeof window!=='undefined'&&window.__CPM_NO_G137W)return t;return t.replace(/\s+/g,"\u00a0").replace(/-/g,"\u2011");};
   const prossimaClubDopo133=(nz)=>{try{
     if(!nz)return null;const _cupDead=!!(player.cup&&(!player.cup.active||player.cup.eliminated||player.cup.champion));
     const _w=nz.week||player.week||1;
@@ -3529,7 +3534,7 @@ const getThisWeekMatchday=()=>{
     const _nz131=prossimaNazionale131();
     if(_nz131)return{label:_nz131.label,sub:_nz131.sub,color:_nz131.color,disabled:false,action:_nz131.action};
     const md=getThisWeekMatchday();
-    if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";const isNatM=md.type==="national";return{label:`${isNatM?"🏳️":isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isNatM?`Nazionale · Amichevole internazionale${(()=>{/* [giro 134 PO-335 «Sì»] come Coppa Nazioni/Euro: «· poi: <club> W.N», gara del club dallo STESSO helper della riga «Poi:» della card (prossimaClubDopo133). Rosso __CPM_NO_G134A */if(typeof window!=='undefined'&&window.__CPM_NO_G134A)return"";const _p=prossimaClubDopo133(md);return _p?` · poi: ${_p.opponentName} W.${_p.week}`:"";})()}`:isCupM?`${L.cup} · ${md.cupRoundName||"Turno"}`:isEuroM?`${euroSig(md.competition)||"Europa"} · ${md.cupRoundName||"Gironi"}`:`${md.isHome?"🏠 In casa":"✈️ In trasferta"}`,/* [7.999.49 parte A] niente «W.»: la settimana sta in testata; casa/trasferta a parole */color:isNatM?"#2563eb":isCupM?TH.goldText:isEuroM?"#1d4ed8":TH.txGreen,disabled:false};}
+    if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";const isNatM=md.type==="national";return{label:`${isNatM?"🏳️":isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isNatM?`Nazionale · Amichevole internazionale${(()=>{/* [giro 134 PO-335 «Sì»] come Coppa Nazioni/Euro: «· poi: <club> W.N», gara del club dallo STESSO helper della riga «Poi:» della card (prossimaClubDopo133). Rosso __CPM_NO_G134A */if(typeof window!=='undefined'&&window.__CPM_NO_G134A)return"";const _p=prossimaClubDopo133(md);return _p?` · poi: ${poiWN137(_p.opponentName,_p.week)}`:"";})()}`:isCupM?`${L.cup} · ${md.cupRoundName||"Turno"}`:isEuroM?`${euroSig(md.competition)||"Europa"} · ${md.cupRoundName||"Gironi"}`:`${md.isHome?"🏠 In casa":"✈️ In trasferta"}`,/* [7.999.49 parte A] niente «W.»: la settimana sta in testata; casa/trasferta a parole */color:isNatM?"#2563eb":isCupM?TH.goldText:isEuroM?"#1d4ed8":TH.txGreen,disabled:false};}
     if((player.week||1)>38)return{label:"🏁 Chiudi la stagione",sub:`S.${player.season||1} completata — premi e verdetti`,color:TH.brandText,disabled:false};/* [7.257.0 screenshot PO «W.39/38 → W.40»] oltre la W.38 l'avanzamento NON va a W.40: fa scattare il rollover (design 6.70/5.75, weekVal>38) — il CTA ora dice la verità invece di promettere una settimana che non esiste */
     return{label:L.advanceWeek,sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.brandText,disabled:false};
   };
