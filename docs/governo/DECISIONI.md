@@ -1132,3 +1132,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 07:45 UTC — PO-341 e PO-342 partita 2D nella 189
 - PO: «189»; cartelloni «Per settore». Decisione tecnica (madre): giro 141 su `sviluppo/giro141-partita2d` da `lavoro/188`; spalti 2D riempiti dalla stessa fonte di riempimento per settore del 3D (affluenza, spicchio ospiti), guardiano nuovo.
+
+### 10/11 08:05 UTC — PO-343 presentazione della squadra e marchio D23 nella 189
+- PO: PO-343 «189»; D23 «K O rward Elite» (PO-337) «Sì, nella 189». Decisione tecnica (madre): giro 142 su `sviluppo/giro142-presentazione` da `lavoro/188` per entrambi; il resto di PO-337 resta come deciso (verifica 189, correzioni 190).
