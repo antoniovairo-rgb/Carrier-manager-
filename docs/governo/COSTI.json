@@ -790,11 +790,11 @@
     "tipo": "catena",
     "modello": "claude-sonnet-5-5",
     "creata": "2026-11-10T15:48:07Z",
-    "chiusa": "2026-11-10T23:45:00Z",
-    "cost_usd": 4.98213024,
-    "output_tokens": 25401,
-    "cache_read_tokens": 38305755,
-    "worker_epoch": 1,
+    "chiusa": "2026-11-10T23:39:13Z",
+    "cost_usd": 5.23919884,
+    "output_tokens": 28762,
+    "cache_read_tokens": 40153338,
+    "worker_epoch": 2,
     "rilevato": "2026-11-11"
   }
 ]

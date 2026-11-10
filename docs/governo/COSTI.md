@@ -61,7 +61,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.189 | giro 147 rossi della 189 (folla, portiere-252) | collaudo | claude-opus-5-5 | 1,3 | 4,10 $ | 37205 | 1 | completo (un solo avvio) |
 | 7.999.190 | giro 146 spalle braccia mani (PO-348) | sviluppo | claude-opus-5-5 | 4,1 | 11,20 $ | 115689 | 1 | completo (un solo avvio) |
 | 7.999.189 | verifica 189 delta (dopo il giro 147) | catena | claude-sonnet-5-5 | 1,2 | 1,28 $ | 13144 | 1 | completo (un solo avvio) |
-| 7.999.189 | verifica finale 7.999.189 | catena | claude-sonnet-5-5 | 7,9 | 4,98 $ | 25401 | 1 | completo (un solo avvio) |
+| 7.999.189 | verifica finale 7.999.189 | catena | claude-sonnet-5-5 | 7,9 | 5,24 $ | 28762 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -71,5 +71,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
-| 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | 72,61 $ |  |  | tutte complete |
+| 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (1 sessioni) |  |  |  | 11,20 $ |  |  | tutte complete |
