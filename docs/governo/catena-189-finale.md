@@ -48,3 +48,4 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 40 | validate-situations | 0 | 698 | run-summary → tests/visual/out/validate/run-summary.json · fingerprint 00001505 · 0 failure gate-history → 1 run · stabile (streak 1 run pulite) ✅ PASS  | free=15394/16086MB df=29G libero |
 | 41 | scena3d-96-tel | 0 | 624 | D8 tel: mediana prato 0.694 scene giudicate 16/16 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15432/16086MB df=29G libero |
 | 42 | scena3d-96-pc | 0 | 891 | D8 pc: mediana prato 0.667 scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15505/16086MB df=29G libero |
+| 43 | scena3d-96-tabv+tabo | 0 | 345 | D8 tabo: mediana prato 0.729 scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15507/16086MB df=29G libero |
