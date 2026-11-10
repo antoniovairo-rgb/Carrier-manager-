@@ -1211,3 +1211,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 22:40 UTC — Questionario di chiarimenti chiesto dal PO
 - Scie 2D: confermata «scia corta e sottile». B14: gol dell'eroe «Solo negli highlight», nella 190 (PO-357, giro 154, motore → catena completa). D18: Legacy Score con tetto ai trofei (PO-358). D11: «Il tuo allievo» e nome del derby legato alle città (PO-359). PO-358/359 con le correzioni dei bassi presenti di PO-337/338 nel giro 155 (190).
 - Play Store: «Non ho ancora iniziato» (resta la guida Claude Doc del 09/11). Rilasci: «190 appena pronta», la Primavera nuova nella 191.
+
+### 10/11 23:58 UTC — 7.999.189 pubblicata
+Verifica finale catena/189-finale (eba3b48): 50 controlli, 48 verdi; highlight-95 verde (5363 s). Rossi: folla, superato dalla verifica delta su 0d4915e9 (12/12, giro 147); portiere-252 dichiarato per decisione PO «Pubblica 189, portiere nella 190» (PO-350, giro 148). Unione lavoro/189 + catena/189-finale + catena/189-delta senza conflitti (solo documenti), check-src identico byte per byte, poc → main 9ba4a97d. Deploy Pages verde; sito: versione 7.999.189 servita, privacy.html 200 senza mail personale. Chiuse PO-315, 316, 317, 319, 336, 339-347; PO-337 parziale (D23 fatto).
