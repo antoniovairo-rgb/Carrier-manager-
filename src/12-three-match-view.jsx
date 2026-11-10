@@ -765,7 +765,12 @@ function ThreeMatchView(props){
     const _mkNumTex=(n,nm)=>{if(_numTexCache[n])return _numTexCache[n];
       const c=document.createElement('canvas');c.width=128;c.height=128;const x=c.getContext('2d');x.textAlign='center';x.lineJoin='round';
       x.font='bold 90px Arial, sans-serif';x.textBaseline='middle';x.lineWidth=10;x.strokeStyle='rgba(7,9,16,0.95)';x.strokeText(String(n),64,66);x.fillStyle='#ffffff';x.fillText(String(n),64,66);
-      const t=new THREE.CanvasTexture(c);_numTexCache[n]=t;return t;};
+      const t=new THREE.CanvasTexture(c);_numTexCache[n]=t;
+      /* [giro 147] i numeri di maglia salivano sulla scheda grafica al PRIMO DISEGNO (misurato col guardiano folla, GLB spento: 4 texture
+         128x128 a 2,4-5,2 s dall'avvio della scena e altre 5 a 11-17 s, una per giocatore che entra nel quadro). Col CH38 li carica gia' il
+         passo lento 7.999.16; senza CH38 nessuno. Ora si caricano qui, alla nascita. Rosso __CPM_NO_G147. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G147)){try{renderer.initTexture(t);}catch(_e147){}}
+      return t;};
     const _mkNumPlane=(n,nm,w,h)=>new THREE.Mesh(new THREE.PlaneGeometry(w||0.5,h||0.5),new THREE.MeshBasicMaterial({map:_mkNumTex(n),transparent:true,side:THREE.DoubleSide,depthWrite:false}));// 5.49.14: aderente → non esce dalla sagoma · [7.132.0] solo numero
     // numerazione deterministica: GK=1, gli altri progressivi per squadra (l'eroe usa il suo numero reale)
     let _hN=2,_aN=2;const _heroN=heroNum||10;
@@ -12426,7 +12431,8 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const tx=(m._num?m._num+' ':'')+nm,w=Math.min(250,x.measureText(tx).width+20);x.fillStyle='rgba(7,9,16,0.62)';
             if(x.roundRect){x.beginPath();x.roundRect(128-w/2,6,w,36,10);x.fill();}else x.fillRect(128-w/2,6,w,36);
             x.fillStyle=gold?'#f5c542':'#ffffff';x.fillText(tx,128,25);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
-            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp._w96=w/256;sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
+            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp._w96=w/256;sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G147)){try{renderer.initTexture(t);}catch(_e147){}}/* [giro 147] la targhetta nasce nascosta e saliva sulla scheda grafica alla prima comparsa (7 texture 256x48 a 11-19 s, in pieno highlight): ora alla nascita. Rosso __CPM_NO_G147 */};
           (_R51.players||[]).forEach(pp=>{if(pp&&pp.mesh)_mk51(pp.mesh,false);});if(hero)_mk51(hero,true);}
         if(_R51._tag51){let _n51=0;const bx=ball?ball.position.x:0,bz=ball?ball.position.z:0;
           /* [7.999.102 collaudo PO 01/10 «nomi senza giocatori in campo»] con i corpi CGTrader si disegnano solo eroe, portiere e i 3 piu'
