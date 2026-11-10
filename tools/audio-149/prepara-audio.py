@@ -27,10 +27,10 @@ SR = 48000
 I = 'highpass=f=45'
 USCITE = [
   # --- pallone: guanto da boxe = cuoio su cuoio, filtrato verso il «pop» di un pallone calciato
-  ('ball.kick', 'sfx/ball/calcio-1', 'tdc-fight-glove', None, [(7.982, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .80),
-  ('ball.kick', 'sfx/ball/calcio-2', 'tdc-fight-glove', None, [(0.162, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .80),
-  ('ball.kick', 'sfx/ball/calcio-3', 'tdc-fight-glove', None, [(23.844, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .80),
-  ('ball.kick', 'sfx/ball/calcio-4', 'tdc-fight-glove', None, [(46.105, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .80),
+  ('ball.kick', 'sfx/ball/calcio-1', 'tdc-fight-glove', None, [(7.982, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .65),
+  ('ball.kick', 'sfx/ball/calcio-2', 'tdc-fight-glove', None, [(0.162, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .65),
+  ('ball.kick', 'sfx/ball/calcio-3', 'tdc-fight-glove', None, [(23.844, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .65),
+  ('ball.kick', 'sfx/ball/calcio-4', 'tdc-fight-glove', None, [(46.105, .30)], I+',lowpass=f=4200,bass=g=6:f=110', .65),
   ('ball.pass', 'sfx/ball/passaggio-1', 'tdc-fight-glove', None, [(28.145, .25)], I+',lowpass=f=3000,bass=g=3:f=120', .45),
   ('ball.pass', 'sfx/ball/passaggio-2', 'tdc-fight-glove', None, [(28.737, .25)], I+',lowpass=f=3000,bass=g=3:f=120', .45),
   ('ball.pass', 'sfx/ball/passaggio-3', 'tdc-fight-glove', None, [(39.980, .25)], I+',lowpass=f=3000,bass=g=3:f=120', .45),
@@ -44,10 +44,10 @@ USCITE = [
   ('gk.save', 'sfx/ball/parata-1', 'tdc-cloth-slap', None, [(0, .50)], I+',lowpass=f=6000', .70),
   ('gk.save', 'sfx/ball/parata-2', 'tdc-fight-smacks', None, [(0.013, .30)], I+',lowpass=f=3200,bass=g=4:f=150', .60),
   # --- arbitro: fischietto a pallina (pea) e Fox 40
-  ('ref.whistle', 'sfx/referee/fischio-1', 'tdc-whistles-pea', None, [(2.80, .95)], 'highpass=f=500', .55),
-  ('ref.whistle', 'sfx/referee/fischio-2', 'tdc-whistles-pea', None, [(9.66, 1.15)], 'highpass=f=500', .55),
-  ('ref.whistle2', 'sfx/referee/fischio-doppio', 'tdc-whistles-fox40', None, [(7.80, .80)], 'highpass=f=500', .55),
-  ('ref.whistle_final', 'sfx/referee/fischio-finale', 'tdc-whistles-pea', None, [(2.80, .95), (9.66, 1.15), (26.85, 2.65)], 'highpass=f=500', .60),
+  ('ref.whistle', 'sfx/referee/fischio-1', 'tdc-whistles-pea', None, [(2.80, .95)], 'highpass=f=500', 1.2),
+  ('ref.whistle', 'sfx/referee/fischio-2', 'tdc-whistles-pea', None, [(9.66, 1.15)], 'highpass=f=500', 1.2),
+  ('ref.whistle2', 'sfx/referee/fischio-doppio', 'tdc-whistles-fox40', None, [(7.80, .80)], 'highpass=f=500', 1.2),
+  ('ref.whistle_final', 'sfx/referee/fischio-finale', 'tdc-whistles-pea', None, [(2.80, .95), (9.66, 1.15), (26.85, 2.65)], 'highpass=f=500', 1.3),
   # --- folla
   ('crowd.roar', 'sfx/crowd/boato-1', 'tdc-crowds-applause', None, [(4.6, 4.6)], I, .95),
   ('crowd.roar', 'sfx/crowd/boato-2', 'tdc-crowds-applause', None, [(74.6, 4.6)], I, .95),
@@ -56,9 +56,9 @@ USCITE = [
   ('crowd.cheer', 'sfx/crowd/esulta-1', 'tdc-crowds-applause', None, [(34.0, 2.2)], I, .70),
   ('crowd.boo', 'sfx/crowd/fischi-1', 'tdc-whistles-crowd', None, [(1.15, 1.55)], 'highpass=f=400', .30),
   # --- interfaccia (Kenney Interface Sounds)
-  ('ui.click', 'sfx/ui/click-1', 'kenney-interface', 'Audio/click_001.ogg', None, '', .35),
-  ('ui.click', 'sfx/ui/click-2', 'kenney-interface', 'Audio/select_001.ogg', None, '', .35),
-  ('ui.click', 'sfx/ui/click-3', 'kenney-interface', 'Audio/select_002.ogg', None, '', .35),
+  ('ui.click', 'sfx/ui/click-1', 'kenney-interface', 'Audio/click_001.ogg', None, '', .25),
+  ('ui.click', 'sfx/ui/click-2', 'kenney-interface', 'Audio/select_001.ogg', None, '', .25),
+  ('ui.click', 'sfx/ui/click-3', 'kenney-interface', 'Audio/select_002.ogg', None, '', .25),
   ('ui.nav', 'sfx/ui/nav-1', 'kenney-interface', 'Audio/open_001.ogg', None, '', .35),
   ('ui.back', 'sfx/ui/indietro-1', 'kenney-interface', 'Audio/back_001.ogg', None, '', .35),
   ('ui.confirm', 'sfx/ui/conferma-1', 'kenney-interface', 'Audio/confirmation_001.ogg', None, '', .40),
@@ -162,8 +162,8 @@ def main():
         base = os.path.join(OUT, nome); os.makedirs(os.path.dirname(base), exist_ok=True)
         tmp = os.path.join(CACHE, '_o.wav'); scrivi_wav(tmp, x, ch)
         br = ('96k' if ch == 2 else '48k')
-        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libopus', '-b:a', br, '-vbr', 'on', '-map_metadata', '-1', base + '.ogg')
-        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libmp3lame', '-b:a', ('128k' if ch == 2 else '64k'), '-map_metadata', '-1', base + '.mp3')
+        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libopus', '-b:a', br, '-vbr', 'on', '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', '-serial_offset', '149', base + '.ogg')
+        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libmp3lame', '-b:a', ('128k' if ch == 2 else '64k'), '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', base + '.mp3')
         rms = float(np.sqrt((x ** 2).mean())); pk = float(np.abs(x).max())
         L = lufs(x, ch) if dur >= 0.4 else None
         s = SRC[sid]
