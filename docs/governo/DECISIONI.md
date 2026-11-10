@@ -1179,3 +1179,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 15:50 UTC — 7.999.189 unita, verifica finale avviata
 - Giro 145 finito (6,68 $): contatto-103 col gancio sotto cpmtest (gate 14/14 fingerprint 00001505, highlight-95 completo uscita 0 sul build col gancio), griglia-mobile con prepartita misurata, partita-vera col tabellone giudicato. Registrata PO-349 (possibile doppio conteggio delle partite al caricamento, da misurare nella 190).
 - lavoro/189: unito anche il giro 145, GAME_VERSION 7.999.189 (eba3b486). Verifica finale avviata su catena/189-finale (session_01QEYiaCp6MDNJwZnCv4qCwd, tetto 8 h), con l'avvertenza sul lanciatore dei comandi git.
+
+### 10/11 17:55 UTC — Verifica 189: due rossi, giro 147 di misura
+- catena/189-finale alle 17:49: 18 controlli, due rossi rigiocati: `portiere-252` (verde KO 1/10 su gi1 «saved (tardi)», 2/2) e `folla` (verde NON PASSA: 1 caricamento di texture 128x128 in [campionato · verde], 2/2). La madre ha rieseguito folla su eba3b486: stesso rosso; su e5ecf70a (prima dell'unione del 145) era verde, un solo campione. Tutti gli altri verdi, compresi i guardiani nuovi (prossima-131, privacy-134, premiazione-132, presentazione-142, rigore-139, partita2d-141, festa-57, contatto-103, riserva-103, panchina-127).
+- Decisione tecnica (madre): giro 147 su `collaudo/giro147-rossi189` per misura e bisezione dei due rossi; la verifica prosegue con gli altri controlli. La 189 non esce finché i due non sono verdi. PO avvisato con notifica.
