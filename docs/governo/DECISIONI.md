@@ -1197,3 +1197,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 20:55 UTC — Verifica 189 delta verde
 - catena/189-delta su lavoro/189 0d4915e9 (con il giro 147): 12/12 verdi al primo giro (folla ×2, validate-situations 14/14 impronta 00001505, scena3d-96 tre formati, presentazione-142, premiazione-132, intro-118, panchina-127, test:logic, save-compat). 1,28 $. Verifica completa su eba3b486 a 38 controlli, tutti verdi dopo folla e portiere-252; mancano spalti-109, validate-situations, scena3d-96, partita-vera, highlight-95, career-critical, build, audit.
+
+### 10/11 22:10 UTC — PO-352 intervista su PC nella 190
+- PO: «Finestra centrata col velo», «190». Decisione tecnica (madre): giro 150 su `sviluppo/giro150-finestre-pc` da `lavoro/189`; una regola unica per le finestre sovrapposte (velo, altezza al contenuto, centratura, larghezza su PC/tablet), censimento di tutte le finestre del gioco nei formati PC e tablet.
