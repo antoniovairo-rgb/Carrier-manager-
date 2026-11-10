@@ -1194,3 +1194,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 20:20 UTC — PO-351 audio
 - PO: fonti «Solo licenza CC0», ambito «Tutto insieme», versione «190». Decisione tecnica (madre): giro 149 su `sviluppo/giro149-audio` da `lavoro/189`; licenza di ogni file verificata alla fonte e scritta nei Crediti e in assets/audio; nessun account creato, nessuna credenziale; peso del pacchetto e funzionamento offline misurati; se la rete dell'ambiente blocca le fonti, il giro lo dichiara senza aggirarlo.
+
+### 10/11 20:55 UTC — Verifica 189 delta verde
+- catena/189-delta su lavoro/189 0d4915e9 (con il giro 147): 12/12 verdi al primo giro (folla ×2, validate-situations 14/14 impronta 00001505, scena3d-96 tre formati, presentazione-142, premiazione-132, intro-118, panchina-127, test:logic, save-compat). 1,28 $. Verifica completa su eba3b486 a 38 controlli, tutti verdi dopo folla e portiere-252; mancano spalti-109, validate-situations, scena3d-96, partita-vera, highlight-95, career-critical, build, audit.
