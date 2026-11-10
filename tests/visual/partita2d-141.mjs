@@ -66,13 +66,14 @@ const MISURA = ({ sc, trasf, top, bot }) => new Promise(res => {
       const vis = dc < dO ? 'casa' : 'osp'; giud++; if (vis === own) ok++;
       const L = (lati[z.k] = lati[z.k] || { casa: 0, osp: 0, attesoCasa: 0, attesoOsp: 0 }); L[vis]++; if (own === 'casa') L.attesoCasa++; else L.attesoOsp++; }
     /* O) densita' per gruppo settore x padrone */
-    const base = rgb(SP.base), seatR = rgb((() => { const a = rgb(SP.casa[0]), t = rgb('#3c424e'); return '#' + a.map((v, i) => Math.max(0, Math.min(255, Math.round((v + (t[i] - v) * 0.70) * 0.82))).toString(16).padStart(2, '0')).join(''); })());
+    const seatOf = h => rgb((() => { const a = rgb(h), t = rgb('#3c424e'); return '#' + a.map((v, i) => Math.max(0, Math.min(255, Math.round((v + (t[i] - v) * 0.70) * 0.82))).toString(16).padStart(2, '0')).join(''); })());
+    const base = rgb(SP.base), seatC = seatOf(SP.casa[0]), seatO = seatOf(SP.osp[0]);
     const palC = SP.casa.map(rgb), palO = SP.osp.map(rgb);
     const G = {}; const outer = [est.x0 - sp - 1, est.y0 - sp - 1, est.x1 + sp + 1, est.y1 + sp + 1];
     for (let yy = 0.5; yy < H; yy += 0.5) for (let xx = 0.5; xx < W; xx += 0.5) {
       if (xx > outer[0] && xx < outer[2] && yy > outer[1] && yy < outer[3]) continue;
       const z = _settore141(xx, yy, est, vert), own = _padrone141(z, F), pal = own === 'osp' ? palO : palC, p = px(xx, yy);
-      const dF = Math.min(...pal.map(c => dist(p, c))), dS = dist(p, seatR), dB = dist(p, base);
+      const dF = Math.min(...pal.map(c => dist(p, c))), dS = dist(p, own === 'osp' ? seatO : seatC), dB = dist(p, base);
       const k = z.k + ':' + own, g = (G[k] = G[k] || { fan: 0, seat: 0, base: 0, atteso: +_fill141(z, F).toFixed(3) });
       if (dF <= dS && dF <= dB && dF < 70) g.fan++; else if (dS < dB && dS < 40) g.seat++; else g.base++; }
     const gruppi = Object.entries(G).map(([k, g]) => ({ k, n: g.fan + g.seat, occ: +(g.fan / Math.max(1, g.fan + g.seat)).toFixed(3), atteso: g.atteso }));

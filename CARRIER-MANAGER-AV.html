@@ -30311,7 +30311,10 @@ function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp){
   const R=(a,b)=>((Math.imul((a|0)+seed,73856093)^Math.imul((b|0)^(seed>>>7),19349663))>>>0)%10000/10000;
   const SN=(v)=>Math.round(v*dpr)/dpr,tw=Math.max(1/dpr,SN(tes)),th=Math.max(1/dpr,SN(tes*1.1));
   const _mx=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return a.map((v,i)=>v+(b[i]-v)*q);};
-  const seat="#"+_mx(SP.casa[0],"#3c424e",0.70).map(v=>Math.max(0,Math.min(255,Math.round(v*0.82))).toString(16).padStart(2,"0")).join("");
+  /* il sedile vuoto: la formula del 3D (70% grigio, ombra 0,82) ma sulla tinta del PADRONE del settore — un sedile rosato nella curva
+     ospiti era di nuovo «colori mischiati» (misurato da spalti-109: meta' del settore ospiti letto come casa) */
+  const _seat=(c)=>"#"+_mx(c,"#3c424e",0.70).map(v=>Math.max(0,Math.min(255,Math.round(v*0.82))).toString(16).padStart(2,"0")).join("");
+  const seat={casa:_seat(SP.casa[0]),osp:_seat(SP.osp[0])};
   const KS=["curvaCasa","curvaOsp","est","ovest"],idx={curvaCasa:0,curvaOsp:1,est:2,ovest:3};
   /* 1) le celle: settore, profondita' (0 contro i cartelloni, 1 in cima), posizione lungo la tribuna (per blocchi e corridoi) */
   const cel=[];const dMax=[0,0,0,0];
@@ -30339,7 +30342,7 @@ function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp){
   const PE=SP.peso||[56,82,100];
   for(const c of cel){if(c.ais)continue;const occ=R(c.x*7+3,c.y*7+11)<c.p;const t=T[KS[c.si]][c.own];t.posti++;if(occ)t.occ++;t.atteso=c.f;
     const X=SN(c.x-tes/2),Y=SN(c.y-tes/2);
-    if(!occ){o.fillStyle=seat;o.fillRect(X,Y,tw,th);continue;}
+    if(!occ){o.fillStyle=seat[c.own];o.fillRect(X,Y,tw,th);continue;}
     const pal=c.own==="osp"?SP.osp:SP.casa,h=Math.floor(R(c.x*13+5,c.y*17+1)*100);
     o.fillStyle=h<PE[0]?pal[0]:h<PE[1]?pal[1]:pal[2];o.fillRect(X,Y,tw,th);}
   return{F,T,seat,n:cel.length};}
