@@ -61,6 +61,25 @@ if (!process.env.CPM_CHROME) {
 
 const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT, openMatch } = await import('./lib/harness.mjs');
 
+/* [giro 138 · uscita deterministica] VERIFICA 188 (catena-188-finale, righe 28-29): uscita 1 DOPO un rapporto completo, due volte;
+   rieseguito sullo stesso build esce 0 (misurato anche qui, giro 138: uscita 0). La sonda non aveva nessuna uscita esplicita nel
+   percorso normale, quindi quell'1 non era un verdetto: e' l'uscita di Node per una promessa rifiutata non attesa (o un'eccezione
+   non catturata). E arriva DOPO la stampa per costruzione: dopo `await browser.close()` tutto il resto (rapporto, scrittura,
+   console.log) e' codice SINCRONO, e Node controlla i rifiuti non gestiti solo quando la coda dei microtask si svuota — cioe' dopo
+   l'ultima riga stampata. Un rifiuto nato nella chiusura di browser/pagine/server (chiusura con una richiesta di rete in volo, un
+   evaluate orfano) esce quindi «a rapporto completo», e dipende dai tempi della macchina: per questo una volta si' e una no.
+   Ora: (a) i due eventi sono intercettati e STAMPATI; prima della fine della raccolta valgono uscita 3 col motivo, dopo la fine
+   della raccolta sono dichiarati «errore tardivo» e non cambiano l'esito; (b) chiusure con tetto e catch; (c) l'uscita e' esplicita
+   e calcolata: 0 se la misura e' completa, 1 se qualcosa NON e' stato misurato («non giudicato» = rosso), col motivo per ultimo. */
+let _raccoltaFinita = false; const _tardivi = [];
+const _errAsync = tipo => e => {
+  const msg = `${tipo}: ${String((e && (e.stack || e.message)) || e).split('\n').slice(0, 3).map(x => x.trim()).join(' ⏎ ').slice(0, 400)}`;
+  if (_raccoltaFinita) { _tardivi.push(msg); console.log(`⚠️ errore tardivo dopo la raccolta (non cambia l'esito): ${msg}`); return; }
+  console.log(`❌ griglia-mobile interrotta — ${msg}`); console.log('ESITO griglia-mobile: uscita 3 · MOTIVO errore asincrono durante la raccolta (vedi riga sopra)'); process.exit(3);
+};
+process.on('unhandledRejection', _errAsync('promessa rifiutata non attesa'));
+process.on('uncaughtException', _errAsync('eccezione non catturata'));
+
 const SEME = +(process.env.CPM_SEME || 4242);
 const FOTO = process.env.CPM_FOTO !== '0';
 /* [7.944 — difetto mio, e l'ho gia' pagato] Girando con CPM_FOTO=0 nella cartella PREDEFINITA la sonda
@@ -672,7 +691,7 @@ if (process.env.CPM_TARATURA === '1') {
   process.exit(ko ? 1 : 0);
 }
 
-const errori = []; const saltate = [];
+const errori = []; const saltate = []; let PREPARTITA_SETT = null;
 const DATI = {};   /* DATI[schermata][larghezza] = misura */
 
 /* [G0 v2 — UNA APERTURA PER CONTESTO, CINQUE LARGHEZZE PER SCHERMATA]
@@ -697,6 +716,7 @@ const misuraTutte = async (page, sc) => {
 };
 const SC = id => SCHERMATE.find(s => s.id === id);
 
+if (process.env.CPM_PROVA_TARDIVO === 'presto') setTimeout(() => { Promise.reject(new Error('prova CPM_PROVA_TARDIVO=presto: rifiuto orfano durante la raccolta')); }, 0);
 /* ctx MENU — home · impostazioni · creazione (una sola apertura) */
 {
   const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, fisAperte: FIS_APERTE }, '?cpmtest=1', errori);
@@ -738,11 +758,33 @@ const SC = id => SCHERMATE.find(s => s.id === id);
     /* prepartita: la stessa via del giocatore (startMatch), senza giocare nulla */
     try { await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); } catch (_e) {}
     await sleep(400);
-    const pm = await page.evaluate(() => window.__CPM_CAREER.playMatch());
+    /* [giro 138] il salvataggio di prova (lib/banco-g0.mjs) e' fermo alla settimana 11, che non ha partita: playMatch rendeva SEMPRE
+       «nomatch» (misurato: verifica 188 due volte, giro 138 due) e la prepartita non e' mai stata misurata. Avanzare con step() non
+       basta (misurato: 4 passi, due settimane, sempre «nomatch»). Cio' che il gioco non produce lo si provoca dalla sonda: con i ganci
+       di prova del gioco (thisWeekMd / patch, solo sonde) si cerca la prima settimana della stagione che ha una partita da giocare e
+       ci si porta li'. E' l'ultima schermata del contesto: le schermate di carriera sono gia' misurate. */
+    let pm = await page.evaluate(() => window.__CPM_CAREER.playMatch());
+    if (pm === 'nomatch') {
+      /* MISURATO (giro 138): in nessuna settimana 1..40 c'e' una partita di CAMPIONATO da giocare; l'unica partita servita e' la
+         settimana 9, un'amichevole della Nazionale (schermata «Convocazione nazionale», non la prepartita di club). Il salvataggio di
+         prova non ha calendario e quello rigenerato non offre gare di lega. Si inietta UNA giornata di campionato alla settimana
+         corrente contro un club della classifica affrontato meno di due volte (la guardia _lgHist98 del gioco scarta il terzo
+         incontro) e si apre la prepartita con la stessa via del giocatore. */
+      const st = await page.evaluate(() => { try { const g = window.__CPM_CAREER.get(); return { week: g.week, club: g.club, standings: g.standings }; } catch (e) { return null; } }).catch(() => null);
+      const visti = {}; ((SAVE.player && SAVE.player.matchHistory) || []).forEach(h => { visti[h.opponent] = (visti[h.opponent] || 0) + 1; });
+      const avv = st && (st.standings || []).find(r => r.id && r.id !== st.club && (visti[r.n] || 0) < 2);
+      if (avv) {
+        const voce = { matchday: 99, week: st.week, opponentId: avv.id, opponentName: avv.n, isHome: true, played: false, result: null };
+        await page.evaluate(v => window.__CPM_CAREER.patch({ calendar: [v], weekLived: false }), voce); await sleep(400);
+        pm = await page.evaluate(() => window.__CPM_CAREER.playMatch()).catch(e => 'error:' + e.message);
+        if (pm === true) PREPARTITA_SETT = { a: st.week, opp: avv.n };
+      }
+      console.log(`  prepartita: nessuna gara di campionato nel calendario di prova · giornata iniettata alla settimana ${st && st.week} contro ${avv ? avv.n : '(nessun avversario valido)'} · playMatch → ${pm}`);
+    }
     if (pm === true) {
       const ok = await page.waitForFunction(() => /VS|OSPITE|CASA/.test(document.body.innerText || ''), null, { timeout: 40000 }).then(() => true).catch(() => false);
       if (ok) await misuraTutte(page, SC('prepartita'));
-      else saltate.push("prepartita: la schermata non si e' aperta");
+      else { const tx = await page.evaluate(() => (document.body.innerText || '').replace(/\s+/g, ' ').slice(0, 160)).catch(() => '?'); saltate.push(`prepartita: la schermata non si e' aperta (a schermo: «${tx}»)`); PREPARTITA_SETT = null; }
     } else saltate.push('prepartita: playMatch → ' + pm);
   }
   await page.close();
@@ -798,7 +840,16 @@ if (PARTITA) {
   await page.close();
 }
 
-await browser.close(); srv.close();
+_raccoltaFinita = true;
+/* prova del rosso (solo collaudo dello strumento): CPM_PROVA_TARDIVO=1 fa nascere un rifiuto orfano DURANTE la chiusura, come quello
+   della verifica 188 — col codice di prima l'uscita e' 1 dopo il rapporto completo, con questo e' 0 e l'errore e' stampato.
+   CPM_PROVA_TARDIVO=presto lo fa nascere prima della fine della raccolta: uscita 3 col motivo. */
+const _chiusura = browser.close();
+/* il rifiuto orfano nasce nello STESSO giro di microtask in cui la chiusura si risolve (come le operazioni di Playwright rifiutate alla
+   disconnessione): e' l'unico tempo che produce l'uscita 1 DOPO il rapporto (un rifiuto in un timer durante la chiusura esce prima) */
+if (process.env.CPM_PROVA_TARDIVO === '1') _chiusura.then(() => { Promise.reject(new Error('prova CPM_PROVA_TARDIVO: rifiuto orfano alla chiusura del browser')); });
+try { await Promise.race([_chiusura, sleep(10000)]); } catch (e) { _tardivi.push('browser.close: ' + String(e.message).slice(0, 160)); }
+try { if (srv.closeAllConnections) srv.closeAllConnections(); srv.close(); } catch (e) { _tardivi.push('srv.close: ' + String(e.message).slice(0, 160)); }
 
 /* ── LA TABELLA ────────────────────────────────────────────────────────────────────────────── */
 const W = TAGLIE.map(t => t.w);
@@ -1109,3 +1160,12 @@ console.log('');
 console.log(R.slice(R.indexOf('### 0 · Larghezza del riquadro letta DALLA PAGINA (prova che le cinque corse sono cinque larghezze)') - 0).join('\n').split('## Dettaglio')[0]);
 console.log(`→ ${path.relative(ROOT, path.join(OUT, 'REPORT.md'))} · ${path.relative(ROOT, path.join(OUT, 'dati.json'))}${FOTO ? ` · ${righe.length * W.length} scatti` : ' (senza scatti)'}`);
 if (saltate.length) console.log('NON misurato: ' + saltate.join(' | '));
+if (PREPARTITA_SETT) console.log(`prepartita misurata su una giornata iniettata dalla sonda (settimana ${PREPARTITA_SETT.a}, contro ${PREPARTITA_SETT.opp}): il calendario di prova non ha gare di campionato`);
+/* [giro 138] uscita ESPLICITA, decisa dopo un giro di eventi: un rifiuto tardivo nato nelle chiusure viene stampato dal gestore
+   (prima di questa riga) e non cambia l'esito. Motivo per ultimo. */
+setTimeout(() => {
+  const codice = saltate.length ? 1 : 0;
+  if (_tardivi.length) console.log(`errori tardivi dopo la raccolta: ${_tardivi.length} (stampati sopra; non cambiano l'esito)`);
+  console.log(`ESITO griglia-mobile: uscita ${codice} · MOTIVO ${codice ? 'non misurato (= rosso): ' + saltate.join(' | ') : `misura completa: ${righe.length} schermate x ${W.length} larghezze`}`);
+  process.exit(codice);
+}, 200);

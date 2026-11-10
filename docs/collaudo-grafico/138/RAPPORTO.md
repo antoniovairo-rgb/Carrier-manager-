@@ -9,6 +9,7 @@ Ramo `collaudo/giro138-strumenti` da `lavoro/188` (04a62ae, 7.999.188). Solo str
 | strumento | voce | prima (com'era) | causa | dopo | esito |
 |---|---|---|---|---|---|
 | `festa-57` | PO-336 | 2 corse, **uscita 1** entrambe: rosso 57 fermo **3** e **1** campioni (serve ≥4); nella 1ª anche rosso 61 «non si distingue» (0 campioni) | **strumento** | 2 corse sulla versione finale, **uscita 0** entrambe: verde fino a 4,39 / 4,43 (clip ripartita), rosso 57 **4 campioni fermi a 2,04**, rosso 61 distinto | chiuso |
+| `griglia-mobile` | verifica 188 r.28-29 | 2 corse normali uscita **0** (riprodotto **non** il rosso), prepartita **mai misurata** (`playMatch → nomatch`, 13 schermate); con un rifiuto orfano alla chiusura del browser: rapporto completo e poi **uscita 1** = il sintomo della 188 | **strumento** (uscita implicita; prepartita cieca) | 2 corse normali **uscita 0** «misura completa: 14 schermate x 5 larghezze»; col rifiuto iniettato **uscita 0** con l'errore stampato come tardivo; con un rifiuto durante la raccolta **uscita 3** col motivo | chiuso |
 
 ## 1 · `festa-57` (PO-336) — strumento, non la festa
 
@@ -48,3 +49,56 @@ solo clip col nome «victory», ma con `__CPM_NO_FESTA61` il gioco suona `mx-vic
 Nota per il PO (non decisa qui): col rosso 61 il gioco oggi non torna sempre al «salto rannicchiato» che il commento del giro 61
 descrive, ma anche al pugno (`mx-fist-pump`), secondo l'ultima esultanza della partita. Il guardiano ora accetta qualunque clip
 diversa da `mx-victory` come prova che il rosso si distingue.
+
+## 5 · `griglia-mobile` — da dove veniva l'uscita 1
+
+**Misura prima** (script com'era, 7.999.188): due corse complete, entrambe **uscita 0**, 217 s, stderr vuoto, ultima riga
+«NON misurato: prepartita: playMatch → nomatch». Il rosso della verifica 188 non si riproduce da solo, come per la madre.
+
+**Causa.** Lo script non aveva nessuna uscita esplicita nel percorso normale: finiva quando Node finiva. L'unico modo di avere 1
+senza un `process.exit(1)` è un **rifiuto di promessa non gestito** (o un'eccezione non catturata). E arriva **dopo** la stampa per
+costruzione: dopo `await browser.close()` tutto il resto (rapporto, scrittura dei file, `console.log`) è codice sincrono, e Node
+controlla i rifiuti non gestiti solo quando la coda dei microtask si svuota, cioè dopo l'ultima riga. Prova del meccanismo:
+- esperimento minimo su Node 22.23.4: un rifiuto orfano nato durante un `await` → tutte le righe stampate, poi uscita 1;
+- sullo script com'era, un rifiuto orfano nato **nello stesso giro** in cui `browser.close()` si risolve (`CPM_PROVA_TARDIVO=1`,
+  come le operazioni di Playwright rifiutate alla disconnessione) dà **esattamente** il sintomo della 188: rapporto completo, ultima
+  riga «NON misurato: prepartita: playMatch → nomatch», poi uscita 1 (stack su stderr, che la tabella della verifica non riporta);
+- lo stesso rifiuto in un timer durante la chiusura esce invece **prima** del rapporto: non è il sintomo della 188.
+
+**Non posso confermare** quale operazione abbia generato il rifiuto nella verifica 188 (lo stderr di quella corsa non è conservato);
+è confermato che il meccanismo produce quel sintomo e che dipende dai tempi della macchina, il che spiega «una volta sì e una no».
+
+**Seconda causa trovata misurando: la prepartita non è mai stata misurata.** Il salvataggio di prova (`lib/banco-g0.mjs`) non ha
+calendario; in quello rigenerato nessuna settimana 1..40 offre una gara di campionato (misurato con `thisWeekMd()` settimana per
+settimana): l'unica partita servita è la settimana 9, un'amichevole della Nazionale (schermata «Convocazione nazionale»). Avanzare
+con `step()` non basta (4 passi, sempre `nomatch`). La sonda ora inietta con `patch()` (gancio di prova del gioco) **una** giornata di
+campionato alla settimana corrente contro un club della classifica affrontato meno di due volte (la guardia `_lgHist98` del gioco
+scarta il terzo incontro) e apre la prepartita con la stessa via del giocatore (`playMatch`). Misurata: 0 px di overflow, 0 nodi
+sotto 11 px, 0/29 sotto soglia di contrasto a 412 px.
+
+**Correzione (solo `tests/visual/griglia-mobile.mjs`).**
+- `unhandledRejection` / `uncaughtException` intercettati e **stampati**: prima della fine della raccolta → uscita 3 col motivo;
+  dopo la fine della raccolta → «errore tardivo», stampato, non cambia l'esito;
+- chiusura del browser con tetto (10 s) e catch, server chiuso con `closeAllConnections`;
+- **uscita esplicita** dopo un giro di eventi: 0 se la misura è completa, 1 se qualcosa non è stato misurato («non giudicato» =
+  rosso), con la riga `ESITO griglia-mobile: uscita N · MOTIVO …` per ultima;
+- prova del rosso dello strumento: `CPM_PROVA_TARDIVO=1` (rifiuto alla chiusura) e `CPM_PROVA_TARDIVO=presto` (durante la raccolta).
+
+**Dopo:**
+
+| corsa | uscita | ultima riga |
+|---|---|---|
+| finale 1 | 0 | ESITO griglia-mobile: uscita 0 · MOTIVO misura completa: 14 schermate x 5 larghezze |
+| finale 2 | 0 | idem (70 scatti) |
+| `CPM_PROVA_TARDIVO=1` | 0 | idem, preceduta da «⚠️ errore tardivo dopo la raccolta … rifiuto orfano alla chiusura del browser» |
+| `CPM_PROVA_TARDIVO=presto` (corsa intermedia) | 3 | ESITO griglia-mobile: uscita 3 · MOTIVO errore asincrono durante la raccolta |
+| corsa intermedia prima della prepartita iniettata | 1 | ESITO … uscita 1 · MOTIVO non misurato (= rosso): prepartita: playMatch → nomatch |
+
+⚠️ Effetto sulla catena: da ora uno «NON misurato» rende `griglia-mobile` rosso (regola PROCESSO.md «non giudicato = rosso»);
+prima usciva 0 lasciando la prepartita fuori dal conto. Il rapporto `docs/collaudo-grafico/g0/` ha ora 14 schermate (era 13): il
+confronto dei totali con le corse precedenti va fatto tenendone conto. Le corse di questo giro scrivevano in una cartella di
+lavoro (`CPM_OUT`), non in `docs/collaudo-grafico/g0/`, che resta quello di prima.
+
+Osservazione per il PO (non indagata oltre, non decisa): il calendario rigenerato dal salvataggio di prova senza gare di
+campionato servibili può essere una proprietà del salvataggio sintetico (nessun `calendar`, 10 gare in `matchHistory`) o un
+comportamento della rigenerazione del calendario: **non posso confermare quale** senza una sonda dedicata.
