@@ -951,12 +951,24 @@ function StrisciaScena948({club,tono}){
       justifyContent:"space-between",gap:8,padding:"6px 10px",pointerEvents:"none",
       background:_no108("10")?"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))":TINTE.sup,
       borderTop:"1px solid "+(_no108("10")?"rgba(15,23,42,0.12)":TINTE.bordo)}}>
+      {(typeof window!=='undefined'&&window.__CPM_NO_G142M)?(
       <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,fontSize:FS.caption,
-        letterSpacing:.2,color:_no108("10")?"#7a1526":TINTE.testo,whiteSpace:"nowrap"}}>
+        letterSpacing:.2,color:_no108("10")?"#7a1526":TINTE.testo,whiteSpace:"nowrap"}} data-cpm="marchio142">
         K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
           border:"2px solid "+(_no108("10")?"#7a1526":TINTE.testo),boxSizing:"border-box"}}/>rward
         <span style={{fontWeight:700,fontStyle:"italic",color:_no108("10")?"#92400e":TINTE.oro}}>Elite</span>
-      </span>
+      </span>):(
+      /* [giro 142 D23 PO-337 «K O rward Elite»] IL MARCHIO E' UNA PAROLA. La riga era un contenitore flex con spazio 3 px fra
+         OGNI figlio: «K», il cerchietto e «rward» diventavano tre pezzi staccati, e il cerchietto (8 px, piu' alto della x) si
+         leggeva come una «O» maiuscola a se'. Ora «Korward» e' un solo testo in linea, la «o» e' una lettera vera (il DOM legge
+         «Korward Elite») disegnata come pallone ad anello della sua stessa altezza, e solo «Elite» sta staccato. Rosso __CPM_NO_G142M. */
+      <span data-cpm="marchio142" style={{fontWeight:900,fontSize:FS.caption,letterSpacing:.2,whiteSpace:"nowrap",
+        color:_no108("10")?"#7a1526":TINTE.testo,lineHeight:1}}>
+        <span>K<span style={{display:"inline-block",width:"0.56em",height:"0.56em",margin:"0 0.03em",borderRadius:"50%",
+          border:"0.13em solid currentColor",boxSizing:"border-box",color:"inherit",fontSize:"inherit",lineHeight:0,overflow:"hidden",
+          verticalAlign:"baseline",textIndent:"-9em"}}>o</span>rward</span>{" "}
+        <span style={{fontWeight:700,fontStyle:"italic",color:_no108("10")?"#92400e":TINTE.oro}}>Elite</span>
+      </span>)}
       <span style={{fontSize:FS.caption,fontWeight:800,color:_no108("10")?"#475569":TINTE.sec,whiteSpace:"nowrap",
         overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23)?spon:null}</span>{/* [23/09 POC — collaudo PO «lo sponsor deve comparire sui cartelloni pubblicitari non li'»] lo sponsor sta sui cartelloni dello stadio (buildStadium, stadCfg.sponsor), non nella striscia. Rosso __CPM_NO_SPONSOR23 */}
       <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
@@ -1023,6 +1035,59 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
       <StrisciaScena948 club={club} tono={null}/>
     </div>);
 }
+/* [giro 142 PO-343 collaudo PO «sembrano manichini» · «hanno pure una posa da impiccato»] LA POSTURA DELLA FILA, MISURATA.
+   Sonda presentazione-142-misura (GLB acceso): la clip idle del corpo CGTrader veniva congelata (in pausa) su tempi quasi uguali per
+   tutti (5,7-6,7 s: il seme R(70+i) e' quasi lineare in i), e in quel tratto della clip la testa sta 48-55 gradi fuori dall'asse del
+   busto rispetto alla posa di riposo, la caviglia sta 16 cm sopra la punta (a riposo 8,7: punte all'ingiu') e la punta affonda nel
+   prato (-6 cm) mentre l'altro piede e' alzato. E nessuno si muoveva: ampiezza delle ossa 0 su 2,5 s.
+   Ora, per ogni uomo e una volta sola: (1) la posa base si sceglie fra i tempi della clip in cui i due piedi stanno alla stessa quota,
+   uno diverso per uomo dal suo seme (pose diverse, sempre in appoggio); (2) collo e testa tornano all'orientamento di riposo rispetto
+   al busto; (3) il piede ruota finche' la punta ha l'inclinazione di riposo; (4) il corpo si appoggia: la punta piu' bassa alla quota
+   di riposo. Poi, a ogni fotogramma, una vita leggera e sfasata scritta in ASSOLUTO sulla base (mai accumulata): respiro sul busto,
+   peso che si sposta, sguardo che gira verso la tribuna, braccia che oscillano appena. Tutto dal seme: nessun Math.random.
+   Rosso __CPM_NO_G142 (la fila di prima). */
+function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THREE==='undefined')return null;
+  const T=THREE,B={};av.traverse(o=>{if(o.isBone&&/^(spine_01|spine_03|neck_01|head|foot_[lr]|ball_[lr]|upperarm_[lr])$/.test(o.name))B[o.name]=o;});
+  if(!B.spine_03||!B.neck_01||!B.head||!B.foot_l||!B.ball_l||!B.foot_r||!B.ball_r)return null;
+  /* mescolatore a valanga (lo stesso di appearanceFromSeed): il passo di LCG singolo dava a semi vicini lo stesso numero, cioe' la stessa posa */
+  const R=k=>(typeof _mix32==='function'?_mix32((seme>>>0)+Math.imul(k,0x9e3779b9)):((seme>>>0)^Math.imul(k,2654435761))>>>0)/4294967296;
+  const qa=new T.Quaternion(),qb=new T.Quaternion(),va=new T.Vector3(),vb=new T.Vector3();
+  const wq=(b,q)=>b.getWorldQuaternion(q),wp=(b,v)=>b.getWorldPosition(v);
+  av.updateMatrixWorld(true);
+  /* riposo: orientamento di collo e testa rispetto al busto, inclinazione del piede, quota della punta */
+  const relRiposo=b=>{wq(B.spine_03,qa);wq(b,qb);return qa.clone().invert().multiply(qb);};
+  const rN=relRiposo(B.neck_01),rH=relRiposo(B.head);
+  const pend=(f,p)=>{wp(f,va);wp(p,vb);const d=vb.clone().sub(va);return Math.atan2(d.y,Math.hypot(d.x,d.z));};
+  const pL=pend(B.foot_l,B.ball_l),pR=pend(B.foot_r,B.ball_r);
+  const ballR=(wp(B.ball_l,va).y+wp(B.ball_r,vb).y)/2-av.position.y;
+  /* (1) posa base: tempi della clip con i due piedi alla stessa quota (entro 3 cm) */
+  act.play();const buoni=[];
+  for(let k=0;k<32;k++){const t=clip.duration*(k+0.5)/32;mx.setTime(t);av.updateMatrixWorld(true);if(Math.abs(wp(B.ball_l,va).y-wp(B.ball_r,vb).y)<0.03)buoni.push(t);}
+  const tb=buoni.length?buoni[Math.floor(R(1)*buoni.length)%buoni.length]:0;
+  mx.setTime(tb);act.paused=true;av.updateMatrixWorld(true);
+  /* (2) collo e testa in asse col busto, come a riposo */
+  const metti=(b,qW)=>{b.parent.updateMatrixWorld(true);b.parent.getWorldQuaternion(qa);b.quaternion.copy(qa.invert().multiply(qW));b.updateMatrixWorld(true);};
+  wq(B.spine_03,qb);metti(B.neck_01,qb.clone().multiply(rN));wq(B.spine_03,qb);metti(B.head,qb.clone().multiply(rH));
+  /* (3) piede: la punta riprende l'inclinazione di riposo */
+  [[B.foot_l,B.ball_l,pL],[B.foot_r,B.ball_r,pR]].forEach(([f,p,pr])=>{wp(f,va);wp(p,vb);const d=vb.clone().sub(va),L=d.length(),h=Math.hypot(d.x,d.z)||1e-6;
+    const tgt=new T.Vector3(d.x/h*Math.cos(pr),Math.sin(pr),d.z/h*Math.cos(pr));const dq=new T.Quaternion().setFromUnitVectors(d.normalize(),tgt);
+    wq(f,qb);metti(f,dq.multiply(qb));});
+  /* (4) appoggio: la punta piu' bassa alla quota di riposo */
+  av.updateMatrixWorld(true);const mn=Math.min(wp(B.ball_l,va).y,wp(B.ball_r,vb).y)-av.position.y;av.position.y=ballR-mn;
+  const base={};['spine_01','spine_03','neck_01','head','foot_l','foot_r','upperarm_l','upperarm_r'].forEach(n=>{if(B[n])base[n]=B[n].quaternion.clone();});
+  /* vita: frequenze e fasi dal seme, ampiezze piccole (gradi) */
+  const ph=k=>R(10+k)*Math.PI*2,fr=(k,a,b)=>a+R(20+k)*(b-a),D=Math.PI/180;
+  const P={fRes:fr(1,0.22,0.30),pRes:ph(1),fPeso:fr(2,0.10,0.16),pPeso:ph(2),fSg:fr(3,0.07,0.12),pSg:ph(3),sg:6+R(4)*5,fBr:fr(5,0.18,0.26),pBr:ph(5)};
+  const X=new T.Vector3(1,0,0),Y=new T.Vector3(0,1,0),Z=new T.Vector3(0,0,1),qq=new T.Quaternion(),qw=new T.Quaternion();
+  const giro=(b,asse,ang)=>{if(!b||!ang)return;b.parent.getWorldQuaternion(qa);qq.setFromAxisAngle(asse,ang);/* rotazione intorno a un asse del MONDO, riportata nello spazio del genitore */
+    qw.copy(qa).multiply(b.quaternion);qw.premultiply(qq);b.quaternion.copy(qa.invert().multiply(qw));};
+  const vita=(el)=>{for(const n in base)B[n].quaternion.copy(base[n]);av.updateMatrixWorld(true);
+    const res=Math.sin(el*Math.PI*2*P.fRes+P.pRes),peso=Math.sin(el*Math.PI*2*P.fPeso+P.pPeso),sg=Math.sin(el*Math.PI*2*P.fSg+P.pSg),br=Math.sin(el*Math.PI*2*P.fBr+P.pBr);
+    if(B.spine_01){giro(B.spine_01,Z,peso*1.4*D);giro(B.spine_01,X,res*0.7*D);B.spine_01.updateMatrixWorld(true);}
+    giro(B.spine_03,X,-res*1.2*D);B.spine_03.updateMatrixWorld(true);
+    giro(B.head,Y,sg*P.sg*D);giro(B.head,X,(res*1.5-1)*D);
+    if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);};
+  av.userData.vita142=vita;av.userData.posa142={tb,buoni:buoni.length,riposo:{rN,rH,pL,pR,ballR}};return av.userData.posa142;}catch(_e){return null;}}
 function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false}){
   /* [7.947 v3 — direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e' nell'as is con
      sovrapposizione delle schermate 2D». Lo stadio non era il problema: lo erano i CH38. Con senzaCorpi
@@ -1119,11 +1184,21 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
         const _GKP=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
         const _gkCol=(function(){try{const cs=[new THREE.Color(homeHex),new THREE.Color(awayHex)];let best=_GKP[0],bd=-1;
           _GKP.forEach(c=>{const q=new THREE.Color(c);const d=Math.min.apply(null,cs.map(h=>Math.abs(q.r-h.r)+Math.abs(q.g-h.g)+Math.abs(q.b-h.b)));if(d>bd){bd=d;best=c;}});return best;}catch(_e){return '#16a34a';}})();
+        /* [giro 142] ogni compagno con l'aspetto che ha IN PARTITA: stesso seme (chiave del club + '_' + indice dei titolari di casa,
+           1..9 = di movimento), stessa funzione (appearanceFromSeed), stesse applicazioni (cgCorporatura, cgCapelli142) e la stessa
+           statura del corpo CGTrader in campo (1,8; l'eroe la sua). Rosso __CPM_NO_G142. */
+        const _g142=!(typeof window!=='undefined'&&window.__CPM_NO_G142);
+        const _key142=(club&&(club.id||club.n))||homeHex||'H';
         for(let i=0;i<N;i++){const isHero=(i===HERO),isGk=!isHero&&(gkIdx||[]).indexOf(i)>=0;
-          const av=corpoCG23(pkg,{shirt:isGk?_gkCol:homeHex,shorts:isGk?_gkCol:awayHex,socks:isGk?_gkCol:homeHex,altezza:isHero&&heroAppr?Math.min(1.95,heroAppr.height||1.86):1.78+R(40+i)*0.12});
+          const ap142=_g142?((isHero&&heroAppr)?heroAppr:((typeof appearanceFromSeed==="function")?appearanceFromSeed(hashStr(_key142+'_'+(i+1))):null)):null;
+          const av=corpoCG23(pkg,{shirt:isGk?_gkCol:homeHex,shorts:isGk?_gkCol:awayHex,socks:isGk?_gkCol:homeHex,altezza:isHero&&heroAppr?Math.min(1.95,heroAppr.height||1.86):(_g142?1.8:1.78+R(40+i)*0.12)});
           if(!av)continue;av.position.set((i-(N-1)/2)*SP,0,LZ);av.rotation.y=0;line.add(av);men.push(av);
-          if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}
+          if(ap142){try{cgCorporatura(av,ap142);cgCapelli142(av,ap142);av.userData.aspetto142={girth:ap142.girth,hair:ap142.hair,variante:cgVarianteCapelli(ap142.hair)};}catch(_e){}}
+          if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);
+            if(_g142&&_posa142(av,mx,a,idle0,hashStr(_key142+'|posa142|'+i))){mixers.push(mx);}
+            else{a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}}
         try{if(typeof window!=='undefined')window.__CPM_PRES200={cg:men.length};}catch(_e){}
+        try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&typeof window!=='undefined')window.__CPM_PRES142={men,mixers,line,scene,HERO};}catch(_e){}/* [giro 142] aggancio di sola prova per la sonda presentazione-142 */
       }).catch(()=>{});
     } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
@@ -1192,6 +1267,8 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       if(!alive)return;raf=requestAnimationFrame(tick);
       const now=performance.now(),el=(now-t0)/1000,dt=Math.min(0.06,(now-tPrev)/1000);tPrev=now;
       if(mixers.length)mixers.forEach(m=>m.update(dt));
+      for(let i=0;i<men.length;i++){const _v=men[i].userData&&men[i].userData.vita142;if(_v)_v(el);}/* [giro 142] vita della fila, dopo il mixer */
+      try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142)window.__CPM_PRES142.el=el;}catch(_e){}
       const b=st.current.beat,tot=st.current.total;
       /* Beat 0 = lo stadio · beat 1 = la squadra · dal 2 in poi lo speaker chiama UN giocatore per volta (i beat
          di testo sono costruiti cosi' in `presBeats`). In verticale la fila intera non ci sta nell'inquadratura

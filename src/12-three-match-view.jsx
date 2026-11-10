@@ -176,6 +176,23 @@ function _guanti201(visual,hex){try{if(!visual||!hex||typeof THREE==='undefined'
     m.geometry=g;m.material=[mat0,mg];m.userData.guanti201=true;tot+=guanto.length/3;tutte+=(pelle.length+guanto.length)/3;});
   try{if(typeof window!=='undefined'&&tot){(window.__CPM_GUANTI201=window.__CPM_GUANTI201||[]).push(tot);(window.__CPM_GUANTI201Q=window.__CPM_GUANTI201Q||[]).push(+(tot/Math.max(1,tutte)).toFixed(3));}}catch(_e){}
   return tot;}catch(_e){return 0;}}
+/* [giro 142 PO-343 «nella presentazione della squadra sono tutti uguali»] L'ASPETTO DEL CORPO CGTRADER E' UNA FUNZIONE SOLA.
+   Variante di capelli (le quattro teste del pacchetto) e corporatura vivevano come chiusure dentro ThreeMatchView: la serata di
+   presentazione non poteva usarle e mostrava la testa di serie su tutti. Ora stanno qui, a livello di modulo, e la partita le chiama
+   uguali (stesso corpo delle funzioni di prima); le cerimonie applicano lo stesso aspetto con cgCapelli142. */
+function cgVarianteCapelli(hex){const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';}
+function cgCorporatura(visual,appearance){const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;}
+const _cgCapTex142=new Map(),_cgCapMat142=new Map();
+function cgCapelli142(visual,appearance){try{if(!visual||typeof THREE==='undefined')return null;const variant=cgVarianteCapelli(appearance&&appearance.hair);
+  const applica=(tex)=>{visual.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
+    const nx=src.map(b=>{if(!b||b.name!=='Material.002')return b;const k=b.uuid+'|'+variant;let mt=_cgCapMat142.get(k);if(!mt){mt=b.clone();mt.name='KorwardNativeHair_'+variant;mt.map=tex;mt.color.set(0xffffff);mt.needsUpdate=true;_cgCapMat142.set(k,mt);}return mt;});
+    m.material=Array.isArray(m.material)?nx:nx[0];});visual.userData.cpmNativeHair={variant,applied:1};};
+  let t=_cgCapTex142.get(variant);if(t&&t._ok142){applica(t);return variant;}
+  const im=(typeof window!=='undefined'&&window.__CPM_TESTE237)?window.__CPM_TESTE237[variant]:null;
+  if(im&&im.complete&&im.naturalWidth>0){t=new THREE.Texture(im);t.flipY=false;t.needsUpdate=true;t._ok142=true;_cgCapTex142.set(variant,t);applica(t);return variant;}
+  /* la testa resta quella del GLB finche' la mappa non e' arrivata (lezione PO-232: una mappa vuota col ritaglio alfa cancella la testa) */
+  new THREE.TextureLoader().load('./assets/hair-colors/source-textures/HEAD_hair_'+variant+'.png',lt=>{lt.flipY=false;lt.needsUpdate=true;lt._ok142=true;_cgCapTex142.set(variant,lt);applica(lt);});
+  visual.userData.cpmNativeHair={variant,applied:0,pending:true};return variant;}catch(_e){return null;}}
 function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
   const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
@@ -1452,7 +1469,7 @@ function ThreeMatchView(props){
          mesh capelli separata: si sostituisce quindi soltanto la mappa del
          materiale testa, mai la geometria né l''incarnato a runtime. */
       const _cgtraderHairMaterialCache=new Map(),_cgtraderHairTextureCache=new Map(),_cgtraderHairLoader=new THREE.TextureLoader();
-      const _cgtraderHairVariant=hex=>{const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';};
+      const _cgtraderHairVariant=cgVarianteCapelli;/* [giro 142] stessa funzione delle cerimonie */
       const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);{/* [PO-237] testa gia' decodificata all'avvio (11-ui-kit, __CPM_TESTE237): pronta subito, niente secondo download/decodifica. Rosso __CPM_NO_PRE237 */const _im237=(typeof window!=='undefined'&&!window.__CPM_NO_PRE237&&window.__CPM_TESTE237)?window.__CPM_TESTE237[key]:null;if(_im237&&_im237.complete&&_im237.naturalWidth>0){const t237=new THREE.Texture(_im237);t237.flipY=false;if('colorSpace' in t237&&THREE.SRGBColorSpace)t237.colorSpace=THREE.SRGBColorSpace;t237.needsUpdate=true;t237._ok232=true;_cgtraderHairTextureCache.set(key,t237);return t237;}}const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
       /* [7.999.162 PO-232] LA TESTA SPARIVA FINCHE' LA SUA TEXTURE NON ERA ARRIVATA. Il materiale della testa (Material.002) riceveva subito
          la mappa dei capelli (PNG da ~2,5 MB) ancora vuota; three r128 nell'attesa campiona una texture nera con alfa 0, e il ritaglio
@@ -1463,7 +1480,7 @@ function ThreeMatchView(props){
       const _flushTeste232=key=>{const L=_testePend232.get(key);if(!L)return;_testePend232.delete(key);try{if(sr.current)sr.current._testePend232=Math.max(0,(sr.current._testePend232|0)-L.length);}catch(_e){}L.forEach(([v,a])=>{try{_applyCgtraderNativeHair(v,a);}catch(_e){}});};
       const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
-      const _applyHyperBuild=(visual,appearance)=>{const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
+      const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
       /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
          mesh HyperShirtPattern-* che questo codice accende (0 su 7 nodi), e la maglia veniva colorata in tinta unita (map=null): niente
          motivo, niente numero. Ora la maglia riceve una texture disegnata qui. LAYOUT MISURATO con una griglia di prova sul corpo
