@@ -49,7 +49,14 @@ const PIXEL = () => { /* gira nella pagina: quota di nero fuori dal campo, quote
     if (den(erba, px, py, 6 * k)) continue;
     if (den(osp, px, py)) { tribO++; if (to && vic(to, r, g, bb)) ospN++; } else { trib++; if (tc && vic(tc, r, g, bb)) casa++; }
   }
-  return { fuori, nero: +(neri / Math.max(1, fuori)).toFixed(3), trib, casa: +(casa / Math.max(1, trib)).toFixed(3), tribO, osp: +(ospN / Math.max(1, tribO)).toFixed(3), spalti: P };
+  /* [giro 141 PO-342] la soglia della tinta (4%) e' stata tarata con la tribuna SEMPRE piena all'88% (la 7.999.178-188: un posto su otto
+     vuoto in ogni partita). Dal 141 la tribuna 2D ha l'affluenza della partita (in Primavera ~10%): la tinta si misura A PARITA' DI
+     AFFLUENZA, riportata all'88% su cui la soglia e' nata (testimone __CPM_G141: posti e occupati disegnati per padrone). Senza testimone
+     (__CPM_NO_G141) la misura resta quella grezza. */
+  const T = window.__CPM_G141 && window.__CPM_G141.T; let kC = 1, kO = 1, occ = null;
+  if (T) { const som = own => { let o = 0, n = 0; for (const v of Object.values(T)) { o += v[own].occ; n += v[own].posti; } return n ? o / n : null; };
+    const oc = som('casa'), oo = som('osp'); occ = { casa: oc, osp: oo }; if (oc != null) kC = 0.88 / Math.max(0.05, oc); if (oo != null) kO = 0.88 / Math.max(0.05, oo); }
+  return { fuori, nero: +(neri / Math.max(1, fuori)).toFixed(3), trib, casaGrezza: +(casa / Math.max(1, trib)).toFixed(3), casa: +(casa / Math.max(1, trib) * kC).toFixed(3), tribO, ospGrezza: +(ospN / Math.max(1, tribO)).toFixed(3), osp: +(ospN / Math.max(1, tribO) * kO).toFixed(3), occ, spalti: P };
 };
 const BARRA = () => { /* rettangolo della barra Statistiche/Pagelle e pallini sotto */
   const W = window.__CPM_W297, li = document.querySelector('[data-cpm="linguette918"]'); if (!W || !li) return null;
@@ -75,7 +82,7 @@ async function giro(sigla, rosso) {
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page); const errs = [];
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
   if (rosso) await page.addInitScript(() => { window.__CPM_NO_SPALTI297 = true; window.__CPM_NO_BARRA297 = true; window.__CPM_NO_FISSE297 = true; });
-  await page.addInitScript(s => { try { if (!localStorage.getItem('cpm-v3')) localStorage.setItem('cpm-v3', JSON.stringify(s)); } catch (e) {} window.__CPM_W297 = {}; }, SAVE);
+  await page.addInitScript(s => { try { if (!localStorage.getItem('cpm-v3')) localStorage.setItem('cpm-v3', JSON.stringify(s)); } catch (e) {} window.__CPM_W297 = {}; window.__CPM_G141 = {}; }, SAVE);
   const foto = async nome => { if (FOTO && (!rosso || SOLO_ROSSO)) { fs.mkdirSync(FOTO, { recursive: true }); await page.screenshot({ path: `${FOTO}/${rosso ? 'prima' : 'dopo'}-${sigla}-${nome}.png` }).catch(() => {}); } };
   try {
     await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
@@ -145,6 +152,7 @@ for (const sg of SCELTI) {
     console.log(`  barra ${m.barra ? JSON.stringify(m.barra.barra) : '-'} campo ${m.barra ? JSON.stringify(m.barra.campo) : '-'} campo coperto ${m.barra ? m.barra.campoCoperto : "-"} px fasi ${m.barra && m.barra.fasi} ling ${m.barra && m.barra.linguette} · pallini sotto: ${m.barra ? m.barra.coperti + '/' + m.barra.campioni + ' campioni, max ' + m.barra.max : '-'}`);
     console.log(`  testata 1° ${JSON.stringify(m.t1)} · 2° ${JSON.stringify(m.t2)}`);
     console.log(`  spalti ${m.pixel && JSON.stringify(m.pixel.spalti)}`);
+    if (m.pixel && m.pixel.occ) console.log(`  [141] affluenza disegnata casa ${m.pixel.occ.casa != null ? (m.pixel.occ.casa * 100).toFixed(1) : '-'}% ospiti ${m.pixel.occ.osp != null ? (m.pixel.occ.osp * 100).toFixed(1) : '-'}% · tinta grezza casa ${(m.pixel.casaGrezza * 100).toFixed(1)}% ospiti ${(m.pixel.ospGrezza * 100).toFixed(1)}%`);
     console.log(`  lampo ${JSON.stringify(m.lampo)} · fps ${m.fps} · costo sfondo ${m.costo && m.costo.sfondo} ms, tratto per-fotogramma ${m.costo && m.costo.fotogramma} ms`);
     for (const k of ['A', 'B', 'C', 'altro']) for (const x of g[k]) console.log('   ' + (rosso ? '·' : '✗') + ' ' + x);
     if (!rosso && !SOLO_ROSSO && (g.A.length || g.B.length || g.C.length || g.altro.length)) fallito = true;

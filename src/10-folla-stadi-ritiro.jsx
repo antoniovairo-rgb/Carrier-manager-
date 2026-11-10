@@ -224,6 +224,29 @@ function computeCrowdContext(a){
     profile:{market:prof.market,passion:prof.passion,history:prof.history,loyalty:prof.loyalty,econ:prof.econ}};
 }
 if(typeof window!=='undefined')window.__CPM_crowdCtx=computeCrowdContext;// esposto per i test analitici
+/* [giro 141 PO-341/PO-342 — UNA FONTE SOLA PER I SETTORI] Chi sta dove e quanto e' pieno ogni settore: la regola che buildStadium
+   applicava in linea (7.187.0 «compattezza del tifo»: la curva si svuota per ultima, i posti spostati in curva si tolgono alle tribune)
+   ora vive qui e la leggono sia lo stadio 3D sia gli spalti della partita 2D. Pura, nessun dado.
+     curvaCasa: Curva Sud, SOLO casa · curvaOsp: Curva Nord, SOLO ospiti · tribuna: Est e Ovest (casa) ·
+     wedge/wedgeFill: lo spicchio ospiti della Tribuna Est accanto alla Curva Nord (finale in campo neutro: meta' tribuna) ·
+     wedgeOvest: in finale anche la Ovest e' divisa a meta' (6.78.0). sideW/endW: larghezze di curva e tribuna (pesano i posti spostati). */
+function settoriFolla141(crowd,sideW,endW){
+  crowd=crowd||{fill:0.9,awayFill:0.5,intensity:0.6,tier:"league",seed:1};
+  const sW=sideW||68,eW=endW||110;
+  const pss=((crowd.passion!=null?crowd.passion:(crowd.profile&&crowd.profile.passion))||60)/100;
+  const loy=((crowd.loyalty!=null?crowd.loyalty:(crowd.profile&&crowd.profile.loyalty))||60)/100;
+  const bf=Math.max(0,Math.min(1,crowd.fill||0));
+  const ultras=crowd.tier!=="trial"&&bf>=0.10;
+  const curvaK=(0.40+0.34*pss)*(0.60+0.40*loy)*Math.max(0,Math.min(1,(bf-0.10)/0.25))*(ultras?1:0);
+  const curvaCasa=Math.min(1,bf+(1-bf)*curvaK);
+  const away=Math.max(0,Math.min(1,crowd.awayFill||0));
+  const curvaOsp=Math.min(1,away+(1-away)*curvaK*0.85);/* anche il settore ospiti e' compatto (chi viaggia e' il nucleo) */
+  const moved=(curvaCasa-bf)*sW+(curvaOsp-away)*sW*0.35;
+  const tribuna=Math.max(0.03,bf-moved/(2*Math.max(1,eW)));
+  const wE=(CROWD_CFG.sectors.tribunaEst&&CROWD_CFG.sectors.tribunaEst.wedge)||0.14;
+  return{passion:pss,loyalty:loy,fill:bf,ultras,curvaK,curvaCasa,away,curvaOsp,tribuna,
+    wedge:crowd.isFinal?0.5:wE,wedgeOvest:crowd.isFinal?0.5:0,wedgeFill:crowd.awayFill!=null?Math.max(0,Math.min(1,crowd.awayFill)):tribuna};}
+if(typeof window!=='undefined')window.__CPM_settori141=settoriFolla141;
 
 /* ══════════ STADI DINAMICI — S1 FONDAMENTA (5.87.0) ══════════
    Design approvato dal PO in docs/STADIUM_SYSTEM_DESIGN.md: 3 slice · NIENTE pista d'atletica (mai) ·
