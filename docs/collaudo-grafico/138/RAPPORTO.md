@@ -11,6 +11,7 @@ Ramo `collaudo/giro138-strumenti` da `lavoro/188` (04a62ae, 7.999.188). Solo str
 | `festa-57` | PO-336 | 2 corse, **uscita 1** entrambe: rosso 57 fermo **3** e **1** campioni (serve ≥4); nella 1ª anche rosso 61 «non si distingue» (0 campioni) | **strumento** | 2 corse sulla versione finale, **uscita 0** entrambe: verde fino a 4,39 / 4,43 (clip ripartita), rosso 57 **4 campioni fermi a 2,04**, rosso 61 distinto | chiuso |
 | `portiere-252` | PO-316 | 1 corsa, **uscita 1**: verde KO 0/7 · rosso KO **0/7** «rosso NON VISTO» (come 10/11 e verifica 182) | **strumento** (braccio rosso senza la geometria del difetto) | 2 corse **uscita 0**: verde KO 0/10 · rosso KO **3/10** e **2/10**, tutti sui tiri angolati fissati | chiuso |
 | `riserva-103` | PO-317 | giro 111: 1 esecuzione, gi17 mai rivelata; giro 138, 2 diagnosi: cade **la prima scena dopo il riscaldamento**, qualunque sia (17,4,1 → gi17; 4,17,1 → gi4, gi17 chiude a 8,09 s) | **strumento** (riscaldamento a una scena; riferimento del caso B) | 2 corse finali **uscita 0**: A 3/3+3/3 · B 3/3+3/3, rosso visto ovunque | chiuso (2 corse finali complete, uscita 0) |
+| `contatto-103` | PO-319 | 1 corsa, **uscita 1**: 2 parate per braccio (pavimento), «il difetto non si vede» | strumento (poche parate) **e** ampiezza del difetto oggi sotto soglia (rosso max 5,5 contro 6) | parate provocate: 4 per braccio (6-7 con tre partite); rosso ancora **uscita 1** «il difetto non si vede» | **NON chiuso** — proposta al PO |
 | `griglia-mobile` | verifica 188 r.28-29 | 2 corse normali uscita **0** (riprodotto **non** il rosso), prepartita **mai misurata** (`playMatch → nomatch`, 13 schermate); con un rifiuto orfano alla chiusura del browser: rapporto completo e poi **uscita 1** = il sintomo della 188 | **strumento** (uscita implicita; prepartita cieca) | 2 corse normali **uscita 0** «misura completa: 14 schermate x 5 larghezze»; col rifiuto iniettato **uscita 0** con l'errore stampato come tardivo; con un rifiuto durante la raccolta **uscita 3** col motivo | chiuso |
 
 ## 1 · `festa-57` (PO-336) — strumento, non la festa
@@ -192,3 +193,21 @@ giudicato» (= rosso); braccio e motivo per ultimi.
 |---|---|---|---|
 | prima | 2 parate, 0 difetti | 2 parate, D3 0 | 1 |
 | dopo 1 (parate provocate) | **4** parate (3 passaggi resi parata), 0 difetti | **4** parate, D3 **0** | 1 |
+| dopo 2 (+ eroe spostato sulla fascia nelle scene di passaggio, prova poi tolta) | 4 parate, 0 difetti, distanze [1,1 · 1,6 · 2,2 · 3,1] | 4 parate, D3 0, distanze [1,1 · 1,6 · 2,7 · **5,5**] | 1 |
+| dopo 3 (3 partite: semi 7, 1234, 2021, `CPM_CT_SEMI` / `CPM_CT_PAR=3`) | **6** parate, 0 difetti, distanze 2,0-3,0 | **7** parate, D3 0, distanze [2,1 · 2,2 · 2,8 · 2,9 · **4,7 · 4,8 · 5,3**] | 1 |
+
+**Esito: NON chiuso.** Lo strumento ora giudica più parate (2 → 4 nella corsa di default, 6-7 con tre partite) e stampa il margine,
+ma il rosso continua a non superare la soglia 6 che definisce il difetto D3. **Misura che conta per il PO:** il difetto di
+`__CPM_NO_G103D` c'è ancora e si vede come spostamento delle distanze (verde mai oltre 3,1 in 14 parate; rosso 4,7-5,5 su 4 parate
+su 11), ma oggi la sua ampiezza resta **sotto 6** — al giro 103 era 6,2 su HOWARD s12/7 (dichiarato «sul filo della soglia 6»).
+Se il gioco sia cambiato da allora o se fosse quella sola scena a superarla **non posso confermarlo**.
+
+Tentativo scartato: spostare sulla fascia la partenza dell'eroe nelle 49 situazioni offensive con un passaggio non ha cambiato la
+geometria delle parate (stesse distanze sulle prime due), quindi l'opzione è stata tolta da `highlight-95.mjs`.
+
+**Proposte (non decise qui):**
+1. un gancio di prova **nel gioco** (solo sotto `?cpmtest=1`, come `__CPM_GK229GEO` per il palo) che fissi la posizione del compagno
+   che tira o lo scarto laterale col portiere: è il modo diretto di provocare la parata angolata dove il rosso supera 6. Tocca `src/`:
+   fuori dal perimetro di questo giro;
+2. oppure una decisione del PO sul criterio del braccio rosso (oggi «almeno una parata oltre 6»): **non la prendo io**; i numeri
+   sopra sono il materiale per deciderla. La soglia 6 non è stata toccata.

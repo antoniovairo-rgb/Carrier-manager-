@@ -47,6 +47,15 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
     const H = window.__H103 = []; let cur = null; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CB95 ? window.__CPM_CB95() : null;
       if (ph === 'hl_result' && c && typeof c.ck === 'number') { if (!cur) { cur = { ck0: c.ck, occ: null, rev: null, n: (window.__CPM_REV95 || []).length, fr: 0, t0: performance.now() }; H.push(cur); }
         cur.fr++; cur.ck = c.ck; if (c.on && (c.tl || c.arc)) cur.occ = c.ck; if (cur.rev == null && (window.__CPM_REV95 || []).length > cur.n) { cur.rev = c.ck; cur.revMs = performance.now() - cur.t0; } } else cur = null; } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); });
+  /* [giro 138 PO-319] solo sonda: PARATE PROVOCATE. contatto-103 giudicava 2 parate per braccio, cioe' il pavimento (margine zero, «il
+     difetto non si vede» al primo giro della verifica 182). Il motore espone l'oggetto intero (__CPM_MOTORE_OBJ, 7.918) e giocaScena e'
+     una funzione pura che RESTITUISCE la decisione della scena senza emettere eventi: la sonda la avvolge e ogni passaggio ARRIVATO
+     (fam assist, esito diverso da «intercettato») diventa «tiro del compagno parato» (ok false, esito saved). Da li' in poi e' il gioco
+     a fare tutto: chiave «chance», spreca298 = saved, il 3D consegna al compagno che tira sul portiere. Il gioco non cambia. */
+  if (process.env.CPM_G138PARATA) await page.addInitScript(() => { window.__P138 = { avvolto: 0, forzate: 0 };
+    setInterval(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); if (!M || M.__p138 || typeof M.giocaScena !== 'function') return; const f = M.giocaScena;
+      M.giocaScena = function (o) { const r = f.apply(this, arguments); if (r && r.fam === 'assist' && r.esito && r.esito !== 'intercettato') { window.__P138.forzate++; return Object.assign({}, r, { ok: false, esito: 'saved' }); } return r; };
+      M.__p138 = 1; window.__P138.avvolto++; } catch (e) {} }, 50); });
   if (process.env.CPM_G104FAIL) await page.addInitScript(() => {/* [giro 104] solo sonda: ogni highlight forzato a fallire (__CPM_FORCE_OUTCOME, gia' esistente) -> ogni uno-due diventa un intercetto, il caso D3 della catena 178 */
     setInterval(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if ((ph === 'hl_choose' || ph === 'hl_move') && !window.__CPM_FORCE_OUTCOME) window.__CPM_FORCE_OUTCOME = 'fail'; } catch (e) {} }, 60); });
   if (+process.env.CPM_CPU > 1) { const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [giro 103] carico riproducibile per le misure (CDP) */
@@ -91,6 +100,7 @@ async function gioca(saveKey, sd, rosso, pol, senza) {
   const G104 = await page.evaluate(() => ({ x: (window.__CPM_G104X || []).length, d: (window.__CPM_G104D || []).length, xs: (window.__CPM_G104X || []).slice(0, 3), ds: (window.__CPM_G104D || []).slice(0, 3) })).catch(() => null);
   if (G104 && (G104.x || G104.d)) console.log(`  [g104] ${saveKey}/${sd} ${pol}: riserva su riquadro altrui ${G104.x} ${JSON.stringify(G104.xs)} · via dichiarata prima del pavimento ${G104.d} ${JSON.stringify(G104.ds)}`);/* [giro 104] testimoni del gioco *//* [giro 104] tutte le rivelazioni della partita, per abbinarle alla scena per indice (hl) e non per ordine di lettura */
   if (process.env.CPM_G103DIAG) { const H = await page.evaluate(() => window.__H103 || []).catch(() => []); for (const x of H) if (x.occ != null) console.log(`  [g103] ${saveKey}/${sd} ${pol} occupata ${(x.occ - x.ck0).toFixed(2)} s di scena · esito a ${x.rev != null ? (x.rev - x.ck0).toFixed(2) : '-'} s (${x.revMs != null ? Math.round(x.revMs) : '-'} ms) · fotogrammi ${x.fr}`); }
+  if (process.env.CPM_G138PARATA) { const P = await page.evaluate(() => window.__P138 || null).catch(() => null); console.log(`  [g138] ${saveKey}/${sd} ${pol}: motore avvolto ${P ? P.avvolto : 0} · passaggi arrivati resi parata del compagno ${P ? P.forzate : 0}`); }
   const tab = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
   await ctx.close();
   hls.forEach((h, i) => { h.vis = VIS[i] || null; const r = R[h.n] || null; const core = r ? String(r.label || '').replace(/^\S+\s/, '').slice(0, 14) : ''; h.r = (r && (!h.inct || h.inct.indexOf(core) >= 0)) ? r : null; if (r && !h.r) h.scartato = 1; });/* l'abbinamento scena↔testimone si verifica sul nome della giocata mostrato «in corso» */
