@@ -1145,3 +1145,11 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 09:20 UTC — 7.999.188 sul sito
 - Deploy riuscito; radice verificata su 7.999.188, CARRIER-MANAGER-AV.html e privacy.html 200. Notifica «CPM 7.999.188 pronta e pubblicata» inviata. lavoro/189 si crea da main con i giri 137-142 quando finiti.
+
+### 10/11 10:05 UTC — Giri 137, 140, 141, 142b finiti
+- 137 (PO-339, PO-340): capitano 1-23° dalla camera (prima 116-126°), «<club> W.N» su una riga a 360 e 412 (prima a capo 4/4 e 2/4); guardiani premiazione-132 e prossima-131 estesi. 3,88 $.
+- 140 (PO-337/338, sola verifica sulla 188): 2 risolti, 2 a metà, 16 presenti, 3 da decidere col PO, 2 non verificabili. 11,43 $.
+- 141 (PO-341, PO-342): una fonte dei settori per 3D e 2D (`settoriFolla141`, 3D invariato provato col guardiano folla); cartelloni del padrone 62-81% → 100%; spalti 2D dall'affluenza (Primavera curva 86-89% → 19% come il 3D). Guardiano partita2d-141. 5,98 $.
+- 142b (PO-343, D23): aspetto della partita sui corpi della presentazione, testa ≤ 10° (prima 26-53°), punte a terra, nessuno fermo, marchio «Korward Elite» nella striscia di tutte le cerimonie; guardiano presentazione-142. Marchio composto a pezzi anche in sala stampa (piastrelle, tovaglia) e titolo iniziale (pallone): non toccati. 6,05 $.
+- Decisioni tecniche (madre) sulle domande minori dei giri: capitano verso il punto-camera fisso «com'era» (137-1); «poi:» resta a fine riga (137-2); sedili vuoti nella tinta del settore (141-2); tribune laterali strette al telefono restano (141-3); criterio A di partita2d-297 confermato (141-4); sguardo della fila che gira piano resta (142-2). Le altre al PO.
+- Sessioni archiviate. 139 (rigore doppio) ancora in catena; 138 (strumenti) al lavoro.

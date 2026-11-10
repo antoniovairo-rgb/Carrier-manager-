@@ -49,6 +49,10 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.188 | giro 136 riconciliazione del backlog | collaudo | claude-opus-5-5 | 0,8 | 3,63 $ | 26856 | 1 | completo (un solo avvio) |
 | 7.999.189 | giro 142 (fermato dopo 1 minuto, rilanciato come 142b) | sviluppo | claude-opus-5-5 | 0,0 | 0,52 $ | 290 | 1 | completo (un solo avvio) |
 | 7.999.188 | verifica finale 7.999.188 | catena | claude-sonnet-5-5 | 6,3 | 1,48 $ | 14879 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 137 capitano verso la camera e club W.N (PO-339, PO-340) | sviluppo | claude-opus-5-5 | 1,4 | 3,88 $ | 31557 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 140 verifica dei bassi PO-337 e PO-338 | collaudo | claude-opus-5-5 | 0,4 | 11,43 $ | 75898 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 141 partita 2D cartelloni e tifosi (PO-341, PO-342) | sviluppo | claude-opus-5-5 | 1,2 | 5,98 $ | 63631 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 142b presentazione della squadra e marchio (PO-343, D23) | sviluppo | claude-opus-5-5 | 1,1 | 6,05 $ | 57599 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -58,4 +62,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
-| 7.999.189 | **TOTALE 7.999.189** (1 sessioni) |  |  |  | 0,52 $ |  |  | tutte complete |
+| 7.999.189 | **TOTALE 7.999.189** (5 sessioni) |  |  |  | 27,87 $ |  |  | tutte complete |

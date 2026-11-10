@@ -614,5 +614,61 @@
     "cache_read_tokens": 6924454,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaCsYy3z7uZZcBZTnSm",
+    "titolo": "giro 137 capitano verso la camera e club W.N (PO-339, PO-340)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T06:51:48Z",
+    "chiusa": "2026-11-10T08:18:47Z",
+    "cost_usd": 3.88463638,
+    "output_tokens": 31557,
+    "cache_read_tokens": 10512941,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYia8j9LWVudi6ZogMmzo",
+    "titolo": "giro 140 verifica dei bassi PO-337 e PO-338",
+    "versione": "7.999.189",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T06:51:51Z",
+    "chiusa": "2026-11-10T07:17:18Z",
+    "cost_usd": 11.43057428,
+    "output_tokens": 75898,
+    "cache_read_tokens": 39124002,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaD1Zv6Y6Q8Lkqbyb7w",
+    "titolo": "giro 141 partita 2D cartelloni e tifosi (PO-341, PO-342)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T07:48:13Z",
+    "chiusa": "2026-11-10T08:59:13Z",
+    "cost_usd": 5.98149864,
+    "output_tokens": 63631,
+    "cache_read_tokens": 14493473,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYia9zsuiiFU2SuC5tzfm",
+    "titolo": "giro 142b presentazione della squadra e marchio (PO-343, D23)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T08:18:13Z",
+    "chiusa": "2026-11-10T09:25:13Z",
+    "cost_usd": 6.0470581,
+    "output_tokens": 57599,
+    "cache_read_tokens": 16253295,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
