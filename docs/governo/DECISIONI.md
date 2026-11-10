@@ -1200,3 +1200,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 22:10 UTC — PO-352 intervista su PC nella 190
 - PO: «Finestra centrata col velo», «190». Decisione tecnica (madre): giro 150 su `sviluppo/giro150-finestre-pc` da `lavoro/189`; una regola unica per le finestre sovrapposte (velo, altezza al contenuto, centratura, larghezza su PC/tablet), censimento di tutte le finestre del gioco nei formati PC e tablet.
+
+### 10/11 22:20 UTC — PO-353, PO-354, PO-355
+- PO-353 (scie della 2D): il PO non ha scelto fra le opzioni; decisione tecnica (madre): l'opzione consigliata «scia corta e sottile», nella 190, giro 151 insieme a PO-354 (cronaca «a tu per tu col portiere» col pallone a centrocampo, da misurare).
+- PO-355 (eroe che vola con le braccia alzate nei festeggiamenti dopo un gol): difetto già presente (7.999.80), stessa regola scelta dal PO per PO-350: nella 190, giro 152, la 189 non si ferma.
