@@ -9,6 +9,7 @@ Ramo `collaudo/giro138-strumenti` da `lavoro/188` (04a62ae, 7.999.188). Solo str
 | strumento | voce | prima (com'era) | causa | dopo | esito |
 |---|---|---|---|---|---|
 | `festa-57` | PO-336 | 2 corse, **uscita 1** entrambe: rosso 57 fermo **3** e **1** campioni (serve ≥4); nella 1ª anche rosso 61 «non si distingue» (0 campioni) | **strumento** | 2 corse sulla versione finale, **uscita 0** entrambe: verde fino a 4,39 / 4,43 (clip ripartita), rosso 57 **4 campioni fermi a 2,04**, rosso 61 distinto | chiuso |
+| `portiere-252` | PO-316 | 1 corsa, **uscita 1**: verde KO 0/7 · rosso KO **0/7** «rosso NON VISTO» (come 10/11 e verifica 182) | **strumento** (braccio rosso senza la geometria del difetto) | 2 corse **uscita 0**: verde KO 0/10 · rosso KO **3/10** e **2/10**, tutti sui tiri angolati fissati | chiuso |
 | `griglia-mobile` | verifica 188 r.28-29 | 2 corse normali uscita **0** (riprodotto **non** il rosso), prepartita **mai misurata** (`playMatch → nomatch`, 13 schermate); con un rifiuto orfano alla chiusura del browser: rapporto completo e poi **uscita 1** = il sintomo della 188 | **strumento** (uscita implicita; prepartita cieca) | 2 corse normali **uscita 0** «misura completa: 14 schermate x 5 larghezze»; col rifiuto iniettato **uscita 0** con l'errore stampato come tardivo; con un rifiuto durante la raccolta **uscita 3** col motivo | chiuso |
 
 ## 1 · `festa-57` (PO-336) — strumento, non la festa
@@ -102,3 +103,35 @@ lavoro (`CPM_OUT`), non in `docs/collaudo-grafico/g0/`, che resta quello di prim
 Osservazione per il PO (non indagata oltre, non decisa): il calendario rigenerato dal salvataggio di prova senza gare di
 campionato servibili può essere una proprietà del salvataggio sintetico (nessun `calendar`, 10 gare in `matchHistory`) o un
 comportamento della rigenerazione del calendario: **non posso confermare quale** senza una sonda dedicata.
+
+## 2 · `portiere-252` (PO-316) — braccio rosso ridisegnato con tiri angolati fissati
+
+**Misura prima** (script com'era): corsa del giro 138 «verde KO 0/7 · rosso KO 0/7 · ❌ rosso NON VISTO: 0 KO su 7 portieri
+giudicati (seme 1, 8 scene)», uscita 1, 648 s — identica alla misura del 10/11 sulla 187 (`RICONCILIAZIONE-136.md` r.59) e alla
+verifica 182.
+
+**Causa.** Con `__CPM_NO_GK252` il portiere decide lato e bersaglio sulla z FINALE dell'arco invece che sul punto in cui il pallone
+attraversa il suo piano (`src/12` r.~6008). Il difetto si vede solo quando questi due punti cadono da **lati opposti** del portiere,
+cioè su un tiro molto angolato; con le posizioni di partenza delle otto scene questo non succede (il seme fisso del giro 111 rende
+ripetibile il bersaglio, non lo rende angolato). Misurato (corsa «dopo 1», casi
+base): pallone al piano del portiere a 1,5-5,8 u dalla sua posizione e reazione mai dal lato opposto («verso» falso in tutti e
+14 i casi base giudicati, nei due bracci).
+
+**Correzione (solo `tests/visual/portiere-252.mjs`).** Tre casi in più, gli stessi nei due bracci: la sonda fissa la posizione di
+partenza dell'eroe (`startZone` della scena, nella sua pagina) vicino al fondo, sulla fascia — gi13 fuori e parata da (88,14), gi1
+parata da (88,86). Il seme del bersaglio è quello del caso base. Soglie e criteri invariati (verde 0 KO, rosso almeno 1 KO, 0,6/0,3,
+0,05 s, 4,5 u). In più: `CPM_SZ252=x,y` per esplorare una posizione, `CPM_SOLO_ANGOLATI=1` per i soli tre casi, registro del portiere
+(`__CPM_GKACT`) e posizione dell'eroe nel `--verbose`; braccio e motivo per ultimi.
+
+Esplorazione (solo rosso, 4 scene per posizione): da (88,14) gi13 KO «verso» 2/2 con `lastTz` 1,09 / −1,91 (uguali fra corse:
+il seme regge); da (88,86) gi1 KO «tardi». gi67 e gi1 da (88,14) non giudicati (bruciapelo < 0,2 s).
+
+**Dopo:**
+
+| corsa | verde | rosso | uscita | durata |
+|---|---|---|---|---|
+| dopo 1 | KO 0/10 | **KO 3/10**: gi13@88,14 fuori (verso), gi13@88,14 parata (verso), gi1@88,86 parata (tardi+verso) | 0 | 907 s |
+| dopo 2 | KO 0/10 | **KO 2/10**: gi13@88,14 fuori (verso), gi13@88,14 parata (verso); gi1@88,86 questa volta ok | 0 | 873 s |
+
+gi13 da (88,14) è KO in tutte e tre le corse rosse (esplorazione + 2), gi1 da (88,86) in 2 su 3: il rosso non dipende più da un solo caso.
+Costo: la corsa passa da ~650 s a ~880-910 s (sopra i 10 minuti: va lanciata in sottofondo).
