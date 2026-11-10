@@ -18,7 +18,13 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 12 | bambini-124 | 0 | 880 | VERDE trasferta-eroe 1440x900: {"n":44,"errMax":0,"es":[{"i":0,"casa":true,"n":"HyperShirt","exp":[232,184,0],"got":[232,184,0]},{"i":0,"casa":true,"n":"HyperShorts","exp":[24,24,38],"got":[24,24,38]}]} ROSSO (__CPM_NO_G124) rosso-rosso: {"n":44,"errMax":72,"es":[{"i":0,"casa":true,"n":"HyperShirt", | free=13499/16086MB df=29G libero |
 | 13 | angolo-117 | 0 | 807 | ROSSO (__CPM_NO_G117A): 6 casi lontani · lontani dalla porta (≥25 u) 6 ROSSO (__CPM_NO_G121H+C+M): 2 casi in area · girati (>35°) 1 ✅ angolo-117 verde (e il rosso si vede)  | free=13220/16086MB df=29G libero |
 | 14 | volee-d3-119 | 0 | 257 | {"arm":"rosso","k":"cross-area-90-54","R119":{"nAll":68,"minAll":0.28,"nPost":15,"minPost":0.64,"gkmin":0.28},"gkPos":{"i":10,"x":90,"y":52.4},"seed":2,"sz":{"x":[88,92],"y":[51,57]},"hlType":"shot","variant":"shot_volley","pre":{"hero":{"team":"home","role":"hero","gk":false,"x":88,"y":51,"worldY": | free=13598/16086MB df=29G libero |
+| 15 | distanze-126 | 0 | 3909 |     di cui fra-linee n  29 · mediana 26.8 m · p90 28.3 · max 29 · oltre 30 m: 0   partite finite 24/24 · campione minimo: tiri 40, dal limite 8, teste 6 VERDE: nessun tiro > 30 m, nessun «dal limite» > 22 m, nessuna testa > 16.5 m  | free=13589/16086MB df=29G libero |
+| 16 | tabellone-117 | 0 | 315 | {"percorso":"ripresa","rosso":false,"err":null,"prima":{"score":{"home":1,"away":0},"motore":{"home":1,"away":0},"log":1,"ev":["home"],"t216":null,"r117":null,"min":11},"snap":{"clock":11,"score":{"home":1,"away":0},"g117":true},"rientro":{"score":{"home":1,"away":0},"motore":{"home":1,"away":0},"lo | free=13498/16086MB df=29G libero |
+| 17 | tabellino-228 | 0 | 306 | k4 verde: tabellino 0-3 (mio-loro), tabellone 3-0, motore 3-0, golLog [{"min":52,"tick":1211,"lato":"home","scena":true,"chi":9},{"min":52,"tick":1211,"lato":"home","scena":true,"chi":21},{"min":73,"tick":1693,"lato":"home","scena":false,"chi":6},{"min":93,"tick":2189,"lato":"home","scena":false,"ch | free=13563/16086MB df=29G libero |
+| 18 | twa-120 | 0 | 42 |   OK  rosso: l'interruttore __CPM_NO_G120 fa cadere modo/AI/rete/Indietro: cadono modo, ai, rete, indietro su 4  twa-120 ✅ VERDE — 12/12 controlli · nessun motivo  | free=13577/16086MB df=29G libero |
+| 19 | sw-cache-120 | 0 | 91 | errori JS: nessuno  sw-cache-120 [rosso] ✅ — atteso: seconda apertura senza rete che NON monta (comportamento di prima)  | free=13431/16086MB df=29G libero |
+| 20 | albo-122 | 0 | 145 | ✅ verde: albo per lega, titoli solo del giocatore in cima, nei 3 formati ✅ rosso: con __CPM_NO_G122 il guardiano boccia l'albo di prima BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 6 (es. t360 · riepilogo assente (albo di prima))  | free=13151/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 14 eseguiti, 14 verdi, 0 rossi.
+- Controlli: 20 eseguiti, 20 verdi, 0 rossi.
