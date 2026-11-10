@@ -726,5 +726,19 @@
     "cache_read_tokens": 14411271,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYia8muXTxyoi5jjJKdKh",
+    "titolo": "giro 145 strumenti 2 (contatto-103, griglia-mobile, partita-vera)",
+    "versione": "7.999.189",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T12:26:58Z",
+    "chiusa": "2026-11-10T15:34:16Z",
+    "cost_usd": 6.68401714,
+    "output_tokens": 56375,
+    "cache_read_tokens": 19584184,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]

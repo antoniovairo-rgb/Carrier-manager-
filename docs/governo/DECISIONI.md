@@ -1175,3 +1175,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 14:40 UTC — PO-348 spalle/braccia/mani nella 190
 - PO: «190, misura subito». Decisione tecnica (madre): giro 146 su `sviluppo/giro146-spalle` da `lavoro/189` (contiene la corporatura per giocatore del giro 142b), misura poi correzione; la 189 non si ferma.
+
+### 10/11 15:50 UTC — 7.999.189 unita, verifica finale avviata
+- Giro 145 finito (6,68 $): contatto-103 col gancio sotto cpmtest (gate 14/14 fingerprint 00001505, highlight-95 completo uscita 0 sul build col gancio), griglia-mobile con prepartita misurata, partita-vera col tabellone giudicato. Registrata PO-349 (possibile doppio conteggio delle partite al caricamento, da misurare nella 190).
+- lavoro/189: unito anche il giro 145, GAME_VERSION 7.999.189 (eba3b486). Verifica finale avviata su catena/189-finale (session_01QEYiaCp6MDNJwZnCv4qCwd, tetto 8 h), con l'avvertenza sul lanciatore dei comandi git.
