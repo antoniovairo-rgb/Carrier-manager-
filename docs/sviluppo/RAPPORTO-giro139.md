@@ -1,8 +1,8 @@
 # RAPPORTO — giro 139 · il doppio rigore dell'eroe del giro 111 (caso naturale)
 
 Ramo `sviluppo/giro139-rigore` da `lavoro/188` (GAME_VERSION 7.999.188). Decisione PO del 10/11: PO-315 nella 189.
-**`src/`, il gioco e `GAME_VERSION` non toccati**: il caso non si è riprodotto, quindi (punto 3 del compito) nessuna correzione,
-nessun interruttore `__CPM_NO_G139`, nessun guardiano `rigore-139`. Resta la sonda come strumento. Macchina: prima di ogni braccio
+**`GAME_VERSION` non toccato.** Il caso **si è riprodotto** alla partita 124 (quarto braccio): causa misurata, correzione in
+`src/14` con rosso `__CPM_NO_G139`, guardiano nuovo `npm run rigore-139`. Macchina: prima di ogni braccio
 `free -m` ~14,4 GB liberi e `df -h` 29 GB liberi; la macchina non era in sofferenza.
 
 ## Il fatto di partenza
@@ -36,17 +36,38 @@ esiste sul ramo** (`lavoro/188`): non l'ho potuto leggere.
 | r111 (ricostruzione esatta del giro 111: Q190-7 ×2, Q190-13, Q190-21) | 4 | 1x | 1 | **0** | 0 | 0 |
 | k1b | 24 | 1x | 1 | 15 | 9 | 0 |
 | k1c | 32 | 2x | 1 | 23 | 12 | 0 |
-| **Totale** | **92** | | | **54** (29 per la squadra dell'eroe) | **28** (27 in scena, tutte gol; 1 del motore) | **0** |
+| k1d | 32 | 2x | 1 | 17 | 9 | **1 (k1d-11)** |
+| **Totale** | **124** | | | **71** (38 per la squadra dell'eroe) | **37** (35 in scena, tutte gol; 2 del motore) | **1** |
 
-Tutte le 92 partite giudicate (arrivate a `ceremony`), 0 errori di pagina.
+Tutte le 124 partite giudicate (arrivate a `ceremony`), 0 errori di pagina. **Frequenza misurata: 1 doppio su 37 battute di rigore
+dell'eroe (2,7%)**, 1 su 124 partite; sulle prime 92 partite (28 battute) zero casi, limite superiore al 95% 10,1%.
 
-**Probabilità massima compatibile con zero casi** (binomiale, confidenza 95%: p ≤ 1 − 0,05^(1/n)):
-- per **battuta di rigore dell'eroe**, n = 28: **p ≤ 10,1%**;
-- per **gol di rigore dell'eroe in scena** (la condizione del giro 111), n = 27: **p ≤ 10,5%**.
-Il campione **non** esclude un difetto raro (sotto il 10% per rigore); esclude che sia frequente.
+## Il doppio riprodotto: k1d-11 (nome «… k1d-11», seme d'autoplay 12, `RIG190_K=1`, 2x)
+Rigiocata due volte da sola: **2 su 2 identiche** (stesso registro). Sequenza (`__CPM_PEN94` + `__CPM_EV`):
+`89' rigore(home)` → `90' occasione_eroe*` → al battito del 90' `scena brain-origine kind:rigore` (inserita) **e** nello stesso battito
+`90' battuta* tiro*` del motore («k1d-11 calcia il rigore!») → `91'` scena del rigore, `piazzato_giocato` con fermo `nullo:volo`
+(il motore l'aveva già calciato), `scena_gol` → `92' gol*` del motore («insacca su assist di …»). **Un rigore, due battute, due gol;
+punteggio 2-0.**
+
+**Causa (spia lato sonda su `tick()` del motore, `CPM_SPIA=1`, nessun ramo nel gioco).** Al battito del 90' il rigore aveva **21 passi
+d'attesa su 40** e la scena **non ancora accettata** (`_acc94`=0): il tetto dei 40 passi non c'entra. `_piaz27` (src/14 r.~1140) è
+uscito per la sua prima condizione: `S.richieste.piazzati` era **spenta**, perché il live chiama `origini(…, piaz)` con `nx<=89`
+(src/15 r.~5202) a ogni battito, **prima** del passo del motore. Il rigore offerto all'89' quindi: al 90' il live inserisce la scena e
+chiama `attendiPiazzato` (che trova il fermo già vuoto), ma il motore — vedendo la richiesta spenta — ha già fatto calciare l'eroe.
+La guardia `noPiaz94` non poteva fermarlo: nasce solo quando la scena calcia (`piazzatoGiocato`), cioè dopo.
+
+**Correzione (src/14, `_piaz27`).** La richiesta spenta vale per le offerte **nuove**; un rigore/punizione **già offerto** (`f._o27`)
+segue la sua attesa (40 passi, 400 se la scena è accettata) e poi, se la scena non arriva, lo calcia il motore come prima. Nessun
+`Math.random`, nessun generatore nuovo: è una condizione. Rosso `__CPM_NO_G139` (torna il codice di prima).
+Prova sulla testimone: **verde** `89' rigore · 90' occasione_eroe* · 91' piazzato_giocato[pen:43,tolto]` (una battuta, in scena; il
+motore cede il pallone al portiere) · **rosso** `90' battuta* tiro* · 91' piazzato_giocato[nullo:volo] · scena_gol · 92' gol*` (doppio).
+
+**Il caso del giro 111 (75' → 77' → 78') NON è dimostrato essere lo stesso meccanismo**: lì il rigore era al 75', lontano dal
+taglio dell'89'. Sul codice attuale non si riproduce (vedi r111) e **non posso confermarne la causa**; il guardiano copre il
+meccanismo misurato qui, e la sonda resta per cercare l'altro.
 
 ### Cosa dice la misura sulla guardia (fatti, non correzioni)
-1. **Ritardo rigore → scena: 1 minuto in 27 casi su 27.** Nel giro 111 era 2 (75' → 77'): una condizione che sul codice attuale non è
+1. **Ritardo rigore → scena: 1 minuto in 35 casi su 35.** Nel giro 111 era 2 (75' → 77'): una condizione che sul codice attuale non è
    mai comparsa.
 2. **La guardia copre 3 minuti di cronometro, non 4.** Al `piazzato_giocato` il minuto del motore `S.min` è **sempre un minuto indietro
    sul cronometro** (15/15 letti nelle fasi di k1a+k1b: scena al cronometro m → guardia `S.min < m+3`). Perché la battuta del giro 111 al
@@ -63,8 +84,6 @@ Il campione **non** esclude un difetto raro (sotto il 10% per rigore); esclude c
   `brain-origine kind:"punizione"` e il rigore **non viene mai calciato** (nessun `piazzato_giocato`, nessuna `battuta`). 1 caso su 28.
 
 ## Cosa non è stato fatto (dichiarato)
-- Nessuna correzione nel gioco, nessun `__CPM_NO_G139`, nessun guardiano `npm run rigore-139`: il compito lo vieta senza riproduzione.
-- Catena di rilascio non eseguita: non ho toccato `src/` né l'HTML (`node tools/check-src.mjs`: «allineato al file in git»).
 - Il braccio a gioco puro (`K` 0,25) ha solo 8 partite e nessun rigore dell'eroe: il gioco puro concede pochi rigori alla squadra
   dell'eroe (rigNo190 = 7 contatti in area respinti su 8 partite). La misura sul caso dell'eroe viene quindi dai bracci K=1, che hanno
   la stessa catena (fallo vero → `fermoSet("pen")` → scena → guardia) cambiando solo la frequenza.
