@@ -49,3 +49,4 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 41 | scena3d-96-tel | 0 | 624 | D8 tel: mediana prato 0.694 scene giudicate 16/16 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15432/16086MB df=29G libero |
 | 42 | scena3d-96-pc | 0 | 891 | D8 pc: mediana prato 0.667 scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15505/16086MB df=29G libero |
 | 43 | scena3d-96-tabv+tabo | 0 | 345 | D8 tabo: mediana prato 0.729 scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15507/16086MB df=29G libero |
+| 44 | partita-vera | 0 | 381 |  ✅ nomi-veri — 52/52 righe-fatto con un cognome della rosa (rosa 20 nomi) ✅ PARTITA-VERA OK — le bande d'accettazione tengono. ESITO partita-vera: uscita 0 · BRACCIO verde · MOTIVO tutte le 12 bande giudicate e tenute (partite finite 2/2)  | free=15502/16086MB df=29G libero |
