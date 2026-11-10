@@ -58,6 +58,8 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.189 | giro 143 curve 2D al secondo tempo (PO-345) | sviluppo | claude-opus-5-5 | 0,7 | 3,20 $ | 30290 | 1 | completo (un solo avvio) |
 | 7.999.189 | giro 144 saluto del chiamato e marchio sala stampa (PO-347, PO-346) | sviluppo | claude-opus-5-5 | 1,0 | 5,40 $ | 49838 | 1 | completo (un solo avvio) |
 | 7.999.189 | giro 145 strumenti 2 (contatto-103, griglia-mobile, partita-vera) | collaudo | claude-opus-5-5 | 3,1 | 6,68 $ | 56375 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 147 rossi della 189 (folla, portiere-252) | collaudo | claude-opus-5-5 | 1,3 | 4,10 $ | 37205 | 1 | completo (un solo avvio) |
+| 7.999.190 | giro 146 spalle braccia mani (PO-348) | sviluppo | claude-opus-5-5 | 4,1 | 11,20 $ | 115689 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -67,4 +69,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
-| 7.999.189 | **TOTALE 7.999.189** (10 sessioni) |  |  |  | 62,25 $ |  |  | tutte complete |
+| 7.999.189 | **TOTALE 7.999.189** (11 sessioni) |  |  |  | 66,35 $ |  |  | tutte complete |
+| 7.999.190 | **TOTALE 7.999.190** (1 sessioni) |  |  |  | 11,20 $ |  |  | tutte complete |

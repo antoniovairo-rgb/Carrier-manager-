@@ -740,5 +740,33 @@
     "cache_read_tokens": 19584184,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaCDzFtqV6JQUvwBVES",
+    "titolo": "giro 147 rossi della 189 (folla, portiere-252)",
+    "versione": "7.999.189",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T17:54:51Z",
+    "chiusa": "2026-11-10T19:12:50Z",
+    "cost_usd": 4.09841456,
+    "output_tokens": 37205,
+    "cache_read_tokens": 9997590,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaB2yhgv46roy5fjdEH",
+    "titolo": "giro 146 spalle braccia mani (PO-348)",
+    "versione": "7.999.190",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T14:30:26Z",
+    "chiusa": "2026-11-10T18:37:25Z",
+    "cost_usd": 11.20465774,
+    "output_tokens": 115689,
+    "cache_read_tokens": 32649248,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
