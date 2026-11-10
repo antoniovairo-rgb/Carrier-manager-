@@ -69,6 +69,29 @@ const AudioMgr=(function(){
     'crowd.bed':['assets/audio/sfx/crowd/brusio-folla-korward.wav']
   };
   const _bedUrls238=()=>_brusio238On()?URL_SFX['crowd.bed']:[];
+  // [giro 149 — PO-351 «effetti e musica piu' belli ed efficaci», fonti SOLO CC0] FILE REALI per gli eventi di partita, interfaccia,
+  //   carriera e musica. Ogni file ha la sua riga di licenza in assets/audio/LICENZE.json (generato, con la tabella qui sotto, da
+  //   tools/audio-149/prepara-audio.py: stessa sorgente, non possono divergere). Ogg/Opus prima, MP3 di riserva (stesso meccanismo
+  //   _tryFetchDecode: un file che non carica o non si decodifica passa al successivo, e se mancano tutti resta la SINTESI di oggi).
+  //   Varianti scelte in modo DETERMINISTICO (hash di chiave + seme di partita + contatore, mai la stessa due volte di fila):
+  //   nessun Math.random nuovo. Rosso: window.__CPM_NO_G149 → l'audio di prima, identico.
+  const _g149On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G149);
+  const A149='assets/audio/';
+  const F149={'ball.kick':{g:0.8,f:['sfx/ball/calcio-1','sfx/ball/calcio-2','sfx/ball/calcio-3','sfx/ball/calcio-4']},'ball.pass':{g:0.45,f:['sfx/ball/passaggio-1','sfx/ball/passaggio-2','sfx/ball/passaggio-3']},'ball.header':{g:0.65,f:['sfx/ball/testa-1','sfx/ball/testa-2']},'ball.post':{g:0.55,f:['sfx/ball/palo-1','sfx/ball/palo-2']},'ball.net':{g:0.45,f:['sfx/ball/rete-1']},'ball.bounce':{g:0.55,f:['sfx/ball/contrasto-1','sfx/ball/contrasto-2']},'gk.save':{g:0.7,f:['sfx/ball/parata-1','sfx/ball/parata-2']},'ref.whistle':{g:0.55,f:['sfx/referee/fischio-1','sfx/referee/fischio-2']},'ref.whistle2':{g:0.55,f:['sfx/referee/fischio-doppio']},'ref.whistle_final':{g:0.6,f:['sfx/referee/fischio-finale']},'crowd.roar':{g:0.95,f:['sfx/crowd/boato-1','sfx/crowd/boato-2']},'crowd.applause':{g:0.6,f:['sfx/crowd/applausi-1','sfx/crowd/applausi-2']},'crowd.cheer':{g:0.7,f:['sfx/crowd/esulta-1']},'crowd.boo':{g:0.3,f:['sfx/crowd/fischi-1']},'ui.click':{g:0.35,f:['sfx/ui/click-1','sfx/ui/click-2','sfx/ui/click-3']},'ui.nav':{g:0.35,f:['sfx/ui/nav-1']},'ui.back':{g:0.35,f:['sfx/ui/indietro-1']},'ui.confirm':{g:0.4,f:['sfx/ui/conferma-1']},'ui.error':{g:0.4,f:['sfx/ui/errore-1']},'ui.popup':{g:0.35,f:['sfx/ui/popup-1']},'ui.close':{g:0.35,f:['sfx/ui/chiudi-1']},'notify.pos':{g:0.4,f:['sfx/notifications/positiva-1']},'notify.neg':{g:0.4,f:['sfx/notifications/negativa-1']},'notify.info':{g:0.35,f:['sfx/notifications/info-1']},'week.advance':{g:0.35,f:['sfx/ui/settimana-1']},'gala.envelope':{g:0.4,f:['sfx/career/busta-1']},'career.contract':{g:0.45,f:['sfx/career/contratto-1']},'career.renew':{g:0.45,f:['sfx/career/rinnovo-1']},'career.record':{g:0.45,f:['sfx/career/record-1']},'career.callup':{g:0.45,f:['sfx/career/convocazione-1']},'career.milestone':{g:0.45,f:['sfx/career/traguardo-1']},'career.levelup':{g:0.45,f:['sfx/career/livello-1']},'season.relegation':{g:0.45,f:['sfx/career/retrocessione-1']},'gala.reveal':{g:0.45,f:['sfx/career/rivelazione-1']},'career.trophy':{g:0.45,f:['music/awards/fanfara-1']},'music.home':{g:0.55,f:['music/menu/spiaggia-loop']},'music.career':{g:0.55,f:['music/career/avventura-loop']}};
+  const _ALIAS149={};/* le fanfare (trofeo/promozione/gala) passano da fanfare(): file della fanfara + applausi veri */
+  const _cat149=k=>/^(ball|gk)\./.test(k)?'match':/^ref\./.test(k)?'referee':/^crowd\./.test(k)?'crowd':/^music\./.test(k)?'music':'sfx';
+  const _buf149={};let _seed149=0;const _cnt149={},_last149={},_plays149={};
+  function _pick149(k,n){const c=_cnt149[k]=(_cnt149[k]|0)+1;let i=(hashStr(k+'|'+_seed149+'|'+c)>>>0)%n;if(n>1&&i===_last149[k])i=(i+1)%n;_last149[k]=i;return i;}
+  function _load149(){Object.keys(F149).forEach(k=>F149[k].f.forEach((n,i)=>_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;})));}
+  function _play149(name,mul,catOver){
+    if(!_g149On()||!ready)return false;
+    const k=_ALIAS149[name]||name,E=F149[k],L=_buf149[k];if(!E||!L)return false;
+    const n=E.f.length;let i=_pick149(k,n),t=0;while(!L[i]&&t<n){i=(i+1)%n;t++;}if(!L[i])return false;
+    try{const s=ctx.createBufferSource();s.buffer=L[i];const g=ctx.createGain();g.gain.value=E.g*(mul==null?1:mul);
+      s.connect(g);g.connect(dest(catOver||_cat149(k)));s.start();
+      s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};
+      _plays149[k]=(_plays149[k]|0)+1;return true;}catch(_e){return false;}
+  }
   const _urlBufs={};let _samplesTried=false;
   function _tryFetchDecode(urls,i,onOk){
     if(!ctx||i>=urls.length)return;
@@ -76,7 +99,8 @@ const AudioMgr=(function(){
   }
   function loadSamples(){
     if(_samplesTried||SILENT()||!ready)return;_samplesTried=true;
-    try{Object.keys(URL_SFX).forEach(k=>{const v=k==='crowd.bed'?_bedUrls238():URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
+    if(_g149On())try{_load149();}catch(_e){}
+    try{Object.keys(URL_SFX).forEach(k=>{if(k==='crowd.roar'&&_g149On())return;const v=k==='crowd.bed'?_bedUrls238():URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
   }
   function playSample(key,peak,cat,dur){
     if(!ready||!_urlBufs[key])return false;
@@ -150,6 +174,7 @@ const AudioMgr=(function(){
   function arp(names,c,step,peak){if(!ready)return;names.forEach((n,i)=>setTimeout(()=>osc(c,{type:'triangle',f0:NOTE[n]||440,dur:0.28,peak:peak||0.16,a:0.005}),i*step*1000));}
   function fanfare(big){
     if(!ready)return;
+    if(_play149('career.trophy')){if(big)_play149('crowd.applause',0.7);return;}
     const seq=[['C',0],['E',0.11],['G',0.22],['C2',0.33],['G',0.46],['C2',0.58]];
     seq.forEach(([n,t])=>setTimeout(()=>{osc('sfx',{type:'sawtooth',f0:NOTE[n],dur:0.55,peak:big?0.2:0.16,a:0.01});osc('sfx',{type:'triangle',f0:NOTE[n]/2,dur:0.55,peak:0.1});},t*1000));
     if(big)crowdApplause(2.2,0.5);
@@ -157,6 +182,7 @@ const AudioMgr=(function(){
   // fischietto arbitro: bandpass noise + FM warble (kind 1=corto,2=doppio,3=lungo finale)
   function refWhistle(kind){
     if(!ready)return;
+    if(_play149(kind===2?'ref.whistle2':kind===3?'ref.whistle_final':'ref.whistle'))return;
     const blow=(t0,dur)=>{try{
       const base=2100,o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(base,now()+t0);
       const lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=17;const lg=ctx.createGain();lg.gain.value=55;lfo.connect(lg);lg.connect(o.frequency);
@@ -244,6 +270,7 @@ const AudioMgr=(function(){
     if(!ready)return;
     // strada 1 (preferita): campione REALE di boato (Mixkit joy crowd, fornito dal PO). Dura ~15s → ne suono i primi
     //   ~4.2s con fade (l'esplosione iniziale). Niente synth sopra: la registrazione è completa.
+    if(_play149('crowd.roar')){vibrate(60);return;}
     if(_urlBufs['crowd.roar']){try{playSample('crowd.roar',0.95,'crowd',4.2);vibrate(60);return;}catch(_e){}}
     try{
       const t0=now(),T=3.4;
@@ -335,6 +362,10 @@ const AudioMgr=(function(){
     if(!ready||!cfg.on.music)return;
     if(mus&&musScene===key)return;
     musicStop(true);musScene=key;
+    {const mk=key==='career'?'music.career':'music.home',L=_g149On()&&_buf149[mk];
+     if(L&&L[0])try{const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));g.gain.setTargetAtTime(F149[mk].g,now(),0.6);
+       const s=ctx.createBufferSource();s.buffer=L[0];s.loop=true;s.connect(g);s.start();_plays149[mk]=(_plays149[mk]|0)+1;
+       mus={g,S:null,step:0,key,src:s};return;}catch(_e){}}
     try{
       const S=SCENES[key]||SCENES.menu;const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));
       g.gain.setTargetAtTime(0.20,now(),0.6);/* presente ma sotto il cursore Musica */
@@ -362,6 +393,7 @@ const AudioMgr=(function(){
     if(!mus){if(musTimer){clearInterval(musTimer);musTimer=null;}return;}
     try{const m=mus;mus=null;musScene=null;if(musTimer){clearInterval(musTimer);musTimer=null;}
       m.g.gain.setTargetAtTime(0.0001,now(),fade?0.4:0.15);
+      if(m.src)setTimeout(()=>{try{m.src.stop();m.src.disconnect();}catch(_e){}},fade?900:300);
       setTimeout(()=>{try{m.g.disconnect();}catch(_e){}},fade?900:300);// le note sono one-shot e si auto-dispongono
     }catch(_e){}
   }
@@ -414,7 +446,7 @@ const AudioMgr=(function(){
   // ---- API pubblica ------------------------------------------------------
   function play(name){
     if(SILENT()||!ready)return;
-    try{const fn=SFX[name];if(fn){_played++;fn();}}catch(_e){}
+    try{const fn=SFX[name];if(fn){_played++;if(name!=='career.trophy'&&_play149(name))return;fn();}}catch(_e){}
   }
   /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
   const _mus23=(k)=>{if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
@@ -427,7 +459,7 @@ const AudioMgr=(function(){
     else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(){ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];delete _last149[k];}); if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
   function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
@@ -447,10 +479,10 @@ const AudioMgr=(function(){
       } else if(t==='CoherenceCheck'){
         const k=e.outKind;
         if(k==='post'){play('ball.post');crowdSwell(0.6,0.55,2000);}
-        else if(k==='saved'){play('gk.save');crowdSwell(0.5,0.45,2200);}
+        else if(k==='saved'){play('gk.save');if(!_play149('crowd.applause',0.55))crowdSwell(0.5,0.45,2200);}
         else if(k==='corner'){play('ref.whistle');crowdSwell(0.4,0.3,1400);}
         else if(k==='wide'||k==='blocked'){crowdSwell(0.5,0.35,1600);}
-        else if(k==='foul'){play('ref.whistle');}
+        else if(k==='foul'){play('ref.whistle');_play149('crowd.boo');}
         else if(k==='offside'){play('ref.whistle2');}
       } else if(t==='GoalHero'){ play('ball.net');crowdRoar(); }
       else if(t==='GoalTeam'){ play('ball.net');crowdRoar(); }
@@ -495,6 +527,11 @@ const AudioMgr=(function(){
   function preview(c){ if(!ready)return; if(c==='music'){arp(['C','E','G'],'music',0.12,0.14);} else if(c==='crowd')crowdSwell(0.7,0.5,1800); else if(c==='referee')refWhistle(1); else if(c==='match')play('ball.kick'); else play('ui.confirm'); }
   // [giro 20] solo prova: quali file del brusio il gioco caricherebbe (vuoto col rosso) e se il buffer e' gia' decodificato
   if(typeof window!=='undefined')window.__CPM_BRUSIO238=()=>({urls:_bedUrls238().slice(),decodificato:!!_urlBufs['crowd.bed'],durata:_urlBufs['crowd.bed']?_urlBufs['crowd.bed'].duration:0});
+  if(typeof window!=='undefined')window.__CPM_AUDIO149=()=>{const o={on:_g149On(),ready,seed:_seed149,plays:{..._plays149},eventi:{}};
+    Object.keys(F149).forEach(k=>{const E=F149[k],L=_buf149[k]||[];o.eventi[k]={g:E.g,n:E.f.length,file:E.f.map((n,i)=>{const b=L[i];if(!b)return {n,caricato:false};
+      let pk=0,ss=0,N=0;for(let c=0;c<b.numberOfChannels;c++){const d=b.getChannelData(c);for(let j=0;j<d.length;j++){const v=Math.abs(d[j]);if(v>pk)pk=v;ss+=v*v;}N+=d.length;}
+      return {n,caricato:true,durata:+b.duration.toFixed(3),picco_db:+(20*Math.log10(pk*E.g+1e-12)).toFixed(1),rms_db:+(20*Math.log10(Math.sqrt(ss/Math.max(1,N))*E.g+1e-12)).toFixed(1)};})};});
+    o.sintesi=Object.keys(SFX);return o;};
   function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
   return {unlock,play,scene,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
