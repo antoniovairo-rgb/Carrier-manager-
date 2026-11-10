@@ -1142,3 +1142,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 09:00 UTC — Rilascio 7.999.188
 - Verifica finale 42/42 verdi. Causa delle due uscite 1 di griglia-mobile: il lanciatore della verifica (`git checkout -- docs/collaudo-grafico/g0` lanciato da tests/visual, percorso inesistente), non la sonda; rilancio pulito uscita 0. La voce griglia-mobile del giro 138 risulterà senza difetto. Decisione tecnica (madre): si pubblica. Chiuse PO-331…335. Costo verifica 1,48 $.
 - Registrata PO-344: parti «non misurate» dichiarate da griglia-mobile e partita-vera da rendere giudicabili.
+
+### 10/11 09:20 UTC — 7.999.188 sul sito
+- Deploy riuscito; radice verificata su 7.999.188, CARRIER-MANAGER-AV.html e privacy.html 200. Notifica «CPM 7.999.188 pronta e pubblicata» inviata. lavoro/189 si crea da main con i giri 137-142 quando finiti.
