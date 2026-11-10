@@ -10,7 +10,10 @@
      · STESSO EROE IN OGNI SCENA: mediana di Sj/Aj per scena, massima/minima <= 1,05 (prima 1,43; dopo 1,03);
      · mani (polso → punta piu' lontana) / statura dentro [0,06 · 0,12] (dopo 0,068-0,105; riferimento mano aperta ~0,108);
      · omero/statura dentro [0,10 · 0,13], avambraccio/statura dentro [0,12 · 0,155] (nessun braccio stirato dalla corporatura).
-   Copertura minima per scena (altrimenti «non giudicato» = rosso). Rosso: __CPM_NO_G146 → deve CADERE.
+   [giro 146b] + POSTURA: spalle BASSE da fermi, alzata senza spalle alle orecchie, nessuna protrazione, nessun arretramento in
+   presentazione (la gobba del giro 146), testa non davanti alle spalle, linea poco spiovente e dritta (soglie sotto, coi numeri).
+   Quinta scena: panchina (eroe nella scena 3D d'ingresso dalla panchina).
+   Copertura minima per scena (altrimenti «non giudicato» = rosso). Rossi: __CPM_NO_G146 e __CPM_NO_G146B → devono CADERE entrambi.
    Uso: node spalle-146.mjs  (CPM_FORMATO=360x800 di default, oppure 1440x900 · CPM_SOLO=verde|rosso) — verde e rosso stampati per ultimi. */
 import fs from 'node:fs';
 if (!process.env.CPM_CHROME && fs.existsSync('/opt/pw-browsers/chromium')) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';

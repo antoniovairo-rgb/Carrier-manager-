@@ -108,7 +108,7 @@ export async function scenaPanchina(browser, port, vp, rosso, tag) {
       const r = await page.evaluate(() => { const L = (window.__CPM_CORPI146 && window.__CPM_CORPI146()) || []; const out = [];
         L.filter(a => a.panca).slice(0, 6).forEach((a, i) => out.push({ chi: 'panca' + i, ...window.__misura146(a.v) }));
         const e = L.find(a => a.eroe); if (e) out.push({ chi: 'eroe', ...window.__misura146(e.v) }); return out; });
-      S.push(...r.map(x => ({ ...x, fase: 'panca' + k }))); if (k === 1) { await foto(page, `${tag}-panchina`); await provino(page, "((window.__CPM_CORPI146()||[]).find(a=>a.panca)||{}).v", `${tag}-panchina`); } k++; }
+      S.push(...r.map(x => ({ ...x, fase: 'panca' + k }))); if (k === 1) { await foto(page, `${tag}-panchina`); await provino(page, "(((window.__CPM_CORPI146()||[]).find(a=>a.panca))||((window.__CPM_CORPI146()||[]).find(a=>a.eroe))||{}).v", `${tag}-panchina`); } k++; }
   } catch (e) { S.push({ errore: 'panchina: ' + String(e.message || e).slice(0, 140) }); }
   await page._ctx.close(); return S.map(x => ({ scena: 'panchina', ...x }));
 }
