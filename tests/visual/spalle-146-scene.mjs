@@ -16,7 +16,7 @@ const SAVE = { phase: 'career', player: {
   form: 70, morale: 70, fatigue: 20, coachTrust: 60, teamChemistry: 60, popularity: 10, bankBalance: 1000,
   goals: 0, assists: 0, matches: 0, totalMatches: 0, totalGoals: 0, matchHistory: [],
   contract: { duration: 3, wage: 1000, expiresAtSeason: 4 } } };
-const init = (page, rosso, extra) => page.addInitScript(([r, x]) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_G146 = 1;
+const init = (page, rosso, extra) => page.addInitScript(([r, x]) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r === true) window.__CPM_NO_G146 = 1; else if (typeof r === 'string') r.split(',').filter(Boolean).forEach(k => { window[k] = 1; });
   try { localStorage.setItem('cpm-intro-seen', '1'); if (x) localStorage.setItem('cpm-v3', JSON.stringify(x)); } catch (e) {} }, [rosso, extra || null]);
 async function pagina(browser, vp, rosso, extra) { const ctx = await browser.newContext({ viewport: vp }); await installCdnRoutes(ctx); const page = await ctx.newPage();
   await page.addInitScript(INIETTA146); await init(page, rosso, extra); page._ctx = ctx; return page; }
@@ -51,7 +51,7 @@ export async function scenaPartita(browser, port, vp, rosso, tag) {
     const info = await page.evaluate(() => window.__CPM_CER425); const i = info.beats.indexOf('lift'); const t0 = info.beatsD.slice(0, i).reduce((a, x) => a + x, 0);
     await page.evaluate(t => { window.__CPM_CERT_SET = t; }, t0 + info.beatsD[i] * 0.4); await sleep(4000);
     if (process.env.DBG146) console.log('DBG', JSON.stringify(await page.evaluate(() => { window.__CPM_N146 = [0, 0]; let raf = 0; const f = () => { raf++; if (raf < 400) requestAnimationFrame(f); }; requestAnimationFrame(f); const st0 = window.__CPM_ANIM_LOD_STATS ? JSON.stringify(window.__CPM_ANIM_LOD_STATS) : null; return new Promise(r => setTimeout(() => r({ n: window.__CPM_N146, e: window.__CPM_E146 || null, raf, ph: window.__CPM_PHASE && window.__CPM_PHASE(), corpi: (window.__CPM_CORPI146() || []).length }), 1500)); })));
-    S.push(...(await campPartita(page, 'premiazione')).map(x => ({ ...x, scena: 'premiazione' }))); await foto(page, `${tag}-premiazione`); await provino(page, EROE_P, `${tag}-premiazione`);
+    S.push(...(await campPartita(page, 'premiazione')).map(x => ({ ...x, scena: 'premiazione' }))); S.push({ scena: 'premiazione', chi: 'trofeo', mani137: await page.evaluate(() => window.__CPM_MANI137 || null), prem24: await page.evaluate(() => window.__CPM_PREM24 ? { ...window.__CPM_PREM24 } : null) }); await foto(page, `${tag}-premiazione`); await provino(page, EROE_P, `${tag}-premiazione`);
   } catch (e) { S.push({ errore: 'partita: ' + String(e.message || e).slice(0, 140) }); }
   await page._ctx.close(); return S.map(x => ({ scena: x.scena || 'highlight', ...x }));
 }
@@ -82,4 +82,33 @@ export async function scenaPresentazione(browser, port, vp, rosso, tag) {
       S.push(...r.map(x => ({ ...x, fase: 'pres' + k }))); if (k === 0) { await foto(page, `${tag}-presentazione`); await provino(page, 'window.__CPM_PRES142.men[window.__CPM_PRES142.HERO]', `${tag}-presentazione`); } await sleep(1200); }
   } catch (e) { S.push({ errore: 'presentazione: ' + String(e.message || e).slice(0, 140) }); }
   await page._ctx.close(); return S.map(x => ({ scena: 'presentazione', ...x }));
+}
+/* [giro 146b] PANCHINA: carriera da salvataggio, partita col GLB acceso, panchina d'attesa forzata (__CPM_FORCE_BENCH, stesso percorso di
+   panchina-127). Si misurano i corpi della panchina (in piedi: chi ha il mixer per fotogramma; i seduti non hanno la regola) e l'eroe
+   durante l'ingresso dalla panchina. */
+export async function scenaPanchina(browser, port, vp, rosso, tag) {
+  const SAVE0 = JSON.parse(fs.readFileSync(new URL('./fixtures/save-190-s12-ovr93.json', import.meta.url)));
+  const page = await pagina(browser, vp, rosso, SAVE0); const S = [];
+  try {
+    await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
+    await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
+    try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
+    await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 30000 }); await sleep(1500);
+    try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
+    await page.evaluate(() => { try { window.__CPM_CAREER.playMatch(); } catch (e) {} });
+    for (let k = 0; k < 120; k++) { if (await page.evaluate(() => typeof window.__CPM_FORCE_BENCH === 'function' && typeof window.__CPM_CLOCK === 'function' && window.__CPM_CLOCK() > 0).catch(() => false)) break;
+      await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null); const x = bs.find(b => /Salta/i.test(b.textContent || '')) || bs.find(b => /Vedi le formazioni|Ingresso in campo|Diplomatico|Siamo pronti|Continua|Calcio d'inizio|Inizia/i.test(b.textContent || '')); if (x) x.click(); }).catch(() => {});
+      await sleep(700); }
+    await page.waitForFunction(() => window.__CPM_GLB_READY === true && typeof window.__CPM_CORPI146 === 'function', null, { timeout: 60000 });
+    const min0 = await page.evaluate(() => (window.__CPM_CLOCK ? window.__CPM_CLOCK() : 0) | 0);
+    await page.evaluate(m => { window.__CPM_BENCH_MIN = m; window.__CPM_FORCE_BENCH(false); }, min0 + 3);
+    await page.waitForFunction(() => { const g = window.__CPM_G127 ? window.__CPM_G127() : null; return g && g.se >= 0; }, null, { timeout: 120000, polling: 100 });
+    const t0 = Date.now(); let k = 0;
+    while (Date.now() - t0 < 60000 && k < 8) { await sleep(500); if (!(await page.evaluate(() => { const g = window.__CPM_G127 ? window.__CPM_G127() : null; return g && g.se >= 0; }))) break;
+      const r = await page.evaluate(() => { const L = (window.__CPM_CORPI146 && window.__CPM_CORPI146()) || []; const out = [];
+        L.filter(a => a.panca).slice(0, 6).forEach((a, i) => out.push({ chi: 'panca' + i, ...window.__misura146(a.v) }));
+        const e = L.find(a => a.eroe); if (e) out.push({ chi: 'eroe', ...window.__misura146(e.v) }); return out; });
+      S.push(...r.map(x => ({ ...x, fase: 'panca' + k }))); if (k === 1) { await foto(page, `${tag}-panchina`); await provino(page, "((window.__CPM_CORPI146()||[]).find(a=>a.panca)||{}).v", `${tag}-panchina`); } k++; }
+  } catch (e) { S.push({ errore: 'panchina: ' + String(e.message || e).slice(0, 140) }); }
+  await page._ctx.close(); return S.map(x => ({ scena: 'panchina', ...x }));
 }

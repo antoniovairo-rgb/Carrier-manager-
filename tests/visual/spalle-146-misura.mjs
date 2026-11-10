@@ -30,7 +30,7 @@ export const INIETTA146 = `(() => {
     const latA = TL.clone().sub(TR); latA.y = 0; latA.normalize();
     /* vertici skinnati visibili */
     const vivo = o => { for (let p = o; p; p = p.parent) if (p.visible === false) return false; return true; };
-    const V = { spalla: [], mano: [], anca: [], testa: [], piede: [] }; const tv = new T.Vector3(); let nmesh = 0;
+    const V = { spalla: [], mano: [], anca: [], testa: [], piede: [], altro: [] }; const tv = new T.Vector3(); let nmesh = 0;
     root.traverse(m => { if (!m.isSkinnedMesh || !vivo(m) || !m.geometry || !m.geometry.attributes.skinIndex) return; nmesh++;
       const g = m.geometry, si = g.attributes.skinIndex, sw = g.attributes.skinWeight, n = g.attributes.position.count, bones = m.skeleton.bones;
       const passo = Math.max(1, Math.floor(n / 12000));
@@ -52,7 +52,48 @@ export const INIETTA146 = `(() => {
     const Sj = UL.distanceTo(UR), Aj = TL.distanceTo(TR), r = x => x == null ? null : +x.toFixed(4);
     const ua = ((seg(B.ual, B.lal) || 0) + (seg(B.uar, B.lar) || 0)) / 2, fa = ((seg(B.lal, B.hl) || 0) + (seg(B.lar, B.hr) || 0)) / 2;
     const ml = mano(B.hl, '_l'), mr = mano(B.hr, '_r');
-    return { H: r(H), Sj: r(Sj), Sv: r(Sv), Aj: r(Aj), Av: r(Av), ua: r(ua), fa: r(fa), mano: r(((ml || 0) + (mr || 0)) / ((ml ? 1 : 0) + (mr ? 1 : 0) || 1)),
+    /* [giro 146b PO «sembra che ha lo scartello» (la gobba)] POSTURA DELLE SPALLE, tutto in frazione di H salvo gli angoli (gradi):
+         qS    quota delle teste degli omeri rispetto alla base del collo (neck_01): negativo = spalle sotto il collo;
+         qA    quota dell'ACROMION (cima dei vertici di spalla nella meta' esterna, |lat| >= 0,5·Sj/2) rispetto alla base del collo;
+         collo collo VISIBILE: mento (vertici della testa nella meta' anteriore, il piu' basso) − cima del trapezio (vertici a dominante
+               clavicola dentro le teste degli omeri); piu' piccolo = collo affondato fra le spalle;
+         pro   PROTRAZIONE: teste degli omeri davanti al torace (spine_03) lungo l'avanti del corpo (dai piedi: ball − foot);
+         spiov inclinazione base del collo → testa dell'omero (gradi sotto l'orizzontale; 0 = orizzontale, alto = spioventi);
+         clav  inclinazione della clavicola (radice → testa dell'omero; positivo = sale verso il fuori);
+         tilt  dislivello fra le due teste degli omeri (gradi);
+         nuca  la base della testa davanti alle spalle (head − omeri, lungo l'avanti): alto = testa in avanti / dorso curvo;
+         cifo  angolo del tratto torace → collo (spine_03 → neck_01) dalla verticale, positivo in avanti. */
+    const post = (() => { try {
+      const CLb = P('clavicle_l', 'LeftShoulder'), CRb = P('clavicle_r', 'RightShoulder'), S3 = P('spine_03', 'Spine2'), HD = P('head', 'Head');
+      const fl = P('foot_l', 'LeftFoot'), bl = P('ball_l', 'LeftToeBase'), fr = P('foot_r', 'RightFoot'), br = P('ball_r', 'RightToeBase');
+      let fw = new T.Vector3(); if (fl && bl) fw.add(W(bl).sub(W(fl))); if (fr && br) fw.add(W(br).sub(W(fr))); fw.y = 0;
+      const fw0 = new T.Vector3().crossVectors(lat, new T.Vector3(0, 1, 0)).normalize(); if (fw.lengthSq() < 1e-10) fw.copy(fw0); else { fw.normalize(); fw = fw0.multiplyScalar(Math.sign(fw0.dot(fw)) || 1); }
+      const U = UL.clone().add(UR).multiplyScalar(0.5), deg = x => x * 180 / Math.PI, hz = v => Math.hypot(v.dot(lat), v.dot(fw));
+      const hU = (Sj / 2), Ld = v => v.clone().sub(U).dot(lat);
+      const acr = s => { const L = V.spalla.filter(v => s * Ld(v) >= 0.5 * hU && Math.min(v.distanceTo(UL), v.distanceTo(UR)) <= 0.12 * H); return L.length ? Math.max(...L.map(v => v.y)) : null; };
+      const aL = acr(1), aR = acr(-1);
+      const trap = V.spalla.filter(v => /clavicle|shoulder/i.test(v.osso.name) && Math.abs(Ld(v)) <= hU);
+      const tTop = trap.length ? Math.max(...trap.map(v => v.y)) : null;
+      const hp = HD ? W(HD) : null; const capo = V.testa.filter(v => /head/i.test(v.osso.name) && (!hp || v.clone().sub(hp).dot(fw) > 0));
+      const mento = capo.length ? Math.min(...capo.map(v => v.y)) : null;
+      const sp = (C, Uu) => { if (!C) return null; const c = W(C), d = Uu.clone().sub(c); return deg(Math.atan2(d.y, hz(d))); };
+      const sl = Uu => { const d = Uu.clone().sub(NE); return deg(Math.atan2(-d.y, hz(d))); };
+      const s3 = S3 ? W(S3) : null; const cn = s3 ? NE.clone().sub(s3) : null;
+      /* profilo VISIBILE della linea delle spalle: cima della pelle di collo/trapezio/clavicola (niente braccio) a |lat| 0,30-0,45·Sj/2
+         contro la cima dell'acromion (vertici di clavicola/omero vicino alla testa dell'omero) a |lat| 0,85-1,05·Sj/2 */
+      const tronco = [...V.spalla.filter(v => /clavicle|shoulder/i.test(v.osso.name)), ...V.testa.filter(v => /neck/i.test(v.osso.name)), ...V.altro.filter(v => /spine|chest/i.test(v.osso.name))];
+      const vicino = v => Math.abs(v.clone().sub(U).dot(fw)) <= 0.06 * H;
+      const cima = (L, a, b) => { const M = L.filter(v => vicino(v) && Math.abs(Ld(v)) >= a * hU && Math.abs(Ld(v)) <= b * hU); return M.length ? Math.max(...M.map(v => v.y)) : null; };
+      const yIn = cima(tronco, 0.30, 0.45), yOut = cima(V.spalla.filter(v => Math.min(v.distanceTo(UL), v.distanceTo(UR)) <= 0.12 * H), 0.85, 1.05);
+      const spiovV = (yIn != null && yOut != null) ? deg(Math.atan2(yIn - yOut, 0.575 * hU)) : null;
+      return { spiovV, qS: (U.y - NE.y) / H, qA: (aL != null && aR != null) ? ((aL + aR) / 2 - NE.y) / H : null, collo: (mento != null && tTop != null) ? (mento - tTop) / H : null,
+        colloJ: hp ? (hp.y - NE.y) / H : null, pro: s3 ? U.clone().sub(s3).dot(fw) / H : null, proN: U.clone().sub(NE).dot(fw) / H,
+        spiov: (sl(UL) + sl(UR)) / 2, clav: ((sp(CLb, UL) || 0) + (sp(CRb, UR) || 0)) / 2, tilt: deg(Math.atan2(Math.abs(UL.y - UR.y), hz(UL.clone().sub(UR)))),
+        nuca: hp ? hp.clone().sub(U).dot(fw) / H : null, cifo: cn ? deg(Math.atan2(cn.dot(fw), cn.y)) : null };
+    } catch (e) { return { errPost: String(e && e.message || e).slice(0, 80) }; } })();
+    const r1 = x => x == null ? null : +x.toFixed(1);
+    return { spiovV: r1(post.spiovV), qS: r(post.qS), qA: r(post.qA), collo: r(post.collo), colloJ: r(post.colloJ), pro: r(post.pro), proN: r(post.proN), spiov: r1(post.spiov), clav: r1(post.clav), tilt: r1(post.tilt), nuca: r(post.nuca), cifo: r1(post.cifo), errPost: post.errPost,
+      H: r(H), Sj: r(Sj), Sv: r(Sv), Aj: r(Aj), Av: r(Av), ua: r(ua), fa: r(fa), mano: r(((ml || 0) + (mr || 0)) / ((ml ? 1 : 0) + (mr ? 1 : 0) || 1)),
       SjH: r(Sj / H), SvH: r(Sv / H), SvAv: Av ? r(Sv / Av) : null, SjAj: r(Sj / Aj), uaH: r(ua / H), faH: r(fa / H), manoH: r((((ml || 0) + (mr || 0)) / ((ml ? 1 : 0) + (mr ? 1 : 0) || 1)) / H),
       gomiti: [r(gomito(B.lal)), r(gomito(B.lar))], maniSu: (B.hl && B.hr) ? r(Math.min(W(B.hl).y, W(B.hr).y) - Math.min(...V.piede.map(v => v.y))) : null, scala: sc ? [r(sc.x), r(sc.y), r(sc.z)] : null, nonUnif: sc ? r(Math.max(sc.x, sc.z) / sc.y) : null, nmesh,
       nv: { spalla: sp.length, anca: an.length, mano: V.mano.length } };
@@ -64,7 +105,7 @@ export const INIETTA146 = `(() => {
     const W = b => b.getWorldPosition(new T.Vector3()); const lat = W(tl).sub(W(tr)); lat.y = 0; lat.normalize(); const fw = new T.Vector3().crossVectors(lat, new T.Vector3(0, 1, 0)).normalize();
     const c = W(pe).add(W(ne)).multiplyScalar(0.5); const hgt = W(ne).y - Math.min(W(tl).y, W(tr).y); const d = hgt * 6.8;
     let R = window.__R146; if (!R) { R = window.__R146 = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); } R.setPixelRatio(1); R.setSize(w, h);
-    const out = []; for (const a of [0, 0.75]) { const dir = fw.clone().applyAxisAngle(new T.Vector3(0, 1, 0), a); const cam = new T.PerspectiveCamera(30, w / h, 0.05, 200);
+    const out = []; for (const a of [0, 0.75, Math.PI / 2]) { const dir = fw.clone().applyAxisAngle(new T.Vector3(0, 1, 0), a); const cam = new T.PerspectiveCamera(30, w / h, 0.05, 200);
       cam.position.copy(c).addScaledVector(dir, d); cam.position.y += hgt * 0.05; cam.lookAt(c.x, c.y + hgt * 0.1, c.z); R.render(sc, cam); out.push(R.domElement.toDataURL('image/png')); }
     return out; } catch (e) { return null; } };
 })();`;
