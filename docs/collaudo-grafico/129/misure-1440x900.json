@@ -1,0 +1,292 @@
+[
+ {
+  "vp": "1440x900",
+  "giro": 0,
+  "braccio": "prima",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512"
+   ],
+   "gpuMB": 58.7,
+   "canvasRamMB": 20,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "folla129": null,
+  "viste": {
+   "gioco": {
+    "frames": 9,
+    "frameMs": 438.9,
+    "frameP95": 773.9,
+    "renderMs": 13.65,
+    "uploadMBs": 16.81,
+    "uploads": 22,
+    "uploadMsTot": 9.8,
+    "uploadMsPerFrame": 1.1,
+    "calls": 414,
+    "tri": 35738,
+    "tex": 47,
+    "geo": 769
+   },
+   "tv": {
+    "frames": 9,
+    "frameMs": 511.4,
+    "frameP95": 745.8,
+    "renderMs": 15.67,
+    "uploadMBs": 15.2,
+    "uploads": 19,
+    "uploadMsTot": 8.4,
+    "uploadMsPerFrame": 0.9,
+    "calls": 737,
+    "tri": 53391,
+    "tex": 60,
+    "geo": 1092
+   },
+   "vicino": {
+    "frames": 10,
+    "frameMs": 398.9,
+    "frameP95": 691.3,
+    "renderMs": 6.78,
+    "uploadMBs": 4.8,
+    "uploads": 6,
+    "uploadMsTot": 2.8,
+    "uploadMsPerFrame": 0.3,
+    "calls": 82,
+    "tri": 21710,
+    "tex": 60,
+    "geo": 1092
+   }
+  },
+  "errs": []
+ },
+ {
+  "vp": "1440x900",
+  "giro": 0,
+  "braccio": "dopo",
+  "parti": {
+   "planes": 14,
+   "planeTri": 122,
+   "texObjs": 6,
+   "canvases": 6,
+   "canvW": [
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 24,
+   "frontMeshes": 0,
+   "frontInstances": 0,
+   "frontTri": 0
+  },
+  "folla129": {
+   "n": 18743,
+   "tri": 37486,
+   "gpuMB": 13.3,
+   "buildMs": 40.5,
+   "atlas": "2048x512"
+  },
+  "viste": {
+   "gioco": {
+    "frames": 7,
+    "frameMs": 492,
+    "frameP95": 520.5,
+    "renderMs": 11.81,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 388,
+    "tri": 52618,
+    "tex": 44,
+    "geo": 760
+   },
+   "tv": {
+    "frames": 8,
+    "frameMs": 527.6,
+    "frameP95": 614,
+    "renderMs": 14.22,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 725,
+    "tri": 70877,
+    "tex": 58,
+    "geo": 1085
+   },
+   "vicino": {
+    "frames": 9,
+    "frameMs": 465.2,
+    "frameP95": 517.9,
+    "renderMs": 8.85,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 75,
+    "tri": 39516,
+    "tex": 58,
+    "geo": 1085
+   }
+  },
+  "errs": []
+ },
+ {
+  "vp": "1440x900",
+  "giro": 1,
+  "braccio": "prima",
+  "parti": {
+   "planes": 13,
+   "planeTri": 120,
+   "texObjs": 11,
+   "canvases": 5,
+   "canvW": [
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512"
+   ],
+   "gpuMB": 58.7,
+   "canvasRamMB": 20,
+   "frontMeshes": 8,
+   "frontInstances": 492,
+   "frontTri": 19680
+  },
+  "folla129": null,
+  "viste": {
+   "gioco": {
+    "frames": 7,
+    "frameMs": 512,
+    "frameP95": 812.6,
+    "renderMs": 14.3,
+    "uploadMBs": 12.8,
+    "uploads": 16,
+    "uploadMsTot": 8.7,
+    "uploadMsPerFrame": 1.2,
+    "calls": 398,
+    "tri": 34932,
+    "tex": 46,
+    "geo": 767
+   },
+   "tv": {
+    "frames": 8,
+    "frameMs": 486.7,
+    "frameP95": 859.6,
+    "renderMs": 17.9,
+    "uploadMBs": 15.2,
+    "uploads": 19,
+    "uploadMsTot": 8.7,
+    "uploadMsPerFrame": 1.1,
+    "calls": 732,
+    "tri": 53071,
+    "tex": 60,
+    "geo": 1092
+   },
+   "vicino": {
+    "frames": 10,
+    "frameMs": 419.6,
+    "frameP95": 775.9,
+    "renderMs": 8.33,
+    "uploadMBs": 4.8,
+    "uploads": 6,
+    "uploadMsTot": 7.5,
+    "uploadMsPerFrame": 0.7,
+    "calls": 82,
+    "tri": 21710,
+    "tex": 60,
+    "geo": 1092
+   }
+  },
+  "errs": []
+ },
+ {
+  "vp": "1440x900",
+  "giro": 1,
+  "braccio": "dopo",
+  "parti": {
+   "planes": 14,
+   "planeTri": 122,
+   "texObjs": 6,
+   "canvases": 6,
+   "canvW": [
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512",
+    "2048x512"
+   ],
+   "gpuMB": 32,
+   "canvasRamMB": 24,
+   "frontMeshes": 0,
+   "frontInstances": 0,
+   "frontTri": 0
+  },
+  "folla129": {
+   "n": 18743,
+   "tri": 37486,
+   "gpuMB": 13.3,
+   "buildMs": 47.5,
+   "atlas": "2048x512"
+  },
+  "viste": {
+   "gioco": {
+    "frames": 6,
+    "frameMs": 504,
+    "frameP95": 533.9,
+    "renderMs": 11.14,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 384,
+    "tri": 52386,
+    "tex": 44,
+    "geo": 759
+   },
+   "tv": {
+    "frames": 8,
+    "frameMs": 527.8,
+    "frameP95": 568.1,
+    "renderMs": 15.94,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 724,
+    "tri": 70829,
+    "tex": 58,
+    "geo": 1085
+   },
+   "vicino": {
+    "frames": 9,
+    "frameMs": 478.4,
+    "frameP95": 555.8,
+    "renderMs": 8.61,
+    "uploadMBs": 0,
+    "uploads": 0,
+    "uploadMsTot": 0,
+    "uploadMsPerFrame": 0,
+    "calls": 75,
+    "tri": 39516,
+    "tex": 58,
+    "geo": 1085
+   }
+  },
+  "errs": []
+ }
+]

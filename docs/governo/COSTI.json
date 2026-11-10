@@ -544,5 +544,33 @@
     "cache_read_tokens": 9865938,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaAQ3hPn1FUSATBuQEr",
+    "titolo": "verifica finale 7.999.187",
+    "versione": "7.999.187",
+    "tipo": "catena",
+    "modello": "claude-sonnet-5-5",
+    "creata": "2026-11-09T18:30:55Z",
+    "chiusa": "2026-11-10T00:27:07Z",
+    "cost_usd": 1.92506748,
+    "output_tokens": 20357,
+    "cache_read_tokens": 12000053,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaBhRzEeSjf9mVCE1f3",
+    "titolo": "giro 135 sonda distanze-126 e costo della folla",
+    "versione": "7.999.187",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T23:12:32Z",
+    "chiusa": "2026-11-10T01:43:41Z",
+    "cost_usd": 0.75660234,
+    "output_tokens": 7676,
+    "cache_read_tokens": 2506667,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-10"
   }
 ]

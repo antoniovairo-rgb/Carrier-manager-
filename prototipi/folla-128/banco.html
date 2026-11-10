@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Banco folla</title>
+<style>
+  :root{--fondo:#0b0f17;--testo:#e8ecf3;--tenue:#9aa3b2;--accento:#3b82f6;--riquadro:rgba(10,14,22,.82)}
+  @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--fondo:#0b0f17;--testo:#e8ecf3}}
+  :root[data-theme="dark"]{--fondo:#0b0f17}
+  html,body{margin:0;height:100%;background:var(--fondo);color:var(--testo);font:14px/1.35 system-ui,Segoe UI,Arial;overflow:hidden}
+  canvas{display:block;width:100vw;height:100vh;touch-action:none}
+  #pan{position:fixed;left:8px;right:8px;top:max(8px,env(safe-area-inset-top));background:var(--riquadro);border-radius:10px;padding:8px 10px}
+  #pan b{font-variant-numeric:tabular-nums}
+  #modi{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  #modi a,#modi button{flex:1 1 auto;min-width:54px;min-height:40px;border:1px solid #2a3344;border-radius:8px;background:#141b28;color:var(--testo);text-decoration:none;display:flex;align-items:center;justify-content:center;font:600 14px system-ui}
+  #modi a.on{background:var(--accento);border-color:var(--accento)}
+  #note{color:var(--tenue);font-size:12px;margin-top:4px}
+  #gioco button,#gioco a{min-height:40px;padding:0 10px;border:1px solid #2a3344;border-radius:8px;background:#141b28;color:var(--testo);text-decoration:none;display:flex;align-items:center;font:600 13px system-ui}
+</style>
+</head>
+<body>
+<div id="pan">
+  <div>Modo <b id="mm">-</b> · <b id="fps">-</b> fps · fotogramma <b id="ms">-</b> ms (p95 <b id="p95">-</b>) · <b id="tri">-</b> triangoli · <b id="dc">-</b> draw call</div>
+  <div id="modi">
+    <a href="?m=oggi">Oggi</a><a href="?m=A">A</a><a href="?m=Ao">A-oggi</a><a href="?m=B">B</a><a href="?m=C">C</a><a href="?m=spenta">Spenta</a><button id="gol" type="button">Gol</button>
+  </div>
+  <div id="note">Banco del giro 128, aggiornato al giro 129 (studio, non e' il gioco): stadio semplificato con quattro settori a due anelli. Lascia girare 20 secondi per modo e annota fps e p95. <b>A</b> = la folla a sagome entrata nel gioco (densita' vera), <b>A-oggi</b> = la stessa alla densita' di prima (la ritirata).</div>
+  <div id="gioco" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center">
+    <span>Nel gioco su questo telefono:</span><button type="button" data-d="vera">Densita' vera</button><button type="button" data-d="oggi">Densita' ridotta</button><a href="../../index.html">Apri il gioco</a>
+    <span id="dg" style="color:var(--tenue)"></span>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="folla-proto.js"></script>
+<script>
+(function(){
+  'use strict';
+  var Q=new URLSearchParams(location.search), MODE=Q.get('m')||'oggi';
+  document.querySelectorAll('#modi a').forEach(function(a){if(a.getAttribute('href')==='?m='+MODE)a.classList.add('on');});
+  document.getElementById('mm').textContent=MODE;
+  /* [giro 129] la manopola di densita' della folla del gioco vive in localStorage 'cpm-folla' (stessa origine del sito) */
+  function dgShow(){var v='vera';try{v=localStorage.getItem('cpm-folla')||'vera';}catch(e){}document.getElementById('dg').textContent='ora: '+(v==='oggi'?'ridotta':'vera')+' (vale dalla prossima partita)';}
+  document.querySelectorAll('#gioco button').forEach(function(b){b.onclick=function(){try{localStorage.setItem('cpm-folla',b.getAttribute('data-d'));}catch(e){}dgShow();};});dgShow();
+  var isDesktop=Math.min(innerWidth,innerHeight)>700;
+  var renderer=new THREE.WebGLRenderer({antialias:isDesktop,powerPreference:'high-performance'});
+  renderer.setPixelRatio(isDesktop?Math.min(devicePixelRatio,2):Math.min(devicePixelRatio,1.5));/* come il gioco */
+  renderer.setSize(innerWidth,innerHeight);renderer.setClearColor(0x6fa8dc);document.body.prepend(renderer.domElement);
+  var scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xffffff,0x445566,0.75));var sun=new THREE.DirectionalLight(0xffffff,0.7);sun.position.set(20,40,10);scene.add(sun);
+  var cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.5,600);
+  var field=new THREE.Mesh(new THREE.PlaneGeometry(105,68),new THREE.MeshLambertMaterial({color:0x3f8f3a}));field.rotation.x=-Math.PI/2;scene.add(field);
+  var concrete=new THREE.MeshLambertMaterial({color:0x8a8f98});
+  var HOME='#c0283a',AWAY='#e8e8f0';
+  /* folla «come oggi»: tela 1024x512 dipinta a mano (rettangoli+cerchi), tre CanvasTexture per tela, ridisegno round-robin ogni 110 ms */
+  var painters=[];
+  function crowdCanvas(away,seed){var c=document.createElement('canvas');c.width=1024;c.height=512;var x=c.getContext('2d');var s=seed>>>0;function r(){s=(s*1664525+1013904223)>>>0;return s/4294967296;}
+    var seats=[],cols=55,rowsLow=6,rowsUp=8,split=Math.round(512*0.48);
+    for(var j=0;j<rowsUp;j++)for(var i=0;i<72;i++)seats.push({x:(i+.5)*1024/72,y:j*split/rowsUp,w:1024/72,h:split/rowsUp,up:1,occ:r()<0.85,col:r()<0.8?(away?AWAY:HOME):'#2b3a55',sk:['#f3c7a6','#c68b5e','#8a5636'][(r()*3)|0],ph:r()*6.28});
+    for(j=0;j<rowsLow;j++)for(i=0;i<cols;i++)seats.push({x:(i+.5)*1024/cols,y:split+j*(512-split)/rowsLow,w:1024/cols,h:(512-split)/rowsLow,up:0,occ:r()<0.85,col:r()<0.8?(away?AWAY:HOME):'#2b3a55',sk:['#f3c7a6','#c68b5e','#8a5636'][(r()*3)|0],ph:r()*6.28});
+    function redraw(t){x.fillStyle='#0c0c18';x.fillRect(0,0,1024,512);for(var k=0;k<seats.length;k++){var q=seats[k];x.fillStyle='#2c2c3a';x.fillRect(q.x-q.w/2,q.y+q.h*.7,q.w-1,q.h*.3);if(!q.occ)continue;var dy=Math.sin(t*.001+q.ph)*q.h*.05;
+      x.fillStyle=q.col;x.fillRect(q.x-q.w*.32,q.y+q.h*.62+dy-q.h*.44,q.w*.64,q.h*.44);x.fillStyle=q.sk;x.beginPath();x.arc(q.x,q.y+q.h*.62+dy-q.h*.56,q.w*.22,0,6.29);x.fill();}
+      for(var n=0;n<texs.length;n++)texs[n].needsUpdate=true;}
+    function mk(o,rp){var t=new THREE.CanvasTexture(c);t.offset.y=o;t.repeat.y=rp;t.anisotropy=4;return t;}
+    var texs=[mk(0,.52),mk(.52,.48),mk(0,1)];redraw(0);painters.push(redraw);return texs;}
+  function stand(cx,cz,rotY,W,away,seed){var g=new THREE.Group();var tx=crowdCanvas(away,seed);
+    function tier(z0,y0,z1,y1,t){var dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);var m=new THREE.Mesh(new THREE.PlaneGeometry(W,L),new THREE.MeshLambertMaterial({color:0xffffff,map:t,side:THREE.DoubleSide}));m.position.set(0,(y0+y1)/2,(z0+z1)/2);m.rotation.x=Math.atan2(dz,dy);g.add(m);}
+    tier(-9,3,1.5,11,tx[0]);tier(2.5,12,11,19.5,tx[1]);
+    var back=new THREE.Mesh(new THREE.BoxGeometry(W,20,3),concrete);back.position.set(0,10,12.5);g.add(back);
+    var wall=new THREE.Mesh(new THREE.BoxGeometry(W,3,1),concrete);wall.position.set(0,1.5,-9.5);g.add(wall);
+    g.position.set(cx,0,cz);g.rotation.y=rotY;scene.add(g);return tx;}
+  stand(0,-46,Math.PI,110,false,1);stand(0,46,0,110,false,2);stand(64,0,Math.PI/2,72,false,3);var nord=stand(-64,0,-Math.PI/2,72,true,4);
+  var info={};
+  if(MODE==='spenta'){scene.traverse(function(o){if(o.isMesh&&o.material.map&&o.material.map.image&&o.material.map.image.width===1024)o.visible=false;});painters=[];}
+  else if(MODE!=='oggi'){info=window.__FOLLA128(MODE[0],{THREE:THREE,scene:scene,fill:0.85,homeHex:HOME,awayHex:AWAY,rows3D:4,density:MODE.length>1?'oggi':undefined});painters=[];}
+  document.getElementById('gol').onclick=function(){window.__FOLLA128_EX=window.__FOLLA128_EX?0:0.9;this.textContent=window.__FOLLA128_EX?'Gol: si':'Gol';};
+  addEventListener('resize',function(){renderer.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});
+  var last=performance.now(),fr=[],lastPaint=0,pi=0,acc=0,frames=0,t0=performance.now();
+  function loop(now){requestAnimationFrame(loop);var dt=now-last;last=now;fr.push(dt);if(fr.length>240)fr.shift();
+    var a=(now-t0)*0.00006;cam.position.set(Math.sin(a)*8,16,30+Math.cos(a)*4);cam.lookAt(Math.sin(a*1.7)*30,6,-40);/* come la vista TV del gioco */
+    if(painters.length&&now-lastPaint>110){lastPaint=now;painters[pi++%painters.length](now);}
+    renderer.render(scene,cam);frames++;
+    if(now-acc>500){acc=now;var s=fr.slice().sort(function(p,q){return p-q;});var m=fr.reduce(function(p,q){return p+q;},0)/fr.length;
+      document.getElementById('fps').textContent=(1000/m).toFixed(0);document.getElementById('ms').textContent=m.toFixed(1);document.getElementById('p95').textContent=s[Math.floor(s.length*.95)].toFixed(1);
+      document.getElementById('tri').textContent=renderer.info.render.triangles.toLocaleString('it-IT');document.getElementById('dc').textContent=renderer.info.render.calls;}}
+  requestAnimationFrame(loop);
+  window.__BANCO={mode:MODE,info:info,renderer:renderer};
+})();
+</script>
+</body>
+</html>

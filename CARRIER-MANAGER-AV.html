@@ -5990,7 +5990,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.186";/* [7.999.181] Correttiva dal collaudo PO della 180 (decisione «Solo spalti, subito» + «Dentro la 181»): PO-312 giro 109 spalti della partita 2D coi colori veri dei club (_spalti109: maglia e secondo colore senza la regola di contrasto dei testi, fondo TINTE.tasto, cartelloni col colore sociale smorzato da fondoClub106; rosso __CPM_NO_G109, guardiano spalti-109 su 7 coppie di club x 3 formati), sigla della porta che non sporge sotto la barra Statistiche/Pagelle (__CPM_NO_G109_ETI), nomi di portatore ed eroe non sovrapposti (__CPM_NO_G109_NOMI); PO-313 lineetta oro #9c6a12 sotto la scheda attiva al posto del pallino del club (__CPM_NO_PUNTINO181, guardiano lineetta-181). */ /* [7.999.180] Correttiva dal collaudo PO della 179 (PO-306 «Si vede malissimo», PO-307 verifica di tutte le schermate, PO-308 freccetta): giro 106 testata compatta senza parole spezzate e colore sociale smorzato da fondoClub106 (lum <= 0,070), «Avversario in zona retrocessione», guardiano home-colori-106 su 8 club; giro 107 tasto del pannello Statistiche/Pagelle col verso giusto, tocco 44 px, linguetta che apre; collaudo 180 (438 foto, 33 difetti) e giro 108 sui 6 alti e 17 medi (galà, passaggio U18, Nazionale, pre-partita, KORWARD, tablet, rosa/granata V1, tocco 44, sala stampa), guardiano collaudo-108. */ /* [7.999.179] Grafica unica «Notte da stadio» (PO-302, decisioni PO 01/11 e 03/11): tappe V2 1, 2, 2b, 3, 4 — tema scuro unico TINTE/TH (via TH_LIGHT/TH_DARK/temaAttivo/v2On e i 197 rami V1, interruttore __CPM_NO_V2 tolto; il rosso dei guardiani grafici altera i token dal banco, __CPM_TEMA_PROVA solo sotto cpmtest), Home/Carriera/Stagione/Club/Agente/Ufficio/partita 2D/highlight/post partita/ingresso/festa/creazione/intervista/offerta/fine stagione/fine carriera, Simula accanto a Gioca, testata compatta, contrasto testi >= 4,5:1; PO-303 storico del patrimonio (player.patrimonio303, punto ogni 4 settimane, migrazione additiva a serie vuota); pc-tablet-292 punto 5 (un solo timer sull intro, guardiano intro-292). */ /* [7.999.178] Highlight dell'eroe e grafica, dai collaudi 177 n.1, n.2, n.4 e dal collaudo grafico PO-299: giro 95 (finta da dribbling, parata dopo la conclusione, esito sempre a schermo, assist su tutti i passaggi), giro 96a scena 3D (eroe in quadro su PC e nelle punizioni, rigore col portiere fermo fino al calcio, corpi separati, targhette, pallone senza salti, logo del cerchio), giro 96b esiti (tocco rapido sulla scelta registrato, esitazione difensiva, gol del rivale gala=bilancio, contrasto pulito senza fallo, riquadro d'esito che non copre l'eroe, titolo a capo, esito su PC, comandi da 40 px, cerimonia senza nero), giro 97 schermate (barra tablet, tasti da 40 px, strisce su PC, spazi PO-296), giro 98 (assist al compagno nominato, protezione palla, niente assist dopo la parata, niente retrocessione dalla Lega B, rinnovo toglie dalla lista cessioni). Giro 90 partita a tutto schermo su PC e tablet e difetti del collaudo PC/tablet (PO-292); giro 91 spazio fra i riquadri ~8 px (PO-296); giro 92 partita 2D con gli spalti dei club, barra in cima, squadre fisse come in tv (PO-297); giro 93 assist dell'eroe: il passaggio arrivato e' una giocata riuscita, il compagno tira da grande occasione (PO-298); giro 94 difetti della carriera 177 n.3 (convocazioni, rigore contato due volte, contratto scaduto, testi). */ /* [7.999.177] Fase di stabilita con i ritocchi chiesti dal PO il 20/10: giro 80 ingresso in campo a ~16 s con tre stacchi di camera (PO-285), giro 81 colori di maglia nel tabellino e nella testata del post-partita (PO-286), giro 82 eroe neutro senza stile di gioco (PO-287), giro 83 piano del personal trainer con valore, resa e consigliato (PO-288), giro 84 impulsi collegati davvero all'Ufficio (PO-289). */ /* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
+const GAME_VERSION="7.999.187";/* [7.999.187] PO-329 ingresso dalla panchina inquadrato dal prato (giro 127, guardiano panchina-127) · PO-330 folla a sagome (giro 129, guardiano folla, rosso __CPM_NO_FOLLA129, manopola cpm-folla).  [7.999.181] Correttiva dal collaudo PO della 180 (decisione «Solo spalti, subito» + «Dentro la 181»): PO-312 giro 109 spalti della partita 2D coi colori veri dei club (_spalti109: maglia e secondo colore senza la regola di contrasto dei testi, fondo TINTE.tasto, cartelloni col colore sociale smorzato da fondoClub106; rosso __CPM_NO_G109, guardiano spalti-109 su 7 coppie di club x 3 formati), sigla della porta che non sporge sotto la barra Statistiche/Pagelle (__CPM_NO_G109_ETI), nomi di portatore ed eroe non sovrapposti (__CPM_NO_G109_NOMI); PO-313 lineetta oro #9c6a12 sotto la scheda attiva al posto del pallino del club (__CPM_NO_PUNTINO181, guardiano lineetta-181). */ /* [7.999.180] Correttiva dal collaudo PO della 179 (PO-306 «Si vede malissimo», PO-307 verifica di tutte le schermate, PO-308 freccetta): giro 106 testata compatta senza parole spezzate e colore sociale smorzato da fondoClub106 (lum <= 0,070), «Avversario in zona retrocessione», guardiano home-colori-106 su 8 club; giro 107 tasto del pannello Statistiche/Pagelle col verso giusto, tocco 44 px, linguetta che apre; collaudo 180 (438 foto, 33 difetti) e giro 108 sui 6 alti e 17 medi (galà, passaggio U18, Nazionale, pre-partita, KORWARD, tablet, rosa/granata V1, tocco 44, sala stampa), guardiano collaudo-108. */ /* [7.999.179] Grafica unica «Notte da stadio» (PO-302, decisioni PO 01/11 e 03/11): tappe V2 1, 2, 2b, 3, 4 — tema scuro unico TINTE/TH (via TH_LIGHT/TH_DARK/temaAttivo/v2On e i 197 rami V1, interruttore __CPM_NO_V2 tolto; il rosso dei guardiani grafici altera i token dal banco, __CPM_TEMA_PROVA solo sotto cpmtest), Home/Carriera/Stagione/Club/Agente/Ufficio/partita 2D/highlight/post partita/ingresso/festa/creazione/intervista/offerta/fine stagione/fine carriera, Simula accanto a Gioca, testata compatta, contrasto testi >= 4,5:1; PO-303 storico del patrimonio (player.patrimonio303, punto ogni 4 settimane, migrazione additiva a serie vuota); pc-tablet-292 punto 5 (un solo timer sull intro, guardiano intro-292). */ /* [7.999.178] Highlight dell'eroe e grafica, dai collaudi 177 n.1, n.2, n.4 e dal collaudo grafico PO-299: giro 95 (finta da dribbling, parata dopo la conclusione, esito sempre a schermo, assist su tutti i passaggi), giro 96a scena 3D (eroe in quadro su PC e nelle punizioni, rigore col portiere fermo fino al calcio, corpi separati, targhette, pallone senza salti, logo del cerchio), giro 96b esiti (tocco rapido sulla scelta registrato, esitazione difensiva, gol del rivale gala=bilancio, contrasto pulito senza fallo, riquadro d'esito che non copre l'eroe, titolo a capo, esito su PC, comandi da 40 px, cerimonia senza nero), giro 97 schermate (barra tablet, tasti da 40 px, strisce su PC, spazi PO-296), giro 98 (assist al compagno nominato, protezione palla, niente assist dopo la parata, niente retrocessione dalla Lega B, rinnovo toglie dalla lista cessioni). Giro 90 partita a tutto schermo su PC e tablet e difetti del collaudo PC/tablet (PO-292); giro 91 spazio fra i riquadri ~8 px (PO-296); giro 92 partita 2D con gli spalti dei club, barra in cima, squadre fisse come in tv (PO-297); giro 93 assist dell'eroe: il passaggio arrivato e' una giocata riuscita, il compagno tira da grande occasione (PO-298); giro 94 difetti della carriera 177 n.3 (convocazioni, rigore contato due volte, contratto scaduto, testi). */ /* [7.999.177] Fase di stabilita con i ritocchi chiesti dal PO il 20/10: giro 80 ingresso in campo a ~16 s con tre stacchi di camera (PO-285), giro 81 colori di maglia nel tabellino e nella testata del post-partita (PO-286), giro 82 eroe neutro senza stile di gioco (PO-287), giro 83 piano del personal trainer con valore, resa e consigliato (PO-288), giro 84 impulsi collegati davvero all'Ufficio (PO-289). */ /* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -11369,6 +11369,11 @@ function Toast({children,tone="info",icon,onClose,style={}}){
 function makeCrowdTex(spec){
   const q=CROWD_CFG.quality,S=spec.sector||{};
   const W=spec.isMobile?q.texWMobile:q.texW,H=q.texH;
+  /* [giro 129 PO-330 «A sagome». Rosso __CPM_NO_FOLLA129 = la folla dipinta di prima] F129: la tela diventa una GRADINATA DI SOLI
+     SEDILI, statica e disegnata una volta; le persone sono impostori 3D istanziati da buildFolla129 sugli stessi posti che
+     questa funzione decide (riempimento per anello/fila, gruppi e vuoti 7.187, corridoi, spicchio ospiti, VIP, famiglie).
+     Densita' «vera» = un posto ogni ~0,62u (x2,9 colonne, x1,35 file basse); «oggi» = la griglia di prima. */
+  const F129=spec.f129||null,_dK129=F129?(F129.dens==="oggi"?1:2.9):1,_rK129=F129?(F129.dens==="oggi"?1:1.35):1;
   const c=document.createElement("canvas");c.width=W;c.height=H;
   const ctx=c.getContext("2d");
   const homeHex=spec.homeHex||"#2563eb",awayHex=spec.awayHex||"#dc2626";
@@ -11384,17 +11389,17 @@ function makeCrowdTex(spec){
   const rnd=()=>{_s=(_s*1664525+1013904223)>>>0;return _s/4294967296;};
   // Geometria bande: alta = file 0..rowsUp-1 (fondo, piccole e fitte) · bassa = file grandi verso il campo
   const splitY=Math.round(H*(1-q.tierSplit));
-  const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit));
-  const colsUp=Math.round(colsLow*1.3);
+  const colsLow=Math.max(26,Math.round((spec.width||100)*q.colsPerUnit*_dK129));
+  const colsUp=F129?colsLow:Math.round(colsLow*1.3);/* [giro 129] in 3D la prospettiva la fa la camera: stesse colonne nei due anelli */
   const _rm92=Math.max(0.5,spec.rowsMul||1);// [5.92→6.2 CROWD-SCALE] file ∝ altezza reale del settore (anche <1 sugli impianti piccoli: tifoso-target costante)
-  const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92);
+  const rowsUp=Math.round(q.rowsUp*_rm92),rowsLow=Math.round(q.rowsLow*_rm92*_rK129);
   const uH=splitY/rowsUp,cWU=W/colsUp,cWL=W/colsLow;
   /* [6.2.0 CROWD-SCALE] scala prospettica PARAMETRICA su rowsLow: l array fisso da 6 file rendeva
      lw[r]=undefined per r>=6 → rH=NaN → le file extra del fix 5.92 erano INVISIBILI (anello basso
      inchiodato a 6 file giganti qualunque fosse rowsMul) */
-  const lw=Array.from({length:rowsLow},(_,r)=>1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
+  const lw=Array.from({length:rowsLow},(_,r)=>F129?1:1+(rowsLow<=1?0:r/(rowsLow-1))*0.66),lwSum=lw.reduce((a,b)=>a+b,0);
   // sedile vuoto: plastica nei colori del CLUB DI CASA (lo stadio è suo), desaturata
-  const seatBase=_mix(homeHex,"#5a6272",0.45);
+  const seatBase=F129?_shade(_mix(homeHex,"#3c424e",0.70),0.82):_mix(homeHex,"#5a6272",0.45);/* [giro 129] sedili meno rosati: col club rosso il 45% di tinta dava una gradinata rosa fra le sagome */
   const _grass46=!!spec.grass;/* [giro 46 PO-071] BORGO: il settore e' un terrapieno d'erba con la gente in piedi, non una gradinata a sedili */
   // VIP box (Tribuna Ovest): campata centrale della fila alta dell'anello inferiore
   const vipC0=S.vip?Math.floor(colsLow*0.40):-1,vipC1=S.vip?Math.ceil(colsLow*0.60):-1;
@@ -11427,14 +11432,34 @@ function makeCrowdTex(spec){
   const _dMean=(_nUp*0.225+_nLo*0.75)/Math.max(1,(_nUp+_nLo));
   /* CALORE per settore: in curva si sta IN PIEDI e si canta anche a stadio semivuoto; in tribuna ci si alza
      solo quando la partita scotta → la quota di seduti scende con l'intensità (la curva parte già bassa). */
+  /* [giro 129] CONTEGGIO ONESTO (misurato: con la logica di prima un settore al fill 0,80 ne mostrava 0,65-0,71 dei posti
+     non-corridoio). Due perdite: la catena dei gruppi ripartiva VUOTA a ogni fila e dopo ogni corridoio (deficit ~p·cK/(1-cK)
+     posti per tratto), e la rampa di profondita' saturava a 1 sulle prime file buttando via massa. Solo a sagome: la catena
+     parte dal suo stato stazionario e la rampa si sposta di un offset tarato (bisezione deterministica, nessun dado) perche'
+     la media attesa sui posti veri (non corridoio, non VIP) sia il riempimento del settore. La folla di prima resta com'era. */
+  const _calib129=(target,wedgeSide)=>{if(!F129)return 0;let lo=-1,hi=1;
+    const _ev=(c)=>{let sum=0,cnt=0;
+      const rowsDef=[];for(let r=0;r<rowsUp;r++)rowsDef.push(["up",r,colsUp]);for(let r=0;r<rowsLow;r++)rowsDef.push(["low",r,colsLow]);
+      for(const [band,r,rc] of rowsDef){const depth=band==="up"?(r/Math.max(1,rowsUp-1))*0.45:0.5+(r/Math.max(1,rowsLow-1))*0.5;
+        for(let cl=0;cl<rc;cl++){const _u=cl/Math.max(1,rc);if(_isAisle(_u))continue;
+          if(band==="low"&&r===0&&cl>=vipC0&&cl<vipC1)continue;
+          const inW=!!S.wedge&&cl<Math.round(rc*S.wedge);if(inW!==wedgeSide)continue;
+          const b=Math.max(0,Math.min(1,target+(depth-_dMean)*0.85+c));
+          sum+=Math.max(0,Math.min(1,b+(_clAt(_u)-0.5)*_clAmp));cnt++;}}
+      return cnt?sum/cnt:target;};
+    if(target<=0)return -1;if(target>=1)return 1;
+    for(let i=0;i<22;i++){const mid=(lo+hi)/2;if(_ev(mid)<target)lo=mid;else hi=mid;}return (lo+hi)/2;};
+  const _c129=_calib129(fill,false),_c129w=S.wedge?_calib129(Math.max(0,Math.min(1,spec.wedgeFill!=null?spec.wedgeFill:fill)),true):0;
   const _seatedBase=(S.seated!=null?S.seated:0.4);
   const _seatedP=Math.max(0.02,_seatedBase*(1-(spec.ultras?0.55:0.42)*inten));
   const pushRow=(band,r,rowCols,cW,rH,by)=>{
+    const _ri129=band==="up"?r:rowsUp+r;
     let _prevOcc=false;/* [7.187.0 P3] stato della catena: azzerato a ogni FILA (i gruppi non scavalcano le file) */
     // riempimento per fila: l'anello BASSO si riempie per primo (le file davanti prima) → a bassa
     // affluenza restano gruppetti sparsi in basso e anello alto vuoto, come negli stadi veri (§6)
     const depth=band==="up"?(r/(rowsUp-1))*0.45:0.5+(r/(rowsLow-1))*0.5;
-    const rowFill=Math.max(0,Math.min(1,fill+(depth-_dMean)*0.85));/* [7.187.0 P1] rampa centrata sul fill medio */
+    const rowFill=Math.max(0,Math.min(1,fill+(depth-_dMean)*0.85+_c129));/* [7.187.0 P1] rampa centrata sul fill medio · [giro 129] +offset tarato (0 nella folla di prima) */
+    let _fresh129=!!F129;
     const dk=0.55+0.50*depth;// profondità: fondo più scuro, fronte in piena luce
     for(let cl=0;cl<rowCols;cl++){
       const bx=cl*cW;
@@ -11443,8 +11468,9 @@ function makeCrowdTex(spec){
       const inWedge=!!S.wedge&&cl<Math.round(rowCols*S.wedge);
       const _u=cl/Math.max(1,rowCols);
       const _wf=(spec.wedgeFill!=null?spec.wedgeFill:fill);
-      const _base=inWedge?Math.max(0,Math.min(1,_wf+(depth-_dMean)*0.85)):rowFill;
-      let _p=Math.max(0,Math.min(1,(_base+(_clAt(_u)-0.5)*_clAmp)*_aisleComp));/* blocchi pieni/vuoti + compensazione corridoi */
+      const _base=inWedge?Math.max(0,Math.min(1,_wf+(depth-_dMean)*0.85+_c129w)):rowFill;
+      let _p=Math.max(0,Math.min(1,(_base+(_clAt(_u)-0.5)*_clAmp)*(F129?1:_aisleComp)));/* blocchi pieni/vuoti + compensazione corridoi · [giro 129] a sagome i corridoi non sono posti: niente compensazione */
+      if(_fresh129&&!vip&&!_isAisle(_u)){_prevOcc=rnd()<_p;_fresh129=false;}/* [giro 129] la catena parte dal suo stato stazionario */
       /* [7.187.0 P3] GRUPPI CONTIGUI: il dado indipendente per posto dava «sale e pepe» anche dentro i blocchi.
          Catena a 2 stati lungo la fila (si compra/abbona in gruppo, i vicini sono sempre gli stessi): la
          probabilità stazionaria resta ESATTAMENTE _p (nessun spettatore in più o in meno), cambia solo la
@@ -11452,14 +11478,14 @@ function makeCrowdTex(spec){
       const _cK=(S.ultras?0.62:0.50);
       const _pc=_prevOcc?(_p+_cK*(1-_p)):(_p*(1-_cK));
       const occ=vip?true:(_isAisle(_u)?false:rnd()<_pc);
-      _prevOcc=occ;
-      if(!occ){seats.push({empty:true,bx,by,cW,rH,col:cl,seatCol:_shade(seatBase,(0.72+rnd()*0.2)*dk)});continue;}
+      _prevOcc=occ;if(F129&&_isAisle(_u))_fresh129=true;
+      if(!occ){seats.push({empty:true,aisle:!vip&&_isAisle(_u),bx,by,cW,rH,col:cl,ri:_ri129,band,seatCol:_shade(seatBase,(0.72+rnd()*0.2)*dk)});continue;}
       const isAwayFan=spec.isAway||inWedge;
       const teamCol=isAwayFan?awayHex:homeHex;
       const team=rnd()<(S.team!=null?S.team:0.6);
       const clBase=vip?"#23262e":(team?teamCol:CLOTHES[(rnd()*CLOTHES.length)|0]);
       const fam=!vip&&!!S.families&&rnd()<S.families;
-      seats.push({empty:false,bx,by,cW,rH,col:cl,band,vip,fam,depth,
+      seats.push({empty:false,bx,by,cW,rH,col:cl,ri:_ri129,band,vip,fam,depth,dk,
         x:bx+cW/2+(rnd()-.5)*cW*0.22,
         isH:!isAwayFan,base:teamCol,
         cloth:_shade(clBase,(0.80+rnd()*0.44)*dk),
@@ -11481,6 +11507,24 @@ function makeCrowdTex(spec){
   {let by=splitY;for(let r=0;r<rowsLow;r++){const rH=(H-splitY)*lw[r]/lwSum;pushRow("low",r,colsLow,cWL,rH,by);by+=rH;}}
   // tre viste della stessa canvas: anello basso / anello alto / intera (per gli angoli)
   // mipmap ON (canvas POT): senza, la texture inclinata degenera in shimmering beige a distanza (alias sui texel pelle)
+  if(F129){/* [giro 129] UNA texture per la tela (prima tre: texLow/texUp/texFull, tre caricamenti dello stesso disegno); le bande
+       si scelgono con le UV del piano (mkTier), non con offset/repeat. Disegno UNA volta: sedili, ballatoio, box VIP, striscioni. */
+    const gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,_grass46?"#2a4423":"#0c0c18");gr.addColorStop(1,_grass46?"#3a5e2f":"#191926");
+    ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+    if(!_grass46){ctx.fillStyle="rgba(120,125,150,0.35)";ctx.fillRect(0,splitY-2,W,3);
+      for(const s of seats){const{cW,rH}=s;ctx.fillStyle="#1d1d27";ctx.fillRect(s.bx+0.5,s.by+rH*0.70,cW-1,rH*0.30);
+        ctx.fillStyle=s.empty?s.seatCol:_shade(seatBase,0.72*(0.55+0.5*(s.depth||0.5)));ctx.fillRect(s.bx+cW*0.16,s.by+rH*0.40,cW*0.68,rH*0.34);}}
+    if(S.vip){ctx.fillStyle="rgba(14,18,30,0.42)";ctx.fillRect(vipC0*cWL,splitY,(vipC1-vipC0)*cWL,(H-splitY)*lw[0]/lwSum);
+      ctx.strokeStyle="rgba(212,175,55,0.55)";ctx.lineWidth=2;ctx.strokeRect(vipC0*cWL+1,splitY+1,(vipC1-vipC0)*cWL-2,(H-splitY)*lw[0]/lwSum-2);}
+    if(S.banner&&fill>0.45){const bh=13,by=H-bh;const segW=W/7;
+      for(let i=0;i<7;i++){ctx.fillStyle=i%2?_shade(spec.isAway?awayHex:homeHex,0.55):(spec.isAway?awayHex:homeHex);ctx.fillRect(i*segW+3,by,segW-6,bh-2);}
+      ctx.fillStyle="rgba(255,255,255,0.85)";for(let i=0;i<7;i++)ctx.fillRect(i*segW+segW*0.22,by+bh*0.38,segW*0.56,2);}
+    const t1=new THREE.CanvasTexture(c);t1.wrapS=t1.wrapT=THREE.ClampToEdgeWrapping;t1.anisotropy=4;
+    const _pssF=(spec.passion!=null?spec.passion:0.6);
+    const _olaF=fill>=(CROWD_CFG.anim.olaMinFill-_pssF*0.14)&&inten>=(CROWD_CFG.anim.olaMinIntensity-_pssF*0.10);
+    return {f129:true,tex:t1,texLow:t1,texUp:t1,texFull:t1,redraw:null,seats,W,H,splitY,tierSplit:q.tierSplit,colsLow,rowsUp,rowsLow,
+      allowOla:_olaF,inten,isAway:!!spec.isAway,key:spec.key||"x",seedKey:spec.seedKey||spec.key||"x",fill,homeHex,awayHex};
+  }
   const mkTex=(offY,repY)=>{const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;t.offset.y=offY;t.repeat.y=repY;t.anisotropy=4;return t;};
   const texLow=mkTex(0,q.tierSplit),texUp=mkTex(q.tierSplit,1-q.tierSplit),texFull=mkTex(0,1);
   const lighten=(hex,k)=>{const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=r+(255-r)*k|0;g=g+(255-g)*k|0;b=b+(255-b)*k|0;return"rgb("+r+","+g+","+b+")";};
@@ -11556,6 +11600,181 @@ function makeCrowdTex(spec){
   return {texLow,texUp,texFull,redraw};
 }
 if(typeof window!=='undefined')window.__CPM_makeCrowdTex=makeCrowdTex;// esposto per collaudo drawing-logic
+
+/* ══════════ [giro 129 PO-330 «A sagome»] FOLLA A IMPOSTORI ══════════
+   Un quadrato per tifoso, preso da un ATLANTE di persone disegnato qui dal codice (nessuna risorsa esterna): 32 varianti
+   (adulti, sciarpa, bandiera, ombrello, bambini, VIP) x 4 pose (braccia giu' · braccia su · applauso · mani in testa).
+   Due tele: COLORE (ombreggiatura in grigio dove si tinge, colori veri altrove) e MASCHERA (r maglia · g pelle · r+g capelli
+   · b accessorio): maglia/pelle/capelli/accessorio si tingono PER ISTANZA, l'ombreggiatura resta. Il tifo (gol nostro/loro,
+   applauso, ola, chi si alza) e' nel vertex shader, guidato da tre uniform: zero ridisegni, zero caricamenti in partita.
+   I posti e chi ci siede vengono da makeCrowdTex (F129): questa funzione li porta soltanto nel mondo. */
+let _F129_ATLAS=null;
+function _folla129Atlas(){
+  if(_F129_ATLAS)return _F129_ATLAS;
+  const CW=64,CH=128,NV=32,NP=4,W=CW*NV,H=CH*NP;
+  const cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
+  const mk=document.createElement("canvas");mk.width=W;mk.height=H;const m=mk.getContext("2d");
+  m.fillStyle="#000";m.fillRect(0,0,W,H);
+  const SH="#ff0000",SK="#00ff00",HA="#ffff00",AU="#0000ff",BA="#000000";
+  /* paint: stessa forma sulle due tele; sulla maschera il colore della regione (nero = colore vero, non si tinge) */
+  const paint=(reg,fill,fn)=>{x.fillStyle=fill;x.beginPath();fn(x);x.fill();m.fillStyle=reg;m.beginPath();fn(m);m.fill();};
+  const line=(reg,stroke,w,fn)=>{x.strokeStyle=stroke;x.lineWidth=w;x.lineCap="round";x.beginPath();fn(x);x.stroke();m.strokeStyle=reg;m.lineWidth=w;m.lineCap="round";m.beginPath();fn(m);m.stroke();};
+  const ell=(cx,cy,rx,ry,a0,a1)=>c=>c.ellipse(cx,cy,rx,ry,0,a0==null?0:a0,a1==null?Math.PI*2:a1);
+  const rect=(x0,y0,w,h)=>c=>c.rect(x0,y0,w,h);
+  for(let v=0;v<NV;v++)for(let p=0;p<NP;p++){
+    const ox=v*CW,oy=p*CH,cx=ox+CW/2;
+    const kind=v>=30?"vip":v>=27?"child":v>=24?"umb":v>=22?"flag":v>=18?"scarf":"base";
+    const capV=kind==="base"&&v>=14;
+    const broad=0.86+((v*7)%5)*0.055,female=(v%4===1)&&kind!=="vip",beard=(v%5===3)&&kind!=="child",glasses=(v%6===4),hoodie=(v%7===5)&&kind==="base";
+    x.save();m.save();x.beginPath();x.rect(ox,oy,CW,CH);x.clip();m.beginPath();m.rect(ox,oy,CW,CH);m.clip();
+    if(kind==="child"){const k=0.66;x.translate(cx,oy+CH);x.scale(k,k);x.translate(-cx,-(oy+CH));m.translate(cx,oy+CH);m.scale(k,k);m.translate(-cx,-(oy+CH));}
+    const shW=13.6*broad*(female?0.9:1),hipW=10.6*broad,headY=oy+22,hr=7.6,shY=oy+34;/* [giro 129, foto col CH38 accanto] proporzioni vere: spalle all'82% dell'altezza, anca al 52%, testa ~13% (prima busto lungo, gambe corte, testa al 17%) */
+    /* gambe e scarpe: colore vero, tono medio (le scure si vedevano troppo dietro i sedili vuoti) */
+    const _pc=["#3d4760","#34353d","#5a5446","#454a55","#2f3a52"][v%5];/* [giro 129] pantaloni vari e che SFUMANO nel colore del gradino: chiari e pieni si leggevano come barre */
+    const gp=x.createLinearGradient(0,oy+72,0,oy+126);gp.addColorStop(0,_pc);gp.addColorStop(0.55,"#2a2b34");gp.addColorStop(1,"#1d1d27");
+    paint(BA,gp,c=>{c.rect(cx-hipW+1,oy+70,hipW-2,52);c.rect(cx+1,oy+70,hipW-2,52);});
+    paint(BA,"#1d1d27",c=>{c.rect(cx-hipW,oy+121,hipW,7);c.rect(cx+1,oy+121,hipW,7);});
+    /* busto: trapezio spalle→fianchi, grigio ombreggiato (luce da sinistra) che si tinge col colore della maglia */
+    const tg=x.createLinearGradient(cx-shW,0,cx+shW,0);tg.addColorStop(0,"#ececec");tg.addColorStop(0.55,"#cdcdcd");tg.addColorStop(1,"#959595");
+    const torso=c=>{c.moveTo(cx-shW,shY+5);c.quadraticCurveTo(cx-shW,shY-1,cx-shW+6,shY-2);c.lineTo(cx+shW-6,shY-2);c.quadraticCurveTo(cx+shW,shY-1,cx+shW,shY+5);c.lineTo(cx+hipW,oy+72);c.lineTo(cx-hipW,oy+72);c.closePath();};
+    paint(SH,tg,torso);
+    x.fillStyle="rgba(0,0,0,0.16)";x.fillRect(cx-1,shY+3,2,30);
+    if(kind==="vip"){paint(BA,"#e9e9ee",c=>{c.moveTo(cx-6,shY-2);c.lineTo(cx+6,shY-2);c.lineTo(cx,shY+16);c.closePath();});paint(BA,"#7a1f2b",c=>c.rect(cx-1.5,shY+1,3,14));}
+    if(hoodie)paint(SH,"#bdbdbd",ell(cx,shY-1,11,5,Math.PI,Math.PI*2));
+    /* braccia per posa: 0 giu' · 1 su · 2 applauso · 3 mani in testa */
+    const flagV=kind==="flag",umbV=kind==="umb";
+    const arm=(sd)=>{const sx=cx+sd*(shW-3),sy=shY+3;let ex,ey,hx,hy;
+      if(umbV&&sd>0){ex=sx+sd*2;ey=shY+20;hx=cx+3;hy=shY+6;}
+      else if(flagV&&sd>0){ex=sx+sd*6;ey=p===1?shY-14:shY+8;hx=cx+20;hy=p===1?oy+12:shY-4;}
+      else if(p===1){ex=sx+sd*6;ey=shY-16;hx=sx+sd*5;hy=oy+6;}
+      else if(p===2){ex=sx+sd*4;ey=shY+18;hx=cx+sd*2.5;hy=shY+2;}
+      else if(p===3){ex=sx+sd*9;ey=headY-4;hx=cx+sd*6;hy=headY-9;}
+      else{ex=sx+sd*3;ey=shY+18;hx=sx+sd*3;hy=oy+70;}
+      line(SH,"#c4c4c4",7.5,c=>{c.moveTo(sx,sy);c.lineTo(ex,ey);});
+      line(SK,"#c8c8c8",5.5,c=>{c.moveTo(ex,ey);c.lineTo(hx,hy);});
+      paint(SK,"#d0d0d0",ell(hx,hy,3.4,3.4));};
+    /* sciarpa al collo (prima delle braccia) */
+    if(kind==="scarf"&&p!==1){paint(AU,"#dcdcdc",c=>c.rect(cx-shW+4,shY-4,(shW-4)*2,6));paint(AU,"#c8c8c8",c=>{c.rect(cx-7,shY+2,5,22);c.rect(cx+2,shY+2,5,18);});}
+    /* collo e testa (ovale, orecchie), ombreggiati */
+    paint(SK,"#bcbcbc",rect(cx-3.5,headY+6,7,shY-headY-5));
+    const hg=x.createRadialGradient(cx-3,headY-3,2,cx,headY,hr+3);hg.addColorStop(0,"#ececec");hg.addColorStop(1,"#a8a8a8");
+    paint(SK,hg,ell(cx,headY,hr*0.84,hr));
+    paint(SK,"#b4b4b4",c=>{c.ellipse(cx-hr*0.84,headY+1,2.2,3,0,0,Math.PI*2);c.ellipse(cx+hr*0.84,headY+1,2.2,3,0,0,Math.PI*2);});
+    /* tratti del volto, appena accennati */
+    paint(BA,"rgba(28,20,16,0.85)",c=>{c.rect(cx-4.4,headY-0.5,2.4,1.8);c.rect(cx+2,headY-0.5,2.4,1.8);});
+    if(p===1||p===3)paint(BA,"#4a1c1c",ell(cx,headY+5,2.6,2.2));else paint(BA,"#6a3a30",rect(cx-2.6,headY+5,5.2,1.2));
+    if(glasses){x.strokeStyle="#111";x.lineWidth=1.1;x.strokeRect(cx-5.6,headY-2.2,4.4,3.4);x.strokeRect(cx+1.2,headY-2.2,4.4,3.4);}
+    /* capelli (si tingono; con calvo il gioco li tinge col colore della pelle) / barba / cappellino */
+    if(beard)paint(HA,"#9a9a9a",ell(cx,headY+4.5,hr*0.66,4.6,0,Math.PI));
+    if(capV){paint(AU,"#cfcfcf",ell(cx,headY-3.2,hr*0.92,hr*0.72,Math.PI,Math.PI*2));paint(AU,"#a6a6a6",rect(cx-2,headY-4.6,hr+3,2.8));}
+    else{paint(HA,"#b9b9b9",ell(cx,headY-2.4,hr*0.9,hr*0.82,Math.PI*1.02,Math.PI*1.98));
+      if(female)paint(HA,"#adadad",c=>{c.rect(cx-hr*0.92,headY-3,3.6,16);c.rect(cx+hr*0.92-3.6,headY-3,3.6,16);});}
+    arm(-1);arm(1);
+    if(kind==="scarf"&&p===1){paint(AU,"#dcdcdc",c=>c.rect(cx-shW-6,oy+3,(shW+6)*2,6));}
+    if(flagV){const px=cx+20;paint(BA,"#d6d6de",rect(px-0.9,p===1?oy+0:oy+10,1.8,p===1?40:50));
+      paint(AU,"#d8d8d8",rect(px-24,p===1?oy+1:oy+11,24,13));x.fillStyle="rgba(0,0,0,0.18)";x.fillRect(px-24,(p===1?oy+1:oy+11)+9,24,4);}
+    if(umbV){paint(BA,"#5a5a60",rect(cx+1,headY-14,1.6,32));
+      const ug=x.createLinearGradient(cx-27,0,cx+27,0);ug.addColorStop(0,"#e0e0e0");ug.addColorStop(1,"#a0a0a0");
+      paint(AU,ug,c=>{c.ellipse(cx+1,headY-6,27,15,0,Math.PI,Math.PI*2);c.closePath();});
+      x.fillStyle="rgba(255,255,255,0.22)";x.fillRect(cx-26,headY-7,54,1.2);}
+    x.restore();m.restore();
+  }
+  _F129_ATLAS={cv,mk,NV,NP,CW,CH};return _F129_ATLAS;
+}
+function buildFolla129(scene,planes,o){
+  const _t0=(typeof performance!=='undefined'?performance.now():0);
+  const AT=_folla129Atlas();const oggi=o.dens==="oggi";const dK=oggi?1:2.9;
+  const COLW=0.56,ROWL=0.80;/* passo minimo: un piano stretto (angoli, fascia sommitale) prende un posto ogni k */
+  const hx=h=>{const n=parseInt(String(h||"#808080").slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
+  const un=(rgb,dk)=>rgb.map(t=>Math.max(0,Math.min(255,Math.round(t/Math.max(0.4,dk||1)*0.94))));
+  const per={};const L=[];
+  const _up=new THREE.Vector3(),_v=new THREE.Vector3();
+  for(const P of planes){
+    const ob=P.obj,mesh=P.mesh;mesh.updateWorldMatrix(true,false);const wm=mesh.matrixWorld;
+    const ts=ob.tierSplit,v0=P.band==="low"?0:P.band==="up"?ts:0,v1=P.band==="low"?ts:1;
+    const rowsIn=P.band==="low"?ob.rowsLow:P.band==="up"?ob.rowsUp:ob.rowsUp+ob.rowsLow,r0=P.band==="low"?ob.rowsUp:0;
+    const kR=Math.max(1,Math.ceil(ROWL/(P.L/Math.max(1,rowsIn)))),kC=Math.max(1,Math.ceil(COLW/(P.W/Math.max(1,ob.colsLow))));
+    _up.set(0,1,0).transformDirection(wm);const yaw=Math.atan2(-_up.x,-_up.z);
+    const sec=per[ob.key]||(per[ob.key]={slots:0,occ:0,fill:+(+ob.fill).toFixed(3),planes:0});sec.planes++;
+    let h=Math.abs(hashStr("f129_"+ob.seedKey+"_"+P.band+"_"+sec.planes))>>>0;const rr=()=>{h=(h*1664525+1013904223)>>>0;return h/4294967296;};
+    for(const st of ob.seats){
+      if(st.ri<r0||st.ri>=r0+rowsIn||((st.ri-r0)%kR)||(st.col%kC))continue;
+      if(st.aisle)continue;/* i corridoi non sono posti: non entrano nel conteggio */
+      sec.slots++;if(st.empty)continue;
+      const cy=st.by+st.rH*0.80,tt=((1-cy/ob.H)-v0)/(v1-v0);if(tt<0||tt>1)continue;
+      sec.occ++;
+      _v.set((st.x/ob.W-0.5)*P.W,(tt-0.5)*P.L,0).applyMatrix4(wm);
+      L.push({x:_v.x,y:_v.y,z:_v.z,yaw,st,ob,r1:rr(),r2:rr(),r3:rr()});
+    }
+  }
+  const n=L.length;
+  const geo=new THREE.PlaneGeometry(1.0,2.0);geo.translate(0,0.94,0);
+  const iA=new Float32Array(n*4),iB=new Float32Array(n*4),iC=new Float32Array(n*4);
+  const cSh=new Uint8Array(n*3),cSk=new Uint8Array(n*3),cHa=new Uint8Array(n*3),cAu=new Uint8Array(n*3);
+  const U={uT:{value:0},uEx:{value:0},uGs:{value:0},uRH:{value:0.9}};
+  const tc=new THREE.CanvasTexture(AT.cv),tm=new THREE.CanvasTexture(AT.mk);tc.anisotropy=4;
+  const mat=new THREE.MeshLambertMaterial({map:tc,alphaTest:0.3,side:THREE.DoubleSide});
+  mat.onBeforeCompile=sh=>{
+    sh.uniforms.uT=U.uT;sh.uniforms.uEx=U.uEx;sh.uniforms.uGs=U.uGs;sh.uniforms.uRH=U.uRH;sh.uniforms.uMask={value:tm};
+    sh.vertexShader="attribute vec4 iA;attribute vec4 iB;attribute vec4 iC;attribute vec3 cSh;attribute vec3 cSk;attribute vec3 cHa;attribute vec3 cAu;\nuniform float uT;uniform float uEx;uniform float uGs;uniform float uRH;\nvarying vec2 vAtl;varying vec3 vSh;varying vec3 vSk;varying vec3 vHa;varying vec3 vAu;\n"+sh.vertexShader.replace("#include <begin_vertex>",[
+      "vec3 transformed=vec3(position);",
+      "float ex=uEx,gs=uGs,ph=iA.y,vip=step(29.5,iA.x);",
+      "float isH=step(0.5,iB.x);",
+      "float hot=step(0.001,ex)*step(0.5,abs(gs));",
+      "float mine=(gs>0.0)?isH:(1.0-isH);",
+      "float cheer=hot*mine,desp=hot*(1.0-mine);",
+      "float wf=mod(uT*5.0,iC.y+10.0)-5.0;",
+      "float ola=(1.0-cheer)*(1.0-desp)*step(0.5,iB.z)*max(0.0,1.0-abs(iC.x-wf)/2.4)*(1.0-ex);",
+      "float clap=(1.0-vip)*step(0.5,iC.z)*step(0.06,ex)*step(ex,0.75)*(1.0-step(0.5,abs(gs)))*step(iA.w,0.55)*step(0.15,sin(uT*9.0+ph));",
+      "float idleUp=step(0.3,iC.w)*step(0.965,sin(uT*0.09*iA.z+ph*3.1));",
+      "float standUp=(1.0-vip)*step(0.5,iB.y)*max(cheer,max(step(0.4,ola),idleUp));",
+      "float sit=step(0.5,iB.y)*(1.0-standUp);",
+      "float dy=0.0,pose=0.0;",
+      "if(vip<0.5){",
+      " if(cheer>0.5){dy=(0.5+0.5*abs(sin(uT*8.0+ph)))*0.42*uRH*ex;pose=step(0.2,ex);}",
+      " else if(desp>0.5){dy=-0.10*uRH*ex;pose=3.0;}",
+      " else{dy=sin(uT*iA.z+ph)*uRH*0.04+ola*uRH*0.55;pose=(clap>0.5&&ola<=0.5)?2.0:step(0.5,ola);}",
+      "}",
+      "dy-=sit*0.52;",
+      "transformed.y+=dy;",
+      "float u=uv.x*0.94+0.03;if(iB.w>0.5)u=1.0-u;",
+      "vAtl=vec2((iA.x+u)/32.0,(3.0-pose+uv.y*0.985+0.005)/4.0);",
+      "vSh=cSh;vSk=cSk;vHa=cHa;vAu=cAu;"].join("\n"));
+    sh.fragmentShader="uniform sampler2D uMask;\nvarying vec2 vAtl;varying vec3 vSh;varying vec3 vSk;varying vec3 vHa;varying vec3 vAu;\n"+sh.fragmentShader.replace("#include <map_fragment>",[
+      "vec4 tcol=texture2D(map,vAtl);vec3 mk=texture2D(uMask,vAtl).rgb;",
+      "float wH=mk.r*mk.g;float wS=max(mk.r-wH,0.0);float wK=max(mk.g-wH,0.0);float wA=mk.b;",
+      "float wB=clamp(1.0-wH-wS-wK-wA,0.0,1.0);float lum=tcol.g*1.18;",
+      "vec3 cc=tcol.rgb*wB+lum*(vSh*wS+vSk*wK+vHa*wH+vAu*wA);",
+      "diffuseColor*=vec4(cc,tcol.a);"].join("\n"));
+  };
+  mat.customProgramCacheKey=()=>"folla129";
+  const SKF=[[245,197,163],[232,168,112],[217,160,106],[200,149,106],[160,106,66],[139,80,48],[124,74,30],[95,56,24]];
+  for(let k=0;k<n;k++){const e=L[k],st=e.st,ob=e.ob;
+    const vh=(e.r1*1e6)|0;
+    let va;
+    if(st.vip)va=30+(vh&1);else if(st.umb)va=24+vh%3;else if(st.flag)va=22+(vh&1);else if(st.scarf)va=18+vh%4;
+    else if(st.fam&&e.r2<0.6)va=27+vh%3;else if(st.cap)va=14+vh%4;else va=vh%14;
+    iA[k*4]=va;iA[k*4+1]=st.ph||0;iA[k*4+2]=st.sp||1;iA[k*4+3]=st.clapP==null?1:st.clapP;
+    iB[k*4]=st.isH?1:0;iB[k*4+1]=st.seated?1:0;iB[k*4+2]=(ob.allowOla&&st.band==="low"&&!st.vip)?1:0;iB[k*4+3]=e.r3<0.5?1:0;
+    iC[k*4]=st.col/dK;iC[k*4+1]=ob.colsLow/dK;iC[k*4+2]=st.band==="low"?1:0;iC[k*4+3]=ob.inten;
+    const dk=st.dk||1,sk=un(hx(st.skin),dk);
+    cSh.set(st.vip?[35,38,46]:un(hx(st.cloth),dk),k*3);cSk.set(sk,k*3);
+    cHa.set(st.hair?un(hx(st.hair),dk):sk,k*3);
+    cAu.set(st.umb?hx(st.umbCol):(va>=14&&va<18)?hx(st.capCol):hx(st.base),k*3);}
+  geo.setAttribute("iA",new THREE.InstancedBufferAttribute(iA,4));geo.setAttribute("iB",new THREE.InstancedBufferAttribute(iB,4));geo.setAttribute("iC",new THREE.InstancedBufferAttribute(iC,4));
+  geo.setAttribute("cSh",new THREE.InstancedBufferAttribute(cSh,3,true));geo.setAttribute("cSk",new THREE.InstancedBufferAttribute(cSk,3,true));
+  geo.setAttribute("cHa",new THREE.InstancedBufferAttribute(cHa,3,true));geo.setAttribute("cAu",new THREE.InstancedBufferAttribute(cAu,3,true));
+  const im=new THREE.InstancedMesh(geo,mat,Math.max(1,n));im.count=n;im.frustumCulled=false;im.name="folla129";
+  const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),S=new THREE.Vector3(),E=new THREE.Euler(),Pv=new THREE.Vector3();
+  for(let k=0;k<n;k++){const e=L[k];E.set(0,e.yaw,0);Q.setFromEuler(E);const sc=0.93+e.r2*0.12;S.set(sc,sc,sc);Pv.set(e.x,e.y-0.04,e.z);M.compose(Pv,Q,S);im.setMatrixAt(k,M);}
+  im.instanceMatrix.needsUpdate=true;scene.add(im);
+  let slots=0,occ=0;for(const k in per){slots+=per[k].slots;occ+=per[k].occ;}
+  let sig=0;for(let k=0;k<n;k++){const e=L[k];sig=(sig*31+((e.x*100)|0)+((e.z*100)|0)*7+iA[k*4]*13+((iA[k*4+1]*1000)|0))|0;}/* firma del determinismo (guardiano folla) */
+  const info={sig,n,slots,occ,ratio:slots?+(occ/slots).toFixed(4):0,dens:o.dens,per,capacity:o.capacity,fill:o.fill,awayFill:o.awayFill,planes:planes.length,
+    tri:n*2,atlas:AT.cv.width+"x"+AT.cv.height,gpuMB:+((AT.cv.width*AT.cv.height*4*1.333*2+n*(64+48+36))/1048576).toFixed(1),buildMs:+(((typeof performance!=='undefined'?performance.now():0)-_t0)).toFixed(1)};
+  try{if(typeof window!=='undefined')window.__CPM_FOLLA129=info;}catch(_e){}
+  return {mesh:im,U,info};
+}
 
 function getStadiumPalette(club){
   // Helper: hex string/number → {r,g,b} 0-1
@@ -11777,7 +11996,13 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillCurvaAw=Math.min(1,_awBase+(1-_awBase)*_curvaK*0.85);/* anche il settore ospiti è compatto (chi viaggia è il nucleo) */
   const _movedC=(_fillCurva-_bfC)*sideW+(_fillCurvaAw-_awBase)*sideW*0.35;// posti spostati nelle curve
   const _fillTrib=Math.max(0.03,_bfC-_movedC/(2*Math.max(1,endW)));// tolti equamente alle due tribune
-  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
+  /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
+     window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
+  const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;
+    let d=(typeof window!=='undefined'&&window.__CPM_FOLLA129_DENS)||null;if(!d){try{d=localStorage.getItem('cpm-folla');}catch(_e){}}
+    return {dens:d==="oggi"?"oggi":"vera"};}catch(_e){return {dens:"vera"};}})();
+  const _f129Planes=[];
+  const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),f129:_F129,
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
     passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||"",grass:K46==="borgo"&&key!=="tribunaOvest"});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
@@ -11797,7 +12022,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _nord=makeCrowdTex(mkSpec("curvaNord",SEC.curvaNord,true,sideW,_fillCurvaAw,_nrdRM));
   const _est=makeCrowdTex(mkSpec("tribunaEst",_finE,false,endW,_fillTrib,_endRM));/* [7.187.0] tribune: le prime a svuotarsi */
   const _ovest=makeCrowdTex(mkSpec("tribunaOvest",_finO,false,endW,_fillTrib,_ovRM));
-  const crowdAnims=[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];
+  const crowdAnims=_F129?null:[_ovest.redraw,_est.redraw,_sud.redraw,_nord.redraw];/* [giro 129] a sagome nessuna tela si ridisegna: il tifo e' nel vertex shader */
 
   // Helper: gradinata a DUE ANELLI inclinati verso il campo (§1 profondità reale, via muro piatto)
   // + LOD1 (§2): prime file di BUSTI 3D instanziati (2 draw call per settore, bob solo nei burst)
@@ -11878,25 +12103,30 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _bz=standD*0.49,_run=standH*1.7,_L=Math.hypot(_run,standH+0.8);
       const sl=new THREE.Mesh(new THREE.PlaneGeometry(standW,_L),_grassM46);sl.position.set(0,(standH+0.8)/2,_bz+_run/2);
       sl.rotation.x=-Math.atan2(_run,standH+0.8);g.add(sl);}
-    const mkTier=(z0,y0,z1,y1,tex)=>{
+    const mkTier=(z0,y0,z1,y1,tex,band129)=>{
       const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);
       const m=new THREE.MeshLambertMaterial({color:0xffffff,map:tex,side:THREE.DoubleSide});
-      const t=new THREE.Mesh(new THREE.PlaneGeometry(standW,L),m);
+      const _pg=new THREE.PlaneGeometry(standW,L);
+      if(crowdObj.f129){const ts=crowdObj.tierSplit,v0=band129==="low"?0:band129==="up"?ts:0,v1=band129==="low"?ts:1;/* [giro 129] banda scelta con le UV: una texture sola */
+        const uv=_pg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setY(i,v0+uv.getY(i)*(v1-v0));uv.needsUpdate=true;}
+      const t=new THREE.Mesh(_pg,m);
+      if(crowdObj.f129)_f129Planes.push({mesh:t,obj:crowdObj,band:band129||"full",W:standW,L});
       t.position.set(0,(y0+y1)/2,(z0+z1)/2);t.rotation.x=Math.atan2(dz,dy);// fronte-basso → retro-alto
+      t.userData.tier127=1;/* [giro 127 PO-329] gradone riconoscibile dal testimone di sola prova __CPM_G127 (faccia posteriore in vista) */
       g.add(t);return m;
     };
     // pendenze da vero stadio (~33°/42°): più piatte, dalla camera broadcast alta si vedrebbero di taglio
     let mLow,mUp;
     if(_nt===1){// anello UNICO ripido (provincia/comunale · curva-muro tedesca)
-      mLow=mkTier(-standD/2+0.6,3.0,standD*0.40,standH+0.6,crowdObj.texFull);/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA · [6.5.1 Polish D] top arretrato 0.30→0.40 + cap +1.0→+0.6 → RAKE più dolce (stessa altezza distribuita su più profondità = incline meno ripido) */
-      mUp=mkTier(standD*0.40,standH+0.6,standD*0.44,standH+0.8,crowdObj.texUp);// fascia sommitale minima (tiene vivo texUp) · [6.5.1] start allineato al nuovo top di mLow
+      mLow=mkTier(-standD/2+0.6,3.0,standD*0.40,standH+0.6,crowdObj.texFull,"full");/* [6.2.0 CROWD-SCALE] muro intero = canvas INTERA · [6.5.1 Polish D] top arretrato 0.30→0.40 + cap +1.0→+0.6 → RAKE più dolce (stessa altezza distribuita su più profondità = incline meno ripido) */
+      mUp=mkTier(standD*0.40,standH+0.6,standD*0.44,standH+0.8,crowdObj.texUp,"up");// fascia sommitale minima (tiene vivo texUp) · [6.5.1] start allineato al nuovo top di mLow
     }else{
-      mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow);
-      mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp);
+      mLow=mkTier(-standD/2+0.6,3.0,-standD*0.10,standH*0.62,crowdObj.texLow,"low");
+      mUp=mkTier(-standD*0.02,standH*0.68,standD*0.32,standH+1.4,crowdObj.texUp,"up");
       const walk=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.10),cM);
       walk.position.set(0,standH*0.645,-standD*0.06);g.add(walk);
       if(_nt>=3){// terzo anello (spagnolo/sudamericano): riusa texUp, arretrato e più alto
-        mkTier(standD*0.34,standH+1.6,standD*0.52,standH*1.34+2.2,crowdObj.texUp);
+        mkTier(standD*0.34,standH+1.6,standD*0.52,standH*1.34+2.2,crowdObj.texUp,"up");
         const walk2=new THREE.Mesh(new THREE.BoxGeometry(standW,0.5,standD*0.08),cM);
         walk2.position.set(0,standH+1.5,standD*0.33);g.add(walk2);
       }
@@ -12009,7 +12239,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     // LOD1 — prime file 3D: busti instanziati appena dietro la balaustra (seedati, deterministici)
     let front=null;
     const nFront=Math.round(CROWD_CFG.anim.frontRowPerStand*Math.min(1,(frontFill||0)*1.4));
-    if(nFront>2){
+    if(nFront>2&&!crowdObj.f129){/* [giro 129] a sagome le prime file sono gia' persone: niente busti cilindro+sfera */
       let fs=Math.abs(hashStr("front_"+cx+"_"+cz+"_"+(crowd.seed||0)))>>>0;
       const fr=()=>{fs=(fs*1664525+1013904223)>>>0;return fs/4294967296;};
       const teamHex=isAway?awayHex:homeHex;
@@ -12036,7 +12266,8 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       frontRows.push(front);
     }
     g.position.set(cx,0,cz);g.rotation.y=rotY;
-    scene.add(g);return {mats:[mLow,mUp],front};
+    g.userData.dim127={W:standW,D:standD,H:standH};/* [giro 127 PO-329] volume della tribuna per il testimone __CPM_G127 */
+    scene.add(g);return {mats:[mLow,mUp],front,g};
   };
 
   // Settori — Ovest/Est dietro le porte visive (z±), curve sui lati corti (x±)
@@ -12065,6 +12296,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
       const _y0=1.6,_run=24,_rise=Math.max(1,cH-_y0),_th=Math.atan2(_rise,_run),_len=Math.hypot(_run,_rise);
       const ramp=new THREE.Mesh(new THREE.PlaneGeometry(24,_len),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?_sud.texFull:_nord.texFull}));
       ramp.position.set(0,_y0+_rise/2,0);ramp.rotation.x=-(Math.PI/2-_th);g.add(ramp);
+      if(_F129)_f129Planes.push({mesh:ramp,obj:x>0?_sud:_nord,band:"full",W:24,L:_len});
       const back=new THREE.Mesh(new THREE.BoxGeometry(24,cH,0.8),cM);back.position.set(0,cH/2,-12.4);g.add(back);
       const _sh=new THREE.Shape();_sh.moveTo(12,0);_sh.lineTo(-12.8,0);_sh.lineTo(-12.8,cH);_sh.lineTo(12,_y0);_sh.lineTo(12,0);
       const _sg=new THREE.ShapeGeometry(_sh);
@@ -12477,7 +12709,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   try{if(typeof window!=='undefined'){/* [giro 46] testimone: tipologia e costo dell'impianto (mesh = tetto dei draw call, indipendente dalla camera) */
     let nM=0,tri=0;scene.traverse(o=>{if(o.isMesh&&o.geometry){nM++;const g=o.geometry,c=((g.index?g.index.count:(g.attributes.position?g.attributes.position.count:0))/3);tri+=o.isInstancedMesh?c*o.count:c;}});
     const w=(window.__CPM_STADI246=window.__CPM_STADI246||{});w.kind=K46;w.tpl=(T&&T.template)||null;w.cap=_capB;w.crown=_crown46;w.meshes=nM;w.tri=Math.round(tri);w.light=lightColor;}}catch(_e){}
-  return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
+  let _folla129=null;
+  if(_F129&&_f129Planes.length){try{_folla129=buildFolla129(scene,_f129Planes,{dens:_F129.dens,isMobile:isMob,meteo:crowd.meteo23||"",capacity:_capB||null,fill:crowd.fill,awayFill:crowd.awayFill});}
+    catch(e){try{if(typeof window!=='undefined')window.__CPM_FOLLA129_ERR=String(e&&e.message||e);}catch(_e){}}}
+  return {stands127:[_ovStand.g,_esStand.g,_sudStand.g,_nordStand.g].filter(Boolean),folla129:_folla129,homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437,kind:K46,tunnel:_tun46info};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
 /* ========================================
@@ -14125,7 +14360,7 @@ function ThreeMatchView(props){
          senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
       if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
       try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null,kind:(!(typeof window!=='undefined'&&window.__CPM_NO_STADI246)&&_c.kind)||null};}catch(_e){}
-      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current._tun46=_sc.tunnel||null;/* [giro 46] bocca del tunnel per la camera dell'ingresso */sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
+      return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current._tun46=_sc.tunnel||null;/* [giro 46] bocca del tunnel per la camera dell'ingresso */sr.current.goalNet=_sc.goalNet;sr.current._stands127=_sc.stands127||null;/* [giro 127 PO-329] volumi delle tribune per il testimone __CPM_G127 */sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
        scena resta con le parti già aggiunte (gradinate e folla: ecco perché lo stadio sembra abitato) ma
@@ -16457,6 +16692,24 @@ function ThreeMatchView(props){
       /* [giro 96a PO-299, testimone di sola prova] TUTTO IL QUADRO IN UNA LETTURA, per il guardiano scena3d-96: piedi e testa dell'eroe
          (ndc), pallone, quota del quadro che cade sul prato, corpi DISEGNATI (radici GLB visibili, o mesh senza GLB), targhette visibili
          col loro rettangolo a schermo, portiere avversario col suo gesto. Nessuna scrittura sullo stato del gioco. */
+      /* [giro 127 PO-329, testimone di sola prova] INGRESSO DALLA PANCHINA: dove sta la telecamera rispetto ai VOLUMI delle quattro
+         tribune (coordinate locali di ciascun gruppo: dentro/dietro = entro la larghezza, oltre il fronte verso il retro, sotto la cima) e
+         quanti GRADONI sono in vista dalla loro faccia POSTERIORE (camera dal lato opposto alla normale che guarda il campo e il cielo,
+         gradone dentro il tronco di vista). Eroe in ndc. Nessuna scrittura sullo stato del gioco. */
+      window.__CPM_G127=function(){try{
+        const V=THREE.Vector3,cp=camera.position,o={se:sr.current._se127!=null?+(+sr.current._se127).toFixed(2):-1,c:[+cp.x.toFixed(2),+cp.y.toFixed(2),+cp.z.toFixed(2)]};
+        const fw=new V();camera.getWorldDirection(fw);o.d=[+fw.x.toFixed(3),+fw.y.toFixed(3),+fw.z.toFixed(3)];
+        if(hero){const pj=(y)=>{const v=new V(hero.position.x,y,hero.position.z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};o.hf=pj(0.05);o.hh=pj(1.85);o.hw=[+hero.position.x.toFixed(2),+hero.position.z.toFixed(2)];o.hv=hero.visible?1:0;try{const a=(glbAvatars||[]).find(x=>x&&x.proc===hero);o.gv=a&&a.root?(a.root.visible?1:0):-1;}catch(_e){o.gv=-2;}}
+        camera.updateMatrixWorld();const fr=new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
+        o.dentro=[];o.retro=0;o.trib=[];
+        for(const g of (sr.current._stands127||[])){if(!g||!g.userData||!g.userData.dim127)continue;g.updateMatrixWorld(true);const dm=g.userData.dim127;
+          const l=g.worldToLocal(cp.clone());const inW=Math.abs(l.x)<=dm.W/2+1,oltre=l.z>=-dm.D/2,sotto=l.y<=dm.H*1.4+3;
+          o.trib.push([+l.x.toFixed(1),+l.y.toFixed(1),+l.z.toFixed(1),dm.W,dm.D,+dm.H.toFixed(1)]);
+          if(inW&&oltre&&sotto)o.dentro.push(o.trib.length-1);
+          g.traverse(m=>{if(!m.isMesh||!m.userData||!m.userData.tier127||!m.visible)return;
+            const n=new V(0,0,1).transformDirection(m.matrixWorld);if(n.y<0)n.negate();const pc=new V().setFromMatrixPosition(m.matrixWorld);
+            if(cp.clone().sub(pc).dot(n)<0&&fr.intersectsObject(m))o.retro++;});}
+        return o;}catch(e){return {err:String(e&&e.message||e)};}};
       window.__CPM_G96=function(){try{
         const V=THREE.Vector3,pj=(x,y,z)=>{const v=new V(x,y,z).project(camera);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
         const P=propsRef.current||{},o={ph:P.matchPhase||null,sk:P.hlSitKey!=null?String(P.hlSitKey):null,fov:+camera.fov.toFixed(1),asp:+camera.aspect.toFixed(3)};
@@ -18643,8 +18896,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       const bx=ball.position.x,bz=ball.position.z;
       const isWalk=P.matchPhase==="walkout";
       // item 2 (5.49.6): edge del trigger d'ingresso subentrante → l'eroe parte dalla LINEA LATERALE (area tecnica home) e avvia la sequenza.
-      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;hero.position.set(-6,0,-35.5);hero._px=-6;hero._pz=-35.5;hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
-      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;hero.position.set(-6,0,-35.5);hero._px=-6;hero._pz=-35.5;hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
+      {const _se=P.subEntry||0;if(_se&&_se!==_lastSubEntry){_lastSubEntry=_se;subEntryT=0;subExitT=-1;hero.visible=true;hero._benched=false;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=(P.subEntryVar||0)%5;/* [7.126.0] variante d'ingresso catturata al trigger (stabile per l'animazione) */}}
+      if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBENTRY!=null){const _fv=window.__CPM_FORCE_SUBENTRY;window.__CPM_FORCE_SUBENTRY=null;subEntryT=0;subExitT=-1;{const _z127=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4;hero.position.set(-6,0,_z127);hero._px=-6;hero._pz=_z127;}hero._sp=0;hero._subVar=_fv%5;hero.visible=true;hero._benched=false;/* [7.126.0] hook test: forza l'ingresso con variante scelta (solo cpmtest) */}
       // [7.127.0] USCITA dal campo (sostituzione): edge → cattura la posizione CORRENTE come partenza, poi cammina al dugout
       {const _sx=P.subExit||0;if(_sx&&_sx!==_lastSubExit){_lastSubExit=_sx;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=(P.subExitVar||0)%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;}}
       if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORCE_SUBEXIT!=null){const _xv=window.__CPM_FORCE_SUBEXIT;window.__CPM_FORCE_SUBEXIT=null;subExitT=0;subEntryT=-1;hero.visible=true;hero._benched=false;hero._exVar=_xv%5;hero._exSx=hero.position.x;hero._exSz=hero.position.z;/* [7.127.0] hook test: forza l'uscita con variante scelta (solo cpmtest) */}
@@ -19995,6 +20248,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         else{_tint(_cm.homeMats,1,1,1);_tint(_cm.awayMats,1,1,1);}}
       // CROWD 2.0 §3/§10 — TIFOSI ANIMATI, cadenza ADATTIVA: burst pieno su gol/occasioni, a riposo la cadenza
       // viene dal contesto (stadio caldo=vivo · partita normale=calmo · spalti radi=quasi statico). Round-robin: ≤1 upload texture/frame.
+      /* [giro 129 PO-330] FOLLA A SAGOME: il tifo e' tre uniform (tempo, eccitazione, chi ha segnato) — nessuna tela ridisegnata.
+         Sotto ?cpmtest=1 resta ferma come la folla di prima (presentazione, il gate non la valida) salvo __CPM_FOLLA129_ANIM;
+         __CPM_FOLLA129_EX/_GS forzano il tifo per le foto, solo in prova. */
+      if(sr.current.crowdMats&&sr.current.crowdMats.folla129){const _U=sr.current.crowdMats.folla129.U;
+        const _an=!_CPM_TEST||(typeof window!=='undefined'&&!!window.__CPM_FOLLA129_ANIM);
+        _U.uT.value=_an?now*0.001:0;_U.uEx.value=_an?_atmoExc:0;_U.uGs.value=_an?(goalBurstT>=0?(goalBurstStadHome?1:-1):0):0;
+        if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FOLLA129_EX!=null){_U.uEx.value=+window.__CPM_FOLLA129_EX;_U.uGs.value=+(window.__CPM_FOLLA129_GS||0);}}
       if(sr.current.crowdMats&&sr.current.crowdMats.crowdAnims){const _cm=sr.current.crowdMats;const _ca=_cm.crowdAnims;
         const _gs=goalBurstT>=0?(goalBurstStadHome?1:-1):0;
         // cadenza SEMPRE step-gated (round-robin, mai ogni-frame): le canvas v2 sono 6× più grandi — un
@@ -20902,7 +21162,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           //   V3 veterano · V4 esplosivo.
           const V=hero._subVar||0;
           const _hold=[1.5,1.0,1.4,2.0,0.6][V],_runEnd=[3.5,3.2,3.6,3.9,2.9][V];
-          const _stx=-6,_stz=-35.5,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);// touchline (area tecnica home) → posizione in campo
+          const _stx=-6,_stz=(typeof window!=='undefined'&&window.__CPM_NO_G127)?-35.5:-34.4,_ftx=G2X(_hxg),_ftz=G2Z(_hyg);/* [giro 127 PO-329 — rosso __CPM_NO_G127] la linea d'attesa sta sul PRATO davanti ai cartelloni (z -35,2, alti 1,3): a -35,5 l'eroe era 0,3 u DIETRO il cartellone e dalla camera di fronte si vedeva solo la sua targhetta */// touchline (area tecnica home) → posizione in campo
           let _hex,_hez;
           if(subEntryT<_hold){_hex=_stx;_hez=_stz;}// istruzioni/pronto: fermo alla linea
           else if(subEntryT<_runEnd){const _r=(subEntryT-_hold)/Math.max(0.1,_runEnd-_hold);
@@ -23644,9 +23904,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         tPx=clamp(rbx-30,-96,-8);tPy=30;tPz=rbz*0.45+32;tLx=rbx+6;tLy=1.3;tLz=rbz*0.6;
         kp=Math.min(dt*2.2,1);kl=Math.min(dt*2.8,1);}
       // item 2 (5.49.6): regia dell'INGRESSO SUBENTRANTE — camera bassa che inquadra l'eroe alla linea e poi mentre entra in campo.
+      sr.current._se127=subEntryT;/* [giro 127] tempo della scena d'ingresso per il testimone __CPM_G127 */
       if(subEntryT>=0){const _hx2=hero.position.x,_hz2=hero.position.z,_near=subEntryT<1.5?1:0;/* [6.5.2] soglia allineata al nuovo beat istruzioni */
+        /* [giro 127 PO-329 «quando l'eroe entra dalla panchina si vedono erroneamente le tribune da dietro (se piu' semplice, cambiare
+           inquadratura di fronte e non di spalle)» — rosso __CPM_NO_G127] MISURATO (sonda panchina-127, GLB acceso, due stadi): la camera
+           stava a z = eroe-11 cioe' ~-44,5, OLTRE la linea laterale e dentro il volume della tribuna sul lato panchine (coordinate locali
+           del gruppo: 9-13 u oltre il fronte, a quota 4,8 sotto i gradoni) e guardava il campo attraverso il retro dei gradoni: 36-52
+           fotogrammi su 84 dentro la tribuna, 44-50 con gradoni visti dalla faccia posteriore. Ora la camera sta sul PRATO, di fronte
+           all'eroe, e guarda verso la panchina: alle sue spalle c'e' il fronte della tribuna (gradoni dal lato giusto). Il gesto e i tempi
+           della scena (SUB_DUR, attesa, corsa) non cambiano. Se l'eroe arriva vicino alla linea opposta la distanza di 11 u si recupera
+           di lato (verso l'attacco) invece di uscire dal campo. */
+        if(typeof window!=='undefined'&&window.__CPM_NO_G127){
         tPx=_hx2-12;tPy=5.0+_near*0.6;tPz=_hz2-11;// bassa, lato campo verso l'eroe + la panchina
-        tLx=_hx2+3;tLy=1.7;tLz=_hz2+2;kp=Math.min(dt*2.4,1);kl=Math.min(dt*3,1);}
+        tLx=_hx2+3;tLy=1.7;tLz=_hz2+2;}
+        else{const _cz127=Math.min(_hz2+11,26),_dz127=_cz127-_hz2,_dx127=Math.sqrt(Math.max(0,121-_dz127*_dz127));
+        tPx=_hx2+2+_dx127;tPy=3.6+_near*0.4;tPz=_cz127;// sul prato, davanti all'eroe, verso la panchina
+        {const _pv127=sr.current._sub127p;let _lx127=0,_lz127=0;if(_pv127&&dt>0){const _vx=(_hx2-_pv127[0])/dt,_vz=(_hz2-_pv127[1])/dt;if(Math.hypot(_vx,_vz)<30){_lx127=_vx*0.125;_lz127=_vz*0.125;}}sr.current._sub127p=[_hx2,_hz2];/* anticipo dello sguardo pari al ritardo a regime del lerp kl=dt*8 (v/8 = 0,125 s di corsa), cosi' l'eroe che entra non resta sul bordo del quadro */
+        tLx=_hx2+_lx127;tLy=1.4;tLz=_hz2-2+_lz127;}sr.current._sub127=[tPx,tPy,tPz,tLx,tLy,tLz];}
+        kp=Math.min(dt*2.4,1);kl=Math.min(dt*3,1);
+        if(sr.current._sub127){kp=Math.min(dt*3.2,1);kl=Math.min(dt*8,1);}/* [giro 127] misurato: con kl dt*3 lo sguardo restava ~3 u indietro sull'eroe che corre (ndc 0,8) */}
+      else if(sr.current._sub127){sr.current._sub127=null;sr.current._sub127p=null;}
       // [7.127.0] REGIA USCITA: la camera SEGUE l'eroe che cammina verso il dugout (altrimenti l'uscita resta fuori quadro)
       if(subExitT>=0){const _hx3=hero.position.x,_hz3=hero.position.z;
         tPx=_hx3-13;tPy=5.4;tPz=_hz3-12;// bassa, lato campo, segue l'eroe verso l'area tecnica
@@ -24006,6 +24283,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
         try{if(sr.current._tocc503)sr.current._tocc503.push('saliente689');}catch(_e){}
       }
       else if((isHL||P.matchPhase==="playing")&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO650)){if(!isHL&&tPz<16){try{if(sr.current._tocc503)sr.current._tocc503.push('tribuna-clamp650');}catch(_e650b){}tPz=16;}}/* [7.654.0 v2] il clamp resta solo sulla CRONACA in tribuna (z>=16): negli HL comanda la regia storica, come chiesto dal PO *//* [7.650.0 v3] IL VINCOLO E' L'ULTIMA PAROLA: misurato un residuo deterministico a z -5,2 (24 percento dei campioni hl sotto 16) scritto da una mano A VALLE dell'override (bisezione con soggetto oltre il piano tribuna) — il clamp sta dopo TUTTE le mani, prima di snap e lerp: da qui la camera non attraversa MAI */
+      /* [giro 127 PO-329] anche lo STACCO di un highlight accodato durante l'ingresso dalla panchina scatta sulla regia dell'ingresso:
+         misurato a 1440x900, lo snap portava la camera sul bersaglio dell'highlight e la scena congelata la teneva li' (eroe a ndc 1,3). */
+      if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
       if(sr.current._cutSnap||sr.current._sceneCut){try{if(sr.current._tocc503)sr.current._tocc503.push('snap');}catch(_e){}/* [7.503.1] */
         const _dSnap=Math.hypot(tPx-camera.position.x,tPy-camera.position.y,tPz-camera.position.z);
         const _no471=(typeof window!=='undefined'&&window.__CPM_NO471);const _nowMs471=performance.now();
@@ -24297,6 +24577,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          const _a=Math.atan2(_dz,_dx)+(Math.sign(_dz||1)*0.85);/* tre quarti: ~49 gradi fuori dall'asse del volo, cosi' la palla attraversa il quadro */
          tPx=_kp.x+Math.cos(_a)*11;tPz=_kp.z+Math.sin(_a)*11;tPy=3.6;tLx=_kp.x;tLy=1.25;tLz=_kp.z;
          _prc.cam=(_prc.cam|0)+1;}}
+      /* [giro 127 PO-329] la regia dell'ingresso dalla panchina ha l'ULTIMA parola prima dell'arbitro d'inerzia (regola 7.521): misurato,
+         le passate degli highlight che si accodano durante la scena spostavano lo sguardo e l'eroe finiva sul bordo del quadro (ndc ±0,8). */
+      if(subEntryT>=0&&sr.current._sub127&&!P.ceremony&&!P.shootout&&!replaying&&!(typeof window!=='undefined'&&window.__CPM_NO_G127)){const _s127=sr.current._sub127;tPx=_s127[0];tPy=_s127[1];tPz=_s127[2];tLx=_s127[3];tLy=_s127[4];tLz=_s127[5];}
 if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.current._tr42||[]).push('arb:'+tPx.toFixed(1)+','+tPy.toFixed(1)+','+tPz.toFixed(1)+'|'+tLx.toFixed(1)+','+tLz.toFixed(1));}catch(_e){}}/* [giro 42 testimone] */
             if(!(typeof window!=='undefined'&&window.__CPM_NO521A)&&!P.ceremony&&!P.shootout&&!replaying){
         const _in5=sr.current._iner521||(sr.current._iner521={px:tPx,py:tPy,pz:tPz,lx:tLx,ly:tLy,lz:tLz});
@@ -24534,7 +24817,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
          nello stesso fotogramma (r. ~7000) ma si esegue solo al fotogramma dopo (r. ~3633), quindi qui il pallone e' ancora dove l'aveva
          lasciato la cronaca — misurato fino a 46u dall'eroe — e la guardia girava lo sguardo verso un pallone che non c'e' piu' (scarto
          15-27u dal bersaglio dello snap, eroe fuori quadro per l'apertura). Dal fotogramma dopo la guardia lavora sul pallone vero. */
-      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&!(sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261))&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
+      if(isHL&&!_gCor50&&!P.ceremony&&!P.shootout&&!replaying&&(subEntryT<0||(typeof window!=='undefined'&&window.__CPM_NO_G127))/* [giro 127] durante l'ingresso dalla panchina la storia e' l'eroe: la guardia-palla dell'highlight accodato non ruota lo sguardo */&&!(sr.current._snapF261&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA261))&&!((sr.current._leg563|0)>0&&!(typeof window!=='undefined'&&window.__CPM_NO619))){/* [7.619.0 — LA GUARDIA-PALLA RISPETTA CHI HA GIA' SCRITTO. Rosso __CPM_NO619] COLLAUDO PO su 7.615 (SIT #21/#184): «5,8-6,4 inversioni/s — ultima passata: bisezione ~50% + lerp». L'audit regia aveva gia' nominato il buco: la guardia-palla consultava solo _gCor50 (la correzione di vista-reale) ma NON _leg563 — in un frame in cui la BISEZIONE ha agito (vista-reale tace per disciplina 7.563) la guardia-palla scriveva comunque camLook: e' la coppia bersaglio<->vista-resa che il 7.563 ha chiuso per l'eroe e che sul pallone restava aperta. Ora, se una rete di legalita' ha gia' scritto in questo frame, la palla aspetta il frame dopo — la stessa frase che il codice usa per l'eroe. ⚠️ NON MISURABILE a 7 fps (Nyquist, come 7.581/7.614): giudice il dispositivo, la cui bozza nomina l'ultima passata. */
         const _cxB=camera.position.x,_cyB=camera.position.y,_czB=camera.position.z;
         const _dxB=ball.position.x-_cxB,_dzB=ball.position.z-_czB,_dyB=(ball.position.y+0.2)-_cyB;
         const _lxB=camLook.x-_cxB,_lzB=camLook.z-_czB,_lyB=camLook.y-_cyB;

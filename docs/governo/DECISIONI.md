@@ -1110,3 +1110,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - catena/187-finale: 35 controlli, unico rosso `distanze-126` (non giudicato 13/24). Verdi fra gli altri highlight-95, partita-vera, career-critical, build web e store, audit-copyright.
 - Giro 135 (misura): una pagina sola, la folla a sagome costa 7-8% di fps e nessun secondo di partita; con tre pagine in parallelo, come nel guardiano, la scena dell'highlight scende da ~7,5 a ~3 fps negli stadi grandi e la partita passa da ~190-205 s a ~320-342 s (densità «oggi»: ~230-243 s). Il rosso è dello strumento (tetto fisso di 420 s di parete): sonda riparata, attende la fine partita, campione e soglie invariati. Rigioco completo sulla 187 in corso.
 - Decisione tecnica (madre): con distanze-126 verde la 187 esce con la densità «vera» scelta dal PO il 09/11 (ritirata «oggi» senza rilascio se il telefono soffre); il costo sotto carico va detto al PO con i numeri, la prova sul telefono decide.
+
+### 10/11 02:05 UTC — Rilascio 7.999.187
+- distanze-126 verde 24/24 sulla 187 con la sonda riparata (giro 135, 3422 s, tutte chiuse con «fine»). src/ invariato dopo la verifica. Decisione tecnica (madre): si pubblica. Chiuse PO-329, PO-330. Costi: verifica 1,92 $ (parziale, 2 avvii), giro 135 0,76 $ (parziale, 2 avvii).

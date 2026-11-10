@@ -74,6 +74,8 @@ jobs:
           # il progetto Android in twa/android/ NON va sul sito.
           mkdir -p _site/twa && cp twa/manifest-twa.webmanifest twa/icone/icon-maskable-192.png _site/twa/
           cp -r assets _site/
+          # [giro 129 PO-330] banco della folla da aprire sul telefono (studio 128 aggiornato): solo la pagina e il suo script.
+          mkdir -p _site/prototipi/folla-128 && cp prototipi/folla-128/banco.html prototipi/folla-128/folla-proto.js _site/prototipi/folla-128/
           # [7.999.11] radice e indirizzo storico servono la versione PRECOMPILATA (dist-web): stesso gioco, senza Babel nel browser
           cp dist-web/index.html _site/index.html
           cp dist-web/index.html _site/CARRIER-MANAGER-AV.html
