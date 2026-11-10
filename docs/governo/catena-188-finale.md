@@ -24,7 +24,11 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 18 | twa-120 | 0 | 42 |   OK  rosso: l'interruttore __CPM_NO_G120 fa cadere modo/AI/rete/Indietro: cadono modo, ai, rete, indietro su 4  twa-120 ✅ VERDE — 12/12 controlli · nessun motivo  | free=13577/16086MB df=29G libero |
 | 19 | sw-cache-120 | 0 | 91 | errori JS: nessuno  sw-cache-120 [rosso] ✅ — atteso: seconda apertura senza rete che NON monta (comportamento di prima)  | free=13431/16086MB df=29G libero |
 | 20 | albo-122 | 0 | 145 | ✅ verde: albo per lega, titoli solo del giocatore in cima, nei 3 formati ✅ rosso: con __CPM_NO_G122 il guardiano boccia l'albo di prima BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 6 (es. t360 · riepilogo assente (albo di prima))  | free=13151/16086MB df=29G libero |
+| 21 | intro-118 | 0 | 115 |   pc portiere: osso piu' basso max 0.000 (attaccante 0.047) · dopo tuffo y 0.000 · 163 campioni intro-118 VERDE BRACCIO: verde  | free=13057/16086MB df=29G libero |
+| 22 | altezza-114 | 0 | 459 | ✓ rosso 1440x900: 6 schermate fuori regola col rosso (menu, opzioni, offerte, calendario, passaggio-pro)  PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso  | free=13409/16086MB df=29G libero |
+| 23 | flussi-115 | 0 | 832 |  flussi-115 · 51 controlli · 1 OK · 50 NO · 0 non giudicati braccio ROSSO: atteso rosso — cade su tutti i 17 punti (50 controlli rossi)  | free=13277/16086MB df=29G libero |
+| 24 | collaudo-110 | 0 | 377 | G180-33: verde OK (3/3) · rosso n/a (non riproducibile) ✅ collaudo-110 OK braccio: verde+rosso · motivo: ogni difetto verde col codice nuovo e rosso con il suo interruttore  | free=13417/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 20 eseguiti, 20 verdi, 0 rossi.
+- Controlli: 24 eseguiti, 24 verdi, 0 rossi.
