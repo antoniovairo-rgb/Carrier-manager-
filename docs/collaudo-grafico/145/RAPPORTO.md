@@ -27,7 +27,7 @@ aspetta il contatto (entro 2,5) o la fine del volo.
 store per `__CPM_STORE_BUILD`): un blocco nuovo, una riga dopo l'armamento del tuffo, un azzeramento alla respinta. Nessun'altra
 riga cambia (`git diff` di `src/12`: +11 −2, le due righe tolte sono le stesse con l'aggiunta in coda). `node tools/build-src.mjs`
 e `node tools/check-src.mjs`: «IDENTICO BYTE PER BYTE». Prove di non regressione (gancio **spento**, il gate non lo accende):
-`validate-situations` **14/14, fingerprint 00001505, 0 failure** (707 s); `highlight-95` completo (default, gancio spento): braccio **verde finito** — 104 highlight, 14 parate giudicate, 0 non giudicabili, **difetti 0**; il braccio rosso era **ancora in corsa dopo 80 minuti** alla chiusura del giro (tetto delle 4 ore), quindi l'esito complessivo di `highlight-95` **non lo ho** e non lo dichiaro. Il verde, cioè il gioco col gancio spento, non mostra difetti.
+`validate-situations` **14/14, fingerprint 00001505, 0 failure** (707 s); `highlight-95` completo (default, gancio spento): **uscita 0**, «✅ highlight-95 verde (e il rosso si vede)», ~95 min: verde 104 highlight, 14 parate giudicate, 0 non giudicabili, **difetti 0**; rosso 110 highlight con D1/D3/D4 visibili (7 D4 senza esito).
 
 **Lo strumento (`contatto-103.mjs`, `highlight-95.mjs`).** `contatto-103` accende il gancio in **entrambi** i bracci (stessa
 geometria, cambia solo il rimedio); `CPM_G145GEO=0` lo spegne, `CPM_G145GEO=<n>` cambia lo scarto. `highlight-95` passa il numero
@@ -129,8 +129,7 @@ decisione che non ho preso.
 ## Note di metodo e cosa NON ho verificato
 
 - **Esecuzioni.** griglia-mobile: 1 prima + 1 dopo + 1 rosso (più 3 sonde di diagnosi del calendario). partita-vera: 1 prima + 1
-  dopo + 2 rossi (più 1 sonda di diagnosi). contatto-103: 1 solo-rosso + 2 complete. Gate una volta e `highlight-95` completo una volta (solo il
-  braccio verde arrivato in fondo), sul build col gancio.
+  dopo + 2 rossi (più 1 sonda di diagnosi). contatto-103: 1 solo-rosso + 2 complete. Gate una volta e `highlight-95` completo una volta , sul build col gancio.
 - **Durate** (macchina della sessione): griglia-mobile ~4 min; partita-vera ~6,5 min (prima e dopo); contatto-103 ~22-24 min la
   completa; `validate-situations` 707 s.
 - **Non eseguito:** la catena completa (`ci-runner`), né gli altri guardiani che usano `highlight-95` o `banco-g0`. partita-vera
@@ -141,6 +140,6 @@ decisione che non ho preso.
 ## Sintesi
 
 Tre strumenti su tre chiusi con verde + rosso che cade: `contatto-103` col gancio di prova `__CPM_G145GEO` nel gioco (solo
-cpmtest; gate 14/14 fingerprint 00001505, `highlight-95` verde 0 difetti, rosso non concluso nel tempo), `griglia-mobile` con la causa vera del `nomatch` misurata e stampata (salvataggio di
+cpmtest; gate 14/14 fingerprint 00001505, `highlight-95` completo uscita 0), `griglia-mobile` con la causa vera del `nomatch` misurata e stampata (salvataggio di
 prova + catena (H)→recupero 103 che conta due volte le stesse gare: osservazione per il PO), `partita-vera` col tabellone
 finalmente giudicato a partite finite e il non giudicato che esce 1.
