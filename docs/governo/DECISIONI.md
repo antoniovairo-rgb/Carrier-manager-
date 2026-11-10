@@ -1157,3 +1157,9 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 10:10 UTC — Risposte del PO sui giri 141 e 142
 - Curve 2D scambiate al secondo tempo «come nel 3D» (PO-345); Primavera quasi vuota «realistico»; marchio in sala stampa «nella 189» (PO-346, il pallone del titolo iniziale resta come stile); saluto del chiamato «Sì» (PO-347).
 - Decisione tecnica (madre): giro 143 su `sviluppo/giro143-curve2d` da `sviluppo/giro141-partita2d`; giro 144 su `sviluppo/giro144-saluto-marchio` da `sviluppo/giro142-presentazione`.
+
+### 10/11 12:30 UTC — Giri 138 e 139 finiti; giri 143, 144, 145 avviati
+- 138 (strumenti): festa-57, portiere-252, riserva-103, griglia-mobile riparati (tutti difetti dello strumento, nessuno del gioco). contatto-103 resta rosso: difetto del braccio rosso max 5,5 contro soglia 6. Decisione tecnica (madre): soglia invariata, gancio di prova nel gioco solo sotto cpmtest (giro 145). Nota: griglia-mobile ora esce 1 per un «NON misurato» (prepartita mai misurata): va reso misurabile prima della verifica 189 (giro 145, con partita-vera tabellone, PO-344). 13,19 $.
+- 139 (PO-315): doppio rigore riprodotto e corretto (`_piaz27`, rosso `__CPM_NO_G139`, guardiano rigore-139); highlight-95 interrotto al tetto, si rigioca nella verifica 189. 5,90 $.
+- Avviati: 143 curve 2D al secondo tempo (sopra 141), 144 saluto e marchio sala stampa (sopra 142b), 145 lotto strumenti 2 (sopra 138).
+- Sessioni archiviate.

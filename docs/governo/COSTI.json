@@ -670,5 +670,33 @@
     "cache_read_tokens": 16253295,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaAwKNd5dGRS3tfMgBq",
+    "titolo": "giro 138 lotto strumenti (festa-57, portiere-252, contatto-103, riserva-103, griglia-mobile)",
+    "versione": "7.999.189",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T06:51:49Z",
+    "chiusa": "2026-11-10T10:49:27Z",
+    "cost_usd": 13.1931583,
+    "output_tokens": 121653,
+    "cache_read_tokens": 41720657,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaBR8D1ZmCQHQpeKKZJ",
+    "titolo": "giro 139 doppio rigore (PO-315)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T06:51:50Z",
+    "chiusa": "2026-11-10T10:32:25Z",
+    "cost_usd": 5.89729236,
+    "output_tokens": 55718,
+    "cache_read_tokens": 16483402,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
