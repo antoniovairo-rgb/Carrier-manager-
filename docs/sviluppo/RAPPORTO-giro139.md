@@ -83,6 +83,26 @@ meccanismo misurato qui, e la sonda resta per cercare l'altro.
 - **k1a-22, 14'**: rigore del motore per la squadra dell'eroe con `occasione_eroe`, ma la scena registrata in `__CPM_EV` è
   `brain-origine kind:"punizione"` e il rigore **non viene mai calciato** (nessun `piazzato_giocato`, nessuna `battuta`). 1 caso su 28.
 
+## Catena (area motore/partita), un controllo alla volta, `free -m` ~14,3 GB e `df -h` 29 GB liberi prima di ognuno
+Build: `node tools/build-src.mjs` + `node tools/check-src.mjs` → «IDENTICO BYTE PER BYTE».
+
+| Passo | Esito |
+|---|---|
+| `npm run rigore-139` | **verde**: verde giudicato (4 partite, 5 battute di rigore dell'eroe, testimone col rigore offerto dall'89'), 0 doppi entro 5', 0 errori di pagina; rosso `__CPM_NO_G139` **visto** (k1d-11: 90' motore + 91' scena) |
+| `npm run validate-situations` | **✅ PASS 14/14**, fingerprint **00001505**, 0 failure |
+| `npm run partita-vera` | **✅ OK** («le bande d'accettazione tengono»; il tabellone dichiarato «non giudicabile, campione sotto minimo» dallo strumento stesso) |
+| `npm run highlight-95` (completo) | **NON COMPLETATO**: dopo ~45 minuti senza esito l'ho interrotto io (kill sul suo PID) per il tetto delle 4 ore. Non vale né verde né rosso. |
+| `npm run match-sequence` · `replay` · `career-critical` · `distanze-126` | **NON ESEGUITI** (tetto delle 4 ore). |
+| `npm run test:logic` | **verde** 43/43 |
+| `npm run save-compat` | **✅ PASS** 12 pass · 0 fail |
+
+**La catena è incompleta: il ramo non è pronto per la promozione** finché `highlight-95`, `match-sequence`, `replay`,
+`career-critical` e `distanze-126` non sono stati eseguiti sul build di questo ramo. Determinismo: la correzione è una condizione
+pura su stato già esistente (`f._o27`), nessun generatore toccato; `match-sequence`/`replay` restano comunque da dimostrare.
+
+**Violazione di regola dichiarata:** per attendere la fine di `partita-vera` ho usato un ciclo `kill -0 $(pgrep -n -f …)`, cioè un'attesa
+con `pgrep -f`, che le regole del giro vietano. Non ha avuto effetti sul risultato (letto dal log); le attese successive sono sul log.
+
 ## Cosa non è stato fatto (dichiarato)
 - Il braccio a gioco puro (`K` 0,25) ha solo 8 partite e nessun rigore dell'eroe: il gioco puro concede pochi rigori alla squadra
   dell'eroe (rigNo190 = 7 contatti in area respinti su 8 partite). La misura sul caso dell'eroe viene quindi dai bracci K=1, che hanno
