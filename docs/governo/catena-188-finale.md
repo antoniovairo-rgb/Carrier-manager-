@@ -41,7 +41,13 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 35 | scena3d-96-pc | 0 | 880 |  scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=13394/16086MB df=29G libero |
 | 36 | scena3d-96-tabv+tabo | 0 | 297 |  scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=13403/16086MB df=29G libero |
 | 37 | partita-vera | 0 | 506 |  ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   | free=13403/16086MB df=29G libero |
+| 38 | highlight-95 | 0 | 5728 |   · D3 s1/1234 «🌀 Roulette e tiro»: esito «Conclusione centrale» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.19,"sl":0.39,"bx":-21.7,"ck":25.850000000000232},"rr":null}   · D1 s1/1234 «🔁  | free=13413/16086MB df=29G libero |
+| 39 | career-critical-A | 0 | 510 | ✅ registro per stagione — alla stagione successiva la giornata torna legittima: {"matchday":34,"week":34,"opp":"FC Cesenate","type":null}  ✅ PASS — una giornata committata non può essere riproposta, e il registro sopravvive al reload  | free=13390/16086MB df=29G libero |
+| 40 | career-critical-B | 0 | 164 |  ✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.   | free=13067/16086MB df=29G libero |
+| 41 | build-web | 0 | 10 | flag build store (deve mancare nella build per il sito): ✅ assente  ✅ DIST OFFLINE FUNZIONANTE  | free=13189/16086MB df=29G libero |
+| 42 | build-dist | 0 | 11 | flag build store (feature AI off, 1.6): ✅ attivo  ✅ DIST OFFLINE FUNZIONANTE  | free=13095/16086MB df=29G libero |
+| 43 | audit-copyright | 0 | 11 | === GATE COPYRIGHT / DE-BRANDING === ✅ OK — nessun riferimento al mondo reale (club/leghe/competizioni/record/nomi).  | free=12797/16086MB df=29G libero |
 
-## Stato parziale
+## Esito
 
-- Controlli: 36 eseguiti, 35 verdi, 1 rossi: griglia-mobile.
+- Controlli: 42 eseguiti, 41 verdi, 1 rossi: griglia-mobile.
