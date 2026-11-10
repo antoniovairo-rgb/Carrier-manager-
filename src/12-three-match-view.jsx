@@ -176,6 +176,23 @@ function _guanti201(visual,hex){try{if(!visual||!hex||typeof THREE==='undefined'
     m.geometry=g;m.material=[mat0,mg];m.userData.guanti201=true;tot+=guanto.length/3;tutte+=(pelle.length+guanto.length)/3;});
   try{if(typeof window!=='undefined'&&tot){(window.__CPM_GUANTI201=window.__CPM_GUANTI201||[]).push(tot);(window.__CPM_GUANTI201Q=window.__CPM_GUANTI201Q||[]).push(+(tot/Math.max(1,tutte)).toFixed(3));}}catch(_e){}
   return tot;}catch(_e){return 0;}}
+/* [giro 142 PO-343 «nella presentazione della squadra sono tutti uguali»] L'ASPETTO DEL CORPO CGTRADER E' UNA FUNZIONE SOLA.
+   Variante di capelli (le quattro teste del pacchetto) e corporatura vivevano come chiusure dentro ThreeMatchView: la serata di
+   presentazione non poteva usarle e mostrava la testa di serie su tutti. Ora stanno qui, a livello di modulo, e la partita le chiama
+   uguali (stesso corpo delle funzioni di prima); le cerimonie applicano lo stesso aspetto con cgCapelli142. */
+function cgVarianteCapelli(hex){const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';}
+function cgCorporatura(visual,appearance){const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;}
+const _cgCapTex142=new Map(),_cgCapMat142=new Map();
+function cgCapelli142(visual,appearance){try{if(!visual||typeof THREE==='undefined')return null;const variant=cgVarianteCapelli(appearance&&appearance.hair);
+  const applica=(tex)=>{visual.traverse(m=>{if(!m.isMesh||!m.material)return;const src=Array.isArray(m.material)?m.material:[m.material];
+    const nx=src.map(b=>{if(!b||b.name!=='Material.002')return b;const k=b.uuid+'|'+variant;let mt=_cgCapMat142.get(k);if(!mt){mt=b.clone();mt.name='KorwardNativeHair_'+variant;mt.map=tex;mt.color.set(0xffffff);mt.needsUpdate=true;_cgCapMat142.set(k,mt);}return mt;});
+    m.material=Array.isArray(m.material)?nx:nx[0];});visual.userData.cpmNativeHair={variant,applied:1};};
+  let t=_cgCapTex142.get(variant);if(t&&t._ok142){applica(t);return variant;}
+  const im=(typeof window!=='undefined'&&window.__CPM_TESTE237)?window.__CPM_TESTE237[variant]:null;
+  if(im&&im.complete&&im.naturalWidth>0){t=new THREE.Texture(im);t.flipY=false;t.needsUpdate=true;t._ok142=true;_cgCapTex142.set(variant,t);applica(t);return variant;}
+  /* la testa resta quella del GLB finche' la mappa non e' arrivata (lezione PO-232: una mappa vuota col ritaglio alfa cancella la testa) */
+  new THREE.TextureLoader().load('./assets/hair-colors/source-textures/HEAD_hair_'+variant+'.png',lt=>{lt.flipY=false;lt.needsUpdate=true;lt._ok142=true;_cgCapTex142.set(variant,lt);applica(lt);});
+  visual.userData.cpmNativeHair={variant,applied:0,pending:true};return variant;}catch(_e){return null;}}
 function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
   if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
   const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
@@ -748,7 +765,12 @@ function ThreeMatchView(props){
     const _mkNumTex=(n,nm)=>{if(_numTexCache[n])return _numTexCache[n];
       const c=document.createElement('canvas');c.width=128;c.height=128;const x=c.getContext('2d');x.textAlign='center';x.lineJoin='round';
       x.font='bold 90px Arial, sans-serif';x.textBaseline='middle';x.lineWidth=10;x.strokeStyle='rgba(7,9,16,0.95)';x.strokeText(String(n),64,66);x.fillStyle='#ffffff';x.fillText(String(n),64,66);
-      const t=new THREE.CanvasTexture(c);_numTexCache[n]=t;return t;};
+      const t=new THREE.CanvasTexture(c);_numTexCache[n]=t;
+      /* [giro 147] i numeri di maglia salivano sulla scheda grafica al PRIMO DISEGNO (misurato col guardiano folla, GLB spento: 4 texture
+         128x128 a 2,4-5,2 s dall'avvio della scena e altre 5 a 11-17 s, una per giocatore che entra nel quadro). Col CH38 li carica gia' il
+         passo lento 7.999.16; senza CH38 nessuno. Ora si caricano qui, alla nascita. Rosso __CPM_NO_G147. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_G147)){try{renderer.initTexture(t);}catch(_e147){}}
+      return t;};
     const _mkNumPlane=(n,nm,w,h)=>new THREE.Mesh(new THREE.PlaneGeometry(w||0.5,h||0.5),new THREE.MeshBasicMaterial({map:_mkNumTex(n),transparent:true,side:THREE.DoubleSide,depthWrite:false}));// 5.49.14: aderente → non esce dalla sagoma · [7.132.0] solo numero
     // numerazione deterministica: GK=1, gli altri progressivi per squadra (l'eroe usa il suo numero reale)
     let _hN=2,_aN=2;const _heroN=heroNum||10;
@@ -1452,7 +1474,7 @@ function ThreeMatchView(props){
          mesh capelli separata: si sostituisce quindi soltanto la mappa del
          materiale testa, mai la geometria né l''incarnato a runtime. */
       const _cgtraderHairMaterialCache=new Map(),_cgtraderHairTextureCache=new Map(),_cgtraderHairLoader=new THREE.TextureLoader();
-      const _cgtraderHairVariant=hex=>{const c=new THREE.Color(hex||'#3a2410'),hsl={};c.getHSL(hsl);if(hsl.l<.11)return 'black';if(hsl.l>.49&&hsl.s>.28)return 'blond';if(hsl.h<.066&&hsl.s>.42)return 'auburn';return 'brown';};
+      const _cgtraderHairVariant=cgVarianteCapelli;/* [giro 142] stessa funzione delle cerimonie */
       const _cgtraderHairTexture=variant=>{const key=variant||'brown';if(_cgtraderHairTextureCache.has(key))return _cgtraderHairTextureCache.get(key);{/* [PO-237] testa gia' decodificata all'avvio (11-ui-kit, __CPM_TESTE237): pronta subito, niente secondo download/decodifica. Rosso __CPM_NO_PRE237 */const _im237=(typeof window!=='undefined'&&!window.__CPM_NO_PRE237&&window.__CPM_TESTE237)?window.__CPM_TESTE237[key]:null;if(_im237&&_im237.complete&&_im237.naturalWidth>0){const t237=new THREE.Texture(_im237);t237.flipY=false;if('colorSpace' in t237&&THREE.SRGBColorSpace)t237.colorSpace=THREE.SRGBColorSpace;t237.needsUpdate=true;t237._ok232=true;_cgtraderHairTextureCache.set(key,t237);return t237;}}const texture=_cgtraderHairLoader.load('./assets/hair-colors/source-textures/HEAD_hair_'+key+'.png',loaded=>{loaded.flipY=false;if('colorSpace' in loaded&&THREE.SRGBColorSpace)loaded.colorSpace=THREE.SRGBColorSpace;loaded.needsUpdate=true;loaded._ok232=true;_flushTeste232(key);},undefined,()=>{texture._ko232=true;_flushTeste232(key);});texture.flipY=false;if('colorSpace' in texture&&THREE.SRGBColorSpace)texture.colorSpace=THREE.SRGBColorSpace;_cgtraderHairTextureCache.set(key,texture);return texture;};
       /* [7.999.162 PO-232] LA TESTA SPARIVA FINCHE' LA SUA TEXTURE NON ERA ARRIVATA. Il materiale della testa (Material.002) riceveva subito
          la mappa dei capelli (PNG da ~2,5 MB) ancora vuota; three r128 nell'attesa campiona una texture nera con alfa 0, e il ritaglio
@@ -1463,7 +1485,7 @@ function ThreeMatchView(props){
       const _flushTeste232=key=>{const L=_testePend232.get(key);if(!L)return;_testePend232.delete(key);try{if(sr.current)sr.current._testePend232=Math.max(0,(sr.current._testePend232|0)-L.length);}catch(_e){}L.forEach(([v,a])=>{try{_applyCgtraderNativeHair(v,a);}catch(_e){}});};
       const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);if(!(typeof window!=='undefined'&&window.__CPM_NO_GLB232)&&!texture._ok232&&!texture._ko232){const L=_testePend232.get(variant)||[];L.push([visual,appearance]);_testePend232.set(variant,L);try{if(sr.current)sr.current._testePend232=(sr.current._testePend232|0)+1;}catch(_e){}visual.userData.cpmNativeHair={variant,applied:0,pending:true};return;}if(texture._ko232)return;let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
-      const _applyHyperBuild=(visual,appearance)=>{const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
+      const _applyHyperBuild=cgCorporatura;/* [giro 142] stessa funzione delle cerimonie */
       /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
          mesh HyperShirtPattern-* che questo codice accende (0 su 7 nodi), e la maglia veniva colorata in tinta unita (map=null): niente
          motivo, niente numero. Ora la maglia riceve una texture disegnata qui. LAYOUT MISURATO con una griglia di prova sul corpo
@@ -4882,6 +4904,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                respingeva a 7 dalla porta, a 10-40 unita' dal portiere (misurato con highlight-95: pallone mai entro 6 dal portiere su 4 assist
                «para il portiere»). Ora il tiro va sul portiere e la respinta parte dalle sue mani, sempre prima della linea. Rosso __CPM_NO_G95D3. */
             const _gk95=(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3))?awayGkMesh:null;
+            /* [giro 145 PO-319, SOLO SONDE ?cpmtest=1] __CPM_G145GEO (1 = 20 unita', oppure il numero): geometria forzata della parata del
+               compagno per il braccio rosso di contatto-103. Al primo fotogramma del tiro parato il portiere avversario si mette di lato al
+               pallone (dalla parte del centro, di __CPM_G145GEO unita' in z) e ci resta per tutto il volo; il suo tuffo parte sul posto.
+               E' la geometria in cui il difetto D3 di __CPM_NO_G103D (z che converge a 2,2 e respinta a u 0,72 dovunque sia il pallone) si
+               vede: col gioco corretto la z converge a 3,2 e la respinta aspetta il contatto. Fuori da cpmtest non esiste. Testimone
+               window.__CPM_G145W {n fotogrammi, scene}. */
+            if(_gk95&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_G145GEO){try{const _o145=(+window.__CPM_G145GEO>1)?+window.__CPM_G145GEO:20;
+              if(sr.current._g145z==null||hlPostArcT<(sr.current._g145t||0)){sr.current._g145z=clamp(ball.position.z+(ball.position.z>=0?-1:1)*_o145,-24,24);const _W=(window.__CPM_G145W=window.__CPM_G145W||{n:0,scene:0});_W.scene++;}
+              sr.current._g145t=hlPostArcT;_gk95.position.z=sr.current._g145z;window.__CPM_G145W.n++;}catch(_e145){}}
             if(_gk95){const _kz103=(typeof window!=='undefined'&&window.__CPM_NO_G103D)?2.2:3.2;ball.position.x+=((Math.min(_gk95.position.x-1.1,AWAY_GOAL_X-1.5))-ball.position.x)*aDt*3.2;ball.position.z+=(_gk95.position.z-ball.position.z)*aDt*_kz103;}
             else ball.position.x+=((AWAY_GOAL_X-(_isCh93?7:2))-ball.position.x)*aDt*3.2;}if(!_m298&&!(_isCh93&&awayGkMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D3)))ball.position.z*=(1-aDt*1.6);
           /* [giro 103 — scena3d-96 D11 nel verde di consegna-103: pc-gi18 3,1u in 0,05 s, scrittore esito:assist_shot dopo ricevente-pass] il
@@ -4892,14 +4923,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_dd<6&&_dd>_mx){ball.position.x=_ox+_dx/_dd*_mx;ball.position.y=_oy+_dy/_dd*_mx;ball.position.z=_oz+_dz/_dd*_mx;}}
           if(_m298){}
           else if(_isCh93&&_u3>=0.72){
-            if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);}
+            if(awayGkMesh&&!oppActType){oppActType="gk_dive";{try{if(typeof window!=='undefined'&&window.__CPM_REC){const _G=(window.__CPM_GK799=window.__CPM_GK799||[]);if(_G.length<200)_G.push({tag:"T4",t:(typeof ballArcT!=="undefined"&&ballArcT!=null)?+(+ballArcT).toFixed(2):null,act:(typeof ballArcActive!=="undefined"&&ballArcActive)?1:0,dur:(typeof ballArcDur!=="undefined"&&ballArcDur!=null)?+(+ballArcDur).toFixed(2):null});}}catch(_e799){}}oppActT=0;oppMesh=awayGkMesh;oppDiveDir=ball.position.z>=oppMesh.position.z?1:-1;oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;oppMesh._diveToZ=clamp(oppMesh.position.z+(ball.position.z-oppMesh.position.z)*0.55,oppMesh.position.z-6,oppMesh.position.z+6);if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_G145GEO)oppMesh._diveToZ=oppMesh.position.z;/* [giro 145] gancio di prova: tuffo sul posto */}
             /* [giro 103 — highlight-95 D3 verde nei rigiochi finali: HOWARD s12/7 «Uno-due», «para il portiere» col pallone a 6,0 dal
                portiere (5,8-6,1 in tutte le corse, con e senza le altre correzioni: scena sul filo della soglia 6)] il pallone convergeva sul
                portiere in x a 3,2/s ma in z a 2,2/s e la respinta partiva a u 0,72 dovunque fosse: col portiere spostato di lato restavano 5-6
                unita'. Ora la z converge come la x e la respinta aspetta il contatto (entro 2,5 dal portiere) o la fine del volo (u 1); il
                tuffo parte a 0,72 come prima. Rosso __CPM_NO_G103D. */
             if((typeof window!=='undefined'&&window.__CPM_NO_G103D)||!awayGkMesh||_u3>=1||Math.hypot(awayGkMesh.position.x-ball.position.x,awayGkMesh.position.z-ball.position.z)<2.5){
-            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;}}
+            hlPostArcType="deflect";hlPostVY=6;hlPostVZ=(Math.random()-0.5)*8;hlPostArcT=0;contactFlashT=0;if(_CPM_TEST)sr.current._g145z=null;/* [giro 145] fine del volo: la geometria di prova si libera */}}
           else{
             /* [7.407.0 collaudo PO gi118 «il portiere non tenta mai la parata» su assist] IL GOL DEL
                COMPAGNO MERITA UN TUFFO. Il tuffo era armato solo dal ramo CHANCE (la respinta lo esige);
@@ -9463,7 +9494,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             animOne(_cap23,_cT.x,_cT.z,aDt,ak,_cT.x,_cT.z);
             if(_cs137){_cap23.position.x=_cs137.x;_cap23.position.z=_cs137.z;}/* MISURATO: col modello d'inerzia di animOne, a fps bassi il capitano oscillava di 3-5u attorno al bersaglio (-1,4 -> -5,0 -> -6,8 in tre campioni). Qui cammina a passo d'uomo (1,6 u/s), la posizione la fissa la cerimonia come per le file */
             if(_fr137&&_bk!=="pass"){/* fronte camera: il capitano (sempre fuori dal passaggio) e l'eroe davanti al palco guardano l'obiettivo, non il palco (nei provini l'eroe mostrava la schiena) */
-              const _yc=((_bk==="lift"||_bk==="fest")&&!(typeof window!=='undefined'&&window.__CPM_NO_G132))?Math.atan2(podiumGrp.position.x-_cap23.position.x,podiumGrp.position.z-_cap23.position.z)/* [giro 132 · PO-332] mentre l'eroe alza la coppa il capitano, davanti al palco, si gira verso di lui: guardava la camera dando le spalle al podio (154°) */:Math.atan2(-_cSgn*10-_cap23.position.x,8-_cap23.position.z);_cap23.rotation.y=_yc;try{const _cA=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);if(_cA&&_cA.root)_cA.root.rotation.y=_yc;}catch(_eR){}
+              const _yc=((_bk==="lift"||_bk==="fest")&&!(typeof window!=='undefined'&&window.__CPM_NO_G132)&&(typeof window!=='undefined'&&window.__CPM_NO_G137C))/* [giro 137 · PO-339 «Guarda la camera»] decisione PO 10/11: durante lift e fest il capitano davanti al palco torna a guardare la CAMERA (com'era prima del giro 132); misurato 116-126° dalla camera col verso del 132. Il ramo verso il podio resta solo come rosso __CPM_NO_G137C */?Math.atan2(podiumGrp.position.x-_cap23.position.x,podiumGrp.position.z-_cap23.position.z)/* [giro 132 · PO-332] mentre l'eroe alza la coppa il capitano, davanti al palco, si gira verso di lui: guardava la camera dando le spalle al podio (154°) */:Math.atan2(-_cSgn*10-_cap23.position.x,8-_cap23.position.z);_cap23.rotation.y=_yc;try{const _cA=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);if(_cA&&_cA.root)_cA.root.rotation.y=_yc;}catch(_eR){}
               if(_bk==="present"||_bk==="captain"||_bk==="coach"){const _yh=Math.atan2(-_cSgn*10-hero.position.x,8-hero.position.z);hero.rotation.y=_yh;try{const _hA=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_hA&&_hA.root)_hA.root.rotation.y=_yh;}catch(_eR){}}}
             if(((_bk==="captain"&&_bp>0.15)||(_pa137&&_bk==="pass"&&_bp<0.6))&&!(typeof window!=="undefined"&&window.__CPM_NO_CAPALZA137)){try{sr.current._mateFx={mesh:_cap23,name:"lift",t:0.3};sr.current._capLift137=_cap23;_cap23._capVit137=true;sr.current._capMesh137=_cap23;}catch(_eL){}}else sr.current._capLift137=null;/* [giro 47 · PO-002 «il capitano alza la coppa»] MISURATO nei provini GLB: il capitano teneva la coppa all'altezza dei fianchi, il corpo non aveva gesto. Ora suona il gesto d'alzata dei compagni (canale unico _mateFx). Rosso __CPM_NO_CAPALZA137 */
             if(_bk==="captain"&&_bp>0.25){try{const _cAv=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);
@@ -9548,7 +9579,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _cmp=[];const _all=_cap23?[_cap23].concat(_cel):_cel.slice();
               _all.forEach((m,ci)=>{const av=(glbAvatars||[]).find(a=>a&&a.proc===m);const o=_ossa(av);if(!o||!o.sl||!o.sr||!(av.root&&av.root.visible!==false))return;const L=_wp(o.sl),R=_wp(o.sr);
                 const fx=(R.z-L.z),fz=-(R.x-L.x);/* davanti = Y x (destra - sinistra) = (dz, 0, -dx): verificato sull'eroe, che guarda la camera a 1° */const _fl=Math.hypot(fx,fz)||1;const tx=_px-(L.x+R.x)/2,tz=_pz-(L.z+R.z)/2,_tl=Math.hypot(tx,tz)||1;
-                const _ang=Math.acos(Math.max(-1,Math.min(1,(fx*tx+fz*tz)/(_fl*_tl))))*180/Math.PI;_cmp.push({c:m===_cap23?'cap':ci-(_cap23?1:0),ang:+_ang.toFixed(0),d:+_tl.toFixed(2)});});
+                const _ang=Math.acos(Math.max(-1,Math.min(1,(fx*tx+fz*tz)/(_fl*_tl))))*180/Math.PI;const _qx=camera.position.x-(L.x+R.x)/2,_qz=camera.position.z-(L.z+R.z)/2,_ql=Math.hypot(_qx,_qz)||1;/* [giro 137 · PO-339] anche l'angolo verso la CAMERA vera */_cmp.push({c:m===_cap23?'cap':ci-(_cap23?1:0),ang:+_ang.toFixed(0),cam:+(Math.acos(Math.max(-1,Math.min(1,(fx*_qx+fz*_qz)/(_fl*_ql))))*180/Math.PI).toFixed(0),d:+_tl.toFixed(2)});});
               _W132.fr.push({t:+_ct.toFixed(2),beat:_bk,bp:+_bp.toFixed(2),k:_ck422,eroe:_er,cmp:_cmp});}}catch(_e132){}}
           // coriandoli continui multicolore su tutto il campo
           if(!confActive||confMat.opacity<0.4){for(let i=0;i<CONF_N;i++){confPos[i*3]=(Math.random()-0.5)*62;confPos[i*3+1]=8+Math.random()*9;confPos[i*3+2]=(Math.random()-0.5)*38;confVel[i*3]=(Math.random()-0.5)*4;confVel[i*3+1]=-1-Math.random()*3;confVel[i*3+2]=(Math.random()-0.5)*4;}confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.95;confActive=true;
@@ -12400,7 +12431,8 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const tx=(m._num?m._num+' ':'')+nm,w=Math.min(250,x.measureText(tx).width+20);x.fillStyle='rgba(7,9,16,0.62)';
             if(x.roundRect){x.beginPath();x.roundRect(128-w/2,6,w,36,10);x.fill();}else x.fillRect(128-w/2,6,w,36);
             x.fillStyle=gold?'#f5c542':'#ffffff';x.fillText(tx,128,25);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
-            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp._w96=w/256;sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
+            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp._w96=w/256;sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});
+            if(!(typeof window!=='undefined'&&window.__CPM_NO_G147)){try{renderer.initTexture(t);}catch(_e147){}}/* [giro 147] la targhetta nasce nascosta e saliva sulla scheda grafica alla prima comparsa (7 texture 256x48 a 11-19 s, in pieno highlight): ora alla nascita. Rosso __CPM_NO_G147 */};
           (_R51.players||[]).forEach(pp=>{if(pp&&pp.mesh)_mk51(pp.mesh,false);});if(hero)_mk51(hero,true);}
         if(_R51._tag51){let _n51=0;const bx=ball?ball.position.x:0,bz=ball?ball.position.z:0;
           /* [7.999.102 collaudo PO 01/10 «nomi senza giocatori in campo»] con i corpi CGTrader si disegnano solo eroe, portiere e i 3 piu'

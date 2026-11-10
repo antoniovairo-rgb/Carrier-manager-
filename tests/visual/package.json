@@ -233,6 +233,7 @@
     "foto-v2-tappa4": "node foto-v2-tappa4.mjs",
     "foto-v2-tappa2": "node foto-v2-tappa2.mjs",
     "partita2d-297": "CPM_PROVA_ROSSO=1 node partita2d-297.mjs",
+    "partita2d-141": "CPM_PROVA_ROSSO=1 node partita2d-141.mjs",
     "spalti-109": "CPM_PROVA_ROSSO=1 node spalti-109.mjs",
     "freccia-107": "CPM_PROVA_ROSSO=1 node freccia-107.mjs",
     "collaudo-108": "node collaudo-108.mjs verde && node collaudo-108.mjs rosso",
@@ -424,6 +425,8 @@
     "neutro-287": "node neutro-287.mjs",
     "pagella-75": "node pagella-75.mjs",
     "rigore-79": "node rigore-79.mjs",
+    "sonda-rigore-139": "node sonda-rigore-139.mjs",
+    "rigore-139": "node rigore-139.mjs",
     "voto-79": "node voto-79.mjs",
     "livello-79": "node livello-79.mjs",
     "quota-190-vivo": "node quota-190-vivo.mjs",
@@ -578,7 +581,8 @@
     "camera-252": "node camera-252.mjs",
     "reazione-252": "node reazione-252.mjs",
     "intro-118": "node intro-118.mjs",
-    "panchina-127": "node panchina-127.mjs"
+    "panchina-127": "node panchina-127.mjs",
+    "presentazione-142": "node presentazione-142.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

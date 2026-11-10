@@ -1123,16 +1123,10 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
      somma quasi costante (i posti aggiunti in curva vengono tolti alle tribune, pesati per larghezza) → la
      affluenza dichiarata resta veritiera, cambia solo DOVE sta la gente. L'effetto scala con passione e fedeltà
      della piazza e si spegne sotto il 10% di riempimento (provini/amichevoli: nessun nucleo organizzato). */
-  const _pssC=((crowd.passion!=null?crowd.passion:(crowd.profile&&crowd.profile.passion))||60)/100;
-  const _loyC=((crowd.loyalty!=null?crowd.loyalty:(crowd.profile&&crowd.profile.loyalty))||60)/100;
-  const _bfC=Math.max(0,Math.min(1,crowd.fill||0));
-  const _ultrasOn=crowd.tier!=="trial"&&_bfC>=0.10;
-  const _curvaK=(0.40+0.34*_pssC)*(0.60+0.40*_loyC)*Math.max(0,Math.min(1,(_bfC-0.10)/0.25))*(_ultrasOn?1:0);
-  const _fillCurva=Math.min(1,_bfC+(1-_bfC)*_curvaK);
-  const _awBase=Math.max(0,Math.min(1,crowd.awayFill||0));
-  const _fillCurvaAw=Math.min(1,_awBase+(1-_awBase)*_curvaK*0.85);/* anche il settore ospiti è compatto (chi viaggia è il nucleo) */
-  const _movedC=(_fillCurva-_bfC)*sideW+(_fillCurvaAw-_awBase)*sideW*0.35;// posti spostati nelle curve
-  const _fillTrib=Math.max(0.03,_bfC-_movedC/(2*Math.max(1,endW)));// tolti equamente alle due tribune
+  /* [giro 141] la regola vive in settoriFolla141 (src/10): la stessa la leggono gli spalti della partita 2D */
+  const _SF141=settoriFolla141(crowd,sideW,endW);
+  const _pssC=_SF141.passion,_loyC=_SF141.loyalty,_bfC=_SF141.fill,_ultrasOn=_SF141.ultras,_curvaK=_SF141.curvaK;
+  const _fillCurva=_SF141.curvaCasa,_awBase=_SF141.away,_fillCurvaAw=_SF141.curvaOsp,_fillTrib=_SF141.tribuna;
   /* [giro 129 PO-330] FOLLA A SAGOME (rosso __CPM_NO_FOLLA129). Manopola di densita' per la ritirata se il telefono soffre:
      window.__CPM_FOLLA129_DENS o localStorage 'cpm-folla' = 'vera' (default, ~22.000 a 50k/85%) | 'oggi' (la griglia di prima, ~1/3). */
   const _F129=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO_FOLLA129)return null;

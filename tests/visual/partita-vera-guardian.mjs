@@ -14,8 +14,8 @@ const b = await launchBrowser();
 /* [7.684.0] DUE PARTITE, non una: vedi la nota sulla banda «catena-viva». Ognuna in un CONTESTO
    PULITO — riaprire la partita nella stessa pagina fa ritrovare al gioco la carriera salvata e la
    seconda gara non si apre piu' (misurato due volte: timeout su openMatch). */
-const PARTITE_G = +(process.env.CPM_PARTITE_G || 2);
-const all = []; const MENTE = []; const ROSA = []; const SCORE = []; const GOL785 = []; let page = null, ctx = null;
+const PARTITE_G = +(process.env.CPM_PARTITE_G || 2); const BLOCCHI_TETTO = +(process.env.CPM_PV_BLOCCHI || 30);
+const all = []; const MENTE = []; const ROSA = []; const SCORE = []; const GOL785 = []; const FINITE = []; let page = null, ctx = null;
 for (let g = 0; g < PARTITE_G; g++) {
   if (ctx) await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 915 } });
@@ -28,14 +28,25 @@ for (let g = 0; g < PARTITE_G; g++) {
   await page.addInitScript((rosso) => { window.__CPM_GLB = false; window.__CPM_TURN616 = {}; window.__CPM_NPD = []; window.__CPM_REC = true; window.__CPM_CARRIER641 = []; if (rosso) String(rosso).split(',').forEach(r => { window[r.trim()] = 1; }); }, process.env.CPM_ROSSO || null);/* [7.684.0] accetta piu' rossi separati da virgola: la banda «manovra-viva» copre due sistemi e per farla fallire vanno spenti entrambi *//* [7.643] +REC e +CARRIER641 */
   await openMatch(page, port, { skipLoadAll: true, name: 'Pv' });
   await page.evaluate((s2) => window.__CPM_AUTOPLAY(true, { seed: s2, policy: 'seeded', tickMs: 300 }), 7300 + g * 911);
-  for (let k = 0; k < 12; k++) { await sleep(20000);
+  /* [giro 145 PO-344] SI ATTENDE LA FINE DELLA PARTITA, non 240 s fissi. Misurato (giro 145): con l'autoplay a 300 ms la partita
+     arriva a `ended` in ~170-180 s; il libro mastro si svuota a blocchi (al piu' 20 s l'uno, come prima, per non far traboccare
+     l'anello) finche' __CPM_PHASE dice `ended`, con un tetto di 30 blocchi. Una partita che non finisce entro il tetto non entra nel
+     tabellone e lo rende non giudicabile (= rosso). CPM_PV_BLOCCHI=n abbassa il tetto: prova del rosso «non giudicato». */
+  let finita = false; const BLOCCHI = +(process.env.CPM_PV_BLOCCHI || 30);
+  for (let k = 0; k < BLOCCHI && !finita; k++) {
+    finita = await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'ended', null, { timeout: 20000, polling: 500 }).then(() => true).catch(() => false);
     const chunk = await page.evaluate(() => { const e = (window.__CPM_EV && window.__CPM_EV()) || []; if (window.__CPM_EV_RESET) window.__CPM_EV_RESET(); return e; });
     all.push(...chunk); }
+  FINITE.push(finita);
   /* [7.747.0] I TESTIMONI DELLA MENTE, per partita: la mente esegue (7.738), la riga descrive (7.739), il raccoglitore va sul pallone (7.743). */
   try { const w = await page.evaluate(() => ({ p: window.__CPM_PASSA738 || null, f: window.__CPM_FATTO739 || null, r: window.__CPM_RACC743 || null })); MENTE.push(w); } catch (_e) { MENTE.push({ p: null, f: null, r: null }); }
   /* [7.755.0] LA ROSA VERA: i cognomi dei 22 (e dell'eroe) di questa partita, per giudicare che ogni riga-fatto nomini uomini che esistono. */
   /* [7.756.0] IL TABELLONE: il punteggio finale del Match State di questa partita, per giudicare che i gol RACCONTATI siano esattamente quelli SEGNATI (§20: mai un gol inventato, mai un gol taciuto). */
-  try { const sc = await page.evaluate(() => { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && ms.score ? { h: ms.score.h | 0, a: ms.score.a | 0 } : null; }); if (sc) SCORE.push(sc); } catch (_e) {}
+  /* [giro 145 PO-344] IL PUNTEGGIO FINALE SI LEGGE DA __CPM_SCORE, e solo a partita finita. Misurato: __CPM_MS() vale null in tutti i
+     16 campioni di una partita intera (il Match State unico non viene scritto in questo flusso), quindi il tabellone era «0 partite»
+     a ogni corsa e la banda non e' mai stata giudicata. __CPM_SCORE legge lo stesso scoreRef (home/away) da cui il Match State
+     prendeva score.h/score.a. */
+  try { const sc = finita ? await page.evaluate(() => { const s = window.__CPM_SCORE && window.__CPM_SCORE(); return s ? { h: s.home | 0, a: s.away | 0 } : null; }) : null; if (sc) SCORE.push(sc); } catch (_e) {}
   /* [7.785.0] IL GOL DEL SIMULATORE ARRIVA A TABELLONE. Il registro dei punti di uscita conta i gol del
      micro-simulatore NATI e quelli MANGIATI prima dell'accredito. Per sei release ne spariva il 90% dentro
      la sequenza di libreria e nessuna banda se ne accorgeva, perche' tutte guardavano cio' che si vedeva e
@@ -85,7 +96,10 @@ const nomiOk = fattoRows.filter(r => _haNome(r.txt)).length;
 try { for (const r of fattoRows.filter(r => !_haNome(r.txt)).slice(0, 5)) console.log(`  · riga-fatto senza cognome della rosa: ${r.min}' [${r.mk || r.rk}] «${String(r.txt || '').slice(0, 100)}»`); } catch (_e) {}/* [7.870] la riga colpevole si stampa: un rosso senza il testo non si ripara */
 /* [7.756.0] TABELLONE COERENTE: i gol del libro mastro (ev 'goal', per lato) devono essere esattamente i gol del punteggio finale. */
 const esiti = all.filter(e => e.ev === 'esito');/* [7.762.0] ogni azione risolta dell'eroe lascia un evento «esito» (7.761): senza, i guardiani della storia sono ciechi sulle scene */
-const _golH = goals.filter(g => g.side === 'home').length, _golA = goals.filter(g => g.side !== 'home').length;
+/* [giro 145] CPM_PV_ROSSO_TAB=1 = prova del rosso dello strumento: si tace UN gol del libro mastro, il tabellone deve andare ❌ */
+if (process.env.CPM_PV_ROSSO_TAB === '1') { const i = all.findIndex(e => e.ev === 'goal'); if (i >= 0) all.splice(i, 1); }
+const goalsT = all.filter(e => e.ev === 'goal');
+const _golH = goalsT.filter(g => g.side === 'home').length, _golA = goalsT.filter(g => g.side !== 'home').length;
 const _scH = SCORE.reduce((a, s) => a + s.h, 0), _scA = SCORE.reduce((a, s) => a + s.a, 0);
 const checks = [
   ['turno-causale', `scritture causali ${causali}% (orologio ${orologio}/${totT})`, totT >= 8 ? causali >= 85 : null],
@@ -125,7 +139,7 @@ const checks = [
   ['riga-descrive', `${fattoRows.length} righe-fatto (${motoreOn ? 'fatti del motore gia\' avvenuti' : 'rk fatto739'}) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
   ['raccoglitore', `${mRacc} ${motoreOn ? 'recuperi/contrasti/intercetti del motore' : 'raccoglitori eletti'} su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
   ['esiti-registrati', `${esiti.length} esiti di scena nel libro mastro su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, esiti.length >= 2 * PARTITE_G],
-  ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
+  ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite (finite ${FINITE.filter(Boolean).length}/${PARTITE_G})`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
   ['gol-del-simulatore', (() => { const n = GOL785.reduce((x, g) => x + ((g.nato | 0)), 0), m = GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0), a = GOL785.reduce((x, g) => x + ((g.accreditato_casa | 0) + (g.accreditato_ospite | 0)), 0); return `${n} gol del microsim nati · ${a} accreditati · ${m} mangiati prima del tabellone`; })(), GOL785.length === PARTITE_G ? GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0) === 0 : null],
   ['nomi-veri', `${nomiOk}/${fattoRows.length} righe-fatto con un cognome della rosa (rosa ${_rosaSet.size} nomi)`, fattoRows.length >= 2 ? nomiOk === fattoRows.length : null],
 ];
@@ -135,11 +149,19 @@ console.log('\n=== GUARDIANO PARTITA-VERA ===\n');
   const _dd = CAR.filter(q => q.d != null).map(q => q.d).sort((a, c) => a - c);
   console.log(`  [info] portatore-stato: campioni ${CAR.length} · copertura ${CAR.length ? Math.round(_con / CAR.length * 100) : 0}% · dist mediana ${_dd.length ? _dd[_dd.length >> 1] : '?'}u · coda consegne ${JSON.stringify(CODA)}`);
 }
-let fail = 0;
+let fail = 0; const violate = [], nonGiud = [];
 for (const [nome, det, ok] of checks) {
-  const tag = ok === null ? '· non giudicabile (campione sotto minimo)' : ok ? '✅' : '❌';
-  if (ok === false) fail++;
+  /* [giro 145] regola PROCESSO.md «non giudicato = rosso»: una banda con campione sotto minimo non passa piu' in silenzio */
+  /* ambito del giro 145: la regola vale per il tabellone (l'unica banda misurata non giudicabile); le altre bande col campione sotto
+     minimo restano informative come prima, e lo si dichiara nella riga */
+  const rossoSeNull = nome === 'tabellone';
+  const tag = ok === null ? (rossoSeNull ? '❌ non giudicabile (campione sotto minimo = rosso)' : '· non giudicabile (campione sotto minimo, informativa)') : ok ? '✅' : '❌';
+  if (ok === false) violate.push(nome); else if (ok === null && rossoSeNull) nonGiud.push(nome);
   console.log(`  ${tag} ${nome} — ${det}`);
 }
-if (fail) { console.log(`\n❌ PARTITA-VERA: ${fail} banda/e violate — la release non parte.\n`); process.exit(1); }
+fail = violate.length + nonGiud.length;
+const braccio = [process.env.CPM_ROSSO ? 'rosso ' + process.env.CPM_ROSSO : 'verde', process.env.CPM_PV_ROSSO_TAB === '1' ? 'rosso-strumento tabellone' : '', process.env.CPM_PV_BLOCCHI ? 'tetto ' + BLOCCHI_TETTO + ' blocchi' : ''].filter(Boolean).join(' + ');
+if (fail) { console.log(`\n❌ PARTITA-VERA: ${violate.length} banda/e violate, ${nonGiud.length} non giudicate — la release non parte.\n`);
+  console.log(`ESITO partita-vera: uscita 1 · BRACCIO ${braccio} · MOTIVO ${[violate.length ? 'violate: ' + violate.join(', ') : '', nonGiud.length ? 'non giudicate (= rosso): ' + nonGiud.join(', ') : ''].filter(Boolean).join(' · ')}`); process.exit(1); }
 console.log('\n✅ PARTITA-VERA OK — le bande d\'accettazione tengono.\n');
+console.log(`ESITO partita-vera: uscita 0 · BRACCIO ${braccio} · MOTIVO tutte le ${checks.length} bande giudicate e tenute (partite finite ${FINITE.filter(Boolean).length}/${PARTITE_G})`);
