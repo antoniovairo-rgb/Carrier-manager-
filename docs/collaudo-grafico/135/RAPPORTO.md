@@ -44,4 +44,4 @@ s1 (stadio della Primavera) resta 146-196 s in tutti i bracci. La fase `playing`
 
 Prima corsa interrotta dal riavvio del contenitore dopo 9 partite (9 su 9 chiuse con `fine`, 169-345 s; log `distanze-126-corsa1-interrotta.log`): **non vale**, rifatta da capo.
 
-Seconda corsa: _in corsa_ (esito sotto).
+Seconda corsa, da capo sul build `653eb88` (= 7.999.187 + sonda riparata), log `distanze-126-187-completa.log`: **uscita 0 in 3422 s · partite finite 24/24, tutte chiuse con `fine` (nessuno stallo, nessun tetto) · VERDE**. Durata per partita 162-513 s; **6 partite su 24 sono durate più di 420 s** (s5 semi 3/4/5/6, s12 semi 1/2: 426-513 s) — con il tetto di prima sarebbero state dichiarate «non finite». Campione: tiri 59 (max 29 m, 0 oltre 30) · dal limite 17 (max 20,9 m, 0 oltre 22) · teste 11 (max 14 m, 0 oltre 16,5), tutti sopra il minimo 40/8/6.
