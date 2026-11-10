@@ -600,5 +600,19 @@
     "cache_read_tokens": 59018,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaCB1uzqXW9rgiTN8LM",
+    "titolo": "verifica finale 7.999.188",
+    "versione": "7.999.188",
+    "tipo": "catena",
+    "modello": "claude-sonnet-5-5",
+    "creata": "2026-11-10T01:50:12Z",
+    "chiusa": "2026-11-10T08:10:59Z",
+    "cost_usd": 1.48021788,
+    "output_tokens": 14879,
+    "cache_read_tokens": 6924454,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]

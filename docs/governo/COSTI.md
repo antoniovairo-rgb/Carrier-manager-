@@ -46,6 +46,9 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.188 | giro 134 privacy dentro l app e poi nel pulsante amichevole (PO-334, PO-335) | sviluppo | claude-opus-5-5 | 0,6 | 4,05 $ | 36451 | 1 | completo (un solo avvio) |
 | 7.999.187 | verifica finale 7.999.187 | catena | claude-sonnet-5-5 | 5,9 | 1,93 $ | 20357 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.187 | giro 135 sonda distanze-126 e costo della folla | collaudo | claude-opus-5-5 | 2,5 | 0,76 $ | 7676 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.188 | giro 136 riconciliazione del backlog | collaudo | claude-opus-5-5 | 0,8 | 3,63 $ | 26856 | 1 | completo (un solo avvio) |
+| 7.999.189 | giro 142 (fermato dopo 1 minuto, rilanciato come 142b) | sviluppo | claude-opus-5-5 | 0,0 | 0,52 $ | 290 | 1 | completo (un solo avvio) |
+| 7.999.188 | verifica finale 7.999.188 | catena | claude-sonnet-5-5 | 6,3 | 1,48 $ | 14879 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -54,4 +57,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.185 | **TOTALE 7.999.185** (4 sessioni) |  |  |  | 18,18 $ |  |  | tutte complete |
 | 7.999.186 | **TOTALE 7.999.186** (9 sessioni) |  |  |  | almeno 24,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
-| 7.999.188 | **TOTALE 7.999.188** (4 sessioni) |  |  |  | 17,50 $ |  |  | tutte complete |
+| 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
+| 7.999.189 | **TOTALE 7.999.189** (1 sessioni) |  |  |  | 0,52 $ |  |  | tutte complete |

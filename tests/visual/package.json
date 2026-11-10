@@ -7,6 +7,8 @@
   "scripts": {
     "lineetta-181": "node lineetta-181.mjs",
     "altezza-114": "node altezza-114.mjs",
+    "prossima-131": "node prossima-131.mjs",
+    "privacy-134": "node privacy-134.mjs",
     "albo-122": "node albo-122.mjs",
     "twa-120": "node twa-120.mjs",
     "sw-cache-120": "node ../../tools/build-dist.mjs --web && node sw-cache-120.mjs && CPM_ROSSO=1 node sw-cache-120.mjs",
@@ -537,6 +539,7 @@
     "assist-298": "node assist-298.mjs",
     "highlight-95": "node highlight-95.mjs",
     "scena3d-96": "node scena3d-96.mjs",
+    "premiazione-132": "node premiazione-132.mjs",
     "esiti-96": "node esiti-96.mjs",
     "assist-nome-98": "node assist-nome-98.mjs",
     "chiusura-99": "node chiusura-99.mjs",

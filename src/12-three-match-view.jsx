@@ -103,7 +103,7 @@ function _tiro34Prep(anims){try{const c=anims.find(a=>a&&a.name==='mx-strike-fow
   for(let k=0;k<n;k++)D[k]=((v[3*k]-x0)*ex+(v[3*k+2]-z0)*ez)/el;for(let k=0;k<n;k++){v[3*k]=x0;v[3*k+2]=z0;}
   c._root34={T:Float32Array.from(T),D:D,y0:v[1]};return true;}catch(e){return false;}}
 function _tiro34D(r,t){const T=r.T,D=r.D,n=T.length;if(t<=T[0])return D[0];if(t>=T[n-1])return D[n-1];let k=1;while(k<n-1&&T[k]<t)k++;const u=(t-T[k-1])/Math.max(1e-4,T[k]-T[k-1]);return D[k-1]+(D[k]-D[k-1])*u;}
-var _PIEDE31=null;var _PUGNO32=false;var _FESTA61=false;/* [7.999.61] festa leggera di fine partita in corso: l'esultanza e' mx-victory *//* [7.999.32] il piano d'esultanza in corso e' quello sobrio (quiet): la clip e' il pugno */
+var _PIEDE31=null;var _PUGNO32=false;var _FESTA61=false;var _PREM132=false;/* [giro 132] premiazione col trofeo in corso: l'alzata dell'eroe e' mx-victory *//* [7.999.61] festa leggera di fine partita in corso: l'esultanza e' mx-victory *//* [7.999.32] il piano d'esultanza in corso e' quello sobrio (quiet): la clip e' il pugno */
 /* [7.999.32 — L'ATTESA IN DIFESA. Idea del PO (27/09): «Goalkeeper Idle potrebbe essere sfruttato per la posizione di attesa in difesa».
    Rosso __CPM_NO_ATTESA32.] Ogni corpo di movimento ha DUE pose ferme: quella normale (`idle`) e l'attesa difensiva (gambe piegate,
    braccia avanti). Durante una scena difende la squadra senza palla — gli avversari se l'eroe attacca, i suoi compagni se la scena e'
@@ -136,6 +136,7 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   let v=(a._gVar&&a._gVar[want])||[base];
   /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
   if(want==='lift'&&v.length>1&&a.proc&&a.proc._capVit137&&!(typeof window!=='undefined'&&window.__CPM_NO_CAPALZA137)){const vi=v.filter(x=>_nm(x)==='mx-victory');if(vi.length)return _segna(vi[0]);}/* [giro 47 · PO-002] il CAPITANO che alza la coppa usa sempre le braccia al cielo: il sorteggio poteva dargli il pugno solo (mani a 1,62 contro 2,07) */
+  if(want==='lift'&&v.length>1&&ai===0&&_PREM132&&!(typeof window!=='undefined'&&window.__CPM_NO_G132)){const vi=v.filter(x=>_nm(x)==='mx-victory');if(vi.length)return _segna(vi[0]);}/* [giro 132 · PO-332 «braccia a T anziche' alzate»] MISURATO (testimone __CPM_G132, corpi 3D): nella premiazione col trofeo il sorteggio escludeva mx-victory (riservata alla festa leggera) e l'eroe suonava mx-victory-jump, congelata al 45% — il punto tarato nel 7.999.118 su mx-victory: mani 0,34 SOTTO la testa, braccia aperte. Col trofeo l'alzata e' sempre mx-victory, come per il capitano. Rosso __CPM_NO_G132 */
   if(want==='lift'&&v.length>1){const vi=v.filter(x=>_nm(x)==='mx-victory');if(_FESTA61&&vi.length&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA61)){v=vi;}else{const pu=v.filter(x=>_nm(x)==='mx-fist-pump'),al=v.filter(x=>_nm(x)!=='mx-fist-pump'&&_nm(x)!=='mx-victory');v=(_PUGNO32&&pu.length)?pu:(al.length?al:v);}}/* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre · [7.999.61 collaudo PO «il festeggiamento post partita usa un'animazione scoordinata, e' tutto accartocciato l'eroe»] nella festa leggera la clip e' mx-victory (braccia al cielo, quella del gala') invece del salto in loop, che passa quasi tutto il tempo rannicchiato. Rosso __CPM_NO_FESTA61 *//* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre */
   if(lato&&(want==='dive'||want==='block')&&!(typeof window!=='undefined'&&window.__CPM_NO_LATO23)){const pool=v.filter(x=>_LATO23[_nm(x)]===lato);if(pool.length)v=pool;}
   if(ai===0&&_PIEDE31&&v.length>1&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31)){const pool=v.filter(x=>_PIEDE_CLIP31[_nm(x)]===_PIEDE31);
@@ -9462,7 +9463,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             animOne(_cap23,_cT.x,_cT.z,aDt,ak,_cT.x,_cT.z);
             if(_cs137){_cap23.position.x=_cs137.x;_cap23.position.z=_cs137.z;}/* MISURATO: col modello d'inerzia di animOne, a fps bassi il capitano oscillava di 3-5u attorno al bersaglio (-1,4 -> -5,0 -> -6,8 in tre campioni). Qui cammina a passo d'uomo (1,6 u/s), la posizione la fissa la cerimonia come per le file */
             if(_fr137&&_bk!=="pass"){/* fronte camera: il capitano (sempre fuori dal passaggio) e l'eroe davanti al palco guardano l'obiettivo, non il palco (nei provini l'eroe mostrava la schiena) */
-              const _yc=Math.atan2(-_cSgn*10-_cap23.position.x,8-_cap23.position.z);_cap23.rotation.y=_yc;try{const _cA=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);if(_cA&&_cA.root)_cA.root.rotation.y=_yc;}catch(_eR){}
+              const _yc=((_bk==="lift"||_bk==="fest")&&!(typeof window!=='undefined'&&window.__CPM_NO_G132))?Math.atan2(podiumGrp.position.x-_cap23.position.x,podiumGrp.position.z-_cap23.position.z)/* [giro 132 · PO-332] mentre l'eroe alza la coppa il capitano, davanti al palco, si gira verso di lui: guardava la camera dando le spalle al podio (154°) */:Math.atan2(-_cSgn*10-_cap23.position.x,8-_cap23.position.z);_cap23.rotation.y=_yc;try{const _cA=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);if(_cA&&_cA.root)_cA.root.rotation.y=_yc;}catch(_eR){}
               if(_bk==="present"||_bk==="captain"||_bk==="coach"){const _yh=Math.atan2(-_cSgn*10-hero.position.x,8-hero.position.z);hero.rotation.y=_yh;try{const _hA=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_hA&&_hA.root)_hA.root.rotation.y=_yh;}catch(_eR){}}}
             if(((_bk==="captain"&&_bp>0.15)||(_pa137&&_bk==="pass"&&_bp<0.6))&&!(typeof window!=="undefined"&&window.__CPM_NO_CAPALZA137)){try{sr.current._mateFx={mesh:_cap23,name:"lift",t:0.3};sr.current._capLift137=_cap23;_cap23._capVit137=true;sr.current._capMesh137=_cap23;}catch(_eL){}}else sr.current._capLift137=null;/* [giro 47 · PO-002 «il capitano alza la coppa»] MISURATO nei provini GLB: il capitano teneva la coppa all'altezza dei fianchi, il corpo non aveva gesto. Ora suona il gesto d'alzata dei compagni (canale unico _mateFx). Rosso __CPM_NO_CAPALZA137 */
             if(_bk==="captain"&&_bp>0.25){try{const _cAv=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);
@@ -9509,6 +9510,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             animOne(m,_mx,_mz,aDt,ak,_mx,_mz);
             if(_fila24){m.position.x=_mx;m.position.z=_mz;try{const _pw=window.__CPM_PREM24||(window.__CPM_PREM24={});const _v=Math.hypot(_mx-_px24,_mz-_pz24)/Math.max(aDt,1e-3);if(ci===0)_pw.vMax=0;_pw.vMax=Math.max(_pw.vMax||0,+_v.toFixed(2));}catch(_e){}}
             if(_team23)m.rotation.y=Math.atan2(-_cSgn*10-m.position.x,8-m.position.z);
+            /* [giro 132 · PO-332 «compagni di squadra rivolti dal lato opposto»] MISURATO (testimone __CPM_G132, angolo fra il davanti
+               delle spalle e il podio): 46-89° per sei compagni su otto, fino a 154°. La rotazione qui sopra e' del modello PROCEDURALE,
+               nascosto sotto il corpo 3D, che gira SOLO col movimento: le file sono fisse, quindi ogni corpo restava col verso
+               dell'ultimo passo. Il corpo 3D di ogni compagno ora guarda il centro del podio. Rosso __CPM_NO_G132. */
+            if(_team23&&!(typeof window!=='undefined'&&window.__CPM_NO_G132)){try{const _av=(m._av132&&m._av132.proc===m&&glbAvatars&&glbAvatars.indexOf(m._av132)>=0)?m._av132:(m._av132=(glbAvatars||[]).find(a=>a&&a.proc===m)||null);
+              const _fy=Math.atan2(podiumGrp.position.x-m.position.x,podiumGrp.position.z-m.position.z);m.rotation.y=_fy;if(_av&&_av.root)_av.root.rotation.y=_fy;}catch(_e132){}}
             /* [7.429.0 collaudo PO — un compagno mezzo AFFONDATO nel podio negli screenshot] il viaggio
                verso l'arco della consegna puo' attraversare il cilindro: spinta radiale fuori dal palco */
             if(podiumGrp.visible&&podiumGrp._rett24){/* [7.997.0] palco rettangolare: spinta fuori dal rettangolo (nel suo riferimento) */
@@ -9523,6 +9530,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_role==="applaude"&&_bk!=="curva"){m.position.y=Math.abs(Math.sin(_ph))*0.08;const _cl=Math.sin(_ct*7+ci)>0?0.5:0.95;m._aL.rotation.x=-_cl;m._aR.rotation.x=-_cl;m._aL.rotation.z=0.15;m._aR.rotation.z=-0.15;if(m._lR)m._lR.rotation.x=0;}
             else if(_role==="abbraccia"&&(_bk==="hug"||_bk==="coach")){m.position.y=0;m._aL.rotation.x=-1.5;m._aR.rotation.x=-1.5;m._aL.rotation.z=0.4;m._aR.rotation.z=-0.4;if(m._lR)m._lR.rotation.x=0;m.rotation.y=Math.atan2(hero.position.x-m.position.x,hero.position.z-m.position.z);}
             else{const _cj=(_bk==="curva")?0.34:0.22;m._aL.rotation.x=-2.0;m._aR.rotation.x=-2.0;m._aL.rotation.z=-0.3;m._aR.rotation.z=0.3;m.position.y=Math.abs(Math.sin(_ph))*_cj;if(m._lR)m._lR.rotation.x=0;}});
+          /* [giro 132 · PO-332 «braccia a T anziche' alzate e compagni rivolti dal lato opposto»] TESTIMONE (solo sotto test): per
+             l'eroe la quota delle MANI vere rispetto alla TESTA e ai piedi; per ogni compagno l'angolo fra il DAVANTI del corpo 3D
+             (dalle spalle: su = Y, davanti = Y x (destra - sinistra)) e la direzione del podio. Si legge dalle ossa, non dalla
+             rotazione del modello procedurale, che sotto il corpo 3D non si vede. */
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _W132=window.__CPM_G132||(window.__CPM_G132={fr:[]});
+            if(_W132.fr.length<600){const _bn=(r,re)=>{let f=null;r.traverse(o=>{if(!f&&o.isBone&&re.test(o.name||""))f=o;});return f;};
+              const _ossa=(av)=>{if(!av||!av.root)return null;if(av._oss132&&av._oss132.r===av.root)return av._oss132;const r=av.root;av._oss132={r,
+                sl:_bn(r,/(LeftArm$|^upperarm_l$)/i),sr:_bn(r,/(RightArm$|^upperarm_r$)/i),hl:_bn(r,/(LeftHand$|^hand_l$)/i),hr:_bn(r,/(RightHand$|^hand_r$)/i),hd:_bn(r,/(Head$|^head$)/),fl:_bn(r,/(LeftFoot$|^foot_l$)/i),fr:_bn(r,/(RightFoot$|^foot_r$)/i)};/* ^…$: le ossa ik_hand_l/ik_foot_l del corpo nuovo sono IK statiche, non le mani */return av._oss132;};
+              const _wp=(b)=>b?new THREE.Vector3().setFromMatrixPosition(b.matrixWorld):null;
+              const _px=podiumGrp.visible?podiumGrp.position.x:0,_pz=podiumGrp.visible?podiumGrp.position.z:0;
+              const _hA=(glbAvatars||[]).find(a=>a&&a.proc===hero),_ho=_ossa(_hA);let _er=null;
+              if(_ho){const L=_wp(_ho.hl),R=_wp(_ho.hr),H=_wp(_ho.hd),FL=_wp(_ho.fl),FR=_wp(_ho.fr);
+                if(L&&R&&H){const _pie=(FL&&FR)?Math.min(FL.y,FR.y):hero.position.y;_er={maniSuTesta:+(Math.min(L.y,R.y)-H.y).toFixed(2),maniSuPiedi:+(Math.min(L.y,R.y)-_pie).toFixed(2),testaSuPiedi:+(H.y-_pie).toFixed(2),apert:+L.distanceTo(R).toFixed(2),
+                  angCam:(()=>{const SL=_wp(_ho.sl),SR=_wp(_ho.sr);if(!SL||!SR)return null;const fx=(SR.z-SL.z),fz=-(SR.x-SL.x),tx=camera.position.x-hero.position.x,tz=camera.position.z-hero.position.z;return +(Math.acos(Math.max(-1,Math.min(1,(fx*tx+fz*tz)/((Math.hypot(fx,fz)||1)*(Math.hypot(tx,tz)||1)))))*180/Math.PI).toFixed(0);})(),clip:_hA._gName||null,peso:_hA._gAct?+(_hA._gAct.getEffectiveWeight()).toFixed(2):null,tC:_hA._gAct?+((_hA._gAct.time||0)/((_hA._gAct.getClip().duration)||1)).toFixed(2):null,cl:sr.current._cerLift,nm:(_hA._gAct&&_hA._gAct.getClip().name)||null};}
+                else _er={ossa:[!!_ho.hl,!!_ho.hr,!!_ho.hd]};}
+              const _cmp=[];const _all=_cap23?[_cap23].concat(_cel):_cel.slice();
+              _all.forEach((m,ci)=>{const av=(glbAvatars||[]).find(a=>a&&a.proc===m);const o=_ossa(av);if(!o||!o.sl||!o.sr||!(av.root&&av.root.visible!==false))return;const L=_wp(o.sl),R=_wp(o.sr);
+                const fx=(R.z-L.z),fz=-(R.x-L.x);/* davanti = Y x (destra - sinistra) = (dz, 0, -dx): verificato sull'eroe, che guarda la camera a 1° */const _fl=Math.hypot(fx,fz)||1;const tx=_px-(L.x+R.x)/2,tz=_pz-(L.z+R.z)/2,_tl=Math.hypot(tx,tz)||1;
+                const _ang=Math.acos(Math.max(-1,Math.min(1,(fx*tx+fz*tz)/(_fl*_tl))))*180/Math.PI;_cmp.push({c:m===_cap23?'cap':ci-(_cap23?1:0),ang:+_ang.toFixed(0),d:+_tl.toFixed(2)});});
+              _W132.fr.push({t:+_ct.toFixed(2),beat:_bk,bp:+_bp.toFixed(2),k:_ck422,eroe:_er,cmp:_cmp});}}catch(_e132){}}
           // coriandoli continui multicolore su tutto il campo
           if(!confActive||confMat.opacity<0.4){for(let i=0;i<CONF_N;i++){confPos[i*3]=(Math.random()-0.5)*62;confPos[i*3+1]=8+Math.random()*9;confPos[i*3+2]=(Math.random()-0.5)*38;confVel[i*3]=(Math.random()-0.5)*4;confVel[i*3+1]=-1-Math.random()*3;confVel[i*3+2]=(Math.random()-0.5)*4;}confGeo.attributes.position.needsUpdate=true;confMat.opacity=0.95;confActive=true;
             /* [7.422.0] il COLORE dei coriandoli e' la firma: scudetto = i colori del club che si
@@ -9552,7 +9579,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   kicker (eroe sui tuoi, un avversario vero sui loro), volo palla in rete/parata/fuori, tuffo del
         //   portiere COERENTE con l'esito (sul gol si butta dal lato sbagliato, sulla parata VA sulla palla),
         //   squadre schierate a centrocampo. Solo presentazione (fase dedicata, gate-cieco → collaudo dal vivo).
-        _FESTA61=!!(P.ceremony&&P.ceremony.light);/* [7.999.61] la scelta della clip d'esultanza legge questo prima del ciclo degli avatar */
+        _FESTA61=!!(P.ceremony&&P.ceremony.light);_PREM132=!!(P.ceremony&&!P.ceremony.light&&ceremonyT>=0);/* [7.999.61] la scelta della clip d'esultanza legge questo prima del ciclo degli avatar */
         if(P.shootout){
           const _bl=sr.current.ball;const _k=P.shootout.kick;
           /* [7.999.58 collaudo PO «i rigori non si vedono bene, non si vede il tiratore e il portiere non si tuffa ma si sposta un po'
@@ -11875,6 +11902,13 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
           const _mf=sr.current._mateFx;const _chi31=[];
           if(sr.current._celLift371===1&&hero)_chi31.push(hero);
           if(_mf&&_mf.name==='lift'&&_mf.mesh)_chi31.push(_mf.mesh);
+          /* [giro 132 · PO-332 «nella premiazione braccia a T anziche' alzate»] RETE DELL'ALZATA. Sul corpo CGTrader col pacchetto
+             Mixamo la clip giusta e' mx-victory (vedi _scegliGesto23); ma l'alzata dipende da una clip che puo' mancare o non
+             attecchire — MISURATO sul corpo «regular» (che non ha le clip Mixamo): `throwin` congelata, mani 0,60-0,68 SOTTO la
+             testa, e la foto del PO mostra lo stesso. Qui, dopo il mixer, se l'eroe col trofeo ha le mani sotto la testa le braccia
+             si PUNTANO in alto (strette, a reggere la coppa, senza i pugni ritmati dell'esultanza). Rosso __CPM_NO_G132. */
+          const _rete132=!!(hero&&sr.current._cerLift===1&&_PREM132&&!(typeof window!=='undefined'&&window.__CPM_NO_G132));
+          if(_rete132&&_chi31.indexOf(hero)<0)_chi31.push(hero);
           for(const _av of (glbAvatars||[])){if(!_av||!_av.proc)continue;const _in31=_chi31.indexOf(_av.proc)>=0,_clip31=!!(_av.gestures&&_av.gestures.lift),_want=_in31&&!_clip31;
             _av._esu31=(_av._esu31||0)+((_want?1:0)-(_av._esu31||0))*Math.min(aDt*7,1);const _k=_clip31&&_in31?1:_av._esu31;if(_k<0.02)continue;
             try{const R=_av.visualRoot||_av.root;
@@ -11883,11 +11917,15 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
               const B=_av._b31;if(!B)continue;
               const v=sr.current._v31||(sr.current._v31={a:new THREE.Vector3(),b:new THREE.Vector3(),d:new THREE.Vector3(),lat:new THREE.Vector3(),t:new THREE.Vector3(),q:new THREE.Quaternion(),pw:new THREE.Quaternion()});
               R.updateMatrixWorld(true);B.uL.getWorldPosition(v.a);B.uR.getWorldPosition(v.b);v.lat.subVectors(v.a,v.b);v.lat.y=0;if(v.lat.lengthSq()<1e-8)continue;v.lat.normalize();
-              _av._ph31=(_av._ph31||0)+aDt*9;const _pump=0.12*Math.sin(_av._ph31);
+              _av._ph31=(_av._ph31||0)+aDt*9;const _pump=(_rete132&&_av.proc===hero)?0:0.12*Math.sin(_av._ph31);/* [giro 132] chi regge la coppa non batte i pugni */
               const aim=(bone,child,side)=>{bone.updateMatrixWorld(true);bone.getWorldPosition(v.a);child.getWorldPosition(v.b);v.d.subVectors(v.b,v.a).normalize();
                 v.t.set(0,1,0).addScaledVector(v.lat,side*(0.42+_pump)).normalize();const dir=v.d.clone().lerp(v.t,_k).normalize();v.q.setFromUnitVectors(v.d,dir);
                 bone.parent.updateMatrixWorld(true);bone.parent.getWorldQuaternion(v.pw);bone.quaternion.copy(v.pw.clone().invert().multiply(v.q).multiply(v.pw).multiply(bone.quaternion.clone()));bone.updateMatrixWorld(true);};
-              if(!_clip31){aim(B.uL,B.lL,1);aim(B.lL,B.hL,1);aim(B.uR,B.lR,-1);aim(B.lR,B.hR,-1);}/* con la clip vera le braccia le muove lei: qui si misura soltanto */
+              let _sotto132=false;if(_rete132&&_av.proc===hero){if(_av._hd132===undefined)_av._hd132=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i)||null;
+                if(_av._hd132){_av._hd132.getWorldPosition(v.a);B.hL.getWorldPosition(v.b);const _yl=v.b.y;B.hR.getWorldPosition(v.b);_sotto132=Math.min(_yl,v.b.y)<v.a.y+0.15;}
+                try{if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){const W=(window.__CPM_RETE132=window.__CPM_RETE132||{fot:0,sotto:0});W.fot++;if(_sotto132)W.sotto++;}}catch(_e){}}
+              if(_sotto132){aim(B.uL,B.lL,0.45);aim(B.lL,B.hL,0.2);aim(B.uR,B.lR,-0.45);aim(B.lR,B.hR,-0.2);}/* laterale 0,19 e 0,08: braccia quasi verticali, mani vicine sopra la testa */
+              else if(!_clip31){aim(B.uL,B.lL,1);aim(B.lL,B.hL,1);aim(B.uR,B.lR,-1);aim(B.lR,B.hR,-1);}/* con la clip vera le braccia le muove lei: qui si misura soltanto */
               if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_ESULTA31=window.__CPM_ESULTA31||{fotogrammi:0,eroe:0,compagno:0,maniSopraTesta:0,clip:0,procedurale:0});W.fotogrammi++;if(_clip31)W.clip=(W.clip|0)+1;else W.procedurale=(W.procedurale|0)+1;if(_av.proc===hero)W.eroe++;else W.compagno++;
                 const hd=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i);if(hd&&_k>0.8){hd.getWorldPosition(v.a);B.hL.getWorldPosition(v.b);const hy=v.b.y;B.hR.getWorldPosition(v.b);if(hy>v.a.y||v.b.y>v.a.y)W.maniSopraTesta++;}}/* almeno una mano sopra la testa: la clip vera alterna i pugni */
             }catch(_e31){}}
