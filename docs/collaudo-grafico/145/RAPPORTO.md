@@ -134,7 +134,7 @@ decisione che non ho preso.
   completa; `validate-situations` 707 s.
 - **Non eseguito:** la catena completa (`ci-runner`), né gli altri guardiani che usano `highlight-95` o `banco-g0`. partita-vera
   dopo la correzione ha **una** corsa verde (più due rosse), non due.
-- Le sonde di diagnosi stanno nella cartella di lavoro non versionata `tests/visual/.tmp145/` e non sono committate.
+- Le sonde di diagnosi (calendario del salvataggio di prova, fase e punteggio della partita) erano script di lavoro fuori dal repo e non sono committate.
 - Le corse di griglia-mobile hanno scritto in una cartella di lavoro (`CPM_OUT`), non in `docs/collaudo-grafico/g0/`.
 
 ## Sintesi
