@@ -85,7 +85,7 @@ const TH = {
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
   primary:"#8e1f33",primaryDk:"#6a1326",brandText:(typeof window!=='undefined'&&window.__CPM_NO_G108_21)?"#ee9aaa":TINTE.oro/* [giro 108 G180-21] il rosa della V1 (#ee9aaa) restava come colore di testo in 24 schermate: diventa l'oro del tema. Rosso __CPM_NO_G108_21 */,accentText:"#a78bfa",
   success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
-  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",scrimForte:"rgba(0,0,0,0.82)"/* [giro 150 PO-352] il velo delle finestre su PC e tablet (da 768 px): la home sotto non si legge piu' */,
   cardBg:TINTE.inc,border:"#2a2f3b",
   el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620",primaryBorder:"#4a2530",
