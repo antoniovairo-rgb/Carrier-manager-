@@ -8,12 +8,15 @@
       tutta l'intro: z fra -12,1 e -11,2 (palo a -12) e |x| < 3,66.
    B) PRIVACY: in Opzioni la voce «Informativa sulla privacy», <a> con href esatto, target _blank, rel noopener, tocco >= 44 px, e il clic apre
       l'URL con window.open (stesso meccanismo della donazione). Non giudicato = rosso.
+      [giro 134 · PO-334 «Dentro l'app», decisione PO 09/11] l'apertura ESTERNA e' stata sostituita: la voce ora e' un bottone che apre
+      la finestra della privacy DENTRO il gioco (data-cpm privacy134-pannello). Qui B controlla: voce presente, tocco >= 44 px, al clic la
+      finestra si apre nella pagina e NESSUN window.open. Il controllo completo (testo = privacy.html, mail, rete bloccata, chiusura) e'
+      in privacy-134.mjs. Il rosso di questo guardiano (__CPM_NO_G118P toglie la voce) resta valido.
    ROSSO (CPM_PROVA_ROSSO=1 → __CPM_NO_G118 + __CPM_NO_G118P): deve fallire sia A sia B. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './c178-graf-lib.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const ROSSO = !!process.env.CPM_PROVA_ROSSO;
-const URL_ATTESA = 'https://antoniovairo-rgb.github.io/Carrier-manager-/privacy.html';
 const F = [{ n: 's360', w: 360, h: 800, t: 1 }, { n: 's412', w: 412, h: 915, t: 1 }, { n: 'pc', w: 1440, h: 900, t: 0 }];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const ko = []; const riga = [];
@@ -28,13 +31,13 @@ for (const f of F) {
   const bt = await page.$('button[title="Impostazioni"]');
   if (!bt) ko.push(`${f.n}: tasto Opzioni non trovato (non giudicato)`); else {
     await bt.click(); await sleep(600);
-    const v = await page.evaluate(() => { const a = document.querySelector('a[data-cpm="privacy118"]'); if (!a) return null; const r = a.getBoundingClientRect(); return { href: a.getAttribute('href'), target: a.getAttribute('target'), rel: a.getAttribute('rel') || '', w: Math.round(r.width), h: Math.round(r.height), testo: a.innerText }; });
+    const v = await page.evaluate(() => { const a = document.querySelector('[data-cpm="privacy118"]'); if (!a) return null; const r = a.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height), testo: a.innerText }; });
     if (!v) ko.push(`${f.n}: voce «Informativa sulla privacy» assente in Opzioni`); else {
-      if (v.href !== URL_ATTESA) ko.push(`${f.n}: href ${v.href}`); if (v.target !== '_blank' || !/noopener/.test(v.rel)) ko.push(`${f.n}: target/rel ${v.target}/${v.rel}`);
       if (v.h < 44 || v.w < 44) ko.push(`${f.n}: tocco ${v.w}x${v.h} < 44`);
-      await page.click('a[data-cpm="privacy118"]'); await sleep(300);
-      const ap = await page.evaluate(() => window.__APERTE118);
-      if (!ap.length || ap[0][0] !== URL_ATTESA) ko.push(`${f.n}: il clic non apre l'URL fuori dall'app (${JSON.stringify(ap)})`);
+      await page.click('[data-cpm="privacy118"]'); await sleep(600);
+      const ap = await page.evaluate(() => window.__APERTE118); const dentro = await page.$('[data-cpm="privacy134-pannello"]');
+      if (ap.length) ko.push(`${f.n}: il clic apre fuori dall'app (${JSON.stringify(ap).slice(0, 90)}) — dal giro 134 deve aprirsi dentro`);
+      if (!dentro) ko.push(`${f.n}: il clic non apre la finestra della privacy dentro il gioco`); else { await page.click('[data-cpm="privacy134-chiudi"]'); await sleep(300); }
       riga.push(`${f.n} privacy ${v.w}x${v.h}`);
     }
     await page.evaluate(() => { const x = document.querySelector('button[aria-label="Chiudi"]'); if (x) x.click(); }); await sleep(300);

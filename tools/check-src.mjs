@@ -82,6 +82,14 @@ if (rebuilt.equals(onDisk)) {
   console.error(`  che copre quella riga (l'intestazione di ogni frammento dice quali righe copre).`);
 }
 
+// ── 1b. [giro 134 PO-334] il testo della privacy nel gioco = privacy.html (BLOCCANTE) ──
+try {
+  const { bloccoAtteso } = await import('./privacy-testo.mjs');
+  const s07 = fs.readFileSync(path.join(ROOT, 'src', '07-versione-save-interviste.jsx'), 'utf8');
+  if (s07.includes(bloccoAtteso())) console.log('✓ il testo della privacy nel gioco corrisponde a privacy.html (fonte unica).');
+  else { fail = true; console.error('✗ il testo della privacy nel gioco NON corrisponde a privacy.html → node tools/privacy-testo.mjs && node tools/build-src.mjs'); }
+} catch (e) { fail = true; console.error('✗ confronto privacy non eseguito: ' + e.message); }
+
 // ── 2. disco vs git HEAD (informativo) ──────────────────────────────────────
 try {
   const inGit = execFileSync('git', ['show', `HEAD:${REL}`], { cwd: ROOT, maxBuffer: 1 << 28 });

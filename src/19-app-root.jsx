@@ -639,7 +639,32 @@ function IntroCinematic({onDone,nome,riascolto}){
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
 /* [7.999.49 parte A] strumenti di sviluppo (revisione azioni, debug audio) solo con ?dev=1 nell'indirizzo */
 function _cpmDev49(){try{return typeof window!=='undefined'&&/[?&]dev=1(&|$)/.test(window.location.search||"");}catch(_e){return false;}}
+/* [giro 134 PO-334 «Dentro l'app», decisione PO 09/11] L'INFORMATIVA SULLA PRIVACY SI LEGGE DENTRO IL GIOCO. Prima la voce di Opzioni apriva
+   privacy.html fuori dall'app (nell'app Android TWA usciva nel browser). Ora apre questa finestra standard (Modal del gioco, token TH/FS/FW/SP,
+   come i Crediti) col testo di PRIVACY134 — generato da privacy.html, mai scritto a mano (tools/privacy-testo.mjs, controllo in check-src.mjs).
+   Il testo e' nel gioco: funziona senza rete. La mail e' ricomposta da _feedbackTo(). Esc chiude solo la finestra (cattura su window, prima
+   del gestore di Opzioni) e si torna a Opzioni. Rosso __CPM_NO_G134P: torna openPrivacy() fuori dall'app. */
+function Privacy134({onClose}){
+  useEffect(()=>{const f=e=>{if(e.key==="Escape"){e.preventDefault();e.stopPropagation();onClose&&onClose();}};window.addEventListener("keydown",f,true);return()=>window.removeEventListener("keydown",f,true);},[onClose]);
+  const _mail=_feedbackTo();
+  const seg=(x,i)=>Array.isArray(x)?(x[0]==="m"?<a key={i} href={"mailto:"+_mail} style={{color:TH.brandText,fontWeight:FW.bold,overflowWrap:"anywhere"}}>{_mail}</a>:x[0]==="b"?<strong key={i} style={{color:TH.text}}>{x[1]}</strong>:<code key={i} style={{fontSize:FS.caption}}>{x[1]}</code>):<React.Fragment key={i}>{x}</React.Fragment>;
+  const riga=v=>Array.isArray(v)?v.map(seg):v;
+  const titolo=(PRIVACY134.find(b=>b[0]==="h1")||[0,"Informativa sulla privacy"])[1];
+  const P={fontSize:FS.small,color:TH.text,lineHeight:1.6,margin:`0 0 ${SP.sm}px`};
+  return(<Modal open onClose={onClose} title={titolo} width={620} z={9999} cpm="privacy134" pannelloCpm="privacy134-pannello"
+    footer={<Btn data-cpm="privacy134-chiudi" onClick={onClose} v="primary">Chiudi</Btn>}>
+    <div data-cpm="privacy134-testo">{PRIVACY134.map((b,i)=>{const[t,v]=b;
+      if(t==="h1")return null;
+      if(t==="data")return <div key={i} style={{fontSize:FS.caption,color:TH.muted,marginBottom:SP.md}}>{v}</div>;
+      if(t==="tldr")return <div key={i} style={{...P,fontWeight:FW.bold,padding:`${SP.sm}px ${SP.md}px`,borderLeft:`4px solid ${TH.primary}`,borderRadius:RAD.md,background:TH.primaryTint||TH.track,marginBottom:SP.md}}>{riga(v)}</div>;
+      if(t==="h2")return <div key={i} style={{fontSize:FS.body,fontWeight:FW.black,color:TH.brandText,margin:`${SP.lg}px 0 ${SP.xs}px`}}>{v}</div>;
+      if(t==="ul")return <ul key={i} style={{...P,paddingLeft:SP.xl}}>{v.map((li,k)=><li key={k} style={{marginBottom:SP.xs}}>{riga(li)}</li>)}</ul>;
+      if(t==="piede")return <div key={i} style={{fontSize:FS.caption,color:TH.muted,marginTop:SP.lg,paddingTop:SP.sm,borderTop:`1px solid ${TH.divider}`}}>{v}</div>;
+      return <p key={i} style={P}>{riga(v)}</p>;})}</div>
+  </Modal>);
+}
 function SettingsScreen({onClose,onExitToMenu,strumenti}){
+  const[privacy134,setPrivacy134]=useState(false);/* [giro 134 PO-334] */
   useEffect(()=>{if(!_pctab292()||!onClose)return;const f=e=>{if(e.key==="Escape"&&!(e.target&&/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))){e.preventDefault();onClose();}};document.addEventListener("keydown",f);return()=>document.removeEventListener("keydown",f);},[onClose]);/* [giro 90 PO-292 D8] Esc chiude Opzioni. Rosso __CPM_NO_PCTAB292 */
   const Seg=({active,label,onClick})=>(
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
@@ -668,10 +693,12 @@ function SettingsScreen({onClose,onExitToMenu,strumenti}){
         {!(typeof window!=='undefined'&&window.__CPM_NO_G118P)&&(
           <Card style={{padding:'12px 14px'}}>{/* [giro 118 PO-322] informativa sulla privacy raggiungibile dall'app (richiesta Google Play) */}
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🔒 Privacy</div>
-            <a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>
+            {privacy134On()?<button data-cpm="privacy118" onClick={()=>setPrivacy134(true)} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',width:'100%',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,background:'transparent',cursor:'pointer',fontFamily:'inherit',color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,boxSizing:'border-box'}}>Informativa sulla privacy</button>/* [giro 134 PO-334] si apre dentro il gioco */
+            :<a data-cpm="privacy118" href={PRIVACY_URL} target="_blank" rel="noopener noreferrer" onClick={e=>{e.preventDefault();openPrivacy();}} className="cpm-press cpm-focus" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:44,padding:'10px 12px',borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,color:TH.brandText,fontWeight:FW.bold,fontSize:FS.body,textDecoration:'none',boxSizing:'border-box'}}>Informativa sulla privacy</a>}
           </Card>)}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
       </div>
+      {privacy134&&<Privacy134 onClose={()=>setPrivacy134(false)}/>}
     </div>
   );
 }
