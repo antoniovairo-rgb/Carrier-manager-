@@ -1,0 +1,123 @@
+{
+ "d10": {
+  "home": "Titolare affermato",
+  "fotoHome": "docs/collaudo-grafico/140/foto/d10-tel-home-fase.jpg",
+  "profiloRuolo": "Titolare",
+  "gradino": "Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora 24) · 130+ presenze (ora 150) · fiducia del mister 90+ (ora 45)) STATISTICHE 6 › Gol stagione 14 Assist stagione 6 Presenze stag",
+  "fotoProfilo": "docs/collaudo-grafico/140/foto/d10-tel-profilo-ruolo.jpg",
+  "snap": {
+   "age": 24,
+   "coachTrust": 45,
+   "squadRole": "titolare",
+   "ovr": 86
+  }
+ },
+ "d14": {
+  "gradino": "Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora 33) · 130+ presenze (ora 602) · fiducia del mister 90+ (ora 100))",
+  "snap": {
+   "age": 33,
+   "totalMatches": 602,
+   "coachTrust": 100,
+   "popularity": 40,
+   "ovr": 86,
+   "clubP": 45,
+   "isCaptain": false,
+   "squadRole": "titolare"
+  },
+  "foto": "docs/collaudo-grafico/140/foto/d14-tel-profilo-gradino.jpg"
+ },
+ "b12": {
+  "apri": true,
+  "H": 915,
+  "bottoni": [
+   {
+    "t": "🆕 Inizia Stagione 13 →",
+    "top": 1341,
+    "bottom": 1402,
+    "pos": "static"
+   }
+  ],
+  "fisarmoniche": 5,
+  "scrollH": 1331,
+  "bottoniInVista": [
+   "🎬 Il film della stagione›",
+   "🎯 Obiettivi stagione›"
+  ],
+  "foto": "docs/collaudo-grafico/140/foto/b12-tel-fine-stagione-prima-vista.jpg"
+ },
+ "d16": {
+  "slotPrima": [
+   {
+    "slot": 0,
+    "name": "Grafica Probe",
+    "club": "FC Salernum",
+    "season": 12,
+    "week": 11,
+    "ovr": 86,
+    "avatarId": 0,
+    "savedAt": 1794294619935,
+    "retired": false
+   },
+   null,
+   null
+  ],
+  "apri": true,
+  "slotDopo": [
+   {
+    "slot": 0,
+    "name": "Grafica Probe",
+    "club": "FC Salernum",
+    "season": 12,
+    "week": 11,
+    "ovr": 86,
+    "avatarId": 0,
+    "savedAt": 1794294621275,
+    "retired": true
+   },
+   null,
+   null
+  ],
+  "grezzo": {
+   "retired": true,
+   "season": 12,
+   "week": 11,
+   "club": "FC Salernum"
+  },
+  "foto": "docs/collaudo-grafico/140/foto/d16-tel-fine-carriera.jpg"
+ },
+ "b5": {
+  "secondoTocco": null,
+  "offerta": true,
+  "accetta": "Accetta",
+  "prima": {
+   "club": "FC Salernum",
+   "tm": [
+    "Gabriele Milani",
+    "Claudio Milani",
+    "Diego D'Amico"
+   ],
+   "cupClub": null
+  },
+  "vivo": {
+   "club": "AC Dorvelli",
+   "tm": [
+    "Ettore Salerno",
+    "Vincenzo Raimondi",
+    "Nico Pirrone"
+   ],
+   "cupClub": null,
+   "week": 11
+  },
+  "salvato": {
+   "club": "AC Dorvelli",
+   "tm": [
+    "Ettore Salerno",
+    "Vincenzo Raimondi",
+    "Nico Pirrone"
+   ],
+   "cupClub": null
+  },
+  "compagniUguali": true
+ },
+ "errori": []
+}
