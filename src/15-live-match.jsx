@@ -590,10 +590,11 @@ function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
   const mx=Math.min((vert?2.5:4.5)*s,liberoX*0.5),my=Math.min((vert?4.5:2.5)*s,liberoY*0.5);
   return{x0:x0-mx,x1:x1+mx,y0:y0-my,y1:y1+my,m:{a:(vert?my:mx)/s,b:(vert?mx:my)/s}};}
 /* il settore ospiti: lo spicchio di tribuna nell'angolo in alto a destra (dietro la porta lontana e il primo tratto del lato) */
-function _ospRect297(W,H,x0,y0,x1,y1,vert){
+function _ospRect297(W,H,x0,y0,x1,y1,vert,rov){
   /* [giro 141 PO-341] il settore ospiti e' la CURVA dietro la porta di chi difende verso il basso (verticale) / a sinistra (coricato), come la
      Curva Nord del 3D; lo spicchio della Tribuna Est si aggiunge in _settore141. Rosso __CPM_NO_G141: lo spicchio nell'angolo di prima. */
-  if(!_no141())return vert?[-2,y1,W+4,H-y1+2]:[-2,-2,x0+2,H+4];
+  if(!_no141()){if(rov)return vert?[-2,-2,W+4,y0+2]:[x1,-2,W-x1+2,H+4];/* [giro 143] secondo tempo: la curva ospiti sta dietro l'altra porta */
+    return vert?[-2,y1,W+4,H-y1+2]:[-2,-2,x0+2,H+4];}
   if(vert)return[x0+(x1-x0)*0.62,-2,W-(x0+(x1-x0)*0.62)+2,y0+(y1-y0)*0.16];
   return[x1-(x1-x0)*0.16,-2,W-(x1-(x1-x0)*0.16)+2,y0+(y1-y0)*0.38];}
 /* [giro 141 PO-341/PO-342 — CARTELLONI PER SETTORE E SPALTI COME IL 3D] Segnalazione PO (foto 187, SIC-PAR Primavera 2): «sui cartelloni
@@ -607,15 +608,21 @@ function _ospRect297(W,H,x0,y0,x1,y1,vert){
    liberi, e i posti vuoti si vedono come SEDILI (come nel 3D). Media tarata per bisezione sui posti veri: la quota disegnata e' quella
    del settore. Tutto deterministico (hashStr), tutto nella tela di servizio disegnata una volta. Rosso __CPM_NO_G141 = la 7.999.188. */
 function _no141(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G141;}catch(_e){return false;}}
+/* [giro 143 PO-345 «Sì, come nel 3D»] AL SECONDO TEMPO LO STADIO 2D GIRA COME QUELLO 3D (7.732): il frame della partita e' eroe-centrico
+   (la squadra dell'eroe attacca sempre verso l'alto / a destra), quindi il cambio campo si vede come lo stadio che ruota di 180 gradi
+   attorno al centro dell'erba esterna — curve, tribune, spicchio ospiti, cartelloni e lampo del gol. Il tempo arriva da LiveMatch con la
+   stessa espressione della prop half del 3D (_tempo143); lo sfondo si ridisegna UNA volta al cambio. Rosso __CPM_NO_G143: curve fisse. */
+function _no143(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G143;}catch(_e){return false;}}
 /* il settore di un punto fuori dall'erba esterna E (x0,y0,x1,y1): curvaCasa · curvaOsp · est · ovest, e u lungo la tribuna (0 dal lato della curva ospiti) */
-function _settore141(x,y,E,vert){
+function _settore141(x,y,E,vert,rov){
+  if(rov){x=E.x0+E.x1-x;y=E.y0+E.y1-y;}/* [giro 143] stadio ruotato: il settore e' quello del punto simmetrico */
   if(vert){if(y<E.y0)return{k:"curvaCasa",u:0.5};if(y>=E.y1)return{k:"curvaOsp",u:0.5};const u=(E.y1-y)/Math.max(1,E.y1-E.y0);return{k:x>=E.x1?"est":"ovest",u};}
   if(x>=E.x1)return{k:"curvaCasa",u:0.5};if(x<E.x0)return{k:"curvaOsp",u:0.5};const u=(x-E.x0)/Math.max(1,E.x1-E.x0);return{k:y>=E.y1?"est":"ovest",u};}
 function _padrone141(z,F){if(z.k==="curvaCasa")return"casa";if(z.k==="curvaOsp")return"osp";if(z.k==="est")return z.u<F.wedge?"osp":"casa";return z.u<F.wedgeOvest?"osp":"casa";}
 function _fill141(z,F){if(z.k==="curvaCasa")return F.curvaCasa;if(z.k==="curvaOsp")return F.curvaOsp;return _padrone141(z,F)==="osp"?F.wedgeFill:F.tribuna;}
 /* larghezze di curva e tribuna come le sceglie buildStadium dalla capienza (pesano i posti spostati in curva) */
 function _misure141(folla){const c=(folla&&folla.capacity)||0;const xl=c>=45000,lg=c>=26000,md=c>=12000;return{sideW:xl?84:lg?76:md?68:60,endW:xl?126:lg?118:md?110:100};}
-function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp){
+function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp,rov){
   const MS=_misure141(folla),F=settoriFolla141(folla||null,MS.sideW,MS.endW);
   const seed=Math.abs(hashStr(String((folla&&folla.seed)||1)+"_spalti141"));
   const R=(a,b)=>((Math.imul((a|0)+seed,73856093)^Math.imul((b|0)^(seed>>>7),19349663))>>>0)%10000/10000;
@@ -631,9 +638,10 @@ function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp){
   for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
     const mg=(sp||0)+tes*0.6;/* niente posti sotto i cartelloni: sarebbero contati e non visti */
     if(x>E.x0-mg&&x<E.x1+mg&&y>E.y0-mg&&y<E.y1+mg)continue;
-    const z=_settore141(x,y,E,vert),si=idx[z.k],curva=si<2;
-    const d=vert?(curva?(si===0?E.y0-y:y-E.y1):(si===2?x-E.x1:E.x0-x)):(curva?(si===0?x-E.x1:E.x0-x):(si===2?y-E.y1:E.y0-y));
-    const lungo=vert?(curva?x:y):(curva?y:x);
+    const z=_settore141(x,y,E,vert,rov),si=idx[z.k],curva=si<2;
+    const xm=rov?E.x0+E.x1-x:x,ym=rov?E.y0+E.y1-y:y;/* [giro 143] profondita' e blocchi misurati nello stadio ruotato: la stessa tribuna, girata */
+    const d=vert?(curva?(si===0?E.y0-ym:ym-E.y1):(si===2?xm-E.x1:E.x0-xm)):(curva?(si===0?xm-E.x1:E.x0-xm):(si===2?ym-E.y1:E.y0-ym));
+    const lungo=vert?(curva?xm:ym):(curva?ym:xm);
     const own=_padrone141(z,F);const f=_fill141(z,F);
     cel.push({x,y,si,d:Math.max(0,d-(sp||0)),blk:Math.floor(lungo/(passo*7)),col:Math.round(lungo/passo),own,f,g:si*2+(own==="osp"?1:0)});if(d>dMax[si])dMax[si]=d;}}
   /* 2) corridoi (una colonna ogni 11-15, sempre libera) e posti veri; rampa a media nulla + blocchi bassa frequenza (7.187.0) */
@@ -685,9 +693,10 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0}){
+function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0,tempo=1}){
   const cRef=React.useRef(null);
-  const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};/* [giro 92 PO-297] i gol dello stadio (casa/ospiti) per accendere la tribuna: letti dal giro di disegno, fuori dalle dipendenze */
+  const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};
+  const tempoRef=React.useRef(1);tempoRef.current=tempo===2?2:1;/* [giro 143] il tempo di gioco (da LiveMatch, come half del 3D): letto dal giro di disegno, fuori dalle dipendenze *//* [giro 92 PO-297] i gol dello stadio (casa/ospiti) per accendere la tribuna: letti dal giro di disegno, fuori dalle dipendenze */
   const rafRef=React.useRef(0);
   const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
   React.useEffect(()=>{
@@ -731,6 +740,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
         else{if(M.b12>H*0.25)M.b12=0;if(M.t12>H*0.35)M.t12=0;}}/* [7.999.22 collaudo PO «campo 2D inizializzato piccolo»] con le linguette a meta' schermo il margine in basso NON si riserva: il campo usa tutta l'altezza sotto la striscia (la regola 0,6 del 7.999.19 lo schiacciava nella meta' alta) */_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
       if(M.t12o!=null&&Math.abs(M.t12o-_t12)<3&&Math.abs(M.b12o-_b12)<3){_t12=M.t12o;_b12=M.b12o;}/* variazioni sotto i 3 px non ridisegnano il campo */
       if(M.sfondo&&(M.t12o!==_t12||M.b12o!==_b12))M.sfondo=null;M.t12o=_t12;M.b12o=_b12;
+      {const _rv=!_no141()&&!_no143()&&tempoRef.current===2;if(M.sfondo&&M.rov143!==_rv)M.sfondo=null;M.rov143=_rv;}/* [giro 143] al cambio di tempo lo sfondo si ridisegna una volta */
       const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
       const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-_t12-_b12-pady*2)/(vert?LUN:LAR));
       const pw=(vert?LAR:LUN)*s,ph=(vert?LUN:LAR)*s;
@@ -769,7 +779,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
           try{if(typeof window!=='undefined'&&window.__CPM_SP109)window.__CPM_SP109={base:SP.base,casa:SP.casa,osp:SP.osp,cart:SP.cart||null};}catch(_e109){}/* [giro 109] testimone di collaudo (inerte, solo se la sonda lo arma) */
           const ox0=est.x0,oy0=est.y0,ox1=est.x1,oy1=est.y1;
           const _g141=!_no141();let _S141=null;
-          if(_g141){try{_S141=_spalti141(o,SP,est,W,H,vert,passo,tes,dpr,folla,Math.max(3,s*0.95));M.s141=_S141;}catch(_e141){_S141=null;}}
+          if(_g141){try{_S141=_spalti141(o,SP,est,W,H,vert,passo,tes,dpr,folla,Math.max(3,s*0.95),M.rov143);M.s141=_S141;}catch(_e141){_S141=null;}}
           if(!_S141)for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
             if(x>ox0-tes&&x<ox1+tes&&y>oy0-tes&&y<oy1+tes)continue;
             const osp=_osp297(x,y,W,H,ox0,oy0,ox1,oy1,vert);const pal=osp?SP.osp:SP.casa;
@@ -777,7 +787,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
             if(h<12)continue;/* qualche posto vuoto */
             o.fillStyle=h<PE[0]?pal[0]:h<PE[1]?pal[1]:h<PE[2]?pal[2]:SP.base;o.fillRect(x-tes/2,y-tes/2,tes,tes*1.1);}}
           /* il divisorio del settore ospiti */
-          M.osp297=_ospRect297(W,H,ox0,oy0,ox1,oy1,vert);
+          M.osp297=_ospRect297(W,H,ox0,oy0,ox1,oy1,vert,M.rov143);M.n143=(M.n143|0)+1;
           if(M.osp297){const q=M.osp297;o.strokeStyle="rgba(15,23,42,0.85)";o.lineWidth=2;o.strokeRect(q[0],q[1],q[2],q[3]);}
           /* l'erba oltre le linee, fino ai cartelloni */
           o.fillStyle=SP.erba;o.fillRect(ox0,oy0,ox1-ox0,oy1-oy0);
@@ -785,12 +795,12 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
           const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=SP.cart||[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
           let k=0;const _kp={casa:0,osp:0},_pan141=[];
           const pan=(x,y,w,h)=>{let col;
-            if(_S141&&SP.cartC){const z=_settore141(x+w/2,y+h/2,est,vert),own=_padrone141(z,_S141.F),L=own==="osp"?SP.cartO:SP.cartC;col=L[_kp[own]%L.length];_kp[own]++;_pan141.push([x,y,w,h,z.k,own,col]);}
+            if(_S141&&SP.cartC){const z=_settore141(x+w/2,y+h/2,est,vert,M.rov143),own=_padrone141(z,_S141.F),L=own==="osp"?SP.cartO:SP.cartC;col=L[_kp[own]%L.length];_kp[own]++;_pan141.push([x,y,w,h,z.k,own,col]);}
             else col=COLC[k%COLC.length];
             o.fillStyle=col;o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
           for(let x=ox0;x<ox1;x+=seg){const w=Math.min(seg-1,ox1-x);pan(x,oy0-sp,w,sp);pan(x,oy1,w,sp);}
           for(let y=oy0-sp;y<oy1+sp;y+=seg){const h=Math.min(seg-1,oy1+sp-y);pan(ox0-sp,y,sp,h);pan(ox1,y,sp,h);}
-          try{if(typeof window!=='undefined'&&window.__CPM_G141)window.__CPM_G141={on:!!_S141,vert,W,H,erba:[ox0,oy0,ox1,oy1],sp,passo,tes,F:_S141?_S141.F:null,T:_S141?_S141.T:null,seat:_S141?_S141.seat:null,pan:_pan141,casa:SP.casa,osp:SP.osp,base:SP.base,folla:folla?{fill:folla.fill,awayFill:folla.awayFill,capacity:folla.capacity,attendance:folla.attendance,tier:folla.tier}:null};}catch(_eW){}
+          try{if(typeof window!=='undefined'&&window.__CPM_G141)window.__CPM_G141={on:!!_S141,rov:!!M.rov143,n143:M.n143,ospRect:M.osp297||null,vert,W,H,erba:[ox0,oy0,ox1,oy1],sp,passo,tes,F:_S141?_S141.F:null,T:_S141?_S141.T:null,seat:_S141?_S141.seat:null,pan:_pan141,casa:SP.casa,osp:SP.osp,base:SP.base,folla:folla?{fill:folla.fill,awayFill:folla.awayFill,capacity:folla.capacity,attendance:folla.attendance,tier:folla.tier}:null};}catch(_eW){}
         }catch(_e297){}}
         /* il prato */
         /* [23/09 POC — collaudo PO «il prato 2D e 3D non devono essere diversi»] LO STESSO PRATO DEL 3D: palette dello
@@ -877,7 +887,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
       if(_sp297&&M.sp297){try{const gq=golRef.current||{h:0,a:0};
         if(!M.gol297)M.gol297={h:gq.h,a:gq.a,t:0,chi:null,n:0};
         const G7=M.gol297;if(gq.h>G7.h||gq.a>G7.a){G7.chi=gq.a>G7.a?"osp":"casa";G7.t=ora;G7.n++;G7.off=false;}G7.h=gq.h;G7.a=gq.a;
-        const el=ora-G7.t;if(G7.t&&el<1600){const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+        const el=ora-G7.t;if(G7.t&&el<1600){const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert,M.rov143);
           const k=(1-el/1600)*(0.62+0.38*Math.abs(Math.sin(el/90)));
           g.save();g.beginPath();g.rect(0,0,W,H);g.rect(est.x0-4,est.y0-4,est.x1-est.x0+8,est.y1-est.y0+8);
           g.clip("evenodd");/* mai sul prato: fuori dall'erba esterna */g.beginPath();g.rect(q[0],q[1],q[2],q[3]);if(G7.chi!=="osp")g.rect(0,0,W,H);g.clip("evenodd");/* gli ospiti: solo lo spicchio; la casa: tutto tranne lo spicchio */
@@ -920,7 +930,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
       /* [giro 92 PO-297] testimone di collaudo (inerte, solo se la sonda lo arma): campo, erba esterna, spicchio ospiti e i ventidue in
          coordinate dello SCHERMO, per misurare il nero fuori dal campo e chi finisce sotto la barra Statistiche/Pagelle */
       try{if(typeof window!=='undefined'&&window.__CPM_W297){const rc=cv.getBoundingClientRect(),k=rc.width/W,X=(v)=>Math.round(rc.left+v*k),Y=(v)=>Math.round(rc.top+v*k);
-        const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert);
+        const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),q=_ospRect297(W,H,est.x0,est.y0,est.x1,est.y1,vert,M.rov143);
         const pt=[];for(let i=0;i<G.length;i++)if(M.g[i])pt.push([X(CX(M.g[i])),Y(CY(M.g[i]))]);if(M.e)pt.push([X(CX(M.e)),Y(CY(M.e))]);
         window.__CPM_W297={dpr,k,vert,campo:[X(ox),Y(oy),Math.round(pw*k),Math.round(ph*k)],erba:[X(est.x0),Y(est.y0),Math.round((est.x1-est.x0)*k),Math.round((est.y1-est.y0)*k)],
           osp:[X(q[0]),Y(q[1]),Math.round(q[2]*k),Math.round(q[3]*k)],cv:[Math.round(rc.left),Math.round(rc.top),Math.round(rc.width),Math.round(rc.height)],r:Math.round(r*k),gioc:pt,
@@ -10646,6 +10656,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
   const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);
+  const _tempo143=clock>=45?2:1;/* [giro 143] il tempo di gioco: UNA espressione per lo stadio 3D (half) e per gli spalti 2D (tempo) */
   if(phase!=="ceremony")striscia96bRef.current=!["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);/* [giro 96b D14] stato della striscia nella fase prima della cerimonia *//* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
   const matchPhase3D=["walkout","hl_move","hl_choose","hl_result","hl_intro","playing"].includes(phase)?phase:"match";
   const hlZone=situations[hlIdx]?.zones?.[0]||null; // ATE-4: zona corrente per zone ring
@@ -11182,7 +11193,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D folla={crowdCtx} tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
+                  <Campo2D folla={crowdCtx} tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home} tempo={_tempo143}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
                   {!(typeof window!=='undefined'&&window.__CPM_NO918)&&!_panCol292&&_pan918el()}
                 </div>);})()}
               <ThreeMatchView key={"tmv"+glbTry} heroFoot={player.foot||"R"}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
@@ -11193,7 +11204,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumVenue={(function(){try{return getStadiumName(homeTeamObj)||null;}catch(_e){return null;}})()}/* [7.658.0] il NOME DELLO STADIO (es. Stadio Valmora) per il cartellone LED — precisazione PO: e' LUI il cartellone da fare piccolo e a scorrimento, non gli striscioni dei tifosi */ stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
                 stadiumStyle={getStadiumStyle(homeTeamObj)}
-                ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={clock>=45?2:1}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
+                ballX={ballPos.x} ballY={ballPos.y} ballLock811={ballLock811} half={_tempo143}/* [7.561.0 richiesta PO «opterei anche per il cambio campo tra il primo ed il secondo tempo come nella realta'»] La simulazione NON scambia le porte — toccarla vorrebbe dire rimettere mano al segno di ogni gol, e non si fa per un'inquadratura. Cambia la CAMERA: nella ripresa la regia larga di cronaca ruota di 180 gradi attorno all'asse verticale, cosi' chi attaccava verso destra ora attacca verso sinistra e le tribune si scambiano di posto — che e' esattamente cio' che si vede in TV dopo il cambio campo. */ fermo={fermoRef}/* [7.559.0] LA SCENA DEVE SAPERE CHE IL GIOCO E' FERMO. Il primo giro del guardiano ha misurato 0 fermi su 9 interruzioni armate: bloccare il BERSAGLIO logico non basta, perche' nel 3D la palla ha altri padroni — il portatore la tiene ai piedi e cammina, e la palla cammina con lui. Il fermo viaggia come ref (stesso schema di `deliver`/`meshDef`: il renderer lo legge ogni fotogramma senza un re-render per tick). */ hlSitKey={phase==="playing"||phase==="matchday"?-1:(hlIdx+(_forceSeqRef.current||0)*10000)}/* [7.212.0] +progressivo: rigiocare la stessa situation riarma lo snap di scena */ stageStamp={stageStamp}/* [7.456.0 codice 007] il commit in cui atterra lo staging fresco — vedi il ri-taglio nel render-loop */ meshDef={meshDefRef} deliver={deliverRef} hlType={_hlType} hlIntent={situations[hlIdx]?.intent||null} hlSetPiece={_hlSetPiece} hlBall={_hlBall} hlWood={_hlWood} hlVariant={_hlVariant} hlPattern={_hlPattern} hlThrough={_hlThrough} hlOneTwo={_hlOneTwo} hlChain={!!(situations[hlIdx]&&situations[hlIdx]._chainDepth)}/* [7.234.0 #51] il 3D sa se la scena è un SECONDO TEMPO (catena) */ hlOutcomeKind={_hlOutcomeKind} hlSpreca102={!!(outcome&&outcome.mate298)}/* [giro 102] il motore ha scritto il tiro del compagno (parato/fuori/palo/murato): la consegna in area si chiude col tiro sul portiere */ hlQuality={_hlQuality} hlGkOut={_hlGkOut} adaptShift={_adaptShift} adaptHotY={_adaptHotY} adaptStr={_adaptStr} bgAction={bgAction} hlZone={hlZone}
                 timeOfDay={timeOfDay} weather={weather} kickoffHour={kickoffHour} attendance={attendance} crowd={crowdCtx}
                 waveEvent={waveEvent} isDerby={!!drby} isBigGame={mw>=7}
                 hlSuccess={outcome?.ok??null} hlReward={chosenAct?.rew||null} hlActLbl={chosenAct?.label||null} hlOutText={outcome?.text||null}/* [23/09 POC] decisione PO «il gesto segue il testo»: il 3D legge la frase dell'esito */ support={(function(){const _s=situations[hlIdx];const _t=_s&&(_s.tactic||_s.ctx);return (_t&&_t.support)||0;})()}/* [7.775.0] i compagni di supporto DICHIARATI dalla situation arrivano al costruttore della scena: senza questo filo `o.support` era undefined e il ramo del terzo uomo non poteva accendersi (misurato: 0 differenze fra acceso e rosso) */ salienteOn={_sal689} gkSave={gkSave695} pgRef={pendingGoalRef} carrierRef={carrierRef} chaserRef850={chaserRef850}/* [7.813.0] il portatore della simulazione al renderer, come ref *//* [7.807.0] il piano vivo (occasione o gol in costruzione): ref stabile, il renderer lo legge a ogni fotogramma senza re-render *//* [7.695.0] il segnale della parata: ref stabile, letto dal renderer a ogni fotogramma *//* [7.689.0] scena saliente extra-eroe in corso: il renderer riaccende i corpi e va in tribuna est */ hlDef={_isDefHL} hlDefTraj={outcome?.defTraj||null} hlDefGesto={chosenAct?.defGesto||null} hlOffBall={!!situations[hlIdx]?.offBall} marca143={(function(){const _s=situations[hlIdx];return (_s&&_s._p6&&_s._p6dif!=null&&_s._p6dist!=null&&!/^(difesa|punizione|rigore)$/.test(_s._p6))?{i:_s._p6dif,d:+_s._p6dist}:null;})()/* [giro 17 PO-123] il marcatore e la distanza dichiarati dal motore: li mostra il 3D, la logica non cambia */} stagedSpot={_stagedSpotRef} cineBusy={cineBusyRef}/* [7.405.0 codice 001] il punto-palla staggiato: il renderer tiene la MESH del battitore sul punto (vedi la colla nel blocco giocatori) */                isDesktop={!isNarrow} ceremony={ceremony} shootout={phase==="shootout"?{kick:soFx}:null} onWalkoutDone={()=>{if(benchStart)setOnBench(true);
