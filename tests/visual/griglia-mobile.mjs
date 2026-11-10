@@ -770,16 +770,30 @@ if (process.env.CPM_PROVA_TARDIVO === 'presto') setTimeout(() => { Promise.rejec
          prova non ha calendario e quello rigenerato non offre gare di lega. Si inietta UNA giornata di campionato alla settimana
          corrente contro un club della classifica affrontato meno di due volte (la guardia _lgHist98 del gioco scarta il terzo
          incontro) e si apre la prepartita con la stessa via del giocatore. */
+      /* [giro 145] CAUSA MISURATA del «nomatch» (catena del gioco su un salvataggio di prova incoerente; il gioco non e' stato toccato).
+         Il salvataggio di prova non ha calendario, dichiara 10 gare di lega nelle settimane 1..10 consecutive (avversari che non sono
+         quelli del calendario che il gioco rigenera) e la classifica a 10 giocate. Al caricamento:
+         (1) il gioco rigenera il calendario di FC Salernum S.12, con la sosta alla settimana 9: la giornata 10 cade alla settimana 11;
+         (2) la regola (H) di `_isStaleMd` (classifica a N giocate > giornate segnate ⇒ la giornata ≤ N e' gia' contata) ritira le
+             giornate 1..10 con la bonifica 7.418 (`played:true, healed418:true`, senza risultato);
+         (3) `recuperaGiornateMancate` (7.999.103) risimula le giornate 1..9 delle settimane passate (healed418 senza risultato, nessuna
+             voce di storico con stessa settimana e avversario) e le conta in classifica: il club passa da 10 a 19 giocate;
+         (4) la giornata 10 (settimana 11, la corrente) resta «giocata» senza risultato ⇒ getThisWeekMatchday → nessuna gara.
+         Misurato con una controprova a 9 gare (senza la settimana 9): stesso esito, classifica a 18. Il doppio conteggio del punto (3) e'
+         un'osservazione per il PO (rapporto del giro 145), non corretta qui. La voce e la classifica si leggono dal salvataggio
+         autoscritto e si stampano, cosi' la causa resta verificata a ogni corsa. */
+      const voce11 = await page.evaluate(() => { try { const p = JSON.parse(localStorage.getItem('cpm-v3')).player; const m = (p.calendar || []).find(x => x && !x.type && x.week === p.week); const me = (p.standings || []).find(r => r && p.club && r.id === p.club.id); const rec = (p.calendar || []).filter(x => x && x.recupero103).length; return m ? { md: m.matchday, opp: m.opponentName, played: !!m.played, healed: !!m.healed418, res: !!m.result, giocateClassifica: me ? me.played : null, risimulate103: rec } : null; } catch (e) { return 'err:' + e.message; } }).catch(() => null);
+      console.log(`  prepartita: voce di lega della settimana corrente nel calendario rigenerato: ${voce11 ? JSON.stringify(voce11) : 'nessuna'} (healed=true ⇒ ritirata dalla regola (H) di _isStaleMd)`);
       const st = await page.evaluate(() => { try { const g = window.__CPM_CAREER.get(); return { week: g.week, club: g.club, standings: g.standings }; } catch (e) { return null; } }).catch(() => null);
       const visti = {}; ((SAVE.player && SAVE.player.matchHistory) || []).forEach(h => { visti[h.opponent] = (visti[h.opponent] || 0) + 1; });
       const avv = st && (st.standings || []).find(r => r.id && r.id !== st.club && (visti[r.n] || 0) < 2);
-      if (avv) {
+      if (avv && process.env.CPM_G145_SENZA_INIEZIONE !== '1') {/* [giro 145] CPM_G145_SENZA_INIEZIONE=1 = braccio rosso dello strumento: senza la giornata iniettata la prepartita non si misura e la sonda deve uscire 1 */
         const voce = { matchday: 99, week: st.week, opponentId: avv.id, opponentName: avv.n, isHome: true, played: false, result: null };
         await page.evaluate(v => window.__CPM_CAREER.patch({ calendar: [v], weekLived: false }), voce); await sleep(400);
         pm = await page.evaluate(() => window.__CPM_CAREER.playMatch()).catch(e => 'error:' + e.message);
         if (pm === true) PREPARTITA_SETT = { a: st.week, opp: avv.n };
       }
-      console.log(`  prepartita: nessuna gara di campionato nel calendario di prova · giornata iniettata alla settimana ${st && st.week} contro ${avv ? avv.n : '(nessun avversario valido)'} · playMatch → ${pm}`);
+      console.log(`  prepartita: la gara della settimana e' gia' contata dal salvataggio di prova · giornata iniettata alla settimana ${st && st.week} contro ${avv ? avv.n : '(nessun avversario valido)'} · playMatch → ${pm}`);
     }
     if (pm === true) {
       const ok = await page.waitForFunction(() => /VS|OSPITE|CASA/.test(document.body.innerText || ''), null, { timeout: 40000 }).then(() => true).catch(() => false);
@@ -1160,7 +1174,7 @@ console.log('');
 console.log(R.slice(R.indexOf('### 0 · Larghezza del riquadro letta DALLA PAGINA (prova che le cinque corse sono cinque larghezze)') - 0).join('\n').split('## Dettaglio')[0]);
 console.log(`→ ${path.relative(ROOT, path.join(OUT, 'REPORT.md'))} · ${path.relative(ROOT, path.join(OUT, 'dati.json'))}${FOTO ? ` · ${righe.length * W.length} scatti` : ' (senza scatti)'}`);
 if (saltate.length) console.log('NON misurato: ' + saltate.join(' | '));
-if (PREPARTITA_SETT) console.log(`prepartita misurata su una giornata iniettata dalla sonda (settimana ${PREPARTITA_SETT.a}, contro ${PREPARTITA_SETT.opp}): il calendario di prova non ha gare di campionato`);
+if (PREPARTITA_SETT) console.log(`prepartita misurata su una giornata iniettata dalla sonda (settimana ${PREPARTITA_SETT.a}, contro ${PREPARTITA_SETT.opp}): la gara della settimana corrente e' ritirata come gia' contata (regola (H) di _isStaleMd) sul calendario che il gioco rigenera dal salvataggio di prova, che ne e' privo`);
 /* [giro 138] uscita ESPLICITA, decisa dopo un giro di eventi: un rifiuto tardivo nato nelle chiusure viene stampato dal gestore
    (prima di questa riga) e non cambia l'esito. Motivo per ultimo. */
 setTimeout(() => {
