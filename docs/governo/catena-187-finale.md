@@ -33,7 +33,21 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 27 | scena3d-96-tel | 0 | 543 | scene giudicate 16/16 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15488/16086MB df=29G libero |
 | 28 | scena3d-96-pc | 0 | 871 | scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15506/16086MB df=29G libero |
 | 29 | scena3d-96-tab | 0 | 298 | scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=15515/16086MB df=29G libero |
+| 30 | partita-vera | 0 | 507 |   ✅ nomi-veri — 52/52 righe-fatto con un cognome della rosa (rosa 20 nomi) ✅ PARTITA-VERA OK — le bande d'accettazione tengono.  | free=15511/16086MB df=29G libero |
+| 31 | highlight-95 | 0 | 5597 |   · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false ✅ highlight-95 verde (e il rosso si vede)  | free=15521/16086MB df=29G libero |
+| 32 | career-critical | 0 | 644 |   ✅ il trofeo si alza una volta sola, e nell'ultima gara → alzate 1 ✅ PASS — una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale.  | free=15494/16086MB df=29G libero |
+| 33 | build-web | 0 | 10 | flag build store (deve mancare nella build per il sito): ✅ assente ✅ DIST OFFLINE FUNZIONANTE  | free=15406/16086MB df=29G libero |
+| 34 | build-dist | 0 | 10 | flag build store (feature AI off, 1.6): ✅ attivo ✅ DIST OFFLINE FUNZIONANTE  | free=15299/16086MB df=29G libero |
+| 35 | audit-copyright | 0 | 10 | === GATE COPYRIGHT / DE-BRANDING === ✅ OK — nessun riferimento al mondo reale (club/leghe/competizioni/record/nomi).  | free=15150/16086MB df=29G libero |
 
 ## Esito
 
-_Parziale: verifica in corso._
+- **34 controlli eseguiti, 33 verdi, 1 rosso: `distanze-126`.**
+- **`distanze-126` (#10) — uscita 1, NON GIUDICATO (= rosso).** Motivo stampato: «campione sotto il minimo — partite finite 13/24». Le misure di merito sono dentro i limiti (tiri max 29 m, oltre 30 m: 0 · dal limite max 21,5 m, oltre 22 m: 0 · teste max 14 m, oltre 16,5 m: 0); a mancare è solo il numero di partite arrivate a fine entro il tetto di 420 s per partita (`CPM_TMAX`), 13 su 24 contro i 16 richiesti. Durata 3570 s (nella 186: 2595 s, 24/24). **Non rigiocato**: una seconda passata costa circa un'ora e la somma delle durate misurate è già al tetto delle 6 ore della sessione. Resta quindi un rosso aperto, da rigiocare. Nessuna soglia toccata.
+- Tutti gli altri controlli: uscita 0. `validate-situations` 14/14, fingerprint 00001505, 0 failure. `highlight-95` completo (verde + rosso, `CPM_D3DIAG=1`): verde 0 difetti su 99 highlight, rosso 7 D4 (il rosso si vede); due righe D3DIAG nel braccio verde (s5/2021 minGB=8.3 e s12/7 minGB=6.8, righe intere in `tests/visual/out`/log di sessione, non nel repo). `scena3d-96` in tre gruppi: tel 16/16 · pc 9/9 · tabv+tabo 6/6 (31/31), errori di pagina 0.
+- `collaudo-110`, rosso nella 186, in questa catena è **verde** (G180-33 verde 3/3).
+- Note non rosse ma da leggere: `griglia-mobile` esce 0 ma dichiara «NON misurato: prepartita: playMatch → nomatch» (stesso esito della 186); `partita-vera` esce 0 con un criterio «non giudicabile (campione sotto minimo) tabellone — gol raccontati 0-3 · punteggio finale 0-0 su 0 partite» (stesso della 186). Per la regola «non giudicato = rosso» il PO può volerli contare come aperti.
+- `panchina-127` (giro 127) verde nei tre formati (m360, tel, pc), braccio verde + rosso; `folla` (giro 129) verde e rosso visto.
+- `build-web` = `build-dist.mjs --web` + `validate-dist.mjs --web`; `build-dist` = `build-dist.mjs` + `validate-dist.mjs`: entrambi «DIST OFFLINE FUNZIONANTE». `audit-copyright`: 0 hit.
+- Prima dell'avvio è servito `npm install` in `tests/visual` (node_modules assente; nessun file tracciato modificato). Le foto di `griglia-mobile` in `docs/collaudo-grafico/g0/` sono state ripristinate con `git checkout`, non committate.
+- Durate: dal wrapper (inizio-fine di ogni comando). `bambini-124` e `angolo-117` hanno superato i 10 minuti di una chiamata: proseguiti e attesi in primo piano sullo stesso processo, non rilanciati.
