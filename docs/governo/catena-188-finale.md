@@ -34,7 +34,10 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 28 | griglia-mobile | 1 | 216 |  → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=13431/16086MB df=29G libero |
 | 29 | griglia-mobile (ripetizione) | 1 | 217 |  → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=13431/16086MB df=29G libero |
 | 30 | design-system | 0 | 1 | ✅ nessun raggio scritto a mano che duplichi un token  ✅ SISTEMA GRAFICO OK  | free=13263/16086MB df=29G libero |
+| 31 | partita-v2 | 0 | 574 |   ✗ CON pc:highlight: 2' — ⚡ Tentativo di tiro 1.70:1 (11px) / 2 1.55:1 (11px) / 3 1.55:1 (11px)   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in | free=13331/16086MB df=29G libero |
+| 32 | partita2d-297 | 0 | 191 | ROSSO: A cade · B cade · C cade  ✅ partita2d-297 VERDE  | free=13398/16086MB df=29G libero |
+| 33 | validate-situations | 0 | 687 | gate-history → 1 run · stabile (streak 1 run pulite)  ✅ PASS  | free=13398/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 29 eseguiti, 28 verdi, 1 rossi: griglia-mobile.
+- Controlli: 32 eseguiti, 31 verdi, 1 rossi: griglia-mobile.
