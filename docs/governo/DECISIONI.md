@@ -1118,3 +1118,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - Deploy riuscito; sito verificato: radice e CARRIER-MANAGER-AV.html servono 7.999.187, privacy.html 200 (senza mail personale), banco della folla prototipi/folla-128/banco.html e folla-proto.js 200. Notifica «CPM 7.999.187 pronta e pubblicata» inviata.
 - lavoro/188 da main: uniti sviluppo/giro134-privacy-poi (131+133+134) e sviluppo/giro132-premiazione, ciascuno da solo, nessun conflitto; GAME_VERSION 7.999.188 (04a62ae7). Verifica finale avviata su catena/188-finale (36 controlli, festa-57 escluso perché rosso pre-esistente, PO-336).
 - Riconciliazione del backlog (decisione PO «Dopo la 187»): avviata.
+
+### 10/11 04:00 UTC — Riconciliazione del backlog (giro 136)
+- Rapporto `docs/governo/RICONCILIAZIONE-136.md` (commit verificati antenati di main con merge-base). Chiuse con prova: PO-292, 296, 297, 298 (fatte nella 7.999.178); PO-299, 300, 301 chiuse per alti/medi fatti nella 178, i loro bassi mai provati raccolti in PO-337 (grafica) e PO-338 (carriera). Restano aperte con stato aggiornato: PO-315, 316, 317, 319 (non fatte; 316 e 319 rimisurate sulla 187: strumenti ancora rossi). Versioni da scegliere col PO al mattino. Costo 3,63 $.

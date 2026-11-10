@@ -572,5 +572,19 @@
     "cache_read_tokens": 2506667,
     "worker_epoch": 2,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaAMtxf5iX3pCAceBbU",
+    "titolo": "giro 136 riconciliazione del backlog",
+    "versione": "7.999.188",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T01:56:01Z",
+    "chiusa": "2026-11-10T02:45:34Z",
+    "cost_usd": 3.62819354,
+    "output_tokens": 26856,
+    "cache_read_tokens": 9151557,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
