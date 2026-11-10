@@ -1121,3 +1121,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 04:00 UTC — Riconciliazione del backlog (giro 136)
 - Rapporto `docs/governo/RICONCILIAZIONE-136.md` (commit verificati antenati di main con merge-base). Chiuse con prova: PO-292, 296, 297, 298 (fatte nella 7.999.178); PO-299, 300, 301 chiuse per alti/medi fatti nella 178, i loro bassi mai provati raccolti in PO-337 (grafica) e PO-338 (carriera). Restano aperte con stato aggiornato: PO-315, 316, 317, 319 (non fatte; 316 e 319 rimisurate sulla 187: strumenti ancora rossi). Versioni da scegliere col PO al mattino. Costo 3,63 $.
+
+### 10/11 05:45 UTC — Verifica 188: griglia-mobile uscita 1 non riprodotta dalla madre
+- catena/188-finale alle 05:16: 29 controlli, 28 verdi; `griglia-mobile` uscita 1 in due passate (216-217 s) con le stesse righe finali di sempre («65 scatti · NON misurato: prepartita: playMatch → nomatch», preesistente e uscita 0 nelle verifiche 186-187 e nei giri 131/133/134).
+- La madre l'ha rieseguito sullo STESSO build (lavoro/188 04a62ae7, pagina nuova, CPM_CHROME=/opt/pw-browsers/chromium, 15,5 GB liberi): uscita 0, stesse righe. Lo script non ha un'uscita 1 esplicita nel percorso normale: l'1 viene da un errore dopo la stampa del rapporto (chiusura di browser/server), non dalla misura. Decisione tecnica (madre): conta come verde a fine verifica se il resto è verde; a rilascio fatto, giro corto sulla chiusura della sonda (uscita 1 dopo un rapporto completo) registrato come difetto di strumento.
