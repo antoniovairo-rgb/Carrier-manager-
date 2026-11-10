@@ -42472,13 +42472,20 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
           <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
             justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
             {(_v68&&r>=4)?null:riga.map((marchio,k)=>(
-              <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
+              <span key={k} data-cpm={marchio?"marchio144p":undefined} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
                 flex:"0 0 auto",fontSize:_v68?14:11,fontWeight:900,letterSpacing:.2,
                 color:marchio?(_n108?TINTE.testo:"#7a1526"):cNomeS,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
-                  ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
+                  ?((typeof window!=='undefined'&&window.__CPM_NO_G144M)?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
                       border:"2px solid "+(_n108?TINTE.testo:"#7a1526"),boxSizing:"border-box"}}/>rward
                     <span style={{fontWeight:700,fontStyle:"italic",color:_n108?TINTE.oro:((_v24&&_lum24(c2)>0.75)?"#b45309":c2),marginLeft:2}}>Elite</span></>)
+                  /* [giro 144 PO-346 «Sì, nella 189»] come nella striscia del giro 142b: «Korward» e' UN testo, la «o» e' una lettera vera
+                     (il DOM legge «Korward») disegnata come anello della sua altezza; il flex con spazio 2 px la staccava in tre pezzi.
+                     Rosso __CPM_NO_G144M. */
+                  :(<span style={{display:"inline-block",whiteSpace:"nowrap",lineHeight:1}}><span>K<span style={{display:"inline-block",width:"0.56em",height:"0.56em",margin:"0 0.03em",borderRadius:"50%",
+                      border:"0.13em solid currentColor",boxSizing:"border-box",color:"inherit",fontSize:"inherit",lineHeight:0,overflow:"hidden",
+                      verticalAlign:"baseline",textIndent:"-9em"}}>o</span>rward</span>{" "}
+                    <span style={{fontWeight:700,fontStyle:"italic",color:_n108?TINTE.oro:((_v24&&_lum24(c2)>0.75)?"#b45309":c2)}}>Elite</span></span>))
                   :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:_n108?TINTE.sec:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNomeS}}>{nome}</span>))}
               </span>))}
           </div>))}
@@ -43113,7 +43120,10 @@ function TavoloStampa24({club=null,nome="",testate=[],sponsor=""}){
       {[40,95,150,250,305,360].map(x=>(<rect key={x} x={x} y="89" width="10" height="41" fill="#fff" opacity=".05"/>))}
       <rect x="0" y="89" width="400" height="41" fill={"url(#"+uid+"ombraTela)"}/>
       <rect x="130" y="93" width="140" height="22" rx="3" fill="#ffffff" opacity={ink==="#ffffff"?0.96:0.9}/>
-      <text x="200" y="108.5" textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize="12" fill="#7a1526">K<tspan fill="none" stroke="#7a1526" strokeWidth="2.2" dy="-1">●</tspan><tspan dy="1">rward </tspan><tspan fontStyle="italic" fontWeight="700" fill={lum(c2)<0.8?c2:"#b45309"}>Elite</tspan></text>
+      {(typeof window!=='undefined'&&window.__CPM_NO_G144M)?(<text data-cpm="marchio144t" x="200" y="108.5" textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize="12" fill="#7a1526">K<tspan fill="none" stroke="#7a1526" strokeWidth="2.2" dy="-1">●</tspan><tspan dy="1">rward </tspan><tspan fontStyle="italic" fontWeight="700" fill={lum(c2)<0.8?c2:"#b45309"}>Elite</tspan></text>):(
+      /* [giro 144 PO-346] «Korward» e' un testo: la «o» e' la lettera vera, che a peso 900 e' gia' un anello pieno della sua altezza (il
+         «●» con contorno sporgeva sopra la riga e il DOM leggeva il simbolo). Rosso __CPM_NO_G144M. */
+      <text data-cpm="marchio144t" x="200" y="108.5" textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize="12" fill="#7a1526">Korward <tspan fontStyle="italic" fontWeight="700" fill={lum(c2)<0.8?c2:"#b45309"}>Elite</tspan></text>)}
       {/* bottiglietta con l'etichetta dello sponsor e il bicchiere */}
       <g filter={"url(#"+uid+"ombra)"} transform="translate(330 74) scale(1.45) translate(-330 -74)">
         <path d="M318,74 L318,50 Q318,44 322,41 L322,34 L330,34 L330,41 Q334,44 334,50 L334,74 Z" fill={"url(#"+uid+"acqua)"} stroke="#7fb3cc" strokeWidth=".8"/>

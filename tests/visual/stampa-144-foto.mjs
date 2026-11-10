@@ -6,9 +6,11 @@ export async function leggiStampa(page) {
   return page.evaluate(() => {
     const scena = document.querySelector('[data-cpm-scena="intervista2d"]');
     const pz = [...document.querySelectorAll('span')].filter(e => !e.closest('[data-cpm="marchio142"]') && !e.closest('svg') && [...e.childNodes].some(n => n.nodeType === 3 && /rward/.test(n.textContent)));
+    const p144 = [...document.querySelectorAll('[data-cpm="marchio144p"]')].map(e => (e.innerText || e.textContent).replace(/\s+/g, ' ').trim());
+    const t144 = [...document.querySelectorAll('[data-cpm="marchio144t"]')].map(e => e.textContent.replace(/\s+/g, ' ').trim());
     const piastrelle = pz.map(e => (e.innerText || e.textContent).replace(/\s+/g, ' ').trim());
     const tov = [...document.querySelectorAll('svg text')].filter(t => /rward/.test(t.textContent)).map(t => t.textContent.replace(/\s+/g, ' ').trim());
-    return { scena: !!scena, piastrelle, tovaglia: tov };
+    return { scena: !!scena, piastrelle, tovaglia: tov, p144, t144 };
   });
 }
 export async function apriStampa(page, port, rosso) {

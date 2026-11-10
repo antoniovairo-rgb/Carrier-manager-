@@ -3,7 +3,7 @@
    tempo di scena (el): chi e' avanti (z massima), la mano destra e sinistra rispetto alla spalla (m), il verso del palmo rispetto
    allo sguardo del corpo (coseno), e la z di ogni corpo. Uso: node saluto-144-misura.mjs [beat] (CPM_ROSSO=1 → __CPM_NO_G144S). */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
-export async function campionaSaluto(page, beat, durMs = 7000) {
+export async function campionaSaluto(page, beat, durMs = 90000) {
   await page.evaluate(b => window.__CPM_CAREER.apriPresentazione(b), beat);
   await page.waitForFunction(() => window.__CPM_PRES142 && window.__CPM_PRES142.men && window.__CPM_PRES142.men.length >= 2, null, { timeout: 60000 });
   return page.evaluate(async (dur) => {
@@ -11,7 +11,7 @@ export async function campionaSaluto(page, beat, durMs = 7000) {
     const ossa = P.men.map(m => { const B = {}; m.traverse(o => { if (o.isBone && /^(upperarm_[lr]|hand_[lr]|middle_01_r|index_01_r|pinky_01_r)$/.test(o.name)) B[o.name] = o; }); return B; });
     { const tw = performance.now(); while ((P.t144 || 0) >= 1 && performance.now() - tw < 20000) await new Promise(r => setTimeout(r, 50)); }
     const t0 = performance.now(), el0 = P.el;
-    while (performance.now() - t0 < dur) {
+    while (performance.now() - t0 < dur && !((P.t144 || 0) >= 6.0)) {
       const z = P.men.map(m => +m.position.z.toFixed(3)); let k = 0; z.forEach((v, i) => { if (v > z[k]) k = i; });
       const m = P.men[k], B = ossa[k]; m.updateMatrixWorld(true);
       const W = (n, v) => B[n].getWorldPosition(v);
@@ -48,7 +48,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const page = await browser.newPage({ viewport: { width: 360, height: 800 } }); await installCdnRoutes(page);
   await apriCarriera(page, srv.address().port, !!process.env.CPM_ROSSO);
   for (const b of (process.argv[2] || '3,7').split(',')) {
-    const S = await campionaSaluto(page, +b, +(process.env.DUR || 7000));
+    const S = await campionaSaluto(page, +b, +(process.env.DUR || 90000));
     console.log('beat ' + b + ' corpi ' + S[0].z.length + ' eroe ' + S[0].eroe);
     S.filter((_, i) => i % 4 === 0).forEach(s => console.log(`  el ${s.el} avanti #${s.avanti} pi ${s.pi} t ${s.t} w ${s.w} z ${s.pz} manoDx-spalla ${s.mr} manoSx ${s.ml} palmo ${s.palmo}`));
   }
