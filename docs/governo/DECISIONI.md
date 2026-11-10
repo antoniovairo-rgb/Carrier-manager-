@@ -1207,3 +1207,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 22:30 UTC — PO-356 prima stagione in Primavera
 - PO: tutte e 4 le idee (chiamate in prima squadra con debutto; salto al mercato di gennaio; Primavera più corta/settimane saltabili; obiettivi e tornei giovanili, Nazionale Under 19 giocabile); «Progetto prima, poi 191». Decisione tecnica (madre): giro 153 su `progetto/giro153-primavera` da `lavoro/189`, solo documento di progetto con misure dell'attuale prima stagione (durata in tempo reale, numero di partite, eventi), poi approvazione del PO.
+
+### 10/11 22:40 UTC — Questionario di chiarimenti chiesto dal PO
+- Scie 2D: confermata «scia corta e sottile». B14: gol dell'eroe «Solo negli highlight», nella 190 (PO-357, giro 154, motore → catena completa). D18: Legacy Score con tetto ai trofei (PO-358). D11: «Il tuo allievo» e nome del derby legato alle città (PO-359). PO-358/359 con le correzioni dei bassi presenti di PO-337/338 nel giro 155 (190).
+- Play Store: «Non ho ancora iniziato» (resta la guida Claude Doc del 09/11). Rilasci: «190 appena pronta», la Primavera nuova nella 191.
