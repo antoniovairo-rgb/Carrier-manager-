@@ -579,7 +579,9 @@ function _spalti109(casa,casa2,osp,osp2){
   /* ospiti col colore di casa (rosso contro rosso): nel loro spicchio vince il secondo colore, se e' davvero diverso */
   const ospP=(_dist286(ospP0[0],casaP[0])<DIST109&&_dist286(ospP0[1],casaP[0])>=DIST109)?[ospP0[1],ospP0[0],ospP0[2]]:ospP0;
   const cart=[casaP[0],fondoClub106(casaP[0]),casaP[1],fondoClub106(casaP[1]),casaP[0],ospP[0]];
-  return{base,erba:"#1e6331",casa:casaP,osp:ospP,cart,tes:0.60,peso:[56,82,100]};}
+  /* [giro 141 PO-341] i cartelloni per settore: quelli di casa coi soli colori di casa, quelli del settore ospiti coi soli colori ospiti */
+  const cartC=[casaP[0],fondoClub106(casaP[0]),casaP[1],fondoClub106(casaP[1])],cartO=[ospP[0],fondoClub106(ospP[0]),ospP[1],fondoClub106(ospP[1])];
+  return{base,erba:"#1e6331",casa:casaP,osp:ospP,cart,cartC,cartO,tes:0.60,peso:[56,82,100]};}
 /* il rettangolo dell'erba esterna (fino ai cartelloni), in pixel, e quanti metri oltre le linee: ai lati 2,5 m e dietro le porte 4,5 m,
    ma mai piu' di meta' dello spazio libero (sul telefono in verticale ai lati restano ~13 px: l'erba ne prende meta', il resto e' tribuna) */
 function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
@@ -589,8 +591,68 @@ function _cart297(PX,PY,vert,LUN,LAR,s,W,H){
   return{x0:x0-mx,x1:x1+mx,y0:y0-my,y1:y1+my,m:{a:(vert?my:mx)/s,b:(vert?mx:my)/s}};}
 /* il settore ospiti: lo spicchio di tribuna nell'angolo in alto a destra (dietro la porta lontana e il primo tratto del lato) */
 function _ospRect297(W,H,x0,y0,x1,y1,vert){
+  /* [giro 141 PO-341] il settore ospiti e' la CURVA dietro la porta di chi difende verso il basso (verticale) / a sinistra (coricato), come la
+     Curva Nord del 3D; lo spicchio della Tribuna Est si aggiunge in _settore141. Rosso __CPM_NO_G141: lo spicchio nell'angolo di prima. */
+  if(!_no141())return vert?[-2,y1,W+4,H-y1+2]:[-2,-2,x0+2,H+4];
   if(vert)return[x0+(x1-x0)*0.62,-2,W-(x0+(x1-x0)*0.62)+2,y0+(y1-y0)*0.16];
   return[x1-(x1-x0)*0.16,-2,W-(x1-(x1-x0)*0.16)+2,y0+(y1-y0)*0.38];}
+/* [giro 141 PO-341/PO-342 — CARTELLONI PER SETTORE E SPALTI COME IL 3D] Segnalazione PO (foto 187, SIC-PAR Primavera 2): «sui cartelloni
+   pubblicitari i colori sono mischiati» e «la densita' dei tifosi deve essere realistica come nella 3D». MISURATO (partita2d-141): i
+   cartelloni alternavano i colori di casa con un pannello ospiti ogni sei su TUTTI i lati; la tribuna era piena all'88% in ogni partita,
+   anche in Primavera dove il 3D ne mostra un quinto. Ora: (1) UNA mappa dei settori, quella del 3D (buildStadium/CROWD_CFG): curva di
+   casa dietro la porta che la squadra in basso attacca, curva ospiti dietro l'altra, Tribuna Est (lato destro / in basso) con lo spicchio
+   ospiti accanto alla curva ospiti, Tribuna Ovest di casa (in finale entrambe divise a meta'); i cartelloni prendono il colore del padrone
+   del loro settore. (2) Il riempimento per settore viene da settoriFolla141 (la stessa regola del 3D) sul contesto folla della partita
+   (computeCrowdContext, la stessa affluenza della MatchdayCard): file vicine al campo piu' piene, blocchi pieni e vuoti, corridoi sempre
+   liberi, e i posti vuoti si vedono come SEDILI (come nel 3D). Media tarata per bisezione sui posti veri: la quota disegnata e' quella
+   del settore. Tutto deterministico (hashStr), tutto nella tela di servizio disegnata una volta. Rosso __CPM_NO_G141 = la 7.999.188. */
+function _no141(){try{return typeof window!=='undefined'&&!!window.__CPM_NO_G141;}catch(_e){return false;}}
+/* il settore di un punto fuori dall'erba esterna E (x0,y0,x1,y1): curvaCasa · curvaOsp · est · ovest, e u lungo la tribuna (0 dal lato della curva ospiti) */
+function _settore141(x,y,E,vert){
+  if(vert){if(y<E.y0)return{k:"curvaCasa",u:0.5};if(y>=E.y1)return{k:"curvaOsp",u:0.5};const u=(E.y1-y)/Math.max(1,E.y1-E.y0);return{k:x>=E.x1?"est":"ovest",u};}
+  if(x>=E.x1)return{k:"curvaCasa",u:0.5};if(x<E.x0)return{k:"curvaOsp",u:0.5};const u=(x-E.x0)/Math.max(1,E.x1-E.x0);return{k:y>=E.y1?"est":"ovest",u};}
+function _padrone141(z,F){if(z.k==="curvaCasa")return"casa";if(z.k==="curvaOsp")return"osp";if(z.k==="est")return z.u<F.wedge?"osp":"casa";return z.u<F.wedgeOvest?"osp":"casa";}
+function _fill141(z,F){if(z.k==="curvaCasa")return F.curvaCasa;if(z.k==="curvaOsp")return F.curvaOsp;return _padrone141(z,F)==="osp"?F.wedgeFill:F.tribuna;}
+/* larghezze di curva e tribuna come le sceglie buildStadium dalla capienza (pesano i posti spostati in curva) */
+function _misure141(folla){const c=(folla&&folla.capacity)||0;const xl=c>=45000,lg=c>=26000,md=c>=12000;return{sideW:xl?84:lg?76:md?68:60,endW:xl?126:lg?118:md?110:100};}
+function _spalti141(o,SP,E,W,H,vert,passo,tes,dpr,folla,sp){
+  const MS=_misure141(folla),F=settoriFolla141(folla||null,MS.sideW,MS.endW);
+  const seed=Math.abs(hashStr(String((folla&&folla.seed)||1)+"_spalti141"));
+  const R=(a,b)=>((Math.imul((a|0)+seed,73856093)^Math.imul((b|0)^(seed>>>7),19349663))>>>0)%10000/10000;
+  const SN=(v)=>Math.round(v*dpr)/dpr,tw=Math.max(1/dpr,SN(tes)),th=Math.max(1/dpr,SN(tes*1.1));
+  const _mx=(c,t,q)=>{const a=_rgb917(c),b=_rgb917(t);return a.map((v,i)=>v+(b[i]-v)*q);};
+  const seat="#"+_mx(SP.casa[0],"#3c424e",0.70).map(v=>Math.max(0,Math.min(255,Math.round(v*0.82))).toString(16).padStart(2,"0")).join("");
+  const KS=["curvaCasa","curvaOsp","est","ovest"],idx={curvaCasa:0,curvaOsp:1,est:2,ovest:3};
+  /* 1) le celle: settore, profondita' (0 contro i cartelloni, 1 in cima), posizione lungo la tribuna (per blocchi e corridoi) */
+  const cel=[];const dMax=[0,0,0,0];
+  for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
+    const mg=(sp||0)+tes*0.6;/* niente posti sotto i cartelloni: sarebbero contati e non visti */
+    if(x>E.x0-mg&&x<E.x1+mg&&y>E.y0-mg&&y<E.y1+mg)continue;
+    const z=_settore141(x,y,E,vert),si=idx[z.k],curva=si<2;
+    const d=vert?(curva?(si===0?E.y0-y:y-E.y1):(si===2?x-E.x1:E.x0-x)):(curva?(si===0?x-E.x1:E.x0-x):(si===2?y-E.y1:E.y0-y));
+    const lungo=vert?(curva?x:y):(curva?y:x);
+    const own=_padrone141(z,F);const f=_fill141(z,F);
+    cel.push({x,y,si,d:Math.max(0,d-(sp||0)),blk:Math.floor(lungo/(passo*7)),col:Math.round(lungo/passo),own,f,g:si*2+(own==="osp"?1:0)});if(d>dMax[si])dMax[si]=d;}}
+  /* 2) corridoi (una colonna ogni 11-15, sempre libera) e posti veri; rampa a media nulla + blocchi bassa frequenza (7.187.0) */
+  const aisN=11+(seed%5),aisO=(seed>>>4)%aisN;
+  const amp=(f)=>1.10*Math.max(0,Math.min(1,1-f))*Math.max(0,Math.min(1,(0.98-f)/0.18));
+  const gruppi={};
+  for(const c of cel){c.ais=(((c.col%aisN)+aisN)%aisN)===aisO;c.dep=1-Math.min(1,c.d/Math.max(1,dMax[c.si]));
+    c.noise=(R(c.blk*31+c.si*977,c.g*13)-0.5)*amp(c.f);if(!c.ais){(gruppi[c.g]=gruppi[c.g]||[]).push(c);}}
+  /* 3) taratura per gruppo (settore x padrone): l'offset che rende la quota attesa dei posti veri uguale al riempimento del settore */
+  for(const g in gruppi){const L=gruppi[g],f=L[0].f;let dm=0;for(const c of L)dm+=c.dep;dm/=L.length;
+    const ev=(off)=>{let sm=0;for(const c of L)sm+=Math.max(0,Math.min(1,f+(c.dep-dm)*0.85*Math.min(1,f*2.2)+c.noise+off));return sm/L.length;};
+    let lo=-1,hi=1;if(f<=0){lo=hi=-1;}else if(f>=1){lo=hi=1;}else for(let i=0;i<22;i++){const m=(lo+hi)/2;if(ev(m)<f)lo=m;else hi=m;}
+    const off=(lo+hi)/2;for(const c of L)c.p=Math.max(0,Math.min(1,f+(c.dep-dm)*0.85*Math.min(1,f*2.2)+c.noise+off));}
+  /* 4) il disegno: tifoso (tinte del suo club) o sedile vuoto della stessa misura; il corridoio resta fondo */
+  const T={};for(const k of KS)T[k]={casa:{posti:0,occ:0,atteso:0},osp:{posti:0,occ:0,atteso:0}};
+  const PE=SP.peso||[56,82,100];
+  for(const c of cel){if(c.ais)continue;const occ=R(c.x*7+3,c.y*7+11)<c.p;const t=T[KS[c.si]][c.own];t.posti++;if(occ)t.occ++;t.atteso=c.f;
+    const X=SN(c.x-tes/2),Y=SN(c.y-tes/2);
+    if(!occ){o.fillStyle=seat;o.fillRect(X,Y,tw,th);continue;}
+    const pal=c.own==="osp"?SP.osp:SP.casa,h=Math.floor(R(c.x*13+5,c.y*17+1)*100);
+    o.fillStyle=h<PE[0]?pal[0]:h<PE[1]?pal[1]:pal[2];o.fillRect(X,Y,tw,th);}
+  return{F,T,seat,n:cel.length};}
 function _osp297(x,y,W,H,x0,y0,x1,y1,vert){const q=_ospRect297(W,H,x0,y0,x1,y1,vert);return x>=q[0]&&x<=q[0]+q[2]&&y>=q[1]&&y<=q[1]+q[3];}
 /* i portieri: un colore che stacca da ENTRAMBE le divise (come nella realta') */
 function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[163,230,53],[249,115,22]];
@@ -620,7 +682,7 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0}){
+function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0}){
   const cRef=React.useRef(null);
   const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};/* [giro 92 PO-297] i gol dello stadio (casa/ospiti) per accendere la tribuna: letti dal giro di disegno, fuori dalle dipendenze */
   const rafRef=React.useRef(0);
@@ -703,7 +765,9 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           const est=_cart297(PX,PY,vert,LUN,LAR,s,W,H),passo=Math.max(3.6,Math.min(6,s*0.9)),tes=Math.max(1.5,passo*(SP.tes||0.46)),PE=SP.peso||[52,80,100];
           try{if(typeof window!=='undefined'&&window.__CPM_SP109)window.__CPM_SP109={base:SP.base,casa:SP.casa,osp:SP.osp,cart:SP.cart||null};}catch(_e109){}/* [giro 109] testimone di collaudo (inerte, solo se la sonda lo arma) */
           const ox0=est.x0,oy0=est.y0,ox1=est.x1,oy1=est.y1;
-          for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
+          const _g141=!_no141();let _S141=null;
+          if(_g141){try{_S141=_spalti141(o,SP,est,W,H,vert,passo,tes,dpr,folla,Math.max(3,s*0.95));M.s141=_S141;}catch(_e141){_S141=null;}}
+          if(!_S141)for(let y=passo*0.5,ri=0;y<H;y+=passo,ri++){for(let x=passo*(ri%2?0.5:1)*0.5;x<W;x+=passo){
             if(x>ox0-tes&&x<ox1+tes&&y>oy0-tes&&y<oy1+tes)continue;
             const osp=_osp297(x,y,W,H,ox0,oy0,ox1,oy1,vert);const pal=osp?SP.osp:SP.casa;
             const h=((Math.imul((x*7)|0,73856093)^Math.imul((y*7)|0,19349663))>>>0)%100;
@@ -716,9 +780,14 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
           o.fillStyle=SP.erba;o.fillRect(ox0,oy0,ox1-ox0,oy1-oy0);
           /* i cartelloni: una fila di pannelli attorno al prato, a tinte alternate */
           const sp=Math.max(3,s*0.95),seg=Math.max(18,s*7.5),COLC=SP.cart||[SP.casa[0],"#0f172a","#f1f5f9",SP.casa[1],"#1d4ed8","#0f172a"];
-          let k=0;const pan=(x,y,w,h)=>{o.fillStyle=COLC[k%COLC.length];o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
+          let k=0;const _kp={casa:0,osp:0},_pan141=[];
+          const pan=(x,y,w,h)=>{let col;
+            if(_S141&&SP.cartC){const z=_settore141(x+w/2,y+h/2,est,vert),own=_padrone141(z,_S141.F),L=own==="osp"?SP.cartO:SP.cartC;col=L[_kp[own]%L.length];_kp[own]++;_pan141.push([x,y,w,h,z.k,own,col]);}
+            else col=COLC[k%COLC.length];
+            o.fillStyle=col;o.fillRect(x,y,w,h);o.fillStyle="rgba(255,255,255,0.22)";o.fillRect(x,y,w,Math.max(1,h*0.22));k++;};
           for(let x=ox0;x<ox1;x+=seg){const w=Math.min(seg-1,ox1-x);pan(x,oy0-sp,w,sp);pan(x,oy1,w,sp);}
           for(let y=oy0-sp;y<oy1+sp;y+=seg){const h=Math.min(seg-1,oy1+sp-y);pan(ox0-sp,y,sp,h);pan(ox1,y,sp,h);}
+          try{if(typeof window!=='undefined'&&window.__CPM_G141)window.__CPM_G141={on:!!_S141,vert,W,H,erba:[ox0,oy0,ox1,oy1],sp,passo,tes,F:_S141?_S141.F:null,T:_S141?_S141.T:null,seat:_S141?_S141.seat:null,pan:_pan141,casa:SP.casa,osp:SP.osp,base:SP.base,folla:folla?{fill:folla.fill,awayFill:folla.awayFill,capacity:folla.capacity,attendance:folla.attendance,tier:folla.tier}:null};}catch(_eW){}
         }catch(_e297){}}
         /* il prato */
         /* [23/09 POC — collaudo PO «il prato 2D e 3D non devono essere diversi»] LO STESSO PRATO DEL 3D: palette dello
@@ -794,7 +863,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* gli archi delle bandierine */
         ARC(0,0,1,0,Math.PI/2);ARC(0,LAR,1,-Math.PI/2,0);
         ARC(LUN,0,1,Math.PI/2,Math.PI);ARC(LUN,LAR,1,Math.PI,Math.PI*1.5);
-        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;try{M.ms297=+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-_t297).toFixed(1);}catch(_e){}/* [giro 92] quanto costa disegnare lo sfondo (una volta) */
+        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;try{M.ms297=+(((typeof performance!=='undefined'&&performance.now)?performance.now():0)-_t297).toFixed(1);}catch(_e){}/* [giro 92] quanto costa disegnare lo sfondo (una volta) */try{if(typeof window!=='undefined'&&window.__CPM_G141&&window.__CPM_G141.pan)window.__CPM_G141.msSfondo=M.ms297;}catch(_eW){}
       }
       g.setTransform(1,0,0,1,0,0);
       g.clearRect(0,0,cv.width,cv.height);
@@ -1023,7 +1092,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
     const _vis12=()=>{try{if(document.visibilityState==='visible')memRef.current.rifai=true;}catch(_e){}};/* [7.999.12] al ritorno dal background lo sfondo si ridisegna */
     try{document.addEventListener('visibilitychange',_vis12);if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_RIFAI12=()=>{memRef.current.rifai=true;};/* solo collaudo: il danno che fa il telefono (tela di servizio svuotata) e la tela visibile da campionare */window.__CPM_DANNO12=()=>{const M=memRef.current;if(M.sfondo){const v=document.createElement('canvas');v.width=M.sfondo.width;v.height=M.sfondo.height;M.sfondo=v;M.sfondoCtx=v.getContext('2d');return true;}return false;};window.__CPM_CAMPO2D_CV=()=>cRef.current;}}catch(_e){}
     return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}try{document.removeEventListener('visibilitychange',_vis12);}catch(_e){}};
-  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame,tifoCasa,tifoCasa2,tifoOsp,tifoOsp2]);
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame,tifoCasa,tifoCasa2,tifoOsp,tifoOsp2,folla]);
   return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
 }
 
@@ -11110,7 +11179,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
+                  <Campo2D folla={crowdCtx} tifoCasa={_mkits.homeShirt} tifoCasa2={_mkits.homeAccent} tifoOsp={_mkits.awayShirt} tifoOsp2={_mkits.awayAccent} golCasa={_hVal901} golOsp={isMatchHome?score.away:score.home}/* [giro 92 PO-297] gli spalti: colori e gol della squadra di casa dello STADIO e di quella ospite */ clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
                   {!(typeof window!=='undefined'&&window.__CPM_NO918)&&!_panCol292&&_pan918el()}
                 </div>);})()}
               <ThreeMatchView key={"tmv"+glbTry} heroFoot={player.foot||"R"}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
