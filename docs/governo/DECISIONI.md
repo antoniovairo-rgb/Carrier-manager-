@@ -1153,3 +1153,7 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 - 142b (PO-343, D23): aspetto della partita sui corpi della presentazione, testa ≤ 10° (prima 26-53°), punte a terra, nessuno fermo, marchio «Korward Elite» nella striscia di tutte le cerimonie; guardiano presentazione-142. Marchio composto a pezzi anche in sala stampa (piastrelle, tovaglia) e titolo iniziale (pallone): non toccati. 6,05 $.
 - Decisioni tecniche (madre) sulle domande minori dei giri: capitano verso il punto-camera fisso «com'era» (137-1); «poi:» resta a fine riga (137-2); sedili vuoti nella tinta del settore (141-2); tribune laterali strette al telefono restano (141-3); criterio A di partita2d-297 confermato (141-4); sguardo della fila che gira piano resta (142-2). Le altre al PO.
 - Sessioni archiviate. 139 (rigore doppio) ancora in catena; 138 (strumenti) al lavoro.
+
+### 10/11 10:10 UTC — Risposte del PO sui giri 141 e 142
+- Curve 2D scambiate al secondo tempo «come nel 3D» (PO-345); Primavera quasi vuota «realistico»; marchio in sala stampa «nella 189» (PO-346, il pallone del titolo iniziale resta come stile); saluto del chiamato «Sì» (PO-347).
+- Decisione tecnica (madre): giro 143 su `sviluppo/giro143-curve2d` da `sviluppo/giro141-partita2d`; giro 144 su `sviluppo/giro144-saluto-marchio` da `sviluppo/giro142-presentazione`.
