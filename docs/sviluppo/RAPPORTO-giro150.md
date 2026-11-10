@@ -69,7 +69,9 @@ sopra/sotto <= 24 px, larghezza PC >= 480 px, pannello dentro lo schermo, scorri
 
 Foto prima/dopo: `docs/sviluppo/giro150/{prima,dopo}-{pc1366,pc1920,tabO,tabV,tel}-{ivPost,ivSett}.png`.
 
-## 5. Catena (solo grafica, un controllo alla volta)
+## 5. Catena (solo grafica, un controllo alla volta) — TUTTA VERDE
+
+Nota: la prima corsa di `prossima-131` è stata interrotta dal riavvio del processo della sessione e rifatta da capo sullo stesso build.
 
 | Controllo | Esito |
 |---|---|
@@ -79,10 +81,11 @@ Foto prima/dopo: `docs/sviluppo/giro150/{prima,dopo}-{pc1366,pc1920,tabO,tabV,te
 | griglia-mobile | ✅ uscita 0, 14 schermate x 5 larghezze (scatti rigenerati NON committati) |
 | design-system | ✅ SISTEMA GRAFICO OK |
 | privacy-134 | ✅ verde 0 difetti, rosso cade |
-| prossima-131 | (vedi sezione 7) |
-| career-critical (due gruppi) | (vedi sezione 7) |
-| test:logic | (vedi sezione 7) |
-| save-compat | (vedi sezione 7) |
+| prossima-131 | ✅ verde 15/15, i quattro rossi cadono |
+| career-critical gruppo 1 (recovery-competition, save-monotonic, playing-mdref, double-tap, stale-matchday, playedmd-registry) | ✅ 6/6 |
+| career-critical gruppo 2 (career-invariants, pending-mr-durable, cup-final-replay, coppa-nazioni, coppa-intera) | ✅ 5/5 |
+| test:logic | ✅ 43/43 |
+| save-compat | ✅ 12 pass · 0 fail |
 
 ## 6. Cosa resta fuori / difetti misurati non corretti
 
