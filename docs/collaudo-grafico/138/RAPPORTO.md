@@ -10,6 +10,7 @@ Ramo `collaudo/giro138-strumenti` da `lavoro/188` (04a62ae, 7.999.188). Solo str
 |---|---|---|---|---|---|
 | `festa-57` | PO-336 | 2 corse, **uscita 1** entrambe: rosso 57 fermo **3** e **1** campioni (serve ≥4); nella 1ª anche rosso 61 «non si distingue» (0 campioni) | **strumento** | 2 corse sulla versione finale, **uscita 0** entrambe: verde fino a 4,39 / 4,43 (clip ripartita), rosso 57 **4 campioni fermi a 2,04**, rosso 61 distinto | chiuso |
 | `portiere-252` | PO-316 | 1 corsa, **uscita 1**: verde KO 0/7 · rosso KO **0/7** «rosso NON VISTO» (come 10/11 e verifica 182) | **strumento** (braccio rosso senza la geometria del difetto) | 2 corse **uscita 0**: verde KO 0/10 · rosso KO **3/10** e **2/10**, tutti sui tiri angolati fissati | chiuso |
+| `riserva-103` | PO-317 | giro 111: 1 esecuzione, gi17 mai rivelata; giro 138, 2 diagnosi: cade **la prima scena dopo il riscaldamento**, qualunque sia (17,4,1 → gi17; 4,17,1 → gi4, gi17 chiude a 8,09 s) | **strumento** (riscaldamento a una scena; riferimento del caso B) | corsa finale **uscita 0**: A 3/3+3/3 · B 3/3+3/3, rosso visto ovunque | chiuso (1 corsa finale completa, vedi sotto) |
 | `griglia-mobile` | verifica 188 r.28-29 | 2 corse normali uscita **0** (riprodotto **non** il rosso), prepartita **mai misurata** (`playMatch → nomatch`, 13 schermate); con un rifiuto orfano alla chiusura del browser: rapporto completo e poi **uscita 1** = il sintomo della 188 | **strumento** (uscita implicita; prepartita cieca) | 2 corse normali **uscita 0** «misura completa: 14 schermate x 5 larghezze»; col rifiuto iniettato **uscita 0** con l'errore stampato come tardivo; con un rifiuto durante la raccolta **uscita 3** col motivo | chiuso |
 
 ## 1 · `festa-57` (PO-336) — strumento, non la festa
@@ -135,3 +136,58 @@ il seme regge); da (88,86) gi1 KO «tardi». gi67 e gi1 da (88,14) non giudicati
 
 gi13 da (88,14) è KO in tutte e tre le corse rosse (esplorazione + 2), gi1 da (88,86) in 2 su 3: il rosso non dipende più da un solo caso.
 Costo: la corsa passa da ~650 s a ~880-910 s (sopra i 10 minuti: va lanciata in sottofondo).
+
+## 4 · `riserva-103` (PO-317) — gi17 non è la scena: è la prima scena dopo il riscaldamento
+
+**Censimento prima.** Giro 111: 1 esecuzione, gi17 «esito mai rivelato» in entrambi i bracci (3 giri citati nel rapporto 111).
+Giro 138, diagnosi col solo braccio verde e solo caso A (`CPM_ARMI=verde CPM_G103_SOLOA=1`), con una riga nuova per scena (testo,
+giocata, tipo 3D, esito risolto, rivelazioni, riquadri rifiutati dalla riserva):
+
+| ordine scene | gi17 | gi4 | gi1 | uscita |
+|---|---|---|---|---|
+| 17,4,1 (come la catena) | ✗ mai rivelato (20 s di scena) | 8,17 s via riserva | 8,10 s via riserva | 0 (2/3 giudicate) |
+| **4,17,1** | **8,09 s via chiusura** | **✗ mai rivelato (20 s di scena)** | 8,10 s via chiusura | 0 (2/3 giudicate) |
+
+gi17 è «⚡ Cross dalla fascia destra!», giocata «🦵 Tiro a giro», tipo `shot`, esito forzato `wide` risolto regolarmente (fase
+`hl_result`, nessun riquadro rifiutato dalla riserva, `__CPM_G104X` = 0). Cambiando l'ordine **il difetto segue la posizione e non
+la scena**: cade sempre la prima scena misurata, quella subito dopo l'unica scena di riscaldamento (che è la stessa gi17 e non
+rivela mai, come già scritto nel commento del giro 103: «4 su 4»). Quindi **è la sonda**, non un esito mai rivelato dal gioco.
+Perché la seconda scena di una pagina nuova non riveli ancora l'esito: **non posso confermarlo** (non indagato oltre: il rimedio
+non ne dipende).
+
+**Correzione (solo `tests/visual/riserva-103.mjs`).** Il riscaldamento si attende come un evento: si gioca una scena di
+riscaldamento finché una **rivela davvero** l'esito (al massimo 3, a rotazione sulle scene della corsa), poi si misura; se nessuna
+rivela lo si stampa e le scene restano giudicate come sono. Soglie invariate. Riga diagnostica per scena (sopra).
+
+**Seconda correzione, trovata dal primo «dopo».** Con gi17 finalmente giudicata, nella prima corsa il caso B ha dato verde gi17
+**2,58 s** «prima dei 2,6 s di scena». La sonda contava dal primo fotogramma in `hl_result`, il gioco conta dalla **risoluzione**
+(`ckNow103()` in `handleAction`, `src/15` r.~9822): ora la sonda legge lo stesso orologio nello stesso `evaluate` che risolve e
+giudica il caso B su quel riferimento (stampato «dalla risoluzione»). Misurato nella corsa dopo: i due riferimenti coincidono o
+differiscono di un fotogramma (gi17 caso A 8,12 → 8,17). Che il 2,58 della prima corsa sarebbe stato ≥ 2,6 col riferimento nuovo
+**non posso confermarlo** (quella corsa non registrava il riferimento nuovo): nella corsa successiva gi17 caso B è 2,67.
+
+| corsa | caso A verde | caso A rosso | caso B verde | caso B rosso | uscita | durata |
+|---|---|---|---|---|---|---|
+| dopo 1 (solo riscaldamento a evento) | 3/3, 0 in corsa | 3/3 in corsa | 3/3, **1 prima dei 2,6** (gi17 2,58) | 3/3 prima | 1 | 684 s |
+| dopo 2 (+ riferimento della risoluzione) | 3/3, 0 in corsa | 3/3 in corsa | 3/3, 0 prima (2,67-2,68) | 3/3 prima (1,50-2,05) | **0** | 622 s |
+
+Riscaldamento: riuscito alla 3ª scena in 5 bracci su 6, alla 2ª in uno (le prime scene di una pagina nuova non rivelano: è il
+motivo per cui una scena sola non bastava).
+
+## 3 · `contatto-103` (PO-319) — parate provocate dalla sonda
+
+**Misura prima** (script com'era): «VERDE parate giudicate 2 · difetti 0 · D3 0 / ROSSO parate giudicate 2 · difetti 0 · D3 0 ·
+✗ rosso: il difetto non si vede», uscita 1, 707 s — identica alla misura del 10/11 sulla 187.
+
+**Correzione dello strumento, primo passo (`highlight-95.mjs` + `contatto-103.mjs`).** `CPM_G138PARATA=1`: la sonda avvolge
+`giocaScena` del motore (oggetto esposto da `__CPM_MOTORE_OBJ`, funzione pura che restituisce la decisione della scena senza
+emettere eventi) e ogni passaggio arrivato diventa «tiro del compagno parato» (`ok:false, esito:'saved'`); tutto il resto lo fa il
+gioco (chiave `chance`, `spreca298`, consegna e tiro del compagno nel 3D). `contatto-103` lo accende di default
+(`CPM_G138PARATA=0` per spegnerlo) e stampa la distanza minima pallone-portiere di **ogni** parata giudicata (diagnosi
+`CPM_D3DIAG` già di `highlight-95`), cioè il margine dalla soglia 6. Nuovo: il rosso con meno di 2 parate giudicate è «non
+giudicato» (= rosso); braccio e motivo per ultimi.
+
+| corsa | verde | rosso | uscita |
+|---|---|---|---|
+| prima | 2 parate, 0 difetti | 2 parate, D3 0 | 1 |
+| dopo 1 (parate provocate) | **4** parate (3 passaggi resi parata), 0 difetti | **4** parate, D3 **0** | 1 |
