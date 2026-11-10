@@ -1172,3 +1172,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 13:50 UTC — lavoro/189 in costruzione
 - lavoro/189 da main (7.999.188) con le unioni, ciascuna da sola e senza conflitti: giri 137, 139, 143 (contiene 141), 144 (contiene 142b); check-src allineato dopo ognuna. Manca il giro 145 (contiene 138), poi GAME_VERSION 7.999.189 e verifica finale.
 - `folla` eseguito dalla madre su lavoro/189: «verde PASSA · rosso visto», uscita 0. Il «rosso F1/F2» segnalato dal giro 143 sono le righe attese del braccio rosso, non un difetto.
+
+### 10/11 14:40 UTC — PO-348 spalle/braccia/mani nella 190
+- PO: «190, misura subito». Decisione tecnica (madre): giro 146 su `sviluppo/giro146-spalle` da `lavoro/189` (contiene la corporatura per giocatore del giro 142b), misura poi correzione; la 189 non si ferma.
