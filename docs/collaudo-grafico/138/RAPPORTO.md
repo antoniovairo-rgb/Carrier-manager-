@@ -198,7 +198,7 @@ giudicato» (= rosso); braccio e motivo per ultimi.
 
 **Esito: NON chiuso.** Lo strumento ora giudica più parate (2 → 4 nella corsa di default, 6-7 con tre partite) e stampa il margine,
 ma il rosso continua a non superare la soglia 6 che definisce il difetto D3. **Misura che conta per il PO:** il difetto di
-`__CPM_NO_G103D` c'è ancora e si vede come spostamento delle distanze (verde mai oltre 3,1 in 14 parate; rosso 4,7-5,5 su 4 parate
+`__CPM_NO_G103D` c'è ancora e si vede come spostamento delle distanze (verde mai oltre 3,1 nelle 10 parate con la distanza stampata; rosso 4,7-5,5 su 4 parate
 su 11), ma oggi la sua ampiezza resta **sotto 6** — al giro 103 era 6,2 su HOWARD s12/7 (dichiarato «sul filo della soglia 6»).
 Se il gioco sia cambiato da allora o se fosse quella sola scena a superarla **non posso confermarlo**.
 
@@ -211,3 +211,30 @@ geometria delle parate (stesse distanze sulle prime due), quindi l'opzione è st
    fuori dal perimetro di questo giro;
 2. oppure una decisione del PO sul criterio del braccio rosso (oggi «almeno una parata oltre 6»): **non la prendo io**; i numeri
    sopra sono il materiale per deciderla. La soglia 6 non è stata toccata.
+
+## Note di metodo e cosa NON ho verificato
+
+- **Esecuzioni.** festa-57: 2 prima + 3 dopo (la 1ª dopo senza `__CPM_CER_HOLD`). griglia-mobile: 2 prima + 1 prima con rifiuto
+  iniettato in un timer (esce **prima** del rapporto: scartata come riproduzione) + 1 prima con rifiuto alla chiusura (riproduce la
+  188) + 3 diagnosi a 412 px + 5 dopo (2 normali finali, 1 col rifiuto alla chiusura, 1 col rifiuto «presto», 1 intermedia).
+  portiere-252: 1 prima + 2 esplorazioni (solo rosso, 4 scene) + 2 dopo. contatto-103: 1 prima + 3 dopo. riserva-103: 2 diagnosi
+  (solo verde, solo caso A, due ordini) + 3 complete (verde+rosso+caso B): sono le 5 esecuzioni chieste da PO-317, di cui 2 complete
+  sulla versione finale.
+- **Durate** (macchina della sessione, un controllo alla volta): festa-57 ~480 s; griglia-mobile ~217-230 s; portiere-252 ~650 s prima,
+  ~880-910 s dopo (3 scene in più per braccio); contatto-103 ~700-770 s, ~1.120 s con tre partite; riserva-103 ~620-690 s.
+  Le corse oltre i 10 minuti sono state lanciate in sottofondo e attese in primo piano sul file di log.
+- **Non eseguito:** la catena completa (`ci-runner`), né gli altri guardiani che usano gli stessi file. Le modifiche toccano solo:
+  `festa-57.mjs`, `griglia-mobile.mjs`, `portiere-252.mjs`, `riserva-103.mjs`, `contatto-103.mjs` e `highlight-95.mjs` (in
+  quest'ultimo solo un'opzione nuova, `CPM_G138PARATA`, spenta se la variabile non c'è: il comportamento di default di
+  `highlight-95` non cambia). `lib/scena-252.mjs` e `lib/harness.mjs` non sono toccati.
+- **griglia-mobile ora può uscire 1** per uno «NON misurato» (regola PROCESSO.md); il suo rapporto ha 14 schermate invece di 13.
+- I file di `docs/collaudo-grafico/g0/` riscritti dalla prima corsa «prima» (cartella di default della sonda) sono stati riportati
+  allo stato del commit; tutte le altre corse hanno scritto in una cartella di lavoro.
+- Memoria e disco prima di ogni corsa: 14,5-15,6 GB liberi, 29 GB di disco liberi (mai sotto).
+
+## Sintesi
+
+Quattro strumenti su cinque riparati e provati (verde + rosso che cade in almeno 2 esecuzioni): `festa-57`, `griglia-mobile`,
+`portiere-252`, `riserva-103` — in tutti e quattro il difetto era **dello strumento**, nessun difetto del gioco trovato.
+`contatto-103` **resta rosso**: lo strumento giudica il doppio delle parate e stampa il margine, ma il difetto del braccio rosso oggi
+misura al massimo 5,5 contro la soglia 6; servono un gancio di prova nel gioco o una decisione del PO sul criterio (proposte sopra).
