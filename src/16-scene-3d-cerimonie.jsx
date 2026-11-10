@@ -1087,7 +1087,51 @@ function _posa142(av,mx,act,clip,seme){try{if(!av||!mx||!act||!clip||typeof THRE
     giro(B.spine_03,X,-res*1.2*D);B.spine_03.updateMatrixWorld(true);
     giro(B.head,Y,sg*P.sg*D);giro(B.head,X,(res*1.5-1)*D);
     if(B.upperarm_l)giro(B.upperarm_l,Z,(br*2.2+1.5)*D);if(B.upperarm_r)giro(B.upperarm_r,Z,(-br*2.2-1.5)*D);};
-  av.userData.vita142=vita;av.userData.posa142={tb,buoni:buoni.length,riposo:{rN,rH,pL,pR,ballR}};return av.userData.posa142;}catch(_e){return null;}}
+  av.userData.vita142=vita;av.userData.posa142={tb,buoni:buoni.length,riposo:{rN,rH,pL,pR,ballR}};
+  try{av.userData.saluto144=_saluto144(av);}catch(_e){}
+  return av.userData.posa142;}catch(_e){return null;}}
+/* [giro 144 PO-347 «Sì, saluta»] IL SALUTO DEL CHIAMATO, scritto sulla posa (stesso metodo di _posa142). Fra gli asset non c'e' una
+   clip di saluto (cgtrader-clip-mixamo/po/po2, kit-adapter, korward-regular-anims: nessuna), quindi il gesto e' procedurale sulle ossa
+   del braccio destro e tutto in spazio MONDO, letto dal corpo: (1) l'omero va verso l'alto e un po' di lato e in avanti, (2)
+   l'avambraccio sta quasi verticale e ondeggia di lato, (3) il palmo si gira verso la tribuna: la normale del palmo e' (polso→medio) x
+   (indice→mignolo), e la rotazione che la porta sullo sguardo, intorno all'asse dell'avambraccio, va per meta' all'osso di torsione e
+   per intero alla mano (convenzione del rig: la torsione la porta la pelle dell'avambraccio, non il gomito). Peso w (0..1) e fase
+   dell'ondeggio arrivano dal tick: nessun Math.random, nessun accumulo (le ossa toccate ripartono dalla loro base a ogni fotogramma). */
+function _saluto144(av){const T=THREE,B={};
+  av.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|lowerarm_r|lowerarm_twist_01_r|hand_r|middle_01_r|index_01_r|pinky_01_r)$/.test(o.name))B[o.name]=o;});
+  if(!B.upperarm_r||!B.upperarm_l||!B.lowerarm_r||!B.hand_r||!B.middle_01_r||!B.index_01_r||!B.pinky_01_r)return null;
+  const base={};['lowerarm_r','lowerarm_twist_01_r','hand_r'].forEach(n=>{if(B[n])base[n]=B[n].quaternion.clone();});
+  /* la mano APERTA: nella clip idle le dita sono piegate (la prima foto era un pugno alzato). Le dita vanno verso la loro posa di
+     legame, ricavata dalle matrici inverse dello scheletro (locale = inversa del genitore x legame del figlio) */
+  const dita=[];try{let sk=null;av.traverse(o=>{if(!sk&&o.isSkinnedMesh&&o.skeleton)sk=o.skeleton;});
+    if(sk){const idx=new Map();sk.bones.forEach((b,k)=>idx.set(b,k));const m=new T.Matrix4(),pp=new T.Vector3(),ss=new T.Vector3();
+      sk.bones.forEach((b,k)=>{if(!/^(index|middle|ring|pinky|thumb)_0[1-3]_r$/.test(b.name))return;const kp=idx.get(b.parent);if(kp==null)return;
+        m.copy(sk.boneInverses[kp]).multiply(new T.Matrix4().copy(sk.boneInverses[k]).invert());const q=new T.Quaternion();m.decompose(pp,q,ss);
+        dita.push({o:b,q0:b.quaternion.clone(),q1:q});});}}catch(_e){}
+  const S={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),side:new T.Vector3(),fwd:new T.Vector3(),up:new T.Vector3(0,1,0),
+    q:new T.Quaternion(),qp:new T.Quaternion(),qw:new T.Quaternion(),id:new T.Quaternion()};
+  const wp=(n,v)=>B[n].getWorldPosition(v);
+  /* ruota l'osso di una rotazione q data in spazio MONDO */
+  const ruota=(o,q)=>{o.parent.updateMatrixWorld(true);o.parent.getWorldQuaternion(S.qp);S.qw.copy(S.qp).multiply(o.quaternion).premultiply(q);
+    o.quaternion.copy(S.qp.invert().multiply(S.qw));o.updateMatrixWorld(true);};
+  const punta=(o,da,a,dir,w)=>{wp(da,S.a);wp(a,S.b);S.c.copy(S.b).sub(S.a).normalize();S.q.setFromUnitVectors(S.c,dir);if(w<1)S.q.slerp(S.id.set(0,0,0,1),1-w);ruota(o,S.q);};
+  return function(w,ond){for(const n in base)B[n].quaternion.copy(base[n]);for(const d of dita)d.o.quaternion.copy(d.q0);if(!(w>0))return;
+    for(const d of dita)d.o.quaternion.copy(d.q0).slerp(d.q1,w*0.85);
+    av.updateMatrixWorld(true);
+    wp('upperarm_r',S.a);wp('upperarm_l',S.b);S.side.copy(S.a).sub(S.b);S.side.y=0;S.side.normalize();/* verso la destra del corpo */
+    S.fwd.copy(S.up).cross(S.side).normalize();/* lo sguardo del corpo */
+    /* (1) omero: su, di lato e appena avanti */
+    S.d.copy(S.side).multiplyScalar(0.74).addScaledVector(S.up,0.58).addScaledVector(S.fwd,0.26).normalize();punta(B.upperarm_r,'upperarm_r','lowerarm_r',S.d,w);
+    /* (2) avambraccio quasi verticale, ondeggio di lato */
+    S.d.copy(S.up).addScaledVector(S.side,0.06+0.30*(ond||0)).addScaledVector(S.fwd,0.10).normalize();punta(B.lowerarm_r,'lowerarm_r','hand_r',S.d,w);
+    /* (3) palmo verso la tribuna, intorno all'asse dell'avambraccio */
+    wp('lowerarm_r',S.a);wp('hand_r',S.b);const ax=S.c.copy(S.b).sub(S.a).normalize().clone();
+    wp('middle_01_r',S.a);S.a.sub(S.b);wp('index_01_r',S.d);wp('pinky_01_r',S.b);S.b.sub(S.d);const nP=S.a.cross(S.b).normalize();
+    nP.addScaledVector(ax,-nP.dot(ax));const fP=S.d.copy(S.fwd).addScaledVector(ax,-S.fwd.dot(ax));
+    if(nP.lengthSq()>1e-6&&fP.lengthSq()>1e-6){nP.normalize();fP.normalize();let ang=Math.acos(Math.max(-1,Math.min(1,nP.dot(fP))));
+      if(S.side.copy(nP).cross(fP).dot(ax)<0)ang=-ang;ang*=w;
+      if(B.lowerarm_twist_01_r){S.q.setFromAxisAngle(ax,ang*0.5);ruota(B.lowerarm_twist_01_r,S.q);}
+      S.q.setFromAxisAngle(ax,ang);ruota(B.hand_r,S.q);}};}
 function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false}){
   /* [7.947 v3 — direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e' nell'as is con
      sovrapposizione delle schermate 2D». Lo stadio non era il problema: lo erano i CH38. Con senzaCorpi
@@ -1274,10 +1318,20 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
          di testo sono costruiti cosi' in `presBeats`). In verticale la fila intera non ci sta nell'inquadratura
          (fov orizzontale ~15°): invece di allargare all'infinito, si stringe su CHI viene chiamato — che e' poi
          come funziona una presentazione vera. */
-      const pi=b-2,called=(pi>=0&&pi<N),lx=(called?pi:(N-1)/2)-(N-1)/2;
+      /* [giro 144] l'ultimo beat («…e il vostro numero») chiama l'EROE: con b-2 avanzava il clone N-2, un compagno al posto suo
+         (misurato: al beat finale era avanti il #5, l'eroe e' il #6). Rosso __CPM_NO_G144S. */
+      const _g144=!(typeof window!=='undefined'&&window.__CPM_NO_G144S);
+      const pi=(_g144&&b>=tot-1&&tot>2)?HERO:b-2,called=(pi>=0&&pi<N),lx=(called?pi:(N-1)/2)-(N-1)/2;
       const hx=lx*SP;
+      /* [giro 144 PO-347] IL TEMPO DEL CHIAMATO, sullo stesso orologio del passo (dt): passo avanti 0-0,9 s, mano su 0,9-1,4, saluto
+         fino a 3,6, mano giu' 3,6-4,1, poi torna in fila. */
+      if(called){if(st.current._pi144!==pi){st.current._pi144=pi;st.current._t144=0;}st.current._t144+=dt;}else{st.current._pi144=-1;st.current._t144=0;}
+      const _t144=st.current._t144||0,_sm=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+      const _w144=_g144&&called?(_sm((_t144-0.9)/0.5)*(1-_sm((_t144-3.6)/0.5))):0,_rit144=_g144&&_t144>4.1;
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
-      for(let i=0;i<men.length;i++){const tz=(called&&i===pi)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);}
+      for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
+        const _sl=men[i].userData&&men[i].userData.saluto144;if(_sl)_sl((called&&i===pi)?_w144:0,Math.sin(Math.max(0,_t144-1.1)*Math.PI*2*1.6));}
+      try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142){window.__CPM_PRES142.pi144=called?pi:-1;window.__CPM_PRES142.t144=_t144;window.__CPM_PRES142.w144=_w144;}}catch(_e){}
       /* [7.419.0] IL CHIAMATO SALUTA I SUOI TIFOSI: braccio destro su con rampa morbida e un
          ondeggio di avambraccio — additivo DOPO il mixer (pattern 7.24.2/gk: il mixer riapplica la
          posa base a ogni frame, quindi l'offset non accumula). Gli altri restano sull'attenti. */
@@ -1416,7 +1470,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       let cx,cy,cz,ax,ay,az;
       if(b<=0){const a=-0.5+el*0.055;cx=Math.sin(a)*92;cz=Math.cos(a)*92;cy=40;ax=0;ay=9;az=0;}         /* la panoramica del catino */
       else if(b===1){cx=-22;cy=9.0;cz=40;ax=0;ay=2.0;az=LZ;}                                             /* la squadra schierata */
-      else{const d=(b>=tot-1)?11.4:9.6;cx=hx+d*0.38;cy=1.62;cz=(called?STEP:LZ)+d;ax=hx;ay=1.15;az=(called?STEP:LZ);}
+      else{const d=(b>=tot-1)?11.4:9.6,_zc=(called?(_g144&&men[pi]?men[pi].position.z:STEP):LZ);cx=hx+d*0.38;cy=1.62;cz=_zc+d;ax=hx;ay=1.15;az=_zc;}/* [giro 144] la camera segue il chiamato anche quando torna in fila */
       const k=Math.min(1,dt*2.6);
       cam.position.x+=(cx-cam.position.x)*k;cam.position.y+=(cy-cam.position.y)*k;cam.position.z+=(cz-cam.position.z)*k;
       aim.x+=(ax-aim.x)*k;aim.y+=(ay+Math.sin(el*0.5)*0.06-aim.y)*k;aim.z+=(az-aim.z)*k;
