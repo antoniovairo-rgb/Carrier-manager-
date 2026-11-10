@@ -213,6 +213,44 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
    erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
    scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
+/* [giro 146 PO-348 «occhio alla gestione delle spalle, braccia e mani: spalle larghe e proporzionate al corpo in tutte le scene e negli
+   highlights»] LA REGOLA UNICA DELLE SPALLE. MISURATO (spalle-146-misura.mjs, GLB acceso, corpo CGTrader): il rapporto fra la distanza
+   delle teste degli omeri (Sj) e quella delle anche (Aj, il bacino e' rigido: non cambia con la posa) era 2,36-2,40 negli highlight e
+   nell'intro, 1,97-2,00 nella serata di presentazione (spalle del 17% piu' strette: li' la postura del gioco non arriva) e 1,26 nella
+   premiazione (la clip dell'alzata solleva le clavicole fin quasi alla verticale: spalle a META'). Ora OGNI corpo, in OGNI scena, dopo
+   l'animazione porta Sj dentro la fascia [min,max]·Aj: si ruotano le CLAVICOLE attorno alla loro radice verso il fuori e l'omero gira
+   del contrario, cosi' la direzione del braccio (e il gesto: mani alzate, saluto, tiro) resta quella della clip. Misurare sulle anche
+   rende la regola indipendente da statura e corporatura (un corpo piu' largo ha anche le spalle piu' larghe). Deterministica, nessun
+   sorteggio; idempotente come _corrPostura23 (se la clip non ha scritto l'osso, si riparte dall'ingresso). La fascia viene dalla
+   misura: il basso e' gli highlight (2,36-2,40, il corpo che il PO ha gia' ritoccato due volte), l'alto lascia passare ogni posa
+   gia' sana. Rosso __CPM_NO_G146. */
+const _SPALLE146={min:2.34,max:2.62};let _w146=null;
+function _spalle146(B){try{if(!B||typeof THREE==='undefined')return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;
+  const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent)return false;
+  const T=THREE,W=_w146||(_w146={a:new T.Vector3(),b:new T.Vector3(),l:new T.Vector3(),r:new T.Vector3(),m:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion()});
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(u.q146o&&b.quaternion.equals(u.q146o))b.quaternion.copy(u.q146i);if(!u.q146i)u.q146i=new T.Quaternion();u.q146i.copy(b.quaternion);}
+  /* l'attacco del braccio a 1,15 volte la lunghezza della clavicola della clip: e' lo stesso allargamento della postura del gioco
+     (_corrPostura23, 23/09); se quella funzione l'ha gia' applicato in questo fotogramma (posizione = la sua uscita) non si somma. */
+  for(const U of [UL,UR]){const u=U.userData;if(u.p23o&&U.position.equals(u.p23o))continue;
+    if(u.p146o&&U.position.equals(u.p146o))U.position.copy(u.p146i);if(!u.p146i){u.p146i=new T.Vector3();u.p146o=new T.Vector3();}u.p146i.copy(U.position);U.position.multiplyScalar(1.15);u.p146o.copy(U.position);}
+  TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
+  TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
+  let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
+  for(let it=0;it<2;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.004)break;
+    CL.getWorldPosition(W.a);CR.getWorldPosition(W.b);W.c.addVectors(W.a,W.b).multiplyScalar(0.5);/* asse del busto: fra le radici delle clavicole */
+    for(const [C,U,P,sg] of [[CL,UL,W.l,1],[CR,UR,W.r,-1]]){
+      C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);const L=W.d.length();if(L<1e-5)continue;
+      const dl=W.d.dot(W.m);W.e.copy(W.d).addScaledVector(W.m,-dl);const pr=W.e.length();
+      let dl2=sg*tg/2-c;dl2=Math.max(-L*0.999,Math.min(L*0.999,dl2));const pr2=Math.sqrt(Math.max(0,L*L-dl2*dl2));
+      if(pr>1e-6)W.e.multiplyScalar(pr2/pr);W.e.addScaledVector(W.m,dl2);
+      W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
+      U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
+      C.quaternion.copy(W.pw.clone().invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.invert().multiply(W.uw));U.updateMatrixWorld(true);mosso=true;}
+  }
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(!u.q146o)u.q146o=new T.Quaternion();u.q146o.copy(b.quaternion);}
+  return mosso;}catch(_e){return false;}}
 /*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
   const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
   [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
@@ -240,9 +278,12 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
       giu(B.upperarm_l,B.clavicle_l,0.45);giu(B.upperarm_r,B.clavicle_r,0.45);}
     try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}}
   else{try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}
+  /* [giro 146 PO-348] la regola unica delle spalle chiude la postura; le uscite di questa funzione diventano quelle di _spalle146, cosi'
+     l'idempotenza (q21o/q22o: «se la clip non ha scritto l'osso, riparti dal tuo ingresso») resta vera anche dopo il ritocco. */
+  if(_spalle146(B)){[B.clavicle_l,B.clavicle_r].forEach(b=>{if(b&&b.userData.q21o)b.userData.q21o.copy(b.quaternion);});[B.upperarm_l,B.upperarm_r].forEach(b=>{if(b&&b.userData.q22o)b.userData.q22o.copy(b.quaternion);});}
   try{if(typeof window!=='undefined'&&B.upperarm_l&&B.upperarm_l.children){const fa=B.upperarm_l.children.find(c=>c.isBone&&/lowerarm_l$/.test(c.name));if(fa){const a0=new THREE.Vector3(),a1=new THREE.Vector3();B.upperarm_l.getWorldPosition(a0);fa.getWorldPosition(a1);const v=a1.sub(a0).normalize();(window.__CPM_BRACCIO22=window.__CPM_BRACCIO22||[]).length<600&&window.__CPM_BRACCIO22.push(+(Math.acos(Math.max(-1,Math.min(1,-v.y)))*180/Math.PI).toFixed(1));}}}catch(_e22){}
 }catch(_e){}}
-function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01|thigh_[lr])$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -886,6 +927,8 @@ function ThreeMatchView(props){
     /* [giro 45 PO-068] testimone inerte del censimento gesti-firme-045: per l'EROE, quale clip VERA monta ogni chiave di gesto (base + varianti
        _gVar) e la tabella del contatto. Serve a misurare GLB acceso quali varianti di GESTI hanno lo stesso corpo e quali clip che calciano
        non hanno contatto/piede. Solo lettura, solo sotto cpmtest/__CPM_REC. */
+    /* [giro 146 PO-348] testimone inerte di spalle-146: i corpi 3D vivi della partita (eroe, compagni, portieri, panchina, cerimonia) per misurare spalle/braccia/mani. Solo lettura, solo sotto cpmtest. */
+    if(typeof window!=='undefined'&&_CPM_TEST)try{window.__CPM_CORPI146=()=>(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible&&(!a.visualRoot||a.visualRoot.visible!==false)).map(a=>({v:a.visualRoot||a.root,eroe:!!a._isHero,gk:!!a._isGk,arb:!!a._isRef,panca:!!a._hyperBench293,cg:!!a._hyper,squadra:a._team||null}));}catch(_e){}
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_GESTI_CLIP045=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a.gestures)return null;
       const nm=x=>{try{return (x&&x.getClip&&x.getClip().name)||null;}catch(_e){return null;}},du=x=>{try{return +((x&&x.getClip&&x.getClip().duration)||0).toFixed(2);}catch(_e){return 0;}};const g={};
       for(const k in a.gestures){const b=a.gestures[k];g[k]={base:nm(b),dur:du(b),var:((a._gVar&&a._gVar[k])||[]).map(nm).filter(Boolean)};}
