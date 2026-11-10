@@ -10,7 +10,7 @@ Ramo `collaudo/giro138-strumenti` da `lavoro/188` (04a62ae, 7.999.188). Solo str
 |---|---|---|---|---|---|
 | `festa-57` | PO-336 | 2 corse, **uscita 1** entrambe: rosso 57 fermo **3** e **1** campioni (serve ≥4); nella 1ª anche rosso 61 «non si distingue» (0 campioni) | **strumento** | 2 corse sulla versione finale, **uscita 0** entrambe: verde fino a 4,39 / 4,43 (clip ripartita), rosso 57 **4 campioni fermi a 2,04**, rosso 61 distinto | chiuso |
 | `portiere-252` | PO-316 | 1 corsa, **uscita 1**: verde KO 0/7 · rosso KO **0/7** «rosso NON VISTO» (come 10/11 e verifica 182) | **strumento** (braccio rosso senza la geometria del difetto) | 2 corse **uscita 0**: verde KO 0/10 · rosso KO **3/10** e **2/10**, tutti sui tiri angolati fissati | chiuso |
-| `riserva-103` | PO-317 | giro 111: 1 esecuzione, gi17 mai rivelata; giro 138, 2 diagnosi: cade **la prima scena dopo il riscaldamento**, qualunque sia (17,4,1 → gi17; 4,17,1 → gi4, gi17 chiude a 8,09 s) | **strumento** (riscaldamento a una scena; riferimento del caso B) | corsa finale **uscita 0**: A 3/3+3/3 · B 3/3+3/3, rosso visto ovunque | chiuso (1 corsa finale completa, vedi sotto) |
+| `riserva-103` | PO-317 | giro 111: 1 esecuzione, gi17 mai rivelata; giro 138, 2 diagnosi: cade **la prima scena dopo il riscaldamento**, qualunque sia (17,4,1 → gi17; 4,17,1 → gi4, gi17 chiude a 8,09 s) | **strumento** (riscaldamento a una scena; riferimento del caso B) | 2 corse finali **uscita 0**: A 3/3+3/3 · B 3/3+3/3, rosso visto ovunque | chiuso (2 corse finali complete, uscita 0) |
 | `griglia-mobile` | verifica 188 r.28-29 | 2 corse normali uscita **0** (riprodotto **non** il rosso), prepartita **mai misurata** (`playMatch → nomatch`, 13 schermate); con un rifiuto orfano alla chiusura del browser: rapporto completo e poi **uscita 1** = il sintomo della 188 | **strumento** (uscita implicita; prepartita cieca) | 2 corse normali **uscita 0** «misura completa: 14 schermate x 5 larghezze»; col rifiuto iniettato **uscita 0** con l'errore stampato come tardivo; con un rifiuto durante la raccolta **uscita 3** col motivo | chiuso |
 
 ## 1 · `festa-57` (PO-336) — strumento, non la festa
@@ -170,6 +170,7 @@ differiscono di un fotogramma (gi17 caso A 8,12 → 8,17). Che il 2,58 della pri
 |---|---|---|---|---|---|---|
 | dopo 1 (solo riscaldamento a evento) | 3/3, 0 in corsa | 3/3 in corsa | 3/3, **1 prima dei 2,6** (gi17 2,58) | 3/3 prima | 1 | 684 s |
 | dopo 2 (+ riferimento della risoluzione) | 3/3, 0 in corsa | 3/3 in corsa | 3/3, 0 prima (2,67-2,68) | 3/3 prima (1,50-2,05) | **0** | 622 s |
+| dopo 3 (stessa versione) | 3/3, 0 in corsa | 3/3 in corsa | 3/3, 0 prima (2,65-2,70) | 3/3 prima (1,50-1,97) | **0** | 693 s |
 
 Riscaldamento: riuscito alla 3ª scena in 5 bracci su 6, alla 2ª in uno (le prime scene di una pagina nuova non rivelano: è il
 motivo per cui una scena sola non bastava).
