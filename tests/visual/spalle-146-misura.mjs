@@ -57,4 +57,14 @@ export const INIETTA146 = `(() => {
       gomiti: [r(gomito(B.lal)), r(gomito(B.lar))], scala: sc ? [r(sc.x), r(sc.y), r(sc.z)] : null, nonUnif: sc ? r(Math.max(sc.x, sc.z) / sc.y) : null, nmesh,
       nv: { spalla: sp.length, anca: an.length, mano: V.mano.length } };
   } catch (e) { return { errore: String(e && e.message || e).slice(0, 120) }; } };
+  /* PROVINO: la scena vera resa da una camera vicina al corpo (fronte e tre quarti), per vedere le spalle; restituisce due dataURL */
+  window.__provino146 = (root, w = 300, h = 420) => { try { const T = THREE; let sc = root; while (sc.parent) sc = sc.parent; if (!sc.isScene) return null;
+    root.updateMatrixWorld(true); const ossa = {}; root.traverse(o => { if (o.isBone) { const k = String(o.name).replace(/^mixamorig\d*/i, '').toLowerCase(); if (!ossa[k]) ossa[k] = o; } });
+    const tl = (ossa.thigh_l || ossa.leftupleg), tr = (ossa.thigh_r || ossa.rightupleg), ne = (ossa.neck_01 || ossa.neck), pe = (ossa.pelvis || ossa.hips); if (!tl || !tr || !ne || !pe) return null;
+    const W = b => b.getWorldPosition(new T.Vector3()); const lat = W(tl).sub(W(tr)); lat.y = 0; lat.normalize(); const fw = new T.Vector3().crossVectors(lat, new T.Vector3(0, 1, 0)).normalize();
+    const c = W(pe).add(W(ne)).multiplyScalar(0.5); const hgt = W(ne).y - Math.min(W(tl).y, W(tr).y); const d = hgt * 6.8;
+    let R = window.__R146; if (!R) { R = window.__R146 = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); } R.setPixelRatio(1); R.setSize(w, h);
+    const out = []; for (const a of [0, 0.75]) { const dir = fw.clone().applyAxisAngle(new T.Vector3(0, 1, 0), a); const cam = new T.PerspectiveCamera(30, w / h, 0.05, 200);
+      cam.position.copy(c).addScaledVector(dir, d); cam.position.y += hgt * 0.05; cam.lookAt(c.x, c.y + hgt * 0.1, c.z); R.render(sc, cam); out.push(R.domElement.toDataURL('image/png')); }
+    return out; } catch (e) { return null; } };
 })();`;

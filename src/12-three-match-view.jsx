@@ -236,8 +236,8 @@ function _spalle146(B){try{if(!B||typeof THREE==='undefined')return false;if(typ
   TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
   TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
   let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
-  for(let it=0;it<2;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
-    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.004)break;
+  for(let it=0;it<3;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.002)break;
     CL.getWorldPosition(W.a);CR.getWorldPosition(W.b);W.c.addVectors(W.a,W.b).multiplyScalar(0.5);/* asse del busto: fra le radici delle clavicole */
     for(const [C,U,P,sg] of [[CL,UL,W.l,1],[CR,UR,W.r,-1]]){
       C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);const L=W.d.length();if(L<1e-5)continue;
