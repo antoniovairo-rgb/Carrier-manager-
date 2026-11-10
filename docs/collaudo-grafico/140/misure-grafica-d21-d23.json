@@ -1,0 +1,107 @@
+{
+ "versione": "7.999.188",
+ "d21": {
+  "premuto": true,
+  "griglia": {
+   "n": 10,
+   "gridGap": "6px",
+   "btnW": 65.9,
+   "figW": 34.7,
+   "gapBottoniOrizz": [
+    6.7,
+    6.7,
+    6.7,
+    6.7,
+    6.7,
+    6.7,
+    6.7,
+    6.7
+   ],
+   "gapFigurineOrizz": [
+    37.9,
+    37.9,
+    37.9,
+    37.9,
+    37.9,
+    37.9,
+    37.9,
+    37.9
+   ],
+   "gapBottoniVert": [
+    6.7,
+    6.7,
+    6.7,
+    6.7,
+    6.7
+   ],
+   "gapFigurineVert": [
+    19.7,
+    19.7,
+    19.7,
+    19.7,
+    19.7
+   ]
+  },
+  "strumento178": {
+   "medH_carte": null,
+   "nH_carte": 0,
+   "medH_tutte": null,
+   "nH_tutte": 0
+  },
+  "nSotto10": 0,
+  "minFs": 11,
+  "foto": "docs/collaudo-grafico/140/foto/d21-tel-creazione.jpg",
+  "fotoGriglia": "docs/collaudo-grafico/140/foto/d21-tel-griglia-avatar.png"
+ },
+ "d23": {
+  "apri": true,
+  "marchi": [
+   {
+    "y": 891,
+    "x": 11,
+    "w": 86,
+    "fs": "11px",
+    "gap": "3px",
+    "display": "flex",
+    "pezzi": [
+     {
+      "t": "K",
+      "l": 11.2,
+      "r": 19.1
+     },
+     {
+      "t": "◯",
+      "l": 22.5,
+      "r": 31.4
+     },
+     {
+      "t": "rward",
+      "l": 34.8,
+      "r": 68.1
+     },
+     {
+      "t": "Elite",
+      "l": 71.5,
+      "r": 97.3
+     }
+    ],
+    "spazi": [
+     3.4,
+     3.4,
+     3.4
+    ]
+   }
+  ],
+  "foto": "docs/collaudo-grafico/140/foto/d23-tel-presentazione-3.jpg",
+  "fotoZoom": "docs/collaudo-grafico/140/foto/d23-tel-marchio-zoom.png",
+  "testata": [
+   {
+    "t": "KrwardElite",
+    "y": 891,
+    "w": 86,
+    "tag": "SPAN"
+   }
+  ]
+ },
+ "errori": []
+}

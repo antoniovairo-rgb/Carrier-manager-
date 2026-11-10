@@ -1,0 +1,150 @@
+{
+ "versione": null,
+ "d20": {
+  "schermate": {
+   "home": {
+    "piccoli": [],
+    "foglie": 76,
+    "sotto10": 0,
+    "da10a11": 39,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11,
+    "foto": "docs/collaudo-grafico/140/foto/d20-tel-home.jpg"
+   },
+   "stagione-classifica": {
+    "piccoli": [],
+    "foglie": 166,
+    "sotto10": 0,
+    "da10a11": 26,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11
+   },
+   "club": {
+    "piccoli": [],
+    "foglie": 74,
+    "sotto10": 0,
+    "da10a11": 48,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11
+   },
+   "carriera-profilo": {
+    "piccoli": [],
+    "foglie": 77,
+    "sotto10": 0,
+    "da10a11": 45,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11
+   },
+   "agente": {
+    "piccoli": [],
+    "foglie": 83,
+    "sotto10": 0,
+    "da10a11": 57,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11,
+    "foto": "docs/collaudo-grafico/140/foto/d20-tel-agente.jpg"
+   },
+   "ufficio": {
+    "piccoli": [],
+    "foglie": 122,
+    "sotto10": 0,
+    "da10a11": 110,
+    "min": 11,
+    "nSotto10_strumento178": 0,
+    "minFs_178": 11
+   }
+  },
+  "FS": {
+   "caption": 11,
+   "small": 12,
+   "body": 13,
+   "bodyLg": 15,
+   "subhead": 17,
+   "title": 20,
+   "h": 24,
+   "display": 32,
+   "displayLg": 44,
+   "hero": 64
+  }
+ },
+ "d13": {
+  "pc1366": {
+   "impulso": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum🌟Impulso dell"
+    },
+    "sopra": [],
+    "puntiTotali": 3648,
+    "foto": "docs/collaudo-grafico/140/foto/d13-pc1366-impulso.jpg"
+   },
+   "vissuta": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum📋Questa setti"
+    },
+    "sopra": [],
+    "puntiTotali": 3648,
+    "foto": "docs/collaudo-grafico/140/foto/d13-pc1366-vissuta.jpg"
+   }
+  },
+  "tabo": {
+   "impulso": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum🌟Impulso dell"
+    },
+    "sopra": [],
+    "puntiTotali": 2752,
+    "foto": "docs/collaudo-grafico/140/foto/d13-tabo-impulso.jpg"
+   },
+   "vissuta": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum📋Questa setti"
+    },
+    "sopra": [],
+    "puntiTotali": 2752,
+    "foto": "docs/collaudo-grafico/140/foto/d13-tabo-vissuta.jpg"
+   }
+  },
+  "pc1180": {
+   "impulso": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum🌟Impulso dell"
+    },
+    "sopra": [],
+    "puntiTotali": 3450,
+    "foto": "docs/collaudo-grafico/140/foto/d13-pc1180-impulso.jpg"
+   },
+   "vissuta": {
+    "apri": true,
+    "overlay": {
+     "z": 9998,
+     "bg": "rgba(0, 0, 0, 0.66)",
+     "t": "Settimana 11 · FC Salernum📋Questa setti"
+    },
+    "sopra": [],
+    "puntiTotali": 3450,
+    "foto": "docs/collaudo-grafico/140/foto/d13-pc1180-vissuta.jpg"
+   }
+  }
+ },
+ "errori": []
+}
