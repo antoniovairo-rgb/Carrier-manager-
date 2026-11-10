@@ -1113,3 +1113,8 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 02:05 UTC — Rilascio 7.999.187
 - distanze-126 verde 24/24 sulla 187 con la sonda riparata (giro 135, 3422 s, tutte chiuse con «fine»). src/ invariato dopo la verifica. Decisione tecnica (madre): si pubblica. Chiuse PO-329, PO-330. Costi: verifica 1,92 $ (parziale, 2 avvii), giro 135 0,76 $ (parziale, 2 avvii).
+
+### 10/11 02:00 UTC — 7.999.187 sul sito; 188 in verifica
+- Deploy riuscito; sito verificato: radice e CARRIER-MANAGER-AV.html servono 7.999.187, privacy.html 200 (senza mail personale), banco della folla prototipi/folla-128/banco.html e folla-proto.js 200. Notifica «CPM 7.999.187 pronta e pubblicata» inviata.
+- lavoro/188 da main: uniti sviluppo/giro134-privacy-poi (131+133+134) e sviluppo/giro132-premiazione, ciascuno da solo, nessun conflitto; GAME_VERSION 7.999.188 (04a62ae7). Verifica finale avviata su catena/188-finale (36 controlli, festa-57 escluso perché rosso pre-esistente, PO-336).
+- Riconciliazione del backlog (decisione PO «Dopo la 187»): avviata.
