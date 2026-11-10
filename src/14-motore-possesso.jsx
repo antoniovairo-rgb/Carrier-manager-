@@ -1137,10 +1137,16 @@ function creaMotorePossesso(cfg){
      all'eroe rigori e punizioni senza scena (misurato: 0 rigori e 0 punizioni fra le scene di 6 partite). Ora, se il battitore e'
      l'eroe e il live lo chiede, il brain dichiara l'occasione con la sua origine e ASPETTA la scena col pallone sul punto (tetto 40
      passi: se la scena non si apre, calcia lui come prima). Il pallone fermo sul dischetto non genera tiri spuri. Rosso __CPM_NO_PIAZ27. */
-  const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||!S.richieste.piazzati||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
+  const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||(!S.richieste.piazzati&&!(f&&f._o27&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G139)))||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
     if(!f._o27){f._o27=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const l=T.team;const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(T),zona:zonaDi(advDi(f.x,l),f.y),press:0,x:+f.x.toFixed(1),y:+f.y.toFixed(1),chiesto:null,attese:0,tipo:kind,origine:{kind,chi:chi(T),x:+f.x.toFixed(1),y:+f.y.toFixed(1)},finestra:false,liberi:0,cast:{ricevente:null,difensore:null,portiere:chi(K)}});return true;}
     if(f._o27<40||(f._acc94&&f._o27<400&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_C3D2))){f._o27++;return true;}return false;};/* [giro 94 D2] _acc94: il live ha accettato la scena (inserita): il motore la aspetta, non calcia lui dopo 40 passi (tetto di sicurezza 400) */
+  /* [giro 139] UN RIGORE GIA' OFFERTO ALLA SCENA NON LO CALCIA IL MOTORE PERCHE' LA RICHIESTA SI E' SPENTA. MISURATO (sonda-rigore-139,
+     partita «k1d-11» seme 12, 2 su 2 identiche): rigore all'88', occasione d'eroe all'89'; il live spegne i piazzati dell'eroe dal 90'
+     (origini(...,nx<=89)) e al battito del 90' inserisce la scena: ma nello stesso battito _piaz27 trovava la richiesta spenta e restituiva
+     falso con 21 passi d'attesa su 40 → battuta+tiro dell'eroe nel motore (gol al 92') E poi la scena al 91' (gol): un rigore, due battute,
+     due gol. La richiesta spenta vale per le offerte NUOVE; quella gia' fatta (_o27) segue la sua attesa (40 passi, 400 se la scena e'
+     accettata). Rosso __CPM_NO_G139. */
   function tickFermo(){const f=S.fermo;S.poss.t++;f.t++;S.conta.fermo++;S.palla.x=f.x;S.palla.y=f.y;
     if(f.t<f.tot)return;
     const l=f.lato;S.poss.lato=l;
