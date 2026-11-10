@@ -11,6 +11,7 @@
     "privacy-134": "node privacy-134.mjs",
     "albo-122": "node albo-122.mjs",
     "twa-120": "node twa-120.mjs",
+    "audio-149": "node audio-149.mjs",
     "sw-cache-120": "node ../../tools/build-dist.mjs --web && node sw-cache-120.mjs && CPM_ROSSO=1 node sw-cache-120.mjs",
     "scorri-113": "node scorri-113.mjs",
     "flussi-115": "node flussi-115.mjs && CPM_ROSSO=1 node flussi-115.mjs",
