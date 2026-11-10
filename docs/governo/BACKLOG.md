@@ -49,6 +49,7 @@ Per lotto: L3 1 · L6 1 · L7 2 · L1-bis 12 · L7 (tocca il flusso settimana: v
 | PO-333 | 09/11 20:45 | PO (questionario, domanda aperta del giro 131): «Sì, nella 188» — anche le AMICHEVOLI della Nazionale nella card «Prossima» come finale/girone: niente forma del club sotto la Nazionale, riga «Poi: <club> · sett. N» | miglioramento (chiarezza) | IN CORSO — giro 133 sopra il giro 131 | 7.999.188 | | | |
 | PO-334 | 09/11 21:22 | PO (foto della pagina privacy dal telefono): «Perché rimanda ad una pagina esterna? Non deve esserci la mia mail personale» | difetto (privacy, dato personale) alto | PARZIALE 09/11 — mail personale tolta da privacy.html, PRIVACY_POLICY.md, STORE_LISTING.md (ora korward.devteam@gmail.com, direttiva PO 21/09), pubblicata subito (verificato sul sito 22:23 UTC). PO 09/11: informativa «Dentro l'app» nella 188 (giro 134) | 7.999.186 (sito) | | | |
 | PO-335 | 09/11 22:30 | PO (questionario, domanda aperta del giro 133): «Sì, nella 188» — il pulsante dell'amichevole della Nazionale dice anche «poi: <club> W.N» come Coppa Nazioni/Euro | miglioramento (chiarezza) | IN CORSO — giro 134 | 7.999.188 | | | |
+| PO-336 | 10/11 00:20 | Trovato dal giro 132 (non segnalato dal PO): il guardiano `festa-57` è rosso già sul commit di partenza c27e506 (7.999.187): «il rosso non riproduce il congelamento» nella festa leggera di fine partita | difetto (strumento) | APERTO — da misurare in un giro dedicato: guardiano rotto o festa cambiata | | | | |
 
 ## Storico — voci chiuse (306)
 

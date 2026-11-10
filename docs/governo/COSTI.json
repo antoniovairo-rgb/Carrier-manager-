@@ -516,5 +516,33 @@
     "cache_read_tokens": 5407760,
     "worker_epoch": 1,
     "rilevato": "2026-11-09"
+  },
+  {
+    "sessione": "session_01QEYiaB7RqBJMLkyZHiLuXY",
+    "titolo": "giro 132 premiazione braccia alzate e compagni al podio (PO-332)",
+    "versione": "7.999.188",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T21:20:16Z",
+    "chiusa": "2026-11-09T23:20:24Z",
+    "cost_usd": 7.50072392,
+    "output_tokens": 65526,
+    "cache_read_tokens": 21471183,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaBkpdCfiseKJct2oMf",
+    "titolo": "giro 134 privacy dentro l app e poi nel pulsante amichevole (PO-334, PO-335)",
+    "versione": "7.999.188",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-09T22:55:40Z",
+    "chiusa": "2026-11-09T23:29:34Z",
+    "cost_usd": 4.05234324,
+    "output_tokens": 36451,
+    "cache_read_tokens": 9865938,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]
