@@ -1,0 +1,95 @@
+{
+ "total": 191,
+ "scene": [
+  {
+   "gi": 0,
+   "scelta": {
+    "sotto10": 0,
+    "da10a11": 15,
+    "tot": 30,
+    "min": 11,
+    "piccoli": []
+   },
+   "esito": {
+    "sotto10": 0,
+    "da10a11": 12,
+    "tot": 28,
+    "min": 11,
+    "piccoli": []
+   },
+   "foto": "docs/collaudo-grafico/140/foto/d20-tel-esito-gi0.jpg"
+  },
+  {
+   "gi": 12,
+   "scelta": {
+    "sotto10": 0,
+    "da10a11": 11,
+    "tot": 24,
+    "min": 11,
+    "piccoli": []
+   },
+   "esito": {
+    "sotto10": 0,
+    "da10a11": 11,
+    "tot": 24,
+    "min": 11,
+    "piccoli": []
+   },
+   "foto": null
+  },
+  {
+   "gi": 40,
+   "scelta": {
+    "sotto10": 0,
+    "da10a11": 15,
+    "tot": 30,
+    "min": 11,
+    "piccoli": []
+   },
+   "esito": {
+    "sotto10": 0,
+    "da10a11": 9,
+    "tot": 19,
+    "min": 11,
+    "piccoli": []
+   },
+   "foto": "docs/collaudo-grafico/140/foto/d20-tel-esito-gi40.jpg"
+  },
+  {
+   "gi": 80,
+   "scelta": {
+    "sotto10": 0,
+    "da10a11": 14,
+    "tot": 29,
+    "min": 11,
+    "piccoli": []
+   },
+   "esito": {
+    "sotto10": 0,
+    "da10a11": 9,
+    "tot": 19,
+    "min": 11,
+    "piccoli": []
+   },
+   "foto": null
+  },
+  {
+   "gi": 120,
+   "scelta": {
+    "sotto10": 0,
+    "da10a11": 11,
+    "tot": 24,
+    "min": 11,
+    "piccoli": []
+   },
+   "esito": {
+    "sotto10": 0,
+    "da10a11": 11,
+    "tot": 29,
+    "min": 11,
+    "piccoli": []
+   },
+   "foto": null
+  }
+ ]
+}

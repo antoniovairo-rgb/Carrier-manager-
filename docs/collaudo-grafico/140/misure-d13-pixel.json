@@ -1,0 +1,86 @@
+{
+ "pc1366": {
+  "banner": {
+   "x": 314,
+   "y": 59,
+   "pos": "sticky",
+   "prima": 241,
+   "dopo": 82,
+   "rapporto": 0.34
+  },
+  "sostieni": {
+   "x": 23,
+   "y": 696,
+   "pos": "static",
+   "prima": 20,
+   "dopo": 7,
+   "rapporto": 0.35
+  },
+  "idee": {
+   "x": 23,
+   "y": 696,
+   "pos": "static",
+   "prima": 20,
+   "dopo": 7,
+   "rapporto": 0.35
+  },
+  "home": {
+   "x": 23,
+   "y": 44,
+   "pos": "static",
+   "prima": 204,
+   "dopo": 69,
+   "rapporto": 0.34
+  },
+  "carta": {
+   "x": 820,
+   "y": 707,
+   "prima": 26,
+   "dopo": 9,
+   "rapporto": 0.34
+  },
+  "apri": true
+ },
+ "tabo": {
+  "banner": {
+   "x": 287,
+   "y": 56,
+   "pos": "sticky",
+   "prima": 241,
+   "dopo": 82,
+   "rapporto": 0.34
+  },
+  "sostieni": {
+   "x": 23,
+   "y": 696,
+   "pos": "static",
+   "prima": 20,
+   "dopo": 7,
+   "rapporto": 0.35
+  },
+  "idee": {
+   "x": 23,
+   "y": 696,
+   "pos": "static",
+   "prima": 20,
+   "dopo": 7,
+   "rapporto": 0.35
+  },
+  "home": {
+   "x": 23,
+   "y": 44,
+   "pos": "static",
+   "prima": 204,
+   "dopo": 69,
+   "rapporto": 0.34
+  },
+  "carta": {
+   "x": 614,
+   "y": 707,
+   "prima": 30,
+   "dopo": 10,
+   "rapporto": 0.34
+  },
+  "apri": true
+ }
+}
