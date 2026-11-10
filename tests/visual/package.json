@@ -336,6 +336,7 @@
     "cross-origine": "node cross-origine-test.mjs",
     "disappunto": "node disappunto-test.mjs",
     "esultanza-braccia": "node esultanza-braccia-test.mjs",
+    "esultanza-152": "node esultanza-152.mjs",
     "fallo-cercato": "node fallo-cercato-test.mjs",
     "filtrante-intercetto": "node filtrante-intercetto-test.mjs",
     "home-riquadri": "node home-riquadri-test.mjs",
