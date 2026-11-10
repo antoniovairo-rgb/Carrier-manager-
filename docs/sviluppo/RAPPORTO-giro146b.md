@@ -125,11 +125,24 @@ La nuca dell'alzata non è nel guardiano: cambia con l'istante della clip (0,000
 
 Esito 360x800: ✅ verde; il rosso `__CPM_NO_G146` cade (larghezza, coerenza 1,93, quota, spiovenza 43-46° in presentazione); il rosso
 `__CPM_NO_G146B` cade (presentazione: spalle dietro il torace su 21 campioni, nuca 0,014; quota alta su portiere e panchina).
-Esito 1440x900 e catena: §7.
+Esito 1440x900: ✅ verde, cadono entrambi i rossi (il 146b anche su quota alta di compagni e panchina, arretramento e nuca 0,015 in presentazione).
 
 ## 7. Catena (un controllo alla volta, `CPM_CI_PAR=0`, memoria e disco controllati prima di ognuno)
 
-<!--CATENA-->
+| controllo | esito |
+|---|---|
+| spalle-146 360x800 · 1440x900 | ✅ · ✅ (cadono entrambi i rossi `__CPM_NO_G146` e `__CPM_NO_G146B`) |
+| premiazione-132 | ✅ (il rosso cade) |
+| presentazione-142 | ✅ (il rosso cade) |
+| posa-sollevamento-191 | ✅ mani 2,10 sopra i piedi (soglia 2,0; giro 146: 2,09) · rosso 0,34 di clip |
+| premiazione-palco-191 | ✅ (il rosso si vede) |
+| intro-118 | ✅ |
+| panchina-127 360x800 · 412x915 · 1440x900 | ✅ · ✅ · ✅ (il rosso si vede) |
+| scena3d-96 tel · pc · tabv · tabo | ✅ 16/16 · ✅ 9/9 · ✅ 3/3 · ✅ 3/3, errori di pagina 0 |
+| validate-situations | ✅ PASS 14/14, fingerprint 00001505, 0 failure |
+| test:logic | ✅ 43 pass · 0 fail |
+| save-compat | ✅ 12 pass · 0 fail |
+| highlight-95 (completo) | ✅ verde 104 highlight · 0 difetti (il rosso si vede) |
 
 ## 8. Foto (`docs/sviluppo/giro146b/`)
 
