@@ -586,5 +586,19 @@
     "cache_read_tokens": 9151557,
     "worker_epoch": 1,
     "rilevato": "2026-11-10"
+  },
+  {
+    "sessione": "session_01QEYiaC9KDtuVXkAyWRDh6r",
+    "titolo": "giro 142 (fermato dopo 1 minuto, rilanciato come 142b)",
+    "versione": "7.999.189",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T08:17:31Z",
+    "chiusa": "2026-11-10T08:17:53Z",
+    "cost_usd": 0.5220916,
+    "output_tokens": 290,
+    "cache_read_tokens": 59018,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-10"
   }
 ]

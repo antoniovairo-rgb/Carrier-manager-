@@ -1135,3 +1135,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 08:05 UTC — PO-343 presentazione della squadra e marchio D23 nella 189
 - PO: PO-343 «189»; D23 «K O rward Elite» (PO-337) «Sì, nella 189». Decisione tecnica (madre): giro 142 su `sviluppo/giro142-presentazione` da `lavoro/188` per entrambi; il resto di PO-337 resta come deciso (verifica 189, correzioni 190).
+
+### 10/11 08:20 UTC — Giro 142 rilanciato come 142b
+- PO: «Hanno pure una posa da impiccato». Il giro 142 era partito da 1 minuto senza commit: fermato e archiviato (costo 0,52 $), rilanciato come 142b (session_01QEYia9zsuiiFU2SuC5tzfm) con la postura nel compito e nel guardiano (testa rispetto al busto, piedi rispetto al prato).
