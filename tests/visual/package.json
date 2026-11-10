@@ -581,7 +581,8 @@
     "camera-252": "node camera-252.mjs",
     "reazione-252": "node reazione-252.mjs",
     "intro-118": "node intro-118.mjs",
-    "panchina-127": "node panchina-127.mjs"
+    "panchina-127": "node panchina-127.mjs",
+    "presentazione-142": "node presentazione-142.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
