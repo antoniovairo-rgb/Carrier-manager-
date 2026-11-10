@@ -1204,3 +1204,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 22:20 UTC — PO-353, PO-354, PO-355
 - PO-353 (scie della 2D): il PO non ha scelto fra le opzioni; decisione tecnica (madre): l'opzione consigliata «scia corta e sottile», nella 190, giro 151 insieme a PO-354 (cronaca «a tu per tu col portiere» col pallone a centrocampo, da misurare).
 - PO-355 (eroe che vola con le braccia alzate nei festeggiamenti dopo un gol): difetto già presente (7.999.80), stessa regola scelta dal PO per PO-350: nella 190, giro 152, la 189 non si ferma.
+
+### 10/11 22:30 UTC — PO-356 prima stagione in Primavera
+- PO: tutte e 4 le idee (chiamate in prima squadra con debutto; salto al mercato di gennaio; Primavera più corta/settimane saltabili; obiettivi e tornei giovanili, Nazionale Under 19 giocabile); «Progetto prima, poi 191». Decisione tecnica (madre): giro 153 su `progetto/giro153-primavera` da `lavoro/189`, solo documento di progetto con misure dell'attuale prima stagione (durata in tempo reale, numero di partite, eventi), poi approvazione del PO.
