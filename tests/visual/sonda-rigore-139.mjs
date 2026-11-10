@@ -10,7 +10,7 @@
    in scena, gol in scena), gli eventi di __CPM_EV, le fasi da __CPM_PHASE col minuto. Una «battuta di rigore dell'eroe» e':
      - scena: `piazzato_giocato` (handleSetPiece ha risolto un rigore/punizione dell'eroe) con un'occasione da rigore aperta prima, o
      - motore: `battuta` kind pen calciata dall'eroe (il motore lo fa tirare a gioco fluido).
-   Uso: CPM_N=12 [CPM_PAR=2] [CPM_K=1] [CPM_TAG=a] [CPM_NOMI=a,b] [CPM_SPEED=2] [CPM_ROSSO=1] node sonda-rigore-139.mjs
+   Uso: CPM_N=12 [CPM_PAR=2] [CPM_K=1] [CPM_TAG=a] [CPM_NOMI=a,b] [CPM_SEMI=7,13] [CPM_SPEED=2] [CPM_ROSSO=1] node sonda-rigore-139.mjs
      CPM_K: se dato, __CPM_RIG190_K (probabilita' che un fallo in area sia rigore; il gioco usa 0,25). Il rigore resta CONCESSO DAL
             MOTORE (fallo vero in area, nessuno stato scritto dalla sonda): cambia solo quanto spesso.
      CPM_ROSSO=1 accende __CPM_NO_G139 (braccio rosso della correzione del giro 139, se esiste).
@@ -22,6 +22,7 @@ const N = +(process.env.CPM_N || 6), PAR = Math.max(1, +(process.env.CPM_PAR || 
 const K = process.env.CPM_K != null && process.env.CPM_K !== '' ? +process.env.CPM_K : null;
 const SPEED = process.env.CPM_SPEED || '2', ROSSO = !!process.env.CPM_ROSSO, CAP = +(process.env.CPM_CAP || 420000);
 const NOMI = process.env.CPM_NOMI ? process.env.CPM_NOMI.split(',') : Array.from({ length: N }, (_, i) => `${TAG}-${i}`);
+const SEMI = process.env.CPM_SEMI ? process.env.CPM_SEMI.split(',').map(Number) : null; /* seme dell'autoplay per partita (default: indice+1) */
 const srv = await startServer(); const url = `http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`; const b = await launchBrowser();
 
 async function partita(nome, idx) {
@@ -40,7 +41,7 @@ async function partita(nome, idx) {
     try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
     await page.evaluate(() => window.__CPM_CAREER.playMatch());
     await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
-    await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), idx + 1);
+    await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), SEMI ? SEMI[idx % SEMI.length] : idx + 1);
   } catch (e) { await ctx.close(); return { nome, err: 'apertura: ' + String(e.message).slice(0, 120) }; }
   const fasi = []; let ph = '', last = '';
   while (Date.now() - t0 < CAP) {
