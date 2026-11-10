@@ -1129,3 +1129,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 ### 10/11 06:20 UTC — Risposte del PO del mattino
 - Capitano nella premiazione: «Guarda la camera» (PO-339). Pulsante a 360 px: «Tieni insieme club e W.N» (PO-340). Privacy in app: «Sì, va bene così» (testo identico, Chiudi in fondo, × in alto). Strumenti: «Lotto strumenti nella 189» (festa-57 PO-336, portiere-252 PO-316, contatto-103 PO-319, riserva-103 gi17 PO-317, chiusura di griglia-mobile). PO-315 rigore doppio: «189». PO-337/338 bassi: «Verifica nella 189, correzioni 190».
 - Decisione tecnica (madre): giri per la 189 su base `lavoro/188` (codice della 188 fermo): 137 capitano + W.N (src), 138 lotto strumenti (solo tests/visual), 139 rigore doppio (misura poi correzione), 140 verifica dei bassi (sola lettura). La 188 esce senza.
+
+### 10/11 07:45 UTC — PO-341 e PO-342 partita 2D nella 189
+- PO: «189»; cartelloni «Per settore». Decisione tecnica (madre): giro 141 su `sviluppo/giro141-partita2d` da `lavoro/188`; spalti 2D riempiti dalla stessa fonte di riempimento per settore del 3D (affluenza, spicchio ospiti), guardiano nuovo.
