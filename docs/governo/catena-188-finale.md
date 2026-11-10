@@ -37,7 +37,11 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 31 | partita-v2 | 0 | 574 |   ✗ CON pc:highlight: 2' — ⚡ Tentativo di tiro 1.70:1 (11px) / 2 1.55:1 (11px) / 3 1.55:1 (11px)   ✗ CON pc:post: FISCHIO FINALE 1.70:1 (11px) / FC Altoadige Primavera 2.55:1 (15px) / 0–1 2.55:1 (64px) ROSSO ATTESO OK: col tema di prova a basso contrasto cade PAL su ogni schermata e CON in | free=13331/16086MB df=29G libero |
 | 32 | partita2d-297 | 0 | 191 | ROSSO: A cade · B cade · C cade  ✅ partita2d-297 VERDE  | free=13398/16086MB df=29G libero |
 | 33 | validate-situations | 0 | 687 | gate-history → 1 run · stabile (streak 1 run pulite)  ✅ PASS  | free=13398/16086MB df=29G libero |
+| 34 | scena3d-96-tel | 0 | 539 |  scene giudicate 16/16 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=13323/16086MB df=29G libero |
+| 35 | scena3d-96-pc | 0 | 880 |  scene giudicate 9/9 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=13394/16086MB df=29G libero |
+| 36 | scena3d-96-tabv+tabo | 0 | 297 |  scene giudicate 6/6 · rossi per punto {} · errori di pagina 0 ✓ scena3d-96 VERDE  | free=13403/16086MB df=29G libero |
+| 37 | partita-vera | 0 | 506 |  ✅ PARTITA-VERA OK — le bande d'accettazione tengono.   | free=13403/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 32 eseguiti, 31 verdi, 1 rossi: griglia-mobile.
+- Controlli: 36 eseguiti, 35 verdi, 1 rossi: griglia-mobile.
