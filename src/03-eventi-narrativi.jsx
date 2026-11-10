@@ -761,7 +761,7 @@ const WEEKLY_IMPULSES=[
      posto e chiede a chi conta di spendere una parola col tecnico — questa succede davvero, e le due
      scelte restano le stesse due facce (il gruppo o la gerarchia). La `cond` e' solo il minimo perche'
      la richiesta abbia senso: la si rivolge a chi il mister ascolta. */
-  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
+  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45&&(_g155("B3")||_gara154(p))/* [giro 155 B3] «la sera prima della gara»: serve una gara questa settimana (a S1 W39, stagione chiusa, usciva lo stesso). Rosso __CPM_NO_G155_B3 */,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
     {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
   ]},
@@ -1448,8 +1448,11 @@ const SEASON_END_COACH=[
   // RELEGATED
   {result:"relegated",style:null,txt:"«Non ci sono scuse. Ho sbagliato anch'io. Ma la retrocessione non definisce chi sei — il prossimo anno rispondiamo sul campo.»"},
   {result:"relegated",style:"Offensivo",txt:"«Non è bastato segnare. Abbiamo preso troppi gol. Dobbiamo ripartire e lo faremo con più umiltà.»"},
+  // NATIONAL CUP [giro 155 D15, collaudo 177: «Coppa alzata e numeri da protagonista» e il mister «Stagione discreta»]
+  {result:"cup",style:null,txt:"«Abbiamo alzato una coppa. In questo mestiere si ricorda chi vince: questa resta. Adesso portiamo la stessa fame anche in campionato.»"},
+  {result:"cup",style:null,txt:"«La Coppa è nostra. Le finali si giocano con la testa, e tu l'hai avuta. Godiamocela, poi si riparte.»"},
   // HIGH TRUST bonus
-  {result:"any",trustMin:80,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
+  {result:"any",trustMin:80,minMatches:10/* [giro 155 D15] non a chi in stagione non ha giocato */,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
 ];
 
 // Sprint 100 — End-of-season president dialogs
