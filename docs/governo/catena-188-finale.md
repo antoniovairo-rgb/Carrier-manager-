@@ -28,7 +28,13 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 22 | altezza-114 | 0 | 459 | ✓ rosso 1440x900: 6 schermate fuori regola col rosso (menu, opzioni, offerte, calendario, passaggio-pro)  PASS altezza-114 (vuoto <= 12% o pagina che scorre, tocco >= 44) — bracci verde+rosso  | free=13409/16086MB df=29G libero |
 | 23 | flussi-115 | 0 | 832 |  flussi-115 · 51 controlli · 1 OK · 50 NO · 0 non giudicati braccio ROSSO: atteso rosso — cade su tutti i 17 punti (50 controlli rossi)  | free=13277/16086MB df=29G libero |
 | 24 | collaudo-110 | 0 | 377 | G180-33: verde OK (3/3) · rosso n/a (non riproducibile) ✅ collaudo-110 OK braccio: verde+rosso · motivo: ogni difetto verde col codice nuovo e rosso con il suo interruttore  | free=13417/16086MB df=29G libero |
+| 25 | scorri-113 | 0 | 168 | ✅ verde: dopo ogni cambio di scheda/sottoscheda lo scorrimento è in cima nei 3 formati ✅ rosso: con __CPM_NO_G113 resta in basso (il guardiano lo vede) BRACCIO verde+rosso · MOTIVO verde: 0 difetti · rosso: 18 (es. t360 menù Stagione→Home: 590)  | free=13357/16086MB df=29G libero |
+| 26 | moduli-112 | 0 | 369 | [rosso] tel milan(4-3-3) vs lazio(4-2-3-1) a capo 2 · rosa ["4-3-3","4-3-3"] · anteprima ["4-3-3","4-3-3"] · campo {"casa":"4-3-3","ospite":"4-3-3"} · motore {"casa":"4-3-3","ospite":"4-3-3"} · preset undefined / undefined · fuori posto 0 · trama null [rosso] tel ata(4-2-3-1) vs fio(3-5-2) a  | free=13274/16086MB df=29G libero |
+| 27 | pc-tablet-292 | 0 | 783 | ROSSO Tablet 1024x768: 1,6,2,3   ✅ il rosso (la 177) fa cadere larghezza, tocco, tasti e striscia nel campo PC-TABLET-292: ✅ VERDE  | free=13265/16086MB df=29G libero |
+| 28 | griglia-mobile | 1 | 216 |  → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=13431/16086MB df=29G libero |
+| 29 | griglia-mobile (ripetizione) | 1 | 217 |  → docs/collaudo-grafico/g0/REPORT.md · docs/collaudo-grafico/g0/dati.json · 65 scatti NON misurato: prepartita: playMatch → nomatch  | free=13431/16086MB df=29G libero |
+| 30 | design-system | 0 | 1 | ✅ nessun raggio scritto a mano che duplichi un token  ✅ SISTEMA GRAFICO OK  | free=13263/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 24 eseguiti, 24 verdi, 0 rossi.
+- Controlli: 29 eseguiti, 28 verdi, 1 rossi: griglia-mobile.
