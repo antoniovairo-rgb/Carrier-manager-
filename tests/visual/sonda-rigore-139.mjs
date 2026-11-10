@@ -43,13 +43,22 @@ async function partita(nome, idx) {
     await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
     await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), SEMI ? SEMI[idx % SEMI.length] : idx + 1);
   } catch (e) { await ctx.close(); return { nome, err: 'apertura: ' + String(e.message).slice(0, 120) }; }
+  /* CPM_SPIA=1: avvolge tick() del motore (lato sonda, nessun ramo nel gioco) e registra, per ogni passo con un rigore fermo, il minuto
+     passato, se era decisivo, i passi d'attesa _o27 e se il live aveva accettato la scena (_acc94), piu' chi ha chiamato attendiPiazzato */
+  if (process.env.CPM_SPIA) await page.evaluate(() => { const arm = () => { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); if (!M || !M.tick || M._spia139) return !!(M && M._spia139);
+    M._spia139 = 1; const W = (window.__CPM_SPIA139 = []); const t0 = M.tick.bind(M); const S = M._S;
+    M.tick = function (ctx) { const f = S.fermo; const out = t0(ctx); const f2 = S.fermo; const pen = (f && f.kind === 'pen') || (f2 && f2.kind === 'pen');
+      if (pen || out.some(e => e && (e.t === 'battuta' || e.t === 'occasione_eroe')) ) { if (W.length < 4000) W.push({ min: ctx.min, dec: !!ctx.dec, o27: f ? f._o27 | 0 : null, acc: f ? f._acc94 | 0 : null, t: f ? f.t : null, ev: out.filter(e => e && /battuta|occasione_eroe|rigore|tiro|gol/.test(e.t)).map(e => e.t + (e.chi && e.chi.eroe ? '*' : '')).join(',') }); }
+      return out; };
+    const ap = M.chiedi && M.chiedi.attendiPiazzato; if (ap) M.chiedi.attendiPiazzato = function () { const r = ap.apply(this, arguments); W.push({ attendi: 1, r, min: S.min, o27: S.fermo ? S.fermo._o27 | 0 : null }); return r; };
+    return true; }; window.__arm139 = setInterval(() => { if (arm()) clearInterval(window.__arm139); }, 50); });
   const fasi = []; let ph = '', last = '';
   while (Date.now() - t0 < CAP) {
     const s = await page.evaluate(() => { try { const M = window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ(); return { ph: window.__CPM_PHASE && window.__CPM_PHASE(), min: M && M._S ? M._S.min | 0 : null, no94: M && M._S ? M._S.noPiaz94 : null }; } catch (e) { return {}; } });
     ph = s.ph || ''; if (ph !== last) { fasi.push((s.min == null ? '?' : s.min) + ':' + ph + (s.no94 != null ? '|g' + s.no94 : '')); last = ph; }
     if (ph === 'ended' || ph === 'ceremony') break; await sleep(400);
   }
-  const R = await page.evaluate(() => ({ pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
+  const R = await page.evaluate(() => ({ spia: window.__CPM_SPIA139 || null, pen: window.__CPM_PEN94 || [], score: window.__CPM_SCORE ? window.__CPM_SCORE() : null,
     ev: (typeof window.__CPM_EV === 'function' ? window.__CPM_EV() : []).filter(e => e && /goal|scena|recita|fine|rigore|pen/i.test(JSON.stringify(e))).slice(0, 200).map(e => JSON.stringify(e).slice(0, 160)),
     conta: (() => { try { const S = window.__CPM_MOTORE_OBJ()._S; return { piaz94: S.conta.piaz94 | 0, piazNo94: S.conta.piazNo94 | 0, rigNo190: S.conta.rigNo190 | 0, g139: S.conta.g139 | 0 }; } catch (e) { return null; } })() })).catch(e => ({ err: String(e.message) }));
   await ctx.close();
