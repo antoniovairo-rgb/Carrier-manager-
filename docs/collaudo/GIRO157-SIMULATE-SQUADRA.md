@@ -180,7 +180,7 @@ Non toccato, e dichiarato:
 | `save-compat` | 12/12 verde |
 | `typing-shortcuts` | verde |
 | `career-critical` (11 passi) | verde: i primi 8 in una corsa; `cup-final-replay` interrotto dal tetto di tempo della chiamata, poi rifatto da solo verde, come `coppa-nazioni` e `coppa-intera` |
-| `validate-situations` | vedi esito nel commit |
+| `validate-situations` | ✅ PASS, fingerprint 00001505, 0 failure |
 
 Non eseguiti: la catena «mirata» per `src/14` (25 guardiani del motore vissuto) e `partita-vera`. La
 modifica non tocca `creaMotorePossesso` né il live, e con forze da 40 in su è identica a prima.
