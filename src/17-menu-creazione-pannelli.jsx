@@ -174,7 +174,15 @@ const CREDITI254=[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
-    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
+    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). Il boato Mixkit non si usa piu'
+       e la sua voce resta solo col rosso __CPM_NO_G149 (che rimette l'audio di prima). */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[
+    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"}]:[
+    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Beach Sports Theme (Loop)»",d:"Musica dei menu. Fonte: opengameart.org",aut:"Trex0n (Cal McEachern)",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"}]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
     {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
