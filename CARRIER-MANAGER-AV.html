@@ -30692,7 +30692,8 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
         _sciaEta151=M.ts-M.scia[0].t;
       }
       }else{
-        if(_volo151&&M.b)M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});else M.scia.length=0;
+        /* stesso riaggancio della vista (oltre 22 punti il pallino salta di colpo): un salto non e' un tragitto, la scia riparte */
+        if(_volo151&&M.b){const _u=M.scia.length?M.scia[M.scia.length-1]:null;if(_u&&Math.abs(_u.x-M.b.x)+Math.abs(_u.y-M.b.y)>22)M.scia.length=0;M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});}else M.scia.length=0;
         while(M.scia.length&&M.ts-M.scia[0].t>SCIA151)M.scia.shift();
         if(M.scia.length>1){
           g.lineCap="round";const _t0=M.scia[0].t,_dd=Math.max(1e-6,M.ts-_t0);
@@ -30719,7 +30720,7 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
       try{if(typeof window!=='undefined'&&window.__CPM_W151){const rc=cv.getBoundingClientRect(),k=rc.width/W;const w=window.__CPM_W151;
         w.n=(w.n|0)+1;w.ts=+M.ts.toFixed(3);w.volo=_volo151?1:0;w.scia=M.scia.length;w.eta=+_sciaEta151.toFixed(3);w.px=+(_sciaPx151*k).toFixed(1);w.tratt=+(_tratt151*k).toFixed(1);
         w.lw=+((_no151s?r*0.52:r*0.22)*k).toFixed(2);w.b=M.b?[+M.b.x.toFixed(1),+M.b.y.toFixed(1)]:null;w.vw=Math.round(rc.width);
-        const R=(w.rec=w.rec||[]);if(R.length<20000)R.push([+M.ts.toFixed(3),w.volo,w.scia,w.eta,w.px,w.tratt,w.b?w.b[0]:-1,w.b?w.b[1]:-1,Math.round(ora)]);}}catch(_e151){}
+        const R=(w.rec=w.rec||[]);if(R.length<20000)R.push([+M.ts.toFixed(3),w.volo,w.scia,w.eta,w.px,w.tratt,w.b?w.b[0]:-1,w.b?w.b[1]:-1,Math.round(ora),st.palla?+st.palla.x.toFixed(1):-1,st.palla?+st.palla.y.toFixed(1):-1]);}}catch(_e151){}
       /* il fermo di gioco: la bandierina sul punto dove si riprende */
       if(st.fermo){
         const q={x:st.fermo.x,y:st.fermo.y};

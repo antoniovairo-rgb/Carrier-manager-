@@ -8,11 +8,13 @@
       in pixel CSS, lunghezza della tratteggiata verso il bersaglio, stato del pallone. Criteri: eta' massima < SOGLIA_ETA (0,5 s, parola
       del PO); nessun fotogramma con scia disegnata e pallone NON in volo; nessuna tratteggiata; almeno MIN_VOLO fotogrammi in volo con
       la scia (altrimenti «non giudicato» = rosso).
-   C) CRONACA (PO-354): per ogni riga del motore che racconta un fatto di ZONA (tiro e cross: i soli che portano il proprio luogo) si misura, nel
-      primo fotogramma 2D dopo l'uscita della riga, la distanza in METRI fra il pallone reso e il luogo del fatto (segmento from→to
-      dichiarato dalla riga); «lontano» = oltre DIST_M metri. Dichiarato accanto: quanto prima il pallone era ancora li' (non piu') e
-      quanto dopo ci arriva (non ancora). Criterio: quota di righe di zona lontane <= SOGLIA_C, su almeno MIN_RIGHE righe (sotto =
-      non giudicato = rosso).
+   C) CRONACA (PO-354): per ogni riga del motore che racconta un fatto di ZONA (tiro e cross: i soli che portano il proprio luogo) si misura
+      la distanza in METRI fra il pallone del MOTORE nell'istante in cui la riga esce e il luogo del fatto (segmento from→to dichiarato
+      dalla riga); «lontano» = oltre DIST_M metri. Si giudica il pallone del motore perche' il Campo2D lo disegna nel fotogramma dopo
+      (richiamo 62 ms, riaggancio oltre 22 punti): in headless pero' il Campo2D gira a 3-5 fps e fra due fotogrammi il motore compie
+      fino a 8 sotto-tick, quindi il pallone RESO del primo fotogramma dopo la riga e' dichiarato accanto (con prima/dopo: quanto prima
+      era ancora li', quanto dopo ci arriva) ma non giudicato — misura lo scheduler della sonda. Criterio: quota di righe di zona
+      lontane <= SOGLIA_C, su almeno MIN_RIGHE righe (sotto = non giudicato = rosso).
    ROSSO: CPM_PROVA_ROSSO=1 rigira con __CPM_NO_G151S (la scia di prima) e pretende che S cada; con __CPM_NO_G151C (se il giro corregge
    la cronaca) pretende che C cada. Verde e rossi stampati per ultimi. CPM_FOTO_151=<cartella> salva le foto. Non prova dispositivi veri. */
 import fs from 'node:fs';
@@ -23,7 +25,9 @@ const FORMATI = { t360: { w: 360, h: 800, touch: true }, pc: { w: 1440, h: 900, 
 const NOMI = (process.env.CPM_NOMI151 || 'Rossi,Bianchi').split(',');
 const FIN = +(process.env.CPM_FIN151 || 75000);
 const SOGLIA_ETA = 0.5, MIN_VOLO = 20, DIST_M = +(process.env.CPM_DIST151 || 15), MIN_RIGHE = 8;
-const SOGLIA_C = process.env.CPM_SC151 != null ? +process.env.CPM_SC151 : null;  /* fissata dopo la misura: vedi sotto */
+/* SOGLIA_C fissata DOPO la misura (giro 151, 8 partite vere): verde 0/30 righe di zona col pallone del motore lontano, rosso
+   __CPM_NO_G151C 24/53 (45%). 10% sta lontano da entrambi. Non si abbassa. */
+const SOGLIA_C = 0.10;
 /* solo i fatti che portano il PROPRIO luogo (from/to del motore): parata, palo, murato e rigore nella riga prendono from dall'arco
    corrente, che non e' il luogo del fatto — misurarli darebbe numeri dello strumento */
 const ZONA = new Set(['tiro', 'cross']);
@@ -45,10 +49,10 @@ async function partita(fk, nome, sw) {
       await sleep(2500);
       const ph = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE());
       if (ph === 'ended') break;
-      if (FOTO && !foto && ph === 'playing') { const v = await page.evaluate(() => (window.__CPM_W151 || {}).volo); if (v) { fs.mkdirSync(FOTO, { recursive: true }); await page.screenshot({ path: `${FOTO}/${sw.length ? 'prima' : 'dopo'}-${fk}-${nome}.png` }); foto = true; } }
+      if (FOTO && !foto && ph === 'playing') { const v = await page.evaluate(() => (window.__CPM_W151 || {}).volo); if (v) { fs.mkdirSync(FOTO, { recursive: true }); await page.screenshot({ path: `${FOTO}/${sw.includes('__CPM_NO_G151S') ? 'prima' : sw.length ? 'rossoC' : 'dopo'}-${fk}-${nome}.png` }); foto = true; } }
     }
-    const w = await page.evaluate(() => { const w = window.__CPM_W151 || {}; return { rec: w.rec || [], righe: w.righe || [], vw: w.vw, lw: w.lw }; });
-    out = { ...out, ...w, min: await page.evaluate(() => { try { return window.__CPM_STATE().min; } catch (e) { return null; } }) };
+    const w = await page.evaluate(() => { const w = window.__CPM_W151 || {}; return { rec: w.rec || [], righe: w.righe || [], vw: w.vw, lw: w.lw, vecchi: w.vecchi | 0 }; });
+    out = { ...out, ...w, min: w.righe.length ? w.righe[w.righe.length - 1].m : null };
   } catch (e) { out.ko = 'eccezione: ' + String(e && e.message || e).slice(0, 160); }
   if (errs.length) out.ko = (out.ko || '') + ' pageerror: ' + errs.slice(0, 2).join(' | ');
   await ctx.close(); return out;
@@ -72,16 +76,19 @@ function misura(p) {
     const A = [g.from.x, g.from.y], C = g.to ? [g.to.x, g.to.y] : null;
     /* il primo fotogramma DOPO l'uscita della riga (quello prima mostra il pallone di un passo fa) */
     let j = -1, best = 1e9; for (let i = 0; i < R.length; i++) if (R[i][8] >= g.t) { j = i; best = R[i][8] - g.t; break; }
-    if (j < 0 || best > 400 || R[j][6] < 0) { righe.push({ ...g, nonGiud: 1 }); continue; }
+    if (!g.palla) { righe.push({ ...g, nonGiud: 1 }); continue; }
+    if (j < 0 || best > 400 || R[j][6] < 0) j = -1;
+    const dM = dSeg(g.palla, A, C);
+    if (j < 0) { righe.push({ m: g.m, kind: g.kind, kp: g.kp, txt: g.txt, d: null, dMot: +dM.toFixed(1), lontano: dM > DIST_M ? 1 : 0, lontano2d: null, from: A, to: C, palla: g.palla, stato: g.stato }); continue; }
     const d0 = dSeg([R[j][6], R[j][7]], A, C);
     let prima = null, dopo = null;
     for (let i = j; i >= 0 && R[j][8] - R[i][8] <= 8000; i--) if (R[i][6] >= 0 && dSeg([R[i][6], R[i][7]], A, C) <= DIST_M) { prima = R[j][8] - R[i][8]; break; }
     for (let i = j; i < R.length && R[i][8] - R[j][8] <= 8000; i++) if (R[i][6] >= 0 && dSeg([R[i][6], R[i][7]], A, C) <= DIST_M) { dopo = R[i][8] - R[j][8]; break; }
-    const dM = g.palla ? dSeg(g.palla, A, C) : null;
-    righe.push({ m: g.m, kind: g.kind, kp: g.kp, txt: g.txt, d: +d0.toFixed(1), dMot: dM == null ? null : +dM.toFixed(1), lontano: d0 > DIST_M ? 1 : 0, prima, dopo, from: A, to: C, b2d: [R[j][6], R[j][7]], palla: g.palla, stato: g.stato });
+    righe.push({ m: g.m, kind: g.kind, kp: g.kp, txt: g.txt, d: +d0.toFixed(1), dMot: dM == null ? null : +dM.toFixed(1), lontano: (dM != null && dM > DIST_M) ? 1 : 0, lontano2d: d0 > DIST_M ? 1 : 0, intorno: d0 > DIST_M ? R.filter(r => Math.abs(r[8] - g.t) < 1500).map(r => [r[8] - g.t, r[1], r[6], r[7], r[9], r[10]]) : undefined, prima, dopo, from: A, to: C, b2d: [R[j][6], R[j][7]], palla: g.palla, stato: g.stato });
   }
   const giud = righe.filter(r => !r.nonGiud);
-  return { S, righe, C: { n: giud.length, lontane: giud.filter(r => r.lontano).length, nonGiud: righe.length - giud.length, tutte: p.righe.length } };
+  const fps = R.length > 1 ? +(R.length / ((R[R.length - 1][8] - R[0][8]) / 1000)).toFixed(1) : null;
+  return { S: { ...S, fps }, righe, C: { n: giud.length, lontane: giud.filter(r => r.lontano).length, lontane2d: giud.filter(r => r.lontano2d).length, giud2d: giud.filter(r => r.lontano2d != null).length, nonGiud: righe.length - giud.length, tutte: p.righe.length, vecchi: p.vecchi | 0 } };
 }
 async function giro(sw) { const out = []; for (const fk of Object.keys(FORMATI)) for (const nome of NOMI) { const p = await partita(fk, nome, sw); const m = misura(p); out.push({ fk, nome, min: p.min, ...m }); } return out; }
 const giudicaS = m => { if (m.ko) return [m.ko]; const S = m.S, k = [];
@@ -95,8 +102,8 @@ const giudicaC = (r) => { const n = r.reduce((s, m) => s + (m.C ? m.C.n : 0), 0)
   else if (SOGLIA_C != null && l / n > SOGLIA_C) k.push(`C righe di zona col pallone lontano ${l}/${n} = ${(100 * l / n).toFixed(0)}% > ${(SOGLIA_C * 100).toFixed(0)}%`);
   return { k, n, l }; };
 const stampa = (r, tag) => { for (const m of r) { if (m.ko) { console.log(tag, m.fk, m.nome, m.ko); continue; } const S = m.S;
-  console.log(`${tag} ${m.fk.padEnd(4)} ${m.nome.padEnd(8)} min ${m.min} | fotogrammi ${S.fot} volo ${S.volo} | scia: ${S.conScia} fot (in volo ${S.voloScia}, FERMA ${S.ferme}) eta' p50 ${S.etaP50} p95 ${S.etaP95} max ${S.etaMax} s · ${S.pxP50}/${S.pxP95}/${S.pxMax} px · spessore ${S.lw} px | tratteggiata ${S.tratt} fot max ${S.trattMax} px | insieme ${S.insieme} | cronaca zona ${m.C.lontane}/${m.C.n} lontane (non giud ${m.C.nonGiud}, righe motore ${m.C.tutte}) | ${giudicaS(m).join(' · ') || 'S OK'}`);
-  for (const x of m.righe.filter(x => x.lontano)) console.log(`   ${tag} lontana ${x.m}' ${x.kind}/${x.kp} d ${x.d} m (motore ${x.dMot}) prima ${x.prima} ms dopo ${x.dopo} ms stato ${x.stato} from ${x.from} to ${x.to} b2d ${x.b2d} palla ${x.palla} «${x.txt}»`); } };
+  console.log(`${tag} ${m.fk.padEnd(4)} ${m.nome.padEnd(8)} min ${m.min} | fotogrammi ${S.fot} volo ${S.volo} | scia: ${S.conScia} fot (in volo ${S.voloScia}, FERMA ${S.ferme}) eta' p50 ${S.etaP50} p95 ${S.etaP95} max ${S.etaMax} s · ${S.pxP50}/${S.pxP95}/${S.pxMax} px · spessore ${S.lw} px | tratteggiata ${S.tratt} fot max ${S.trattMax} px | insieme ${S.insieme} | fps ${S.fps} | cronaca zona: pallone del motore lontano ${m.C.lontane}/${m.C.n} (reso nel fotogramma dopo ${m.C.lontane2d}/${m.C.giud2d}, non giud ${m.C.nonGiud}, righe motore ${m.C.tutte}, fatti scesi in coda ${m.C.vecchi}) | ${giudicaS(m).join(' · ') || 'S OK'}`);
+  for (const x of m.righe.filter(x => x.lontano)) console.log(`   ${tag} lontana ${x.m}' ${x.kind}/${x.kp} motore ${x.dMot} m (reso ${x.d}) prima ${x.prima} ms dopo ${x.dopo} ms stato ${x.stato} from ${x.from} to ${x.to} b2d ${x.b2d} palla ${x.palla} «${x.txt}»`); } };
 const verde = await giro([]);
 let rS = null, rC = null;
 if (ROSSO) { rS = await giro(['__CPM_NO_G151S']); if (CON_C) rC = await giro(['__CPM_NO_G151C']); }
