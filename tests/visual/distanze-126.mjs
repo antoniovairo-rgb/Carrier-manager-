@@ -19,7 +19,11 @@ const FLAGS = [...(ROSSO ? ['__CPM_NO_G126'] : []), ...(process.env.CPM_FLAGS ||
 const SEMI = (process.env.CPM_SEMI || '1,2,3,4,5,6,7,8').split(',').map(Number);
 const SAVES = (process.env.CPM_SALVA || 's1,s5,s12').split(',');
 const PAR = +(process.env.CPM_PAR || 3), OUT = process.env.CPM_OUT || `out/distanze-126-${ROSSO ? 'rosso' : 'verde'}.json`;
-const TMAX = +(process.env.CPM_TMAX || 420000);
+/* [giro 135] La partita si attende fino al suo EVENTO di fine (ended/ceremony), non per un tempo fisso di parete:
+   il tetto di 420 s tagliava le partite di s5/s12 quando la scena gira a 3-4 fps (hl_result aspetta 6 s DI SCENA,
+   con __CPM_PARETE103 fino a 150 s di parete per scena). Si abbandona solo per STALLO (fase e minuto fermi per
+   CPM_STALLO ms, def. 240000 > 150000 della guardia di scena) o al tetto di sicurezza CPM_TMAX (def. 1500000). */
+const TMAX = +(process.env.CPM_TMAX || 1500000), STALLO = +(process.env.CPM_STALLO || 240000);
 const M_U = 1.05, S_TIRO = 30, S_LIM = 22, S_TESTA = 16.5, MIN = { tiri: 40, limite: 8, teste: 6 };
 const srv = await startServer(); const b = await launchBrowser();
 async function gioca(sk, sd) {
@@ -39,24 +43,25 @@ async function gioca(sk, sd) {
   await page.evaluate(() => window.__CPM_CAREER.playMatch());
   await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'playing', null, { timeout: 60000 }).catch(() => {});
   await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 150 }), sd);
-  const sit = {}, cont = []; const t0 = Date.now(); let ph = '';
+  const sit = {}, cont = []; const t0 = Date.now(); let ph = '', prog = '', tProg = t0, chiusa = 'tetto';
   while (Date.now() - t0 < TMAX) {
     const st = await page.evaluate(() => { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); const c = window.__CPM_CURSIT ? window.__CPM_CURSIT() : null;
-      const L = (window.__CPM_CONT121 || []).splice(0); const t = window.__CPM_SCOREMIN ? 0 : 0; return { ph, c, L }; }).catch(() => null);
-    if (!st) break; ph = st.ph; if (ph === 'ended' || ph === 'ceremony') break;
+      const L = (window.__CPM_CONT121 || []).splice(0); const m = window.__CPM_CLOCK ? window.__CPM_CLOCK() : null; return { ph, c, L, m }; }).catch(() => null);
+    if (!st) { chiusa = 'pagina'; break; } ph = st.ph; if (ph === 'ended' || ph === 'ceremony') { chiusa = 'fine'; break; }
+    const k = ph + '|' + st.m + '|' + (st.c ? st.c.i : ''); if (k !== prog) { prog = k; tProg = Date.now(); } else if (Date.now() - tProg > STALLO) { chiusa = 'stallo'; break; }
     if (st.c && (ph === 'hl_choose' || ph === 'hl_result' || ph === 'hl_move' || ph === 'hl_intro') && !sit[st.c.i]) sit[st.c.i] = st.c;
     for (const x of st.L) cont.push(x);
     await sleep(100);
   }
   const R = await page.evaluate(() => window.__CPM_RES218 || []).catch(() => []);
   const mm = await page.evaluate(() => { try { return window.__CPM_SCORE ? window.__CPM_SCORE() : null; } catch (e) { return null; } }).catch(() => null);
-  await ctx.close(); return { sk, sd, ph, sit, cont, R, tab: mm };
+  await ctx.close(); return { sk, sd, ph, sit, cont, R, tab: mm, s: Math.round((Date.now() - t0) / 1000), chiusa };
 }
 const lavori = []; for (const sk of SAVES) for (const sd of SEMI) lavori.push({ sk, sd });
 const fatti = new Array(lavori.length); let p = 0;
 await Promise.all(Array.from({ length: Math.min(PAR, lavori.length) }, async () => { while (p < lavori.length) { const i = p++;
   try { fatti[i] = await gioca(lavori[i].sk, lavori[i].sd); } catch (e) { fatti[i] = { ...lavori[i], err: String(e).slice(0, 100), sit: {}, cont: [], R: [] }; }
-  const f = fatti[i]; console.log(`${ROSSO ? 'rosso' : 'verde'} ${f.sk} seme ${f.sd} fine ${f.ph} scene ${Object.keys(f.sit).length} contatti ${f.cont.length}${f.err ? ' ERR ' + f.err : ''}`); } }));
+  const f = fatti[i]; console.log(`${ROSSO ? 'rosso' : 'verde'} ${f.sk} seme ${f.sd} fine ${f.ph} (${f.chiusa || '-'}, ${f.s || '-'} s) scene ${Object.keys(f.sit).length} contatti ${f.cont.length}${f.err ? ' ERR ' + f.err : ''}`); } }));
 await b.close(); srv.close();
 /* una riga per highlight: il contatto dell'eroe (non di cronaca) di quella scena, abbinato al titolo */
 const R = [];
