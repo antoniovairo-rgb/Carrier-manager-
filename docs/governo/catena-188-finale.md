@@ -15,7 +15,10 @@ Sessione di sola verifica. Un controllo alla volta (CPM_CI_PAR=0), CPM_CHROME=/o
 | 9 | panchina-127-tel | 0 | 326 | ROSSO 412x915 casa: 112 fotogrammi · camera dentro/dietro tribuna 44 · gradoni dal retro 52 · eroe inquadrato 1 · camera inizio [-15.86,4.76,-44.54] meta' [-13.62,4.65,-39.83] dir [0.797,-0.202,0.569] · locale tribuna [15.9,4.8,-13.2,126,28,36.7] · errori 0 braccio: verde+rosso · formati 412x | free=13626/16086MB df=29G libero |
 | 10 | panchina-127-pc | 0 | 440 | ROSSO 1440x900 casa: 102 fotogrammi · camera dentro/dietro tribuna 11 · gradoni dal retro 21 · eroe inquadrato 1 · camera inizio [-15.34,4.56,-44.07] meta' [27.03,4.34,-9.22] dir [0.725,-0.283,0.627] · locale tribuna [15.3,4.6,-13.7,126,28,36.7] · errori 0 braccio: verde+rosso · formati 1440x | free=13601/16086MB df=29G libero |
 | 11 | folla | 0 | 164 |   ✓ F5 manopola di densita': 'oggi' 6391 tifosi contro 'vera' 19067  FOLLA: verde PASSA · rosso visto  | free=13600/16086MB df=29G libero |
+| 12 | bambini-124 | 0 | 880 | VERDE trasferta-eroe 1440x900: {"n":44,"errMax":0,"es":[{"i":0,"casa":true,"n":"HyperShirt","exp":[232,184,0],"got":[232,184,0]},{"i":0,"casa":true,"n":"HyperShorts","exp":[24,24,38],"got":[24,24,38]}]} ROSSO (__CPM_NO_G124) rosso-rosso: {"n":44,"errMax":72,"es":[{"i":0,"casa":true,"n":"HyperShirt", | free=13499/16086MB df=29G libero |
+| 13 | angolo-117 | 0 | 807 | ROSSO (__CPM_NO_G117A): 6 casi lontani · lontani dalla porta (≥25 u) 6 ROSSO (__CPM_NO_G121H+C+M): 2 casi in area · girati (>35°) 1 ✅ angolo-117 verde (e il rosso si vede)  | free=13220/16086MB df=29G libero |
+| 14 | volee-d3-119 | 0 | 257 | {"arm":"rosso","k":"cross-area-90-54","R119":{"nAll":68,"minAll":0.28,"nPost":15,"minPost":0.64,"gkmin":0.28},"gkPos":{"i":10,"x":90,"y":52.4},"seed":2,"sz":{"x":[88,92],"y":[51,57]},"hlType":"shot","variant":"shot_volley","pre":{"hero":{"team":"home","role":"hero","gk":false,"x":88,"y":51,"worldY": | free=13598/16086MB df=29G libero |
 
 ## Stato parziale
 
-- Controlli: 11 eseguiti, 11 verdi, 0 rossi.
+- Controlli: 14 eseguiti, 14 verdi, 0 rossi.
