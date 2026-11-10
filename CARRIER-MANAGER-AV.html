@@ -14003,33 +14003,49 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
    sorteggio; idempotente come _corrPostura23 (se la clip non ha scritto l'osso, si riparte dall'ingresso). La fascia viene dalla
    misura: il basso e' gli highlight (2,36-2,40, il corpo che il PO ha gia' ritoccato due volte), l'alto lascia passare ogni posa
    gia' sana. Rosso __CPM_NO_G146. */
-const _SPALLE146={min:2.34,max:2.62};let _w146=null;
+const _SPALLE146={min:2.34,max:2.62,allunga:1.35};let _w146=null;
 function _spalle146(B){try{if(!B||typeof THREE==='undefined')return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;
   const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent)return false;
   const T=THREE,W=_w146||(_w146={a:new T.Vector3(),b:new T.Vector3(),l:new T.Vector3(),r:new T.Vector3(),m:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion()});
   for(const b of [CL,CR,UL,UR]){const u=b.userData;if(u.q146o&&b.quaternion.equals(u.q146o))b.quaternion.copy(u.q146i);if(!u.q146i)u.q146i=new T.Quaternion();u.q146i.copy(b.quaternion);}
   /* l'attacco del braccio a 1,15 volte la lunghezza della clavicola della clip: e' lo stesso allargamento della postura del gioco
      (_corrPostura23, 23/09); se quella funzione l'ha gia' applicato in questo fotogramma (posizione = la sua uscita) non si somma. */
-  for(const U of [UL,UR]){const u=U.userData;if(u.p23o&&U.position.equals(u.p23o))continue;
+  for(const U of [UL,UR]){const u=U.userData;u.f146=!!(u.p23o&&U.position.equals(u.p23o));if(u.f146)continue;/* f146: in questo fotogramma l'ha allargato _corrPostura23 */
     if(u.p146o&&U.position.equals(u.p146o))U.position.copy(u.p146i);if(!u.p146i){u.p146i=new T.Vector3();u.p146o=new T.Vector3();}u.p146i.copy(U.position);U.position.multiplyScalar(1.15);u.p146o.copy(U.position);}
+  const fuori=U=>{const u=U.userData;if(u.f146)u.p23o.copy(U.position);else if(u.p146o)u.p146o.copy(U.position);};/* l'uscita di posizione la registra chi ha preso l'ingresso */
   TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
   TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
-  let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
+  if(!W.hl){W.hl=new T.Vector3();W.hr=new T.Vector3();W.h2=new T.Vector3();W.u2=new T.Vector3();W.y146=new T.Vector3();W.hv=new T.Vector3();}
+  if(B.hand_l)B.hand_l.getWorldPosition(W.hl);if(B.hand_r)B.hand_r.getWorldPosition(W.hr);/* le mani come le ha messe la clip, prima di ogni ritocco */
+  const L0={};let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
+  W.y146.set(0,1,0).addScaledVector(W.m,-W.m.y).normalize();/* verticale ortogonale all'asse laterale */
   for(let it=0;it<3;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
     const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.002)break;
     CL.getWorldPosition(W.a);CR.getWorldPosition(W.b);W.c.addVectors(W.a,W.b).multiplyScalar(0.5);/* asse del busto: fra le radici delle clavicole */
-    for(const [C,U,P,sg] of [[CL,UL,W.l,1],[CR,UR,W.r,-1]]){
-      C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);const L=W.d.length();if(L<1e-5)continue;
-      const dl=W.d.dot(W.m);W.e.copy(W.d).addScaledVector(W.m,-dl);const pr=W.e.length();
-      let dl2=sg*tg/2-c;dl2=Math.max(-L*0.999,Math.min(L*0.999,dl2));const pr2=Math.sqrt(Math.max(0,L*L-dl2*dl2));
-      if(pr>1e-6)W.e.multiplyScalar(pr2/pr);W.e.addScaledVector(W.m,dl2);
+    for(const [C,U,P,sg,Hd,H0] of [[CL,UL,W.l,1,B.hand_l,W.hl],[CR,UR,W.r,-1,B.hand_r,W.hr]]){
+      C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);let L=W.d.length();if(L<1e-5)continue;if(L0[sg]==null)L0[sg]=L;
+      /* la parte non laterale si divide in ALTEZZA (verticale) e AVANTI: si consuma prima l'avanti (spalla protratta), poi l'altezza */
+      let dl=W.d.dot(W.m),dv=W.d.dot(W.y146);const dl2=sg*tg/2-c;
+      /* braccia alzate: la clip porta la clavicola quasi in verticale e la sola rotazione abbasserebbe la spalla (e le mani, e il trofeo:
+         misurato -0,10 sull'alzata). L'attacco del braccio si allunga quanto serve per tenere insieme larghezza e quota, fino a
+         `allunga` volte la lunghezza d'inizio fotogramma. */
+      const L2=Math.min(L0[sg]*_SPALLE146.allunga,Math.sqrt(dl2*dl2+dv*dv));
+      if(L2>L*1.001){const k=L2/L;U.position.multiplyScalar(k);fuori(U);U.updateMatrixWorld(true);U.getWorldPosition(P);W.d.subVectors(P,W.a);L*=k;dl*=k;dv*=k;}
+      const dl3=Math.max(-L*0.999,Math.min(L*0.999,dl2)),resto=Math.max(0,L*L-dl3*dl3),dv2=Math.sign(dv)*Math.min(Math.abs(dv),Math.sqrt(resto));
+      W.e.copy(W.d).addScaledVector(W.m,-dl).addScaledVector(W.y146,-dv);const fo=W.e.length(),fo2=Math.sqrt(Math.max(0,resto-dv2*dv2));
+      if(fo>1e-6)W.e.multiplyScalar(fo2/fo);W.e.addScaledVector(W.y146,dv2).addScaledVector(W.m,dl3);
       W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
       U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
       C.quaternion.copy(W.pw.clone().invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
-      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.invert().multiply(W.uw));U.updateMatrixWorld(true);mosso=true;}
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.clone().invert().multiply(W.uw));U.updateMatrixWorld(true);
+      /* la MANO resta dove l'ha messa la clip (trofeo, saluto, esultanza): l'omero si ri-mira dalla spalla nuova verso la mano di prima */
+      if(Hd){U.getWorldPosition(W.u2);Hd.getWorldPosition(W.h2);W.h2.sub(W.u2);W.hv.subVectors(H0,W.u2);
+        if(W.h2.lengthSq()>1e-8&&W.hv.lengthSq()>1e-8){W.q.setFromUnitVectors(W.h2.normalize(),W.hv.normalize());U.getWorldQuaternion(W.uw);U.quaternion.copy(W.cw.clone().invert().multiply(W.q).multiply(W.uw));U.updateMatrixWorld(true);}}
+      mosso=true;}
   }
   for(const b of [CL,CR,UL,UR]){const u=b.userData;if(!u.q146o)u.q146o=new T.Quaternion();u.q146o.copy(b.quaternion);}
-  return mosso;}catch(_e){return false;}}
+  try{if(typeof window!=='undefined'&&window.__CPM_N146)window.__CPM_N146[mosso?1:0]++;}catch(_e3){}
+  return mosso;}catch(_e){try{if(typeof window!=='undefined')window.__CPM_E146=String(_e&&_e.message||_e);}catch(_e2){}return false;}}
 /*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
   const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
   [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
@@ -14062,7 +14078,7 @@ function _spalle146(B){try{if(!B||typeof THREE==='undefined')return false;if(typ
   if(_spalle146(B)){[B.clavicle_l,B.clavicle_r].forEach(b=>{if(b&&b.userData.q21o)b.userData.q21o.copy(b.quaternion);});[B.upperarm_l,B.upperarm_r].forEach(b=>{if(b&&b.userData.q22o)b.userData.q22o.copy(b.quaternion);});}
   try{if(typeof window!=='undefined'&&B.upperarm_l&&B.upperarm_l.children){const fa=B.upperarm_l.children.find(c=>c.isBone&&/lowerarm_l$/.test(c.name));if(fa){const a0=new THREE.Vector3(),a1=new THREE.Vector3();B.upperarm_l.getWorldPosition(a0);fa.getWorldPosition(a1);const v=a1.sub(a0).normalize();(window.__CPM_BRACCIO22=window.__CPM_BRACCIO22||[]).length<600&&window.__CPM_BRACCIO22.push(+(Math.acos(Math.max(-1,Math.min(1,-v.y)))*180/Math.PI).toFixed(1));}}}catch(_e22){}
 }catch(_e){}}
-function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01|thigh_[lr])$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01|thigh_[lr]|hand_[lr])$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -22175,7 +22191,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
             if(av._hyperBench293){
               if(_fr293){const sp=sr.current._sph293;sp.center.set(av.root.position.x,av.root.position.y+1.0,av.root.position.z);sp.radius=2.4;av._inQ293=sr.current._frs293.intersectsSphere(sp);av.root.visible=av._inQ293;}
-              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
+              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;try{_spalle146(_ossa23(av.visualRoot||av.root));}catch(_e146){}/* [giro 146] la regola unica delle spalle anche in panchina */}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
               continue;}
             if(av.mx)av.mx.update(dt);
             const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);

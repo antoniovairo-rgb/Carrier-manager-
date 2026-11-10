@@ -50,6 +50,7 @@ export async function scenaPartita(browser, port, vp, rosso, tag) {
     await page.waitForFunction(() => !!window.__CPM_CER425, null, { timeout: 60000 });
     const info = await page.evaluate(() => window.__CPM_CER425); const i = info.beats.indexOf('lift'); const t0 = info.beatsD.slice(0, i).reduce((a, x) => a + x, 0);
     await page.evaluate(t => { window.__CPM_CERT_SET = t; }, t0 + info.beatsD[i] * 0.4); await sleep(4000);
+    if (process.env.DBG146) console.log('DBG', JSON.stringify(await page.evaluate(() => { window.__CPM_N146 = [0, 0]; let raf = 0; const f = () => { raf++; if (raf < 400) requestAnimationFrame(f); }; requestAnimationFrame(f); const st0 = window.__CPM_ANIM_LOD_STATS ? JSON.stringify(window.__CPM_ANIM_LOD_STATS) : null; return new Promise(r => setTimeout(() => r({ n: window.__CPM_N146, e: window.__CPM_E146 || null, raf, ph: window.__CPM_PHASE && window.__CPM_PHASE(), corpi: (window.__CPM_CORPI146() || []).length }), 1500)); })));
     S.push(...(await campPartita(page, 'premiazione')).map(x => ({ ...x, scena: 'premiazione' }))); await foto(page, `${tag}-premiazione`); await provino(page, EROE_P, `${tag}-premiazione`);
   } catch (e) { S.push({ errore: 'partita: ' + String(e.message || e).slice(0, 140) }); }
   await page._ctx.close(); return S.map(x => ({ scena: x.scena || 'highlight', ...x }));

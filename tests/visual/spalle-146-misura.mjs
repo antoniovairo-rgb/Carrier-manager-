@@ -54,7 +54,7 @@ export const INIETTA146 = `(() => {
     const ml = mano(B.hl, '_l'), mr = mano(B.hr, '_r');
     return { H: r(H), Sj: r(Sj), Sv: r(Sv), Aj: r(Aj), Av: r(Av), ua: r(ua), fa: r(fa), mano: r(((ml || 0) + (mr || 0)) / ((ml ? 1 : 0) + (mr ? 1 : 0) || 1)),
       SjH: r(Sj / H), SvH: r(Sv / H), SvAv: Av ? r(Sv / Av) : null, SjAj: r(Sj / Aj), uaH: r(ua / H), faH: r(fa / H), manoH: r((((ml || 0) + (mr || 0)) / ((ml ? 1 : 0) + (mr ? 1 : 0) || 1)) / H),
-      gomiti: [r(gomito(B.lal)), r(gomito(B.lar))], scala: sc ? [r(sc.x), r(sc.y), r(sc.z)] : null, nonUnif: sc ? r(Math.max(sc.x, sc.z) / sc.y) : null, nmesh,
+      gomiti: [r(gomito(B.lal)), r(gomito(B.lar))], maniSu: (B.hl && B.hr) ? r(Math.min(W(B.hl).y, W(B.hr).y) - Math.min(...V.piede.map(v => v.y))) : null, scala: sc ? [r(sc.x), r(sc.y), r(sc.z)] : null, nonUnif: sc ? r(Math.max(sc.x, sc.z) / sc.y) : null, nmesh,
       nv: { spalla: sp.length, anca: an.length, mano: V.mano.length } };
   } catch (e) { return { errore: String(e && e.message || e).slice(0, 120) }; } };
   /* PROVINO: la scena vera resa da una camera vicina al corpo (fronte e tre quarti), per vedere le spalle; restituisce due dataURL */
