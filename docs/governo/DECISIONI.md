@@ -1191,3 +1191,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 19:35 UTC — PO-348: «sembra che ha lo scartello»
 - PO sulle foto dopo del giro 146: «le spalle le hai modificate? sembra che ha lo scartello» (la gobba). Decisione tecnica (madre): il giro 146 NON si unisce alla 190 com'è; giro 146b sopra `sviluppo/giro146-spalle` misura altezza delle spalle rispetto al collo, protrazione delle clavicole e curvatura del dorso, e corregge: spalle larghe ma basse, schiena dritta. La 189 non contiene il giro 146 (nessun effetto sul rilascio in corso).
+
+### 10/11 20:20 UTC — PO-351 audio
+- PO: fonti «Solo licenza CC0», ambito «Tutto insieme», versione «190». Decisione tecnica (madre): giro 149 su `sviluppo/giro149-audio` da `lavoro/189`; licenza di ogni file verificata alla fonte e scritta nei Crediti e in assets/audio; nessun account creato, nessuna credenziale; peso del pacchetto e funzionamento offline misurati; se la rete dell'ambiente blocca le fonti, il giro lo dichiara senza aggirarlo.
