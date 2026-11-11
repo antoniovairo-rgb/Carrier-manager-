@@ -30,11 +30,19 @@
    L'accordo esatto deve scendere.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node bg-decision-test.mjs [CPM_ROSSO=1]                  */
+/* [giro 162 PO-362] LO STRUMENTO ERA CIECO, ANCHE SULLA BASE (0 righe utili su 15). Il peso di famiglia che questo guardiano
+   sorveglia (`_dec499` sul sorteggio pesato di BG_MATCH, src/15) vive solo nel ramo della cronaca pescata; dal 7.870 la partita
+   vera la racconta il narratore del motore del possesso (`narra870`), che `__CPM_NO499` non tocca. Lo strumento si mette quindi
+   nel regime dove vive cio' che giudica: `__CPM_NO870` acceso in ENTRAMBI i bracci. E la partita si aspetta fino al suo EVENTO
+   di fine (fischio), non per 240 s fissi: si abbandona solo per STALLO (fase e minuto fermi per CPM_STALLO ms). Soglie e
+   campione minimo invariati. CPM_MOTORE=1 (solo diagnosi) lascia acceso il motore. Stampa i motivi di scarto delle righe.
+   ⚠️ Ne segue che, a motore acceso, il peso di famiglia NON e' sorvegliato da nessuno: lo dice il rapporto 162. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
 
-const ROSSO = !!process.env.CPM_ROSSO;
+const ROSSO = !!process.env.CPM_ROSSO, MOTORE = !!process.env.CPM_MOTORE;
 const PARTITE = +(process.env.CPM_PARTITE || 3);
-const TETTO_MS = +(process.env.CPM_TETTO || 240000);
+const TETTO_MS = +(process.env.CPM_TETTO || 3600000);     /* solo sicurezza: si chiude sul fischio */
+const STALLO = +(process.env.CPM_STALLO || 240000);
 const MIN_RIGHE = 15;
 /* SOGLIE SCELTE PER SEPARARE, sui due bracci misurati: col peso di famiglia l'accordo esatto e' 69,0%,
    senza (prova del rosso) 51,6%. 60% sta in mezzo con ~9 punti di margine da entrambe le parti.
@@ -55,28 +63,43 @@ async function partita(i) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO499 = 1; }, ROSSO);
+  await page.addInitScript(([r, mot]) => { window.__CPM_GLB = false; if (!mot) window.__CPM_NO870 = 1; if (r) window.__CPM_NO499 = 1; }, [ROSSO, MOTORE]);
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Dec' + i });
     await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 350 }), 700 + i * 61);
-    const t0 = Date.now();
+    const t0 = Date.now(); let prog = '', tProg = t0, fine = 'tetto', acc = [], ultimo = -1;
     while (Date.now() - t0 < TETTO_MS) {
       await sleep(500);
       const ph = await matchPhase(page);
-      if (ph === 'ended' || ph === 'ceremony') break;
+      /* il registro e' un anello da 400 voci: si raccoglie a mano a mano (per timestamp), o una partita lunga perde l'inizio */
+      const nuove = await page.evaluate((u) => (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle' && e.ts > u), ultimo).catch(() => []);
+      for (const e of nuove) { acc.push(e); ultimo = Math.max(ultimo, e.ts); }
+      if (ph === 'ended' || ph === 'ceremony') { fine = 'fischio'; break; }
+      const m = await page.evaluate(() => window.__CPM_CLOCK ? window.__CPM_CLOCK() : null).catch(() => null);
+      const k = ph + '|' + m; if (k !== prog) { prog = k; tProg = Date.now(); } else if (Date.now() - tProg > STALLO) { fine = 'stallo'; break; }
     }
-    return await page.evaluate(() => (window.__CPM_EV ? window.__CPM_EV() : []).filter(e => e.ev === 'chronicle'));
+    console.log(`  partita ${i + 1}: chiusa su ${fine} dopo ${Math.round((Date.now() - t0) / 1000)} s · righe di cronaca ${acc.length} · utili ${acc.filter(r => r.dec && r.pd && !r.ef && !r.rec).length}${fine === 'stallo' ? ' · fase ' + prog : ''}`);
+    return acc;
   } catch (e) { return []; }
   finally { await page.close().catch(() => {}); }
 }
 
+/* [giro 162] il campione e' un EVENTO, non un numero di partite: le partite del provino finiscono al 50' e in ognuna ~3/4 delle
+   righe sono recite (escluse per progetto), quindi tre partite davano 10 righe utili su 15. Si giocano almeno PARTITE partite e
+   poi altre, intere, finche' le righe utili non arrivano al minimo (tetto dichiarato CPM_MAX_PARTITE).
+   ⚠️ E il minimo NON basta a separare: col campione di 15 righe il rosso e' atterrato a 60,0% esatti contro la soglia 60
+   (granularita' 6,7 punti), verde 100%. Il bersaglio di raccolta e' quindi CAMPIONE=40 righe utili (granularita' 2,5); il
+   minimo per giudicare resta 15, invariato. */
+const MAX_PARTITE = +(process.env.CPM_MAX_PARTITE || 30), CAMPIONE = +(process.env.CPM_CAMPIONE || 40);
+const utili = (L) => L.filter(r => r.dec && r.pd && !r.ef && !r.rec).length;
 const righe = [];
-for (let i = 0; i < PARTITE; i++) righe.push(...(await partita(i)));
+for (let i = 0; i < MAX_PARTITE && (i < PARTITE || utili(righe) < Math.max(MIN_RIGHE, CAMPIONE)); i++) righe.push(...(await partita(i)));
 await b.close(); srv.close();
 
 const recite = righe.filter(r => r.rec).length;
 const val = righe.filter(r => r.dec && r.pd && !r.ef && !r.rec);/* [7.532.0] le righe di RECITA (kickoff/piazzati/contropiedi/ponte) sono teatro deterministico con pd=dec PER COSTRUZIONE e pool finiti: dentro le metriche gonfiavano l'accordo e affamavano la varieta' del repertorio PESCATO — si misurano a parte (contatore) e si escludono da accordo+varieta'. */
-console.log(`\n=== LA CRONACA RACCONTA L'EVENTO DECISO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO499)' : ''} ===`);
+console.log(`\n=== LA CRONACA RACCONTA L'EVENTO DECISO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO499)' : ''}${MOTORE ? ' · MOTORE ACCESO (diagnosi)' : ''} ===`);
+console.log(`  righe ${righe.length} · scarti: senza dec ${righe.filter(r => !r.dec).length} · senza pd ${righe.filter(r => !r.pd).length} · con esito ef ${righe.filter(r => r.ef).length} · recite ${recite} · dal narratore del motore (mk) ${righe.filter(r => r.mk).length}`);
 if (val.length < MIN_RIGHE) { console.log(`  ⚠ solo ${val.length} righe utili (minimo ${MIN_RIGHE})\n❌ CIECO: non abbastanza righe`); process.exit(2); }
 
 const esatto = val.filter(r => r.pd === r.dec).length;
