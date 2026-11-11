@@ -14,7 +14,7 @@ Versione 7.999.190, HEAD 4f9363a0 (ramo lavoro/190). Solo verifica: nessuna modi
 
 ## Tempi per partita (s)
 - s1: seme 1–8 → 196, 253, 291, 182, 257, 252, 219, 489
-- s5: seme 1–8 → 427, 473, 546, 656, 723, 564, 450, 424 (seme 2/4/3/5/7/6/8 come da log: 473, 546, 656, 723, 450, 564, 424)
+- s5: seme 1–8 → 427, 473, 656, 546, 723, 564, 450, 424
 - s12: seme 1–8 → 573, 572, 478, 401, 400, 625, 478, 474
 
 ## Misure (braccio verde, 157 highlight con contatto)
