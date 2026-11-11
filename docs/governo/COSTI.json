@@ -936,5 +936,19 @@
     "cache_read_tokens": 5158923,
     "worker_epoch": 3,
     "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYiaCSmx2pfUgg2AoC3rZ",
+    "titolo": "giro 154 gol eroe solo negli highlight (PO-357)",
+    "versione": "7.999.190",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T22:52:33Z",
+    "chiusa": "2026-11-11T02:35:14Z",
+    "cost_usd": 2.0683168,
+    "output_tokens": 13836,
+    "cache_read_tokens": 7982986,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-11"
   }
 ]

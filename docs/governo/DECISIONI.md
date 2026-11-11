@@ -1217,3 +1217,6 @@ Verifica finale catena/189-finale (eba3b48): 50 controlli, 48 verdi; highlight-9
 
 ### 11/11 01:10 UTC — lavoro/190 in costruzione
 Da main (db7533ad) uniti uno alla volta: giri 148, 149, 150, 155, 156, 157, 146b (con 146). Conflitti solo documentali (ROADMAP: tenute entrambe le righe; tests/visual/package.json: tenuti tutti gli script). Build ricomposta: check-src identico byte per byte. Ramo lavoro/190 e7bdb690. In attesa dei giri 151, 152, 154. CI «Validate Situations» sul commit di rilascio 189: annullata (come sulla 188), il deploy Pages è verde.
+
+### 11/11 03:05 UTC — 7.999.190 in verifica finale, giro 154 fuori per ora
+Giro 154 (PO-357) chiuso con catena incompleta: distanze-126 rosso (un tiro a 30,6 m su 30, causa non misurata), rigore-139 non giudicato, partita-vera non eseguito, bg-sync cieco (identico sulla base), bg-decision cieco. Nel giro è stato usato un `pkill -f` (vietato): segnalato. Decisione tecnica: NON unito; giro 154b (session_01QEYiaBRqNYf66ZuW3znmUY) chiude i controlli. lavoro/190 = 146+146b, 148, 149, 150, 151, 152, 155, 156, 157 con GAME_VERSION 7.999.190 (4f9363a0); verifica finale catena/190-finale (session_01QEYia916nNz7yYB5a7JR3u). Se il 154b chiude verde prima della fine, unione DA SOLA + verifica delta, come per la 189; altrimenti PO-357 si decide col PO.
