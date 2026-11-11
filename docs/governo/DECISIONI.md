@@ -1241,3 +1241,8 @@ Verifica finale 190 a 35 controlli: 34 verdi; distanze-126 «non giudicato» 15/
 - Progetto Primavera 153 (191): D3 presenze in prima squadra **contano nei totali da professionista**; D13 una presenza in prima squadra **sblocca il primo contratto da OVR 62**; D9 torneo **«Coppa Europea Giovani»**; D10 partecipano **le Primavera dei club madre da coppa europea (prestigio ≥71)**.
 - Progetto Primavera 153 (191): D7 capocannoniere = **primo in classifica marcatori**; D8 chi esce a gennaio **non vince** i premi Primavera; D11/D12 **niente Europeo Under 19, convocazioni Under 19 anche dopo il salto**; D6 tasto avanti veloce **solo in Primavera**.
 - Decisioni tecniche della sessione madre: D14 SAVE_VERSION resta 9 (campi nuovi additivi con migrazione); taglio di 3 px sul telefono (giro 150) corretto nella 191; larghezza minima 520 px confermata; posizione 88,86 di portiere-252 resta (copre la geometria degenere, il giro 148 l'ha resa verde).
+- D9 rinnovo a inizio stagione: **media fra stagione scorsa e stagione in corso, sempre** (191).
+- B11 lettera d'addio: **presenze in Primavera contate a parte** (191).
+- Intervista post-partita su PC: **centrata sotto la scena** (come nella 190).
+- «Ohh» dello stadio: **riprovare la registrazione CC0** nel giro audio 191.
+Questionario del mattino chiuso: tutte le domande dei giri della 190 e del progetto 153 hanno risposta.
