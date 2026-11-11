@@ -76,6 +76,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.191 | giro 154b chiusura controlli PO-357 | sviluppo | claude-opus-5-5 | 3,6 | 4,16 $ | 25669 | 1 | completo (un solo avvio) |
 | 7.999.190 | verifica 190 distanze-126 intero | catena | claude-sonnet-5-5 | 1,2 | 0,81 $ | 6280 | 1 | completo (un solo avvio) |
 | 7.999.191 | giro 158 simulate (prima parte, Opus, interrotto per passaggio a Fable) | sviluppo | claude-opus-5-5 | 3,3 | 10,31 $ | 110815 | 1 | completo (un solo avvio) |
+| 7.999.190 | verifica finale 7.999.190 | catena | claude-sonnet-5-5 | 12,2 | 5,18 $ | 41168 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -86,5 +87,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
-| 7.999.190 | **TOTALE 7.999.190** (12 sessioni) |  |  |  | almeno 53,16 $ |  |  | 8 sessioni parziali: totale minimo |
+| 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
 | 7.999.191 | **TOTALE 7.999.191** (3 sessioni) |  |  |  | 18,45 $ |  |  | tutte complete |
