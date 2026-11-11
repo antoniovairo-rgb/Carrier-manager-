@@ -77,6 +77,14 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.190 | verifica 190 distanze-126 intero | catena | claude-sonnet-5-5 | 1,2 | 0,81 $ | 6280 | 1 | completo (un solo avvio) |
 | 7.999.191 | giro 158 simulate (prima parte, Opus, interrotto per passaggio a Fable) | sviluppo | claude-opus-5-5 | 3,3 | 10,31 $ | 110815 | 1 | completo (un solo avvio) |
 | 7.999.190 | verifica finale 7.999.190 | catena | claude-sonnet-5-5 | 12,2 | 5,18 $ | 41168 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 159 seguiti dei bassi (PO-358/359) | sviluppo | claude-opus-5-5 | 0,5 | 4,60 $ | 36997 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 160 testo 12 px | sviluppo | claude-opus-5-5 | 1,9 | 5,33 $ | 45443 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 161 audio cerimonie, fischi, Ohh, licenza Mixkit | sviluppo | claude-opus-5-5 | 1,5 | 7,96 $ | 73066 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 162 spalle alla porta e strumenti bg-sync/bg-decision (PO-362) | sviluppo | claude-opus-5-5 | 8,2 | 8,78 $ | 67341 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 163 Primavera Indice e avanti veloce (PO-356) | sviluppo | claude-opus-5-5 | 1,4 | 8,42 $ | 80091 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 164 misura stagione pro (PO-364) | collaudo | claude-opus-5-5 | 0,3 | 3,92 $ | 42160 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 159b scadenza rinnovi e finestra estiva | sviluppo | claude-opus-5-5 | 0,5 | 2,65 $ | 25794 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 161b file Mixkit tolto (PO-351) | sviluppo | claude-opus-5-5 | 1,2 | 5,73 $ | 45350 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -88,4 +96,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
-| 7.999.191 | **TOTALE 7.999.191** (3 sessioni) |  |  |  | 18,45 $ |  |  | tutte complete |
+| 7.999.191 | **TOTALE 7.999.191** (11 sessioni) |  |  |  | 65,85 $ |  |  | tutte complete |

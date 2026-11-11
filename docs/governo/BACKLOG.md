@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (21)
+## Voci aperte o parziali (23)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 7 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 (misura) 1.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -41,6 +41,8 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-362 | 11/11 07:50 | Sessione madre (dal giro 154b): scena «spalle alla porta» → «Proteggi palla e scarica»/«Girata secca e tiro» con tiro a 30,5-30,8 m oltre il limite di 30 di distanze-126 (s1 seme 8); identico sulla base lavoro/189: difetto preesistente. Anche bg-sync e bg-decision ciechi identici sulla base (strumenti). 11/11 13:35 sessione madre: anche trama (1 passo drift, 0 coppie) e bg-continuity (0 righe confrontabili) CIECHI identici su main 7.999.189 → stessa famiglia, da riparare insieme (giro 162 + seguito). 11/11 14:50: anche ball-alive ROSSO su main (fermo 10,8 s > 2; 190: 14,5 s) e bg-rhythm ROSSO su main (costruzione/sviluppo 1,08× < 1,3; 190: 1,13×) → preesistenti | difetto (highlight / strumenti) medio | APERTO | 7.999.191 | | | |
 | PO-363 | 11/11 12:25 | Sessione madre (verifica 190): guardiano grafica-v2 ROSSO «standings: riga tua non nel colore del club» su tel/tabv/tabo/pc; identico su main 7.999.189 (db7533ad) e su lavoro/190: difetto preesistente, la riga della squadra dell'eroe in classifica ha il fondo neutro invece del colore del club | difetto (grafica) medio | APERTO | 7.999.191 | | | |
 | PO-364 | 11/11 12:35 | PO: «pensi che sia vincente anche per la carriera professionistica gestire a "momenti salienti" e non partita dopo partita? non vorrei che diventi noioso il gioco alla lunga» — PO (questionario): «Prima misuro, poi decidi». Giro 164 di sola misura (durata, scelte, ripetizione, posta in gioco della stagione da professionista) | domanda (carriera) | DA FARE — PO 11/11 dopo il giro 164: «B e C insieme» → giro 165 tasto «Vai al prossimo momento» da pro con regola di posta allargata, giro 166 partite senza posta a soli highlight | 7.999.191 | | | |
+| PO-365 | 11/11 21:22 | PO (foto docs/collaudo-po/190-fischio-finale-box.jpg, telefono, partita 3D, FISCHIO FINALE · VITTORIA PESANTE): «Non si vede il voto e le altre info nel box sotto» — nel riquadro bianco il punteggio grande «1-0» e il voto «7,4» sono quasi invisibili (colore chiaro su bianco) | difetto (grafica fine partita) | DA FARE — giro 169 | 7.999.191 |
+| PO-366 | 11/11 21:25 | Visto dalla madre nella stessa foto (non segnalato dal PO): il riquadro dice voto 7,4, la barra in basso dice ★ 7.1 nella stessa schermata — due voti diversi per la stessa partita | difetto (coerenza voto) | DA MISURARE — giro 169 | 7.999.191 |
 
 ## Storico — voci chiuse (343)
 
