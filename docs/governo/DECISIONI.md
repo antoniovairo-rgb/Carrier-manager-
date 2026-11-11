@@ -1300,3 +1300,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 11/11 ~23:00 UTC — PO-367 scene 3D con Fable
 - PO: «Prima misura, poi scegli» e «Subito, per la 192». Giro 170 (Fable) solo analisi su tutte le scene 3D (src/12 azioni salienti, src/16 cerimonie, src/19), nessuna modifica a src/. Le proposte tornano al PO; i giri di miglioramento entrano nella 192. La 191 resta a contenuto chiuso.
+
+## 12/11 ~00:05 Roma — PO-368 tifosi nel colore del club
+- Richiesta PO con foto (partita 2D). Decisione madre: giro 171 su lavoro/191, entra nella 192 (la 191 è a contenuto chiuso); il giro verifica anche folla 3D e cori/cartelloni con la stessa regola (colore del club, mai il colore della maglia del giorno).

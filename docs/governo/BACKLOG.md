@@ -44,6 +44,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-365 | 11/11 21:22 | PO (foto docs/collaudo-po/190-fischio-finale-box.jpg, telefono, partita 3D, FISCHIO FINALE · VITTORIA PESANTE): «Non si vede il voto e le altre info nel box sotto» — nel riquadro bianco il punteggio grande «1-0» e il voto «7,4» sono quasi invisibili (colore chiaro su bianco) | difetto (grafica fine partita) | DA FARE — giro 169 | 7.999.191 |
 | PO-366 | 11/11 21:25 | Visto dalla madre nella stessa foto (non segnalato dal PO): il riquadro dice voto 7,4, la barra in basso dice ★ 7.1 nella stessa schermata — due voti diversi per la stessa partita | difetto (coerenza voto) | DA MISURARE — giro 169 | 7.999.191 |
 | PO-367 | 11/11 23:55 | PO: «Su tutte le scene 3D chiediamo un aiuto a Fable 5.2 al fine di migliorarle il più possibile?» — questionario: «Prima misura, poi scegli», «Subito, per la 192» | miglioramento (scene 3D) | DA MISURARE — giro 170 (Fable, solo analisi: inventario, foto, difetti, proposte con priorità e costo) | 7.999.192 |
+| PO-368 | 12/11 00:05 | PO (foto docs/collaudo-po/191-tifosi-colore-trasferta.webp, PC, partita 2D Primavera CES-LNS, Leonessa in trasferta con maglia viola): «i tifosi devono mantenere il colore originale del club, non prendere il colore della maglia da trasferta» — settori/curve ai lati del campo in viola (maglia away) invece del celeste del club | difetto (grafica partita 2D e folla) | DA FARE — giro 171 (2D e verifica anche nel 3D) | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 
