@@ -1258,3 +1258,6 @@ La verifica 190 ha trovato grafica-v2 rosso (catena mirata, poi sostituita dai g
 
 ### 11/11 13:35 UTC — trama e bg-continuity ciechi preesistenti
 Nella verifica 190 trama, bg-continuity e bg-decision escono CIECHI (0 righe/coppie). Rieseguiti dalla sessione madre su main 7.999.189 (db7533ad): trama CIECO (1 passo drift, 0 coppie, exit 2), bg-continuity CIECO (0 righe confrontabili, exit 2) — identici; bg-decision già visto cieco sulla base dal giro 154b. Preesistenti, dichiarati nella 190; riparazione degli strumenti nella 191 (PO-362).
+
+### 11/11 14:50 UTC — ball-alive e bg-rhythm rossi preesistenti
+Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseguiti dalla sessione madre su main 7.999.189: ball-alive ROSSO (fermo 10,8 s, exit 2), bg-rhythm ROSSO (1,08×, exit 2) → preesistenti, aggiunti a PO-362. Nota: il fermo più lungo cresce da 10,8 a 14,5 s fra 189 e 190 su un solo campione per braccio: non giudicabile come regressione su 1 partita, da misurare nel giro di riparazione.
