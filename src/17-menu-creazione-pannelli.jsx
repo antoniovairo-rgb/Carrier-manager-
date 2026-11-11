@@ -138,7 +138,6 @@ const CREDITI238=[
     {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
   {sez:"Suoni",voci:[
     {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
-    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
     {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
 ];
 /* [PO-254, richiesta PO 15/10 «Crediti, pulsante/link troppo minimale ed il contenuto non e' stato aggiornato (tutte le fonti
@@ -174,10 +173,9 @@ const CREDITI254=[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
-    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). Il boato Mixkit non si usa piu'
-       e la sua voce resta solo col rosso __CPM_NO_G149 (che rimette l'audio di prima). */
-    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[
-    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"}]:[
+    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). [giro 161b] il boato di terzi
+       e' uscito dal repo (decisione PO 11/11): col rosso __CPM_NO_G149 l'audio torna sintetizzato e qui non resta nessuna voce. */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[]:[
     {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},

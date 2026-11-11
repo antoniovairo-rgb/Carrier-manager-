@@ -1782,13 +1782,6 @@
    "licenza": "nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)",
    "cc0": true,
    "nota": "brusio in loop della partita, invariato dal giro 149"
-  },
-  "sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav": {
-   "evento": "crowd.roar (solo col rosso __CPM_NO_G149)",
-   "licenza": "Mixkit Sound Effects Free License (licenza propria Mixkit/Envato, NON CC0)",
-   "cc0": false,
-   "pagina": "https://mixkit.co/license/",
-   "nota": "boato del gol dal 7.72.1; col giro 149 non si scarica piu' e il gol usa i boati CC0. Rimozione dal repo: decisione del PO (domanda aperta nel rapporto del giro 149)."
   }
  }
 }

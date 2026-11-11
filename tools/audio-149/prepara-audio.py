@@ -134,7 +134,7 @@ def main():
                 # file audio che il giro 149 NON ha prodotto ma che stanno nel repo: anche loro hanno la loro riga (il guardiano lo pretende)
                 'altri': {
                   'sfx/crowd/brusio-folla-korward.wav': {'evento': 'crowd.bed', 'licenza': 'nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)', 'cc0': True, 'nota': 'brusio in loop della partita, invariato dal giro 149'},
-                  'sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav': {'evento': 'crowd.roar (solo col rosso __CPM_NO_G149)', 'licenza': 'Mixkit Sound Effects Free License (licenza propria Mixkit/Envato, NON CC0)', 'cc0': False, 'pagina': 'https://mixkit.co/license/', 'nota': 'boato del gol dal 7.72.1; col giro 149 non si scarica piu\' e il gol usa i boati CC0. Rimozione dal repo: decisione del PO (domanda aperta nel rapporto del giro 149).'}}}
+                  # [giro 161b] il boato di terzi «stadium joy shouting crowd» (licenza propria, non CC0) e' uscito dal repo: decisione PO 11/11 «Togliere il file»
     zips = {}
     solo = sys.argv[sys.argv.index('--solo') + 1].split(',') if '--solo' in sys.argv else None
     if solo:  # [giro 161] rielabora solo queste uscite: le altre righe del registro restano quelle generate (stessa sorgente, stesso codice)

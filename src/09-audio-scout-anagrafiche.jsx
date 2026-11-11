@@ -56,8 +56,8 @@ const AudioMgr=(function(){
   // [7.71.1] PRE-REGISTRATO e attivo-al-drop: appena un file `goal-roar.(ogg|mp3|wav)` compare in assets/audio/sfx/crowd/
   //   il boato del gol suona il campione REALE (crowdRoar lo preferisce). Finché il file NON c'è, il fetch fallisce e si
   //   ricade sul synth (comportamento attuale). Nessun altro passo di codice: basta caricare il file nel repo.
-  // [7.72.1] campioni REALI forniti dal PO (Freesound/Mixkit) — priorità sui fallback generati:
-  //   crowd.roar = boato di gioia allo stadio (Mixkit) · crowd.bed = brusio di folla da calcio.
+  // [7.72.1] campioni REALI forniti dal PO — priorità sui fallback generati: crowd.roar = boato di gioia allo stadio
+  //   (file tolto nel giro 161b) · crowd.bed = brusio di folla da calcio.
   // [giro 20 — PO-238, decisione PO 14/10 «Sostituiscilo»] il brusio mp3 del 7.72.1 (fonte e licenza non
   //   verificabili) e' USCITO dal gioco: crowd.bed e' ora generato da noi (tools/gen-crowd-bed.mjs: rumore modellato +
   //   grani vocali sintetici, seme fisso, nessun campione di terzi). Misura (tools/misura-brusio.mjs): il vecchio aveva
@@ -65,7 +65,9 @@ const AudioMgr=(function(){
   //   e' periodico per costruzione (giunto +1,0/-0,8 dB). Rosso: window.__CPM_NO_BRUSIO238 → niente file, synth di riserva.
   const _brusio238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRUSIO238);
   const URL_SFX={
-    'crowd.roar':['assets/audio/sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav','assets/audio/sfx/crowd/goal-roar.ogg','assets/audio/sfx/crowd/goal-roar.mp3','assets/audio/sfx/crowd/goal-roar.wav'],
+    /* [giro 161b PO-351, decisione PO 11/11 «Togliere il file»] il boato di terzi (licenza propria, non CC0) e' uscito dal repo: col rosso
+       __CPM_NO_G149 il boato torna la SINTESI a formanti di crowdRoar (i goal-roar.* restano il vecchio aggancio «basta caricare il file»). */
+    'crowd.roar':['assets/audio/sfx/crowd/goal-roar.ogg','assets/audio/sfx/crowd/goal-roar.mp3','assets/audio/sfx/crowd/goal-roar.wav'],
     'crowd.bed':['assets/audio/sfx/crowd/brusio-folla-korward.wav']
   };
   const _bedUrls238=()=>_brusio238On()?URL_SFX['crowd.bed']:[];
@@ -115,7 +117,7 @@ const AudioMgr=(function(){
     try{const s=ctx.createBufferSource();s.buffer=_urlBufs[key];const g=ctx.createGain();const pk=peak==null?0.85:peak;g.gain.value=pk;
       s.connect(g);g.connect(dest(cat||'crowd'));
       const bd=_urlBufs[key].duration;
-      if(dur&&dur>0.25&&dur<bd){const t=now();g.gain.setValueAtTime(pk,t+dur-0.5);g.gain.linearRampToValueAtTime(0.0001,t+dur);s.start(t);s.stop(t+dur+0.05);}/* [7.72.1] campione lungo → suona solo i primi `dur`s con fade (il boato Mixkit dura 15s) */
+      if(dur&&dur>0.25&&dur<bd){const t=now();g.gain.setValueAtTime(pk,t+dur-0.5);g.gain.linearRampToValueAtTime(0.0001,t+dur);s.start(t);s.stop(t+dur+0.05);}/* [7.72.1] campione lungo → suona solo i primi `dur`s con fade */
       else s.start();
       s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};return true;}catch(_e){return false;}
   }
@@ -276,8 +278,8 @@ const AudioMgr=(function(){
   //   DOMINANTE (che maschera ogni residuo tonale) + applausi in cima. Preferisce un campione reale se registrato ({url}).
   function crowdRoar(){
     if(!ready)return;
-    // strada 1 (preferita): campione REALE di boato (Mixkit joy crowd, fornito dal PO). Dura ~15s → ne suono i primi
-    //   ~4.2s con fade (l'esplosione iniziale). Niente synth sopra: la registrazione è completa.
+    // strada 1 (preferita): campione REALE di boato (file del giro 149; col rosso un goal-roar.* se mai caricato, ne suono i
+    //   primi ~4.2s con fade). Niente synth sopra: la registrazione è completa.
     if(_play149('crowd.roar')){vibrate(60);return;}
     if(_urlBufs['crowd.roar']){try{playSample('crowd.roar',0.95,'crowd',4.2);vibrate(60);return;}catch(_e){}}
     try{

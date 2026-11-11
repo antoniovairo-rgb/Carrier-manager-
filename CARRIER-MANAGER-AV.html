@@ -8296,8 +8296,8 @@ const AudioMgr=(function(){
   // [7.71.1] PRE-REGISTRATO e attivo-al-drop: appena un file `goal-roar.(ogg|mp3|wav)` compare in assets/audio/sfx/crowd/
   //   il boato del gol suona il campione REALE (crowdRoar lo preferisce). Finché il file NON c'è, il fetch fallisce e si
   //   ricade sul synth (comportamento attuale). Nessun altro passo di codice: basta caricare il file nel repo.
-  // [7.72.1] campioni REALI forniti dal PO (Freesound/Mixkit) — priorità sui fallback generati:
-  //   crowd.roar = boato di gioia allo stadio (Mixkit) · crowd.bed = brusio di folla da calcio.
+  // [7.72.1] campioni REALI forniti dal PO — priorità sui fallback generati: crowd.roar = boato di gioia allo stadio
+  //   (file tolto nel giro 161b) · crowd.bed = brusio di folla da calcio.
   // [giro 20 — PO-238, decisione PO 14/10 «Sostituiscilo»] il brusio mp3 del 7.72.1 (fonte e licenza non
   //   verificabili) e' USCITO dal gioco: crowd.bed e' ora generato da noi (tools/gen-crowd-bed.mjs: rumore modellato +
   //   grani vocali sintetici, seme fisso, nessun campione di terzi). Misura (tools/misura-brusio.mjs): il vecchio aveva
@@ -8305,7 +8305,9 @@ const AudioMgr=(function(){
   //   e' periodico per costruzione (giunto +1,0/-0,8 dB). Rosso: window.__CPM_NO_BRUSIO238 → niente file, synth di riserva.
   const _brusio238On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRUSIO238);
   const URL_SFX={
-    'crowd.roar':['assets/audio/sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav','assets/audio/sfx/crowd/goal-roar.ogg','assets/audio/sfx/crowd/goal-roar.mp3','assets/audio/sfx/crowd/goal-roar.wav'],
+    /* [giro 161b PO-351, decisione PO 11/11 «Togliere il file»] il boato di terzi (licenza propria, non CC0) e' uscito dal repo: col rosso
+       __CPM_NO_G149 il boato torna la SINTESI a formanti di crowdRoar (i goal-roar.* restano il vecchio aggancio «basta caricare il file»). */
+    'crowd.roar':['assets/audio/sfx/crowd/goal-roar.ogg','assets/audio/sfx/crowd/goal-roar.mp3','assets/audio/sfx/crowd/goal-roar.wav'],
     'crowd.bed':['assets/audio/sfx/crowd/brusio-folla-korward.wav']
   };
   const _bedUrls238=()=>_brusio238On()?URL_SFX['crowd.bed']:[];
@@ -8355,7 +8357,7 @@ const AudioMgr=(function(){
     try{const s=ctx.createBufferSource();s.buffer=_urlBufs[key];const g=ctx.createGain();const pk=peak==null?0.85:peak;g.gain.value=pk;
       s.connect(g);g.connect(dest(cat||'crowd'));
       const bd=_urlBufs[key].duration;
-      if(dur&&dur>0.25&&dur<bd){const t=now();g.gain.setValueAtTime(pk,t+dur-0.5);g.gain.linearRampToValueAtTime(0.0001,t+dur);s.start(t);s.stop(t+dur+0.05);}/* [7.72.1] campione lungo → suona solo i primi `dur`s con fade (il boato Mixkit dura 15s) */
+      if(dur&&dur>0.25&&dur<bd){const t=now();g.gain.setValueAtTime(pk,t+dur-0.5);g.gain.linearRampToValueAtTime(0.0001,t+dur);s.start(t);s.stop(t+dur+0.05);}/* [7.72.1] campione lungo → suona solo i primi `dur`s con fade */
       else s.start();
       s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};return true;}catch(_e){return false;}
   }
@@ -8516,8 +8518,8 @@ const AudioMgr=(function(){
   //   DOMINANTE (che maschera ogni residuo tonale) + applausi in cima. Preferisce un campione reale se registrato ({url}).
   function crowdRoar(){
     if(!ready)return;
-    // strada 1 (preferita): campione REALE di boato (Mixkit joy crowd, fornito dal PO). Dura ~15s → ne suono i primi
-    //   ~4.2s con fade (l'esplosione iniziale). Niente synth sopra: la registrazione è completa.
+    // strada 1 (preferita): campione REALE di boato (file del giro 149; col rosso un goal-roar.* se mai caricato, ne suono i
+    //   primi ~4.2s con fade). Niente synth sopra: la registrazione è completa.
     if(_play149('crowd.roar')){vibrate(60);return;}
     if(_urlBufs['crowd.roar']){try{playSample('crowd.roar',0.95,'crowd',4.2);vibrate(60);return;}catch(_e){}}
     try{
@@ -46190,7 +46192,6 @@ const CREDITI238=[
     {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
   {sez:"Suoni",voci:[
     {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
-    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
     {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
 ];
 /* [PO-254, richiesta PO 15/10 «Crediti, pulsante/link troppo minimale ed il contenuto non e' stato aggiornato (tutte le fonti
@@ -46226,10 +46227,9 @@ const CREDITI254=[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
-    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). Il boato Mixkit non si usa piu'
-       e la sua voce resta solo col rosso __CPM_NO_G149 (che rimette l'audio di prima). */
-    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[
-    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"}]:[
+    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). [giro 161b] il boato di terzi
+       e' uscito dal repo (decisione PO 11/11): col rosso __CPM_NO_G149 l'audio torna sintetizzato e qui non resta nessuna voce. */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[]:[
     {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},

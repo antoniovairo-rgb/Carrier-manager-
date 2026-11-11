@@ -2,7 +2,7 @@
 /* [giro 161, da ascolto-149] REGISTRA i suoni del giro 161 per docs/sviluppo/giro161/ascolto.html (prima = rosso __CPM_NO_G161 = audio
    del giro 149: gol subito muto, «ohh» sintetico, cerimonie senza musica).
    [giro 149 · PO-351] REGISTRA la pagina d'ascolto docs/sviluppo/giro149/ascolto.html: ogni evento sonoro suonato DAL GIOCO VERO,
-   prima (rosso __CPM_NO_G149 = audio di oggi, sintesi + boato Mixkit) e dopo (file CC0), con gli stessi volumi di categoria del gioco.
+   prima (rosso __CPM_NO_G149 = audio di prima del giro 149, sintetizzato; dal giro 161b anche il boato) e dopo (file CC0).
    Come: un init-script aggancia ogni connect() verso ctx.destination anche a un MediaStreamDestination e un MediaRecorder registra
    l'evento; i webm si convertono in MP3 (si aprono anche su Safari). Uso: node tools/build-dist.mjs --web && node ascolto-161.mjs */
 import http from 'node:http';
