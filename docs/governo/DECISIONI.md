@@ -1267,3 +1267,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Unite in lavoro/190, da sole, catena/190-finale e catena/190-distanze (solo verbali, nessun file src).
 - Rossi dichiarati nella ROADMAP, tutti preesistenti sulla 189: sim-motore, grafica-v2 (PO-363), trama, bg-continuity, bg-decision, bg-sync, ball-alive, bg-rhythm (PO-362). Correzioni nella 191.
 - PO-357 (giro 154b) non entra: esce nella 191 come deciso dal PO.
+
+## 11/11 sera — risposte PO al questionario dopo la 190
+- Rinnovi (giro 159, domanda 1): «Stessa regola» — scadenza = stagione + durata − 1 anche per i rinnovi → giro 159b.
+- Finestra estiva W1-5 (giro 159, domanda 2): «Sì, inizio stagione» — «1 stagione» firmato lì scade a fine della stagione in corso → giro 159b.
+- Mixkit (giro 161): «Togliere il file» — il .wav esce da repo e sito, il rosso __CPM_NO_G149 usa un suono CC0 → giro 161b (PO-351).
+- Carriera pro (PO-364, giro 164): «B e C insieme» → giro 165 (tasto facoltativo da pro, regola di posta allargata) e giro 166 (partite senza posta a soli highlight; motore, Fable).
