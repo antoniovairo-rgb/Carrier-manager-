@@ -131,6 +131,7 @@
     "save-compat": "node run-save-compat.mjs",
     "bassi-155": "node bassi-155-test.mjs",
     "seguiti-159": "node seguiti-159-test.mjs",
+    "seguiti-159b": "node seguiti-159b-test.mjs",
     "stress": "node run-stress.mjs",
     "replay": "node run-replay.mjs",
     "cross-validate": "node cross-validate.mjs",

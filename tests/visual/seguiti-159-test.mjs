@@ -18,7 +18,7 @@ const HTML = fs.readFileSync(ROOT + 'CARRIER-MANAGER-AV.html', 'utf8');
 const statico = {
   L358: HTML.includes('Math.min(trophies*LEGACY_PER_TROFEO159,LEGACY_TETTI358.trofei)'),
   T359: HTML.includes('"mun-liv":{name:"Derby della Brughiera Rossa"'),
-  B4tr: HTML.includes('...contrattoFirma159(p.season||1,_newDur98,(p.week||1)>5)'),
+  B4tr: HTML.includes(':contrattoFirma159(p.season||1,_newDur98,(p.week||1)>5))'),/* [giro 159b] la chiamata ora sta nel ramo verde del rosso __CPM_NO_G159B */
   B4pro: HTML.includes('contract:{...contrattoFirma159(newSeason,offer.duration||1,false)'),
   D9: HTML.includes('const growthMult=_gR159>12?1.18:_gR159>6?1.08:0.97;') && HTML.includes('const _gR159=golRinnovo159(player);'),
   B11: HTML.includes('{presenzeLettera159(p).testo}'),
