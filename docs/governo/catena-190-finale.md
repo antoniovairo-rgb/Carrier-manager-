@@ -20,3 +20,6 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 14 | riserva-103 | 0 | 621 | VERDE | mem used 594/16086 free 13450 avail 15491 · disk used 10G avail 29G (26%) |
 | 15 | panchina-127 | 0 | 879 | VERDE | mem used 581/16086 free 13461 avail 15504 · disk used 10G avail 29G (26%) |
 | 16 | folla | 0 | 150 | VERDE | mem used 605/16086 free 13438 avail 15480 · disk used 10G avail 29G (26%) |
+| 17 | bambini-124 | 0 | 845 | VERDE | mem used 692/16086 free 13350 avail 15393 · disk used 10G avail 29G (26%) |
+| 18 | angolo-117 | 0 | 719 | VERDE | mem used 926/16086 free 13116 avail 15160 · disk used 10G avail 29G (26%) |
+| 19 | volee-d3-119 | 0 | 224 | VERDE | mem used 596/16086 free 13445 avail 15489 · disk used 10G avail 29G (26%) |
