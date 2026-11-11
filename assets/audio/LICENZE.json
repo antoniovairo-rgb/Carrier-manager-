@@ -920,6 +920,41 @@
     "sha256": "aa592af5f69c834d9c64856a77148b2a7b7e34c65ed7c680f1e1e649ec2fd4fe"
    }
   },
+  "sfx/crowd/ohh-1": {
+   "evento": "crowd.ohh",
+   "g": 0.7,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 4.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -5.5,
+   "rms_dbfs": -18.0,
+   "loop": false,
+   "byte": {
+    "ogg": 23249,
+    "mp3": 32468
+   },
+   "sorgente": {
+    "id": "commons-ohh-france-usa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg",
+    "file": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/17/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg/Match_amical_France-USA_-_58241_spectateurs_-_Action_rat%C3%A9e_sur_faute_21h38.ogg.mp3",
+    "membro": null,
+    "tagli": [
+     [
+      31.0,
+      4.0
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Romainbehar (Wikimedia Commons, «Own work», 9 June 2018)",
+    "licenza": "CC0 1.0 (letta sulla pagina del file: «I, the copyright holder of this work, hereby publish it under the following license: This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication»). Scaricata la TRASCODIFICA MP3 che Wikimedia pubblica per lo stesso file: l'originale .ogg su upload.wikimedia.org risponde 429 (giro 161, tre tentativi)",
+    "letta": "2026-11-11",
+    "sha256": "b633231a2ff9d15a5c15f0369bfa4691c67a2182d8e037c50dc3c2b1d8aa5dae"
+   }
+  },
   "sfx/ui/click-1": {
    "evento": "ui.click",
    "g": 0.25,
@@ -1673,6 +1708,71 @@
     "licenza": "CC0 (pagina OpenGameArt «License(s): CC0»)",
     "letta": "2026-11-10",
     "sha256": "50aa6a32625fe8565403a0c8ceb772d7fb500b9267d0019eacfe0fc742b6c73d"
+   }
+  },
+  "music/awards/trionfo": {
+   "evento": "music.premiazioni",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 27.4,
+   "canali": 2,
+   "lufs": -18.0,
+   "picco_dbfs": -5.9,
+   "rms_dbfs": -22.1,
+   "loop": false,
+   "byte": {
+    "ogg": 350618,
+    "mp3": 439316
+   },
+   "sorgente": {
+    "id": "oga-triumphant",
+    "pagina": "https://opengameart.org/content/triumphant",
+    "file": "https://opengameart.org/sites/default/files/triumphant_0.mp3",
+    "membro": null,
+    "tagli": null,
+    "filtro": "",
+    "autore": "Emma_MA",
+    "licenza": "CC0 (campo License della pagina OpenGameArt). Descrizione dell'autrice: «A short celebratory theme using strings and horns»",
+    "letta": "2026-11-11",
+    "sha256": "2da7ebd179e4564684b25d3c0704cb8fe5ee7ba7e7432517eae90ea89371778b"
+   }
+  },
+  "music/ceremony/il-mondo-e-nostro": {
+   "evento": "music.cerimonia",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 48.0,
+   "canali": 2,
+   "lufs": -18.0,
+   "picco_dbfs": -2.6,
+   "rms_dbfs": -20.3,
+   "loop": false,
+   "byte": {
+    "ogg": 647866,
+    "mp3": 768788
+   },
+   "sorgente": {
+    "id": "oga-world-is-ours",
+    "pagina": "https://opengameart.org/content/the-world-is-ours",
+    "file": "https://opengameart.org/sites/default/files/the_world_is_ours.wav",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      48.0
+     ]
+    ],
+    "filtro": "",
+    "autore": "Zane Little Music",
+    "licenza": "CC0 (campo License della pagina OpenGameArt). Descrizione dell'autore: «A fun and upbeat track for uplifting, determined, or triumphant moments!»",
+    "letta": "2026-11-11",
+    "sha256": "a446cbf5ce5d58acf593719d36cdee535a5e3e05e43016309329ef911eb70efd"
    }
   }
  },

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Giro 149 (PO-351) — prepara i file audio CC0 del gioco, in modo riproducibile.
 
-  python3 -I tools/audio-149/prepara-audio.py [--cache DIR]
+  python3 -I tools/audio-149/prepara-audio.py [--cache DIR] [--solo nome1,nome2]   (--solo: giro 161, rielabora solo quelle uscite)
 
 1. scarica ogni sorgente di tools/audio-149/sorgenti.json nella cache (se non c'e' gia') e ne VERIFICA lo sha256:
    un hash diverso ferma tutto (il file alla fonte e' cambiato: la licenza va riletta);
@@ -55,6 +55,9 @@ USCITE = [
   ('crowd.applause', 'sfx/crowd/applausi-2', 'tdc-crowds-applause', None, [(100.5, 3.0)], I, .60),
   ('crowd.cheer', 'sfx/crowd/esulta-1', 'tdc-crowds-applause', None, [(34.0, 2.2)], I, .70),
   ('crowd.boo', 'sfx/crowd/fischi-1', 'tdc-whistles-crowd', None, [(1.15, 1.55)], 'highpass=f=400', .30),
+  # [giro 161] «ohh» dello stadio: registrazione CC0 di Commons (Stade de France, azione fallita), taglio scelto sull'inviluppo
+  #   (salita 31,5-33,5 s da -19 a -13,7 dB RMS, ricaduta a 34,5 s): NON scelto all'ascolto, va confermato dal PO
+  ('crowd.ohh', 'sfx/crowd/ohh-1', 'commons-ohh-france-usa', None, [(31.0, 4.0)], I, .70),
   # --- interfaccia (Kenney Interface Sounds)
   ('ui.click', 'sfx/ui/click-1', 'kenney-interface', 'Audio/click_001.ogg', None, '', .25),
   ('ui.click', 'sfx/ui/click-2', 'kenney-interface', 'Audio/select_001.ogg', None, '', .25),
@@ -83,6 +86,9 @@ USCITE = [
   # --- musica (loop)
   ('music.home', 'music/menu/spiaggia-loop', 'oga-beach-sports', None, None, '', .55),
   ('music.career', 'music/career/avventura-loop', 'oga-happy-adventure', None, None, '', .55),
+  # [giro 161 — decisione PO 11/11: fuori partita la musica suona SOLO nelle cerimonie] brani suonati una volta, non in loop
+  ('music.premiazioni', 'music/awards/trionfo', 'oga-triumphant', None, None, '', .55),
+  ('music.cerimonia', 'music/ceremony/il-mondo-e-nostro', 'oga-world-is-ours', None, [(0, 48.0)], '', .55),
 ]
 STEREO = lambda key: key.startswith('music.') or key == 'career.trophy'
 SOSTENUTO = lambda key, dur: dur >= 1.0 or key.startswith(('music.', 'crowd.', 'ref.', 'career.', 'season.', 'gala.'))
@@ -130,7 +136,12 @@ def main():
                   'sfx/crowd/brusio-folla-korward.wav': {'evento': 'crowd.bed', 'licenza': 'nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)', 'cc0': True, 'nota': 'brusio in loop della partita, invariato dal giro 149'},
                   'sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav': {'evento': 'crowd.roar (solo col rosso __CPM_NO_G149)', 'licenza': 'Mixkit Sound Effects Free License (licenza propria Mixkit/Envato, NON CC0)', 'cc0': False, 'pagina': 'https://mixkit.co/license/', 'nota': 'boato del gol dal 7.72.1; col giro 149 non si scarica piu\' e il gol usa i boati CC0. Rimozione dal repo: decisione del PO (domanda aperta nel rapporto del giro 149).'}}}
     zips = {}
+    solo = sys.argv[sys.argv.index('--solo') + 1].split(',') if '--solo' in sys.argv else None
+    if solo:  # [giro 161] rielabora solo queste uscite: le altre righe del registro restano quelle generate (stessa sorgente, stesso codice)
+        vecchio = json.load(open(os.path.join(OUT, 'LICENZE.json'), encoding='utf8'))
+        registro['file'] = {n: v for n, v in vecchio['file'].items() if n not in solo}
     for key, nome, sid, membro, tagli, filtro, g in USCITE:
+        if solo and nome not in solo: continue
         ch = 2 if STEREO(key) else 1
         src = sorgente(sid)
         if membro:
@@ -144,7 +155,7 @@ def main():
             parti = []
             for (a, d) in tagli:
                 p = x[int(a * SR): int((a + d) * SR)].copy()
-                n = len(p); fi = min(int(.004 * SR), n // 4); fo = min(int((.06 if d < 1 else .35) * SR), n // 2)
+                n = len(p); fi = min(int(.004 * SR), n // 4); fo = min(int((.06 if d < 1 else 3.0 if key.startswith('music.') else .35) * SR), n // 2)
                 p[:fi] *= np.linspace(0, 1, fi)[:, None]; p[n - fo:] *= np.linspace(1, 0, fo)[:, None]
                 parti.append(p); parti.append(np.zeros((int(.20 * SR), ch), np.float32))
             x = np.concatenate(parti[:-1])
@@ -170,11 +181,12 @@ def main():
         registro['file'][nome] = {
             'evento': key, 'g': g, 'formati': ['ogg', 'mp3'], 'durata_s': round(dur, 3), 'canali': ch,
             'lufs': None if L is None else round(L, 1), 'picco_dbfs': round(20 * np.log10(pk + 1e-12), 1), 'rms_dbfs': round(20 * np.log10(rms + 1e-12), 1),
-            'loop': key.startswith('music.'),
+            'loop': key in ('music.home', 'music.career'),
             'byte': {'ogg': os.path.getsize(base + '.ogg'), 'mp3': os.path.getsize(base + '.mp3')},
             'sorgente': {'id': sid, 'pagina': s['pagina'], 'file': s['file'], 'membro': membro, 'tagli': tagli, 'filtro': filtro,
                          'autore': s['autore'], 'licenza': s['licenza'], 'letta': s['letta'], 'sha256': s['sha256']}}
         print(f"{nome:36s} {key:18s} {dur:6.2f}s  LUFS={registro['file'][nome]['lufs']}  pk={registro['file'][nome]['picco_dbfs']}  ogg={os.path.getsize(base + '.ogg')//1024}KB")
+    ordine = [u[1] for u in USCITE]; registro['file'] = {n: registro['file'][n] for n in ordine if n in registro['file']}
     json.dump(registro, open(os.path.join(OUT, 'LICENZE.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
     tot = sum(v['byte']['ogg'] + v['byte']['mp3'] for v in registro['file'].values())
     print(f"{len(registro['file'])} file · peso totale ogg+mp3 = {tot/1048576:.2f} MB")
