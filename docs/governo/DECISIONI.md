@@ -1285,3 +1285,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 158b (Fable, PO-360): voto simulato dalla pagella del motore; squadra dell'eroe a forza pari 1,17 → 1,37 punti/partita; sim-motore da rosso 1,97 a verde 2,33. Il rosso preesistente sim-motore è chiuso. Restano aperti (decisione madre: giro dedicato dopo la 191) i due sorteggi separati per i gol dell'eroe (_pSimStats e motore) e l'OVR che sposta poco i gol. Il resto della catena mirata di src/14 non eseguito dal giro → si esegue nella verifica finale 191.
 - 165 (PO-364 B), decisioni tecniche della madre: soglie dei traguardi/contratto/scontro diretto accettate (domanda 3); fermata generica che legge il velo nel DOM accettata (domanda 4); la correzione «tasto spento col confronto del procuratore aperto» va estesa alla Primavera (domanda 5) → nel giro di unione. Al PO domattina: fermarsi su ogni scelta della settimana o solo su quelle di storia (1), tetto alle fermate (2), rinnovo che ferma una volta o finché non risolto (6).
 - 168 (PO-363): difetto del gioco (velo neutro al posto del colore del club dal 02/11); corretto, grafica-v2 verde su 4 formati, guardiano grafica-168. Decisione madre (domanda 1): grafica-168 entra nelle catene grafica e completa di ci-runner, fatto alla costruzione di lavoro/191.
+
+## 11/11 ~22:45 UTC — risposte PO sul tasto «Vai al prossimo momento» (giro 165)
+- Scelte: «Solo scelte di storia» — si ferma su mercato, procuratore, mister, momenti di carriera; le scelte di routine automatiche come in Primavera (163).
+- Tetto: «Nessun tetto».
+- Rinnovo: «Finché non è risolto» — ferma a ogni corsa finché il giocatore non firma o rifiuta.
+→ giro 165b sullo stesso ramo, con l'estensione alla Primavera della correzione «tasto spento col confronto del procuratore aperto» (decisione madre).
