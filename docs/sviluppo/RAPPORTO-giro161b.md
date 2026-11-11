@@ -67,7 +67,16 @@ Audio scaricato dal sito al primo avvio (`sw-cache-120`): 2,5 MB, invariato (il 
 | `audit-copyright` | ✅ 0 riferimenti al mondo reale |
 | `test:logic` | ✅ 43/43 |
 | `save-compat` | ✅ 12/12 |
-<!--CATENA-->
+| `test:vision` | ✅ verde |
+| `typing-shortcuts` | ✅ PASS |
+| `replay` | ✅ 8 highlight, replay completi e coerenti |
+| `career-critical` | ✅ PASS |
+| `partita-vera` | ✅ 12 bande giudicate e tenute, 2/2 partite finite |
+| `match-sequence` | ✅ le tre velocità raccontano la stessa partita, fischio finale 4/4 giri (minuto 92) |
+| `validate-situations` | ✅ PASS, 14 categorie, fingerprint 00001505, 0 failure (ai-vision: skip, Ollama non raggiungibile — come sempre in cloud) |
+
+La catena CI (sette passi) e `partita-vera` + `match-sequence` sono girati in sequenza in un solo giro sullo stesso build,
+19:17 → 20:01.
 
 Dichiarato: la prima esecuzione di `validate-dist` è caduta **prima di giudicare** perché lanciata senza `CPM_CHROME` (Playwright cercava
 una build di Chromium non presente); rilanciata da capo con `CPM_CHROME=/opt/pw-browsers/chromium`, verde. Il guardiano nuovo ha avuto
