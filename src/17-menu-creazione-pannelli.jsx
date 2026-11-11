@@ -524,7 +524,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               className="cpm-t40i"
               style={{...inp,fontSize:FS.small,padding:"7px 12px",marginBottom:6}}
             />
-            <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:4,marginBottom:4,paddingRight:2}}>
+            <div data-cpm="sogni155" style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:(_g155("D21")?4:SP.sm)/* [giro 155 D21] 4,5 px fra i bottoni del «Club dei sogni»: la spaziatura della griglia (SP.sm). Rosso __CPM_NO_G155_D21 */,marginBottom:4,paddingRight:2}}>
               {CLUBS.filter(c=>!c.isU18&&(!dreamSearch||c.n.toLowerCase().includes(dreamSearch.toLowerCase())||c.a.toLowerCase().includes(dreamSearch.toLowerCase()))).sort((a,b)=>b.p-a.p).map(c=>{
                 const sel=dreamClub?.id===c.id;
                 return(
@@ -963,6 +963,11 @@ function _NationalCallupScreenOld235({data,onPlay}){
 /* ========================================
    RETIREMENT UTILITIES + CAREER END SCREEN  (Sprint 9)
 ======================================== */
+/* [giro 155 · PO-358, decisione PO 10/11 «tetto ai trofei»] il Legacy Score sommava 80 punti per trofeo SENZA tetto: con 6 trofei
+   qualunque carriera lunga toccava 1000 (verifica D18 del giro 140). Ora ogni voce ha il suo massimo e i massimi sommano esattamente
+   1000: il punteggio pieno e' solo di chi e' al tetto su TUTTE le voci. Il punteggio non e' salvato (si calcola dal giocatore), quindi
+   i salvataggi esistenti si ricalcolano da soli. Rosso __CPM_NO_G155_L358. */
+const LEGACY_TETTI358={gol:300,assist:100,trofei:140,nazionale:150,ovr:150,stagioni:100,patrimonio:60};
 function calcLegacyScore(p){
   const goals=p.totalGoals||0;
   const assists=p.totalAssists||0;
@@ -974,7 +979,7 @@ function calcLegacyScore(p){
   let score=0;
   score+=Math.min(goals*2,300);
   score+=Math.min(assists,100);
-  score+=trophies*80;
+  score+=_g155("L358")?trophies*80:Math.min(trophies*80,LEGACY_TETTI358.trofei);
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
@@ -1029,6 +1034,9 @@ function generateRetirementBio(p,legacyScore){
 /* [giro 94 D21 collaudo 177-3 «17 stagioni» per una carriera S1→S18] le stagioni giocate sono quelle archiviate nello storico (la
    schermata riceve il giocatore con la stagione appena chiusa gia' dentro `history`); `season-1` valeva solo dopo il passaggio d'anno. */
 function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const n=new Set(((p&&p.history)||[]).map(h=>h&&h.season).filter(x=>x!=null)).size;return Math.max(a,n);}catch(_e){return a;}}
+/* [giro 155 B11, collaudo 177: «17 stagioni» nella lettera, «St. 18» nell'intestazione] la lettera d'addio contava season-1, l'intestazione
+   stagioniGiocate94 (giro 94): nella stessa cerimonia due numeri. Ora la lettera usa lo stesso conto. Rosso __CPM_NO_G155_B11. */
+function stagioniLettera155(p){return _g155("B11")?Math.max(1,((p&&p.season)||1)-1):Math.max(1,stagioniGiocate94(p));}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -1042,7 +1050,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
      e ≥60 gol con la stessa maglia — stesso criterio dell'arco «La bandiera» 7.18). Zero campi save. */
   const _flagClub=(()=>{try{const by={};(p.history||[]).forEach(h=>{if(!h||!h.clubId)return;by[h.clubId]=by[h.clubId]||{id:h.clubId,n:h.club,seasons:0,goals:0};by[h.clubId].seasons++;by[h.clubId].goals+=(h.goals||0);});const best=Object.values(by).sort((a,b)=>(b.seasons*100+b.goals)-(a.seasons*100+a.goals))[0];if(best){const _db56=(typeof CLUBS!=="undefined")&&CLUBS.find(c=>c.id===best.id);if(_db56)best.n=_db56.n;}/* [7.257.0 screenshot PO «squadra sbagliata!»] le stagioni U18 condividono l'id del club madre e il nome veniva dalla PRIMA entry dello storico («FC Salernum Primavera», quella del provino): il club del cuore e la maglia ritirata sono del club SENIOR — nome risolto dal DB per id */return best&&best.seasons>=5&&best.goals>=60?best:null;}catch(_e){return null;}})();
   const _firstClub=(p.history||[])[0]?.club||p.club?.n||"il mio primo club";
-  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=Math.max(1,(p.season||1)-1);
+  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=stagioniLettera155(p);
   const trophies=p.trophies||[];
   const history=p.history||[];
   const bestSeason=history.reduce((best,h)=>(!best||h.goals>best.goals)?h:best,null);

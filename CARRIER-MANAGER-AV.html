@@ -335,6 +335,10 @@ const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE
 const{useState,useEffect,useRef,useCallback}=React;
 const _SIT_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]sit=\d/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5] test-mode SPENTO nella build store// 5.43.1 Situation Test Mode: blocca la fine-partita così il match resta vivo nell'highlight forzato (mai attivo in gioco normale)
 const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5]// gate visivo (?cpmtest=1): il gate forza le situation e valida l'AI off-ball → il read-freeze d'avvio highlight (presentazione) è disattivato qui per non mascherare la liveness; in gioco normale è attivo.
+/* [giro 155 · bassi del collaudo 177 verificati nel giro 140] UN interruttore rosso per tutte le correzioni del giro:
+   window.__CPM_NO_G155 le spegne tutte, window.__CPM_NO_G155_<codice> (B1, B2, B3, B6, B8, B10, B11, B12, B13, D9, D10, D14,
+   D15, D17, D21, L358, T359) una sola. Guardiano: npm run bassi-155. */
+function _g155(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G155||(k&&window["__CPM_NO_G155_"+k]));}catch(_e){return false;}}
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
 const _CPM_CHIP_GUARD=!((typeof window!=='undefined')&&/[?&]cpmchip=0\b/.test((window.location&&window.location.search)||""));
@@ -2454,7 +2458,7 @@ const WEEKLY_IMPULSES=[
      posto e chiede a chi conta di spendere una parola col tecnico — questa succede davvero, e le due
      scelte restano le stesse due facce (il gruppo o la gerarchia). La `cond` e' solo il minimo perche'
      la richiesta abbia senso: la si rivolge a chi il mister ascolta. */
-  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
+  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45&&(_g155("B3")||_gara154(p))/* [giro 155 B3] «la sera prima della gara»: serve una gara questa settimana (a S1 W39, stagione chiusa, usciva lo stesso). Rosso __CPM_NO_G155_B3 */,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
     {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
   ]},
@@ -3141,8 +3145,11 @@ const SEASON_END_COACH=[
   // RELEGATED
   {result:"relegated",style:null,txt:"«Non ci sono scuse. Ho sbagliato anch'io. Ma la retrocessione non definisce chi sei — il prossimo anno rispondiamo sul campo.»"},
   {result:"relegated",style:"Offensivo",txt:"«Non è bastato segnare. Abbiamo preso troppi gol. Dobbiamo ripartire e lo faremo con più umiltà.»"},
+  // NATIONAL CUP [giro 155 D15, collaudo 177: «Coppa alzata e numeri da protagonista» e il mister «Stagione discreta»]
+  {result:"cup",style:null,txt:"«Abbiamo alzato una coppa. In questo mestiere si ricorda chi vince: questa resta. Adesso portiamo la stessa fame anche in campionato.»"},
+  {result:"cup",style:null,txt:"«La Coppa è nostra. Le finali si giocano con la testa, e tu l'hai avuta. Godiamocela, poi si riparte.»"},
   // HIGH TRUST bonus
-  {result:"any",trustMin:80,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
+  {result:"any",trustMin:80,minMatches:10/* [giro 155 D15] non a chi in stagione non ha giocato */,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
 ];
 
 // Sprint 100 — End-of-season president dialogs
@@ -5071,6 +5078,10 @@ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 // Sprint POP — crescita popolarità realistica: rendimenti decrescenti + freno inizio carriera.
 // I guadagni positivi vengono attenuati in base a popolarità attuale, partite in carriera e stagione.
 // Le penalità (valori <=0) restano piene, così le scelte sbagliate pesano sempre.
+/* [giro 155 B6] la popolarita' che un avviso dichiara e' quella che si applica: popGain (freno d'inizio carriera e rendimenti
+   decrescenti) + il tetto 0..100, non il valore grezzo dell'evento. */
+function deltaPop155(p,amt){if(!amt)return 0;const cur=(p&&p.popularity)||20;return clamp(cur+popGain(p||{},amt),0,100)-cur;}
+function popAvviso155(p,amt){return _g155("B6")?(amt||0):deltaPop155(p,amt);}/* il numero che l'avviso dell'impulso scrive. Rosso __CPM_NO_G155_B6 */
 function popGain(p,amt){
   if(!amt||amt<=0)return amt||0;
   const cur=p.popularity||20;
@@ -5260,6 +5271,22 @@ function _ovrToWageWeekly133(ovr,prestige){
   const pm=p>=90?1.4:p>=80?1.2:p>=70?1.0:p>=60?0.85:p>=50?0.70:0.55;
   return Math.round(clamp(annual*pm,0,20000000)/52);
 }
+/* [giro 155 B2, collaudo 177: «Contratto in scadenza e stipendio sotto il mercato» con 263k di stipendio e 238k di stima] la stima
+   mostrata dal procuratore usa il prestigio del club (_ovrToWageWeekly133), il giudizio «sottopagato» usava la tabella senza
+   prestigio (_ovrToAnnualWage133 x0,80): due misure diverse sulla stessa riga. Ora il giudizio usa la STESSA stima che si legge
+   (sottopagato = sotto l'80% della stima mostrata). Rosso __CPM_NO_G155_B2. */
+function sottopagato155(p){const w=(p&&p.contract&&p.contract.wage)||577,o=(p&&p.ovr)||65;
+  if(_g155("B2"))return (w*52)<(_ovrToAnnualWage133(o)*0.80);
+  return w<_ovrToWageWeekly133(o,(p&&p.club&&p.club.p)||60)*0.80;}
+/* [giro 155 D9, collaudo 177: controfferta «€19,3 mln», firmato €22,2 mln] la firma moltiplica per il procuratore (x1,15) e per il
+   bonus «Prepara rinnovo» (max +30%), ma la controfferta mostrava solo la cifra del club. Una sola formula per la firma e per cio'
+   che si mostra prima di firmare. */
+function nettoFirma155(p,wage){const a=(p&&p.hasAgent)?1.15:1.0,b=Math.min((p&&p.agentRenewalBonus)||0,0.30);return Math.round((wage||0)*a*(1+b));}
+/* sulla controfferta: il netto alla firma, se diverso dalla cifra del club; null = niente riga (o rosso __CPM_NO_G155_D9) */
+function nettoMostrato155(p,wage){if(_g155("D9"))return null;const n=nettoFirma155(p,wage);return n!==Math.round(wage||0)?n:null;}
+/* [giro 155 B13, collaudo 177: partite europee in matchHistory senza season] la voce scritta dalla partita europea DAL VIVO non aveva la
+   stagione (le simulate si'). Rosso __CPM_NO_G155_B13. */
+function stagioneVoce155(p){return _g155("B13")?{}:{season:(p&&p.season)||1};}
 function _fmtWageY133(weeklyWage){
   const a=(weeklyWage||0)*52;
   /* [7.999.49 parte A, glossario] «€11,4 mln», «€450 mila»: prima «€11.4M»/«€450k», col punto decimale e le sigle inglesi */
@@ -7547,14 +7574,21 @@ const DERBIES={
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
-  "mun-liv":{name:"Derby dell'Ovest Lontano",e:"🥀"},"liv-mun":{name:"Derby dell'Ovest Lontano",e:"🥀"},
+  "mun-liv":{name:"Derby fra Mersey e Manchester",e:"🥀"},"liv-mun":{name:"Derby fra Mersey e Manchester",e:"🥀"},/* [giro 155 PO-359] il nome viene dalle due citta' nei nomi dei club (FC Merseyside, Manchester Rovers) */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
   "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
-function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
+function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
+  /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
+     Merseyside, Manchester Rovers). Rosso __CPM_NO_G155_T359 (torna il nome vecchio). */
+  if(d&&_g155("T359")&&d.name==="Derby fra Mersey e Manchester")return {...d,name:"Derby dell'Ovest Lontano"};
+  return d;}
+/* [giro 155 · PO-359] l'arco in cui l'eroe fa da mentore a un giovane si chiamava «Il ragazzo della Primavera» anche a 29 anni: ora
+   «Il tuo allievo». Rosso __CPM_NO_G155_T359. */
+function titoloAllievo359(){return _g155("T359")?"Il ragazzo della Primavera":"Il tuo allievo";}
 
 /* ========================================
    MATCH WEIGHT — importance of the match (1-10)
@@ -7586,6 +7620,14 @@ function calcMatchWeight(player,opponentId,standings,week){
 // Sprint D1 — Gerarchia di Squadra
 const SQUAD_ROLES=['primavera','riserva','rotazione','titolare','leader'];
 
+/* [giro 155 D14, collaudo 177: «Prossimo gradino — Leader» con le tre condizioni soddisfatte] la fascia si assegna con SEI condizioni
+   (18-career-app, _capElig: eta' 27+, 130+ presenze, fiducia 90+, OVR 80+, OVR non sotto il livello della squadra, popolarita' 58+) e
+   poi arriva in una settimana qualunque (estrazione al 10%): il riquadro ne scriveva tre. Ora le scrive tutte e dice che la fascia
+   arriva col tempo. Rosso __CPM_NO_G155_D14. */
+function gradinoLeader155(p){const a=p.age||18,m=p.totalMatches||0,t=p.coachTrust||60,o=p.ovr||60,cp=((p.club&&(p.club.prestige||p.club.p))||65)-2,po=Math.round(p.popularity||20);
+  if(_g155("D14"))return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}))`;
+  const ok=a>=27&&m>=130&&t>=90&&o>=80&&o>=cp&&po>=58;
+  return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}) · OVR 80+ e non sotto il livello della squadra, ${cp} (ora ${o}) · popolarità 58+ (ora ${po}))`+(ok?". Ci sei: la fascia può arrivare in una qualunque delle prossime settimane.":". Con tutte e sei, la fascia arriva nelle settimane successive, non subito.");}
 function calcSquadRole(player){
   const ovr=player.ovr||60;
   const trust=player.coachTrust||60;
@@ -42481,9 +42523,32 @@ function ProTransitionScreen({player,onChoose}){
 /* ========================================
    CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
 ======================================== */
+/* [giro 155 B1, collaudo 177: «Trofeo d'Oro: vince chi ha 27 gol, 2° con 42»] il punteggio e' ovr*0,38+gol*1,1+assist*0,75+trofei
+   (09-audio-scout, generateSeasonAwards) e il sottotitolo lo dice, ma la riga del podio non scriveva i trofei: l'ordine sembrava
+   sbagliato. Ora la riga porta anche la bacheca. Rosso __CPM_NO_G155_B1. */
+/* [giro 155 B10, collaudo 177: «CAMPIONI D'EUROPA!» e sotto «IN EUROPA! … qualificato in Coppa dei Campioni!»] il banner della
+   qualificazione guardava solo la classifica. Con la coppa europea appena vinta non si festeggia l'«arrivo» in Europa: si dice che
+   l'anno prossimo si difende il titolo (proposta del rapporto 140). Rosso __CPM_NO_G155_B10. */
+function bannerEuropa155(euroChamp,small,nome,comp){
+  if(euroChamp&&!_g155("B10"))return comp==="Coppa dei Campioni"
+    ?{titolo:"🏆 E L'ANNO PROSSIMO SI DIFENDE IL TITOLO",riga:(nome||"La squadra")+" di nuovo in "+comp+".",piccola:false}
+    :{titolo:"🏆 DI NUOVO IN EUROPA",riga:(nome||"La squadra")+" giocherà la "+comp+".",piccola:false};
+  return {titolo:small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉",riga:(nome||"")+" qualificato in "+comp+"!",piccola:!!small};}
+/* [giro 155 D15, collaudo 177: «Sei uno dei giocatori su cui ho sempre potuto contare» dopo una stagione da 0 presenze; «Coppa
+   alzata» con il mister che dice «Stagione discreta»] (1) la frase di fiducia («any», trustMin 80) ora pretende almeno 10
+   presenze (minMatches); (2) la classificazione del mister conosce la Coppa nazionale, come quella del presidente. Rosso
+   __CPM_NO_G155_D15. */
+function classeMister155(o){const v=_g155("D15");
+  return o.isChampion?"champion":o.euroChamp?"euro":o.isRelegated?"relegated":o.isPromoted?"promoted":(!v&&o.cupChamp)?"cup":o.top?"good":"survival";}
+function poolMister155(res,trust,style,matches){const v=_g155("D15");
+  return SEASON_END_COACH.filter(d=>(d.result===res||(d.result==="any"&&trust>=(d.trustMin||0)&&(v||(matches||0)>=(d.minMatches||0))))&&(!d.style||d.style===style)&&(v?d.result!=="cup":true));}
+/* [giro 155 B8, collaudo 177: «Prima parte con il FC Clermont»] l'articolo davanti al nome di un club non si indovina (FC, CF,
+   Real, Atletico…): la riga ora non ne usa. Rosso __CPM_NO_G155_B8. */
+function etichettaPrimaParte155(n){const x=n||"club precedente";return _g155("B8")?"Prima parte con il "+x+":":"Prima parte: "+x+" —";}
+function trofeiOro155(c){if(_g155("B1")||!c||!c.trofei)return "";return " · 🏆 "+c.trofei;}
 function getCareerPhase(age){
   if(age<=21)return{label:"Giovane promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
-  if(age<=26)return{label:"Titolare affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=26)return{label:(_g155("D10")?"Titolare affermato":"Anni della maturità")/* [giro 155 D10] «Titolare affermato» e' la FASE D'ETA' 22-26, non il ruolo: in Home accanto a «Riserva» nel Profilo sembrava una contraddizione. Rosso __CPM_NO_G155_D10 */,e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
   if(age<=30)return{label:"Nel pieno della carriera"/* [7.999.49 parte A] «Forma» e' la condizione fisica: la fase d'eta' non la usa */,e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
   if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
   return{label:"Fine carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
@@ -44830,7 +44895,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{_actG.key==="oro"?trofeiOro155(c):""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -44878,7 +44943,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}{mom.a.key==="oro"&&w?trofeiOro155(w):""}</div>
                   </div>
                 </div>
                 <div style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
@@ -45217,10 +45282,10 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const narrative=getSeasonNarrative(playerStats.goals||0,playerStats.assists||0,playerStats.matches||0,playerPos,numTeams,isChampion,isRelegated,_extraNarr100);
   const headline=getSeasonHeadline(playerStats.goals||0,playerStats.assists||0,playerPos,isChampion,isRelegated,_extraNarr100);
   // Sprint 100: pick contextual coach dialog
-  const _coachResult100=isChampion?"champion":euro?.champion?"euro":isRelegated?"relegated":isPromoted?"promoted":playerPos<=numTeams/2?"good":"survival";/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
+  const _coachResult100=classeMister155({isChampion,euroChamp:!!euro?.champion,isRelegated,isPromoted,cupChamp:!!player.cup?.champion,top:playerPos<=numTeams/2});/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
   const _ct100=player.coachTrust||50;
   const _cs100=player.coach?.style||null;
-  const _coachPool100=SEASON_END_COACH.filter(d=>(d.result===_coachResult100||(d.result==="any"&&_ct100>=(d.trustMin||0)))&&(!d.style||d.style===_cs100));
+  const _coachPool100=poolMister155(_coachResult100,_ct100,_cs100,playerStats.matches||0);
   const _coachLine100=(_coachPool100.length>0?_coachPool100:SEASON_END_COACH.filter(d=>d.result===_coachResult100||d.result==="any"))[hashStr((player.name||"x")+String(season||1))%Math.max(1,(_coachPool100.length||1))];
   // Sprint 100: pick president dialog
   const _objsMet100=(player.seasonObjectives||[]).length>0&&(player.seasonObjectives||[]).filter(o=>/* [7.294.0] stesso metro degli altri siti */
@@ -45355,11 +45420,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <div style={{fontSize:FS.body,fontWeight:FW.bold,fontStyle:"italic",color:TH.text,marginTop:4}}>{headline}</div>
         {isChampion&&<div style={{marginTop:8,fontSize:FS.body,fontWeight:800,color:TH.goldText,letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
         {/* [7.8.3 collaudo PO «la qualificazione in Europa va festeggiata, soprattutto per una piccola come la Salernitana!»] festeggiamento dedicato per la qualificazione europea (e la promozione), con enfasi per le piazze piccole (prestigio basso) */}
-        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";return(
+        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";const _bE=bannerEuropa155(!!euro?.champion,_small,club?.n||club?.name,_comp);return(
           <div style={{marginTop:8}}>
-            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉"}</div>
-            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{club?.n||club?.name} qualificato in {_comp}!</div>
-            {_small&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_bE.titolo}</div>
+            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{_bE.riga}</div>
+            {_bE.piccola&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
           </div>);})()}
         {!isChampion&&isPromoted&&<div style={{marginTop:8,fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>🎉 PROMOSSI! Si sale di categoria! 🎉</div>}
         {/* [7.157.0] «a un soffio dall'Europa»: 8° = subito sotto lo spot Conference (7°) → l'Europa non parte. Chiarisce PERCHÉ, così non sembra un bug. */}
@@ -45675,6 +45740,9 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           notifiche (premi, crescita, economia, movimenti): partendo prima che finisca, quelle della stagione
           CHIUSA finivano sopra la schermata di quella NUOVA. Ora il pulsante aspetta che il riepilogo sia
           scorso — e la coda 7.286.0, che comprime le raffiche, fa sì che l'attesa duri pochi secondi. */}
+      {/* [giro 155 B12, collaudo 177: «Il giorno dell'addio» sotto la piega, dopo 7 fisarmoniche] il tasto che chiude la stagione
+          (o la carriera) resta FISSO in fondo allo schermo, come il piede dell'analisi 217. Rosso __CPM_NO_G155_B12. */}
+      <div data-cpm="fine155-piede" style={_g155("B12")?{}:{position:"sticky",bottom:0,zIndex:5,paddingTop:SP.sm,paddingBottom:`calc(${SP.sm}px + env(safe-area-inset-bottom, 0px))`,background:TH.bg}}>
       {farewell&&onRetire?(
         <Btn onClick={onRetire} v="danger" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
           {notifBusy?"📣 Riepilogo in corso…":"🏁 Il giorno dell'addio →"}
@@ -45684,6 +45752,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         {notifBusy?"📣 Riepilogo in corso…":`🆕 Inizia Stagione ${season+1} →`}
       </Btn>
       )}
+      </div>
     </div>
   );
 }
@@ -46266,7 +46335,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               className="cpm-t40i"
               style={{...inp,fontSize:FS.small,padding:"7px 12px",marginBottom:6}}
             />
-            <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:4,marginBottom:4,paddingRight:2}}>
+            <div data-cpm="sogni155" style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:(_g155("D21")?4:SP.sm)/* [giro 155 D21] 4,5 px fra i bottoni del «Club dei sogni»: la spaziatura della griglia (SP.sm). Rosso __CPM_NO_G155_D21 */,marginBottom:4,paddingRight:2}}>
               {CLUBS.filter(c=>!c.isU18&&(!dreamSearch||c.n.toLowerCase().includes(dreamSearch.toLowerCase())||c.a.toLowerCase().includes(dreamSearch.toLowerCase()))).sort((a,b)=>b.p-a.p).map(c=>{
                 const sel=dreamClub?.id===c.id;
                 return(
@@ -46705,6 +46774,11 @@ function _NationalCallupScreenOld235({data,onPlay}){
 /* ========================================
    RETIREMENT UTILITIES + CAREER END SCREEN  (Sprint 9)
 ======================================== */
+/* [giro 155 · PO-358, decisione PO 10/11 «tetto ai trofei»] il Legacy Score sommava 80 punti per trofeo SENZA tetto: con 6 trofei
+   qualunque carriera lunga toccava 1000 (verifica D18 del giro 140). Ora ogni voce ha il suo massimo e i massimi sommano esattamente
+   1000: il punteggio pieno e' solo di chi e' al tetto su TUTTE le voci. Il punteggio non e' salvato (si calcola dal giocatore), quindi
+   i salvataggi esistenti si ricalcolano da soli. Rosso __CPM_NO_G155_L358. */
+const LEGACY_TETTI358={gol:300,assist:100,trofei:140,nazionale:150,ovr:150,stagioni:100,patrimonio:60};
 function calcLegacyScore(p){
   const goals=p.totalGoals||0;
   const assists=p.totalAssists||0;
@@ -46716,7 +46790,7 @@ function calcLegacyScore(p){
   let score=0;
   score+=Math.min(goals*2,300);
   score+=Math.min(assists,100);
-  score+=trophies*80;
+  score+=_g155("L358")?trophies*80:Math.min(trophies*80,LEGACY_TETTI358.trofei);
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
@@ -46771,6 +46845,9 @@ function generateRetirementBio(p,legacyScore){
 /* [giro 94 D21 collaudo 177-3 «17 stagioni» per una carriera S1→S18] le stagioni giocate sono quelle archiviate nello storico (la
    schermata riceve il giocatore con la stagione appena chiusa gia' dentro `history`); `season-1` valeva solo dopo il passaggio d'anno. */
 function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const n=new Set(((p&&p.history)||[]).map(h=>h&&h.season).filter(x=>x!=null)).size;return Math.max(a,n);}catch(_e){return a;}}
+/* [giro 155 B11, collaudo 177: «17 stagioni» nella lettera, «St. 18» nell'intestazione] la lettera d'addio contava season-1, l'intestazione
+   stagioniGiocate94 (giro 94): nella stessa cerimonia due numeri. Ora la lettera usa lo stesso conto. Rosso __CPM_NO_G155_B11. */
+function stagioniLettera155(p){return _g155("B11")?Math.max(1,((p&&p.season)||1)-1):Math.max(1,stagioniGiocate94(p));}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -46784,7 +46861,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
      e ≥60 gol con la stessa maglia — stesso criterio dell'arco «La bandiera» 7.18). Zero campi save. */
   const _flagClub=(()=>{try{const by={};(p.history||[]).forEach(h=>{if(!h||!h.clubId)return;by[h.clubId]=by[h.clubId]||{id:h.clubId,n:h.club,seasons:0,goals:0};by[h.clubId].seasons++;by[h.clubId].goals+=(h.goals||0);});const best=Object.values(by).sort((a,b)=>(b.seasons*100+b.goals)-(a.seasons*100+a.goals))[0];if(best){const _db56=(typeof CLUBS!=="undefined")&&CLUBS.find(c=>c.id===best.id);if(_db56)best.n=_db56.n;}/* [7.257.0 screenshot PO «squadra sbagliata!»] le stagioni U18 condividono l'id del club madre e il nome veniva dalla PRIMA entry dello storico («FC Salernum Primavera», quella del provino): il club del cuore e la maglia ritirata sono del club SENIOR — nome risolto dal DB per id */return best&&best.seasons>=5&&best.goals>=60?best:null;}catch(_e){return null;}})();
   const _firstClub=(p.history||[])[0]?.club||p.club?.n||"il mio primo club";
-  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=Math.max(1,(p.season||1)-1);
+  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=stagioniLettera155(p);
   const trophies=p.trophies||[];
   const history=p.history||[];
   const bestSeason=history.reduce((best,h)=>(!best||h.goals>best.goals)?h:best,null);
@@ -48789,6 +48866,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{try{
     const sn=player.season||1;
     const mine=[..._committedMdRef.current].filter(k=>String(k).startsWith(sn+"|")).map(k=>+String(k).split("|")[1]).filter(n=>!isNaN(n));
+    /* [giro 155 D17, collaudo 177: «dopo la ricarica compaiono playedMd con valori strani»] il caricamento (17-menu, seed 7.312) fonde nel
+       registro le giornate marcate giocate nel calendario; dal vivo questo specchio fondeva solo quelle committate in sessione, quindi
+       il registro vivo e quello ricaricato differivano (giro 140: [1489,1498,1505] contro [1489,1498,1505,1..34]). Stessa regola qui:
+       il registro nasce uguale a come lo ricostruirebbe il caricamento. Rosso __CPM_NO_G155_D17. */
+    if(!_g155("D17"))(player.calendar||[]).forEach(m=>{if(m&&m.played&&m.matchday!=null&&mine.indexOf(m.matchday)<0)mine.push(m.matchday);});
     if(!mine.length)return;
     const cur=(player.playedMd&&player.playedMd.s===sn&&Array.isArray(player.playedMd.md))?player.playedMd.md:[];
     if(mine.every(n=>cur.indexOf(n)>=0))return;
@@ -51432,8 +51514,8 @@ const getThisWeekMatchday=()=>{
             :"La vicenda si sgonfia da sola, senza che nessuno l'abbia davvero chiusa. In certi sguardi, per qualche settimana, resterà.",
           choices:[{l:bene?"Voltare pagina →":"Incassare e andare avanti →",c:"fine",fx:(q)=>bene?({coachTrust:clamp((q.coachTrust||60)+6,0,100),teamChemistry:clamp((q.teamChemistry||60)+4,0,100),morale:clamp((q.morale||70)+4,0,100)}):({morale:clamp((q.morale||70)-2,0,100)})}]};}
       ]},
-    /* ── IL RAGAZZO DELLA PRIMAVERA — un compagno VERO della rosa ────────────────────────────── */
-    giovane:{e:"🌱",lab:"Il ragazzo della Primavera",once:"career",finW:33,/* [7.279.0] l'epilogo parla di «fine stagione» (aggregato in prima squadra o girato in prestito): non può cadere a metà campionato */
+    /* ── IL TUO ALLIEVO (fino al giro 155 «Il ragazzo della Primavera») — un compagno VERO della rosa ────────────────────────────── */
+    giovane:{e:"🌱",lab:titoloAllievo359()/* [giro 155 PO-359] */,once:"career",finW:33,/* [7.279.0] l'epilogo parla di «fine stagione» (aggregato in prima squadra o girato in prestito): non può cadere a metà campionato */
       /* [7.273.0 collaudo PO «non è prematuro che a 18 anni già fa da mentore ed è l'idolo dei giovani
          della Primavera? posticiperei questo tipo di storia»] Mancava del tutto il vincolo d'ETÀ: bastavano
          una seconda stagione e 72 di OVR, quindi un diciottenne appena arrivato si ritrovava maestro di
@@ -52372,7 +52454,7 @@ const getThisWeekMatchday=()=>{
         // [6.64.0 collaudo PO «mi ripropone la semifinale di UCL»] marca la gara giocata per MATCHDAY (preciso),
         //   non per settimana (che poteva marcare/mancare la voce sbagliata se una voce stantia era desincronizzata).
         const newCal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew},simulated:false}:m);
-        const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,assists:result.assists||0,rating:result.rating,won:result.won,drew:result.drew,euro:true}].slice(-200);
+        const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,assists:result.assists||0,rating:result.rating,won:result.won,drew:result.drew,euro:true,...stagioneVoce155(p)}].slice(-200);
         if(isGrp){
           const pts=result.won?3:result.drew?1:0;
           const newGR=[...(p.euro?.groupResults||[]),{opp:result.opponent,oppCol:result.oppCol,home:md?.isHome,won:result.won,drew:result.drew,hs:result.homeScore,as:result.awayScore}];
@@ -52705,7 +52787,8 @@ const getThisWeekMatchday=()=>{
     if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
     if(ef.form)bits.push(`💪${ef.form>0?"+":""}${ef.form}`);
     if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
-    if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
+    {const _dp155=popAvviso155(player,ef.popularity);/* [giro 155 B6, collaudo 177: «+3 dichiarato, +1 effettivo»] l'avviso dice cio' che si applica (popGain), non il valore grezzo. Rosso __CPM_NO_G155_B6 */
+    if(_dp155)bits.push(`⭐${_dp155>0?"+":""}${_dp155}`);}
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
     if(choice.uff289&&!(typeof window!=="undefined"&&window.__CPM_NO_IMP289))setTimeout(()=>notify(uffAvviso289(choice.uff289),TH.success),250);/* [PO-289] dove la trovi */
@@ -53989,7 +54072,7 @@ const getThisWeekMatchday=()=>{
         const cupTeams=shuffle([...lcAll]).slice(0,Math.min(16,lcAll.length));
         if(!cupTeams.some(t=>t.id===_cupClub74?.id||t.n===_cupClub74?.n))cupTeams[0]=_cupClub74;
         const _s52cupBracket=cupTeams.map(t=>t.id||t.n);
-        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_s52cupBracket,cupSurvivors:_s52cupBracket,cupBracketMatches:{},season:newSeason};/* [6.74.0 QA-21] +season: il seed dei match "altri" del tabellone usava cup.season inesistente → sempre 0 (stessi punteggi ogni stagione) */
+        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_s52cupBracket,cupSurvivors:_s52cupBracket,cupBracketMatches:{},season:newSeason,...(_g155("D17")?{}:{club:_cupClub74?.id})/* [giro 155 D17] il cammino nasce timbrato col club che lo gioca (prima lo timbrava solo il caricamento) */};/* [6.74.0 QA-21] +season: il seed dei match "altri" del tabellone usava cup.season inesistente → sempre 0 (stessi punteggi ogni stagione) */
         const r16Opp=pick(cupTeams.filter(t=>t.id!==_cupClub74?.id&&t.n!==_cupClub74?.n))||cupTeams[0];
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
@@ -54168,7 +54251,7 @@ const getThisWeekMatchday=()=>{
         const _oppPool=_teams.filter(t=>t.id!==offer.club?.id);
         const _opp=_oppPool.length?_oppPool[Math.abs(hashStr((offer.club?.id||"x")+"procup"+newSeason))%_oppPool.length]:null;
         if(_opp){
-          _cupPro={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_br,cupSurvivors:_br,cupBracketMatches:{},season:newSeason};/* [6.74.0 QA-21] +season per il seed del tabellone */
+          _cupPro={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_br,cupSurvivors:_br,cupBracketMatches:{},season:newSeason,...(_g155("D17")?{}:{club:offer.club?.id})/* [giro 155 D17] */};/* [6.74.0 QA-21] +season per il seed del tabellone */
           _calPro=[...newCalendar,{matchday:990,week:9,opponentId:_opp.id,opponentName:_opp.n,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:"R16"}];
         }
       }catch(_e){}
@@ -54310,9 +54393,9 @@ const getThisWeekMatchday=()=>{
     return{result:"reject"};
   };
   const _acceptNegoWage=(wage,duration)=>{
-    const agentMult=player.hasAgent?1.15:1.0;
+    const agentMult=player.hasAgent?1.15:1.0;/* [giro 155 D9] stessa formula di nettoFirma155 (06-archetipi): cio' che si mostra e' cio' che si firma */
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
-    const finalWage=Math.round(wage*agentMult*(1+_renB95));
+    const finalWage=_g155("D9")?Math.round(wage*agentMult*(1+_renB95)):nettoFirma155(player,wage);
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
     /* [7.999.172 PO-270, collaudo carriere L6-bis §3 — eccezione zona G concessa dal PO 16/10] il rinnovo si firma solo nell'ultimo
        anno (durata 1) o da svincolato (0), e al cambio stagione la durata scala di uno: scrivere `duration` = anni firmati faceva
@@ -55712,7 +55795,7 @@ const getThisWeekMatchday=()=>{
                       }} style={{padding:"7px 12px",borderRadius:RAD.sm,border:"1.5px solid "+TH.cardBorder,background:TH.surface2,textAlign:"left",cursor:"pointer",fontFamily:"inherit",transition:"all .12s"}}>
                         <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{o.label}</div>
                         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{o.desc}</div>
-                        {o.pct>0&&<div style={{fontSize:FS.caption,fontWeight:700,color:TH.brandText,marginTop:3}}>{annK(o.wage)} / anno{player.hasAgent&&` → ${annK(Math.round(o.wage*agentMult))} con agente`}</div>}
+                        {o.pct>0&&<div style={{fontSize:FS.caption,fontWeight:700,color:TH.brandText,marginTop:3}}>{annK(o.wage)} / anno{player.hasAgent&&` → ${annK(_g155("D9")?Math.round(o.wage*agentMult):nettoFirma155(player,o.wage))} alla firma`}</div>}
                       </button>
                     ))}
                   </div>
@@ -55725,6 +55808,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{background:TH.bgAmber,borderRadius:RAD.sm,padding:"12px",marginBottom:10,border:"1px solid #fed7aa"}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>🤝 Il club fa una contro-offerta</div>
                     <div style={{fontSize:FS.small,color:TH.text}}>Stipendio proposto: <strong style={{color:TH.txGreen}}>{annK(clubFinalWage)} / anno</strong></div>
+                    {nettoMostrato155(player,clubFinalWage)!=null&&<div data-cpm="netto155" style={{fontSize:FS.caption,color:TH.accentText,marginTop:2}}>Alla firma: {annK(nettoMostrato155(player,clubFinalWage))} / anno ({player.hasAgent?"procuratore +15%":""}{player.hasAgent&&(player.agentRenewalBonus||0)>0?" · ":""}{(player.agentRenewalBonus||0)>0?"«Prepara rinnovo» +"+Math.round(Math.min(player.agentRenewalBonus,0.30)*100)+"%":""})</div>}{/* [giro 155 D9] il netto che si firma, prima di firmare. Rosso __CPM_NO_G155_D9 */}
                     <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{clubFinalDuration} ann{clubFinalDuration===1?"o":"i"} · non accettano la tua richiesta di {playerAsk?.replace("Chiedi","")}</div>
                   </div>
                   <div style={{display:"flex",gap:8}}>
@@ -56329,7 +56413,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{const c=player.seasonCarry;if(!c||c.season!==(player.season||1))return null;
               const sp=(c.spells||[]).filter(x=>x&&((x.g||0)+(x.a||0)+(x.m||0))>0);if(!sp.length)return null;
               return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>
-                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> {(x.m===1&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D6))?"partita":"partite"} · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
+                {sp.map((x,i)=>(<div key={i}>{etichettaPrimaParte155(x.n)} <b style={{color:TH.text}}>{x.m}</b> {(x.m===1&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D6))?"partita":"partite"} · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
               </div>);})()}
             {(()=>{
               /* [7.465.0 collaudo PO «anche se simulate le ho giocate le ultime 5 partite»] UNA PARTITA SIMULATA
@@ -58710,7 +58794,7 @@ const getThisWeekMatchday=()=>{
             const _rec5=(player.matchHistory||[]).slice(-5);
             const _avg5=_rec5.length?Math.round(_rec5.reduce((s,m)=>s+(m.rating||6),0)/_rec5.length*10)/10:6.0;
             const _next39=role==='leader'?null
-              :role==='titolare'?`Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${player.age||18}) · 130+ presenze (ora ${player.totalMatches||0}) · fiducia del mister 90+ (ora ${player.coachTrust||60}))`/* [7.999.49 parte A] i valori attuali anche qui, come negli altri gradini */
+              :role==='titolare'?gradinoLeader155(player)/* [7.999.49 parte A] i valori attuali anche qui, come negli altri gradini */
               :role==='rotazione'?`Prossimo gradino — Titolare: OVR ≥78 (ora ${player.ovr||60}) · fiducia del mister ≥72 (ora ${player.coachTrust||60}) · voto medio ≥6,8 (ora ${String(_avg5).replace(".",",")})`
               :role==='riserva'?`Prossimo gradino — Rotazione: OVR ≥68 (ora ${player.ovr||60}) · fiducia del mister ≥55 (ora ${player.coachTrust||60}) · voto medio ≥6,2 (ora ${String(_avg5).replace(".",",")})`
               :"Prossimo gradino: firma il primo contratto da professionista";
@@ -59603,7 +59687,7 @@ const getThisWeekMatchday=()=>{
         var expiresS=player.contract?.expiresAtSeason||(player.season||1)+1;
         var seasonLeft=expiresS-(player.season||1);
         var marketWage=_eur49(_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*52); // Sprint 133
-        var isUnderpaid=(wage*52)<(_ovrToAnnualWage133(player.ovr||65)*0.80);
+        var isUnderpaid=sottopagato155(player);/* [giro 155 B2] stessa stima della riga «mercato» */
         /* [7.999.49 parte A] un contratto gia' scaduto si dice scaduto: mai stagioni negative, mai «in scadenza» */
         var _c49=_contratto49(player);var isExpired49=!!(_c49&&_c49.scaduto);
         var isExpiringSoon=!isExpired49&&seasonLeft<=1;

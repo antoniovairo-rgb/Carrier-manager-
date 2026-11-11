@@ -188,6 +188,22 @@ function _ovrToWageWeekly133(ovr,prestige){
   const pm=p>=90?1.4:p>=80?1.2:p>=70?1.0:p>=60?0.85:p>=50?0.70:0.55;
   return Math.round(clamp(annual*pm,0,20000000)/52);
 }
+/* [giro 155 B2, collaudo 177: «Contratto in scadenza e stipendio sotto il mercato» con 263k di stipendio e 238k di stima] la stima
+   mostrata dal procuratore usa il prestigio del club (_ovrToWageWeekly133), il giudizio «sottopagato» usava la tabella senza
+   prestigio (_ovrToAnnualWage133 x0,80): due misure diverse sulla stessa riga. Ora il giudizio usa la STESSA stima che si legge
+   (sottopagato = sotto l'80% della stima mostrata). Rosso __CPM_NO_G155_B2. */
+function sottopagato155(p){const w=(p&&p.contract&&p.contract.wage)||577,o=(p&&p.ovr)||65;
+  if(_g155("B2"))return (w*52)<(_ovrToAnnualWage133(o)*0.80);
+  return w<_ovrToWageWeekly133(o,(p&&p.club&&p.club.p)||60)*0.80;}
+/* [giro 155 D9, collaudo 177: controfferta «€19,3 mln», firmato €22,2 mln] la firma moltiplica per il procuratore (x1,15) e per il
+   bonus «Prepara rinnovo» (max +30%), ma la controfferta mostrava solo la cifra del club. Una sola formula per la firma e per cio'
+   che si mostra prima di firmare. */
+function nettoFirma155(p,wage){const a=(p&&p.hasAgent)?1.15:1.0,b=Math.min((p&&p.agentRenewalBonus)||0,0.30);return Math.round((wage||0)*a*(1+b));}
+/* sulla controfferta: il netto alla firma, se diverso dalla cifra del club; null = niente riga (o rosso __CPM_NO_G155_D9) */
+function nettoMostrato155(p,wage){if(_g155("D9"))return null;const n=nettoFirma155(p,wage);return n!==Math.round(wage||0)?n:null;}
+/* [giro 155 B13, collaudo 177: partite europee in matchHistory senza season] la voce scritta dalla partita europea DAL VIVO non aveva la
+   stagione (le simulate si'). Rosso __CPM_NO_G155_B13. */
+function stagioneVoce155(p){return _g155("B13")?{}:{season:(p&&p.season)||1};}
 function _fmtWageY133(weeklyWage){
   const a=(weeklyWage||0)*52;
   /* [7.999.49 parte A, glossario] «€11,4 mln», «€450 mila»: prima «€11.4M»/«€450k», col punto decimale e le sigle inglesi */

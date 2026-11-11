@@ -570,6 +570,10 @@ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 // Sprint POP — crescita popolarità realistica: rendimenti decrescenti + freno inizio carriera.
 // I guadagni positivi vengono attenuati in base a popolarità attuale, partite in carriera e stagione.
 // Le penalità (valori <=0) restano piene, così le scelte sbagliate pesano sempre.
+/* [giro 155 B6] la popolarita' che un avviso dichiara e' quella che si applica: popGain (freno d'inizio carriera e rendimenti
+   decrescenti) + il tetto 0..100, non il valore grezzo dell'evento. */
+function deltaPop155(p,amt){if(!amt)return 0;const cur=(p&&p.popularity)||20;return clamp(cur+popGain(p||{},amt),0,100)-cur;}
+function popAvviso155(p,amt){return _g155("B6")?(amt||0):deltaPop155(p,amt);}/* il numero che l'avviso dell'impulso scrive. Rosso __CPM_NO_G155_B6 */
 function popGain(p,amt){
   if(!amt||amt<=0)return amt||0;
   const cur=p.popularity||20;

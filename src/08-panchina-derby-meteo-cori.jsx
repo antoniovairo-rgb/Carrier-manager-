@@ -283,14 +283,21 @@ const DERBIES={
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
-  "mun-liv":{name:"Derby dell'Ovest Lontano",e:"🥀"},"liv-mun":{name:"Derby dell'Ovest Lontano",e:"🥀"},
+  "mun-liv":{name:"Derby fra Mersey e Manchester",e:"🥀"},"liv-mun":{name:"Derby fra Mersey e Manchester",e:"🥀"},/* [giro 155 PO-359] il nome viene dalle due citta' nei nomi dei club (FC Merseyside, Manchester Rovers) */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
   "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
-function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
+function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
+  /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
+     Merseyside, Manchester Rovers). Rosso __CPM_NO_G155_T359 (torna il nome vecchio). */
+  if(d&&_g155("T359")&&d.name==="Derby fra Mersey e Manchester")return {...d,name:"Derby dell'Ovest Lontano"};
+  return d;}
+/* [giro 155 · PO-359] l'arco in cui l'eroe fa da mentore a un giovane si chiamava «Il ragazzo della Primavera» anche a 29 anni: ora
+   «Il tuo allievo». Rosso __CPM_NO_G155_T359. */
+function titoloAllievo359(){return _g155("T359")?"Il ragazzo della Primavera":"Il tuo allievo";}
 
 /* ========================================
    MATCH WEIGHT — importance of the match (1-10)
@@ -322,6 +329,14 @@ function calcMatchWeight(player,opponentId,standings,week){
 // Sprint D1 — Gerarchia di Squadra
 const SQUAD_ROLES=['primavera','riserva','rotazione','titolare','leader'];
 
+/* [giro 155 D14, collaudo 177: «Prossimo gradino — Leader» con le tre condizioni soddisfatte] la fascia si assegna con SEI condizioni
+   (18-career-app, _capElig: eta' 27+, 130+ presenze, fiducia 90+, OVR 80+, OVR non sotto il livello della squadra, popolarita' 58+) e
+   poi arriva in una settimana qualunque (estrazione al 10%): il riquadro ne scriveva tre. Ora le scrive tutte e dice che la fascia
+   arriva col tempo. Rosso __CPM_NO_G155_D14. */
+function gradinoLeader155(p){const a=p.age||18,m=p.totalMatches||0,t=p.coachTrust||60,o=p.ovr||60,cp=((p.club&&(p.club.prestige||p.club.p))||65)-2,po=Math.round(p.popularity||20);
+  if(_g155("D14"))return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}))`;
+  const ok=a>=27&&m>=130&&t>=90&&o>=80&&o>=cp&&po>=58;
+  return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}) · OVR 80+ e non sotto il livello della squadra, ${cp} (ora ${o}) · popolarità 58+ (ora ${po}))`+(ok?". Ci sei: la fascia può arrivare in una qualunque delle prossime settimane.":". Con tutte e sei, la fascia arriva nelle settimane successive, non subito.");}
 function calcSquadRole(player){
   const ovr=player.ovr||60;
   const trust=player.coachTrust||60;
