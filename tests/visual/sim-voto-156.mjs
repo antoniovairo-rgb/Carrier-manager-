@@ -112,6 +112,59 @@ if (FASI.includes('funzione')) {
   await ctx.close();
 }
 
+/* ── FASE opzioni: tre tarature possibili, calcolate sulle stesse partite (NESSUNA applicata al gioco) ───────────
+   A = base del voto spostata verso il dal vivo: pareggio 6,0 (era 5,8), sconfitta 5,7 - 0,15 x scarto (max -0,4) (era 5,5 - 0,18 x scarto, max -0,5)
+   B = in Primavera (u18) l'OVR neutro e' 60 invece di 71 (stesso +0,05 a punto, tetto +0,6)
+   C = il voto e' la PAGELLA dell'eroe che il motore senza grafica ha gia' calcolato (simulaPartitaMotore con dettaglio, stesso
+       seme e stessa forza della gara simulata), compressa verso 6 con la quota minuti come oggi; + gol/assist come oggi. */
+if (FASI.includes('opzioni')) {
+  const { ctx, page } = await apri(SALVA.primavera, 'Sonda Voto');
+  const GR = [[55, 'primavera', 17], [62, 'primavera', 17], [70, 'primavera', 17], [60, 'pro', 19], [70, 'pro', 19], [80, 'pro', 19], [75, 'pro', 26]];
+  console.log(`\n── FASE opzioni (N=${N} per gruppo; voto medio · % sotto 6 · mediana) ──`);
+  out.opzioni = [];
+  for (const [ovr, b, age] of GR) {
+    const base = JSON.parse(SALVA[b]['cpm-v3']).player;
+    const r = await page.evaluate(({ base, ovr, age, N }) => {
+      const club = base.club; let p = { ...base, ovr, age, coachTrust: 60, form: 70, fatigue: 10, matchHistory: [], name: 'Sonda Voto' };
+      try { p.squadRole = calcSquadRole(p); } catch (e) {}
+      const pool = getLeagueClubs(p).filter(c => c && c.id !== club.id);
+      const V = { att: [], A: [], B: [], C: [] }; let stessa = 0, conPag = 0;
+      for (let i = 0; i < N; i++) {
+        const w = (i % 34) + 1, season = 1 + Math.floor(i / 34); p = { ...p, week: w, season };
+        const opp = pool[i % pool.length]; const isHome = (i % 2) === 0;
+        const _aSd = standingsSeed(club.id || club.n, season, w); const seed = (_aSd + w * 31 + 1) >>> 0, seedPS = (_aSd + 2) >>> 0;
+        const sim = simulateMatch(p.club, opp, p.ovr, isHome, seed, {}, { motore: true, giocatore: p, stileEroe: (typeof stileMotore === 'function' ? stileMotore(p) : null), stile: null });
+        const ps = _pSimStats(sim, p.ovr, p.archetype?.id || p.archetype || '', seededRng(seedPS));
+        const gaBonus = ps.goals * 0.4 + ps.assists * 0.2, q = sim.quota156 != null ? sim.quota156 : 1, ov = sim.ovr156 != null ? sim.ovr156 : ovr;
+        const fin = (x) => Math.round(clamp(x + gaBonus, 4.0, 9.5) * 10) / 10;
+        const att = fin(sim.rating); V.att.push(att);
+        const m = sim.homeScore - sim.awayScore, nz = sim.rating - (m > 0 ? (6.2 + Math.min(m * 0.25, 0.8)) : m === 0 ? 5.8 : (5.5 - Math.min(-m * 0.18, 0.5)));/* rumore+bonus OVR gia' dentro il voto di oggi (prima della compressione: approssimato) */
+        const baseA = m > 0 ? (6.2 + Math.min(m * 0.25, 0.8)) : m === 0 ? 6.0 : (5.7 - Math.min(-m * 0.15, 0.4));
+        const baseO = m > 0 ? (6.2 + Math.min(m * 0.25, 0.8)) : m === 0 ? 5.8 : (5.5 - Math.min(-m * 0.18, 0.5));
+        const comp = (r) => 6 + (r - 6) * (0.3 + 0.7 * q);
+        const ovB = (base.proStatus === 'u18') ? ov - 60 : ov - 71 - (age >= 31 ? 3 : 0);
+        const ovO = ov - 71 - (age >= 31 ? 3 : 0);
+        const rn = (seededRng((seed ^ 0xa156) >>> 0)() - 0.5) * 0.4;
+        V.A.push(fin(comp(baseA + clamp(ovO * 0.05, 0, 0.6) + rn)));
+        V.B.push(fin(comp(baseO + clamp(ovB * 0.05, 0, 0.6) + rn)));
+        let vC = null;
+        try { const fz = clamp((ov - 70) * 1.0, 0, 15) * q; const cp = clamp((club.p || 65), 30, 99), op = clamp((opp.p || 65), 30, 99);
+          const R = simulaPartitaMotore({ seed: (seed >>> 0) ^ 0x5a17, forzaH: clamp(cp + fz, 30, 99), forzaA: op, stadio: isHome ? 'home' : 'away', ovr: ovr, stile: (typeof stileMotore === 'function' ? stileMotore(p) : null), dettaglio: true });
+          if (R.home === sim.homeScore && R.away === sim.awayScore) stessa++;
+          const e = (R.pag || []).find(x => x && x.eroe); if (e && typeof e.voto === 'number') { conPag++; vC = fin(comp(e.voto)); } } catch (e) {}
+        V.C.push(vC);
+        p = { ...p, matchHistory: [...p.matchHistory, { rating: att, simulated: true }].slice(-5) };
+      }
+      return { V, stessa, conPag };
+    }, { base, ovr, age, N });
+    const st = (a) => { const v = a.filter(x => x != null); return `${f2(media(v))} · <6 ${pc(v.filter(x => x < 6).length, v.length)} · med ${f2(mediana(v))}`; };
+    const nome = `${b === 'pro' ? 'Prima squadra ' + age + ' anni' : 'Primavera st.1'} OVR ${ovr}`;
+    console.log(`  ${nome.padEnd(30)} oggi ${st(r.V.att)} | A ${st(r.V.A)} | B ${st(r.V.B)} | C ${st(r.V.C)} (pagella trovata ${r.conPag}/${N}, stesso risultato della gara simulata ${r.stessa}/${N})`);
+    out.opzioni.push({ nome, oggi: st(r.V.att), A: st(r.V.A), B: st(r.V.B), C: st(r.V.C), conPag: r.conPag, stessa: r.stessa });
+  }
+  await ctx.close();
+}
+
 /* ── FASE 2: percorso vero del tasto Simula ───────────────────────────────────────────────────────────── */
 async function storiaNuova(page, da) { return page.evaluate((da) => { const s = window.__CPM_CAREER.snapshot(); return { mh: (s.matchHistory || []).slice(da), ovr: s.ovr, week: s.week, season: s.season }; }, da); }
 if (FASI.includes('simula')) {
@@ -160,7 +213,7 @@ if (FASI.includes('vivo')) {
       const m = st.mh.filter(x => !x.simulated).pop() || null;
       const voto = m && m.rating > 0 ? m.rating : (res && res.rating != null ? +res.rating : null);
       righe.push({ voto, g: m ? m.goals || 0 : (res ? res.goals || 0 : 0), a: m ? m.assists || 0 : (res ? res.assists || 0 : 0), esito: m ? (m.won ? 'V' : m.drew ? 'N' : 'P') : (res ? (res.won ? 'V' : res.drew ? 'N' : 'P') : '?'), stato: (m && m.matchStatus) || (res && res.matchStatus) || null, quota: res && res.minutesPlayed != null ? res.minutesPlayed / 90 : null });
-      console.log(`    ${k} vivo ${i}: fase ${ph} · voto ${voto} · ${m ? m.homeScore + '-' + m.awayScore : res ? res.homeScore + '-' + res.awayScore : '?'} · stato ${righe[righe.length - 1].stato} · fonte ${m ? 'matchHistory' : res ? 'endResult' : 'nessuna'}`);
+      console.log(`    ${k} vivo ${i}: fase ${ph} · voto ${voto} · ${m ? m.homeScore + '-' + m.awayScore : res ? res.homeScore + '-' + res.awayScore : '?'} · gol ${righe[righe.length - 1].g} assist ${righe[righe.length - 1].a} · stato ${righe[righe.length - 1].stato} · fonte ${m ? 'matchHistory' : res ? 'endResult' : 'nessuna'}`);
       await ctx.close();
     }
     out.vivo.push({ ...riassunto(`${k} · dal vivo (pilota)`, righe), salvataggio: k });
