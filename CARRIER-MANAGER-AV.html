@@ -28425,6 +28425,12 @@ function creaMotorePossesso(cfg){
      e la FORMA (senza questi dati il bonus resta 2, come prima) e un difensore avversario lo marca: le occasioni sono quelle che nascono. */
   const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
   const _eroeNonTira14=(P)=>!!(P&&P.eroe&&cfg.v2&&_EG&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14));/* [7.999.13] l'eroe tira solo nelle sue scene (vedi il ramo del tiro) */
+  /* [giro 154, decisione PO PO-357 «i gol dell'eroe nascono solo negli highlight». Rosso __CPM_NO_G154] Nella partita vissuta (brainLive)
+     l'eroe non segna e non serve assist in gioco fluido. I suoi piazzati restano scene (_piaz27); quando la scena non e' possibile
+     (richiesta spenta, oltre l'89', tetto di quattro) il rigore e la punizione dal limite li batte un compagno, il gol decretato lo
+     chiude un compagno, e il gol di un compagno servito dall'eroe in gioco fluido resta del compagno, senza assist. La simulazione
+     rapida (senza brainLive) e' fuori: li' le occasioni dell'eroe SONO gioco fluido (eseguiOccV2). Guardiano gol-eroe-154. */
+  const _g154=()=>!!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G154);
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   /* [7.999.130 PO-202, decisione PO 04/10 «alzare il tetto a 99»] Il tetto a 95 rendeva identici in campo tutti i club fra 95 e 99
      (la squadra dell'eroe a 96 valeva come la prima della lega a 98). Rosso __CPM_NO_TETTO202 (torna 95). */
@@ -28514,7 +28520,7 @@ function creaMotorePossesso(cfg){
       case 'ricezione': case 'conduzione': {const q=e.to||e.chi;if(q&&typeof q.x==='number'){const adv=l==='home'?q.x:100-q.x;const w=(q.y<22||q.y>78)&&adv>=66;if(w&&!S._fascia23[l])A.fascia++;S._fascia23[l]=w;}break;}
       case 'tiro': A.tiri++;A.xg=Math.round((A.xg+(typeof e.xg==='number'?e.xg:_XG914(e)))*1000)/1000;
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
-      case 'gol': if(S.fischio228)break;/* [7.999.161 PO-228 k4] dopo il fischio il motore non conta gol (lo accende il live match, rosso __CPM_NO_TAB228) */A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;try{(S._golLog=S._golLog||[]).push({min:S.min,tick:S.tick,lato:e.lato||l||null,scena:!!e.scena,chi:e.chi?e.chi.i:null});}catch(_eG){}/* [7.999.10] registro dei gol del motore, solo lettura: serve a confrontarlo col tabellone */break;
+      case 'gol': if(S.fischio228)break;/* [7.999.161 PO-228 k4] dopo il fischio il motore non conta gol (lo accende il live match, rosso __CPM_NO_TAB228) */A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;try{(S._golLog=S._golLog||[]).push({min:S.min,tick:S.tick,lato:e.lato||l||null,scena:!!e.scena,chi:e.chi?e.chi.i:null,as:e.assist?e.assist.i:null,int:(S.poss&&S.poss.kind)||null});}catch(_eG){}/* [giro 154] + chi ha servito l'assist e il tipo di conclusione (solo lettura, per gol-eroe-154) *//* [7.999.10] registro dei gol del motore, solo lettura: serve a confrontarlo col tabellone */break;
       case 'corner': A.corner++;break;
       case 'fallo': if(!e.daFuorigioco||(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLOFG23))A.falli++;break;/* [24/09 POC] la punizione per fuorigioco non e' un fallo (1,55 a squadra al banco). Rosso __CPM_NO_FALLOFG23 */
       case 'rigore': A.rigori++;break;
@@ -29272,7 +29278,7 @@ function creaMotorePossesso(cfg){
     ramo("circola228");passa(R,Q,{circ228:true});}
   function arrivoTiro(){const p=S.poss;const P=g[p.tiratore];const l=p.lato,out=p.esito;const gk=portiereDi(altro(l));
     if(out==="goal"){S.rete={lato:l,t:0};S.poss.stato="rete";S.conta.gol[l]++;const gr=S.richieste.gol;if(gr&&gr.lato===l){if(gr.t>=5)S.conta.golForzati++;S.richieste.gol=null;}
-      ev("gol",{chi:chi(P),assist:chi(p.ultimoPassatore!=null&&p.ultimoPassatore!==p.tiratore?g[p.ultimoPassatore]:null),lato:l,x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});return;}
+      ev("gol",{chi:chi(P),assist:chi(p.ultimoPassatore!=null&&p.ultimoPassatore!==p.tiratore&&!(g[p.ultimoPassatore]&&g[p.ultimoPassatore].eroe&&_g154())?g[p.ultimoPassatore]:null)/* [giro 154] niente assist dell'eroe in gioco fluido */,lato:l,x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});return;}
     if(out==="saved"){const corner=rnd()<(V2?K2.cornerParata:0.35);ev("parata",{gk:chi(gk),chi:chi(P),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else{gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);S.poss.t=0;}return;}
     /* [7.913.0 — A8] I CORNER. Il tabellino del PO segnava «calci d'angolo 0» a fine partita, e il banco dava
        1,45 per squadra contro i 4,9 veri. Nel calcio vero il corner nasce quasi sempre da una deviazione: un
@@ -29322,6 +29328,7 @@ function creaMotorePossesso(cfg){
      falso con 21 passi d'attesa su 40 → battuta+tiro dell'eroe nel motore (gol al 92') E poi la scena al 91' (gol): un rigore, due battute,
      due gol. La richiesta spenta vale per le offerte NUOVE; quella gia' fatta (_o27) segue la sua attesa (40 passi, 400 se la scena e'
      accettata). Rosso __CPM_NO_G139. */
+  function _rig154(f,T,l){T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});}
   function tickFermo(){const f=S.fermo;S.poss.t++;f.t++;S.conta.fermo++;S.palla.x=f.x;S.palla.y=f.y;
     if(f.t<f.tot)return;
     const l=f.lato;S.poss.lato=l;
@@ -29329,10 +29336,10 @@ function creaMotorePossesso(cfg){
     if(f.kind==="throw"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=clamp(f.y,2,98);S.fermo=null;const R=scegliRicevente(T.p,{})||(piuVicino(f.x,f.y,l,{noGk:true,escl:T.p.i})||{}).p;ev("battuta",{kind:"throw",chi:chi(T.p)});if(R){S.palla.x=f.x;S.palla.y=f.y;passa(T.p,R,{sicuro:true,kind:"corto"});}else tenuta(T.p,null);return;}
     if(f.kind==="goal_kick"){const gk=portiereDi(l);gk.x=f.x;gk.y=f.y;S.fermo=null;ev("battuta",{kind:"goal_kick",chi:chi(gk)});S.palla.x=f.x;S.palla.y=f.y;const R=scegliRicevente(gk,{});if(R)passa(gk,R,{sicuro:true,kind:hyp(R.x,R.y,gk.x,gk.y)>26?"lancio":"corto"});else tenuta(gk,null);return;}
     if(f.kind==="corner"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===T.p.i||q.gk)continue;const sc=advDi(q.x,l)-Math.abs(q.y-50)*0.5+(q.eroe?3:0)+_bonusCross26(q,l)+rnd()*5;if(sc>bs){bs=sc;R=q;}}ev("battuta",{kind:"corner",chi:chi(T.p)});cross(T.p,R,{corner:true});return;}
-    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(T.eroe&&S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=="undefined"&&window&&window.__CPM_NO_C3D2)){S.fermo=null;const K94=portiereDi(altro(l));if(K94){S.palla.x=K94.x;S.palla.y=K94.y;tenuta(K94,null);}return;}/* [giro 94 D2] niente secondo rigore dell'eroe dopo quello giocato in scena */if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
+    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(T.eroe&&S.noPiaz94!=null&&(S.min|0)<S.noPiaz94&&!(typeof window!=="undefined"&&window&&window.__CPM_NO_C3D2)){S.fermo=null;const K94=portiereDi(altro(l));if(K94){S.palla.x=K94.x;S.palla.y=K94.y;tenuta(K94,null);}return;}/* [giro 94 D2] niente secondo rigore dell'eroe dopo quello giocato in scena */if(_piaz27(f,T,"rigore"))return;if(T.eroe&&_g154()){const _c154=piuVicino(f.x,f.y,l,{noGk:true,escl:T.i});if(_c154){S.conta.g154=(S.conta.g154|0)+1;return _rig154(f,_c154.p,l);}}/* [giro 154] fuori scena il rigore lo batte un compagno */T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
     /* punizione */
     const _tir27=advDi(f.x,l)>=78&&Math.abs(f.y-50)<=18;const _H27=_tir27&&S.richieste.piazzati&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27)?g.find(q=>q.eroe&&q.team===l&&attivo(q)):null;/* [7.999.27] dal limite, tirabile: la batte l'eroe */
-    const T=(_H27?{p:_H27}:null)||((B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true}));if(!T){libero(f.x,f.y);return;}if(_tir27&&_piaz27(f,T.p,"punizione"))return;T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
+    const T=(_H27?{p:_H27}:null)||((B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true}));if(!T){libero(f.x,f.y);return;}if(_tir27&&_piaz27(f,T.p,"punizione"))return;if(_tir27&&T.p.eroe&&_g154()){const _c154=piuVicino(f.x,f.y,l,{noGk:true,escl:T.p.i});if(_c154){S.conta.g154=(S.conta.g154|0)+1;T.p=_c154.p;}}/* [giro 154] fuori scena la punizione dal limite la batte un compagno */T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
     const adv=advDi(f.x,l);ev("battuta",{kind:"foul",chi:chi(T.p),adv:+adv.toFixed(0)});
     /* [24/09 POC — BRAIN] LA PUNIZIONE DAL LIMITE NON E' SEMPRE UN TIRO. Banco 10 partite: 87 tiri su 236 (37 %) erano punizioni
        dirette, perche' ogni fallo oltre 72 di avanzamento e centrale diventava tiro al 70 %. Ora il tiro diretto si prova solo da
@@ -29534,7 +29541,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
     /* tetto duro del decreto: al nono tick il gol entra da dove sta la palla (a fine partita non puo' restare appeso) */
-    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W&&S.poss.stato!=="volo"){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);
+    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true,escl:_g154()?HERO:null});/* [giro 154] il gol decretato non lo chiude l'eroe fuori scena */if(W&&S.poss.stato!=="volo"){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);
       const zW=zonaDi(advDi(W.p.x,gr.lato),W.p.y);const M=(zW==="area"||zW==="limite"||zW==="trequarti")?null:piuAvanzato(gr.lato,W.p.i);
       if(M&&advDi(M.x,gr.lato)>=advDi(W.p.x,gr.lato)+6&&hyp(M.x,M.y,W.p.x,W.p.y)>=5){S.conta.rami.lancioTetto=(S.conta.rami.lancioTetto|0)+1;passa(W.p,M,{kind:"lancio",sicuro:true});}/* [7.872] anche al tetto: prima il lancio in avanti, il tiro al tick dopo da dove arriva */
       else tira(W.p);muoviTutti();return _fine();}}
