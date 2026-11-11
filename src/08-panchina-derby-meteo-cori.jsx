@@ -973,3 +973,45 @@ if(typeof window!=="undefined"&&!window.__CPM_NO_PERSIST167){
 const DEVTOOLS_DEFAULT=true;
 const devToolsOn=()=>{try{const v=safeLS.get("cpm-devtools");return v==null?DEVTOOLS_DEFAULT:v==="1";}catch(_e){return DEVTOOLS_DEFAULT;}};
 const setDevTools=(on)=>{try{safeLS.set("cpm-devtools",on?"1":"0");}catch(_e){}};
+/* [giro 163 · PO-356, progetto PRIMAVERA-153 §3 — F] L'INDICE PRIMAVERA. Funzione PURA: legge solo dati gia' salvati
+   (matchHistory, forma, fiducia, OVR, prestigio del club madre), non scrive niente, nessun campo nuovo nel salvataggio.
+   Valore 0-100 = 35% voto medio delle ultime 5 di Primavera (5,0→0 · 8,0→100) + 25% (gol + assist·0,6)/partita delle
+   ultime 10 (tetto per ruolo: attacco 0,7 · centrocampo 0,45 · difesa 0,2) + 15% forma (30→0 · 95→100) + 15% fiducia
+   del mister (0-100) + 10% OVR rispetto alla prima squadra (ovr − (prestigio madre − 20): −10→0 · +10→100).
+   Si giudica dalla 6ª partita di lega della stagione (prima: {pronto:false}). Al giocatore si mostrano 5 tacche, mai il
+   numero. I pesi sono la proposta del progetto, da tarare con la sonda. Fuori dalla Primavera vale null. */
+const IP153_TACCHE=["Ti stanno guardando","Sei nei loro appunti","Si parla di te","Sei a un passo","La prima squadra ti aspetta"];
+function _ipRuolo153(pos){const s=String(pos||"").toLowerCase();if(/difens|terzin|portier|libero|stopper/.test(s))return 0.2;if(/centrocamp|mediano|regist|mezzal|trequart|mezzapunta/.test(s))return 0.45;return 0.7;}
+function indicePrimavera(p){try{
+  if(!p||(p.proStatus||"u18")!=="u18")return null;
+  const sn=p.season||1;
+  const lega=(p.matchHistory||[]).filter(m=>m&&(m.season||1)===sn&&!m.cup&&!m.euro&&!m.national&&!m.squalificato&&!m.nonConvocato&&!m.svincolato&&!m.injured&&typeof m.rating==="number"&&isFinite(m.rating));
+  if(lega.length<6)return{pronto:false,partite:lega.length,minimo:6};
+  const n01=(v,a,b)=>Math.max(0,Math.min(1,(v-a)/(b-a)));
+  const u5=lega.slice(-5),u10=lega.slice(-10);
+  const voto=u5.reduce((s,m)=>s+m.rating,0)/u5.length;
+  const contr=u10.reduce((s,m)=>s+(m.goals||0)+(m.assists||0)*0.6,0)/u10.length;
+  const madre=(typeof CLUBS!=="undefined"&&p.club&&CLUBS.find(c=>c&&c.id===p.club.id&&!c.isU18))||null;
+  const pm=madre?(madre.p||60):(((p.club&&p.club.p)||60)+12);
+  const parti={voto:n01(voto,5,8),contributo:n01(contr,0,_ipRuolo153(p.position)),forma:n01(p.form||70,30,95),fiducia:n01(p.coachTrust==null?60:p.coachTrust,0,100),ovr:n01((p.ovr||60)-(pm-20),-10,10)};
+  const valore=Math.round(100*(0.35*parti.voto+0.25*parti.contributo+0.15*parti.forma+0.15*parti.fiducia+0.10*parti.ovr));
+  const tacca=Math.max(0,Math.min(4,Math.floor(valore/20)));
+  return{pronto:true,valore,tacca,etichetta:IP153_TACCHE[tacca],partite:lega.length,parti};
+}catch(_e){return null;}}
+/* [giro 163 · PO-356 idea 3, decisione PO 11/11 «solo sui momenti importanti»] LA PARTITA CHIAVE, una regola sola: e' la
+   stessa del riquadro «Prossima» della home (derby · scontro al vertice · sfida a una delle prime tre), piu' ogni gara che
+   non sia di campionato. Le posizioni contano solo quando in classifica c'e' almeno un punto (alla prima giornata l'ordine
+   e' quello dell'elenco, non un verdetto). Funzione PURA, nessun sorteggio. */
+function partitaChiave163(p,md){try{
+  if(!p||!md)return null;
+  if(md.type&&md.type!=="league")return md.type==="cup"?"🏆 Coppa":md.type==="national"?"🏳️ Nazionale":"🌍 Coppa europea";
+  const d=(typeof isDerby==="function")?isDerby(p.club&&p.club.id,md.opponentId):null;
+  if(d)return (d.e||"🔥")+" "+(d.name||"Derby");
+  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
+  if(!st.some(t=>(t.pts||0)>0))return null;
+  const pos=(id,n)=>st.findIndex(t=>t.id===id||(n&&(t.n||t.name)===n));
+  const mp=pos(p.club&&p.club.id,p.club&&(p.club.n||p.club.name)),op=pos(md.opponentId,md.opponentName);
+  if(mp>=0&&op>=0&&mp<=2&&op<=2)return "⚔️ Scontro al vertice";
+  if(op>=0&&op<=2)return "🏆 Sfida alla capolista";
+  return null;
+}catch(_e){return null;}}
