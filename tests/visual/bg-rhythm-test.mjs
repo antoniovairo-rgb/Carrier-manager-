@@ -36,6 +36,12 @@
 
    PROVA DEL ROSSO: `__CPM_NO501` appiattisce densita' e pavimento sui valori unici di prima. La
    separazione fra le fasi deve sparire.
+   [giro 167 PO-362] LO STRUMENTO ERA GIUSTO, IL DIFETTO ERA DEL GIOCO. Questo guardiano gioca la partita vera (motore acceso) e legge
+   fase e minuto dal registro: misurava cio' che il gioco fa oggi, ed era rosso (giro 162: 1,01-1,13x; giro 167: 1,00-1,23x) perche' il
+   narratore del motore (`narra870`) aveva UN SOLO respiro per tutte le fasi — la regola del 7.501 vive nella cronaca pescata, che a
+   motore acceso non gira. Corretto nel gioco (src/15, `_sog167`/`costr167`): in costruzione, dopo una riga, il minuto seguente lo
+   interrompe solo un fatto da area. Criterio, soglia (1,30x), minimo (8 coppie per fase) e campione (6 partite) INVARIATI.
+   PROVA DEL ROSSO: `__CPM_NO_G167` (il respiro unico di prima); resta acceso anche `__CPM_NO501`, che a motore acceso non tocca nulla.
 
      CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node bg-rhythm-test.mjs [CPM_ROSSO=1]                    */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } from './lib/harness.mjs';
@@ -66,7 +72,7 @@ async function partita(i) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 110)));
-  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO501 = 1; }, ROSSO);
+  await page.addInitScript(r => { window.__CPM_GLB = false; if (r) { window.__CPM_NO501 = 1; window.__CPM_NO_G167 = 1; } }, ROSSO);
   try {
     await openMatch(page, port, { skipLoadAll: true, name: 'Rit' + i });
     await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 1100 + i * 67);
@@ -95,7 +101,7 @@ for (let i = 0; i < PARTITE; i++) {
 await b.close(); srv.close();
 
 const media = v => v.length ? v.reduce((a, c) => a + c, 0) / v.length : null;
-console.log(`\n=== LA PARTITA HA UN RITMO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO501)' : ''} ===`);
+console.log(`\n=== LA PARTITA HA UN RITMO${ROSSO ? ' · PROVA DEL ROSSO (__CPM_NO_G167)' : ''} ===`);
 const M = {};
 for (const f of ['pericolo', 'sviluppo', 'costruzione']) {
   const v = perFase[f]; M[f] = media(v);
