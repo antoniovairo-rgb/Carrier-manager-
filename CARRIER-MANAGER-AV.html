@@ -335,6 +335,10 @@ const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE
 const{useState,useEffect,useRef,useCallback}=React;
 const _SIT_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]sit=\d/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5] test-mode SPENTO nella build store// 5.43.1 Situation Test Mode: blocca la fine-partita così il match resta vivo nell'highlight forzato (mai attivo in gioco normale)
 const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5]// gate visivo (?cpmtest=1): il gate forza le situation e valida l'AI off-ball → il read-freeze d'avvio highlight (presentazione) è disattivato qui per non mascherare la liveness; in gioco normale è attivo.
+/* [giro 155 · bassi del collaudo 177 verificati nel giro 140] UN interruttore rosso per tutte le correzioni del giro:
+   window.__CPM_NO_G155 le spegne tutte, window.__CPM_NO_G155_<codice> (B1, B2, B3, B6, B8, B10, B11, B12, B13, D9, D10, D14,
+   D15, D17, D21, L358, T359) una sola. Guardiano: npm run bassi-155. */
+function _g155(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G155||(k&&window["__CPM_NO_G155_"+k]));}catch(_e){return false;}}
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
 const _CPM_CHIP_GUARD=!((typeof window!=='undefined')&&/[?&]cpmchip=0\b/.test((window.location&&window.location.search)||""));
@@ -394,7 +398,7 @@ const TH = {
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
   primary:"#8e1f33",primaryDk:"#6a1326",brandText:(typeof window!=='undefined'&&window.__CPM_NO_G108_21)?"#ee9aaa":TINTE.oro/* [giro 108 G180-21] il rosa della V1 (#ee9aaa) restava come colore di testo in 24 schermate: diventa l'oro del tema. Rosso __CPM_NO_G108_21 */,accentText:"#a78bfa",
   success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
-  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",scrimForte:"rgba(0,0,0,0.82)"/* [giro 150 PO-352] il velo delle finestre su PC e tablet (da 768 px): la home sotto non si legge piu' */,
   cardBg:TINTE.inc,border:"#2a2f3b",
   el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620",primaryBorder:"#4a2530",
@@ -2454,7 +2458,7 @@ const WEEKLY_IMPULSES=[
      posto e chiede a chi conta di spendere una parola col tecnico — questa succede davvero, e le due
      scelte restano le stesse due facce (il gruppo o la gerarchia). La `cond` e' solo il minimo perche'
      la richiesta abbia senso: la si rivolge a chi il mister ascolta. */
-  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
+  {id:"wi_tv_primaserata",cat:"opportunità",cond:p=>(p.popularity||20)>=45&&(_g155("B3")||_gara154(p))/* [giro 155 B3] «la sera prima della gara»: serve una gara questa settimana (a S1 W39, stagione chiusa, usciva lo stesso). Rosso __CPM_NO_G155_B3 */,txt:"Una TV nazionale ti vuole in prima serata. Grande vetrina, ma è la sera prima della gara.",choices:[
     {txt:"📺 Ci vado — occasione unica",ef:{popularity:9,fatigue:4,form:-2}},
     {txt:"🛌 Prima la partita, sempre",ef:{coachTrust:4,popularity:-2}},
   ]},
@@ -3141,8 +3145,11 @@ const SEASON_END_COACH=[
   // RELEGATED
   {result:"relegated",style:null,txt:"«Non ci sono scuse. Ho sbagliato anch'io. Ma la retrocessione non definisce chi sei — il prossimo anno rispondiamo sul campo.»"},
   {result:"relegated",style:"Offensivo",txt:"«Non è bastato segnare. Abbiamo preso troppi gol. Dobbiamo ripartire e lo faremo con più umiltà.»"},
+  // NATIONAL CUP [giro 155 D15, collaudo 177: «Coppa alzata e numeri da protagonista» e il mister «Stagione discreta»]
+  {result:"cup",style:null,txt:"«Abbiamo alzato una coppa. In questo mestiere si ricorda chi vince: questa resta. Adesso portiamo la stessa fame anche in campionato.»"},
+  {result:"cup",style:null,txt:"«La Coppa è nostra. Le finali si giocano con la testa, e tu l'hai avuta. Godiamocela, poi si riparte.»"},
   // HIGH TRUST bonus
-  {result:"any",trustMin:80,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
+  {result:"any",trustMin:80,minMatches:10/* [giro 155 D15] non a chi in stagione non ha giocato */,txt:"«Qualunque cosa succeda — ti ringrazio. Sei uno dei giocatori su cui ho sempre potuto contare.»"},
 ];
 
 // Sprint 100 — End-of-season president dialogs
@@ -5071,6 +5078,10 @@ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 // Sprint POP — crescita popolarità realistica: rendimenti decrescenti + freno inizio carriera.
 // I guadagni positivi vengono attenuati in base a popolarità attuale, partite in carriera e stagione.
 // Le penalità (valori <=0) restano piene, così le scelte sbagliate pesano sempre.
+/* [giro 155 B6] la popolarita' che un avviso dichiara e' quella che si applica: popGain (freno d'inizio carriera e rendimenti
+   decrescenti) + il tetto 0..100, non il valore grezzo dell'evento. */
+function deltaPop155(p,amt){if(!amt)return 0;const cur=(p&&p.popularity)||20;return clamp(cur+popGain(p||{},amt),0,100)-cur;}
+function popAvviso155(p,amt){return _g155("B6")?(amt||0):deltaPop155(p,amt);}/* il numero che l'avviso dell'impulso scrive. Rosso __CPM_NO_G155_B6 */
 function popGain(p,amt){
   if(!amt||amt<=0)return amt||0;
   const cur=p.popularity||20;
@@ -5260,6 +5271,22 @@ function _ovrToWageWeekly133(ovr,prestige){
   const pm=p>=90?1.4:p>=80?1.2:p>=70?1.0:p>=60?0.85:p>=50?0.70:0.55;
   return Math.round(clamp(annual*pm,0,20000000)/52);
 }
+/* [giro 155 B2, collaudo 177: «Contratto in scadenza e stipendio sotto il mercato» con 263k di stipendio e 238k di stima] la stima
+   mostrata dal procuratore usa il prestigio del club (_ovrToWageWeekly133), il giudizio «sottopagato» usava la tabella senza
+   prestigio (_ovrToAnnualWage133 x0,80): due misure diverse sulla stessa riga. Ora il giudizio usa la STESSA stima che si legge
+   (sottopagato = sotto l'80% della stima mostrata). Rosso __CPM_NO_G155_B2. */
+function sottopagato155(p){const w=(p&&p.contract&&p.contract.wage)||577,o=(p&&p.ovr)||65;
+  if(_g155("B2"))return (w*52)<(_ovrToAnnualWage133(o)*0.80);
+  return w<_ovrToWageWeekly133(o,(p&&p.club&&p.club.p)||60)*0.80;}
+/* [giro 155 D9, collaudo 177: controfferta «€19,3 mln», firmato €22,2 mln] la firma moltiplica per il procuratore (x1,15) e per il
+   bonus «Prepara rinnovo» (max +30%), ma la controfferta mostrava solo la cifra del club. Una sola formula per la firma e per cio'
+   che si mostra prima di firmare. */
+function nettoFirma155(p,wage){const a=(p&&p.hasAgent)?1.15:1.0,b=Math.min((p&&p.agentRenewalBonus)||0,0.30);return Math.round((wage||0)*a*(1+b));}
+/* sulla controfferta: il netto alla firma, se diverso dalla cifra del club; null = niente riga (o rosso __CPM_NO_G155_D9) */
+function nettoMostrato155(p,wage){if(_g155("D9"))return null;const n=nettoFirma155(p,wage);return n!==Math.round(wage||0)?n:null;}
+/* [giro 155 B13, collaudo 177: partite europee in matchHistory senza season] la voce scritta dalla partita europea DAL VIVO non aveva la
+   stagione (le simulate si'). Rosso __CPM_NO_G155_B13. */
+function stagioneVoce155(p){return _g155("B13")?{}:{season:(p&&p.season)||1};}
 function _fmtWageY133(weeklyWage){
   const a=(weeklyWage||0)*52;
   /* [7.999.49 parte A, glossario] «€11,4 mln», «€450 mila»: prima «€11.4M»/«€450k», col punto decimale e le sigle inglesi */
@@ -5990,7 +6017,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.189";/* [7.999.189] PO-339 capitano verso la camera, PO-340 «club W.N» insieme (giro 137) · PO-315 doppio rigore (giro 139, guardiano rigore-139) · PO-341/342/345 partita 2D: cartelloni per settore, spalti dall affluenza, stadio ruotato al secondo tempo (giri 141, 143) · PO-343/347, D23 di PO-337, PO-346 presentazione: aspetto e postura dei compagni, saluto, marchio Korward (giri 142b, 144) · PO-316/317/319/336/344 strumenti di controllo (giri 138, 145).  [7.999.188] PO-331/333/335 card Prossima e pulsante con la partita della Nazionale (giri 131, 133, 134, guardiano prossima-131) · PO-334 privacy letta dentro il gioco (giro 134, guardiano privacy-134) · PO-332 premiazione: compagni rivolti al podio, braccia alzate col trofeo (giro 132, guardiano premiazione-132).  [7.999.187] PO-329 ingresso dalla panchina inquadrato dal prato (giro 127, guardiano panchina-127) · PO-330 folla a sagome (giro 129, guardiano folla, rosso __CPM_NO_FOLLA129, manopola cpm-folla).  [7.999.181] Correttiva dal collaudo PO della 180 (decisione «Solo spalti, subito» + «Dentro la 181»): PO-312 giro 109 spalti della partita 2D coi colori veri dei club (_spalti109: maglia e secondo colore senza la regola di contrasto dei testi, fondo TINTE.tasto, cartelloni col colore sociale smorzato da fondoClub106; rosso __CPM_NO_G109, guardiano spalti-109 su 7 coppie di club x 3 formati), sigla della porta che non sporge sotto la barra Statistiche/Pagelle (__CPM_NO_G109_ETI), nomi di portatore ed eroe non sovrapposti (__CPM_NO_G109_NOMI); PO-313 lineetta oro #9c6a12 sotto la scheda attiva al posto del pallino del club (__CPM_NO_PUNTINO181, guardiano lineetta-181). */ /* [7.999.180] Correttiva dal collaudo PO della 179 (PO-306 «Si vede malissimo», PO-307 verifica di tutte le schermate, PO-308 freccetta): giro 106 testata compatta senza parole spezzate e colore sociale smorzato da fondoClub106 (lum <= 0,070), «Avversario in zona retrocessione», guardiano home-colori-106 su 8 club; giro 107 tasto del pannello Statistiche/Pagelle col verso giusto, tocco 44 px, linguetta che apre; collaudo 180 (438 foto, 33 difetti) e giro 108 sui 6 alti e 17 medi (galà, passaggio U18, Nazionale, pre-partita, KORWARD, tablet, rosa/granata V1, tocco 44, sala stampa), guardiano collaudo-108. */ /* [7.999.179] Grafica unica «Notte da stadio» (PO-302, decisioni PO 01/11 e 03/11): tappe V2 1, 2, 2b, 3, 4 — tema scuro unico TINTE/TH (via TH_LIGHT/TH_DARK/temaAttivo/v2On e i 197 rami V1, interruttore __CPM_NO_V2 tolto; il rosso dei guardiani grafici altera i token dal banco, __CPM_TEMA_PROVA solo sotto cpmtest), Home/Carriera/Stagione/Club/Agente/Ufficio/partita 2D/highlight/post partita/ingresso/festa/creazione/intervista/offerta/fine stagione/fine carriera, Simula accanto a Gioca, testata compatta, contrasto testi >= 4,5:1; PO-303 storico del patrimonio (player.patrimonio303, punto ogni 4 settimane, migrazione additiva a serie vuota); pc-tablet-292 punto 5 (un solo timer sull intro, guardiano intro-292). */ /* [7.999.178] Highlight dell'eroe e grafica, dai collaudi 177 n.1, n.2, n.4 e dal collaudo grafico PO-299: giro 95 (finta da dribbling, parata dopo la conclusione, esito sempre a schermo, assist su tutti i passaggi), giro 96a scena 3D (eroe in quadro su PC e nelle punizioni, rigore col portiere fermo fino al calcio, corpi separati, targhette, pallone senza salti, logo del cerchio), giro 96b esiti (tocco rapido sulla scelta registrato, esitazione difensiva, gol del rivale gala=bilancio, contrasto pulito senza fallo, riquadro d'esito che non copre l'eroe, titolo a capo, esito su PC, comandi da 40 px, cerimonia senza nero), giro 97 schermate (barra tablet, tasti da 40 px, strisce su PC, spazi PO-296), giro 98 (assist al compagno nominato, protezione palla, niente assist dopo la parata, niente retrocessione dalla Lega B, rinnovo toglie dalla lista cessioni). Giro 90 partita a tutto schermo su PC e tablet e difetti del collaudo PC/tablet (PO-292); giro 91 spazio fra i riquadri ~8 px (PO-296); giro 92 partita 2D con gli spalti dei club, barra in cima, squadre fisse come in tv (PO-297); giro 93 assist dell'eroe: il passaggio arrivato e' una giocata riuscita, il compagno tira da grande occasione (PO-298); giro 94 difetti della carriera 177 n.3 (convocazioni, rigore contato due volte, contratto scaduto, testi). */ /* [7.999.177] Fase di stabilita con i ritocchi chiesti dal PO il 20/10: giro 80 ingresso in campo a ~16 s con tre stacchi di camera (PO-285), giro 81 colori di maglia nel tabellino e nella testata del post-partita (PO-286), giro 82 eroe neutro senza stile di gioco (PO-287), giro 83 piano del personal trainer con valore, resa e consigliato (PO-288), giro 84 impulsi collegati davvero all'Ufficio (PO-289). */ /* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
+const GAME_VERSION="7.999.190";/* [7.999.190] PO-348 spalle senza gobba (giri 146+146b) · PO-350 portiere a bruciapelo (giro 148) · PO-351 audio CC0 (giro 149) · PO-352 finestre PC col velo (giro 150) · PO-353/354 scia 2D corta e cronaca col pallone (giro 151) · PO-355 esultanza senza volo (giro 152) · PO-337/338/358/359 bassi, Legacy, testi (giro 155) · PO-361 Ultime notizie a riga piena (giro 156) · PO-360 forza vera nelle simulate sotto 40 (giro 157) */ /* [7.999.189] PO-339 capitano verso la camera, PO-340 «club W.N» insieme (giro 137) · PO-315 doppio rigore (giro 139, guardiano rigore-139) · PO-341/342/345 partita 2D: cartelloni per settore, spalti dall affluenza, stadio ruotato al secondo tempo (giri 141, 143) · PO-343/347, D23 di PO-337, PO-346 presentazione: aspetto e postura dei compagni, saluto, marchio Korward (giri 142b, 144) · PO-316/317/319/336/344 strumenti di controllo (giri 138, 145).  [7.999.188] PO-331/333/335 card Prossima e pulsante con la partita della Nazionale (giri 131, 133, 134, guardiano prossima-131) · PO-334 privacy letta dentro il gioco (giro 134, guardiano privacy-134) · PO-332 premiazione: compagni rivolti al podio, braccia alzate col trofeo (giro 132, guardiano premiazione-132).  [7.999.187] PO-329 ingresso dalla panchina inquadrato dal prato (giro 127, guardiano panchina-127) · PO-330 folla a sagome (giro 129, guardiano folla, rosso __CPM_NO_FOLLA129, manopola cpm-folla).  [7.999.181] Correttiva dal collaudo PO della 180 (decisione «Solo spalti, subito» + «Dentro la 181»): PO-312 giro 109 spalti della partita 2D coi colori veri dei club (_spalti109: maglia e secondo colore senza la regola di contrasto dei testi, fondo TINTE.tasto, cartelloni col colore sociale smorzato da fondoClub106; rosso __CPM_NO_G109, guardiano spalti-109 su 7 coppie di club x 3 formati), sigla della porta che non sporge sotto la barra Statistiche/Pagelle (__CPM_NO_G109_ETI), nomi di portatore ed eroe non sovrapposti (__CPM_NO_G109_NOMI); PO-313 lineetta oro #9c6a12 sotto la scheda attiva al posto del pallino del club (__CPM_NO_PUNTINO181, guardiano lineetta-181). */ /* [7.999.180] Correttiva dal collaudo PO della 179 (PO-306 «Si vede malissimo», PO-307 verifica di tutte le schermate, PO-308 freccetta): giro 106 testata compatta senza parole spezzate e colore sociale smorzato da fondoClub106 (lum <= 0,070), «Avversario in zona retrocessione», guardiano home-colori-106 su 8 club; giro 107 tasto del pannello Statistiche/Pagelle col verso giusto, tocco 44 px, linguetta che apre; collaudo 180 (438 foto, 33 difetti) e giro 108 sui 6 alti e 17 medi (galà, passaggio U18, Nazionale, pre-partita, KORWARD, tablet, rosa/granata V1, tocco 44, sala stampa), guardiano collaudo-108. */ /* [7.999.179] Grafica unica «Notte da stadio» (PO-302, decisioni PO 01/11 e 03/11): tappe V2 1, 2, 2b, 3, 4 — tema scuro unico TINTE/TH (via TH_LIGHT/TH_DARK/temaAttivo/v2On e i 197 rami V1, interruttore __CPM_NO_V2 tolto; il rosso dei guardiani grafici altera i token dal banco, __CPM_TEMA_PROVA solo sotto cpmtest), Home/Carriera/Stagione/Club/Agente/Ufficio/partita 2D/highlight/post partita/ingresso/festa/creazione/intervista/offerta/fine stagione/fine carriera, Simula accanto a Gioca, testata compatta, contrasto testi >= 4,5:1; PO-303 storico del patrimonio (player.patrimonio303, punto ogni 4 settimane, migrazione additiva a serie vuota); pc-tablet-292 punto 5 (un solo timer sull intro, guardiano intro-292). */ /* [7.999.178] Highlight dell'eroe e grafica, dai collaudi 177 n.1, n.2, n.4 e dal collaudo grafico PO-299: giro 95 (finta da dribbling, parata dopo la conclusione, esito sempre a schermo, assist su tutti i passaggi), giro 96a scena 3D (eroe in quadro su PC e nelle punizioni, rigore col portiere fermo fino al calcio, corpi separati, targhette, pallone senza salti, logo del cerchio), giro 96b esiti (tocco rapido sulla scelta registrato, esitazione difensiva, gol del rivale gala=bilancio, contrasto pulito senza fallo, riquadro d'esito che non copre l'eroe, titolo a capo, esito su PC, comandi da 40 px, cerimonia senza nero), giro 97 schermate (barra tablet, tasti da 40 px, strisce su PC, spazi PO-296), giro 98 (assist al compagno nominato, protezione palla, niente assist dopo la parata, niente retrocessione dalla Lega B, rinnovo toglie dalla lista cessioni). Giro 90 partita a tutto schermo su PC e tablet e difetti del collaudo PC/tablet (PO-292); giro 91 spazio fra i riquadri ~8 px (PO-296); giro 92 partita 2D con gli spalti dei club, barra in cima, squadre fisse come in tv (PO-297); giro 93 assist dell'eroe: il passaggio arrivato e' una giocata riuscita, il compagno tira da grande occasione (PO-298); giro 94 difetti della carriera 177 n.3 (convocazioni, rigore contato due volte, contratto scaduto, testi). */ /* [7.999.177] Fase di stabilita con i ritocchi chiesti dal PO il 20/10: giro 80 ingresso in campo a ~16 s con tre stacchi di camera (PO-285), giro 81 colori di maglia nel tabellino e nella testata del post-partita (PO-286), giro 82 eroe neutro senza stile di gioco (PO-287), giro 83 piano del personal trainer con valore, resa e consigliato (PO-288), giro 84 impulsi collegati davvero all'Ufficio (PO-289). */ /* [7.999.176] Fase di stabilita. Giro 77: guardiani instabili riparati nello strumento (nazionale-155, tempo-138, apertura-261, nomi-219 robusto ai crash) e chiavi oggetto doppie tolte. Giro 79 dai collaudi 175: scheda del mister «Rigore per loro» solo sui rigori avversari (__CPM_NO_RIG79, rigore-79), voto delle testate = voto della pagella (__CPM_NO_VOTO79), via la memoria «Enfant prodige» senza tratto (__CPM_NO_ENFANT79), «Livello N/3» dell Ufficio su una riga a 360 px (__CPM_NO_LIV79), guardiano 284f non cieco. */ /* prec.: *//* [7.999.175] Decisioni PO 19/10 sera su PO-098/PO-190: giro 75 stile unico Finalizzatore per tutti (via la scelta dello stile e il tratto Enfant, migrazione additiva dei salvataggi, rosso __CPM_NO_STILEUNICO75) e pagella = risultato registrato per i gol dell eroe; giro 78 curva di difficolta PO-156 ritarata sul solo Finalizzatore (difficolta-156 a uno stile, 20/20 x2). */ /* prec.: *//* [7.999.174] Blocco B (19/10): giri 62 salvataggi ed errori (PO-167, PO-168 gestore errori), 65 Nazionale per finestre e CT (PO-155), 66+71 impulsi con memoria, seguiti spenti al trasferimento (PO-154, PO-224), 67+69 stili dell eroe e curva di difficolta per fase (PO-098, PO-156), 70 acquisti e investimenti concreti (PO-281, PO-157), 72 correzioni dai collaudi 172/173 (fra le linee, pallone PO-278, barra 360, PO-171), 73 taccuino 173 (PO-282 tappeto, PO-283 stacco, PO-284 battitore d angolo), 76 cadenza dello scatto CGTrader guidata dalla fase del passo (piedi-252, soglia 0,40). Non entrano: giro 74 (quota PO-190, chiusa dal PO), giro 75 stile unico e via l Enfant (7.999.175). */ /* prec.: *//* [7.999.173] Blocco A (19/10): giri 60 esiti e gesti (PO-218, PO-143 stacco difensivo), 61 regia highlight (avvicinamento, eroe in quadro «fra le linee», PO-252), 63 prestazioni e pulizia (PO-180, PO-023 guardiano render, PO-171 ritratto CH38 morto, PO-072 DT-01 su src/07), 64 grafica (PO-276 campi vuoti, PO-071 tipologia e cartelloni, palco PO-002/137), 68 schermate (PO-066, PO-267, mappa PO-205). */ /* prec.: *//* [7.999.172] Lotto L1-bis (18/10): giri 50 guardiani PO-271 e testa-76, 51 rinnovo/badge/testi (PO-268/269/270/272), 52 schede del finale (PO-226 spenta per decisione), 53 highlight PO-273/274/275, 54 ingresso dal tunnel PO-277, 55 pallone PO-278, 56 statistiche PO-279, 57 esito della scelta PO-280, 58 pallino 2D/pillola/walkout-fermi-197, 35 ritaratura passaggi. */ /* prec.: *//* [7.999.171] Mega rilascio del 16/10 (decisione PO: chiusura di L1 + stadi e grafica correlata). Giro 22: PO-252 sei difetti degli highlight (piedi, pallone in rete, difesa, rinvio, portiere, cross aereo). Giro 31: PO-220 chiusure difensive (contatto 5,1→1,8 u, non-arrivo 88%→9%). Giro 34: nomi-219 misurato stabile. Giro 36: PO-262 determinismo (punto di partenza seedato nelle scene a movimento bloccato, match-sequence 3/3 verde). Giri 33+37 (eccezione zona G): PO-222 squalificato/non convocato senza presenza su Simula, PO-223 resa dell investimento legata a puntata e scelta, PO-263/264/265. Giro 39: PO-171 via il CH38 dal caricamento (−4,08 MB a ogni avvio). Giro 40: PO-261 prima apertura, PO-258 portiere sulla punizione. Giro 41: esiti PO-218/240/250. Giro 42: PO-252 residui. Giro 43: PO-143 cross, PO-266 cronaca. Giro 44: PO-226/246/260 schede del mister mai sopra highlight e cerimonia, schede-246 riparato. Giro 45: PO-022/068 motore unico e gesti. Giro 46: PO-071 tipologie di stadio, pubblico, cartelloni, ingresso. Giro 47: PO-137/002 cerimonie, il capitano passa la coppa. Giro 48: PO-061 maglie 3D. Unione: PO-267 Crediti senza «Non posso confermarlo». Rapporti docs/sviluppo/RAPPORTO-giro22,31,33,34,36,37,39..48.md. Non entra: giro 35 (ripartenza ristretta e passaggi, non consegnato). */ /* storia: /* [7.999.170] Decisione PO 15/10 «Subito senza il 22». Giro 23: PO-245 ingresso a passo di camminata (ingresso-camminata-245), coppa e prestito (coppa-prestito-245, eccezione zona G), PO-247 avviso premi dopo l intervista (toast-intervista-247), PO-251 oro da festa (festa-oro-251). Giro 24: PO-253 «Il confronto» del procuratore nella finestra standard (procuratore-253). Giro 25/25b: PO-254 Crediti col pulsante del kit in home e le fonti di CREDITI-fonti.md (crediti-254). Giro 26: PO-255 badge d avvio solo «v x.y.z», PO-256 toast mai sopra un Modal aperto (badge-255, toast-256). Giro 27: taccuino 169 (PO-207 ripartenza dal centro dopo rigore e punizione, PO-257 provocazione che libera la scena). Giro 28: PO-259 schede del mister «poche ma decisive» (schede-259). Giro 29 (L3): copia di riserva automatica degli slot e avviso se il salvataggio fallisce (backup-167). Giro 30: PO-217 analisi pre-partita nel giornale, PO-066 riquadri della home. Rapporti docs/sviluppo/RAPPORTO-giro23..30.md. */ /* storia: /* [7.999.169] Contiene la 7.999.168 mai pubblicata (PO-249: niente scritta fps al giocatore, guardiano fps-249) e i giri 16-20. Giro 16: PO-228 ritaratura delle statistiche di partita e PO-220 chiusure difensive (difesa-220-scena). Giro 17: PO-022 scene generate dal motore, PO-068 gesti, PO-123/143 (catalogo-022, pressing-143). Giro 18: PO-207 ripartenza dal centro dopo il gol nato in scena (ripartenza-207 verde, niente piu' deroga), nomi-219 riparato, PO-226 scelta della scheda al battito sotto autoplay. Giro 19: PO-242 riquadro coerente su «Conduci palla al piede e tira», PO-243 intervista dopo la Nazionale, PO-244 giornale, PO-245 ingresso, PO-246 scheda del mister, PO-247 minori. Giro 20: PO-238 brusio di folla generato da noi (fonte certa), PO-241 attesa dei corpi senza «Caricamento giocatori». Rapporti docs/sviluppo/RAPPORTO-giro16..20.md. */ /* storia: /* [7.999.167] Integrati i giri 13, 14, 15 sopra la 7.999.166. (1) Giro 13, bloccante c / CL194, decisione PO 14/10 «Sì, ripara i salvataggi» (eccezione zona G solo per questo difetto): la classifica sbilanciata dal difetto CL194 si rimette in pari al caricamento (guardiano migrazione-194, rosso __CPM_NO_MIG194). (2) Giro 14: PO-234 schede in partita con tre indicazioni e lessico «indicazioni» (schede-234); PO-235 convocazione della Nazionale nel kit (convocazione-235); PO-236 bambini dell ingresso per entrambe le squadre (bambini-236). (3) Giro 15: PO-237 pre-caricamento dei corpi per la prima partita (prima-partita-237); PO-238 Crediti nella home (crediti-238; fonti da completare dal PO). Rapporti docs/sviluppo/RAPPORTO-giro13/14/15.md. */ /* storia: /* [7.999.166] (1) PO-229 giro 12: il lato del portiere sul tiro al palo si decide dal passaggio vero del pallone anche a pochi fotogrammi (gk-miss-229 braccio palo a CPU lenta; rosso __CPM_NO_GK229L). (2) PO-239: il riquadrino sopra la scena mostra solo gli fps, non più «CGTrader · N corpi» (rosso __CPM_NO_HUD239). (3) PO-240: «Sfiora il vantaggio» non esce più fra le frasi del riquadro di fine scena, che non conosce il punteggio (taccuino PO: sul 3-0); resta nella cronaca col contesto «pari» (rosso __CPM_NO_VANT240). */ /* storia: /* [7.999.165 PO-233, foto PO 14/10] Calendario · Prossime partite: la partita della Nazionale mostrava «1489ª giornata» (codice interno 1470 + settimana 19); ora mostra la competizione («Amichevole Internazionale»). Guardiano giornata-233, rosso __CPM_NO_GIORN233. */ /* storia: /* [7.999.164, giro 11 sviluppatrice, sottoinsieme 17/10] (1) PO-218 caso cross: riquadro, motore e 3D dicono lo stesso esito sul cross sbagliato (8 azioni-cross col lessico del tiro, presa del portiere registrata come intercetto, cross fuori misura come spazzata, cross da punizione come tiro dell eroe, pallone «fuori» che si assestava in area): guardiano cross-218 verde 0/40, 0/200, x 46,8; rosso __CPM_NO_CROSS218 24, 95/200, x 39,0. (2) PO-209/PO-211: l intervista post partita mostra il club con cui si e' giocato, non quello di partenza dopo un cambio di squadra; guardiano testata-209, rosso __CPM_NO_TESTA209. Rapporto docs/sviluppo/RAPPORTO-giro11.md. */ /* storia: /* [7.999.163, decisione PO 13/10 pomeriggio «integrala la PO-226»] PO-226 primo passo (voce qui sotto) sopra la 7.999.162. Guardiano tempo-138: il braccio rosso spegne anche il seme e le interazioni nuove, che coprono il difetto (verde 2/2 sulla 162). */ /* storia: /* [7.999.162 PO-229 — voce aggiunta, stesso numero] IL PORTIERE SUI TIRI SBAGLIATI. Taccuino PO 13/10 (7.999.160): «Volée di collo potente» e «Girata secca e tiro» finite fuori → «codice 111 — portiere fuori tempo», «il portiere non si tuffa nel momento giusto». MISURATO in tempo di scena (sonda nuova gk-miss-229, testimone __CPM_GK229, pagina fresca per scena, volée/tiro al volo/girata, esiti fuori e palo): sul tiro FUORI il portiere restava FERMO 5 volte su 5 anche con il pallone che gli passava a 0,2-2,9u e a quota 0,2-2,5 (l'arco del tiro fuori muore davanti alla porta e solo dopo il pallone scivola oltre il palo); sul PALO il tuffo partiva al calcio e arrivava disteso all'arrivo, ma corto (55% della distanza). Ora (src/12, fireConclusion) sul tiro che esce di poco (arco entro 1,5u dal palo) o che gli passa a portata (entro 4,5u sul suo piano) il portiere reagisce verso il punto in cui il pallone attraversa il suo piano: tuffo all'80% della distanza, oppure riflesso col corpo (gk_block) se il pallone gli arriva addosso (entro 1,2u); sul tiro largo lo guarda uscire. La distesa resta sincronizzata all'arco (7.465): il corpo parte al calcio (+0,05/+0,10 s). Dopo, GLB spento: 10 reazioni su 10, il corpo parte da 0,26 a 0,59 s di scena PRIMA che il pallone lo superi (mediana 0,44); GLB acceso (volee, girata, tiro al volo): 6 su 6, mediana 0,47 s prima. Il rosso finale resta rosso (3 portieri fermi su 7 scene giudicabili; i tiri a bruciapelo, pallone sul portiere entro 0,20 s dal calcio, non si giudicano). Un tuffo armato a pallone gia' passato su un tiro sbagliato si annulla (contatore __CPM_GK229TARDI, mai visto scattare nelle misure). Rosso __CPM_NO_GK229M. [v2, rosso del coordinatore sulla build combinata: «alvolo gi6 post: gk_block dalla parte opposta al pallone», 2 corse su 2] il riflesso col corpo partiva al caricamento verso la z stimata con l'arco lineare e lo scatto di 0,19 s si chiudeva prima del calcio; l'arco non e' lineare e sui palloni vicini la stima sbagliava lato. Ora quel riflesso aspetta il calcio e rimira a ogni fotogramma il punto di passaggio estrapolando la velocita' vera del pallone. Sonda: il verso si giudica solo sui tiri che arrivano da davanti al portiere (sui tiri dal fondo il pallone passa da entrambi i lati: dichiarato non giudicabile). Misurato: gk-miss-229 verde 2 volte di fila su pagina fresca (partenza del corpo mediana 0,34 e 0,54 s prima del passaggio), gk-dive-sync PASS (anticipo mediano -0,05 s), goal-postarc PASS. Codice 007 (camera che salta): un passo isolato di 5,0-5,3u a 170-250 u/s di scena su girata e volée gi88 (2 scene su 40), fuori dagli stacchi; causa non attribuita con una misura: annotato, non toccato. *//* [7.999.162] (1) Bloccante a (seme, sviluppatrice giro 9): Bloccante a (SEME-a): stesso salvataggio e stesso seme davano partite diverse, perche' al motore del possesso arrivavano valori del tempo reale. Ora alla ripresa dopo una scena riceve un punto logico (x seedata, corsia ereditata dal SUO pallone, eroe fotografato a chiusura scena; nelle scene senza highlight l'eroe del motore), il debito di sotto-tick del minuto si paga prima delle richieste del battito, il sotto-tick porta il minuto dell'ultimo battito e un riavvio del metronomo in gioco fluido non butta piu' i fatti del motore in coda. Misurato S12, semi 2311/4242/777: primo ingresso divergente fra il 6' e il 38' prima, nessuno dopo. Guardiano seme-a (rosso __CPM_NO_SEME). Guardiano seme-a, rosso __CPM_NO_SEME. (2) PO-232 («gli highlights devono partire sempre con i GLB on di CGTrader caricati totalmente, mai in T-Pose o senza testa»): la scena dell eroe parte solo coi corpi pronti (CH38 agganciato, corpi CGTrader montati e compilati, teste caricate, clip attiva), cronometro fermo fino a 8 s con «Caricamento giocatori…»; la testa CGTrader cambia texture solo a immagine caricata (prima spariva per tutto il download). Guardiano glb-pronti-232 con rete lenta: verde 0/6 scene non pronte, rosso __CPM_NO_GLB232 4/6. (3) PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco» (foto PO sulla 7.999.160: «La tua storia» in finestra col titolo della fisarmonica, la freccia e «LA TUA STORIA» ripetuto dentro): le card della home che passano da _pop224 si smontano e si ridisegnano DENTRO il Modal (ModalPannello + cardInFinestra230): un solo titolo nella testa, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Collaudo 161: intervista con la cornice standard (anche il foglio dal basso), scelta in partita via finestraStd(TH_DARK), elenco premi del Galà a capo invece che tagliato. Guardiano finestra-230 esteso (patto e procuratore), rosso __CPM_NO_MOD230. (4) Bloccante c della prontezza, permesso PO 13/10 «Si', solo per questo difetto» (zona G, CL194): la partita di campionato giocata DAL VIVO passava a updateStandings il NOME dell'avversario (src/18 onMatchEnd, opponentId:result.opponentId||result.opponent; il risultato dal vivo non porta l'id) e sul salvataggio 194 il nome «FC Altoadige Primavera» non coincide con la riga «FC Altoadige»: l'avversario non riceveva il risultato speculare e giocava il riposo contro nessuno (src/09 updateStandings, ramo byeTeam), la somma GF−GS di lega cresceva. Misurato sulla 34a giornata dal vivo (3-1): prima Altoadige 35-55 contro 36-57 ricostruito, GF−GS di lega 3→4; ora 36-57 = ricostruito, 3→3. Si usa l'id della giornata servita. Solo partite future: lo sbilancio +3 gia' nel file resta (nessuna migrazione, tocca dati del giocatore). Rosso __CPM_NO_CL194, guardiano classifica-194. */ /* storia: /* [7.999.161 PO-229] (1) Lo strappo del pallone alla consegna build-up→conclusione: la guardia 7.394 (pallone gia' al piede = consegna avvenuta) valeva solo per la conduzione; ora anche per il DRIBBLING. buildup-sync su gi21: rosso __CPM_NO_DRB229 3,9/4,3u dribble→CONSEGNA, verde 0. (2) PO-224: le finestre aspettano anche l intervista settimanale (a 360 px «La tua storia» finiva sotto «Zona Mista», collaudatrice giro 8); rosso __CPM_NO_IV224, popup-224 verde. (3) Copyright, decisione PO 12/10 «rinomina tutti gli evocativi»: 17 nomi di stadio con simboli o soprannomi di club reali o nomi di stadi veri (Sabaudo, Meneghino, Capitolino, Vesuvio, Phocéen, Blau, der Wand, Cannon, Bridge, Leonino, Kadıköy, Kartal, Princier, Adriatico, Gabriel Montpied, Arena Lviv, Cerámica Vieja) rinominati e aggiunti alla lista del controllo (prova del rosso: Sabaudo segnalato). (4) PO-230: cornice standard unica (finestraStd, dal Modal) per impulsi, momento di carriera, tutorial e scelta in partita; guardiano finestra-230, rosso __CPM_NO_FIN230. (5) PO-231, decisione PO 12/10 «Sempre, dopo ogni partita»: l intervista post partita esce dopo ogni gara (prima 18% da pro dopo una gara normale, 4% in Primavera: «questa volta non e' uscita» non era un guasto). Guardiano intervista-231, rosso __CPM_NO_IV231. (6) PO-228 caso k4 (tabellino 1-0, tabellone 0-0): un gol del motore nato dopo il fischio (minuto 96) entrava nel tabellino e non nel tabellone; al fischio i gol ancora in coda escono dal tabellino e il motore smette di contarli. Guardiano tabellino-228: verde coincide, rosso __CPM_NO_TAB228 scarto di 1 gol. (7) PO-229 gi38 (sviluppatrice, giro 8): il ri-taglio di staging non spegne piu' l uno-due gia' partito (sonda po229-gi38-probe verde 4/4, rosso __CPM_NO_PO229 3/3). (8) L7: la riga stagione·settimana·posto della carriera non va a capo a 360-412 px. (9) PO-229 build-up (PO: «test di qualità/verità degli highlights eroe»): il pallone non salta piu' al cambio di beat (lucchetto del gol della scena precedente, blocchi post-arco 87/92/93 attivi durante la costruzione, _int10 non azzerato, colla di conduzione) e chi lo porta lo accompagna; buildup-sync da rosso 9/36 a verde, rosso __CPM_NO_BU229. */ /* storia: /* [7.999.160 PO-224 e copyright] (1) «Il mondo fuori» e «Il conto delle parole» in finestra in primo piano (_pop224); in finestra la fisarmonica parte aperta (un tocco solo, rosso __CPM_NO_POPAP224). (2) Nomi reali fra i rivali rinominati (Kylian, Bukayo, Erling, Vinicius, Pedri, Saka, Bellingham) e aggiunti alla lista del controllo copyright, che ora scansiona anche RIVAL_FIRST/RIVAL_LAST (prova del rosso: «Kylian» trovato). (3) «Sostieni il gioco» diventa «Sostieni il progetto». (5) PO-229: sul gol la finestra d esito aspetta la conclusione in TEMPO DI SCENA (6 s di scena, tetto 30 s reali): a 4-7 fps il gol era dichiarato con la palla ferma a x 24-40 (goal-postarc 4/6 classe C → 0/8; rosso __CPM_NO_CK229 1/4). Sonde riparate: gk-dive-sync (anticipo in tempo di scena, parata forzata, tuffo finito prima dell arrivo giudicato: verde mediana -0,07 s, rosso __CPM_NO465 3/4), goal-postarc/outcome-not-goal/delivery-arrival (__CPM_ACTSO: __CPM_ACTS era ridefinito con le sole etichette), salto automatico di hl_move; gk-dive-sync e goal-postarc in catena. (6) PO-227: nella fila dell ingresso i bambini corrono da fermi solo se il loro giocatore cammina (peso della corsa dalla velocita smussata, era fisso a 1): fila-227 verde 0/4110 letture da fermi con corsa, rosso __CPM_NO_FILA227 4132/4132. (4) PO-218: «Conduci palla al piede e tira» fallita si racconta da tiro, non da dribbling (collaudatrice 2: murato raccontato «Palla persa nel dribbling»); guardiano lessico-218 esteso, verde 0/12 rosso 12/12 (__CPM_NO_C70TIRO). */ /* storia: /* [7.999.159 PO-218 e PO-221] (1) Fuorigioco contro intercetto: con la chiave intercept il racconto segue il motore (rosso __CPM_NO_FG218). (2) Un tiro fermato si racconta da tiro, non da passaggio: 138 azioni-tiro su 138 avevano il lessico di passaggio; guardiano lessico-218, rosso __CPM_NO_LEX218. (3) Resa dei tiri delle scene 1,4 → 1,8 (gol dell'eroe 0,50 su 60 partite, sotto 0,6-0,9). (4) La punizione aperta da una scena normale conta nel tetto «1 a partita». (5) PO-224: finestre anche per La tua storia, scelte narrative, esonero e procuratore; la finestra aspetta sotto un dialogo bloccante (popup-224). (6) Copyright (sviluppatrice, giro 6): 14 derby e 16 club con nome reale rinominati, migration dei nomi salvati, blocklist allargata. (7) PO-220: slancio difensivo 5,2 → 7,5u, degrado a pressing oltre 8u (rosso __CPM_NO_PUSH220). *//* [7.999.158 PO-221 parte 2, PO-224, PO-225, decisioni PO 10-11/10] (1) La punizione respinta dal tetto «1 a partita» non diventa piu' l'occasione corrente (prima la scena successiva si apriva comunque come punizione: 27 su 16 partite contro 14 dal ramo col tetto). Rosso __CPM_NO_PZTOT221. (2) I riquadri della home che chiedono una scelta (patto col mister, spogliatoio) compaiono come finestra, uno alla volta; guardiano popup-224, rosso __CPM_NO_POP224. (3) La grafica TV pre-partita esce in dissolvenza dopo 4 s dell'ingresso in campo; rosso __CPM_NO_TV225. (4) Tetto di 7 scene a partita, rigori esclusi (decisione PO 11/10); rosso __CPM_NO_TETTO7. Contiene la 7.999.157 (non promossa da sola: scene-221 rosso a 9,0 scene). *//* [7.999.157 PO-221 assist + PO-154 varco di collaudo, decisioni PO 10/10] (1) Dopo il passaggio riuscito di un assist il compagno conclude in posizione da gol (almeno 88 di avanzamento, quasi centrale) invece che 10 piu' avanti dell'eroe: misurato su 7.999.156 il compagno segnava 2 volte su 34 e gli assist erano 0,08 a partita. Rosso __CPM_NO_POS221. (2) Varco di solo collaudo __CPM_CAREER.apriImpulso(id): apre il pop-up di un impulso preciso del catalogo con le sue scelte vere, per misurare le 221 scelte (PO-154). Non cambia il gioco; zona G ferma. Rosso __CPM_NO_APRIIMP157. */
 /* [giro 63 PO-072 DT-01] Le note di versione 7.4xx-7.999.x che stavano qui (433 righe di soli commenti, 799 KB) sono in docs/archivio/note-versione-src07.md. */
 const SAVE_VERSION=9;// v9 [7.6.0 FASE 2]: clubEvo (evoluzione pluriennale del club: fanbase/stadiumTier/budget/seasonsTop-Low) — migration retro-compatibile. v8 [5.81.0 BIL-3b]: bankBalance (stipendio accumulato, €) + perkTrainer/perkNutrition (staff personale) — migration retro-compatibile. v7: player.foot
 // 5.67.0 — TABELLONE realistico del torneo per NAZIONALI (Europeo/Mondiale): dopo il girone la fase a
@@ -7547,14 +7574,21 @@ const DERBIES={
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
-  "mun-liv":{name:"Derby dell'Ovest Lontano",e:"🥀"},"liv-mun":{name:"Derby dell'Ovest Lontano",e:"🥀"},
+  "mun-liv":{name:"Derby fra Mersey e Manchester",e:"🥀"},"liv-mun":{name:"Derby fra Mersey e Manchester",e:"🥀"},/* [giro 155 PO-359] il nome viene dalle due citta' nei nomi dei club (FC Merseyside, Manchester Rovers) */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
   "gal-fenk":{name:"Derby del Canale Scuro",e:"🌙"},"fenk-gal":{name:"Derby del Canale Scuro",e:"🌙"},
   "ajax-feye":{name:"De Klassieker",e:"🌷"},"feye-ajax":{name:"De Klassieker",e:"🌷"},
 };
-function isDerby(aId,bId){return DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;}
+function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
+  /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
+     Merseyside, Manchester Rovers). Rosso __CPM_NO_G155_T359 (torna il nome vecchio). */
+  if(d&&_g155("T359")&&d.name==="Derby fra Mersey e Manchester")return {...d,name:"Derby dell'Ovest Lontano"};
+  return d;}
+/* [giro 155 · PO-359] l'arco in cui l'eroe fa da mentore a un giovane si chiamava «Il ragazzo della Primavera» anche a 29 anni: ora
+   «Il tuo allievo». Rosso __CPM_NO_G155_T359. */
+function titoloAllievo359(){return _g155("T359")?"Il ragazzo della Primavera":"Il tuo allievo";}
 
 /* ========================================
    MATCH WEIGHT — importance of the match (1-10)
@@ -7586,6 +7620,14 @@ function calcMatchWeight(player,opponentId,standings,week){
 // Sprint D1 — Gerarchia di Squadra
 const SQUAD_ROLES=['primavera','riserva','rotazione','titolare','leader'];
 
+/* [giro 155 D14, collaudo 177: «Prossimo gradino — Leader» con le tre condizioni soddisfatte] la fascia si assegna con SEI condizioni
+   (18-career-app, _capElig: eta' 27+, 130+ presenze, fiducia 90+, OVR 80+, OVR non sotto il livello della squadra, popolarita' 58+) e
+   poi arriva in una settimana qualunque (estrazione al 10%): il riquadro ne scriveva tre. Ora le scrive tutte e dice che la fascia
+   arriva col tempo. Rosso __CPM_NO_G155_D14. */
+function gradinoLeader155(p){const a=p.age||18,m=p.totalMatches||0,t=p.coachTrust||60,o=p.ovr||60,cp=((p.club&&(p.club.prestige||p.club.p))||65)-2,po=Math.round(p.popularity||20);
+  if(_g155("D14"))return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}))`;
+  const ok=a>=27&&m>=130&&t>=90&&o>=80&&o>=cp&&po>=58;
+  return `Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${a}) · 130+ presenze (ora ${m}) · fiducia del mister 90+ (ora ${t}) · OVR 80+ e non sotto il livello della squadra, ${cp} (ora ${o}) · popolarità 58+ (ora ${po}))`+(ok?". Ci sei: la fascia può arrivare in una qualunque delle prossime settimane.":". Con tutte e sei, la fascia arriva nelle settimane successive, non subito.");}
 function calcSquadRole(player){
   const ovr=player.ovr||60;
   const trust=player.coachTrust||60;
@@ -8267,6 +8309,29 @@ const AudioMgr=(function(){
     'crowd.bed':['assets/audio/sfx/crowd/brusio-folla-korward.wav']
   };
   const _bedUrls238=()=>_brusio238On()?URL_SFX['crowd.bed']:[];
+  // [giro 149 — PO-351 «effetti e musica piu' belli ed efficaci», fonti SOLO CC0] FILE REALI per gli eventi di partita, interfaccia,
+  //   carriera e musica. Ogni file ha la sua riga di licenza in assets/audio/LICENZE.json (generato, con la tabella qui sotto, da
+  //   tools/audio-149/prepara-audio.py: stessa sorgente, non possono divergere). Ogg/Opus prima, MP3 di riserva (stesso meccanismo
+  //   _tryFetchDecode: un file che non carica o non si decodifica passa al successivo, e se mancano tutti resta la SINTESI di oggi).
+  //   Varianti scelte in modo DETERMINISTICO (hash di chiave + seme di partita + contatore, mai la stessa due volte di fila):
+  //   nessun Math.random nuovo. Rosso: window.__CPM_NO_G149 → l'audio di prima, identico.
+  const _g149On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G149);
+  const A149='assets/audio/';
+  const F149={'ball.kick':{g:0.65,f:['sfx/ball/calcio-1','sfx/ball/calcio-2','sfx/ball/calcio-3','sfx/ball/calcio-4']},'ball.pass':{g:0.45,f:['sfx/ball/passaggio-1','sfx/ball/passaggio-2','sfx/ball/passaggio-3']},'ball.header':{g:0.65,f:['sfx/ball/testa-1','sfx/ball/testa-2']},'ball.post':{g:0.55,f:['sfx/ball/palo-1','sfx/ball/palo-2']},'ball.net':{g:0.45,f:['sfx/ball/rete-1']},'ball.bounce':{g:0.55,f:['sfx/ball/contrasto-1','sfx/ball/contrasto-2']},'gk.save':{g:0.7,f:['sfx/ball/parata-1','sfx/ball/parata-2']},'ref.whistle':{g:1.2,f:['sfx/referee/fischio-1','sfx/referee/fischio-2']},'ref.whistle2':{g:1.2,f:['sfx/referee/fischio-doppio']},'ref.whistle_final':{g:1.3,f:['sfx/referee/fischio-finale']},'crowd.roar':{g:0.95,f:['sfx/crowd/boato-1','sfx/crowd/boato-2']},'crowd.applause':{g:0.6,f:['sfx/crowd/applausi-1','sfx/crowd/applausi-2']},'crowd.cheer':{g:0.7,f:['sfx/crowd/esulta-1']},'crowd.boo':{g:0.3,f:['sfx/crowd/fischi-1']},'ui.click':{g:0.25,f:['sfx/ui/click-1','sfx/ui/click-2','sfx/ui/click-3']},'ui.nav':{g:0.35,f:['sfx/ui/nav-1']},'ui.back':{g:0.35,f:['sfx/ui/indietro-1']},'ui.confirm':{g:0.4,f:['sfx/ui/conferma-1']},'ui.error':{g:0.4,f:['sfx/ui/errore-1']},'ui.popup':{g:0.35,f:['sfx/ui/popup-1']},'ui.close':{g:0.35,f:['sfx/ui/chiudi-1']},'notify.pos':{g:0.4,f:['sfx/notifications/positiva-1']},'notify.neg':{g:0.4,f:['sfx/notifications/negativa-1']},'notify.info':{g:0.35,f:['sfx/notifications/info-1']},'week.advance':{g:0.35,f:['sfx/ui/settimana-1']},'gala.envelope':{g:0.4,f:['sfx/career/busta-1']},'career.contract':{g:0.45,f:['sfx/career/contratto-1']},'career.renew':{g:0.45,f:['sfx/career/rinnovo-1']},'career.record':{g:0.45,f:['sfx/career/record-1']},'career.callup':{g:0.45,f:['sfx/career/convocazione-1']},'career.milestone':{g:0.45,f:['sfx/career/traguardo-1']},'career.levelup':{g:0.45,f:['sfx/career/livello-1']},'season.relegation':{g:0.45,f:['sfx/career/retrocessione-1']},'gala.reveal':{g:0.45,f:['sfx/career/rivelazione-1']},'career.trophy':{g:0.45,f:['music/awards/fanfara-1']},'music.home':{g:0.55,f:['music/menu/spiaggia-loop']},'music.career':{g:0.55,f:['music/career/avventura-loop']}};
+  const _ALIAS149={};/* le fanfare (trofeo/promozione/gala) passano da fanfare(): file della fanfara + applausi veri */
+  const _cat149=k=>/^(ball|gk)\./.test(k)?'match':/^ref\./.test(k)?'referee':/^crowd\./.test(k)?'crowd':/^music\./.test(k)?'music':'sfx';
+  const _buf149={};let _seed149=0;const _cnt149={},_last149={},_plays149={};
+  function _pick149(k,n){const c=_cnt149[k]=(_cnt149[k]|0)+1;let i=(hashStr(k+'|'+_seed149+'|'+c)>>>0)%n;if(n>1&&i===_last149[k])i=(i+1)%n;_last149[k]=i;return i;}
+  function _load149(){Object.keys(F149).forEach(k=>F149[k].f.forEach((n,i)=>_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;})));}
+  function _play149(name,mul,catOver){
+    if(!_g149On()||!ready)return false;
+    const k=_ALIAS149[name]||name,E=F149[k],L=_buf149[k];if(!E||!L)return false;
+    const n=E.f.length;let i=_pick149(k,n),t=0;while(!L[i]&&t<n){i=(i+1)%n;t++;}if(!L[i])return false;
+    try{const s=ctx.createBufferSource();s.buffer=L[i];const g=ctx.createGain();g.gain.value=E.g*(mul==null?1:mul);
+      s.connect(g);g.connect(dest(catOver||_cat149(k)));s.start();
+      s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};
+      _plays149[k]=(_plays149[k]|0)+1;return true;}catch(_e){return false;}
+  }
   const _urlBufs={};let _samplesTried=false;
   function _tryFetchDecode(urls,i,onOk){
     if(!ctx||i>=urls.length)return;
@@ -8274,7 +8339,8 @@ const AudioMgr=(function(){
   }
   function loadSamples(){
     if(_samplesTried||SILENT()||!ready)return;_samplesTried=true;
-    try{Object.keys(URL_SFX).forEach(k=>{const v=k==='crowd.bed'?_bedUrls238():URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
+    if(_g149On())try{_load149();}catch(_e){}
+    try{Object.keys(URL_SFX).forEach(k=>{if(k==='crowd.roar'&&_g149On())return;const v=k==='crowd.bed'?_bedUrls238():URL_SFX[k];_tryFetchDecode(Array.isArray(v)?v:[v],0,buf=>{_urlBufs[k]=buf;if(k==='crowd.bed'&&inMatch&&bed&&!bed.real)_swapBedToReal();});});}catch(_e){}
   }
   function playSample(key,peak,cat,dur){
     if(!ready||!_urlBufs[key])return false;
@@ -8348,6 +8414,7 @@ const AudioMgr=(function(){
   function arp(names,c,step,peak){if(!ready)return;names.forEach((n,i)=>setTimeout(()=>osc(c,{type:'triangle',f0:NOTE[n]||440,dur:0.28,peak:peak||0.16,a:0.005}),i*step*1000));}
   function fanfare(big){
     if(!ready)return;
+    if(_play149('career.trophy')){if(big)_play149('crowd.applause',0.7);return;}
     const seq=[['C',0],['E',0.11],['G',0.22],['C2',0.33],['G',0.46],['C2',0.58]];
     seq.forEach(([n,t])=>setTimeout(()=>{osc('sfx',{type:'sawtooth',f0:NOTE[n],dur:0.55,peak:big?0.2:0.16,a:0.01});osc('sfx',{type:'triangle',f0:NOTE[n]/2,dur:0.55,peak:0.1});},t*1000));
     if(big)crowdApplause(2.2,0.5);
@@ -8355,6 +8422,7 @@ const AudioMgr=(function(){
   // fischietto arbitro: bandpass noise + FM warble (kind 1=corto,2=doppio,3=lungo finale)
   function refWhistle(kind){
     if(!ready)return;
+    if(_play149(kind===2?'ref.whistle2':kind===3?'ref.whistle_final':'ref.whistle'))return;
     const blow=(t0,dur)=>{try{
       const base=2100,o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(base,now()+t0);
       const lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=17;const lg=ctx.createGain();lg.gain.value=55;lfo.connect(lg);lg.connect(o.frequency);
@@ -8442,6 +8510,7 @@ const AudioMgr=(function(){
     if(!ready)return;
     // strada 1 (preferita): campione REALE di boato (Mixkit joy crowd, fornito dal PO). Dura ~15s → ne suono i primi
     //   ~4.2s con fade (l'esplosione iniziale). Niente synth sopra: la registrazione è completa.
+    if(_play149('crowd.roar')){vibrate(60);return;}
     if(_urlBufs['crowd.roar']){try{playSample('crowd.roar',0.95,'crowd',4.2);vibrate(60);return;}catch(_e){}}
     try{
       const t0=now(),T=3.4;
@@ -8533,6 +8602,10 @@ const AudioMgr=(function(){
     if(!ready||!cfg.on.music)return;
     if(mus&&musScene===key)return;
     musicStop(true);musScene=key;
+    {const mk=key==='career'?'music.career':'music.home',L=_g149On()&&_buf149[mk];
+     if(L&&L[0])try{const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));g.gain.setTargetAtTime(F149[mk].g,now(),0.6);
+       const s=ctx.createBufferSource();s.buffer=L[0];s.loop=true;s.connect(g);s.start();_plays149[mk]=(_plays149[mk]|0)+1;
+       mus={g,S:null,step:0,key,src:s};return;}catch(_e){}}
     try{
       const S=SCENES[key]||SCENES.menu;const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('music'));
       g.gain.setTargetAtTime(0.20,now(),0.6);/* presente ma sotto il cursore Musica */
@@ -8560,6 +8633,7 @@ const AudioMgr=(function(){
     if(!mus){if(musTimer){clearInterval(musTimer);musTimer=null;}return;}
     try{const m=mus;mus=null;musScene=null;if(musTimer){clearInterval(musTimer);musTimer=null;}
       m.g.gain.setTargetAtTime(0.0001,now(),fade?0.4:0.15);
+      if(m.src)setTimeout(()=>{try{m.src.stop();m.src.disconnect();}catch(_e){}},fade?900:300);
       setTimeout(()=>{try{m.g.disconnect();}catch(_e){}},fade?900:300);// le note sono one-shot e si auto-dispongono
     }catch(_e){}
   }
@@ -8593,6 +8667,7 @@ const AudioMgr=(function(){
     'crowd.applause':()=>crowdApplause(1.6,0.5),
     'crowd.cheer':()=>crowdApplause(1.1,0.6),
     'crowd.roar':()=>crowdRoar(),
+    'crowd.boo':()=>crowdSwell(0.9,0.3,900),/* [giro 149] fischi della curva: il file CC0 prima, questa sintesi di ripiego (col rosso il fallo resta solo fischietto, come prima) */
     'career.contract':()=>arp(['C','E','G','C2'],'sfx',0.11,0.18),
     'career.renew':()=>arp(['C','E','G'],'sfx',0.1,0.16),
     'career.trophy':()=>fanfare(true),
@@ -8612,7 +8687,7 @@ const AudioMgr=(function(){
   // ---- API pubblica ------------------------------------------------------
   function play(name){
     if(SILENT()||!ready)return;
-    try{const fn=SFX[name];if(fn){_played++;fn();}}catch(_e){}
+    try{const fn=SFX[name];if(fn){_played++;if(name!=='career.trophy'&&_play149(name))return;fn();}}catch(_e){}
   }
   /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
   const _mus23=(k)=>{if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
@@ -8625,7 +8700,7 @@ const AudioMgr=(function(){
     else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(){ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];delete _last149[k];}); if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
   function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
@@ -8645,10 +8720,10 @@ const AudioMgr=(function(){
       } else if(t==='CoherenceCheck'){
         const k=e.outKind;
         if(k==='post'){play('ball.post');crowdSwell(0.6,0.55,2000);}
-        else if(k==='saved'){play('gk.save');crowdSwell(0.5,0.45,2200);}
+        else if(k==='saved'){play('gk.save');if(!_play149('crowd.applause',0.55))crowdSwell(0.5,0.45,2200);}
         else if(k==='corner'){play('ref.whistle');crowdSwell(0.4,0.3,1400);}
         else if(k==='wide'||k==='blocked'){crowdSwell(0.5,0.35,1600);}
-        else if(k==='foul'){play('ref.whistle');}
+        else if(k==='foul'){play('ref.whistle');_play149('crowd.boo');}
         else if(k==='offside'){play('ref.whistle2');}
       } else if(t==='GoalHero'){ play('ball.net');crowdRoar(); }
       else if(t==='GoalTeam'){ play('ball.net');crowdRoar(); }
@@ -8693,6 +8768,11 @@ const AudioMgr=(function(){
   function preview(c){ if(!ready)return; if(c==='music'){arp(['C','E','G'],'music',0.12,0.14);} else if(c==='crowd')crowdSwell(0.7,0.5,1800); else if(c==='referee')refWhistle(1); else if(c==='match')play('ball.kick'); else play('ui.confirm'); }
   // [giro 20] solo prova: quali file del brusio il gioco caricherebbe (vuoto col rosso) e se il buffer e' gia' decodificato
   if(typeof window!=='undefined')window.__CPM_BRUSIO238=()=>({urls:_bedUrls238().slice(),decodificato:!!_urlBufs['crowd.bed'],durata:_urlBufs['crowd.bed']?_urlBufs['crowd.bed'].duration:0});
+  if(typeof window!=='undefined')window.__CPM_AUDIO149=()=>{const o={on:_g149On(),ready,seed:_seed149,plays:{..._plays149},eventi:{}};
+    Object.keys(F149).forEach(k=>{const E=F149[k],L=_buf149[k]||[];o.eventi[k]={g:E.g,n:E.f.length,file:E.f.map((n,i)=>{const b=L[i];if(!b)return {n,caricato:false};
+      let pk=0,ss=0,N=0;for(let c=0;c<b.numberOfChannels;c++){const d=b.getChannelData(c);for(let j=0;j<d.length;j++){const v=Math.abs(d[j]);if(v>pk)pk=v;ss+=v*v;}N+=d.length;}
+      return {n,caricato:true,durata:+b.duration.toFixed(3),picco_db:+(20*Math.log10(pk*E.g+1e-12)).toFixed(1),rms_db:+(20*Math.log10(Math.sqrt(ss/Math.max(1,N))*E.g+1e-12)).toFixed(1)};})};});
+    o.sintesi=Object.keys(SFX);return o;};
   function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
   return {unlock,play,scene,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
@@ -11252,7 +11332,7 @@ const modaleAperto256=()=>_modali256.n>0&&!(typeof window!=='undefined'&&window.
 const _avvisaModali256=()=>{_modali256.ascolta.forEach(f=>{try{f(_modali256.n);}catch(_e){}});};
 function ModalPannello({children,title,footer,onClose,dismissable=true,width=440,style={},cpm}){
   useEffect(()=>{_modali256.n++;_avvisaModali256();return()=>{_modali256.n=Math.max(0,_modali256.n-1);_avvisaModali256();};},[]);
-  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
+  return(<div data-cpm={cpm} onClick={e=>e.stopPropagation()} className="cpm-rise cpm-pan150" style={{...finestraStd(),maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",...style}}>
       {title!=null&&<div data-cpm="finestra-testa" style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div data-cpm="finestra-titolo" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
         {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus cpm-t40" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4,...(_tocco292()?{minWidth:44,minHeight:44}:{})}}>×</button>}
@@ -11264,7 +11344,7 @@ function ModalPannello({children,title,footer,onClose,dismissable=true,width=440
 /* z = livello dello scrim (le finestre-impulso stanno a 9997, sotto i dialoghi bloccanti); cpm/pannelloCpm = data-cpm di scrim e pannello. */
 function Modal({open=true,onClose,children,title,footer,width=440,dismissable=true,style={},z=9998,cpm,pannelloCpm,foglio=false}){
   if(!open)return null;
-  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className={"cpm-fade"+(foglio&&_g114()?" cpm-foglio114":"")/* [giro 114 G184-06] sul telefono la finestra e' un foglio ancorato in basso (azioni sotto il pollice), centrata da 900 px */} style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
+  return(<div data-cpm={cpm} onClick={dismissable?onClose:undefined} className={"cpm-fade cpm-velo150"+(foglio&&_g114()?" cpm-foglio114":"")/* [giro 114 G184-06] sul telefono la finestra e' un foglio ancorato in basso (azioni sotto il pollice), centrata da 900 px */} style={{position:"fixed",inset:0,background:TH.scrim,zIndex:z,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}>
     <ModalPannello title={title} footer={footer} onClose={onClose} dismissable={dismissable} width={width} style={style} cpm={pannelloCpm}>{children}</ModalPannello>
   </div>);
 }
@@ -13992,6 +14072,129 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
    erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
    scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
+/* [giro 146 PO-348 «occhio alla gestione delle spalle, braccia e mani: spalle larghe e proporzionate al corpo in tutte le scene e negli
+   highlights»] LA REGOLA UNICA DELLE SPALLE. MISURATO (spalle-146-misura.mjs, GLB acceso, corpo CGTrader): il rapporto fra la distanza
+   delle teste degli omeri (Sj) e quella delle anche (Aj, il bacino e' rigido: non cambia con la posa) era 2,36-2,40 negli highlight e
+   nell'intro, 1,97-2,00 nella serata di presentazione (spalle del 17% piu' strette: li' la postura del gioco non arriva) e 1,26 nella
+   premiazione (la clip dell'alzata solleva le clavicole fin quasi alla verticale: spalle a META'). Ora OGNI corpo, in OGNI scena, dopo
+   l'animazione porta Sj dentro la fascia [min,max]·Aj: si ruotano le CLAVICOLE attorno alla loro radice verso il fuori e l'omero gira
+   del contrario, cosi' la direzione del braccio (e il gesto: mani alzate, saluto, tiro) resta quella della clip. Misurare sulle anche
+   rende la regola indipendente da statura e corporatura (un corpo piu' largo ha anche le spalle piu' larghe). Deterministica, nessun
+   sorteggio; idempotente come _corrPostura23 (se la clip non ha scritto l'osso, si riparte dall'ingresso). La fascia viene dalla
+   misura: il basso e' gli highlight (2,36-2,40, il corpo che il PO ha gia' ritoccato due volte), l'alto lascia passare ogni posa
+   gia' sana. Rosso __CPM_NO_G146. */
+const _SPALLE146={min:2.34,max:2.62,allunga:1.35};let _w146=null;
+/* [giro 146b collaudo PO sulle foto del giro 146 «le spalle le hai modificate? sembra che ha lo scartello» (la gobba)] MISURATO
+   (spalle-146-misura.mjs estesa, GLB acceso): la regola del giro 146 allargava ruotando la clavicola e consumando prima la componente in
+   avanti → nella serata di presentazione le teste degli omeri passavano da +0,016·H DAVANTI al torace a −0,006·H DIETRO, e la testa
+   finiva a +0,014·H davanti alle spalle (prima −0,007): di profilo il dorso alto sporge. Nell'alzata del trofeo la clip porta le teste
+   degli omeri a +0,39·Aj SOPRA la base del collo (da fermi −0,45/−0,55) e il giro 146 le allargava A QUELLA QUOTA: spalle larghe e alle
+   orecchie, collo affondato. LA STESSA REGOLA, CORRETTA: (1) la testa dell'omero si sposta SOLO di lato (quota e avanti/indietro della
+   clip intatti: nessuna protrazione, nessun arretramento aggiunti) — clavicola ruotata verso il punto nuovo e attacco del braccio
+   allungato o accorciato quanto serve; (2) TETTO di quota: mai sopra `tetto`·Aj rispetto alla base del collo (neck_01), che e' la quota
+   delle spalle da fermi nel gioco — con le braccia alzate le spalle tornano basse invece di salire verso le orecchie; (3) le MANI
+   restano dove le mette la clip: omero e avambraccio si ripiegano col teorema del coseno nel piano del gomito della clip (IK a due ossa)
+   e la mano riprende la sua rotazione di clip (trofeo, saluto, gesto). Deterministica, idempotente come prima. Rosso __CPM_NO_G146B
+   (= regola del giro 146 com'era, _spalle146a). */
+const _SPALLE146B={tetto:-0.44,lmin:0.7,lmax:1.45};let _w146b=null;
+function _spalle146(B){if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146B)return _spalle146a(B);
+  try{if(!B||typeof THREE==='undefined')return false;
+  const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r,NK=B.neck_01;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent||!NK)return false;
+  const LA={l:B.lowerarm_l,r:B.lowerarm_r},HA={l:B.hand_l,r:B.hand_r};
+  const T=THREE,W=_w146b||(_w146b={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),m:new T.Vector3(),y:new T.Vector3(),n:new T.Vector3(),P:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),
+    s:new T.Vector3(),el:new T.Vector3(),hn:new T.Vector3(),D:new T.Vector3(),nr:new T.Vector3(),pp:new T.Vector3(),e2:new T.Vector3(),t:new T.Vector3(),
+    q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion(),lw:new T.Quaternion(),
+    h0:{l:new T.Vector3(),r:new T.Vector3()},hq:{l:new T.Quaternion(),r:new T.Quaternion()}});
+  const tutte=[CL,CR,UL,UR,LA.l,LA.r,HA.l,HA.r].filter(Boolean);
+  for(const b of tutte){const u=b.userData;if(u.q146bo&&b.quaternion.equals(u.q146bo))b.quaternion.copy(u.q146bi);if(!u.q146bi)u.q146bi=new T.Quaternion();u.q146bi.copy(b.quaternion);}
+  for(const U of [UL,UR]){const u=U.userData;u.f146b=!!(u.p23o&&U.position.equals(u.p23o));if(u.f146b)continue;/* in questo fotogramma l'attacco l'ha gia' scritto _corrPostura23 */
+    if(u.p146bo&&U.position.equals(u.p146bo))U.position.copy(u.p146bi);if(!u.p146bi){u.p146bi=new T.Vector3();u.p146bo=new T.Vector3();}u.p146bi.copy(U.position);}
+  TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
+  TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
+  W.m.subVectors(W.a,W.b).normalize();W.y.set(0,1,0).addScaledVector(W.m,-W.m.y).normalize();NK.getWorldPosition(W.n);
+  for(const k of ['l','r']){if(HA[k]){HA[k].getWorldPosition(W.h0[k]);HA[k].getWorldQuaternion(W.hq[k]);}}/* le mani come le ha messe la clip */
+  const tetto=_SPALLE146B.tetto*Aj;let mosso=false;const R={l:0,r:0};
+  for(const [U,k] of [[UL,'l'],[UR,'r']]){const F=LA[k],Hd=HA[k];if(!F||!Hd)continue;U.getWorldPosition(W.s);F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);R[k]=(W.el.distanceTo(W.s)+W.hn.distanceTo(W.el))*0.995;}/* portata del braccio */
+  /* (1)+(2) la testa dell'omero: di lato fino alla fascia, sotto il tetto di quota; avanti/indietro intatto */
+  for(let it=0;it<3;it++){UL.getWorldPosition(W.a);UR.getWorldPosition(W.b);const Sj=W.a.distanceTo(W.b);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj)),dS=tg-Sj;
+    const alto=Math.max(W.t.subVectors(W.a,W.n).dot(W.y),W.t.subVectors(W.b,W.n).dot(W.y))>tetto+Aj*0.002;
+    if(Math.abs(dS)<=Aj*0.002&&!alto)break;
+    for(const [C,U,sg,k0] of [[CL,UL,1,'l'],[CR,UR,-1,'r']]){
+      C.getWorldPosition(W.c);U.getWorldPosition(W.P);W.d.subVectors(W.P,W.c);const L=W.d.length();if(L<1e-5)continue;
+      const pv=W.t.subVectors(W.P,W.n).dot(W.y);let dv=Math.min(0,tetto-pv);
+      /* la spalla scende verso il tetto solo finche' la mano della clip resta a portata (braccia alzate: trofeo) */
+      if(dv<0&&R[k0]>0&&!(typeof window!=='undefined'&&window.__CPM_PROVA146B_NOREACH)){W.t.copy(W.h0[k0]).sub(W.P).addScaledVector(W.m,-sg*dS/2);const wy=W.t.dot(W.y),ww=W.t.lengthSq(),R2=R[k0]*R[k0];
+        if(ww>R2)dv=0;else dv=Math.max(dv,Math.min(0,wy-Math.sqrt(Math.max(0,wy*wy-ww+R2))));}
+      W.e.copy(W.d).addScaledVector(W.m,sg*dS/2).addScaledVector(W.y,dv);
+      let Le=W.e.length();if(Le<1e-5)continue;const k=Math.max(_SPALLE146B.lmin,Math.min(_SPALLE146B.lmax,Le/L));
+      W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
+      U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
+      C.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
+      if(Math.abs(k-1)>1e-4)U.position.multiplyScalar(k);
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.invert().multiply(W.uw));U.updateMatrixWorld(true);mosso=true;}
+  }
+  /* (3) le mani restano dove le ha messe la clip: IK a due ossa nel piano del gomito della clip */
+  if(mosso)for(const [U,k] of [[UL,'l'],[UR,'r']]){const F=LA[k],Hd=HA[k];if(!F||!Hd||!F.parent||!Hd.parent)continue;
+    U.getWorldPosition(W.s);F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);
+    const a1=W.el.distanceTo(W.s),b1=W.hn.distanceTo(W.el);if(a1<1e-5||b1<1e-5)continue;
+    W.D.subVectors(W.h0[k],W.s);let dl=W.D.length();if(dl<1e-5)continue;W.D.multiplyScalar(1/dl);dl=Math.max(Math.abs(a1-b1)+1e-4,Math.min(a1+b1-1e-4,dl));
+    W.nr.crossVectors(W.e2.subVectors(W.el,W.s),W.t.subVectors(W.hn,W.s));if(W.nr.lengthSq()<1e-10){W.nr.crossVectors(W.D,W.m);if(W.nr.lengthSq()<1e-10)W.nr.crossVectors(W.D,W.y);}
+    W.pp.crossVectors(W.nr,W.D);if(W.pp.lengthSq()<1e-12)continue;W.pp.normalize();if(W.pp.dot(W.e2)<0)W.pp.negate();
+    const ca=Math.max(-1,Math.min(1,(a1*a1+dl*dl-b1*b1)/(2*a1*dl))),sa=Math.sqrt(Math.max(0,1-ca*ca));
+    W.e.copy(W.D).multiplyScalar(ca*a1).addScaledVector(W.pp,sa*a1);/* gomito nuovo, relativo alla spalla */
+    W.q.setFromUnitVectors(W.e2.normalize(),W.t.copy(W.e).normalize());U.getWorldQuaternion(W.uw);U.parent.getWorldQuaternion(W.pw);
+    U.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.uw));U.updateMatrixWorld(true);
+    F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);W.e2.subVectors(W.hn,W.el);W.t.copy(W.s).addScaledVector(W.D,dl).sub(W.el);
+    if(W.e2.lengthSq()>1e-10&&W.t.lengthSq()>1e-10){W.q.setFromUnitVectors(W.e2.normalize(),W.t.normalize());F.getWorldQuaternion(W.lw);F.parent.getWorldQuaternion(W.pw);F.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.lw));F.updateMatrixWorld(true);}
+    Hd.parent.getWorldQuaternion(W.pw);Hd.quaternion.copy(W.pw.invert().multiply(W.hq[k]));Hd.updateMatrixWorld(true);}
+  for(const U of [UL,UR]){const u=U.userData;if(u.f146b)u.p23o.copy(U.position);else u.p146bo.copy(U.position);}/* l'uscita la registra chi ha preso l'ingresso */
+  for(const b of tutte){const u=b.userData;if(!u.q146bo)u.q146bo=new T.Quaternion();u.q146bo.copy(b.quaternion);}
+  try{if(typeof window!=='undefined'&&window.__CPM_N146)window.__CPM_N146[mosso?1:0]++;}catch(_e3){}
+  return mosso;}catch(_e){try{if(typeof window!=='undefined')window.__CPM_E146=String(_e&&_e.message||_e);}catch(_e2){}return false;}}
+/* la regola del giro 146 com'era (rosso __CPM_NO_G146B) */
+function _spalle146a(B){try{if(!B||typeof THREE==='undefined')return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;
+  const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent)return false;
+  const T=THREE,W=_w146||(_w146={a:new T.Vector3(),b:new T.Vector3(),l:new T.Vector3(),r:new T.Vector3(),m:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion()});
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(u.q146o&&b.quaternion.equals(u.q146o))b.quaternion.copy(u.q146i);if(!u.q146i)u.q146i=new T.Quaternion();u.q146i.copy(b.quaternion);}
+  /* l'attacco del braccio a 1,15 volte la lunghezza della clavicola della clip: e' lo stesso allargamento della postura del gioco
+     (_corrPostura23, 23/09); se quella funzione l'ha gia' applicato in questo fotogramma (posizione = la sua uscita) non si somma. */
+  for(const U of [UL,UR]){const u=U.userData;u.f146=!!(u.p23o&&U.position.equals(u.p23o));if(u.f146)continue;/* f146: in questo fotogramma l'ha allargato _corrPostura23 */
+    if(u.p146o&&U.position.equals(u.p146o))U.position.copy(u.p146i);if(!u.p146i){u.p146i=new T.Vector3();u.p146o=new T.Vector3();}u.p146i.copy(U.position);U.position.multiplyScalar(1.15);u.p146o.copy(U.position);}
+  const fuori=U=>{const u=U.userData;if(u.f146)u.p23o.copy(U.position);else if(u.p146o)u.p146o.copy(U.position);};/* l'uscita di posizione la registra chi ha preso l'ingresso */
+  TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
+  TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
+  if(!W.hl){W.hl=new T.Vector3();W.hr=new T.Vector3();W.h2=new T.Vector3();W.u2=new T.Vector3();W.y146=new T.Vector3();W.hv=new T.Vector3();}
+  if(B.hand_l)B.hand_l.getWorldPosition(W.hl);if(B.hand_r)B.hand_r.getWorldPosition(W.hr);/* le mani come le ha messe la clip, prima di ogni ritocco */
+  const L0={};let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
+  W.y146.set(0,1,0).addScaledVector(W.m,-W.m.y).normalize();/* verticale ortogonale all'asse laterale */
+  for(let it=0;it<3;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.002)break;
+    CL.getWorldPosition(W.a);CR.getWorldPosition(W.b);W.c.addVectors(W.a,W.b).multiplyScalar(0.5);/* asse del busto: fra le radici delle clavicole */
+    for(const [C,U,P,sg,Hd,H0] of [[CL,UL,W.l,1,B.hand_l,W.hl],[CR,UR,W.r,-1,B.hand_r,W.hr]]){
+      C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);let L=W.d.length();if(L<1e-5)continue;if(L0[sg]==null)L0[sg]=L;
+      /* la parte non laterale si divide in ALTEZZA (verticale) e AVANTI: si consuma prima l'avanti (spalla protratta), poi l'altezza */
+      let dl=W.d.dot(W.m),dv=W.d.dot(W.y146);const dl2=sg*tg/2-c;
+      /* braccia alzate: la clip porta la clavicola quasi in verticale e la sola rotazione abbasserebbe la spalla (e le mani, e il trofeo:
+         misurato -0,10 sull'alzata). L'attacco del braccio si allunga quanto serve per tenere insieme larghezza e quota, fino a
+         `allunga` volte la lunghezza d'inizio fotogramma. */
+      const L2=Math.min(L0[sg]*_SPALLE146.allunga,Math.sqrt(dl2*dl2+dv*dv));
+      if(L2>L*1.001){const k=L2/L;U.position.multiplyScalar(k);fuori(U);U.updateMatrixWorld(true);U.getWorldPosition(P);W.d.subVectors(P,W.a);L*=k;dl*=k;dv*=k;}
+      const dl3=Math.max(-L*0.999,Math.min(L*0.999,dl2)),resto=Math.max(0,L*L-dl3*dl3),dv2=Math.sign(dv)*Math.min(Math.abs(dv),Math.sqrt(resto));
+      W.e.copy(W.d).addScaledVector(W.m,-dl).addScaledVector(W.y146,-dv);const fo=W.e.length(),fo2=Math.sqrt(Math.max(0,resto-dv2*dv2));
+      if(fo>1e-6)W.e.multiplyScalar(fo2/fo);W.e.addScaledVector(W.y146,dv2).addScaledVector(W.m,dl3);
+      W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
+      U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
+      C.quaternion.copy(W.pw.clone().invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.clone().invert().multiply(W.uw));U.updateMatrixWorld(true);
+      /* la MANO resta dove l'ha messa la clip (trofeo, saluto, esultanza): l'omero si ri-mira dalla spalla nuova verso la mano di prima */
+      if(Hd){U.getWorldPosition(W.u2);Hd.getWorldPosition(W.h2);W.h2.sub(W.u2);W.hv.subVectors(H0,W.u2);
+        if(W.h2.lengthSq()>1e-8&&W.hv.lengthSq()>1e-8){W.q.setFromUnitVectors(W.h2.normalize(),W.hv.normalize());U.getWorldQuaternion(W.uw);U.quaternion.copy(W.cw.clone().invert().multiply(W.q).multiply(W.uw));U.updateMatrixWorld(true);}}
+      mosso=true;}
+  }
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(!u.q146o)u.q146o=new T.Quaternion();u.q146o.copy(b.quaternion);}
+  try{if(typeof window!=='undefined'&&window.__CPM_N146)window.__CPM_N146[mosso?1:0]++;}catch(_e3){}
+  return mosso;}catch(_e){try{if(typeof window!=='undefined')window.__CPM_E146=String(_e&&_e.message||_e);}catch(_e2){}return false;}}
 /*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
   const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
   [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
@@ -14019,9 +14222,12 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
       giu(B.upperarm_l,B.clavicle_l,0.45);giu(B.upperarm_r,B.clavicle_r,0.45);}
     try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}}
   else{try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}
+  /* [giro 146 PO-348] la regola unica delle spalle chiude la postura; le uscite di questa funzione diventano quelle di _spalle146, cosi'
+     l'idempotenza (q21o/q22o: «se la clip non ha scritto l'osso, riparti dal tuo ingresso») resta vera anche dopo il ritocco. */
+  if(_spalle146(B)){[B.clavicle_l,B.clavicle_r].forEach(b=>{if(b&&b.userData.q21o)b.userData.q21o.copy(b.quaternion);});[B.upperarm_l,B.upperarm_r].forEach(b=>{if(b&&b.userData.q22o)b.userData.q22o.copy(b.quaternion);});}
   try{if(typeof window!=='undefined'&&B.upperarm_l&&B.upperarm_l.children){const fa=B.upperarm_l.children.find(c=>c.isBone&&/lowerarm_l$/.test(c.name));if(fa){const a0=new THREE.Vector3(),a1=new THREE.Vector3();B.upperarm_l.getWorldPosition(a0);fa.getWorldPosition(a1);const v=a1.sub(a0).normalize();(window.__CPM_BRACCIO22=window.__CPM_BRACCIO22||[]).length<600&&window.__CPM_BRACCIO22.push(+(Math.acos(Math.max(-1,Math.min(1,-v.y)))*180/Math.PI).toFixed(1));}}}catch(_e22){}
 }catch(_e){}}
-function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|lowerarm_[lr]|clavicle_[lr]|spine_03|neck_01|thigh_[lr]|hand_[lr])$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -14670,6 +14876,8 @@ function ThreeMatchView(props){
     /* [giro 45 PO-068] testimone inerte del censimento gesti-firme-045: per l'EROE, quale clip VERA monta ogni chiave di gesto (base + varianti
        _gVar) e la tabella del contatto. Serve a misurare GLB acceso quali varianti di GESTI hanno lo stesso corpo e quali clip che calciano
        non hanno contatto/piede. Solo lettura, solo sotto cpmtest/__CPM_REC. */
+    /* [giro 146 PO-348] testimone inerte di spalle-146: i corpi 3D vivi della partita (eroe, compagni, portieri, panchina, cerimonia) per misurare spalle/braccia/mani. Solo lettura, solo sotto cpmtest. */
+    if(typeof window!=='undefined'&&_CPM_TEST)try{window.__CPM_CORPI146=()=>(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible&&(!a.visualRoot||a.visualRoot.visible!==false)).map(a=>({v:a.visualRoot||a.root,eroe:!!a._isHero,gk:!!a._isGk,arb:!!a._isRef,panca:!!a._hyperBench293,cg:!!a._hyper,squadra:a._team||null}));}catch(_e){}
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_GESTI_CLIP045=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a.gestures)return null;
       const nm=x=>{try{return (x&&x.getClip&&x.getClip().name)||null;}catch(_e){return null;}},du=x=>{try{return +((x&&x.getClip&&x.getClip().duration)||0).toFixed(2);}catch(_e){return 0;}};const g={};
       for(const k in a.gestures){const b=a.gestures[k];g[k]={base:nm(b),dur:du(b),var:((a._gVar&&a._gVar[k])||[]).map(nm).filter(Boolean)};}
@@ -19825,13 +20033,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _ug=clamp((awayGkMesh.position.x-ball.position.x)/_cdx,0,1);_zq252+=_pz*Math.min(2.6,_cl*0.14)*_sg*Math.sin(_ug*Math.PI);}
             const _dz203=Math.abs(_zq252-awayGkMesh.position.z);
             const _closeShot203=(P.playerX||50)>=87;
-            oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
+            /* [giro 148 PO-350 — A BRUCIAPELO IL RIFLESSO SOLO SE IL PALLONE ARRIVA ADDOSSO. Rosso __CPM_NO_G148, guardiano portiere-252
+               (CPM_GI=1)] MISURATO (giro 147 + baseline 148, 10 corse di gi1@88,86: KO 2/10): con l'eroe a x>=87 il riflesso era obbligato
+               qualunque fosse la distanza laterale, e il riflesso TRASLA il portiere in 0,19 s fin dal caricamento verso la z stimata
+               (morsetto ±9u). Su quei tiri, calciati quasi paralleli al piano del portiere (eroe a z 23, pallone che corre lungo la porta),
+               la stima lineare del passaggio e' instabile: il portiere saltava a z 6,4-7,5 prima del calcio, il pallone gli passava a
+               2,5-3,3u e il movimento cominciava 0,24-0,31 s DOPO il piano. Quando il pallone arrivava entro ~1u il riflesso era giusto.
+               Ora il bruciapelo forza il riflesso solo entro 1,2u (la stessa soglia del riflesso su ogni altro tiro, giro 22/7.999.162);
+               oltre, e' un tuffo vero, che parte al calcio legato al volo (7.465: distesa = progresso dell'arco) — quindi prima del piano.
+               Cambia solo il gesto: esito, arco e bersaglio restano quelli decisi dal motore. Deterministico, nessun sorteggio. */
+            const _close148=_closeShot203&&!(_gk252&&t!=='penalty'&&!(typeof window!=='undefined'&&window.__CPM_NO_G148)&&_dz203>=1.2);/* il RIGORE resta escluso: misurato (scena3d-96 tel, gi58 parata) col tuffo al posto del riflesso il portiere si muove prima del tiro (D4, 3 fotogrammi) — il rigore ha il suo regime */
+            oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_close148)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
             /* [PO-252/5, seconda misura] il riflesso della PARATA aspetta il calcio e rimira in volo il punto in cui il pallone vero
                attraversa il suo piano — lo stesso canale del 7.999.162 (_blk229), che finora valeva solo sul tiro sbagliato. Misurato in
                catena (portiere-252 verde 1/7) e nel banco (testa gi1/gi53: riflesso a 0,73-0,78u, portiere che si sposta dalla parte
                opposta): lo scatto di 0,19 s si chiudeva PRIMA del calcio verso una stima lineare, e l'arco vero non e' lineare. */
             if(_gk252){if(oppActType==="gk_block"&&!_closeShot203){awayGkMesh._blk229=sr.current._actSitKey403;awayGkMesh._pb229=null;awayGkMesh._zpost229=null;}else awayGkMesh._blk229=null;}
-            if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
+            if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;_gc.d148={zq:+_zq252.toFixed(2),zp:+_zp229.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),sx:+ball.position.x.toFixed(2),sz:+ball.position.z.toFixed(2),tx:+ballArcTgtX.toFixed(2),v:P.hlVariant||null,t:t,close:_closeShot203?1:0,c148:_close148?1:0};}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
             oppDiveDir=_zq252>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro [PO-252/5: dove il pallone passa]
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
             // PARATE #3: la PORTATA del tuffo dipende dall'esito → su una PARATA il portiere si distende fino alla palla (parata credibile),
@@ -20136,7 +20354,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          nessun piano, non arma piu' un'esultanza muta — il boato resta, la pantomima no. */
       {const _cpk84=(P.celebPlan&&P.celebPlan.key)||null;
        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _c=(window.__CPM_ARM392=window.__CPM_ARM392||{});_c.fr=(_c.fr||0)+1;if(_cpk84){_c.conPiano=(_c.conPiano||0)+1;_c.key=_cpk84;_c.memo=sr.current._celKey84;}_c.ph=P.matchPhase;_c.sk=P.hlSitKey;_c.celebT=+celebT.toFixed(2);}catch(_e){}}
-       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._celAt392=now;
+       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._pv152=null;sr.current._cv152=0;sr.current._celAt392=now;
          sr.current._celPlan393=P.celebPlan;/* [7.393.0] L'ESULTANZA SI TIENE UNA COPIA DEL PIANO. Il piano vive nello stato React e chiunque puo' azzerarlo; l'azzeramento differito del 7.392 e' in tempo d'OROLOGIO, ma l'esultanza vive in tempo di SCENA — e headless GLB-ON un secondo d'orologio compra una frazione di secondo di gioco: misurato, il piano raggiungeva il renderer per 4 fotogrammi su 47 di esultanza, e la clip non si montava mai (0%). Con la copia scattata QUI, all'armamento, nessun azzeramento esterno puo' piu' spegnere un'esultanza in corso: la copia muore con lei. *//* [7.392.0] QUANDO e' nata: serve a non ucciderla nello stesso fotogramma in cui nasce */
          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDX=0;window.__CPM_CELSTEP=0;window.__CPM_CELY=0;window.__CPM_CELN=0;window.__CPM_CELPOS=null;window.__CPM_CELFR=0;window.__CPM_CELGST=0;window.__CPM_CELTS=0;window.__CPM_CELARM=0;window.__CPM_CELPREV=null;}catch(_e84){}}/* i contatori appartengono a UNA esultanza */}}
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
@@ -22146,7 +22364,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
             if(av._hyperBench293){
               if(_fr293){const sp=sr.current._sph293;sp.center.set(av.root.position.x,av.root.position.y+1.0,av.root.position.z);sp.radius=2.4;av._inQ293=sr.current._frs293.intersectsSphere(sp);av.root.visible=av._inQ293;}
-              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
+              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;try{_spalle146(_ossa23(av.visualRoot||av.root));}catch(_e146){}/* [giro 146] la regola unica delle spalle anche in panchina */}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
               continue;}
             if(av.mx)av.mx.update(dt);
             const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);
@@ -22736,6 +22954,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            misurata una scena (gi0) con zero per cento di clip su otto fotogrammi, cioe' un'esultanza
            interamente muta. Ora il cronometro non parte finche' il piano non c'e', con un'attesa massima
            di 1,2 s oltre la quale si procede comunque: meglio l'esultanza povera di ieri che nessuna. */
+        sr.current._ctx152=P.ceremony?'cer':(celebT>=0?'cel':null);/* [giro 152 PO-355] contesto dell'esultanza per il testimone __CPM_G152W (solo collaudo) */
         if(celebT>=0){celebT+=aDt;
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{/* [7.384.0] i canali CORPOREI misurati dove accadono: spostamento percorso e quota massima. Senza, «l'esultanza non si vede» resta un giudizio. */
             const _pp84=window.__CPM_CELPOS;if(_pp84){const _st84=Math.hypot(hero.position.x-_pp84[0],hero.position.z-_pp84[1]);window.__CPM_CELDX=(window.__CPM_CELDX||0)+_st84;window.__CPM_CELSTEP=Math.max(window.__CPM_CELSTEP||0,_st84);}
@@ -22759,6 +22978,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           _PUGNO32=!!(_pl&&_pl.quiet);sr.current._celLift371=(_act&&_pl&&_pl.clip==="lift"&&!_scorer373&&_cu<((_pl&&_pl.quiet)?0.70:0.94))?1:0;/* [7.373.0] col gol del compagno le braccia al cielo sono SUE: l'eroe corre a raggiungerlo *//* [7.372.0] la versione SOBRIA tiene le braccia al cielo per meno tempo: con una sola clip di gioia la differenza fra esultare e contenersi la fanno durata e immobilita', non l'assenza del gesto */
           /* (b) CORSA verso la curva / i compagni / la bandierina. Il bersaglio resta DENTRO il campo e
                  lontano dai pali: una corsa non deve mai finire dentro la porta (§11). */
+          let _tgt152=null;
           if(_act&&_pl&&(_pl.run>0||_scorer373)){
             let _ctx371=null,_ctz371=null;
             if(_scorer373){/* [7.373.0] verso il marcatore, fermandosi ACCANTO a lui e non dentro */
@@ -22780,7 +23000,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               _ctz371=(Math.abs(hero.position.z)<5.5)?_sd371*7:hero.position.z;}
             }
             if(_ctx371!=null){_ctx371=clamp(_ctx371,-GOAL_LINE_X+6,GOAL_LINE_X-6);_ctz371=clamp(_ctz371,-27,27);
-              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);}}
+              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);_tgt152=[_ctx371,_ctz371];}}
+          /* [giro 152 PO-355 «occhio ai festeggiamenti dopo un gol, a volte l'eroe vola con le braccia alzate». Rosso __CPM_NO_G152]
+             MISURATO (esultanza-152, corpi 3D accesi, 14 gol forzati con l'esultanza imposta): nelle corse a braccia alzate
+             (run_to_crowd, run_wide) l'eroe si spostava fino a 13 u/s con la clip `lift` montata a peso pieno e IN PAUSA
+             (congelamento all'apice del 7.384) e la corsa a peso 0-0,13 — braccia al cielo immobili e gambe ferme che scivolano sul
+             prato: 5 corse su 6. La festa di fine partita lo aveva gia' risolto (7.999.80, _muove80); l'esultanza in campo no.
+             Stessa regola: le braccia al cielo si tengono SOLO a eroe fermo. Fermo = velocita' reale sotto 1,5 u/s (sale subito,
+             scende smussata: niente ri-armi a scatti) e, se il piano ha una corsa, arrivato a meno di 1,5u dal suo bersaglio.
+             In corsa comanda la locomozione (gambe e braccia della corsa); arrivato, le braccia tornano al cielo. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)){
+            const _pv=sr.current._pv152;const _vi=(_pv&&aDt>0)?Math.hypot(hero.position.x-_pv[0],hero.position.z-_pv[1])/aDt:0;
+            const _vp=sr.current._cv152||0;sr.current._cv152=Math.max(_vi>40?0:_vi,_vp+(Math.min(_vi,40)-_vp)*Math.min(1,aDt*8));
+            sr.current._pv152=[hero.position.x,hero.position.z];
+            const _lontano=!!(_tgt152&&Math.hypot(_tgt152[0]-hero.position.x,_tgt152[1]-hero.position.z)>1.5);
+            if(sr.current._celLift371===1&&(sr.current._cv152>1.5||_lontano))sr.current._celLift371=0;}
           /* (c) CORPO — quota: salto e scivolata si vedono anche col GLB (sono posizione) */
           const _jmp=(_pl&&_pl.jump)?_pl.jump:((_pl&&_pl.run>0)?0:((_pl&&_pl.quiet)?0.35:1.2));
           if(_act&&!(_pl&&_pl.slide))hero.position.y=Math.sin(Math.min(Math.max(celebT-_cdel,0)/0.5,1)*Math.PI)*_jmp*(1-_cp3);
@@ -22802,7 +23036,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _tx=pp.mesh.position.x+_dx*_k,_tz=pp.mesh.position.z+_dz*_k;
               pp.mesh._celT371=1;animOne(pp.mesh,_tx,_tz,aDt,ak,_tx,_tz);});}
           if(_cu>=1&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDONE84=1;}catch(_e84){}}/* [7.384.0] il gioco DICHIARA la fine dell'esultanza: una sonda che aspetta a orologio non sa quanto tempo-scena abbia comprato */
-          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
+          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;sr.current._pv152=null;sr.current._cv152=0;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
             sr.current.players.forEach(pp=>{if(pp.mesh)pp.mesh._celT371=0;});}// [6.76.0 LMV-A4] assegnamenti assoluti → cleanup esplicito
           actType=null;}
         // 5.49.23: CERIMONIA TROFEO sul campo — eroe alza il trofeo, coriandoli su tutto il campo, fuochi d'artificio, compagni in festa
@@ -23223,7 +23457,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              al cielo a peso pieno e la corsa a peso 0 — la clip ha le gambe ferme, quindi SCIVOLA sul prato. Velocita' reale
              dell'eroe per fotogramma (media mobile): oltre 1,5 u/s la clip d'esultanza non si accende, comanda la locomozione;
              fermo, le braccia tornano al cielo. Rosso: __CPM_NO_VOLO80. */
-          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);}
+          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)&&_vi<40)sr.current._cv80=Math.max(sr.current._cv80,_vi);/* [giro 152] la velocita' SALE subito e scende smussata: la media mobile da sola teneva le braccia al cielo per due fotogrammi di scatto (misurato 2,2-2,9 u/s, beat present) */}
            sr.current._pv80={x:hero.position.x,z:hero.position.z};}
           const _muove80=!(typeof window!=='undefined'&&window.__CPM_NO_VOLO80)&&(sr.current._cv80||0)>1.5&&!_onPodium;
           sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)&&!_muove80?(_armsUp?1:2):0;
@@ -25637,6 +25871,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
             {const _ws=(_ai===0&&_a._spr252)?(_a._ws252||0):0;if(_a.run)_a.run.weight=_lbW*(1-_gTot)*(1-_ws);if(_ws||(_a._spr252&&_a._spr252.weight))_a._spr252.weight=_lbW*(1-_gTot)*_ws;}/* [PO-252/1] la corsa si divide fra jog e scatto */if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
             _updateAvatarMixerLod(_a,aDt,_ai,true);
+            if(_ai===0&&sr.current._ctx152&&typeof window!=='undefined'&&window.__CPM_G152W&&(_CPM_TEST||_SIT_TEST)){try{/* [giro 152 PO-355 «a volte l'eroe vola con le braccia alzate»] testimone per fotogramma: quota del piede piu' basso sopra il prato, posizione, clip e pausa, pesi */
+              const W=window.__CPM_G152W;if(W.length<40000){let _f=null;if(_a._footL&&_a._footR){const _v=new THREE.Vector3();_a._footL.getWorldPosition(_v);const _l=_v.y;_a._footR.getWorldPosition(_v);_f=Math.min(_l,_v.y)-(_a.root?_a.root.position.y:0)-(_a._fs203!=null?_a._fs203:0.118);}
+                const _ga=_a._gAct;W.push({c:sr.current._ctx152,ph:P.matchPhase||null,pk:(P.celebPlan&&P.celebPlan.pick)||(P.celebPlan&&P.celebPlan.id)||(sr.current._celPlan393&&(sr.current._celPlan393.pick||sr.current._celPlan393.id))||null,bk:sr.current._bk57||null,dt:+aDt.toFixed(4),x:+hero.position.x.toFixed(3),z:+hero.position.z.toFixed(3),y:+(hero.position.y||0).toFixed(3),f:_f!=null?+_f.toFixed(3):null,g:_a._gName||null,gn:_ga?_ga.getClip().name:null,gt:_ga?+(_ga.time||0).toFixed(3):null,gp:_ga?(_ga.paused?1:0):null,gw:+(_a._gw||0).toFixed(2),rw:_a.run?+((_a.run.weight||0)+((_a._spr252&&_a._spr252!==_a.run)?(_a._spr252.weight||0):0)).toFixed(2):null,iw:_a.idle?+(_a.idle.weight||0).toFixed(2):null,l371:sr.current._celLift371|0,cl:sr.current._cerLift|0});}}catch(_e152){}}
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
             //   campo (B2, run normale) li RIAPPLICA dopo il mixer → gambe che corrono, braccia in alto
@@ -29742,8 +29979,15 @@ function simulaPartitaMotore(o){o=o||{};
   const R=i=>i===0?'GK':i<=4?'DF':i<=7?'MF':'AT';/* [7.999.6] i ruoli del gioco: con POR/DIF/CEN/ATT il motore non riconosceva i reparti */
   const gio=P.map((p,i)=>({team:'home',gk:!!p[2],name:'H'+(i+1),rl:R(i),x:p[0],y:p[1]})).concat(Q.map((p,i)=>({team:'away',gk:!!p[2],name:'A'+(i+1),rl:R(i),x:p[0],y:p[1]})));
   /* [7.999.5] occasioni dell'eroe ACCESE: nella partita guardata sono gli highlight, qui le risolve il motore con la scelta piu' probabile dal profilo (scelta PO). Spente, la simulazione perdeva ~0,4 gol a partita e i gol dell'eroe. */
+  /* [giro 157 PO-360, rosso __CPM_NO_G157] IL PAVIMENTO DEL MOTORE NON CANCELLA LE DIFFERENZE DI FORZA. creaMotorePossesso porta
+     ogni forza sotto 40 a 40 (r.~257): in Primavera 2 (club da 20 a 38) tutte le squadre diventavano 40 contro 40 e la squadra
+     dell'eroe, quinta del girone, simulava come contro chiunque (misurato: stesso seme contro un avversario da 30 o da 35 = stesso
+     risultato). Il motore confronta le squadre solo per DIFFERENZA (vantDi): si alzano le due forze dello stesso tanto, quanto basta
+     a portare la piu' debole a 40, e la differenza resta quella vera. Solo la simulazione rapida: il live non passa di qui. */
+  let _fH157=+o.forzaH||65,_fA157=+o.forzaA||65;
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_G157)){const _lo157=Math.min(_fH157,_fA157);if(_lo157<40){_fH157+=40-_lo157;_fA157+=40-_lo157;}}
   const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70,stile:o.stile||null},forza:{home:_fH157,away:_fA157},tattica:o.tattica||null,lato:'home'});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});
@@ -30421,6 +30665,8 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
+/* [giro 151 PO-353] vita della scia del pallone 2D in secondi di TEMPO DI SCENA (decisione PO: «sparisce in meno di mezzo secondo») */
+const SCIA151=0.35;
 function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0,tempo=1}){
   const cRef=React.useRef(null);
   const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};
@@ -30666,7 +30912,18 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
       const puls=0.5+0.5*Math.sin(ora/260);
 
       /* la scia del pallone: dove e' passato negli ultimi istanti */
-      if(M.b){M.scia.push({x:M.b.x,y:M.b.y});if(M.scia.length>18)M.scia.shift();}
+      /* [giro 151 PO-353, foto docs/collaudo-po/188-partita2d-scie.png «troppe traiettorie di passaggio, lasciano troppa scia»]
+         DECISIONE PO: scia corta e sottile — una codina breve dietro il pallone che sparisce in meno di mezzo secondo, solo mentre
+         il pallone viaggia. MISURATO prima (sonda partita2d-151): la scia contava 18 FOTOGRAMMI, quindi durava 0,3 s a 60 fps e
+         quasi 2 s a 10, e si disegnava anche col pallone al piede; in piu' la linea tratteggiata andava dal pallone al bersaglio
+         del passaggio, attraverso mezzo campo. UNA REGOLA: i punti portano il TEMPO DI SCENA (somma dei dt del disegno) e vivono
+         SCIA151 secondi; si raccolgono solo con il pallone in volo, e fuori dal volo la scia si svuota. Spessore massimo r*0,22.
+         La tratteggiata non si disegna piu'; il cerchietto sul bersaglio resta. Rosso __CPM_NO_G151S (la scia di prima). */
+      const _no151s=(typeof window!=='undefined'&&window.__CPM_NO_G151S);
+      M.ts=(M.ts||0)+dt;const _volo151=!!(st.poss&&st.poss.stato==="volo");
+      let _sciaPx151=0,_sciaEta151=0,_tratt151=0;
+      if(_no151s){
+      if(M.b){M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});if(M.scia.length>18)M.scia.shift();}
       if(M.scia.length>2){
         g.lineCap="round";
         for(let i=1;i<M.scia.length;i++){
@@ -30674,15 +30931,40 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
           g.strokeStyle="rgba(255,255,255,"+(a*0.30).toFixed(3)+")";
           g.lineWidth=Math.max(0.6,r*0.52*a);
           g.beginPath();g.moveTo(CX(M.scia[i-1]),CY(M.scia[i-1]));g.lineTo(CX(M.scia[i]),CY(M.scia[i]));g.stroke();
+          _sciaPx151+=Math.hypot(CX(M.scia[i])-CX(M.scia[i-1]),CY(M.scia[i])-CY(M.scia[i-1]));
+        }
+        _sciaEta151=M.ts-M.scia[0].t;
+      }
+      }else{
+        /* stesso riaggancio della vista (oltre 22 punti il pallino salta di colpo): un salto non e' un tragitto, la scia riparte */
+        if(_volo151&&M.b){const _u=M.scia.length?M.scia[M.scia.length-1]:null;if(_u&&Math.abs(_u.x-M.b.x)+Math.abs(_u.y-M.b.y)>22)M.scia.length=0;M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});}else M.scia.length=0;
+        while(M.scia.length&&M.ts-M.scia[0].t>SCIA151)M.scia.shift();
+        if(M.scia.length>1){
+          g.lineCap="round";const _t0=M.scia[0].t,_dd=Math.max(1e-6,M.ts-_t0);
+          for(let i=1;i<M.scia.length;i++){
+            const a=Math.max(0,1-(M.ts-M.scia[i].t)/SCIA151);
+            g.strokeStyle="rgba(255,255,255,"+(a*0.32).toFixed(3)+")";
+            g.lineWidth=Math.max(0.5,r*0.22*a);
+            g.beginPath();g.moveTo(CX(M.scia[i-1]),CY(M.scia[i-1]));g.lineTo(CX(M.scia[i]),CY(M.scia[i]));g.stroke();
+            _sciaPx151+=Math.hypot(CX(M.scia[i])-CX(M.scia[i-1]),CY(M.scia[i])-CY(M.scia[i-1]));
+          }
+          _sciaEta151=_dd;
         }
       }
       /* il passaggio in volo: la linea tratteggiata fino al bersaglio dichiarato dal motore */
-      if(st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){
+      if(_no151s&&st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){_tratt151=Math.hypot(CX(st.poss.a)-CX(M.b),CY(st.poss.a)-CY(M.b));
         g.save();g.setLineDash([4,5]);g.strokeStyle="rgba(255,255,255,0.40)";g.lineWidth=1.2;
-        g.beginPath();g.moveTo(CX(M.b),CY(M.b));g.lineTo(CX(st.poss.a),CY(st.poss.a));g.stroke();
-        g.setLineDash([]);g.strokeStyle="rgba(255,255,255,0.55)";
+        g.beginPath();g.moveTo(CX(M.b),CY(M.b));g.lineTo(CX(st.poss.a),CY(st.poss.a));g.stroke();g.restore();}
+      if(st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){
+        g.save();g.strokeStyle="rgba(255,255,255,0.55)";g.lineWidth=1.2;
         g.beginPath();g.arc(CX(st.poss.a),CY(st.poss.a),r*0.55,0,Math.PI*2);g.stroke();g.restore();
       }
+      /* [giro 151] testimone di collaudo (inerte, solo se la sonda lo arma): la scia in tempo di scena e in pixel CSS, la tratteggiata,
+         lo stato del pallone e dove sta il pallone reso (coordinate del motore) */
+      try{if(typeof window!=='undefined'&&window.__CPM_W151){const rc=cv.getBoundingClientRect(),k=rc.width/W;const w=window.__CPM_W151;
+        w.n=(w.n|0)+1;w.ts=+M.ts.toFixed(3);w.volo=_volo151?1:0;w.scia=M.scia.length;w.eta=+_sciaEta151.toFixed(3);w.px=+(_sciaPx151*k).toFixed(1);w.tratt=+(_tratt151*k).toFixed(1);
+        w.lw=+((_no151s?r*0.52:r*0.22)*k).toFixed(2);w.b=M.b?[+M.b.x.toFixed(1),+M.b.y.toFixed(1)]:null;w.vw=Math.round(rc.width);
+        const R=(w.rec=w.rec||[]);if(R.length<20000)R.push([+M.ts.toFixed(3),w.volo,w.scia,w.eta,w.px,w.tratt,w.b?w.b[0]:-1,w.b?w.b[1]:-1,Math.round(ora),st.palla?+st.palla.x.toFixed(1):-1,st.palla?+st.palla.y.toFixed(1):-1]);}}catch(_e151){}
       /* il fermo di gioco: la bandierina sul punto dove si riprende */
       if(st.fermo){
         const q={x:st.fermo.x,y:st.fermo.y};
@@ -31588,7 +31870,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
-  useEffect(()=>{try{AudioMgr.enterMatch();}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
+  useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 36 PO-262 — IL PUNTO DEL PIAZZATO E' FUNZIONE DELLA PARTITA, NON DEL CASO. Rosso __CPM_NO_SP262] MISURATO (match-sequence
      rosso sulla 169/170; testimoni di sola lettura su pPos, sorteggi di `_rndM` e stato dei ref per minuto, 6 giri identici a 1x): la
@@ -33098,11 +33380,25 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _pk=(arr,k)=>arr[_h(k)%arr.length];
     const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:5,rimessa:5,rinvio:5,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
     /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
-    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:3;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
+    /* [giro 151 PO-354, foto docs/collaudo-po/188-partita2d-scie.png: «Tedesco (SIC) a tu per tu col portiere, conclude di prima!» col
+       pallone a centrocampo] MISURATO (sonda partita2d-151, 4 partite vere 2D): il battito del minuto narra i fatti dei 22 sotto-tick, e
+       16 righe di zona su 30 (tiri e cross) uscivano col pallone gia' a piu' di 15 m dal luogo del fatto — che era stato li' 0,4-0,8 s
+       prima (a 2x: a 1x il doppio). La riga diceva al presente un'azione che il campo aveva gia' chiuso. UNA REGOLA: un tiro o un cross
+       il cui tragitto (from→to dichiarato dal motore) sta a piu' di 15 m dal pallone del motore AL BATTITO non si racconta come azione
+       in corso: scende in coda (priorita' 1) e la riga racconta cio' che il campo mostra ora; la statistica del tiro (ms) passa alla riga
+       scelta, cosi' tiri, momentum e tabellino non cambiano conto. Se nel minuto non c'e' altro da dire resta la riga di prima. Lettura
+       pura dello stato del motore (nessun sorteggio). Rosso __CPM_NO_G151C. */
+    const _no151c=(typeof window!=='undefined'&&window.__CPM_NO_G151C);
+    const _vec151=[];const _d151=(p,a,c)=>{const ax=a.x*1.05,ay=a.y*0.68,px=p.x*1.05,py=p.y*0.68;if(!c)return Math.hypot(px-ax,py-ay);const cx=c.x*1.05,cy=c.y*0.68,dx=cx-ax,dy=cy-ay,L=dx*dx+dy*dy;let u=L>0?((px-ax)*dx+(py-ay)*dy)/L:0;u=Math.max(0,Math.min(1,u));return Math.hypot(px-(ax+u*dx),py-(ay+u*dy));};
+    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:3;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;
+      if(!_no151c&&(e.t==='tiro'||e.t==='cross')&&e.from&&st&&st.palla&&_d151(st.palla,e.from,e.to||null)>15){pr=0.5;_vec151.push(e);}
+      if(pr>bp){bp=pr;best=e;}}
     if(!best||bp<=0)return null;
+    const _msC151=(best&&_vec151.indexOf(best)<0)?_vec151.filter(e=>e.t==='tiro').reduce((m,e)=>{const tl=(e.chi&&e.chi.team)||e.lato||st.poss.lato;if(tl==='home')m.shots=(m.shots|0)+1;else m.oppShots=(m.oppShots|0)+1;return m;},{}):{};
+    const _carry151=!!(_msC151.shots||_msC151.oppShots);
     const cool=(ctx&&ctx.cool)|0;
-    if(bp<5&&cool>0)return null;
-    if(bp<=2&&(_h("dice")%100)>=60)return null;
+    if(bp<5&&cool>0&&!_carry151)return null;
+    if(bp<=2&&(_h("dice")%100)>=60&&!_carry151)return null;
     const e=best;const l=e.lato||st.poss.lato;const nostro=(l==='home');const arc=st.arco||null;
     let txt="",at=null,ms=null,ef=null,bpos=null,poss=0;
     const to=(e.to||(arc&&arc.to)||null);const from=(e.from||(arc&&arc.from)||null);
@@ -33156,6 +33452,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     else return null;
     if(!txt)return null;
     const chiN=e.chi||e.da||e.gk||null;const aN=e.a||e.su||null;
+    if(_carry151){ms=Object.assign({},ms||{});for(const k in _msC151)ms[k]=(ms[k]|0)+_msC151[k];}
+    try{if(typeof window!=='undefined'&&window.__CPM_W151&&_vec151.length){const w=window.__CPM_W151;w.vecchi=(w.vecchi|0)+_vec151.length;}}catch(_e){}
     return{txt,ef,w:1,bpos:bpos||(to?{x:to.x,y:to.y}:null),at,ms,tn617:null,poss:0,
       _eroe75:!!(e.t==='gol'&&nostro&&e.chi&&e.chi.eroe),/* [giro 75] il motore ha fatto segnare l'EROE in gioco fluido: va nel suo risultato registrato (team_goal) */
       _motore870:{lato:l,kind:e.t,kindP:e.kind||e.intent||null,prio:bp,dur:(e.dur>0)?+e.dur:null,from:from?{x:+from.x.toFixed(1),y:+from.y.toFixed(1)}:null,to:to?{x:+to.x.toFixed(1),y:+to.y.toFixed(1)}:null,imp:bp>=6},
@@ -37792,6 +38090,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               side:_side546,actor:_act511,rcv:_az551?String(_az551.a||"").trim():null,ef:ev.ef||null,pd:ev.pd||null,rete:ev._rete852?1:0});/* [7.854 misura] la battuta della rete si riconosce al lancio dell'arco */
           }
           if(typeof window!=='undefined'&&window.__CPM_TXT487!==undefined){try{const _t=(window.__CPM_TXT487=window.__CPM_TXT487||[]);if(_t.length<300)_t.push({m:nx,txt:evTxt,pd:ev.pd||null,ef:ev.ef||null});}catch(_e){}}
+          /* [giro 151 PO-354] testimone di collaudo (inerte, solo se la sonda lo arma): la riga del motore quando ESCE, col luogo del fatto
+             che racconta (from/to) e il pallone del motore in quell'istante; il pallone reso lo campiona la sonda dal testimone del Campo2D */
+          if(typeof window!=='undefined'&&window.__CPM_W151&&ev._motore870){try{const w=window.__CPM_W151;const _st151=motoreRef.current&&motoreRef.current.stato?motoreRef.current.stato():null;
+            (w.righe=w.righe||[]).length<400&&w.righe.push({t:Math.round((typeof performance!=='undefined'&&performance.now)?performance.now():Date.now()),m:nx,kind:ev._motore870.kind,kp:ev._motore870.kindP,from:ev._motore870.from,to:ev._motore870.to,txt:String(evTxt).slice(0,90),palla:_st151&&_st151.palla?[+_st151.palla.x.toFixed(1),+_st151.palla.y.toFixed(1)]:null,stato:_st151&&_st151.poss?_st151.poss.stato:null,b2d:w.b||null,ts:w.ts});}catch(_e151){}}
           /* [7.496.0 F1b] LA RIGA DI CRONACA NEL REGISTRO, con cio' che DICHIARA: la zona (`pd`), dove
              manda il pallone (`bpos`) e quali statistiche si porta dietro (`ms`). E' il verso invertito
              che l'audit ha misurato — il testo che comanda il campo e il box-score — e serve poterlo
@@ -42433,9 +42735,32 @@ function ProTransitionScreen({player,onChoose}){
 /* ========================================
    CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
 ======================================== */
+/* [giro 155 B1, collaudo 177: «Trofeo d'Oro: vince chi ha 27 gol, 2° con 42»] il punteggio e' ovr*0,38+gol*1,1+assist*0,75+trofei
+   (09-audio-scout, generateSeasonAwards) e il sottotitolo lo dice, ma la riga del podio non scriveva i trofei: l'ordine sembrava
+   sbagliato. Ora la riga porta anche la bacheca. Rosso __CPM_NO_G155_B1. */
+/* [giro 155 B10, collaudo 177: «CAMPIONI D'EUROPA!» e sotto «IN EUROPA! … qualificato in Coppa dei Campioni!»] il banner della
+   qualificazione guardava solo la classifica. Con la coppa europea appena vinta non si festeggia l'«arrivo» in Europa: si dice che
+   l'anno prossimo si difende il titolo (proposta del rapporto 140). Rosso __CPM_NO_G155_B10. */
+function bannerEuropa155(euroChamp,small,nome,comp){
+  if(euroChamp&&!_g155("B10"))return comp==="Coppa dei Campioni"
+    ?{titolo:"🏆 E L'ANNO PROSSIMO SI DIFENDE IL TITOLO",riga:(nome||"La squadra")+" di nuovo in "+comp+".",piccola:false}
+    :{titolo:"🏆 DI NUOVO IN EUROPA",riga:(nome||"La squadra")+" giocherà la "+comp+".",piccola:false};
+  return {titolo:small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉",riga:(nome||"")+" qualificato in "+comp+"!",piccola:!!small};}
+/* [giro 155 D15, collaudo 177: «Sei uno dei giocatori su cui ho sempre potuto contare» dopo una stagione da 0 presenze; «Coppa
+   alzata» con il mister che dice «Stagione discreta»] (1) la frase di fiducia («any», trustMin 80) ora pretende almeno 10
+   presenze (minMatches); (2) la classificazione del mister conosce la Coppa nazionale, come quella del presidente. Rosso
+   __CPM_NO_G155_D15. */
+function classeMister155(o){const v=_g155("D15");
+  return o.isChampion?"champion":o.euroChamp?"euro":o.isRelegated?"relegated":o.isPromoted?"promoted":(!v&&o.cupChamp)?"cup":o.top?"good":"survival";}
+function poolMister155(res,trust,style,matches){const v=_g155("D15");
+  return SEASON_END_COACH.filter(d=>(d.result===res||(d.result==="any"&&trust>=(d.trustMin||0)&&(v||(matches||0)>=(d.minMatches||0))))&&(!d.style||d.style===style)&&(v?d.result!=="cup":true));}
+/* [giro 155 B8, collaudo 177: «Prima parte con il FC Clermont»] l'articolo davanti al nome di un club non si indovina (FC, CF,
+   Real, Atletico…): la riga ora non ne usa. Rosso __CPM_NO_G155_B8. */
+function etichettaPrimaParte155(n){const x=n||"club precedente";return _g155("B8")?"Prima parte con il "+x+":":"Prima parte: "+x+" —";}
+function trofeiOro155(c){if(_g155("B1")||!c||!c.trofei)return "";return " · 🏆 "+c.trofei;}
 function getCareerPhase(age){
   if(age<=21)return{label:"Giovane promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
-  if(age<=26)return{label:"Titolare affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=26)return{label:(_g155("D10")?"Titolare affermato":"Anni della maturità")/* [giro 155 D10] «Titolare affermato» e' la FASE D'ETA' 22-26, non il ruolo: in Home accanto a «Riserva» nel Profilo sembrava una contraddizione. Rosso __CPM_NO_G155_D10 */,e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
   if(age<=30)return{label:"Nel pieno della carriera"/* [7.999.49 parte A] «Forma» e' la condizione fisica: la fase d'eta' non la usa */,e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
   if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
   return{label:"Fine carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
@@ -43661,6 +43986,8 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
       for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
         const _sl=men[i].userData&&men[i].userData.saluto144;if(_sl)_sl((called&&i===pi)?_w144:0,Math.sin(Math.max(0,_t144-1.1)*Math.PI*2*1.6));}
+      /* [giro 146 PO-348] la regola unica delle spalle (src/12 _spalle146), dopo clip, vita della fila e saluto: la serata non ha la postura del gioco */
+      if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
       try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142){window.__CPM_PRES142.pi144=called?pi:-1;window.__CPM_PRES142.t144=_t144;window.__CPM_PRES142.w144=_w144;}}catch(_e){}
       /* [7.419.0] IL CHIAMATO SALUTA I SUOI TIFOSI: braccio destro su con rampa morbida e un
          ondeggio di avambraccio — additivo DOPO il mixer (pattern 7.24.2/gk: il mixer riapplica la
@@ -44782,7 +45109,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{_actG.key==="oro"?trofeiOro155(c):""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -44830,7 +45157,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}{mom.a.key==="oro"&&w?trofeiOro155(w):""}</div>
                   </div>
                 </div>
                 <div style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
@@ -45169,10 +45496,10 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const narrative=getSeasonNarrative(playerStats.goals||0,playerStats.assists||0,playerStats.matches||0,playerPos,numTeams,isChampion,isRelegated,_extraNarr100);
   const headline=getSeasonHeadline(playerStats.goals||0,playerStats.assists||0,playerPos,isChampion,isRelegated,_extraNarr100);
   // Sprint 100: pick contextual coach dialog
-  const _coachResult100=isChampion?"champion":euro?.champion?"euro":isRelegated?"relegated":isPromoted?"promoted":playerPos<=numTeams/2?"good":"survival";/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
+  const _coachResult100=classeMister155({isChampion,euroChamp:!!euro?.champion,isRelegated,isPromoted,cupChamp:!!player.cup?.champion,top:playerPos<=numTeams/2});/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
   const _ct100=player.coachTrust||50;
   const _cs100=player.coach?.style||null;
-  const _coachPool100=SEASON_END_COACH.filter(d=>(d.result===_coachResult100||(d.result==="any"&&_ct100>=(d.trustMin||0)))&&(!d.style||d.style===_cs100));
+  const _coachPool100=poolMister155(_coachResult100,_ct100,_cs100,playerStats.matches||0);
   const _coachLine100=(_coachPool100.length>0?_coachPool100:SEASON_END_COACH.filter(d=>d.result===_coachResult100||d.result==="any"))[hashStr((player.name||"x")+String(season||1))%Math.max(1,(_coachPool100.length||1))];
   // Sprint 100: pick president dialog
   const _objsMet100=(player.seasonObjectives||[]).length>0&&(player.seasonObjectives||[]).filter(o=>/* [7.294.0] stesso metro degli altri siti */
@@ -45307,11 +45634,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <div style={{fontSize:FS.body,fontWeight:FW.bold,fontStyle:"italic",color:TH.text,marginTop:4}}>{headline}</div>
         {isChampion&&<div style={{marginTop:8,fontSize:FS.body,fontWeight:800,color:TH.goldText,letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
         {/* [7.8.3 collaudo PO «la qualificazione in Europa va festeggiata, soprattutto per una piccola come la Salernitana!»] festeggiamento dedicato per la qualificazione europea (e la promozione), con enfasi per le piazze piccole (prestigio basso) */}
-        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";return(
+        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";const _bE=bannerEuropa155(!!euro?.champion,_small,club?.n||club?.name,_comp);return(
           <div style={{marginTop:8}}>
-            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉"}</div>
-            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{club?.n||club?.name} qualificato in {_comp}!</div>
-            {_small&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_bE.titolo}</div>
+            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{_bE.riga}</div>
+            {_bE.piccola&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
           </div>);})()}
         {!isChampion&&isPromoted&&<div style={{marginTop:8,fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>🎉 PROMOSSI! Si sale di categoria! 🎉</div>}
         {/* [7.157.0] «a un soffio dall'Europa»: 8° = subito sotto lo spot Conference (7°) → l'Europa non parte. Chiarisce PERCHÉ, così non sembra un bug. */}
@@ -45627,6 +45954,9 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           notifiche (premi, crescita, economia, movimenti): partendo prima che finisca, quelle della stagione
           CHIUSA finivano sopra la schermata di quella NUOVA. Ora il pulsante aspetta che il riepilogo sia
           scorso — e la coda 7.286.0, che comprime le raffiche, fa sì che l'attesa duri pochi secondi. */}
+      {/* [giro 155 B12, collaudo 177: «Il giorno dell'addio» sotto la piega, dopo 7 fisarmoniche] il tasto che chiude la stagione
+          (o la carriera) resta FISSO in fondo allo schermo, come il piede dell'analisi 217. Rosso __CPM_NO_G155_B12. */}
+      <div data-cpm="fine155-piede" style={_g155("B12")?{}:{position:"sticky",bottom:0,zIndex:5,paddingTop:SP.sm,paddingBottom:`calc(${SP.sm}px + env(safe-area-inset-bottom, 0px))`,background:TH.bg}}>
       {farewell&&onRetire?(
         <Btn onClick={onRetire} v="danger" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
           {notifBusy?"📣 Riepilogo in corso…":"🏁 Il giorno dell'addio →"}
@@ -45636,6 +45966,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         {notifBusy?"📣 Riepilogo in corso…":`🆕 Inizia Stagione ${season+1} →`}
       </Btn>
       )}
+      </div>
     </div>
   );
 }
@@ -45868,7 +46199,15 @@ const CREDITI254=[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
-    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"},
+    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). Il boato Mixkit non si usa piu'
+       e la sua voce resta solo col rosso __CPM_NO_G149 (che rimette l'audio di prima). */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[
+    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"}]:[
+    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Beach Sports Theme (Loop)»",d:"Musica dei menu. Fonte: opengameart.org",aut:"Trex0n (Cal McEachern)",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"}]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
     {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
@@ -46210,7 +46549,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
               className="cpm-t40i"
               style={{...inp,fontSize:FS.small,padding:"7px 12px",marginBottom:6}}
             />
-            <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:4,marginBottom:4,paddingRight:2}}>
+            <div data-cpm="sogni155" style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:(_g155("D21")?4:SP.sm)/* [giro 155 D21] 4,5 px fra i bottoni del «Club dei sogni»: la spaziatura della griglia (SP.sm). Rosso __CPM_NO_G155_D21 */,marginBottom:4,paddingRight:2}}>
               {CLUBS.filter(c=>!c.isU18&&(!dreamSearch||c.n.toLowerCase().includes(dreamSearch.toLowerCase())||c.a.toLowerCase().includes(dreamSearch.toLowerCase()))).sort((a,b)=>b.p-a.p).map(c=>{
                 const sel=dreamClub?.id===c.id;
                 return(
@@ -46649,6 +46988,11 @@ function _NationalCallupScreenOld235({data,onPlay}){
 /* ========================================
    RETIREMENT UTILITIES + CAREER END SCREEN  (Sprint 9)
 ======================================== */
+/* [giro 155 · PO-358, decisione PO 10/11 «tetto ai trofei»] il Legacy Score sommava 80 punti per trofeo SENZA tetto: con 6 trofei
+   qualunque carriera lunga toccava 1000 (verifica D18 del giro 140). Ora ogni voce ha il suo massimo e i massimi sommano esattamente
+   1000: il punteggio pieno e' solo di chi e' al tetto su TUTTE le voci. Il punteggio non e' salvato (si calcola dal giocatore), quindi
+   i salvataggi esistenti si ricalcolano da soli. Rosso __CPM_NO_G155_L358. */
+const LEGACY_TETTI358={gol:300,assist:100,trofei:140,nazionale:150,ovr:150,stagioni:100,patrimonio:60};
 function calcLegacyScore(p){
   const goals=p.totalGoals||0;
   const assists=p.totalAssists||0;
@@ -46660,7 +47004,7 @@ function calcLegacyScore(p){
   let score=0;
   score+=Math.min(goals*2,300);
   score+=Math.min(assists,100);
-  score+=trophies*80;
+  score+=_g155("L358")?trophies*80:Math.min(trophies*80,LEGACY_TETTI358.trofei);
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
@@ -46715,6 +47059,9 @@ function generateRetirementBio(p,legacyScore){
 /* [giro 94 D21 collaudo 177-3 «17 stagioni» per una carriera S1→S18] le stagioni giocate sono quelle archiviate nello storico (la
    schermata riceve il giocatore con la stagione appena chiusa gia' dentro `history`); `season-1` valeva solo dopo il passaggio d'anno. */
 function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const n=new Set(((p&&p.history)||[]).map(h=>h&&h.season).filter(x=>x!=null)).size;return Math.max(a,n);}catch(_e){return a;}}
+/* [giro 155 B11, collaudo 177: «17 stagioni» nella lettera, «St. 18» nell'intestazione] la lettera d'addio contava season-1, l'intestazione
+   stagioniGiocate94 (giro 94): nella stessa cerimonia due numeri. Ora la lettera usa lo stesso conto. Rosso __CPM_NO_G155_B11. */
+function stagioniLettera155(p){return _g155("B11")?Math.max(1,((p&&p.season)||1)-1):Math.max(1,stagioniGiocate94(p));}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -46728,7 +47075,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
      e ≥60 gol con la stessa maglia — stesso criterio dell'arco «La bandiera» 7.18). Zero campi save. */
   const _flagClub=(()=>{try{const by={};(p.history||[]).forEach(h=>{if(!h||!h.clubId)return;by[h.clubId]=by[h.clubId]||{id:h.clubId,n:h.club,seasons:0,goals:0};by[h.clubId].seasons++;by[h.clubId].goals+=(h.goals||0);});const best=Object.values(by).sort((a,b)=>(b.seasons*100+b.goals)-(a.seasons*100+a.goals))[0];if(best){const _db56=(typeof CLUBS!=="undefined")&&CLUBS.find(c=>c.id===best.id);if(_db56)best.n=_db56.n;}/* [7.257.0 screenshot PO «squadra sbagliata!»] le stagioni U18 condividono l'id del club madre e il nome veniva dalla PRIMA entry dello storico («FC Salernum Primavera», quella del provino): il club del cuore e la maglia ritirata sono del club SENIOR — nome risolto dal DB per id */return best&&best.seasons>=5&&best.goals>=60?best:null;}catch(_e){return null;}})();
   const _firstClub=(p.history||[])[0]?.club||p.club?.n||"il mio primo club";
-  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=Math.max(1,(p.season||1)-1);
+  const _totG=p.totalGoals||p.goals||0,_totM=p.totalMatches||p.matches||0,_totS=stagioniLettera155(p);
   const trophies=p.trophies||[];
   const history=p.history||[];
   const bestSeason=history.reduce((best,h)=>(!best||h.goals>best.goals)?h:best,null);
@@ -48733,6 +49080,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{try{
     const sn=player.season||1;
     const mine=[..._committedMdRef.current].filter(k=>String(k).startsWith(sn+"|")).map(k=>+String(k).split("|")[1]).filter(n=>!isNaN(n));
+    /* [giro 155 D17, collaudo 177: «dopo la ricarica compaiono playedMd con valori strani»] il caricamento (17-menu, seed 7.312) fonde nel
+       registro le giornate marcate giocate nel calendario; dal vivo questo specchio fondeva solo quelle committate in sessione, quindi
+       il registro vivo e quello ricaricato differivano (giro 140: [1489,1498,1505] contro [1489,1498,1505,1..34]). Stessa regola qui:
+       il registro nasce uguale a come lo ricostruirebbe il caricamento. Rosso __CPM_NO_G155_D17. */
+    if(!_g155("D17"))(player.calendar||[]).forEach(m=>{if(m&&m.played&&m.matchday!=null&&mine.indexOf(m.matchday)<0)mine.push(m.matchday);});
     if(!mine.length)return;
     const cur=(player.playedMd&&player.playedMd.s===sn&&Array.isArray(player.playedMd.md))?player.playedMd.md:[];
     if(mine.every(n=>cur.indexOf(n)>=0))return;
@@ -50578,7 +50930,7 @@ const getThisWeekMatchday=()=>{
   /* [7.999.159 PO-224, collaudatrice giro 6 e rilascio giro 3] la finestra non si apre SOTTO un altro dialogo bloccante (il confronto col procuratore, non chiudibile, la copriva in 90 settimane su 92 della sonda; la finestra della settimana): aspetta che si chiuda. Estesa ai riquadri con scelta del censimento: «La tua storia», scelte narrative, esonero, procuratore (ingaggio e boutique/global). */
   const _pop224=(node)=>{if(!node)return null;const _w=typeof window!=='undefined'?window:{};if(_w.__CPM_NO_POP224||(_CPM_TEST&&!_w.__CPM_POP224))return node;if(_popTaken224)return null;if(!_w.__CPM_NO_POPAP224&&React.isValidElement(node)&&node.props&&node.props.momento!=null)node=React.cloneElement(node,{momentoAperto:true});/* [7.999.160] in finestra la fisarmonica parte aperta: un tocco solo */if(!_w.__CPM_NO_POPWAIT224&&((player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)||weekLiveModal||(!_w.__CPM_NO_IV224&&interviewModal)))return null;/* [7.999.161 PO-224, collaudatrice giro 8: a 360 px «La tua storia» stava sotto l'intervista «Zona Mista» settimanale] la finestra aspetta anche l'intervista. Rosso __CPM_NO_IV224 */_popTaken224=true;
     if(!_w.__CPM_NO_MOD230&&finestraOn230()&&React.isValidElement(node)&&node.type===Card){const _f230=cardInFinestra230(node);return(<Modal z={9997} dismissable={false} cpm="pop224" pannelloCpm="finestra230" title={_f230.title} footer={_f230.footer}>{_f230.body}</Modal>);}/* [7.999.162 PO-230, decisione PO 13/10 «la finestra standard e' il Modal del gioco»] la Card della home in finestra si smonta e si ridisegna DENTRO il Modal: un solo titolo, niente fisarmonica ne' freccia, niente occhiello ripetuto, pulsanti nel piede. Rosso __CPM_NO_MOD230 (la Card clonata della 7.999.161) */
-    return(<div data-cpm="pop224" className="cpm-fade" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise" data-cpm="finestra230" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto",...(finestraOn230()?{...finestraStd(),padding:SP.sm}:{})}}>{(finestraOn230()&&React.isValidElement(node))?React.cloneElement(node,{style:{...(node.props.style||{}),background:"transparent",border:"none",boxShadow:"none",marginBottom:0}}):node}</div></div>);};/* [7.999.161 PO-230] cornice standard: la Card interna perde fondo, bordo e ombra propri */
+    return(<div data-cpm="pop224" className="cpm-fade cpm-velo150" style={{position:"fixed",inset:0,background:TH.scrim,zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg}}><div className="cpm-rise cpm-pan150" data-cpm="finestra230" style={{width:"100%",maxWidth:440,maxHeight:"90vh",overflow:"auto",...(finestraOn230()?{...finestraStd(),padding:SP.sm}:{})}}>{(finestraOn230()&&React.isValidElement(node))?React.cloneElement(node,{style:{...(node.props.style||{}),background:"transparent",border:"none",boxShadow:"none",marginBottom:0}}):node}</div></div>);};/* [7.999.161 PO-230] cornice standard: la Card interna perde fondo, bordo e ombra propri */
   /* [7.999.173 PO-224, giro 66] il censimento (docs/sviluppo/PO224-censimento-home.md) aveva lasciato in home quattro riquadri che
      chiedono una scelta o una presa d'atto: «Il progetto del club», «Sponsor», «Vita privata», «Non mi era mai successo». Passano anche
      loro per la stessa finestra (_pop224: uno alla volta, aspetta i dialoghi bloccanti). Solo presentazione: stato e pulsanti invariati.
@@ -51376,8 +51728,8 @@ const getThisWeekMatchday=()=>{
             :"La vicenda si sgonfia da sola, senza che nessuno l'abbia davvero chiusa. In certi sguardi, per qualche settimana, resterà.",
           choices:[{l:bene?"Voltare pagina →":"Incassare e andare avanti →",c:"fine",fx:(q)=>bene?({coachTrust:clamp((q.coachTrust||60)+6,0,100),teamChemistry:clamp((q.teamChemistry||60)+4,0,100),morale:clamp((q.morale||70)+4,0,100)}):({morale:clamp((q.morale||70)-2,0,100)})}]};}
       ]},
-    /* ── IL RAGAZZO DELLA PRIMAVERA — un compagno VERO della rosa ────────────────────────────── */
-    giovane:{e:"🌱",lab:"Il ragazzo della Primavera",once:"career",finW:33,/* [7.279.0] l'epilogo parla di «fine stagione» (aggregato in prima squadra o girato in prestito): non può cadere a metà campionato */
+    /* ── IL TUO ALLIEVO (fino al giro 155 «Il ragazzo della Primavera») — un compagno VERO della rosa ────────────────────────────── */
+    giovane:{e:"🌱",lab:titoloAllievo359()/* [giro 155 PO-359] */,once:"career",finW:33,/* [7.279.0] l'epilogo parla di «fine stagione» (aggregato in prima squadra o girato in prestito): non può cadere a metà campionato */
       /* [7.273.0 collaudo PO «non è prematuro che a 18 anni già fa da mentore ed è l'idolo dei giovani
          della Primavera? posticiperei questo tipo di storia»] Mancava del tutto il vincolo d'ETÀ: bastavano
          una seconda stagione e 72 di OVR, quindi un diciottenne appena arrivato si ritrovava maestro di
@@ -52316,7 +52668,7 @@ const getThisWeekMatchday=()=>{
         // [6.64.0 collaudo PO «mi ripropone la semifinale di UCL»] marca la gara giocata per MATCHDAY (preciso),
         //   non per settimana (che poteva marcare/mancare la voce sbagliata se una voce stantia era desincronizzata).
         const newCal=(p.calendar||[]).map(m=>(md&&m.matchday===md.matchday)?{...m,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew},simulated:false}:m);
-        const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,assists:result.assists||0,rating:result.rating,won:result.won,drew:result.drew,euro:true}].slice(-200);
+        const newHist=[...(p.matchHistory||[]),{week:p.week||1,opponent:result.opponent,oppAbbr:result.oppAbbr,oppCol:result.oppCol,homeScore:result.homeScore,awayScore:result.awayScore,goals:result.goals||0,assists:result.assists||0,rating:result.rating,won:result.won,drew:result.drew,euro:true,...stagioneVoce155(p)}].slice(-200);
         if(isGrp){
           const pts=result.won?3:result.drew?1:0;
           const newGR=[...(p.euro?.groupResults||[]),{opp:result.opponent,oppCol:result.oppCol,home:md?.isHome,won:result.won,drew:result.drew,hs:result.homeScore,as:result.awayScore}];
@@ -52649,7 +53001,8 @@ const getThisWeekMatchday=()=>{
     if(ef.morale)bits.push(`😄${ef.morale>0?"+":""}${ef.morale}`);
     if(ef.form)bits.push(`💪${ef.form>0?"+":""}${ef.form}`);
     if(ef.fatigue)bits.push(`⚡${ef.fatigue>0?"+":""}${ef.fatigue}`);
-    if(ef.popularity)bits.push(`⭐${ef.popularity>0?"+":""}${ef.popularity}`);
+    {const _dp155=popAvviso155(player,ef.popularity);/* [giro 155 B6, collaudo 177: «+3 dichiarato, +1 effettivo»] l'avviso dice cio' che si applica (popGain), non il valore grezzo. Rosso __CPM_NO_G155_B6 */
+    if(_dp155)bits.push(`⭐${_dp155>0?"+":""}${_dp155}`);}
     if(ef.coachTrust)bits.push(`🤝${ef.coachTrust>0?"+":""}${ef.coachTrust}`);
     if(bits.length)notify(bits.join(" "));
     if(choice.uff289&&!(typeof window!=="undefined"&&window.__CPM_NO_IMP289))setTimeout(()=>notify(uffAvviso289(choice.uff289),TH.success),250);/* [PO-289] dove la trovi */
@@ -53933,7 +54286,7 @@ const getThisWeekMatchday=()=>{
         const cupTeams=shuffle([...lcAll]).slice(0,Math.min(16,lcAll.length));
         if(!cupTeams.some(t=>t.id===_cupClub74?.id||t.n===_cupClub74?.n))cupTeams[0]=_cupClub74;
         const _s52cupBracket=cupTeams.map(t=>t.id||t.n);
-        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_s52cupBracket,cupSurvivors:_s52cupBracket,cupBracketMatches:{},season:newSeason};/* [6.74.0 QA-21] +season: il seed dei match "altri" del tabellone usava cup.season inesistente → sempre 0 (stessi punteggi ogni stagione) */
+        newCup={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_s52cupBracket,cupSurvivors:_s52cupBracket,cupBracketMatches:{},season:newSeason,...(_g155("D17")?{}:{club:_cupClub74?.id})/* [giro 155 D17] il cammino nasce timbrato col club che lo gioca (prima lo timbrava solo il caricamento) */};/* [6.74.0 QA-21] +season: il seed dei match "altri" del tabellone usava cup.season inesistente → sempre 0 (stessi punteggi ogni stagione) */
         const r16Opp=pick(cupTeams.filter(t=>t.id!==_cupClub74?.id&&t.n!==_cupClub74?.n))||cupTeams[0];
         if(r16Opp)newCalendar=[...newCalendar,{matchday:990,week:CUP_ROUND_WEEKS[1],opponentId:r16Opp.id,opponentName:r16Opp.n||r16Opp.name,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:CUP_ROUND_NAMES[1]}];
       }
@@ -54112,7 +54465,7 @@ const getThisWeekMatchday=()=>{
         const _oppPool=_teams.filter(t=>t.id!==offer.club?.id);
         const _opp=_oppPool.length?_oppPool[Math.abs(hashStr((offer.club?.id||"x")+"procup"+newSeason))%_oppPool.length]:null;
         if(_opp){
-          _cupPro={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_br,cupSurvivors:_br,cupBracketMatches:{},season:newSeason};/* [6.74.0 QA-21] +season per il seed del tabellone */
+          _cupPro={active:true,round:1,nextWeek:9,eliminated:false,champion:false,results:[],bracket:_br,cupSurvivors:_br,cupBracketMatches:{},season:newSeason,...(_g155("D17")?{}:{club:offer.club?.id})/* [giro 155 D17] */};/* [6.74.0 QA-21] +season per il seed del tabellone */
           _calPro=[...newCalendar,{matchday:990,week:9,opponentId:_opp.id,opponentName:_opp.n,isHome:true,played:false,result:null,type:"cup",competition:"Coppa Nazionale",cupRound:1,cupRoundName:"R16"}];
         }
       }catch(_e){}
@@ -54254,9 +54607,9 @@ const getThisWeekMatchday=()=>{
     return{result:"reject"};
   };
   const _acceptNegoWage=(wage,duration)=>{
-    const agentMult=player.hasAgent?1.15:1.0;
+    const agentMult=player.hasAgent?1.15:1.0;/* [giro 155 D9] stessa formula di nettoFirma155 (06-archetipi): cio' che si mostra e' cio' che si firma */
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
-    const finalWage=Math.round(wage*agentMult*(1+_renB95));
+    const finalWage=_g155("D9")?Math.round(wage*agentMult*(1+_renB95)):nettoFirma155(player,wage);
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
     /* [7.999.172 PO-270, collaudo carriere L6-bis §3 — eccezione zona G concessa dal PO 16/10] il rinnovo si firma solo nell'ultimo
        anno (durata 1) o da svincolato (0), e al cambio stagione la durata scala di uno: scrivere `duration` = anni firmati faceva
@@ -55095,8 +55448,8 @@ const getThisWeekMatchday=()=>{
           ?{cardBg:"linear-gradient(135deg,#1a1204,#2a1e06)",cardBd:"1px solid rgba(245,196,66,0.55)",glow:"0 0 40px rgba(245,196,66,0.28)",kicker:"👑 Un Momento Leggendario",kickerCol:"rgba(253,224,71,0.85)",name:"#fff7e0",boxBd:"#f5c542",boxTxt:"#fde9b0",optTxt:"#fff7e0",optBd:"rgba(245,196,66,0.22)",optBdH:"rgba(245,196,66,0.65)",optBgH:"rgba(245,196,66,0.12)",memCol:"rgba(245,196,66,0.55)"}
           :{cardBg:"linear-gradient(135deg,#0f172a,#1a1535)",cardBd:"1px solid rgba(124,58,237,0.4)",glow:"none",kicker:"⚡ Un Momento Che Ricorderai",kickerCol:"rgba(165,180,252,0.7)",name:"#e0e7ff",boxBd:"#7c3aed",boxTxt:"#c7d2fe",optTxt:"#e0e7ff",optBd:"rgba(165,180,252,0.15)",optBdH:"rgba(165,180,252,0.5)",optBgH:"rgba(124,58,237,0.12)",memCol:"rgba(165,180,252,0.5)"};
         return(
-        <div className={_g114()?"cpm-foglio114":undefined}/* [giro 114 G184-07] il «momento» e' un foglio sul telefono */ style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <Card data-cpm="finestra230" style={{maxWidth:420,width:"100%",padding:"24px",...(finestraOn230()?finestraStd():{background:_T.cardBg,border:_T.cardBd,boxShadow:_T.glow})}}>
+        <div className={"cpm-velo150"+(_g114()?" cpm-foglio114":"")}/* [giro 114 G184-07] il «momento» e' un foglio sul telefono */ style={{position:"fixed",inset:0,background:finestraOn230()?TH.scrim:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <Card data-cpm="finestra230" className="cpm-pan150" style={{maxWidth:420,width:"100%",padding:"24px",...(finestraOn230()?finestraStd():{background:_T.cardBg,border:_T.cardBd,boxShadow:_T.glow})}}>
             <div style={{textAlign:"center",marginBottom:10}}>
               <div style={{fontSize:_epic?13:14,letterSpacing:3,textTransform:"uppercase",color:_T.kickerCol,marginBottom:4,fontWeight:_epic?800:400}}>{_T.kicker}</div>
               <div style={{fontSize:_epic?20:18,fontWeight:900,color:_T.name,lineHeight:1.2}}>{careerMomentModal.name}</div>
@@ -55161,7 +55514,7 @@ const getThisWeekMatchday=()=>{
        della dashboard sottostante finivano DAVANTI alla scena 3D dell'intervista. Il modal esce dall'albero
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
-        <div data-cpm="intervista231" data-ctx={interviewModal.matchCtx||""} style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
+        <div data-cpm="intervista231" data-ctx={interviewModal.matchCtx||""} className={"cpm-velo150"+(_iv3d?" cpm-scena150":"")}/* [giro 150 PO-352] la regola condivisa delle finestre (src/19): su PC e tablet velo scuro, finestra centrata alta quanto il contenuto */ style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
           {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={((interviewModal&&interviewModal.club)||player.club)||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}
           {/* [7.977.0 — collaudo PO dal suo Android: «schermata rotta e brutta». LA CAUSA E' UN COMMENTO.
               Qui stava un commento in stile C, NUDO, fra due espressioni JSX, cioe' FUORI dalle graffe: quello
@@ -55171,7 +55524,7 @@ const getThisWeekMatchday=()=>{
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
           {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={((interviewModal&&interviewModal.club)||player.club)||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
-          <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":(typeof window!=="undefined"&&window.__CPM_NO_IV12)?"62vh":"71vh",...((typeof window!=="undefined"&&(window.__CPM_NO_IV12||window.__CPM_NO_IV25))?{}:{minHeight:"69vh"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] scena 40% → 31%, riquadro 62 → 71vh */,overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)",...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?{background:TH.surface3,border:`1px solid ${TH.divider}`,borderRadius:`${RAD.xl}px ${RAD.xl}px 0 0`}:{})/* [7.999.162 PO-230] foglio dal basso (la scena 3D sta sopra): fondo, filo e raggio della cornice standard */}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1,...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?finestraStd():{})}}>
+          <Card className="cpm-pan150" style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":(typeof window!=="undefined"&&window.__CPM_NO_IV12)?"62vh":"71vh",...((typeof window!=="undefined"&&(window.__CPM_NO_IV12||window.__CPM_NO_IV25))?{}:{minHeight:"69vh"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] scena 40% → 31%, riquadro 62 → 71vh */,overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)",...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?{background:TH.surface3,border:`1px solid ${TH.divider}`,borderRadius:`${RAD.xl}px ${RAD.xl}px 0 0`}:{})/* [7.999.162 PO-230] foglio dal basso (la scena 3D sta sopra): fondo, filo e raggio della cornice standard */}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1,...((finestraOn230()&&!(typeof window!=="undefined"&&window.__CPM_NO_MOD230))?finestraStd():{})}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
               {/* [7.977.0 — direttiva PO «anche in questa ad ogni modo ci andranno le figurine»] al posto
@@ -55656,7 +56009,7 @@ const getThisWeekMatchday=()=>{
                       }} style={{padding:"7px 12px",borderRadius:RAD.sm,border:"1.5px solid "+TH.cardBorder,background:TH.surface2,textAlign:"left",cursor:"pointer",fontFamily:"inherit",transition:"all .12s"}}>
                         <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{o.label}</div>
                         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{o.desc}</div>
-                        {o.pct>0&&<div style={{fontSize:FS.caption,fontWeight:700,color:TH.brandText,marginTop:3}}>{annK(o.wage)} / anno{player.hasAgent&&` → ${annK(Math.round(o.wage*agentMult))} con agente`}</div>}
+                        {o.pct>0&&<div style={{fontSize:FS.caption,fontWeight:700,color:TH.brandText,marginTop:3}}>{annK(o.wage)} / anno{player.hasAgent&&` → ${annK(_g155("D9")?Math.round(o.wage*agentMult):nettoFirma155(player,o.wage))} alla firma`}</div>}
                       </button>
                     ))}
                   </div>
@@ -55669,6 +56022,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{background:TH.bgAmber,borderRadius:RAD.sm,padding:"12px",marginBottom:10,border:"1px solid #fed7aa"}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber,marginBottom:4}}>🤝 Il club fa una contro-offerta</div>
                     <div style={{fontSize:FS.small,color:TH.text}}>Stipendio proposto: <strong style={{color:TH.txGreen}}>{annK(clubFinalWage)} / anno</strong></div>
+                    {nettoMostrato155(player,clubFinalWage)!=null&&<div data-cpm="netto155" style={{fontSize:FS.caption,color:TH.accentText,marginTop:2}}>Alla firma: {annK(nettoMostrato155(player,clubFinalWage))} / anno ({player.hasAgent?"procuratore +15%":""}{player.hasAgent&&(player.agentRenewalBonus||0)>0?" · ":""}{(player.agentRenewalBonus||0)>0?"«Prepara rinnovo» +"+Math.round(Math.min(player.agentRenewalBonus,0.30)*100)+"%":""})</div>}{/* [giro 155 D9] il netto che si firma, prima di firmare. Rosso __CPM_NO_G155_D9 */}
                     <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{clubFinalDuration} ann{clubFinalDuration===1?"o":"i"} · non accettano la tua richiesta di {playerAsk?.replace("Chiedi","")}</div>
                   </div>
                   <div style={{display:"flex",gap:8}}>
@@ -56273,7 +56627,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{const c=player.seasonCarry;if(!c||c.season!==(player.season||1))return null;
               const sp=(c.spells||[]).filter(x=>x&&((x.g||0)+(x.a||0)+(x.m||0))>0);if(!sp.length)return null;
               return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>
-                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> {(x.m===1&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D6))?"partita":"partite"} · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
+                {sp.map((x,i)=>(<div key={i}>{etichettaPrimaParte155(x.n)} <b style={{color:TH.text}}>{x.m}</b> {(x.m===1&&!(typeof window!=='undefined'&&window.__CPM_NO_G95D6))?"partita":"partite"} · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
               </div>);})()}
             {(()=>{
               /* [7.465.0 collaudo PO «anche se simulate le ho giocate le ultime 5 partite»] UNA PARTITA SIMULATA
@@ -58654,7 +59008,7 @@ const getThisWeekMatchday=()=>{
             const _rec5=(player.matchHistory||[]).slice(-5);
             const _avg5=_rec5.length?Math.round(_rec5.reduce((s,m)=>s+(m.rating||6),0)/_rec5.length*10)/10:6.0;
             const _next39=role==='leader'?null
-              :role==='titolare'?`Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${player.age||18}) · 130+ presenze (ora ${player.totalMatches||0}) · fiducia del mister 90+ (ora ${player.coachTrust||60}))`/* [7.999.49 parte A] i valori attuali anche qui, come negli altri gradini */
+              :role==='titolare'?gradinoLeader155(player)/* [7.999.49 parte A] i valori attuali anche qui, come negli altri gradini */
               :role==='rotazione'?`Prossimo gradino — Titolare: OVR ≥78 (ora ${player.ovr||60}) · fiducia del mister ≥72 (ora ${player.coachTrust||60}) · voto medio ≥6,8 (ora ${String(_avg5).replace(".",",")})`
               :role==='riserva'?`Prossimo gradino — Rotazione: OVR ≥68 (ora ${player.ovr||60}) · fiducia del mister ≥55 (ora ${player.coachTrust||60}) · voto medio ≥6,2 (ora ${String(_avg5).replace(".",",")})`
               :"Prossimo gradino: firma il primo contratto da professionista";
@@ -59547,7 +59901,7 @@ const getThisWeekMatchday=()=>{
         var expiresS=player.contract?.expiresAtSeason||(player.season||1)+1;
         var seasonLeft=expiresS-(player.season||1);
         var marketWage=_eur49(_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*52); // Sprint 133
-        var isUnderpaid=(wage*52)<(_ovrToAnnualWage133(player.ovr||65)*0.80);
+        var isUnderpaid=sottopagato155(player);/* [giro 155 B2] stessa stima della riga «mercato» */
         /* [7.999.49 parte A] un contratto gia' scaduto si dice scaduto: mai stagioni negative, mai «in scadenza» */
         var _c49=_contratto49(player);var isExpired49=!!(_c49&&_c49.scaduto);
         var isExpiringSoon=!isExpired49&&seasonLeft<=1;
@@ -61709,6 +62063,8 @@ function App(){
         .cpm-career:has([data-cpm="anteprima-sezione"])>div:has([data-cpm="anteprima-sezione"]){flex:1 0 auto;}
         .cpm-career:has([data-cpm="anteprima-sezione"]) div:has(>[data-cpm="anteprima-sezione"]){flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;}
         @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G150)?'':`/* [giro 150 PO-352 «Finestra centrata col velo»] UNA REGOLA PER TUTTE LE FINESTRE in primo piano, da 768 px (PC e tablet; il telefono resta com'e'): velo scuro TH.scrimForte su tutta la pagina, finestra alta quanto il contenuto e centrata in verticale (scorre dentro se e' piu' alta dello schermo), larga almeno 520 px. Lo strato porta .cpm-velo150, il pannello .cpm-pan150 (Modal, finestre degli impulsi, momento di carriera, intervista). Dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) le misure si dividono per 1,12, altrimenti la finestra esce dallo schermo (misurato: offerta alta 774 px su 768). Con la scena della sala stampa (.cpm-scena150) la finestra si centra nello spazio SOTTO la scena (31% alto). Il foglio del giro 114 (768-899 px) resta foglio. Rosso __CPM_NO_G150. */
+        @media(min-width:768px){.cpm-velo150{background:${TH.scrimForte}!important;padding:${SP.lg}px!important;overflow:hidden!important;}.cpm-velo150:not(.cpm-foglio114){align-items:center!important;}.cpm-velo150>.cpm-pan150{min-width:min(520px,100%);height:auto!important;min-height:0!important;max-height:calc(100vh - ${2*SP.lg}px)!important;overflow-y:auto!important;}.cpm-velo150:not(.cpm-foglio114)>.cpm-pan150{border-radius:${RAD.xl}px!important;}.cpm-scroll .cpm-velo150>.cpm-pan150{min-width:min(464px,100%);max-height:calc((100vh - ${2*SP.lg}px) / 1.12)!important;}.cpm-velo150.cpm-scena150{padding-top:calc(31vh + ${SP.lg}px)!important;}.cpm-velo150.cpm-scena150>.cpm-pan150{max-height:calc(69vh - ${3*SP.lg}px)!important;box-shadow:${TH.el3}!important;}}`}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}
@@ -61718,6 +62074,7 @@ function App(){
         .cpm-dash-grid{display:flex;flex-direction:column;gap:${_sb(12)}px;}
         ${(typeof window!=='undefined'&&window.__CPM_NO_SPAZIO296)?'':'[style*="flex-direction: column"][style*="gap"]>[data-cpm-fis]{margin-bottom:0!important;}'}/* [giro 91 PO-296] in una colonna con gap lo spazio fra fisarmoniche e' il gap: senza questa regola margine e gap si sommavano (12+8 = ~22 px a schermo) */
         @media(min-width:900px){.cpm-dash-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start;}}
+        ${(typeof window!=='undefined'&&window.__CPM_NO_G156)?'':'@media(min-width:900px){.cpm-dash-grid>*{grid-column:1/-1;}}'}/* [giro 156 PO-361 «ultime notizie, graficamente tagliato...uniforma»] la griglia a due colonne ha un figlio solo («Ultime notizie», src/18 ~9129): misurato a 1428 px 533 contro 1074 px delle altre card. Ogni card della griglia prende la riga piena, come il resto della Home. Rosso __CPM_NO_G156, guardiano home-larghezza-156 */
         .cpm-offers{display:flex;flex-direction:column;gap:${_sb(10)}px;}
         @media(min-width:900px){.cpm-offers{display:grid;grid-template-columns:1fr 1fr;}}
         .cpm-proto{display:flex;flex-direction:column;gap:${_sb(8)}px;}

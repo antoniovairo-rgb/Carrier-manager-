@@ -1,0 +1,477 @@
+{
+ "statico": {
+  "B1": 3,
+  "B2": 2,
+  "B6": 2,
+  "B8": 2,
+  "B10": 2,
+  "B11": 2,
+  "B13": 2,
+  "D9": 3,
+  "D14": 2,
+  "D15": 2,
+  "T359": 2,
+  "D9firma": true,
+  "B3": true,
+  "D15cup": 2,
+  "D21": true,
+  "B12": true,
+  "L358": true
+ },
+ "A": {
+  "D21": {
+   "ok": true,
+   "dato": {
+    "n": 252,
+    "min": 9,
+    "mediana": 9
+   }
+  },
+  "B1": {
+   "ok": true,
+   "dato": " · 🏆 campione · coppa nazionale"
+  },
+  "B2": {
+   "ok": true,
+   "dato": {
+    "stima": 67308,
+    "stipendio": 70673,
+    "sottopagato": false
+   }
+  },
+  "B3": {
+   "ok": true,
+   "dato": {
+    "stagioneChiusa": false,
+    "settimanaConGara": true
+   }
+  },
+  "B6": {
+   "ok": true,
+   "dato": {
+    "avviso": 1,
+    "applicato": 1
+   }
+  },
+  "B8": {
+   "ok": true,
+   "dato": "Prima parte: FC Clermont —"
+  },
+  "B10": {
+   "ok": true,
+   "dato": {
+    "conCoppa": {
+     "titolo": "🏆 E L'ANNO PROSSIMO SI DIFENDE IL TITOLO",
+     "riga": "FC Prova di nuovo in Coppa dei Campioni.",
+     "piccola": false
+    },
+    "senza": "🎉 IN EUROPA! 🎉"
+   }
+  },
+  "B11": {
+   "ok": true,
+   "dato": {
+    "lettera": 18,
+    "intestazione": 18
+   }
+  },
+  "B13": {
+   "ok": true,
+   "dato": {
+    "season": 7
+   }
+  },
+  "D9": {
+   "ok": true,
+   "dato": {
+    "mostrato": 1265,
+    "firmato": 1265
+   }
+  },
+  "D10": {
+   "ok": true,
+   "dato": "Anni della maturità"
+  },
+  "D14": {
+   "ok": true,
+   "dato": "Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora 33) · 130+ presenze (ora 602) · fiducia del mister 90+ (ora 100) · OVR 80+ e non sotto il livello della squadra, 68 (ora 86) · popolarità 58+ (ora 40)). Con tutte e sei, la fascia arriva nelle settimane successive, non subito."
+  },
+  "D15": {
+   "ok": true,
+   "dato": {
+    "classe": "cup",
+    "fiducia0presenze": false,
+    "fiducia20presenze": true,
+    "frasiCoppa": 2
+   }
+  },
+  "L358": {
+   "ok": true,
+   "dato": {
+    "carrieraD18": 745,
+    "leggenda": 1000,
+    "leggendaSenzaTrofei": 860,
+    "sommaTetti": 1000
+   }
+  },
+  "T359": {
+   "ok": true,
+   "dato": {
+    "arco": "Il tuo allievo",
+    "derby": "Derby fra Mersey e Manchester"
+   }
+  },
+  "B12": {
+   "ok": true,
+   "dato": [
+    {
+     "t": "🆕 Inizia Stagione 13 →",
+     "top": 756,
+     "bottom": 816,
+     "H": 915,
+     "toccabile": true
+    }
+   ]
+  },
+  "D17": {
+   "ok": true,
+   "dato": {
+    "reg": {
+     "week": 14,
+     "giocate": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+     ],
+     "mancanti": [],
+     "registro": 13
+    },
+    "cup": {
+     "season": 13,
+     "cupClub": "sal",
+     "club": "sal",
+     "cupSeason": 13
+    }
+   }
+  }
+ },
+ "B": {
+  "D21": {
+   "ok": false,
+   "dato": {
+    "n": 252,
+    "min": 4.5,
+    "mediana": 4.5
+   }
+  },
+  "B1": {
+   "ok": false,
+   "dato": ""
+  },
+  "B2": {
+   "ok": false,
+   "dato": {
+    "stima": 67308,
+    "stipendio": 70673,
+    "sottopagato": true
+   }
+  },
+  "B3": {
+   "ok": false,
+   "dato": {
+    "stagioneChiusa": true,
+    "settimanaConGara": true
+   }
+  },
+  "B6": {
+   "ok": false,
+   "dato": {
+    "avviso": 3,
+    "applicato": 1
+   }
+  },
+  "B8": {
+   "ok": false,
+   "dato": "Prima parte con il FC Clermont:"
+  },
+  "B10": {
+   "ok": false,
+   "dato": {
+    "conCoppa": {
+     "titolo": "🎉 IN EUROPA! 🎉",
+     "riga": "FC Prova qualificato in Coppa dei Campioni!",
+     "piccola": false
+    },
+    "senza": "🎉 IN EUROPA! 🎉"
+   }
+  },
+  "B11": {
+   "ok": false,
+   "dato": {
+    "lettera": 17,
+    "intestazione": 18
+   }
+  },
+  "B13": {
+   "ok": false,
+   "dato": {}
+  },
+  "D9": {
+   "ok": false,
+   "dato": {
+    "mostrato": null,
+    "firmato": 1265
+   }
+  },
+  "D10": {
+   "ok": false,
+   "dato": "Titolare affermato"
+  },
+  "D14": {
+   "ok": false,
+   "dato": "Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora 33) · 130+ presenze (ora 602) · fiducia del mister 90+ (ora 100))"
+  },
+  "D15": {
+   "ok": false,
+   "dato": {
+    "classe": "good",
+    "fiducia0presenze": true,
+    "fiducia20presenze": true,
+    "frasiCoppa": 0
+   }
+  },
+  "L358": {
+   "ok": false,
+   "dato": {
+    "carrieraD18": 1000,
+    "leggenda": 1000,
+    "leggendaSenzaTrofei": 860,
+    "sommaTetti": 1000
+   }
+  },
+  "T359": {
+   "ok": false,
+   "dato": {
+    "arco": "Il ragazzo della Primavera",
+    "derby": "Derby dell'Ovest Lontano"
+   }
+  },
+  "B12": {
+   "ok": false,
+   "dato": [
+    {
+     "t": "🆕 Inizia Stagione 13 →",
+     "top": 1341,
+     "bottom": 1402,
+     "H": 915,
+     "toccabile": false
+    }
+   ]
+  },
+  "D17": {
+   "ok": false,
+   "dato": {
+    "reg": {
+     "week": 14,
+     "giocate": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+     ],
+     "mancanti": [
+      11,
+      12,
+      13
+     ],
+     "registro": 10
+    },
+    "cup": {
+     "season": 13,
+     "cupClub": null,
+     "club": "sal",
+     "cupSeason": 13
+    }
+   }
+  }
+ },
+ "C": {
+  "D21": {
+   "ok": false,
+   "dato": {
+    "n": 252,
+    "min": 4.5,
+    "mediana": 4.5
+   }
+  },
+  "B1": {
+   "ok": false,
+   "dato": ""
+  },
+  "B2": {
+   "ok": false,
+   "dato": {
+    "stima": 67308,
+    "stipendio": 70673,
+    "sottopagato": true
+   }
+  },
+  "B3": {
+   "ok": false,
+   "dato": {
+    "stagioneChiusa": true,
+    "settimanaConGara": true
+   }
+  },
+  "B6": {
+   "ok": false,
+   "dato": {
+    "avviso": 3,
+    "applicato": 1
+   }
+  },
+  "B8": {
+   "ok": false,
+   "dato": "Prima parte con il FC Clermont:"
+  },
+  "B10": {
+   "ok": false,
+   "dato": {
+    "conCoppa": {
+     "titolo": "🎉 IN EUROPA! 🎉",
+     "riga": "FC Prova qualificato in Coppa dei Campioni!",
+     "piccola": false
+    },
+    "senza": "🎉 IN EUROPA! 🎉"
+   }
+  },
+  "B11": {
+   "ok": false,
+   "dato": {
+    "lettera": 17,
+    "intestazione": 18
+   }
+  },
+  "B13": {
+   "ok": false,
+   "dato": {}
+  },
+  "D9": {
+   "ok": false,
+   "dato": {
+    "mostrato": null,
+    "firmato": 1265
+   }
+  },
+  "D10": {
+   "ok": false,
+   "dato": "Titolare affermato"
+  },
+  "D14": {
+   "ok": false,
+   "dato": "Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora 33) · 130+ presenze (ora 602) · fiducia del mister 90+ (ora 100))"
+  },
+  "D15": {
+   "ok": false,
+   "dato": {
+    "classe": "good",
+    "fiducia0presenze": true,
+    "fiducia20presenze": true,
+    "frasiCoppa": 0
+   }
+  },
+  "L358": {
+   "ok": false,
+   "dato": {
+    "carrieraD18": 1000,
+    "leggenda": 1000,
+    "leggendaSenzaTrofei": 860,
+    "sommaTetti": 1000
+   }
+  },
+  "T359": {
+   "ok": false,
+   "dato": {
+    "arco": "Il ragazzo della Primavera",
+    "derby": "Derby dell'Ovest Lontano"
+   }
+  },
+  "B12": {
+   "ok": false,
+   "dato": [
+    {
+     "t": "🆕 Inizia Stagione 13 →",
+     "top": 1341,
+     "bottom": 1402,
+     "H": 915,
+     "toccabile": false
+    }
+   ]
+  },
+  "D17": {
+   "ok": false,
+   "dato": {
+    "reg": {
+     "week": 14,
+     "giocate": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+     ],
+     "mancanti": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+     ],
+     "registro": 0
+    },
+    "cup": {
+     "season": 13,
+     "cupClub": null,
+     "club": "sal",
+     "cupSeason": 13
+    }
+   }
+  }
+ },
+ "guasti": []
+}

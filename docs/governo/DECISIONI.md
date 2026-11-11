@@ -1261,3 +1261,9 @@ Nella verifica 190 trama, bg-continuity e bg-decision escono CIECHI (0 righe/cop
 
 ### 11/11 14:50 UTC — ball-alive e bg-rhythm rossi preesistenti
 Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseguiti dalla sessione madre su main 7.999.189: ball-alive ROSSO (fermo 10,8 s, exit 2), bg-rhythm ROSSO (1,08×, exit 2) → preesistenti, aggiunti a PO-362. Nota: il fermo più lungo cresce da 10,8 a 14,5 s fra 189 e 190 su un solo campione per braccio: non giudicabile come regressione su 1 partita, da misurare nel giro di riparazione.
+
+## 11/11 ~17:00 UTC — rilascio 7.999.190
+- highlight-95 rieseguito dalla madre su lavoro/190 4f9363a0 (il lanciatore della verifica aveva il comando sbagliato): VERDE 99 highlight, 0 D4 senza esito, 0 difetti; braccio rosso visibile (D4 senza esito 7). Log scratchpad h95-190.log.
+- Unite in lavoro/190, da sole, catena/190-finale e catena/190-distanze (solo verbali, nessun file src).
+- Rossi dichiarati nella ROADMAP, tutti preesistenti sulla 189: sim-motore, grafica-v2 (PO-363), trama, bg-continuity, bg-decision, bg-sync, ball-alive, bg-rhythm (PO-362). Correzioni nella 191.
+- PO-357 (giro 154b) non entra: esce nella 191 come deciso dal PO.

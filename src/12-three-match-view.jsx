@@ -213,6 +213,129 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
    erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
    scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
 function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
+/* [giro 146 PO-348 «occhio alla gestione delle spalle, braccia e mani: spalle larghe e proporzionate al corpo in tutte le scene e negli
+   highlights»] LA REGOLA UNICA DELLE SPALLE. MISURATO (spalle-146-misura.mjs, GLB acceso, corpo CGTrader): il rapporto fra la distanza
+   delle teste degli omeri (Sj) e quella delle anche (Aj, il bacino e' rigido: non cambia con la posa) era 2,36-2,40 negli highlight e
+   nell'intro, 1,97-2,00 nella serata di presentazione (spalle del 17% piu' strette: li' la postura del gioco non arriva) e 1,26 nella
+   premiazione (la clip dell'alzata solleva le clavicole fin quasi alla verticale: spalle a META'). Ora OGNI corpo, in OGNI scena, dopo
+   l'animazione porta Sj dentro la fascia [min,max]·Aj: si ruotano le CLAVICOLE attorno alla loro radice verso il fuori e l'omero gira
+   del contrario, cosi' la direzione del braccio (e il gesto: mani alzate, saluto, tiro) resta quella della clip. Misurare sulle anche
+   rende la regola indipendente da statura e corporatura (un corpo piu' largo ha anche le spalle piu' larghe). Deterministica, nessun
+   sorteggio; idempotente come _corrPostura23 (se la clip non ha scritto l'osso, si riparte dall'ingresso). La fascia viene dalla
+   misura: il basso e' gli highlight (2,36-2,40, il corpo che il PO ha gia' ritoccato due volte), l'alto lascia passare ogni posa
+   gia' sana. Rosso __CPM_NO_G146. */
+const _SPALLE146={min:2.34,max:2.62,allunga:1.35};let _w146=null;
+/* [giro 146b collaudo PO sulle foto del giro 146 «le spalle le hai modificate? sembra che ha lo scartello» (la gobba)] MISURATO
+   (spalle-146-misura.mjs estesa, GLB acceso): la regola del giro 146 allargava ruotando la clavicola e consumando prima la componente in
+   avanti → nella serata di presentazione le teste degli omeri passavano da +0,016·H DAVANTI al torace a −0,006·H DIETRO, e la testa
+   finiva a +0,014·H davanti alle spalle (prima −0,007): di profilo il dorso alto sporge. Nell'alzata del trofeo la clip porta le teste
+   degli omeri a +0,39·Aj SOPRA la base del collo (da fermi −0,45/−0,55) e il giro 146 le allargava A QUELLA QUOTA: spalle larghe e alle
+   orecchie, collo affondato. LA STESSA REGOLA, CORRETTA: (1) la testa dell'omero si sposta SOLO di lato (quota e avanti/indietro della
+   clip intatti: nessuna protrazione, nessun arretramento aggiunti) — clavicola ruotata verso il punto nuovo e attacco del braccio
+   allungato o accorciato quanto serve; (2) TETTO di quota: mai sopra `tetto`·Aj rispetto alla base del collo (neck_01), che e' la quota
+   delle spalle da fermi nel gioco — con le braccia alzate le spalle tornano basse invece di salire verso le orecchie; (3) le MANI
+   restano dove le mette la clip: omero e avambraccio si ripiegano col teorema del coseno nel piano del gomito della clip (IK a due ossa)
+   e la mano riprende la sua rotazione di clip (trofeo, saluto, gesto). Deterministica, idempotente come prima. Rosso __CPM_NO_G146B
+   (= regola del giro 146 com'era, _spalle146a). */
+const _SPALLE146B={tetto:-0.44,lmin:0.7,lmax:1.45};let _w146b=null;
+function _spalle146(B){if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146B)return _spalle146a(B);
+  try{if(!B||typeof THREE==='undefined')return false;
+  const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r,NK=B.neck_01;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent||!NK)return false;
+  const LA={l:B.lowerarm_l,r:B.lowerarm_r},HA={l:B.hand_l,r:B.hand_r};
+  const T=THREE,W=_w146b||(_w146b={a:new T.Vector3(),b:new T.Vector3(),c:new T.Vector3(),m:new T.Vector3(),y:new T.Vector3(),n:new T.Vector3(),P:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),
+    s:new T.Vector3(),el:new T.Vector3(),hn:new T.Vector3(),D:new T.Vector3(),nr:new T.Vector3(),pp:new T.Vector3(),e2:new T.Vector3(),t:new T.Vector3(),
+    q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion(),lw:new T.Quaternion(),
+    h0:{l:new T.Vector3(),r:new T.Vector3()},hq:{l:new T.Quaternion(),r:new T.Quaternion()}});
+  const tutte=[CL,CR,UL,UR,LA.l,LA.r,HA.l,HA.r].filter(Boolean);
+  for(const b of tutte){const u=b.userData;if(u.q146bo&&b.quaternion.equals(u.q146bo))b.quaternion.copy(u.q146bi);if(!u.q146bi)u.q146bi=new T.Quaternion();u.q146bi.copy(b.quaternion);}
+  for(const U of [UL,UR]){const u=U.userData;u.f146b=!!(u.p23o&&U.position.equals(u.p23o));if(u.f146b)continue;/* in questo fotogramma l'attacco l'ha gia' scritto _corrPostura23 */
+    if(u.p146bo&&U.position.equals(u.p146bo))U.position.copy(u.p146bi);if(!u.p146bi){u.p146bi=new T.Vector3();u.p146bo=new T.Vector3();}u.p146bi.copy(U.position);}
+  TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
+  TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
+  W.m.subVectors(W.a,W.b).normalize();W.y.set(0,1,0).addScaledVector(W.m,-W.m.y).normalize();NK.getWorldPosition(W.n);
+  for(const k of ['l','r']){if(HA[k]){HA[k].getWorldPosition(W.h0[k]);HA[k].getWorldQuaternion(W.hq[k]);}}/* le mani come le ha messe la clip */
+  const tetto=_SPALLE146B.tetto*Aj;let mosso=false;const R={l:0,r:0};
+  for(const [U,k] of [[UL,'l'],[UR,'r']]){const F=LA[k],Hd=HA[k];if(!F||!Hd)continue;U.getWorldPosition(W.s);F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);R[k]=(W.el.distanceTo(W.s)+W.hn.distanceTo(W.el))*0.995;}/* portata del braccio */
+  /* (1)+(2) la testa dell'omero: di lato fino alla fascia, sotto il tetto di quota; avanti/indietro intatto */
+  for(let it=0;it<3;it++){UL.getWorldPosition(W.a);UR.getWorldPosition(W.b);const Sj=W.a.distanceTo(W.b);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj)),dS=tg-Sj;
+    const alto=Math.max(W.t.subVectors(W.a,W.n).dot(W.y),W.t.subVectors(W.b,W.n).dot(W.y))>tetto+Aj*0.002;
+    if(Math.abs(dS)<=Aj*0.002&&!alto)break;
+    for(const [C,U,sg,k0] of [[CL,UL,1,'l'],[CR,UR,-1,'r']]){
+      C.getWorldPosition(W.c);U.getWorldPosition(W.P);W.d.subVectors(W.P,W.c);const L=W.d.length();if(L<1e-5)continue;
+      const pv=W.t.subVectors(W.P,W.n).dot(W.y);let dv=Math.min(0,tetto-pv);
+      /* la spalla scende verso il tetto solo finche' la mano della clip resta a portata (braccia alzate: trofeo) */
+      if(dv<0&&R[k0]>0&&!(typeof window!=='undefined'&&window.__CPM_PROVA146B_NOREACH)){W.t.copy(W.h0[k0]).sub(W.P).addScaledVector(W.m,-sg*dS/2);const wy=W.t.dot(W.y),ww=W.t.lengthSq(),R2=R[k0]*R[k0];
+        if(ww>R2)dv=0;else dv=Math.max(dv,Math.min(0,wy-Math.sqrt(Math.max(0,wy*wy-ww+R2))));}
+      W.e.copy(W.d).addScaledVector(W.m,sg*dS/2).addScaledVector(W.y,dv);
+      let Le=W.e.length();if(Le<1e-5)continue;const k=Math.max(_SPALLE146B.lmin,Math.min(_SPALLE146B.lmax,Le/L));
+      W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
+      U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
+      C.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
+      if(Math.abs(k-1)>1e-4)U.position.multiplyScalar(k);
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.invert().multiply(W.uw));U.updateMatrixWorld(true);mosso=true;}
+  }
+  /* (3) le mani restano dove le ha messe la clip: IK a due ossa nel piano del gomito della clip */
+  if(mosso)for(const [U,k] of [[UL,'l'],[UR,'r']]){const F=LA[k],Hd=HA[k];if(!F||!Hd||!F.parent||!Hd.parent)continue;
+    U.getWorldPosition(W.s);F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);
+    const a1=W.el.distanceTo(W.s),b1=W.hn.distanceTo(W.el);if(a1<1e-5||b1<1e-5)continue;
+    W.D.subVectors(W.h0[k],W.s);let dl=W.D.length();if(dl<1e-5)continue;W.D.multiplyScalar(1/dl);dl=Math.max(Math.abs(a1-b1)+1e-4,Math.min(a1+b1-1e-4,dl));
+    W.nr.crossVectors(W.e2.subVectors(W.el,W.s),W.t.subVectors(W.hn,W.s));if(W.nr.lengthSq()<1e-10){W.nr.crossVectors(W.D,W.m);if(W.nr.lengthSq()<1e-10)W.nr.crossVectors(W.D,W.y);}
+    W.pp.crossVectors(W.nr,W.D);if(W.pp.lengthSq()<1e-12)continue;W.pp.normalize();if(W.pp.dot(W.e2)<0)W.pp.negate();
+    const ca=Math.max(-1,Math.min(1,(a1*a1+dl*dl-b1*b1)/(2*a1*dl))),sa=Math.sqrt(Math.max(0,1-ca*ca));
+    W.e.copy(W.D).multiplyScalar(ca*a1).addScaledVector(W.pp,sa*a1);/* gomito nuovo, relativo alla spalla */
+    W.q.setFromUnitVectors(W.e2.normalize(),W.t.copy(W.e).normalize());U.getWorldQuaternion(W.uw);U.parent.getWorldQuaternion(W.pw);
+    U.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.uw));U.updateMatrixWorld(true);
+    F.getWorldPosition(W.el);Hd.getWorldPosition(W.hn);W.e2.subVectors(W.hn,W.el);W.t.copy(W.s).addScaledVector(W.D,dl).sub(W.el);
+    if(W.e2.lengthSq()>1e-10&&W.t.lengthSq()>1e-10){W.q.setFromUnitVectors(W.e2.normalize(),W.t.normalize());F.getWorldQuaternion(W.lw);F.parent.getWorldQuaternion(W.pw);F.quaternion.copy(W.pw.invert().multiply(W.q).multiply(W.lw));F.updateMatrixWorld(true);}
+    Hd.parent.getWorldQuaternion(W.pw);Hd.quaternion.copy(W.pw.invert().multiply(W.hq[k]));Hd.updateMatrixWorld(true);}
+  for(const U of [UL,UR]){const u=U.userData;if(u.f146b)u.p23o.copy(U.position);else u.p146bo.copy(U.position);}/* l'uscita la registra chi ha preso l'ingresso */
+  for(const b of tutte){const u=b.userData;if(!u.q146bo)u.q146bo=new T.Quaternion();u.q146bo.copy(b.quaternion);}
+  try{if(typeof window!=='undefined'&&window.__CPM_N146)window.__CPM_N146[mosso?1:0]++;}catch(_e3){}
+  return mosso;}catch(_e){try{if(typeof window!=='undefined')window.__CPM_E146=String(_e&&_e.message||_e);}catch(_e2){}return false;}}
+/* la regola del giro 146 com'era (rosso __CPM_NO_G146B) */
+function _spalle146a(B){try{if(!B||typeof THREE==='undefined')return false;if(typeof window!=='undefined'&&window.__CPM_NO_G146)return false;
+  const CL=B.clavicle_l,CR=B.clavicle_r,UL=B.upperarm_l,UR=B.upperarm_r,TL=B.thigh_l,TR=B.thigh_r;if(!CL||!CR||!UL||!UR||!TL||!TR||!TL.parent)return false;
+  const T=THREE,W=_w146||(_w146={a:new T.Vector3(),b:new T.Vector3(),l:new T.Vector3(),r:new T.Vector3(),m:new T.Vector3(),c:new T.Vector3(),d:new T.Vector3(),e:new T.Vector3(),q:new T.Quaternion(),pw:new T.Quaternion(),cw:new T.Quaternion(),uw:new T.Quaternion()});
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(u.q146o&&b.quaternion.equals(u.q146o))b.quaternion.copy(u.q146i);if(!u.q146i)u.q146i=new T.Quaternion();u.q146i.copy(b.quaternion);}
+  /* l'attacco del braccio a 1,15 volte la lunghezza della clavicola della clip: e' lo stesso allargamento della postura del gioco
+     (_corrPostura23, 23/09); se quella funzione l'ha gia' applicato in questo fotogramma (posizione = la sua uscita) non si somma. */
+  for(const U of [UL,UR]){const u=U.userData;u.f146=!!(u.p23o&&U.position.equals(u.p23o));if(u.f146)continue;/* f146: in questo fotogramma l'ha allargato _corrPostura23 */
+    if(u.p146o&&U.position.equals(u.p146o))U.position.copy(u.p146i);if(!u.p146i){u.p146i=new T.Vector3();u.p146o=new T.Vector3();}u.p146i.copy(U.position);U.position.multiplyScalar(1.15);u.p146o.copy(U.position);}
+  const fuori=U=>{const u=U.userData;if(u.f146)u.p23o.copy(U.position);else if(u.p146o)u.p146o.copy(U.position);};/* l'uscita di posizione la registra chi ha preso l'ingresso */
+  TL.parent.updateWorldMatrix(true,true);CL.parent.updateWorldMatrix(true,true);
+  TL.getWorldPosition(W.a);TR.getWorldPosition(W.b);const Aj=W.a.distanceTo(W.b);if(!(Aj>1e-4))return false;
+  if(!W.hl){W.hl=new T.Vector3();W.hr=new T.Vector3();W.h2=new T.Vector3();W.u2=new T.Vector3();W.y146=new T.Vector3();W.hv=new T.Vector3();}
+  if(B.hand_l)B.hand_l.getWorldPosition(W.hl);if(B.hand_r)B.hand_r.getWorldPosition(W.hr);/* le mani come le ha messe la clip, prima di ogni ritocco */
+  const L0={};let mosso=false;W.m.subVectors(W.a,W.b).normalize();/* asse laterale dal bacino (rigido): + verso il lato sinistro */
+  W.y146.set(0,1,0).addScaledVector(W.m,-W.m.y).normalize();/* verticale ortogonale all'asse laterale */
+  for(let it=0;it<3;it++){UL.getWorldPosition(W.l);UR.getWorldPosition(W.r);const Sj=W.l.distanceTo(W.r);if(!(Sj>1e-4))break;
+    const tg=Math.max(_SPALLE146.min*Aj,Math.min(_SPALLE146.max*Aj,Sj));if(Math.abs(tg-Sj)<=Aj*0.002)break;
+    CL.getWorldPosition(W.a);CR.getWorldPosition(W.b);W.c.addVectors(W.a,W.b).multiplyScalar(0.5);/* asse del busto: fra le radici delle clavicole */
+    for(const [C,U,P,sg,Hd,H0] of [[CL,UL,W.l,1,B.hand_l,W.hl],[CR,UR,W.r,-1,B.hand_r,W.hr]]){
+      C.getWorldPosition(W.a);const c=W.b.subVectors(W.a,W.c).dot(W.m);W.d.subVectors(P,W.a);let L=W.d.length();if(L<1e-5)continue;if(L0[sg]==null)L0[sg]=L;
+      /* la parte non laterale si divide in ALTEZZA (verticale) e AVANTI: si consuma prima l'avanti (spalla protratta), poi l'altezza */
+      let dl=W.d.dot(W.m),dv=W.d.dot(W.y146);const dl2=sg*tg/2-c;
+      /* braccia alzate: la clip porta la clavicola quasi in verticale e la sola rotazione abbasserebbe la spalla (e le mani, e il trofeo:
+         misurato -0,10 sull'alzata). L'attacco del braccio si allunga quanto serve per tenere insieme larghezza e quota, fino a
+         `allunga` volte la lunghezza d'inizio fotogramma. */
+      const L2=Math.min(L0[sg]*_SPALLE146.allunga,Math.sqrt(dl2*dl2+dv*dv));
+      if(L2>L*1.001){const k=L2/L;U.position.multiplyScalar(k);fuori(U);U.updateMatrixWorld(true);U.getWorldPosition(P);W.d.subVectors(P,W.a);L*=k;dl*=k;dv*=k;}
+      const dl3=Math.max(-L*0.999,Math.min(L*0.999,dl2)),resto=Math.max(0,L*L-dl3*dl3),dv2=Math.sign(dv)*Math.min(Math.abs(dv),Math.sqrt(resto));
+      W.e.copy(W.d).addScaledVector(W.m,-dl).addScaledVector(W.y146,-dv);const fo=W.e.length(),fo2=Math.sqrt(Math.max(0,resto-dv2*dv2));
+      if(fo>1e-6)W.e.multiplyScalar(fo2/fo);W.e.addScaledVector(W.y146,dv2).addScaledVector(W.m,dl3);
+      W.q.setFromUnitVectors(W.d.normalize(),W.e.normalize());
+      U.getWorldQuaternion(W.uw);C.parent.getWorldQuaternion(W.pw);C.getWorldQuaternion(W.cw);
+      C.quaternion.copy(W.pw.clone().invert().multiply(W.q).multiply(W.cw));C.updateMatrixWorld(true);
+      C.getWorldQuaternion(W.cw);U.quaternion.copy(W.cw.clone().invert().multiply(W.uw));U.updateMatrixWorld(true);
+      /* la MANO resta dove l'ha messa la clip (trofeo, saluto, esultanza): l'omero si ri-mira dalla spalla nuova verso la mano di prima */
+      if(Hd){U.getWorldPosition(W.u2);Hd.getWorldPosition(W.h2);W.h2.sub(W.u2);W.hv.subVectors(H0,W.u2);
+        if(W.h2.lengthSq()>1e-8&&W.hv.lengthSq()>1e-8){W.q.setFromUnitVectors(W.h2.normalize(),W.hv.normalize());U.getWorldQuaternion(W.uw);U.quaternion.copy(W.cw.clone().invert().multiply(W.q).multiply(W.uw));U.updateMatrixWorld(true);}}
+      mosso=true;}
+  }
+  for(const b of [CL,CR,UL,UR]){const u=b.userData;if(!u.q146o)u.q146o=new T.Quaternion();u.q146o.copy(b.quaternion);}
+  try{if(typeof window!=='undefined'&&window.__CPM_N146)window.__CPM_N146[mosso?1:0]++;}catch(_e3){}
+  return mosso;}catch(_e){try{if(typeof window!=='undefined')window.__CPM_E146=String(_e&&_e.message||_e);}catch(_e2){}return false;}}
 /*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
   const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
   [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
@@ -240,9 +363,12 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
       giu(B.upperarm_l,B.clavicle_l,0.45);giu(B.upperarm_r,B.clavicle_r,0.45);}
     try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}}
   else{try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}
+  /* [giro 146 PO-348] la regola unica delle spalle chiude la postura; le uscite di questa funzione diventano quelle di _spalle146, cosi'
+     l'idempotenza (q21o/q22o: «se la clip non ha scritto l'osso, riparti dal tuo ingresso») resta vera anche dopo il ritocco. */
+  if(_spalle146(B)){[B.clavicle_l,B.clavicle_r].forEach(b=>{if(b&&b.userData.q21o)b.userData.q21o.copy(b.quaternion);});[B.upperarm_l,B.upperarm_r].forEach(b=>{if(b&&b.userData.q22o)b.userData.q22o.copy(b.quaternion);});}
   try{if(typeof window!=='undefined'&&B.upperarm_l&&B.upperarm_l.children){const fa=B.upperarm_l.children.find(c=>c.isBone&&/lowerarm_l$/.test(c.name));if(fa){const a0=new THREE.Vector3(),a1=new THREE.Vector3();B.upperarm_l.getWorldPosition(a0);fa.getWorldPosition(a1);const v=a1.sub(a0).normalize();(window.__CPM_BRACCIO22=window.__CPM_BRACCIO22||[]).length<600&&window.__CPM_BRACCIO22.push(+(Math.acos(Math.max(-1,Math.min(1,-v.y)))*180/Math.PI).toFixed(1));}}}catch(_e22){}
 }catch(_e){}}
-function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|lowerarm_[lr]|clavicle_[lr]|spine_03|neck_01|thigh_[lr]|hand_[lr])$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -891,6 +1017,8 @@ function ThreeMatchView(props){
     /* [giro 45 PO-068] testimone inerte del censimento gesti-firme-045: per l'EROE, quale clip VERA monta ogni chiave di gesto (base + varianti
        _gVar) e la tabella del contatto. Serve a misurare GLB acceso quali varianti di GESTI hanno lo stesso corpo e quali clip che calciano
        non hanno contatto/piede. Solo lettura, solo sotto cpmtest/__CPM_REC. */
+    /* [giro 146 PO-348] testimone inerte di spalle-146: i corpi 3D vivi della partita (eroe, compagni, portieri, panchina, cerimonia) per misurare spalle/braccia/mani. Solo lettura, solo sotto cpmtest. */
+    if(typeof window!=='undefined'&&_CPM_TEST)try{window.__CPM_CORPI146=()=>(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible&&(!a.visualRoot||a.visualRoot.visible!==false)).map(a=>({v:a.visualRoot||a.root,eroe:!!a._isHero,gk:!!a._isGk,arb:!!a._isRef,panca:!!a._hyperBench293,cg:!!a._hyper,squadra:a._team||null}));}catch(_e){}
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_GESTI_CLIP045=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a.gestures)return null;
       const nm=x=>{try{return (x&&x.getClip&&x.getClip().name)||null;}catch(_e){return null;}},du=x=>{try{return +((x&&x.getClip&&x.getClip().duration)||0).toFixed(2);}catch(_e){return 0;}};const g={};
       for(const k in a.gestures){const b=a.gestures[k];g[k]={base:nm(b),dur:du(b),var:((a._gVar&&a._gVar[k])||[]).map(nm).filter(Boolean)};}
@@ -6046,13 +6174,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _ug=clamp((awayGkMesh.position.x-ball.position.x)/_cdx,0,1);_zq252+=_pz*Math.min(2.6,_cl*0.14)*_sg*Math.sin(_ug*Math.PI);}
             const _dz203=Math.abs(_zq252-awayGkMesh.position.z);
             const _closeShot203=(P.playerX||50)>=87;
-            oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_closeShot203)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
+            /* [giro 148 PO-350 — A BRUCIAPELO IL RIFLESSO SOLO SE IL PALLONE ARRIVA ADDOSSO. Rosso __CPM_NO_G148, guardiano portiere-252
+               (CPM_GI=1)] MISURATO (giro 147 + baseline 148, 10 corse di gi1@88,86: KO 2/10): con l'eroe a x>=87 il riflesso era obbligato
+               qualunque fosse la distanza laterale, e il riflesso TRASLA il portiere in 0,19 s fin dal caricamento verso la z stimata
+               (morsetto ±9u). Su quei tiri, calciati quasi paralleli al piano del portiere (eroe a z 23, pallone che corre lungo la porta),
+               la stima lineare del passaggio e' instabile: il portiere saltava a z 6,4-7,5 prima del calcio, il pallone gli passava a
+               2,5-3,3u e il movimento cominciava 0,24-0,31 s DOPO il piano. Quando il pallone arrivava entro ~1u il riflesso era giusto.
+               Ora il bruciapelo forza il riflesso solo entro 1,2u (la stessa soglia del riflesso su ogni altro tiro, giro 22/7.999.162);
+               oltre, e' un tuffo vero, che parte al calcio legato al volo (7.465: distesa = progresso dell'arco) — quindi prima del piano.
+               Cambia solo il gesto: esito, arco e bersaglio restano quelli decisi dal motore. Deterministico, nessun sorteggio. */
+            const _close148=_closeShot203&&!(_gk252&&t!=='penalty'&&!(typeof window!=='undefined'&&window.__CPM_NO_G148)&&_dz203>=1.2);/* il RIGORE resta escluso: misurato (scena3d-96 tel, gi58 parata) col tuffo al posto del riflesso il portiere si muove prima del tiro (D4, 3 fotogrammi) — il rigore ha il suo regime */
+            oppActType=(_svK203&&(_dz203<(_gk252?1.2:2.4)||_close148)&&!_tuffoTesto23(P))?"gk_block":"gk_dive";oppActT=0;oppMesh=awayGkMesh;
             /* [PO-252/5, seconda misura] il riflesso della PARATA aspetta il calcio e rimira in volo il punto in cui il pallone vero
                attraversa il suo piano — lo stesso canale del 7.999.162 (_blk229), che finora valeva solo sul tiro sbagliato. Misurato in
                catena (portiere-252 verde 1/7) e nel banco (testa gi1/gi53: riflesso a 0,73-0,78u, portiere che si sposta dalla parte
                opposta): lo scatto di 0,19 s si chiudeva PRIMA del calcio verso una stima lineare, e l'arco vero non e' lineare. */
             if(_gk252){if(oppActType==="gk_block"&&!_closeShot203){awayGkMesh._blk229=sr.current._actSitKey403;awayGkMesh._pb229=null;awayGkMesh._zpost229=null;}else awayGkMesh._blk229=null;}
-            if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
+            if(_CPM_TEST&&typeof window!=='undefined'){try{const _gc=window.__CPM_GKACT||(window.__CPM_GKACT={});_gc[oppActType]=(_gc[oppActType]||0)+1;_gc.last=oppActType;_gc.lastDz=+_dz203.toFixed(2);_gc.lastTz=+ballArcTgtZ.toFixed(2);_gc.lastX=P.playerX;_gc.lastKind=P.hlOutcomeKind;_gc.d148={zq:+_zq252.toFixed(2),zp:+_zp229.toFixed(2),gz:+awayGkMesh.position.z.toFixed(2),gx:+awayGkMesh.position.x.toFixed(2),sx:+ball.position.x.toFixed(2),sz:+ball.position.z.toFixed(2),tx:+ballArcTgtX.toFixed(2),v:P.hlVariant||null,t:t,close:_closeShot203?1:0,c148:_close148?1:0};}catch(_e){}}/* [7.203.0] hook test-only: la probe verifica che il riflesso scatti sui tiri centrali/ravvicinati e il tuffo su quelli angolati · [7.231.0] +lastTz: la z ASSOLUTA del bersaglio (lastDz è relativo al GK, che può stare a z±2 → non prova da solo che il tiro parato sia nello specchio) */
             oppDiveDir=_zq252>=oppMesh.position.z?1:-1; // tuffo VERSO il lato del tiro [PO-252/5: dove il pallone passa]
             oppMesh._divePz=oppMesh.position.z;oppMesh._diveYaw=oppMesh.rotation.y;
             // PARATE #3: la PORTATA del tuffo dipende dall'esito → su una PARATA il portiere si distende fino alla palla (parata credibile),
@@ -6357,7 +6495,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          nessun piano, non arma piu' un'esultanza muta — il boato resta, la pantomima no. */
       {const _cpk84=(P.celebPlan&&P.celebPlan.key)||null;
        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _c=(window.__CPM_ARM392=window.__CPM_ARM392||{});_c.fr=(_c.fr||0)+1;if(_cpk84){_c.conPiano=(_c.conPiano||0)+1;_c.key=_cpk84;_c.memo=sr.current._celKey84;}_c.ph=P.matchPhase;_c.sk=P.hlSitKey;_c.celebT=+celebT.toFixed(2);}catch(_e){}}
-       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._celAt392=now;
+       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._pv152=null;sr.current._cv152=0;sr.current._celAt392=now;
          sr.current._celPlan393=P.celebPlan;/* [7.393.0] L'ESULTANZA SI TIENE UNA COPIA DEL PIANO. Il piano vive nello stato React e chiunque puo' azzerarlo; l'azzeramento differito del 7.392 e' in tempo d'OROLOGIO, ma l'esultanza vive in tempo di SCENA — e headless GLB-ON un secondo d'orologio compra una frazione di secondo di gioco: misurato, il piano raggiungeva il renderer per 4 fotogrammi su 47 di esultanza, e la clip non si montava mai (0%). Con la copia scattata QUI, all'armamento, nessun azzeramento esterno puo' piu' spegnere un'esultanza in corso: la copia muore con lei. *//* [7.392.0] QUANDO e' nata: serve a non ucciderla nello stesso fotogramma in cui nasce */
          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDX=0;window.__CPM_CELSTEP=0;window.__CPM_CELY=0;window.__CPM_CELN=0;window.__CPM_CELPOS=null;window.__CPM_CELFR=0;window.__CPM_CELGST=0;window.__CPM_CELTS=0;window.__CPM_CELARM=0;window.__CPM_CELPREV=null;}catch(_e84){}}/* i contatori appartengono a UNA esultanza */}}
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
@@ -8367,7 +8505,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
             if(av._hyperBench293){
               if(_fr293){const sp=sr.current._sph293;sp.center.set(av.root.position.x,av.root.position.y+1.0,av.root.position.z);sp.radius=2.4;av._inQ293=sr.current._frs293.intersectsSphere(sp);av.root.visible=av._inQ293;}
-              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
+              if(av._seated904)continue;av._dt293+=dt;if(av._inQ293&&(sr.current._fc293+_bi)%3===0){av.mx.update(av._dt293);av._dt293=0;try{_spalle146(_ossa23(av.visualRoot||av.root));}catch(_e146){}/* [giro 146] la regola unica delle spalle anche in panchina */}else if(!av._inQ293)av._dt293=Math.min(av._dt293,0.5);
               continue;}
             if(av.mx)av.mx.update(dt);
             const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);
@@ -8957,6 +9095,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            misurata una scena (gi0) con zero per cento di clip su otto fotogrammi, cioe' un'esultanza
            interamente muta. Ora il cronometro non parte finche' il piano non c'e', con un'attesa massima
            di 1,2 s oltre la quale si procede comunque: meglio l'esultanza povera di ieri che nessuna. */
+        sr.current._ctx152=P.ceremony?'cer':(celebT>=0?'cel':null);/* [giro 152 PO-355] contesto dell'esultanza per il testimone __CPM_G152W (solo collaudo) */
         if(celebT>=0){celebT+=aDt;
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{/* [7.384.0] i canali CORPOREI misurati dove accadono: spostamento percorso e quota massima. Senza, «l'esultanza non si vede» resta un giudizio. */
             const _pp84=window.__CPM_CELPOS;if(_pp84){const _st84=Math.hypot(hero.position.x-_pp84[0],hero.position.z-_pp84[1]);window.__CPM_CELDX=(window.__CPM_CELDX||0)+_st84;window.__CPM_CELSTEP=Math.max(window.__CPM_CELSTEP||0,_st84);}
@@ -8980,6 +9119,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           _PUGNO32=!!(_pl&&_pl.quiet);sr.current._celLift371=(_act&&_pl&&_pl.clip==="lift"&&!_scorer373&&_cu<((_pl&&_pl.quiet)?0.70:0.94))?1:0;/* [7.373.0] col gol del compagno le braccia al cielo sono SUE: l'eroe corre a raggiungerlo *//* [7.372.0] la versione SOBRIA tiene le braccia al cielo per meno tempo: con una sola clip di gioia la differenza fra esultare e contenersi la fanno durata e immobilita', non l'assenza del gesto */
           /* (b) CORSA verso la curva / i compagni / la bandierina. Il bersaglio resta DENTRO il campo e
                  lontano dai pali: una corsa non deve mai finire dentro la porta (§11). */
+          let _tgt152=null;
           if(_act&&_pl&&(_pl.run>0||_scorer373)){
             let _ctx371=null,_ctz371=null;
             if(_scorer373){/* [7.373.0] verso il marcatore, fermandosi ACCANTO a lui e non dentro */
@@ -9001,7 +9141,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               _ctz371=(Math.abs(hero.position.z)<5.5)?_sd371*7:hero.position.z;}
             }
             if(_ctx371!=null){_ctx371=clamp(_ctx371,-GOAL_LINE_X+6,GOAL_LINE_X-6);_ctz371=clamp(_ctz371,-27,27);
-              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);}}
+              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);_tgt152=[_ctx371,_ctz371];}}
+          /* [giro 152 PO-355 «occhio ai festeggiamenti dopo un gol, a volte l'eroe vola con le braccia alzate». Rosso __CPM_NO_G152]
+             MISURATO (esultanza-152, corpi 3D accesi, 14 gol forzati con l'esultanza imposta): nelle corse a braccia alzate
+             (run_to_crowd, run_wide) l'eroe si spostava fino a 13 u/s con la clip `lift` montata a peso pieno e IN PAUSA
+             (congelamento all'apice del 7.384) e la corsa a peso 0-0,13 — braccia al cielo immobili e gambe ferme che scivolano sul
+             prato: 5 corse su 6. La festa di fine partita lo aveva gia' risolto (7.999.80, _muove80); l'esultanza in campo no.
+             Stessa regola: le braccia al cielo si tengono SOLO a eroe fermo. Fermo = velocita' reale sotto 1,5 u/s (sale subito,
+             scende smussata: niente ri-armi a scatti) e, se il piano ha una corsa, arrivato a meno di 1,5u dal suo bersaglio.
+             In corsa comanda la locomozione (gambe e braccia della corsa); arrivato, le braccia tornano al cielo. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)){
+            const _pv=sr.current._pv152;const _vi=(_pv&&aDt>0)?Math.hypot(hero.position.x-_pv[0],hero.position.z-_pv[1])/aDt:0;
+            const _vp=sr.current._cv152||0;sr.current._cv152=Math.max(_vi>40?0:_vi,_vp+(Math.min(_vi,40)-_vp)*Math.min(1,aDt*8));
+            sr.current._pv152=[hero.position.x,hero.position.z];
+            const _lontano=!!(_tgt152&&Math.hypot(_tgt152[0]-hero.position.x,_tgt152[1]-hero.position.z)>1.5);
+            if(sr.current._celLift371===1&&(sr.current._cv152>1.5||_lontano))sr.current._celLift371=0;}
           /* (c) CORPO — quota: salto e scivolata si vedono anche col GLB (sono posizione) */
           const _jmp=(_pl&&_pl.jump)?_pl.jump:((_pl&&_pl.run>0)?0:((_pl&&_pl.quiet)?0.35:1.2));
           if(_act&&!(_pl&&_pl.slide))hero.position.y=Math.sin(Math.min(Math.max(celebT-_cdel,0)/0.5,1)*Math.PI)*_jmp*(1-_cp3);
@@ -9023,7 +9177,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _tx=pp.mesh.position.x+_dx*_k,_tz=pp.mesh.position.z+_dz*_k;
               pp.mesh._celT371=1;animOne(pp.mesh,_tx,_tz,aDt,ak,_tx,_tz);});}
           if(_cu>=1&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDONE84=1;}catch(_e84){}}/* [7.384.0] il gioco DICHIARA la fine dell'esultanza: una sonda che aspetta a orologio non sa quanto tempo-scena abbia comprato */
-          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
+          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;sr.current._pv152=null;sr.current._cv152=0;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
             sr.current.players.forEach(pp=>{if(pp.mesh)pp.mesh._celT371=0;});}// [6.76.0 LMV-A4] assegnamenti assoluti → cleanup esplicito
           actType=null;}
         // 5.49.23: CERIMONIA TROFEO sul campo — eroe alza il trofeo, coriandoli su tutto il campo, fuochi d'artificio, compagni in festa
@@ -9444,7 +9598,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              al cielo a peso pieno e la corsa a peso 0 — la clip ha le gambe ferme, quindi SCIVOLA sul prato. Velocita' reale
              dell'eroe per fotogramma (media mobile): oltre 1,5 u/s la clip d'esultanza non si accende, comanda la locomozione;
              fermo, le braccia tornano al cielo. Rosso: __CPM_NO_VOLO80. */
-          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);}
+          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)&&_vi<40)sr.current._cv80=Math.max(sr.current._cv80,_vi);/* [giro 152] la velocita' SALE subito e scende smussata: la media mobile da sola teneva le braccia al cielo per due fotogrammi di scatto (misurato 2,2-2,9 u/s, beat present) */}
            sr.current._pv80={x:hero.position.x,z:hero.position.z};}
           const _muove80=!(typeof window!=='undefined'&&window.__CPM_NO_VOLO80)&&(sr.current._cv80||0)>1.5&&!_onPodium;
           sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)&&!_muove80?(_armsUp?1:2):0;
@@ -11858,6 +12012,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
             {const _ws=(_ai===0&&_a._spr252)?(_a._ws252||0):0;if(_a.run)_a.run.weight=_lbW*(1-_gTot)*(1-_ws);if(_ws||(_a._spr252&&_a._spr252.weight))_a._spr252.weight=_lbW*(1-_gTot)*_ws;}/* [PO-252/1] la corsa si divide fra jog e scatto */if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
             _updateAvatarMixerLod(_a,aDt,_ai,true);
+            if(_ai===0&&sr.current._ctx152&&typeof window!=='undefined'&&window.__CPM_G152W&&(_CPM_TEST||_SIT_TEST)){try{/* [giro 152 PO-355 «a volte l'eroe vola con le braccia alzate»] testimone per fotogramma: quota del piede piu' basso sopra il prato, posizione, clip e pausa, pesi */
+              const W=window.__CPM_G152W;if(W.length<40000){let _f=null;if(_a._footL&&_a._footR){const _v=new THREE.Vector3();_a._footL.getWorldPosition(_v);const _l=_v.y;_a._footR.getWorldPosition(_v);_f=Math.min(_l,_v.y)-(_a.root?_a.root.position.y:0)-(_a._fs203!=null?_a._fs203:0.118);}
+                const _ga=_a._gAct;W.push({c:sr.current._ctx152,ph:P.matchPhase||null,pk:(P.celebPlan&&P.celebPlan.pick)||(P.celebPlan&&P.celebPlan.id)||(sr.current._celPlan393&&(sr.current._celPlan393.pick||sr.current._celPlan393.id))||null,bk:sr.current._bk57||null,dt:+aDt.toFixed(4),x:+hero.position.x.toFixed(3),z:+hero.position.z.toFixed(3),y:+(hero.position.y||0).toFixed(3),f:_f!=null?+_f.toFixed(3):null,g:_a._gName||null,gn:_ga?_ga.getClip().name:null,gt:_ga?+(_ga.time||0).toFixed(3):null,gp:_ga?(_ga.paused?1:0):null,gw:+(_a._gw||0).toFixed(2),rw:_a.run?+((_a.run.weight||0)+((_a._spr252&&_a._spr252!==_a.run)?(_a._spr252.weight||0):0)).toFixed(2):null,iw:_a.idle?+(_a.idle.weight||0).toFixed(2):null,l371:sr.current._celLift371|0,cl:sr.current._cerLift|0});}}catch(_e152){}}
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
             //   campo (B2, run normale) li RIAPPLICA dopo il mixer → gambe che corrono, braccia in alto

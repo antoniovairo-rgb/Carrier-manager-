@@ -26,6 +26,10 @@ const React=window.React;const ReactDOM=window.ReactDOM;const THREE=window.THREE
 const{useState,useEffect,useRef,useCallback}=React;
 const _SIT_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]sit=\d/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5] test-mode SPENTO nella build store// 5.43.1 Situation Test Mode: blocca la fine-partita così il match resta vivo nell'highlight forzato (mai attivo in gioco normale)
 const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test((window.location&&window.location.search)||"");// [5.85.0 ARC-5]// gate visivo (?cpmtest=1): il gate forza le situation e valida l'AI off-ball → il read-freeze d'avvio highlight (presentazione) è disattivato qui per non mascherare la liveness; in gioco normale è attivo.
+/* [giro 155 · bassi del collaudo 177 verificati nel giro 140] UN interruttore rosso per tutte le correzioni del giro:
+   window.__CPM_NO_G155 le spegne tutte, window.__CPM_NO_G155_<codice> (B1, B2, B3, B6, B8, B10, B11, B12, B13, D9, D10, D14,
+   D15, D17, D21, L358, T359) una sola. Guardiano: npm run bassi-155. */
+function _g155(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G155||(k&&window["__CPM_NO_G155_"+k]));}catch(_e){return false;}}
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
 const _CPM_CHIP_GUARD=!((typeof window!=='undefined')&&/[?&]cpmchip=0\b/.test((window.location&&window.location.search)||""));
@@ -85,7 +89,7 @@ const TH = {
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
   primary:"#8e1f33",primaryDk:"#6a1326",brandText:(typeof window!=='undefined'&&window.__CPM_NO_G108_21)?"#ee9aaa":TINTE.oro/* [giro 108 G180-21] il rosa della V1 (#ee9aaa) restava come colore di testo in 24 schermate: diventa l'oro del tema. Rosso __CPM_NO_G108_21 */,accentText:"#a78bfa",
   success:TINTE.verde,danger:TINTE.rosso,warning:TINTE.giallo,gold:TINTE.oro,goldText:TINTE.oro,accent:"#a78bfa",
-  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",
+  surface2:TINTE.inc,surface3:TINTE.sup/* come nel tema chiaro, dove surface3 coincide con la card: le card che lo usano restano neutre (home-066 F1) */,divider:"#2a2f3b",track:"#2a2f3b",scrim:"rgba(0,0,0,0.66)",scrimForte:"rgba(0,0,0,0.82)"/* [giro 150 PO-352] il velo delle finestre su PC e tablet (da 768 px): la home sotto non si legge piu' */,
   cardBg:TINTE.inc,border:"#2a2f3b",
   el1:"0 2px 12px rgba(0,0,0,0.45)",el2:"0 4px 16px rgba(0,0,0,0.5)",el3:"0 12px 48px rgba(0,0,0,0.6)",
   primaryTint:"#2a1620",primaryBorder:"#4a2530",

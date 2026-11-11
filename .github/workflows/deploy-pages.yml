@@ -76,6 +76,9 @@ jobs:
           cp -r assets _site/
           # [giro 129 PO-330] banco della folla da aprire sul telefono (studio 128 aggiornato): solo la pagina e il suo script.
           mkdir -p _site/prototipi/folla-128 && cp prototipi/folla-128/banco.html prototipi/folla-128/folla-proto.js _site/prototipi/folla-128/
+          # [giro 149 PO-351] pagina d'ascolto dell'audio CC0 (prima/dopo di ogni evento, registrati dal gioco): la pagina, le misure e gli MP3.
+          mkdir -p _site/prototipi/audio-149 && cp docs/sviluppo/giro149/ascolto.html _site/prototipi/audio-149/index.html \
+            && cp docs/sviluppo/giro149/misure.json _site/prototipi/audio-149/ && cp -r docs/sviluppo/giro149/prima docs/sviluppo/giro149/dopo _site/prototipi/audio-149/
           # [7.999.11] radice e indirizzo storico servono la versione PRECOMPILATA (dist-web): stesso gioco, senza Babel nel browser
           cp dist-web/index.html _site/index.html
           cp dist-web/index.html _site/CARRIER-MANAGER-AV.html

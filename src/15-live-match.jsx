@@ -693,6 +693,8 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
+/* [giro 151 PO-353] vita della scia del pallone 2D in secondi di TEMPO DI SCENA (decisione PO: «sparisce in meno di mezzo secondo») */
+const SCIA151=0.35;
 function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false,tifoCasa=null,tifoCasa2=null,tifoOsp=null,tifoOsp2=null,golCasa=0,golOsp=0,tempo=1}){
   const cRef=React.useRef(null);
   const golRef=React.useRef({h:0,a:0});golRef.current={h:golCasa|0,a:golOsp|0};
@@ -938,7 +940,18 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
       const puls=0.5+0.5*Math.sin(ora/260);
 
       /* la scia del pallone: dove e' passato negli ultimi istanti */
-      if(M.b){M.scia.push({x:M.b.x,y:M.b.y});if(M.scia.length>18)M.scia.shift();}
+      /* [giro 151 PO-353, foto docs/collaudo-po/188-partita2d-scie.png «troppe traiettorie di passaggio, lasciano troppa scia»]
+         DECISIONE PO: scia corta e sottile — una codina breve dietro il pallone che sparisce in meno di mezzo secondo, solo mentre
+         il pallone viaggia. MISURATO prima (sonda partita2d-151): la scia contava 18 FOTOGRAMMI, quindi durava 0,3 s a 60 fps e
+         quasi 2 s a 10, e si disegnava anche col pallone al piede; in piu' la linea tratteggiata andava dal pallone al bersaglio
+         del passaggio, attraverso mezzo campo. UNA REGOLA: i punti portano il TEMPO DI SCENA (somma dei dt del disegno) e vivono
+         SCIA151 secondi; si raccolgono solo con il pallone in volo, e fuori dal volo la scia si svuota. Spessore massimo r*0,22.
+         La tratteggiata non si disegna piu'; il cerchietto sul bersaglio resta. Rosso __CPM_NO_G151S (la scia di prima). */
+      const _no151s=(typeof window!=='undefined'&&window.__CPM_NO_G151S);
+      M.ts=(M.ts||0)+dt;const _volo151=!!(st.poss&&st.poss.stato==="volo");
+      let _sciaPx151=0,_sciaEta151=0,_tratt151=0;
+      if(_no151s){
+      if(M.b){M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});if(M.scia.length>18)M.scia.shift();}
       if(M.scia.length>2){
         g.lineCap="round";
         for(let i=1;i<M.scia.length;i++){
@@ -946,15 +959,40 @@ function Campo2D({folla=null,motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEr
           g.strokeStyle="rgba(255,255,255,"+(a*0.30).toFixed(3)+")";
           g.lineWidth=Math.max(0.6,r*0.52*a);
           g.beginPath();g.moveTo(CX(M.scia[i-1]),CY(M.scia[i-1]));g.lineTo(CX(M.scia[i]),CY(M.scia[i]));g.stroke();
+          _sciaPx151+=Math.hypot(CX(M.scia[i])-CX(M.scia[i-1]),CY(M.scia[i])-CY(M.scia[i-1]));
+        }
+        _sciaEta151=M.ts-M.scia[0].t;
+      }
+      }else{
+        /* stesso riaggancio della vista (oltre 22 punti il pallino salta di colpo): un salto non e' un tragitto, la scia riparte */
+        if(_volo151&&M.b){const _u=M.scia.length?M.scia[M.scia.length-1]:null;if(_u&&Math.abs(_u.x-M.b.x)+Math.abs(_u.y-M.b.y)>22)M.scia.length=0;M.scia.push({x:M.b.x,y:M.b.y,t:M.ts});}else M.scia.length=0;
+        while(M.scia.length&&M.ts-M.scia[0].t>SCIA151)M.scia.shift();
+        if(M.scia.length>1){
+          g.lineCap="round";const _t0=M.scia[0].t,_dd=Math.max(1e-6,M.ts-_t0);
+          for(let i=1;i<M.scia.length;i++){
+            const a=Math.max(0,1-(M.ts-M.scia[i].t)/SCIA151);
+            g.strokeStyle="rgba(255,255,255,"+(a*0.32).toFixed(3)+")";
+            g.lineWidth=Math.max(0.5,r*0.22*a);
+            g.beginPath();g.moveTo(CX(M.scia[i-1]),CY(M.scia[i-1]));g.lineTo(CX(M.scia[i]),CY(M.scia[i]));g.stroke();
+            _sciaPx151+=Math.hypot(CX(M.scia[i])-CX(M.scia[i-1]),CY(M.scia[i])-CY(M.scia[i-1]));
+          }
+          _sciaEta151=_dd;
         }
       }
       /* il passaggio in volo: la linea tratteggiata fino al bersaglio dichiarato dal motore */
-      if(st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){
+      if(_no151s&&st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){_tratt151=Math.hypot(CX(st.poss.a)-CX(M.b),CY(st.poss.a)-CY(M.b));
         g.save();g.setLineDash([4,5]);g.strokeStyle="rgba(255,255,255,0.40)";g.lineWidth=1.2;
-        g.beginPath();g.moveTo(CX(M.b),CY(M.b));g.lineTo(CX(st.poss.a),CY(st.poss.a));g.stroke();
-        g.setLineDash([]);g.strokeStyle="rgba(255,255,255,0.55)";
+        g.beginPath();g.moveTo(CX(M.b),CY(M.b));g.lineTo(CX(st.poss.a),CY(st.poss.a));g.stroke();g.restore();}
+      if(st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){
+        g.save();g.strokeStyle="rgba(255,255,255,0.55)";g.lineWidth=1.2;
         g.beginPath();g.arc(CX(st.poss.a),CY(st.poss.a),r*0.55,0,Math.PI*2);g.stroke();g.restore();
       }
+      /* [giro 151] testimone di collaudo (inerte, solo se la sonda lo arma): la scia in tempo di scena e in pixel CSS, la tratteggiata,
+         lo stato del pallone e dove sta il pallone reso (coordinate del motore) */
+      try{if(typeof window!=='undefined'&&window.__CPM_W151){const rc=cv.getBoundingClientRect(),k=rc.width/W;const w=window.__CPM_W151;
+        w.n=(w.n|0)+1;w.ts=+M.ts.toFixed(3);w.volo=_volo151?1:0;w.scia=M.scia.length;w.eta=+_sciaEta151.toFixed(3);w.px=+(_sciaPx151*k).toFixed(1);w.tratt=+(_tratt151*k).toFixed(1);
+        w.lw=+((_no151s?r*0.52:r*0.22)*k).toFixed(2);w.b=M.b?[+M.b.x.toFixed(1),+M.b.y.toFixed(1)]:null;w.vw=Math.round(rc.width);
+        const R=(w.rec=w.rec||[]);if(R.length<20000)R.push([+M.ts.toFixed(3),w.volo,w.scia,w.eta,w.px,w.tratt,w.b?w.b[0]:-1,w.b?w.b[1]:-1,Math.round(ora),st.palla?+st.palla.x.toFixed(1):-1,st.palla?+st.palla.y.toFixed(1):-1]);}}catch(_e151){}
       /* il fermo di gioco: la bandierina sul punto dove si riprende */
       if(st.fermo){
         const q={x:st.fermo.x,y:st.fermo.y};
@@ -1860,7 +1898,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
-  useEffect(()=>{try{AudioMgr.enterMatch();}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
+  useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 36 PO-262 — IL PUNTO DEL PIAZZATO E' FUNZIONE DELLA PARTITA, NON DEL CASO. Rosso __CPM_NO_SP262] MISURATO (match-sequence
      rosso sulla 169/170; testimoni di sola lettura su pPos, sorteggi di `_rndM` e stato dei ref per minuto, 6 giri identici a 1x): la
@@ -3370,11 +3408,25 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _pk=(arr,k)=>arr[_h(k)%arr.length];
     const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:5,rimessa:5,rinvio:5,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
     /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
-    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:3;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
+    /* [giro 151 PO-354, foto docs/collaudo-po/188-partita2d-scie.png: «Tedesco (SIC) a tu per tu col portiere, conclude di prima!» col
+       pallone a centrocampo] MISURATO (sonda partita2d-151, 4 partite vere 2D): il battito del minuto narra i fatti dei 22 sotto-tick, e
+       16 righe di zona su 30 (tiri e cross) uscivano col pallone gia' a piu' di 15 m dal luogo del fatto — che era stato li' 0,4-0,8 s
+       prima (a 2x: a 1x il doppio). La riga diceva al presente un'azione che il campo aveva gia' chiuso. UNA REGOLA: un tiro o un cross
+       il cui tragitto (from→to dichiarato dal motore) sta a piu' di 15 m dal pallone del motore AL BATTITO non si racconta come azione
+       in corso: scende in coda (priorita' 1) e la riga racconta cio' che il campo mostra ora; la statistica del tiro (ms) passa alla riga
+       scelta, cosi' tiri, momentum e tabellino non cambiano conto. Se nel minuto non c'e' altro da dire resta la riga di prima. Lettura
+       pura dello stato del motore (nessun sorteggio). Rosso __CPM_NO_G151C. */
+    const _no151c=(typeof window!=='undefined'&&window.__CPM_NO_G151C);
+    const _vec151=[];const _d151=(p,a,c)=>{const ax=a.x*1.05,ay=a.y*0.68,px=p.x*1.05,py=p.y*0.68;if(!c)return Math.hypot(px-ax,py-ay);const cx=c.x*1.05,cy=c.y*0.68,dx=cx-ax,dy=cy-ay,L=dx*dx+dy*dy;let u=L>0?((px-ax)*dx+(py-ay)*dy)/L:0;u=Math.max(0,Math.min(1,u));return Math.hypot(px-(ax+u*dx),py-(ay+u*dy));};
+    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:3;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;
+      if(!_no151c&&(e.t==='tiro'||e.t==='cross')&&e.from&&st&&st.palla&&_d151(st.palla,e.from,e.to||null)>15){pr=0.5;_vec151.push(e);}
+      if(pr>bp){bp=pr;best=e;}}
     if(!best||bp<=0)return null;
+    const _msC151=(best&&_vec151.indexOf(best)<0)?_vec151.filter(e=>e.t==='tiro').reduce((m,e)=>{const tl=(e.chi&&e.chi.team)||e.lato||st.poss.lato;if(tl==='home')m.shots=(m.shots|0)+1;else m.oppShots=(m.oppShots|0)+1;return m;},{}):{};
+    const _carry151=!!(_msC151.shots||_msC151.oppShots);
     const cool=(ctx&&ctx.cool)|0;
-    if(bp<5&&cool>0)return null;
-    if(bp<=2&&(_h("dice")%100)>=60)return null;
+    if(bp<5&&cool>0&&!_carry151)return null;
+    if(bp<=2&&(_h("dice")%100)>=60&&!_carry151)return null;
     const e=best;const l=e.lato||st.poss.lato;const nostro=(l==='home');const arc=st.arco||null;
     let txt="",at=null,ms=null,ef=null,bpos=null,poss=0;
     const to=(e.to||(arc&&arc.to)||null);const from=(e.from||(arc&&arc.from)||null);
@@ -3428,6 +3480,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     else return null;
     if(!txt)return null;
     const chiN=e.chi||e.da||e.gk||null;const aN=e.a||e.su||null;
+    if(_carry151){ms=Object.assign({},ms||{});for(const k in _msC151)ms[k]=(ms[k]|0)+_msC151[k];}
+    try{if(typeof window!=='undefined'&&window.__CPM_W151&&_vec151.length){const w=window.__CPM_W151;w.vecchi=(w.vecchi|0)+_vec151.length;}}catch(_e){}
     return{txt,ef,w:1,bpos:bpos||(to?{x:to.x,y:to.y}:null),at,ms,tn617:null,poss:0,
       _eroe75:!!(e.t==='gol'&&nostro&&e.chi&&e.chi.eroe),/* [giro 75] il motore ha fatto segnare l'EROE in gioco fluido: va nel suo risultato registrato (team_goal) */
       _motore870:{lato:l,kind:e.t,kindP:e.kind||e.intent||null,prio:bp,dur:(e.dur>0)?+e.dur:null,from:from?{x:+from.x.toFixed(1),y:+from.y.toFixed(1)}:null,to:to?{x:+to.x.toFixed(1),y:+to.y.toFixed(1)}:null,imp:bp>=6},
@@ -8064,6 +8118,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               side:_side546,actor:_act511,rcv:_az551?String(_az551.a||"").trim():null,ef:ev.ef||null,pd:ev.pd||null,rete:ev._rete852?1:0});/* [7.854 misura] la battuta della rete si riconosce al lancio dell'arco */
           }
           if(typeof window!=='undefined'&&window.__CPM_TXT487!==undefined){try{const _t=(window.__CPM_TXT487=window.__CPM_TXT487||[]);if(_t.length<300)_t.push({m:nx,txt:evTxt,pd:ev.pd||null,ef:ev.ef||null});}catch(_e){}}
+          /* [giro 151 PO-354] testimone di collaudo (inerte, solo se la sonda lo arma): la riga del motore quando ESCE, col luogo del fatto
+             che racconta (from/to) e il pallone del motore in quell'istante; il pallone reso lo campiona la sonda dal testimone del Campo2D */
+          if(typeof window!=='undefined'&&window.__CPM_W151&&ev._motore870){try{const w=window.__CPM_W151;const _st151=motoreRef.current&&motoreRef.current.stato?motoreRef.current.stato():null;
+            (w.righe=w.righe||[]).length<400&&w.righe.push({t:Math.round((typeof performance!=='undefined'&&performance.now)?performance.now():Date.now()),m:nx,kind:ev._motore870.kind,kp:ev._motore870.kindP,from:ev._motore870.from,to:ev._motore870.to,txt:String(evTxt).slice(0,90),palla:_st151&&_st151.palla?[+_st151.palla.x.toFixed(1),+_st151.palla.y.toFixed(1)]:null,stato:_st151&&_st151.poss?_st151.poss.stato:null,b2d:w.b||null,ts:w.ts});}catch(_e151){}}
           /* [7.496.0 F1b] LA RIGA DI CRONACA NEL REGISTRO, con cio' che DICHIARA: la zona (`pd`), dove
              manda il pallone (`bpos`) e quali statistiche si porta dietro (`ms`). E' il verso invertito
              che l'audit ha misurato — il testo che comanda il campo e il box-score — e serve poterlo

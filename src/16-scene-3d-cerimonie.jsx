@@ -113,9 +113,32 @@ function ProTransitionScreen({player,onChoose}){
 /* ========================================
    CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
 ======================================== */
+/* [giro 155 B1, collaudo 177: «Trofeo d'Oro: vince chi ha 27 gol, 2° con 42»] il punteggio e' ovr*0,38+gol*1,1+assist*0,75+trofei
+   (09-audio-scout, generateSeasonAwards) e il sottotitolo lo dice, ma la riga del podio non scriveva i trofei: l'ordine sembrava
+   sbagliato. Ora la riga porta anche la bacheca. Rosso __CPM_NO_G155_B1. */
+/* [giro 155 B10, collaudo 177: «CAMPIONI D'EUROPA!» e sotto «IN EUROPA! … qualificato in Coppa dei Campioni!»] il banner della
+   qualificazione guardava solo la classifica. Con la coppa europea appena vinta non si festeggia l'«arrivo» in Europa: si dice che
+   l'anno prossimo si difende il titolo (proposta del rapporto 140). Rosso __CPM_NO_G155_B10. */
+function bannerEuropa155(euroChamp,small,nome,comp){
+  if(euroChamp&&!_g155("B10"))return comp==="Coppa dei Campioni"
+    ?{titolo:"🏆 E L'ANNO PROSSIMO SI DIFENDE IL TITOLO",riga:(nome||"La squadra")+" di nuovo in "+comp+".",piccola:false}
+    :{titolo:"🏆 DI NUOVO IN EUROPA",riga:(nome||"La squadra")+" giocherà la "+comp+".",piccola:false};
+  return {titolo:small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉",riga:(nome||"")+" qualificato in "+comp+"!",piccola:!!small};}
+/* [giro 155 D15, collaudo 177: «Sei uno dei giocatori su cui ho sempre potuto contare» dopo una stagione da 0 presenze; «Coppa
+   alzata» con il mister che dice «Stagione discreta»] (1) la frase di fiducia («any», trustMin 80) ora pretende almeno 10
+   presenze (minMatches); (2) la classificazione del mister conosce la Coppa nazionale, come quella del presidente. Rosso
+   __CPM_NO_G155_D15. */
+function classeMister155(o){const v=_g155("D15");
+  return o.isChampion?"champion":o.euroChamp?"euro":o.isRelegated?"relegated":o.isPromoted?"promoted":(!v&&o.cupChamp)?"cup":o.top?"good":"survival";}
+function poolMister155(res,trust,style,matches){const v=_g155("D15");
+  return SEASON_END_COACH.filter(d=>(d.result===res||(d.result==="any"&&trust>=(d.trustMin||0)&&(v||(matches||0)>=(d.minMatches||0))))&&(!d.style||d.style===style)&&(v?d.result!=="cup":true));}
+/* [giro 155 B8, collaudo 177: «Prima parte con il FC Clermont»] l'articolo davanti al nome di un club non si indovina (FC, CF,
+   Real, Atletico…): la riga ora non ne usa. Rosso __CPM_NO_G155_B8. */
+function etichettaPrimaParte155(n){const x=n||"club precedente";return _g155("B8")?"Prima parte con il "+x+":":"Prima parte: "+x+" —";}
+function trofeiOro155(c){if(_g155("B1")||!c||!c.trofei)return "";return " · 🏆 "+c.trofei;}
 function getCareerPhase(age){
   if(age<=21)return{label:"Giovane promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
-  if(age<=26)return{label:"Titolare affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=26)return{label:(_g155("D10")?"Titolare affermato":"Anni della maturità")/* [giro 155 D10] «Titolare affermato» e' la FASE D'ETA' 22-26, non il ruolo: in Home accanto a «Riserva» nel Profilo sembrava una contraddizione. Rosso __CPM_NO_G155_D10 */,e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
   if(age<=30)return{label:"Nel pieno della carriera"/* [7.999.49 parte A] «Forma» e' la condizione fisica: la fase d'eta' non la usa */,e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
   if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
   return{label:"Fine carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
@@ -1341,6 +1364,8 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
       /* il chiamato fa un passo avanti verso i tifosi, gli altri restano in fila */
       for(let i=0;i<men.length;i++){const tz=(called&&i===pi&&!_rit144)?STEP:LZ;men[i].position.z+=(tz-men[i].position.z)*Math.min(1,dt*3.2);
         const _sl=men[i].userData&&men[i].userData.saluto144;if(_sl)_sl((called&&i===pi)?_w144:0,Math.sin(Math.max(0,_t144-1.1)*Math.PI*2*1.6));}
+      /* [giro 146 PO-348] la regola unica delle spalle (src/12 _spalle146), dopo clip, vita della fila e saluto: la serata non ha la postura del gioco */
+      if(typeof _spalle146==='function')for(let i=0;i<men.length;i++){try{_spalle146(_ossa23(men[i]));}catch(_e){}}
       try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_PRES142){window.__CPM_PRES142.pi144=called?pi:-1;window.__CPM_PRES142.t144=_t144;window.__CPM_PRES142.w144=_w144;}}catch(_e){}
       /* [7.419.0] IL CHIAMATO SALUTA I SUOI TIFOSI: braccio destro su con rampa morbida e un
          ondeggio di avambraccio — additivo DOPO il mixer (pattern 7.24.2/gk: il mixer riapplica la
@@ -2462,7 +2487,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&_actG.key==="oro"&&c.ovr!=null)?` · OVR ${c.ovr}`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{_actG.key==="oro"?trofeiOro155(c):""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -2510,7 +2535,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                   {nw!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{nw}</div>}
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w?w.name:"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{w&&w.club?w.club:""}{nw!=null?" · "+nw+" gol":""}{(!(typeof window!=="undefined"&&window.__CPM_NO_PICCOLI85)&&mom.a.key==="oro"&&w&&w.ovr!=null)?" · OVR "+w.ovr:""}{mom.a.key==="oro"&&w?trofeiOro155(w):""}</div>
                   </div>
                 </div>
                 <div style={{fontSize:FS.caption,color:pos>0?(_no108("02")?TH.primary:TINTE.oro):TH.muted,fontWeight:pos>0?FW.bold:FW.regular,borderTop:"1px solid "+TH.divider,paddingTop:6}}>{pos>0?`Tu sei ${pos+1}°: questa volta il premio va a un altro`:"Non eri in corsa per questo premio"}</div>
@@ -2849,10 +2874,10 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const narrative=getSeasonNarrative(playerStats.goals||0,playerStats.assists||0,playerStats.matches||0,playerPos,numTeams,isChampion,isRelegated,_extraNarr100);
   const headline=getSeasonHeadline(playerStats.goals||0,playerStats.assists||0,playerPos,isChampion,isRelegated,_extraNarr100);
   // Sprint 100: pick contextual coach dialog
-  const _coachResult100=isChampion?"champion":euro?.champion?"euro":isRelegated?"relegated":isPromoted?"promoted":playerPos<=numTeams/2?"good":"survival";/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
+  const _coachResult100=classeMister155({isChampion,euroChamp:!!euro?.champion,isRelegated,isPromoted,cupChamp:!!player.cup?.champion,top:playerPos<=numTeams/2});/* [7.421.0 collaudo PO — screenshot fine S.19] IL MISTER NON SAPEVA DELL'EUROPA: la classificazione non aveva la voce «euro» — dopo una CHAMPIONS VINTA (senza scudetto) cadeva su «good» e diceva «Stagione discreta... puntiamo piu' in alto». Il presidente celebrava, il mister sminuiva: due voci dalla stessa serata che non si erano parlate. */
   const _ct100=player.coachTrust||50;
   const _cs100=player.coach?.style||null;
-  const _coachPool100=SEASON_END_COACH.filter(d=>(d.result===_coachResult100||(d.result==="any"&&_ct100>=(d.trustMin||0)))&&(!d.style||d.style===_cs100));
+  const _coachPool100=poolMister155(_coachResult100,_ct100,_cs100,playerStats.matches||0);
   const _coachLine100=(_coachPool100.length>0?_coachPool100:SEASON_END_COACH.filter(d=>d.result===_coachResult100||d.result==="any"))[hashStr((player.name||"x")+String(season||1))%Math.max(1,(_coachPool100.length||1))];
   // Sprint 100: pick president dialog
   const _objsMet100=(player.seasonObjectives||[]).length>0&&(player.seasonObjectives||[]).filter(o=>/* [7.294.0] stesso metro degli altri siti */
@@ -2987,11 +3012,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <div style={{fontSize:FS.body,fontWeight:FW.bold,fontStyle:"italic",color:TH.text,marginTop:4}}>{headline}</div>
         {isChampion&&<div style={{marginTop:8,fontSize:FS.body,fontWeight:800,color:TH.goldText,letterSpacing:0.5}}>🎊 Campioni! La lega è vostra! 🎊</div>}
         {/* [7.8.3 collaudo PO «la qualificazione in Europa va festeggiata, soprattutto per una piccola come la Salernitana!»] festeggiamento dedicato per la qualificazione europea (e la promozione), con enfasi per le piazze piccole (prestigio basso) */}
-        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";return(
+        {!isChampion&&_isEuroZone132&&(()=>{const _small=(club?.p||60)<62;const _comp=_isCL132?"Coppa dei Campioni":_isEL132?"Coppa Europa":"Coppa Conference";const _bE=bannerEuropa155(!!euro?.champion,_small,club?.n||club?.name,_comp);return(
           <div style={{marginTop:8}}>
-            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_small?"🎉 IMPRESA STORICA! 🎉":"🎉 IN EUROPA! 🎉"}</div>
-            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{club?.n||club?.name} qualificato in {_comp}!</div>
-            {_small&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>{_bE.titolo}</div>
+            <div style={{marginTop:3,fontSize:FS.small,fontWeight:800,color:TH.success}}>{_bE.riga}</div>
+            {_bE.piccola&&<div style={{marginTop:2,fontSize:FS.caption,fontWeight:700,color:TH.success,fontStyle:"italic"}}>Una notte che questa piazza ricorderà per sempre.</div>}
           </div>);})()}
         {!isChampion&&isPromoted&&<div style={{marginTop:8,fontSize:FS.bodyLg,fontWeight:900,color:TH.success,letterSpacing:0.4}}>🎉 PROMOSSI! Si sale di categoria! 🎉</div>}
         {/* [7.157.0] «a un soffio dall'Europa»: 8° = subito sotto lo spot Conference (7°) → l'Europa non parte. Chiarisce PERCHÉ, così non sembra un bug. */}
@@ -3307,6 +3332,9 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           notifiche (premi, crescita, economia, movimenti): partendo prima che finisca, quelle della stagione
           CHIUSA finivano sopra la schermata di quella NUOVA. Ora il pulsante aspetta che il riepilogo sia
           scorso — e la coda 7.286.0, che comprime le raffiche, fa sì che l'attesa duri pochi secondi. */}
+      {/* [giro 155 B12, collaudo 177: «Il giorno dell'addio» sotto la piega, dopo 7 fisarmoniche] il tasto che chiude la stagione
+          (o la carriera) resta FISSO in fondo allo schermo, come il piede dell'analisi 217. Rosso __CPM_NO_G155_B12. */}
+      <div data-cpm="fine155-piede" style={_g155("B12")?{}:{position:"sticky",bottom:0,zIndex:5,paddingTop:SP.sm,paddingBottom:`calc(${SP.sm}px + env(safe-area-inset-bottom, 0px))`,background:TH.bg}}>
       {farewell&&onRetire?(
         <Btn onClick={onRetire} v="danger" fw disabled={!!notifBusy} style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4,...(notifBusy?{opacity:.55}:{})}}>
           {notifBusy?"📣 Riepilogo in corso…":"🏁 Il giorno dell'addio →"}
@@ -3316,6 +3344,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         {notifBusy?"📣 Riepilogo in corso…":`🆕 Inizia Stagione ${season+1} →`}
       </Btn>
       )}
+      </div>
     </div>
   );
 }

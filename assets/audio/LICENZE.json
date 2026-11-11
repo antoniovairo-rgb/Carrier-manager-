@@ -1,0 +1,1694 @@
+{
+ "_nota": "Registro delle licenze dei file audio del gioco (giro 149, PO-351). Generato da tools/audio-149/prepara-audio.py: non modificare a mano.",
+ "normalizzazione": "sostenuti (>=1 s, folla/fischietto/jingle/musica): -18 LUFS integrati, picco <= -1,5 dBFS · impatti (<1 s): picco -3 dBFS",
+ "file": {
+  "sfx/ball/calcio-1": {
+   "evento": "ball.kick",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.3,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -20.9,
+   "loop": false,
+   "byte": {
+    "ogg": 1847,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      7.982,
+      0.3
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=4200,bass=g=6:f=110",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/calcio-2": {
+   "evento": "ball.kick",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.3,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -21.9,
+   "loop": false,
+   "byte": {
+    "ogg": 1853,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0.162,
+      0.3
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=4200,bass=g=6:f=110",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/calcio-3": {
+   "evento": "ball.kick",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.3,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -23.0,
+   "loop": false,
+   "byte": {
+    "ogg": 1839,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      23.844,
+      0.3
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=4200,bass=g=6:f=110",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/calcio-4": {
+   "evento": "ball.kick",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.3,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -22.3,
+   "loop": false,
+   "byte": {
+    "ogg": 1895,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      46.105,
+      0.3
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=4200,bass=g=6:f=110",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/passaggio-1": {
+   "evento": "ball.pass",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.25,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -22.6,
+   "loop": false,
+   "byte": {
+    "ogg": 1566,
+    "mp3": 2516
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      28.145,
+      0.25
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=3000,bass=g=3:f=120",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/passaggio-2": {
+   "evento": "ball.pass",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.25,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -20.6,
+   "loop": false,
+   "byte": {
+    "ogg": 1614,
+    "mp3": 2516
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      28.737,
+      0.25
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=3000,bass=g=3:f=120",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/passaggio-3": {
+   "evento": "ball.pass",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.25,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -22.7,
+   "loop": false,
+   "byte": {
+    "ogg": 1580,
+    "mp3": 2516
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      39.98,
+      0.25
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=3000,bass=g=3:f=120",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/testa-1": {
+   "evento": "ball.header",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.28,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -24.1,
+   "loop": false,
+   "byte": {
+    "ogg": 1709,
+    "mp3": 2708
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      48.217,
+      0.28
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=1800,bass=g=4:f=140",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/testa-2": {
+   "evento": "ball.header",
+   "g": 0.65,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.28,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -21.2,
+   "loop": false,
+   "byte": {
+    "ogg": 1705,
+    "mp3": 2708
+   },
+   "sorgente": {
+    "id": "tdc-fight-glove",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Boxing%20Glove%20Hits_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      1.212,
+      0.28
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=1800,bass=g=4:f=140",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ff1eba4769ac435e269304df0b0a9ae0c72c5924657d4264987948bfa50dff22"
+   }
+  },
+  "sfx/ball/palo-1": {
+   "evento": "ball.post",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.5,
+   "canali": 1,
+   "lufs": -31.1,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -30.1,
+   "loop": false,
+   "byte": {
+    "ogg": 8255,
+    "mp3": 12500
+   },
+   "sorgente": {
+    "id": "tdc-metal-railing1",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Metal",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Metal/METAL/IMPACT/METLImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Back%20Porch%20Railing%20Hit%2001_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      1.5
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "f0a211fffdac84613ed8e57f843e0df45040ee77c4d0db93cbba253230886938"
+   }
+  },
+  "sfx/ball/palo-2": {
+   "evento": "ball.post",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.6,
+   "canali": 1,
+   "lufs": -25.0,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -23.2,
+   "loop": false,
+   "byte": {
+    "ogg": 8935,
+    "mp3": 13268
+   },
+   "sorgente": {
+    "id": "tdc-metal-railing2",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Metal",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Metal/METAL/IMPACT/METLImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Back%20Porch%20Railing%20Hit%2002_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      1.6
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "50fe48f9e75452b9c093d2b1ca98461708bdcdc9e033f655c52ee7e743e1db5c"
+   }
+  },
+  "sfx/ball/rete-1": {
+   "evento": "ball.net",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.4,
+   "canali": 1,
+   "lufs": -27.7,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -27.3,
+   "loop": false,
+   "byte": {
+    "ogg": 2470,
+    "mp3": 3668
+   },
+   "sorgente": {
+    "id": "tdc-cloth-swish",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Cloth",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Cloth/CLOTH/IMPACT/CLOTHImpt-Samsung%20Galaxy%20Smartphone%2C%20CU_Swish%2C%20Impact%2C%20Fight_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      5.322,
+      0.4
+     ]
+    ],
+    "filtro": "highpass=f=300,lowpass=f=7000",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "5d45f3485d6ffa517a07380172bca5993b21054a8464c3fa104cd2de5f4696cc"
+   }
+  },
+  "sfx/ball/contrasto-1": {
+   "evento": "ball.bounce",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.0,
+   "canali": 1,
+   "lufs": -24.6,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -23.7,
+   "loop": false,
+   "byte": {
+    "ogg": 5911,
+    "mp3": 8468
+   },
+   "sorgente": {
+    "id": "tdc-fight-bodyfall",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/BODYFALL/FGHTBf-Samsung%20Galaxy%20Smartphone%2C%20CU_Bodyfall%2C%20On%20Grass_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      1.0
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=5000",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "f597a039523aa8eeff7fb84ce14f526baa7e9420b81e56ec3146cd5855ef79ef"
+   }
+  },
+  "sfx/ball/contrasto-2": {
+   "evento": "ball.bounce",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.31,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -21.6,
+   "loop": false,
+   "byte": {
+    "ogg": 1867,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-sports-bounce",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Sports",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Sports/SPORTS/COURT/SPRTCourt-Samsung%20Galaxy%20Smartphone%2C%20CU_Basketball%20Bounce_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      0.31
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=2400,bass=g=4:f=120",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "71100fd5bcb787cf8e5cf679bd16957640e9a6aaa2a06865b71024da77406aa9"
+   }
+  },
+  "sfx/ball/parata-1": {
+   "evento": "gk.save",
+   "g": 0.7,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.5,
+   "canali": 1,
+   "lufs": -25.5,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -25.8,
+   "loop": false,
+   "byte": {
+    "ogg": 2878,
+    "mp3": 4436
+   },
+   "sorgente": {
+    "id": "tdc-cloth-slap",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Cloth",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Cloth/CLOTH/IMPACT/CLOTHImpt-Blue%20Snowball%20Microphone%2C%20CU_Glove%20Slap_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      0.5
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=6000",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "8483eb1f3eabe18b219ecea7afe34446894c2a223ec6dbc1b682f0f04db278bb"
+   }
+  },
+  "sfx/ball/parata-2": {
+   "evento": "gk.save",
+   "g": 0.6,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.3,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -25.4,
+   "loop": false,
+   "byte": {
+    "ogg": 1864,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "tdc-fight-smacks",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Fight",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Fight/FIGHT/IMPACT/FGHTImpt-Blue%20Snowball%20Microphone%2C%20CU_Smacks%2C%20Hand_The%20Designer%27s%20Choice_GNRL2.flac",
+    "membro": null,
+    "tagli": [
+     [
+      0.013,
+      0.3
+     ]
+    ],
+    "filtro": "highpass=f=45,lowpass=f=3200,bass=g=4:f=150",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "d9f7fd3074f0afe4cb955266ac4142822cd34d95ec24977b9318de60d9345c33"
+   }
+  },
+  "sfx/referee/fischio-1": {
+   "evento": "ref.whistle",
+   "g": 1.2,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.95,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -12.0,
+   "rms_dbfs": -22.0,
+   "loop": false,
+   "byte": {
+    "ogg": 6102,
+    "mp3": 8084
+   },
+   "sorgente": {
+    "id": "tdc-whistles-pea",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/MECHANICAL/WHSTMech-Blue%20Snowball%20Microphone%2C%20CU_Pea%20Whistle%2C%20Blowing_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      2.8,
+      0.95
+     ]
+    ],
+    "filtro": "highpass=f=500",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto: https://creativecommons.org/publicdomain/zero/1.0/; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "8a075e48be2aa1e96e6d705be529f9b3d6ae662642a3ba46623705d2cfad8df2"
+   }
+  },
+  "sfx/referee/fischio-2": {
+   "evento": "ref.whistle",
+   "g": 1.2,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.15,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -13.3,
+   "rms_dbfs": -21.9,
+   "loop": false,
+   "byte": {
+    "ogg": 7346,
+    "mp3": 9620
+   },
+   "sorgente": {
+    "id": "tdc-whistles-pea",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/MECHANICAL/WHSTMech-Blue%20Snowball%20Microphone%2C%20CU_Pea%20Whistle%2C%20Blowing_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      9.66,
+      1.15
+     ]
+    ],
+    "filtro": "highpass=f=500",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto: https://creativecommons.org/publicdomain/zero/1.0/; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "8a075e48be2aa1e96e6d705be529f9b3d6ae662642a3ba46623705d2cfad8df2"
+   }
+  },
+  "sfx/referee/fischio-doppio": {
+   "evento": "ref.whistle2",
+   "g": 1.2,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.8,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -5.0,
+   "rms_dbfs": -20.8,
+   "loop": false,
+   "byte": {
+    "ogg": 4742,
+    "mp3": 6932
+   },
+   "sorgente": {
+    "id": "tdc-whistles-fox40",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/MECHANICAL/WHSTMech-Blue%20Snowball%20Microphone%2C%20CU_Fox%2040%20Whistle%2C%20Blowing_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      7.8,
+      0.8
+     ]
+    ],
+    "filtro": "highpass=f=500",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "ea2f0be4659399dcf3a138649ce6f208b0f486efb7ff045cf06d9f76a0191b07"
+   }
+  },
+  "sfx/referee/fischio-finale": {
+   "evento": "ref.whistle_final",
+   "g": 1.3,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 5.15,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -13.0,
+   "rms_dbfs": -21.4,
+   "loop": false,
+   "byte": {
+    "ogg": 32912,
+    "mp3": 41684
+   },
+   "sorgente": {
+    "id": "tdc-whistles-pea",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/MECHANICAL/WHSTMech-Blue%20Snowball%20Microphone%2C%20CU_Pea%20Whistle%2C%20Blowing_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      2.8,
+      0.95
+     ],
+     [
+      9.66,
+      1.15
+     ],
+     [
+      26.85,
+      2.65
+     ]
+    ],
+    "filtro": "highpass=f=500",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto: https://creativecommons.org/publicdomain/zero/1.0/; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "8a075e48be2aa1e96e6d705be529f9b3d6ae662642a3ba46623705d2cfad8df2"
+   }
+  },
+  "sfx/crowd/boato-1": {
+   "evento": "crowd.roar",
+   "g": 0.95,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 4.6,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -7.4,
+   "rms_dbfs": -19.5,
+   "loop": false,
+   "byte": {
+    "ogg": 26514,
+    "mp3": 37268
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      4.6,
+      4.6
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/boato-2": {
+   "evento": "crowd.roar",
+   "g": 0.95,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 4.6,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -7.2,
+   "rms_dbfs": -19.4,
+   "loop": false,
+   "byte": {
+    "ogg": 26688,
+    "mp3": 37268
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      74.6,
+      4.6
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/applausi-1": {
+   "evento": "crowd.applause",
+   "g": 0.6,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 3.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -6.8,
+   "rms_dbfs": -19.5,
+   "loop": false,
+   "byte": {
+    "ogg": 17683,
+    "mp3": 24404
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      20.0,
+      3.0
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/applausi-2": {
+   "evento": "crowd.applause",
+   "g": 0.6,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 3.0,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -5.3,
+   "rms_dbfs": -19.5,
+   "loop": false,
+   "byte": {
+    "ogg": 17738,
+    "mp3": 24404
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      100.5,
+      3.0
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/esulta-1": {
+   "evento": "crowd.cheer",
+   "g": 0.7,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 2.2,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -7.7,
+   "rms_dbfs": -19.5,
+   "loop": false,
+   "byte": {
+    "ogg": 13049,
+    "mp3": 18068
+   },
+   "sorgente": {
+    "id": "tdc-crowds-applause",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Crowds",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Crowds/CROWDS/APPLAUSE/CRWDApls-CU_Crowd%20Applause%2C%20Cheering%2C%20Yelling%2C%20Whooping_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      34.0,
+      2.2
+     ]
+    ],
+    "filtro": "highpass=f=45",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "726f452c461dd73f9b94e17c3a7454392bd449ef5bc94f17450e67e1511acca6"
+   }
+  },
+  "sfx/crowd/fischi-1": {
+   "evento": "crowd.boo",
+   "g": 0.3,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.55,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -9.8,
+   "rms_dbfs": -23.1,
+   "loop": false,
+   "byte": {
+    "ogg": 9431,
+    "mp3": 12884
+   },
+   "sorgente": {
+    "id": "tdc-whistles-crowd",
+    "pagina": "https://archive.org/details/Designers-Choice-Collection-Whistles",
+    "file": "https://archive.org/download/Designers-Choice-Collection-Whistles/WHISTLES/HUMAN/WHSTHmn-Blue%20Snowball%20Microphone%2C%20CU_Crowd%20Element_Nicholas%20Judy_TDC.flac",
+    "membro": null,
+    "tagli": [
+     [
+      1.15,
+      1.55
+     ]
+    ],
+    "filtro": "highpass=f=400",
+    "autore": "Nicholas A. Judy (The Designer's Choice)",
+    "licenza": "CC0 1.0 (licenseurl dell'oggetto; caricato dall'autore)",
+    "letta": "2026-11-10",
+    "sha256": "aa592af5f69c834d9c64856a77148b2a7b7e34c65ed7c680f1e1e649ec2fd4fe"
+   }
+  },
+  "sfx/ui/click-1": {
+   "evento": "ui.click",
+   "g": 0.25,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.097,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -28.0,
+   "loop": false,
+   "byte": {
+    "ogg": 584,
+    "mp3": 1364
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/click_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/click-2": {
+   "evento": "ui.click",
+   "g": 0.25,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.04,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -19.2,
+   "loop": false,
+   "byte": {
+    "ogg": 480,
+    "mp3": 788
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/select_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/click-3": {
+   "evento": "ui.click",
+   "g": 0.25,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.04,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -18.0,
+   "loop": false,
+   "byte": {
+    "ogg": 490,
+    "mp3": 788
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/select_002.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/nav-1": {
+   "evento": "ui.nav",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.148,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -17.2,
+   "loop": false,
+   "byte": {
+    "ogg": 1134,
+    "mp3": 1748
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/open_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/indietro-1": {
+   "evento": "ui.back",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.061,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -23.2,
+   "loop": false,
+   "byte": {
+    "ogg": 492,
+    "mp3": 980
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/back_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/conferma-1": {
+   "evento": "ui.confirm",
+   "g": 0.4,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.29,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -13.4,
+   "loop": false,
+   "byte": {
+    "ogg": 2499,
+    "mp3": 2900
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/confirmation_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/errore-1": {
+   "evento": "ui.error",
+   "g": 0.4,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.104,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -18.2,
+   "loop": false,
+   "byte": {
+    "ogg": 830,
+    "mp3": 1364
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/error_004.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/popup-1": {
+   "evento": "ui.popup",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.38,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -16.3,
+   "loop": false,
+   "byte": {
+    "ogg": 2787,
+    "mp3": 3476
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/maximize_006.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/chiudi-1": {
+   "evento": "ui.close",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.148,
+   "canali": 1,
+   "lufs": null,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -17.1,
+   "loop": false,
+   "byte": {
+    "ogg": 1101,
+    "mp3": 1748
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/close_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/positiva-1": {
+   "evento": "notify.pos",
+   "g": 0.4,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.539,
+   "canali": 1,
+   "lufs": -15.3,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -16.9,
+   "loop": false,
+   "byte": {
+    "ogg": 3452,
+    "mp3": 4820
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/confirmation_002.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/negativa-1": {
+   "evento": "notify.neg",
+   "g": 0.4,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.5,
+   "canali": 1,
+   "lufs": -22.0,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -20.2,
+   "loop": false,
+   "byte": {
+    "ogg": 3811,
+    "mp3": 4436
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/error_006.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/notifications/info-1": {
+   "evento": "notify.info",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.491,
+   "canali": 1,
+   "lufs": -11.7,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -13.9,
+   "loop": false,
+   "byte": {
+    "ogg": 2691,
+    "mp3": 4436
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/question_001.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/ui/settimana-1": {
+   "evento": "week.advance",
+   "g": 0.35,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.608,
+   "canali": 1,
+   "lufs": -26.9,
+   "picco_dbfs": -3.0,
+   "rms_dbfs": -27.2,
+   "loop": false,
+   "byte": {
+    "ogg": 2781,
+    "mp3": 5396
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/switch_002.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/career/busta-1": {
+   "evento": "gala.envelope",
+   "g": 0.4,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.0,
+   "canali": 1,
+   "lufs": -23.3,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -22.5,
+   "loop": false,
+   "byte": {
+    "ogg": 5938,
+    "mp3": 8468
+   },
+   "sorgente": {
+    "id": "kenney-interface",
+    "pagina": "https://opengameart.org/content/interface-sounds",
+    "file": "https://opengameart.org/sites/default/files/kenney_interfaceSounds.zip",
+    "membro": "Audio/scroll_002.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + License.txt nel pacchetto: Creative Commons Zero)",
+    "letta": "2026-11-10",
+    "sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+   }
+  },
+  "sfx/career/contratto-1": {
+   "evento": "career.contract",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.387,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -4.2,
+   "rms_dbfs": -19.2,
+   "loop": false,
+   "byte": {
+    "ogg": 9025,
+    "mp3": 11540
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_STEEL/jingles_STEEL02.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/rinnovo-1": {
+   "evento": "career.renew",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.909,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -3.9,
+   "rms_dbfs": -18.0,
+   "loop": false,
+   "byte": {
+    "ogg": 6791,
+    "mp3": 7700
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_STEEL/jingles_STEEL10.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/record-1": {
+   "evento": "career.record",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.945,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -4.5,
+   "rms_dbfs": -18.3,
+   "loop": false,
+   "byte": {
+    "ogg": 6208,
+    "mp3": 8084
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_STEEL/jingles_STEEL15.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/convocazione-1": {
+   "evento": "career.callup",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.87,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -9.3,
+   "rms_dbfs": -18.9,
+   "loop": false,
+   "byte": {
+    "ogg": 6935,
+    "mp3": 7508
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_SAX/jingles_SAX02.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/traguardo-1": {
+   "evento": "career.milestone",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.639,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -9.1,
+   "rms_dbfs": -19.0,
+   "loop": false,
+   "byte": {
+    "ogg": 4881,
+    "mp3": 5588
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_SAX/jingles_SAX10.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/livello-1": {
+   "evento": "career.levelup",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.408,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -7.4,
+   "rms_dbfs": -18.2,
+   "loop": false,
+   "byte": {
+    "ogg": 2480,
+    "mp3": 3860
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_SAX/jingles_SAX16.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/retrocessione-1": {
+   "evento": "season.relegation",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 1.256,
+   "canali": 1,
+   "lufs": -18.0,
+   "picco_dbfs": -4.5,
+   "rms_dbfs": -18.5,
+   "loop": false,
+   "byte": {
+    "ogg": 8394,
+    "mp3": 10580
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_STEEL/jingles_STEEL12.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "sfx/career/rivelazione-1": {
+   "evento": "gala.reveal",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 0.909,
+   "canali": 1,
+   "lufs": -18.4,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -17.6,
+   "loop": false,
+   "byte": {
+    "ogg": 5669,
+    "mp3": 7700
+   },
+   "sorgente": {
+    "id": "kenney-jingles",
+    "pagina": "https://opengameart.org/content/85-short-music-jingles",
+    "file": "https://opengameart.org/sites/default/files/jingleSounds_Kenney.zip",
+    "membro": "OGG/jingles_STEEL/jingles_STEEL04.ogg",
+    "tagli": null,
+    "filtro": "",
+    "autore": "Kenney Vleugels (www.kenney.nl)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0» + license.txt nel pacchetto)",
+    "letta": "2026-11-10",
+    "sha256": "be324b6cf26e35c95c2a344569a2470512819d0246cc81328bef3499de3682e5"
+   }
+  },
+  "music/awards/fanfara-1": {
+   "evento": "career.trophy",
+   "g": 0.45,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 11.84,
+   "canali": 2,
+   "lufs": -18.0,
+   "picco_dbfs": -7.0,
+   "rms_dbfs": -21.9,
+   "loop": false,
+   "byte": {
+    "ogg": 160048,
+    "mp3": 190484
+   },
+   "sorgente": {
+    "id": "oga-victory-fanfare",
+    "pagina": "https://opengameart.org/content/victory-fanfare-short",
+    "file": "https://opengameart.org/sites/default/files/Heavy_ConceptB.wav",
+    "membro": null,
+    "tagli": [
+     [
+      0,
+      11.84
+     ]
+    ],
+    "filtro": "",
+    "autore": "cynicmusic",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0»)",
+    "letta": "2026-11-10",
+    "sha256": "cf7aca1193530c804f41a22cfd9a2813c25d3c244fa96ad88c88c6206daa033d"
+   }
+  },
+  "music/menu/spiaggia-loop": {
+   "evento": "music.home",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 31.979,
+   "canali": 2,
+   "lufs": -19.0,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -20.1,
+   "loop": true,
+   "byte": {
+    "ogg": 464837,
+    "mp3": 512660
+   },
+   "sorgente": {
+    "id": "oga-beach-sports",
+    "pagina": "https://opengameart.org/content/beach-sports-theme-loop",
+    "file": "https://opengameart.org/sites/default/files/ogg_beachtheme_3.ogg",
+    "membro": null,
+    "tagli": null,
+    "filtro": "",
+    "autore": "Trex0n (nota sulla pagina: Cal McEachern)",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0»)",
+    "letta": "2026-11-10",
+    "sha256": "45b2d7d397c70f42483daa9ac6b95673a0b9dd59fa48166ce68aeccc011c096e"
+   }
+  },
+  "music/career/avventura-loop": {
+   "evento": "music.career",
+   "g": 0.55,
+   "formati": [
+    "ogg",
+    "mp3"
+   ],
+   "durata_s": 46.786,
+   "canali": 2,
+   "lufs": -18.4,
+   "picco_dbfs": -1.5,
+   "rms_dbfs": -16.6,
+   "loop": true,
+   "byte": {
+    "ogg": 629279,
+    "mp3": 749588
+   },
+   "sorgente": {
+    "id": "oga-happy-adventure",
+    "pagina": "https://opengameart.org/content/happy-adventure-loop",
+    "file": "https://opengameart.org/sites/default/files/happy_adveture.mp3",
+    "membro": null,
+    "tagli": null,
+    "filtro": "",
+    "autore": "TinyWorlds",
+    "licenza": "CC0 (pagina OpenGameArt «License(s): CC0»)",
+    "letta": "2026-11-10",
+    "sha256": "50aa6a32625fe8565403a0c8ceb772d7fb500b9267d0019eacfe0fc742b6c73d"
+   }
+  }
+ },
+ "altri": {
+  "sfx/crowd/brusio-folla-korward.wav": {
+   "evento": "crowd.bed",
+   "licenza": "nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)",
+   "cc0": true,
+   "nota": "brusio in loop della partita, invariato dal giro 149"
+  },
+  "sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav": {
+   "evento": "crowd.roar (solo col rosso __CPM_NO_G149)",
+   "licenza": "Mixkit Sound Effects Free License (licenza propria Mixkit/Envato, NON CC0)",
+   "cc0": false,
+   "pagina": "https://mixkit.co/license/",
+   "nota": "boato del gol dal 7.72.1; col giro 149 non si scarica piu' e il gol usa i boati CC0. Rimozione dal repo: decisione del PO (domanda aperta nel rapporto del giro 149)."
+  }
+ }
+}
