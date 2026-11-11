@@ -65,7 +65,7 @@ Nessuna seconda logica, nessun `Math.random` nuovo, nessun campo salvato.
   il volo deve ricomparire; «non giudicato» = rosso. Le partite vere sono opzionali (`CPM_VERE=1`): misurate qui,
   ma l'autoplay non lascia vivere l'esultanza.
 
-**Dopo la correzione** (prima corsa completa del guardiano): verde 0 esultanze in volo su 17 in campo/ripresa + festa
+**Dopo la correzione** (prima corsa completa del guardiano, poi confermata dalla catena in §5): verde 0 esultanze in volo su 17 in campo/ripresa + festa
 (scivolata massima 0,55u); rosso 4 esultanze in campo in volo, scivolate fino a **19,7u**. La riga della coppa,
 allora ancora nel verdetto, faceva fallire il verde: vedi §4. Esito della catena in §5.
 
@@ -88,7 +88,28 @@ accompagnano i numeri, non li sostituiscono.
 
 ## 5. Catena
 
-_(compilata a fine corsa)_
+Un controllo alla volta, `CPM_CHROME=/opt/pw-browsers/chromium`, memoria libera ~15,5 GB e disco 29 GB prima di ognuno.
+Il container è stato riavviato due volte durante il giro (catene in sottofondo uccise): le corse interrotte non valgono e
+sono state rifatte da capo sul build del commit 6532254.
+
+| controllo | esito |
+|---|---|
+| `esultanza-152` | ✅ verde 0/18 esultanze in volo · rosso `__CPM_NO_G152` cade 4/18 (run_to_crowd 2/3, run_wide 2/3) · coppa fuori giudizio (scivolata 2,72u in entrambi) |
+| `festa-57` | ✅ verde + rosso + rosso61 |
+| `premiazione-132` | ✅ verde, i rossi cadono |
+| `posa-sollevamento-191` | ✅ (clipT 0,45 verde, 0,34 rosso) |
+| `premiazione-palco-191` | ✅ (in volo 0/27 verde, 5/27 rosso) |
+| `validate-situations` | ✅ PASS · fingerprint 00001505 · 0 failure |
+| `highlight-95` (completo) | ✅ verde (103 highlight, D4 0) e il rosso si vede — durata ~89 min |
+| `test:logic` | ✅ |
+| `save-compat` | ✅ 12 pass · 0 fail |
+| `scena3d-96` (tel · pc · tabv · tabo) | ⏸ **non eseguito**: tetto delle 4 ore |
+| `goal-postarc` | ⏸ **non eseguito**: tetto delle 4 ore |
+| `partita-vera` | ⏸ **non eseguito**: tetto delle 4 ore |
+
+La catena non è completa: prima di promuovere servono `scena3d-96` nei quattro formati, `goal-postarc` e
+`partita-vera`. La modifica tocca solo l'esultanza in campo e la velocità della festa; nessuno dei tre passi mancanti
+è stato eseguito, quindi il loro esito **non posso confermarlo**.
 
 ## Domande aperte al PO
 
