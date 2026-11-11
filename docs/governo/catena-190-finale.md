@@ -29,3 +29,5 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 23 | twa-120 | 0 | 37 | VERDE | mem used 594/16086 free 13425 avail 15491 · disk used 10G avail 29G (26%) |
 | 24 | sw-cache-120 | 0 | 88 | VERDE | mem used 815/16086 free 13198 avail 15270 · disk used 10G avail 29G (26%) |
 | 25 | albo-122 | 0 | 118 | VERDE | mem used 887/16086 free 12985 avail 15198 · disk used 11G avail 29G (27%) |
+| 26 | intro-118 | 0 | 109 | VERDE | mem used 938/16086 free 12935 avail 15147 · disk used 11G avail 29G (27%) |
+| 27 | altezza-114 | 0 | 396 | VERDE | mem used 628/16086 free 13243 avail 15457 · disk used 11G avail 29G (27%) |
