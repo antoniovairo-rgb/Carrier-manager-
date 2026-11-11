@@ -1,0 +1,2428 @@
+[
+ {
+  "scena": "azione-shot",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-shot-tel-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 10,
+   "min": 0.0467,
+   "max": 0.1815,
+   "fuori": 2,
+   "ultimo": 0.0793,
+   "bn": 10,
+   "bfuori": 2,
+   "bgeo": 2,
+   "a12": 10,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-shot-tel-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 19,
+   "min": 0.0467,
+   "max": 0.1815,
+   "fuori": 2,
+   "ultimo": 0.0842,
+   "bn": 19,
+   "bfuori": 2,
+   "bgeo": 2,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-shot-tel-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "tel",
+  "nome": "1",
+  "f": "esultanza-tel-1.jpg",
+  "gi": 1,
+  "cel": null
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "tel",
+  "nome": "2",
+  "f": "esultanza-tel-2.jpg"
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.6,
+   "renderer": [
+    {
+     "fpsRender": 3.6,
+     "msRender": 13.1,
+     "calls": 174,
+     "tri": 82401,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 813,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "tel",
+  "nome": "3",
+  "f": "esultanza-tel-3.jpg"
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-shot-fallita-tel-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 102,
+   "min": 0.0467,
+   "max": 0.2829,
+   "fuori": 3,
+   "ultimo": 0.0803,
+   "bn": 102,
+   "bfuori": 3,
+   "bgeo": 3,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-shot-fallita-tel-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 113,
+   "min": 0.0467,
+   "max": 0.2829,
+   "fuori": 3,
+   "ultimo": 0.0885,
+   "bn": 113,
+   "bfuori": 3,
+   "bgeo": 3,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-shot-fallita-tel-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-penalty-tel-1-scelta.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 142,
+   "min": 0.0467,
+   "max": 0.2829,
+   "fuori": 3,
+   "ultimo": 0.0724,
+   "bn": 142,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-penalty-tel-2-gesto.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 153,
+   "min": 0.0467,
+   "max": 0.2829,
+   "fuori": 3,
+   "ultimo": 0.0816,
+   "bn": 153,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-penalty-tel-3-esito.jpg",
+  "gi": 58,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-header-tel-1-scelta.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 184,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 5,
+   "ultimo": 0.0803,
+   "bn": 184,
+   "bfuori": 6,
+   "bgeo": 6,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-header-tel-2-gesto.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 195,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 5,
+   "ultimo": 0.0905,
+   "bn": 195,
+   "bfuori": 6,
+   "bgeo": 6,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-header-tel-3-esito.jpg",
+  "gi": 7,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-freekick-tel-1-scelta.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 220,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 9,
+   "ultimo": 0.1029,
+   "bn": 220,
+   "bfuori": 10,
+   "bgeo": 10,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-freekick-tel-2-gesto.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 230,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 9,
+   "ultimo": 0.1065,
+   "bn": 230,
+   "bfuori": 10,
+   "bgeo": 10,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-freekick-tel-3-esito.jpg",
+  "gi": 14,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-cross-tel-1-scelta.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 256,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 14,
+   "ultimo": 0.0806,
+   "bn": 256,
+   "bfuori": 19,
+   "bgeo": 19,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-cross-tel-2-gesto.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 265,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 14,
+   "ultimo": 0.0842,
+   "bn": 265,
+   "bfuori": 19,
+   "bgeo": 19,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-cross-tel-3-esito.jpg",
+  "gi": 17,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-pass-tel-1-scelta.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 291,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 15,
+   "ultimo": 0.0811,
+   "bn": 291,
+   "bfuori": 20,
+   "bgeo": 20,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-pass-tel-2-gesto.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 300,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 15,
+   "ultimo": 0.0859,
+   "bn": 300,
+   "bfuori": 20,
+   "bgeo": 20,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-pass-tel-3-esito.jpg",
+  "gi": 19,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-dribble-tel-1-scelta.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 327,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 20,
+   "ultimo": 0.0808,
+   "bn": 327,
+   "bfuori": 25,
+   "bgeo": 25,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-dribble-tel-2-gesto.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 336,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 20,
+   "ultimo": 0.0848,
+   "bn": 336,
+   "bfuori": 25,
+   "bgeo": 25,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-dribble-tel-3-esito.jpg",
+  "gi": 150,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-tackle-tel-1-scelta.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 361,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 25,
+   "ultimo": 0.1058,
+   "bn": 361,
+   "bfuori": 30,
+   "bgeo": 30,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-tackle-tel-2-gesto.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 370,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 25,
+   "ultimo": 0.1062,
+   "bn": 370,
+   "bfuori": 30,
+   "bgeo": 30,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-tackle-tel-3-esito.jpg",
+  "gi": 32,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-build-tel-1-scelta.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 397,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 30,
+   "ultimo": 0.0887,
+   "bn": 397,
+   "bfuori": 35,
+   "bgeo": 35,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-build-tel-2-gesto.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 406,
+   "min": 0.0467,
+   "max": 0.3728,
+   "fuori": 30,
+   "ultimo": 0.0913,
+   "bn": 406,
+   "bfuori": 35,
+   "bgeo": 35,
+   "a12": 12,
+   "afuori": 2,
+   "abfuori": 2,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-build-tel-3-esito.jpg",
+  "gi": 140,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-scelta",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.6,
+   "renderer": [
+    {
+     "fpsRender": 3.6,
+     "msRender": 10.5,
+     "calls": 172,
+     "tri": 81991,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 913,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "1-present",
+  "f": "premiazione-tel-1-present.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "2-captain",
+  "f": "premiazione-tel-2-captain.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "3-pass",
+  "f": "premiazione-tel-3-pass.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "4-lift",
+  "f": "premiazione-tel-4-lift.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 57.5,
+   "renderer": []
+  }
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "5-fest",
+  "f": "premiazione-tel-5-fest.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "1-present",
+  "f": "premiazione-tel-1-present.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "2-captain",
+  "f": "premiazione-tel-2-captain.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "3-pass",
+  "f": "premiazione-tel-3-pass.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "4-lift",
+  "f": "premiazione-tel-4-lift.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 2.9,
+   "renderer": [
+    {
+     "fpsRender": 2.9,
+     "msRender": 22.2,
+     "calls": 231,
+     "tri": 129184,
+     "pr": 1.5,
+     "canvas": "541x1119",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1923,
+     "skinned": 752,
+     "inst": 6,
+     "geo": 874,
+     "tex": 969,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "tel",
+  "nome": "5-fest",
+  "f": "premiazione-tel-5-fest.jpg"
+ },
+ {
+  "scena": "festa",
+  "fmt": "tel",
+  "nome": "1-inizio",
+  "f": "festa-tel-1-inizio.jpg",
+  "cer": {
+   "kind": "bigwin",
+   "beats": [
+    "burst",
+    "hug",
+    "fest"
+   ],
+   "beatsD": [
+    2.54,
+    2.99,
+    2.79
+   ],
+   "coach": true
+  }
+ },
+ {
+  "scena": "festa",
+  "fmt": "tel",
+  "nome": "2-meta",
+  "f": "festa-tel-2-meta.jpg"
+ },
+ {
+  "scena": "festa",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.3,
+   "renderer": [
+    {
+     "fpsRender": 3.3,
+     "msRender": 15.7,
+     "calls": 185,
+     "tri": 103118,
+     "pr": 1.5,
+     "canvas": "541x1119",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1921,
+     "skinned": 752,
+     "inst": 6,
+     "geo": 859,
+     "tex": 968,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "festa",
+  "fmt": "tel",
+  "nome": "3-avanti",
+  "f": "festa-tel-3-avanti.jpg"
+ },
+ {
+  "scena": "panchina",
+  "fmt": "tel",
+  "nome": "1-attesa",
+  "f": "panchina-tel-1-attesa.jpg",
+  "g": {
+   "se": -1,
+   "c": [
+    -8.27,
+    15.76,
+    15.57
+   ],
+   "d": [
+    0.077,
+    -0.431,
+    -0.899
+   ],
+   "hf": [
+    -2.348,
+    -2.009,
+    0.983
+   ],
+   "hh": [
+    -2.522,
+    -1.867,
+    0.981
+   ],
+   "hw": [
+    -15,
+    10
+   ],
+   "hv": 1,
+   "gv": 1,
+   "dentro": [],
+   "retro": 0,
+   "trib": [
+    [
+     8.3,
+     15.8,
+     -69.4,
+     126,
+     28,
+     24.1
+    ],
+    [
+     -8.3,
+     15.8,
+     -38.3,
+     126,
+     28,
+     24.1
+    ],
+    [
+     -15.6,
+     15.8,
+     -74.1,
+     84,
+     26,
+     21.9
+    ],
+    [
+     15.6,
+     15.8,
+     -57.5,
+     84,
+     26,
+     21.9
+    ]
+   ]
+  }
+ },
+ {
+  "scena": "panchina",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 2.9,
+   "renderer": [
+    {
+     "fpsRender": 2.9,
+     "msRender": 11.1,
+     "calls": 125,
+     "tri": 95341,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 695,
+     "tex": 962,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "panchina",
+  "fmt": "tel",
+  "nome": "2-riscaldamento",
+  "f": "panchina-tel-2-riscaldamento.jpg"
+ },
+ {
+  "scena": "panchina",
+  "fmt": "tel",
+  "nome": "3-avanti",
+  "f": "panchina-tel-3-avanti.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "nome": "1-present",
+  "f": "premiazione-pc-1-present.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "nome": "2-captain",
+  "f": "premiazione-pc-2-captain.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "nome": "3-pass",
+  "f": "premiazione-pc-3-pass.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "nome": "4-lift",
+  "f": "premiazione-pc-4-lift.jpg"
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 0.8,
+   "jsMsPerSec": 24,
+   "jsMsMaxCallback": 30,
+   "renderer": [
+    {
+     "fpsRender": 0.8,
+     "msRender": 21.3,
+     "calls": 370,
+     "tri": 163820,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1925,
+     "skinned": 752,
+     "inst": 6,
+     "geo": 1549,
+     "tex": 969,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "premiazione",
+  "fmt": "pc",
+  "nome": "5-fest",
+  "f": "premiazione-pc-5-fest.jpg"
+ },
+ {
+  "scena": "festa",
+  "fmt": "pc",
+  "nome": "1-inizio",
+  "f": "festa-pc-1-inizio.jpg",
+  "cer": {
+   "kind": "bigwin",
+   "beats": [
+    "burst",
+    "hug",
+    "fest"
+   ],
+   "beatsD": [
+    2.54,
+    2.99,
+    2.79
+   ],
+   "coach": true
+  }
+ },
+ {
+  "scena": "festa",
+  "fmt": "pc",
+  "nome": "2-meta",
+  "f": "festa-pc-2-meta.jpg"
+ },
+ {
+  "scena": "festa",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 0.7,
+   "jsMsPerSec": 19,
+   "jsMsMaxCallback": 35,
+   "renderer": [
+    {
+     "fpsRender": 0.7,
+     "msRender": 18.7,
+     "calls": 291,
+     "tri": 120978,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1923,
+     "skinned": 752,
+     "inst": 6,
+     "geo": 1388,
+     "tex": 968,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "festa",
+  "fmt": "pc",
+  "nome": "3-avanti",
+  "f": "festa-pc-3-avanti.jpg"
+ },
+ {
+  "scena": "panchina",
+  "fmt": "pc",
+  "nome": "1-attesa",
+  "f": "panchina-pc-1-attesa.jpg",
+  "g": {
+   "se": -1,
+   "c": [
+    -8.16,
+    15.94,
+    16.18
+   ],
+   "d": [
+    0.082,
+    -0.432,
+    -0.898
+   ],
+   "hf": [
+    -0.926,
+    -1.893,
+    0.984
+   ],
+   "hh": [
+    -0.991,
+    -1.751,
+    0.982
+   ],
+   "hw": [
+    -15,
+    10
+   ],
+   "hv": 1,
+   "gv": 1,
+   "dentro": [],
+   "retro": 0,
+   "trib": [
+    [
+     8.2,
+     15.9,
+     -70,
+     126,
+     28,
+     24.1
+    ],
+    [
+     -8.2,
+     15.9,
+     -37.7,
+     126,
+     28,
+     24.1
+    ],
+    [
+     -16.2,
+     15.9,
+     -74,
+     84,
+     26,
+     21.9
+    ],
+    [
+     16.2,
+     15.9,
+     -57.6,
+     84,
+     26,
+     21.9
+    ]
+   ]
+  }
+ },
+ {
+  "scena": "panchina",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 1.2,
+   "jsMsPerSec": 21,
+   "jsMsMaxCallback": 19,
+   "renderer": [
+    {
+     "fpsRender": 1.2,
+     "msRender": 12.2,
+     "calls": 164,
+     "tri": 104641,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1918,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1309,
+     "tex": 962,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "panchina",
+  "fmt": "pc",
+  "nome": "2-riscaldamento",
+  "f": "panchina-pc-2-riscaldamento.jpg"
+ },
+ {
+  "scena": "panchina",
+  "fmt": "pc",
+  "nome": "3-avanti",
+  "f": "panchina-pc-3-avanti.jpg"
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "01",
+  "f": "ingresso-pc-01.jpg",
+  "tScena": 0.1,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "02",
+  "f": "ingresso-pc-02.jpg",
+  "tScena": 0.6,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 0.7,
+   "jsMsPerSec": 20,
+   "jsMsMaxCallback": 37,
+   "renderer": [
+    {
+     "fpsRender": 0.7,
+     "msRender": 19,
+     "calls": 520,
+     "tri": 313453,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1906,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1305,
+     "tex": 940,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "03",
+  "f": "ingresso-pc-03.jpg",
+  "tScena": 1.2,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "04",
+  "f": "ingresso-pc-04.jpg",
+  "tScena": 1.6,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "05",
+  "f": "ingresso-pc-05.jpg",
+  "tScena": 2,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "06",
+  "f": "ingresso-pc-06.jpg",
+  "tScena": 2.4,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "07",
+  "f": "ingresso-pc-07.jpg",
+  "tScena": 2.8,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "08",
+  "f": "ingresso-pc-08.jpg",
+  "tScena": 3.2,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "09",
+  "f": "ingresso-pc-09.jpg",
+  "tScena": 3.6,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "10",
+  "f": "ingresso-pc-10.jpg",
+  "tScena": 4.1,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "11",
+  "f": "ingresso-pc-11.jpg",
+  "tScena": 4.5,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "12",
+  "f": "ingresso-pc-12.jpg",
+  "tScena": 5,
+  "stacchi": 0
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "13",
+  "f": "ingresso-pc-13.jpg",
+  "tScena": 5.5,
+  "stacchi": 1
+ },
+ {
+  "scena": "ingresso",
+  "fmt": "pc",
+  "nome": "14",
+  "f": "ingresso-pc-14.jpg",
+  "tScena": 6,
+  "stacchi": 1
+ },
+ {
+  "scena": "gioco",
+  "fmt": "pc",
+  "nome": "1-inizio",
+  "f": "gioco-pc-1-inizio.jpg"
+ },
+ {
+  "scena": "gioco",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 1.4,
+   "jsMsPerSec": 20,
+   "jsMsMaxCallback": 18,
+   "renderer": [
+    {
+     "fpsRender": 1.4,
+     "msRender": 9.1,
+     "calls": 300,
+     "tri": 83522,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1919,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1468,
+     "tex": 962,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "gioco",
+  "fmt": "pc",
+  "nome": "2-meta",
+  "f": "gioco-pc-2-meta.jpg"
+ },
+ {
+  "scena": "gioco",
+  "fmt": "pc",
+  "nome": "3-avanti",
+  "f": "gioco-pc-3-avanti.jpg"
+ },
+ {
+  "scena": "azione-shot",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-shot-pc-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 4,
+   "min": 0.0548,
+   "max": 0.0658,
+   "fuori": 4,
+   "ultimo": 0.0548,
+   "bn": 4,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 4,
+   "afuori": 4,
+   "abfuori": 4,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-shot-pc-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 12,
+   "min": 0.0442,
+   "max": 0.1027,
+   "fuori": 8,
+   "ultimo": 0.092,
+   "bn": 12,
+   "bfuori": 8,
+   "bgeo": 8,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-shot-pc-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "pc",
+  "nome": "1",
+  "f": "esultanza-pc-1.jpg",
+  "gi": 1,
+  "cel": null
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "pc",
+  "nome": "2",
+  "f": "esultanza-pc-2.jpg"
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 1.2,
+   "jsMsPerSec": 16,
+   "jsMsMaxCallback": 15,
+   "renderer": [
+    {
+     "fpsRender": 1.2,
+     "msRender": 8.4,
+     "calls": 222,
+     "tri": 82921,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1919,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1431,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "esultanza",
+  "fmt": "pc",
+  "nome": "3",
+  "f": "esultanza-pc-3.jpg"
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-shot-fallita-pc-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 62,
+   "min": 0.0442,
+   "max": 0.2853,
+   "fuori": 8,
+   "ultimo": 0.2853,
+   "bn": 62,
+   "bfuori": 8,
+   "bgeo": 8,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-shot-fallita-pc-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 70,
+   "min": 0.0442,
+   "max": 0.2889,
+   "fuori": 8,
+   "ultimo": 0.2889,
+   "bn": 70,
+   "bfuori": 8,
+   "bgeo": 8,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-shot-fallita-pc-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-penalty-pc-1-scelta.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 88,
+   "min": 0.0442,
+   "max": 0.3052,
+   "fuori": 8,
+   "ultimo": 0.2055,
+   "bn": 88,
+   "bfuori": 8,
+   "bgeo": 8,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-penalty-pc-2-gesto.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 95,
+   "min": 0.0442,
+   "max": 0.3052,
+   "fuori": 8,
+   "ultimo": 0.0982,
+   "bn": 95,
+   "bfuori": 8,
+   "bgeo": 8,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-penalty",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-penalty-pc-3-esito.jpg",
+  "gi": 58,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-header-pc-1-scelta.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 112,
+   "min": 0.0442,
+   "max": 0.3052,
+   "fuori": 9,
+   "ultimo": 0.1702,
+   "bn": 112,
+   "bfuori": 9,
+   "bgeo": 9,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-header-pc-2-gesto.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 121,
+   "min": 0.0442,
+   "max": 0.3052,
+   "fuori": 9,
+   "ultimo": 0.088,
+   "bn": 121,
+   "bfuori": 9,
+   "bgeo": 9,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-header",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-header-pc-3-esito.jpg",
+  "gi": 7,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-freekick-pc-1-scelta.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 140,
+   "min": 0.0442,
+   "max": 0.3312,
+   "fuori": 12,
+   "ultimo": 0.2461,
+   "bn": 140,
+   "bfuori": 12,
+   "bgeo": 12,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-freekick-pc-2-gesto.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 147,
+   "min": 0.0442,
+   "max": 0.3312,
+   "fuori": 18,
+   "ultimo": 0.1081,
+   "bn": 147,
+   "bfuori": 18,
+   "bgeo": 18,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-freekick",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-freekick-pc-3-esito.jpg",
+  "gi": 14,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-cross-pc-1-scelta.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 165,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 21,
+   "ultimo": 0.1359,
+   "bn": 165,
+   "bfuori": 21,
+   "bgeo": 21,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-cross-pc-2-gesto.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 172,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 27,
+   "ultimo": 0.0448,
+   "bn": 172,
+   "bfuori": 27,
+   "bgeo": 27,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-cross",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-cross-pc-3-esito.jpg",
+  "gi": 17,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-pass-pc-1-scelta.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 189,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 28,
+   "ultimo": 0.047,
+   "bn": 189,
+   "bfuori": 28,
+   "bgeo": 28,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-pass-pc-2-gesto.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 197,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 28,
+   "ultimo": 0.047,
+   "bn": 197,
+   "bfuori": 28,
+   "bgeo": 28,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-pass",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-pass-pc-3-esito.jpg",
+  "gi": 19,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-dribble-pc-1-scelta.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 215,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 28,
+   "ultimo": 0.0847,
+   "bn": 215,
+   "bfuori": 28,
+   "bgeo": 28,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-dribble-pc-2-gesto.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 223,
+   "min": 0.0442,
+   "max": 0.3497,
+   "fuori": 28,
+   "ultimo": 0.0847,
+   "bn": 223,
+   "bfuori": 28,
+   "bgeo": 28,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-dribble",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-dribble-pc-3-esito.jpg",
+  "gi": 150,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-tackle-pc-1-scelta.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 241,
+   "min": 0.0442,
+   "max": 0.3916,
+   "fuori": 31,
+   "ultimo": 0.3401,
+   "bn": 241,
+   "bfuori": 30,
+   "bgeo": 30,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-tackle-pc-2-gesto.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 250,
+   "min": 0.0442,
+   "max": 33.4826,
+   "fuori": 38,
+   "ultimo": 0.1059,
+   "bn": 250,
+   "bfuori": 37,
+   "bgeo": 37,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-tackle",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-tackle-pc-3-esito.jpg",
+  "gi": 32,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "pc",
+  "nome": "1-scelta",
+  "f": "azione-build-pc-1-scelta.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 269,
+   "min": 0.0442,
+   "max": 33.4826,
+   "fuori": 39,
+   "ultimo": 0.0959,
+   "bn": 269,
+   "bfuori": 38,
+   "bgeo": 38,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "pc",
+  "nome": "2-gesto",
+  "f": "azione-build-pc-2-gesto.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 277,
+   "min": 0.0442,
+   "max": 33.4826,
+   "fuori": 40,
+   "ultimo": 0.1035,
+   "bn": 277,
+   "bfuori": 39,
+   "bgeo": 39,
+   "a12": 12,
+   "afuori": 8,
+   "abfuori": 8,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-build",
+  "fmt": "pc",
+  "nome": "3-esito",
+  "f": "azione-build-pc-3-esito.jpg",
+  "gi": 140,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-scelta",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 0.9,
+   "jsMsPerSec": 18,
+   "jsMsMaxCallback": 23,
+   "renderer": [
+    {
+     "fpsRender": 0.9,
+     "msRender": 11.5,
+     "calls": 312,
+     "tri": 83824,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1919,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1562,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "azione-shot-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-shot-night-tel-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 10,
+   "min": 0.0468,
+   "max": 0.1825,
+   "fuori": 3,
+   "ultimo": 0.0793,
+   "bn": 10,
+   "bfuori": 3,
+   "bgeo": 3,
+   "a12": 10,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-shot-night-tel-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 20,
+   "min": 0.0468,
+   "max": 0.1825,
+   "fuori": 3,
+   "ultimo": 0.0852,
+   "bn": 20,
+   "bfuori": 3,
+   "bgeo": 3,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-shot-night-tel-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "esultanza-night",
+  "fmt": "tel",
+  "nome": "1",
+  "f": "esultanza-night-tel-1.jpg",
+  "gi": 1,
+  "cel": {
+   "ctx": {
+    "by": "hero",
+    "tier": "LEAD",
+    "tags": [],
+    "heat": 1,
+    "usAfter": 1,
+    "themAfter": 0,
+    "minute": 1
+   },
+   "pick": "jump_arms_up",
+   "dur": 2.8
+  }
+ },
+ {
+  "scena": "esultanza-night",
+  "fmt": "tel",
+  "nome": "2",
+  "f": "esultanza-night-tel-2.jpg"
+ },
+ {
+  "scena": "esultanza-night",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.7,
+   "jsMsPerSec": 58,
+   "jsMsMaxCallback": 19,
+   "renderer": [
+    {
+     "fpsRender": 3.7,
+     "msRender": 9.9,
+     "calls": 173,
+     "tri": 82399,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 811,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "esultanza-night",
+  "fmt": "tel",
+  "nome": "3",
+  "f": "esultanza-night-tel-3.jpg"
+ },
+ {
+  "scena": "azione-shot-fallita-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-shot-fallita-night-tel-1-scelta.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 106,
+   "min": 0.0468,
+   "max": 0.2839,
+   "fuori": 4,
+   "ultimo": 0.0803,
+   "bn": 106,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-shot-fallita-night-tel-2-gesto.jpg",
+  "gi": 1,
+  "fr": {
+   "n": 118,
+   "min": 0.0468,
+   "max": 0.2839,
+   "fuori": 4,
+   "ultimo": 0.0854,
+   "bn": 118,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-shot-fallita-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-shot-fallita-night-tel-3-esito.jpg",
+  "gi": 1,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-penalty-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-penalty-night-tel-1-scelta.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 150,
+   "min": 0.0468,
+   "max": 0.2839,
+   "fuori": 4,
+   "ultimo": 0.0724,
+   "bn": 150,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-penalty-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-penalty-night-tel-2-gesto.jpg",
+  "gi": 58,
+  "fr": {
+   "n": 160,
+   "min": 0.0468,
+   "max": 0.2839,
+   "fuori": 4,
+   "ultimo": 0.0789,
+   "bn": 160,
+   "bfuori": 4,
+   "bgeo": 4,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-penalty-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-penalty-night-tel-3-esito.jpg",
+  "gi": 58,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-header-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-header-night-tel-1-scelta.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 191,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 6,
+   "ultimo": 0.0813,
+   "bn": 191,
+   "bfuori": 6,
+   "bgeo": 6,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-header-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-header-night-tel-2-gesto.jpg",
+  "gi": 7,
+  "fr": {
+   "n": 202,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 6,
+   "ultimo": 0.0911,
+   "bn": 202,
+   "bfuori": 6,
+   "bgeo": 6,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-header-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-header-night-tel-3-esito.jpg",
+  "gi": 7,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-freekick-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-freekick-night-tel-1-scelta.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 227,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 11,
+   "ultimo": 0.1015,
+   "bn": 227,
+   "bfuori": 11,
+   "bgeo": 11,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-freekick-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-freekick-night-tel-2-gesto.jpg",
+  "gi": 14,
+  "fr": {
+   "n": 236,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 11,
+   "ultimo": 0.1053,
+   "bn": 236,
+   "bfuori": 11,
+   "bgeo": 11,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-freekick-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-freekick-night-tel-3-esito.jpg",
+  "gi": 14,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-cross-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-cross-night-tel-1-scelta.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 261,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 15,
+   "ultimo": 0.0809,
+   "bn": 261,
+   "bfuori": 19,
+   "bgeo": 19,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-cross-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-cross-night-tel-2-gesto.jpg",
+  "gi": 17,
+  "fr": {
+   "n": 271,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 15,
+   "ultimo": 0.087,
+   "bn": 271,
+   "bfuori": 19,
+   "bgeo": 19,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-cross-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-cross-night-tel-3-esito.jpg",
+  "gi": 17,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-pass-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-pass-night-tel-1-scelta.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 297,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 17,
+   "ultimo": 0.0811,
+   "bn": 297,
+   "bfuori": 20,
+   "bgeo": 20,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-pass-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-pass-night-tel-2-gesto.jpg",
+  "gi": 19,
+  "fr": {
+   "n": 307,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 17,
+   "ultimo": 0.0857,
+   "bn": 307,
+   "bfuori": 20,
+   "bgeo": 20,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-pass-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-pass-night-tel-3-esito.jpg",
+  "gi": 19,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-dribble-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-dribble-night-tel-1-scelta.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 334,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 22,
+   "ultimo": 0.0912,
+   "bn": 334,
+   "bfuori": 25,
+   "bgeo": 25,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-dribble-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-dribble-night-tel-2-gesto.jpg",
+  "gi": 150,
+  "fr": {
+   "n": 344,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 22,
+   "ultimo": 0.0849,
+   "bn": 344,
+   "bfuori": 25,
+   "bgeo": 25,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-dribble-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-dribble-night-tel-3-esito.jpg",
+  "gi": 150,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-tackle-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-tackle-night-tel-1-scelta.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 371,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 24,
+   "ultimo": 0.1055,
+   "bn": 371,
+   "bfuori": 27,
+   "bgeo": 27,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-tackle-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-tackle-night-tel-2-gesto.jpg",
+  "gi": 32,
+  "fr": {
+   "n": 381,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 24,
+   "ultimo": 0.1073,
+   "bn": 381,
+   "bfuori": 27,
+   "bgeo": 27,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-tackle-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-tackle-night-tel-3-esito.jpg",
+  "gi": 32,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-build-night",
+  "fmt": "tel",
+  "nome": "1-scelta",
+  "f": "azione-build-night-tel-1-scelta.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 408,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 27,
+   "ultimo": 0.089,
+   "bn": 408,
+   "bfuori": 30,
+   "bgeo": 30,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_choose"
+  }
+ },
+ {
+  "scena": "azione-build-night",
+  "fmt": "tel",
+  "nome": "2-gesto",
+  "f": "azione-build-night-tel-2-gesto.jpg",
+  "gi": 140,
+  "fr": {
+   "n": 418,
+   "min": 0.0468,
+   "max": 0.3369,
+   "fuori": 27,
+   "ultimo": 0.0939,
+   "bn": 418,
+   "bfuori": 30,
+   "bgeo": 30,
+   "a12": 12,
+   "afuori": 3,
+   "abfuori": 3,
+   "fase": "hl_result"
+  }
+ },
+ {
+  "scena": "azione-build-night",
+  "fmt": "tel",
+  "nome": "3-esito",
+  "f": "azione-build-night-tel-3-esito.jpg",
+  "gi": 140,
+  "fase": "hl_result"
+ },
+ {
+  "scena": "azione-scelta-night",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.5,
+   "jsMsPerSec": 67,
+   "jsMsMaxCallback": 30,
+   "renderer": [
+    {
+     "fpsRender": 3.5,
+     "msRender": 11.8,
+     "calls": 172,
+     "tri": 81991,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 914,
+     "tex": 964,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ }
+]

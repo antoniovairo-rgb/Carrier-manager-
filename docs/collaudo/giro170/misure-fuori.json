@@ -1,0 +1,848 @@
+[
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "1-apertura",
+  "f": "intro-tel-1-apertura.jpg",
+  "el": 1.295,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 10.8,
+   "jsMsPerSec": 42,
+   "jsMsMaxCallback": 13,
+   "renderer": [
+    {
+     "fpsRender": 10.8,
+     "msRender": 2.2,
+     "calls": 62,
+     "tri": 25494,
+     "pr": 1.6,
+     "canvas": "600x1299",
+     "ombre": false,
+     "luci": 5,
+     "luciOmbra": 0,
+     "mesh": 106,
+     "skinned": 14,
+     "inst": 0,
+     "geo": 67,
+     "tex": 21,
+     "tone": 4,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "2-corsa",
+  "f": "intro-tel-2-corsa.jpg",
+  "el": 4.919,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "3-ralenti",
+  "f": "intro-tel-3-ralenti.jpg",
+  "el": 7.022963636363636,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "4-tiro",
+  "f": "intro-tel-4-tiro.jpg",
+  "el": 9.279,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "5-gol",
+  "f": "intro-tel-5-gol.jpg",
+  "el": 10.239,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "6-esulta",
+  "f": "intro-tel-6-esulta.jpg",
+  "el": 13.599,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "tel",
+  "nome": "7-chiusura",
+  "f": "intro-tel-7-chiusura.jpg",
+  "el": 17.079,
+  "chiusa": null
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b0-a",
+  "f": "presentazione-tel-b0-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b1-a",
+  "f": "presentazione-tel-b1-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b2-a",
+  "f": "presentazione-tel-b2-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.6,
+   "jsMsPerSec": 18,
+   "jsMsMaxCallback": 8,
+   "renderer": [
+    {
+     "fpsRender": 3.6,
+     "msRender": 3,
+     "calls": 101,
+     "tri": 101128,
+     "pr": 1.6,
+     "canvas": "536x1160",
+     "ombre": false,
+     "luci": 11,
+     "luciOmbra": 0,
+     "mesh": 297,
+     "skinned": 49,
+     "inst": 5,
+     "geo": 110,
+     "tex": 66,
+     "tone": 0,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b2-b",
+  "f": "presentazione-tel-b2-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b4-a",
+  "f": "presentazione-tel-b4-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b4-b",
+  "f": "presentazione-tel-b4-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b6-a",
+  "f": "presentazione-tel-b6-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b6-b",
+  "f": "presentazione-tel-b6-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b7-a",
+  "f": "presentazione-tel-b7-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "tel",
+  "nome": "b7-b",
+  "f": "presentazione-tel-b7-b.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "1-apertura",
+  "f": "gala-tel-1-apertura.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 11.8,
+   "jsMsPerSec": 13,
+   "jsMsMaxCallback": 2,
+   "renderer": [
+    {
+     "fpsRender": 11.8,
+     "msRender": 0.8,
+     "calls": 40,
+     "tri": 19212,
+     "pr": 1.6,
+     "canvas": "536x1160",
+     "ombre": false,
+     "luci": 6,
+     "luciOmbra": 0,
+     "mesh": 36,
+     "skinned": 6,
+     "inst": 0,
+     "geo": 39,
+     "tex": 14,
+     "tone": 4,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "2-busta",
+  "f": "gala-tel-2-busta.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "3-svela",
+  "f": "gala-tel-3-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "4-svela",
+  "f": "gala-tel-4-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "5-svela",
+  "f": "gala-tel-5-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "tel",
+  "nome": "6-premio",
+  "f": "gala-tel-6-premio.jpg",
+  "tes": {
+   "presentatore": true,
+   "presentatrice": true
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "tel",
+  "nome": "1-frontale",
+  "f": "parata-tel-1-frontale.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 5.1,
+   "jsMsPerSec": 35,
+   "jsMsMaxCallback": 11,
+   "renderer": [
+    {
+     "fpsRender": 5.1,
+     "msRender": 4.1,
+     "calls": 117,
+     "tri": 100126,
+     "pr": 2,
+     "canvas": "750x1624",
+     "ombre": false,
+     "luci": 7,
+     "luciOmbra": 0,
+     "mesh": 340,
+     "skinned": 56,
+     "inst": 0,
+     "geo": 103,
+     "tex": 71,
+     "tone": 0,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "tel",
+  "nome": "2-laterale",
+  "f": "parata-tel-2-laterale.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "tel",
+  "nome": "3-alta",
+  "f": "parata-tel-3-alta.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "tel",
+  "nome": "4-secondo-giro",
+  "f": "parata-tel-4-secondo-giro.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "0-panchina-attesa",
+  "f": "subentro-tel-0-panchina-attesa.jpg",
+  "fase": "playing"
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "1",
+  "f": "subentro-tel-1.jpg",
+  "se": 0.14
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "misura": {
+   "fpsRaf": 3.5,
+   "jsMsPerSec": 61,
+   "jsMsMaxCallback": 27,
+   "renderer": [
+    {
+     "fpsRender": 3.5,
+     "msRender": 12,
+     "calls": 140,
+     "tri": 130111,
+     "pr": 1.5,
+     "canvas": "541x1120",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1917,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 930,
+     "tex": 962,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "2",
+  "f": "subentro-tel-2.jpg",
+  "se": 0.84
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "3",
+  "f": "subentro-tel-3.jpg",
+  "se": 1.29
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "4",
+  "f": "subentro-tel-4.jpg",
+  "se": 1.82
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "5",
+  "f": "subentro-tel-5.jpg",
+  "se": 2.3
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "6",
+  "f": "subentro-tel-6.jpg",
+  "se": 2.79
+ },
+ {
+  "scena": "subentro",
+  "fmt": "tel",
+  "nome": "7",
+  "f": "subentro-tel-7.jpg",
+  "se": 3.2
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "1-apertura",
+  "f": "intro-pc-1-apertura.jpg",
+  "el": 1.621,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 3.4,
+   "jsMsPerSec": 15,
+   "jsMsMaxCallback": 8,
+   "renderer": [
+    {
+     "fpsRender": 3.4,
+     "msRender": 2.4,
+     "calls": 78,
+     "tri": 25618,
+     "pr": 1.6,
+     "canvas": "2304x1440",
+     "ombre": false,
+     "luci": 5,
+     "luciOmbra": 0,
+     "mesh": 106,
+     "skinned": 14,
+     "inst": 0,
+     "geo": 84,
+     "tex": 21,
+     "tone": 4,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "2-corsa",
+  "f": "intro-pc-2-corsa.jpg",
+  "el": 6.429509090909091,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "3-ralenti",
+  "f": "intro-pc-3-ralenti.jpg",
+  "el": 7.060054545454546,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "4-tiro",
+  "f": "intro-pc-4-tiro.jpg",
+  "el": 9.039000000000001,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "5-gol",
+  "f": "intro-pc-5-gol.jpg",
+  "el": 10.838999999999999,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "6-esulta",
+  "f": "intro-pc-6-esulta.jpg",
+  "el": 13.599,
+  "chiusa": null
+ },
+ {
+  "scena": "intro",
+  "fmt": "pc",
+  "nome": "7-chiusura",
+  "f": "intro-pc-7-chiusura.jpg",
+  "el": 17.319,
+  "chiusa": null
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b0-a",
+  "f": "presentazione-pc-b0-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b1-a",
+  "f": "presentazione-pc-b1-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b2-a",
+  "f": "presentazione-pc-b2-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 1.7,
+   "jsMsPerSec": 8,
+   "jsMsMaxCallback": 7,
+   "renderer": [
+    {
+     "fpsRender": 1.7,
+     "msRender": 2.9,
+     "calls": 156,
+     "tri": 101498,
+     "pr": 1.6,
+     "canvas": "2057x1286",
+     "ombre": false,
+     "luci": 11,
+     "luciOmbra": 0,
+     "mesh": 297,
+     "skinned": 49,
+     "inst": 5,
+     "geo": 208,
+     "tex": 74,
+     "tone": 0,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b2-b",
+  "f": "presentazione-pc-b2-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b4-a",
+  "f": "presentazione-pc-b4-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b4-b",
+  "f": "presentazione-pc-b4-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b6-a",
+  "f": "presentazione-pc-b6-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b6-b",
+  "f": "presentazione-pc-b6-b.jpg"
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b7-a",
+  "f": "presentazione-pc-b7-a.jpg",
+  "n": 7
+ },
+ {
+  "scena": "presentazione",
+  "fmt": "pc",
+  "nome": "b7-b",
+  "f": "presentazione-pc-b7-b.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "1-apertura",
+  "f": "gala-pc-1-apertura.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 4.1,
+   "jsMsPerSec": 5,
+   "jsMsMaxCallback": 2,
+   "renderer": [
+    {
+     "fpsRender": 4.1,
+     "msRender": 0.9,
+     "calls": 44,
+     "tri": 19220,
+     "pr": 1.6,
+     "canvas": "2057x1286",
+     "ombre": false,
+     "luci": 6,
+     "luciOmbra": 0,
+     "mesh": 36,
+     "skinned": 6,
+     "inst": 0,
+     "geo": 41,
+     "tex": 15,
+     "tone": 4,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "2-busta",
+  "f": "gala-pc-2-busta.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "3-svela",
+  "f": "gala-pc-3-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "4-svela",
+  "f": "gala-pc-4-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "5-svela",
+  "f": "gala-pc-5-svela.jpg"
+ },
+ {
+  "scena": "gala",
+  "fmt": "pc",
+  "nome": "6-premio",
+  "f": "gala-pc-6-premio.jpg",
+  "tes": {
+   "presentatore": true,
+   "presentatrice": true
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "pc",
+  "nome": "1-frontale",
+  "f": "parata-pc-1-frontale.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 3.3,
+   "jsMsPerSec": 29,
+   "jsMsMaxCallback": 15,
+   "renderer": [
+    {
+     "fpsRender": 3.3,
+     "msRender": 5.3,
+     "calls": 159,
+     "tri": 101484,
+     "pr": 2,
+     "canvas": "2880x1800",
+     "ombre": false,
+     "luci": 7,
+     "luciOmbra": 0,
+     "mesh": 340,
+     "skinned": 56,
+     "inst": 0,
+     "geo": 150,
+     "tex": 79,
+     "tone": 0,
+     "enc": 3000
+    }
+   ]
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "pc",
+  "nome": "2-laterale",
+  "f": "parata-pc-2-laterale.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "pc",
+  "nome": "3-alta",
+  "f": "parata-pc-3-alta.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "parata",
+  "fmt": "pc",
+  "nome": "4-secondo-giro",
+  "f": "parata-pc-4-secondo-giro.jpg",
+  "p": {
+   "men": 8,
+   "glb": true,
+   "euro": false,
+   "v": 2,
+   "apice23": 0.475,
+   "cg23": 8,
+   "folla": "dipinta"
+  }
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "0-panchina-attesa",
+  "f": "subentro-pc-0-panchina-attesa.jpg",
+  "fase": "playing"
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "1",
+  "f": "subentro-pc-1.jpg",
+  "se": 0.05
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "misura": {
+   "fpsRaf": 1.2,
+   "jsMsPerSec": 18,
+   "jsMsMaxCallback": 20,
+   "renderer": [
+    {
+     "fpsRender": 1.2,
+     "msRender": 10.1,
+     "calls": 162,
+     "tri": 136649,
+     "pr": 2,
+     "canvas": "1906x1510",
+     "ombre": true,
+     "luci": 14,
+     "luciOmbra": 1,
+     "mesh": 1916,
+     "skinned": 749,
+     "inst": 6,
+     "geo": 1306,
+     "tex": 962,
+     "tone": 4,
+     "enc": 3001
+    }
+   ]
+  }
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "2",
+  "f": "subentro-pc-2.jpg",
+  "se": 0.47
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "3",
+  "f": "subentro-pc-3.jpg",
+  "se": 0.65
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "4",
+  "f": "subentro-pc-4.jpg",
+  "se": 0.65
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "5",
+  "f": "subentro-pc-5.jpg",
+  "se": 0.65
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "6",
+  "f": "subentro-pc-6.jpg",
+  "se": 0.82
+ },
+ {
+  "scena": "subentro",
+  "fmt": "pc",
+  "nome": "7",
+  "f": "subentro-pc-7.jpg",
+  "se": 1.11
+ }
+]
