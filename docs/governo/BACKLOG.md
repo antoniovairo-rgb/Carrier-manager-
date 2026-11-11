@@ -45,6 +45,8 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-366 | 11/11 21:25 | Visto dalla madre nella stessa foto (non segnalato dal PO): il riquadro dice voto 7,4, la barra in basso dice ★ 7.1 nella stessa schermata — due voti diversi per la stessa partita | difetto (coerenza voto) | DA MISURARE — giro 169 | 7.999.191 |
 | PO-367 | 11/11 23:55 | PO: «Su tutte le scene 3D chiediamo un aiuto a Fable 5.2 al fine di migliorarle il più possibile?» — questionario: «Prima misura, poi scegli», «Subito, per la 192» | miglioramento (scene 3D) | DA MISURARE — giro 170 (Fable, solo analisi: inventario, foto, difetti, proposte con priorità e costo) | 7.999.192 |
 | PO-368 | 12/11 00:05 | PO (foto docs/collaudo-po/191-tifosi-colore-trasferta.webp, PC, partita 2D Primavera CES-LNS, Leonessa in trasferta con maglia viola): «i tifosi devono mantenere il colore originale del club, non prendere il colore della maglia da trasferta» — settori/curve ai lati del campo in viola (maglia away) invece del celeste del club | difetto (grafica partita 2D e folla) | DA FARE — giro 171 (2D e verifica anche nel 3D) | 7.999.192 |
+| PO-369 | 12/11 00:10 | PO: «l'audio del pubblico è terribile e pure degli effetti sono nel menù» — questionario: pubblico «Suona finto o sporco», «Troppo forte o invadente», «Sempre uguale»; menù «Più discreti e brevi» | difetto (audio) | DA FARE — giro 172 | 7.999.192 |
+| PO-370 | 12/11 00:10 | PO: «durante la partita devi dare la possibilità di accedere al setting dell'audio» — questionario: «Icona audio in partita» (2D e 3D, pannello con cursori Pubblico, Effetti, Musica e Muto, partita in pausa mentre è aperto) | nuova funzione (audio, partita) | DA FARE — giro 172 | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 

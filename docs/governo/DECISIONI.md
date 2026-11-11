@@ -1303,3 +1303,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~00:05 Roma — PO-368 tifosi nel colore del club
 - Richiesta PO con foto (partita 2D). Decisione madre: giro 171 su lavoro/191, entra nella 192 (la 191 è a contenuto chiuso); il giro verifica anche folla 3D e cori/cartelloni con la stessa regola (colore del club, mai il colore della maglia del giorno).
+
+## 12/11 ~00:10 Roma — PO-369/370 audio
+- Pubblico: «finto o sporco», «troppo forte», «sempre uguale» (non «meglio il suono di prima»). Menù: «più discreti e brevi». In partita: «icona audio» con cursori Pubblico/Effetti/Musica e Muto, partita in pausa.
+- Giro 172 su lavoro/191 (contiene audio 149/161/161b), entra nella 192. Solo CC0 (regola PO). Pagina d'ascolto prima/dopo per il PO.
