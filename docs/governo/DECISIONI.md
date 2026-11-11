@@ -1252,3 +1252,6 @@ Questionario del mattino chiuso: tutte le domande dei giri della 190 e del proge
 
 ### 11/11 12:17 UTC — Fable 5.2 per i giri difficili sul motore (decisione PO)
 PO: «valuta se per qualche task specifico è meglio usare Fable 5.2» → questionario → «Solo giri difficili sul motore». Regola: Fable 5.2 (8/40 $ per milione di token, il doppio di Opus 5.5) per i giri di analisi profonda (motore, cause non trovate); Opus 5.5 per gli altri giri di sviluppo; Sonnet 5.5 per le verifiche. Applicata subito: giro 158 (Opus, primo commit c1f123e7, 10,31 $) interrotto e proseguito come 158b su Fable (session_01QEYiaC66WAviak7gjdW5AD) sullo stesso ramo.
+
+### 11/11 12:25 UTC — grafica-v2 rosso preesistente (PO-363)
+La verifica 190 ha trovato grafica-v2 rosso (catena mirata, poi sostituita dai guardiani src/14). Rieseguito dalla sessione madre: ROSSO identico su main 7.999.189 e su lavoro/190 («riga tua non nel colore del club» nei 4 formati) → preesistente, non introdotto dalla 190. Registrato PO-363 per la 191. La 190 lo dichiara come rosso preesistente.
