@@ -189,16 +189,18 @@ Tutti sullo stesso sorgente (build `node tools/build-src.mjs` + `node tools/chec
 | build web (`build-dist --web`) | ✅ (file nuovi in `dist-web/assets/audio`) |
 | build store (`build-dist` + `validate-dist`) | ✅ dist offline funzionante, 0 richieste esterne |
 | `audit-copyright` | ✅ 0 riferimenti al mondo reale |
-| `validate-situations` | ESITO_GATE |
-| `partita-vera` | ESITO_PV |
-| `match-sequence` | ESITO_MS |
-| `replay` | ESITO_REPLAY |
-| `test:logic` | ESITO_LOGIC |
-| `save-compat` | ESITO_SAVE |
+| `validate-situations` | ✅ 14/14, fingerprint 00001505, 0 failure (696 s) |
+| `partita-vera` | ✅ 12 bande tenute, 2/2 partite finite |
+| `match-sequence` | ✅ 1x/1x, 2x/2x, 1x/2x: 81/81 righe identiche, fischio finale 4/4 giri (minuto 92) |
+| `replay` | ✅ 8 highlight, replay completi e coerenti |
+| `test:logic` | ✅ 43/43 |
+| `save-compat` | ✅ 12/12 |
 
 Dichiarato: la prima esecuzione di `sw-cache-120` è caduta **prima di giudicare** per un `ENOENT` sulla cartella `tests/visual/out/`
 (assente nel clone nuovo, è ignorata da git): creata la cartella, rilanciato da capo, verde. La prima esecuzione di `audio-161` è caduta per
-i `node_modules` mancanti del banco (`npm install` in `tests/visual`).
+i `node_modules` mancanti del banco (`npm install` in `tests/visual`). La prima esecuzione di `match-sequence` ha superato
+il tetto di 10 minuti di una chiamata ed è stata interrotta (uscita 124, nessun verdetto): **non vale**, rifatta da capo in sottofondo con
+attesa in primo piano sul file, verde.
 
 ## File toccati
 
