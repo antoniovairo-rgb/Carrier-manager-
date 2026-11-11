@@ -107,7 +107,7 @@ registrato e col contatore `__CPM_PAG75`; i numeri qui sopra sono ricalcolati co
 
 ## 5. Catena
 
-Vedi §7 (riempita a fine catena).
+Vedi §7.
 
 ## 6. Domande aperte per il PO
 
@@ -123,7 +123,40 @@ Vedi §7 (riempita a fine catena).
 
 ## 7. Esito della catena
 
-(riempito a fine giro)
+Un controllo alla volta (`CPM_CI_PAR=0`), `free -m`/`df -h` prima di ognuno, `CPM_CHROME=/opt/pw-browsers/chromium`, build del commit
+`b60a61f`. Il container si e' riavviato a meta' di `match-sequence` (00:18): quel passo e' stato rifatto da capo.
+
+| controllo | esito |
+|---|---|
+| gol-eroe-154 | ✅ verde e rosso (§3; numeri ricalcolati con le regole finali dalla stessa corsa) |
+| test:logic | ✅ |
+| save-compat | ✅ 12 pass · 0 fail |
+| match-sequence | ✅ le tre velocita' raccontano la stessa partita |
+| replay | ✅ |
+| goal-postarc | ✅ |
+| tabellino-228 | ✅ verde e il rosso si vede |
+| tabellone-117 | ✅ verde e il rosso si vede |
+| rigore-139 | ❌ **non giudicato** — vedi sotto; adattato, **NON rieseguito** |
+| distanze-126 | ❌ **verde rosso per un tiro**: 30,6 m contro 30 (s1 seme 8 hl 3, «Girata secca e tiro», shot_power); 24/24 partite, 155 contatti, nessun altro superamento. **Causa non misurata**: non ho rigiocato quella partita sulla base |
+| bg-sync | ❌ CIECO (21 righe in 40 s, 0 coppie giudicabili) — **identico sulla base `lavoro/189` (0d4915e)**, rigiocato in un worktree: difetto preesistente dello strumento |
+| bg-decision | ❌ CIECO (0 righe utili su 15) — **non verificato sulla base** (stessa famiglia di bg-sync, probabile preesistente: non posso confermarlo) |
+| career-critical gruppo 1 (recovery-competition … playedmd-registry) | ✅ |
+| career-critical gruppo 2 (career-invariants … coppa-intera) | ✅ |
+| validate-situations | ✅ PASS |
+| partita-vera | ⏹️ fermato all'avvio (fine del tetto di tempo): **non eseguito** |
+| highlight-95 (completo) | **non eseguito** (tetto di tempo) |
+
+**rigore-139.** Il guardiano del giro 139 giudica le «battute di rigore dell'eroe» calciate dal motore (minimo 3) e il suo rosso
+deve riprodurre il doppio motore+scena al 90'-91'. Col PO-357 quelle battute non esistono piu': nel verde i rigori del motore a
+31', 36', 20' li ha battuti un compagno (battute dell'eroe 1 contro il minimo 3 → «non giudicato»), e nel rosso il motore non
+calcia piu' l'eroe → il doppio non si riproduce. E' la conseguenza attesa della decisione, non un difetto nuovo. Adattamento
+(stesso schema di pagella-75): `sonda-rigore-139.mjs` accende `__CPM_NO_G154` in entrambi i bracci, cosi' l'invariante del giro
+139 resta misurato nella condizione in cui nasceva. **Il guardiano adattato non e' stato rieseguito**: va rifatto prima di
+promuovere.
+
+**Da fare prima di qualunque promozione:** rigore-139 (adattato), distanze-126 (rigiocare s1 seme 8 con e senza `__CPM_NO_G154`
+per sapere se il tiro a 30,6 m dipende dal rimedio — il rimedio non tocca le scene, ma cambia il flusso della partita e quindi
+quali scene nascono), bg-decision sulla base, partita-vera, highlight-95 completo.
 
 ## Note di processo
 

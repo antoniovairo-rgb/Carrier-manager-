@@ -30,7 +30,7 @@ async function partita(nome, idx) {
   const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
   const sv = JSON.parse(JSON.stringify(save)); const pl = sv.player || sv; pl.name = pl.name + ' ' + nome;
   await page.addInitScript(([s, k, sp, r]) => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_PRESENT = 1;
-    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1;
+    if (k != null) window.__CPM_RIG190_K = k; if (r) window.__CPM_NO_G139 = 1; window.__CPM_NO_G154 = 1;/* [giro 154] dal PO-357 il rigore dell'eroe fuori scena lo batte un compagno: le battute del motore dell'eroe non esistono piu' e il guardiano del giro 139 restava non giudicato. Si ricrea quella condizione in ENTRAMBI i bracci, come pagella-75 */
     localStorage.setItem('cpm-match-speed', sp); localStorage.setItem('cpm-v3', JSON.stringify(s)); }, [sv, K, SPEED, ROSSO]);
   const t0 = Date.now();
   try {
