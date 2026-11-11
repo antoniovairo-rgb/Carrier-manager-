@@ -28850,7 +28850,7 @@ function creaMotorePossesso(cfg){
     else if(out==="goal"){out="saved";S.conta.golNegati++;}
     return out;};
   const tira=(P,opt)=>{opt=opt||{};const l=P.team;const press=pressioneSu(P);const intent=opt.intent||"shot";
-    const out=esitoTiro(P,intent,{pressure:press<2?3:press<4?2:1,gkOut:false,pressRaw:press});
+    const out=(opt.res158!=null)?esitoTiro(P,intent,{pressure:press<2?3:press<4?2:1,gkOut:false,pressRaw:(opt.press158!=null?opt.press158:press),res221:opt.res158}):esitoTiro(P,intent,{pressure:press<2?3:press<4?2:1,gkOut:false,pressRaw:press});/* [giro 158] res158/press158 li passa solo l'occasione dell'eroe nella simulazione rapida (eseguiOccV2): senza, la chiamata e' quella di prima */
     const gx=l===HOME?100.6:-0.6;let ty=50+(rnd()-0.5)*8,tx=gx;
     const adv=advDi(P.x,l);const zona=zonaDi(adv,P.y);
     if(out==="wide"){ty=rnd()<0.5?(GOAL_Y0-2-rnd()*6):(GOAL_Y1+2+rnd()*6);}
@@ -29004,6 +29004,7 @@ function creaMotorePossesso(cfg){
     /* [7.999.137 PO-202] nella vissuta in modo brain (cfg.brainLive) l'occasione e' la STESSA della simulazione rapida: il motore la
        riconosce con la sua regola (_occV2Pronta: pallone all'eroe oltre la trequarti, ritmo legato al punteggio) e, invece di sceglierla
        da solo, la dichiara: la vissuta apre la scena e il giocatore sceglie. */
+    if(P.eroe&&S._seg158!=null){const _sg=S._seg158;S._seg158=null;/* [giro 158] il seguito del dribbling riuscito nell'occasione simulata (_o158) */if(_o158()&&S.tick-_sg<=1){const _z=zonaDi(advDi(P.x,l),P.y);if(_z==="area"||_z==="limite"){tira(P,{res158:_res158()});return;}}}
     let _nat137=false;if(V2&&P.eroe&&_occV2Pronta(P)){if(S.richieste.s259){S.richieste.s259.gap=0;S.richieste.s259.occ=S.min|0;S.richieste.s259.cerca=false;}/* [PO-259] l'occasione e' arrivata: il gap della scelta si consuma */if(!cfg.brainLive){eseguiOccV2(P);return;}S._nOccV2=(S._nOccV2|0)+1;S._ultOccV2=S.min;_nat137=true;}
     if(!_nat137&&V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
     if(!_nat137&&V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
@@ -29214,6 +29215,13 @@ function creaMotorePossesso(cfg){
     const sc=(cfg.scelte&&cfg.scelte[k])||auto;const l=P.team,adv=advDi(P.x,l);
     ev("occasione_eroe",{k,auto,scelta:sc,chi:chi(P),zona:zonaDi(adv,P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
     {const _c67=(S.conta.scelte67=S.conta.scelte67||{});_c67[sc]=(_c67[sc]|0)+1;}/* [giro 67 PO-098] conteggio inerte delle scelte dell'eroe, per la sonda stili-098 */
+    if(_o158()){/* [giro 158] l'occasione simulata si conclude come la scena vissuta: vedi _o158 */
+      if(sc==="tiro"){tira(P,{res158:_res158()});return;}
+      if(sc==="dribbling"){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===P.team||q.gk)continue;const d=hyp(q.x,q.y,P.x,P.y);if(d<dd){dd=d;D=q;}}
+        const a=attrsDi(P),b=D?attrsDi(D):a;const pOk=clamp(0.46+((a.dribbling+a.velocità)/2-(b.fisico+b.posizionamento)/2)*0.012,0.2,0.8);
+        if(S.tab)S.tab[l].dribbling++;if(rnd()<pOk){if(S.tab)S.tab[l].dribblingOk++;ev("dribbling",{chi:chi(P),su:chi(D),ok:true});conduci(P,{spinta:true});S._seg158=S.tick;return;}
+        ev("dribbling",{chi:chi(P),su:chi(D),ok:false});if(rnd()<0.3){fallo(P);return;}perdi(P,"contrasto");return;}
+      if((sc==="passaggio"||sc==="cross")&&_assist158(P,sc==="cross"))return;}
     if(sc==="tiro"){tira(P);return;}
     if(sc==="cross"){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<74)continue;const s2=aq-Math.abs(q.y-50)*0.3+rnd()*6;if(s2>bs){bs=s2;R=q;}}
       if(R){cross(P,R);return;}const R2=scegliRicevente(P,{});if(R2)passa(P,R2);else conduci(P);return;}
@@ -29222,6 +29230,36 @@ function creaMotorePossesso(cfg){
       if(S.tab)S.tab[l].dribbling++;if(rnd()<pOk){if(S.tab)S.tab[l].dribblingOk++;ev("dribbling",{chi:chi(P),su:chi(D),ok:true});conduci(P,{spinta:true});return;}
       ev("dribbling",{chi:chi(P),su:chi(D),ok:false});if(rnd()<0.3){fallo(P);return;}perdi(P,"contrasto");return;}
     const R=scegliRicevente(P,{});if(R)passa(P,R);else conduci(P);}
+  /* [giro 158 PO-360 difetto B, decisione PO 11/11 — rosso __CPM_NO_G158 (o il solo __CPM_NO_G158O)] L'OCCASIONE SIMULATA DELL'EROE E' UNA GIOCATA DA GOL.
+     MISURATO (percorso della carriera, 70 contro 70, tattiche persona, 2.000 partite): la squadra dell'eroe simulata segnava 0,90 gol e ne
+     subiva 1,19 (1,17 punti a partita contro 1,37 del fondo classifica; 2,09 gol in tutto, sotto la banda 2,3-3,5 di sim-motore). La causa
+     non e' la difesa (10 contro 11, senza l'eroe, gli avversari segnano 1,11): nel gioco fluido l'eroe non tira (7.999.13: le sue conclusioni
+     nascono dalle occasioni) e nella simulazione rapida le sue ~4,8 occasioni a partita erano 2,3 dribbling che, vinto il duello, non
+     portavano a niente, 2,1 passaggi qualunque e 0,3 tiri con la resa di un tiro qualunque. Nella partita vissuta la stessa occasione e'
+     una scena: tiro con la resa PO-221, assist con il compagno che ha una grande occasione PO-298 (giocaScena; misura PO-202 del 05/10:
+     vissuta +0,3 gol sulla simulata, «sono le scene, dove il giocatore sceglie sempre una giocata da gol»).
+     Qui, solo nella simulazione rapida, la scelta del profilo (sceltaAutoV2) non cambia e ogni famiglia si conclude come nella scena:
+     (a) tiro: la resa della scena (la stessa costante di giocaScena); (b) passaggio o cross: se un compagno e' davvero in area (avanzamento
+     >= 78, entro 20 dal centro: la soglia dei cross del motore) e' un assist — probabilita' del passaggio di giocaScena, e il compagno
+     calcia di prima da dove si trova con la grande occasione PO-298; senza un compagno in area resta il passaggio di prima;
+     (c) dribbling: vinto il duello, al battito dopo l'eroe tira se e' al limite o in area («conduci e tira»), altrimenti gioca come prima.
+     Nessuna costante nuova. Varianti misurate e scartate (stesse 1.000 partite): ogni passaggio = assist con il compagno portato davanti
+     alla porta 1,50-1,18 gol e 1,62 punti (sopra la banda del fondo classifica); assist dopo il dribbling invece che sul passaggio
+     1,15-1,19 ma stili-098 rosso (l'Incursore faceva piu' assist del Regista); la marcatura dell'eroe solo col possesso della sua squadra
+     (primo commit del giro) 1,02-1,06: alzava i punti togliendo gol agli avversari e i gol totali restavano 2,08.
+     La partita vissuta (brainLive) non passa di qui. */
+  const _x158=(k)=>!!(typeof window!=='undefined'&&window&&window[k]);
+  const _o158=()=>!!cfg.occasioniV2&&!cfg.brainLive&&!_x158('__CPM_NO_G158')&&!_x158('__CPM_NO_G158O');
+  const _res158=()=>(_x158('__CPM_NO_221')||_x158('__CPM_NO_RES221'))?1:((typeof window!=='undefined'&&window&&window.__CPM_RES221_K!=null)?+window.__CPM_RES221_K:1.8);
+  function _assist158(P,alta){const l=P.team;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk||!attivo(q))continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const dq=hyp(q.x,q.y,P.x,P.y);if(dq<3)continue;const s2=aq-Math.abs(q.y-50)*0.3-corsiaLibera(P.x,P.y,q.x,q.y,l)*6;if(s2>bs){bs=s2;R=q;}}
+    if(!R)return false;/* nessun compagno gia' in area (avanzamento >= 78, entro 20 dal centro: la soglia dei cross del motore): resta il passaggio di prima */
+    let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===l||q.gk)continue;const d=hyp(q.x,q.y,P.x,P.y);if(d<dd){dd=d;D=q;}}
+    const a=attrsDi(P),b=D?attrsDi(D):{posizionamento:forza.away};const _i=_x158('__CPM_NO_221')?0:Math.max(0,a.passaggio-70)*0.006;const pas=clamp(0.80+(a.passaggio-b.posizionamento)*0.008+_i,0.5,_i>0?0.97:0.95);
+    if(rnd()>=pas){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}return true;}/* intercettato: lo stesso gesto del ramo «turno» */
+    S.conta.passaggi++;S.poss.ultimoPassatore=P.i;ev(alta?"cross":"passaggio",{da:chi(P),a:chi(R),kind:"corto",from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)}});
+    const _in=alta?"header":"shot",x0=xgV2(R,_in,1);const r=_x158('__CPM_NO_ASSIST298')?1:clamp(clamp(0.28+0.8*x0,0.28,0.6)/Math.max(0.01,x0),1,12);
+    S.poss.lato=l;S.poss.padrone=R.i;S.poss.stato="tenuta";S.palla.x=R.x;S.palla.y=R.y;/* il compagno conclude di prima, da dove si trova */
+    tira(R,{intent:_in,res158:r,press158:1});return true;}
   function muoviVolo(){
     const p=S.poss;const _dt=S.dt||1;if(S.fase<=1e-9)S.conta.volo++;p.t+=_dt;/* [7.898] il volo avanza di v·dt per chiamata; t conta minuti */
     const R=p.ricevente!=null?g[p.ricevente]:null;
@@ -29393,14 +29431,7 @@ function creaMotorePossesso(cfg){
     const _rif924=padrone||((_m924&&st==="volo"&&S.poss.ricevente!=null)?g[S.poss.ricevente]:null);
     const app=[];if(_rif924&&(st==="tenuta"||(_m924&&st==="volo"))){const c=[];for(const q of g){if(!mio(q,l)||q.gk||q.i===_rif924.i)continue;c.push({q,d:hyp(q.x,q.y,_rif924.x,_rif924.y)});}c.sort((a,b)=>a.d-b.d);for(let i=0;i<Math.min(_m924?3:2,c.length);i++)app.push(c[i].q);}
     const advB=advDi(bx,l);
-    /* [giro 158 PO-360 difetto B, rosso __CPM_NO_G158] NELLA SIMULATA LA MARCATURA A UOMO DELL'EROE E' UNA CONSEGNA DIFENSIVA. Il marcatore (7.999.6)
-       restava incollato all'eroe anche mentre la SUA squadra costruiva: misurato (sonda sim-squadra-g158, 70 contro 70, tre serie da 2.000
-       semi) la squadra dell'eroe subiva 1,13-1,19 gol e faceva 1,23-1,32 punti a partita, contro 1,37 del fondo classifica a forza pari; con
-       la marcatura solo quando la palla e' della squadra dell'eroe: 0,99-1,02 gol subiti e 1,41-1,44 punti. Le altre leve misurate non
-       spostano il risultato oltre il rumore (tiro libero dell'eroe 1,28-1,34, conduzione dell'eroe 1,25-1,27, occasioni dal limite 1,25-1,27).
-       Solo la simulazione rapida (occasioniV2 senza brainLive): la partita vissuta resta com'e'. */
-    const _g158=!!cfg.occasioniV2&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G158);
-    let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])&&!(_g158&&S.poss.lato!==g[HERO].team)){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
+    let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
     for(const p of g){if(!attivo(p))continue;
       if(p.i===S.poss.padrone&&st==="tenuta")continue;/* il padrone si muove solo con la conduzione */
       const sl=slotDi(p);let tx,ty,v=4.5;

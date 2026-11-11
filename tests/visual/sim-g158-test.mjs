@@ -1,14 +1,16 @@
 /* [giro 158 PO-360] GUARDIANO DELLE PARTITE SIMULATE: SQUADRA DELL'EROE E VOTO DALLA PAGELLA DEL MOTORE.
-   G1 · squadra (difetto B del giro 157). 70 contro 70, semi fissi, casa e trasferta alternate, motore senza grafica (__CPM_SIM_MOTORE).
-        Due bracci sulla stessa pagina di prova: A = il gioco com'e', B = __CPM_NO_G158 (marcatura a uomo dell'eroe anche col possesso
-        avversario, cioe' la simulata di prima). Giudicati: punti a partita di A nella banda del fondo classifica a forza pari
-        (valore esatto dalla stessa curva di updateStandings, lambda 1,42 / 1,26, +-0,08), A meglio di B di almeno 0,08 punti, A subisce
-        meno gol di B. Il motore e' seedato: con gli stessi semi i numeri sono sempre gli stessi.
+   G1 · squadra (difetto B del giro 157). Percorso vero della carriera: simulateMatch col motore (__CPM_simMatch, quindi con la tattica
+        persona dell'avversario), 70 contro 70, eroe OVR 70, avversari diversi, casa e trasferta alternate, semi fissi. Due bracci sulla
+        stessa pagina di prova: A = il gioco com'e', B = __CPM_NO_G158 (l'occasione simulata dell'eroe come prima: tiro con la resa di un tiro
+        qualunque, passaggio qualunque anche col compagno in area, dribbling riuscito che non porta a niente). Giudicati: (a) punti a partita di A nella banda del fondo classifica a
+        forza pari (valore esatto dalla curva di updateStandings, lambda 1,42 / 1,26, +-0,08); (b) A fa almeno 0,08 punti piu' di B;
+        (c) A segna almeno 0,15 gol piu' di B e non ne subisce meno di B oltre 0,06 (la correzione sta nei gol fatti, non in un avversario
+        indebolito); (d) gol totali a partita di A nella banda di sim-motore 2,3-3,5. Il motore e' seedato: stessi semi, stessi numeri.
    G2 · voto (opzione C, decisione PO 11/11). Griglia OVR della sonda sim-voto-156 (Primavera p25 OVR 55-70, prima squadra 19 anni OVR
         60-70), semi del percorso vero. Giudicati: (a) ogni simulata porta la pagella del motore (base158) e la base e' la pagella SENZA
         la quota gol/assist del motore, compressa coi minuti; (b) un gol registrato vale nel voto una volta sola, con la scala della
         pagella (1 gol = +0,80 sulla base); (c) voto medio della griglia >= 6,15 (prima: 5,77-5,99 in questi gruppi).
-   Dichiarati, non giudicati: gol totali a partita (banda di sim-motore 2,3-3,5), caso Primavera 40 contro 40 con eroe OVR 65.
+   Dichiarati, non giudicati: motore con tattica neutra (__CPM_SIM_MOTORE) a 70 contro 70 e Primavera 40 contro 40 con eroe OVR 65.
    CPM_ROSSO=1 → __CPM_NO_G158 anche sul braccio A: il guardiano deve uscire con codice 1.
    «Non giudicato» = rosso. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -30,34 +32,43 @@ const fails = [];
 const f2 = x => isFinite(x) ? x.toFixed(2) : '-';
 
 /* ── G1 · squadra ── */
-const squadra = (page, F, ovr, N) => page.evaluate(({ F, ovr, N }) => {
+const carriera = (page, N) => page.evaluate(({ N }) => {
+  let pt = 0, gf = 0, gs = 0;
+  for (let k = 0; k < N; k++) { const r = window.__CPM_simMatch({ id: 'a', n: 'A', p: 70 }, { id: 'b' + k, n: 'B' + k, p: 70 }, 70, k % 2 === 0, (7000 + k * 41) >>> 0, {}, { motore: true });
+    gf += r.homeScore; gs += r.awayScore; pt += r.won ? 3 : r.drew ? 1 : 0; }
+  return { pt: pt / N, gf: gf / N, gs: gs / N };
+}, { N });
+const neutra = (page, F, ovr, N) => page.evaluate(({ F, ovr, N }) => {
   let pt = 0, gf = 0, gs = 0;
   for (let k = 0; k < N; k++) { const r = window.__CPM_SIM_MOTORE({ seed: (9001 + k * 7919) >>> 0, forzaH: F, forzaA: F, stadio: k % 2 ? 'away' : 'home', ovr });
     gf += r.home; gs += r.away; pt += r.home > r.away ? 3 : r.home === r.away ? 1 : 0; }
   return { pt: pt / N, gf: gf / N, gs: gs / N };
 }, { F, ovr, N });
 const t0 = Date.now();
-const [A, B] = await Promise.all([pagina(ROSSO), pagina(true)]);
-const [gA, gB] = await Promise.all([squadra(A.page, 70, 70, N1), squadra(B.page, 70, 70, N1)]);
+const A = await pagina(ROSSO), B = await pagina(true);
+const gA = await carriera(A.page, N1), gB = await carriera(B.page, N1);/* un braccio alla volta */
 /* il fondo classifica a forza pari: la stessa curva di updateStandings (src/09), valore esatto dalla Poisson */
 const fondo = await A.page.evaluate(() => { const pmf = (l) => { const p = []; let v = Math.exp(-l); for (let k = 0; k < 15; k++) { p.push(v); v *= l / (k + 1); } return p; };
   const h = pmf(1.42), a = pmf(1.26); let ptC = 0, ptT = 0; for (let i = 0; i < 15; i++) for (let j = 0; j < 15; j++) { const q = h[i] * a[j]; ptC += q * (i > j ? 3 : i === j ? 1 : 0); ptT += q * (j > i ? 3 : i === j ? 1 : 0); }
   return { pt: (ptC + ptT) / 2, gol: 1.42 + 1.26 }; });
 const lo = fondo.pt - 0.08, hi = fondo.pt + 0.08;
-console.log(`G1 · 70 contro 70, ${N1} partite per braccio (${Math.round((Date.now() - t0) / 1000)} s)`);
+console.log(`G1 · carriera simulata 70 contro 70, ${N1} partite per braccio (${Math.round((Date.now() - t0) / 1000)} s)`);
 console.log(`     fondo classifica a forza pari: ${f2(fondo.pt)} punti a partita (banda ${f2(lo)}-${f2(hi)}), ${f2(fondo.gol)} gol`);
 console.log(`     A (gioco${ROSSO ? ', ROSSO' : ''}): ${f2(gA.pt)} punti · gol ${f2(gA.gf)}-${f2(gA.gs)} (totale ${f2(gA.gf + gA.gs)})`);
 console.log(`     B (__CPM_NO_G158): ${f2(gB.pt)} punti · gol ${f2(gB.gf)}-${f2(gB.gs)} (totale ${f2(gB.gf + gB.gs)})`);
 if (!(isFinite(gA.pt) && isFinite(gB.pt))) fails.push('G1 non giudicato: misura mancante');
 else {
-  if (gA.pt < lo || gA.pt > hi) fails.push(`G1: punti a partita ${f2(gA.pt)} fuori dalla banda del fondo classifica ${f2(lo)}-${f2(hi)}`);
-  if (gA.pt - gB.pt < 0.08) fails.push(`G1: la squadra dell'eroe non migliora rispetto alla simulata di prima (${f2(gA.pt)} contro ${f2(gB.pt)}, serve +0,08)`);
-  if (!(gA.gs < gB.gs)) fails.push(`G1: gol subiti non in calo (${f2(gA.gs)} contro ${f2(gB.gs)})`);
+  if (gA.pt < lo || gA.pt > hi) fails.push(`G1a: punti a partita ${f2(gA.pt)} fuori dalla banda del fondo classifica ${f2(lo)}-${f2(hi)}`);
+  if (gA.pt - gB.pt < 0.08) fails.push(`G1b: la squadra dell'eroe non migliora rispetto alla simulata di prima (${f2(gA.pt)} contro ${f2(gB.pt)}, serve +0,08)`);
+  if (gA.gf - gB.gf < 0.15) fails.push(`G1c: gol fatti non in aumento (${f2(gA.gf)} contro ${f2(gB.gf)}, serve +0,15)`);
+  if (gB.gs - gA.gs > 0.06) fails.push(`G1c: i gol subiti calano (${f2(gA.gs)} contro ${f2(gB.gs)}): la correzione non deve indebolire l'avversario`);
+  if (gA.gf + gA.gs < 2.3 || gA.gf + gA.gs > 3.5) fails.push(`G1d: gol totali a partita ${f2(gA.gf + gA.gs)} fuori da 2,3-3,5`);
 }
-/* dichiarato: Primavera 40 contro 40, eroe OVR 65 (il caso Leonessa del giro 157) */
-const [pA, pB] = await Promise.all([squadra(A.page, 40, 65, 600), squadra(B.page, 40, 65, 600)]);
+/* dichiarati: motore con tattica neutra, 70 contro 70 e Primavera 40 contro 40 con eroe OVR 65 (il caso Leonessa del giro 157) */
+const nA = await neutra(A.page, 70, 70, 600), nB = await neutra(B.page, 70, 70, 600);
+console.log(`     dichiarato · tattica neutra 70 contro 70, 600 partite: A ${f2(nA.pt)} punti (gol ${f2(nA.gf)}-${f2(nA.gs)}) · B ${f2(nB.pt)} (gol ${f2(nB.gf)}-${f2(nB.gs)})`);
+const pA = await neutra(A.page, 40, 65, 600), pB = await neutra(B.page, 40, 65, 600);
 console.log(`     dichiarato · 40 contro 40, eroe OVR 65, 600 partite: A ${f2(pA.pt)} punti (gol ${f2(pA.gf)}-${f2(pA.gs)}) · B ${f2(pB.pt)} (gol ${f2(pB.gf)}-${f2(pB.gs)})`);
-console.log(`     dichiarato · gol totali a partita ${f2(gA.gf + gA.gs)} (banda di sim-motore 2,3-3,5: misura con le tattiche persona in npm run sim-motore)`);
 await B.ctx.close();
 
 /* ── G2 · voto ── */
