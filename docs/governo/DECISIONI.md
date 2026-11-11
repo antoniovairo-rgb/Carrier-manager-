@@ -1246,3 +1246,6 @@ Verifica finale 190 a 35 controlli: 34 verdi; distanze-126 «non giudicato» 15/
 - Intervista post-partita su PC: **centrata sotto la scena** (come nella 190).
 - «Ohh» dello stadio: **riprovare la registrazione CC0** nel giro audio 191.
 Questionario del mattino chiuso: tutte le domande dei giri della 190 e del progetto 153 hanno risposta.
+
+### 11/11 08:58 UTC — giri della 191 lanciati (base lavoro/190)
+158 simulate: voto dal motore + squadra simulata (PO-360) · 159 seguiti bassi: Legacy 14/trofeo, derby inventato, contratti B4, rinnovo D9, addio B11 · 160 testo 12 px + taglio 3 px · 161 audio: musica cerimonie, fischi gol subito, Ohh, lettura licenza Mixkit · 162 PO-362 scena «spalle alla porta» + strumenti bg-sync/bg-decision · 163 Primavera F (Indice) + 3 (avanti veloce). PO-357 entra dal ramo sviluppo/giro154b-gol-eroe. Verifica finale 190: 50 controlli, unico non verde distanze-126 (rieseguito intero a parte).
