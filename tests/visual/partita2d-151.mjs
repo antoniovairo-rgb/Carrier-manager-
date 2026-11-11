@@ -23,7 +23,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const FORMATI = { t360: { w: 360, h: 800, touch: true }, pc: { w: 1440, h: 900, touch: false } };
 const NOMI = (process.env.CPM_NOMI151 || 'Rossi,Bianchi').split(',');
-const FIN = +(process.env.CPM_FIN151 || 75000);
+const FIN = +(process.env.CPM_FIN151 || 115000);  /* fino al fischio a 2x: a 75 s la 1440x900 (3 fps headless) poteva restare sotto MIN_VOLO */
 const SOGLIA_ETA = 0.5, MIN_VOLO = 20, DIST_M = +(process.env.CPM_DIST151 || 15), MIN_RIGHE = 8;
 /* SOGLIA_C fissata DOPO la misura (giro 151, 8 partite vere): verde 0/30 righe di zona col pallone del motore lontano, rosso
    __CPM_NO_G151C 24/53 (45%). 10% sta lontano da entrambi. Non si abbassa. */
