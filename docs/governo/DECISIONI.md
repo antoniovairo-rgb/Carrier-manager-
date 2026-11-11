@@ -1297,3 +1297,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Unico conflitto: tests/visual/ci-runner.mjs (163 contro 154b). La fusione automatica a «due lati» aveva lasciato due chiavi `completa` e `carriera`: in JS vince l'ultima, quindi gol-eroe-154 sarebbe uscito dalla completa senza errore. Corretto a mano: una sola completa (con gol-eroe-154 e grafica-168) e una sola carriera (con indice-163 e salta-163); grafica-168 anche nella catena grafica.
 - Prova rapida su b58d70ee: test:logic 51/51, save-compat 12/12.
 - Da unire quando finiscono: 165+165b, 166, 167 (contiene 162), 169. Poi GAME_VERSION 7.999.191 e verifica finale (con il resto della catena mirata di src/14 che il 158b non ha eseguito).
+
+## 11/11 ~23:00 UTC — PO-367 scene 3D con Fable
+- PO: «Prima misura, poi scegli» e «Subito, per la 192». Giro 170 (Fable) solo analisi su tutte le scene 3D (src/12 azioni salienti, src/16 cerimonie, src/19), nessuna modifica a src/. Le proposte tornano al PO; i giri di miglioramento entrano nella 192. La 191 resta a contenuto chiuso.
