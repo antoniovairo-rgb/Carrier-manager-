@@ -1291,3 +1291,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Tetto: «Nessun tetto».
 - Rinnovo: «Finché non è risolto» — ferma a ogni corsa finché il giocatore non firma o rifiuta.
 → giro 165b sullo stesso ramo, con l'estensione alla Primavera della correzione «tasto spento col confronto del procuratore aperto» (decisione madre).
+
+## 11/11 ~23:10 UTC — costruzione lavoro/191
+- Da main 6e995b91 (7.999.190), uniti uno alla volta con verifica check-src IDENTICO dopo ognuno: 154b, 158 (158b), 159 (159b), 160, 161 (161b), 162, 163, 168. Nessun conflitto in src/.
+- Unico conflitto: tests/visual/ci-runner.mjs (163 contro 154b). La fusione automatica a «due lati» aveva lasciato due chiavi `completa` e `carriera`: in JS vince l'ultima, quindi gol-eroe-154 sarebbe uscito dalla completa senza errore. Corretto a mano: una sola completa (con gol-eroe-154 e grafica-168) e una sola carriera (con indice-163 e salta-163); grafica-168 anche nella catena grafica.
+- Prova rapida su b58d70ee: test:logic 51/51, save-compat 12/12.
+- Da unire quando finiscono: 165+165b, 166, 167 (contiene 162), 169. Poi GAME_VERSION 7.999.191 e verifica finale (con il resto della catena mirata di src/14 che il 158b non ha eseguito).
