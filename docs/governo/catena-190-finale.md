@@ -12,3 +12,4 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 6 | posa-sollevamento-191 | 0 | 74 | VERDE | mem used 603/16086 free 13440 avail 15482 · disk used 10G avail 29G (26%) |
 | 7 | premiazione-palco-191 | 0 | 60 | VERDE | mem used 646/16086 free 13396 avail 15439 · disk used 10G avail 29G (26%) |
 | 8 | presentazione-142 | 0 | 159 | VERDE | mem used 775/16086 free 13267 avail 15310 · disk used 10G avail 29G (26%) |
+| 9 | rigore-139 | 0 | 440 | VERDE | mem used 800/16086 free 13241 avail 15286 · disk used 10G avail 29G (26%) |
