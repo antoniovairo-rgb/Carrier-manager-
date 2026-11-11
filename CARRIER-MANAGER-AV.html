@@ -393,6 +393,9 @@ const TINTE={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#26
    momenti-v2, partita-v2, simula-v2, patrimonio-303): un token a basso contrasto deve farli cadere. */
 const _temaProva=(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")&&window.__CPM_TEMA_PROVA)?window.__CPM_TEMA_PROVA:null;
 if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catch(_e){}}
+/* [giro 160 D20] il banco puo' anche alterare la scala FS (chiave fs) e spegnere le correzioni del giro (chiave noG160): e' il braccio
+   rosso del guardiano testo-160, sempre solo sotto ?cpmtest=1. Nessun secondo tema: si tocca un token, come per TINTE. */
+const _noG160=()=>!!(_temaProva&&_temaProva.noG160);
 const TH = {
   bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
@@ -546,7 +549,11 @@ const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e nu
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
-const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
+const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
+   Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
+   tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */
+if(_temaProva&&_temaProva.fs){try{Object.assign(FS,_temaProva.fs);}catch(_e){}}
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                                                  // 4pt grid · box = lo spazio FRA riquadri fratelli
 /* [giro 91 PO-296 — «Ridurrei anche lo spazio tra i box in tutte le schermate», decisione PO: a meta', circa 8 px (erano 14-16)] PUNTO UNICO: lo spazio fra
@@ -818,7 +825,7 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
    - colori: pannello TH.card, testo TH.text/TH.muted, filetti TH.divider, ombre TH.el2/el3 (seguono il tema chiaro/scuro); la
      cornice resta nei colori del club, e senza club usa TH.primary -> TH.primaryDk; il testo sulla pastiglia del ruolo e' bianco o
      TH.text secondo il contrasto misurato (_rap944);
-   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 11 px) e i pesi FW;
+   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 12 px, giro 160) e i pesi FW;
      raggi dalla scala RAD;
    - NIENTE ELLISSI: ogni riga sceglie il passo FS piu' grande che entra nella larghezza; se nemmeno FS.caption entra, il ruolo
      perde la coda dopo « · », il cognome va su due righe; le righe che non entrano in ALTEZZA non si disegnano (priorita':
@@ -62065,6 +62072,8 @@ function App(){
         @media(max-width:899px){.cpm-foglio114{align-items:flex-end!important;padding:0!important;}.cpm-foglio114>*{max-width:100%!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;padding-bottom:env(safe-area-inset-bottom,0px);}}`:''}
         ${(typeof window!=='undefined'&&window.__CPM_NO_G150)?'':`/* [giro 150 PO-352 «Finestra centrata col velo»] UNA REGOLA PER TUTTE LE FINESTRE in primo piano, da 768 px (PC e tablet; il telefono resta com'e'): velo scuro TH.scrimForte su tutta la pagina, finestra alta quanto il contenuto e centrata in verticale (scorre dentro se e' piu' alta dello schermo), larga almeno 520 px. Lo strato porta .cpm-velo150, il pannello .cpm-pan150 (Modal, finestre degli impulsi, momento di carriera, intervista). Dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) le misure si dividono per 1,12, altrimenti la finestra esce dallo schermo (misurato: offerta alta 774 px su 768). Con la scena della sala stampa (.cpm-scena150) la finestra si centra nello spazio SOTTO la scena (31% alto). Il foglio del giro 114 (768-899 px) resta foglio. Rosso __CPM_NO_G150. */
         @media(min-width:768px){.cpm-velo150{background:${TH.scrimForte}!important;padding:${SP.lg}px!important;overflow:hidden!important;}.cpm-velo150:not(.cpm-foglio114){align-items:center!important;}.cpm-velo150>.cpm-pan150{min-width:min(520px,100%);height:auto!important;min-height:0!important;max-height:calc(100vh - ${2*SP.lg}px)!important;overflow-y:auto!important;}.cpm-velo150:not(.cpm-foglio114)>.cpm-pan150{border-radius:${RAD.xl}px!important;}.cpm-scroll .cpm-velo150>.cpm-pan150{min-width:min(464px,100%);max-height:calc((100vh - ${2*SP.lg}px) / 1.12)!important;}.cpm-velo150.cpm-scena150{padding-top:calc(31vh + ${SP.lg}px)!important;}.cpm-velo150.cpm-scena150>.cpm-pan150{max-height:calc(69vh - ${3*SP.lg}px)!important;box-shadow:${TH.el3}!important;}}`}
+        ${_noG160()?'':`/* [giro 160, aperto dal giro 150] SUL TELEFONO le finestre dentro lo scorrimento della home (.cpm-scroll, zoom 1,12) uscivano di 3-4 px sopra e sotto: il pannello porta maxHeight 90vh, che sotto lo zoom diventa ~101vh (misurato 806 px su 800 al 360, 851 su 844 al 390: offerta e privacy). Stessa correzione del giro 150 per PC e tablet: la misura si divide per 1,12. Rosso: banco noG160. */
+        @media(max-width:767px){.cpm-scroll .cpm-velo150>.cpm-pan150{max-height:calc(90vh / 1.12)!important;}}`}
         .cpm-page{width:100%;}
         @media(min-width:900px){.cpm-page{max-width:960px;margin:0 auto;}}
         @media(min-width:1280px){.cpm-page{max-width:1140px;}}
@@ -62092,7 +62101,7 @@ function App(){
         input:focus,select:focus{border-color:${TH.primary}!important;box-shadow:0 0 0 3px ${TH.primary}22!important;}
         :focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
         button:focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
-        .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:11px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
+        .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:${_noG160()?11:FS.caption}px/* [giro 160 D20] era 11 scritto a mano (tasti 1·2·3 del menu su tablet e PC, trovato da testo-160): ora il token */;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
         @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
         .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:${(typeof window!=='undefined'&&window.__CPM_NO_G97D1)?'600px':'none'};z-index:100;}/* [giro 97 PO-299 D1] a 820 px la barra era larga 600 (672 a schermo) e il contenuto 789: ai lati scorrevano le card. Sotto i 900 px (niente sidebar) la barra prende tutta la larghezza. Rosso __CPM_NO_G97D1 */
         .cpm-nav-hint{display:none;}

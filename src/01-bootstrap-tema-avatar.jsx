@@ -84,6 +84,9 @@ const TINTE={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#26
    momenti-v2, partita-v2, simula-v2, patrimonio-303): un token a basso contrasto deve farli cadere. */
 const _temaProva=(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")&&window.__CPM_TEMA_PROVA)?window.__CPM_TEMA_PROVA:null;
 if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catch(_e){}}
+/* [giro 160 D20] il banco puo' anche alterare la scala FS (chiave fs) e spegnere le correzioni del giro (chiave noG160): e' il braccio
+   rosso del guardiano testo-160, sempre solo sotto ?cpmtest=1. Nessun secondo tema: si tocca un token, come per TINTE. */
+const _noG160=()=>!!(_temaProva&&_temaProva.noG160);
 const TH = {
   bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
@@ -237,7 +240,11 @@ const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e nu
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
-const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
+const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
+   Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
+   tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */
+if(_temaProva&&_temaProva.fs){try{Object.assign(FS,_temaProva.fs);}catch(_e){}}
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                                                  // 4pt grid · box = lo spazio FRA riquadri fratelli
 /* [giro 91 PO-296 — «Ridurrei anche lo spazio tra i box in tutte le schermate», decisione PO: a meta', circa 8 px (erano 14-16)] PUNTO UNICO: lo spazio fra
@@ -509,7 +516,7 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
    - colori: pannello TH.card, testo TH.text/TH.muted, filetti TH.divider, ombre TH.el2/el3 (seguono il tema chiaro/scuro); la
      cornice resta nei colori del club, e senza club usa TH.primary -> TH.primaryDk; il testo sulla pastiglia del ruolo e' bianco o
      TH.text secondo il contrasto misurato (_rap944);
-   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 11 px) e i pesi FW;
+   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 12 px, giro 160) e i pesi FW;
      raggi dalla scala RAD;
    - NIENTE ELLISSI: ogni riga sceglie il passo FS piu' grande che entra nella larghezza; se nemmeno FS.caption entra, il ruolo
      perde la coda dopo « · », il cognome va su due righe; le righe che non entrano in ALTEZZA non si disegnano (priorita':
