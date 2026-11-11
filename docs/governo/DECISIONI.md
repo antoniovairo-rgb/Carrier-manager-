@@ -1255,3 +1255,6 @@ PO: «valuta se per qualche task specifico è meglio usare Fable 5.2» → quest
 
 ### 11/11 12:25 UTC — grafica-v2 rosso preesistente (PO-363)
 La verifica 190 ha trovato grafica-v2 rosso (catena mirata, poi sostituita dai guardiani src/14). Rieseguito dalla sessione madre: ROSSO identico su main 7.999.189 e su lavoro/190 («riga tua non nel colore del club» nei 4 formati) → preesistente, non introdotto dalla 190. Registrato PO-363 per la 191. La 190 lo dichiara come rosso preesistente.
+
+### 11/11 13:35 UTC — trama e bg-continuity ciechi preesistenti
+Nella verifica 190 trama, bg-continuity e bg-decision escono CIECHI (0 righe/coppie). Rieseguiti dalla sessione madre su main 7.999.189 (db7533ad): trama CIECO (1 passo drift, 0 coppie, exit 2), bg-continuity CIECO (0 righe confrontabili, exit 2) — identici; bg-decision già visto cieco sulla base dal giro 154b. Preesistenti, dichiarati nella 190; riparazione degli strumenti nella 191 (PO-362).
