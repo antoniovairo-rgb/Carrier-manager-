@@ -283,7 +283,7 @@ const DERBIES={
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
-  "mun-liv":{name:"Derby fra Mersey e Manchester",e:"🥀"},"liv-mun":{name:"Derby fra Mersey e Manchester",e:"🥀"},/* [giro 155 PO-359] il nome viene dalle due citta' nei nomi dei club (FC Merseyside, Manchester Rovers) */
+  "mun-liv":{name:"Derby della Brughiera Rossa",e:"🥀"},"liv-mun":{name:"Derby della Brughiera Rossa",e:"🥀"},/* [giro 159 PO-359, decisione PO 11/11 «inventare anche i luoghi»] nome tutto inventato, come gli altri derby del mondo del gioco */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
@@ -293,7 +293,9 @@ const DERBIES={
 function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
   /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
      Merseyside, Manchester Rovers). Rosso __CPM_NO_G155_T359 (torna il nome vecchio). */
-  if(d&&_g155("T359")&&d.name==="Derby fra Mersey e Manchester")return {...d,name:"Derby dell'Ovest Lontano"};
+  if(d&&_g155("T359")&&d.name==="Derby della Brughiera Rossa")return {...d,name:"Derby dell'Ovest Lontano"};
+  /* [giro 159 · PO-359] il nome della 190 usava due luoghi reali (Mersey, Manchester): ora e' inventato. Rosso __CPM_NO_G159_T359. */
+  if(d&&_g159("T359")&&d.name==="Derby della Brughiera Rossa")return {...d,name:"Derby fra Mersey e Manchester"};
   return d;}
 /* [giro 155 · PO-359] l'arco in cui l'eroe fa da mentore a un giovane si chiamava «Il ragazzo della Primavera» anche a 29 anni: ora
    «Il tuo allievo». Rosso __CPM_NO_G155_T359. */
