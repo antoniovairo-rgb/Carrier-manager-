@@ -1285,7 +1285,7 @@ const getThisWeekMatchday=()=>{
         bankBalance:Math.round(Math.max(0,(p.bankBalance||0)+(ef.bank||0))),
         teamChemistry:clamp((p.teamChemistry||60)+(ef.chem||0),0,100),
         transferListed:ef.transferListed===true?true:ef.transferListed===false?false:(p.transferListed||false),/* [7.161.0 A2] ora anche transferListed:true (prestito richiesto) */
-        ...((ef.wageMult||ef.contractYears)?{contract:{...(p.contract||{}),wage:Math.round((p.contract?.wage||6000)*(ef.wageMult||1)),duration:(p.contract?.duration||1)+(ef.contractYears||0),expiresAtSeason:(p.season||1)+(p.contract?.duration||1)+(ef.contractYears||0)},renewalSeason:p.season||1}:{}),/* [7.161.0 A2] le «firme» dei career moments RINNOVANO davvero il contratto */
+        ...((ef.wageMult||ef.contractYears)?{contract:{...(p.contract||{}),wage:Math.round((p.contract?.wage||6000)*(ef.wageMult||1)),duration:(p.contract?.duration||1)+(ef.contractYears||0),expiresAtSeason:scadenzaRinnovo159b(p.season,(p.contract?.duration||1)+(ef.contractYears||0))/* [giro 159b] anche le firme dei career moments */},renewalSeason:p.season||1}:{}),/* [7.161.0 A2] le «firme» dei career moments RINNOVANO davvero il contratto */
         log:[`⚡ Momento: ${careerMomentModal?.name||"importante"}`,...(p.log||[])].slice(0,60),
       };
     });
@@ -5615,7 +5615,7 @@ const getThisWeekMatchday=()=>{
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),growthBoost:(offer.growthBonus>0?{pct:offer.growthBonus,until:newSeason}:null),/* [7.999.50] crescita dell'offerta nella prima stagione */contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] */
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),growthBoost:(offer.growthBonus>0?{pct:offer.growthBonus,until:newSeason}:null),/* [7.999.50] crescita dell'offerta nella prima stagione */contract:{...contrattoFirma159(newSeason,offer.duration||1,false)/* [giro 159 B4] passaggio pro: si firma a inizio stagione */,wage:offer.wage||500},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] */
         // [6.33.0 STAB-3] stesso reset tornei Nazionali dell'altro path di rollover (vedi nota sopra).
         euroMondiale:p.euroMondiale?{...p.euroMondiale,active:false}:p.euroMondiale,
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
@@ -5758,7 +5758,8 @@ const getThisWeekMatchday=()=>{
       setNegoModal({step:"refused",baseWage:player.contract?.wage||0,baseDuration:0,playerAsk:null,clubFinalWage:null,clubFinalDuration:null});
       return;
     }
-    const growthMult=(player.goals||0)>12?1.18:(player.goals||0)>6?1.08:0.97;
+    const _gR159=golRinnovo159(player);/* [giro 159 D9] media stagione scorsa + in corso */
+    const growthMult=_gR159>12?1.18:_gR159>6?1.08:0.97;
     const rawWage=Math.round((player.contract?.wage||577)*growthMult);
     const ovrCap=_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*1.25; // Sprint 133
     const baseWage=clamp(rawWage,500,ovrCap);
@@ -5786,7 +5787,7 @@ const getThisWeekMatchday=()=>{
        valere ZERO stagioni in piu' a un rinnovo di 1 anno (29 casi su 29 nelle sintetiche). Ora la stagione in corso resta coperta e
        gli anni firmati si AGGIUNGONO: durata = max(residua,1) + firmati. Rosso __CPM_NO_RIN270, guardiano rinnovo-270. */
     const _durRin270=(typeof window!=='undefined'&&window.__CPM_NO_RIN270)?(()=>duration):(q=>Math.max(1,q.contract?.duration||0)+duration);
-    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:(p.season||1)+_durRin270(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8, collaudo carriera 177 n.4: dopo «Contratto rinnovato!» la home diceva ancora «Sei in lista cessioni» e a W8 il giocatore e' stato ceduto] chi rinnova resta: il rinnovo toglie dalla lista cessioni e chiude la richiesta di cessione. Rosso __CPM_NO_G98D8 */agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration:_durRin270(p),wage:finalWage,expiresAtSeason:scadenzaRinnovo159b(p.season,_durRin270(p))/* [giro 159b] */},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8, collaudo carriera 177 n.4: dopo «Contratto rinnovato!» la home diceva ancora «Sei in lista cessioni» e a W8 il giocatore e' stato ceduto] chi rinnova resta: il rinnovo toglie dalla lista cessioni e chiude la richiesta di cessione. Rosso __CPM_NO_G98D8 */agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}]),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -5849,7 +5850,7 @@ const getThisWeekMatchday=()=>{
          collaudo setOffer). Rosso __CPM_NO_RIN270b, guardiano rinnovo-270. */
       const _firm270b=tc.duration||2;
       const _durRin270b=(typeof window!=='undefined'&&window.__CPM_NO_RIN270b)?(()=>_firm270b):(q=>Math.max(1,q.contract?.duration||0)+_firm270b);
-      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:(p.season||1)+_durRin270b(p)},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8] idem sul rinnovo via offerta */agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
+      setPlayer(p=>({...p,contract:{duration:_durRin270b(p),wage:finalRenewalWage,expiresAtSeason:scadenzaRinnovo159b(p.season,_durRin270b(p))/* [giro 159b] */},contractExpired:false,...((typeof window!=='undefined'&&window.__CPM_NO_G98D8)?{}:{transferListed:false,transferRequest:null}),/* [giro 98 D8] idem sul rinnovo via offerta */agentRenewalBonus:0,renewalSeason:p.season||1,/* [7.8.28 QA] anche il rinnovo via OFFERTA attiva il cooldown rinnovi (prima solo _acceptNegoWage → si poteva ri-negoziare subito) */morale:clamp((p.morale||70)+(tc.moralBonus||5),0,100),log:[`📋 Rinnovo contratto: ${tc.duration||2} stagion${(tc.duration||2)===1?"e":"i"} a ${_fmtWageY133(finalRenewalWage)}/anno${agentNote}`,...(p.log||[])].slice(0,60)}));
       setTransferOffer(null);
       notify(`✅ Contratto rinnovato${agentNote||""}!`,TH.success);
       return;
@@ -6056,7 +6057,7 @@ const getThisWeekMatchday=()=>{
       // Sprint 98: compute contract from offer (wage+duration already set by generateTransferOffer)
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
       const _newDur98=tc.duration||2;
-      const _newContract98={duration:_newDur98,wage:_newWage98,expiresAtSeason:(p.season||1)+_newDur98};
+      const _newContract98={...((_g159b()&&(p.week||1)<=5)?{duration:Math.max(1,_newDur98||1),expiresAtSeason:(p.season||1)+Math.max(1,_newDur98||1)}/* [giro 159b] rosso: finestra estiva come la 7.999.190 */:contrattoFirma159(p.season||1,_newDur98,(p.week||1)>5))/* [giro 159 B4] fuori dalla finestra estiva W1-5 si firma a meta' stagione */,wage:_newWage98};
       return{...p,club:newClub,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] idem: salto a pro via trasferimento */contractExpired:false,transferListed:false,transferRequest:null,/* [7.282.0] cambiando maglia la vecchia richiesta di cessione decade: restava lì, respinta, anche due club dopo */isCaptain:false,seasonObjectives:(function(){/* [7.294.0 direttiva PO «anche obiettivo seconda squadra»] il club che ti prende a
         stagione in corso non puo' chiederti il bottino di un anno intero (ne' vederselo gia' pagato dai gol fatti
         altrove): il bersaglio si riscala sulle giornate che restano e il conto riparte da questa maglia. */

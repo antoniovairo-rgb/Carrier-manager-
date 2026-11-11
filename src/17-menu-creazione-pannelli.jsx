@@ -967,6 +967,7 @@ function _NationalCallupScreenOld235({data,onPlay}){
    qualunque carriera lunga toccava 1000 (verifica D18 del giro 140). Ora ogni voce ha il suo massimo e i massimi sommano esattamente
    1000: il punteggio pieno e' solo di chi e' al tetto su TUTTE le voci. Il punteggio non e' salvato (si calcola dal giocatore), quindi
    i salvataggi esistenti si ricalcolano da soli. Rosso __CPM_NO_G155_L358. */
+const LEGACY_PER_TROFEO159=14;
 const LEGACY_TETTI358={gol:300,assist:100,trofei:140,nazionale:150,ovr:150,stagioni:100,patrimonio:60};
 function calcLegacyScore(p){
   const goals=p.totalGoals||0;
@@ -979,7 +980,9 @@ function calcLegacyScore(p){
   let score=0;
   score+=Math.min(goals*2,300);
   score+=Math.min(assists,100);
-  score+=_g155("L358")?trophies*80:Math.min(trophies*80,LEGACY_TETTI358.trofei);
+  /* [giro 159 · PO-358, decisione PO 11/11 «14 punti a trofeo fino a 10»] con 80 a trofeo il tetto 140 si toccava al 2° trofeo: ora 14 a
+     trofeo, tetto 140 raggiunto al 10°. Rosso __CPM_NO_G159_L358 (80 a trofeo col tetto, come la 190). */
+  score+=_g155("L358")?trophies*80:(_g159("L358")?Math.min(trophies*80,LEGACY_TETTI358.trofei):Math.min(trophies*LEGACY_PER_TROFEO159,LEGACY_TETTI358.trofei));
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
@@ -1037,6 +1040,12 @@ function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const
 /* [giro 155 B11, collaudo 177: «17 stagioni» nella lettera, «St. 18» nell'intestazione] la lettera d'addio contava season-1, l'intestazione
    stagioniGiocate94 (giro 94): nella stessa cerimonia due numeri. Ora la lettera usa lo stesso conto. Rosso __CPM_NO_G155_B11. */
 function stagioniLettera155(p){return _g155("B11")?Math.max(1,((p&&p.season)||1)-1):Math.max(1,stagioniGiocate94(p));}
+/* [giro 159 · B11, decisione PO 11/11 «presenze in Primavera contate a parte»] la lettera d'addio scriveva le presenze totali, Primavera
+   compresa (collaudo 177: 701). Ora le presenze da professionista (proCareerOf, lo stesso scorporo della biografia) e accanto
+   «Primavera: X presenze». Rosso __CPM_NO_G159_B11 (un numero solo, Primavera compresa). */
+function presenzeLettera159(p){const tot=(p&&(p.totalMatches||p.matches))||0;if(_g159("B11"))return{pro:tot,primavera:0,testo:tot+" presenze"};
+  let pro=tot;try{pro=proCareerOf(p).matches;}catch(_e){}const pr=Math.max(0,tot-pro);
+  return{pro:pro,primavera:pr,testo:pro+" presenze"+(pr>0?" (Primavera: "+pr+" presenze)":"")};}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -1134,7 +1143,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{textAlign:"left",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:RAD.md,padding:"11px 15px",animation:"celebTitle .8s ease-out .2s both"}}>
             <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.88)",lineHeight:1.75,fontStyle:"italic"}}>
               «Cari tifosi,<br/>
-              tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {_totM} presenze e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
+              tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {presenzeLettera159(p).testo} e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
               {(_flagClub?`Al ${_flagClub.n} lascio il pezzo più grande del mio cuore: ${_flagClub.seasons} stagioni e ${_flagClub.goals} gol insieme non si dimenticano. `:"A ogni maglia che ho vestito lascio un pezzo di cuore. ")}
               {(p.life&&(p.life.stage==="sposato"||p.life.stage==="genitore"))?`Il grazie più grande va a ${p.life.name}${p.life.stage==="genitore"?" e ai nostri figli":""}: le notti difficili le avete vinte voi, prima di me. `:""}{/* [7.29.0 ONDA 4 §S14] payoff della vita privata */}
               Oggi appendo le scarpette al chiodo. Grazie di tutto — siete stati voi la mia carriera.»

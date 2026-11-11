@@ -29,6 +29,8 @@ const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]c
 /* [giro 155 · bassi del collaudo 177 verificati nel giro 140] UN interruttore rosso per tutte le correzioni del giro:
    window.__CPM_NO_G155 le spegne tutte, window.__CPM_NO_G155_<codice> (B1, B2, B3, B6, B8, B10, B11, B12, B13, D9, D10, D14,
    D15, D17, D21, L358, T359) una sola. Guardiano: npm run bassi-155. */
+/* [giro 159] interruttore rosso dei seguiti del 155 (decisioni PO 11/11): __CPM_NO_G159 tutto, __CPM_NO_G159_<voce> una sola voce (L358 T359 B4 D9 B11). */
+function _g159(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G159||(k&&window["__CPM_NO_G159_"+k]));}catch(_e){return false;}}
 function _g155(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G155||(k&&window["__CPM_NO_G155_"+k]));}catch(_e){return false;}}
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
