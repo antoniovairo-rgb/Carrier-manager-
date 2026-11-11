@@ -1307,3 +1307,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~00:10 Roma — PO-369/370 audio
 - Pubblico: «finto o sporco», «troppo forte», «sempre uguale» (non «meglio il suono di prima»). Menù: «più discreti e brevi». In partita: «icona audio» con cursori Pubblico/Effetti/Musica e Muto, partita in pausa.
 - Giro 172 su lavoro/191 (contiene audio 149/161/161b), entra nella 192. Solo CC0 (regola PO). Pagina d'ascolto prima/dopo per il PO.
+
+## 12/11 ~00:28 Roma — gesti negli highlight (PO-367)
+- PO: «sì, aggiungi i gesti al giro 170». Il giro 170 è già in corso e una sessione cloud in corsa non riceve messaggi: interromperla farebbe perdere il lavoro fatto. Decisione madre: giro 170b separato (Fable, solo analisi) sui gesti negli highlight, codice contro animazioni mancanti, misure per gesto e un gesto pilota per la prova Fable. I due rapporti si leggono insieme.
