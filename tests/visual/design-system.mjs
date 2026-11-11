@@ -4,7 +4,7 @@
    dei casi. La 7.919 ha portato gli 871 corpi scritti a mano sotto il pavimento a zero: senza un guardiano,
    il primo `fontSize:10` scritto domani riapre il buco e nessuno se ne accorge finché il PO non fotografa.
    Qui si giudica ciò che è OGGETTIVO e non discutibile:
-     1. nessun corpo tipografico scritto a mano SOTTO IL PAVIMENTO dichiarato (FS.caption = 11 px);
+     1. nessun corpo tipografico scritto a mano SOTTO IL PAVIMENTO dichiarato (FS.caption = 12 px dal giro 160);
      2. nessun raggio scritto a mano che coincida con un token della scala (se il token esiste, si usa);
      3. i numeri di riferimento restano a verbale, così la prossima ondata si misura contro questi.
    Uscita ≠0 solo sulle due regole; il resto è censimento dichiarato. */
@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const SRC = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'src');
-const PAVIMENTO = 11;
+const PAVIMENTO = 12;/* [giro 160 D20] il pavimento passa a 12 px insieme a FS.caption (decisione PO 11/11) */
 const RAD = { xs: 6, sm: 8, md: 12, lg: 16, xl: 20 };
 const file = fs.readdirSync(SRC).filter(f => f.endsWith('.jsx')).sort();
 let sottoPavimento = [], raggiToken = [], corpi = 0, corpiToken = 0, raggi = 0, raggiTok = 0, colori = 0, coloriToken = 0;
