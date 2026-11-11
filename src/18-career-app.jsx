@@ -1455,6 +1455,7 @@ const getThisWeekMatchday=()=>{
   const[saltaTick163,setSaltaTick163]=useState(0);
   const[saltaFine163,setSaltaFine163]=useState(null);
   const _salta163Ref=useRef({fermo:0,firma:"",passi:0});
+  const _saltaVisti163=useRef("");/* l'ultimo stato persistente che ha gia' fermato la corsa (vedi sotto): non riferma nella stessa settimana */
   const _saltaOn163=()=>!(typeof window!=='undefined'&&window.__CPM_NO_SALTA153);
   const _saltaPrev163=(p)=>{try{/* la proiezione mostrata nel pannello: prossima partita chiave secondo la classifica di OGGI */
     const w0=p.week||1;const cal=(p.calendar||[]).filter(m=>m&&!m.played&&(m.week||0)>=w0&&!_isStaleMd(p,m)).sort((a,b)=>(a.week||0)-(b.week||0));
@@ -1491,7 +1492,16 @@ const getThisWeekMatchday=()=>{
       if(screen!=="dashboard"||tab!=="dashboard")return _saltaStop163("hai cambiato schermata");
       if(openingPending().length)return _saltaStop163("apertura di stagione");
       /* mercato e chiamate: si fermano SEMPRE, con la finestra aperta davanti */
-      if(transferOffer||negoModal||player.transferSaga||agentIntro||(player.agentCheckin&&player.agentCheckin.due&&player.hasAgent))return _saltaStop163("mercato");
+      if(transferOffer||negoModal||agentIntro)return _saltaStop163("mercato");
+      /* stati che RESTANO nel salvataggio (saga di mercato con la sua card sulla home, controllo del procuratore): fermano una
+         volta per settimana. Misurato (salta-163, 2° giro): la saga gia' consegnata (delivered) o di un'altra stagione resta in
+         player.transferSaga senza card, e leggerla come «mercato aperto» fermava la corsa 76 volte di fila. Le condizioni sono
+         quelle della card della home. */
+      {const _sg=player.transferSaga,_sn=player.season||1,_wk=player.week||1;
+       const _card=!!(_sg&&!_sg.delivered&&_sg.season===_sn&&_wk-(_sg.week||1)>=0);
+       const _ck=!!(player.agentCheckin&&player.agentCheckin.due&&player.hasAgent);
+       const _k=(_card?"saga":"")+(_ck?"agente":"")+"|"+_sn+"|"+_wk;
+       if((_card||_ck)&&_saltaVisti163.current!==_k){_saltaVisti163.current=_k;return _saltaStop163("mercato");}}
       if(nationalCallupData)return _saltaStop163("chiamata");
       const _nq=player.nationsCupQueue,_em=player.euroMondiale;
       if((_nq&&_nq.active&&!_nq.done)||(_em&&_em.active&&!_em.done&&!_emInAttesa(_em)))return _saltaStop163("chiamata");

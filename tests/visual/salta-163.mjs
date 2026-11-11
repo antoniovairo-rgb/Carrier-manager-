@@ -84,7 +84,7 @@ try {
   ok(s2.tasto && s2.w === s0.w && s2.mh === s0.mh, '«Annulla»: torna il tasto, nulla e\' cambiato');
 
   console.log('2-3) una stagione intera col solo tasto');
-  let tocchi = 0, giri = 0, fermate = {}, chiaviAperte = 0, chiaviOk = 0;
+  let mercatoSaga = 0, tocchi = 0, giri = 0, fermate = {}, chiaviAperte = 0, chiaviOk = 0;
   while (giri++ < 80) {
     const st = await stato(page);
     if (st.pro !== 'u18' || st.w > 38 || st.screen !== 'dashboard') break;
@@ -92,6 +92,7 @@ try {
     tocchi++; await sleep(500);
     if (!(await clicca(page, '[data-cpm="salta163-vai"]'))) { note.push('pannello senza «Vai»'); break; }
     tocchi++;
+    if (giri === 1) { await sleep(150); await foto(page, 'corsa-telefono-in-corsa'); }
     const esito = await aspettaFine(page);
     if (esito === 'scaduto') { ok(false, 'la corsa non si e\' fermata entro 240 s'); break; }
     await sleep(700);
@@ -115,6 +116,7 @@ try {
       /* fermate diverse (impulso importante, intervista, momento, mercato): il banco chiude come il giocatore che legge */
       tocchi++;
       await page.evaluate(() => { try { window.__CPM_CAREER.scegli(0); } catch (e) {} window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.chiudi163(); });
+      if (motivo === 'mercato') { mercatoSaga += await page.evaluate(() => { const p = window.__CPM_CAREER.snapshot(); const v = p.transferSaga && !p.transferSaga.delivered ? 1 : 0; if (v) window.__CPM_CAREER.patch({ transferSaga: null }); return v; }); await sleep(500); }
       await sleep(900);
     }
     try { await page.evaluate(() => { const b = [...document.querySelectorAll('[data-cpm="salta163-riepilogo"] button')].pop(); if (b) b.click(); }); } catch (e) {}
@@ -136,6 +138,7 @@ try {
   ok(fin.st === 18, `classifica a 18 righe (${fin.st})`);
   ok(errors.length === 0, `nessun errore di pagina${errors.length ? ' — ' + errors[0] : ''}`);
   note.push(`fermate «momento importante»: ${JSON.stringify(fin.fermate.filter(f => f.motivo === 'momento importante').map(f => 'W' + f.w + ' ' + f.chi + (f.imp ? ' ' + f.imp : '')))}`);
+  note.push(`fermate «mercato» con la saga sulla home (chiusa dal banco come il giocatore che la legge): ${mercatoSaga}`);
   note.push(`tocchi per la stagione: ${tocchi} (giri del tasto ${giri}) · fermate: ${JSON.stringify(fermate)} · gare simulate dal tasto ${fin.sim.length}, decisioni del mister ${JSON.stringify(fin.sim.reduce((a, x) => (a[x.dec] = (a[x.dec] || 0) + 1, a), {}))}`);
   await page.close();
 
@@ -151,15 +154,36 @@ try {
     ok(fo === true && m.motivo === 'mercato', `offerta durante la corsa → fermata «mercato» (offerta ${fo}, motivo ${m.motivo}, stato ${e})`);
     await W.page.close();
   }
+  console.log('4b) saga di mercato: ferma solo se la sua card e\' sulla home, una volta per settimana');
+  {
+    const ap = { campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1 };
+    const W = await apri({ width: 412, height: 915 }, savePlayer({ week: 6, ...ap, transferSaga: { offer: null, week: 3, season: 1, club: 'FC Prova', tone: null, delivered: true } }));
+    await W.page.evaluate(() => { window.__CPM_SALTA153 = []; });
+    await clicca(W.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W.page, '[data-cpm="salta163-vai"]');
+    await aspettaFine(W.page, 120000); await sleep(400);
+    const L1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).map(f => f.motivo));
+    ok(L1.length === 1 && L1[0] !== 'mercato', `saga gia' consegnata (senza card): nessuna fermata «mercato» (${JSON.stringify(L1)})`);
+    await W.page.close();
+    const W2 = await apri({ width: 412, height: 915 }, savePlayer({ week: 6, ...ap, transferSaga: { offer: null, week: 6, season: 1, club: 'FC Prova', tone: null } }));
+    await W2.page.evaluate(() => { window.__CPM_SALTA153 = []; });
+    await clicca(W2.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W2.page, '[data-cpm="salta163-vai"]');
+    await aspettaFine(W2.page, 60000); await sleep(400);
+    const a1 = await W2.page.evaluate(() => { const L = window.__CPM_SALTA153 || []; return { m: (L[L.length - 1] || {}).motivo, w: window.__CPM_CAREER.snapshot().week }; });
+    await clicca(W2.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W2.page, '[data-cpm="salta163-vai"]');
+    await sleep(2500);
+    const a2 = await W2.page.evaluate(() => { const L = window.__CPM_SALTA153 || []; return { n: L.length, m: (L[L.length - 1] || {}).motivo, w: window.__CPM_CAREER.snapshot().week, st: document.querySelector('[data-cpm="salta163"]').getAttribute('data-salta163') }; });
+    ok(a1.m === 'mercato' && a1.w === 6, `saga con la card sulla home: fermata «mercato» nella sua settimana (${a1.m}, W${a1.w})`);
+    ok(!(a2.n === 2 && a2.m === 'mercato' && a2.w === 6), `ripartendo nella stessa settimana la saga non riferma subito (fermate ${a2.n}, ultima ${a2.m}, W${a2.w}, stato ${a2.st})`);
+    await W2.page.close();
+  }
   console.log('5) Ferma');
   {
-    const W = await apri({ width: 1280, height: 800 }, savePlayer({ week: 3, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1 }));
+    const W = await apri({ width: 1280, height: 800 }, savePlayer({ week: 2, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1 }));
     await W.page.evaluate(() => { window.__CPM_SALTA153 = []; });
     await foto(W.page, 'tasto-pc');
     await clicca(W.page, '[data-cpm="salta163-tasto"]'); await sleep(500);
     await foto(W.page, 'conferma-pc');
-    await clicca(W.page, '[data-cpm="salta163-vai"]'); await sleep(250);
-    await foto(W.page, 'corsa-pc');
+    await clicca(W.page, '[data-cpm="salta163-vai"]'); await sleep(120);
     const fe = await clicca(W.page, '[data-cpm="salta163-ferma"]');
     const e = await aspettaFine(W.page, 20000); await sleep(500);
     const m = await W.page.evaluate(() => { const L = window.__CPM_SALTA153 || []; return (L[L.length - 1] || {}).motivo; });
