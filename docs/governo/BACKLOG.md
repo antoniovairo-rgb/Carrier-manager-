@@ -16,7 +16,7 @@ La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
 ## Voci aperte o parziali (27)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.189 / 7.999.190 1 · 7.999.189 1 · 7.999.190 10 · | 1 · 7.999.191 1 · 190 (misura) 1 · 190 1.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.189 / 7.999.190 1 · 7.999.189 1 · 7.999.190 9 · | 1 · 7.999.191 2 · 7.999.190 / 7.999.191 1 · 190 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,13 +42,13 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-354 | 10/11 22:15 | Visto dalla madre nella stessa foto (non segnalato dal PO): la cronaca dice «Tedesco (SIC) a tu per tu col portiere, conclude di prima!» mentre il pallone è a centrocampo, vicino all'eroe | difetto (cronaca ↔ campo 2D) da misurare | IN CORSO — giro 151 (misura, poi correzione se confermato) | 7.999.190 | | | |
 | PO-355 | 10/11 22:20 | PO: «occhio ai festeggiamenti dopo un gol, a volte l'eroe vola con le braccia alzate» (precedente: 7.999.80 taccuino «continua a volare con le braccia alzate» nei festeggiamenti post partita; src/12 r.~9385) | difetto (esultanza eroe 3D) medio | IN CORSO — giro 152 nella 190 (difetto già presente, come per PO-350) | 7.999.190 | | | |
 | PO-356 | 10/11 22:25 | PO: «L'anno della primavera è troppo limitante, non vorrei che i player si annoino alla prima stagione. Hai qualche idea?» — oggi: 3 provini, offerte dalle Primavera, una stagione intera in Primavera e solo a fine stagione il passaggio in prima squadra (ProTransitionScreen, src/18 r.~4507) | nuova funzione (carriera, prima stagione) | IN CORSO — PO 10/11: tutte e 4 le idee (chiamate in prima squadra, salto a gennaio, Primavera più corta, obiettivi e tornei giovanili con Nazionale Under 19); «Progetto prima, poi 191». Giro 153: progetto senza toccare il gioco, da approvare dal PO | 7.999.191 | | | |
-| PO-357 | 10/11 22:40 | PO (questionario, B14 del collaudo 177): i gol dell'eroe «Solo negli highlight» — il motore non fa più segnare l'eroe in gioco fluido (oggi voluto dal giro 75, src/15 r.~7497-7502, rosso __CPM_NO_PAGELLA75) | modifica (motore partita) | IN CORSO — giro 154b; PO 11/11: «Esce nella 191» | 7.999.191 | | | |
 | PO-358 | 10/11 22:40 | PO (questionario, D18 del collaudo 177): Legacy Score più selettivo, «Sì, tetto ai trofei» (ogni voce col suo massimo; 1000 solo per una carriera da leggenda in tutto). calcLegacyScore src/17 r.~958-974 | miglioramento (carriera) | IN CORSO — giro 155 nella 190 | 7.999.190 | | | |
 | PO-359 | 10/11 22:40 | PO (questionario, D11 del collaudo 177): «Sì, entrambi» — arco «Il ragazzo della Primavera» rinominato «Il tuo allievo»; «Derby dell'Ovest Lontano» (mun-liv, src/08 r.~286) con un nome legato alle città inventate dei due club | miglioramento (testi) | IN CORSO — giro 155 nella 190 | 7.999.190 | | | |
 | PO-360 | 10/11 22:58 | PO: «se simulo le partite l'eroe gioca sempre male, soprattutto ad inizio carriera, è normale?» — da misurare: voto/gol/assist simulati vs giocati per OVR e stagione (src/10 r.~964-969, voto simulato; la Home dice «le simulate non entrano nella media»). 10/11 23:00 PO, foto docs/collaudo-po/190-simulate-voti-severi.png: «è troppo severo da simulazione» — sett. 16-26 Primavera tutte simulate: 1V 3N 6P, gol fatti 2 in 10 partite, voti 5,1-6,3 (8 su 10 sotto 6), con squadra 5ª a sett. 19 → da misurare anche i RISULTATI di squadra simulati, non solo il voto. 10/11 23:05 PO: «prima della simulazione era da -1 alla vetta -13!» (a -1 punto dalla vetta prima della serie simulata, a -13 dopo) | carriera/bilanciamento | PARZIALE — 190: forza vera sotto 40 nelle simulate (giro 157). PO 11/11: voto simulato = pagella del motore (opzione C) e correzione del difetto B/gol bassi nella 191 | 7.999.190 / 7.999.191 | | | |
 | PO-361 | 10/11 22:58 | PO (foto Home da PC): «ultime notizie, graficamente tagliato...uniforma» — la card «Ultime notizie» occupa mezza larghezza mentre le altre righe sono a tutta larghezza (src/18 r.~9124) | grafica/PC | APERTA | 190 | | | |
+| PO-362 | 11/11 07:50 | Sessione madre (dal giro 154b): scena «spalle alla porta» → «Proteggi palla e scarica»/«Girata secca e tiro» con tiro a 30,5-30,8 m oltre il limite di 30 di distanze-126 (s1 seme 8); identico sulla base lavoro/189: difetto preesistente. Anche bg-sync e bg-decision ciechi identici sulla base (strumenti) | difetto (highlight / strumenti) medio | APERTO | 7.999.191 | | | |
 
-## Storico — voci chiuse (334)
+## Storico — voci chiuse (335)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -386,6 +386,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-345 | 10/11 10:10 | PO (questionario, domanda del giro 141): curve della partita 2D scambiate al secondo tempo «Sì, come nel 3D» (lo stadio ruota di 180° all'intervallo come nel 3D dal 7.732: nel 2° tempo la squadra dell'eroe attacca verso la curva ospiti; la frase «la curva di casa resta dietro la porta d'attacco» scritta qui dalla madre era imprecisa e vale solo per il 1° tempo). Primavera quasi vuota: «Sì, realistico» | miglioramento (grafica partita 2D) | FATTO — 7.999.189 (giro 143) | 7.999.189 | | | |
 | PO-346 | 10/11 10:10 | PO (questionario, domanda del giro 142): marchio «Korward Elite» scritto a pezzi anche in sala stampa (piastrelle e tovaglia «K●rward»): «Sì, nella 189»; il pallone del titolo iniziale resta come stile | difetto (grafica) basso | FATTO — 7.999.189 (giro 144) | 7.999.189 | | | |
 | PO-347 | 10/11 10:10 | PO (questionario, domanda del giro 142): nella presentazione il giocatore chiamato, dopo il passo avanti, «Sì, saluta» (saluto con la mano verso la tribuna, poi torna in fila) | miglioramento (scena 3D, presentazione) | FATTO — 7.999.189 (giro 144) | 7.999.189 | | | |
+| PO-357 | 10/11 22:40 | PO (questionario, B14 del collaudo 177): i gol dell'eroe «Solo negli highlight» — il motore non fa più segnare l'eroe in gioco fluido (oggi voluto dal giro 75, src/15 r.~7497-7502, rosso __CPM_NO_PAGELLA75) | modifica (motore partita) | FATTO sul ramo sviluppo/giro154b-gol-eroe (gol-eroe-154 verde, rigore-139, partita-vera, highlight-95 verdi); PO 11/11: «Esce nella 191» | 7.999.191 | | | |
 
 ## Ricostruzione (fonti e regole di stato)
 

@@ -1235,3 +1235,6 @@ Giro 154 (PO-357) chiuso con catena incompleta: distanze-126 rosso (un tiro a 30
 - D20 testo minimo 12 px: **sì, nella 191** (giro grafico dedicato).
 - B4 contratto di 1 stagione firmato a metà: **vale fino a fine della prossima stagione** (191).
 - Progetto Primavera 153 (191): D1 chiamate in prima squadra **media**; D2 nella settimana della chiamata la Primavera **si simula senza l'eroe**; D5 tasto avanti veloce **solo sui momenti importanti**; D4 salto a gennaio **club madre ed esterni**.
+
+### 11/11 07:50 UTC — verifica 190 e giro 154b
+Verifica finale 190 a 35 controlli: 34 verdi; distanze-126 «non giudicato» 15/24 perché fermato a 2400 s dal lanciatore (stesso ritmo della 189, che chiedeva 3756 s per 24/24) → rieseguito intero in session_01QEYiaCMGpDbdVWvWqcXCp8 (catena/190-distanze). Giro 154b chiuso: PO-357 verde sul ramo, entra nella 191 per decisione PO. Nuova voce PO-362 (tiro oltre 30 m nella scena «spalle alla porta», preesistente; bg-sync/bg-decision ciechi preesistenti).

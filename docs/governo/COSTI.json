@@ -950,5 +950,19 @@
     "cache_read_tokens": 7982986,
     "worker_epoch": 2,
     "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYiaBRqNYf66ZuW3znmUY",
+    "titolo": "giro 154b chiusura controlli PO-357",
+    "versione": "7.999.191",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-11T03:04:52Z",
+    "chiusa": "2026-11-11T06:41:58Z",
+    "cost_usd": 4.1622221,
+    "output_tokens": 25669,
+    "cache_read_tokens": 11961414,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-11"
   }
 ]
