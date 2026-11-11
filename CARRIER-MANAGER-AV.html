@@ -20354,7 +20354,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          nessun piano, non arma piu' un'esultanza muta — il boato resta, la pantomima no. */
       {const _cpk84=(P.celebPlan&&P.celebPlan.key)||null;
        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _c=(window.__CPM_ARM392=window.__CPM_ARM392||{});_c.fr=(_c.fr||0)+1;if(_cpk84){_c.conPiano=(_c.conPiano||0)+1;_c.key=_cpk84;_c.memo=sr.current._celKey84;}_c.ph=P.matchPhase;_c.sk=P.hlSitKey;_c.celebT=+celebT.toFixed(2);}catch(_e){}}
-       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._celAt392=now;
+       if(_cpk84&&_cpk84!==sr.current._celKey84){sr.current._celKey84=_cpk84;celebT=0;sr.current._pv152=null;sr.current._cv152=0;sr.current._celAt392=now;
          sr.current._celPlan393=P.celebPlan;/* [7.393.0] L'ESULTANZA SI TIENE UNA COPIA DEL PIANO. Il piano vive nello stato React e chiunque puo' azzerarlo; l'azzeramento differito del 7.392 e' in tempo d'OROLOGIO, ma l'esultanza vive in tempo di SCENA — e headless GLB-ON un secondo d'orologio compra una frazione di secondo di gioco: misurato, il piano raggiungeva il renderer per 4 fotogrammi su 47 di esultanza, e la clip non si montava mai (0%). Con la copia scattata QUI, all'armamento, nessun azzeramento esterno puo' piu' spegnere un'esultanza in corso: la copia muore con lei. *//* [7.392.0] QUANDO e' nata: serve a non ucciderla nello stesso fotogramma in cui nasce */
          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDX=0;window.__CPM_CELSTEP=0;window.__CPM_CELY=0;window.__CPM_CELN=0;window.__CPM_CELPOS=null;window.__CPM_CELFR=0;window.__CPM_CELGST=0;window.__CPM_CELTS=0;window.__CPM_CELARM=0;window.__CPM_CELPREV=null;}catch(_e84){}}/* i contatori appartengono a UNA esultanza */}}
       if(goalBurstT>=0){goalBurstT+=dt;const _u=Math.min(goalBurstT/1.8,1);
@@ -22954,6 +22954,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            misurata una scena (gi0) con zero per cento di clip su otto fotogrammi, cioe' un'esultanza
            interamente muta. Ora il cronometro non parte finche' il piano non c'e', con un'attesa massima
            di 1,2 s oltre la quale si procede comunque: meglio l'esultanza povera di ieri che nessuna. */
+        sr.current._ctx152=P.ceremony?'cer':(celebT>=0?'cel':null);/* [giro 152 PO-355] contesto dell'esultanza per il testimone __CPM_G152W (solo collaudo) */
         if(celebT>=0){celebT+=aDt;
           if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{/* [7.384.0] i canali CORPOREI misurati dove accadono: spostamento percorso e quota massima. Senza, «l'esultanza non si vede» resta un giudizio. */
             const _pp84=window.__CPM_CELPOS;if(_pp84){const _st84=Math.hypot(hero.position.x-_pp84[0],hero.position.z-_pp84[1]);window.__CPM_CELDX=(window.__CPM_CELDX||0)+_st84;window.__CPM_CELSTEP=Math.max(window.__CPM_CELSTEP||0,_st84);}
@@ -22977,6 +22978,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           _PUGNO32=!!(_pl&&_pl.quiet);sr.current._celLift371=(_act&&_pl&&_pl.clip==="lift"&&!_scorer373&&_cu<((_pl&&_pl.quiet)?0.70:0.94))?1:0;/* [7.373.0] col gol del compagno le braccia al cielo sono SUE: l'eroe corre a raggiungerlo *//* [7.372.0] la versione SOBRIA tiene le braccia al cielo per meno tempo: con una sola clip di gioia la differenza fra esultare e contenersi la fanno durata e immobilita', non l'assenza del gesto */
           /* (b) CORSA verso la curva / i compagni / la bandierina. Il bersaglio resta DENTRO il campo e
                  lontano dai pali: una corsa non deve mai finire dentro la porta (§11). */
+          let _tgt152=null;
           if(_act&&_pl&&(_pl.run>0||_scorer373)){
             let _ctx371=null,_ctz371=null;
             if(_scorer373){/* [7.373.0] verso il marcatore, fermandosi ACCANTO a lui e non dentro */
@@ -22998,7 +23000,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               _ctz371=(Math.abs(hero.position.z)<5.5)?_sd371*7:hero.position.z;}
             }
             if(_ctx371!=null){_ctx371=clamp(_ctx371,-GOAL_LINE_X+6,GOAL_LINE_X-6);_ctz371=clamp(_ctz371,-27,27);
-              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);}}
+              animOne(hero,_ctx371,_ctz371,aDt,ak,_ctx371,_ctz371);_tgt152=[_ctx371,_ctz371];}}
+          /* [giro 152 PO-355 «occhio ai festeggiamenti dopo un gol, a volte l'eroe vola con le braccia alzate». Rosso __CPM_NO_G152]
+             MISURATO (esultanza-152, corpi 3D accesi, 14 gol forzati con l'esultanza imposta): nelle corse a braccia alzate
+             (run_to_crowd, run_wide) l'eroe si spostava fino a 13 u/s con la clip `lift` montata a peso pieno e IN PAUSA
+             (congelamento all'apice del 7.384) e la corsa a peso 0-0,13 — braccia al cielo immobili e gambe ferme che scivolano sul
+             prato: 5 corse su 6. La festa di fine partita lo aveva gia' risolto (7.999.80, _muove80); l'esultanza in campo no.
+             Stessa regola: le braccia al cielo si tengono SOLO a eroe fermo. Fermo = velocita' reale sotto 1,5 u/s (sale subito,
+             scende smussata: niente ri-armi a scatti) e, se il piano ha una corsa, arrivato a meno di 1,5u dal suo bersaglio.
+             In corsa comanda la locomozione (gambe e braccia della corsa); arrivato, le braccia tornano al cielo. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)){
+            const _pv=sr.current._pv152;const _vi=(_pv&&aDt>0)?Math.hypot(hero.position.x-_pv[0],hero.position.z-_pv[1])/aDt:0;
+            const _vp=sr.current._cv152||0;sr.current._cv152=Math.max(_vi>40?0:_vi,_vp+(Math.min(_vi,40)-_vp)*Math.min(1,aDt*8));
+            sr.current._pv152=[hero.position.x,hero.position.z];
+            const _lontano=!!(_tgt152&&Math.hypot(_tgt152[0]-hero.position.x,_tgt152[1]-hero.position.z)>1.5);
+            if(sr.current._celLift371===1&&(sr.current._cv152>1.5||_lontano))sr.current._celLift371=0;}
           /* (c) CORPO — quota: salto e scivolata si vedono anche col GLB (sono posizione) */
           const _jmp=(_pl&&_pl.jump)?_pl.jump:((_pl&&_pl.run>0)?0:((_pl&&_pl.quiet)?0.35:1.2));
           if(_act&&!(_pl&&_pl.slide))hero.position.y=Math.sin(Math.min(Math.max(celebT-_cdel,0)/0.5,1)*Math.PI)*_jmp*(1-_cp3);
@@ -23020,7 +23036,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _tx=pp.mesh.position.x+_dx*_k,_tz=pp.mesh.position.z+_dz*_k;
               pp.mesh._celT371=1;animOne(pp.mesh,_tx,_tz,aDt,ak,_tx,_tz);});}
           if(_cu>=1&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELDONE84=1;}catch(_e84){}}/* [7.384.0] il gioco DICHIARA la fine dell'esultanza: una sonda che aspetta a orologio non sa quanto tempo-scena abbia comprato */
-          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
+          if(_cu>=1){celebT=-1;hero.position.y=0;sr.current._celPlan393=null;sr.current._pv152=null;sr.current._cv152=0;hero._aL.rotation.x=0;hero._aR.rotation.x=0;hero._aL.rotation.z=0;hero._aR.rotation.z=0;sr.current._celLift371=0;
             sr.current.players.forEach(pp=>{if(pp.mesh)pp.mesh._celT371=0;});}// [6.76.0 LMV-A4] assegnamenti assoluti → cleanup esplicito
           actType=null;}
         // 5.49.23: CERIMONIA TROFEO sul campo — eroe alza il trofeo, coriandoli su tutto il campo, fuochi d'artificio, compagni in festa
@@ -23441,7 +23457,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              al cielo a peso pieno e la corsa a peso 0 — la clip ha le gambe ferme, quindi SCIVOLA sul prato. Velocita' reale
              dell'eroe per fotogramma (media mobile): oltre 1,5 u/s la clip d'esultanza non si accende, comanda la locomozione;
              fermo, le braccia tornano al cielo. Rosso: __CPM_NO_VOLO80. */
-          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);}
+          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);if(!(typeof window!=='undefined'&&window.__CPM_NO_G152)&&_vi<40)sr.current._cv80=Math.max(sr.current._cv80,_vi);/* [giro 152] la velocita' SALE subito e scende smussata: la media mobile da sola teneva le braccia al cielo per due fotogrammi di scatto (misurato 2,2-2,9 u/s, beat present) */}
            sr.current._pv80={x:hero.position.x,z:hero.position.z};}
           const _muove80=!(typeof window!=='undefined'&&window.__CPM_NO_VOLO80)&&(sr.current._cv80||0)>1.5&&!_onPodium;
           sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)&&!_muove80?(_armsUp?1:2):0;
@@ -25855,6 +25871,9 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
             {const _ws=(_ai===0&&_a._spr252)?(_a._ws252||0):0;if(_a.run)_a.run.weight=_lbW*(1-_gTot)*(1-_ws);if(_ws||(_a._spr252&&_a._spr252.weight))_a._spr252.weight=_lbW*(1-_gTot)*_ws;}/* [PO-252/1] la corsa si divide fra jog e scatto */if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
             _updateAvatarMixerLod(_a,aDt,_ai,true);
+            if(_ai===0&&sr.current._ctx152&&typeof window!=='undefined'&&window.__CPM_G152W&&(_CPM_TEST||_SIT_TEST)){try{/* [giro 152 PO-355 «a volte l'eroe vola con le braccia alzate»] testimone per fotogramma: quota del piede piu' basso sopra il prato, posizione, clip e pausa, pesi */
+              const W=window.__CPM_G152W;if(W.length<40000){let _f=null;if(_a._footL&&_a._footR){const _v=new THREE.Vector3();_a._footL.getWorldPosition(_v);const _l=_v.y;_a._footR.getWorldPosition(_v);_f=Math.min(_l,_v.y)-(_a.root?_a.root.position.y:0)-(_a._fs203!=null?_a._fs203:0.118);}
+                const _ga=_a._gAct;W.push({c:sr.current._ctx152,ph:P.matchPhase||null,pk:(P.celebPlan&&P.celebPlan.pick)||(P.celebPlan&&P.celebPlan.id)||(sr.current._celPlan393&&(sr.current._celPlan393.pick||sr.current._celPlan393.id))||null,bk:sr.current._bk57||null,dt:+aDt.toFixed(4),x:+hero.position.x.toFixed(3),z:+hero.position.z.toFixed(3),y:+(hero.position.y||0).toFixed(3),f:_f!=null?+_f.toFixed(3):null,g:_a._gName||null,gn:_ga?_ga.getClip().name:null,gt:_ga?+(_ga.time||0).toFixed(3):null,gp:_ga?(_ga.paused?1:0):null,gw:+(_a._gw||0).toFixed(2),rw:_a.run?+((_a.run.weight||0)+((_a._spr252&&_a._spr252!==_a.run)?(_a._spr252.weight||0):0)).toFixed(2):null,iw:_a.idle?+(_a.idle.weight||0).toFixed(2):null,l371:sr.current._celLift371|0,cl:sr.current._cerLift|0});}}catch(_e152){}}
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
             //   campo (B2, run normale) li RIAPPLICA dopo il mixer → gambe che corrono, braccia in alto
