@@ -542,6 +542,16 @@ function fondoClub106(col){
 function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
 function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):((_g110(23)?'rgba(13,15,20,':'rgba(15,23,42,')+q+')');}
+/* [giro 168 · PO-363] IL VELO DEL COLORE DEL CLUB. La riga tua della classifica chiamava inkVelo945(club.c) — ma inkVelo945 vuole un
+   INCHIOSTRO (bianco o scuro) e per ogni altro colore rende il velo scuro del tema: il colore del club non arrivava mai (dal giro 110
+   G180-23 il velo e' rgba(13,15,20), il fondo della pagina, ed e' li' che grafica-v2 e' diventato rosso; prima era ardesia 15,23,42).
+   Qui il colore del club, smorzato verso la notte come la fascia della prossima partita (fondoClub106: col bianco o col giallo
+   puri il velo scendeva a 2,49:1 / 3,44:1 sui numeri, misura giro 168), diventa rgba(r,g,b,q). Rosso __CPM_NO_G168: la chiamata di prima. */
+function veloClub168(col,q){
+  try{ if(typeof window!=='undefined'&&window.__CPM_NO_G168)return inkVelo945(col,q);
+    let h=String(fondoClub106(col)||'').trim();if(h[0]!=='#')return inkVelo945(col,q);h=h.slice(1);if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(h.length!==6||v.some(isNaN))return inkVelo945(col,q);
+    return 'rgba('+v.join(',')+','+q+')'; }catch(_e){ return inkVelo945(col,q); }}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
@@ -58272,7 +58282,7 @@ const getThisWeekMatchday=()=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
                     const zone=zoneOf(i);
                     const zc=zone?ZONE_COLORS[zone]:null;
-                    return<tr key={t.id||t.n} data-cpm={my?"riga-mia-v2":undefined} style={{background:my?inkVelo945(player.club?.c||"#8e1f33",0.28):(i%2?TH.surface2:"transparent")}}>
+                    return<tr key={t.id||t.n} data-cpm={my?"riga-mia-v2":undefined} style={{background:my?veloClub168(player.club?.c||"#8e1f33",0.28)/* [giro 168] colore del club, non il velo dell'inchiostro */:(i%2?TH.surface2:"transparent")}}>
                       {/* [7.73.0 UI Kit] barra accento: zona → colore zona, altrimenti riga eroe → brand */}
                       <td style={{width:4,padding:0}}><div style={{width:4,height:30,background:zc||(my?TH.primary:"transparent"),borderRadius:RAD.pill}}/></td>
                       {/* [7.73.0 UI Kit] posizione a MEDAGLIA (top-3, stessa terna dei capocannonieri) · pill brand per l'eroe · numero semplice altrimenti */}

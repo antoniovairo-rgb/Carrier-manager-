@@ -9442,7 +9442,7 @@ const getThisWeekMatchday=()=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
                     const zone=zoneOf(i);
                     const zc=zone?ZONE_COLORS[zone]:null;
-                    return<tr key={t.id||t.n} data-cpm={my?"riga-mia-v2":undefined} style={{background:my?inkVelo945(player.club?.c||"#8e1f33",0.28):(i%2?TH.surface2:"transparent")}}>
+                    return<tr key={t.id||t.n} data-cpm={my?"riga-mia-v2":undefined} style={{background:my?veloClub168(player.club?.c||"#8e1f33",0.28)/* [giro 168] colore del club, non il velo dell'inchiostro */:(i%2?TH.surface2:"transparent")}}>
                       {/* [7.73.0 UI Kit] barra accento: zona → colore zona, altrimenti riga eroe → brand */}
                       <td style={{width:4,padding:0}}><div style={{width:4,height:30,background:zc||(my?TH.primary:"transparent"),borderRadius:RAD.pill}}/></td>
                       {/* [7.73.0 UI Kit] posizione a MEDAGLIA (top-3, stessa terna dei capocannonieri) · pill brand per l'eroe · numero semplice altrimenti */}
