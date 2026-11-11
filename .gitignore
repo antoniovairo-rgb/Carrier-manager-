@@ -58,3 +58,7 @@ assets/rejected/
 # [7.999.47] foto di lavoro della festa vecchia (sonda festa-sonda.mjs), rigenerabili
 docs/collaudo-testi/festa/Festa[12]-*.png
 tools/audio-149/.cache/
+
+# [giro 170] le sonde giro170-*.mjs scattano in PNG; nel repo vanno solo i JPEG (48 MB invece di 287)
+docs/collaudo/giro170/*.png
+docs/collaudo/giro170/fogli/*.png
