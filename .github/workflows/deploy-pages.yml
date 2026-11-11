@@ -79,6 +79,9 @@ jobs:
           # [giro 149 PO-351] pagina d'ascolto dell'audio CC0 (prima/dopo di ogni evento, registrati dal gioco): la pagina, le misure e gli MP3.
           mkdir -p _site/prototipi/audio-149 && cp docs/sviluppo/giro149/ascolto.html _site/prototipi/audio-149/index.html \
             && cp docs/sviluppo/giro149/misure.json _site/prototipi/audio-149/ && cp -r docs/sviluppo/giro149/prima docs/sviluppo/giro149/dopo _site/prototipi/audio-149/
+          # [giro 161] pagina d'ascolto del giro 161 (gol subito, «ohh» registrato, musica delle cerimonie): stesso schema della 149.
+          mkdir -p _site/prototipi/audio-161 && cp docs/sviluppo/giro161/ascolto.html _site/prototipi/audio-161/index.html \
+            && cp docs/sviluppo/giro161/misure.json _site/prototipi/audio-161/ && cp -r docs/sviluppo/giro161/prima docs/sviluppo/giro161/dopo _site/prototipi/audio-161/
           # [7.999.11] radice e indirizzo storico servono la versione PRECOMPILATA (dist-web): stesso gioco, senza Babel nel browser
           cp dist-web/index.html _site/index.html
           cp dist-web/index.html _site/CARRIER-MANAGER-AV.html

@@ -6083,6 +6083,11 @@ const getThisWeekMatchday=()=>{
 
   const ovr=player.ovr||calcOvr(player.stats),week=player.week||1,season=player.season||1;
 
+  /* [giro 161 — decisione PO 11/11] fuori dalla partita la musica suona SOLO nelle cerimonie: premiazioni, serata/schermata di
+     presentazione, fine stagione. Un solo effetto dichiara quale cerimonia e' in scena (null = nessuna) e l'AudioMgr accende o
+     spegne il brano; rosso __CPM_NO_G161 = nessuna musica, come prima. Prima dei return anticipati: ordine degli hook invariato. */
+  const _cer161=(screen==="seasonAwards"&&seasonAwardsData)?"premiazioni":presEvent?"presentazione":(screen==="clubPresentation"&&presentationData)?"presentazione":(screen==="seasonEnd"&&seasonEndData)?"finestagione":null;
+  useEffect(()=>{try{AudioMgr.ceremony(_cer161);}catch(_e){}return()=>{try{AudioMgr.ceremony(null);}catch(_e){}};},[_cer161]);
   // Sprint 49: Season Awards screen (before SeasonEnd)
   if(screen==="seasonAwards"&&seasonAwardsData)return(
     <div style={{width:"100%"}}>

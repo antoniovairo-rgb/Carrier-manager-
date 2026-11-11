@@ -1,0 +1,107 @@
+{
+ "_nota": "misure delle registrazioni (silenzi di testa/coda tolti): picco/RMS dBFS, LUFS integrati",
+ "eventi": [
+  {
+   "id": "gol-subito",
+   "nome": "Gol subito: fischi della curva",
+   "gruppo": "Partita",
+   "prima": {
+    "picco_db": -42.059942,
+    "rms_db": -55.744705,
+    "lufs": -53.8,
+    "durata_s": 2.74
+   },
+   "dopo": {
+    "picco_db": -15.163468,
+    "rms_db": -29.671023,
+    "lufs": -21.8,
+    "durata_s": 2.74
+   }
+  },
+  {
+   "id": "palo",
+   "nome": "Palo: legno + «ohh»",
+   "gruppo": "Partita",
+   "prima": {
+    "picco_db": -10.156222,
+    "rms_db": -29.478097,
+    "lufs": -28.3,
+    "durata_s": 4.34
+   },
+   "dopo": {
+    "picco_db": -8.359546,
+    "rms_db": -23.114096,
+    "lufs": -20.4,
+    "durata_s": 4.34
+   }
+  },
+  {
+   "id": "fuori",
+   "nome": "Tiro fuori: «ohh»",
+   "gruppo": "Partita",
+   "prima": {
+    "picco_db": -21.613469,
+    "rms_db": -35.239278,
+    "lufs": -70,
+    "durata_s": 4.3
+   },
+   "dopo": {
+    "picco_db": -12.850409,
+    "rms_db": -25.395786,
+    "lufs": -22.5,
+    "durata_s": 4.34
+   }
+  },
+  {
+   "id": "angolo",
+   "nome": "Calcio d'angolo: fischio + «ohh»",
+   "gruppo": "Partita",
+   "prima": {
+    "picco_db": -15.198682,
+    "rms_db": -23.406909,
+    "lufs": -16.7,
+    "durata_s": 4.34
+   },
+   "dopo": {
+    "picco_db": -11.51411,
+    "rms_db": -25.940051,
+    "lufs": -21.3,
+    "durata_s": 4.34
+   }
+  },
+  {
+   "id": "premiazioni",
+   "nome": "Premiazioni (primi 15 s)",
+   "gruppo": "Cerimonie",
+   "prima": {
+    "picco_db": null,
+    "rms_db": null,
+    "lufs": -70,
+    "durata_s": 15.1
+   },
+   "dopo": {
+    "picco_db": -23.283603,
+    "rms_db": -38.075841,
+    "lufs": -34.5,
+    "durata_s": 15.14
+   }
+  },
+  {
+   "id": "presentazione",
+   "nome": "Presentazione / fine stagione (primi 15 s)",
+   "gruppo": "Cerimonie",
+   "prima": {
+    "picco_db": null,
+    "rms_db": null,
+    "lufs": -70,
+    "durata_s": 15.14
+   },
+   "dopo": {
+    "picco_db": -23.244669,
+    "rms_db": -41.046597,
+    "lufs": -38.7,
+    "durata_s": 15.14
+   }
+  }
+ ]
+}

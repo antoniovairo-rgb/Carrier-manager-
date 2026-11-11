@@ -1,10 +1,11 @@
 # assets/audio/sfx/crowd/ — audio folla (campioni REALI)
 
-Contiene i campioni collegati automaticamente dal gioco (`AudioMgr`, registro `URL_SFX`):
+Contiene i campioni collegati automaticamente dal gioco (`AudioMgr`, registro `URL_SFX`). I boati, gli applausi, i fischi e
+l'«ohh» CC0 dei giri 149/161 hanno la loro riga in `assets/audio/LICENZE.json`. Il vecchio boato del gol (clip di terzi con licenza
+propria, non CC0) e' uscito dal repo nel giro 161b (decisione PO 11/11 «Togliere il file»):
 
 | File | Uso nel gioco | Note |
 |---|---|---|
-| `mixkit-stadium-joy-shouting-crowd-3022.wav` | **Boato del GOL** (`crowd.roar`) | clip ~15s → il gioco ne suona i **primi ~4.2s** con fade (l'esplosione iniziale) |
 | `brusio-folla-korward.wav` | **Brusio di folla** durante il gioco (`crowd.bed`, in loop) | **generato da noi** (giro 20, PO-238): `node tools/gen-crowd-bed.mjs` lo riscrive identico byte per byte. Il gioco lo modula sul momentum (`_bedGain`) |
 
 ### Il brusio: come e' fatto (giro 20)
@@ -37,16 +38,14 @@ suona il synth di riserva. Guardiano: `tests/visual/brusio-238.mjs`.
 
 ## Sostituire o aggiungere
 
-- **Cambiare il boato**: sostituisci il file di `crowd.roar` (o aggiungi `goal-roar.ogg/mp3`,
-  che ha priorità) — vedi il registro `URL_SFX` in `CARRIER-MANAGER-AV.html`.
+- **Cambiare il boato**: i boati del gol sono le voci `crowd.roar` della tabella `F149` (`src/09`, file CC0 del giro 149);
+  col rosso `__CPM_NO_G149` il gol usa la sintesi (un `goal-roar.ogg/mp3/wav` caricato qui avrebbe la precedenza).
 - **Cambiare il brusio**: ritocca `tools/gen-crowd-bed.mjs` e rigeneralo, oppure sostituisci il file di `crowd.bed`
   (solo con fonte e licenza verificate, scritte in `docs/governo/CREDITI-fonti.md`).
 - Il **service worker** cachea i file al 1° caricamento → offline ok. `build-dist` copia `assets/`.
 
 ## Note
 
-- I due file sono **WAV non compressi** (2.7MB / 1MB). Per il rilascio store si possono
-  ri-comprimere in **OGG** (~10× più piccoli) senza toccare il codice (basta rinominare l'estensione
-  nel registro). Registrare **fonte + licenza** di ogni file in `docs/governo/CREDITI-fonti.md`.
+- Il brusio è un **WAV non compresso** (1 MB). Registrare **fonte + licenza** di ogni file in `docs/governo/CREDITI-fonti.md`.
   ⚠️ Il brusio NON va ricompresso in mp3: l'encoder aggiunge silenzio in testa e il loop torna a bucarsi.
 - Se un file manca o non si decodifica, il gioco ricade automaticamente sul **synth** (0 crash).

@@ -1,0 +1,86 @@
+Fonte: https://mixkit.co/terms/ («User Terms»)
+Letto: 2026-11-11 · sha256 della risposta HTML: 1059c7d6bd494fb9799e9063782c44ae4e02301b041f4f1f33c290d1a101f12f
+Testo estratto dall'HTML (tag tolti, nessuna altra modifica):
+
+User Terms
+Last revised: October 2, 2025
+About us and these terms
+Access and restrictions
+Intellectual property
+Indemnification; Disclaimer; Limitation of liability
+Dispute resolution
+Miscellaneous
+Definitions
+About us and these terms
+1. Welcome: Hi, we’re Envato and welcome to Mixkit. We’re happy to have you here and we hope you enjoy your stay.
+2. About us: Mixkit is a free library of digital Items which are available for download and use for your projects, such as videos, music, templates, sound effects and digital art. 
+It is important to understand that by downloading Items on Mixkit you are only receiving a non-exclusive license to use that Item. You do not acquire any rights of ownership in that Item.
+3. User Terms: By accessing and using Mixkit, you acknowledge and agree that the following terms apply to your use of Mixkit:
+these Mixkit User Terms;
+the applicable Mixkit Licenses;
+Envato’s Acceptable Use Policy;
+Envato’s Fair Use Policy;
+any applicable policies, guidelines and instructions as communicated from time to time.
+Your use of Mixkit is conditional on your acceptance to be bound by these User Terms and the other terms noted above.
+4. Legal authority: These User Terms are a legally binding agreement between us and you. If you are signing up on behalf of a company or organization, another individual, or any other third party, you represent and warrant that you have full legal authority to agree to these User Terms and bind that third party.
+5. Definitions and interpretation: Any capitalized terms will have the meanings set out in the Definitions section of these User Terms. Words like ‘include’ and ‘including’ are not words of limitation and where anything is ‘within our discretion’ we mean our sole discretion.
+6. Your privacy: For more information on how we handle the information you provide to us when you use Mixkit, please see our Privacy Policy. By using Mixkit, you consent to our collection, use and disclosure of personal data and other data as outlined therein.
+Access and restrictions
+7. Age: You must be 18 years of age or over to access and use Mixkit.
+8. Access: Subject to your compliance with these User Terms, you are granted a non-exclusive, limited, non-transferable, freely revocable license to access and use Mixkit for business or personal use. We reserve all rights not expressly granted under these User Terms. 
+9. Restrictions: You must not (either in your own right or through any third party), and you must not permit any third party to:
+use an Item in any way that breaches our Acceptable Use Policy; 
+sell physical or digital copies of Items without first altering them by applying human skill and effort, and incorporating other elements (merely printing an Item on an object such as a mug or shirt is not sufficient alteration);
+interfere with or disrupt the integrity or performance of Mixkit (for example through sending mass unsolicited messages, “flooding” servers, or introducing a virus, time bomb, trojan horse, worm, cancelbot or other computer routine);
+rent, license, sublicense, sell, resell or otherwise commercially exploit or make Mixkit or any Item available to any third party (except as expressly contemplated by these User Terms) including aggregate or collate an Item(s) and make available on a stock or inventory basis; 
+use Mixkit or its related systems and networks, or any Item, to build a similar or competitive product or service;
+copy, republish, frame, link to, download, transmit, modify, adapt, create derivative works based on, rent, lease, loan, sell, assign, distribute, display, perform, license, sublicense, reverse engineer, reverse assemble, disassemble, or decompile any part of Mixkit (including any component of the website), any Mixkit Intellectual Property;
+use Envato or Mixkit as a trademark or trade name, without our prior written consent;
+a virtual private network (VPN) or any other means to avoid compliance with these User Terms, or for any fraudulent or illegal reasons;
+remove any watermarking, copyright notices or other protective measures from any Item, including preview files; 
+use scripts or bots to mass download Items (this includes using any means whatsoever to scrape/download the entire library and/or database of Items) and/or
+access or use Mixkit in any way not expressly permitted by these User Terms.
+10. Mixkit License: Your use of our Items is subject to the applicable Mixkit License. Subject to Clause 10, the provisions of the Mixkit License applies to all use of the licensed Item, even if you sub-license or transfer use of the Item to a third party.
+11. Termination: In addition to any other legal rights we have, we can terminate your rights under the Mixkit License (and require that you cease all use of Items) if you breach the Mixkit License or these User Terms.
+Intellectual property
+12. Envato intellectual property: All rights, title and interest (including all intellectual property rights) in and to Mixkit website, Items, and any other content that makes up Mixkit (Mixkit Intellectual Property) is owned and/or controlled by the Group Companies. 
+13. Third party rights: For some Items, a component of the Item (such as a trade mark or brand) may be sourced from a third party and different license terms may apply to the component, such as someone else’s license or an open source or creative commons license. These components may not have been cleared for use by you, and it is your responsibility to evaluate whether your use of these components require the permission of those third parties and if so, to obtain that permission. To avoid doubt, the Mixkit License will apply to all other components of the Item.
+14. Infringement of intellectual property rights: We respect the intellectual property rights of others. If you believe that an Item or other content on Mixkit infringes any intellectual property right (including copyright), please see the information in our Copyright Policy.
+15. Use of your data: By using Mixkit, you grant Envato a non-exclusive, royalty-free, perpetual, and worldwide right to collect, analyse, and utilise data derived from your use of Mixkit for its own commercial purposes. This includes, but is not limited to, data relating to site activity, user preferences, and transaction patterns.
+Indemnification; Disclaimer; Limitation of liability
+16. INDEMNITY: YOU AGREE TO INDEMNIFY AND HOLD HARMLESS EACH GROUP COMPANY FROM AND AGAINST ANY AND ALL LOSSES, COSTS (INCLUDING LEGAL COSTS), EXPENSES, DEMANDS OR LIABILITY THAT THE GROUP COMPANY INCURS ARISING OUT OF, OR IN CONNECTION WITH, YOUR BREACH OF THESE USER TERMS AND/OR A THIRD PARTY CLAIM AGAINST THE GROUP COMPANY RELATING TO YOUR USE OF MIXKIT OR ANY ITEM.
+17. DISCLAIMER: MIXKIT IS A FREE SERVICE AND TO THE FULLEST EXTENT PERMITTED BY LAW, MIXKIT AND THE ITEMS ARE MADE AVAILABLE TO YOU AN AN “AS-IS” BASIS AND WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF NON_INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. YOU ACKNOWLEDGE THAT WE MAKE NO WARRANTY THAT (A) MIXKIT WILL MEET YOUR REQUIREMENTS; (B) YOUR ACCESS TO MIXKIT WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE; (C) THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF MIXKIT WILL BE ACCURATE OR RELIABLE; OR (D) THE QUALITY OF ANY ITEMS, PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL OBTAINED BY YOU THROUGH MIXKIT WILL MEET YOUR EXPECTATIONS.
+18. LIMITATION OF OUR LIABILITY: UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY (WHETHER IN CONTRACT, TORT, OR OTHERWISE) SHALL ENVATO OR ITS GROUP COMPANIES BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY LOSS OF REVENUE, LOSS OF PROFIT, LOSS OF GOODWILL, LOSS OF CUSTOMERS, LOSS OF CAPITAL, DAMAGE TO REPUTATION, LOSS IN CONNECTION WITH ANY OTHER CONTRACT, LOSS OF DATA, OR INDIRECT, CONSEQUENTIAL OR SPECIAL LOSS, DAMAGE OR EXPENSE. OUR TOTAL AGGREGATE LIABILITY TO YOU IS LIMITED TO TEN ($10) US DOLLARS. 
+19. CONSUMER LAWS: IN SOME PLACES (SUCH AS THE STATE OF NEW JERSEY), THERE MAY BE NON-EXCLUDABLE WARRANTIES, GUARANTEES OR OTHER RIGHTS. ACCORDINGLY SOME OF THE LIMITATIONS SET FORTH ABOVE MAY NOT APPLY TO YOU OR BE ENFORCEABLE WITH RESPECT TO YOU. IF YOU ARE DISSATISFIED WITH ANY PORTION OF MIXKIT OR THESE USER TERMS, YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USE OF MIXKIT.
+Dispute resolution
+20. Arbitration: Any controversy or claim arising out of or relating to these User Terms, or the breach thereof, shall be settled by binding individual (not class) arbitration administered under the Commercial Arbitration Rules of the American Arbitration Association or of the International Centre for Dispute Resolution in effect on the date of the commencement of arbitration, rather than in court, and judgment on the award rendered by the arbitrator(s) may be entered in any court having jurisdiction thereof or having jurisdiction over the relevant party or its assets. This agreement to arbitrate includes claims that arose before you first accepted any version of these User Terms containing an arbitration provision. The place of arbitration shall be the state and county of New York. The language of the arbitration shall be English. There shall be one arbitrator to be mutually agreed by the parties. Each party shall bear its own costs in the arbitration. Both parties agree that the following claims are exceptions to the Arbitration Agreement and will be brought in a judicial proceeding in a court of competent jurisdiction: (i) any claim related to actual or threatened infringement, misappropriation or violation of a party’s copyrights, trademarks, trade secrets, patents, or other intellectual property rights; (ii) any claim seeking emergency injunctive relief based on exigent circumstances (e.g., imminent danger or commission of a crime, hacking, cyber-attack) (iii) any claim arising solely from your alleged failure to pay fees due to Envato. This arbitration provision will survive termination of these User Terms.
+21. Class action waiver: YOU AND ENVATO AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE ACTION. Unless both you and Envato agree, no arbitrator or judge may consolidate more than one person’s claims or otherwise preside over any form of a representative or class proceeding. The arbitrator may award injunctive relief only in favor of the individual party seeking relief and only to the extent necessary to provide relief warranted by that party’s individual claim. You and Envato acknowledge and agree that we are each waiving the right to a trial by jury as to all arbitrable disputes under these User Terms.
+22. Severance: If a court decides that applicable law precludes enforcement of any of the limitations in this section as to a particular claim for relief, then that claim (and only that claim) must be severed from the arbitration and may be brought in court.
+Miscellaneous
+23. Relationship between the parties: Nothing in these User Terms is to be construed as constituting a partnership, joint venture, employment or agency relationship between you and any Group Company, or between you and any other User. 
+24. Use of Group Company services: We may use the services of another Group Company for any purpose in relation to Mixkit.
+25. Changes to these terms: We may change these User Terms (and any terms or policies referenced in these User Terms) at any time. We will post the current version of these User Terms on our website. You can also keep track of whether changes have been made by referring to the version and effective date of the User Terms. By continuing to use Mixkit after the effective date of the changes, you agree to be bound by the updated terms. If you do not agree with the changes, you should not use Mixkit.
+26. Changes to our services: We may add, change or remove features or functionality to Reshot or discontinue, temporarily or permanently, Mixkit (or any part thereof) at any time with or without notice.
+27. Taxes: If taxes are payable in connection with your use of Mixkit or any Item, you are responsible for paying all associated fees and taxes wherever levied (including withholding tax, if applicable).
+28. Sanctions: We are subject to trade and economic sanctions and laws and regulations that govern the use of our services. These laws or regulations may prohibit us from providing services to you or require that we discontinue making services available to you without notice. By using our services you agree to comply with all trade or economic sanctions, export and import laws and regulations and warrant that: (i) you are not prohibited from accessing our services; and (ii) you will not make our services available to anyone who is prohibited from accessing them under the laws or regulations of any jurisdiction.
+29. Assignment: You may not transfer or assign these User Terms or any of your rights or obligations under these User Terms without Envato’s prior written consent. Envato may transfer or assign any of its rights and obligations under these User Terms, in whole or in part, at any time with or without notice.
+30. Entire agreement: These User Terms (and any policies or agreements referenced in these User Terms) constitute the entire agreement between you and Envato with respect to Mixkit. These User Terms supersede any prior representations, agreements, or understandings between you and Envato, whether written or oral, with respect to Envato Tuts+ including previous versions of the User Terms. The English version of these User Terms will control.
+31. Severability: If any individual term of these User Terms is found to be invalid or unenforceable, such finding will be limited solely to such invalid or unenforceable part, without affecting the remaining parts of such individual term, or any other part of these User Terms, so that these User Terms shall otherwise remain in full force and effect.
+32. Waiver: Envato’s express waiver or failure to enforce any provision of these User Terms shall in no way be construed to be a present or future waiver of such provision nor affect Envato’s ability to enforce any provision thereafter.
+33. Governing law: These User Terms are governed by and shall be construed in accordance with the laws of the State of New York, without regard to any conflict of laws principles. 
+34. Notices: If you have any queries in relation to these User Terms, please contact terms@help.envato.com with the subject line ‘Mixkit User Terms’. Any notice we send to you may be provided via our website.
+Definitions
+Envato, we, us or our: Shutterstock, Inc.
+Group Companies: Envato and any company that controls, is controlled by or is under common control with Envato. References to a Group Company include any successors (whether by merger, purchase or otherwise) and permitted assigns.
+Items: digital goods found on Mixkit, which may include goods like videos, music, sound effects, Premiere Prod and After Effects project files and digital art..
+Mixkit: the web-based platform and services made available by Envato at https://mixkit.co/ (or any successor or related site), including all features, functionalities, websites, software, Item, services applications and other content offered, provided or made available thereon.
+User, you or your: each person who accesses or uses Mixkit.
+User Terms: the Mixkit User Terms set out in this document and the terms of the other documentation specified in section 3, which are incorporated by reference in these User Terms, in each case as amended from time to time.
+>
+Unlimited creative stock assets, all in one place.
+Millions of premium assets
+Lifetime commercial licence
+>Start creating now
+modal#close:self"
+data-analytics-context="modal"
+>
