@@ -1249,3 +1249,6 @@ Questionario del mattino chiuso: tutte le domande dei giri della 190 e del proge
 
 ### 11/11 08:58 UTC — giri della 191 lanciati (base lavoro/190)
 158 simulate: voto dal motore + squadra simulata (PO-360) · 159 seguiti bassi: Legacy 14/trofeo, derby inventato, contratti B4, rinnovo D9, addio B11 · 160 testo 12 px + taglio 3 px · 161 audio: musica cerimonie, fischi gol subito, Ohh, lettura licenza Mixkit · 162 PO-362 scena «spalle alla porta» + strumenti bg-sync/bg-decision · 163 Primavera F (Indice) + 3 (avanti veloce). PO-357 entra dal ramo sviluppo/giro154b-gol-eroe. Verifica finale 190: 50 controlli, unico non verde distanze-126 (rieseguito intero a parte).
+
+### 11/11 12:17 UTC — Fable 5.2 per i giri difficili sul motore (decisione PO)
+PO: «valuta se per qualche task specifico è meglio usare Fable 5.2» → questionario → «Solo giri difficili sul motore». Regola: Fable 5.2 (8/40 $ per milione di token, il doppio di Opus 5.5) per i giri di analisi profonda (motore, cause non trovate); Opus 5.5 per gli altri giri di sviluppo; Sonnet 5.5 per le verifiche. Applicata subito: giro 158 (Opus, primo commit c1f123e7, 10,31 $) interrotto e proseguito come 158b su Fable (session_01QEYiaC66WAviak7gjdW5AD) sullo stesso ramo.

@@ -978,5 +978,19 @@
     "cache_read_tokens": 4101133,
     "worker_epoch": 1,
     "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYia9DvTnjA8usAzP3Tks",
+    "titolo": "giro 158 simulate (prima parte, Opus, interrotto per passaggio a Fable)",
+    "versione": "7.999.191",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-11T08:57:21Z",
+    "chiusa": "2026-11-11T12:16:13Z",
+    "cost_usd": 10.3103127,
+    "output_tokens": 110815,
+    "cache_read_tokens": 28476332,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-11"
   }
 ]
