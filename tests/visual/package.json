@@ -591,7 +591,9 @@
     "presentazione-142": "node presentazione-142.mjs",
     "home-larghezza-156": "node home-larghezza-156.mjs",
     "sim-voto-156": "node sim-voto-156.mjs",
-    "spalle-146": "node spalle-146.mjs"
+    "spalle-146": "node spalle-146.mjs",
+    "indice-163": "node indice-163.mjs",
+    "salta-163": "node salta-163.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
