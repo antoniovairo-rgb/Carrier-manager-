@@ -39,3 +39,5 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 33 | griglia-mobile | 0 | 202 | VERDE | mem used 664/16086 free 13205 avail 15421 · disk used 11G avail 29G (27%) |
 | 34 | design-system | 0 | 0 | VERDE | mem used 767/16086 free 13103 avail 15318 · disk used 11G avail 29G (27%) |
 | 35 | partita-v2 | 0 | 518 | VERDE | mem used 712/16086 free 13157 avail 15373 · disk used 11G avail 29G (27%) |
+| 36 | partita2d-297 | 0 | 167 | VERDE | mem used 629/16086 free 13240 avail 15456 · disk used 11G avail 29G (27%) |
+| 37 | spalti-109 | 0 | 343 | VERDE | mem used 627/16086 free 13242 avail 15458 · disk used 11G avail 29G (27%) |
