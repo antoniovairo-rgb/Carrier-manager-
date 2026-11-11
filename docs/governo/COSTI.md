@@ -62,6 +62,14 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.190 | giro 146 spalle braccia mani (PO-348) | sviluppo | claude-opus-5-5 | 4,1 | 11,20 $ | 115689 | 1 | completo (un solo avvio) |
 | 7.999.189 | verifica 189 delta (dopo il giro 147) | catena | claude-sonnet-5-5 | 1,2 | 1,28 $ | 13144 | 1 | completo (un solo avvio) |
 | 7.999.189 | verifica finale 7.999.189 | catena | claude-sonnet-5-5 | 7,9 | 5,24 $ | 28762 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.190 | giro 146b spalle senza gobba (PO-348) | sviluppo | claude-opus-5-5 | 3,7 | 13,68 $ | 107526 | 1 | completo (un solo avvio) |
+| 7.999.190 | giro 148 portiere a bruciapelo (PO-350) | sviluppo | claude-opus-5-5 | 3,8 | 5,34 $ | 48469 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.190 | giro 149 audio CC0 (PO-351) | sviluppo | claude-opus-5-5 | 1,3 | 12,22 $ | 112395 | 1 | completo (un solo avvio) |
+| 7.999.190 | giro 150 finestre PC (PO-352) | sviluppo | claude-opus-5-5 | 1,6 | 0,92 $ | 8448 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.190 | giro 155 difetti bassi, Legacy, testi (PO-337/338/358/359) | sviluppo | claude-opus-5-5 | 1,2 | 0,78 $ | 9090 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.190 | giro 156 misura simulate + Ultime notizie (PO-360/361) | sviluppo | claude-opus-5-5 | 1,3 | 2,51 $ | 24756 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.190 | giro 157 risultati di squadra nelle simulate (PO-360) | sviluppo | claude-opus-5-5 | 0,8 | 1,06 $ | 11165 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.191 | giro 153 progetto Primavera (PO-356) | progetto | claude-opus-5-5 | 0,2 | 3,98 $ | 43233 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -72,4 +80,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
-| 7.999.190 | **TOTALE 7.999.190** (1 sessioni) |  |  |  | 11,20 $ |  |  | tutte complete |
+| 7.999.190 | **TOTALE 7.999.190** (8 sessioni) |  |  |  | almeno 47,72 $ |  |  | 5 sessioni parziali: totale minimo |
+| 7.999.191 | **TOTALE 7.999.191** (1 sessioni) |  |  |  | 3,98 $ |  |  | tutte complete |

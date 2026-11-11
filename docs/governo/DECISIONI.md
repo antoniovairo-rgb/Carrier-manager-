@@ -1214,3 +1214,6 @@ Prese dalla sessione principale secondo la regola PO «Deve essere la sessione m
 
 ### 10/11 23:58 UTC — 7.999.189 pubblicata
 Verifica finale catena/189-finale (eba3b48): 50 controlli, 48 verdi; highlight-95 verde (5363 s). Rossi: folla, superato dalla verifica delta su 0d4915e9 (12/12, giro 147); portiere-252 dichiarato per decisione PO «Pubblica 189, portiere nella 190» (PO-350, giro 148). Unione lavoro/189 + catena/189-finale + catena/189-delta senza conflitti (solo documenti), check-src identico byte per byte, poc → main 9ba4a97d. Deploy Pages verde; sito: versione 7.999.189 servita, privacy.html 200 senza mail personale. Chiuse PO-315, 316, 317, 319, 336, 339-347; PO-337 parziale (D23 fatto).
+
+### 11/11 01:10 UTC — lavoro/190 in costruzione
+Da main (db7533ad) uniti uno alla volta: giri 148, 149, 150, 155, 156, 157, 146b (con 146). Conflitti solo documentali (ROADMAP: tenute entrambe le righe; tests/visual/package.json: tenuti tutti gli script). Build ricomposta: check-src identico byte per byte. Ramo lavoro/190 e7bdb690. In attesa dei giri 151, 152, 154. CI «Validate Situations» sul commit di rilascio 189: annullata (come sulla 188), il deploy Pages è verde.
