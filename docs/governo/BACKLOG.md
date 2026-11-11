@@ -48,6 +48,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-361 | 10/11 22:58 | PO (foto Home da PC): «ultime notizie, graficamente tagliato...uniforma» — la card «Ultime notizie» occupa mezza larghezza mentre le altre righe sono a tutta larghezza (src/18 r.~9124) | grafica/PC | APERTA | 190 | | | |
 | PO-362 | 11/11 07:50 | Sessione madre (dal giro 154b): scena «spalle alla porta» → «Proteggi palla e scarica»/«Girata secca e tiro» con tiro a 30,5-30,8 m oltre il limite di 30 di distanze-126 (s1 seme 8); identico sulla base lavoro/189: difetto preesistente. Anche bg-sync e bg-decision ciechi identici sulla base (strumenti) | difetto (highlight / strumenti) medio | APERTO | 7.999.191 | | | |
 | PO-363 | 11/11 12:25 | Sessione madre (verifica 190): guardiano grafica-v2 ROSSO «standings: riga tua non nel colore del club» su tel/tabv/tabo/pc; identico su main 7.999.189 (db7533ad) e su lavoro/190: difetto preesistente, la riga della squadra dell'eroe in classifica ha il fondo neutro invece del colore del club | difetto (grafica) medio | APERTO | 7.999.191 | | | |
+| PO-364 | 11/11 12:35 | PO: «pensi che sia vincente anche per la carriera professionistica gestire a "momenti salienti" e non partita dopo partita? non vorrei che diventi noioso il gioco alla lunga» — PO (questionario): «Prima misuro, poi decidi». Giro 164 di sola misura (durata, scelte, ripetizione, posta in gioco della stagione da professionista) | domanda (carriera) | DA MISURARE | 7.999.191 (misura) | | | |
 
 ## Storico — voci chiuse (335)
 
