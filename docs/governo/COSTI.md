@@ -74,6 +74,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.190 | giro 152 esultanza (PO-355) | sviluppo | claude-opus-5-5 | 3,7 | 1,28 $ | 7061 | 3 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.190 | giro 154 gol eroe solo negli highlight (PO-357) | sviluppo | claude-opus-5-5 | 3,7 | 2,07 $ | 13836 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.191 | giro 154b chiusura controlli PO-357 | sviluppo | claude-opus-5-5 | 3,6 | 4,16 $ | 25669 | 1 | completo (un solo avvio) |
+| 7.999.190 | verifica 190 distanze-126 intero | catena | claude-sonnet-5-5 | 1,2 | 0,81 $ | 6280 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -84,5 +85,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.187 | **TOTALE 7.999.187** (5 sessioni) |  |  |  | almeno 25,05 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
-| 7.999.190 | **TOTALE 7.999.190** (11 sessioni) |  |  |  | almeno 52,34 $ |  |  | 8 sessioni parziali: totale minimo |
+| 7.999.190 | **TOTALE 7.999.190** (12 sessioni) |  |  |  | almeno 53,16 $ |  |  | 8 sessioni parziali: totale minimo |
 | 7.999.191 | **TOTALE 7.999.191** (2 sessioni) |  |  |  | 8,14 $ |  |  | tutte complete |

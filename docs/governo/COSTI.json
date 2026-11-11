@@ -964,5 +964,19 @@
     "cache_read_tokens": 11961414,
     "worker_epoch": 1,
     "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYiaCMGpDbdVWvWqcXCp8",
+    "titolo": "verifica 190 distanze-126 intero",
+    "versione": "7.999.190",
+    "tipo": "catena",
+    "modello": "claude-sonnet-5-5",
+    "creata": "2026-11-11T07:46:32Z",
+    "chiusa": "2026-11-11T08:58:24Z",
+    "cost_usd": 0.81385214,
+    "output_tokens": 6280,
+    "cache_read_tokens": 4101133,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-11"
   }
 ]
