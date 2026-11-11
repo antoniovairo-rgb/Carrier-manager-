@@ -1860,7 +1860,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const desperateFiredRef=useRef(false);
   const earlyDespRef=useRef(false);
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
-  useEffect(()=>{try{AudioMgr.enterMatch();}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
+  useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
   /* [giro 36 PO-262 — IL PUNTO DEL PIAZZATO E' FUNZIONE DELLA PARTITA, NON DEL CASO. Rosso __CPM_NO_SP262] MISURATO (match-sequence
      rosso sulla 169/170; testimoni di sola lettura su pPos, sorteggi di `_rndM` e stato dei ref per minuto, 6 giri identici a 1x): la

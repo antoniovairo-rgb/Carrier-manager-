@@ -95,3 +95,10 @@ Per **aggiungere un suono reale** senza modificare il codice del sistema:
 - Suoni dedicati per `week.advance`/training sui 3 path settimanali frammentati.
 - Sostituzione progressiva delle voci synth con campioni reali (catalogo già pronto).
 - Telecronaca (predisposta: toggle presente, sorgente futura) e vibrazione (già attiva su mobile via `navigator.vibrate`).
+
+## Giro 149 (PO-351) — file CC0 al posto della sintesi
+
+`AudioMgr` suona **prima il file** (tabella `F149`, `_play149`) e ripiega sulla sintesi descritta sopra se il file non carica.
+Varianti scelte con `hashStr(chiave|seme di partita|contatore)` (seme passato da `LiveMatch` a `enterMatch(seed)`), mai la stessa due
+volte di fila, nessun `Math.random`. Sonda `window.__CPM_AUDIO149()` (file decodificati, livelli in uscita, suoni partiti). Rosso
+`__CPM_NO_G149`. Guardiano `npm run audio-149`. Licenze in `assets/audio/LICENZE.json`; rapporto `docs/sviluppo/RAPPORTO-giro149.md`.

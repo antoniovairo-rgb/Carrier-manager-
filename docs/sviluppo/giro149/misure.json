@@ -1,0 +1,447 @@
+{
+ "_nota": "misure delle registrazioni (silenzi di testa/coda tolti): picco/RMS dBFS, LUFS integrati",
+ "eventi": [
+  {
+   "id": "calcio",
+   "nome": "Calcio / tiro",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -12.075665,
+    "rms_db": -34.414038,
+    "lufs": -32.6,
+    "durata_s": 1.06
+   },
+   "dopo": {
+    "picco_db": -8.495507,
+    "rms_db": -29.90995,
+    "lufs": -27.2,
+    "durata_s": 1.06
+   }
+  },
+  {
+   "id": "passaggio",
+   "nome": "Passaggio",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -24.781039,
+    "rms_db": -40.363208,
+    "lufs": -70,
+    "durata_s": 0.94
+   },
+   "dopo": {
+    "picco_db": -11.92387,
+    "rms_db": -28.616318,
+    "lufs": -70,
+    "durata_s": 0.94
+   }
+  },
+  {
+   "id": "testa",
+   "nome": "Colpo di testa",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -15.902826,
+    "rms_db": -30.687404,
+    "lufs": -70,
+    "durata_s": 0.94
+   },
+   "dopo": {
+    "picco_db": -8.485718,
+    "rms_db": -29.300065,
+    "lufs": -70,
+    "durata_s": 0.94
+   }
+  },
+  {
+   "id": "palo",
+   "nome": "Palo (con la folla)",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -10.147959,
+    "rms_db": -24.61292,
+    "lufs": -70,
+    "durata_s": 2.02
+   },
+   "dopo": {
+    "picco_db": -9.215695,
+    "rms_db": -29.269135,
+    "lufs": -28.1,
+    "durata_s": 2.02
+   }
+  },
+  {
+   "id": "parata",
+   "nome": "Parata (con la folla)",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -17.199257,
+    "rms_db": -31.909288,
+    "lufs": -70,
+    "durata_s": 2.02
+   },
+   "dopo": {
+    "picco_db": -7.486311,
+    "rms_db": -31.02555,
+    "lufs": -27.3,
+    "durata_s": 2.02
+   }
+  },
+  {
+   "id": "contrasto",
+   "nome": "Contrasto",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -28.431514,
+    "rms_db": -42.153579,
+    "lufs": -70,
+    "durata_s": 1.42
+   },
+   "dopo": {
+    "picco_db": -10.780589,
+    "rms_db": -27.916364,
+    "lufs": -70,
+    "durata_s": 1.42
+   }
+  },
+  {
+   "id": "gol",
+   "nome": "Gol: rete + boato",
+   "gruppo": "Pallone",
+   "prima": {
+    "picco_db": -2.314066,
+    "rms_db": -21.093918,
+    "lufs": -17.5,
+    "durata_s": 5.14
+   },
+   "dopo": {
+    "picco_db": -7.787063,
+    "rms_db": -22.892357,
+    "lufs": -18.6,
+    "durata_s": 5.14
+   }
+  },
+  {
+   "id": "fischio",
+   "nome": "Fischietto (fallo)",
+   "gruppo": "Arbitro",
+   "prima": {
+    "picco_db": -13.050915,
+    "rms_db": -17.652414,
+    "lufs": -70,
+    "durata_s": 1.66
+   },
+   "dopo": {
+    "picco_db": -15.277859,
+    "rms_db": -23.132666,
+    "lufs": -16.5,
+    "durata_s": 1.66
+   }
+  },
+  {
+   "id": "fischio-doppio",
+   "nome": "Fischio doppio (fuorigioco)",
+   "gruppo": "Arbitro",
+   "prima": {
+    "picco_db": -13.015907,
+    "rms_db": -18.472337,
+    "lufs": -70,
+    "durata_s": 1.42
+   },
+   "dopo": {
+    "picco_db": -7.401913,
+    "rms_db": -21.626348,
+    "lufs": -14.9,
+    "durata_s": 1.42
+   }
+  },
+  {
+   "id": "fischio-finale",
+   "nome": "Triplice fischio",
+   "gruppo": "Arbitro",
+   "prima": {
+    "picco_db": -13.018797,
+    "rms_db": -16.853763,
+    "lufs": -11.3,
+    "durata_s": 5.74
+   },
+   "dopo": {
+    "picco_db": -13.640514,
+    "rms_db": -21.776529,
+    "lufs": -15.8,
+    "durata_s": 5.74
+   }
+  },
+  {
+   "id": "fallo",
+   "nome": "Fallo: fischio + fischi della curva",
+   "gruppo": "Arbitro",
+   "prima": {
+    "picco_db": -12.954257,
+    "rms_db": -17.660427,
+    "lufs": -70,
+    "durata_s": 2.14
+   },
+   "dopo": {
+    "picco_db": -12.805955,
+    "rms_db": -24.694885,
+    "lufs": -18.3,
+    "durata_s": 2.14
+   }
+  },
+  {
+   "id": "applausi",
+   "nome": "Applausi",
+   "gruppo": "Folla",
+   "prima": {
+    "picco_db": -20.457756,
+    "rms_db": -35.398274,
+    "lufs": -29.7,
+    "durata_s": 3.46
+   },
+   "dopo": {
+    "picco_db": -10.418318,
+    "rms_db": -26.894748,
+    "lufs": -22.6,
+    "durata_s": 3.46
+   }
+  },
+  {
+   "id": "esulta",
+   "nome": "Esultanza",
+   "gruppo": "Folla",
+   "prima": {
+    "picco_db": -18.658247,
+    "rms_db": -34.034394,
+    "lufs": -28.1,
+    "durata_s": 2.62
+   },
+   "dopo": {
+    "picco_db": -11.619361,
+    "rms_db": -25.602466,
+    "lufs": -21.2,
+    "durata_s": 2.62
+   }
+  },
+  {
+   "id": "click",
+   "nome": "Tocco di un pulsante",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -23.233432,
+    "rms_db": -36.442606,
+    "lufs": -70,
+    "durata_s": 0.62
+   },
+   "dopo": {
+    "picco_db": -18.179491,
+    "rms_db": -38.551084,
+    "lufs": -70,
+    "durata_s": 0.62
+   }
+  },
+  {
+   "id": "conferma",
+   "nome": "Conferma",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -19.777601,
+    "rms_db": -32.352548,
+    "lufs": -70,
+    "durata_s": 0.82
+   },
+   "dopo": {
+    "picco_db": -13.746387,
+    "rms_db": -24.382033,
+    "lufs": -70,
+    "durata_s": 0.82
+   }
+  },
+  {
+   "id": "errore",
+   "nome": "Errore",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -20.511147,
+    "rms_db": -31.761416,
+    "lufs": -70,
+    "durata_s": 0.7
+   },
+   "dopo": {
+    "picco_db": -14.596655,
+    "rms_db": -29.680701,
+    "lufs": -70,
+    "durata_s": 0.74
+   }
+  },
+  {
+   "id": "popup",
+   "nome": "Finestra che si apre",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -21.605971,
+    "rms_db": -34.209011,
+    "lufs": -70,
+    "durata_s": 0.82
+   },
+   "dopo": {
+    "picco_db": -15.142936,
+    "rms_db": -28.344249,
+    "lufs": -70,
+    "durata_s": 0.82
+   }
+  },
+  {
+   "id": "notifica",
+   "nome": "Notifica positiva",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -19.037463,
+    "rms_db": -32.260119,
+    "lufs": -70,
+    "durata_s": 1.06
+   },
+   "dopo": {
+    "picco_db": -13.776292,
+    "rms_db": -27.788035,
+    "lufs": -23.2,
+    "durata_s": 1.06
+   }
+  },
+  {
+   "id": "settimana",
+   "nome": "Avanza la settimana",
+   "gruppo": "Interfaccia",
+   "prima": {
+    "picco_db": -22.684384,
+    "rms_db": -34.886138,
+    "lufs": -70,
+    "durata_s": 1.06
+   },
+   "dopo": {
+    "picco_db": -14.862922,
+    "rms_db": -30.605563,
+    "lufs": -70,
+    "durata_s": 0.98
+   }
+  },
+  {
+   "id": "contratto",
+   "nome": "Firma del contratto",
+   "gruppo": "Carriera",
+   "prima": {
+    "picco_db": -17.837093,
+    "rms_db": -30.843107,
+    "lufs": -27.2,
+    "durata_s": 1.82
+   },
+   "dopo": {
+    "picco_db": -14.141553,
+    "rms_db": -28.405397,
+    "lufs": -24.5,
+    "durata_s": 1.82
+   }
+  },
+  {
+   "id": "convocazione",
+   "nome": "Convocazione",
+   "gruppo": "Carriera",
+   "prima": {
+    "picco_db": -18.878924,
+    "rms_db": -32.076291,
+    "lufs": -28.4,
+    "durata_s": 1.42
+   },
+   "dopo": {
+    "picco_db": -19.061445,
+    "rms_db": -28.35589,
+    "lufs": -24.9,
+    "durata_s": 1.42
+   }
+  },
+  {
+   "id": "record",
+   "nome": "Record",
+   "gruppo": "Carriera",
+   "prima": {
+    "picco_db": -17.069334,
+    "rms_db": -29.686664,
+    "lufs": -25.5,
+    "durata_s": 1.54
+   },
+   "dopo": {
+    "picco_db": -14.492327,
+    "rms_db": -28.142101,
+    "lufs": -24.4,
+    "durata_s": 1.54
+   }
+  },
+  {
+   "id": "retrocessione",
+   "nome": "Retrocessione",
+   "gruppo": "Carriera",
+   "prima": {
+    "picco_db": -17.10863,
+    "rms_db": -31.305272,
+    "lufs": -28.9,
+    "durata_s": 1.7
+   },
+   "dopo": {
+    "picco_db": -14.423976,
+    "rms_db": -28.395401,
+    "lufs": -24.9,
+    "durata_s": 1.7
+   }
+  },
+  {
+   "id": "trofeo",
+   "nome": "Trofeo / promozione (cerimonia)",
+   "gruppo": "Carriera",
+   "prima": {
+    "picco_db": -11.683304,
+    "rms_db": -30.34652,
+    "lufs": -26.1,
+    "durata_s": 9.14
+   },
+   "dopo": {
+    "picco_db": -11.919211,
+    "rms_db": -29.202909,
+    "lufs": -25.9,
+    "durata_s": 9.14
+   }
+  },
+  {
+   "id": "musica-menu",
+   "nome": "Musica dei menu (8 s)",
+   "gruppo": "Musica",
+   "prima": {
+    "picco_db": -23.539547,
+    "rms_db": -38.388897,
+    "lufs": -36.5,
+    "durata_s": 8.14
+   },
+   "dopo": {
+    "picco_db": -18.696356,
+    "rms_db": -37.192801,
+    "lufs": -36,
+    "durata_s": 8.14
+   }
+  },
+  {
+   "id": "musica-carriera",
+   "nome": "Musica della carriera (8 s)",
+   "gruppo": "Musica",
+   "prima": {
+    "picco_db": -23.910666,
+    "rms_db": -38.468655,
+    "lufs": -36.6,
+    "durata_s": 7.94
+   },
+   "dopo": {
+    "picco_db": -19.021568,
+    "rms_db": -33.248081,
+    "lufs": -34.4,
+    "durata_s": 8.14
+   }
+  }
+ ]
+}
