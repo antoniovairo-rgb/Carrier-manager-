@@ -1196,7 +1196,14 @@ function creaMotorePossesso(cfg){
     const _rif924=padrone||((_m924&&st==="volo"&&S.poss.ricevente!=null)?g[S.poss.ricevente]:null);
     const app=[];if(_rif924&&(st==="tenuta"||(_m924&&st==="volo"))){const c=[];for(const q of g){if(!mio(q,l)||q.gk||q.i===_rif924.i)continue;c.push({q,d:hyp(q.x,q.y,_rif924.x,_rif924.y)});}c.sort((a,b)=>a.d-b.d);for(let i=0;i<Math.min(_m924?3:2,c.length);i++)app.push(c[i].q);}
     const advB=advDi(bx,l);
-    let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
+    /* [giro 158 PO-360 difetto B, rosso __CPM_NO_G158] NELLA SIMULATA LA MARCATURA A UOMO DELL'EROE E' UNA CONSEGNA DIFENSIVA. Il marcatore (7.999.6)
+       restava incollato all'eroe anche mentre la SUA squadra costruiva: misurato (sonda sim-squadra-g158, 70 contro 70, tre serie da 2.000
+       semi) la squadra dell'eroe subiva 1,13-1,19 gol e faceva 1,23-1,32 punti a partita, contro 1,37 del fondo classifica a forza pari; con
+       la marcatura solo quando la palla e' della squadra dell'eroe: 0,99-1,02 gol subiti e 1,41-1,44 punti. Le altre leve misurate non
+       spostano il risultato oltre il rumore (tiro libero dell'eroe 1,28-1,34, conduzione dell'eroe 1,25-1,27, occasioni dal limite 1,25-1,27).
+       Solo la simulazione rapida (occasioniV2 senza brainLive): la partita vissuta resta com'e'. */
+    const _g158=!!cfg.occasioniV2&&!cfg.brainLive&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_G158);
+    let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])&&!(_g158&&S.poss.lato!==g[HERO].team)){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
     for(const p of g){if(!attivo(p))continue;
       if(p.i===S.poss.padrone&&st==="tenuta")continue;/* il padrone si muove solo con la conduzione */
       const sl=slotDi(p);let tx,ty,v=4.5;

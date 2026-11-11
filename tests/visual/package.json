@@ -187,6 +187,7 @@
     "risolvi-eroe": "node risolvi-eroe-test.mjs",
     "sim-motore": "node sim-motore-test.mjs",
     "sim-squadra-g157": "node sim-squadra-g157-test.mjs",
+    "sim-g158": "node sim-g158-test.mjs && CPM_ROSSO=1 node sim-g158-test.mjs; test $? -eq 1",
     "tattiche": "node ../../prototipo/partita-vera/tattiche.mjs 250",
     "eroe-dal-gioco": "node eroe-dal-gioco-test.mjs",
     "passo-velocita": "node passo-velocita-test.mjs",

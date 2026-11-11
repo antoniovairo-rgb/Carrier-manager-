@@ -953,11 +953,12 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   /* [7.999.4 MOTORE UNICO passo 2. Rosso __CPM_NO_SIMV2] la partita DELL'EROE simulata la gioca il motore del live, senza
      grafica (simulaPartitaMotore, src/14), con lo stesso seme; il Poisson sopra resta per le partite fra altri club (tabellone
      di coppa, simulatore di debug) e come ripiego se il motore non risponde. L'oggetto risultato non cambia forma. */
+  let _pag158=null;
   if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
     const _t0=(typeof performance!=='undefined')?performance.now():0;
     const _pe5=(typeof TATTICHE_MOTORE!=='undefined')?getClubPersona(opponent):null;/* [7.999.5] stili: il mister dell'eroe (opz.stile) e la persona dell'avversario */
-    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clamp(clubP+_fz156,30,99),/* [giro 69 PO-156] */forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,stile:(opz&&opz.stileEroe)||null,/* [giro 67 PO-098] */tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
-    hG=_r.home;aG=_r.away;
+    const _r=simulaPartitaMotore({dettaglio:!(typeof window!=='undefined'&&window.__CPM_NO_G158),/* [giro 158] la pagella della stessa esecuzione */seed:(seed>>>0)^0x5a17,forzaH:clamp(clubP+_fz156,30,99),/* [giro 69 PO-156] */forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,stile:(opz&&opz.stileEroe)||null,/* [giro 67 PO-098] */tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
+    hG=_r.home;aG=_r.away;_pag158=(_r.pag||[]).find(e=>e&&e.eroe)||null;
     if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
   }catch(_eSM){}}
   const _m=hG-aG;
@@ -967,9 +968,30 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
   /* [giro 69 PO-156] il voto segue il livello (OVR 71 = neutro, +0,05 a punto sopra, nessun malus sotto, tetto +0,6; da 31 anni 3 punti in meno nel voto: il fuoriclasse non prende 6 pieno in
      una vittoria di misura) e la quota di minuti (chi entra a mezz'ora dalla fine resta vicino al 6). */
   if(_q156!=null){const _o156=_ov156-71-((+opz.giocatore.age||24)>=31?3:0),_r156=_baseRat+clamp(_o156*0.05,0,0.6)+(_rng()-0.5)*0.4;_simRating=Math.round(clamp(6+(_r156-6)*(0.3+0.7*_q156),4.0,9.5)*10)/10;}
-  return{homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156,eta156:+opz.giocatore.age||24}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  /* [giro 158 PO-360, decisione PO 11/11 «C, pagella del motore», rosso __CPM_NO_G158] IL VOTO DELLA SIMULATA E' LA PAGELLA DEL MOTORE.
+     Prima il voto era una formula sul risultato (pareggio 5,8, sconfitta <=5,5: sonda sim-voto-156, simulata 5,75-6,38 contro 6,40-7,60 dal
+     vivo). Ora si legge la pagella dell'eroe dalla STESSA esecuzione del motore che ha deciso il risultato (src/14 pagelle(), la sorgente del
+     voto dal vivo), compressa coi minuti come prima. DOPPIO CONTEGGIO: la pagella contiene gia' i gol e gli assist che il motore ha dato
+     all'eroe, mentre i gol e gli assist dell'eroe che entrano nel tabellino e nello storico li decide _pSimStats (sorteggio a parte). Senza
+     correzione un gol veniva premiato due volte (dal motore e da +0,4 dei chiamanti) e un gol del motore mai registrato alzava il voto. Qui
+     si toglie dalla pagella la quota gol/assist del motore (_ga158, stessa scala di pagelle()); i gol/assist veri si aggiungono una volta sola
+     in votoSimEroe, con la stessa scala. */
+  let _base158=null;
+  if(_pag158&&isFinite(+_pag158.voto)){const _b158=(+_pag158.voto)-_ga158(_pag158.gol,_pag158.assist),_qq158=(_q156!=null)?_q156:1;
+    _base158=Math.round(clamp(6+(_b158-6)*(0.3+0.7*_qq158),4.0,9.5)*10)/10;_simRating=_base158;}
+  const _res158={homeScore:hG,awayScore:aG,won:hG>aG,drew:hG===aG,rating:_simRating,...(_q156!=null?{quota156:Math.round(_q156*100)/100,stato156:_st156,ovr156:_ov156,eta156:+opz.giocatore.age||24}:{}),opponent:opponent?.n||opponent?.name,oppAbbr:opponent?.a||opponent?.abbr,oppCol:opponent?.c||opponent?.col,simulated:true};
+  if(_base158!=null){try{Object.defineProperty(_res158,'base158',{value:_base158,enumerable:false});Object.defineProperty(_res158,'pag158',{value:_pag158,enumerable:false});}catch(_e){}}/* non enumerabili: la forma del risultato non cambia (sim-motore A) */
+  return _res158;
 }
-if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simMatch=simulateMatch;}catch(_e){}}// [7.200.0] esposto al simulatore di bilanciamento (test-only)
+/* [giro 158] la quota di voto che pagelle() (src/14, ramo _v29) da' a gol e assist: gol 0,75 · 0,55 · 0,55 · poi 0,30, ognuno anche tiro in
+   porta (+0,05); assist 0,50 poi 0,35. Una sola scala, usata per togliere i gol del motore e per aggiungere quelli del tabellino. */
+function _ga158(g,a){let v=0;const G=[0.75,0.55,0.55];for(let j=0;j<(g|0);j++)v+=(j<3?G[j]:0.30)+0.05;for(let j=0;j<(a|0);j++)v+=(j<1?0.50:0.35);return v;}
+/* [giro 158] il voto finale dell'eroe in una partita simulata, con i gol e gli assist registrati (ps = _pSimStats). Senza la pagella (motore
+   spento o __CPM_NO_G158) resta la formula di prima: voto + 0,4 a gol + 0,2 ad assist. */
+function votoSimEroe(sim,ps){if(!sim||sim.rating==null)return null;const g=(ps&&ps.goals)|0,a=(ps&&ps.assists)|0;
+  if(sim.base158!=null)return Math.round(clamp(sim.base158+_ga158(g,a),4.0,g>=4?10:9.5)*10)/10;
+  return Math.round(clamp(sim.rating+g*0.4+a*0.2,4.0,9.5)*10)/10;}
+if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){try{window.__CPM_simMatch=simulateMatch;window.__CPM_VOTO158=votoSimEroe;}catch(_e){}}// [7.200.0] esposto al simulatore di bilanciamento (test-only)
 // Sprint 131: probabilistic player goals/assists for simulated matches
 function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato → G/A del giocatore riproducibili nelle partite simulate
   const R=rng||Math.random;
