@@ -44,3 +44,8 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 38 | validate-situations | 0 | 628 | VERDE | mem used 818/16086 free 13050 avail 15267 · disk used 11G avail 29G (27%) |
 | 39 | scena3d-96 | 0 | 1441 | VERDE | mem used 762/16086 free 13096 avail 15323 · disk used 11G avail 29G (27%) |
 | 40 | partita-vera | 0 | 377 | VERDE | mem used 620/16086 free 13237 avail 15465 · disk used 11G avail 29G (27%) |
+| 41 | goal-postarc | 0 | 360 | VERDE | mem used 613/16086 free 13244 avail 15472 · disk used 11G avail 29G (27%) |
+| 42 | gk-dive-sync | 0 | 169 | VERDE | mem used 606/16086 free 13250 avail 15479 · disk used 11G avail 29G (27%) |
+| 43 | career-critical | 0 | 725 | VERDE | mem used 598/16086 free 13258 avail 15487 · disk used 11G avail 29G (27%) |
+| 44 | career-invariants | 0 | 10 | VERDE | mem used 966/16086 free 12890 avail 15119 · disk used 11G avail 29G (27%) |
+| 45 | tripath-chokepoint | 0 | 0 | VERDE | mem used 1095/16086 free 12761 avail 14990 · disk used 11G avail 29G (27%) |
