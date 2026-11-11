@@ -588,7 +588,8 @@
     "panchina-127": "node panchina-127.mjs",
     "presentazione-142": "node presentazione-142.mjs",
     "home-larghezza-156": "node home-larghezza-156.mjs",
-    "sim-voto-156": "node sim-voto-156.mjs"
+    "sim-voto-156": "node sim-voto-156.mjs",
+    "spalle-146": "node spalle-146.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
