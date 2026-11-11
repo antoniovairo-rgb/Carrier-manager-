@@ -43,3 +43,4 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 37 | spalti-109 | 0 | 343 | VERDE | mem used 627/16086 free 13242 avail 15458 · disk used 11G avail 29G (27%) |
 | 38 | validate-situations | 0 | 628 | VERDE | mem used 818/16086 free 13050 avail 15267 · disk used 11G avail 29G (27%) |
 | 39 | scena3d-96 | 0 | 1441 | VERDE | mem used 762/16086 free 13096 avail 15323 · disk used 11G avail 29G (27%) |
+| 40 | partita-vera | 0 | 377 | VERDE | mem used 620/16086 free 13237 avail 15465 · disk used 11G avail 29G (27%) |
