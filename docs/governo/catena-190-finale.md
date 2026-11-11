@@ -49,3 +49,7 @@ Ramo `catena/190-finale`, base HEAD 4f9363a (lavoro/190). Solo verifica, `CPM_CI
 | 43 | career-critical | 0 | 725 | VERDE | mem used 598/16086 free 13258 avail 15487 · disk used 11G avail 29G (27%) |
 | 44 | career-invariants | 0 | 10 | VERDE | mem used 966/16086 free 12890 avail 15119 · disk used 11G avail 29G (27%) |
 | 45 | tripath-chokepoint | 0 | 0 | VERDE | mem used 1095/16086 free 12761 avail 14990 · disk used 11G avail 29G (27%) |
+| 46 | stab-nat-trigger | 0 | 13 | VERDE | mem used 1005/16086 free 12851 avail 15080 · disk used 11G avail 29G (27%) |
+| 47 | build-web | 0 | 6 | VERDE | mem used 893/16086 free 12963 avail 15192 · disk used 11G avail 29G (27%) |
+| 48 | build-dist | 0 | 6 | VERDE | mem used 787/16086 free 13070 avail 15298 · disk used 11G avail 29G (27%) |
+| 49 | audit-copyright | 0 | 9 | VERDE | mem used 852/16086 free 12864 avail 15233 · disk used 11G avail 29G (27%) |
