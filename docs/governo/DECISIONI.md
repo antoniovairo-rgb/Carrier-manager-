@@ -1230,3 +1230,7 @@ Giro 154 (PO-357) chiuso con catena incompleta: distanze-126 rosso (un tiro a 30
 - Musica fuori partita: **solo nelle cerimonie** (191).
 - Fischi della curva sul gol subito: **sì, nella 191**.
 - Velo finestre PC: **0,82 come ora**.
+- PO-358 Legacy: **14 punti a trofeo fino a 10** (tetto 140 con 10 trofei) — la 190 esce con 80/trofeo, correzione nella 191.
+- PO-359 derby: **inventare anche i luoghi** — la 190 esce con «Derby fra Mersey e Manchester», nome inventato nella 191.
+- D20 testo minimo 12 px: **sì, nella 191** (giro grafico dedicato).
+- B4 contratto di 1 stagione firmato a metà: **vale fino a fine della prossima stagione** (191).
