@@ -4255,7 +4255,18 @@ function scenaDalMotoreSpalle(occ,player,seed){
   const titoli=[(N.dif?N.dif+' ti è addosso':'Il marcatore ti è addosso')+': spalle alla porta!','🧱 Spalle alla porta, marcatura stretta!'];
   const intro=N.ric?(N.ric+' si smarca per lo scarico.'):'Nessun compagno libero vicino: decidi tu.';
   const ctx={pressure:'high',support:Math.min(occ.liberi|0,3),nearby_def:2,lanes:[]};
-  return _p6Costruisci(occ,player,seed,P6_SPALLE,c,titoli,intro,limite?['bordo','area']:['area'],ctx,'spalle');
+  /* [giro 162 PO-362 «spalle alla porta» a 30,5-30,8 m] MISURATO (sonda-spalle-162, flusso vero s1/s5/s12 x 8 semi): la distanza al
+     contatto e' quella dell'ANCORA, non dell'avvio ne' dell'arco — l'eroe parte a x-2 dall'occasione e calcia da li' (s1 seme 8: ancora
+     x 71 = 30,5 m, avvio 69, contatto 30,8 m). Causa: _p6Pressione trasforma in «spalle» la conclusione al LIMITE quando il marcatore
+     e' entro 1,2 u, e l'ancora del limite (giro 126, __CPM_NO_G126C) vive solo in scenaDalMotoreConclusione: la stessa occasione,
+     diventata «spalle», resta dove il motore la vede (zona limite x 70-84, fino a 31 m) e offre girata e tiro di potenza da li'.
+     Ora, SOLO se fra le opzioni scelte c'e' una conclusione, l'ancora del limite e' la stessa della conclusione (x 81,5-83,5 in
+     proporzione, y 39-61): 16-19 m dal centro della porta. Le scene di sola rifinitura (scarico, sponda, fallo cercato) e quelle gia'
+     in area restano dove le ha messe il motore. Nessun sorteggio in piu'. Rosso __CPM_NO_G162. */
+  const _anc162=(!limite||(typeof window!=='undefined'&&window.__CPM_NO_G162))?null:(sc,o)=>{
+    if(!sc.some(t=>_rew95(t)==='goal'))return null;const x0=+o.x,y0=+o.y;
+    const nx=clamp(81.5+(x0-70)/7,81.5,83.5),ny=clamp(y0,39,61);return (nx!==x0||ny!==y0)?{x:nx,y:ny}:null;};
+  return _p6Costruisci(occ,player,seed,P6_SPALLE,c,titoli,intro,limite?['bordo','area']:['area'],ctx,'spalle',_anc162);
 }
 /* [7.999.149 PO-022 Passo 6, strati 3-4] FASCIA e FRA LE LINEE nascono dall'occasione del motore (trequarti: esterno se il motore
    vede l'eroe a 22 o piu' dal centro, centrale altrimenti). Fascia: cross (primo palo, secondo palo, basso teso), fondo e cross,
