@@ -1220,3 +1220,13 @@ Da main (db7533ad) uniti uno alla volta: giri 148, 149, 150, 155, 156, 157, 146b
 
 ### 11/11 03:05 UTC — 7.999.190 in verifica finale, giro 154 fuori per ora
 Giro 154 (PO-357) chiuso con catena incompleta: distanze-126 rosso (un tiro a 30,6 m su 30, causa non misurata), rigore-139 non giudicato, partita-vera non eseguito, bg-sync cieco (identico sulla base), bg-decision cieco. Nel giro è stato usato un `pkill -f` (vietato): segnalato. Decisione tecnica: NON unito; giro 154b (session_01QEYiaBRqNYf66ZuW3znmUY) chiude i controlli. lavoro/190 = 146+146b, 148, 149, 150, 151, 152, 155, 156, 157 con GAME_VERSION 7.999.190 (4f9363a0); verifica finale catena/190-finale (session_01QEYia916nNz7yYB5a7JR3u). Se il 154b chiude verde prima della fine, unione DA SOLA + verifica delta, come per la 189; altrimenti PO-357 si decide col PO.
+
+### 11/11 ~07:00 UTC — risposte PO al questionario della 190
+- PO-360 voto simulato: **C, pagella del motore** (il PO ha scelto contro la consigliata A+B; attenzione al doppio conteggio dei gol da misurare nel giro). Nella 191.
+- PO-360 squadra simulata (difetto B, gol bassi): **giro di correzione nella 191**.
+- PO-357 gol dell'eroe solo negli highlight: **esce nella 191**; la 190 esce appena la sua verifica è verde.
+- Alzata del trofeo (146b): **lasciare così**.
+- Boato Mixkit (non CC0): **verificare la licenza prima** di decidere.
+- Musica fuori partita: **solo nelle cerimonie** (191).
+- Fischi della curva sul gol subito: **sì, nella 191**.
+- Velo finestre PC: **0,82 come ora**.
