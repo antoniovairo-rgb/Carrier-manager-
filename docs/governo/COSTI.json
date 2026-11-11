@@ -908,5 +908,33 @@
     "cache_read_tokens": 8624467,
     "worker_epoch": 1,
     "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYiaCN8uCbnE9qxo44jiW",
+    "titolo": "giro 151 scie 2D e cronaca (PO-353/354)",
+    "versione": "7.999.190",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T22:04:53Z",
+    "chiusa": "2026-11-11T01:16:11Z",
+    "cost_usd": 1.27055292,
+    "output_tokens": 10959,
+    "cache_read_tokens": 4615157,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-11"
+  },
+  {
+    "sessione": "session_01QEYiaAJgjCC2anCv9CxEzi",
+    "titolo": "giro 152 esultanza (PO-355)",
+    "versione": "7.999.190",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-10T22:04:54Z",
+    "chiusa": "2026-11-11T01:44:17Z",
+    "cost_usd": 1.28174458,
+    "output_tokens": 7061,
+    "cache_read_tokens": 5158923,
+    "worker_epoch": 3,
+    "rilevato": "2026-11-11"
   }
 ]
