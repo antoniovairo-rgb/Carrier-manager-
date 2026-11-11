@@ -111,11 +111,14 @@ profilo, intervista settimanale, menu — 12 coppie.
 | test:logic | ✅ 43/43 |
 | save-compat | ✅ 12 pass · 0 fail |
 | altezza-114 | ✅ PASS verde+rosso |
-| pc-tablet-292 | _in corsa — vedi §7_ |
-| finestre-150 | _da eseguire_ |
-| home-larghezza-156 | _da eseguire_ |
-| griglia-mobile | _da eseguire_ |
-| career-critical | _da eseguire_ |
+| pc-tablet-292 | ✅ VERDE, il rosso (la 177) cade, telefono identico con e senza interruttori (770 s) |
+| finestre-150 | ✅ verde 36/36, rosso cade 30/30, telefono invariato fra i bracci; al 360 offerta e privacy ora 324x720 a 40 px dal bordo (1182 s) |
+| home-larghezza-156 | ✅ verde alle 4 risoluzioni |
+| griglia-mobile | ✅ uscita 0, 14 schermate x 5 larghezze; corpo minimo della Home fuori carriera 11 → 12 a tutte le larghezze (scatti rigenerati NON committati) |
+| career-critical | ✅ uscita 0, nessun rosso (685 s) |
+
+Nota: `altezza-114` e `pc-tablet-292` superano il tetto di 10 minuti di una chiamata nella prima prova (timeout dello strumento,
+non rosso): rifatti da capo sullo stesso build, attesa in primo piano sul file di log.
 
 ## 7. Cosa resta fuori / dichiarato
 
