@@ -1393,3 +1393,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~21:20 Roma — PO-378 nomi di squadra lunghi
 - Richiesta PO con foto («SELEZIONE GRAN...»). Decisioni madre: (1) misurare prima in quali schermate e formati il nome viene tagliato, per tutti i club; (2) abbreviazione solo dove il nome intero non ci sta, il nome intero resta dove c'è spazio; (3) una funzione unica con un dizionario dei prefissi (Selezione → Sel., Polisportiva → Pol., Atletico → Atl., Sporting → Sp., Unione Sportiva → U.S., Associazione Calcio → A.C., Football Club → FC, Deportivo → Dep., Real resta Real) e, se ancora non ci sta, la sigla del club; (4) mai i tre puntini su un nome di squadra. Giro nella 192.
+
+## 12/11 ~23:00 Roma — giro 181 idee (richiesta esplicita del PO)
+- PO: sessione di migliorie e idee nuove, modello a scelta della madre. Scelto Fable: è un'analisi di prodotto ampia e unica, dove la profondità conta più del costo; nessuna catena di controlli (consumo contenuto). Eccezione esplicita del PO alla regola «nessun giro nuovo prima della 191».
