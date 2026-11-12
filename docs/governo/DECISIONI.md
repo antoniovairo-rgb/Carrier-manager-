@@ -1375,3 +1375,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Rigore: pallone che parte 0,18 s prima del calcio → nel fotogramma del calcio; piede-pallone alla partenza 112 → 15 cm; piede d'appoggio che scivola 16 → 2 cm/fotogramma; rincorsa con i passi veri dell'animazione. Guardiano gesto-177 (6/6 verde, rosso 3/3). Costo 27,70 $.
 - Punizione e passaggio corto: la stessa leva NON si applica (diagnosi del 170b corretta: per la punizione serve un'altra animazione; per il passaggio la tabella dei contatti). Stima del giro: tecnica utile su pallonetto e tiro (saltello a codice), punizione con animazione nuova; nulla su lancio lungo e finta.
 - Le sue domande (soglia 20 cm in 3D, aggancio a ci-runner, piede d'appoggio 13 cm) le decide la madre all'unione nella 192.
+
+## 12/11 ~19:45 Roma — regola sul modello per i gesti
+- PO: «Sì va bene». Fable solo per i gesti dove va trovata la causa vera (tuffo del portiere, finta, lancio lungo, punizione con animazione nuova); Opus per i gesti che seguono la strada tracciata dal 177 (pallonetto, tiro, cross). Giri dei gesti nella 192, dopo l'uscita della 191 e nel rispetto del limite settimanale (max 3 giri insieme).
