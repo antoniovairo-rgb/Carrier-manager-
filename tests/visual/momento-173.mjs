@@ -177,6 +177,11 @@ try {
       try {
         const p = await apriPrompt166(A.page);
         if (!p.solo) throw new Error('bottone dei momenti salienti assente');
+        /* la DURATA dell'avviso si misura nella pagina (osservatore del DOM, performance.now()), non fra due campioni del banco: un
+           campione ogni ~80 ms piu' la latenza di page.evaluate accorciava la misura (1.422 ms letti su un'attesa di 2.000, catena 12/11) */
+        await A.page.evaluate(() => { const L = (window.__OSS173 = []); let cur = null;
+          new MutationObserver(() => { const g = document.querySelector('[data-cpm="gol-173"]'); const t = performance.now();
+            if (g && !cur) { cur = { t0: t, txt: g.textContent.trim() }; L.push(cur); } else if (!g && cur) { cur.t1 = t; cur = null; } }).observe(document.body, { childList: true, subtree: true, characterData: true }); });
         await A.page.evaluate(() => document.querySelector('[data-cpm="solo-166"]').click());
         let auto = false;
         while (Date.now() - t0 < 300000) {
@@ -199,14 +204,15 @@ try {
       } catch (e) { note.push(`${nomeF}: ${String(e.message).slice(0, 140)}`); }
       if (cur) cur.dur = cur.t1 - cur.t0;
       const log = await A.page.evaluate(() => window.__CPM_GOL173 || []).catch(() => []);
+      const oss = await A.page.evaluate(() => (window.__OSS173 || []).map(o => ({ txt: o.txt, ms: o.t1 != null ? Math.round(o.t1 - o.t0) : null }))).catch(() => []);
       const ev = await A.page.evaluate(() => ((window.__CPM_EV && window.__CPM_EV()) || []).filter(e => e.ev === 'goal')).catch(() => []);
       if (nomeF === 'telefono') {
         const testoOk = avvisi.every(a => (a.lato === 'noi' ? /^GOL! \S.* \d+'$/ : /^Gol subito · \S.* \d+'$/).test(a.txt));
-        const durOk = avvisi.every(a => a.dur >= 1600 && a.dur <= 3000);
+        const durOk = oss.length === avvisi.length && oss.every(o => o.ms != null && o.ms >= 1600 && o.ms <= 3000);
         const fermo = avvisi.every(a => a.cMax - a.c0 <= 0);
         ok(finita && avvisi.length >= 1 && log.length === avvisi.length, `gol nel gioco veloce → avviso (${avvisi.length} avvisi, testimone ${log.length}, partita finita ${finita}, minuto ${minMax}${avvisi.length ? '' : ' · NON GIUDICATO'})`);
         ok(avvisi.length >= 1 && testoOk, `testo dell'avviso: ${JSON.stringify(avvisi.map(a => a.txt))}`);
-        ok(avvisi.length >= 1 && durOk && fermo, `circa 2 s col minuto fermo, poi si riparte (durate ${JSON.stringify(avvisi.map(a => a.dur))} ms, minuto fermo ${fermo})`);
+        ok(avvisi.length >= 1 && durOk && fermo, `circa 2 s col minuto fermo, poi si riparte (durate nella pagina ${JSON.stringify(oss.map(o => o.ms))} ms · fra campioni del banco ${JSON.stringify(avvisi.map(a => a.dur))} ms · minuto fermo ${fermo})`);
         ok(velCamp > 20 && !velVisto, `il tasto della velocità non c'è nella partita a soli highlight (${velCamp} campioni in gioco, visto ${velVisto})`);
         ok(A.errs.length === 0, `nessun errore di pagina${A.errs.length ? ' — ' + A.errs[0] : ''}`);
         note.push(`sezione 4: durata reale ${((Date.now() - t0) / 1000).toFixed(1)} s · gol nel registro ${JSON.stringify(ev.map(e => e.min + "' " + e.side + ' ' + e.src))} · avvisi ${JSON.stringify(avvisi.map(a => ({ t: a.txt, ms: a.dur })))}`);

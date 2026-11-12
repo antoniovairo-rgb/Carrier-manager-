@@ -48,8 +48,9 @@ da scena (73'):
 | | Durata reale | Avvisi |
 |---|---|---|
 | Rosso `__CPM_NO_G173` (momento-173 §4) | 41,5 s | 0 |
-| Verde (momento-173 §4, tre giri) | 42,4 s · 44,2 s · VEDI §4 | 1 per giro, 1.894 ms · 1.968 ms |
-| `solo-highlight-166` in catena (intera / soli highlight) | VEDI §4 | |
+| Rosso `__CPM_NO_G173`, dopo la riparazione | 40,1 s | 0 |
+| Verde (momento-173 §4, cinque giri) | 42,4 · 44,2 · 43,6 · 42,5 · 42,0 s | 1 per giro; nella pagina 2.014 · 2.015 · 2.024 ms |
+| `solo-highlight-166` in catena | intera **189,7 s** · soli highlight **43,3 s** | libro mastro **298/298** identico con l'avviso |
 
 L'avviso aggiunge circa 2 s per gol nel gioco veloce: una partita con tre gol ambientali costerà circa 6 s in più.
 
@@ -139,12 +140,12 @@ In panchina il bottone resta assente (`coachDecision?.status==="starter"`, invar
 3. **Bottone dei momenti salienti** (prompt vero): partita senza posta → c'è; con la 100ª presenza in arrivo (`posta165` «🎖️ 100ª presenza
    in carriera», peso `calcMatchWeight` 1, cioè un caso che la regola del 166 lasciava passare) → non c'è.
 4. **Partita a soli highlight**: nella partita intera il tasto della velocità c'è; a soli highlight un gol nel gioco veloce mostra l'avviso
-   (testo, 1,6-3,0 s, minuto fermo, numero di avvisi = testimone), e il tasto della velocità non compare in nessun campione di gioco.
+   (testo, durata 1,6-3,0 s misurata nella pagina da un osservatore del DOM, minuto fermo, numero di avvisi = testimone), e il tasto della velocità non compare in nessun campione di gioco.
    Nessun gol nel gioco veloce = **non giudicato = rosso**.
 
 | Braccio | Esito |
 |---|---|
-| verde | **19/19, uscita 0** (sezioni 1-3: 13/13; sezione 4: 6/6) |
+| verde | **19/19, uscita 0**, tre volte di fila dopo la riparazione della misura (§4) |
 | rosso `CPM_ROSSO173=1` | **9 verdi, 10 rossi, uscita 1** — sponsor null/null/mister · giornata libera, pioggia, primo allenatore «mister» · spogliatoio fuori elenco «mister» · tasto acceso senza motivo · il tocco apre la conferma della corsa invece della trattativa · bottone dei salienti presente con la 100ª presenza · 0 avvisi (non giudicato) · tasto della velocità visibile |
 
 Comandi:
@@ -160,7 +161,119 @@ CPM_NO173=1 CPM_SOLO165B=2 CPM_CHROME=/opt/pw-browsers/chromium npm run momento-
 
 ## 4. Catena
 
-CATENA_QUI
+Build provata: commit `af4be1d` (`check-src`: IDENTICO BYTE PER BYTE, 7.251.816 byte). Esecutore di appoggio fuori dal repo: **un passo
+alla volta** (`CPM_CI_PAR=0`), `free -m` e `df -h` scritti nel registro prima di ogni prova, un rosso riprovato fino a 3 volte (come
+`ci-runner`: verde alla 2ª o 3ª = instabile; rosso vero = 3 su 3). Lanciato dentro il turno con attese in primo piano, dalle 08:10 alle
+19:02 (nessuna interruzione). Memoria libera fra 14.141 e 14.686 MB, disco libero 29 GB in tutti i passi.
+Passi: la catena **`carriera`** di `ci-runner.mjs` (68, con `momento-173`) + `test:vision`, `typing-shortcuts`, `tripath-chokepoint`,
+`design-system`, `solo-highlight-166`, `partita-vera`, `validate-situations` = **75**. `STABILITA.json` non scritto (non è il `ci-runner`).
+
+**Esito: 71 verdi al primo colpo · 2 instabili (verdi alla 2ª prova) · 2 rossi 3 su 3, entrambi preesistenti e fuori dal giro.**
+
+| Controllo | Cosa è successo |
+|---|---|
+| `validate-situations` | **PASS 14/14**, fingerprint `00001505`, 0 failure (635 s) |
+| `solo-highlight-166` | verde (344 s): **libro mastro 298/298 voci identiche** fra partita intera e soli highlight **con l'avviso attivo**, risultato 2-0 uguale, schermata finale e voce di carriera uguali; soli highlight **43,3 s** (gioco fluido 9,2 s, scene 29,4 s, prepartita 4,6 s) contro **189,7 s** dell'intera; rosso cade su 3, 7, 8. ⚠️ Il mandato diceva «288/288»: su questo build la stessa partita ha 298 voci (82 recita, 82 cronaca, 110 turn…), in entrambe le modalità |
+| `partita-vera` | verde, 12 bande su 12, partite finite 2/2 (380 s) |
+| `momento-165` · `momento-165b` · `salta-163` · `indice-163` | verdi |
+| `momento-173` | **instabile**: 1ª prova rossa sulla sola durata dell'avviso (1.422 ms), 2ª verde (1.976 ms). Causa **nello strumento**: la durata era misurata fra due campioni del banco (`page.evaluate` ogni ~80 ms + latenza), cioè velocità × intervallo. Riparato (vedi sotto) |
+| `ripartenza-207` | **instabile** (rosso, poi verde): nella 1ª prova il braccio «rosso18» non ha mostrato il difetto che deve mostrare. Gioca partite intere, dove niente del giro 173 è attivo (`_sh173` vale solo a soli highlight). Non riparato: fuori ambito, segnalato |
+| `parata-100` | ❌ **3 su 3**, con **gli stessi numeri del giro 166 su `main` 7.999.190**: verde 8 parate (tutte su tiro del compagno), 0 sul ramo `cross_goal` («non giudicato»), 0 difetti; rosso 1 parata. Preesistente |
+| `finale-202` | ❌ **3 su 3** in 0 s: «ancora della simulazione non trovata». È statico e legge `src/14-motore-possesso.jsx`, che questo giro **non tocca**: cerca `forza:{home:+o.forzaH||65,away:+o.forzaA||65},`, mentre il motore oggi scrive `forza:{home:_fH157,away:_fA157}` — **anche su `main` e su `lavoro/191`** (verificato con `git show`). Preesistente |
+| `grafica-v2` | **verde** (nel giro 166 era rosso anche su `main`) |
+
+**Riparazione di `momento-173` e rigiocata.** La durata dell'avviso ora si misura **nella pagina**: un `MutationObserver` stampa
+`performance.now()` quando l'avviso compare e quando sparisce; il campionamento del banco resta solo per «visto», testo e minuto fermo.
+Soglia invariata (1,6-3,0 s). Dopo la catena, sul build `af4be1d` (la riparazione tocca solo il guardiano), uno alla volta:
+
+| Prova | Esito | Durata dell'avviso nella pagina · fra campioni del banco | Partita a soli highlight |
+|---|---|---|---|
+| verde 1 | 19/19, uscita 0 | 2.014 ms · 1.919 ms | 43,6 s |
+| verde 2 | 19/19, uscita 0 | 2.015 ms · 1.859 ms | 42,5 s |
+| verde 3 | 19/19, uscita 0 | 2.024 ms · 1.898 ms | 42,0 s |
+| rosso `CPM_ROSSO173=1` | 9 verdi, **10 rossi, uscita 1** | nessun avviso | 40,1 s |
+
+Tutti i passi:
+
+| # | Controllo | Prove (esito, durata) |
+|---|---|---|
+| 1 | `test:vision` | ✅ 2s |
+| 2 | `typing-shortcuts` | ✅ 19s |
+| 3 | `tripath-chokepoint` | ✅ 0s |
+| 4 | `design-system` | ✅ 0s |
+| 5 | `solo-highlight-166` | ✅ 344s |
+| 6 | `partita-vera` | ✅ 380s |
+| 7 | `validate-situations` | ✅ 635s |
+| 8 | `indice-163` | ✅ 49s |
+| 9 | `salta-163` | ✅ 155s |
+| 10 | `momento-165` | ✅ 224s |
+| 11 | `momento-165b` | ✅ 222s |
+| 12 | `momento-173` | ❌ 113s · ✅ 112s |
+| 13 | `grafica-v2` | ✅ 213s |
+| 14 | `simula-v2` | ✅ 91s |
+| 15 | `momenti-v2` | ✅ 421s |
+| 16 | `partita-v2` | ✅ 536s |
+| 17 | `patrimonio-303` | ✅ 192s |
+| 18 | `intro-292` | ✅ 103s |
+| 19 | `tema-unico` | ✅ 47s |
+| 20 | `carriera3-94` | ✅ 207s |
+| 21 | `assist-298` | ✅ 1867s |
+| 22 | `schermate-97` | ✅ 259s |
+| 23 | `highlight-95` | ✅ 5291s |
+| 24 | `parata-100` | ❌ 3159s · ❌ 3275s · ❌ 3153s |
+| 25 | `riserva-103` | ✅ 562s |
+| 26 | `riserva-104` | ✅ 443s |
+| 27 | `contatto-103` | ✅ 604s |
+| 28 | `consegna-103` | ✅ 1261s |
+| 29 | `colla-103` | ✅ 318s |
+| 30 | `assist-nome-98` | ✅ 3085s |
+| 31 | `chiusura-99` | ✅ 1382s |
+| 32 | `scena3d-96` | ✅ 1441s |
+| 33 | `esiti-96` | ✅ 716s |
+| 34 | `impulsi-289` | ✅ 34s |
+| 35 | `piccoli-85` | ✅ 42s |
+| 36 | `trainer-288` | ✅ 32s |
+| 37 | `test:logic` | ✅ 3s |
+| 38 | `save-compat` | ✅ 8s |
+| 39 | `replay` | ✅ 41s |
+| 40 | `career-critical` | ✅ 582s |
+| 41 | `classifica-102` | ✅ 31s |
+| 42 | `recupero-103` | ✅ 60s |
+| 43 | `euro-attesa-181` | ✅ 24s |
+| 44 | `riquadro-euro-105` | ✅ 33s |
+| 45 | `avversario-106` | ✅ 9s |
+| 46 | `rinvio-coppe-107` | ✅ 48s |
+| 47 | `etichette-108` | ✅ 10s |
+| 48 | `titolo-110` | ✅ 23s |
+| 49 | `pre-188` | ✅ 16s |
+| 50 | `conferenza-192` | ✅ 0s |
+| 51 | `partita-rigiocata-194` | ✅ 511s |
+| 52 | `pro-rivale-176` | ✅ 38s |
+| 53 | `rigori-190` | ✅ 9s |
+| 54 | `debito-190` | ✅ 0s |
+| 55 | `scene-190` | ✅ 1s |
+| 56 | `finale-202` | ❌ 0s · ❌ 1s · ❌ 0s |
+| 57 | `ripresa-202` | ✅ 429s |
+| 58 | `tetto-202` | ✅ 6s |
+| 59 | `minuti-202` | ✅ 162s |
+| 60 | `recupero-202` | ✅ 485s |
+| 61 | `ripartenza-207` | ❌ 1332s · ✅ 1330s |
+| 62 | `anteprima-212` | ✅ 32s |
+| 63 | `mister-215` | ✅ 31s |
+| 64 | `presentazione-214` | ✅ 43s |
+| 65 | `possesso-209` | ✅ 549s |
+| 66 | `brain-202` | ✅ 426s |
+| 67 | `tempo-138` | ✅ 515s |
+| 68 | `tabellino-216` | ✅ 509s |
+| 69 | `squalifica-222` | ✅ 135s |
+| 70 | `investimento-223` | ✅ 199s |
+| 71 | `infortunio-263` | ✅ 176s |
+| 72 | `svincolato-264` | ✅ 127s |
+| 73 | `meta-conto-265` | ✅ 57s |
+| 74 | `rimbalzo-189` | ✅ 62s |
+| 75 | `acquisti-281` | ✅ 79s |
+
+Nessun file del repo è stato modificato dalla catena (`git status` pulito a parte questo rapporto e il guardiano riparato).
 
 ---
 
@@ -187,5 +300,7 @@ variabilità di base della partita intera (rapporto 166 §4.3).
    allenatore e non il mister di oggi. Confermate?
 4. **Altre «offerte» di routine.** Restano routine altre proposte commerciali della categoria «opportunità» (`wi_videogioco`,
    `wi_docufilm`, `wi_biografia`…). La decisione parlava solo di `wi_sponsor*`: le altre vanno spostate?
-5. **Tocchi per stagione.** Due giri per braccio non bastano a separare l'effetto del giro dalla varianza delle stagioni (§1.1). Serve una
+5. **Rossi preesistenti della catena.** `parata-100` (nessuna parata sul ramo `cross_goal`) e `finale-202` (ancora del motore cambiata
+   in `src/14`) sono rossi anche su `main`; `ripartenza-207` è instabile sul braccio «rosso18». Vanno a un giro dei rossi?
+6. **Tocchi per stagione.** Due giri per braccio non bastano a separare l'effetto del giro dalla varianza delle stagioni (§1.1). Serve una
    misura su più stagioni (es. 5+5 giri, ~25 minuti) prima del rilascio?
