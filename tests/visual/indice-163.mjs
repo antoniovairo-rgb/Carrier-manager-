@@ -117,8 +117,9 @@ try {
   await W6.page.close();
   /* professionista: niente barra */
   const WP = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', club: { id: 'milan', n: 'AC Dorvelli', a: 'ACR', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }));
-  const bp = await WP.page.evaluate(() => !!document.querySelector('[data-cpm="corsa163"]'));
-  ok(!bp, 'professionista: la card non c\'è (solo Primavera)');
+  /* [giro 165] da professionista la card c'e' col solo tasto «Vai al prossimo momento» (guardiano momento-165): la BARRA no */
+  const bp = await WP.page.evaluate(() => !!document.querySelector('[data-cpm="ip163"]'));
+  ok(!bp, 'professionista: la barra dell\'Indice non c\'è (solo Primavera)');
   await WP.page.close();
   await page.close();
 } catch (e) { fails.push('eccezione: ' + (e && e.message)); console.log('  ✗ eccezione', e && e.message); }

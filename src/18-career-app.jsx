@@ -1457,12 +1457,43 @@ const getThisWeekMatchday=()=>{
   const _salta163Ref=useRef({fermo:0,firma:"",passi:0});
   const _saltaVisti163=useRef("");/* l'ultimo stato persistente che ha gia' fermato la corsa (vedi sotto): non riferma nella stessa settimana */
   const _saltaOn163=()=>!(typeof window!=='undefined'&&window.__CPM_NO_SALTA153);
+  /* [giro 165 · PO-364 opzione B, decisione PO «B e C insieme»] lo stesso tasto anche da PROFESSIONISTA («Vai al prossimo
+     momento»): stessi percorsi veri, ma la fermata «partita» usa la posta allargata posta165 (src/08) e, da professionista,
+     una scelta della settimana NON si sceglie da sola: ferma la corsa con la scelta davanti. Si ferma anche sul rinnovo (la
+     card «Il contratto scade», una volta per stagione) e da svincolato non parte. Rosso __CPM_NO_G165 = da professionista il
+     tasto non c'e' (il comportamento del giro 163). */
+  const _rinnVisto165=useRef(0);/* la stagione in cui la card del rinnovo ha gia' fermato la corsa */
+  const _pro165=(p)=>(p.proStatus||"u18")==="pro"&&!(typeof window!=='undefined'&&window.__CPM_NO_G165);
+  const _chiave165=(p,md)=>((p.proStatus||"u18")==="pro"?posta165(p,md):partitaChiave163(p,md));
+  const _rinnovo165=(p)=>(p.proStatus||"u18")==="pro"&&!p.contractExpired&&!p.loan&&((p.contract&&p.contract.duration)||2)<=1&&(p.renewalSeason||0)!==(p.season||1)&&(p.week||1)>=28;
+  /* [giro 165b · PO-364, decisioni PO 11/11 sera] tre rifiniture del tasto da professionista. (1) «Solo scelte di storia»: la
+     corsa si ferma solo sulle scelte di STORIA (procuratore, mister, offerte, interviste, momenti di carriera `mile`, seguiti di
+     una scelta gia' fatta; mercato e impulsi primopro/addio fermavano gia'); le scelte di routine si fanno da sole con la stessa
+     estrazione seedata della Primavera (giro 163). (3) Rinnovo «finche' non e' risolto»: la card del contratto in scadenza ferma
+     OGNI corsa finche' il giocatore non firma o rifiuta (rifiuto = campo additivo `rinnRif165b`, la stagione del rifiuto; nessun
+     bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
+     Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
+  const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
+    const id=String((wl&&wl.impId)||""),tx=String((wl&&wl.event&&wl.event.txt)||"");
+    const im=id?WEEKLY_IMPULSES.find(x=>x.id===id):null;
+    if(im&&im.seg)return "seguito";
+    if(im&&im.mile&&wl.cat!=="esordio")return "momento di carriera";
+    if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
+    if(/procurator/i.test(id+" "+tx))return "procuratore";
+    if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
+    if(/mister/i.test(id)||/\b(mister|allenator)/i.test(tx))return "mister";
+    if(/intervist/i.test(id))return "intervista";
+    return null;}catch(_e){return "storia";}};
+  const _rifiuta165b=()=>{if(_g165b()&&(player.proStatus||"u18")==="pro"&&!player.contractExpired)setPlayer(p=>({...p,rinnRif165b:p.season||1}));};
   const _saltaPrev163=(p)=>{try{/* la proiezione mostrata nel pannello: prossima partita chiave secondo la classifica di OGGI */
     const w0=p.week||1;const cal=(p.calendar||[]).filter(m=>m&&!m.played&&(m.week||0)>=w0&&!_isStaleMd(p,m)).sort((a,b)=>(a.week||0)-(b.week||0));
-    let routine=0;for(const m of cal){const k=partitaChiave163(p,m);if(k)return{chiave:{opp:m.opponentName,w:m.week,perche:k},routine};routine++;}
+    let routine=0;for(const m of cal){const k=_chiave165(p,m);if(k)return{chiave:{opp:m.opponentName,w:m.week,perche:k},routine};routine++;}
     return{chiave:null,routine};}catch(_e){return{chiave:null,routine:0};}};
   const _saltaMotivo163=()=>{/* perche' il tasto non si puo' usare adesso (null = si puo') */
-    if((player.proStatus||"u18")!=="u18")return "solo in Primavera";
+    if((player.proStatus||"u18")!=="u18"&&!_pro165(player))return "solo in Primavera";
+    if(_pro165(player)&&player.contractExpired)return "prima trova una squadra";
+    if((_pro165(player)||((player.proStatus||"u18")==="u18"&&_g165b()))&&player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)return "chiudi prima la finestra aperta";/* [giro 165b] anche in Primavera */
     if(openingPending().length)return "prima avvia la stagione";
     if((player.week||1)>38)return "stagione finita";
     const _nq=player.nationsCupQueue,_em=player.euroMondiale;
@@ -1474,12 +1505,12 @@ const getThisWeekMatchday=()=>{
       const v=mh.filter(m=>m.won).length,n=mh.filter(m=>m.drew).length,pe=mh.length-v-n,g=mh.reduce((s,m)=>s+(m.goals||0),0),a=mh.reduce((s,m)=>s+(m.assists||0),0);
       const sett=((player.season||1)-(st.s0||player.season||1))*38+(player.week||1)-(st.w0||player.week||1);
       setSaltaFine163({motivo,sett,partite:mh.length,v,n,pe,g,a,scelte:(st.scelte||[]).slice(-6),...(extra||{})});
-      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SALTA153=window.__CPM_SALTA153||[]).push({motivo,s:player.season||1,w:player.week||1,sett,partite:mh.length,passi:_salta163Ref.current.passi,...(extra||{})});}catch(_e){}}
+      if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SALTA153=window.__CPM_SALTA153||[]).push({motivo,s:player.season||1,w:player.week||1,sett,partite:mh.length,passi:_salta163Ref.current.passi,auto:(st.scelte||[]).length,...(extra||{})});}catch(_e){}}
     }catch(_e){setSaltaFine163({motivo,sett:0,partite:0,v:0,n:0,pe:0,g:0,a:0,scelte:[]});}
     setSalta163(null);};
   const _saltaAvvia163=()=>{if(!_saltaOn163()||_saltaMotivo163())return;
     _salta163Ref.current={fermo:0,firma:"",passi:0};setSaltaFine163(null);
-    setSalta163({fase:"corsa",s0:player.season||1,w0:player.week||1,mh0:(player.matchHistory||[]).length,inj0:!!player.injured,scelte:[]});};
+    setSalta163({fase:"corsa",ps0:player.proStatus||"u18",s0:player.season||1,w0:player.week||1,mh0:(player.matchHistory||[]).length,inj0:!!player.injured,scelte:[]});};
   useEffect(()=>{if(!salta163||salta163.fase!=="corsa")return;const t=setTimeout(()=>setSaltaTick163(x=>x+1),_CPM_TEST?220:320);return()=>clearTimeout(t);});
   useEffect(()=>{if(!saltaTick163||!salta163||salta163.fase!=="corsa")return;
     try{
@@ -1488,7 +1519,10 @@ const getThisWeekMatchday=()=>{
       if(firma===R.firma){if(++R.fermo>=14)return _saltaStop163("nessun progresso");}else{R.fermo=0;R.firma=firma;}
       if(R.passi>600)return _saltaStop163("nessun progresso");
       if(!_saltaOn163())return _saltaStop163("spento");
-      if((player.proStatus||"u18")!=="u18")return _saltaStop163("fuori dalla Primavera");
+      if((player.proStatus||"u18")!==(salta163.ps0||"u18"))return _saltaStop163((salta163.ps0||"u18")==="u18"?"fuori dalla Primavera":"cambio di stato");
+      if((salta163.ps0||"u18")==="pro"&&!_pro165(player))return _saltaStop163("spento");
+      if(_pro165(player)&&player.contractExpired)return _saltaStop163("rinnovo");
+      if(_pro165(player)&&_rinnovo165(player)&&(_g165b()?(player.rinnRif165b||0)!==(player.season||1):_rinnVisto165.current!==(player.season||1))){/* [giro 165b] ferma a ogni corsa finche' non firmi o rifiuti */_rinnVisto165.current=player.season||1;return _saltaStop163("rinnovo");}
       if(screen!=="dashboard"||tab!=="dashboard")return _saltaStop163("hai cambiato schermata");
       if(openingPending().length)return _saltaStop163("apertura di stagione");
       /* mercato e chiamate: si fermano SEMPRE, con la finestra aperta davanti */
@@ -1508,13 +1542,20 @@ const getThisWeekMatchday=()=>{
       if(interviewModal)return _saltaStop163("intervista");
       if(milestoneModal||careerMomentModal||presEvent||ritiroEvent||monthlyReviewModal)return _saltaStop163("momento importante",{chi:milestoneModal?"traguardo":careerMomentModal?"momento di carriera":presEvent?"presentazione":ritiroEvent?"ritiro":"verifica del mister"});
       if(!salta163.inj0&&player.injured)return _saltaStop163("infortunio");
+      /* [giro 165] da professionista: qualunque altra finestra in primo piano (il confronto col procuratore, il patto col mister,
+         lo spogliatoio, un momento della storia) ferma la corsa con la finestra davanti. Misurato (momento-165): il confronto col
+         procuratore ferma una volta per settimana, e alla ripartenza la corsa proseguiva SOTTO la finestra. */
+      if((_pro165(player)||((player.proStatus||"u18")==="u18"&&_g165b()))&&!weekLiveModal&&!showMatchPrompt&&typeof document!=='undefined'){const _v=document.querySelector('.cpm-velo150');
+        if(_v){const _q=_v.getAttribute('data-cpm')?_v:_v.querySelector('[data-cpm]');const _c=(_q&&_q.getAttribute('data-cpm'))||"finestra";
+          return _saltaStop163(/pop224|patto|spogliat/i.test(_c)?"scelta da fare":/confronto|procurat|agent/i.test(_c)?"mercato":"momento importante",{chi:"finestra "+_c});}}
       if(weekLiveModal){
         const ch=(weekLiveModal.choices||[]);
         if(!ch.length){setWeekLiveModal(null);return;}/* evento senza scelta: si legge nel diario, si chiude */
         const _mk=/mercato|cession|offert|trasferiment|procurator|estero/i;
         const _txt=String((weekLiveModal.event&&weekLiveModal.event.txt)||"");
         if(["primopro","addio"].indexOf(weekLiveModal.cat)>=0)/* misurato (salta-163): gli impulsi «esordio» sono la famiglia di ROUTINE della prima stagione (bar, autografo, muretto…: 6 fermate in 23 settimane) e non si fermano */return _saltaStop163("momento importante",{chi:"impulso "+weekLiveModal.cat,imp:weekLiveModal.impId||null});
-        if(weekLiveModal.impId==="wi_procuratore_push"||weekLiveModal.impId==="wi_giornalista_mercato"||_mk.test(_txt))return _saltaStop163("mercato");
+        if(weekLiveModal.impId==="wi_procuratore_push"||weekLiveModal.impId==="wi_giornalista_mercato"||_mk.test(_txt))return _saltaStop163("mercato",{chi:"impulso "+(weekLiveModal.impId||weekLiveModal.cat||"?")});/* [giro 165b] il testimone dice la sorgente: salta-163 confondeva questo impulso (estratto a caso) con la saga */
+        if(_pro165(player)&&ch.length>=2){const _st165b=_g165b()?_storia165b(weekLiveModal):"scelta";if(_st165b)return _saltaStop163("scelta da fare",{imp:weekLiveModal.impId||null,storia:_st165b});}/* [giro 165b] solo le scelte di storia restano al giocatore; la routine va all'estrazione seedata qui sotto *//* [giro 165] da professionista la scelta resta al giocatore */
         const ok=ch.map((c,i)=>({c,i})).filter(x=>{try{return !sotto265(x.c,player.bankBalance);}catch(_e){return true;}});
         if(!ok.length)return _saltaStop163("scelta da fare");
         const u=(Math.abs(hashStr("ps153|scelta|"+(player.name||"")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+(weekLiveModal.impId||weekLiveModal.cat||"sp")))%1000)/1000;
@@ -1522,20 +1563,20 @@ const getThisWeekMatchday=()=>{
         setSalta163(s=>s?{...s,scelte:[...(s.scelte||[]),{w:player.week||1,txt:String(pk.c.txt||"")}]}:s);
         handleImpulseChoice(pk.c);return;}
       if(showMatchPrompt){
-        if(partitaChiave163(player,showMatchPrompt))return _saltaStop163("partita chiave",{perche:partitaChiave163(player,showMatchPrompt)});
+        if(_chiave165(player,showMatchPrompt))return _saltaStop163("partita chiave",{perche:_chiave165(player,showMatchPrompt)});
         if(!coachDecision)return;/* la decisione del mister arriva col suo effetto: si aspetta il passo dopo */
-        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SALTA153_SIM=window.__CPM_SALTA153_SIM||[]).push({s:player.season||1,w:player.week||1,opp:showMatchPrompt.opponentName,md:showMatchPrompt.matchday,chiave:partitaChiave163(player,showMatchPrompt),dec:coachDecision.status});}catch(_e){}}/* testimone: ogni gara simulata dal tasto, con la regola letta nell'istante */
+        if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SALTA153_SIM=window.__CPM_SALTA153_SIM||[]).push({s:player.season||1,w:player.week||1,opp:showMatchPrompt.opponentName,md:showMatchPrompt.matchday,chiave:_chiave165(player,showMatchPrompt),pro:(player.proStatus||"u18")==="pro",dec:coachDecision.status});}catch(_e){}}/* testimone: ogni gara simulata dal tasto, con la regola letta nell'istante */
         if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));
         simulateAndAdvance();return;}
       if((player.week||1)>38)return _saltaStop163("fine stagione");
       if(player.injured){if(!player.weekLived){liveCurrentWeek();return;}doAdvanceWeek();return;}
       if(!player.weekLived){liveCurrentWeek();return;}
       const md=getThisWeekMatchday();
-      if(md){const k=partitaChiave163(player,md);setSimula302(true);setShowMatchPrompt(md);if(k)return _saltaStop163("partita chiave",{perche:k});return;}
+      if(md){const k=_chiave165(player,md);setSimula302(true);setShowMatchPrompt(md);if(k)return _saltaStop163("partita chiave",{perche:k});return;}
       doAdvanceWeek();
     }catch(_e){_saltaStop163("errore");}
   },[saltaTick163]);// eslint-disable-line
-  useEffect(()=>{if(salta163&&salta163.fase==="corsa"&&(player.proStatus||"u18")!=="u18")setSalta163(null);},[player.proStatus]);// eslint-disable-line
+  useEffect(()=>{if(salta163&&salta163.fase==="corsa"&&(player.proStatus||"u18")!==(salta163.ps0||"u18"))setSalta163(null);},[player.proStatus]);// eslint-disable-line
 
   // [6.1.0 ARC-19/§11] HARNESS CARRIERA (test-only, MAI nella store build): espone il giro-settimana
   //   REALE per la suite di non-regressione — abilita il test «N stagioni» che l'audit QA v2 dichiarava
@@ -1566,7 +1607,10 @@ const getThisWeekMatchday=()=>{
       presBeats:()=>{try{return presBeats();}catch(e){return null;}},
       ip153:(q)=>{try{return indicePrimavera(q||player);}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] l'Indice Primavera, la stessa funzione della barra */
       chiudi163:()=>{try{setInterviewModal(null);setMilestoneModal(null);setCareerMomentModal(null);setMonthlyReviewModal(null);return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 163] solo il banco salta-163: chiude le finestre che il tasto non chiude da solo, come il giocatore che le legge */
-      chiave163:(md)=>{try{return partitaChiave163(player,md||getThisWeekMatchday());}catch(e){return "error:"+(e&&e.message);}},
+      chiave163:(md)=>{try{return _chiave165(player,md||getThisWeekMatchday());}catch(e){return "error:"+(e&&e.message);}},/* [giro 165] da professionista e' la posta allargata */
+      storia165b:(wl)=>{try{return _storia165b(wl);}catch(e){return "error:"+(e&&e.message);}},/* [giro 165b] classificazione storia/routine (null = routine) */
+      rifiuta165b:()=>{try{_rifiuta165b();return true;}catch(e){return "error:"+(e&&e.message);}},
+      posta165:(q,md)=>{try{return posta165(q||player,md||getThisWeekMatchday());}catch(e){return "error:"+(e&&e.message);}},
       roster:()=>{try{return generateTeamRoster(player.club||{},player.season||1);}catch(e){return null;}},
       sagaView:()=>{try{const v=sagaView(player);return v?{id:v.A.id,ep:v.ix,tot:v.A.eps.length}:null;}catch(e){return null;}},/* [7.308.0] la probe legge quale episodio e' a schermo */
       forceSaga:(id)=>{try{/* avvia una saga saltando i cancelli seedati (settimana/probabilita'): gli ATTORI restano quelli veri */
@@ -7304,7 +7348,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                   <div style={{display:"flex",gap:8}}>
                     <Btn onClick={()=>{_acceptNegoWage(clubFinalWage,clubFinalDuration);}} v="primary" fw>✅ Accetta counter</Btn>
-                    <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Rifiuta</Btn>
+                    <Btn onClick={()=>{_rifiuta165b();setNegoModal(null);}} v="secondary" fw>Rifiuta</Btn>
                   </div>
                 </div>
               )}
@@ -7318,7 +7362,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                   <div style={{display:"flex",gap:8}}>
                     <Btn onClick={()=>{_acceptNegoWage(baseWage,baseDuration);}} v="primary" fw>Accetta offerta base</Btn>
-                    <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Chiudi</Btn>
+                    <Btn onClick={()=>{_rifiuta165b();setNegoModal(null);}} v="secondary" fw>Chiudi</Btn>
                   </div>
                 </div>
               )}
@@ -7329,7 +7373,7 @@ const getThisWeekMatchday=()=>{
                     <div style={{fontSize:FS.small,fontWeight:800,color:TH.lossFg,marginBottom:4}}>Il club non intende rinnovare</div>
                     <div style={{fontSize:FS.caption,color:"#9f1239",lineHeight:1.6}}>«Abbiamo deciso di puntare su altri profili.» La fiducia dell'allenatore è troppo bassa: guadagnatela sul campo, o trova una nuova squadra prima dell'inizio della prossima stagione (tab Agente → richieste e offerte di mercato).</div>
                   </div>
-                  <Btn onClick={()=>setNegoModal(null)} v="secondary" fw>Ho capito</Btn>
+                  <Btn onClick={()=>{_rifiuta165b();setNegoModal(null);}} v="secondary" fw>Ho capito</Btn>
                 </div>
               )}
             </Modal>
@@ -7726,17 +7770,19 @@ const getThisWeekMatchday=()=>{
       {/* [giro 163 · PO-356 F + idea 3] CORSA ALLA PRIMA SQUADRA: la barra dell'Indice Primavera (5 tacche, mai il numero; rosso
           __CPM_NO_IP153 = barra assente) e il tasto «Vai al prossimo momento importante» (rosso __CPM_NO_SALTA153 = tasto assente).
           Solo in Primavera. Il tasto prima chiede (pannello), poi corre sui percorsi veri, poi dice dove si e' fermato e perche'. */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="u18"&&(()=>{
-        const _noIP=typeof window!=='undefined'&&!!window.__CPM_NO_IP153,_noSa=!_saltaOn163();
+      {tab==="dashboard"&&((player.proStatus||"u18")==="u18"||_pro165(player))&&(()=>{
+        /* [giro 165] da professionista la card porta solo il tasto «Vai al prossimo momento» (niente Indice Primavera) */
+        const _isPro=(player.proStatus||"u18")!=="u18";
+        const _noIP=_isPro||(typeof window!=='undefined'&&!!window.__CPM_NO_IP153),_noSa=!_saltaOn163();
         if(_noIP&&_noSa)return null;
         const ip=_noIP?null:indicePrimavera(player);
         const _mot=_saltaMotivo163();const _corsa=!!(salta163&&salta163.fase==="corsa");
         const _prev=(salta163&&salta163.fase==="conferma")?_saltaPrev163(player):null;
         const _lab=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted}}>{t}</div>;
-        const _MOT={"partita chiave":"⚽ Partita chiave","mercato":"📩 Mercato","chiamata":"🏳️ Chiamata","momento importante":"⭐ Momento importante","intervista":"🎙️ Intervista","infortunio":"🩹 Infortunio","fine stagione":"🏁 Fine stagione","scelta da fare":"⚡ Scelta da fare","hai cambiato schermata":"⏸️ Interrotto","nessun progresso":"⏸️ Fermo","apertura di stagione":"🏁 Apertura di stagione","fuori dalla Primavera":"🌱 Fuori dalla Primavera","errore":"⏸️ Fermo","spento":"⏸️ Fermo","fermato da te":"⏸️ Fermato da te"};
+        const _MOT={"partita chiave":"⚽ Partita chiave","mercato":"📩 Mercato","chiamata":"🏳️ Chiamata","momento importante":"⭐ Momento importante","intervista":"🎙️ Intervista","infortunio":"🩹 Infortunio","fine stagione":"🏁 Fine stagione","scelta da fare":"⚡ Scelta da fare","hai cambiato schermata":"⏸️ Interrotto","nessun progresso":"⏸️ Fermo","apertura di stagione":"🏁 Apertura di stagione","fuori dalla Primavera":"🌱 Fuori dalla Primavera","errore":"⏸️ Fermo","spento":"⏸️ Fermo","fermato da te":"⏸️ Fermato da te","rinnovo":"📋 Rinnovo","cambio di stato":"⏸️ Fermo"};
         const fn=saltaFine163;
         return(
-        <Card data-cpm="corsa163" style={{marginBottom:_sb(9),padding:16,borderRadius:RAD.md,boxShadow:TH.el2}}>
+        <Card data-cpm="corsa163" data-g165={_isPro?"pro":"primavera"} style={{marginBottom:_sb(9),padding:16,borderRadius:RAD.md,boxShadow:TH.el2}}>
           {!_noIP&&(<div data-cpm="ip163" data-ip163={ip&&ip.pronto?ip.tacca:"-"} style={{marginBottom:_noSa?0:SP.md}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:SP.sm,marginBottom:SP.xs}}>
               {_lab("Corsa alla prima squadra")}
@@ -7749,11 +7795,12 @@ const getThisWeekMatchday=()=>{
           </div>)}
           {!_noSa&&(<div data-cpm="salta163" data-salta163={_corsa?"corsa":(salta163&&salta163.fase)||"fermo"}>
             {!_corsa&&!_prev&&(<>
-              <Btn data-cpm="salta163-tasto" v="secondary" fw size="lg" disabled={!!_mot} onClick={_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>⏩ Vai al prossimo momento importante</Btn>
+              <Btn data-cpm="salta163-tasto" v="secondary" fw size="lg" disabled={!!_mot} onClick={_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</Btn>
               {_mot&&<div data-cpm="salta163-motivo" style={{fontSize:FS.small,color:TH.muted,textAlign:"center",marginTop:SP.xs}}>{_mot}</div>}
             </>)}
             {_prev&&(<div data-cpm="salta163-conferma" style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
-              <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.5}}>Simulo le partite di routine e scelgo da solo negli impulsi della settimana. <b>Mi fermo</b> su partite chiave, chiamate, mercato e fine stagione.</div>
+              {_isPro?<div style={{fontSize:FS.body,color:TH.text,lineHeight:1.5}}>Simulo le partite senza posta in gioco. <b>Mi fermo</b> sulla prossima partita che conta (derby, ex club, scontri diretti, traguardi, rientro, contratto, finali e coppe), su ogni scelta, offerta, rinnovo e momento della tua storia.</div>
+              :<div style={{fontSize:FS.body,color:TH.text,lineHeight:1.5}}>Simulo le partite di routine e scelgo da solo negli impulsi della settimana. <b>Mi fermo</b> su partite chiave, chiamate, mercato e fine stagione.</div>}
               <div data-cpm="salta163-prossima" className="cpm-num" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{_prev.chiave?("Con la classifica di oggi: "+_prev.routine+" partit"+(_prev.routine===1?"a":"e")+" simulat"+(_prev.routine===1?"a":"e")+", poi "+_prev.chiave.perche+" contro "+_prev.chiave.opp+" (sett. "+_prev.chiave.w+")."):("Con la classifica di oggi nessuna partita chiave da qui alla fine: "+_prev.routine+" partit"+(_prev.routine===1?"a":"e")+" simulat"+(_prev.routine===1?"a":"e")+".")}</div>
               <div style={{display:"flex",gap:SP.sm}}>
                 <Btn data-cpm="salta163-vai" v="primary" fw size="lg" disabled={!!_mot} onClick={_mot?undefined:_saltaAvvia163}>Vai</Btn>

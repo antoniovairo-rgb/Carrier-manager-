@@ -32,14 +32,14 @@ function savePlayer(over = {}) {
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
-async function apri(vp, player) {
+async function apri(vp, player, no165 = false) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([pl, rosso]) => {
-    window.__CPM_GLB = false; if (rosso) window.__CPM_NO_SALTA153 = 1;
+  await page.addInitScript(([pl, rosso, no165]) => {
+    window.__CPM_GLB = false; if (rosso) window.__CPM_NO_SALTA153 = 1; if (no165) window.__CPM_NO_G165 = 1;
     localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl }));
-  }, [player, ROSSO]);
+  }, [player, ROSSO, no165]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 40000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
   await sleep(1200);
@@ -161,8 +161,11 @@ try {
     await W.page.evaluate(() => { window.__CPM_SALTA153 = []; });
     await clicca(W.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W.page, '[data-cpm="salta163-vai"]');
     await aspettaFine(W.page, 120000); await sleep(400);
-    const L1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).map(f => f.motivo));
-    ok(L1.length === 1 && L1[0] !== 'mercato', `saga gia' consegnata (senza card): nessuna fermata «mercato» (${JSON.stringify(L1)})`);
+    /* [giro 165b] una fermata «mercato» da un IMPULSO di mercato (estratto a caso nella settimana, chi «impulso …») non e' la saga:
+       misurato, la stessa scena dava «mercato» 1 volta su 3 per quell'impulso. Si giudica solo la fermata dovuta alla saga. */
+    const F1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).map(f => ({ m: f.motivo, chi: f.chi || '' })));
+    const L1 = F1.map(f => f.m + (f.chi ? ' (' + f.chi + ')' : ''));
+    ok(F1.length === 1 && !(F1[0].m === 'mercato' && !/^impulso/.test(F1[0].chi)), `saga gia' consegnata (senza card): nessuna fermata «mercato» per la saga (${JSON.stringify(L1)})`);
     await W.page.close();
     const W2 = await apri({ width: 412, height: 915 }, savePlayer({ week: 6, ...ap, transferSaga: { offer: null, week: 6, season: 1, club: 'FC Prova', tone: null } }));
     await W2.page.evaluate(() => { window.__CPM_SALTA153 = []; });
@@ -191,11 +194,11 @@ try {
     await foto(W.page, 'riepilogo-pc');
     await W.page.close();
   }
-  console.log('6) solo Primavera');
+  console.log('6) solo Primavera (col giro 165 spento: da professionista il tasto e\' del guardiano momento-165)');
   {
-    const W = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', week: 4, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, club: { id: 'milan', n: 'AC Dorvelli', a: 'ACR', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }));
+    const W = await apri({ width: 412, height: 915 }, savePlayer({ proStatus: 'pro', week: 4, campDone: true, presidentModalSeason: 1, jerseyNumSeason: 1, drawSeen: 1, mercatoSeen: 1, presentSeason: 1, club: { id: 'milan', n: 'AC Dorvelli', a: 'ACR', p: 90, c: '#dc2626', c2: '#0f0f0f', nat: '🇮🇹', lg: 'Lega A' } }), true);
     const t = await W.page.evaluate(() => !!document.querySelector('[data-cpm="salta163-tasto"]'));
-    ok(!t, 'professionista: il tasto non c\'è');
+    ok(!t, 'professionista con __CPM_NO_G165: il tasto non c\'è');
     await W.page.close();
   }
 } catch (e) { fails.push('eccezione: ' + (e && e.message)); console.log('  ✗ eccezione', e && e.message); }
