@@ -1,0 +1,1096 @@
+{
+ "tiro-collo": {
+  "gi": 8,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "💥 Tiro di potenza",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 102,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.99
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 115,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 127,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 102,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.99
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 114,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 126,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 115,
+   "pc": 114
+  }
+ },
+ "tiro-piatto": {
+  "gi": 0,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🦵 Tiro angolato",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 103,
+    "na": 0,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 118,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 130,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 103,
+    "na": 0,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 118,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 130,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 118,
+   "pc": 118
+  }
+ },
+ "tiro-volo": {
+  "gi": 6,
+  "k": 1,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🦵 Tiro al volo",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 114,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.95
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 138,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 151,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 114,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.95
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 138,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 150,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 138,
+   "pc": 138
+  }
+ },
+ "pallonetto": {
+  "gi": 0,
+  "k": 2,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🤸 Pallonetto",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 106,
+    "na": 0,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 118,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 130,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 106,
+    "na": 0,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 118,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 130,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 118,
+   "pc": 118
+  }
+ },
+ "testa": {
+  "gi": 7,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "✈️ Colpo di testa",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 87,
+    "na": 0,
+    "gesto": [
+     null,
+     0
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 100,
+    "na": 1,
+    "gesto": [
+     "header",
+     0.87
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 112,
+    "na": 1,
+    "gesto": [
+     "header",
+     0.98
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 87,
+    "na": 0,
+    "gesto": [
+     null,
+     0
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 100,
+    "na": 1,
+    "gesto": [
+     "header",
+     0.87
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 112,
+    "na": 1,
+    "gesto": [
+     "header",
+     0.98
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 100,
+   "pc": 100
+  }
+ },
+ "rigore": {
+  "gi": 5,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "💥 Angolato rasoterra",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 24,
+    "na": 0,
+    "gesto": [
+     "penalty",
+     0.98
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 36,
+    "na": 1,
+    "gesto": [
+     "penalty",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 48,
+    "na": 1,
+    "gesto": [
+     "penalty",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 24,
+    "na": 0,
+    "gesto": [
+     "penalty",
+     0.98
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 36,
+    "na": 1,
+    "gesto": [
+     "penalty",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 48,
+    "na": 1,
+    "gesto": [
+     "penalty",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 36,
+   "pc": 36
+  }
+ },
+ "punizione": {
+  "gi": 13,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🎯 Punizione a giro",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 24,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.98
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 36,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 48,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 24,
+    "na": 0,
+    "gesto": [
+     "kick",
+     0.98
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 36,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 48,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 36,
+   "pc": 36
+  }
+ },
+ "pass-corto": {
+  "gi": 18,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🌀 Dribbling netto e assist",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 57,
+    "na": 0,
+    "gesto": [
+     "pass",
+     0.99
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 69,
+    "na": 1,
+    "gesto": [
+     "pass",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 81,
+    "na": 1,
+    "gesto": [
+     "pass",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 57,
+    "na": 0,
+    "gesto": [
+     "pass",
+     0.99
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 70,
+    "na": 1,
+    "gesto": [
+     "pass",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 82,
+    "na": 1,
+    "gesto": [
+     "pass",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 69,
+   "pc": 70
+  }
+ },
+ "pass-lungo": {
+  "gi": 29,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🏃 Lancia il contropiede",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 42,
+    "na": 0,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 54,
+    "na": 1,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 66,
+    "na": 1,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 42,
+    "na": 0,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 54,
+    "na": 1,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 66,
+    "na": 1,
+    "gesto": [
+     "longPass",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 54,
+   "pc": 54
+  }
+ },
+ "cross": {
+  "gi": 42,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "arco",
+  "label": "🦶 Cross d'esterno",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "prima (−0,20 s)",
+    "f": 138,
+    "na": 0,
+    "gesto": [
+     "cross",
+     0.99
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "contatto (pallone parte)",
+    "f": 150,
+    "na": 1,
+    "gesto": [
+     "cross",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "dopo (+0,20 s)",
+    "f": 162,
+    "na": 1,
+    "gesto": [
+     "cross",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "prima (−0,20 s)",
+    "f": 139,
+    "na": 0,
+    "gesto": [
+     "cross",
+     0.99
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "contatto (pallone parte)",
+    "f": 150,
+    "na": 1,
+    "gesto": [
+     "cross",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "dopo (+0,20 s)",
+    "f": 162,
+    "na": 1,
+    "gesto": [
+     "cross",
+     1
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 150,
+   "pc": 150
+  }
+ },
+ "dribbling": {
+  "gi": 30,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "gesto",
+  "label": "🌀 Dribbling centrale e conduci",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "gesto: inizio",
+    "f": 7,
+    "na": 1,
+    "gesto": [
+     "change",
+     0.67
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "gesto: +0,23 s",
+    "f": 21,
+    "na": 1,
+    "gesto": [
+     "change",
+     0.97
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "gesto: +0,53 s",
+    "f": 39,
+    "na": 1,
+    "gesto": [
+     "change",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: inizio",
+    "f": 7,
+    "na": 1,
+    "gesto": [
+     "change",
+     0.67
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: +0,23 s",
+    "f": 21,
+    "na": 1,
+    "gesto": [
+     "change",
+     0.97
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: +0,53 s",
+    "f": 40,
+    "na": 1,
+    "gesto": [
+     "change",
+     1
+    ]
+   }
+  ]
+ },
+ "contrasto": {
+  "gi": 31,
+  "k": 0,
+  "out": "success",
+  "kind": null,
+  "modo": "gesto",
+  "label": "🛡️ Scivolata netta",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "gesto: inizio",
+    "f": 7,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     0.67
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "gesto: +0,23 s",
+    "f": 21,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     0.97
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "gesto: +0,53 s",
+    "f": 39,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: inizio",
+    "f": 8,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     0.72
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: +0,23 s",
+    "f": 22,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     0.98
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "gesto: +0,53 s",
+    "f": 40,
+    "na": 0,
+    "gesto": [
+     "tackle",
+     1
+    ]
+   }
+  ]
+ },
+ "parata": {
+  "gi": 8,
+  "k": 0,
+  "out": "fail",
+  "kind": "saved",
+  "modo": "palla",
+  "label": "💥 Tiro di potenza",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "tuffo: prima",
+    "f": 145,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "tuffo: mano-pallone",
+    "f": 155,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "tuffo: dopo",
+    "f": 169,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "tuffo: prima",
+    "f": 145,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "tuffo: mano-pallone",
+    "f": 155,
+    "na": 1,
+    "gesto": [
+     "kick",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "tuffo: dopo",
+    "f": 169,
+    "na": 1,
+    "gesto": [
+     "miss",
+     0.87
+    ]
+   }
+  ],
+  "partenza": {
+   "telefono": 114,
+   "pc": 115
+  }
+ },
+ "disappunto": {
+  "gi": 3,
+  "k": 1,
+  "out": "fail",
+  "kind": "wide",
+  "modo": "dopo",
+  "label": "🌀 Dribbling portiere e tiro",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "reazione +1,2 s dall'arco",
+    "f": 199,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "reazione +2,2 s",
+    "f": 259,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "reazione +3,3 s",
+    "f": 329,
+    "na": 1,
+    "gesto": [
+     null,
+     0.01
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +1,2 s dall'arco",
+    "f": 199,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +2,2 s",
+    "f": 259,
+    "na": 1,
+    "gesto": [
+     "miss",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +3,3 s",
+    "f": 329,
+    "na": 1,
+    "gesto": [
+     null,
+     0.01
+    ]
+   }
+  ]
+ },
+ "esultanza": {
+  "gi": 3,
+  "k": 1,
+  "out": "success",
+  "kind": null,
+  "modo": "dopo",
+  "label": "🌀 Dribbling portiere e tiro",
+  "scatti": [
+   {
+    "dev": "telefono",
+    "nome": "reazione +1,2 s dall'arco",
+    "f": 199,
+    "na": 1,
+    "gesto": [
+     null,
+     0.12
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "reazione +2,2 s",
+    "f": 259,
+    "na": 1,
+    "gesto": [
+     "lift",
+     1
+    ]
+   },
+   {
+    "dev": "telefono",
+    "nome": "reazione +3,3 s",
+    "f": 329,
+    "na": 1,
+    "gesto": [
+     "lift",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +1,2 s dall'arco",
+    "f": 199,
+    "na": 1,
+    "gesto": [
+     null,
+     0.12
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +2,2 s",
+    "f": 259,
+    "na": 1,
+    "gesto": [
+     "lift",
+     1
+    ]
+   },
+   {
+    "dev": "pc",
+    "nome": "reazione +3,3 s",
+    "f": 329,
+    "na": 1,
+    "gesto": [
+     "lift",
+     1
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,232 @@
+[
+ {
+  "i": 0,
+  "nome": "Rossi",
+  "fase": "ceremony",
+  "sReali": 302,
+  "eventi": 14,
+  "azioni": [
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 440
+    },
+    "t": "shot",
+    "v": "shot_power",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "💥 Tiro da fuori"
+   },
+   {
+    "clip": {},
+    "t": "tackle",
+    "v": null,
+    "ok": false,
+    "key": "through",
+    "kind": null,
+    "label": "🧠 Anticipa sul primo controllo"
+   },
+   {
+    "clip": {
+     "kick/kick~m": 162
+    },
+    "t": "freekick",
+    "v": "freekick_direct",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "🎯 Punizione a giro"
+   },
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 3026
+    },
+    "t": "shot",
+    "v": "shot_one_on_one",
+    "ok": true,
+    "key": "goal",
+    "kind": null,
+    "label": "⚡ Conclusione di prima"
+   }
+  ],
+  "clip": {
+   "kick/mx-strike-foward-jog": 2,
+   "kick/kick~m": 1
+  },
+  "punteggio": {
+   "home": 1,
+   "away": 0
+  },
+  "minuto": 90
+ },
+ {
+  "i": 1,
+  "nome": "Bianchi",
+  "fase": "ceremony",
+  "sReali": 319,
+  "eventi": 25,
+  "azioni": [
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 247
+    },
+    "t": "shot",
+    "v": "shot_power",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "💥 Tiro da fuori"
+   },
+   {
+    "clip": {},
+    "t": "tackle",
+    "v": null,
+    "ok": false,
+    "key": "foul",
+    "kind": null,
+    "label": "🛡️ Scivolata netta"
+   },
+   {
+    "clip": {
+     "dribble/dribble": 6,
+     "kick/mx-strike-foward-jog": 952
+    },
+    "t": "shot",
+    "v": "shot_curled",
+    "ok": true,
+    "key": "goal",
+    "kind": null,
+    "label": "🦵 Tiro a giro"
+   },
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 339
+    },
+    "t": "shot",
+    "v": "shot_power",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "💥 Tiro da fuori"
+   },
+   {
+    "clip": {
+     "kick/kick~m": 627
+    },
+    "t": "freekick",
+    "v": "freekick_direct",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "💥 Botta sopra la barriera"
+   },
+   {
+    "clip": {
+     "longPass/mx-strike-foward-jog": 135,
+     "lift/mx-victory-jump": 11
+    },
+    "t": "pass",
+    "v": "pass_lofted",
+    "ok": true,
+    "key": "assist",
+    "kind": null,
+    "label": "🎯 Lancio smarcante per WRIGHT"
+   },
+   {
+    "clip": {
+     "lift/mx-victory-jump": 1501
+    },
+    "t": "shot",
+    "v": "shot_volley",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "⚽ Volée di collo potente"
+   }
+  ],
+  "clip": {
+   "kick/mx-strike-foward-jog": 3,
+   "dribble/dribble": 1,
+   "kick/kick~m": 1,
+   "longPass/mx-strike-foward-jog": 1,
+   "lift/mx-victory-jump": 1
+  },
+  "punteggio": {
+   "home": 2,
+   "away": 0
+  },
+  "minuto": 90
+ },
+ {
+  "i": 2,
+  "nome": "Verdi",
+  "fase": "ceremony",
+  "sReali": 310,
+  "eventi": 16,
+  "azioni": [
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 247
+    },
+    "t": "shot",
+    "v": "shot_power",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "💥 Tiro da fuori"
+   },
+   {
+    "clip": {},
+    "t": "tackle",
+    "v": null,
+    "ok": false,
+    "key": "through",
+    "kind": null,
+    "label": "🛑 Chiusura immediata"
+   },
+   {
+    "clip": {
+     "kick/kick~m": 166
+    },
+    "t": "freekick",
+    "v": "freekick_cross_high",
+    "ok": true,
+    "key": "chance",
+    "kind": null,
+    "label": "↗️ Palla in area"
+   },
+   {
+    "clip": {
+     "kick/mx-strike-foward-jog": 731
+    },
+    "t": "shot",
+    "v": "shot_one_on_one",
+    "ok": false,
+    "key": "miss",
+    "kind": null,
+    "label": "🎯 Piazzato nell'angolo basso"
+   },
+   {
+    "clip": {
+     "penalty/penalty": 2636
+    },
+    "t": null,
+    "v": null,
+    "ok": true,
+    "key": "goal",
+    "kind": null,
+    "label": "Rigore — Potente all'incrocio"
+   }
+  ],
+  "clip": {
+   "kick/mx-strike-foward-jog": 2,
+   "kick/kick~m": 1,
+   "penalty/penalty": 1
+  },
+  "punteggio": {
+   "home": 2,
+   "away": 0
+  },
+  "minuto": 90
+ }
+]

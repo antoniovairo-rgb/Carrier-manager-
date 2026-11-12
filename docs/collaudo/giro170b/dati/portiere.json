@@ -1,0 +1,194 @@
+[
+ {
+  "f": "parata_gi0_k0_s1",
+  "partenza": 118,
+  "nK": 141,
+  "manoPallaCm": 14,
+  "manoF": 143,
+  "giuntoPallaCm": 14,
+  "giunto": "haR",
+  "giuntoF": 143,
+  "fermataPallaF": 151,
+  "dtManoFermataMs": -133,
+  "clip": {
+   "dive": 179
+  },
+  "bacinoMinCm": 96,
+  "spostLatCm": 325,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 193
+ },
+ {
+  "f": "parata_gi0_k0_s2",
+  "partenza": 118,
+  "nK": 94,
+  "manoPallaCm": 92,
+  "manoF": 141,
+  "giuntoPallaCm": 78,
+  "giunto": "knL",
+  "giuntoF": 143,
+  "fermataPallaF": 139,
+  "dtManoFermataMs": 33,
+  "clip": {
+   "dive": 162
+  },
+  "bacinoMinCm": 90,
+  "spostLatCm": 602,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 176
+ },
+ {
+  "f": "parata_gi3_k1_s1",
+  "partenza": 129,
+  "nK": 81,
+  "manoPallaCm": 69,
+  "manoF": 167,
+  "giuntoPallaCm": 27,
+  "giunto": "knL",
+  "giuntoF": 166,
+  "fermataPallaF": 168,
+  "dtManoFermataMs": -17,
+  "clip": {
+   "dive": 172
+  },
+  "bacinoMinCm": 96,
+  "spostLatCm": 543,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 186
+ },
+ {
+  "f": "parata_gi3_k1_s2",
+  "partenza": 121,
+  "nK": 82,
+  "manoPallaCm": 125,
+  "manoF": 131,
+  "giuntoPallaCm": 61,
+  "giunto": "toL",
+  "giuntoF": 133,
+  "fermataPallaF": 140,
+  "dtManoFermataMs": -150,
+  "clip": {
+   "dive": 150
+  },
+  "bacinoMinCm": 91,
+  "spostLatCm": 466,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 164
+ },
+ {
+  "f": "parata_gi7_k0_s1",
+  "partenza": 109,
+  "nK": 70,
+  "manoPallaCm": 334,
+  "manoF": 274,
+  "giuntoPallaCm": 310,
+  "giunto": "toL",
+  "giuntoF": 274,
+  "fermataPallaF": 176,
+  "dtManoFermataMs": 1633,
+  "clip": {
+   "dive": 164
+  },
+  "bacinoMinCm": 90,
+  "spostLatCm": 666,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 175
+ },
+ {
+  "f": "parata_gi7_k0_s2",
+  "partenza": 103,
+  "nK": 68,
+  "manoPallaCm": 378,
+  "manoF": 162,
+  "giuntoPallaCm": 310,
+  "giunto": "toR",
+  "giuntoF": 162,
+  "fermataPallaF": 179,
+  "dtManoFermataMs": -283,
+  "clip": {
+   "dive": 171
+  },
+  "bacinoMinCm": 85,
+  "spostLatCm": 794,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 181
+ },
+ {
+  "f": "parata_gi8_k0_s1",
+  "partenza": 114,
+  "nK": 50,
+  "manoPallaCm": 249,
+  "manoF": 150,
+  "giuntoPallaCm": 249,
+  "giunto": "haL",
+  "giuntoF": 150,
+  "fermataPallaF": 159,
+  "dtManoFermataMs": -150,
+  "clip": {
+   "dive": 178
+  },
+  "bacinoMinCm": 96,
+  "spostLatCm": 631,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 192
+ },
+ {
+  "f": "parata_gi8_k0_s2",
+  "partenza": 114,
+  "nK": 62,
+  "manoPallaCm": 242,
+  "manoF": 160,
+  "giuntoPallaCm": 218,
+  "giunto": "elR",
+  "giuntoF": 160,
+  "fermataPallaF": 166,
+  "dtManoFermataMs": -100,
+  "clip": {
+   "dive": 184
+  },
+  "bacinoMinCm": 96,
+  "spostLatCm": 680,
+  "want": [
+   "dive"
+  ],
+  "opp": [
+   "gk_dive"
+  ],
+  "ngk": 198
+ }
+]
