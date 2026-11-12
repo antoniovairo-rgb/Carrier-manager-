@@ -126,7 +126,29 @@ Sempre (anche PC): bandiere e sciarpe nel colore del club dell'intro e senza neb
 
 ## 6. Guardiani e catena
 
-_(compilato a fine corsa, vedi §6 in fondo)_
+Tutti eseguiti uno alla volta (`CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno) sul build finale (`check-src`: IDENTICO BYTE PER BYTE).
+
+| Guardiano | Esito |
+|---|---|
+| **scene-178** (nuovo) | verde col verde (S1 ΔE 0,0 su 4 club × 4 scene, S2 bandiere ΔE 0,0, S3 0 fotogrammi fuori a 375 e 412, PC 7/85, S4 0 punti · 12 file a sagome); **rosso col rosso** (21 rossi con `__CPM_NO_G178_COLORE` + `__CPM_NO_G178_INTRO`) |
+| intro-292 | verde (e rosso atteso) |
+| presentazione-200 | verde (e il rosso si vede) |
+| premiazione-palco-191 | verde (e il rosso si vede) |
+| cerimonie | PASS |
+| stadi-071 | verde (e il rosso si vede) |
+| kit-061 | PASS |
+| tema-unico | verde (e rosso atteso) |
+| colori-286 | uscita 0 |
+| intro-118 | verde |
+| spalle-146 | verde (e i rossi cadono) |
+| **flussi-115** | prima corsa: braccio verde 54/54, **braccio rosso CIECO su G184-11**. Causa: il rosso toglie il velo dietro le didascalie dell'intro per mostrare che il contrasto cade (prima c'era la bandiera bianca dietro); con la nuova regia verticale dietro le scritte c'è scena scura e senza velo il contrasto regge. Correzione nella sonda, non nelle soglie: il braccio rosso riproduce la 183 accendendo anche i due rossi del giro 178. Seconda corsa: verde 54/54, rosso su tutti i 17 punti |
+| griglia-mobile | uscita 0 (14 schermate × 5 larghezze); le foto che riscrive in `docs/collaudo-grafico/` sono state ripristinate, non fanno parte del lavoro |
+| design-system | SISTEMA GRAFICO OK |
+| career-critical | PASS |
+| test:logic | uscita 0 |
+| save-compat | 12 pass · 0 fail |
+
+Non eseguiti: il gate completo e `partita-vera`. Il renderer della partita (`src/12`) non è stato toccato; l'unica riga condivisa con la partita è la marcatura `userData._g178` dentro `loadGLB` (`src/11`), che nessun codice della partita legge. Sceglie la sessione madre se serve la catena completa (direttiva PO 22/09: nel dubbio si sceglie la completa — qui la funzione di caricamento GLB è condivisa, e lo segnalo).
 
 ---
 
