@@ -8,6 +8,9 @@
                 il piede con il picco di velocita' piu' alto.
    dtPicco      fotogramma del PICCO di velocita' della punta che calcia (rispetto al bacino, come il 170b) in ±0,5 s, meno la
                 partenza. In fotogrammi (1 = 16,7 ms). Negativo = il piede ha gia' colpito quando il pallone parte.
+   dtAvanti     come dtPicco, ma contando solo la velocita' della punta NEL VERSO in cui parte il pallone (componente in pianta lungo
+                la direzione del pallone nei 3 fotogrammi dopo la partenza): e' il picco della SPINTA, e non si lascia ingannare dal
+                rientro della gamba (che nelle clip corte `kick` e `pass` e' piu' veloce della spinta). vAvanti = quella velocita' (m/s).
    dtVicino     fotogramma della distanza MINIMA punta-centro pallone in ±0,5 s, meno la partenza.
    dContatto    distanza fra la punta che calcia NEL FOTOGRAMMA DI PARTENZA e il punto di battuta (centro del pallone nel fotogramma
                 prima, quando e' ancora fermo), in cm. Il pallone del gioco ha raggio 0,20 u (≈ 22 cm). A 16 m/s il piede fa 27 cm
@@ -47,6 +50,8 @@ export function misura177(R) {
   const punto = F[d - 1].b; const dCont = dist(J(F[d].h, K), punto);
   let dMin170 = 1e9; for (let i = Math.max(0, d - 6); i <= Math.min(F.length - 1, d + 6); i++) dMin170 = Math.min(dMin170, dist(J(F[i].h, K), F[i].b));
   const kd = J(F[d].h, K), bd = F[d].b;
+  let iAv = d, vAv = 0; { const b3 = F[Math.min(F.length - 1, d + 3)].b; let ux = b3[0] - bd[0], uz = b3[2] - bd[2]; const ul = Math.hypot(ux, uz); if (ul > 0.02) { ux /= ul; uz /= ul;
+    for (let i = lo; i <= hi; i++) { const p = J(F[i].h, K), q = J(F[i - 1].h, K), a = J(F[i].h, 'pel'), b = J(F[i - 1].h, 'pel'); const v = ((p[0] - a[0] - q[0] + b[0]) * ux + (p[2] - a[2] - q[2] + b[2]) * uz) * m * 60; if (v > vAv) { vAv = v; iAv = i; } } } else iAv = null; }
   const sc = [], hq = []; for (let i = Math.max(1, d - 6); i <= Math.min(F.length - 1, d + 3); i++) { const p = J(F[i].h, S), q = J(F[i - 1].h, S); sc.push(Math.hypot(p[0] - q[0], p[2] - q[2]) * m * 100); hq.push((p[1] - suolo) * m * 100); }
   let cavSu = null; if (R.pre) { const A = 'an' + (piede === 'L' ? 'R' : 'L'); const base = med(F.filter(x => x.f <= R.pre && x.ph === 'hl_choose').map(x => J(x.h, A)[1])); const ora = med(F.slice(Math.max(0, d - 3), d + 4).map(x => J(x.h, A)[1])); if (base != null && ora != null) cavSu = (ora - base) * m * 100; }
   const b0 = F[Math.max(0, d - 30)].b, b1 = F[d - 1].b; const fermo = dist(b0, b1) * m * 100;
@@ -55,7 +60,7 @@ export function misura177(R) {
   for (let i = Math.max(1, d - 45); i < F.length; i++) { if (F[i].f - F[i - 1].f !== 1) continue; let dy = Math.abs(fwd(i) - fwd(i - 1)) * 180 / Math.PI; if (dy > 180) dy = 360 - dy; if (i > d + 20) { giroRil = Math.max(giroRil, dy); continue; } giro = Math.max(giro, dy);
     const p = J(F[i].h, 'pel'), q = J(F[i - 1].h, 'pel'); salto = Math.max(salto, Math.hypot(p[0] - q[0], p[2] - q[2]) * m * 100); }
   return { n: F.length, scala: +m.toFixed(3), partenza: d, tScena: F[d].ck, gesto, clip, pesoGesto: peso, piede: piede === 'R' ? 'dx' : 'sx',
-    dtPiccoF: iPk - d, dtPiccoMs: Math.round((iPk - d) * 1000 / 60), dtVicinoF: iMin - d, vPiedeMs: r1(vPk), vPallaMs: r1(vPalla),
+    dtPiccoF: iPk - d, dtPiccoMs: Math.round((iPk - d) * 1000 / 60), dtAvantiF: iAv == null ? null : iAv - d, vAvantiMs: r1(vAv), dtVicinoF: iMin - d, vPiedeMs: r1(vPk), vPallaMs: r1(vPalla),
     dContattoCm: r1(dCont * m * 100), dMinCm: r1(dMin170 * m * 100), dMinAssolutoCm: r1(dMin * m * 100),
     puntaQuotaCm: r1((kd[1] - suolo) * m * 100), pallaQuotaCm: r1((bd[1] - suolo) * m * 100), dPiantaCm: r1(Math.hypot(kd[0] - bd[0], kd[2] - bd[2]) * m * 100),
     appoggioQuotaCm: r1(med(hq)), appoggioScorreCmF: r1(med(sc)), appoggioScorreMaxCmF: r1(Math.max(...sc, 0)), appoggioCavigliaSuCm: r1(cavSu), palloneFermoCm: r1(fermo), giroMaxGradiF: r1(giro), giroDopoGradiF: r1(giroRil), saltoBacinoMaxCmF: r1(salto) };
@@ -65,7 +70,7 @@ export function misura177(R) {
 export function riassunto177(L) {
   const V = L.filter(x => x && !x.errore); const g = k => { const a = V.map(x => x[k]).filter(x => x != null && Number.isFinite(x)); return a.length ? { med: med(a), min: Math.min(...a), max: Math.max(...a) } : null; };
   const o = { esecuzioni: L.length, valide: V.length, clip: [...new Set(V.map(x => x.clip))] };
-  for (const k of ['dtPiccoF', 'dtPiccoMs', 'dtVicinoF', 'dContattoCm', 'dMinCm', 'puntaQuotaCm', 'dPiantaCm', 'appoggioQuotaCm', 'appoggioScorreCmF', 'appoggioCavigliaSuCm', 'palloneFermoCm', 'giroMaxGradiF', 'giroDopoGradiF', 'saltoBacinoMaxCmF', 'vPiedeMs', 'vPallaMs']) o[k] = g(k);
+  for (const k of ['dtPiccoF', 'dtPiccoMs', 'dtAvantiF', 'vAvantiMs', 'dtVicinoF', 'dContattoCm', 'dMinCm', 'puntaQuotaCm', 'dPiantaCm', 'appoggioQuotaCm', 'appoggioScorreCmF', 'appoggioCavigliaSuCm', 'palloneFermoCm', 'giroMaxGradiF', 'giroDopoGradiF', 'saltoBacinoMaxCmF', 'vPiedeMs', 'vPallaMs']) o[k] = g(k);
   return o;
 }
 export const fmt = x => x ? `${x.med} (${x.min}…${x.max})` : '—';
