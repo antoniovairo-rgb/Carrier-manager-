@@ -13,7 +13,7 @@ allargata) è del giro 165. Qui la regola di posta è **quella che il gioco ha g
 - **Non è un secondo motore.** È lo stesso battito della partita intera (stesso corpo di codice, stessi sorteggi,
   stessi sotto-tick del motore), fatto correre a lotti invece che a orologio. Le scene restano a tempo reale.
 - **Durata misurata** (pilota automatico, 1x, telefono 412 px, senza corpi 3D): partita intera **188-211 s**,
-  a soli highlight **43-64 s** (0,7-1,1 min). Il giro 164 stimava ≈ 0,8 min (non misurato): la misura lo conferma
+  a soli highlight **40-64 s** (0,7-1,1 min). Il giro 164 stimava ≈ 0,8 min (non misurato): la misura lo conferma
   come ordine di grandezza; il tempo dipende quasi solo dal numero di scene (5-8 nelle partite misurate).
 - **Stesso seme → stessa partita:** sulla partita del guardiano **288/288 voci del libro mastro identiche**,
   stesso risultato (2-0), stessa schermata finale (tabellino, pagella, statistiche: 1.625 caratteri uguali), stessa
@@ -23,6 +23,10 @@ allargata) è del giro 165. Qui la regola di posta è **quella che il gioco ha g
   diversi). Dove la partita intera è stabile, i soli highlight le sono identici; dove non lo è, il confronto
   **non è giudicabile**. È una variabilità che esisteva prima di questo giro (§4.3) e che non ho corretto.
 - Rosso `window.__CPM_NO_G166` · guardiano `npm run solo-highlight-166` (verde col verde, rosso col rosso).
+- **⚠️ La catena completa da 98 passi non è chiusa** (§6.1): in 8 ore, uno alla volta, ha fatto 11 passi; due sono
+  rossi tre prove su tre e **sono rossi uguali su `main` 7.999.190** (`grafica-v2`, `parata-100`). Verdi, uno alla
+  volta: gate 14/14, `partita-vera`, `replay`, `save-compat`, `career-critical`, `test:vision`, `test:logic`,
+  `typing-shortcuts`, `design-system`, `highlight-95` (instabile: 1 rossa, 1 verde).
 
 ## 1. Misura prima
 
@@ -127,9 +131,9 @@ Ripetizioni su questo nome: 3 partite intere e 2 a soli highlight, tutte identic
 
 | Partita | Scene | Durata reale | Gioco fluido | Scene (tempo) |
 |---|---|---|---|---|
-| Collaudo Salienti (4 giri) | 5 | 43,0-43,7 s | 7,7-8,1 s | 29,9 s |
-| Tobia Ferrante (3 giri) | 7 | 55,6-56,8 s | 6,2 s | ≈ 44 s |
-| Marco Bellandi (3 giri) | 7-8 | 56,8-63,7 s | 6,2-9,1 s | ≈ 52 s |
+| Collaudo Salienti (5 giri) | 5 | 39,8-43,7 s | 3,8-8,1 s | 29,8-32,0 s |
+| Tobia Ferrante (3 giri) | 7 | 55,5-56,5 s | 5,8-9,0 s | 41,2-45,6 s |
+| Marco Bellandi (3 giri) | 7-8 | 56,8-63,7 s | 6,2-9,1 s | 45,0-52,2 s |
 
 Cioè **0,7-1,1 minuti**, contro 3,1-3,5 minuti della partita intera (188-211 s). La stima del giro 164 (≈ 0,8 min)
 regge per le partite con 5 scene; con 7-8 scene si sale a circa un minuto. **Non misurato:** il telefono del PO,
@@ -207,32 +211,74 @@ misurare il passo.
 
 ## 6. Controlli
 
-Controlli lanciati uno alla volta (`CPM_CI_PAR=0`), memoria libera 12,3-15,5 GB e disco libero 29 GB registrati ogni
-minuto per tutta la catena. Build provata: commit `8838681` (`check-src`: IDENTICO BYTE PER BYTE, 7190384 byte).
+Tutti lanciati **uno alla volta**, con memoria e disco letti prima di ciascuno (memoria disponibile 12,3-15,5 GB,
+disco libero 28-29 GB per tutta la durata). Build provata: commit `8838681` (`check-src`: IDENTICO BYTE PER BYTE,
+7190384 byte); i commit successivi toccano solo questo rapporto.
 
-**Stato: catena COMPLETA in corso** (98 passi in sequenza pura; aggiornato il 12/11 alle 02:10). Il contenitore si è
-riavviato una volta alle 23:42 dell'11/11 durante `highlight-95`: la catena è ripartita come giro composto
-(`CPM_CI_FATTI`, 8 passi già verdi sulla stessa build non rigiocati).
+### 6.1 ⚠️ La catena COMPLETA da 98 passi NON è stata portata a termine
+
+Lo dichiaro senza giri di parole: la consegna chiedeva la catena completa, e non l'ho chiusa. I fatti:
+
+- Lanciata l'11/11 alle 19:59 con `CPM_CI_PAR=0 CPM_D3DIAG=1 node ci-runner.mjs completa`. In sequenza pura i passi
+  che giocano partite vere durano 30-90 minuti l'uno (`assist-298` 32 min, `highlight-95` 86 min, `parata-100`
+  45 min a prova).
+- Alle 23:42 il contenitore si è riavviato durante `highlight-95`; ripartita come giro composto (`CPM_CI_FATTI`,
+  8 passi già verdi sulla stessa build non rigiocati).
+- Dopo **8 ore** erano chiusi **11 passi su 98**: 9 verdi e 2 rossi tre prove su tre.
+- I due rossi li ho rigiocati su **`main` 7.999.190 (`6e995b9`)** in una copia di lavoro separata: **sono rossi anche
+  lì, con gli stessi numeri**. Quindi `main` stesso oggi non passa questa catena, e nessun ramo che ne parte può
+  chiuderla verde.
+- A quel passo servivano più di 24 ore per un esito che non poteva essere verde. Ho fermato la catena (per PID) e
+  ho eseguito, uno alla volta, il nucleo della catena del motore scritto in `CLAUDE.md` (§6.3).
+
+Per riprenderla dalla sessione madre, sulla stessa build:
+`CPM_CI_FATTI=simula-v2,momenti-v2,partita-v2,patrimonio-303,intro-292,tema-unico,carriera3-94,assist-298,highlight-95 CPM_CI_PAR=0 CPM_D3DIAG=1 node ci-runner.mjs completa`
+
+### 6.2 Gli 11 passi della catena eseguiti
+
+| Passo | Esito sul ramo | Numeri | Su `main` 7.999.190 |
+|---|---|---|---|
+| `grafica-v2` | ❌ rosso 6 prove su 6 | «classifica: la tua riga non nel colore del club» su telefono, tablet verticale, tablet orizzontale e PC | ❌ **rosso uguale** (stesse 4 righe) |
+| `simula-v2` | ✅ | 104 s | — |
+| `momenti-v2` | ✅ | 470 s | — |
+| `partita-v2` | ✅ | 573 s | — |
+| `patrimonio-303` | ✅ | 202 s | — |
+| `intro-292` | ✅ | 105 s | — |
+| `tema-unico` | ✅ | 52 s | — |
+| `carriera3-94` | ✅ | 217 s | — |
+| `assist-298` | ✅ | 1.905 s | — |
+| `highlight-95` (`CPM_D3DIAG=1`) | ⚠️ instabile: 1 rossa, 1 verde | prova 1 ❌: 101 highlight, D4 senza esito 0, **1 difetto D3** (s1/2021 «Stacco in corsa potente»: pallone a 6,3 dal portiere, soglia 6); braccio rosso visto (D4 7). Prova 2: interrotta dal riavvio a 57 minuti, non vale. Prova 3 ✅ 5.165 s | non rigiocato |
+| `parata-100` | ❌ rosso 3 prove su 3 (9.115 s) | verde: 8 parate, tutte su tiro del compagno, **0 sul ramo `cross_goal`** («non giudicato»), 0 difetti; rosso: 1 parata, il difetto non si vede | ❌ **rosso uguale**: 8 parate, 0 sul ramo `cross_goal`; rosso 1 parata |
+
+`highlight-95` non usa la modalità nuova; il difetto D3 della prima prova è a 0,3 dalla soglia e non si è ripetuto.
+Non posso confermare se sia un tremolio di base: su `main` non l'ho rigiocato (86 minuti a prova).
+Il fatto che `parata-100` dia **gli stessi identici conteggi** su ramo e su `main` (6 partite per braccio) è anche
+una prova indiretta che la partita intera non è cambiata.
+
+### 6.3 Nucleo della catena del motore (uno alla volta, dopo aver fermato la catena)
 
 | Controllo | Esito | Numeri |
 |---|---|---|
-| `solo-highlight-166` (da solo, prima della catena) | ✅ verde · rosso cade su 3, 7, 8 | vedi §5 |
-| `design-system` (da solo) | ✅ | «SISTEMA GRAFICO OK» |
-| `test:logic` (da solo) | ✅ | 0 falliti, 2,7 s |
-| `grafica-v2` | ❌ rosso 6 prove su 6 | «classifica: la tua riga non nel colore del club» su telefono, tablet e PC. Schermata che questo giro non tocca: **da confrontare con `main`** (non ancora fatto) |
-| `simula-v2` | ✅ | 104 s |
-| `momenti-v2` | ✅ | 470 s |
-| `partita-v2` | ✅ | 573 s |
-| `patrimonio-303` | ✅ | 202 s |
-| `intro-292` | ✅ | 105 s |
-| `tema-unico` | ✅ | 52 s |
-| `carriera3-94` | ✅ | 217 s |
-| `assist-298` | ✅ | 1.905 s |
-| `highlight-95` (con `CPM_D3DIAG=1`) | ⚠️ instabile: rosso alla prima prova, verde alla seconda completa | prima prova: verde 101 highlight, D4 0, **1 difetto D3** (s1/2021 «Stacco in corsa potente», pallone a 6,3 dal portiere, soglia 6); il braccio rosso si vede (D4 7). Seconda prova (interrotta dal riavvio a 57 minuti) non vale. Terza prova: ✅ 5.165 s |
-| `parata-100` | prima prova ❌ «non giudicato» | verde: 8 parate, tutte su tiro del compagno, 0 sul ramo `cross_goal`, 0 difetti. In riprova |
-| gli altri 85 passi | in corso | — |
+| `test:vision` | ✅ | 2 s |
+| `test:logic` | ✅ | 0 falliti, 2,7 s |
+| `typing-shortcuts` | ✅ | 17 s |
+| `validate-situations` (gate) | ✅ **14/14** | 628 s · fingerprint `00001505` · 0 failure · 1 avviso su `bg-coherence` (non bloccante) |
+| `save-compat` | ✅ | 8 s |
+| `replay` | ✅ | 42 s · «replay completi e coerenti» |
+| `career-critical` | ✅ | 563 s |
+| `partita-vera` | ✅ | 375 s · braccio verde · 12 bande su 12 giudicate e tenute · partite finite 2/2 |
+| `design-system` | ✅ | «SISTEMA GRAFICO OK» |
+| `solo-highlight-166` (2 giri) | ✅ verde · rosso cade su 3, 7, 8 | giro 1: 288/288 voci, intera 188,7 s, soli highlight 43,0 s · giro 2 (328 s): intera 185,0 s, soli highlight **39,8 s** (gioco fluido 3,8 s, scene 32,0 s, prepartita 4,0 s) |
 | `gol-eroe` | non esiste | nessun file né script con questo nome in `tests/visual` |
 
+### 6.4 Non eseguiti
+
+Gli altri **87 passi** della catena completa (da `riserva-103` a `esiti-60`), fra cui quelli mappati su `src/15` e
+`src/18` che non stanno nel nucleo: `intervista-231`, `tabellino-228`, `scene-221`, `esiti-218`, `nomi-219`,
+`difesa-220`, `gk-dive-sync`, `goal-postarc`, `schede-234/246/259/260`, `pagella-75`, `giornata-233`.
+Le build di distribuzione (`build-dist`, `validate-dist`) e `audit-copyright` non le ho lanciate: i testi nuovi
+(«Gioca solo i momenti salienti», «Momenti salienti», «Si va al prossimo momento») non contengono nomi propri.
+`docs/governo/STABILITA.json` non è stato scritto (la catena non è arrivata in fondo).
 
 ## 7. Foto (`docs/sviluppo/giro166/`)
 
@@ -265,6 +311,9 @@ prompt il primo club della lega; la partita che poi si gioca è quella vera dell
 
 ## 9. Domande per la sessione madre
 
+0. **`main` 7.999.190 non passa la catena completa** (§6.2): `grafica-v2` («la tua riga della classifica non nel
+   colore del club») e `parata-100` (nessuna parata sul ramo `cross_goal`: non giudicato) sono rossi stabili anche
+   su `main`. Sono già noti? E la catena completa del giro 166 va ripresa da voi (comando in §6.1) o basta il nucleo?
 1. **Variabilità di base (§4.3).** La partita intera, rigiocata identica, dà risultati diversi su 2 nomi su 3
    (stato iniziale diverso già al 1'; rami attorno alle scene). Va aperta una voce a parte? Tocca ogni guardiano
    che confronta due partite «uguali» (compreso `audio-161`).
