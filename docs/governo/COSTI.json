@@ -1314,5 +1314,19 @@
     "cache_read_tokens": 15461714,
     "worker_epoch": 1,
     "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYiaD1P1RjHeHGWGbMeeV",
+    "titolo": "giro 180c altre clip Rohr, correzione mani (PO-367)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-12T13:38:54Z",
+    "chiusa": "2026-11-12T14:20:58Z",
+    "cost_usd": 7.34584338,
+    "output_tokens": 70231,
+    "cache_read_tokens": 20172476,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-12"
   }
 ]
