@@ -1348,3 +1348,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~13:45 Roma — pack Rohr dal Drive del PO
 - Il PO ha caricato Mocap_Pack_04_Crowd_Reactions.zip (161 MB) e Mocap_Pack_05_Soccer.zip (136 MB) nella sua cartella Drive «gumroad», condivisa via link: scaricabili senza login (verificato dalla madre; copia locale cancellata subito).
 - Giro 180b avviato: zip solo in /tmp della sessione, mai nel repo; nel repo solo le clip convertite. Alla fine del giro la madre chiede al PO di togliere la condivisione via link (la licenza vieta la ridistribuzione del pacchetto).
+
+## 12/11 ~14:00 Roma — altri gesti dai pack Rohr
+- PO (scelta multipla, tutte): parate del portiere 15-17_Goalkeeper_Save_01..03; dribbling 01-03_Dribble; 07_Throw_In e 20/21 cartellini (Yellow_Card, Yellow_And_Red_Card); 04-06_Juggling; dal pack 04 applausi (01 Sitting_Clapping, 02 Standing_Clapping, 04 Clapping_And_Agree, 15 Clap_Twice_Hand_Up), 06/07/08 braccia al cielo, 12 Standing_Selfie, 13 Sitting_Phone_Video per pubblico/panchina di galà, presentazione e parata.
+- Madre: giro 180c dopo il 180b, stesso file assets/cgtrader-clip-rohr.glb e stessa procedura; il PO toglie la condivisione via link della cartella Drive solo dopo il 180c.
