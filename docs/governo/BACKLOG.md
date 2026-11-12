@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (35)
+## Voci aperte o parziali (36)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 12.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 13.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -55,6 +55,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-376 | 12/11 19:55 | PO: «negli highlights non vedo da molto azioni che partono dalle fasce. Riesci a confermarlo?» — non confermato: nel catalogo ci sono situazioni di fascia (cross dalla fascia sx/dx, sovrapposizione, punizione dalla fascia, cross d'esterno), ma quante ne escono davvero dipende da ruolo e posizione dell'eroe: da misurare su partite vere per ruolo, confrontando con una versione vecchia per capire se è una regressione | da misurare (highlight) | DA MISURARE — tra i primi giri della 192 | 7.999.192 |
 | PO-377 | 12/11 21:05 | Dal giro 173 (foto avviso-gol-telefono.png, madre): la riga di cronaca dice «GOL! Jung (WRK) … su assist di Vogt» mentre il badge del gioco e l'avviso dicono Riedel — due marcatori diversi per lo stesso gol; difetto preesistente | difetto (cronaca, coerenza) | DA MISURARE — 192 | 7.999.192 |
 | PO-378 | 12/11 21:20 | PO (foto docs/collaudo-po/191-nome-squadra-tagliato.png, «SELEZIONE GRAN...»): «i nomi delle squadre troppo lunghi non si leggono bene, non è il caso di abbreviare? ad es. Sel. Granata oppure Pol., Atl. ecc» | miglioramento (grafica, testi) | DA FARE — 192 (misura dei punti dove il nome si taglia, poi abbreviazione solo quando non ci sta) | 7.999.192 |
+| PO-379 | 12/11 23:10 | PO (foto docs/collaudo-po/191-spogliatoio-compagni-non-in-rosa.png): «i 3 compagni dello spogliatoio dove li ha pescati?» — Simone Napolitano, Zeno Vallone, Ivan Ratti non compaiono nella rosa di 24 mostrata sopra. Lettura del codice (da confermare con misura): syncTeammateNames (src/08 r. 469-470) non risincronizza i nomi quando l'eroe è in Primavera (proStatus u18), quindi restano i nomi generati alla creazione; il fix 7.106.3 «Nino non lo vedo in rosa» copriva solo la prima squadra | difetto (carriera, coerenza) | DA FARE — 192 | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 
