@@ -3,12 +3,15 @@
    Cerimonia di campionato forzata coi corpi GLB; col gancio __CPM_CERT_SET si visita ogni momento (10%, 50%, 85%). Il testimone
    __CPM_CER476.corpi da' ogni corpo (tranne l'eroe) nel riferimento del palco rettangolare: si contano i campioni con un corpo
    dentro l'impronta (corpo 6,4x2,8 o gradino 7,4x3,8) a quota sotto 0,2, cioe' DENTRO il solido.
-   MISURATO prima: un compagno e un avversario dentro per tutta la cerimonia (67+67). VERDE → 0. ROSSO (__CPM_NO_PALCO191B) → ≥10. */
+   MISURATO prima: un compagno e un avversario dentro per tutta la cerimonia (67+67). VERDE → 0. ROSSO (__CPM_NO_PALCO191B) → ≥10.
+   [giro 174 PO-371] Oggi nessun corpo capita dove compare il palco: verde e rosso davano entrambi «dentro 0» (rosso cieco). La sonda
+   PROVOCA la condizione col gancio di collaudo __CPM_PALCO174_INTRUSO (un compagno e un avversario messi dentro il palco a ogni
+   fotogramma, prima della spinta). Soglie invariate: verde 0, rosso ≥10. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 async function braccio(rosso) {
 const p = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(p);
-await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; if (r) window.__CPM_NO_PALCO191B = 1; }, rosso);
+await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_PALCO174_INTRUSO = 1; if (r) window.__CPM_NO_PALCO191B = 1; }, rosso);
 await openMatch(p, port, { skipLoadAll: true, name: 'Corpi191' });
 await p.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 60000 }).catch(() => {}); await sleep(1500);
 await p.evaluate(() => { window.__CPM_CER476 = []; window.__CPM_FORCE_CEREMONY({ name: 'CAMPIONI PREMIER DIVISION', kind: 'league' }); });

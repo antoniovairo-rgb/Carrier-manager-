@@ -19,7 +19,12 @@ for (const rosso of [false, true]) {
     await page.evaluate(k => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(k); }, Math.max(0, k));
     for (let w = 0; w < 30; w++) { await sleep(700); const f = await page.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (!/^hl_/.test(f || '')) break; }
     const R = await page.evaluate(() => (window.__CPM_P1B2 || []).filter(r => r[0] === 'cross' || r[0] === 'pass'));
-    out.push({ gi, k, fotogrammi: R.length, min: R.length ? Math.min(...R.map(r => Math.min(r[3], r[4]))) : null });
+    /* [giro 174 PO-371] la distanza si legge ALL'ISTANTE DEL LANCIO: l'ultimo fotogramma prima che l'arco parta (ballArcT<0) e i primi
+       due dopo. Prima era il minimo su TUTTO il gesto: da quando la rincorsa porta l'eroe accanto al pallone, nel rosso il piede gli
+       passava a 1,6 durante l'avvicinamento e il rosso non cadeva piu' (1,56/1,65), mentre al lancio il pallone era a 2,8-3,1. Il
+       verde ora deve avere il pallone al piede proprio quando parte il cross (prima bastava sfiorarlo in un istante qualunque). */
+    const iL = R.findIndex(r => r[6] >= 0), fin = iL > 0 ? R.slice(iL - 1, iL + 2) : [];
+    out.push({ gi, k, fotogrammi: R.length, lancio: fin.map(r => r[6]), min: fin.length >= 2 ? Math.min(...fin.map(r => Math.min(r[3], r[4]))) : null });
   }
   esito[rosso ? 'rosso' : 'verde'] = out; console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(out)); await page.close();
 }

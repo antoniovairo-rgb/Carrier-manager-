@@ -18,18 +18,25 @@ for (const rosso of [false, true]) {
   await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 20000 }); await sleep(2500);
   try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (e) {}
   await sleep(4000);
+  /* [giro 174 PO-371] la home V2 (testata compatta, decisione PO 02/11) non mostra piu' la carta dell'eroe: la sonda contava 0 carte
+     in entrambi i bracci (cieca). Le figurine oggi stanno in «Club» (compagni) e in «Agente» (il procuratore, il caso del PO-208): si
+     leggono LI', tutte, e la regola vale per OGNI carta (prima: solo la prima carta della home). */
+  const carteTab = {};
+  for (const tab of ['Club', 'Agente']) { await page.getByText(tab, { exact: true }).last().click().catch(() => {}); await sleep(1500);
+    carteTab[tab] = await page.evaluate(() => { const C = [...document.querySelectorAll('[data-cpm-volto]')]; return { n: C.length, grigie: C.filter(c => /e2e8f0|226, ?232, ?240/i.test(c.outerHTML || '')).length }; }); }
   esito[rosso ? 'rosso' : 'verde'] = await page.evaluate(() => {
     const z = { gol: 0, possesso: 0, tiri: 0, inPorta: 0, xg: 0, fascia: 0, cross: 0, dribbling: 0, dribblingOk: 0, passaggi: 0, passOk: 0, contrasti: 0, intercetti: 0, parate: 0, corner: 0, falli: 0, ammonizioni: 0, espulsioni: 0, rimesse: 0 };
     let righe = null; try { righe = righeTabellino23(z, z).length; } catch (e) { righe = 'errore ' + e.message; }
-    const c = document.querySelector('[data-cpm-volto]'); const html = c ? (c.outerHTML || '') : ''; return { carte: document.querySelectorAll('[data-cpm-volto]').length, grigia: /e2e8f0|226, ?232, ?240/i.test(html), righe };
+    return { righe };
   });
+  const E = esito[rosso ? 'rosso' : 'verde']; E.tab = carteTab; E.carte = carteTab.Club.n + carteTab.Agente.n; E.grigie = carteTab.Club.grigie + carteTab.Agente.grigie;
   await ctx.close();
 }
 await b.close(); srv.close();
 console.log(JSON.stringify(esito));
 const V = esito.verde, R = esito.rosso, g = [];
-if (!(V.carte >= 1 && V.grigia)) g.push('figurine verde ' + JSON.stringify(V));
-if (!(R.carte >= 1 && !R.grigia)) g.push('figurine rosso non si vede ' + JSON.stringify(R));
+if (!(V.tab.Club.n >= 1 && V.tab.Agente.n >= 1 && V.grigie === V.carte)) g.push('figurine verde ' + JSON.stringify(V));
+if (!(R.tab.Club.n >= 1 && R.tab.Agente.n >= 1 && R.grigie === 0)) g.push('figurine rosso non si vede ' + JSON.stringify(R));
 if (!(V.righe === 17)) g.push('statistiche verde ' + V.righe);
 if (!(R.righe === 2)) g.push('statistiche rosso ' + R.righe);
 if (g.length) { console.log('❌ figurine-208'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }

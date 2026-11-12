@@ -21,6 +21,10 @@ async function braccio(rosso) {
   const avv = await page.locator('[data-cpm="avv195"]').allInnerTexts();
   await page.getByText('Home', { exact: true }).first().click().catch(() => {}); await sleep(800);
   for (let k = 0; k < 30; k++) { if (await page.locator('text=LE TUE OPZIONI').first().isVisible().catch(() => false)) break;
+    /* [giro 174 PO-371] dal 7.35 ogni settimana vissuta apre l'«Impulso della settimana» (data-cpm="settimana23") con una scelta
+       obbligatoria: finche' non si risponde la stagione non si chiude. La sonda rispondeva solo a bottoni con testi fissi e restava
+       ferma sulla home (opzioni false nei due bracci). Ora risponde con l'ultima scelta del riquadro; i criteri non cambiano. */
+    if (await page.evaluate(() => { const m = document.querySelector('[data-cpm="settimana23"]'); if (!m) return false; const bs = [...m.querySelectorAll('button')].filter(b => b.offsetParent !== null); if (!bs.length) return false; bs[bs.length - 1].click(); return true; })) { await sleep(1500); continue; }
     await page.evaluate(() => { const x = [...document.querySelectorAll('button')].filter(b => b.offsetParent !== null).find(b => /Capito|Vivi la Settimana|Chiudi la stagione|Continua|Avanti|Prosegui|Aspettiamo|Ho capito|Vedi le offerte|Scegli|Salta|Chiudi$/i.test(b.textContent || '')); if (x) x.click(); }); await sleep(1500); }
   const opz = await page.locator('text=LE TUE OPZIONI').first().isVisible().catch(() => false);
   const leghe = await page.locator('[data-cpm="lega196"]').allInnerTexts();
