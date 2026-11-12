@@ -160,6 +160,28 @@ prima di ognuno. Dopo ogni modifica a `src/`: `node tools/build-src.mjs` + `node
 | `partita-vera` | verde | 12 bande su 12, partite finite 2/2 |
 | `ci-runner mirata` (area `src/12`, base `lavoro/191`, `CPM_CI_PAR=0`) | vedi sotto | 69 passi |
 
-**Catena mirata — IN CORSA** al momento di questo commit: verdi `test:logic`, `save-compat`, `design-system`, `tema-unico`,
-`typing-shortcuts`, `career-critical` (629 s), `regia-176` (1235 s, sonda definitiva), `chiusura-99` (1375 s); gli altri passi
-sono in esecuzione (passi lenti in sequenza). Questa sezione si aggiorna a catena chiusa.
+**Catena mirata — PARZIALE, NON VALE COME CATENA COMPLETA.** Lanciata con `node ci-runner.mjs mirata origin/lavoro/191`
+(`CPM_CI_PAR=0`, 69 passi). Dopo **47 passi in ~9 ore** il container è stato riavviato (uptime a 0) e la corsa è morta: per
+regola una corsa interrotta non vale e si rifà da capo sul build esatto. Non l'ho rifatta: altre ~8 ore con lo stesso rischio.
+**Domanda per la sessione madre: rifarla (magari a gruppi) prima della promozione?** E: `render-3d-023` e `ingresso-277` sono
+rossi anche sulla base `lavoro/191` — da assegnare a un giro proprio. Registro: `giro176/catena-mirata-parziale.txt`.
+
+Esiti dei 47 passi eseguiti:
+- **verdi 43**, fra cui il gate `validate-situations` (620 s: golden e `post-highlight` compresi, il rischio principale della
+  stretta), `partita-vera`, `regia-176` (con la sonda definitiva), `scena3d-96`, `career-critical`, `goal-postarc`,
+  `gk-dive-sync`, `esiti-218`, `scene-221`, `assist-298`, `consegna-103`, `contatto-103`.
+- **instabile 1**: `panchina-293` (verde alla seconda prova).
+- **rossi 4, tutti PREESISTENTI** (misurati o documentati uguali senza questo giro):
+  - `parata-100` — nessuna parata sul ramo `cross_goal` (verde 8 parate, rosso 1): conteggi identici a quelli che il rapporto
+    del giro 166 registra su `main` 7.999.190.
+  - `spazio-296` — menu iniziale «Crea il tuo calciatore» 16,8 px: il rapporto del giro 169 lo dà «base identica» (UI, `src/17`).
+  - `render-3d-023` — heap 1.298 MB > 700 (stabile, 1.947 texture). **Rifatto sulla base `lavoro/191`** (worktree, stesso
+    browser): heap 1.287-1.303 MB, stesso rosso. Non è di questo giro; la soglia (misurata 250-330 MB in origine) va guardata
+    a parte.
+  - `ingresso-277` — «nessun pulsante Salta ingresso» (bracci verde e salta). **Rifatto sulla base `lavoro/191`**: stesso
+    rosso, stessi due motivi (il pulsante `data-cpm="salta-ingresso"` non compare). Non è di questo giro: l'ingresso in campo
+    (fase `walkout`) non è toccato dalla regia 176, che agisce solo nelle fasi `hl_*`.
+- **non eseguiti 22**: i passi da `difesa-220-scena` in poi (`ingresso-camminata-245`, `analisi-217`, `piedi-252`, `rete-252`,
+  `difesa-252`, `rinvio-252`, `portiere-252`, `aereo-252`, `difesa-220-giro31`, `apertura-261`, `parata-258`, `esiti-241`,
+  `camera-252`*, `reazione-252`, `spot-266`, `testa-143`, `stadi-071`, `cerimonie`, `passaggio-coppa-137`, `kit-061`,
+  `strisce-corpo`). *`camera-252` era già stato eseguito a parte: verde.
