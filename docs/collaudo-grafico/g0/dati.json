@@ -22,7 +22,8 @@
   "carriera-profilo",
   "carriera-nazionale",
   "agente",
-  "ufficio"
+  "ufficio",
+  "prepartita"
  ],
  "dati": {
   "home": {
@@ -1028,7 +1029,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Informativa sulla privacy"
      },
      {
@@ -1115,7 +1116,7 @@
       "fs": 13,
       "n": 1,
       "esempio": "Informativa sulla privacy",
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus"
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
      },
      {
       "fs": 15,
@@ -1230,7 +1231,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Informativa sulla privacy"
      },
      {
@@ -1317,7 +1318,7 @@
       "fs": 13,
       "n": 1,
       "esempio": "Informativa sulla privacy",
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus"
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
      },
      {
       "fs": 15,
@@ -1432,7 +1433,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Informativa sulla privacy"
      },
      {
@@ -1519,7 +1520,7 @@
       "fs": 13,
       "n": 1,
       "esempio": "Informativa sulla privacy",
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus"
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
      },
      {
       "fs": 15,
@@ -1634,7 +1635,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Informativa sulla privacy"
      },
      {
@@ -1721,7 +1722,7 @@
       "fs": 13,
       "n": 1,
       "esempio": "Informativa sulla privacy",
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus"
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
      },
      {
       "fs": 15,
@@ -1836,7 +1837,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Informativa sulla privacy"
      },
      {
@@ -1923,7 +1924,7 @@
       "fs": 13,
       "n": 1,
       "esempio": "Informativa sulla privacy",
-      "sel": "div:nth-child(2)>div:nth-child(2)>a.cpm-press.cpm-focus"
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
      },
      {
       "fs": 15,
@@ -4054,15 +4055,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 95,
+    "nTesto": 93,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 23,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -4085,7 +4086,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Nel pieno della carriera"
      },
      {
@@ -4121,7 +4122,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span.cpm-num",
       "esempio": "28"
      }
     ],
@@ -4152,7 +4153,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 56
+      "n": 55
      },
      {
       "f": "Barlow Condensed",
@@ -4166,7 +4167,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -4246,7 +4247,7 @@
      },
      {
       "fs": 13,
-      "n": 16,
+      "n": 15,
       "esempio": "Il gruppo prima di tutto →",
       "sel": "div.cpm-career>div:nth-child(6)>button.cpm-press.cpm-focus"
      },
@@ -4276,80 +4277,80 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1940,
-    "schermate": 2.12,
+    "altezzaPx": 1877,
+    "schermate": 2.05,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 197,
-      "quota": 10.2,
+      "quota": 10.5,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(4)"
      },
      {
       "px": 193,
-      "quota": 10,
+      "quota": 10.3,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 171,
-      "quota": 8.8,
+      "quota": 9.1,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 139,
-      "quota": 7.2,
+      "quota": 7.4,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(18)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(17)"
      },
      {
       "px": 110,
-      "quota": 5.7,
+      "quota": 5.8,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 95,
-      "quota": 4.9,
+      "quota": 5,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
       "px": 77,
-      "quota": 4,
+      "quota": 4.1,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Adesso guardano te›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
      },
      {
       "px": 68,
-      "quota": 3.5,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.3,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
      {
       "px": 62,
-      "quota": 3.2,
-      "txt": "Sponsor›",
+      "quota": 3.3,
+      "txt": "Offerta di sponsor · Kappa Ridge›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
     ],
@@ -4373,7 +4374,7 @@
      "🤝",
      "⭐",
      "🎁",
-     "🌱 Il ragazzo della Primavera",
+     "🌱 Il tuo allievo",
      "🔥",
      "✅",
      "☕ Sostieni il progetto",
@@ -4403,15 +4404,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 95,
+    "nTesto": 93,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 23,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -4434,7 +4435,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Nel pieno della carriera"
      },
      {
@@ -4470,7 +4471,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span.cpm-num",
       "esempio": "28"
      }
     ],
@@ -4501,7 +4502,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 56
+      "n": 55
      },
      {
       "f": "Barlow Condensed",
@@ -4515,7 +4516,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -4595,7 +4596,7 @@
      },
      {
       "fs": 13,
-      "n": 16,
+      "n": 15,
       "esempio": "Il gruppo prima di tutto →",
       "sel": "div.cpm-career>div:nth-child(6)>button.cpm-press.cpm-focus"
      },
@@ -4625,80 +4626,80 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1927,
-    "schermate": 2.11,
+    "altezzaPx": 1865,
+    "schermate": 2.04,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 197,
-      "quota": 10.2,
+      "quota": 10.6,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(4)"
      },
      {
       "px": 179,
-      "quota": 9.3,
+      "quota": 9.6,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 171,
-      "quota": 8.9,
+      "quota": 9.2,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 139,
-      "quota": 7.2,
+      "quota": 7.5,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(18)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(17)"
      },
      {
       "px": 110,
-      "quota": 5.7,
+      "quota": 5.9,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 95,
-      "quota": 4.9,
+      "quota": 5.1,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
       "px": 77,
-      "quota": 4,
+      "quota": 4.1,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Adesso guardano te›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
      },
      {
       "px": 68,
-      "quota": 3.5,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.3,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
      {
       "px": 62,
-      "quota": 3.2,
-      "txt": "Sponsor›",
+      "quota": 3.3,
+      "txt": "Offerta di sponsor · Kappa Ridge›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
     ],
@@ -4722,7 +4723,7 @@
      "🤝",
      "⭐",
      "🎁",
-     "🌱 Il ragazzo della Primavera",
+     "🌱 Il tuo allievo",
      "🔥",
      "✅",
      "☕ Sostieni il progetto",
@@ -4752,15 +4753,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 95,
+    "nTesto": 93,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 23,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -4783,7 +4784,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Nel pieno della carriera"
      },
      {
@@ -4819,7 +4820,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span.cpm-num",
       "esempio": "28"
      }
     ],
@@ -4851,7 +4852,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 56
+      "n": 55
      },
      {
       "f": "Barlow Condensed",
@@ -4865,7 +4866,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -4945,7 +4946,7 @@
      },
      {
       "fs": 13,
-      "n": 16,
+      "n": 15,
       "esempio": "Il gruppo prima di tutto →",
       "sel": "div.cpm-career>div:nth-child(6)>button.cpm-press.cpm-focus"
      },
@@ -4975,80 +4976,80 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1927,
-    "schermate": 2.11,
+    "altezzaPx": 1865,
+    "schermate": 2.04,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 197,
-      "quota": 10.2,
+      "quota": 10.6,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(4)"
      },
      {
       "px": 179,
-      "quota": 9.3,
+      "quota": 9.6,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 171,
-      "quota": 8.9,
+      "quota": 9.2,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 139,
-      "quota": 7.2,
+      "quota": 7.5,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(18)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(17)"
      },
      {
       "px": 117,
-      "quota": 6,
+      "quota": 6.2,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 95,
-      "quota": 4.9,
+      "quota": 5.1,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
       "px": 77,
-      "quota": 4,
+      "quota": 4.1,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Adesso guardano te›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
      },
      {
       "px": 68,
-      "quota": 3.5,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.3,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
      {
       "px": 62,
-      "quota": 3.2,
-      "txt": "Sponsor›",
+      "quota": 3.3,
+      "txt": "Offerta di sponsor · Kappa Ridge›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
     ],
@@ -5072,7 +5073,7 @@
      "🤝",
      "⭐",
      "🎁",
-     "🌱 Il ragazzo della Primavera",
+     "🌱 Il tuo allievo",
      "🔥",
      "✅",
      "☕ Sostieni il progetto",
@@ -5102,15 +5103,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 95,
+    "nTesto": 93,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 23,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -5133,7 +5134,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Nel pieno della carriera"
      },
      {
@@ -5169,7 +5170,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span.cpm-num",
       "esempio": "28"
      }
     ],
@@ -5201,7 +5202,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 56
+      "n": 55
      },
      {
       "f": "Barlow Condensed",
@@ -5215,7 +5216,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -5295,7 +5296,7 @@
      },
      {
       "fs": 13,
-      "n": 16,
+      "n": 15,
       "esempio": "Il gruppo prima di tutto →",
       "sel": "div.cpm-career>div:nth-child(6)>button.cpm-press.cpm-focus"
      },
@@ -5325,80 +5326,80 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1927,
-    "schermate": 2.11,
+    "altezzaPx": 1865,
+    "schermate": 2.04,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 197,
-      "quota": 10.2,
+      "quota": 10.6,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(4)"
      },
      {
       "px": 179,
-      "quota": 9.3,
+      "quota": 9.6,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 171,
-      "quota": 8.9,
+      "quota": 9.2,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 139,
-      "quota": 7.2,
+      "quota": 7.5,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(18)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(17)"
      },
      {
       "px": 117,
-      "quota": 6,
+      "quota": 6.2,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 95,
-      "quota": 4.9,
+      "quota": 5.1,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
       "px": 77,
-      "quota": 4,
+      "quota": 4.1,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Adesso guardano te›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.8,
       "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
      },
      {
       "px": 68,
-      "quota": 3.5,
+      "quota": 3.6,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
      },
      {
       "px": 62,
-      "quota": 3.2,
+      "quota": 3.3,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
      {
       "px": 62,
-      "quota": 3.2,
-      "txt": "Sponsor›",
+      "quota": 3.3,
+      "txt": "Offerta di sponsor · Kappa Ridge›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
     ],
@@ -5422,7 +5423,7 @@
      "🤝",
      "⭐",
      "🎁",
-     "🌱 Il ragazzo della Primavera",
+     "🌱 Il tuo allievo",
      "🔥",
      "✅",
      "☕ Sostieni il progetto",
@@ -5452,15 +5453,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 95,
+    "nTesto": 93,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 71,
+    "nMisurati": 70,
     "nSotto": 0,
     "nGradiente": 2,
-    "nEmoji": 23,
+    "nEmoji": 22,
     "peggiori": [
      {
       "testo": "#b7707d",
@@ -5483,7 +5484,7 @@
       "soglia": 4.5,
       "n": 1,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Nel pieno della carriera"
      },
      {
@@ -5519,7 +5520,7 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "div:nth-child(15)>div:nth-child(1)>span.cpm-num",
+      "sel": "div:nth-child(14)>div:nth-child(1)>span.cpm-num",
       "esempio": "28"
      }
     ],
@@ -5551,7 +5552,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 56
+      "n": 55
      },
      {
       "f": "Barlow Condensed",
@@ -5565,7 +5566,7 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 28,
+      "n": 27,
       "fs": 32,
       "esempio": "10"
      },
@@ -5645,7 +5646,7 @@
      },
      {
       "fs": 13,
-      "n": 16,
+      "n": 15,
       "esempio": "Il gruppo prima di tutto →",
       "sel": "div.cpm-career>div:nth-child(6)>button.cpm-press.cpm-focus"
      },
@@ -5675,80 +5676,80 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1911,
-    "schermate": 2.09,
+    "altezzaPx": 1848,
+    "schermate": 2.02,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 197,
-      "quota": 10.3,
+      "quota": 10.7,
       "txt": "86ATTGrafica ProbeItalia · Attaccante · 28",
       "sel": "div.cpm-scroll>div.cpm-career>section:nth-child(4)"
      },
      {
       "px": 179,
-      "quota": 9.4,
+      "quota": 9.7,
       "txt": "Stagione 12 · Settimana 11 di 3810Partite1",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
       "px": 153,
-      "quota": 8,
+      "quota": 8.3,
       "txt": "Lo spogliatoio🎁Claudio Milani ti deve una",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      },
      {
       "px": 139,
-      "quota": 7.3,
+      "quota": 7.5,
       "txt": "Obiettivi personali›✅ Batti il tuo record:",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(18)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(17)"
      },
      {
       "px": 117,
-      "quota": 6.1,
+      "quota": 6.3,
       "txt": "0AvanzaEscIndietroSpcConferma☕ Sostieni il",
       "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar.cpm-v2nav"
      },
      {
       "px": 95,
-      "quota": 5,
+      "quota": 5.1,
       "txt": "SALFC SalernumLega B · St. 12 · Sett. 11/3",
       "sel": "div.cpm-scroll>div.cpm-career>header:nth-child(1)"
      },
      {
       "px": 77,
-      "quota": 4,
+      "quota": 4.1,
       "txt": "🤝78/100Fiducia del mister⭐64/100Popolarit",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.9,
       "txt": "Adesso guardano te›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 71,
-      "quota": 3.7,
+      "quota": 3.9,
       "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
      },
      {
       "px": 68,
-      "quota": 3.6,
+      "quota": 3.7,
       "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
      },
      {
       "px": 62,
-      "quota": 3.3,
+      "quota": 3.4,
       "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
      },
      {
       "px": 62,
-      "quota": 3.3,
-      "txt": "Sponsor›",
+      "quota": 3.4,
+      "txt": "Offerta di sponsor · Kappa Ridge›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
      }
     ],
@@ -5772,7 +5773,7 @@
      "🤝",
      "⭐",
      "🎁",
-     "🌱 Il ragazzo della Primavera",
+     "🌱 Il tuo allievo",
      "🔥",
      "✅",
      "☕ Sostieni il progetto",
@@ -5804,7 +5805,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 241,
+    "nTesto": 239,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5812,7 +5813,7 @@
     "nMisurati": 240,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#ffffff",
@@ -5845,10 +5846,10 @@
       "fw": 400,
       "rap": 6.03,
       "soglia": 4.5,
-      "n": 13,
+      "n": 12,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(7)",
-      "esempio": "1"
+      "esempio": "4"
      },
      {
       "testo": "#f87171",
@@ -5859,8 +5860,8 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "tbody:nth-child(2)>tr:nth-child(14)>td:nth-child(7)",
-      "esempio": "8"
+      "sel": "tbody:nth-child(2)>tr:nth-child(11)>td:nth-child(7)",
+      "esempio": "7"
      },
      {
       "testo": "#9aa3b2",
@@ -5869,7 +5870,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 43,
+      "n": 38,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(4)",
       "esempio": "19"
@@ -5914,7 +5915,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 100,
+      "n": 101,
       "fs": 12,
       "esempio": "Calendario"
      },
@@ -5925,16 +5926,16 @@
       "esempio": "Classifica"
      },
      {
-      "c": "#4ade80",
-      "n": 27,
+      "c": "#f87171",
+      "n": 28,
       "fs": 12,
-      "esempio": "8"
+      "esempio": "4"
      },
      {
-      "c": "#f87171",
-      "n": 27,
+      "c": "#4ade80",
+      "n": 25,
       "fs": 12,
-      "esempio": "1"
+      "esempio": "10"
      },
      {
       "c": "#8f98a8",
@@ -5977,7 +5978,7 @@
      {
       "fs": 13,
       "n": 20,
-      "esempio": "34",
+      "esempio": "35",
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(11)"
      },
      {
@@ -6045,7 +6046,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 241,
+    "nTesto": 239,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6053,7 +6054,7 @@
     "nMisurati": 240,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#ffffff",
@@ -6086,10 +6087,10 @@
       "fw": 400,
       "rap": 6.03,
       "soglia": 4.5,
-      "n": 13,
+      "n": 12,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(7)",
-      "esempio": "1"
+      "esempio": "4"
      },
      {
       "testo": "#f87171",
@@ -6100,8 +6101,8 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "tbody:nth-child(2)>tr:nth-child(14)>td:nth-child(7)",
-      "esempio": "8"
+      "sel": "tbody:nth-child(2)>tr:nth-child(11)>td:nth-child(7)",
+      "esempio": "7"
      },
      {
       "testo": "#9aa3b2",
@@ -6110,7 +6111,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 43,
+      "n": 38,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(4)",
       "esempio": "19"
@@ -6155,7 +6156,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 100,
+      "n": 101,
       "fs": 12,
       "esempio": "Calendario"
      },
@@ -6166,16 +6167,16 @@
       "esempio": "Classifica"
      },
      {
-      "c": "#4ade80",
-      "n": 27,
+      "c": "#f87171",
+      "n": 28,
       "fs": 12,
-      "esempio": "8"
+      "esempio": "4"
      },
      {
-      "c": "#f87171",
-      "n": 27,
+      "c": "#4ade80",
+      "n": 25,
       "fs": 12,
-      "esempio": "1"
+      "esempio": "10"
      },
      {
       "c": "#8f98a8",
@@ -6218,7 +6219,7 @@
      {
       "fs": 13,
       "n": 20,
-      "esempio": "34",
+      "esempio": "35",
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(11)"
      },
      {
@@ -6286,7 +6287,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 241,
+    "nTesto": 239,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6294,7 +6295,7 @@
     "nMisurati": 240,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#ffffff",
@@ -6327,10 +6328,10 @@
       "fw": 400,
       "rap": 6.03,
       "soglia": 4.5,
-      "n": 13,
+      "n": 12,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(7)",
-      "esempio": "1"
+      "esempio": "4"
      },
      {
       "testo": "#f87171",
@@ -6341,8 +6342,8 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "tbody:nth-child(2)>tr:nth-child(14)>td:nth-child(7)",
-      "esempio": "8"
+      "sel": "tbody:nth-child(2)>tr:nth-child(11)>td:nth-child(7)",
+      "esempio": "7"
      },
      {
       "testo": "#9aa3b2",
@@ -6351,7 +6352,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 43,
+      "n": 38,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(4)",
       "esempio": "19"
@@ -6397,7 +6398,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 100,
+      "n": 101,
       "fs": 12,
       "esempio": "Calendario"
      },
@@ -6408,16 +6409,16 @@
       "esempio": "Classifica"
      },
      {
-      "c": "#4ade80",
-      "n": 27,
+      "c": "#f87171",
+      "n": 28,
       "fs": 12,
-      "esempio": "8"
+      "esempio": "4"
      },
      {
-      "c": "#f87171",
-      "n": 27,
+      "c": "#4ade80",
+      "n": 25,
       "fs": 12,
-      "esempio": "1"
+      "esempio": "10"
      },
      {
       "c": "#8f98a8",
@@ -6460,7 +6461,7 @@
      {
       "fs": 13,
       "n": 20,
-      "esempio": "34",
+      "esempio": "35",
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(11)"
      },
      {
@@ -6528,7 +6529,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 241,
+    "nTesto": 239,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6536,7 +6537,7 @@
     "nMisurati": 240,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#ffffff",
@@ -6569,10 +6570,10 @@
       "fw": 400,
       "rap": 6.03,
       "soglia": 4.5,
-      "n": 13,
+      "n": 12,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(7)",
-      "esempio": "1"
+      "esempio": "4"
      },
      {
       "testo": "#f87171",
@@ -6583,8 +6584,8 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "tbody:nth-child(2)>tr:nth-child(14)>td:nth-child(7)",
-      "esempio": "8"
+      "sel": "tbody:nth-child(2)>tr:nth-child(11)>td:nth-child(7)",
+      "esempio": "7"
      },
      {
       "testo": "#9aa3b2",
@@ -6593,7 +6594,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 43,
+      "n": 38,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(4)",
       "esempio": "19"
@@ -6639,7 +6640,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 100,
+      "n": 101,
       "fs": 12,
       "esempio": "Calendario"
      },
@@ -6650,16 +6651,16 @@
       "esempio": "Classifica"
      },
      {
-      "c": "#4ade80",
-      "n": 27,
+      "c": "#f87171",
+      "n": 28,
       "fs": 12,
-      "esempio": "8"
+      "esempio": "4"
      },
      {
-      "c": "#f87171",
-      "n": 27,
+      "c": "#4ade80",
+      "n": 25,
       "fs": 12,
-      "esempio": "1"
+      "esempio": "10"
      },
      {
       "c": "#8f98a8",
@@ -6702,7 +6703,7 @@
      {
       "fs": 13,
       "n": 20,
-      "esempio": "34",
+      "esempio": "35",
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(11)"
      },
      {
@@ -6770,7 +6771,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 241,
+    "nTesto": 239,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6778,7 +6779,7 @@
     "nMisurati": 240,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 20,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#ffffff",
@@ -6811,10 +6812,10 @@
       "fw": 400,
       "rap": 6.03,
       "soglia": 4.5,
-      "n": 13,
+      "n": 12,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(7)",
-      "esempio": "1"
+      "esempio": "4"
      },
      {
       "testo": "#f87171",
@@ -6825,8 +6826,8 @@
       "soglia": 4.5,
       "n": 2,
       "svg": false,
-      "sel": "tbody:nth-child(2)>tr:nth-child(14)>td:nth-child(7)",
-      "esempio": "8"
+      "sel": "tbody:nth-child(2)>tr:nth-child(11)>td:nth-child(7)",
+      "esempio": "7"
      },
      {
       "testo": "#9aa3b2",
@@ -6835,7 +6836,7 @@
       "fw": 400,
       "rap": 6.56,
       "soglia": 4.5,
-      "n": 43,
+      "n": 38,
       "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(4)",
       "esempio": "19"
@@ -6881,7 +6882,7 @@
     "tinteTesto": [
      {
       "c": "#9aa3b2",
-      "n": 100,
+      "n": 101,
       "fs": 12,
       "esempio": "Calendario"
      },
@@ -6892,16 +6893,16 @@
       "esempio": "Classifica"
      },
      {
-      "c": "#4ade80",
-      "n": 27,
+      "c": "#f87171",
+      "n": 28,
       "fs": 12,
-      "esempio": "8"
+      "esempio": "4"
      },
      {
-      "c": "#f87171",
-      "n": 27,
+      "c": "#4ade80",
+      "n": 25,
       "fs": 12,
-      "esempio": "1"
+      "esempio": "10"
      },
      {
       "c": "#8f98a8",
@@ -6944,7 +6945,7 @@
      {
       "fs": 13,
       "n": 20,
-      "esempio": "34",
+      "esempio": "35",
       "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(11)"
      },
      {
@@ -10657,14 +10658,88 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1794,
-    "schermate": 1.96,
+    "altezzaPx": 1844,
+    "schermate": 2.02,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [],
+    "blocchi": [
+     {
+      "px": 731,
+      "quota": 39.7,
+      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 228,
+      "quota": 12.4,
+      "txt": "Statistiche6›Gol stagione14Assist stagione",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
+     },
+     {
+      "px": 123,
+      "quota": 6.7,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Biografia›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Record personali3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Bacheca trofei3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Storico allenatori4›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Rivale: Bruno Salvatori›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Club dei sogni: FC Catalunya›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "La Stampa3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Match del Cuore›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Corsa ai Premi›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
+     }
+    ],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
      "Presenze": 3,
+     "OVR": 1,
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
@@ -10914,14 +10989,88 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1782,
-    "schermate": 1.95,
+    "altezzaPx": 1831,
+    "schermate": 2,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [],
+    "blocchi": [
+     {
+      "px": 731,
+      "quota": 39.9,
+      "txt": "86ATTITAPROBE84TIR81PAS83DRI82VEL80FIS81TE",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 214,
+      "quota": 11.7,
+      "txt": "Statistiche6›Gol stagione14Assist stagione",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(3)"
+     },
+     {
+      "px": 123,
+      "quota": 6.7,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Biografia›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Record personali3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(5)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Bacheca trofei3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Storico allenatori4›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Rivale: Bruno Salvatori›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(8)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Club dei sogni: FC Catalunya›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(9)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "La Stampa3›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Match del Cuore›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 40,
+      "quota": 2.2,
+      "txt": "Corsa ai Premi›",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(12)"
+     }
+    ],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
      "Presenze": 3,
+     "OVR": 1,
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
@@ -11171,14 +11320,15 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1782,
-    "schermate": 1.95,
+    "altezzaPx": 1815,
+    "schermate": 1.98,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
      "Presenze": 3,
+     "OVR": 1,
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
@@ -11428,14 +11578,15 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1782,
-    "schermate": 1.95,
+    "altezzaPx": 1815,
+    "schermate": 1.98,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
      "Presenze": 3,
+     "OVR": 1,
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
@@ -11685,14 +11836,15 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1782,
-    "schermate": 1.95,
+    "altezzaPx": 1815,
+    "schermate": 1.98,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
      "Gol": 4,
      "Assist": 3,
      "Presenze": 3,
+     "OVR": 1,
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
@@ -15266,10 +15418,985 @@
      }
     ]
    }
+  },
+  "prepartita": {
+   "360": {
+    "W": 360,
+    "radice": "body",
+    "scrollWidth": 360,
+    "clientWidth": 360,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 31,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 29,
+    "nSotto": 0,
+    "nGradiente": 0,
+    "nEmoji": 4,
+    "peggiori": [
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 15,
+      "fw": 800,
+      "rap": 5.74,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "VS"
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Il mister · come vincerla"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 5,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(3)",
+      "esempio": "Ospite"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 12,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#0d0f14",
+      "fs": 13,
+      "fw": 400,
+      "rap": 6.59,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus",
+      "esempio": "Torna alla home"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 5,
+    "nFondi": 5,
+    "nCorpi": 4,
+    "nRaggi": 4,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     13,
+     15
+    ],
+    "raggi": [
+     6,
+     8,
+     16,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#f4f1ea",
+      "n": 16,
+      "fs": 27,
+      "esempio": "SAL"
+     },
+     {
+      "c": "#9aa3b2",
+      "n": 8,
+      "fs": 12,
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "c": "#8f98a8",
+      "n": 3,
+      "fs": 15,
+      "esempio": "VS"
+     },
+     {
+      "c": "#e8b44a",
+      "n": 1,
+      "fs": 11,
+      "esempio": "La tua squadra · Casa"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Vedi le formazioni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 10,
+      "esempio": "Lega B",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Giornata 99 di 1",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "VS",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 3,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🗡️",
+     "🌧️ Pioggia"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root",
+      "lum": 0.005,
+      "fondo": "#0d0f14",
+      "px": 800,
+      "txt": "*{box-sizing:border-box;} @keyfram"
+     }
+    ]
+   },
+   "375": {
+    "W": 375,
+    "radice": "body",
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 31,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 29,
+    "nSotto": 0,
+    "nGradiente": 0,
+    "nEmoji": 4,
+    "peggiori": [
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 15,
+      "fw": 800,
+      "rap": 5.74,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "VS"
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Il mister · come vincerla"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 5,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(3)",
+      "esempio": "Ospite"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 12,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#0d0f14",
+      "fs": 13,
+      "fw": 400,
+      "rap": 6.59,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus",
+      "esempio": "Torna alla home"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 5,
+    "nFondi": 5,
+    "nCorpi": 4,
+    "nRaggi": 4,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     13,
+     15
+    ],
+    "raggi": [
+     6,
+     8,
+     16,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#f4f1ea",
+      "n": 16,
+      "fs": 27,
+      "esempio": "SAL"
+     },
+     {
+      "c": "#9aa3b2",
+      "n": 8,
+      "fs": 12,
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "c": "#8f98a8",
+      "n": 3,
+      "fs": 15,
+      "esempio": "VS"
+     },
+     {
+      "c": "#e8b44a",
+      "n": 1,
+      "fs": 11,
+      "esempio": "La tua squadra · Casa"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Vedi le formazioni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 10,
+      "esempio": "Lega B",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Giornata 99 di 1",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "VS",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 3,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🗡️",
+     "🌧️ Pioggia"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root",
+      "lum": 0.005,
+      "fondo": "#0d0f14",
+      "px": 667,
+      "txt": "*{box-sizing:border-box;} @keyfram"
+     }
+    ]
+   },
+   "390": {
+    "W": 390,
+    "radice": "body",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 31,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 29,
+    "nSotto": 0,
+    "nGradiente": 0,
+    "nEmoji": 4,
+    "peggiori": [
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 15,
+      "fw": 800,
+      "rap": 5.74,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "VS"
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Il mister · come vincerla"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 5,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(3)",
+      "esempio": "Ospite"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 12,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#0d0f14",
+      "fs": 13,
+      "fw": 400,
+      "rap": 6.59,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus",
+      "esempio": "Torna alla home"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 5,
+    "nFondi": 5,
+    "nCorpi": 4,
+    "nRaggi": 4,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     13,
+     15
+    ],
+    "raggi": [
+     6,
+     8,
+     16,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#f4f1ea",
+      "n": 16,
+      "fs": 27,
+      "esempio": "SAL"
+     },
+     {
+      "c": "#9aa3b2",
+      "n": 8,
+      "fs": 12,
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "c": "#8f98a8",
+      "n": 3,
+      "fs": 15,
+      "esempio": "VS"
+     },
+     {
+      "c": "#e8b44a",
+      "n": 1,
+      "fs": 11,
+      "esempio": "La tua squadra · Casa"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Vedi le formazioni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 10,
+      "esempio": "Lega B",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Giornata 99 di 1",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "VS",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 3,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🗡️",
+     "🌧️ Pioggia"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root",
+      "lum": 0.005,
+      "fondo": "#0d0f14",
+      "px": 844,
+      "txt": "*{box-sizing:border-box;} @keyfram"
+     }
+    ]
+   },
+   "412": {
+    "W": 412,
+    "radice": "body",
+    "scrollWidth": 412,
+    "clientWidth": 412,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 31,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 29,
+    "nSotto": 0,
+    "nGradiente": 0,
+    "nEmoji": 4,
+    "peggiori": [
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 15,
+      "fw": 800,
+      "rap": 5.74,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "VS"
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Il mister · come vincerla"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 5,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(3)",
+      "esempio": "Ospite"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 12,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#0d0f14",
+      "fs": 13,
+      "fw": 400,
+      "rap": 6.59,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus",
+      "esempio": "Torna alla home"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 5,
+    "nFondi": 5,
+    "nCorpi": 4,
+    "nRaggi": 4,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     13,
+     15
+    ],
+    "raggi": [
+     6,
+     8,
+     16,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#f4f1ea",
+      "n": 16,
+      "fs": 27,
+      "esempio": "SAL"
+     },
+     {
+      "c": "#9aa3b2",
+      "n": 8,
+      "fs": 12,
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "c": "#8f98a8",
+      "n": 3,
+      "fs": 15,
+      "esempio": "VS"
+     },
+     {
+      "c": "#e8b44a",
+      "n": 1,
+      "fs": 11,
+      "esempio": "La tua squadra · Casa"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Vedi le formazioni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 10,
+      "esempio": "Lega B",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Giornata 99 di 1",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "VS",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 3,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🗡️",
+     "🌧️ Pioggia"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root",
+      "lum": 0.005,
+      "fondo": "#0d0f14",
+      "px": 915,
+      "txt": "*{box-sizing:border-box;} @keyfram"
+     }
+    ]
+   },
+   "430": {
+    "W": 430,
+    "radice": "body",
+    "scrollWidth": 430,
+    "clientWidth": 430,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 31,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 29,
+    "nSotto": 0,
+    "nGradiente": 0,
+    "nEmoji": 4,
+    "peggiori": [
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 15,
+      "fw": 800,
+      "rap": 5.74,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "VS"
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.74,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Il mister · come vincerla"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 5,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(3)",
+      "esempio": "Ospite"
+     },
+     {
+      "testo": "#9aa3b2",
+      "fondo": "#1a1e27",
+      "fs": 12,
+      "fw": 400,
+      "rap": 6.56,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "testo": "#8f98a8",
+      "fondo": "#0d0f14",
+      "fs": 13,
+      "fw": 400,
+      "rap": 6.59,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div.cpm-piena-az>button.cpm-press.cpm-focus",
+      "esempio": "Torna alla home"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 5,
+    "nFondi": 5,
+    "nCorpi": 4,
+    "nRaggi": 4,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     13,
+     15
+    ],
+    "raggi": [
+     6,
+     8,
+     16,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#f4f1ea",
+      "n": 16,
+      "fs": 27,
+      "esempio": "SAL"
+     },
+     {
+      "c": "#9aa3b2",
+      "n": 8,
+      "fs": 12,
+      "esempio": "Pressano alto: non tenere "
+     },
+     {
+      "c": "#8f98a8",
+      "n": 3,
+      "fs": 15,
+      "esempio": "VS"
+     },
+     {
+      "c": "#e8b44a",
+      "n": 1,
+      "fs": 11,
+      "esempio": "La tua squadra · Casa"
+     },
+     {
+      "c": "#0d0f14",
+      "n": 1,
+      "fs": 15,
+      "esempio": "Vedi le formazioni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 10,
+      "esempio": "Lega B",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Giornata 99 di 1",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "VS",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 3,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🗡️",
+     "🌧️ Pioggia"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root",
+      "lum": 0.005,
+      "fondo": "#0d0f14",
+      "px": 932,
+      "txt": "*{box-sizing:border-box;} @keyfram"
+     }
+    ]
+   }
   }
  },
- "saltate": [
-  "prepartita: playMatch → nomatch"
- ],
+ "saltate": [],
  "errori": []
 }

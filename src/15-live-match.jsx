@@ -11419,14 +11419,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 {ceremony&&ceremony.light&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47)?(
                   <div data-cpm="festa47" style={{position:"absolute",left:12,right:12,bottom:64,zIndex:24,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:4}}>
                     <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:2,color:"#fff",background:TH.primary,padding:"3px 10px",borderRadius:RAD.xs,textTransform:"uppercase"}}>{"Fischio finale · "+((ceremony.festa&&ceremony.festa.titolo)||ceremony.name||"Vittoria")}</div>
-                    <div style={{width:"100%",background:"rgba(255,255,255,0.94)",borderRadius:RAD.sm,padding:"8px 12px",display:"flex",alignItems:"center",gap:12,boxShadow:"0 6px 20px rgba(0,0,0,0.35)"}}>
+                    {/* [giro 169 PO-365 — foto PO «Non si vede il voto e le altre info nel box sotto»] Misurato: il riquadro era BIANCO
+                        (rgba 255,255,255,0.94) ma i testi usano i token del tema unico scuro, pensati per il fondo notte: punteggio e
+                        voto TH.text #f4f1ea su bianco 1,1:1, testo grigio TH.muted 2,4:1. Ora il riquadro e' la superficie del tema
+                        (TINTE.sup quasi opaca, bordo TINTE.bordo) e l'«oro» delle voci e' TH.gold invece del granata TH.primary
+                        (1,6:1 sul fondo scuro). Nessun colore del club entra nel riquadro. Rosso __CPM_NO_G169 = il bianco di prima. */}
+                    {(()=>{const _no169=(typeof window!=='undefined'&&!!window.__CPM_NO_G169);return(
+                    <div data-cpm="box-fischio" style={{width:"100%",background:_no169?"rgba(255,255,255,0.94)":"rgba(26,30,39,0.96)",border:_no169?"none":("1px solid "+TINTE.bordo),borderRadius:RAD.sm,padding:"8px 12px",display:"flex",alignItems:"center",gap:12,boxShadow:"0 6px 20px rgba(0,0,0,0.35)"}}>
                       <div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",letterSpacing:-.5,whiteSpace:"nowrap"}}>{(ceremony.festa&&ceremony.festa.punteggio)||""}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.small,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{ceremony.festa&&ceremony.festa.avversario?((ceremony.festa.casa?"in casa contro ":"in trasferta contro ")+ceremony.festa.avversario):ceremony.name}</div>
                         <div style={{display:"flex",gap:10,marginTop:2}}>{((ceremony.festa&&ceremony.festa.voci)||[]).map((v,i)=>(
-                          <span key={i} style={{fontSize:FS.body,fontWeight:FW.black,color:v.oro?TH.primary:TH.text,fontVariantNumeric:"tabular-nums"}}>{v.n}<span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,marginLeft:3}}>{v.et}</span></span>))}</div>
+                          <span key={i} style={{fontSize:FS.body,fontWeight:FW.black,color:v.oro?(_no169?TH.primary:TH.gold):TH.text,fontVariantNumeric:"tabular-nums"}}>{v.n}<span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,marginLeft:3}}>{v.et}</span></span>))}</div>
                       </div>
-                    </div>
+                    </div>);})()}
                   </div>
                 ):(
                 <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"14px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(94,15,29,0.72),rgba(94,15,29,0))"}}>
@@ -12335,12 +12341,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       {isNarrow&&(phase==="ceremony"&&!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D14)?striscia96bRef.current:!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase))&&(show3D||phase==="walkout")&&(
         <div data-cpm="striscia"/* [7.901.0] etichetta stabile: la sonda hud-c3 la usa come fondo della zona di campo (dal fondo della barra a qui), nessun cambio di stile */ style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           {/* Compact stats bar */}
-          {(()=>{const _rb_cs=Math.min(mStats.rb,30);const _raw_cs=clamp(5.8+_rb_cs*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
+          {(()=>{const _rb_cs=Math.min(mStats.rb,30);const _raw_cs=clamp(5.8+_rb_cs*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _r_cs=Math.round(_raw_cs*10)/10;/* [giro 169 PO-366 — foto PO: riquadro «7,4 voto», barra «★ 7.1» nella stessa schermata] la barra calcolava ancora la formula vecchia dei bonus delle scene, mentre riquadro della festa, voto registrato (_buildEndResult, VOTO20) e card PC (VOTO23) leggono la PAGELLA del motore. Ora anche la barra legge la pagella: una sola fonte, in corso e al fischio. Rosso __CPM_NO_G169_VOTO */try{if(!(typeof window!=='undefined'&&window.__CPM_NO_G169_VOTO)&&motoreRef.current&&motoreRef.current.pagelle){const _e169=motoreRef.current.pagelle().find(x=>x&&x.eroe);if(_e169&&typeof _e169.voto==='number')_r_cs=Math.round(_e169.voto*10)/10;}}catch(_e169b){}const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:5,paddingBottom:4,borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
               <span style={{fontSize:FS.caption,fontWeight:900,color:"#4ade80"}}>⚽ {mStats.goals}</span>
               <span style={{fontSize:FS.caption,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
               <span style={{fontSize:FS.caption,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
-              <span style={{fontSize:FS.caption,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
+              <span data-cpm="voto-barra" style={{fontSize:FS.caption,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
               <span style={{fontSize:FS.caption,color:"#94a3b8"/* [7.976.0 A17] misurato dalla griglia: rgba(255,255,255,0.3) su #050810 = 2,57:1. #94a3b8 sullo stesso fondo = 7,81:1 */,marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
             </div>
           );})()}
