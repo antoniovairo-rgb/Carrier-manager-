@@ -207,7 +207,32 @@ misurare il passo.
 
 ## 6. Controlli
 
-CATENA_DA_COMPLETARE
+Controlli lanciati uno alla volta (`CPM_CI_PAR=0`), memoria libera 12,3-15,5 GB e disco libero 29 GB registrati ogni
+minuto per tutta la catena. Build provata: commit `8838681` (`check-src`: IDENTICO BYTE PER BYTE, 7190384 byte).
+
+**Stato: catena COMPLETA in corso** (98 passi in sequenza pura; aggiornato il 12/11 alle 02:10). Il contenitore si è
+riavviato una volta alle 23:42 dell'11/11 durante `highlight-95`: la catena è ripartita come giro composto
+(`CPM_CI_FATTI`, 8 passi già verdi sulla stessa build non rigiocati).
+
+| Controllo | Esito | Numeri |
+|---|---|---|
+| `solo-highlight-166` (da solo, prima della catena) | ✅ verde · rosso cade su 3, 7, 8 | vedi §5 |
+| `design-system` (da solo) | ✅ | «SISTEMA GRAFICO OK» |
+| `test:logic` (da solo) | ✅ | 0 falliti, 2,7 s |
+| `grafica-v2` | ❌ rosso 6 prove su 6 | «classifica: la tua riga non nel colore del club» su telefono, tablet e PC. Schermata che questo giro non tocca: **da confrontare con `main`** (non ancora fatto) |
+| `simula-v2` | ✅ | 104 s |
+| `momenti-v2` | ✅ | 470 s |
+| `partita-v2` | ✅ | 573 s |
+| `patrimonio-303` | ✅ | 202 s |
+| `intro-292` | ✅ | 105 s |
+| `tema-unico` | ✅ | 52 s |
+| `carriera3-94` | ✅ | 217 s |
+| `assist-298` | ✅ | 1.905 s |
+| `highlight-95` (con `CPM_D3DIAG=1`) | ⚠️ instabile: rosso alla prima prova, verde alla seconda completa | prima prova: verde 101 highlight, D4 0, **1 difetto D3** (s1/2021 «Stacco in corsa potente», pallone a 6,3 dal portiere, soglia 6); il braccio rosso si vede (D4 7). Seconda prova (interrotta dal riavvio a 57 minuti) non vale. Terza prova: ✅ 5.165 s |
+| `parata-100` | prima prova ❌ «non giudicato» | verde: 8 parate, tutte su tiro del compagno, 0 sul ramo `cross_goal`, 0 difetti. In riprova |
+| gli altri 85 passi | in corso | — |
+| `gol-eroe` | non esiste | nessun file né script con questo nome in `tests/visual` |
+
 
 ## 7. Foto (`docs/sviluppo/giro166/`)
 
