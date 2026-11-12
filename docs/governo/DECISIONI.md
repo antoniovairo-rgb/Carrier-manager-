@@ -1352,3 +1352,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~14:00 Roma — altri gesti dai pack Rohr
 - PO (scelta multipla, tutte): parate del portiere 15-17_Goalkeeper_Save_01..03; dribbling 01-03_Dribble; 07_Throw_In e 20/21 cartellini (Yellow_Card, Yellow_And_Red_Card); 04-06_Juggling; dal pack 04 applausi (01 Sitting_Clapping, 02 Standing_Clapping, 04 Clapping_And_Agree, 15 Clap_Twice_Hand_Up), 06/07/08 braccia al cielo, 12 Standing_Selfie, 13 Sitting_Phone_Video per pubblico/panchina di galà, presentazione e parata.
 - Madre: giro 180c dopo il 180b, stesso file assets/cgtrader-clip-rohr.glb e stessa procedura; il PO toglie la condivisione via link della cartella Drive solo dopo il 180c.
+
+## 12/11 ~14:40 Roma — 180b finito, 180c avviato
+- 180b: 9 clip su 12 in assets/cgtrader-clip-rohr.glb (2,04 MB, 30 fps, 75 ossa); scartate dal cancello anatomico (soglie invariate) Penalty_Kick 01/02 e Defending_02. Conversione con bpy da PyPI in venv temporaneo. Igiene verificata: nessun file originale nel repo.
+- Madre sulle domande §6: (1) correzione IK delle mani rispetto alla spalla e ripassaggio di tutte le clip dal cancello invariato; (2) rigore dopo il pilota 177; (3) clip del pubblico accorciate a cicli di 3-4 s; (4) file fuori da dist/ finché non è usato; (5) riga di cortesia nei Crediti preparata, attivata quando le clip entrano nel gioco. → giro 180c (anche le clip in più del PO).
+- Segnalato dal 180b (§6.6): nel repo pubblico sono tracciati gli originali CGTrader (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB). Domanda al PO.
