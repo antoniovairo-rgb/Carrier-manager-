@@ -1,5 +1,712 @@
 [
  {
+  "data": "2026-11-12 06:11",
+  "versione": "7.999.190",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "gol-eroe-154",
+    "ok": false,
+    "s": 1,
+    "coda": " | log out/ci-rossi/gol-eroe-154-2026-11-12T06-11-51-860Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "grafica-168",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/grafica-168-2026-11-12T06-11-52-241Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "grafica-v2",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/grafica-v2-2026-11-12T06-11-52-603Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "simula-v2",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/simula-v2-2026-11-12T06-11-53-007Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "momenti-v2",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/momenti-v2-2026-11-12T06-11-53-370Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "partita-v2",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/partita-v2-2026-11-12T06-11-53-722Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "patrimonio-303",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/patrimonio-303-2026-11-12T06-11-54-211Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "intro-292",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/intro-292-2026-11-12T06-11-54-644Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "tema-unico",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/tema-unico-2026-11-12T06-11-55-093Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "carriera3-94",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/carriera3-94-2026-11-12T06-11-55-467Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "assist-nome-98",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/assist-nome-98-2026-11-12T06-11-55-866Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "bambini-294",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/bambini-294-2026-11-12T06-11-56-270Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "crea-home-295",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/crea-home-295-2026-11-12T06-11-56-699Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "neutro-287",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/neutro-287-2026-11-12T06-11-57-155Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "rigore-79",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/rigore-79-2026-11-12T06-11-57-508Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "livello-79",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/livello-79-2026-11-12T06-11-57-959Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "errori-168",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/errori-168-2026-11-12T06-11-58-308Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "stile-unico-75",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/stile-unico-75-2026-11-12T06-11-58-703Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "pagella-75",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/pagella-75-2026-11-12T06-11-59-058Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "corpi-073",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/corpi-073-2026-11-12T06-11-59-417Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "passaggi-228",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/passaggi-228-2026-11-12T06-11-59-778Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "ripartenza-235",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/ripartenza-235-2026-11-12T06-12-00-180Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "test:vision",
+    "ok": false,
+    "s": 0,
+    "coda": "",
+    "prove": 3
+   },
+   {
+    "passo": "test:logic",
+    "ok": false,
+    "s": 0,
+    "coda": "",
+    "prove": 3
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/typing-shortcuts-2026-11-12T06-12-01-324Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "validate-situations",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/validate-situations-2026-11-12T06-12-01-693Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "save-compat",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/save-compat-2026-11-12T06-12-02-062Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "replay",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/replay-2026-11-12T06-12-02-462Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "manovre-150",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/manovre-150-2026-11-12T06-12-02-866Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "popup-224",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/popup-224-2026-11-12T06-12-03-251Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "lessico-218",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/lessico-218-2026-11-12T06-12-03-627Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "fila-227",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/fila-227-2026-11-12T06-12-04-016Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "finestra-230",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/finestra-230-2026-11-12T06-12-04-381Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "procuratore-253",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/procuratore-253-2026-11-12T06-12-04-807Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "design-system",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/design-system-2026-11-12T06-12-05-197Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "giornata-233",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/giornata-233-2026-11-12T06-12-05-621Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "fps-249",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/fps-249-2026-11-12T06-12-05-992Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "migrazione-194",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/migrazione-194-2026-11-12T06-12-06-333Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "convocazione-235",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/convocazione-235-2026-11-12T06-12-06-663Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "prima-partita-237",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/prima-partita-237-2026-11-12T06-12-07-005Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "brusio-238",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/brusio-238-2026-11-12T06-12-07-385Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "attesa-241",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/attesa-241-2026-11-12T06-12-07-755Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "statistiche-228",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/statistiche-228-2026-11-12T06-12-08-113Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "crediti-254",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/crediti-254-2026-11-12T06-12-08-462Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "badge-255",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/badge-255-2026-11-12T06-12-08-807Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "toast-256",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/toast-256-2026-11-12T06-12-09-153Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "backup-167",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/backup-167-2026-11-12T06-12-09-522Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "piedi-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/piedi-252-2026-11-12T06-12-09-895Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "rete-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/rete-252-2026-11-12T06-12-10-269Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "portiere-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/portiere-252-2026-11-12T06-12-10-625Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "aereo-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/aereo-252-2026-11-12T06-12-11-028Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "difesa-220-giro31",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/difesa-220-giro31-2026-11-12T06-12-11-406Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "apertura-261",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/apertura-261-2026-11-12T06-12-11-816Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "parata-258",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/parata-258-2026-11-12T06-12-12-257Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "esiti-241",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/esiti-241-2026-11-12T06-12-12-729Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "camera-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/camera-252-2026-11-12T06-12-13-189Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "reazione-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/reazione-252-2026-11-12T06-12-13-577Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "schede-260",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/schede-260-2026-11-12T06-12-13-970Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "tecnica-045",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/tecnica-045-2026-11-12T06-12-14-315Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "difesa-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/difesa-252-2026-11-12T06-12-14-691Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "rinvio-252",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/rinvio-252-2026-11-12T06-12-15-087Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "spot-266",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/spot-266-2026-11-12T06-12-15-436Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "testa-143",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/testa-143-2026-11-12T06-12-15-854Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "esiti-60",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/esiti-60-2026-11-12T06-12-16-266Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "assist-298",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/assist-298-2026-11-12T06-12-16-706Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "highlight-95",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/highlight-95-2026-11-12T06-12-16-658Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "parata-100",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/parata-100-2026-11-12T06-12-17-144Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "riserva-103",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/riserva-103-2026-11-12T06-12-17-072Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "riserva-104",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/riserva-104-2026-11-12T06-12-17-585Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "contatto-103",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/contatto-103-2026-11-12T06-12-17-599Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "consegna-103",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/consegna-103-2026-11-12T06-12-17-996Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "colla-103",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/colla-103-2026-11-12T06-12-18-020Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "chiusura-99",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/chiusura-99-2026-11-12T06-12-18-378Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "scena3d-96",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/scena3d-96-2026-11-12T06-12-18-454Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "esiti-96",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/esiti-96-2026-11-12T06-12-18-876Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "partita2d-297",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/partita2d-297-2026-11-12T06-12-18-901Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "spazio-296",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/spazio-296-2026-11-12T06-12-19-367Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "schermate-97",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/schermate-97-2026-11-12T06-12-19-301Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "pc-tablet-292",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/pc-tablet-292-2026-11-12T06-12-19-797Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "voto-79",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/voto-79-2026-11-12T06-12-19-769Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "career-critical",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/career-critical-2026-11-12T06-12-20-159Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "partita-vera",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/partita-vera-2026-11-12T06-12-20-163Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "scena-motore-147",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/scena-motore-147-2026-11-12T06-12-20-529Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "esiti-218",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/esiti-218-2026-11-12T06-12-20-549Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "cross-218",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/cross-218-2026-11-12T06-12-20-979Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "testata-209",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/testata-209-2026-11-12T06-12-20-908Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "gk-dive-sync",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/gk-dive-sync-2026-11-12T06-12-21-371Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "gk-miss-229",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/gk-miss-229-2026-11-12T06-12-21-386Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "goal-postarc",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/goal-postarc-2026-11-12T06-12-21-750Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "nomi-219",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/nomi-219-2026-11-12T06-12-21-761Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "difesa-220",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/difesa-220-2026-11-12T06-12-22-138Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "scene-221",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/scene-221-2026-11-12T06-12-22-162Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "intervista-231",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/intervista-231-2026-11-12T06-12-22-547Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "tabellino-228",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/tabellino-228-2026-11-12T06-12-22-547Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "schede-234",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/schede-234-2026-11-12T06-12-22-915Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "bambini-236",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/bambini-236-2026-11-12T06-12-22-908Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "difesa-220-scena",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/difesa-220-scena-2026-11-12T06-12-23-302Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "schede-259",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/schede-259-2026-11-12T06-12-23-310Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "schede-246",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/schede-246-2026-11-12T06-12-23-755Z.log",
+    "prove": 3
+   },
+   {
+    "passo": "solo-highlight-166",
+    "ok": false,
+    "s": 0,
+    "coda": " | log out/ci-rossi/solo-highlight-166-2026-11-12T06-12-23-714Z.log",
+    "prove": 3
+   }
+  ]
+ },
+ {
   "data": "2026-10-21 10:36",
   "versione": "7.999.177",
   "catena": "notte",
@@ -21353,79 +22060,6 @@
     "passo": "nomi-219",
     "ok": true,
     "s": 3428
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
-   }
-  ]
- },
- {
-  "data": "2026-10-09 14:28",
-  "versione": "7.999.155",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 5
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 27
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 716
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 14
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 61
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 926
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 519
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1141
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1126
-   },
-   {
-    "passo": "nomi-219",
-    "ok": false,
-    "s": 2239,
-    "coda": "informativo: difensore usato verde 92% · rosso 81%; scambi verde 24 | ❌ nomi-219 |   · verde: vicini 100% su 9 nominati (servono >=90% su >=12)"
    },
    {
     "passo": "design-system",
