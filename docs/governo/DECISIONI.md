@@ -1357,3 +1357,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 180b: 9 clip su 12 in assets/cgtrader-clip-rohr.glb (2,04 MB, 30 fps, 75 ossa); scartate dal cancello anatomico (soglie invariate) Penalty_Kick 01/02 e Defending_02. Conversione con bpy da PyPI in venv temporaneo. Igiene verificata: nessun file originale nel repo.
 - Madre sulle domande §6: (1) correzione IK delle mani rispetto alla spalla e ripassaggio di tutte le clip dal cancello invariato; (2) rigore dopo il pilota 177; (3) clip del pubblico accorciate a cicli di 3-4 s; (4) file fuori da dist/ finché non è usato; (5) riga di cortesia nei Crediti preparata, attivata quando le clip entrano nel gioco. → giro 180c (anche le clip in più del PO).
 - Segnalato dal 180b (§6.6): nel repo pubblico sono tracciati gli originali CGTrader (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB). Domanda al PO.
+
+## 12/11 ~14:45 Roma — originali CGTrader e limite settimanale
+- PO: originali CGTrader «Toglierli dal repo» → PO-374, giro dopo il rilascio 191 (verifica che il gioco usi solo i convertiti; il PO conserva i file dell'acquisto su CGTrader).
+- Limite d'uso settimanale in stato «warning» (si azzera lunedì 16/11 13:00 Roma). PO: «Priorità alla 191»: nessun giro nuovo finché la 191 non è pubblicata (eccezione: verifica finale 191); poi massimo 3 giri alla volta, Fable solo dove serve davvero. Ondata 2 della 192 (esultanza, ingresso, premiazione, notte), 180c già avviato prima della decisione.

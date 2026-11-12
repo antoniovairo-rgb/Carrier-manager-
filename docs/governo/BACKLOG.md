@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (29)
+## Voci aperte o parziali (31)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 6.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 8.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -50,6 +50,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-371 | 12/11 08:40 | Dai giri 169 e 166 (madre): controlli rossi o ciechi preesistenti, identici sulla base: spazio-296, calendario-offerte-195, palco-corpi-191, figurine-208, piede-cross-p1b2, doppio-gesto-148, testa-146, home-066, festa-3d (catena grafica) e parata-100 (catena completa) | difetto (strumenti/grafica) | DA FARE — giro 174 | 7.999.192 |
 | PO-372 | 12/11 08:40 | Dal giro 166 §4.3 (madre): la stessa partita intera rigiocata identica dà risultati diversi su 2 nomi su 3 (stato iniziale diverso già al 1', rami attorno alle scene) — tocca ogni guardiano che confronta due partite | difetto (motore, riproducibilità) | DA FARE — giro 175 (Fable) | 7.999.192 |
 | PO-373 | 12/11 11:50 | PO (questionario, D10 del giro 170): partite di notte «Atmosfera sì, campo no» — cielo scuro, riflettori visibili con alone, stadio più buio intorno; prato luminoso e colori pieni (vincolo 7.539) | miglioramento (scene 3D, notte) | DA FARE — ondata 2 della 192 | 7.999.192 |
+| PO-374 | 12/11 14:45 | Dal giro 180b (§6.6), deciso dal PO: «Toglierli dal repo» — originali CGTrader tracciati nel repo pubblico (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB): verificare che il gioco non li usi, toglierli dall'albero e dal sito; nessun force push (restano nei commit vecchi) | licenza (asset) | DA FARE — dopo il rilascio 191 | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 
