@@ -1361,3 +1361,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~14:45 Roma — originali CGTrader e limite settimanale
 - PO: originali CGTrader «Toglierli dal repo» → PO-374, giro dopo il rilascio 191 (verifica che il gioco usi solo i convertiti; il PO conserva i file dell'acquisto su CGTrader).
 - Limite d'uso settimanale in stato «warning» (si azzera lunedì 16/11 13:00 Roma). PO: «Priorità alla 191»: nessun giro nuovo finché la 191 non è pubblicata (eccezione: verifica finale 191); poi massimo 3 giri alla volta, Fable solo dove serve davvero. Ondata 2 della 192 (esultanza, ingresso, premiazione, notte), 180c già avviato prima della decisione.
+
+## 12/11 ~16:00 Roma — 180c finito (24 clip), decisioni madre
+- 180c: assets/cgtrader-clip-rohr.glb con 24 clip (2,76 MB) su 33 provate; coda del tiro di collo tagliata, ginocchia dell'esultanza 01 sul suolo (5,8 → 0 cm), clip del pubblico ad anello di 3,7-4,0 s.
+- Madre sulle domande §6: (1) correzione delle mani SOLO dove non peggiora il cancello (per ogni clip si tiene la versione con il massimo più basso; cancello e soglie invariati) → rientrano defending-01, goalkeeper-save-03, dribble-03; (2) swaying-arms: tratto più mosso; (3) le clip con oggetti o sedute restano nel file (servono ai giri di collegamento); (4) juggling-03: anello fino a 5 s se la giunzione è senza salto, altrimenti fuori.
+- Per il limite settimanale (priorità alla 191) il ripassaggio (giro 180d, ~1 min di script + zip) parte dopo l'uscita della 191: il PO lascia aperta la condivisione della cartella Drive fino ad allora.
+- 173 alle 15:50 Roma al passo 23/75 della sua catena (parata-100 rosso 3/3 uguale a main, PO-371).
