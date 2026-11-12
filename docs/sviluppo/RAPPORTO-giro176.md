@@ -109,7 +109,7 @@ il pannello in 4 famiglie a 375, targhette nei tre formati).
 
 ## 5. Rituali eseguiti
 
-(vedi §8, compilata a fine giro)
+Vedi §8.
 
 ## 6. Dubbi e domande per la sessione madre
 
@@ -145,4 +145,21 @@ il pannello in 4 famiglie a 375, targhette nei tre formati).
 
 ## 8. Rituali
 
-(compilata a fine giro)
+Tutti dalla cartella `tests/visual`, `CPM_CHROME=/opt/pw-browsers/chromium`, un browser alla volta, `free -m` e `df -h`
+prima di ognuno. Dopo ogni modifica a `src/`: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BYTE PER BYTE**.
+
+| Controllo | Esito | Note |
+|---|---|---|
+| `regia-176` (nuovo) | **verde** | taglia 18,9 / 19,0 / 18,8% · margine 18,2 / 20,1% · targhette 0,7 / 0,2 / 0,2% |
+| `regia-176:rosso` | **rosso come atteso** | 12 motivi, vedi §4 |
+| `hero-framing` (191 scene, 412, quadro 3D) | eseguito (censimento, non boccia) | mediana **0,147** (rosso 0,097) · sotto 0,15: 108/191 (rosso 190/191) · figurine 2 (rosso 6) · fotogrammi fuori 1,7% (rosso 1,5%) · gi15 86% e gi86 56% fuori anche col rosso (88%, 54%) |
+| `gesti-copertura-96` | verde | enumerazione statica (fedeli 284, non disegnabili 9, varianti 35/35) |
+| `highlight-95` (`CPM_D3DIAG=1`) | **verde, e il rosso si vede** | 109 highlight, D4 0, passaggi arrivati 93,8%, gol del compagno = assist 15/15. ⚠️ Una PRIMA corsa, avviata in una catena che ho poi interrotto, si era chiusa con «rosso: D1-D4 non si vede» (braccio rosso senza difetti); la seconda corsa, da sola, 85 min, è verde col rosso visibile. Registro: `giro176/rituale-highlight-95.log` |
+| `scena3d-96` | verde | 31/31 scene giudicate, 0 errori di pagina |
+| `camera-252` | verde (e il rosso vede il salto) | |
+| `partita-vera` | verde | 12 bande su 12, partite finite 2/2 |
+| `ci-runner mirata` (area `src/12`, base `lavoro/191`, `CPM_CI_PAR=0`) | vedi sotto | 69 passi |
+
+**Catena mirata — IN CORSA** al momento di questo commit: verdi `test:logic`, `save-compat`, `design-system`, `tema-unico`,
+`typing-shortcuts`, `career-critical` (629 s), `regia-176` (1235 s, sonda definitiva), `chiusura-99` (1375 s); gli altri passi
+sono in esecuzione (passi lenti in sequenza). Questa sezione si aggiorna a catena chiusa.
