@@ -95,6 +95,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | giro 170b analisi gesti negli highlight (PO-367) | collaudo | claude-fable-5-2 | 3,2 | 19,13 $ | 162877 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.192 | giro 171 tifosi nel colore del club (PO-368) | sviluppo | claude-opus-5-5 | 1,9 | 7,76 $ | 68541 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 172 audio pubblico, menù, icona in partita (PO-369/370) | sviluppo | claude-opus-5-5 | 2,7 | 15,09 $ | 133724 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 179 ricerca animazioni con licenza libera (PO-367) | collaudo | claude-opus-5-5 | 0,1 | 3,83 $ | 61411 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -107,4 +108,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
 | 7.999.191 | **TOTALE 7.999.191** (17 sessioni) |  |  |  | almeno 110,82 $ |  |  | 1 sessioni parziali: totale minimo |
-| 7.999.192 | **TOTALE 7.999.192** (4 sessioni) |  |  |  | almeno 62,07 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.192 | **TOTALE 7.999.192** (5 sessioni) |  |  |  | almeno 65,90 $ |  |  | 1 sessioni parziali: totale minimo |

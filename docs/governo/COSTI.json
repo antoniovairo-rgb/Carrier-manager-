@@ -1258,5 +1258,19 @@
     "cache_read_tokens": 46404189,
     "worker_epoch": 1,
     "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYia9Sm8TYxFU3FbcJweC",
+    "titolo": "giro 179 ricerca animazioni con licenza libera (PO-367)",
+    "versione": "7.999.192",
+    "tipo": "collaudo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-12T08:13:54Z",
+    "chiusa": "2026-11-12T08:22:50Z",
+    "cost_usd": 3.82689232,
+    "output_tokens": 61411,
+    "cache_read_tokens": 7515163,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-12"
   }
 ]
