@@ -49,6 +49,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-370 | 12/11 00:10 | PO: «durante la partita devi dare la possibilità di accedere al setting dell'audio» — questionario: «Icona audio in partita» (2D e 3D, pannello con cursori Pubblico, Effetti, Musica e Muto, partita in pausa mentre è aperto) | nuova funzione (audio, partita) | DA FARE — giro 172 | 7.999.192 |
 | PO-371 | 12/11 08:40 | Dai giri 169 e 166 (madre): controlli rossi o ciechi preesistenti, identici sulla base: spazio-296, calendario-offerte-195, palco-corpi-191, figurine-208, piede-cross-p1b2, doppio-gesto-148, testa-146, home-066, festa-3d (catena grafica) e parata-100 (catena completa) | difetto (strumenti/grafica) | DA FARE — giro 174 | 7.999.192 |
 | PO-372 | 12/11 08:40 | Dal giro 166 §4.3 (madre): la stessa partita intera rigiocata identica dà risultati diversi su 2 nomi su 3 (stato iniziale diverso già al 1', rami attorno alle scene) — tocca ogni guardiano che confronta due partite | difetto (motore, riproducibilità) | DA FARE — giro 175 (Fable) | 7.999.192 |
+| PO-373 | 12/11 11:50 | PO (questionario, D10 del giro 170): partite di notte «Atmosfera sì, campo no» — cielo scuro, riflettori visibili con alone, stadio più buio intorno; prato luminoso e colori pieni (vincolo 7.539) | miglioramento (scene 3D, notte) | DA FARE — ondata 2 della 192 | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 

@@ -1333,3 +1333,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~11:40 Roma — contenuto della 191
 - PO: «Il 167 passa alla 192». La 191 = 11 giri già in lavoro/191 + 173. Verifica finale appena il 173 è unito. Uscita stimata 13/11 mattina (stima, non confermabile).
 - Conseguenza: i rossi preesistenti degli strumenti della cronaca (trama, bg-continuity, bg-decision, bg-sync, ball-alive, bg-rhythm) restano dichiarati anche nella 191, come nella 190.
+
+## 12/11 ~11:50 Roma — questionario sui dubbi aperti
+- Riquadro del fischio finale (169): «Scuro, come il tema».
+- Mixkit nella storia git (161b): «Lasciare la storia com'è» (nessun force push).
+- Notte (170 D10): «Atmosfera sì, campo no» → PO-373, ondata 2 della 192.
+- Play Store (PO-322): «Dopo la 192»; la madre prepara la lista dei passi del PO.
