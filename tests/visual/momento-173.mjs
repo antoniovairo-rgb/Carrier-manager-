@@ -80,6 +80,9 @@ try {
       for (const id of ['wi_sponsor', 'wi_sponsor_auto', 'wi_sponsor_pers', 'wi_figlia_mister', 'wi_vice_infortunato', 'wi_infortunato_posto', 'wi_giornata_libera', 'wi_pioggia_scelta', 'wi_primo_mister']) out[id] = q(id);
       out.sm_crisis = sm('sm_crisis');
       out.spoFuori = C.storia165b({ isSpogliatoio: true, smId: 'sm_prova173', event: { txt: 'Il mister vi ha visti litigare: vuole parlarti.' }, choices: [{ txt: 'a' }, { txt: 'b' }] });
+      out.conti = { storia: 0, routine: 0, tipi: {} };
+      for (const im of WEEKLY_IMPULSES) { if ((im.choices || []).length < 2) continue; const t = C.storia165b(wl(im.id)); if (t) { out.conti.storia++; out.conti.tipi[t] = (out.conti.tipi[t] || 0) + 1; } else out.conti.routine++; }
+      out.spo = { storia: 0, routine: 0 }; for (const m of SPOGLIATOIO_MOMENTS) { if ((m.choices || []).length < 2) continue; if (sm(m.id)) out.spo.storia++; else out.spo.routine++; }
       out.due = q('wi_sponsor') === q('wi_sponsor') && q('wi_giornata_libera') === q('wi_giornata_libera');
       out.puro = JSON.stringify(C.snapshot()) === J0;
       return out;
@@ -90,6 +93,7 @@ try {
     ok(r.spoFuori === null, `spogliatoio che nomina il mister ma fuori elenco → routine (${r.spoFuori})`);
     ok(r.due && r.puro, `stessa risposta due volte (${r.due}) e salvataggio intatto (${r.puro})`);
     ok(errors.length === 0, `nessun errore di pagina${errors.length ? ' — ' + errors[0] : ''}`);
+    note.push(`catalogo (impulsi con almeno due scelte): ${r.conti.storia} di storia, ${r.conti.routine} di routine · per tipo ${JSON.stringify(r.conti.tipi)} · spogliatoio ${JSON.stringify(r.spo)}`);
     await page.close();
   }
 
