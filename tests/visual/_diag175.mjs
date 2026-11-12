@@ -12,7 +12,7 @@ if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
 const E = process.env, NOME = E.NOME || 'Tobia Ferrante', GIRI = +(E.GIRI || 3), PAR = +(E.PAR || 1), VEL = E.VEL || '1', GLB = E.GLB === '1';
 const STOPMIN = +(E.STOPMIN || 0), SEME = +(E.SEME || 7300), TICK = +(E.TICK || 300), FLAGS = (E.FLAGS || '').split(',').filter(Boolean);
-const OUT = E.OUT || '/tmp/claude-0/-home-user-Carrier-manager-/37381430-0a16-5958-87d3-ef836c9aa21d/scratchpad/d175'; fs.mkdirSync(OUT, { recursive: true });
+const OUT = E.OUT || new URL('./out/diag175', import.meta.url).pathname; fs.mkdirSync(OUT, { recursive: true });
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 
 async function giro(n) {

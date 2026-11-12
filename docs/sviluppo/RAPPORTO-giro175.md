@@ -39,6 +39,10 @@ sintetico del giro 166, stesso seme del pilota) e registra per ogni giro:
    `?cpmtest`), contati per minuto, fase e chiamante;
 3. il libro mastro (`__CPM_EV`).
 
+La «prima differenza di stato» fra due giri (primo `tick` con impronta diversa, e le chiamate che lo precedono)
+l'ho letta dai dump della sonda con uno script usa-e-getta che non è nel ramo; la sonda stampa già la prima
+chiamata diversa. I dump vanno in `tests/visual/out/diag175/` (cartella ignorata da git).
+
 Variabili utili: `NOME`, `GIRI`, `PAR`, `VELS=1,1.5,2`, `GLBS=0,1`, `RESEED=1` (seme del flusso di prova diverso a
 ogni giro), `PILOTA=orologio`, `STOPMIN`, `FLAGS=__CPM_NO_G175`.
 
@@ -205,9 +209,44 @@ insieme dei passi lenti. Verificato: nessun doppione nelle cinque catene.
 
 ## 6. Controlli
 
-DA COMPILARE
+Tutti lanciati **uno alla volta** (`CPM_CI_PAR=0`), con memoria e disco letti prima di ciascuno (memoria disponibile
+15,1-15,5 GB, disco libero 29 GB per tutta la durata). Build provata: commit `20845bf` (`check-src`: IDENTICO BYTE
+PER BYTE; i commit successivi toccano solo rapporto e sonde).
+
+**La catena completa da 102 passi (`node ci-runner.mjs completa`) NON è stata lanciata.** Il giro 166 l'ha misurata:
+11 passi in 8 ore in sequenza pura, con due rossi (`grafica-v2`, `parata-100`) rossi uguali su `main`. Ho eseguito il
+nucleo della catena del motore scritto in `CLAUDE.md` e i controlli nominati nella consegna.
+
+| Controllo | Esito | Numeri |
+|---|---|---|
+| `riproduci-175` | ✅ verde · rosso cade | §4 · ≈ 27 min |
+| `test:vision` | ✅ | 2 s · 0 falliti |
+| `test:logic` | ✅ | 3 s · 0 falliti |
+| `typing-shortcuts` | ✅ | 19 s |
+| `validate-situations` (gate) | ✅ PASS | 687 s · impronta `00001505` · 0 fallimenti · `bg-coherence` 0 issue |
+| `save-compat` | ✅ | 12 s |
+| `replay` | ✅ | 47 s |
+| `career-critical` | ✅ | 633 s |
+| `partita-vera` | ✅ | 405 s · braccio verde · 12 bande su 12 giudicate e tenute · partite finite 2/2 · gol raccontati 3-2 = punteggio 3-2 |
+| `design-system` | ✅ | 1 s |
+| `sim-motore` | ✅ | 25 s · stesso seme stessa partita · 200 partite a pari forza: gol 2,33 · pareggi 23% |
+| `solo-highlight-166` | ✅ verde · rosso cade su 3, 7, 8 | 376 s · 307/307 voci uguali fra intera e soli highlight · 1-0 e 1-0 · schermata finale 1.471 caratteri uguali · intera 195,4 s, soli highlight 53,6 s |
+| `highlight-95` (`CPM_D3DIAG=1`) | ✅ verde · il rosso si vede | 5.546 s · verde: 101 highlight · D4 senza esito 0 · passaggi 28, arrivati 89,3% (pavimento 70%) · gol del compagno 13 = assist 13 · parate giudicate 17 · non giudicabili 0 · **difetti 0** — rosso: 110 highlight, 172 difetti, D4 5. Confronto col giro 166 (stesso guardiano, partite diverse, §5): 101 highlight e 1 difetto D3 in una prova su due |
+| `distanze-126` (senza tetto di tempo) | ✅ verde | 3.644 s · 24 partite finite su 24 · 141 highlight con contatto · tiri 48 (mediana 19,8 m, p90 27,3, massimo 28; oltre 30 m: 0) · dal limite 13 (massimo 21,3; oltre 22 m: 0) · colpi di testa 11 (mediana 12,2, massimo 14; oltre 16,5 m: 0) · campione minimo 40/8/6 raggiunto. Solo braccio verde (quello predefinito dello script) |
+| `match-sequence` (in più) | ✅ | 619 s · 1× contro 2×: 79 righe su 79 identiche · fischio finale 4 giri su 4 |
+| `seme-a` (in più, guardiano del giro 161) | ✅ | 617 s · 3 giri, seme 2311: ingressi del motore, sorteggi per minuto e punteggio (1-1) identici |
+
+Non eseguiti: `audio-161`/`audio-161b` (confrontano due partite uguali: ora dovrebbero essere più stabili, non
+misurato), i guardiani di scena della catena `completa` diversi da `highlight-95`.
+
+`sim-motore` non passa da `LiveMatch` (prova la partita simulata): i suoi numeri non possono essere cambiati da
+questo giro. `partita-vera` gioca due partite vere: rispetto al rapporto 166 (12 bande su 12, 2/2 finite) tiene le
+stesse bande; le partite non sono le stesse (§5).
 
 ## 7. Domande e punti aperti per la sessione madre
+
+Non ho toccato `GAME_VERSION`, `docs/governo/ROADMAP.md`, `docs/RELEASE_HISTORY.md` né `CLAUDE.md`: li integra la
+sessione madre.
 
 1. **Stato che sopravvive tra due partite nella stessa pagina: NON GIUDICATO.** Ho scritto una sonda che gioca la
    partita, rimette il giocatore com'era e la rigioca senza ricaricare: la seconda partita non si è mai montata
