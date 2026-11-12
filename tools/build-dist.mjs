@@ -91,7 +91,7 @@ let _ch38Esclusi = 0;
        grep del nome; i file a nome COSTRUITO a runtime (portraits/, avatar-N, anim-*, hair-colors/, korward-regular-*) restano TUTTI.
    CPM_DIST_CON_SORGENTI=1 rimette tutto. Dopo la copia, controllo: ogni './assets/...' letterale della pagina deve esistere nella dist. */
 const CON_SORGENTI = !!process.env.CPM_DIST_CON_SORGENTI;
-const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp))$/;
+const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp)|cgtrader-clip-rohr\.glb)$/;   /* [giro 180c] clip Rohr: fuori finche' il gioco non le carica (decisione madre 180b §6.4) */
 let _srcEsclusi = 0;
 const _sz = s => { const st = fs.statSync(s); if (!st.isDirectory()) return st.size; let t = 0; for (const f of fs.readdirSync(s)) t += _sz(path.join(s, f)); return t; };
 if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true,

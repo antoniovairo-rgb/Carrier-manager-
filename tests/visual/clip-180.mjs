@@ -7,10 +7,19 @@
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url'; import { createRequire } from 'node:module';
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const REPO = path.resolve(QUI, '../..');
 const FILE = process.env.CPM_CLIP180 || 'assets/cgtrader-clip-rohr.glb';
-const ATTESE = { 'rohr-side-foot-kick': 4.5, 'rohr-power-kick': 4.4333, 'rohr-goal-celebration-01': 3.4667,
-  'rohr-goal-celebration-02': 3.5, 'rohr-goal-celebration-03': 3.1667, 'rohr-defending-01': 6.2333,
-  'rohr-clapping-hands-up': 14.1, 'rohr-fist-up-cheering': 21.7667, 'rohr-pointing-up-cheering': 12.9333 };
-const PESO_MAX = 2.5e6;   // dichiarato nel rapporto 180b: ~2,0 MB
+// [giro 180c] 24 clip (dopo la correzione delle mani e il cancello invariato); durate lette dal file
+const ATTESE = { 'rohr-side-foot-kick': 4.5, 'rohr-power-kick': 2.6, 'rohr-goal-celebration-01': 3.4667,
+  'rohr-goal-celebration-02': 3.5, 'rohr-goal-celebration-03': 3.1667, 'rohr-clapping-hands-up': 3.9,
+  'rohr-fist-up-cheering': 3.7, 'rohr-pointing-up-cheering': 4, 'rohr-goalkeeper-save-01': 7.1667,
+  'rohr-goalkeeper-save-02': 4.3667, 'rohr-throw-in': 7.9333, 'rohr-yellow-card': 2.8667, 'rohr-yellow-red-card': 5.7,
+  'rohr-juggling-01': 3.1333, 'rohr-juggling-02': 3.7333, 'rohr-sitting-clapping': 3.1667, 'rohr-standing-clapping': 3.5,
+  'rohr-clapping-and-agree': 3.0333, 'rohr-clap-twice-hand-up': 3.3667, 'rohr-swaying-arms': 3.9, 'rohr-hands-up-swaying': 4,
+  'rohr-hands-up-looking-up': 3.7667, 'rohr-standing-selfie': 4, 'rohr-sitting-phone-video': 3.3667 };
+// [giro 180c] clip ad ANELLO (pubblico + palleggi, 3-4 s): l'ultimo fotogramma deve coincidere col primo (chiusura dell'anello)
+const ANELLO = ['rohr-clapping-hands-up', 'rohr-fist-up-cheering', 'rohr-pointing-up-cheering', 'rohr-juggling-01', 'rohr-juggling-02',
+  'rohr-sitting-clapping', 'rohr-standing-clapping', 'rohr-clapping-and-agree', 'rohr-clap-twice-hand-up', 'rohr-swaying-arms',
+  'rohr-hands-up-swaying', 'rohr-hands-up-looking-up', 'rohr-standing-selfie', 'rohr-sitting-phone-video'];
+const PESO_MAX = 3.0e6;   // dichiarato nel rapporto 180c: 2,76 MB (24 clip, quelle lunghe accorciate a 3-4 s)
 const err = []; const ok = m => console.log('  ✓ ' + m); const ko = m => { err.push(m); console.log('  ✗ ' + m); };
 function leggi(f) {
   const b = fs.readFileSync(path.join(REPO, f));
@@ -36,6 +45,8 @@ if (G) {
     : ko(`scheletro: ${nomi.length} ossa, diverso dal corpo (${nomiC.length})`);
   const extra = ['meshes', 'materials', 'images', 'textures'].filter(k => (j[k] || []).length);
   extra.length === 0 ? ok('solo animazioni (nessuna mesh/materiale/immagine)') : ko(`contiene ${extra.join(', ')}`);
+  const leggiF = acc => { const v = j.bufferViews[acc.bufferView]; const o = (v.byteOffset || 0) + (acc.byteOffset || 0);
+    const k = { SCALAR: 1, VEC3: 3, VEC4: 4 }[acc.type]; return Array.from(new Float32Array(G.bin.buffer.slice(G.bin.byteOffset + o, G.bin.byteOffset + o + acc.count * k * 4))); };
   const giunti = new Set(j.skins?.[0]?.joints || []);
   const anim = j.animations || [];
   const nomiA = anim.map(a => a.name).sort(); const att = Object.keys(ATTESE).sort();
@@ -47,6 +58,16 @@ if (G) {
     const ossaOk = a.channels.every(c => giunti.has(c.target.node));
     if (att !== undefined && Math.abs(dur - att) <= 1 / 30 + 1e-4 && fpsOk && ossaOk) ok(`${a.name}: ${dur.toFixed(3)} s · 30 fps · ${a.channels.length} canali sullo skin`);
     else ko(`${a.name}: durata ${dur.toFixed(3)} (attesa ${att}) · 30fps ${fpsOk} · canali sullo skin ${ossaOk}`);
+    if (ANELLO.includes(a.name)) {   // giunzione: primo e ultimo valore di OGNI canale (rotazione in gradi, traslazione in mm)
+      let rot = 0, tr = 0;
+      for (const c of a.channels) {
+        const out = j.accessors[a.samplers[c.sampler].output]; const v = leggiF(out); const k = c.target.path === 'rotation' ? 4 : 3;
+        const n = out.count; const p0 = v.slice(0, k), p1 = v.slice((n - 1) * k, n * k);
+        if (k === 4) { const d = Math.abs(p0.reduce((s, x, i) => s + x * p1[i], 0)); rot = Math.max(rot, 2 * Math.acos(Math.min(1, d)) * 180 / Math.PI); }
+        else tr = Math.max(tr, Math.hypot(...p0.map((x, i) => x - p1[i])) * 1000);
+      }
+      rot < 0.5 && tr < 1 ? ok(`${a.name}: anello chiuso (giunzione ${rot.toFixed(2)}° · ${tr.toFixed(2)} mm)`) : ko(`${a.name}: anello APERTO (giunzione ${rot.toFixed(2)}° · ${tr.toFixed(2)} mm)`);
+    }
   }
   // parse VERO con il GLTFLoader di three r128
   try {

@@ -10,20 +10,20 @@
  },
  {
   "clip": "rohr-power-kick",
-  "durata": 4.433,
-  "tracce": 53,
-  "sotto_suolo_cm": 1,
-  "t_sotto": 3.8,
-  "quota_sotto_1cm": 0.044,
-  "bacino_max_m": 2.34
+  "durata": 2.6,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.7,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.67
  },
  {
   "clip": "rohr-goal-celebration-01",
   "durata": 3.467,
   "tracce": 52,
-  "sotto_suolo_cm": 5.8,
-  "t_sotto": 3.4,
-  "quota_sotto_1cm": 0.143,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0.5,
+  "quota_sotto_1cm": 0,
   "bacino_max_m": 1.06
  },
  {
@@ -45,39 +45,174 @@
   "bacino_max_m": 1.68
  },
  {
-  "clip": "rohr-defending-01",
-  "durata": 6.233,
-  "tracce": 52,
-  "sotto_suolo_cm": 1,
-  "t_sotto": 2.9,
-  "quota_sotto_1cm": 0,
-  "bacino_max_m": 1.03
- },
- {
   "clip": "rohr-clapping-hands-up",
-  "durata": 14.1,
-  "tracce": 50,
-  "sotto_suolo_cm": 1.6,
-  "t_sotto": 0.4,
+  "durata": 3.9,
+  "tracce": 51,
+  "sotto_suolo_cm": 1.5,
+  "t_sotto": 0,
   "quota_sotto_1cm": 1,
-  "bacino_max_m": 0.01
+  "bacino_max_m": 0
  },
  {
   "clip": "rohr-fist-up-cheering",
-  "durata": 21.767,
-  "tracce": 59,
+  "durata": 3.7,
+  "tracce": 50,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.01
+ },
+ {
+  "clip": "rohr-pointing-up-cheering",
+  "durata": 4,
+  "tracce": 51,
+  "sotto_suolo_cm": 1.1,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0.1,
+  "bacino_max_m": 0.01
+ },
+ {
+  "clip": "rohr-goalkeeper-save-01",
+  "durata": 7.167,
+  "tracce": 60,
+  "sotto_suolo_cm": 0.8,
+  "t_sotto": 6,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.93
+ },
+ {
+  "clip": "rohr-goalkeeper-save-02",
+  "durata": 4.367,
+  "tracce": 52,
+  "sotto_suolo_cm": 1.3,
+  "t_sotto": 1.8,
+  "quota_sotto_1cm": 0.045,
+  "bacino_max_m": 0.73
+ },
+ {
+  "clip": "rohr-throw-in",
+  "durata": 7.933,
+  "tracce": 60,
+  "sotto_suolo_cm": 1,
+  "t_sotto": 7.4,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.26
+ },
+ {
+  "clip": "rohr-yellow-card",
+  "durata": 2.867,
+  "tracce": 50,
+  "sotto_suolo_cm": 1.1,
+  "t_sotto": 0.5,
+  "quota_sotto_1cm": 0.069,
+  "bacino_max_m": 0.08
+ },
+ {
+  "clip": "rohr-yellow-red-card",
+  "durata": 5.7,
+  "tracce": 55,
+  "sotto_suolo_cm": 1.2,
+  "t_sotto": 5.2,
+  "quota_sotto_1cm": 0.421,
+  "bacino_max_m": 0.02
+ },
+ {
+  "clip": "rohr-juggling-01",
+  "durata": 3.133,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.2,
+  "t_sotto": 1.8,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.07
+ },
+ {
+  "clip": "rohr-juggling-02",
+  "durata": 3.733,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.6,
+  "t_sotto": 0.4,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.1
+ },
+ {
+  "clip": "rohr-sitting-clapping",
+  "durata": 3.167,
+  "tracce": 54,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0
+ },
+ {
+  "clip": "rohr-standing-clapping",
+  "durata": 3.5,
+  "tracce": 54,
+  "sotto_suolo_cm": 0.8,
+  "t_sotto": 2.7,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.01
+ },
+ {
+  "clip": "rohr-clapping-and-agree",
+  "durata": 3.033,
+  "tracce": 51,
+  "sotto_suolo_cm": 1.1,
+  "t_sotto": 3,
+  "quota_sotto_1cm": 0.903,
+  "bacino_max_m": 0.01
+ },
+ {
+  "clip": "rohr-clap-twice-hand-up",
+  "durata": 3.367,
+  "tracce": 50,
   "sotto_suolo_cm": 0,
   "t_sotto": 0,
   "quota_sotto_1cm": 0,
   "bacino_max_m": 0.05
  },
  {
-  "clip": "rohr-pointing-up-cheering",
-  "durata": 12.933,
-  "tracce": 53,
-  "sotto_suolo_cm": 1.4,
+  "clip": "rohr-swaying-arms",
+  "durata": 3.9,
+  "tracce": 50,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.07
+ },
+ {
+  "clip": "rohr-hands-up-swaying",
+  "durata": 4,
+  "tracce": 52,
+  "sotto_suolo_cm": 1.5,
   "t_sotto": 0.6,
-  "quota_sotto_1cm": 0.123,
+  "quota_sotto_1cm": 0.925,
   "bacino_max_m": 0.03
+ },
+ {
+  "clip": "rohr-hands-up-looking-up",
+  "durata": 3.767,
+  "tracce": 51,
+  "sotto_suolo_cm": 1.2,
+  "t_sotto": 1.3,
+  "quota_sotto_1cm": 0.368,
+  "bacino_max_m": 0.06
+ },
+ {
+  "clip": "rohr-standing-selfie",
+  "durata": 4,
+  "tracce": 51,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.04
+ },
+ {
+  "clip": "rohr-sitting-phone-video",
+  "durata": 3.367,
+  "tracce": 50,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0
  }
 ]

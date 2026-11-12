@@ -1,5 +1,7 @@
 # Rapporto giro 180 — clip Anderson Rohr (PO-367)
 
+> **Aggiornamento 180c (12/11/2026):** 16 clip nuove (su 21 provate), correzione delle mani, clip accorciate ad anello: sezione **«180c»** in fondo.
+>
 > **Aggiornamento 180b (12/11/2026):** il PO ha scaricato lui i due pacchetti; le clip sono state importate. Vedi la sezione **«180b»** in fondo. Le sezioni 1-6 qui sotto sono il resoconto del primo tentativo (fermo all'email) e restano come storia.
 
 ## (180, primo tentativo) — FERMO: lo scaricamento chiede un'email
@@ -272,3 +274,210 @@ Eseguite dopo il commit `13d7b45` (12/11):
   nessun FBX/zip/uasset del pacchetto.
 - `dist/` dopo `build-dist`: nessun file del pacchetto originale (contiene solo il GLB convertito, vedi §5).
 - **`/tmp/rohr` cancellata** (zip, FBX estratti), insieme all'ambiente Python temporaneo con Blender e alla ruota scaricata.
+
+# 180c — Altre clip, correzione delle mani, anelli (12/11/2026, ~13:40-14:40 ora di Roma)
+
+Ramo `sviluppo/giro180-animazioni-rohr`. **Nessun cambio a `src/`** (check-src: IDENTICO BYTE PER BYTE), `GAME_VERSION` non
+toccata, clip **ancora non collegate** ai gesti.
+
+## In una riga
+
+**`assets/cgtrader-clip-rohr.glb` ha ora 24 clip (2,76 MB)** su 33 provate. La correzione delle mani chiesta (IK del braccio
+rispetto alla spalla) è fatta e porta il polso esattamente dove lo vuole la sorgente rispetto alla spalla (scarto da 5,1° a
+**0,0°**), **ma il cancello invariato misura le mani rispetto al bacino e con la correzione peggiora** su quasi tutte le clip
+(massimo +0,2…+4,9° su 30 clip): nessuna delle tre scartate rientra, e **`rohr-defending-01`, che era dentro, ora esce** (28,6° → 33,3°).
+Domanda per la sessione madre in §6.
+
+## Tabella per il PO
+
+Fogli dei provini: 4 momenti (inizio · metà · «gesto» = istante più veloce di mano o piede · fine), PC (in fila) e telefono (in
+colonna), in `docs/sviluppo/giro180/<clip>-pc.jpg` e `-telefono.jpg`. Tutti rigenerati (la correzione delle mani tocca ogni clip).
+
+| Clip | Cosa mostra (visto sui provini) | Giudizio | Foto |
+|---|---|---|---|
+| `rohr-side-foot-kick` | tiro di piatto (invariato a occhio) | **usabile** | [PC](giro180/rohr-side-foot-kick-pc.jpg) · [telefono](giro180/rohr-side-foot-kick-telefono.jpg) |
+| `rohr-power-kick` | tiro di collo, **coda tagliata a 2,6 s**: finisce col piede appoggiato dopo il tiro, braccio d'equilibrio ancora largo | **usabile** (la coda non c'è più) | [PC](giro180/rohr-power-kick-pc.jpg) · [telefono](giro180/rohr-power-kick-telefono.jpg) |
+| `rohr-goal-celebration-01` | scivolata in ginocchio, indici al cielo: **ginocchia sul suolo** (5,8 → 0 cm) | **usabile** | [PC](giro180/rohr-goal-celebration-01-pc.jpg) · [telefono](giro180/rohr-goal-celebration-01-telefono.jpg) |
+| `rohr-goal-celebration-02` | braccia alzate, sguardo al cielo | **usabile** | [PC](giro180/rohr-goal-celebration-02-pc.jpg) · [telefono](giro180/rohr-goal-celebration-02-telefono.jpg) |
+| `rohr-goal-celebration-03` | saltello, braccio teso, poi si volta | **usabile** (rotazione finale) | [PC](giro180/rohr-goal-celebration-03-pc.jpg) · [telefono](giro180/rohr-goal-celebration-03-telefono.jpg) |
+| `rohr-goalkeeper-save-01` | portiere in attesa, poi **stacco in alto con le due mani** (presa alta), poi si rialza e cammina | **usabile** come presa alta; il bacino si sposta 1,9 m | [PC](giro180/rohr-goalkeeper-save-01-pc.jpg) · [telefono](giro180/rohr-goalkeeper-save-01-telefono.jpg) |
+| `rohr-goalkeeper-save-02` | portiere in attesa, **passo laterale con braccio teso** (parata in piedi, non un tuffo), poi si raddrizza | **usabile** | [PC](giro180/rohr-goalkeeper-save-02-pc.jpg) · [telefono](giro180/rohr-goalkeeper-save-02-telefono.jpg) |
+| `rohr-throw-in` | rimessa laterale: si china, porta le mani sopra la testa, lancia, si raddrizza | **usabile, serve il pallone** fra le mani (la clip non ce l'ha) | [PC](giro180/rohr-throw-in-pc.jpg) · [telefono](giro180/rohr-throw-in-telefono.jpg) |
+| `rohr-yellow-card` | braccio destro alzato dritto sopra la testa (il cartellino), poi giù | **usabile, serve il cartellino** in mano | [PC](giro180/rohr-yellow-card-pc.jpg) · [telefono](giro180/rohr-yellow-card-telefono.jpg) |
+| `rohr-yellow-red-card` | due volte il braccio alzato (giallo, poi rosso) | **usabile, servono i cartellini** | [PC](giro180/rohr-yellow-red-card-pc.jpg) · [telefono](giro180/rohr-yellow-red-card-telefono.jpg) |
+| `rohr-juggling-01` | palleggio di piede, sul posto; **anello di 3,13 s** | **usabile, serve il pallone** | [PC](giro180/rohr-juggling-01-pc.jpg) · [telefono](giro180/rohr-juggling-01-telefono.jpg) |
+| `rohr-juggling-02` | palleggio di coscia/piede alternati; **anello di 3,73 s** | **usabile, serve il pallone**; la chiusura dell'anello qui lavora di più (salto 12,9 cm riassorbito, §3) | [PC](giro180/rohr-juggling-02-pc.jpg) · [telefono](giro180/rohr-juggling-02-telefono.jpg) |
+| `rohr-clapping-hands-up` | applauso con le mani alte; **3,9 s ad anello** (era 14,1) | **usabile** | [PC](giro180/rohr-clapping-hands-up-pc.jpg) · [telefono](giro180/rohr-clapping-hands-up-telefono.jpg) |
+| `rohr-fist-up-cheering` | pugno alzato; **3,7 s** (era 21,8) | **usabile** | [PC](giro180/rohr-fist-up-cheering-pc.jpg) · [telefono](giro180/rohr-fist-up-cheering-telefono.jpg) |
+| `rohr-pointing-up-cheering` | indice in alto; **4,0 s** (era 12,9) | **usabile** | [PC](giro180/rohr-pointing-up-cheering-pc.jpg) · [telefono](giro180/rohr-pointing-up-cheering-telefono.jpg) |
+| `rohr-sitting-clapping` | **seduto** che applaude | **usabile solo con un sedile sotto** (seduto nel vuoto: in gradinata va allineato al seggiolino) | [PC](giro180/rohr-sitting-clapping-pc.jpg) · [telefono](giro180/rohr-sitting-clapping-telefono.jpg) |
+| `rohr-standing-clapping` | in piedi, applauso a mani basse, piccolo | **usabile** | [PC](giro180/rohr-standing-clapping-pc.jpg) · [telefono](giro180/rohr-standing-clapping-telefono.jpg) |
+| `rohr-clapping-and-agree` | applauso e cenno della testa | **usabile** | [PC](giro180/rohr-clapping-and-agree-pc.jpg) · [telefono](giro180/rohr-clapping-and-agree-telefono.jpg) |
+| `rohr-clap-twice-hand-up` | due battute di mani e braccia su | **usabile** | [PC](giro180/rohr-clap-twice-hand-up-pc.jpg) · [telefono](giro180/rohr-clap-twice-hand-up-telefono.jpg) |
+| `rohr-swaying-arms` | dondolio delle braccia; **nei 4 fotogrammi quasi immobile** (il tratto scelto è calmo) | **da sistemare**: da rivedere in movimento, forse va scelto un altro tratto | [PC](giro180/rohr-swaying-arms-pc.jpg) · [telefono](giro180/rohr-swaying-arms-telefono.jpg) |
+| `rohr-hands-up-swaying` | mani alte che ondeggiano | **usabile** | [PC](giro180/rohr-hands-up-swaying-pc.jpg) · [telefono](giro180/rohr-hands-up-swaying-telefono.jpg) |
+| `rohr-hands-up-looking-up` | mani alte, testa all'indietro, sguardo al cielo | **usabile** | [PC](giro180/rohr-hands-up-looking-up-pc.jpg) · [telefono](giro180/rohr-hands-up-looking-up-telefono.jpg) |
+| `rohr-standing-selfie` | braccio teso in alto (il telefono), l'altro aperto | **usabile, serve il telefono** in mano | [PC](giro180/rohr-standing-selfie-pc.jpg) · [telefono](giro180/rohr-standing-selfie-telefono.jpg) |
+| `rohr-sitting-phone-video` | seduto, mani davanti al petto (riprende col telefono) | **usabile solo con sedile e telefono** | [PC](giro180/rohr-sitting-phone-video-pc.jpg) · [telefono](giro180/rohr-sitting-phone-video-telefono.jpg) |
+| 18_Defending_01 (era `rohr-defending-01`) | — | **fuori: scartata dal cancello DOPO la correzione delle mani** (28,6° → 33,3°); provini del 180b tolti | — |
+| 10/11_Penalty_Kick_01/02 · 19_Defending_02 | — | **ancora fuori** (31,6° · 41,5° · 39,4° dopo la correzione) | — |
+| 17_Goalkeeper_Save_03 | — | **fuori** (28,3° senza correzione → 30,1° con) | — |
+| 01/02/03_Dribble | — | **fuori** (31,6° · 35,9° · 28,9° senza → 35,0° · 37,3° · 31,3° con) | — |
+| 06_Juggling_03 | — | **fuori**: la chiusura dell'anello deve riassorbire un salto di 15,7 cm e il cancello sui fotogrammi della rampa arriva a 33,9° | — |
+
+«Usabile» = il gesto si legge sul nostro corpo senza difetti visibili nei provini e nelle misure. Il giudizio vero, a velocità
+reale e in partita, resta da dare quando le clip verranno collegate. Gli oggetti (pallone, cartellini, telefono, sedile) **non sono
+nelle clip**: vanno aggiunti dal gioco.
+
+## 1. Scaricamento, estrazione, strumenti
+
+- Zip dalla cartella Drive del PO (`curl`, nessun login): **sha256 identici** a quelli registrati in `CREDITI-fonti.md`
+  (pack 05 `1a26159823911a0b…`, pack 04 `56fcdcc77ceb7d45…`). In `/tmp/rohr`, fuori dal clone.
+- Estrazione **selettiva** dei soli 33 FBX dello scheletro UE5 che servono (21 dal pack 05, 12 dal pack 04), per nome, in due
+  cartelle nuove e vuote. Nessuno script del pacchetto eseguito né aperto. Gli sha256 dei 12 FBX già usati coincidono col 180b.
+- Blender 5.3 (`bpy` da PyPI) in un ambiente virtuale in `/tmp/rohr-venv`. Nota pratica: `pip install bpy` scaricava a
+  ~100 KB/s (stimata un'ora); la ruota è stata scaricata a 16 pezzi in parallelo da `files.pythonhosted.org` (stesso file, sha256
+  verificato contro quello pubblicato da PyPI, `5850cd39369e4cd8…`) e installata dal file locale.
+
+## 2. La correzione delle mani (decisione madre §6.1) — fatta, misurata, non basta
+
+**Cosa fa** (`tools/rohr-180/riadatta_rohr.py`, funzione `ik_braccio`, sempre attiva, `CPM_IK=0` la spegne): dopo il
+riadattamento di ogni fotogramma, per ciascun braccio, il polso va a `spalla + (polso − spalla della sorgente) × (omero+avambraccio
+nostro) / (omero+avambraccio della sorgente)`; IK a due ossa (legge del coseno), piano del gomito preso dal riadattamento,
+orientamento della mano (e quindi delle dita) preso dalla sorgente. Spostamento del polso: 0,5-4,1 cm. Verifica: lo scarto
+**mano-rispetto-alla-spalla** passa dal 5,1° del 180b a **0,0°** su tutte le clip (nessun fotogramma saltato per gomito degenere).
+
+**Cosa dice il cancello invariato** (mani, piedi, testa **rispetto al bacino**, mediana ≤ 10°, massimo ≤ 30°): prima/dopo per ogni
+clip nella tabella di §4. Il massimo **sale** su 31 clip su 33 (da +0,2° a +4,9°; +12,3° su \`juggling-03\`, dove però pesa la rampa
+dell'anello, §3) e scende su 2 (\`clapping-hands-up\` 8,4° → 7,3°, \`goal-celebration-02\` 6,2° → 5,1°); le mediane non si muovono
+(±0,1°). Per gli anelli il «prima» non comprende la rimisura dei fotogrammi della rampa, il «dopo» sì.
+
+**Perché** (misurato, non supposto): il nostro braccio è più corto in proporzione (0,439 m contro 0,551, rapporto 0,80, mentre
+l'altezza dell'anca dà 0,973). Rendere esatta la direzione spalla→polso accorcia la portata in modo uniforme e, vista dal bacino,
+la mano vicina al fianco si sposta di più in direzione. Diagnostica di controllo, **solo misura e non usata per il file**
+(`CPM_IK_RIF=bacino`, polso mandato nel punto della sorgente rispetto al bacino, cioè proprio dove guarda il cancello): rigori
+01/02 e difesa 02 scendono a 26,2° · 33,6° · 23,5° di massimo, ma la mediana delle mani resta 13-15° perché quel punto
+**non è raggiungibile** con un braccio più corto (la IK si ferma a braccio teso). Cioè: nessuna IK sul nostro braccio rende
+uguali le direzioni dal bacino; le tre clip sono fuori per le proporzioni del corpo, non per un errore d'angolo.
+
+**Applicata alla lettera** ("ripassa tutte le clip dal cancello invariato; entrano solo quelle che lo passano"): con la correzione
+escono `defending-01` (che c'era), `goalkeeper-save-03` e `dribble-03` (che senza la passerebbero). Vedi §6, domanda 1.
+
+## 3. Le altre correzioni
+
+- **Coda del tiro di collo** (`rohr-power-kick:a=2.6`): misurato sul file del 180b, piede destro più veloce a 2,2-2,3 s (il
+  colpo), piede giù a 2,5 s, il bacino comincia a girarsi dopo 2,6 s (da −92° a −173° fino a 3,2 s, poi se ne va). Taglio a
+  **2,6 s**: 4,43 → 2,60 s, 111 → 64 KB.
+- **Ginocchia nella scivolata** (`rohr-goal-celebration-01:suolo`): per ogni fotogramma Blender valuta i **vertici deformati** del
+  nostro corpo e, se il più basso scende sotto il suo livello a riposo, alza il bacino di quella differenza. Alzata massima
+  6,4 cm; misura indipendente sui vertici con three r128 (sonda): **5,8 → 0,0 cm**, quota di campioni oltre 1 cm 14% → 0%. Il
+  rovescio: mentre le ginocchia toccano, le punte dei piedi possono stare qualche centimetro più su di prima (nei provini non si
+  vede staccata). Applicata **solo** a questa clip: nessun'altra supera 2 cm sotto il suolo (max 1,5 cm, §4).
+- **Anelli di 3-4 s** (decisione madre §6.3) per le 3 clip del pubblico già dentro, le 9 nuove del pack 04 e i 3 palleggi
+  (`ciclo=3-4`): (1) nella sorgente si cerca la finestra di 3-4 s il cui ultimo fotogramma somiglia di più al primo (posizione
+  **e** velocità di bacino, mani, gomiti, piedi, ginocchia, testa); (2) la differenza residua si riassorbe sugli ultimi 10
+  fotogrammi (0,33 s) con una rampa liscia, così l'ultimo fotogramma coincide col primo; (3) il cancello si **rimisura** sui
+  fotogrammi della rampa. Misura della giunzione: salto prima della chiusura → 0, e passo massimo **dentro** la rampa contro il passo
+  massimo **fuori** (se il primo non supera il secondo, la rampa non si vede come uno scatto). Su 14 anelli: in 9 il passo in rampa
+  è ≤ di quello fuori; in 5 lo supera di poco (hands-up-swaying 4,2 contro 3,5 cm; hands-up-looking-up 0,7 contro 0,5;
+  standing-selfie 0,7 contro 0,4; fist-up 2,2 contro 2,0; pointing-up 2,4 contro 2,4) — in valore assoluto sono movimenti
+  sotto il centimetro per fotogramma o comunque nel ritmo del gesto. Il guardiano controlla la chiusura (§5).
+- **Sonda dei provini**: il riquadro «fine» della parata 01 era **vuoto**. Causa: three ritaglia la mesh con la sfera della posa
+  di riposo, e il corpo si era spostato di 1,9 m. Corretto nella sonda (`frustumCulled=false`); non riguarda la clip. Nel gioco
+  la stessa cosa può succedere a una clip con molto spostamento del bacino: da tenere presente quando verranno collegate.
+
+## 4. Misure, per clip
+
+Cancello: mediana / massimo in gradi, **prima** e **dopo** la correzione delle mani. Suolo: vertice più basso sotto il livello a
+riposo (sonda three r128 sui vertici). Scivolamento del piede in appoggio: mediana · 90° percentile (m/s, stessi limiti di misura
+del 180b §4: i percentili alti cadono nei passi veloci). Mano-testa: distanza minima osso-osso, nostro / sorgente in scala (cm).
+Giunzione: solo per gli anelli.
+
+| Clip | FBX (sha256, primi 16) | Durata | Cancello prima | Cancello dopo | Nel file | Sotto suolo | Scivolamento | Mano-testa | Giunzione | Opzioni |
+|---|---|---|---|---|---|---|---|---|---|---|
+|`rohr-side-foot-kick`|08_Side_Foot_Kick_ue5 (`e2baf0928c0f5da7…`)|4,5 s|3,77° / 18,27°|3,77° / 19,58°|sì|1,1 cm|0,025 · 0,827|47,0 / 52,9|—|—|
+|`rohr-power-kick`|09_Power_Kick_ue5 (`2dcadd8d78b58469…`)|2,6 s|5,06° / 16,78°|5,06° / 18,49°|sì|0,7 cm|0,043 · 0,503|48,3 / 55,1|—|a=2.6|
+|`rohr-goal-celebration-01`|12_Goal_Celebration_01_ue5 (`3d33fb8ebba86261…`)|3,467 s|4,05° / 21,23°|4,05° / 22,49°|sì|0 cm|0,014 · 0,137|34,5 / 38,7|—|suolo|
+|`rohr-goal-celebration-02`|13_Goal_Celebration_02_ue5 (`b43fae915f4244bc…`)|3,5 s|1,42° / 6,17°|1,33° / 5,13°|sì|0 cm|0,006 · 0,116|22,4 / 24,6|—|—|
+|`rohr-goal-celebration-03`|14_Goal_Celebration_03_ue5 (`64508912d21cea94…`)|3,167 s|4,19° / 22,46°|4,28° / 23,24°|sì|0,6 cm|0,09 · 0,544|15,4 / 13,6|—|—|
+|— (rohr-defending-01)|18_Defending_01_ue5 (`ed9789d1c8f4cb49…`)|6,233 s|7,45° / 28,58°|7,53° / 33,31°|**no**|—|0,08 · 1,202|31,8 / 35,6|—|—|
+|`rohr-clapping-hands-up`|03_Clapping_Hands_Up_ue5 (`0174b0b26b952522…`)|3,9 s|3,35° / 8,43°|3,35° / 7,32°|sì|1,5 cm|0,004 · 0,014|24,7 / 28,1|0,61 → 0 cm (rampa 0,29 · fuori 0,46)|ciclo=3-4|
+|`rohr-fist-up-cheering`|05_Fist_Up_Cheering_ue5 (`7bf69a418c9dbb07…`)|3,7 s|3,72° / 16,2°|3,72° / 17,2°|sì|0 cm|0,005 · 0,011|28,5 / 31,6|0,92 → 0 cm (rampa 2,15 · fuori 2,03)|ciclo=3-4|
+|`rohr-pointing-up-cheering`|17_Pointing_Up_Cheering_ue5 (`ef5b6c2fc3cf941e…`)|4 s|3,46° / 15,52°|3,47° / 18,85°|sì|1,1 cm|0,003 · 0,012|28,5 / 32,1|3,24 → 0 cm (rampa 2,44 · fuori 2,43)|ciclo=3-4|
+|— (rohr-penalty-kick-01)|10_Penalty_Kick_01_ue5 (`4bd04c128d1f36d3…`)|10,533 s|4,88° / 30,33°|4,88° / 31,62°|**no**|—|0,061 · 0,708|27,5 / 33,5|—|—|
+|— (rohr-penalty-kick-02)|11_Penalty_Kick_02_ue5 (`045c5bea65085b93…`)|8,733 s|5,36° / 39,78°|5,36° / 41,46°|**no**|—|0,053 · 0,709|29,0 / 35,0|—|—|
+|— (rohr-defending-02)|19_Defending_02_ue5 (`af5f864fc7ec475b…`)|8,45 s|7,71° / 35,6°|7,64° / 39,36°|**no**|—|0,109 · 1,605|23,5 / 28,5|—|—|
+|`rohr-goalkeeper-save-01`|15_Goalkeeper_Save_01_ue5 (`1e265d0fe409b2df…`)|7,167 s|7,38° / 27,34°|7,38° / 28,79°|sì|0,8 cm|0,012 · 0,416|17,9 / 23,1|—|—|
+|`rohr-goalkeeper-save-02`|16_Goalkeeper_Save_02_ue5 (`17fea4c6aacd806a…`)|4,367 s|6,35° / 18,83°|6,46° / 20,5°|sì|1,3 cm|0,024 · 0,291|29,7 / 34,2|—|—|
+|— (rohr-goalkeeper-save-03)|17_Goalkeeper_Save_03_ue5 (`519a22f817339044…`)|8,9 s|7,63° / 28,32°|7,63° / 30,1°|**no**|—|0,013 · 0,302|38,0 / 46,0|—|—|
+|— (rohr-dribble-01)|01_Dribble_01_ue5 (`77f2f953aef1a4ba…`)|5,917 s|6,32° / 31,64°|6,32° / 35,03°|**no**|—|0,105 · 1,69|49,9 / 55,9|—|—|
+|— (rohr-dribble-02)|02_Dribble_02_ue5 (`a4fbfc1f2b6759c4…`)|9,017 s|6,62° / 35,91°|6,62° / 37,33°|**no**|—|0,048 · 0,868|39,0 / 44,1|—|—|
+|— (rohr-dribble-03)|03_Dribble_03_ue5 (`25559ae92624a132…`)|3,383 s|6,12° / 28,94°|6,14° / 31,32°|**no**|—|0,115 · 1,007|43,0 / 48,7|—|—|
+|`rohr-throw-in`|07_Throw_In_ue5 (`7c0493fed556ce41…`)|7,933 s|3,02° / 27,81°|2,96° / 29,47°|sì|1 cm|0,014 · 0,099|17,9 / 20,7|—|—|
+|`rohr-yellow-card`|20_Yellow_Card_ue5 (`7273daef858baa30…`)|2,867 s|2,47° / 21,05°|2,47° / 21,22°|sì|1,1 cm|0,003 · 0,008|23,7 / 25,5|—|—|
+|`rohr-yellow-red-card`|21_Yellow_And_Red_Card_ue5 (`20c2d68e5ca5d92b…`)|5,7 s|2,97° / 18,82°|2,97° / 18,98°|sì|1,2 cm|0,005 · 0,031|25,3 / 27,1|—|—|
+|`rohr-juggling-01`|04_Juggling_01_ue5 (`6e067597e6c525d6…`)|3,133 s|6,37° / 19,06°|6,37° / 20,41°|sì|0,2 cm|0,01 · 0,092|57,5 / 64,9|6,23 → 0 cm (rampa 2,32 · fuori 5,16)|ciclo=3-4|
+|`rohr-juggling-02`|05_Juggling_02_ue5 (`d1ef01b574a80bc9…`)|3,733 s|5,62° / 17,42°|5,63° / 18,65°|sì|0,6 cm|0,029 · 0,467|59,1 / 66,9|12,91 → 0 cm (rampa 6,28 · fuori 12,93)|ciclo=3-4|
+|— (rohr-juggling-03)|06_Juggling_03_ue5 (`c0dca47ce5989044…`)|3,0 s|6,7° / 21,62°|6,77° / 33,89°|**no**|—|0,011 · 0,349|55,2 / 62,2|15,73 → 0 cm (rampa 10,55 · fuori 7,68)|ciclo=3-4|
+|`rohr-sitting-clapping`|01_Sitting_Clapping_ue5 (`f934a0f3e581a57b…`)|3,167 s|6,51° / 15,91°|6,49° / 16,45°|sì|0 cm|nessun appoggio rilevato|33,3 / 37,7|0,56 → 0 cm (rampa 0,8 · fuori 0,84)|ciclo=3-4|
+|`rohr-standing-clapping`|02_Standing_Clapping_ue5 (`b2e15ae9e4f83700…`)|3,5 s|3,68° / 14,34°|3,68° / 15,51°|sì|0,8 cm|0,003 · 0,009|41,3 / 46,9|0,35 → 0 cm (rampa 0,58 · fuori 0,6)|ciclo=3-4|
+|`rohr-clapping-and-agree`|04_Clapping_And_Agree_ue5 (`a6f141cf08bac419…`)|3,033 s|3,32° / 12,38°|3,34° / 13,42°|sì|1,1 cm|0,002 · 0,004|38,9 / 44,2|1,15 → 0 cm (rampa 0,59 · fuori 0,64)|ciclo=3-4|
+|`rohr-clap-twice-hand-up`|15_Clap_Twice_Hand_Up_ue5 (`c7237e92553dc34d…`)|3,367 s|3,73° / 11,84°|3,72° / 12,04°|sì|0 cm|0,025 · 0,063|24,7 / 25,6|1,68 → 0 cm (rampa 4,97 · fuori 5,97)|ciclo=3-4|
+|`rohr-swaying-arms`|06_Swaying_Arms_ue5 (`3f8572d7642ddc6a…`)|3,9 s|3,4° / 18,6°|3,4° / 19,12°|sì|0 cm|0,021 · 0,031|61,2 / 70,1|1,4 → 0 cm (rampa 1,42 · fuori 2,26)|ciclo=3-4|
+|`rohr-hands-up-swaying`|07_Hands_Up_Swaying_ue5 (`e38cfb1e946364e4…`)|4 s|3,44° / 5,84°|3,48° / 6,06°|sì|1,5 cm|0,013 · 0,031|28,6 / 33,2|4,57 → 0 cm (rampa 4,21 · fuori 3,51)|ciclo=3-4|
+|`rohr-hands-up-looking-up`|08_Hands_Up_Looking_Up_ue5 (`128ff7a324d5501a…`)|3,767 s|1,54° / 4,06°|1,55° / 4,87°|sì|1,2 cm|0,005 · 0,015|40,1 / 46,9|3,44 → 0 cm (rampa 0,71 · fuori 0,49)|ciclo=3-4|
+|`rohr-standing-selfie`|12_Standing_Selfie_ue5 (`48dfa0ed7ae51642…`)|4 s|3,99° / 5,25°|3,87° / 5,72°|sì|0 cm|0,002 · 0,009|58,9 / 66,1|3,92 → 0 cm (rampa 0,67 · fuori 0,44)|ciclo=3-4|
+|`rohr-sitting-phone-video`|13_Sitting_Phone_Video_ue5 (`84a482a0963e1ddf…`)|3,367 s|6,7° / 22,98°|6,7° / 27,84°|sì|0 cm|nessun appoggio rilevato|30,6 / 37,1|2,32 → 0 cm (rampa 0,6 · fuori 0,34)|ciclo=3-4|
+
+Note: le mani arrivano ancora **3-9 cm più vicine alla testa** che nella sorgente (braccio più corto); come nel 180b, un contatto
+mano-viso **Non posso confermarlo né escluderlo** con una misura osso-osso. Lo scalino costante di ~1,5 cm sotto il suolo di alcune
+clip del pubblico è la taratura del suolo (180b §4), non un movimento. Sui provini delle pose accosciate (portiere, palleggi) si
+vede in qualche fotogramma la pelle della coscia attraverso i pantaloncini: è la pelle del nostro modello in piegamento forte, non
+la clip (la stessa cosa c'è nei provini del 180b); Non posso confermarlo oltre il provino.
+
+## 5. File, peso, `dist/`, guardiano, controlli
+
+- **`assets/cgtrader-clip-rohr.glb`**: **2.764.540 byte** (era 2.042.300), 24 clip, 75 ossa uguali al corpo, solo animazioni.
+  Peso per clip (circa, KB): tiri 64-111 · esultanze 78-86 · portiere 107-203 · rimessa 224 · cartellini 68-148 · palleggi 77-92 ·
+  pubblico 73-98. Le tre del pubblico già dentro pesavano 1,24 MB, ora **278 KB**.
+- **Fuori da `dist/`** (decisione madre §6.4): `tools/build-dist.mjs` lo mette nell'elenco dei file non referenziati;
+  `tools/validate-dist.mjs` ha un controllo nuovo «clip Rohr non collegate fuori dal pacchetto». Verde; **prova del rosso**: copiato
+  a mano il file in `dist/assets/` → «❌ presente», uscita 1. Quando il gioco lo caricherà, vanno tolte entrambe le righe.
+- **Guardiano `npm run clip-180`** aggiornato: 24 clip attese con durata ±1 fotogramma, peso ≤ 3,0 MB, e **nuovo controllo
+  d'anello** sui 14 anelli (primo e ultimo valore di ogni canale: < 0,5° e < 1 mm). Verde (giunzioni 0,03-0,14°). Prova del rosso:
+  sul file del 180b → rosso, 9 controlli falliti fra cui i tre anelli aperti (25° · 92° · 19°), uscita 1; sul file `cgtrader-clip-po.glb`
+  → rosso, 8.
+- **Controlli, uno alla volta, memoria e disco controllati prima di ciascuno:** `check-src` IDENTICO BYTE PER BYTE · `test:logic`
+  51/51 · `save-compat` 12/12 · `build-dist` ✅ (nessuna CDN) · `validate-dist` ✅ (offline, 0 errori, Rohr fuori) · `crediti-254` ✅ ·
+  `design-system` ✅ · `clip-180` ✅. Gate 14/14 e catena completa **non** eseguiti: nessun byte del gioco cambiato.
+- Roadmap non aggiornata: nessuna versione parte (`GAME_VERSION` invariata per mandato).
+
+## 6. Domande per la sessione madre
+
+1. **La correzione delle mani peggiora il cancello.** Applicata alla lettera, fa uscire `defending-01` (era dentro, giudicata
+   usabile come postura) e tiene fuori `goalkeeper-save-03` e `dribble-03`, che senza correzione passerebbero (28,6° · 28,3° · 28,9°).
+   Strade possibili, nessuna presa: (a) tenere così; (b) correzione delle mani solo dove non peggiora il cancello; (c) nessuna
+   correzione (dal «prima» della tabella §4 entrerebbero 27-28 clip: 28 se anche \`juggling-03\` regge la rampa senza correzione,
+   cosa non misurata); (d) un cancello misurato rispetto alla spalla, che la sessione madre ha già
+   escluso. Lo script rifà qualsiasi variante in ~1 minuto (`CPM_IK=0`), ma servono di nuovo gli zip.
+2. **`rohr-swaying-arms`**: il tratto scelto per l'anello sembra calmo nei provini. Va scelto un tratto più mosso (es. finestra con
+   più movimento delle mani a parità di giunzione)?
+3. **Clip con oggetti** (rimessa, cartellini, selfie, video col telefono, palleggi) e **seduti** (sitting-clapping, sitting-phone-video):
+   servono pallone/cartellini/telefono/sedile dal gioco. Si tengono nel file anche se oggi nessuna scena ha quegli oggetti?
+4. **`juggling-03`** è fuori solo per la chiusura dell'anello (senza chiusura passa a 23,3°, ma con un salto di 15,7 cm): accettare un
+   anello di più di 4 s, o lasciarla fuori?
+
+## 7. Crediti (decisione madre §6.5) — preparato, NON attivato
+
+Da fare **quando** le clip entreranno nel gioco (oggi no, `src/` intoccato):
+1. in `src/17-menu-creazione-pannelli.jsx`, elenco della finestra Crediti (accanto alla voce «Animazioni Mixamo e modello CH38»),
+   la riga di cortesia, pronta da incollare nello stesso formato delle voci vicine:
+   `{n:"Animazioni Anderson Rohr",d:"Esultanze, tiri, parate, rimessa, cartellini, palleggi e gesti del pubblico.",aut:"Anderson Rohr",lic:"«This pack can be used for free in both personal and commercial projects. Attribution is not required» (andersonrohr.gumroad.com)"}`
+   (va verificato il formato esatto delle voci di quel blocco al momento di incollarla);
+2. in `docs/governo/CREDITI-fonti.md` spostare la registrazione Rohr dall'elenco «FUORI dalla tabella» a una riga della tabella;
+3. rilanciare `npm run crediti-254` (conta le righe della tabella e le cerca nella finestra Crediti): deve restare verde;
+4. togliere `cgtrader-clip-rohr.glb` dall'esclusione di `build-dist.mjs` e il controllo in `validate-dist.mjs` (§5).
+
+## 8. Verifiche finali di igiene
+
+Vedi sotto (eseguite dopo il commit).

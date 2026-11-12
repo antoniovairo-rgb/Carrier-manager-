@@ -34,9 +34,10 @@ Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy sho
 **Perché fuori dalla tabella:** il guardiano `crediti-254` pretende nella finestra Crediti del gioco ogni riga della tabella qui
 sopra (conta ogni riga che comincia con «|», per questo qui è un elenco); aggiungere la riga senza toccare `src/` lo renderebbe rosso, e il mandato del giro 180b vieta cambi a `src/` (le clip non
 sono ancora collegate ai gesti). La riga entra in tabella **quando** le clip entreranno nel gioco — domanda aperta per la
-sessione madre nel rapporto 180b §6.
+sessione madre nel rapporto 180b §6. **Decisione madre (180c):** la riga entra in tabella e nella finestra Crediti solo quando le clip
+entreranno nel gioco; la riga di cortesia è preparata (non attivata) nel rapporto 180c §7.
 
-- **Risorsa:** 9 clip di animazione convertite e riadattate allo scheletro CGTrader, file `assets/cgtrader-clip-rohr.glb` (nessuna mesh, solo animazioni)
+- **Risorsa:** 24 clip di animazione (giro 180c; erano 9 nel 180b) convertite e riadattate allo scheletro CGTrader, file `assets/cgtrader-clip-rohr.glb` (nessuna mesh, solo animazioni; **fuori da `dist/`** finché il gioco non lo carica)
 - **Autore:** Anderson Rohr
 - **Fonte:** «Free mocap pack 05: Soccer» <https://andersonrohr.gumroad.com/l/mocap_pack5> e «Free mocap pack 04: Crowd Reactions» <https://andersonrohr.gumroad.com/l/mocap_pack4> (Gumroad)
 - **Licenza, parola per parola (sezione «Licensing», identica sulle due pagine, riletta alla fonte il 12/11/2026):** «This pack can be used for free in both personal and commercial projects. Attribution is not required, but feel free to tag me (my socials: https://linktr.ee/andersonrohr). I’d love to see what you create with it. You may not redistribute, resell, or repackage this pack as a standalone product.»

@@ -18,9 +18,21 @@ mediana <= 10 gradi, massimo <= 30 gradi, altrimenti la clip e' RIFIUTATA.
 Uso (Blender 5 come modulo Python `bpy`, pip install bpy, Python 3.13):
   python -I tools/rohr-180/riadatta_rohr.py -- <cgtrader-lod.glb> <uscita.glb> <file.fbx> <nome-clip> [<file.fbx> <nome-clip>]...
 Stampa una riga CANCELLO e una riga MISURA (scivolamento piedi, compenetrazione col suolo) per clip.
+
+[giro 180c] Opzioni per clip, attaccate al nome con «:» e separate da «,» (es. `rohr-power-kick:a=2.4`):
+  da=<s> / a=<s>  taglio della clip, in secondi dall'inizio (dopo l'esclusione della posa di riferimento);
+  ciclo=<min>-<max> sceglie la finestra di <min>-<max> secondi in cui l'ultimo fotogramma coincide col primo (posizione E
+                  velocita' di mani, gomiti, piedi, ginocchia, testa e bacino), cosi' la clip gira in anello senza salto;
+  suolo           alza il bacino, fotogramma per fotogramma, di quanto il vertice piu' basso del corpo scende sotto il suo livello
+                  a riposo (corregge ginocchia/corpo che affondano; misurato sui VERTICI deformati, non sulle ossa).
+Correzione delle mani (sempre attiva, CPM_IK=0 la spegne): IK del braccio a 2 ossa che porta il polso nel punto della
+sorgente RISPETTO ALLA SPALLA, scalato sulle proporzioni del nostro braccio ((omero+avambraccio) nostro / sorgente); il
+piano del gomito resta quello del riadattamento, l'orientamento della mano resta quello della sorgente. Il cancello e le sue
+soglie NON cambiano: la riga CANCELLO riporta l'esito prima e dopo la correzione.
 """
-import sys, math, statistics, json
+import sys, math, statistics, json, os
 import bpy
+import numpy as np
 from mathutils import Matrix, Vector, Quaternion
 
 # sorgente UE5 -> bersaglio CGTrader (UE4)
@@ -44,7 +56,9 @@ SWING = {b for b in FIGLIO_T if b != 'pelvis'}
 SOGLIA_MED, SOGLIA_MAX = 10.0, 30.0
 
 
-def riadatta(T, src_path, nome):
+def riadatta(T, src_path, nome, opz=None):
+    opz = opz or {}
+    usa_ik = os.environ.get('CPM_IK', '1') != '0'
     prima = set(bpy.data.objects.keys())
     bpy.ops.import_scene.fbx(filepath=src_path)
     nuovi = [bpy.data.objects[k] for k in bpy.data.objects.keys() if k not in prima]
@@ -84,6 +98,36 @@ def riadatta(T, src_path, nome):
     posa_rif = (h2 - h1).length > max(0.05, 8 * (h3 - h2).length)
     if posa_rif:
         f0 += 1
+    # [180c] taglio / ciclo: si decide sulla SORGENTE, prima del riadattamento (indici a 30 fps: f = f0 + 2*i)
+    giunzione_src = None
+    if 'da' in opz or 'a' in opz:
+        f_a = min(f1, f0 + int(round(float(opz.get('a', 1e9)) * fps_s)))
+        f0 = f0 + 2 * int(round(float(opz.get('da', 0)) * fps_s / 2)); f1 = f_a
+    elif 'ciclo' in opz:
+        lo, hi = (float(x) for x in opz['ciclo'].split('-'))
+        PUNTI = ('hand_l', 'hand_r', 'lowerarm_l', 'lowerarm_r', 'ball_l', 'ball_r', 'calf_l', 'calf_r', 'head')
+        des = []
+        for f in range(f0, f1 + 1, 2):
+            W = mondo(f); pv = W['pelvis'].translation
+            des.append([pv.copy()] + [W[n].translation - pv for n in PUNTI])
+        def dist(u, v): return max((a - b).length for a, b in zip(u, v))
+        def vel(u, v): return [b - a for a, b in zip(u, v)]
+        Lmin, Lmax = int(round(lo * 30)), int(round(hi * 30))
+        best = None
+        for i in range(0, len(des) - Lmin - 1):
+            for L in range(Lmin, min(Lmax, len(des) - 1 - i) + 1):
+                j = i + L
+                sp = dist(des[i], des[j]); sv = dist(vel(des[j - 1], des[j]), vel(des[i], des[i + 1]))
+                sc_ = sp + 2 * sv
+                if best is None or sc_ < best[0]:
+                    best = (sc_, i, j, sp, sv)
+        if best is None:
+            raise SystemExit(f'RIFIUTATA {nome}: clip troppo corta per un ciclo di {lo}-{hi} s')
+        _, i, j, sp, sv = best
+        passo = statistics.median(dist(des[k], des[k + 1]) for k in range(i, j))
+        giunzione_src = {'salto_cm': round(sp * 100, 2), 'vel_cm_fot': round(sv * 100, 2), 'passo_mediano_cm': round(passo * 100, 2),
+                         'da_s': round(i / 30, 3), 'a_s': round(j / 30, 3)}
+        f0, f1 = f0 + 2 * i, f0 + 2 * j
     S0 = mondo(f0)
     imb = yaw(S0['thigh_r'].translation - S0['thigh_l'].translation, latoT)              # fotogramma 0 -> direzione del bersaglio
     # suolo e scala dal RIPOSO della sorgente (in piedi), non dal primo fotogramma: un'esultanza puo' cominciare in salto
@@ -91,6 +135,24 @@ def riadatta(T, src_path, nome):
     terra_T = min(T_rest['foot_l'].translation.z, T_rest['foot_r'].translation.z)
     scala = (T_rest['pelvis'].translation.z - terra_T) / max(1e-6, S_rest['pelvis'].translation.z - terra_S)
     Tp = T_rest['pelvis'].translation
+    # [180c] lunghezze del braccio (omero + avambraccio), sorgente e nostro, dal riposo
+    Lb_S = {l: (S_rest[f'lowerarm_{l}'].translation - S_rest[f'upperarm_{l}'].translation).length
+               + (S_rest[f'hand_{l}'].translation - S_rest[f'lowerarm_{l}'].translation).length for l in ('l', 'r')}
+    corpo = [o for o in bpy.context.scene.objects if o.type == 'MESH' and o.find_armature() == T]
+    def vmin():
+        dg = bpy.context.evaluated_depsgraph_get(); z = 1e9
+        for o in corpo:
+            oe = o.evaluated_get(dg); me = oe.to_mesh(); n = len(me.vertices)
+            co = np.empty(n * 3, dtype=np.float64); me.vertices.foreach_get('co', co); co = co.reshape(n, 3)
+            mw = np.array(oe.matrix_world)
+            z = min(z, float((co @ mw[2, :3] + mw[2, 3]).min())); oe.to_mesh_clear()
+        return z
+    usa_suolo = 'suolo' in opz
+    if usa_suolo and not corpo:
+        raise SystemExit('opzione suolo: nessuna mesh legata allo scheletro bersaglio')
+    vmin_rest = vmin() if usa_suolo else None
+    ik_stat = {'fotogrammi': 0, 'saltati': 0, 'spost_max_cm': 0.0}
+    sollevato = [0.0, 0]
     Qr = q_rest.to_matrix().to_4x4(); Im = imb.to_matrix().to_4x4()
     Sr = {k: (Qr @ m).to_quaternion() for k, m in S_rest.items()}
     act = bpy.data.actions.new(nome)
@@ -107,9 +169,42 @@ def riadatta(T, src_path, nome):
         return d
     ordine = sorted(MAPPA.keys(), key=lambda s: prof(MAPPA[s]))
     errori, traccia, peggio = [], [], [0.0, '', 0, 0.0]
+    errori_prima, peggio_prima = [], [0.0, '', 0, 0.0]
+    fr_err = {}
     per_osso, spalla = {}, []
     mt = [9.0, 9.0]
     passi = list(range(f0, f1 + 1, 2))
+    def ik_braccio(lato, Sw, k):
+        """[180c] IK a 2 ossa: polso = spalla + (polso - spalla della sorgente) x (braccio nostro / braccio sorgente)."""
+        pu, pl, ph = (T.pose.bones[f'{n}_{lato}'] for n in ('upperarm', 'lowerarm', 'hand'))
+        W = lambda pb: Tw @ pb.matrix
+        A, B, C = W(pu).translation.copy(), W(pl).translation.copy(), W(ph).translation.copy()
+        a, b = (B - A).length, (C - B).length
+        ds = Sw[f'hand_{lato}'].translation - Sw[f'upperarm_{lato}'].translation
+        G = A + ds * ((a + b) / Lb_S[lato])
+        if os.environ.get('CPM_IK_RIF') == 'bacino':   # SOLO diagnostica 180c (mai per il file): polso nel punto della sorgente rispetto al BACINO
+            G = (Tw @ T.pose.bones['pelvis'].matrix).translation + (Sw[f'hand_{lato}'].translation - Sw['pelvis'].translation) * scala
+        d = min(max((G - A).length, abs(a - b) + 1e-4), a + b - 1e-4)
+        ik_stat['fotogrammi'] += 1
+        if (G - A).length < 1e-6:
+            ik_stat['saltati'] += 1; return
+        n = (G - A).normalized(); pv = (B - A) - n * (B - A).dot(n)
+        if pv.length < 1e-5:   # gomito sulla retta spalla-polso: piano indefinito, si lascia il riadattamento
+            ik_stat['saltati'] += 1; return
+        pv.normalize()
+        cA = max(-1.0, min(1.0, (a * a + d * d - b * b) / (2 * a * d))); sA = math.sqrt(max(0.0, 1 - cA * cA))
+        B2, G2 = A + n * (a * cA) + pv * (a * sA), A + n * d
+        Rh = W(ph).to_quaternion()
+        M = W(pu); q1 = (B - A).rotation_difference(B2 - A)
+        pu.matrix = Tw.inverted() @ Matrix.LocRotScale(M.translation, q1 @ M.to_quaternion(), M.to_scale()); vl.update()
+        M = W(pl); Bn, Cn = M.translation.copy(), W(ph).translation.copy()
+        q2 = (Cn - Bn).rotation_difference(G2 - Bn)
+        pl.matrix = Tw.inverted() @ Matrix.LocRotScale(Bn, q2 @ M.to_quaternion(), M.to_scale()); vl.update()
+        M = W(ph)
+        ph.matrix = Tw.inverted() @ Matrix.LocRotScale(M.translation, Rh, M.to_scale()); vl.update()
+        ik_stat['spost_max_cm'] = max(ik_stat['spost_max_cm'], (M.translation - C).length * 100)
+        for pb in (pu, pl, ph):
+            pb.keyframe_insert('rotation_quaternion', frame=k)
     for k, f in enumerate(passi):
         Sw = {n: Im @ m for n, m in mondo(f).items()}
         nuovo = {}
@@ -145,11 +240,25 @@ def riadatta(T, src_path, nome):
                 pb.keyframe_insert('location', frame=k)
         vl.update()
         P = lambda n: (Tw @ T.pose.bones[n].matrix).translation.copy()
-        for s in ('hand_l', 'hand_r', 'foot_l', 'foot_r', 'head'):
-            tb = P(s) - P('pelvis'); sb = (Sw[INV[s]].translation - Sw['pelvis'].translation) * scala
-            if tb.length > 1e-6 and sb.length > 1e-6:
-                e = math.degrees(tb.angle(sb)); errori.append(e); per_osso.setdefault(s, []).append(e)
-                if e > peggio[0]: peggio[:] = [e, s, k, round(tb.length, 3)]
+        def cancello(lista, pg, po):
+            for s in ('hand_l', 'hand_r', 'foot_l', 'foot_r', 'head'):
+                tb = P(s) - P('pelvis'); sb = (Sw[INV[s]].translation - Sw['pelvis'].translation) * scala
+                if tb.length > 1e-6 and sb.length > 1e-6:
+                    e = math.degrees(tb.angle(sb)); lista.append(e)
+                    if po is not None: po.setdefault(s, []).append(e)
+                    if e > pg[0]: pg[:] = [e, s, k, round(tb.length, 3)]
+        cancello(errori_prima, peggio_prima, None)
+        if usa_ik:
+            for lato in ('l', 'r'):
+                ik_braccio(lato, Sw, k)
+        if usa_suolo:
+            d = vmin_rest - vmin()
+            if d > 0:
+                pp = T.pose.bones['pelvis']; M = Tw @ pp.matrix
+                pp.matrix = Tw.inverted() @ Matrix.LocRotScale(M.translation + Vector((0, 0, d)), M.to_quaternion(), M.to_scale())
+                vl.update(); pp.keyframe_insert('location', frame=k)
+                sollevato[0] = max(sollevato[0], d); sollevato[1] += 1
+        n0 = len(errori); cancello(errori, peggio, per_osso); fr_err[k] = (n0, len(errori))
         # diagnostica (NON cancello): mano rispetto alla SPALLA — separa l'errore d'angolo da quello di proporzioni (braccio sorgente
         # 0,278+0,273 m contro 0,199+0,240 del bersaglio: vicino al bacino la sola differenza di lunghezze sposta la direzione)
         for lato in ('l', 'r'):
@@ -160,13 +269,74 @@ def riadatta(T, src_path, nome):
             mt[0] = min(mt[0], (P(f'hand_{lato}') - P('head')).length)
             mt[1] = min(mt[1], (Sw[f'hand_{lato}'].translation - Sw['head'].translation).length * scala)
         traccia.append({n: P(n) for n in ('pelvis', 'foot_l', 'foot_r', 'ball_l', 'ball_r', 'hand_l', 'hand_r', 'head')})
+    chiusura = None
+    if 'ciclo' in opz:
+        # [180c] CHIUSURA dell'anello: la differenza fra l'ultimo fotogramma e il primo si riassorbe sugli ultimi M fotogrammi
+        # (rampa liscia, smoothstep): ogni osso q(k) <- slerp(I, q0·qL⁻¹, w(k)) · q(k); il bacino trasla di (p0 - pL)·w(k).
+        # A k = L la posa coincide col fotogramma 0. La misura che conta e' il passo massimo DENTRO la rampa contro il passo mediano.
+        L = len(passi) - 1; M = min(10, L // 3)
+        ossa = [T.pose.bones[b] for b in MAPPA.values()]
+        def leggi(k):
+            sc.frame_set(k); vl.update()
+            return {pb.name: (pb.rotation_quaternion.copy(), pb.location.copy()) for pb in ossa}
+        p0, pL = leggi(0), leggi(L)
+        corr = {}
+        for n, (q0, l0) in p0.items():
+            qL, lL = pL[n]
+            if q0.dot(qL) < 0: q0 = -q0
+            corr[n] = (q0 @ qL.inverted(), l0 - lL)
+        rampa = []
+        for k in range(L - M + 1, L + 1):
+            t = (k - (L - M)) / M; w = t * t * (3 - 2 * t)
+            pk = leggi(k); rampa.append(k)
+            for pb in ossa:
+                q, l = pk[pb.name]; qc, dl = corr[pb.name]
+                pb.rotation_quaternion = Quaternion().slerp(qc, w) @ q
+                pb.keyframe_insert('rotation_quaternion', frame=k)
+                if pb.name == 'pelvis':
+                    pb.location = l + dl * w; pb.keyframe_insert('location', frame=k)
+        T.animation_data.action = act
+        traccia_prima, traccia = traccia, []
+        for k in range(L + 1):
+            sc.frame_set(k); vl.update()
+            traccia.append({n: (Tw @ T.pose.bones[n].matrix).translation.copy() for n in ('pelvis', 'foot_l', 'foot_r', 'ball_l', 'ball_r', 'hand_l', 'hand_r', 'head')})
+        chiusura = {'fotogrammi_rampa': M}
+        # il cancello si RIMISURA sui fotogrammi della rampa (la chiusura li ha cambiati): sorgente al suo fotogramma, bersaglio al suo
+        for k in rampa:
+            Sw = {n: Im @ m for n, m in mondo(passi[k]).items()}
+            sc.frame_set(k); vl.update()
+            P = lambda n: (Tw @ T.pose.bones[n].matrix).translation.copy()
+            a0, a1 = fr_err[k]; nuovi_e = []
+            for s_ in ('hand_l', 'hand_r', 'foot_l', 'foot_r', 'head'):
+                tb = P(s_) - P('pelvis'); sb = (Sw[INV[s_]].translation - Sw['pelvis'].translation) * scala
+                if tb.length > 1e-6 and sb.length > 1e-6:
+                    e = math.degrees(tb.angle(sb)); nuovi_e.append(e)
+                    if e > peggio[0]: peggio[:] = [e, s_ + ' (rampa)', k, round(tb.length, 3)]
+            if len(nuovi_e) == a1 - a0:
+                errori[a0:a1] = nuovi_e
+            chiusura['cancello_rampa_max'] = round(max(chiusura.get('cancello_rampa_max', 0), max(nuovi_e, default=0)), 2)
     for o in nuovi:
         bpy.data.objects.remove(o, do_unlink=True)
     med, mx = statistics.median(errori), max(errori)
+    med0, mx0 = statistics.median(errori_prima), max(errori_prima)
+    # [180c] giunzione dell'anello misurata sul BERSAGLIO: ultimo fotogramma contro il primo (bacino assoluto + estremita' dal bacino)
+    PT = ('hand_l', 'hand_r', 'foot_l', 'foot_r', 'head')
+    dT = lambda u, v: max([(u['pelvis'] - v['pelvis']).length] + [((u[n] - u['pelvis']) - (v[n] - v['pelvis'])).length for n in PT])
+    giunzione = {'salto_cm': round(dT(traccia[-1], traccia[0]) * 100, 2),
+                 'passo_mediano_cm': round(statistics.median(dT(traccia[i], traccia[i + 1]) for i in range(len(traccia) - 1)) * 100, 2)}
+    if chiusura:
+        chiusura['salto_prima_cm'] = round(dT(traccia_prima[-1], traccia_prima[0]) * 100, 2)
+    if chiusura:   # passo massimo dentro la rampa (e sul giro L -> 0) contro il passo mediano fuori rampa
+        Lc = len(traccia) - 1; M = chiusura['fotogrammi_rampa']
+        chiusura['passo_max_rampa_cm'] = round(max(dT(traccia[i], traccia[i + 1]) for i in range(Lc - M, Lc)) * 100, 2)
+        chiusura['passo_max_fuori_cm'] = round(max(dT(traccia[i], traccia[i + 1]) for i in range(0, Lc - M)) * 100, 2)
     mis = misure(traccia, {n: T_rest[n].translation.z for n in ('foot_l', 'foot_r', 'ball_l', 'ball_r')}, terra_T, 30.0)
-    print(f'CANCELLO {nome}: fotogrammi 30fps {len(passi)} · durata {(f1 - f0) / fps_s:.3f}s · estremita\': mediana {med:.2f}°, massimo {mx:.2f}° · scala anca {scala:.3f}')
+    print(f'CANCELLO {nome}: fotogrammi 30fps {len(passi)} · durata {(f1 - f0) / fps_s:.3f}s · PRIMA della correzione mani: mediana {med0:.2f}°, massimo {mx0:.2f}° ({peggio_prima[1]}) · DOPO: mediana {med:.2f}°, massimo {mx:.2f}° ({peggio[1]}) · scala anca {scala:.3f}')
     print('MISURA ' + json.dumps({'clip': nome, 'fps_sorgente': fps_s, 'posa_riferimento_esclusa': posa_rif, 'fotogrammi': len(passi), 'durata': round((f1 - f0) / fps_s, 3),
                                   'cancello_med': round(med, 2), 'cancello_max': round(mx, 2),
+                                  'cancello_prima_med': round(med0, 2), 'cancello_prima_max': round(mx0, 2), 'peggio_prima': peggio_prima[1],
+                                  'ik': ik_stat if usa_ik else None, 'opzioni': opz, 'giunzione': giunzione, 'chiusura': chiusura, 'giunzione_sorgente': giunzione_src,
+                                  'suolo_sollevato_max_cm': round(sollevato[0] * 100, 1) if usa_suolo else None, 'suolo_fotogrammi': sollevato[1] if usa_suolo else None,
                                   'peggio': {'osso': peggio[1], 'fotogramma': peggio[2], 'dist_bacino_m': peggio[3]},
                                   'mano_testa_min_cm': round(mt[0] * 100, 1), 'mano_testa_min_sorgente_cm': round(mt[1] * 100, 1),
                                   'mano_da_spalla_max': round(max(spalla), 2) if spalla else None,
@@ -212,8 +382,10 @@ def main():
     import os
     nuove = []
     for p, n in coppie:
+        n, _, o = n.partition(':')
+        opz = dict((x.split('=', 1) + [''])[:2] for x in o.split(',') if x)
         try:
-            nuove.append(riadatta(T, p, n))
+            nuove.append(riadatta(T, p, n, opz))
         except SystemExit as e:   # CPM_SALTA_RIFIUTATE=1: in lotto una clip rifiutata si scarta e si prosegue (come lo script Mixamo)
             if not os.environ.get('CPM_SALTA_RIFIUTATE'):
                 raise

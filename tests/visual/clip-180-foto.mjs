@@ -34,7 +34,7 @@ const elenco = await page.evaluate(async ({ CORPO, CLIP }) => {
   const cam = new THREE.PerspectiveCamera(30, W / H, 0.05, 50);
   const mix = new THREE.AnimationMixer(m);
   let pelvis = null; m.traverse(o => { if (o.name === 'pelvis') pelvis = o; });
-  const pelli = []; m.traverse(o => { if (o.isSkinnedMesh) pelli.push(o); });
+  const pelli = []; m.traverse(o => { if (o.isSkinnedMesh) { pelli.push(o); o.frustumCulled = false; } });   // [180c] la sfera di ritaglio e' quella della posa di riposo: un corpo che si sposta (parata) spariva dal provino
   const v = new THREE.Vector3();
   const minY = () => { let y = 1e9; m.updateMatrixWorld(true);
     for (const s of pelli) { const pos = s.geometry.attributes.position; s.skeleton.update();
