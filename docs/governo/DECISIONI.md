@@ -1318,3 +1318,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 169: riquadro scuro come il tema (contrasto ≥4,5), voto della barra dalla pagella del motore (4/12 → 12/12 uguali). 10 rossi preesistenti della catena grafica + parata-100 → PO-371, giro 174 (192). festa-3d: seme che vince.
 - 166: partita intera non riproducibile → PO-372, giro 175 Fable (192). La catena completa del 166 (11/98) si chiude nella verifica finale 191.
 - Costi e archivio: 165b, 166 (worker riavviato, costo forse parziale), 169, 170, 170b, 171, 172.
+
+## 12/11 ~09:00 Roma — piano 192 (scene 3D, gesti, animazioni)
+- PO: scene 3D «Le prime 5 del piano» del giro 170 (azioni salienti D1/D11, esultanza D2, intro + colore unico D3/D6, ingresso in campo D4, premiazione e festa D5/D12). Inquadrature provate dal PO sul telefono prima dell'uscita.
+- PO: gesti «Prova pilota: rigore con Fable» (giro 170b §6), poi decisione sugli altri gesti del codice in base al risultato.
+- PO: animazioni nuove «Cerca e proponi»: giro di sola ricerca, licenza letta alla fonte, nessun file nel gioco senza il sì del PO.
+- Madre: due ondate per non far toccare src/12 a troppi giri insieme. Ondata 1: giro 176 regia azioni salienti, giro 177 rigore pilota (Fable), giro 178 intro + colore unico, giro 179 ricerca animazioni. Ondata 2 (dopo l'unione dell'ondata 1): esultanza, ingresso in campo, premiazione.
