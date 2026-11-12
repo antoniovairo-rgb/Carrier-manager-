@@ -33430,7 +33430,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
        tutte le fasi. Ora in COSTRUZIONE, dopo una riga, il minuto seguente lo interrompe solo un fatto da area (murato, tiro, parata,
        palo, gol, rigore: priorita' >= 7); in sviluppo e in pericolo resta tutto com'era. Lettura della fase, nessun sorteggio. */
     const _sog167=(ctx&&ctx.costr167)?7:5;
-    if(bp<_sog167&&cool>0&&!_carry151)return null;
+    if(bp<_sog167&&cool>0&&!_carry151){if(bp>=5){const m=_ms167([best]);if(Object.keys(m).length){const P=msPend167Ref.current||{};for(const k in m)P[k]=(P[k]|0)+m[k];msPend167Ref.current=P;}}return null;}/* [giro 167] un fatto con statistiche (fallo, angolo) taciuto dal respiro di costruzione: i suoi conti passano alla prossima riga — prima del giro nessun fatto con statistiche veniva taciuto dal respiro */
     if(bp<=2&&(_h("dice")%100)>=60&&!_carry151)return null;
     const e=best;const l=e.lato||st.poss.lato;const nostro=(l==='home');const arc=st.arco||null;
     let txt="",at=null,ms=null,ef=null,bpos=null,poss=0;
@@ -33484,7 +33484,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     else if(e.t==='presa'){txt=_pk(["🧤 "+_nm(e.gk)+" esce e fa sua la palla alta.","🧤 Uscita sicura di "+_nm(e.gk)+"."],"pr");at="save";}
     else return null;
     if(!txt)return null;
-    if(!_no167f&&msPend167Ref.current){ms=Object.assign({},ms||{});const P=msPend167Ref.current;for(const k in P)ms[k]=(ms[k]|0)+P[k];msPend167Ref.current=null;}/* [giro 167] i conti dei fatti vecchi taciuti */
+    if(msPend167Ref.current){ms=Object.assign({},ms||{});const P=msPend167Ref.current;for(const k in P)ms[k]=(ms[k]|0)+P[k];msPend167Ref.current=null;}/* [giro 167] i conti dei fatti vecchi taciuti */
     const chiN=e.chi||e.da||e.gk||null;const aN=e.a||e.su||null;
     if(_carry151){ms=Object.assign({},ms||{});for(const k in _msC151)ms[k]=(ms[k]|0)+_msC151[k];}
     try{if(typeof window!=='undefined'&&window.__CPM_W151&&_vec151.length){const w=window.__CPM_W151;w.vecchi=(w.vecchi|0)+_vec151.length;}}catch(_e){}
