@@ -1,5 +1,325 @@
 [
  {
+  "data": "2026-11-12 15:40",
+  "versione": "7.999.190",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "box-fischio-169",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "grafica-168",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "grafica-v2",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "simula-v2",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "momenti-v2",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita-v2",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "patrimonio-303",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "intro-292",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "tema-unico",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "partita2d-297",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "spazio-296",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pc-tablet-292",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "panchina-293",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "cori-291",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "colori-286",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "livello-79",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "barra-360-72",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pallone-278",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "rimbalzo-189",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "calendario-offerte-195",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "walkout-fermi-197",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "fila-206",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "premiazione-palco-191",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "coppa-mani-191",
+    "ok": true,
+    "s": 0,
+    "gia_verde": true
+   },
+   {
+    "passo": "posa-sollevamento-191",
+    "ok": true,
+    "s": 81
+   },
+   {
+    "passo": "palco-corpi-191",
+    "ok": true,
+    "s": 121
+   },
+   {
+    "passo": "parata-198",
+    "ok": true,
+    "s": 33
+   },
+   {
+    "passo": "busta-199",
+    "ok": true,
+    "s": 82
+   },
+   {
+    "passo": "presentazione-200",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "guanti-201",
+    "ok": true,
+    "s": 66
+   },
+   {
+    "passo": "formazioni-204",
+    "ok": true,
+    "s": 53
+   },
+   {
+    "passo": "figurine-208",
+    "ok": true,
+    "s": 42
+   },
+   {
+    "passo": "post-210",
+    "ok": true,
+    "s": 515
+   },
+   {
+    "passo": "piedi-203",
+    "ok": true,
+    "s": 638
+   },
+   {
+    "passo": "gesti-scena-p1b",
+    "ok": true,
+    "s": 656
+   },
+   {
+    "passo": "piede-cross-p1b2",
+    "ok": true,
+    "s": 299
+   },
+   {
+    "passo": "rincorsa-144",
+    "ok": true,
+    "s": 238
+   },
+   {
+    "passo": "doppio-gesto-148",
+    "ok": true,
+    "s": 358
+   },
+   {
+    "passo": "testa-146",
+    "ok": true,
+    "s": 371
+   },
+   {
+    "passo": "movimento-147",
+    "ok": true,
+    "s": 645
+   },
+   {
+    "passo": "l7-schermate",
+    "ok": true,
+    "s": 47
+   },
+   {
+    "passo": "analisi-217",
+    "ok": true,
+    "s": 28
+   },
+   {
+    "passo": "home-066",
+    "ok": true,
+    "s": 104
+   },
+   {
+    "passo": "via-ch38-171",
+    "ok": true,
+    "s": 104
+   },
+   {
+    "passo": "stadi-071",
+    "ok": true,
+    "s": 175
+   },
+   {
+    "passo": "passaggio-coppa-137",
+    "ok": true,
+    "s": 154
+   },
+   {
+    "passo": "cerimonie",
+    "ok": true,
+    "s": 41
+   },
+   {
+    "passo": "scene-fuori-137",
+    "ok": true,
+    "s": 48
+   },
+   {
+    "passo": "kit-061",
+    "ok": true,
+    "s": 28
+   }
+  ],
+  "composto": true,
+  "nota_composto": "passi gia' verdi prima del riavvio del container (cigraf-parte1.log): box-fischio-169, grafica-168, grafica-v2, simula-v2, momenti-v2, partita-v2, patrimonio-303, intro-292, tema-unico, partita2d-297, spazio-296, pc-tablet-292, panchina-293, cori-291, colori-286, livello-79, barra-360-72, pallone-278, griglia-mobile, design-system, career-critical, test:logic, save-compat, titolo-110, pre-188, rimbalzo-189, calendario-offerte-195, walkout-fermi-197, fila-206, premiazione-palco-191, coppa-mani-191"
+ },
+ {
   "data": "2026-11-12 06:11",
   "versione": "7.999.190",
   "catena": "completa",
@@ -21993,78 +22313,6 @@
     "passo": "tabellino-216",
     "ok": true,
     "s": 546
-   }
-  ]
- },
- {
-  "data": "2026-10-09 16:21",
-  "versione": "7.999.155",
-  "catena": "completa",
-  "passi": [
-   {
-    "passo": "test:vision",
-    "ok": true,
-    "s": 2
-   },
-   {
-    "passo": "test:logic",
-    "ok": true,
-    "s": 4
-   },
-   {
-    "passo": "typing-shortcuts",
-    "ok": true,
-    "s": 25
-   },
-   {
-    "passo": "validate-situations",
-    "ok": true,
-    "s": 718
-   },
-   {
-    "passo": "save-compat",
-    "ok": true,
-    "s": 13
-   },
-   {
-    "passo": "replay",
-    "ok": true,
-    "s": 57
-   },
-   {
-    "passo": "career-critical",
-    "ok": true,
-    "s": 807
-   },
-   {
-    "passo": "partita-vera",
-    "ok": true,
-    "s": 514
-   },
-   {
-    "passo": "scena-motore-147",
-    "ok": true,
-    "s": 1112
-   },
-   {
-    "passo": "manovre-150",
-    "ok": true,
-    "s": 7
-   },
-   {
-    "passo": "esiti-218",
-    "ok": true,
-    "s": 1143
-   },
-   {
-    "passo": "nomi-219",
-    "ok": true,
-    "s": 3428
-   },
-   {
-    "passo": "design-system",
-    "ok": true,
-    "s": 1
    }
   ]
  }

@@ -11,15 +11,15 @@ Sessione figlia: nessuna decisione di prodotto presa qui; i dubbi sono in fondo,
 | `calendario-offerte-195` | verde ❌ e rosso ❌: «opzioni: false» in entrambi (il rosso con 0 caselle era giusto) | **strumento** — l'«Impulso della settimana» (scelta obbligatoria dal 7.35) blocca la chiusura della stagione e la sonda non lo rispondeva | verde ✅ (34 caselle, 4 leghe) · rosso ✅ (0 caselle, 0 leghe) |
 | `palco-corpi-191` | verde «dentro 0», rosso «dentro 0» (rosso cieco) | **strumento** — oggi nessun corpo capita dove compare il palco: la condizione non si produce più da sola | verde ✅ dentro 0 · rosso ✅ dentro 236 (con la condizione provocata) |
 | `figurine-208` | «carte 0» in entrambi i bracci | **strumento** — la home V2 non mostra più la carta dell'eroe | verde ✅ 4/4 grigie (Club 3 + Agente 1) · rosso ✅ 0/4 grigie |
-| `piede-cross-p1b2` | rosso ❌ 1,56 / 1,65 (soglia ≥ 2,5) | **strumento** — misurava il minimo su tutto il gesto: la rincorsa porta l'eroe accanto al pallone prima del calcio | verde ✅ 0,41 / 0,65 · rosso ✅ 2,89 / 2,83 (misura all'istante del lancio) |
+| `piede-cross-p1b2` | rosso ❌ 1,56 / 1,65 (soglia ≥ 2,5) | **strumento** — misurava il minimo su tutto il gesto (la rincorsa porta l'eroe accanto al pallone); e anche all'istante del lancio il rosso naturale oscilla 2,1-2,9 | verde ✅ 0,30 / 0,62 · provocato ✅ 0,40 / 0,44 · rosso ✅ 4,42 / 4,27 · rosso naturale stampato (2,88 / 2,10) |
 | `doppio-gesto-148` | verde ❌: «assist» e «generico» (gi18) con la finta nella sequenza ma senza cambio di direzione | **gioco** — la guardia «un gesto per azione» (7.396) contava l'avvicinamento della scelta come gesto dell'azione scelta | verde ✅ · rosso 148 ✅ · **rosso 174** `__CPM_NO_G174_DOPPIO` ✅ |
 | `testa-146` | rosso ❌ 2,41 / 2,45 / 1,25 (soglia ≥ 2,5) | **strumento** — senza il 146 il difetto oggi ha un'altra forma (l'eroe arriva sul pallone e lo supera nel caricamento) e oscilla attorno alla soglia | gioco ✅ · rete ✅ · provocato ✅ 0,63-0,74 · rosso ✅ 3,15-4,17 · rosso naturale stampato (2,42 / 2,42 / 1,20) |
 | `home-066` | ❌ «7 fuori standard», tutti «F1 fondo sfumato» sul riquadro della prossima partita | **strumento** — l'esenzione F1 del riquadro nel colore del club copriva «fondo non neutro» ma non «fondo sfumato» (sfumatura del giro 106 B) | verde ✅ 0 su 132 · rosso ✅ 17 su 132 |
 | `festa-3d` | partita persa 0–2, niente festa, non giudicato | **strumento** — il nome «Festa2» genera una sconfitta; dietro c'erano altri due criteri superati dal gioco (cori PO-291, squadre fisse PO-297) | verde ✅ (2–1, coro a schermo) · rosso 47 ✅ · rosso 48 ✅ |
 | `parata-100` | 0 parate sul ramo `cross_goal` in verde e rosso → non giudicato | **strumento** — le partite vere non producono il caso; con l'esito forzato il ramo è spento per costruzione | verde ✅ (2 provocate a 2,0-2,1 dal portiere + 6 parate vere, 0 difetti) · rosso ✅ (provocata gi42 a 17,9) |
 
-Nessuna soglia abbassata, nessun guardiano ritirato. Due difetti del **gioco** corretti, otto **strumenti** riscritti. Tre di questi
-(palco, testa, parata) ora **provocano** la condizione con un gancio di collaudo che esiste solo sotto `?cpmtest=1`.
+Nessuna soglia abbassata, nessun guardiano ritirato. Due difetti del **gioco** corretti, otto **strumenti** riscritti. Quattro di questi
+(palco, piede, testa, parata) ora **provocano** la condizione con un gancio di collaudo che esiste solo sotto `?cpmtest=1`.
 
 ## Dettaglio, controllo per controllo
 
@@ -68,6 +68,11 @@ Nessuna soglia abbassata, nessun guardiano ritirato. Due difetti del **gioco** c
 - **Criterio vecchio**: minimo della distanza su **tutto** il gesto. **Nuovo**: minimo su tre fotogrammi attorno al lancio (l'ultimo
   prima che l'arco parta e i primi due dopo). Soglie invariate (≤ 0,8 e ≥ 2,5). Più severo per il verde: il pallone deve essere al
   piede quando parte il cross, prima bastava sfiorarlo in un istante qualunque.
+- **Seconda prova**: rosso gi42 a **2,09** (prima 2,83): anche all'istante del lancio il rosso naturale dipende da quanto l'eroe è
+  vicino al pallone e sta a cavallo della soglia. Come per `testa-146`, il difetto pieno misurato al 7.999.143 (3,8-4,7) lo provoca il
+  gancio `__CPM_PIEDE174_LONTANO` (`src/12`, solo `?cpmtest=1`): pallone 4 u alle spalle dell'eroe al primo fotogramma del caricamento
+  del cross. Quattro bracci: verde naturale (≤ 0,8), **provocato** (gancio, P1B2 acceso: ≤ 0,8, misurato 0,40 / 0,44), **rosso**
+  (gancio, P1B2 + rincorsa spenti: ≥ 2,5, misurato 4,42 / 4,27), rosso naturale stampato e non giudicato.
 
 ### 6. `doppio-gesto-148` — difetto del gioco
 - **Prima**: verde ❌ su «assist» (gi18 «Sterzata e assist») e «generico» (gi18 «Dribbling netto e assist»): tratto `feint` presente,
@@ -123,3 +128,70 @@ Nessuna soglia abbassata, nessun guardiano ritirato. Due difetti del **gioco** c
   Verde: `cross_goal>assist_shot` a 2,0-2,1 dal portiere; rosso (`__CPM_NO_G100D3`): `cross_goal>deflect` a 4,8 (gi16) e 17,9 (gi42).
   Una scena provocata che non arriva al riquadro di parata è «non giudicata» = rossa. Soglia 6 invariata.
 
+## Ganci e interruttori aggiunti (tutti nuovi, nessuno rimosso)
+
+| Nome | File | Tipo | Effetto |
+|---|---|---|---|
+| `__CPM_NO_G174_SPAZIO` | `src/17` | rosso del gioco | il pulsante «Crediti» torna col margine sopra `SP.sm` (16,8 px sul menu) |
+| `__CPM_NO_G174_DOPPIO` | `src/12` | rosso del gioco | la chiave «un gesto per azione» torna senza `|esito` (la finta di gi18 non si monta) |
+| `__CPM_PALCO174_INTRUSO` | `src/12` | gancio di collaudo (solo `?cpmtest=1`) | un compagno e un avversario dentro il palco a ogni fotogramma, prima della spinta |
+| `__CPM_PIEDE174_LONTANO` | `src/12` | gancio di collaudo (solo `?cpmtest=1`) | pallone 4 u alle spalle dell'eroe al primo fotogramma del caricamento del cross |
+| `__CPM_TESTA174_LONTANO` | `src/12` | gancio di collaudo (solo `?cpmtest=1`) | pallone 3 u prima della testa al primo fotogramma del caricamento del colpo di testa |
+| `__CPM_SPRECA174` | `src/15` | gancio di collaudo (solo `?cpmtest=1`) | su un'azione fallita forzata scrive il tiro del compagno parato (`mate298`) |
+
+I quattro ganci non cambiano nulla fuori da `?cpmtest=1` (condizione `_CPM_TEST` o `_SIT_TEST`, e la variabile di finestra accesa).
+Dopo ogni modifica a `src/`: `node tools/build-src.mjs` + `node tools/check-src.mjs` → **IDENTICO BYTE PER BYTE** (ultimo controllo: 7253201 byte).
+
+## Prove (uno alla volta, `CPM_CI_PAR=0`, `free -m` e `df -h` prima di ognuno; memoria libera ≥ 14 GB, disco 29 GB liberi)
+
+Due giri completi di fila **sul build finale** (85bfb49), dopo aver fermato e scartato un giro B partito sul build precedente
+(quando `piede-cross-p1b2` è caduto alla seconda prova e ho dovuto aggiungere il suo gancio).
+
+| Controllo | Giro A | Giro B |
+|---|---|---|
+| `calendario-offerte-195` | ✅ 40 s | ✅ 39 s — verde 34 caselle «ALT · t», 4 leghe · rosso 0 / 0 |
+| `figurine-208` | ✅ 42 s | ✅ 44 s — verde 4/4 grigie · rosso 0/4 |
+| `palco-corpi-191` | ✅ 122 s | ✅ 124 s — verde 0 su 118 · rosso 228 su 114 |
+| `piede-cross-p1b2` | ✅ 297 s | ✅ 309 s — verde 0,30-0,62 · provocato 0,44 / 0,45 · rosso 4,31 / 4,96 · naturale 2,88 / 2,10 |
+| `testa-146` | ✅ 386 s | ✅ 415 s — provocato 0,62-0,78 · rosso 3,12-4,14 · naturale 2,50 / 2,47 / 1,22 |
+| `doppio-gesto-148` | ✅ 362 s | ✅ 367 s — verde cross/assist/generico con finta e cambio · rosso senza finta · rosso174 assist e generico senza cambio |
+| `home-066` verde / `CPM_ROSSO=1` | ✅ / rosso atteso (17) | ✅ 0 su 132 / rosso atteso 17 su 132 |
+| `festa-3d` · `--rosso` · `--rosso48` | ✅ ✅ ✅ | ✅ ✅ ✅ — 2–1 in casa, coro col cognome a schermo; rosso 47 riquadro vecchio; rosso 48 scudo a x 257 e niente coro |
+| `spazio-296` (verde + rosso 296 + rosso 174) | ✅ 1.031 s | ✅ 1.054 s |
+| `parata-100` | ✅ 1.934 s — rosso: gi16 8,2 · gi42 16,7 | ✅ 1.891 s — verde 0 difetti, 2 sul ramo cross_goal · rosso: gi16 7,3 · gi42 18,1 |
+
+
+## Catena grafica completa e partita-vera (build finale, uno alla volta)
+
+- `node ci-runner.mjs grafica` con `CPM_CI_PAR=0`: **56/56 verdi**. La prima corsa è stata fermata dal tetto di 2 ore delle attività
+  in sottofondo dopo 31 passi (tutti verdi). I 25 mancanti li ho rifatti col **giro composto** del runner (`CPM_CI_FATTI` con i 31 già
+  verdi, stesso build), come prevede il runner per i riavvii. Il registro è in `docs/governo/STABILITA.json` (giro segnato «composto»).
+- Un passo **instabile**: `pallone-278`, verde alla seconda prova (primo rosso: «rosso-hl40: rapporto 0,172 · pallone 11 px · uomo 64
+  px»). Non tocca nessuna delle parti cambiate qui; nel giro 169 era verde. Va tenuto d'occhio: se si ripete è un guardiano da riparare
+  (decisione PO 13/10).
+- `npm run partita-vera`: ✅ braccio verde, 12 bande su 12 giudicate e tenute, partite finite 2/2 (378 s).
+- I passi della catena rigenerano foto tracciate (`docs/collaudo-grafico/g0`, `docs/sviluppo/foto-l7`, `foto/analisi217`): le ho
+  riportate com'erano per non sporcare il diff. Restano i due censimenti di `home-066` (verde 0, rosso 17), che sono il nuovo esito.
+
+## Domande per la sessione madre
+
+1. **Ganci di collaudo che provocano il difetto** (palco, piede, testa, parata). Li ho usati perché il gioco di oggi non produce più la
+   condizione da sola, oppure la produce a cavallo della soglia. È la strada della regola «ciò che il gioco non produce si provoca
+   dalla sonda» (PROCESSO, controlli instabili). Va bene così, o la madre preferisce cercare scene o semi dove il difetto si produce da
+   solo?
+2. **`testa-146` e `piede-cross-p1b2`, rosso naturale**: senza i rispettivi rimedi il difetto oggi è più piccolo (2,1-2,9 invece di 3,2-4,7).
+   Non ho trovato quale modifica l'ha ridotto: la storia del clone parte dal 07/11 e il valore è già quello sul commit più vecchio. Lo
+   lascio stampato nei guardiani come «info». Serve una caccia dedicata?
+3. **Impulso a fine stagione** (`calendario-offerte-195`): alla settimana 39, a stagione finita, «Vivi la Settimana» apre comunque un
+   impulso con scelta obbligatoria prima di poter chiudere la stagione. È voluto (battito garantito del 7.35) o a stagione chiusa
+   l'impulso non dovrebbe uscire?
+4. **Testo del riquadro**: nelle scene provocate di `parata-100` il riquadro dice «Cross da gol — il portiere dice no a **il** compagno».
+   Nel provino il compagno non ha un nome e la preposizione non si articola («al compagno»). Non l'ho corretto (fuori ambito): va aperto?
+5. **Coro della festa con le statistiche forzate** (`festa-3d`): il gancio `__CPM_FESTA942_FORCE` forza 2 gol nella fascia, ma il
+   coro sceglie la variante dai gol veri della partita (0), quindi a schermo «Festa3, il gol arriverà!» sotto una «DOPPIETTA». È solo il
+   banco di prova, nel gioco i numeri coincidono. Lo segnalo nel caso si voglia un gancio coerente.
+6. **`spazio-296` su PC**: alla prima corsa (prima delle correzioni) il post-partita su PC non era stato raggiunto («niente fischio»,
+   attesa a parete di 420 s). Nelle quattro corse dopo non si è ripetuto. Se ricompare è da trattare come controllo instabile.
+7. **Doppio gesto, nuovo conteggio**: con la correzione la scena gi18 ha tre gesti (dribble della scelta → cambio di direzione → passaggio).
+   È ciò che chiede la decisione PO del 06/10 (prima la preparazione, poi il gesto finale) e `gesti-scena-p1b` resta verde. Il primo,
+   però, è l'avvicinamento dei 23/09 durante la scelta: se il PO lo vede come un gesto in più va deciso lì, non qui.
