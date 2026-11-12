@@ -1310,3 +1310,11 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~00:28 Roma — gesti negli highlight (PO-367)
 - PO: «sì, aggiungi i gesti al giro 170». Il giro 170 è già in corso e una sessione cloud in corsa non riceve messaggi: interromperla farebbe perdere il lavoro fatto. Decisione madre: giro 170b separato (Fable, solo analisi) sui gesti negli highlight, codice contro animazioni mancanti, misure per gesto e un gesto pilota per la prova Fable. I due rapporti si leggono insieme.
+
+## 12/11 ~08:45 Roma — rapporti 165b, 166, 169; lavoro/191 a 11 giri; giri 173-175
+- Uniti in lavoro/191, uno alla volta: 165 (con 165b), 169, 166 → 13fa539b. ci-runner.mjs era di nuovo con chiavi doppie (completa ×3, carriera ×3, grafica ×2): riunite le liste (unione senza perdite), box-fischio-169 in grafica e completa. test:logic 51/51.
+- PO (questionario mattina): avviso di 2 s sui gol nella modalità solo momenti salienti; sponsor = scelta di storia.
+- Madre: 166 usa posta165 (unione 165+166); velocità nascosta nei soli highlight; panchina e scheda prepartita senza bottone; testi 166 approvati; «mister» da elenco esplicito di id; rinnovo aperto = tasto spento con «Prima rispondi al rinnovo» che apre la card (resta «finché non è risolto»); rifiuti come 165b; nessuna migration. → giro 173 (191).
+- 169: riquadro scuro come il tema (contrasto ≥4,5), voto della barra dalla pagella del motore (4/12 → 12/12 uguali). 10 rossi preesistenti della catena grafica + parata-100 → PO-371, giro 174 (192). festa-3d: seme che vince.
+- 166: partita intera non riproducibile → PO-372, giro 175 Fable (192). La catena completa del 166 (11/98) si chiude nella verifica finale 191.
+- Costi e archivio: 165b, 166 (worker riavviato, costo forse parziale), 169, 170, 170b, 171, 172.

@@ -85,6 +85,16 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.191 | giro 164 misura stagione pro (PO-364) | collaudo | claude-opus-5-5 | 0,3 | 3,92 $ | 42160 | 1 | completo (un solo avvio) |
 | 7.999.191 | giro 159b scadenza rinnovi e finestra estiva | sviluppo | claude-opus-5-5 | 0,5 | 2,65 $ | 25794 | 1 | completo (un solo avvio) |
 | 7.999.191 | giro 161b file Mixkit tolto (PO-351) | sviluppo | claude-opus-5-5 | 1,2 | 5,73 $ | 45350 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 158b simulate: voto dal motore e squadra simulata (PO-360) | sviluppo | claude-fable-5-2 | 9,1 | 18,17 $ | 119640 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 165 tasto Vai al prossimo momento da pro (PO-364 B) | sviluppo | claude-opus-5-5 | 1,6 | 6,89 $ | 67623 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 168 riga tua nel colore del club (PO-363) | sviluppo | claude-opus-5-5 | 0,9 | 3,17 $ | 26750 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 165b tasto momento: scelte di storia, rinnovo | sviluppo | claude-opus-5-5 | 1,7 | 6,96 $ | 60020 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 166 partite a soli momenti salienti (PO-364 C) — worker riavviato, costo forse parziale | sviluppo | claude-fable-5-2 | 10,5 | 4,66 $ | 22571 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.191 | giro 169 riquadro fischio finale e voto (PO-365/366) | sviluppo | claude-opus-5-5 | 5,1 | 5,12 $ | 37022 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 170 analisi scene 3D (PO-367) | collaudo | claude-fable-5-2 | 0,9 | 20,08 $ | 145845 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 170b analisi gesti negli highlight (PO-367) | collaudo | claude-fable-5-2 | 3,2 | 19,13 $ | 162877 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.192 | giro 171 tifosi nel colore del club (PO-368) | sviluppo | claude-opus-5-5 | 1,9 | 7,76 $ | 68541 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 172 audio pubblico, menù, icona in partita (PO-369/370) | sviluppo | claude-opus-5-5 | 2,7 | 15,09 $ | 133724 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -96,4 +106,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
-| 7.999.191 | **TOTALE 7.999.191** (11 sessioni) |  |  |  | 65,85 $ |  |  | tutte complete |
+| 7.999.191 | **TOTALE 7.999.191** (17 sessioni) |  |  |  | almeno 110,82 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.192 | **TOTALE 7.999.192** (4 sessioni) |  |  |  | almeno 62,07 $ |  |  | 1 sessioni parziali: totale minimo |

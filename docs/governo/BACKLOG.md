@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (23)
+## Voci aperte o parziali (29)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 6.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -47,6 +47,8 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-368 | 12/11 00:05 | PO (foto docs/collaudo-po/191-tifosi-colore-trasferta.webp, PC, partita 2D Primavera CES-LNS, Leonessa in trasferta con maglia viola): «i tifosi devono mantenere il colore originale del club, non prendere il colore della maglia da trasferta» — settori/curve ai lati del campo in viola (maglia away) invece del celeste del club | difetto (grafica partita 2D e folla) | DA FARE — giro 171 (2D e verifica anche nel 3D) | 7.999.192 |
 | PO-369 | 12/11 00:10 | PO: «l'audio del pubblico è terribile e pure degli effetti sono nel menù» — questionario: pubblico «Suona finto o sporco», «Troppo forte o invadente», «Sempre uguale»; menù «Più discreti e brevi» | difetto (audio) | DA FARE — giro 172 | 7.999.192 |
 | PO-370 | 12/11 00:10 | PO: «durante la partita devi dare la possibilità di accedere al setting dell'audio» — questionario: «Icona audio in partita» (2D e 3D, pannello con cursori Pubblico, Effetti, Musica e Muto, partita in pausa mentre è aperto) | nuova funzione (audio, partita) | DA FARE — giro 172 | 7.999.192 |
+| PO-371 | 12/11 08:40 | Dai giri 169 e 166 (madre): controlli rossi o ciechi preesistenti, identici sulla base: spazio-296, calendario-offerte-195, palco-corpi-191, figurine-208, piede-cross-p1b2, doppio-gesto-148, testa-146, home-066, festa-3d (catena grafica) e parata-100 (catena completa) | difetto (strumenti/grafica) | DA FARE — giro 174 | 7.999.192 |
+| PO-372 | 12/11 08:40 | Dal giro 166 §4.3 (madre): la stessa partita intera rigiocata identica dà risultati diversi su 2 nomi su 3 (stato iniziale diverso già al 1', rami attorno alle scene) — tocca ogni guardiano che confronta due partite | difetto (motore, riproducibilità) | DA FARE — giro 175 (Fable) | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 
