@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (32)
+## Voci aperte o parziali (33)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 9.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 10.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -52,6 +52,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-373 | 12/11 11:50 | PO (questionario, D10 del giro 170): partite di notte «Atmosfera sì, campo no» — cielo scuro, riflettori visibili con alone, stadio più buio intorno; prato luminoso e colori pieni (vincolo 7.539) | miglioramento (scene 3D, notte) | DA FARE — ondata 2 della 192 | 7.999.192 |
 | PO-374 | 12/11 14:45 | Dal giro 180b (§6.6), deciso dal PO: «Toglierli dal repo» — originali CGTrader tracciati nel repo pubblico (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB): verificare che il gioco non li usi, toglierli dall'albero e dal sito; nessun force push (restano nei commit vecchi) | licenza (asset) | DA FARE — dopo il rilascio 191 | 7.999.192 |
 | PO-375 | 12/11 17:40 | PO: «le interviste non pensi che siano troppe? non vorrei che annoiassero il player, alla lunga sono sempre le stesse cose da dire» — dato del giro 164 (stima): 23-33% di domande già uscite in due stagioni, catalogo 91 domande (45 vittoria). Questionario: «Meno e più varie» (intervista solo dopo partite che contano, regola posta165, più sorprese rare; domande legate ai fatti della partita; mai la stessa domanda nella stessa stagione), «Nella 192, dopo la 191» | miglioramento (carriera, interviste) | DA FARE — tra i primi giri della 192 | 7.999.192 |
+| PO-376 | 12/11 19:55 | PO: «negli highlights non vedo da molto azioni che partono dalle fasce. Riesci a confermarlo?» — non confermato: nel catalogo ci sono situazioni di fascia (cross dalla fascia sx/dx, sovrapposizione, punizione dalla fascia, cross d'esterno), ma quante ne escono davvero dipende da ruolo e posizione dell'eroe: da misurare su partite vere per ruolo, confrontando con una versione vecchia per capire se è una regressione | da misurare (highlight) | DA MISURARE — tra i primi giri della 192 | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 

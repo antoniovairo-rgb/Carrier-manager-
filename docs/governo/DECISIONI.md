@@ -1378,3 +1378,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~19:45 Roma — regola sul modello per i gesti
 - PO: «Sì va bene». Fable solo per i gesti dove va trovata la causa vera (tuffo del portiere, finta, lancio lungo, punizione con animazione nuova); Opus per i gesti che seguono la strada tracciata dal 177 (pallonetto, tiro, cross). Giri dei gesti nella 192, dopo l'uscita della 191 e nel rispetto del limite settimanale (max 3 giri insieme).
+
+## 12/11 ~19:55 Roma — PO-376 azioni dalle fasce
+- Domanda PO: non vede da molto azioni che partono dalle fasce. Madre: non confermabile senza misura. Giro di sola misura tra i primi della 192 (dopo l'uscita della 191, limite settimanale): partite vere per ruolo dell'eroe (esterno, centrocampista, punta, difensore), quota di highlight che partono dalle fasce (y < 28 o > 72) e per famiglia, confronto con una versione vecchia (es. 7.999.150) per vedere se è una regressione; poi proposta al PO.
