@@ -1344,3 +1344,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - 180: il download gratuito Gumroad chiede un'email (con reCAPTCHA): il giro si è fermato senza scrivere nulla. PO: «Li metto su Google Drive» — scarica lui i pack 04 e 05 e li carica in una cartella del suo Drive; la madre li legge col collegamento Drive e passa al giro 180-bis solo il necessario. Gli zip originali NON entrano nel repository. Conversione FBX→GLB: la decide la madre (Blender headless se disponibile nella sessione, altrimenti convertitore da verificare).
 - 178: D6 colore unico ΔE 5-19 → 0,0 in tutte le scene per 4 club; intro telefono eroe fuori quadro 57/104 → 0/90 (375) e 73/112 → 0/101 (412); bandiere nel colore del club; tifo a sagome al posto dei quadratini. Pronto per la 192.
 - 173 ancora in corso (passo 24/75 alle 12:30 Roma): la verifica finale della 191 parte appena finisce.
+
+## 12/11 ~13:45 Roma — pack Rohr dal Drive del PO
+- Il PO ha caricato Mocap_Pack_04_Crowd_Reactions.zip (161 MB) e Mocap_Pack_05_Soccer.zip (136 MB) nella sua cartella Drive «gumroad», condivisa via link: scaricabili senza login (verificato dalla madre; copia locale cancellata subito).
+- Giro 180b avviato: zip solo in /tmp della sessione, mai nel repo; nel repo solo le clip convertite. Alla fine del giro la madre chiede al PO di togliere la condivisione via link (la licenza vieta la ridistribuzione del pacchetto).
