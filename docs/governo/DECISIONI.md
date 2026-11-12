@@ -1370,3 +1370,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~17:40 Roma — PO-375 interviste
 - PO: «Meno e più varie», «Nella 192, dopo la 191». Il giro misura prima quante interviste e ripetizioni ci sono davvero (Primavera e pro), poi applica: intervista solo dopo partite con posta (posta165) più rare sorprese, domande legate ai fatti della partita (gol, errore, rivale, classifica, ex club), nessuna domanda ripetuta nella stessa stagione.
+
+## 12/11 ~19:40 Roma — giro 177 (pilota rigore, Fable) finito
+- Rigore: pallone che parte 0,18 s prima del calcio → nel fotogramma del calcio; piede-pallone alla partenza 112 → 15 cm; piede d'appoggio che scivola 16 → 2 cm/fotogramma; rincorsa con i passi veri dell'animazione. Guardiano gesto-177 (6/6 verde, rosso 3/3). Costo 27,70 $.
+- Punizione e passaggio corto: la stessa leva NON si applica (diagnosi del 170b corretta: per la punizione serve un'altra animazione; per il passaggio la tabella dei contatti). Stima del giro: tecnica utile su pallonetto e tiro (saltello a codice), punizione con animazione nuova; nulla su lancio lungo e finta.
+- Le sue domande (soglia 20 cm in 3D, aggancio a ci-runner, piede d'appoggio 13 cm) le decide la madre all'unione nella 192.

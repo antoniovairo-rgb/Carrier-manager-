@@ -1328,5 +1328,19 @@
     "cache_read_tokens": 20172476,
     "worker_epoch": 1,
     "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYiaBPKp4akonsXPBpV3X",
+    "titolo": "giro 177 prova pilota rigore (PO-367)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-fable-5-2",
+    "creata": "2026-11-12T08:13:52Z",
+    "chiusa": "2026-11-12T15:29:10Z",
+    "cost_usd": 27.70395438,
+    "output_tokens": 193247,
+    "cache_read_tokens": 61149686,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-12"
   }
 ]
