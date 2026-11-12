@@ -161,8 +161,11 @@ try {
     await W.page.evaluate(() => { window.__CPM_SALTA153 = []; });
     await clicca(W.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W.page, '[data-cpm="salta163-vai"]');
     await aspettaFine(W.page, 120000); await sleep(400);
-    const L1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).map(f => f.motivo));
-    ok(L1.length === 1 && L1[0] !== 'mercato', `saga gia' consegnata (senza card): nessuna fermata «mercato» (${JSON.stringify(L1)})`);
+    /* [giro 165b] una fermata «mercato» da un IMPULSO di mercato (estratto a caso nella settimana, chi «impulso …») non e' la saga:
+       misurato, la stessa scena dava «mercato» 1 volta su 3 per quell'impulso. Si giudica solo la fermata dovuta alla saga. */
+    const F1 = await W.page.evaluate(() => (window.__CPM_SALTA153 || []).map(f => ({ m: f.motivo, chi: f.chi || '' })));
+    const L1 = F1.map(f => f.m + (f.chi ? ' (' + f.chi + ')' : ''));
+    ok(F1.length === 1 && !(F1[0].m === 'mercato' && !/^impulso/.test(F1[0].chi)), `saga gia' consegnata (senza card): nessuna fermata «mercato» per la saga (${JSON.stringify(L1)})`);
     await W.page.close();
     const W2 = await apri({ width: 412, height: 915 }, savePlayer({ week: 6, ...ap, transferSaga: { offer: null, week: 6, season: 1, club: 'FC Prova', tone: null } }));
     await W2.page.evaluate(() => { window.__CPM_SALTA153 = []; });

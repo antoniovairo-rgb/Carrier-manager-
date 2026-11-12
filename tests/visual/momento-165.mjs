@@ -41,14 +41,14 @@ function saveU18() {
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
-async function apri(vp, player) {
+async function apri(vp, player, extra = {}) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([pl, rosso]) => {
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G165 = 1;
+  await page.addInitScript(([pl, rosso, ex]) => {
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G165 = 1; Object.assign(window, ex || {});
     localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl }));
-  }, [player, ROSSO]);
+  }, [player, ROSSO, extra]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 60000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
   await sleep(1200);
@@ -230,7 +230,9 @@ try {
 
   console.log('4) rinnovo');
   {
-    const W = await apri({ width: 412, height: 915 }, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }));
+    /* [giro 165b] «una volta per stagione» e' il comportamento del giro 165, che resta acceso col rosso __CPM_NO_G165B: dal 165b
+       il rinnovo ferma a ogni corsa finche' non e' risolto, e lo giudica momento-165b */
+    const W = await apri({ width: 412, height: 915 }, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }), { __CPM_NO_G165B: 1 });
     await clicca(W.page, '[data-cpm="salta163-tasto"]'); await sleep(500); await clicca(W.page, '[data-cpm="salta163-vai"]');
     await aspettaFine(W.page, 60000); await sleep(400);
     const a1 = await ultima(W.page);
