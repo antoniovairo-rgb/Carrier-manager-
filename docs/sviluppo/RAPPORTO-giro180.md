@@ -480,4 +480,9 @@ Da fare **quando** le clip entreranno nel gioco (oggi no, `src/` intoccato):
 
 ## 8. Verifiche finali di igiene
 
-Vedi sotto (eseguite dopo il commit).
+Eseguite dopo il commit \`1edbee8\` (12/11):
+- \`git status\`: pulito. File del commit: nessun \`.fbx\`, \`.zip\`, \`.uasset\`, \`.pdf\`, \`mocap/\`, \`RTG_RKK_to_MH/\`.
+- \`git ls-files\` coi nomi del pacchetto (\`_ue5\`, \`_iclone\`, i nomi delle 33 clip, \`Importing_into\`, \`RTG_RKK\`, \`.uasset\`, \`pack04/05\`):
+  gli unici riscontri sono i **nostri** provini \`docs/sviluppo/giro180/rohr-*-pc/telefono.jpg\`. Storia di tutti i rami: nessun FBX/zip/uasset.
+- \`dist/\` dopo \`build-dist\`: nessun file del pacchetto e **nemmeno il GLB convertito** (escluso, §5).
+- **Cancellati** \`/tmp/rohr\` (zip, FBX estratti, file di prova), l'ambiente \`/tmp/rohr-venv\` con Blender e la ruota scaricata.
