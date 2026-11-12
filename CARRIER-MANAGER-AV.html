@@ -18441,6 +18441,13 @@ function ThreeMatchView(props){
            quota all'impatto scendeva a 0,49-0,60. Il pallone passa accanto alla testa (0,26u, quota 1,47-1,65) PRIMA che l'arco del colpo sia
            armato; all'armo (caricamento -0,24) e' gia' a 1,35-1,47, sotto il pavimento 1,5 di questa regola, che quindi non scatta mai: gara
            fra armo e discesa. Pavimento a 1,3 (la quota minima che il guardiano accetta per un colpo di testa). */
+        /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_PIEDE174_LONTANO): senza P1B2 e rincorsa il pallone al lancio del
+           cross sta oggi a 2,1-2,9 dal piede (gi16/gi42, varia da prova a prova) e il guardiano piede-cross-p1b2 non vedeva cadere il suo rosso
+           in modo stabile (soglia 2,5). Il gancio rimette il difetto pieno misurato al 7.999.143 (pallone a 3,8-4,7 dal piede): al primo
+           fotogramma del caricamento del cross il pallone sta 4 u alle spalle dell'eroe, a terra. Una volta per scena. */
+        if(_preT74<0&&P.hlType==='cross'&&hero&&typeof window!=='undefined'&&window.__CPM_PIEDE174_LONTANO&&(_CPM_TEST||_SIT_TEST)&&sr.current._p174k!==P.hlSitKey){sr.current._p174k=P.hlSitKey;
+          const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*4.0;ball.position.z=hero.position.z-_fz174*4.0;ball.position.y=0.22;ballArcY0=ball.position.y;
+          try{(window.__CPM_PIEDE174=window.__CPM_PIEDE174||[]).push(String(P.hlSitKey));}catch(_e){}}
         /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_TESTA174_LONTANO): oggi, senza il 146, l'eroe arriva sul
            pallone e lo supera nel caricamento (testa a 2,4-2,6 u al lancio, misurato su gi6/gi7/gi55) e il guardiano testa-146 non vedeva
            piu' cadere il suo rosso (soglia 2,5). Il gancio rimette il difetto che il 146 ripara, com'era descritto al 7.999.144: al primo

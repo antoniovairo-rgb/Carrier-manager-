@@ -5,9 +5,13 @@
    ROSSO (__CPM_NO_P1B2 + __CPM_NO_RINC144, il mondo di prima): >= 2,5 su entrambe. Uso: node piede-cross-p1b2.mjs */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser(); const esito = {};
-for (const rosso of [false, true]) {
+/* [giro 174 PO-371] quattro bracci. Il rosso «naturale» (P1B2 + rincorsa spenti) oggi lascia il pallone a 2,1-2,9 dal piede al lancio, a
+   cavallo della soglia 2,5 (seconda prova: gi42 2,09): resta stampato ma non giudicato. Il difetto pieno lo provoca il gancio di collaudo
+   __CPM_PIEDE174_LONTANO (pallone 4 u alle spalle dell'eroe al primo fotogramma del caricamento): «provocato» (gancio, P1B2 acceso) deve
+   portarlo al piede (<= 0,8), «rosso» (gancio, P1B2 + rincorsa spenti) deve lasciarlo lontano (>= 2,5). Soglie invariate. */
+for (const rosso of ['verde', 'provocato', 'rosso', 'info']) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; if (r) { window.__CPM_NO_P1B2 = 1; window.__CPM_NO_RINC144 = 1; } }, rosso);/* [7.999.143] il rosso spegne anche la rincorsa: con la clip in corsa l'eroe avanza verso il pallone e su gi42 il rosso scendeva a 1,47 (catena) — il rosso e' il mondo di prima, aggancio e rincorsa spenti */
+  await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_GLB = true; window.__CPM_REC = 1; window.__CPM_REALWAIT = 1; if (r === 'provocato' || r === 'rosso') window.__CPM_PIEDE174_LONTANO = 1; if (r === 'rosso' || r === 'info') { window.__CPM_NO_P1B2 = 1; window.__CPM_NO_RINC144 = 1; } }, rosso);/* [7.999.143] il rosso spegne anche la rincorsa: con la clip in corsa l'eroe avanza verso il pallone e su gi42 il rosso scendeva a 1,47 (catena) — il rosso e' il mondo di prima, aggancio e rincorsa spenti */
   await openMatch(page, port, { skipLoadAll: true, name: 'Piede P1b2' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 90000 }).catch(() => {});
   const out = [];
@@ -26,11 +30,12 @@ for (const rosso of [false, true]) {
     const iL = R.findIndex(r => r[6] >= 0), fin = iL > 0 ? R.slice(iL - 1, iL + 2) : [];
     out.push({ gi, k, fotogrammi: R.length, lancio: fin.map(r => r[6]), min: fin.length >= 2 ? Math.min(...fin.map(r => Math.min(r[3], r[4]))) : null });
   }
-  esito[rosso ? 'rosso' : 'verde'] = out; console.log((rosso ? 'rosso ' : 'verde ') + JSON.stringify(out)); await page.close();
+  esito[rosso] = out; console.log(rosso.padEnd(10) + JSON.stringify(out) + (rosso === 'info' ? ' (rosso naturale, solo stampato)' : '')); await page.close();
 }
 await b.close(); srv.close();
 const g = [];
 if (!esito.verde.every(x => x.fotogrammi >= 5 && x.min != null && x.min <= 0.8)) g.push('verde: pallone lontano dal piede al cross ' + JSON.stringify(esito.verde));
+if (!esito.provocato.every(x => x.fotogrammi >= 5 && x.min != null && x.min <= 0.8)) g.push('provocato: il P1B2 non porta al piede il pallone lontano ' + JSON.stringify(esito.provocato));
 if (!esito.rosso.every(x => x.fotogrammi >= 5 && x.min != null && x.min >= 2.5)) g.push('rosso: pallone vicino al piede anche spento ' + JSON.stringify(esito.rosso));
 if (g.length) { console.log('❌ piede-cross-p1b2'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ piede-cross-p1b2 verde (e il rosso si vede)');
