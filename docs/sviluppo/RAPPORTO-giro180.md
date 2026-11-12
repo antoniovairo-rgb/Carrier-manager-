@@ -264,4 +264,11 @@ Come leggerle:
 
 ## 7. Verifiche finali di igiene (dopo il commit)
 
-Vedi l'ultimo blocco del commit del giro: `git status`, `git ls-files` e ricerca dei nomi FBX del pacchetto.
+Eseguite dopo il commit `13d7b45` (12/11):
+- `git status`: pulito. Diff del commit: nessun `.fbx`, `.zip`, `.uasset`, `.pdf`, `mocap/`, `RTG_RKK_to_MH/`.
+- `git ls-files` cercando i nomi del pacchetto (`_ue5`, `_iclone`, `Side_Foot`, `Power_Kick`, `Penalty_Kick`, `Goal_Celebration`,
+  `Defending_0`, `Clapping`, `Fist_Up`, `Pointing_Up`, `Importing_into`, `RTG_RKK`, `.uasset`, `pack04/05`): gli unici riscontri sono
+  i **nostri** provini `docs/sviluppo/giro180/rohr-clapping-hands-up-*.jpg` (foto del corpo CGTrader). Storia di tutti i rami:
+  nessun FBX/zip/uasset del pacchetto.
+- `dist/` dopo `build-dist`: nessun file del pacchetto originale (contiene solo il GLB convertito, vedi §5).
+- **`/tmp/rohr` cancellata** (zip, FBX estratti), insieme all'ambiente Python temporaneo con Blender e alla ruota scaricata.
