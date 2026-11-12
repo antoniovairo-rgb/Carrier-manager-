@@ -348,8 +348,8 @@ orientamento della mano (e quindi delle dita) preso dalla sorgente. Spostamento 
 **mano-rispetto-alla-spalla** passa dal 5,1° del 180b a **0,0°** su tutte le clip (nessun fotogramma saltato per gomito degenere).
 
 **Cosa dice il cancello invariato** (mani, piedi, testa **rispetto al bacino**, mediana ≤ 10°, massimo ≤ 30°): prima/dopo per ogni
-clip nella tabella di §4. Il massimo **sale** su 31 clip su 33 (da +0,2° a +4,9°; +12,3° su \`juggling-03\`, dove però pesa la rampa
-dell'anello, §3) e scende su 2 (\`clapping-hands-up\` 8,4° → 7,3°, \`goal-celebration-02\` 6,2° → 5,1°); le mediane non si muovono
+clip nella tabella di §4. Il massimo **sale** su 31 clip su 33 (da +0,2° a +4,9°; +12,3° su `juggling-03`, dove però pesa la rampa
+dell'anello, §3) e scende su 2 (`clapping-hands-up` 8,4° → 7,3°, `goal-celebration-02` 6,2° → 5,1°); le mediane non si muovono
 (±0,1°). Per gli anelli il «prima» non comprende la rimisura dei fotogrammi della rampa, il «dopo» sì.
 
 **Perché** (misurato, non supposto): il nostro braccio è più corto in proporzione (0,439 m contro 0,551, rapporto 0,80, mentre
@@ -457,7 +457,7 @@ la clip (la stessa cosa c'è nei provini del 180b); Non posso confermarlo oltre 
 1. **La correzione delle mani peggiora il cancello.** Applicata alla lettera, fa uscire `defending-01` (era dentro, giudicata
    usabile come postura) e tiene fuori `goalkeeper-save-03` e `dribble-03`, che senza correzione passerebbero (28,6° · 28,3° · 28,9°).
    Strade possibili, nessuna presa: (a) tenere così; (b) correzione delle mani solo dove non peggiora il cancello; (c) nessuna
-   correzione (dal «prima» della tabella §4 entrerebbero 27-28 clip: 28 se anche \`juggling-03\` regge la rampa senza correzione,
+   correzione (dal «prima» della tabella §4 entrerebbero 27-28 clip: 28 se anche `juggling-03` regge la rampa senza correzione,
    cosa non misurata); (d) un cancello misurato rispetto alla spalla, che la sessione madre ha già
    escluso. Lo script rifà qualsiasi variante in ~1 minuto (`CPM_IK=0`), ma servono di nuovo gli zip.
 2. **`rohr-swaying-arms`**: il tratto scelto per l'anello sembra calmo nei provini. Va scelto un tratto più mosso (es. finestra con
@@ -480,9 +480,9 @@ Da fare **quando** le clip entreranno nel gioco (oggi no, `src/` intoccato):
 
 ## 8. Verifiche finali di igiene
 
-Eseguite dopo il commit \`1edbee8\` (12/11):
-- \`git status\`: pulito. File del commit: nessun \`.fbx\`, \`.zip\`, \`.uasset\`, \`.pdf\`, \`mocap/\`, \`RTG_RKK_to_MH/\`.
-- \`git ls-files\` coi nomi del pacchetto (\`_ue5\`, \`_iclone\`, i nomi delle 33 clip, \`Importing_into\`, \`RTG_RKK\`, \`.uasset\`, \`pack04/05\`):
-  gli unici riscontri sono i **nostri** provini \`docs/sviluppo/giro180/rohr-*-pc/telefono.jpg\`. Storia di tutti i rami: nessun FBX/zip/uasset.
-- \`dist/\` dopo \`build-dist\`: nessun file del pacchetto e **nemmeno il GLB convertito** (escluso, §5).
-- **Cancellati** \`/tmp/rohr\` (zip, FBX estratti, file di prova), l'ambiente \`/tmp/rohr-venv\` con Blender e la ruota scaricata.
+Eseguite dopo il commit `1edbee8` (12/11):
+- `git status`: pulito. File del commit: nessun `.fbx`, `.zip`, `.uasset`, `.pdf`, `mocap/`, `RTG_RKK_to_MH/`.
+- `git ls-files` coi nomi del pacchetto (`_ue5`, `_iclone`, i nomi delle 33 clip, `Importing_into`, `RTG_RKK`, `.uasset`, `pack04/05`):
+  gli unici riscontri sono i **nostri** provini `docs/sviluppo/giro180/rohr-*-pc/telefono.jpg`. Storia di tutti i rami: nessun FBX/zip/uasset.
+- `dist/` dopo `build-dist`: nessun file del pacchetto e **nemmeno il GLB convertito** (escluso, §5).
+- **Cancellati** `/tmp/rohr` (zip, FBX estratti, file di prova), l'ambiente `/tmp/rohr-venv` con Blender e la ruota scaricata.
