@@ -1367,3 +1367,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Madre sulle domande §6: (1) correzione delle mani SOLO dove non peggiora il cancello (per ogni clip si tiene la versione con il massimo più basso; cancello e soglie invariati) → rientrano defending-01, goalkeeper-save-03, dribble-03; (2) swaying-arms: tratto più mosso; (3) le clip con oggetti o sedute restano nel file (servono ai giri di collegamento); (4) juggling-03: anello fino a 5 s se la giunzione è senza salto, altrimenti fuori.
 - Per il limite settimanale (priorità alla 191) il ripassaggio (giro 180d, ~1 min di script + zip) parte dopo l'uscita della 191: il PO lascia aperta la condivisione della cartella Drive fino ad allora.
 - 173 alle 15:50 Roma al passo 23/75 della sua catena (parata-100 rosso 3/3 uguale a main, PO-371).
+
+## 12/11 ~17:40 Roma — PO-375 interviste
+- PO: «Meno e più varie», «Nella 192, dopo la 191». Il giro misura prima quante interviste e ripetizioni ci sono davvero (Primavera e pro), poi applica: intervista solo dopo partite con posta (posta165) più rare sorprese, domande legate ai fatti della partita (gol, errore, rivale, classifica, ex club), nessuna domanda ripetuta nella stessa stagione.
