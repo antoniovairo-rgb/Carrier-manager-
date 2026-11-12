@@ -17273,6 +17273,14 @@ function ThreeMatchView(props){
         const _u=new THREE.Vector3(ball.position.x,0,ball.position.z).project(camera),_v=new THREE.Vector3(ball.position.x,1.75,ball.position.z).project(camera);const _uomo=Math.hypot((_v.x-_u.x)*_ww/2,(_v.y-_u.y)*_hh/2);/* uomo di 1,75u in piedi sul punto del pallone */
         return{r:_g.radius,seg:[_g.widthSegments,_g.heightSegments],sc:+ball.scale.x.toFixed(3),reff:+_re.toFixed(3),haloR:_hg.radius,haloSc:+ballHalo.scale.x.toFixed(3),haloOp:+ballHalo.material.opacity.toFixed(3),haloVis:!!ballHalo.visible,vis:!!ball.visible,y:+ball.position.y.toFixed(2),
           ndc:[+_c.x.toFixed(4),+_c.y.toFixed(4)],on:Math.abs(_c.x)<=1&&Math.abs(_c.y)<=1&&_c.z<1,dpx:+_d.toFixed(1),uomo:+_uomo.toFixed(1),rap:_uomo>0.5?+(_d/_uomo).toFixed(3):null,rect:(function(){const _b=renderer.domElement.getBoundingClientRect();return{x:_b.x,y:_b.y,w:_b.width,h:_b.height};})(),fase:(propsRef.current&&propsRef.current.matchPhase)||null};}catch(_e){return{err:String(_e)};}};/* [giro 55 PO-278] test-only: taglia (a schermo, contro un uomo alla stessa profondita') e alone del pallone per il guardiano pallone-278 */
+      /* [giro 176 PO-367 D1 — sonda della REGIA VERTICALE, test-only] eroe (piedi e testa), pallone e linea di porta proiettati in
+         PIXEL DI SCHERMO (stesso riferimento di getBoundingClientRect del pannello delle scelte): l'altezza dell'eroe si dichiara
+         come frazione dell'altezza della FINESTRA e il «sotto il pannello» si giudica confrontando due rettangoli veri. */
+      window.__CPM_REGIA176=function(){try{const _b=renderer.domElement.getBoundingClientRect();const _px=(x,y,z)=>{const v=new THREE.Vector3(x,y,z).project(camera);return{x:+(_b.x+(v.x+1)/2*_b.width).toFixed(1),y:+(_b.y+(1-v.y)/2*_b.height).toFixed(1),dav:v.z<1};};
+        const _gx=(typeof _GLX!=='undefined')?_GLX:48.6;
+        return{c:{x:_b.x,y:_b.y,w:_b.width,h:_b.height},vh:window.innerHeight,vw:window.innerWidth,piedi:_px(hero.position.x,hero.position.y,hero.position.z),testa:_px(hero.position.x,hero.position.y+1.75,hero.position.z),
+          palla:ball&&ball.visible?_px(ball.position.x,ball.position.y,ball.position.z):null,porta:[_px(_gx,0,-3.35),_px(_gx,2.44,3.35),_px(_gx,1.2,0)],
+          fase:(propsRef.current&&propsRef.current.matchPhase)||null,def:!!(propsRef.current&&propsRef.current.hlDef),ht:(propsRef.current&&propsRef.current.hlType)||null,g176:sr.current._g176?{t:+sr.current._g176.t.toFixed(2),w:+sr.current._g176.w.toFixed(2)}:null,v176:sr.current._g176v||null,vo72:+(sr.current._vo72||0).toFixed(1),fov:+camera.fov.toFixed(1),dC:hero?+camera.position.distanceTo(hero.position).toFixed(1):null,sb:!!sr.current._sb42};}catch(_e){return{err:String(_e)};}};
       window.__CPM_GKB95=function(){try{if(!awayGkMesh)return null;return +Math.hypot(awayGkMesh.position.x-ball.position.x,(awayGkMesh.position.z-ball.position.z)/0.68).toFixed(2);}catch(_e){return null;}};/* [giro 95 D3] distanza portiere avversario-pallone (unita' logiche), lettura leggera per la sonda highlight-95 (test-only) */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
       /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
@@ -24552,6 +24560,18 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
        _cs252._w252k=_sk252;_cs252._w252h=!!isHL;}
       sr.current._sb42=!!_subjBall50;
       const _w252=_no252t?((isHL&&!_subjBall50)?1:0):sr.current._w252;
+      /* [giro 176 PO-367 D1 — LA STRETTA VIVE SOLO NELLA FINESTRA DEL GESTO. Rosso __CPM_NO_G176, guardiano regia-176]
+         MISURATO (regia-176-misura, telefono 412x915, GLB acceso): eroe al 7% dell'altezza dello schermo nella scelta e al 9-10% al
+         gesto, con il terzo alto del quadro occupato da tribuna. Il moltiplicatore globale e' stato bocciato due volte (7.482, 7.509):
+         qui la taglia CHIESTA cresce solo nei primi istanti dell'esito (hl_result, 0-2,2 s di scena, poi riapre entro 3,0 s), con
+         rampe di ~0,3 s, e solo quando il soggetto e' l'eroe (_w252 la spegne gia' quando la storia passa al pallone). La taglia e'
+         una TAGLIA, non un fattore: i provini del PO sono 'p'/'m'/'g' (window.__CPM_TAGLIA176, solo collaudo; predefinita 'm'). */
+      const _no176=(typeof window!=='undefined'&&!!window.__CPM_NO_G176);
+      {const _g=(sr.current._g176=sr.current._g176||{t:0,w:0,k:'',ph:''});const _k=String((P&&P.hlSitKey)||''),_ph=String(P.matchPhase||'');
+       if(_g.k!==_k||_g.ph!==_ph){_g.k=_k;_g.ph=_ph;_g.t=0;}else _g.t+=Math.min(dt,0.05);
+       const _on=isResult&&!_no176&&!P.ceremony&&!P.shootout&&!replaying;
+       const _tw=_on?(_g.t<=2.2?1:clamp(1-(_g.t-2.2)/0.8,0,1)):0;
+       if(!_on)_g.w=0;else _g.w+=(_tw-_g.w)*Math.min(dt/0.3,1);}
       if(isHL&&_w252>0.002&&hero&&!P.ceremony&&!P.shootout&&!replaying
          &&!(typeof window!=='undefined'&&(window.__CPM_NO505||window.__CPM_ZOOM480||window.__CPM_FRAMET480))){
         const _hx5=hero.position.x,_hy5=hero.position.y+0.9,_hz5=hero.position.z;
@@ -24568,7 +24588,7 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
            0,24 era TUTTA stretta (q10 0,138 → max 0,267, zero scene sopra 0,30), quindi la correzione e'
            globale. */
         const _tg5=(typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_TAGLIA18)?(+window.__CPM_TAGLIA_REV||0.18):0.12;/* [23/09 POC — decisione PO (wizard): nella SOLA review CGTrader la taglia chiesta e' 0,18; la partita normale resta a 0,12 (7.713). Rosso __CPM_NO_TAGLIA18. __CPM_TAGLIA_REV solo per la taratura da sonda.] */const _kw292=(camera&&camera.aspect>1.05&&!(typeof window!=='undefined'&&window.__CPM_NO_LARGO292))?clamp(1+(camera.aspect-1)*0.5,1,1.3):1;/* [giro 90 PO-292 D4, «Partita a tutto schermo»] quadro LARGO (aspetto > 1, PC e tablet orizzontale): la taglia dell'eroe cresce fino a 1,3x (nel 1920x1080 era ~50 px su 935, una macchia in un quadro largo il doppio); telefono e tablet verticale (aspetto < 1) invariati. Rosso __CPM_NO_LARGO292. */
-        const _want5=Math.max(3.5,1.75/(2*_tg5*_kw292*_tf5));/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
+        const _T176={p:0.19,m:0.25,g:0.31},_q176=(typeof window!=='undefined'&&window.__CPM_TAGLIA176),_tgG176=(typeof _q176==='number'&&_q176>0.05&&_q176<0.6)?_q176:(_T176[_q176]||_T176.m);const _tgE5=(_no176||P.hlType==='header')?_tg5:_tg5+(Math.max(_tg5,_tgG176)-_tg5)*(sr.current._g176?sr.current._g176.w:0);/* sul colpo di TESTA la camera non si avvicina: il pallone arriva dall'alto e di lato e, con la camera addosso all'eroe, finiva alle sue spalle (fuori dal vincolo d'ottica, che lo scarta). Li' stringe solo l'ottica, che il pallone lo tiene per costruzione. *//* [giro 176] taglia del gesto: 'p' ~15%, 'm' ~20%, 'g' ~25% dell'altezza dello schermo sul telefono (taratura sulla misura, il percorso reale rende meno di quanto chiede) */const _want5=Math.max(3.5,1.75/(2*_tgE5*_kw292*_tf5));/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
         if(_d5>_want5){
           const _sc5=1-(1-_want5/_d5)*camHL*_w252;
           tPx=_hx5+_vx5*_sc5;tPy=Math.max(2.1,_hy5+_vy5*_sc5);tPz=_hz5+_vz5*_sc5;
@@ -26546,6 +26566,27 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           if(_d88){try{let _cb88=null,_cd88=1e9;sr.current.players.forEach((pp,ii)=>{const src=((propsRef.current&&propsRef.current.allPlayers)||[])[ii];if(src&&src.team==='away'&&!src.gk&&pp.mesh){const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_cd88){_cd88=d;_cb88=pp.mesh;}}});
             if(_cb88&&_cd88<6){const _vc88=(_R72._vc88||(_R72._vc88=new THREE.Vector3()));_vc88.set(_cb88.position.x,0.1,_cb88.position.z).project(camera);const _bc88=_vc88.y-2*(_R72._vo72||0)/_H72;if(_vc88.z<1&&_bc88<_base72)_base72=_bc88;}}catch(_e88){}}
           if(_v72.z<1&&_base72<(_d88?-0.12:-0.30))_tg72=Math.min((_d88?0.50:0.22)*_H72,((_d88?-0.02:-0.20)-_base72)/2*_H72);_R72._k88=_d88?7:4;}
+        /* [giro 176 PO-367 D1 — LA MIRA SOPRA IL PANNELLO. Rosso __CPM_NO_G176, guardiano regia-176]
+           MISURATO (regia-176-misura, 412x915): nella scelta il pannello copre il 24-33% basso dello schermo, l'eroe sta a meta' quadro
+           (ndc ~0) e il terzo alto e' tribuna. Lo scorrimento 72/86/88 interveniva solo con pallone o eroe gia' SOTTO ndc -0,30. Qui,
+           con la stessa leva (finestra di proiezione, la camera non si muove e la taglia non cambia), il busto dell'eroe va al 42% della
+           zona LIBERA fra il bordo alto del pannello e il bordo alto del quadro: l'erba sotto finisce dietro il pannello, la tribuna
+           esce dall'alto. Si legge il rettangolo VERO del pannello (ogni 0,25 s, una query DOM), e si applica solo se il pannello
+           copre il riquadro 3D (sul PC sta in colonna e non tocca nulla). Tetto: la testa resta sotto ndc 0,86 e il pallone sotto 0,92
+           (salendo non esce dall'alto); lo scorrimento sale soltanto, quindi non porta mai nulla sotto il pannello. */
+        if(_ph72==="hl_choose"&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_G176)){try{
+          const _q=(_R72._pan176=_R72._pan176||{t:-1,top:null});const _nw=performance.now();
+          if(_nw-_q.t>250){_q.t=_nw;_q.top=null;const _el=document.querySelector('[data-cpm="scelte"]'),_cv=renderer.domElement;
+            if(_el&&_cv){const _a=_el.getBoundingClientRect(),_c=_cv.getBoundingClientRect();const _ov=Math.min(_a.right,_c.right)-Math.max(_a.left,_c.left);
+              if(_a.height>4&&_c.height>4&&_ov>0.6*_c.width&&_a.top<_c.bottom&&getComputedStyle(_el).visibility!=='hidden')_q.top=1-2*(_a.top-_c.top)/_c.height;}}
+          if(_q.top!=null&&_q.top>-0.95){const _yP=clamp(_q.top,-0.9,0.4),_yS=_yP+0.42*(1-_yP);
+            const _vb=(_R72._vb176||(_R72._vb176=new THREE.Vector3()));_vb.set(hero.position.x,hero.position.y+0.9,hero.position.z).project(camera);
+            if(_vb.z<1){const _b0=_vb.y-2*(_R72._vo72||0)/_H72;_vb.set(hero.position.x,hero.position.y+1.85,hero.position.z).project(camera);const _t0=_vb.y-2*(_R72._vo72||0)/_H72;
+              let _o=(_yS-_b0)/2*_H72;_o=Math.min(_o,(0.86-_t0)/2*_H72);
+              if(ball){_vb.copy(ball.position).project(camera);const _p0=_vb.y-2*(_R72._vo72||0)/_H72;if(_vb.z<1)_o=Math.min(_o,Math.max(0,(0.92-_p0)/2*_H72));}
+              _o=Math.min(_o,0.45*_H72);if(_o>_tg72){_tg72=_o;_R72._k88=Math.max(_R72._k88||4,5);}
+              _R72._g176v={top:+_q.top.toFixed(3),ys:+_yS.toFixed(3),off:+(_o/_H72).toFixed(3)};}}
+        }catch(_e176){}}
         const _cur72=(_R72._vo72||0)+(_tg72-(_R72._vo72||0))*Math.min((dt||0.016)*(_R72._k88||4),1);_R72._k88=4;_R72._vo72=_cur72;
         if(Math.abs(_cur72)>0.5){camera.setViewOffset(_sz72.x,_H72,0,_cur72,_sz72.x,_H72);_R72._voOn72=1;}
         else if(_R72._voOn72){camera.clearViewOffset();_R72._voOn72=0;_R72._vo72=0;}
@@ -26574,7 +26615,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
           K.q.copy(camera.quaternion);K.fov=camera.fov;K.on=1;
           const _res=_ph96==='hl_result',_asp=camera.aspect||0.75,_land=_asp>1.05;
           const _soft=n=>{const a=0.76,L=0.90,m=Math.abs(n);return m<=a?n:Math.sign(n)*(a+(L-a)*(1-Math.exp(-(m-a)/(L-a))));};
-          const _pt=[[hero.position.x,0.05,hero.position.z],[hero.position.x,1.85,hero.position.z]];
+          const _hy176=(!_W96.__CPM_NO_G176&&_res)?Math.max(0,hero.position.y||0):0;/* [giro 176] con la stretta lo STACCO conta: nel colpo di testa il corpo sale e, coi punti a quota fissa, la testa usciva dall'alto (2-3 campioni su 10) */const _pt=[[hero.position.x,0.05+_hy176,hero.position.z],[hero.position.x,1.85+_hy176,hero.position.z]];
           const _wB=_res&&ball&&!_W96.__CPM_NO_G96D3;
           const _ang=(p)=>{const v=K.a.set(p[0],p[1],p[2]).applyMatrix4(camera.matrixWorldInverse);if(v.z>-0.3)return null;return[Math.atan2(v.x,-v.z),Math.atan2(v.y,-v.z)];};
           const _off=()=>K.a.set(0,0,-10).applyMatrix4(camera.projectionMatrix).y;
@@ -26589,7 +26630,20 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             let tN=_need(H);
             if(B){const tb=_need(H.concat([B]));const fb=Math.min(tb,_tMax);const w=clamp((_tMax*1.25-tb)/(_tMax*0.25),0,1);tN=Math.max(tN,tN+(fb-tN)*w);}
             let tT=Math.max(tV,tN);
-            if(_res&&!_W96.__CPM_NO_G96D8){const hg=(Math.tan(H[1][1])-Math.tan(H[0][1]))/tV/2;if(hg>0.005&&hg<0.07){const tIn=Math.max(Math.tan(15*Math.PI/180),tV*hg/0.07);tT=Math.max(Math.min(tV,tIn),tN);}}
+            if(_res&&!_W96.__CPM_NO_G96D8){const hg=(Math.tan(H[1][1])-Math.tan(H[0][1]))/tV/2;
+              /* [giro 176 PO-367 D1 — la stretta nella finestra del gesto passa anche dall'OTTICA. Rosso __CPM_NO_G176] la taglia chiesta
+                 alla distanza (F6) arriva tardi: misurato, la camera impiega ~1,5 s di scena per avvicinarsi da 24u a 11u e il contatto e'
+                 gia' avvenuto. Qui, solo mentre il peso della finestra (_g176.w, 0-2,2 s dell'esito, rampe 0,3 s) e' acceso, la soglia
+                 del 7% sale fino alla taglia del provino (convertita da altezza dello SCHERMO ad altezza del riquadro 3D): l'ottica
+                 stringe subito e si rilascia da sola man mano che la camera arriva. Resta il vincolo (1)-(2): mai piu' stretto di quanto
+                 serve a tenere eroe intero e pallone dentro (tN). */
+              const _w176=(!_W96.__CPM_NO_G176&&sr.current._g176)?sr.current._g176.w*clamp(sr.current._w252==null?1:sr.current._w252,0,1):0;/* spenta quando la storia passa al pallone (_w252, isteresi 7.520 + dissolvenza 252) */let _T176=0.07,_m176=Math.tan(15*Math.PI/180);
+              if(_w176>0.002){const _q=_W96.__CPM_TAGLIA176,_TW={p:0.15,m:0.20,g:0.25},_tw=(typeof _q==='number'&&_q>0.05&&_q<0.6)?_q*0.8:(_TW[_q]||_TW.m);
+                const _ch=(renderer.domElement&&renderer.domElement.clientHeight)||1,_vh=(_W96.innerHeight)||_ch;
+                _T176=0.07+(Math.max(0.07,_tw*_vh/_ch)-0.07)*_w176;_m176=Math.tan((15-7*_w176)*Math.PI/180);}
+              let _tN176=tN;/* [giro 176] la PORTA gia' inquadrata (tiri, teste, piazzati) non esce per colpa della stretta: entra nel vincolo dell'ottica */
+              if(_w176>0.002&&/^(shot|header|penalty|freekick)$/.test(String(P.hlType||''))){const _G=_ang([_GLX,1.2,0]);if(_G&&Math.abs(Math.tan(_G[0])/(tV*_asp))<0.95&&Math.abs(Math.tan(_G[1])/tV+_off())<0.95)_tN176=Math.max(tN,_need(H.concat([_G])));}
+              if(hg>0.005&&hg<_T176){const tIn=Math.max(_m176,tV*hg/_T176);tT=Math.max(Math.min(tV,tIn),_w176>0.002?_tN176:tN);}}
             tT=Math.min(tT,Math.max(tV,_tMax));
             if(Math.abs(tT-tV)>1e-4){camera.fov=Math.atan(tT)*360/Math.PI;camera.updateProjectionMatrix();tV=tT;}
             const tH=tV*_asp;
@@ -26673,6 +26727,17 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const _fw=_R51._fw96||(_R51._fw96=new THREE.Vector3()),_pv=_R51._pv96||(_R51._pv96=new THREE.Vector3());camera.getWorldDirection(_fw);
             const _vis=_R51._tag51.filter(g=>g.sp.visible).map(g=>{const av=_R51._av102&&_R51._av102.get(g.m);const r=(av&&av.root)?av.root.position:g.m.position;return{g,x:r.x,z:r.z,db:g.gold?-1:Math.hypot(r.x-bx,r.z-bz)};}).sort((a,b)=>a.db-b.db);
             const _placed=[];
+            /* [giro 176 PO-367 D11 — UNA TARGHETTA NON COPRE IL CORPO DI UN ALTRO. Rosso __CPM_NO_G176, guardiano regia-176]
+               MISURATO (giro 170, azione-shot-tel-1-scelta): le targhette non si sovrapponevano fra loro (D10) ma stavano sui CORPI
+               altrui — «77 VAIRO» sui piedi del portiere — e con la mira 176 l'eroe sale nel quadro verso i corpi piu' lontani. Qui i
+               corpi disegnati (radice GLB visibile; piedi->testa proiettati, larghezza 0,28 dell'altezza) entrano fra gli ostacoli:
+               una targhetta che copre oltre il 25% di un corpo che non e' il suo sale di una o due righe; se non trova posto non si
+               disegna (quella dell'eroe sale e resta comunque). Testimone di prova: __CPM_TAG176 (targhette disegnate, quante su un
+               corpo altrui, quante su un'altra targhetta). */
+            const _no176t=!!(typeof window!=='undefined'&&window.__CPM_NO_G176),_tst176=typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC);
+            const _corpi176=[];if(!_no176t||_tst176){const _v176=_R51._v176||(_R51._v176=new THREE.Vector3());
+              for(const av of (glbAvatars||[])){if(!av||!av.root||!av.root.visible)continue;const rp=av.root.position;if((rp.x-camera.position.x)*_fw.x+(0.9-camera.position.y)*_fw.y+(rp.z-camera.position.z)*_fw.z<0.3)continue;_v176.set(rp.x,0.02,rp.z).project(camera);const y0=_v176.y,x0=_v176.x;_v176.set(rp.x,1.8,rp.z).project(camera);const hb=_v176.y-y0;if(hb<=0)continue;const wb=hb*0.28*_Hp/_Wp/2;_corpi176.push({m:av.proc,b:[x0-wb,y0,x0+wb,_v176.y]});}}
+            const _suCorpo176=(b,m)=>_corpi176.some(c=>{if(c.m===m)return false;const ox=Math.max(0,Math.min(b[2],c.b[2])-Math.max(b[0],c.b[0])),oy=Math.max(0,Math.min(b[3],c.b[3])-Math.max(b[1],c.b[1]));return ox*oy>0.25*(c.b[2]-c.b[0])*(c.b[3]-c.b[1]);});
             for(const t of _vis){const px=_tpx*(t.g.gold?1.12:1);let y=2.35;
               _pv.set(t.x,y,t.z);const d=_pv.clone().sub(camera.position).dot(_fw);if(d<0.3){t.g.sp.visible=false;continue;}
               const hW=px/_Hp*2*d*_tV;t.g.sp.scale.set(hW*2.1/0.39,hW,1);
@@ -26681,9 +26746,12 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
               const hit=(b)=>_placed.some(q=>{const ox=Math.max(0,Math.min(b[2],q[2])-Math.max(b[0],q[0])),oy=Math.max(0,Math.min(b[3],q[3])-Math.max(b[1],q[1]));return ox*oy>0.12*(b[2]-b[0])*(b[3]-b[1]);});
               let b=box(y);
               if(hit(b)){y+=hW*1.15;b=box(y);}
+              if(!_no176t){for(let k=0;k<2&&_suCorpo176(b,t.g.m);k++){const y2=y+hW*1.15,b2=box(y2);if(hit(b2))break;y=y2;b=b2;}
+                if(!t.g.gold&&_suCorpo176(b,t.g.m)){t.g.sp.visible=false;_n51--;continue;}}
               const fuori=b[4]>=1||b[0]<-1||b[2]>1||b[1]<-1||b[3]>1;
               if(!t.g.gold&&(hit(b)||fuori)){t.g.sp.visible=false;_n51--;continue;}
-              t.g.sp.position.set(t.x,y,t.z);_placed.push(b);}
+              t.g.sp.position.set(t.x,y,t.z);_placed.push(b);
+              if(_tst176){const T=(window.__CPM_TAG176=window.__CPM_TAG176||{n:0,su:0,ss:0});T.n++;if(_suCorpo176(b,t.g.m))T.su++;if(_placed.slice(0,-1).some(q=>{const ox=Math.max(0,Math.min(b[2],q[2])-Math.max(b[0],q[0])),oy=Math.max(0,Math.min(b[3],q[3])-Math.max(b[1],q[1]));return ox*oy>0.12*(b[2]-b[0])*(b[3]-b[1]);}))T.ss++;}}
           }catch(_e96t){}}
           if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}

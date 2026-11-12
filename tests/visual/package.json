@@ -594,6 +594,8 @@
     "portiere-252": "node portiere-252.mjs",
     "aereo-252": "node aereo-252.mjs",
     "camera-252": "node camera-252.mjs",
+    "regia-176": "CPM_GUARDIANO=1 node regia-176-misura.mjs",
+    "regia-176:rosso": "CPM_GUARDIANO=1 CPM_ATTESO_ROSSO=1 CPM_FLAGS='{\"__CPM_NO_G176\":true}' node regia-176-misura.mjs",
     "reazione-252": "node reazione-252.mjs",
     "intro-118": "node intro-118.mjs",
     "panchina-127": "node panchina-127.mjs",
