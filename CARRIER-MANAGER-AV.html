@@ -39937,7 +39937,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        arrivato e' una giocata riuscita dell'eroe (chiave «chance», come ogni passaggio chiave completato senza gol): il 3D consegna la
        palla al compagno che tira e non segna, il riquadro dice «assist perfetto» e come il compagno ha sprecato, il motore registra il
        passaggio e il tiro del compagno. Nessun assist accreditato, nessuna catena (il seguito lo ha gia' deciso il motore). */
-    const _sp298=(!ok&&!_forz298&&_g137&&_g137.fam==='assist'&&!_g137.ok&&_g137.esito&&_g137.esito!=='intercettato'&&!(typeof window!=='undefined'&&window.__CPM_NO_ASSIST298))?({saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito]||'saved'):null;
+    /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_SPRECA174='saved'): parata-100 giocava partite intere sperando nel
+       tiro sprecato del compagno sul ramo cross_goal e non lo incontrava mai (0 su 6 partite per braccio, anche su main). Con l'esito
+       forzato dalle sonde il ramo e' spento per costruzione (!_forz298). Il gancio scrive, su un'azione fallita forzata, il tiro del
+       compagno parato come lo scriverebbe il motore; tutto il resto (riquadro, 3D, portiere) e' quello del gioco. Fuori da cpmtest no. */
+    const _sp174=(!ok&&_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_SPRECA174)?String(window.__CPM_SPRECA174):null;
+    const _sp298=_sp174||((!ok&&!_forz298&&_g137&&_g137.fam==='assist'&&!_g137.ok&&_g137.esito&&_g137.esito!=='intercettato'&&!(typeof window!=='undefined'&&window.__CPM_NO_ASSIST298))?({saved:'saved',wide:'wide',post:'post',blocked:'blocked'}[_g137.esito]||'saved'):null);
     if(_sp298){ok=true;key="chance";_outKind="chance";_wood=null;}
     /* [7.669.0] LO STATO NARRATIVO IMPARA DA CIO' CHE L'EROE FA: e' l'unico modo perche' le
        interazioni abbiano memoria vera (il difensore che stringe la marcatura DOPO due dribbling
