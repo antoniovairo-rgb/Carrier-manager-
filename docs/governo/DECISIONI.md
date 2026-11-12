@@ -1396,3 +1396,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~23:00 Roma — giro 181 idee (richiesta esplicita del PO)
 - PO: sessione di migliorie e idee nuove, modello a scelta della madre. Scelto Fable: è un'analisi di prodotto ampia e unica, dove la profondità conta più del costo; nessuna catena di controlli (consumo contenuto). Eccezione esplicita del PO alla regola «nessun giro nuovo prima della 191».
+
+## 13/11 ~00:40 Roma — box-fischio-169 rosso nella verifica 191
+- La verifica lo segnala rosso. Rifatto dalla madre su lavoro/191 ec86cf71: 2 rossi su 4 corse, sempre e solo su PC/sconfitta, contrasto dagli stili 13,26 (ok) ma «pixel 1,15»: la foto del rettangolo misurato mostra il pannello delle statistiche («Passaggi», «Precisione passaggi»), non il riquadro. Nelle corse verdi lo stesso rettangolo mostra il riquadro leggibile (0 – 2, 5,9 voto).
+- Rifatto sul ramo del solo giro 169 (sviluppo/giro169-box-fischio): 1 rosso su 3, identico. Quindi non nasce dalle unioni della 191: è un'instabilità nata col guardiano del 169 (il rettangolo misurato e la foto non sono nello stesso istante: il layout di fine partita su PC si sposta quando arrivano le statistiche).
+- Decisione madre: strumento instabile, non difetto del gioco (il contrasto degli stili passa in tutti i casi e le foto verdi lo confermano). Dichiarato nella riga della 191 come «instabile, strumento»; correzione del guardiano nella 192 (foto dopo layout stabile) senza toccare le soglie.
