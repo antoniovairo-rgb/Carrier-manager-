@@ -1780,7 +1780,7 @@ function cori291(N,g,base,usati){const U=String(N).toUpperCase();
   const c1=pool[kh(base+"|cori291")%pool.length],resto=pool.filter(t=>t!==c1),c2=resto[kh(base+"|cori291|2")%resto.length];
   return [c1,c2];}
 try{if(typeof window!=='undefined')window.__CPM_CORI291=cori291;}catch(_e){}
-function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
+function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null,soloHL=false}){/* [giro 166 PO-364 C] soloHL: partita a SOLI HIGHLIGHT, scelta nel prompt per le gare senza posta *//* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
@@ -2339,7 +2339,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         ev:(typeof MATCH_EV!=="undefined"?MATCH_EV:[]).filter(e=>e&&e.ev==="goal").slice(0,30).map(e=>({min:e.min|0,side:e.side,src:e.src||null}))};}catch(_e){return null;}};
     const _snap=()=>{try{const ph=phaseRef.current,ck=clockRef.current|0;
       const live=(ph==="playing"||ph==="hl_intro"||ph==="hl_move"||ph==="hl_choose"||ph==="hl_result");
-      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=(_no55?86:89))safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current,g117:_g117Snap()}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
+      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=(_no55?86:89))safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current,g117:_g117Snap(),s166:soloHL?1:0/* [giro 166] la ripresa rientra nella stessa modalita' */}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
     }catch(_e){}};
     const vh=()=>{if(document.visibilityState==="hidden")_snap();};
     document.addEventListener("visibilitychange",vh);window.addEventListener("pagehide",_snap);
@@ -2853,6 +2853,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       return {fps5s,corpi,tri};
     };
   },[]);
+  /* [giro 166 · PO-364 opzione C, decisione PO «B e C insieme»] PARTITA A SOLI HIGHLIGHT. Rosso __CPM_NO_G166 (la partita torna intera).
+     MISURA PRIMA (giro 164 e sonda del giro): una partita di campionato da professionista a 1x dura 188 s reali, di cui 148 s di gioco
+     fluido e 34,5 s di scene (5 scene). La modalita' NON e' un secondo motore: e' lo STESSO battito della partita intera (stesso corpo,
+     stessi sorteggi, stessi sotto-tick), fatto correre a lotti dentro flushSync — un render per battito, come a velocita' normale — invece
+     che a orologio. Le scene (intro, scelta, esito) restano com'erano, a tempo reale. __CPM_SOLO166 e' il gancio di sola sonda. */
+  const _solo166=!!(soloHL||(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_SOLO166))&&!(typeof window!=='undefined'&&window.__CPM_NO_G166);
+  useEffect(()=>{if(typeof window!=='undefined'&&_CPM_TEST){try{window.__CPM_LM166={chiesta:!!soloHL,attiva:_solo166};}catch(_e){}}},[soloHL,_solo166]);
   const [matchSpeed,setMatchSpeed]=useState(readMatchSpeed);/* [7.484.0] ritmo scelto dal giocatore */
   /* [7.338.0 direttiva PO «prevedere un pulsante di warning per niente invasivo durante il live match che
      permetta di prendere appunti sull'azione sbagliata … la partita deve essere messa in PAUSA finché non mi
@@ -4991,7 +4998,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current){if(stagedRef45.current&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO45)){if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.evitate++;_w45.ultima={x:+_stM870.eroe.x.toFixed(1),y:+_stM870.eroe.y.toFixed(1),fase:phaseRef.current};}catch(_e45){}}}else{if(stagedRef45.current&&typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.rosse=(_w45.rosse|0)+1;}catch(_e45){}}setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});}}/* [7.999.45] il motore non riscrive l'eroe gia' messo in scena (testimone __CPM_STACCO45: evitate / rosse) */
     };
     const _per115=Math.max(40,Math.round(MATCH_TICK_MS/_SUB898/((typeof window!=='undefined'&&window.__CPM_NO484)?1:((context==="trial"&&primoProvino&&(hlIdx|0)===0&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?Math.max(2,matchSpeed||1):(matchSpeed||1)))));/* [giro 115] il periodo del battito, calcolato una volta (prima stava in coda al setInterval) */
-    const iv=setInterval(()=>{
+    const _batt166=()=>{/* [giro 166] il battito ha un nome: lo chiama l'intervallo (partita intera) o il lotto (soli highlight) */
       if(_CPM_TEST&&phaseRef.current==="playing"){try{window.__CPM_SCENA115=(window.__CPM_SCENA115||0)+_per115;}catch(_e){}}/* [giro 115] tempo di SCENA del gioco fluido (ms di battiti), letto da flussi-115 */
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
@@ -9147,9 +9154,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso 7.478 */
         return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};
       });
-    },_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
-    return()=>clearInterval(iv);
-  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
+    };
+    /* [giro 166] SOLI HIGHLIGHT: il gioco fluido non si guarda, quindi i battiti non aspettano l'orologio. Ogni battito gira dentro
+       flushSync (aggiornamenti e effetti applicati subito: clockRef/phaseRef sono aggiornati prima del battito dopo, come quando fra due
+       battiti passa un render); il lotto si ferma appena la fase esce da 'playing' (scena, fischio) o l'effetto viene smontato (pausa,
+       scelta aperta). 12 ms di lotto ogni 16: resta il tempo di un fotogramma. Testimone __CPM_G166 (solo collaudo). */
+    let _vivo166=true;
+    const _lotto166=()=>{const _t0=performance.now();let _n=0;
+      while(_vivo166&&phaseRef.current==="playing"&&_n<66&&(performance.now()-_t0)<12){ReactDOM.flushSync(_batt166);_n++;}
+      if(_CPM_TEST&&typeof window!=='undefined'){try{const _w=(window.__CPM_G166=window.__CPM_G166||{battiti:0,lotti:0,ms:0});_w.battiti+=_n;_w.lotti++;_w.ms+=performance.now()-_t0;}catch(_e){}}};
+    const iv=setInterval(_solo166?_lotto166:_batt166,_solo166?16:_per115);/* [giro 115 G184-22] primo provino: fino al primo highlight il cronometro corre a 2x (la scena nasce da un fatto del motore, decisione PO 7.999.6, e non si forza). La cronaca e' funzione pura del minuto (7.489): nessun sorteggio cambia. hlIdx e' fra le deps: dal primo highlight si torna alla velocita' scelta *//* [7.898] /_SUB898: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
+    return()=>{_vivo166=false;clearInterval(iv);};
+  },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,corpiHold232,matchSpeed,scFreeze681,_solo166]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
   // Ball attachment — la palla sta sull'eroe PRIMA dell'azione (intro/move/choose). FIX boomerang: NON
   //   durante hl_result — lì la palla vola verso l'esito (rete/compagno/fuori) e non va più richiamata sull'eroe.
@@ -11569,6 +11585,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               </div>}</div>)}
               {/* Sprint 97 — pressure border */}
+              {/* [giro 166] SOLI HIGHLIGHT: mentre il gioco fluido scorre, il campo sta dietro un velo che dice dove si sta andando. Tabellone, minuto e cronaca restano leggibili sopra. */}
+              {_solo166&&phase==="playing"&&<div data-cpm="solo-166-velo" style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:SP.xs,background:TINTE.bg,opacity:0.92,textAlign:"center",padding:SP.md}}>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TINTE.oro,letterSpacing:"0.16em",textTransform:"uppercase"}}>Momenti salienti</div>
+                <div style={{fontSize:FS.display,fontWeight:FW.black,color:TINTE.testo,fontFamily:FONT_TV,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{clock}'</div>
+                <div style={{fontSize:FS.small,color:TINTE.testo}}>Si va al prossimo momento</div>
+              </div>}
               {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
               {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
               {/* Sprint 97 — pressure cinema */}
