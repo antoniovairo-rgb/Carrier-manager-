@@ -58,3 +58,15 @@ assets/rejected/
 # [7.999.47] foto di lavoro della festa vecchia (sonda festa-sonda.mjs), rigenerabili
 docs/collaudo-testi/festa/Festa[12]-*.png
 tools/audio-149/.cache/
+
+# [giro 180b PO-367] RETE DI SICUREZZA sui sorgenti dei pacchetti di animazione (Anderson Rohr e simili): la licenza vieta di
+# ridistribuire il pacchetto, quindi FBX, zip, uasset e i PDF che li accompagnano non entrano MAI nel repository ne' in dist/.
+# Nel repo entrano solo le clip convertite (assets/cgtrader-clip-rohr.glb). Gli originali stanno fuori dal clone (/tmp/rohr).
+# Pattern stretti sui nomi del pacchetto: un *.fbx globale toccherebbe gli originali CGTrader gia' tracciati (altra fonte).
+[0-9][0-9]_*.fbx
+*_ue5.fbx
+*_iclone.fbx
+*.uasset
+mocap/
+RTG_RKK_to_MH/
+Importing_into_UE5.pdf

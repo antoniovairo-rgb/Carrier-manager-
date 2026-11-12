@@ -18,6 +18,33 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 
 **Regola del lotto:** le nuove clip del lotto P1-a vengono da pacchetti già presenti, quindi non aggravano il rischio (stessi file), ma non ne aggiungo di nuovi da fuori finché il PO non decide.
 
+## Anderson Rohr — `assets/cgtrader-clip-rohr.glb` (giro 180b, 12/11/2026)
+
+| Pacchetto | Cosa dice la licenza (citazione, riletta alla fonte il 12/11/2026) | Fonte | Esito per il gioco |
+|---|---|---|---|
+| Anderson Rohr, «Free mocap pack 05: Soccer» e «Free mocap pack 04: Crowd Reactions» (**scaricati dal PO il 12/11**, prezzo 0) | «This pack can be used for free in both personal and commercial projects. Attribution is not required, but feel free to tag me (my socials: https://linktr.ee/andersonrohr). I’d love to see what you create with it. You may not redistribute, resell, or repackage this pack as a standalone product.» | [andersonrohr.gumroad.com/l/mocap_pack5](https://andersonrohr.gumroad.com/l/mocap_pack5), [/l/mocap_pack4](https://andersonrohr.gumroad.com/l/mocap_pack4) | uso nel gioco permesso; **rischio repo pubblico accettato dal PO il 12/11** (stesso rischio di CGTrader/Mixamo). Originali (FBX, zip, PDF) mai nel repo né in `dist/` |
+
+Sorgente: FBX scheletro «UE5» (Manny, 79 ossa, 60 fps). Conversione e riadattamento: `tools/rohr-180/riadatta_rohr.py` (Blender 5.3
+come modulo Python `bpy`, da PyPI) → 30 fps, scheletro CGTrader a 75 ossa, solo animazioni. Il primo fotogramma di ogni FBX è una
+posa di riferimento ed è escluso. Provini: `docs/sviluppo/giro180/` (`npm run clip-180-foto`). Guardiano: `npm run clip-180`.
+**Nessuna clip è collegata a un gesto** (nessuna riga in `GESTI`/`BRAIN_GESTI`, nessun flag `__CPM_NO_*`): restano da fare i
+passi del rito sopra quando la sessione madre deciderà quali usare.
+
+| Clip nel GLB | FBX sorgente (sha256, primi 16) | Durata | Cancello (mediana/max) | Giudizio 180b |
+|---|---|---|---|---|
+| `rohr-side-foot-kick` | 08_Side_Foot_Kick_ue5 (`e2baf0928c0f5da7…`) | 4,50 s | 3,8° / 18,3° | usabile |
+| `rohr-power-kick` | 09_Power_Kick_ue5 (`2dcadd8d78b58469…`) | 4,43 s | 5,1° / 18,8° | da sistemare (coda: si gira e se ne va; rincorsa 2,3 m) |
+| `rohr-goal-celebration-01` | 12_Goal_Celebration_01_ue5 (`3d33fb8ebba86261…`) | 3,47 s | 4,1° / 21,2° | da sistemare (in ginocchio: gambe 5-6 cm sotto il suolo) |
+| `rohr-goal-celebration-02` | 13_Goal_Celebration_02_ue5 (`b43fae915f4244bc…`) | 3,50 s | 1,4° / 6,2° | usabile |
+| `rohr-goal-celebration-03` | 14_Goal_Celebration_03_ue5 (`64508912d21cea94…`) | 3,17 s | 4,2° / 22,5° | usabile |
+| `rohr-defending-01` | 18_Defending_01_ue5 (`ed9789d1c8f4cb49…`) | 6,23 s | 7,5° / 28,6° | usabile (postura difensiva, non un blocco) |
+| `rohr-clapping-hands-up` | 03_Clapping_Hands_Up_ue5 (`0174b0b26b952522…`) | 14,10 s | 3,4° / 9,2° | usabile, da accorciare |
+| `rohr-fist-up-cheering` | 05_Fist_Up_Cheering_ue5 (`7bf69a418c9dbb07…`) | 21,77 s | 3,8° / 16,2° | usabile, da accorciare |
+| `rohr-pointing-up-cheering` | 17_Pointing_Up_Cheering_ue5 (`ef5b6c2fc3cf941e…`) | 12,93 s | 3,4° / 15,8° | usabile, da accorciare |
+| — (scartata) | 10_Penalty_Kick_01_ue5 (`4bd04c128d1f36d3…`) | 10,53 s | 4,9° / **30,3°** | **non nel file**: cancello (soglia 30°) |
+| — (scartata) | 11_Penalty_Kick_02_ue5 (`045c5bea65085b93…`) | 8,73 s | 5,4° / **39,8°** | **non nel file**: cancello |
+| — (scartata) | 19_Defending_02_ue5 (`af5f864fc7ec475b…`) | 8,45 s | 7,7° / **35,1°** | **non nel file**: cancello |
+
 ## Inventario (letto dai file GLB, 26/09)
 
 | File | Clip | In uso oggi | Mai usate |

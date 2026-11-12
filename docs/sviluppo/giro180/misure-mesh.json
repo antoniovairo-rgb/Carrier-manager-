@@ -1,0 +1,83 @@
+[
+ {
+  "clip": "rohr-side-foot-kick",
+  "durata": 4.5,
+  "tracce": 52,
+  "sotto_suolo_cm": 1.1,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0.043,
+  "bacino_max_m": 0.67
+ },
+ {
+  "clip": "rohr-power-kick",
+  "durata": 4.433,
+  "tracce": 53,
+  "sotto_suolo_cm": 1,
+  "t_sotto": 3.8,
+  "quota_sotto_1cm": 0.044,
+  "bacino_max_m": 2.34
+ },
+ {
+  "clip": "rohr-goal-celebration-01",
+  "durata": 3.467,
+  "tracce": 52,
+  "sotto_suolo_cm": 5.8,
+  "t_sotto": 3.4,
+  "quota_sotto_1cm": 0.143,
+  "bacino_max_m": 1.06
+ },
+ {
+  "clip": "rohr-goal-celebration-02",
+  "durata": 3.5,
+  "tracce": 52,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 2.8,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.31
+ },
+ {
+  "clip": "rohr-goal-celebration-03",
+  "durata": 3.167,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.6,
+  "t_sotto": 2.2,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.68
+ },
+ {
+  "clip": "rohr-defending-01",
+  "durata": 6.233,
+  "tracce": 52,
+  "sotto_suolo_cm": 1,
+  "t_sotto": 2.9,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.03
+ },
+ {
+  "clip": "rohr-clapping-hands-up",
+  "durata": 14.1,
+  "tracce": 50,
+  "sotto_suolo_cm": 1.6,
+  "t_sotto": 0.4,
+  "quota_sotto_1cm": 1,
+  "bacino_max_m": 0.01
+ },
+ {
+  "clip": "rohr-fist-up-cheering",
+  "durata": 21.767,
+  "tracce": 59,
+  "sotto_suolo_cm": 0,
+  "t_sotto": 0,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.05
+ },
+ {
+  "clip": "rohr-pointing-up-cheering",
+  "durata": 12.933,
+  "tracce": 53,
+  "sotto_suolo_cm": 1.4,
+  "t_sotto": 0.6,
+  "quota_sotto_1cm": 0.123,
+  "bacino_max_m": 0.03
+ }
+]
