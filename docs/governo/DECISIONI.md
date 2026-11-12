@@ -1324,3 +1324,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO: gesti «Prova pilota: rigore con Fable» (giro 170b §6), poi decisione sugli altri gesti del codice in base al risultato.
 - PO: animazioni nuove «Cerca e proponi»: giro di sola ricerca, licenza letta alla fonte, nessun file nel gioco senza il sì del PO.
 - Madre: due ondate per non far toccare src/12 a troppi giri insieme. Ondata 1: giro 176 regia azioni salienti, giro 177 rigore pilota (Fable), giro 178 intro + colore unico, giro 179 ricerca animazioni. Ondata 2 (dopo l'unione dell'ondata 1): esultanza, ingresso in campo, premiazione.
+
+## 12/11 ~11:20 Roma — animazioni nuove (giro 179)
+- PO: «Usa il pacchetto Anderson Rohr» (Free mocap pack 05 Soccer, e 04 Crowd Reactions per le esultanze sobrie): accettato il rischio del repository pubblico come per CGTrader e Mixamo (decisione 27/09). Licenza da registrare in CREDITI-fonti.md con testo letto alla fonte e data.
+- Madre: giro 180 adatta lo scheletro UE5 del pacchetto al nostro (UE4 Mannequin, 75 ossa) e importa SOLO le clip che servono (calci piatto/collo, esultanze, difesa), senza ancora usarle nei gesti. Vincolo: nessun account, nessuna email del PO. Se il download gratuito chiede un'email o un account, il giro si ferma e il PO scarica il pacchetto lui.
+- Giro 179 (ricerca): nessuna fonte libera per tiro al volo, colpo di testa in tuffo, controllo di petto.
