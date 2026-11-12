@@ -176,14 +176,14 @@ const CREDITI254=[
     /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). [giro 161b] il boato di terzi
        e' uscito dal repo (decisione PO 11/11): col rosso __CPM_NO_G149 l'audio torna sintetizzato e qui non resta nessuna voce. */
     ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[]:[
-    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto"+((typeof window!=='undefined'&&window.__CPM_NO_G172)?"":", grida dell'arena")/* [giro 172] */+". Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Beach Sports Theme (Loop)»",d:"Musica dei menu. Fonte: opengameart.org",aut:"Trex0n (Cal McEachern)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"},
     /* [giro 161] le tre sorgenti nuove: l'«ohh» dello stadio e i due brani delle cerimonie (voci assenti col rosso __CPM_NO_G161) */
     ...((typeof window!=='undefined'&&window.__CPM_NO_G161)?[]:[
-    {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:"«Ohh» del pubblico. Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:((typeof window!=='undefined'&&window.__CPM_NO_G172)?"«Ohh» del pubblico":"Brusio e «ohh» del pubblico")/* [giro 172] il letto della folla viene da questa registrazione */+". Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Triumphant»",d:"Musica delle premiazioni. Fonte: opengameart.org",aut:"Emma_MA",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}])]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),

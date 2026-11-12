@@ -69,3 +69,15 @@ interfaccia, carriera, cerimonie e musica. La struttura qui sopra è quella usat
   `npm run audio-149` fallisce finché codice, `sw.js` e registro non coincidono.
 - **Fuori dal giro 149:** `sfx/crowd/brusio-folla-korward.wav` (nostro, giro 20). Il boato di terzi con licenza propria (non CC0) è
   uscito dal repo nel giro 161b (decisione PO 11/11 «Togliere il file»): col rosso `__CPM_NO_G149` il boato del gol è sintetizzato.
+
+## Giro 172 (PO-369, PO-370) — pubblico e menu
+
+- **Letto della folla** (`crowd.bed`): `sfx/crowd/letto-1` e `letto-2`, dalla registrazione CC0 dello Stade de France (Romainbehar,
+  Wikimedia Commons) senza il tratto dell'«ohh». Il gioco li suona a **grani seedati** (7-11 s, dissolvenza a potenza costante di
+  2,5 s, mai la stessa porzione due volte di fila), circa 8 dB sotto gli effetti di gioco. Il vecchio `brusio-folla-korward.wav`
+  resta solo come riserva e per il rosso `__CPM_NO_G172`.
+- **Strati caldi** (`crowd.swell`): `caldo-1` (stadio) e `caldo-2` (arena, The Designer's Choice «Ambiences»), sulle occasioni.
+- **Varianti**: `esulta-2`, `fischi-2`, `ohh-2` (quest'ultimo derivato da `ohh-1`: stessa registrazione, piu' grave e lento).
+- **Menu**: `*-morbida`, tutti < 150 ms, passa-basso 4,5 kHz, volume dimezzato; suonano solo su conferme importanti, finestre
+  principali e notifiche, mai sulla navigazione.
+- Peso del registro: 5,82 MB (tetto 6 MB del guardiano `audio-149`). Guardiano: `npm run audio-172`.

@@ -710,7 +710,11 @@ function AudioSettings(){
   if(!cfg)return null;
   const refresh=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
   // [7.97.0 collaudo PO «volume generale ridondante col device»] slider MASTER rimosso: restano solo le categorie.
-  const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
+  /* [giro 172 PO-370] le stesse voci del pannello audio in partita (Pubblico · Effetti · Musica), con nomi che dicono cosa regolano;
+     rosso __CPM_NO_G172: le quattro voci di prima, senza la musica */
+  const _g172s=!(typeof window!=='undefined'&&window.__CPM_NO_G172);
+  const VOL=_g172s?[{k:'crowd',label:'📣 Pubblico'},{k:'match',label:'⚽ Effetti di partita'},{k:'music',label:'🎵 Musica'},{k:'referee',label:'🟨 Arbitro'},{k:'sfx',label:'✨ Suoni dei menu'}]
+    :[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
   const Toggle=({on,onClick,dis})=>(
     <button onClick={dis?undefined:onClick} disabled={dis} className={_g114()?"cpm-t40":undefined} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
@@ -792,7 +796,7 @@ function HomeNavBar({onImport,onSettings}){
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
         <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
-        <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
+        <button title="Impostazioni" data-suono="apri" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
       </div>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0]&&onImport)onImport(e.target.files[0]);e.target.value="";}}/>
     </div>
@@ -817,7 +821,7 @@ function App(){
      può non essere ancora nel DOM. LiveMatch lo azzera SOLO nelle fasi col canvas 3D vivo (pixel-perfect). */
   useEffect(()=>{let _zr=0,_zt=0;const _za=()=>{const el=document.querySelector('.cpm-scroll');if(el){if(!el.style.zoom)el.style.zoom="1.12";}else if(_zt++<90){_zr=requestAnimationFrame(_za);}};_za();return()=>{if(_zr)cancelAnimationFrame(_zr);};},[phase]);
   // [7.62.0 AUDIO] gesture-unlock dell'AudioContext (autoplay policy) + click UI DELEGATO (un solo listener copre TUTTI i bottoni, non invasivo)
-  useEffect(()=>{const clickH=(ev)=>{try{AudioMgr.unlock();const t=ev.target;if(t&&t.closest&&t.closest('button,[role="button"],a[href],.cpm-clickable,label'))AudioMgr.play('ui.click');}catch(_a){}};document.addEventListener('pointerdown',clickH,true);return()=>document.removeEventListener('pointerdown',clickH,true);},[]);
+  useEffect(()=>{const clickH=(ev)=>{try{AudioMgr.unlock();AudioMgr.tocco(ev.target);/* [giro 172 PO-370] solo conferme importanti e finestre principali (data-suono); rosso __CPM_NO_G172: click su ogni tocco */}catch(_a){}};document.addEventListener('pointerdown',clickH,true);return()=>document.removeEventListener('pointerdown',clickH,true);},[]);
   // [7.62.0 AUDIO] musica di alto livello per schermata (un solo useEffect sul phase globale → crossfade menu↔partita)
   useEffect(()=>{try{AudioMgr.scene(phase);}catch(_a){}},[phase]);
   const[player,setPlayer]=useState(null);
