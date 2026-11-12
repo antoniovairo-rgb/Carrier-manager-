@@ -1390,3 +1390,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 12/11 ~21:15 Roma — verifica finale leggera dalla 192
 - PO: «Leggera dalla 192». La 191 completa la verifica completa già avviata (tocca motore, partita e carriera).
 - Regola dalla 192: (1) mirata sui file cambiati rispetto alla versione pubblicata (ci-runner mirata con base = main); (2) i guardiani nuovi dei giri della versione; (3) highlight-95, distanze-126, partita-vera e validate-situations solo se cambiano src/04, src/12, src/14 o src/15; (4) controllo delle unioni: ci-runner con chiavi uniche, package.json valido, check-src IDENTICO, test:logic e save-compat. Rilasci di sola grafica o testi: obiettivo 2-4 ore.
+
+## 12/11 ~21:20 Roma — PO-378 nomi di squadra lunghi
+- Richiesta PO con foto («SELEZIONE GRAN...»). Decisioni madre: (1) misurare prima in quali schermate e formati il nome viene tagliato, per tutti i club; (2) abbreviazione solo dove il nome intero non ci sta, il nome intero resta dove c'è spazio; (3) una funzione unica con un dizionario dei prefissi (Selezione → Sel., Polisportiva → Pol., Atletico → Atl., Sporting → Sp., Unione Sportiva → U.S., Associazione Calcio → A.C., Football Club → FC, Deportivo → Dep., Real resta Real) e, se ancora non ci sta, la sigla del club; (4) mai i tre puntini su un nome di squadra. Giro nella 192.

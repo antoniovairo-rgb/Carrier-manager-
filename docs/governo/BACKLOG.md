@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (34)
+## Voci aperte o parziali (35)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 11.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · 7.999.191 8 · | 1 · 7.999.190 / 7.999.191 1 · 7.999.191 | 2 · 7.999.192 | 12.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -54,6 +54,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-375 | 12/11 17:40 | PO: «le interviste non pensi che siano troppe? non vorrei che annoiassero il player, alla lunga sono sempre le stesse cose da dire» — dato del giro 164 (stima): 23-33% di domande già uscite in due stagioni, catalogo 91 domande (45 vittoria). Questionario: «Meno e più varie» (intervista solo dopo partite che contano, regola posta165, più sorprese rare; domande legate ai fatti della partita; mai la stessa domanda nella stessa stagione), «Nella 192, dopo la 191» | miglioramento (carriera, interviste) | DA FARE — tra i primi giri della 192 | 7.999.192 |
 | PO-376 | 12/11 19:55 | PO: «negli highlights non vedo da molto azioni che partono dalle fasce. Riesci a confermarlo?» — non confermato: nel catalogo ci sono situazioni di fascia (cross dalla fascia sx/dx, sovrapposizione, punizione dalla fascia, cross d'esterno), ma quante ne escono davvero dipende da ruolo e posizione dell'eroe: da misurare su partite vere per ruolo, confrontando con una versione vecchia per capire se è una regressione | da misurare (highlight) | DA MISURARE — tra i primi giri della 192 | 7.999.192 |
 | PO-377 | 12/11 21:05 | Dal giro 173 (foto avviso-gol-telefono.png, madre): la riga di cronaca dice «GOL! Jung (WRK) … su assist di Vogt» mentre il badge del gioco e l'avviso dicono Riedel — due marcatori diversi per lo stesso gol; difetto preesistente | difetto (cronaca, coerenza) | DA MISURARE — 192 | 7.999.192 |
+| PO-378 | 12/11 21:20 | PO (foto docs/collaudo-po/191-nome-squadra-tagliato.png, «SELEZIONE GRAN...»): «i nomi delle squadre troppo lunghi non si leggono bene, non è il caso di abbreviare? ad es. Sel. Granata oppure Pol., Atl. ecc» | miglioramento (grafica, testi) | DA FARE — 192 (misura dei punti dove il nome si taglia, poi abbreviazione solo quando non ci sta) | 7.999.192 |
 
 ## Storico — voci chiuse (343)
 
