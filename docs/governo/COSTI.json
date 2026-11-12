@@ -1272,5 +1272,33 @@
     "cache_read_tokens": 7515163,
     "worker_epoch": 1,
     "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYiaCjJscdWvKQTzqGh8T",
+    "titolo": "giro 180 pacchetto Anderson Rohr (fermo: download chiede email) — worker riavviato, costo forse parziale",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-12T10:19:23Z",
+    "chiusa": "2026-11-12T10:22:50Z",
+    "cost_usd": 1.33032944,
+    "output_tokens": 9653,
+    "cache_read_tokens": 1879495,
+    "worker_epoch": 2,
+    "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYia9bFMoMNKYacvZHW5g",
+    "titolo": "giro 178 intro sul telefono e colore unico (PO-367 D3/D6)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-12T08:13:53Z",
+    "chiusa": "2026-11-12T10:42:55Z",
+    "cost_usd": 12.25311728,
+    "output_tokens": 118637,
+    "cache_read_tokens": 36911941,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-12"
   }
 ]
