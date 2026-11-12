@@ -90,7 +90,9 @@ if (SOLO !== 'rosso' && E.CPM_G175_GLB !== '0') {
   const g = await partita(NOME_GLB, 0, {}, { glb: true, vel: '2' });
   const base = (verde.find(x => x.nome === NOME_GLB) || { P: [] }).P[0];
   const giud = !!base && g.finita && g.minMax >= 90 && g.scene >= 1 && g.seq.length >= 100 && g.errs.length === 0;
-  const d = base ? primaDiff(base.seq, g.seq, 0) : null;
+  /* `corpi232` e' la nota dell'ATTESA del caricamento dei corpi (quanti ms reali): esiste solo coi corpi accesi e non e' un fatto della partita */
+  const senzaAttesa = q => q.filter(e => e.ev !== 'corpi232');
+  const d = base ? primaDiff(senzaAttesa(base.seq), senzaAttesa(g.seq), 0) : null; g.attese = g.seq.length - senzaAttesa(g.seq).length;
   glb = { g, giud, d, ok: giud && !d && ris(base.score) === ris(g.score) }; dump['verde|glb|' + NOME_GLB] = g;
 }
 const rosso = SOLO === 'verde' ? [] : await braccio(NOMI_ROSSI, { __CPM_NO_G175: true }, 30);
@@ -101,7 +103,7 @@ console.log(`B. braccio VERDE — ${NOMI.length} nomi × 3 ripetizioni (1× · 1
 for (const x of verde) console.log(`  ${x.uguali ? '✓' : '✗'} «${x.nome}» — ${riga(x)}`);
 if (verde.length) console.log(`  pilota: ${JSON.stringify((verde[0].P[0] || {}).pilota)} (battiti di scena prima della scelta; null = a orologio)`);
 console.log('C. corpi 3D accesi');
-if (glb) console.log(`  ${glb.ok ? '✓' : '✗'} «${NOME_GLB}» coi corpi accesi (2×) = corpi spenti — ${ris(glb.g.score)} ${glb.g.seq.length}v ${glb.g.minMax}' ${glb.g.scene}sc ${sec(glb.g.tPartita)}${glb.giud ? '' : ' · NON GIUDICATO ' + JSON.stringify([glb.g.finita, glb.g.note, glb.g.errs])}${glb.d ? ` · prima differenza alla voce ${glb.d.i}: ${JSON.stringify(glb.d.a).slice(0, 120)} ≠ ${JSON.stringify(glb.d.b).slice(0, 120)}` : ''}`);
+if (glb) console.log(`  ${glb.ok ? '✓' : '✗'} «${NOME_GLB}» coi corpi accesi (2×) = corpi spenti — ${ris(glb.g.score)} ${glb.g.seq.length - glb.g.attese}v (+${glb.g.attese} note d'attesa dei corpi, escluse) ${glb.g.minMax}' ${glb.g.scene}sc ${sec(glb.g.tPartita)}${glb.giud ? '' : ' · NON GIUDICATO ' + JSON.stringify([glb.g.finita, glb.g.note, glb.g.errs])}${glb.d ? ` · prima differenza alla voce ${glb.d.i}: ${JSON.stringify(glb.d.a).slice(0, 120)} ≠ ${JSON.stringify(glb.d.b).slice(0, 120)}` : ''}`);
 else console.log('  ✗ non giocata — NON GIUDICATO');
 console.log(`B. braccio ROSSO (__CPM_NO_G175) — ${NOMI_ROSSI.length} nomi × 3 ripetizioni, fermate al 30' (confronto fino al 25')`);
 for (const x of rosso) console.log(`  ${x.giudic && (x.d01 || x.d02) ? '✓ si separano' : '✗ NON si separano'} «${x.nome}» — ${riga(x)}`);

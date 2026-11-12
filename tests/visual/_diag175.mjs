@@ -41,7 +41,7 @@ async function giro(n) {
         wrap(M, ''); } catch (e) { D.err = String(e); } return M; };
     window.__D175_AVV = () => { if (typeof window.creaMotorePossesso === 'function' && !window.creaMotorePossesso.__a) { const w = avvolgi(window.creaMotorePossesso); w.__a = 1; window.creaMotorePossesso = w; return true; } return false; };
     window.__CPM_PASSI959 = {}; window.__CPM_RNDM959 = {}; window.__CPM_POS959 = {};
-  }, { s: save166(NOME), vel: (E.VELS ? E.VELS.split(',')[n % E.VELS.split(',').length] : VEL), glb: GLB, flags: FLAGS, reseed: E.RESEED === '1' ? 1000 + n * 77 : null });
+  }, { s: save166(NOME), vel: (E.VELS ? E.VELS.split(',')[n % E.VELS.split(',').length] : VEL), glb: (E.GLBS ? E.GLBS.split(',')[n % E.GLBS.split(',').length] === '1' : GLB), flags: FLAGS, reseed: E.RESEED === '1' ? 1000 + n * 77 : null });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 }); await sleep(1200);
   const avv = await page.evaluate(() => window.__D175_AVV()); if (!avv) console.log('  ⚠ motore non avvolto');
