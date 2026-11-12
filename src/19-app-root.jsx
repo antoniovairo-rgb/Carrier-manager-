@@ -281,6 +281,14 @@ function IntroCinematic({onDone,nome,riascolto}){
     if(_luce23){try{renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;}catch(_e){}}
     host.appendChild(renderer.domElement);renderer.domElement.style.cssText="position:absolute;inset:0;width:100%;height:100%;";
     const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x050810,26,74);
+    /* [giro 178 · PO-367 D3 «sul telefono l'eroe esce dall'inquadratura proprio mentre esulta; bandiere grigie; tifo a quadratini»]
+       Rosso __CPM_NO_G178_INTRO: regia, bandiere e tifo di prima. Il colore della scena passa dallo sviluppo unico (D6, src/11). */
+    const _g178i=!window.__CPM_NO_G178_INTRO;
+    /* il club dell'intro e' quello della maglia dell'eroe (granata/bianco). Solo il banco di prova (cpmtest) puo' cambiarlo, per misurare
+       lo sviluppo del colore su quattro club: __CPM_G178_CLUB={c,c2}. Il gioco non sceglie un colore nuovo. */
+    const _clb178=(_test115&&window.__CPM_G178_CLUB&&window.__CPM_G178_CLUB.c)?window.__CPM_G178_CLUB:{c:'#8e1f33',c2:'#f2f2f2'};
+    const _luceIntro178=(typeof LUCE178!=='undefined'&&LUCE178.intro)||1;
+    if(typeof sviluppoColore178==='function')sviluppoColore178(renderer,scene,{luce:_luceIntro178,nome:'intro'});
     const cam=new THREE.PerspectiveCamera(50,W()/H(),0.1,120);
     scene.add(new THREE.AmbientLight(0xaab6d2,_luce23?0.12:1.0));/* [7.42.0 collaudo PO «scena molto molto buia»] +54% */
     scene.add(new THREE.HemisphereLight(0xbdd2ff,0x2a3a2c,_luce23?0.3:0.55));/* riempimento cielo/prato: i dettagli si leggono */
@@ -325,7 +333,7 @@ function IntroCinematic({onDone,nome,riascolto}){
       if(side===0){x=-21+r1*42;z=-16.5-r2*4;}else if(side===1){x=-21+r1*42;z=16.5+r2*4;}else if(side===2){x=-26.5+r2*3;z=-17+r1*34;}else{x=23.5+r2*3;z=-17+r1*34;}
       y=2.2+r2*4.4;cArr[i*3]=x;cArr[i*3+1]=y;cArr[i*3+2]=z;cBase[i]=y;}
     cg.setAttribute('position',new THREE.BufferAttribute(cArr,3));
-    const crowd=new THREE.Points(cg,new THREE.PointsMaterial({color:0xd8c9b8,size:0.34,transparent:true,opacity:0.85}));scene.add(crowd);
+    const crowd=new THREE.Points(cg,new THREE.PointsMaterial({color:0xd8c9b8,size:0.34,transparent:true,opacity:0.85}));if(!_g178i)scene.add(crowd);
     /* [7.32.1 collaudo PO «disegna gli spalti con i tifosi con le sciarpe e bandiere!»] secondo strato di
        tifosi COLORATI (granata/bianco) + SCIARPE tese sopra le teste nella curva dietro la porta + BANDIERE
        su asta che sventolano (piani double-side animati nel tick) */
@@ -335,13 +343,43 @@ function IntroCinematic({onDone,nome,riascolto}){
       if(side===0){x=-19+r1*38;z=-16.8-r2*3.4;}else if(side===1){x=-19+r1*38;z=16.8+r2*3.4;}else{x=(i%2?-26:24)+r2*2.4;z=-15+r1*30;}
       y=2.5+r2*3.8;c2Arr[i*3]=x;c2Arr[i*3+1]=y;c2Arr[i*3+2]=z;}
     cg2.setAttribute('position',new THREE.BufferAttribute(c2Arr,3));
-    const crowd2=new THREE.Points(cg2,new THREE.PointsMaterial({color:0xa3263a,size:0.4,transparent:true,opacity:0.9}));scene.add(crowd2);
-    const scarves=[];for(let i=0;i<16;i++){const sc=new THREE.Mesh(new THREE.PlaneGeometry(1.7,0.22),new THREE.MeshBasicMaterial({color:i%2?0xa3263a:0xf5f0e6,side:THREE.DoubleSide}));
+    const crowd2=new THREE.Points(cg2,new THREE.PointsMaterial({color:0xa3263a,size:0.4,transparent:true,opacity:0.9}));if(!_g178i)scene.add(crowd2);
+    /* [giro 178] IL TIFO A SAGOME. I due strati di punti (900 + 520 quadratini) diventano file di tifosi disegnati con l'atlante della
+       folla del giro 147 (_folla129Atlas: le stesse 32 figure x 4 pose dello stadio della partita), tinte coi colori del club: maglie,
+       sciarpe e bandierine nel colore del club, pelle e capelli vari. Tre file per tribuna, ogni fila e' UN piano con una striscia di 24
+       tifosi ripetuta (24 tifosi x 2 pose x 3 strisce = 6 texture, ~1,2 milioni di pixel calcolati una volta). Dopo il gol la fila
+       passa alla posa a braccia alzate e salta (stesso ritmo dei punti di prima). */
+    const folla178=[];
+    if(_g178i&&typeof _folla129Atlas==='function'){try{
+      const AT=_folla129Atlas(),CW=AT.CW,CH=AT.CH,NJ=24;const ax=AT.cv.getContext('2d'),mx=AT.mk.getContext('2d');
+      const AD=ax.getImageData(0,0,AT.cv.width,AT.cv.height).data,MD=mx.getImageData(0,0,AT.mk.width,AT.mk.height).data,AW=AT.cv.width;
+      const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
+      const C1=hx(_clb178.c),C2=hx(_clb178.c2),NEU=[[58,62,72],[90,92,98],[34,36,44]];
+      const SKF=[[245,197,163],[232,168,112],[217,160,106],[200,149,106],[160,106,66],[139,80,48]],HAF=[[28,20,14],[52,36,22],[90,64,36],[20,20,22],[120,96,60]];
+      const strip=(seed,pose)=>{const c=document.createElement('canvas');c.width=CW*NJ;c.height=CH;const x=c.getContext('2d');const img=x.createImageData(c.width,CH),D=img.data;
+        let h=(seed*2654435761)>>>0;const rr=()=>{h=(h*1664525+1013904223)>>>0;return h/4294967296;};
+        for(let j=0;j<NJ;j++){const r1=rr(),r2=rr(),r3=rr(),r4=rr();const v=r1<0.18?18+((r2*4)|0):r1<0.28?22+((r2*2)|0):((r2*14)|0);/* base · sciarpa · bandierina */
+          const sh=r3<0.62?C1:r3<0.86?C2:NEU[(r4*3)|0],sk=SKF[(r4*SKF.length)|0],ha=HAF[(r2*HAF.length)|0],au=r4<0.5?C1:C2;const p=pose===1?1:((r3*10|0)%3===0?2:0);
+          for(let yy=0;yy<CH;yy++)for(let xx=0;xx<CW;xx++){const si=4*((p*CH+yy)*AW+v*CW+xx),di=4*(yy*c.width+j*CW+xx);const a=AD[si+3];if(a<8)continue;
+            const tr=AD[si]/255,tg=AD[si+1]/255,tb=AD[si+2]/255,mr=MD[si]/255,mg=MD[si+1]/255,mb=MD[si+2]/255;
+            const wH=mr*mg,wS=Math.max(mr-wH,0),wK=Math.max(mg-wH,0),wA=mb,wB=Math.max(0,Math.min(1,1-wH-wS-wK-wA)),lum=tg*1.18;
+            for(let k=0;k<3;k++){const tc=k===0?tr:k===1?tg:tb;const v2=tc*wB*255+lum*(sh[k]*wS+sk[k]*wK+ha[k]*wH+au[k]*wA);D[di+k]=Math.max(0,Math.min(255,v2));}D[di+3]=a;}}
+        x.putImageData(img,0,0);const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.anisotropy=4;return t;};
+      const TX=[0,1,2].map(k=>[strip(178+k*31,0),strip(178+k*31,1)]);
+      /* tribune: [cx, cz, larghezza, rotazione, normale x, normale z] — il fronte di ogni blocco (vedi standMat qui sopra) */
+      const ST=[[0,-17.45,42,0,0,1],[0,17.45,42,Math.PI,0,-1],[-25.45,0,36,Math.PI/2,1,0],[25.45,0,36,-Math.PI/2,-1,0]];
+      const PW=0.62,PH=PW*CH/CW;
+      ST.forEach(([cx,cz,w,ry,nx,nz],si)=>{for(let row=0;row<3;row++){const k=(si+row)%3;const m=new THREE.MeshLambertMaterial({map:TX[k][0],alphaTest:0.3,side:THREE.DoubleSide});
+        m.map=TX[k][0];const g=new THREE.PlaneGeometry(w,PH);const pl=new THREE.Mesh(g,m);TX[k][0].repeat.set(w/(NJ*PW),1);TX[k][1].repeat.set(w/(NJ*PW),1);
+        const y0=0.55+row*1.75+PH/2;pl.position.set(cx+nx*(0.06+row*0.02),y0,cz+nz*(0.06+row*0.02));pl.rotation.y=ry;pl.userData.folla178=true;pl.name='folla178-'+si+'-'+row;
+        pl._y0=y0;pl._tx=TX[k];pl._ph=si*1.7+row*0.9;scene.add(pl);folla178.push(pl);}});
+    }catch(_e){}}
+    const scarves=[];for(let i=0;i<16;i++){const sc=new THREE.Mesh(new THREE.PlaneGeometry(1.7,0.22),_g178i?new THREE.MeshBasicMaterial({color:new THREE.Color(i%2?_clb178.c:_clb178.c2),side:THREE.DoubleSide,fog:false}):new THREE.MeshBasicMaterial({color:i%2?0xa3263a:0xf5f0e6,side:THREE.DoubleSide}));
       sc.position.set(-15+i*2,4.6+((i*37)%3)*0.7,-17.4-((i*53)%2)*1.1);scene.add(sc);scarves.push(sc);}
-    const flags=[];const flagCols=[0xa3263a,0xf5f0e6,0xd4a017,0xa3263a,0xf5f0e6,0xa3263a];
+    const flags=[];const flagCols=_g178i?[_clb178.c,_clb178.c2,_clb178.c,_clb178.c2,_clb178.c,_clb178.c]:[0xa3263a,0xf5f0e6,0xd4a017,0xa3263a,0xf5f0e6,0xa3263a];/* [giro 178] bandiere nel colore del club (maglia dell'eroe), senza nebbia: erano granata/crema/oro e la nebbia a 26-74 le spegneva in grigio */
     for(let i=0;i<12;i++){const grp=new THREE.Group();
       const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,2.6,6),new THREE.MeshStandardMaterial({color:0x888888}));pole.position.y=1.3;grp.add(pole);
-      const cloth=new THREE.Mesh(new THREE.PlaneGeometry(1.5,0.95),new THREE.MeshBasicMaterial({color:flagCols[i%flagCols.length],side:THREE.DoubleSide}));
+      const cloth=new THREE.Mesh(new THREE.PlaneGeometry(1.5,0.95),new THREE.MeshBasicMaterial({color:new THREE.Color(flagCols[i%flagCols.length]),side:THREE.DoubleSide,fog:!_g178i}));
       cloth.position.set(0.78,2.05,0);grp.add(cloth);grp._cloth=cloth;
       const behind=i<7;const fx=behind?(-13+i*4.4):(i%2?-25.4:23.6);const fz=behind?-16.6:(-12+(i-7)*5.6);
       grp.position.set(fx,3.1,fz);grp.rotation.y=behind?0:(i%2?Math.PI/2:-Math.PI/2);
@@ -409,7 +447,7 @@ function IntroCinematic({onDone,nome,riascolto}){
     if(_cgIntro23&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
         if(!pkg||disposed)return;const A=n=>(pkg.animations||[]).find(c=>c&&c.name===n)||null;
-        heroAv=corpoCG23(pkg,{shirt:'#8e1f33',shorts:'#f2f2f2',socks:'#8e1f33',altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
+        heroAv=corpoCG23(pkg,{shirt:_clb178.c,shorts:_clb178.c2,socks:_clb178.c,altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
         if(!heroAv||!gkAv)return;scene.add(heroAv);scene.add(gkAv);
         const mk=(av,defs)=>{const mx=new THREE.AnimationMixer(av);mixers.push(mx);const acts={};Object.keys(defs).forEach(k=>{if(defs[k])acts[k]=mx.clipAction(defs[k]);});return acts;};
         heroActs=mk(heroAv,{jog:A('jog'),idle:A('idle'),kick:A('kick'),lift:A('throwin')});gkActs=mk(gkAv,{idle:A('gk-ready')||A('idle'),dive:A('gk-dive')});
@@ -578,6 +616,8 @@ function IntroCinematic({onDone,nome,riascolto}){
       cg.attributes.position.needsUpdate=true;
       {const pos2=cg2.attributes.position.array;for(let i=0;i<crowd2N;i++)pos2[i*3+1]=c2Arr[i*3+1]+Math.abs(Math.sin(el*5+i*1.3))*amp*1.15;cg2.attributes.position.needsUpdate=true;}
       scarves.forEach((sc,i)=>{sc.position.y=4.6+((i*37)%3)*0.7+Math.sin(el*4.5+i)*0.3*(amp>0.2?1.6:1);sc.rotation.z=Math.sin(el*4+i*0.9)*0.14;});
+      for(let i=0;i<folla178.length;i++){const pl=folla178[i],su=amp>0.2;const tx=pl._tx[su?1:0];if(pl.material.map!==tx){pl.material.map=tx;pl.material.needsUpdate=true;}
+        pl.position.y=pl._y0+Math.abs(Math.sin(el*5+pl._ph))*amp*0.8;}/* [giro 178] le file di tifosi saltano col ritmo dei punti di prima; dopo il gol braccia alzate */
       flags.forEach((f,i)=>{if(f._cloth){f._cloth.rotation.y=Math.sin(el*2.4+i*1.4)*0.55;f._cloth.position.x=0.78+Math.sin(el*2.4+i*1.4)*0.06;}});
       // coriandoli dal gol
       if(el>9.6&&el<14.6){conf.material.opacity=Math.min(1,(el-12.2)*2)*(el>12.4?Math.max(0,1-(el-15.0)/2.2):1);
@@ -595,12 +635,29 @@ function IntroCinematic({onDone,nome,riascolto}){
           indietro»): resta SOTTO LA CURVA con l'eroe fino alla CTA — leggero dolly laterale + push-in */
         const o=Math.sin((el-11.4)*0.33)*1.9,pu=Math.min(1,Math.max(0,(el-12.6)/4));/* [7.53.3] ancore festa ritimate sull'arrivo sotto la curva (9.6+2.4=12.0) */
         cx=hero.position.x+3.4+o;cy=3.3-pu*0.5;cz=hero.position.z+6.4-pu*1.2;lx=hero.position.x;ly=3.1-pu*0.7;lz=hero.position.z-5;}
+      /* [giro 178 · D3] IN VERTICALE l'eroe resta nel quadro. MISURATO (sonda scene-178, 375x812): 59 fotogrammi su 105 con meno del 90% delle ossa
+         dell'eroe dentro l'inquadratura. Causa letta e calcolata nel giro 170: dall'11,4 la camera guarda 5 unita' OLTRE l'eroe e l'eroe cade a
+         11,4 gradi dall'asse, mentre in verticale il semicampo orizzontale e' 12,1 gradi (ottica 50). Rimedio, solo in verticale (aspetto < 0,62;
+         PC invariato): (a) l'ottica si allarga come al gala' (giro 47) fino al campo orizzontale di un'inquadratura 0,62, tetto 72 gradi;
+         (b) il punto guardato si sposta verso l'eroe (mai oltre di piu' di 1,2 unita' in profondita') in ogni tappa che lo segue;
+         (c) nell'apertura, se l'eroe e' in scena, la camera lo tiene dentro mescolando lo sguardo verso di lui. */
+      if(_g178i&&cam.aspect<0.62){const hpx=(heroAv&&heroAv.visible)?heroAv.position.x:hero.position.x,hpz=(heroAv&&heroAv.visible)?heroAv.position.z:hero.position.z;
+        if(el<4){lx=lx*0.45+hpx*0.55;lz=lz*0.45+hpz*0.55;ly=1.1;}
+        else if(el<8.8){lx=hpx;lz=hpz-1.2;}
+        else if(el<11.4){/* (d) tiro e gol: la camera-gol di PC (7.53.3) guarda la porta dal palo e lascia l'eroe alle spalle. In verticale la
+             camera sta sul prolungamento porta→eroe, 4,6 unita' dietro e 2,4 sopra, e guarda un punto al 40% fra l'eroe e la porta: eroe in
+             basso al centro, porta e volo del pallone davanti. */
+          const dx=hpx,dz=hpz+12,dl=Math.hypot(dx,dz)||1;cx=hpx+dx/dl*4.6;cy=2.4;cz=hpz+dz/dl*4.6;lx=hpx*0.6;ly=1.2;lz=hpz+(-12-hpz)*0.4;
+          /* MISURATO al primo giro: 3 fotogrammi su ~100 fuori fra 10,96 e 11,56 — lo scatto verso la curva dopo il gol, con la camera che
+             insegue in ritardo. Dal gol (10,2) lo sguardo va sull'eroe, e piu' svelto (sotto) */
+          if(el>=10.2){lx=hpx;ly=1.3;lz=hpz;}}
+        else{lx=hpx;lz=hpz-1.2;ly=Math.min(ly,1.9);}}
       if(shakeIntro>0.01){cx+=Math.sin(el*70)*shakeIntro*0.5;cy+=Math.cos(el*60)*shakeIntro*0.3;shakeIntro*=0.86;}/* colpo di cannone → micro-shake */
-      {const _ck=1-Math.exp(-_dtI*5.2),_lk=1-Math.exp(-_dtI*6.8);/* [7.32.7] smoothing camera DT-CORRETTO (il fattore fisso per-frame era frame-rate-dependent → rubber-banding a fps bassi) */
+      {const _ck=1-Math.exp(-_dtI*5.2),_lk=1-Math.exp(-_dtI*((_g178i&&cam.aspect<0.62&&el>=9.6&&el<13)?14:6.8));/* [giro 178] in verticale, dal gol all'arrivo sotto la curva, lo sguardo insegue l'eroe in ~0,07 s invece di ~0,15 *//* [7.32.7] smoothing camera DT-CORRETTO (il fattore fisso per-frame era frame-rate-dependent → rubber-banding a fps bassi) */
        cam.position.x+=(cx-cam.position.x)*_ck;cam.position.y+=(cy-cam.position.y)*_ck;cam.position.z+=(cz-cam.position.z)*_ck;
        camLook.x+=(lx-camLook.x)*_lk;camLook.y+=(ly-camLook.y)*_lk;camLook.z+=(lz-camLook.z)*_lk;}
       cam.lookAt(camLook);
-      {const _w=W(),_h=H();if(stG._vw!==_w||stG._vh!==_h){stG._vw=_w;stG._vh=_h;cam.aspect=_w/_h;cam.updateProjectionMatrix();renderer.setSize(_w,_h);}}/* [7.37.0 collaudo PO «va ancora a scatti»] setSize SOLO su resize: ogni frame riallocava il buffer di disegno */
+      {const _w=W(),_h=H();if(stG._vw!==_w||stG._vh!==_h){stG._vw=_w;stG._vh=_h;cam.aspect=_w/_h;cam.fov=(_g178i&&cam.aspect<0.62)?Math.min(72,2*Math.atan(Math.tan(25*Math.PI/180)*0.62/cam.aspect)*180/Math.PI):50;cam.updateProjectionMatrix();renderer.setSize(_w,_h);}}/* [7.37.0 collaudo PO «va ancora a scatti»] setSize SOLO su resize: ogni frame riallocava il buffer di disegno */
       renderer.render(scene,cam);
       raf=requestAnimationFrame(tick);
     };

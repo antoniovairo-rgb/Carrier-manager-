@@ -29,6 +29,9 @@ const BR = ROSSO ? 'rosso' : 'verde';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const INIT = ({ rosso, punti }) => { window.__CPM_GLB = false; try { localStorage.setItem('cpm-intro-seen', '1'); localStorage.setItem('cpm-dark', '0'); } catch (_e) {}
   if (rosso) for (const k of punti) window['__CPM_NO_G115_' + k] = true;
+  /* [giro 178] il mondo della 183 comprende la regia e il colore dell'intro di allora: col nuovo inquadramento verticale dietro le didascalie
+     c'e' scena scura e il velo (G184-11) non serve piu' a reggere il contrasto, quindi senza questi due rossi il braccio rosso diventava cieco su 11 */
+  if (rosso) { window.__CPM_NO_G178_INTRO = true; window.__CPM_NO_G178_COLORE = true; }
   let s = 4242; Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
 const fase = p => p.evaluate(() => window.__CPM_PHASE ? window.__CPM_PHASE() : null).catch(() => null);
 const testo = p => p.evaluate(() => document.body.innerText || '').catch(() => '');
