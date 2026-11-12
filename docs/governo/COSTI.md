@@ -101,6 +101,7 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | giro 180b clip Rohr importate (9/12) (PO-367) | sviluppo | claude-opus-5-5 | 0,8 | 6,35 $ | 73493 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 180c altre clip Rohr, correzione mani (PO-367) | sviluppo | claude-opus-5-5 | 0,7 | 7,35 $ | 70231 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 177 prova pilota rigore (PO-367) | sviluppo | claude-fable-5-2 | 7,3 | 27,70 $ | 193247 | 1 | completo (un solo avvio) |
+| 7.999.191 | giro 173 rifiniture tasto momento e soli highlight (PO-364) | sviluppo | claude-opus-5-5 | 11,5 | 11,94 $ | 78664 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -112,5 +113,5 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.188 | **TOTALE 7.999.188** (6 sessioni) |  |  |  | 22,61 $ |  |  | tutte complete |
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
-| 7.999.191 | **TOTALE 7.999.191** (17 sessioni) |  |  |  | almeno 110,82 $ |  |  | 1 sessioni parziali: totale minimo |
+| 7.999.191 | **TOTALE 7.999.191** (18 sessioni) |  |  |  | almeno 122,75 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.192 | **TOTALE 7.999.192** (10 sessioni) |  |  |  | almeno 120,88 $ |  |  | 2 sessioni parziali: totale minimo |

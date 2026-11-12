@@ -1342,5 +1342,19 @@
     "cache_read_tokens": 61149686,
     "worker_epoch": 1,
     "rilevato": "2026-11-12"
+  },
+  {
+    "sessione": "session_01QEYiaCyRwGYt2FcUCahaRn",
+    "titolo": "giro 173 rifiniture tasto momento e soli highlight (PO-364)",
+    "versione": "7.999.191",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-12T07:44:11Z",
+    "chiusa": "2026-11-12T19:11:32Z",
+    "cost_usd": 11.9379549,
+    "output_tokens": 78664,
+    "cache_read_tokens": 41151164,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-12"
   }
 ]

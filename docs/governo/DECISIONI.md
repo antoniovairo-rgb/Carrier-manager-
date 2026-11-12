@@ -1381,3 +1381,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 12/11 ~19:55 Roma — PO-376 azioni dalle fasce
 - Domanda PO: non vede da molto azioni che partono dalle fasce. Madre: non confermabile senza misura. Giro di sola misura tra i primi della 192 (dopo l'uscita della 191, limite settimanale): partite vere per ruolo dell'eroe (esterno, centrocampista, punta, difensore), quota di highlight che partono dalle fasce (y < 28 o > 72) e per famiglia, confronto con una versione vecchia (es. 7.999.150) per vedere se è una regressione; poi proposta al PO.
+
+## 12/11 ~21:05 Roma — 173 finito, lavoro/191 completa, verifica finale avviata
+- 173: avviso gol nei soli highlight con libro mastro 298/298 identico; sponsor = storia; mister da elenco; rinnovo = tasto spento con motivo; posta165 nei soli highlight. Rossi della sua catena: parata-100 (3/3, uguale su main) e finale-202 (ancora di src/14 assente anche su main) → preesistenti; ripartenza-207 instabile.
+- Madre sulle domande §7: (1) marcatore diverso fra cronaca e badge → PO-377 (192); (2) il tocco apre la trattativa: va bene; (3) elenco mister confermato; (4) videogioco/docufilm/biografia: spostati fra le offerte nella 192, coerente con «sponsor = offerta»; (5) finale-202 e ripartenza-207 al giro dei rossi (seguito del 174) nella 192; (6) niente misura extra dei tocchi: copre la verifica.
+- Unito in lavoro/191 (nessun conflitto, ci-runner con chiavi uniche), GAME_VERSION 7.999.191 → ec86cf71 (test:logic 51/51). Verifica finale (Sonnet) su catena/191-finale: completa + carriera + grafica + mirata src/14, highlight-95 e distanze-126 senza tetto, ogni rosso confrontato su main 6e995b91.
