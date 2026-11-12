@@ -1,0 +1,120 @@
+
+> cpm-visual-3d-validation@1.0.0 regia-176:rosso
+> CPM_GUARDIANO=1 CPM_ATTESO_ROSSO=1 CPM_FLAGS='{"__CPM_NO_G176":true}' node regia-176-misura.mjs
+
+
+== tel375 375x812 · 191 scene · famiglie shot:81 penalty:2 header:14 freekick:7 cross:15 pass:42 dribble:2 tackle:26 build:2
+  tiro        gi53  scelta: eroe 6.8% · pannello 35% · sopra il pannello (margine 2% schermo) | gesto (eroe soggetto, 12 campioni): eroe 12.6% [finestra intera 12.6%, palla fuori 0/12] · fuori 0/12 · palla fuori 0/12 · porta fuori 0/12
+  tiro        gi143 scelta: eroe 7.3% · pannello 30% · sopra il pannello (margine 4% schermo) | gesto (eroe soggetto, 4 campioni): eroe 10.6% [finestra intera 10.9%, palla fuori 0/9] · fuori 0/9 · palla fuori 0/4 · porta fuori 0/9
+  cross       gi46  scelta: eroe 7.1% · pannello 37% · per meta' sotto il pannello | gesto (eroe soggetto, 7 campioni): eroe 11.3% [finestra intera 11.1%, palla fuori 4/14] · fuori 0/14 · palla fuori 0/7 · porta fuori 0/0
+  cross       gi100 scelta: eroe 7.1% · pannello 35% · per meta' sotto il pannello | gesto (eroe soggetto, 6 campioni): eroe 12.0% [finestra intera 11.1%, palla fuori 0/13] · fuori 0/13 · palla fuori 0/6 · porta fuori 0/0
+  testa       gi44  scelta: eroe 9.2% · pannello 37% · sopra il pannello (margine 25% schermo) | gesto (eroe soggetto, 11 campioni): eroe 9.9% [finestra intera 9.9%, palla fuori 1/11] · fuori 0/11 · palla fuori 1/11 · porta fuori 11/11
+  testa       gi124 scelta: eroe 8.1% · pannello 28% · sopra il pannello (margine 4% schermo) | gesto (eroe soggetto, 12 campioni): eroe 13.0% [finestra intera 13.0%, palla fuori 5/13] · fuori 1/13 · palla fuori 4/12 · porta fuori 13/13
+  rigore      gi5   scelta: eroe 6.3% · pannello 31% · sopra il pannello (margine 14% schermo) | gesto (eroe soggetto, 6 campioni): eroe 8.4% [finestra intera 7.3%, palla fuori 0/13] · fuori 0/13 · palla fuori 0/6 · porta fuori 0/13
+  rigore      gi58  scelta: eroe 6.2% · pannello 34% · sopra il pannello (margine 14% schermo) | gesto (eroe soggetto, 11 campioni): eroe 11.7% [finestra intera 11.7%, palla fuori 0/13] · fuori 0/13 · palla fuori 0/11 · porta fuori 0/13
+  punizione   gi14  scelta: eroe 8.6% · pannello 29% · sopra il pannello (margine 4% schermo) | gesto (eroe soggetto, 3 campioni): eroe 11.6% [finestra intera 12.1%, palla fuori 2/13] · fuori 0/13 · palla fuori 0/3 · porta fuori 6/13
+  punizione   gi81  scelta: eroe 7.3% · pannello 36% · sopra il pannello (margine 3% schermo) | gesto (eroe soggetto, 4 campioni): eroe 11.2% [finestra intera 11.3%, palla fuori 0/14] · fuori 0/14 · palla fuori 0/4 · porta fuori 4/14
+  passaggio   gi47  scelta: eroe 7.4% · pannello 30% · sopra il pannello (margine 1% schermo) | gesto (eroe soggetto, 9 campioni): eroe 11.8% [finestra intera 11.1%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  passaggio   gi162 scelta: eroe 7.2% · pannello 35% · per meta' sotto il pannello | gesto (eroe soggetto, 6 campioni): eroe 10.9% [finestra intera 10.9%, palla fuori 0/0] · fuori 0/15 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi30  scelta: eroe 7.9% · pannello 35% · per meta' sotto il pannello | gesto (eroe soggetto, 13 campioni): eroe 11.7% [finestra intera 11.7%, palla fuori 0/0] · fuori 0/13 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi150 scelta: eroe 6.9% · pannello 35% · per meta' sotto il pannello | gesto (eroe soggetto, 13 campioni): eroe 11.5% [finestra intera 11.5%, palla fuori 0/0] · fuori 0/13 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi54  scelta: eroe 9.3% · pannello 37% · sopra il pannello (margine 4% schermo) | gesto (eroe soggetto, 14 campioni): eroe 12.0% [finestra intera 12.0%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi155 scelta: eroe 9.7% · pannello 35% · sopra il pannello (margine 7% schermo) | gesto (eroe soggetto, 13 campioni): eroe 11.3% [finestra intera 11.3%, palla fuori 0/0] · fuori 0/13 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi123 scelta: eroe 7.6% · pannello 35% · per meta' sotto il pannello | gesto (eroe soggetto, 11 campioni): eroe 9.5% [finestra intera 9.5%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi140 scelta: eroe 7.7% · pannello 28% · sopra il pannello (margine 7% schermo) | gesto (eroe soggetto, 13 campioni): eroe 12.5% [finestra intera 12.5%, palla fuori 0/0] · fuori 0/13 · palla fuori 0/0 · porta fuori 0/0
+
+== tel412 412x915 · 191 scene · famiglie shot:81 penalty:2 header:14 freekick:7 cross:15 pass:42 dribble:2 tackle:26 build:2
+  tiro        gi53  scelta: eroe 5.4% · pannello 31% · sopra il pannello (margine 18% schermo) | gesto (eroe soggetto, 13 campioni): eroe 12.3% [finestra intera 12.3%, palla fuori 0/13] · fuori 0/13 · palla fuori 0/13 · porta fuori 0/13
+  tiro        gi143 scelta: eroe 7.4% · pannello 26% · sopra il pannello (margine 8% schermo) | gesto (eroe soggetto, 5 campioni): eroe 10.6% [finestra intera 11.3%, palla fuori 0/10] · fuori 0/10 · palla fuori 0/5 · porta fuori 0/10
+  cross       gi46  scelta: eroe 7.2% · pannello 33% · sopra il pannello (margine 1% schermo) | gesto (eroe soggetto, 7 campioni): eroe 11.3% [finestra intera 11.3%, palla fuori 3/15] · fuori 0/15 · palla fuori 0/7 · porta fuori 0/0
+  cross       gi100 scelta: eroe 7.2% · pannello 31% · sopra il pannello (margine 2% schermo) | gesto (eroe soggetto, 8 campioni): eroe 12.1% [finestra intera 11.3%, palla fuori 0/15] · fuori 0/15 · palla fuori 0/8 · porta fuori 0/0
+  testa       gi44  scelta: eroe 9.4% · pannello 33% · sopra il pannello (margine 29% schermo) | gesto (eroe soggetto, 14 campioni): eroe 10.7% [finestra intera 10.7%, palla fuori 3/14] · fuori 0/14 · palla fuori 3/14 · porta fuori 14/14
+  testa       gi124 scelta: eroe 8.2% · pannello 24% · sopra il pannello (margine 8% schermo) | gesto (eroe soggetto, 15 campioni): eroe 14.3% [finestra intera 14.6%, palla fuori 4/16] · fuori 0/16 · palla fuori 3/15 · porta fuori 16/16
+  rigore      gi5   scelta: eroe 6.3% · pannello 28% · sopra il pannello (margine 18% schermo) | gesto (eroe soggetto, 6 campioni): eroe 8.9% [finestra intera 8.1%, palla fuori 0/14] · fuori 0/14 · palla fuori 0/6 · porta fuori 0/14
+  rigore      gi58  scelta: eroe 6.4% · pannello 30% · sopra il pannello (margine 18% schermo) | gesto (eroe soggetto, 13 campioni): eroe 11.3% [finestra intera 11.8%, palla fuori 0/17] · fuori 0/17 · palla fuori 0/13 · porta fuori 0/17
+  punizione   gi14  scelta: eroe 8.7% · pannello 26% · sopra il pannello (margine 7% schermo) | gesto (eroe soggetto, 3 campioni): eroe 11.7% [finestra intera 12.3%, palla fuori 3/15] · fuori 0/15 · palla fuori 0/3 · porta fuori 8/15
+  punizione   gi81  scelta: eroe 7.3% · pannello 32% · sopra il pannello (margine 9% schermo) | gesto (eroe soggetto, 3 campioni): eroe 11.2% [finestra intera 11.3%, palla fuori 0/14] · fuori 0/14 · palla fuori 0/3 · porta fuori 3/14
+  passaggio   gi47  scelta: eroe 7.5% · pannello 24% · sopra il pannello (margine 7% schermo) | gesto (eroe soggetto, 8 campioni): eroe 12.0% [finestra intera 11.0%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  passaggio   gi162 scelta: eroe 7.3% · pannello 31% · sopra il pannello (margine 4% schermo) | gesto (eroe soggetto, 7 campioni): eroe 11.2% [finestra intera 11.2%, palla fuori 0/0] · fuori 0/16 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi30  scelta: eroe 8.0% · pannello 31% · sopra il pannello (margine 3% schermo) | gesto (eroe soggetto, 14 campioni): eroe 11.9% [finestra intera 11.9%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi150 scelta: eroe 7.2% · pannello 31% · sopra il pannello (margine 5% schermo) | gesto (eroe soggetto, 16 campioni): eroe 11.8% [finestra intera 11.8%, palla fuori 0/0] · fuori 0/16 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi54  scelta: eroe 9.2% · pannello 33% · sopra il pannello (margine 9% schermo) | gesto (eroe soggetto, 16 campioni): eroe 12.1% [finestra intera 12.1%, palla fuori 0/0] · fuori 0/16 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi155 scelta: eroe 9.9% · pannello 31% · sopra il pannello (margine 11% schermo) | gesto (eroe soggetto, 16 campioni): eroe 11.0% [finestra intera 11.0%, palla fuori 0/0] · fuori 0/16 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi123 scelta: eroe 7.8% · pannello 31% · sopra il pannello (margine 3% schermo) | gesto (eroe soggetto, 14 campioni): eroe 12.8% [finestra intera 12.8%, palla fuori 0/0] · fuori 0/14 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi140 scelta: eroe 7.8% · pannello 24% · sopra il pannello (margine 7% schermo) | gesto (eroe soggetto, 16 campioni): eroe 12.7% [finestra intera 12.7%, palla fuori 0/0] · fuori 0/16 · palla fuori 0/0 · porta fuori 0/0
+
+== pc 1440x900 · 191 scene · famiglie shot:81 penalty:2 header:14 freekick:7 cross:15 pass:42 dribble:2 tackle:26 build:2
+  tiro        gi53  scelta: eroe 7.0% · pannello 0% · nessun pannello | gesto (eroe soggetto, 41 campioni): eroe 13.7% [finestra intera 13.7%, palla fuori 0/41] · fuori 0/41 · palla fuori 0/41 · porta fuori 0/41
+  tiro        gi143 scelta: eroe 7.5% · pannello 0% · nessun pannello | gesto (eroe soggetto, 13 campioni): eroe 12.6% [finestra intera 12.5%, palla fuori 0/31] · fuori 0/31 · palla fuori 0/13 · porta fuori 0/31
+  cross       gi46  scelta: eroe 7.2% · pannello 0% · nessun pannello | gesto (eroe soggetto, 17 campioni): eroe 12.2% [finestra intera 13.5%, palla fuori 0/43] · fuori 0/43 · palla fuori 0/17 · porta fuori 0/0
+  cross       gi100 scelta: eroe 7.2% · pannello 0% · nessun pannello | gesto (eroe soggetto, 25 campioni): eroe 12.7% [finestra intera 12.3%, palla fuori 0/47] · fuori 0/47 · palla fuori 0/25 · porta fuori 0/0
+  testa       gi44  scelta: eroe 9.2% · pannello 0% · nessun pannello | gesto (eroe soggetto, 42 campioni): eroe 11.9% [finestra intera 11.9%, palla fuori 0/42] · fuori 0/42 · palla fuori 0/42 · porta fuori 42/42
+  testa       gi124 scelta: eroe 8.1% · pannello 0% · nessun pannello | gesto (eroe soggetto, 5 campioni): eroe 9.4% [finestra intera 13.2%, palla fuori 13/41] · fuori 9/41 · palla fuori 0/5 · porta fuori 22/41
+  rigore      gi5   scelta: eroe 6.3% · pannello 0% · nessun pannello | gesto (eroe soggetto, 16 campioni): eroe 9.0% [finestra intera 8.7%, palla fuori 0/45] · fuori 0/45 · palla fuori 0/16 · porta fuori 0/45
+  rigore      gi58  scelta: eroe 6.2% · pannello 0% · nessun pannello | gesto (eroe soggetto, 17 campioni): eroe 9.3% [finestra intera 8.6%, palla fuori 0/40] · fuori 0/40 · palla fuori 0/17 · porta fuori 0/40
+  punizione   gi14  scelta: eroe 9.3% · pannello 0% · nessun pannello | gesto (eroe soggetto, 12 campioni): eroe 13.3% [finestra intera 13.6%, palla fuori 0/43] · fuori 0/43 · palla fuori 0/12 · porta fuori 9/43
+  punizione   gi81  scelta: eroe 7.3% · pannello 0% · nessun pannello | gesto (eroe soggetto, 14 campioni): eroe 11.7% [finestra intera 11.4%, palla fuori 0/46] · fuori 0/46 · palla fuori 0/14 · porta fuori 0/46
+  passaggio   gi47  scelta: eroe 7.4% · pannello 0% · nessun pannello | gesto (eroe soggetto, 20 campioni): eroe 11.8% [finestra intera 11.8%, palla fuori 0/0] · fuori 0/42 · palla fuori 0/0 · porta fuori 0/0
+  passaggio   gi162 scelta: eroe 7.3% · pannello 0% · nessun pannello | gesto (eroe soggetto, 39 campioni): eroe 11.7% [finestra intera 11.8%, palla fuori 0/0] · fuori 0/46 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi30  scelta: eroe 7.9% · pannello 0% · nessun pannello | gesto (eroe soggetto, 43 campioni): eroe 15.5% [finestra intera 15.5%, palla fuori 0/0] · fuori 0/43 · palla fuori 0/0 · porta fuori 0/0
+  dribbling   gi150 scelta: eroe 7.1% · pannello 0% · nessun pannello | gesto (eroe soggetto, 46 campioni): eroe 12.5% [finestra intera 12.5%, palla fuori 0/0] · fuori 0/46 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi54  scelta: eroe 9.6% · pannello 0% · nessun pannello | gesto (eroe soggetto, 48 campioni): eroe 13.9% [finestra intera 13.9%, palla fuori 0/0] · fuori 0/48 · palla fuori 0/0 · porta fuori 0/0
+  difesa      gi155 scelta: eroe 10.1% · pannello 0% · nessun pannello | gesto (eroe soggetto, 46 campioni): eroe 13.8% [finestra intera 13.8%, palla fuori 0/0] · fuori 0/46 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi123 scelta: eroe 7.8% · pannello 0% · nessun pannello | gesto (eroe soggetto, 37 campioni): eroe 10.1% [finestra intera 10.1%, palla fuori 0/0] · fuori 0/46 · palla fuori 0/0 · porta fuori 0/0
+  costruzione gi140 scelta: eroe 7.9% · pannello 0% · nessun pannello | gesto (eroe soggetto, 48 campioni): eroe 13.6% [finestra intera 13.6%, palla fuori 0/0] · fuori 0/48 · palla fuori 0/0 · porta fuori 0/0
+
+=== RIEPILOGO (mediane; eroe in % dell'altezza della FINESTRA) ===
+formato  famiglia     scene  eroe-scelta eroe-gesto pannello  sotto-pannello  eroe-fuori-gesto palla-fuori porta-fuori
+tel375   tiro         2         7.3%      12.6%     35%    0/2            0/21            0/16       0/21
+tel375   cross        2         7.1%      12.0%     37%    2/2            0/27            0/13       0/0
+tel375   testa        2         9.2%      13.0%     37%    0/2            1/24            5/23       24/24
+tel375   rigore       2         6.3%      11.7%     34%    0/2            0/26            0/17       0/26
+tel375   punizione    2         8.6%      11.6%     36%    0/2            0/27            0/7       10/27
+tel375   passaggio    2         7.4%      11.8%     35%    1/2            0/29            0/0       0/0
+tel375   dribbling    2         7.9%      11.7%     35%    2/2            0/26            0/0       0/0
+tel375   difesa       2         9.7%      12.0%     37%    0/2            0/27            0/0       0/0
+tel375   costruzione  2         7.7%      12.5%     35%    1/2            0/27            0/0       0/0
+tel412   tiro         2         7.4%      12.3%     31%    0/2            0/23            0/18       0/23
+tel412   cross        2         7.2%      12.1%     33%    0/2            0/30            0/15       0/0
+tel412   testa        2         9.4%      14.3%     33%    0/2            0/30            6/29       30/30
+tel412   rigore       2         6.4%      11.3%     30%    0/2            0/31            0/19       0/31
+tel412   punizione    2         8.7%      11.7%     32%    0/2            0/29            0/6       11/29
+tel412   passaggio    2         7.5%      12.0%     31%    0/2            0/30            0/0       0/0
+tel412   dribbling    2         8.0%      11.9%     31%    0/2            0/30            0/0       0/0
+tel412   difesa       2         9.9%      12.1%     33%    0/2            0/32            0/0       0/0
+tel412   costruzione  2         7.8%      12.8%     31%    0/2            0/30            0/0       0/0
+pc       tiro         2         7.5%      13.7%      0%    0/2            0/72            0/54       0/72
+pc       cross        2         7.2%      12.7%      0%    0/2            0/90            0/42       0/0
+pc       testa        2         9.2%      11.9%      0%    0/2            9/83            0/47       64/83
+pc       rigore       2         6.3%       9.3%      0%    0/2            0/85            0/33       0/85
+pc       punizione    2         9.3%      13.3%      0%    0/2            0/89            0/26       9/89
+pc       passaggio    2         7.4%      11.8%      0%    0/2            0/88            0/0       0/0
+pc       dribbling    2         7.9%      15.5%      0%    0/2            0/89            0/0       0/0
+pc       difesa       2        10.1%      13.9%      0%    0/2            0/94            0/0       0/0
+pc       costruzione  2         7.9%      13.6%      0%    0/2            0/94            0/0       0/0
+tel375: (dichiarato, non giudicato) finestra intera 0,4-2,2 s compreso il volo col soggetto-pallone: eroe 11.3% · pallone fuori 6/101
+tel375: targhette disegnate 2838 · su un corpo altrui 330 (11.6%) · su un'altra targhetta 0
+tel375: mediana eroe al gesto 11.6% (minimo 15%) · margine piedi→pannello in scelta 4.2% (18 scene, minimo 12%) · pallone fuori al gesto 0/53
+tel412: (dichiarato, non giudicato) finestra intera 0,4-2,2 s compreso il volo col soggetto-pallone: eroe 11.8% · pallone fuori 6/113
+tel412: targhette disegnate 2756 · su un corpo altrui 312 (11.3%) · su un'altra targhetta 0
+tel412: mediana eroe al gesto 11.8% (minimo 15%) · margine piedi→pannello in scelta 7.8% (18 scene, minimo 12%) · pallone fuori al gesto 0/58
+pc: (dichiarato, non giudicato) finestra intera 0,4-2,2 s compreso il volo col soggetto-pallone: eroe 12.5% · pallone fuori 0/336
+pc: targhette disegnate 4446 · su un corpo altrui 269 (6.1%) · su un'altra targhetta 0
+pc: mediana eroe al gesto 12.5% (minimo 15%) · margine piedi→pannello in scelta pannello fuori dal riquadro 3D (0 scene, minimo 12%) · pallone fuori al gesto 0/155
+
+❌ ROSSO regia-176:
+  - tel375 cross: eroe sotto il pannello in 2 scene
+  - tel375 passaggio: eroe sotto il pannello in 1 scene
+  - tel375 dribbling: eroe sotto il pannello in 2 scene
+  - tel375 costruzione: eroe sotto il pannello in 1 scene
+  - tel375: eroe al gesto 11.6% sotto la taglia minima 15%
+  - tel375: eroe troppo vicino al pannello nella scelta (margine mediano 4.2% < 12%)
+  - tel375: targhette su corpi o targhette altrui 330/2838 (tetto 5%)
+  - tel412: eroe al gesto 11.8% sotto la taglia minima 15%
+  - tel412: eroe troppo vicino al pannello nella scelta (margine mediano 7.8% < 12%)
+  - tel412: targhette su corpi o targhette altrui 312/2756 (tetto 5%)
+  - pc: eroe al gesto 12.5% sotto la taglia minima 15%
+  - pc: targhette su corpi o targhette altrui 269/4446 (tetto 5%)
+✅ braccio rosso: rosso come atteso
+FINE regia-176-misura
+FINE-CORSA 0

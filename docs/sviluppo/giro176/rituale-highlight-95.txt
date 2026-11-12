@@ -1,0 +1,71 @@
+verde s1 seme 1234 pass fine ceremony highlight 6 tabellone {"home":3,"away":1}
+verde s1 seme 1234 drib fine ended highlight 6 tabellone {"home":2,"away":2}
+verde s1 seme 2021 pass fine ended highlight 6 tabellone {"home":3,"away":1}
+verde s1 seme 2021 drib fine ended highlight 7 tabellone {"home":1,"away":1}
+verde s1 seme 7 pass fine ended highlight 4 tabellone {"home":1,"away":2}
+verde s1 seme 7 drib fine ceremony highlight 9 tabellone {"home":2,"away":0}
+verde s5 seme 1234 pass fine ended highlight 5 tabellone {"home":0,"away":0}
+verde s5 seme 1234 drib fine ended highlight 1 tabellone {"home":1,"away":1}
+verde s5 seme 2021 pass fine ended highlight 5 tabellone {"home":1,"away":0}
+verde s5 seme 2021 drib fine ended highlight 5 tabellone {"home":2,"away":1}
+verde s5 seme 7 pass fine ended highlight 2 tabellone {"home":1,"away":3}
+verde s5 seme 7 drib fine ended highlight 4 tabellone {"home":0,"away":1}
+verde s12 seme 1234 pass fine hl_result highlight 6 tabellone {"home":3,"away":1}
+verde s12 seme 1234 drib fine ceremony highlight 7 tabellone {"home":1,"away":0}
+verde s12 seme 2021 pass fine hl_result highlight 7 tabellone {"home":3,"away":0}
+verde s12 seme 2021 drib fine ceremony highlight 9 tabellone {"home":2,"away":1}
+verde s12 seme 7 pass fine ceremony highlight 6 tabellone {"home":2,"away":1}
+verde s12 seme 7 drib fine ceremony highlight 7 tabellone {"home":1,"away":0}
+verde s12 seme 1234 pass (scena senza esito) fine ceremony highlight 7 tabellone {"home":3,"away":1}
+  verde rivelazioni lette da un'altra scena (abbinate per indice): 18
+    ~ s1/1234 hl2: letta hl1 via scena+occupata · giusta nessuna
+    ~ s1/1234 hl4: letta hl3 via scena+occupata · giusta nessuna
+    ~ s1/1234 hl3: letta hl2 via scena+occupata · giusta nessuna
+    ~ s1/2021 hl1: letta hl0 via scena+occupata · giusta nessuna
+    ~ s1/2021 hl5: letta hl4 via scena+occupata · giusta nessuna
+    ~ s1/7 hl1: letta hl0 via scena+occupata · giusta nessuna
+VERDE highlight 109 · D4 senza esito 0 · passaggi 32 arrivati 93.8% gol compagno 15 assist 15 esiti {"goal/assist":15,"saved/chance":7,"wide/chance":5,"blocked/chance":3,"intercettato/intercept":2} · finte 11 riuscite 45.5% {"null/chance/chance":3,"dribble/chance/chance":2,"dribble/intercept/dispossessed":1,"null/intercept/dispossessed":5} · falli cercati 4 · parate giudicate 13 · non giudicabili (guardia di parete) 0 · difetti 0
+rosso s1 seme 1234 pass fine ended highlight 7 tabellone {"home":0,"away":2}
+rosso s1 seme 1234 drib fine ended highlight 7 tabellone {"home":0,"away":2}
+rosso s1 seme 2021 pass fine ended highlight 7 tabellone {"home":1,"away":1}
+rosso s1 seme 2021 drib fine ended highlight 7 tabellone {"home":2,"away":0}
+rosso s1 seme 7 pass fine ended highlight 7 tabellone {"home":0,"away":1}
+rosso s1 seme 7 drib fine ended highlight 5 tabellone {"home":0,"away":1}
+D3DIAG s5/1234 «✈️ Stacco in corsa potente» minGB=8.0 {"tipo":"header","kind":"saved","d3":{"gk":{"x":95.4,"y":51.8},"ball":{"x":82.2,"y":73,"h":1.11},"hero":{"x":85,"y":65},"dHeroOpp":8.3,"gkBall":25,"c53":null,"sv":{"k":"1","v":"header_diving","gx":45.43,"gz":1.26,"sx":32.2,"sz":15.64,"tx":46.45,"tz":2.57,"hx":35,"hz":10.2,"aT":0},"p258":{"t":"header","gx":45.43,"prima":46.45,"dopo":45.88,"u":0.96},"p119":null,"gkmin":24.95,"scT":5.06,"gkAct":{"last":"gk_dive","lastTz":3.1},"gkT":{"home":{"x":6.5,"y":52.7},"away":{"x":94.8,"y":52.5}}},"st":{"act":{"t":null,"aT":0.55,"tgt":{"x":85,"y":65,"tl":0},"ht":"header","ok":false,"pat":"HEADER_ATTACK","rew":"goal","kind":"saved"},"ball":{"x":82.2,"y":73},"hero":{"x":85,"y":65},"gk":{"x":95.4,"y":51.8}}}
+rosso s5 seme 1234 pass fine ended highlight 4 tabellone {"home":0,"away":0}
+D3DIAG s5/1234 «↗️ Palla in area» minGB=5.0 {"tipo":"freekick","kind":"saved","d3":{"gk":{"x":97,"y":51.9},"ball":{"x":85.6,"y":39.6,"h":0.22},"hero":{"x":83,"y":37.5},"dHeroOpp":2.94,"gkBall":16.8,"c53":null,"sv":{"k":"0","v":"freekick_cross_high","gx":46.96,"gz":1.31,"sx":35.6,"sz":-7.07,"tx":42,"tz":3.3,"hx":32.8,"hz":-8.64,"aT":-0.55},"p258":null,"p119":null,"gkmin":16.76,"scT":0.3,"gkAct":{"last":"gk_dive","lastTz":3.3},"gkT":{"home":{"x":5,"y":48.8},"away":{"x":95,"y":48.8}}},"st":{"act":{"t":null,"aT":0,"tgt":{"x":85.6,"y":39.6,"tl":0},"ht":"freekick","ok":false,"pat":"SET_PIECE","rew":"assist","kind":"saved"},"ball":{"x":85.6,"y":39.6},"hero":{"x":82.8,"y":37.3},"gk":{"x":97,"y":51.9}}}
+rosso s5 seme 1234 drib fine ended highlight 3 tabellone {"home":0,"away":0}
+rosso s5 seme 2021 pass fine playing highlight 7 tabellone {"home":0,"away":0}
+D3DIAG s5/2021 «↗️ Palla in area» minGB=4.7 {"tipo":"freekick","kind":"saved","d3":{"gk":{"x":94.9,"y":47.2},"ball":{"x":80.9,"y":65.2,"h":0.22},"hero":{"x":78.6,"y":68},"dHeroOpp":5.43,"gkBall":22.8,"c53":null,"sv":{"k":"2","v":"freekick_cross_high","gx":44.95,"gz":-1.93,"sx":30.9,"sz":10.34,"tx":42,"tz":-3.3,"hx":28.42,"hz":12.37,"aT":-0.55},"p258":null,"p119":null,"gkmin":22.87,"scT":8.35,"gkAct":{"last":"gk_dive","lastTz":-3.3},"gkT":{"home":{"x":5,"y":52.1},"away":{"x":95,"y":52.1}}},"st":{"act":{"t":null,"aT":0.55,"tgt":{"x":80.9,"y":65.2,"tl":0},"ht":"freekick","ok":false,"pat":"SET_PIECE","rew":"assist","kind":"saved"},"ball":{"x":80.9,"y":65.2},"hero":{"x":78.4,"y":68.2},"gk":{"x":94.9,"y":47.2}}}
+rosso s5 seme 2021 drib fine ended highlight 6 tabellone {"home":1,"away":0}
+rosso s5 seme 7 pass fine ended highlight 3 tabellone {"home":1,"away":1}
+rosso s5 seme 7 drib fine ended highlight 4 tabellone {"home":0,"away":1}
+rosso s12 seme 1234 pass fine ceremony highlight 7 tabellone {"home":2,"away":0}
+rosso s12 seme 1234 drib fine ceremony highlight 7 tabellone {"home":0,"away":0}
+rosso s12 seme 2021 pass fine ceremony highlight 7 tabellone {"home":0,"away":1}
+rosso s12 seme 2021 drib fine ceremony highlight 5 tabellone {"home":0,"away":1}
+rosso s12 seme 7 pass fine ceremony highlight 7 tabellone {"home":2,"away":0}
+rosso s12 seme 7 drib fine ceremony highlight 7 tabellone {"home":1,"away":1}
+rosso s12 seme 1234 pass (scena senza esito) fine ceremony highlight 7 tabellone {"home":2,"away":0}
+  rosso rivelazioni lette da un'altra scena (abbinate per indice): 4
+    ~ s1/2021 hl5: letta hl4 via riserva+occupata · giusta nessuna
+    ~ s5/7 hl2: letta hl1 via riserva+occupata · giusta nessuna
+    ~ s12/7 hl2: letta hl1 via riserva+occupata · giusta nessuna
+    ~ s12/7 hl5: letta hl4 via riserva+occupata · giusta nessuna
+ROSSO highlight 114 · D4 senza esito 7 · passaggi 29 arrivati 82.8% gol compagno 1 assist 1 esiti {"wide/intercept":10,"saved/intercept":6,"blocked/intercept":7,"intercettato/intercept":5,"goal/assist":1} · finte 13 riuscite 0.0% {"pass/intercept/intercepted":2,"null/intercept/intercepted":9,"null/intercept/overhit":2} · falli cercati 3 · parate giudicate 15 · non giudicabili (guardia di parete) 0 · difetti 209
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato raccontato perso «Anticipato dall'avversario»
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con LUZI»: esito «Anticipato dall'avversario» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.08,"sl":0.53,"bx":9.1,"ck":0.7500000000000001},"rr":null}
+  · D3 s1/1234 «🧠 Anticipa sul primo controllo»: esito «Chiusura impeccabile!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.16,"sl":0.53,"bx":8,"ck":5.399999999999989},"rr":null}
+  · D3 s1/1234 «🦵 Tiro a giro»: esito «Che peccato!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":0.03,"sl":0.59,"bx":31.1,"ck":9.650000000000002},"rr":null}
+  · D3 s1/1234 «🎯 Punizione a giro»: esito «Che peccato!» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.03,"sl":0.55,"bx":32.1,"ck":14.40000000000007},"rr":null}
+  · D3 s1/1234 «🎯 Controllo e tiro fermo»: esito «Conclusione murata» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.1,"sl":0.48,"bx":26.6,"ck":18.65000000000013},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato raccontato perso «Anticipato dall'avversario»
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: 3D intercetta un passaggio arrivato (intercepted)
+  · D3 s1/1234 «🔁 Uno-due con LUZI»: esito «Anticipato dall'avversario» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.16,"sl":0.46,"bx":27.6,"ck":22.650000000000187},"rr":null}
+  · D3 s1/1234 «🌀 Roulette e tiro»: esito «Conclusione centrale» rivelato dalla riserva mentre il 3D mostrava ancora la conclusione {"cap":null,"c":{"tl":false,"arc":true,"pa":false,"pat":null,"pt":-1,"at":-0.15,"sl":0.44,"bx":-21.7,"ck":27.15000000000025},"rr":null}
+  · D1 s1/1234 «🔁 Uno-due con LUZI»: passaggio arrivato ma chiave intercept ok=false
+✅ highlight-95 verde (e il rosso si vede)
+ESITO 0

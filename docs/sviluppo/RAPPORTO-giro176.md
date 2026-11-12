@@ -38,7 +38,7 @@ Sonda `tests/visual/regia-176-misura.mjs` (anche guardiano). Tre formati, pagina
 attivo, 2 scene per famiglia (18 scene per formato), esito forzato «riuscito». Numeri da `__CPM_REGIA176()` (aggancio di
 sola prova in `src/12`): eroe, pallone e linea di porta proiettati in pixel di schermo, confrontati col rettangolo vero
 del pannello `[data-cpm="scelte"]`. Il gesto si campiona a **tempo di scena** (0,4-2,2 s della finestra), mai a orologio.
-Registri completi: `docs/sviluppo/giro176/regia-176-rosso.log` / `-verde.log` (+ `.json`).
+Registri completi: `docs/sviluppo/giro176/regia-176-rosso.txt` / `-verde.txt` (+ `.json`).
 
 ### 2.1 Riepilogo per formato
 
@@ -133,7 +133,7 @@ Vedi §8.
 - Nota di metodo: due trappole incontrate e corrette nella sonda, da tenere presenti: (a) il gesto va campionato a tempo di
   scena (a orologio il PC misurava la rampa d'ingresso: 12,8% invece di ~19%); (b) subito dopo la risoluzione il contatore
   della finestra vale ancora il tempo della **scelta** (si azzera al primo fotogramma di `hl_result`): una foto «a 0,6 s»
-  partiva troppo presto. Il registro del guardiano in `regia-176-*.log` è stato prodotto **prima** della correzione (b):
+  partiva troppo presto. Il registro del guardiano in `regia-176-*.txt` è stato prodotto **prima** della correzione (b):
   la (b) toglie al più i primi campioni di ogni esito; la corsa del guardiano nella catena (§8) usa la sonda corretta.
 
 ## 7. Foto prima/dopo
@@ -154,7 +154,7 @@ prima di ognuno. Dopo ogni modifica a `src/`: `node tools/build-src.mjs` + `node
 | `regia-176:rosso` | **rosso come atteso** | 12 motivi, vedi §4 |
 | `hero-framing` (191 scene, 412, quadro 3D) | eseguito (censimento, non boccia) | mediana **0,147** (rosso 0,097) · sotto 0,15: 108/191 (rosso 190/191) · figurine 2 (rosso 6) · fotogrammi fuori 1,7% (rosso 1,5%) · gi15 86% e gi86 56% fuori anche col rosso (88%, 54%) |
 | `gesti-copertura-96` | verde | enumerazione statica (fedeli 284, non disegnabili 9, varianti 35/35) |
-| `highlight-95` (`CPM_D3DIAG=1`) | **verde, e il rosso si vede** | 109 highlight, D4 0, passaggi arrivati 93,8%, gol del compagno = assist 15/15. ⚠️ Una PRIMA corsa, avviata in una catena che ho poi interrotto, si era chiusa con «rosso: D1-D4 non si vede» (braccio rosso senza difetti); la seconda corsa, da sola, 85 min, è verde col rosso visibile. Registro: `giro176/rituale-highlight-95.log` |
+| `highlight-95` (`CPM_D3DIAG=1`) | **verde, e il rosso si vede** | 109 highlight, D4 0, passaggi arrivati 93,8%, gol del compagno = assist 15/15. ⚠️ Una PRIMA corsa, avviata in una catena che ho poi interrotto, si era chiusa con «rosso: D1-D4 non si vede» (braccio rosso senza difetti); la seconda corsa, da sola, 85 min, è verde col rosso visibile. Registro: `giro176/rituale-highlight-95.txt` |
 | `scena3d-96` | verde | 31/31 scene giudicate, 0 errori di pagina |
 | `camera-252` | verde (e il rosso vede il salto) | |
 | `partita-vera` | verde | 12 bande su 12, partite finite 2/2 |

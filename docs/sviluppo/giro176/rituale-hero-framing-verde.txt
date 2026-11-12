@@ -1,0 +1,41 @@
+  … 20 scene misurate
+  … 40 scene misurate
+  … 60 scene misurate
+  … 80 scene misurate
+  … 100 scene misurate
+  … 120 scene misurate
+  … 140 scene misurate
+  … 160 scene misurate
+  … 180 scene misurate
+
+=== ALTEZZA APPARENTE DELL'EROE su 191 scene (frazione dell'altezza del quadro, al MASSIMO della scena) ===
+  mediana 0.147 · media 0.146 · minimo 0.063 · massimo 0.216
+  quartili: 25% 0.135 · 75% 0.161
+
+  sotto 0,15 (gesto non distinguibile): 108/191 scene — 57%
+  sotto 0,08 (figurina):                2/191 scene — 1%
+  con l'eroe FUORI dal quadro in almeno un fotogramma: 10/191
+  quota di fotogrammi con l'eroe fuori dal quadro: 85/5145 = 1.7%
+
+=== SCENE IN CUI L'EROE NON E' IN QUADRO (oltre meta' dei fotogrammi della conclusione) ===
+  gi 15   86% dei fotogrammi · «—»
+  gi 86   56% dei fotogrammi · «—»
+
+=== le 15 scene in cui l'eroe e' piu' piccolo ===
+  gi 45  0.063 · —         · «—»
+  gi 36  0.071 · —         · «—»
+  gi 90  0.084 · —         · «—»
+  gi 44  0.085 · —         · «—»
+  gi133  0.090 · —         · «—»
+  gi 55  0.092 · —         · «—»
+  gi 52  0.093 · —         · «—»
+  gi171  0.095 · —         · «—»
+  gi126  0.096 · —         · «—»
+  gi 64  0.096 · —         · «—»
+  gi 77  0.103 · —         · «—»
+  gi138  0.104 · —         · «—»
+  gi124  0.105 · —         · «—»
+  gi134  0.106 · —         · «—»
+  gi 86  0.109 · —         · «—»
+
+dettaglio → out/framing/hero-framing.json
