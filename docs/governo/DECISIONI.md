@@ -1329,3 +1329,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO: «Usa il pacchetto Anderson Rohr» (Free mocap pack 05 Soccer, e 04 Crowd Reactions per le esultanze sobrie): accettato il rischio del repository pubblico come per CGTrader e Mixamo (decisione 27/09). Licenza da registrare in CREDITI-fonti.md con testo letto alla fonte e data.
 - Madre: giro 180 adatta lo scheletro UE5 del pacchetto al nostro (UE4 Mannequin, 75 ossa) e importa SOLO le clip che servono (calci piatto/collo, esultanze, difesa), senza ancora usarle nei gesti. Vincolo: nessun account, nessuna email del PO. Se il download gratuito chiede un'email o un account, il giro si ferma e il PO scarica il pacchetto lui.
 - Giro 179 (ricerca): nessuna fonte libera per tiro al volo, colpo di testa in tuffo, controllo di petto.
+
+## 12/11 ~11:40 Roma — contenuto della 191
+- PO: «Il 167 passa alla 192». La 191 = 11 giri già in lavoro/191 + 173. Verifica finale appena il 173 è unito. Uscita stimata 13/11 mattina (stima, non confermabile).
+- Conseguenza: i rossi preesistenti degli strumenti della cronaca (trama, bg-continuity, bg-decision, bg-sync, ball-alive, bg-rhythm) restano dichiarati anche nella 191, come nella 190.
