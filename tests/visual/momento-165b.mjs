@@ -13,6 +13,9 @@
    4. PRIMAVERA: col confronto del procuratore aperto il tasto e' spento («chiudi prima la finestra aperta»); una finestra col velo
       che compare durante la corsa la ferma.
    Braccio rosso: CPM_ROSSO165B=1 accende __CPM_NO_G165B (comportamento del giro 165) → il guardiano DEVE uscire 1.
+   [giro 173] le sezioni 1 e 3 giudicano il comportamento del 165b (mister letto dal testo, rinnovo che ferma a ogni corsa), che dal
+   giro 173 vive nel suo rosso: si aprono con __CPM_NO_G173 (il nuovo comportamento lo giudica momento-173). La sezione 2 gira col
+   giro 173 acceso; CPM_NO173=1 la gira col 173 spento (misura «prima» del rapporto 173).
    Foto: CPM_FOTO165B=<cartella> salva il riepilogo della corsa a 375x812 e 1280x800.
    Uso: cd tests/visual && CPM_CHROME=/opt/pw-browsers/chromium node momento-165b.mjs */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
@@ -20,6 +23,7 @@ import fs from 'fs';
 
 const ROSSO = process.env.CPM_ROSSO165B === '1';
 const FOTO = process.env.CPM_FOTO165B || '';
+const NO173 = process.env.CPM_NO173 === '1';
 const SOLO = (process.env.CPM_SOLO165B || '').split(',').filter(Boolean);
 const fai = (n) => !SOLO.length || SOLO.includes(String(n));
 const fails = [], oks = [], note = [];
@@ -43,14 +47,14 @@ function saveU18(over = {}) {
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
-async function apri(vp, player) {
+async function apri(vp, player, no173 = NO173) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([pl, rosso]) => {
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G165B = 1;
+  await page.addInitScript(([pl, rosso, n173]) => {
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G165B = 1; if (n173) window.__CPM_NO_G173 = 1;
     localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl }));
-  }, [player, ROSSO]);
+  }, [player, ROSSO, no173]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 60000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
   await sleep(1200);
@@ -83,7 +87,7 @@ try {
   /* ---------- 1. classifica storia/routine ---------- */
   if (fai(1)) {
     console.log('1) storia o routine (storia165b sugli impulsi veri)');
-    const { page, errors } = await apri({ width: 412, height: 915 }, savePro({ week: 6 }));
+    const { page, errors } = await apri({ width: 412, height: 915 }, savePro({ week: 6 }), true);
     const r = await page.evaluate(() => {
       const C = window.__CPM_CAREER, J0 = JSON.stringify(C.snapshot());
       const wl = (id) => { const im = WEEKLY_IMPULSES.find(x => x.id === id); return im ? { isImpulse: true, impId: id, cat: im.cat, event: { txt: String(im.txt || '') }, choices: im.choices || [] } : null; };
@@ -171,7 +175,7 @@ try {
   /* ---------- 3. rinnovo finche' non e' risolto ---------- */
   if (fai(3)) {
     console.log('3) rinnovo: ferma a ogni corsa finché non firmi o rifiuti');
-    const W = await apri({ width: 412, height: 915 }, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }));
+    const W = await apri({ width: 412, height: 915 }, savePro({ week: 28, contract: { duration: 1, wage: 6000, expiresAtSeason: 3 }, coachTrust: 80 }), true);
     const c1 = await corsa(W.page, 60000); await chiudiRiepilogo(W.page); await sleep(300);
     const c2 = await corsa(W.page, 60000);
     const card = await W.page.evaluate(() => !!document.querySelector('[data-cpm="rinnovo94"]'));
@@ -237,6 +241,6 @@ try {
 
 await browser.close(); srv.close();
 for (const n of note) console.log('  · ' + n);
-console.log(`\nmomento-165b ${ROSSO ? '[BRACCIO ROSSO __CPM_NO_G165B]' : '[verde atteso]'}: ${oks.length} verdi, ${fails.length} rossi`);
+console.log(`\nmomento-165b ${ROSSO ? '[BRACCIO ROSSO __CPM_NO_G165B]' : '[verde atteso]'}${NO173 ? ' [giro 173 spento: CPM_NO173]' : ''}: ${oks.length} verdi, ${fails.length} rossi`);
 console.log(fails.length ? 'ESITO: ROSSO' : 'ESITO: VERDE');
 process.exit(fails.length ? 1 : 0);

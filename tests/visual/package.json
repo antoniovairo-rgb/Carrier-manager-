@@ -605,7 +605,8 @@
     "indice-163": "node indice-163.mjs",
     "salta-163": "node salta-163.mjs",
     "momento-165": "node momento-165.mjs",
-    "momento-165b": "node momento-165b.mjs"
+    "momento-165b": "node momento-165b.mjs",
+    "momento-173": "node momento-173.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

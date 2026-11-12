@@ -453,8 +453,15 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      fa il giro 165. Rosso __CPM_NO_G166: il bottone non c'e' e la partita e' intera.
      soloChiesta166Ref = la scelta appena fatta nel prompt (la consuma startMatch); soloHL166Ref = la modalita' della partita in corso. */
   const soloHL166Ref=useRef(false),soloChiesta166Ref=useRef(false);
+  /* [giro 173 · PO-364, decisioni PO e sessione madre 12/11] rifiniture del tasto «Vai al prossimo momento» (165/165b) e della partita a soli
+     highlight (166), ora unite: (1) il bottone dei momenti salienti segue posta165; (4) gli sponsor (wi_sponsor*) sono scelte di storia
+     («offerta»); (5) le scelte «mister» si riconoscono da un elenco esplicito di id, non dal testo; (6) col rinnovo aperto il tasto e' spento
+     col motivo «Prima rispondi al rinnovo» e al tocco apre la trattativa. I punti 2-3 (avviso sul gol, velocita' nascosta) vivono in src/15.
+     Rosso __CPM_NO_G173 = il comportamento dei giri 165b+166 uniti nel 191. */
+  const _g173=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G173);
   const senzaPosta166=(md)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_G166)return false;
     if(!md||player.proStatus!=="pro")return false;
+    if(_g173())return !posta165(player,md);/* [giro 173 punto 1] la regola di posta e' quella allargata del tasto (giro 165): il bottone c'e' solo quando posta165 dice «niente posta» */
     if(md.type&&md.type!=="league")return false;
     return calcMatchWeight(player,md.opponentId,player.standings||[],player.week||1)<5;}catch(_e){return false;}};
   const matchResumeRef=useRef(null); // [7.150.0] snapshot per la ripresa DENTRO la partita dopo background
@@ -1485,6 +1492,8 @@ const getThisWeekMatchday=()=>{
      bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
      Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
   const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
+  const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
     const id=String((wl&&wl.impId)||""),tx=String((wl&&wl.event&&wl.event.txt)||"");
     const im=id?WEEKLY_IMPULSES.find(x=>x.id===id):null;
@@ -1493,7 +1502,10 @@ const getThisWeekMatchday=()=>{
     if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
     if(/procurator/i.test(id+" "+tx))return "procuratore";
     if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
-    if(/mister/i.test(id)||/\b(mister|allenator)/i.test(tx))return "mister";
+    if(_g173()){/* [giro 173 punti 4-5] sponsor = offerta; mister = elenco esplicito (motivi nel RAPPORTO-giro173 §2) */
+      if(/^wi_sponsor/.test(id))return "offerta";
+      if(MISTER173.indexOf(id||String((wl&&wl.smId)||""))>=0)return "mister";}
+    else if(/mister/i.test(id)||/\b(mister|allenator)/i.test(tx))return "mister";
     if(/intervist/i.test(id))return "intervista";
     return null;}catch(_e){return "storia";}};
   const _rifiuta165b=()=>{if(_g165b()&&(player.proStatus||"u18")==="pro"&&!player.contractExpired)setPlayer(p=>({...p,rinnRif165b:p.season||1}));};
@@ -1504,6 +1516,7 @@ const getThisWeekMatchday=()=>{
   const _saltaMotivo163=()=>{/* perche' il tasto non si puo' usare adesso (null = si puo') */
     if((player.proStatus||"u18")!=="u18"&&!_pro165(player))return "solo in Primavera";
     if(_pro165(player)&&player.contractExpired)return "prima trova una squadra";
+    if(_rinnAperto173(player))return "Prima rispondi al rinnovo";
     if((_pro165(player)||((player.proStatus||"u18")==="u18"&&_g165b()))&&player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent)return "chiudi prima la finestra aperta";/* [giro 165b] anche in Primavera */
     if(openingPending().length)return "prima avvia la stagione";
     if((player.week||1)>38)return "stagione finita";
@@ -4450,7 +4463,7 @@ const getThisWeekMatchday=()=>{
       }catch(_e468){return pick(_smPool);}})();
       const txt=moment.txt.replace(/\{nome\}/g,mate.name);
       setPlayer(p=>({...p,weekLived:true,smLast:moment.id,smSeen:{...(p.smSeen||{}),[moment.id]:(((p.season||1)-1)*38+(p.week||1))}}));/* [7.468.0] la memoria si scrive DOVE la scelta e' stata fatta, in settimane vere (stesso asse del 7.463) */
-      setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype},coachMsg:_liveCoachMsg}),50);
+      setTimeout(()=>setWeekLiveModal({event:{txt,e:mate.icon},changes:{},choices:moment.choices,isSpogliatoio:true,smId:moment.id/* [giro 173] l'id del momento: l'elenco «mister» lo legge */,teammate:{name:mate.name,icon:mate.icon,archetype:mate.archetype},coachMsg:_liveCoachMsg}),50);
       return;
     }
     // Sprint 24B + [5.91.0 BIL-9] gli impulsi con SCELTA escono anche nelle settimane di partita.
@@ -7812,7 +7825,7 @@ const getThisWeekMatchday=()=>{
           </div>)}
           {!_noSa&&(<div data-cpm="salta163" data-salta163={_corsa?"corsa":(salta163&&salta163.fase)||"fermo"}>
             {!_corsa&&!_prev&&(<>
-              <Btn data-cpm="salta163-tasto" v="secondary" fw size="lg" disabled={!!_mot} onClick={_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</Btn>
+              <Btn data-cpm="salta163-tasto" data-g173={_rinnAperto173(player)?"rinnovo":undefined} v="secondary" fw size="lg" disabled={!!_mot&&!_rinnAperto173(player)} aria-disabled={_mot?"true":undefined} style={_rinnAperto173(player)?{opacity:0.55}:undefined} onClick={_rinnAperto173(player)?openNegoModal/* [giro 173 punto 6] spento col motivo, ma il tocco apre la trattativa del rinnovo */:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</Btn>
               {_mot&&<div data-cpm="salta163-motivo" style={{fontSize:FS.small,color:TH.muted,textAlign:"center",marginTop:SP.xs}}>{_mot}</div>}
             </>)}
             {_prev&&(<div data-cpm="salta163-conferma" style={{display:"flex",flexDirection:"column",gap:SP.sm}}>

@@ -5,7 +5,7 @@
    Non e' un secondo motore: e' lo stesso battito della partita intera fatto correre a lotti (src/15, _lotto166).
    A. STATICO (dal repo)
       1. un solo lotto (_lotto166) che chiama lo stesso battito della partita intera dentro flushSync; nessun Math.random nel blocco;
-      2. il bottone del prompt dipende da senzaPosta166, e senzaPosta166 usa calcMatchWeight < 5 senza allargarla.
+      2. il bottone del prompt dipende da senzaPosta166, che dal giro 173 usa la posta allargata posta165 (rosso: calcMatchWeight < 5).
    B. PROMPT (carriera vera, salvataggio sintetico, ?cpmtest)
       3. professionista, campionato, peso < 5 → il bottone c'e' (e la nota che lo spiega);
       4. Coppa → non c'e';   5. campionato con peso >= 5 (ex club + rivale) → non c'e';   6. Primavera (u18) → non c'e'.
@@ -37,7 +37,8 @@ const lotto = (s15.match(/const _lotto166=\(\)=>\{[\s\S]*?\n    const iv=setInte
 ok('1 un solo lotto, stesso battito in flushSync, nessun Math.random', (s15.match(/const _lotto166=/g) || []).length === 1 && (s15.match(/const _batt166=/g) || []).length === 1 && /ReactDOM\.flushSync\(_batt166\)/.test(lotto) && /setInterval\(_solo166\?_lotto166:_batt166/.test(lotto) && !/Math\.random/.test(lotto),
   `lotto ${lotto.length} car. · definizioni ${(s15.match(/const _lotto166=/g) || []).length}`);
 const sp = (s18.match(/const senzaPosta166=[\s\S]*?\n  const matchResumeRef/) || [''])[0];
-ok('2 il bottone dipende da senzaPosta166 = calcMatchWeight < 5, solo campionato, solo professionisti', /calcMatchWeight\([^)]*\)<5/.test(sp) && /proStatus!=="pro"/.test(sp) && /md\.type!=="league"/.test(sp) && /senzaPosta166\(showMatchPrompt\)&&\(<>\s*<Btn data-cpm="solo-166"/.test(s18), `regola ${sp.length} car.`);
+/* [giro 173 punto 1] la regola e' la posta allargata posta165 (giro 165); la vecchia (calcMatchWeight < 5, solo campionato) resta nel rosso __CPM_NO_G173 */
+ok('2 il bottone dipende da senzaPosta166 = niente posta per posta165 (rosso 173: calcMatchWeight < 5), solo professionisti', /if\(_g173\(\)\)return !posta165\(player,md\)/.test(sp) && /calcMatchWeight\([^)]*\)<5/.test(sp) && /proStatus!=="pro"/.test(sp) && /md\.type!=="league"/.test(sp) && /senzaPosta166\(showMatchPrompt\)&&\(<>\s*<Btn data-cpm="solo-166"/.test(s18), `regola ${sp.length} car.`);
 
 /* ---------------- B. prompt ---------------- */
 async function prompt(rosso) {
