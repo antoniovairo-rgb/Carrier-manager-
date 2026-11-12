@@ -364,7 +364,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
-      {crediti238On()&&crediti254On()&&<div style={{marginTop:SP.sm}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}
+      {crediti238On()&&crediti254On()&&<div style={{marginTop:(typeof window!=='undefined'&&window.__CPM_NO_G174_SPAZIO)?SP.sm:0}}>{/* [PO-254] pulsante secondario del kit, a tutta larghezza, con icona (decisione PO «Pulsante del kit in home») */}{/* [giro 174 PO-371, spazio-296 rosso preesistente. Rosso __CPM_NO_G174_SPAZIO] MISURATO (telefono, menu e opzioni): fra «Crea il tuo calciatore» e «Crediti» 16,8 px — il margine sotto della carta (7) e quello sopra del pulsante (8) si sommavano. Ogni riquadro che lo precede (benvenuto, salvataggi, sovrascrittura, tasti) ha gia' il suo margine sotto: il pulsante non ne aggiunge un altro. */}
         <Btn data-cpm="crediti254-pulsante" onClick={()=>setCrediti238(true)} v="secondary" fw icon={<span data-cpm="crediti254-icona" aria-hidden="true">ℹ️</span>}>Crediti</Btn>
       </div>}
       {crediti238On()&&!crediti254On()&&<div style={{textAlign:"center",marginTop:SP.sm}}>{/* [PO-238] la voce Crediti, nella home del gioco (fuori dalla carriera) */}

@@ -11864,7 +11864,13 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
                il rilascio della clip. Quindi la guardia non e' «dopo la fine niente di nuovo»: e' «un
                montaggio per istanza d'azione», per il solo EROE — i compagni hanno catene legittime a due
                gesti (ricevi→tira) che vivono su azioni diverse e non c'entrano col codice 000. */
-            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'');/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'')/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+               /* [giro 174 PO-371, doppio-gesto-148 rosso preesistente. Rosso __CPM_NO_G174_DOPPIO] MISURATO (gi18 «Sterzata e assist»,
+                  GLB acceso, __CPM_GST): nel tratto di finta dell'esito la catena VUOLE «change» ma la clip non si monta mai. Sulle scene
+                  con intento dribbling l'avvicinamento dei 23/09 (clip «dribble» in hl_move/hl_choose, actType vuoto) spendeva questa chiave,
+                  e la finta dell'azione scelta (hl_result, actType ancora vuoto) aveva la stessa chiave: scartata come secondo gesto della
+                  stessa azione. L'azione scelta comincia alla risoluzione: la chiave ora separa la scelta dall'esito. */
+               +((propsRef.current&&propsRef.current.matchPhase==='hl_result'&&!(typeof window!=='undefined'&&window.__CPM_NO_G174_DOPPIO))?'|esito':'');
              /* [7.582.0 — CONTARE I GESTI DELL'EROE PER SCENA, e farlo contare AL GIOCO.
                 Collaudo PO (appunti 7.578, SIT #45): «codice 000 — gesto scoordinato». La guardia del
                 7.396 concede UN montaggio per istanza d'azione, ma la chiave include `actType`: quando
