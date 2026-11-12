@@ -405,7 +405,7 @@ function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchPa
 function ThreeMatchView(props){
   const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
-    stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
+    stadiumHomeCol,stadiumAwayCol,stadiumAwayCol2=null,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
     isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
@@ -2572,7 +2572,7 @@ function ThreeMatchView(props){
     //   striscioni uscivano coi colori sbagliati. sHome/sAway = colori sociali (homeTeamObj/awayTeamObj); il
     //   secondario di casa è homeClub.c2 (sociale), quello ospite un accento neutro (nessun prop awayClub).
     const _tHCol=sHome,_tACol=sAway;
-    const _hc2=homeClub?.c2||"#f0f0f0",_ac2="#f0f0f0";
+    const _hc2=homeClub?.c2||"#f0f0f0",_ac2=(!(typeof window!=='undefined'&&window.__CPM_NO_G171)&&stadiumAwayCol2)||"#f0f0f0";/* [giro 171 PO-368] bandiere, sciarpe e teli ospiti col SECONDO colore sociale del club ospite (era un bianco fisso). Rosso __CPM_NO_G171 */
     const _tifoSeed=(_adSeed44>>>0)||1;/* seed per-match (deterministico) per disegni bandiere/nomi gruppi */
     const _ultrasToken=(nm)=>{const t=String(nm||"").replace(/\b(FC|AC|AS|US|SS|SC|CF|CD|SD|RC|AT|KV|BV|SV|VF[BL]|Real|Athletic|Atletico|Sporting|Racing|Club|Deportivo|United|City|Town|County|Calcio|U18)\b/gi," ").trim().split(/\s+/).filter(Boolean).sort((a,b)=>b.length-a.length)[0]||"";return t.toUpperCase();};
     /* [7.174.0 collaudo PO «perché le bandiere hanno la F?»] l iniziale era charAt(0) del nome GREZZO («FC Parmense» → F
@@ -3020,7 +3020,8 @@ function ThreeMatchView(props){
         cancelli:{home:!!_tifoHome,away:!!_tifoAway},tier:_ctier,
         bandiere:{home:_c(flagGroups,true),away:_c(flagGroups,false)},
         sciarpe:{home:_c(scarfMs,true),away:_c(scarfMs,false)},
-        teli:{home:_c(teloMs,true),away:_c(teloMs,false)}};
+        teli:{home:_c(teloMs,true),away:_c(teloMs,false)},
+        colori171:{stadio:{home:sHome,away:sAway},scenografia:{home:[_tHCol,_hc2],away:[_tACol,_ac2]},kit:{home:homeCol||null,away:oppCol||null}}};/* [giro 171] i colori con cui folla e scenografia sono stati COSTRUITI */
     }catch(e){return{err:String(e&&e.message||e)};}};
     // Sprint 3D-G3C: particelle coriandoli al gol (pre-allocate, attivate sul goal burst)
     const CONF_N=64,confPos=new Float32Array(CONF_N*3),confVel=new Float32Array(CONF_N*3);
