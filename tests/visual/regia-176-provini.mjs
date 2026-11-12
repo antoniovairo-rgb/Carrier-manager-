@@ -29,7 +29,10 @@ for (const br of BR) {
     const s = await page.evaluate(() => window.__CPM_REGIA176()).catch(() => null);
     await page.screenshot({ path: path.join(OUT, `${FMT}-${nome}-${br}-1-scelta.png`) });
     await page.evaluate(() => window.__CPM_RESOLVE(0)).catch(() => {});
-    const ok = await page.waitForFunction(t => { const r = window.__CPM_REGIA176 && window.__CPM_REGIA176(); return r && r.fase === 'hl_result' && r.g176 && r.g176.t >= t; }, TG, { timeout: 12000, polling: 50 }).then(() => true).catch(() => false);
+    /* il contatore della finestra si azzera al primo fotogramma di hl_result: subito dopo la risoluzione vale ancora il tempo della
+       SCELTA. Si aspetta prima di vederlo ripartire (t < 0,3 in hl_result), poi che superi CPM_TG */
+    await page.waitForFunction(() => { const r = window.__CPM_REGIA176 && window.__CPM_REGIA176(); return r && r.fase === 'hl_result' && r.g176 && r.g176.t < 0.3; }, null, { timeout: 12000, polling: 30 }).catch(() => {});
+    const ok = await page.waitForFunction(t => { const r = window.__CPM_REGIA176 && window.__CPM_REGIA176(); return r && r.fase === 'hl_result' && r.g176 && r.g176.t >= t; }, TG, { timeout: 15000, polling: 50 }).then(() => true).catch(() => false);
     const g = await page.evaluate(() => window.__CPM_REGIA176()).catch(() => null);
     await page.screenshot({ path: path.join(OUT, `${FMT}-${nome}-${br}-2-gesto.png`) });
     const hS = s && !s.err ? +((s.piedi.y - s.testa.y) / s.vh * 100).toFixed(1) : null, hG = g && !g.err ? +((g.piedi.y - g.testa.y) / g.vh * 100).toFixed(1) : null;

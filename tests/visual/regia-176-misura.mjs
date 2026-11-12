@@ -72,12 +72,13 @@ for (const fmt of FMTS) {
       const rel = !s.pan ? 'nessun pannello' : sotto ? (s.testa.y > s.pan.y ? 'COPERTO dal pannello' : 'per meta\' sotto il pannello') : `sopra il pannello (margine ${((s.pan.y - s.piedi.y) / s.vh * 100).toFixed(0)}% schermo)`;
       if (FOTO) await page.screenshot({ path: path.join(FOTO, `${fmt}-${NOMI[t]}-gi${gi}-1-scelta.png`) }).catch(() => {});
       await page.evaluate(() => window.__CPM_RESOLVE(0)).catch(() => {});
-      const hG = [], hT = []; let nE = 0, nPT = 0, pFT = 0, nG = 0, eF = 0, nP = 0, pF = 0, nPo = 0, poF = 0, fotoG = false;
+      const hG = [], hT = []; let azz = false, tPrev = null, nE = 0, nPT = 0, pFT = 0, nG = 0, eF = 0, nP = 0, pF = 0, nPo = 0, poF = 0, fotoG = false;
       const t0 = Date.now();
       /* si campiona a TEMPO DI SCENA (finestra del gesto 0,4-2,2 s, contatore `g176.t` che corre in entrambi i bracci), mai a orologio:
          in headless il tempo di scena scorre a 1/2-1/6 del reale (PC piu' lento) e una finestra a orologio misurava la rampa d'ingresso */
       while (Date.now() - t0 < 40000) { await sleep(300); const g = await page.evaluate(LETTURA).catch(() => null); if (!g || g.err) continue; if (g.ph !== 'hl_result') { if (nG) break; continue; }
-        const ts = g.g176 ? g.g176.t : 0; if (ts > 2.2 && nG) break; if (ts < 0.4 || ts > 2.2) continue;
+        const ts = g.g176 ? g.g176.t : 0; if (!azz) { if (ts < 0.3 || (tPrev != null && ts < tPrev)) azz = true; else { tPrev = ts; continue; } }/* il contatore si azzera al primo fotogramma di hl_result: prima vale ancora il tempo della SCELTA */
+        if (ts > 2.2 && nG) break; if (ts < 0.4 || ts > 2.2) continue;
         nG++; if (!g.sb) { hG.push((g.piedi.y - g.testa.y) / g.vh); nE++; } hT.push((g.piedi.y - g.testa.y) / g.vh); if (!dentro(g.piedi, g.c, g.pan) || !dentro(g.testa, g.c, g.pan)) eF++;
         if (ATTACCO.has(t)) { const fu = !dentro(g.palla, g.c, g.pan); nPT++; if (fu) pFT++; if (!g.sb) { nP++; if (fu) pF++; } }
         if (PORTA.has(t)) { nPo++; if (!dentro(g.porta[2], g.c, g.pan)) poF++; }

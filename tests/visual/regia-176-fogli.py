@@ -18,7 +18,7 @@ try:
     font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 26)
 except Exception:
     font = ImageFont.load_default()
-ETI = {'rosso': 'PRIMA (regia di oggi)', 'p': 'PROVINO P', 'm': 'PROVINO M (predefinito)', 'g': 'PROVINO G'}
+ETI = {'rosso': 'PRIMA', 'p': 'P', 'm': 'M (predef.)', 'g': 'G'}
 fam = sorted({f.split('-')[1] for f in os.listdir(src) if f.startswith(fmt + '-') and f.endswith('.png')})
 W = 420 if fmt.startswith('tel') else 720
 
@@ -49,3 +49,5 @@ def striscia(nomi, momento, nome_out):
 for f in fam:
     striscia(['rosso', 'p', 'm', 'g'], '2-gesto', f'{fmt}-{f}-gesto-provini.jpg')
     striscia(['rosso', 'm'], '1-scelta', f'{fmt}-{f}-scelta-prima-dopo.jpg')
+    if not os.path.exists(os.path.join(src, f'{fmt}-{f}-p-2-gesto.png')):
+        striscia(['rosso', 'm'], '2-gesto', f'{fmt}-{f}-gesto-prima-dopo.jpg')
