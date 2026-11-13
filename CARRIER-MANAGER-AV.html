@@ -7814,7 +7814,12 @@ function generateTeammates(player,keepBond){
 // [7.106.3] i compagni salvati (name congelato alla stagione di ingaggio) vanno RI-SINCRONIZZATI alla rosa corrente:
 //   stesso pool di generateTeammates → l'i-esimo teammate riceve il nome dell'i-esimo slot ATTUALE (archetipi/bond intatti).
 function syncTeammateNames(player){
-  const tms=player.teammates;if(!tms||!tms.length||!player.club||(player.proStatus||"u18")==="u18")return tms;
+  /* [giro 182 · PO-379 «i 3 compagni dello spogliatoio dove li ha pescati?»] l'uscita su proStatus «u18» lasciava in Primavera
+     i compagni pescati alla CREAZIONE (club null → rosa finta «U18»): misurato 0/3 nella «Rosa» mostrata, contro 3/3 da
+     professionista. Ora il riallineamento vale in Primavera e da professionista: stessa rosa del pannello (generateTeamRoster
+     sul club in cui giochi), archetipi e legame intatti, idempotente. Rosso __CPM_NO_G182_SPOG = comportamento di prima. */
+  const _no182=(typeof window!=='undefined'&&window.__CPM_NO_G182_SPOG);
+  const tms=player.teammates;if(!tms||!tms.length||!player.club||(_no182&&(player.proStatus||"u18")==="u18"))return tms;
   const cseed=hashStr(player.club?.id||player.club?.n||"u18");
   const roster=generateTeamRoster(player.club,player.season||1);
   const pool=seededShuffle(roster.slice(1),cseed^0xDEADBEEF);
@@ -11461,6 +11466,41 @@ function FiguraV2({player,w=54,grande=false}){
         </div>
       </div></div>);}
 /* [PO-302 tappa 2] il titolo di scheda V2 (V2Stagione/V2Agente/V2Ufficio): occhiello maiuscolo, titolo in carattere TV, a destra un dato */
+/* [giro 182 · PO-378 «nomi di squadra lunghi: SELEZIONE GRAN...»] FUNZIONE UNICA dei nomi di squadra dove lo spazio e' poco.
+   Ordine deciso dal PO: (1) il nome INTERO se ci sta; (2) il nome abbreviato col dizionario (Selezione→Sel., Polisportiva→Pol.,
+   Atletico→Atl., Sporting→Sp., Unione Sportiva→U.S., Associazione Calcio→A.C., Football Club→FC, Deportivo→Dep.; «Real» resta
+   Real); (3) la sigla del club se ancora non ci sta. MAI i tre puntini su un nome di squadra: il testo si misura sul posto
+   (scrollWidth contro clientWidth) e si scende di un gradino solo se il nome non ci sta davvero. Rosso __CPM_NO_G182_NOMI =
+   il comportamento di prima (nome intero coi puntini). */
+const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
+function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
+function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const ab=abbreviaSquadra182(n);if(ab!==n)out.push(ab);const sg=team&&(team.a||team.abbr);if(sg&&out.indexOf(sg)<0)out.push(String(sg));return out;}
+function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
+function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
+  const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
+  const key=cand.join("|");
+  const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
+  const rosso=_no182nomi();
+  useEffect(()=>{setLiv(0);},[key]);
+  /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
+  (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+  /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
+     si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
+  useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
+    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
+    let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
+    let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
+      if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
+      if(el.scrollWidth>el.clientWidth+0.5)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+    return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
+  const L=Math.min(liv,cand.length-1);
+  const T=as;
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
+    style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
+}
+if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>
@@ -27204,7 +27244,7 @@ function ScoutReportScreen({report,opponent,onClose,loading,mister,mine}){
           <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Analisi pre-partita</div>
-            <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opponent?.n||"Avversario"}</div>
+            <NomeSquadra182 as="div" team={opponent} fb="Avversario" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}/>
             <div style={{fontSize:FS.small,color:TH.muted}}>{opponent?.lg||""}</div>
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>
@@ -28046,7 +28086,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
-        <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,minWidth:0}}>{team?.n||team?.a}</span>
+        <NomeSquadra182 as="span" team={team} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,flex:1,minWidth:0}}/>
         <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px"}}>{_fmtOf(rr)}</span>
       </div>
       <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
@@ -28067,9 +28107,9 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
-          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{homeTeam?.n}</span></div>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><NomeSquadra182 as="span" team={homeTeam} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}/></div>
           <span style={{fontSize:FS.body,fontWeight:FW.black,color:TH.faint}}>VS</span>
-          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textAlign:"right"}}>{awayTeam?.n}</span><TeamBadge team={awayTeam} size={36}/></div>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><NomeSquadra182 as="span" team={awayTeam} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,textAlign:"right"}}/><TeamBadge team={awayTeam} size={36}/></div>
         </div>
       </Card>
       {/* [23/09 POC — collaudo PO «i cognomi vengono tagliati? hai molto spazio, sfruttalo!»] le due formazioni una sotto
@@ -28119,13 +28159,13 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",minWidth:0}}>
               <TeamBadge team={homeTeam} size={46}/>
               <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{homeTeam?.a}</div>
-              <div style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{homeTeam?.n}</div>
+              <NomeSquadra182 as="div" team={homeTeam} style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",maxWidth:"32vw"}}/>
               {_pipRow(homeTeam?.p,false)}
             </div>
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",minWidth:0,textAlign:"right"}}>
               <TeamBadge team={awayTeam} size={46}/>
               <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{awayTeam?.a}</div>
-              <div style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{awayTeam?.n}</div>
+              <NomeSquadra182 as="div" team={awayTeam} style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",maxWidth:"32vw"}}/>
               {_pipRow(awayTeam?.p,true)}
             </div>
           </div>
@@ -41599,7 +41639,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
               <TeamBadge team={homeTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"right":"left"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?"auto":0}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <NomeSquadra182 as="div" team={homeTeamObj} fb="Squadra" style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,maxWidth:70,marginLeft:_swap893?"auto":0}}/>
                 <div style={{fontSize:FS.display,fontWeight:900,color:_hCol901,lineHeight:1,textAlign:_swap893?"right":"left"}}>{_hVal901}</div>
               </div>
             </div>
@@ -41675,7 +41715,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div data-cpm="scudo-ospiti" style={{display:"flex",alignItems:"center",gap:7,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
               <TeamBadge team={awayTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"left":"right"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?0:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <NomeSquadra182 as="div" team={awayTeamObj} fb="Avversario" style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,maxWidth:70,marginLeft:_swap893?0:"auto"}}/>
                 <div style={{fontSize:FS.display,fontWeight:900,color:_aCol901,lineHeight:1,textAlign:_swap893?"left":"right"}}>{_aVal901}</div>
               </div>
             </div>
@@ -41691,7 +41731,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
                 <TeamBadge team={homeTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(homeTeamObj,"Squadra")}</div>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" team={homeTeamObj} fb="Squadra" testo={_no182nomi()?_nomeBarra108(homeTeamObj,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
               {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
@@ -41733,7 +41773,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
                 <TeamBadge team={awayTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(awayTeamObj,"Avversario")}</div>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" team={awayTeamObj} fb="Avversario" testo={_no182nomi()?_nomeBarra108(awayTeamObj,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
@@ -42127,12 +42167,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {/* header: nomi squadre con barra colore */}
                     <div style={{display:"flex",alignItems:"stretch"}}>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreHomeCol||"#3b82f6"}`,minWidth:0}}>
-                        <div data-cpm="ingresso-nome-v2" style={{fontSize:FS.subhead,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}>{_tvHome.name}</div>
+                        <NomeSquadra182 as="div" cpm="ingresso-nome-v2" team={homeTeamObj} testo={_tvHome.name} style={{fontSize:FS.subhead,color:TINTE.testo,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}/>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvHome.pos?`${_tvHome.pos}ª in classifica`:"Casa"):"Casa"}</div>
                       </div>
                       <div style={{display:"flex",alignItems:"center"}}><span data-cpm="ingresso-vs-v2" style={{padding:"3px 8px",borderRadius:RAD.xs,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,fontSize:FS.body,letterSpacing:1}}>VS</span></div>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreAwayCol||"#ef4444"}`,minWidth:0,textAlign:"right"}}>
-                        <div data-cpm="ingresso-nome-v2" style={{fontSize:FS.subhead,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}>{_tvAway.name}</div>
+                        <NomeSquadra182 as="div" cpm="ingresso-nome-v2" team={awayTeamObj} testo={_tvAway.name} style={{fontSize:FS.subhead,color:TINTE.testo,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}/>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvAway.pos?`${_tvAway.pos}ª in classifica`:"Ospite"):"Ospite"}</div>
                       </div>
                     </div>
@@ -47019,7 +47059,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 <Figurina tipo="giocatore" chiave={s.name} larg={33}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
+                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:(_no182nomi()?<>{s.club} · S.{s.season} W.{s.week}/38</>:<span style={{display:"flex",minWidth:0}}>{/* [giro 182 PO-378] il nome del club nello slot passa dalla funzione unica (intero → dizionario → sigla), mai coi puntini; stagione e settimana restano intere */}<NomeSquadra182 as="span" cpm="slot-club-182" team={[...CLUBS,...U18_CLUBS,...U18_CLUBS_P2].find(c=>c.n===s.club)||{n:s.club}} style={{flex:"0 1 auto",minWidth:0}}/><span style={{flex:"0 0 auto"}}>{" · S."+s.season+" W."+s.week+"/38"}</span></span>)}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
                 </div>
                 <OvrRing value={s.ovr} size={40}/>
@@ -47232,7 +47272,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
                 return(
                 <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:RAD.sm,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
-                  <span style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
+                  <NomeSquadra182 as="span" team={c} style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text}}/>
                   <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
                 </button>
                 );
@@ -47437,7 +47477,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
         <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:_no115("24")?"#e8c98f":TINTE.oro}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><NomeSquadra182 as="div" team={opp} style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5}}/><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}
@@ -51008,6 +51048,12 @@ const getThisWeekMatchday=()=>{
      bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
      Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
   const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  /* [giro 182 punto C · PO «anche videogioco, docufilm, biografia fermano il tasto come gli sponsor»] le offerte ECONOMICHE della
+     categoria «opportunità» sono «offerta»: le tre nominate dal PO (il docufilm senza cachet, ma nominato) e le altre con un cachet
+     positivo in una scelta (ef.bank>0, misurato sul catalogo: esports 18.000, bonus gol social 8.000, scuola calcio 6.000 contro
+     un investimento di 30.000). Gli sponsor (wi_sponsor*) restano alla regola del giro 173. Motivi ed esclusi nel
+     RAPPORTO-giro182 §C. Rosso __CPM_NO_G182_OFFERTE = routine come prima. */
+  const OFFERTE182=["wi_videogioco","wi_docufilm","wi_biografia","wi_esports","wi_bonus_gol_social","wi_scuola_calcio"];
   const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
@@ -51018,6 +51064,7 @@ const getThisWeekMatchday=()=>{
     if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
     if(/procurator/i.test(id+" "+tx))return "procuratore";
     if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G182_OFFERTE)&&OFFERTE182.indexOf(id)>=0)return "offerta";/* [giro 182 punto C] */
     if(_g173()){/* [giro 173 punti 4-5] sponsor = offerta; mister = elenco esplicito (motivi nel RAPPORTO-giro173 §2) */
       if(/^wi_sponsor/.test(id))return "offerta";
       if(MISTER173.indexOf(id||String((wl&&wl.smId)||""))>=0)return "mister";}
@@ -58785,7 +58832,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:(_imp||_h2h.length>0)?8:0}}>
               <TeamBadge team={_opp} size={36}/>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
+                <NomeSquadra182 as="div" team={_opp} fb={_nmd.opponentName} style={{fontSize:FS.body,fontWeight:800,color:TH.text}}/>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
                   {_oPos>=0&&<span style={{fontSize:FS.caption,color:TH.muted}}>{_oPos+1}° classifica</span>}
                   <span style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_pColor)}}>Force {_opp.p||60}</span>
@@ -59062,7 +59109,7 @@ const getThisWeekMatchday=()=>{
                       return(
                         <div key={ri} style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",background:row.isPlayer?"rgba(59,130,246,0.08)":"transparent",borderRadius:RAD.xs,alignItems:"center"}}>
                           <div style={{fontSize:FS.caption,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
-                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
+                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,display:"flex",minWidth:0,whiteSpace:"nowrap"}}><NomeSquadra182 as="span" team={row} style={{minWidth:0,flex:"0 1 auto"}}/>{row.isPlayer?<span style={{flex:"0 0 auto"}}>{" ⭐"}</span>:null}</div>
                           {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
                             <div key={vi} style={{fontSize:FS.caption,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
                           ))}
@@ -61177,7 +61224,7 @@ const getThisWeekMatchday=()=>{
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
-                              <span style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <NomeSquadra182 as="span" team={r.club} style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600}}/>
                               <TaccheV2 n={/Trattativa|Forte/.test(r.int)?3:/moderato/.test(r.int)?2:1} col={/Trattativa|Forte/.test(r.int)?TINTE.verde:/moderato/.test(r.int)?TINTE.giallo:TINTE.sec} label={"Interesse: "+r.int.replace(/^\S+\s/,"")}/>{/* [PO-302 tappa 2 · V2Agente] indicatore d'interesse a 3 tacche, la parola resta */}
                               <span style={{fontSize:FS.caption,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>

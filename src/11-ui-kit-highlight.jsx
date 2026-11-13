@@ -184,6 +184,41 @@ function FiguraV2({player,w=54,grande=false}){
         </div>
       </div></div>);}
 /* [PO-302 tappa 2] il titolo di scheda V2 (V2Stagione/V2Agente/V2Ufficio): occhiello maiuscolo, titolo in carattere TV, a destra un dato */
+/* [giro 182 · PO-378 «nomi di squadra lunghi: SELEZIONE GRAN...»] FUNZIONE UNICA dei nomi di squadra dove lo spazio e' poco.
+   Ordine deciso dal PO: (1) il nome INTERO se ci sta; (2) il nome abbreviato col dizionario (Selezione→Sel., Polisportiva→Pol.,
+   Atletico→Atl., Sporting→Sp., Unione Sportiva→U.S., Associazione Calcio→A.C., Football Club→FC, Deportivo→Dep.; «Real» resta
+   Real); (3) la sigla del club se ancora non ci sta. MAI i tre puntini su un nome di squadra: il testo si misura sul posto
+   (scrollWidth contro clientWidth) e si scende di un gradino solo se il nome non ci sta davvero. Rosso __CPM_NO_G182_NOMI =
+   il comportamento di prima (nome intero coi puntini). */
+const _DIZ_SQUADRA182=[["Associazione Calcio","A.C."],["Unione Sportiva","U.S."],["Football Club","FC"],["Polisportiva","Pol."],["Selezione","Sel."],["Deportivo","Dep."],["Atletico","Atl."],["Sporting","Sp."]];
+function abbreviaSquadra182(nome){let n=String(nome==null?"":nome);for(const[k,v]of _DIZ_SQUADRA182){n=n.replace(new RegExp("(^|[\\s(])"+k+"(?=$|[\\s),.])","gi"),(m,a)=>a+v);}return n;}
+function candidatiSquadra182(team,fb){const n=String((team&&(team.n||team.name))||fb||"");const out=[n];const ab=abbreviaSquadra182(n);if(ab!==n)out.push(ab);const sg=team&&(team.a||team.abbr);if(sg&&out.indexOf(sg)<0)out.push(String(sg));return out;}
+function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182_NOMI;}
+function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
+  const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
+  const key=cand.join("|");
+  const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
+  const rosso=_no182nomi();
+  useEffect(()=>{setLiv(0);},[key]);
+  /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
+  (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+  /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
+     si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
+  useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
+    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
+    let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
+    let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
+      if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
+      if(el.scrollWidth>el.clientWidth+0.5)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+    return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
+  const L=Math.min(liv,cand.length-1);
+  const T=as;
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
+    style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
+}
+if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
 function TitoloV2({occhiello,titolo,destra,cpm}){
   return(<div data-cpm={cpm||"titolo-v2"} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",gap:"6px 12px",flexWrap:"wrap",padding:"2px 2px 0"}}>
     <div style={{display:"flex",flexDirection:"column",gap:2,minWidth:0}}>

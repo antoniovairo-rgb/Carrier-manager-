@@ -40,6 +40,7 @@ function savePro(over = {}) {
 }
 if (FOTO) fs.mkdirSync(FOTO, { recursive: true });
 const init173 = ROSSO ? { __CPM_NO_G173: true } : {};
+const ROSSO182 = process.env.CPM_ROSSO182OFF === '1';/* [giro 182 punto C] braccio rosso delle offerte: __CPM_NO_G182_OFFERTE → il guardiano DEVE uscire 1 */
 
 const srv = await startServer(); const port = srv.address().port;
 const browser = await launchBrowser();
@@ -47,10 +48,10 @@ async function apri(vp, player) {
   const page = await browser.newPage({ viewport: vp, deviceScaleFactor: FOTO ? 2 : 1 });
   await installCdnRoutes(page);
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
-  await page.addInitScript(([pl, rosso]) => {
-    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G173 = 1;
+  await page.addInitScript(([pl, rosso, rosso182]) => {
+    window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1; if (rosso) window.__CPM_NO_G173 = 1; if (rosso182) window.__CPM_NO_G182_OFFERTE = 1;
     localStorage.setItem('cpm-v3', JSON.stringify({ phase: 'career', player: pl }));
-  }, [player, ROSSO]);
+  }, [player, ROSSO, ROSSO182]);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 60000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 60000 });
   await sleep(1200);
@@ -79,6 +80,8 @@ try {
       const out = {};
       for (const id of ['wi_sponsor', 'wi_sponsor_auto', 'wi_sponsor_pers', 'wi_figlia_mister', 'wi_vice_infortunato', 'wi_infortunato_posto', 'wi_giornata_libera', 'wi_pioggia_scelta', 'wi_primo_mister']) out[id] = q(id);
       out.sm_crisis = sm('sm_crisis');
+      /* [giro 182 punto C] le offerte economiche della categoria «opportunità» fermano il tasto come gli sponsor */
+      out.off182 = {}; for (const id of ['wi_videogioco', 'wi_docufilm', 'wi_biografia', 'wi_esports', 'wi_bonus_gol_social', 'wi_scuola_calcio']) out.off182[id] = q(id);
       out.spoFuori = C.storia165b({ isSpogliatoio: true, smId: 'sm_prova173', event: { txt: 'Il mister vi ha visti litigare: vuole parlarti.' }, choices: [{ txt: 'a' }, { txt: 'b' }] });
       out.conti = { storia: 0, routine: 0, tipi: {} };
       for (const im of WEEKLY_IMPULSES) { if ((im.choices || []).length < 2) continue; const t = C.storia165b(wl(im.id)); if (t) { out.conti.storia++; out.conti.tipi[t] = (out.conti.tipi[t] || 0) + 1; } else out.conti.routine++; }
@@ -88,6 +91,8 @@ try {
       return out;
     });
     ok(r.wi_sponsor === 'offerta' && r.wi_sponsor_auto === 'offerta' && r.wi_sponsor_pers === 'offerta', `sponsor → «offerta» (wi_sponsor ${r.wi_sponsor}, wi_sponsor_auto ${r.wi_sponsor_auto}, wi_sponsor_pers ${r.wi_sponsor_pers})`);
+    const off182 = Object.entries(r.off182 || {});
+    ok(off182.length === 6 && off182.every(([, v]) => v === 'offerta'), `offerte economiche «opportunità» → «offerta» (${off182.map(([k, v]) => k.replace('wi_', '') + ' ' + v).join(', ')})`);
     ok(r.wi_figlia_mister === 'mister' && r.wi_vice_infortunato === 'mister' && r.wi_infortunato_posto === 'mister' && r.sm_crisis === 'mister', `elenco mister → «mister» (figlia ${r.wi_figlia_mister}, vice ${r.wi_vice_infortunato}, posto ${r.wi_infortunato_posto}, sm_crisis ${r.sm_crisis})`);
     ok(r.wi_giornata_libera === null && r.wi_pioggia_scelta === null && r.wi_primo_mister === null, `routine fuori elenco (giornata libera ${r.wi_giornata_libera}, pioggia ${r.wi_pioggia_scelta}, primo allenatore ${r.wi_primo_mister})`);
     ok(r.spoFuori === null, `spogliatoio che nomina il mister ma fuori elenco → routine (${r.spoFuori})`);

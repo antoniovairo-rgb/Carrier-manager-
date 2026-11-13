@@ -320,7 +320,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 <Figurina tipo="giocatore" chiave={s.name} larg={33}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
+                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:(_no182nomi()?<>{s.club} · S.{s.season} W.{s.week}/38</>:<span style={{display:"flex",minWidth:0}}>{/* [giro 182 PO-378] il nome del club nello slot passa dalla funzione unica (intero → dizionario → sigla), mai coi puntini; stagione e settimana restano intere */}<NomeSquadra182 as="span" cpm="slot-club-182" team={[...CLUBS,...U18_CLUBS,...U18_CLUBS_P2].find(c=>c.n===s.club)||{n:s.club}} style={{flex:"0 1 auto",minWidth:0}}/><span style={{flex:"0 0 auto"}}>{" · S."+s.season+" W."+s.week+"/38"}</span></span>)}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
                 </div>
                 <OvrRing value={s.ovr} size={40}/>
@@ -533,7 +533,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy,onBack}){
                 return(
                 <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:RAD.sm,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
-                  <span style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
+                  <NomeSquadra182 as="span" team={c} style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text}}/>
                   <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
                 </button>
                 );
@@ -738,7 +738,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
         <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:_no115("24")?"#e8c98f":TINTE.oro}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><NomeSquadra182 as="div" team={opp} style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5}}/><div style={{fontSize:FS.caption,color:_no115("24")?"rgba(255,255,255,0.6)":TINTE.sec}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}

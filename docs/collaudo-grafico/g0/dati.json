@@ -879,15 +879,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 20,
+    "nTesto": 23,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 15,
+    "nMisurati": 17,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 5,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -896,7 +896,7 @@
       "fw": 400,
       "rap": 5.74,
       "soglia": 4.5,
-      "n": 4,
+      "n": 5,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "85"
@@ -944,7 +944,7 @@
       "fw": 600,
       "rap": 14.79,
       "soglia": 4.5,
-      "n": 6,
+      "n": 7,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)",
       "esempio": "🔇 Silenzia tutto"
@@ -970,7 +970,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 15
+      "n": 17
      }
     ],
     "nFamiglie": 1,
@@ -980,13 +980,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 7,
+      "n": 8,
       "fs": 15,
       "esempio": "⚙️ Opzioni"
      },
      {
       "c": "#8f98a8",
-      "n": 5,
+      "n": 6,
       "fs": 12,
       "esempio": "85"
      },
@@ -1006,7 +1006,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 13,
+      "n": 15,
       "esempio": "🎧 Audio",
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
      },
@@ -1028,18 +1028,17 @@
     "schermate": 0.87,
     "scorritore": "documento",
     "blocchi": [],
-    "etichette": {
-     "Partite": 1
-    },
-    "nEmojiChar": 9,
+    "etichette": {},
+    "nEmojiChar": 10,
     "doveEmoji": [
      "⚙️ Opzioni",
      "🎧 Audio",
      "🔇 Silenzia tutto",
-     "🏟️ Audio partite",
-     "✨ Effetti sonori",
      "📣 Pubblico",
+     "⚽ Effetti di partita",
+     "🎵 Musica",
      "🟨 Arbitro",
+     "✨ Suoni dei menu",
      "📳 Vibrazione",
      "🔒 Privacy"
     ],
@@ -1060,7 +1059,7 @@
       "lum": 0.005,
       "fondo": "#0d0f14",
       "px": 727,
-      "txt": "🎧 Audio🔇 Silenzia tutto🏟️ Audio"
+      "txt": "🎧 Audio🔇 Silenzia tutto📣 Pubbli"
      }
     ]
    },
@@ -1074,15 +1073,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 20,
+    "nTesto": 23,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 15,
+    "nMisurati": 17,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 5,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -1091,7 +1090,7 @@
       "fw": 400,
       "rap": 5.74,
       "soglia": 4.5,
-      "n": 4,
+      "n": 5,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "85"
@@ -1139,7 +1138,7 @@
       "fw": 600,
       "rap": 14.79,
       "soglia": 4.5,
-      "n": 6,
+      "n": 7,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)",
       "esempio": "🔇 Silenzia tutto"
@@ -1165,7 +1164,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 15
+      "n": 17
      }
     ],
     "nFamiglie": 1,
@@ -1175,13 +1174,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 7,
+      "n": 8,
       "fs": 15,
       "esempio": "⚙️ Opzioni"
      },
      {
       "c": "#8f98a8",
-      "n": 5,
+      "n": 6,
       "fs": 12,
       "esempio": "85"
      },
@@ -1201,7 +1200,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 13,
+      "n": 15,
       "esempio": "🎧 Audio",
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
      },
@@ -1223,18 +1222,17 @@
     "schermate": 0.73,
     "scorritore": "documento",
     "blocchi": [],
-    "etichette": {
-     "Partite": 1
-    },
-    "nEmojiChar": 9,
+    "etichette": {},
+    "nEmojiChar": 10,
     "doveEmoji": [
      "⚙️ Opzioni",
      "🎧 Audio",
      "🔇 Silenzia tutto",
-     "🏟️ Audio partite",
-     "✨ Effetti sonori",
      "📣 Pubblico",
+     "⚽ Effetti di partita",
+     "🎵 Musica",
      "🟨 Arbitro",
+     "✨ Suoni dei menu",
      "📳 Vibrazione",
      "🔒 Privacy"
     ],
@@ -1255,7 +1253,7 @@
       "lum": 0.005,
       "fondo": "#0d0f14",
       "px": 594,
-      "txt": "🎧 Audio🔇 Silenzia tutto🏟️ Audio"
+      "txt": "🎧 Audio🔇 Silenzia tutto📣 Pubbli"
      }
     ]
    },
@@ -1269,15 +1267,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 20,
+    "nTesto": 23,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 15,
+    "nMisurati": 17,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 5,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -1286,7 +1284,7 @@
       "fw": 400,
       "rap": 5.74,
       "soglia": 4.5,
-      "n": 4,
+      "n": 5,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "85"
@@ -1334,7 +1332,7 @@
       "fw": 600,
       "rap": 14.79,
       "soglia": 4.5,
-      "n": 6,
+      "n": 7,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)",
       "esempio": "🔇 Silenzia tutto"
@@ -1360,7 +1358,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 15
+      "n": 17
      }
     ],
     "nFamiglie": 1,
@@ -1370,13 +1368,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 7,
+      "n": 8,
       "fs": 15,
       "esempio": "⚙️ Opzioni"
      },
      {
       "c": "#8f98a8",
-      "n": 5,
+      "n": 6,
       "fs": 12,
       "esempio": "85"
      },
@@ -1396,7 +1394,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 13,
+      "n": 15,
       "esempio": "🎧 Audio",
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
      },
@@ -1418,18 +1416,17 @@
     "schermate": 0.92,
     "scorritore": "documento",
     "blocchi": [],
-    "etichette": {
-     "Partite": 1
-    },
-    "nEmojiChar": 9,
+    "etichette": {},
+    "nEmojiChar": 10,
     "doveEmoji": [
      "⚙️ Opzioni",
      "🎧 Audio",
      "🔇 Silenzia tutto",
-     "🏟️ Audio partite",
-     "✨ Effetti sonori",
      "📣 Pubblico",
+     "⚽ Effetti di partita",
+     "🎵 Musica",
      "🟨 Arbitro",
+     "✨ Suoni dei menu",
      "📳 Vibrazione",
      "🔒 Privacy"
     ],
@@ -1450,7 +1447,7 @@
       "lum": 0.005,
       "fondo": "#0d0f14",
       "px": 771,
-      "txt": "🎧 Audio🔇 Silenzia tutto🏟️ Audio"
+      "txt": "🎧 Audio🔇 Silenzia tutto📣 Pubbli"
      }
     ]
    },
@@ -1464,15 +1461,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 20,
+    "nTesto": 23,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 15,
+    "nMisurati": 17,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 5,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -1481,7 +1478,7 @@
       "fw": 400,
       "rap": 5.74,
       "soglia": 4.5,
-      "n": 4,
+      "n": 5,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "85"
@@ -1529,7 +1526,7 @@
       "fw": 600,
       "rap": 14.79,
       "soglia": 4.5,
-      "n": 6,
+      "n": 7,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)",
       "esempio": "🔇 Silenzia tutto"
@@ -1555,7 +1552,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 15
+      "n": 17
      }
     ],
     "nFamiglie": 1,
@@ -1565,13 +1562,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 7,
+      "n": 8,
       "fs": 15,
       "esempio": "⚙️ Opzioni"
      },
      {
       "c": "#8f98a8",
-      "n": 5,
+      "n": 6,
       "fs": 12,
       "esempio": "85"
      },
@@ -1591,7 +1588,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 13,
+      "n": 15,
       "esempio": "🎧 Audio",
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
      },
@@ -1613,18 +1610,17 @@
     "schermate": 1,
     "scorritore": "documento",
     "blocchi": [],
-    "etichette": {
-     "Partite": 1
-    },
-    "nEmojiChar": 9,
+    "etichette": {},
+    "nEmojiChar": 10,
     "doveEmoji": [
      "⚙️ Opzioni",
      "🎧 Audio",
      "🔇 Silenzia tutto",
-     "🏟️ Audio partite",
-     "✨ Effetti sonori",
      "📣 Pubblico",
+     "⚽ Effetti di partita",
+     "🎵 Musica",
      "🟨 Arbitro",
+     "✨ Suoni dei menu",
      "📳 Vibrazione",
      "🔒 Privacy"
     ],
@@ -1645,7 +1641,7 @@
       "lum": 0.005,
       "fondo": "#0d0f14",
       "px": 842,
-      "txt": "🎧 Audio🔇 Silenzia tutto🏟️ Audio"
+      "txt": "🎧 Audio🔇 Silenzia tutto📣 Pubbli"
      }
     ]
    },
@@ -1659,15 +1655,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 20,
+    "nTesto": 23,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 12,
     "sottoPav": [],
-    "nMisurati": 15,
+    "nMisurati": 17,
     "nSotto": 0,
     "nGradiente": 0,
-    "nEmoji": 5,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#8f98a8",
@@ -1676,7 +1672,7 @@
       "fw": 400,
       "rap": 5.74,
       "soglia": 4.5,
-      "n": 4,
+      "n": 5,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "85"
@@ -1724,7 +1720,7 @@
       "fw": 600,
       "rap": 14.79,
       "soglia": 4.5,
-      "n": 6,
+      "n": 7,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)",
       "esempio": "🔇 Silenzia tutto"
@@ -1750,7 +1746,7 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 15
+      "n": 17
      }
     ],
     "nFamiglie": 1,
@@ -1760,13 +1756,13 @@
     "tinteTesto": [
      {
       "c": "#f4f1ea",
-      "n": 7,
+      "n": 8,
       "fs": 15,
       "esempio": "⚙️ Opzioni"
      },
      {
       "c": "#8f98a8",
-      "n": 5,
+      "n": 6,
       "fs": 12,
       "esempio": "85"
      },
@@ -1786,7 +1782,7 @@
     "corpiDet": [
      {
       "fs": 12,
-      "n": 13,
+      "n": 15,
       "esempio": "🎧 Audio",
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
      },
@@ -1808,18 +1804,17 @@
     "schermate": 1.02,
     "scorritore": "documento",
     "blocchi": [],
-    "etichette": {
-     "Partite": 1
-    },
-    "nEmojiChar": 9,
+    "etichette": {},
+    "nEmojiChar": 10,
     "doveEmoji": [
      "⚙️ Opzioni",
      "🎧 Audio",
      "🔇 Silenzia tutto",
-     "🏟️ Audio partite",
-     "✨ Effetti sonori",
      "📣 Pubblico",
+     "⚽ Effetti di partita",
+     "🎵 Musica",
      "🟨 Arbitro",
+     "✨ Suoni dei menu",
      "📳 Vibrazione",
      "🔒 Privacy"
     ],
@@ -1840,7 +1835,7 @@
       "lum": 0.005,
       "fondo": "#0d0f14",
       "px": 859,
-      "txt": "🎧 Audio🔇 Silenzia tutto🏟️ Audio"
+      "txt": "🎧 Audio🔇 Silenzia tutto📣 Pubbli"
      }
     ]
    }
@@ -5768,13 +5763,12 @@
      "Punti": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 8,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
-     "★",
      "🏆 Campione (promossa)",
      "⬆ Promosse (2-3)",
      "⚽ Capocannonieri",
@@ -6003,13 +5997,12 @@
      "Punti": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 8,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
-     "★",
      "🏆 Campione (promossa)",
      "⬆ Promosse (2-3)",
      "⚽ Capocannonieri",
@@ -6239,13 +6232,12 @@
      "Punti": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 8,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
-     "★",
      "🏆 Campione (promossa)",
      "⬆ Promosse (2-3)",
      "⚽ Capocannonieri",
@@ -6475,13 +6467,12 @@
      "Punti": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 8,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
-     "★",
      "🏆 Campione (promossa)",
      "⬆ Promosse (2-3)",
      "⚽ Capocannonieri",
@@ -6711,13 +6702,12 @@
      "Punti": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 9,
+    "nEmojiChar": 8,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "📊",
      "📅",
      "🏆",
-     "★",
      "🏆 Campione (promossa)",
      "⬆ Promosse (2-3)",
      "⚽ Capocannonieri",
@@ -14225,18 +14215,18 @@
      "Stagione": 3,
      "Settimana": 8
     },
-    "nEmojiChar": 20,
+    "nEmojiChar": 17,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🏋️",
-     "· ★ pesa di più nel giudizio e",
-     "★ consigliato",
      "🏃",
      "🧠",
      "🏫",
      "🏡",
      "🏎️",
-     "⛵"
+     "⛵",
+     "🤝",
+     "📈"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -14458,18 +14448,18 @@
      "Stagione": 3,
      "Settimana": 8
     },
-    "nEmojiChar": 20,
+    "nEmojiChar": 17,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🏋️",
-     "· ★ pesa di più nel giudizio e",
-     "★ consigliato",
      "🏃",
      "🧠",
      "🏫",
      "🏡",
      "🏎️",
-     "⛵"
+     "⛵",
+     "🤝",
+     "📈"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -14692,18 +14682,18 @@
      "Stagione": 3,
      "Settimana": 8
     },
-    "nEmojiChar": 20,
+    "nEmojiChar": 17,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🏋️",
-     "· ★ pesa di più nel giudizio e",
-     "★ consigliato",
      "🏃",
      "🧠",
      "🏫",
      "🏡",
      "🏎️",
-     "⛵"
+     "⛵",
+     "🤝",
+     "📈"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -14926,18 +14916,18 @@
      "Stagione": 3,
      "Settimana": 8
     },
-    "nEmojiChar": 20,
+    "nEmojiChar": 17,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🏋️",
-     "· ★ pesa di più nel giudizio e",
-     "★ consigliato",
      "🏃",
      "🧠",
      "🏫",
      "🏡",
      "🏎️",
-     "⛵"
+     "⛵",
+     "🤝",
+     "📈"
     ],
     "hVoce": 58,
     "hSostieni": 27,
@@ -15160,18 +15150,18 @@
      "Stagione": 3,
      "Settimana": 8
     },
-    "nEmojiChar": 20,
+    "nEmojiChar": 17,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "🏋️",
-     "· ★ pesa di più nel giudizio e",
-     "★ consigliato",
      "🏃",
      "🧠",
      "🏫",
      "🏡",
      "🏎️",
-     "⛵"
+     "⛵",
+     "🤝",
+     "📈"
     ],
     "hVoce": 58,
     "hSostieni": 27,

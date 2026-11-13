@@ -1492,6 +1492,12 @@ const getThisWeekMatchday=()=>{
      bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
      Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
   const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  /* [giro 182 punto C · PO «anche videogioco, docufilm, biografia fermano il tasto come gli sponsor»] le offerte ECONOMICHE della
+     categoria «opportunità» sono «offerta»: le tre nominate dal PO (il docufilm senza cachet, ma nominato) e le altre con un cachet
+     positivo in una scelta (ef.bank>0, misurato sul catalogo: esports 18.000, bonus gol social 8.000, scuola calcio 6.000 contro
+     un investimento di 30.000). Gli sponsor (wi_sponsor*) restano alla regola del giro 173. Motivi ed esclusi nel
+     RAPPORTO-giro182 §C. Rosso __CPM_NO_G182_OFFERTE = routine come prima. */
+  const OFFERTE182=["wi_videogioco","wi_docufilm","wi_biografia","wi_esports","wi_bonus_gol_social","wi_scuola_calcio"];
   const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
@@ -1502,6 +1508,7 @@ const getThisWeekMatchday=()=>{
     if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
     if(/procurator/i.test(id+" "+tx))return "procuratore";
     if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G182_OFFERTE)&&OFFERTE182.indexOf(id)>=0)return "offerta";/* [giro 182 punto C] */
     if(_g173()){/* [giro 173 punti 4-5] sponsor = offerta; mister = elenco esplicito (motivi nel RAPPORTO-giro173 §2) */
       if(/^wi_sponsor/.test(id))return "offerta";
       if(MISTER173.indexOf(id||String((wl&&wl.smId)||""))>=0)return "mister";}
@@ -9269,7 +9276,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:(_imp||_h2h.length>0)?8:0}}>
               <TeamBadge team={_opp} size={36}/>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
+                <NomeSquadra182 as="div" team={_opp} fb={_nmd.opponentName} style={{fontSize:FS.body,fontWeight:800,color:TH.text}}/>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
                   {_oPos>=0&&<span style={{fontSize:FS.caption,color:TH.muted}}>{_oPos+1}° classifica</span>}
                   <span style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_pColor)}}>Force {_opp.p||60}</span>
@@ -9546,7 +9553,7 @@ const getThisWeekMatchday=()=>{
                       return(
                         <div key={ri} style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",background:row.isPlayer?"rgba(59,130,246,0.08)":"transparent",borderRadius:RAD.xs,alignItems:"center"}}>
                           <div style={{fontSize:FS.caption,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
-                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
+                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,display:"flex",minWidth:0,whiteSpace:"nowrap"}}><NomeSquadra182 as="span" team={row} style={{minWidth:0,flex:"0 1 auto"}}/>{row.isPlayer?<span style={{flex:"0 0 auto"}}>{" ⭐"}</span>:null}</div>
                           {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
                             <div key={vi} style={{fontSize:FS.caption,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
                           ))}
@@ -11661,7 +11668,7 @@ const getThisWeekMatchday=()=>{
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
-                              <span style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <NomeSquadra182 as="span" team={r.club} style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600}}/>
                               <TaccheV2 n={/Trattativa|Forte/.test(r.int)?3:/moderato/.test(r.int)?2:1} col={/Trattativa|Forte/.test(r.int)?TINTE.verde:/moderato/.test(r.int)?TINTE.giallo:TINTE.sec} label={"Interesse: "+r.int.replace(/^\S+\s/,"")}/>{/* [PO-302 tappa 2 · V2Agente] indicatore d'interesse a 3 tacche, la parola resta */}
                               <span style={{fontSize:FS.caption,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>
