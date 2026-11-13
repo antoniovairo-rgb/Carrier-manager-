@@ -1452,3 +1452,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 13/11 ~21:50 Roma — PO-385 rassegna stampa a schede
 - PO: «Schede una dopo l'altra», «Nella 193». Il giro misura prima la lunghezza della pagina (altezza in schermate su telefono e PC, blocchi, testi ripetuti), poi la divide in 4 passi con Avanti/Salta e puntini; nessuna informazione persa.
+
+## 13/11 ~22:00 Roma — verifica leggera 192, primo blocco
+- 25 controlli: verdi tutti tranne tifosi-171 (1/8 misure: PC, coppia VEL v VAL, «testimoni assenti (canvas)», sia nel verde sia nel rosso: strumento instabile), audio-161 (controllo 8 non giudicato: con la partita riproducibile del 175 la partita di prova non ha gol subiti) e clip-180 (peso, già dichiarato).
+- Madre: difetti degli strumenti, non del gioco → giro 186 (solo tests/visual): seme di audio-161 con un gol subito, testimone stabile per tifosi-171, e box-fischio-169 reso stabile come promesso per la 192. La verifica prosegue a blocchi.
