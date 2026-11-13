@@ -97,7 +97,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 0/18 (12) | 0/18 (12) | 0/18 (12) | 0/18 (12) | 0/18 (12) |
-| Impostazioni | 0/20 (12) | 0/20 (12) | 0/20 (12) | 0/20 (12) | 0/20 (12) |
+| Impostazioni | 0/23 (12) | 0/23 (12) | 0/23 (12) | 0/23 (12) | 0/23 (12) |
 | Creazione | 0/563 (12) | 0/563 (12) | 0/563 (12) | 0/563 (12) | 0/563 (12) |
 | Offerte | 0/32 (12) | 0/32 (12) | 0/32 (12) | 0/32 (12) | 0/32 (12) |
 | Dashboard | 0/94 (12) | 0/94 (12) | 0/94 (12) | 0/94 (12) | 0/94 (12) |
@@ -110,14 +110,14 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Agente | 0/94 (12) | 0/94 (12) | 0/94 (12) | 0/94 (12) | 0/94 (12) |
 | Ufficio | 0/140 (12) | 0/140 (12) | 0/140 (12) | 0/140 (12) | 0/140 (12) |
 | Prepartita | 0/31 (12) | 0/31 (12) | 0/31 (12) | 0/31 (12) | 0/31 (12) |
-| **TOTALE** | **0/1774** | **0/1774** | **0/1774** | **0/1774** | **0/1774** |
+| **TOTALE** | **0/1777** | **0/1777** | **0/1777** | **0/1777** | **0/1777** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 0/18 | 0/18 | 0/18 | 0/18 | 0/18 |
-| Impostazioni | 0/20 | 0/20 | 0/20 | 0/20 | 0/20 |
+| Impostazioni | 0/23 | 0/23 | 0/23 | 0/23 | 0/23 |
 | Creazione | 0/563 | 0/563 | 0/563 | 0/563 | 0/563 |
 | Offerte | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
 | Dashboard | 0/94 | 0/94 | 0/94 | 0/94 | 0/94 |
@@ -130,14 +130,14 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Agente | 0/94 | 0/94 | 0/94 | 0/94 | 0/94 |
 | Ufficio | 0/140 | 0/140 | 0/140 | 0/140 | 0/140 |
 | Prepartita | 0/31 | 0/31 | 0/31 | 0/31 | 0/31 |
-| **TOTALE** | **0/1774** | **0/1774** | **0/1774** | **0/1774** | **0/1774** |
+| **TOTALE** | **0/1777** | **0/1777** | **0/1777** | **0/1777** | **0/1777** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 0/8 (5 · 5) | 0/8 (5 · 5) | 0/8 (5 · 5) | 0/8 (5 · 5) | 0/8 (5 · 5) |
-| Impostazioni | 0/15 (0 · 5) | 0/15 (0 · 5) | 0/15 (0 · 5) | 0/15 (0 · 5) | 0/15 (0 · 5) |
+| Impostazioni | 0/17 (0 · 6) | 0/17 (0 · 6) | 0/17 (0 · 6) | 0/17 (0 · 6) | 0/17 (0 · 6) |
 | Creazione | 0/804 (1 · 10) | 0/804 (1 · 10) | 0/804 (1 · 10) | 0/804 (1 · 10) | 0/804 (1 · 10) |
 | Offerte | 0/29 (0 · 6) | 0/29 (0 · 6) | 0/29 (0 · 6) | 0/29 (0 · 6) | 0/29 (0 · 6) |
 | Dashboard | 0/71 (2 · 22) | 0/71 (2 · 22) | 0/71 (2 · 22) | 0/71 (2 · 22) | 0/71 (2 · 22) |
@@ -150,7 +150,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Agente | 0/76 (0 · 19) | 0/76 (0 · 19) | 0/76 (0 · 19) | 0/76 (0 · 19) | 0/76 (0 · 19) |
 | Ufficio | 0/110 (0 · 31) | 0/110 (0 · 31) | 0/110 (0 · 31) | 0/110 (0 · 31) | 0/110 (0 · 31) |
 | Prepartita | 0/29 (0 · 4) | 0/29 (0 · 4) | 0/29 (0 · 4) | 0/29 (0 · 4) | 0/29 (0 · 4) |
-| **TOTALE** | **0/1813** | **0/1813** | **0/1813** | **0/1813** | **0/1813** |
+| **TOTALE** | **0/1815** | **0/1815** | **0/1815** | **0/1815** | **0/1815** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
@@ -316,7 +316,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 915 | 0.005 | `#0d0f14` | `div#root>div.cpm-root` | *{box-sizing:border-box;} @keyfram |
 | Impostazioni | 73 | 0.013 | `#1a1e27` | `div.cpm-root>div:nth-child(1)>div:nth-child(1)` | ⚙️ Opzioni✕ |
-|  | 842 | 0.005 | `#0d0f14` | `div.cpm-root>div:nth-child(1)>div:nth-child(2)` | 🎧 Audio🔇 Silenzia tutto🏟️ Audio |
+|  | 842 | 0.005 | `#0d0f14` | `div.cpm-root>div:nth-child(1)>div:nth-child(2)` | 🎧 Audio🔇 Silenzia tutto📣 Pubbli |
 | Creazione | 915 | 0.005 | `#0d0f14` | `div#root>div.cpm-root` | *{box-sizing:border-box;} @keyfram |
 | Offerte | 915 | 0.005 | `#0d0f14` | `div#root>div.cpm-root` | *{box-sizing:border-box;} @keyfram |
 | Dashboard | 915 | 0.005 | `#0d0f14` | `div#root>div.cpm-root` | *{box-sizing:border-box;} @keyfram |
@@ -357,20 +357,20 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 6 | 6 | 6 | 6 | 6 |
-| Impostazioni | 9 | 9 | 9 | 9 | 9 |
+| Impostazioni | 10 | 10 | 10 | 10 | 10 |
 | Creazione | 5 | 5 | 5 | 5 | 5 |
 | Offerte | 0 | 0 | 0 | 0 | 0 |
 | Dashboard | 11 | 11 | 11 | 11 | 11 |
-| Stagione · Classifica | 9 | 9 | 9 | 9 | 9 |
+| Stagione · Classifica | 8 | 8 | 8 | 8 | 8 |
 | Stagione · Calendario | 31 | 31 | 31 | 31 | 31 |
 | Stagione · Coppe | 9 | 9 | 9 | 9 | 9 |
 | Club | 10 | 10 | 10 | 10 | 10 |
 | Carriera · Profilo | 4 | 4 | 4 | 4 | 4 |
 | Carriera · Nazionale | 13 | 13 | 13 | 13 | 13 |
 | Agente | 12 | 12 | 12 | 12 | 12 |
-| Ufficio | 20 | 20 | 20 | 20 | 20 |
+| Ufficio | 17 | 17 | 17 | 17 | 17 |
 | Prepartita | 3 | 3 | 3 | 3 | 3 |
-| **TOTALE** | **142** | **142** | **142** | **142** | **142** |
+| **TOTALE** | **139** | **139** | **139** | **139** | **139** |
 
 > Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)
 > non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso
@@ -379,18 +379,18 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | schermata | primi testi con emoji |
 |---|---|
 | Home fuori carriera | `Si scende in campo! ⚽` · `⚽` · `ℹ️` · `🏠` · `🎬` · `📂` |
-| Impostazioni | `⚙️ Opzioni` · `🎧 Audio` · `🔇 Silenzia tutto` · `🏟️ Audio partite` · `✨ Effetti sonori` · `📣 Pubblico` |
+| Impostazioni | `⚙️ Opzioni` · `🎧 Audio` · `🔇 Silenzia tutto` · `📣 Pubblico` · `⚽ Effetti di partita` · `🎵 Musica` |
 | Creazione | `Si scende in campo! ⚽` · `👤 Identità` · `🗺️ Percorso` · `📋 Percorso carriera` · `⭐ Club dei sogni (facoltativo)` · `⚡ Modalità Sfida (facoltativa:` |
 | Offerte | `Si scende in campo! ⚽` |
 | Dashboard | `Si scende in campo! ⚽` · `⚡ Vivi la Settimana` · `⏩ Vai al prossimo momento` · `🤝` · `⭐` · `🎁` |
-| Stagione · Classifica | `Si scende in campo! ⚽` · `📊` · `📅` · `🏆` · `★` · `🏆 Campione (promossa)` |
+| Stagione · Classifica | `Si scende in campo! ⚽` · `📊` · `📅` · `🏆` · `🏆 Campione (promossa)` · `⬆ Promosse (2-3)` |
 | Stagione · Calendario | `Si scende in campo! ⚽` · `📊` · `📅` · `🏆` · `⚽` · `V vinta · N pareggio · P persa` |
 | Stagione · Coppe | `Si scende in campo! ⚽` · `📊` · `📅` · `🏆` · `⭐` · `🌍` |
 | Club | `Si scende in campo! ⚽` · `⬆️` · `🧣` · `🩺 Dr.` · `(medico sociale) · 📋` · `✨ Forma e morale` |
 | Carriera · Profilo | `Si scende in campo! ⚽` · `👤` · `🌍` · `☕ Sostieni il progetto` · `💡 Idee e feedback` |
 | Carriera · Nazionale | `Si scende in campo! ⚽` · `👤` · `🌍` · `⚽` · `📊` · `🎽` |
 | Agente | `Si scende in campo! ⚽` · `📣` · `🤵 Obiettivo della stagione` · `✂️ Licenzia il procuratore` · `🔴 Chiuso` · `⚠️` |
-| Ufficio | `Si scende in campo! ⚽` · `🏋️` · `· ★ pesa di più nel giudizio e` · `★ consigliato` · `🏃` · `🧠` |
+| Ufficio | `Si scende in campo! ⚽` · `🏋️` · `🏃` · `🧠` · `🏫` · `🏡` |
 | Prepartita | `Si scende in campo! ⚽` · `⚽` · `👑` · `🌧️ Pioggia` |
 
 ## Ridondanze · la stessa grandezza, quante volte e dove (412 px, fisarmoniche come le trova il giocatore)
@@ -412,7 +412,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Settimana |  |  |  |  | 4 |  | 1 | 2 | 1 |  | 5 | 5 | 8 |  | **7** |
 | Gol |  |  |  | 1 | 2 | 2 | 1 |  |  | 4 | 3 |  |  |  | **6** |
 | Fiducia |  |  |  |  | 1 |  |  |  | 2 | 1 | 1 | 1 | 4 |  | **6** |
-| Partite |  | 1 |  |  | 2 |  | 3 |  |  |  | 1 |  | 1 |  | **5** |
+| Partite |  |  |  |  | 2 |  | 3 |  |  |  | 1 |  | 1 |  | **4** |
 | Presenze |  |  |  |  |  |  |  | 1 |  | 3 | 6 |  |  |  | **3** |
 | Morale |  |  |  |  | 1 |  |  |  | 3 |  |  |  | 4 |  | **3** |
 | Assist |  |  |  | 1 | 2 |  |  |  |  | 3 |  |  |  |  | **3** |
@@ -471,7 +471,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | schermata | famiglie | dettaglio (famiglia x nodi) |
 |---|---:|---|
 | Home fuori carriera | 1 | Barlow x8 |
-| Impostazioni | 1 | Barlow x15 |
+| Impostazioni | 1 | Barlow x17 |
 | Creazione | 2 | Barlow x802 · Barlow Condensed x2 |
 | Offerte | 1 | Barlow x29 |
 | Dashboard | 2 | Barlow x56 · Barlow Condensed x15 |
@@ -494,7 +494,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | schermata | corpi | dettaglio (px x nodi · esempio) |
 |---|---:|---|
 | Home fuori carriera | 3 | **12** x5 (Crea il tuo ) · **13** x2 (ℹ️) · **15** x1 (Nuova carrie) |
-| Impostazioni | 3 | **12** x13 (🎧 Audio) · **13** x1 (Informativa ) · **15** x1 (⚙️ Opzioni) |
+| Impostazioni | 3 | **12** x15 (🎧 Audio) · **13** x1 (Informativa ) · **15** x1 (⚙️ Opzioni) |
 | Creazione | 5 | **12** x548 (Nuova carrie) · **13** x1 (← Home) · **15** x1 (Inizia i pro) · **17** x1 (NOME) · **32** x1 (Crea il tuo ) |
 | Offerte | 3 | **12** x19 (3) · **13** x6 (Torino Athle) · **17** x1 (Offerte rice) |
 | Dashboard | 6 | **12** x42 (Lega B · St.) · **13** x15 (Il gruppo pr) · **15** x4 (⏩ Vai al pro) · **17** x2 (FC Salernum) · **20** x3 (⚡ Vivi la Se) · **32** x4 (10) |
@@ -518,7 +518,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | schermata | tinte | dettaglio (tinta x nodi · esempio) |
 |---|---:|---|
 | Home fuori carriera | 3 | `#9aa3b2` x4 (Crea il tuo ca) · `#0d0f14` x2 (Nuova carriera) · `#f4f1ea` x2 (ℹ️) |
-| Impostazioni | 4 | `#f4f1ea` x7 (⚙️ Opzioni) · `#8f98a8` x5 (85) · `#9aa3b2` x2 (🎧 Audio) · `#e8b44a` x1 (Informativa su) |
+| Impostazioni | 4 | `#f4f1ea` x8 (⚙️ Opzioni) · `#8f98a8` x6 (85) · `#9aa3b2` x2 (🎧 Audio) · `#e8b44a` x1 (Informativa su) |
 | Creazione | 6 | `#ffffff` x260 (CFM) · `#f4f1ea` x258 (Crea il tuo ca) · `#8f98a8` x255 (← Home) · `#9aa3b2` x20 (Nuova carriera) · `#e8b44a` x9 (📋 Percorso ca) · `#0d0f14` x2 (Inizia i provi) |
 | Offerte | 3 | `#9aa3b2` x19 (3) · `#f4f1ea` x9 (TAT) · `#0d0f14` x1 (Scegli →) |
 | Dashboard | 11 | `#f4f1ea` x28 (10) · `#9aa3b2` x22 (Lega B · St. 1) · `#8f98a8` x7 (Stagione) · `#e8b44a` x4 (7,4) · `#0d0f14` x2 (⚡ Vivi la Sett) · `#86efac` x2 (Batti il tuo r) · `#4ade80` x2 (FATTO) · `#47484a` x1 (allenamento, e) · `#b7707d` x1 (78) · `#a78bfa` x1 (64) · `#d97706` x1 (Nel pieno dell) |
@@ -577,11 +577,11 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Home fuori carriera | 12.55:1 | 4.5:1 | `#f4f1ea` su `#262b37` | 13 / 400 | 2 | `div:nth-child(4)>button.cpm-press.cpm-focus>span:nth-child(1)` | ℹ️ |
 | Home fuori carriera | 16.99:1 | 3:1 | `#0d0f14` su `#f4f1ea` | 15 / 700 | 1 | `div.cpm-piena>div.cpm-slots>button.cpm-press.cpm-focus` | Nuova carriera |
 | Home fuori carriera | 16.99:1 | 4.5:1 | `#0d0f14` su `#f4f1ea` | 12 / 400 | 1 | `div.cpm-nav-tabs>button.cpm-tab-act>div:nth-child(2)` | Home |
-| Impostazioni | 5.74:1 | 4.5:1 | `#8f98a8` su `#1a1e27` | 12 / 400 | 4 | `div:nth-child(1)>div:nth-child(2)>span.cpm-num` | 85 |
+| Impostazioni | 5.74:1 | 4.5:1 | `#8f98a8` su `#1a1e27` | 12 / 400 | 5 | `div:nth-child(1)>div:nth-child(2)>span.cpm-num` | 85 |
 | Impostazioni | 6.56:1 | 4.5:1 | `#9aa3b2` su `#1a1e27` | 12 / 700 | 2 | `div:nth-child(1)>div:nth-child(1)>div:nth-child(1)` | 🎧 Audio |
 | Impostazioni | 6.59:1 | 4.5:1 | `#8f98a8` su `#0d0f14` | 12 / 400 | 1 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(3)` | Le impostazioni si salvano |
 | Impostazioni | 8.78:1 | 4.5:1 | `#e8b44a` su `#1a1e27` | 13 / 700 | 1 | `div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus` | Informativa sulla privacy |
-| Impostazioni | 14.79:1 | 4.5:1 | `#f4f1ea` su `#1a1e27` | 12 / 600 | 6 | `div:nth-child(1)>div:nth-child(2)>span:nth-child(1)` | 🔇 Silenzia tutto |
+| Impostazioni | 14.79:1 | 4.5:1 | `#f4f1ea` su `#1a1e27` | 12 / 600 | 7 | `div:nth-child(1)>div:nth-child(2)>span:nth-child(1)` | 🔇 Silenzia tutto |
 | Creazione | 5.74:1 | 4.5:1 | `#8f98a8` su `#1a1e27` | 12 / 700 | 2 | `div.cpm-create>div:nth-child(1)>div:nth-child(1)` | 👤 Identità |
 | Creazione | 6.17:1 | 4.5:1 | `#9aa3b2` su `#16233b` | 12 / 400 | 1 | `div:nth-child(2)>div:nth-child(2)>div:nth-child(2)` | 3 provini → offerte dalle  |
 | Creazione | 6.34:1 | 4.5:1 | `#8f98a8` su `#11141b` | 12 / 400 | 252 | `div:nth-child(2)>button:nth-child(1)>span:nth-child(3)` | Liga Ibérica |
