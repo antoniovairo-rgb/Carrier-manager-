@@ -1421,3 +1421,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - ci-runner.mjs di nuovo con chiavi doppie (completa ×3, carriera ×2) e la costante LENTI dichiarata due volte (errore di sintassi): riuniti senza perdite. test:logic 51/51, save-compat verde → 498bf937.
 - solo-highlight-166 rosso dopo 171+172 (libro mastro 1/263 identico): in prova di nuovo con il 175 (partita riproducibile) unito.
 - Lo script di unione scriveva «in lavoro/191» nei messaggi dei commit della 192: corretto per le prossime.
+
+## 13/11 ~10:40 Roma — prove su lavoro/192 (498bf937)
+- solo-highlight-166 verde (rosso cade su 3, 7, 8): il rosso precedente veniva dalla partita non riproducibile, sparito col 175 unito.
+- audio-172 verde (rosso cade su 3-4, 6-11), dopo l'installazione di numpy nell'ambiente.
+- riproduci-175 verde: 5 nomi × 3 ripetizioni a 1×, 1,5×, 2× identici; col rosso le differenze tornano.
