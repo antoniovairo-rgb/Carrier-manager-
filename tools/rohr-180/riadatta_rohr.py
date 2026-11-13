@@ -25,6 +25,10 @@ Stampa una riga CANCELLO e una riga MISURA (scivolamento piedi, compenetrazione 
                   velocita' di mani, gomiti, piedi, ginocchia, testa e bacino), cosi' la clip gira in anello senza salto;
   suolo           alza il bacino, fotogramma per fotogramma, di quanto il vertice piu' basso del corpo scende sotto il suo livello
                   a riposo (corregge ginocchia/corpo che affondano; misurato sui VERTICI deformati, non sulle ossa).
+[giro 184] ik=0|1   correzione delle mani spenta/accesa per QUESTA clip (decisione madre 180c §6.1: la si tiene solo dove non
+                  peggiora il cancello; si sceglie confrontando due passate, CPM_IK=0 e CPM_IK=1, e si annota qui la scelta);
+  mosso=<k>       (con ciclo) fra le finestre la cui giunzione costa al piu' k volte la migliore, quella con piu' moto delle mani
+                  rispetto al bacino (decisione madre 180c §6.2, swaying-arms «tratto piu' mosso»).
 Correzione delle mani (sempre attiva, CPM_IK=0 la spegne): IK del braccio a 2 ossa che porta il polso nel punto della
 sorgente RISPETTO ALLA SPALLA, scalato sulle proporzioni del nostro braccio ((omero+avambraccio) nostro / sorgente); il
 piano del gomito resta quello del riadattamento, l'orientamento della mano resta quello della sorgente. Il cancello e le sue
@@ -58,7 +62,7 @@ SOGLIA_MED, SOGLIA_MAX = 10.0, 30.0
 
 def riadatta(T, src_path, nome, opz=None):
     opz = opz or {}
-    usa_ik = os.environ.get('CPM_IK', '1') != '0'
+    usa_ik = opz.get('ik', os.environ.get('CPM_IK', '1')) != '0'   # [184] ik=0/1 per clip (vince sull'ambiente)
     prima = set(bpy.data.objects.keys())
     bpy.ops.import_scene.fbx(filepath=src_path)
     nuovi = [bpy.data.objects[k] for k in bpy.data.objects.keys() if k not in prima]
@@ -113,20 +117,30 @@ def riadatta(T, src_path, nome, opz=None):
         def dist(u, v): return max((a - b).length for a, b in zip(u, v))
         def vel(u, v): return [b - a for a, b in zip(u, v)]
         Lmin, Lmax = int(round(lo * 30)), int(round(hi * 30))
-        best = None
+        best, cand = None, []
         for i in range(0, len(des) - Lmin - 1):
             for L in range(Lmin, min(Lmax, len(des) - 1 - i) + 1):
                 j = i + L
                 sp = dist(des[i], des[j]); sv = dist(vel(des[j - 1], des[j]), vel(des[i], des[i + 1]))
                 sc_ = sp + 2 * sv
+                cand.append((sc_, i, j, sp, sv))
                 if best is None or sc_ < best[0]:
                     best = (sc_, i, j, sp, sv)
         if best is None:
             raise SystemExit(f'RIFIUTATA {nome}: clip troppo corta per un ciclo di {lo}-{hi} s')
+        # [184] moto delle MANI rispetto al bacino in una finestra: cammino medio per fotogramma (cm), mano sinistra + destra
+        def moto(i, j): return sum((des[k + 1][1 + h] - des[k][1 + h]).length for k in range(i, j) for h in (0, 1)) / max(1, j - i) * 100
+        moto_min = moto(best[1], best[2])
+        if 'mosso' in opz:
+            # [184, decisione madre 180c §6.2] tratto PIU' MOSSO: fra le finestre la cui giunzione costa al piu' mosso=<k> volte la
+            # migliore, quella con piu' moto delle mani; la rampa di chiusura resta la stessa (e si rimisura come per le altre)
+            kk = float(opz['mosso'] or 2)
+            best = max((c for c in cand if c[0] <= kk * best[0] + 1e-9), key=lambda c: moto(c[1], c[2]))
         _, i, j, sp, sv = best
         passo = statistics.median(dist(des[k], des[k + 1]) for k in range(i, j))
         giunzione_src = {'salto_cm': round(sp * 100, 2), 'vel_cm_fot': round(sv * 100, 2), 'passo_mediano_cm': round(passo * 100, 2),
-                         'da_s': round(i / 30, 3), 'a_s': round(j / 30, 3)}
+                         'da_s': round(i / 30, 3), 'a_s': round(j / 30, 3),
+                         'moto_mani_cm_fot': round(moto(i, j), 3), 'moto_mani_finestra_giunzione_migliore_cm_fot': round(moto_min, 3)}
         f0, f1 = f0 + 2 * i, f0 + 2 * j
     S0 = mondo(f0)
     imb = yaw(S0['thigh_r'].translation - S0['thigh_l'].translation, latoT)              # fotogramma 0 -> direzione del bersaglio

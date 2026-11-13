@@ -45,6 +45,105 @@
   "bacino_max_m": 1.68
  },
  {
+  "clip": "rohr-defending-01",
+  "durata": 6.233,
+  "tracce": 52,
+  "sotto_suolo_cm": 1,
+  "t_sotto": 2.9,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.03
+ },
+ {
+  "clip": "rohr-goalkeeper-save-01",
+  "durata": 7.167,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.8,
+  "t_sotto": 6,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 1.93
+ },
+ {
+  "clip": "rohr-goalkeeper-save-02",
+  "durata": 4.367,
+  "tracce": 52,
+  "sotto_suolo_cm": 1.3,
+  "t_sotto": 1.8,
+  "quota_sotto_1cm": 0.045,
+  "bacino_max_m": 0.73
+ },
+ {
+  "clip": "rohr-goalkeeper-save-03",
+  "durata": 8.9,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.6,
+  "t_sotto": 0.5,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.42
+ },
+ {
+  "clip": "rohr-dribble-03",
+  "durata": 3.367,
+  "tracce": 54,
+  "sotto_suolo_cm": 0.8,
+  "t_sotto": 2,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 2.56
+ },
+ {
+  "clip": "rohr-throw-in",
+  "durata": 7.933,
+  "tracce": 52,
+  "sotto_suolo_cm": 1,
+  "t_sotto": 7.4,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.26
+ },
+ {
+  "clip": "rohr-yellow-card",
+  "durata": 2.867,
+  "tracce": 50,
+  "sotto_suolo_cm": 1.1,
+  "t_sotto": 0.5,
+  "quota_sotto_1cm": 0.069,
+  "bacino_max_m": 0.08
+ },
+ {
+  "clip": "rohr-yellow-red-card",
+  "durata": 5.7,
+  "tracce": 51,
+  "sotto_suolo_cm": 1.2,
+  "t_sotto": 5.2,
+  "quota_sotto_1cm": 0.421,
+  "bacino_max_m": 0.02
+ },
+ {
+  "clip": "rohr-juggling-01",
+  "durata": 3.133,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.2,
+  "t_sotto": 1.8,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.07
+ },
+ {
+  "clip": "rohr-juggling-02",
+  "durata": 3.733,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.6,
+  "t_sotto": 0.4,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.1
+ },
+ {
+  "clip": "rohr-juggling-03",
+  "durata": 4.7,
+  "tracce": 52,
+  "sotto_suolo_cm": 0.9,
+  "t_sotto": 2.1,
+  "quota_sotto_1cm": 0,
+  "bacino_max_m": 0.21
+ },
+ {
   "clip": "rohr-clapping-hands-up",
   "durata": 3.9,
   "tracce": 51,
@@ -72,72 +171,9 @@
   "bacino_max_m": 0.01
  },
  {
-  "clip": "rohr-goalkeeper-save-01",
-  "durata": 7.167,
-  "tracce": 60,
-  "sotto_suolo_cm": 0.8,
-  "t_sotto": 6,
-  "quota_sotto_1cm": 0,
-  "bacino_max_m": 1.93
- },
- {
-  "clip": "rohr-goalkeeper-save-02",
-  "durata": 4.367,
-  "tracce": 52,
-  "sotto_suolo_cm": 1.3,
-  "t_sotto": 1.8,
-  "quota_sotto_1cm": 0.045,
-  "bacino_max_m": 0.73
- },
- {
-  "clip": "rohr-throw-in",
-  "durata": 7.933,
-  "tracce": 60,
-  "sotto_suolo_cm": 1,
-  "t_sotto": 7.4,
-  "quota_sotto_1cm": 0,
-  "bacino_max_m": 0.26
- },
- {
-  "clip": "rohr-yellow-card",
-  "durata": 2.867,
-  "tracce": 50,
-  "sotto_suolo_cm": 1.1,
-  "t_sotto": 0.5,
-  "quota_sotto_1cm": 0.069,
-  "bacino_max_m": 0.08
- },
- {
-  "clip": "rohr-yellow-red-card",
-  "durata": 5.7,
-  "tracce": 55,
-  "sotto_suolo_cm": 1.2,
-  "t_sotto": 5.2,
-  "quota_sotto_1cm": 0.421,
-  "bacino_max_m": 0.02
- },
- {
-  "clip": "rohr-juggling-01",
-  "durata": 3.133,
-  "tracce": 52,
-  "sotto_suolo_cm": 0.2,
-  "t_sotto": 1.8,
-  "quota_sotto_1cm": 0,
-  "bacino_max_m": 0.07
- },
- {
-  "clip": "rohr-juggling-02",
-  "durata": 3.733,
-  "tracce": 52,
-  "sotto_suolo_cm": 0.6,
-  "t_sotto": 0.4,
-  "quota_sotto_1cm": 0,
-  "bacino_max_m": 0.1
- },
- {
   "clip": "rohr-sitting-clapping",
   "durata": 3.167,
-  "tracce": 54,
+  "tracce": 50,
   "sotto_suolo_cm": 0,
   "t_sotto": 0,
   "quota_sotto_1cm": 0,
@@ -146,7 +182,7 @@
  {
   "clip": "rohr-standing-clapping",
   "durata": 3.5,
-  "tracce": 54,
+  "tracce": 50,
   "sotto_suolo_cm": 0.8,
   "t_sotto": 2.7,
   "quota_sotto_1cm": 0,
@@ -172,12 +208,12 @@
  },
  {
   "clip": "rohr-swaying-arms",
-  "durata": 3.9,
-  "tracce": 50,
+  "durata": 3.4,
+  "tracce": 51,
   "sotto_suolo_cm": 0,
   "t_sotto": 0,
   "quota_sotto_1cm": 0,
-  "bacino_max_m": 0.07
+  "bacino_max_m": 0.08
  },
  {
   "clip": "rohr-hands-up-swaying",

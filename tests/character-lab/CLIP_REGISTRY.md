@@ -16,9 +16,13 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 
 **Decisione PO (questionario 27/09): «Lascia com'è».** Il PO accetta il rischio così com'è. Registrato qui come decisione del PO, non come verifica di conformità.
 
+**Originali CGTrader tolti dal repo (giro 184, 13/11/2026, PO-374, decisione PO 12/11 «Toglierli dal repo»):** la cartella `assets/source/cgtrader-soccer-player/originals/` (FBX, OBJ/MTL, GLB parziali del pacchetto) e `TEXTURES.zip` non sono più nell'albero né nel sito; restano nei commit vecchi (nessun force push, decisione PO) e il PO li conserva nel suo acquisto CGTrader. Verificato prima di toglierli: nessuna riga di `src/`, `tools/` o dei guardiani li apre, e caricando il gioco (home, plancia, partita, GLB acceso) il browser non li chiede mai. Nel gioco restano solo i GLB convertiti in `assets/`. Guardiano `npm run licenze-184`. Restano in `assets/source/` il puntatore LFS `BLENDER+RIG.blend` e `CHARACTER.glb` (fuori dalla decisione: dubbio nel rapporto giro 184).
+
 **Regola del lotto:** le nuove clip del lotto P1-a vengono da pacchetti già presenti, quindi non aggravano il rischio (stessi file), ma non ne aggiungo di nuovi da fuori finché il PO non decide.
 
 ## Anderson Rohr — `assets/cgtrader-clip-rohr.glb` (giro 180b, 12/11/2026)
+
+**Giro 184 (180d, 13/11/2026):** il file ha ora **28 clip** (3,30 MB). La correzione delle mani resta solo dove abbassa il massimo del cancello (5 clip: goal-celebration-02, juggling-02, clapping-hands-up, hands-up-looking-up, standing-selfie), spenta sulle altre; rientrano `rohr-defending-01` (28,58°), `rohr-goalkeeper-save-03` (28,34°), `rohr-dribble-03` (28,94°) e `rohr-juggling-03` (anello di 4,7 s, 24,74°); `rohr-swaying-arms` sul tratto più mosso (3,4 s). Elenco e opzioni: `tools/rohr-180/clip-184.txt`; misure per clip in `docs/sviluppo/RAPPORTO-giro184.md`. La tabella qui sotto è quella del 180c (storica).
 
 | Pacchetto | Cosa dice la licenza (citazione, riletta alla fonte il 12/11/2026) | Fonte | Esito per il gioco |
 |---|---|---|---|

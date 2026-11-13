@@ -6,6 +6,8 @@ Giro 25b (15/10, decisione PO «Rimettile con la loro fonte»): le ultime cinque
 
 Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy shouting crowd» (n. 3022, licenza propria del sito d'origine, non CC0) è uscito dal repo, dal gioco e dai Crediti; la sua riga è tolta. Il testo della licenza letto l'11/11 resta come documentazione in `docs/sviluppo/giro161/`.
 
+Giro 184 (13/11, PO-374, decisione PO 12/11 «Toglierli dal repo»): gli originali CGTrader (`assets/source/cgtrader-soccer-player/originals/`: FBX, OBJ/MTL, GLB parziali; e `TEXTURES.zip`) sono tolti dal repo e dal sito il 13/11; restano nella storia git (nessun force push, decisione PO) e il PO li conserva nel suo acquisto CGTrader. Il gioco usa solo i GLB convertiti in `assets/` (verificato con grep e sulla rete del browser, rapporto `docs/sviluppo/RAPPORTO-giro184.md`). Guardiano `licenze-184`: nessun originale CGTrader/Mixamo/Rohr in `assets/`, `dist/`, `dist-web/`.
+
 | Risorsa | Autore | Licenza | Fonte |
 |---|---|---|---|
 | Giocatori 3D «Soccer Player - Rigged» (CGTrader) | Hisenberg | Royalty Free (standard) — dichiarata dal PO | ordine CGTrader #17876008 del 2026-09-20, foto docs/governo/foto/po238-ordine-cgtrader.jpg |
@@ -37,7 +39,7 @@ sono ancora collegate ai gesti). La riga entra in tabella **quando** le clip ent
 sessione madre nel rapporto 180b §6. **Decisione madre (180c):** la riga entra in tabella e nella finestra Crediti solo quando le clip
 entreranno nel gioco; la riga di cortesia è preparata (non attivata) nel rapporto 180c §7.
 
-- **Risorsa:** 24 clip di animazione (giro 180c; erano 9 nel 180b) convertite e riadattate allo scheletro CGTrader, file `assets/cgtrader-clip-rohr.glb` (nessuna mesh, solo animazioni; **fuori da `dist/`** finché il gioco non lo carica)
+- **Risorsa:** 28 clip di animazione (giro 184 = 180d; 24 nel 180c, 9 nel 180b) convertite e riadattate allo scheletro CGTrader, file `assets/cgtrader-clip-rohr.glb` (nessuna mesh, solo animazioni; **fuori da `dist/`** finché il gioco non lo carica)
 - **Autore:** Anderson Rohr
 - **Fonte:** «Free mocap pack 05: Soccer» <https://andersonrohr.gumroad.com/l/mocap_pack5> e «Free mocap pack 04: Crowd Reactions» <https://andersonrohr.gumroad.com/l/mocap_pack4> (Gumroad)
 - **Licenza, parola per parola (sezione «Licensing», identica sulle due pagine, riletta alla fonte il 12/11/2026):** «This pack can be used for free in both personal and commercial projects. Attribution is not required, but feel free to tag me (my socials: https://linktr.ee/andersonrohr). I’d love to see what you create with it. You may not redistribute, resell, or repackage this pack as a standalone product.»

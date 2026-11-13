@@ -8,15 +8,18 @@ import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath }
 const QUI = path.dirname(fileURLToPath(import.meta.url)); const REPO = path.resolve(QUI, '../..');
 const FILE = process.env.CPM_CLIP180 || 'assets/cgtrader-clip-rohr.glb';
 // [giro 180c] 24 clip (dopo la correzione delle mani e il cancello invariato); durate lette dal file
+// [giro 184 = 180d] 28 clip: correzione delle mani solo dove non peggiora il cancello -> rientrano defending-01, goalkeeper-save-03,
+// dribble-03; juggling-03 ad anello di 4,7 s; swaying-arms sul tratto piu' mosso (3,4 s). Durate lette dal file.
 const ATTESE = { 'rohr-side-foot-kick': 4.5, 'rohr-power-kick': 2.6, 'rohr-goal-celebration-01': 3.4667,
   'rohr-goal-celebration-02': 3.5, 'rohr-goal-celebration-03': 3.1667, 'rohr-clapping-hands-up': 3.9,
   'rohr-fist-up-cheering': 3.7, 'rohr-pointing-up-cheering': 4, 'rohr-goalkeeper-save-01': 7.1667,
-  'rohr-goalkeeper-save-02': 4.3667, 'rohr-throw-in': 7.9333, 'rohr-yellow-card': 2.8667, 'rohr-yellow-red-card': 5.7,
+  'rohr-goalkeeper-save-02': 4.3667, 'rohr-defending-01': 6.2333, 'rohr-goalkeeper-save-03': 8.9, 'rohr-dribble-03': 3.3667,
+  'rohr-juggling-03': 4.7, 'rohr-throw-in': 7.9333, 'rohr-yellow-card': 2.8667, 'rohr-yellow-red-card': 5.7,
   'rohr-juggling-01': 3.1333, 'rohr-juggling-02': 3.7333, 'rohr-sitting-clapping': 3.1667, 'rohr-standing-clapping': 3.5,
-  'rohr-clapping-and-agree': 3.0333, 'rohr-clap-twice-hand-up': 3.3667, 'rohr-swaying-arms': 3.9, 'rohr-hands-up-swaying': 4,
+  'rohr-clapping-and-agree': 3.0333, 'rohr-clap-twice-hand-up': 3.3667, 'rohr-swaying-arms': 3.4, 'rohr-hands-up-swaying': 4,
   'rohr-hands-up-looking-up': 3.7667, 'rohr-standing-selfie': 4, 'rohr-sitting-phone-video': 3.3667 };
 // [giro 180c] clip ad ANELLO (pubblico + palleggi, 3-4 s): l'ultimo fotogramma deve coincidere col primo (chiusura dell'anello)
-const ANELLO = ['rohr-clapping-hands-up', 'rohr-fist-up-cheering', 'rohr-pointing-up-cheering', 'rohr-juggling-01', 'rohr-juggling-02',
+const ANELLO = ['rohr-clapping-hands-up', 'rohr-fist-up-cheering', 'rohr-pointing-up-cheering', 'rohr-juggling-01', 'rohr-juggling-02', 'rohr-juggling-03',
   'rohr-sitting-clapping', 'rohr-standing-clapping', 'rohr-clapping-and-agree', 'rohr-clap-twice-hand-up', 'rohr-swaying-arms',
   'rohr-hands-up-swaying', 'rohr-hands-up-looking-up', 'rohr-standing-selfie', 'rohr-sitting-phone-video'];
 const PESO_MAX = 3.0e6;   // dichiarato nel rapporto 180c: 2,76 MB (24 clip, quelle lunghe accorciate a 3-4 s)
