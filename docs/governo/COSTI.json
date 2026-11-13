@@ -1510,5 +1510,33 @@
     "cache_read_tokens": 22348552,
     "worker_epoch": 1,
     "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYiaBNrXgtVCpw7YStxDq",
+    "titolo": "giro 185 tasto momento: in corsa al titolo solo le partite decisive (PO-384)",
+    "creata": "2026-11-13T20:41:35Z",
+    "chiusa": "2026-11-13T21:32:24Z",
+    "cost_usd": 3.07537606,
+    "output_tokens": 33324,
+    "cache_read_tokens": 6157220,
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYia95vFcJjzCQcbVZZ3j",
+    "titolo": "giro 186 strumenti dopo la partita riproducibile (audio-161, tifosi-171, box-fischio-169)",
+    "creata": "2026-11-13T20:52:02Z",
+    "chiusa": "2026-11-13T22:31:56Z",
+    "cost_usd": 3.51144132,
+    "output_tokens": 26928,
+    "cache_read_tokens": 9090393,
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
   }
 ]

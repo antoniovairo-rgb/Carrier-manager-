@@ -1461,3 +1461,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Verdi: rigore-79 e tutti gli strumenti della cronaca del giro 167 (ball-alive, trama, bg-sync, bg-continuity, bg-decision, bg-rhythm, cronaca-motore-167).
 - Rossi: rigore-139 (non giudicato: 2 battute di rigore su 3 minime con la partita ora riproducibile), solo-highlight-166 (controllo 12: interviste 0 e 0 dopo partita senza posta, conseguenza della decisione PO-375), riproduci-175 (1 nome su 5: il minuto del primo evento al calcio d'inizio cambia 0/1 fra due ripetizioni: residuo vero di non determinismo).
 - Giro 187 (terzo in contemporanea con 185 e 186): semi di rigore-139, criterio del controllo 12 allineato a PO-375 senza renderlo più permissivo, correzione del residuo al minuto 0/1. Il terzo blocco della verifica prosegue.
+
+## 13/11 ~23:55 Roma — giri 185 e 186 uniti in lavoro/192 (dca5c00a)
+- Giro 185 (PO-384): in corsa al titolo e in lotta salvezza il tasto «Vai al prossimo momento» si ferma solo su scontri diretti, ultime 3 giornate e partite in cui il verdetto è possibile (prima 9 fermate su 9, dopo 4–5 su 9). Rosso __CPM_NO_G185, guardiano momento-185.
+- Giro 186: strumenti di tifosi-171 e box-fischio-169 stabili su 3–4 corse, audio-161 con nuovo seme di controllo.
+- Nessun conflitto; check-src identico. Dopo il terzo blocco si rifanno, uno alla volta: momento-185, momento-165, momento-165b, momento-173, tifosi-171, audio-161, box-fischio-169, test:logic, save-compat, tripath-chokepoint. solo-highlight-166 aspetta il giro 187.
