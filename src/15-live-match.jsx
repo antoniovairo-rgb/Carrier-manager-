@@ -2805,6 +2805,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [giro 172 PO-370] pannello audio in partita: si apre dall'altoparlante della barra, mette in pausa e alla chiusura riprende
+     SOLO se prima la partita non era gia' in pausa. Rosso window.__CPM_NO_G172: niente icona. */
+  const [audio172,setAudio172]=useState(false);const audioPausa172=useRef(false);
+  const _apriAudio172=()=>{audioPausa172.current=paused;setPaused(true);setAudio172(true);};
+  const _chiudiAudio172=()=>{setAudio172(false);if(!audioPausa172.current)setPaused(false);};
+  const _icoAudio172=()=>{let m=false;try{m=!!AudioMgr.getCfg().mute;}catch(_e){}return m?"🔇":"🔊";};
+  const _g172=!(typeof window!=='undefined'&&window.__CPM_NO_G172);
   /* [7.909.0 — D7 revocata] L'interruttore «Corpi: leggeri / pieni» del menu di pausa ha finito il suo lavoro:
      serviva a far misurare al PO i due bracci sul suo telefono, la misura e' arrivata (pieni 31-32 fps, leggeri
      29-30) e ha revocato la 7.907. Via il bottone e la preferenza; il campo usa il corpo pieno e il contatore dei
@@ -11032,6 +11039,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {paused?"▶":"⏸"}
                   </button>
                 )}
+                {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                  <button data-cpm="audio-partita" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.7)",lineHeight:1,...(_hb292?{..._hb292,margin:"-14px -4px"}:{})}}>{_icoAudio172()}</button>
+                )}
                 {/* [7.484.0] VELOCITA' DELLA PARTITA, scelta dal giocatore. Sta accanto alla pausa perche'
                     e' lo stesso gesto — «quanto in fretta scorre» — e perche' l'intestazione e' l'unica
                     zona sempre visibile in tutte le fasi. Bersagli da 30px d'altezza utile: si tocca col
@@ -11120,6 +11130,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button className="cpm-t40m" onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginLeft:10,marginRight:_no108("13")?22:26}:{})}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                  )}
+                  {_g172&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                    <button data-cpm="audio-partita" className="cpm-t40m" onClick={_apriAudio172} aria-label="Audio della partita" title="Audio (mette in pausa)" style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.75)",lineHeight:1,...(_hbV2108?{..._hbV2108,margin:"-14px -3px"}:{}),...(_t40m108?{marginRight:_no108("13")?22:26}:{})}}>{_icoAudio172()}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&!_sh173/* [giro 173] */&&(
                     <button className="cpm-t40m"
@@ -11839,7 +11852,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>)}
               {/* Pause overlay */}
-              {paused&&!bugNote&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+              {_g172&&audio172&&<PannelloAudio172 onClose={_chiudiAudio172}/>}
+              {paused&&!bugNote&&!(_g172&&audio172)&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>

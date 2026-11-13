@@ -79,7 +79,7 @@ const AudioMgr=(function(){
   //   nessun Math.random nuovo. Rosso: window.__CPM_NO_G149 → l'audio di prima, identico.
   const _g149On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G149);
   const A149='assets/audio/';
-  const F149={'ball.kick':{g:0.65,f:['sfx/ball/calcio-1','sfx/ball/calcio-2','sfx/ball/calcio-3','sfx/ball/calcio-4']},'ball.pass':{g:0.45,f:['sfx/ball/passaggio-1','sfx/ball/passaggio-2','sfx/ball/passaggio-3']},'ball.header':{g:0.65,f:['sfx/ball/testa-1','sfx/ball/testa-2']},'ball.post':{g:0.55,f:['sfx/ball/palo-1','sfx/ball/palo-2']},'ball.net':{g:0.45,f:['sfx/ball/rete-1']},'ball.bounce':{g:0.55,f:['sfx/ball/contrasto-1','sfx/ball/contrasto-2']},'gk.save':{g:0.7,f:['sfx/ball/parata-1','sfx/ball/parata-2']},'ref.whistle':{g:1.2,f:['sfx/referee/fischio-1','sfx/referee/fischio-2']},'ref.whistle2':{g:1.2,f:['sfx/referee/fischio-doppio']},'ref.whistle_final':{g:1.3,f:['sfx/referee/fischio-finale']},'crowd.roar':{g:0.95,f:['sfx/crowd/boato-1','sfx/crowd/boato-2']},'crowd.applause':{g:0.6,f:['sfx/crowd/applausi-1','sfx/crowd/applausi-2']},'crowd.cheer':{g:0.7,f:['sfx/crowd/esulta-1']},'crowd.boo':{g:0.3,f:['sfx/crowd/fischi-1']},'crowd.ohh':{g:0.7,f:['sfx/crowd/ohh-1']},'ui.click':{g:0.25,f:['sfx/ui/click-1','sfx/ui/click-2','sfx/ui/click-3']},'ui.nav':{g:0.35,f:['sfx/ui/nav-1']},'ui.back':{g:0.35,f:['sfx/ui/indietro-1']},'ui.confirm':{g:0.4,f:['sfx/ui/conferma-1']},'ui.error':{g:0.4,f:['sfx/ui/errore-1']},'ui.popup':{g:0.35,f:['sfx/ui/popup-1']},'ui.close':{g:0.35,f:['sfx/ui/chiudi-1']},'notify.pos':{g:0.4,f:['sfx/notifications/positiva-1']},'notify.neg':{g:0.4,f:['sfx/notifications/negativa-1']},'notify.info':{g:0.35,f:['sfx/notifications/info-1']},'week.advance':{g:0.35,f:['sfx/ui/settimana-1']},'gala.envelope':{g:0.4,f:['sfx/career/busta-1']},'career.contract':{g:0.45,f:['sfx/career/contratto-1']},'career.renew':{g:0.45,f:['sfx/career/rinnovo-1']},'career.record':{g:0.45,f:['sfx/career/record-1']},'career.callup':{g:0.45,f:['sfx/career/convocazione-1']},'career.milestone':{g:0.45,f:['sfx/career/traguardo-1']},'career.levelup':{g:0.45,f:['sfx/career/livello-1']},'season.relegation':{g:0.45,f:['sfx/career/retrocessione-1']},'gala.reveal':{g:0.45,f:['sfx/career/rivelazione-1']},'career.trophy':{g:0.45,f:['music/awards/fanfara-1']},'music.home':{g:0.55,f:['music/menu/spiaggia-loop']},'music.career':{g:0.55,f:['music/career/avventura-loop']},'music.premiazioni':{g:0.55,f:['music/awards/trionfo']},'music.cerimonia':{g:0.55,f:['music/ceremony/il-mondo-e-nostro']}};
+  const F149={'ball.kick':{g:0.65,f:['sfx/ball/calcio-1','sfx/ball/calcio-2','sfx/ball/calcio-3','sfx/ball/calcio-4']},'ball.pass':{g:0.45,f:['sfx/ball/passaggio-1','sfx/ball/passaggio-2','sfx/ball/passaggio-3']},'ball.header':{g:0.65,f:['sfx/ball/testa-1','sfx/ball/testa-2']},'ball.post':{g:0.55,f:['sfx/ball/palo-1','sfx/ball/palo-2']},'ball.net':{g:0.45,f:['sfx/ball/rete-1']},'ball.bounce':{g:0.55,f:['sfx/ball/contrasto-1','sfx/ball/contrasto-2']},'gk.save':{g:0.7,f:['sfx/ball/parata-1','sfx/ball/parata-2']},'ref.whistle':{g:1.2,f:['sfx/referee/fischio-1','sfx/referee/fischio-2']},'ref.whistle2':{g:1.2,f:['sfx/referee/fischio-doppio']},'ref.whistle_final':{g:1.3,f:['sfx/referee/fischio-finale']},'crowd.roar':{g:0.95,f:['sfx/crowd/boato-1','sfx/crowd/boato-2']},'crowd.applause':{g:0.6,f:['sfx/crowd/applausi-1','sfx/crowd/applausi-2']},'crowd.cheer':{g:0.7,f:['sfx/crowd/esulta-1','sfx/crowd/esulta-2']},'crowd.boo':{g:0.3,f:['sfx/crowd/fischi-1','sfx/crowd/fischi-2']},'crowd.ohh':{g:0.7,f:['sfx/crowd/ohh-1','sfx/crowd/ohh-2']},'ui.click':{g:0.25,f:['sfx/ui/click-1','sfx/ui/click-2','sfx/ui/click-3']},'ui.nav':{g:0.35,f:['sfx/ui/nav-1']},'ui.back':{g:0.35,f:['sfx/ui/indietro-1']},'ui.confirm':{g:0.4,f:['sfx/ui/conferma-1']},'ui.error':{g:0.4,f:['sfx/ui/errore-1']},'ui.popup':{g:0.35,f:['sfx/ui/popup-1']},'ui.close':{g:0.35,f:['sfx/ui/chiudi-1']},'notify.pos':{g:0.4,f:['sfx/notifications/positiva-1']},'notify.neg':{g:0.4,f:['sfx/notifications/negativa-1']},'notify.info':{g:0.35,f:['sfx/notifications/info-1']},'week.advance':{g:0.35,f:['sfx/ui/settimana-1']},'gala.envelope':{g:0.4,f:['sfx/career/busta-1']},'career.contract':{g:0.45,f:['sfx/career/contratto-1']},'career.renew':{g:0.45,f:['sfx/career/rinnovo-1']},'career.record':{g:0.45,f:['sfx/career/record-1']},'career.callup':{g:0.45,f:['sfx/career/convocazione-1']},'career.milestone':{g:0.45,f:['sfx/career/traguardo-1']},'career.levelup':{g:0.45,f:['sfx/career/livello-1']},'season.relegation':{g:0.45,f:['sfx/career/retrocessione-1']},'gala.reveal':{g:0.45,f:['sfx/career/rivelazione-1']},'career.trophy':{g:0.45,f:['music/awards/fanfara-1']},'music.home':{g:0.55,f:['music/menu/spiaggia-loop']},'music.career':{g:0.55,f:['music/career/avventura-loop']},'music.premiazioni':{g:0.55,f:['music/awards/trionfo']},'music.cerimonia':{g:0.55,f:['music/ceremony/il-mondo-e-nostro']},'crowd.bed':{g:0.5,f:['sfx/crowd/letto-1','sfx/crowd/letto-2']},'crowd.swell':{g:0.5,f:['sfx/crowd/caldo-1','sfx/crowd/caldo-2']},'ui.confirm172':{g:0.2,f:['sfx/ui/conferma-morbida']},'ui.popup172':{g:0.16,f:['sfx/ui/apri-morbida']},'notify.pos172':{g:0.18,f:['sfx/notifications/positiva-morbida']},'notify.neg172':{g:0.18,f:['sfx/notifications/negativa-morbida']},'notify.info172':{g:0.14,f:['sfx/notifications/info-morbida']},'week.advance172':{g:0.16,f:['sfx/ui/settimana-morbida']}};
   // [giro 161 — decisioni PO 11/11] tre voci nuove nella stessa tabella (stesso registro, stessa pipeline): l'«ohh» dello stadio
   //   (registrazione CC0 di Commons al posto della sintesi) e i due brani delle CERIMONIE, l'unico posto fuori dalla partita dove
   //   suona la musica (premiazioni · presentazione · fine stagione). Rosso: window.__CPM_NO_G161 → l'audio del giro 149, identico
@@ -88,19 +88,46 @@ const AudioMgr=(function(){
   const K161={'crowd.ohh':1,'music.premiazioni':1,'music.cerimonia':1};
   const CER161={premiazioni:'music.premiazioni',presentazione:'music.cerimonia',finestagione:'music.cerimonia'};
   let _cer161=null,_ga161=0;
+  // [giro 172 — PO-369 «l'audio del pubblico e' terribile» (finto/sporco · troppo forte · sempre uguale) e PO-370 «effetti nel menu»
+  //   («piu' discreti e brevi»)] MISURATO prima (tools/audio-172/misura-file.py, tests/visual/misura-172.mjs): il letto era un file
+  //   SINTETICO di 23,8 s in loop fisso (25 ripetizioni identiche in 10 minuti, salto al giunto 1,6 volte il passo tipico), a -29,0
+  //   LUFS momentanei contro -27,9 degli effetti di gioco (margine 1,1 dB); un suono di menu a OGNI tocco (100 su 100 tocchi); suoni
+  //   d'interfaccia lunghi 0,29-0,61 s. Ora: letto = registrazione CC0 vera dello stadio (due strati) suonata a GRANI seedati (7-11 s,
+  //   dissolvenza a potenza costante di 2,5 s, mai la stessa porzione due volte di fila), ~8 dB sotto gli effetti; strati «caldi» sulle
+  //   occasioni, calo nei momenti morti; varianti nuove di esultanza/fischi/«ohh»; menu = suoni nuovi < 150 ms, solo su conferme
+  //   importanti e notifiche. Nessun Math.random: scelte da hashStr(seme di partita | contatore). Rosso: window.__CPM_NO_G172 → come prima.
+  const _g172On=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G172);
+  const K172={'crowd.bed':1,'crowd.swell':1,'ui.confirm172':1,'ui.popup172':1,'notify.pos172':1,'notify.neg172':1,'notify.info172':1,'week.advance172':1};
+  const N172={'sfx/crowd/esulta-2':1,'sfx/crowd/fischi-2':1,'sfx/crowd/ohh-2':1};/* varianti nuove di eventi gia' esistenti: col rosso non si scelgono */
+  const ALIAS172={'ui.confirm':'ui.confirm172','ui.popup':'ui.popup172','notify.pos':'notify.pos172','notify.neg':'notify.neg172','notify.info':'notify.info172','week.advance':'week.advance172'};
+  const BED172={xf:2.5,dMin:7,dMax:11,riposo:0.16,tau:8,vicino:4};
+  const _log172=[],_logBed172=[];let _bedN172=0,_ui172=0;
+  /* il piano dei grani e' una funzione PURA (seme, contatore, grano precedente, durate degli strati): il guardiano la percorre per 10 minuti */
+  function _bedPlan172(seed,c,prev,lens){
+    const h=hashStr('bed172|'+seed+'|'+c)>>>0,h2=hashStr('bed172o|'+seed+'|'+c)>>>0;
+    const li=h%lens.length,len=lens[li],d=BED172.dMin+(h2%1000)/1000*(BED172.dMax-BED172.dMin);
+    let o=((h2>>>10)%1000)/1000*len;
+    if(prev&&prev.li===li){const dd=Math.abs(o-prev.o),dc=Math.min(dd,len-dd);if(dc<BED172.vicino)o=(o+len/2)%len;}
+    return {li,o:+o.toFixed(3),d:+d.toFixed(3)};
+  }
   const _ALIAS149={};/* le fanfare (trofeo/promozione/gala) passano da fanfare(): file della fanfara + applausi veri */
   const _cat149=k=>/^(ball|gk)\./.test(k)?'match':/^ref\./.test(k)?'referee':/^crowd\./.test(k)?'crowd':/^music\./.test(k)?'music':'sfx';
   const _buf149={};let _seed149=0;const _cnt149={},_last149={},_plays149={};
   function _pick149(k,n){const c=_cnt149[k]=(_cnt149[k]|0)+1;let i=(hashStr(k+'|'+_seed149+'|'+c)>>>0)%n;if(n>1&&i===_last149[k])i=(i+1)%n;_last149[k]=i;return i;}
-  function _load149(){Object.keys(F149).forEach(k=>{if(K161[k]&&!_g161On())return;F149[k].f.forEach((n,i)=>_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;if(_cer161&&CER161[_cer161]===k&&!mus)_cerStart161();}));});}
+  function _load149(){Object.keys(F149).forEach(k=>{if(K161[k]&&!_g161On())return;if(K172[k]&&!_g172On())return;F149[k].f.forEach((n,i)=>{if(N172[n]&&!_g172On())return;_tryFetchDecode([A149+n+'.ogg',A149+n+'.mp3'],0,buf=>{(_buf149[k]||(_buf149[k]=[]))[i]=buf;if(_cer161&&CER161[_cer161]===k&&!mus)_cerStart161();
+      if(k==='crowd.bed'&&inMatch&&bed&&!bed.g172&&!_matchHushed)_swapBed172();/* [giro 172] il letto vero arriva dopo l'avvio: passa ai grani in dissolvenza */});});});}
   function _play149(name,mul,catOver){
     if(!_g149On()||!ready)return false;
-    const k=_ALIAS149[name]||name,E=F149[k],L=_buf149[k];if(!E||!L)return false;if(K161[k]&&!_g161On())return false;
-    const n=E.f.length;let i=_pick149(k,n),t=0;while(!L[i]&&t<n){i=(i+1)%n;t++;}if(!L[i])return false;
+    const k=(_g172On()&&ALIAS172[name])||_ALIAS149[name]||name,E=F149[k],L=_buf149[k];if(!E||!L)return false;if(K161[k]&&!_g161On())return false;if(K172[k]&&!_g172On())return false;
+    const n=E.f.length;let i,t=0;
+    if(_g172On()||!E.f.some(f=>N172[f])){i=_pick149(k,n);while(!L[i]&&t<n){i=(i+1)%n;t++;}}
+    else{const ok=E.f.map((f,j)=>j).filter(j=>!N172[E.f[j]]);i=ok[_pick149(k,ok.length)];}/* [giro 172] col rosso le varianti nuove non esistono: stessa scelta di prima */
+    if(!L[i])return false;
+    if(/^crowd\./.test(k)){_log172.push(k+':'+i);if(_log172.length>4000)_log172.shift();}/* [giro 172] testimone: quale campione e' partito */
     try{const s=ctx.createBufferSource();s.buffer=L[i];const g=ctx.createGain();g.gain.value=E.g*(mul==null?1:mul);
       s.connect(g);g.connect(dest(catOver||_cat149(k)));s.start();
       s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};
-      _plays149[k]=(_plays149[k]|0)+1;return true;}catch(_e){return false;}
+      _plays149[k]=(_plays149[k]|0)+1;if(k!==name)_plays149[name]=(_plays149[name]|0)+1;return true;}catch(_e){return false;}
   }
   const _urlBufs={};let _samplesTried=false;
   function _tryFetchDecode(urls,i,onOk){
@@ -223,9 +250,38 @@ const AudioMgr=(function(){
       if(old){old.g.gain.setTargetAtTime(0.0001,now(),0.8);setTimeout(()=>{try{old.src.stop();old.src.disconnect();old.g.disconnect();if(old.lp)old.lp.disconnect();}catch(_e){}},1600);}
     }catch(_e){}
   }
+  // ---- [giro 172] LETTO A GRANI: porzioni di 7-11 s scelte dal piano seedato, sovrapposte con dissolvenza a potenza costante ----
+  const _bedGain172=t=>0.125*(0.55+1.5*t);/* a 0,30 (avvio) il letto esce ~8 dB sotto gli effetti (misura nel guardiano audio-172) */
+  let _cvIn172=null,_cvOut172=null;
+  function _curve172(){if(_cvIn172)return;const N=64;_cvIn172=new Float32Array(N);_cvOut172=new Float32Array(N);for(let j=0;j<N;j++){const a=j/(N-1)*Math.PI/2;_cvIn172[j]=Math.max(0.0001,Math.sin(a));_cvOut172[j]=Math.max(0.0001,Math.cos(a));}}
+  function _bedGrain172(){
+    if(!bed||!bed.g172||!ready)return;
+    try{const L=_buf149['crowd.bed'];const c=++_bedN172;const p=_bedPlan172(_seed149,c,bed.prev,[L[0].duration,L[1].duration]);bed.prev=p;
+      _logBed172.push(p.li+':'+p.o);if(_logBed172.length>400)_logBed172.shift();
+      _curve172();const buf=L[p.li],X=BED172.xf,t0=Math.max(now()+0.05,bed.next||0);
+      const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;const g=ctx.createGain();g.gain.value=0.0001;
+      g.gain.setValueCurveAtTime(_cvIn172,t0,X);g.gain.setValueAtTime(1,t0+p.d);g.gain.setValueCurveAtTime(_cvOut172,t0+p.d,X);
+      s.connect(g);g.connect(bed.g);s.start(t0,p.o%buf.duration);s.stop(t0+p.d+X+0.05);
+      s.onended=()=>{try{s.disconnect();g.disconnect();}catch(_e){}};
+      bed.srcs.push(s);if(bed.srcs.length>4)bed.srcs.shift();
+      bed.next=t0+p.d;bed.timer=setTimeout(_bedGrain172,Math.max(200,(bed.next-now()-1.0)*1000));}catch(_e){}
+  }
+  function _relax172(){/* calo nei momenti morti: senza eventi il letto torna verso il riposo (tau 8 s) */
+    if(!bed||!bed.g172)return;crowdLevel(bed.level+(BED172.riposo-bed.level)*(1-Math.exp(-1/BED172.tau)));}
+  function _bedStart172(base){
+    const L=_buf149['crowd.bed'];if(!_g172On()||!ready||!L||!L[0]||!L[1])return false;
+    try{const g=ctx.createGain();g.gain.value=0.0001;g.connect(dest('crowd'));
+      bed={g,lp:null,src:null,level:base||0.30,real:true,g172:true,srcs:[],prev:null,next:0,timer:null,relax:null};
+      g.gain.setTargetAtTime(_bedGain172(bed.level),now(),1.2);_bedGrain172();bed.relax=setInterval(_relax172,1000);return true;}catch(_e){return false;}
+  }
+  function _bedKill172(b,fade){try{if(b.timer)clearTimeout(b.timer);if(b.relax)clearInterval(b.relax);b.g.gain.setTargetAtTime(0.0001,now(),fade);
+    setTimeout(()=>{try{b.srcs.forEach(x=>{try{x.stop();}catch(_e){}});b.g.disconnect();}catch(_e){}},fade*2500);}catch(_e){}}
+  function _swapBed172(){try{const old=bed;bed=null;if(!_bedStart172(old?old.level:0.30)){bed=old;return;}
+      if(old){old.g.gain.setTargetAtTime(0.0001,now(),0.8);setTimeout(()=>{try{if(old.src){old.src.stop();old.src.disconnect();}old.g.disconnect();if(old.lp)old.lp.disconnect();}catch(_e){}},1600);}}catch(_e){}}
   function crowdStart(base){
     if(!ready||bed)return;
     _matchHushed=false;
+    if(_g172On()&&_bedStart172(base))return;
     try{
       if(_urlBufs['crowd.bed']){_startRealBed(base);return;}
       // fallback SYNTH (finché il file reale non è caricato/assente): rumore filtrato
@@ -240,7 +296,8 @@ const AudioMgr=(function(){
   }
   function crowdLevel(v){
     if(!bed)return;try{const t=Math.max(0.03,Math.min(1,v));bed.level=t;
-      if(bed.real){bed.g.gain.setTargetAtTime(_bedGain(t),now(),0.5);}
+      if(bed.g172){bed.g.gain.setTargetAtTime(_bedGain172(t),now(),0.5);}
+      else if(bed.real){bed.g.gain.setTargetAtTime(_bedGain(t),now(),0.5);}
       else{bed.g.gain.setTargetAtTime(0.09+t*0.45,now(),0.5);if(bed.lp)bed.lp.frequency.setTargetAtTime(560+t*1700,now(),0.6);}}catch(_e){}
   }
   // [7.64.0 collaudo PO «il gol sembra la musichetta di wonder woman»] la vecchia crowdSwell usava un BANDPASS a
@@ -316,7 +373,7 @@ const AudioMgr=(function(){
     vibrate(60);
   }
   function crowdStop(){
-    if(!bed)return;try{const b=bed;bed=null;b.g.gain.setTargetAtTime(0.0001,now(),0.6);
+    if(!bed)return;if(bed.g172){const b=bed;bed=null;_bedKill172(b,0.6);return;}try{const b=bed;bed=null;b.g.gain.setTargetAtTime(0.0001,now(),0.6);
       setTimeout(()=>{try{b.src.stop();b.src.disconnect();if(b.lp)b.lp.disconnect();b.g.disconnect();}catch(_e){}},1500);}catch(_e){}
   }
 
@@ -458,12 +515,18 @@ const AudioMgr=(function(){
     'gala.reveal':()=>arp(['C','E','G','C2','E2'],'sfx',0.08,0.2),
     'gala.winner':()=>fanfare(true),
     'gala.trophy':()=>fanfare(true),
+    // [giro 172] voci nuove (suonano da file; questa e' la sintesi di riserva se il file manca)
+    'crowd.bed':()=>crowdSwell(1.2,0.25,900),'crowd.swell':()=>crowdSwell(1.6,0.35,1400),
+    'ui.confirm172':()=>osc('sfx',{type:'sine',f0:560,f1:700,dur:0.1,peak:0.07}),'ui.popup172':()=>osc('sfx',{type:'sine',f0:440,f1:560,dur:0.1,peak:0.06}),
+    'notify.pos172':()=>osc('sfx',{type:'sine',f0:660,f1:880,dur:0.12,peak:0.07}),'notify.neg172':()=>osc('sfx',{type:'triangle',f0:400,f1:320,dur:0.12,peak:0.07}),
+    'notify.info172':()=>osc('sfx',{type:'sine',f0:700,f1:700,dur:0.09,peak:0.06}),'week.advance172':()=>osc('sfx',{type:'sine',f0:520,f1:620,dur:0.1,peak:0.06}),
   };
 
   // ---- API pubblica ------------------------------------------------------
   function play(name){
     if(SILENT()||!ready)return;
-    try{const fn=SFX[name];if(fn){_played++;if(name!=='career.trophy'&&_play149(name))return;fn();}}catch(_e){}
+    try{const fn=SFX[name];if(fn){
+      _played++;if(name!=='career.trophy'&&_play149(name))return;fn();}}catch(_e){}
   }
   /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
   const _mus23=(k)=>{if(_cer161&&_g161On())return;/* [giro 161] una cerimonia in corso tiene la sua musica */if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
@@ -481,7 +544,7 @@ const AudioMgr=(function(){
     else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
-  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];delete _last149[k];}); if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
+  function enterMatch(seed){ _seed149=(seed>>>0)||0;Object.keys(_cnt149).forEach(k=>{delete _cnt149[k];if(!_g172On())delete _last149[k];});/* [giro 172] l'ultimo campione si ricorda anche fra una partita e l'altra: mai lo stesso due volte di fila nemmeno al cambio di partita */ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
   function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
@@ -497,7 +560,8 @@ const AudioMgr=(function(){
         else if(h==='header')play('ball.header');
         else if(h==='cross'||h==='pass'||h==='build'||h==='dribble')play('ball.pass');
         else if(h==='tackle'||h==='def')play('ball.bounce');
-        if(bed)crowdLevel(Math.min(1,(bed.level||0.3)+0.12));// azione offensiva → letto sale
+        if(_g172On()&&bed&&bed.g172){const occ=/^(shot|freekick|penalty|header|cross)$/.test(h);crowdLevel(Math.min(1,(bed.level||0.3)+(occ?0.2:0.06)));if(occ)_play149('crowd.swell',0.45);}/* [giro 172] l'occasione scalda la curva (strato caldo), il resto appena */
+        else if(bed)crowdLevel(Math.min(1,(bed.level||0.3)+0.12));// azione offensiva → letto sale
       } else if(t==='CoherenceCheck'){
         const k=e.outKind;
         if(k==='post'){play('ball.post');if(!_play149('crowd.ohh'))crowdSwell(0.6,0.55,2000);}
@@ -506,8 +570,8 @@ const AudioMgr=(function(){
         else if(k==='wide'||k==='blocked'){if(!_play149('crowd.ohh',0.8))crowdSwell(0.5,0.35,1600);}/* [giro 161] l'«ohh» registrato; senza file (o col rosso) la sintesi di prima */
         else if(k==='foul'){play('ref.whistle');_play149('crowd.boo');}
         else if(k==='offside'){play('ref.whistle2');}
-      } else if(t==='GoalHero'){ play('ball.net');crowdRoar(); }
-      else if(t==='GoalTeam'){ play('ball.net');crowdRoar(); }
+      } else if(t==='GoalHero'){ play('ball.net');crowdRoar();if(_g172On()&&bed&&bed.g172)crowdLevel(0.85); }
+      else if(t==='GoalTeam'){ play('ball.net');crowdRoar();if(_g172On()&&bed&&bed.g172)crowdLevel(0.85); }/* [giro 172] dopo il boato lo stadio resta acceso e poi si calma da solo */
       else if(t==='GoalAgainst'){ if(_g161On()){_ga161++;if(!_play149('crowd.boo',1.8))crowdSwell(2.2,0.4,900);if(bed)crowdLevel(Math.max(0.16,(bed.level||0.3)-0.1));}else crowdSwell(2.2,0.4,900); }/* [giro 161] fischi della curva sul gol subito (la folla poi si abbassa) */
       else if(t==='HalfTime'){ refWhistle(2);crowdLevel(0.18); }
       else if(t==='MatchEnd'){ refWhistle(3); }
@@ -520,6 +584,7 @@ const AudioMgr=(function(){
   }
   function notifyCue(msg,color){
     if(SILENT()||!ready)return;
+    if(_g172On()){const tn=Date.now();if(tn-_ui172<450)return;_ui172=tn;}/* [giro 172] mai due notifiche sonore a raffica */
     try{const m=String(msg||'');const TC=(typeof TH!=='undefined')?TH:{};
       if(color===TC.danger||/❌|⚠️|infortun|svincol|retroces|eliminat|sconfitt|mancat/i.test(m))play('notify.neg');
       else if(/🏆|trofeo|campion|scudetto|record/i.test(m))play('career.trophy');
@@ -555,10 +620,19 @@ const AudioMgr=(function(){
       let pk=0,ss=0,N=0;for(let c=0;c<b.numberOfChannels;c++){const d=b.getChannelData(c);for(let j=0;j<d.length;j++){const v=Math.abs(d[j]);if(v>pk)pk=v;ss+=v*v;}N+=d.length;}
       return {n,caricato:true,durata:+b.duration.toFixed(3),picco_db:+(20*Math.log10(pk*E.g+1e-12)).toFixed(1),rms_db:+(20*Math.log10(Math.sqrt(ss/Math.max(1,N))*E.g+1e-12)).toFixed(1)};})};});
     o.sintesi=Object.keys(SFX);return o;};
+  // [giro 172] testimone (solo lettura): letto a grani, piano puro, campioni partiti per evento di folla
+  if(typeof window!=='undefined')window.__CPM_AUDIO172=()=>({on:_g172On(),ready,seed:_seed149,letto:bed?{g172:!!bed.g172,real:!!bed.real,livello:+(bed.level||0).toFixed(3),guadagno:bed.g172?+_bedGain172(bed.level).toFixed(4):null,grani:_bedN172}:null,
+    grani:_logBed172.slice(),scelte:_log172.slice(),plays:{..._plays149},piano:(seed,n,lens)=>{const o=[];let pr=null;for(let c=1;c<=n;c++){pr=_bedPlan172(seed,c,pr,lens);o.push(pr);}return o;},parametri:{...BED172}});
   if(typeof window!=='undefined')window.__CPM_AUDIO161=()=>({on:_g161On(),ready,cerimonia:_cer161,musica:musScene,golSubiti:_ga161,plays:{..._plays149}});
   function debug(){ return {ready,unlocked,silent:SILENT(),ctx:ctx?ctx.state:'none',inMatch,scene:musScene,bed:!!bed,played:_played,cfg:getCfg(),catalog:Object.keys(SFX)}; }
 
-  return {unlock,play,scene,ceremony,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
+  /* [giro 172 PO-370] il listener delegato dei tocchi: col verde suona SOLO sugli elementi marcati data-suono (conferma importante,
+     finestra principale), mai sulla navigazione, e mai due volte entro 450 ms; col rosso il click su ogni tocco di prima */
+  function tocco(el){if(SILENT()||!ready)return;try{
+    if(!_g172On()){if(el&&el.closest&&el.closest('button,[role="button"],a[href],.cpm-clickable,label'))play('ui.click');return;}
+    const m=el&&el.closest&&el.closest('[data-suono]');if(!m)return;const tn=Date.now();if(tn-_ui172<450)return;_ui172=tn;
+    play(m.getAttribute('data-suono')==='apri'?'ui.popup':'ui.confirm');}catch(_e){}}
+  return {unlock,play,tocco,scene,ceremony,enterMatch,exitMatch,hushMatch,event,crowd:crowdLevel,notifyCue,vibrate,setSuspended,
     ui:{click:()=>play('ui.click'),nav:()=>play('ui.nav'),back:()=>play('ui.back')},
     setOn,setVol,setMaster,toggleMute,getCfg,preview,debug,catalog:()=>Object.keys(SFX),cats:CATS};
 })();
@@ -567,6 +641,39 @@ const AudioMgr=(function(){
 //   gol subito (cronaca/microsim e scena difensiva). Solo audio + un contatore su window: nessun generatore pseudo-casuale, nessuno stato
 //   di partita — la sequenza della partita resta identica (match-sequence, replay, audio-161 lo misurano). Sotto ?cpmtest l'AudioMgr e'
 //   muto (SILENT) ma il contatore resta: e' il testimone del guardiano. Rosso: window.__CPM_NO_G161 → non si emette, come prima.
+/* [giro 172 — PO-370 «durante la partita devi dare la possibilita' di accedere al setting dell'audio», scelta «Icona audio in partita»]
+   Il pannello che apre l'altoparlante della barra di partita (2D e 3D): tre cursori — Pubblico (bus crowd), Effetti (bus match:
+   pallone, parate, pali), Musica (bus music) — e Muto. Sono le STESSE impostazioni della schermata generale (AudioMgr.setVol /
+   toggleMute → localStorage 'cpm-audio'): nessun secondo salvataggio. La partita resta in pausa finche' e' aperto (LiveMatch). */
+const AUDIO172_VOCI=[{k:'crowd',l:'Pubblico',i:'📣'},{k:'match',l:'Effetti',i:'⚽'},{k:'music',l:'Musica',i:'🎵'}];
+function PannelloAudio172({onClose}){
+  const[cfg,setCfg]=useState(()=>{try{return AudioMgr.getCfg();}catch(_e){return null;}});
+  if(!cfg)return null;
+  const rinfresca=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
+  const muto=!!cfg.mute;
+  return(<div data-cpm="audio-pannello" role="dialog" aria-modal="true" aria-label="Audio della partita" onClick={onClose}
+      style={{position:'fixed',inset:0,zIndex:9000,background:'rgba(5,8,20,0.74)',display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
+    <div onClick={e=>e.stopPropagation()} style={{width:'min(340px,100%)',background:TINTE.sup,border:'1px solid '+TINTE.bordo,borderRadius:RAD.lg,padding:'14px 16px 16px',color:TINTE.testo,boxShadow:'0 12px 40px rgba(0,0,0,.55)'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+        <div style={{fontSize:FS.body,fontWeight:800}}>{muto?'🔇':'🔊'} Audio</div>
+        <button data-cpm="audio-chiudi-x" aria-label="Chiudi" onClick={onClose} style={{background:'none',border:'none',color:TINTE.sec,fontSize:FS.body,cursor:'pointer',padding:'8px 10px',margin:'-8px -10px',fontFamily:'inherit'}}>✕</button>
+      </div>
+      <div style={{fontSize:FS.caption,color:TINTE.sec,marginBottom:12}}>Partita in pausa · le scelte valgono anche nelle Impostazioni</div>
+      <label style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 0',borderBottom:'1px solid '+TINTE.bordo,marginBottom:10,cursor:'pointer'}}>
+        <span style={{fontSize:FS.small,fontWeight:700}}>🔇 Muto</span>
+        <input data-cpm="audio-muto" type="checkbox" checked={muto} onChange={()=>{try{AudioMgr.toggleMute();}catch(_e){}rinfresca();}} style={{width:22,height:22,accentColor:TINTE.oro}}/>
+      </label>
+      {AUDIO172_VOCI.map(r=>{const vol=Math.round((cfg.vol[r.k]||0)*100),spento=!cfg.on[r.k];return(
+        <div key={r.k} style={{marginBottom:10,opacity:(muto||spento)?0.5:1}}>
+          <div style={{display:'flex',justifyContent:'space-between',fontSize:FS.small,fontWeight:700,marginBottom:4}}><span>{r.i} {r.l}</span><span className="cpm-num" style={{color:TINTE.sec,fontSize:FS.caption}}>{spento?'spento':vol+'%'}</span></div>
+          <input data-cpm={'audio-'+r.k} type="range" min="0" max="100" value={vol} aria-label={r.l}
+            onChange={e=>{const v=(+e.target.value)/100;try{AudioMgr.setVol(r.k,v);if(v>0&&!cfg.on[r.k])AudioMgr.setOn(r.k,true);}catch(_x){}rinfresca();}}
+            style={{width:'100%',height:28,accentColor:TINTE.oro,cursor:'pointer'}}/>
+        </div>);})}
+      <button data-cpm="audio-chiudi" onClick={onClose} style={{width:'100%',marginTop:4,minHeight:44,borderRadius:RAD.sm,border:'none',background:TINTE.testo,color:TINTE.bg,fontWeight:800,fontSize:FS.small,cursor:'pointer',fontFamily:'inherit'}}>Riprendi la partita</button>
+    </div>
+  </div>);
+}
 function golSubito161(src){try{if(typeof window!=='undefined'){if(window.__CPM_NO_G161)return;const w=window.__CPM_GA161||(window.__CPM_GA161={n:0,src:{}});w.n++;w.src[src]=(w.src[src]|0)+1;}AudioMgr.event({type:'GoalAgainst',src});}catch(_e){}}
 // [7.89.0 collaudo PO] AUDIO IN PAUSA IN BACKGROUND: quando la scheda/app va in background (visibilitychange→hidden
 //   o pagehide) l'AudioContext viene SOSPESO → musica ed effetti tacciono; al ritorno in foreground si riprende

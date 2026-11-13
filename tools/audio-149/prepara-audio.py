@@ -89,7 +89,37 @@ USCITE = [
   # [giro 161 — decisione PO 11/11: fuori partita la musica suona SOLO nelle cerimonie] brani suonati una volta, non in loop
   ('music.premiazioni', 'music/awards/trionfo', 'oga-triumphant', None, None, '', .55),
   ('music.cerimonia', 'music/ceremony/il-mondo-e-nostro', 'oga-world-is-ours', None, [(0, 48.0)], '', .55),
+  # [giro 172 — PO-369 «l'audio del pubblico e' terribile»: finto/sporco, troppo forte, sempre uguale] il LETTO della folla diventa la
+  #   registrazione CC0 vera dello Stade de France (Romainbehar, la stessa dell'«ohh»), tolto l'«ohh» (31-35 s): due strati che il gioco
+  #   alterna a grani seedati (mai la stessa porzione due volte di fila). Taglio d'ascolto NON fatto: scelto sulle misure (inviluppo,
+  #   creste a 20 ms, piattezza spettrale), da giudicare nella pagina d'ascolto. Filtro: via il rombo sotto 110 Hz e sopra 7 kHz.
+  ('crowd.bed', 'sfx/crowd/letto-1', 'commons-ohh-france-usa', None, [(0.6, 22.0)], 'highpass=f=110,lowpass=f=7000', .5),
+  ('crowd.bed', 'sfx/crowd/letto-2', 'commons-ohh-france-usa', None, [(22.6, 8.0), (43.6, 6.0)], 'highpass=f=110,lowpass=f=7000', .5),
+  #   strati CALDI (le occasioni): la folla agitata dopo l'azione fallita (35,2-41,6 s) e le grida dell'arena della TDC (68-74 s, tratto
+  #   senza campanelle ne' sirene: creste a 20 ms ≤ 3,5 dB)
+  ('crowd.swell', 'sfx/crowd/caldo-1', 'commons-ohh-france-usa', None, [(35.2, 6.4)], 'highpass=f=110,lowpass=f=7000', .5),
+  ('crowd.swell', 'sfx/crowd/caldo-2', 'tdc-amb-arena', None, [(68.0, 6.0)], 'highpass=f=110,lowpass=f=7000', .5),
+  #   varianti: mai lo stesso campione due volte di fila. ohh-2 e' DERIVATO da ohh-1 (stessa registrazione, -1,3 semitoni e 7% piu' lento):
+  #   non esiste un secondo «ohh» CC0 di stadio raggiungibile da qui — dichiarato nel rapporto
+  ('crowd.cheer', 'sfx/crowd/esulta-2', 'tdc-crowds-applause', None, [(116.0, 2.2)], I, .70),
+  ('crowd.boo', 'sfx/crowd/fischi-2', 'tdc-whistles-crowd', None, [(0.0, 1.15)], 'highpass=f=400', .30),
+  ('crowd.ohh', 'sfx/crowd/ohh-2', 'commons-ohh-france-usa', None, [(31.0, 4.0)], I + ',asetrate=48000*0.93,aresample=48000', .70),
+  # [giro 172 — PO-370 «effetti nel menu»: «piu' discreti e brevi»] suoni d'interfaccia NUOVI, < 150 ms, morbidi (passa-basso 4,5 kHz,
+  #   coda in dissolvenza) e piu' bassi (g ~ meta' di quelli del giro 149). Suonano solo su conferme importanti, finestre principali e notifiche.
+  ('ui.confirm172', 'sfx/ui/conferma-morbida', 'kenney-interface', 'Audio/bong_001.ogg', None, 'lowpass=f=4500', .20),
+  ('ui.popup172', 'sfx/ui/apri-morbida', 'kenney-interface', 'Audio/toggle_001.ogg', None, 'lowpass=f=4500', .16),
+  ('notify.pos172', 'sfx/notifications/positiva-morbida', 'kenney-interface', 'Audio/glass_005.ogg', None, 'lowpass=f=4500', .18),
+  ('notify.neg172', 'sfx/notifications/negativa-morbida', 'kenney-interface', 'Audio/back_004.ogg', None, 'lowpass=f=4500', .18),
+  ('notify.info172', 'sfx/notifications/info-morbida', 'kenney-interface', 'Audio/glass_003.ogg', None, 'lowpass=f=4500', .14),
+  ('week.advance172', 'sfx/ui/settimana-morbida', 'kenney-interface', 'Audio/toggle_002.ogg', None, 'lowpass=f=4500', .16),
 ]
+# [giro 172] trattamenti dedicati: xjoin = parti unite in dissolvenza incrociata (non col silenzio) · loop = coda fusa nella testa
+#   (dissolvenza a potenza costante: giunto senza salto) · enc = (opus, mp3, Hz dell'mp3): la folla e' a banda stretta, si codifica
+#   piu' leggera (peso) · corto = durata massima e dissolvenza finale (menu < 150 ms)
+OPZ172 = {n: {'xjoin': 1.0, 'loop': 2.0, 'enc': ('24k', '40k', 24000)} for n in ('sfx/crowd/letto-1', 'sfx/crowd/letto-2')}
+OPZ172.update({n: {'xjoin': 0, 'loop': 0, 'enc': ('24k', '40k', 24000)} for n in ('sfx/crowd/caldo-1', 'sfx/crowd/caldo-2', 'sfx/crowd/ohh-2')})
+OPZ172.update({n: {'corto': (.14, .04)} for n in ('sfx/ui/conferma-morbida', 'sfx/ui/apri-morbida', 'sfx/notifications/positiva-morbida',
+               'sfx/notifications/negativa-morbida', 'sfx/notifications/info-morbida', 'sfx/ui/settimana-morbida')})
 STEREO = lambda key: key.startswith('music.') or key == 'career.trophy'
 SOSTENUTO = lambda key, dur: dur >= 1.0 or key.startswith(('music.', 'crowd.', 'ref.', 'career.', 'season.', 'gala.'))
 
@@ -135,6 +165,8 @@ def main():
                 'altri': {
                   'sfx/crowd/brusio-folla-korward.wav': {'evento': 'crowd.bed', 'licenza': 'nessuna di terzi: generato da noi (tools/gen-crowd-bed.mjs, giro 20, seme fisso)', 'cc0': True, 'nota': 'brusio in loop della partita, invariato dal giro 149'},
                   # [giro 161b] il boato di terzi «stadium joy shouting crowd» (licenza propria, non CC0) e' uscito dal repo: decisione PO 11/11 «Togliere il file»
+                  # [giro 172] chiuse qui le due graffe che la riga tolta nel giro 161b si era portata via (il generatore non si compilava piu')
+                }}
     zips = {}
     solo = sys.argv[sys.argv.index('--solo') + 1].split(',') if '--solo' in sys.argv else None
     if solo:  # [giro 161] rielabora solo queste uscite: le altre righe del registro restano quelle generate (stessa sorgente, stesso codice)
@@ -151,7 +183,19 @@ def main():
         if key.startswith('music.'):  # loop: via il silenzio di testa del codificatore mp3 della sorgente (29,7 ms misurati) = giunto senza buco
             lead = int(np.argmax(np.abs(x).max(axis=1) > 1e-4))
             if 0 < lead < int(.08 * SR): x = x[lead:].copy()
-        if tagli:
+        O = OPZ172.get(nome, {})
+        if tagli and O.get('xjoin'):  # [giro 172] parti unite in dissolvenza incrociata a potenza costante
+            xf = int(O['xjoin'] * SR); y = None
+            for (a, d) in tagli:
+                p = x[int(a * SR): int((a + d) * SR)].copy()
+                if y is None: y = p; continue
+                t = np.linspace(0, np.pi / 2, xf)[:, None]
+                y = np.concatenate([y[:-xf], y[-xf:] * np.cos(t) + p[:xf] * np.sin(t), p[xf:]])
+            x = y
+        elif tagli and nome in OPZ172 and 'corto' not in O:  # [giro 172] taglio singolo con dissolvenze lunghe (strati, nessun silenzio)
+            (a, d) = tagli[0]; x = x[int(a * SR): int((a + d) * SR)].copy(); n = len(x); f = min(int(.25 * SR), n // 4)
+            if not O.get('loop'): x[:f] *= np.linspace(0, 1, f)[:, None]; x[n - f:] *= np.linspace(1, 0, f)[:, None]
+        elif tagli:
             parti = []
             for (a, d) in tagli:
                 p = x[int(a * SR): int((a + d) * SR)].copy()
@@ -162,6 +206,11 @@ def main():
         if filtro:
             tmp = os.path.join(CACHE, '_f.wav'); scrivi_wav(tmp, x, ch)
             x = np.frombuffer(sh('ffmpeg', '-v', 'error', '-i', tmp, '-af', filtro, '-ac', str(ch), '-ar', str(SR), '-f', 'f32le', '-').stdout, dtype=np.float32).reshape(-1, ch).copy()
+        if O.get('loop'):  # [giro 172] la coda (loop s) si fonde nella testa: il file ricomincia esattamente dove finisce
+            lf = int(O['loop'] * SR); t = np.linspace(0, np.pi / 2, lf)[:, None]
+            x = np.concatenate([x[:lf] * np.sin(t) + x[-lf:] * np.cos(t), x[lf:-lf]])
+        if O.get('corto'):  # [giro 172] menu: al massimo `corto[0]` s, coda in dissolvenza di `corto[1]` s
+            mx, fo = O['corto']; x = x[:int(mx * SR)].copy(); f = min(int(fo * SR), len(x) // 2); x[len(x) - f:] *= np.linspace(1, 0, f)[:, None] ** 2
         dur = len(x) / SR
         if SOSTENUTO(key, dur):
             L = lufs(x, ch); gain = 10 ** ((-18 - L) / 20) if L is not None else 1
@@ -172,16 +221,17 @@ def main():
             x = x * (10 ** (-3 / 20) / max(np.abs(x).max(), 1e-9))
         base = os.path.join(OUT, nome); os.makedirs(os.path.dirname(base), exist_ok=True)
         tmp = os.path.join(CACHE, '_o.wav'); scrivi_wav(tmp, x, ch)
-        br = ('96k' if ch == 2 else '48k')
+        br = ('96k' if ch == 2 else '48k'); enc = O.get('enc')
+        if enc: br = enc[0]
         sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libopus', '-b:a', br, '-vbr', 'on', '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', '-serial_offset', '149', base + '.ogg')
-        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libmp3lame', '-b:a', ('128k' if ch == 2 else '64k'), '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', base + '.mp3')
+        sh('ffmpeg', '-v', 'error', '-y', '-i', tmp, '-c:a', 'libmp3lame', '-b:a', (enc[1] if enc else '128k' if ch == 2 else '64k'), *(['-ar', str(enc[2])] if enc else []), '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', base + '.mp3')
         rms = float(np.sqrt((x ** 2).mean())); pk = float(np.abs(x).max())
         L = lufs(x, ch) if dur >= 0.4 else None
         s = SRC[sid]
         registro['file'][nome] = {
             'evento': key, 'g': g, 'formati': ['ogg', 'mp3'], 'durata_s': round(dur, 3), 'canali': ch,
             'lufs': None if L is None else round(L, 1), 'picco_dbfs': round(20 * np.log10(pk + 1e-12), 1), 'rms_dbfs': round(20 * np.log10(rms + 1e-12), 1),
-            'loop': key in ('music.home', 'music.career'),
+            'loop': key in ('music.home', 'music.career', 'crowd.bed'),
             'byte': {'ogg': os.path.getsize(base + '.ogg'), 'mp3': os.path.getsize(base + '.mp3')},
             'sorgente': {'id': sid, 'pagina': s['pagina'], 'file': s['file'], 'membro': membro, 'tagli': tagli, 'filtro': filtro,
                          'autore': s['autore'], 'licenza': s['licenza'], 'letta': s['letta'], 'sha256': s['sha256']}}

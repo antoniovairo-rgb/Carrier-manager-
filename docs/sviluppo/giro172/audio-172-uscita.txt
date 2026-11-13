@@ -1,0 +1,46 @@
+
+> cpm-visual-3d-validation@1.0.0 audio-172
+> node audio-172.mjs
+
+flusso della partita vera (seme 7300): 19 eventi, 9 verso la folla, finita true, risultato {"h":0,"a":1}
+A. STATICO (comune)
+  ✓ 1 tredici file nuovi nel registro, CC0, fonte completa (nessun file generato) — incompleti/assenti []
+  ✓ 2 peso audio sotto 6 MB (tetto del giro 149, non alzato) — 5.82 MB (6097665 byte, 67 file)
+  ✓ 5 nel blocco del giro 172 nessun Math.random — blocco 4465 car.
+braccio VERDE
+  ✓ 3 letto: giunto senza salto e senza fruscio — letto-1.ogg rapp 0.35 ΔdB 1.12 >8k 0% <100 0.25% piatt 0.003 | letto-1.mp3 rapp 0.12 ΔdB 1.36 >8k 0% <100 0.12% piatt 0.003 | letto-2.ogg rapp 1.13 ΔdB -0.88 >8k 0% <100 0.43% piatt 0.003 | letto-2.mp3 rapp 0.95 ΔdB -0.08 >8k 0% <100 0.25% piatt 0.003
+  ✓ 4 menu: suoni < 150 ms e senza acuti taglienti — conferma-morbida.ogg 120 ms >8k 0% · apri-morbida.ogg 136 ms >8k 0.05% · positiva-morbida.ogg 132 ms >8k 0% · negativa-morbida.ogg 94 ms >8k 0% · info-morbida.ogg 121 ms >8k 0% · settimana-morbida.ogg 136 ms >8k 0.07%
+  ✓ 6 letto a grani della registrazione vera — G172=true · letto {"g172":true,"real":true,"livello":0.184,"guadagno":0.1033,"grani":2} · grani ["1:0.352","0:0.64"]
+  ✓ 7 letto ≥ 6 dB sotto gli effetti di gioco — letto M mediana -36.9 LUFS · effetti (max M, mediana) -27.9 · margine 9 dB
+  ✓ 8 reattivita': occasione · calo nei momenti morti · gol · fuori · gol subito · fallo — {"l0":0.284,"lOcc":0.484,"swell":1,"lMorto":0.174,"roar":1,"lGol":0.85,"ohh":1,"booGA":1,"booFallo":1}
+  ✓ 9 varieta' su ~10 minuti di partita vera (4 partite): mai lo stesso campione di fila, letto mai la stessa porzione — {"crowd.swell":"16 volte, 2 campioni, 0 di fila","crowd.ohh":"8 volte, 2 campioni, 0 di fila","crowd.applause":"8 volte, 2 campioni, 0 di fila","crowd.boo":"4 volte, 2 campioni, 0 di fila"} · letto in 10 min: {"grani10min":71,"porzioniRipetuteDiFila":0,"strati":[0,1]}
+  ✓ 10 menu: niente suono sulla navigazione, sì sulle conferme e notifiche, mai a raffica, volume basso — 100 tocchi di navigazione (su 4 elementi non marcati; 2 marcati esclusi) → 0 suoni {} · tasto «conferma» 1 · notifica 1 · due notifiche a 100 ms 1 · picchi in uscita {"ui.confirm":-20.321237,"ui.popup":-21.450495,"notify.pos":-22.1143,"notify.neg":-20.870344,"notify.info":-23.899466}
+  ✓   errori di pagina (sito) — []
+  ✓ 11 [tel375] icona in 2D e in 3D, pannello Pubblico/Effetti/Musica + Muto — 2D: fase true icona true · pannello true (4/4 comandi) · 3D: fase true icona true pannello true
+  ✓ 12 [tel375] pausa col pannello aperto, ripresa alla chiusura — {"prima":"hl_intro@4","apertura":"hl_choose@4","dopo4s":"hl_choose@4","ferma":true} · chiuso true · riparte true (scelta fatta dall'autoplay)
+  ✓ 13 [tel375] cursori e Muto salvati nelle stesse impostazioni — {"ls":{"crowd":0.37,"mute":true},"cfg":{"crowd":0.37,"mute":true}}
+  ✓    [tel375] errori di pagina — []
+  ✓ 11 [pc1280] icona in 2D e in 3D, pannello Pubblico/Effetti/Musica + Muto — 2D: fase true icona true · pannello true (4/4 comandi) · 3D: fase true icona true pannello true
+  ✓ 12 [pc1280] pausa col pannello aperto, ripresa alla chiusura — {"prima":"hl_choose@4","apertura":"hl_choose@4","dopo4s":"hl_choose@4","ferma":true} · chiuso true · riparte true (scelta fatta dall'autoplay)
+  ✓ 13 [pc1280] cursori e Muto salvati nelle stesse impostazioni — {"ls":{"crowd":0.37,"mute":true},"cfg":{"crowd":0.37,"mute":true}}
+  ✓    [pc1280] errori di pagina — []
+braccio ROSSO (__CPM_NO_G172 = audio di prima)
+  ✗ 3 letto: giunto senza salto e senza fruscio — brusio-folla-korward.wav rapp 1.61 ΔdB -1.13 >8k 0.02% <100 0.09% piatt 0.03
+  ✗ 4 menu: suoni < 150 ms e senza acuti taglienti — conferma-1.ogg 290 ms >8k 0% · popup-1.ogg 380 ms >8k 0% · click-1.ogg 97 ms >8k 0.52% · positiva-1.ogg 539 ms >8k 0% · negativa-1.ogg 500 ms >8k 0.03% · info-1.ogg 491 ms >8k 0% · settimana-1.ogg 608 ms >8k 0.8%
+  ✗ 6 letto a grani della registrazione vera — G172=false · letto {"g172":false,"real":true,"livello":0.3,"guadagno":null,"grani":0} · grani []
+  ✗ 7 letto ≥ 6 dB sotto gli effetti di gioco — letto M mediana -29 LUFS · effetti (max M, mediana) -28 · margine 1 dB
+  ✗ 8 reattivita': occasione · calo nei momenti morti · gol · fuori · gol subito · fallo — {"l0":0.3,"lOcc":0.42,"swell":0,"lMorto":0.42,"roar":1,"lGol":0.42,"ohh":1,"booGA":1,"booFallo":1}
+  ✗ 9 varieta' su ~10 minuti di partita vera (4 partite): mai lo stesso campione di fila, letto mai la stessa porzione — {"crowd.ohh":"8 volte, 1 campioni, 7 di fila","crowd.applause":"8 volte, 2 campioni, 2 di fila","crowd.boo":"4 volte, 1 campioni, 3 di fila"} · letto in 10 min: {"grani10min":71,"porzioniRipetuteDiFila":0,"strati":[0,1]}
+  ✗ 10 menu: niente suono sulla navigazione, sì sulle conferme e notifiche, mai a raffica, volume basso — 100 tocchi di navigazione (su 4 elementi non marcati; 2 marcati esclusi) → 100 suoni {"ui.click":100} · tasto «conferma» 1 · notifica 1 · due notifiche a 100 ms 2 · picchi in uscita {"ui.confirm":-13.670465,"ui.popup":-15.185185,"notify.pos":-13.574479,"notify.neg":-14.610563,"notify.info":-15.106184}
+  ✓   errori di pagina (sito) — []
+  ✗ 11 [tel375] icona in 2D e in 3D, pannello Pubblico/Effetti/Musica + Muto — 2D: fase true icona false · pannello undefined (undefined/4 comandi) · 3D: fase true icona false pannello undefined
+  ✗ 12 [tel375] pausa col pannello aperto, ripresa alla chiusura — null · chiuso undefined · riparte undefined
+  ✗ 13 [tel375] cursori e Muto salvati nelle stesse impostazioni — null
+  ✓    [tel375] errori di pagina — []
+  ✗ 11 [pc1280] icona in 2D e in 3D, pannello Pubblico/Effetti/Musica + Muto — 2D: fase true icona false · pannello undefined (undefined/4 comandi) · 3D: fase true icona false pannello undefined
+  ✗ 12 [pc1280] pausa col pannello aperto, ripresa alla chiusura — null · chiuso undefined · riparte undefined
+  ✗ 13 [pc1280] cursori e Muto salvati nelle stesse impostazioni — null
+  ✓    [pc1280] errori di pagina — []
+VERDE: PASSA
+ROSSO: CADE (come deve) su 3, 4, 6, 7, 8, 9, 10, 11
+FINE 0
