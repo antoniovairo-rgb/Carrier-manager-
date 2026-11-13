@@ -44,8 +44,11 @@ console.log(`home raggiunta (bottoni: ${home.btns}, "Nuova carriera": ${home.has
 console.log(`richieste esterne (CDN) tentate: ${externalHits.length ? '❌ ' + externalHits.slice(0, 5).join(' ') : '✅ NESSUNA → davvero offline'}`);
 console.log(`richieste locali: ${okLocal.n} ok · ${notFound.length ? '❌ ' + notFound.length + ' fallite: ' + notFound.slice(0, 4).join(' ') : '✅ 0 fallite (nessun asset mancante)'}`);
 console.log(`errori console: ${errs.length ? '❌ ' + errs.slice(0, 4).join(' | ') : '✅ nessuno'}`);
+/* [giro 180c] le clip Rohr non le carica nessuna riga del gioco: devono restare FUORI dal pacchetto (decisione madre 180b §6.4) */
+const rohrFuori = !fs.existsSync(path.join(DIST, 'assets', 'cgtrader-clip-rohr.glb'));
+console.log(`clip Rohr non collegate fuori dal pacchetto: ${rohrFuori ? '✅' : '❌ assets/cgtrader-clip-rohr.glb presente'}`);
 console.log(WEB ? `flag build store (deve mancare nella build per il sito): ${storeFlag ? '❌ presente' : '✅ assente'}` : `flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
-const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && notFound.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
+const ok = rohrFuori && mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && notFound.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
 console.log(ok ? '\n✅ DIST OFFLINE FUNZIONANTE' : '\n❌ DIST da rivedere');
 await browser.close(); srv.close();
 process.exit(ok ? 0 : 1);
