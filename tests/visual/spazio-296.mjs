@@ -22,7 +22,7 @@ import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from '
 import { SAVE, INIT } from './lib/banco-g0.mjs';
 if (!process.env.CPM_CHROME) process.env.CPM_CHROME = '/opt/pw-browsers/chromium';
 if (!process.env.PLAYWRIGHT_BROWSERS_PATH) process.env.PLAYWRIGHT_BROWSERS_PATH = '/opt/pw-browsers';
-const ROSSO = !!process.env.CPM_PROVA_ROSSO, MISURA_SOLA = !!process.env.CPM_MISURA, FOTO = process.env.CPM_FOTO_296 || '', SENZA_POST = !!process.env.CPM_SENZA_POST;
+const ROSSO = !!process.env.CPM_PROVA_ROSSO, ROSSO174 = process.env.CPM_PROVA_ROSSO === '174', MISURA_SOLA = !!process.env.CPM_MISURA, FOTO = process.env.CPM_FOTO_296 || '', SENZA_POST = !!process.env.CPM_SENZA_POST;
 const FORMATI = { tel: { nome: 'Telefono 412x915', w: 412, h: 915, touch: true }, pc: { nome: 'PC 1366x768', w: 1366, h: 768, touch: false } };
 const SCELTI = (process.env.CPM_FORMATI || 'tel,pc').split(',').filter(k => FORMATI[k]);
 const DIR_FOTO = process.env.CPM_DIR_FOTO || '/tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad';
@@ -100,7 +100,7 @@ async function apri(f, init, query) {
   const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1 }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
   const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(`${f.k} · ${String(e.message).slice(0, 120)}`));
-  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO ? ['__CPM_NO_SPAZIO296'] : [], ...init });
+  await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO174 ? ['__CPM_NO_G174_SPAZIO'] : ROSSO ? ['__CPM_NO_SPAZIO296'] : [], ...init });
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html${query}`, { waitUntil: 'load', timeout: 120000 });
   await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 90000 });
   return { ctx, page };
@@ -168,7 +168,7 @@ for (const fk of SCELTI) {
     const opt = { viewport: { width: f.w, height: f.h }, deviceScaleFactor: 1 }; if (f.touch) { opt.isMobile = true; opt.hasTouch = true; }
     const ctx = await b.newContext(opt); const page = await ctx.newPage(); await installCdnRoutes(page);
     page.on('pageerror', e => errs.push(`${fk} partita · ${String(e.message).slice(0, 120)}`));
-    await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO ? ['__CPM_NO_SPAZIO296'] : [] });
+    await page.addInitScript(INIT, { seme: 4242, tema: 'chiaro', rossi: ROSSO174 ? ['__CPM_NO_G174_SPAZIO'] : ROSSO ? ['__CPM_NO_SPAZIO296'] : [] });
     let ok = false; try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { mancanti.push(fk + ' post-partita apertura'); }
     if (ok) { try { await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 300 })); } catch (e) {}
       let fine = false; for (let t = 0; t < 420; t += 5) { const ph = await page.evaluate(() => { try { return window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (e) { return null; } }).catch(() => null);
@@ -204,7 +204,10 @@ if (errs.length) console.log('errori di pagina: ' + errs.slice(0, 4).join(' | ')
 if (mancanti.length) console.log('schermate non raggiunte: ' + mancanti.join(', '));
 const totSchermate = Object.values(R).reduce((s, o) => s + Object.keys(o).length, 0);
 let esito;
-if (ROSSO) { esito = cadute > 0; console.log(esito ? `ROSSO ATTESO OK: con __CPM_NO_SPAZIO296 cadono ${cadute} schermate su ${totSchermate}` : 'ROSSO NON RIUSCITO: con l\'interruttore acceso il guardiano resta verde'); fail.slice(0, 8).forEach(s => console.log('  ' + s)); }
+/* [giro 174 PO-371] CPM_PROVA_ROSSO=174 accende il solo __CPM_NO_G174_SPAZIO: deve tornare il 16,8 fra «Crea il tuo calciatore» e
+   «Crediti» sul menu del telefono (il difetto misurato prima della correzione del giro). */
+if (ROSSO174) { esito = fail.some(s => /^tel menu-home: .*oltre 10/.test(s)); console.log(esito ? `ROSSO 174 ATTESO OK: con __CPM_NO_G174_SPAZIO torna lo spazio doppio sul menu (${cadute} schermate cadute)` : 'ROSSO 174 NON RIUSCITO: il menu resta a posto anche con l\'interruttore acceso'); fail.slice(0, 8).forEach(s => console.log('  ' + s)); }
+else if (ROSSO) { esito = cadute > 0; console.log(esito ? `ROSSO ATTESO OK: con __CPM_NO_SPAZIO296 cadono ${cadute} schermate su ${totSchermate}` : 'ROSSO NON RIUSCITO: con l\'interruttore acceso il guardiano resta verde'); fail.slice(0, 8).forEach(s => console.log('  ' + s)); }
 else { esito = cadute === 0 && totSchermate >= 12 * SCELTI.length && mancanti.filter(x => !/post-partita/.test(x) || !SENZA_POST).length === 0; fail.forEach(s => console.log('  ✗ ' + s));
   console.log(esito ? `spazio-296 VERDE: ${totSchermate} schermate misurate, distanze fra riquadri-carta 6-10 px, nessuna sovrapposizione` : `spazio-296 ROSSO: ${cadute} schermate cadute, ${mancanti.length} non raggiunte`); }
 await b.close(); srv.close(); process.exit(esito ? 0 : 1);

@@ -11,9 +11,12 @@ const browser = await launchBrowser();
 const page = await browser.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 let errori = 0; const msg = [];
 page.on('pageerror', (e) => { errori++; if (msg.length < 3) msg.push(String(e).slice(0, 160)); });
-await page.addInitScript(([r, r48]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_FESTA3D47 = true; if (r48) { window.__CPM_NO_TAB48 = true; window.__CPM_NO_CORO48 = true; }
+await page.addInitScript(([r, r48]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_FESTA3D47 = true; if (r48) { window.__CPM_NO_TAB48 = true; window.__CPM_NO_CORO48 = true; window.__CPM_NO_FISSE297 = true; /* [giro 174] dal giro 92 (PO-297, squadre fisse come in TV) la barra non si specchia piu': il tabellone specchiato che il 7.999.48 correggeva esiste solo spegnendo anche il 297 */ }
   window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, [rosso, rosso48]);
-await openMatch(page, port, { skipLoadAll: true, name: 'Festa2' });
+/* [giro 174 PO-371] il seme di partita nasce dal NOME (7.496): con «Festa2» la partita finisce 0–2 e, dalla direttiva PO del 23/09 (festa
+   solo sulle vittorie importanti o sulle prestazioni super), la festa non compare: il guardiano non giudicava nulla. Misurati quattro nomi
+   (autoplay 4545): Festa2 0–2, Festa3 2–1, Festa4 1–0, Festa5 3–2. Si gioca una partita VINTA; criteri invariati. */
+await openMatch(page, port, { skipLoadAll: true, name: 'Festa3' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 4545, policy: 'seeded', tickMs: 300 }));
 let v = null; const t0 = Date.now();
 while (Date.now() - t0 < 420000) {
@@ -24,7 +27,10 @@ while (Date.now() - t0 < 420000) {
   if (v && (v.f || v.vecchio || v.fase === 'ended')) break; await sleep(300); }
 let dopo = null, coro = null, casaSx = null;
 if (v && v.f) {
-  for (let i = 0; i < 25 && !coro; i++) { await sleep(300); coro = await page.evaluate(() => { const c = window.__CPM_CORO48; const n = window.__CPM_HERO_NAME && window.__CPM_HERO_NAME(); return (c && c.length && n && document.body.innerText.toUpperCase().includes(n.toUpperCase() + '!')) ? c.join(' / ') : null; }).catch(() => null); }
+  for (let i = 0; i < 25 && !coro; i++) { await sleep(300); coro = await page.evaluate(() => { const c = window.__CPM_CORO48; const n = window.__CPM_HERO_NAME && window.__CPM_HERO_NAME(); const B = document.body.innerText.toUpperCase();
+    /* [giro 174 PO-371] dal 7.999.177 (PO-291) i cori escono da un repertorio di varianti e non tutti hanno la forma «COGNOME!» del 7.999.48
+       («Vairo, uno di noi!»): si pretende un coro registrato che contiene il cognome e che e' A SCHERMO in quel momento. */
+    return (c && c.length && n && c.some(t => t.toUpperCase().includes(n.toUpperCase()) && B.includes(t.toUpperCase()))) ? c.join(' / ') : null; }).catch(() => null); }
   casaSx = await page.evaluate(() => { const e = document.querySelector('[data-cpm="scudo-casa"] img, [data-cpm="scudo-casa"] svg, [data-cpm="scudo-casa"]'); const b = e && e.getBoundingClientRect(); const sc = window.__CPM_SCORE(); const d = document.querySelector('[data-cpm="scudo-casa"]'); return d ? { x: Math.round(b.left), testo: d.innerText.replace(/\s+/g, ' ') } : null; }).catch(() => null);
  await page.click('[data-cpm="salta"]').catch(() => {}); for (let i = 0; i < 20; i++) { await sleep(300); dopo = await page.evaluate(() => window.__CPM_PHASE()).catch(() => null); if (dopo === 'ended') break; } }
 await browser.close(); server.close();

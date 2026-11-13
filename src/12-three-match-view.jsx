@@ -4382,6 +4382,21 @@ function ThreeMatchView(props){
            quota all'impatto scendeva a 0,49-0,60. Il pallone passa accanto alla testa (0,26u, quota 1,47-1,65) PRIMA che l'arco del colpo sia
            armato; all'armo (caricamento -0,24) e' gia' a 1,35-1,47, sotto il pavimento 1,5 di questa regola, che quindi non scatta mai: gara
            fra armo e discesa. Pavimento a 1,3 (la quota minima che il guardiano accetta per un colpo di testa). */
+        /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_PIEDE174_LONTANO): senza P1B2 e rincorsa il pallone al lancio del
+           cross sta oggi a 2,1-2,9 dal piede (gi16/gi42, varia da prova a prova) e il guardiano piede-cross-p1b2 non vedeva cadere il suo rosso
+           in modo stabile (soglia 2,5). Il gancio rimette il difetto pieno misurato al 7.999.143 (pallone a 3,8-4,7 dal piede): al primo
+           fotogramma del caricamento del cross il pallone sta 4 u alle spalle dell'eroe, a terra. Una volta per scena. */
+        if(_preT74<0&&P.hlType==='cross'&&hero&&typeof window!=='undefined'&&window.__CPM_PIEDE174_LONTANO&&(_CPM_TEST||_SIT_TEST)&&sr.current._p174k!==P.hlSitKey){sr.current._p174k=P.hlSitKey;
+          const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*4.0;ball.position.z=hero.position.z-_fz174*4.0;ball.position.y=0.22;ballArcY0=ball.position.y;
+          try{(window.__CPM_PIEDE174=window.__CPM_PIEDE174||[]).push(String(P.hlSitKey));}catch(_e){}}
+        /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_TESTA174_LONTANO): oggi, senza il 146, l'eroe arriva sul
+           pallone e lo supera nel caricamento (testa a 2,4-2,6 u al lancio, misurato su gi6/gi7/gi55) e il guardiano testa-146 non vedeva
+           piu' cadere il suo rosso (soglia 2,5). Il gancio rimette il difetto che il 146 ripara, com'era descritto al 7.999.144: al primo
+           fotogramma del caricamento il pallone sta 3 u PRIMA della testa (alle spalle della direzione dell'eroe), alla quota della testa.
+           Una volta per scena. Fuori da cpmtest non esiste. */
+        if(_preT74<0&&P.hlType==='header'&&hero&&typeof window!=='undefined'&&window.__CPM_TESTA174_LONTANO&&(_CPM_TEST||_SIT_TEST)&&sr.current._t174k!==P.hlSitKey){sr.current._t174k=P.hlSitKey;
+          const _fx174=Math.sin(hero.rotation.y),_fz174=Math.cos(hero.rotation.y);ball.position.x=hero.position.x-_fx174*3.0;ball.position.z=hero.position.z-_fz174*3.0;ball.position.y=(hero.position.y||0)+1.75;ballArcY0=ball.position.y;
+          try{(window.__CPM_TESTA174=window.__CPM_TESTA174||[]).push(String(P.hlSitKey));}catch(_e){}}
         if(_preT74<0&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA76)&&ball.position.y>=((typeof window!=='undefined'&&window.__CPM_NO_TESTA76B)?1.5:1.3)&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8){ballArcT=-aDt;}
         /* [7.999.144 decisione PO 06/10 «colpo di testa» in L1. Rosso __CPM_NO_TESTA146] MISURATO (testimone testa-pallone, scene forzate
            gi1/gi36/gi44 e una partita S12): quando parte l'arco del colpo di testa la testa dell'eroe e' a 3,1-3,3 u dal pallone in due scene
@@ -9496,6 +9511,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              cioe' dentro il solido. La spinta fuori dal rettangolo (7.997) valeva solo per i compagni della festa: chi «resta dove si trova»
              (avversari, compagni fuori dalla festa) poteva trovarsi dove il palco compare. Ora la spinta vale per ogni corpo tranne l'eroe.
              Rosso __CPM_NO_PALCO191B. */
+          /* [giro 174 PO-371] PROVOCAZIONE SOLO DI COLLAUDO (cpmtest + __CPM_PALCO174_INTRUSO): oggi nessun corpo si trova dove il palco
+             compare, quindi il guardiano palco-corpi-191 non poteva vedere il suo rosso (verde e rosso entrambi «dentro 0»). Il gancio
+             mette a ogni fotogramma un compagno e un avversario (mai l'eroe) dentro l'impronta del corpo del palco, PRIMA della spinta:
+             col 191 la spinta li deve espellere, senza (__CPM_NO_PALCO191B) restano dentro. Fuori da cpmtest non esiste. */
+          if(podiumGrp.visible&&podiumGrp._rett24&&typeof window!=='undefined'&&window.__CPM_PALCO174_INTRUSO&&(_CPM_TEST||_SIT_TEST)){const _ci=Math.cos(podiumGrp.rotation.y),_si=Math.sin(podiumGrp.rotation.y);
+            for(const [_sq,_lx] of [['home',1.2],['away',-1.2]]){const _pp=(sr.current.players||[]).find(pp=>pp&&pp.mesh&&pp.mesh!==hero&&pp.team===_sq&&pp.mesh.visible!==false);
+              if(_pp){_pp.mesh.position.x=podiumGrp.position.x+_lx*_ci+0.4*_si;_pp.mesh.position.z=podiumGrp.position.z-_lx*_si+0.4*_ci;}}}
           if(podiumGrp.visible&&podiumGrp._rett24&&!(typeof window!=='undefined'&&window.__CPM_NO_PALCO191B)){const _c191=Math.cos(podiumGrp.rotation.y),_s191=Math.sin(podiumGrp.rotation.y),_px191=podiumGrp.position.x,_pz191=podiumGrp.position.z;
             for(const pp of (sr.current.players||[])){const m=pp&&pp.mesh;if(!m||m===hero)continue;const dx=m.position.x-_px191,dz=m.position.z-_pz191;let lx=dx*_c191-dz*_s191,lz=dx*_s191+dz*_c191;
               if(Math.abs(lx)<4.0&&Math.abs(lz)<2.2){if(4.0-Math.abs(lx)<2.2-Math.abs(lz))lx=Math.sign(lx||1)*4.0;else lz=Math.sign(lz||1)*2.2;
@@ -11850,7 +11872,13 @@ if(typeof window!=='undefined'&&window.__CPM_CAMJ42){try{(sr.current._tr42=sr.cu
                il rilascio della clip. Quindi la guardia non e' «dopo la fine niente di nuovo»: e' «un
                montaggio per istanza d'azione», per il solo EROE — i compagni hanno catene legittime a due
                gesti (ricevi→tira) che vivono su azioni diverse e non c'entrano col codice 000. */
-            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'');/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'')/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
+               /* [giro 174 PO-371, doppio-gesto-148 rosso preesistente. Rosso __CPM_NO_G174_DOPPIO] MISURATO (gi18 «Sterzata e assist»,
+                  GLB acceso, __CPM_GST): nel tratto di finta dell'esito la catena VUOLE «change» ma la clip non si monta mai. Sulle scene
+                  con intento dribbling l'avvicinamento dei 23/09 (clip «dribble» in hl_move/hl_choose, actType vuoto) spendeva questa chiave,
+                  e la finta dell'azione scelta (hl_result, actType ancora vuoto) aveva la stessa chiave: scartata come secondo gesto della
+                  stessa azione. L'azione scelta comincia alla risoluzione: la chiave ora separa la scelta dall'esito. */
+               +((propsRef.current&&propsRef.current.matchPhase==='hl_result'&&!(typeof window!=='undefined'&&window.__CPM_NO_G174_DOPPIO))?'|esito':'');
              /* [7.582.0 — CONTARE I GESTI DELL'EROE PER SCENA, e farlo contare AL GIOCO.
                 Collaudo PO (appunti 7.578, SIT #45): «codice 000 — gesto scoordinato». La guardia del
                 7.396 concede UN montaggio per istanza d'azione, ma la chiave include `actType`: quando

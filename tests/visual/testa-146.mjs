@@ -33,9 +33,19 @@ async function lancio(gi, flags) {
   } catch (e) { return null; } finally { await page.close().catch(() => {}); }
 }
 const SC = [6, 7, 55];
-const BR = [['gioco', [], [6, 44], x => x <= 1.0], ['rete', ['__CPM_NO_TESTA76'], [6, 7], x => x <= 1.0], ['rosso', ['__CPM_NO_TESTA76', '__CPM_NO_TESTA146'], SC, x => x >= 2.5]];
+/* [giro 174 PO-371] il rosso «naturale» (76+146 spenti) non cadeva piu': 2,41/2,45/1,25 (base identica, anche sul commit piu' vecchio
+   disponibile). Misurato col testimone __CPM_P1B2: oggi il pallone arriva gia' alla testa (0,24-0,5 u) PRIMA che l'arco del colpo si
+   armi, e nei 0,22 s del caricamento l'eroe lo supera: al lancio 2,4-2,6 u, a cavallo della soglia. Il difetto che il 146 ripara («l'arco
+   parte dal punto di consegna, 3 u prima della testa») lo PROVOCA ora il gancio di collaudo __CPM_TESTA174_LONTANO. Due bracci nuovi,
+   soglie invariate: «provocato» (gancio, 76 spento) → tutte <= 1,0 (il 146 ripara davvero il difetto pieno); «rosso» (gancio, 76 e 146
+   spenti) → almeno 2 su 3 >= 2,5. Il rosso naturale resta stampato, non giudicato. */
+const BR = [['gioco', [], [6, 44], x => x <= 1.0], ['rete', ['__CPM_NO_TESTA76'], [6, 7], x => x <= 1.0],
+  ['provoc', ['__CPM_TESTA174_LONTANO', '__CPM_NO_TESTA76'], SC, x => x <= 1.0],
+  ['rosso', ['__CPM_TESTA174_LONTANO', '__CPM_NO_TESTA76', '__CPM_NO_TESTA146'], SC, x => x >= 2.5],
+  ['info', ['__CPM_NO_TESTA76', '__CPM_NO_TESTA146'], SC, null]];
 const g = [];
-for (const [nome, fl, scene, ok] of BR) { const out = []; for (const gi of scene) out.push({ gi, lancio: await lancio(gi, fl) });
+for (const [nome, fl, scene, ok] of BR) {
+  if (!ok) { const out = []; for (const gi of scene) out.push({ gi, lancio: await lancio(gi, fl) }); console.log('info  ' + JSON.stringify(out) + ' (rosso naturale, solo stampato)'); continue; } const out = []; for (const gi of scene) out.push({ gi, lancio: await lancio(gi, fl) });
   const giud = out.filter(x => x.lancio != null), buoni = giud.filter(x => ok(x.lancio));
   /* una scena non giudicata (testimone senza la riga del lancio, capita sotto carico) non decide; servono almeno 2 scene giudicate.
      Verdi: tutte le giudicate dentro. Rosso: almeno 2 scene oltre 2,5 (misurato 2,70-3,26 su gi6/gi7/gi55, un campione di gi1 a 1,7). */

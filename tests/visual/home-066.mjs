@@ -100,7 +100,10 @@ for (const [nome, pl] of SCENARI) {
       const fb = rgb(cs.backgroundColor); const chiaro = !clubV2 && fb && fb.a > 0.5 && lum(fb) > 0.6;
       if (chiaro && sc0.tagName !== 'BUTTON' && Math.round(parseFloat(cs.borderTopLeftRadius)) !== 12) v.viol.push('R1 card con raggio ' + cs.borderTopLeftRadius + ' invece di RAD.md');
       if (!clubV2 && fb && fb.a > 0.5 && cs.backgroundColor !== fondoCard && !/gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo non neutro ' + cs.backgroundColor);
-      if (/gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo sfumato');
+      /* [giro 174 PO-371] l'esenzione F1 del riquadro della prossima partita copriva solo il «fondo non neutro»: dal giro 106 B il fondo del
+         club smorzato verso la notte porta anche la SFUMATURA (tavola V2Home, __CPM_NO_G106B) e i 7 «fuori standard» erano tutti questo
+         riquadro, uno per situazione. La regola «card neutra» resta intera per ogni altro riquadro. */
+      if (!clubV2 && /gradient/.test(cs.backgroundImage)) v.viol.push('F1 fondo sfumato');
       const fisK = [...box.querySelectorAll('button[aria-expanded]')].find(bt => Math.round(parseFloat(getComputedStyle(bt).borderTopLeftRadius)) === 6);
       if (fisK) v.viol.push('A1 fisarmonica col cappello delle schede (raggio 6), non la Card col momento');
       const r2 = new Set(), t1 = new Set(), t2 = new Set(), c1 = new Set(), o1 = new Set();

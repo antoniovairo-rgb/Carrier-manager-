@@ -11,7 +11,7 @@
    CPM_MISURA=1 stampa senza giudicare, CPM_RIGHE=1 una riga per scena, CPM_PAR=2; il rosso gira nel solo regime «prova», CPM_REGIMI_ROSSO).
    ⚠️ Due pagine per volta al massimo: con tre la riserva della scena scatta per la guardia di parete (30 s) e le parate diventano non giudicabili. */
 import fs from 'node:fs';
-import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
+import { startServer, launchBrowser, installCdnRoutes, sleep, openMatch } from './lib/harness.mjs';
 const FX = (f) => JSON.parse(fs.readFileSync(new URL('./fixtures/' + f, import.meta.url)));
 const SALVA = { s1: 'save-c177-s1w15.json', s5: 'save-c177-s5w20.json', s12: 'save-190-s12-ovr93.json' };
 const ARMI = (process.env.CPM_ARMI || 'verde,rosso').split(',');
@@ -64,8 +64,38 @@ async function gioca(sk, sd, rosso, regime) {
   }
   return { out, ph, n: scene.length };
 }
+/* [giro 174 PO-371] SCENE PROVOCATE. Le partite vere non incontravano mai la parata sul ramo cross_goal (0 su 6 partite per braccio, sul
+   ramo e su main: «non giudicato» in verde e rosso). Dal giro 102 quel ramo finisce sul portiere solo col tiro sprecato del compagno
+   scritto dal motore (outcome.mate298), che con l'esito forzato dalle sonde e' spento per costruzione. Il gancio di collaudo
+   __CPM_SPRECA174='saved' lo scrive su un cross fallito forzato; il resto (riquadro, 3D, portiere) e' quello del gioco. Una pagina nuova
+   per scena (CPM_PROV, default gi16 e gi42, l'opzione di cross). Misurato: verde cross_goal>assist_shot a 2,0-2,1 dal portiere; rosso
+   cross_goal>deflect a 4,7 e 17,6. Le partite vere restano: il pavimento delle 3 parate sul tiro del compagno lo danno loro. */
+const PROV = (process.env.CPM_PROV || '16,42').split(',').filter(Boolean).map(Number);
+async function provocata(gi, rosso) {
+  const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
+  try {
+    await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_REC = true; window.__CPM_REALWAIT = 1; window.__CPM_PARETE103 = 150000; if (r) window.__CPM_NO_G100D3 = 1;
+      const L = window.__P100 = []; const f = () => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (ph === 'hl_result' && L.length < 40000) { const a = window.__CPM_ARC || {};
+        L.push([Date.now(), (window.__CPM_RES218 || []).length, window.__CPM_GKB95 ? window.__CPM_GKB95() : null, a.pa || null, window.__CPM_REVAT95 || 0, typeof window.__CPM_SCENET === 'number' ? window.__CPM_SCENET : null]); } } catch (e) {} requestAnimationFrame(f); }; requestAnimationFrame(f); }, rosso);
+    await openMatch(page, srv.address().port, { skipLoadAll: true, name: 'Parata174' }); await sleep(1000);
+    const k = await page.evaluate(gi => { const s = SITUATIONS[gi]; return (s.actions || []).findIndex(a => { try { return (deriveHL(s, a) || {}).type === 'cross'; } catch (e) { return false; } }); }, gi);
+    if (k < 0) return null;
+    await page.evaluate(gi => { window.__CPM_FORCE_SIT(gi, false); window.__CPM_FROZEN = false; }, gi);
+    await page.waitForFunction(() => window.__CPM_PHASE && window.__CPM_PHASE() === 'hl_choose', null, { timeout: 30000 }).catch(() => {});
+    await sleep(500);
+    await page.evaluate(k => { window.__CPM_FORCE_OUTCOME = 'fail'; window.__CPM_SPRECA174 = 'saved'; window.__CPM_RESOLVE(k); }, k);
+    for (let w = 0; w < 40; w++) { await sleep(500); const ph = await page.evaluate(() => window.__CPM_PHASE()); if (!/^hl_/.test(ph || '')) break; }
+    const r = await page.evaluate(() => { const R = window.__CPM_RES218 || []; const L = window.__P100 || []; const x = R[R.length - 1] || {};
+      const rev = (L.find(f => f[4] > 0) || [])[4] || 0; const fRev = rev ? L.find(f => f[0] >= rev) : null; const lim = fRev && fRev[5] != null ? fRev[5] + 1.5 : null;
+      let m = 99; for (const f of L) if ((lim != null && f[5] != null ? f[5] <= lim : true) && f[2] != null) m = Math.min(m, f[2]);
+      return { lab: x.label, ovl: String(x.ovl || ''), sp: x.sp298 || null, pas: [...new Set(L.map(f => f[3]))].join('>'), minGB: m, rev: !!rev }; });
+    if (!RE_PARATA.test(r.ovl) || r.sp !== 'saved') return { ...r, nonParata: true };
+    return r;
+  } catch (e) { return null; } finally { await page.close().catch(() => {}); }
+}
 const esito = {};
 for (const arm of ARMI) { const rosso = arm === 'rosso'; const lav = []; for (const rg of (rosso ? (process.env.CPM_REGIMI_ROSSO || 'prova').split(',') : REGIMI)) for (const sk of SAVES) for (const sd of SEMI) lav.push({ rg, sk, sd });
+  const prov = []; for (const gi of PROV) { const r = await provocata(gi, rosso); console.log(arm + ' provocata gi' + gi + ' ' + JSON.stringify(r)); if (r && !r.nonParata) prov.push({ gi, ...r }); }
   const fatti = new Array(lav.length); let k = 0;
   await Promise.all(Array.from({ length: Math.min(PAR, lav.length) }, async () => { while (k < lav.length) { const i = k++; const L = lav[i];
     try { fatti[i] = await gioca(L.sk, L.sd, rosso, L.rg); } catch (e) { fatti[i] = { out: [], ph: 'errore ' + String(e).slice(0, 80), n: 0 }; } } }));
@@ -73,7 +103,7 @@ for (const arm of ARMI) { const rosso = arm === 'rosso'; const lav = []; for (co
      la scena che deve giudicare (verde: nessuna parata sul ramo cross_goal o meno di 3 del compagno; rosso: nessuna parata giudicabile)
      si rigiocano le stesse partite, al massimo due volte, dichiarandolo. Le soglie non cambiano. */
   const _cieco = () => { const o = fatti.flatMap(M => (M && M.out) || []).filter(x => !(x.rv && x.rv.cap === 'parete'));
-    return rosso ? !o.length : (o.filter(x => /assist/.test(x.g)).length < 3 || !o.some(x => /cross_goal/.test(x.pas))); };
+    return rosso ? !(o.length + prov.length) : (o.filter(x => /assist/.test(x.g)).length < 3 || !(o.some(x => /cross_goal/.test(x.pas)) || prov.some(x => /cross_goal/.test(x.pas)))); };
   for (let giro = 1; giro <= 2 && _cieco(); giro++) { console.log(arm + ' copertura insufficiente: secondo giro ' + giro); const base = lav.length; const ext = lav.slice(0, base).map(L => ({ ...L, rip: giro }));
     let j = 0; await Promise.all(Array.from({ length: Math.min(PAR, ext.length) }, async () => { while (j < ext.length) { const i = j++; const L = ext[i];
       try { fatti.push(await gioca(L.sk, L.sd, rosso, L.rg)); } catch (e) { fatti.push({ out: [], ph: 'errore ' + String(e).slice(0, 80), n: 0 }); } lav.push(L); } })); }
@@ -83,12 +113,17 @@ for (const arm of ARMI) { const rosso = arm === 'rosso'; const lav = []; for (co
       if (o.rv && o.rv.cap === 'parete') { T.ng = (T.ng | 0) + 1; continue; }
       if (o.minGB > 6) T.dif.push(tag + ' «' + o.ovl + '» minGB ' + o.minGB.toFixed(1));
       if (process.env.CPM_RIGHE) console.log('    ' + tag + ' g=' + o.g + ' key=' + o.key + ' minGB=' + o.minGB.toFixed(1) + ' tiro=' + o.tiro + ' tuffo=' + o.tuffo + ' rev=' + o.rev + ' via=' + (o.rv ? o.rv.via + (o.rv.wpa ? '+wpa' : '') + (o.rv.cap ? '+' + o.rv.cap : '') : '-') + ' dur=' + o.dur + ' fr=' + o.nfr + ' pa=' + o.pas + ' «' + o.ovl + '»' + (process.env.CPM_TR ? '\n      ' + o.tr : '')); } });
-  esito[arm] = T; console.log(arm.toUpperCase() + ' parate ' + T.par + ' (tiro del compagno ' + T.comp + ') · sul ramo cross_goal ' + (T.cg | 0) + ' · non giudicabili ' + (T.ng | 0) + ' · difetti ' + T.dif.length); T.dif.slice(0, 12).forEach(x => console.log('  · ' + x));
+  for (const o of prov) { T.par++; T.prov = (T.prov | 0) + 1; if (/cross_goal/.test(o.pas)) T.cg = (T.cg | 0) + 1;
+    if (o.minGB > 6) T.dif.push('provocata gi' + o.gi + ' «' + o.ovl + '» minGB ' + o.minGB.toFixed(1) + ' (' + o.pas + ')'); }
+  if (PROV.length && prov.length < PROV.length) T.provMancanti = PROV.length - prov.length;
+  esito[arm] = T; console.log((T.prov | 0) + ' scene provocate giudicate su ' + PROV.length + '; '); console.log(arm.toUpperCase() + ' parate ' + T.par + ' (tiro del compagno ' + T.comp + ') · sul ramo cross_goal ' + (T.cg | 0) + ' · non giudicabili ' + (T.ng | 0) + ' · difetti ' + T.dif.length); T.dif.slice(0, 12).forEach(x => console.log('  · ' + x));
 }
 await b.close(); srv.close();
 if (process.env.CPM_MISURA) process.exit(0);
 const g = [], V = esito.verde, R = esito.rosso;
 if (V) { if (V.comp < 3) g.push('verde: cieco, solo ' + V.comp + ' parate sul tiro del compagno (pavimento 3)'); if (!(V.cg > 0)) g.push('verde: nessuna parata sul ramo cross_goal (il ramo corretto dal giro 100 non e\' stato guardato)'); if (V.dif.length) g.push('verde: ' + V.dif.length + ' parate senza pallone al portiere'); }
 if (R && !R.dif.length) g.push('rosso: il difetto non si vede (' + R.par + ' parate)');
+/* [giro 174] una scena provocata che non arriva al riquadro di parata e' «non giudicata», quindi rossa */
+for (const [n, T] of [['verde', V], ['rosso', R]]) if (T && T.provMancanti) g.push(n + ': ' + T.provMancanti + ' scene provocate non giudicate');
 if (g.length) { console.log('❌ parata-100'); g.forEach(x => console.log('  · ' + x)); process.exit(1); }
 console.log('✅ parata-100' + (V ? ' verde' : '') + (R ? ' · il rosso si vede' : ''));
