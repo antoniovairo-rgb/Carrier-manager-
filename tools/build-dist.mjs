@@ -84,7 +84,7 @@ const CON_CH38 = !!process.env.CPM_DIST_CON_CH38;
 const _ch38Dist = /[\\/]assets[\\/](footballer[a-z-]*\.glb|anim-[a-z-]+\.glb)$/;
 let _ch38Esclusi = 0;
 /* [giro 116 — PO-322] file che il gioco NON referenzia: fuori dal pacchetto store.
-   (a) assets/source/ = sorgenti d'autore (FBX, TEXTURES.zip, .blend, modello CGTrader originale, 142 MB) — nessuna riga di src/ li apre,
+   (a) assets/source/ = sorgenti d'autore (oggi .blend + CHARACTER.glb CGTrader; FBX/OBJ/TEXTURES.zip tolti il 13/11, giro 184) — nessuna riga di src/ li apre,
        solo gli script Python di tools/ (render offline); distribuirli in un AAB e' anche un rischio di licenza.
    (b) README.md dentro assets/ (documentazione).
    (c) elenco ESPLICITO di file di assets/ il cui nome non compare in nessun sorgente (src/, CARRIER-MANAGER-AV.html, sw.js): misurato con
@@ -93,13 +93,22 @@ let _ch38Esclusi = 0;
 const CON_SORGENTI = !!process.env.CPM_DIST_CON_SORGENTI;
 const _srcDist = /[\\/]assets[\\/]source([\\/]|$)|[\\/]assets[\\/].*README\.md$|[\\/]assets[\\/](hyper-casual-korward-(animated|football|football-(black|brown|red))\.glb|cgtrader-review-lod[12]\.glb|cgtrader-unreal-axis-[a-z-]+\.glb|cgtrader-ajax-shirt-review\.png|hero-highlight-portrait-v1\.(png|webp)|cgtrader-clip-rohr\.glb)$/;   /* [giro 180c] clip Rohr: fuori finche' il gioco non le carica (decisione madre 180b §6.4) */
 let _srcEsclusi = 0;
+/* [giro 184 — PO-374, decisione PO 12/11 «Toglierli dal repo»] gli ORIGINALI dei pacchetti di terzi (CGTrader, Mixamo, Anderson
+   Rohr: FBX, OBJ/MTL, BVH, uasset, zip/7z/rar, cartella originals/, nomi *_ue5/*_iclone) non entrano MAI nel pacchetto, nemmeno con
+   CPM_DIST_CON_SORGENTI=1: la licenza ne vieta la ridistribuzione. Gli originali CGTrader sono stati tolti dal repo il 13/11
+   (restano nella storia git, nessun force push); questa riga e' la rete se un file del genere ricomparisse. Guardiano licenze-184. */
+const _origDist = /[\\/]originals([\\/]|$)|\.(fbx|obj|mtl|bvh|uasset|zip|7z|rar)$/i;
+const _origNome = /(_ue5|_iclone)\.[a-z0-9]+$/i;
+let _origEsclusi = 0;
 const _sz = s => { const st = fs.statSync(s); if (!st.isDirectory()) return st.size; let t = 0; for (const f of fs.readdirSync(s)) t += _sz(path.join(s, f)); return t; };
 if (fs.existsSync(assetsSrc)) fs.cpSync(assetsSrc, path.join(DIST, 'assets'), { recursive: true,
   filter: s => {
+    if (_origDist.test(s) || _origNome.test(s)) { _origEsclusi += _sz(s); return false; }   /* [giro 184] mai, nemmeno con CPM_DIST_CON_SORGENTI */
     if (!CON_CH38 && _ch38Dist.test(s)) { _ch38Esclusi += fs.statSync(s).size; return false; }
     if (!CON_SORGENTI && _srcDist.test(s)) { _srcEsclusi += _sz(s); return false; }
     return true; } });
 console.log(`CH38 escluso dal pacchetto: ${(_ch38Esclusi / 1048576).toFixed(2)} MB${CON_CH38 ? ' (CPM_DIST_CON_CH38: incluso)' : ''}`);
+if (_origEsclusi) console.log(`Originali di pacchetti di terzi esclusi: ${(_origEsclusi / 1048576).toFixed(2)} MB (sempre)`);
 console.log(`Sorgenti/non referenziati esclusi: ${(_srcEsclusi / 1048576).toFixed(2)} MB${CON_SORGENTI ? ' (CPM_DIST_CON_SORGENTI: inclusi)' : ''}`);
 { const miss = new Set(); for (const m of html.matchAll(/['"`]\.\/(assets\/[A-Za-z0-9_./-]+\.(?:glb|png|webp|jpg|jpeg|json|wav|mp3|ogg|js))['"`]/g)) if (!fs.existsSync(path.join(DIST, m[1])) && (CON_CH38 || !_ch38Dist.test('/' + m[1]))) miss.add(m[1]); /* CH38 e' escluso di proposito (giro 39) */
   if (miss.size) { console.error('FATAL: file referenziati dalla pagina ma assenti dalla dist:\n  ' + [...miss].join('\n  ')); process.exit(3); } }

@@ -74,3 +74,12 @@ docs/sviluppo/giro178/*.png
 mocap/
 RTG_RKK_to_MH/
 Importing_into_UE5.pdf
+# [giro 184 PO-374, decisione PO 12/11 «Toglierli dal repo»] RETE DI SICUREZZA sugli ORIGINALI dei pacchetti di terzi (CGTrader,
+# Mixamo, Rohr): tolti dal repo il 13/11 (restano nella storia, nessun force push). In assets/ entrano solo i GLB convertiti.
+# Guardiano: tests/visual/licenze-184.mjs.
+assets/**/originals/
+assets/**/*.fbx
+assets/**/*.obj
+assets/**/*.mtl
+assets/**/*.bvh
+assets/**/*.zip
