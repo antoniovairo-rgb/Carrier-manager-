@@ -11108,7 +11108,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
               <TeamBadge team={homeTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"right":"left"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?"auto":0}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <NomeSquadra182 as="div" team={homeTeamObj} fb="Squadra" style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,maxWidth:70,marginLeft:_swap893?"auto":0}}/>
                 <div style={{fontSize:FS.display,fontWeight:900,color:_hCol901,lineHeight:1,textAlign:_swap893?"right":"left"}}>{_hVal901}</div>
               </div>
             </div>
@@ -11184,7 +11184,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             <div data-cpm="scudo-ospiti" style={{display:"flex",alignItems:"center",gap:7,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
               <TeamBadge team={awayTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"left":"right"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?0:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <NomeSquadra182 as="div" team={awayTeamObj} fb="Avversario" style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,maxWidth:70,marginLeft:_swap893?0:"auto"}}/>
                 <div style={{fontSize:FS.display,fontWeight:900,color:_aCol901,lineHeight:1,textAlign:_swap893?"left":"right"}}>{_aVal901}</div>
               </div>
             </div>
@@ -11200,7 +11200,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none",..._strisciaV2(_fH3)}}>
                 <TeamBadge team={homeTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fH3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(homeTeamObj,"Squadra")}</div>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" team={homeTeamObj} fb="Squadra" testo={_no182nomi()?_nomeBarra108(homeTeamObj,"Squadra"):undefined} style={{color:_fH3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"right":"left",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
               {!(typeof window!=='undefined'&&window.__CPM_NO_G96B_D15)&&<style>{'@media(pointer:coarse){.cpm-t40m:not([style*="position"]){position:relative;z-index:1;}.cpm-t40m::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,'+(_no108("13")?42:44)+'px);height:max(100%,'+(_no108("13")?42:44)+'px);transform:translate(-50%,-50%);}}'}</style>}{/* [giro 108 G180-13] l'area di tocco allargata passa da 42 a 44 px (la soglia del collaudo). Rosso __CPM_NO_G108_13 */}
@@ -11242,7 +11242,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* Away team */}
               <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none",..._strisciaV2(_fA3)}}>
                 <TeamBadge team={awayTeamObj} size={26}/>
-                <div style={{fontSize:FS.caption,color:_fA3.ink,fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}>{_nomeBarra108(awayTeamObj,"Avversario")}</div>
+                <NomeSquadra182 as="div" cpm="barra-nome-182" team={awayTeamObj} fb="Avversario" testo={_no182nomi()?_nomeBarra108(awayTeamObj,"Avversario"):undefined} style={{color:_fA3.ink,fontWeight:700,minWidth:0,textAlign:_swap893?"left":"right",fontFamily:FONT_TV,fontSize:FS.body,textTransform:"uppercase",letterSpacing:.5}}/>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
@@ -11636,12 +11636,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {/* header: nomi squadre con barra colore */}
                     <div style={{display:"flex",alignItems:"stretch"}}>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreHomeCol||"#3b82f6"}`,minWidth:0}}>
-                        <div data-cpm="ingresso-nome-v2" style={{fontSize:FS.subhead,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}>{_tvHome.name}</div>
+                        <NomeSquadra182 as="div" cpm="ingresso-nome-v2" team={homeTeamObj} testo={_tvHome.name} style={{fontSize:FS.subhead,color:TINTE.testo,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}/>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvHome.pos?`${_tvHome.pos}ª in classifica`:"Casa"):"Casa"}</div>
                       </div>
                       <div style={{display:"flex",alignItems:"center"}}><span data-cpm="ingresso-vs-v2" style={{padding:"3px 8px",borderRadius:RAD.xs,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,fontSize:FS.body,letterSpacing:1}}>VS</span></div>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreAwayCol||"#ef4444"}`,minWidth:0,textAlign:"right"}}>
-                        <div data-cpm="ingresso-nome-v2" style={{fontSize:FS.subhead,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}>{_tvAway.name}</div>
+                        <NomeSquadra182 as="div" cpm="ingresso-nome-v2" team={awayTeamObj} testo={_tvAway.name} style={{fontSize:FS.subhead,color:TINTE.testo,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:.4,lineHeight:1.1}}/>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvAway.pos?`${_tvAway.pos}ª in classifica`:"Ospite"):"Ospite"}</div>
                       </div>
                     </div>

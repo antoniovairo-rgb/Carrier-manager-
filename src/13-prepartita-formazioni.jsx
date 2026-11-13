@@ -190,7 +190,7 @@ function ScoutReportScreen({report,opponent,onClose,loading,mister,mine}){
           <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Analisi pre-partita</div>
-            <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opponent?.n||"Avversario"}</div>
+            <NomeSquadra182 as="div" team={opponent} fb="Avversario" style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}/>
             <div style={{fontSize:FS.small,color:TH.muted}}>{opponent?.lg||""}</div>
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>
@@ -1032,7 +1032,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
-        <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,minWidth:0}}>{team?.n||team?.a}</span>
+        <NomeSquadra182 as="span" team={team} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,flex:1,minWidth:0}}/>
         <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px"}}>{_fmtOf(rr)}</span>
       </div>
       <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
@@ -1053,9 +1053,9 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
-          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{homeTeam?.n}</span></div>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><NomeSquadra182 as="span" team={homeTeam} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}/></div>
           <span style={{fontSize:FS.body,fontWeight:FW.black,color:TH.faint}}>VS</span>
-          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textAlign:"right"}}>{awayTeam?.n}</span><TeamBadge team={awayTeam} size={36}/></div>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><NomeSquadra182 as="span" team={awayTeam} style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,textAlign:"right"}}/><TeamBadge team={awayTeam} size={36}/></div>
         </div>
       </Card>
       {/* [23/09 POC — collaudo PO «i cognomi vengono tagliati? hai molto spazio, sfruttalo!»] le due formazioni una sotto
@@ -1105,13 +1105,13 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",minWidth:0}}>
               <TeamBadge team={homeTeam} size={46}/>
               <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{homeTeam?.a}</div>
-              <div style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{homeTeam?.n}</div>
+              <NomeSquadra182 as="div" team={homeTeam} style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",maxWidth:"32vw"}}/>
               {_pipRow(homeTeam?.p,false)}
             </div>
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",minWidth:0,textAlign:"right"}}>
               <TeamBadge team={awayTeam} size={46}/>
               <div style={{fontSize:"clamp(22px,7vw,30px)",fontWeight:900,letterSpacing:"0.04em",color:"#f1f5f9",marginTop:2}}>{awayTeam?.a}</div>
-              <div style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"32vw"}}>{awayTeam?.n}</div>
+              <NomeSquadra182 as="div" team={awayTeam} style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",maxWidth:"32vw"}}/>
               {_pipRow(awayTeam?.p,true)}
             </div>
           </div>

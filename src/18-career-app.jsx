@@ -9269,7 +9269,7 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:(_imp||_h2h.length>0)?8:0}}>
               <TeamBadge team={_opp} size={36}/>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
+                <NomeSquadra182 as="div" team={_opp} fb={_nmd.opponentName} style={{fontSize:FS.body,fontWeight:800,color:TH.text}}/>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
                   {_oPos>=0&&<span style={{fontSize:FS.caption,color:TH.muted}}>{_oPos+1}° classifica</span>}
                   <span style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_pColor)}}>Force {_opp.p||60}</span>
@@ -9546,7 +9546,7 @@ const getThisWeekMatchday=()=>{
                       return(
                         <div key={ri} style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",background:row.isPlayer?"rgba(59,130,246,0.08)":"transparent",borderRadius:RAD.xs,alignItems:"center"}}>
                           <div style={{fontSize:FS.caption,color:isQ?_ecBorder:TH.faint,fontWeight:700,textAlign:"center"}}>{ri+1}</div>
-                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.n}{row.isPlayer?" ⭐":""}</div>
+                          <div style={{fontSize:FS.caption,color:row.isPlayer?_ecBorder:TH.text,fontWeight:row.isPlayer?700:400,display:"flex",minWidth:0,whiteSpace:"nowrap"}}><NomeSquadra182 as="span" team={row} style={{minWidth:0,flex:"0 1 auto"}}/>{row.isPlayer?<span style={{flex:"0 0 auto"}}>{" ⭐"}</span>:null}</div>
                           {[row.w+row.d+row.l,row.w,row.d,row.l,row.gf,row.ga,row.pts].map((v,vi)=>(
                             <div key={vi} style={{fontSize:FS.caption,textAlign:"center",fontWeight:vi===6?700:400,color:vi===6?(row.isPlayer?_ecBorder:TH.text):TH.muted}}>{v}</div>
                           ))}
@@ -11661,7 +11661,7 @@ const getThisWeekMatchday=()=>{
                           {_rumors.map(function(r,i){return(
                             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<_rumors.length-1?"1px solid #d1fae5":"none"}}>
                               <div style={{width:20,height:20,flexShrink:0}}><TeamBadge team={r.club} size={20}/></div>
-                              <span style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.club.n}</span>
+                              <NomeSquadra182 as="span" team={r.club} style={{flex:1,fontSize:FS.caption,color:TH.txGreen,fontWeight:600}}/>
                               <TaccheV2 n={/Trattativa|Forte/.test(r.int)?3:/moderato/.test(r.int)?2:1} col={/Trattativa|Forte/.test(r.int)?TINTE.verde:/moderato/.test(r.int)?TINTE.giallo:TINTE.sec} label={"Interesse: "+r.int.replace(/^\S+\s/,"")}/>{/* [PO-302 tappa 2 · V2Agente] indicatore d'interesse a 3 tacche, la parola resta */}
                               <span style={{fontSize:FS.caption,fontWeight:700,color:r.col,flexShrink:0}}>{r.int}</span>
                             </div>
