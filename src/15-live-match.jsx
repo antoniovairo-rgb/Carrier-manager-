@@ -1900,6 +1900,27 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const halfFiredRef=useRef(_rsCk138>=45);const oppRedRef=useRef(false);/* [6.0.0 MP-5] */// [5.77.0 MOT-4] l'intervallo scatta UNA volta garantita al 45' · [7.150.0] ripresa dopo il 45' → intervallo già passato (niente falso «fine primo tempo» né reset momentum)
   useEffect(()=>{try{AudioMgr.enterMatch(bgSimSeedRef.current);}catch(_a){}return()=>{try{AudioMgr.exitMatch();}catch(_a){}};},[]);/* [7.62.0 AUDIO] al mount/unmount del match: musica menu OFF + letto-folla ON, e viceversa al ritorno */
   const bgSimSeedRef=useRef(hashStr(String(opponent?.id||opponent?.n||"opp")+"|"+(player?.season||1)+"|"+(player?.week||1)+"|"+(player?.name||""))>>>0);// [5.77.0 MOT-1] seed del micro-sim: stabile per partita
+  /* [giro 175 · PO-372 — LA STESSA PARTITA CON LE STESSE SCELTE E' LA STESSA PARTITA. Rosso __CPM_NO_G175]
+     MISURATO (tests/visual/_diag175.mjs, che avvolge il motore e ne registra ogni chiamata): la partita intera rigiocata identica
+     si separava perche' alcuni ingressi del motore nascevano da sorteggi SENZA seme (Math.random in produzione; sotto ?cpmtest un
+     flusso di prova unico, consumato anche dalla carriera e dai cori a orologio da polso, quindi con un punto di partenza diverso
+     a ogni giro). Ogni sorteggio che ENTRA nella partita (posizioni iniziali, possesso iniziale, tuffo del portiere sul rigore...)
+     passa da qui: un generatore col seme della partita e un'etichetta propria, cosi' due sorteggi non si rubano i numeri e
+     nessuno dipende da QUANTI ne sono usciti prima. Col rosso torna `rng()`/`Math.random()` com'era. */
+  const _g175=!(typeof window!=='undefined'&&window.__CPM_NO_G175);
+  const _rnd175=tag=>_g175?seededRng((((bgSimSeedRef.current>>>0)^hashStr("g175|"+tag))>>>0)||1):null;
+  const _rng175=(r,a,b)=>r?Math.floor(r()*(b-a+1))+a:rng(a,b);
+  const settle175Ref=useRef(null);/* [giro 175] il punto d'assestamento deciso dall'esito per la scena incatenata (handleAction lo scrive, la continuita' lo legge) */
+  /* [giro 175 · PO-372 — IL MOTORE NASCE DALL'EROE DEL CALCIO D'INIZIO, NON DA DOVE LO HA PORTATO L'ATTESA. Rosso __CPM_NO_G175]
+     MISURATO («Collaudo Salienti», corpi 3D accesi contro spenti): coi corpi accesi il primo battito aspetta il caricamento
+     (5,2 s) e in quell'attesa la deriva dell'eroe (un giro ogni 500 ms REALI, con sorteggi senza seme) lo sposta: il motore nasceva
+     con l'eroe a 50,62 invece di 47,61 e la partita finiva 4-0 invece di 1-0. Su un telefono lento sarebbe un'altra partita ancora.
+     Al primo battito (minuto 0, partita non ripresa) l'eroe consegnato e' quello del calcio d'inizio: e' gia' cosi' quando non c'e'
+     attesa, perche' il primo battito arriva prima del primo giro di deriva. */
+  const _eroeNasce175=()=>{const _e0=eroe0_175Ref.current;
+    if(_g175&&_e0&&!resumeState&&(clockRef.current|0)<=1)return{x:_e0.x,y:_e0.y};
+    return{x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50};};
+  const apPassi175Ref=useRef(0);/* [giro 175] battiti di pressione gia' trascorsi nella scena in corso (li conta il pilota automatico dei guardiani) */
   /* [giro 36 PO-262 — IL PUNTO DEL PIAZZATO E' FUNZIONE DELLA PARTITA, NON DEL CASO. Rosso __CPM_NO_SP262] MISURATO (match-sequence
      rosso sulla 169/170; testimoni di sola lettura su pPos, sorteggi di `_rndM` e stato dei ref per minuto, 6 giri identici a 1x): la
      prima scena a movimento bloccato (punizione, gi1 al 6') apriva con l'eroe in 82,4/48,4 · 80,4/52,4 · 82,4/52,4 · 80,4/49,4 —
@@ -2147,7 +2168,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
      vede il numero cambiare, i bersagli freschi sono gia' nei props — non un fotogramma prima. */
   const [stageStamp,setStageStamp]=useState(0);
   const [matchPlayers,_setMPraw]=useState(()=>{
-    const j=(x,y,d=4)=>({x:clamp(x+rng(-d,d),3,97),y:clamp(y+rng(-d,d),3,97)});
+    const _rj175=_rnd175("ventidue");/* [giro 175] gli scarti dei ventidue al calcio d'inizio: stessi 42 sorteggi, stesso ordine, col seme della partita (misurato: portiere a 4,48 in cinque giri e a 12,52 nel sesto — il motore nasceva da un campo diverso) */
+    const j=(x,y,d=4)=>({x:clamp(x+_rng175(_rj175,-d,d),3,97),y:clamp(y+_rng175(_rj175,-d,d),3,97)});
     // Sprint 79 — prestige-aware away formation: elite teams press higher (lower x = closer to home goal)
     const _oppP79=opponent?.p||opponent?.prestige||65;
     const aOff=_oppP79>=75?-6:_oppP79>=60?0:6; // high prestige presses, low prestige sits deep
@@ -2578,7 +2600,8 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const handleContinueRef=useRef(null);/* [7.227.0 #44] idem per handleContinue: in REVISIONE la continuazione della catena parte da un effect (pattern anti-closure-stale) */
   const _rvwChainOkRef=useRef(true),_rvwChainArmRef=useRef(false);/* [7.227.0 #44] esito da propagare al secondo tempo + armamento one-shot per ciclo di revisione */
   // position resets to situation startZone on each new highlight
-  const [pPos,setPPos]=useState(()=>getStartPos(situations[0])||{x:58,y:50});
+  const eroe0_175Ref=useRef(null);/* [giro 175] l'eroe del calcio d'inizio, come nasce: il motore parte da qui (vedi creaMotorePossesso) */
+  const [pPos,setPPos]=useState(()=>{const _p0=getStartPos(situations[0],_rnd175("eroe0")||undefined)||{x:58,y:50};eroe0_175Ref.current={x:_p0.x,y:_p0.y};return _p0;});/* [giro 175] l'eroe consegnato al motore al calcio d'inizio (misurato: 58,38 contro 45,48 fra due giri uguali) */
   const pPosRef=useRef({x:58,y:50});
   const _contKeyRef=useRef(null);/* [7.399.0 codice 002] chiave «continuita' gia' applicata» per scena (hlIdx+forceSeq) */
   const _stagedSpotRef=useRef(null);/* [7.402.0 codice 001] il punto-palla che lo staging ha usato per piazzare il battitore: il piazzamento della palla lo RIUSA — una sorgente sola, niente doppio calcolo di hlBallSpot con esiti diversi */
@@ -2606,7 +2629,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [possession,setPossession]=useState(()=>{
     const opp=opponent?.p||opponent?.prestige||65;
     const diff=(player.ovr||65)-opp;
-    return clamp(Math.round(50+diff*0.28+rng(-5,5)),22,78);
+    return clamp(Math.round(50+diff*0.28+_rng175(_rnd175("possesso0"),-5,5)),22,78);/* [giro 175] */
   });
   const possessionRef=useRef(50);
   useEffect(()=>{possessionRef.current=possession;},[possession]);
@@ -3172,7 +3195,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     window.__CPM_FERMO_SET=(k,x,y,t)=>{try{fermoRef.current={x:+x,y:+y,t:(t|0)||12,kind:String(k)};return true;}catch(e){return false;}};/* [7.633.0 SOLO COLLAUDO] forza un fermo per misurare lo schieramento da palla inattiva senza aspettare la lotteria dei sorteggi (pattern __CPM_FORCE_SIT) */
     window.__CPM_AUTOPLAY=(on,opts)=>{try{
       if(_apT){clearInterval(_apT);_apT=null;}
-      if(!on){try{window.__CPM_AUTOPLAY_ON=false;}catch(_e){}return true;}
+      if(!on){try{window.__CPM_AUTOPLAY_ON=false;window.__CPM_AP175=null;}catch(_e){}return true;}
       /* [7.682.0] IL FREEZE DELLA SCELTA E' PER CHI LEGGE, e sotto pilota automatico non legge nessuno.
          Il guardiano partita-vera raccoglie per un tempo REALE fisso: tre scelte da venti secondi gli
          mangiavano un minuto di partita, i turni scendevano da 26 a 22 e la banda «catena-viva >=5»
@@ -3180,6 +3203,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
          passare la release e' esattamente cio' che non si fa, quindi si toglie la causa: in autoplay il
          tempo non si ferma. `__CPM_SCFREEZE_TEST` lo riaccende per la sonda che DEVE misurarlo. */
       window.__CPM_AUTOPLAY_ON=true;
+      try{window.__CPM_AP175=(!_g175||(opts&&opts.pilota==="orologio"))?null:{k:Math.max(1,Math.round((((opts&&opts.tickMs)|0)||350)/200))};}catch(_e175){}/* [giro 175] pilota sul battito: quanti battiti di pressione (100 ms di scena) prima di scegliere — la meta' del vecchio giro a orologio, cioe' la sua attesa media. `pilota:"orologio"` (solo sonde) rimette il vecchio */
       window.__CPM_FORCED_MODE=false;// [6.77.0 FLAKE-FIX] l'autoplay gioca la partita VERA → il fischio finale deve arrivare
       const o=opts||{};let _as=((o.seed|0)||1)>>>0;const _ar=()=>{_as=(_as*1664525+1013904223)>>>0;return _as/4294967296;};
       let lastKey="";
@@ -3187,7 +3211,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         const ph=phaseRef.current;
         const key=ph+"#"+(hlIdxRef.current||0)+"#"+(numHLRef.current||0);
         if(ph==="matchday"||ph==="formations"||ph==="walkout"){if(key!==lastKey){lastKey=key;setPhase("playing");}}// stesso path del bottone Salta
-        else if(ph==="hl_move"){if(key!==lastKey){lastKey=key;setPhase("hl_choose");}}
+        else if(ph==="hl_move"){if(key!==lastKey){const _s175=situationsRef.current[hlIdxRef.current];if(window.__CPM_AP175&&_s175&&!_s175.lockMovement&&_s175.maxMoves!==0)return;/* [giro 175] qui il passaggio lo fa il battito di pressione della scena (vedi sopra); senza quel battito (piazzati) resta questo */lastKey=key;setPhase("hl_choose");}}
         else if(ph==="hl_choose"){
           if(key===lastKey||_hlActionFiredRef.current)return;
           lastKey=key;
@@ -4177,7 +4201,12 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
                 getStartPos casuale — era quello il «punto a caso». Le sit NON incatenate mantengono il
                 comportamento 4.86 (fallback allo spot corretto sui salti di campo legittimi). */
              const _isChain=!!(_curSit&&_curSit._chainDepth);
-             const _pv=ballTargetRef.current||ballPosRef.current||{x:58,y:50};/* [7.399.0 codice 002] il bersaglio, non la posizione a meta' volo: leggere `ballPosRef` qui trovava la palla fuori zona e ripiegava sul punto casuale (vedi il commento sopra) — il privilegio del bersaglio era gia' riconosciuto alle catene dal 7.34.1, e la ragione vale per tutte */
+             /* [giro 175 · PO-372 — LA SCENA INCATENATA NASCE DAL PUNTO DECISO, NON DA QUELLO RESO. Rosso __CPM_NO_G175] Alla chiusura
+                della scena `_allinea781` porta il bersaglio logico SUL pallone reso (7.781: la cronaca riparte da dove sta la palla): e'
+                una posizione del 3D, che dipende dai fotogrammi e dal tempo reale della lettura. Per la scena incatenata quel punto
+                diventava la posizione dell'eroe, cioe' un ingresso delle probabilita' e del motore. Il pallone resta dov'e' stato visto;
+                l'eroe della seconda meta' nasce sul punto d'assestamento che l'esito aveva deciso (lo stesso a cui mirava l'arco). */
+             const _pv=(_g175&&_isChain&&settle175Ref.current)?settle175Ref.current:(ballTargetRef.current||ballPosRef.current||{x:58,y:50});settle175Ref.current=null;/* si usa una volta *//* [7.399.0 codice 002] il bersaglio, non la posizione a meta' volo: leggere `ballPosRef` qui trovava la palla fuori zona e ripiegava sul punto casuale (vedi il commento sopra) — il privilegio del bersaglio era gia' riconosciuto alle catene dal 7.34.1, e la ragione vale per tutte */
              const _in=_pv.x>=_sz.x[0]&&_pv.x<=_sz.x[1]&&_pv.y>=_sz.y[0]&&_pv.y<=_sz.y[1];
              /* [7.621.0 — SPRINT «PARTITA VERA»: LA SCENA NASCE DOV'ERA DIRETTO IL GIOCO. Rosso __CPM_NO621]
                 L'audit highlights (punto 2): «la continuita' butta via il ponte» — bersaglio fuori dalla
@@ -4233,7 +4262,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     const _nd21=(sit&&sit.tactic&&sit.tactic.nearby_def!=null)?sit.tactic.nearby_def:({none:0,low:1,medium:2,high:3}[sit&&sit.tactic&&sit.tactic.pressure]||1);
     const _ddBase21=[88,74,58,44][clamp(Math.round(_nd21),0,3)];
     const _ddJit21=(Math.abs(hashStr(((sit&&sit.text)||"")+"|dd|"+hlIdx))%13)-6;
-    movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
+    apPassi175Ref.current=0;movesLeftRef.current=mm;setMovesLeft(mm);moveCoolRef.current=0;pressureRef.current=1;setPressureBar(1);defDistRef.current=clamp(_ddBase21+_ddJit21,26,99);setDefDist(defDistRef.current);
     // CINE-TAC: aerial/immediate situations skip hl_move and go straight to action choice
     if(mm===0&&!sit?.lockMovement){setPhase("hl_choose");}else{setPhase("hl_move");}
   };
@@ -4271,6 +4300,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
       pressureRef.current=Math.max(0,pressureRef.current-(STEP/TOTAL)*pressureMult);
       setPressureBar(pressureRef.current);
       if(pressureRef.current<=0){clearInterval(iv);setPhase("hl_choose");}
+      /* [giro 175 · PO-372 — IL PILOTA AUTOMATICO DEI GUARDIANI SCEGLIE SUL BATTITO DELLA SCENA, NON A OROLOGIO. Rosso __CPM_NO_G175]
+         MISURATO: il pilota passava da «muoviti» a «scegli» al suo giro di 300 ms REALI, cioe' dopo 0-3 di questi battiti da 100 ms
+         secondo dove cadeva il suo orologio: il marcatore (`defDist`, che qui si avvicina a ogni battito) era a distanze diverse a
+         ogni giro, il malus di marcatura cambiava e con lui la probabilita' tirata dal dado del motore. Ora, sotto pilota, il
+         passaggio lo fa QUESTO battito dopo un numero fisso di passi: la distanza del marcatore alla scelta e' sempre la stessa.
+         Il giocatore vero non e' toccato: il suo tempo di decisione e' una sua scelta. */
+      else if(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&window.__CPM_AP175&&(++apPassi175Ref.current)>=(window.__CPM_AP175.k|0)){clearInterval(iv);setPhase("hl_choose");}
     },STEP);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,paused]);// eslint-disable-line
@@ -5010,6 +5046,17 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
           if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current){if(stagedRef45.current&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO45)){if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.evitate++;_w45.ultima={x:+_stM870.eroe.x.toFixed(1),y:+_stM870.eroe.y.toFixed(1),fase:phaseRef.current};}catch(_e45){}}}else{if(stagedRef45.current&&typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.rosse=(_w45.rosse|0)+1;}catch(_e45){}}setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});}}/* [7.999.45] il motore non riscrive l'eroe gia' messo in scena (testimone __CPM_STACCO45: evitate / rosse) */
     };
+    /* [giro 175 · PO-372 — UN PASSO PAGATO IN RITARDO SI SPECCHIA COME UNO PUNTUALE. Rosso __CPM_NO_G175] I passi del minuto che
+       l'intervallo a orologio non ha fatto in tempo a battere si pagano al battito (cicli 161 e 967): il MOTORE li riceve tutti,
+       ma gli SPECCHI (pallone logico, bersaglio, ventidue, eroe, portatore, turno) restavano fermi all'ultimo passo arrivato a
+       orologio — quanti, lo decide il tempo reale. MISURATO («Tobia Ferrante», 78', tre velocita'): la scena aperta su quel battito
+       nasceva dal bersaglio del pallone specchiato un passo prima o un passo dopo, l'eroe a y 36,7273 in un giro e 36,7114
+       nell'altro, e quella posizione rientrava nel motore con `riprendi`. Inoltre il cambio di turno di un passo pagato in ritardo
+       si annotava al battito con un'altra causa. Qui ogni passo pagato fa quello che fa il sotto-tick puntuale (stessa condizione
+       `_vivo966`, stessi eventi del passo). Il motore non riceve nulla di nuovo: cambiano solo gli specchi. */
+    const _specDeb175=(_M175,_ev175)=>{if(!_g175)return;try{
+      if(phaseRef.current==='playing'&&(!stagedRef45.current||(typeof window!=='undefined'&&!!window.__CPM_NO_STACCO45))){const _st175=_M175.stato();_specchi898(_st175,_ev175);
+        if(!_st175.scena&&_st175.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st175.palla.x,0,100),y:clamp(_st175.palla.y,0,100)}));}}catch(_e175){}};
     const _per115=Math.max(40,Math.round(MATCH_TICK_MS/_SUB898/((typeof window!=='undefined'&&window.__CPM_NO484)?1:((context==="trial"&&primoProvino&&(hlIdx|0)===0&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?Math.max(2,matchSpeed||1):(matchSpeed||1)))));/* [giro 115] il periodo del battito, calcolato una volta (prima stava in coda al setInterval) */
     const _batt166=()=>{/* [giro 166] il battito ha un nome: lo chiama l'intervallo (partita intera) o il lotto (soli highlight) */
       if(_CPM_TEST&&phaseRef.current==="playing"){try{window.__CPM_SCENA115=(window.__CPM_SCENA115||0)+_per115;}catch(_e){}}/* [giro 115] tempo di SCENA del gioco fluido (ms di battiti), letto da flussi-115 */
@@ -5349,7 +5396,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
         if(!(typeof window!=='undefined'&&(window.__CPM_NO_SEME||window.__CPM_NO967))&&MOTORE870&&motoreRef.current&&!["hl_intro","hl_move","hl_choose","hl_result"].includes(phaseRef.current)){try{
           const _M161=motoreRef.current,_mP161=Math.max(0,(nx|0)-1);let _g161=0;
           while((passi966Ref.current|0)<(_SUB898-1)&&_g161<_SUB898){
-            const _evR=_M161.tick({min:_mP161,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);_brain23(_evR);
+            const _evR=_M161.tick({min:_mP161,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);_brain23(_evR);_specDeb175(_M161,_evR);
             passi966Ref.current=(passi966Ref.current|0)+1;_g161++;
             if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[_mP161]=(window.__CPM_PASSI959[_mP161]|0)+1;}catch(_e959){}}}
           if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g161;}catch(_e){}}
@@ -6166,7 +6213,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
+            motoreRef.current=creaMotorePossesso({calmaRossi:(context==="trial"&&primoProvino&&!(typeof window!=='undefined'&&window.__CPM_NO_G115_22))?15:0,slot:(_no112()?null:{h:sagoma112(modCasa112Ref.current,"motH"),a:sagoma112(modOsp112Ref.current,"motA")})/* [giro 112b] i posti nel modulo dei due club */,v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,..._eroeNasce175(),attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null),stile:(typeof stileMotore==='function'?stileMotore(player):null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma · [giro 67 PO-098] e per lo stile */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),brainLive:brain137(),fin202:((brain137()||(typeof window!=='undefined'&&window.__CPM_NO_FIN202))?null:((_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FIN202)||{home:0.85,away:1.3})),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             /* [giro 117 PO-324] RIPRESA: il motore nasce nuovo, ma i gol segnati prima del riavvio tornano nel suo tabellino, nel suo registro
                e nel registro MATCH_EV — stessi numeri del tabellone ripreso. Se l'istantanea e' di prima (senza g117) i gol si ricavano dal
                punteggio salvato, al minuto della ripresa. Nessun sorteggio: si scrivono solo contatori ed elenchi di lettura. Rosso __CPM_NO_G117B. */
@@ -6264,7 +6311,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
               l'etichetta del minuto in corso, il battito porta gia' quella del minuto nuovo. */
            const _mPrec967=Math.max(0,(nx|0)-1);
            if(!_no967&&MOTORE870&&_M){while((passi966Ref.current|0)<(_SUB898-1)&&_g967<_SUB898){
-             const _evR=_M.tick({min:_mPrec967,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);_brain23(_evR);
+             const _evR=_M.tick({min:_mPrec967,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);_brain23(_evR);_specDeb175(_M,_evR);
              passi966Ref.current=(passi966Ref.current|0)+1;_g967++;
              if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[_mPrec967]=(window.__CPM_PASSI959[_mPrec967]|0)+1;}catch(_e967){}}}}
            if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g967;}catch(_e){}}}
@@ -10090,6 +10137,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       pendingChainSitRef.current={..._seguito23([CHAIN_SITS.header,CHAIN_SITS.mischia]),_chainDepth:1};}
     // Sprint 79 — ball moves toward outcome position for visual coherence
     const _by79=pPosRef.current.y;
+    /* [giro 175 · PO-372 — L'ASSESTAMENTO DEL PALLONE DOPO L'ESITO E' FUNZIONE DELLA SCENA. Rosso __CPM_NO_G175] Il commento 7.57 qui
+       sotto lo dichiarava gia' «deterministico (rng seedato)», ma `rng()` non ha seme (Math.random in produzione). Da questo punto
+       nasce la scena incatenata, e da li' la posizione dell'eroe che entra nelle probabilita' e nella ripresa del motore: MISURATO
+       («Marco Bellandi», 13'): y dell'eroe 45,86 · 47,01 · 45,80 in tre giri uguali, e da li' 4-0 · 3-0 · 4-0. Stessi intervalli di
+       prima, generatore col seme della partita + scena + minuto. */
+    {const _re175=_rnd175("esito|"+(hlIdxRef.current|0)+"|"+(clockRef.current|0));const rng=(a,b)=>_rng175(_re175,a,b);settle175Ref.current=null;
     if(key==="goal")ballTargetRef.current={x:97,y:clamp(_by79+rng(-12,12),22,78)};
     else if(key==="miss"||key==="miss_easy")ballTargetRef.current={x:rng(89,98),y:ok?clamp(_by79+rng(-10,10),22,78):rng(5,95)};
     else if(key==="assist")ballTargetRef.current={x:rng(86,95),y:clamp(_by79+rng(-18,18),12,88)};
@@ -10111,8 +10164,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        ballTargetRef.current={
          x:clamp(_psz.x[0]+(_psz.x[1]-_psz.x[0])*0.42+rng(-3,3),_psz.x[0],_psz.x[1]),
          y:clamp((_psz.y[0]+_psz.y[1])/2+rng(-8,8),_psz.y[0],_psz.y[1])};
+        settle175Ref.current={x:ballTargetRef.current.x,y:ballTargetRef.current.y};/* [giro 175] il punto d'assestamento DECISO: la scena incatenata nasce da qui, non da dove il pallone reso e' arrivato a tempo reale (vedi l'effetto di continuita') */
        /* [7.57.0] hook di osservabilità (test-only): coerenza assestamento↔startZone della chain-sit */
        if(_CPM_TEST){try{const _s=ballTargetRef.current,_z=_psz;window.__CPM_CHAIN_COH={settle:{x:_s.x,y:_s.y},sz:{x:[..._z.x],y:[..._z.y]},inZone:_s.x>=_z.x[0]&&_s.x<=_z.x[1]&&_s.y>=_z.y[0]&&_s.y<=_z.y[1],key,chainText:(_pcs&&_pcs.text)||null,srcText:(situations[hlIdx]&&situations[hlIdx].text)||null};}catch(_e){}}}}/* [7.201.0] +testo della chain-sit e della sit d'origine: la probe verifica che l'eroe non incorni MAI il proprio cross */
+    }
     // [7.91.0 collaudo PO «la palla della 1ª azione si ferma nel nulla SENZA GIOCATORI che ricevono, scollegata
     //   dalla 2ª»] CONTINUITÀ: se una catena è pendente, il COMPAGNO più vicino al punto d'assestamento ci si porta
     //   SUBITO → durante l'esito della 1ª azione la palla è RICEVUTA da un giocatore reale (non resta «nel nulla»),

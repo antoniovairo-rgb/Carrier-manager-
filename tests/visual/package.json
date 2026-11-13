@@ -69,6 +69,7 @@
     "po229-gi38": "node po229-gi38-probe.mjs",
     "sonda-motion-161": "node sonda-motion-161.mjs",
     "solo-highlight-166": "node solo-highlight-166.mjs",
+    "riproduci-175": "node riproduci-175.mjs",
     "camera-step-census": "node camera-step-census-test.mjs",
     "wave-pose-sweep": "node wave-pose-sweep.mjs",
     "wave-arm-geometry": "node wave-arm-geometry.mjs",
