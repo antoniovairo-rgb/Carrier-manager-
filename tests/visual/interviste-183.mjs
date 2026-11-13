@@ -97,9 +97,15 @@ for (const r of ris) {
   const nome = r.tipo + ' ' + r.braccio;
   if (r.partite < 20) { g.push(nome + ': NON GIUDICATO (solo ' + r.partite + ' partite)'); continue; }
   if (r.errori.length) g.push(nome + ': errori di pagina ' + JSON.stringify(r.errori));
-  const ok = r.postIv > 0 && r.ripetute === 0 && r.quotaPost <= 45 && r.quotaFatti >= 60;
+  /* frequenza = la regola del PO, non una percentuale: la posta dipende dalla classifica, che cambia fra un giro e l'altro (partite
+     simulate con Math.random: 14 e 17 interviste su 34 in due giri). Ogni intervista deve avere un motivo (posta, tripletta,
+     sorpresa), le sorprese al massimo un quarto delle partite senza posta (attese 1 su 8), e mai un'intervista dopo ogni partita. */
+  const sorp = r.motivi['🎲 Sorpresa'] || 0, senzaMotivo = Object.keys(r.motivi).filter(k => !k || /sempre|undefined|null/.test(k)).length;
+  const nonPosta = r.partite - (r.postIv - sorp); r.sorprese = sorp; r.nonPosta = nonPosta;
+  const freqOk = r.postIv < r.partite && senzaMotivo === 0 && sorp <= Math.max(2, Math.ceil(nonPosta / 4));
+  const ok = r.postIv > 0 && r.ripetute === 0 && freqOk && r.quotaFatti >= 60;
   if (r.braccio === 'verde' && r.ha.iv !== 'function') g.push(nome + ': window.intervista183 non esiste');
-  if (r.braccio === 'verde' && !ok) g.push(nome + ': ' + (r.postIv === 0 ? 'NON GIUDICATO (nessuna intervista)' : 'ripetute ' + r.ripetute + ' · post ' + r.quotaPost + '% · fatti ' + r.quotaFatti + '%'));
+  if (r.braccio === 'verde' && !ok) g.push(nome + ': ' + (r.postIv === 0 ? 'NON GIUDICATO (nessuna intervista)' : 'ripetute ' + r.ripetute + ' · post ' + r.quotaPost + '% · sorprese ' + r.sorprese + ' su ' + r.nonPosta + ' partite senza posta · fatti ' + r.quotaFatti + '%'));
   if (r.braccio === 'rosso' && ok) g.push(nome + ': il rosso non si vede (passa anche col comportamento di prima)');
 }
 if (ARM !== 'entrambe') { console.log(g.length ? '⚠️ ' + g.join(' · ') : 'misura completata'); process.exit(0); }
