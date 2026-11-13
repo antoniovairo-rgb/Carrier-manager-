@@ -1440,5 +1440,19 @@
     "cache_read_tokens": 5511199,
     "worker_epoch": 2,
     "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYiaCf39AB4EFw5ovF1My",
+    "titolo": "giro 184 licenze: originali CGTrader fuori, clip Rohr 180d (PO-374, PO-367)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T09:13:19Z",
+    "chiusa": "2026-11-13T09:41:05Z",
+    "cost_usd": 6.09542574,
+    "output_tokens": 53986,
+    "cache_read_tokens": 15957745,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
   }
 ]

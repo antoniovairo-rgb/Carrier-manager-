@@ -1426,3 +1426,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - solo-highlight-166 verde (rosso cade su 3, 7, 8): il rosso precedente veniva dalla partita non riproducibile, sparito col 175 unito.
 - audio-172 verde (rosso cade su 3-4, 6-11), dopo l'installazione di numpy nell'ambiente.
 - riproduci-175 verde: 5 nomi × 3 ripetizioni a 1×, 1,5×, 2× identici; col rosso le differenze tornano.
+
+## 13/11 ~12:20 Roma — giro 184 unito in lavoro/192 (dd2c1212)
+- PO-374: originali CGTrader (originals/ + TEXTURES.zip, 12 file, ~115 MB) tolti dall'albero; nessuno li usava (grep e rete del browser); guardiano licenze-184 nella completa.
+- Clip Rohr: 28 clip (rientrano defending-01, goalkeeper-save-03, dribble-03, juggling-03; swaying-arms più mosso). clip-180 rosso SOLO sul peso: 3,30 MB contro tetto 3,0 MB. Decisione madre: il tetto NON si alza; le clip lunghe (goalkeeper-save-03 8,9 s, defending-01 6,2 s) si accorciano nel giro che le collegherà ai gesti; fino ad allora clip-180 è un rosso dichiarato (il file è fuori da dist/, il gioco non lo carica).
+- Dubbi del 184 al PO: BLENDER+RIG.blend (originale CGTrader in Git LFS, 124 MB, usato da due script di sviluppo) e CHARACTER.glb (14 MB, originale o conversione: non confermato).
