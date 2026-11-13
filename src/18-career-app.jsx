@@ -1212,9 +1212,10 @@ const getThisWeekMatchday=()=>{
          «quasi un derby… sara' una bolgia» usciva senza derby e nelle giovanili. Ora le domande con una condizione escono solo se
          il requisito c'e', con la stessa regola delle domande settimanali: la condizione della domanda (cond). Rosso __CPM_NO_DERBY192. */
       const _no192=(typeof window!=='undefined'&&window.__CPM_NO_DERBY192);
-      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})())&&(!_g183()||!memSetIv183(player).has(hIv183(q))));/* [giro 183] mai la stessa domanda nella stagione */
-      if(_pool.length){
-        const _pq=_pool[Math.floor(Math.random()*_pool.length)];
+      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})()));
+      const _pool183=_g183()?_pool.filter(q=>!memSetIv183(player).has(hIv183(q))):_pool;/* [giro 183] mai la stessa domanda nella stagione */
+      if(_pool183.length){
+        const _pq=_pool183[Math.floor(Math.random()*_pool183.length)];
         const _paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
         pendingMisterDiscorsoRef.current=_disc; // mister talk deferred until conference closes
         if(_g183())setPlayer(p=>memIv183(p,_pq));
