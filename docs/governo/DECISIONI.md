@@ -1466,3 +1466,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Giro 185 (PO-384): in corsa al titolo e in lotta salvezza il tasto «Vai al prossimo momento» si ferma solo su scontri diretti, ultime 3 giornate e partite in cui il verdetto è possibile (prima 9 fermate su 9, dopo 4–5 su 9). Rosso __CPM_NO_G185, guardiano momento-185.
 - Giro 186: strumenti di tifosi-171 e box-fischio-169 stabili su 3–4 corse, audio-161 con nuovo seme di controllo.
 - Nessun conflitto; check-src identico. Dopo il terzo blocco si rifanno, uno alla volta: momento-185, momento-165, momento-165b, momento-173, tifosi-171, audio-161, box-fischio-169, test:logic, save-compat, tripath-chokepoint. solo-highlight-166 aspetta il giro 187.
+
+## 13/11 ~23:55 Roma — giro 181, «Altri ruoli»
+- PO: «Altri ruoli sicuramente no!». G181-09 (centrocampista e difensore) scartata: il giocatore resta attaccante. Non entra nel BACKLOG e non va riproposta.
