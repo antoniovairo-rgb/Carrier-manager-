@@ -51463,6 +51463,7 @@ const getThisWeekMatchday=()=>{
         const pp=Math.max(0,fs.findIndex(t=>t.id===ci||(t.n||t.name)===(player.club&&player.club.n)));
         setSeasonEndData({season:player.season,club:player.club,finalStandings:fs,playerStats:{goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60},champion:fs[0]||null,playerPos:pp,isChampion:pp===0,awards:(player.lastAwards&&player.lastAwards.aw)||null,seasonObjectives:player.seasonObjectives||[],rival:null,euro:player.euro||null,leagueOverrides:player.leagueOverrides||{}});
         setScreen("seasonEnd");return true;}catch(e){return "error:"+(e&&e.message);}},
+      forceIv183:(i,ctx,part)=>{try{const q=IV_FATTI183[i|0];if(!q)return "nessuna";setInterviewModal({q,paper:NEWSPAPERS[(i|0)%NEWSPAPERS.length],opponent:"FC Test",matchCtx:ctx||"win",partita24:part||{hs:2,as:1,casa:true,voto:7.9,gol:2}});return q.q;}catch(e){return "error:"+(e&&e.message);}},/* [giro 183] foto delle domande nuove sui fatti (solo sonde) */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       notify247:(m)=>{try{notify(m||"💪 +3 ⚡+14 ⭐+12");return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 19 PO-247] solo il guardiano toast-247 */
       apriIntro253:()=>{try{setAgentIntro({fee:agentHireFee(player),amb:null});return true;}catch(e){return "error:"+(e&&e.message);}},/* [giro 24 PO-253] solo il guardiano procuratore-253: apre il primo incontro col procuratore */
@@ -53630,7 +53631,7 @@ const getThisWeekMatchday=()=>{
     /* [giro 183 · PO-375 «Meno e più varie»] l'intervista esce solo dopo una partita con posta (posta165), dopo una tripletta o
        a sorpresa una volta su otto (seedata); la domanda parla dei fatti della partita e non si ripete nella stagione
        (intervista183 in src/07). Rosso __CPM_NO_G183 = sempre, come dal giro PO-231. */
-    const _d183=_g183()?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
+    const _d183=(_g183()&&_sempre231)/* il rosso di PO-231 (__CPM_NO_IV231) resta il sorteggio di prima */?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
     try{if(typeof window!=='undefined')window.__CPM_IV183={si:_d183?!!_d183.si:true,motivo:_d183?_d183.motivo:"rosso 183",q:_d183&&_d183.q?_d183.q.q:null,week:player.week||1};}catch(_e183){}
     if(_d183?_d183.si:(_sempre231||Math.random()<_interviewChance)){
       if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */

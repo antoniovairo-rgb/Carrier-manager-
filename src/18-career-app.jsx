@@ -3828,7 +3828,7 @@ const getThisWeekMatchday=()=>{
     /* [giro 183 · PO-375 «Meno e più varie»] l'intervista esce solo dopo una partita con posta (posta165), dopo una tripletta o
        a sorpresa una volta su otto (seedata); la domanda parla dei fatti della partita e non si ripete nella stagione
        (intervista183 in src/07). Rosso __CPM_NO_G183 = sempre, come dal giro PO-231. */
-    const _d183=_g183()?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
+    const _d183=(_g183()&&_sempre231)/* il rosso di PO-231 (__CPM_NO_IV231) resta il sorteggio di prima */?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
     try{if(typeof window!=='undefined')window.__CPM_IV183={si:_d183?!!_d183.si:true,motivo:_d183?_d183.motivo:"rosso 183",q:_d183&&_d183.q?_d183.q.q:null,week:player.week||1};}catch(_e183){}
     if(_d183?_d183.si:(_sempre231||Math.random()<_interviewChance)){
       if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
