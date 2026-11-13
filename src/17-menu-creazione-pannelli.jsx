@@ -2790,6 +2790,9 @@ function migratePlayer(player){
     try{const _em=newP.euroMondiale;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAL35)&&_em&&_em.active&&!_em.done&&_em.phase&&_em.phase!=="qualificazioni"&&Array.isArray(newP.calendar)){
       const _cal=newP.calendar.filter(m=>!(m&&m.type==="national"&&!m.played&&(m.week||0)>=24));
       if(_cal.length!==newP.calendar.length){newP={...newP,calendar:_cal};changed=true;}}}catch(_e35){}
+  /* [giro 183 PO-375] memoria delle domande d'intervista della stagione {s,h}: campo additivo e idempotente (assente o malformato
+     -> vuoto; una memoria di una stagione passata resta e vale vuota). Nessun bump di SAVE_VERSION. */
+  if(!newP.ivMem183||typeof newP.ivMem183!=="object"||!Array.isArray(newP.ivMem183.h)){newP={...newP,ivMem183:{s:newP.season||1,h:[]}};changed=true;}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}

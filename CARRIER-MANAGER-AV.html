@@ -7324,7 +7324,7 @@ const INTERVIEW_QS=[
 ];
 // Sprint 15 — pick interview question based on player context
 const _recentInterviewQs=[];
-function pickInterviewByCtx(p,matchResult=null){
+function pickInterviewByCtx(p,matchResult=null,escludi183=null){/* [giro 183] escludi183 = memoria della stagione (Set di hash): con la memoria non si ripete mai, a catalogo esaurito torna null */
   const ctx=new Set(["weekly"]);
   if(matchResult){ctx.add(matchResult.won?"win":matchResult.drew?"draw":"loss");}
   if((p.form||70)>=75)ctx.add("good_form");
@@ -7360,12 +7360,296 @@ function pickInterviewByCtx(p,matchResult=null){
   const _u18Q455=(p.proStatus||"u18")!=="pro";
   const pool=INTERVIEW_QS.filter(q=>q.ctx.some(c=>ctx.has(c))&&(!_u18Q455||q.y===1)&&(!q.cond||(function(){try{return q.cond(p,_venueInfo);}catch(e){return false;}})()));/* [6.97.0 collaudo PO «eviterei di parlare di Nazionale a un OVR basso in B — tutto deve avere una logica»] le domande possono dichiarare una cond di pertinenza */
   const fresh=pool.filter(q=>!_recentInterviewQs.includes(q.q));
+  if(escludi183){const f2=pool.filter(q=>!escludi183.has(hIv183(q)));if(!f2.length)return null;const f3=f2.filter(q=>!_recentInterviewQs.includes(q.q));const ch=(f3.length?f3:f2)[Math.floor(Math.random()*(f3.length||f2.length))];_recentInterviewQs.push(ch.q);if(_recentInterviewQs.length>10)_recentInterviewQs.shift();return{q:ch,paper:NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)]};}
   const chosen=(fresh.length?fresh:pool.length?pool:INTERVIEW_QS)[Math.floor(Math.random()*((fresh.length||pool.length)||INTERVIEW_QS.length))];
   _recentInterviewQs.push(chosen.q);
   if(_recentInterviewQs.length>10)_recentInterviewQs.shift();
   const paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
   return{q:chosen,paper};
 }
+/* [giro 183 · PO-375, decisione PO «Meno e più varie»] il PO: «le interviste non pensi che siano troppe? non vorrei che
+   annoiassero il player, alla lunga sono sempre le stesse cose da dire». Misurato prima (tests/visual/interviste-183.mjs,
+   una stagione di Primavera e una da professionista): intervista dopo OGNI partita, la stessa domanda tornava piu' volte
+   nella stessa stagione (il ricordo era di 10 domande e spariva al ricaricamento), e la domanda poteva non parlare
+   della partita giocata. Ora tre regole:
+   1) l'intervista post partita esce solo dopo una partita CON POSTA (la regola posta165 di src/08: coppe, Nazionale,
+      derby, ex club, rivale, classifica, traguardi, rientro…) o dopo una tripletta; le altre partite hanno un'intervista
+      «a sorpresa» UNA SU OTTO, seedata su nome+stagione+settimana+avversario (nessun Math.random);
+   2) la domanda parla dei FATTI veri: il tuo gol / doppietta / tripletta / assist / espulsione, il voto, la rimonta, il
+      derby, il rivale, l'ex club, la classifica, il traguardo, il rientro. Prima si cerca fra le domande dei fatti della
+      posta, poi fra quelle della tua partita, solo alla fine fra quelle del risultato;
+   3) MAI la stessa domanda nella stessa stagione: la memoria vive nel salvataggio (player.ivMem183 {s:stagione,h:[hash]})
+      e vale anche per le interviste della settimana e per la conferenza pre-partita. A catalogo esaurito non si
+      ripete: l'intervista salta.
+   Rosso __CPM_NO_G183 = il comportamento di prima (sempre, scelta col solo ricordo delle ultime 10). Guardiano
+   tests/visual/interviste-183.mjs. Rigori sbagliati ed errori dell'eroe non sono nel risultato registrato della partita:
+   non si possono chiedere senza toccare LiveMatch (fuori ambito, nel rapporto). */
+const _g183=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G183);
+const IV_FATTI183=[
+/* --- la posta: derby --- */
+{ctx:["f_derby"],r:["win"],y:1,q:"Il derby è vostro. Cosa significa vincere una partita così davanti alla vostra gente?",a:[
+  {tone:"diplomatico",txt:"È la vittoria dei tifosi prima che nostra. Questa settimana la città è un po' più nostra.",ef:{m:6,p:6,t:4}},
+  {tone:"diretto",txt:"Significa tutto. Queste sono le partite per cui ti alleni da bambino.",ef:{m:9,p:8,t:-2}},
+  {tone:"umile",txt:"Una gioia enorme, ma domani si torna a lavorare. Il campionato è lungo.",ef:{m:4,p:3,t:7}},
+]},
+{ctx:["f_derby"],r:["loss"],y:1,q:"Il derby perso brucia più di ogni altra sconfitta. Cosa dici ai tifosi?",a:[
+  {tone:"diplomatico",txt:"Chiediamo scusa. Sappiamo cosa vale per loro, e la prossima volta dovremo dare di più.",ef:{m:-2,p:4,t:5}},
+  {tone:"diretto",txt:"Che non doveva succedere. Ci siamo fatti trovare molli e loro ne hanno approfittato.",ef:{m:-4,p:3,t:-3}},
+  {tone:"umile",txt:"Che fa male anche a me. Me la porto dietro tutta la settimana, è giusto così.",ef:{m:-3,p:2,t:6}},
+]},
+{ctx:["f_derby"],r:["draw"],y:1,q:"Derby finito in parità: è un punto che vale qualcosa o un'occasione persa?",a:[
+  {tone:"diplomatico",txt:"Nel derby non si perde mai niente se si lotta così. Lo prendiamo e andiamo avanti.",ef:{m:2,p:3,t:5}},
+  {tone:"diretto",txt:"Un'occasione persa. Avevamo la partita in mano e non l'abbiamo chiusa.",ef:{m:-1,p:4,t:-2}},
+  {tone:"umile",txt:"Un punto sudato. Il derby è sempre una partita a sé, rispettiamo l'avversario.",ef:{m:2,p:2,t:6}},
+]},
+/* --- la posta: rivale, ex club --- */
+{ctx:["f_rivale"],y:1,q:"Di fronte c'era il tuo rivale di sempre. Quanto conta vincere anche il duello personale?",a:[
+  {tone:"diplomatico",txt:"C'è rispetto. Lui spinge me e io spingo lui: è così che si cresce.",ef:{m:4,p:4,t:5}},
+  {tone:"diretto",txt:"Conta, inutile negarlo. Oggi volevo dimostrare chi è il più forte.",ef:{m:8,p:7,t:-3}},
+  {tone:"umile",txt:"Conta la squadra. I confronti personali li lascio ai giornali, con rispetto.",ef:{m:3,p:2,t:7}},
+]},
+{ctx:["f_rivale"],r:["loss"],y:1,q:"Il tuo rivale oggi ha avuto la meglio. Ti brucia?",a:[
+  {tone:"diplomatico",txt:"Gli faccio i complimenti, oggi è stato più bravo. Ci rivedremo.",ef:{m:-1,p:4,t:5}},
+  {tone:"diretto",txt:"Mi brucia, sì. E la prossima volta voglio essere io a sorridere.",ef:{m:-2,p:5,t:-2}},
+  {tone:"umile",txt:"Mi insegna qualcosa. Guardo cosa ha fatto meglio e lavoro su quello.",ef:{m:1,p:2,t:7}},
+]},
+{ctx:["f_ex"],y:1,q:"Oggi hai ritrovato il tuo ex club. Che effetto fa giocare contro chi ti conosce così bene?",a:[
+  {tone:"diplomatico",txt:"Un effetto strano. Ho ancora tanti amici lì, ma in campo ognuno fa il suo.",ef:{m:4,p:5,t:5}},
+  {tone:"diretto",txt:"Volevo far vedere cosa si sono persi. E credo di esserci riuscito.",ef:{m:7,p:8,t:-3}},
+  {tone:"umile",txt:"Solo gratitudine. Una parte di quello che sono la devo a loro.",ef:{m:3,p:4,t:6}},
+]},
+{ctx:["f_ex"],c:"f_gol",y:1,q:"Hai segnato al tuo ex club. Perché hai scelto di esultare così?",a:[
+  {tone:"diplomatico",txt:"Per rispetto ho esultato poco. Lì sono cresciuto, non lo dimentico.",ef:{m:4,p:6,t:5}},
+  {tone:"diretto",txt:"Il gol è gol. Oggi indosso questa maglia e la festeggio come voglio.",ef:{m:7,p:7,t:-3}},
+  {tone:"umile",txt:"Mi è venuto così, senza pensarci. Un pensiero ai miei vecchi compagni c'è.",ef:{m:3,p:4,t:5}},
+]},
+/* --- la posta: classifica --- */
+{ctx:["f_vertice"],r:["win"],q:"Vittoria contro una delle prime della classe. Adesso dove può arrivare questa squadra?",a:[
+  {tone:"diplomatico",txt:"Partita dopo partita. Oggi abbiamo dimostrato di poter stare lassù.",ef:{m:6,p:5,t:5}},
+  {tone:"diretto",txt:"Fino in fondo. Non ci nascondiamo più: vogliamo stare in alto.",ef:{m:9,p:8,t:-3}},
+  {tone:"umile",txt:"Non facciamo voli. Tre punti pesanti, ma la classifica si guarda a maggio.",ef:{m:4,p:3,t:8}},
+]},
+{ctx:["f_vertice"],r:["loss","draw"],q:"Contro le big della classifica non è arrivata la vittoria. Cosa manca per fare il salto?",a:[
+  {tone:"diplomatico",txt:"Poco. Siamo vicini, serve un pizzico di cattiveria in più negli ultimi metri.",ef:{m:1,p:3,t:5}},
+  {tone:"diretto",txt:"Manca il coraggio di giocarcela fino in fondo. Oggi ci siamo accontentati.",ef:{m:-2,p:4,t:-3}},
+  {tone:"umile",txt:"Esperienza. Queste partite ci insegnano dove dobbiamo migliorare.",ef:{m:1,p:2,t:7}},
+]},
+{ctx:["f_titolo"],q:"Siamo alla volata per il titolo. Si dorme la notte in queste settimane?",a:[
+  {tone:"diplomatico",txt:"Si dorme, sì. Siamo concentrati e il gruppo è sereno: è la nostra forza.",ef:{m:5,p:4,t:6}},
+  {tone:"diretto",txt:"Poco, ma va bene così. Questa è la parte della stagione che sogno da agosto.",ef:{m:8,p:7,t:-2}},
+  {tone:"umile",txt:"Penso solo alla prossima partita. Guardare troppo avanti non serve a nessuno.",ef:{m:3,p:3,t:8}},
+]},
+{ctx:["f_salvezza"],r:["win"],y:1,q:"Tre punti pesantissimi nella lotta per non retrocedere. Liberazione?",a:[
+  {tone:"diplomatico",txt:"Respiriamo un po', ma non è finita. Restiamo uniti fino all'ultima giornata.",ef:{m:6,p:4,t:6}},
+  {tone:"diretto",txt:"Liberazione, sì. Questa squadra vale molto più della sua classifica.",ef:{m:8,p:6,t:-1}},
+  {tone:"umile",txt:"Un passo. Ne servono altri, e ce li dobbiamo sudare tutti.",ef:{m:4,p:3,t:8}},
+]},
+{ctx:["f_salvezza"],r:["loss","draw"],y:1,q:"La zona calda si avvicina. Hai paura di retrocedere?",a:[
+  {tone:"diplomatico",txt:"Paura no, responsabilità sì. Abbiamo le qualità per uscirne.",ef:{m:1,p:3,t:6}},
+  {tone:"diretto",txt:"Chi dice di non avere paura mente. Ma la paura va trasformata in rabbia.",ef:{m:-1,p:5,t:-1}},
+  {tone:"umile",txt:"Penso solo a lavorare di più. Le chiacchiere non ci tirano fuori.",ef:{m:1,p:2,t:8}},
+]},
+{ctx:["f_scontro"],y:1,q:"Era uno scontro diretto in classifica. Quanto pesa questo risultato?",a:[
+  {tone:"diplomatico",txt:"Pesa, perché eravamo vicini. Ma la stagione si decide sulla lunga distanza.",ef:{m:3,p:3,t:6}},
+  {tone:"diretto",txt:"Questi sono i punti che contano doppio. Lo sapevamo tutti nello spogliatoio.",ef:{m:5,p:5,t:-1}},
+  {tone:"umile",txt:"Un risultato tra tanti. Domani si riparte con la stessa fame.",ef:{m:2,p:2,t:7}},
+]},
+{ctx:["f_finale"],y:1,q:"Ultime giornate della stagione. Che voto dai alla tua annata?",a:[
+  {tone:"diplomatico",txt:"Un voto lo lascio a voi e al mister. Io so di aver dato tutto.",ef:{m:3,p:4,t:6}},
+  {tone:"diretto",txt:"Un bel voto. Sono cresciuto tanto e si è visto in campo.",ef:{m:7,p:6,t:-2}},
+  {tone:"umile",txt:"Sufficiente, ma posso fare molto di più. L'estate serve a questo.",ef:{m:2,p:2,t:8}},
+]},
+/* --- la posta: traguardi, rientro, contratto --- */
+{ctx:["f_presenze"],y:1,q:"Oggi hai tagliato un traguardo di presenze in carriera. Ti ricordi la prima?",a:[
+  {tone:"diplomatico",txt:"Come fosse ieri. Ringrazio chi mi ha dato fiducia lungo la strada.",ef:{m:5,p:5,t:6}},
+  {tone:"diretto",txt:"Me la ricordo, e voglio arrivare a molte di più. Questo è solo un numero.",ef:{m:7,p:6,t:-1}},
+  {tone:"umile",txt:"Mi ricordo le gambe che tremavano. Ogni partita è ancora un regalo.",ef:{m:4,p:4,t:7}},
+]},
+{ctx:["f_traguardo_gol"],y:1,q:"Con il gol di oggi hai raggiunto un traguardo tondo in carriera. A chi lo dedichi?",a:[
+  {tone:"diplomatico",txt:"Alla mia famiglia e ai compagni che mi hanno messo il pallone giusto.",ef:{m:6,p:6,t:5}},
+  {tone:"diretto",txt:"A me stesso, per una volta. Ci ho messo anni di sacrifici per arrivarci.",ef:{m:8,p:7,t:-3}},
+  {tone:"umile",txt:"A chi mi ha allenato da ragazzo. Senza di loro non sarei qui.",ef:{m:4,p:5,t:7}},
+]},
+{ctx:["f_rientro"],y:1,q:"Era la tua prima partita dopo l'infortunio. Come ti sei sentito in campo?",a:[
+  {tone:"diplomatico",txt:"Bene. Ringrazio lo staff medico, hanno fatto un lavoro enorme.",ef:{m:5,p:3,t:6,f:1}},
+  {tone:"diretto",txt:"Come se non mi fossi mai fermato. Sono tornato e voglio recuperare il tempo perso.",ef:{m:7,p:5,t:-1}},
+  {tone:"umile",txt:"Un po' di ruggine c'è, è normale. Serve qualche partita per tornare al cento per cento.",ef:{m:3,p:2,t:7}},
+]},
+{ctx:["f_contratto"],q:"Il tuo contratto è in scadenza e la fiducia del mister non è al massimo. Ti senti sotto esame?",a:[
+  {tone:"diplomatico",txt:"Mi sento un giocatore di questa squadra. Del contratto parlano il club e il mio agente.",ef:{m:2,p:3,t:6}},
+  {tone:"diretto",txt:"Sotto esame ci sono sempre. Rispondo in campo, non con le parole.",ef:{m:4,p:5,t:-2}},
+  {tone:"umile",txt:"Penso solo ad allenarmi bene. Il resto arriverà se lo merito.",ef:{m:2,p:2,t:8}},
+]},
+/* --- la posta: coppe, Europa, Nazionale --- */
+{ctx:["f_coppa"],r:["win"],y:1,q:"Avanti in coppa. Quanto ci tenete ad arrivare fino in fondo?",a:[
+  {tone:"diplomatico",txt:"Tantissimo. La coppa è un'occasione per tutti, anche per chi gioca meno.",ef:{m:5,p:4,t:6}},
+  {tone:"diretto",txt:"Vogliamo alzarla. Non giochiamo le coppe per fare esperienza.",ef:{m:8,p:7,t:-2}},
+  {tone:"umile",txt:"Un turno alla volta. In coppa basta una serata storta per salutare.",ef:{m:3,p:3,t:8}},
+]},
+{ctx:["f_coppa"],r:["loss","draw"],y:1,q:"La coppa si è fatta in salita stasera. Cosa non ha funzionato?",a:[
+  {tone:"diplomatico",txt:"Ci è mancata lucidità nei momenti chiave. Gli avversari hanno meritato.",ef:{m:-1,p:3,t:5}},
+  {tone:"diretto",txt:"L'atteggiamento. In coppa non puoi aspettare che le cose succedano.",ef:{m:-2,p:4,t:-3}},
+  {tone:"umile",txt:"Parlo per me: potevo fare di più. Ripartiamo dal campionato.",ef:{m:-1,p:2,t:7}},
+]},
+{ctx:["f_europa"],q:"Serata europea. Che sensazione dà giocare in questo palcoscenico?",a:[
+  {tone:"diplomatico",txt:"Un onore per tutto il club. Queste notti ripagano i sacrifici di una stagione.",ef:{m:6,p:6,t:5}},
+  {tone:"diretto",txt:"È qui che voglio stare. Sono le partite che fanno la differenza in una carriera.",ef:{m:9,p:8,t:-2}},
+  {tone:"umile",txt:"Ti senti piccolo all'inizio, poi l'arbitro fischia ed è sempre calcio.",ef:{m:4,p:4,t:7}},
+]},
+{ctx:["f_nazionale"],q:"Con la maglia della Nazionale addosso cambia qualcosa nel modo di giocare?",a:[
+  {tone:"diplomatico",txt:"Cambia la responsabilità. Rappresenti un intero paese, non solo un club.",ef:{m:6,p:7,t:4}},
+  {tone:"diretto",txt:"Mi esalta. Con questa maglia voglio essere decisivo ogni volta.",ef:{m:9,p:9,t:-2}},
+  {tone:"umile",txt:"Cambia l'emozione dell'inno. Poi provo solo a fare quello che faccio nel club.",ef:{m:4,p:5,t:6}},
+]},
+{ctx:["f_nazionale"],c:"f_gol",q:"Un gol con la Nazionale. Chi hai cercato con lo sguardo dopo aver segnato?",a:[
+  {tone:"diplomatico",txt:"I compagni, e poi la mia famiglia in tribuna. È un gol di tutti.",ef:{m:7,p:8,t:4}},
+  {tone:"diretto",txt:"Nessuno: ho solo urlato. Lo sognavo da quando ero bambino.",ef:{m:9,p:9,t:-1}},
+  {tone:"umile",txt:"Il ct, per ringraziarlo della fiducia. Senza la sua chiamata non sarei qui.",ef:{m:5,p:6,t:6}},
+]},
+/* --- la tua partita: gol, assist, voto, rimonta, espulsione --- */
+{ctx:["f_tripletta"],y:1,q:"Tripletta! Il pallone te lo porti a casa: dove lo metterai?",a:[
+  {tone:"diplomatico",txt:"In bacheca, con le firme dei compagni. Senza di loro non sarebbero arrivati tre gol.",ef:{m:8,p:8,t:5}},
+  {tone:"diretto",txt:"In salotto, ben in vista. Serate così vanno ricordate.",ef:{m:11,p:10,t:-3}},
+  {tone:"umile",txt:"Lo regalo a mio padre. È lui che mi portava agli allenamenti da piccolo.",ef:{m:6,p:7,t:6}},
+]},
+{ctx:["f_doppietta"],y:1,q:"Doppietta oggi. Quale dei due gol ti è piaciuto di più?",a:[
+  {tone:"diplomatico",txt:"Il secondo, perché è nato da un'azione corale. Era il gol della squadra.",ef:{m:6,p:6,t:5}},
+  {tone:"diretto",txt:"Il primo. Ho deciso io dove metterla e l'ho messa lì.",ef:{m:9,p:8,t:-3}},
+  {tone:"umile",txt:"Tutti e due, ma ne ho sbagliato un terzo che mi fa ancora arrabbiare.",ef:{m:4,p:5,t:7}},
+]},
+{ctx:["f_doppietta"],r:["loss","draw"],y:1,q:"Due gol tuoi non sono bastati per vincere. Rimane l'amaro in bocca?",a:[
+  {tone:"diplomatico",txt:"I gol contano se arrivano i punti. Oggi non è bastato, ripartiamo insieme.",ef:{m:2,p:5,t:6}},
+  {tone:"diretto",txt:"Sì. Io ho fatto la mia parte, dietro dobbiamo concedere meno.",ef:{m:4,p:6,t:-5}},
+  {tone:"umile",txt:"Avrei scambiato i miei due gol con una vittoria senza pensarci.",ef:{m:2,p:4,t:8}},
+]},
+{ctx:["f_gol"],r:["win"],y:1,q:"Il tuo gol ha messo la partita sulla strada giusta. Raccontaci quell'azione.",a:[
+  {tone:"diplomatico",txt:"Un'azione costruita bene da tutti, io ho solo messo l'ultimo tocco.",ef:{m:5,p:5,t:5}},
+  {tone:"diretto",txt:"Ho visto lo spazio prima degli altri e non ho esitato. Istinto da attaccante.",ef:{m:8,p:7,t:-2}},
+  {tone:"umile",txt:"Un po' di fortuna nel rimbalzo, lo ammetto. Ma in area bisogna esserci.",ef:{m:4,p:3,t:7}},
+]},
+{ctx:["f_gol"],r:["loss"],y:1,q:"Hai segnato, ma la squadra ha perso. Che sapore ha questo gol?",a:[
+  {tone:"diplomatico",txt:"Nessun sapore. Il gol serve se porta punti, oggi purtroppo no.",ef:{m:1,p:4,t:6}},
+  {tone:"diretto",txt:"Agrodolce. La mia parte l'ho fatta, ma da solo non si vince.",ef:{m:3,p:5,t:-4}},
+  {tone:"umile",txt:"Lo dimentico subito. Conta solo rialzarsi la prossima settimana.",ef:{m:1,p:3,t:7}},
+]},
+{ctx:["f_gol"],r:["draw"],y:1,q:"Il tuo gol vale un punto. Lo prendi o speravi di più?",a:[
+  {tone:"diplomatico",txt:"Lo prendiamo. Un punto in campionato non si butta mai.",ef:{m:3,p:4,t:6}},
+  {tone:"diretto",txt:"Speravo di più. Con un po' di cattiveria ne facevamo un altro.",ef:{m:4,p:5,t:-2}},
+  {tone:"umile",txt:"Contento di aver aiutato. La prossima proverò a fare quel passo in più.",ef:{m:3,p:3,t:7}},
+]},
+{ctx:["f_assist"],y:1,q:"Oggi l'assist l'hai fatto tu. Ti piace di più servire o segnare?",a:[
+  {tone:"diplomatico",txt:"Servire. Vedere un compagno esultare grazie a te è una gioia pulita.",ef:{m:5,p:4,t:7}},
+  {tone:"diretto",txt:"Segnare, sempre. Ma quando il compagno è messo meglio la passo.",ef:{m:6,p:6,t:-1}},
+  {tone:"umile",txt:"Non fa differenza. Basta che il pallone finisca in rete.",ef:{m:4,p:3,t:7}},
+]},
+{ctx:["f_assist"],r:["loss","draw"],y:1,q:"Il tuo assist non è bastato. Cosa è mancato alla squadra?",a:[
+  {tone:"diplomatico",txt:"Un po' di concretezza. Le occasioni le abbiamo create, dobbiamo chiuderle.",ef:{m:1,p:3,t:6}},
+  {tone:"diretto",txt:"Attenzione dietro. Davanti abbiamo fatto il nostro, dietro abbiamo regalato.",ef:{m:2,p:4,t:-4}},
+  {tone:"umile",txt:"È mancato qualcosa anche da me. Potevo inventare di più nel finale.",ef:{m:1,p:2,t:7}},
+]},
+{ctx:["f_voto_alto"],y:1,q:"I giornali ti daranno un voto altissimo domani. Ti sei sentito il migliore in campo?",a:[
+  {tone:"diplomatico",txt:"Il migliore è stato il gruppo. Io mi sono trovato nelle condizioni giuste.",ef:{m:6,p:5,t:6}},
+  {tone:"diretto",txt:"Sì. Oggi mi riusciva tutto e l'ho sentito dal primo minuto.",ef:{m:9,p:8,t:-3}},
+  {tone:"umile",txt:"I voti non li leggo. Domani in allenamento si riparte da zero.",ef:{m:4,p:3,t:7}},
+]},
+{ctx:["f_voto_alto"],r:["loss","draw"],y:1,q:"La tua partita è stata ottima, il risultato no. Come convivi con questa contraddizione?",a:[
+  {tone:"diplomatico",txt:"Il calcio è di squadra: se non vinciamo, la mia prestazione conta poco.",ef:{m:2,p:4,t:6}},
+  {tone:"diretto",txt:"Male. Ho dato tutto e torno a casa senza i tre punti.",ef:{m:3,p:5,t:-3}},
+  {tone:"umile",txt:"Mi tengo le cose buone e lavoro su quello che è mancato a tutti.",ef:{m:2,p:3,t:7}},
+]},
+{ctx:["f_voto_basso"],y:1,q:"Non è stata la tua giornata migliore. Cosa non ha funzionato?",a:[
+  {tone:"diplomatico",txt:"Non sono riuscito a entrare in partita. Me ne assumo la responsabilità.",ef:{m:-2,p:2,t:6}},
+  {tone:"diretto",txt:"Mi arrivavano pochi palloni giocabili. Così è difficile incidere.",ef:{m:1,p:3,t:-5}},
+  {tone:"umile",txt:"Tutto, sinceramente. Torno a casa, rivedo la partita e lavoro sugli errori.",ef:{m:-1,p:2,t:8}},
+]},
+{ctx:["f_voto_basso"],r:["win"],y:1,q:"La squadra ha vinto, ma tu sei sembrato fuori dal gioco. Ti preoccupa?",a:[
+  {tone:"diplomatico",txt:"No, l'importante era vincere. Ci sono giorni in cui aiuti in altri modi.",ef:{m:1,p:2,t:7}},
+  {tone:"diretto",txt:"Un po' sì. Non mi piace vincere senza lasciare il segno.",ef:{m:2,p:3,t:-1}},
+  {tone:"umile",txt:"Mi serve da lezione. Per fortuna i compagni oggi hanno fatto la differenza.",ef:{m:1,p:2,t:8}},
+]},
+{ctx:["f_rimonta"],y:1,q:"Eravate sotto e l'avete ribaltata. Cosa vi siete detti nello spogliatoio?",a:[
+  {tone:"diplomatico",txt:"Che dovevamo crederci tutti insieme. Questo gruppo non molla mai.",ef:{m:7,p:5,t:6}},
+  {tone:"diretto",txt:"Qualche parola forte, e ha funzionato. Ci voleva una scossa.",ef:{m:8,p:6,t:-1}},
+  {tone:"umile",txt:"Poche parole, tanta rabbia. Il merito è del mister che ci ha dato la scossa.",ef:{m:5,p:4,t:8}},
+]},
+{ctx:["f_espulso"],y:1,q:"Il cartellino rosso ha cambiato la partita. Ti senti in colpa con i compagni?",a:[
+  {tone:"diplomatico",txt:"Sì, e chiedo scusa a tutti. Ho lasciato la squadra in dieci, non deve succedere.",ef:{m:-3,p:2,t:6}},
+  {tone:"diretto",txt:"L'arbitro è stato severo. Era un intervento di gioco, nient'altro.",ef:{m:-1,p:3,t:-5}},
+  {tone:"umile",txt:"Ho sbagliato e pagherò. La lezione l'ho capita.",ef:{m:-2,p:2,t:8}},
+]},
+];
+/* i fatti veri della partita: dalla posta (etichetta di posta165) e dal risultato registrato */
+function fatti183(p,r,posta){
+  const f=new Set();if(!r)return f;
+  const g=r.goals|0,a=r.assists|0,c=String(r.context||"");
+  if(g>=3)f.add("f_tripletta");else if(g===2)f.add("f_doppietta");else if(g===1)f.add("f_gol");
+  if(a>=1)f.add("f_assist");
+  if(typeof r.rating==="number"){if(r.rating>=7.8)f.add("f_voto_alto");else if(r.rating>0&&r.rating<=5.5)f.add("f_voto_basso");}
+  if(r.wasBehind&&r.won)f.add("f_rimonta");
+  if(r.sentOff||r.matchStatus==="sent_off")f.add("f_espulso");
+  if(/^(national|nationsCup|euroMondiale)/.test(c))f.add("f_nazionale");else if(/^euro/.test(c))f.add("f_europa");else if(c==="cup")f.add("f_coppa");
+  const L=String(posta||"");
+  if(/Derby|🔥/.test(L))f.add("f_derby");
+  if(/Ex club/.test(L))f.add("f_ex");
+  if(/rivale/i.test(L))f.add("f_rivale");
+  if(/vertice|capolista/.test(L))f.add("f_vertice");
+  if(/Corsa al titolo/.test(L))f.add("f_titolo");
+  if(/salvezza/i.test(L))f.add("f_salvezza");
+  if(/Scontro diretto/.test(L))f.add("f_scontro");
+  if(/Finale di stagione/.test(L))f.add("f_finale");
+  if(/presenza in carriera/.test(L))f.add("f_presenze");
+  if(/gol dai/.test(L)&&g>=1)f.add("f_traguardo_gol");
+  if(/infortunio/.test(L))f.add("f_rientro");
+  if(/Contratto/.test(L))f.add("f_contratto");
+  if(/Coppa europea/.test(L))f.add("f_europa");else if(/Coppa/.test(L)&&!f.has("f_nazionale")&&!f.has("f_europa"))f.add("f_coppa");
+  if(/Nazionale/.test(L))f.add("f_nazionale");
+  return f;
+}
+const _POSTA183=["f_derby","f_ex","f_rivale","f_vertice","f_titolo","f_salvezza","f_scontro","f_finale","f_presenze","f_traguardo_gol","f_rientro","f_contratto","f_coppa","f_europa","f_nazionale"];
+/* memoria della stagione nel salvataggio: hash delle domande gia' fatte */
+const hIv183=q=>hashStr(String((q&&q.q)||q||""));
+function memSetIv183(p){const m=p&&p.ivMem183;return new Set((m&&m.s===(p.season||1)&&Array.isArray(m.h))?m.h:[]);}
+function memIv183(p,q){const sn=(p&&p.season)||1;const m=p&&p.ivMem183;const h=(m&&m.s===sn&&Array.isArray(m.h))?m.h:[];const k=hIv183(q);
+  return{...p,ivMem183:{s:sn,h:h.indexOf(k)>=0?h:[...h,k].slice(-400)}};}
+const _okIv183=(q,p,v)=>{if((p.proStatus||"u18")!=="pro"&&q.y!==1)return false;if(!q.cond)return true;try{return !!q.cond(p,v);}catch(e){return false;}};
+function _pickSeed183(pool,seed){return pool.length?pool[hashStr(seed)%pool.length]:null;}
+/* la domanda post partita: fatti della posta → fatti della tua partita → risultato; mai una gia' fatta in stagione */
+function scegliPost183(p,r,posta){
+  const mem=memSetIv183(p),F=fatti183(p,r,posta),res=r.won?"win":r.drew?"draw":"loss";
+  const v={isHome:typeof r.isHome==="boolean"?r.isHome:null,matchResult:r};
+  const okF=q=>q.ctx.some(c=>F.has(c))&&(!q.r||q.r.indexOf(res)>=0)&&(!q.c||F.has(q.c))&&!mem.has(hIv183(q))&&_okIv183(q,p,v);
+  const tierA=IV_FATTI183.filter(q=>okF(q)&&q.ctx.some(c=>_POSTA183.indexOf(c)>=0));
+  const tierB=IV_FATTI183.filter(q=>okF(q)&&!q.ctx.some(c=>_POSTA183.indexOf(c)>=0));
+  const tierC=INTERVIEW_QS.filter(q=>q.ctx.indexOf(res)>=0&&!mem.has(hIv183(q))&&_okIv183(q,p,v));
+  /* fra i fatti, prima quelli scritti con una condizione sulla partita (il tuo gol, il voto…), che sono i piu' specifici */
+  const tierC1=tierC.filter(q=>q.cond&&/matchResult|isHome/.test(String(q.cond)));
+  const seed=(p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|post183";
+  const pool=tierA.length?tierA:tierB.length?tierB:tierC1.length?tierC1:tierC;
+  return _pickSeed183(pool,seed);
+}
+/* LA DECISIONE: c'e' l'intervista dopo questa partita, e con quale domanda? Funzione pura (legge il salvataggio, la voce
+   di calendario e il risultato registrato; nessun sorteggio libero). */
+function intervista183(p,md,r){try{
+  if(!p||!r)return{si:false,motivo:"nessuna partita"};
+  if(!_g183()){const iw=pickInterviewByCtx(p,r);return{si:true,q:iw.q,paper:iw.paper,motivo:"sempre (rosso 183)"};}
+  const c=String(r.context||"");
+  let posta=null;
+  if(/^(national|nationsCup|euroMondiale)/.test(c))posta="🏳️ Nazionale";
+  else if(/^euro/.test(c))posta="🌍 Coppa europea";
+  else{try{posta=(typeof posta165==="function")?posta165(p,md||{type:c==="cup"?"cup":"league",opponentName:r.opponent}):null;}catch(e){posta=null;}}
+  if(!posta&&(r.goals|0)>=3)posta="🎩 Tripletta";
+  const sorpresa=!posta&&(hashStr((p.name||"")+"|"+(p.season||1)+"|"+(p.week||1)+"|"+(r.opponent||"")+"|sorpresa183")%8===0);
+  if(!posta&&!sorpresa)return{si:false,motivo:"nessuna posta"};
+  const q=scegliPost183(p,r,posta);
+  if(!q)return{si:false,motivo:"catalogo della stagione esaurito"};
+  return{si:true,q,paper:NEWSPAPERS[hashStr((p.name||"")+"|"+(p.week||1)+"|carta183")%NEWSPAPERS.length],motivo:posta||"🎲 Sorpresa"};
+}catch(e){return{si:false,motivo:"errore "+(e&&e.message)};}}
+/* l'intervista della settimana: le stesse domande di prima, ma mai una gia' fatta in stagione */
+function intervistaSett183(p){try{
+  if(!_g183()){const iw=pickInterviewByCtx(p);return{q:iw.q,paper:iw.paper};}
+  const iw=pickInterviewByCtx(p,null,memSetIv183(p));
+  return iw?{q:iw.q,paper:iw.paper}:null;
+}catch(e){return null;}}
 // Sprint 11 — S11.1 Coach data
 const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancuso","Bellandi","Coralli","Petrucci","Montaldo","Ferrantini","Colussi","Tarantola","Ghiselli","Lupinacci","Verdiani"];// [5.96.0 CR-1] bonifica: erano presenti 11 allenatori REALI (Gattuso, Conte, Allegri, Capello…)
 const COACH_STYLES=[
@@ -49489,6 +49773,9 @@ function migratePlayer(player){
     try{const _em=newP.euroMondiale;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAL35)&&_em&&_em.active&&!_em.done&&_em.phase&&_em.phase!=="qualificazioni"&&Array.isArray(newP.calendar)){
       const _cal=newP.calendar.filter(m=>!(m&&m.type==="national"&&!m.played&&(m.week||0)>=24));
       if(_cal.length!==newP.calendar.length){newP={...newP,calendar:_cal};changed=true;}}}catch(_e35){}
+  /* [giro 183 PO-375] memoria delle domande d'intervista della stagione {s,h}: campo additivo e idempotente (assente o malformato
+     -> vuoto; una memoria di una stagione passata resta e vale vuota). Nessun bump di SAVE_VERSION. */
+  if(!newP.ivMem183||typeof newP.ivMem183!=="object"||!Array.isArray(newP.ivMem183.h)){newP={...newP,ivMem183:{s:newP.season||1,h:[]}};changed=true;}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}
@@ -50728,11 +51015,12 @@ const getThisWeekMatchday=()=>{
          «quasi un derby… sara' una bolgia» usciva senza derby e nelle giovanili. Ora le domande con una condizione escono solo se
          il requisito c'e', con la stessa regola delle domande settimanali: la condizione della domanda (cond). Rosso __CPM_NO_DERBY192. */
       const _no192=(typeof window!=='undefined'&&window.__CPM_NO_DERBY192);
-      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})()));
+      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})())&&(!_g183()||!memSetIv183(player).has(hIv183(q))));/* [giro 183] mai la stessa domanda nella stagione */
       if(_pool.length){
         const _pq=_pool[Math.floor(Math.random()*_pool.length)];
         const _paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
         pendingMisterDiscorsoRef.current=_disc; // mister talk deferred until conference closes
+        if(_g183())setPlayer(p=>memIv183(p,_pq));
         setInterviewModal({q:_pq,paper:_paper,opponent:opp.n,matchCtx:"prematch"});
         _pressShown=true;
       }
@@ -53259,6 +53547,7 @@ const getThisWeekMatchday=()=>{
        giornata di campionato. (I percorsi di uscita che lasciavano il riferimento carico sono chiusi
        alla fonte, vedi startMatch e onQuit: questa e' la rete che copre anche le uscite non previste.) */
     const _ctxClub448=(()=>{const c=result&&result.context;return !c||c==="career"||c==="cup"||c==="euro_group"||c==="euro_ko";})();
+    const _md183=_playingMdRef.current;/* [giro 183] la giornata appena giocata, per la regola della posta dell'intervista (il riferimento si consuma qui sotto) */
     if(_ctxClub448||(typeof window!=="undefined"&&window.__CPM_NO_P0_3))try{const _pm=_playingMdRef.current;if(_pm&&_pm.matchday!=null){_committedMdRef.current.add(_pm.season+"|"+_pm.matchday);if(_pm.season===(player.season||1)){_endedMdNum91=_pm.matchday;if(!_pm.type){_endedLeague705=true;_endedOppId705=_pm.oppId;_endedOppName705=_pm.oppName;_endedIsHome705=!!_pm.isHome;}}}_playingMdRef.current=null;}catch(_e){}
     setLastMatch(result);
     // [6.61.0 collaudo PO «titolone sulla vittoria della UCL»] rileva se QUESTA partita VINCE una competizione
@@ -53338,9 +53627,15 @@ const getThisWeekMatchday=()=>{
        non e' uscita». Non era un guasto: 18% dopo una partita normale da pro, 4% in Primavera. Ora esce SEMPRE (domande sempre scelte
        dal risultato). Rosso __CPM_NO_IV231 = probabilita' di prima. */
     const _sempre231=!(typeof window!=='undefined'&&window.__CPM_NO_IV231);
-    if(_sempre231||Math.random()<_interviewChance){
+    /* [giro 183 · PO-375 «Meno e più varie»] l'intervista esce solo dopo una partita con posta (posta165), dopo una tripletta o
+       a sorpresa una volta su otto (seedata); la domanda parla dei fatti della partita e non si ripete nella stagione
+       (intervista183 in src/07). Rosso __CPM_NO_G183 = sempre, come dal giro PO-231. */
+    const _d183=_g183()?intervista183(player,_md183?{type:_md183.type||"league",opponentId:_md183.oppId,opponentName:_md183.oppName,matchday:_md183.matchday,isHome:_md183.isHome}:null,result):null;
+    try{if(typeof window!=='undefined')window.__CPM_IV183={si:_d183?!!_d183.si:true,motivo:_d183?_d183.motivo:"rosso 183",q:_d183&&_d183.q?_d183.q.q:null,week:player.week||1};}catch(_e183){}
+    if(_d183?_d183.si:(_sempre231||Math.random()<_interviewChance)){
       if(typeof window!=='undefined')window.__CPM_IV231=(window.__CPM_IV231|0)+1;/* testimone PO-231: interviste chieste dopo la partita */
-      const iw=pickInterviewByCtx(player,result);
+      const iw=_d183?{q:_d183.q,paper:_d183.paper}:pickInterviewByCtx(player,result);
+      if(_d183)setPlayer(p=>memIv183(p,_d183.q));
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
@@ -54064,10 +54359,10 @@ const getThisWeekMatchday=()=>{
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         const _resolvedEvTxt=resolveEvText(ev.txt,{...p,...extras});
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[_resolvedEvTxt,...(p.log||[])].slice(0,60)};
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        const _iw183=doInterview?(_g183()?intervistaSett183(p):pickInterviewByCtx(p)):null;/* [giro 183] mai la stessa domanda nella stagione: memoria nel salvataggio */if(_iw183&&_g183())upd={...upd,ivMem183:memIv183(p,_iw183.q).ivMem183};if(_iw183){const iw=_iw183;const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_resolvedEvTxt},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
       }else{
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        const _iw183=doInterview?(_g183()?intervistaSett183(p):pickInterviewByCtx(p)):null;/* [giro 183] mai la stessa domanda nella stagione: memoria nel salvataggio */if(_iw183&&_g183())upd={...upd,ivMem183:memIv183(p,_iw183.q).ivMem183};if(_iw183){const iw=_iw183;const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{},coachMsg:_liveCoachMsg}),50);
       }
       return{...p,...upd};
