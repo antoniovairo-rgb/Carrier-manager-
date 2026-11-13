@@ -23,12 +23,12 @@ for (const [nome, vp] of [['telefono', { width: 412, height: 915 }], ['pc', { wi
     const ok = await page.waitForSelector('[data-cpm="intervista231"]', { timeout: 8000 }).then(() => true).catch(() => false);
     await sleep(900);
     const f = OUT + 'intervista-' + tag + '-' + nome + '.png'; await page.screenshot({ path: f });
-    const testo = await page.evaluate(() => { const el = document.querySelector('[data-cpm="intervista231"]'); return el ? (el.innerText || '').replace(/\s+/g, ' ').slice(0, 160) : null; });
+    const testo = await page.evaluate(() => { const el = document.querySelector('[data-cpm="intervista231"]'); return el ? (el.innerText || '').replace(/\s+/g, ' ') : null; });
     fatti.push({ nome, tag, q, ok, testo }); console.log(nome, tag, ok ? 'finestra aperta' : 'FINESTRA NON TROVATA', '·', q);
   }
   await ctx.close();
 }
 await b.close(); srv.close();
-const male = fatti.filter(x => !x.ok || !x.testo || !x.testo.includes(String(x.q).slice(0, 20)));
+const male = fatti.filter(x => !x.ok || !x.testo || !x.testo.includes(String(x.q).slice(0, 40))).map(x => ({ ...x, testo: (x.testo || '').slice(0, 200) }));
 if (male.length) { console.log('❌ foto-183: ' + JSON.stringify(male)); process.exit(1); }
 console.log('✅ foto-183: 6 foto in docs/sviluppo/giro183/');
