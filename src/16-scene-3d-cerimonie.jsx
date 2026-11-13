@@ -1180,6 +1180,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));renderer.setSize(W(),H());renderer.setClearColor(0x050810,1);
     host.appendChild(renderer.domElement);renderer.domElement.style.cssText="position:absolute;inset:0;width:100%;height:100%;";
     const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x070b16,120,300);
+    if(typeof sviluppoColore178==='function')sviluppoColore178(renderer,scene,{luce:LUCE178.presentazione,nome:'presentazione'});/* [giro 178 · D6] lo sviluppo del colore della partita */
     const cam=new THREE.PerspectiveCamera(42,W()/H(),0.5,600);
     const _s=(seed>>>0)||7;const R=n=>(((Math.imul((_s+Math.imul(n,2654435761))>>>0,1664525)+1013904223)>>>0)/4294967296);
     const homeHex=(club&&club.c)||"#6c1f2e",awayHex=(club&&club.c2)||"#f5f5f5";
@@ -1607,7 +1608,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
     const el=ref.current;if(!el||typeof THREE==="undefined")return;
     const W=()=>el.clientWidth||360,H=()=>el.clientHeight||640;
     const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(W(),H());renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));el.appendChild(renderer.domElement);
-    const scene=new THREE.Scene();scene.background=new THREE.Color(0x141b30);scene.fog=new THREE.Fog(0x141b30,70,170);/* [7.453.0] il fondo era quasi nero (0x070a16) e la nebbia mangiava il viale gia' a 55u: la citta' in festa spariva nel buio */
+    const scene=new THREE.Scene();scene.background=new THREE.Color(0x141b30);scene.fog=new THREE.Fog(0x141b30,70,170);
+    if(typeof sviluppoColore178==='function')sviluppoColore178(renderer,scene,{luce:LUCE178.parata,nome:'parata'});/* [giro 178 · D6] lo sviluppo del colore della partita *//* [7.453.0] il fondo era quasi nero (0x070a16) e la nebbia mangiava il viale gia' a 55u: la citta' in festa spariva nel buio */
     const cam=new THREE.PerspectiveCamera(52,W()/H(),0.1,400);
     /* [7.453.0 collaudo PO «l'atmosfera/scena è troppo troppo buia»] La via era illuminata da una sola
        direzionale alta e da un ambiente piatto: tutto cio' che non guardava in su restava nero, e la festa
@@ -2030,6 +2032,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     try{renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;}catch(_e){}
     host.appendChild(renderer.domElement);renderer.domElement.style.cssText="position:absolute;inset:0;width:100%;height:100%;";
     const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x07060c,10,26);
+    if(typeof sviluppoColore178==='function')sviluppoColore178(renderer,scene,{luce:LUCE178.gala,nome:'gala'});/* [giro 178 · D6] lo sviluppo del colore della partita */
     const cam=new THREE.PerspectiveCamera(46,W()/H(),0.1,60);cam.position.set(0,2.2,8.6);
     /* [giro 47 · PO-137] MISURATO nel censimento del gala' (412 e 360 px): sul telefono in verticale il campo ORIZZONTALE di una
        camera a 46° e' di ~21°, e i due presentatori a |x|=1,62-1,72 uscivano tagliati dai bordi. In verticale il fov si allarga

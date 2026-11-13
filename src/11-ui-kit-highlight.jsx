@@ -1856,6 +1856,54 @@ function makeToonGrad(){
   const t=new THREE.CanvasTexture(c);t.minFilter=t.magFilter=THREE.NearestFilter;return t;
 }
 const _glbCache={};
+/* [giro 178 · PO-367 D6 «lo stesso club ha colori diversi in partita, presentazione e parata»] UN SOLO SVILUPPO DEL COLORE.
+   MISURATO (sonda scene-178, campione piatto dello stesso esadecimale): la partita «sviluppa» il colore con ACES + uscita sRGB +
+   esposizione 0,52 e le maglie portate in lineare (texture sRGB, 7.547); fuori partita c'erano altre tre catene — presentazione e
+   parata senza nulla (l'esadecimale crudo, i gialli si bruciano a 255,255,48), intro e gala' con ACES ma SENZA uscita sRGB e con
+   esposizione 1,05/1,12 — e i corpi CGTrader fuori partita (corpoCG23) prendevano l'esadecimale come se fosse gia' lineare.
+   Questa funzione e' L'UNICA impostazione di resa delle scene fuori partita, allineata a quella della partita:
+     · renderer: uscita sRGB, ACES, esposizione SVIL178.expo (lo stesso numero della partita, 12: toneMappingExposure 0,52);
+     · materiali: ogni colore/emissivo scritto come esadecimale (sRGB) si porta in LINEARE, una volta; le texture-colore disegnate
+       su canvas si dichiarano sRGB. I fattori dei GLB restano come sono (sono gia' lineari per specifica glTF): loadGLB li marca
+       alla nascita (_g178), e un clone ritinto con un esadecimale si riconosce perche' il suo colore non e' piu' quello del file;
+     · luce: le luci di una scena erano tarate sulla SUA vecchia catena; il guadagno `luce` (moltiplica l'intensita' solo durante
+       il disegno, poi la ripristina) riporta la luminanza media della scena a quella misurata prima — cambia lo sviluppo, non la
+       luce che il PO aveva approvato. Si applica dentro scene.onBeforeRender/onAfterRender: vale anche per i corpi che arrivano
+       dopo (GLB asincroni) e per le luci animate.
+   NON sceglie nessun colore: lo stesso esadecimale, deciso altrove (giri 168/171), appare uguale in tutte le scene.
+   Rosso __CPM_NO_G178_COLORE: la funzione non fa nulla e ogni scena torna alla sua catena di prima. Guardiano npm run scene-178. */
+const SVIL178={expo:0.52};
+/* guadagno di luce per scena (vedi sopra): tarato MISURANDO la luminanza media prima/dopo (docs/sviluppo/RAPPORTO-giro178.md) */
+const LUCE178={intro:1,presentazione:2.3,parata:4.0,gala:2.2};/* regola: il guadagno piu' piccolo che lascia la luminanza media >= 90% di prima (misure cal1-cal3) */
+function _marcaGLTF178(g){try{if(g&&g.scene)g.scene.traverse(o=>{const L=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];
+  for(const m of L){if(!m||!m.userData)continue;if(m.color)m.userData._g178=m.color.getHex();if(m.emissive)m.userData._ge178=m.emissive.getHex();}});}catch(_e){}}
+function _linCol178(m,k,kg,kc,ks){const c=m[k];if(!c||!c.isColor)return;const u=m.userData||(m.userData={});const h=c.getHex();
+  if(u[kc]===h)return;/* gia' portato in lineare da noi */
+  if(u[kg]!==undefined&&u[kg]===h){u[kc]=h;return;}/* fattore glTF intatto: e' gia' lineare */
+  if(ks)u[ks]='#'+c.getHexString();c.convertSRGBToLinear();u[kc]=c.getHex();}
+function _linTex178(m,k){const t=m[k];if(!t||!t.isTexture||t.encoding!==THREE.LinearEncoding)return;const im=t.image;
+  const ok=t.isCanvasTexture||(typeof HTMLCanvasElement!=='undefined'&&im instanceof HTMLCanvasElement)||(typeof HTMLImageElement!=='undefined'&&im instanceof HTMLImageElement);
+  if(!ok)return;t.encoding=THREE.sRGBEncoding;t.needsUpdate=true;m.needsUpdate=true;}
+function _linMat178(m){if(!m||m.isShaderMaterial||m.isRawShaderMaterial)return;
+  /* materiali con shader modificato (folla a sagome del giro 147: i colori del club arrivano PER ISTANZA, non dal materiale): restano come
+     in partita, dove nessuno li converte. MISURATO al primo giro: convertire la loro texture sbiancava il pubblico della presentazione. */
+  if(m.onBeforeCompile&&m.onBeforeCompile!==THREE.Material.prototype.onBeforeCompile){if(m.userData)m.userData._c178=m.color?m.color.getHex():1;return;}_linCol178(m,'color','_g178','_c178','_s178');_linCol178(m,'emissive','_ge178','_ce178',null);_linTex178(m,'map');_linTex178(m,'emissiveMap');}
+function sviluppoColore178(renderer,scene,opts){try{
+  if(typeof window!=='undefined'&&window.__CPM_NO_G178_COLORE)return false;if(!renderer||!scene)return false;
+  let luce=(opts&&opts.luce)||1;
+  try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST&&window.__CPM_G178_LUCE&&opts&&window.__CPM_G178_LUCE[opts.nome])luce=+window.__CPM_G178_LUCE[opts.nome];}catch(_e){}/* solo banco di prova: taratura del guadagno */
+  renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=SVIL178.expo;
+  const pB=scene.onBeforeRender,pA=scene.onAfterRender,L=[];
+  scene.onBeforeRender=function(r,s,c,t){try{L.length=0;
+      if(s.fog&&s.fog.color&&!s.fog._f178){s.fog.color.convertSRGBToLinear();s.fog._f178=1;}
+      s.traverse(o=>{if(o.isLight){if(luce!==1){L.push(o,o.intensity);o.intensity*=luce;}return;}const m=o.material;if(!m)return;
+        if(m.vertexColors&&o.geometry&&o.geometry.attributes&&o.geometry.attributes.color&&!(o.geometry.userData&&o.geometry.userData._v178)){/* colori per vertice (coriandoli): anch'essi sRGB, una volta */
+          const A=o.geometry.attributes.color,a=A.array,f=v=>v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);if(a&&!(a instanceof Uint8Array)){for(let i=0;i<a.length;i++)a[i]=f(a[i]);A.needsUpdate=true;}(o.geometry.userData||(o.geometry.userData={}))._v178=1;}
+        if(Array.isArray(m)){for(let i=0;i<m.length;i++)_linMat178(m[i]);}else _linMat178(m);});}catch(_e){}
+    if(pB)pB.call(this,r,s,c,t);};
+  scene.onAfterRender=function(r,s,c){for(let i=0;i<L.length;i+=2)L[i].intensity=L[i+1];L.length=0;if(pA)pA.call(this,r,s,c);};
+  try{if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){const w=(window.__CPM_G178=window.__CPM_G178||{});(w.scene=w.scene||[]).push({nome:(opts&&opts.nome)||'?',luce,expo:SVIL178.expo});}}catch(_e){}
+  return true;}catch(_e){return false;}}
 function loadGLB(url){
   // [7.8.1 collaudo PO «mai burattini»] NON cachare i FALLIMENTI: prima un errore transitorio (rete mobile
   //   durante il prefetch al boot) restava cachato come promise RIFIUTATA → ogni retry (incluso il caricamento
@@ -1863,7 +1911,7 @@ function loadGLB(url){
   //   cache → il match ri-scarica da zero. I successi restano cachati (il prefetch continua a giovare).
   if(!_glbCache[url])_glbCache[url]=new Promise((res,rej)=>{
     if(typeof THREE.GLTFLoader==='undefined'){rej(new Error('no GLTFLoader'));return;}
-    new THREE.GLTFLoader().load(url,res,null,rej);
+    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);res(g);},null,rej);
   }).catch(e=>{try{delete _glbCache[url];}catch(_){}throw e;});
   return _glbCache[url];
 }
