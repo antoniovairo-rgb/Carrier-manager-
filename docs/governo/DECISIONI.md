@@ -1456,3 +1456,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 13/11 ~22:00 Roma — verifica leggera 192, primo blocco
 - 25 controlli: verdi tutti tranne tifosi-171 (1/8 misure: PC, coppia VEL v VAL, «testimoni assenti (canvas)», sia nel verde sia nel rosso: strumento instabile), audio-161 (controllo 8 non giudicato: con la partita riproducibile del 175 la partita di prova non ha gol subiti) e clip-180 (peso, già dichiarato).
 - Madre: difetti degli strumenti, non del gioco → giro 186 (solo tests/visual): seme di audio-161 con un gol subito, testimone stabile per tifosi-171, e box-fischio-169 reso stabile come promesso per la 192. La verifica prosegue a blocchi.
+
+## 13/11 ~23:35 Roma — verifica leggera 192, secondo blocco
+- Verdi: rigore-79 e tutti gli strumenti della cronaca del giro 167 (ball-alive, trama, bg-sync, bg-continuity, bg-decision, bg-rhythm, cronaca-motore-167).
+- Rossi: rigore-139 (non giudicato: 2 battute di rigore su 3 minime con la partita ora riproducibile), solo-highlight-166 (controllo 12: interviste 0 e 0 dopo partita senza posta, conseguenza della decisione PO-375), riproduci-175 (1 nome su 5: il minuto del primo evento al calcio d'inizio cambia 0/1 fra due ripetizioni: residuo vero di non determinismo).
+- Giro 187 (terzo in contemporanea con 185 e 186): semi di rigore-139, criterio del controllo 12 allineato a PO-375 senza renderlo più permissivo, correzione del residuo al minuto 0/1. Il terzo blocco della verifica prosegue.
