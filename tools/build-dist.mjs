@@ -84,7 +84,7 @@ const CON_CH38 = !!process.env.CPM_DIST_CON_CH38;
 const _ch38Dist = /[\\/]assets[\\/](footballer[a-z-]*\.glb|anim-[a-z-]+\.glb)$/;
 let _ch38Esclusi = 0;
 /* [giro 116 — PO-322] file che il gioco NON referenzia: fuori dal pacchetto store.
-   (a) assets/source/ = sorgenti d'autore (oggi .blend + CHARACTER.glb CGTrader; FBX/OBJ/TEXTURES.zip tolti il 13/11, giro 184) — nessuna riga di src/ li apre,
+   (a) assets/source/ = sorgenti d'autore (originali CGTrader tutti tolti il 13/11: FBX/OBJ/TEXTURES.zip col giro 184, .blend e CHARACTER.glb su decisione PO) — nessuna riga di src/ li apre,
        solo gli script Python di tools/ (render offline); distribuirli in un AAB e' anche un rischio di licenza.
    (b) README.md dentro assets/ (documentazione).
    (c) elenco ESPLICITO di file di assets/ il cui nome non compare in nessun sorgente (src/, CARRIER-MANAGER-AV.html, sw.js): misurato con
