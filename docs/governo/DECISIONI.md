@@ -1474,3 +1474,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Scelte tutte nella 193: G181-05, 07, 03, 04 (rapide), G181-14, 12, 11 (carriera), G181-22, 17, 16 (coinvolgimento e store) → PO-386…395.
 - Non scelta: G181-21 sfida del giorno. Scartata prima: G181-09 altri ruoli.
 - La 193 diventa grande (PO-380…395 + PO-385): la madre la divide in ondate da max 3 giri; i punti in conflitto con decisioni chiuse (cerimonie, rischio cieco, impulsi con memoria) restano dentro quei vincoli.
+
+## 13/11 23:59 Roma — domande del mattino anticipate (chieste dal PO)
+- «Primavera» abbreviata in «U19» → PO-396 (193).
+- Barra partita a 375 px: nome abbreviato, sigla solo se non entra → PO-397 (193). La madre le mette nella 193 per non riaprire la 192 a contenuto chiuso.
+- Interviste in Primavera 4 su 34: «Va bene così», nessuna modifica a PO-375.
+- Il questionario programmato per le 07:05 è annullato: fatto ora.

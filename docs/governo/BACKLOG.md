@@ -62,6 +62,8 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-393 | 13/11 23:58 | PO dal giro 181, questionario 13/11 23:58 («Nella 193»): G181-22: opzioni di lettura e primo impatto per Google Play | miglioramento (accessibilità, store) | DA FARE — 193 | 7.999.193 |
 | PO-394 | 13/11 23:58 | PO dal giro 181, questionario 13/11 23:58 («Nella 193»): G181-17: la lotta per non retrocedere come storia | nuova funzione (carriera) | DA FARE — 193 | 7.999.193 |
 | PO-395 | 13/11 23:58 | PO dal giro 181, questionario 13/11 23:58 («Nella 193»): G181-16: il filo del paese per tutta la carriera — tocca la decisione sugli impulsi con memoria: rispettarla | nuova funzione (carriera) | DA FARE — 193 | 7.999.193 |
+| PO-396 | 13/11 23:59 | PO, seguito di PO-378 (questionario): «Primavera» si accorcia in «U19» quando il nome non entra | miglioramento (nomi squadre) | DA FARE — 193 | 7.999.193 |
+| PO-397 | 13/11 23:59 | PO, seguito di PO-378 (questionario): sulla barra della partita a 375 px (oggi 216/296 club in sigla) usare prima il nome abbreviato, la sigla solo se anche quello non entra | miglioramento (partita, telefono) | DA FARE — 193 | 7.999.193 |
 
 ## Storico — voci chiuse (353)
 
