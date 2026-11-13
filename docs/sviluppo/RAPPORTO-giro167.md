@@ -161,11 +161,19 @@ Vedi tabella in testa: tutti e sette verdi col verde e rossi col rosso, un contr
 |---|---|---|
 | grafica-v2 | classifica: «riga tua non nel colore del club» (6 schermate) | ❌ identico → preesistente |
 | parata-100 | «nessuna parata sul ramo cross_goal» (non giudicato), 8 parate | ❌ identico (8 parate, 0 cross_goal, stessi conteggi per seme) → preesistente |
-| spazio-296 | distanze oltre 10 px su menu-home/opzioni/post-partita | (vedi sotto) |
-| pagella-75 | «nessuna partita con un gol dell'eroe in gioco fluido» (non esercitato) | (vedi sotto) |
-| scena-motore-147 | «zona di partenza senza il punto del motore» (una scena al 73' in una corsa, al 52' nell'altra) | (vedi sotto) |
-| convocazione-235 | prima-convocazione 412px: verdetto «NO» | (vedi sotto) |
-| crediti-254 | voce «Mixkit 3022» assente dalla pagina crediti | (vedi sotto) |
+| spazio-296 | distanze oltre 10 px su menu-home/opzioni/post-partita | ❌ identico (stesse 4 schermate, stessi valori 16,8 e 14) → preesistente |
+| pagella-75 | «nessuna partita con un gol dell'eroe in gioco fluido» (non esercitato) | ❌ identico; braccio verde con gli stessi tabellini partita per partita (k4 1-0, k12 2-0, k13 2-0) → preesistente |
+| scena-motore-147 | «zona di partenza senza il punto del motore» (una scena al 73' in una corsa, al 52' nell'altra) | ❌ rosso anche sulla base (tre scene: 3', 36', 3') → preesistente |
+| convocazione-235 | prima-convocazione 412px: verdetto «NO» | ❌ rosso anche sulla base (verdetto «NO» già sul braccio verde) → preesistente |
+| crediti-254 | voce «Mixkit 3022» assente dalla pagina crediti | ❌ rosso anche sulla base (documento 21 righe contro le 16 attese dal guardiano) → preesistente |
+
+**I 7 passi mancanti** (eseguiti a parte dopo il riavvio, uno alla volta, `free`/`df` prima di ognuno, build `708dd0d`): schede-260 ✅
+(1204 s), tecnica-045 ✅, difesa-252 ✅ (reale fermi 0/4, rosso 3/3), rinvio-252 ✅ (v max 26,1 contro rosso 42,5), spot-266 ✅,
+testa-143 ✅ (16,5 contro rosso 42,5), esiti-60 ✅ — tutti al primo tentativo.
+
+**Bilancio:** 90 + 7 = 97 passi; 90 verdi, 7 rossi, tutti e 7 rossi anche sulla base `428d86d` (misurati qui in un worktree, poi
+rimosso). Nessun rosso nuovo introdotto dal giro. ⚠️ La catena NON è una corsa unica intera: 90 passi in una corsa interrotta dal
+riavvio + 7 a parte (domanda 7).
 
 ## Domande aperte (per la sessione madre, nessuna decisione presa qui)
 
@@ -180,6 +188,11 @@ Vedi tabella in testa: tutti e sette verdi col verde e rossi col rosso, un contr
 5. **Catena:** i sette guardiani della cronaca non sono in nessuna catena di `ci-runner`. Entrano nella `completa`?
 6. **bg-sync**: le 4 righe fuori sincrono del verde sono tutte cambi di gioco/aperture (pallone in volo lungo fuori dal tratto
    dichiarato). Da indagare come difetto del narratore o del volo?
+7. **Catena non in un'unica corsa** (90 passi + 7 a parte, per il riavvio del container dopo ~20 ore di catena): basta, o va rifatta
+   intera in un'altra sessione?
+8. **Sette rossi preesistenti** sulla base del giro 162 (grafica-v2, parata-100, spazio-296, pagella-75, scena-motore-147,
+   convocazione-235, crediti-254): tre sono «non giudicato/non esercitato» per i semi scelti (parata-100, pagella-75) o scene che
+   cambiano fra corse (scena-motore-147). Da assegnare a un giro dedicato?
 
 ## Note di processo
 
