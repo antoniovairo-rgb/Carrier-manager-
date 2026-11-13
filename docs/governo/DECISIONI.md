@@ -1436,3 +1436,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO: «Togliere anche questi»: BLENDER+RIG.blend (puntatore Git LFS, 124 MB) e CHARACTER.glb (14 MB) tolti da lavoro/192 (34be8b7a). Il gioco non li usava; i 4 script di sviluppo che li leggono hanno una nota: serve la copia locale dell'acquisto fuori da git. licenze-184 verde e rosso che cade 4/4.
 - Il download dei pacchetti Rohr non serve più: il PO può togliere la condivisione via link della cartella Drive «gumroad».
 - 13/11 ~12:50 Roma: il PO ha tolto la condivisione via link della cartella Drive «gumroad».
+
+## 13/11 ~18:10 Roma — 182 e 183 persi, rilanciati
+- Le sessioni dei giri 182 e 183 si sono messe in attesa di un controllo in sottofondo alle 11:14 Roma e non si sono più svegliate (contenitore chiuso): nessun commit sul repository, lavoro perso (183: 12,83 $; 182: costo non riportato). Rilanciati come 182b e 183b con l'obbligo di commit e push dopo ogni punto e prima di ogni controllo lungo. Controllo della madre ogni ora per vedere subito una nuova fermata.

@@ -1454,5 +1454,33 @@
     "cache_read_tokens": 15957745,
     "worker_epoch": 1,
     "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYiaCxeJg9MMnXtcxKoJk",
+    "titolo": "giro 183 interviste — fermo senza salvare, rifatto col 183b",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T09:13:18Z",
+    "chiusa": "2026-11-13T10:14:30Z",
+    "cost_usd": 12.83139642,
+    "output_tokens": 78209,
+    "cache_read_tokens": 21842833,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYia9NJVZVnM6oBDrPLJJ",
+    "titolo": "giro 182 spogliatoio e nomi — fermo senza salvare, rifatto col 182b (costo non letto: la sessione non lo riporta)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T09:13:18Z",
+    "chiusa": "2026-11-13T10:14:30Z",
+    "cost_usd": 0.0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
   }
 ]
