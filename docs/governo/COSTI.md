@@ -103,6 +103,11 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | giro 177 prova pilota rigore (PO-367) | sviluppo | claude-fable-5-2 | 7,3 | 27,70 $ | 193247 | 1 | completo (un solo avvio) |
 | 7.999.191 | giro 173 rifiniture tasto momento e soli highlight (PO-364) | sviluppo | claude-opus-5-5 | 11,5 | 11,94 $ | 78664 | 1 | completo (un solo avvio) |
 | 7.999.191 | verifica finale 7.999.191 (interrotta, 3 riavvii) — worker riavviato, costo parziale | catena | claude-sonnet-5-5 | 9,1 | 0,14 $ | 4000 | 4 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.192 | giro 167 strumenti della cronaca (PO-362) — worker riavviato, costo parziale | sviluppo | claude-opus-5-5 | 29,1 | 2,39 $ | 12365 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.192 | giro 181 idee e migliorie — worker riavviato, costo forse parziale | collaudo | claude-fable-5-2 | 1,6 | 24,50 $ | 91358 | 4 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.192 | giro 174 rossi preesistenti catena grafica e parata-100 (PO-371) | sviluppo | claude-opus-5-5 | 9,4 | 17,02 $ | 114546 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 175 partita riproducibile (PO-372) | sviluppo | claude-fable-5-2 | 5,8 | 24,09 $ | 142985 | 1 | completo (un solo avvio) |
+| 7.999.192 | giro 176 regia azioni salienti (PO-367) — worker riavviato, costo parziale | sviluppo | claude-opus-5-5 | 15,9 | 1,35 $ | 6498 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -115,4 +120,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.189 | **TOTALE 7.999.189** (13 sessioni) |  |  |  | almeno 72,87 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.190 | **TOTALE 7.999.190** (13 sessioni) |  |  |  | almeno 58,34 $ |  |  | 8 sessioni parziali: totale minimo |
 | 7.999.191 | **TOTALE 7.999.191** (19 sessioni) |  |  |  | almeno 122,89 $ |  |  | 2 sessioni parziali: totale minimo |
-| 7.999.192 | **TOTALE 7.999.192** (10 sessioni) |  |  |  | almeno 120,88 $ |  |  | 2 sessioni parziali: totale minimo |
+| 7.999.192 | **TOTALE 7.999.192** (15 sessioni) |  |  |  | almeno 190,23 $ |  |  | 5 sessioni parziali: totale minimo |
