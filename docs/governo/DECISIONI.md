@@ -1414,3 +1414,10 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO sulla taglia dell'eroe nelle azioni salienti (giro 176, provini P/M/G): «Lasciare com'è» → il giro 176 NON entra nella 192 (ramo conservato).
 - PO sulle idee del giro 181: tutte e quattro le famiglie proposte → PO-380 (pulizie testi, mister, nomi reali nei salvataggi), PO-381 (sfida del mister in partita), PO-382 (Le tue leggende), PO-383 (Bentornato e cartolina), per la 193.
 - Costruzione di lavoro/192 da main 7.999.191: giri pronti 171, 172, 174, 175, 177, 178, 180 (clip fuori da dist), 167 dopo la lettura del rapporto.
+
+## 13/11 ~11:00 Roma — costruzione lavoro/192
+- Da main 7.999.191 (30e67ca9), uniti uno alla volta: 171, 172, 174, 175, 177, 178, 180 (clip Rohr, fuori da dist), 167. Il 176 non entra (decisione PO).
+- Conflitto in src/15 sul 172 (pulsante audio accanto a quello della velocità; il 173 nasconde la velocità nei soli highlight): meccanico, risolto dalla madre tenendo entrambe le modifiche; momento-173 verde dopo l'unione. audio-172 da rifare: il primo rosso era l'ambiente (numpy mancante, installato).
+- ci-runner.mjs di nuovo con chiavi doppie (completa ×3, carriera ×2) e la costante LENTI dichiarata due volte (errore di sintassi): riuniti senza perdite. test:logic 51/51, save-compat verde → 498bf937.
+- solo-highlight-166 rosso dopo 171+172 (libro mastro 1/263 identico): in prova di nuovo con il 175 (partita riproducibile) unito.
+- Lo script di unione scriveva «in lavoro/191» nei messaggi dei commit della 192: corretto per le prossime.
