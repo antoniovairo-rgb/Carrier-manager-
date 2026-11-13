@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+/* [giro 170b] tabelle markdown da out/giro170b/analisi.json (per il rapporto docs/collaudo/GIRO170B-GESTI.md). Sola lettura. */
+import fs from 'node:fs';
+const A = JSON.parse(fs.readFileSync(new URL('./out/giro170b/analisi.json', import.meta.url)));
+const E = A.esecuzioni.filter(e => !e.errore && e.seme <= 2);
+const med = a => { const s = a.filter(x => x != null && Number.isFinite(x)).sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : null; };
+const mm = (a, d = 0) => { const s = a.filter(x => x != null && Number.isFinite(x)); if (!s.length) return '—'; const f = x => (+x).toFixed(d).replace('.', ','); return `${f(med(s))} (${f(Math.min(...s))}…${f(Math.max(...s))})`; };
+const ORD = ['tiro-collo', 'tiro-piatto', 'tiro-prima', 'tiro-volo', 'pallonetto', 'testa', 'rigore', 'punizione', 'pass-corto', 'pass-lungo', 'cross', 'dribbling', 'contrasto', 'parata', 'disappunto', 'esultanza'];
+const G = g => E.filter(e => e.g === g);
+let o = '### T1 — Sincronia gesto ↔ pallone (mediana e campo min…max)\n\n| Gesto | Esec. | Clip alla partenza del pallone | Distanza minima arto–pallone, cm | …quando, ms dalla partenza | Picco di velocità dell\'arto, ms dalla partenza | Velocità arto, m/s | Velocità pallone, m/s | Corpo–pallone alla partenza, cm (testimone del gioco) | Senza gesto montato |\n|---|---|---|---|---|---|---|---|---|---|\n';
+for (const g of ORD.slice(0, 11)) { const L = G(g).filter(e => e.contatto); const c = {}; for (const e of L) { const k = (e.contatto.clipAllaPartenza || '').replace(/@.*/, '').replace(/^null\/.*/, 'nessuna'); c[k] = (c[k] | 0) + 1; }
+  o += `| ${g} | ${L.length} | ${Object.entries(c).map(([k, v]) => '`' + k + '` ×' + v).join(', ')} | ${mm(L.map(e => e.contatto.dMinCm))} | ${mm(L.map(e => e.contatto.dtMinMs))} | ${mm(L.map(e => e.contatto.dtPiccoMs))} | ${mm(L.map(e => e.contatto.vArtoMs), 1)} | ${mm(L.map(e => e.contatto.vPallaMs), 1)} | ${mm(L.map(e => e.contatto.corpoPallaGiocoCm))} | ${L.filter(e => !(e.contatto.pesoGesto > 0.5)).length} |\n`; }
+o += '\n### T2 — Piedi, quota del corpo, compenetrazioni\n\n| Gesto | Esec. | Piede d\'appoggio: scorrimento, cm per fotogramma | Piede d\'appoggio: quota della punta, cm dal suolo | Bacino sopra la quota normale, cm | Pallone dentro il tronco (esec.) | Pallone dentro coscia/stinco (esec.) | Altro corpo a meno di 45 cm (esec.) |\n|---|---|---|---|---|---|---|---|\n';
+for (const g of ORD.slice(0, 13)) { const L = G(g); const S = L.filter(e => e.appoggio);
+  o += `| ${g} | ${L.length} | ${mm(S.map(e => e.appoggio.cmPerFotogrammaMed), 1)} | ${mm(S.map(e => e.appoggio.quotaPuntaCm))} | ${mm(S.map(e => e.appoggio.bacinoSuCm))} | ${L.filter(e => e.compenetra.palloneNelTronco > 0).length} | ${L.filter(e => e.compenetra.palloneNellaGamba > 0).length} | ${L.filter(e => e.compenetra.corpoCorpo > 0).length} |\n`; }
+o += '\n### T3 — Orientamento e scatti di posa\n\n| Gesto | Esec. | Petto ↔ direzione vera del pallone, gradi | Corpo ↔ bersaglio secondo il gioco, gradi | Scatto di posa massimo, cm/fotogramma² | Esecuzioni con scatto > 12 | Giro del busto massimo in un fotogramma, gradi | Esecuzioni con giro > 20° |\n|---|---|---|---|---|---|---|---|\n';
+for (const g of ORD) { const L = G(g); const C = L.filter(e => e.contatto);
+  o += `| ${g} | ${L.length} | ${['dribbling', 'contrasto'].includes(g) ? 'n.g.' : mm(C.map(e => e.contatto.orientaPettoGradi))} | ${['dribbling', 'contrasto'].includes(g) ? 'n.g.' : mm(C.map(e => e.contatto.orientaGiocoGradi))} | ${mm(L.map(e => e.scatti.maxCmF2), 1)} | ${L.filter(e => e.scatti.maxCmF2 > 12).length} | ${mm(L.map(e => e.scatti.giroMaxGradiF))} | ${L.filter(e => e.scatti.giriOltre20 > 0).length} |\n`; }
+o += '\n### T4 — Clip viste per gesto (varietà misurata)\n\n| Gesto | Esec. | Clip montate sull\'eroe (numero di esecuzioni in cui compaiono) | Durata mediana del gesto montato, s |\n|---|---|---|---|\n';
+for (const g of ORD) { const L = G(g); const c = {}; for (const e of L) for (const k of Object.keys(e.clip || {})) c[k] = (c[k] | 0) + 1;
+  o += `| ${g} | ${L.length} | ${Object.entries(c).sort((a, b) => b[1] - a[1]).map(([k, v]) => '`' + k + '` ×' + v).join(', ') || 'nessuna'} | ${mm(L.map(e => e.gesto.s), 1)} |\n`; }
+/* giri a scatto: dove */
+o += '\n### T5 — I giri del busto oltre 20° in un fotogramma (tutte le esecuzioni dove compaiono)\n\n| Esecuzione | Azione | Giro, gradi | Quando, ms dalla partenza del pallone | Clip e peso in quel fotogramma |\n|---|---|---|---|---|\n';
+for (const e of E.filter(e => e.scatti.giriOltre20 > 0).sort((a, b) => b.scatti.giroMaxGradiF - a.scatti.giroMaxGradiF)) o += `| ${e.g} gi${e.gi}:${e.k} seme ${e.seme}${e.kind ? ' (' + e.kind + ')' : ''} | ${String(e.label || '').replace(/\|/g, '/')} | ${e.scatti.giroMaxGradiF} | ${e.scatti.giroRispettoPartenzaMs ?? '—'} | ${e.scatti.giroPesoGesto ? '`' + e.scatti.giroPesoGesto[2] + '` peso ' + e.scatti.giroPesoGesto[1] : '—'} |\n`;
+fs.writeFileSync(new URL('./out/giro170b/tabelle.md', import.meta.url), o); console.log(o);
