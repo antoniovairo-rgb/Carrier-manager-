@@ -1409,3 +1409,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 13/11 ~10:00 Roma — rilascio 7.999.191
 - Verifica leggera: 23/23 verdi su lavoro/191. Un solo rosso al primo passaggio, audio-161b, causato dalla madre: il commento di GAME_VERSION conteneva il nome del file audio tolto, che il guardiano vieta in src/. Commento riscritto (nessun cambio di comportamento), audio-161b verde, test:logic 51/51.
 - Pubblicata con i rossi dichiarati nella ROADMAP (parata-100 preesistente, box-fischio-169 instabile dello strumento) e la nota della verifica leggera.
+
+## 13/11 ~10:20 Roma — 176 e idee del 181
+- PO sulla taglia dell'eroe nelle azioni salienti (giro 176, provini P/M/G): «Lasciare com'è» → il giro 176 NON entra nella 192 (ramo conservato).
+- PO sulle idee del giro 181: tutte e quattro le famiglie proposte → PO-380 (pulizie testi, mister, nomi reali nei salvataggi), PO-381 (sfida del mister in partita), PO-382 (Le tue leggende), PO-383 (Bentornato e cartolina), per la 193.
+- Costruzione di lavoro/192 da main 7.999.191: giri pronti 171, 172, 174, 175, 177, 178, 180 (clip fuori da dist), 167 dopo la lettura del rapporto.
