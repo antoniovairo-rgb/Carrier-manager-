@@ -144,7 +144,7 @@ try {
   /* ---------- 2. la corsa vera ---------- */
   if (fai(2)) {
     console.log('2) la corsa vera del tasto da W28 a fine stagione');
-    for (const nome of ['foto', 'salvezza']) {
+    for (const nome of ['foto', 'capolista', 'salvezza']) {
       const t0 = Date.now();
       const { page, errors } = await apri(savePro({ week: 28 }), ROSSO);
       await page.evaluate(([cfg, src]) => { const st = eval(src)(cfg); window.__CPM_CAREER.patch({ standings: st }); }, [CLASSIFICHE[nome], COSTRUISCI]);
