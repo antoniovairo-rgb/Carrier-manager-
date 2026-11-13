@@ -1492,6 +1492,12 @@ const getThisWeekMatchday=()=>{
      bump SAVE). (4) In Primavera valgono anche il tasto spento col confronto del procuratore aperto e la fermata sui veli.
      Rosso __CPM_NO_G165B = il comportamento del giro 165 (ogni scelta ferma, rinnovo una volta per stagione, Primavera esclusa). */
   const _g165b=()=>!(typeof window!=='undefined'&&window.__CPM_NO_G165B);
+  /* [giro 182 punto C · PO «anche videogioco, docufilm, biografia fermano il tasto come gli sponsor»] le offerte ECONOMICHE della
+     categoria «opportunità» sono «offerta»: le tre nominate dal PO (il docufilm senza cachet, ma nominato) e le altre con un cachet
+     positivo in una scelta (ef.bank>0, misurato sul catalogo: esports 18.000, bonus gol social 8.000, scuola calcio 6.000 contro
+     un investimento di 30.000). Gli sponsor (wi_sponsor*) restano alla regola del giro 173. Motivi ed esclusi nel
+     RAPPORTO-giro182 §C. Rosso __CPM_NO_G182_OFFERTE = routine come prima. */
+  const OFFERTE182=["wi_videogioco","wi_docufilm","wi_biografia","wi_esports","wi_bonus_gol_social","wi_scuola_calcio"];
   const MISTER173=["wi_figlia_mister","wi_vice_infortunato","wi_infortunato_posto","sm_crisis"];/* [giro 173 punto 5] le sole scelte «mister» */
   const _rinnAperto173=(p)=>_g173()&&_pro165(p)&&_g165b()&&_rinnovo165(p)&&(p.rinnRif165b||0)!==(p.season||1);/* [giro 173 punto 6] il rinnovo aspetta una risposta */
   const _storia165b=(wl)=>{try{/* null = scelta di routine; altrimenti il tipo di storia */
@@ -1502,6 +1508,7 @@ const getThisWeekMatchday=()=>{
     if(["primopro","addio"].indexOf(wl&&wl.cat)>=0)return "momento di carriera";
     if(/procurator/i.test(id+" "+tx))return "procuratore";
     if(/prestit|offert|rinnov/i.test(id)||/\boffert/i.test(tx))return "offerta";
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_G182_OFFERTE)&&OFFERTE182.indexOf(id)>=0)return "offerta";/* [giro 182 punto C] */
     if(_g173()){/* [giro 173 punti 4-5] sponsor = offerta; mister = elenco esplicito (motivi nel RAPPORTO-giro173 §2) */
       if(/^wi_sponsor/.test(id))return "offerta";
       if(MISTER173.indexOf(id||String((wl&&wl.smId)||""))>=0)return "mister";}
