@@ -1449,3 +1449,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 13/11 ~21:40 Roma — PO-384 corsa al titolo blocca il tasto momento
 - Foto PO sulla 191: in corsa al titolo il tasto si ferma a ogni partita. PO: «Solo le partite decisive», «Dentro la 192». Giro 185 su lavoro/192 (cfd047a6). La verifica leggera in corso continua; al rientro del 185 si rifanno solo i controlli di tasto momento e carriera (momento-165, momento-165b, momento-173, solo-highlight-166, career-critical, test:logic, save-compat).
+
+## 13/11 ~21:50 Roma — PO-385 rassegna stampa a schede
+- PO: «Schede una dopo l'altra», «Nella 193». Il giro misura prima la lunghezza della pagina (altezza in schermate su telefono e PC, blocchi, testi ripetuti), poi la divide in 4 passi con Avanti/Salta e puntini; nessuna informazione persa.

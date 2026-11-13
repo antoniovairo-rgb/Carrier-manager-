@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (30)
+## Voci aperte o parziali (32)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.191 / 7.999.192 1 · 7.999.192 | 12 · 7.999.193 | 4.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.191 / 7.999.192 1 · 7.999.192 | 13 · 7.999.193 | 5.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -51,6 +51,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-382 | 13/11 10:20 | PO dal giro 181 (G181-15): «Le tue leggende», albo permanente delle carriere finite da battere | nuova funzione (carriera) | DA FARE — 193 | 7.999.193 |
 | PO-383 | 13/11 10:20 | PO dal giro 181 (G181-18/19): «Bentornato» riassunto alla ripresa dopo giorni; cartolina di fine stagione da condividere | nuova funzione (coinvolgimento) | DA FARE — 193 | 7.999.193 |
 | PO-384 | 13/11 21:35 | PO (foto docs/collaudo-po/191-momento-corsa-titolo-w29.jpg e -w30.jpg, 7.999.191, 3° posto, sett. 29-30): «Ho chiesto di andare al prossimo momento ma si blocca sulle richieste di simulazione» — dalla W28 ogni partita è «Corsa al titolo» (prime 4 a ≤ 9 punti), il tasto si ferma a ogni partita («0 settimane · 0 partite»). Decisione PO: «Solo le partite decisive» (scontri diretti con le altre prime 4, ultime 3 giornate, partite in cui il titolo si può vincere o perdere), dentro la 192 | difetto (carriera, tasto momento) | DA FARE — giro 185 nella 192 | 7.999.192 |
+| PO-385 | 13/11 21:50 | PO: «dopo la partita la pagina della rassegna stampa è lunghissima, meglio un wizard o roba simile» — questionario: «Schede una dopo l'altra» (1 risultato e voto, 2 le tue giocate, 3 i giornali, 4 classifica e prossima partita; Avanti, Salta, puntini di avanzamento), «Nella 193» | miglioramento (fine partita, chiarezza) | DA FARE — 193 | 7.999.193 |
 
 ## Storico — voci chiuse (353)
 
