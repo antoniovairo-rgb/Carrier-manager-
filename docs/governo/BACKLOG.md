@@ -50,6 +50,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-381 | 13/11 10:20 | PO dal giro 181 (G181-08): il piano del mister diventa una piccola sfida di partita con premio, anche nelle partite senza posta (tocca il tetto di 2-3 interazioni col mister, PO-226/234/259) | nuova funzione (partita, carriera) | DA FARE — 193 | 7.999.193 |
 | PO-382 | 13/11 10:20 | PO dal giro 181 (G181-15): «Le tue leggende», albo permanente delle carriere finite da battere | nuova funzione (carriera) | DA FARE — 193 | 7.999.193 |
 | PO-383 | 13/11 10:20 | PO dal giro 181 (G181-18/19): «Bentornato» riassunto alla ripresa dopo giorni; cartolina di fine stagione da condividere | nuova funzione (coinvolgimento) | DA FARE — 193 | 7.999.193 |
+| PO-384 | 13/11 21:35 | PO (foto docs/collaudo-po/191-momento-corsa-titolo-w29.jpg e -w30.jpg, 7.999.191, 3° posto, sett. 29-30): «Ho chiesto di andare al prossimo momento ma si blocca sulle richieste di simulazione» — dalla W28 ogni partita è «Corsa al titolo» (prime 4 a ≤ 9 punti), il tasto si ferma a ogni partita («0 settimane · 0 partite»). Decisione PO: «Solo le partite decisive» (scontri diretti con le altre prime 4, ultime 3 giornate, partite in cui il titolo si può vincere o perdere), dentro la 192 | difetto (carriera, tasto momento) | DA FARE — giro 185 nella 192 | 7.999.192 |
 
 ## Storico — voci chiuse (353)
 

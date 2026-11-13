@@ -1446,3 +1446,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Uniti in lavoro/192 (ci-runner di nuovo con chiavi doppie, riunito con lo script scratchpad/dedup-ci.py); GAME_VERSION 7.999.192 → cfd047a6.
 - Domande per il PO domattina: abbreviazione per «Primavera» (oggi scende alla sigla dove non ci sta); allargare la barra della partita a 375 px (216 club su 296 mostrano la sigla); frequenza delle interviste in Primavera (4 su 34 con la regola decisa; leva: le sorprese, oggi 1 su 8).
 - Verifica leggera della 192 dalla madre (scratchpad/leggera192.sh, a blocchi sotto 100 min, riprende saltando i fatti): base, guardiani di tutti i giri della 192, strumenti della cronaca e della grafica, career-critical, griglia-mobile, partita-vera, validate-situations, highlight-95, distanze-126, parata-100.
+
+## 13/11 ~21:40 Roma — PO-384 corsa al titolo blocca il tasto momento
+- Foto PO sulla 191: in corsa al titolo il tasto si ferma a ogni partita. PO: «Solo le partite decisive», «Dentro la 192». Giro 185 su lavoro/192 (cfd047a6). La verifica leggera in corso continua; al rientro del 185 si rifanno solo i controlli di tasto momento e carriera (momento-165, momento-165b, momento-173, solo-highlight-166, career-critical, test:logic, save-compat).
