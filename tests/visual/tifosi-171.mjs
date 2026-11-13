@@ -55,6 +55,13 @@ async function scegliCoppie() {
   await ctx.close(); return r;
 }
 
+const ATTESA2D = async () => { const t0 = performance.now(); let cv = null, da = 0, perche = 'mai in playing';
+  while (performance.now() - t0 < 60000) {
+    const f = window.__CPM_PHASE && window.__CPM_PHASE(), c = f === 'playing' && window.__CPM_CAMPO2D_CV && window.__CPM_CAMPO2D_CV(), G = window.__CPM_G141;
+    if (c && c.isConnected && G && G.on && G.ospRect) { if (c !== cv) { cv = c; da = performance.now(); } else if (performance.now() - da >= 1500) return { ok: true }; }
+    else { cv = null; perche = 'ultima fase ' + f; }
+    await new Promise(r => setTimeout(r, 100)); }
+  return { ok: false, perche }; };
 const LEGGI2D = () => {
   const cv = window.__CPM_CAMPO2D_CV && window.__CPM_CAMPO2D_CV(); const G = window.__CPM_G141, T = window.__CPM_G171;
   if (!cv || !G || !G.on || !G.ospRect || !T || !T.tifo) return { ko: '2D: testimoni assenti (' + [!cv && 'canvas', !(G && G.on) && '__CPM_G141', !(T && T.tifo) && '__CPM_G171'].filter(Boolean).join(',') + ')' };
@@ -109,8 +116,12 @@ async function misura(coppia, clubs, fk, rosso) {
     await page.keyboard.press('Enter'); await sleep(1500); await page.keyboard.press('Enter');
     for (let i = 0; i < 40; i++) { await sleep(500); const ok = await page.evaluate(() => { const x = [...document.querySelectorAll('button')].find(q => /Salta ingresso/.test(q.textContent || '')); if (x) { x.click(); return true; } return false; }); if (ok) break; }
     await page.waitForFunction(() => window.__CPM_PHASE() === 'playing' && window.__CPM_W297 && window.__CPM_W297.campo && window.__CPM_G141 && window.__CPM_G141.on, null, { timeout: 60000 });
-    await page.evaluate(() => { const x = document.querySelector('[data-cpm="linguette918"] button[aria-label="Nascondi"]'); if (x) x.click(); }); await sleep(1500);
-    m.d2 = await page.evaluate(LEGGI2D);
+    await page.evaluate(() => { const x = document.querySelector('[data-cpm="linguette918"] button[aria-label="Nascondi"]'); if (x) x.click(); });
+    /* [giro 186] Il Campo2D esiste SOLO in fase playing (src/15, vista2d): la vecchia attesa fissa di 1,5 s poteva finire dentro un
+       highlight, con la tela smontata («2D: testimoni assenti (canvas)») e i testimoni __CPM_G141/G171 rimasti della tela di prima.
+       Ora si aspetta il battito del gioco: la STESSA tela viva in playing per 1,5 s di fila, e la lettura parte nello stesso compito
+       JS in cui l'attesa la vede viva (nessun render React in mezzo). Fino a 60 s: oltre, non giudicato = rosso. */
+    m.d2 = await page.evaluate(`(${ATTESA2D})().then(a => a.ok ? (${LEGGI2D})() : { ko: '2D: tela mai stabile in playing per 1,5 s (' + a.perche + ')' })`);
     m.d3 = await page.evaluate(() => { try { const t = window.__CPM_TIFO && window.__CPM_TIFO(); return t ? t.colori171 || { ko: 'colori171 assente' } : { ko: '__CPM_TIFO assente' }; } catch (e) { return { ko: String(e.message) }; } });
     m.nomi = await page.evaluate(() => window.__CPM_G171 && window.__CPM_G171.nomi);
     if (FOTO && coppia.po) { fs.mkdirSync(FOTO, { recursive: true }); await page.screenshot({ path: `${FOTO}/${rosso ? 'prima' : 'dopo'}-2d-${fk}.png` });

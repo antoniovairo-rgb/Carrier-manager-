@@ -33,7 +33,9 @@ const QUI = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(QUI, '../..');
 const DIST = path.resolve(process.env.CPM_DIST || path.join(ROOT, 'dist-web'));
 const REG = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/audio/LICENZE.json'), 'utf8'));
-const SEME = +(process.env.CPM_A161_SEED || 7300), NOME = process.env.CPM_A161_NOME || 'Pv';
+/* [giro 186] dal giro 175 la partita e' riproducibile: con 7300/'Pv' la partita di prova finisce 1-0 senza gol subiti (controllo 8 NON GIUDICATO).
+   Scansione 186 (seme 7300): Pv/Fischi/Rossi/Leo/Bianchi/Verdi 0 gol subiti; 'Ga161' 3-1 con un gol subito (via cronaca), identica in ogni corsa. */
+const SEME = +(process.env.CPM_A161_SEED || 7300), NOME = process.env.CPM_A161_NOME || 'Ga161';
 
 /* ---------------- A. statico ---------------- */
 const st = []; const ok = (nome, cond, info) => st.push({ nome, ok: !!cond, info });
