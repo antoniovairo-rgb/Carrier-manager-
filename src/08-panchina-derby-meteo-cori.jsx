@@ -469,7 +469,12 @@ function generateTeammates(player,keepBond){
 // [7.106.3] i compagni salvati (name congelato alla stagione di ingaggio) vanno RI-SINCRONIZZATI alla rosa corrente:
 //   stesso pool di generateTeammates → l'i-esimo teammate riceve il nome dell'i-esimo slot ATTUALE (archetipi/bond intatti).
 function syncTeammateNames(player){
-  const tms=player.teammates;if(!tms||!tms.length||!player.club||(player.proStatus||"u18")==="u18")return tms;
+  /* [giro 182 · PO-379 «i 3 compagni dello spogliatoio dove li ha pescati?»] l'uscita su proStatus «u18» lasciava in Primavera
+     i compagni pescati alla CREAZIONE (club null → rosa finta «U18»): misurato 0/3 nella «Rosa» mostrata, contro 3/3 da
+     professionista. Ora il riallineamento vale in Primavera e da professionista: stessa rosa del pannello (generateTeamRoster
+     sul club in cui giochi), archetipi e legame intatti, idempotente. Rosso __CPM_NO_G182_SPOG = comportamento di prima. */
+  const _no182=(typeof window!=='undefined'&&window.__CPM_NO_G182_SPOG);
+  const tms=player.teammates;if(!tms||!tms.length||!player.club||(_no182&&(player.proStatus||"u18")==="u18"))return tms;
   const cseed=hashStr(player.club?.id||player.club?.n||"u18");
   const roster=generateTeamRoster(player.club,player.season||1);
   const pool=seededShuffle(roster.slice(1),cseed^0xDEADBEEF);
