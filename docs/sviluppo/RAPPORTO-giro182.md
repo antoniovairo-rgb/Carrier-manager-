@@ -75,7 +75,31 @@ tutte `null` = routine: il tasto **non** si fermava.
 
 ## Catena eseguita
 
-Vedi la sezione «Esiti» qui sotto (aggiornata a fine giro).
+Catena dell'area carriera + grafica, base `origin/lavoro/192`, un controllo alla volta (`CPM_CI_PAR=0`, `free -m`/`df -h`
+prima di ognuno, `CPM_CHROME=/opt/pw-browsers/chromium`), tutti sullo stesso build finale (dopo l'ultima modifica a `src/`;
+`tools/check-src.mjs`: IDENTICO BYTE PER BYTE):
+
+| passo | esito | durata |
+|---|---|---|
+| test:logic | verde | 3 s |
+| save-compat | verde | 11 s |
+| design-system | verde | <1 s |
+| tema-unico | verde (rosso atteso visto) | 54 s |
+| typing-shortcuts | verde | 23 s |
+| career-critical | verde (prima corsa fermata dal mio tetto di 590 s: non un verdetto, rifatta per intero senza tetto) | ~19 min |
+| griglia-mobile | verde (14 schermate × 5 larghezze) | 240 s |
+| spogliatoio-182 | verde 15/0 (rosso 2 ko) | 70 s |
+| nomi-182 | verde 27/0 (rosso 2 ko) | 249 s |
+| momento-173 (completo) | verde 20/0 (rosso offerte 1 ko) | ~9 min |
+| barra-360-72 | verde | 64 s |
+| pre-188 | verde | 17 s |
+| salta-163 | verde | 167 s |
+| momento-165 | verde | 252 s |
+| momento-165b | verde | 209 s |
+| grafica-v2 | verde (rosso atteso visto) | 250 s |
+
+Non eseguiti (limite settimanale): highlight-95, distanze-126 (non ho toccato src/04, 12, 14; in src/15 solo testo della barra
+e dell'ingresso), partita-vera, validate-situations e il resto delle liste di src/15 e src/18 della mappa.
 
 ## Dubbi per il PO (nessuna decisione presa)
 
