@@ -1030,6 +1030,40 @@ function partitaChiave163(p,md){try{
    calcMatchWeight) · scontro diretto in classifica (posizioni vicine, al massimo 3 punti, dalla settimana 8).
    Funzione PURA: legge il salvataggio e la voce di calendario, non scrive niente, nessun sorteggio. Ritorna l'etichetta
    (perche' si ferma) o null. */
+/* [giro 185 · PO-384, decisione PO «Solo le partite decisive»] nella corsa al titolo (W28+, fra le prime 4, a <= 9 punti dalla
+   vetta) e nella lotta salvezza (W25+, fra le ultime 3) il ramo di calcMatchWeight dava posta a OGNI partita: il tasto «Vai al
+   prossimo momento» si fermava a ogni settimana sul riquadro della partita. Ora, in quei due periodi, ha posta solo:
+   (a) lo scontro diretto (titolo: avversario fra le prime 4; salvezza: avversario fra le ultime 4);
+   (b) le ultime 3 giornate di campionato (contate sul calendario: gare di lega non giocate da questa in poi <= 3);
+   (c) la partita che puo' DECIDERE il titolo o la retrocessione, «o quasi»: basta lo scenario migliore per la decisione, non
+       servono anche i risultati degli altri. Con R gare di lega rimaste (questa compresa) e 3(R-1) punti in palio dopo:
+       - titolo vinto: primo con L punti sul secondo e L+3 > 3(R-1) (vinci tu, il secondo perde);
+       - titolo perso: a G punti dalla vetta e G+3 > 3(R-1) (perdi tu, la prima vince);
+       - retrocessione: a G punti dalla quartultima (la prima salva) e G+3 > 3(R-1) (perdi tu, lei vince).
+   «Quasi» perche' la decisione dipende anche dall'altra partita: fermarsi una giornata prima del verdetto esatto e' il prezzo
+   di non perdere mai la partita in cui il verdetto arriva. Le altre partite di quei periodi cadono nelle regole che seguono
+   (finale di stagione W37+, sfida alle prime tre, rivale, scontro diretto in classifica) o diventano senza posta. Funzione pura.
+   Rosso __CPM_NO_G185 = ogni partita del periodo ha posta (giro 165). */
+function _g185(){return !(typeof window!=="undefined"&&window.__CPM_NO_G185);}
+function decisiva185(p,md,st,mp,op,wk){try{
+  const n=st.length;if(!n||mp<0)return null;
+  const myPts=st[mp].pts||0,topPts=st[0].pts||0;
+  const titolo=wk>=28&&mp<=3&&topPts-myPts<=9,salv=wk>=25&&mp>=n-3;
+  if(!titolo&&!salv)return null;
+  const mw=md.week||wk;
+  const cal=(p.calendar||[]).filter(m=>m&&(!m.type||m.type==="league")&&!m.played&&(m.week||0)>=mw);
+  const R=cal.length?cal.length:Math.max(1,Math.ceil((39-mw)*34/38));
+  const dopo=3*(R-1);
+  if(titolo){
+    if(op>=0&&op<=3&&op!==mp)return "🏆 Corsa al titolo — scontro diretto";
+    if(R<=3)return "🏆 Corsa al titolo — ultime giornate";
+    if(mp===0&&n>1&&(myPts-(st[1].pts||0))+3>dopo)return "🏆 Il titolo si può vincere";
+    if(mp>0&&(topPts-myPts)+3>dopo)return "🏆 Il titolo si può perdere";}
+  if(salv){
+    if(op>=0&&op>=n-4&&op!==mp)return "🆘 Lotta salvezza — scontro diretto";
+    if(R<=3)return "🆘 Lotta salvezza — ultime giornate";
+    const safe=st[n-4];if(safe&&((safe.pts||0)-myPts)+3>dopo)return "🆘 Si può retrocedere";}
+  return null;}catch(_e){return null;}}
 const _TRAG165_PRES=[50,100,150,200,250,300,350,400,450,500];
 const _TRAG165_GOL=[50,100,150,200,250,300];
 function posta165(p,md){try{
@@ -1064,8 +1098,11 @@ function posta165(p,md){try{
   const mp=pos(cid,cn),op=pos(oid,on);
   if(conPunti&&mp>=0){
     const myPts=st[mp].pts||0,topPts=st[0].pts||0;
+    if(_g185()){/* [giro 185 · PO-384] solo le partite decisive (vedi decisiva185) */
+      const dk=decisiva185(p,md,st,mp,op,wk);if(dk)return dk;}
+    else{
     if(wk>=28&&mp<=3&&topPts-myPts<=9)return "🏆 Corsa al titolo";
-    if(wk>=25&&mp>=st.length-3)return "🆘 Lotta salvezza";}
+    if(wk>=25&&mp>=st.length-3)return "🆘 Lotta salvezza";}}
   if(wk>=37)return "🏁 Finale di stagione";
   if(k163)return k163;/* scontro al vertice, sfida alle prime tre */
   if(p.rival&&p.rival.club&&isOpp(p.rival.club.id,p.rival.club.n))return "⚔️ Il tuo rivale";
