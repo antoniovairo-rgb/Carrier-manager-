@@ -1439,3 +1439,10 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 13/11 ~18:10 Roma — 182 e 183 persi, rilanciati
 - Le sessioni dei giri 182 e 183 si sono messe in attesa di un controllo in sottofondo alle 11:14 Roma e non si sono più svegliate (contenitore chiuso): nessun commit sul repository, lavoro perso (183: 12,83 $; 182: costo non riportato). Rilanciati come 182b e 183b con l'obbligo di commit e push dopo ogni punto e prima di ogni controllo lungo. Controllo della madre ogni ora per vedere subito una nuova fermata.
+
+## 13/11 ~20:35 Roma — 182b e 183b uniti, verifica leggera della 192 avviata
+- 182b: compagni dello spogliatoio sempre dalla rosa (Primavera e pro, migrazione idempotente); nomi di squadra mai coi puntini (intero → dizionario → sigla); offerte con cachet (videogioco, docufilm, biografia…) fermano il tasto momento. Catena carriera+grafica verde.
+- 183b: interviste post partita Primavera 34 → 4 a stagione, pro 34 → 14; domande ripetute nella stagione 13 → 0 (Primavera) e 2 → 0 (pro); legate ai fatti 0% → 100% / 93%.
+- Uniti in lavoro/192 (ci-runner di nuovo con chiavi doppie, riunito con lo script scratchpad/dedup-ci.py); GAME_VERSION 7.999.192 → cfd047a6.
+- Domande per il PO domattina: abbreviazione per «Primavera» (oggi scende alla sigla dove non ci sta); allargare la barra della partita a 375 px (216 club su 296 mostrano la sigla); frequenza delle interviste in Primavera (4 su 34 con la regola decisa; leva: le sorprese, oggi 1 su 8).
+- Verifica leggera della 192 dalla madre (scratchpad/leggera192.sh, a blocchi sotto 100 min, riprende saltando i fatti): base, guardiani di tutti i giri della 192, strumenti della cronaca e della grafica, career-critical, griglia-mobile, partita-vera, validate-situations, highlight-95, distanze-126, parata-100.

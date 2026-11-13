@@ -1482,5 +1482,33 @@
     "cache_read_tokens": 0,
     "worker_epoch": 1,
     "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYiaBr7s9JM5rkfhpSwvR",
+    "titolo": "giro 182b spogliatoio, nomi abbreviati, offerte (PO-379, PO-378)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T17:08:01Z",
+    "chiusa": "2026-11-13T18:45:12Z",
+    "cost_usd": 7.39265894,
+    "output_tokens": 77047,
+    "cache_read_tokens": 20413903,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
+  },
+  {
+    "sessione": "session_01QEYia9VrR7mVx93p26Pcw5",
+    "titolo": "giro 183b interviste meno e più varie (PO-375)",
+    "versione": "7.999.192",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "creata": "2026-11-13T17:08:02Z",
+    "chiusa": "2026-11-13T18:32:33Z",
+    "cost_usd": 8.28349538,
+    "output_tokens": 76425,
+    "cache_read_tokens": 22348552,
+    "worker_epoch": 1,
+    "rilevato": "2026-11-13"
   }
 ]
