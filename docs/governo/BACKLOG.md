@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO, VERIFICATO, CHIUSO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (27)
+## Voci aperte o parziali (30)
 
-Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.191 / 7.999.192 1 · 7.999.192 | 13.
+Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare confine zona G) 1 · 7.999.184 1 · | 1 · 7.999.191 / seguenti 1 · 7.999.191 / 7.999.192 1 · 7.999.192 | 12 · 7.999.193 | 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -41,7 +41,6 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-371 | 12/11 08:40 | Dai giri 169 e 166 (madre): controlli rossi o ciechi preesistenti, identici sulla base: spazio-296, calendario-offerte-195, palco-corpi-191, figurine-208, piede-cross-p1b2, doppio-gesto-148, testa-146, home-066, festa-3d (catena grafica) e parata-100 (catena completa) | difetto (strumenti/grafica) | DA FARE — giro 174 | 7.999.192 |
 | PO-372 | 12/11 08:40 | Dal giro 166 §4.3 (madre): la stessa partita intera rigiocata identica dà risultati diversi su 2 nomi su 3 (stato iniziale diverso già al 1', rami attorno alle scene) — tocca ogni guardiano che confronta due partite | difetto (motore, riproducibilità) | DA FARE — giro 175 (Fable) | 7.999.192 |
 | PO-373 | 12/11 11:50 | PO (questionario, D10 del giro 170): partite di notte «Atmosfera sì, campo no» — cielo scuro, riflettori visibili con alone, stadio più buio intorno; prato luminoso e colori pieni (vincolo 7.539) | miglioramento (scene 3D, notte) | DA FARE — ondata 2 della 192 | 7.999.192 |
-| PO-374 | 12/11 14:45 | Dal giro 180b (§6.6), deciso dal PO: «Toglierli dal repo» — originali CGTrader tracciati nel repo pubblico (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB): verificare che il gioco non li usi, toglierli dall'albero e dal sito; nessun force push (restano nei commit vecchi) | licenza (asset) | DA FARE — dopo il rilascio 191 | 7.999.192 |
 | PO-375 | 12/11 17:40 | PO: «le interviste non pensi che siano troppe? non vorrei che annoiassero il player, alla lunga sono sempre le stesse cose da dire» — dato del giro 164 (stima): 23-33% di domande già uscite in due stagioni, catalogo 91 domande (45 vittoria). Questionario: «Meno e più varie» (intervista solo dopo partite che contano, regola posta165, più sorprese rare; domande legate ai fatti della partita; mai la stessa domanda nella stessa stagione), «Nella 192, dopo la 191» | miglioramento (carriera, interviste) | DA FARE — tra i primi giri della 192 | 7.999.192 |
 | PO-376 | 12/11 19:55 | PO: «negli highlights non vedo da molto azioni che partono dalle fasce. Riesci a confermarlo?» — non confermato: nel catalogo ci sono situazioni di fascia (cross dalla fascia sx/dx, sovrapposizione, punizione dalla fascia, cross d'esterno), ma quante ne escono davvero dipende da ruolo e posizione dell'eroe: da misurare su partite vere per ruolo, confrontando con una versione vecchia per capire se è una regressione | da misurare (highlight) | DA MISURARE — tra i primi giri della 192 | 7.999.192 |
 | PO-377 | 12/11 21:05 | Dal giro 173 (foto avviso-gol-telefono.png, madre): la riga di cronaca dice «GOL! Jung (WRK) … su assist di Vogt» mentre il badge del gioco e l'avviso dicono Riedel — due marcatori diversi per lo stesso gol; difetto preesistente | difetto (cronaca, coerenza) | DA MISURARE — 192 | 7.999.192 |
@@ -52,7 +51,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-382 | 13/11 10:20 | PO dal giro 181 (G181-15): «Le tue leggende», albo permanente delle carriere finite da battere | nuova funzione (carriera) | DA FARE — 193 | 7.999.193 |
 | PO-383 | 13/11 10:20 | PO dal giro 181 (G181-18/19): «Bentornato» riassunto alla ripresa dopo giorni; cartolina di fine stagione da condividere | nuova funzione (coinvolgimento) | DA FARE — 193 | 7.999.193 |
 
-## Storico — voci chiuse (352)
+## Storico — voci chiuse (353)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -408,6 +407,7 @@ Per lotto: L3 1 · L6 1 · L1-bis 7 · L7 (tocca il flusso settimana: verificare
 | PO-364 | 11/11 12:35 | PO: «pensi che sia vincente anche per la carriera professionistica gestire a "momenti salienti" e non partita dopo partita? non vorrei che diventi noioso il gioco alla lunga» — PO (questionario): «Prima misuro, poi decidi». Giro 164 di sola misura (durata, scelte, ripetizione, posta in gioco della stagione da professionista) | domanda (carriera) | FATTO 13/11 — tasto «Vai al prossimo momento» e partite solo momenti salienti (giri 165, 165b, 166, 173) | 7.999.191 | | | |
 | PO-365 | 11/11 21:22 | PO (foto docs/collaudo-po/190-fischio-finale-box.jpg, telefono, partita 3D, FISCHIO FINALE · VITTORIA PESANTE): «Non si vede il voto e le altre info nel box sotto» — nel riquadro bianco il punteggio grande «1-0» e il voto «7,4» sono quasi invisibili (colore chiaro su bianco) | difetto (grafica fine partita) | FATTO 13/11 — riquadro del fischio finale leggibile, scuro come il tema (giro 169) | 7.999.191 |
 | PO-366 | 11/11 21:25 | Visto dalla madre nella stessa foto (non segnalato dal PO): il riquadro dice voto 7,4, la barra in basso dice ★ 7.1 nella stessa schermata — due voti diversi per la stessa partita | difetto (coerenza voto) | FATTO 13/11 — voto della barra = pagella del motore (giro 169) | 7.999.191 |
+| PO-374 | 12/11 14:45 | Dal giro 180b (§6.6), deciso dal PO: «Toglierli dal repo» — originali CGTrader tracciati nel repo pubblico (assets/source/cgtrader-soccer-player/originals/*.fbx, .obj, TEXTURES.zip, ~115 MB): verificare che il gioco non li usi, toglierli dall'albero e dal sito; nessun force push (restano nei commit vecchi) | licenza (asset) | FATTO sul ramo lavoro/192 — originali FBX/OBJ/TEXTURES.zip (giro 184) e, su decisione PO del 13/11, anche BLENDER+RIG.blend e CHARACTER.glb tolti dall'albero; licenze-184 verde; nessun force push | 7.999.192 |
 
 ## Ricostruzione (fonti e regole di stato)
 

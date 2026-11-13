@@ -1431,3 +1431,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - PO-374: originali CGTrader (originals/ + TEXTURES.zip, 12 file, ~115 MB) tolti dall'albero; nessuno li usava (grep e rete del browser); guardiano licenze-184 nella completa.
 - Clip Rohr: 28 clip (rientrano defending-01, goalkeeper-save-03, dribble-03, juggling-03; swaying-arms più mosso). clip-180 rosso SOLO sul peso: 3,30 MB contro tetto 3,0 MB. Decisione madre: il tetto NON si alza; le clip lunghe (goalkeeper-save-03 8,9 s, defending-01 6,2 s) si accorciano nel giro che le collegherà ai gesti; fino ad allora clip-180 è un rosso dichiarato (il file è fuori da dist/, il gioco non lo carica).
 - Dubbi del 184 al PO: BLENDER+RIG.blend (originale CGTrader in Git LFS, 124 MB, usato da due script di sviluppo) e CHARACTER.glb (14 MB, originale o conversione: non confermato).
+
+## 13/11 ~12:40 Roma — gli ultimi originali CGTrader
+- PO: «Togliere anche questi»: BLENDER+RIG.blend (puntatore Git LFS, 124 MB) e CHARACTER.glb (14 MB) tolti da lavoro/192 (34be8b7a). Il gioco non li usava; i 4 script di sviluppo che li leggono hanno una nota: serve la copia locale dell'acquisto fuori da git. licenze-184 verde e rosso che cade 4/4.
+- Il download dei pacchetti Rohr non serve più: il PO può togliere la condivisione via link della cartella Drive «gumroad».
