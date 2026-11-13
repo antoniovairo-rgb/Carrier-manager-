@@ -48,6 +48,11 @@ function osservatore() {
     const cs = getComputedStyle(el); return cs.visibility !== 'hidden' && cs.display !== 'none' && Number(cs.opacity) > 0.05; };
   const fase = () => { try { return (window.__CPM_PHASE && window.__CPM_PHASE()) || (document.querySelector('[data-cpm="barra"]') ? 'partita' : 'carriera'); } catch (e) { return '?'; } };
   const via = (el) => { const p = []; let e = el; for (let i = 0; i < 4 && e; i++, e = e.parentElement) { const d = e.getAttribute && e.getAttribute('data-cpm'); if (d) { p.push(d); break; } } return p.join('/') || el.tagName.toLowerCase(); };
+  window.__dispDi182 = ((el) => {  const pe = el.parentElement; if (!pe) return el.clientWidth; const cs = getComputedStyle(pe); let w = pe.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (cs.display.includes('flex') && !cs.flexDirection.startsWith('column')) { const k = [...pe.children].filter(c => c !== el && getComputedStyle(c).position !== 'absolute' && getComputedStyle(c).display !== 'none');
+      for (const c of k) { const r = c.getBoundingClientRect(); const cc = getComputedStyle(c); w -= r.width + parseFloat(cc.marginLeft) + parseFloat(cc.marginRight); }
+      const gap = parseFloat(cs.columnGap) || 0; w -= gap * k.length; }
+    const ce = getComputedStyle(el); const mx = parseFloat(ce.maxWidth); if (!isNaN(mx)) w = Math.min(w, mx); return Math.floor(w); });
   setInterval(() => {
     const N = window.__N182; N.scan++;
     const f = fase();
@@ -57,7 +62,12 @@ function osservatore() {
       if (el.getAttribute('data-nome182') != null) {
         if (!visibile(el)) continue;
         const k = via(el) + '|' + el.getAttribute('data-intero182') + '|' + innerWidth;
-        N.nomi[k] = { cpm: el.getAttribute('data-cpm'), intero: el.getAttribute('data-intero182'), mostrato: t, liv: +el.getAttribute('data-nome182'), w: el.clientWidth, sw: el.scrollWidth, fase: f };
+        const liv = +el.getAttribute('data-nome182'); let disp = null, prec = null;
+        if (liv > 0) { /* abbreviato solo dove serve: il gradino prima NON deve starci nello spazio disponibile */
+          const cs2 = getComputedStyle(el); disp = window.__dispDi182(el);
+          const pr = document.createElement('span'); pr.style.cssText = `position:absolute;left:-9999px;white-space:nowrap;font:${cs2.font};letter-spacing:${cs2.letterSpacing};text-transform:${cs2.textTransform}`;
+          pr.textContent = (el.getAttribute('data-cand182') || '').split('|')[liv - 1] || ''; document.body.appendChild(pr); prec = pr.getBoundingClientRect().width; pr.remove(); }
+        N.nomi[k] = { cpm: el.getAttribute('data-cpm'), intero: el.getAttribute('data-intero182'), mostrato: t, liv, w: el.clientWidth, sw: el.scrollWidth, fase: f, disp, prec };
       }
       const cs = getComputedStyle(el);
       const tagliato = (cs.overflow.includes('hidden') || cs.overflowX === 'hidden' || cs.overflow.includes('clip')) && el.scrollWidth > el.clientWidth + 1 && el.children.length === 0;
@@ -82,8 +92,7 @@ const tuttiIClub = (page) => page.evaluate(() => {
     prova.style.cssText = `position:absolute;left:-9999px;top:0;white-space:nowrap;font:${cs.font};letter-spacing:${cs.letterSpacing};text-transform:${cs.textTransform};font-feature-settings:${cs.fontFeatureSettings}`;
     document.body.appendChild(prova);
     /* lo spazio DISPONIBILE, non quello del testo attuale: un gemello con un testo lunghissimo al posto dell'elemento */
-    const gem = el.cloneNode(true); gem.textContent = 'W'.repeat(80); const d0 = el.style.display; el.style.display = 'none'; el.parentNode.insertBefore(gem, el);
-    const w = gem.clientWidth; gem.remove(); el.style.display = d0; let liv = [0, 0, 0], nessuno = [];
+    const w = window.__dispDi182(el); let liv = [0, 0, 0], nessuno = [];
     for (const c of club) {
       const cand = window.__CPM_NOMI182.candidati(c);
       let scelto = -1; for (let i = 0; i < cand.length; i++) { prova.textContent = cand[i]; if (prova.getBoundingClientRect().width <= w + 0.5) { scelto = i; break; } }
@@ -186,6 +195,9 @@ const scesi = Nm.filter(x => x.liv > 0), stretti = Nm.filter(x => x.sw > x.w + 1
 for (const x of scesi) console.log(`    · ${x.cpm} «${x.intero}» → «${x.mostrato}» (livello ${x.liv}, ${x.w}px)`);
 ok(Nm.length >= 8, `nomi visti dalla funzione unica: ${Nm.length} (almeno 8 per giudicare)`);
 ok(stretti.length === 0, `nomi della funzione unica che non ci stanno: ${stretti.length} ${stretti.slice(0, 3).map(x => x.intero + '@' + x.w).join(', ')}`);
+const inutili = scesi.filter(x => x.disp != null && x.prec != null && x.prec <= x.disp - 1);
+for (const x of inutili) console.log(`    ✗ abbreviato senza bisogno: ${x.cpm} «${x.mostrato}» ma il gradino prima (${x.prec.toFixed(0)} px) sta in ${x.disp} px`);
+ok(inutili.length === 0, `abbreviazioni senza bisogno: ${inutili.length}`);
 ok(!ROSSO ? scesi.length > 0 : true, `almeno un nome abbreviato dove l'intero non ci sta (visti ${scesi.length})`);
 console.log('\n— tutti i club, per punto (intero / dizionario / sigla) —');
 const C = Object.values(raccolta.club);

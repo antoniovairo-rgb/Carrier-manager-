@@ -197,18 +197,25 @@ function _no182nomi(){return typeof window!=='undefined'&&!!window.__CPM_NO_G182
 function NomeSquadra182({team,fb,testo,style={},as="div",cpm,...rest}){
   const cand=testo!=null?candidatiSquadra182({...(team||{}),n:testo},fb):candidatiSquadra182(team,fb);
   const key=cand.join("|");
-  const[liv,setLiv]=useState(0);const ref=useRef(null);const[giro,setGiro]=useState(0);
+  const[liv,setLiv]=useState(0);const ref=useRef(null);const[,setGiro]=useState(0);const dec=useRef(0);
   const rosso=_no182nomi();
   useEffect(()=>{setLiv(0);},[key]);
+  /* si scende di un gradino solo se il testo non ci sta; si ricorda quanto era largo il contenitore quando si e' scesi */
   (React.useLayoutEffect||useEffect)(()=>{if(rosso)return;const el=ref.current;if(!el)return;
-    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1)setLiv(liv+1);});
-  /* si riparte dal nome intero solo quando cambia la FINESTRA: la larghezza dell'elemento segue il suo testo (elemento flessibile),
-     osservarla farebbe oscillare intero↔abbreviato */
-  useEffect(()=>{if(rosso||typeof window==="undefined")return;let w=window.innerWidth;
-    const on=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;setLiv(0);setGiro(g=>g+1);}};window.addEventListener("resize",on);return()=>window.removeEventListener("resize",on);},[rosso]);
+    if(el.scrollWidth>el.clientWidth+0.5&&liv<cand.length-1){dec.current=(el.parentElement&&el.parentElement.clientWidth)||0;setLiv(liv+1);}});
+  /* si risale al nome intero quando lo spazio CRESCE (contenitore piu' largo di quando si e' scesi, finestra, carattere caricato);
+     si riscende se il testo non ci sta piu'. Mai su un restringimento causato dal proprio testo piu' corto: niente oscillazioni */
+  useEffect(()=>{if(rosso)return;const el=ref.current;if(!el)return;
+    const azzera=()=>{dec.current=0;setLiv(0);setGiro(g=>g+1);};
+    let w=window.innerWidth;const onR=()=>{if(Math.abs(window.innerWidth-w)>0.5){w=window.innerWidth;azzera();}};window.addEventListener("resize",onR);
+    let vivo=true;try{document.fonts&&document.fonts.ready&&document.fonts.ready.then(()=>{if(vivo)azzera();});}catch(_e){}
+    let ro=null;if(typeof ResizeObserver!=="undefined"){ro=new ResizeObserver(()=>{const pe=el.parentElement;
+      if(dec.current&&pe&&pe.clientWidth>dec.current+1){azzera();return;}
+      if(el.scrollWidth>el.clientWidth+0.5)setGiro(g=>g+1);});ro.observe(el);if(el.parentElement)ro.observe(el.parentElement);}
+    return()=>{vivo=false;window.removeEventListener("resize",onR);if(ro)ro.disconnect();};},[rosso]);
   const L=Math.min(liv,cand.length-1);
   const T=as;
-  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} title={cand[0]} {...rest}
+  return(<T ref={ref} data-cpm={cpm||"nome-squadra-182"} data-nome182={L} data-intero182={cand[0]} data-cand182={key} title={cand[0]} {...rest}
     style={{...style,overflow:"hidden",whiteSpace:"nowrap",textOverflow:rosso?"ellipsis":"clip",minWidth:0}}>{rosso?cand[0]:cand[L]}</T>);
 }
 if(typeof window!=='undefined'){window.__CPM_NOMI182={abbrevia:abbreviaSquadra182,candidati:candidatiSquadra182};}
