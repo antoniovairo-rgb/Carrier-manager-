@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ascolto audio 161</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16202b;--mute:#5b6775;--line:#dde2e8;--acc:#1f6feb;--prima:#8a5a00;--dopo:#0a7a3e}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1319;--card:#161d26;--ink:#e6edf3;--mute:#9aa7b4;--line:#2a3441;--acc:#58a6ff;--prima:#e3b341;--dopo:#3fb950}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+p.sub{color:var(--mute);margin:0 0 16px;font-size:14px}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:24px 0 8px}
+.ev{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;display:grid;grid-template-columns:1fr auto auto;gap:8px 10px;align-items:center}
+.ev .n{font-weight:600}
+.ev .m{grid-column:1/-1;color:var(--mute);font-size:12.5px;font-variant-numeric:tabular-nums}
+button{font:inherit;font-size:14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 14px;min-height:40px;cursor:pointer}
+button.p{border-color:var(--prima);color:var(--prima)}
+button.d{border-color:var(--dopo);color:var(--dopo)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.top{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.nota{font-size:13px;color:var(--mute);border-left:3px solid var(--line);padding-left:10px;margin:12px 0}
+@media (max-width:420px){.ev{grid-template-columns:1fr 1fr}.ev .n{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main>
+<h1>Audio del giro 161 — prima e dopo</h1>
+<p class="sub">Registrati dal gioco vero, con i volumi di categoria di default. «Prima» è l'audio del giro 149 (gol subito muto, «ohh» sintetico, cerimonie senza musica); «dopo» è il giro 161.</p>
+<div class="top"><button id="tutti-p" class="p">▶ Tutti «prima»</button><button id="tutti-d" class="d">▶ Tutti «dopo»</button><button id="stop">■ Ferma</button></div>
+<p class="nota">«Prima» del gol subito è silenzio: l'evento non veniva emesso. Il taglio dell'«ohh» (4 s della registrazione di Commons) è stato scelto misurando l'inviluppo, non all'ascolto: va confermato qui. La musica suona solo nelle cerimonie; qui se ne ascoltano i primi 15 secondi.</p>
+<div id="lista"></div>
+</main>
+<script>
+var EV=[["gol-subito", "Gol subito: fischi della curva", "Partita"], ["palo", "Palo: legno + «ohh»", "Partita"], ["fuori", "Tiro fuori: «ohh»", "Partita"], ["angolo", "Calcio d'angolo: fischio + «ohh»", "Partita"], ["premiazioni", "Premiazioni («Triumphant», primi 15 s)", "Cerimonie"], ["presentazione", "Presentazione e fine stagione («The World Is Ours», primi 15 s)", "Cerimonie"]];
+var lista=document.getElementById('lista'),cur=null,coda=[],gruppo='';
+function suona(src,btn){ferma();cur=new Audio(src);if(btn){btn.classList.add('on');cur.onended=function(){btn.classList.remove('on');prossimo();};}else cur.onended=prossimo;cur.play().catch(function(){});cur._b=btn;}
+function ferma(){if(cur){cur.pause();if(cur._b)cur._b.classList.remove('on');cur=null;}}
+function prossimo(){if(coda.length){var x=coda.shift();suona(x[0],x[1]);}}
+EV.forEach(function(e){
+  if(e[2]!==gruppo){gruppo=e[2];var h=document.createElement('h2');h.textContent=gruppo;lista.appendChild(h);}
+  var d=document.createElement('div');d.className='ev';d.id='ev-'+e[0];
+  d.innerHTML='<span class="n"></span><button class="p">▶ prima</button><button class="d">▶ dopo</button><span class="m"></span>';
+  d.querySelector('.n').textContent=e[1];
+  var bp=d.querySelector('.p'),bd=d.querySelector('.d');
+  bp.onclick=function(){coda=[];suona('prima/'+e[0]+'.mp3',bp);};
+  bd.onclick=function(){coda=[];suona('dopo/'+e[0]+'.mp3',bd);};
+  lista.appendChild(d);
+});
+function tutti(q){coda=EV.map(function(e){return [q+'/'+e[0]+'.mp3',document.querySelector('#ev-'+e[0]+' .'+(q==='prima'?'p':'d'))];});prossimo();}
+document.getElementById('tutti-p').onclick=function(){tutti('prima');};
+document.getElementById('tutti-d').onclick=function(){tutti('dopo');};
+document.getElementById('stop').onclick=function(){coda=[];ferma();};
+var f=function(x){return (x&&x.picco_db!=null)?('picco '+x.picco_db+' · RMS '+x.rms_db+(x.lufs!=null?' · '+x.lufs+' LUFS':'')+' · '+x.durata_s+' s'):'—';};
+fetch('misure.json').then(function(r){return r.json();}).then(function(m){m.eventi.forEach(function(e){var el=document.querySelector('#ev-'+e.id+' .m');if(el)el.textContent='prima: '+f(e.prima)+'   ·   dopo: '+f(e.dopo);});}).catch(function(){});
+</script>
+</body>
+</html>

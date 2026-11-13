@@ -198,6 +198,30 @@ function sottopagato155(p){const w=(p&&p.contract&&p.contract.wage)||577,o=(p&&p
 /* [giro 155 D9, collaudo 177: controfferta «€19,3 mln», firmato €22,2 mln] la firma moltiplica per il procuratore (x1,15) e per il
    bonus «Prepara rinnovo» (max +30%), ma la controfferta mostrava solo la cifra del club. Una sola formula per la firma e per cio'
    che si mostra prima di firmare. */
+/* [giro 159 · B4, decisione PO 11/11] LA DURATA FIRMATA E LA SCADENZA DETTA SONO LA STESSA COSA. Al cambio stagione il gioco scala
+   `duration` di uno e a zero il contratto e' scaduto: `duration` conta le stagioni che restano COMPRESA quella in corso, quindi la
+   scadenza vera e' stagione + duration - 1. Prima la scadenza si scriveva stagione + anni firmati con duration = anni firmati: nel
+   passaggio pro «1 stagione» diceva «scade a fine stagione S+1» e scadeva a fine S; nel trasferimento di gennaio diceva S+1 e
+   scadeva a fine S, cioe' sei mesi. Decisione PO: firmato a meta' stagione vale fino a fine della PROSSIMA stagione (la stagione in
+   corso in piu'); firmato a inizio stagione (passaggio pro, finestra estiva W1-5) scadenza = stagione + durata - 1.
+   Rosso __CPM_NO_G159_B4 (le due scritture di prima). */
+function contrattoFirma159(season,anni,metaStagione){const s=season||1,d=Math.max(1,anni||1);
+  if(_g159("B4"))return{duration:d,expiresAtSeason:s+d};
+  return metaStagione?{duration:d+1,expiresAtSeason:s+d}:{duration:d,expiresAtSeason:s+d-1};}
+/* [giro 159b, decisioni PO 11/11 sera] (1) «Stessa regola» anche per il RINNOVO: la durata dopo un rinnovo conta le stagioni che
+   restano compresa quella in corso (PO-270: max(residua,1)+anni firmati), ma la scadenza si scriveva stagione + durata, cioe' una
+   stagione piu' in la' di quella vera (firma in stagione 2, durata 3: diceva «fine stagione 5», valeva fino a fine 4). Ora la
+   scadenza e' stagione + durata - 1, la stessa del B4: cio' che si legge e' cio' che succede. La durata NON cambia.
+   (2) Finestra estiva W1-5 = inizio stagione (confermata dal PO): un «1 stagione» firmato li' scade a fine della stagione in corso.
+   Rosso __CPM_NO_G159B: rinnovi con stagione + durata, firma nella finestra estiva con stagione + anni (la 7.999.190). */
+function _g159b(){try{return typeof window!=="undefined"&&!!window.__CPM_NO_G159B;}catch(_e){return false;}}
+function scadenzaRinnovo159b(season,duration){const s=season||1,d=Math.max(1,duration||1);return _g159b()?s+d:s+d-1;}
+/* [giro 159 · D9, decisione PO 11/11 «media fra stagione scorsa e stagione in corso, sempre»] la proposta di rinnovo guardava solo i
+   gol della stagione in corso: a inizio stagione erano 0 e la proposta era sempre -3%. Ora la base e' la media dei gol della stagione
+   scorsa (history, stessa stagione-1) e di quella in corso; senza una stagione scorsa nello storico resta la stagione in corso.
+   Rosso __CPM_NO_G159_D9 (solo stagione in corso). */
+function golRinnovo159(p){const cur=(p&&p.goals)||0;if(_g159("D9"))return cur;const s=(p&&p.season)||1;
+  const h=((p&&p.history)||[]).filter(x=>x&&x.season===s-1);if(!h.length)return cur;const last=h.reduce((a,x)=>a+(x.goals||0),0);return (last+cur)/2;}
 function nettoFirma155(p,wage){const a=(p&&p.hasAgent)?1.15:1.0,b=Math.min((p&&p.agentRenewalBonus)||0,0.30);return Math.round((wage||0)*a*(1+b));}
 /* sulla controfferta: il netto alla firma, se diverso dalla cifra del club; null = niente riga (o rosso __CPM_NO_G155_D9) */
 function nettoMostrato155(p,wage){if(_g155("D9"))return null;const n=nettoFirma155(p,wage);return n!==Math.round(wage||0)?n:null;}

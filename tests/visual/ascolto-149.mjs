@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /* [giro 149 · PO-351] REGISTRA la pagina d'ascolto docs/sviluppo/giro149/ascolto.html: ogni evento sonoro suonato DAL GIOCO VERO,
-   prima (rosso __CPM_NO_G149 = audio di oggi, sintesi + boato Mixkit) e dopo (file CC0), con gli stessi volumi di categoria del gioco.
+   prima (rosso __CPM_NO_G149 = audio di prima del giro 149, tutto sintetizzato: dal giro 161b anche il boato) e dopo (file CC0).
+   [giro 161b] CPM_SOLO=gol,... riregistra solo quegli eventi, CPM_SOLO_PRIMA=1 solo il braccio «prima»; misure.json si aggiorna
+   solo per cio' che si e' registrato (le altre righe restano).
    Come: un init-script aggancia ogni connect() verso ctx.destination anche a un MediaStreamDestination e un MediaRecorder registra
    l'evento; i webm si convertono in MP3 (si aprono anche su Safari). Uso: node tools/build-dist.mjs --web && node ascolto-149.mjs */
 import http from 'node:http';
@@ -70,7 +72,9 @@ async function braccio(rosso) {
   await p.goto(URLG, { waitUntil: 'load' }); await p.waitForFunction(() => document.getElementById('root')?.children.length > 0);
   await p.mouse.click(206, 40); await sleep(6000);
   const dir = path.join(OUT, rosso ? 'prima' : 'dopo'); fs.mkdirSync(dir, { recursive: true });
+  const SOLO = process.env.CPM_SOLO ? process.env.CPM_SOLO.split(',') : null;
   for (const [id, , , codice, ms] of EVENTI) {
+    if (SOLO && !SOLO.includes(id)) continue;
     const b64 = await p.evaluate(async ({ codice, ms }) => {
       try { AudioMgr.scene('loading'); } catch (_e) {} /* silenzio fra un evento e l'altro (musica e ambiente spenti) */
       await new Promise(r => setTimeout(r, 900));
@@ -91,8 +95,9 @@ async function braccio(rosso) {
   }
   await b.close();
 }
-const MIS = {};
+let MIS = {};
+if (process.env.CPM_SOLO) try { for (const e of JSON.parse(fs.readFileSync(path.join(OUT, 'misure.json'), 'utf8')).eventi) MIS[e.id] = { prima: e.prima, dopo: e.dopo }; } catch (_e) {}
 await braccio(true);
-await braccio(false);
+if (!process.env.CPM_SOLO_PRIMA) await braccio(false);
 srv.close();
 fs.writeFileSync(path.join(OUT, 'misure.json'), JSON.stringify({ _nota: 'misure delle registrazioni (silenzi di testa/coda tolti): picco/RMS dBFS, LUFS integrati', eventi: EVENTI.map(([id, nome, gruppo]) => ({ id, nome, gruppo, ...MIS[id] })) }, null, 1));

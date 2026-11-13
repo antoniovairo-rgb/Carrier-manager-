@@ -4,6 +4,8 @@ Fonti: risposte del PO al questionario del 14/10 (DECISIONI.md) e verifica sulle
 
 Giro 25b (15/10, decisione PO «Rimettile con la loro fonte»): le ultime cinque righe tornano nei Crediti con la fonte già presente nel repo. Decisione PO «Senza riga licenza»: per «Regular Male» e per i ritratti la schermata mostra autore e provenienza senza riga Licenza; lo stesso vale per le righe con Licenza «—».
 
+Giro 161b (11/11, decisione PO «Togliere il file»): il suono «Stadium joy shouting crowd» (n. 3022, licenza propria del sito d'origine, non CC0) è uscito dal repo, dal gioco e dai Crediti; la sua riga è tolta. Il testo della licenza letto l'11/11 resta come documentazione in `docs/sviluppo/giro161/`.
+
 | Risorsa | Autore | Licenza | Fonte |
 |---|---|---|---|
 | Giocatori 3D «Soccer Player - Rigged» (CGTrader) | Hisenberg | Royalty Free (standard) — dichiarata dal PO | ordine CGTrader #17876008 del 2026-09-20, foto docs/governo/foto/po238-ordine-cgtrader.jpg |
@@ -11,7 +13,6 @@ Giro 25b (15/10, decisione PO «Rimettile con la loro fonte»): le ultime cinque
 | Ritratti delle figurine | generati con l'API a pagamento di OpenAI | — | risposta PO 14/10 |
 | Font Great Vibes | Robert Leuschke («The Great Vibes Pro Project Authors») | SIL Open Font License 1.1 | github.com/google/fonts/blob/main/ofl/greatvibes/METADATA.pb, OFL.txt |
 | Font Barlow, Barlow Condensed | Jeremy Tribby («The Barlow Project Authors») | SIL Open Font License 1.1 | github.com/google/fonts/blob/main/ofl/barlow/ e /barlowcondensed/ |
-| Suono «Stadium joy shouting crowd» (Mixkit 3022) | Non posso confermarlo (la pagina non indica l'autore) | Mixkit Sound Effects Free License | mixkit.co/free-sound-effects/crowd/, mixkit.co/license/ · dal giro 149 non più usato (solo col rosso `__CPM_NO_G149`; rimozione: decisione PO) |
 | Suoni «The Designer's Choice» (fischietti, applausi/boato, impatti) — giro 149 | Nicholas A. Judy | CC0 1.0 (licenseurl dell'oggetto, caricato dall'autore) | archive.org/details/Designers-Choice-Collection-{Whistles,Crowds,Fight,Cloth,Metal,Sports}, letta il 10/11; file per file in assets/audio/LICENZE.json |
 | Suoni «Interface Sounds» e «85 Short Music Jingles» — giro 149 | Kenney | CC0 (pagina + License.txt nel pacchetto) | opengameart.org/content/interface-sounds · /content/85-short-music-jingles, lette il 10/11 |
 | Musica «Victory Fanfare Short» — giro 149 | cynicmusic | CC0 | opengameart.org/content/victory-fanfare-short, letta il 10/11 |

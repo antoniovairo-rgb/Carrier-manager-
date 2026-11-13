@@ -26,8 +26,8 @@ async function apri(saveObj, nome, extra) {
   const s = JSON.parse(JSON.stringify(saveObj)); const pl = JSON.parse(s['cpm-v3']);
   if (nome) pl.player.name = nome;
   if (extra) Object.assign(pl.player, extra);
-  s['cpm-v3'] = JSON.stringify(pl);
-  await page.addInitScript((S) => { window.__CPM_GLB = false; for (const k of Object.keys(S)) { try { localStorage.setItem(k, typeof S[k] === 'string' ? S[k] : JSON.stringify(S[k])); } catch (e) {} } try { localStorage.setItem('cpm-match-speed', '2'); localStorage.removeItem('cpm-match-resume'); } catch (e) {} }, s);
+  s['cpm-v3'] = JSON.stringify(pl); if (process.env.CPM_ROSSO === '1') s.__rosso158 = 1;/* [giro 158] braccio rosso: voto con la formula di prima */
+  await page.addInitScript((S) => { window.__CPM_GLB = false; if (S.__rosso158) window.__CPM_NO_G158 = 1; delete S.__rosso158; for (const k of Object.keys(S)) { try { localStorage.setItem(k, typeof S[k] === 'string' ? S[k] : JSON.stringify(S[k])); } catch (e) {} } try { localStorage.setItem('cpm-match-speed', '2'); localStorage.removeItem('cpm-match-resume'); } catch (e) {} }, s);
   await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load', timeout: 90000 });
   await page.waitForFunction(() => !!document.getElementById('root').children.length, null, { timeout: 60000 }); await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 5000 }); } catch (e) {}
@@ -98,8 +98,11 @@ if (FASI.includes('funzione')) {
         const _aSd = standingsSeed(club.id || club.n, season, w); const seed = (_aSd + w * 31 + 1) >>> 0, seedPS = (_aSd + 2) >>> 0;
         const sim = simulateMatch(p.club, opp, p.ovr, isHome, seed, {}, { motore: true, giocatore: p, stileEroe: (typeof stileMotore === 'function' ? stileMotore(p) : null), stile: (p.coach && p.coach.style) || null });
         const ps = _pSimStats(sim, p.ovr, p.archetype?.id || p.archetype || '', seededRng(seedPS));
-        const voto = Math.round(clamp(sim.rating + ps.goals * 0.4 + ps.assists * 0.2, 4.0, 9.5) * 10) / 10;
-        const r = { voto, base: sim.rating, g: ps.goals, a: ps.goals != null ? ps.assists : 0, esito: sim.won ? 'V' : sim.drew ? 'N' : 'P', stato: sim.stato156 || null, quota: sim.quota156 != null ? sim.quota156 : null, hs: sim.homeScore, as: sim.awayScore };
+        const voto = (typeof votoSimEroe === 'function') ? votoSimEroe(sim, ps) : Math.round(clamp(sim.rating + ps.goals * 0.4 + ps.assists * 0.2, 4.0, 9.5) * 10) / 10;/* [giro 158] la funzione del gioco */
+        /* [giro 158] doppio conteggio: «C ingenuo» = pagella del motore intera (gol del motore dentro) compressa coi minuti + 0,4 a gol + 0,2 ad assist registrati */
+        const pg = sim.pag158 || null, qq = sim.quota156 != null ? sim.quota156 : 1;
+        const naive = pg ? Math.round(clamp(6 + (pg.voto - 6) * (0.3 + 0.7 * qq) + ps.goals * 0.4 + ps.assists * 0.2, 4.0, 9.5) * 10) / 10 : null;
+        const r = { voto, naive, eg: pg ? pg.gol | 0 : null, ea: pg ? pg.assist | 0 : null, base: sim.rating, g: ps.goals, a: ps.goals != null ? ps.assists : 0, esito: sim.won ? 'V' : sim.drew ? 'N' : 'P', stato: sim.stato156 || null, quota: sim.quota156 != null ? sim.quota156 : null, hs: sim.homeScore, as: sim.awayScore };
         R.push(r);
         p = { ...p, matchHistory: [...p.matchHistory, { rating: voto, simulated: true }].slice(-5) };/* la scelta del mister legge la media degli ultimi 3 voti */
       }
@@ -107,6 +110,11 @@ if (FASI.includes('funzione')) {
     }, { base, G, N });
     if (righe.err) { console.log('  ' + G.nome + ': ' + righe.err); continue; }
     console.log(`  [${G.nome}] lega ${righe.lega} · prestigio medio avversari ${righe.oppP.toFixed(1)} · prestigio club ${G.clubP || base.club.p}`);
+    const RR = righe.R, conP = RR.filter(r => r.naive != null);
+    if (conP.length) { const mm = (f) => media(conP.map(f)); const egSenza = conP.filter(r => r.eg > 0 && !r.g).length, gSenza = conP.filter(r => r.g > 0 && !(r.eg > 0)).length, ent = conP.filter(r => r.eg > 0 && r.g > 0).length;
+      const dG = conP.filter(r => r.eg > 0 || r.g > 0);
+      console.log(`  ${''.padEnd(34)} [158] doppio conteggio: voto C ingenuo ${f2(mm(r => r.naive))} contro ${f2(mm(r => r.voto))} · gol eroe motore/p ${f2(mm(r => r.eg))} registrati/p ${f2(mm(r => r.g))} · partite con gol del motore NON registrato ${egSenza}, registrato senza gol del motore ${gSenza}, entrambi ${ent} · scarto medio ingenuo-corretto dove c'e' un gol ${f2(media(dG.map(r => r.naive - r.voto)))} (n ${dG.length})`);
+      out.funzione158 = out.funzione158 || []; out.funzione158.push({ gruppo: G.nome, naive: +f2(mm(r => r.naive)), corretto: +f2(mm(r => r.voto)), egPP: +f2(mm(r => r.eg)), gPP: +f2(mm(r => r.g)), egSenza, gSenza, entrambi: ent, scartoConGol: +f2(media(dG.map(r => r.naive - r.voto))), nConGol: dG.length }); }
     out.funzione.push({ ...riassunto(G.nome, righe.R), ...G, oppP: righe.oppP, lega: righe.lega });
   }
   await ctx.close();

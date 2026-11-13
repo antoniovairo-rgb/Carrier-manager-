@@ -283,7 +283,7 @@ const DERBIES={
   "rma-bar":{name:"El Clásico",e:"👑"},"bar-rma":{name:"El Clásico",e:"👑"},
   "rma-atm":{name:"Derbi Madrileño",e:"🌆"},"atm-rma":{name:"Derbi Madrileño",e:"🌆"},
   "mun-mcy":{name:"Derby del Fiume Grigio",e:"🌹"},"mcy-mun":{name:"Derby del Fiume Grigio",e:"🌹"},
-  "mun-liv":{name:"Derby fra Mersey e Manchester",e:"🥀"},"liv-mun":{name:"Derby fra Mersey e Manchester",e:"🥀"},/* [giro 155 PO-359] il nome viene dalle due citta' nei nomi dei club (FC Merseyside, Manchester Rovers) */
+  "mun-liv":{name:"Derby della Brughiera Rossa",e:"🥀"},"liv-mun":{name:"Derby della Brughiera Rossa",e:"🥀"},/* [giro 159 PO-359, decisione PO 11/11 «inventare anche i luoghi»] nome tutto inventato, come gli altri derby del mondo del gioco */
   "ars-tot":{name:"Derby della Città Alta",e:"🔫"},"tot-ars":{name:"Derby della Città Alta",e:"🔫"},
   "bay-bvb":{name:"Der Klassiker",e:"🦁"},"bvb-bay":{name:"Der Klassiker",e:"🦁"},
   "psg-marse":{name:"Le Classique",e:"🗼"},"marse-psg":{name:"Le Classique",e:"🗼"},
@@ -293,7 +293,9 @@ const DERBIES={
 function isDerby(aId,bId){const d=DERBIES[`${aId}-${bId}`]||DERBIES[`${bId}-${aId}`]||null;
   /* [giro 155 · PO-359] «Derby dell'Ovest Lontano» non aveva legame coi due club: il nome ora viene dalle citta' nei loro nomi (FC
      Merseyside, Manchester Rovers). Rosso __CPM_NO_G155_T359 (torna il nome vecchio). */
-  if(d&&_g155("T359")&&d.name==="Derby fra Mersey e Manchester")return {...d,name:"Derby dell'Ovest Lontano"};
+  if(d&&_g155("T359")&&d.name==="Derby della Brughiera Rossa")return {...d,name:"Derby dell'Ovest Lontano"};
+  /* [giro 159 · PO-359] il nome della 190 usava due luoghi reali (Mersey, Manchester): ora e' inventato. Rosso __CPM_NO_G159_T359. */
+  if(d&&_g159("T359")&&d.name==="Derby della Brughiera Rossa")return {...d,name:"Derby fra Mersey e Manchester"};
   return d;}
 /* [giro 155 · PO-359] l'arco in cui l'eroe fa da mentore a un giovane si chiamava «Il ragazzo della Primavera» anche a 29 anni: ora
    «Il tuo allievo». Rosso __CPM_NO_G155_T359. */
@@ -971,3 +973,97 @@ if(typeof window!=="undefined"&&!window.__CPM_NO_PERSIST167){
 const DEVTOOLS_DEFAULT=true;
 const devToolsOn=()=>{try{const v=safeLS.get("cpm-devtools");return v==null?DEVTOOLS_DEFAULT:v==="1";}catch(_e){return DEVTOOLS_DEFAULT;}};
 const setDevTools=(on)=>{try{safeLS.set("cpm-devtools",on?"1":"0");}catch(_e){}};
+/* [giro 163 · PO-356, progetto PRIMAVERA-153 §3 — F] L'INDICE PRIMAVERA. Funzione PURA: legge solo dati gia' salvati
+   (matchHistory, forma, fiducia, OVR, prestigio del club madre), non scrive niente, nessun campo nuovo nel salvataggio.
+   Valore 0-100 = 35% voto medio delle ultime 5 di Primavera (5,0→0 · 8,0→100) + 25% (gol + assist·0,6)/partita delle
+   ultime 10 (tetto per ruolo: attacco 0,7 · centrocampo 0,45 · difesa 0,2) + 15% forma (30→0 · 95→100) + 15% fiducia
+   del mister (0-100) + 10% OVR rispetto alla prima squadra (ovr − (prestigio madre − 20): −10→0 · +10→100).
+   Si giudica dalla 6ª partita di lega della stagione (prima: {pronto:false}). Al giocatore si mostrano 5 tacche, mai il
+   numero. I pesi sono la proposta del progetto, da tarare con la sonda. Fuori dalla Primavera vale null. */
+const IP153_TACCHE=["Ti stanno guardando","Sei nei loro appunti","Si parla di te","Sei a un passo","La prima squadra ti aspetta"];
+function _ipRuolo153(pos){const s=String(pos||"").toLowerCase();if(/difens|terzin|portier|libero|stopper/.test(s))return 0.2;if(/centrocamp|mediano|regist|mezzal|trequart|mezzapunta/.test(s))return 0.45;return 0.7;}
+function indicePrimavera(p){try{
+  if(!p||(p.proStatus||"u18")!=="u18")return null;
+  const sn=p.season||1;
+  const lega=(p.matchHistory||[]).filter(m=>m&&(m.season||1)===sn&&!m.cup&&!m.euro&&!m.national&&!m.squalificato&&!m.nonConvocato&&!m.svincolato&&!m.injured&&typeof m.rating==="number"&&isFinite(m.rating));
+  if(lega.length<6)return{pronto:false,partite:lega.length,minimo:6};
+  const n01=(v,a,b)=>Math.max(0,Math.min(1,(v-a)/(b-a)));
+  const u5=lega.slice(-5),u10=lega.slice(-10);
+  const voto=u5.reduce((s,m)=>s+m.rating,0)/u5.length;
+  const contr=u10.reduce((s,m)=>s+(m.goals||0)+(m.assists||0)*0.6,0)/u10.length;
+  const madre=(typeof CLUBS!=="undefined"&&p.club&&CLUBS.find(c=>c&&c.id===p.club.id&&!c.isU18))||null;
+  const pm=madre?(madre.p||60):(((p.club&&p.club.p)||60)+12);
+  const parti={voto:n01(voto,5,8),contributo:n01(contr,0,_ipRuolo153(p.position)),forma:n01(p.form||70,30,95),fiducia:n01(p.coachTrust==null?60:p.coachTrust,0,100),ovr:n01((p.ovr||60)-(pm-20),-10,10)};
+  const valore=Math.round(100*(0.35*parti.voto+0.25*parti.contributo+0.15*parti.forma+0.15*parti.fiducia+0.10*parti.ovr));
+  const tacca=Math.max(0,Math.min(4,Math.floor(valore/20)));
+  return{pronto:true,valore,tacca,etichetta:IP153_TACCHE[tacca],partite:lega.length,parti};
+}catch(_e){return null;}}
+/* [giro 163 · PO-356 idea 3, decisione PO 11/11 «solo sui momenti importanti»] LA PARTITA CHIAVE, una regola sola: e' la
+   stessa del riquadro «Prossima» della home (derby · scontro al vertice · sfida a una delle prime tre), piu' ogni gara che
+   non sia di campionato. Le posizioni contano solo quando in classifica c'e' almeno un punto (alla prima giornata l'ordine
+   e' quello dell'elenco, non un verdetto). Funzione PURA, nessun sorteggio. */
+function partitaChiave163(p,md){try{
+  if(!p||!md)return null;
+  if(md.type&&md.type!=="league")return md.type==="cup"?"🏆 Coppa":md.type==="national"?"🏳️ Nazionale":"🌍 Coppa europea";
+  const d=(typeof isDerby==="function")?isDerby(p.club&&p.club.id,md.opponentId):null;
+  if(d)return (d.e||"🔥")+" "+(d.name||"Derby");
+  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
+  if(!st.some(t=>(t.pts||0)>0))return null;
+  const pos=(id,n)=>st.findIndex(t=>t.id===id||(n&&(t.n||t.name)===n));
+  const mp=pos(p.club&&p.club.id,p.club&&(p.club.n||p.club.name)),op=pos(md.opponentId,md.opponentName);
+  if(mp>=0&&op>=0&&mp<=2&&op<=2)return "⚔️ Scontro al vertice";
+  if(op>=0&&op<=2)return "🏆 Sfida alla capolista";
+  return null;
+}catch(_e){return null;}}
+/* [giro 165 · PO-364 opzione B, decisione PO «B e C insieme»] LA POSTA IN GIOCO DA PROFESSIONISTA, allargata. La regola del
+   giro 164 (gara non di campionato, oppure calcMatchWeight >= 5) lasciava a un club di prestigio basso 1-4 partite con posta
+   su 38-40: il tasto «Vai al prossimo momento» avrebbe simulato quasi tutta la stagione. Ora una partita ha posta se e':
+   gara non di campionato · derby · scontro al vertice o sfida a una delle prime tre (la regola della home, partitaChiave163) ·
+   contro un ex club · contro il rivale · il primo match dopo un infortunio · una partita che puo' darti un traguardo
+   personale (la 50ª, 100ª, 150ª… presenza, a un gol dai 50, 100, 150… in carriera; 10 e 25 si raggiungono gia' in Primavera, record stagionale di lega a un passo) · col contratto in bilico (in scadenza, non
+   rinnovato, fiducia del mister sotto 55, dalla settimana 28) · corsa al titolo, lotta salvezza, finale di stagione (i rami di
+   calcMatchWeight) · scontro diretto in classifica (posizioni vicine, al massimo 3 punti, dalla settimana 8).
+   Funzione PURA: legge il salvataggio e la voce di calendario, non scrive niente, nessun sorteggio. Ritorna l'etichetta
+   (perche' si ferma) o null. */
+const _TRAG165_PRES=[50,100,150,200,250,300,350,400,450,500];
+const _TRAG165_GOL=[50,100,150,200,250,300];
+function posta165(p,md){try{
+  if(!p||!md)return null;
+  const k163=partitaChiave163(p,md);
+  if(k163&&md.type&&md.type!=="league")return k163;/* coppe, coppe europee, Nazionale */
+  if(k163&&/Derby|🔥/.test(k163))return k163;
+  const oid=md.opponentId,on=md.opponentName,cid=p.club&&p.club.id,cn=p.club&&(p.club.n||p.club.name);
+  const isOpp=(id,n)=>(id!=null&&oid!=null&&id===oid)||(n&&on&&n===on);
+  /* ex club: una stagione passata in un club che non e' quello di oggi (anche la Primavera da cui vieni) */
+  if((p.history||[]).some(h=>h&&!(h.clubId!=null&&h.clubId===cid)&&!(h.club&&h.club===cn)&&(isOpp(h.clubId,h.club)||(h.club&&on&&String(on).replace(/ Primavera$| U18$/,"")===String(h.club).replace(/ Primavera$| U18$/,""))))
+     ||(p.worldMemory||[]).some(m=>m&&m.type==="ex_club"&&m.clubId!==cid&&isOpp(m.clubId,m.club)))return "🔙 Ex club";
+  /* il primo match dopo un infortunio: rientro in corso e nessuna gara giocata da sano dopo l'ultimo stop */
+  if(!p.injured&&p.justRecovered&&(p.returnPenaltyWeeks||0)>0){
+    const sn=p.season||1,mh=(p.matchHistory||[]).filter(m=>m&&!m.national&&(m.season||1)===sn);
+    const last=mh[mh.length-1];
+    if(!last||last.injured||((last.week||0)<(p.week||1)-1))return "🩹 Primo match dopo l'infortunio";}
+  /* traguardi personali a un passo */
+  const tm=p.totalMatches||0;if(_TRAG165_PRES.indexOf(tm+1)>=0)return "🎖️ "+(tm+1)+"ª presenza in carriera";
+  const tg=p.totalGoals||0;const gt=_TRAG165_GOL.find(x=>x>tg&&x-tg<=1);if(gt)return "🎯 A un gol dai "+gt+" in carriera";
+  try{const lg=p.club&&p.club.lg;let rec=(typeof LEAGUE_RECORDS!=="undefined"&&lg)?((LEAGUE_RECORDS[lg]||(typeof _LR_DEFAULT!=="undefined"?_LR_DEFAULT:{})).seasonRecord):null;
+    const ov=(p.leagueRecordOverrides||{})[lg];if(ov&&ov.goals>((rec&&rec.goals)||0))rec={goals:ov.goals};
+    const lgG=(typeof leagueGoalsOf==="function")?leagueGoalsOf(p):(p.goals||0);
+    if(rec&&rec.goals&&lgG>=8&&rec.goals-lgG>=0&&rec.goals-lgG<=2)return "👑 Record stagionale a "+(rec.goals-lgG+1)+" gol";}catch(_e){}
+  /* contratto in bilico */
+  const wk=p.week||1;
+  if((p.proStatus||"u18")==="pro"&&!p.loan&&!p.contractExpired&&((p.contract&&p.contract.duration)||2)<=1&&(p.renewalSeason||0)!==(p.season||1)&&wk>=28&&(p.coachTrust==null?60:p.coachTrust)<55)return "📋 Contratto in bilico";
+  /* i rami di calcMatchWeight: corsa al titolo, salvezza, ultima giornata */
+  const st=[...(p.standings||[])].sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gd||0)-(a.gd||0)||(b.gf||0)-(a.gf||0));
+  const conPunti=st.some(t=>(t.pts||0)>0);
+  const pos=(id,n)=>st.findIndex(t=>t.id===id||(n&&(t.n||t.name)===n));
+  const mp=pos(cid,cn),op=pos(oid,on);
+  if(conPunti&&mp>=0){
+    const myPts=st[mp].pts||0,topPts=st[0].pts||0;
+    if(wk>=28&&mp<=3&&topPts-myPts<=9)return "🏆 Corsa al titolo";
+    if(wk>=25&&mp>=st.length-3)return "🆘 Lotta salvezza";}
+  if(wk>=37)return "🏁 Finale di stagione";
+  if(k163)return k163;/* scontro al vertice, sfida alle prime tre */
+  if(p.rival&&p.rival.club&&isOpp(p.rival.club.id,p.rival.club.n))return "⚔️ Il tuo rivale";
+  if(conPunti&&mp>=0&&op>=0&&wk>=8&&Math.abs(mp-op)<=2&&Math.abs((st[mp].pts||0)-(st[op].pts||0))<=3)return "📊 Scontro diretto in classifica";
+  return null;
+}catch(_e){return null;}}

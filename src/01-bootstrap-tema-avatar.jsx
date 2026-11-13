@@ -29,6 +29,8 @@ const _CPM_TEST=(typeof window!=='undefined')&&!window.__CPM_STORE_BUILD&&/[?&]c
 /* [giro 155 · bassi del collaudo 177 verificati nel giro 140] UN interruttore rosso per tutte le correzioni del giro:
    window.__CPM_NO_G155 le spegne tutte, window.__CPM_NO_G155_<codice> (B1, B2, B3, B6, B8, B10, B11, B12, B13, D9, D10, D14,
    D15, D17, D21, L358, T359) una sola. Guardiano: npm run bassi-155. */
+/* [giro 159] interruttore rosso dei seguiti del 155 (decisioni PO 11/11): __CPM_NO_G159 tutto, __CPM_NO_G159_<voce> una sola voce (L358 T359 B4 D9 B11). */
+function _g159(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G159||(k&&window["__CPM_NO_G159_"+k]));}catch(_e){return false;}}
 function _g155(k){try{return typeof window!=="undefined"&&!!(window.__CPM_NO_G155||(k&&window["__CPM_NO_G155_"+k]));}catch(_e){return false;}}
 // Polish P1 (5.55.0): guardia pallonetto — il motore non deve rendere un scavetto sopra un portiere FERMO
 //   (coerente solo in 1v1 / uscita GK o se il giocatore lo sceglie esplicitamente). Default ON; ?cpmchip=0 lo spegne.
@@ -84,6 +86,9 @@ const TINTE={bg:"#0d0f14",sup:"#1a1e27",inc:"#11141b",tasto:"#262b37",bordo:"#26
    momenti-v2, partita-v2, simula-v2, patrimonio-303): un token a basso contrasto deve farli cadere. */
 const _temaProva=(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")&&window.__CPM_TEMA_PROVA)?window.__CPM_TEMA_PROVA:null;
 if(_temaProva&&_temaProva.tinte){try{Object.assign(TINTE,_temaProva.tinte);}catch(_e){}}
+/* [giro 160 D20] il banco puo' anche alterare la scala FS (chiave fs) e spegnere le correzioni del giro (chiave noG160): e' il braccio
+   rosso del guardiano testo-160, sempre solo sotto ?cpmtest=1. Nessun secondo tema: si tocca un token, come per TINTE. */
+const _noG160=()=>!!(_temaProva&&_temaProva.noG160);
 const TH = {
   bg:TINTE.bg,bgGrad:TINTE.bg,card:TINTE.sup,cardBorder:TINTE.bordo,shadow:"0 2px 12px rgba(0,0,0,0.45)",
   text:TINTE.testo,muted:TINTE.sec,faint:"#8f98a8",navBg:TINTE.sup,
@@ -233,11 +238,25 @@ function fondoClub106(col){
 function _no108(k){try{return typeof window!=='undefined'&&!!window['__CPM_NO_G108_'+k];}catch(_e){return false;}}
 /* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
 function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):((_g110(23)?'rgba(13,15,20,':'rgba(15,23,42,')+q+')');}
+/* [giro 168 · PO-363] IL VELO DEL COLORE DEL CLUB. La riga tua della classifica chiamava inkVelo945(club.c) — ma inkVelo945 vuole un
+   INCHIOSTRO (bianco o scuro) e per ogni altro colore rende il velo scuro del tema: il colore del club non arrivava mai (dal giro 110
+   G180-23 il velo e' rgba(13,15,20), il fondo della pagina, ed e' li' che grafica-v2 e' diventato rosso; prima era ardesia 15,23,42).
+   Qui il colore del club, smorzato verso la notte come la fascia della prossima partita (fondoClub106: col bianco o col giallo
+   puri il velo scendeva a 2,49:1 / 3,44:1 sui numeri, misura giro 168), diventa rgba(r,g,b,q). Rosso __CPM_NO_G168: la chiamata di prima. */
+function veloClub168(col,q){
+  try{ if(typeof window!=='undefined'&&window.__CPM_NO_G168)return inkVelo945(col,q);
+    let h=String(fondoClub106(col)||'').trim();if(h[0]!=='#')return inkVelo945(col,q);h=h.slice(1);if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(h.length!==6||v.some(isNaN))return inkVelo945(col,q);
+    return 'rgba('+v.join(',')+','+q+')'; }catch(_e){ return inkVelo945(col,q); }}
 const FONT_TV="'Barlow Condensed','Barlow','Segoe UI',sans-serif";/* titoli e numeri grandi: gia' incorporato in src/00 (600/700, OFL) */
 
 /* ===== UX/UI OVERHAUL · scale del Design System (FASE 1) =====
    Token additivi consumati dalle ondate successive; nessun uso qui → zero regressione. */
-const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
+const FS={caption:12,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 12px)
+/* [giro 160 D20, decisione PO 11/11] il pavimento del testo passa da 11 a 12 px: si alza il TOKEN, non i singoli punti (~1.360 usi).
+   Misurato prima col banco (testo-160, braccio anteprima) su 12 schermate x telefono 360/390, tablet 768, PC 1366: nessun testo
+   tagliato, nessuno scorrimento orizzontale, nessuna riga persa dal line-clamp; righe +0..+6 per schermata. Rosso: banco fs.caption=11. */
+if(_temaProva&&_temaProva.fs){try{Object.assign(FS,_temaProva.fs);}catch(_e){}}
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32,box:7};                                                  // 4pt grid · box = lo spazio FRA riquadri fratelli
 /* [giro 91 PO-296 — «Ridurrei anche lo spazio tra i box in tutte le schermate», decisione PO: a meta', circa 8 px (erano 14-16)] PUNTO UNICO: lo spazio fra
@@ -509,7 +528,7 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
    - colori: pannello TH.card, testo TH.text/TH.muted, filetti TH.divider, ombre TH.el2/el3 (seguono il tema chiaro/scuro); la
      cornice resta nei colori del club, e senza club usa TH.primary -> TH.primaryDk; il testo sulla pastiglia del ruolo e' bianco o
      TH.text secondo il contrasto misurato (_rap944);
-   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 11 px) e i pesi FW;
+   - tipografia: il carattere del gioco (Barlow, ereditato), SOLO la scala FS (mai sotto FS.caption = 12 px, giro 160) e i pesi FW;
      raggi dalla scala RAD;
    - NIENTE ELLISSI: ogni riga sceglie il passo FS piu' grande che entra nella larghezza; se nemmeno FS.caption entra, il ruolo
      perde la coda dopo « · », il cognome va su due righe; le righe che non entrano in ALTEZZA non si disegnano (priorita':

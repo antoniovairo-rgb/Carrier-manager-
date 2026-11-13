@@ -1,0 +1,146 @@
+{
+ "statico": {
+  "rinNego": true,
+  "rinOff": true,
+  "momenti": true,
+  "estiva": true,
+  "vecchieScritture": true
+ },
+ "A": {
+  "logica": {
+   "ok": true,
+   "dato": {
+    "a": 4,
+    "b": 3,
+    "c": 5
+   }
+  },
+  "rinNego": {
+   "ok": true,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 1,
+     "club": "b04",
+     "duration": 3,
+     "exp": 4,
+     "svincolato": false
+    },
+    "scritta": 4,
+    "ultimaStagioneSottoContratto": 4,
+    "passi": [
+     "S3:d2/e4",
+     "S4:d1/e4",
+     "S5:d0/e4/svinc"
+    ]
+   }
+  },
+  "rinOff": {
+   "ok": true,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 1,
+     "club": "b04",
+     "duration": 3,
+     "exp": 4,
+     "svincolato": false
+    },
+    "scritta": 4,
+    "ultimaStagioneSottoContratto": 4,
+    "passi": [
+     "S3:d2/e4",
+     "S4:d1/e4",
+     "S5:d0/e4/svinc"
+    ]
+   }
+  },
+  "estiva": {
+   "ok": true,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 3,
+     "club": "lec",
+     "duration": 1,
+     "exp": 2,
+     "svincolato": false
+    },
+    "scritta": 2,
+    "ultimaStagioneSottoContratto": 2,
+    "passi": [
+     "S3:d0/e2/svinc"
+    ]
+   }
+  }
+ },
+ "B": {
+  "logica": {
+   "ok": false,
+   "dato": {
+    "a": 5,
+    "b": 4,
+    "c": 6
+   }
+  },
+  "rinNego": {
+   "ok": false,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 1,
+     "club": "b04",
+     "duration": 3,
+     "exp": 5,
+     "svincolato": false
+    },
+    "scritta": 5,
+    "ultimaStagioneSottoContratto": 4,
+    "passi": [
+     "S3:d2/e5",
+     "S4:d1/e5",
+     "S5:d0/e5/svinc"
+    ]
+   }
+  },
+  "rinOff": {
+   "ok": false,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 1,
+     "club": "b04",
+     "duration": 3,
+     "exp": 5,
+     "svincolato": false
+    },
+    "scritta": 5,
+    "ultimaStagioneSottoContratto": 4,
+    "passi": [
+     "S3:d2/e5",
+     "S4:d1/e5",
+     "S5:d0/e5/svinc"
+    ]
+   }
+  },
+  "estiva": {
+   "ok": false,
+   "dato": {
+    "firma": {
+     "season": 2,
+     "week": 3,
+     "club": "lec",
+     "duration": 1,
+     "exp": 3,
+     "svincolato": false
+    },
+    "scritta": 3,
+    "ultimaStagioneSottoContratto": 2,
+    "passi": [
+     "S3:d0/e3/svinc"
+    ]
+   }
+  }
+ },
+ "guasti": []
+}

@@ -28,7 +28,13 @@ const ATTESI = [
   ['Ritratti delle figurine', ['Ritratti delle figurine', 'OpenAI']],
   ['Great Vibes', ['Great Vibes', 'Robert Leuschke', 'SIL Open Font License 1.1']],
   ['Barlow', ['Barlow', 'Barlow Condensed', 'Jeremy Tribby']],
-  ['Mixkit 3022', ['Mixkit', '3022', 'Mixkit Sound Effects Free License']],
+  /* [giro 161b] la riga Mixkit 3022 e' uscita dal documento (file tolto dal repo, decisione PO 11/11); le cinque righe del giro 149
+     erano nel documento ma non qui (il guardiano era rosso dal giro 149 su «allineare ATTESI»): allineate, stessi testi della finestra. */
+  ["The Designer's Choice", ["The Designer's Choice", 'Nicholas A. Judy', 'CC0 1.0']],
+  ['Interface Sounds', ['Interface Sounds', '85 Short Music Jingles', 'Kenney', 'CC0 1.0']],
+  ['Victory Fanfare Short', ['Victory Fanfare Short', 'cynicmusic', 'CC0 1.0']],
+  ['Beach Sports Theme', ['Beach Sports Theme (Loop)', 'Trex0n', 'CC0 1.0']],
+  ['Happy Adventure', ['Happy Adventure (Loop)', 'TinyWorlds', 'CC0 1.0']],
   ['Brusio di folla', ['Brusio di folla', 'Realizzato per Korward Elite']],/* [PO-290] testo per il giocatore */
   ['DiceBear (libreria)', ['DiceBear', 'Florian Körner', 'MIT']],
   ['Avataaars', ['Avataaars', 'Pablo Stanley']],
@@ -51,7 +57,7 @@ const R267 = !!process.env.CPM_NO_CRED267;
 /* [7.999.172 PO-268] al giocatore niente numero d'ordine ne' data dell'acquisto CGTrader (restano modello, autore e CGTrader come
    fonte). Col rosso __CPM_NO_CRED268 (CPM_ROSSO=__CPM_NO_CRED268) tornano, e il guardiano DEVE uscire 1. */
 const ORDINE268 = ['17876008', '20/09/2026', 'Ordine CGTrader'];
-const CON_NC = R267 ? ['Mixkit 3022', 'Avataaars'] : [];
+const CON_NC = R267 ? ['Avataaars'] : [];/* [giro 161b] via 'Mixkit 3022' (riga tolta dal documento) */
 const NONCONF_MIN = R267 ? (DOC.match(/Non posso confermarlo/g) || []).length - 1 : 0; // la riga d'intestazione del documento ne nomina uno
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 let ko = [];

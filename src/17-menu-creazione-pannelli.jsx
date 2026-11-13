@@ -138,7 +138,6 @@ const CREDITI238=[
     {n:"Barlow e Barlow Condensed",d:"Testi, numeri ed etichette (incorporati nel gioco).",manca:"autore e licenza",fonte:"src/00-head.html"}]},
   {sez:"Suoni",voci:[
     {n:"Effetti sintetizzati",d:"Quasi tutti i suoni sono generati in tempo reale con Web Audio.",lic:"Realizzati per Korward Elite",fonte:"assets/audio/README.md · src/09-audio-scout-anagrafiche.jsx"},
-    {n:"Boato del gol — Mixkit «stadium joy shouting crowd» (3022)",d:"Campione fornito dal PO.",manca:"autore e licenza",fonte:"assets/audio/sfx/crowd/README.md"},
     {n:"Brusio di folla",d:"Generato per il gioco da rumore filtrato e voci sintetiche, nessun campione di terzi (tools/gen-crowd-bed.mjs).",lic:"Realizzato per Korward Elite",fonte:"assets/audio/sfx/crowd/README.md · tools/gen-crowd-bed.mjs"}]}
 ];
 /* [PO-254, richiesta PO 15/10 «Crediti, pulsante/link troppo minimale ed il contenuto non e' stato aggiornato (tutte le fonti
@@ -174,15 +173,19 @@ const CREDITI254=[
     {n:"Great Vibes",aut:"Robert Leuschke («The Great Vibes Pro Project Authors»)",lic:"SIL Open Font License 1.1"},
     {n:"Barlow e Barlow Condensed",aut:"Jeremy Tribby («The Barlow Project Authors»)",lic:"SIL Open Font License 1.1"}]},
   {sez:"Suoni",voci:[
-    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). Il boato Mixkit non si usa piu'
-       e la sua voce resta solo col rosso __CPM_NO_G149 (che rimette l'audio di prima). */
-    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[
-    {n:"«Stadium joy shouting crowd» (Mixkit 3022)",nc:["aut"],lic:"Mixkit Sound Effects Free License"}]:[
+    /* [giro 149 PO-351] suoni da fonti CC0 (registro completo, file per file: assets/audio/LICENZE.json). [giro 161b] il boato di terzi
+       e' uscito dal repo (decisione PO 11/11): col rosso __CPM_NO_G149 l'audio torna sintetizzato e qui non resta nessuna voce. */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G149)?[]:[
     {n:"«The Designer's Choice» — fischietti, folla, impatti",d:"Fischietto, applausi e boato, calcio, colpo di testa, palo, parata, contrasto. Fonte: archive.org (Designers-Choice-Collection)",aut:"Nicholas A. Judy",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Interface Sounds» e «85 Short Music Jingles»",d:"Suoni dell'interfaccia e jingle della carriera. Fonte: opengameart.org",aut:"Kenney (kenney.nl)",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Victory Fanfare Short»",d:"Fanfara di trofei e cerimonie. Fonte: opengameart.org",aut:"cynicmusic",lic:"CC0 1.0 (pubblico dominio)"},
     {n:"«Beach Sports Theme (Loop)»",d:"Musica dei menu. Fonte: opengameart.org",aut:"Trex0n (Cal McEachern)",lic:"CC0 1.0 (pubblico dominio)"},
-    {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"}]),
+    {n:"«Happy Adventure (Loop)»",d:"Musica della carriera. Fonte: opengameart.org",aut:"TinyWorlds",lic:"CC0 1.0 (pubblico dominio)"},
+    /* [giro 161] le tre sorgenti nuove: l'«ohh» dello stadio e i due brani delle cerimonie (voci assenti col rosso __CPM_NO_G161) */
+    ...((typeof window!=='undefined'&&window.__CPM_NO_G161)?[]:[
+    {n:"«Match amical France-USA — 58241 spectateurs — Action ratée sur faute»",d:"«Ohh» del pubblico. Fonte: Wikimedia Commons",aut:"Romainbehar",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«Triumphant»",d:"Musica delle premiazioni. Fonte: opengameart.org",aut:"Emma_MA",lic:"CC0 1.0 (pubblico dominio)"},
+    {n:"«The World Is Ours»",d:"Musica di presentazione e fine stagione. Fonte: opengameart.org",aut:"Zane Little Music",lic:"CC0 1.0 (pubblico dominio)"}])]),
     ...(_c290?[{n:"Brusio di folla",d:"Creato al computer per il gioco, senza registrazioni di terzi.",aut:"Realizzato per Korward Elite"}]:[{n:"Brusio di folla",aut:"generato per Korward Elite (giro 20, 14/10)",lic:"nostra: nessun campione di terzi, solo sintesi da numeri pseudo-casuali con seme fisso"}]),
     {n:_c290?"Effetti sonori":"Effetti sonori sintetizzati con Web Audio",d:_c290?"Creati al computer per il gioco.":undefined,aut:"Realizzati per Korward Elite"}]},
   {sez:"Librerie software",voci:[
@@ -967,6 +970,7 @@ function _NationalCallupScreenOld235({data,onPlay}){
    qualunque carriera lunga toccava 1000 (verifica D18 del giro 140). Ora ogni voce ha il suo massimo e i massimi sommano esattamente
    1000: il punteggio pieno e' solo di chi e' al tetto su TUTTE le voci. Il punteggio non e' salvato (si calcola dal giocatore), quindi
    i salvataggi esistenti si ricalcolano da soli. Rosso __CPM_NO_G155_L358. */
+const LEGACY_PER_TROFEO159=14;
 const LEGACY_TETTI358={gol:300,assist:100,trofei:140,nazionale:150,ovr:150,stagioni:100,patrimonio:60};
 function calcLegacyScore(p){
   const goals=p.totalGoals||0;
@@ -979,7 +983,9 @@ function calcLegacyScore(p){
   let score=0;
   score+=Math.min(goals*2,300);
   score+=Math.min(assists,100);
-  score+=_g155("L358")?trophies*80:Math.min(trophies*80,LEGACY_TETTI358.trofei);
+  /* [giro 159 · PO-358, decisione PO 11/11 «14 punti a trofeo fino a 10»] con 80 a trofeo il tetto 140 si toccava al 2° trofeo: ora 14 a
+     trofeo, tetto 140 raggiunto al 10°. Rosso __CPM_NO_G159_L358 (80 a trofeo col tetto, come la 190). */
+  score+=_g155("L358")?trophies*80:(_g159("L358")?Math.min(trophies*80,LEGACY_TETTI358.trofei):Math.min(trophies*LEGACY_PER_TROFEO159,LEGACY_TETTI358.trofei));
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
@@ -1037,6 +1043,12 @@ function stagioniGiocate94(p){const a=Math.max(0,((p&&p.season)||1)-1);try{const
 /* [giro 155 B11, collaudo 177: «17 stagioni» nella lettera, «St. 18» nell'intestazione] la lettera d'addio contava season-1, l'intestazione
    stagioniGiocate94 (giro 94): nella stessa cerimonia due numeri. Ora la lettera usa lo stesso conto. Rosso __CPM_NO_G155_B11. */
 function stagioniLettera155(p){return _g155("B11")?Math.max(1,((p&&p.season)||1)-1):Math.max(1,stagioniGiocate94(p));}
+/* [giro 159 · B11, decisione PO 11/11 «presenze in Primavera contate a parte»] la lettera d'addio scriveva le presenze totali, Primavera
+   compresa (collaudo 177: 701). Ora le presenze da professionista (proCareerOf, lo stesso scorporo della biografia) e accanto
+   «Primavera: X presenze». Rosso __CPM_NO_G159_B11 (un numero solo, Primavera compresa). */
+function presenzeLettera159(p){const tot=(p&&(p.totalMatches||p.matches))||0;if(_g159("B11"))return{pro:tot,primavera:0,testo:tot+" presenze"};
+  let pro=tot;try{pro=proCareerOf(p).matches;}catch(_e){}const pr=Math.max(0,tot-pro);
+  return{pro:pro,primavera:pr,testo:pro+" presenze"+(pr>0?" (Primavera: "+pr+" presenze)":"")};}
 function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const{player:p,legacyScore}=retData;
   const grade=getLegacyGrade(legacyScore);
@@ -1134,7 +1146,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{textAlign:"left",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:RAD.md,padding:"11px 15px",animation:"celebTitle .8s ease-out .2s both"}}>
             <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.88)",lineHeight:1.75,fontStyle:"italic"}}>
               «Cari tifosi,<br/>
-              tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {_totM} presenze e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
+              tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {presenzeLettera159(p).testo} e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
               {(_flagClub?`Al ${_flagClub.n} lascio il pezzo più grande del mio cuore: ${_flagClub.seasons} stagioni e ${_flagClub.goals} gol insieme non si dimenticano. `:"A ogni maglia che ho vestito lascio un pezzo di cuore. ")}
               {(p.life&&(p.life.stage==="sposato"||p.life.stage==="genitore"))?`Il grazie più grande va a ${p.life.name}${p.life.stage==="genitore"?" e ai nostri figli":""}: le notti difficili le avete vinte voi, prima di me. `:""}{/* [7.29.0 ONDA 4 §S14] payoff della vita privata */}
               Oggi appendo le scarpette al chiodo. Grazie di tutto — siete stati voi la mia carriera.»

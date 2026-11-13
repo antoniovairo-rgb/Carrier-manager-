@@ -67,5 +67,5 @@ interfaccia, carriera, cerimonie e musica. La struttura qui sopra è quella usat
 - **Aggiungere/cambiare un file:** nuova sorgente in `sorgenti.json` (con hash e licenza letta alla fonte), nuova riga in `USCITE`
   dello script, poi eseguirlo e aggiornare la tabella `F149` di `src/09` e la lista `AUDIO149` di `sw.js` — il guardiano
   `npm run audio-149` fallisce finché codice, `sw.js` e registro non coincidono.
-- **Fuori dal giro 149:** `sfx/crowd/brusio-folla-korward.wav` (nostro, giro 20) e `sfx/crowd/mixkit-stadium-joy-shouting-crowd-3022.wav`
-  (licenza Mixkit, **non CC0**: col giro 149 non si scarica più; resta per il rosso `__CPM_NO_G149` in attesa della decisione del PO).
+- **Fuori dal giro 149:** `sfx/crowd/brusio-folla-korward.wav` (nostro, giro 20). Il boato di terzi con licenza propria (non CC0) è
+  uscito dal repo nel giro 161b (decisione PO 11/11 «Togliere il file»): col rosso `__CPM_NO_G149` il boato del gol è sintetizzato.
