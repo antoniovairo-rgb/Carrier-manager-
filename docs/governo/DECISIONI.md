@@ -1435,3 +1435,4 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 ## 13/11 ~12:40 Roma — gli ultimi originali CGTrader
 - PO: «Togliere anche questi»: BLENDER+RIG.blend (puntatore Git LFS, 124 MB) e CHARACTER.glb (14 MB) tolti da lavoro/192 (34be8b7a). Il gioco non li usava; i 4 script di sviluppo che li leggono hanno una nota: serve la copia locale dell'acquisto fuori da git. licenze-184 verde e rosso che cade 4/4.
 - Il download dei pacchetti Rohr non serve più: il PO può togliere la condivisione via link della cartella Drive «gumroad».
+- 13/11 ~12:50 Roma: il PO ha tolto la condivisione via link della cartella Drive «gumroad».
