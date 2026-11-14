@@ -634,6 +634,8 @@
     "agente-198": "node agente-198.mjs",
     "svincolato-198": "node svincolato-198.mjs",
     "home-199": "node home-199.mjs",
+    "provini-201": "node provini-201.mjs",
+    "scelte-201": "node scelte-201.mjs",
     "figurina-199": "node figurina-199.mjs",
     "rassegna-200": "node rassegna-200.mjs",
     "rifiniture-200": "node rifiniture-200.mjs",

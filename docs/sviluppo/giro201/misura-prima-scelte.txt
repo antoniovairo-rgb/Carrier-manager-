@@ -1,0 +1,40 @@
+?? scelte-201.mjs
+A) rosso: apri la scelta, ricarica senza rispondere, guarda se torna
+    saga-tono: aperta «Nel calcio mai dire mai» · dopo il ricaricamento «Nel calcio mai dire mai» · errori 0
+    saga-offerta: aperta «STA OFFERTA UFFICIALE FC STAMFORD 🏴 · Premier Div» · dopo il ricaricamento NON TORNA · errori 0
+    offerta: aperta «STA OFFERTA UFFICIALE FC STAMFORD 🏴 · Premier Div» · dopo il ricaricamento NON TORNA · errori 0
+    richiamo: aperta «🎩 PRIMO RICHIAMO · METÀ STAGIONE Il presidente ti» · dopo il ricaricamento NON TORNA · errori 0
+    rinnovo: aperta «Accetta l'offerta del club» · dopo il ricaricamento NON TORNA · errori 0
+    svincolato: aperta «⛔ STAGIONE 4 · SENZA CONTRATTO Sei svincolato Il c» · dopo il ricaricamento NON TORNA · errori 0
+    impulso: aperta «SETTIMANA 30 · FC MERSEYSIDE 🌟 Impulso della sett» · dopo il ricaricamento NON TORNA · errori 0
+    spogliatoio: aperta «SETTIMANA 30 · FC MERSEYSIDE Bryan Tedesco Lo spog» · dopo il ricaricamento NON TORNA · errori 0
+    intervista: aperta «Korward Elite Vesta Assicura Korward Elite Vesta A» · dopo il ricaricamento NON TORNA · errori 0
+    verifica: aperta «VERIFICA TRIMESTRALE · S.3 W.8» · dopo il ricaricamento NON TORNA · errori 0
+    momento: aperta «⚡ UN MOMENTO CHE RICORDERAI Il Rigore della Vita ⚽» · dopo il ricaricamento NON TORNA · errori 0
+    procuratore: aperta «Ci penso ancora» · dopo il ricaricamento NON TORNA · errori 0
+    patto: aperta «IL PATTO COL MISTER» · dopo il ricaricamento «IL PATTO COL MISTER» · errori 0
+    da-decidere: aperta «🧊 DAL CAMPO D'ALLENAMENTO Allarme sovraccarico Il» · dopo il ricaricamento «🧊 DAL CAMPO D'ALLENAMENTO Allarme sovraccarico Il» · errori 0
+    convocazione: aperta «lobby convocazione» · dopo il ricaricamento «Home: partita della Nazionale ancora da giocare (F» · errori 0
+  ✓ rosso bocciato: 4 scelte su 15 tornano (attese meno di tutte)
+
+TABELLA
+| Scelta | Aperta | Torna dopo il ricaricamento (rosso = prima) | Torna (verde = dopo) |
+| Saga di mercato, episodio 2 (cosa rispondi ai media) | sì | sì | — |
+| Saga di mercato, episodio 3 → «Ascolta l'offerta» (offerta ufficiale) | sì | NO | — |
+| Offerta di trasferimento diretta (finestra) | sì | NO | — |
+| Richiamo del presidente (giro 198) | sì | NO | — |
+| Trattativa del rinnovo (aperta dal richiamo) | sì | NO | — |
+| Schermata «Sei svincolato» (giro 198) | sì | NO | — |
+| Impulso della settimana (scelta) | sì | NO | — |
+| Spogliatoio (scelta con un compagno) | sì | NO | — |
+| Intervista | sì | NO | — |
+| Verifica trimestrale del mister (sett. 8) | sì | NO | — |
+| Momento di carriera (finestra) | sì | NO | — |
+| Primo incontro col procuratore | sì | NO | — |
+| Patto col mister (verdetto da accogliere) | sì | sì | — |
+| Scelte «Da decidere» della Home (giro 199: campo d'allenamento) | sì | sì | — |
+| Convocazione in Nazionale (amichevole in calendario) | sì | sì | — |
+
+✅ scelte-201 verde
+
+[exited with code 0]
