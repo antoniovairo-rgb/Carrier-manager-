@@ -1,4 +1,4 @@
-# Rapporto — giro 194 (7.999.194)
+# Rapporto — giro 194 (7.999.194) — completo, controlli tutti eseguiti
 
 Ramo `sviluppo/giro194-tasto-momento`, partito da `lavoro/194`. `GAME_VERSION` non toccato.
 Ogni correzione del gioco ha il suo rosso `window.__CPM_NO_G194<lettera>`; il guardiano nuovo `momento-194` è stato provato verde
@@ -91,7 +91,28 @@ primario → bocciato. Prova del rosso dello strumento: `CPM_NO_G194D=1` (torna 
 
 ## Controlli (uno alla volta, `CPM_CI_PAR=0`, `CPM_CHROME=/opt/pw-browsers/chromium`)
 
-ESITI_CONTROLLI
+Eseguiti in fila sul build finale (`check-src`: IDENTICO BYTE PER BYTE), memoria libera ~15,2-15,5 GB e disco 29 GB liberi prima
+di ognuno. Log del guardiano nuovo in `docs/sviluppo/giro194/momento-194.log`.
+
+| Controllo | Uscita | Esito |
+|---|---|---|
+| **momento-194** (nuovo) | 0 | 37 ✓, 0 ✗: A 4 casi verdi + rosso A bocciato · B verde + rosso B bocciato · C 3 club verdi + 3 rossi bocciati |
+| gioca-188 | 0 | verde, 6 ok, 0 ko |
+| momento-185 | 0 | verde, 25 ok, 0 ko |
+| momento-165 | 0 | ESITO: VERDE |
+| momento-165b | 0 | ESITO: VERDE |
+| momento-173 | 0 | ESITO: VERDE |
+| solo-highlight-166 | 0 | VERDE: PASSA (il rosso cade su 3, 7 e 8 come deve) |
+| interviste-183 | 0 | verde, il rosso si vede |
+| convocazione-235 | 0 | VERDE (360/412), prova del rosso riconosciuta — era ROSSO sulla 7.999.193 |
+| convocazione-190 | 0 | VERDE, 13 ok · 0 ko |
+| griglia-mobile | 0 | misura completa: 14 schermate × 5 larghezze |
+| career-critical | 0 | 26 ✅, 0 ❌ |
+| test:logic | 0 | 51 test, 51 pass, 0 fail |
+| save-compat | 0 | ✅ PASS |
+
+Non eseguiti (fuori dalla lista del giro): quality gate 14/14, `partita-vera`, `design-system`. Il punto C tocca la grafica di un
+tasto: per la direttiva PO 22/09 la catena grafica comprende anche `design-system`, che non era nella lista di questo giro.
 
 ## Dubbi per il PO (non decisi da me)
 
