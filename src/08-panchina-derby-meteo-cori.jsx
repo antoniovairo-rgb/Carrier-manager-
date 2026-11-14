@@ -433,7 +433,47 @@ function calcCoachDecision(player,matchWeight=1,rng){
       ?"Le ultime prestazioni ti hanno guadagnato la maglia da titolare."
       :"Sei in formazione. Dai il massimo.";
   }
+  /* [giro 190 · PO-380b · G181-02 «la frase del mister e' identica 6 volte su 6»] LA CONVOCAZIONE RACCONTA LA SETTIMANA VERA.
+     La scelta del mister (status, minuto d'ingresso) resta quella di sopra, intatta; cambia solo la FRASE, scelta fra i fatti
+     della settimana: l'avversario in calendario, l'ultimo voto e contro chi, la serie di gol, la stanchezza, la forma. Nessun
+     sorteggio: la variante si sceglie da un hash di stagione/settimana/nome, quindi la stessa settimana dice sempre la stessa
+     cosa. Rosso __CPM_NO_G190B = la frase fissa di prima. */
+  try{if(!(typeof window!=='undefined'&&window.__CPM_NO_G190B)){const _r190=fraseConvocazione190(player,status,reason,{trust,fatigue,form,avgRating,matchWeight,ovrEdge:_ovrEdge});if(_r190)reason=_r190;}}catch(_e190){}
   return{status,reason,entryMinute};
+}
+function fraseConvocazione190(player,status,base,f){
+  const wk=player.week||1;const cal=Array.isArray(player.calendar)?player.calendar:[];
+  const md=cal.find(m=>m&&m.week===wk&&!m.played)||null;const avv=md&&(md.opponentName||(md.opponent&&md.opponent.n))||null;
+  const mh=Array.isArray(player.matchHistory)?player.matchHistory:[];const ult=mh.length?mh[mh.length-1]:null;
+  const voto=ult&&typeof ult.rating==="number"?ult.rating:null;const vt=voto!=null?voto.toFixed(1).replace(".",","):null;const prec=ult&&ult.opponent?String(ult.opponent):null;
+  let serie=0;for(let i=mh.length-1;i>=0;i--){if((mh[i]&&mh[i].goals)>0)serie++;else break;}
+  const gUlt=ult&&ult.goals>0?ult.goals:0;
+  const c=[];/* ogni candidata cita un fatto della settimana; si scelgono solo quelle vere */
+  if(status==="starter"){
+    if(serie>=2)c.push(`${serie} partite di fila in gol: chi segna non si tocca. Titolare${avv?" contro "+avv:""}.`);
+    if(gUlt>0&&prec)c.push(`${gUlt>1?gUlt+" gol":"Il gol"} al ${prec} ti ha messo in vetrina: ${avv?"contro "+avv+" ":""}parti dal primo minuto.`);
+    if(voto!=null&&voto>=7.3)c.push(`Quel ${vt} in pagella${prec?" contro il "+prec:""} è ancora sulla lavagna dello spogliatoio. Titolare.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Dopo il ${vt} contro il ${prec} il mister ti rimette dentro: titolare${avv?" contro "+avv:""}, rispondi in campo.`);
+    if(f.fatigue>=55)c.push(`Le gambe sono un po' pesanti, ma${avv?" contro "+avv:""} il mister non rinuncia a te: titolare, dosa le energie.`);
+    if(f.matchWeight>=7&&avv)c.push(`Contro ${avv} si decide molto: il mister conta su di te dal primo minuto.`);
+    if(avv&&f.ovrEdge>=8)c.push(`Contro ${avv} il mister non ci pensa due volte: sei tra i migliori della rosa, titolare.`);
+    if(avv&&f.trust>=80)c.push(`Il mister ha scritto il tuo nome per primo sulla lavagna${avv?" per la gara con "+avv:""}. Titolare.`);
+    if(avv&&f.form>=75)c.push(`In settimana in allenamento sei stato il più brillante: contro ${avv} giochi dall'inizio.`);
+    if(avv)c.push(`Contro ${avv} parti dal primo minuto: il mister ti ha comunicato la formazione dopo la rifinitura.`);
+  }else if(status==="bench"){
+    if(f.fatigue>78)c.push(`Hai nelle gambe tutte le partite delle ultime settimane: ${avv?"contro "+avv+" ":""}parti dalla panchina, tieniti pronto.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Il ${vt} contro il ${prec} pesa ancora: ${avv?"con "+avv+" ":""}si parte dalla panchina. Fatti trovare pronto.`);
+    if(gUlt>0&&prec)c.push(`Il gol al ${prec} non è bastato per la maglia da titolare: ${avv?"contro "+avv+" ":""}panchina, ma il mister ti terrà d'occhio.`);
+    if(avv&&f.trust<40)c.push(`Contro ${avv} il mister preferisce chi c'è davanti a te. Panchina: in allenamento puoi cambiargli idea.`);
+    if(avv)c.push(`Contro ${avv} parti dalla panchina: scelta tattica del mister, ma la partita è lunga.`);
+  }else if(status==="not_called"){
+    if(f.fatigue>80)c.push(`Il fisico chiede riposo: ${avv?"la gara con "+avv+" la guardi":"questa la guardi"} dalla tribuna.`);
+    if(voto!=null&&voto<6&&prec)c.push(`Dopo il ${vt} contro il ${prec} il mister ha scelto altri. ${avv?"Contro "+avv+" non":"Non"} sei tra i convocati.`);
+    if(avv)c.push(`La lista per ${avv} è appesa in bacheca e il tuo nome non c'è. Lavora in allenamento per tornarci.`);
+  }
+  if(!c.length)return null;/* senza fatti (prima giornata, nessun avversario) resta la frase di sempre */
+  const h=Math.abs(hashStr("conv190|"+(player.season||1)+"|"+wk+"|"+(player.name||"")+"|"+status));
+  return c[h%c.length];
 }
 
 /* ========================================
