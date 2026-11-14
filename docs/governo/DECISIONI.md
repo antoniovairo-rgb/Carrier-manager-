@@ -1523,3 +1523,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~11:00 Roma — PO-408 box con scelte da fare in home
 - PO: «In cima alla home», con segno «da decidere», niente pop up in più; «Nella 194», dopo il giro cerimonie.
+
+## 14/11 ~11:20 Roma — PO-412 ingresso in campo scenico + piano del blocco scene 3D
+- PO: tutte e 4 le idee (coreografia, fumogeni e coriandoli, inno coi bambini, regia per tipo), nella 194 col giro cerimonie.
+- Decisione della madre: il blocco scene 3D della 194 (PO-402, 404, 406, 407, 412, più PO-373 notte) è troppo grande per un giro solo: si fa in due giri in sequenza, A cerimonie (premiazione, coppa, mister, presentazione, parata) e B ingresso in campo e notte; peso e fotogrammi al secondo misurati sul telefono in entrambi.
