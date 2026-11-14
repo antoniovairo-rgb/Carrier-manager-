@@ -117,6 +117,13 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.192 | giro 186 strumenti dopo la partita riproducibile (audio-161, tifosi-171, box-fischio-169) | sviluppo | claude-opus-5-5 | 1,7 | 3,51 $ | 26928 | 1 | completo (un solo avvio) |
 | 7.999.192 | giro 187 dopo la partita riproducibile: rigore-139, solo-highlight-166, minuto 0/1 (PO-372) — worker riavviato, costo forse parziale | sviluppo | claude-opus-5-5 | 5,5 | 5,12 $ | 39046 | 2 | parziale: solo l'ultimo avvio del contenitore |
 | 7.999.193 | giro 188 «Gioca» quando il tasto momento si ferma (PO-400) | sviluppo | claude-opus-5-5 | 0,7 | 2,05 $ | 13906 | 1 | completo (un solo avvio) |
+| 7.999.194 | giro 189 idee e migliorie, seconda tornata | collaudo | claude-fable-5-2 | 1,4 | 15,64 $ | 95672 | 1 | completo (un solo avvio) |
+| 7.999.194 | giro 190 testi, frase del mister, nomi U19, barra a 375 px (PO-380, PO-396, PO-397) | sviluppo | claude-opus-5-5 | 1,6 | 9,47 $ | 88355 | 1 | completo (un solo avvio) |
+| 7.999.194 | giro 193 idee, terza tornata: tifoso esigente, carriera lunga | collaudo | claude-fable-5-2 | 1,4 | 15,52 $ | 101421 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.194 | giro 191 rigori: doppio calcio e lotteria (PO-399, PO-403) | sviluppo | claude-opus-5-5 | 4,9 | 10,59 $ | 88024 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.194 | giro 192 cerimonie: mister, coppa, presentazione, parata (PO-402, 404, 406, 407) | sviluppo | claude-opus-5-5 | 3,8 | 17,31 $ | 135605 | 1 | completo (un solo avvio) |
+| 7.999.194 | giro 194 tasto momento e convocazione-235 (PO-405, 410, 411, 431) | sviluppo | claude-opus-5-5 | 1,2 | 4,67 $ | 42990 | 2 | parziale: solo l'ultimo avvio del contenitore |
+| 7.999.194 | giro 195 grafica, fruibilità e usabilità (analisi, 15 proposte G195-01…15) | collaudo | claude-fable-5-2 | 0,7 | 11,73 $ | 88427 | 1 | completo (un solo avvio) |
 | 7.999.180 | **TOTALE 7.999.180** (4 sessioni) |  |  |  | almeno 41,55 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.181 | **TOTALE 7.999.181** (1 sessioni) |  |  |  | almeno 0,72 $ |  |  | 1 sessioni parziali: totale minimo |
 | 7.999.182 | **TOTALE 7.999.182** (5 sessioni) |  |  |  | 21,81 $ |  |  | tutte complete |
@@ -131,3 +138,4 @@ Una riga con più di un avvio del contenitore copre solo l'ultimo avvio: il tota
 | 7.999.191 | **TOTALE 7.999.191** (19 sessioni) |  |  |  | almeno 122,89 $ |  |  | 2 sessioni parziali: totale minimo |
 | 7.999.192 | **TOTALE 7.999.192** (23 sessioni) |  |  |  | almeno 236,54 $ |  |  | 6 sessioni parziali: totale minimo |
 | 7.999.193 | **TOTALE 7.999.193** (1 sessioni) |  |  |  | 2,05 $ |  |  | tutte complete |
+| 7.999.194 | **TOTALE 7.999.194** (7 sessioni) |  |  |  | almeno 84,93 $ |  |  | 3 sessioni parziali: totale minimo |

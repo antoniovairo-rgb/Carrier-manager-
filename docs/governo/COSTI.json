@@ -1650,5 +1650,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaCovvqgdTHdLuX8tAf",
+    "titolo": "giro 195 grafica, fruibilità e usabilità (analisi, 15 proposte G195-01…15)",
+    "creata": "2026-11-14T15:06:05Z",
+    "chiusa": "2026-11-14T15:48:35Z",
+    "cost_usd": 11.73242902,
+    "output_tokens": 88427,
+    "cache_read_tokens": 15172754,
+    "worker_epoch": 1,
+    "versione": "7.999.194",
+    "tipo": "collaudo",
+    "modello": "claude-fable-5-2",
+    "rilevato": "2026-11-14"
   }
 ]
