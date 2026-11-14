@@ -63,7 +63,7 @@ async function giudica(page, w, h, braccio, fotoNome) {
   const fermi = S.map(x => Math.abs(x.piedeFondo - x.H) <= 2 && x.colonnaFondo <= x.piedeCima + 1 && x.ultimo <= x.piedeCima + 1 && x.safe);
   const navOk = S.every((x, i) => x.puntini === 4 && (i < 3 ? (x.avanti && x.salta) : true));
   const passa = tabOk && altOk && fermi.every(Boolean) && navOk;
-  const msg = `${w}x${h} [${braccio}]: tabellino scheda ${s1.tabScheda} visibile ${s1.tabVisibile} (${s1.voci} voci su due colonne, ${s1.tabH} px) · scheda 1 ${s1.schermi} schermi (tetto ${TETTO}; momenti ${s1.momenti}, festa ${s1.festa}) · piede fermo in fondo ${fermi.map(x => x ? '✓' : '✗').join('')} (fondo piede ${S.map(x => x.piedeFondo).join('/')} su ${s1.H}; ultimo testo ${S.map(x => x.ultimo).join('/')} sopra cima piede ${S.map(x => x.piedeCima).join('/')}; safe-area ${S.every(x => x.safe)}) · nav ${navOk}`;
+  const msg = `${w}x${h} [${braccio}]: tabellino scheda ${s1.tabScheda} visibile ${s1.tabVisibile} (${s1.voci} voci in fila, ${s1.tabH} px) · scheda 1 ${s1.schermi} schermi (tetto ${TETTO}; momenti ${s1.momenti}, festa ${s1.festa}) · piede fermo in fondo ${fermi.map(x => x ? '✓' : '✗').join('')} (fondo piede ${S.map(x => x.piedeFondo).join('/')} su ${s1.H}; ultimo testo ${S.map(x => x.ultimo).join('/')} sopra cima piede ${S.map(x => x.piedeCima).join('/')}; safe-area ${S.every(x => x.safe)}) · nav ${navOk}`;
   return { passa, msg, S };
 }
 const SEME = 7304;
