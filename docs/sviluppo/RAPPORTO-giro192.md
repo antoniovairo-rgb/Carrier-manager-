@@ -86,11 +86,39 @@ mani 0,30 sopra la testa, presa 0,13, gomiti 178°. Provini `prima/dopo-parata-e
 
 ## Peso e fotogrammi al secondo
 
-ESITI_PRESTAZIONI
+Sonda `prestazioni-192.mjs`: telefono 375×812, CPU rallentata ×4 (CDP), headless con rendering software; «prima» = i quattro rossi
+accesi, «dopo» = verde. Gli fps headless confrontano i due bracci, non sono gli fps del telefono (che non posso misurare da qui).
+
+| scena | fps prima | fps dopo | byte scaricati prima | dopo |
+|---|---|---|---|---|
+| premiazione di coppa | 5,8 | 5,9 | — | — |
+| serata di presentazione | 2,9 | **6,9** | 16.653 KB | 16.535 KB |
+| parata | 5,0 | 4,7 | 33.920 KB | 33.920 KB |
+
+La presentazione raddoppia gli fps perché non disegna più le 13.433 istanze della folla a sagome. La parata −0,3 fps è dentro
+la variabilità che ho visto fra le corse (non l'ho ripetuta abbastanza per dirlo con certezza); scarica un file in più
+(`cgtrader-clip-po.glb`, 638 KB) che nella misura risulta già in cache (stessi byte). Peso del gioco: `CARRIER-MANAGER-AV.html`
+7.328.771 → 7.351.411 byte (+22,6 KB, codice e commenti).
 
 ## Controlli
 
-ESITI_CONTROLLI
+Uno alla volta (`CPM_CI_PAR=0`, `free -m` e `df -h` prima di ciascuno, `CPM_CHROME=/opt/pw-browsers/chromium`), dopo ogni
+modifica a `src/` `node tools/build-src.mjs` + `node tools/check-src.mjs`.
+
+| controllo | esito |
+|---|---|
+| cerimonie-192 (A,B,C,D) | ✅ verde, ogni rosso si vede |
+| premiazione-palco-191 | ✅ |
+| coppa-mani-191 | ✅ (scarto 0,08, faccia 0) |
+| posa-sollevamento-191 | ✅ |
+| palco-corpi-191 | ✅ |
+| presentazione-200 | ✅ |
+| cerimonie | ✅ |
+| festa-3d | ✅ |
+| griglia-mobile | ✅ (14 schermate × 5 larghezze; le foto rigenerate in `docs/collaudo-grafico/g0` non le ho committate) |
+| highlight-95 | ESITO_H95 |
+| test:logic | ✅ |
+| save-compat | ✅ 12 pass · 0 fail |
 
 ## Dubbi e cose aperte (per il PO)
 
