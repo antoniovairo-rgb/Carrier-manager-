@@ -1492,3 +1492,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Causa misurata dalla madre: src/18, il tasto apre il riquadro in modalità Simula (setSimula302(true)) anche sulle fermate «partita chiave». Dal giro 165.
 - PO: «Subito, 7.999.193 rapida»; riquadro «Gioca e Simula, come sempre». Giro 188 (Opus), verifica leggera mirata.
 - Conseguenza: le voci che erano per la 193 (PO-380…399, PO-385) passano alla 7.999.194.
+
+## 14/11 ~08:15 Roma — PO-401 diagonali negli highlight dell'eroe
+- PO: «Prima misura, poi nella 194». Primo giro della 194: misura della scelta a 4 direzioni e proposta per 8.
