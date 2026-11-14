@@ -7,7 +7,8 @@
    porta, portieri NON di turno visibili nel quadro) e se il nero dello stacco e' in pagina (data-cpm="stacco191").
    Per ogni CAMBIO di rigore (dal secondo in poi) tre giudizi:
      B stacco   — almeno un campione col nero dello stacco prima della rincorsa del nuovo rigorista;
-     C sguardo  — fuori dal nero e prima della rincorsa (tempo del rigore < 0,55 s dopo lo stacco) l'angolo massimo <= 15 gradi;
+     C sguardo  — fuori dal nero e prima della rincorsa (tempo del rigore < 0,55 s dopo lo stacco) l'angolo massimo <= 15 gradi; se un
+                  fotogramma lungo salta la finestra, il primo fotogramma dopo il nero prima del calcio;
      D portiere — fuori dal nero, fino alla fine del tiro, nessun campione con un portiere non di turno dentro il quadro.
    Un cambio senza campioni utili per un giudizio = NON GIUDICATO = rosso.
    Uso: node lotteria-191.mjs                    guardiano: verde telefono 375x812 + verde PC 1280x800 + i tre rossi (telefono)
@@ -63,11 +64,15 @@ async function braccio(schermo, rossi, foto) {
   const chiavi = [...new Set(C.map(c => c.key).filter(k => k != null && k >= 1))];
   const cambi = chiavi.map(k => { const S = C.filter(c => c.key === k && c.u != null);
     const stacco = S.some(c => c.st);
-    const fermo = S.filter(c => !c.st && c.u - c.sh >= 0 && c.u - c.sh < RINCORSA && c.ang != null);
+    let fermo = S.filter(c => !c.st && c.u - c.sh >= 0 && c.u - c.sh < RINCORSA && c.ang != null); let primo = false;
+    /* in headless un fotogramma puo' durare 0,7 s e saltare tutta la finestra ferma (misurato, CPM_DUMP): allora si giudica il PRIMO
+       fotogramma disegnato dopo il nero, prima del calcio (0,85 s) — e' quello che lo spettatore vede per primo */
+    if (!fermo.length) { const f0 = S.find(c => !c.st && c.u - c.sh >= 0 && c.u - c.sh < 0.85 && c.ang != null); if (f0) { fermo = [f0]; primo = true; } }
     const tiro = S.filter(c => !c.st && c.u - c.sh < FINE_TIRO);
     const finito = S.some(c => c.u - c.sh >= FINE_TIRO);
-    return { k, campioni: S.length, stacco, angMax: fermo.length ? Math.max(...fermo.map(c => c.ang)) : null, nFermo: fermo.length,
+    return { k, campioni: S.length, stacco, angMax: fermo.length ? Math.max(...fermo.map(c => c.ang)) : null, nFermo: fermo.length, primo,
       portiereAltro: tiro.filter(c => c.altri > 0).length, nTiro: tiro.length, finito }; }).filter(x => x.finito);
+  if (process.env.CPM_DUMP) for (const x of cambi) if (!x.nFermo) console.log('DUMP r' + x.k + ' ' + C.filter(c => c.key === x.k).slice(0, 40).map(c => `${c.t}:${c.st ? 'N' : '-'}${(c.u - c.sh).toFixed(2)}`).join(' '));
   return { schermo, rossi: rossi.join(''), errs: errs.length, cambi, scatti };
 }
 
@@ -76,7 +81,7 @@ const giudica = (r) => { const g = r.cambi; const n = g.length;
     angMax: g.length ? Math.max(...g.map(x => x.angMax == null ? -1 : x.angMax)) : null, portiereOk: g.filter(x => x.nTiro > 0 && x.portiereAltro === 0).length, portiereNG: g.filter(x => !x.nTiro).length,
     portiereFot: g.reduce((a, x) => a + x.portiereAltro, 0) }; };
 const stampa = (r) => { console.log(`${r.schermo} ${r.rossi ? 'ROSSO ' + r.rossi : 'VERDE'} errs=${r.errs} ` + JSON.stringify(giudica(r)));
-  for (const x of r.cambi) console.log(`   r${x.k}: campioni ${x.campioni} · stacco ${x.stacco ? 'si' : 'no'} · sguardo max ${x.angMax}° su ${x.nFermo} · portiere altrui ${x.portiereAltro}/${x.nTiro}`); };
+  for (const x of r.cambi) console.log(`   r${x.k}: campioni ${x.campioni} · stacco ${x.stacco ? 'si' : 'no'} · sguardo max ${x.angMax}° su ${x.nFermo}${x.primo ? ' (primo fotogramma dopo il nero)' : ''} · portiere altrui ${x.portiereAltro}/${x.nTiro}`); };
 
 if (process.env.CPM_FOTO) {
   const dir = process.env.CPM_FOTO; fs.mkdirSync(dir, { recursive: true }); const rossi = (process.env.CPM_ROSSI || '').split('').filter(Boolean);
