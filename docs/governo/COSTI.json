@@ -1720,5 +1720,19 @@
     "tipo": "sviluppo",
     "modello": "claude-opus-5-5",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYia9XV8ZVQMA9cRrydnm",
+    "titolo": "giro 197 scelte dell'azione sempre in vista sui telefoni bassi (PO-452)",
+    "creata": "2026-11-14T16:46:39Z",
+    "chiusa": "2026-11-14T19:51:29Z",
+    "cost_usd": 4.66465542,
+    "output_tokens": 34159,
+    "cache_read_tokens": 12948868,
+    "worker_epoch": 2,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]

@@ -1597,3 +1597,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Giro 200 (PO-385, 448): rassegna a 4 schede (0,71-1,25 schermi ciascuna, 96/96 righe di prima presenti), 10 rifiniture su 12 corrette; controlli verdi; unito senza conflitti; rassegna-200 e rifiniture-200 nella catena completa. 15,75 $.
 - PO (questionario): niente rassegna dopo Simula; tabellino nella scheda 1 accorciato; Salta = salva e torna alla carriera; tasti fissi in fondo → PO-461 (giro breve nella 195).
 - Madre: punti non corretti del giro 200 messi in BACKLOG: PO-462 intervista tagliata su PC (198 partita/PC, misura prima), PO-463 Sempreverde al ritiro e coda Coppa delle Nazioni (197 coerenza carriera).
+
+## 14/11 ~22:15 Roma — giro 197 unito in lavoro/195, riquadro della partita fino al 51% sui telefoni bassi
+- Giro 197 (PO-452): scelte alte 56 px e tutte a schermo da 360×640, titolo della mossa a capo; 8/8 controlli verdi; unito (catene ricomposte, 81141069). 4,66 $.
+- PO (questionario): «Sì, fino al 51% sui bassi» — eccezione alla regola 7.901 (riquadro ≤ 44%) solo sotto 909 px di altezza; sopra resta 44%.
+- Madre: hud-c3 (asserisce ≤ 44% a 412×915) non eseguito dal giro → va nella verifica della 195.
