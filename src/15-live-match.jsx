@@ -2335,7 +2335,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
        è il colore finale del gradiente del pannello broadcast (#0d1528), nelle fasi 3D il nero-blu del canvas. */
     el.style.background=(phase==="matchday"||phase==="ended"||(phase==="formations"&&!window.__CPM_NO_FORMAZ23))?"":(phase==="formations"?"#0d1528":"#050810");/* [23/09 POC] formazioni nel kit chiaro: fondo della pagina *//* [7.184.2] fondo scuro: sotto le card broadcast si vedeva il chiaro della pagina («spazio bianco inutile») · [7.184.3] zoom 1 per TUTTA la partita: `zoom` NON propaga l'altezza al contenitore di scroll (proprietà non-standard) → lo scroller credeva che il contenuto stesse nello schermo, non scrollava, e il CTA in eccesso restava irraggiungibile (misurato: bottone a y=733 su viewport 620 con scrollHeight==clientHeight) */
     const wr=document.querySelector('.cpm-match-wrap');/* [7.184.3] la finestra ad altezza fissa del match (flex:1+overflow:hidden) va APERTA nelle fasi DOM, o il contenuto in eccesso non entra nemmeno nel calcolo dello scroll */
-    if(_zoomDom184){el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex=(phase==="matchday"&&_g114())?"1 0 auto":"0 0 auto";}}
+    if(_zoomDom184&&!(phase==="ended"&&_g202())){/* [giro 202] nella rassegna a schede scorre la sua colonna, il piede resta fermo in fondo */el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex=(phase==="matchday"&&_g114())?"1 0 auto":"0 0 auto";}}
     else{el.style.overflowY="hidden";el.style.paddingBottom="0px";if(wr){wr.style.overflow="hidden";wr.style.flex="1";}}
     return()=>{el.style.zoom="1.12";el.style.background="";el.style.overflowY="";el.style.paddingBottom="";if(wr){wr.style.overflow="";wr.style.flex="";}};},[phase,_zoomDom184]);
   const stagedRef45=useRef(false);/* [7.999.45 taccuino PO SIT #3 «001, eroe >= 43,3 u»] la scena ha messo in posizione l'eroe: finche' non si torna a 'playing' il motore non lo riscrive. Rosso __CPM_NO_STACCO45 */
@@ -3157,6 +3157,7 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     window.__CPM_SET_NUMHL=(n)=>{try{const v=Math.max(1,Math.min(9,n|0));numHLRef.current=v;setNumHL(v);return v;}catch(e){return null;}};
     // [7.2.0] hook di collaudo della PREMIAZIONE 3D: salta direttamente alla fase ceremony (test-only). Il runner
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
+    window.__CPM_PUSH_MEV202=(min,type,txt)=>{try{pushMatchEvent(min|0,String(type||"sub"),String(txt||"Evento di prova"));return true;}catch(e){return false;}};/* [giro 202, SOLO COLLAUDO] la partita con MOLTI eventi (12 momenti chiave, il tetto della lista) che il pilota seedato non produce: la sonda la provoca */
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league",...((o&&o.light)?{light:true}:{}),...((o&&o.festa)?{festa:o.festa}:{})});setPhase("ceremony");return true;}catch(e){return false;}};/* [7.999.47] anche la cerimonia leggera con i numeri della festa */
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
     /* [7.911.1 — C11] LA CERIMONIA D'INGRESSO NON ERA RAGGIUNGIBILE DA UNA SONDA. Il percorso del provino entra
@@ -10567,6 +10568,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   useEffect(()=>{try{if(scroll200Ref.current)scroll200Ref.current.scrollTop=0;}catch(_e){}},[sk200]);
   const _g200=()=>context!=="trial"&&!(typeof window!=='undefined'&&window.__CPM_NO_G200);
   const _v200=(n)=>(!_g200()||sk200===n)?undefined:{display:"none"};
+  /* [giro 202 · PO-461, questionario PO 14/11] (2) il TABELLINO DELLA GARA passa dalla scheda 4 alla 1, accanto a risultato e voto,
+     ACCORCIATO: le stesse voci su due colonne (due voci per riga, righe compatte) invece di una voce per riga. Nessuna voce tolta.
+     (4) Avanti/Salta e i puntini FISSI IN FONDO allo schermo su ogni scheda: nella fase ended la pagina non scorre piu' fuori
+     (come nelle fasi col 3D), la rassegna riempie lo schermo, il contenuto scorre nella sua colonna SOPRA il piede (mai sotto) e il
+     piede tiene conto dell'area sicura del telefono. (1) e (3) restano come erano: dopo Simula nessuna rassegna; Salta salva e torna.
+     Rosso __CPM_NO_G202 = la rassegna del giro 200 (tabellino nella scheda 4, piede in fondo alla pagina). */
+  const _g202=()=>_g200()&&!(typeof window!=='undefined'&&window.__CPM_NO_G202);
   const _T200=["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=["Risultato","Giocate","Giornali","Classifica"];
   const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
     <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
@@ -12596,7 +12604,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>);})()}
           </div>
           <div data-scheda200="1" style={_v200(0)}>
-          {ceremony&&!ceremony.light&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2Festa] fondo notte con la cornice in oro, titolo in carattere TV */}
+          {ceremony&&!ceremony.light&&_g202()&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 10px",padding:"10px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden",display:"flex",alignItems:"center",gap:12,textAlign:"left"}}>{/* [giro 202] la festa in una banda sola: trofeo accanto al titolo, stesse tre righe */}
+            <div style={{fontSize:34,lineHeight:1,flexShrink:0,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
+            <div style={{minWidth:0}}>
+              <div style={{fontSize:FS.h,color:TINTE.testo,letterSpacing:1,textShadow:"0 2px 8px rgba(0,0,0,0.4)",fontFamily:FONT_TV,fontWeight:800,lineHeight:1}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
+              <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.oro,marginTop:3,letterSpacing:"0.16em",textTransform:"uppercase"}}>{ceremony.name}</div>
+              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
+            </div>
+          </div>)}
+          {ceremony&&!ceremony.light&&!_g202()&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2Festa] fondo notte con la cornice in oro, titolo in carattere TV */}
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{fontSize:FS.display,fontWeight:900,color:TINTE.testo,letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)",fontFamily:FONT_TV,fontWeight:800,lineHeight:1}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.oro,marginTop:3,letterSpacing:"0.16em",textTransform:"uppercase"}}>{ceremony.name}</div>
@@ -12615,28 +12631,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _c286h=(typeof window!=='undefined'&&window.__CPM_NO_COL286)?{}:colori286({sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},"#101a33");
             try{if(typeof window!=='undefined'){window.__CPM_COL286=Object.assign(window.__CPM_COL286||{},{kit:{sx:scoreHomeCol,sx2:_mkits.homeAccent,dx:scoreAwayCol,dx2:_mkits.awayAccent},testata:_c286h});}}catch(_e){}
             return(
-            <div data-cpm="post-v2" style={{margin:"0 -22px 16px",paddingBottom:14,background:TINTE.bg,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 18px, rgba(255,255,255,0) 18px 36px)",position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2PostPartita] fondo notte a righe diagonali, risultato grande in carattere TV, nomi in maiuscolo */}{/* [7.95.0] no top-margin: segue il masthead del giornale */}
+            <div data-cpm="post-v2" style={{margin:_g202()?"0 -22px 10px":"0 -22px 16px",paddingBottom:_g202()?10:14,/* [giro 202] testata del risultato piu' bassa: stesse righe, margini e cifre piu' piccoli */background:TINTE.bg,backgroundImage:"repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 18px, rgba(255,255,255,0) 18px 36px)",position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2PostPartita] fondo notte a righe diagonali, risultato grande in carattere TV, nomi in maiuscolo */}{/* [7.95.0] no top-margin: segue il masthead del giornale */}
               {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
-              <div style={{padding:"12px 14px 0"}}>
+              <div style={{padding:_g202()?"8px 14px 0":"12px 14px 0"}}>
                 <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_no108("28")?_compCol:legCol944(_compCol,"#16171c")/* [giro 108 G180-28] il colore della lega come testo scendeva a 3,81:1 (Premier Division #e11d48): reso leggibile sul fondo del giornale. Rosso __CPM_NO_G108_28 */}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
-                <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:5,fontWeight:700}}>FISCHIO FINALE</div>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
+                <div style={{fontSize:FS.caption,color:TINTE.sec,letterSpacing:3,marginTop:_g202()?2:5,fontWeight:700}}>FISCHIO FINALE</div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:_g202()?6:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
                     {/* [giro 115 G184-23] i nomi delle squadre vanno su due righe invece di troncarsi («SELEZIONE GRANA…» a 360). Rosso __CPM_NO_G115_23 */}<div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
                     <div data-cpm="barra286-sx" style={{height:3,borderRadius:RAD.pill,background:_c286h.sx||scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
-                  <div className="cpm-num" data-cpm="post-risultato-v2" style={{fontSize:FS.hero,fontWeight:800,lineHeight:1,color:TINTE.testo,flexShrink:0,fontFamily:FONT_TV}}>{isMatchHome?score.home:score.away}<span style={{color:TINTE.sec,fontSize:FS.display,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
+                  <div className="cpm-num" data-cpm="post-risultato-v2" style={{fontSize:_g202()?FS.displayLg:FS.hero,fontWeight:800,lineHeight:1,color:TINTE.testo,flexShrink:0,fontFamily:FONT_TV}}>{isMatchHome?score.home:score.away}<span style={{color:TINTE.sec,fontSize:FS.display,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
                     <div data-cpm="post-nome-squadra" style={(typeof window!=="undefined"&&window.__CPM_NO_G115_23)?{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}:{fontSize:FS.bodyLg,fontWeight:900,color:TINTE.testo,overflowWrap:"break-word",lineHeight:1.15,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",fontFamily:FONT_TV,textTransform:"uppercase",letterSpacing:.5}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
                     <div data-cpm="barra286-dx" style={{height:3,borderRadius:RAD.pill,background:_c286h.dx||scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
-                <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
+                <div style={{display:"inline-block",marginTop:_g202()?6:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
                 {(subbedOff||benchStart)&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{/* [7.38.0 Sezione 8] minuti giocati quando non è un 90' pieno */}
                   ⏱ {benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
                 </div>}
-                {_celebTier>=1&&<div style={{marginTop:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
+                {_celebTier>=1&&<div style={{marginTop:_g202()?6:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
               </div>
             </div>);
           })()}
@@ -12722,7 +12738,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               passano tutti gli eventi — non dalla cronaca e non dalle tue azioni, che erano due sorgenti
               diverse. Si mostrano solo le voci che il motore produce davvero: una riga vuota e' peggio di una
               riga assente. */}
-          <div data-scheda200="4" style={_v200(3)}>
+          <div data-scheda200={_g202()?"1":"4"} data-cpm="tabellino202" style={_v200(_g202()?0:3)}>
           {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
             if(!_T||!_T.home||!_T.away)return null;
             const _ord=ordineTabellino280(_T,isMatchHome);const _mine=_ord.sx,_loro=_ord.dx;/* [PO-280 bis] _mine/_loro qui = colonna sinistra/destra */
@@ -12755,7 +12771,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
                   <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
-                {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                {_g202()&&(<div data-cpm="tab202-griglia" style={{display:"flex",flexWrap:"wrap",columnGap:14,rowGap:6}}>{/* [giro 202] stesse voci, in fila: «casa · voce · ospiti» una dopo l'altra, la barra sottile sotto ciascuna */}
+                  {_righe.map((r)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} data-cpm="tab202-voce" style={{flex:"1 0 auto",minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",gap:5,fontVariantNumeric:"tabular-nums",lineHeight:1.15,whiteSpace:"nowrap"}}>
+                      <span className="cpm-num" style={{fontSize:FS.small,fontWeight:800,color:a>=b?TH.text:TH.muted}}>{r[1]}</span>
+                      <span style={{fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
+                      <span className="cpm-num" style={{fontSize:FS.small,fontWeight:800,color:b>=a?TH.text:TH.muted}}>{r[2]}</span>
+                    </div>
+                    <div style={{display:"flex",height:2,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:2}}>
+                      <div data-cpm="barra286-a" style={{width:qa+"%",background:_c286.sx}} />
+                      <div data-cpm="barra286-b" style={{width:(100-qa)+"%",background:_c286.dx}} />
+                    </div>
+                  </div>);})}</div>)}
+                {!_g202()&&_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:(_g200()?3:7)}}>{/* [giro 200] nelle schede le righe stanno piu' strette (stessa lista, stesse barre) */}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:FS.small,fontVariantNumeric:"tabular-nums"}}>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:a>=b?TH.text:TH.muted,minWidth:34,textAlign:"left"}}>{r[1]}</span>
@@ -12793,18 +12822,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
             try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
             {/* [7.86.0 collaudo PO «standardizza UX/UI»] PAGELLA: voto + meter (voto/10) in un pannello del kit */}
-            <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>
-            <div style={{display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>
-              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
+            {!_g202()&&<div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>}
+            <div style={{display:"flex",alignItems:"center",gap:14,padding:_g202()?"8px 12px":"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>{/* [giro 202] pagella piu' bassa */}
+              <div className="cpm-num" style={{fontSize:_g202()?36:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
+                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:_g202()?4:6}}>{_g202()&&<span style={{color:TH.muted,letterSpacing:1}}>PAGELLA · </span>}{/* [giro 202] l'etichetta entra nel riquadro */}{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
                 <div style={{height:6,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${Math.round(rating*10)}%`,background:rc,borderRadius:RAD.pill,transition:"width .5s"}}/></div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.faint,marginTop:3}}><span>4.0</span><span>10.0</span></div>
               </div>
             </div>
             {/* Sprint 113 — Coach post-match evaluation */}
             {/* [23/09 POC — collaudo PO «migliora la grafica e metti le figurine dove necessario»] mister, protagonista e migliore in campo con la loro figurina; etichette tutte nello stile di sezione del kit */}
-            {context!=="trial"&&<div style={{marginTop:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
+            {context!=="trial"&&<div style={{marginTop:_g202()?8:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
               <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={(misterInPartita(player,context)||{}).name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{(misterInPartita(player,context)||{}).name||"Il mister"} · dopo la partita</div>
@@ -12814,8 +12843,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
-              <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
+              <div data-cpm="momenti202" style={_g202()?{columnCount:matchEvents.length>2?2:1,columnGap:12}:{display:"flex",flexDirection:"column",gap:3}}>{/* [giro 202] su due colonne (da tre momenti in su), in ordine di minuto: prima la sinistra poi la destra, righe compatte */}
+                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:_g202()?"baseline":"center",..._g202()?{lineHeight:1.25,gap:4,breakInside:"avoid",marginBottom:3}:{},fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>
                 </div>)}
@@ -12890,7 +12919,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         </Card>
         </div>
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
-        <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
+        <div data-cpm="piede202" style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",...(_g202()?{paddingBottom:isNarrow?"calc(10px + env(safe-area-inset-bottom,0px))":"calc(4px + env(safe-area-inset-bottom,0px))"}:{}),background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
           {(_g200()&&sk200<3)?(<div data-cpm="nav200" style={{display:"flex",gap:SP.sm,alignItems:"center"}}>
             <Btn onClick={handleEnd} v="ghost" data-cpm="salta200" style={{flex:"0 0 auto",minHeight:54,padding:"14px 14px",fontSize:FS.body,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Salta</Btn>
             {_nav200()}
