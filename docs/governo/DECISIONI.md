@@ -1487,3 +1487,8 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 07:30 Roma — 7.999.192 pubblicata (main 9c1275fa)
 - Verifica leggera completa; dopo le unioni 19/19 verdi. Dichiarati: clip-180 peso, riproduci-175 residuo raro (PO-398), doppio rigore r187d-11 (PO-399). Prossima: 7.999.193 a ondate da max 3 giri.
+
+## 14/11 ~08:05 Roma — PO-400, manca «Gioca» quando il tasto momento si ferma
+- Causa misurata dalla madre: src/18, il tasto apre il riquadro in modalità Simula (setSimula302(true)) anche sulle fermate «partita chiave». Dal giro 165.
+- PO: «Subito, 7.999.193 rapida»; riquadro «Gioca e Simula, come sempre». Giro 188 (Opus), verifica leggera mirata.
+- Conseguenza: le voci che erano per la 193 (PO-380…399, PO-385) passano alla 7.999.194.
