@@ -51491,7 +51491,7 @@ const getThisWeekMatchday=()=>{
       if(player.injured){if(!player.weekLived){liveCurrentWeek();return;}doAdvanceWeek();return;}
       if(!player.weekLived){liveCurrentWeek();return;}
       const md=getThisWeekMatchday();
-      if(md){const k=_chiave165(player,md);setSimula302(true);setShowMatchPrompt(md);if(k)return _saltaStop163("partita chiave",{perche:k});return;}
+      if(md){const k=_chiave165(player,md);setSimula302(!k||(typeof window!=='undefined'&&!!window.__CPM_NO_G188));setShowMatchPrompt(md);if(k)return _saltaStop163("partita chiave",{perche:k});return;}/* [giro 188 PO-400] alla fermata per partita chiave il riquadro e' quello di sempre (Gioca + Simula, con le regole convocato/infortunio/squalifica); le gare senza posta restano in modalita' Simula e le chiude il tasto da solo. Rosso __CPM_NO_G188 */
       doAdvanceWeek();
     }catch(_e){_saltaStop163("errore");}
   },[saltaTick163]);// eslint-disable-line
