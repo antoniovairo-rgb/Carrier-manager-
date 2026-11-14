@@ -1520,3 +1520,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~10:55 Roma — PO-407 parata sul pullman
 - Pullman sbiadito; coppa che taglia il viso, non fra le mani, braccia innaturali. Nel giro cerimonie della 194 (PO-402, 404, 406, 407): la presa della coppa è la stessa del podio, si corregge una volta per tutte le cerimonie.
+
+## 14/11 ~11:00 Roma — PO-408 box con scelte da fare in home
+- PO: «In cima alla home», con segno «da decidere», niente pop up in più; «Nella 194», dopo il giro cerimonie.
