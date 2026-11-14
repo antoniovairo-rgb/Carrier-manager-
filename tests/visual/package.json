@@ -623,7 +623,8 @@
     "momento-185": "node momento-185.mjs",
     "gioca-188": "node gioca-188.mjs",
     "spogliatoio-182": "node spogliatoio-182.mjs",
-    "nomi-182": "node nomi-182.mjs"
+    "nomi-182": "node nomi-182.mjs",
+    "nomi-190": "node nomi-190.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
