@@ -1,0 +1,301 @@
+«Gioca vs» → 🌍 Gioca vs FC ValdenauKCC · Gironi → SETTIMANA 14 · KORWARD CHAMPIONS CUP · VLD · vs FC Valdenau · In casa · Sei titolare · «Contro FC Valdenau par
+«Gioca la partita» → Gioca la partita → ⭐ KORWARD CHAMPIONS CUP · Fase a gironi · Giornata 5/6 · MER · FC Merseyside · La tua squadra · Casa · VS · VL
+  t+0s TASTI ["Vedi le formazioni","Analisi dell'avversario","Salta e gioca","Torna alla home"]
+     TESTO ⭐ KORWARD CHAMPIONS CUP · Fase a gironi · Giornata 5/6 · MER · FC Merseyside · La tua squadra · Casa · VS · VLD · FC Valdenau · Ospite · 🎭 Gioca: imprevedibile e creativo · STADIO · Mersey Stadium · Arena · SPETTATORI · 73.650 · METEO · ☀️ Soleggiato · ORARIO · 15:00 · IL MISTER · COME VINCERLA · Gioco aereo — sono deboli in mezzo all'area: attacca di testa quando arriva il cross. · Tiri potenti — il portiere è insi
+     ► Vedi le formazioni
+  t+1s TASTI ["Salta l'ingresso","Ingresso in campo"]
+     TESTO FORMAZIONI · ⭐ KORWARD CHAMPIONS CUP · Fase a gironi · Giornata 5/6 · MER · FC Merseyside · VS · FC Valdenau · VLD · FC Merseyside · 4-4-2 · 10 · 10 · SPENCER · 77 · 77 · VAIRO · 6 · 6 · THORNTON · 7 · 7 · RUSSELL · 8 · 8 · HOWARD · 9 · 9 · HAMMOND · 2 · 2 · HUGHES · 3 · 3 · HAMILTON · 4 · 4 · GRAY · 5 · 5 · BAILEY · 1 · 1 · MAXWELL · FC Valdenau · 5-3-2 · 10 · 10 · LINK · 11 · 11 · KLEIN · 7 · 7 · ROTH · 8 · 8 · DIT
+     ► Ingresso in campo
+  t+17s TASTI ["Salta ingresso →"]
+     TESTO MER · MERSEYSIDE · 0–0 · 🏃 · ☀️ · INGRESSO IN CAMPO · VLD · VALDENAU · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FC MERSEYSIDE · Casa · VS · FC VALDENAU · Ospite · 5 · PUNTI NEL GIRONE · 4 · GARE DISPUTATE · CAMMINO · V · N · P · N · DIRETTA · · · Mersey Stadium · 👥 73.650 · 🕐 15:00 · Salta ingresso → · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.8 · 📍 Difesa propria
+     ► Salta ingresso →
+  t+22s TASTI ["⏸","🔊","1×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–0 · 2' · ☀️ · ⏸ · 🔊 · 1,5× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · – · – · TIRI · 0 · 0 · IN PORTA · 0 · 0 · XG · 0,00 · 0,00 · STATISTICHE · PAGELLE · › · ✋ Intercetto di Howard (MER): la palla cambia squadra. · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.8 · 📍 Difesa propria
+  t+23s TASTI ["⏸","🔊","1,5×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–0 · 4' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 90% · 10% · TIRI · 0 · 0 · IN PORTA · 0 · 0 · XG · 0,00 · 0,00 · STATISTICHE · PAGELLE · › · 💨 Spencer (MER) calcia alto: rinvio dal fondo. · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.8 · 📍 Centrocampo basso
+  t+24s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–0 · 5' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 63% · 37% · TIRI · 1 · 0 · IN PORTA · 0 · 0 · XG · 0,03 · 0,00 · STATISTICHE · PAGELLE · › · 💨 Spencer (MER) calcia alto: rinvio dal fondo. · ⚽ 0 · 🎯 0 · ⚡ 100% · ⭐ 5.9 · 📍 Centrocampo basso
+  t+38s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–0 · 19' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 🧠 Ricevi fra le linee: hai spazio! · HUGHES apre per RUSSELL, che ti serve. RUSSELL taglia alle spalle della difesa. · ⚔️ ATTACCO · Tocca per iniziare
+  t+39s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","Scegli"]
+     TESTO MER · MER · 0–0 · 19' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🧠 Ricevi fra le linee: hai spazio! · 📍 Trequarti · 2 · mosse · Sposta l'eroe con le frecce, poi scegli la giocata. Il marcatore sta arrivando. · Scegli
+     ► Scegli
+  t+43s TASTI ["⏸","🔊","2×","⚠️","🌀Finta e cambio di passoDRIBBLING · 88","🎯Filtrante per RUSSELLPASSAGGIO · 88","🔁Uno-due con RUSSELLPASSAGGIO · 88"]
+     TESTO MER · MER · 0–0 · 19' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🧠 RICEVI FRA LE LINEE: HAI SPAZIO! · HUGHES apre per RUSSELL, che ti serve. RUSSELL taglia alle spalle della difesa. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Finta e cambio di passo · DRIBBLING · 88 · 🎯 · Filtrante per RUSSELL · PASSAGGIO · 88 · 🔁 · Uno-due con RUSSELL · PASSAGGIO · 88
+     ► 🎯Filtrante per RUSSELLPASSAGGIO · 88
+  t+46s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–0 · 19' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🎯 · LA GIOCATA · Filtrante per RUSSELL
+  t+77s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–0 · 19' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🅰️ ASSIST PERFETTO — MURATO IL TIRO DI RUSSELL · Assist perfetto — murato il tiro di RUSSELL · 🎯 Filtrante per RUSSELL · 🅰️ Palla perfetta per RUSSELL, ma il tiro viene murato. · voto 5.6 · CONTINUA
+     ► Continua
+  t+81s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–0 · 21' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 52% · 48% · TIRI · 4 · 0 · IN PORTA · 1 · 0 · XG · 0,23 · 0,00 · STATISTICHE · PAGELLE · › · 🧭 Apertura di Klein (VLD) a scavalcare il campo: la riceve Roth (VLD) sulla fascia, nella trequarti. · ⚽ 0 · 🎯 0 · ⚡ 90% · ⭐ 5.6 · 📍 Trequarti
+  t+86s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–0 · 26' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 🚩 Calcio d'angolo di HAMMOND: attacca il pallone! · DITTRICH ti marca stretto. · ⚔️ ATTACCO · Tocca per iniziare
+  t+89s TASTI ["⏸","🔊","2×","⚠️","🎯Conclusione precisaFISICO · 91","💥Conclusione potenteFISICO · 91","🎯Controllo e tiro fermoTECNICA · 89"]
+     TESTO MER · MER · 0–0 · 26' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🚩 CALCIO D'ANGOLO DI HAMMOND: ATTACCA IL PALLONE! · DITTRICH ti marca stretto. · Scegli prima che il marcatore arrivi · Pressione · 🎯 · Conclusione precisa · FISICO · 91 · 💥 · Conclusione potente · FISICO · 91 · 🎯 · Controllo e tiro fermo · TECNICA · 89
+     ► 🎯Conclusione precisaFISICO · 91
+  t+92s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–0 · 26' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🎯 · LA GIOCATA · Testa piazzata all'angolo
+  t+106s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–0 · 26' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 💨 CHE PECCATO! · Che peccato! · 🎯 Testa piazzata all'angolo · 💨 Sopra la traversa — che rimpianto! · 🏃 Difensore addosso −3% · voto 5.6 · CONTINUA
+     ► Continua
+  t+109s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–0 · 27' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 45% · 55% · TIRI · 5 · 0 · IN PORTA · 1 · 0 · XG · 0,25 · 0,00 · STATISTICHE · PAGELLE · › · 💨 Sopra la traversa — che rimpianto! · ⚽ 0 · 🎯 0 · ⚡ 77% · ⭐ 5.6 · 📍 Trequarti
+  t+117s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 🧠 Ricevi fra le linee: hai spazio! · HAMILTON apre per RUSSELL, che ti serve. Nessun taglio in profondità: valuta il tiro o il dai e vai. · ⚔️ ATTACCO · Tocca per iniziare
+  t+119s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","Scegli"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🧠 Ricevi fra le linee: hai spazio! · 📍 Bordo area · 2 · mosse · Sposta l'eroe con le frecce, poi scegli la giocata. Il marcatore sta arrivando. · Scegli
+     ► ▲
+  t+121s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🧠 RICEVI FRA LE LINEE: HAI SPAZIO! · HAMILTON apre per RUSSELL, che ti serve. Nessun taglio in profondità: valuta il tiro o il dai e vai. · Scegli prima che il marcatore arrivi · Pressione · 🔁 · Uno-due con RUSSELL · PASSAGGIO · 88 · 🏃 · Conduci palla al piede e tira · VELOCITÀ · 88 · 🌀 · Finta e cambio di passo · DRIBBLING · 88
+  t+122s TASTI ["⏸","🔊","2×","⚠️","🔁Uno-due con RUSSELLPASSAGGIO · 88","🏃Conduci palla al piede e tiraVELOCITÀ · 88","🌀Finta e cambio di passoDRIBBLING · 88"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🧠 RICEVI FRA LE LINEE: HAI SPAZIO! · HAMILTON apre per RUSSELL, che ti serve. Nessun taglio in profondità: valuta il tiro o il dai e vai. · Scegli prima che il marcatore arrivi · Pressione · 🔁 · Uno-due con RUSSELL · PASSAGGIO · 88 · 🏃 · Conduci palla al piede e tira · VELOCITÀ · 88 · 🌀 · Finta e cambio di passo · DRIBBLING · 88
+     ► 🌀Finta e cambio di passoDRIBBLING · 88
+  t+124s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🌀 · LA GIOCATA · Finta e cambio di passo
+  t+128s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🌀 SALTA L'UOMO! · Salta l'uomo! · 🌀 Finta e cambio di passo · ⚡ Numero splendido — il difensore è a terra, palla al piede! · 📢 Spinta tattica del mister · voto 5.3 · CONTINUA
+     ► Continua
+  t+130s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚡ CATENA! · ⚽ · ⚡ Dribbling riuscito, SCHULZE resta indietro! · KNOLL è tra i pali. RUSSELL ti accompagna. · ⚔️ ATTACCO · Tocca per iniziare
+  t+133s TASTI ["⏸","🔊","2×","⚠️","🌀Punta il portiere e piazzalaTECNICA · 89","💥Conclusione in corsaTIRO · 90","↩️Scarico a RUSSELL liberoPASSAGGIO · 88"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · ⚡ DRIBBLING RIUSCITO, SCHULZE RESTA INDIETRO! · KNOLL è tra i pali. RUSSELL ti accompagna. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Punta il portiere e piazzala · TECNICA · 89 · 💥 · Conclusione in corsa · TIRO · 90 · ↩️ · Scarico a RUSSELL libero · PASSAGGIO · 88
+     ► ↩️Scarico a RUSSELL liberoPASSAGGIO · 88
+  t+134s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ↩️ · LA GIOCATA · Scarico a RUSSELL libero
+  t+146s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–1 · 35' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ✂️ PALLA PERSA · Palla persa · ↩️ Scarico a RUSSELL libero · ✂️ Passaggio intercettato. · ⚠️ Momento difficile · voto 5.2 · CONTINUA
+     ► Continua
+  t+148s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–1 · 36' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 39% · 61% · TIRI · 5 · 3 · IN PORTA · 1 · 2 · XG · 0,25 · 0,24 · STATISTICHE · PAGELLE · › · ✂️ Passaggio intercettato. · ✂️ PALLA PERSA · ⚽ 0 · 🎯 0 · ⚡ 55% · ⭐ 5.2 · 📍 Trequarti
+  t+157s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–2 · 45' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 🔥 SCHULZE esce palla al piede: aggredisci! · Sei il più vicino: tocca a te. · 🛡️ DIFESA · Tocca per iniziare
+  t+160s TASTI ["⏸","🔊","2×","⚠️","🤼Raddoppio coordinato col compagnoTECNICA · 89","🧠Anticipa sul primo controlloMENTALITÀ · 92","🛑Chiusura immediataVELOCITÀ · 88"]
+     TESTO MER · MER · 0–2 · 45' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🔥 SCHULZE ESCE PALLA AL PIEDE: AGGREDISCI! · Sei il più vicino: tocca a te. · Scegli prima che il marcatore arrivi · Pressione · 🤼 · Raddoppio coordinato col compagno · TECNICA · 89 · 🧠 · Anticipa sul primo controllo · MENTALITÀ · 92 · 🛑 · Chiusura immediata · VELOCITÀ · 88
+     ► 🧠Anticipa sul primo controlloMENTALITÀ · 92
+  t+162s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–2 · 45' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🧠 · LA GIOCATA · Anticipa sul primo controllo
+  t+169s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–2 · 45' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🛡️ ENTRATA PULITA! · Entrata pulita! · 🧠 Anticipa sul primo controllo · ✋ Anticipo perfetto! · 📢 Spinta tattica del mister · voto 5.4 · CONTINUA
+     ► Continua
+  t+171s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–2 · 46' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · CAMBIO CAMPO · VLD · VLD · MER · VLD · POSSESSO · 40% · 60% · TIRI · 5 · 4 · IN PORTA · 1 · 3 · XG · 0,25 · 0,38 · STATISTICHE · PAGELLE · › · ↔️ Le squadre si scambiano il campo: nella ripresa si attacca sotto l'altra curva. · ⚽ 0 · 🎯 0 · ⚡ 43% · ⭐ 5.4 · 📍 Bordo area
+  t+175s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 50' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ GOL — SCHULZE · ⚽ · 🧠 Fra le linee, SCHULZE esce in ritardo! · Verticalizzazione di HOWARD per te. Nessun taglio in profondità: valuta il tiro o il dai e vai. · ⚔️ ATTACCO · Tocca per iniziare
+  t+177s TASTI ["⏸","🔊","2×","⚠️","▲","◀","▶","▼","Scegli"]
+     TESTO MER · MER · 0–3 · 50' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🧠 Fra le linee, SCHULZE esce in ritardo! · 📍 Bordo area · 2 · mosse · Sposta l'eroe con le frecce, poi scegli la giocata. Il marcatore sta arrivando. · Scegli
+     ► Scegli
+  t+179s TASTI ["⏸","🔊","2×","⚠️","🌀Finta e cambio di passoDRIBBLING · 88","🔁Uno-due con HOWARDPASSAGGIO · 88","💥Tiro da fuoriTIRO · 90"]
+     TESTO MER · MER · 0–3 · 50' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🧠 FRA LE LINEE, SCHULZE ESCE IN RITARDO! · Verticalizzazione di HOWARD per te. Nessun taglio in profondità: valuta il tiro o il dai e vai. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Finta e cambio di passo · DRIBBLING · 88 · 🔁 · Uno-due con HOWARD · PASSAGGIO · 88 · 💥 · Tiro da fuori · TIRO · 90
+     ► 🔁Uno-due con HOWARDPASSAGGIO · 88
+  t+180s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 50' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🔁 · LA GIOCATA · Uno-due con HOWARD
+  t+212s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–3 · 50' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🅰️ ASSIST SERVITO — LA DIFESA CHIUDE HOWARD SUL TIRO · Assist servito — la difesa chiude HOWARD sul tiro · 🔁 Uno-due con HOWARD · 🅰️ Il passaggio è d'oro: HOWARD calcia, la difesa respinge. · 📢 Spinta tattica del mister · voto 5.5 · CONTINUA
+     ► Continua
+  t+214s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–3 · 51' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 39% · 61% · TIRI · 6 · 5 · IN PORTA · 1 · 4 · XG · 0,27 · 0,48 · STATISTICHE · PAGELLE · › · 🅰️ Il passaggio è d'oro: HOWARD calcia, la difesa respinge. · ⚽ 0 · 🎯 0 · ⚡ 34% · ⭐ 5.5 · 📍 Centrocampo
+  t+228s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 66' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 🧠 Fra le linee, SCHULZE esce in ritardo! · SPENCER taglia alle spalle della difesa. · ⚔️ ATTACCO · Tocca per iniziare
+  t+231s TASTI ["⏸","🔊","2×","⚠️","🎯Lancio smarcante per SPENCERPASSAGGIO · 88","🔁Uno-due con SPENCERPASSAGGIO · 88","🎯Filtrante per SPENCERPASSAGGIO · 88"]
+     TESTO MER · MER · 0–3 · 66' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 🧠 FRA LE LINEE, SCHULZE ESCE IN RITARDO! · SPENCER taglia alle spalle della difesa. · Scegli prima che il marcatore arrivi · Pressione · 🎯 · Lancio smarcante per SPENCER · PASSAGGIO · 88 · 🔁 · Uno-due con SPENCER · PASSAGGIO · 88 · 🎯 · Filtrante per SPENCER · PASSAGGIO · 88
+     ► 🎯Lancio smarcante per SPENCERPASSAGGIO · 88
+  t+233s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 66' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🎯 · LA GIOCATA · Lancio smarcante per SPENCER
+  t+264s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–3 · 66' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🅰️ ASSIST DA GOL — IL PORTIERE DICE NO A SPENCER · Assist da gol — il portiere dice no a SPENCER · 🎯 Lancio smarcante per SPENCER · 🅰️ Palla perfetta per SPENCER, ma il portiere gli chiude lo specchio. · 📢 Spinta tattica del mister · voto 5.5 · CONTINUA
+     ► Continua
+  t+266s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–3 · 66' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 40% · 60% · TIRI · 8 · 7 · IN PORTA · 2 · 5 · XG · 0,31 · 0,52 · STATISTICHE · PAGELLE · › · 🅰️ Palla perfetta per SPENCER, ma il portiere gli chiude lo specchio. · 🅰️ ASSIST DA GOL — IL PORTIERE DICE NO A SPENCER · La partita al 66' · FC Merseyside 0 - 3 FC Valdenau · ⚽ 0 · 🎯 0 · ⚡ 24% · ⭐ 5.5 · 📍 Trequarti
+  t+285s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 79' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · ⚽ · 💥 Palla buona al limite dell'area! · RUSSELL è libero sul secondo palo. · ⚔️ ATTACCO · Tocca per iniziare
+  t+288s TASTI ["⏸","🔊","2×","⚠️","🌀Roulette e tiroDRIBBLING · 88","🎯Cerca l'angoloTECNICA · 89","🤝Servi RUSSELL liberoPASSAGGIO · 88"]
+     TESTO MER · MER · 0–3 · 79' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · LA TUA GIOCATA · 💥 PALLA BUONA AL LIMITE DELL'AREA! · RUSSELL è libero sul secondo palo. · Scegli prima che il marcatore arrivi · Pressione · 🌀 · Roulette e tiro · DRIBBLING · 88 · 🎯 · Cerca l'angolo · TECNICA · 89 · 🤝 · Servi RUSSELL libero · PASSAGGIO · 88
+     ► 🤝Servi RUSSELL liberoPASSAGGIO · 88
+  t+290s TASTI ["⏸","🔊","2×","⚠️"]
+     TESTO MER · MER · 0–3 · 79' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🤝 · LA GIOCATA · Servi RUSSELL libero
+  t+322s TASTI ["⏸","🔊","2×","⚠️","Continua"]
+     TESTO MER · MER · 0–3 · 79' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · 🅰️ ASSIST DA GOL — IL PORTIERE DICE NO A RUSSELL · Assist da gol — il portiere dice no a RUSSELL · 🤝 Servi RUSSELL libero · 🅰️ Palla perfetta per RUSSELL, ma il portiere gli chiude lo specchio. · 📢 Spinta tattica del mister · voto 5.5 · CONTINUA
+     ► Continua
+  t+324s TASTI ["⏸","🔊","2×","⚠️","Statistiche","Pagelle","›"]
+     TESTO MER · MER · 0–3 · 80' · ☀️ · ⏸ · 🔊 · 2× · ⚠️ · ⭐ KCC · VLD · VLD · MER · VLD · POSSESSO · 38% · 62% · TIRI · 12 · 7 · IN PORTA · 4 · 5 · XG · 0,62 · 0,52 · STATISTICHE · PAGELLE · › · 🅰️ Palla perfetta per RUSSELL, ma il portiere gli chiude lo specchio. · ⚽ 0 · 🎯 0 · ⚡ 26% · ⭐ 5.5 · 📍 Trequarti
+  t+337s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+339s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+342s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+344s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+346s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+347s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+349s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+352s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+353s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+355s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+357s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+360s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+361s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+362s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+365s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+367s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+369s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+370s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+372s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+375s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+376s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+378s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+380s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+383s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+384s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+385s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+388s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+390s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+392s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  t+393s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+395s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · ⚽ · 0 · Gol · 🎯 · 0 · Assist · 💥 · 1 · Tiri · 🔵 · 36% · Poss. · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi
+     ► Il tuo tabellino›
+     ► Tabellino della gara›
+  t+398s TASTI ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · IL TUO TABELLINO IN NUMERI · › · 👟 · 74 · Palloni ricevuti · 🎯 · 56/65 · Passaggi riusciti · ⚽ · 0/1 · Tiri in porta · 🛡️ · 7 · Recuperi · PAGELLA · 5.5 · Da migliorare · 4.0 · 10.0 · MISTER T
+     ► Tabellino della gara›
+  t+399s TASTI ["Il tuo tabellino›","Tabellino della gara›"]
+     TESTO 📰 Cifre del Calcio · Stag. 13 · Sett. 14 · KO AMARO · KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6 · FISCHIO FINALE · FC MERSEYSIDE · 0–3 · FC VALDENAU · SCONFITTA · IL TUO TABELLINO · › · TABELLINO DELLA GARA · › · FC Merseyside · — · FC Valdenau · 0 · Gol · 3 · 36% · Possesso · 64% · 15 · Tiri · 8 · 4 · Tiri in porta · 5 · 0.83 · Gol attesi (xG) · 0.54 · 24 · Azioni dalle fasce · 25 · 9 · Cross · 10 · 43% 
+     ► Tabellino della gara›
+  fine osservazione dopo 401 s
+FOTO /home/user/Carrier-manager-/docs/collaudo/giro193/09-dopo-live-coppa-tel.png
+TASTI: ["Il tuo tabellino›","Tabellino della gara›","Il tuo tabellino in numeri›"] 
+TESTO: 📰 Cifre del Calcio
+Stag. 13 · Sett. 14
+KO AMARO
+KORWARD CHAMPIONS CUP · FASE A GIRONI · GIORNATA 5/6
+FISCHIO FINALE
+FC MERSEYSIDE
+0–3
+FC VALDENAU
+SCONFITTA
+IL TUO TABELLINO
+›
+TABELLINO DELLA GARA
+›
+IL TUO TABELLINO IN NUMERI
+›
+👟
+74
+Palloni ricevuti
+🎯
+56/65
+Passaggi riusciti
+⚽
+0/1
+Tiri in porta
+🛡️
+7
+Recuperi
+PAGELLA
+5.5
+Da migliorare
+4.0
+10.0
+MISTER TARANTOLA · DOPO LA PARTITA
+Prestazione sotto le aspettative. Domani in campo — c'è molto su cui lavorare.
+MOMENTI CHIAVE
+30'
+😨 Gol di Gündel
+42'
+😨 Gol di Meyer
+49'
+😨 Gol di Schulze
+L'ANALISI
+FC Valdenau ha sfruttato le transizioni rapide. Il FC Merseyside ha sofferto in fase difensiva.
+DALLE ALTRE TESTATE
+CRONACA DI SPORT
+Sotto analisi: Samuelito Vairo al minimo (5.5/10), il FC Merseyside deve reagire
+ZONA MISTA
+ALLARME ROSSO! FC Merseyside cade 0-3 — serve una scossa
+SPORT IN RETE
+Studio: lacune difensive del FC Merseyside sfruttate da FC Valdenau, 0-3
+LE PAROLE DEL PROTAGONISTA
+«Abbiamo deluso i tifosi. Ce lo meritiamo. Torneremo più cattivi.»
+MIGLIORE IN CAMPO
+Howard
+LA CURVA
+«Fischi a fine partita — i tifosi chiedono di più.»
+📖 Veterano — 13ª stagione
+#FCMerseysideRiparti
+🏟️ TORNA ALLA HOME
+STATO {"n":"Samuelito Vairo","club":"FC Merseyside","lg":"Premier Division","s":13,"w":14,"lived":true,"pro":"pro","ovr":94,"g":14,"a":3,"m":18,"tg":446,"age":29,"trust":96,"mor":95,"pop":100,"bank":127690714,"fase":null}
