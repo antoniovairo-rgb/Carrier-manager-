@@ -1556,3 +1556,9 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Nessun conflitto src; check-src identico; guardiani cerimonie-192 e momento-194 messi nella catena completa.
 - Decisioni tecniche della madre sui dubbi: 194 colore vivo del club per il tasto (contrasto misurato 4,83:1 su MER, sopra 4,5) accettato; 192 coppa un po' più piccola accettata; 191 scena non aperta quando il motore ha già calciato accettata per la 194 (niente doppio calcio), la scena «di sola visione» e il guardiano del ramo vanno in PO-450 (195); maglie chiare sul pullman → PO-451 (195).
 - Giro 195 usabilità (Fable) partito; giro 196 T-pose in corso. Costi 194 finora ≈ 73,2 $.
+
+## 14/11 ~17:45 Roma — proposte del giro 195 (Fable, usabilità)
+- Verifica 194 parte A: 25 verdi su 25 su lavoro/194 (dab34a71).
+- PO ha scelto 14 proposte su 15, raggruppate in PO-452…459; G195-10 (striscia «Sostieni / Idee») scartata: «Lasciala com'è».
+- Ordine (PO «Scelte nella 195, resto 196»): nella 195 PO-452 scelte sempre in vista e PO-456 Agente «da fare ora» (stesso giro di PO-446); le altre nella 196.
+- Giro 195: 11,73 $.
