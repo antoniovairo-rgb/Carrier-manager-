@@ -534,7 +534,16 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   },[player.ovr]);// eslint-disable-line
 
   // Sprint 15 — apply chosen interview answer to player state
-  const applyInterviewAnswer=(ans)=>{
+  /* [giro 194 · PO-405, decisione PO] IL TONO ABITUALE. Durante la corsa del tasto «Vai al prossimo momento» l'intervista
+     SETTIMANALE risponde da sola col tono che il giocatore usa piu' spesso. Lo storico sta in player.ivToni194 (campo additivo,
+     contato solo sulle risposte date dal giocatore); i salvataggi senza storico lo leggono dal diario (righe «🎙️ [tono]»).
+     Nessuna storia, o parita' col Diplomatico in testa: Diplomatico. Rosso __CPM_NO_G194A = l'intervista ferma la corsa. */
+  const _tonoAbituale194=(p)=>{try{const T=["diplomatico","diretto","umile"];const c={diplomatico:0,diretto:0,umile:0};
+    const st=p&&p.ivToni194;if(st&&typeof st==="object")T.forEach(t=>{c[t]=+st[t]||0;});
+    else (p&&p.log||[]).forEach(l=>{const m=/^🎙️ \[(diplomatico|diretto|umile)\]/.exec(String(l||""));if(m)c[m[1]]++;});
+    const mx=Math.max(c.diplomatico,c.diretto,c.umile);if(mx<=0||c.diplomatico===mx)return "diplomatico";
+    return c.umile===mx?"umile":"diretto";}catch(_e){return "diplomatico";}};
+  const applyInterviewAnswer=(ans,auto194)=>{
     if(ans&&ans.pres&&interviewModal&&interviewModal.matchCtx==="presentazione"){try{const _t214=PRES_TONI.find(x=>x.k===ans.pres);if(_t214)doPresentazione(_t214);}catch(_e){}}/* [7.999.135 PO-214] */
     const ef=ans.ef||{};
     const toneLabel=IV_TONE_LBL[ans.tone]||ans.tone;/* [7.8.11] stessa mappa del bottone (era divergente) */
@@ -567,6 +576,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         form:clamp((p.form||70)+(ef.f||0),30,95),
         value:Math.max(0.5,(p.value||0.8)+(ef.v||0)),
         teamChemistry:clamp((p.teamChemistry||60)+_tcDelta,0,100),
+        ...((!auto194&&["diplomatico","diretto","umile"].indexOf(ans.tone)>=0)?{ivToni194:{...(p.ivToni194||{}),[ans.tone]:((p.ivToni194||{})[ans.tone]||0)+1}}:{}),/* [giro 194] lo storico del tono abituale */
         log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
       };
     });
@@ -1541,6 +1551,15 @@ const getThisWeekMatchday=()=>{
       if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_SALTA153=window.__CPM_SALTA153||[]).push({motivo,s:player.season||1,w:player.week||1,sett,partite:mh.length,passi:_salta163Ref.current.passi,auto:(st.scelte||[]).length,...(extra||{})});}catch(_e){}}
     }catch(_e){setSaltaFine163({motivo,sett:0,partite:0,v:0,n:0,pe:0,g:0,a:0,scelte:[]});}
     setSalta163(null);};
+  /* [giro 194 · PO-410] il riepilogo della corsa resta finche' il giocatore non fa la prossima azione (gioca, simula, vive la
+     settimana, nuova corsa) e poi sparisce da solo: si fotografa lo stato quando compare, si chiude quando cambia o si entra in campo. */
+  const _fine194Ref=useRef({fn:null,f:""});
+  useEffect(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_G194B)return;const R=_fine194Ref.current;
+    if(!saltaFine163){R.fn=null;return;}
+    const f=[player.season||1,player.week||1,player.weekLived?1:0,(player.matchHistory||[]).length].join("|");
+    if(R.fn!==saltaFine163){R.fn=saltaFine163;R.f=f;if(screen!=="match")return;}
+    if(f!==R.f||screen==="match")setSaltaFine163(null);}catch(_e){}
+  },[saltaFine163,player.season,player.week,player.weekLived,(player.matchHistory||[]).length,screen]);// eslint-disable-line
   const _saltaAvvia163=()=>{if(!_saltaOn163()||_saltaMotivo163())return;
     _salta163Ref.current={fermo:0,firma:"",passi:0};setSaltaFine163(null);
     setSalta163({fase:"corsa",ps0:player.proStatus||"u18",s0:player.season||1,w0:player.week||1,mh0:(player.matchHistory||[]).length,inj0:!!player.injured,scelte:[]});};
@@ -1572,7 +1591,19 @@ const getThisWeekMatchday=()=>{
       if(nationalCallupData)return _saltaStop163("chiamata");
       const _nq=player.nationsCupQueue,_em=player.euroMondiale;
       if((_nq&&_nq.active&&!_nq.done)||(_em&&_em.active&&!_em.done&&!_emInAttesa(_em)))return _saltaStop163("chiamata");
-      if(interviewModal)return _saltaStop163("intervista");
+      if(interviewModal){
+        /* [giro 194 · PO-405] l'intervista SETTIMANALE non ferma piu' la corsa: risponde da sola col tono abituale (stessi effetti di
+           una scelta, sulle due domande), chiude la prima pagina e la elenca fra le «Scelte fatte da solo». Le altre interviste fermano. */
+        if(interviewModal.matchCtx==="weekly"&&!(typeof window!=='undefined'&&window.__CPM_NO_G194A)){
+          if(interviewModal.step==="esito"){chiudiIntervista24();return;}
+          const _t194=_tonoAbituale194(player),_as=(interviewModal.q&&interviewModal.q.a)||[];
+          const _a194=_as.find(a=>a&&a.tone===_t194)||_as.find(a=>a&&a.tone==="diplomatico")||_as[0];
+          if(!_a194){setInterviewModal(null);return;}
+          if(interviewModal.step!=="rilancio"){const _l=(IV_TONE_LBL[_t194]||_t194).replace(/^\S+\s/,"");
+            setSalta163(s=>s?{...s,scelte:[...(s.scelte||[]),{w:player.week||1,txt:"Intervista settimanale: tono "+_l,iv194:_t194}]}:s);
+            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_IV194=window.__CPM_IV194||[]).push({s:player.season||1,w:player.week||1,tono:_t194,risposta:_a194.tone,q:String((interviewModal.q&&interviewModal.q.q)||"").slice(0,60)});}catch(_e){}}}
+          applyInterviewAnswer(_a194,true);return;}
+        return _saltaStop163("intervista");}
       if(milestoneModal||careerMomentModal||presEvent||ritiroEvent||monthlyReviewModal)return _saltaStop163("momento importante",{chi:milestoneModal?"traguardo":careerMomentModal?"momento di carriera":presEvent?"presentazione":ritiroEvent?"ritiro":"verifica del mister"});
       if(!salta163.inj0&&player.injured)return _saltaStop163("infortunio");
       /* [giro 165] da professionista: qualunque altra finestra in primo piano (il confronto col procuratore, il patto col mister,
@@ -6870,7 +6901,7 @@ const getThisWeekMatchday=()=>{
 
       {/* == Sprint 15 — Interview Modal == */}
       {(typeof window!=='undefined'&&(window.__CPM_IVBLK231=interviewModal?[transferOffer&&'mercato',weekLiveModal&&'settimana',careerMomentModal&&'momento',monthlyReviewModal&&'mese'].filter(Boolean).join(','):null),null)}
-      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal||(!(typeof window!=='undefined'&&window.__CPM_NO_IV243)&&nationsCupModal)))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&!(salta163&&salta163.fase==="corsa"&&interviewModal.matchCtx==="weekly"&&!(typeof window!=='undefined'&&window.__CPM_NO_G194A))/* [giro 194] la risposta da sola non lampeggia a schermo */&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal||(!(typeof window!=='undefined'&&window.__CPM_NO_IV243)&&nationsCupModal)))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"")||(interviewModal.matchCtx==="presentazione"&&!(typeof window!=="undefined"&&window.__CPM_NO_PRES214));/* [7.999.135 PO-214] la presentazione nella sala stampa del post partita *//* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -7842,7 +7873,20 @@ const getThisWeekMatchday=()=>{
           </div>)}
           {!_noSa&&(<div data-cpm="salta163" data-salta163={_corsa?"corsa":(salta163&&salta163.fase)||"fermo"}>
             {!_corsa&&!_prev&&(<>
-              <Btn data-cpm="salta163-tasto" data-g173={_rinnAperto173(player)?"rinnovo":undefined} v="secondary" fw size="lg" disabled={!!_mot&&!_rinnAperto173(player)} aria-disabled={_mot?"true":undefined} style={_rinnAperto173(player)?{opacity:0.55}:undefined} onClick={_rinnAperto173(player)?openNegoModal/* [giro 173 punto 6] spento col motivo, ma il tocco apre la trattativa del rinnovo */:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</Btn>
+              {(typeof window!=='undefined'&&window.__CPM_NO_G194C)?<Btn data-cpm="salta163-tasto" data-g173={_rinnAperto173(player)?"rinnovo":undefined} v="secondary" fw size="lg" disabled={!!_mot&&!_rinnAperto173(player)} aria-disabled={_mot?"true":undefined} style={_rinnAperto173(player)?{opacity:0.55}:undefined} onClick={_rinnAperto173(player)?openNegoModal/* [giro 173 punto 6] spento col motivo, ma il tocco apre la trattativa del rinnovo */:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</Btn>
+              :(()=>{/* [giro 194 · PO-411, decisione PO] IL TASTO PIENO NEL COLORE DEL CLUB, come il riquadro «Prossima»: testo in grassetto e
+                  sotto, in piccolo, dove si fermera' (la stessa proiezione del pannello di conferma). L'inchiostro e' quello del kit
+                  (inkSu945: bianco o notte, il piu' contrastato sul colore), quindi i club chiari hanno il testo scuro. Spento: fondo
+                  della traccia come il tasto «Avanza» spento. Rosso __CPM_NO_G194C = il tasto secondario di prima. */
+                const _rin=_rinnAperto173(player),_off=!!_mot&&!_rin;
+                const _cc=(player.club&&player.club.c)||TH.primary,_bg=_off?TH.track:_cc,_ink=_off?TH.faint:inkSu945(_cc);
+                let _dove="";if(!_mot){const _pv=_saltaPrev163(player);_dove=_pv.chiave?("fino alla partita chiave · sett. "+_pv.chiave.w):"fino a fine stagione";}
+                return(<button data-cpm="salta163-tasto" data-g194={_cc} data-g173={_rin?"rinnovo":undefined} disabled={_off} aria-disabled={_mot?"true":undefined} className={_off?"":"cpm-press"}
+                  onClick={_rin?openNegoModal/* [giro 173 punto 6] */:_mot?undefined:()=>{setSaltaFine163(null);setSalta163({fase:"conferma"});}}
+                  style={{width:"100%",minHeight:56,borderRadius:RAD.md,border:"none",background:_bg,color:_ink,opacity:_rin?0.55:1,cursor:_off?"not-allowed":"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,padding:"8px 12px",fontFamily:"inherit"}}>
+                  <span data-cpm="salta163-titolo" style={{...fsTV(FS.subhead,FW.black),letterSpacing:"0.04em",textTransform:"uppercase",textAlign:"center",lineHeight:1.1,color:_ink}}>{_isPro?"⏩ Vai al prossimo momento":"⏩ Vai al prossimo momento importante"}</span>
+                  {_dove&&<span data-cpm="salta163-dove" className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,textAlign:"center",lineHeight:1.2,color:_ink}}>{_dove}</span>}
+                </button>);})()}
               {_mot&&<div data-cpm="salta163-motivo" style={{fontSize:FS.small,color:TH.muted,textAlign:"center",marginTop:SP.xs}}>{_mot}</div>}
             </>)}
             {_prev&&(<div data-cpm="salta163-conferma" style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
@@ -7862,7 +7906,7 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text}}>{(_MOT[fn.motivo]||fn.motivo)+(fn.perche?(" · "+fn.perche):"")}</div>
               <div className="cpm-num" style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45}}>{fn.sett+" settiman"+(fn.sett===1?"a":"e")+" · "+fn.partite+" partit"+(fn.partite===1?"a":"e")+(fn.partite?(": "+fn.v+"V "+fn.n+"N "+fn.pe+"P · "+fn.g+" gol, "+fn.a+" assist"):"")}</div>
               {(fn.scelte||[]).length>0&&<div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.45,marginTop:SP.xs}}>{"Scelte fatte da solo: "+fn.scelte.map(c=>"sett. "+c.w+" «"+c.txt+"»").join(" · ")}</div>}
-              <div style={{display:"flex",justifyContent:"flex-end",marginTop:SP.xs}}><Btn v="ghost" onClick={()=>setSaltaFine163(null)}>Ok</Btn></div>
+              {(typeof window!=='undefined'&&window.__CPM_NO_G194B)&&<div style={{display:"flex",justifyContent:"flex-end",marginTop:SP.xs}}><Btn v="ghost" onClick={()=>setSaltaFine163(null)}>Ok</Btn></div>}{/* [giro 194 · PO-410] niente «Ok»: il riepilogo sparisce alla prossima azione. Rosso __CPM_NO_G194B */}
             </div>)}
           </div>)}
         </Card>);})()}
