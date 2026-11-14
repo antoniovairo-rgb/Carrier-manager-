@@ -1,0 +1,94 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "body",
+ "T": {
+  "n": 6,
+  "sotto48": 2,
+  "sotto44": 0,
+  "sotto32": 0,
+  "elenco": [
+   {
+    "tag": "button[data-cpm=crediti254-pulsante]",
+    "w": 362,
+    "h": 45,
+    "nome": "ℹ️ Crediti"
+   },
+   {
+    "tag": "button",
+    "w": 362,
+    "h": 47,
+    "nome": "Nuova carriera"
+   }
+  ]
+ },
+ "V": {
+  "n": 3,
+  "elenco": [
+   {
+    "a": "Home",
+    "b": "Rivedi l'intro",
+    "d": 0
+   },
+   {
+    "a": "Rivedi l'intro",
+    "b": "Importa salvataggio (.json)",
+    "d": 0
+   },
+   {
+    "a": "Importa salvataggio (.json)",
+    "b": "Impostazioni",
+    "d": 0
+   }
+  ]
+ },
+ "C": {
+  "n": 0,
+  "elenco": []
+ },
+ "F": {
+  "alto": 0,
+  "basso": 79,
+  "libero": 588,
+  "quotaLibera": 88,
+  "fissi": [
+   {
+    "dove": "basso",
+    "h": 79,
+    "tag": "div"
+   }
+  ]
+ },
+ "S": {
+  "altezza": 667,
+  "schermi": 1
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 6,
+  "senzaNome": 0,
+  "senzaNomeElenco": [],
+  "conAria": 0,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 1,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 8,
+  "13": 2,
+  "15": 1,
+  "17": 4,
+  "30": 1,
+  "31": 1,
+  "40": 1
+ },
+ "nTesto": 18
+}

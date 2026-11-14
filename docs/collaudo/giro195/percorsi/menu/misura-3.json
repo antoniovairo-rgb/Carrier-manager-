@@ -1,0 +1,234 @@
+{
+ "VW": 375,
+ "VH": 667,
+ "radice": "div",
+ "T": {
+  "n": 14,
+  "sotto48": 7,
+  "sotto44": 5,
+  "sotto32": 5,
+  "elenco": [
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "nome": ""
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "nome": ""
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "nome": ""
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "nome": ""
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "nome": ""
+   },
+   {
+    "tag": "button",
+    "w": 44,
+    "h": 44,
+    "nome": "Chiudi"
+   },
+   {
+    "tag": "button[data-cpm=privacy118]",
+    "w": 313,
+    "h": 44,
+    "nome": "Informativa sulla privacy"
+   }
+  ]
+ },
+ "V": {
+  "n": 10,
+  "elenco": [
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 2.6
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 2.5
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 2.6
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 2.5
+   },
+   {
+    "a": "",
+    "b": "",
+    "d": 0
+   }
+  ]
+ },
+ "C": {
+  "n": 0,
+  "elenco": []
+ },
+ "F": {
+  "alto": 0,
+  "basso": 0,
+  "libero": 667,
+  "quotaLibera": 100,
+  "fissi": []
+ },
+ "S": {
+  "altezza": 667,
+  "schermi": 1
+ },
+ "G": {
+  "n": 0,
+  "elenco": []
+ },
+ "A": {
+  "bersagli": 14,
+  "senzaNome": 12,
+  "senzaNomeElenco": [
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "input",
+    "w": 313,
+    "h": 16,
+    "grezzo": "",
+    "aria": null
+   },
+   {
+    "tag": "button",
+    "w": 65,
+    "h": 56,
+    "grezzo": "",
+    "aria": null
+   }
+  ],
+  "conAria": 1,
+  "nonSemantici": 0,
+  "nonFocus": 0,
+  "titoli": 0,
+  "live": 0,
+  "dialog": 0,
+  "nav": 0,
+  "svgSenzaNome": 0,
+  "imgSenzaAlt": 0
+ },
+ "corpi": {
+  "12": 15,
+  "13": 1,
+  "15": 2
+ },
+ "nTesto": 18
+}

@@ -1,0 +1,361 @@
+{
+ "Z": {
+  "dashboard": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 4.47
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 0,
+    "tagliatiEs": [],
+    "schermi": 5.27,
+    "vicini": 20
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 4,
+    "tagliatiEs": [
+     "Offerta di sponsor · Nexon W −59",
+     "Il tuo procuratore: boutique −59",
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 6.35,
+    "vicini": 20
+   }
+  },
+  "standings": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 2.01
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 2,
+    "tagliatiEs": [
+     "📊 Classifica −5",
+     "📅 Calendario −8"
+    ],
+    "schermi": 2.29,
+    "vicini": 19
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 4,
+    "tagliatiEs": [
+     "📊 Classifica −15",
+     "📅 Calendario −19",
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 2.57,
+    "vicini": 19
+   }
+  },
+  "calendar": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 2.33
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 1,
+    "tagliatiEs": [
+     "📅 Calendario −2"
+    ],
+    "schermi": 2.7,
+    "vicini": 18
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 5,
+    "tagliatiEs": [
+     "📊 Classifica −15",
+     "📅 Calendario −19",
+     "▶ vs FC Wolfstadt −12",
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 3.43,
+    "vicini": 17
+   }
+  },
+  "club": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 1.92
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 0,
+    "tagliatiEs": [],
+    "schermi": 2.23,
+    "vicini": 21
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 2,
+    "tagliatiEs": [
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 2.93,
+    "vicini": 21
+   }
+  },
+  "profile": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 3.19
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 0,
+    "tagliatiEs": [],
+    "schermi": 3.4,
+    "vicini": 31
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 2,
+    "tagliatiEs": [
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 3.86,
+    "vicini": 31
+   }
+  },
+  "agente": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 3.35
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 0,
+    "tagliatiEs": [],
+    "schermi": 4.01,
+    "vicini": 19
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 5,
+    "tagliatiEs": [
+     "AST −24",
+     "ISL −3",
+     "SUS −25",
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 5.14,
+    "vicini": 19
+   }
+  },
+  "ufficio": {
+   "base": {
+    "tagliati": 0,
+    "schermi": 2.82
+   },
+   "x1.3": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 0,
+    "tagliatiEs": [],
+    "schermi": 3.79,
+    "vicini": 29
+   },
+   "x1.6": {
+    "overflow": 0,
+    "bottoniFuori": 0,
+    "es": [],
+    "tagliati": 2,
+    "tagliatiEs": [
+     "☕ Sostieni il progetto −35",
+     "💡 Idee e feedback −8"
+    ],
+    "schermi": 5.18,
+    "vicini": 29
+   }
+  }
+ },
+ "L": {
+  "dashboard": {
+   "bottoni": 35,
+   "bottoniSenzaNome": 0,
+   "titoli": 0,
+   "testi": 134,
+   "ruoli": {
+    "InlineTextBox": 152,
+    "StaticText": 134,
+    "generic": 49,
+    "button": 35,
+    "image": 6,
+    "SvgRoot": 3,
+    "RootWebArea": 1,
+    "banner": 1
+   }
+  },
+  "standings": {
+   "bottoni": 18,
+   "bottoniSenzaNome": 0,
+   "titoli": 1,
+   "testi": 255,
+   "ruoli": {
+    "InlineTextBox": 256,
+    "StaticText": 255,
+    "cell": 198,
+    "generic": 35,
+    "SvgRoot": 19,
+    "row": 19,
+    "button": 18,
+    "option": 14,
+    "columnheader": 11
+   }
+  },
+  "calendar": {
+   "bottoni": 17,
+   "bottoniSenzaNome": 0,
+   "titoli": 1,
+   "testi": 249,
+   "ruoli": {
+    "InlineTextBox": 265,
+    "StaticText": 249,
+    "generic": 146,
+    "button": 17,
+    "SvgRoot": 9,
+    "RootWebArea": 1,
+    "banner": 1,
+    "heading": 1
+   }
+  },
+  "club": {
+   "bottoni": 18,
+   "bottoniSenzaNome": 0,
+   "titoli": 0,
+   "testi": 85,
+   "ruoli": {
+    "InlineTextBox": 96,
+    "StaticText": 85,
+    "generic": 35,
+    "button": 18,
+    "image": 5,
+    "SvgRoot": 2,
+    "RootWebArea": 1,
+    "banner": 1,
+    "LineBreak": 1
+   }
+  },
+  "profile": {
+   "bottoni": 32,
+   "bottoniSenzaNome": 0,
+   "titoli": 0,
+   "testi": 101,
+   "ruoli": {
+    "InlineTextBox": 104,
+    "StaticText": 101,
+    "generic": 36,
+    "button": 32,
+    "RootWebArea": 1,
+    "banner": 1,
+    "region": 1,
+    "SvgRoot": 1,
+    "image": 1
+   }
+  },
+  "agente": {
+   "bottoni": 28,
+   "bottoniSenzaNome": 0,
+   "titoli": 1,
+   "testi": 122,
+   "ruoli": {
+    "InlineTextBox": 130,
+    "StaticText": 122,
+    "generic": 71,
+    "button": 28,
+    "image": 6,
+    "SvgRoot": 4,
+    "RootWebArea": 1,
+    "banner": 1,
+    "heading": 1
+   }
+  },
+  "ufficio": {
+   "bottoni": 36,
+   "bottoniSenzaNome": 0,
+   "titoli": 1,
+   "testi": 155,
+   "ruoli": {
+    "InlineTextBox": 173,
+    "StaticText": 155,
+    "generic": 41,
+    "button": 36,
+    "RootWebArea": 1,
+    "banner": 1,
+    "heading": 1,
+    "SvgRoot": 1
+   }
+  }
+ },
+ "M": {
+  "dashboard": {
+   "animazioni": 14,
+   "conRiduci": 0
+  },
+  "standings": {
+   "animazioni": 10,
+   "conRiduci": 0
+  },
+  "calendar": {
+   "animazioni": 10,
+   "conRiduci": 0
+  },
+  "club": {
+   "animazioni": 6,
+   "conRiduci": 0
+  },
+  "profile": {
+   "animazioni": 8,
+   "conRiduci": 0
+  },
+  "agente": {
+   "animazioni": 11,
+   "conRiduci": 0
+  },
+  "ufficio": {
+   "animazioni": 6,
+   "conRiduci": 0
+  }
+ },
+ "meta": {
+  "viewport": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover",
+  "lang": "it",
+  "title": "Korward Elite: Football Career Simulator"
+ }
+}

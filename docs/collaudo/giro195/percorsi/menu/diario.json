@@ -1,0 +1,28 @@
+{
+ "nome": "menu",
+ "W": 375,
+ "H": 667,
+ "save": "save-c177-s5w20.json",
+ "tocchi": 1,
+ "diario": [
+  {
+   "passo": "@misura",
+   "esito": "bersagli 6 <48:2 <44:0 <32:0 vicini 3 tagliati 0 schermi 1 sfum 0 senzaNome 0 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "02-_misura.png"
+  },
+  {
+   "passo": "Opzioni",
+   "esito": {
+    "w": 93,
+    "h": 57,
+    "y": 597
+   },
+   "foto": "03-Opzioni.png"
+  },
+  {
+   "passo": "@misura",
+   "esito": "bersagli 14 <48:7 <44:5 <32:5 vicini 10 tagliati 0 schermi 1 sfum 0 senzaNome 12 nonSem 0 titoli 0 dialog 0 live 0",
+   "foto": "04-_misura.png"
+  }
+ ]
+}
