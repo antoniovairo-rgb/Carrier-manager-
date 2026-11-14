@@ -95,8 +95,8 @@ export async function chiudi166(page, { tetto = 60000 } = {}) {
   while (Date.now() - t0 < tetto) {
     const s = await page.evaluate(() => { const t = document.body.innerText || ''; const iv = !!document.querySelector('[data-cpm="intervista231"]');
       const p = (JSON.parse(localStorage.getItem('cpm-v3') || '{}').player) || {}; const live = typeof window.__CPM_PHASE === 'function' && !!document.querySelector('[data-cpm="fine-partita"],[data-cpm="ended"]');
-      return { iv, iv231: window.__CPM_IV231 | 0, n: (p.matchHistory || []).length, h: (p.matchHistory || []).slice(-1)[0] || null, live, bott: [...document.querySelectorAll('button')].map(x => (x.textContent || '').trim()).filter(Boolean).slice(-12) }; }).catch(() => null);
-    if (s) { if (s.iv) visti.intervista = true; visti.iv231 = s.iv231; if (s.n > 0) { visti.voce = s.h; break; } visti.ultimiBottoni = s.bott; }
+      return { iv, iv231: window.__CPM_IV231 | 0, iv183: window.__CPM_IV183 || null, n: (p.matchHistory || []).length, h: (p.matchHistory || []).slice(-1)[0] || null, live, bott: [...document.querySelectorAll('button')].map(x => (x.textContent || '').trim()).filter(Boolean).slice(-12) }; }).catch(() => null);
+    if (s) { if (s.iv) visti.intervista = true; visti.iv231 = s.iv231; visti.iv183 = s.iv183; if (s.n > 0) { visti.voce = s.h; break; } visti.ultimiBottoni = s.bott; }
     await page.evaluate(() => { const B = [...document.querySelectorAll('button')].filter(x => x.offsetParent !== null); const pri = B.filter(x => /Continua|Avanti|Torna|Prosegui|Vai|Chiudi|Fine|Rispondi|Salta/i.test((x.textContent || ''))); const b = pri[pri.length - 1]; if (b) b.click(); }).catch(() => {});
     await sleep(700);
   }
