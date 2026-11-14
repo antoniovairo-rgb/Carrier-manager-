@@ -74,6 +74,11 @@ Foto: `giro196/prima-campionato-notte-walkout.png`; foto del PO: `giro196/po-193
 | licenze-184 | verde, rosso visto |
 | clip-180 | **rosso, preesistente**: `assets/cgtrader-clip-rohr.glb` pesa 3.298.744 byte contro un tetto di 3.000.000. Il file arriva dal giro 184 (commit 85cdd28) e questo giro non tocca asset. Soglia non abbassata. |
 | highlight-95 | verde (102 highlight, 0 difetti), rosso visto (171 difetti). Una prima corsa, interrotta dal tetto di 30 min del sottofondo, aveva segnato **1 difetto D3** nel braccio verde (s5/2021 «Uno-due con GÜNTHER»: il pallone non arriva al portiere entro 1,5 s dall'esito): da trattare come **instabile**, non riprodotto alla corsa completa. |
+| partita-vera | verde: 12/12 bande giudicate e tenute, 2/2 partite finite |
+| griglia-mobile | verde: 14 schermate × 5 larghezze (artefatti rigenerati riportati com'erano, giro senza grafica) |
+| fps-249 | verde, rosso visto |
+| test:logic | 51/51 |
+| save-compat | 12 pass · 0 fail |
 
 ## Dubbi per il PO (non decisi)
 
@@ -83,3 +88,9 @@ Foto: `giro196/prima-campionato-notte-walkout.png`; foto del PO: `giro196/po-193
 - La regola vale solo con i modelli 3D accesi; con «3D spento» dall'utente (`cpm-glb=0`) il comportamento non è cambiato.
 - Sotto `?cpmtest=1` l'attesa si accende solo con `__CPM_T196ON` (le altre sonde del banco non cambiano comportamento).
 - La rete del telefono del PO non è nota: la banda della sonda (8 Mbit/s) è un'ipotesi; non posso confermare che sia quella reale.
+- **L'attesa misurata è ~55 s contro un tetto di 60 s** (headless, rete della sonda). Su una rete un po' più lenta di quella della
+  sonda la partita passerebbe al 2D. Non ho cambiato il tetto: la scelta del numero spetta al PO.
+- **clip-180 è rosso** per un asset del giro 184 (`cgtrader-clip-rohr.glb`, 3,30 MB contro il tetto di 3,00 MB). Non l'ho toccato,
+  perché questo giro non cambia asset: va deciso se ricomprimere la clip o rivedere il tetto.
+- **highlight-95** ha dato un difetto D3 una volta e zero alla corsa completa: è un candidato «instabile», da riparare se si ripete.
+- Il giro non è stato promosso su `main` e non ha un numero di versione: `GAME_VERSION` è fuori dal mio perimetro.
