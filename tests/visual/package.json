@@ -449,6 +449,8 @@
     "rigore-79": "node rigore-79.mjs",
     "sonda-rigore-139": "node sonda-rigore-139.mjs",
     "rigore-139": "node rigore-139.mjs",
+    "rigore-191": "node rigore-191.mjs",
+    "lotteria-191": "node lotteria-191.mjs",
     "voto-79": "node voto-79.mjs",
     "livello-79": "node livello-79.mjs",
     "quota-190-vivo": "node quota-190-vivo.mjs",
