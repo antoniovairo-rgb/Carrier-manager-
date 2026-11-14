@@ -1563,3 +1563,7 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 - Ordine (PO «Scelte nella 195, resto 196»): nella 195 PO-452 scelte sempre in vista e PO-456 Agente «da fare ora» (stesso giro di PO-446); le altre nella 196.
 - Giro 195: 11,73 $.
 - Madre: creato lavoro/195 da lavoro/194 (dab34a71). Partono due giri della 195 nei posti liberi (con il 196 sono 3): giro 197 scelte sempre in vista (PO-452; PO-389 resta nella 196, il giro lascia spazio ai testi) e giro 198 Agente «da fare ora» + tasto che porta al rinnovo + svincolato (PO-456, 446, 432). Il 196 resta dentro la 194; poi si unisce anche in lavoro/195.
+
+## 14/11 ~18:50 Roma — giro 198 unito in lavoro/195
+- Giro 198 (PO-456, 446, 432): 10/10 controlli verdi; unito senza conflitti; guardiani agente-198 e svincolato-198 già nella catena completa. 7,72 $.
+- Decisioni tecniche della madre sui dubbi: soglia dei richiami = quella di rifiuto già nel gioco (accettata); «fermati un anno» non fatto (regola nuova, resta fuori); «Fai girare il nome» a 375×667 resta sotto la barra con piccolo scorrimento (accettato); card prossima partita e fiducia del mister da svincolato → seguito in PO-448 rifiniture.

@@ -1664,5 +1664,19 @@
     "tipo": "collaudo",
     "modello": "claude-fable-5-2",
     "rilevato": "2026-11-14"
+  },
+  {
+    "sessione": "session_01QEYiaBZ4CerLjXHDn1dbF7",
+    "titolo": "giro 198 Agente «da fare ora», tasto che porta al rinnovo, svincolato (PO-456, 446, 432)",
+    "creata": "2026-11-14T16:46:40Z",
+    "chiusa": "2026-11-14T17:44:28Z",
+    "cost_usd": 7.71920536,
+    "output_tokens": 72742,
+    "cache_read_tokens": 21296977,
+    "worker_epoch": 1,
+    "versione": "7.999.195",
+    "tipo": "sviluppo",
+    "modello": "claude-opus-5-5",
+    "rilevato": "2026-11-14"
   }
 ]
