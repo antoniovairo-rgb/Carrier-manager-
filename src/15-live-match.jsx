@@ -1419,6 +1419,9 @@ try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* so
    e la ripresa dell'avversario dopo un tiro fuori/parato o un pallone perso (regola del calcio). Rosso __CPM_NO_BRAIN137 = 7.999.136. */
 /* [7.999.139 PO-210, decisione PO 05/10 «come le schede carriera»] le sezioni del resoconto post partita sono fisarmoniche della carriera
    (cappello standard + Card), aperte, con la scelta del giocatore ricordata. Rosso __CPM_NO_POST210 = titolo fatto a mano di prima. */
+/* [giro 200 · PO-448, G193-18 «rifiniture viste negli anni lunghi»] interruttore unico dei testi e numeri corretti in src/16-18.
+   Rosso __CPM_NO_G200 = i testi di prima (insieme alla rassegna in una pagina sola). */
+function _g200x(){return !(typeof window!=='undefined'&&window.__CPM_NO_G200);}
 function Sez210({id,titolo,icona,children}){
   if(typeof window!=='undefined'&&window.__CPM_NO_POST210)return(<>
     <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>{(icona?icona+" ":"")+String(titolo).toUpperCase()}</div>{children}</>);
@@ -10555,6 +10558,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _kbContinue=useRef(handleContinue);_kbContinue.current=handleContinue;
   const _kbSet=useRef(handleSetPiece);_kbSet.current=handleSetPiece;/* [giro 90 PO-292 D6] */
   const _kbEnd=useRef(handleEnd);_kbEnd.current=handleEnd;
+  /* [giro 200 · PO-385, decisione PO «Schede una dopo l'altra»] la rassegna di fine partita (fase ended) si legge a QUATTRO schede: 1 risultato
+     e voto, 2 le tue giocate, 3 i giornali, 4 classifica e prossima partita (col tabellino della gara: da solo e' alto quanto mezza
+     scheda). Avanti, Salta (= torna alla carriera, salva il risultato come il tasto di sempre) e puntini. Nessun blocco tolto: le schede
+     non visibili restano montate e nascoste (display:none), quindi il contenuto e i testimoni dei blocchi sono quelli di prima.
+     Il provino (trial) resta com'era. Rosso __CPM_NO_G200 = la pagina unica di prima. */
+  const [sk200,setSk200]=useState(0);const scroll200Ref=useRef(null);
+  useEffect(()=>{try{if(scroll200Ref.current)scroll200Ref.current.scrollTop=0;}catch(_e){}},[sk200]);
+  const _g200=()=>context!=="trial"&&!(typeof window!=='undefined'&&window.__CPM_NO_G200);
+  const _v200=(n)=>(!_g200()||sk200===n)?undefined:{display:"none"};
+  const _T200=["Risultato e voto","Le tue giocate","I giornali","Classifica e prossima partita"],_C200=["Risultato","Giocate","Giornali","Classifica"];
+  const _nav200=()=>(<div style={{flex:"0 0 auto",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+    <div style={{display:"flex",alignItems:"center"}}>{_T200.map((t,i)=>(<button key={i} type="button" data-cpm="puntino200" aria-label={"Scheda "+(i+1)+" di 4: "+t} aria-current={sk200===i?"step":undefined} onClick={()=>setSk200(i)}
+      style={{width:24,height:28,border:"none",background:"transparent",padding:0,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{width:sk200===i?16:8,height:8,borderRadius:RAD.pill,background:sk200===i?TINTE.oro:TH.track,transition:"width .2s"}}/></button>))}</div>
+    <div data-cpm="titolo200" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:.4,textTransform:"uppercase",whiteSpace:"nowrap"}}>{(sk200+1)+"/4 · "+_C200[sk200]}</div></div>);
 
   useEffect(()=>{
     const sit=situations[hlIdx];
@@ -12557,12 +12574,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          risultato via handleEnd. Prima la card poteva traboccare oltre il viewport (wrapper overflow:hidden) →
          bottone irraggiungibile → l'utente usciva dal tasto Home in alto perdendo la partita. */}
       {phase==="ended"&&(
-        <div style={{display:"flex",flexDirection:"column",height:"100%",minHeight:0,width:"100%"}}>
-        <div style={{flex:1,minHeight:0,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:isNarrow?"0":"0 0 4px"}}>
+        <div data-cpm="rassegna200" style={{display:"flex",flexDirection:"column",height:"100%",minHeight:0,width:"100%"}}>
+        <div ref={scroll200Ref} style={{flex:1,minHeight:0,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:isNarrow?"0":"0 0 4px"}}>
         <Card style={{textAlign:"center",padding:"22px"}}>
           {/* [7.95.0 collaudo PO «schermata post-partita ridondante + il "giornale" non sembra un giornale: comprimile
               in un'unica schermata giornale»] la 2ª schermata post-partita (rassegna stampa) è RIMOSSA (onMatchEnd →
               dashboard): il riepilogo ended È ora il GIORNALE — testata serif + data + TITOLONE derivato dal risultato. */}
+          <div data-scheda200="3" style={_v200(2)}>
           {(()=>{const _pw=(player.name||"L'eroe").trim().split(/\s+/).filter(w=>!/^(jr|sr|ii|iii|iv)\.?$/i.test(w));const _hn=(_pw[_pw.length-1]||player.name||"L'EROE").toUpperCase();const _g=mStats.goals,_a=mStats.assists;
             /* [7.293.0 #120] su un turno KO deciso dal dischetto il titolo racconta il TURNO, non il punteggio */
             const _hl=_drawShootout?(_shootoutWon?`DAL DISCHETTO ALLA GLORIA: ${_hn} E COMPAGNI PASSANO`:`FUORI AI RIGORI: ${_hn} E COMPAGNI ELIMINATI`)
@@ -12576,15 +12594,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:FW.black,lineHeight:1.14,color:TH.text,letterSpacing:0,textTransform:"uppercase"}}>{_hl}</div>
             </div>);})()}
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
           {ceremony&&!ceremony.light&&(<div data-cpm="festa-v2" style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:TINTE.bg,boxShadow:"inset 0 0 0 1.5px "+TINTE.oro,position:"relative",overflow:"hidden"}}>{/* [PO-302 tappa 3 · V2Festa] fondo notte con la cornice in oro, titolo in carattere TV */}
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{fontSize:FS.display,fontWeight:900,color:TINTE.testo,letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)",fontFamily:FONT_TV,fontWeight:800,lineHeight:1}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:TINTE.oro,marginTop:3,letterSpacing:"0.16em",textTransform:"uppercase"}}>{ceremony.name}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>{/* [7.686.0 collaudo PO con screenshot: sotto «Coppa delle Nazioni» c'era scritto «FC Merseyside»] CHI ALZA IL TROFEO. Il sottotitolo della premiazione mostrava SEMPRE il club, anche quando il trofeo e' della NAZIONALE: in una Coppa delle Nazioni vinta con la Spagna leggere il nome del club inglese e' una cosa che non sta ne' in cielo ne' in terra. Nei contesti di nazionale si scrive la NAZIONE. */}{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
           </div>)}
+          </div>
           {/* [6.88.0 collaudo PO «post-partita più moderno, in linea con prematch/rassegna»] HERO BROADCAST:
               banda scura con hairline nel colore della competizione, squadre con spina-colore, esito chiaro +
               CELEBRAZIONE scalata sull'importanza (coriandoli sui big win, curva citata; il titolo ha la sua cerimonia). */}
+          <div data-scheda200="1" style={_v200(0)}>
           {(()=>{
             const _hWon=winning||(_drawShootout&&_shootoutWon);
             const _hDrew=!winning&&!losing;
@@ -12618,11 +12640,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </div>);
           })()}
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
           {_drawShootout&&(<div style={{margin:"0 0 16px",padding:"10px 14px",borderRadius:RAD.md,background:_shootoutWon?"rgba(22,163,74,0.12)":"rgba(220,38,38,0.10)",border:`1.5px solid ${_shootoutWon?TH.success:TH.danger}`,textAlign:"center"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>🎲 Si decide ai rigori</div>
             <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
+          </div>
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
+          <div data-scheda200="2" style={_v200(1)}>
           {(()=>{/* [PO-259] la riga della scelta: cosa hai deciso e cosa e' successo (dal racconto nato dai fatti del motore). Rosso __CPM_NO_SCHEDE259 */
             if(typeof INT259==='undefined'||!INT259.attivo())return null;const _L0=((narrRef669.current||{}).r259list)||[];if(!_L0.length)return null;
             /* [PO-280 — rosso __CPM_NO_ESITO280] l'esito del riepilogo si ricalcola sui fatti dal minuto della scelta al fischio (INT259.finaleEsito): la riga
@@ -12639,6 +12665,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <span style={{fontWeight:FW.bold}}>{"\ud83e\udde0 La tua scelta al "+r.m0+"': "}</span>{"«"+r.et+"»"}
                 <span style={{color:TH.muted}}>{" \u2192 "+(r.breve||"non c'è stato il tempo di vederne l'effetto")}</span></div>))}
             </div>);})()}
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           <Sez210 id="post-tabellino" titolo="Il tuo tabellino">
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},(()=>{/* [7.999.17 collaudo PO: «17 tiri» nel TUO tabellino contro «6/13 tiri in porta» poco sotto] quel 17 erano i tiri della SQUADRA (mxStats). Qui ora i tiri dell'EROE dalla pagella del motore, la stessa fonte del riquadro «in numeri». Rosso __CPM_NO_TIRI17 */let _q17=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRI17))_q17=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe)||null;}catch(_e){}return _q17?{l:"Tiri",v:_q17.tiri|0,e:"💥",c:TH.accent}:{l:"Tiri squadra",v:mxStats.shots,e:"💥",c:TH.accent};})(),{l:"Poss.",v:((()=>{/* [7.999.136 PO-209 collaudo PO «alcune statistiche sembrano al contrario»: possesso 37% qui e 49% nel tabellino sotto] qui si leggeva lo stato della cronaca (possession), che va per conto suo; il tabellino della gara lo prende dal motore. Ora la stessa fonte. Rosso __CPM_NO_POSS209 */
@@ -12650,6 +12678,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ))}
           </div>
           </Sez210>
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           {(()=>{/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] le connessioni della gara */
             const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
             if(!_gv.length&&!_rc.length)return null;
@@ -12663,6 +12693,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {_row("⚽","Gol su assist di",_rc,TH.warning)}
             </Sez210>);
           })()}
+          </div>
+          <div data-scheda200="4" style={_v200(3)}>
+          {_g200()&&(()=>{/* [giro 200 · PO-385, scheda 4 «classifica e prossima partita»] la classifica e' quella SALVATA prima di questa giornata
+              (gli altri campi si giocano quando si torna alla carriera): si dice, e accanto i punti di questa partita. Solo lettura. */
+            const _cl=player.club||{};const _gd=(r)=>(r.gd!=null?r.gd:((r.gf|0)-(r.ga|0)));
+            const _st=_isNatCtx?[]:[...(player.standings||[])].filter(Boolean).sort((a,b)=>(b.pts|0)-(a.pts|0)||_gd(b)-_gd(a)||(b.gf|0)-(a.gf|0));
+            const _io=_st.findIndex(r=>r.id===_cl.id||r.clubId===_cl.id);
+            const _a0=Math.max(0,Math.min(_io-1,_st.length-3));const _idx=_io<0?[]:[_a0,_a0+1,_a0+2].filter(i=>i<_st.length);
+            const _pt=context==="career"?(winning?3:(!winning&&!losing)?1:0):null;
+            const _wk=player.week||1;const _nx=[...(player.calendar||[])].filter(m=>m&&!m.played&&(m.week|0)>_wk).sort((a,b)=>(a.week|0)-(b.week|0))[0]||null;
+            const _tipo={cup:"Coppa",euro:"Coppa europea",nations:"Nazionale",national:"Nazionale",friendly:"Amichevole"};
+            return(<div data-cpm="classifica200">
+              <Sez210 id="post-classifica200" titolo={_io>=0?"Classifica e prossima partita":"Prossima partita"}>
+                {_io>=0&&<><div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>{"Prima dei risultati degli altri campi"+(_pt!=null?(" · questa partita: +"+_pt+(_pt===1?" punto":" punti")):"")}</div>
+                {_idx.map((i,k)=>{const r=_st[i];const io=i===_io;return(<div key={i} data-cpm={io?"classifica200-io":undefined} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 6px",borderTop:k?`1px solid ${TH.divider}`:"none",background:io?TH.surface2:"transparent",borderRadius:RAD.sm,fontSize:FS.small,fontWeight:io?FW.bold:FW.semibold,color:TH.text}}>
+                  <span className="cpm-num" style={{minWidth:24,color:TH.muted}}>{(i+1)+"°"}</span>
+                  <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.n||r.name||r.id}</span>
+                  <span className="cpm-num">{(r.pts|0)+" pt"}</span></div>);})}</>}
+                <div data-cpm="prossima200" style={{fontSize:FS.small,color:TH.text,lineHeight:1.45,marginTop:_io>=0?SP.sm:0,paddingTop:_io>=0?SP.sm:0,borderTop:_io>=0?`1px solid ${TH.divider}`:"none"}}>{_nx?(<><b>{(_nx.isHome!==false?"In casa":"In trasferta")+" contro "+(_nx.opponentName||"l'avversario")}</b><span style={{color:TH.muted}}>{" · "+(_tipo[_nx.type]||"Campionato")+" · settimana "+_nx.week}</span></>):"Nessuna partita in calendario dopo questa."}</div>
+              </Sez210>
+            </div>);})()}
+          </div>
           {/* [7.914.0 — IL TABELLINO DELLA GARA, richiesta del PO: «ci deve essere il tabellino delle statistiche
               completo altrimenti non riesco a capirne l'andamento»] Le quattro voci qui sotto sono le TUE
               (falli subiti, angoli guadagnati, tiri avversari): raccontano la tua partita, non la gara. Questo
@@ -12670,6 +12722,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               passano tutti gli eventi — non dalla cronaca e non dalle tue azioni, che erano due sorgenti
               diverse. Si mostrano solo le voci che il motore produce davvero: una riga vuota e' peggio di una
               riga assente. */}
+          <div data-scheda200="4" style={_v200(3)}>
           {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
             if(!_T||!_T.home||!_T.away)return null;
             const _ord=ordineTabellino280(_T,isMatchHome);const _mine=_ord.sx,_loro=_ord.dx;/* [PO-280 bis] _mine/_loro qui = colonna sinistra/destra */
@@ -12703,7 +12756,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <span data-cpm="tab280-dx" style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:_t286.dx}}>{_nDx}</span>
                 </div>
                 {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
-                  return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
+                  return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:(_g200()?3:7)}}>{/* [giro 200] nelle schede le righe stanno piu' strette (stessa lista, stesse barre) */}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:FS.small,fontVariantNumeric:"tabular-nums"}}>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:a>=b?TH.text:TH.muted,minWidth:34,textAlign:"left"}}>{r[1]}</span>
                       <span style={{flex:"1 1 0",textAlign:"center",fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
@@ -12717,6 +12770,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </Sez210>);
           })()}
+          </div>
+          <div data-scheda200="2" style={_v200(1)}>
           <Sez210 id="post-numeri" titolo="Il tuo tabellino in numeri">
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
             {/* [23/09 POC — collaudo PO «queste statistiche sono coerenti? vengono da brain?»] NO, venivano da contatori a parte
@@ -12732,6 +12787,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             ))}
           </div>
           </Sez210>
+          </div>
+          <div data-scheda200="1" style={_v200(0)}>
           {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);let rating=Math.round(raw*10)/10;
             /* [23/09 POC] la PAGELLA e' il voto del brain (lo stesso della pagella a destra nel giornale), non una formula a parte */
             try{if(!(typeof window!=='undefined'&&window.__CPM_NO_NUMERI23)){const _q=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe);if(_q&&typeof _q.voto==='number')rating=_q.voto;}}catch(_e){}const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
@@ -12765,6 +12822,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </div>}
           </div>);})()}
+          </div>
+          <div data-scheda200="3" style={_v200(2)}>
           {/* [7.99.0 collaudo PO «il giornale post-partita deve sembrare un vero giornale, più ricco: considerazioni reali del giornalista/mister/tifosi, eventi per importanza/prestigio, pagelle, commenti dell'eroe»] RASSEGNA STAMPA integrata nel riepilogo ended — tutto DERIVATO da generateLocalPressAnalysis (headline multi-testata, analisi tattica, MVP/flop, voci mister+eroe, curva) + occhiello per importanza/prestigio della gara. Solo carriera (i provini restano sobri). */}
           {context!=="trial"&&(()=>{
             const _rbP=Math.min(mStats.rb,30);let _ratP=Math.round(clamp(5.8+_rbP*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0)*10)/10;
@@ -12827,13 +12886,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}
             </div>);
           })()}
+          </div>
         </Card>
         </div>
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
+          {(_g200()&&sk200<3)?(<div data-cpm="nav200" style={{display:"flex",gap:SP.sm,alignItems:"center"}}>
+            <Btn onClick={handleEnd} v="ghost" data-cpm="salta200" style={{flex:"0 0 auto",minHeight:54,padding:"14px 14px",fontSize:FS.body,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Salta</Btn>
+            {_nav200()}
+            <Btn onClick={()=>setSk200(k=>Math.min(3,k+1))} v="primary" data-cpm="avanti200" style={{flex:"1 1 0",minWidth:0,padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}}>Avanti ›</Btn>
+          </div>):(<div style={_g200()?{display:"flex",gap:SP.sm,alignItems:"center"}:undefined}>{_g200()&&_nav200()}
           <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",minHeight:54,fontSize:FS.bodyLg,background:TINTE.testo,color:TINTE.bg,fontFamily:FONT_TV,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em"}} data-cpm="post-continua-v2">
             {context==="trial"?"📋 Risultati provino":(_no190("A")?"🏟️ Torna alla dashboard":"🏟️ Torna alla Home")} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
-          </Btn>
+          </Btn></div>)}
         </div>
         </div>
       )}

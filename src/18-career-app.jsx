@@ -2717,8 +2717,9 @@ const getThisWeekMatchday=()=>{
     const myScore=Math.round((p.ovr||70)+Math.min(14,(p.nationalCaps||0)*0.5)+Math.min(12,g*0.8)+((role==="titolare"||role==="leader")?3:role==="riserva"?-4:0));
     const list=[...npcs,{name:p.name,score:myScore,caps:p.nationalCaps||0,me:true}].sort((a,b)=>b.score-a.score);
     const rank=list.findIndex(x=>x.me)+1;
-    const why=(rank===1&&(p.nationalCaps||0)===0)?"Sei in cima alla lista del CT, ma la maglia numero 9 si prende in campo: prima serve la convocazione."/* [7.999.49 parte A] a zero presenze la maglia non «è tua» */
-      :rank===1?"Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco.":rank===2?"Sei il primo nome dietro al titolare: una grande striscia può ribaltare le gerarchie.":(role==="riserva"?"«Il mio 9 gioca ogni settimana — tu no.» Per rientrare nel giro serve il campo.":"Sei tra i convocabili, ma davanti c'è chi segna di più: servono numeri, non parole.");
+    const _g7=_g200x();/* [giro 200 · PO-448 p.7] «la maglia numero 9 è tua» e in campo un altro numero: si parla del posto, non del numero */
+    const why=(rank===1&&(p.nationalCaps||0)===0)?(_g7?"Sei in cima alla lista del CT, ma il posto da centravanti si prende in campo: prima serve la convocazione.":"Sei in cima alla lista del CT, ma la maglia numero 9 si prende in campo: prima serve la convocazione.")/* [7.999.49 parte A] a zero presenze la maglia non «è tua» */
+      :rank===1?(_g7?"Oggi il posto da centravanti è tuo: il CT ti considera il riferimento dell'attacco.":"Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco."):rank===2?"Sei il primo nome dietro al titolare: una grande striscia può ribaltare le gerarchie.":(role==="riserva"?"«Il mio 9 gioca ogni settimana — tu no.» Per rientrare nel giro serve il campo.":"Sei tra i convocabili, ma davanti c'è chi segna di più: servono numeri, non parole.");
     return{list,rank,why};
   }catch(_e){return null;}};
   /* [7.999.173 PO-155 «Svincolato, poi finestre + CT»] LE FINESTRE INTERNAZIONALI SONO LE SOSTE DEL CALENDARIO.
@@ -7709,13 +7710,13 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>{_no190("A")?"Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.":"Se scegli un numero nuovo, poi torni qui col tasto Avanza."}</div>
             </div>)}
             {k==="addio"&&(<div>
-              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>è l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>è l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — {_g200x()?"ogni stadio vorrà salutarti.":"ogni stadio vorra' salutarti."}</div>{/* [giro 200 · PO-448 p.9] accento, non apostrofo */}
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 <Btn v="danger" fw onClick={()=>{setPlayer(p=>{const sn2=p.season||1;return{...p,retireAnnounced:sn2,retireAskedSeason:sn2,
                   morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||20)+8,0,100),
                   diary:capDiary([...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#92400e"}]),
                   log:[`🏁 L'ANNUNCIO: questa e' l'ultima stagione. Da oggi ogni partita e' un addio — il tour comincia.`,...(p.log||[])].slice(0,60)};});
-                  setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa è l'ultima stagione</Btn>
+                  setTimeout(()=>notify(_g200x()?"🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorrà salutarti.":"🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa è l'ultima stagione</Btn>
                 <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,retireAskedSeason:p.season||1}))}>🔁 Non ancora — si gioca</Btn>
               </div>
             </div>)}
@@ -8137,6 +8138,9 @@ const getThisWeekMatchday=()=>{
             {_io(t)&&!md._g131&&!_am133?<FormaV2 lista={player.matchHistory}/>:null}{/* [giro 131] la forma e' quella del CLUB: sotto la Nazionale non va */}
             {pos>=0&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_v(0.85)}}>{pos+1}ª in classifica</span>}
           </div>);
+          /* [giro 200 · PO-448, rilievo del giro 198] da svincolato la partita del calendario e' del CLUB, non tua: la card lo dice in testa e
+             con una riga. Le regole (Gioca/Simula e i loro motivi) restano quelle di sempre. Rosso __CPM_NO_G200 = la card di prima. */
+          const _sv200=_g200x()&&!_naz35&&(player.proStatus||"u18")==="pro"&&!!player.contractExpired;
           return(
           <section data-cpm="prossima-v2" data-club106={_cc} data-g131={_nz131?_nz131.kind:"club"} style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",backgroundColor:_cf,backgroundImage:_sfum106,color:_ink,marginBottom:_sb(9)}}>
             <div aria-hidden="true" style={{position:"absolute",inset:0,background:"repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 18px, rgba(255,255,255,0) 18px 36px)"}}/>
@@ -8144,9 +8148,10 @@ const getThisWeekMatchday=()=>{
             <div aria-hidden="true" style={{position:"absolute",left:"50%",top:"50%",width:148,height:148,margin:"-74px 0 0 -74px",borderRadius:"50%",border:"2px solid "+_v(0.10)}}/>
             <div style={{position:"relative",padding:"16px 18px 18px",display:"flex",flexDirection:"column",gap:14}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
-                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>Prossima · {comp}{_nz131?(" · "+_nz131.turno):_etichettaTurno957(md)}</span>
+                <span style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:"0.12em",textTransform:"uppercase",color:_v(0.85),minWidth:0}}>{_sv200?"Il club gioca senza di te":"Prossima"} · {comp}{_nz131?(" · "+_nz131.turno):_etichettaTurno957(md)}</span>
                 <span className="cpm-num" style={{...fsTV(FS.body,FW.bold),letterSpacing:"0.06em",background:"rgba(0,0,0,0.28)",color:"#ffffff",borderRadius:999,padding:"5px 10px",whiteSpace:"nowrap",flexShrink:0}}>{"SETT. "+md.week+" · "+(home?"CASA":"TRASFERTA")}</span>
               </div>
+              {_sv200&&<div data-cpm="svincolato200-prossima" style={{fontSize:FS.small,fontWeight:FW.semibold,color:_ink,lineHeight:1.4}}>{"Sei svincolato: "+(me.n||"il club")+" gioca questa partita senza di te."}</div>}
               <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) auto minmax(0,1fr)",alignItems:"start"}}>
                 {squadra(home?me:opp,home?myPos:oppPos)}
                 <span style={{...fsTV(FS.display,FW.black),color:_v(0.6),padding:"18px 6px 0"}}>VS</span>
@@ -8324,7 +8329,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(<div style={{marginBottom:_sb(9)}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
-            {[{l:"Fiducia del mister",v:Math.round(player.coachTrust||60),e:"🤝",c:TH.primary},{l:"Popolarità",v:Math.round(player.popularity||20),e:"⭐",c:TH.accent}].map(it=>(
+            {[(_g200x()&&player.contractExpired)?null:{l:"Fiducia del mister",v:Math.round(player.coachTrust||60),e:"🤝",c:TH.primary},{l:"Popolarità",v:Math.round(player.popularity||20),e:"⭐",c:TH.accent}].filter(Boolean).map(it=>(/* [giro 200] da svincolato non hai un mister: la fiducia non si mostra */
               <Card key={it.l} style={{padding:"9px 12px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:1}}><span style={{fontSize:FS.subhead}}>{it.e}</span><span className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:legCol944(it.c)}}>{it.v}<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.faint}}>/100</span></span></div>
                 <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:7}}>{it.l}</div>
@@ -10210,7 +10215,7 @@ const getThisWeekMatchday=()=>{
                 </div>
               </section>
               <div data-cpm="club-anelli-v2" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:8}}>
-                {[["Fiducia del mister",Math.round(player.coachTrust||60),TINTE.verde],["Popolarità",Math.round(player.popularity||20),TINTE.oro]].map(([l,v,c])=>(
+                {[(_g200x()&&player.contractExpired)?null:["Fiducia del mister",Math.round(player.coachTrust||60),TINTE.verde],["Popolarità",Math.round(player.popularity||20),TINTE.oro]].filter(Boolean).map(([l,v,c])=>(/* [giro 200] da svincolato niente fiducia del mister */
                   <div key={l} style={{background:TINTE.sup,border:"1px solid "+TINTE.bordo,borderRadius:RAD.lg,padding:"12px 14px",display:"flex",alignItems:"center",gap:12}}>
                     <AnelloV2 v={v} col={c} size={50}/>
                     <span style={{fontSize:FS.small,fontWeight:FW.semibold,letterSpacing:"0.06em",textTransform:"uppercase",color:TINTE.sec}}>{l}</span>
@@ -10356,13 +10361,14 @@ const getThisWeekMatchday=()=>{
                       <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{_cs?.desc||"Approccio equilibrato"}</div>
                     </div>
                   </div>
+                  {!(_g200x()&&player.contractExpired)&&(<>{/* [giro 200] da svincolato niente fiducia del mister */}
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
                     <div style={{fontSize:FS.caption,color:TH.muted}}>Fiducia del mister</div>{/* [7.999.49 parte A] una riga sola: numero e giudizio insieme */}
                     <div className="cpm-num" style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_ctColor)}}>{_ct}/100 ({_ctLabel.charAt(0)+_ctLabel.slice(1).toLowerCase()})</div>
                   </div>
                   <div style={{height:4,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:RAD.pill,transition:"width .4s"}}/>
-                  </div>
+                  </div></>)}
                 </Card>
               </Fisarmonica>
               );
@@ -10893,7 +10899,10 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {(player.fanLegend||[]).map((f,i)=>{
                   const statusIcon=f.status==="legend"?"🏆":f.status==="traitor"?"😤":"👋";
-                  const statusLabel=f.status==="legend"?"Leggenda":f.status==="traitor"?"Traditore":"Rispettato";
+                  /* [giro 200 · PO-448 p.6] il grado si decide quando lasci il club (Sprint 25B): finche' ci giochi la voce resta «regular» e il
+                     club di undici stagioni risultava «Rispettato» accanto a una «Leggenda» di quattro. Per il club di oggi si dice com'e'. */
+                  const _qui200=_g200x()&&f.status!=="legend"&&f.status!=="traitor"&&(f.clubId===(player.club?.id||player.club?.n))&&!player.contractExpired;
+                  const statusLabel=_qui200?"Ci giochi ora":f.status==="legend"?"Leggenda":f.status==="traitor"?"Traditore":"Rispettato";
                   const statusColor=f.status==="legend"?TH.warning:f.status==="traitor"?TH.danger:TH.muted;
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,paddingBottom:i<(player.fanLegend.length-1)?8:0,borderBottom:i<(player.fanLegend.length-1)?`1px solid ${TH.cardBorder}`:"none"}}>
@@ -11341,7 +11350,7 @@ const getThisWeekMatchday=()=>{
                 {l:"Esordio",e:"🌍",done:nc>=1},
                 {l:"10 Presenze",e:"🎌",done:nc>=10},
                 {l:"25 Presenze",e:"⭐",done:nc>=25},
-                {l:"Gol Azzurro",e:"🎖️",done:(player.nationalGoals||0)>=1},
+                {l:(_g200x()&&(player.nation||"Italia")!=="Italia")?"Gol in Nazionale":"Gol Azzurro",e:"🎖️",done:(player.nationalGoals||0)>=1},/* [giro 200 · PO-448 p.5] «Azzurro» solo per l'Italia */
               ]},
             ];
             return(
@@ -11878,7 +11887,7 @@ const getThisWeekMatchday=()=>{
                     </div>);})()}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>STIPENDIO ATTUALE</div>
+                      <div style={{fontSize:FS.caption,color:TH.muted}}>{(_g200x()&&player.contractExpired)?"ULTIMO STIPENDIO":"STIPENDIO ATTUALE"}</div>{/* [giro 200 · PO-448 p.4] da svincolato non c'e' uno stipendio «attuale» */}
                       <div style={{fontSize:FS.body,fontWeight:800,color:TH.text}}>{wageYear} l'anno</div>
                     </div>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
@@ -11913,6 +11922,7 @@ const getThisWeekMatchday=()=>{
                 </Card></Fisarmonica>
                 {/* Sprint 125 — Richiedi Cessione */}
                 {(()=>{
+                  if(_g200x()&&player.contractExpired)return null;/* [giro 200 · PO-448 p.4] da svincolato non c'e' un club a cui chiedere la cessione */
                   var tr=player.transferRequest;
                   var hasPending=tr&&tr.status==="pending";
                   var hasAccepted=tr&&tr.status==="accepted";
@@ -12100,7 +12110,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{
               const ct=ctListView(player);if(!ct)return null;
               return(
-              <Fisarmonica id="s24-la-maglia-numero-9-la-lista-" titolo="La maglia numero 9 — La lista del CT" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+              <Fisarmonica id="s24-la-maglia-numero-9-la-lista-" titolo={_g200x()?"Il centravanti — La lista del CT":"La maglia numero 9 — La lista del CT"} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 <div style={{fontSize:FS.caption,color:TH.faint,marginBottom:6}}>Ordine del CT: livello, gol e ruolo nel club. Accanto, le presenze in Nazionale.</div>{/* [7.999.49 parte A] il numero accanto non e' il criterio dell'ordine: lo si dice */}
                 <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:8}}>
                   {ct.list.map((x,i)=>(
@@ -12241,9 +12251,18 @@ const getThisWeekMatchday=()=>{
             {q&&q.done&&(
               <Fisarmonica id="s24-coppa-delle-nazioni-s" titolo={<>Coppa delle Nazioni S.{q.season}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid "+(q.trophyWon?"#fde68a":TH.track)}}>
                 <div style={{fontSize:FS.small,fontWeight:700,color:q.trophyWon?TH.goldText:q.qualified?TH.txGreen:TH.muted}}>
-                  {q.trophyWon?"🏆 Campioni!":q.qualified?"✅ Fase finale":q.pts>=3?"Eliminati (fase a gironi)":"❌ Eliminati"}
+                  {(()=>{/* [giro 200 · PO-448 p.1] la chiusura della coppa scrive l'esito in worldMemory, non nella coda (trophyWon/qualified non ci sono):
+                      la scheda lo leggeva dalla coda e diceva «Eliminati» a chi l'aveva vinta. E q.pts conta anche la finale (10/9): i punti
+                      del GIRONE si contano sulle sole gare del girone. Solo lettura. Rosso __CPM_NO_G200 = com'era. */
+                    if(!_g200x())return q.trophyWon?"🏆 Campioni!":q.qualified?"✅ Fase finale":q.pts>=3?"Eliminati (fase a gironi)":"❌ Eliminati";
+                    const _m=(player.worldMemory||[]).find(m=>m&&m.type==="nations_cup"&&m.season===q.season)||{};
+                    const _won=!!(q.trophyWon||_m.won),_qual=!!(q.qualified||_m.qualified||q.isFinal);
+                    return _won?"🏆 Campioni!":q.isFinal?"🥈 Finale persa":_qual?"✅ Fase finale":q.pts>=3?"Eliminati (fase a gironi)":"❌ Eliminati";})()}
                 </div>
-                <div style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>Punti: {q.pts||0}/9</div>
+                <div data-cpm="coppa200-punti" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>{(()=>{if(!_g200x())return "Punti: "+(q.pts||0)+"/9";
+                  const _gn=q.isFinal?Math.max(0,(q.opponents||[]).length-1):(q.opponents||[]).length;const _gm=(q.matches||[]).slice(0,_gn);
+                  const _gp=_gm.length?_gm.reduce((t,m)=>t+(m&&m.won?3:m&&m.drew?1:0),0):(q.pts||0);
+                  return "Punti nel girone: "+_gp+"/"+(3*(_gn||3));})()}</div>
               </Card></Fisarmonica>
             )}
 
