@@ -68,9 +68,9 @@ async function scenario(nome) {
       if (!s) break;
       out.fasi[s.ph] = (out.fasi[s.ph] || 0) + 1; if (s.att) out.attesa = true; if (s.p2d) out.partita2D = true;
       if (s.att && !foto.attesa) { foto.attesa = 1; await page.screenshot({ path: path.join(FOTO, `${ROSSO ? 'rosso' : 'dopo'}-${nome}-attesa.png`) }).catch(() => {}); }
-      for (const f of s.w) { if (!VISTA(f.ph)) continue; const k = f.ph === 'walkout' ? 'walkout' : 'hl'; out.frames[k]++; out.maxCg = Math.max(out.maxCg, f.cg);
+      for (const f of s.w) { if (!VISTA(f.ph)) continue; if (f.v) { out.coperti = (out.coperti || 0) + 1; continue; } /* sotto la schermata d'attesa opaca o col campo 2D sopra: il 3D non si vede */ const k = f.ph === 'walkout' ? 'walkout' : 'hl'; out.frames[k]++; out.maxCg = Math.max(out.maxCg, f.cg);
         const bad = f.noCg + f.tpose + f.proc; if (bad) { out.cattivi[k]++; if (f.noCg) out.noCg++; if (f.tpose) out.tpose++; if (f.proc) out.proc++; for (const c of f.chi) out.chi[c] = (out.chi[c] || 0) + 1; } }
-      const cattivo = s.w.some(f => VISTA(f.ph) && (f.noCg + f.tpose + f.proc));
+      const cattivo = s.w.some(f => VISTA(f.ph) && !f.v && (f.noCg + f.tpose + f.proc));
       const fk = s.ph === 'walkout' ? 'walkout' : (/^hl_/.test(s.ph || '') ? 'hl' : null);
       if (fk && !foto[fk] && (cattivo || out.frames[fk] > 60)) { foto[fk] = 1; await page.screenshot({ path: path.join(FOTO, `${ROSSO ? 'rosso' : (process.env.CPM_PRIMA ? 'prima' : 'dopo')}-${nome}-${fk}.png`) }).catch(() => {}); }
       if (s.ph === 'ended' || out.scene >= SCENE) break;

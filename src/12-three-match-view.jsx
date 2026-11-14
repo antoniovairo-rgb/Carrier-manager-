@@ -1227,12 +1227,39 @@ function ThreeMatchView(props){
     const _t196v=new THREE.Vector3(),_t196q=new THREE.Quaternion();
     const _t196in=o=>{try{o.getWorldPosition(_t196v);_t196v.y+=0.8;_t196v.project(camera);return Math.abs(_t196v.x)<=1.02&&Math.abs(_t196v.y)<=1.02&&_t196v.z<1;}catch(_e){return false;}};
     const _t196ruolo=o=>{for(let x=o,k=0;x&&k<8;x=x.parent,k++){if(x._isRef)return 'arbitro';if(x._isCoach)return 'panchina';if(x._mascot196)return 'bambino';if(x===hero)return 'eroe';}return '';};
+    /* [giro 196 PO-449 — rosso __CPM_NO_G196] PRONTEZZA «NESSUN CORPO SBAGLIATO». Regola del PO: mai corpi di riserva ne' T-pose; se i
+       corpi CGTrader o le loro clip non sono pronti il gioco ASPETTA (schermata con barra, LiveMatch) e, oltre il tetto, passa alla
+       partita 2D. Pronto = pacchetto CGTrader montato e compilato, teste caricate, e in TUTTA la scena (non solo nell'inquadratura:
+       chi e' al tunnel entra in quadro dopo) nessun corpo visibile non CGTrader, nessuno in T-pose, nessuna figura procedurale.
+       `pct` (0..1) = byte CGTrader arrivati (loadGLB, __CPM_GLBP196) piu' i passi finali: e' la barra. */
+    const _conta196=()=>{const sk=new Set(),pr=new Set(),c={cg:0,noCg:0,tpose:0,proc:0,chi:[]};
+      scene.traverseVisible(o=>{if(!o.isMesh)return;
+        if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);c.proc++;if(c.chi.length<4)c.chi.push('proc:'+(_t196ruolo(g)||'giocatore'));return;}
+        if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||!bs.length||sk.has(bs[0]))return;sk.add(bs[0]);
+        let n=0,maxA=0;for(let i=0;i<bs.length;i++){const b=bs[i];if(!/^(upperarm|lowerarm|thigh|calf)_[lr]$/i.test(b.name||''))continue;const r=b.userData&&b.userData.rq196;if(!r)continue;_t196q.fromArray(r);const a=b.quaternion.angleTo(_t196q);if(a>maxA)maxA=a;n++;}
+        const cg=!!(o.userData&&o.userData.cg196);if(cg)c.cg++;else c.noCg++;const tp=n>0&&maxA<0.105;if(tp)c.tpose++;
+        if((!cg||tp)&&c.chi.length<4)c.chi.push((cg?'cg':'nocg')+(tp?'-tpose':'')+':'+(_t196ruolo(o)||'giocatore'));});
+      return c;};
+    const _pronti196=()=>{try{
+      if(!_useGLB)return {pronti:true,motivo:'glb-off',pct:1};
+      const st=String(window.__CPM_HYPER_CASUAL_STATUS||'');
+      if(/^fallback/.test(st)||window.__CPM_GLB_FAIL==='error')return {pronti:false,fallito:true,motivo:'fallito',pct:0};
+      const G=window.__CPM_GLBP196||{};let l=0,t=0;for(const k in G){if(!/cgtrader/i.test(k))continue;const v=G[k];l+=v[0]||0;t+=Math.max(v[1]||0,v[0]||0);}
+      const fb=t>0?Math.min(1,l/t):0;
+      if(window.__CPM_GLB_READY!==true)return {pronti:false,motivo:'regular',pct:+(0.05+0.75*fb).toFixed(3)};
+      if(!/^ready/.test(st))return {pronti:false,motivo:'cgtrader',pct:+(0.05+0.75*fb).toFixed(3)};
+      if(!window.__CPM_HYPER_COMPILED74)return {pronti:false,motivo:'compila',pct:0.85};
+      if(sr.current&&(sr.current._testePend232|0)>0)return {pronti:false,motivo:'testa',pct:0.9};
+      const c=_conta196();
+      if(c.noCg||c.tpose||c.proc)return {pronti:false,motivo:'corpi',pct:0.95,...c};
+      return {pronti:true,motivo:st,pct:1,...c};}catch(_e){return {pronti:false,motivo:'errore',pct:0};}};
+    try{window.__CPM_PRONTI196=_pronti196;}catch(_e){}
     const _t196=()=>{try{const W=window.__CPM_T196W;if(!Array.isArray(W)||W.length>=(+window.__CPM_T196MAX||20000))return;
-      const P=propsRef.current||{};const sk=new Set(),pr=new Set();const out={t:+(performance.now()/1000).toFixed(2),ph:P.matchPhase||'',st:String(window.__CPM_HYPER_CASUAL_STATUS||''),cg:0,noCg:0,tpose:0,proc:0,chi:[]};
+      const P=propsRef.current||{};const sk=new Set(),pr=new Set();const out={t:+(performance.now()/1000).toFixed(2),ph:P.matchPhase||'',v:!!(window.__CPM_ATT196||window.__CPM_2D196),st:String(window.__CPM_HYPER_CASUAL_STATUS||''),cg:0,noCg:0,tpose:0,proc:0,chi:[]};
       scene.traverseVisible(o=>{if(!o.isMesh)return;
         if(o.userData&&o.userData.proc196){const g=o._procG196||o;if(pr.has(g))return;pr.add(g);if(!_t196in(g))return;out.proc++;if(out.chi.length<6)out.chi.push('proc:'+(_t196ruolo(g)||'giocatore'));return;}
-        if(!o.isSkinnedMesh||!o.skeleton||sk.has(o.skeleton))return;sk.add(o.skeleton);
-        const bs=o.skeleton.bones;if(!bs||!bs.length||!_t196in(bs[0]))return;
+        if(!o.isSkinnedMesh||!o.skeleton)return;const bs=o.skeleton.bones;if(!bs||!bs.length||sk.has(bs[0]))return;sk.add(bs[0]);/* un corpo = un insieme di ossa (i cloni danno a ogni mesh il suo oggetto Skeleton sulle stesse ossa) */
+        if(!_t196in(bs[0]))return;
         let n=0,maxA=0;for(let i=0;i<bs.length;i++){const b=bs[i];if(!/^(upperarm|lowerarm|thigh|calf)_[lr]$/i.test(b.name||''))continue;const r=b.userData&&b.userData.rq196;if(!r)continue;_t196q.fromArray(r);const a=b.quaternion.angleTo(_t196q);if(a>maxA)maxA=a;n++;}
         const cg=!!(o.userData&&o.userData.cg196);if(cg)out.cg++;else out.noCg++;
         const tp=n>0&&maxA<0.105;if(tp)out.tpose++;
@@ -6818,7 +6845,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
          aspettano al tunnel finche' il 3D e' pronto (__CPM_GLB_READY, lo stesso segnale del fischio d'inizio; tetto 10 s) e
          LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
-      const _hold74=isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10));
+      const _hold74=(isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||(window.__CPM_NO_ING277&&(window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))))/* [giro 54 PO-277 «sfrutta il tempo per caricare i GLB» — rosso __CPM_NO_ING277] il velo aspetta solo il corpo CH38 (gia' pre-caricato: ~0,3 s); i corpi CGTrader si montano e compilano DURANTE la camminata, mentre la camera e' sul tunnel e sulle tribune */&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10)))||(isWalk&&typeof window!=='undefined'&&window.__CPM_ATT196===true)/* [giro 196] la schermata d'attesa dei corpi (LiveMatch) tiene le squadre al tunnel finche' tutti sono CGTrader con clip */;
       try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
       if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
       else if(isWalk){

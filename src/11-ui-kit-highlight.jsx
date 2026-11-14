@@ -1968,7 +1968,7 @@ function loadGLB(url){
   //   cache → il match ri-scarica da zero. I successi restano cachati (il prefetch continua a giovare).
   if(!_glbCache[url])_glbCache[url]=new Promise((res,rej)=>{
     if(typeof THREE.GLTFLoader==='undefined'){rej(new Error('no GLTFLoader'));return;}
-    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},null,rej);
+    new THREE.GLTFLoader().load(url,g=>{_marcaGLTF178(g);try{const _cg196=/cgtrader/i.test(url);if(g&&g.scene)g.scene.traverse(o=>{if(o.isBone)o.userData.rq196=o.quaternion.toArray();if(_cg196)o.userData.cg196=1;});}catch(_e196){}/* [giro 196 PO-449] marca d'origine (corpo CGTrader si/no) e rotazione di riposo di ogni osso: la copiano i cloni (userData), e il testimone __CPM_T196W riconosce la T-pose (ossa ferme sulla posa di riposo) e i corpi non CGTrader */res(g);},e=>{try{if(e&&typeof window!=='undefined')(window.__CPM_GLBP196=window.__CPM_GLBP196||{})[url]=[e.loaded||0,e.total||0];}catch(_e196p){}}/* [giro 196] byte arrivati per file: la barra della schermata d'attesa */,rej);
   }).catch(e=>{try{delete _glbCache[url];}catch(_){}throw e;});
   return _glbCache[url];
 }

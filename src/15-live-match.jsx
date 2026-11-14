@@ -2990,6 +2990,34 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
   const [corpiHold232,setCorpiHold232]=useState(false);
   const corpiHold232Ref=useRef(false);
   const corpiCap232Ref=useRef({t:0,fatto:false});
+  /* [giro 196 PO-449 «T pose e non CGTrader non deve mai capitare» — rosso __CPM_NO_G196] REGOLA DEL PO: mai corpi di riserva ne' T-pose.
+     MISURATO (sonda tpose-196, telefono emulato 412 px, rete 8 Mbit/s a banda condivisa, CPU x2, cache vuota, notte, campionato): il velo
+     dell'ingresso aspettava solo il corpo «regular» (giro 54 PO-277: i CGTrader si montavano DURANTE la camminata) e poi la camminata
+     partiva con figure procedurali (giocatori e bambini) e corpi regular — 102 fotogrammi su 356 dell'ingresso; in partita l'attesa dei
+     corpi PO-232 mollava dopo 8 s e il bottone «Gioca comunque senza modelli 3D» rimetteva i procedurali. Ora ingresso e scene dell'eroe
+     ASPETTANO window.__CPM_PRONTI196 (src/12: tutti i corpi visibili CGTrader, con clip, nessun procedurale) dietro una schermata OPACA
+     con barra; oltre il tetto (__CPM_CAP196, 60 s) o a caricamento fallito la partita passa alla vista 2D per il resto della gara. */
+  const _g196On=()=>typeof window!=='undefined'&&!window.__CPM_NO_G196&&(!_CPM_TEST||!!window.__CPM_T196ON);
+  const [att196,setAtt196]=useState(null);
+  const att196Ref=useRef({t:0,k:''});
+  const [modo2D196,setModo2D196]=useState(false);
+  const modo2D196Ref=useRef(false);
+  const _att196=r=>{try{const k=r?(r.motivo+'|'+Math.round((r.pct||0)*100)):'';if(k===att196Ref.current.k)return;att196Ref.current.k=k;window.__CPM_ATT196=!!r;setAtt196(r?{pct:r.pct||0,motivo:r.motivo}:null);}catch(_e){}};
+  const _vai2D196=(motivo)=>{if(modo2D196Ref.current)return;modo2D196Ref.current=true;try{window.__CPM_2D196=true;}catch(_e){}setModo2D196(true);_att196(null);try{cpmEv("partita2D196",{motivo,min:clockRef.current|0});}catch(_e){}if(phaseRef.current==="walkout")setPhase("playing");};
+  const _chk196=(fase)=>{try{const r=window.__CPM_PRONTI196();const c=att196Ref.current;
+    if(r.pronti){if(c.t){try{cpmEv("attesa196",{ms:Date.now()-c.t,fase});}catch(_e){}}c.t=0;_att196(null);return 'pronti';}
+    if(!c.t)c.t=Date.now();
+    if(r.fallito||Date.now()-c.t>(+window.__CPM_CAP196||60000)){_vai2D196(r.fallito?'fallito':'tetto');return '2d';}
+    _att196(r);return 'attesa';}catch(_e){return 'attesa';}};
+  useEffect(()=>{try{window.__CPM_2D196=false;window.__CPM_ATT196=false;}catch(_e){}return()=>{try{window.__CPM_ATT196=false;}catch(_e){}};},[]);/* [giro 196] una partita non eredita l'attesa o il 2D della precedente */
+  useEffect(()=>{/* [giro 196] l'ingresso in campo aspetta i corpi giusti */
+    if(phase!=="walkout"||!_g196On()||modo2D196Ref.current)return;
+    const _glbExp=window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
+    if(!_glbExp||typeof window.__CPM_PRONTI196!=='function')return;
+    att196Ref.current.t=0;_chk196('walkout');
+    const iv=setInterval(()=>{_chk196('walkout');},250);
+    return()=>{clearInterval(iv);_att196(null);};
+  },[phase,glbTry]);
   const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
   useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
@@ -3053,6 +3081,13 @@ function LiveMatch({player,opponent,context="career",primoProvino=false,onMatchE
     if(phase!=="playing"||kickoffHold){_set(false);return;}
     const _glbExp=(typeof window!=='undefined')&&window.__CPM_GLB!==false&&(function(){try{return localStorage.getItem('cpm-glb')!=='0';}catch(e){return true;}})();
     if(!_glbExp||window.__CPM_NO_GLB232||typeof window.__CPM_CORPI232!=='function'||corpiCap232Ref.current.fatto){_set(false);return;}
+    if(_g196On()&&typeof window.__CPM_PRONTI196==='function'){/* [giro 196] stessa trattenuta del cronometro, ma sulla prontezza «nessun corpo sbagliato» e senza il tetto di 8 s: oltre il tetto lungo si gioca in 2D */
+      if(modo2D196Ref.current){_set(false);return;}
+      att196Ref.current.t=0;
+      const _c=()=>{const e=_chk196('playing');if(e==='attesa'){if(!corpiHold232Ref.current)_set(true);return false;}_set(false);return e==='2d';};
+      if(_c())return;
+      const iv196=setInterval(()=>{if(_c())clearInterval(iv196);},250);
+      return()=>{clearInterval(iv196);_att196(null);};}
     const _chk=()=>{try{const c=corpiCap232Ref.current;if(c.fatto){_set(false);return true;}
       const r=window.__CPM_CORPI232();
       if(!r||r.pronti){if(c.t){try{cpmEv("corpi232",{attesaMs:Date.now()-c.t,min:clockRef.current|0});}catch(_e){}}c.t=0;_set(false);return false;}
@@ -11397,7 +11432,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   915) e sotto restava una grande area NERA: il riquadro del 3D, sospeso, non disegnava piu' nulla ma
                   continuava a occupare il suo flex. Ora e' una sovrapposizione (inset 0, zIndex 1): il campo prende
                   ESATTAMENTE lo spazio che era del 3D, e cronaca, sottopancia e cartelli (zIndex 2+) restano sopra. */}
-              {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&phase==="playing";
+              {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&(phase==="playing"||(modo2D196&&show3D))/* [giro 196] partita 2D: oltre il tetto d'attesa dei corpi anche le scene dell'eroe si giocano sul campo dall'alto */;
                 try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
                 if(!_c2d)return null;
                 return(<div data-cpm="vista2d" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden"}}>
@@ -11849,8 +11884,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}
                     style={{padding:"12px 26px",borderRadius:RAD.sm,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
-                  <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
-                    style={{padding:"9px 18px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
+                  <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);if(_g196On()){_vai2D196('scelta');return;}/* [giro 196] mai i modelli di ripiego: si gioca in 2D */try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
+                    style={{padding:"9px 18px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>{_g196On()?"Gioca la partita in 2D":"Gioca comunque senza modelli 3D"}</button>
+                </div>)}
+              {att196&&!modo2D196&&(phase==="walkout"||phase==="playing")&&(
+                <div data-cpm="attesa196" style={{position:"absolute",inset:0,background:"#050814",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:42,padding:"0 26px",textAlign:"center"}}>{/* [giro 196 PO-449] schermata d'attesa OPACA: dietro non si vede nessun corpo finche' non sono tutti CGTrader con clip */}
+                  <div style={{fontSize:34,marginBottom:8}}>🏟️</div>
+                  <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Caricamento dei giocatori</div>
+                  <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.78)",lineHeight:1.5,maxWidth:320,marginBottom:14}}>{att196.motivo==="compila"||att196.motivo==="testa"||att196.motivo==="corpi"?"Ultimi ritocchi: i giocatori si preparano…":"Stiamo scaricando i giocatori 3D. Con una connessione lenta serve qualche secondo."}</div>
+                  <div style={{width:"min(260px,70%)",height:8,background:"rgba(255,255,255,0.14)",borderRadius:RAD.pill,overflow:"hidden"}}>
+                    <div data-cpm="attesa196-barra" style={{height:"100%",width:Math.max(4,Math.round((att196.pct||0)*100))+"%",background:"#f59e0b",borderRadius:RAD.pill,transition:"width 0.3s linear"}}/>
+                  </div>
+                  <div style={{marginTop:8,fontSize:FS.caption,color:"rgba(255,255,255,0.6)",fontVariantNumeric:"tabular-nums"}}>{Math.round((att196.pct||0)*100)}%</div>
                 </div>)}
               {phase==="walkout"&&walkHold74&&(
                 <div data-cpm="walkhold74" style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>{/* [7.999.59] velo sull'attesa del 3D: la compilazione non si vede piu' come scatti dell'ingresso */}
@@ -11874,7 +11919,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:RAD.pill,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
-              {corpiHold232&&!kickoffHold&&!paused&&phase==="playing"&&(attesa241On()?(()=>{/* [giro 20 PO-241] schede vere al posto della scritta tecnica */
+              {corpiHold232&&!att196&&!kickoffHold&&!paused&&phase==="playing"&&(attesa241On()?(()=>{/* [giro 20 PO-241] schede vere al posto della scritta tecnica */
                 const _sc=schedeAttesa241({player,home:homeTeamObj,away:awayTeamObj,homeRoster,awayRoster,isMatchHome,clock,score,possession,opponent,context});
                 if(!_sc.length)return null;const _x=_sc[att241%_sc.length];
                 return(<div data-cpm="attesa241" style={{position:"absolute",top:"36%",left:"50%",transform:"translate(-50%,-50%)",minWidth:200,zIndex:39,background:"rgba(5,8,20,0.82)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:RAD.md,padding:"6px 14px",maxWidth:"calc(100% - 32px)",textAlign:"center",pointerEvents:"none"}}>
