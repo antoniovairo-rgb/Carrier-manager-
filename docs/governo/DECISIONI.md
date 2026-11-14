@@ -1514,3 +1514,6 @@ Verifica 190: ball-alive ROSSO (fermo 14,5 s) e bg-rhythm ROSSO (1,13×). Rieseg
 
 ## 14/11 ~10:35 Roma — PO-405 l'intervista settimanale ferma il tasto momento
 - PO: durante la corsa del tasto l'intervista settimanale «Risponde da solo e la elenca» (tono più usato dal giocatore, Diplomatico se manca la storia), nel riepilogo «Scelte fatte da solo» con gli effetti. «Nella 194». Le interviste post-partita delle partite chiave restano come sono (il tasto si ferma già prima, sulla partita).
+
+## 14/11 ~10:50 Roma — PO-406 serata di presentazione
+- Postura con spalle curve, braccio innaturale, spalti vuoti. Giro cerimonie della 194 con PO-402 (mister che vola) e PO-404 (coppa che vola): stessi corpi, stesse clip, stessi stadi.
